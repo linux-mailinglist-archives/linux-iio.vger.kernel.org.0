@@ -2,63 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D29165BF83
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jan 2023 13:00:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A191E65BF89
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jan 2023 13:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237361AbjACL6f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Jan 2023 06:58:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48876 "EHLO
+        id S237495AbjACL7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Jan 2023 06:59:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237434AbjACL6b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Jan 2023 06:58:31 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68916DFF8
-        for <linux-iio@vger.kernel.org>; Tue,  3 Jan 2023 03:58:30 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id bn26so9741533wrb.0
-        for <linux-iio@vger.kernel.org>; Tue, 03 Jan 2023 03:58:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TM/fv8r72lGY1GkkNJAibywbzPYZQ5pCj0+GnYUBcVE=;
-        b=S9pzhbApE4DSBcx8w0AJB2s+gmZXZHMhAw15lib1KWhbytevy9S8uApTmEAXV8l+DO
-         t2lkOLId5MBnR2GrBjxK5tuOSIIZM873lOa0Vf2ESmAxxbVjfBvqw0SzQ3PexlH+VHQk
-         RVrBZi5lXAbd6f6sfydjbOZ9JncrgY75S+hukiYVr4Fxyv6hBmKOjmNnj3R8KEvNzdZ3
-         i4Nq+FxOYTcPr/tBClvHOAasNcfQkb2zMTYLU+jXRFSZwSc+lBWnPSmqlThQVbLpdLfe
-         EdYSgb2LJ+sfF1SmlA3YsnbHFJNun3HFiigamI+rf6Ibo1tWfM/xpCYL5P2pPNuDfnTU
-         OBJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TM/fv8r72lGY1GkkNJAibywbzPYZQ5pCj0+GnYUBcVE=;
-        b=38MnlqEgtSa4TWxVzDwNCx04/nIBseFrUEqxJOXmUxAqAIR34YnlPhelKZ5CNymnEF
-         jA8Hsa4yknMw5/Qo5l3jVGiflDaBKYMWZ0jzUlCox5a9kVwB1tqSNdDH+8cJRLYaSs8L
-         xLFXsgiC67wRXHpN2ZPYfFv76OFwWM8fulsiNNYLWwC0HQTeSFfA9IloNEtk9smt87FQ
-         fi7bfiWv7goa1THJ7h59GZtTdLcCfzPGaH6ENj45gGZQUeJftYQC7s81mgRS4eGFOQex
-         wnlx9u9nm5yx6BEcrXoH28ijtS6IQiwU6CXsUTDVDF5RFuuRIWCKBgAU94kQ8LriYAqz
-         eyTA==
-X-Gm-Message-State: AFqh2krkcJBrsQ2MYWJJdIWRWhIlDDW1dqepIvIVBg8vyR1PSyBOE2+B
-        VCssd7Ehr0z2ZYmr46D4NBu2Cw==
-X-Google-Smtp-Source: AMrXdXto5B4pnQxpO4E1hO08Dv+wSKzyJnlYGGjudihTtX6h1rcgkc8jXUuQ7G9YvGMckIGAIgFk+g==
-X-Received: by 2002:adf:a159:0:b0:284:356:3400 with SMTP id r25-20020adfa159000000b0028403563400mr18099556wrr.30.1672747108877;
-        Tue, 03 Jan 2023 03:58:28 -0800 (PST)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id c8-20020a5d4148000000b002428c4fb16asm31073289wrq.10.2023.01.03.03.58.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Jan 2023 03:58:28 -0800 (PST)
-Message-ID: <c5ef569d-0f36-19ac-da53-3a5acdca4165@linaro.org>
-Date:   Tue, 3 Jan 2023 11:58:26 +0000
+        with ESMTP id S237435AbjACL7d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Jan 2023 06:59:33 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B79FCFC;
+        Tue,  3 Jan 2023 03:59:32 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 74AE26602CE7;
+        Tue,  3 Jan 2023 11:59:29 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1672747170;
+        bh=/EzXblkT2s5G5iuzR271kOa2ZyEevP0o+iEY8c1rpe8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=itL6o8LGmxDL9Oy7vbVGRMKQvWDJ0eI+dcG23HJmKFr930dykN71/l431hib7336n
+         F9ZNoqref0+FflC/XHm/pPg1VKAlCew/6hsqitS9Oc4BAL0QziH3I6mGLQOKAzElIB
+         Gt8dMCvT27ETO5yXQ2NnP2wJoggwk1OybcKEbgPeIA8/3GimIFdPJ/uBppptGgUxlC
+         ooFWgbPTNfccjTgudYnKlBcT+iQ2Nu8sNCddw3Gj6IRO+XYjzwExIa1QSLGNp5W3bH
+         9OT7eLFX58ti681qp2FvBR8ScYe0J4oKVkcb3AyWIfBFARzd5GUZUaMWVi6cDwINSc
+         oHIi+IAqiDq8Q==
+Message-ID: <d3688dc6-d869-b313-3849-b07043a3c064@collabora.com>
+Date:   Tue, 3 Jan 2023 12:59:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
+ Thunderbird/102.6.0
 Subject: Re: [PATCH v2 02/11] dt-bindings: nvmem: Fix qcom,qfprom compatibles
  enum ordering
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         agross@kernel.org
 Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
@@ -74,44 +55,47 @@ References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
  <20221111120156.48040-3-angelogioacchino.delregno@collabora.com>
  <b611f647-c46f-3780-c6b4-3cfb4fe402e7@linaro.org>
  <1fac581e-ef02-4576-0dbf-67662a29f724@collabora.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <1fac581e-ef02-4576-0dbf-67662a29f724@collabora.com>
+ <c5ef569d-0f36-19ac-da53-3a5acdca4165@linaro.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <c5ef569d-0f36-19ac-da53-3a5acdca4165@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 16/11/2022 08:50, AngeloGioacchino Del Regno wrote:
-> Il 15/11/22 17:42, Krzysztof Kozlowski ha scritto:
->> On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
->>> Move qcom,msm8974-qfprom after qcom,msm8916-qfprom to respect
->>> alphabetical ordering.
+Il 03/01/23 12:58, Srinivas Kandagatla ha scritto:
+> 
+> 
+> On 16/11/2022 08:50, AngeloGioacchino Del Regno wrote:
+>> Il 15/11/22 17:42, Krzysztof Kozlowski ha scritto:
+>>> On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
+>>>> Move qcom,msm8974-qfprom after qcom,msm8916-qfprom to respect
+>>>> alphabetical ordering.
+>>>>
+>>>> Fixes: c8b336bb1aeb ("dt-bindings: nvmem: Add soc qfprom compatible strings")
 >>>
->>> Fixes: c8b336bb1aeb ("dt-bindings: nvmem: Add soc qfprom compatible 
->>> strings")
+>>> It's a style, code readability, but not a bug. I propose to drop the tag.
+>>>
+>>> With that:
+>>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>
+>>>
 >>
->> It's a style, code readability, but not a bug. I propose to drop the tag.
->>
->> With that:
->> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>
->>
+>> Should I send a v3, or is it possible to drop the tag while applying it?
 > 
-> Should I send a v3, or is it possible to drop the tag while applying it?
+> Applied after dropping fixes tag..
+> 
 
-Applied after dropping fixes tag..
+Thanks for that!
 
---srini
-> 
-> Thanks,
-> Angelo
-> 
+Cheers,
+Angelo
+
+

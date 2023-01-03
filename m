@@ -2,100 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A191E65BF89
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jan 2023 13:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C2465BFF8
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jan 2023 13:37:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237495AbjACL7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 Jan 2023 06:59:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49864 "EHLO
+        id S233135AbjACMhV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 Jan 2023 07:37:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237435AbjACL7d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Jan 2023 06:59:33 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B79FCFC;
-        Tue,  3 Jan 2023 03:59:32 -0800 (PST)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        with ESMTP id S230337AbjACMhU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 Jan 2023 07:37:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E610563BA;
+        Tue,  3 Jan 2023 04:37:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 74AE26602CE7;
-        Tue,  3 Jan 2023 11:59:29 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1672747170;
-        bh=/EzXblkT2s5G5iuzR271kOa2ZyEevP0o+iEY8c1rpe8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=itL6o8LGmxDL9Oy7vbVGRMKQvWDJ0eI+dcG23HJmKFr930dykN71/l431hib7336n
-         F9ZNoqref0+FflC/XHm/pPg1VKAlCew/6hsqitS9Oc4BAL0QziH3I6mGLQOKAzElIB
-         Gt8dMCvT27ETO5yXQ2NnP2wJoggwk1OybcKEbgPeIA8/3GimIFdPJ/uBppptGgUxlC
-         ooFWgbPTNfccjTgudYnKlBcT+iQ2Nu8sNCddw3Gj6IRO+XYjzwExIa1QSLGNp5W3bH
-         9OT7eLFX58ti681qp2FvBR8ScYe0J4oKVkcb3AyWIfBFARzd5GUZUaMWVi6cDwINSc
-         oHIi+IAqiDq8Q==
-Message-ID: <d3688dc6-d869-b313-3849-b07043a3c064@collabora.com>
-Date:   Tue, 3 Jan 2023 12:59:26 +0100
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E70E612F3;
+        Tue,  3 Jan 2023 12:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82135C433D2;
+        Tue,  3 Jan 2023 12:37:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672749437;
+        bh=dB/QDWMWjPvnvJtwYHuiDSHxla5EZBvL/ZWB+joq7w0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Y+aabUelfstOIDqoO/0JWYLu6/dFlO9zksv+ub/3pQGAy+kaUznWjlY0BqJgZK/hR
+         bWId+uyeiT8RCnXX5jrYc08e4Rq290BvT0hotIBXivh+cVG7FyUGDKh0ii6NuRwJdp
+         ZoCcJmVLOfHCoMO1d2+1tSPcxJ3mH6KVxA/egzFQH9fSVhiqDpvdgeABu7pnvki/Ti
+         r250DNouxBqS9bir2kjL2hMyCWilnkn+Ju3ryXnZOu9nTABAHdAoDt7NyklaBFK9uH
+         ELIP3euShWo81qZIquUQ2JkkZgafED4ECJxhpulAgZDFJnp9mFz5y5YdHBoGo7/0EU
+         2p7vIvXV9wc2A==
+Date:   Tue, 3 Jan 2023 12:37:11 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     saravanan sekar <sravanhome@gmail.com>, sre@kernel.org,
+        lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-pm@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v6 0/7] Add support for mp2733 battery charger
+Message-ID: <Y7Qhd2uoHOHUh9h2@google.com>
+References: <20221123175425.564042-1-sravanhome@gmail.com>
+ <eedcf790-5447-d988-f9cb-9103f34f27ae@gmail.com>
+ <20221211115042.5ec91c3f@jic23-huawei>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 02/11] dt-bindings: nvmem: Fix qcom,qfprom compatibles
- enum ordering
-Content-Language: en-US
-To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        jic23@kernel.org, lars@metafoo.de, keescook@chromium.org,
-        tony.luck@intel.com, gpiccoli@igalia.com, evgreen@chromium.org,
-        gregkh@linuxfoundation.org, a39.skl@gmail.com,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
-        kernel@collabora.com, luca@z3ntu.xyz
-References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
- <20221111120156.48040-3-angelogioacchino.delregno@collabora.com>
- <b611f647-c46f-3780-c6b4-3cfb4fe402e7@linaro.org>
- <1fac581e-ef02-4576-0dbf-67662a29f724@collabora.com>
- <c5ef569d-0f36-19ac-da53-3a5acdca4165@linaro.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <c5ef569d-0f36-19ac-da53-3a5acdca4165@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221211115042.5ec91c3f@jic23-huawei>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 03/01/23 12:58, Srinivas Kandagatla ha scritto:
-> 
-> 
-> On 16/11/2022 08:50, AngeloGioacchino Del Regno wrote:
->> Il 15/11/22 17:42, Krzysztof Kozlowski ha scritto:
->>> On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
->>>> Move qcom,msm8974-qfprom after qcom,msm8916-qfprom to respect
->>>> alphabetical ordering.
->>>>
->>>> Fixes: c8b336bb1aeb ("dt-bindings: nvmem: Add soc qfprom compatible strings")
->>>
->>> It's a style, code readability, but not a bug. I propose to drop the tag.
->>>
->>> With that:
->>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>
->>>
->>
->> Should I send a v3, or is it possible to drop the tag while applying it?
-> 
-> Applied after dropping fixes tag..
-> 
+On Sun, 11 Dec 2022, Jonathan Cameron wrote:
 
-Thanks for that!
+> On Tue, 6 Dec 2022 17:05:26 +0100
+> saravanan sekar <sravanhome@gmail.com> wrote:
+> 
+> > On 23/11/22 18:54, Saravanan Sekar wrote:
+> > > changes in v6:
+> > >    - splitted chip id to v6-0003 and support of mp2733 to v6-0004 patch
+> > >    - fixed commit message English grammar
+> > > 
+> > > changes in v5:
+> > >    - fixed commit message on v5-0002 and v5-0004
+> > > 
+> > > changes in v4:
+> > >    - fixed attributes groups review comments in v3
+> > >    - added new bug fix patches v4-0007 and v4-0008
+> > > 
+> > > changes in v3:
+> > >    - fixed dt_binding_check error
+> > >    - fixed spelling usb->USB
+> > > 
+> > > changes in v2:
+> > >    - fixed spelling
+> > >    - revert back probe to probe_new in mfd driver
+> > > 
+> > > add support for mp2733 Battery charger control driver for Monolithic
+> > > Power System's MP2733 chipset
+> > > 
+> > > Saravanan Sekar (7):
+> > >    mfd: mp2629: fix failed to get iio channel by device name
+> > >    power: supply: fix wrong interpretation of register value
+> > >    mfd: mp2629: introduce chip id machanism to distinguish chip
+> > >    mfd: mp2629: Add support for mps mp2733 battery charger
+> > >    iio: adc: mp2629: restrict input voltage mask for mp2629
+> > >    power: supply: Add support for mp2733 battery charger
+> > >    power: supply: mp2629: Add USB fast charge settings
+> > > 
+> > >   .../ABI/testing/sysfs-class-power-mp2629      |  16 ++
+> > >   drivers/iio/adc/mp2629_adc.c                  |   5 +-
+> > >   drivers/mfd/mp2629.c                          |   7 +-
+> > >   drivers/power/supply/mp2629_charger.c         | 229 +++++++++++++++---
+> > >   include/linux/mfd/mp2629.h                    |   6 +
+> > >   5 files changed, 226 insertions(+), 37 deletions(-)
+> > >   
+> > 
+> > Hi,
+> > 
+> > Can someone give me share the plan for this series?
+> 
+> Given some cross dependencies I think the whole lot should go through
+> mfd.  Lee?
 
-Cheers,
-Angelo
+That's fine by me.
 
+I have some serious catching up to do though.
 
+Please bear with me.
+
+-- 
+Lee Jones [李琼斯]

@@ -2,70 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A688765D349
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Jan 2023 13:54:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73E6B65D4A9
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Jan 2023 14:47:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231220AbjADMyt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 Jan 2023 07:54:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
+        id S229582AbjADNrO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 Jan 2023 08:47:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234001AbjADMyo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Jan 2023 07:54:44 -0500
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296451DDC4
-        for <linux-iio@vger.kernel.org>; Wed,  4 Jan 2023 04:54:43 -0800 (PST)
-Received: by mail-qt1-x82e.google.com with SMTP id h21so27043376qta.12
-        for <linux-iio@vger.kernel.org>; Wed, 04 Jan 2023 04:54:43 -0800 (PST)
+        with ESMTP id S239372AbjADNrH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 Jan 2023 08:47:07 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F15FCC3
+        for <linux-iio@vger.kernel.org>; Wed,  4 Jan 2023 05:47:05 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id vm8so75768010ejc.2
+        for <linux-iio@vger.kernel.org>; Wed, 04 Jan 2023 05:47:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
-        b=BQfo1+41q2NZR57Q7BFlMODaOza2AgrRvUpAp3daCd4t1w84OEhFtXAM1g7CkVTr/y
-         mvXWkJvXCDM96Iy3cSf9E37Th3uZX5TzmwlIsHFzK3DAyLuSjJ8d3uR9drr/ahkzPGkt
-         iW+sw+gZOJCd7bumtfoM4UR2xOfXz6tdmGq2f+IJJhoSBazdofAm5Gs9PxuweXnk264c
-         knSGf1CtrqZScdeov1GoaGbl2sApMUXYjJGPCObPVA0UTlHx2t6+wdp4VOKHmsqLWM8X
-         lQt15zqigA6uJCG+q37n0r4mLK1MKtsniT1i9jhRA9qlN9E2Mf0sYN4W9Jd0n+39BoCK
-         yzWA==
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oAIQZvW5RZUPmyj2ch5cIK4CvZCcLKlBNu+PBeDorUg=;
+        b=feJknn9iKitrlA0+TzXEVxXfTjovGt5bFEBOu+EbuVB9dEm2b6rZxr8uOLi9BZIu7P
+         VZfZxQSdamB7YVwfHGB+CHFWJHULpQgUXvW667HDb/UJoULco2O+G2N90jdLV5TeDGdn
+         MRvtxvxhwOwPOJkuTO4fI9Q10IesZpYaHRKpuiq0r/W9ojFw4lfEaNTt5lW5uQrEZMKY
+         ATwCUPwLyK3wk/JLVZWof0RLagMUyZAjmTWVmHpTKeNbtfcH2NXnbHEZi5ewq8UZm3Ck
+         vudTxQTR8eAhPAUFiRRW7zcTQXieDmmBrcsqS3PHjkHcjt5+O+m0/1I3Oljpz/DlnEMe
+         vRfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
-        b=HjRUSfmJ6uUFwOVhoaMLZVzQVu57EYfUbpb5JJrE6SaT9+hE+m0jk3fYA99KQ+vj2j
-         dO99jgrLVUgI/QQ/8AD4gFtiELSj4xlEF/7FoT9ae9Fp3z/IxOLUaY81mtWtR//hvjYS
-         zYI97KG5RvCgRYopjgcbWE+WdIp0MzNfQ3k0FFbMOTr0CWs5yCtojXAPkRNd3c1k+Lhd
-         JRq1k7whcYWHPiQHxceyLnTm2zNP6ORGAQALBwP3n0kHA7b1V8rVquh50c0qK1f2REPa
-         3fFnAOTQ88Qm1Q9XzXMaoNNe2W6POCVYmPRXsrPk48s60ukETDCFx0ssEkS1yaUepEmA
-         P2Kw==
-X-Gm-Message-State: AFqh2krXe4kXd50/kLnn4cy8cCPq+2F9K9oHRFT6SKmixz6vkgD2Tsgd
-        ihUYZJU8o3akyQxXI+Bq3f9gmMKPy6c8HelzzC8=
-X-Google-Smtp-Source: AMrXdXuKXTvNK0aSB9vnyjtdhrZfKmRzvU9Jw1W0zhcD7x19AMFVNgTh5oL+8ilZBOfTDf/bL64QVz1mYULxa/ftADs=
-X-Received: by 2002:ac8:568a:0:b0:3a9:688d:fad2 with SMTP id
- h10-20020ac8568a000000b003a9688dfad2mr1976067qta.646.1672836882017; Wed, 04
- Jan 2023 04:54:42 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6200:5d91:b0:4a5:78e9:2012 with HTTP; Wed, 4 Jan 2023
- 04:54:41 -0800 (PST)
-Reply-To: Gregdenzell9@gmail.com
-From:   Greg Denzell <mzsophie@gmail.com>
-Date:   Wed, 4 Jan 2023 12:54:41 +0000
-Message-ID: <CAEoj5=ZpJ15GRz-U33Ocbu5-P3Va+3bNv3476+mmJJ52cwx7tA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oAIQZvW5RZUPmyj2ch5cIK4CvZCcLKlBNu+PBeDorUg=;
+        b=wJolayzXYQhZHd+kE/YPPf/LboUNvtqOJGehXXH3HlGafrQFPRrt6I9RlCS/ec5sM6
+         CEuJA/ghXHmke2wEnRKRt+A9991vyHBNfT4Cste5ufwQe1RbXljXdeOSgSBYQJk92dqC
+         Z+3IoUzIFzNPdEu6rPpTgj1L2cPKPrYEHmx2Ft9pWfZf0zpqw25Pfb23QmWcWb+VCJyy
+         OgTwYGd4NVurJ3Tnn0OCJ6v0wG3hMLXAQJZw+oQYAr4ZnqZwA15XoEjm3yZgPFWGYX/I
+         6TN3OIM/99hiBe7dsCAue4k5omfIfbJu/o6VG7BhP4fBGUzzrED90RM9suSliHLbHHmc
+         ilOw==
+X-Gm-Message-State: AFqh2kqgeJcRJagBNs+w747M0aUHAhPLyr+itCrPf9X2vsLHs5p+bcnt
+        OZECNxnXHD863iXXHtMPurk=
+X-Google-Smtp-Source: AMrXdXvK+mbKV68fVIuuT1z9xB5r0NY2Z6+aKcjSL+GBdNzt+Pf4aAqt5AIhm6zXm4dDKgnDcIi6uw==
+X-Received: by 2002:a17:907:8dc6:b0:84c:f9b1:f46e with SMTP id tg6-20020a1709078dc600b0084cf9b1f46emr1239106ejc.31.1672840024473;
+        Wed, 04 Jan 2023 05:47:04 -0800 (PST)
+Received: from giga-mm.home ([2a02:1210:8629:800:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with ESMTPSA id h14-20020a1709063c0e00b00780b1979adesm15323922ejg.218.2023.01.04.05.47.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jan 2023 05:47:03 -0800 (PST)
+Message-ID: <7a76556496c0a72a54df2eea5813aeac924b1973.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ep93xx: Enable wider build testing with
+ COMPILE_TEST
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>
+Date:   Wed, 04 Jan 2023 14:47:02 +0100
+In-Reply-To: <20221231144128.489810-1-jic23@kernel.org>
+References: <20221231144128.489810-1-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.2 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Seasons Greetings!
+On Sat, 2022-12-31 at 14:41 +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> It is useful to be able to build this driver without needing
+> to build support for ARCH_EP93XX.
+>=20
+> Also add an explicit dependency on HAS_IOMEM so we have
+> devm_platform_ioremap_resource() etc available.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This will remind you again that I have not yet received your reply to
-my last message to you.
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+
+> Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+> Cc: Hartley Sweeten <hsweeten@visionengravers.com>
+> ---
+> =C2=A0drivers/iio/adc/Kconfig | 3 ++-
+> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 46c4fc2fc534..7d6e74189a2d 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -441,7 +441,8 @@ config ENVELOPE_DETECTOR
+> =C2=A0
+> =C2=A0config EP93XX_ADC
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Cirrus Logic EP=
+93XX ADC driver"
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on ARCH_EP93XX
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on ARCH_EP93XX || COMP=
+ILE_TEST
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on HAS_IOMEM
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Driver for the ADC=
+ module on the EP93XX series of SoC from Cirrus Logic.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 It's recommended t=
+o switch on CONFIG_HIGH_RES_TIMERS option, in this
+
+--=20
+Alexander Sverdlin.
+

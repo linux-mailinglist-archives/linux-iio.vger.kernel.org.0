@@ -2,122 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4984265F114
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jan 2023 17:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF2165F7E3
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Jan 2023 00:50:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbjAEQ0w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 Jan 2023 11:26:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60218 "EHLO
+        id S229684AbjAEXuj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 Jan 2023 18:50:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234996AbjAEQ0m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Jan 2023 11:26:42 -0500
-Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43BB824C
-        for <linux-iio@vger.kernel.org>; Thu,  5 Jan 2023 08:26:41 -0800 (PST)
-Date:   Thu, 05 Jan 2023 16:26:35 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1672935998; x=1673195198;
-        bh=hkx5scIgMzsEcBB5JyGZyNLYzbEu+AwqPA1IFe4L250=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=lukJ3Y+BLMdeQ9SD8RB/ntm8jDeThIyWrggMPVHJfIIyH9A41G6WCclcKJp6uqQdc
-         kxk57Jaj19oM4hrBDYrLpyifXpMjjxtAk/1O9TjeSwl1OApOlnEJ08p8WgN+T0oVhv
-         HF+hHi/88i1N3Ue9S83Rn0GNaMDgtY70P1m9KzUh9Jp2aUOVk015a1OSZCRT3gQiH1
-         /ihI0kueIRKV9FpC/UwnmXQSK5hoSArgmsUei7o/Sn+eLc2coGx/YeVp0wsaKhanY7
-         amNMKvj98j3Ctn9ivc48+9VeZy9b93vOrxAccLVg+tfB0uc5IbIPImprJ/GGGa3QQl
-         ldB+CzS3u1q2g==
-To:     Jonathan.Cameron@Huawei.com, kai.heng.feng@canonical.com
-From:   Wahaj <wahajaved@protonmail.com>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: CM32181 Bug Report (Linux 6.0+)
-Message-ID: <XRVRm0eZvITN7LSrbXQuiYw0sb7W0e2rdRLWGQ-9vkmrMqMVB6IMsOyxuP_CyqmUrqzHdQCASMo9_eU7N3EEkLcAvoWr716p0ZvKfdv1OmA=@protonmail.com>
-In-Reply-To: <20230103112629.000063e8@Huawei.com>
-References: <k0IjFnlIUFDGe3OlkvevaSjhOZclaX1X6Sskt5vhLQIv9_WeRYNZ--2gUYu67qsxY9WNu1DnH6h4lIx1UPnG4vAY4j7KuqVlq52RN0lC9dg=@protonmail.com> <20230103112629.000063e8@Huawei.com>
-Feedback-ID: 13756336:user:proton
+        with ESMTP id S235045AbjAEXui (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 Jan 2023 18:50:38 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A9A34D5E
+        for <linux-iio@vger.kernel.org>; Thu,  5 Jan 2023 15:50:38 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id k137so21738015pfd.8
+        for <linux-iio@vger.kernel.org>; Thu, 05 Jan 2023 15:50:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6dUGG4xNbmHxqZEWk1QIkj1J4BmjM8dGcX1VYzdsWsY=;
+        b=AkF8e5fzAZ2VeUWgeccokzgmGMkI/xbhVuZWko5E+WUCvTbBhrEKmFzqLouhvH+mff
+         qSqo5/ZV3earTqKSCp3SucQw6ZEGAkuyiK3Va6Q3oXWSho1ztU5OiVZ3KGLnymu6SJyF
+         yJYorrv3G2fCSumBtEidADBhZh5crz739IbFEP5+7NCyC5U+LgwrtBXkkrYFbt2jOXWq
+         Y449etWueBSN1zELXIYwdt5uyRHikVqeb51i58uQwmdHeqEo3o44FSBxNW34TTRgo/m9
+         jJH9mwbhak1aC6v/2dJ4HHsUFY3j5uoPORWHh05YdVfKLqkVjjUuMV7nkiWOtRDGTt9L
+         MeDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6dUGG4xNbmHxqZEWk1QIkj1J4BmjM8dGcX1VYzdsWsY=;
+        b=aXMM76nIRKp0BzTAe2JX9m8yw0abD4yMepGa+UDW7+B7abOPlti0rl+EPMWxbfkYwh
+         UkM8Z2MAI+94cjU0s/N7WhW0kL577SqByU3EIFVae5dV6ALZDnOJFzyw9Ni3V9FV0MuK
+         wXc1lEyDFgi1X2p63dGaKjI3PdGd9bB81VUo0LDn15wnriACFOyPgmJBNQEtZMBVVImt
+         jILAPe127nDcRgBc7Fx45AJPGyx354a+GNI4oAIqTYQ3qw0HzG4dC62P+JGFrP60L41V
+         X5/3PE6T75OdBgQrHkqUJ1+ziJ63fhWyH2h++Jw9PW3BNwj+JUiX783n37TOGbLNNMgL
+         uW+Q==
+X-Gm-Message-State: AFqh2kqz792amCJ2ODk6evQp6UwSkXHmI+T0w4N+L8+8xfyyQkvfdk+e
+        ZOMyXV2JWHnRVNDNVvWeWIWFxwDByX1ZA29P//uz4if2TK3dPfADOwkxMw==
+X-Google-Smtp-Source: AMrXdXvnfYaDhVS8foEMYOEQlITVPNRz/fxf/qtKT1wYa+88dUuBCAVEBsDcBAahaCKU6vtleoo7q7KppsH16zgzEeY=
+X-Received: by 2002:a05:6602:110:b0:6e9:a169:c879 with SMTP id
+ s16-20020a056602011000b006e9a169c879mr3296848iot.99.1672962309821; Thu, 05
+ Jan 2023 15:45:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Received: by 2002:a92:c147:0:b0:304:bdf2:e728 with HTTP; Thu, 5 Jan 2023
+ 15:45:09 -0800 (PST)
+Reply-To: avamedicinemed3@gmail.com
+From:   Dr Ava Smith <mcaitlin9999@gmail.com>
+Date:   Fri, 6 Jan 2023 00:45:09 +0100
+Message-ID: <CAPfBHRZD4pVvik6GendF69T3qA4ykoMKDEioXBhGmcT6ACQgxw@mail.gmail.com>
+Subject: From Dr Ava Smith in United States
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-------- Original Message -------
-
-
-On Tuesday, January 3rd, 2023 at 2:26 PM, Jonathan Cameron <Jonathan.Camero=
-n@Huawei.com> wrote:
-
-> On Wed, 28 Dec 2022 14:05:24 +0000
-> Wahaj wahajaved@protonmail.com wrote:
->
-
->> Hi Jonathan
->>
->> Hope you're doing well. I have been using a laptop that comes with a
->> CM32181 Light Sensor and after upgrading to the Linux kernel 6.0+, my
->> laptop cannot seem to suspend because of the PM subsystem error. I
->> have narrowed the problem down to this module and I believe that the
->> commit 68c1b3dd5c48b2323067f8c1f0649ae2f31ab20bis the culprit
->>
->> The following lines were provided from the journalctl logs:
->>
->>
->>> cm32181 i2c-CPLM3218:00: PM: dpm_run_callback():
->>> acpi_subsys_suspend+0x0/0x60 returns -121 cm32181 i2c-CPLM3218:00:
->>> PM: failed to suspend async: error -121
->>
->> I would love the chance to be able to work on this given any guidance
->> on where to start
->
->
-> Hi Wahaj,
->
-> Certainly seems likely that you have identified the right commit.
-> As a starting point, resend this email to linux-iio@vger.kernel.org
-> and Kai-Heng Feng kai.heng.feng@canonical.com
->
->
-> If you could try reverting the commit to be completely sure it is
-> the cause that would help avoid any doubt.
-> Superficially the only thing that I can see causing this problem is
-> a fail of the i2c bus write.
->
-> Does the device work prior to suspend? Try cat /sys/bus/iio/iio:device0/*
-> and see if you get any errors (may be device1 etc)
->
-> If the device wasn't working at all the register writes in probe() should
-> have failed so we shouldn't be trying to suspend it.
-> It's possible your machine has some unusual power dependencies or
-> similar that mean the device is getting powered down before we try to
-> suspend it.
->
-> Anyhow, better to have this discussion on list as there are many other pe=
-ople
-> who may have more insight than me or be able to replicate and help debug.
->
-> Jonathan
->
->> Best Regards,
->> Wahaj Javed
-
-Hi Jonathan and Kai-Heng Feng,
-
-I am currently using the 5.15 linux kernel for a while now which works perf=
-ectly fine.
-
-From what I gather the suspend functionality does work when using an older =
-Linux version without the PM i2c bus writes.
-
-The device does work fine prior to and post attempted suspend with no error=
-s showing in cat /sys/bus/iio/iio:device0/*
-Let me know if there's anything I should start looking into
-
-Best Regards
-Wahaj Javed
+-- 
+Hello Dear,
+My name is Dr Ava Smith.Am an English and French nationalities.
+I will be waiting to get a response from you so i can tell you more
+about my self and share so some photos too.
+Thanks
+Ava

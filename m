@@ -2,50 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A5E466152E
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 13:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4FBC661536
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 13:51:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbjAHMsq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Jan 2023 07:48:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60926 "EHLO
+        id S232950AbjAHMvA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Jan 2023 07:51:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjAHMsp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 07:48:45 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB0D92;
-        Sun,  8 Jan 2023 04:48:44 -0800 (PST)
+        with ESMTP id S230363AbjAHMvA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 07:51:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A22B21AB;
+        Sun,  8 Jan 2023 04:50:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6DFE9B80975;
-        Sun,  8 Jan 2023 12:48:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4FFC433EF;
-        Sun,  8 Jan 2023 12:48:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A947BB80976;
+        Sun,  8 Jan 2023 12:50:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E7C433EF;
+        Sun,  8 Jan 2023 12:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673182122;
-        bh=Uhlc99022Ls0RTWOv48mkmJNl6QEEfWEdVTIJlk76sI=;
+        s=k20201202; t=1673182256;
+        bh=rDIT6gOl0JO4Pi6BQxe7HUa29MorRTACERDszgVOHnE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DIAG724NZZLEidXWg1jC1XYmyNiNI61x6bP7gcuowLviyKULbyXPN36yNlsBaP5O3
-         bWn0cOmZM/X3JvYYfsJPJLlj2AtuPoQQRKEbiiLKYzf7QymlvKxr3cTdtNk1pcDph9
-         GdYtHznCWH9t3WYIh32j9UmVkW0saMAFzP2nJbpAY39fQx03vc22XJPD0hK5ty1/Jw
-         tMYRWuzGB7kMkP8QIbofCm52XN5ec3wM9q4QFdR7ZwARuIuEj48X7j9ct+GlCEQtSe
-         uV5tot3cCauwKHhjxRw6aiCeOG610+dBLYaXfls+ayYlfT0zj1eJXamVh3bA8Nee47
-         5P8FM2AacXgfQ==
-Date:   Sun, 8 Jan 2023 13:02:08 +0000
+        b=NvemCsLHeLLV+8PVO2pbhxbb52p3xtb96zE7/xXKTz1izmy3Rw0KxsxjRIFJn/SlS
+         oFXd4nidiwMNH23ZaBiUh6nxpg9P1mI2CYC2aQKuaYnCTnJ+BZocXBRtTUum4LhmK2
+         lCftg30KLGlQzvHx82O3xsXbGp7KvX4O0CKEXJVvex175baGrwtul/lzWabC67km8f
+         JPQU9cheLe38Cen77Wj5tFSIg38d9JIJPNq7Hm8wLfpEdMTgo+y3n2jo6MhuZWXScP
+         MasUqRGgcCAx5v9Wofq/ZbAEwj/GxGoTLz5Msdtto1NCPWB4BaRqz3EAv9zXRM+E0H
+         80I/jiXRfWrGA==
+Date:   Sun, 8 Jan 2023 13:04:22 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Denis Ciocca <denis.ciocca@st.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 0/3] iio: st-sensors: Add LSM303C
- accelerometer+magnetometer
-Message-ID: <20230108130137.302a79d6@jic23-huawei>
-In-Reply-To: <CACRpkdbiQFumJek5WUh=dcxXDvOV=Dhd+WqCrzzyWJY+i-xKuQ@mail.gmail.com>
-References: <20230106102239.9647-1-stephan@gerhold.net>
-        <CACRpkdbiQFumJek5WUh=dcxXDvOV=Dhd+WqCrzzyWJY+i-xKuQ@mail.gmail.com>
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: qcom-spmi-adc5: define
+ ADC5_BAT_ID_100K_PU channel
+Message-ID: <20230108130422.76493bf8@jic23-huawei>
+In-Reply-To: <20230106-pm7250b-bat_id-v1-1-82ca8f2db741@fairphone.com>
+References: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
+        <20230106-pm7250b-bat_id-v1-1-82ca8f2db741@fairphone.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,38 +62,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 8 Jan 2023 00:56:22 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Fri, 06 Jan 2023 16:39:41 +0100
+Luca Weiss <luca.weiss@fairphone.com> wrote:
 
-> On Fri, Jan 6, 2023 at 11:24 AM Stephan Gerhold <stephan@gerhold.net> wrote:
+> Define the ADC channel used for battery identification purposes so it
+> can be used in drivers.
 > 
-> > Add support for the ST LSM303C [1] accelerometer and magnetometer combo
-> > sensor in st_accel and st_magn. LSM303C seems to be more or less
-> > a combination of LIS2HH12 as accelerometer and LIS3MDL as magnetometer
-> > so this series just adds two new compatibles for the two sensors that
-> > are already supported.
-> >
-> > [1]: https://www.st.com/resource/en/datasheet/lsm303c.pdf
-> >
-> > Stephan Gerhold (3):
-> >   dt-bindings: iio: st-sensors: Add LSM303C accelerometer+magnetometer
-> >   iio: accel: st_accel: Add LSM303C
-> >   iio: magnetometer: st_magn: Add LSM303C  
-> 
-> This patch set:
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Applied to the togreg branch of iio.git and pushed out as testing for
+0-day to take a look at it.
 
-Series applied to the togreg branch of iio.git and pushed out as testing 
-for 0-day to take a poke at it.
+If anyone else has comments, then there is still time as I won't push
+this out as a non-rebasing branch for a few days at least
+(and I'm aware I picked it up very quickly :)
 
-Note, still time for others to review as I'll probably not push this out as
-a non rebasing tree until next weekendish.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Yours,
-> Linus Walleij
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index 821fee60a765..8c33da9de257 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -543,6 +543,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>  					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_XO_THERM_100K_PU]	= ADC5_CHAN_TEMP("xo_therm", 0,
+>  					SCALE_HW_CALIB_XOTHERM)
+> +	[ADC5_BAT_ID_100K_PU]	= ADC5_CHAN_TEMP("bat_id", 0,
+> +					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_AMUX_THM1_100K_PU] = ADC5_CHAN_TEMP("amux_thm1_100k_pu", 0,
+>  					SCALE_HW_CALIB_THERM_100K_PULLUP)
+>  	[ADC5_AMUX_THM2_100K_PU] = ADC5_CHAN_TEMP("amux_thm2_100k_pu", 0,
+> 
 

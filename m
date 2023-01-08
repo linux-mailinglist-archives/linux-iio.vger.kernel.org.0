@@ -2,49 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F922661545
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 13:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7C966154C
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 14:01:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230368AbjAHM6D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Jan 2023 07:58:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
+        id S233225AbjAHNBm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Jan 2023 08:01:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjAHM6C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 07:58:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA55DEF7;
-        Sun,  8 Jan 2023 04:58:01 -0800 (PST)
+        with ESMTP id S229627AbjAHNBl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 08:01:41 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7038BDF58;
+        Sun,  8 Jan 2023 05:01:40 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6A5E0B80976;
-        Sun,  8 Jan 2023 12:58:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD94C433EF;
-        Sun,  8 Jan 2023 12:57:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 05002B80A36;
+        Sun,  8 Jan 2023 13:01:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74E2C433D2;
+        Sun,  8 Jan 2023 13:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673182679;
-        bh=TxvREl6UDYmnCeKmIm1J8t4vc0IFfK/snhTTrx3rGQY=;
+        s=k20201202; t=1673182897;
+        bh=axSUVB3lof9WSwRIsKgGRZbHEkRI+Nv4KBBytu4sLFI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=V/nkC+C0lUnI/amaOQ28+jUx+I3BND94oxh4UPQ8py0HazQ/K/8fmSSHAHMztjwkI
-         gTC0BkeJZR+z4BOjhA59pq9GHSTdwt9bSIeab/9Jfh46mSEEWHemGZ/c3sR06VUnLh
-         bHBcmmPbth21RZ+lZI7Kbn1HDHlesu3/qyOcuLbUkUVYH9rsOGEDgMxAhMHL71jibe
-         QLmzOXUTu9wFy1hKOXd82TSAV7mBrd5L606wluM6knLwmNHFe+CKR9frYOomM50yQN
-         MqFOdo9UBWd1iQhsB8mUdiNhw5bZsCddgSEkjKE3Q40VDASLZM2JiD8cljWfvYoiHr
-         ZS5mAlJZjYyQA==
-Date:   Sun, 8 Jan 2023 13:11:26 +0000
+        b=pfuNWB2sb257KSDBUJea2JgTBiIUCe9W1JQ5Y5TDxhwlpbWf7AjskS7jdOuoTRarZ
+         ID5gc1H6tKhTQVFoPsuA5neqr2FviCPsa3iIwRhPbYffON0t5wxBEBqsE+lPFf6YX+
+         e2u8I892KGi+tNEDjZEWQROgNyATIYMlyl150h8uYD6HX4+pOmxi5gxE/dspuJajha
+         HjTtJ8Am/hp4r/N9vWZdXUMPeoMq+sEYxkxj5YO/j2GKdUDW5KDWuXAjP9lHy9T9NB
+         NP++0DlJthv1uvJdpU18T/VWxKeKEbd7+WBalsonkEgakE+RCh+D/ac1kSuyhiARlo
+         Hamv1AnarRWyQ==
+Date:   Sun, 8 Jan 2023 13:15:05 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier Moysan <olivier.moysan@foss.st.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: adc: stm32-dfsdm: add id registers support
-Message-ID: <20230108131126.39e15757@jic23-huawei>
-In-Reply-To: <20230105125331.328275-1-olivier.moysan@foss.st.com>
-References: <20230105125331.328275-1-olivier.moysan@foss.st.com>
+To:     haibo.chen@nxp.com
+Cc:     lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 0/3] add imx93 adc support
+Message-ID: <20230108131505.0a51fe46@jic23-huawei>
+In-Reply-To: <20230103114359.2663262-1-haibo.chen@nxp.com>
+References: <20230103114359.2663262-1-haibo.chen@nxp.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,72 +56,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 5 Jan 2023 13:53:30 +0100
-Olivier Moysan <olivier.moysan@foss.st.com> wrote:
+On Tue,  3 Jan 2023 19:43:55 +0800
+haibo.chen@nxp.com wrote:
 
-> Add support of identification registers to STM32 DFSDM
-> to allow hardware capabilities discovery and configuration check.
-> The number of filters and channels, are read from registers,
-> when they are available.
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-One minor thing inline. I'll tweak it whilst applying.
+> V5:
+>   -For ADC driver, use dev_err_probe() to replace dev_err() in dev_err_probe(). 
+>   -Add imx93_adc_power_down() in the probe error path.
+>   -Re-order the function in imx93_adc_remove(), make them inverse in probe().
+>   -Remove the pm_runtime_get_sync(dev) in imx93_adc_remove(), because this driver
+>    enable the pm_runtime autosuspend feature, and config the delay as 50ms. So when
+>    called imx93_adc_remove(), this device still in runtime resume state, no need to
+>    force resume the device back.
+I don't follow this point.  Perhaps talk me through in more detail on why the device
+will be in a runtime resumed state when ever we hit remove?
 
-
-Applied with that tweak to the togreg branch of iio.git and pushed out
-as testing for 0-day etc to look at it.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Changes in v2:
-> - Add and update comments
-> - Remove useless masks
-
-
-
-> diff --git a/drivers/iio/adc/stm32-dfsdm.h b/drivers/iio/adc/stm32-dfsdm.h
-> index 4afc1f528b78..b64cfb42c549 100644
-> --- a/drivers/iio/adc/stm32-dfsdm.h
-> +++ b/drivers/iio/adc/stm32-dfsdm.h
-> @@ -13,25 +13,29 @@
-
-...
-
->  /*
-> @@ -231,6 +235,28 @@
->  #define DFSDM_AWCFR_AWHTF_MASK	GENMASK(15, 8)
->  #define DFSDM_AWCFR_AWHTF(v)	FIELD_PREP(DFSDM_AWCFR_AWHTF_MASK, v)
->  
-> +/*
-> + * Identification register definitions
-> + */
-> +#define DFSDM_HWCFGR		0x7F0
-> +#define DFSDM_VERR		0x7F4
-> +#define DFSDM_IPIDR		0x7F8
-> +#define DFSDM_SIDR		0x7FC
-> +
-> +/* HWCFGR: Hardware configuration register */
-> +#define DFSDM_HWCFGR_NBT_SHIFT	0
-
-The _SHIFT macros don't add anything useful over using
-the _MASK ones directly.  So drop them.
-
-> +#define DFSDM_HWCFGR_NBT_MASK	GENMASK(7, 0)
-> +#define DFSDM_HWCFGR_NBF_SHIFT	8
-> +#define DFSDM_HWCFGR_NBF_MASK	GENMASK(15, 8)
-> +
-> +/* VERR: Version register */
-> +#define DFSDM_VERR_MINREV_SHIFT	0
-> +#define DFSDM_VERR_MINREV_MASK	GENMASK(3, 0)
-> +#define DFSDM_VERR_MAJREV_SHIFT	4
-> +#define DFSDM_VERR_MAJREV_MASK	GENMASK(7, 4)
-> +
-> +#define STM32MP15_IPIDR_NUMBER	0x00110031
-> +
->  /* DFSDM filter order  */
->  enum stm32_dfsdm_sinc_order {
->  	DFSDM_FASTSINC_ORDER, /* FastSinc filter type */
+>   -no changes for binding doc and dts.
+> 
+> V4:
+>   For ADC driver, re-define the ADC status show the relation to specific register bit.
+>   Redo the imx93_adc_remove(), change the return error sequence in imx93_adc_read_raw(),
+>   and use a direct string for indio_dev->name.
+>   For dt-bings, change the commit title and add maintainer's reviewed by tag
+>   For dts, no change.
+> 
+> V3:
+>   For dt-bings, add some change according to review comments, and pass dt_binding_check.
+>   For dts, add #io-channel-cells = <1>; to pass dtbs_check
+>   For ADC driver, no change.
+> 
+> V2:
+>   For ADC driver, add change according to matainer's commets.
+> 
+> Haibo Chen (3):
+>   iio: adc: add imx93 adc support
+>   dt-bindings: iio: adc: Add NXP IMX93 ADC
+>   arm64: dts: imx93: add ADC support
+> 
+>  .../bindings/iio/adc/nxp,imx93-adc.yaml       |  81 +++
+>  MAINTAINERS                                   |   4 +-
+>  .../boot/dts/freescale/imx93-11x11-evk.dts    |  12 +
+>  arch/arm64/boot/dts/freescale/imx93.dtsi      |  13 +
+>  drivers/iio/adc/Kconfig                       |  10 +
+>  drivers/iio/adc/Makefile                      |   1 +
+>  drivers/iio/adc/imx93_adc.c                   | 477 ++++++++++++++++++
+>  7 files changed, 597 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>  create mode 100644 drivers/iio/adc/imx93_adc.c
+> 
 

@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2CB06614A2
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 11:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A59A6614B2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 12:17:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232985AbjAHK54 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Jan 2023 05:57:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41028 "EHLO
+        id S232900AbjAHLRW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Jan 2023 06:17:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232950AbjAHK5z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 05:57:55 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDB99140FE
-        for <linux-iio@vger.kernel.org>; Sun,  8 Jan 2023 02:57:54 -0800 (PST)
+        with ESMTP id S229673AbjAHLRV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 06:17:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0BAB4A4
+        for <linux-iio@vger.kernel.org>; Sun,  8 Jan 2023 03:17:20 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6873360C59
-        for <linux-iio@vger.kernel.org>; Sun,  8 Jan 2023 10:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2D8C433D2;
-        Sun,  8 Jan 2023 10:57:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E3651B8085C
+        for <linux-iio@vger.kernel.org>; Sun,  8 Jan 2023 11:17:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE591C433D2;
+        Sun,  8 Jan 2023 11:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673175473;
-        bh=4hwwv1V4LuHFJiL0/NTZ1kqZFRvIVVJxmM5MHNbL6Q4=;
+        s=k20201202; t=1673176637;
+        bh=iZIz6ZTIhutSgpOkrhiliF8K1ISbGo3f+AxDxgrPfi4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dM0ojoP85AgBr0T4lrMWbXM6rYI1rvz1lHRGcN0302U655mJQqwkh0G0A1wkI1NTX
-         VducQ9mDoA9MUXNb8Kig4XBZxPCTblDPJOUx+DZr6YobyYwWnbd6TjX4p71JCQYEa7
-         qVDWUzDOSMKaI7FOpCwWZyMbIi8yGcGUdOUvTgbC//pAHk7J1kEZ8Xev+n3Qe3pdHh
-         EL7kozw8ascHW25Vsa2ieyYuZOSz1AZKSIjx869nyIiNgxM00+3PhB4kKZQKuIOG/r
-         c95pGF3wuSemc+2cgNrrKUqT6zNmvxNIao9Gm0Gomde+cMRl1D6sIoui9Bod4dsMnA
-         4XthvirvBX8Yg==
-Date:   Sun, 8 Jan 2023 11:11:22 +0000
+        b=mgisAHRxSO1XdTy64hEWL8Ctx3QYDZjeT92UIefqsKXJCKbeMjpLQnTFGzFe/Y9zM
+         Ys2VYZN0pwWAochyxnR8hcxH50JjHo03ok3tNFTVOjOQKFGHBw+FD+h5lWjbAXKTtc
+         oqR6KAxiAd+cz/uO1yF3RldoFxR9JhNV1KO1WZt1qXPXd+dMiU/XHGBUOxmO69w6m6
+         edKD+rz7Zoy+26//pGUyVr7JbfL0jiz3ThxZynj0WhlSVyp1IOnZRiCn0DC10jM0cB
+         RsuOFumDY2HX73OiNiiSOlF7rWasqaWzCNVHz3Awf4ZR4qjEC5zAoaTNvBEZXrZLPL
+         kikdLcsuF7XHA==
+Date:   Sun, 8 Jan 2023 11:30:46 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Peter Robinson <pbrobinson@gmail.com>
 Cc:     William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/4] counter: intel: Depend on X86
-Message-ID: <20230108111122.4abdadf5@jic23-huawei>
-In-Reply-To: <20230108074750.443705-2-pbrobinson@gmail.com>
+Subject: Re: [PATCH 3/4] counter: FTM quad: Depend on the Layerscape SoC
+Message-ID: <20230108113046.461ec222@jic23-huawei>
+In-Reply-To: <20230108074750.443705-3-pbrobinson@gmail.com>
 References: <20230108074750.443705-1-pbrobinson@gmail.com>
-        <20230108074750.443705-2-pbrobinson@gmail.com>
+        <20230108074750.443705-3-pbrobinson@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,22 +54,21 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  8 Jan 2023 07:47:48 +0000
+On Sun,  8 Jan 2023 07:47:49 +0000
 Peter Robinson <pbrobinson@gmail.com> wrote:
 
-> Limite the Intel counter driver to X86, it doesn't
-> make sense to build it for all arches if the couner
-> subsystem is enabled.
+> At the moment only the Freescale LS1021A is the only HW that
+> supports this IP block so add an appropriate dependency and
+> compile test.
 > 
 > Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
 
-Probably better to go with
-depends on X86 || COMPILE_TEST
+Ah I see you had deliberately not put COMPILE_TEST for the x86
+one - fair enough I guess.
 
-Sometimes other compilers throw up issues that are missed by those
-targeting a specific architecture.  Obviously this is less important
-for x86 drivers than more obscure platforms, but meh the principle still
-stands.
+For this one, the IP is fairly generic and I think appears on other
+chips - not sure they are supported by Linux however.  Maybe it's
+fine to limit it like this for now and see if anyone shouts...
 
 Jonathan
 
@@ -79,15 +78,15 @@ Jonathan
 >  1 file changed, 1 insertion(+)
 > 
 > diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index 508d857808e9..011e6af840fc 100644
+> index 011e6af840fc..ef78386ccd2e 100644
 > --- a/drivers/counter/Kconfig
 > +++ b/drivers/counter/Kconfig
-> @@ -41,6 +41,7 @@ config FTM_QUADDEC
+> @@ -31,6 +31,7 @@ config 104_QUAD_8
 >  
->  config INTEL_QEP
->  	tristate "Intel Quadrature Encoder Peripheral driver"
-> +	depends on X86
->  	depends on PCI
+>  config FTM_QUADDEC
+>  	tristate "Flex Timer Module Quadrature decoder driver"
+> +	depends on SOC_LS1021A || COMPILE_TEST
+>  	depends on HAS_IOMEM && OF
 >  	help
->  	  Select this option to enable the Intel Quadrature Encoder Peripheral
+>  	  Select this option to enable the Flex Timer Quadrature decoder
 

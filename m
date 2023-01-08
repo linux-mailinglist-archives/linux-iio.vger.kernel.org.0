@@ -2,266 +2,261 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FBC9661559
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Jan 2023 14:08:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E92D8661B2E
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Jan 2023 00:47:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230400AbjAHNIO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 Jan 2023 08:08:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38406 "EHLO
+        id S233243AbjAHXrk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 Jan 2023 18:47:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbjAHNIN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 08:08:13 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51538E0B8;
-        Sun,  8 Jan 2023 05:08:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0BD9FB80064;
-        Sun,  8 Jan 2023 13:08:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC599C433D2;
-        Sun,  8 Jan 2023 13:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673183289;
-        bh=DJq8QxcSOWrcMi28Y4XbKU2EzQc7bbSIjXDuNYvJUPQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jZv/RLcnR5wnf5batn5N3jdPKg6f3DljFQaGf6Y+0d+BTm+e2vpP+MDxZcgnhZJ06
-         kwqQbqTlPgNV0iaunrcafLqry+o33RQWRIGAs4NyIlsZQr6CgEhVjOZA7pAJrfRR21
-         JreXi4a6XVSr1kDC3wb8VGp1OgHqqXxHQP3jVJXaJ9LUQajJ99TSOMP/j+C7/123k2
-         wWcrP0bE+pSN4JYY04nOxPzyMa+KiSjt3PbVd14gEzYWdhAoRCwX2hi5x0g8E14b3f
-         2NvIgzhxjdxBnfKr136S0GHeWY7Ngn68huP6p7SpnEY/I/zihkIkqazTERk1T4f0kb
-         IZkYshhS4v78A==
-Date:   Sun, 8 Jan 2023 13:21:37 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     haibo.chen@nxp.com
-Cc:     lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] iio: adc: add imx93 adc support
-Message-ID: <20230108132137.1f965aa3@jic23-huawei>
-In-Reply-To: <20230103114359.2663262-2-haibo.chen@nxp.com>
-References: <20230103114359.2663262-1-haibo.chen@nxp.com>
-        <20230103114359.2663262-2-haibo.chen@nxp.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+        with ESMTP id S233682AbjAHXrj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 Jan 2023 18:47:39 -0500
+Received: from mail-108-mta168.mxroute.com (mail-108-mta168.mxroute.com [136.175.108.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8022F10B5C
+        for <linux-iio@vger.kernel.org>; Sun,  8 Jan 2023 15:47:33 -0800 (PST)
+Received: from mail-111-mta2.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta168.mxroute.com (ZoneMTA) with ESMTPSA id 18593c83e75000011e.001
+ for <linux-iio@vger.kernel.org>
+ (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256);
+ Sun, 08 Jan 2023 23:47:32 +0000
+X-Zone-Loop: a3ce79a44c7cc06933093a19d0f85b7c6b73e8e89fcd
+X-Originating-IP: [136.175.111.2]
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
+        s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=SU+QeQVMH8Az0vW/HlaY7Gn1PRS67BfjnS+k4cWTltA=; b=T8ULxAw95lTrSNQ8e1aVkUBRfN
+        TpOXFcikmwRkS2eTrvHysFfrBQNPajP7RUMmCxz8G0pwLIatGLV7waE2KNCmsC6vaIJfBFfnNQXn8
+        WC/w0H1otlqq99a5F2kVPNqUwfle1m1CU5Lq4Wc6SukyT0XrD6QYavvdYgJN5z4Tmem2R2YZuAhsX
+        iuH6BGBkbP0ntA19Og4/YwFdIOnpCySpVg1sHx30TTD4JlpDpIrvuoH7YuDufuD1l/opsNhMJCijH
+        ZF1+gOuHtTJ7TIKOjdtFhn8CcD41RR4TgJTaSy4cAP3I1zRv+IWYURNhc1bDx4mcjQ28FXdVZVXgx
+        RBOrfnPQ==;
+From:   Andrew Hepp <andrew.hepp@ahepp.dev>
+To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Andrew Hepp" <andrew.hepp@ahepp.dev>
+Subject: [PATCH v2] iio: temperature: Add MCP9600 thermocouple EMF converter driver
+Date:   Sun,  8 Jan 2023 15:45:04 -0800
+Message-Id: <20230108234503.2803-1-andrew.hepp@ahepp.dev>
+In-Reply-To: <Jonathan Cameron <jic23@kernel.org>
+References: <Jonathan Cameron <jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: andrew.hepp@ahepp.dev
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  3 Jan 2023 19:43:56 +0800
-haibo.chen@nxp.com wrote:
+From: "Andrew Hepp" <andrew.hepp@ahepp.dev>
 
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> The ADC in i.mx93 is a total new ADC IP, add a driver to support
-> this ADC.
-> 
-> Currently, only support one shot normal conversion triggered by
-> software. For other mode, will add in future.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Hi Haibo,
+Add support for the MCP9600 thermocouple EMF converter.
 
-I'm still not sure about the power handling in remove. One other
-minor comment inline that would be good to clean up for v6.
+Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+---
+Changes for v2:
+- remove unused sysfs include
+- remove unused scan fields from channel
+- warn rather than fail when probing unknown device
+- register device through devm
+- clean up style and prints
+---
+ drivers/iio/temperature/Kconfig   |  10 ++
+ drivers/iio/temperature/Makefile  |   1 +
+ drivers/iio/temperature/mcp9600.c | 146 ++++++++++++++++++++++++++++++
+ 3 files changed, 157 insertions(+)
+ create mode 100644 drivers/iio/temperature/mcp9600.c
 
-Thanks,
-
-Jonathan
-
-> new file mode 100644
-> index 000000000000..0c98de438919
-> --- /dev/null
-> +++ b/drivers/iio/adc/imx93_adc.c
-
-...
-
-> +
-> +static int imx93_adc_calibration(struct imx93_adc *adc)
-> +{
-> +	u32 mcr, msr;
-> +	int ret;
-> +
-> +	/* make sure ADC in power down mode */
-> +	imx93_adc_power_down(adc);
-> +
-> +	/* config SAR controller operating clock */
-> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
-> +	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_ADCLKSE_MASK, 1);
-> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
-> +
-> +	imx93_adc_power_up(adc);
-
-I think this function should be side effect free on error to aid easy reviewing
-/ code modularity. Thus if anything after this point fails, the device
-should be deliberately powered down again to remove that side effect.
-
-> +
-> +	/*
-> +	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
-> +	 * can add the setting of these bit if need in future.
-> +	 */
-> +
-> +	/* run calibration */
-> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
-> +	mcr |= FIELD_PREP(IMX93_ADC_MCR_CALSTART_MASK, 1);
-> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
-> +
-> +	/* wait calibration to be finished */
-> +	ret = readl_poll_timeout(adc->regs + IMX93_ADC_MSR, msr,
-> +		!(msr & IMX93_ADC_MSR_CALBUSY_MASK), 1000, 2000000);
-> +	if (ret == -ETIMEDOUT) {
-> +		dev_warn(adc->dev, "ADC do not finish calibration in 1 min!\n");
-> +		return ret;
-> +	}
-> +
-> +	/* check whether calbration is success or not */
-> +	msr = readl(adc->regs + IMX93_ADC_MSR);
-> +	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
-> +		dev_warn(adc->dev, "ADC calibration failed!\n");
-> +		return -EAGAIN;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-
-...
-
-> +static int imx93_adc_probe(struct platform_device *pdev)
-> +{
-> +	struct imx93_adc *adc;
-> +	struct iio_dev *indio_dev;
-> +	struct device *dev = &pdev->dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-> +	if (!indio_dev)
-> +		return dev_err_probe(dev, -ENOMEM,
-> +				     "Failed allocating iio device\n");
-> +
-> +	adc = iio_priv(indio_dev);
-> +	adc->dev = dev;
-> +
-> +	mutex_init(&adc->lock);
-> +	adc->regs = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(adc->regs))
-> +		return dev_err_probe(dev, PTR_ERR(adc->regs),
-> +				     "Failed geting ioremap resource\n");
-> +
-> +	/* The third irq is for ADC conversion usage */
-> +	adc->irq = platform_get_irq(pdev, 2);
-> +	if (adc->irq < 0)
-> +		return adc->irq;
-> +
-> +	adc->ipg_clk = devm_clk_get(dev, "ipg");
-> +	if (IS_ERR(adc->ipg_clk))
-> +		return dev_err_probe(dev, PTR_ERR(adc->ipg_clk),
-> +				     "Failed getting clock.\n");
-> +
-> +	adc->vref = devm_regulator_get(dev, "vref");
-> +	if (IS_ERR(adc->vref))
-> +		return dev_err_probe(dev, PTR_ERR(adc->vref),
-> +				     "Failed getting reference voltage.\n");
-> +
-> +	ret = regulator_enable(adc->vref);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to enable reference voltage.\n");
-> +
-> +	platform_set_drvdata(pdev, indio_dev);
-> +
-> +	init_completion(&adc->completion);
-> +
-> +	indio_dev->name = "imx93-adc";
-> +	indio_dev->info = &imx93_adc_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = imx93_adc_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(imx93_adc_iio_channels);
-> +
-> +	ret = clk_prepare_enable(adc->ipg_clk);
-> +	if (ret) {
-> +		dev_err_probe(dev, ret,
-> +			      "Failed to enable ipg clock.\n");
-> +		goto error_regulator_disable;
-> +	}
-> +
-> +	ret = request_irq(adc->irq, imx93_adc_isr, 0, IMX93_ADC_DRIVER_NAME, adc);
-> +	if (ret < 0) {
-> +		dev_err_probe(dev, ret,
-> +			      "Failed requesting irq, irq = %d\n", adc->irq);
-> +		goto error_ipg_clk_disable;
-> +	}
-> +
-> +	ret = imx93_adc_calibration(adc);
-> +	if (ret < 0)
-
-As above, I'd expect the device to be powered down if this function fails
-and hence need an additional error label.
-
-> +		goto error_free_adc_irq;
-> +
-> +	imx93_adc_config_ad_clk(adc);
-> +
-> +	ret = iio_device_register(indio_dev);
-> +	if (ret) {
-> +		dev_err_probe(dev, ret,
-> +			      "Failed to register this iio device.\n");
-> +		goto error_free_adc_irq;
-> +	}
-> +
-> +	pm_runtime_set_active(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, 50);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_enable(dev);
-> +
-> +	return 0;
-> +
-> +error_free_adc_irq:
-> +	imx93_adc_power_down(adc);
-> +	free_irq(adc->irq, adc);
-> +error_ipg_clk_disable:
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +error_regulator_disable:
-> +	regulator_disable(adc->vref);
-> +
-> +	return ret;
-> +}
-> +
-> +static int imx93_adc_remove(struct platform_device *pdev)
-> +{
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct imx93_adc *adc = iio_priv(indio_dev);
-> +	struct device *dev = adc->dev;
-
-As per reply to cover letter I don't understand logic by which we
-are definitely runtime resumed at this stage.
-
-> +
-> +	pm_runtime_disable(dev);
-> +	pm_runtime_dont_use_autosuspend(dev);
-> +	pm_runtime_put_noidle(dev);
-
-This is not balanced with a pm_runtime_get* so I think we underflow
-(which is protected against in runtime pm ref counting but not a nice
-thing to do deliberately).
-
-> +	iio_device_unregister(indio_dev);
-> +	imx93_adc_power_down(adc);
-> +	free_irq(adc->irq, adc);
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +	regulator_disable(adc->vref);
-> +
-> +	return 0;
-> +}
-> +
+diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+index ed384f33e0c7..ea2ce364b2e9 100644
+--- a/drivers/iio/temperature/Kconfig
++++ b/drivers/iio/temperature/Kconfig
+@@ -158,4 +158,14 @@ config MAX31865
+ 	  This driver can also be build as a module. If so, the module
+ 	  will be called max31865.
+ 
++config MCP9600
++	tristate "MCP9600 thermocouple EMF converter"
++	depends on I2C
++	help
++	  If you say yes here you get support for MCP9600
++	  thermocouple EMF converter connected via I2C.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called mcp9600.
++
+ endmenu
+diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
+index dfec8c6d3019..9330d4a39598 100644
+--- a/drivers/iio/temperature/Makefile
++++ b/drivers/iio/temperature/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
+ obj-$(CONFIG_MAX30208) += max30208.o
+ obj-$(CONFIG_MAX31856) += max31856.o
+ obj-$(CONFIG_MAX31865) += max31865.o
++obj-$(CONFIG_MCP9600) += mcp9600.o
+ obj-$(CONFIG_MLX90614) += mlx90614.o
+ obj-$(CONFIG_MLX90632) += mlx90632.o
+ obj-$(CONFIG_TMP006) += tmp006.o
+diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+new file mode 100644
+index 000000000000..d938e09632cf
+--- /dev/null
++++ b/drivers/iio/temperature/mcp9600.c
+@@ -0,0 +1,146 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * mcp9600.c - Support for Microchip MCP9600 thermocouple EMF converter
++ *
++ * Copyright (c) 2022 Andrew Hepp
++ * Author: <andrew.hepp@ahepp.dev>
++ */
++
++#include <linux/err.h>
++#include <linux/i2c.h>
++#include <linux/init.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++
++#include <linux/iio/iio.h>
++
++/* MCP9600 registers */
++#define MCP9600_HOT_JUNCTION 0x0
++#define MCP9600_COLD_JUNCTION 0x2
++#define MCP9600_DEVICE_ID 0x20
++
++/* MCP9600 device id value */
++#define MCP9600_DEVICE_ID_MCP9600 0x40
++
++static const struct iio_chan_spec mcp9600_channels[] = {
++	{
++		.type = IIO_TEMP,
++		.address = MCP9600_HOT_JUNCTION,
++		.info_mask_separate =
++			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++	},
++	{
++		.type = IIO_TEMP,
++		.address = MCP9600_COLD_JUNCTION,
++		.channel2 = IIO_MOD_TEMP_AMBIENT,
++		.modified = 1,
++		.info_mask_separate =
++			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++	},
++	IIO_CHAN_SOFT_TIMESTAMP(2),
++};
++
++struct mcp9600_data {
++	struct i2c_client *client;
++	struct mutex read_lock; /* lock to prevent concurrent reads */
++};
++
++static int mcp9600_read(struct mcp9600_data *data,
++			struct iio_chan_spec const *chan, int *val)
++{
++	__be16 buf;
++	int ret;
++
++	mutex_lock(&data->read_lock);
++	ret = i2c_smbus_read_i2c_block_data(data->client, chan->address, 2,
++					    (u8 *)&buf);
++	mutex_unlock(&data->read_lock);
++
++	if (ret < 0)
++		return ret;
++	*val = be16_to_cpu(buf);
++
++	return 0;
++}
++
++static int mcp9600_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int *val,
++			    int *val2, long mask)
++{
++	struct mcp9600_data *data = iio_priv(indio_dev);
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = mcp9600_read(data, chan, val);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = 62;
++		*val2 = 500000;
++		return IIO_VAL_INT_PLUS_MICRO;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info mcp9600_info = {
++	.read_raw = mcp9600_read_raw,
++};
++
++static int mcp9600_probe(struct i2c_client *client)
++{
++	struct iio_dev *indio_dev;
++	struct mcp9600_data *data;
++	int ret;
++
++	ret = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
++	if (ret < 0)
++		return ret;
++	if (ret != MCP9600_DEVICE_ID_MCP9600)
++		dev_warn(&client->dev, "Expected ID %x, got %x\n",
++				MCP9600_DEVICE_ID_MCP9600, ret);
++
++	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	data = iio_priv(indio_dev);
++	data->client = client;
++	mutex_init(&data->read_lock);
++
++	indio_dev->info = &mcp9600_info;
++	indio_dev->name = "mcp9600";
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = mcp9600_channels;
++	indio_dev->num_channels = ARRAY_SIZE(mcp9600_channels);
++
++	return devm_iio_device_register(&client->dev, indio_dev);
++}
++
++static const struct i2c_device_id mcp9600_id[] = {
++	{ "mcp9600" },
++	{}
++};
++MODULE_DEVICE_TABLE(i2c, mcp9600_id);
++
++static const struct of_device_id mcp9600_of_match[] = {
++	{ .compatible = "microchip,mcp9600" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, mcp9600_of_match);
++
++static struct i2c_driver mcp9600_driver = {
++	.driver = {
++		.name = "mcp9600",
++		.of_match_table = mcp9600_of_match,
++	},
++	.probe_new = mcp9600_probe,
++	.id_table = mcp9600_id
++};
++module_i2c_driver(mcp9600_driver);
++
++MODULE_AUTHOR("Andrew Hepp <andrew.hepp@ahepp.dev>");
++MODULE_DESCRIPTION("Microchip MCP9600 thermocouple EMF converter driver");
++MODULE_LICENSE("GPL");
+-- 
+2.30.2
 

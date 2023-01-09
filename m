@@ -2,183 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 413F2662476
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Jan 2023 12:43:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01B2A662472
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Jan 2023 12:43:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234111AbjAILmh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S236468AbjAILmh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Mon, 9 Jan 2023 06:42:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57208 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237195AbjAILmD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Jan 2023 06:42:03 -0500
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2615F6391
-        for <linux-iio@vger.kernel.org>; Mon,  9 Jan 2023 03:41:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1673264518;
-  x=1704800518;
-  h=date:to:cc:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to:from;
-  bh=F/FtRDckejOQVJ1GXqQKDRHjhsq2xSpLThubtJPcYmw=;
-  b=p0ulHzU1azsWoxsvDBnEQhoomSKYnAmMoYFDwM3s2SEy/5ZPX8NiuXlE
-   RMWug8m95/Y6IaXLfpk6GxgyBGKGH7F/66ER5WePBwHLFl/5cYIem/myu
-   NMde7ypIgJAoAgG1erFyhLYpTx+J2dc58/dv9dd3xV6xnL2ZSMQ93zTX7
-   UojXlPnuSg+u0FMusznPRuHkisddJnrPv6az7LrLlz5coj/WqhK0NTSD5
-   Sa2xl49V/Wd3XGU6INU64dGsauoGvcB+rotTcMmcbw1b/s8+vWT8hNYpA
-   IwSXDqZ8vmGP2NNlS3tTwMkh9YU+9jacN/kiJg8YXxA6/Jot+QSiaZH/m
-   Q==;
-Date:   Mon, 9 Jan 2023 12:41:56 +0100
+        with ESMTP id S234111AbjAILmF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 Jan 2023 06:42:05 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2965A5F82
+        for <linux-iio@vger.kernel.org>; Mon,  9 Jan 2023 03:42:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673264524; x=1704800524;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lDjaCWUzdYwYNkS/MTZUwYBYKzaOJgpic2tzkvbPb/c=;
+  b=mGzYYBZx57hS7PFhvaKqUn10yawokxE84KcMPEO7Mw6LVTrwfhPyEdMG
+   KCixf9UQSrei0vD8lNq1yt3RAi9SjfF/iJQ/W5tJ4QQq33sW1uEvEpYK6
+   6zeRoZzv076HFZnNv1qgt3b4+YwE/cJuRSygWEQ05dGhaElACFVd8gEft
+   hwkACkWbtnUuUogcpolXPuX8O+b3lrqXk2QNR5up9cnqt+he4uBc2Qb0+
+   PGw4v8junflD9V8ShCnhNMPsMa6qqSGCOzJksbAJ542wOR4SNROQOumcp
+   xq4SldYsa1SYFQzyyNvY16uvZzGhmd/XS8zccmuVpmn2rfQoLhxpEDchC
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10584"; a="320553951"
+X-IronPort-AV: E=Sophos;i="5.96,311,1665471600"; 
+   d="scan'208";a="320553951"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2023 03:42:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10584"; a="901974078"
+X-IronPort-AV: E=Sophos;i="5.96,311,1665471600"; 
+   d="scan'208";a="901974078"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006.fm.intel.com with ESMTP; 09 Jan 2023 03:42:02 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pEqXQ-006Myg-2p;
+        Mon, 09 Jan 2023 13:42:00 +0200
+Date:   Mon, 9 Jan 2023 13:42:00 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@axis.com>
-Subject: Re: [PATCH 2/2] iio: light: vcnl4000: Add interrupt support for
- vcnl4040
-Message-ID: <Y7v9hP60m52vjRMo@axis.com>
-References: <20221220214959.2289330-1-marten.lindahl@axis.com>
- <20221220214959.2289330-3-marten.lindahl@axis.com>
- <20221223160054.316c473f@jic23-huawei>
+Cc:     Derek John Clark <derekjohn.clark@gmail.com>,
+        linux-iio@vger.kernel.org,
+        =?iso-8859-1?Q?Joaqu=EDn_Ignacio_Aramend=EDa?= <samsagax@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: BMI0160/260 conflicts
+Message-ID: <Y7v9iPcebF9RTSOn@smile.fi.intel.com>
+References: <CAFqHKTm2WRNkcSoBEE=oNbfu_9d9RagQHLydmv6q1=snO_MXyA@mail.gmail.com>
+ <20230108115341.6929e7c5@jic23-huawei>
+ <Y7v8yE8+cXZIDUvw@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221223160054.316c473f@jic23-huawei>
-From:   Marten Lindahl <martenli@axis.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y7v8yE8+cXZIDUvw@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Dec 23, 2022 at 05:00:54PM +0100, Jonathan Cameron wrote:
-> On Tue, 20 Dec 2022 22:49:59 +0100
-> Mårten Lindahl <marten.lindahl@axis.com> wrote:
-> 
-> > Add support to configure proximity sensor interrupts and threshold
-> > limits for vcnl4040. If an interrupt is detected an event will be
-> > pushed to the event interface.
+On Mon, Jan 09, 2023 at 01:38:48PM +0200, Andy Shevchenko wrote:
+> On Sun, Jan 08, 2023 at 11:53:41AM +0000, Jonathan Cameron wrote:
+> > On Sat, 7 Jan 2023 19:51:59 -0800
+> > Derek John Clark <derekjohn.clark@gmail.com> wrote:
+
+...
+
+> > > Remediation:
+> > > I have reached out to the aforementioned companies about releasing
+> > > updated BIOS for each of the respective models to correct the DSDT
+> > > ID's. AYANEO and GPD seem receptive as they have each provided beta
+> > > BIOS for testing. 
 > > 
-> > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-> Hi,
+> > Great.  Hopefully that means that the scope of problem devices from
+> > these manufacturers is not going to grow too much going forwards!
 > 
-> Code looks good in general. A few readability related suggestions inline.
-> 
-> Thanks,
-> 
-> Jonathan
+> Wow, you have Ayaneo response?! Unbelievable!
+> If they answering to you, can you ping them on [1] please?
 
-Hi Jonathan!
+TL;DR: They are using Realtek's ACPI HID for the Bosch sensor device.
 
-Thank you. Please see my reflections below.
-> 
-> > ---
-> >  drivers/iio/light/vcnl4000.c | 163 +++++++++++++++++++++++++++++++++++
-> >  1 file changed, 163 insertions(+)
-> > 
-> > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> > index 142d1760f65d..61d18c404ea6 100644
-> > --- a/drivers/iio/light/vcnl4000.c
-> > +++ b/drivers/iio/light/vcnl4000.c
-> > @@ -60,8 +60,11 @@
-> 
-> ...
-> 
-> >  /* Bit masks for interrupt registers. */
-> >  #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt source */
-> > @@ -138,6 +144,7 @@ struct vcnl4000_data {
-> >  	enum vcnl4000_device_ids id;
-> >  	int rev;
-> >  	int al_scale;
-> > +	int ps_int;
-> 
-> Bit big for 2 bits ;)  Maybe size it same as register size.
-> 
-> Also, probably benefit from a comment as ps_int isn't a particularly obviously name.
+> [1]: https://lore.kernel.org/lkml/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/
 
-Ok, I'll do so.
-> 
-> >  	const struct vcnl4000_chip_spec *chip_spec;
-> >  	struct mutex vcnl4000_lock;
-> >  	struct vcnl4200_channel vcnl4200_al;
-> 
-> 
-> ...
-> 
-> >  
-> > +static int vcnl4040_read_event_config(struct iio_dev *indio_dev,
-> > +				      const struct iio_chan_spec *chan,
-> > +				      enum iio_event_type type,
-> > +				      enum iio_event_direction dir)
-> > +{
-> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> > +
-> > +	return (dir == IIO_EV_DIR_RISING) ?
-> > +	    (data->ps_int & 0x01) : (data->ps_int & 0x02) >> 1;
-> 
-> Add some field definitions and FIELD_GET() to extract them.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I will do that.
-> 
-> > +}
-> > +
-> > +static int vcnl4040_write_event_config(struct iio_dev *indio_dev,
-> > +				       const struct iio_chan_spec *chan,
-> > +				       enum iio_event_type type,
-> > +				       enum iio_event_direction dir, int state)
-> > +{
-> > +	int ret;
-> > +	u16 val;
-> > +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> > +
-> > +	mutex_lock(&data->vcnl4000_lock);
-> > +
-> > +	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-> > +	if (ret < 0)
-> > +		goto out;
-> > +
-> > +	val = FIELD_GET(VCNL4040_PS_CONF2_PS_INT, ret);
-> > +
-> > +	if (dir == IIO_EV_DIR_RISING)
-> > +		val = state ? (val | 0x1) : (val & 0x2);
-> 
-> Whilst I'm sure this is correct, it's not easy to follow. Perhaps
-> 		val = state ? (val | 0x1) : (val & ~0x1);
-> to make it clear you are turning on an off one bit?
-> Also as above, some field definitions may make this easier to follow.
 
-I will do that to make it more clear.
-> 
-> > +	else
-> > +		val = state ? (val | 0x2) : (val & 0x1);
-> > +
-> > +	data->ps_int = val;
-> > +	val = (ret & ~VCNL4040_PS_CONF2_PS_INT) |
-> 
-> It's been quite a few lines. Probably better to put that ret into
-> a reg_val or similarly named field to make it slightly easier to see it
-> is retained from above.
-> 
-> > +	    FIELD_PREP(VCNL4040_PS_CONF2_PS_INT, val);
-> > +	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
-> > +
-> > +out:
-> > +	mutex_unlock(&data->vcnl4000_lock);
-> > +	data->chip_spec->set_power_state(data, (bool)data->ps_int);
-> the bool cast is a little nasty.  Perhaps != 0 is clearer?
-
-I will rework these lines using field definitions. I'll send v2 shortly.
-
-Kind regards
-Mårten
-
-> 
-> > +
-> > +	return ret;
-> > +}
-> > +
-> 
-> 

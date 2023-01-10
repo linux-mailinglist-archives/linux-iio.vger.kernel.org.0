@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A286664221
+	by mail.lfdr.de (Postfix) with ESMTP id B62F7664222
 	for <lists+linux-iio@lfdr.de>; Tue, 10 Jan 2023 14:44:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233543AbjAJNoN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S233541AbjAJNoN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 10 Jan 2023 08:44:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39068 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238622AbjAJNnt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Jan 2023 08:43:49 -0500
+        with ESMTP id S238625AbjAJNnu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Jan 2023 08:43:50 -0500
 Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16AD3B916
-        for <linux-iio@vger.kernel.org>; Tue, 10 Jan 2023 05:43:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF4F5A8AE
+        for <linux-iio@vger.kernel.org>; Tue, 10 Jan 2023 05:43:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1673358215;
-  x=1704894215;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1673358216;
+  x=1704894216;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dHH9T+lTlvszF/h/7EbtIRUggJMtqeajLkeifWusHXo=;
-  b=RCl51ULkR5tY6ns0Xu9LD2yAIR5YKfKmUfmutGPW680IGOVU0jhbkeWi
-   qTtdEvLSK6s0poouvINOqv4mooyh5WKFy1USPQ/kI8kIrD8RV8xqNggTV
-   BqQS0scYMs1ZjbtqOzpX4bw4TU9NUIi5TLgvsrRcscZDtAIdwqan9N2Cd
-   3Gxa/a5NSbHr7DKdgD7i7cAAOim351sGMsLQj39ltAAAJslMt1Go0L8G7
-   0ym9syNBLhQYQpWtwLmriAF2vmKwOCsL5YPABiCVPNwh1c8Ulrbbx4rPn
-   mV8bUVMhRITVkg56RrQQbu90GVUcdbu1Rl0yxW/myMyWGbjnrilp/8dOh
-   g==;
+  bh=ccDY6TQH7ztz7Bhj6c1RPWzUK3yPpHu/cwy0/O5YPbE=;
+  b=mKZwJDQ7EM5G66cVZQYoWlkg6HQDtQLLi8HMNYnaEo/wGCRKWxMEi4/S
+   YN32yY2H26s4ezuRn8EQs130MVyUVM9nEpo6fyNYwwdEMHxCfoL/Bxl8B
+   2BBIF4PQwYdjBqjtUWZi2eCToh6u3vKUzhINQG3mG2s1DEaUUhMdas/Mk
+   AV1kpGG4lP19TdoL5SlegCi0QkOsT6AihJX4vSx4AKoYA88ch/5jBlXSy
+   rq/amii8dlE1SBuSfWjsdS13UWiWiA0m4eCCGGVCOujmvDEUUJRgw9l8v
+   9xrMZc8aUypR54LFNRKCiphtg3JHnf7VJX8u4YRj0zrwJZF5dnkITt46F
+   A==;
 From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 CC:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
         <kernel@axis.com>,
         =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
-Subject: [PATCH v3 1/3] iio: light: vcnl4000: Prepare for more generic setup
-Date:   Tue, 10 Jan 2023 14:43:21 +0100
-Message-ID: <20230110134323.543123-2-marten.lindahl@axis.com>
+Subject: [PATCH v3 2/3] iio: light: vcnl4000: Make irq handling more generic
+Date:   Tue, 10 Jan 2023 14:43:22 +0100
+Message-ID: <20230110134323.543123-3-marten.lindahl@axis.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230110134323.543123-1-marten.lindahl@axis.com>
 References: <20230110134323.543123-1-marten.lindahl@axis.com>
@@ -50,291 +50,134 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In order to allow the chip_spec array reference the function pointers
-for interrupts, the code for these functions need to be moved above the
-chip_spec array.
+This driver supports 4 chips, by which only one (vcnl4010) handles
+interrupts and has support for triggered buffer. The setup of these
+functions is hardcoded for vcnl4010 inside the generic vcnl4000_probe,
+and thus ignores the chip specific configuration structure where all
+other chip specific functions are specified.
 
-This is a prestep to support a more generic setup of interrupts.
+This complicates adding interrupt handler and triggered buffer support
+to chips which may have support for it.
+
+Add members for irq threads and iio_buffer_setup_ops to the generic
+vcnl4000_chip_spec struct, so that instead of checking a chip specific
+boolean irq support, we check for a chip specific triggered buffer
+handler, and/or a chip specific irq thread handler.
 
 Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
 ---
- drivers/iio/light/vcnl4000.c | 256 +++++++++++++++++------------------
- 1 file changed, 128 insertions(+), 128 deletions(-)
+ drivers/iio/light/vcnl4000.c | 52 ++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index cc1a2062e76d..11b54b57e592 100644
+index 11b54b57e592..792fc7f9c36e 100644
 --- a/drivers/iio/light/vcnl4000.c
 +++ b/drivers/iio/light/vcnl4000.c
-@@ -887,6 +887,134 @@ static ssize_t vcnl4000_read_near_level(struct iio_dev *indio_dev,
- 	return sprintf(buf, "%u\n", data->near_level);
- }
+@@ -150,11 +150,13 @@ struct vcnl4000_chip_spec {
+ 	struct iio_chan_spec const *channels;
+ 	const int num_channels;
+ 	const struct iio_info *info;
+-	bool irq_support;
++	const struct iio_buffer_setup_ops *buffer_setup_ops;
+ 	int (*init)(struct vcnl4000_data *data);
+ 	int (*measure_light)(struct vcnl4000_data *data, int *val);
+ 	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
+ 	int (*set_power_state)(struct vcnl4000_data *data, bool on);
++	irqreturn_t (*irq_thread)(int irq, void *priv);
++	irqreturn_t (*trig_buffer_func)(int irq, void *priv);
+ };
  
-+static irqreturn_t vcnl4010_irq_thread(int irq, void *p)
-+{
-+	struct iio_dev *indio_dev = p;
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+	unsigned long isr;
-+	int ret;
-+
-+	ret = i2c_smbus_read_byte_data(data->client, VCNL4010_ISR);
-+	if (ret < 0)
-+		goto end;
-+
-+	isr = ret;
-+
-+	if (isr & VCNL4010_INT_THR) {
-+		if (test_bit(VCNL4010_INT_THR_LOW, &isr)) {
-+			iio_push_event(indio_dev,
-+				       IIO_UNMOD_EVENT_CODE(
-+					       IIO_PROXIMITY,
-+					       1,
-+					       IIO_EV_TYPE_THRESH,
-+					       IIO_EV_DIR_FALLING),
-+				       iio_get_time_ns(indio_dev));
-+		}
-+
-+		if (test_bit(VCNL4010_INT_THR_HIGH, &isr)) {
-+			iio_push_event(indio_dev,
-+				       IIO_UNMOD_EVENT_CODE(
-+					       IIO_PROXIMITY,
-+					       1,
-+					       IIO_EV_TYPE_THRESH,
-+					       IIO_EV_DIR_RISING),
-+				       iio_get_time_ns(indio_dev));
-+		}
-+
-+		i2c_smbus_write_byte_data(data->client, VCNL4010_ISR,
-+					  isr & VCNL4010_INT_THR);
-+	}
-+
-+	if (isr & VCNL4010_INT_DRDY && iio_buffer_enabled(indio_dev))
-+		iio_trigger_poll_chained(indio_dev->trig);
-+
-+end:
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t vcnl4010_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+	const unsigned long *active_scan_mask = indio_dev->active_scan_mask;
-+	u16 buffer[8] __aligned(8) = {0}; /* 1x16-bit + naturally aligned ts */
-+	bool data_read = false;
-+	unsigned long isr;
-+	int val = 0;
-+	int ret;
-+
-+	ret = i2c_smbus_read_byte_data(data->client, VCNL4010_ISR);
-+	if (ret < 0)
-+		goto end;
-+
-+	isr = ret;
-+
-+	if (test_bit(0, active_scan_mask)) {
-+		if (test_bit(VCNL4010_INT_PROXIMITY, &isr)) {
-+			ret = vcnl4000_read_data(data,
-+						 VCNL4000_PS_RESULT_HI,
-+						 &val);
-+			if (ret < 0)
-+				goto end;
-+
-+			buffer[0] = val;
-+			data_read = true;
-+		}
-+	}
-+
-+	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_ISR,
-+					isr & VCNL4010_INT_DRDY);
-+	if (ret < 0)
-+		goto end;
-+
-+	if (!data_read)
-+		goto end;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
-+					   iio_get_time_ns(indio_dev));
-+
-+end:
-+	iio_trigger_notify_done(indio_dev->trig);
-+	return IRQ_HANDLED;
-+}
-+
-+static int vcnl4010_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+	int ret;
-+	int cmd;
-+
-+	/* Do not enable the buffer if we are already capturing events. */
-+	if (vcnl4010_is_in_periodic_mode(data))
-+		return -EBUSY;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL,
-+					VCNL4010_INT_PROX_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	cmd = VCNL4000_SELF_TIMED_EN | VCNL4000_PROX_EN;
-+	return i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, cmd);
-+}
-+
-+static int vcnl4010_buffer_predisable(struct iio_dev *indio_dev)
-+{
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, 0);
-+}
-+
-+static const struct iio_buffer_setup_ops vcnl4010_buffer_ops = {
-+	.postenable = &vcnl4010_buffer_postenable,
-+	.predisable = &vcnl4010_buffer_predisable,
-+};
-+
- static const struct iio_chan_spec_ext_info vcnl4000_ext_info[] = {
- 	{
- 		.name = "nearlevel",
-@@ -1030,134 +1158,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ static const struct i2c_device_id vcnl4000_id[] = {
+@@ -1121,7 +1123,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ 		.channels = vcnl4000_channels,
+ 		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+ 		.info = &vcnl4000_info,
+-		.irq_support = false,
+ 	},
+ 	[VCNL4010] = {
+ 		.prod = "VCNL4010/4020",
+@@ -1132,7 +1133,9 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ 		.channels = vcnl4010_channels,
+ 		.num_channels = ARRAY_SIZE(vcnl4010_channels),
+ 		.info = &vcnl4010_info,
+-		.irq_support = true,
++		.irq_thread = vcnl4010_irq_thread,
++		.trig_buffer_func = vcnl4010_trigger_handler,
++		.buffer_setup_ops = &vcnl4010_buffer_ops,
+ 	},
+ 	[VCNL4040] = {
+ 		.prod = "VCNL4040",
+@@ -1143,7 +1146,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ 		.channels = vcnl4040_channels,
+ 		.num_channels = ARRAY_SIZE(vcnl4040_channels),
+ 		.info = &vcnl4040_info,
+-		.irq_support = false,
+ 	},
+ 	[VCNL4200] = {
+ 		.prod = "VCNL4200",
+@@ -1154,7 +1156,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ 		.channels = vcnl4000_channels,
+ 		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+ 		.info = &vcnl4000_info,
+-		.irq_support = false,
  	},
  };
  
--static irqreturn_t vcnl4010_irq_thread(int irq, void *p)
--{
--	struct iio_dev *indio_dev = p;
--	struct vcnl4000_data *data = iio_priv(indio_dev);
--	unsigned long isr;
--	int ret;
--
--	ret = i2c_smbus_read_byte_data(data->client, VCNL4010_ISR);
--	if (ret < 0)
--		goto end;
--
--	isr = ret;
--
--	if (isr & VCNL4010_INT_THR) {
--		if (test_bit(VCNL4010_INT_THR_LOW, &isr)) {
--			iio_push_event(indio_dev,
--				       IIO_UNMOD_EVENT_CODE(
--					       IIO_PROXIMITY,
--					       1,
--					       IIO_EV_TYPE_THRESH,
--					       IIO_EV_DIR_FALLING),
--				       iio_get_time_ns(indio_dev));
+@@ -1214,31 +1215,36 @@ static int vcnl4000_probe(struct i2c_client *client)
+ 	indio_dev->name = VCNL4000_DRV_NAME;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+-	if (client->irq && data->chip_spec->irq_support) {
+-		ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
+-						      NULL,
+-						      vcnl4010_trigger_handler,
+-						      &vcnl4010_buffer_ops);
++	if (data->chip_spec->trig_buffer_func &&
++	    data->chip_spec->buffer_setup_ops) {
++		ret = devm_iio_triggered_buffer_setup(&client->dev,
++						      indio_dev, NULL,
++						      data->chip_spec->trig_buffer_func,
++						      data->chip_spec->buffer_setup_ops);
+ 		if (ret < 0) {
+ 			dev_err(&client->dev,
+ 				"unable to setup iio triggered buffer\n");
+ 			return ret;
+ 		}
++	}
+ 
+-		ret = devm_request_threaded_irq(&client->dev, client->irq,
+-						NULL, vcnl4010_irq_thread,
+-						IRQF_TRIGGER_FALLING |
+-						IRQF_ONESHOT,
+-						"vcnl4010_irq",
+-						indio_dev);
+-		if (ret < 0) {
+-			dev_err(&client->dev, "irq request failed\n");
+-			return ret;
 -		}
--
--		if (test_bit(VCNL4010_INT_THR_HIGH, &isr)) {
--			iio_push_event(indio_dev,
--				       IIO_UNMOD_EVENT_CODE(
--					       IIO_PROXIMITY,
--					       1,
--					       IIO_EV_TYPE_THRESH,
--					       IIO_EV_DIR_RISING),
--				       iio_get_time_ns(indio_dev));
--		}
--
--		i2c_smbus_write_byte_data(data->client, VCNL4010_ISR,
--					  isr & VCNL4010_INT_THR);
--	}
--
--	if (isr & VCNL4010_INT_DRDY && iio_buffer_enabled(indio_dev))
--		iio_trigger_poll_chained(indio_dev->trig);
--
--end:
--	return IRQ_HANDLED;
--}
--
--static irqreturn_t vcnl4010_trigger_handler(int irq, void *p)
--{
--	struct iio_poll_func *pf = p;
--	struct iio_dev *indio_dev = pf->indio_dev;
--	struct vcnl4000_data *data = iio_priv(indio_dev);
--	const unsigned long *active_scan_mask = indio_dev->active_scan_mask;
--	u16 buffer[8] __aligned(8) = {0}; /* 1x16-bit + naturally aligned ts */
--	bool data_read = false;
--	unsigned long isr;
--	int val = 0;
--	int ret;
--
--	ret = i2c_smbus_read_byte_data(data->client, VCNL4010_ISR);
--	if (ret < 0)
--		goto end;
--
--	isr = ret;
--
--	if (test_bit(0, active_scan_mask)) {
--		if (test_bit(VCNL4010_INT_PROXIMITY, &isr)) {
--			ret = vcnl4000_read_data(data,
--						 VCNL4000_PS_RESULT_HI,
--						 &val);
--			if (ret < 0)
--				goto end;
--
--			buffer[0] = val;
--			data_read = true;
--		}
--	}
--
--	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_ISR,
--					isr & VCNL4010_INT_DRDY);
--	if (ret < 0)
--		goto end;
--
--	if (!data_read)
--		goto end;
--
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
--					   iio_get_time_ns(indio_dev));
--
--end:
--	iio_trigger_notify_done(indio_dev->trig);
--	return IRQ_HANDLED;
--}
--
--static int vcnl4010_buffer_postenable(struct iio_dev *indio_dev)
--{
--	struct vcnl4000_data *data = iio_priv(indio_dev);
--	int ret;
--	int cmd;
--
--	/* Do not enable the buffer if we are already capturing events. */
--	if (vcnl4010_is_in_periodic_mode(data))
--		return -EBUSY;
--
--	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL,
--					VCNL4010_INT_PROX_EN);
--	if (ret < 0)
--		return ret;
--
--	cmd = VCNL4000_SELF_TIMED_EN | VCNL4000_PROX_EN;
--	return i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, cmd);
--}
--
--static int vcnl4010_buffer_predisable(struct iio_dev *indio_dev)
--{
--	struct vcnl4000_data *data = iio_priv(indio_dev);
--	int ret;
--
--	ret = i2c_smbus_write_byte_data(data->client, VCNL4010_INT_CTRL, 0);
--	if (ret < 0)
--		return ret;
--
--	return i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, 0);
--}
--
--static const struct iio_buffer_setup_ops vcnl4010_buffer_ops = {
--	.postenable = &vcnl4010_buffer_postenable,
--	.predisable = &vcnl4010_buffer_predisable,
--};
--
- static const struct iio_trigger_ops vcnl4010_trigger_ops = {
- 	.validate_device = iio_trigger_validate_own_device,
- };
++	if (client->irq) {
++		if (data->chip_spec->irq_thread) {
++			ret = devm_request_threaded_irq(&client->dev,
++							client->irq, NULL,
++							data->chip_spec->irq_thread,
++							IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++							"vcnl4000_irq",
++							indio_dev);
++			if (ret < 0) {
++				dev_err(&client->dev, "irq request failed\n");
++				return ret;
++			}
+ 
+-		ret = vcnl4010_probe_trigger(indio_dev);
+-		if (ret < 0)
+-			return ret;
++			ret = vcnl4010_probe_trigger(indio_dev);
++			if (ret < 0)
++				return ret;
++		}
+ 	}
+ 
+ 	ret = pm_runtime_set_active(&client->dev);
 -- 
 2.30.2
 

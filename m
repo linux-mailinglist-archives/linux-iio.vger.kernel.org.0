@@ -2,220 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19DA9665750
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jan 2023 10:23:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B95D76658A0
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jan 2023 11:10:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238303AbjAKJXl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Jan 2023 04:23:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57048 "EHLO
+        id S235919AbjAKKKn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Jan 2023 05:10:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231315AbjAKJX0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Jan 2023 04:23:26 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AE75FAE
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jan 2023 01:23:24 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id ja17so10640301wmb.3
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jan 2023 01:23:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VCHQ33qmTPBoL9vCuW97RQR7YPeZg23yIQSrtsZ57nY=;
-        b=N9QhRW4dBka0TDujevzLX+HeWiponZl/IUCLOq9qO1MiME7qVRhtjOGPPwaM2Qw+QP
-         UL4qg37RINhnS3gTlNYXiz+aCbEETqRjN7PhGpMnDKAD8Z3p8LoPNNkcp5De41BODRqz
-         bvs4QiQqNO5FvvF9+5+iqOQmQJxBHNhINWtrc8ZrjKOi5CfpRu6q+37FWtij0Hs4eXZP
-         eMvCbr6alagBF7hetw+7Qv/pdOvwk+58BH4WrdRo90kqpYEkCKMsWWq8U2wISQlY6jMw
-         UU40tS1yRh7XCOGOnzbmNppczW85yX1Uyp4XZN3/clcDUtY3LLCVsa/IJeV+vPzW+6qD
-         mCGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VCHQ33qmTPBoL9vCuW97RQR7YPeZg23yIQSrtsZ57nY=;
-        b=LWCstihtSe9XVNUzmUX2KJhPNqAkET1a79yXjI+B+5ylRAMWS0YCggu8XAHXax4Kom
-         vc/6Xo4VhA4fHsLWI3KiXVxmUCYJwIaa9ZVm83Z3FELFB3ZsZSORtDwP2kseNosieZG5
-         cyUJP+2BJFnZRYsqUnbqsrJaZNL0wjvtYXnCtbQ0mKMMFstVlGTB6ybaRaXHSlRqjOR5
-         cxOuxN+LXyzXGlxllfTrlrHF20kYyoyzIVlRSd6A/JX17fTH5ik/Lk3WLmj0AJPqyiiM
-         b9KfzBrQFaAPu5BA8NpxlfagKDr/IxrAf7vLKCsWbop0oCdSXdH5JJFEXmAQ0QZaPBXO
-         nD7w==
-X-Gm-Message-State: AFqh2kr8m8MTl8v96ck5d6SDK2+rDehX3tcuwIuF4uIj0SrKu37S4l7a
-        xpQyVqoI1Q+AuCbhGpvxknjLPA==
-X-Google-Smtp-Source: AMrXdXtigiQmPVFGTglR+qRQyd8ks4S9fkpqM62Z5sgB9z/r2a1LtwsflCamS478OXUukaBYId+UCw==
-X-Received: by 2002:a05:600c:154b:b0:3cf:674a:aefe with SMTP id f11-20020a05600c154b00b003cf674aaefemr51820927wmg.22.1673429003135;
-        Wed, 11 Jan 2023 01:23:23 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id z6-20020a05600c0a0600b003d96efd09b7sm26023635wmp.19.2023.01.11.01.23.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jan 2023 01:23:22 -0800 (PST)
-Message-ID: <714ec9f7-486b-b06f-f070-27c6db19ba3e@linaro.org>
-Date:   Wed, 11 Jan 2023 10:23:20 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: add Texas Instruments
- ADS7924
+        with ESMTP id S236837AbjAKKKP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Jan 2023 05:10:15 -0500
+Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2092.outbound.protection.outlook.com [40.92.103.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67E9DFF5;
+        Wed, 11 Jan 2023 02:06:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=T4905V82hUxdt1VqE47iSGXsVorVw1s5aez73K8+AWFgBnaxQGU/iaXbj7YKT9oMoSegrsiUi83jDCNppPEMP8gnyEuZSy8ad13j6XvFLGsZd2KZZHZOCxcvUBcLHoD4BYeHwnVuJi8vzl8qZzORHJXcctC3EICEGxRxfakJnyQ1YVmyXvWzB2HQWvj3On8qK9XGoErSc00sxm2TKyakFrljcsf2BRnWPPN7H3CRf/L2jfA/2DYb295x+PAz++XLkz0al8fmP9y0s0VhWxIOYAt6dfMPsvjnmOe7FI2mGKqlQmBgysXyxKKG2ieDclBRxQhYTVWhSOqWiwp8iuSDDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RkgVilK9CzkGq3z7TONLXujhYjDnv2DaiNSSBCw12Z4=;
+ b=NybfeAaqng/LGTE2HNzB9bwnbB0O+2qxf8tUTbfiLycWGX1/kKAdmM8mm3acGVpfjpZ/qg/FYKSLXcZYi7Tf51mfICbClwIV/d5/OCDvIK7tZFuZCbEtYGemOJBbs1VMuyjFZvUaIK0bamzzKKWPOkX9J+Gc19Tuo6Ip9ETTGAZpBoX+uugaPuerM1dA0jUSoBl6S9NJ2OAxG5zwSFMPRdpV3q/8SLf/TPDeu+rb2tOsA5z0pnmKBsWGBbcvGaFeLsfNlFMcFcZ2RZhOX09lax9BauD2hFWoczJbgeCKHhTXF+TkKlwQ8wz82zkQ8gnmwAtPI2G/DbGppjMUvzLOVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RkgVilK9CzkGq3z7TONLXujhYjDnv2DaiNSSBCw12Z4=;
+ b=IRgzg3iet1iUijwNe+6EEnoplUbQopKlSRnQZViwo3ryoFYtXUy4VjGd8IHW/Rdd2rjpBmFCghv1kEpVgB+RfPe1Qa24iKlK0sgwnk82mybbReZgTK01xTwUn1k6aVN/djQz6gzgJjJ6EfDLjvnGSyRglSIA98HpAeRpMTnduCUd9d8NGpz55sD4OGJPGfjLOzpCcxB+Nv6sNJvTzPOoUSPC0aLkPU3o+YMv3LI/22youKbHiVnkVLwebJYezta5N+eOSu0S9uvXK/52RSZahVfIsNa0JDneBgEMLoenlMydaKfGgKNYV6VSDtnzfsrwJix9LW+vjVCwkbbpvl7VqA==
+Received: from BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:2::9) by
+ MA0PR01MB6359.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a01:7f::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6002.12; Wed, 11 Jan 2023 10:06:27 +0000
+Received: from BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::f2f0:34b5:eb58:bb5a]) by BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::f2f0:34b5:eb58:bb5a%6]) with mapi id 15.20.6002.013; Wed, 11 Jan 2023
+ 10:06:27 +0000
+From:   Aditya Garg <gargaditya08@live.com>
+To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+CC:     Jiri Kosina <jikos@kernel.org>,
+        "jkosina@suse.cz" <jkosina@suse.cz>,
+        "benjamin.tissoires@redhat.com" <benjamin.tissoires@redhat.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "orlandoch.dev@gmail.com" <orlandoch.dev@gmail.com>,
+        "ronald@innovation.ch" <ronald@innovation.ch>
+Subject: Re: [PATCH v2] HID: Recognize sensors with application collections
+ too.
+Thread-Topic: [PATCH v2] HID: Recognize sensors with application collections
+ too.
+Thread-Index: AQHZJNGQGewQeI41JU22YhcaXx9jy66YOK6AgADGWQA=
+Date:   Wed, 11 Jan 2023 10:06:27 +0000
+Message-ID: <A02BE14A-8532-4C2D-940B-06DCCDB005D3@live.com>
+References: <8DA00FF4-DB08-4CEC-A5B4-47A71DC09C13@live.com>
+ <01D620E2-18CA-40F6-A330-454CBC20C542@live.com>
+ <EFCEA45A-C6F4-477A-B011-9C9E6E61E488@live.com>
+ <74fbf0eb19ebdb964397d8f8d9b5fc12a06128cf.camel@linux.intel.com>
+In-Reply-To: <74fbf0eb19ebdb964397d8f8d9b5fc12a06128cf.camel@linux.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     Hugo Villeneuve <hugo@hugovil.com>, hvilleneuve@dimonoff.com,
-        jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230110160124.3853593-1-hugo@hugovil.com>
- <20230110160124.3853593-3-hugo@hugovil.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230110160124.3853593-3-hugo@hugovil.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:  [UN6I2o5BcOFUD/a+oa+BFlK8+a2faC2BsknhOfesfg7c/pwKAr1HTVcZnuF9snrQ]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BM1PR01MB0931:EE_|MA0PR01MB6359:EE_
+x-ms-office365-filtering-correlation-id: 74867673-657c-4135-9d40-08daf3bb80f1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: xsbllrBTs5rmh0almGHvA9XTBZhLGuxxIgtQGQpFLyk81QD5FJtRcTa9yLbyZk7deUQWYET8szG1FS4OX8eYY2V2jHJT18/bEmYM0/puZohVfbzzSTyyiafyUY4PKlc6UF9Pdz/Y8GhCvkt7wWIylIrZ9dvxhngiMGG6szR9/UNN/zLHkopR84rZO/IAjhlxXrS3pdxJvziTR2UKS/1/cYubu4NV83eu0a4XX/37A6hzwEhRqD7CSCNmohFKxhtVrZFbi7QR3u5q5lM7xLMYIB/IQh0Dh3xBYZ3yrdrEX/FOebypYCvSYspmVSPd5ccgfkfaVRd2DYwqWPbuZtg3SKyQz6AiTR7m/O1T0gw7SAVFi+s+o4efTsIfpQYTO5C7eYB4Pcogw/n/KVB7zoyDbBLB1iaeWJ8LBL6M6A+sMT/li3mPL5X4c2GPam5APhSNGXLtrHEkW8DzRxR5JD8VJTFhFYSh7jF0kjozzO2nPSfYyUhsNw0Y9GtQZr2vGUD0kWyyp+Svyda6U+GLUMMm/qTtvDkLqNwcuFCmZCQox15VrhhpY/SuQnYqrkNJsLhyh7C55ilneyNivVsp9+a/a8Mvc8vWi+sdbza3OpQimv96GJ4MLMHd2XHI0zZSvc4HwuUXpZN7SxAich5uy8YTXg==
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?L7UkVGovRV6BWXkRgbABavcG8uM3EregBTrbhDfA+MKqkBM9L30pav8LwM0I?=
+ =?us-ascii?Q?NcBPxchS5vwCeoKWXvLLS7bIhqdEBOowwgpXQX93zx1XsP6d6EvujQofVjQr?=
+ =?us-ascii?Q?0bCZFj2nCQ9xiTAdWv1MOWtXNr8b30s7juFUVrYmDiwGon2h2B4nwGEHFHGX?=
+ =?us-ascii?Q?mKqpioLZmn/mMqFS907FsS/PRpKBsT3BV0LrrL+9nYfE9DXlGhbgkYOmcDPA?=
+ =?us-ascii?Q?Ggfe1RZdLQvnF8K2FLPI16A6pxF5AW/n4Np7JOVJrWejGFYunoLmD6aUDkZk?=
+ =?us-ascii?Q?b5QdLvd0iqgwt70bSfvOOhB9um0ri+k4t+SgSFcLZdSKtT1aXA163nuEscm3?=
+ =?us-ascii?Q?nsINBcsdxXZOCKttFl/fVp7NYSEhpqWkmYxbrsUiLRO2utEVL3v4Ym0VOEOA?=
+ =?us-ascii?Q?2HMJ1w8fiFQ3OxGPhtSc2WcAeJ9gil1OoPZ9TcPJJ5bv3/BGwxLDtUPDlAz5?=
+ =?us-ascii?Q?yZejkBGEFKXAawqBORMtmOwKC03Ca4uGdqMQpPn0nFCFjOQ90UofK9eysk+p?=
+ =?us-ascii?Q?pof8sUnK7yVjmlFG4yTYAssGhCwiFflVqGMyOyOqrgw3zzFdAlE6eHVXsJHx?=
+ =?us-ascii?Q?eDnAJHNEjWEdRCN3LTjF0IvC4zTlS8XO/CNnIDRNs45wQyruzhD4wcR9t4z3?=
+ =?us-ascii?Q?tgRJNktNHi4yiCsTs0TOQzuIxah5e0M6O328SXuejfsKefCNqMC8LCjzW/rA?=
+ =?us-ascii?Q?PtBff6I4bF942MXvGIq7W+sjaJ/6nGkZFuVx65W4tWvjoaLuzbF/SYf+bK5T?=
+ =?us-ascii?Q?scftKqJs8uzQUWBDuK0pTDkYNIssjo+hZmAnxMROZj7zISDAnIfeDORNV2Gz?=
+ =?us-ascii?Q?MdJxnotEOeRoDbivadF1Lazw96wLnbniSYr/mKlSKQl6/WWkyCZ1fcGib9Tf?=
+ =?us-ascii?Q?rAojchKuy7+VfriNjc1nFE9L5/shCQy7REAZZneemIveynzvwS/4C0OFV51p?=
+ =?us-ascii?Q?wSz8TLJAAXT3KoCrYCDXhK9jh33a1F0ZFPcT/bzSGoOTtoqIAQzcLj+sB99f?=
+ =?us-ascii?Q?decRWRcrPic2fPk4cheUWQ/9QDfF2MJjpwtoQW8IhkUOurhkoaQCPQwMKmGq?=
+ =?us-ascii?Q?v3R24gDWvPuaU6IlQXbCICNZVQuUP1ikg0lEGlvqvrQrH+1unvqAzluNF1dF?=
+ =?us-ascii?Q?FvSMsq0Woo4pfEtnd5mFrj/3E7TNFkWFXF2oI2dwNoyoY/kAkK7qBS0KRSGH?=
+ =?us-ascii?Q?4Q4f00Hwh89n4tHrjQmJ0Npgam9l5SbGYy0Lj59zBoMLSwlpw9EqMD+go+3u?=
+ =?us-ascii?Q?ugmyYpVVsYMxjMeVMKHqRN33wUEiOH77AoitAMMafayCy5lap/cqjBL0AXuh?=
+ =?us-ascii?Q?YH4TbuAZO8PZNifEh0TZ9XNIOT/YrtPtCEEjVhQ4UKl8Tg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <F581870798785D42ACDD1801C9B40F6B@INDPRD01.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BM1PR01MB0931.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74867673-657c-4135-9d40-08daf3bb80f1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jan 2023 10:06:27.3786
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0PR01MB6359
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/01/2023 17:01, Hugo Villeneuve wrote:
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> Add device tree bindings document for the Texas Instruments ADS7924
-> ADC.
-> 
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-Please test the bindings before sending. It's better to use tools for
-review than humans... we are all quite busy.
 
-> ---
->  .../bindings/iio/adc/ti,ads7924.yaml          | 104 ++++++++++++++++++
->  1 file changed, 104 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> new file mode 100644
-> index 000000000000..a9d3e8778d11
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> @@ -0,0 +1,104 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads7924.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: TI ADS7924 4 channels 12 bits I2C analog to digital converter
-> +
-> +maintainers:
-> +  - Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> +
-> +description: |
-> +  Texas Instruments ADS7924 4 channels 12 bits I2C analog to digital converter
-> +
-> +  Specifications:
-> +    https://www.ti.com/lit/gpn/ads7924
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,ads7924
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vref-supply:
-> +    description:
-> +      The regulator supply for the ADC reference voltage (AVDD)
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vref-supply
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +
-> +patternProperties:
+> On 11-Jan-2023, at 3:46 AM, srinivas pandruvada <srinivas.pandruvada@linu=
+x.intel.com> wrote:
+>=20
+>=20
+> Don't add full stop at the end.
+>=20
+> HID: Recognize sensors with application collection
+>=20
+> Better not use language extensions. Simple to use
+>=20
+> report->field[i]->physical ?  report->field[i]->physical : report-
+>> field[i]->application
+>=20
+>=20
 
-Put it before "required:" block.
+Sending a v3 with the changes.
 
-> +  "^channel@[0-3]+$":
-> +    $ref: "adc.yaml"
-
-Drop quotes.
-
-> +    type: object
-> +    description: |
-> +      Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          The channel number. It can have up to 4 channels numbered from 0 to 3.
-> +        items:
-> +          - minimum: 0
-> +            maximum: 3
-
-Test your bindings, so you will see error here of missing label: true.
-
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-
-Missing additionalProperties: false.
-
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@48 {
-> +            compatible = "ti,ads7924";
-> +            reg = <0x48>;
-> +            vref-supply = <&ads7924_reg>;
-> +            reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
-> +            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-parent = <&gpio>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            channel@0 {
-> +                reg = <0>;
-> +                label = "CH0";
-> +            };
-> +            channel@1 {
-> +                reg = <1>;
-> +                label = "CH1";
-> +            };
-> +            channel@2 {
-> +                reg = <2>;
-> +                label = "CH2";
-> +            };
-> +            channel@3 {
-> +                reg = <3>;
-> +                label = "CH3";
-> +            };
-> +        };
-> +    };
-> +...
-
-Best regards,
-Krzysztof
 

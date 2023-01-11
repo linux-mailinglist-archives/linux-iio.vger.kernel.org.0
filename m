@@ -2,88 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3951D665B31
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jan 2023 13:16:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 618ED665B3D
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jan 2023 13:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232408AbjAKMQw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 Jan 2023 07:16:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37230 "EHLO
+        id S231602AbjAKMWQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 Jan 2023 07:22:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjAKMQp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Jan 2023 07:16:45 -0500
-X-Greylist: delayed 420 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 11 Jan 2023 04:16:43 PST
-Received: from frolo.macqel.be (smtp2.macqel.be [109.135.2.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1D1E4C31
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jan 2023 04:16:43 -0800 (PST)
-Received: by frolo.macqel.be (Postfix, from userid 1000)
-        id 3B1EDDF00AE; Wed, 11 Jan 2023 13:09:39 +0100 (CET)
-Date:   Wed, 11 Jan 2023 13:09:40 +0100
-From:   Philippe De Muyter <phdm@macq.eu>
-To:     lorenzo@kernel.org, linux-iio@vger.kernel.org
-Subject: sysfs mount_matrix for st_lsm6dsx gyro
-Message-ID: <20230111120940.GA23351@frolo.macqel>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-X-Spam-Status: No, score=0.2 required=5.0 tests=BAYES_40,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229509AbjAKMWP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 Jan 2023 07:22:15 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CAE76376
+        for <linux-iio@vger.kernel.org>; Wed, 11 Jan 2023 04:22:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673439735; x=1704975735;
+  h=message-id:subject:from:to:cc:date:mime-version:
+   content-transfer-encoding;
+  bh=WL9u6n6lQcezpgmxlhgyTpMFXB9OIZ4oZiEg5MFEDfA=;
+  b=GLIm9Qz02hgZwW91/gPKS1vObEovTlZCfG7kj/IYV8b817TuQdbqbjDR
+   uDzUadbP/wORNX/utDTSZUJmXA4I10rrS0Hr15e8R9olQ8PGP8PNEi/OK
+   RRyQX1zJ8koUULZJff3ZoQFEdu+bCvOjsP289Su7DbQtC+hUKykbNxBCz
+   Qbph2ez9Y/CL+/tSa0DYaoQlFcQtAUdqfgWTO4ORMx8vagzZwPxAOI7uv
+   VFQXmjpb2E2u3msqxWRupSHS8Ac0nhBXKWxtZx1/GeQFtn6eaiFofR9vh
+   9i8+H+G5Lcx15BXjegAI607PeUp072RsIxcg9DaQfZUPqRvtgYkVCcc+c
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="311208957"
+X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
+   d="scan'208";a="311208957"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 04:22:14 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="687918554"
+X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
+   d="scan'208";a="687918554"
+Received: from dperchan-mobl1.ger.corp.intel.com (HELO kronos) ([143.185.115.141])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 04:22:13 -0800
+Message-ID: <a6dc426498221c81fa71045b41adf782ebd42136.camel@intel.com>
+Subject: [PATCH] iio: hid: fix the retval in accel_3d_capture_sample
+From:   Dmitry Perchanov <dmitry.perchanov@intel.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de, demisrael@gmail.com
+Date:   Wed, 11 Jan 2023 14:22:10 +0200
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Lorenzo and list,
+Return value should be zero for success.
+This was forgotten for timestamp feature.
+Verified on RealSense cameras.
 
-I do not find a "*mount_matrix" entry in sysfs for a 'ism330dlc_gyro'
-iio device.
-Is that normal ?
-Is a fix available ?
+Fixes: a96cd0f901ee ("iio: accel: hid-sensor-accel-3d: Add timestamp")
 
-Some more info :
+Signed-off-by: Dmitry Perchanov <dmitry.perchanov@intel.com>
+---
+ drivers/iio/accel/hid-sensor-accel-3d.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I have backported  drivers/iio/imu/st_lsm6dsx to linux-4.9 in order
-to drive a ism330dlc imu on a custom board.  The chip is correctly
-detected and two devices are created in /sys/bus/iio/devices/
+diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hi=
+d-sensor-accel-3d.c
+index a2def6f93..5eac7ea19 100644
+--- a/drivers/iio/accel/hid-sensor-accel-3d.c
++++ b/drivers/iio/accel/hid-sensor-accel-3d.c
+@@ -280,6 +280,7 @@ static int accel_3d_capture_sample(struct hid_sensor_hu=
+b_device *hsdev,
+ 			hid_sensor_convert_timestamp(
+ 					&accel_state->common_attributes,
+ 					*(int64_t *)raw_data);
++		ret =3D 0;
+ 	break;
+ 	default:
+ 		break;
+-- =
 
-the first one (where name is 'ism330dlc_gyro') has the following entries :
+2.39.0
 
- me@proto4:~$ ls /sys/bus/iio/devices/iio\:device1/
- buffer                      in_anglvel_x_raw  sampling_frequency
- current_timestamp_clock     in_anglvel_y_raw  sampling_frequency_available
- dev                         in_anglvel_z_raw  scan_elements
- in_anglvel_scale            name              subsystem
- in_anglvel_scale_available  power             uevent
- me@proto4:~$
 
-the second one (where name is 'ism330dlc_accel') has those entries :
+---------------------------------------------------------------------
+Intel Israel (74) Limited
 
- me@proto4:~$ ls /sys/bus/iio/devices/iio\:device2
- buffer                    in_accel_x_raw  sampling_frequency
- current_timestamp_clock   in_accel_y_raw  sampling_frequency_available
- dev                       in_accel_z_raw  scan_elements
- events                    mount_matrix    subsystem
- in_accel_scale            name            uevent
- in_accel_scale_available  power
- me@proto4:~$
+This e-mail and any attachments may contain confidential material for
+the sole use of the intended recipient(s). Any review or distribution
+by others is strictly prohibited. If you are not the intended
+recipient, please contact the sender and delete all copies.
 
-The 'mount_matrix' entry is only present in the 'ism330dlc_accel' device
-but not in the 'ism330dlc_gyro' device.
-
-On a similar board, but with mpu9250 imu, I get only one iio:deviceX
-entry but with two *mount_matrix entries : 
-
-	in_accel_mount_matrix
-	in_anglvel_mount_matrix
-
-In both cases, I would have expected only one 'iio:deviceX' entry with
-only one 'mount_matrix' entry.
-
-Best regards
-
-Philippe
-
--- 
-Philippe De Muyter +32 2 6101532 Macq SA rue de l'Aeronef 2 B-1140 Bruxelles

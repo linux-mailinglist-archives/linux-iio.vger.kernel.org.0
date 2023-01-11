@@ -2,178 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C62E665056
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jan 2023 01:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBEA1665122
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jan 2023 02:35:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234505AbjAKAXP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 Jan 2023 19:23:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41770 "EHLO
+        id S232388AbjAKBfA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 Jan 2023 20:35:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233118AbjAKAXO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Jan 2023 19:23:14 -0500
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300234F126;
-        Tue, 10 Jan 2023 16:23:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=lB3/oUiQ+pVa3onRwFzKH8YJVkOYTVRbneHLzsVtvD4=; b=czfF3gI5EhN07SWurtEOumrABb
-        F5oGtQmkN7dmn4KMRc9NnpsWCE31Lps7MoC2Xchrnf8aKA70fK0tIOb6FP8PqVsgBlpm1YzVDDZOP
-        JKg8zgIT+Du2L1R0Y7galc/ycYbEqySqtMnQT77KcZ3uZUGdIbIfyk2UUEx4O4ZKs2ao=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41152 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1pFOtV-0002cr-Nn; Tue, 10 Jan 2023 19:23:06 -0500
-Date:   Tue, 10 Jan 2023 19:23:05 -0500
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     hvilleneuve@dimonoff.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-Id: <20230110192305.0214a1075518c7d5774e8166@hugovil.com>
-In-Reply-To: <c4b5c190-5fb5-17f2-69ce-7137ef7f33db@wanadoo.fr>
+        with ESMTP id S229744AbjAKBe7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 Jan 2023 20:34:59 -0500
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090D3D8C;
+        Tue, 10 Jan 2023 17:34:58 -0800 (PST)
+Received: by mail-oo1-f43.google.com with SMTP id q20-20020a4a3314000000b004f2177e6b38so746752ooq.3;
+        Tue, 10 Jan 2023 17:34:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+bGxsqXp9QRg1WP9+JgfhsxrxUMgKueBuLUDUsQvow4=;
+        b=mspRrPW4f2aMXe2dMcExY4TRe4Xme6sH6uJ7PrEfjZh8WSO6KDif3hU1Igy5HYAPJF
+         B234D7RRpXqC8GVw8J0nND7Z1wCbrW+kPmCLn7mFTcIirPUuuYQLxNFXPO/r2xVTPuz4
+         5Xd4nr1EPjXKIFkLAFNdgjWcfqKnxA2BCX4fj71YrFJMkmEO1Be8aL5qh9xs1kFNE11O
+         acRXfr0RKIEVbXUCtEoWV15JJfMQYHJCuF4/q0P8Uri+BpWZDSzNnKDu27GBQeNdNxad
+         2ajIj7D7HiCJlnlkES8tMsDzkvTuqjABsCW3dMnXquBFUyP4yrsc7MSj2cjGeuM4BIKQ
+         4i4g==
+X-Gm-Message-State: AFqh2kqnDeTSOj/e1tKBqmdhhcw7iuR+TbYPwtnAbBYsnZB+NWwJGKU7
+        cYGOBN0JwoqsFpKUVoC+5w==
+X-Google-Smtp-Source: AMrXdXszeRQ9+HsqYlG00B7ojUFlF74VNi7+aTHjFGuLt7TAkHB+QXEBoWCcejCQimTSLn7z32LzxQ==
+X-Received: by 2002:a4a:ac0c:0:b0:4e7:128c:f195 with SMTP id p12-20020a4aac0c000000b004e7128cf195mr19374010oon.8.1673400897206;
+        Tue, 10 Jan 2023 17:34:57 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id q187-20020a4a4bc4000000b004a3c359fdaesm6437668ooa.30.2023.01.10.17.34.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jan 2023 17:34:56 -0800 (PST)
+Received: (nullmailer pid 3441155 invoked by uid 1000);
+        Wed, 11 Jan 2023 01:34:56 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hvilleneuve@dimonoff.com,
+        jic23@kernel.org, linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        lars@metafoo.de
+In-Reply-To: <20230110160124.3853593-3-hugo@hugovil.com>
 References: <20230110160124.3853593-1-hugo@hugovil.com>
-        <20230110160124.3853593-2-hugo@hugovil.com>
-        <c4b5c190-5fb5-17f2-69ce-7137ef7f33db@wanadoo.fr>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+ <20230110160124.3853593-3-hugo@hugovil.com>
+Message-Id: <167340066186.3433002.1362198141589296440.robh@kernel.org>
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: add Texas Instruments ADS7924
+Date:   Tue, 10 Jan 2023 19:34:56 -0600
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v2 1/2] iio: adc: ti-ads7924: add Texas Instruments
- ADS7924 driver
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Jan 2023 19:50:42 +0100
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> Le 10/01/2023 =E0 17:01, Hugo Villeneuve a =E9crit=A0:
-> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> >=20
-> > The Texas Instruments ADS7924 is a 4 channels, 12-bit analog to
-> > digital converter (ADC) with an I2C interface.
-> >=20
-> > Datasheet: https://www.ti.com/lit/gpn/ads7924
-> >=20
-> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > ---
->=20
-> Hi,
->=20
-> should there be a v3, a few nits below.
+On Tue, 10 Jan 2023 11:01:24 -0500, Hugo Villeneuve wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Add device tree bindings document for the Texas Instruments ADS7924
+> ADC.
+> 
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> ---
+>  .../bindings/iio/adc/ti,ads7924.yaml          | 104 ++++++++++++++++++
+>  1 file changed, 104 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
+> 
 
-Hi,
-there will definitely be a V3 (missing include), thanks for the input, I wi=
-ll incorporate these changes into V3.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Hugo.
+yamllint warnings/errors:
 
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml: 'oneOf' conditional failed, one must be fixed:
+	'unevaluatedProperties' is a required property
+	'additionalProperties' is a required property
+	hint: Either unevaluatedProperties or additionalProperties must be present
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+Error: Documentation/devicetree/bindings/iio/adc/ti,ads7924.example.dts:29.40-41 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:434: Documentation/devicetree/bindings/iio/adc/ti,ads7924.example.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1508: dt_binding_check] Error 2
 
->=20
-> CJ
->=20
-> >   MAINTAINERS                  |   7 +
-> >   drivers/iio/adc/Kconfig      |  11 +
-> >   drivers/iio/adc/Makefile     |   1 +
-> >   drivers/iio/adc/ti-ads7924.c | 492 +++++++++++++++++++++++++++++++++++
-> >   4 files changed, 511 insertions(+)
-> >   create mode 100644 drivers/iio/adc/ti-ads7924.c
-> >=20
->=20
-> [...]
->=20
-> > +static int ads7924_get_channels_config(struct i2c_client *client,
-> > +				       struct iio_dev *indio_dev)
-> > +{
-> > +	struct ads7924_data *priv =3D iio_priv(indio_dev);
-> > +	struct device *dev =3D priv->dev;
-> > +	struct fwnode_handle *node;
-> > +	int num_channels =3D 0;
-> > +
-> > +	device_for_each_child_node(dev, node) {
-> > +		u32 pval;
-> > +		unsigned int channel;
-> > +
-> > +		if (fwnode_property_read_u32(node, "reg", &pval)) {
-> > +			dev_err(dev, "invalid reg on %pfw\n", node);
-> > +			continue;
-> > +		}
-> > +
-> > +		channel =3D pval;
-> > +		if (channel >=3D ADS7924_CHANNELS) {
-> > +			dev_err(dev, "invalid channel index %d on %pfw\n",
-> > +				channel, node);
-> > +			continue;
-> > +		}
-> > +
-> > +		num_channels++;
-> > +	}
-> > +
-> > +	if (num_channels > 0) {
-> > +		dev_dbg(dev, "found %d ADC channels\n", num_channels);
-> > +		return 0;
-> > +	} else {
-> > +		return -EINVAL;
-> > +	}
->=20
-> 	if (num_channels <=3D 0)
-> 		return -EINVAL;
->=20
-> 	dev_dbg(dev, "found %d ADC channels\n", num_channels);
-> 	return 0;
->=20
-> is much more usual.
->=20
-> > +}
-> > +
->=20
-> [...]
->=20
-> > +static int ads7924_reset(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ads7924_data *data =3D iio_priv(indio_dev);
-> > +
-> > +	if (data->reset_gpio) {
-> > +		gpiod_set_value(data->reset_gpio, 1); /* Assert. */
-> > +		/* Educated guess: assert time not specified in datasheet... */
-> > +		mdelay(100);
-> > +		gpiod_set_value(data->reset_gpio, 0); /* Deassert. */
-> > +	} else {
-> > +		int ret;
->=20
-> having 'ret' near 'struct ads7924_data *data' is more usual and saves 1 L=
-oC.
->=20
-> > +
-> > +		/*
-> > +		 * A write of 10101010 to this register will generate a
-> > +		 * software reset of the ADS7924.
-> > +		 */
-> > +		ret =3D regmap_write(data->regmap, ADS7924_RESET_REG, 0b10101010);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	return 0;
-> > +};
->=20
->=20
+doc reference errors (make refcheckdocs):
 
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230110160124.3853593-3-hugo@hugovil.com
 
---=20
-Hugo Villeneuve <hugo@hugovil.com>
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+

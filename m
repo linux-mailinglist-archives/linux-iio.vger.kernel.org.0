@@ -2,154 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 231D3669A14
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 15:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CAAD669A37
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 15:32:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229454AbjAMO3w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Jan 2023 09:29:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
+        id S229562AbjAMObh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Jan 2023 09:31:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjAMO2y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 09:28:54 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 209E878E96;
-        Fri, 13 Jan 2023 06:18:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673619539; x=1705155539;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8CM+ANswML+huvLCOjDIrB7RxnHX0wqAonnUb68AXO4=;
-  b=jf2n6LyhcgXoabQ2PYC6uTZbRgtei3cndwnvFiH4Cdxv0mXkdbpW69do
-   U6lRkfgN8FrzqmVOtsjwJ0trWOnYoaxQ6gW5vWisVr3ZWK4aOf8nb6zJG
-   XNQeTGP3DYIhAEF0P8DmGM3FXs5na8hthnydqxdKFiisauBdL1Qs8zuB+
-   KxlYk4s3R4bpNuHsUvnzyvOSoLf1spQgw4BLrR6t1SkdRBz/yuVBcRk3u
-   njnmjKio+OU4d44yYHZk2aEpIyF9bMV2OEOOTnNVlggpjLOEzqQWTSRUj
-   kfUFIVYWQDTo04Xb9a9nyFmGLxm8sFqvmcv3IlTfRalxIR2w3VvrnAJtJ
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="324058540"
-X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
-   d="scan'208";a="324058540"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 06:18:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="832079536"
-X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
-   d="scan'208";a="832079536"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 13 Jan 2023 06:18:45 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 2760F130; Fri, 13 Jan 2023 16:19:18 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 1/1] iio: chemical: scd30_core: Switch to use dev_err_probe()
-Date:   Fri, 13 Jan 2023 16:19:17 +0200
-Message-Id: <20230113141917.23725-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S229575AbjAMOar (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 09:30:47 -0500
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F8C6848FD
+        for <linux-iio@vger.kernel.org>; Fri, 13 Jan 2023 06:23:42 -0800 (PST)
+Received: by mail-io1-xd2d.google.com with SMTP id h184so1116794iof.9
+        for <linux-iio@vger.kernel.org>; Fri, 13 Jan 2023 06:23:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+OF3VMKCJX/ixRNA7KETCaEsWyEBkIDVOlKWye/O0OA=;
+        b=MK7e6Vy0okniHu3Q9+oSRGxZAwtfUcCw709gjtpmGqYm4W84IZvw4tBwf/JeD4Sz6H
+         3KURCQ1q7FJNLx+GLRWt1AGelsjK5K90b9GlN0sKUA6ZUg/qpGAmzhVkYIMi1e8GW14O
+         cFtXxDW3U7HKPR1h1QucXhqmNKCsZMoObgInYsIcK9GV+Q1SmTW3TNFPjIiYngs//Zw8
+         0a/3E2iFbnIOhj7mPg7o55ip5AqJcSu4cmOrbMNeUEYXVxQDLd1kY3ucGjxruvrrHS7M
+         XetQgLqP0j8VlFQPDJPkXr0ojEVpUsKfNGxzo9W4EnGlfHoCwYlTt4oOdX6QabpPSrPy
+         sowg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OF3VMKCJX/ixRNA7KETCaEsWyEBkIDVOlKWye/O0OA=;
+        b=6laZ+ENBq2puZOWRIxfNi+UiPAkJzeBDvq/B3kVamql/6XFjzJtZouJL3g+zz9lgSi
+         ukBjjj8cDurxSX3lt9W8+X5W6KuhncsQxrNtlQkFF1MpZGLIBthRrbo1JfDq3K7AHtif
+         rtR/0Z2VhCfgFpspk1qJt8kg+xodbm6kp5XS3XU1TMoJa9+ZM9kLTM3Py139GNy/iXEb
+         TziVBC0IjreQKSva2Y4KdknrSgXnX9xt2cHlroHW9J9m2d7UnrEUlh2t7qcBGuGk9DkH
+         iXk6HxBVtmgd5/SvxkdV9IKLpoh60/5Q6UpYz7K5uHUQ0lGXDae49OW/q4qTA9dNaVtb
+         rZ/g==
+X-Gm-Message-State: AFqh2krvM38KgJfaAx7Y8qMl5c2cT2kvtQeC+FmzwvYCiCCHduYEnrR+
+        2wuC+iPk4cFnQFd0ZPHLZqirosC3KqJ2SPbpBM5RH2c8zt8=
+X-Google-Smtp-Source: AMrXdXshiBnmfviu9GpNb0RTPGnCcyaimsk+bKcdbNGmrDubcSeViaijlgxCq2yePIP/Xii+kaUmkoerHpw3FkTn4/M=
+X-Received: by 2002:a6b:7f08:0:b0:6e2:ec05:87c8 with SMTP id
+ l8-20020a6b7f08000000b006e2ec0587c8mr6674474ioq.144.1673619821627; Fri, 13
+ Jan 2023 06:23:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6e02:1282:b0:30d:c36b:403c with HTTP; Fri, 13 Jan 2023
+ 06:23:41 -0800 (PST)
+Reply-To: hitnodeby23@yahoo.com
+From:   Hinda Itno Deby <atidigahcyril@gmail.com>
+Date:   Fri, 13 Jan 2023 06:23:41 -0800
+Message-ID: <CALHvQ-i=c6i56KKAWCU6YHCKu56RytXe0C3_h_MOPvHa0vgPTw@mail.gmail.com>
+Subject: Reply
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM,UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d2d listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5005]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [hitnodeby23[at]yahoo.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [atidigahcyril[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.6 URG_BIZ Contains urgent matter
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Switch to use dev_err_probe() to simplify the error paths and
-unify message template.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/chemical/scd30_core.c | 40 +++++++++++--------------------
- 1 file changed, 14 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
-index e0bb1dd5e790..7be5a45cf71a 100644
---- a/drivers/iio/chemical/scd30_core.c
-+++ b/drivers/iio/chemical/scd30_core.c
-@@ -642,10 +642,8 @@ static int scd30_setup_trigger(struct iio_dev *indio_dev)
- 
- 	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
- 				      iio_device_id(indio_dev));
--	if (!trig) {
--		dev_err(dev, "failed to allocate trigger\n");
--		return -ENOMEM;
--	}
-+	if (!trig)
-+		return dev_err_probe(dev, -ENOMEM, "failed to allocate trigger\n");
- 
- 	trig->ops = &scd30_trigger_ops;
- 	iio_trigger_set_drvdata(trig, indio_dev);
-@@ -667,9 +665,9 @@ static int scd30_setup_trigger(struct iio_dev *indio_dev)
- 					IRQF_NO_AUTOEN,
- 					indio_dev->name, indio_dev);
- 	if (ret)
--		dev_err(dev, "failed to request irq\n");
-+		return dev_err_probe(dev, ret, "failed to request irq\n");
- 
--	return ret;
-+	return 0;
- }
- 
- int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
-@@ -717,17 +715,13 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
- 		return ret;
- 
- 	ret = scd30_reset(state);
--	if (ret) {
--		dev_err(dev, "failed to reset device: %d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to reset device\n");
- 
- 	if (state->irq > 0) {
- 		ret = scd30_setup_trigger(indio_dev);
--		if (ret) {
--			dev_err(dev, "failed to setup trigger: %d\n", ret);
--			return ret;
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to setup trigger\n");
- 	}
- 
- 	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL, scd30_trigger_handler, NULL);
-@@ -735,23 +729,17 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
- 		return ret;
- 
- 	ret = scd30_command_read(state, CMD_FW_VERSION, &val);
--	if (ret) {
--		dev_err(dev, "failed to read firmware version: %d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to read firmware version\n");
- 	dev_info(dev, "firmware version: %d.%d\n", val >> 8, (char)val);
- 
- 	ret = scd30_command_write(state, CMD_MEAS_INTERVAL, state->meas_interval);
--	if (ret) {
--		dev_err(dev, "failed to set measurement interval: %d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to set measurement interval\n");
- 
- 	ret = scd30_command_write(state, CMD_START_MEAS, state->pressure_comp);
--	if (ret) {
--		dev_err(dev, "failed to start measurement: %d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to start measurement\n");
- 
- 	ret = devm_add_action_or_reset(dev, scd30_stop_meas, state);
- 	if (ret)
 -- 
-2.39.0
+My name is Hinda Itno Deby Please I want us to discuss Urgent Business
+Proposal, if you are interested kindly reply to me so i can give you
+all the details.
 
+Thanks and God Bless You.
+Ms Hinda Itno Deby

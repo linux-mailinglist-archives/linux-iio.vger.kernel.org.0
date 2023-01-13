@@ -2,187 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6912F66A3AC
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 20:50:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0705B66A3B2
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 20:52:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230036AbjAMTud (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Jan 2023 14:50:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
+        id S229889AbjAMTwV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Jan 2023 14:52:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjAMTuc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 14:50:32 -0500
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7FA63F51;
-        Fri, 13 Jan 2023 11:50:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=MzT+FeQLKa//TLnfFaf1hfOuJqIQoyYV+YS7hdueDjo=; b=rnEyYfxfvFkdfcxi870hutULuP
-        XYXkcSTjScKpojA0ELRyVQYSCbK5tQvvw0a8LdRV82aQ0CuvxdhJSn6iVMxUd15QNlr7GMMBqzgYr
-        Y0MefnJX48RMaJJxQvdtVulx77HHj/HRXlKSyJKzqzaWLoGp43a/p3d5WiJVctzIBs1A=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41188 helo=pettiford.lan)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1pGQ4C-0000pu-Rt; Fri, 13 Jan 2023 14:50:23 -0500
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     hvilleneuve@dimonoff.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hugo@hugovil.com
-Date:   Fri, 13 Jan 2023 14:49:59 -0500
-Message-Id: <20230113194959.3276433-3-hugo@hugovil.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230113194959.3276433-1-hugo@hugovil.com>
-References: <20230113194959.3276433-1-hugo@hugovil.com>
+        with ESMTP id S229560AbjAMTwU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 14:52:20 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11AA87C3B1
+        for <linux-iio@vger.kernel.org>; Fri, 13 Jan 2023 11:52:20 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AD0B5B821E4
+        for <linux-iio@vger.kernel.org>; Fri, 13 Jan 2023 19:52:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800ACC433EF;
+        Fri, 13 Jan 2023 19:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673639537;
+        bh=3OwrAUqKdf8hcD/Nq5Xzbzj0F/V5j82bZlWpkaJXl+g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RWxDe8xBpfOdJf5S4PpoQyZuqIplXQ866tOsWKjekydl8jumJJ4TOHbRdHYPYDe/s
+         GILvirI/It3tAHLJ9hoqYBa1fL+VAt33+4eSnmWmDpEwCO0B2lEhQKVnargz/4Okkx
+         5TUYcJ6ijKzvIqa/rk831eJgiMwatw/F3j5EoXgzYvnm11ahxzdIhsfIPj0y60nb5t
+         ya6LL29iDu92Kve+fqELtsr5QphAl/Ahlb/FBHXiwRU6vm6YpNGxhbakg84Bir6ILb
+         g5r78Jc8Zbp1h3YWqgx1uNf1Fuugk6lhr2TmWEY+aP9mR3fqDkhClSEvx+lm+gFVDZ
+         gu8d9DgDFRxAg==
+Date:   Fri, 13 Jan 2023 14:52:14 -0500
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     Peter Robinson <pbrobinson@gmail.com>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 2/4] counter: intel: Depend on X86
+Message-ID: <Y8G2bjAR6JVq/BZi@ishi>
+References: <20230108074750.443705-1-pbrobinson@gmail.com>
+ <20230108074750.443705-2-pbrobinson@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="AVx6TAKQ/INecQaA"
+Content-Disposition: inline
+In-Reply-To: <20230108074750.443705-2-pbrobinson@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH v3 2/2] dt-bindings: iio: adc: add Texas Instruments ADS7924
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-Add device tree bindings document for the Texas Instruments ADS7924
-ADC.
+--AVx6TAKQ/INecQaA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
----
- .../bindings/iio/adc/ti,ads7924.yaml          | 112 ++++++++++++++++++
- 1 file changed, 112 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
+On Sun, Jan 08, 2023 at 07:47:48AM +0000, Peter Robinson wrote:
+> Limite the Intel counter driver to X86, it doesn't
+> make sense to build it for all arches if the couner
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-new file mode 100644
-index 000000000000..24bbf95383b4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-@@ -0,0 +1,112 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/ti,ads7924.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: TI ADS7924 4 channels 12 bits I2C analog to digital converter
-+
-+maintainers:
-+  - Hugo Villeneuve <hvilleneuve@dimonoff.com>
-+
-+description: |
-+  Texas Instruments ADS7924 4 channels 12 bits I2C analog to digital converter
-+
-+  Specifications:
-+    https://www.ti.com/lit/gpn/ads7924
-+
-+properties:
-+  compatible:
-+    const: ti,ads7924
-+
-+  reg:
-+    maxItems: 1
-+
-+  vref-supply:
-+    description:
-+      The regulator supply for the ADC reference voltage (AVDD)
-+
-+  reset-gpios:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+patternProperties:
-+  "^channel@[0-3]+$":
-+    $ref: adc.yaml
-+
-+    description: |
-+      Represents the external channels which are connected to the ADC.
-+
-+    properties:
-+      reg:
-+        description: |
-+          The channel number. It can have up to 4 channels numbered from 0 to 3.
-+        items:
-+          - minimum: 0
-+            maximum: 3
-+
-+      label:
-+        description: |
-+          Unique name to identify the channel.
-+
-+    required:
-+      - reg
-+
-+    additionalProperties: false
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - vref-supply
-+  - "#address-cells"
-+  - "#size-cells"
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/gpio/gpio.h>
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@48 {
-+            compatible = "ti,ads7924";
-+            reg = <0x48>;
-+            vref-supply = <&ads7924_reg>;
-+            reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
-+            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-+            interrupt-parent = <&gpio>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            channel@0 {
-+                reg = <0>;
-+                label = "CH0";
-+            };
-+            channel@1 {
-+                reg = <1>;
-+                label = "CH1";
-+            };
-+            channel@2 {
-+                reg = <2>;
-+                label = "CH2";
-+            };
-+            channel@3 {
-+                reg = <3>;
-+                label = "CH3";
-+            };
-+        };
-+    };
-+...
--- 
-2.30.2
+I'll fix the "Limite" and "couner" typos as I pick up this patch.
 
+> subsystem is enabled.
+>=20
+> Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+
+Applied to counter-next, thanks.
+
+William Breathitt Gray
+
+--AVx6TAKQ/INecQaA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY8G2bgAKCRC1SFbKvhIj
+K7LoAP9ft9fu+w3QShjwG17Z3Lnzn0dtOf5Q/FpqGEG8Mv9kawD9GspbNcyP8mmf
+RVjg8R4M65i5cPzjdYJi6ZasAW9xqwg=
+=WWxl
+-----END PGP SIGNATURE-----
+
+--AVx6TAKQ/INecQaA--

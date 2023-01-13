@@ -2,84 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D8966A25E
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 19:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5247F66A426
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 21:36:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229883AbjAMSs0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Jan 2023 13:48:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53102 "EHLO
+        id S230111AbjAMUgU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Jan 2023 15:36:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjAMSsZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 13:48:25 -0500
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B20327183;
-        Fri, 13 Jan 2023 10:48:24 -0800 (PST)
-Received: by mail-qt1-x834.google.com with SMTP id d16so6831781qtw.8;
-        Fri, 13 Jan 2023 10:48:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=km2chU6Uz/sy/0UFbCpxcWmUeBDD1WA+yAZkjGgI1Lo=;
-        b=SwXdZ/OcjODyj0kahdbYvA6ok6v2hzrOhYo/1Lsijf5KrYh9vH3rGCurdP0CIJTz+E
-         fTGvnMACw6sr9xJ1dxnsXkdLyHFXPQJcl54JzKYnpWDq4hKTRlVYFEMwQtSG3+lIAmYW
-         038kDrDiDIfNQnN7nzOuvpihuFIA2rFm9JOVY77eypYMJYvBBB8ygoANg/3fTsAq/VIN
-         dN90mIJ2PMTnr+0NF6XuxzGeJd23v+vJ1oUn3L6FtGleeQ5xGG4t0LsNcVg5VOpD7wbE
-         mPmVaHW3kycRSkYaHQzw3CM9oT2Tdln/gb3NPcGCbZjuI+eduDB2vpFfmtVvTxvqkYsE
-         4SQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=km2chU6Uz/sy/0UFbCpxcWmUeBDD1WA+yAZkjGgI1Lo=;
-        b=50l9eOPXf81Lqm/864rq+O7edgQEt3qYET5iCK0mEMQWCeGMvp1QpOstRW3rVf4S44
-         WKAGsxFSYKQtUOxaCP+GfjESkBVzWHPD//7py7ysKKWTO6fNwzdjWkO4aV+cE3qZZOKG
-         1Azz8tFh4CoFUsHv1XxVnjCF5hFjT5hQRB06E6ZJCQ00uAq6Ch/bShNQY6uMTa9soQ7R
-         Rw/R3s0GcZVRJ06fXxiF/tQuG0uhPl1S/rWa1T0TZ4zS8FVTV6xRlkOTtrPsFGpmIkCB
-         FPT22JDlB0cJw1znL0se7x96HcV+/NGK0XULqCO7lik8KohIdv8q1Bu6YiW6qzsEOWkD
-         p3VQ==
-X-Gm-Message-State: AFqh2kpFI2AN2SJfnj3Bdwns7YKmKzU74yfl3NJfARqWsat67F2c7ic/
-        MDJwLjgMDR2UWr79mYrjTz83IiRqkhGn6ue5OG0=
-X-Google-Smtp-Source: AMrXdXtE4oDa+XfbV5WsgM8B+Khqg6/6Rc5E5NQ20g3FwFNJ8nG/ZHMFP+iNLFrJPndbTGCVgZA7YpZh8YwYoMhgKXY=
-X-Received: by 2002:ac8:1247:0:b0:3b1:328c:ff11 with SMTP id
- g7-20020ac81247000000b003b1328cff11mr283404qtj.195.1673635703313; Fri, 13 Jan
- 2023 10:48:23 -0800 (PST)
+        with ESMTP id S229684AbjAMUgS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 15:36:18 -0500
+X-Greylist: delayed 4177 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 13 Jan 2023 12:35:59 PST
+Received: from mail.dmbarone.com (mail.dmbarone.com [5.181.144.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3061B1D7;
+        Fri, 13 Jan 2023 12:35:57 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dmbarone.com (Postfix) with ESMTP id A6A2A2A56DC;
+        Fri, 13 Jan 2023 15:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673623549; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=aZlCZBThkmHI4RIfhijFhrDQnHCy/Xl7TNfW0/j1wX1qfdzwVqggHO2ETrOVEE9ox
+         5L9Zof05uKP8fn6Oz6SAqdZjOLEzkW1bNmIudiM3C/JGSJCfDMVpscJUw2BQ8k1IWV
+         kGfvZ5LRxhdcH3yPO1sXVrBpL67PNHP6E0ARFzgY=
+X-Virus-Scanned: Debian amavisd-new at ispdmbarone.kubeitalia.it
+Received: from mail.dmbarone.com ([127.0.0.1])
+        by localhost (ispdmbarone.kubeitalia.it [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id 77yDe_Wyf_gF; Fri, 13 Jan 2023 15:25:49 +0000 (UTC)
+Received: from [172.20.10.6] (unknown [129.205.124.225])
+        (Authenticated sender: admin@dmbarone.com)
+        by mail.dmbarone.com (Postfix) with ESMTPSA id B337E2A544D;
+        Fri, 13 Jan 2023 15:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673623549; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=aZlCZBThkmHI4RIfhijFhrDQnHCy/Xl7TNfW0/j1wX1qfdzwVqggHO2ETrOVEE9ox
+         5L9Zof05uKP8fn6Oz6SAqdZjOLEzkW1bNmIudiM3C/JGSJCfDMVpscJUw2BQ8k1IWV
+         kGfvZ5LRxhdcH3yPO1sXVrBpL67PNHP6E0ARFzgY=
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20230113133320.7531-1-abelova@astralinux.ru> <c0c7d2d7-648d-feb3-14ea-c2ab3baddfb1@ispras.ru>
-In-Reply-To: <c0c7d2d7-648d-feb3-14ea-c2ab3baddfb1@ispras.ru>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 13 Jan 2023 20:47:47 +0200
-Message-ID: <CAHp75Vf3SZEFmXoqm8-ynyYq5p8Eme93Da87RbCP5-9hzAzrZg@mail.gmail.com>
-Subject: Re: [lvc-project] [PATCH] iio: chemical: scd30: Add check for NULL in scd30_i2c_command
-To:     Alexey Khoroshilov <khoroshilov@ispras.ru>
-Cc:     Anastasia Belova <abelova@astralinux.ru>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        lvc-project@linuxtesting.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeit!!?=
+To:     Recipients <admi@dmbarone.com>
+From:   <admi@dmbarone.com>
+Date:   Fri, 13 Jan 2023 16:25:49 +0100
+Reply-To: theresasteven225@gmail.com
+X-Antivirus: Avast (VPS 230113-2, 1/13/2023), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20230113152549.A6A2A2A56DC@mail.dmbarone.com>
+X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_80,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  2.0 BAYES_80 BODY: Bayes spam probability is 80 to 95%
+        *      [score: 0.9291]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [129.205.124.225 listed in zen.spamhaus.org]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [5.181.144.66 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [theresasteven225[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 8:41 PM Alexey Khoroshilov
-<khoroshilov@ispras.ru> wrote:
-> On 13.01.2023 16:33, Anastasia Belova wrote:
+Eine Spende wurde an Sie get=E4tigt, antworten Sie f=FCr weitere Einzelheit=
+en.
 
-> It seems it is better to put the whole validation loop under if (rsp)
-> check.
-
-No. The entire patch is redundant.
-The code that calls this function is under the control of the same
-driver, so we know how to avoid shooting in our foot.
+Gr=FC=DFe
+Theresia Steven
 
 -- 
-With Best Regards,
-Andy Shevchenko
+This email has been checked for viruses by Avast antivirus software.
+www.avast.com

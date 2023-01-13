@@ -2,115 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEBD1669A0A
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 15:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 231D3669A14
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 15:29:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjAMO0y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Jan 2023 09:26:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
+        id S229454AbjAMO3w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Jan 2023 09:29:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjAMOZo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 09:25:44 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63E11D0EB;
-        Fri, 13 Jan 2023 06:17:07 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ntk4J5kGHz67bbZ;
-        Fri, 13 Jan 2023 22:16:32 +0800 (CST)
-Received: from localhost (10.81.201.219) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 13 Jan
- 2023 14:16:41 +0000
-Date:   Fri, 13 Jan 2023 14:16:40 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-CC:     Jonathan Cameron <jic23@kernel.org>, <hvilleneuve@dimonoff.com>,
-        <lars@metafoo.de>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] iio: adc: ti-ads7924: add Texas Instruments
- ADS7924 driver
-Message-ID: <20230113141640.00006fb1@Huawei.com>
-In-Reply-To: <20230112143357.6d6204f19eb622333bfd2f47@hugovil.com>
-References: <20230110160124.3853593-1-hugo@hugovil.com>
-        <20230110160124.3853593-2-hugo@hugovil.com>
-        <20230112190030.37b9ea2f@jic23-huawei>
-        <20230112143357.6d6204f19eb622333bfd2f47@hugovil.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229489AbjAMO2y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 09:28:54 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 209E878E96;
+        Fri, 13 Jan 2023 06:18:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673619539; x=1705155539;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8CM+ANswML+huvLCOjDIrB7RxnHX0wqAonnUb68AXO4=;
+  b=jf2n6LyhcgXoabQ2PYC6uTZbRgtei3cndwnvFiH4Cdxv0mXkdbpW69do
+   U6lRkfgN8FrzqmVOtsjwJ0trWOnYoaxQ6gW5vWisVr3ZWK4aOf8nb6zJG
+   XNQeTGP3DYIhAEF0P8DmGM3FXs5na8hthnydqxdKFiisauBdL1Qs8zuB+
+   KxlYk4s3R4bpNuHsUvnzyvOSoLf1spQgw4BLrR6t1SkdRBz/yuVBcRk3u
+   njnmjKio+OU4d44yYHZk2aEpIyF9bMV2OEOOTnNVlggpjLOEzqQWTSRUj
+   kfUFIVYWQDTo04Xb9a9nyFmGLxm8sFqvmcv3IlTfRalxIR2w3VvrnAJtJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="324058540"
+X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
+   d="scan'208";a="324058540"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 06:18:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="832079536"
+X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
+   d="scan'208";a="832079536"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 13 Jan 2023 06:18:45 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 2760F130; Fri, 13 Jan 2023 16:19:18 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v1 1/1] iio: chemical: scd30_core: Switch to use dev_err_probe()
+Date:   Fri, 13 Jan 2023 16:19:17 +0200
+Message-Id: <20230113141917.23725-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.201.219]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Switch to use dev_err_probe() to simplify the error paths and
+unify message template.
 
-> > > +		break;
-> > > +	}
-> > > +	case IIO_CHAN_INFO_SCALE:
-> > > +		vref_uv = regulator_get_voltage(data->vref_reg);
-> > > +		if (vref_uv < 0) {
-> > > +			/* dummy regulator "get_voltage" returns -EINVAL */
-> > > +			ret = -EINVAL;  
-> > 			return -EINVAL;  
-> > > +		} else {
-> > > +			*val =  vref_uv / 1000; /* Convert reg voltage to mV */
-> > > +			*val2 = ADS7924_BITS;
-> > > +			ret = IIO_VAL_FRACTIONAL_LOG2;  
-> > 			return IIO_VAL_FR...
-> >   
-> > > +		}
-> > > +		break;
-> > > +	default:
-> > > +		ret = -EINVAL;  
-> > 		return -EINVAL;  
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	return ret;
-> > > +}  
-> 
-> Done. With these changes, I propose to also remove last "return ret" (like in rcar-gyroadc.c). Then, maybe also remove break statements?
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/chemical/scd30_core.c | 40 +++++++++++--------------------
+ 1 file changed, 14 insertions(+), 26 deletions(-)
 
-Definitely to both. I was just being lazy whilst commenting ;)  No breaks after returns, and as you
-have noted, the last return ret is unreachable.
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index e0bb1dd5e790..7be5a45cf71a 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -642,10 +642,8 @@ static int scd30_setup_trigger(struct iio_dev *indio_dev)
+ 
+ 	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
+ 				      iio_device_id(indio_dev));
+-	if (!trig) {
+-		dev_err(dev, "failed to allocate trigger\n");
+-		return -ENOMEM;
+-	}
++	if (!trig)
++		return dev_err_probe(dev, -ENOMEM, "failed to allocate trigger\n");
+ 
+ 	trig->ops = &scd30_trigger_ops;
+ 	iio_trigger_set_drvdata(trig, indio_dev);
+@@ -667,9 +665,9 @@ static int scd30_setup_trigger(struct iio_dev *indio_dev)
+ 					IRQF_NO_AUTOEN,
+ 					indio_dev->name, indio_dev);
+ 	if (ret)
+-		dev_err(dev, "failed to request irq\n");
++		return dev_err_probe(dev, ret, "failed to request irq\n");
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+@@ -717,17 +715,13 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+ 		return ret;
+ 
+ 	ret = scd30_reset(state);
+-	if (ret) {
+-		dev_err(dev, "failed to reset device: %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to reset device\n");
+ 
+ 	if (state->irq > 0) {
+ 		ret = scd30_setup_trigger(indio_dev);
+-		if (ret) {
+-			dev_err(dev, "failed to setup trigger: %d\n", ret);
+-			return ret;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to setup trigger\n");
+ 	}
+ 
+ 	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL, scd30_trigger_handler, NULL);
+@@ -735,23 +729,17 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
+ 		return ret;
+ 
+ 	ret = scd30_command_read(state, CMD_FW_VERSION, &val);
+-	if (ret) {
+-		dev_err(dev, "failed to read firmware version: %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to read firmware version\n");
+ 	dev_info(dev, "firmware version: %d.%d\n", val >> 8, (char)val);
+ 
+ 	ret = scd30_command_write(state, CMD_MEAS_INTERVAL, state->meas_interval);
+-	if (ret) {
+-		dev_err(dev, "failed to set measurement interval: %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to set measurement interval\n");
+ 
+ 	ret = scd30_command_write(state, CMD_START_MEAS, state->pressure_comp);
+-	if (ret) {
+-		dev_err(dev, "failed to start measurement: %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to start measurement\n");
+ 
+ 	ret = devm_add_action_or_reset(dev, scd30_stop_meas, state);
+ 	if (ret)
+-- 
+2.39.0
 
-> > > +
-> > > +	if (num_channels > 0) {
-> > > +		dev_dbg(dev, "found %d ADC channels\n", num_channels);
-> > > +		return 0;
-> > > +	} else {  
-> > 
-> > As per other review.  Give us what we expect which is error paths
-> > as out of line.  
-> 
-> Already done as suggested by Christophe:
-> 
->     if (num_channels <= 0)
->         return -EINVAL;
-
-This is an out of line error path because it's indented more than the normal
-flow.
-
-> 
->     dev_dbg(dev, "found %d ADC channels\n", num_channels);
->     return 0;
-> 
-> Although I do not fully understand what you mean by "...error paths as out of line"? Do you mean to drop the debug message?
-See above.
-
-> 
-> >   
-> > > +		return -EINVAL;
-> > > +	}
-> > > +}  

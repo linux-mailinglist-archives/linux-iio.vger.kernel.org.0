@@ -2,106 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 798896699A9
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 15:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBD1669A0A
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 15:26:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239906AbjAMOOI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Jan 2023 09:14:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39746 "EHLO
+        id S229626AbjAMO0y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 Jan 2023 09:26:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241899AbjAMON2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 09:13:28 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E9F13F60;
-        Fri, 13 Jan 2023 06:10:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673619048; x=1705155048;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=VszPdD8fqxRqOd/HfrnPBU0fMr/COn8/DWm99ESmAlI=;
-  b=nrN1IVsbcUKkJzuLK5JiGeNfKlxRLUmOAV8LOkeMBfpPK8Qd/wF7LfnZ
-   QYEauomjSyOLGZLobkIbvwq+YZeLU1u2nRdsQwB/fW6JqiqVpHHHQLGDO
-   Yu31zkCC4z9UY5F4L/fO/HDIdZy7RUkrufe+CGWg+31RoI3MMsXtB7OUM
-   pgYq2v3SjNhKbFFR1eQi/hGpm2v0U6SS/ozdm4t1WawJcDv2Fa8IINrYz
-   P/Y/NeszM/T1zj26bxIvdCXIfb0zkY+ym1+O9KU4frMQbLDWWYQK8Vu0T
-   LsXGwNS9lHXeqeIe8MSlVXxxAOEzOwNLW9nayTwFBn/RbExnd/dTqW5YP
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="325256017"
-X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
-   d="scan'208";a="325256017"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2023 06:10:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10589"; a="800605098"
-X-IronPort-AV: E=Sophos;i="5.97,214,1669104000"; 
-   d="scan'208";a="800605098"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 13 Jan 2023 06:10:45 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D73D8130; Fri, 13 Jan 2023 16:11:18 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] iio: chemical: scd30_core: use sysfs_emit() to instead of scnprintf()
-Date:   Fri, 13 Jan 2023 16:11:17 +0200
-Message-Id: <20230113141117.23353-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S229693AbjAMOZo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 09:25:44 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63E11D0EB;
+        Fri, 13 Jan 2023 06:17:07 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ntk4J5kGHz67bbZ;
+        Fri, 13 Jan 2023 22:16:32 +0800 (CST)
+Received: from localhost (10.81.201.219) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 13 Jan
+ 2023 14:16:41 +0000
+Date:   Fri, 13 Jan 2023 14:16:40 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Hugo Villeneuve <hugo@hugovil.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <hvilleneuve@dimonoff.com>,
+        <lars@metafoo.de>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] iio: adc: ti-ads7924: add Texas Instruments
+ ADS7924 driver
+Message-ID: <20230113141640.00006fb1@Huawei.com>
+In-Reply-To: <20230112143357.6d6204f19eb622333bfd2f47@hugovil.com>
+References: <20230110160124.3853593-1-hugo@hugovil.com>
+        <20230110160124.3853593-2-hugo@hugovil.com>
+        <20230112190030.37b9ea2f@jic23-huawei>
+        <20230112143357.6d6204f19eb622333bfd2f47@hugovil.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.201.219]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-should only use sysfs_emit() or sysfs_emit_at() when formatting the
-value to be returned to user space.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/chemical/scd30_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> > > +		break;
+> > > +	}
+> > > +	case IIO_CHAN_INFO_SCALE:
+> > > +		vref_uv = regulator_get_voltage(data->vref_reg);
+> > > +		if (vref_uv < 0) {
+> > > +			/* dummy regulator "get_voltage" returns -EINVAL */
+> > > +			ret = -EINVAL;  
+> > 			return -EINVAL;  
+> > > +		} else {
+> > > +			*val =  vref_uv / 1000; /* Convert reg voltage to mV */
+> > > +			*val2 = ADS7924_BITS;
+> > > +			ret = IIO_VAL_FRACTIONAL_LOG2;  
+> > 			return IIO_VAL_FR...
+> >   
+> > > +		}
+> > > +		break;
+> > > +	default:
+> > > +		ret = -EINVAL;  
+> > 		return -EINVAL;  
+> > > +		break;
+> > > +	}
+> > > +
+> > > +	return ret;
+> > > +}  
+> 
+> Done. With these changes, I propose to also remove last "return ret" (like in rcar-gyroadc.c). Then, maybe also remove break statements?
 
-diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
-index 682fca39d14d..e0bb1dd5e790 100644
---- a/drivers/iio/chemical/scd30_core.c
-+++ b/drivers/iio/chemical/scd30_core.c
-@@ -354,7 +354,7 @@ static ssize_t sampling_frequency_available_show(struct device *dev, struct devi
- 	ssize_t len = 0;
- 
- 	do {
--		len += scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ", 1000000000 / i);
-+		len += sysfs_emit_at(buf, len, "0.%09u ", 1000000000 / i);
- 		/*
- 		 * Not all values fit PAGE_SIZE buffer hence print every 6th
- 		 * (each frequency differs by 6s in time domain from the
-@@ -380,7 +380,7 @@ static ssize_t calibration_auto_enable_show(struct device *dev, struct device_at
- 	ret = scd30_command_read(state, CMD_ASC, &val);
- 	mutex_unlock(&state->lock);
- 
--	return ret ?: sprintf(buf, "%d\n", val);
-+	return ret ?: sysfs_emit(buf, "%d\n", val);
- }
- 
- static ssize_t calibration_auto_enable_store(struct device *dev, struct device_attribute *attr,
-@@ -414,7 +414,7 @@ static ssize_t calibration_forced_value_show(struct device *dev, struct device_a
- 	ret = scd30_command_read(state, CMD_FRC, &val);
- 	mutex_unlock(&state->lock);
- 
--	return ret ?: sprintf(buf, "%d\n", val);
-+	return ret ?: sysfs_emit(buf, "%d\n", val);
- }
- 
- static ssize_t calibration_forced_value_store(struct device *dev, struct device_attribute *attr,
--- 
-2.39.0
+Definitely to both. I was just being lazy whilst commenting ;)  No breaks after returns, and as you
+have noted, the last return ret is unreachable.
 
+> > > +
+> > > +	if (num_channels > 0) {
+> > > +		dev_dbg(dev, "found %d ADC channels\n", num_channels);
+> > > +		return 0;
+> > > +	} else {  
+> > 
+> > As per other review.  Give us what we expect which is error paths
+> > as out of line.  
+> 
+> Already done as suggested by Christophe:
+> 
+>     if (num_channels <= 0)
+>         return -EINVAL;
+
+This is an out of line error path because it's indented more than the normal
+flow.
+
+> 
+>     dev_dbg(dev, "found %d ADC channels\n", num_channels);
+>     return 0;
+> 
+> Although I do not fully understand what you mean by "...error paths as out of line"? Do you mean to drop the debug message?
+See above.
+
+> 
+> >   
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}  

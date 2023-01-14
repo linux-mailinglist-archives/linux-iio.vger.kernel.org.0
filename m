@@ -2,99 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD3166A4B1
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jan 2023 22:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F5F66AC68
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jan 2023 17:04:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbjAMVB0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 Jan 2023 16:01:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
+        id S229900AbjANQEP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Jan 2023 11:04:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjAMVBX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 Jan 2023 16:01:23 -0500
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630F53D5D9;
-        Fri, 13 Jan 2023 13:01:22 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id d13so2772097qkk.12;
-        Fri, 13 Jan 2023 13:01:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pt9wDu+LePqDkarLCg0TYoySNbJ6aVRsIECGx7EpuCc=;
-        b=lu+NQVC2IOqzpyGQnHqDNHqs0MBsb9C5IZQnD1DxGiFEykM4uZJaokfC7SoaWAIMt8
-         Bh6UYtaC1+P2Jg/mte05K4sVLD2WgMixqPqIrRliIcEPnhuBYGIzICOYahnU6Y2s4bgL
-         jrxhTBDCsZUUsiER1ISfDMSUuNrQ+24YQSvlPNt51rqakSYMzrDhcQqT1YPEsJ/uLopW
-         kkbF11oleAiUSDlg8HzSbjCvRQNvxqfxxdJJ4ZzLbTJjiUMHdJ0iYv5WU2EKgiCJlMtv
-         vifS8h/QO/E6v7Vom+lOlXnaR7dro7IFn2p2KXGfh+11Fda+tfFJB4zHMKCK8P0nEge0
-         OdvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pt9wDu+LePqDkarLCg0TYoySNbJ6aVRsIECGx7EpuCc=;
-        b=CJ8gGDJwLVvBMeovbCo6nHYtzt3eJgeBfqVZT6vCyhELnl0Yx0CPT62qRHvZQAAkqC
-         y7yj8qIyq4lG/NjhQ84NgvS/2o70lFSzLCDpjsIxPmq0j2M5hjm4KKJEEP8jhYMy12B4
-         Z3Su6wTFosa3jweR4ssYJHb1EoukhySppYaxasb5/rCkXNGp5l06ao0ME8/NChiQz7cZ
-         CSR4ke0UHsOlPCLV3sCXABpYhm1EopRe+uME0/bgnTls9ysnb69rR4cWvqpYsT1coatV
-         ZlNlm6+ag18e6Vgyw7mVQLTG1J4PG9hslr2U1wOikh8y4+U7UFCclYz3LAEk8D+8E/rB
-         mi7w==
-X-Gm-Message-State: AFqh2kqdfZlcLuHUs0PFmuJ/Olr6oWL9CJyqkh/JwIrHH1ctOaNHR29Z
-        piYUtQO1BkvAMHTyLk1Epr+cpTphMNt+g4dud+I=
-X-Google-Smtp-Source: AMrXdXs0kxp9rxLCja0vpZObCJjT9qP8fb1iWEfU5Nv/eoJMIFF4E4Rj1Uf5bR38Q7OFXWhzqbpxGo/R2F6uSjOCbvA=
-X-Received: by 2002:a05:620a:51c1:b0:705:c63f:1fa8 with SMTP id
- cx1-20020a05620a51c100b00705c63f1fa8mr1101954qkb.504.1673643681450; Fri, 13
- Jan 2023 13:01:21 -0800 (PST)
-MIME-Version: 1.0
-References: <20230113133320.7531-1-abelova@astralinux.ru> <c0c7d2d7-648d-feb3-14ea-c2ab3baddfb1@ispras.ru>
- <CAHp75Vf3SZEFmXoqm8-ynyYq5p8Eme93Da87RbCP5-9hzAzrZg@mail.gmail.com> <15a05909-a373-09af-c0bf-1b35fd019bd5@ispras.ru>
-In-Reply-To: <15a05909-a373-09af-c0bf-1b35fd019bd5@ispras.ru>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 13 Jan 2023 23:00:45 +0200
-Message-ID: <CAHp75VcsqMufyaSk0FWyUBHQOL_TJjMmmfECpkAfQVUSNp33jg@mail.gmail.com>
-Subject: Re: [lvc-project] [PATCH] iio: chemical: scd30: Add check for NULL in scd30_i2c_command
-To:     Alexey Khoroshilov <khoroshilov@ispras.ru>
-Cc:     Anastasia Belova <abelova@astralinux.ru>,
+        with ESMTP id S229985AbjANQEO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 11:04:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5C5901D;
+        Sat, 14 Jan 2023 08:04:13 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8EB97B80884;
+        Sat, 14 Jan 2023 16:04:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A83C433D2;
+        Sat, 14 Jan 2023 16:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673712251;
+        bh=gHs5qQbPcvSB1cDmNEt/ExisBhwloQ4/ZJ9WLvyno2w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=B70kyxRhz/FT2yC5bj/XASnWVoShbWYL3n/Q2/Juj3MV4TWF8li6TZW0oECX2oyyI
+         PTBmLJGFyrLZR49ooCHtVGBfGLFHdvWJgC4jK/xHYFcdAcIuKaCHNU+lXasvMtbQSq
+         GbpVbc5cM3rpXNQJre5j5TRWI296pUJPCJuEDDS6wmB2J5ZjRdl3a4uivH8YCV3llV
+         i7AUwwfDubqlGORWu1m1PMKaqO9KAmnKS5/TBWCfokD06783O5/joVTE2F3CoTMQ7m
+         rTg4aF+298S+41wITKDnxC40JyRbpfkLxBBMITAAK0xaLdBSbucwKx7E8OhGWmwwY3
+         T/bu0Gf04aqJg==
+Date:   Sat, 14 Jan 2023 16:17:48 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        lvc-project@linuxtesting.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: chemical: scd30_core: use sysfs_emit() to
+ instead of scnprintf()
+Message-ID: <20230114161748.1b316bb4@jic23-huawei>
+In-Reply-To: <20230113141117.23353-1-andriy.shevchenko@linux.intel.com>
+References: <20230113141117.23353-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 9:27 PM Alexey Khoroshilov
-<khoroshilov@ispras.ru> wrote:
-> On 13.01.2023 21:47, Andy Shevchenko wrote:
-> > On Fri, Jan 13, 2023 at 8:41 PM Alexey Khoroshilov
-> > <khoroshilov@ispras.ru> wrote:
-> >> On 13.01.2023 16:33, Anastasia Belova wrote:
-> >
-> >> It seems it is better to put the whole validation loop under if (rsp)
-> >> check.
-> >
-> > No. The entire patch is redundant.
-> > The code that calls this function is under the control of the same
-> > driver, so we know how to avoid shooting in our foot.
->
-> I see, there is an assumption that response is NULL iff size is zero.
+On Fri, 13 Jan 2023 16:11:17 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Yes. ->read() is called with (NULL, 0) and the code copes with this.
-A similar situation was discussed recently and Linus T. rejected a
-proposed change in vsnprintf().
+> Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+> should only use sysfs_emit() or sysfs_emit_at() when formatting the
+> value to be returned to user space.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Applied
 
-> May be it could be documented, because naming of arguments does not make
-> such assumption obvious for fresh readers.
+Thanks,
 
-Documentation improvements are always appreciated!
+> ---
+>  drivers/iio/chemical/scd30_core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+> index 682fca39d14d..e0bb1dd5e790 100644
+> --- a/drivers/iio/chemical/scd30_core.c
+> +++ b/drivers/iio/chemical/scd30_core.c
+> @@ -354,7 +354,7 @@ static ssize_t sampling_frequency_available_show(struct device *dev, struct devi
+>  	ssize_t len = 0;
+>  
+>  	do {
+> -		len += scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ", 1000000000 / i);
+> +		len += sysfs_emit_at(buf, len, "0.%09u ", 1000000000 / i);
+>  		/*
+>  		 * Not all values fit PAGE_SIZE buffer hence print every 6th
+>  		 * (each frequency differs by 6s in time domain from the
+> @@ -380,7 +380,7 @@ static ssize_t calibration_auto_enable_show(struct device *dev, struct device_at
+>  	ret = scd30_command_read(state, CMD_ASC, &val);
+>  	mutex_unlock(&state->lock);
+>  
+> -	return ret ?: sprintf(buf, "%d\n", val);
+> +	return ret ?: sysfs_emit(buf, "%d\n", val);
+>  }
+>  
+>  static ssize_t calibration_auto_enable_store(struct device *dev, struct device_attribute *attr,
+> @@ -414,7 +414,7 @@ static ssize_t calibration_forced_value_show(struct device *dev, struct device_a
+>  	ret = scd30_command_read(state, CMD_FRC, &val);
+>  	mutex_unlock(&state->lock);
+>  
+> -	return ret ?: sprintf(buf, "%d\n", val);
+> +	return ret ?: sysfs_emit(buf, "%d\n", val);
+>  }
+>  
+>  static ssize_t calibration_forced_value_store(struct device *dev, struct device_attribute *attr,
 
--- 
-With Best Regards,
-Andy Shevchenko

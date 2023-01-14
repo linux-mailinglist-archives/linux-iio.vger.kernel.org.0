@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5FB66AD06
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jan 2023 18:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B917A66AD09
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jan 2023 18:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjANRUg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Jan 2023 12:20:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41344 "EHLO
+        id S229676AbjANRWR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Jan 2023 12:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbjANRUf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 12:20:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06819B762
-        for <linux-iio@vger.kernel.org>; Sat, 14 Jan 2023 09:20:33 -0800 (PST)
+        with ESMTP id S230309AbjANRWM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 12:22:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8903CBB94
+        for <linux-iio@vger.kernel.org>; Sat, 14 Jan 2023 09:22:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84B7660B4D
-        for <linux-iio@vger.kernel.org>; Sat, 14 Jan 2023 17:20:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F41C433D2;
-        Sat, 14 Jan 2023 17:20:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0FF9DB80938
+        for <linux-iio@vger.kernel.org>; Sat, 14 Jan 2023 17:22:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D94C433EF;
+        Sat, 14 Jan 2023 17:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673716832;
-        bh=8GcIJARxMme6qs1iqwWTKAvG1UI8WRpMJm/cu8LHEkE=;
+        s=k20201202; t=1673716926;
+        bh=1HRWYmFzAT5/ShMZK0IQmQTvJYxhKS9k4XatFAKgGVc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cGEctlzPrl8ALrqwTPQDBkQ886gH+65zn5FM4R8SOig2MK0U/g0DmzzXJul7mSnjK
-         5URd9Gg7sr2Kk6FlHr4uSVRFNqGYb26zvmgU3irYyFQw2nePjoynfPoY1B3HCpm0pI
-         b+7JWbDuhHc6P2TqFlrb3nqGBO7diD6AoULs5MLd7Uyj8nU1wnlcwLaTbuSS9ULMiR
-         nMAAtlZAwE2OB+P+gkP6+5kuOodWkjzT9cR4ROaFU74sJtxjrOGOs/88NFbGsuvWF0
-         hogqID6zEiaBVGy3lQN2lkUdnfavwI2MdpQTHxYWBJifmdAkWuuYQNQTPvyTqmoGhg
-         XfGhmJDHiCumQ==
-Date:   Sat, 14 Jan 2023 17:34:09 +0000
+        b=k+m45caSdCO+g7NoDeuJX/8UTg8KN4XT/SMvfwdrm14HmXBuvYPU3t6qL3oLdk/0e
+         RyLDiXeKO2Mxub9eUMBkj68TLQ3UR3UroOwICnckSHFT00q3qtHpD4pipOoSTA2QnL
+         EUgRE2nRz/kzjVHuc01NRDp3NBFwDcJhuz7ySB2z1yDclVtXj5D8fiyROxZJuX1udS
+         OevuCndWk7D1rETiH9RnfWqdyWTWO/CrjSKcFDQcS3t1tu7psRwINb4WwAhZoiPdBn
+         34UD8pMutYOocuASTmfiRRuP4akrdEW72/J1A3wbuT2XCyy2mPf1MXoo9ZIr4+6a/9
+         WAPdHd8f4uvqA==
+Date:   Sat, 14 Jan 2023 17:35:43 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Carlos Song <carlos.song@nxp.com>
 Cc:     "lars@metafoo.de" <lars@metafoo.de>,
@@ -40,14 +40,14 @@ Cc:     "lars@metafoo.de" <lars@metafoo.de>,
         Bough Chen <haibo.chen@nxp.com>,
         dl-linux-imx <linux-imx@nxp.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [EXT] Re: [PATCH v4 1/4] iio: imu: fxos8700: fix incorrect ODR
- mode readback
-Message-ID: <20230114173409.145c0549@jic23-huawei>
-In-Reply-To: <VI1PR04MB500569F6060A544F87899C5BE8FF9@VI1PR04MB5005.eurprd04.prod.outlook.com>
+Subject: Re: [EXT] Re: [PATCH v4 2/4] iio: imu: fxos8700: fix failed
+ initialization ODR mode assignment
+Message-ID: <20230114173543.2be0818e@jic23-huawei>
+In-Reply-To: <VI1PR04MB50057136A46A6FA64DBDDC5CE8FF9@VI1PR04MB5005.eurprd04.prod.outlook.com>
 References: <20221228093941.270046-1-carlos.song@nxp.com>
-        <20221228093941.270046-2-carlos.song@nxp.com>
-        <20221231145115.7d9414e5@jic23-huawei>
-        <VI1PR04MB500569F6060A544F87899C5BE8FF9@VI1PR04MB5005.eurprd04.prod.outlook.com>
+        <20221228093941.270046-3-carlos.song@nxp.com>
+        <20221231145439.08564db1@jic23-huawei>
+        <VI1PR04MB50057136A46A6FA64DBDDC5CE8FF9@VI1PR04MB5005.eurprd04.prod.outlook.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,177 +61,134 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Jan 2023 07:44:20 +0000
+On Tue, 10 Jan 2023 07:44:23 +0000
 Carlos Song <carlos.song@nxp.com> wrote:
 
-> Hi, Jonathan. I have some doubts about how to use regmap_write() and regmap_updata_bits() appropriately
-> and faced difficult decisions. I propose different modifications as follows and I would like to get some suggestions
-> from you. Thanks!
-> 
 > > -----Original Message-----
 > > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Saturday, December 31, 2022 10:51 PM
+> > Sent: Saturday, December 31, 2022 10:55 PM
 > > To: Carlos Song <carlos.song@nxp.com>
 > > Cc: lars@metafoo.de; rjones@gateworks.com;
 > > Jonathan.Cameron@huawei.com; Bough Chen <haibo.chen@nxp.com>;
 > > dl-linux-imx <linux-imx@nxp.com>; linux-iio@vger.kernel.org
-> > Subject: [EXT] Re: [PATCH v4 1/4] iio: imu: fxos8700: fix incorrect ODR mode
-> > readback
+> > Subject: [EXT] Re: [PATCH v4 2/4] iio: imu: fxos8700: fix failed initialization
+> > ODR mode assignment
 > > 
 > > Caution: EXT Email
 > > 
-> > On Wed, 28 Dec 2022 17:39:38 +0800
+> > On Wed, 28 Dec 2022 17:39:39 +0800
 > > carlos.song@nxp.com wrote:
 > >   
 > > > From: Carlos Song <carlos.song@nxp.com>
 > > >
-> > > The absence of a correct offset leads an incorrect ODR mode readback
-> > > after use a hexadecimal number to mark the value from
-> > > FXOS8700_CTRL_REG1.
+> > > The absence of correct offset leads a failed initialization ODR mode
+> > > assignment.
 > > >
-> > > Get ODR mode by field mask and FIELD_GET clearly and conveniently.
-> > > And attach other additional fix for keeping the original code logic
-> > > and a good readability.
+> > > Select MAX ODR mode as the initialization ODR mode by field mask and
+> > > FIELD_PREP.
 > > >
 > > > Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
-> > > Signed-off-by: Carlos Song <carlos.song@nxp.com>  
-> > Hi Carlos,
-> > 
-> > I'm fairly sure the new code doesn't quite work correctly. See inline.
-> > 
-> > Jonathan
-> >   
+> > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
 > > > ---
 > > > Changes for V4:
-> > > - Use ODR_MSK in the first place that merged the first two patches
-> > >   in V3 into this patch.
-> > > - Rework commit log
+> > > - None
 > > > Changes for V3:
-> > > - Remove FXOS8700_CTRL_ODR_GENMSK and set  
-> > FXOS8700_CTRL_ODR_MSK a  
-> > >   field mask
-> > > - Legal use of filed mask and FIELD_PREP() to select ODR mode
+> > > - Legal use of FIELD_PREP() and field mask to select initialization
+> > >   ODR mode
 > > > - Rework commit log
 > > > ---
-> > >  drivers/iio/imu/fxos8700_core.c | 11 +++++------
-> > >  1 file changed, 5 insertions(+), 6 deletions(-)
+> > >  drivers/iio/imu/fxos8700_core.c | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
 > > >
 > > > diff --git a/drivers/iio/imu/fxos8700_core.c
-> > > b/drivers/iio/imu/fxos8700_core.c index 773f62203bf0..a1af5d0fde5d
+> > > b/drivers/iio/imu/fxos8700_core.c index a1af5d0fde5d..de4ced979226
 > > > 100644
 > > > --- a/drivers/iio/imu/fxos8700_core.c
 > > > +++ b/drivers/iio/imu/fxos8700_core.c
-> > > @@ -10,6 +10,7 @@
-> > >  #include <linux/regmap.h>
-> > >  #include <linux/acpi.h>
-> > >  #include <linux/bitops.h>
-> > > +#include <linux/bitfield.h>
+> > > @@ -611,6 +611,7 @@ static const struct iio_info fxos8700_info = {
+> > > static int fxos8700_chip_init(struct fxos8700_data *data, bool
+> > > use_spi)  {
+> > >       int ret;
+> > > +     int reg;
+> > >       unsigned int val;
+> > >       struct device *dev = regmap_get_device(data->regmap);
 > > >
-> > >  #include <linux/iio/iio.h>
-> > >  #include <linux/iio/sysfs.h>
-> > > @@ -144,9 +145,9 @@
-> > >  #define FXOS8700_NVM_DATA_BNK0      0xa7
-> > >
-> > >  /* Bit definitions for FXOS8700_CTRL_REG1 */
-> > > -#define FXOS8700_CTRL_ODR_MSK       0x38
-> > >  #define FXOS8700_CTRL_ODR_MAX       0x00
-> > >  #define FXOS8700_CTRL_ODR_MIN       GENMASK(4, 3)
-> > > +#define FXOS8700_CTRL_ODR_MSK       GENMASK(5, 3)
-> > >
-> > >  /* Bit definitions for FXOS8700_M_CTRL_REG1 */
-> > >  #define FXOS8700_HMS_MASK           GENMASK(1, 0)
-> > > @@ -508,10 +509,8 @@ static int fxos8700_set_odr(struct fxos8700_data  
-> > *data, enum fxos8700_sensor t,  
-> > >       if (i >= odr_num)
-> > >               return -EINVAL;
-> > >
-> > > -     return regmap_update_bits(data->regmap,
-> > > -                               FXOS8700_CTRL_REG1,
-> > > -                               FXOS8700_CTRL_ODR_MSK +  
-> > FXOS8700_ACTIVE,  
-> > > -                               fxos8700_odr[i].bits << 3 |  
-> > active_mode);  
-> > > +     val = val | FIELD_PREP(FXOS8700_CTRL_ODR_MSK,
-> > > + fxos8700_odr[i].bits) | active_mode;  
-> > 
-> > val |= would be neater.
-> > 
-> > Also, if I read the existing code correctly, val hasn't been masked, so if
-> > active_mode was set in val, it still will be, hence no need to or it in again.
-> > You also haven't masked out _CTRL_ODR_MSK so as a result of this call you will
-> > get the bitwise or of whatever ODR value you are trying to set and whatever it
-> > was set to before.
-> > 
-> >   
-> > > +     return regmap_write(data->regmap, FXOS8700_CTRL_REG1, val);
-> > >  }
-> > >  
-> 
-> I am so sorry that I don't use the FIELD_PREP correctly due to my rustiness.
-> Firstly I fix the issue I haven't masked out _CTRL_ODR_MSK. But activating the device
-> is required after that so I or FXOS8700_ACTIVE instead or active_mode. Then I want to
-> discuss about the appropriate usage scenarios about regmap_write and regmap_update_bits.
-> 
-> In source code, regmap_write use _regmap_write only while regmap_update_bits encapsulates 
-> _regmap_read, modify mask bits and _regmap write. So when need to see what the previous values
-> or the value has been already got before and is used at other place, it is better to use regmap_write.
-> We just renew the value and use regmap_write to write it to the register. If we just need modify
-> the register bits but there is no need to see what the previous values were, it is better to use
-> regmap_update_bits. It is a simple and direct means and can avoid using regmap_read to get a value
-> and perform bit operations.
-> To sum up, if the value of the register has been read by regmap_read or other methods, then use
-> regmap_write correspondingly to renew the value. If no value has been obtained from the register,
-> modifying the register using regmap_update_bits is the preferred method. I'm not sure if that's the
-> right understanding.
-> 
-> So based on it, there are two reasons that I choose regmap_write to replace regmap_update_bits:
-> 1. There is a val which has been get by regmap_read and is used, so just use regmap_write and FIELD_PREP
-> to renew the val. 
-> 2. The code block used regmap_read and regmap_write to renew the value, uniform use of regmap_write
-> can have a good readability.
-> 
-> So I think the using regmap_write than regmap_update_bits is more reasonable.
-> @@ -508,10 +509,9 @@ static int fxos8700_set_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
->         if (i >= odr_num)
->                 return -EINVAL;
-> 
-> -       return regmap_update_bits(data->regmap,
-> -                                 FXOS8700_CTRL_REG1,
-> -                                 FXOS8700_CTRL_ODR_MSK + FXOS8700_ACTIVE,
-> -                                 fxos8700_odr[i].bits << 3 | active_mode);
-> +       val &= ~FXOS8700_CTRL_ODR_MSK;
-> +       val |= FIELD_PREP(FXOS8700_CTRL_ODR_MSK, fxos8700_odr[i].bits) | FXOS8700_ACTIVE;
-> +       return regmap_write(data->regmap, FXOS8700_CTRL_REG1, val);
->  }
-> 
-> However there is a minimal fix, the patch looks more graceful:
-> @@ -511,7 +512,8 @@ static int fxos8700_set_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
->         return regmap_update_bits(data->regmap,
->                                   FXOS8700_CTRL_REG1,
->                                   FXOS8700_CTRL_ODR_MSK + FXOS8700_ACTIVE,
-| not + for combining masks. 
-> -                                 fxos8700_odr[i].bits << 3 | active_mode);
-> +                                 FIELD_PREP(FXOS8700_CTRL_ODR_MSK, fxos8700_odr[i].bits) |
-> +                                 FXOS8700_ACTIVE);
->  }
-> 
-> Which is better? In next patch I also faced a difficult decision about it.
-
-I would go with the regmap_write() choice - though in cases like this I think
-most important concern is readability.  Sometimes that means regmap_update_bits()
-is a better choice even if we already have the read value available.
-I think that's not true here so regmap_write() is better option.
-
-> > >  static int fxos8700_get_odr(struct fxos8700_data *data, enum
-> > > fxos8700_sensor t, @@ -524,7 +523,7 @@ static int  
-> > fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,  
-> > >       if (ret)
+> > > @@ -663,8 +664,11 @@ static int fxos8700_chip_init(struct fxos8700_data  
+> > *data, bool use_spi)  
 > > >               return ret;
 > > >
-> > > -     val &= FXOS8700_CTRL_ODR_MSK;
-> > > +     val = FIELD_GET(FXOS8700_CTRL_ODR_MSK, val);
+> > >       /* Max ODR (800Hz individual or 400Hz hybrid), active mode */
+> > > -     return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
+> > > -                        FXOS8700_CTRL_ODR_MAX |  
+> > FXOS8700_ACTIVE);  
+> > > +     ret = regmap_read(data->regmap, FXOS8700_CTRL_REG1, &reg);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +     reg = reg | FIELD_PREP(FXOS8700_CTRL_ODR_MSK,
+> > > + FXOS8700_CTRL_ODR_MAX) | FXOS8700_ACTIVE;  
+> > reg |= will work here. However, like in previous patch I'd expect to see the
+> > _CTRL_ODR_MSK used in
+> >         reg &= ~FXOS8700_CTRL_ODR_MASK;
+> >         reg |= FIELD_PREP(FXOS8700_CTRL_ODR_MSK,
+> > FXOS8700_CTRL_ODR_MAX) | FXOS8700_ACTIVE;
+> > 
+> > This is a good place to use regmap_update_bits() as there is no need to see
+> > what the previous values were (unlike in previous patch).
+> >   
+> > > +     return regmap_write(data->regmap, FXOS8700_CTRL_REG1, reg);
+> > >  }
 > > >
-> > >       for (i = 0; i < odr_num; i++)
-> > >               if (val == fxos8700_odr[i].bits)  
+> > >  static void fxos8700_chip_uninit(void *data)  
 > 
+> This is a good place to use regmap_update_bits(), because I don't need using the regmap_read to
+> get the value and perform bit operations:
+> @@ -666,8 +666,10 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
+>                 return ret;
+> 
+>         /* Max ODR (800Hz individual or 400Hz hybrid), active mode */
+> -       return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
+> -                          FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
+> +       return regmap_update_bits(data->regmap, FXOS8700_CTRL_REG1,
+> +                               FXOS8700_CTRL_ODR_MSK + FXOS8700_ACTIVE,
+> +                               FIELD_PREP(FXOS8700_CTRL_ODR_MSK, FXOS8700_CTRL_ODR_MAX) |
+> +                               FXOS8700_ACTIVE);
+>  }
+> 
+> 
+>  static void fxos8700_chip_uninit(void *data)
+> 
+> Here I also faced a difficult decision:
+> most code block of the entire driver code uses regmap_read and regmap_write to modify registers,
+> only my two patches use regmap_update_bits. I admit that this is indeed a good place to
+> use regmap_update_bits, but do I need to consider the uniformity of the entire driver code
+> style when proposing a patch? When using regmap_read and regmap_write, although the
+> patch is a bit lengthy and jumbled, it is very uniform in terms of the overall code style.
+> Like this:
+> 
+> @@ -663,8 +664,11 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
+>                 return ret;
+> 
+>         /* Max ODR (800Hz individual or 400Hz hybrid), active mode */
+> -       return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
+> -                          FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
+> +       ret = regmap_read(data->regmap, FXOS8700_CTRL_REG1, &reg);
+> +       if (ret)
+> +               return ret;
+> +       reg &= ~FXOS8700_CTRL_ODR_MASK;
+> +       reg |= FIELD_PREP(FXOS8700_CTRL_ODR_MSK, FXOS8700_CTRL_ODR_MAX) |
+> + FXOS8700_ACTIVE;
+> +       return regmap_write(data->regmap, FXOS8700_CTRL_REG1, reg);
+>  }
+> 
+>  static void fxos8700_chip_uninit(void *data)
+> 
+> How should I weigh them?
+
+If code is simpler / more readable with regmap_update_bits() then that is the better
+option.  If there are other places in the driver where it is appropriate to change
+to this function then it would be great to make that improvement as well (I haven't
+looked!)
+
+Jonathan
+
 

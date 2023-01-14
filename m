@@ -2,193 +2,234 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B917A66AD09
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jan 2023 18:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61A1166AD22
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jan 2023 18:53:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbjANRWR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Jan 2023 12:22:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41796 "EHLO
+        id S230325AbjANRx1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Jan 2023 12:53:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230309AbjANRWM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 12:22:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8903CBB94
-        for <linux-iio@vger.kernel.org>; Sat, 14 Jan 2023 09:22:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0FF9DB80938
-        for <linux-iio@vger.kernel.org>; Sat, 14 Jan 2023 17:22:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D94C433EF;
-        Sat, 14 Jan 2023 17:22:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673716926;
-        bh=1HRWYmFzAT5/ShMZK0IQmQTvJYxhKS9k4XatFAKgGVc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=k+m45caSdCO+g7NoDeuJX/8UTg8KN4XT/SMvfwdrm14HmXBuvYPU3t6qL3oLdk/0e
-         RyLDiXeKO2Mxub9eUMBkj68TLQ3UR3UroOwICnckSHFT00q3qtHpD4pipOoSTA2QnL
-         EUgRE2nRz/kzjVHuc01NRDp3NBFwDcJhuz7ySB2z1yDclVtXj5D8fiyROxZJuX1udS
-         OevuCndWk7D1rETiH9RnfWqdyWTWO/CrjSKcFDQcS3t1tu7psRwINb4WwAhZoiPdBn
-         34UD8pMutYOocuASTmfiRRuP4akrdEW72/J1A3wbuT2XCyy2mPf1MXoo9ZIr4+6a/9
-         WAPdHd8f4uvqA==
-Date:   Sat, 14 Jan 2023 17:35:43 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Carlos Song <carlos.song@nxp.com>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "rjones@gateworks.com" <rjones@gateworks.com>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        Bough Chen <haibo.chen@nxp.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [EXT] Re: [PATCH v4 2/4] iio: imu: fxos8700: fix failed
- initialization ODR mode assignment
-Message-ID: <20230114173543.2be0818e@jic23-huawei>
-In-Reply-To: <VI1PR04MB50057136A46A6FA64DBDDC5CE8FF9@VI1PR04MB5005.eurprd04.prod.outlook.com>
-References: <20221228093941.270046-1-carlos.song@nxp.com>
-        <20221228093941.270046-3-carlos.song@nxp.com>
-        <20221231145439.08564db1@jic23-huawei>
-        <VI1PR04MB50057136A46A6FA64DBDDC5CE8FF9@VI1PR04MB5005.eurprd04.prod.outlook.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
+        with ESMTP id S230098AbjANRxY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 12:53:24 -0500
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C83693FA;
+        Sat, 14 Jan 2023 09:53:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=EwlRK873bQW6EMYn9B+dl2f2uA02s1q0ZG38QSTLXHc=; b=h5YAAFwNHLV9GJ2bKVpR9I4TAm
+        wbSoHLK1QzuRIH1cSU5lavVE81zrSr+mJMA/bmWeLhvmOM+laQaaF9Kyqm2wbkJxox13TWqqxx0Y7
+        eJp6t0lkHYuokXkasi6pyZupMAHAHrG4LeLy+GuTJEc7t1nmyTYijuNbxnXQ37nJnW3c=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41192 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1pGkiP-0002ef-MF; Sat, 14 Jan 2023 12:53:14 -0500
+Date:   Sat, 14 Jan 2023 12:53:13 -0500
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     hvilleneuve@dimonoff.com, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <20230114125313.3410f601fc8855d8fdb6b18b@hugovil.com>
+In-Reply-To: <20230114162841.41358640@jic23-huawei>
+References: <20230113194959.3276433-1-hugo@hugovil.com>
+        <20230113194959.3276433-2-hugo@hugovil.com>
+        <20230114162841.41358640@jic23-huawei>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v3 1/2] iio: adc: ti-ads7924: add Texas Instruments
+ ADS7924 driver
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 10 Jan 2023 07:44:23 +0000
-Carlos Song <carlos.song@nxp.com> wrote:
+On Sat, 14 Jan 2023 16:28:41 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Saturday, December 31, 2022 10:55 PM
-> > To: Carlos Song <carlos.song@nxp.com>
-> > Cc: lars@metafoo.de; rjones@gateworks.com;
-> > Jonathan.Cameron@huawei.com; Bough Chen <haibo.chen@nxp.com>;
-> > dl-linux-imx <linux-imx@nxp.com>; linux-iio@vger.kernel.org
-> > Subject: [EXT] Re: [PATCH v4 2/4] iio: imu: fxos8700: fix failed initialization
-> > ODR mode assignment
+> On Fri, 13 Jan 2023 14:49:58 -0500
+> Hugo Villeneuve <hugo@hugovil.com> wrote:
+> 
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 > > 
-> > Caution: EXT Email
+> > The Texas Instruments ADS7924 is a 4 channels, 12-bit analog to
+> > digital converter (ADC) with an I2C interface.
 > > 
-> > On Wed, 28 Dec 2022 17:39:39 +0800
-> > carlos.song@nxp.com wrote:
-> >   
-> > > From: Carlos Song <carlos.song@nxp.com>
-> > >
-> > > The absence of correct offset leads a failed initialization ODR mode
-> > > assignment.
-> > >
-> > > Select MAX ODR mode as the initialization ODR mode by field mask and
-> > > FIELD_PREP.
-> > >
-> > > Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
-> > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > > ---
-> > > Changes for V4:
-> > > - None
-> > > Changes for V3:
-> > > - Legal use of FIELD_PREP() and field mask to select initialization
-> > >   ODR mode
-> > > - Rework commit log
-> > > ---
-> > >  drivers/iio/imu/fxos8700_core.c | 8 ++++++--
-> > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/imu/fxos8700_core.c
-> > > b/drivers/iio/imu/fxos8700_core.c index a1af5d0fde5d..de4ced979226
-> > > 100644
-> > > --- a/drivers/iio/imu/fxos8700_core.c
-> > > +++ b/drivers/iio/imu/fxos8700_core.c
-> > > @@ -611,6 +611,7 @@ static const struct iio_info fxos8700_info = {
-> > > static int fxos8700_chip_init(struct fxos8700_data *data, bool
-> > > use_spi)  {
-> > >       int ret;
-> > > +     int reg;
-> > >       unsigned int val;
-> > >       struct device *dev = regmap_get_device(data->regmap);
-> > >
-> > > @@ -663,8 +664,11 @@ static int fxos8700_chip_init(struct fxos8700_data  
-> > *data, bool use_spi)  
-> > >               return ret;
-> > >
-> > >       /* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> > > -     return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> > > -                        FXOS8700_CTRL_ODR_MAX |  
-> > FXOS8700_ACTIVE);  
-> > > +     ret = regmap_read(data->regmap, FXOS8700_CTRL_REG1, &reg);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +     reg = reg | FIELD_PREP(FXOS8700_CTRL_ODR_MSK,
-> > > + FXOS8700_CTRL_ODR_MAX) | FXOS8700_ACTIVE;  
-> > reg |= will work here. However, like in previous patch I'd expect to see the
-> > _CTRL_ODR_MSK used in
-> >         reg &= ~FXOS8700_CTRL_ODR_MASK;
-> >         reg |= FIELD_PREP(FXOS8700_CTRL_ODR_MSK,
-> > FXOS8700_CTRL_ODR_MAX) | FXOS8700_ACTIVE;
+> > Datasheet: https://www.ti.com/lit/gpn/ads7924
+> 
+> This counts as a normal tag, so there shouldn't be blank line between
+> it and the SOB.
+
+Fixed.
+
+> 
+> A few other small things inline noticed on this read through.
+> I can fix these up whilst applying if nothing else comes up for v3
+> and DT binding reviewers are happy.  If you are doing a v4 for
+> other reasons, please address these comments in that.
+
+Ok,
+I have already prepared a V4 with all these changes, just in case. Thank you for your comments.
+
+
+> Jonathan
+> 
+> 
+> 
 > > 
-> > This is a good place to use regmap_update_bits() as there is no need to see
-> > what the previous values were (unlike in previous patch).
-> >   
-> > > +     return regmap_write(data->regmap, FXOS8700_CTRL_REG1, reg);
-> > >  }
-> > >
-> > >  static void fxos8700_chip_uninit(void *data)  
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> ...
+> > diff --git a/drivers/iio/adc/ti-ads7924.c b/drivers/iio/adc/ti-ads7924.c
+> > new file mode 100644
+> > index 000000000000..c24fae4ef8e0
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/ti-ads7924.c
+> > @@ -0,0 +1,474 @@
 > 
-> This is a good place to use regmap_update_bits(), because I don't need using the regmap_read to
-> get the value and perform bit operations:
-> @@ -666,8 +666,10 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
->                 return ret;
+> ...
 > 
->         /* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> -       return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> -                          FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
-> +       return regmap_update_bits(data->regmap, FXOS8700_CTRL_REG1,
-> +                               FXOS8700_CTRL_ODR_MSK + FXOS8700_ACTIVE,
-> +                               FIELD_PREP(FXOS8700_CTRL_ODR_MSK, FXOS8700_CTRL_ODR_MAX) |
-> +                               FXOS8700_ACTIVE);
->  }
+> > +static int ads7924_read_raw(struct iio_dev *indio_dev,
+> > +			    struct iio_chan_spec const *chan, int *val,
+> > +			    int *val2, long mask)
+> > +{
+> > +	int ret, vref_uv;
+> > +	struct ads7924_data *data = iio_priv(indio_dev);
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		mutex_lock(&data->lock);
+> > +		ret = ads7924_get_adc_result(data, chan, val);
+> > +		mutex_unlock(&data->lock);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +
+> > +		return IIO_VAL_INT;
+> > +	case IIO_CHAN_INFO_SCALE:
+> > +		vref_uv = regulator_get_voltage(data->vref_reg);
+> > +		if (vref_uv < 0)
+> > +			return -EINVAL;
 > 
-> 
->  static void fxos8700_chip_uninit(void *data)
-> 
-> Here I also faced a difficult decision:
-> most code block of the entire driver code uses regmap_read and regmap_write to modify registers,
-> only my two patches use regmap_update_bits. I admit that this is indeed a good place to
-> use regmap_update_bits, but do I need to consider the uniformity of the entire driver code
-> style when proposing a patch? When using regmap_read and regmap_write, although the
-> patch is a bit lengthy and jumbled, it is very uniform in terms of the overall code style.
-> Like this:
-> 
-> @@ -663,8 +664,11 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
->                 return ret;
-> 
->         /* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> -       return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> -                          FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
-> +       ret = regmap_read(data->regmap, FXOS8700_CTRL_REG1, &reg);
-> +       if (ret)
-> +               return ret;
-> +       reg &= ~FXOS8700_CTRL_ODR_MASK;
-> +       reg |= FIELD_PREP(FXOS8700_CTRL_ODR_MSK, FXOS8700_CTRL_ODR_MAX) |
-> + FXOS8700_ACTIVE;
-> +       return regmap_write(data->regmap, FXOS8700_CTRL_REG1, reg);
->  }
-> 
->  static void fxos8700_chip_uninit(void *data)
-> 
-> How should I weigh them?
+> Better to return the error value from regulator_get_voltage() rather
+> than replace it with -EINVAL.
 
-If code is simpler / more readable with regmap_update_bits() then that is the better
-option.  If there are other places in the driver where it is appropriate to change
-to this function then it would be great to make that improvement as well (I haven't
-looked!)
+Of course, done.
 
-Jonathan
+> > +
+> > +		*val =  vref_uv / 1000; /* Convert reg voltage to mV */
+> > +		*val2 = ADS7924_BITS;
+> > +		return IIO_VAL_FRACTIONAL_LOG2;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static const struct iio_info ads7924_info = {
+> > +	.read_raw = ads7924_read_raw,
+> > +};
+> > +
+> > +static int ads7924_get_channels_config(struct i2c_client *client,
+> > +				       struct iio_dev *indio_dev)
+> > +{
+> > +	struct ads7924_data *priv = iio_priv(indio_dev);
+> > +	struct device *dev = priv->dev;
+> > +	struct fwnode_handle *node;
+> > +	int num_channels = 0;
+> > +
+> > +	device_for_each_child_node(dev, node) {
+> > +		u32 pval;
+> > +		unsigned int channel;
+> > +
+> > +		if (fwnode_property_read_u32(node, "reg", &pval)) {
+> > +			dev_err(dev, "invalid reg on %pfw\n", node);
+> > +			continue;
+> > +		}
+> > +
+> > +		channel = pval;
+> > +		if (channel >= ADS7924_CHANNELS) {
+> > +			dev_err(dev, "invalid channel index %d on %pfw\n",
+> > +				channel, node);
+> > +			continue;
+> > +		}
+> > +
+> > +		num_channels++;
+> > +	}
+> > +
+> > +	if (num_channels <= 0)
+> 
+> How would it be less than 0?  if (!num_channels) works fine I think.
+
+Done.
+
+> > +		return -EINVAL;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int ads7924_set_conv_mode(struct ads7924_data *data, int mode)
+> > +{
+> > +	int ret;
+> > +	unsigned int mode_field;
+> > +	struct device *dev = data->dev;
+> > +
+> > +	/*
+> > +	 * When switching between modes, be sure to first select the Awake mode
+> > +	 * and then switch to the desired mode. This procedure ensures the
+> > +	 * internal control logic is properly synchronized.
+> > +	 */
+> > +	if (mode != ADS7924_MODECNTRL_IDLE) {
+> > +		mode_field = FIELD_PREP(ADS7924_MODECNTRL_MODE_MASK,
+> > +					ADS7924_MODECNTRL_AWAKE);
+> > +
+> > +		ret = regmap_update_bits(data->regmap, ADS7924_MODECNTRL_REG,
+> > +					 ADS7924_MODECNTRL_MODE_MASK,
+> > +					 mode_field);
+> > +		if (ret) {
+> > +			dev_warn(dev, "failed to set awake mode (%pe)\n",
+> > +				 ERR_PTR(ret));
+> 
+> As below.
+
+Agreed, converted to dev_err.
+
+> 
+> > +			return ret;
+> > +		}
+> > +	}
+> > +
+> > +	mode_field = FIELD_PREP(ADS7924_MODECNTRL_MODE_MASK, mode);
+> > +
+> > +	ret = regmap_update_bits(data->regmap, ADS7924_MODECNTRL_REG,
+> > +				 ADS7924_MODECNTRL_MODE_MASK, mode_field);
+> > +	if (ret)
+> > +		dev_warn(dev, "failed to set mode %d (%pe)\n", mode,
+> > +			 ERR_PTR(ret));
+> 
+> Why warning? Seems like a fairly critical error to me.
+> dev_err() more appropriate perhaps.
+
+Agreed, converted to dev_err.
+
+> > +
+> > +	return ret;
+> > +}
+> > +
+> 
+> 
 
 
+-- 
+Hugo Villeneuve <hugo@hugovil.com>

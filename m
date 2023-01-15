@@ -2,234 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A1166AD22
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jan 2023 18:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8467866AF13
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Jan 2023 03:28:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230325AbjANRx1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 Jan 2023 12:53:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48128 "EHLO
+        id S230257AbjAOC15 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 Jan 2023 21:27:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230098AbjANRxY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 12:53:24 -0500
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C83693FA;
-        Sat, 14 Jan 2023 09:53:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=EwlRK873bQW6EMYn9B+dl2f2uA02s1q0ZG38QSTLXHc=; b=h5YAAFwNHLV9GJ2bKVpR9I4TAm
-        wbSoHLK1QzuRIH1cSU5lavVE81zrSr+mJMA/bmWeLhvmOM+laQaaF9Kyqm2wbkJxox13TWqqxx0Y7
-        eJp6t0lkHYuokXkasi6pyZupMAHAHrG4LeLy+GuTJEc7t1nmyTYijuNbxnXQ37nJnW3c=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41192 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1pGkiP-0002ef-MF; Sat, 14 Jan 2023 12:53:14 -0500
-Date:   Sat, 14 Jan 2023 12:53:13 -0500
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     hvilleneuve@dimonoff.com, lars@metafoo.de, robh+dt@kernel.org,
+        with ESMTP id S230042AbjAOC14 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 Jan 2023 21:27:56 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44243A247;
+        Sat, 14 Jan 2023 18:27:55 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id b3so38313348lfv.2;
+        Sat, 14 Jan 2023 18:27:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nzYqmUGWdkiR3nac7b6eSL5nUmL6qwhST1HTV4blflI=;
+        b=fyri0enoH/SF3/a+qtxyARzTfbUg9eHnkUKa+pLSldjFf2wYQxTueZccRJVLzG2SEM
+         vhoZvAMbtc4/jH9fUtf7PKfHu+Ur8wfq9w9dFzaxU8nxxzArQwWgkVryARvDMeI7IIoR
+         4YXQprO4KDhqChp7DESRuhUBRFYfDIDm5UySq6JRR09V1JSaRXVd8ZZ3ExrRAuwir5ru
+         5CthD0mkHt9+Bw0y1NkfErxAV9qfO8TJMmpkYbvVeq46inZyBvnbz7535LLHBq+0O4Bf
+         fgPfaC/p9pc+hEebjtnFI/Xq8Vhd2ce8zdA0+xEA0hhQHr3XdfTHdtoMzWUkVGsyUYt1
+         Np2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nzYqmUGWdkiR3nac7b6eSL5nUmL6qwhST1HTV4blflI=;
+        b=4FOKG58lZ3toB/xEREgRv4r2GK23jK2ondeQa3TSPYUVlUHDGdYV4LQ+MgBcZexu0M
+         4Oh8a0+p+NXfF0+CY/eWB8dI28ze8dIc4gTeHVbBKJDL5iN7L6zYnYOq2QNo/r+a8OYL
+         4INhJPwsuhFbXv1pZPfO+j6U3QLl+fTP+n0Ff0n+A1lc+FdwTHnkML/B9Q5uk5nXsRSD
+         Raxv992ylakLTZ3zvFWHINLkc13HigQbhRDvqf1I1GyHMwJ5JtW4eIYC49Oi1o3mFi4A
+         izCDBDCMrNQ4uhAhFS+hwjOkSfJ/HBXgwWm8GiGNB0vMWPWMR74jNOtTs1CSBM80b0oq
+         EZ0A==
+X-Gm-Message-State: AFqh2kowUgxMhncxaX7IOCskj12pfVn8ryjPoBxBZBsxI2mNJZzWOif2
+        J9a9dorgRY+Zo6qgwNvnrsFlYzSgZ/qnF4RM
+X-Google-Smtp-Source: AMrXdXvNXEOnpFLcMCJjUNODd/oXq02pdnP/px4PPidZ7iBZxQL0ANdvRk1KB6a0uJF/YKqhCw5gnA==
+X-Received: by 2002:ac2:4f12:0:b0:4b5:b5d0:36e4 with SMTP id k18-20020ac24f12000000b004b5b5d036e4mr27909321lfr.13.1673749673498;
+        Sat, 14 Jan 2023 18:27:53 -0800 (PST)
+Received: from fedora.36 ([78.10.207.59])
+        by smtp.gmail.com with ESMTPSA id o16-20020ac24e90000000b004b5323639d8sm4510478lfr.155.2023.01.14.18.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Jan 2023 18:27:52 -0800 (PST)
+From:   =?UTF-8?q?Micha=C5=82=20Grzelak?= <mchl.grzlk@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        cosmin.tanislav@analog.com, jic23@kernel.org, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <20230114125313.3410f601fc8855d8fdb6b18b@hugovil.com>
-In-Reply-To: <20230114162841.41358640@jic23-huawei>
-References: <20230113194959.3276433-1-hugo@hugovil.com>
-        <20230113194959.3276433-2-hugo@hugovil.com>
-        <20230114162841.41358640@jic23-huawei>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+        devicetree@vger.kernel.org,
+        =?UTF-8?q?Micha=C5=82=20Grzelak?= <mchl.grzlk@gmail.com>
+Subject: [PATCH] dt-bindings: iio: addac: adi,74115: Add missing maxItems
+Date:   Sun, 15 Jan 2023 03:25:58 +0100
+Message-Id: <20230115022558.145076-1-mchl.grzlk@gmail.com>
+X-Mailer: git-send-email 2.37.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v3 1/2] iio: adc: ti-ads7924: add Texas Instruments
- ADS7924 driver
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 Jan 2023 16:28:41 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+Running 'make dt_binding_check' gives following warnings:
+iio/addac/adi,ad74115.example.dtb:
+addac@0: adi,conv2-range-microvolt: 'oneOf' conditional failed, one must
+be fixed:
+        4282967296 is not one of [-2500000, 0]
+        4282967296 is not one of [-12000000, 0]
+        -2500000 was expected
+        -104000 was expected
+        625000 was expected
 
-> On Fri, 13 Jan 2023 14:49:58 -0500
-> Hugo Villeneuve <hugo@hugovil.com> wrote:
-> 
-> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > 
-> > The Texas Instruments ADS7924 is a 4 channels, 12-bit analog to
-> > digital converter (ADC) with an I2C interface.
-> > 
-> > Datasheet: https://www.ti.com/lit/gpn/ads7924
-> 
-> This counts as a normal tag, so there shouldn't be blank line between
-> it and the SOB.
+addac@0: Unevaluated properties are not allowed
+('adi,conv2-range-microvolt' was unexpected)
+        From schema: iio/addac/adi,ad74115.yaml
 
-Fixed.
+As every property with standard suffix has inferred type of array of
+cells, adi,conv2-range-microvolt is required by meta-schemas/cell.yaml
+to have maxItems >= 2. Fix these errors by setting maxItems to 2.
 
-> 
-> A few other small things inline noticed on this read through.
-> I can fix these up whilst applying if nothing else comes up for v3
-> and DT binding reviewers are happy.  If you are doing a v4 for
-> other reasons, please address these comments in that.
+Signed-off-by: Michał Grzelak <mchl.grzlk@gmail.com>
+---
+ Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Ok,
-I have already prepared a V4 with all these changes, just in case. Thank you for your comments.
-
-
-> Jonathan
-> 
-> 
-> 
-> > 
-> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> ...
-> > diff --git a/drivers/iio/adc/ti-ads7924.c b/drivers/iio/adc/ti-ads7924.c
-> > new file mode 100644
-> > index 000000000000..c24fae4ef8e0
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/ti-ads7924.c
-> > @@ -0,0 +1,474 @@
-> 
-> ...
-> 
-> > +static int ads7924_read_raw(struct iio_dev *indio_dev,
-> > +			    struct iio_chan_spec const *chan, int *val,
-> > +			    int *val2, long mask)
-> > +{
-> > +	int ret, vref_uv;
-> > +	struct ads7924_data *data = iio_priv(indio_dev);
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW:
-> > +		mutex_lock(&data->lock);
-> > +		ret = ads7924_get_adc_result(data, chan, val);
-> > +		mutex_unlock(&data->lock);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +
-> > +		return IIO_VAL_INT;
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		vref_uv = regulator_get_voltage(data->vref_reg);
-> > +		if (vref_uv < 0)
-> > +			return -EINVAL;
-> 
-> Better to return the error value from regulator_get_voltage() rather
-> than replace it with -EINVAL.
-
-Of course, done.
-
-> > +
-> > +		*val =  vref_uv / 1000; /* Convert reg voltage to mV */
-> > +		*val2 = ADS7924_BITS;
-> > +		return IIO_VAL_FRACTIONAL_LOG2;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static const struct iio_info ads7924_info = {
-> > +	.read_raw = ads7924_read_raw,
-> > +};
-> > +
-> > +static int ads7924_get_channels_config(struct i2c_client *client,
-> > +				       struct iio_dev *indio_dev)
-> > +{
-> > +	struct ads7924_data *priv = iio_priv(indio_dev);
-> > +	struct device *dev = priv->dev;
-> > +	struct fwnode_handle *node;
-> > +	int num_channels = 0;
-> > +
-> > +	device_for_each_child_node(dev, node) {
-> > +		u32 pval;
-> > +		unsigned int channel;
-> > +
-> > +		if (fwnode_property_read_u32(node, "reg", &pval)) {
-> > +			dev_err(dev, "invalid reg on %pfw\n", node);
-> > +			continue;
-> > +		}
-> > +
-> > +		channel = pval;
-> > +		if (channel >= ADS7924_CHANNELS) {
-> > +			dev_err(dev, "invalid channel index %d on %pfw\n",
-> > +				channel, node);
-> > +			continue;
-> > +		}
-> > +
-> > +		num_channels++;
-> > +	}
-> > +
-> > +	if (num_channels <= 0)
-> 
-> How would it be less than 0?  if (!num_channels) works fine I think.
-
-Done.
-
-> > +		return -EINVAL;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int ads7924_set_conv_mode(struct ads7924_data *data, int mode)
-> > +{
-> > +	int ret;
-> > +	unsigned int mode_field;
-> > +	struct device *dev = data->dev;
-> > +
-> > +	/*
-> > +	 * When switching between modes, be sure to first select the Awake mode
-> > +	 * and then switch to the desired mode. This procedure ensures the
-> > +	 * internal control logic is properly synchronized.
-> > +	 */
-> > +	if (mode != ADS7924_MODECNTRL_IDLE) {
-> > +		mode_field = FIELD_PREP(ADS7924_MODECNTRL_MODE_MASK,
-> > +					ADS7924_MODECNTRL_AWAKE);
-> > +
-> > +		ret = regmap_update_bits(data->regmap, ADS7924_MODECNTRL_REG,
-> > +					 ADS7924_MODECNTRL_MODE_MASK,
-> > +					 mode_field);
-> > +		if (ret) {
-> > +			dev_warn(dev, "failed to set awake mode (%pe)\n",
-> > +				 ERR_PTR(ret));
-> 
-> As below.
-
-Agreed, converted to dev_err.
-
-> 
-> > +			return ret;
-> > +		}
-> > +	}
-> > +
-> > +	mode_field = FIELD_PREP(ADS7924_MODECNTRL_MODE_MASK, mode);
-> > +
-> > +	ret = regmap_update_bits(data->regmap, ADS7924_MODECNTRL_REG,
-> > +				 ADS7924_MODECNTRL_MODE_MASK, mode_field);
-> > +	if (ret)
-> > +		dev_warn(dev, "failed to set mode %d (%pe)\n", mode,
-> > +			 ERR_PTR(ret));
-> 
-> Why warning? Seems like a fairly critical error to me.
-> dev_err() more appropriate perhaps.
-
-Agreed, converted to dev_err.
-
-> > +
-> > +	return ret;
-> > +}
-> > +
-> 
-> 
-
-
+diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+index 72d2e910f206..cdeb04184f5a 100644
+--- a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
++++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+@@ -87,6 +87,7 @@ properties:
+ 
+   adi,conv2-range-microvolt:
+     description: Conversion range for ADC conversion 2.
++    maxItems: 2
+     oneOf:
+       - items:
+           - enum: [-2500000, 0]
 -- 
-Hugo Villeneuve <hugo@hugovil.com>
+2.37.3
+

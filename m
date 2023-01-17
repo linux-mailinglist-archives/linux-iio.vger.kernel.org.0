@@ -2,182 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DECCE66D4C1
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jan 2023 03:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E785666D819
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jan 2023 09:24:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235745AbjAQCz0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 Jan 2023 21:55:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53246 "EHLO
+        id S236204AbjAQIYk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Jan 2023 03:24:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235628AbjAQCzD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 Jan 2023 21:55:03 -0500
-Received: from out29-79.mail.aliyun.com (out29-79.mail.aliyun.com [115.124.29.79])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A8617CFE;
-        Mon, 16 Jan 2023 18:52:24 -0800 (PST)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.07436261|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00640295-0.000820888-0.992776;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047211;MF=yulong.zhang@metoak.net;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.QujuXNn_1673923940;
-Received: from localhost.localdomain(mailfrom:yulong.zhang@metoak.net fp:SMTPD_---.QujuXNn_1673923940)
-          by smtp.aliyun-inc.com;
-          Tue, 17 Jan 2023 10:52:22 +0800
-From:   Yulong Zhang <yulong.zhang@metoak.net>
-To:     jonathan.cameron@huawei.com
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, yulong.zhang@metoak.net
-Subject: [PATCH v3] tools/iio/iio_utils:fix memory leak
-Date:   Tue, 17 Jan 2023 10:51:47 +0800
-Message-Id: <20230117025147.69890-1-yulong.zhang@metoak.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230116151654.00005666@Huawei.com>
-References: <20230116151654.00005666@Huawei.com>
+        with ESMTP id S236207AbjAQIYV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Jan 2023 03:24:21 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A832BECB
+        for <linux-iio@vger.kernel.org>; Tue, 17 Jan 2023 00:23:55 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id vm8so73504423ejc.2
+        for <linux-iio@vger.kernel.org>; Tue, 17 Jan 2023 00:23:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SdY7eS2gudaCi6HurWv3eem+oJar6G0+HOwoGQXhZ5k=;
+        b=TVue1D0OQ7ueDetwat3HXPXuoLTzL4OavmTfmfTu0EXDGfYNrX8I+fQmNlE0YXrPFu
+         JM7mznzDG9iq8uTBbFjjXWvzkcaU+K7lp07RKeM8zVq9Jq05BrppCaNmFutII1Cf3Iqm
+         Y35tMnUuhUhqi/66MUCquDagUTem80SyCzo9mL1gFyAHOZ2FOcIcgUZLZf7r4HO1pvH3
+         lyNIqFd/0iwR4dcZ27LTD68degQpcHhJzOs1kfgJGGVJ/+doMeExbvZCctc01x9GSfBa
+         12c5g25Ne5bQxSnIhdamgGopezoK+YKI9J85xxeSdv7E/sSvUtvBrpuPh98QCv6GYsFE
+         vXfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SdY7eS2gudaCi6HurWv3eem+oJar6G0+HOwoGQXhZ5k=;
+        b=w7bPYk+fSYe3v9CW5yAb2BAQoFKjIyZrz2zNQCxPnFjHGjnGVKKIAmcLYvyogXqL1R
+         dCkVU+xAqulWhLkAXc+wpd17lWcQl0NcKaCaArbRpxvaDqOyOKwrcY5eMsM6LLPdB0GN
+         1WJOCr7kNkYlvggqC+2Omf5K23XyHww6wVC5VZ1wYwErZfFkowa6pySBYJNIqzS+t3Gb
+         cSsu0i2d/P4/M6CNBSPYTC5Pf9DVczW2e0R8WnR25G2KHkA4cD/oYaEBEpB2D95jLVzf
+         60ZvQ1xW9SYAw0NSbJ0tTWwcseZW0pnHCpejobe116yGAZlq5IXR1v5lvBM+hY/ic9Ci
+         64NQ==
+X-Gm-Message-State: AFqh2kpZz4QSmLFg7UEiGAWUTirI4okj8aNmyZYmgAFFiK39qT3uquCg
+        pKCE0fgR/JWudofkzZEo8Rpa/S4vVXC7pn9cEPE=
+X-Google-Smtp-Source: AMrXdXun0AXnrBP8ESLXlwsWfYZ6YoLklo3YTNAXwXEF+fWHK8bKLm5JpcUOHZzojB2UuocNEgkBXi2jqBVBSCuft7s=
+X-Received: by 2002:a17:907:7652:b0:7c1:275d:976c with SMTP id
+ kj18-20020a170907765200b007c1275d976cmr245951ejc.280.1673943835083; Tue, 17
+ Jan 2023 00:23:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+Reply-To: salkavar2@gmail.com
+Sender: stedoni744@gmail.com
+Received: by 2002:a05:7412:c414:b0:9c:49dc:c9c5 with HTTP; Tue, 17 Jan 2023
+ 00:23:54 -0800 (PST)
+From:   "Mr.Sal kavar" <salkavar2@gmail.com>
+Date:   Tue, 17 Jan 2023 00:23:54 -0800
+X-Google-Sender-Auth: 3NL2SyYlhMuNOWw4pKjGfMJfX_E
+Message-ID: <CAKMRoaMiVqvDuO3i_A84HbKJfXtLWdx+-W0mvU=yAak+w9hTPQ@mail.gmail.com>
+Subject: Yours Faithful,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MILLION_HUNDRED,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        T_MONEY_PERCENT,UNDISC_MONEY autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:641 listed in]
+        [list.dnswl.org]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 0.9996]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 0.9996]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [salkavar2[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [stedoni744[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [stedoni744[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  2.9 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 MONEY_FRAUD_5 Lots of money and many fraud phrases
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-1. fopen sysfs without fclose.
-2. asprintf filename without free.
-3. if asprintf return error,do not need to free the buffer.
+I assume you and your family are in good health.
 
-Signed-off-by: Yulong Zhang <yulong.zhang@metoak.net>
----
- tools/iio/iio_utils.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+Sum of $15.5m, (Fifteen Million Five Hundred Thousand Dollars Only)
+when the account holder suddenly passed on, he left no beneficiary who
+would be entitled to the receipt of this fund. For this reason, I have
+found it expedient to transfer this fund to a trustworthy individual
+with capacity to act as foreign business partner.
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 8d35893b2fa8..6a00a6eecaef 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -264,6 +264,7 @@ int iioutils_get_param_float(float *output, const char *param_name,
- 			if (fscanf(sysfsfp, "%f", output) != 1)
- 				ret = errno ? -errno : -ENODATA;
- 
-+			fclose(sysfsfp);
- 			break;
- 		}
- error_free_filename:
-@@ -345,9 +346,9 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 			}
- 
- 			sysfsfp = fopen(filename, "r");
-+			free(filename);
- 			if (!sysfsfp) {
- 				ret = -errno;
--				free(filename);
- 				goto error_close_dir;
- 			}
- 
-@@ -357,7 +358,6 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 				if (fclose(sysfsfp))
- 					perror("build_channel_array(): Failed to close file");
- 
--				free(filename);
- 				goto error_close_dir;
- 			}
- 			if (ret == 1)
-@@ -365,11 +365,9 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 
- 			if (fclose(sysfsfp)) {
- 				ret = -errno;
--				free(filename);
- 				goto error_close_dir;
- 			}
- 
--			free(filename);
- 		}
- 
- 	*ci_array = malloc(sizeof(**ci_array) * (*counter));
-@@ -395,9 +393,9 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 			}
- 
- 			sysfsfp = fopen(filename, "r");
-+			free(filename);
- 			if (!sysfsfp) {
- 				ret = -errno;
--				free(filename);
- 				count--;
- 				goto error_cleanup_array;
- 			}
-@@ -405,20 +403,17 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 			errno = 0;
- 			if (fscanf(sysfsfp, "%i", &current_enabled) != 1) {
- 				ret = errno ? -errno : -ENODATA;
--				free(filename);
- 				count--;
- 				goto error_cleanup_array;
- 			}
- 
- 			if (fclose(sysfsfp)) {
- 				ret = -errno;
--				free(filename);
- 				count--;
- 				goto error_cleanup_array;
- 			}
- 
- 			if (!current_enabled) {
--				free(filename);
- 				count--;
- 				continue;
- 			}
-@@ -429,7 +424,6 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 						strlen(ent->d_name) -
- 						strlen("_en"));
- 			if (!current->name) {
--				free(filename);
- 				ret = -ENOMEM;
- 				count--;
- 				goto error_cleanup_array;
-@@ -439,7 +433,6 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 			ret = iioutils_break_up_name(current->name,
- 						     &current->generic_name);
- 			if (ret) {
--				free(filename);
- 				free(current->name);
- 				count--;
- 				goto error_cleanup_array;
-@@ -450,17 +443,16 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 				       scan_el_dir,
- 				       current->name);
- 			if (ret < 0) {
--				free(filename);
- 				ret = -ENOMEM;
- 				goto error_cleanup_array;
- 			}
- 
- 			sysfsfp = fopen(filename, "r");
-+			free(filename);
- 			if (!sysfsfp) {
- 				ret = -errno;
--				fprintf(stderr, "failed to open %s\n",
--					filename);
--				free(filename);
-+				fprintf(stderr, "failed to open %s/%s_index\n",
-+					scan_el_dir, current->name);
- 				goto error_cleanup_array;
- 			}
- 
-@@ -470,17 +462,14 @@ int build_channel_array(const char *device_dir, int buffer_idx,
- 				if (fclose(sysfsfp))
- 					perror("build_channel_array(): Failed to close file");
- 
--				free(filename);
- 				goto error_cleanup_array;
- 			}
- 
- 			if (fclose(sysfsfp)) {
- 				ret = -errno;
--				free(filename);
- 				goto error_cleanup_array;
- 			}
- 
--			free(filename);
- 			/* Find the scale */
- 			ret = iioutils_get_param_float(&current->scale,
- 						       "scale",
--- 
-2.25.1
+You will take 45% 10% will be shared to Charity in both countries and
+45% will be for me.
 
+
+Mr.Sal Kavar.

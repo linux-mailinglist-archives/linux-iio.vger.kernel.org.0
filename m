@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1187066DF70
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jan 2023 14:53:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF2866DF71
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jan 2023 14:53:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231235AbjAQNxL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Jan 2023 08:53:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46830 "EHLO
+        id S230063AbjAQNxP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Jan 2023 08:53:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230342AbjAQNwx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Jan 2023 08:52:53 -0500
+        with ESMTP id S230372AbjAQNw4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Jan 2023 08:52:56 -0500
 Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2056.outbound.protection.outlook.com [40.107.6.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87AE3CE05;
-        Tue, 17 Jan 2023 05:51:49 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C4A3CE29;
+        Tue, 17 Jan 2023 05:51:51 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HHyNDdIRLPrBVZVqDA3iKT8EoFzo7Xm0m8abhQpnukILeFbq2L1trikcdzdzQ35n26YkxsbxxWKuZ6osnshPt5X1oeMylGCGp317mEePNZ6y/0Nwz8uDaBvLrUXY8ByyJoeu5OnZtkDUEeQKkyYWXw/GPJ8gIt/eygw9lxgwi9P360jD9aL71KB0D4JsZd1sqcJoHPlocpO9C2OSd1Z0wO+uFt1z2xSB3ut/FQ0HHno9cNm2YCljFs2zXMssQqZUWExLBzfsNpqUCaiYKpvO009nKu4Bv7U9IZlw2X9Al5vS3QsJZYnaaLnIxHkFm0RAVBJ4EZTakxNvxYezq7QX4w==
+ b=fj5pykZYD+0kIOOeKyjJ4rvjEhC3esXJ8puMpxTbHtcGMWhfX9/vLzYCLglh0QfIU2bCYdY5McPiNiViVV1nYMvHrkSmnmnGTGAfiYzuxG4IShwBXvwB6dEzHd6IzNXS9wj1awNboFMe4ca/8rDHnQMgRZB44AAfY9HY8qZz1Dbu7Pz1EQZ9Ifa+QR4BtJTs85RXPfF0P2NNdx1Bi0SbS+/WE9L3O/x4Ze4D+GBY4kTpnOKU4v8CuRPvFTqMYMEbZEUjUn4fa99LIeJ+1b6X078ZklWj3Magjw/Xpce75lKEhg/Umq+G6dfGo4GwP2C3YaJ6QbbYoRIF3jpVPGp+yQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0Dckup4bNqyej2ibkcfsxjXeol4324ikjI78C+Rf6Q4=;
- b=IfKcMnHi2zf/eCzRbQ2jp45STQ7Prj5iuN5KWnW0IZrvQ7oepcVuT2gVQlsYwJwaDwaVt3C4Oi2kSQe8P3ZPsk9H2592uPUa4UdecKOA0R9zA6UN52GBvlOLWb3RmcgvnX+2//dUy+U/NRGToR5O0QD/fF1UzkFzELQoa6Mg6KUbfVAYKLz3tgVzFNGRgaqqBxsB1xO290HTYaJo1dKBfBBiVFd7nQKgpGxfF21VHM1y4BEZ/7C4nrQdNVlr3wk0FA27cIt/26FfPlTmsxkkj7P5wupbWgOaIpMr4vCdEUf+8kDvORi/j/vOA+ZhgmRhKGR4sS2MHXHSp28F/NiUhA==
+ bh=i9VMheMwhKy88WKtB/x0JuUemVSQFfTfqkFMuOlyidw=;
+ b=fJxT1SRaCknqB+nORKja0B88miCZyMtpj9iAaC4DrmFplBymGqYasOxSEQKHhZh8fTXrLq1mgi71DGwkw/yh2bfkMQOkdZH2aGmcDm5klWH0DfmzAFSClsnop/7kQ9swgxOkxMoGf1Uh1H96B7jRzLgJ+U+3Yu75Hr3tuw79djcLtswlWwnvMEXEgBxIVNfRgxnCPADLbF9+RzbBYngy3RhyiHaVQDmXbVxHqxEkqxwUKUljaQ74z58RD6LmdmksrdOiQ0925Fx8aNtbo4fyja0sut1D6Q041ifFtGm9jJfMOKdSRUHEBIRJimoaDs6o98lhZvosBWBjNWHx6uMSgA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0Dckup4bNqyej2ibkcfsxjXeol4324ikjI78C+Rf6Q4=;
- b=G6+d45zxE6wz/QRJLZjF37qO9WNqoOQ8RBKMU1cLoTa/9AQp+B16qYjJUXTi38KzpbZTiZoulwb7g2NE671IDRIh192Ax+5luoEDTAsG3Jq9reUc48LxKUMhffqyl7V8p1MgKrDcMGusNaCfCIgjkF00C96COnqSiAgD33seOEc=
+ bh=i9VMheMwhKy88WKtB/x0JuUemVSQFfTfqkFMuOlyidw=;
+ b=BH3IHMfMSBfP22BACx/PdNOAYfe7FAIgN3wyITcy1v73qUMHQsPfTSbqk0m/BWZU8mdB4ZFzcuTAkFREPhofGL7cQg7AMVAqyv074+eC7jmOGdyEw/dFuYCSnGrEdFtcvBPk3190ZD6gNJl0VKDaYdt/iy8tZlTgzzKvJ16uRgA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB7PR04MB4010.eurprd04.prod.outlook.com (2603:10a6:5:21::30) by
  VI1PR04MB6909.eurprd04.prod.outlook.com (2603:10a6:803:13d::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5986.23; Tue, 17 Jan
- 2023 13:51:22 +0000
+ 2023 13:51:26 +0000
 Received: from DB7PR04MB4010.eurprd04.prod.outlook.com
  ([fe80::7479:76ef:8e5:da0b]) by DB7PR04MB4010.eurprd04.prod.outlook.com
  ([fe80::7479:76ef:8e5:da0b%6]) with mapi id 15.20.6002.012; Tue, 17 Jan 2023
- 13:51:22 +0000
+ 13:51:26 +0000
 From:   haibo.chen@nxp.com
 To:     jic23@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de
 Cc:     lars@metafoo.de, robh+dt@kernel.org,
@@ -46,9 +46,9 @@ Cc:     lars@metafoo.de, robh+dt@kernel.org,
         festevam@gmail.com, linux-imx@nxp.com, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         haibo.chen@nxp.com
-Subject: [PATCH v6 2/3] dt-bindings: iio: adc: Add NXP IMX93 ADC
-Date:   Tue, 17 Jan 2023 21:51:36 +0800
-Message-Id: <20230117135137.1735536-3-haibo.chen@nxp.com>
+Subject: [PATCH v6 3/3] arm64: dts: imx93: add ADC support
+Date:   Tue, 17 Jan 2023 21:51:37 +0800
+Message-Id: <20230117135137.1735536-4-haibo.chen@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230117135137.1735536-1-haibo.chen@nxp.com>
 References: <20230117135137.1735536-1-haibo.chen@nxp.com>
@@ -60,50 +60,50 @@ X-ClientProxiedBy: SI2P153CA0016.APCP153.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB7PR04MB4010:EE_|VI1PR04MB6909:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4bebf70-b3de-4e01-053b-08daf891eab9
+X-MS-Office365-Filtering-Correlation-Id: a4d51a46-cb17-4a5b-f0a8-08daf891ed18
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SGfUHrn0dUlzkhz+yHb9EL+7xYrA75PwMOz1eCDBRfQtDbxj0ntqtSiBv3WlbSbLeF83soLWaNufFLsT+cUKOIuzVoCu2IJXPkxKJYhJkyjRJD/F4nob6I+xxoe92u/JDWZ5zlY605U+4PU6CgfVdNJ2ND/e5MgW23tvfcio2jvcRe5t1rKRiKWYNmhKt2tOh3GXdPUSGx2/3o+ArsK8pSeN+Ek7JNuBADfN9kcpUZz0UKWuRwoO4tB7IhqpL4XWXnAhwc0A61XFO/P4KzEiyVcQq4VHmkx4pvJcCZxcgHqg8sgNsTlvdQYbudVQ22O1LLeWLC+AM+rM0zgTIgUYp883pLRK+x3Domu5rFn/Yfl+v4IfiVlpRGAM5oIgLsp3A/R9/Kfpz2BHVGT9P3A1e2ad4ZhYrXFEz3tRK6bGq+3E6tgNxGsYGVaEHLecz2zj5tXJYrtflIErfswH0V9BOLVMBboFlEzgSLFfXA4Ap9nhsfeHjE4uA2m4mi80YRJj24awamq7/k4IdktJeZebvaXmymVfc7K+wAaBfgB9amSbs8gHJYI3jJPMdoL+fXFjqQ2LrULZyjzgkH+A+W7qGo6RldF7QvlHp+c0A3gQsbwXqWd30ASn7VKONEwbfv6tG7nuVmAjX4cPLDB9HPjcFPZNNanmul7b1/8/cmGgjLmiMkh8H54rGhp9NWCDPZRN+OhZRqQGvyyzEoJKdfVcmHSb5PKCuGcbc+7LfB0w09177gT52km0KMPdFgZ8EGp2
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4010.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199015)(36756003)(86362001)(66946007)(66556008)(8936002)(8676002)(66476007)(7416002)(2906002)(4326008)(38100700002)(83380400001)(5660300002)(38350700002)(316002)(6666004)(6486002)(52116002)(966005)(41300700001)(478600001)(2616005)(6512007)(1076003)(9686003)(26005)(186003)(6506007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Ch9TJmmvReRiYSKt6wSTRBuO4THVNIt1ykSpIgQBad/88xfWyLcvsyyLuloNaZGs4Z44qvtoCOJb+KFgyuw1vE+BIEiHtYlMhySlbCtNIdehUKcLiEQVRIOwBWN+NrWPEOZzmlEvrgESFxLX+f5OvSahu1TqFbX1VuQAt5UEBB5zcw6H+HHQGZ7W8Tbx+YLl7xvoNWLFqpauNft3R5QwcZwvq8wBtZHkGyNWWRsVkAhpW1yo6tScbS/qit/Wx7sS3fFWu2WpfJ02QA1SjSVxqwFiA0BfKfETQNazyVwajOU/VTFBNUOXWo8jm8NMxenZBnenRWR4U0eBXcjNeSq0UyIDC0BvNw97ouMNwxdm0hNzwmgqXW4QTsXeYpBxmbH095SEHb9imk/k4ZjaKE5edZn8m1Dn8Gjb776qP+iXUGoh+WfZbp44VRK6dAVssEl5RXLNj0F/RiIhjwKveVbLlgtEMLOA9laS5ft0QFKlkuYVSgDl3UUhh1eIihX0jYxcpMAvrNZz/TQ/aKai8nQc7rRpG8mIaHSWTymbMaDUeFkHCv2dyfoamo9qHboNNXvSNoX+y1TuysdV5IWKxn5EWa0bAFUcqCHD0Ud66sA8BcrnUJf6hTkcPrnXYFl84fPVH6x+N4r92cgWH3/d7CZQWIZz0M3SXOrr2A+hKaYqj5R5k2exAdUqGuhGfX3PmQF29LUlVfLIXAEcjTJEajj/Kw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4010.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(366004)(136003)(39860400002)(346002)(376002)(451199015)(36756003)(86362001)(66946007)(66556008)(8936002)(8676002)(66476007)(7416002)(2906002)(4326008)(38100700002)(83380400001)(5660300002)(38350700002)(316002)(6666004)(6486002)(52116002)(41300700001)(478600001)(2616005)(6512007)(1076003)(9686003)(26005)(186003)(6506007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vHPUuYkuQE/D8zakpbhX8Mb3Tcbp/qKRN6QE32EhB9y46aIMPp57uN6zl/4S?=
- =?us-ascii?Q?REKrEdlY8fA47Zyzqwnb8owwjhPDMihZqn0df4RtNbEBpxrzTvSHZSqaMfEG?=
- =?us-ascii?Q?ZzaELPnhr/e4DhJ1FjSJAW2fX8VY98H20N7Y/ZHbe/xcQd5fS6Rd/N6qZfx2?=
- =?us-ascii?Q?8h+4/5iwWv8eRTeMp7v/XKSiaaWaEUgOWLnm94ZQDdgiw9ng8zyLiTS3EdRf?=
- =?us-ascii?Q?BFz5UYw+DhgVHm3D6lIJg25c0rSmQ2RfrxCxz0cSQzGX0PNbLEaBpEpLsUtz?=
- =?us-ascii?Q?iBWTMhi3Y/ktjFhA/WnnbqeL2n6PmRaelc12iNKrk20tucJZziOhin/zkjXK?=
- =?us-ascii?Q?BFMkfYu8oluM/OIhFj1KjrfOlDMROX/rdPjE73Q/LwjhDSmAmaUg6lss7g8Q?=
- =?us-ascii?Q?5U9JkwpyfWN8EyanQ6k3FySpt8+89w1oUfUzQi9jxfq4HUTwx3oLbhdocjRK?=
- =?us-ascii?Q?ahyA7aYF0aJ0xXzrOHijeVnB1nhl0lABTIAHtpsnHZsEvRaof7uJ5hX/sRAB?=
- =?us-ascii?Q?dnEuEH7/nwn3HyOKvKAF8O4XMcAzPd71yLS5RSlO5ykiFJRIN7+Zc519fu+J?=
- =?us-ascii?Q?+Ze0FlOazKVYD0QP0ngIQ5rxYSsZwVSZqlYAuz9N3FIe720SCE5gaETp0+bp?=
- =?us-ascii?Q?hdwR37BUROrT9GeMckezxY3inBzhA1kAcEhejnOBdsGsCrtSdJv/i9Vu6AYT?=
- =?us-ascii?Q?SmcSxHuje5YhSsrMNVpzm+AvXIrtN0FQ0rExILJf5DRckII8zwBVA52MoQZi?=
- =?us-ascii?Q?ofqEjyz+xzlSDgitS09XxIBMHtY+QUy0V9jF8nU8cHU9e7DQ2wTojJUW0urg?=
- =?us-ascii?Q?nemI8QXF5iOggi5sRIzr0BPLEJNm4cWUiHgRnzK9/Z5R2kwg0T6V+NrFQLY5?=
- =?us-ascii?Q?PEhzSQuAUWA9rLhcJa5/CpTxOm6m/eMgMcafQugIPWB/qU+QIxL3rCG/ywrH?=
- =?us-ascii?Q?clRTy9FmdN22qUThwgeMkOqF2k/TwuOvTttVFTV7fL1aTq1vKRGgSYtjIgiD?=
- =?us-ascii?Q?QFYywyB370ctF8s0ropVsif3cGuunVYd1GlCJqHS4cjXN7VMdCMntiqxfmGe?=
- =?us-ascii?Q?uPcHTCdc/gD9JnCYK7u1Id3TyxRbGMNXJUIAloJqTPGytf2tVVXe6dzXwANP?=
- =?us-ascii?Q?YKO0o/HJ/x7qu/2Xmh6LPX8hD7Jxjqcb6xjPSNa7yTZbH1tX3bXyQXHpDR+n?=
- =?us-ascii?Q?mvAFHZxTfJqgpprRxZomeL0PSVHtNTjLyymSnY1gKM8+mFSHldKXwcc7CGMg?=
- =?us-ascii?Q?QWn+5gf70Ao54qz6/uxn6UZ/XMa3PPRbjozXePkZ08b3lzEpH/y4g1OEGEuC?=
- =?us-ascii?Q?i48YoHqR15QaHtpgj/3suQvdWeiUHDetDC2NTDVdFx7XKwmJkMi1+kwbRTcq?=
- =?us-ascii?Q?vzo3uu7uCN24b1LwyQuqGK3BbKzWtfew5MifMK399INYEnwJHsbQ1DeMhWO2?=
- =?us-ascii?Q?Q1PMbRJzbP3JTyIYZD0F/kqFbYlzqJOywTmqORNxrRh+g8VIs4Uc5xh1W4fy?=
- =?us-ascii?Q?zblE2tNedqSWmwn4/Hvaf6Eg1S5QMUnW8vuChO5/k2kXtMAXIdRBQmISfnAR?=
- =?us-ascii?Q?4zTGX0EJbHgjXIYGRfytMkWho8HJe4N2/+SdkKNx?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7LyFfEEKkUA2hlkkwFPtXNg3/G5Y9hztMnnkSfktsX16sbJP+jQJBO7Z8urP?=
+ =?us-ascii?Q?kGZ2MyfenWc7oV/JpZbFrJS7oXTzpg79c1qS0YyU27JfFysVR/McN8+icANJ?=
+ =?us-ascii?Q?xNEPTlMZut3SZ+Kodq2tT0W+TJWqFov8kl8APUniRtZgCuS2CLWPTgZ+Sbf0?=
+ =?us-ascii?Q?960qBiEPDjFovnpxptMLR1L7KbFSEbwi+ITmSa5IJr5IXPHgUAR+A6GBmVaJ?=
+ =?us-ascii?Q?4Ss3zDmvjZVCM6kbETYRAn2tMI2mTlVEAOyIgzPtOF4ndl5zl1/ndvZswBah?=
+ =?us-ascii?Q?9NYdOpsrKqY7bMeie/mFOmbzxO6Ztw8axdweqjcSzm8QrQB8d5i35qOOhJAW?=
+ =?us-ascii?Q?tlvBONnWjPubx++zHFsI+HoFmCiUDRWixkUgljxqlzu0iLRcgGOn/glSXfZL?=
+ =?us-ascii?Q?bU02UxTskgKOaC1QfyKH+v7LZSlGpLBAKdt+CrcXNmd/0WfVwGZO9KBSyvZY?=
+ =?us-ascii?Q?GqfOx36dTDjMGS9/CLhHS37creVIGYZWbNtdcPhOjLsceUSfuG6l+0iRzeWd?=
+ =?us-ascii?Q?SYjFJ01OqRRK+DnSh1lBxq/EhQa7M16dSSPLeF1044chM9Xp5X3ULJLkO+e/?=
+ =?us-ascii?Q?4XPAg+ZWs+F6i98ptDdAOqI+q0BAYGm7Qls9hraz+lJgeJsuoNj/O+6TbR+2?=
+ =?us-ascii?Q?8j+dVj1HZZyOxLVl0qy1W8LH0BnvjOYlFBcYuzEhU6miX1yn4BvMtiDh+HlF?=
+ =?us-ascii?Q?PEzewj1vK+H2xwJrkMArDYSeEvKNje4w4xbFysynAXYfuNOVPAhBUOykQsfy?=
+ =?us-ascii?Q?xELIxCNxYI18Lgn1rJVoFyzpFwE2ikab4u+GYHax4z7J7udA6Cf7fMFj1Jjc?=
+ =?us-ascii?Q?mPg5+YJWLLTmj89QFn6+FDiuOY2T5CcJPqloj8DXtje3Bwq/1onB+P4M9fd8?=
+ =?us-ascii?Q?Y+AYJjBvuXWFKABFHz33sArfLLFNMl2mLAbofMiuzxFPQq/60jeJQiNFm0sn?=
+ =?us-ascii?Q?ZmeXDx8Fo+p2L32D4CAFk2c5P4UlDwZKbvAyLtwgaLZNijpUoQjbDN0neMAB?=
+ =?us-ascii?Q?6dt4IARIJbWUBzES3+ubPdLA/M0FbNKhTtKd2Nb8SbDOW7EQWWZFeKGRHcJg?=
+ =?us-ascii?Q?frIhu7eYPbqWRkW9ok7kDOiYGbL+smyYIwAsfbAa2RobVZ9B6F3UxVLXpwMH?=
+ =?us-ascii?Q?DagkFJiTJ4QKfqL9lflrvpJB2jQWrowlb0ukTuUFIS9WvDNs1rQ8PRPzoCsR?=
+ =?us-ascii?Q?uf5sSGGMjbR3zG1u+9uzOn6rp7zcYvPjF8up6UdHiFJzKyloVtPBrjy2VWZj?=
+ =?us-ascii?Q?ZT1XmzF8h+LzgpzGK4COwNC5ccev/GWWzhTSayuyrgzVBpqbD8RLtGJ55RsJ?=
+ =?us-ascii?Q?Vo0TGBUqFARI6juBVHozXWGq/EkjMFdISA58DJaWnfMcn5q4KR7y5Rrf8jKG?=
+ =?us-ascii?Q?prtWP20+R6wd/0qUHElieiXUcuNnqhkbb625+TZi3SJvjOTt1a+v2V50mDmJ?=
+ =?us-ascii?Q?z0Y539nmHv+SHM3QeIyaPADfsoVEiLBokXyKKmhIlXAFjX0PgAP7RbVtgyxv?=
+ =?us-ascii?Q?+bb2jqKr9qnspsImlfZ1Ag39ZZTH+zOcu6OqqH8wWbgz8/ust7CSr1f7iV2s?=
+ =?us-ascii?Q?Kk33BdYjOwRKMDqBzvBd8t8GHtjW7zL42LB70tyi?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4bebf70-b3de-4e01-053b-08daf891eab9
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4d51a46-cb17-4a5b-f0a8-08daf891ed18
 X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4010.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2023 13:51:21.9849
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2023 13:51:26.0627
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UcUWqHrw4Wi65kwQ98KCEoopPhHLG1QUgDFigRix3U0uuxVHKk8EJIjPzKbTrkWqk0pKCzj/PNgM8CgX4i7glw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: s8a6DfiIqscXwTXNT9Z+Rr+upZA9xxqO7EtoE3RdMkQjFLgBL5UUwB6AX9NB3oaK+AtNnTwlR8582AUmrIziFg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6909
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -117,103 +117,68 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-The IMX93 SoC has a new ADC IP, so add binding documentation
-for NXP IMX93 ADC.
+Add ADC support for imx93-11x11-evk board.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 ---
- .../bindings/iio/adc/nxp,imx93-adc.yaml       | 81 +++++++++++++++++++
- 1 file changed, 81 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 12 ++++++++++++
+ arch/arm64/boot/dts/freescale/imx93.dtsi          | 13 +++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-new file mode 100644
-index 000000000000..dacc526dc695
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-@@ -0,0 +1,81 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/nxp,imx93-adc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+index 27f9a9f33134..c928b6824e41 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+@@ -15,6 +15,13 @@ chosen {
+ 		stdout-path = &lpuart1;
+ 	};
+ 
++	reg_vref_1v8: regulator-adc-vref {
++		compatible = "regulator-fixed";
++		regulator-name = "vref_1v8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
 +
-+title: NXP iMX93 ADC
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -27,6 +34,11 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+ 	};
+ };
+ 
++&adc1 {
++	vref-supply = <&reg_vref_1v8>;
++	status = "okay";
++};
 +
-+maintainers:
-+  - Haibo Chen <haibo.chen@nxp.com>
+ &mu1 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+index 6808321ed809..abb3fbe4ba22 100644
+--- a/arch/arm64/boot/dts/freescale/imx93.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+@@ -280,6 +280,19 @@ anatop: anatop@44480000 {
+ 				compatible = "fsl,imx93-anatop", "syscon";
+ 				reg = <0x44480000 0x10000>;
+ 			};
 +
-+description:
-+  The ADC on iMX93 is a 8-channel 12-bit 1MS/s ADC with 4 channels
-+  connected to pins. it support normal and inject mode, include
-+  One-Shot and Scan (continuous) conversions. Programmable DMA
-+  enables for each channel  Also this ADC contain alternate analog
-+  watchdog thresholds, select threshold through input ports. And
-+  also has Self-test logic and Software-initiated calibration.
-+
-+properties:
-+  compatible:
-+    const: nxp,imx93-adc
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    items:
-+      - description: WDGnL, watchdog threshold interrupt requests.
-+      - description: WDGnH, watchdog threshold interrupt requests.
-+      - description: normal conversion, include EOC (End of Conversion),
-+          ECH (End of Chain), JEOC (End of Injected Conversion) and
-+          JECH (End of injected Chain).
-+      - description: Self-testing Interrupts.
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: ipg
-+
-+  vref-supply:
-+    description:
-+      The reference voltage which used to establish channel scaling.
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - vref-supply
-+  - "#io-channel-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/clock/imx93-clock.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    soc {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+        adc@44530000 {
-+            compatible = "nxp,imx93-adc";
-+            reg = <0x44530000 0x10000>;
-+            interrupts = <GIC_SPI 217 IRQ_TYPE_LEVEL_HIGH>,
-+                         <GIC_SPI 218 IRQ_TYPE_LEVEL_HIGH>,
-+                         <GIC_SPI 219 IRQ_TYPE_LEVEL_HIGH>,
-+                         <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
-+            clocks = <&clk IMX93_CLK_ADC1_GATE>;
-+            clock-names = "ipg";
-+            vref-supply = <&reg_vref_1v8>;
-+            #io-channel-cells = <1>;
-+        };
-+    };
-+...
++			adc1: adc@44530000 {
++				compatible = "nxp,imx93-adc";
++				reg = <0x44530000 0x10000>;
++				interrupts = <GIC_SPI 217 IRQ_TYPE_LEVEL_HIGH>,
++					     <GIC_SPI 218 IRQ_TYPE_LEVEL_HIGH>,
++					     <GIC_SPI 219 IRQ_TYPE_LEVEL_HIGH>,
++					     <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX93_CLK_ADC1_GATE>;
++				clock-names = "ipg";
++				#io-channel-cells = <1>;
++				status = "disabled";
++			};
+ 		};
+ 
+ 		aips2: bus@42000000 {
 -- 
 2.34.1
 

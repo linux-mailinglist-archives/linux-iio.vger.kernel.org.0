@@ -2,112 +2,196 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 538CA66E87E
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jan 2023 22:34:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8567C670D11
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 00:17:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjAQVev (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 Jan 2023 16:34:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50440 "EHLO
+        id S229693AbjAQXRV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 Jan 2023 18:17:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbjAQVbk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Jan 2023 16:31:40 -0500
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0BB58999;
-        Tue, 17 Jan 2023 11:57:25 -0800 (PST)
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-12c8312131fso33200695fac.4;
-        Tue, 17 Jan 2023 11:57:25 -0800 (PST)
+        with ESMTP id S229714AbjAQXPt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 Jan 2023 18:15:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C623B0CF
+        for <linux-iio@vger.kernel.org>; Tue, 17 Jan 2023 13:02:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1673989354;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7w76HtfzwdcmqP5jdkU9ZLwca97vCioI41/SywejLwE=;
+        b=cqhrwLCsGTcIEiugrni63U3gGEn4ao4d2KNGYXwnM4d3jnFO4jUg18mhaKShKURiIm0VZj
+        fX5LN5EBZnUaI+h2t9bOk8pV7itdk2CzWVCiSPpRx/A3vyaOxjHRVQLIDBZEa8JMT5VAJL
+        rrJUqHclarTsOhdN3JS5yFJPZj2FL+c=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-125-hH1jPAiQNI6IL7vSsyCOlw-1; Tue, 17 Jan 2023 16:02:33 -0500
+X-MC-Unique: hH1jPAiQNI6IL7vSsyCOlw-1
+Received: by mail-ej1-f70.google.com with SMTP id hc30-20020a170907169e00b0086d90ee8b17so6279874ejc.10
+        for <linux-iio@vger.kernel.org>; Tue, 17 Jan 2023 13:02:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WoQ1Ujnm/vZWONGjo7EJYTRd9zE4o9AG/5l154hNW+Y=;
-        b=nxaZklT82ZHMQ5DyC+GUFan+usFVL7TEGBKGoACetZC9STI+05e7f49rPbkTd/OZY4
-         1N6LRfSpBk7qfBjOCFd2L7xx3rRWA2B6WTsmxIKS07OnhSCRrEajyhP5DShvNc3Ui7UD
-         fP/DxdABwUw+vvW2zfLGM+XktEvgRMkyLY+qiwMi7znCI2OnbqGIKVeubbtBy065GOh4
-         ABPUFhdjMac0N2NynPNYNnWJgWmqd+efprqgj4SK5fdcU4unGggj83S3vjl9Pe5Hy46G
-         5ZLrJKMykfaky6rTT2A6yV0DarIUflEuGWNQMMSJrlmXT16vEB+rvtY2D1iJ8T3cU2gS
-         2KIQ==
-X-Gm-Message-State: AFqh2kpnDNMFgkrD3ONsJOerTeRXO4QqOE68BEoxx3OUy5VcNRv11oFN
-        /rUO/9d9aP6h0cVcQuzf4Q==
-X-Google-Smtp-Source: AMrXdXsWU+wMIMJZJ0i92BSHODRi1mci32oCzZVAgx/IGlmoFNzIN6Vsk3DXaRLgbmBP86jPqZIr8w==
-X-Received: by 2002:a05:6870:588c:b0:15f:6de0:b74 with SMTP id be12-20020a056870588c00b0015f6de00b74mr1595745oab.19.1673985444692;
-        Tue, 17 Jan 2023 11:57:24 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id q187-20020a4a4bc4000000b004a3c359fdaesm15462457ooa.30.2023.01.17.11.57.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jan 2023 11:57:24 -0800 (PST)
-Received: (nullmailer pid 3536600 invoked by uid 1000);
-        Tue, 17 Jan 2023 19:57:23 -0000
-Date:   Tue, 17 Jan 2023 13:57:23 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     =?utf-8?Q?Micha=C5=82?= Grzelak <mchl.grzlk@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, lars@metafoo.de,
-        Michael.Hennerich@analog.com, cosmin.tanislav@analog.com,
-        jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: addac: adi,74115: Add missing maxItems
-Message-ID: <20230117195723.GA3527095-robh@kernel.org>
-References: <20230115022558.145076-1-mchl.grzlk@gmail.com>
+        bh=7w76HtfzwdcmqP5jdkU9ZLwca97vCioI41/SywejLwE=;
+        b=o4OMDnoZN4g3JuqeF2++oc07njkgqvcZVkt2IQmmUlfcJvBV3c/pB+Kbdm1ntkZsV2
+         sWbzAZBeH4RCTbkPefm+0wXY2O3L9rLxnHcqgPwq4L67HeifOitZOWsyVsAetqNUVTRN
+         y1RQIuAhbdZAl2DZtDYWxLX7aVpaxHzhadMKtkwDk64icrDMOF2sge3wSmAicRsceAjQ
+         lOL/3s5aXfJsrxvpDCVkFm8oES+yyHAo3T/+zGeojEIdiH8oNmgYNinWS3Jm21MNonz5
+         F35yVa9twttnQz44Ez2TDY7eQgBIdn+QhdKXJIUWv41YIwpKmy0CF6U1y7RMb2FYqckP
+         w2hQ==
+X-Gm-Message-State: AFqh2kpxs+57BNw3PmALSLNri2HjRBZVnVRgv9eo8Lh4i13sqgYDI6yz
+        TDfM7awAgOv9e5VV5gSPJGx7QTmhJr1DlMT/H1ahfbTWxHXcOBiRSZrb3/b4L0XMP1eJOdiBsqp
+        UBpg9Yq7JRlKGMG3snYyP
+X-Received: by 2002:a17:906:f49:b0:864:8c78:e7ff with SMTP id h9-20020a1709060f4900b008648c78e7ffmr524131ejj.23.1673989351199;
+        Tue, 17 Jan 2023 13:02:31 -0800 (PST)
+X-Google-Smtp-Source: AMrXdXvAJSrzqGgbRw1prAYhG1g+FMQCC1Uscp3OUxHkrUrWI/VWjJQOxnfATQw4f1HIT+XTEqIsJg==
+X-Received: by 2002:a17:906:f49:b0:864:8c78:e7ff with SMTP id h9-20020a1709060f4900b008648c78e7ffmr524102ejj.23.1673989350949;
+        Tue, 17 Jan 2023 13:02:30 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id q21-20020a17090676d500b0086a2e31d1c1sm5876991ejn.28.2023.01.17.13.02.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jan 2023 13:02:30 -0800 (PST)
+Message-ID: <a204fdeb-b2bb-5c61-8a75-de6dd244892a@redhat.com>
+Date:   Tue, 17 Jan 2023 22:02:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230115022558.145076-1-mchl.grzlk@gmail.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] iio: light: cm32181: Fix PM support on system with 2 I2C
+ resources
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de
+Cc:     Wahaj <wahajaved@protonmail.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230117160951.282581-1-kai.heng.feng@canonical.com>
+ <5c95d25b-ff26-053b-efc8-5f6fd979c7e2@redhat.com>
+Content-Language: en-US, nl
+In-Reply-To: <5c95d25b-ff26-053b-efc8-5f6fd979c7e2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 15, 2023 at 03:25:58AM +0100, Michał Grzelak wrote:
-> Running 'make dt_binding_check' gives following warnings:
-> iio/addac/adi,ad74115.example.dtb:
-> addac@0: adi,conv2-range-microvolt: 'oneOf' conditional failed, one must
-> be fixed:
->         4282967296 is not one of [-2500000, 0]
->         4282967296 is not one of [-12000000, 0]
->         -2500000 was expected
->         -104000 was expected
->         625000 was expected
-> 
-> addac@0: Unevaluated properties are not allowed
-> ('adi,conv2-range-microvolt' was unexpected)
->         From schema: iio/addac/adi,ad74115.yaml
+Hi,
 
-I think your dtschema version is out of date. I don't see this issue. 
-The issue has to do with signed types and there have been some fixes 
-related to them.
+On 1/17/23 18:19, Hans de Goede wrote:
+> Hi,
+> 
+> On 1/17/23 17:09, Kai-Heng Feng wrote:
+>> Commit c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices
+>> with 2 I2C resources") creates a second client for the actual I2C
+>> address, but the "struct device" passed to PM ops is the first client
+>> that can't talk to the sensor.
+>>
+>> That means the I2C transfers in both suspend and resume routines can
+>> fail and blocking the whole suspend process.
+>>
+>> Instead of using the first client for I2C transfer, store the cm32181
+>> private struct on both cases so the PM ops can get the correct I2C
+>> client to perfrom suspend and resume.
+>>
+>> Fixes: 68c1b3dd5c48 ("iio: light: cm32181: Add PM support")
+>> Tested-by: Wahaj <wahajaved@protonmail.com>
+>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> 
+> Thank you for this fix. I had looking into this on my todo list,
+> since I have been seeing some bug reports about this too.
+> 
+> One remark inline:
+> 
+>> ---
+>>  drivers/iio/light/cm32181.c | 11 +++++++----
+>>  1 file changed, 7 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+>> index 001055d097509..0f319c891353c 100644
+>> --- a/drivers/iio/light/cm32181.c
+>> +++ b/drivers/iio/light/cm32181.c
+>> @@ -440,6 +440,8 @@ static int cm32181_probe(struct i2c_client *client)
+>>  	if (!indio_dev)
+>>  		return -ENOMEM;
+>>  
+>> +	i2c_set_clientdata(client, indio_dev);
+>> +
+> 
+> Why move this up, the suspend/resume callbacks cannot run until
+> probe() completes, so no need for this change.
+> 
+>>  	/*
+>>  	 * Some ACPI systems list 2 I2C resources for the CM3218 sensor, the
+>>  	 * SMBus Alert Response Address (ARA, 0x0c) and the actual I2C address.
+>> @@ -458,9 +460,9 @@ static int cm32181_probe(struct i2c_client *client)
+>>  		client = i2c_acpi_new_device(dev, 1, &board_info);
+>>  		if (IS_ERR(client))
+>>  			return PTR_ERR(client);
+>> -	}
+>>  
+>> -	i2c_set_clientdata(client, indio_dev);
+>> +		i2c_set_clientdata(client, indio_dev);
+>> +	}
+> 
+> And moving it inside the if block here (instead of just dropping it)
+> is also weird. I guess you meant to just delete it since you moved it up.
+> 
+>>  
+>>  	cm32181 = iio_priv(indio_dev);
+>>  	cm32181->client = client;
+> 
+> Also note that the ->client used in suspend/resume now is not set until
+> here, so moving the i2c_set_clientdata() up really does not do anything.
+> 
+> I beleive it would be best to just these 2 hunks from the patch and
+> only keep the changes to the suspend/resume callbacks.
 
-> As every property with standard suffix has inferred type of array of
-> cells, adi,conv2-range-microvolt is required by meta-schemas/cell.yaml
-> to have maxItems >= 2. Fix these errors by setting maxItems to 2.
+p.s.
 
-The meta-schemas have nothing to do with warnings in examples. It's like 
-this: meta-schemas check schemas check examples
+I believe that this will likely also fix:
+https://bugzilla.redhat.com/show_bug.cgi?id=2152281
+
+Can you please add a:
+
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
+
+to the next version.
+
+Regards,
+
+Hans
+
+
 
 > 
-> Signed-off-by: Michał Grzelak <mchl.grzlk@gmail.com>
-> ---
->  Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> index 72d2e910f206..cdeb04184f5a 100644
-> --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> @@ -87,6 +87,7 @@ properties:
->  
->    adi,conv2-range-microvolt:
->      description: Conversion range for ADC conversion 2.
-> +    maxItems: 2
->      oneOf:
->        - items:
->            - enum: [-2500000, 0]
-> -- 
-> 2.37.3
+>> @@ -490,7 +492,8 @@ static int cm32181_probe(struct i2c_client *client)
+>>  
+>>  static int cm32181_suspend(struct device *dev)
+>>  {
+>> -	struct i2c_client *client = to_i2c_client(dev);
+>> +	struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
+>> +	struct i2c_client *client = cm32181->client;
+>>  
+>>  	return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
+>>  					 CM32181_CMD_ALS_DISABLE);
+>> @@ -498,8 +501,8 @@ static int cm32181_suspend(struct device *dev)
+>>  
+>>  static int cm32181_resume(struct device *dev)
+>>  {
+>> -	struct i2c_client *client = to_i2c_client(dev);
+>>  	struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
+>> +	struct i2c_client *client = cm32181->client;
+>>  
+>>  	return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
+>>  					 cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
 > 
+

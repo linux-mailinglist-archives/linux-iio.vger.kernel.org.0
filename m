@@ -2,59 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F5A6724B6
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 18:20:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74708672665
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 19:11:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjARRUZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 12:20:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50434 "EHLO
+        id S230304AbjARSLu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 13:11:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjARRUZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 12:20:25 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71F84A1CA;
-        Wed, 18 Jan 2023 09:20:19 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NxsvY0ZFxz67JwR;
-        Thu, 19 Jan 2023 01:19:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 18 Jan
- 2023 17:20:16 +0000
-Date:   Wed, 18 Jan 2023 17:20:15 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-CC:     Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 1/5] iio: core: Point users of extend_name field
- to read_label callback
-Message-ID: <20230118172015.00003aa6@Huawei.com>
-In-Reply-To: <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
-References: <20230116220909.196926-1-marijn.suijten@somainline.org>
-        <20230116220909.196926-2-marijn.suijten@somainline.org>
-        <20230118161920.0000207c@Huawei.com>
-        <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S230460AbjARSLi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 13:11:38 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811C256EEC;
+        Wed, 18 Jan 2023 10:11:36 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id q10-20020a1cf30a000000b003db0edfdb74so1604053wmq.1;
+        Wed, 18 Jan 2023 10:11:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-id:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=thZKzDaf41DOaDvzUVPdA+iiPMIsDq7PLQWiM3Lp49Q=;
+        b=Vq1msGhnpVMBs0zCpH22rqL+V1G+NR5pHVjXueq2cjEuSWKRT5Tf4G5i/gWOJPb286
+         UrKqQz+uKIRbbYxRKSmT6JE2O382ES5NqftxXoJmA8FsNg4NwKOW81DDKyXAt4f/obtA
+         mctWLMjRW7npj4ete1xJ10W2deeD3Cmu1pVMmoSeoXvWzjFJPeKAV3Zrnw/8ef/mMZw8
+         h73RmkTVUBvFPKJC1v31anMHtftuvhjOZqOhlTfmdcTN1dNW/G7JQCzUTHpLAQIUTt1C
+         Haj23BWbKf0MMySxEDWFpLCXsOK5R3mZ7oANDD26sLCRNUJTKg2rHbav7mETH8u7Y20V
+         cWJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-id:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=thZKzDaf41DOaDvzUVPdA+iiPMIsDq7PLQWiM3Lp49Q=;
+        b=AfNQ5Kf2zSsHR5nOrrhhGFUrIr33W0RhgeSJ+1uzDmSQY4vOWo1pZ/mjNIrZr6EZuq
+         NtumSi50gfMRCW9C92bVMqyufFmBDBM1RiP9A9ZnmIC77HEF6GDa4bufd5IYO+ISA+vb
+         sPulxO1RGVN/a3ogVRioB0qkdwc/vhoP+2d8v6wsHRBYtdEYPe5za0mR90DDzuMkVKj1
+         mE9Fvz+bQ30YQmxqoCFY41k63haoNkdcGCpUGteum27tjujt2PGfi2kPbaeeBzEoW2Vu
+         3VSN5hsGogN14qxxLc0WzHGF7lC73+5rtnKSC3IcPP9spI5HvOSnZ/OTYC7BTNtZMevm
+         2QoQ==
+X-Gm-Message-State: AFqh2krii+HsbizZxJlGp08lMEKJAnWW+Qu21Kkv/EM9EJ2Kj2E02tZP
+        n4ApImat2gjCszmxR9yP2Cw=
+X-Google-Smtp-Source: AMrXdXvC3macKDxyUb+BGmYm7BcOTuI3IMOhA5CwUNKGqTvZkc3N9iWtCJJjx6b7+Ycm553BQ/XoJw==
+X-Received: by 2002:a05:600c:3422:b0:3da:f651:782c with SMTP id y34-20020a05600c342200b003daf651782cmr3620699wmp.25.1674065495006;
+        Wed, 18 Jan 2023 10:11:35 -0800 (PST)
+Received: from fedora.36 ([78.10.207.59])
+        by smtp.gmail.com with ESMTPSA id l36-20020a05600c1d2400b003d1e1f421bfsm3107205wms.10.2023.01.18.10.11.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jan 2023 10:11:34 -0800 (PST)
+Date:   Wed, 18 Jan 2023 19:11:33 +0100 (CET)
+From:   =?ISO-8859-2?Q?Micha=B3_Grzelak?= <mchl.grzlk@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+cc:     =?ISO-8859-2?Q?Micha=B3_Grzelak?= <mchl.grzlk@gmail.com>,
+        linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, cosmin.tanislav@analog.com,
+        jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: addac: adi,74115: Add missing
+ maxItems
+In-Reply-To: <20230117195723.GA3527095-robh@kernel.org>
+Message-ID: <16a6e9ae-291f-d0b9-9529-4c72588d9668@student.agh.edu.pl>
+References: <20230115022558.145076-1-mchl.grzlk@gmail.com> <20230117195723.GA3527095-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: multipart/mixed; boundary="-1463809024-2123484451-1674063327=:48246"
+Content-ID: <bf5b20f9-7b9d-cbf5-db48-9adad995e2@student.agh.edu.pl>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,77 +74,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 Jan 2023 17:35:25 +0100
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> On 2023-01-18 16:19:20, Jonathan Cameron wrote:
-> > On Mon, 16 Jan 2023 23:09:05 +0100
-> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> >   
-> > > As mentioned and discussed in [1] extend_name should not be used for
-> > > full channel labels (and most drivers seem to only use it to express a
-> > > short type of a channel) as this affects sysfs filenames, while the
-> > > label name is supposed to be extracted from the *_label sysfs file
-> > > instead.  This appears to have been unclear to some drivers as
-> > > extend_name is also used when read_label is unset, achieving an initial
-> > > goal of providing sensible names in *_label sysfs files without noticing
-> > > that sysfs filenames are (negatively and likely unintentionally)
-> > > affected as well.
-> > > 
-> > > Point readers of iio_chan_spec::extend_name to iio_info::read_label by
-> > > mentioning deprecation and side-effects of this field.
-> > > 
-> > > [1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
-> > > 
-> > > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > ---
-> > >  include/linux/iio/iio.h | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > > 
-> > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > > index 81413cd3a3e7..36c89f238fb9 100644
-> > > --- a/include/linux/iio/iio.h
-> > > +++ b/include/linux/iio/iio.h
-> > > @@ -221,6 +221,9 @@ struct iio_event_spec {
-> > >   * @extend_name:	Allows labeling of channel attributes with an
-> > >   *			informative name. Note this has no effect codes etc,
-> > >   *			unlike modifiers.
-> > > + *			This field is deprecated in favour of overriding read_label
-> > > + *			in iio_info, which unlike @extend_name does not affect sysfs
-> > > + *			filenames.  
-> > Perhaps reword as
-> > 
-> > This field is deprecated in favour of overriding the default label
-> > by providing a read_label() callback in iio_info, which unlike
-> > @extend_name does not affect sysfs filenames.
-> > ?  
-> 
-> Agreed, explicitly stating "the default label by" makes this much more
-> clear.  Though, maybe swap that around into "in favour of providing
-> read_label() in iio_info to override the label"?  Otherwise this could
-> be interpreted as "overriding the default label" is preferred to setting
-> extend_name... which one would do to override the default label.
+---1463809024-2123484451-1674063327=:48246
+Content-Type: text/plain; charset=ISO-8859-2; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <35a7aac2-3d12-ac32-14cf-0679fc484c6@student.agh.edu.pl>
 
-Sure that works.
-> 
-> I can queue this up for v3 unless you'll fix it up while applying,
-> presuming no other changes have to be made (aside from dropping patch
-> 3/5).
-I haven't looked closely enough at the rest, but if this is all that
-needs updating I'll change it whilst applying.
+On Tue, 17 Jan 2023, Rob Herring wrote:
 
-> 
-> Will read_label() turn into a link?  And is the @extend_name reference
-> proper?  Is there something to link to iio_info, perhaps a hashtag - or
-> maybe fully qualify `#iio_info::read_label()` for linking purposes?
-> /me jumps over to kerneldoc documentation :)
-> 
-> - Marijn
-> 
-> > >   * @datasheet_name:	A name used in in-kernel mapping of channels. It should
-> > >   *			correspond to the first name that the channel is referred
-> > >   *			to by in the datasheet (e.g. IND), or the nearest  
-> >   
-> 
+> On Sun, Jan 15, 2023 at 03:25:58AM +0100, Micha³ Grzelak wrote:
+>> Running 'make dt_binding_check' gives following warnings:
+>> iio/addac/adi,ad74115.example.dtb:
+>> addac@0: adi,conv2-range-microvolt: 'oneOf' conditional failed, one must
+>> be fixed:
+>>         4282967296 is not one of [-2500000, 0]
+>>         4282967296 is not one of [-12000000, 0]
+>>         -2500000 was expected
+>>         -104000 was expected
+>>         625000 was expected
+>>
+>> addac@0: Unevaluated properties are not allowed
+>> ('adi,conv2-range-microvolt' was unexpected)
+>>         From schema: iio/addac/adi,ad74115.yaml
+>
+> I think your dtschema version is out of date. I don't see this issue.
+> The issue has to do with signed types and there have been some fixes
+> related to them.
+>
 
+Right. Issue vanished after upgrade, sorry for unnecessary noise.
+
+Best regards,
+Micha³
+---1463809024-2123484451-1674063327=:48246--

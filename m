@@ -2,116 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BDFF671E42
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 14:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C085671E7F
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 14:52:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbjARNm6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 08:42:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44448 "EHLO
+        id S230149AbjARNwf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 08:52:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230145AbjARNmH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 08:42:07 -0500
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23B75611FE;
-        Wed, 18 Jan 2023 05:10:58 -0800 (PST)
-Received: by mail-ot1-f50.google.com with SMTP id g2-20020a9d6b02000000b006864bf5e658so2416838otp.1;
-        Wed, 18 Jan 2023 05:10:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=C73j249s5bhwEuVvXBUJxqTogNEcEvZ4jDs6uGdeSpI=;
-        b=uEfDNwoXY2fZYfyoWhqGLHUxwCstFqXTj+cYLlPz7Bmskv/G2X61WZYzH6X2HIDLqY
-         /N9mhYvpBxvwEJ5SVyGTQFaXnZPFs0zLKXR+y/sUB3F6WtVdbKRyG5CA2KW4Ov8p71P5
-         N8IpCklABWYnrDb0VchxN76lMxRI+hylx1I7aWBYOckeqbEjZCH9PBLWcboQN62aQS9M
-         oOHzr9aIE6LO0JIIdWNJk3ZIzu2kLbWxV5kWROD/Ll6f39VMd9QJqhhwFKC5ecDVH5Ki
-         WSlidBJNt9Xl1ODhEylkCdR9sILEO2NOZPmbNhGgTTuBlOeQyOxjNee+RfLvZc6qMDnc
-         Gv1Q==
-X-Gm-Message-State: AFqh2kq4PtooecDE510QGQruhzMqak/Amnc75t5CvzOoSRNTJ8/iEP+a
-        rqNUP+G/CNnRV3VqMT64Kg==
-X-Google-Smtp-Source: AMrXdXuZ/Q1R/e+2+1EZkZ2Wjv+Jm8OHazomq5xSIF2UKkdyDtTVd2zV+xaJkBBDz4yHktrjx9hC4A==
-X-Received: by 2002:a9d:4c13:0:b0:684:c595:70a6 with SMTP id l19-20020a9d4c13000000b00684c59570a6mr3544907otf.24.1674047451997;
-        Wed, 18 Jan 2023 05:10:51 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id h8-20020a056830164800b006864a6f2bfdsm2513474otr.31.2023.01.18.05.10.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 05:10:51 -0800 (PST)
-Received: (nullmailer pid 1459892 invoked by uid 1000);
-        Wed, 18 Jan 2023 13:10:47 -0000
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S230190AbjARNvh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 08:51:37 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C4910F0;
+        Wed, 18 Jan 2023 05:22:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674048169; x=1705584169;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Nj0qpQdgtaOkN7UVN/SyAs7hEIf/6xEd/lNQJtbQvrk=;
+  b=Xt265l+HwZoCu+7oK//xxbw7qbit/qoOIrcXoamq9d/LT+NEfDwTlLfg
+   DWMu4Sq3hy+Z3Q96lDU+CtOt0sRC9l4GQNIV8lGa2EJtoak6RsBDzOx35
+   R7551QFIjv7lF+olv/lU7a05xTZlfn22z/gLOud6m/SS3RWbbm+8B9+Xr
+   lX6SHjdHwwURW+yNqDmp8DDwDwc/hR7Se0DbcskXPMZNKXzUwZeS1NFqK
+   HlVdue+dql9CF7cEBVRE9wdz9EFmCiV9jzdHDCyZiQGC2UykIFS0xB7lk
+   n3tRNGXmg0zrNuI5CTKdfskdQbqVHiWbExqMAW/bBn8dKhmH7ue8+Ux78
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="387330412"
+X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
+   d="scan'208";a="387330412"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 05:22:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="609649791"
+X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
+   d="scan'208";a="609649791"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP; 18 Jan 2023 05:22:44 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pI8Oo-00BCHY-1j;
+        Wed, 18 Jan 2023 15:22:42 +0200
+Date:   Wed, 18 Jan 2023 15:22:42 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        devicetree@vger.kernel.org,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lee Jones <lee@kernel.org>, linux-iio@vger.kernel.org,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230118063822.14521-3-okan.sahin@analog.com>
-References: <20230118063822.14521-1-okan.sahin@analog.com>
- <20230118063822.14521-3-okan.sahin@analog.com>
-Message-Id: <167404705445.1390430.14924342340029865521.robh@kernel.org>
-Subject: Re: [PATCH v3 2/5] dt-bindings: mfd: Add ADI MAX77541/MAX77540
-Date:   Wed, 18 Jan 2023 07:10:47 -0600
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Message-ID: <Y8fyonSp49QoAb8v@smile.fi.intel.com>
+References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+ <20230118123528.oaxtjbdier3ojd3m@SoMainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230118123528.oaxtjbdier3ojd3m@SoMainline.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On Wed, 18 Jan 2023 09:38:09 +0300, Okan Sahin wrote:
-> Add ADI MAX77541/MAX77540 devicetree document.
+On Wed, Jan 18, 2023 at 01:35:28PM +0100, Marijn Suijten wrote:
+> On 2023-01-18 12:06:23, Andy Shevchenko wrote:
+> > The node name can contain an address part which is unused
+> > by the driver. Moreover, this string is propagated into
+> > the userspace label, sysfs filenames *and breaking ABI*.
+> > 
+> > Cut the address part out before assigning the channel name.
+> > 
+> > Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+> > Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> Signed-off-by: Okan Sahin <okan.sahin@analog.com>
-> ---
->  .../devicetree/bindings/mfd/adi,max77541.yaml | 87 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 88 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+> Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+
+Thank you!
+
+My answers below.
+
+...
+
+> > +	name = devm_kasprintf(dev, GFP_KERNEL, "%pfwP", fwnode);
 > 
+> Is this better/cleaner than copying the string from fwnode_get_name?
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Coying to where? And what would be the lifetime of that string?
 
-yamllint warnings/errors:
+With devm_kasprintf():
+- we don't care how long the string is
+- we don't care about corner cases of lifetime as it's the same as
+  device itself (i.o.w. the same as the IIO device container)
 
-dtschema/dtc warnings/errors:
-./Documentation/devicetree/bindings/mfd/adi,max77541.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/regulator/adi,max77541-regulator.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mfd/adi,max77541.example.dtb: pmic@69: regulators: False schema does not allow {'buck1': {'regulator-min-microvolt': [[500000]], 'regulator-max-microvolt': [[5200000]], 'regulator-boot-on': True, 'regulator-always-on': True}, 'buck2': {'regulator-min-microvolt': [[500000]], 'regulator-max-microvolt': [[5200000]], 'regulator-boot-on': True, 'regulator-always-on': True}}
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+...
 
-doc reference errors (make refcheckdocs):
+> > +	name[strchrnul(name, '@') - name] = '\0';
+> 
+> This is the same as *strchrnul(name, '@') = '\0'; if I'm not mistaken.
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230118063822.14521-3-okan.sahin@analog.com
+Yes, But it's harder to read and understand. I believe the compiler has
+enough power to optimize this to the same assembly code.
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 

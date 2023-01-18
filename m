@@ -2,82 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB416717E2
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 10:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B6E6718E2
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 11:26:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjARJhj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 04:37:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55628 "EHLO
+        id S230009AbjARK0M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 05:26:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230040AbjARJfC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 04:35:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0396A193DE;
-        Wed, 18 Jan 2023 00:54:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229827AbjARKZl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 05:25:41 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27747D673
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 01:29:54 -0800 (PST)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9F81BB8118F;
-        Wed, 18 Jan 2023 08:54:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D8DC433F0;
-        Wed, 18 Jan 2023 08:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674032086;
-        bh=qpbIsiLmAWo/Yyxp9eZJRCZtQ25fsobPBsJ/XpH9rEA=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=YhCyzSQcoTw8iqjo7c+CNIZCUhXds2k7rVb4XcN+Joyx3dW8gmlKluhfsTdV3fZnk
-         Iz/A/2/KJqWZgb5dto5rbgTDx2HxISQyNyOvPDB3IC69jd1xhL4gLmFmRq29q4K9eF
-         R1MdX8X/dqciwv9WSJhx3AiF0ixAjtKGqI1J8QIyYRXMIcZSL7Pfae6XvKRahJjr5M
-         HoFCeHmLT7BnzDvklHdLeuatRGc2TIMBnxKgYUQRpYLdDwhCj68WLntkVR/AiX+XOY
-         kwxMEVSNtdsO8rOkSoLI50KY1EWy6g6QYy/vfrlN9Mdw3Z/DJse9EfEO7wZjEuxDao
-         0P70JC9bKnDbA==
-Date:   Wed, 18 Jan 2023 09:54:46 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Aditya Garg <gargaditya08@live.com>
-cc:     "benjamin.tissoires@redhat.com" <benjamin.tissoires@redhat.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "orlandoch.dev@gmail.com" <orlandoch.dev@gmail.com>,
-        "ronald@innovation.ch" <ronald@innovation.ch>
-Subject: Re: [PATCH v3] HID: Recognize sensors with application collections
-In-Reply-To: <9E66CF6F-99A0-4CC5-9FA0-3A9DCFCA0388@live.com>
-Message-ID: <nycvar.YFH.7.76.2301180953340.1734@cbobk.fhfr.pm>
-References: <8DA00FF4-DB08-4CEC-A5B4-47A71DC09C13@live.com> <01D620E2-18CA-40F6-A330-454CBC20C542@live.com> <EFCEA45A-C6F4-477A-B011-9C9E6E61E488@live.com> <9E66CF6F-99A0-4CC5-9FA0-3A9DCFCA0388@live.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 12A903F3F7;
+        Wed, 18 Jan 2023 10:29:51 +0100 (CET)
+Date:   Wed, 18 Jan 2023 10:29:50 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Message-ID: <20230118092950.kctzkvz5h6rzi7rp@SoMainline.org>
+References: <20230117093944.72271-1-andriy.shevchenko@linux.intel.com>
+ <20230117231204.fpvxryjscosg57a6@SoMainline.org>
+ <Y8ejxsqeHL/pBTAY@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8ejxsqeHL/pBTAY@smile.fi.intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 11 Jan 2023, Aditya Garg wrote:
-
-> From: Ronald Tschalär <ronald@innovation.ch>
+On 2023-01-18 09:46:14, Andy Shevchenko wrote:
+> On Wed, Jan 18, 2023 at 12:12:04AM +0100, Marijn Suijten wrote:
+> > On 2023-01-17 11:39:44, Andy Shevchenko wrote:
+> > > The node name can contain an address part which is not used by
+> > > the driver. Cut it out before assigning the channel name.
+> > 
+> > This explanation doesn't cut it.  It's not that the driver "doesn't use"
 > 
-> According to HUTRR39 logical sensor devices may be nested inside
-> physical collections or may be specified in multiple top-level
-> application collections (see page 59, strategies 1 and 2). However,
-> the current code was only recognizing those with physical collections.
+> Driver doesn't use it still. There is no contradiction, but I agree that
+> below part is good to have in the commit message.
+
+You can leave that in if you want but that's not the issue that I
+reported/described.  Having both describes the situation in full.
+
+> > the address part, it is that this string is propagated into the
+> > userspace label, sysfs /filenames/ *and breaking ABI*.
 > 
-> This issue turned up in the T2 MacBook Pros which define the ALS in
-> a top-level application collection.
+> So I will add it into v2 in case the fix works (see below).
 > 
-> Signed-off-by: Ronald Tschalär <ronald@innovation.ch>
-> Signed-off-by: Aditya Garg <gargaditya08@live.com>
+> ...
+> 
+> > > -	const char *name = fwnode_get_name(fwnode), *channel_name;
+> > > +	const char *name, *channel_name;
+> > 
+> > I don't think this'll compile as name is still a pointer to const data,
+> > while you're assigning (a '\0' char) to it below.
+> 
+> Right, it's always hard for me to compile things for ARM on x86 :-)
+> Thanks for catching this up!
 
-Makes sense. Queued in for-6.3/hid-core. Thanks,
+Thanks for sending this in regardless; as said before I rather break ABI
+and clean the driver up properly (no more extend_name...) than sending a
+fix like this :)
 
--- 
-Jiri Kosina
-SUSE Labs
+> But does this fix the issue after compilation fix?
 
+It does, no more @xx in sysfs filenames nor label contents!
+
+- Marijn

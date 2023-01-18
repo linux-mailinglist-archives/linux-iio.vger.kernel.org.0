@@ -2,48 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E16DD6716EA
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 10:02:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 450436716FE
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 10:04:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229977AbjARJB7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 04:01:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58132 "EHLO
+        id S229913AbjARJEi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 04:04:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbjARI7v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 03:59:51 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A78611DE;
-        Wed, 18 Jan 2023 00:19:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674029980; x=1705565980;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RNq2iIuPm+2/Woqz849r4QT1JASJeQWrk6QFhE+mRIE=;
-  b=geVaqhbDk2ty72s6HG0Uj7+DydHpNdZa4Q+FwhGuoYFt71IE5TFvHpPG
-   wzJtswMCCkLB4P2tzb3mKbFhvGgjKf0EBz4Fq2YzB5C1UxnlQvstZtZMI
-   7TSYzvwL8rshKAX1IXinbYldLwTClmXi8VXyo8Hh5rXaQH0rbe/0fJtMH
-   ZMe+q73HGGfYApNab72jLwZP8ZnPDgzoLTVOR/iukaBOn8gjMHetADynR
-   ORK30GtPQx65CAIPSFDN1yiE0InYR3g4Vog6kuiZMvMfpt/t7qYitDvHq
-   zI7Q8uOtQ6mSxvaDYLkyWbDQrFrkKrfMsKq29InmUCH015GazUAVUU44z
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="411168569"
-X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="411168569"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 00:19:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="690091014"
-X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="690091014"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 18 Jan 2023 00:19:36 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pI3fS-00B0f0-12;
-        Wed, 18 Jan 2023 10:19:34 +0200
-Date:   Wed, 18 Jan 2023 10:19:34 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S230033AbjARJEO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 04:04:14 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426981555C
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 00:23:04 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id n7so7016697wrx.5
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 00:23:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sC4oSthDqU9cf3u2CS4pwyGd5dXVv3IJrMPqW08SHjU=;
+        b=PHK37/6BC93sa2U8vVLffIfZLoLfvLEUdjc5PDUnIWHanPCuBFvmeXTAOktMipPju/
+         MU3gG/0WYsWu7craUR8r9AFY8IpVJkypg0GfImeoDwL3hHsytzJi1Z2T/rusVjmUVmuH
+         TOyoyatn5wIxzEFPbE4IzyrOApadPH5x2K1fj6ZvvgS0TiF8XZyROf7UL3p4x54xHmfD
+         Tb8TRj9VgeAsQjgOon9jeSOLFfurjByG2hHNeKHrvHskT30x6sAJ9+451BL1PuVJMa+z
+         kCmADvdlrDNL3a5NCbCv7bGv43HKl32uBS++n+tltJ6n/feVL9saJhXnTddedBUQ0Xg5
+         dngQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sC4oSthDqU9cf3u2CS4pwyGd5dXVv3IJrMPqW08SHjU=;
+        b=gVas85MjpD5PPY3dibGEVyxP2vGa6y0GhYIZOONK+OSQ9/LpWAPyhetzXjNaRjBjYB
+         NQd1tG/mfQUjyJhWUiRjLN41+MxnkVep0/fQmBFerdqigAVzohDkamIV+9dfvt8Tderr
+         RU7NM29vrup3r/cpRpwXPiizbvSGj7b5iDa5gGg0LwABxHDHJY/eGgkgXaCkWe2ChFag
+         sOVt/BETq5/MVwxqD8HANhv/UxMqtTmScEsroxE/Xwmx2k2rk/SQrCbatANL9az9gevN
+         929N3GM758gf0/vNfn6pbMdH0IZvavLOile1kiike8jjfTqKa3Qs0YoxJfXQHNejsSeM
+         pNtQ==
+X-Gm-Message-State: AFqh2krvQEwc+RuGTWy4327Cp8uuyMMwRZZBDJb09k4wfYtG2rdiduL0
+        ky3S890iloWP2XVEux9UNl51EA==
+X-Google-Smtp-Source: AMrXdXvOicajt2IQqs1cr0S7TxfA67bKcXWin0mWuNxnzOwgUl0pT6dXcK/3bL8CyUYii8kYqIashQ==
+X-Received: by 2002:adf:f703:0:b0:2bd:dd96:b06a with SMTP id r3-20020adff703000000b002bddd96b06amr5342051wrp.48.1674030183084;
+        Wed, 18 Jan 2023 00:23:03 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id f8-20020a0560001b0800b002423edd7e50sm30440470wrz.32.2023.01.18.00.22.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 00:22:59 -0800 (PST)
+Message-ID: <c4433cba-ce35-e5d3-f04b-ba8f9f501732@linaro.org>
+Date:   Wed, 18 Jan 2023 09:22:57 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v3 2/5] dt-bindings: mfd: Add ADI MAX77541/MAX77540
+Content-Language: en-US
 To:     Okan Sahin <okan.sahin@analog.com>
 Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -51,108 +63,117 @@ Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Mark Brown <broonie@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Caleb Connolly <caleb.connolly@linaro.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
         William Breathitt Gray <william.gray@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] drivers: regulator: Add ADI MAX77541/MAX77540
- Regulator Support
-Message-ID: <Y8erlpofdk24vwCC@smile.fi.intel.com>
 References: <20230118063822.14521-1-okan.sahin@analog.com>
- <20230118063822.14521-4-okan.sahin@analog.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230118063822.14521-4-okan.sahin@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+ <20230118063822.14521-3-okan.sahin@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230118063822.14521-3-okan.sahin@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 09:38:10AM +0300, Okan Sahin wrote:
-> Regulator driver for both MAX77541 and MAX77540.
-> The MAX77541 is a high-efficiency step-down converter
-> with two 3A switching phases for single-cell Li+ battery
-> and 5VDC systems.
+On 18/01/2023 07:38, Okan Sahin wrote:
+> Add ADI MAX77541/MAX77540 devicetree document.
 > 
-> The MAX77540 is a high-efficiency step-down converter
-> with two 3A switching phases.
+> Signed-off-by: Okan Sahin <okan.sahin@analog.com>
+> ---
+>  .../devicetree/bindings/mfd/adi,max77541.yaml | 87 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 88 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/adi,max77541.yaml b/Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+> new file mode 100644
+> index 000000000000..91d15e9ca2e3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+> @@ -0,0 +1,87 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/adi,max77541.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: MAX77540/MAX77541 PMIC from ADI
+> +
+> +maintainers:
+> +  - Okan Sahin <okan.sahin@analog.com>
+> +
+> +description: |
+> +  MAX77540 is a Power Management IC with 2 buck regulators.
+> +
+> +  MAX77541 is a Power Management IC with 2 buck regulators and 1 ADC.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,max77540
+> +      - adi,max77541
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  regulators:
+> +    $ref: /schemas/regulator/adi,max77541-regulator.yaml#
 
-...
+No improvements regarding bisectability - this patch fails. If you
+tested this patch, you would see it.
 
-> + * Copyright (c) 2022 Analog Devices, Inc.
+Instead of ignoring comments, either implement them or ask for
+clarification.
 
-Happy New Year!
-
-...
-
-> +static int max77541_regulator_probe(struct platform_device *pdev)
-> +{
-> +	struct max77541 *max77541 = dev_get_drvdata(pdev->dev.parent);
-> +	struct regulator_config config = {};
-> +	const struct regulator_desc *desc;
-> +	struct device *dev = &pdev->dev;
-
-You may rearrange this a bit
-
-	struct max77541 *max77541 = dev_get_drvdata(dev->parent);
-
-> +	struct regulator_dev *rdev;
-> +	int i;
-
-> +	config.dev = pdev->dev.parent;
-
-dev->parent
 
 > +
-> +	if (max77541->id == MAX77540)
-> +		desc = max77540_regulators_desc;
-> +	else if (max77541->id == MAX77541)
-> +		desc = max77541_regulators_desc;
-> +	else
-> +		return -EINVAL;
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
 > +
-> +	for (i = 0; i < MAX77541_MAX_REGULATORS; i++) {
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: adi,max77540
+> +    then:
+> +      properties:
+> +        regulator:
 
-> +		rdev = devm_regulator_register(dev,
-> +					       &desc[i], &config);
+You do not have 'regulator' property.
 
-This is perfectly one line.
+> +          properties:
+> +            compatible:
+> +              const: adi,max77540-regulator
+> +    else:
+> +      properties:
+> +        regulator:
 
-> +		if (IS_ERR(rdev))
-> +			return dev_err_probe(dev, PTR_ERR(rdev),
-> +					     "Failed to register regulator\n");
-> +	}
+Same problem.
+
+> +          properties:
+> +            compatible:
+> +              const: adi,max77541-regulator
 > +
-> +	return 0;
-> +}
+> +additionalProperties: false
+> +
 
-...
-
-> +static const struct of_device_id max77541_regulator_of_id[] = {
-> +	{
-> +		.compatible = "adi,max77540-regulator",
-> +		.data = (void *)MAX77540,
-> +	},
-> +	{
-> +		.compatible = "adi,max77541-regulator",
-> +		.data = (void *)MAX77541,
-> +	},
-> +	{ /* sentinel */  }
-
-As pointed out, better to use pointers directly.
-
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 

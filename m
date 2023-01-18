@@ -2,98 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13A0C671612
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 09:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB07671619
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 09:21:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjARIUV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 03:20:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41106 "EHLO
+        id S229798AbjARIVd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 03:21:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjARITY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 03:19:24 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A8246E833;
-        Tue, 17 Jan 2023 23:47:18 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id s3so10280687edd.4;
-        Tue, 17 Jan 2023 23:47:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1LCPLBgrIk06G/mmYXIxpu2GlEPHwjS0EL5galTqjKo=;
-        b=mk6DYCPA+0dr5KzN8hWOljeu2+D2BOIf4y69CviWz0TxGM8p3ohAy/qdgWh+4tP7Pn
-         RU8t83mIghKo4gQNvEx22yvEMHQpZ6qlduuloCBR9WWdCLEkbSl73vXzNhzQgefnK2CS
-         JavXdDwYnoUjDgJTrtUjWN5YAgI1LgXr6n0YKvFpZ34QyA0AxZMjLUvlMQT/q7Cwvkmr
-         nawi1MgAM45bvssJ8V0lWmj8v9HfaEZVSFE+6zlrxcYcDKzQ04RuIowZkQr+Etiau4LM
-         pzQKX4TqbeOGYVBcQnpSQBERHLtm9Nhftr5l9o9QfqgkW8/OB+pyXuBUl8NDmqoNeav4
-         KpUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1LCPLBgrIk06G/mmYXIxpu2GlEPHwjS0EL5galTqjKo=;
-        b=F3fy+O7MkwwiTz7Z+zD3H5iaEPlWlvuVdiI7Kxgy0Wecq6equ/sYEE7bkXCFtpgyxY
-         otH68oswe+ABiCM5xNfzirvO9Ox09sQ2bRUvE06onkmAoOkhnUrMMM/hX9F/JHjh0exd
-         XRXGA2QYulipprkNcl0q3QG56q0KzFFWDnEfWp8aSyBXbAY4cGg/v1ZxA9Mtd/y4E8uk
-         C54ygW1fFvfV3Cjs9TbcK0uJKaA9oCpXHlIkhASMvYsEhTciPoe3exZOP+GmDyphLvyC
-         0NxkidXqmCifwkzyrer+cRBnYQui0eaw1h5EuD2m+pTlgRvNrChYslmPmi4zqaDfgzR7
-         bKkw==
-X-Gm-Message-State: AFqh2kpWWgjJYRhj3DjU1f8aw9AXkqxA27UJHkVgmFQ2CxVaKf76oJAb
-        BLhJoUETWc8QuTM98Qa2i74=
-X-Google-Smtp-Source: AMrXdXs+nGvLJcMIXH6ilNgO1yBx9w5fuQ2adsLupLu+3b5xhhSHqIu/FadeRG05Q0MYZTQT1snkNw==
-X-Received: by 2002:aa7:cc91:0:b0:46c:6ed1:83b0 with SMTP id p17-20020aa7cc91000000b0046c6ed183b0mr5821272edt.9.1674028036849;
-        Tue, 17 Jan 2023 23:47:16 -0800 (PST)
-Received: from felia.fritz.box ([2a02:810d:2a40:1104:595a:333:19d3:2dba])
-        by smtp.gmail.com with ESMTPSA id s1-20020aa7c541000000b00495c3573b36sm13813184edr.32.2023.01.17.23.47.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jan 2023 23:47:16 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     William Breathitt Gray <william.gray@linaro.org>,
-        Peter Robinson <pbrobinson@gmail.com>,
-        linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] counter: fix dependency references for config MICROCHIP_TCB_CAPTURE
-Date:   Wed, 18 Jan 2023 08:46:59 +0100
-Message-Id: <20230118074659.5909-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230086AbjARIUv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 03:20:51 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE6839287;
+        Tue, 17 Jan 2023 23:48:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674028092; x=1705564092;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=V0/TXsQQWmEebWydvXYOMJFyW5Ah/NfVrzP/l74ZXew=;
+  b=TLGw42hmOomx4Kgw8pFfOylDAVbHoWz5bDL5iKv5qoDNSI8ncjiiK1Pc
+   szgNu0PsfXTs2V+FGZ3XD+uKFXyp11NbUcADRJoGUWSrFh3lq6PJHRe5i
+   Va3spuHAGPNNfHo01axByiqgzLn+g7NhX0fDIA9dwALx2P2MNKY3n1ITT
+   tWysx8HzU+rBXDHtiS4JKsUpPVtG0Ps1KfAn2zxNVm0X0R9YysyHsr8SI
+   ZttQwaDU2XkOzbEBZcgfQlRx1RCMmwPFGEVCqb2anXqpa7ssEr/xKZVVc
+   mi0TNi1kjov7FLyfcEK97gLUZ1x1WpXaWbHFXpsj+/84Dqb7NK+5YcfOn
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="312800645"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="312800645"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 23:48:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="637171941"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="637171941"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga006.jf.intel.com with ESMTP; 17 Jan 2023 23:48:07 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id ECF4B256; Wed, 18 Jan 2023 09:48:42 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] iio: core: Replace iio_sysfs_match_string_with_gaps() by __sysfs_match_string()
+Date:   Wed, 18 Jan 2023 09:48:27 +0200
+Message-Id: <20230118074828.66155-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Commit dfeef15e73ca ("counter: microchip-tcp-capture: Add appropriate arch
-deps for TCP driver") intends to add appropriate dependencies for the
-config MICROCHIP_TCB_CAPTURE. It however prefixes the intended configs with
-CONFIG, but in Kconfig files in contrast to source files, the configs are
-referenced to without prefixing them with CONFIG.
+None of the current users is using gaps in the list of the items.
+No need to have a specific function for that, just replace it by
+library available __sysfs_match_string().
 
-Fix the dependency references due to this minor misconception.
-
-Fixes: dfeef15e73ca ("counter: microchip-tcp-capture: Add appropriate arch deps for TCP driver")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/counter/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/industrialio-core.c | 32 +-------------------------------
+ 1 file changed, 1 insertion(+), 31 deletions(-)
 
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 90602536fb13..b5ba8fb02cf7 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -63,7 +63,7 @@ config INTERRUPT_CNT
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 52e690f031cb..26e357f14db8 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -205,36 +205,6 @@ bool iio_buffer_enabled(struct iio_dev *indio_dev)
+ }
+ EXPORT_SYMBOL_GPL(iio_buffer_enabled);
  
- config MICROCHIP_TCB_CAPTURE
- 	tristate "Microchip Timer Counter Capture driver"
--	depends on CONFIG_SOC_AT91SAM9 || CONFIG_SOC_SAM_V7 || COMPILE_TEST
-+	depends on SOC_AT91SAM9 || SOC_SAM_V7 || COMPILE_TEST
- 	depends on HAS_IOMEM && OF
- 	select REGMAP_MMIO
- 	help
+-/**
+- * iio_sysfs_match_string_with_gaps - matches given string in an array with gaps
+- * @array: array of strings
+- * @n: number of strings in the array
+- * @str: string to match with
+- *
+- * Returns index of @str in the @array or -EINVAL, similar to match_string().
+- * Uses sysfs_streq instead of strcmp for matching.
+- *
+- * This routine will look for a string in an array of strings.
+- * The search will continue until the element is found or the n-th element
+- * is reached, regardless of any NULL elements in the array.
+- */
+-static int iio_sysfs_match_string_with_gaps(const char * const *array, size_t n,
+-					    const char *str)
+-{
+-	const char *item;
+-	int index;
+-
+-	for (index = 0; index < n; index++) {
+-		item = array[index];
+-		if (!item)
+-			continue;
+-		if (sysfs_streq(item, str))
+-			return index;
+-	}
+-
+-	return -EINVAL;
+-}
+-
+ #if defined(CONFIG_DEBUG_FS)
+ /*
+  * There's also a CONFIG_DEBUG_FS guard in include/linux/iio/iio.h for
+@@ -569,7 +539,7 @@ ssize_t iio_enum_write(struct iio_dev *indio_dev,
+ 	if (!e->set)
+ 		return -EINVAL;
+ 
+-	ret = iio_sysfs_match_string_with_gaps(e->items, e->num_items, buf);
++	ret = __sysfs_match_string(e->items, e->num_items, buf);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
-2.17.1
+2.39.0
 

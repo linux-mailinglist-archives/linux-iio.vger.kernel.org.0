@@ -2,79 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EEA4671500
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 08:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F436715E4
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 09:13:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbjARHUS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 02:20:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35326 "EHLO
+        id S230080AbjARINY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 03:13:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229925AbjARHTa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 02:19:30 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D806A7ED71;
-        Tue, 17 Jan 2023 22:41:58 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30I3LlMY001202;
-        Wed, 18 Jan 2023 01:41:39 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3n3q4d7646-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Jan 2023 01:41:39 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 30I6fbxc002766
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 18 Jan 2023 01:41:37 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 18 Jan
- 2023 01:41:36 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 18 Jan 2023 01:41:36 -0500
-Received: from okan.localdomain ([10.158.40.55])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 30I6ccUw005042;
-        Wed, 18 Jan 2023 01:41:20 -0500
-From:   Okan Sahin <okan.sahin@analog.com>
-To:     <okan.sahin@analog.com>
-CC:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-Subject: [PATCH v3 5/5] drivers: iio: adc: Add ADI MAX77541 ADC Support
-Date:   Wed, 18 Jan 2023 09:38:12 +0300
-Message-ID: <20230118063822.14521-6-okan.sahin@analog.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230118063822.14521-1-okan.sahin@analog.com>
-References: <20230118063822.14521-1-okan.sahin@analog.com>
+        with ESMTP id S229804AbjARIMh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 03:12:37 -0500
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2050.outbound.protection.outlook.com [40.107.8.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B3E3474D1
+        for <linux-iio@vger.kernel.org>; Tue, 17 Jan 2023 23:42:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MbniYq92ogmhXzwRqXp5zAFhYfbl6RMdSRcghqUXtZ1Z/PVDovCOt1i2y4Bdrg1JjtdGk88FIcjeMuVgHQej4eTc6rw1X9z6tDqdWhezbnbp6t9P+3KMKfN0QkDbzdXoIgSS8tgu4D9lpHRJWYiMH1Ws1ohdkeMDmm/NX4BPwihy67zfWH1gBO985g/s0bbpjA0ChznTBkaR7zT74/bk9B6ODHX6Rtm6A8UfQeGCmj81MIzKMgLKsygoFUXGXSYjh9PjHex2PMVnaQp9hcxipTn2CD9vbygetlB26FchBaU64T2yCoPgBs2Civ0kfViUgq9h1p43y8/Xb9KcTivQxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UX0h+Hc8PLnL6XhvKQ4nOFlXbANjRAdtDzfDWbCEu1E=;
+ b=N9mj9BYUF8Tvr6yI1Zviia+2mNTVlyo38oCM3a17uLR5D4+AuhxCwGBIVS5UC81DZ9tEEwPfGns/12manVHQoYipRNuXS+2TZeL+a7+cmuPleA/kLKURZfZwB00R+h3JP2FXWOD4kSvCXJfr/dBTlYT0HjWu0U8Jubidmr6un37f4edgUkhql9AQF9iIT8HvXx4yMVOLRBJzi36YHmHlRYR0qKpTJN6PfrpOcAq8TJpaYOgepUn4ZyjsLdYrj2bPs+sKM0NqDJpxF0SxnSpk59VbqOneNefQOTmp5ug3h+LLPqFQ7KS3IcJoBnIj+hIZWmmTxaF87FrB7q0/h8o8KQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UX0h+Hc8PLnL6XhvKQ4nOFlXbANjRAdtDzfDWbCEu1E=;
+ b=DQziMK071N+rx3ZuHzcQtZDl0y5jJyGoL0DWaY2p77uBTTJ0A+LIsYIEiGCb5lyjCA1N/3xhDUPUjg0Kn9GFoRyRQ9qDDwtWCiwIdOpPw73mnOASc+urMcS6zNyJr51I4Sk+6lDSxCYCIAw4AKFsofn1eGpaYajabNH6YOheiuQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI1PR04MB5005.eurprd04.prod.outlook.com (2603:10a6:803:57::30)
+ by VI1PR04MB7152.eurprd04.prod.outlook.com (2603:10a6:800:12b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.24; Wed, 18 Jan
+ 2023 07:41:59 +0000
+Received: from VI1PR04MB5005.eurprd04.prod.outlook.com
+ ([fe80::e2d1:cb8b:dc57:8749]) by VI1PR04MB5005.eurprd04.prod.outlook.com
+ ([fe80::e2d1:cb8b:dc57:8749%6]) with mapi id 15.20.6002.024; Wed, 18 Jan 2023
+ 07:41:59 +0000
+From:   carlos.song@nxp.com
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     rjones@gateworks.com, Jonathan.Cameron@huawei.com,
+        haibo.chen@nxp.com, carlos.song@nxp.com, linux-imx@nxp.com,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v5 0/4] iio: imu: fxos8700: fix bugs about ODR and changes for a good readability
+Date:   Wed, 18 Jan 2023 15:42:23 +0800
+Message-Id: <20230118074227.1665098-1-carlos.song@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0106.apcprd02.prod.outlook.com
+ (2603:1096:4:92::22) To VI1PR04MB5005.eurprd04.prod.outlook.com
+ (2603:10a6:803:57::30)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: WCKUANNcDOdZdcBwMcKdJU6TXSgghQ3U
-X-Proofpoint-GUID: WCKUANNcDOdZdcBwMcKdJU6TXSgghQ3U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-18_01,2023-01-17_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 clxscore=1011 spamscore=0
- mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301180057
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR04MB5005:EE_|VI1PR04MB7152:EE_
+X-MS-Office365-Filtering-Correlation-Id: b41c7ebc-40e9-41b6-affb-08daf9277b24
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QZTxA6tIJyIofFTi1k0e85jLtROkugfGiwwXkLAmRRQGLAleSKAQFJJ80owp2VRwBCFpJMiEcVuiiKr1rM8psg6vffto0Kgbo2RHmOl1vrM4i3+OfNBLSY8kaUH1fzJjyjxdBhlzxBKUIUyeLyzhHcHUVNLYVlKz5a3AYIDSuA2Jut5469XxV8lC68XyYyqWCXzDiPQ41WdIBKN+xEvMbE5Ao5ZdKyd9vEwNnqK0+QX0JLOt5oYXYTwbYqjO18FVHimz6iqWyGffs6iFTkFeu1atqi8q1DWOWo5aYs7H9BRALQ/mmquBLHd5EcddpXq5QQeRyLr86aXP9QRJd616S2bwp83Inm0at8VNXsrEwpGPURWH4uaHTBNzVYTIK96+ESAjy6JiCX3q2WXc+J33lzU+L7NV/6GO2GYkOpf7xvULs3ZesEMJ7ZNAl6swm4bqky4UUjzVgaYEIuUH8+QaoeuPGNbiSl99yuppWo1KDk9U/j17jdMKkHF7GqXCJa3yShkRBDcq8Qv7Rwnh6bGBxo6YJMM7fJi3hp83RNokV4t2q6i6lsml75uMUzcmKse+/GOMWs6Yrld4mqoZIOB6LGyoUZTZ5pEYT8OYfYKEdPROa0fkoqStjWCvkWRaz4wVPIYo2HOIExgXje6kuz7NBMgQLWIrjI9+uY5hyupZ/r/ao8McEuAlcDT68LdV+KzZR6zb1dap9Ravj/XKqWqXYw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5005.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(376002)(136003)(396003)(346002)(366004)(451199015)(38350700002)(38100700002)(8936002)(5660300002)(4744005)(2906002)(66556008)(66476007)(66946007)(8676002)(4326008)(41300700001)(2616005)(1076003)(186003)(83380400001)(9686003)(6512007)(26005)(316002)(52116002)(6666004)(36756003)(478600001)(6486002)(6506007)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LWUvR+LaU/Tj2hy4ImSWKaFWKjstsBzv+H4E0SHNpUEWwLPS8fC5oQLVSvL2?=
+ =?us-ascii?Q?Oar2gopojlhKxIGlYTNNp0RaknGUgAW7N8BifApkQEtQqfP33pdTMQjdyI9T?=
+ =?us-ascii?Q?kL8cEfy+e3CaS8r68uqFzeQBl3UdI2lB0v69lsUbZIQ90e0OcG6WF++W+2m1?=
+ =?us-ascii?Q?cz6l9YurFqfXay+Rk4P/62tT/CiWnG35Ro7iiQDJBDMtLVec8MqnWKjCAtGu?=
+ =?us-ascii?Q?3obY3PLcTP/Tra6Vxl2prIyimdJKxbBLcv1Cq5hy+9saNWekaTo6olXjnLav?=
+ =?us-ascii?Q?4nStUA5/WF3LReuzZ88f242kbL+oAFeYmHzypiLnFay9k0TI3DmfzvDvmAI4?=
+ =?us-ascii?Q?GoXdy36zd1JrUtGH6s/lDkjwyH/JrLmyS1i5BFFmK6i8gA2p+aNExNpyE32r?=
+ =?us-ascii?Q?Mbjh0a1uXmagSnNJ7biyN2/wlmWrjqPg3GksUPtacs0whcD21Petap93oP7S?=
+ =?us-ascii?Q?h8eqHadk4RNLUz8kPrsjW4g+vZ+O79nt2t71OSzDOl1Avvxi68zJ6unL9Ain?=
+ =?us-ascii?Q?ov1e7X2qM9KuyMwGIFh5dchUDd1l+L+CCx9V0nApowfre87KjbJ/s7eYZE7l?=
+ =?us-ascii?Q?p8xDHjYQiypLPtnkub/E4JWsKbo1OnPGfFF6c+GsbOl+JuAu2F5ZZqG7kp7l?=
+ =?us-ascii?Q?dltHovkOHnF3WM/82pSTYbZ/R/Sl/uMxqncB5QeBV13wH2L7uriqjw+e1nIJ?=
+ =?us-ascii?Q?sBFhzZx0AxQ5OpHQ4BXLYp5l3NZQgHaXlNYjX61/C88+Wun/MJAChRtH5lRH?=
+ =?us-ascii?Q?VDCNjEiuowH3n2IualP/WrGb+TKljWopRPNjavmxJKwgzmrp+qL99N2GfRhI?=
+ =?us-ascii?Q?dOzU4W+QJ1lh0DcFDlQvXuzPgS0ADVKWnJG8cQVNvxID2toZFajzhfsU5Avp?=
+ =?us-ascii?Q?jQsc+CxmFh1M5RbaLCIzWB51vYzhA9g0jgHl6ovtd74iw0q8/Pj9QnkwOq7Q?=
+ =?us-ascii?Q?Y0EhXi7FC8djXDi/dK58rHBSNJZ6FVVgxDm6R08m8XoHcyh2vL2/d/DTCxes?=
+ =?us-ascii?Q?y1auC31Ggh70AJT7SYevtUSeZ6UcbZpCJ8QKGrhiOFunzxcK3wbevtszhaXe?=
+ =?us-ascii?Q?dZuj0+lGEFQe7KMXoIT1+GUsUEUIzjwtbCOkkWb+8DZjuyIPhQvOxwYvq3HJ?=
+ =?us-ascii?Q?S/1bF7I+Pw30Rn25hgAS+z1lvvKo7YvJWzJmLGE0/JrGfpuZFqRYhPovL0tQ?=
+ =?us-ascii?Q?EcOXCBpZLxjnqD2o4VX+3ug9tTfEiCZAW22VG7UOFYy2tPPsN04sxcJlBri6?=
+ =?us-ascii?Q?TWlmVygavImfjvscGCET6h/8TW06TgV9Z28HU4OaB2fBqT21Vcz1sycwEQ8B?=
+ =?us-ascii?Q?8GOu8cuwsW0xB0GJSfz25PFjNshao90w89Xd4fE80MZFoON5ZtQ5/8CRwpK3?=
+ =?us-ascii?Q?8SRUKKlL9wUWh/EMagY9CcHMIqQUSeI3A6d2sbx4tWyH0j4DeoL0NqgTp9rq?=
+ =?us-ascii?Q?x3BATvwo4eoR1FerGILI9UgYwymYKie5mzRBZeF5iklekPZgtVMxrW9LY7v3?=
+ =?us-ascii?Q?l12GocuF1He99wCgouN2N4g0mElEeoupVpkWLyUau/yHrV4iYgpN077nEo90?=
+ =?us-ascii?Q?88+BB11DurvjDZjWP/XBNsudHar1EKb5S7iaMbB1?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b41c7ebc-40e9-41b6-affb-08daf9277b24
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5005.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2023 07:41:59.4826
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mlyS+m4LHruSucBu1wEpZjv2/a1SkiD5Ogcgoa+xkQJ7FV1p8ZDqlhnt0NaCmZ2Rxiqsphlm92XLlxRrnTM30Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7152
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,270 +111,22 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The MAX77541 has an 8-bit Successive Approximation Register (SAR) ADC
-with four multiplexers for supporting the telemetry feature.
+From: Carlos Song <carlos.song@nxp.com>
 
-Signed-off-by: Okan Sahin <okan.sahin@analog.com>
----
- MAINTAINERS                    |   1 +
- drivers/iio/adc/Kconfig        |  11 ++
- drivers/iio/adc/Makefile       |   1 +
- drivers/iio/adc/max77541-adc.c | 200 +++++++++++++++++++++++++++++++++
- 4 files changed, 213 insertions(+)
- create mode 100644 drivers/iio/adc/max77541-adc.c
+Hi, Jonathan. Thank you for the suggestion. In patch 1, I use
+regmap_write to modify the value of the register. And in patch 2,
+I use regmap_update_bits instead of regmap_get and regmap_write
+for a good readability. Other patches have not been changed.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fcb846f7250f..763f2eec4bb7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12503,6 +12503,7 @@ L:	linux-kernel@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/adi,max77541.yaml
- F:	Documentation/devicetree/bindings/regulator/adi,max77541-regulator.yaml
-+F:	drivers/iio/adc/max77541-adc.c
- F:	drivers/mfd/max77541.c
- F:	drivers/regulator/max77541-regulator.c
- F:	include/linux/mfd/max77541.h
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 791612ca6012..9716225b50da 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -696,6 +696,17 @@ config MAX1363
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called max1363.
- 
-+config MAX77541_ADC
-+	tristate "Analog Devices MAX77541 ADC driver"
-+	depends on MFD_MAX77541
-+	help
-+	  This driver controls a Analog Devices MAX77541 ADC
-+	  via I2C bus. This device has one adc. Say yes here to build
-+	  support for Analog Devices MAX77541 ADC interface.
-+
-+	  To compile this driver as a module, choose M here:
-+	  the module will be called max77541-adc.
-+
- config MAX9611
- 	tristate "Maxim max9611/max9612 ADC driver"
- 	depends on I2C
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 46caba7a010c..03774cccbb4b 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -64,6 +64,7 @@ obj-$(CONFIG_MAX1118) += max1118.o
- obj-$(CONFIG_MAX11205) += max11205.o
- obj-$(CONFIG_MAX1241) += max1241.o
- obj-$(CONFIG_MAX1363) += max1363.o
-+obj-$(CONFIG_MAX77541_ADC) += max77541-adc.o
- obj-$(CONFIG_MAX9611) += max9611.o
- obj-$(CONFIG_MCP320X) += mcp320x.o
- obj-$(CONFIG_MCP3422) += mcp3422.o
-diff --git a/drivers/iio/adc/max77541-adc.c b/drivers/iio/adc/max77541-adc.c
-new file mode 100644
-index 000000000000..8c459661940f
---- /dev/null
-+++ b/drivers/iio/adc/max77541-adc.c
-@@ -0,0 +1,200 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2022 Analog Devices, Inc.
-+ * ADI MAX77541 ADC Driver with IIO interface
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/iio/iio.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/driver.h>
-+#include <linux/regulator/of_regulator.h>
-+#include <linux/units.h>
-+#include <linux/mfd/max77541.h>
-+
-+enum max77541_adc_range {
-+	LOW_RANGE,
-+	MID_RANGE,
-+	HIGH_RANGE,
-+};
-+
-+struct max77541_adc_iio {
-+	struct regmap	*regmap;
-+};
-+
-+enum max77541_adc_channel {
-+	MAX77541_ADC_VSYS_V = 0,
-+	MAX77541_ADC_VOUT1_V,
-+	MAX77541_ADC_VOUT2_V,
-+	MAX77541_ADC_TEMP,
-+};
-+
-+static int max77541_adc_offset(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       int *val, int *val2)
-+{
-+	switch (chan->channel) {
-+	case MAX77541_ADC_TEMP:
-+		*val = DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
-+					 1725);
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int max77541_adc_scale(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int *val, int *val2)
-+{
-+	struct max77541_adc_iio *info = iio_priv(indio_dev);
-+	unsigned int reg_val;
-+	int ret;
-+
-+	switch (chan->channel) {
-+	case MAX77541_ADC_VSYS_V:
-+		*val = 25;
-+		return IIO_VAL_INT;
-+	case MAX77541_ADC_VOUT1_V:
-+	case MAX77541_ADC_VOUT2_V:
-+		ret = regmap_read(info->regmap, MAX77541_REG_M2_CFG1, &reg_val);
-+		if (ret)
-+			return ret;
-+		reg_val = FIELD_GET(MAX77541_BITS_MX_CFG1_RNG, reg_val);
-+
-+		switch (reg_val) {
-+		case LOW_RANGE:
-+			*val = 6;
-+			*val2 = 250000;
-+			break;
-+		case MID_RANGE:
-+			*val = 12;
-+			*val2 = 500000;
-+			break;
-+		case HIGH_RANGE:
-+			*val = 25;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case MAX77541_ADC_TEMP:
-+		*val = 1725;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int max77541_adc_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val)
-+{
-+	struct max77541_adc_iio *info = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regmap_read(info->regmap, chan->address, val);
-+	if (ret)
-+		return ret;
-+
-+	return IIO_VAL_INT;
-+}
-+
-+#define MAX77541_ADC_CHANNEL_V(_channel, _name, _type, _reg) \
-+	{							\
-+		.type = _type,					\
-+		.indexed = 1,					\
-+		.channel = _channel,				\
-+		.address = _reg,				\
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
-+				      BIT(IIO_CHAN_INFO_SCALE), \
-+		.datasheet_name = _name,			\
-+	}
-+
-+#define MAX77541_ADC_CHANNEL_TEMP(_channel, _name, _type, _reg) \
-+	{							\
-+		.type = _type,					\
-+		.indexed = 1,					\
-+		.channel = _channel,				\
-+		.address = _reg,				\
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
-+				      BIT(IIO_CHAN_INFO_SCALE) |\
-+				      BIT(IIO_CHAN_INFO_OFFSET),\
-+		.datasheet_name = _name,			\
-+	}
-+
-+static const struct iio_chan_spec max77541_adc_channels[] = {
-+	MAX77541_ADC_CHANNEL_V(MAX77541_ADC_VSYS_V, "vsys_v", IIO_VOLTAGE,
-+			       MAX77541_REG_ADC_DATA_CH1),
-+	MAX77541_ADC_CHANNEL_V(MAX77541_ADC_VOUT1_V, "vout1_v", IIO_VOLTAGE,
-+			       MAX77541_REG_ADC_DATA_CH2),
-+	MAX77541_ADC_CHANNEL_V(MAX77541_ADC_VOUT2_V, "vout2_v", IIO_VOLTAGE,
-+			       MAX77541_REG_ADC_DATA_CH3),
-+	MAX77541_ADC_CHANNEL_TEMP(MAX77541_ADC_TEMP, "temp", IIO_TEMP,
-+				  MAX77541_REG_ADC_DATA_CH6),
-+};
-+
-+static int max77541_adc_read_raw(struct iio_dev *indio_dev,
-+				 struct iio_chan_spec const *chan,
-+				 int *val, int *val2, long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_OFFSET:
-+		return max77541_adc_offset(indio_dev, chan, val, val2);
-+	case IIO_CHAN_INFO_SCALE:
-+		return max77541_adc_scale(indio_dev, chan, val, val2);
-+	case IIO_CHAN_INFO_RAW:
-+		return max77541_adc_raw(indio_dev, chan, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info max77541_adc_info = {
-+	.read_raw = max77541_adc_read_raw,
-+};
-+
-+static int max77541_adc_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct max77541_adc_iio *info;
-+	struct iio_dev *indio_dev;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	info = iio_priv(indio_dev);
-+
-+	info->regmap = dev_get_regmap(dev->parent, NULL);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	indio_dev->name = "max77541";
-+	indio_dev->info = &max77541_adc_info;
-+	indio_dev->channels = max77541_adc_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(max77541_adc_channels);
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct platform_device_id max77541_adc_platform_id[] = {
-+	{ "max77541-adc", },
-+	{  /* sentinel */  }
-+};
-+MODULE_DEVICE_TABLE(platform, max77541_adc_platform_id);
-+
-+static struct platform_driver max77541_adc_driver = {
-+	.driver = {
-+		.name = "max77541-adc",
-+	},
-+	.probe = max77541_adc_probe,
-+	.id_table = max77541_adc_platform_id,
-+};
-+module_platform_driver(max77541_adc_driver);
-+
-+MODULE_AUTHOR("Okan Sahin <Okan.Sahin@analog.com>");
-+MODULE_DESCRIPTION("MAX77541 ADC driver");
-+MODULE_LICENSE("GPL");
+Carlos Song (4):
+  iio: imu: fxos8700: fix incorrect ODR mode readback
+  iio: imu: fxos8700: fix failed initialization ODR mode assignment
+  iio: imu: fxos8700: remove definition FXOS8700_CTRL_ODR_MIN
+  iio: imu: fxos8700: fix MAGN sensor scale and unit
+
+ drivers/iio/imu/fxos8700_core.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
+
 -- 
-2.30.2
+2.34.1
 

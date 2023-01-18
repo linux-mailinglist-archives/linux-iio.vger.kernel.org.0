@@ -2,29 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B6E6718E2
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 11:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 587D76719B7
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 11:55:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbjARK0M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 05:26:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55270 "EHLO
+        id S229736AbjARKze (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 05:55:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229827AbjARKZl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 05:25:41 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27747D673
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 01:29:54 -0800 (PST)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 12A903F3F7;
-        Wed, 18 Jan 2023 10:29:51 +0100 (CET)
-Date:   Wed, 18 Jan 2023 10:29:50 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S230101AbjARKxH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 05:53:07 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3F288771;
+        Wed, 18 Jan 2023 02:02:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674036149; x=1705572149;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GMIDeoU7GnMI0BkDvSAk8CGgIfw46xKlXkg7dZExt5c=;
+  b=Dywwg/9A5dLKT1bTSkHbxXxoGRhhnEODif+InpgM63b5zzfpwBKOvUZz
+   nFq3OdCGVCX9Yf+Saqsp3For7q6cKsWQon3yqJYwVe8/0HZ8/p9aBGMUm
+   ++wR3JuKpGUVG21WMjPLgW2Sue1mItlHTPWKNHz0sSb4ET55TQVkLxj3e
+   a9rJ9hkySfa9Lwq422G9FI0SYJ+FyEIXYvC7ZYEpuSOb3NWwzDVsQa5hL
+   6HSQexCuhUbRRMRScFZuGlii9Lx6wabtiXepPeOL5uge3c4mg6Q8wkzKh
+   NtxlXia0zmHjmxZq/ba17QCw2puG0FyaXWs+yb6roSYr2fhdyDK2LOwEl
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="312827268"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="312827268"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 02:02:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="637218700"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="637218700"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 18 Jan 2023 02:02:26 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pI5Gy-00B714-0l;
+        Wed, 18 Jan 2023 12:02:24 +0200
+Date:   Wed, 18 Jan 2023 12:02:23 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
         linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -32,59 +54,57 @@ Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
 Subject: Re: [PATCH v1 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
-Message-ID: <20230118092950.kctzkvz5h6rzi7rp@SoMainline.org>
+Message-ID: <Y8fDr2aM8z8Nm1z2@smile.fi.intel.com>
 References: <20230117093944.72271-1-andriy.shevchenko@linux.intel.com>
  <20230117231204.fpvxryjscosg57a6@SoMainline.org>
  <Y8ejxsqeHL/pBTAY@smile.fi.intel.com>
+ <20230118092950.kctzkvz5h6rzi7rp@SoMainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y8ejxsqeHL/pBTAY@smile.fi.intel.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230118092950.kctzkvz5h6rzi7rp@SoMainline.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-01-18 09:46:14, Andy Shevchenko wrote:
-> On Wed, Jan 18, 2023 at 12:12:04AM +0100, Marijn Suijten wrote:
-> > On 2023-01-17 11:39:44, Andy Shevchenko wrote:
-> > > The node name can contain an address part which is not used by
-> > > the driver. Cut it out before assigning the channel name.
+On Wed, Jan 18, 2023 at 10:29:50AM +0100, Marijn Suijten wrote:
+> On 2023-01-18 09:46:14, Andy Shevchenko wrote:
+> > On Wed, Jan 18, 2023 at 12:12:04AM +0100, Marijn Suijten wrote:
+> > > On 2023-01-17 11:39:44, Andy Shevchenko wrote:
+
+...
+
+> > > > -	const char *name = fwnode_get_name(fwnode), *channel_name;
+> > > > +	const char *name, *channel_name;
+> > > 
+> > > I don't think this'll compile as name is still a pointer to const data,
+> > > while you're assigning (a '\0' char) to it below.
 > > 
-> > This explanation doesn't cut it.  It's not that the driver "doesn't use"
+> > Right, it's always hard for me to compile things for ARM on x86 :-)
+> > Thanks for catching this up!
 > 
-> Driver doesn't use it still. There is no contradiction, but I agree that
-> below part is good to have in the commit message.
+> Thanks for sending this in regardless; as said before I rather break ABI
+> and clean the driver up properly (no more extend_name...) than sending a
+> fix like this :)
 
-You can leave that in if you want but that's not the issue that I
-reported/described.  Having both describes the situation in full.
+Yes, but we need to backport something and ABI breakage is definitely not
+an option for that.
 
-> > the address part, it is that this string is propagated into the
-> > userspace label, sysfs /filenames/ *and breaking ABI*.
+> > But does this fix the issue after compilation fix?
 > 
-> So I will add it into v2 in case the fix works (see below).
-> 
-> ...
-> 
-> > > -	const char *name = fwnode_get_name(fwnode), *channel_name;
-> > > +	const char *name, *channel_name;
-> > 
-> > I don't think this'll compile as name is still a pointer to const data,
-> > while you're assigning (a '\0' char) to it below.
-> 
-> Right, it's always hard for me to compile things for ARM on x86 :-)
-> Thanks for catching this up!
+> It does, no more @xx in sysfs filenames nor label contents!
 
-Thanks for sending this in regardless; as said before I rather break ABI
-and clean the driver up properly (no more extend_name...) than sending a
-fix like this :)
+Okay, I'm about to send v2 and hopefully you can give your Tested-by.
 
-> But does this fix the issue after compilation fix?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-It does, no more @xx in sysfs filenames nor label contents!
 
-- Marijn

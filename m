@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 649BA672769
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 19:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CEAB67276B
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 19:45:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbjARSpT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 13:45:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60234 "EHLO
+        id S230305AbjARSpW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 13:45:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230202AbjARSov (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 13:44:51 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD41C30E8E
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 10:44:47 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id h16so34890133wrz.12
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 10:44:47 -0800 (PST)
+        with ESMTP id S230313AbjARSoy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 13:44:54 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4BAC3525E
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 10:44:52 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id k8so20413296wrc.9
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 10:44:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=51TEnoWg+r6F1+/BdxbyNrnSbBYgYodHFxrZC/pGotw=;
-        b=EEMZVvNvViFCtB8B+1Xv5v7x3yhjw8gqXh38XhlgBHd1nIlNjcHpLM05FnlXjZlNwW
-         BQgeP6Gxv5YPE9Z9ZWoQlmzzK5xdNOvSrANZARI6sdTpybHVoS9vVQj26t8DdvgNB1cT
-         fWr7/5/nKgMiyyLpo4FnBzH5JHcsvOE7KQP+hC8IzuXLSdHhUfjNppd0WsNf5T5I1Yy0
-         hPoKCivzDFgA7gH6OKwjn5wpQ1MoYrqTd9/uC0ud7l6NSWZJ6g/aBcSDw8hRP1PVWpF+
-         +pGy6CcyqUerc279MlWTA4MYsuSt0s07gHKXz3O6Zxl02gGR15uXIz4pYWkGHjaGZrjE
-         86kw==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PBLmBnkzTzMlrNoUUtLpd8YSr91NAA0vKXbUP+pU1cE=;
+        b=rVmsHtANIVjhani7hCmj3Czh3dpTThTYKA0a/Wa2waiKwX4dquskrLyf+/EgWTNxV2
+         /pggI4f6nfbzxb0eGs85evqI3NRrBWUrcLNB5EV7EUBQBT8TBinEb7cLLUXbeV0JB5Sv
+         WfgFAW05ApjDiXV6rVfMX/6nUxeI2IFGXB3FjI+rCwnwoD/Wt8B1SffF9NmwrcBXPVYa
+         PoIUtaEeVPuj8QVsrWzf9Q0EJ28Wyn5COWEorfXtxuNsiOlFNM4BlpY6p33tTu4Q2Bej
+         Jix8P9OaX6E8VQe5QsSOXw7KMMAMp20IHpk5swLgUl1f2UMT3F1ZVD7xHppGuuHoQH+/
+         Tsxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=51TEnoWg+r6F1+/BdxbyNrnSbBYgYodHFxrZC/pGotw=;
-        b=CFJhyYPCrRPX0WN/NqUdsi1nVyAaGfeFSFEtajBDfr/gcGO/6zUs/YgxrSKkYLqyZb
-         RdoBLuIiDweLAz9EdyGAd2j3UBgK6eSVCNmwsuZiKf3MsGPQSoLA/+vOM3W8wUlzvzaY
-         d9JnL4XJTzqnwHXUP6/N9/vo1btb1ZwqmSxgQQR6UGoggPxu5aUJ/MNCZbqHPC0QFsHa
-         BiQ7YoUh8af7/hpgmiew0MVJqQT3AdgxjTj/wKL0sSktXDlmh6QcqOumki7P5nMKp0Ks
-         7O8iKSG6/vyDGfWmseuiocmzFFmx0vsmE3shQg3NlVQIHeoN8jj+fG8+0vmb8+CGrK/t
-         Zp5Q==
-X-Gm-Message-State: AFqh2kpkahEDGkzomppUyTI2ST/JF3i5OciL9HcMG0Pkqxho5bqOkgzl
-        vuwL/1+C9N0pTsYVc73hDNQQHg==
-X-Google-Smtp-Source: AMrXdXtho7wKqo/gqrqDo6MYsO14I9DU93Q+0he/iDHK3GHj3kga/MxQinOSPsFWQHqX7MjEeCNVxQ==
-X-Received: by 2002:adf:ea8e:0:b0:242:1926:783c with SMTP id s14-20020adfea8e000000b002421926783cmr3211460wrm.58.1674067486387;
-        Wed, 18 Jan 2023 10:44:46 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PBLmBnkzTzMlrNoUUtLpd8YSr91NAA0vKXbUP+pU1cE=;
+        b=r/PIp+n7vUfdmGZPGXhdeaSLzT+ouAWvok+/wYcNcjAT5tPffRj/grhWiMx76SQoi0
+         uFv3vLFxGccQnLe3c+u97KCXvGjxB7OSDqOcHifyPImHzDqaSdEdYSZ9Xn8cOxFLqEBv
+         PlILVyy9vd6fxzmxlCfATcNlBw9nuXPlTB/xwkz3y/cOoSDe++r0Nj6QLi49d2RDAAn1
+         0NKvRajevJUyv8csHkUkiFp8d/dm7KR8BrX0PCw7gB026RXbV2vBFiCcSQxM12TcF26i
+         /rZzRpPUcJRpepfFBAJQGlJNqsRDApcyRNFrPWtYyitJG6r61DU7Ul8UZt7CSOXwarzL
+         1+aA==
+X-Gm-Message-State: AFqh2kp7EQvlWS/KtLKRHaFCwrf+p29J0AB38kA+c+x8nemtBtOoGS+Y
+        x3bBJO5G2y5BeC9jowo1Ex/fVg==
+X-Google-Smtp-Source: AMrXdXtBsC5D6pQvN8wndvGkEYTgqdGhtTbNREYy3v9NkM+3ifBMW0cexDgFB36rZBrhM7rL1qg9rQ==
+X-Received: by 2002:a5d:60c1:0:b0:298:879c:6d01 with SMTP id x1-20020a5d60c1000000b00298879c6d01mr13259200wrt.23.1674067491384;
+        Wed, 18 Jan 2023 10:44:51 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id g1-20020a5d46c1000000b00241cfe6e286sm31640325wrs.98.2023.01.18.10.44.41
+        by smtp.gmail.com with ESMTPSA id g1-20020a5d46c1000000b00241cfe6e286sm31640325wrs.98.2023.01.18.10.44.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 10:44:45 -0800 (PST)
+        Wed, 18 Jan 2023 10:44:50 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -106,10 +107,12 @@ To:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-stm32@st-md-mailman.stormreply.com,
         chrome-platform@lists.linux.dev
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 1/5] dt-bindings: iio: drop unneeded quotes
-Date:   Wed, 18 Jan 2023 19:44:09 +0100
-Message-Id: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/5] dt-bindings: iio: minor whitespace cleanups
+Date:   Wed, 18 Jan 2023 19:44:10 +0100
+Message-Id: <20230118184413.395820-2-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
+References: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -122,291 +125,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Cleanup by removing unneeded quotes from refs and redundant blank lines.
-No functional impact except adjusting to preferred coding style.
+Drop redundant blank lines and add such when needed.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../devicetree/bindings/iio/accel/memsensing,msa311.yaml  | 5 ++---
- Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml | 2 +-
- Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 2 +-
- .../devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml    | 2 +-
- Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml | 4 ++--
- .../devicetree/bindings/iio/adc/ingenic,adc.yaml          | 4 ++--
- .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml    | 4 ++--
- .../devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml    | 2 +-
- .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml   | 2 +-
- .../devicetree/bindings/iio/adc/st,stm32-adc.yaml         | 8 ++++----
- .../devicetree/bindings/iio/adc/ti,ads131e08.yaml         | 2 +-
- Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml | 2 +-
- .../devicetree/bindings/iio/dac/lltc,ltc1660.yaml         | 4 ++--
- .../devicetree/bindings/iio/dac/lltc,ltc2632.yaml         | 4 ++--
- .../devicetree/bindings/iio/dac/st,stm32-dac.yaml         | 4 ++--
- Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 2 +-
- .../devicetree/bindings/iio/temperature/ti,tmp117.yaml    | 6 +++---
- 17 files changed, 29 insertions(+), 30 deletions(-)
+ Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml        | 1 +
+ .../bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml    | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-index 23528dcaa073..d530ec041fe7 100644
---- a/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-@@ -1,9 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
--
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/accel/memsensing,msa311.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/accel/memsensing,msa311.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: MEMSensing digital 3-Axis accelerometer
- 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-index 75a7184a4735..35ed04350e28 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-@@ -61,7 +61,7 @@ required:
- 
- patternProperties:
-   "^channel@([0-9]|1[0-5])$":
--    $ref: "adc.yaml"
-+    $ref: adc.yaml
-     type: object
-     description: |
-       Represents the external channels which are connected to the ADC.
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-index 1bfbeed6f299..7cc4ddc4e9b7 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
-@@ -43,7 +43,7 @@ required:
- 
- patternProperties:
-   "^channel@[0-7]$":
--    $ref: "adc.yaml"
-+    $ref: adc.yaml
-     type: object
-     description: |
-       Represents the external channels which are connected to the ADC.
-diff --git a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
-index 31f840d59303..4817b840977a 100644
---- a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
-@@ -41,7 +41,7 @@ properties:
-     description: Startup time expressed in ms, it depends on SoC.
- 
-   atmel,trigger-edge-type:
--    $ref: '/schemas/types.yaml#/definitions/uint32'
-+    $ref: /schemas/types.yaml#/definitions/uint32
-     description:
-       One of possible edge types for the ADTRG hardware trigger pin.
-       When the specific edge type is detected, the conversion will
-diff --git a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
-index 77605f17901c..9c57eb13f892 100644
---- a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/adc/avia-hx711.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/adc/avia-hx711.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: AVIA HX711 ADC chip for weight cells
- 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-index 517e8b1fcb73..b71c951e6d02 100644
---- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
-@@ -2,8 +2,8 @@
- # Copyright 2019-2020 Artur Rojek
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Ingenic JZ47xx ADC controller IIO
- 
-diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-index 2c93fb41f172..f7b3fde4115a 100644
---- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-@@ -2,8 +2,8 @@
- # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/adc/microchip,mcp3911.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/adc/microchip,mcp3911.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Microchip MCP3911 Dual channel analog front end (ADC)
- 
-diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-index 8b743742a5f9..ba86c7b7d622 100644
---- a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-@@ -69,7 +69,7 @@ required:
- 
- patternProperties:
-   "^channel@[0-7]$":
--    $ref: "adc.yaml"
-+    $ref: adc.yaml
-     type: object
-     description: |
-       Represents the external channels which are connected to the ADC.
-diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-index 81c87295912c..e27d094cfa05 100644
---- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-@@ -52,7 +52,7 @@ properties:
-   vdd-supply: true
- 
-   samsung,syscon-phandle:
--    $ref: '/schemas/types.yaml#/definitions/phandle'
-+    $ref: /schemas/types.yaml#/definitions/phandle
-     description:
-       Phandle to the PMU system controller node (to access the ADC_PHY
-       register on Exynos3250/4x12/5250/5420/5800).
-diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-index 1c340c95df16..995cbf8cefc6 100644
---- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/adc/st,stm32-adc.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/adc/st,stm32-adc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: STMicroelectronics STM32 ADC
- 
-@@ -80,7 +80,7 @@ properties:
-     description:
-       Phandle to system configuration controller. It can be used to control the
-       analog circuitry on stm32mp1.
--    $ref: "/schemas/types.yaml#/definitions/phandle-array"
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
- 
-   interrupt-controller: true
- 
-@@ -341,7 +341,7 @@ patternProperties:
-     patternProperties:
-       "^channel@([0-9]|1[0-9])$":
-         type: object
--        $ref: "adc.yaml"
-+        $ref: adc.yaml
-         description: Represents the external channels which are connected to the ADC.
- 
-         properties:
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-index 55c2c73626f4..890f125d422c 100644
---- a/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
-@@ -77,7 +77,7 @@ required:
- 
- patternProperties:
-   "^channel@([0-7])$":
--    $ref: "adc.yaml"
-+    $ref: adc.yaml
-     type: object
-     description: |
-       Represents the external channels which are connected to the ADC.
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml b/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
-index bdf3bba2d750..32c52f9fe18b 100644
---- a/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
-@@ -41,7 +41,7 @@ required:
- 
- patternProperties:
-   "^channel@[0-7]$":
--    $ref: "adc.yaml"
-+    $ref: adc.yaml
-     type: object
- 
-     properties:
-diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
-index 133b0f867992..c9f51d00fa8f 100644
---- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
-@@ -2,8 +2,8 @@
- # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc1660.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/dac/lltc,ltc1660.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Linear Technology Micropower octal 8-Bit and 10-Bit DACs
- 
-diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-index b1eb77335d05..c9e3be3b5754 100644
---- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Linear Technology LTC263x 12-/10-/8-Bit Rail-to-Rail DAC
- 
-diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
-index 0f1bf1110122..04045b932bd2 100644
---- a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/dac/st,stm32-dac.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/dac/st,stm32-dac.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: STMicroelectronics STM32 DAC
- 
-diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-index 68b481c63318..decf022335d8 100644
---- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-@@ -63,7 +63,7 @@ properties:
-     description: if defined provides VDD IO power to the sensor.
- 
-   st,drdy-int-pin:
--    $ref: '/schemas/types.yaml#/definitions/uint32'
-+    $ref: /schemas/types.yaml#/definitions/uint32
-     description: |
-       The pin on the package that will be used to signal data ready
-     enum:
-diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-index 347bc16a4671..c4f1c69f9330 100644
---- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-@@ -1,10 +1,10 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: "http://devicetree.org/schemas/iio/temperature/ti,tmp117.yaml#"
--$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+$id: http://devicetree.org/schemas/iio/temperature/ti,tmp117.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
- 
--title: "TI TMP117 - Digital temperature sensor with integrated NV memory"
-+title: TI TMP117 - Digital temperature sensor with integrated NV memory
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml
+index ff50c72c62b5..9eb9928500e2 100644
+--- a/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5380.yaml
+@@ -12,6 +12,7 @@ maintainers:
  
  description: |
-     TI TMP117 - Digital temperature sensor with integrated NV memory that supports
+   DAC devices supporting both SPI and I2C interfaces.
++
+ properties:
+   compatible:
+     enum:
+diff --git a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+index 00e3b59641d2..d4e09d2dcd21 100644
+--- a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
++++ b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-
+ $id: http://devicetree.org/schemas/iio/proximity/google,cros-ec-mkbp-proximity.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
 -- 
 2.34.1
 

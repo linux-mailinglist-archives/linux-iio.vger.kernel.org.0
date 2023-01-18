@@ -2,62 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5A47672222
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 16:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3CF0672250
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 17:01:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbjARPwb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 10:52:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51440 "EHLO
+        id S230148AbjARQBc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 11:01:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230455AbjARPve (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 10:51:34 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A613E43462;
-        Wed, 18 Jan 2023 07:49:38 -0800 (PST)
+        with ESMTP id S231332AbjARQAE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 11:00:04 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9533A37544;
+        Wed, 18 Jan 2023 07:57:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674056978; x=1705592978;
+  t=1674057432; x=1705593432;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=2KTLpDLI59XYuNm6chvF++y1aXAv7uQxEewm8vdKkWg=;
-  b=nPT0tJIcnJYtfSd55fiv0e6y4QXYK3Am83cb27QV7/9qzt9fc7Pm/6As
-   vB2AOBAYcavh7I5XO5yGNUqJ1PjxKOb/rAz2FkJ1o9akuBxcDV4N9RXft
-   E/9ZDGry/A0wTJcl/HEXQ2cw9kJSQwzWKezMd5JGKRpXJL7JFx8zc9B8K
-   85ufYQqFmeKAsgQt/zJA5yk8n1Q2zxHZfPwAVc9ZHPpx//0TD7ZASDnfA
-   FUQmVXW5/TWM4L8n74Kg10SQHpO97pbn6cWQm68BvJMargBI+I5WGPBrX
-   /RbMpyzWCUrkUpDnN8TbVnEyCRVvaiyr8BNMrpuSVYlT/t7h8VutcsCXC
+  bh=DkJy9b3JAxxLyt2nl0Vw3miTgnaruYcbY3qIyzZgzDU=;
+  b=Xvm2bZZ/5kXFor7w3N9zSRnHWla7iTMlrmH60HSKnxUZPCXBZ9SBAukj
+   a+p2si6+7HIrmEDSr6RE4967/mJJFyj52fDg66wqjEqsKPI2Gq/Sest8m
+   U168oxs0hegtMaMddL9ZMxF9dxzQ6juHa4lDSpxWspFsUhaUQU/muPovD
+   WSwJ0hPuR9pfDnd9J51NQVspRFO8sOy4wdIVL8hQvHPecCNCclew3RZqW
+   XMsTzpk5o/HmVMNE0zptlKCi+CVXpv64XGfhNnSebG/deiTxvclKuDB3T
+   ymaaL1JHxHjtyBnOjlrIsEwIv1qsFJ8jgL3yHEsVJoAuaCX/6iTJemIab
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="322702396"
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="323699437"
 X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="322702396"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:49:38 -0800
+   d="scan'208";a="323699437"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 07:57:12 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="661760886"
+X-IronPort-AV: E=McAfee;i="6500,9779,10594"; a="659845668"
 X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="661760886"
+   d="scan'208";a="659845668"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Jan 2023 07:49:36 -0800
+  by orsmga002.jf.intel.com with ESMTP; 18 Jan 2023 07:57:08 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pIAgw-00BFdy-1J;
-        Wed, 18 Jan 2023 17:49:34 +0200
-Date:   Wed, 18 Jan 2023 17:49:34 +0200
+        id 1pIAoE-00BFsU-1a;
+        Wed, 18 Jan 2023 17:57:06 +0200
+Date:   Wed, 18 Jan 2023 17:57:06 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>
-Subject: Re: [PATCH v1 1/2] iio: core: Replace
- iio_sysfs_match_string_with_gaps() by __sysfs_match_string()
-Message-ID: <Y8gVDs0UoiHqCRsM@smile.fi.intel.com>
-References: <20230118074828.66155-1-andriy.shevchenko@linux.intel.com>
- <5f9b713b-9c71-7da6-e674-b6ebd28dc5d5@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Message-ID: <Y8gW0msz0KwkpQaA@smile.fi.intel.com>
+References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+ <20230118123528.oaxtjbdier3ojd3m@SoMainline.org>
+ <Y8fyonSp49QoAb8v@smile.fi.intel.com>
+ <20230118140423.y4ogqdkyti7vcwaz@SoMainline.org>
+ <Y8gCRECOja+FxRsf@smile.fi.intel.com>
+ <20230118152121.blb74eplrqz5rww2@SoMainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5f9b713b-9c71-7da6-e674-b6ebd28dc5d5@metafoo.de>
+In-Reply-To: <20230118152121.blb74eplrqz5rww2@SoMainline.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -68,20 +75,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 07:22:30AM -0800, Lars-Peter Clausen wrote:
-> On 1/17/23 23:48, Andy Shevchenko wrote:
-> > None of the current users is using gaps in the list of the items.
-> > No need to have a specific function for that, just replace it by
-> > library available __sysfs_match_string().
+On Wed, Jan 18, 2023 at 04:21:21PM +0100, Marijn Suijten wrote:
+> On 2023-01-18 16:29:24, Andy Shevchenko wrote:
+...
+> > The devm_kstrdup(fwnode_get_name()) is an open coded variant of the above.
+> > I don't think we need to open code and produce NIH even a single API. And
+> > no, there is no magic behind that. At least from the fwnode point of view.
+> > 
+> > You may very well say that > 1500 instances of "%pOF" is a magic...
 > 
-> Hm, I specifically remember adding this for a driver where there were gaps.
-> One of the DACs. But it might be that the driver itself never made it
-> upstream.
+> Forgive me for not having a clear definition of "open coding" in mind
+> (showing a different way of implementing something, compared to the
+> "status quo" that I was not yet aware of?), nor knowing what NIH is
+> supposed to mean in this context.
 
-I have checked all modules that have struct iio_enum and/or ("or" probably may
-not happen) IIO_ENUM() in them.
+"open coding" means to have a copy of the function of macro that is already
+implemented and available (even if it's private to some driver or module,
+we always can move it to the generic module and header).
 
-It might be that I missed something.
+NIH: Not Invented Here.
+
+> We're in bike-shedding territory
+> anyway, guess I should just bookmark the page that details all the many
+> `%` format strings available.
+
+True :-)
+
+...
+> > > I find the latter clearer as it doesn't require the reader to figure out
+> > > that name - name cancels itself out.  Alternatively we can write
+> > > strchrnul(name, '@')[0].
+> > 
+> > I don't like to have Pythonisms in the C code, really.
+> > 
+> > P.S. I guess this little patch already emptied my bandwidth, so I leave
+> > any further discussion to you and IIO maintainers. Thank you for the
+> > review!
+> 
+> Just soaking up kernel coding standards here :)
+
+Right.
 
 -- 
 With Best Regards,

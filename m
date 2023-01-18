@@ -2,71 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 587D76719B7
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 11:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45BF36719E1
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 12:00:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbjARKze (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 05:55:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
+        id S230214AbjARLAs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 06:00:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjARKxH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 05:53:07 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3F288771;
-        Wed, 18 Jan 2023 02:02:29 -0800 (PST)
+        with ESMTP id S229919AbjARK5o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 05:57:44 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE3A8CE6A;
+        Wed, 18 Jan 2023 02:05:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674036149; x=1705572149;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GMIDeoU7GnMI0BkDvSAk8CGgIfw46xKlXkg7dZExt5c=;
-  b=Dywwg/9A5dLKT1bTSkHbxXxoGRhhnEODif+InpgM63b5zzfpwBKOvUZz
-   nFq3OdCGVCX9Yf+Saqsp3For7q6cKsWQon3yqJYwVe8/0HZ8/p9aBGMUm
-   ++wR3JuKpGUVG21WMjPLgW2Sue1mItlHTPWKNHz0sSb4ET55TQVkLxj3e
-   a9rJ9hkySfa9Lwq422G9FI0SYJ+FyEIXYvC7ZYEpuSOb3NWwzDVsQa5hL
-   6HSQexCuhUbRRMRScFZuGlii9Lx6wabtiXepPeOL5uge3c4mg6Q8wkzKh
-   NtxlXia0zmHjmxZq/ba17QCw2puG0FyaXWs+yb6roSYr2fhdyDK2LOwEl
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="312827268"
+  t=1674036355; x=1705572355;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sGwCRk+5/82kviy26W1sAKCGQVjy71ZrSmzZw9BkOwI=;
+  b=lRzQtKfP3fVkmVH8EwEGLHzHVZq2i3MEULAm/IuXucPg+VVQ7IVnBIfw
+   a8jm5qhhj0HD9q5CBNO+59CDvBP8cZ843owWvRDQPg6r06jYZNr6MT5GV
+   YjbTOKpArb1dgWJgDU1vpJ1qePFlTMW7/Ynx3+Cx5/3BjmWhpcS5+5/aq
+   pepl+MtT7epb0gvUaDRivQ8T87/8V5KetvVb+Uor9pRcXg8Cq3vfBXrY9
+   Q8qCLFUcarmSHrFwVDXaazSN4bgEyE6CvD6IVAF1C2ofP7F9eELUz4oWc
+   CF1hxgTfOUn7PIM+lQIf5j50zDVqIISB+XYRfxGtXQuPginD59OTmA7Vf
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="308509831"
 X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="312827268"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 02:02:29 -0800
+   d="scan'208";a="308509831"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 02:05:54 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="637218700"
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="691946163"
 X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
-   d="scan'208";a="637218700"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 18 Jan 2023 02:02:26 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pI5Gy-00B714-0l;
-        Wed, 18 Jan 2023 12:02:24 +0200
-Date:   Wed, 18 Jan 2023 12:02:23 +0200
+   d="scan'208";a="691946163"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga001.jf.intel.com with ESMTP; 18 Jan 2023 02:05:51 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id DCAD0368; Wed, 18 Jan 2023 12:06:25 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
         linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        linux-kernel@vger.kernel.org
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
-Message-ID: <Y8fDr2aM8z8Nm1z2@smile.fi.intel.com>
-References: <20230117093944.72271-1-andriy.shevchenko@linux.intel.com>
- <20230117231204.fpvxryjscosg57a6@SoMainline.org>
- <Y8ejxsqeHL/pBTAY@smile.fi.intel.com>
- <20230118092950.kctzkvz5h6rzi7rp@SoMainline.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Subject: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Date:   Wed, 18 Jan 2023 12:06:23 +0200
+Message-Id: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230118092950.kctzkvz5h6rzi7rp@SoMainline.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,37 +67,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 10:29:50AM +0100, Marijn Suijten wrote:
-> On 2023-01-18 09:46:14, Andy Shevchenko wrote:
-> > On Wed, Jan 18, 2023 at 12:12:04AM +0100, Marijn Suijten wrote:
-> > > On 2023-01-17 11:39:44, Andy Shevchenko wrote:
+The node name can contain an address part which is unused
+by the driver. Moreover, this string is propagated into
+the userspace label, sysfs filenames *and breaking ABI*.
 
-...
+Cut the address part out before assigning the channel name.
 
-> > > > -	const char *name = fwnode_get_name(fwnode), *channel_name;
-> > > > +	const char *name, *channel_name;
-> > > 
-> > > I don't think this'll compile as name is still a pointer to const data,
-> > > while you're assigning (a '\0' char) to it below.
-> > 
-> > Right, it's always hard for me to compile things for ARM on x86 :-)
-> > Thanks for catching this up!
-> 
-> Thanks for sending this in regardless; as said before I rather break ABI
-> and clean the driver up properly (no more extend_name...) than sending a
-> fix like this :)
+Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: rephrased commit message (Marijn), fixed compilation issue (Marijin)
+ drivers/iio/adc/qcom-spmi-adc5.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Yes, but we need to backport something and ABI breakage is definitely not
-an option for that.
-
-> > But does this fix the issue after compilation fix?
-> 
-> It does, no more @xx in sysfs filenames nor label contents!
-
-Okay, I'm about to send v2 and hopefully you can give your Tested-by.
-
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index e90c299c913a..c2d5e06f137a 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -628,12 +628,20 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+ 				    struct fwnode_handle *fwnode,
+ 				    const struct adc5_data *data)
+ {
+-	const char *name = fwnode_get_name(fwnode), *channel_name;
++	const char *channel_name;
++	char *name;
+ 	u32 chan, value, varr[2];
+ 	u32 sid = 0;
+ 	int ret;
+ 	struct device *dev = adc->dev;
+ 
++	name = devm_kasprintf(dev, GFP_KERNEL, "%pfwP", fwnode);
++	if (!name)
++		return -ENOMEM;
++
++	/* Cut the address part */
++	name[strchrnul(name, '@') - name] = '\0';
++
+ 	ret = fwnode_property_read_u32(fwnode, "reg", &chan);
+ 	if (ret) {
+ 		dev_err(dev, "invalid channel number %s\n", name);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.0
 

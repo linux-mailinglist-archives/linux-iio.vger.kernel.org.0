@@ -2,82 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BEC5672381
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 17:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15484672396
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 17:40:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230341AbjARQhs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 11:37:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
+        id S229906AbjARQkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 11:40:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjARQh0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 11:37:26 -0500
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556EB41B7E;
-        Wed, 18 Jan 2023 08:37:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=pHXxnxZLzOGoKxbma4bKofhzaLgd2KSaWI6G8LAFKCg=; b=D4G5mLw+vwzwIOtrf1Ik8JoPVb
-        2jbbsXY3/bX+/4wa7wCfjjYhxdEVTfZRFk2yZk8asjo6lqYlmEQcU3Il3N/bHStI1WGv79kb0wMQr
-        QeSq/VNcd92/MszNpWMr/oi3Sz20vUleuLuVSQNRwU4kJqkalHBd0wwd8YkKSzGJlxfbfm94P2gSE
-        3b5WfF4vRJsYjg2q2CU0iPgKnlPGUeUEMaDpwS0zoXeuJ9bUN56IcZh+G2O089NfH1jz6gyA/xfnF
-        8sMTklEtAtLuUpujibgv6m7jDbuJAeRBLcDXiIHxWGKjpWfVHnhFu8ckkvUi5vIq/We0qiSV21jDE
-        fO2VrIgQ==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1pIBQu-000EdM-4s; Wed, 18 Jan 2023 17:37:04 +0100
-Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
-        by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1pIBQt-00077t-QB; Wed, 18 Jan 2023 17:37:03 +0100
-Message-ID: <64406c4f-c9da-b434-360b-1050ff685d2d@metafoo.de>
-Date:   Wed, 18 Jan 2023 08:37:01 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v1 1/2] iio: core: Replace
- iio_sysfs_match_string_with_gaps() by __sysfs_match_string()
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S230520AbjARQjq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 11:39:46 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A56F92D15F;
+        Wed, 18 Jan 2023 08:39:36 -0800 (PST)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id CAFA92012A;
+        Wed, 18 Jan 2023 17:39:33 +0100 (CET)
+Date:   Wed, 18 Jan 2023 17:39:32 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>
-References: <20230118074828.66155-1-andriy.shevchenko@linux.intel.com>
- <5f9b713b-9c71-7da6-e674-b6ebd28dc5d5@metafoo.de>
- <Y8gVDs0UoiHqCRsM@smile.fi.intel.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <Y8gVDs0UoiHqCRsM@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.7/26785/Wed Jan 18 09:42:40 2023)
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/5] iio: core: Point users of extend_name field
+ to read_label callback
+Message-ID: <20230118163932.srskwgx6rhzozai6@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230116220909.196926-1-marijn.suijten@somainline.org>
+ <20230116220909.196926-2-marijn.suijten@somainline.org>
+ <20230118161920.0000207c@Huawei.com>
+ <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 1/18/23 07:49, Andy Shevchenko wrote:
-> On Wed, Jan 18, 2023 at 07:22:30AM -0800, Lars-Peter Clausen wrote:
->> On 1/17/23 23:48, Andy Shevchenko wrote:
->>> None of the current users is using gaps in the list of the items.
->>> No need to have a specific function for that, just replace it by
->>> library available __sysfs_match_string().
->> Hm, I specifically remember adding this for a driver where there were gaps.
->> One of the DACs. But it might be that the driver itself never made it
->> upstream.
-> I have checked all modules that have struct iio_enum and/or ("or" probably may
-> not happen) IIO_ENUM() in them.
->
-> It might be that I missed something.
-I checked too, I can't find it either. The driver probably never made it 
-upstream.
+On 2023-01-18 17:35:27, Marijn Suijten wrote:
+> On 2023-01-18 16:19:20, Jonathan Cameron wrote:
+> > On Mon, 16 Jan 2023 23:09:05 +0100
+> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
+> > 
+> > > As mentioned and discussed in [1] extend_name should not be used for
+> > > full channel labels (and most drivers seem to only use it to express a
+> > > short type of a channel) as this affects sysfs filenames, while the
+> > > label name is supposed to be extracted from the *_label sysfs file
+> > > instead.  This appears to have been unclear to some drivers as
+> > > extend_name is also used when read_label is unset, achieving an initial
+> > > goal of providing sensible names in *_label sysfs files without noticing
+> > > that sysfs filenames are (negatively and likely unintentionally)
+> > > affected as well.
+> > > 
+> > > Point readers of iio_chan_spec::extend_name to iio_info::read_label by
+> > > mentioning deprecation and side-effects of this field.
+> > > 
+> > > [1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
+> > > 
+> > > Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > > ---
+> > >  include/linux/iio/iio.h | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > > index 81413cd3a3e7..36c89f238fb9 100644
+> > > --- a/include/linux/iio/iio.h
+> > > +++ b/include/linux/iio/iio.h
+> > > @@ -221,6 +221,9 @@ struct iio_event_spec {
+> > >   * @extend_name:	Allows labeling of channel attributes with an
+> > >   *			informative name. Note this has no effect codes etc,
+> > >   *			unlike modifiers.
+> > > + *			This field is deprecated in favour of overriding read_label
+> > > + *			in iio_info, which unlike @extend_name does not affect sysfs
+> > > + *			filenames.
+> > Perhaps reword as
+> > 
+> > This field is deprecated in favour of overriding the default label
+> > by providing a read_label() callback in iio_info, which unlike
+> > @extend_name does not affect sysfs filenames.
+> > ?
+> 
+> Agreed, explicitly stating "the default label by" makes this much more
+> clear.  Though, maybe swap that around into "in favour of providing
+> read_label() in iio_info to override the label"?  Otherwise this could
+> be interpreted as "overriding the default label" is preferred to setting
+> extend_name... which one would do to override the default label.
+> 
+> I can queue this up for v3 unless you'll fix it up while applying,
+> presuming no other changes have to be made (aside from dropping patch
+> 3/5).
+> 
+> Will read_label() turn into a link?  And is the @extend_name reference
+
+Yes, if read_label is a function that exists (but it's a member)... and
+@extend_name will indeed reference the member anywhere.
+
+> proper?  Is there something to link to iio_info, perhaps a hashtag - or
+> maybe fully qualify `#iio_info::read_label()` for linking purposes?
+> /me jumps over to kerneldoc documentation :)
+
+Looks like that would be &iio_info->read_label() (not sure about the
+trailing () though):
+https://docs.kernel.org/doc-guide/kernel-doc.html#highlights-and-cross-references
+
+- Marijn

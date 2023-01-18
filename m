@@ -2,127 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45A55671FD0
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 15:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9A68672079
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 16:04:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbjAROjm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 09:39:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36110 "EHLO
+        id S230382AbjARPEV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 10:04:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231393AbjAROj3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 09:39:29 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767A945BFE;
-        Wed, 18 Jan 2023 06:29:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674052170; x=1705588170;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8+fojA/7h/Ru//XT9YiU9bcdKtVKTeplGKeIMROnBDA=;
-  b=Hiz+YTDE1lg8CwJphjizq7UxfdjGwZ3TeZcht+iAmmdCOOx8srSHLK3m
-   VmQx+u8MP+FZGM986RMFcdE8onDJFDZdkDPY2YbfsOH/JehmFCkqe1ioz
-   an48ELPpQiFivqtPEyr5fGZIoR+cPuYg5HYes2hOyzqTjvAtqv2kZdP19
-   oXjh3cvZeOZVGRzyGjoZLp3VJxXRB1t34pbgYgfXmUSA1LycoOiXIayHD
-   dEYSYwDiaMjoQm/TmLq+Ft/gNxruDJ9w+6lbaJvZXk6qpyiZYCsqlIMg0
-   OpLJoL9F+KR+7Q9jDd+iTEwFUqccr32lqFmUqXGT6p04iBhxPFwW1od8L
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="325045424"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="325045424"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2023 06:29:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="661723988"
-X-IronPort-AV: E=Sophos;i="5.97,226,1669104000"; 
-   d="scan'208";a="661723988"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Jan 2023 06:29:26 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pI9RM-00BDsZ-2e;
-        Wed, 18 Jan 2023 16:29:24 +0200
-Date:   Wed, 18 Jan 2023 16:29:24 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
-Message-ID: <Y8gCRECOja+FxRsf@smile.fi.intel.com>
-References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
- <20230118123528.oaxtjbdier3ojd3m@SoMainline.org>
- <Y8fyonSp49QoAb8v@smile.fi.intel.com>
- <20230118140423.y4ogqdkyti7vcwaz@SoMainline.org>
+        with ESMTP id S230500AbjARPDp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 10:03:45 -0500
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76436F74B
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 07:02:14 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id r71so7566290iod.2
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 07:02:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lFSlJrlky2vAw3bGZpl7Yc3Zqu8itKzSOTxJU1sUyDs=;
+        b=xB/YG6ErAkorBupCK2neBx+A7oNrKfOb67Qfoo8QOIaJONJlGcRe+a4FztJpagZ6ir
+         jtPxeHNzloH2msRBrnZUx3p5mtdKdEvz4KgvKDBs39jcePEy4g9ggITXXKeR5jUq0sk8
+         4H7iNfPJY3rh+P7MgPA9HFg6DbK8HCtQ/4yrSCn7pWOp49MerkwYx6wTfuCsIAgVMCzK
+         91iuK6yL/JN5bIdz6gbSN4J+H7UHVhZCSPxm0GrfgJ+ZzkNjWM95XqY77J3Cq1xhTeoq
+         iUM681Sum9kLgJx4I4BGiivOc01VohLqLycF8G+Zhp3whK3NXPWdkjWqgaRSS1HQKk/3
+         Z3nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lFSlJrlky2vAw3bGZpl7Yc3Zqu8itKzSOTxJU1sUyDs=;
+        b=hxo4sU1zX2QrG6hKOQl//ZDEsCbfFZW0iXbYxCECBAhplmlBvOPlkteBeWaIwGCjF3
+         sD3vAsB6hrq22sq6/9iHtNy5gXcnBD58zz3AgqrNKBnClbczFadPuUtk5ReNhaO/owjZ
+         ccEeMpc5aCz1q8rNDJMAqzZ5oDkgqfNeEuFdACWAj0O9InJmeApbOd7wINxDvNpFrJx4
+         BiW6ghC/Upi6Nlkn41luAnIvDxRGoOarHih9hlknT0zw2Yfsad9vBF5UpSwOX7btlXn9
+         QNJrxf1cFvtTPVJC4LUHy105oiFd6tMKwiezzU+Nfkych1pJYDl00i5TZ3qB75HE0kZi
+         Cpow==
+X-Gm-Message-State: AFqh2kol+iuG+pVVgpnanqhIf68W7wTKcK3HBzWt9XEpHZwS67k8puQC
+        0ItujQyCYcewmkoY6u2Tt8zfgQ==
+X-Google-Smtp-Source: AMrXdXvI+yd4CdLll7l4TRRe/pWKR0LO9NZcgtbN4mW0LOSAqxaTytI794LRD5/Hl0ZK/vH94Yq0RQ==
+X-Received: by 2002:a5d:8502:0:b0:6bc:d71a:570e with SMTP id q2-20020a5d8502000000b006bcd71a570emr5242217ion.16.1674054133648;
+        Wed, 18 Jan 2023 07:02:13 -0800 (PST)
+Received: from fedora ([185.203.218.253])
+        by smtp.gmail.com with ESMTPSA id c9-20020a02a609000000b003a53692d6dbsm2701272jam.124.2023.01.18.07.02.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jan 2023 07:02:12 -0800 (PST)
+Date:   Wed, 18 Jan 2023 10:02:10 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Peter Robinson <pbrobinson@gmail.com>, linux-iio@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: fix dependency references for config
+ MICROCHIP_TCB_CAPTURE
+Message-ID: <Y8gJ8lPAg3l3bugb@fedora>
+References: <20230118074659.5909-1-lukas.bulwahn@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="VSsqTeVGGrf4e10X"
 Content-Disposition: inline
-In-Reply-To: <20230118140423.y4ogqdkyti7vcwaz@SoMainline.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230118074659.5909-1-lukas.bulwahn@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 03:04:23PM +0100, Marijn Suijten wrote:
-> On 2023-01-18 15:22:42, Andy Shevchenko wrote:
 
-...
+--VSsqTeVGGrf4e10X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > > +	name = devm_kasprintf(dev, GFP_KERNEL, "%pfwP", fwnode);
-> > > 
-> > > Is this better/cleaner than copying the string from fwnode_get_name?
-> > 
-> > Coying to where? And what would be the lifetime of that string?
-> > 
-> > With devm_kasprintf():
-> > - we don't care how long the string is
-> > - we don't care about corner cases of lifetime as it's the same as
-> >   device itself (i.o.w. the same as the IIO device container)
-> 
-> Curious if there isn't a devm_strdup(name) or similar?  Main point is
-> that %pfwP seems like magic when fwnode_get_name is not (but returns a
-> const string that we cannot modify).
+On Wed, Jan 18, 2023 at 08:46:59AM +0100, Lukas Bulwahn wrote:
+> Commit dfeef15e73ca ("counter: microchip-tcp-capture: Add appropriate arch
+> deps for TCP driver") intends to add appropriate dependencies for the
+> config MICROCHIP_TCB_CAPTURE. It however prefixes the intended configs wi=
+th
+> CONFIG, but in Kconfig files in contrast to source files, the configs are
+> referenced to without prefixing them with CONFIG.
+>=20
+> Fix the dependency references due to this minor misconception.
+>=20
+> Fixes: dfeef15e73ca ("counter: microchip-tcp-capture: Add appropriate arc=
+h deps for TCP driver")
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
+>  drivers/counter/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index 90602536fb13..b5ba8fb02cf7 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -63,7 +63,7 @@ config INTERRUPT_CNT
+> =20
+>  config MICROCHIP_TCB_CAPTURE
+>  	tristate "Microchip Timer Counter Capture driver"
+> -	depends on CONFIG_SOC_AT91SAM9 || CONFIG_SOC_SAM_V7 || COMPILE_TEST
+> +	depends on SOC_AT91SAM9 || SOC_SAM_V7 || COMPILE_TEST
+>  	depends on HAS_IOMEM && OF
+>  	select REGMAP_MMIO
+>  	help
+> --=20
+> 2.17.1
 
-The devm_kstrdup(fwnode_get_name()) is an open coded variant of the above.
-I don't think we need to open code and produce NIH even a single API. And
-no, there is no magic behind that. At least from the fwnode point of view.
+Applied to counter-next.
 
-You may very well say that > 1500 instances of "%pOF" is a magic...
+William Breathitt Gray
 
-> If there is not, let's stick with
-> devm_kasprintf().
+--VSsqTeVGGrf4e10X
+Content-Type: application/pgp-signature; name="signature.asc"
 
-There is, but I'm against it. See above why.
+-----BEGIN PGP SIGNATURE-----
 
-> > > > +	name[strchrnul(name, '@') - name] = '\0';
-> > > 
-> > > This is the same as *strchrnul(name, '@') = '\0'; if I'm not mistaken.
-> > 
-> > Yes, But it's harder to read and understand. I believe the compiler has
-> > enough power to optimize this to the same assembly code.
-> 
-> I find the latter clearer as it doesn't require the reader to figure out
-> that name - name cancels itself out.  Alternatively we can write
-> strchrnul(name, '@')[0].
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY8gJ8gAKCRC1SFbKvhIj
+K8uNAP9qN+iORDxdNOV4OEqfNM749PKlUtm0pDXR9Sg1YmydHQEAiaD1RnPdcmAD
+SAL1qkwRLcVlg8tDcLtndKHqaju05w0=
+=I0Ud
+-----END PGP SIGNATURE-----
 
-I don't like to have Pythonisms in the C code, really.
-
-P.S. I guess this little patch already emptied my bandwidth, so I leave
-any further discussion to you and IIO maintainers. Thank you for the
-review!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--VSsqTeVGGrf4e10X--

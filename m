@@ -2,234 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55AE9671ABA
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 12:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E47C8671D31
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jan 2023 14:12:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbjARLfC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 06:35:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
+        id S229819AbjARNMY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 Jan 2023 08:12:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbjARLeu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 06:34:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553134C6D0
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 02:52:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1674039172;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XR4lu08dhpKLNLAmhLt8RYhLri3hR5H1H/boJl2s8Ew=;
-        b=AzLnWyIPdG5DnKcgsTPtArHaL26KCuSiBoYb1wgA+6MEqHtNY36r0/cbr5N4ZYhzm9vCZI
-        s/LDiX9Cb9jvCSIBxw99Cf/Lzmw0jX70AQmG/ihBOmVfW3aJ0oxFyCRh1m075MAZbneook
-        K4M9McHsAR3+ttINfGPHGZsqdKl14xE=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-541-1DoLstQzOY6s0T9iqK3k0Q-1; Wed, 18 Jan 2023 05:52:50 -0500
-X-MC-Unique: 1DoLstQzOY6s0T9iqK3k0Q-1
-Received: by mail-ed1-f72.google.com with SMTP id y20-20020a056402271400b0046c9a6ec30fso23395284edd.14
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 02:52:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XR4lu08dhpKLNLAmhLt8RYhLri3hR5H1H/boJl2s8Ew=;
-        b=MMDmfmp0GgENWMizuCbAAxrjYUCdW5JZIhqcQi3Nalh6/+hDn7r5DQztzdrGrbmLzy
-         LkPVXxcYCRrsvWB7Nytn5J4KXIywleX7ZoYkbNSYStSo+/7fdSfF7+aZBgNZ4kR7bqmq
-         4hqdrCZuh02LY683hcFTIVuzyuQaPYs2qZwlcXBTi4JL9SxYldnRijrF9ifcKec1PabD
-         sQIiVyASwrqvCFg9BjAZ7o/Ip3dwqtDqQbZ+ZobUY5QeFMbce0OPRRqNUgiRnc1gE9mj
-         j0fNwnxFa5MPYs1ljkqJFkfwqIDrbLf7CqkzMGe/7yFVX3Rqv5E61CRVPG16+fp4gXYW
-         3bQA==
-X-Gm-Message-State: AFqh2ko0OKXc3IWbnFJVTLw/5DR1K3QuDPaUglqJgi12dvclyCRQwSWg
-        UagIaLADfeCXpo+mIu+OwLPtW0XhcfS6h5DHBp3BQ9tgsfQeEJmdY2WVtGh/WOZ6sqS8WUV2pfP
-        zs+HFPcassVLsZb1NaNO+
-X-Received: by 2002:a17:906:244b:b0:7be:fb2c:c112 with SMTP id a11-20020a170906244b00b007befb2cc112mr6178451ejb.66.1674039169563;
-        Wed, 18 Jan 2023 02:52:49 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXs9ShTtWOgn2wmv2ilGuHcRACbdyeBsDeSxNQN/n8BHN+Zn8PMNKibiqd/bJ3maavu2TFU5Bw==
-X-Received: by 2002:a17:906:244b:b0:7be:fb2c:c112 with SMTP id a11-20020a170906244b00b007befb2cc112mr6178440ejb.66.1674039169331;
-        Wed, 18 Jan 2023 02:52:49 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id k22-20020a1709063fd600b00862497eafb2sm8408915ejj.103.2023.01.18.02.52.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jan 2023 02:52:48 -0800 (PST)
-Message-ID: <a9db708f-59a6-586a-8728-81622a93ef3e@redhat.com>
-Date:   Wed, 18 Jan 2023 11:52:48 +0100
+        with ESMTP id S230504AbjARNLw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 08:11:52 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE42B278B;
+        Wed, 18 Jan 2023 04:35:32 -0800 (PST)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id C831C200DB;
+        Wed, 18 Jan 2023 13:35:29 +0100 (CET)
+Date:   Wed, 18 Jan 2023 13:35:28 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Message-ID: <20230118123528.oaxtjbdier3ojd3m@SoMainline.org>
+References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] iio: light: cm32181: Fix PM support on system with 2 I2C
- resources
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de,
-        Wahaj <wahajaved@protonmail.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230117160951.282581-1-kai.heng.feng@canonical.com>
- <5c95d25b-ff26-053b-efc8-5f6fd979c7e2@redhat.com>
- <CAAd53p5DFUMjMNAyp6YVONwCpGs8rRVORj0=OSgj+Z0f3QpeCg@mail.gmail.com>
- <CAAd53p5XXCniBN7x4uhp4XW=qr2U72_UntgAR0BV2viRtd+8EA@mail.gmail.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAAd53p5XXCniBN7x4uhp4XW=qr2U72_UntgAR0BV2viRtd+8EA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-
-On 1/18/23 06:15, Kai-Heng Feng wrote:
-> On Wed, Jan 18, 2023 at 11:29 AM Kai-Heng Feng
-> <kai.heng.feng@canonical.com> wrote:
->>
->> Hi Hans,
->>
->> On Wed, Jan 18, 2023 at 1:21 AM Hans de Goede <hdegoede@redhat.com> wrote:
->>>
->>> Hi,
->>>
->>> On 1/17/23 17:09, Kai-Heng Feng wrote:
->>>> Commit c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices
->>>> with 2 I2C resources") creates a second client for the actual I2C
->>>> address, but the "struct device" passed to PM ops is the first client
->>>> that can't talk to the sensor.
->>>>
->>>> That means the I2C transfers in both suspend and resume routines can
->>>> fail and blocking the whole suspend process.
->>>>
->>>> Instead of using the first client for I2C transfer, store the cm32181
->>>> private struct on both cases so the PM ops can get the correct I2C
->>>> client to perfrom suspend and resume.
->>>>
->>>> Fixes: 68c1b3dd5c48 ("iio: light: cm32181: Add PM support")
->>>> Tested-by: Wahaj <wahajaved@protonmail.com>
->>>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
->>>
->>> Thank you for this fix. I had looking into this on my todo list,
->>> since I have been seeing some bug reports about this too.
->>>
->>> One remark inline:
->>>
->>>> ---
->>>>  drivers/iio/light/cm32181.c | 11 +++++++----
->>>>  1 file changed, 7 insertions(+), 4 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
->>>> index 001055d097509..0f319c891353c 100644
->>>> --- a/drivers/iio/light/cm32181.c
->>>> +++ b/drivers/iio/light/cm32181.c
->>>> @@ -440,6 +440,8 @@ static int cm32181_probe(struct i2c_client *client)
->>>>       if (!indio_dev)
->>>>               return -ENOMEM;
->>>>
->>>> +     i2c_set_clientdata(client, indio_dev);
->>>> +
->>>
->>> Why move this up, the suspend/resume callbacks cannot run until
->>> probe() completes, so no need for this change.
->>
->> The intention is to save indio_dev as drvdata in the first (i.e.
->> original) i2c_client's dev.
->>
->>>
->>>>       /*
->>>>        * Some ACPI systems list 2 I2C resources for the CM3218 sensor, the
->>>>        * SMBus Alert Response Address (ARA, 0x0c) and the actual I2C address.
->>>> @@ -458,9 +460,9 @@ static int cm32181_probe(struct i2c_client *client)
->>>>               client = i2c_acpi_new_device(dev, 1, &board_info);
->>>>               if (IS_ERR(client))
->>>>                       return PTR_ERR(client);
->>>> -     }
->>>>
->>>> -     i2c_set_clientdata(client, indio_dev);
->>>> +             i2c_set_clientdata(client, indio_dev);
->>>> +     }
->>>
->>> And moving it inside the if block here (instead of just dropping it)
->>> is also weird. I guess you meant to just delete it since you moved it up.
->>
->> Doesn't i2c_acpi_new_device() creates a new i2c_client (and its dev embedded)?
->>
->> So the intention is to save indio_dev for the second (ARA case) i2c_client too.
->>
->>>
->>>>
->>>>       cm32181 = iio_priv(indio_dev);
->>>>       cm32181->client = client;
->>>
->>> Also note that the ->client used in suspend/resume now is not set until
->>> here, so moving the i2c_set_clientdata() up really does not do anything.
->>>
->>> I beleive it would be best to just these 2 hunks from the patch and
->>> only keep the changes to the suspend/resume callbacks.
->>
->> Yes, it seems like those 2 hunks are not necessary. Let me send a new patch.
+On 2023-01-18 12:06:23, Andy Shevchenko wrote:
+> The node name can contain an address part which is unused
+> by the driver. Moreover, this string is propagated into
+> the userspace label, sysfs filenames *and breaking ABI*.
 > 
->         if (ACPI_HANDLE(dev) && client->addr == SMBUS_ALERT_RESPONSE_ADDRESS) {
->                 ...
->                 client = i2c_acpi_new_device(dev, 1, &board_info);
->                 ...
->         }
->         i2c_set_clientdata(client, indio_dev);
+> Cut the address part out before assigning the channel name.
 > 
-> It means the indio_dev is only assigned to the new i2c_client->dev's
-> drvdata, the original dev's drvdata remains NULL.
-> So we need to assign it before the original client gets replaced by
-> the new one, otherwise we can't get cm32181 in PM ops.
+> Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+> Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-You are right, my bad. The original code has a bug where it indeed was
-making the i2c_set_clientdata() call on the wrong client device.
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 
-So the i2c_set_clientdata() call needs to be moved up.
+One question and suggestion below.
 
-There is no need to also call i2c_set_clientdata() on the dummy
-i2c-client though. That one does not have a driver attached.
-
-The suspend/resume callbacks are made on the original client-dev,
-not on the one of the dummy-client (which is the one which we
-actually use to communicate).
-
->> But I do wonder what happens for the removing case? Will the second
->> i2c_client leak?
-
-Yes it does, good point. That should probably also be fixed, but
-that needs to be a different / second patch.
-
-Regards,
-
-Hans
-
-
-
->>>> @@ -490,7 +492,8 @@ static int cm32181_probe(struct i2c_client *client)
->>>>
->>>>  static int cm32181_suspend(struct device *dev)
->>>>  {
->>>> -     struct i2c_client *client = to_i2c_client(dev);
->>>> +     struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
->>>> +     struct i2c_client *client = cm32181->client;
->>>>
->>>>       return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
->>>>                                        CM32181_CMD_ALS_DISABLE);
->>>> @@ -498,8 +501,8 @@ static int cm32181_suspend(struct device *dev)
->>>>
->>>>  static int cm32181_resume(struct device *dev)
->>>>  {
->>>> -     struct i2c_client *client = to_i2c_client(dev);
->>>>       struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
->>>> +     struct i2c_client *client = cm32181->client;
->>>>
->>>>       return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
->>>>                                        cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
->>>
+> ---
+> v2: rephrased commit message (Marijn), fixed compilation issue (Marijin)
+>  drivers/iio/adc/qcom-spmi-adc5.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 > 
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index e90c299c913a..c2d5e06f137a 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -628,12 +628,20 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+>  				    struct fwnode_handle *fwnode,
+>  				    const struct adc5_data *data)
+>  {
+> -	const char *name = fwnode_get_name(fwnode), *channel_name;
+> +	const char *channel_name;
+> +	char *name;
+>  	u32 chan, value, varr[2];
+>  	u32 sid = 0;
+>  	int ret;
+>  	struct device *dev = adc->dev;
+>  
+> +	name = devm_kasprintf(dev, GFP_KERNEL, "%pfwP", fwnode);
 
+Is this better/cleaner than copying the string from fwnode_get_name?
+
+> +	if (!name)
+> +		return -ENOMEM;
+> +
+> +	/* Cut the address part */
+> +	name[strchrnul(name, '@') - name] = '\0';
+
+This is the same as *strchrnul(name, '@') = '\0'; if I'm not mistaken.
+
+- Marijn
+
+> +
+>  	ret = fwnode_property_read_u32(fwnode, "reg", &chan);
+>  	if (ret) {
+>  		dev_err(dev, "invalid channel number %s\n", name);
+> -- 
+> 2.39.0
+> 

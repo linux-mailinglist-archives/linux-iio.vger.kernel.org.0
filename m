@@ -2,129 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 715546748F9
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Jan 2023 02:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 520AA674B7E
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Jan 2023 05:58:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjATBmx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Jan 2023 20:42:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51938 "EHLO
+        id S231205AbjATE6l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Jan 2023 23:58:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjATBmw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 20:42:52 -0500
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A9D241D9;
-        Thu, 19 Jan 2023 17:42:50 -0800 (PST)
-Received: by mail-ot1-f50.google.com with SMTP id f88-20020a9d03e1000000b00684c4041ff1so2298013otf.8;
-        Thu, 19 Jan 2023 17:42:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3fa6PPtmv8bHW5qqhtcHqFt8wmFZ+0TFiAlmx2L9q84=;
-        b=3T+ShNdcXLXfnfLcOCcxzpVgmEbKRtpaFgq1LliOGE5QVgfXer4OREA7OVtrk4/ynl
-         5U22Ax5MCxQWHXGhw7NBY72y9uux31S2rOJyaemU2peQTqrSQpQMG/SNaQKYEFU10vPv
-         sfTA7cnaeIL1edRqx5nAXeX5oanxa7CNCB9ddDonL1aQh3MAfchs3bFXgc8A7c8XQnK3
-         Nv3KjHQVs0shWyGvWHFv9uuqDSscEB2AARClJoYR0TlhgW9Uh2S9Wod1qvYvCzsWW7hi
-         fP6ZrffxkN2ut17mwmd3Oso6nZ2WDDEe9eIblr+IHJJMsk+jZh4BQvwji9oc5HyXfT+Y
-         N03Q==
-X-Gm-Message-State: AFqh2koMVgVR5AS0RVnnVrnTP6xrcQJ109Ub2tghTd5kgxAvV7beDdhL
-        wrgqClo91JT40izVHMLNOg==
-X-Google-Smtp-Source: AMrXdXtKmLpq1iI7gLQf60pfLWgE2BZLF1lHU3djaO8Nn2uBr4hptQOjfXMFJ5Pl89bsjX5HNud48w==
-X-Received: by 2002:a9d:7d19:0:b0:670:69ad:3636 with SMTP id v25-20020a9d7d19000000b0067069ad3636mr6282024otn.23.1674178969701;
-        Thu, 19 Jan 2023 17:42:49 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id a20-20020a9d6e94000000b006718a823321sm6329944otr.41.2023.01.19.17.42.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jan 2023 17:42:48 -0800 (PST)
-Received: (nullmailer pid 3131600 invoked by uid 1000);
-        Fri, 20 Jan 2023 01:42:43 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, iio@vger.kernel.org,
-        Martin Botka <martin.botka@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        with ESMTP id S231176AbjATE6O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 23:58:14 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130581A0;
+        Thu, 19 Jan 2023 20:47:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674190054; x=1705726054;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ozaxhpxM4A0zByBv1AHnqvQW/wrI3mGABs3fTgTiWIY=;
+  b=kqKj/NOof0w9IRfBmZw79h5ATJ0QFcOM9Uv88uS+dHWIKj2/wvFMZP35
+   OPeCoOS6mt8afgWqrmDGKgW+tUYQsYeJLUmK222Yw+W7mLnjCj/8kSv5t
+   Xhq+11jJnr5w5BiGAoEsSQYT9FASr8c1FVfnv/zeji1Nm3xxG9IoEakgc
+   TXE6Lv12mBkvSOU05ynBe8ov7W1ZVWsU1EetRKto8m6abFEkIBReslwnU
+   VitFq5qrWW8Vz3LHUDIwhHbedtof+x9OeKBEi3OhdU5rNz9hpHBS0FyDc
+   tArG7H+sxiCdI62QCC+01zlCWzgmLK79OiSZtt4BbK1ukyXv5q1kZeXD9
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="308938731"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="308938731"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 09:47:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="749008977"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="749008977"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 19 Jan 2023 09:47:16 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B892F36D; Thu, 19 Jan 2023 19:47:51 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        linux-arm-msm@vger.kernel.org
-In-Reply-To: <20230119212632.185881-2-marijn.suijten@somainline.org>
-References: <20230119212632.185881-1-marijn.suijten@somainline.org>
- <20230119212632.185881-2-marijn.suijten@somainline.org>
-Message-Id: <167417887912.3129483.8810312426567009756.robh@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Require generic adc-chan
- name for channel nodes
-Date:   Thu, 19 Jan 2023 19:42:43 -0600
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: adc: xilinx-ams: Convert to use fwnode_device_is_compatible()
+Date:   Thu, 19 Jan 2023 19:47:49 +0200
+Message-Id: <20230119174749.76769-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.39.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Replace open coded fwnode_device_is_compatible() in the driver.
 
-On Thu, 19 Jan 2023 22:26:31 +0100, Marijn Suijten wrote:
-> As discussed in [1] it is more convenient to use a generic adc-chan node
-> name for ADC channels while storing a friendly - board-specific instead
-> of PMIC-specific - name in the label, if/when desired to overwrite the
-> channel description already contained (but previously unused) in the
-> driver [2].
-> 
-> Replace the .* name pattern with the adc-chan literal, but leave the
-> label property optional for bindings to choose to fall back a channel
-> label hardcoded in the driver [2] instead.
-> 
-> [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  .../bindings/iio/adc/qcom,spmi-vadc.yaml         | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/adc/xilinx-ams.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dtb: adc@3100: 'conn-therm@4f' does not match any of the regexes: '^adc-chan@[0-9a-f]+$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dtb: adc@3100: 'conn-therm@147', 'xo-therm@44' do not match any of the regexes: '^adc-chan@[0-9a-f]+$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230119212632.185881-2-marijn.suijten@somainline.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+index a507d2e17079..34cf336b3490 100644
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -1220,8 +1220,7 @@ static int ams_init_module(struct iio_dev *indio_dev,
+ 	int num_channels = 0;
+ 	int ret;
+ 
+-	if (fwnode_property_match_string(fwnode, "compatible",
+-					 "xlnx,zynqmp-ams-ps") == 0) {
++	if (fwnode_device_is_compatible(fwnode, "xlnx,zynqmp-ams-ps")) {
+ 		ams->ps_base = fwnode_iomap(fwnode, 0);
+ 		if (!ams->ps_base)
+ 			return -ENXIO;
+@@ -1232,8 +1231,7 @@ static int ams_init_module(struct iio_dev *indio_dev,
+ 		/* add PS channels to iio device channels */
+ 		memcpy(channels, ams_ps_channels, sizeof(ams_ps_channels));
+ 		num_channels = ARRAY_SIZE(ams_ps_channels);
+-	} else if (fwnode_property_match_string(fwnode, "compatible",
+-						"xlnx,zynqmp-ams-pl") == 0) {
++	} else if (fwnode_device_is_compatible(fwnode, "xlnx,zynqmp-ams-pl")) {
+ 		ams->pl_base = fwnode_iomap(fwnode, 0);
+ 		if (!ams->pl_base)
+ 			return -ENXIO;
+@@ -1247,8 +1245,7 @@ static int ams_init_module(struct iio_dev *indio_dev,
+ 		num_channels += AMS_PL_MAX_FIXED_CHANNEL;
+ 		num_channels = ams_get_ext_chan(fwnode, channels,
+ 						num_channels);
+-	} else if (fwnode_property_match_string(fwnode, "compatible",
+-						"xlnx,zynqmp-ams") == 0) {
++	} else if (fwnode_device_is_compatible(fwnode, "xlnx,zynqmp-ams")) {
+ 		/* add AMS channels to iio device channels */
+ 		memcpy(channels, ams_ctrl_channels, sizeof(ams_ctrl_channels));
+ 		num_channels += ARRAY_SIZE(ams_ctrl_channels);
+-- 
+2.39.0
 

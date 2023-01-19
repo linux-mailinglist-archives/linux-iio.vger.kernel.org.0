@@ -2,63 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6AC5673BEA
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Jan 2023 15:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 231EB673CF3
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Jan 2023 16:01:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230475AbjASO22 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Jan 2023 09:28:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49900 "EHLO
+        id S229720AbjASPBL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Jan 2023 10:01:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbjASO16 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 09:27:58 -0500
+        with ESMTP id S229734AbjASPBK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 10:01:10 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DD47F9B3;
-        Thu, 19 Jan 2023 06:27:38 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C8B298FD;
+        Thu, 19 Jan 2023 07:01:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90AD461ACC;
-        Thu, 19 Jan 2023 14:27:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CA3C433F2;
-        Thu, 19 Jan 2023 14:27:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4240361C2F;
+        Thu, 19 Jan 2023 15:01:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B5BC433D2;
+        Thu, 19 Jan 2023 15:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674138457;
-        bh=ATdPVmaH8/3z52/j6Bq9k4EsCVBhII5f9ZpQi4jovsY=;
+        s=k20201202; t=1674140465;
+        bh=jtw/ZizwoNTsLpGN/pS2yl4aMhOQh+qg2c0Qa/WImKs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mZ7mHOSyQOvnMZ5T/OGegzZQV1VoKeZ/4Tiur8pim8Vr8z03tHC7kwHgyN7zymyac
-         D9O4+pgqg4LtdH+ZDohBLAs8HezUvg6igvyVqOWygIo/8U1qsQCMQa7U5aSVhGaFaq
-         ctIHC7lA9IRTq5oy7gYFaoOZXxwM269cnAf+mJSGe8+xxF+KojIzCYt0t+6P5Zlpa9
-         AOP9wKIe0Gt0y5iRAogZ1B2BLC6em6aOb1DTmc3edCaISbNMQRwOGyh+NTFea8L1vX
-         iwfCHDyN4ln4e6WlOXxrCLJ5RxbydaQD/eE7VEbHOcdtQ4D2yNzETKiGCR2ol9KEXe
-         4nYfa6uSX16rw==
-Date:   Thu, 19 Jan 2023 14:27:29 +0000
+        b=GjFDprlT7EJ8Nrwkz4CXAKiCBu7tVEE603oN6sj2eaMf9hWE6psoiVfycnTW01hJh
+         lBzLACWXf/3WoIsz185DB2VhBUBTGB4muMGLjYmPJTq8MU0hST8paR4d2mt8j9NWmh
+         3hXtSqA0eU3HKP+jkkwvrcYVi371U2FVx76BuUyf5NR+df3fQCCdPUmCmy9qWHALi5
+         e14EEAVeOLgCt/b5j/c0AU7ezDJqzVjzUR+IhI+S7WdlZRqpZ+Wm10do2vQbHKuULC
+         N/2xvPCmqbwNuB54YTP8WsUIgnYH/HYBynyr2G4qt90SMCUrT8SLSbF4hbdDYQgSit
+         Cj4768SIUY4Ig==
+Date:   Thu, 19 Jan 2023 15:00:59 +0000
 From:   Lee Jones <lee@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Okan Sahin <okan.sahin@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     sre@kernel.org, jic23@kernel.org, lars@metafoo.de,
+        andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] drivers: mfd: Add ADI MAX77541/MAX77540 PMIC
- Support
-Message-ID: <Y8lTUegNjFZrXh1o@google.com>
-References: <20230118063822.14521-1-okan.sahin@analog.com>
- <20230118063822.14521-2-okan.sahin@analog.com>
- <Y8eq0GtVZfVdNKYn@smile.fi.intel.com>
+Subject: Re: [PATCH v6 1/7] mfd: mp2629: fix failed to get iio channel by
+ device name
+Message-ID: <Y8lbKy1jjkeSHJL3@google.com>
+References: <20221123175425.564042-1-sravanhome@gmail.com>
+ <20221123175425.564042-2-sravanhome@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y8eq0GtVZfVdNKYn@smile.fi.intel.com>
+In-Reply-To: <20221123175425.564042-2-sravanhome@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -68,35 +56,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 Jan 2023, Andy Shevchenko wrote:
+On Wed, 23 Nov 2022, Saravanan Sekar wrote:
 
-> On Wed, Jan 18, 2023 at 09:38:08AM +0300, Okan Sahin wrote:
-> > MFD driver for MAX77541/MAX77540 to enable its sub
-> > devices.
-> > 
-> > The MAX77541 is a multi-function devices. It includes
-> > buck converter and ADC.
-> > 
-> > The MAX77540 is a high-efficiency buck converter
-> > with two 3A switching phases.
-> > 
-> > They have same regmap except for ADC part of MAX77541.
-> 
-> ...
-> 
-> > +/*
-> > + * Copyright (c) 2022 Analog Devices, Inc.
-> 
-> Happy New Year!
+> The mfd cell devices name populated on sysfs entry is dynamically derived
 
-If the code hasn't changed greatly since the Copyright, there is no
-requirement to update the date.
+Could you please make an attempt to capitalise words that require it?
 
-> > + * Mfd core driver for the MAX77540 and MAX77541
+MFD, ADC, IIO, etc.  Also the start of the subject line description.
+
+> from an auto instance which introduced a regression. As a result
+> mpc2629_charger driver failed to get adc channel because of iio consumer
+
+How can you regress something that doesn't appear to exist?
+
+$ git grep -i mpc2629 next/master
+
+> name mismatch with the sysfs.
+
+Why is the charger driver reading sysfs?
+
+> /sys/class/i2c-adapter/i2c-1/mp2629_adc.0.auto/
+> /sys/class/i2c-adapter/i2c-1/mp2629_charger.1.auto/
+
+Can you provide an error message or some debug prints or something that
+will help describe the exact issue you are facing please?
+ 
+> Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
+> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> ---
+>  drivers/mfd/mp2629.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> MFD
-
-Please remove all mention of MFD - it's not a thing - we made it up!
+> diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
+> index 16840ec5fd1c..f4c5aa06f38c 100644
+> --- a/drivers/mfd/mp2629.c
+> +++ b/drivers/mfd/mp2629.c
+> @@ -51,7 +51,7 @@ static int mp2629_probe(struct i2c_client *client)
+>  		return PTR_ERR(ddata->regmap);
+>  	}
+>  
+> -	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_AUTO, mp2629_cell,
+> +	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_NONE, mp2629_cell,
+>  				   ARRAY_SIZE(mp2629_cell), NULL, 0, NULL);
+>  	if (ret)
+>  		dev_err(ddata->dev, "Failed to register sub-devices %d\n", ret);
+> -- 
+> 2.34.1
+> 
 
 -- 
 Lee Jones [李琼斯]

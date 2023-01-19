@@ -2,80 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24341672D08
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Jan 2023 00:55:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10CD4673328
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Jan 2023 08:59:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbjARXzH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 Jan 2023 18:55:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57080 "EHLO
+        id S230042AbjASH7O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Jan 2023 02:59:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbjARXyq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 Jan 2023 18:54:46 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152E24994F
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 15:54:31 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id y18so411155ljk.11
-        for <linux-iio@vger.kernel.org>; Wed, 18 Jan 2023 15:54:30 -0800 (PST)
+        with ESMTP id S230131AbjASH7J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 02:59:09 -0500
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90795AA44;
+        Wed, 18 Jan 2023 23:59:03 -0800 (PST)
+Received: by mail-qv1-xf29.google.com with SMTP id j9so1046288qvt.0;
+        Wed, 18 Jan 2023 23:59:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZYrMw3/IeRv7TW4QNk3zPlYQuNPsIe7wUOKS4NjkGS0=;
-        b=K8ly6emFAqGAA22x+q/ZurAWisaHh8ge1KHBvgTXbS3+VO5TodHzfuaZAz2yZVyZj0
-         L7gQzLkhRsdIsGO0Mn/qUpNM97shSrEW95jmIs6sPh9Zkq1R5txo14E/h6Km7O881z1O
-         i+U4b/uG5kopa+ud+gsH4l3p3FziOwFd+qoJo=
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LmxZN1YrGcXIl6BJ7TKPqUyMt3s9X7GC0r8mhCyLVo8=;
+        b=KGyQWSTYSZ34wKgDYbw+kGxfjC+rpxGiKRzBmXLO+hQx8UnwneML37sz4LLXkNu6UL
+         xALXkefIx1XI53QROsTnc8672Myaemq0lVzG4fAS2RJUU7+RlIkriHMVvsmy6HKyFzTO
+         YH8PwA11Y8GirnFCeDPj1B5ctmqQPG1xPFE77niZ4x9BdzJ/IjV1RBmGU0adQ0P5bh+3
+         xY6VYduSdLs4YQ4OwseQLNKXEMmTqfQ7nrP2jESI7Aefa1Zb/EHAH91QhSDDlEdkDv7R
+         +MxsBBnbRNucNF2QSuFqLIOyeLLSzjXfxMFdYxL0tTqK2YNPjLOr5OMvHI/Ye9AMURVB
+         Z5aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZYrMw3/IeRv7TW4QNk3zPlYQuNPsIe7wUOKS4NjkGS0=;
-        b=H/EUV5drHpIWv/u7iTV+1O2WC6/d2PQIYQhpJ4O3tPB7fbXogGRii2OgvyGurZ/iz7
-         0I5HczHCDeItQzGiEmW/tQA0XAunNaN0xW9SREuYsvL0QfDmJC6AXGBUxa7EccWP5MR8
-         6AqBA9mBdwksqxtkzTGnoyNpRSMcFvQq81Sz3a/Qe74/5jEYPGsqgGZFABSiAT021Urc
-         iS535ugJWsz2LJSouVkDMPLUKEwMlYcdCg4v/re5p6AQh9aTZiA7yYnyChIarXnzZ0k1
-         bq92OPQiQ602US4YFWPYvGTQxHdh0xIM4j5rVBSarXevFxx9UDyZlRLmZIpit5EcGRuX
-         cHqQ==
-X-Gm-Message-State: AFqh2koFdFMc0hE43QncPTC+K5vZqS3tMlHvkltVZGUDk43cmbMgJpj+
-        fwbrQuZROx5CohFrHJ18DIK0m3bAQNRftY3/Ssj/Lg==
-X-Google-Smtp-Source: AMrXdXtV9/EvY88izpZDNRGb0mcJzG9wCFMUrHPHXuEO8AGVgoLTo9c70QaJmh6rbOpnQub3UHpAkLYKcR6/wa70gaU=
-X-Received: by 2002:a2e:a49a:0:b0:28b:6abf:29ea with SMTP id
- h26-20020a2ea49a000000b0028b6abf29eamr780014lji.359.1674086069412; Wed, 18
- Jan 2023 15:54:29 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 18 Jan 2023 17:54:28 -0600
-MIME-Version: 1.0
-In-Reply-To: <20230114172928.80414-1-jic23@kernel.org>
-References: <20230114172928.80414-1-jic23@kernel.org>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Wed, 18 Jan 2023 17:54:28 -0600
-Message-ID: <CAE-0n502JpQWfZsN960KcA34ndrqMmkmznCNGY36eGJ=JPiy3g@mail.gmail.com>
-Subject: Re: [PATCH] iio: proximity: sx_common: Drop documentation of non
- existent struct element.
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LmxZN1YrGcXIl6BJ7TKPqUyMt3s9X7GC0r8mhCyLVo8=;
+        b=QxKvFqjnfe+I+exdJjjupm4Cl8d0+ALYqWJA/u0ft3T0FzbBsZ0yTwYGwPRJyiHs4e
+         CUIVZ6DRox6ZXzmo9Qpb/XDU1zTHjOC7jdtuhj/SDzTAondxyDlByl0h9cNqYV8pcG6F
+         jLH4D7QErk6qOQivC4O1ltDhTJ6v+oZKP3/06AaCvBEdHjCkbvsCP3Rer7xntG1U2qFb
+         Nf/8tDnJezhMJ/wLEBSRiReFFWGYoMS6kAlI2WADCgvK2gJDtOqg2qbkRfHFEGdCeXkI
+         GO+hWjhgNih00WjTfGivedeA5zv/Q2fRo/wWog+KwSXyhgW27xFo6i5fM1H+NPG7IrBq
+         MVTA==
+X-Gm-Message-State: AFqh2koWRm70TKPLG5I8WW3lCGAVhwJBgAKLsYCeGwCOwWAkmca5VHxe
+        NJyvMgPyRliIwAGRbWGG0/w=
+X-Google-Smtp-Source: AMrXdXv+INBpJMonZE+SaI/fxARrwKp0VT1O9hj9jRu8mAkCgF8HYsqZYMOKWAoxLprXrbcGWvUKlQ==
+X-Received: by 2002:ad4:52e7:0:b0:531:cc33:19b0 with SMTP id p7-20020ad452e7000000b00531cc3319b0mr12905265qvu.24.1674115142525;
+        Wed, 18 Jan 2023 23:59:02 -0800 (PST)
+Received: from p200300f6ef015700e657423a1f156bec.dip0.t-ipconnect.de (p200300f6ef015700e657423a1f156bec.dip0.t-ipconnect.de. [2003:f6:ef01:5700:e657:423a:1f15:6bec])
+        by smtp.gmail.com with ESMTPSA id 3-20020a05620a070300b00706b69d3414sm2426279qkc.94.2023.01.18.23.59.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jan 2023 23:59:01 -0800 (PST)
+Message-ID: <bb2e8b7b4ca894ed53d70bf04e2d52bed2553105.camel@gmail.com>
+Subject: Re: [PATCH v1 1/2] iio: core: Replace
+ iio_sysfs_match_string_with_gaps() by __sysfs_match_string()
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gwendal Grignou <gwendal@chromium.org>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>
+Date:   Thu, 19 Jan 2023 09:00:45 +0100
+In-Reply-To: <64406c4f-c9da-b434-360b-1050ff685d2d@metafoo.de>
+References: <20230118074828.66155-1-andriy.shevchenko@linux.intel.com>
+         <5f9b713b-9c71-7da6-e674-b6ebd28dc5d5@metafoo.de>
+         <Y8gVDs0UoiHqCRsM@smile.fi.intel.com>
+         <64406c4f-c9da-b434-360b-1050ff685d2d@metafoo.de>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Jonathan Cameron (2023-01-14 09:29:28)
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> struct sx_common_data doesn't have a num_default_regs element so
-> drop the documentation for it.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Cc: Stephen Boyd <swboyd@chromium.org>
-> ---
+On Wed, 2023-01-18 at 08:37 -0800, Lars-Peter Clausen wrote:
+> On 1/18/23 07:49, Andy Shevchenko wrote:
+> > On Wed, Jan 18, 2023 at 07:22:30AM -0800, Lars-Peter Clausen wrote:
+> > > On 1/17/23 23:48, Andy Shevchenko wrote:
+> > > > None of the current users is using gaps in the list of the
+> > > > items.
+> > > > No need to have a specific function for that, just replace it
+> > > > by
+> > > > library available __sysfs_match_string().
+> > > Hm, I specifically remember adding this for a driver where there
+> > > were gaps.
+> > > One of the DACs. But it might be that the driver itself never
+> > > made it
+> > > upstream.
+> > I have checked all modules that have struct iio_enum and/or ("or"
+> > probably may
+> > not happen) IIO_ENUM() in them.
+> >=20
+> > It might be that I missed something.
+> I checked too, I can't find it either. The driver probably never made
+> it=20
+> upstream.
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Yeah, I also did a quick check and I could find it in one adc (most
+likely we have more downstream users of this) that did not make it
+upstream. Eventually, we want to have it upstream but the ABI using the
+gaps can arguably be dropped...
+
+Anyways, from my side I'm fine with this change. We can revert it if we
+ever have a real user for this. I'll just have to be careful when
+updating ADI tree (but that is our problem :)).
+
+- Nuno S=C3=A1

@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 231EB673CF3
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Jan 2023 16:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6038673D0B
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Jan 2023 16:06:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjASPBL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 Jan 2023 10:01:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
+        id S229615AbjASPGT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 Jan 2023 10:06:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbjASPBK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 10:01:10 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C8B298FD;
-        Thu, 19 Jan 2023 07:01:06 -0800 (PST)
+        with ESMTP id S229544AbjASPGS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 Jan 2023 10:06:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D492B83C3;
+        Thu, 19 Jan 2023 07:06:17 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4240361C2F;
-        Thu, 19 Jan 2023 15:01:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B5BC433D2;
-        Thu, 19 Jan 2023 15:01:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F75461C1E;
+        Thu, 19 Jan 2023 15:06:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0BDC433EF;
+        Thu, 19 Jan 2023 15:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674140465;
-        bh=jtw/ZizwoNTsLpGN/pS2yl4aMhOQh+qg2c0Qa/WImKs=;
+        s=k20201202; t=1674140776;
+        bh=ed/d1Vc476vyDl5PAf6BZKDeh52LAXW4QTKCR29Wwos=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GjFDprlT7EJ8Nrwkz4CXAKiCBu7tVEE603oN6sj2eaMf9hWE6psoiVfycnTW01hJh
-         lBzLACWXf/3WoIsz185DB2VhBUBTGB4muMGLjYmPJTq8MU0hST8paR4d2mt8j9NWmh
-         3hXtSqA0eU3HKP+jkkwvrcYVi371U2FVx76BuUyf5NR+df3fQCCdPUmCmy9qWHALi5
-         e14EEAVeOLgCt/b5j/c0AU7ezDJqzVjzUR+IhI+S7WdlZRqpZ+Wm10do2vQbHKuULC
-         N/2xvPCmqbwNuB54YTP8WsUIgnYH/HYBynyr2G4qt90SMCUrT8SLSbF4hbdDYQgSit
-         Cj4768SIUY4Ig==
-Date:   Thu, 19 Jan 2023 15:00:59 +0000
+        b=G+qBScBy5NjwE5b+jFH2oJR4GBZxRf3rwDsZDXzMUG2u4Z2TKPAlcej+oJ8Tt8CLC
+         dUshQoe7+t30T5JtUpSjXsy9Wr25/iGgjBIdZUSlncyhzLq2ZO8YXYOCUOYDTo/aD2
+         VxbXCMMACZURN6ojxDnP4V2Uwuv/1lXWKpKDhKy4MjzhSc/xhdtVm2R/qig/ml6A3W
+         R6Sye8BvYGnBvqMXx6OZE1oEdjF782aSwWp4nqFkZKtvjGHS0QWiH+utpz45h5JFQ1
+         O7gjpD6Vb2yxR8jdIlDTc5uOETRdmJvlLdyPCS3EtpwEuuzV+Xyl23qf5ek6Qmp2+1
+         9dYHPohTlge2A==
+Date:   Thu, 19 Jan 2023 15:06:11 +0000
 From:   Lee Jones <lee@kernel.org>
 To:     Saravanan Sekar <sravanhome@gmail.com>
 Cc:     sre@kernel.org, jic23@kernel.org, lars@metafoo.de,
         andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v6 1/7] mfd: mp2629: fix failed to get iio channel by
- device name
-Message-ID: <Y8lbKy1jjkeSHJL3@google.com>
+Subject: Re: [PATCH v6 3/7] mfd: mp2629: introduce chip id machanism to
+ distinguish chip
+Message-ID: <Y8lcY/hhDSEw9Mt3@google.com>
 References: <20221123175425.564042-1-sravanhome@gmail.com>
- <20221123175425.564042-2-sravanhome@gmail.com>
+ <20221123175425.564042-4-sravanhome@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221123175425.564042-2-sravanhome@gmail.com>
+In-Reply-To: <20221123175425.564042-4-sravanhome@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,50 +56,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+"Use DT API to pass through chip ID"
+
 On Wed, 23 Nov 2022, Saravanan Sekar wrote:
 
-> The mfd cell devices name populated on sysfs entry is dynamically derived
+> Introduce chip id machanism to distinguish chip
 
-Could you please make an attempt to capitalise words that require it?
+Please be more imaginative than simply repeating the subject line.
 
-MFD, ADC, IIO, etc.  Also the start of the subject line description.
-
-> from an auto instance which introduced a regression. As a result
-> mpc2629_charger driver failed to get adc channel because of iio consumer
-
-How can you regress something that doesn't appear to exist?
-
-$ git grep -i mpc2629 next/master
-
-> name mismatch with the sysfs.
-
-Why is the charger driver reading sysfs?
-
-> /sys/class/i2c-adapter/i2c-1/mp2629_adc.0.auto/
-> /sys/class/i2c-adapter/i2c-1/mp2629_charger.1.auto/
-
-Can you provide an error message or some debug prints or something that
-will help describe the exact issue you are facing please?
+Also: "ID"
  
-> Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
 > Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > ---
->  drivers/mfd/mp2629.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/mfd/mp2629.c       | 4 +++-
+>  include/linux/mfd/mp2629.h | 5 +++++
+>  2 files changed, 8 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
-> index 16840ec5fd1c..f4c5aa06f38c 100644
+> index f4c5aa06f38c..a3fc02ad5ec1 100644
 > --- a/drivers/mfd/mp2629.c
 > +++ b/drivers/mfd/mp2629.c
-> @@ -51,7 +51,7 @@ static int mp2629_probe(struct i2c_client *client)
->  		return PTR_ERR(ddata->regmap);
->  	}
+> @@ -13,6 +13,7 @@
+>  #include <linux/mfd/mp2629.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+>  #include <linux/regmap.h>
+>  #include <linux/slab.h>
 >  
-> -	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_AUTO, mp2629_cell,
-> +	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_NONE, mp2629_cell,
->  				   ARRAY_SIZE(mp2629_cell), NULL, 0, NULL);
->  	if (ret)
->  		dev_err(ddata->dev, "Failed to register sub-devices %d\n", ret);
+> @@ -43,6 +44,7 @@ static int mp2629_probe(struct i2c_client *client)
+>  		return -ENOMEM;
+>  
+>  	ddata->dev = &client->dev;
+> +	ddata->chip_id = (uintptr_t)device_get_match_data(&client->dev);
+>  	i2c_set_clientdata(client, ddata);
+>  
+>  	ddata->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
+> @@ -60,7 +62,7 @@ static int mp2629_probe(struct i2c_client *client)
+>  }
+>  
+>  static const struct of_device_id mp2629_of_match[] = {
+> -	{ .compatible = "mps,mp2629"},
+> +	{ .compatible = "mps,mp2629", .data = (void *)CHIP_ID_MP2629 },
+
+
+Is this value something you can ask the H/W for?
+
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, mp2629_of_match);
+> diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
+> index 89b706900b57..072c8181b48b 100644
+> --- a/include/linux/mfd/mp2629.h
+> +++ b/include/linux/mfd/mp2629.h
+> @@ -9,9 +9,14 @@
+>  #include <linux/device.h>
+>  #include <linux/regmap.h>
+>  
+> +enum mp2xx_chip_id {
+> +	CHIP_ID_MP2629,
+> +};
+> +
+>  struct mp2629_data {
+>  	struct device *dev;
+>  	struct regmap *regmap;
+> +	enum mp2xx_chip_id chip_id;
+>  };
+>  
+>  enum mp2629_adc_chan {
 > -- 
 > 2.34.1
 > 

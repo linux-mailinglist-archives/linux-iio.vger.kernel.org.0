@@ -2,25 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D951675186
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Jan 2023 10:49:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A02E7675213
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Jan 2023 11:09:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjATJtY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 Jan 2023 04:49:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40022 "EHLO
+        id S229494AbjATKJx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 Jan 2023 05:09:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjATJtX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Jan 2023 04:49:23 -0500
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415143CE39;
-        Fri, 20 Jan 2023 01:49:20 -0800 (PST)
-Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1pInzo-0002mL-W5; Fri, 20 Jan 2023 10:47:41 +0100
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
+        with ESMTP id S229500AbjATKJw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 Jan 2023 05:09:52 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370148B326;
+        Fri, 20 Jan 2023 02:09:48 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9B2C61F09;
+        Fri, 20 Jan 2023 10:09:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA804C433D2;
+        Fri, 20 Jan 2023 10:09:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1674209387;
+        bh=QQh8ShqbKc4vcCYjUJJI+sW3w3r+3sanu/vPZ2IyzTw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rMYgPKw1pGl3FwPpK4PFmTlmFnpTnyZ7ux/Z8gB+BTQu8ad2dbnHGdmqSUUh9QAo3
+         C+u0IUTCPhPJwzafpGLLSfvLo60WsvNwXWf3AIb1nv8SUA+shDrhHnhPjsEK+wxt8Q
+         HF3ooQ8AjjaEe2zCmeFagpTzLf/Qp8lQOOmYtGYc=
+Date:   Fri, 20 Jan 2023 11:09:43 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Cc:     broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
         vigneshr@ti.com, jic23@kernel.org, tudor.ambarus@microchip.com,
         pratyush@kernel.org, sanju.mehta@amd.com,
         chin-ting_kuo@aspeedtech.com, clg@kaod.org, kdasu.kdev@gmail.com,
@@ -31,7 +42,7 @@ To:     broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
         matthias.bgg@gmail.com, haibo.chen@nxp.com,
         linus.walleij@linaro.org, daniel@zonque.org,
         haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        agross@kernel.org, bjorn.andersson@linaro.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, heiko@sntech.de,
         krzysztof.kozlowski@linaro.org, andi@etezian.org,
         mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
         wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org,
@@ -43,9 +54,7 @@ To:     broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
         skomatineni@nvidia.com, sumit.semwal@linaro.org,
         christian.koenig@amd.com, j.neuschaefer@gmx.net,
         vireshk@kernel.org, rmfrfs@gmail.com, johan@kernel.org,
-        elder@kernel.org, gregkh@linuxfoundation.org,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Cc:     git@amd.com, linux-spi@vger.kernel.org,
+        elder@kernel.org, git@amd.com, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
         radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
         alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
@@ -73,25 +82,25 @@ Cc:     git@amd.com, linux-spi@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-media@vger.kernel.org,
         dri-devel@lists.freedesktop.org, greybus-dev@lists.linaro.org,
         linux-staging@lists.linux.dev, amitrkcian2002@gmail.com
-Subject: Re: [PATCH v2 02/13] spi: Replace all spi->chip_select and spi->cs_gpiod
- references with function call
-Date:   Fri, 20 Jan 2023 10:47:37 +0100
-Message-ID: <3658396.MHq7AAxBmi@diego>
-In-Reply-To: <20230119185342.2093323-3-amit.kumar-mahapatra@amd.com>
+Subject: Re: [PATCH v2 06/13] staging: Replace all spi->chip_select and
+ spi->cs_gpiod references with function call
+Message-ID: <Y8poZ1wN8/dAO3H/@kroah.com>
 References: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
- <20230119185342.2093323-3-amit.kumar-mahapatra@amd.com>
+ <20230119185342.2093323-7-amit.kumar-mahapatra@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230119185342.2093323-7-amit.kumar-mahapatra@amd.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Am Donnerstag, 19. Januar 2023, 19:53:31 CET schrieb Amit Kumar Mahapatra:
+On Fri, Jan 20, 2023 at 12:23:35AM +0530, Amit Kumar Mahapatra wrote:
 > Supporting multi-cs in spi drivers would require the chip_select & cs_gpiod
 > members of struct spi_device to be an array. But changing the type of these
 > members to array would break the spi driver functionality. To make the
@@ -104,96 +113,5 @@ Am Donnerstag, 19. Januar 2023, 19:53:31 CET schrieb Amit Kumar Mahapatra:
 > spi->chip_select[idx] & spi->cs_gpiod[idx] respectively.
 > 
 > Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-> ---
 
-> diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
-> index bd87d3c92dd3..246e81453ec3 100644
-> --- a/drivers/spi/spi-rockchip-sfc.c
-> +++ b/drivers/spi/spi-rockchip-sfc.c
-> @@ -346,7 +346,7 @@ static int rockchip_sfc_xfer_setup(struct rockchip_sfc *sfc,
->  
->  	/* set the Controller */
->  	ctrl |= SFC_CTRL_PHASE_SEL_NEGETIVE;
-> -	cmd |= mem->spi->chip_select << SFC_CMD_CS_SHIFT;
-> +	cmd |= spi_get_chipselect(mem->spi, 0) << SFC_CMD_CS_SHIFT;
->  
->  	dev_dbg(sfc->dev, "sfc addr.nbytes=%x(x%d) dummy.nbytes=%x(x%d)\n",
->  		op->addr.nbytes, op->addr.buswidth,
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index 79242dc5272d..adc5638eff4b 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -246,28 +246,30 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
->  	bool cs_asserted = spi->mode & SPI_CS_HIGH ? enable : !enable;
->  
->  	/* Return immediately for no-op */
-> -	if (cs_asserted == rs->cs_asserted[spi->chip_select])
-> +	if (cs_asserted == rs->cs_asserted[spi_get_chipselect(spi, 0)])
->  		return;
->  
->  	if (cs_asserted) {
->  		/* Keep things powered as long as CS is asserted */
->  		pm_runtime_get_sync(rs->dev);
->  
-> -		if (spi->cs_gpiod)
-> +		if (spi_get_csgpiod(spi, 0))
->  			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
->  		else
-> -			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER, BIT(spi->chip_select));
-> +			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER,
-> +					      BIT(spi_get_chipselect(spi, 0)));
->  	} else {
-> -		if (spi->cs_gpiod)
-> +		if (spi_get_csgpiod(spi, 0))
->  			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
->  		else
-> -			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER, BIT(spi->chip_select));
-> +			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER,
-> +					      BIT(spi_get_chipselect(spi, 0)));
->  
->  		/* Drop reference from when we first asserted CS */
->  		pm_runtime_put(rs->dev);
->  	}
->  
-> -	rs->cs_asserted[spi->chip_select] = cs_asserted;
-> +	rs->cs_asserted[spi_get_chipselect(spi, 0)] = cs_asserted;
->  }
->  
->  static void rockchip_spi_handle_err(struct spi_controller *ctlr,
-> @@ -541,7 +543,7 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
->  	if (spi->mode & SPI_LSB_FIRST)
->  		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
->  	if (spi->mode & SPI_CS_HIGH)
-> -		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
-> +		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
->  
->  	if (xfer->rx_buf && xfer->tx_buf)
->  		cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
-> @@ -724,7 +726,7 @@ static int rockchip_spi_setup(struct spi_device *spi)
->  	struct rockchip_spi *rs = spi_controller_get_devdata(spi->controller);
->  	u32 cr0;
->  
-> -	if (!spi->cs_gpiod && (spi->mode & SPI_CS_HIGH) && !rs->cs_high_supported) {
-> +	if (!spi_get_csgpiod(spi, 0) && (spi->mode & SPI_CS_HIGH) && !rs->cs_high_supported) {
->  		dev_warn(&spi->dev, "setup: non GPIO CS can't be active-high\n");
->  		return -EINVAL;
->  	}
-> @@ -735,10 +737,10 @@ static int rockchip_spi_setup(struct spi_device *spi)
->  
->  	cr0 &= ~(0x3 << CR0_SCPH_OFFSET);
->  	cr0 |= ((spi->mode & 0x3) << CR0_SCPH_OFFSET);
-> -	if (spi->mode & SPI_CS_HIGH && spi->chip_select <= 1)
-> -		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
-> -	else if (spi->chip_select <= 1)
-> -		cr0 &= ~(BIT(spi->chip_select) << CR0_SOI_OFFSET);
-> +	if (spi->mode & SPI_CS_HIGH && spi_get_chipselect(spi, 0) <= 1)
-> +		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
-> +	else if (spi_get_chipselect(spi, 0) <= 1)
-> +		cr0 &= ~(BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET);
->  
->  	writel_relaxed(cr0, rs->regs + ROCKCHIP_SPI_CTRLR0);
-
-for the two Rockchip drivers
-Acked-by: Heiko Stuebner <heiko@sntech.de>
-
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

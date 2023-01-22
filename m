@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF95677374
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 00:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D2D367737C
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 00:37:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbjAVXbj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 Jan 2023 18:31:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
+        id S230261AbjAVXht (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 Jan 2023 18:37:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230134AbjAVXbh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Jan 2023 18:31:37 -0500
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [5.144.164.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A7EF12582
-        for <linux-iio@vger.kernel.org>; Sun, 22 Jan 2023 15:31:32 -0800 (PST)
+        with ESMTP id S230245AbjAVXhs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 Jan 2023 18:37:48 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFCB9A279;
+        Sun, 22 Jan 2023 15:37:45 -0800 (PST)
 Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 188351F675;
-        Mon, 23 Jan 2023 00:31:29 +0100 (CET)
-Date:   Mon, 23 Jan 2023 00:31:27 +0100
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0B73F1F54F;
+        Mon, 23 Jan 2023 00:37:42 +0100 (CET)
+Date:   Mon, 23 Jan 2023 00:37:41 +0100
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
@@ -37,9 +37,9 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Manivannan Sadhasivam <mani@kernel.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: Use labels with generic node
- names for ADC channels
-Message-ID: <20230122233127.n4ned4cuiyiay42u@SoMainline.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Require generic adc-chan
+ name for channel nodes
+Message-ID: <20230122233741.7jn2nzghfvhgoemr@SoMainline.org>
 Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
         Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
@@ -56,37 +56,64 @@ Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
 References: <20230119212632.185881-1-marijn.suijten@somainline.org>
- <20230119221757.wltdog4owclidejl@SoMainline.org>
- <20230121165954.5806ee29@jic23-huawei>
+ <20230119212632.185881-2-marijn.suijten@somainline.org>
+ <20230121170825.0d284151@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230121165954.5806ee29@jic23-huawei>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230121170825.0d284151@jic23-huawei>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-01-21 16:59:54, Jonathan Cameron wrote:
-> On Thu, 19 Jan 2023 23:17:57 +0100
+On 2023-01-21 17:08:25, Jonathan Cameron wrote:
+> On Thu, 19 Jan 2023 22:26:31 +0100
 > Marijn Suijten <marijn.suijten@somainline.org> wrote:
 > 
-> > +cc linux-iio@vger.kernel.org
+> > As discussed in [1] it is more convenient to use a generic adc-chan node
+> > name for ADC channels while storing a friendly - board-specific instead
+> > of PMIC-specific - name in the label, if/when desired to overwrite the
+> > channel description already contained (but previously unused) in the
+> > driver [2].
 > > 
-> > Apologies, I blindly copied Jonathans request [1] to send this to
-> > iio@vger.kernel.org, without checking for the common linux- prefix.
-> Oops from me!
-> :)
+> > Replace the .* name pattern with the adc-chan literal, but leave the
+> > label property optional for bindings to choose to fall back a channel
+> > label hardcoded in the driver [2] instead.
+> > 
+> > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+> > [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+> > 
+> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Other than the use in the tm5 thermal example that Rob's bot found, this looks
+> good to me.
 
-Double oops from me, linux-iio was already CC'd because of the
-dt-bindings patch (and I collate all CC'ers in the cover letter and
-distribute all patches with --cc-cover) and I acted on the iio@ bounce
-too quickly :)
+Yep, shouldn't have ran dt_binding_check and dtbs_check with
+DT_SCHEMA_FILES=just/the/one/edited/here.
+
+> I think ideal would be to fix that in a precursor patch then
+> do this one.
+
+Can't that be part of the current one?  At least the change requested by
+dt-bindings here is backwards-compatible; the adc-chan@xx format with
+optional label property was already allowed.
+
+> Note that the existing two patches should be in the other order
+> 1. Update the dtsi
+> 2. Tighten the bounds to check they are right.
+
+Hmm, I'm never sure what goes first: drivers, bindings, or DT
+(considering there's an ABI it shouldn't matter whether drivers or DT
+go first, leaving just dt-bindings which could be used to TDD the DT...
+or check adjustment after the fact).  Is this relationship - and the
+order following from it - documented somewhere?
+
+> Doesn't matter much though as the two patches will probably go through
+> different trees.
+
+Should be right, indeed.
 
 - Marijn
-
-<snip>

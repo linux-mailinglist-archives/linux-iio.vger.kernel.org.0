@@ -2,168 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39EEE6787D8
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 21:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB4686787ED
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 21:35:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232401AbjAWUdq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 15:33:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
+        id S231681AbjAWUfu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 15:35:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbjAWUdq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 15:33:46 -0500
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC3983E5;
-        Mon, 23 Jan 2023 12:33:44 -0800 (PST)
-Received: by mail-oi1-f174.google.com with SMTP id i5so11440390oih.11;
-        Mon, 23 Jan 2023 12:33:44 -0800 (PST)
+        with ESMTP id S231480AbjAWUft (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 15:35:49 -0500
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC33A8690;
+        Mon, 23 Jan 2023 12:35:47 -0800 (PST)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-15f64f2791dso15378251fac.7;
+        Mon, 23 Jan 2023 12:35:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TrqI5Ij0O95gCzmKCmcYaV3PIFWC+QL1zw9c0VIbm+A=;
-        b=I1aAQocG/0QuLGz2DX2Zn7xL4D1cfH+3z64mnnp2Qb74Dt1dzl2nDsQlDsnbShf/lw
-         KQENvKn0rIrdL583wgFJZSyDeOVKDP5l/Dt3ZJegj0jGLCiR5qtuc2+dUJ/sNYXDud3s
-         +fZ5b1Bu35g5281+GN0dUrpEi4u8nJpYWg1Aag4+kZ1aAQOFzrp5wZ/qSISNnerjgUP7
-         3uTimR+I5hSEvYZj5iHXApsvoFi1UCQ4Jl0j0cOHIjcR0GLAECiF81pwJ0RIND76wCpH
-         X6KU/BJC4FvfeX3klTRcd8KkgTg75Wte5V3IDNkcWRsMzQEJ0IgP3FWkK8JYy0TRRN2o
-         TeVg==
-X-Gm-Message-State: AFqh2koTA6pXSvC7Dmkg1w2lTkxYUParGALct1gk5Jv+csxL+bFgpgA7
-        S6o0+uAZk148TORNBlcplA==
-X-Google-Smtp-Source: AMrXdXsGKKWCKC87sdHRroBTg34rpaNG4pqP2GTedN+HwXhwJK32IDUo9Nlm9V/lhJeTRuJUTQ1oeQ==
-X-Received: by 2002:a05:6808:2819:b0:360:cd17:6968 with SMTP id et25-20020a056808281900b00360cd176968mr18783885oib.15.1674506024074;
-        Mon, 23 Jan 2023 12:33:44 -0800 (PST)
+        bh=bqUWksinymEVfLReKJJtCyYWWLZ6cx8j3ymD6Z3V0yc=;
+        b=5buK6GITVl+Nj+yB7C1cfpAl3OJNGmZUheZ6f2K1kPMrkxe6J1Ieh2RIZTM5PFLTT/
+         lUxSTkgwfzxz2HcLvt7wEMRtf6fQ0RGb9AIVguN/xZRyUdz+IqSFCMmxk93tEyV6xEi7
+         ls7umcYEQaoQePWzh3a31/llYebdGZr+1U0JP1JCCrVU3dvcLZVnsqMGCNEx1oAJcDpK
+         alJ6h/pCNYlEmDiJTKypT0/96/IY33y+UK32TDEr9JpyYtkDLw+8vbk5y4cDUC5sjJ2E
+         +VfAz6vs2bvkaMpoucYQd/NYr7grlupVjxly7GEyd6jw0PoOFy5xViHnkAeAJPJpOeif
+         EEFQ==
+X-Gm-Message-State: AFqh2koL7JuUY0yWDrtWIbXVcqv9xP1RjiF60derlYOORqFMCKbf14XI
+        c8sVrcL6SJ6jtjhVnCp0rQ==
+X-Google-Smtp-Source: AMrXdXsvDCFsbVFw+eJ2cbyJwAUV1dOFiwlLrgu1CNnxj6xXm20ORfJFg1UiQgks29vH4SbJm/yNBA==
+X-Received: by 2002:a05:6870:2f02:b0:155:a38f:70d1 with SMTP id qj2-20020a0568702f0200b00155a38f70d1mr12278017oab.18.1674506147053;
+        Mon, 23 Jan 2023 12:35:47 -0800 (PST)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id bx35-20020a0568081b2300b0036701c185basm135326oib.55.2023.01.23.12.33.41
+        by smtp.gmail.com with ESMTPSA id v11-20020a056870310b00b00144e6ffe9e5sm9358140oaa.47.2023.01.23.12.35.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jan 2023 12:33:43 -0800 (PST)
-Received: (nullmailer pid 2476342 invoked by uid 1000);
-        Mon, 23 Jan 2023 20:33:41 -0000
-Date:   Mon, 23 Jan 2023 14:33:41 -0600
+        Mon, 23 Jan 2023 12:35:46 -0800 (PST)
+Received: (nullmailer pid 2479493 invoked by uid 1000);
+        Mon, 23 Jan 2023 20:35:44 -0000
+Date:   Mon, 23 Jan 2023 14:35:44 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
         Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Renato Lui Geh <renatogeh@gmail.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Phil Reid <preid@electromag.com.au>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Philippe Reynes <tremyfr@yahoo.fr>, devicetree@vger.kernel.org,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        ", Lad Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Benson Leung <bleung@chromium.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Harald Geyer <harald@ccbib.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Andreas Klinger <ak@it-klinger.de>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Robert Yang <decatf@gmail.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Harald Geyer <harald@ccbib.org>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-fbdev@vger.kernel.org,
         Eugene Zaikonnikov <ez@norophonic.com>,
-        Phil Reid <preid@electromag.com.au>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        linux-samsung-soc@vger.kernel.org, Robert Yang <decatf@gmail.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Kent Gustavsson <kent@minoris.se>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Renato Lui Geh <renatogeh@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-iio@vger.kernel.org, kernel@pengutronix.de,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        chrome-platform@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Nishant Malpani <nish.malpani25@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-kernel@vger.kernel.org,
+        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
         linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
         linux-stm32@st-md-mailman.stormreply.com,
-        chrome-platform@lists.linux.dev
-Subject: Re: [PATCH 3/5] dt-bindings: iio: correct node names in examples
-Message-ID: <20230123203341.GA2459877-robh@kernel.org>
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Subject: Re: [PATCH 4/5] dt-bindings: iio: use lowercase hex in examples
+Message-ID: <167450611717.2478620.14360335395859339085.robh@kernel.org>
 References: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
- <20230118184413.395820-3-krzysztof.kozlowski@linaro.org>
- <20230121171709.5eb75e94@jic23-huawei>
- <45b9b378-6619-c47a-b5ea-6b6b7edca785@linaro.org>
- <20230122170105.6a1a9766@jic23-huawei>
+ <20230118184413.395820-4-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230122170105.6a1a9766@jic23-huawei>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,
+In-Reply-To: <20230118184413.395820-4-krzysztof.kozlowski@linaro.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 22, 2023 at 05:01:05PM +0000, Jonathan Cameron wrote:
-> On Sat, 21 Jan 2023 19:31:23 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+
+On Wed, 18 Jan 2023 19:44:12 +0100, Krzysztof Kozlowski wrote:
+> Use lowercase hex in addresses in examples.
 > 
-> > On 21/01/2023 18:17, Jonathan Cameron wrote:
-> > > On Wed, 18 Jan 2023 19:44:11 +0100
-> > > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > >   
-> > >> Do not use underscores and unneeded suffixes (e.g. i2c0) in node name in
-> > >> examples.
-> > >>
-> > >> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > >> ---  
-> > >   
-> > >> diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
-> > >> index 6c5ad426a016..12f75ddc4a70 100644
-> > >> --- a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
-> > >> +++ b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
-> > >> @@ -42,7 +42,7 @@ examples:
-> > >>          #address-cells = <1>;
-> > >>          #size-cells = <0>;
-> > >>  
-> > >> -        heart_mon@0 {
-> > >> +        heart-rate@0 {  
-> > > 
-> > > These are both heart-rate and pulse oximeters so measure more than just
-> > > the rate (oxygen saturation in the blood). Reality is they actually
-> > > measure light absorption over time, but you can calculate an estimate
-> > > of both rate and oxygen saturation from that.
-> > > 
-> > > I don't really mind simplifying that to heart-rate, but wanted to
-> > > call this out for possible discussion.  
-> > 
-> > They could be heart-mon. The fix is mostly around the underscore. I
-> > don't have any arguments for changing it to heart-rate, thus we can go
-> > with whatever you prefer.
-> I'm fine with either and as we have a patch with heart-rate that wins
-> currently. I'll just let this sit for a little longer than
-> normal to see if we get any other responses!
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  .../devicetree/bindings/iio/accel/kionix,kxcjk1013.yaml     | 2 +-
+>  .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml     | 2 +-
+>  Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml   | 2 +-
+>  .../devicetree/bindings/iio/potentiometer/adi,ad5272.yaml   | 2 +-
+>  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml    | 6 +++---
+>  5 files changed, 7 insertions(+), 7 deletions(-)
+> 
 
-I don't care all that much until we've documented something. Otherwise, 
-we may be just changing things twice. We have the list in the spec, but 
-really I'd like that in schema form. We'd also need to figure out how to 
-use that. There's always going to be odd things which we don't have any 
-defined name.
-
-For now, I'd just do 's/_/-/'.
-
-Rob
+Acked-by: Rob Herring <robh@kernel.org>

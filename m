@@ -2,140 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F7867889A
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 21:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 242E9678912
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 22:04:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231674AbjAWUrI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 15:47:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47168 "EHLO
+        id S232821AbjAWVEZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 16:04:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbjAWUrH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 15:47:07 -0500
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAB330D8;
-        Mon, 23 Jan 2023 12:47:07 -0800 (PST)
-Received: by mail-oi1-f172.google.com with SMTP id o66so11495743oia.6;
-        Mon, 23 Jan 2023 12:47:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+xLghjk06txc21TL6jUAE/A4E0QaZ29dI9auCG3vhDo=;
-        b=oTEcqczFiN5jxg/P7GcqsCUG+E4uilhYhyih43N+zQeTUegrU/X/UIED8NW1+m6GSL
-         6ys7T4K+hTLrMAYOqVNv4UwVOFegnKpOJ00DD8Y988aWRIXwtvDg+cvT3kaYg4XVRDvu
-         nunmchn65qGxqs6V8FJ1/G8oNKco3Somf3WQkr6mNgb+RmAchPLjHyPe3LB7RqafX/J0
-         NiMuaWbw9Khso4CA4Vmo7a5q9XKoIsBkQ9kBbW42bujezOJeda0rkBt72JorALYXUrAb
-         WrewJPvO2s3KieujwJzGQ4Ni0RQyf4ZIEQ/mMLA1IDwRoqXIPYUO91Gj5v6g0auqmqZi
-         7eHg==
-X-Gm-Message-State: AFqh2kqK0SUp3+h6u4AZ8hp4KHEcRyItfGAXnVzOSVdpe24hcslZpSnI
-        WIB8DJBEprTZuKdYJHE9sA==
-X-Google-Smtp-Source: AMrXdXs0GdZyBepqCdjPw6vuhi4kiXTC6MdsciMg0KU1dm35ma/15bsTbV/dQtJ+tboBuLEeFGalFQ==
-X-Received: by 2002:aca:6205:0:b0:365:648:3a5d with SMTP id w5-20020aca6205000000b0036506483a5dmr12623568oib.42.1674506826206;
-        Mon, 23 Jan 2023 12:47:06 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id i11-20020aca2b0b000000b00369a721732asm155293oik.41.2023.01.23.12.47.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jan 2023 12:47:05 -0800 (PST)
-Received: (nullmailer pid 2494593 invoked by uid 1000);
-        Mon, 23 Jan 2023 20:47:03 -0000
-Date:   Mon, 23 Jan 2023 14:47:03 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S232719AbjAWVEY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 16:04:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2151A360AF;
+        Mon, 23 Jan 2023 13:04:23 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA84E61092;
+        Mon, 23 Jan 2023 21:04:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F7BC4339C;
+        Mon, 23 Jan 2023 21:04:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674507862;
+        bh=CVVF40aIqyqHuHo5QkyM/mqnSUoD6khV2a9bfpLNjLk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mfc5nGdhbTQHKS96aFAAYhGHqgGQtHEQwGNQCfoW1bECCUUvMIAag+B3WjF/5/zV5
+         Xlp+vJ120UbeyNBOxUKEYKmOQqmqB1zymvNx4+QZWz4a8BNVXC+PDOKLN6TpJIRQaM
+         wQ3O4JgzqS4j9o3GCZawgUVfH9QP7SkS+j0RrD3FBD3wzmWosm6FLdz/DofYem8f8V
+         o1fiq59l/h1noYlTNB6H64wX9YJOufPBjdWgF/X0uQg2GmBJqxqhPLcojG+M4CAqAm
+         mOKVqWrgwtCKjkZWUebvaWP5PSlV8LYDP3Oi4f4iOXNacfFidSqA+QPi8FQvC8cKJA
+         zZYVAa6fpkrow==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Renato Lui Geh <renatogeh@gmail.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Robert Yang <decatf@gmail.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Stefan Agner <stefan@agner.ch>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Harald Geyer <harald@ccbib.org>,
-        Eugene Zaikonnikov <ez@norophonic.com>,
-        Phil Reid <preid@electromag.com.au>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        chrome-platform@lists.linux.dev
-Subject: Re: [PATCH 5/5] dt-bindings: iio: cleanup examples - indentation
-Message-ID: <20230123204703.GA2479312-robh@kernel.org>
-References: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
- <20230118184413.395820-5-krzysztof.kozlowski@linaro.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Barry Song <baohua@kernel.org>
+Subject: [PATCH 00/12] staging: iio: accel: adis16203 Inclinometer cleanup and graduation
+Date:   Mon, 23 Jan 2023 21:17:46 +0000
+Message-Id: <20230123211758.563383-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230118184413.395820-5-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 07:44:13PM +0100, Krzysztof Kozlowski wrote:
-> Use 4-space indentation (for cases when it is neither 4 not 2 space).
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[...]
+Whilst taking a look at what we still have in staging, I noticed that this
+driver was (probably) only still there due to the need to define some ABI
+for the odd 180 degree offset channel (same as the other channel
+minus 180 degrees).
 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index 1d965124c488..04b12146959e 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -120,5 +120,5 @@ examples:
->          adi,rejection-60-Hz-enable;
->          adi,buffer-enable;
->          adi,burnout-currents-enable;
-> -        };
-> +      };
+Rather than leaving the driver in staging for ever, let us just drop that
+channel and move on. The rest of the series is trivial driver cleanup.
 
-Indentation needs adjusting.
+Note this is only build tested, so would be great if people can take
+a good look.  If anyone happens to have one of these that would be even
+better (they are still marked for production use more than 12 years after
+the driver was submitted).
 
-Otherwise,
+There are lots of features we could support if anyone wanted to, but
+it should be functional for basic channel reading without the bells
+and whistles.  I've tried to incorporate the relevant device tree bindings
+however (multiple interrupt lines, supplies and reset gpio).
 
-Acked-by: Rob Herring <robh@kernel.org>
+Cc: Barry Song <baohua@kernel.org>
+(mostly for comedy value, not expecting you to remember the driver :)
+
+Jonathan Cameron (12):
+  staging: iio: accel: adis16203: More conventional header ordering
+  staging: iio: accel: adis16203: Drop excessive register comments
+  staging: iio: accel: adis16203: Rename incli channel registers
+  staging: iio: accel: adis16203: Drop the 180 degree offset channel
+  staging: iio: accel: adis16203: Simplify handling of calibbias
+  staging: iio: accel: adis16203: Drop driver name define
+  staging: iio: accel: adis16203: Make units explicit in name of delay
+    define
+  staging: iio: accel: adis16203: Trivial whitespace cleanup
+  staging: iio: accel: adis16203: Drop setting drvdata as nothing gets
+    it
+  staging: iio: accel: adis16203: Trivial style cleanup
+  staging: iio: accel: adis16203: Move out of staging
+  dt-bindings: iio: accel: Add ADIS16203 Inclinometer
+
+ .../bindings/iio/accel/adi,adis16203.yaml     |  59 +++++
+ drivers/iio/accel/Kconfig                     |  12 +
+ drivers/iio/accel/Makefile                    |   1 +
+ drivers/{staging => }/iio/accel/adis16203.c   | 212 ++++++------------
+ drivers/staging/iio/accel/Kconfig             |  12 -
+ drivers/staging/iio/accel/Makefile            |   1 -
+ 6 files changed, 136 insertions(+), 161 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
+ rename drivers/{staging => }/iio/accel/adis16203.c (51%)
+
+-- 
+2.39.1
+

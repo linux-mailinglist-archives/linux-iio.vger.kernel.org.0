@@ -2,427 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD06E678BDB
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 00:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68AB6678BE9
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 00:18:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232602AbjAWXLQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 18:11:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44492 "EHLO
+        id S231774AbjAWXSM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 18:18:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232564AbjAWXLO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 18:11:14 -0500
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75440392B1;
-        Mon, 23 Jan 2023 15:11:07 -0800 (PST)
-Received: by mail-ej1-x62d.google.com with SMTP id bk15so34558153ejb.9;
-        Mon, 23 Jan 2023 15:11:07 -0800 (PST)
+        with ESMTP id S229469AbjAWXSL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 18:18:11 -0500
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01A6713507
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 15:18:10 -0800 (PST)
+Received: by mail-qt1-x82c.google.com with SMTP id jr19so10495375qtb.7
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 15:18:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nlmvRomHtcVCsgxI9mL922H8tGvbIBB4555k2PJ7e+4=;
-        b=qKgqUzVNLgqlWfIYsU7V/r2tsX8f5caJIwrn8KpeyZYKxN3Qe1J3txm00XqFbNDl1r
-         /RBxZL/68PoZRWqHL7+8x+627WggjG9Js1PY1nRCGeZoHCUHKYoHGpsIoyZOHsPfwiNK
-         oAnUejOPqrLQy1B8IBBlWYcNDENQdNpRdGc67TRhicwEohP3Zb9TFNxw2j4S45g8s/No
-         DmTmSdahyCyltIx+loNg295n7kLgba7URWXWyhxA9xMmZYR2V7Xc3ds2GY9tJjk5Kud8
-         IqkOwU866jxc79ZmRpOW1MJGd7/bHybWMNmBpbu53cZWVeu2LI9wMWckdrKjWHStSTlL
-         +BHg==
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wdlyZ9rT2ydR7flNpHZe1XEeAgVGxlcAPT5DY/7RdGw=;
+        b=Wcbdmjpc2+Zezt9SjzJhaAPjgE2kW6y4jYLHi9sguPEdt0tjlwq4HdTgn3QnAXlzB9
+         l72VgiQ4dWTTCRi9hOoKf2s5iftOWIRrlaieyH44J9AhIALimt3a/vdSItHKKvpsi1oX
+         +Yjv505GMY3JttHLuddbN41Wyu+UC+wAR6F38=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nlmvRomHtcVCsgxI9mL922H8tGvbIBB4555k2PJ7e+4=;
-        b=bJPwEuEDJvHqu0qIVXU/z74ti4ymVRNUwpfY7xaQgVlDBYQJpesyUOAjLFwjbjMiJv
-         EQDnA9PWwo3VTYwnsf+XS4q3O4G7beCUGdLJ+vnesRpwI8fh9WS0Rv6EwWhkSEuU6tAS
-         VxSlBh4ITuOTdfo5yKZzbp2ZhTdohC+LizZGZO1Ay8JLZZf6PmTpLRzdnm2IcU8wqa1A
-         GptuRRXtJ25Ojk5YzCnUeU64pK65yCmwjedAhM0FrPcZ3imtiIKGij1zC/tYhFi3X2fk
-         gc6bKa4Ou2Ses80ICQ+C5Dkmcw2cSax7iZ9/s7npNopM/15uLwuS52zYhuB2Ore3mJvU
-         RSpg==
-X-Gm-Message-State: AFqh2koWz9NxRAk1yxw7SyV8WZU8u4/abn5mXuRpDzcOsLjxYPoORFJu
-        xGNR5PSDvThALffrQ+/94IEU0OVPJlY=
-X-Google-Smtp-Source: AMrXdXtB7FOv3psBSi5KvTml/nYh3YkMxgq8+cU6jrrvoGpjdsvjjaMlplc4xsd+SFKtB7TbLTPddQ==
-X-Received: by 2002:a17:906:2798:b0:870:97f1:3877 with SMTP id j24-20020a170906279800b0087097f13877mr23491896ejc.53.1674515465569;
-        Mon, 23 Jan 2023 15:11:05 -0800 (PST)
-Received: from localhost.localdomain ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id b21-20020a170906709500b0084d43e23436sm72601ejk.38.2023.01.23.15.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jan 2023 15:11:05 -0800 (PST)
-From:   Markuss Broks <markuss.broks@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Markuss Broks <markuss.broks@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH 2/2] iio: light: Add support for AMS TCS3490 light sensor
-Date:   Tue, 24 Jan 2023 01:10:25 +0200
-Message-Id: <20230123231028.26073-3-markuss.broks@gmail.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230123231028.26073-1-markuss.broks@gmail.com>
-References: <20230123231028.26073-1-markuss.broks@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wdlyZ9rT2ydR7flNpHZe1XEeAgVGxlcAPT5DY/7RdGw=;
+        b=zQJglOyk2Il6NqDVtgHwwO2f2LRDFNGrw+I0zy6rv/do6wgzgdzLVleo1xTtjnuLnn
+         N6I070B2NfTrHcmww1ipoomUfYqf6s9l24EI0WvivfDlvf2WbDtLXLJ7qaZ5thDVtZ6o
+         w3S6UNma+GJIOjAqKSuPtds2eDP+7aFDAFpcqN5lV/t00Vd6WCHYfYSULuBJ8c23nI+4
+         SF5su+L+FE+/TUdayZOlQWqs+b4PxlRIfSFadDlRHlpoS0QNpfIQadxtUyxjSQ6Vrcid
+         Zc64aITgUMHxZq5v2p4GtYI9GXS+B21vN82MNuoD2ehrPKmjqGqkRqGJwR2GrZnYjOAZ
+         Sr2A==
+X-Gm-Message-State: AFqh2koHUedgLzvZxCzBxKr2396SFguZ+Tm98u6/aVJkh6QluE3Hk7VT
+        qsyDOvTd2k99ro/n2zAylPk6+SVFDc1SYSCx
+X-Google-Smtp-Source: AMrXdXsLvSK2cx9ZNnQUkexEpC9TxyXrzRdhkuLkHx52TNHZorItQE8ZeNwYQTqzLoa1yEuOxCmy3Q==
+X-Received: by 2002:ac8:754d:0:b0:3ae:95c:8486 with SMTP id b13-20020ac8754d000000b003ae095c8486mr34237940qtr.64.1674515888773;
+        Mon, 23 Jan 2023 15:18:08 -0800 (PST)
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com. [209.85.222.169])
+        by smtp.gmail.com with ESMTPSA id n6-20020ac81e06000000b003b7ea9814b9sm204951qtl.10.2023.01.23.15.18.08
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jan 2023 15:18:08 -0800 (PST)
+Received: by mail-qk1-f169.google.com with SMTP id z9so7235876qkl.13
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 15:18:08 -0800 (PST)
+X-Received: by 2002:a05:6638:378c:b0:3a7:dd8b:54e5 with SMTP id
+ w12-20020a056638378c00b003a7dd8b54e5mr1388544jal.8.1674515537964; Mon, 23 Jan
+ 2023 15:12:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+ <20230122172441.4f8d75f5@jic23-huawei> <22fa80f5-0cf0-85bd-03a4-e1eb80272420@linaro.org>
+In-Reply-To: <22fa80f5-0cf0-85bd-03a4-e1eb80272420@linaro.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 23 Jan 2023 15:12:06 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WVEfi2u-uHcZAoMd4HXPcZrwb95HQzTE8V6YmAW9mhPA@mail.gmail.com>
+Message-ID: <CAD=FV=WVEfi2u-uHcZAoMd4HXPcZrwb95HQzTE8V6YmAW9mhPA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a driver for AMS TCS3490 Color Light-to-Digital Converter. This
-device provides color and IR (red, green, blue, clear and IR) light
-sensing. The color sensing can be used for light source detection and
-color temperature measurements.
+Hi,
 
-Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
----
- MAINTAINERS                 |   7 +
- drivers/iio/light/Kconfig   |  12 ++
- drivers/iio/light/Makefile  |   1 +
- drivers/iio/light/tcs3490.c | 270 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 290 insertions(+)
- create mode 100644 drivers/iio/light/tcs3490.c
+On Mon, Jan 23, 2023 at 8:35 AM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
+>
+> On 22.01.2023 18:24, Jonathan Cameron wrote:
+> > On Wed, 18 Jan 2023 12:06:23 +0200
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> >> The node name can contain an address part which is unused
+> >> by the driver. Moreover, this string is propagated into
+> >> the userspace label, sysfs filenames *and breaking ABI*.
+> >>
+> >> Cut the address part out before assigning the channel name.
+> >>
+> >> Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+> >> Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
+> >> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > LGTM, but given it will have ABI impact, I'd like to hear from
+> > Andy, Bjorn or Konrad as maintainers and /or Dmitry as someone
+> > who has touched this driver fairly recently.
+> + Doug
+>
+> Unless the Chromium folks relied on the old names (they're the
+> only ones I can think of that actually could have tapped into
+> this), I say green light!
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 30e032abd196..3c47e132e4dd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1144,6 +1144,13 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/light/ams,as73211.yaml
- F:	drivers/iio/light/as73211.c
- 
-+AMS TCS3490 DRIVER
-+M:	Markuss Broks <markuss.broks@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/light/ams,tcs3490.yaml
-+F:	drivers/iio/light/tcs3490.c
-+
- AMT (Automatic Multicast Tunneling)
- M:	Taehee Yoo <ap420073@gmail.com>
- L:	netdev@vger.kernel.org
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 0d4447df7200..582e3853e835 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -494,6 +494,18 @@ config TCS3472
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called tcs3472.
- 
-+config TCS3490
-+	tristate "AMS TCS3490 color light-to-digital converter"
-+	depends on I2C
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  Say Y here if you have an AMS TCS3490 color light-to digital converter
-+	  which provides RGB color and IR light sensing.
-+
-+	  This driver can also be built as a module.  If so, the module
-+	  will be called tcs3490.
-+
- config SENSORS_TSL2563
- 	tristate "TAOS TSL2560, TSL2561, TSL2562 and TSL2563 ambient light sensors"
- 	depends on I2C
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index d74d2b5ff14c..81663465d8c1 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -47,6 +47,7 @@ obj-$(CONFIG_ST_UVIS25_I2C)	+= st_uvis25_i2c.o
- obj-$(CONFIG_ST_UVIS25_SPI)	+= st_uvis25_spi.o
- obj-$(CONFIG_TCS3414)		+= tcs3414.o
- obj-$(CONFIG_TCS3472)		+= tcs3472.o
-+obj-$(CONFIG_TCS3490)		+= tcs3490.o
- obj-$(CONFIG_SENSORS_TSL2563)	+= tsl2563.o
- obj-$(CONFIG_TSL2583)		+= tsl2583.o
- obj-$(CONFIG_TSL2591)		+= tsl2591.o
-diff --git a/drivers/iio/light/tcs3490.c b/drivers/iio/light/tcs3490.c
-new file mode 100644
-index 000000000000..6fa2c220a6a1
---- /dev/null
-+++ b/drivers/iio/light/tcs3490.c
-@@ -0,0 +1,270 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * AMS TCS3490 Color Light-to-Digital Converter
-+ *
-+ * Copyright (c) 2023 Markuss Broks <markuss.broks@gmail.com>
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#define TCS3490_SUSPEND			0
-+#define TCS3490_POWER_ON_INTERNAL	BIT(0)
-+#define TCS3490_ADC_ENABLE		BIT(1)
-+
-+#define TCS3490_ENABLE			0x80
-+#define TCS3490_GAIN_CTRL		0x8f
-+#define TCS3490_REVID			0x91
-+#define TCS3490_ID			0x92
-+#define TCS3490_STATUS			0x93
-+
-+#define TCS3490_CLEAR_IR_BASE		0x94
-+#define TCS3490_RED_BASE		0x96
-+#define TCS3490_GREEN_BASE		0x98
-+#define TCS3490_BLUE_BASE		0x9a
-+
-+#define TCS3490_CLEAR_IR_MODE		0xc0
-+
-+#define TCS3490_STATUS_RGBC_VALID	BIT(0)
-+#define TCS3490_STATUS_ALS_SAT		BIT(7)
-+
-+#define TCS3490_MODE_CLEAR		0
-+#define TCS3490_MODE_IR			BIT(7)
-+
-+#define TCS3490_GAIN_MASK		GENMASK(1, 0)
-+
-+#define TCS3490_LIGHT_CHANNEL(_color, _idx) {		\
-+	.type = IIO_INTENSITY,				\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
-+	.info_mask_shared_by_type =			\
-+			BIT(IIO_CHAN_INFO_CALIBSCALE),	\
-+	.address = _idx,				\
-+	.modified = 1,					\
-+	.channel2 = IIO_MOD_LIGHT_##_color,		\
-+}							\
-+
-+struct tcs3490 {
-+	struct i2c_client *client;
-+	struct regmap *regmap;
-+	struct regulator *vdd_supply;
-+};
-+
-+const unsigned int tcs3490_gain_multiplier[] = {1, 4, 16, 64};
-+
-+static const struct regmap_config tcs3490_regmap_config = {
-+	.reg_bits	= 8,
-+	.val_bits	= 8,
-+};
-+
-+static const struct iio_chan_spec tcs3490_channels[] = {
-+	TCS3490_LIGHT_CHANNEL(RED, TCS3490_RED_BASE),
-+	TCS3490_LIGHT_CHANNEL(GREEN, TCS3490_GREEN_BASE),
-+	TCS3490_LIGHT_CHANNEL(BLUE, TCS3490_BLUE_BASE),
-+	TCS3490_LIGHT_CHANNEL(CLEAR, TCS3490_CLEAR_IR_BASE),
-+	TCS3490_LIGHT_CHANNEL(IR, TCS3490_CLEAR_IR_BASE),
-+};
-+
-+static int tcs3490_get_gain(struct tcs3490 *data, int *val)
-+{
-+	int ret;
-+	unsigned int gain;
-+
-+	ret = regmap_read(data->regmap, TCS3490_GAIN_CTRL, &gain);
-+	if (ret)
-+		return ret;
-+
-+	gain &= TCS3490_GAIN_MASK;
-+
-+	*val = tcs3490_gain_multiplier[gain];
-+	return 0;
-+}
-+
-+static int tcs3490_set_gain(struct tcs3490 *data, unsigned int gain)
-+{
-+	int ret, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(tcs3490_gain_multiplier); i++) {
-+		if (tcs3490_gain_multiplier[i] == gain)
-+			break;
-+	}
-+
-+	if (i == ARRAY_SIZE(tcs3490_gain_multiplier))
-+		return -EINVAL;
-+
-+	ret = regmap_write(data->regmap, TCS3490_GAIN_CTRL, i);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int tcs3490_read_channel(struct tcs3490 *data,
-+				const struct iio_chan_spec *chan,
-+				int *val)
-+{
-+	unsigned int tries = 20;
-+	unsigned int val_l, val_h, status;
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, TCS3490_ENABLE,
-+			   TCS3490_POWER_ON_INTERNAL | TCS3490_ADC_ENABLE);
-+	if (ret)
-+		return ret;
-+
-+	switch (chan->channel2) {
-+	case IIO_MOD_LIGHT_RED:
-+	case IIO_MOD_LIGHT_GREEN:
-+	case IIO_MOD_LIGHT_BLUE:
-+		break;
-+	case IIO_MOD_LIGHT_CLEAR:
-+		ret = regmap_write(data->regmap, TCS3490_CLEAR_IR_MODE, TCS3490_MODE_CLEAR);
-+		break;
-+	case IIO_MOD_LIGHT_IR:
-+		ret = regmap_write(data->regmap, TCS3490_CLEAR_IR_MODE, TCS3490_MODE_IR);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	do {
-+		usleep_range(3000, 4000);
-+
-+		ret = regmap_read(data->regmap, TCS3490_STATUS, &status);
-+		if (ret)
-+			return ret;
-+		if (status & TCS3490_STATUS_RGBC_VALID)
-+			break;
-+	} while (--tries);
-+
-+	if (!tries)
-+		return -ETIMEDOUT;
-+
-+	ret = regmap_read(data->regmap, chan->address, &val_l);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(data->regmap, chan->address + 1, &val_h);
-+	if (ret)
-+		return ret;
-+
-+	*val = (val_h << 8) | val_l;
-+
-+	ret = regmap_write(data->regmap, TCS3490_ENABLE, TCS3490_SUSPEND);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int tcs3490_read_raw(struct iio_dev *indio_dev,
-+			    const struct iio_chan_spec *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	struct tcs3490 *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = tcs3490_read_channel(data, chan, val);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = IIO_VAL_INT;
-+		break;
-+	case IIO_CHAN_INFO_CALIBSCALE:
-+		ret = tcs3490_get_gain(data, val);
-+		ret = IIO_VAL_INT;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	if (ret < 0)
-+		return ret;
-+	return IIO_VAL_INT;
-+}
-+
-+static int tcs3490_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct tcs3490 *data = iio_priv(indio_dev);
-+
-+	if (mask == IIO_CHAN_INFO_CALIBSCALE)
-+		return tcs3490_set_gain(data, val);
-+
-+	return -EINVAL;
-+}
-+
-+static const struct iio_info tcs3490_info = {
-+	.read_raw = tcs3490_read_raw,
-+	.write_raw = tcs3490_write_raw,
-+};
-+
-+static int tcs3490_probe(struct i2c_client *client)
-+{
-+	struct tcs3490 *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+
-+	data->client = client;
-+
-+	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
-+	if (IS_ERR(data->vdd_supply))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
-+				     "Unable to get regulators\n");
-+
-+	data->regmap = devm_regmap_init_i2c(client, &tcs3490_regmap_config);
-+	if (IS_ERR(data->regmap))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),
-+				     "Failed to register the register map\n");
-+
-+	ret = regulator_enable(data->vdd_supply);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Unable to enable regulators\n");
-+
-+	indio_dev->name = "tcs3490";
-+	indio_dev->info = &tcs3490_info;
-+	indio_dev->channels = tcs3490_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(tcs3490_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = regmap_write(data->regmap, TCS3490_ENABLE, TCS3490_SUSPEND);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct of_device_id tcs3490_of_match[] = {
-+	{ .compatible = "ams,tcs3490", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, tcs3490_of_match);
-+
-+static struct i2c_driver tcs3490_driver = {
-+	.driver = {
-+		.name = "tcs3490",
-+		.of_match_table = of_match_ptr(tcs3490_of_match),
-+	},
-+	.probe_new = tcs3490_probe,
-+};
-+
-+module_i2c_driver(tcs3490_driver);
-+
-+MODULE_DESCRIPTION("AMS TCS3490 Color Light-to-Digital Converter driver");
-+MODULE_AUTHOR("Markuss Broks <markuss.broks@gmail.com>");
-+MODULE_LICENSE("GPL");
--- 
-2.39.0
+Thanks for the CC. I _think_ the only place we use these ADCs is for
+certain thermistors and I think that those are all just hooked up in
+the device tree, so the channel name doesn't matter. I'll also note
+that no Qualcomm Chromebooks are shipping with anything newer than
+kernel 5.15 right now, and (I checked) the ChromeOS 5.15 tree doesn't
+have commit 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device
+properties"). Thus, even if I'm wrong and the name is used someplace
+hidden then the "old" name would be better for us. I haven't tested
+the patch myself, but it sounds as if ${SUBJECT} patch is actually
+moving us back to the old name.
 
++Matthias to keep me honest since he's spent more time with the ADCs.
+
+> Konrad
+> >
+> > Mostly I want to be sure they know this exists before it causes surprise.
+> >
+> > Jonathan
+> >
+> >> ---
+> >> v2: rephrased commit message (Marijn), fixed compilation issue (Marijin)
+> >>  drivers/iio/adc/qcom-spmi-adc5.c | 10 +++++++++-
+> >>  1 file changed, 9 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> >> index e90c299c913a..c2d5e06f137a 100644
+> >> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> >> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> >> @@ -628,12 +628,20 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+> >>                                  struct fwnode_handle *fwnode,
+> >>                                  const struct adc5_data *data)
+> >>  {
+> >> -    const char *name = fwnode_get_name(fwnode), *channel_name;
+> >> +    const char *channel_name;
+> >> +    char *name;
+> >>      u32 chan, value, varr[2];
+> >>      u32 sid = 0;
+> >>      int ret;
+> >>      struct device *dev = adc->dev;
+> >>
+> >> +    name = devm_kasprintf(dev, GFP_KERNEL, "%pfwP", fwnode);
+> >> +    if (!name)
+> >> +            return -ENOMEM;
+> >> +
+> >> +    /* Cut the address part */
+> >> +    name[strchrnul(name, '@') - name] = '\0';
+> >> +
+> >>      ret = fwnode_property_read_u32(fwnode, "reg", &chan);
+> >>      if (ret) {
+> >>              dev_err(dev, "invalid channel number %s\n", name);
+> >

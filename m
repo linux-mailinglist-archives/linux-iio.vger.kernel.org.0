@@ -2,155 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFF07677EAA
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 16:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69E2367818C
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 17:35:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232093AbjAWPFD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 10:05:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34412 "EHLO
+        id S233180AbjAWQfo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 11:35:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231778AbjAWPFC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 10:05:02 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C9728D0E;
-        Mon, 23 Jan 2023 07:05:01 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id x40so18602104lfu.12;
-        Mon, 23 Jan 2023 07:05:01 -0800 (PST)
+        with ESMTP id S233178AbjAWQfo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 11:35:44 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD2E2B612
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 08:35:42 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id kt14so32076144ejc.3
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 08:35:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P3rqFJi0wYIMyx4eFEnrANXBYlUWFGjnlOrB4sJY0mc=;
-        b=VSvjd1+J+2hfVE0rK2aWfDA0OVUPFITcaGU/EEk+ovd3PB+LZoSIbLXjg/6O4g0QkX
-         wQSOdPQHW8ShVOvuv6K4ehak+/FUBZ6bBjlKapxHcHQImaA7q7t1gEwYZmwObqGrP/PP
-         CuO1Q1/NA1X4wba91SbkMkbJ02vBgbwFgxkUGAZz0utThM5EFRk4Y/dHFQrqiTC3T8XY
-         pxEaA9cykcbArWN/Q14sLzrf2oqArLVwTmvV0IHeWZXjaXfjdJS++GDWvaf9CtXKja5B
-         /+o8WCQ6Z8OG5i90gfUfiXJhw6rQk2gldlIFYsb4njbrpXyfD3NMkTBxEGrhoTwav/UE
-         HUzA==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m0Gxh9AiNJZqPqlkDkjLVBcYYycaXIS8zrXO7C1huyk=;
+        b=uRk9GBjR7rCDMx8/44l0h8DBuBbLcsuh0HZRINoQhDYcIvif8GTpEfh5xna3sgxBBZ
+         UGhklSqPZB5p2Lza3TNG3DI/U+y1i/ByCQcX7fLwaOn65lGmM75rZ2dHZN+Ki9WFN5t+
+         xX8MNtAVSt02mAmOiVTsolwBcL/M8Dkh5SCG5GwXLg55qfJGFtin+rBsrAXvOAk0zDAU
+         x0j9JmfymCZGfJhdQF+plzqCf1MhyOvRfaaYuLfvLOETejbek111Rx9WJ/1+ECvhsi7A
+         nn1HLzpbYYgLaTSWGN1drWR9uO5kkTlqPEpDV3zlM939HWCaSh5M6Xp+0pAdpHLAbih2
+         1/3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P3rqFJi0wYIMyx4eFEnrANXBYlUWFGjnlOrB4sJY0mc=;
-        b=RXKXSeDWVED+HTRoYIVS3h1Kg/2Xiwsf6GLEeVRsELkNLw7N+TVP54n2nL5vSwxCd+
-         ge4q+NmxOeiCFmZ+E6D6dgCb2EB9dI7stkmIXIUXfGbuY60MTiNTiYkjT592Yis2nkWw
-         ge8anLLBKkO9wJ/L6eZEW9r4xGHS2qTnecRrzHOuCTpTkVxcJBmW7maQR5JgnstmWh70
-         TBXpDsKLokpLyawQpAf4mNSiAXxObo7ctOoO9s6FitJqtmhsc8yITJhF1btrN4ddApCA
-         RO89iMg9380Zi/cFnk6MhT4uJkZCu8YQEUpHwtJTUw51Vt+xHZ8KivybTNN8eCJqQwCG
-         n2PA==
-X-Gm-Message-State: AFqh2kpF1iGzmvy+cExxcY7VfLFck5DoMWF7ZhxATtKKUZ9sKGUUjpi/
-        EYOwfb3jvVI7arcLAg75UkI=
-X-Google-Smtp-Source: AMrXdXuHnINfpXEMI/5P6IHfO27xMrOaiT1cQnmYVDzQ2npYaq/u8eUakJKoBBnDu0eFJD/hs2QaqA==
-X-Received: by 2002:a05:6512:340a:b0:4d2:551e:3838 with SMTP id i10-20020a056512340a00b004d2551e3838mr7464162lfr.29.1674486299330;
-        Mon, 23 Jan 2023 07:04:59 -0800 (PST)
-Received: from mobilestation ([95.79.133.202])
-        by smtp.gmail.com with ESMTPSA id b8-20020a0565120b8800b004d593f218absm1011508lfv.108.2023.01.23.07.04.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jan 2023 07:04:58 -0800 (PST)
-Date:   Mon, 23 Jan 2023 18:04:56 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Cc:     broonie@kernel.org, miquel.raynal@bootlin.com,
-        linus.walleij@linaro.org, krzysztof.kozlowski@linaro.org,
-        vireshk@kernel.org, gregkh@linuxfoundation.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com, kernel@pengutronix.de,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, greybus-dev@lists.linaro.org,
-        linux-staging@lists.linux.dev
-Subject: Re: [PATCH v2 02/13] spi: Replace all spi->chip_select and
- spi->cs_gpiod references with function call
-Message-ID: <20230123145953.ytaaq3x4tetgepyf@mobilestation>
-References: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
- <20230119185342.2093323-3-amit.kumar-mahapatra@amd.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m0Gxh9AiNJZqPqlkDkjLVBcYYycaXIS8zrXO7C1huyk=;
+        b=g1QhSNqPOPlzj60ZPyvanH8tpKUSYyDXhAcSTvwNknteSKKNOhK7FiXB8NKysekCmK
+         fC8/I5vRzHVL4cCxf91mY+sQBZl4atTiuHr8FQc2+plt4sy9yh0n4ZRi19SkGneWJAqR
+         9xjCCDW2B6poNRcz2m8GoElOIoMsbb537yMDmWXpJqPfeWkbEnGSAh5vNSeLx2sc79gP
+         zP1Z/jw0eazV7njMzwaspYzN6yIRlT/xC2gCPef/YpRHDS76vnOg4di4mu+EdxLLDbRm
+         aXaQzJ0qKXcI5vmgE/tjE9zT6R6M9SqN2p6WVfSktUosxlUbdCvElh+SaXQ0OhlWVwRS
+         FvXg==
+X-Gm-Message-State: AFqh2kqYRjggCUR0n80ipYx81Hc43UY5ynLv4kYu7d4rEUC6BgkSfpa4
+        G+9Tp8e70x6wC4FRZZ5OQhq8Ng==
+X-Google-Smtp-Source: AMrXdXvYAMztktTuFtNe8pWfh2/y+eI4NoNWhqyzS+5Ne4GtBPTgyn1QcIOMd4PzPj0633HsMKsLRQ==
+X-Received: by 2002:a17:906:489b:b0:850:52f8:5ca9 with SMTP id v27-20020a170906489b00b0085052f85ca9mr25511121ejq.28.1674491741481;
+        Mon, 23 Jan 2023 08:35:41 -0800 (PST)
+Received: from [192.168.1.101] (abxi24.neoplus.adsl.tpnet.pl. [83.9.2.24])
+        by smtp.gmail.com with ESMTPSA id kw17-20020a170907771100b0084c4b87aa18sm22392447ejc.37.2023.01.23.08.35.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jan 2023 08:35:41 -0800 (PST)
+Message-ID: <22fa80f5-0cf0-85bd-03a4-e1eb80272420@linaro.org>
+Date:   Mon, 23 Jan 2023 17:35:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230119185342.2093323-3-amit.kumar-mahapatra@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>
+References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+ <20230122172441.4f8d75f5@jic23-huawei>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230122172441.4f8d75f5@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jan 20, 2023 at 12:23:31AM +0530, Amit Kumar Mahapatra wrote:
-> Supporting multi-cs in spi drivers would require the chip_select & cs_gpiod
-> members of struct spi_device to be an array. But changing the type of these
-> members to array would break the spi driver functionality. To make the
-> transition smoother introduced four new APIs to get/set the
-> spi->chip_select & spi->cs_gpiod and replaced all spi->chip_select and
-> spi->cs_gpiod references with get or set API calls.
-> While adding multi-cs support in further patches the chip_select & cs_gpiod
-> members of the spi_device structure would be converted to arrays & the
-> "idx" parameter of the APIs would be used as array index i.e.,
-> spi->chip_select[idx] & spi->cs_gpiod[idx] respectively.
+
+
+On 22.01.2023 18:24, Jonathan Cameron wrote:
+> On Wed, 18 Jan 2023 12:06:23 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-> ---
+>> The node name can contain an address part which is unused
+>> by the driver. Moreover, this string is propagated into
+>> the userspace label, sysfs filenames *and breaking ABI*.
+>>
+>> Cut the address part out before assigning the channel name.
+>>
+>> Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+>> Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
+>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> LGTM, but given it will have ABI impact, I'd like to hear from 
+> Andy, Bjorn or Konrad as maintainers and /or Dmitry as someone
+> who has touched this driver fairly recently.
++ Doug
 
-[nip]
+Unless the Chromium folks relied on the old names (they're the
+only ones I can think of that actually could have tapped into
+this), I say green light!
 
->  drivers/spi/spi-dw-core.c         |  2 +-
->  drivers/spi/spi-dw-mmio.c         |  4 ++--
-
-[nip]
-
-> diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-> index 99edddf9958b..4fd1aa800cc3 100644
-> --- a/drivers/spi/spi-dw-core.c
-> +++ b/drivers/spi/spi-dw-core.c
-> @@ -103,7 +103,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
->  	 * support active-high or active-low CS level.
->  	 */
->  	if (cs_high == enable)
-> -		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
-> +		dw_writel(dws, DW_SPI_SER, BIT(spi_get_chipselect(spi, 0)));
->  	else
->  		dw_writel(dws, DW_SPI_SER, 0);
->  }
-> diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-> index 26c40ea6dd12..d511da766ce8 100644
-> --- a/drivers/spi/spi-dw-mmio.c
-> +++ b/drivers/spi/spi-dw-mmio.c
-> @@ -65,7 +65,7 @@ static void dw_spi_mscc_set_cs(struct spi_device *spi, bool enable)
->  	struct dw_spi *dws = spi_master_get_devdata(spi->master);
->  	struct dw_spi_mmio *dwsmmio = container_of(dws, struct dw_spi_mmio, dws);
->  	struct dw_spi_mscc *dwsmscc = dwsmmio->priv;
-> -	u32 cs = spi->chip_select;
-> +	u32 cs = spi_get_chipselect(spi, 0);
->  
->  	if (cs < 4) {
->  		u32 sw_mode = MSCC_SPI_MST_SW_MODE_SW_PIN_CTRL_MODE;
-> @@ -138,7 +138,7 @@ static void dw_spi_sparx5_set_cs(struct spi_device *spi, bool enable)
->  	struct dw_spi *dws = spi_master_get_devdata(spi->master);
->  	struct dw_spi_mmio *dwsmmio = container_of(dws, struct dw_spi_mmio, dws);
->  	struct dw_spi_mscc *dwsmscc = dwsmmio->priv;
-> -	u8 cs = spi->chip_select;
-> +	u8 cs = spi_get_chipselect(spi, 0);
->  
->  	if (!enable) {
->  		/* CS override drive enable */
-
-For the DW SSI part:
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-
--Serge(y)
-
-[nip]
+Konrad
+> 
+> Mostly I want to be sure they know this exists before it causes surprise.
+> 
+> Jonathan
+> 
+>> ---
+>> v2: rephrased commit message (Marijn), fixed compilation issue (Marijin)
+>>  drivers/iio/adc/qcom-spmi-adc5.c | 10 +++++++++-
+>>  1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+>> index e90c299c913a..c2d5e06f137a 100644
+>> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+>> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+>> @@ -628,12 +628,20 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+>>  				    struct fwnode_handle *fwnode,
+>>  				    const struct adc5_data *data)
+>>  {
+>> -	const char *name = fwnode_get_name(fwnode), *channel_name;
+>> +	const char *channel_name;
+>> +	char *name;
+>>  	u32 chan, value, varr[2];
+>>  	u32 sid = 0;
+>>  	int ret;
+>>  	struct device *dev = adc->dev;
+>>  
+>> +	name = devm_kasprintf(dev, GFP_KERNEL, "%pfwP", fwnode);
+>> +	if (!name)
+>> +		return -ENOMEM;
+>> +
+>> +	/* Cut the address part */
+>> +	name[strchrnul(name, '@') - name] = '\0';
+>> +
+>>  	ret = fwnode_property_read_u32(fwnode, "reg", &chan);
+>>  	if (ret) {
+>>  		dev_err(dev, "invalid channel number %s\n", name);
+> 

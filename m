@@ -2,135 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB254677947
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 11:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 365D5677A71
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 13:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbjAWKgQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 05:36:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55776 "EHLO
+        id S230103AbjAWMC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 07:02:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230489AbjAWKgP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 05:36:15 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B1B17176;
-        Mon, 23 Jan 2023 02:36:11 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P0mck3ssfz6J7f6;
-        Mon, 23 Jan 2023 18:32:06 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 23 Jan
- 2023 10:36:08 +0000
-Date:   Mon, 23 Jan 2023 10:36:07 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        <iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        with ESMTP id S229502AbjAWMC6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 07:02:58 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75ED555AA;
+        Mon, 23 Jan 2023 04:02:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674475377; x=1706011377;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Gac31zA3L0a5rQtCHU57yyl10/98WWoOzbC9C/m7naQ=;
+  b=KQhYLwm6Zds+Oykz0S4bi/POjHpPpGojBiuYP8td/cJOOQyeF2SNeQfb
+   8uWHCQMMoK5sQ+AldXy8/d1gN8Cl5yYUEuEo/C0EuRciMivV1ym2ICXKb
+   Gsqn1eDnIz0UGykfAa6eJYfeUAnL0tVXbiegRXplx46dRE/nlvsPIoABc
+   Fg1/sBPO6BHW61xeGYPxAR+6i36pnNKOMeGLCcrAtdZrlWDnWF4h2qjQg
+   jpF76wcHKeU6aJINaH6qLte5ieZiKtV74vaZBNFBSJnjmtgPsky2IGcT6
+   KAm84OA3u/QV2XE2tL1gmS55mB05qVJDKvFq0Z2Eh/UPvBJPFF8NGEPIR
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="305683345"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="305683345"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2023 04:02:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10598"; a="663532353"
+X-IronPort-AV: E=Sophos;i="5.97,239,1669104000"; 
+   d="scan'208";a="663532353"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 23 Jan 2023 04:02:54 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pJvXI-00Diqy-0V;
+        Mon, 23 Jan 2023 14:02:52 +0200
+Date:   Mon, 23 Jan 2023 14:02:51 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        "Manivannan Sadhasivam" <mani@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Require generic adc-chan
- name for channel nodes
-Message-ID: <20230123103607.00001fcd@Huawei.com>
-In-Reply-To: <20230122233741.7jn2nzghfvhgoemr@SoMainline.org>
-References: <20230119212632.185881-1-marijn.suijten@somainline.org>
-        <20230119212632.185881-2-marijn.suijten@somainline.org>
-        <20230121170825.0d284151@jic23-huawei>
-        <20230122233741.7jn2nzghfvhgoemr@SoMainline.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
+Message-ID: <Y853a5jr4rfrDHfd@smile.fi.intel.com>
+References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
+ <20230122172441.4f8d75f5@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230122172441.4f8d75f5@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Jan 2023 00:37:41 +0100
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
+On Sun, Jan 22, 2023 at 05:24:41PM +0000, Jonathan Cameron wrote:
+> On Wed, 18 Jan 2023 12:06:23 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > The node name can contain an address part which is unused
+> > by the driver. Moreover, this string is propagated into
+> > the userspace label, sysfs filenames *and breaking ABI*.
+> > 
+> > Cut the address part out before assigning the channel name.
+> > 
+> > Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+> > Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> LGTM, but given it will have ABI impact, I'd like to hear from 
+> Andy, Bjorn or Konrad as maintainers and /or Dmitry as someone
+> who has touched this driver fairly recently.
 
-> On 2023-01-21 17:08:25, Jonathan Cameron wrote:
-> > On Thu, 19 Jan 2023 22:26:31 +0100
-> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> >   
-> > > As discussed in [1] it is more convenient to use a generic adc-chan node
-> > > name for ADC channels while storing a friendly - board-specific instead
-> > > of PMIC-specific - name in the label, if/when desired to overwrite the
-> > > channel description already contained (but previously unused) in the
-> > > driver [2].
-> > > 
-> > > Replace the .* name pattern with the adc-chan literal, but leave the
-> > > label property optional for bindings to choose to fall back a channel
-> > > label hardcoded in the driver [2] instead.
-> > > 
-> > > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> > > [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
-> > > 
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>  
-> > Other than the use in the tm5 thermal example that Rob's bot found, this looks
-> > good to me.  
-> 
-> Yep, shouldn't have ran dt_binding_check and dtbs_check with
-> DT_SCHEMA_FILES=just/the/one/edited/here.
-> 
-> > I think ideal would be to fix that in a precursor patch then
-> > do this one.  
-> 
-> Can't that be part of the current one?  At least the change requested by
-> dt-bindings here is backwards-compatible; the adc-chan@xx format with
-> optional label property was already allowed.
+Hmm... But this is to fix the ABI breakage. It means that the previous series
+by Nuno had broken it.
 
-Sure you can merge it in, or do it as a precursor. I'd split it though
-purely as it can be picked up by a different maintainer if that makes
-sense (at cost of some errors as things filter through the various
-trees).
+> Mostly I want to be sure they know this exists before it causes surprise.
 
-> 
-> > Note that the existing two patches should be in the other order
-> > 1. Update the dtsi
-> > 2. Tighten the bounds to check they are right.  
-> 
-> Hmm, I'm never sure what goes first: drivers, bindings, or DT
-> (considering there's an ABI it shouldn't matter whether drivers or DT
-> go first, leaving just dt-bindings which could be used to TDD the DT...
-> or check adjustment after the fact).  Is this relationship - and the
-> order following from it - documented somewhere?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-In this particular case we in theory want bisectability.  As you note
-the updated tighter naming is already allowed, so we can make that change
-first.
-
-Normally we are adding new bindings and it doesn't matter on order as
-we just have an undocumented binding if the driver goes first.
-
-As noted it all become irrelevant when things go through different
-trees anyway!
-
-J
-> 
-> > Doesn't matter much though as the two patches will probably go through
-> > different trees.  
-> 
-> Should be right, indeed.
-> 
-> - Marijn
 

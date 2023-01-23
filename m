@@ -2,53 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 642946785EF
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 20:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4859667866A
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 20:33:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbjAWTRP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 14:17:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
+        id S231736AbjAWTd5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 14:33:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230088AbjAWTRP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 14:17:15 -0500
+        with ESMTP id S230236AbjAWTd4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 14:33:56 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91CD140FA;
-        Mon, 23 Jan 2023 11:17:14 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F6031E29
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 11:33:51 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B00A60FE5;
-        Mon, 23 Jan 2023 19:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F2FC433EF;
-        Mon, 23 Jan 2023 19:17:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46F3B61026
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 19:33:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A53C433D2;
+        Mon, 23 Jan 2023 19:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674501433;
-        bh=WPTo/AYSSV3PH4rx0T+DOwWymx0lq8Uby5njTsynD3g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qIFZNkae57YPCdDiHeWgTq101KzsRoV+P2dV6cJUNu1D2ZQ402vEvlIWyw6mkvYyQ
-         UaKffvML6hJ3wu0fM2fp0Xh6YKog6GAMDyYeedSYB1Awoa6Wt7GrvnSjrgxfM/XpH/
-         EyCj9dEe0/Bf72NrD9R7ZFdGLieFfEgELTvlZ0FQQZIrOxBLTqz7tAf5iYms9kjrwu
-         17Fh9DexQVSjGUumyhFEMXBviNypDoLvIeMsnXmCuZzHejl9Trl8PlNtXukzlKW1LW
-         BmhkE2H9QotRtoDzc2stXSym2If9OHO46gHD/9U+SWP+JgeBFrycI8p3iZN/glzmGY
-         p9mmm5Rv5BNRA==
-Date:   Mon, 23 Jan 2023 19:30:59 +0000
+        s=k20201202; t=1674502430;
+        bh=mgJWgGjjZ2kSnTcJCQxgldyBfGgrVo2mkMhxGvoJYxI=;
+        h=Date:From:To:Subject:From;
+        b=TW29qCM401ID20EX3XMb2REYgVA3NOdftsN/WEXO71t3KUPQM6muR7t9SUqwmGmnH
+         ErkxB+ol0N5Mcx6kMeVmWrZiUzosRHElt/FGqrSymoo/zWIH0Hh+5nKXO02+iJC45j
+         pqYyoCiil3A4y0X14jZdblNcMrCrd7LSvBkuh5ds+GwmX3Mc4an/0Pcp90pzMe8wi7
+         g0VAGQal2Xna/6JA/Wue/BWvWP2S1u8IYsBtoelQHeupgaL6u5gMh8V5nLvIoxLcu3
+         hqon8Z+bBOZUUVgjUi12+werqJDekEGVpOaq49eVo3xF5rd06ekp8qH7DJKg9hUCq7
+         U31wL2kymWx8g==
+Date:   Mon, 23 Jan 2023 19:47:38 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v2 1/1] iio: adc: qcom-spmi-adc5: Fix the channel name
-Message-ID: <20230123193059.27a1c1a7@jic23-huawei>
-In-Reply-To: <Y853a5jr4rfrDHfd@smile.fi.intel.com>
-References: <20230118100623.42255-1-andriy.shevchenko@linux.intel.com>
-        <20230122172441.4f8d75f5@jic23-huawei>
-        <Y853a5jr4rfrDHfd@smile.fi.intel.com>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO fixes for 6.2 - set 1
+Message-ID: <20230123194738.25eb2a1a@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,36 +49,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 Jan 2023 14:02:51 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+The following changes since commit 1b929c02afd37871d5afb9d498426f83432e71c2:
 
-> On Sun, Jan 22, 2023 at 05:24:41PM +0000, Jonathan Cameron wrote:
-> > On Wed, 18 Jan 2023 12:06:23 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >   
-> > > The node name can contain an address part which is unused
-> > > by the driver. Moreover, this string is propagated into
-> > > the userspace label, sysfs filenames *and breaking ABI*.
-> > > 
-> > > Cut the address part out before assigning the channel name.
-> > > 
-> > > Fixes: 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
-> > > Reported-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> > 
-> > LGTM, but given it will have ABI impact, I'd like to hear from 
-> > Andy, Bjorn or Konrad as maintainers and /or Dmitry as someone
-> > who has touched this driver fairly recently.  
-> 
-> Hmm... But this is to fix the ABI breakage. It means that the previous series
-> by Nuno had broken it.
-Absolutely agree. I plan to take the change. The risk that someone needs
-to fix up their use of the broken ABI makes it worth a little more shouting
-about than if we had caught it sooner.
+  Linux 6.2-rc1 (2022-12-25 13:41:39 -0800)
 
-Jonathan
+are available in the Git repository at:
 
-> 
-> > Mostly I want to be sure they know this exists before it causes surprise.  
-> 
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.2a
 
+for you to fetch changes up to 2acd031347f645871959a799238a7caf6803aa18:
+
+  iio: imu: fxos8700: fix MAGN sensor scale and unit (2023-01-21 18:15:19 +0000)
+
+----------------------------------------------------------------
+1st set of IIO fixes for the 6.2 cycle.
+
+The usual mixed bag - with a bunch of issues found by Carlos Song
+in the fxos8700 IMU driver dominating.
+
+hid-accel,gyro
+ - Fix wrong returned value when read succeeds.
+marvell,berlin-adc
+ - Missing of_node_put() in an error path.
+nxp,fxos8700 (freescale)
+ - Wrong channel type match.
+ - Swapped channel read back.
+ - Incomplete channel read back (not enough bytes).
+ - Missing shift of acceleration data.
+ - Range selection didn't work (datasheet bug)
+ - Wrong ODR mode read back due to wrong field offset.
+ - Drop unused, but wrong define.
+ - Fix issue with magnetometer scale an units.
+nxp,imx8qxp
+- Fix an irq flood due to not reading data early enough.
+st,lsm6dsx
+ - Add CONFIG_IIO_TRIGGERED_BUFFER select.
+st,stm32-adc
+ - Fix missing MODULE_DEVICE_TABLE() needed for module aliases.
+ti,twl6030
+ - Fix missing enable of some channels.
+ - Fix a typo in previous patch that meant one channel still wasn't enabled.
+xilinx,xadc
+ - Carrying on incorrectly after allocation error.
+
+----------------------------------------------------------------
+Andreas Kemnade (2):
+      iio:adc:twl6030: Enable measurements of VUSB, VBAT and others
+      iio:adc:twl6030: Enable measurement of VAC
+
+Carlos Song (9):
+      iio: imu: fxos8700: fix map label of channel type to MAGN sensor
+      iio: imu: fxos8700: fix swapped ACCEL and MAGN channels readback
+      iio: imu: fxos8700: fix incomplete ACCEL and MAGN channels readback
+      iio: imu: fxos8700: fix IMU data bits returned to user space
+      iio: imu: fxos8700: fix ACCEL measurement range selection
+      iio: imu: fxos8700: fix incorrect ODR mode readback
+      iio: imu: fxos8700: fix failed initialization ODR mode assignment
+      iio: imu: fxos8700: remove definition FXOS8700_CTRL_ODR_MIN
+      iio: imu: fxos8700: fix MAGN sensor scale and unit
+
+Dmitry Perchanov (2):
+      iio: hid: fix the retval in accel_3d_capture_sample
+      iio: hid: fix the retval in gyro_3d_capture_sample
+
+Frank Li (1):
+      iio: imx8qxp-adc: fix irq flood when call imx8qxp_adc_read_raw()
+
+Kai-Heng Feng (1):
+      iio: light: cm32181: Fix PM support on system with 2 I2C resources
+
+Marco Pagani (1):
+      iio: adc: xilinx-ams: fix devm_krealloc() return value check
+
+Olivier Moysan (1):
+      iio: adc: stm32-dfsdm: fill module aliases
+
+Vladimir Oltean (1):
+      iio: imu: st_lsm6dsx: fix build when CONFIG_IIO_TRIGGERED_BUFFER=m
+
+Xiongfeng Wang (1):
+      iio: adc: berlin2-adc: Add missing of_node_put() in error path
+
+ drivers/iio/accel/hid-sensor-accel-3d.c |   1 +
+ drivers/iio/adc/berlin2-adc.c           |   4 +-
+ drivers/iio/adc/imx8qxp-adc.c           |  11 +++-
+ drivers/iio/adc/stm32-dfsdm-adc.c       |   1 +
+ drivers/iio/adc/twl6030-gpadc.c         |  32 +++++++++
+ drivers/iio/adc/xilinx-ams.c            |   2 +-
+ drivers/iio/gyro/hid-sensor-gyro-3d.c   |   1 +
+ drivers/iio/imu/fxos8700_core.c         | 111 +++++++++++++++++++++++++-------
+ drivers/iio/imu/st_lsm6dsx/Kconfig      |   1 +
+ drivers/iio/light/cm32181.c             |   9 +--
+ 10 files changed, 143 insertions(+), 30 deletions(-)

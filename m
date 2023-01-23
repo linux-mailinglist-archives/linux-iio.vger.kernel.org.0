@@ -2,136 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E9F67892C
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jan 2023 22:05:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E90F5678BD3
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 00:10:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbjAWVFN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 16:05:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39852 "EHLO
+        id S231511AbjAWXK6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 Jan 2023 18:10:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233086AbjAWVFC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 16:05:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BEE738661;
-        Mon, 23 Jan 2023 13:04:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B8B67B80EA4;
-        Mon, 23 Jan 2023 21:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E06C433EF;
-        Mon, 23 Jan 2023 21:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674507886;
-        bh=JfdSnP/IqcEU/RUpwi8uEy+ZYVr2XcnzyLksuNk/4MU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YNRo016XnjSx+2eUjgQivHPW6qu9wGLJEfSclufrG+a7FCGG7CLXpMnTOeMRusC5g
-         2qGeqOcz9IFBj3uIJhkn6he4GU2IiZSb2eLlW/geh3Ahmvcw47x5hbTILYI08UN0SJ
-         QoJRUQ0g3PsYFMRTMmJ0tRsff+VJ63rICoKEuxEZry5IgyUpOKrBnUPSZ/mrPUpa/G
-         yV0lTP99JC1s/Q8fWtqc94/a/Diok3RT26pMgM4of7m3nDVQIqdNZ77z1f1L3m9WVZ
-         vKZm37Wuig7NywbFgDX+BjreTJmC7u73FX+Mw+IWUezQzjqGSIzDGVb0Q4rH8SQXbo
-         rV8q90XoX8DsQ==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S229651AbjAWXK5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 18:10:57 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B5B2ED5E;
+        Mon, 23 Jan 2023 15:10:56 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id u19so34601536ejm.8;
+        Mon, 23 Jan 2023 15:10:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KxVqHX/t1GmPKxmzWNFuPMIsX21SLa7bq9EMxvXTX4I=;
+        b=FtrRebO7wW5W84nJClLKGVMZx+FCTjAL3RBPYe9/QWNiGKitzsEbDTvyq+O+ePTuMZ
+         jKHVm6/rDt8c6wyOFK1MhXw6SFSpiWqYXbNgBZL9o+HI0W/C+ikDtusxS4w7Ovq3gVXW
+         k7qcDU5jo1+wMo6nps3GK0xNWmoYIW4c9Vn4KvdSzcBIhQ1I3ctAHpzQxLPbqxJd9VFu
+         p4WQdO/LTgj+IPpMfLmyfFbGJB9Yj4Lyi18T6QPZSeD1PURGbfoapSYm6jmPX3qG2wPS
+         VPpEmSIL1gd7Hq5NDuARJXXWTAjx2BnsIMMzNy2iz7WG/cGtogBZoJ92TWDnupvk91Nh
+         vJaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KxVqHX/t1GmPKxmzWNFuPMIsX21SLa7bq9EMxvXTX4I=;
+        b=Us5PF9U3SBIxUoVu44YTdttHYXcf7YB9c20xViznDSLVlDlQWXRwiK5SqkviBIZHN4
+         hJjpjl2JTTvyK0oWyTrS6aOWMHjRKAqol8AR8WpcfI71OBpUoappnIkpMwj/59jgSWxX
+         0uhDq9XYUcXsC7uNQ49Txu0e8I76Dqgzab5246bZehH6+oCC+CWFEn3AEJyNa1nMJO+f
+         g+/HrxKAFk9Y9+Y71aTyvfwU6BYGdU5w3JQ21899eO7pE79YTdxRnoNoE0ITOXhfjw8g
+         kYvyMDD+PHAN+0crY4Q/IPEthSNvrvBI/OhW2+RVeEAh/gq+vl1lxJH5CDo4tvHDSL5g
+         ss7w==
+X-Gm-Message-State: AFqh2kpF8PdLS1w81PlrWyYQF/nGwZefR/XdaAp5HTNDNqa5SipBWO+1
+        /vI7SuLJ9glYie1UBme6Hl1uqdVB920=
+X-Google-Smtp-Source: AMrXdXvUZlJS0y5fAr6nFCzMNEtRAfvMzxLFBRf7zGTZoOdGh/si4UPGFi5rgfA6nUd5G6Cd1ndr4w==
+X-Received: by 2002:a17:907:a2cb:b0:870:7b:94db with SMTP id re11-20020a170907a2cb00b00870007b94dbmr32254202ejc.28.1674515455117;
+        Mon, 23 Jan 2023 15:10:55 -0800 (PST)
+Received: from localhost.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id b21-20020a170906709500b0084d43e23436sm72601ejk.38.2023.01.23.15.10.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jan 2023 15:10:54 -0800 (PST)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Barry Song <baohua@kernel.org>
-Subject: [PATCH 12/12] dt-bindings: iio: accel: Add ADIS16203 Inclinometer
-Date:   Mon, 23 Jan 2023 21:17:58 +0000
-Message-Id: <20230123211758.563383-13-jic23@kernel.org>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230123211758.563383-1-jic23@kernel.org>
-References: <20230123211758.563383-1-jic23@kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 0/2] Add a driver for AMS TCS3490 light sensor
+Date:   Tue, 24 Jan 2023 01:10:23 +0200
+Message-Id: <20230123231028.26073-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This light sensor can sense four channels of visible light
+(red, green, blue, clear) and IR light. These features allow it to
+be used for sensing the light source, or getting the environment color
+temperature to adjust display gamma and backlight level.
 
-There has been a driver in staging for quite a while.
-Given we are now moving it to the main tree, time to make sure it
-has binding documentation.
+It is used on Sony Xperia Yoshino family devices.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- .../bindings/iio/accel/adi,adis16203.yaml     | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+Tested on Sony Xperia XZ1 (poplar).
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-new file mode 100644
-index 000000000000..05c095247e10
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-@@ -0,0 +1,59 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accel/adi,adis16203.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ADIS16203 Programmable 360 degree inclinometer
-+
-+maintainers:
-+  - Jonathan Cameron <Jonathan.Cameron@huawei.com>
-+
-+properties:
-+  compatible:
-+    const: adi,adis16203
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 2
-+
-+  interrupt-names:
-+    description:
-+      Device has two configurable outputs, both of which may be used
-+      as interrupt sources.
-+    enum:
-+      - dio0
-+      - dio1
-+
-+  reset-gpios: true
-+
-+  vdd-supply: true
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        accelerometer@0 {
-+            compatible = "adi,adis16201";
-+            reg = <0>;
-+            spi-max-frequency = <2500000>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "dio0";
-+        };
-+    };
-+...
-+
+Markuss Broks (2):
+  dt-bindings: iio: tcs3490: Add bindings for AMS TCS3490 light sensor
+  iio: light: Add support for AMS TCS3490 Color Light-to-Digital
+    Converter
+
+ .../bindings/iio/light/ams,tcs3490.yaml       |  52 ++++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/light/Kconfig                     |  12 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/tcs3490.c                   | 272 ++++++++++++++++++
+ 5 files changed, 344 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/ams,tcs3490.yaml
+ create mode 100644 drivers/iio/light/tcs3490.c
+
 -- 
-2.39.1
+2.39.0
 

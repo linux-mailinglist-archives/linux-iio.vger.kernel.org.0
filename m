@@ -2,100 +2,268 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB0E6794B2
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 11:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A23EF679514
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 11:22:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233210AbjAXKEX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Jan 2023 05:04:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46778 "EHLO
+        id S232166AbjAXKWm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Jan 2023 05:22:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233705AbjAXKEU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 05:04:20 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D2B3EC7B;
-        Tue, 24 Jan 2023 02:04:16 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id r9so13320837wrw.4;
-        Tue, 24 Jan 2023 02:04:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=C07Sdj5SgC+4bTQhxr8yF2K18bhfSCxMpf1Br4u8+/M=;
-        b=a7qtoobVIxAwjxdMt/BthyU3ccigYZFLZ2xxeSed3jIo0aDVlo8EDF+jDw5EFpWnOB
-         HXYEjd4cAv9BxL4XKx64iZ1Gz8Rk4u9VMRzKe+ZV8RIFK61sVY16i3R7N/ntK4E86y47
-         T74j4E3TkRO7CffrSlzH5aUPpX76mcotpaLwnNX0aRiEtmwakyX2G0ApPTv16w/54fsQ
-         11/gr/v7Wbj8tGYlwFsxaHg0lFSK43CfBwnFKw75zy+dHX493b4lbu1dIzX3HCDwok6R
-         iEo8oj7pM9bKWDlkn6rEHsgDMb7JAYGZhyDvDPZW38vj3bj7L1LQD5/aYNb/J3WLmU4M
-         LK/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C07Sdj5SgC+4bTQhxr8yF2K18bhfSCxMpf1Br4u8+/M=;
-        b=U/NWhawNEGQSe5Uwq5LsymM5c/7YsNGG2hVZAwVZ2ua8cua4tiZ4v6EH9pRBphox5l
-         arF3CNWlyv4S3DQhPlGTDrcfYhHgNAJxZH4PUSl/v68Z6gcW9wJgl7BTdqcz9A3Aj9tS
-         Dq/+UncxmzmoUTaxc/z0xOYBfk3o3pC4JRX9r7c1xNHVcTFsyYW1JyXLCvXkc2ga7gcy
-         agJhV6b7W3ceUZ7awT7QXm5gIUpU9qemvaCwhlJ8Yf9wFQmBG/bEXeAFhd3GNO7WAE0v
-         889FnG/mwqo3zT3citxzgquKg9r+FyFvfOqSE3newmDHaHEuJbK13raeFIVd3WHA/K+6
-         faTQ==
-X-Gm-Message-State: AFqh2kqlbieV6uxE3zFu2KhptYzEsB/7eKyHU0b1fPRKpn9NzldPu7H5
-        i06tF0rmwXcfmovm0r83wQw=
-X-Google-Smtp-Source: AMrXdXtSX600y9yX9q1xMcVZ9eQp8dKJQEZC+hSjWrcMzjUx4Frpc2/Tl6sFwQF1sJipV65ZrjQD+Q==
-X-Received: by 2002:adf:ec4f:0:b0:2bd:ffc1:3f16 with SMTP id w15-20020adfec4f000000b002bdffc13f16mr24414099wrn.8.1674554654776;
-        Tue, 24 Jan 2023 02:04:14 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id t20-20020adfa2d4000000b002bdcce37d31sm1758731wra.99.2023.01.24.02.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Jan 2023 02:04:14 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Haibo Chen <haibo.chen@nxp.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S231660AbjAXKWl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 05:22:41 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34502ED5D;
+        Tue, 24 Jan 2023 02:22:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674555760; x=1706091760;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sUU7MOHTnJghBqZkG5w1EGUITK+XSb5q9ldAgzSWs5s=;
+  b=R9n+WQ9cAxm768YMnwFAlBCBW30xqnyTYtlDeoxLADF9oyugKmMzLvLj
+   j11EZXg4GLlfCN7aHbMPh4UcJJLMltoFUhmBoNfIScFifRedXryysEqaf
+   NYZnX+PB5YNuxGUrHAmrBSpW4cOZnPxFkamU7dReceKUGRWnChJ0lBy5Y
+   AUcQ2VxqWA6X77rGKO2jk3TSneFzQ/z8Ohni05nFWJvW6iyogxRtFaxAU
+   8+RLqTv2Mzi4lzDTgBaWtY4j2HwkgtSnfmPuy2PlbwSx4XkF/OVtYkX02
+   qWbzEJPYxxRuHeeGCbQp9/k1Sn/nsruGkJGZI+KiEFrpj2iqvkyHLAr4F
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="326300222"
+X-IronPort-AV: E=Sophos;i="5.97,242,1669104000"; 
+   d="scan'208";a="326300222"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2023 02:22:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10599"; a="770252433"
+X-IronPort-AV: E=Sophos;i="5.97,242,1669104000"; 
+   d="scan'208";a="770252433"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 24 Jan 2023 02:22:37 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pKGRm-00EHud-2j;
+        Tue, 24 Jan 2023 12:22:34 +0200
+Date:   Tue, 24 Jan 2023 12:22:34 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: adc: imx93: Fix spelling mistake "geting" -> "getting"
-Date:   Tue, 24 Jan 2023 10:04:13 +0000
-Message-Id: <20230124100413.684416-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: light: Add support for AMS TCS3490 light sensor
+Message-ID: <Y8+xamtH/U4vK75e@smile.fi.intel.com>
+References: <20230123231028.26073-1-markuss.broks@gmail.com>
+ <20230123231028.26073-3-markuss.broks@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123231028.26073-3-markuss.broks@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Thrre is a spelling mistake in a dev_err_probe message. Fix it.
+On Tue, Jan 24, 2023 at 01:10:25AM +0200, Markuss Broks wrote:
+> Add a driver for AMS TCS3490 Color Light-to-Digital Converter. This
+> device provides color and IR (red, green, blue, clear and IR) light
+> sensing. The color sensing can be used for light source detection and
+> color temperature measurements.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/iio/adc/imx93_adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+...
 
-diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-index d8de8284e13d..a775d2e40567 100644
---- a/drivers/iio/adc/imx93_adc.c
-+++ b/drivers/iio/adc/imx93_adc.c
-@@ -315,7 +315,7 @@ static int imx93_adc_probe(struct platform_device *pdev)
- 	adc->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(adc->regs))
- 		return dev_err_probe(dev, PTR_ERR(adc->regs),
--				     "Failed geting ioremap resource\n");
-+				     "Failed getting ioremap resource\n");
- 
- 	/* The third irq is for ADC conversion usage */
- 	adc->irq = platform_get_irq(pdev, 2);
+> +AMS TCS3490 DRIVER
+> +M:	Markuss Broks <markuss.broks@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+
+> +F:	Documentation/devicetree/bindings/iio/light/ams,tcs3490.yaml
+
+Shouldn't actually be added with the schema patch?
+
+> +F:	drivers/iio/light/tcs3490.c
+
+I dunno what's the rules but it feels a bit inconsistent in case the schema
+will leave while driver got, for example, rewritten (as brand new) and reverted
+(as old one). In such (quite unlikely) circumstances we may end up with the
+dangling file.
+
+Rob, Krzysztof, Jonathan, what is yours take from this?
+
+...
+
+> +config TCS3490
+> +	tristate "AMS TCS3490 color light-to-digital converter"
+
+> +	depends on I2C
+
+Hmm... Where is the select REGMAP_I2C?
+
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+> +	help
+> +	  Say Y here if you have an AMS TCS3490 color light-to digital converter
+> +	  which provides RGB color and IR light sensing.
+> +
+> +	  This driver can also be built as a module.  If so, the module
+> +	  will be called tcs3490.
+
+...
+
+> +struct tcs3490 {
+
+> +	struct i2c_client *client;
+
+Why do you need this?
+
+> +	struct regmap *regmap;
+> +	struct regulator *vdd_supply;
+> +};
+
+...
+
+> +static const struct regmap_config tcs3490_regmap_config = {
+> +	.reg_bits	= 8,
+> +	.val_bits	= 8,
+
+Seems you are using regmap internal serialization, but does it guarantee the
+serialization on the transaction level? Or why is it not a problem?
+
+> +};
+
+...
+
+> +	do {
+> +		usleep_range(3000, 4000);
+> +
+> +		ret = regmap_read(data->regmap, TCS3490_STATUS, &status);
+> +		if (ret)
+> +			return ret;
+> +		if (status & TCS3490_STATUS_RGBC_VALID)
+> +			break;
+> +	} while (--tries);
+> +
+> +	if (!tries)
+> +		return -ETIMEDOUT;
+
+regmap_read_poll_timeout()?
+
+...
+
+> +	ret = regmap_read(data->regmap, chan->address, &val_l);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(data->regmap, chan->address + 1, &val_h);
+> +	if (ret)
+> +		return ret;
+
+Why not a bulk read into __le16 val?
+
+> +	*val = (val_h << 8) | val_l;
+
+Use le16_to_cpu().
+
+> +	ret = regmap_write(data->regmap, TCS3490_ENABLE, TCS3490_SUSPEND);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+
+Can be simply
+
+	return regmap_write(...);
+
+> +}
+
+...
+
+> +static int tcs3490_read_raw(struct iio_dev *indio_dev,
+> +			    const struct iio_chan_spec *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	struct tcs3490 *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = tcs3490_read_channel(data, chan, val);
+> +		if (ret < 0)
+> +			return ret;
+
+> +		ret = IIO_VAL_INT;
+> +		break;
+
+return directly.
+
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		ret = tcs3490_get_gain(data, val);
+
+Missing error check.
+
+> +		ret = IIO_VAL_INT;
+> +		break;
+
+Return directly.
+
+> +	default:
+> +		ret = -EINVAL;
+> +		break;
+
+Ditto.
+
+> +	}
+
+> +	if (ret < 0)
+> +		return ret;
+> +	return IIO_VAL_INT;
+
+Redundant, see above.
+
+> +}
+
+...
+
+> +static const struct of_device_id tcs3490_of_match[] = {
+> +	{ .compatible = "ams,tcs3490", },
+
+Inner comma is not needed.
+
+> +	{ },
+
+Terminator entries should go without a comma.
+
+> +};
+
+...
+
+> +static struct i2c_driver tcs3490_driver = {
+> +	.driver = {
+> +		.name = "tcs3490",
+> +		.of_match_table = of_match_ptr(tcs3490_of_match),
+
+Kill of_match_ptr(). Its usage is wrong in 99% of the cases.
+
+> +	},
+> +	.probe_new = tcs3490_probe,
+> +};
+
+> +
+
+Redundant blank line.
+
+> +module_i2c_driver(tcs3490_driver);
+
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 

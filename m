@@ -2,41 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CBD867946E
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 10:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84AC9679474
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 10:44:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232964AbjAXJnt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Jan 2023 04:43:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38778 "EHLO
+        id S232776AbjAXJo4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Jan 2023 04:44:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232276AbjAXJns (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 04:43:48 -0500
+        with ESMTP id S232388AbjAXJoz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 04:44:55 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED324ECF;
-        Tue, 24 Jan 2023 01:43:46 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P1MQj3899z67QJq;
-        Tue, 24 Jan 2023 17:40:29 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824BC9008;
+        Tue, 24 Jan 2023 01:44:54 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P1MVz2ZVpz6J9lw;
+        Tue, 24 Jan 2023 17:44:11 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 24 Jan
- 2023 09:43:44 +0000
-Date:   Tue, 24 Jan 2023 09:43:44 +0000
+ 2023 09:44:51 +0000
+Date:   Tue, 24 Jan 2023 09:44:50 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        "Barry Song" <baohua@kernel.org>
-Subject: Re: [PATCH 12/12] dt-bindings: iio: accel: Add ADIS16203
- Inclinometer
-Message-ID: <20230124094344.00003e67@Huawei.com>
-In-Reply-To: <6abc3265-75a2-1fa6-803e-6066a81b8ec5@linaro.org>
+        Barry Song <baohua@kernel.org>
+Subject: Re: [PATCH 11/12] staging: iio: accel: adis16203: Move out of
+ staging
+Message-ID: <20230124094450.0000272b@Huawei.com>
+In-Reply-To: <20230123211758.563383-12-jic23@kernel.org>
 References: <20230123211758.563383-1-jic23@kernel.org>
-        <20230123211758.563383-13-jic23@kernel.org>
-        <6abc3265-75a2-1fa6-803e-6066a81b8ec5@linaro.org>
+        <20230123211758.563383-12-jic23@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -55,123 +54,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 Jan 2023 09:39:10 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon, 23 Jan 2023 21:17:57 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On 23/01/2023 22:17, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > There has been a driver in staging for quite a while.
-> > Given we are now moving it to the main tree, time to make sure it
-> > has binding documentation.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  .../bindings/iio/accel/adi,adis16203.yaml     | 59 +++++++++++++++++++
-> >  1 file changed, 59 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-> > new file mode 100644
-> > index 000000000000..05c095247e10
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-> > @@ -0,0 +1,59 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/accel/adi,adis16203.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: ADIS16203 Programmable 360 degree inclinometer
-> > +
-> > +maintainers:
-> > +  - Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: adi,adis16203
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 2
-> > +
-> > +  interrupt-names:  
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> maxItems (and probably minItems
+> The main blocker of this driver moving previously was non standard
+> ABI for the 180 degree offset channel. Now support for that channel
+> has been dropped, this simple driver can move out of staging.
 > 
-> > +    description:
-> > +      Device has two configurable outputs, both of which may be used
-> > +      as interrupt sources.
-> > +    enum:  
-> 
-> This won't work. It's an list. You need:
-> items:
->   enum:
->      .....
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I forgot my own rules of posting graduations with move detection turned off.
+I'm going to be doing a v2 anyway to fix the issues Rob's bot and
+Krysztof pointed out in the binding so will hopefully remember to
+turn move detection off for that.
 
-Gah. I'm still rubbish at writing these things. I guess I just
-don't do them often enough.
-
+> ---
+>  drivers/iio/accel/Kconfig                   | 12 ++++++++++++
+>  drivers/iio/accel/Makefile                  |  1 +
+>  drivers/{staging => }/iio/accel/adis16203.c |  0
+>  drivers/staging/iio/accel/Kconfig           | 12 ------------
+>  drivers/staging/iio/accel/Makefile          |  1 -
+>  5 files changed, 13 insertions(+), 13 deletions(-)
 > 
-> > +      - dio0
-> > +      - dio1
-> > +
-> > +  reset-gpios: true  
-> 
-> maxItems: 1
-> 
-> 
-> > +
-> > +  vdd-supply: true
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +        accelerometer@0 {
-> > +            compatible = "adi,adis16201";
-> > +            reg = <0>;
-> > +            spi-max-frequency = <2500000>;
-> > +            interrupt-parent = <&gpio0>;
-> > +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-> > +            interrupt-names = "dio0";  
-> 
-> You require here two items, according to interrupts. Don't you miss
-> minItems?
-
-Indeed.
-
-> 
-> Also... if you tested the binding it would complain here.
-
-I thought I had tested it (and fixed a few issues that showed up).
-I guess something went wrong with with the final test.  Will investigate.
-
-Thanks and sorry for the waste of time with the silly errors!
-
-Jonathan
-
-
-> 
-> > +        };
-> > +    };
-> > +...
-> > +  
-> 
-> Best regards,
-> Krzysztof
-> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index b6b45d359f28..88d4b18bd5e8 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -18,6 +18,18 @@ config ADIS16201
+>  	  To compile this driver as a module, say M here: the module will
+>  	  be called adis16201.
+>  
+> +config ADIS16203
+> +	tristate "Analog Devices ADIS16203 Programmable 360 Degrees Inclinometer"
+> +	depends on SPI
+> +	select IIO_ADIS_LIB
+> +	select IIO_ADIS_LIB_BUFFER if IIO_BUFFER
+> +	help
+> +	  Say Y here to build support for Analog Devices adis16203 Programmable
+> +	  360 Degrees Inclinometer.
+> +
+> +	  To compile this driver as a module, say M here: the module will be
+> +	  called adis16203.
+> +
+>  config ADIS16209
+>  	tristate "Analog Devices ADIS16209 Dual-Axis Digital Inclinometer and Accelerometer"
+>  	depends on SPI
+> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+> index 311ead9c3ef1..b6f0cee52659 100644
+> --- a/drivers/iio/accel/Makefile
+> +++ b/drivers/iio/accel/Makefile
+> @@ -5,6 +5,7 @@
+>  
+>  # When adding new entries keep the list in alphabetical order
+>  obj-$(CONFIG_ADIS16201) += adis16201.o
+> +obj-$(CONFIG_ADIS16203) += adis16203.o
+>  obj-$(CONFIG_ADIS16209) += adis16209.o
+>  obj-$(CONFIG_ADXL313) += adxl313_core.o
+>  obj-$(CONFIG_ADXL313_I2C) += adxl313_i2c.o
+> diff --git a/drivers/staging/iio/accel/adis16203.c b/drivers/iio/accel/adis16203.c
+> similarity index 100%
+> rename from drivers/staging/iio/accel/adis16203.c
+> rename to drivers/iio/accel/adis16203.c
+> diff --git a/drivers/staging/iio/accel/Kconfig b/drivers/staging/iio/accel/Kconfig
+> index 3318997a7009..3769af8719f3 100644
+> --- a/drivers/staging/iio/accel/Kconfig
+> +++ b/drivers/staging/iio/accel/Kconfig
+> @@ -4,18 +4,6 @@
+>  #
+>  menu "Accelerometers"
+>  
+> -config ADIS16203
+> -	tristate "Analog Devices ADIS16203 Programmable 360 Degrees Inclinometer"
+> -	depends on SPI
+> -	select IIO_ADIS_LIB
+> -	select IIO_ADIS_LIB_BUFFER if IIO_BUFFER
+> -	help
+> -	  Say Y here to build support for Analog Devices adis16203 Programmable
+> -	  360 Degrees Inclinometer.
+> -
+> -	  To compile this driver as a module, say M here: the module will be
+> -	  called adis16203.
+> -
+>  config ADIS16240
+>  	tristate "Analog Devices ADIS16240 Programmable Impact Sensor and Recorder"
+>  	depends on SPI
+> diff --git a/drivers/staging/iio/accel/Makefile b/drivers/staging/iio/accel/Makefile
+> index 094cc9be35bd..b0beec471814 100644
+> --- a/drivers/staging/iio/accel/Makefile
+> +++ b/drivers/staging/iio/accel/Makefile
+> @@ -3,5 +3,4 @@
+>  # Makefile for industrial I/O accelerometer drivers
+>  #
+>  
+> -obj-$(CONFIG_ADIS16203) += adis16203.o
+>  obj-$(CONFIG_ADIS16240) += adis16240.o
 

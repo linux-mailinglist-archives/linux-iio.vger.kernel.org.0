@@ -2,104 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B88367953B
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 11:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF5BB67A378
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 20:58:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbjAXKcQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 Jan 2023 05:32:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36134 "EHLO
+        id S233265AbjAXT6c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Jan 2023 14:58:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232821AbjAXKcP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 05:32:15 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146DD3FF23
-        for <linux-iio@vger.kernel.org>; Tue, 24 Jan 2023 02:32:11 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id y1so8906034wru.2
-        for <linux-iio@vger.kernel.org>; Tue, 24 Jan 2023 02:32:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Vgx+byQpBO/6No7Ir2bnN8fVUuZMRKX8+w8Wat/wjes=;
-        b=OuQJqxRtNYs7Sva3jrKvhV17n3ni651EJpq1zFt7cdE/1SM1pSRe3/GTkhENJ6ZfV0
-         gTxh2TNBTcLl9Zjwz+RGr4KglC9pWlQPiOu7BlZ5CnFBmjUoY3iYdubioHbIxROkfc7d
-         9o88HQvLa09KqZsfskNQBm2C30yyZcamjU9EOLvZGpT9OxYj6/mjQjG2ILB2+U7GDzT1
-         CmqyXx+7J+IRNWHyVY4hBrs8QIUy3goWTXPH7SGSAfD+xg7w7IE/sItMi5450IatozaQ
-         3XfoRhUfmSB8BOIrL5OKxL0oVsfa/wOAblvk9ZyNJGQ6AlsAM8hkiw1S+cpmPf5PIzQX
-         v3/A==
+        with ESMTP id S229932AbjAXT6b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 14:58:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302E36EAE
+        for <linux-iio@vger.kernel.org>; Tue, 24 Jan 2023 11:57:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1674590270;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Czuty/IXmZh0Ej+a6tXx+TzxJZ0sK5TjGVX3sprTlhc=;
+        b=GG1evi+N8vsJACv64rzq/Sp2qufqfRfe2SPG1zL2DnfCSlgzgV6j61mwQY6eQPlSVKPv2q
+        ExkFAAhTe61cFF+t7MdrvBpsoQ0FiOjkNk5NKftnCVdQwttUVomHRTKtHYi1Su/4g5kja7
+        Bim1gTTSMx1fOdyqLqkI0nrjYTSTndI=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-515-9WxBmFLeM5-Z2z4MkZOOvA-1; Tue, 24 Jan 2023 14:57:49 -0500
+X-MC-Unique: 9WxBmFLeM5-Z2z4MkZOOvA-1
+Received: by mail-qk1-f197.google.com with SMTP id x12-20020a05620a258c00b007051ae500a2so11654197qko.15
+        for <linux-iio@vger.kernel.org>; Tue, 24 Jan 2023 11:57:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vgx+byQpBO/6No7Ir2bnN8fVUuZMRKX8+w8Wat/wjes=;
-        b=Tyd+Az7+CGUlwzbjsP8NUIIm6NgF0JmJ3z+1CUIakMVUv22B+8BpiraUq+zpFJ5zwa
-         PZALDaVaIaf6HOPyllAwIJ5luPbbQf9YA1C4METLvbH9MMBHwHMYiB5Yvm52ul+q22Z4
-         41Q2j8VrY+tBizcGiI6hygjpB085YSnJzR5sm71Kz/fnvfaUj2nXrry3lN+M8MHkMiIC
-         ylGjphyzeC2t7VL1PxAESpIZqhQ2cj66oCBAA91cDaaHUboWXUj5o3M5uAIFQZ8TxnKK
-         0MkHLd42duq+X0OpDtA2339l8cXk9hQFsW+KhMZpaShb3RdxzlaKDtQgve7tArM7x8Qk
-         LTZw==
-X-Gm-Message-State: AFqh2kpu4l20K/mY7TUzlqBTFOVR44LEF8nr8sLa4ASByyFIkwAwwnGH
-        qG1gW+f3a95jqO5Kkzxzuzyoew==
-X-Google-Smtp-Source: AMrXdXsRbdzhAPpI+JnXWb0o8J0R9VSbSXKp5V9FYY6TChaGKTvDrXPVuu8lgDC2/XJw3EmKa9i5pQ==
-X-Received: by 2002:adf:ef11:0:b0:2bb:dd87:3485 with SMTP id e17-20020adfef11000000b002bbdd873485mr24895602wro.30.1674556329374;
-        Tue, 24 Jan 2023 02:32:09 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id t9-20020adff049000000b002bddaea7a0bsm1556999wro.57.2023.01.24.02.32.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jan 2023 02:32:09 -0800 (PST)
-Message-ID: <09396c7b-1cf5-8ce6-e1ba-3c79a9e8ec56@linaro.org>
-Date:   Tue, 24 Jan 2023 11:32:07 +0100
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Czuty/IXmZh0Ej+a6tXx+TzxJZ0sK5TjGVX3sprTlhc=;
+        b=rY89w4F3LRrFtPYVlmlFlf+n4zsFGShYY8JodBwaF6wBMNtvYXstVkM+ItEguJH7aF
+         vyMu4FCrCJ1pHWtUZI+N1rZmlIe1JI9hVjjJLHOc0pXq4DwR3HKfzyfu585o/vyA3GDG
+         nQKFgVLMjoANTkwh49Fy6UPxQ/Yk/OC2OHcwvFi6g1sdXxwyP44AbAt6I1CuozRMJiJx
+         WXAsi50h3jEUGTQ3iasrgaixFVBgOSx9DNTnlPF3JC0o2nSrwqRdqNH/L9QU8QAfL46/
+         BkY412H7NiWLmUjNLMmY4Bt+ZogC1lrsoRmDevCPuGjgb+/orHJn7K4sXkjCz39hGKX6
+         WA7g==
+X-Gm-Message-State: AO0yUKUgApCkVou9aMYbVMT3hVDXn197R0yjAMR3uUrR8iEfQFv/yMuA
+        0VqjvtaT1EoCa5XHsVikYuiN3shHJqFruNGUS6CyRxcxJ3BtSBYoXiBwkeq64PSPYf6XLteHZ0z
+        5fFfyvaUWNLNyKNSp5J7H
+X-Received: by 2002:a05:6214:459b:b0:537:6e23:f350 with SMTP id op27-20020a056214459b00b005376e23f350mr3160693qvb.31.1674590268610;
+        Tue, 24 Jan 2023 11:57:48 -0800 (PST)
+X-Google-Smtp-Source: AK7set9kKYBDFdSjmr+lGrxgWaKhFEYSXIS1MBxhMFZ/vCcevsONki7kxiyHr9fwQS2F+JNHi11TBg==
+X-Received: by 2002:a05:6214:459b:b0:537:6e23:f350 with SMTP id op27-20020a056214459b00b005376e23f350mr3160672qvb.31.1674590268414;
+        Tue, 24 Jan 2023 11:57:48 -0800 (PST)
+Received: from localhost.localdomain.com (024-205-208-113.res.spectrum.com. [24.205.208.113])
+        by smtp.gmail.com with ESMTPSA id c38-20020a05620a26a600b006ea7f9d8644sm2012405qkp.96.2023.01.24.11.57.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jan 2023 11:57:48 -0800 (PST)
+From:   Tom Rix <trix@redhat.com>
+To:     jic23@kernel.org, lars@metafoo.de, andrea.merello@iit.it
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] iio: imu: fix spdx format
+Date:   Tue, 24 Jan 2023 11:43:01 -0800
+Message-Id: <20230124194301.656518-1-trix@redhat.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: tcs3490: Add bindings for AMS
- TCS3490 light sensor
-Content-Language: en-US
-To:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20230123231028.26073-1-markuss.broks@gmail.com>
- <20230123231028.26073-2-markuss.broks@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230123231028.26073-2-markuss.broks@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/01/2023 00:10, Markuss Broks wrote:
-> Add device-tree bindings for the AMS TCS3490 Color ALS.
+checkpatch reports
+WARNING: Missing or malformed SPDX-License-Identifier tag in line 1
+FILE: drivers/iio/imu/bno055/bno055_ser_trace.c:1:
++//SPDX-License-Identifier: GPL-2.0
 
-If there is going to be new version:
+Add a space
 
-Subject: drop second/last, redundant "bindings for". The "dt-bindings"
-prefix is already stating that these are bindings.
+Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/iio/imu/bno055/bno055_ser_trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-> 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
-
-Best regards,
-Krzysztof
+diff --git a/drivers/iio/imu/bno055/bno055_ser_trace.c b/drivers/iio/imu/bno055/bno055_ser_trace.c
+index 48397b66daef..ab564186d19c 100644
+--- a/drivers/iio/imu/bno055/bno055_ser_trace.c
++++ b/drivers/iio/imu/bno055/bno055_ser_trace.c
+@@ -1,4 +1,4 @@
+-//SPDX-License-Identifier: GPL-2.0
++// SPDX-License-Identifier: GPL-2.0
+ 
+ /*
+  * bno055_ser Trace Support
+-- 
+2.26.3
 

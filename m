@@ -2,64 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37154678DC2
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 02:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D7E67922D
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jan 2023 08:40:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231483AbjAXByj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 Jan 2023 20:54:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34344 "EHLO
+        id S232963AbjAXHkW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 Jan 2023 02:40:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjAXByi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 Jan 2023 20:54:38 -0500
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D1E39BA3;
-        Mon, 23 Jan 2023 17:54:31 -0800 (PST)
-Received: by mail-ot1-x333.google.com with SMTP id n24-20020a0568301e9800b006865671a9d5so8422067otr.6;
-        Mon, 23 Jan 2023 17:54:31 -0800 (PST)
+        with ESMTP id S232593AbjAXHkV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 Jan 2023 02:40:21 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4EA34C37
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 23:40:19 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so12176867wma.1
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jan 2023 23:40:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1SIlV76DVxeq/C35+t24zRKgN1DEZm4VgHWvTfe7RPk=;
-        b=l7NNGsr1JQuzUnc25Wtd9Awtmf42my7g2nvhiZ0bzAIgkjx6lp88NC5FHN7pPgY82k
-         G542R43Ae3PgKGJh1Cs5N3kgZrdwccgTwEquohn8UL+0w2Mm8KZoVhQLSiSAi+Ixjrix
-         Rjpo/AGoTe7VNNmIEOM8ujjMoLam1cMsaId4YrJ8TmzGR3PYNCO/lmyQgrKrtEnBIOpi
-         e6jWB0NLfojhUcOftYFok+T6clN0RR1YMmvzXpJlItmt6SMUsvBThcYtLLjkmGyD/1UG
-         6NUXH77gXICtHggfPzx/oCL65F+AdQkxevZSNAEDgXzCv2ifhndexxbmSk7RtPeqEn8T
-         e5xg==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mqgrYYoh+EWOFvzfNiDUZjtAea3Dxak9qwqCg1uYmZs=;
+        b=Iw6RmCnB7UYWK7kSGR74JYXm36gVuMD2oo69ktEWRjIlPFJ3uJKXdHINKBsnvNa20K
+         a6s62IgiALmtBdqhwlm38anPhhtKphIymExmhaarIuTy5WOIM18iqW5M2vQxqHzOL0Ob
+         VAB6f44+e/uitx/Jz2LE91zlKQvD1trBEC6H52BTjjkr5zt9DXFqLogf95s7DRDamiLv
+         gqhITmZDiJjRp2ecP1LeQh4bcxQTtGI8kgAgNoKpRi6J+fZglBjyXPY071TJYlGDxZ1S
+         RZt2VXIe0bs3W7Tit02TVq/emcJZk9j7wxUZP38Q6Kord2ejBzNtOJgfb7krcUMQvKSX
+         XXyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1SIlV76DVxeq/C35+t24zRKgN1DEZm4VgHWvTfe7RPk=;
-        b=bEedwFrNbgY5o0Ol8yMOPqAcRJkhMpNEIll8tsYchpsYEXBbgtXaoQNPucFqaktPWi
-         O+fKJuxyV/6qnTxMuAnWjU6EpkDz28apZMfiulD5KKErGjkVZr/o21INQDV+ldv9SvqH
-         +bKTvI4aGP1+FCoO365x/mIwfSLG0RE1FUelxi63QZlmPIhO6ogLYcrelx2FscdIdSGy
-         femZEfTVOLpOxBp4buuA0t8yZv9SX0QI7i5u2bYjqiRVFEV7JxL0lJUMAr4mrPvPZCvV
-         XSBb9yLWFviRHKem2wD5U4RIgCxr5I/abJfSRq8HS6LDgxXAGkyg1jOE+Pmxb3+97jgO
-         I7kg==
-X-Gm-Message-State: AFqh2kqOzV3j+j+odKnhYPQ7GT8lj8+Nn2/N86iQWyGM7RsKR5/vYMBC
-        jUdTb84CYOjkPRU/G6Rg5Zc=
-X-Google-Smtp-Source: AMrXdXv0I+2WnACwWrMr9nYYPOZnq5pzy3Uspbg1ghHol1K/v8O+Swkxm8uHb0X/rKx0GxMcZRtRrA==
-X-Received: by 2002:a05:6830:18e6:b0:67f:e4ff:2996 with SMTP id d6-20020a05683018e600b0067fe4ff2996mr11221961otf.12.1674525271116;
-        Mon, 23 Jan 2023 17:54:31 -0800 (PST)
-Received: from localhost ([2804:30c:b10:f300:3241:5b01:98c4:5294])
-        by smtp.gmail.com with ESMTPSA id s13-20020a05683004cd00b00686543d0f04sm393165otd.21.2023.01.23.17.54.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jan 2023 17:54:30 -0800 (PST)
-Date:   Mon, 23 Jan 2023 22:54:23 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mqgrYYoh+EWOFvzfNiDUZjtAea3Dxak9qwqCg1uYmZs=;
+        b=0maNrC44gnxbCB0RiG+H01bReydAZb8ZIXy1Zu7Ipd+M3wDuWjBfj+dB9+o2RxYHfM
+         zO5ObVCy6K10XrI3XZqIIVn7cBeBsbYFxXxd9vKenC3z5bl59zT7Pejf1VAjtwIDd05t
+         3Ts+19yDJMhtd2x2PJf10sNKt8Z275o87NS8JdrCDk66gJfzx3Do5I7DhMVO5OTOzaUu
+         oJf3AiBw16lHCILdxq9oW2Nbcm9E/KTjXtDczLmdnI07SIMp8bsv4onQNx/VWDIWGbo+
+         cALCEAr4NJOkiXaCFTwNDpr6Ectjf94vrauzwbrTORLvyoBPo8RY5MjXX8qX7CmIT0Sq
+         IxMw==
+X-Gm-Message-State: AFqh2kqb7ZybssuQFvmy425L/WHw975V5VNjfuIPbMxTNHjtK0bJTPPC
+        4SqQwiRcna7uIv+FVXSrZupGMQ==
+X-Google-Smtp-Source: AMrXdXvjUqFczdJEB1osktna21bsflhjC5XBWkXYjahNjJYeA03Is1n5wsbfsMieycER48v2a2JOKg==
+X-Received: by 2002:a1c:4b09:0:b0:3db:f0a:8726 with SMTP id y9-20020a1c4b09000000b003db0f0a8726mr23769294wma.28.1674546018235;
+        Mon, 23 Jan 2023 23:40:18 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id i10-20020a1c3b0a000000b003dc0c5e257esm1480972wma.39.2023.01.23.23.40.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jan 2023 23:40:17 -0800 (PST)
+Message-ID: <d6be59b8-b0e1-172d-0d04-f18dca1e1342@linaro.org>
+Date:   Tue, 24 Jan 2023 08:40:13 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH 3/5] dt-bindings: iio: correct node names in examples
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lucas Stankus <lucas.p.stankus@gmail.com>,
         Puranjay Mohan <puranjay12@gmail.com>,
         Dmitry Rokosov <ddrokosov@sberdevices.ru>,
         Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
         Renato Lui Geh <renatogeh@gmail.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -73,7 +78,7 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
         Nishant Malpani <nish.malpani25@gmail.com>,
         Rui Miguel Silva <rmfrfs@gmail.com>,
         Dragos Bogdan <dragos.bogdan@analog.com>,
@@ -106,48 +111,37 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-samsung-soc@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         chrome-platform@lists.linux.dev
-Subject: Re: [PATCH 1/5] dt-bindings: iio: drop unneeded quotes
-Message-ID: <Y886T3/2Gu0k7XQN@marsc.168.1.7>
 References: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <20230118184413.395820-3-krzysztof.kozlowski@linaro.org>
+ <20230121171709.5eb75e94@jic23-huawei>
+ <45b9b378-6619-c47a-b5ea-6b6b7edca785@linaro.org>
+ <20230122170105.6a1a9766@jic23-huawei>
+ <20230123203341.GA2459877-robh@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230123203341.GA2459877-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 01/18, Krzysztof Kozlowski wrote:
-> Cleanup by removing unneeded quotes from refs and redundant blank lines.
-> No functional impact except adjusting to preferred coding style.
+On 23/01/2023 21:33, Rob Herring wrote:
+until we've documented something. Otherwise,
+> we may be just changing things twice. We have the list in the spec, but 
+> really I'd like that in schema form. We'd also need to figure out how to 
+> use that. There's always going to be odd things which we don't have any 
+> defined name.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  .../devicetree/bindings/iio/accel/memsensing,msa311.yaml  | 5 ++---
->  Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml | 2 +-
->  Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 2 +-
->  .../devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml    | 2 +-
->  Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml | 4 ++--
->  .../devicetree/bindings/iio/adc/ingenic,adc.yaml          | 4 ++--
->  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml    | 4 ++--
->  .../devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml    | 2 +-
->  .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml   | 2 +-
->  .../devicetree/bindings/iio/adc/st,stm32-adc.yaml         | 8 ++++----
->  .../devicetree/bindings/iio/adc/ti,ads131e08.yaml         | 2 +-
->  Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml | 2 +-
->  .../devicetree/bindings/iio/dac/lltc,ltc1660.yaml         | 4 ++--
->  .../devicetree/bindings/iio/dac/lltc,ltc2632.yaml         | 4 ++--
->  .../devicetree/bindings/iio/dac/st,stm32-dac.yaml         | 4 ++--
->  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 2 +-
->  .../devicetree/bindings/iio/temperature/ti,tmp117.yaml    | 6 +++---
->  17 files changed, 29 insertions(+), 30 deletions(-)
-> 
+> For now, I'd just do 's/_/-/'.
 
-For adi,ad7292.yaml
-Acked-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+I'll send a v2 with fixes.
+
+Best regards,
+Krzysztof
+

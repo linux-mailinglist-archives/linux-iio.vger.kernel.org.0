@@ -2,44 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 845A967FA15
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jan 2023 18:49:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB52567FA19
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jan 2023 18:52:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjA1Rtg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Jan 2023 12:49:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47214 "EHLO
+        id S230354AbjA1Rw1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 Jan 2023 12:52:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230354AbjA1Rtf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Jan 2023 12:49:35 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1CCD222E2;
-        Sat, 28 Jan 2023 09:49:34 -0800 (PST)
+        with ESMTP id S230482AbjA1Rw1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Jan 2023 12:52:27 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D80222E2
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jan 2023 09:52:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 378E3B80B84;
-        Sat, 28 Jan 2023 17:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144C1C433D2;
-        Sat, 28 Jan 2023 17:49:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C453860BAA
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jan 2023 17:52:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DC0C433D2;
+        Sat, 28 Jan 2023 17:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674928171;
-        bh=8/SXHapVGxNXSE5DLgHD93D+IWGE00UMyYXEVCQ2ZbQ=;
+        s=k20201202; t=1674928345;
+        bh=LiPRNvuM6nGQoIDW0hw2/t2ZPb2a7HZ80AkyWeeDmJs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eMKRK0tl5+DdixmtVJ4tkjbNXZv3DFFaTC6GpQyjSl/6CXPDWoBU1EHI0wT8ox5Ow
-         SvUUW91FRQPUSU837Dukbaeqh+VgcKF0wrd2f75/azG8UY2PlTWrLAKSm3C2ZnHvEG
-         ds+g9Z6IM0pTsQmQYWR2v7APKu60mGoe/S/TKYZOm/PzTl0GetFhDIxnfTwfP1f+jL
-         XIhdtPkNGzDV5Z3MM65rHzabHdps/c7BMDntqUFt6ToLSuc9VUGFedO7Vs5AH9qLdI
-         B3RiOYEgl8STSwqDPqhxQS9+Fa9zTOjRrSmEqXhDRh4ggCEgO30OUC5cRuUe4M5nGK
-         u/gmucSduI6Mg==
-Date:   Sat, 28 Jan 2023 18:03:25 +0000
+        b=YzlqCiFBPgXfW973Aye+r/GeVC/HZx/AdZtVf6lSN0GjyebnJ77JlSLsmXMPFu4AM
+         mnU30XzpP8Ua24DBHjBL/xRz2lETYLDIhUID5xi4CIYOdbLlBD6CdRiibR0qfz0kNj
+         HBSBFtnW5iA9ptnmtNr85kUHa3M/Mc4qJzxI2Q5bFH6ztj7xJnlMHdjvTpkk3+to32
+         YuywJsVEFarHltxzc8LW5vjEFgoE0Nhbqi43iNYg3f13NgEXZalRnEVUhYz2lM/+LB
+         03jxgckQFLzy1SeIlTy636LchcUiZJGVMBSZ6uvmJs1Mr7qVKgkPAyofHkMifxiZSN
+         T36MQr5yqwrdQ==
+Date:   Sat, 28 Jan 2023 18:06:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drivers: iio: dac: ad5592r: add gpio_chip names
-Message-ID: <20230128180325.0d7bd0b7@jic23-huawei>
-In-Reply-To: <20221123204832.3e514378@jic23-huawei>
-References: <20221117090130.51702-1-antoniu.miclaus@analog.com>
-        <20221123204832.3e514378@jic23-huawei>
+To:     linux-iio@vger.kernel.org
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar <prabhakar.csengg@gmail.com>
+Subject: Re: [PATCH] iio: adc: rzg2l: Use RUNTIME_PM_OPS() instead of SET_*
+Message-ID: <20230128180618.727ae295@jic23-huawei>
+In-Reply-To: <20220807190712.1039403-1-jic23@kernel.org>
+References: <20220807190712.1039403-1-jic23@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,59 +56,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Nov 2022 20:48:32 +0000
+On Sun,  7 Aug 2022 20:07:12 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Thu, 17 Nov 2022 11:01:30 +0200
-> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> > Add array of explicit gpio names for the `gpiochip` structure of
-> > ad5592r, mainly for debug purposes.  
-> Can you give an example of when this is more useful than the offset?
-> (which I'm assuming is also available when debugging?)
+> Here we could use DEFINE_RUNTIME_DEV_PM_OPS() but that would have the
+> side effect of providing suspend and resume support.  That would be
+> harmless but also of little purpose as this driver does very simplistic
+> power management with synchronous power up and down around individual
+> channel reads.
 > 
-> Jonathan
+> In general these new PM macros avoid the need to mark functions
+> __maybe_unused, whilst still allowing the compiler to remove them
+> if they are unused.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Biju Das <biju.das.jz@bp.renesas.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
 
-This one is still outstanding in patchwork.
++CC Prabhakar on basis of recent DT binding patch might have hardware
+ to test changing this to DEFINE_RUNTIME_DEV_PM_OPS.
 
-Antoniu, if you want this to be applied please address the question above.
+If not I'm tempted to just pick this one up on basis it does
+no harm and we can revisit later.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/rzg2l_adc.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> > 
-> > Since the gpios are configurable via the dts, generic names are
-> > used.
-> > 
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > ---
-> >  drivers/iio/dac/ad5592r-base.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-> > index 7a9b5fc1e579..076bc9ecfb49 100644
-> > --- a/drivers/iio/dac/ad5592r-base.c
-> > +++ b/drivers/iio/dac/ad5592r-base.c
-> > @@ -124,6 +124,10 @@ static int ad5592r_gpio_request(struct gpio_chip *chip, unsigned offset)
-> >  	return 0;
-> >  }
-> >  
-> > +static const char * const ad5592r_gpio_names[] = {
-> > +	"GPIO0", "GPIO1", "GPIO2", "GPIO3", "GPIO4", "GPIO5", "GPIO6", "GPIO7",
-> > +};
-> > +
-> >  static int ad5592r_gpio_init(struct ad5592r_state *st)
-> >  {
-> >  	if (!st->gpio_map)
-> > @@ -140,6 +144,7 @@ static int ad5592r_gpio_init(struct ad5592r_state *st)
-> >  	st->gpiochip.set = ad5592r_gpio_set;
-> >  	st->gpiochip.request = ad5592r_gpio_request;
-> >  	st->gpiochip.owner = THIS_MODULE;
-> > +	st->gpiochip.names = ad5592r_gpio_names;
-> >  
-> >  	mutex_init(&st->gpio_lock);
-> >    
-> 
+> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+> index 0921ff2d9b3a..b859a2db6b13 100644
+> --- a/drivers/iio/adc/rzg2l_adc.c
+> +++ b/drivers/iio/adc/rzg2l_adc.c
+> @@ -547,7 +547,7 @@ static const struct of_device_id rzg2l_adc_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, rzg2l_adc_match);
+>  
+> -static int __maybe_unused rzg2l_adc_pm_runtime_suspend(struct device *dev)
+> +static int rzg2l_adc_pm_runtime_suspend(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct rzg2l_adc *adc = iio_priv(indio_dev);
+> @@ -559,7 +559,7 @@ static int __maybe_unused rzg2l_adc_pm_runtime_suspend(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int __maybe_unused rzg2l_adc_pm_runtime_resume(struct device *dev)
+> +static int rzg2l_adc_pm_runtime_resume(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct rzg2l_adc *adc = iio_priv(indio_dev);
+> @@ -581,9 +581,9 @@ static int __maybe_unused rzg2l_adc_pm_runtime_resume(struct device *dev)
+>  }
+>  
+>  static const struct dev_pm_ops rzg2l_adc_pm_ops = {
+> -	SET_RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend,
+> -			   rzg2l_adc_pm_runtime_resume,
+> -			   NULL)
+> +	RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend,
+> +		       rzg2l_adc_pm_runtime_resume,
+> +		       NULL)
+>  };
+>  
+>  static struct platform_driver rzg2l_adc_driver = {
+> @@ -591,7 +591,7 @@ static struct platform_driver rzg2l_adc_driver = {
+>  	.driver		= {
+>  		.name		= DRIVER_NAME,
+>  		.of_match_table = rzg2l_adc_match,
+> -		.pm		= &rzg2l_adc_pm_ops,
+> +		.pm		= pm_ptr(&rzg2l_adc_pm_ops),
+>  	},
+>  };
+>  
 

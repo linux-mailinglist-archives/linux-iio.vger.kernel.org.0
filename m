@@ -2,74 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F93B67FC30
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Jan 2023 02:36:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F1DA67FF55
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Jan 2023 14:20:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233616AbjA2BgS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 Jan 2023 20:36:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
+        id S229960AbjA2NUr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 29 Jan 2023 08:20:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232518AbjA2Bfx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 Jan 2023 20:35:53 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E0724109;
-        Sat, 28 Jan 2023 17:35:21 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id j29-20020a05600c1c1d00b003dc52fed235so392522wms.1;
-        Sat, 28 Jan 2023 17:35:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t7EoOIyQeLcoH6apOH/p+8qL29vfGf4A8BXO8aUOa/8=;
-        b=RG7uxBvtPo8Vrp57nCfhqwOMrmgry9P8aMSO/97by2iC5Zr1J+bETTR6g36KReXqKi
-         e2LJPGKby1NwhYM6ZbsuqIPXxcLfUylDXiWMImFTrtHfOkv6PkO1PtLd7l2Ec5cTbIZh
-         7anYN3WZGnzdchvGCHXe0BiXS1BdJlh5PI7DhC45ZpWINi5YwtKS/D226+vaHuvUhaLZ
-         iYnvw5mReh7A0R/Y9jS1A6C54min5JnmKb7rljtSCAenZ6muhGqXWKAepCFUMw1xn/Gv
-         6sNS6+0o4QgqmvvlUMLxdBkfwBBwwZWtjJdEcCowUIMzrUjnGnu4++z0SzEnV8XSTPz0
-         xbdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t7EoOIyQeLcoH6apOH/p+8qL29vfGf4A8BXO8aUOa/8=;
-        b=QaRr3QuEUV0vaQPT6596oUfpdDQU0hbcZM16swZTdgs0kcklWagpx5Pj9OPBHUNRDR
-         N/yGId5F7Y123OkICguNe3wGcSLJZm/SSNfe3d/OgPSjq+VUXLPZVeNzuAC/RNZ+s6An
-         g/84vNN7tbeA1DTb6Hylyl33WXoxbqTpOaLtdRNwqeIEPTmvrR5KjDeg9a9zjOGIwr2o
-         gmb7hqU/lguB190rKy2ON7YB0hnu4ZLlho7lc1PLCAjnAHazfjBuBeOopHGidmxnN3rB
-         ZItgr6fSnihQZzEtjf/kHwuIgvJPoVjGuK5oXz8o0CH7dQdni0Isga1WnLiXvXZg6qfG
-         1PSw==
-X-Gm-Message-State: AFqh2kp8bJoVuSy5XTDLhHJmiD9VzTCrlPzbj25NPSG0mX+ixDjS5B7U
-        EwmtaN9wGNKZnflQyPRgso6okrkqbuY=
-X-Google-Smtp-Source: AMrXdXv7vZNjbfrNwFGSjOY9aFIOrYvtHPic/PBugevRUWg4bREcM01kNs/YMZotZL672gc2I5iCYg==
-X-Received: by 2002:a05:600c:4e05:b0:3db:1d8:9f25 with SMTP id b5-20020a05600c4e0500b003db01d89f25mr43422801wmq.2.1674956116740;
-        Sat, 28 Jan 2023 17:35:16 -0800 (PST)
-Received: from localhost.localdomain (143.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.143])
-        by smtp.gmail.com with ESMTPSA id r7-20020a05600c434700b003dc3f195abesm5197132wme.39.2023.01.28.17.35.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jan 2023 17:35:16 -0800 (PST)
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+        with ESMTP id S229605AbjA2NUq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 29 Jan 2023 08:20:46 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B58166ED;
+        Sun, 29 Jan 2023 05:20:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1674998430; bh=tW0vCGvFhtR9wx8OFa891HzIun4rM0WHTOEfZftZPZo=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=oCJeL/LRtX2HtICxBsjKE62oQi+bfug/6SNxke/P+2Ajsz6jxGGAejDNggh94/31a
+         +tRsGRo4M1EbAbDXX/fen+HVEK/F9P7KU9niy0nx/h0hWz4QVqw+zXehmrLXhEoBCx
+         E4FyysEPLl/VyeFpLkYX14eL0OD96Sbu1x3aEDX0zaJ3htP1bUjfC687mPLfh2TIDV
+         nm/DrwtmDf+GpeF5Z0Lry7hFnGrBHikw+5rt41mMacWhgeGygGdXaMclr60vM5m09P
+         LSKe0pfZ0OlHNOkjF9vDZrQz4Z0du8jpOjFkc4WBwScecFPoEQXaYlyQb6AhRcMwBW
+         asIIAP7VtPN2w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from probook ([95.223.44.193]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mt79P-1oXsV51mCf-00tPOj; Sun, 29
+ Jan 2023 14:20:30 +0100
+From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
 To:     linux-iio@vger.kernel.org
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+Cc:     =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 7/7] iio: pressure: bmp280: Add nvmem operations for BMP580
-Date:   Sun, 29 Jan 2023 02:33:09 +0100
-Message-Id: <013686653a60092227c842ae2fd0197f2509ad7c.1674954271.git.ang.iglesiasg@gmail.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1674954271.git.ang.iglesiasg@gmail.com>
-References: <cover.1674954271.git.ang.iglesiasg@gmail.com>
+Subject: [PATCH] iio: chemical: sps030: Reformat comment in a more readable way
+Date:   Sun, 29 Jan 2023 14:20:20 +0100
+Message-Id: <20230129132020.1352368-1-j.neuschaefer@gmx.net>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:aafJvaAiz1MwGQ1PENhwxikwho5iwei2TDN4G1s4A4LQ2cJITYj
+ BxX0e9tapuS+dEaC8jkYnfgkDsP/5hqmEBv4XUp1FrpGhtEearpgBGpHaFjcdTbawylrlMF
+ 9SszZVdPwhA+GdEAyyRAb3Tgjq/IUj5HuNZbTmk2ATSQTgeVVH+s7RFQqFeQmb+4ppEFbVL
+ liQsT+R7cA2u89w4CKCHA==
+UI-OutboundReport: notjunk:1;M01:P0:wBvTdjarNOA=;TRRLp1yH1eLt1P2mqfKk9mL24Li
+ e81lXJ3amYY5dKCc5XxRSj2vyCFg7iBndKZgjhTV+f+ts3PEZ0q9pTLf2DTQtx6+K9VaD1HoF
+ rjbtAPz7WM/h4xKqD20Cd4OjsU3liGVb1jpNuC/fCkmDdZiBWv2f2E7TRRWOPXPmEiYzI/u03
+ Sa4YNDFM1S+aDy11+xH2hNNSEhv5aeNICZi+OphHU3P081i9FzyVJiOSIsRpcRcBpQk0JwjKU
+ Z7FUQlNIWPigzuMmKPvQh5CglrVGeBr3tNIjVEPtMY22EbHqebcVI9Y3wrzK97cbfHooSbkwd
+ AdkRXc7+XBIp+Pu+CCdHHqpzypiZuEvrPNrNNGdC1pD+2QipNRgHH6CD5V3Qy2m8ocN6t/K5y
+ Wwe7StmoEVqa0baKUSS5ypG2FQTj+ca1fFaqAVL0XhY3/iDkZqTfBpA2iUw8ntyBmCr2wrsQ1
+ +Lrx70a9gWragCO1AjVcR3UVJnpxyi3Rzjy2ndtHLPq/VpTKuybXkyx1b9DAslp2hXYN+YYVF
+ w4i37LfZe2oudha4UY4GKRwf8jGq3y17CxuKlacmCNZOUY7B1jrpS5OksMjqM1kLlBaUybZhs
+ NKAKSFKInj83rPk9hqmgRzl6DbIg6RVLbS/UVYeTyfBEbsv8zGTciyXWbfUQ3FuGGwMxOd3ua
+ WDOTOIPtuL/MW898bf7fhIubX7Ubj4/8/ax40ObAEskx9vhUk7dnbeC8khueQg4P4cBHvFpPP
+ NEIUwtGQT6w8jy7BMPwsj2wv2oLHqlVRjCVNbbrm01psVi3gWBHUq4F9Olep+mel8mRxMb7MV
+ Pt1q3h5V4hdTO8WZdTOGJGP/uxeHGZWkcYEgZNW+CzjIHGr/v/P5GanpNE1SBR1KhwX/+J+ZO
+ SybikPcgn0vmnsq1zP7DY8TS5uylKQxycizjWyn62z4rIJcSGfaI+ewLD5K1ZRzgndNDIQIjA
+ +Eq9VkiYyqyTAf0loTczxIq3S3o=
+X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,278 +70,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The pressure sensor BMP580 contains a non-volatile memory that stores
-trimming and configuration params. That memory provides an programmable
-user range of three 2-byte words.
+It's easier to see the (lack of) difference between the lines when they
+are visually aligned.
 
-Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+=2D--
+ drivers/iio/chemical/sps30_i2c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index c65fb4025ad9..cc2811c9c6f4 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -28,6 +28,7 @@
- #include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/module.h>
-+#include <linux/nvmem-provider.h>
- #include <linux/regmap.h>
- #include <linux/delay.h>
- #include <linux/iio/iio.h>
-@@ -1290,6 +1291,88 @@ static int bmp580_soft_reset(struct bmp280_data *data)
- 	return 0;
- }
- 
-+#define NVM_READ	false
-+#define NVM_WRITE	true
-+
-+/**
-+ * bmp580_nvm_operation() - Helper function to commit NVM memory operations
-+ * @data: sensor data struct
-+ * @is_write: flag to signal write operation
-+ */
-+static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
-+{
-+	unsigned long deadline;
-+	unsigned int reg;
-+	int ret;
-+
-+	/* Check NVM ready flag */
-+	ret = regmap_read(data->regmap, BMP580_REG_STATUS, &reg);
-+	if (ret) {
-+		dev_err(data->dev, "failed to check nvm status\n");
-+		return ret;
-+	}
-+	if (!(reg & BMP580_STATUS_NVM_RDY_MASK)) {
-+		dev_err(data->dev, "sensor's nvm is not ready\n");
-+		return -EIO;
-+	}
-+
-+	/* Send NVM operation sequence */
-+	ret = regmap_write(data->regmap, BMP580_REG_CMD, BMP580_CMD_NVM_OP_SEQ_0);
-+	if (ret) {
-+		dev_err(data->dev, "failed to send nvm operation's first sequence\n");
-+		return ret;
-+	}
-+	if (is_write) {
-+		/* Send NVM write sequence */
-+		ret = regmap_write(data->regmap, BMP580_REG_CMD,
-+				   BMP580_CMD_NVM_WRITE_SEQ_1);
-+		if (ret) {
-+			dev_err(data->dev, "failed to send nvm write sequence\n");
-+			return ret;
-+		}
-+		/* Datasheet says on 4.8.1.2 it takes approximately 10ms */
-+		usleep_range(10000, 10500);
-+		deadline = jiffies + msecs_to_jiffies(10);
-+	} else {
-+		/* Send NVM read sequence */
-+		ret = regmap_write(data->regmap, BMP580_REG_CMD,
-+				   BMP580_CMD_NVM_READ_SEQ_1);
-+		if (ret) {
-+			dev_err(data->dev, "failed to send nvm read sequence\n");
-+			return ret;
-+		}
-+		/* Datasheet says on 4.8.1.1 it takes approximately 200us */
-+		usleep_range(200, 250);
-+		deadline = jiffies + usecs_to_jiffies(200);
-+	}
-+	if (ret) {
-+		dev_err(data->dev, "failed to write command sequence\n");
-+		return -EIO;
-+	}
-+
-+	/* Wait until NVM is ready again */
-+	do {
-+		ret = regmap_read(data->regmap, BMP580_REG_STATUS, &reg);
-+		if (ret) {
-+			dev_err(data->dev, "failed to check nvm status\n");
-+			reg &= ~BMP580_STATUS_NVM_RDY_MASK;
-+		}
-+	} while (time_before(jiffies, deadline) && !(reg & BMP580_STATUS_NVM_RDY_MASK));
-+	if (!(reg & BMP580_STATUS_NVM_RDY_MASK)) {
-+		dev_err(data->dev,
-+			"reached timeout waiting for nvm operation completion\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	/* Check NVM error flags */
-+	if ((reg & BMP580_STATUS_NVM_ERR_MASK) || (reg & BMP580_STATUS_NVM_CMD_ERR_MASK)) {
-+		dev_err(data->dev, "error processing nvm operation\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Contrary to previous sensors families, compensation algorithm is builtin.
-  * We are only required to read the register raw data and adapt the ranges
-@@ -1384,8 +1467,140 @@ static const int bmp580_odr_table[][2] = {
- 	[BMP580_ODR_0_125HZ] =	{0, 125000},
- };
- 
-+const int bmp580_nvmem_addrs[] = { 0x20, 0x21, 0x22 };
-+
-+static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
-+			     size_t bytes)
-+{
-+	struct bmp280_data *data = priv;
-+	u16 *dst = val;
-+	int ret, addr;
-+
-+	pm_runtime_get_sync(data->dev);
-+	mutex_lock(&data->lock);
-+
-+	/* Set sensor in standby mode */
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-+				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-+				 BMP580_ODR_DEEPSLEEP_DIS |
-+				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-+	if (ret) {
-+		dev_err(data->dev, "failed to change sensor to standby mode\n");
-+		goto exit;
-+	}
-+	/* Wait standby transition time */
-+	usleep_range(2500, 3000);
-+
-+	while (bytes >= sizeof(u16)) {
-+		addr = bmp580_nvmem_addrs[offset / sizeof(u16)];
-+
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR,
-+				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-+		if (ret) {
-+			dev_err(data->dev, "error writing nvm address\n");
-+			goto exit;
-+		}
-+
-+		ret = bmp580_nvm_operation(data, NVM_READ);
-+		if (ret)
-+			goto exit;
-+
-+		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-+				       sizeof(data->le16));
-+		if (ret) {
-+			dev_err(data->dev, "error reading nvm data regs\n");
-+			goto exit;
-+		}
-+
-+		*dst++ = le16_to_cpu(data->le16);
-+		bytes -= sizeof(u16);
-+		offset += sizeof(u16);
-+	}
-+exit:
-+	/* Restore chip config */
-+	data->chip_info->chip_config(data);
-+	mutex_unlock(&data->lock);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+	return ret;
-+}
-+
-+static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
-+			      size_t bytes)
-+{
-+	struct bmp280_data *data = priv;
-+	u16 *buf = val;
-+	int ret, addr;
-+
-+	pm_runtime_get_sync(data->dev);
-+	mutex_lock(&data->lock);
-+
-+	/* Set sensor in standby mode */
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-+				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-+				 BMP580_ODR_DEEPSLEEP_DIS |
-+				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-+	if (ret) {
-+		dev_err(data->dev, "failed to change sensor to standby mode\n");
-+		goto exit;
-+	}
-+	/* Wait standby transition time */
-+	usleep_range(2500, 3000);
-+
-+	while (bytes >= sizeof(u16)) {
-+		addr = bmp580_nvmem_addrs[offset / sizeof(u16)];
-+
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR, BMP580_NVM_PROG_EN |
-+				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-+		if (ret) {
-+			dev_err(data->dev, "error writing nvm address\n");
-+			goto exit;
-+		}
-+		data->le16 = cpu_to_le16(*buf++);
-+
-+		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-+					sizeof(data->le16));
-+		if (ret) {
-+			dev_err(data->dev, "error writing LSB NVM data regs\n");
-+			goto exit;
-+		}
-+
-+		ret = bmp580_nvm_operation(data, NVM_WRITE);
-+		if (ret)
-+			goto exit;
-+
-+		/* Disable programming mode bit */
-+		ret = regmap_update_bits(data->regmap, BMP580_REG_NVM_ADDR,
-+					 BMP580_NVM_PROG_EN, 0);
-+		if (ret) {
-+			dev_err(data->dev, "error resetting nvm write\n");
-+			goto exit;
-+		}
-+
-+		bytes -= sizeof(u16);
-+		offset += sizeof(u16);
-+	}
-+exit:
-+	/* Restore chip config */
-+	data->chip_info->chip_config(data);
-+	mutex_unlock(&data->lock);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+	return ret;
-+}
-+
- static int bmp580_preinit(struct bmp280_data *data)
- {
-+	struct nvmem_config config = {
-+		.dev = data->dev,
-+		.priv = data,
-+		.name = "bmp580_nvmem",
-+		.word_size = sizeof(u16),
-+		.stride = sizeof(u16),
-+		.size = 3 * sizeof(u16),
-+		.reg_read = bmp580_nvmem_read,
-+		.reg_write = bmp580_nvmem_write,
-+	};
- 	unsigned int reg;
- 	int ret;
- 
-@@ -1413,7 +1628,8 @@ static int bmp580_preinit(struct bmp280_data *data)
- 		return -EIO;
- 	}
- 
--	return 0;
-+	/* Register nvmem device */
-+	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
- }
- 
- static int bmp580_chip_config(struct bmp280_data *data)
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index f29d44b09efc..1c942b3dc384 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -104,6 +104,9 @@
- #define BMP580_FILTER_63X		6
- #define BMP580_FILTER_127X		7
- 
-+#define BMP580_NVM_ROW_ADDR_MASK	GENMASK(5, 0)
-+#define BMP580_NVM_PROG_EN		BIT(6)
-+
- #define BMP580_TEMP_SKIPPED		0x7f7f7f
- #define BMP580_PRESS_SKIPPED		0x7f7f7f
- 
--- 
-2.39.1
+diff --git a/drivers/iio/chemical/sps30_i2c.c b/drivers/iio/chemical/sps30=
+_i2c.c
+index 2aed483a2fdec..0cb5d9b65d625 100644
+=2D-- a/drivers/iio/chemical/sps30_i2c.c
++++ b/drivers/iio/chemical/sps30_i2c.c
+@@ -68,10 +68,10 @@ static int sps30_i2c_command(struct sps30_state *state=
+, u16 cmd, void *arg, size
+ 	/*
+ 	 * Internally sensor stores measurements in a following manner:
+ 	 *
+-	 * PM1: upper two bytes, crc8, lower two bytes, crc8
++	 * PM1:   upper two bytes, crc8, lower two bytes, crc8
+ 	 * PM2P5: upper two bytes, crc8, lower two bytes, crc8
+-	 * PM4: upper two bytes, crc8, lower two bytes, crc8
+-	 * PM10: upper two bytes, crc8, lower two bytes, crc8
++	 * PM4:   upper two bytes, crc8, lower two bytes, crc8
++	 * PM10:  upper two bytes, crc8, lower two bytes, crc8
+ 	 *
+ 	 * What follows next are number concentration measurements and
+ 	 * typical particle size measurement which we omit.
+=2D-
+2.39.0
 

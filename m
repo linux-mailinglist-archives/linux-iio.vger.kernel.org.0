@@ -2,429 +2,477 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7141E681B32
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jan 2023 21:17:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A3A681BAC
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Jan 2023 21:42:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjA3URY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Jan 2023 15:17:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58918 "EHLO
+        id S229890AbjA3UmX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Jan 2023 15:42:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjA3URX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Jan 2023 15:17:23 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4579302B5;
-        Mon, 30 Jan 2023 12:17:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 74FC3B815DF;
-        Mon, 30 Jan 2023 20:17:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE8DC433D2;
-        Mon, 30 Jan 2023 20:17:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675109836;
-        bh=BW1MwabsMq5gwKtS2OGI3Ga7toP+lOo5FAEpPysgNGk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IfWAeQH1XCHBFYbwir3mK+8Zs1964DSMJF6oxz4RMHikBGqz6aofjfIGFqFDJ90y8
-         5bLsBi+S2FjmQyxSVCvoCG2O4CKeRjpoz607r36lX1hCj7x+e/6BUBs0i8e83T60Me
-         eNb24KTAI4ScNDUqwSfok3Wv8momk0b8xqwHt3D0wxV74DnzZNrH99J/friyzLGmj+
-         8rJEvJ7zhWfzS8pXKsMXstQyJKZZvOO9z4/3II02kbvtn0Mymiz2M+Sm2B64C0CXpn
-         D0Uj94aAS8+hzuNW1qr8MwIaLDyQhi+mK7A/gUa9t80muuzjS9vrE0hKS0gWjY8AeQ
-         R0lZS9FDrIOvw==
-Date:   Mon, 30 Jan 2023 20:31:10 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Darrell Kavanagh <darrell.kavanagh@gmail.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bastien Nocera <hadess@hadess.net>
-Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
- LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-Message-ID: <20230130203110.60c96f37@jic23-huawei>
-In-Reply-To: <CAMxBKG3S6aJSrO-BAPCAhVpg2qF2kWfRJ9d0n2EmOY=JGNid-A@mail.gmail.com>
-References: <167493679618.4533.12181720504943588640.reportbug@debian-duet>
-        <Y9WGmBc9HG4Tx9gf@eldamar.lan>
-        <CAMxBKG1670TFuV3nHP7Yk8s6H+oBF7iiyiB-b=PvKv9hcH22xQ@mail.gmail.com>
-        <20230129182441.082f29d0@jic23-huawei>
-        <CAMxBKG0tyLSpaDPGBXsJbqgHSG9rH6owtSJsLw_ekmTA3Kyvdw@mail.gmail.com>
-        <CAMxBKG3zL_yvw=dHK+Gqd3EHWzvJmiLHVvKnf6UsYbMgcS6nrg@mail.gmail.com>
-        <20230130123113.00002c3f@Huawei.com>
-        <CAMxBKG3xOEj1gEs9pGzKb+rDjTLPqAq1YOp4bEFas4tQMzGZ+Q@mail.gmail.com>
-        <20230130173525.0000418d@huawei.com>
-        <CAMxBKG1yKcodDD2kvfwKvpYnPrXmgaOk9rTztRPFzKMCZ5F=tA@mail.gmail.com>
-        <20230130194110.256144e7@jic23-huawei>
-        <CAMxBKG3S6aJSrO-BAPCAhVpg2qF2kWfRJ9d0n2EmOY=JGNid-A@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+        with ESMTP id S229862AbjA3UmW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Jan 2023 15:42:22 -0500
+Received: from mx.flying-snail.de (mx.flying-snail.de [IPv6:2a06:1c40:3::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0015F3C299;
+        Mon, 30 Jan 2023 12:42:17 -0800 (PST)
+Received: from [2a02:908:1b0:8800:2ff:ffff:fe11:2236] (helo=mondbasis.internal.flying-snail.de)
+        by mx.flying-snail.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <pelzi@flying-snail.de>)
+        id 1pMayl-000wmW-9k; Mon, 30 Jan 2023 21:42:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=feldner-bv.de; s=s1; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
+        From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=xbF51NSpqhA0ak0twPBf7fV2mTqn/Hjt4Cvq2ujPMbQ=; b=RFYVV2XdLwQ8hRfiJqS3/O26Aq
+        GGawiXs8g4pBO9ELJ/PqpBdAlKXU0acdmPYJmhlLvf/I5zT3CeTZVUl5ohVI38MIdOXRyRf1Bf4kR
+        EPp552bZaPF/OxhxN91KT1LZyuPCSB9NnBo4NtMi5E5qdpYjruQzxwwDm/k0HJOAGhEuSI7+4v1nh
+        zjFr3Q0YQ1DQHUW2Uutpv0mLQKmCSOLHoGtLuNlDVoaPONffpqaREvfRhQJ6DzLc4kfhl/n98r+U0
+        miAxmnWJWmJ/WFPXtYj+zAZ9M75LTw56/34f3rwNlG9Rc46IDVx+3KQk9JI8k31dO3CKoX4fDqRnX
+        iGV7CQBQ==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=flying-snail.de; s=s1; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To
+        :From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=xbF51NSpqhA0ak0twPBf7fV2mTqn/Hjt4Cvq2ujPMbQ=; b=pvHJEtOqg/d2blzERcLPUHFY+a
+        IdqskCiwJjMVvsP4uLgg5nSdcCG0bICDdGXzpscAM5TMc2r35wSYkxDbqMpQ3iuNDHzeOt24FTq7G
+        tG0KAM5kJXtTTvCZuZ8+VHUWm6x8UjSgt9zuMotkTIudspaEY0jTZOh4QVChDSP+AvEZYTPPqg3Ox
+        dvLGbqVjwgK7IxL+IfbTEAkr7DtvwI36MXhWQwv4Fx/DyNbUswAPHLuZgAr0IWdjJDg87xupEGCE1
+        eRa494wtC2tmRzpBcbl73LIC0xadmslzB0tqzenwB+gc1IKyZomQPWdGAhIBoWYZxhZde4Y6+Ti67
+        qQ5Aw6Aw==;
+Received: from [2a02:908:1b0:8800:1400:2ed0:5344:b031] (helo=debian-qemu)
+        by mondbasis.internal.flying-snail.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <pelzi@flying-snail.de>)
+        id 1pMayg-000bop-D1; Mon, 30 Jan 2023 21:42:14 +0100
+Date:   Mon, 30 Jan 2023 21:42:09 +0100
+From:   Andreas Feldner <pelzi@flying-snail.de>
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, harald@ccbib.org
+Subject: [PATCH 1/2] iio: dht11: forked a driver version that polls sensor's
+ signal from GPIO
+Message-ID: <Y9groXq2oI6lqFea@debian-qemu.internal.flying-snail.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 Jan 2023 20:02:31 +0000
-Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+On a BananaPi M2 Zero, the existing, IRQ based dht11 driver is not working,
+but missing most IRQs. Following the hints in Harald Geyer's comments I
+tried to implement a version of the driver that is polling the GPIO
+sensor in a busy loop, not using IRQ altogether.
 
-> Thanks. To be clear, before I changed the grub command line, the
-> system always booted up "sideways", even when the sensor was not being
-> detected. This was true for everything, not just Gnome, except grub
-> itself.
-> 
-> I added:
-> 
-> GRUB_CMDLINE_LINUX_DEFAULT="fbcon=rotate:1
-> video=DSI-1:panel_orientation=right_side_up quiet splash"
-> 
-> This fixed the orientation for pre-splash boot messages, the splash
-> screen and the desktop environment. But not, for example (as I saw
-> after adding my own module signing key for testing your fixes), the
-> MOK validation screens.
-> 
-> Does this make sense?
-> 
-> Does what you are proposing act at a lower level than changing the
-> systemd hwdb orientation matrix?
+This version is actually working fair enough on this board, yielding a
+valid result at every 2 or 3 read attempts.
 
-I'm not sure on the userspace side of things, but intent is that
-it will provide the orientation data to any users - though only after
-the kernel boots and software needs to be aware of it.  Give it a go,
-and if not Bastien (IIRC wrote iio-sensor-proxy) may be able to advise.
+I used the "compatible" string to allow selection of the required driver.
+To select this forked driver, give compatible="dht11-poll" instead of
+compatible="dht11" in the device tree (overlay).
 
-For Bastien - patches for kernel side are: 
-https://lore.kernel.org/linux-iio/20230130201018.981024-1-jic23@kernel.org/T/#t
+Signed-off-by: Andreas Feldner <pelzi@flying-snail.de>
+---
+ drivers/iio/humidity/Kconfig         |  10 +
+ drivers/iio/humidity/Makefile        |   1 +
+ drivers/iio/humidity/dht11_polling.c | 348 +++++++++++++++++++++++++++
+ 3 files changed, 359 insertions(+)
+ create mode 100644 drivers/iio/humidity/dht11_polling.c
 
-Darrell is going to test them after back porting to 6.1.
-With the first patch he gets the right result in gnome but we weren't
-picking up the rotation matrix at that point (ROTM in ACPI).
-
-Thanks,
-
-Jonathan
-
-> 
-> Thanks,
-> Darrell
-> 
-> On Mon, 30 Jan 2023 at 19:27, Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Mon, 30 Jan 2023 18:32:02 +0000
-> > Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
-> >  
-> > > On Mon, 30 Jan 2023 at 17:35, Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:
-> > >  
-> > > > That certainly looks like suitable matrix.
-> > > >
-> > > > If we are lucky it matches the handling in bmc150-accel-core.c for an identically
-> > > > named method.  That is going to swap the x and y axis which is I'd have thought would
-> > > > be rather bad if what you have is currently working well.
-> > > >  
-> > >
-> > > Actually, that would be good, because at present I have to rotate 90
-> > > degrees in my grub command line.  
-> > :)
-> >
-> > I'll see if I can roll a suitable patch.
-> >
-> > Jonathan
-> >  
-> > >
-> > > Darrell
-> > >  
-> > > > >             }
-> > > > >
-> > > > >             Method (PRIM, 0, NotSerialized)
-> > > > >             {
-> > > > >                 Name (RBUF, Buffer (One)
-> > > > >                 {
-> > > > >                      0x01                                             // .
-> > > > >                 })
-> > > > >                 Return (RBUF) /* \_SB_.PCI0.I2C5.DEV_.PRIM.RBUF */
-> > > > >             }
-> > > > >
-> > > > >             Method (_STA, 0, NotSerialized)  // _STA: Status
-> > > > >             {
-> > > > >                 If ((GAVT == 0x6A))
-> > > > >                 {
-> > > > >                     Return (0x0F)
-> > > > >                 }
-> > > > >                 Else
-> > > > >                 {
-> > > > >                     Return (Zero)
-> > > > >                 }
-> > > > >             }
-> > > > >
-> > > > >             Method (CALS, 1, NotSerialized)
-> > > > >             {
-> > > > >                 Local0 = Arg0
-> > > > >                 If (((Local0 == Zero) || (Local0 == Ones)))
-> > > > >                 {
-> > > > >                     Local0 = BAC1 /* \BAC1 */
-> > > > >                     Return (Local0)
-> > > > >                 }
-> > > > >                 Else
-> > > > >                 {
-> > > > >                     BAC1 = Local0
-> > > > >                     BACS = Local0
-> > > > >                     BSCA (0xB0)
-> > > > >                 }
-> > > > >             }
-> > > > >         }
-> > > > >     }
-> > > > >
-> > > > >
-> > > > > Thanks,
-> > > > > Darrell
-> > > > >
-> > > > > On Mon, 30 Jan 2023 at 12:31, Jonathan Cameron
-> > > > > <Jonathan.Cameron@huawei.com> wrote:  
-> > > > > >
-> > > > > > On Mon, 30 Jan 2023 03:37:23 +0000
-> > > > > > Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
-> > > > > >  
-> > > > > > > Forwarding because original html messages were rejected by the server...
-> > > > > > >
-> > > > > > > ---------- Forwarded message ---------
-> > > > > > > From: Darrell Kavanagh <darrell.kavanagh@gmail.com>
-> > > > > > > Date: Mon, 30 Jan 2023 at 02:52
-> > > > > > > Subject: Re: Bug#1029850: linux: Driver not loaded for ST
-> > > > > > > Microelectronics LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-> > > > > > > To: Jonathan Cameron <jic23@kernel.org>
-> > > > > > > Cc: <lorenzo@kernel.org>, <lars@metafoo.de>,
-> > > > > > > <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-> > > > > > > <carnil@debian.org>
-> > > > > > >
-> > > > > > >
-> > > > > > > Hi Jonathan,
-> > > > > > >
-> > > > > > > Thank you. The driver has evolved quite a bit in 6.2 (I read somewhere
-> > > > > > > that 6.2 includes some i2c enhancements), but I adapted your changes
-> > > > > > > to fit my Debian 6.1 kernel and it works. Two IIO devices are created
-> > > > > > > in sysfs, iio-sensor-proxy.service starts up and automatic screen
-> > > > > > > rotation in Gnome just works.
-> > > > > > >
-> > > > > > > To get the modules to load on boot, I made a small change to your code
-> > > > > > > in st_lsm6dsx_i2c to add the acpi alias to modules.alias:
-> > > > > > >
-> > > > > > > adding a null element to st_lsm6dsx_i2c_acpi_match:
-> > > > > > >     static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
-> > > > > > >          { "SMO8B30", ST_LSM6DS3TRC_ID, },
-> > > > > > >          { },
-> > > > > > >     };
-> > > > > > > then:
-> > > > > > >    MODULE_DEVICE_TABLE(acpi, st_lsm6dsx_i2c_acpi_match);  
-> > > > > >
-> > > > > > doh! That was indeed sloppy of me to miss even for an untested hack.
-> > > > > >
-> > > > > >
-> > > > > >  
-> > > > > > >
-> > > > > > >
-> > > > > > > dmesg shows:
-> > > > > > >
-> > > > > > > [ 7366.120208] st_lsm6dsx_i2c i2c-SMO8B30:00: supply vdd not found,
-> > > > > > > using dummy regulator
-> > > > > > > [ 7366.120260] st_lsm6dsx_i2c i2c-SMO8B30:00: supply vddio not found,
-> > > > > > > using dummy regulator
-> > > > > > > [ 7366.650839] st_lsm6dsx_i2c i2c-SMO8B30:00: mounting matrix not
-> > > > > > > found: using identity...
-> > > > > > >
-> > > > > > > Is this a problem?  
-> > > > > >
-> > > > > > Those are all fine. For regulators that's expected on ACPI and should
-> > > > > > be harmless as it's up to the firmware to manage power (in DT it may
-> > > > > > be up to the kernel).
-> > > > > > For the mounting matrix, there is often something in ACPI DSDT
-> > > > > > (non standard though).  Could you
-> > > > > > cat /sys/firmware/acpi/tables/DSDT > ~/dsdt
-> > > > > > then run through iasl from acpitools
-> > > > > > iasl -d ~/dsdt
-> > > > > > and find the bit related to this device.
-> > > > > >
-> > > > > > If you can then share that there may be a _DSM or similar in there that
-> > > > > > is effectively the mounting matrix.  If we are lucky it will look like
-> > > > > > some existing versions we have code to handle and can add that support
-> > > > > > as well.
-> > > > > >
-> > > > > > Either way - I'll spin a formal patch with your fixes above and we can
-> > > > > > get this upstream for future kernels.  Mounting matrix can follow
-> > > > > > later if needed.
-> > > > > >
-> > > > > > Thanks,
-> > > > > >
-> > > > > > Jonathan
-> > > > > >
-> > > > > >  
-> > > > > > >
-> > > > > > > Thanks again.
-> > > > > > >
-> > > > > > > Darrell
-> > > > > > >
-> > > > > > >
-> > > > > > > On Sun, 29 Jan 2023 at 18:10, Jonathan Cameron <jic23@kernel.org> wrote:  
-> > > > > > > >
-> > > > > > > > On Sun, 29 Jan 2023 17:03:51 +0000
-> > > > > > > > Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
-> > > > > > > >  
-> > > > > > > > > Hi,
-> > > > > > > > >
-> > > > > > > > > I raised this bug in Debian, and have been asked to raise it upstream and
-> > > > > > > > > was given your addresses to do so. Will this email be OK, or should I raise
-> > > > > > > > > it in a bug tracking system somewhere?  
-> > > > > > > >
-> > > > > > > > Email is the right option.
-> > > > > > > >  
-> > > > > > > > >
-> > > > > > > > > Many thanks,
-> > > > > > > > > Darrell
-> > > > > > > > >
-> > > > > > > > >
-> > > > > > > > >
-> > > > > > > > >
-> > > > > > > > > ---------- Forwarded message ---------
-> > > > > > > > > From: Salvatore Bonaccorso <carnil@debian.org>
-> > > > > > > > > Date: Sat, 28 Jan 2023 at 20:33
-> > > > > > > > > Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
-> > > > > > > > > LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-> > > > > > > > > To: Darrell Kavanagh <darrell.kavanagh@gmail.com>, <1029850@bugs.debian.org>
-> > > > > > > > >
-> > > > > > > > >
-> > > > > > > > > Hi Darrell,
-> > > > > > > > >
-> > > > > > > > > On Sat, Jan 28, 2023 at 08:13:16PM +0000, Darrell Kavanagh wrote:  
-> > > > > > > > > > Package: src:linux
-> > > > > > > > > > Version: 6.1.4-1
-> > > > > > > > > > Severity: normal
-> > > > > > > > > > File: linux
-> > > > > > > > > > X-Debbugs-Cc: darrell.kavanagh@gmail.com
-> > > > > > > > > >
-> > > > > > > > > > Dear Maintainer,
-> > > > > > > > > >
-> > > > > > > > > > This is a convertable touchscreen tablet/laptop. The rotation sensor  
-> > > > > > > > > device  
-> > > > > > > > > > ST Microelectronics LSM6DS3TR-C does not work. It is detected via ACPI  
-> > > > > > > > > and the  
-> > > > > > > > > > sysfs trees are created at  
-> > > > > > > > > devices/pci0000:00/0000:00:17.1/i2c_designware.3/i2c-4/i2c-SMO8B30:00  
-> > > > > > > > > > and devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:3c/SMO8B30:00 with
-> > > > > > > > > > symlinks bus/acpi/devices/SMO8B30:00 and bus/i2c/devices/i2c-SMO8B30:00,  
-> > > > > > > > > but  
-> > > > > > > > > > no driver is loaded.  
-> > > > > > > >
-> > > > > > > > At least this is using the ST PNP ID which is better than average
-> > > > > > > > (long story!)
-> > > > > > > >
-> > > > > > > > The driver in question (ultimately drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > > > > > > > does not currently have an ACPI support.  It should be straight forwards
-> > > > > > > > to add though the driver first needs converting to use
-> > > > > > > > device_get_match_data() with appropriate fallback so that it will match on
-> > > > > > > > ACPI, OF or original spi_device_id tables
-> > > > > > > >
-> > > > > > > > Completely untested but something like the following
-> > > > > > > > (the offset in the enum is needed to allow us to tell if we got a result when
-> > > > > > > > calling device_get_match_data() as it returns NULL on failure IIRC)
-> > > > > > > >
-> > > > > > > > I'm not sure how sucessful the driver will be at finding any interrupts etc, but
-> > > > > > > > it may get you basic functionality.
-> > > > > > > >
-> > > > > > > > Good luck and others more familiar with the driver may well tell me what I forgot
-> > > > > > > > when hacking the below ;)
-> > > > > > > >
-> > > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > > > > > > > index 499fcf8875b4..2617ce236ddc 100644
-> > > > > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > > > > > > > @@ -39,7 +39,7 @@
-> > > > > > > >  #define ST_ISM330IS_DEV_NAME   "ism330is"
-> > > > > > > >
-> > > > > > > >  enum st_lsm6dsx_hw_id {
-> > > > > > > > -       ST_LSM6DS3_ID,
-> > > > > > > > +       ST_LSM6DS3_ID = 1,
-> > > > > > > >         ST_LSM6DS3H_ID,
-> > > > > > > >         ST_LSM6DSL_ID,
-> > > > > > > >         ST_LSM6DSM_ID,
-> > > > > > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > > > > > > > index df5f60925260..ecfceb2fb3db 100644
-> > > > > > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > > > > > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > > > > > > > @@ -23,10 +23,15 @@ static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
-> > > > > > > >
-> > > > > > > >  static int st_lsm6dsx_i2c_probe(struct i2c_client *client)
-> > > > > > > >  {
-> > > > > > > > -       const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> > > > > > > > -       int hw_id = id->driver_data;
-> > > > > > > > +       int hw_id;
-> > > > > > > >         struct regmap *regmap;
-> > > > > > > >
-> > > > > > > > +       hw_id = (kernel_ulong_t)device_get_match_data(&client->dev);
-> > > > > > > > +       if (!hw_id)
-> > > > > > > > +               hw_id = i2c_client_get_device_id(client)->driver_data;
-> > > > > > > > +       if (!hw_id)
-> > > > > > > > +               return -EINVAL;
-> > > > > > > > +
-> > > > > > > >         regmap = devm_regmap_init_i2c(client, &st_lsm6dsx_i2c_regmap_config);
-> > > > > > > >         if (IS_ERR(regmap)) {
-> > > > > > > >                 dev_err(&client->dev, "Failed to register i2c regmap %ld\n", PTR_ERR(regmap));
-> > > > > > > > @@ -129,6 +134,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
-> > > > > > > >  };
-> > > > > > > >  MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
-> > > > > > > >
-> > > > > > > > +static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
-> > > > > > > > +       { "SMO8B30", ST_LSM6DS3TRC_ID, },
-> > > > > > > > +};
-> > > > > > > > +
-> > > > > > > >  static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
-> > > > > > > >         { ST_LSM6DS3_DEV_NAME, ST_LSM6DS3_ID },
-> > > > > > > >         { ST_LSM6DS3H_DEV_NAME, ST_LSM6DS3H_ID },
-> > > > > > > > @@ -161,6 +170,7 @@ static struct i2c_driver st_lsm6dsx_driver = {
-> > > > > > > >                 .name = "st_lsm6dsx_i2c",
-> > > > > > > >                 .pm = pm_sleep_ptr(&st_lsm6dsx_pm_ops),
-> > > > > > > >                 .of_match_table = st_lsm6dsx_i2c_of_match,
-> > > > > > > > +               .acpi_match_table = st_lsm6dsx_i2c_acpi_match,
-> > > > > > > >         },
-> > > > > > > >         .probe_new = st_lsm6dsx_i2c_probe,
-> > > > > > > >         .id_table = st_lsm6dsx_i2c_id_table,
-> > > > > > > >
-> > > > > > > >  
-> > > > > > > > > >
-> > > > > > > > > > The device is identifying itself to the kernel with PNP id SMO8B30:
-> > > > > > > > > > physical_node:
-> > > > > > > > > >       modalias=acpi:SMO8B30:SMO8B30:
-> > > > > > > > > >       name=SMO8B30:00
-> > > > > > > > > >       uevent=MODALIAS=acpi:SMO8B30:SMO8B30:
-> > > > > > > > > >       waiting_for_supplier=0
-> > > > > > > > > > firmware_node:
-> > > > > > > > > >       hid=SMO8B30
-> > > > > > > > > >       modalias=acpi:SMO8B30:SMO8B30:
-> > > > > > > > > >       path=\_SB_.PCI0.I2C5.DEV_
-> > > > > > > > > >       status=15
-> > > > > > > > > >       uevent=MODALIAS=acpi:SMO8B30:SMO8B30:
-> > > > > > > > > >       uid=0
-> > > > > > > > > >
-> > > > > > > > > > The kernel module for the appropriate driver (st_lsm6dsx_i2c) is not  
-> > > > > > > > > loaded on boot.  
-> > > > > > > > > > Modprobing it does not associate it with the device, as I would expect as
-> > > > > > > > > > the module does not provide an alias for the above acpi/pnp id.  
-> > > > > > > > >
-> > > > > > > > > Can you report this issue upstream? Gues to reach out are according to
-> > > > > > > > > get_maintainers.pl script:
-> > > > > > > > >
-> > > > > > > > > Lorenzo Bianconi <lorenzo@kernel.org> (maintainer:ST LSM6DSx IMU IIO DRIVER)
-> > > > > > > > > Jonathan Cameron <jic23@kernel.org> (maintainer:IIO SUBSYSTEM AND DRIVERS)
-> > > > > > > > > Lars-Peter Clausen <lars@metafoo.de> (reviewer:IIO SUBSYSTEM AND DRIVERS)
-> > > > > > > > > linux-iio@vger.kernel.org (open list:ST LSM6DSx IMU IIO DRIVER)
-> > > > > > > > > linux-kernel@vger.kernel.org (open list)
-> > > > > > > > >
-> > > > > > > > > Please keep us in the loop.
-> > > > > > > > >
-> > > > > > > > > Regards,
-> > > > > > > > > Salvatore  
-> > > > > > > >  
-> > > > > >  
-> > > >  
-> >  
+diff --git a/drivers/iio/humidity/Kconfig b/drivers/iio/humidity/Kconfig
+index 2de5494e7c22..7b06b06181d4 100644
+--- a/drivers/iio/humidity/Kconfig
++++ b/drivers/iio/humidity/Kconfig
+@@ -25,6 +25,16 @@ config DHT11
+ 	  Other sensors should work as well as long as they speak the
+ 	  same protocol.
+ 
++config DHT11_POLLING
++	tristate "DHT11 (and compatible) sensors driver using polling"
++	depends on GPIOLIB || COMPILE_TEST
++	help
++	  This driver supports reading data via a single GPIO line.
++          This version does not require the line to generate
++          interrupts. It is required to read DHT11/22 signals on
++          some boards that fail to generate IRQ quickly enough.
++          This driver is tested with DHT22 on a BananaPI M2 Zero.
++
+ config HDC100X
+ 	tristate "TI HDC100x relative humidity and temperature sensor"
+ 	depends on I2C
+diff --git a/drivers/iio/humidity/Makefile b/drivers/iio/humidity/Makefile
+index f19ff3de97c5..908e5ecebb27 100644
+--- a/drivers/iio/humidity/Makefile
++++ b/drivers/iio/humidity/Makefile
+@@ -5,6 +5,7 @@
+ 
+ obj-$(CONFIG_AM2315) += am2315.o
+ obj-$(CONFIG_DHT11) += dht11.o
++obj-$(CONFIG_DHT11_POLLING) += dht11_polling.o
+ obj-$(CONFIG_HDC100X) += hdc100x.o
+ obj-$(CONFIG_HDC2010) += hdc2010.o
+ obj-$(CONFIG_HID_SENSOR_HUMIDITY) += hid-sensor-humidity.o
+diff --git a/drivers/iio/humidity/dht11_polling.c b/drivers/iio/humidity/dht11_polling.c
+new file mode 100644
+index 000000000000..ea41548144b0
+--- /dev/null
++++ b/drivers/iio/humidity/dht11_polling.c
+@@ -0,0 +1,348 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * DHT11/DHT22 polling version of the bit banging GPIO driver.
++ *
++ * Copyright (c) Andreas Feldner <pelzi@flying-snail.de>
++ * based on work Copyright (c) Harald Geyer <harald@ccbib.org>
++ */
++
++#include <linux/err.h>
++#include <linux/interrupt.h>
++#include <linux/device.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/slab.h>
++#include <linux/sysfs.h>
++#include <linux/io.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/wait.h>
++#include <linux/bitops.h>
++#include <linux/completion.h>
++#include <linux/mutex.h>
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/timekeeping.h>
++
++#include <linux/iio/iio.h>
++
++#define DRIVER_NAME	"dht11_poll"
++
++#define DHT11_DATA_VALID_TIME	2000000000  /* 2s in ns */
++
++#define DHT11_EDGES_PREAMBLE 2
++#define DHT11_BITS_PER_READ 40
++/*
++ * Note that when reading the sensor actually 84 edges are detected, but
++ * since the last edge is not significant, we only store 83:
++ */
++#define DHT11_EDGES_PER_READ (2 * DHT11_BITS_PER_READ + \
++			      DHT11_EDGES_PREAMBLE + 1)
++
++/*
++ * Data transmission timing:
++ * Data bits are encoded as pulse length (high time) on the data line.
++ * 0-bit: 22-30uS -- typically 26uS (AM2302)
++ * 1-bit: 68-75uS -- typically 70uS (AM2302)
++ * The actual timings also depend on the properties of the cable, with
++ * longer cables typically making pulses shorter.
++ *
++ * Our decoding depends on the time resolution of the system:
++ * timeres > 34uS ... don't know what a 1-tick pulse is
++ * 34uS > timeres > 30uS ... no problem (30kHz and 32kHz clocks)
++ * 30uS > timeres > 23uS ... don't know what a 2-tick pulse is
++ * timeres < 23uS ... no problem
++ *
++ * Luckily clocks in the 33-44kHz range are quite uncommon, so we can
++ * support most systems if the threshold for decoding a pulse as 1-bit
++ * is chosen carefully. If somebody really wants to support clocks around
++ * 40kHz, where this driver is most unreliable, there are two options.
++ * a) select an implementation using busy loop polling on those systems
++ * b) use the checksum to do some probabilistic decoding
++ */
++#define DHT11_START_TRANSMISSION_MIN	18000  /* us */
++#define DHT11_START_TRANSMISSION_MAX	20000  /* us */
++#define DHT11_MIN_TIMERES	34000  /* ns */
++#define DHT11_THRESHOLD		49000  /* ns */
++#define DHT11_AMBIG_LOW		23000  /* ns */
++#define DHT11_AMBIG_HIGH	30000  /* ns */
++
++struct dht11 {
++	struct device			*dev;
++
++	struct gpio_desc		*gpiod;
++
++	bool				complete;
++	/* The iio sysfs interface doesn't prevent concurrent reads: */
++	struct mutex			lock;
++
++	s64				timestamp;
++	int				temperature;
++	int				humidity;
++
++	/* num_edges: -1 means "no transmission in progress" */
++	int				num_edges;
++	struct {s64 ts; int value; }	edges[DHT11_EDGES_PER_READ];
++};
++
++/*
++ * dht11_edges_print: show the data as actually received by the
++ *                    driver.
++ */
++static void dht11_edges_print(struct dht11 *dht11)
++{
++	int i;
++
++	dev_dbg(dht11->dev, "%d edges detected:\n", dht11->num_edges);
++	for (i = 1; i < dht11->num_edges; ++i) {
++		dev_dbg(dht11->dev, "%d: %lld ns %s\n", i,
++			dht11->edges[i].ts - dht11->edges[i - 1].ts,
++			dht11->edges[i - 1].value ? "high" : "low");
++	}
++}
++
++static unsigned char dht11_decode_byte(char *bits)
++{
++	unsigned char ret = 0;
++	int i;
++
++	for (i = 0; i < 8; ++i) {
++		ret <<= 1;
++		if (bits[i])
++			++ret;
++	}
++
++	return ret;
++}
++
++static int dht11_decode(struct dht11 *dht11, int offset)
++{
++	int i, t;
++	char bits[DHT11_BITS_PER_READ];
++	unsigned char temp_int, temp_dec, hum_int, hum_dec, checksum;
++
++	for (i = 0; i < DHT11_BITS_PER_READ; ++i) {
++		t = dht11->edges[offset + 2 * i + 1].ts -
++			dht11->edges[offset + 2 * i].ts;
++		if (!dht11->edges[offset + 2 * i].value) {
++			dev_info(dht11->dev,
++				 "lost synchronisation at edge %d using offset %d\n",
++				 offset + 2 * i, offset);
++			return -EIO;
++		}
++		bits[i] = t > DHT11_THRESHOLD;
++	}
++
++	hum_int = dht11_decode_byte(bits);
++	hum_dec = dht11_decode_byte(&bits[8]);
++	temp_int = dht11_decode_byte(&bits[16]);
++	temp_dec = dht11_decode_byte(&bits[24]);
++	checksum = dht11_decode_byte(&bits[32]);
++
++	if (((hum_int + hum_dec + temp_int + temp_dec) & 0xff) != checksum) {
++		dev_info(dht11->dev, "invalid checksum using offset %d\n", offset);
++		return -EIO;
++	}
++
++	dht11->timestamp = ktime_get_boottime_ns();
++	if (hum_int < 4) {  /* DHT22: 100000 = (3*256+232)*100 */
++		dht11->temperature = (((temp_int & 0x7f) << 8) + temp_dec) *
++					((temp_int & 0x80) ? -100 : 100);
++		dht11->humidity = ((hum_int << 8) + hum_dec) * 100;
++	} else if (temp_dec == 0 && hum_dec == 0) {  /* DHT11 */
++		dht11->temperature = temp_int * 1000;
++		dht11->humidity = hum_int * 1000;
++	} else {
++		dev_err(dht11->dev,
++			"Don't know how to decode data: %d %d %d %d\n",
++			hum_int, hum_dec, temp_int, temp_dec);
++		return -EIO;
++	}
++
++	return 0;
++}
++
++/*
++ * IRQ handler called on GPIO edges
++ */
++static void dht11_handle_edge(struct dht11 *dht11, int value)
++{
++	if (dht11->num_edges < DHT11_EDGES_PER_READ && dht11->num_edges >= 0) {
++		dht11->edges[dht11->num_edges].ts = ktime_get_boottime_ns();
++		dht11->edges[dht11->num_edges++].value = value;
++
++		if (dht11->num_edges >= DHT11_EDGES_PER_READ)
++			dht11->complete = !0;
++	}
++}
++
++static int dht11_read_raw(struct iio_dev *iio_dev,
++			  const struct iio_chan_spec *chan,
++			  int *val, int *val2, long m)
++{
++	struct dht11 *dht11 = iio_priv(iio_dev);
++	int ret, timeres, offset, value_prev, num_samples;
++	u64 startstamp;
++
++	mutex_lock(&dht11->lock);
++
++	startstamp = ktime_get_boottime_ns();
++	if (dht11->timestamp + DHT11_DATA_VALID_TIME < startstamp) {
++		timeres = ktime_get_resolution_ns();
++		dev_dbg(dht11->dev, "current timeresolution: %dns\n", timeres);
++		if (timeres > DHT11_MIN_TIMERES) {
++			dev_err(dht11->dev, "timeresolution %dns too low\n",
++				timeres);
++			/* In theory a better clock could become available
++			 * at some point ... and there is no error code
++			 * that really fits better.
++			 */
++			ret = -EAGAIN;
++			goto err;
++		}
++		if (timeres > DHT11_AMBIG_LOW && timeres < DHT11_AMBIG_HIGH)
++			dev_warn(dht11->dev,
++				 "timeresolution: %dns - decoding ambiguous\n",
++				 timeres);
++
++		dht11->complete = 0;
++
++		dht11->num_edges = 0;
++		ret = gpiod_direction_output(dht11->gpiod, 0);
++		if (ret)
++			goto err;
++		usleep_range(DHT11_START_TRANSMISSION_MIN,
++			     DHT11_START_TRANSMISSION_MAX);
++		value_prev = 0;
++		ret = gpiod_direction_input(dht11->gpiod);
++		if (ret)
++			goto err;
++
++		num_samples = 0;
++		while (!dht11->complete) {
++			int value = gpiod_get_value_cansleep(dht11->gpiod);
++
++			if (value >= 0 && value != value_prev) {
++				dht11_handle_edge(dht11, value);
++				value_prev = value;
++				num_samples = 1;
++			} else if (value < 0) {
++				ret = value;
++				break;
++			} else {
++				num_samples++;
++				if ((num_samples % 1000) == 0) {
++					dev_warn(dht11->dev, "No edge detected during 1000 reads, aborting polling.\n");
++					ret = -ETIMEDOUT;
++					dht11_handle_edge(dht11, value);
++					break;
++				}
++			}
++		}
++
++		dht11_edges_print(dht11);
++
++		if (dht11->num_edges < 2 * DHT11_BITS_PER_READ) {
++			dev_err(dht11->dev, "Only %d signal edges detected\n",
++				dht11->num_edges);
++			ret = -ETIMEDOUT;
++		} else {
++			/* there is a chance we only missed out the preamble! */
++			ret = 0;
++		}
++		if (ret < 0)
++			goto err;
++
++		offset = dht11->num_edges - 2 * DHT11_BITS_PER_READ;
++
++		for (; offset >= 0; offset--) {
++			if (dht11->edges[offset].value)
++				ret = dht11_decode(dht11, offset);
++			else
++				ret = -EIO;
++			if (!ret)
++				break;
++		}
++
++		if (ret)
++			goto err;
++	}
++
++	ret = IIO_VAL_INT;
++	if (chan->type == IIO_TEMP)
++		*val = dht11->temperature;
++	else if (chan->type == IIO_HUMIDITYRELATIVE)
++		*val = dht11->humidity;
++	else
++		ret = -EINVAL;
++err:
++	dht11->num_edges = -1;
++	mutex_unlock(&dht11->lock);
++	return ret;
++}
++
++static const struct iio_info dht11_iio_info = {
++	.read_raw		= dht11_read_raw,
++};
++
++static const struct iio_chan_spec dht11_chan_spec[] = {
++	{ .type = IIO_TEMP,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED), },
++	{ .type = IIO_HUMIDITYRELATIVE,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED), }
++};
++
++static const struct of_device_id dht11_dt_ids[] = {
++	{ .compatible = "dht11-poll", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, dht11_dt_ids);
++
++static int dht11_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct dht11 *dht11;
++	struct iio_dev *iio;
++
++	iio = devm_iio_device_alloc(dev, sizeof(*dht11));
++	if (!iio) {
++		dev_err(dev, "Failed to allocate IIO device\n");
++		return -ENOMEM;
++	}
++
++	dht11 = iio_priv(iio);
++	dht11->dev = dev;
++	dht11->gpiod = devm_gpiod_get(dev, NULL, GPIOD_IN);
++	if (IS_ERR(dht11->gpiod))
++		return PTR_ERR(dht11->gpiod);
++
++	dht11->timestamp = ktime_get_boottime_ns() - DHT11_DATA_VALID_TIME - 1;
++	dht11->num_edges = -1;
++
++	platform_set_drvdata(pdev, iio);
++
++	dht11->complete = 0;
++	mutex_init(&dht11->lock);
++	iio->name = pdev->name;
++	iio->info = &dht11_iio_info;
++	iio->modes = INDIO_DIRECT_MODE;
++	iio->channels = dht11_chan_spec;
++	iio->num_channels = ARRAY_SIZE(dht11_chan_spec);
++
++	return devm_iio_device_register(dev, iio);
++}
++
++static struct platform_driver dht11_driver = {
++	.driver = {
++		.name	= DRIVER_NAME,
++		.of_match_table = dht11_dt_ids,
++	},
++	.probe  = dht11_probe,
++};
++
++module_platform_driver(dht11_driver);
++
++MODULE_AUTHOR("Andreas Feldner <pelzi@flying-snail.de>");
++MODULE_DESCRIPTION("DHT11 polling humidity/temperature sensor driver");
++MODULE_LICENSE("GPL v2");
+-- 
+2.30.2
 

@@ -2,50 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C67BA681AE8
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jan 2023 20:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA43681AE9
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Jan 2023 20:56:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230340AbjA3T4e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Jan 2023 14:56:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
+        id S231127AbjA3T4f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Jan 2023 14:56:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbjA3T4d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Jan 2023 14:56:33 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB284ED3
-        for <linux-iio@vger.kernel.org>; Mon, 30 Jan 2023 11:56:32 -0800 (PST)
+        with ESMTP id S230062AbjA3T4e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Jan 2023 14:56:34 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB414ED3
+        for <linux-iio@vger.kernel.org>; Mon, 30 Jan 2023 11:56:34 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EEC26123D
-        for <linux-iio@vger.kernel.org>; Mon, 30 Jan 2023 19:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB55C4339B;
-        Mon, 30 Jan 2023 19:56:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B533761243
+        for <linux-iio@vger.kernel.org>; Mon, 30 Jan 2023 19:56:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10374C4339C;
+        Mon, 30 Jan 2023 19:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675108591;
-        bh=qgPC1npyzm5QkOkTgqQ4tUF+yuO02D7WEJE+oGHzYa4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=bfcGdCiVCCwIZ7dfkev/Z25yjFbEdxIUUIGFcIVigcvcyoS+G+mPqmzeJt5UO5pw1
-         HkK2D037xjTR1a0BQ34YlgnQW9jd+X6b5CxshYypH862NFgodWpau+yCpy7iEdDGgt
-         P2Ic91SBhxhdf34uGsG/aefGzWYJ2AY6wCss7qoxskHSXsf+WWLwFpJE6AWeVNWKOL
-         7uXQaT6apUqHEwOXZLxxoW0wldzFO6wMnIOHC2ecL7/MIu1EkW97t1ik/s9ynjV5QA
-         TPf0UzQbq+k6lUtrKspQdBKAc+ppoIs09k6iHalXzafetEENgl++yGxZFrZq/fGHin
-         BZxx3U2++kYpQ==
+        s=k20201202; t=1675108593;
+        bh=ufddF5NQRDRVc2dIgzKDxaiXC33zqz1KBx2GjPsvdYY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=E1ZvVDEZiCIYg+ssh5k9rQ/hqVVH0sjZVKOGp7Rag9fKw697yzT7TqQr6YA14Qub1
+         Qnna0Ih2/fXELDGs1fuq2ZyC8FSMWkgqpjAizC1YC83RXqgZUYpwoHRA/Z2d95HV0S
+         q1pj8hMCSx2At9zkq0zc3sE9I0RRGYpx3x46RoCpv3nI2C7SU3+OUc5uq9HJUaT35D
+         mgxmN1F+axZqEPettmt3NEoNeoZh+ReLiUN7kLK9zN3QlkRWj8etw9jH2gumeO3qEE
+         8mUeOrUriYhy4Jy7omzbF96CHsxSpcmgmHXt2ZD02o/GH3Fl0gkIIfZU6qN65bDsAC
+         eobLq//s0K+vQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org,
         Darrell Kavanagh <darrell.kavanagh@gmail.com>
 Cc:     lorenzo@kernel.org, carnil@debian.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 0/2] iio: imu: lsx6dsx: support SMO8B30 ACPI ID.
-Date:   Mon, 30 Jan 2023 20:10:16 +0000
-Message-Id: <20230130201018.981024-1-jic23@kernel.org>
+Subject: [PATCH 1/2] iio: imu: lsm6dsx: Support SMO8B30 ACPI ID for LSM6DS3TR-C
+Date:   Mon, 30 Jan 2023 20:10:17 +0000
+Message-Id: <20230130201018.981024-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230130201018.981024-1-jic23@kernel.org>
+References: <20230130201018.981024-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -54,12 +55,14 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Darrell Kavanagh reported a failure to load the driver on his device
-(for future reference, what was it?)
+ID seen in the wild and it is a valid ST micro ID.
+An offset of 1 for the device ID enum is needed when adding support for
+retrieving the ID from device_get_match_data() to allow detection of
+NULL pointer and fallback to i2c_device_id table.
 
-DSDT blob as follows.
+DSDT chunk cropped for relevant parts.
 
-  Scope (_SB.PCI0.I2C5)
+   Scope (_SB.PCI0.I2C5)
     {
         Device (DEV)
         {
@@ -88,55 +91,77 @@ DSDT blob as follows.
                 })
                 Return (RBUF) /* \_SB_.PCI0.I2C5.DEV_.ROTM.RBUF */
             }
+...
 
-            Method (PRIM, 0, NotSerialized)
-            {
-                Name (RBUF, Buffer (One)
-                {
-                     0x01                                             // .
-                })
-                Return (RBUF) /* \_SB_.PCI0.I2C5.DEV_.PRIM.RBUF */
-            }
+Link: https://lore.kernel.org/all/20230129182441.082f29d0@jic23-huawei/
+Reported-by: Darrell Kavanagh <darrell.kavanagh@gmail.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
 
-            Method (_STA, 0, NotSerialized)  // _STA: Status
-            {
-                If ((GAVT == 0x6A))
-                {
-                    Return (0x0F)
-                }
-                Else
-                {
-                    Return (Zero)
-                }
-            }
+Since initial posting in thread added missing {} to terminate the
+list of IDs and MODULE_DEVICE_TABLE() so that autoloading of the
+driver works (thanks Darrell!)
 
-            Method (CALS, 1, NotSerialized)
-            {
-                Local0 = Arg0
-                If (((Local0 == Zero) || (Local0 == Ones)))
-                {
-                    Local0 = BAC1 /* \BAC1 */
-                    Return (Local0)
-                }
-                Else
-                {
-                    BAC1 = Local0
-                    BACS = Local0
-                    BSCA (0xB0)
-                }
-            }
-        }
-    }
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h     |  2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c | 16 ++++++++++++++--
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-Jonathan Cameron (2):
-  iio: imu: lsm6dsx: Support SMO8B30 ACPI ID for LSM6DS3TR-C
-  iio: imu: lsm6dsx: Add ACPI mount matrix retrieval
-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 65 +++++++++++++++++++-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  | 16 ++++-
- 3 files changed, 77 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 499fcf8875b4..2617ce236ddc 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -39,7 +39,7 @@
+ #define ST_ISM330IS_DEV_NAME	"ism330is"
+ 
+ enum st_lsm6dsx_hw_id {
+-	ST_LSM6DS3_ID,
++	ST_LSM6DS3_ID = 1,
+ 	ST_LSM6DS3H_ID,
+ 	ST_LSM6DSL_ID,
+ 	ST_LSM6DSM_ID,
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+index df5f60925260..8ae5a485ce7d 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+@@ -23,10 +23,15 @@ static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
+ 
+ static int st_lsm6dsx_i2c_probe(struct i2c_client *client)
+ {
+-	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+-	int hw_id = id->driver_data;
++	int hw_id;
+ 	struct regmap *regmap;
+ 
++	hw_id = (kernel_ulong_t)device_get_match_data(&client->dev);
++	if (!hw_id)
++		hw_id = i2c_client_get_device_id(client)->driver_data;
++	if (!hw_id)
++		return -EINVAL;
++
+ 	regmap = devm_regmap_init_i2c(client, &st_lsm6dsx_i2c_regmap_config);
+ 	if (IS_ERR(regmap)) {
+ 		dev_err(&client->dev, "Failed to register i2c regmap %ld\n", PTR_ERR(regmap));
+@@ -129,6 +134,12 @@ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
+ 
++static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
++	{ "SMO8B30", ST_LSM6DS3TRC_ID, },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, st_lsm6dsx_i2c_acpi_match);
++
+ static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
+ 	{ ST_LSM6DS3_DEV_NAME, ST_LSM6DS3_ID },
+ 	{ ST_LSM6DS3H_DEV_NAME, ST_LSM6DS3H_ID },
+@@ -161,6 +172,7 @@ static struct i2c_driver st_lsm6dsx_driver = {
+ 		.name = "st_lsm6dsx_i2c",
+ 		.pm = pm_sleep_ptr(&st_lsm6dsx_pm_ops),
+ 		.of_match_table = st_lsm6dsx_i2c_of_match,
++		.acpi_match_table = st_lsm6dsx_i2c_acpi_match,
+ 	},
+ 	.probe_new = st_lsm6dsx_i2c_probe,
+ 	.id_table = st_lsm6dsx_i2c_id_table,
 -- 
 2.39.1
 

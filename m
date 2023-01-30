@@ -2,296 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13A90680DAC
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jan 2023 13:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B245B680DE4
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Jan 2023 13:39:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236836AbjA3MbS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 30 Jan 2023 07:31:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58528 "EHLO
+        id S232776AbjA3MjS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 30 Jan 2023 07:39:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236458AbjA3MbS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Jan 2023 07:31:18 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB07B2BF13;
-        Mon, 30 Jan 2023 04:31:16 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P56r60s2xz6J7ds;
-        Mon, 30 Jan 2023 20:27:02 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 30 Jan
- 2023 12:31:14 +0000
-Date:   Mon, 30 Jan 2023 12:31:13 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Darrell Kavanagh <darrell.kavanagh@gmail.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
- LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-Message-ID: <20230130123113.00002c3f@Huawei.com>
-In-Reply-To: <CAMxBKG3zL_yvw=dHK+Gqd3EHWzvJmiLHVvKnf6UsYbMgcS6nrg@mail.gmail.com>
-References: <167493679618.4533.12181720504943588640.reportbug@debian-duet>
-        <Y9WGmBc9HG4Tx9gf@eldamar.lan>
-        <CAMxBKG1670TFuV3nHP7Yk8s6H+oBF7iiyiB-b=PvKv9hcH22xQ@mail.gmail.com>
-        <20230129182441.082f29d0@jic23-huawei>
-        <CAMxBKG0tyLSpaDPGBXsJbqgHSG9rH6owtSJsLw_ekmTA3Kyvdw@mail.gmail.com>
-        <CAMxBKG3zL_yvw=dHK+Gqd3EHWzvJmiLHVvKnf6UsYbMgcS6nrg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S235497AbjA3MjR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 30 Jan 2023 07:39:17 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D35EC4A
+        for <linux-iio@vger.kernel.org>; Mon, 30 Jan 2023 04:39:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675082356; x=1706618356;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=m2zCmkvwWEOGMOXWQX8qZkTe8gLorF6v8MrO+t6BYxY=;
+  b=kgnz9cklRVXvNwHiXQdfAqjcsuuEw1DhAyBYSAyOebZ+V/mIhutQN5rn
+   F7VjgDg0Q/cqvt5Rg6NQopIPvOs6MaUJlGAI4YDboUfbIL6V98CziPlht
+   PhdSk1hUOUxEBvNGCigdN5ybe/hQJKRDL6onbZPX1RBCkGvXYeUenVdHy
+   8JXear5CDM9NJ1zdeEae54IaabSSOyePwupd9gTW7vGRd9HZgeYSC1qRH
+   6Z8JYY+8NUzGvvkEo8BH3Hm7FZhN+0/6d/aMQEAjry0HO0/OMBg1yhiQl
+   w3heGW6AalQ/Vgb7eEcrxx5HQwnCsiEZF5IF93CQN6APVj+FYASgwKGKJ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="327563497"
+X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
+   d="scan'208";a="327563497"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 04:39:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="696382741"
+X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
+   d="scan'208";a="696382741"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 30 Jan 2023 04:39:14 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pMTRI-00HLgM-2G;
+        Mon, 30 Jan 2023 14:39:12 +0200
+Date:   Mon, 30 Jan 2023 14:39:12 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?iso-8859-1?Q?M=E5rten?= Lindahl <marten.lindahl@axis.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, kernel@axis.com
+Subject: Re: [PATCH] iio: light: vcnl4000: Fix WARN_ON on uninitialized lock
+Message-ID: <Y9e6cGDYxkrTtQtC@smile.fi.intel.com>
+References: <20230130093742.838577-1-marten.lindahl@axis.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230130093742.838577-1-marten.lindahl@axis.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 Jan 2023 03:37:23 +0000
-Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+On Mon, Jan 30, 2023 at 10:37:42AM +0100, Mårten Lindahl wrote:
+> There are different init functions for the sensors in this driver in
+> which only one initialize the generic vcnl4000_lock. With commit
+> e21b5b1f2 ("iio: light: vcnl4000: Preserve conf bits when toggle power")
+> the vcnl4040 sensor started to depend on the lock, but it was missed to
+> initialize it in vcnl4040's init function. This has not been visible
+> until we run lockdep on it:
 
-> Forwarding because original html messages were rejected by the server...
-> 
-> ---------- Forwarded message ---------
-> From: Darrell Kavanagh <darrell.kavanagh@gmail.com>
-> Date: Mon, 30 Jan 2023 at 02:52
-> Subject: Re: Bug#1029850: linux: Driver not loaded for ST
-> Microelectronics LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-> To: Jonathan Cameron <jic23@kernel.org>
-> Cc: <lorenzo@kernel.org>, <lars@metafoo.de>,
-> <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-> <carnil@debian.org>
-> 
-> 
-> Hi Jonathan,
-> 
-> Thank you. The driver has evolved quite a bit in 6.2 (I read somewhere
-> that 6.2 includes some i2c enhancements), but I adapted your changes
-> to fit my Debian 6.1 kernel and it works. Two IIO devices are created
-> in sysfs, iio-sensor-proxy.service starts up and automatic screen
-> rotation in Gnome just works.
-> 
-> To get the modules to load on boot, I made a small change to your code
-> in st_lsm6dsx_i2c to add the acpi alias to modules.alias:
-> 
-> adding a null element to st_lsm6dsx_i2c_acpi_match:
->     static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
->          { "SMO8B30", ST_LSM6DS3TRC_ID, },
->          { },
->     };
-> then:
->    MODULE_DEVICE_TABLE(acpi, st_lsm6dsx_i2c_acpi_match);
+>   DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+>   WARNING: CPU: 1 PID: 8800 at kernel/locking/mutex.c:575 __mutex_lock+0x4f8/0x890
+>   ...
+>   Call trace:
+>    __mutex_lock
+>    mutex_lock_nested
+>    vcnl4200_set_power_state
+>    vcnl4200_init
+>    vcnl4000_probe
+>    i2c_device_probe
+>    really_probe
+>    __driver_probe_device
+>    driver_probe_device
+>    __driver_attach
+>    bus_for_each_dev
+>    driver_attach
+>    bus_add_driver
+>    driver_register
+>    i2c_register_driver
+>    vcnl4000_driver_init
+>    do_one_initcall
+>    do_init_module
+>    load_module
+>    __do_sys_finit_module
+>    ...
 
-doh! That was indeed sloppy of me to miss even for an untested hack.
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces-in-commit-messages
 
+Otherwise looks good to me,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-
+> Fix this by adding mutex_init on the lock in the init function used for
+> vcnl4040.
 > 
+> Fixes: e21b5b1f2 ("iio: light: vcnl4000: Preserve conf bits when toggle power")
+> Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+> ---
+>  drivers/iio/light/vcnl4000.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> dmesg shows:
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index cc1a2062e76d..a8a9fc3b1a02 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -316,6 +316,7 @@ static int vcnl4200_init(struct vcnl4000_data *data)
+>  	}
+>  	mutex_init(&data->vcnl4200_al.lock);
+>  	mutex_init(&data->vcnl4200_ps.lock);
+> +	mutex_init(&data->vcnl4000_lock);
+>  
+>  	ret = data->chip_spec->set_power_state(data, true);
+>  	if (ret < 0)
+> -- 
+> 2.30.2
 > 
-> [ 7366.120208] st_lsm6dsx_i2c i2c-SMO8B30:00: supply vdd not found,
-> using dummy regulator
-> [ 7366.120260] st_lsm6dsx_i2c i2c-SMO8B30:00: supply vddio not found,
-> using dummy regulator
-> [ 7366.650839] st_lsm6dsx_i2c i2c-SMO8B30:00: mounting matrix not
-> found: using identity...
-> 
-> Is this a problem?
 
-Those are all fine. For regulators that's expected on ACPI and should
-be harmless as it's up to the firmware to manage power (in DT it may
-be up to the kernel).
-For the mounting matrix, there is often something in ACPI DSDT
-(non standard though).  Could you
-cat /sys/firmware/acpi/tables/DSDT > ~/dsdt
-then run through iasl from acpitools
-iasl -d ~/dsdt
-and find the bit related to this device.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-If you can then share that there may be a _DSM or similar in there that
-is effectively the mounting matrix.  If we are lucky it will look like
-some existing versions we have code to handle and can add that support
-as well.
-
-Either way - I'll spin a formal patch with your fixes above and we can
-get this upstream for future kernels.  Mounting matrix can follow
-later if needed.
-
-Thanks,
-
-Jonathan
-
-
-> 
-> Thanks again.
-> 
-> Darrell
-> 
-> 
-> On Sun, 29 Jan 2023 at 18:10, Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Sun, 29 Jan 2023 17:03:51 +0000
-> > Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
-> >  
-> > > Hi,
-> > >
-> > > I raised this bug in Debian, and have been asked to raise it upstream and
-> > > was given your addresses to do so. Will this email be OK, or should I raise
-> > > it in a bug tracking system somewhere?  
-> >
-> > Email is the right option.
-> >  
-> > >
-> > > Many thanks,
-> > > Darrell
-> > >
-> > >
-> > >
-> > >
-> > > ---------- Forwarded message ---------
-> > > From: Salvatore Bonaccorso <carnil@debian.org>
-> > > Date: Sat, 28 Jan 2023 at 20:33
-> > > Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
-> > > LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-> > > To: Darrell Kavanagh <darrell.kavanagh@gmail.com>, <1029850@bugs.debian.org>
-> > >
-> > >
-> > > Hi Darrell,
-> > >
-> > > On Sat, Jan 28, 2023 at 08:13:16PM +0000, Darrell Kavanagh wrote:  
-> > > > Package: src:linux
-> > > > Version: 6.1.4-1
-> > > > Severity: normal
-> > > > File: linux
-> > > > X-Debbugs-Cc: darrell.kavanagh@gmail.com
-> > > >
-> > > > Dear Maintainer,
-> > > >
-> > > > This is a convertable touchscreen tablet/laptop. The rotation sensor  
-> > > device  
-> > > > ST Microelectronics LSM6DS3TR-C does not work. It is detected via ACPI  
-> > > and the  
-> > > > sysfs trees are created at  
-> > > devices/pci0000:00/0000:00:17.1/i2c_designware.3/i2c-4/i2c-SMO8B30:00  
-> > > > and devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:3c/SMO8B30:00 with
-> > > > symlinks bus/acpi/devices/SMO8B30:00 and bus/i2c/devices/i2c-SMO8B30:00,  
-> > > but  
-> > > > no driver is loaded.  
-> >
-> > At least this is using the ST PNP ID which is better than average
-> > (long story!)
-> >
-> > The driver in question (ultimately drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > does not currently have an ACPI support.  It should be straight forwards
-> > to add though the driver first needs converting to use
-> > device_get_match_data() with appropriate fallback so that it will match on
-> > ACPI, OF or original spi_device_id tables
-> >
-> > Completely untested but something like the following
-> > (the offset in the enum is needed to allow us to tell if we got a result when
-> > calling device_get_match_data() as it returns NULL on failure IIRC)
-> >
-> > I'm not sure how sucessful the driver will be at finding any interrupts etc, but
-> > it may get you basic functionality.
-> >
-> > Good luck and others more familiar with the driver may well tell me what I forgot
-> > when hacking the below ;)
-> >
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > index 499fcf8875b4..2617ce236ddc 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > @@ -39,7 +39,7 @@
-> >  #define ST_ISM330IS_DEV_NAME   "ism330is"
-> >
-> >  enum st_lsm6dsx_hw_id {
-> > -       ST_LSM6DS3_ID,
-> > +       ST_LSM6DS3_ID = 1,
-> >         ST_LSM6DS3H_ID,
-> >         ST_LSM6DSL_ID,
-> >         ST_LSM6DSM_ID,
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > index df5f60925260..ecfceb2fb3db 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > @@ -23,10 +23,15 @@ static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
-> >
-> >  static int st_lsm6dsx_i2c_probe(struct i2c_client *client)
-> >  {
-> > -       const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> > -       int hw_id = id->driver_data;
-> > +       int hw_id;
-> >         struct regmap *regmap;
-> >
-> > +       hw_id = (kernel_ulong_t)device_get_match_data(&client->dev);
-> > +       if (!hw_id)
-> > +               hw_id = i2c_client_get_device_id(client)->driver_data;
-> > +       if (!hw_id)
-> > +               return -EINVAL;
-> > +
-> >         regmap = devm_regmap_init_i2c(client, &st_lsm6dsx_i2c_regmap_config);
-> >         if (IS_ERR(regmap)) {
-> >                 dev_err(&client->dev, "Failed to register i2c regmap %ld\n", PTR_ERR(regmap));
-> > @@ -129,6 +134,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
-> >
-> > +static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
-> > +       { "SMO8B30", ST_LSM6DS3TRC_ID, },
-> > +};
-> > +
-> >  static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
-> >         { ST_LSM6DS3_DEV_NAME, ST_LSM6DS3_ID },
-> >         { ST_LSM6DS3H_DEV_NAME, ST_LSM6DS3H_ID },
-> > @@ -161,6 +170,7 @@ static struct i2c_driver st_lsm6dsx_driver = {
-> >                 .name = "st_lsm6dsx_i2c",
-> >                 .pm = pm_sleep_ptr(&st_lsm6dsx_pm_ops),
-> >                 .of_match_table = st_lsm6dsx_i2c_of_match,
-> > +               .acpi_match_table = st_lsm6dsx_i2c_acpi_match,
-> >         },
-> >         .probe_new = st_lsm6dsx_i2c_probe,
-> >         .id_table = st_lsm6dsx_i2c_id_table,
-> >
-> >  
-> > > >
-> > > > The device is identifying itself to the kernel with PNP id SMO8B30:
-> > > > physical_node:
-> > > >       modalias=acpi:SMO8B30:SMO8B30:
-> > > >       name=SMO8B30:00
-> > > >       uevent=MODALIAS=acpi:SMO8B30:SMO8B30:
-> > > >       waiting_for_supplier=0
-> > > > firmware_node:
-> > > >       hid=SMO8B30
-> > > >       modalias=acpi:SMO8B30:SMO8B30:
-> > > >       path=\_SB_.PCI0.I2C5.DEV_
-> > > >       status=15
-> > > >       uevent=MODALIAS=acpi:SMO8B30:SMO8B30:
-> > > >       uid=0
-> > > >
-> > > > The kernel module for the appropriate driver (st_lsm6dsx_i2c) is not  
-> > > loaded on boot.  
-> > > > Modprobing it does not associate it with the device, as I would expect as
-> > > > the module does not provide an alias for the above acpi/pnp id.  
-> > >
-> > > Can you report this issue upstream? Gues to reach out are according to
-> > > get_maintainers.pl script:
-> > >
-> > > Lorenzo Bianconi <lorenzo@kernel.org> (maintainer:ST LSM6DSx IMU IIO DRIVER)
-> > > Jonathan Cameron <jic23@kernel.org> (maintainer:IIO SUBSYSTEM AND DRIVERS)
-> > > Lars-Peter Clausen <lars@metafoo.de> (reviewer:IIO SUBSYSTEM AND DRIVERS)
-> > > linux-iio@vger.kernel.org (open list:ST LSM6DSx IMU IIO DRIVER)
-> > > linux-kernel@vger.kernel.org (open list)
-> > >
-> > > Please keep us in the loop.
-> > >
-> > > Regards,
-> > > Salvatore  
-> >  
 

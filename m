@@ -2,47 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31920682967
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 10:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADF668299C
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 10:53:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232733AbjAaJrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Jan 2023 04:47:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42354 "EHLO
+        id S229761AbjAaJxk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Jan 2023 04:53:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231221AbjAaJrD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 04:47:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA5DCA2C;
-        Tue, 31 Jan 2023 01:46:24 -0800 (PST)
+        with ESMTP id S230480AbjAaJxi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 04:53:38 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58772126CD
+        for <linux-iio@vger.kernel.org>; Tue, 31 Jan 2023 01:53:31 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97D8861485;
-        Tue, 31 Jan 2023 09:46:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D279C433EF;
-        Tue, 31 Jan 2023 09:46:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675158380;
-        bh=KTfxAv4/PIks1rtAcMvxbdh4fpDCyfuw7pXRReopI3Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=nu1hPCq9s7Jhnb2Yl9juR5sAlsr0lq6ir2BCfz3ElXtbHzNbizn+DzUNFurLSgomT
-         i6X4/Ra8hBdbUiPfbOzDbJy0oYh/iigjyWBjLn2nUN4lv6N/gIpm7wsaV1Hl/UJY0O
-         kJiBJ9xVBmAYzeTKP1DeMPkZYhI18L9LyB7ja6bxJh3YVfMTAWVSmfmZs+BtGEXdbz
-         y3iibSwb/vaQALRn0b++qB/1GVsN6XWKAXregjKVdxV9Yf/DG2DZaMtiaZsb9LP6Sh
-         ADmy6BuRHFhxWWvezjlgKYB7RGal2G2b+lYT+qYnIvozJuBH03HuRl+jIu+PC4ACNq
-         k46Sj9kV/IsHA==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Andrea Merello <andrea.merello@iit.it>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adis16480: select CONFIG_CRC32
-Date:   Tue, 31 Jan 2023 10:46:11 +0100
-Message-Id: <20230131094616.130238-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.0
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0F51CB81AB2
+        for <linux-iio@vger.kernel.org>; Tue, 31 Jan 2023 09:53:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DA8C4339B;
+        Tue, 31 Jan 2023 09:53:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1675158808;
+        bh=6o3yEPEjHKHA8KsxgRGQ/PrdEVEucPcP5FyrObccm1I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nmwqWjuD0bNIj4l7yEfJ5zdx9c8DwpthYxyC06yrVq6nUELw07sjMHXppRFBxfwgO
+         FxLdRP9ZHc4sa6NaPOCXi53+TmnvSMKLcMMaUPLx9T6iNmns1IOJAcTPycfIfJRVLO
+         STITpfIAK8iRFgw73eF6qvrMv3/VoBRJio2Ef100=
+Date:   Tue, 31 Jan 2023 10:52:45 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] IIO fixes for 6.2 - set 1
+Message-ID: <Y9jk7Vly2ylRNs6N@kroah.com>
+References: <20230123194738.25eb2a1a@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230123194738.25eb2a1a@jic23-huawei>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,33 +48,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Mon, Jan 23, 2023 at 07:47:38PM +0000, Jonathan Cameron wrote:
+> The following changes since commit 1b929c02afd37871d5afb9d498426f83432e71c2:
+> 
+>   Linux 6.2-rc1 (2022-12-25 13:41:39 -0800)
+> 
+> are available in the Git repository at:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.2a
 
-In rare randconfig builds, the missing CRC32 helper causes
-a link error:
+Sorry for the delay, now pulled and pushed out.
 
-ld.lld: error: undefined symbol: crc32_le
->>> referenced by usercopy_64.c
->>>               vmlinux.o:(adis16480_trigger_handler)
-
-Fixes: 941f130881fa ("iio: adis16480: support burst read function")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/iio/imu/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
-index f1d7d4b5e222..c2f97629e9cd 100644
---- a/drivers/iio/imu/Kconfig
-+++ b/drivers/iio/imu/Kconfig
-@@ -47,6 +47,7 @@ config ADIS16480
- 	depends on SPI
- 	select IIO_ADIS_LIB
- 	select IIO_ADIS_LIB_BUFFER if IIO_BUFFER
-+	select CRC32
- 	help
- 	  Say yes here to build support for Analog Devices ADIS16375, ADIS16480,
- 	  ADIS16485, ADIS16488 inertial sensors.
--- 
-2.39.0
-
+greg k-h

@@ -2,95 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 164A6682A52
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 11:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1228682A8D
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 11:30:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbjAaKVb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Jan 2023 05:21:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47674 "EHLO
+        id S230511AbjAaKaB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Jan 2023 05:30:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231157AbjAaKV3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 05:21:29 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62FEF244A8;
-        Tue, 31 Jan 2023 02:21:25 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id o5so12789858qtr.11;
-        Tue, 31 Jan 2023 02:21:25 -0800 (PST)
+        with ESMTP id S230489AbjAaKaA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 05:30:00 -0500
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53D84C6C9
+        for <linux-iio@vger.kernel.org>; Tue, 31 Jan 2023 02:29:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zKP87TjiGZNs0yCcl80tXkV44epFLNcF2cOejqOOv20=;
-        b=qWaOS81AfJwBWXGyhdbivBN1cu5C9V3P859ZE5gbkrNdHSfM+e48bswhX4pvIceVtQ
-         6gNWrO7RLZMpl0DYMNSjiI/9LWvgCRqrKtKx8UdRbLWYFqwg6LF3LHs4m9dq7iKO8v3F
-         00jCY84ieVBBK4DpqSk9csNoOaXEWdJocV6kvi+k/IRJv9CBeDjeFYtbrYtf88eHlq45
-         4aByQu5WUVoqlKpKxKoEQm5Y8E4Y8BREsAkLrx92waPSIer4zGLZHBA/RT955D2jYQ1H
-         nAVH6dPuZAFbJs4hsGaX/Klgk7RZw7H6h1RAc/BSw9NEhKaWW5srJYO7b1euG75M4wm0
-         aumg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zKP87TjiGZNs0yCcl80tXkV44epFLNcF2cOejqOOv20=;
-        b=4O/qe/GB0nWCPHxw+ZAFdl2rqaZbGKAljcSxcHkuvb7M+fmrWYZYR6pPvAHvmD8sn2
-         PmqfA5QmRlGZjUe9UHA/fjYkdg3bd3kI0hFw1NrbI24oP7P9CvS63GWl/9ZbAvHa0/tJ
-         bCAB323HuG1dmRmXi4rZuOK1cujRRvc6RkCRjJy/EQ1w/sAOdAuzmE2Dl0JJnkSvTPtF
-         6jaXdlA7TjiSUj+FgBb6xQuSRtnQ4AdSu5P+uMw7cl5e+Tm5gduZkAexzg600ESB50YY
-         RM92IfiWwOiADBi3I8PuzY7dUqJ9NdV/6TLSMNgUq/tqsuKh3OQBeR0ABYh4sPpwuOjQ
-         S8HQ==
-X-Gm-Message-State: AO0yUKWyG+9udkOOFOYWsM9TXLZ7aH1VqCSyN7v1GrGVBfrF3l8uVuWQ
-        Anw94mTvJA4VcKBpMYORZ3/R+OWD7gBN5w==
-X-Google-Smtp-Source: AK7set9giH92eTTcoPQQi5neUmN49ZbW8xRnRwCPgG4fgOGr/aVOcwbtnOHAHLt6gLZqRPVebqXXQA==
-X-Received: by 2002:ac8:4e90:0:b0:3b9:b297:5ec5 with SMTP id 16-20020ac84e90000000b003b9b2975ec5mr1708716qtp.13.1675160484448;
-        Tue, 31 Jan 2023 02:21:24 -0800 (PST)
-Received: from p200300f6ef015700e657423a1f156bec.dip0.t-ipconnect.de (p200300f6ef015700e657423a1f156bec.dip0.t-ipconnect.de. [2003:f6:ef01:5700:e657:423a:1f15:6bec])
-        by smtp.gmail.com with ESMTPSA id h18-20020a05622a171200b003b8238114d9sm1259328qtk.12.2023.01.31.02.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Jan 2023 02:21:23 -0800 (PST)
-Message-ID: <2c8c64f95569a3bfb142761bad7a948c71a8d266.camel@gmail.com>
-Subject: Re: [PATCH] iio: adis16480: select CONFIG_CRC32
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Andrea Merello <andrea.merello@iit.it>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Tue, 31 Jan 2023 11:23:10 +0100
-In-Reply-To: <20230131094616.130238-1-arnd@kernel.org>
-References: <20230131094616.130238-1-arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 
+  d=axis.com; q=dns/txt; s=axis-central1; t=1675160997;
+  x=1706696997;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LYRZ0qDTV1jqiyRnNxqnCtMnM79B0pnr9Yt5Xu3e8Bs=;
+  b=iruiLl2UNChGxuF5qLscwvQ6Mugm/OSW/nGSq1Zbt5D6BTToguGX13+X
+   dSfMrkSyb2Pc7VISvTXT7zkIPbCJAaP1UB67YLYfNQ2PNqWQVHIc3cb8p
+   QsdQQ/rwf3WbcTIK/qFJ7D4OG2GbCjCNgfrf3+iLIj4T//LhyfLCESWD3
+   C3LyuzkvgiVLo7L0zmvniLzsfADbFPWWz39xbkCqwPjSOBZ5fJ96Qf9ef
+   DskF1nRLfyP5fku0B76B+R6i1Snwopzgc0fbZAiCQb3KDXsnsg/kdJU1o
+   tWsitQ7lft/tduk7+6FpqE4b+/aQkFZLgA13SwJD1Qt716olpfOhotAyt
+   w==;
+From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        <linux-iio@vger.kernel.org>, <kernel@axis.com>,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
+Subject: [PATCH v2] iio: light: vcnl4000: Fix WARN_ON on uninitialized lock
+Date:   Tue, 31 Jan 2023 11:29:51 +0100
+Message-ID: <20230131102951.2012021-1-marten.lindahl@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2023-01-31 at 10:46 +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> In rare randconfig builds, the missing CRC32 helper causes
-> a link error:
->=20
-> ld.lld: error: undefined symbol: crc32_le
-> > > > referenced by usercopy_64.c
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 vmlinux.o:(adis16480_trigger_handler)
->=20
-> Fixes: 941f130881fa ("iio: adis16480: support burst read function")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
+There are different init functions for the sensors in this driver in
+which only one initialize the generic vcnl4000_lock. With commit
+e21b5b1f2669 ("iio: light: vcnl4000: Preserve conf bits when toggle power")
+the vcnl4040 sensor started to depend on the lock, but it was missed to
+initialize it in vcnl4040's init function. This has not been visible
+until we run lockdep on it:
 
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+  at kernel/locking/mutex.c:575 __mutex_lock+0x4f8/0x890
+  Call trace:
+  __mutex_lock
+  mutex_lock_nested
+  vcnl4200_set_power_state
+  vcnl4200_init
+  vcnl4000_probe
+  i2c_device_probe
+  really_probe
+  __driver_probe_device
+  driver_probe_device
+  __driver_attach
+  bus_for_each_dev
+  driver_attach
+  bus_add_driver
+  driver_register
+  i2c_register_driver
+  vcnl4000_driver_init
+  do_one_initcall
+  do_init_module
+  load_module
+  __do_sys_finit_module
 
+Fix this by initializing the lock in the probe function instead of doing
+it in the chip specific init functions.
+
+Fixes: e21b5b1f2669 ("iio: light: vcnl4000: Preserve conf bits when toggle power")
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+---
+
+v2:
+ - Trimmed backtrace in commit message
+ - Have 12 digit sha-1 id in Fixes tag
+ - Make the lock initialization in probe instead of in _init function
+
+ drivers/iio/light/vcnl4000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index b5d398228289..caa2fff9f486 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -208,7 +208,6 @@ static int vcnl4000_init(struct vcnl4000_data *data)
+ 
+ 	data->rev = ret & 0xf;
+ 	data->al_scale = 250000;
+-	mutex_init(&data->vcnl4000_lock);
+ 
+ 	return data->chip_spec->set_power_state(data, true);
+ };
+@@ -1366,6 +1365,7 @@ static int vcnl4000_probe(struct i2c_client *client,
+ 	data->client = client;
+ 	data->id = id->driver_data;
+ 	data->chip_spec = &vcnl4000_chip_spec_cfg[data->id];
++	mutex_init(&data->vcnl4000_lock);
+ 
+ 	ret = data->chip_spec->init(data);
+ 	if (ret < 0)
+-- 
+2.30.2
 

@@ -2,517 +2,295 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86DBD68284D
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 10:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A78CF6828D0
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 10:28:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232098AbjAaJLe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Jan 2023 04:11:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33476 "EHLO
+        id S231297AbjAaJ2Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Jan 2023 04:28:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232525AbjAaJKn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 04:10:43 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B2D4474E1;
-        Tue, 31 Jan 2023 01:08:15 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P5fGP4mjFz68916;
-        Tue, 31 Jan 2023 17:03:09 +0800 (CST)
-Received: from localhost (10.45.154.62) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 31 Jan
- 2023 09:06:46 +0000
-Date:   Tue, 31 Jan 2023 09:06:45 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andreas Feldner <pelzi@flying-snail.de>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <harald@ccbib.org>
-Subject: Re: [PATCH 1/2] iio: dht11: forked a driver version that polls
- sensor's signal from GPIO
-Message-ID: <20230131090645.00006469@Huawei.com>
-In-Reply-To: <Y9groXq2oI6lqFea@debian-qemu.internal.flying-snail.de>
-References: <Y9groXq2oI6lqFea@debian-qemu.internal.flying-snail.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S232588AbjAaJ2X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 04:28:23 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8571FC14A;
+        Tue, 31 Jan 2023 01:28:18 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30V9KiZ7020093;
+        Tue, 31 Jan 2023 04:27:52 -0500
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2177.outbound.protection.outlook.com [104.47.55.177])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3negvtn42n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 31 Jan 2023 04:27:51 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g8F2smzPPUMlY+wXBZjwGstXM6ZlfAn+NZGBTSa+B/ZTBB64gnfxFHLh4+vSLjXWRmNUjr4lfZgXZfnnXJ2t5UuZMFtRzF4gZ6qSn7Rc8yUwBjebBjl2kDZ+B8tmvPIJZV57bi5ed1N6w4jXCjkDt2GUFEsXT+mlVwtpT6fJgRgZr81w5WxjUGar8dPECC3uzrio9uNEoTT2QmrX/jDBRsKAPWTxXyQm5XwQT9/VqBOEXXpmi5oA0/kmxEHL/bMJqI9dXq24iRTY/Vj1WjcfcDkvLyk3FrKG0QWTUGMOz/Xvr6A+FF8aLQhtLAROu2ZesZ7fayxgRJD/cbXmewyFfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=55FXE0p14RP2qkUPvAXu/OBoi9Jp94F4khuQAU3C7LI=;
+ b=KJ043ix4iYWyC0TVvKnPvavfW29dmJIcflydEQ2+CMG5d2tf/w8FjBsRtnZVaRSpJZDlHTA7wc1Q/PYzWcCs1kUDUThbsWZoxF/nNHh9LR9upvMewLIH483SmREAtBfNPWFeEPp61ECF0jRxVzKUYkKUgVOV2OX7OqNe+AB3OJp0hA87kxaf/4mqT8Ci9wXRxWtRQPQR9KWmo4mrTkPmPiQbPH3a30YfbnEpOUZMAFQ7RVsYJdVdOF06D4k/iIQSfOl/uaktDZcfY2cpmHvpzkvShdZ8TW9UQMCjc2zpvc2rUMReBRLoab8wPQAq3rJZwIr+FbjN3gg2mu2s8pBSpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=55FXE0p14RP2qkUPvAXu/OBoi9Jp94F4khuQAU3C7LI=;
+ b=sjXRToR7bekgUjdGIWICweHQe4pE9zyvV1NMrJGV4+Jx7qKQX9u01gAfpKnjTkvCHi1C3T5ALFFRcGD/LHB1yuVOtjrbZEOdgO46UO01EPmXvszt3MlxlD39G67kb3xkCoA+5bzGjJS7PrLr+5pHmFdpyxItF4dM1GZqm/4YzBA=
+Received: from MN2PR03MB5168.namprd03.prod.outlook.com (2603:10b6:208:1ec::19)
+ by BY5PR03MB5202.namprd03.prod.outlook.com (2603:10b6:a03:220::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.36; Tue, 31 Jan
+ 2023 09:27:48 +0000
+Received: from MN2PR03MB5168.namprd03.prod.outlook.com
+ ([fe80::2f8c:567f:c6cc:dbd9]) by MN2PR03MB5168.namprd03.prod.outlook.com
+ ([fe80::2f8c:567f:c6cc:dbd9%6]) with mapi id 15.20.6043.038; Tue, 31 Jan 2023
+ 09:27:48 +0000
+From:   "Sahin, Okan" <Okan.Sahin@analog.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: RE: [PATCH v3 3/5] drivers: regulator: Add ADI MAX77541/MAX77540
+ Regulator Support
+Thread-Topic: [PATCH v3 3/5] drivers: regulator: Add ADI MAX77541/MAX77540
+ Regulator Support
+Thread-Index: AQHZKwfLM9q3yL8ciUSLt6aTy9zYOq6j1SEAgBRcQ/CAACJtYA==
+Date:   Tue, 31 Jan 2023 09:27:48 +0000
+Message-ID: <MN2PR03MB516865804044A798AEB5B6C0E7D09@MN2PR03MB5168.namprd03.prod.outlook.com>
+References: <20230118063822.14521-1-okan.sahin@analog.com>
+ <20230118063822.14521-4-okan.sahin@analog.com>
+ <Y8erlpofdk24vwCC@smile.fi.intel.com>
+ <MN2PR03MB5168EC97926AB33D4D806FCCE7D09@MN2PR03MB5168.namprd03.prod.outlook.com>
+In-Reply-To: <MN2PR03MB5168EC97926AB33D4D806FCCE7D09@MN2PR03MB5168.namprd03.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcb2thbi5zYWhp?=
+ =?us-ascii?Q?blxhcHBkYXRhXHJvYW1pbmdcMDlkODQ5YjYtMzJkMy00YTQwLTg1ZWUtNmI4?=
+ =?us-ascii?Q?NGJhMjllMzViXG1zZ3NcbXNnLTgzZTFlY2JjLWExNDktMTFlZC1iZTk2LTU4?=
+ =?us-ascii?Q?NmMyNWQzYzNlNFxhbWUtdGVzdFw4M2UxZWNiZS1hMTQ5LTExZWQtYmU5Ni01?=
+ =?us-ascii?Q?ODZjMjVkM2MzZTRib2R5LnR4dCIgc3o9IjM0MTciIHQ9IjEzMzE5NjMwODY0?=
+ =?us-ascii?Q?NjQ5NTA2MCIgaD0iYVh4bXZKRGRBaDZXdXdRMXQzUEtZRUhkMjVVPSIgaWQ9?=
+ =?us-ascii?Q?IiIgYmw9IjAiIGJvPSIxIiBjaT0iY0FBQUFFUkhVMVJTUlVGTkNnVUFBRW9D?=
+ =?us-ascii?Q?QUFCVWcwUkdWalhaQWZBV3ZEOVF5QkxROEJhOFAxRElFdEFEQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUhBQUFBRGFBUUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUVBQVFBQkFBQUFSczFnRlFBQUFBQUFBQUFBQUFBQUFKNEFBQUJoQUdR?=
+ =?us-ascii?Q?QWFRQmZBSE1BWlFCakFIVUFjZ0JsQUY4QWNBQnlBRzhBYWdCbEFHTUFkQUJ6?=
+ =?us-ascii?Q?QUY4QVpnQmhBR3dBY3dCbEFGOEFaZ0J2QUhNQWFRQjBBR2tBZGdCbEFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBRUFBQUFBQUFBQUFnQUFBQUFBbmdBQUFHRUFaQUJwQUY4QWN3QmxBR01B?=
+ =?us-ascii?Q?ZFFCeUFHVUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0IwQUdrQVpRQnlB?=
+ =?us-ascii?Q?REVBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFBQUFD?=
+ =?us-ascii?Q?QUFBQUFBQ2VBQUFBWVFCa0FHa0FYd0J6QUdVQVl3QjFBSElBWlFCZkFIQUFj?=
+ =?us-ascii?Q?Z0J2QUdvQVpRQmpBSFFBY3dCZkFIUUFhUUJsQUhJQU1nQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUJBQUFBQUFBQUFBSUFBQUFBQUE9PSIvPjwv?=
+ =?us-ascii?Q?bWV0YT4=3D?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR03MB5168:EE_|BY5PR03MB5202:EE_
+x-ms-office365-filtering-correlation-id: 00a574b3-c383-4020-8c36-08db036d6b26
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ffpXk4G2HkNxI/mToJTUuvFYNAD3/83Z15+OtgEfH/Hn3iR+bSUhvqD/IasQmBrWMw44i0ztaou/ldDFaq2IOnVNsY8T3pbD104T2dMG7Bu56vCfg3qL48krJECFpeHWSrOWdPvyblLwZ6qEKgQ3kkkJh5JsP7rNpz7IuyDC1Na6Xa++hnTZ/iIOCzzsY7yrPylCvTXjcBEnL7lFEOW1JFpFgp53NJ4jwzP1lpPr0/egqfcmWhpu5hjyKt7XttEWoccaMWWM6fLEaXlYPgEwqxPaYU/KEqECc5k35647H/jtM7axkiPiQwiLtTiIFJlNxrgy0uFwChEyU8QxYby3ClrPFBcsIw42Au91rRvvh6VvX15T81sm7h/XjngQ52qKkijw52ewrIbRm78wrDlsiKsdL8b+xoU5t1aIobNelyR++MOwNxj1nxHb7A6c1DaY9QHaCdSgoSxX/51UnDUjro/sge8TO30LvHSzwcU7M3WW/NBR1DcqY0RPKzqn8CAESgOd3ju5Nh+Q7436nfBSm7E3uSG7xvbNbwnGz56uvRlo8kbPoIvpsl7PlL3V0UXgdShJmhdFlrR0DpOhBPYbS+QUFeyzmiakurU/N3F8Cf6wsxDHfEBpgAhwriMpXYcE2MM1hIeQjQ5YoLABheKsKZUdhx3V8GywiVUYyXXzZPBm1DjteBdTrwuAIKHS/XNS+G+Ao1wDkPQXHqcUL6DUJQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR03MB5168.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(366004)(396003)(39860400002)(376002)(346002)(451199018)(52536014)(2906002)(316002)(2940100002)(122000001)(186003)(53546011)(6506007)(5660300002)(38070700005)(7416002)(54906003)(9686003)(26005)(38100700002)(55016003)(7696005)(71200400001)(33656002)(66476007)(86362001)(478600001)(66556008)(8676002)(6916009)(64756008)(4326008)(66446008)(8936002)(66946007)(76116006)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YDdISysTQ4Whd4s/z5CAyWaE2Mr3F5xDsqksgRluO2pUWRUrWKC4idBanFqN?=
+ =?us-ascii?Q?yYbcDjPwSJv14CIqecIEHlbUKSn9kN9ADVOpH1mk1ki2YMjHhPanHsJzQJJ1?=
+ =?us-ascii?Q?4zGwegAjPa+q0v6JjBk0YghpRmRQ6I2q7PTnznu/ejT0T/NyI062fnDCZvR4?=
+ =?us-ascii?Q?q8KgS6XcG6EcCoKaTtnBz/NZY7hKre5Hp5DBi6BgMb8APx2j0giOK/Uzcf7U?=
+ =?us-ascii?Q?mzXtuspOXQflQMhTpqh9Ve1FD+wXfHmoK8egzQa0fvpmeiuaq2HuAoS2+ivh?=
+ =?us-ascii?Q?IvyZe1ccAgz0zTRDxPr4JuVYx2be7GQocCt2ccHsOaUA0BIk4foWynx30swV?=
+ =?us-ascii?Q?zv5ckIEXgu2erAb7FShkeZpxibBA80mWobh7uoHp/+tjI9Fp6JeRhUmIvurP?=
+ =?us-ascii?Q?t5vSm953XT1NRrpGnAO4Gcoy5NY02X+THXQQCtBbZAKKT649qADL0fGoX1K8?=
+ =?us-ascii?Q?sDbEE38w0aLMGDTtmkgkzq1awPaP9lDaqFNmWQKFVLusGC1ydfTiXvQLojRo?=
+ =?us-ascii?Q?nddNxDoCWOgUOauO1Rjuhbsde2rwD6bxvw1FDeof+P8oxKaUg9jmVlZg6QD2?=
+ =?us-ascii?Q?BVwwzlp9MLDqRM3Cz5gI3kUT8YoCBdKVGm6wMzFJkwToQwdgijh0I/38ahAM?=
+ =?us-ascii?Q?My72BZmy2QGqDWia4E2gtaBD4lAwFVmK6GkjIj6X8i5XT3FJMEsuBiUiceXB?=
+ =?us-ascii?Q?9DLgti4YV3lmOA7gg8jXQOhp3Hmc6284/0bzcrxEJXGr5YJQWv2TF7ON3CjW?=
+ =?us-ascii?Q?1dfvqged8RA4XDmo0rHiyyUOIpISKD98zprYf0EGEaigrSr3VAP8LqKaTsMr?=
+ =?us-ascii?Q?+ZG7BRimiNKxV8KQZtSM2anzWw710E/ILVxKl9JEn5CqKI0pbzZZThctveqe?=
+ =?us-ascii?Q?Tc2DV+HtsYCFDPfklywOGczzy0CqpiwOQhZHK8s3gB5rNDNSPLxNGuNU+qiR?=
+ =?us-ascii?Q?TboWG7MTvSViaKJTiW/a469zW4Q3FLAYx+860f8dFAu3urmhlb4jApjrNe1S?=
+ =?us-ascii?Q?te5IfFoDMUlExdzpLzYcGx5fdS6EZ3urP8NuG1jKV76cRMnXPGDeC4x73E0I?=
+ =?us-ascii?Q?KEyqEkAMyxZM+6gJEigGj3ywE5m7zL0fXp8DZ5Tb2XkjXdEOP9FlcK837yRw?=
+ =?us-ascii?Q?lrixiwucmcgdanUI411BHBZzsfct3XKX5P5iUGXOAn1KfHKAXLr347dudl8O?=
+ =?us-ascii?Q?74tCKb0+wHlpO6Ze+QHQvdevULJbIR+ets0lKcfGj8wB4TLMeBHXqsaNR6mx?=
+ =?us-ascii?Q?G/D0VEYgBanlmDQUdsjc1yrlyjvlQvK39JRg3hBI1UYkC8CJyn9MLZmASRdY?=
+ =?us-ascii?Q?dsEDxeo2bsUzaalEbhAl0jZPFdAsyTaI5gcbxJyLUan3WrMFxBMWCxOW1Tzs?=
+ =?us-ascii?Q?O5gG5XMAHn1EcatskcaMK5xiCXGlyg7q071LQ+ASoe7DHDhFW4tWTaAkdhtY?=
+ =?us-ascii?Q?sDDjp4Ar8DxXdHXLQPjUD8zcYRd5pDBFrfm064V2f4krvihX6I//Bym6fUak?=
+ =?us-ascii?Q?Q1CDdbwhQBI966nOxaibopPVvIzCqHgY7Z54BXHoc9Hz1BKAyQ3tDqUEg2Rd?=
+ =?us-ascii?Q?x9+CexeGNS/CVjTAUTIot7CetkHeUOlfoweSxWRd?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.45.154.62]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR03MB5168.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00a574b3-c383-4020-8c36-08db036d6b26
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jan 2023 09:27:48.6750
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YKI59ObpyqOZWtK3wKZQyKp0vRE5o2pinx+jsiIKRrQagF5eOMs5a/HwORemaJXmhAve8oqNQi06vBsldGatvg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB5202
+X-Proofpoint-ORIG-GUID: A42d89DgJIZih9m4JxHsxS3QynCj8U9_
+X-Proofpoint-GUID: A42d89DgJIZih9m4JxHsxS3QynCj8U9_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-31_04,2023-01-30_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0 adultscore=0
+ phishscore=0 mlxscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301310082
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 Jan 2023 21:42:09 +0100
-Andreas Feldner <pelzi@flying-snail.de> wrote:
 
-> On a BananaPi M2 Zero, the existing, IRQ based dht11 driver is not working,
-> but missing most IRQs. Following the hints in Harald Geyer's comments I
-> tried to implement a version of the driver that is polling the GPIO
-> sensor in a busy loop, not using IRQ altogether.
-> 
-> This version is actually working fair enough on this board, yielding a
-> valid result at every 2 or 3 read attempts.
-> 
-> I used the "compatible" string to allow selection of the required driver.
-> To select this forked driver, give compatible="dht11-poll" instead of
-> compatible="dht11" in the device tree (overlay).
-> 
-> Signed-off-by: Andreas Feldner <pelzi@flying-snail.de>
-Hi Andreas,
+Hi Andy,
 
-Whilst this is potentially interesting as a PoC, we aren't going to take
-a second driver upstream for the same part.
+Sorry for second question. I do not want to bother you, but I realized that=
+ I need to be sure about driver_data before sending new patch. You said tha=
+t you need to use pointers directly for driver_data then I fixed that part =
+in mfd, but I do not need or  use driver_data in regulator since chip_id co=
+mes from mfd device so I think using like below should be enough for my imp=
+lementation.
 
-So if this is going to go forwards it would need to be integrated with
-the existing driver with selection via whether an IRQ is provided in DT.
+static const struct platform_device_id max77541_regulator_platform_id[] =3D=
+ {
+	{ "max77540-regulator", },
+	{ "max77541-regulator", },
+	{  /* sentinel */  }
+};
+MODULE_DEVICE_TABLE(platform, max77541_regulator_platform_id);
 
-However, a driver that only reads successfully after a few goes and relies
-on rapidly polling is not something I'm keen on merging. Whether it works
-at all will likely be dependent on the precise platform and what else is
-running.
+static const struct of_device_id max77541_regulator_of_id[] =3D {
+	{ .compatible =3D "adi,max77540-regulator", },
+	{ .compatible =3D "adi,max77541-regulator", },
+	{ /* sentinel */  }
+};
+MODULE_DEVICE_TABLE(of, max77541_regulator_of_id);
 
-A few quick comments inline.
+What do you think?
 
-I've not looked at the algorithm so this is all more superficial stuff.
+On Tue, Jan 31, 2023 at 10:21 AM +0300, Okan Sahin wrote:
 
-Thanks,
+>Hi Andy,
+>
+>Thank you for your feedback and efforts. I have a question below.
+>
+>On Wed, 18 Jan 2022 11:20 AM
+>Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>
+>>On Wed, Jan 18, 2023 at 09:38:10AM +0300, Okan Sahin wrote:
+>>> Regulator driver for both MAX77541 and MAX77540.
+>>> The MAX77541 is a high-efficiency step-down converter with two 3A
+>>> switching phases for single-cell Li+ battery and 5VDC systems.
+>>>
+>>> The MAX77540 is a high-efficiency step-down converter with two 3A
+>>> switching phases.
+>>
+>>...
+>>
+>>> + * Copyright (c) 2022 Analog Devices, Inc.
+>>
+>>Happy New Year!
+>>
+>>...
+>>
+>>> +static int max77541_regulator_probe(struct platform_device *pdev) {
+>>> +	struct max77541 *max77541 =3D dev_get_drvdata(pdev->dev.parent);
+>>> +	struct regulator_config config =3D {};
+>>> +	const struct regulator_desc *desc;
+>>> +	struct device *dev =3D &pdev->dev;
+>>
+>>You may rearrange this a bit
+>>
+>>	struct max77541 *max77541 =3D dev_get_drvdata(dev->parent);
+>>
+>>> +	struct regulator_dev *rdev;
+>>> +	int i;
+>>
+>>> +	config.dev =3D pdev->dev.parent;
+>>
+>>dev->parent
+>>
+>>> +
+>>> +	if (max77541->id =3D=3D MAX77540)
+>>> +		desc =3D max77540_regulators_desc;
+>>> +	else if (max77541->id =3D=3D MAX77541)
+>>> +		desc =3D max77541_regulators_desc;
+>>> +	else
+>>> +		return -EINVAL;
+>>> +
+>>> +	for (i =3D 0; i < MAX77541_MAX_REGULATORS; i++) {
+>>
+>>> +		rdev =3D devm_regulator_register(dev,
+>>> +					       &desc[i], &config);
+>>
+>>This is perfectly one line.
+>Thank you, I will arrange it.
+>>
+>>> +		if (IS_ERR(rdev))
+>>> +			return dev_err_probe(dev, PTR_ERR(rdev),
+>>> +					     "Failed to register regulator\n");
+>>> +	}
+>>> +
+>>> +	return 0;
+>>> +}
+>>
+>>...
+>However, this one is not fit when I set max-line-length argument as 80 in
+>checkpatch script. What do you suggest? This line has 99 characters.
+>>
+>>> +static const struct of_device_id max77541_regulator_of_id[] =3D {
+>>> +	{
+>>> +		.compatible =3D "adi,max77540-regulator",
+>>> +		.data =3D (void *)MAX77540,
+>>> +	},
+>>> +	{
+>>> +		.compatible =3D "adi,max77541-regulator",
+>>> +		.data =3D (void *)MAX77541,
+>>> +	},
+>>> +	{ /* sentinel */  }
+>>
+>>As pointed out, better to use pointers directly.
+>>
+>>> +};
+>>
+>>--
+>>With Best Regards,
+>>Andy Shevchenko
+>>
+>
+>Regards,
+>Okan Sahin
 
-Jonathan
-
-> ---
->  drivers/iio/humidity/Kconfig         |  10 +
->  drivers/iio/humidity/Makefile        |   1 +
->  drivers/iio/humidity/dht11_polling.c | 348 +++++++++++++++++++++++++++
->  3 files changed, 359 insertions(+)
->  create mode 100644 drivers/iio/humidity/dht11_polling.c
-> 
-> diff --git a/drivers/iio/humidity/Kconfig b/drivers/iio/humidity/Kconfig
-> index 2de5494e7c22..7b06b06181d4 100644
-> --- a/drivers/iio/humidity/Kconfig
-> +++ b/drivers/iio/humidity/Kconfig
-> @@ -25,6 +25,16 @@ config DHT11
->  	  Other sensors should work as well as long as they speak the
->  	  same protocol.
->  
-> +config DHT11_POLLING
-> +	tristate "DHT11 (and compatible) sensors driver using polling"
-> +	depends on GPIOLIB || COMPILE_TEST
-> +	help
-> +	  This driver supports reading data via a single GPIO line.
-> +          This version does not require the line to generate
-
-Odd alignment.
-
-> +          interrupts. It is required to read DHT11/22 signals on
-> +          some boards that fail to generate IRQ quickly enough.
-> +          This driver is tested with DHT22 on a BananaPI M2 Zero.
-> +
->  config HDC100X
->  	tristate "TI HDC100x relative humidity and temperature sensor"
->  	depends on I2C
-> diff --git a/drivers/iio/humidity/Makefile b/drivers/iio/humidity/Makefile
-> index f19ff3de97c5..908e5ecebb27 100644
-> --- a/drivers/iio/humidity/Makefile
-> +++ b/drivers/iio/humidity/Makefile
-> @@ -5,6 +5,7 @@
->  
->  obj-$(CONFIG_AM2315) += am2315.o
->  obj-$(CONFIG_DHT11) += dht11.o
-> +obj-$(CONFIG_DHT11_POLLING) += dht11_polling.o
->  obj-$(CONFIG_HDC100X) += hdc100x.o
->  obj-$(CONFIG_HDC2010) += hdc2010.o
->  obj-$(CONFIG_HID_SENSOR_HUMIDITY) += hid-sensor-humidity.o
-> diff --git a/drivers/iio/humidity/dht11_polling.c b/drivers/iio/humidity/dht11_polling.c
-> new file mode 100644
-> index 000000000000..ea41548144b0
-> --- /dev/null
-> +++ b/drivers/iio/humidity/dht11_polling.c
-> @@ -0,0 +1,348 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * DHT11/DHT22 polling version of the bit banging GPIO driver.
-> + *
-> + * Copyright (c) Andreas Feldner <pelzi@flying-snail.de>
-> + * based on work Copyright (c) Harald Geyer <harald@ccbib.org>
-> + */
-> +
-> +#include <linux/err.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/device.h>
-> +#include <linux/kernel.h>
-> +#include <linux/printk.h>
-> +#include <linux/slab.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/io.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/wait.h>
-> +#include <linux/bitops.h>
-> +#include <linux/completion.h>
-> +#include <linux/mutex.h>
-> +#include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/timekeeping.h>
-
-Strangely I ran into this one yesterday. Should include
-linux/ktime.h to get linux/timekeeping.h otherwise you'll get
-build errors on a few architectures.
-
-> +
-> +#include <linux/iio/iio.h>
-> +
-> +#define DRIVER_NAME	"dht11_poll"
-> +
-> +#define DHT11_DATA_VALID_TIME	2000000000  /* 2s in ns */
-> +
-> +#define DHT11_EDGES_PREAMBLE 2
-> +#define DHT11_BITS_PER_READ 40
-> +/*
-> + * Note that when reading the sensor actually 84 edges are detected, but
-> + * since the last edge is not significant, we only store 83:
-> + */
-> +#define DHT11_EDGES_PER_READ (2 * DHT11_BITS_PER_READ + \
-> +			      DHT11_EDGES_PREAMBLE + 1)
-> +
-> +/*
-> + * Data transmission timing:
-> + * Data bits are encoded as pulse length (high time) on the data line.
-> + * 0-bit: 22-30uS -- typically 26uS (AM2302)
-> + * 1-bit: 68-75uS -- typically 70uS (AM2302)
-> + * The actual timings also depend on the properties of the cable, with
-> + * longer cables typically making pulses shorter.
-> + *
-> + * Our decoding depends on the time resolution of the system:
-> + * timeres > 34uS ... don't know what a 1-tick pulse is
-> + * 34uS > timeres > 30uS ... no problem (30kHz and 32kHz clocks)
-> + * 30uS > timeres > 23uS ... don't know what a 2-tick pulse is
-> + * timeres < 23uS ... no problem
-> + *
-> + * Luckily clocks in the 33-44kHz range are quite uncommon, so we can
-> + * support most systems if the threshold for decoding a pulse as 1-bit
-> + * is chosen carefully. If somebody really wants to support clocks around
-> + * 40kHz, where this driver is most unreliable, there are two options.
-> + * a) select an implementation using busy loop polling on those systems
-> + * b) use the checksum to do some probabilistic decoding
-> + */
-> +#define DHT11_START_TRANSMISSION_MIN	18000  /* us */
-> +#define DHT11_START_TRANSMISSION_MAX	20000  /* us */
-> +#define DHT11_MIN_TIMERES	34000  /* ns */
-> +#define DHT11_THRESHOLD		49000  /* ns */
-> +#define DHT11_AMBIG_LOW		23000  /* ns */
-> +#define DHT11_AMBIG_HIGH	30000  /* ns */
-> +
-> +struct dht11 {
-> +	struct device			*dev;
-> +
-> +	struct gpio_desc		*gpiod;
-> +
-> +	bool				complete;
-> +	/* The iio sysfs interface doesn't prevent concurrent reads: */
-> +	struct mutex			lock;
-> +
-> +	s64				timestamp;
-> +	int				temperature;
-> +	int				humidity;
-> +
-> +	/* num_edges: -1 means "no transmission in progress" */
-> +	int				num_edges;
-> +	struct {s64 ts; int value; }	edges[DHT11_EDGES_PER_READ];
-
-spacing after {
-
-> +};
-> +
-> +/*
-> + * dht11_edges_print: show the data as actually received by the
-> + *                    driver.
-> + */
-> +static void dht11_edges_print(struct dht11 *dht11)
-> +{
-> +	int i;
-> +
-> +	dev_dbg(dht11->dev, "%d edges detected:\n", dht11->num_edges);
-> +	for (i = 1; i < dht11->num_edges; ++i) {
-> +		dev_dbg(dht11->dev, "%d: %lld ns %s\n", i,
-> +			dht11->edges[i].ts - dht11->edges[i - 1].ts,
-> +			dht11->edges[i - 1].value ? "high" : "low");
-> +	}
-> +}
-> +
-> +static unsigned char dht11_decode_byte(char *bits)
-> +{
-> +	unsigned char ret = 0;
-> +	int i;
-> +
-> +	for (i = 0; i < 8; ++i) {
-> +		ret <<= 1;
-> +		if (bits[i])
-> +			++ret;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int dht11_decode(struct dht11 *dht11, int offset)
-> +{
-> +	int i, t;
-> +	char bits[DHT11_BITS_PER_READ];
-> +	unsigned char temp_int, temp_dec, hum_int, hum_dec, checksum;
-> +
-> +	for (i = 0; i < DHT11_BITS_PER_READ; ++i) {
-> +		t = dht11->edges[offset + 2 * i + 1].ts -
-> +			dht11->edges[offset + 2 * i].ts;
-> +		if (!dht11->edges[offset + 2 * i].value) {
-> +			dev_info(dht11->dev,
-> +				 "lost synchronisation at edge %d using offset %d\n",
-> +				 offset + 2 * i, offset);
-> +			return -EIO;
-> +		}
-> +		bits[i] = t > DHT11_THRESHOLD;
-> +	}
-> +
-> +	hum_int = dht11_decode_byte(bits);
-> +	hum_dec = dht11_decode_byte(&bits[8]);
-> +	temp_int = dht11_decode_byte(&bits[16]);
-> +	temp_dec = dht11_decode_byte(&bits[24]);
-> +	checksum = dht11_decode_byte(&bits[32]);
-> +
-> +	if (((hum_int + hum_dec + temp_int + temp_dec) & 0xff) != checksum) {
-> +		dev_info(dht11->dev, "invalid checksum using offset %d\n", offset);
-> +		return -EIO;
-> +	}
-> +
-> +	dht11->timestamp = ktime_get_boottime_ns();
-> +	if (hum_int < 4) {  /* DHT22: 100000 = (3*256+232)*100 */
-> +		dht11->temperature = (((temp_int & 0x7f) << 8) + temp_dec) *
-> +					((temp_int & 0x80) ? -100 : 100);
-> +		dht11->humidity = ((hum_int << 8) + hum_dec) * 100;
-> +	} else if (temp_dec == 0 && hum_dec == 0) {  /* DHT11 */
-> +		dht11->temperature = temp_int * 1000;
-> +		dht11->humidity = hum_int * 1000;
-> +	} else {
-> +		dev_err(dht11->dev,
-> +			"Don't know how to decode data: %d %d %d %d\n",
-> +			hum_int, hum_dec, temp_int, temp_dec);
-> +		return -EIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * IRQ handler called on GPIO edges
-> + */
-> +static void dht11_handle_edge(struct dht11 *dht11, int value)
-> +{
-> +	if (dht11->num_edges < DHT11_EDGES_PER_READ && dht11->num_edges >= 0) {
-> +		dht11->edges[dht11->num_edges].ts = ktime_get_boottime_ns();
-> +		dht11->edges[dht11->num_edges++].value = value;
-> +
-> +		if (dht11->num_edges >= DHT11_EDGES_PER_READ)
-> +			dht11->complete = !0;
-> +	}
-> +}
-> +
-> +static int dht11_read_raw(struct iio_dev *iio_dev,
-> +			  const struct iio_chan_spec *chan,
-> +			  int *val, int *val2, long m)
-> +{
-> +	struct dht11 *dht11 = iio_priv(iio_dev);
-> +	int ret, timeres, offset, value_prev, num_samples;
-> +	u64 startstamp;
-> +
-> +	mutex_lock(&dht11->lock);
-> +
-> +	startstamp = ktime_get_boottime_ns();
-> +	if (dht11->timestamp + DHT11_DATA_VALID_TIME < startstamp) {
-> +		timeres = ktime_get_resolution_ns();
-> +		dev_dbg(dht11->dev, "current timeresolution: %dns\n", timeres);
-> +		if (timeres > DHT11_MIN_TIMERES) {
-> +			dev_err(dht11->dev, "timeresolution %dns too low\n",
-> +				timeres);
-> +			/* In theory a better clock could become available
-Comment syntax for IIO multiline comments is
-			/*
-			 * In theory...
-
-> +			 * at some point ... and there is no error code
-> +			 * that really fits better.
-
-Hmm. I'd just error out without implying it's worth a retry.
-Chances of better clock becoming available is low.
-If you want to do this, do it at probe and defer probing perhaps.
-
-> +			 */
-> +			ret = -EAGAIN;
-> +			goto err;
-> +		}
-> +		if (timeres > DHT11_AMBIG_LOW && timeres < DHT11_AMBIG_HIGH)
-> +			dev_warn(dht11->dev,
-> +				 "timeresolution: %dns - decoding ambiguous\n",
-> +				 timeres);
-> +
-> +		dht11->complete = 0;
-> +
-> +		dht11->num_edges = 0;
-> +		ret = gpiod_direction_output(dht11->gpiod, 0);
-> +		if (ret)
-> +			goto err;
-> +		usleep_range(DHT11_START_TRANSMISSION_MIN,
-> +			     DHT11_START_TRANSMISSION_MAX);
-> +		value_prev = 0;
-> +		ret = gpiod_direction_input(dht11->gpiod);
-> +		if (ret)
-> +			goto err;
-> +
-> +		num_samples = 0;
-> +		while (!dht11->complete) {
-> +			int value = gpiod_get_value_cansleep(dht11->gpiod);
-> +
-> +			if (value >= 0 && value != value_prev) {
-> +				dht11_handle_edge(dht11, value);
-> +				value_prev = value;
-> +				num_samples = 1;
-> +			} else if (value < 0) {
-> +				ret = value;
-> +				break;
-> +			} else {
-> +				num_samples++;
-> +				if ((num_samples % 1000) == 0) {
-> +					dev_warn(dht11->dev, "No edge detected during 1000 reads, aborting polling.\n");
-> +					ret = -ETIMEDOUT;
-> +					dht11_handle_edge(dht11, value);
-> +					break;
-> +				}
-> +			}
-> +		}
-> +
-> +		dht11_edges_print(dht11);
-> +
-> +		if (dht11->num_edges < 2 * DHT11_BITS_PER_READ) {
-> +			dev_err(dht11->dev, "Only %d signal edges detected\n",
-> +				dht11->num_edges);
-> +			ret = -ETIMEDOUT;
-> +		} else {
-> +			/* there is a chance we only missed out the preamble! */
-> +			ret = 0;
-> +		}
-> +		if (ret < 0)
-> +			goto err;
-> +
-> +		offset = dht11->num_edges - 2 * DHT11_BITS_PER_READ;
-> +
-> +		for (; offset >= 0; offset--) {
-> +			if (dht11->edges[offset].value)
-> +				ret = dht11_decode(dht11, offset);
-> +			else
-> +				ret = -EIO;
-> +			if (!ret)
-> +				break;
-> +		}
-> +
-> +		if (ret)
-> +			goto err;
-> +	}
-> +
-> +	ret = IIO_VAL_INT;
-> +	if (chan->type == IIO_TEMP)
-
-Switch statement would be cleaner here even if more lines of code.
-
-> +		*val = dht11->temperature;
-> +	else if (chan->type == IIO_HUMIDITYRELATIVE)
-> +		*val = dht11->humidity;
-> +	else
-> +		ret = -EINVAL;
-> +err:
-> +	dht11->num_edges = -1;
-> +	mutex_unlock(&dht11->lock);
-> +	return ret;
-> +}
-> +
-> +static const struct iio_info dht11_iio_info = {
-> +	.read_raw		= dht11_read_raw,
-> +};
-> +
-> +static const struct iio_chan_spec dht11_chan_spec[] = {
-> +	{ .type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED), },
-> +	{ .type = IIO_HUMIDITYRELATIVE,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED), }
-> +};
-> +
-> +static const struct of_device_id dht11_dt_ids[] = {
-> +	{ .compatible = "dht11-poll", },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, dht11_dt_ids);
-> +
-> +static int dht11_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct dht11 *dht11;
-> +	struct iio_dev *iio;
-> +
-> +	iio = devm_iio_device_alloc(dev, sizeof(*dht11));
-> +	if (!iio) {
-> +		dev_err(dev, "Failed to allocate IIO device\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	dht11 = iio_priv(iio);
-> +	dht11->dev = dev;
-> +	dht11->gpiod = devm_gpiod_get(dev, NULL, GPIOD_IN);
-> +	if (IS_ERR(dht11->gpiod))
-> +		return PTR_ERR(dht11->gpiod);
-> +
-> +	dht11->timestamp = ktime_get_boottime_ns() - DHT11_DATA_VALID_TIME - 1;
-> +	dht11->num_edges = -1;
-> +
-> +	platform_set_drvdata(pdev, iio);
-
-Is this used?
-
-> +
-> +	dht11->complete = 0;
-> +	mutex_init(&dht11->lock);
-> +	iio->name = pdev->name;
-
-Hard code the name here as it's easier than us figuring out what
-this ends up as. 
-
-> +	iio->info = &dht11_iio_info;
-> +	iio->modes = INDIO_DIRECT_MODE;
-> +	iio->channels = dht11_chan_spec;
-> +	iio->num_channels = ARRAY_SIZE(dht11_chan_spec);
-> +
-> +	return devm_iio_device_register(dev, iio);
-> +}
-> +
-> +static struct platform_driver dht11_driver = {
-> +	.driver = {
-> +		.name	= DRIVER_NAME,
-
-Don't try to align values, it goes wrong far too often as drivers
-are extended.  Also better to have the name directly here.
-
-
-> +		.of_match_table = dht11_dt_ids,
-> +	},
-> +	.probe  = dht11_probe,
-> +};
-> +
-> +module_platform_driver(dht11_driver);
-> +
-> +MODULE_AUTHOR("Andreas Feldner <pelzi@flying-snail.de>");
-> +MODULE_DESCRIPTION("DHT11 polling humidity/temperature sensor driver");
-> +MODULE_LICENSE("GPL v2");
+Regards,
+Okan
 

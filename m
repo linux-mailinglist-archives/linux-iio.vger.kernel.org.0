@@ -2,108 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D87B2682A0E
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 11:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 264F8682A10
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Jan 2023 11:13:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbjAaKNU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 Jan 2023 05:13:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41728 "EHLO
+        id S229969AbjAaKNf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 Jan 2023 05:13:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjAaKNT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 05:13:19 -0500
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 900B92386D;
-        Tue, 31 Jan 2023 02:13:18 -0800 (PST)
-Received: by mail-qt1-f173.google.com with SMTP id w3so4162272qts.7;
-        Tue, 31 Jan 2023 02:13:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bOusrxrqG7TnsLI2NCfTQDgToKUngDEM8aFSM9oqO2E=;
-        b=uRkeA27S1kLE3p42ORWJCgk2P1fQffOHrxWENuqhMb2nPyIcwmgtHoIVHAzNFNRLN1
-         vLo1r2256d/b/KLun150Pv2VZ0ResNm3+YocXGZ1UvnOkHP1ITg/vgBGnILHO2XXKkt1
-         +u4YjfJCM8rFfh3IOiCLSiWdxOqyvfuJYFvMtqdAGBF0ZdwhU8o8hP9yiek3A5glSFQ/
-         LmFyMyHnhlRThOZBLKJmaHJRWuKMr+2kFicpuhi1oEpC7aNP/McfcFadBx2DV1rKGIpD
-         ZCBj2ih3LeWwd+K0jO1CHaHAoTST7Jv60tFynS9SH/m45UNfTzF6YN98UrUYR9hRC9hd
-         Z6dg==
-X-Gm-Message-State: AO0yUKW5UlMW4AhdwNz/KdY02IoOFS9FXl6oJZyp8V6FWA1kWRXLa1tq
-        sPuztHjp0hoNLD3qYvAoIu6h7IBgf1Oe9Q==
-X-Google-Smtp-Source: AK7set/izsiPqfh3yUF5hQTTQXLkNj3SNOxVHLlEh7qHdk1qDTs+9OjOFUeMBxtk4LK6FG6eIvyfyg==
-X-Received: by 2002:a05:622a:130e:b0:3b9:abfb:61cd with SMTP id v14-20020a05622a130e00b003b9abfb61cdmr3310558qtk.26.1675159997156;
-        Tue, 31 Jan 2023 02:13:17 -0800 (PST)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
-        by smtp.gmail.com with ESMTPSA id o11-20020ac8428b000000b003b63b8df24asm2068554qtl.36.2023.01.31.02.13.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Jan 2023 02:13:16 -0800 (PST)
-Received: by mail-yb1-f170.google.com with SMTP id x4so17454813ybp.1;
-        Tue, 31 Jan 2023 02:13:16 -0800 (PST)
-X-Received: by 2002:a25:9801:0:b0:7d5:b884:3617 with SMTP id
- a1-20020a259801000000b007d5b8843617mr4711958ybo.380.1675159996282; Tue, 31
- Jan 2023 02:13:16 -0800 (PST)
-MIME-Version: 1.0
-References: <7b7a13680fa24282c3407e12b5943a66a2ed9068.1666611184.git.geert+renesas@glider.be>
- <3c0895a3-2da6-3bd1-c786-01cf5eaa2452@linaro.org> <20221029135102.5bb9d786@jic23-huawei>
-In-Reply-To: <20221029135102.5bb9d786@jic23-huawei>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 31 Jan 2023 11:13:04 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVTkPZm+66PumNa_LgV6DYR2HgH9k6Nbi9RcRPHGRDOVw@mail.gmail.com>
-Message-ID: <CAMuHMdVTkPZm+66PumNa_LgV6DYR2HgH9k6Nbi9RcRPHGRDOVw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rcar-gyroadc:
- Miscellaneous improvements
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
+        with ESMTP id S229863AbjAaKNf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 Jan 2023 05:13:35 -0500
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0E249973;
+        Tue, 31 Jan 2023 02:13:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1675160010; x=1706696010;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BLfbb6NEKYdixzxNTlcXCZh7D0DeRCzh+i1m4DSVTHE=;
+  b=ETIOItMumTwPC0gz/hoe83YrVY19feJQMYgzsPCH5w2R3t6kwBnWI7wZ
+   QdXnNvsVDggQzZMGXdb6M6Qg/vu3xzTwI+8joSA8rzL8YjVTo6Azo06pW
+   BP4DDG5POCdbt1ga9K6h7in1mAm/yvOr7aMcjMylZeJ7qjxA+1LeQAvOA
+   6uGU59eCWGMBtlBBIaKiWQZ9vm9UIcodM43bwJTMrUCMMem6iK/nZsZ8w
+   eCfs0arCFfgGFcOD4g3gPriFfbxVL0+aqY9xcam3EjQDTU4t5fbnGLXVY
+   YDJG0sw3NDer6ZyStz5oKoK+K/vj4c8jlyTfymAJDrynH914qfd4+6HLf
+   g==;
+X-IronPort-AV: E=Sophos;i="5.97,261,1669071600"; 
+   d="scan'208";a="28766403"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 31 Jan 2023 11:13:28 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Tue, 31 Jan 2023 11:13:28 +0100
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Tue, 31 Jan 2023 11:13:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1675160008; x=1706696008;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BLfbb6NEKYdixzxNTlcXCZh7D0DeRCzh+i1m4DSVTHE=;
+  b=XsaWx+s9ssnD+/NMSGf8viPpUW8NdIihwUBCWJBiMZi37dGB1xi28RHI
+   z0RTFcWuCjoNQYavSpvbbYQbzXm67GU/ifrX+PIfEjqFKjSonPnGO5E3x
+   5m0loycsEV/IEomQF/1y2DtyFD9Jc+kiRsxrpM48qPG42Bsh2txfrQ4O1
+   Soxm/VKwpP0Lj8N7AQ/kh+/I45XfM8gI47rvQpDx4Bk7xcs9jqgzU+1bk
+   4TGsr9KWoFXn2GIrHPNoufg4cLeoDjbyOf1XtRQUmbgjhG4NJIe697Q7u
+   1iq70E0kCQnAQkyR5DbFVQwJnEv1KzLLZhlXs1//72H/oIOIyjWqFgepT
+   g==;
+X-IronPort-AV: E=Sophos;i="5.97,261,1669071600"; 
+   d="scan'208";a="28766402"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 31 Jan 2023 11:13:27 +0100
+Received: from steina-w.tq-net.de (unknown [10.123.53.21])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id B8075280056;
+        Tue, 31 Jan 2023 11:13:27 +0100 (CET)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Cai Huoqing <cai.huoqing@linux.dev>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/1] dt-bindings: iio: adc: add missing vref-supply
+Date:   Tue, 31 Jan 2023 11:13:23 +0100
+Message-Id: <20230131101323.606931-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Although this property is used right now for IIO_CHAN_INFO_SCALE,
+this ADC has two internal reference voltages, which the driver currently
+doesn't make use of.
 
-On Sat, Oct 29, 2022 at 2:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Mon, 24 Oct 2022 08:23:43 -0400
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > On 24/10/2022 07:34, Geert Uytterhoeven wrote:
-> > > Set limits on the number of power-domains and resets, and make them
-> > > required.
-> > >
-> > > Simplify the example, and update it to match reality:
-> > >   - Convert from obsolete MSTP to CPG/MSSR bindings,
-> > >   - Examples should use #{address,size}-cells = <1>,
-> > >   - Add missing resets property,
-> > >   - Drop soc container and pinctrl properties, which are not needed in
-> > >     examples.
-> > >
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
-> >
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Applied,
+Fixes: db73419d8c06 ("dt-bindings: iio: adc: Add binding documentation for NXP IMX8QXP ADC")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ .../devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml          | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Looks like this fell through the cracks, as I cannot see it applied?
-Do you want me to resend?
-Thanks!
+diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+index 63369ba388e4..879768af0303 100644
+--- a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+@@ -39,6 +39,9 @@ properties:
+   power-domains:
+     maxItems: 1
+ 
++  vref-supply:
++    description: External ADC reference voltage supply on VREFH pad.
++
+   "#io-channel-cells":
+     const: 1
+ 
+@@ -72,6 +75,7 @@ examples:
+             assigned-clocks = <&clk IMX_SC_R_ADC_0>;
+             assigned-clock-rates = <24000000>;
+             power-domains = <&pd IMX_SC_R_ADC_0>;
++            vref-supply = <&reg_1v8>;
+             #io-channel-cells = <1>;
+         };
+     };
+-- 
+2.34.1
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

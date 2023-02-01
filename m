@@ -2,160 +2,256 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B62D1686643
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Feb 2023 13:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E11F168666D
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Feb 2023 14:11:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbjBAMwP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Feb 2023 07:52:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60808 "EHLO
+        id S231795AbjBANLk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Feb 2023 08:11:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbjBAMwO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Feb 2023 07:52:14 -0500
-Received: from mx.flying-snail.de (mx.flying-snail.de [IPv6:2a06:1c40:3::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC6F410AE;
-        Wed,  1 Feb 2023 04:52:05 -0800 (PST)
-Received: from [2a02:908:1b0:8800:2ff:ffff:fe11:2236] (helo=mondbasis.internal.flying-snail.de)
-        by mx.flying-snail.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <pelzi@flying-snail.de>)
-        id 1pNCai-001B9i-Ji; Wed, 01 Feb 2023 13:51:56 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=feldner-bv.de; s=s1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=9Kc52uTv16sb0p6oBN78b7mTEi6EW2H8uLi6sYCMDIs=; b=ktkS87f+Kf7kubR0H5oGcj8eZv
-        G6jhE5RrjOOZugFvEOR04xFilf27mHg2FB0WT314q6eDl1FrAgaHEntKoZL8VctuT4g3Dbm4ahsAY
-        yPkmSDzCyDdH9liMl9whoiVqn03AcUTrDRB/cPcF1plG37t01KhvpzYhKNjW1/5uB2H6D438Kp0Z7
-        W9hYQGVnDPJUtEv5wTOcg3eVqQIhVqGsU7QItQ2dFZRL+yu8pQnhmrAOJqwohbFHzIn3xfw+vT7S7
-        QB43IJMy+RkHKiYRTbIszwAbfANdDWr+b9Ru3gQLSjkDdk5Kzg56WpQSF2rFmzu4/PUQjDNlqwQQU
-        phUFRtAA==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=flying-snail.de; s=s1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To
-        :From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=9Kc52uTv16sb0p6oBN78b7mTEi6EW2H8uLi6sYCMDIs=; b=A2+j3qmKGfUl0SkB5cGY5Og1pb
-        gAgrZghlO7cegCW5GtT6iNdOzcdpevwFJG73qLrM7Gb0Ej1tOfGc2YgOgUq2Y1g5qG236Yv3+b+fn
-        +Kkrl8ADg4dju14fDGz5N1Kh76btdq3sh2XyRqHlcSxHkBReluM/HG8tyBWerBlE/a4I5VBbUM9Bz
-        juiLB9JMpNKeiKQ/3LkhAxh/Fp3mcavn6FvNiX9SAwGqkqoN2r5kZwLuPoqrKtnqVGtIz4PxA4W71
-        y19x4/b0OE0LODIh4zLs1wCqJyqCi0XUEXrHKi0LpOG26X1/Ny9/f6ACrFrAKD2Lb8Rd1o0Ver1xw
-        YTOZFRXw==;
-Received: from [2a02:908:1b0:8800:89e8:729d:cb4e:3baa]
-        by mondbasis.internal.flying-snail.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <pelzi@flying-snail.de>)
-        id 1pNCae-000APG-Gj; Wed, 01 Feb 2023 13:51:55 +0100
-Message-ID: <d03ec6a7-62c0-0a82-a0f0-d2030ed5723d@feldner-bv.de>
-Date:   Wed, 1 Feb 2023 13:51:52 +0100
+        with ESMTP id S231531AbjBANLj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Feb 2023 08:11:39 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48EDB61D7D;
+        Wed,  1 Feb 2023 05:11:36 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3119u5Dj011870;
+        Wed, 1 Feb 2023 08:11:33 -0500
+Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2045.outbound.protection.outlook.com [104.47.57.45])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3nfnvvguq6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 01 Feb 2023 08:11:33 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Wrv0DFHomZ7Fj5BUJ9XWJ0QrZ8DtEwnb2hxk02OjvLFeD0TAHvuOOtccD0GRRK5puqb0p22Eja3WYRay9Y1d+TYqUPC+yBJRDkcDgbmIAbi6OO0ah+9MeTmTmBXwLrmTbvhiSuMX1M2gkUotLFcG0sBghXKxCHNaOITTixy+Zn5oG32gEDWV0+nOzZHk14cHyMwF4bu1aVCPrFiYSU/9+XWCZ+B8JkFNogR+7eQYk00e6K6ziDu6kK34GRUyms/5wK8wj0PGQ65yaZMA0POT0I3412jeK5wF1TP33U56wfQuDitSQUsxQva4Sm5UeZw4x1axRqFQx1mlzZQhs1VfBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QFz+cyxuX5H52P2a28lUTlyuSJAmnTildWG/RBF37R8=;
+ b=ZJn1eUPzcZJNVqeGj/KhjXS2meuoBV5SSdRTBQsBzaTaTrvYx7BfFbHaKF8MDsfkUc2VY3Yn9Un5lsfOBPBB1dDH3A9vdjjXvrtIXjbxGWulLW671bfdDt757+AI3zPwPtaBQ+WYwCfizFBtjtCDlcCGasyCeq89FfIZBOU7dkf1vPfG4xUh3PVGuD6rqA13rcuSvt+J6ULIAikUTGyMZ/x4sd6tnYN+UVX7K7YhJ1fIDiXnzPDNEAy6um9Wc6tBTUH9vtqnZvU3h0x+4qBH03Be6mxaGfSWpyj+vkBxQG7xCS2ovDRs20m2ZU16xQHtiPxYdeAqJGQtMkShhkb5qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QFz+cyxuX5H52P2a28lUTlyuSJAmnTildWG/RBF37R8=;
+ b=XHvWgfbsrsV9V1DCAHMP48WXkkJL4HFNpO+SBP0tcg+3WoKMAPlJ+/3lZvP8f2uWAiTaTzvEYjA+REyElTGkfXl3n/1vD7wqy9GYomZMLHN4gNpxGW/dq73TH3AcD5U47v7GKFmO/jWFs2ReZCCDrrzthxhAT2ydf2SVfXKkULQ=
+Received: from CY4PR03MB3399.namprd03.prod.outlook.com (2603:10b6:910:57::13)
+ by BL1PR03MB6069.namprd03.prod.outlook.com (2603:10b6:208:309::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.24; Wed, 1 Feb
+ 2023 13:11:30 +0000
+Received: from CY4PR03MB3399.namprd03.prod.outlook.com
+ ([fe80::fdc9:2a00:3b74:9060]) by CY4PR03MB3399.namprd03.prod.outlook.com
+ ([fe80::fdc9:2a00:3b74:9060%7]) with mapi id 15.20.6043.038; Wed, 1 Feb 2023
+ 13:11:30 +0000
+From:   "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] drivers: iio: dac: ad5592r: add gpio_chip names
+Thread-Topic: [PATCH] drivers: iio: dac: ad5592r: add gpio_chip names
+Thread-Index: AQHY+mM74RG3gPw8BEirirbipGiYpa5NBR4AgG2ArrA=
+Date:   Wed, 1 Feb 2023 13:11:30 +0000
+Message-ID: <CY4PR03MB33992B4DBEF40A9F960001289BD19@CY4PR03MB3399.namprd03.prod.outlook.com>
+References: <20221117090130.51702-1-antoniu.miclaus@analog.com>
+ <20221123204832.3e514378@jic23-huawei>
+In-Reply-To: <20221123204832.3e514378@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?iso-8859-2?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcYW1pY2xhdX?=
+ =?iso-8859-2?Q?NcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZi?=
+ =?iso-8859-2?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy1lZWY4ZmM1Yy1hMjMxLTExZWQtYWQ4ZS?=
+ =?iso-8859-2?Q?00MTU2NDUwMDAwMzBcYW1lLXRlc3RcZWVmOGZjNWUtYTIzMS0xMWVkLWFk?=
+ =?iso-8859-2?Q?OGUtNDE1NjQ1MDAwMDMwYm9keS50eHQiIHN6PSIzMzQyIiB0PSIxMzMxOT?=
+ =?iso-8859-2?Q?czMDY4NzUwMzg0NjciIGg9IkZ2eUxpdVA5ZzVqVWxTSXk3S1VYWlBLZlln?=
+ =?iso-8859-2?Q?WT0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
+ =?iso-8859-2?Q?5DZ1VBQUVvQ0FBQURTMU94UGpiWkFaWGw2Q1dBN21aamxlWG9KWUR1Wm1N?=
+ =?iso-8859-2?Q?REFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBbkl6dWxBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QU?=
+ =?iso-8859-2?Q?c4QWFnQmxBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFh?=
+ =?iso-8859-2?Q?UUIwQUdrQWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQU?=
+ =?iso-8859-2?Q?FBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdV?=
+ =?iso-8859-2?Q?QVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQVlRQmtB?=
+ =?iso-8859-2?Q?R2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUUJqQUhRQW?=
+ =?iso-8859-2?Q?N3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21ldGE+?=
+x-dg-rorf: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY4PR03MB3399:EE_|BL1PR03MB6069:EE_
+x-ms-office365-filtering-correlation-id: a4654682-d571-4256-b893-08db0455d597
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: OsEKY9UXjCsguE1+Pf517D+Lbs1NWAndvRK6n+YkbhZgnnGWwrV1Fqp8tZUakWRIdp0DZSDJ43K6juspEv8Ths0oZ3F48E7A4YolOWVZ3jNY33d1cYfliJF/xnf7wejYvjSwrFc9GpciCr8YndDzox3ZrKaQfX4CP3SWPZa20F6yQzBJPxeNFIbWtPkEmpcO9L5IF9ezekpuBECRLu5Cd6ZK/rO+0Vv3C2bH8DOUEyngvTGLnc061rV4rNqwAE1NdxInsSyKNJdvLUGQxKiOPe1BEilkqWnKPsHwd8LKk/41mJCtnEhdS0IqlMt7sUSPmd5+f7KcNTvko86rTz92mlsZVC6udDAyJrAvAGnLcUg4WM2lGkSleb+GO/lJMkiYAKvV5EJNzi9cZEYeiXX4wtvStI/wKpr52eIezonzc6Um7BL6zBsuHTvNj8/rVbJTbfbYoob0s5pbK4FrL+tRtSQKRHakMucPB5qt6cZjYgtKgE7zdsq+pRP0I002f38PKWzBP4iuj29ypwecw50pJHULKw1BPxBJ91qoXMkp1EozEAwr2ioTadRLBQBYVmussP2T5/c66rMcPsPGObYCFZPmuHK6HNK0ree7NOWF0tDNiWMs5xcKthC7JWj91CxUweHKnzClg9L/PPFJltL40rdTa26WqHfNPAt6Ewpp1ATRDV7FGKeM6lS6pEVVpDaa
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3399.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(39860400002)(366004)(136003)(346002)(451199018)(83380400001)(54906003)(316002)(41300700001)(52536014)(8936002)(4326008)(6916009)(66946007)(64756008)(66556008)(66476007)(66446008)(6506007)(8676002)(76116006)(9686003)(26005)(53546011)(186003)(478600001)(66574015)(71200400001)(7696005)(38070700005)(86362001)(55016003)(33656002)(2906002)(5660300002)(38100700002)(122000001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?1S6CBIzf91jkMc1OBO9fJZu6Odhht0cpmrzog8uekfcQ3tl+Zjt7780Ez1?=
+ =?iso-8859-2?Q?YmLdUEkq+c1gGb6C6dnk6FNJzrSN1MBbKDLe2kC/vKE1g8EYy/9DCsNQ3F?=
+ =?iso-8859-2?Q?Z88AtRICPhFgv0fWq16E0+BE25jZJc1RB7yZFoOfuRJ2eTacDL8UwK9I+o?=
+ =?iso-8859-2?Q?4MTWkUEU3eEFhmqnzMOR0jtenUPJcrcm7zIfIEREN67pJoGzJfSrOzTkRY?=
+ =?iso-8859-2?Q?hakX9de0b+YeDH/v9E7PbGo/ju5sbvTfaz+8M4IDQZjmOAuBEBrr/x6jYw?=
+ =?iso-8859-2?Q?no9w/0XGbERnOCSi9vyF6Z1Nna43nVuqa3jGoR83SfFD4wyLQVkxTsdmqe?=
+ =?iso-8859-2?Q?IGvGyoOrE3n/U2FhHk8uPaMFmLIV1MDjQlILHruQ+fwZvNFzxZvksCajqw?=
+ =?iso-8859-2?Q?vcZx9Y69tPV5NrX3R3hO/PKUfW8ZeqJRD/2bCEow1CeGSLAT9uEBvLtUxu?=
+ =?iso-8859-2?Q?No+Xpf4JPf2TlhENPiAZSjPDHprBEyo1AOY8IaNMxMLfJ1Lqg63jmf8bc2?=
+ =?iso-8859-2?Q?QA9Z/YHV9wePMUMK0wu/mpT/bbAGV+YE1qJ0MiiODXup242S0fZnJ4kWXG?=
+ =?iso-8859-2?Q?k7DdtctjO7xQ4EMB7Qo+N1w7YISYg7yz0vrrx2ZfoIJ2c019pgXpPz7Jf8?=
+ =?iso-8859-2?Q?VZOPwxK8cMcchoGLN0gkfCMSwKKKfFJVzcjLZ4K7d6kwZGJDLCa8REORH5?=
+ =?iso-8859-2?Q?SNIhuwZJFHiC3/odTHRPX/JES7/inyyk0/mdPrQPZUKDlxyBuhmbrF2Rub?=
+ =?iso-8859-2?Q?b2E6OeOJFxYnxVgg9RpSPcfuIGSm2ZFX/j/QmxGDlu9qLIszWdIcaJaZDh?=
+ =?iso-8859-2?Q?74jeIEvjNBf229U2T1SM8WuBX3BA/1ezC+wN5zeo8497DWxDlLb3Aq/VBM?=
+ =?iso-8859-2?Q?ZZS6+igO+JdBbkXPEmkvoREwQsjbqukHuWnETdKgYlhoIc7jPRqoL6grYG?=
+ =?iso-8859-2?Q?Fr4Jqdz5XRv6GvcXNFEX2bak7FGsRU2UqW2vlyztsxuTQyTVS7rN5MeLWt?=
+ =?iso-8859-2?Q?/8xfu66FPATxzbKz6AC+AyFFNQXFtkDSZ7DG1c5ZJSaPdkiG72PF2jnfTd?=
+ =?iso-8859-2?Q?qLFIRdJFQl2IIKspRF3mkxzUrQmT3GN5fkddg/MvNnM+rz6gFxZkBb9+kI?=
+ =?iso-8859-2?Q?42tPZhbowMl+5zj2VkTUXXYpfKUaUwjTpnmYDQvKdkVEpmDRYHGapNicyZ?=
+ =?iso-8859-2?Q?EGnUcviziBFS/MXeLkgaCQ3zMHEc9RpBJ2NwvVUbCJ6sp1EA2AKDqqa1iS?=
+ =?iso-8859-2?Q?kkBUsiMhtPQsRY9I7yNjuK126Sjxa1D8QTUCpsCjzd3OHpfyvP/gAQHYXM?=
+ =?iso-8859-2?Q?MBIvgfNi0EEMspEivVE+eKZ5DVhIm4bdmOFyfKNpcZVNSTqNwOxm+iqplz?=
+ =?iso-8859-2?Q?iPyLBfjL1pDJK56BK49IvbtcgTThxyRekyQyNaXZOzcMMN0HlGHBFZtewc?=
+ =?iso-8859-2?Q?nWMRRLKqKbFJ/RoLp6b+SPq6bIYOUe9kCmICpYTsLXek5ei3iXlBOlzHHA?=
+ =?iso-8859-2?Q?IN6XCNyX6S/GYa+m26Fw2pC4R65eEIwFhstfaeY55civkNACobQ5BMOs23?=
+ =?iso-8859-2?Q?IdTA53EF99yhmTwS5+fodzKH73VNq40+2iSG6eoCKv5NttImt9jQ1RurKQ?=
+ =?iso-8859-2?Q?JLChXdaDMYVKuGz6iSeHyvV7YPhCs2llb3?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: [PATCH 1/2] iio: dht11: forked a driver version that polls
- sensor's signal from GPIO
-To:     harald@ccbib.org
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <Y9groXq2oI6lqFea@debian-qemu.internal.flying-snail.de>
- <ee14f0c8bfbae887d21f827baece8b6e@ccbib.org>
-From:   pelzi@flying-snail.de
-In-Reply-To: <ee14f0c8bfbae887d21f827baece8b6e@ccbib.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3399.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4654682-d571-4256-b893-08db0455d597
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Feb 2023 13:11:30.5122
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7yAy0Agh1cQqgZpKRUWzzpUszjgjaDcxLtg/NgEVFgJov14OoAuJFZybTv3zXixyLjjkhgAFgVviqcgYVys6d5g7wYDDAzDT7+I2z8MukGo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR03MB6069
+X-Proofpoint-GUID: 892L5n1vUzTzhbT7jC-bJeREAb67ht7B
+X-Proofpoint-ORIG-GUID: 892L5n1vUzTzhbT7jC-bJeREAb67ht7B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-01_04,2023-01-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 clxscore=1011 priorityscore=1501 lowpriorityscore=0
+ phishscore=0 impostorscore=0 bulkscore=0 spamscore=0 adultscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302010113
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I understand that the first priority is in finding out if there is 
-actually a proper
-use case for a polling implementation at all. Only then, it might be 
-worth to extend
-the existing dht11 module by an polling alternative.
 
-Am 31.01.23 um 11:18 schrieb harald@ccbib.org:
-> On 2023-01-30 21:42, Andreas Feldner wrote:
->> On a BananaPi M2 Zero, the existing, IRQ based dht11 driver is not 
->> working,
->> but missing most IRQs.
->
-> That's quite surprising as the driver works well on many similar systems
-> based on Allwinner SoCs. I suspect the problem is with your setup. Maybe
-> some other (polling?) driver is slowing everything down.
 
-Can you give me a hint how to look for signs of such a situation?
+--
+Antoniu Micl=E3u=BA
 
-BTW I took some pride in building the board's system image from 
-reproduceable sources: Debian kernel package 
-linux-image-5.10.0-20-armmp-lpae, and the device tree from ﻿﻿﻿﻿
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Wednesday, November 23, 2022 10:49 PM
+> To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
+> Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH] drivers: iio: dac: ad5592r: add gpio_chip names
+>=20
+> [External]
+>=20
+> On Thu, 17 Nov 2022 11:01:30 +0200
+> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+>=20
+> > Add array of explicit gpio names for the `gpiochip` structure of
+> > ad5592r, mainly for debug purposes.
+> Can you give an example of when this is more useful than the offset?
+> (which I'm assuming is also available when debugging?)
+>=20
+> Jonathan
+>=20
+Hello Jonathan,
 
-arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
+I guess this patch is not mandatory. It is a gpio_chip structure member tha=
+t was left unpopulated.
+Also, I think it is nice to see explicitly the gpios under cat /sys/kernel/=
+debug/gpio alongside the others.
+This is the current output when trying to debug on a rpi (without the patch=
+ applied):
 
-So the setup should be reproducible, unlike other approaches advertised 
-in the BananaPi forum...
+analog@analog:~ $ sudo cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-57, parent: platform/fe200000.gpio, pinctrl-bcm2711:
+ gpio-0   (ID_SDA              )
+ gpio-1   (ID_SCL              )
+ gpio-2   (SDA1                )
+ gpio-3   (SCL1                )
+ gpio-4   (GPIO_GCLK           )
+ gpio-5   (GPIO5               )
+ gpio-6   (GPIO6               )
+....
+gpiochip2: GPIOs 496-503, parent: spi/spi0.0, spi0.0, can sleep:
 
-What I did is
+gpiochip1: GPIOs 504-511, parent: platform/soc:firmware:gpio, raspberrypi-e=
+xp-gpio, can sleep:
+ gpio-504 (BT_ON               )
+ gpio-505 (WL_ON               )
+ gpio-506 (PWR_LED_OFF         |led1                ) out lo ACTIVE LOW
+ gpio-507 (GLOBAL_RESET        )
+ gpio-508 (VDD_SD_IO_SEL       |vdd-sd-io           ) out hi
+ gpio-509 (CAM_GPIO            |power_ctrl          ) out lo
+ gpio-510 (SD_PWR_ON           |sd_vcc_reg          ) out hi
+ gpio-511 (SD_OC_N             )
 
-- check /proc/interrupts. The highest volume interrupts there are two 
-instances of sunxi-mmc, one generating about 50 interrupts per second, 
-the other about 25. Those (and most) interrupts are GICv2, but the GPIO 
-releated are sunxi-pio-{level,edge}
+The gpiochip2, corresponding to ad5592r has no explicit gpios, due to the f=
+act that the
+gpio names were assigned.
 
-- check dmesg: literally no messages apart from dht11_poll itself
-
-- check top: sugov:0 is reported to eat 10% of one cpu, but I understand 
-that's expected and an artifact anyway. Changing the scaling governor to 
-"performance" eliminates this, but does not help in making the irq 
-driven dht11 work.
-
-- check vmstat: ir is between 50 and 200 apart from short spikes, those 
-probably related to a certain cron job
-
-- check sysstat cpu, mem, threads, mutex: each of the 4 cores has a low 
-performance (a factor of 15 lower than a Raspberrypi 3), but constant, 
-low stddev, etc. No surprises running e.g. 8 threads instead of 4.
-
-So, apart from the fact that it is missing about 3/4 of the IRQs the 
-dht11 driver should get, I have no indication that something might be 
-wrong with the board or its setup. Where else should I look?
-
-Some additional remarks of questionable relevance:
-
-Prior to attempt to put the logic into a kernel module, I implemented a 
-polling PoC in userspace using libgpiod by nailing together parts of 
-gpioset, gpiomon, and the dht11 kernel module:
-https://github.com/pelzvieh/banana_resources/blob/main/poll_dht11.c
-
-This works "reasonably", once in a few shots, but the diagnostics show 
-that there are only typically 5 to 7 samples for a high pulse 
-corresponding to a zero bit (26-28 µs). My naive interpretation was that 
-the board is just quite slow for this task.
-
-BTW the constant timing of the low pulse of 50 µs was confirmed by that 
-experiment as well. It seems to work as given in the DHT22 datasheet 
-floating arount in internet (e.g. for download at 
-https://www.mikrocontroller-elektronik.de/dht22-am2302-luftfeuchte-und-temperatursensor/).
-
->> Following the hints in Harald Geyer's comments I
->> tried to implement a version of the driver that is polling the GPIO
->> sensor in a busy loop, not using IRQ altogether.
->
-> IIRC one readout takes about 80 milliseconds. That's a very long time for
-> a busy loop. I doubt this is acceptable for inclusion in the kernel. Of
-> course also Jonathan's comments apply.
-
-Seems to be a bit less, just in case that matters. Given the timing 
-chart I'd expect
-
-on average: 200µs + 40 * 100µs = 4,2ms
-
-worst case (device trying to send all one-bits): 200µs + 40 * 120µs = 5,0ms
-
-Yours,
-
-Andreas.
+Regards,
+> >
+> > Since the gpios are configurable via the dts, generic names are
+> > used.
+> >
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > ---
+> >  drivers/iio/dac/ad5592r-base.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-b=
+ase.c
+> > index 7a9b5fc1e579..076bc9ecfb49 100644
+> > --- a/drivers/iio/dac/ad5592r-base.c
+> > +++ b/drivers/iio/dac/ad5592r-base.c
+> > @@ -124,6 +124,10 @@ static int ad5592r_gpio_request(struct gpio_chip
+> *chip, unsigned offset)
+> >  	return 0;
+> >  }
+> >
+> > +static const char * const ad5592r_gpio_names[] =3D {
+> > +	"GPIO0", "GPIO1", "GPIO2", "GPIO3", "GPIO4", "GPIO5", "GPIO6",
+> "GPIO7",
+> > +};
+> > +
+> >  static int ad5592r_gpio_init(struct ad5592r_state *st)
+> >  {
+> >  	if (!st->gpio_map)
+> > @@ -140,6 +144,7 @@ static int ad5592r_gpio_init(struct ad5592r_state
+> *st)
+> >  	st->gpiochip.set =3D ad5592r_gpio_set;
+> >  	st->gpiochip.request =3D ad5592r_gpio_request;
+> >  	st->gpiochip.owner =3D THIS_MODULE;
+> > +	st->gpiochip.names =3D ad5592r_gpio_names;
+> >
+> >  	mutex_init(&st->gpio_lock);
+> >
 

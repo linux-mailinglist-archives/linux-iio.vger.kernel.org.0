@@ -2,170 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0AD686B4E
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Feb 2023 17:13:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4AC9686C3F
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Feb 2023 17:58:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjBAQNF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 1 Feb 2023 11:13:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48854 "EHLO
+        id S231597AbjBAQ6D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Feb 2023 11:58:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231185AbjBAQMy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Feb 2023 11:12:54 -0500
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C2D790B8;
-        Wed,  1 Feb 2023 08:12:23 -0800 (PST)
-Received: (Authenticated sender: hadess@hadess.net)
-        by mail.gandi.net (Postfix) with ESMTPSA id 41C6D4000B;
-        Wed,  1 Feb 2023 16:12:19 +0000 (UTC)
-Message-ID: <d9cec163f93922e59378a4aa351934ba1d702817.camel@hadess.net>
-Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
- LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-From:   Bastien Nocera <hadess@hadess.net>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Darrell Kavanagh <darrell.kavanagh@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 01 Feb 2023 17:12:19 +0100
-In-Reply-To: <c3207f3a-ecb9-0e69-e26a-71dc1b06db6a@redhat.com>
-References: <167493679618.4533.12181720504943588640.reportbug@debian-duet>
-         <Y9WGmBc9HG4Tx9gf@eldamar.lan>
-         <CAMxBKG1670TFuV3nHP7Yk8s6H+oBF7iiyiB-b=PvKv9hcH22xQ@mail.gmail.com>
-         <20230129182441.082f29d0@jic23-huawei>
-         <CAMxBKG0tyLSpaDPGBXsJbqgHSG9rH6owtSJsLw_ekmTA3Kyvdw@mail.gmail.com>
-         <CAMxBKG3zL_yvw=dHK+Gqd3EHWzvJmiLHVvKnf6UsYbMgcS6nrg@mail.gmail.com>
-         <20230130123113.00002c3f@Huawei.com>
-         <CAMxBKG3xOEj1gEs9pGzKb+rDjTLPqAq1YOp4bEFas4tQMzGZ+Q@mail.gmail.com>
-         <20230130173525.0000418d@huawei.com>
-         <CAMxBKG1yKcodDD2kvfwKvpYnPrXmgaOk9rTztRPFzKMCZ5F=tA@mail.gmail.com>
-         <20230130194110.256144e7@jic23-huawei>
-         <CAMxBKG3S6aJSrO-BAPCAhVpg2qF2kWfRJ9d0n2EmOY=JGNid-A@mail.gmail.com>
-         <20230130203110.60c96f37@jic23-huawei>
-         <CAMxBKG1+Vcaic2WzVvZZSrVDO7+PTYJZgPP77s_GPOdo+BKJAQ@mail.gmail.com>
-         <CAMxBKG0Q4H6Dv9a=oOAX8c5TS08ZJBBO0tTLRaUY9h-W1FTHCQ@mail.gmail.com>
-         <20230201102824.00002044@Huawei.com>
-         <c3207f3a-ecb9-0e69-e26a-71dc1b06db6a@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        with ESMTP id S231543AbjBAQ6A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Feb 2023 11:58:00 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E6A7B402;
+        Wed,  1 Feb 2023 08:57:54 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D37961889;
+        Wed,  1 Feb 2023 16:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4DFC433D2;
+        Wed,  1 Feb 2023 16:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675270673;
+        bh=wgoFWDzet3MEnQEk+UbM8HUIOsFtAK8npPJ49HGAO1o=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=u9X4Gr7TjZ6UkgVwjSehC9yfCUt//67EjPYTXTHnJ+aTE6aXNoDaG/fZz03jXnElM
+         c315hFd6D+lNgE3Ekgg0QaNB3z7pxxWqm4plvstpHb14GQ0FGDiib2q7//3OZr4/JT
+         i0jWp+SqAe/OVftlr6AN17B1kIJdLkIF0i/EuIo2IVSpqxiD6qKmMLkB+1ogV6NLc6
+         JidEOiKwk15fIiFO+dc5Qsvoe66Y0tsqMeopIu++n7efbaGm5W5Uc31U7fqGait52w
+         WnE8sOF8lc6h19Dd3hynSSTPWQGh4Vapzj+sPUAC+hBsgiEQz8Z/aI5T8L99Afd+Hr
+         1f40qveSqB9TQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        jic23@kernel.org, tudor.ambarus@microchip.com, pratyush@kernel.org,
+        sanju.mehta@amd.com, chin-ting_kuo@aspeedtech.com, clg@kaod.org,
+        kdasu.kdev@gmail.com, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, eajames@linux.ibm.com, olteanv@gmail.com,
+        han.xu@nxp.com, john.garry@huawei.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, khilman@baylibre.com,
+        matthias.bgg@gmail.com, haibo.chen@nxp.com,
+        linus.walleij@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        agross@kernel.org, heiko@sntech.de, krzysztof.kozlowski@linaro.org,
+        andi@etezian.org, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, wens@csie.org,
+        jernej.skrabec@gmail.com, samuel@sholland.org,
+        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
+        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
+        kvalo@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
+        skomatineni@nvidia.com, sumit.semwal@linaro.org,
+        christian.koenig@amd.com, j.neuschaefer@gmx.net,
+        vireshk@kernel.org, rmfrfs@gmail.com, johan@kernel.org,
+        elder@kernel.org, gregkh@linuxfoundation.org,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Cc:     git@amd.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
+        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
+        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
+        alim.akhtar@samsung.com, ldewangan@nvidia.com,
+        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-mtd@lists.infradead.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        michael@walle.cc, palmer@dabbelt.com,
+        linux-riscv@lists.infradead.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, greybus-dev@lists.linaro.org,
+        linux-staging@lists.linux.dev, amitrkcian2002@gmail.com
+In-Reply-To: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
+References: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
+Subject: Re: (subset) [PATCH v2 00/13] spi: Add support for
+ stacked/parallel memories
+Message-Id: <167527065195.537421.10361370461620477483.b4-ty@kernel.org>
+Date:   Wed, 01 Feb 2023 16:57:31 +0000
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.0
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2023-02-01 at 12:00 +0100, Hans de Goede wrote:
-> Hi,
+On Fri, 20 Jan 2023 00:23:29 +0530, Amit Kumar Mahapatra wrote:
+> This patch is in the continuation to the discussions which happened on
+> 'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
+> adding dt-binding support for stacked/parallel memories.
 > 
-> On 2/1/23 11:28, Jonathan Cameron wrote:
-> > On Wed, 1 Feb 2023 01:40:49 +0000
-> > Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
-> > 
-> > > Hello, all.
-> > > 
-> > > I've finally reached a conclusion on this, after testing all the
-> > > combinations of the patches (with and without reading the acpi
-> > > mounting matrix), window managers (wayland, xorg) and the
-> > > presence or
-> > > not of my custom kernel parms.
-> > > 
-> > > What works well is the full set of patches with the custom kernel
-> > > parms and a new hwdb entry for the sensor:
-> > > 
-> > > sensor:modalias:acpi:SMO8B30*:dmi:*:svnLENOVO*:pn82AT:*
-> > >  ACCEL_MOUNT_MATRIX=0, 1, 0; -1, 0, 0; 0, 0, 1
-> > > 
-> > > The autorotate then works correctly in wayland and xorg, but for
-> > > xorg,
-> > > the settings say the screen is "portrait left" when in actual
-> > > fact it
-> > > is in standard laptop landscape orientation. Wayland does not
-> > > have
-> > > this problem (I guess because wayland's view of the screen is
-> > > straight
-> > > from the kernel).
-> > > 
-> > > Without the hwdb entry, the orientation is 90 degrees out without
-> > > using the acpi matrix and 180 degrees out when using it. I could
-> > > have
-> > > gone either way here with appropriate hwdb entries, but my view
-> > > is
-> > > that we *should* be using the matrix.
-> > 
-> > Added Hans de Goede as he has probably run into more of this mess
-> > than anyone else.  Hans, any thoughts on if we are doing something
-> > wrong on kernel side?  Or is the matrix just wrong *sigh*
+> This patch series updated the spi-nor, spi core and the spi drivers
+> to add stacked and parallel memories support.
 > 
-> I see below that this laptop has a panel which is mounted 90 degrees
-> rotated, that likely explains why the ACPI matrix does not work.
-> So the best thing to do here is to just override it with a hwdb
-> entries.
-> 
-> IIRC there are already 1 or 2 other hwdb entries which actually
-> override the ACPI provided matrix because of similar issues.
-> 
-> Linux userspace expects the matrix in this case to be set so that
-> it causes e.g. gnome's auto-rotation to put the image upright
-> even with older gnome versions / mate / xfce which don't know about
-> the panel being mounted 90 degrees.
-> 
-> So e.g. "monitor-sensor" will report left-side-up or right-side-up
-> while the device is actually in normal clamshell mode with the
-> display up-right.
-> 
-> This reporting of left-side-up or right-side-up is actually "correct"
-> looking from the native LCD panel orientation and as mentioned is
-> done for backward compatibility. This is documented here:
-> 
-> https://github.com/systemd/systemd/blob/main/hwdb.d/60-sensor.hwdb#L54
-> 
-> The way we are handling this is likely incompatible with how Windows
-> handles this special case of 90° rotated screen + ROTM. Or the
-> matrix in the ACPI tables could be just wrong...
-> 
-> > I think 'ROTM' is defined by MS. 
-> > https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/sensors-acpi-entries
-> 
-> Right and as such it would be good if we can still add support to
-> it to the sensor driver in question. Because the ROTM info usually
-> is correct and avoids the need for adding more and more hwdb entries.
-> 
-> Note there already is existing support in some other sensor drivers.
-> 
-> So we probably need to factor out some helper code for this and share
-> that between sensor drivers.
-> 
-> 
-> > > The only thing that concerns me is the need for custom kernel
-> > > parms.
-> > > It would be better if there was a way to avoid this, so that the
-> > > user
-> > > didn't have to mess around with their grub config. Though having
-> > > said
-> > > that, the sensors fix as we have it doesn't make things worse -
-> > > under
-> > > currently released kernels the screen always starts up sideways
-> > > unless
-> > > custom parms are added in grub.
-> 
-> We actually have a quirk mechanism in the kernel for specifying
-> the need for: video=DSI-1:panel_orientation=right_side_up  and this
-> will also automatically fix the fbcon orientation, see:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/drm_panel_orientation_quirks.c
-> 
-> If you submit a patch for this upstream please Cc me.
+> [...]
 
-And if after that change, and copy/pasting the orientation from the
-DSDT into hwdb the sensor and screen move in the expected ways, then
-maybe stealing the BMC150 driver's
-bmc150_apply_bosc0200_acpi_orientation() might be a good idea.
+Applied to
 
-Once exported through "mount_matrix", iio-sensor-proxy should see it
-and read it without the need for a hwdb entry.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Cheers
+Thanks!
+
+[01/13] spi: Add APIs in spi core to set/get spi->chip_select and spi->cs_gpiod
+        commit: 303feb3cc06ac0665d0ee9c1414941200e60e8a3
+[02/13] spi: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[03/13] net: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[04/13] iio: imu: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[05/13] mtd: devices: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[06/13] staging: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[07/13] platform/x86: serial-multi-instantiate: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

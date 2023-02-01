@@ -2,511 +2,561 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85307686487
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Feb 2023 11:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F342F6864ED
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Feb 2023 12:01:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231362AbjBAKlJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Feb 2023 05:41:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43770 "EHLO
+        id S232384AbjBALBu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Feb 2023 06:01:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231829AbjBAKkv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Feb 2023 05:40:51 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D165964D87;
-        Wed,  1 Feb 2023 02:40:14 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3119u9nq011940;
-        Wed, 1 Feb 2023 05:39:36 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3nfnvvg60t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 01 Feb 2023 05:39:36 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 311AdYJi014270
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 1 Feb 2023 05:39:34 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Wed, 1 Feb 2023 05:39:33 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Wed, 1 Feb 2023 05:39:33 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 1 Feb 2023 05:39:33 -0500
-Received: from okan.localdomain ([10.158.19.61])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 311AZiWd012011;
-        Wed, 1 Feb 2023 05:39:11 -0500
-From:   Okan Sahin <okan.sahin@analog.com>
-To:     <okan.sahin@analog.com>
-CC:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        "Ramona Bolboaca" <ramona.bolboaca@analog.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-Subject: [PATCH v4 5/5] drivers: mfd: Add ADI MAX77541/MAX77540 PMIC Support
-Date:   Wed, 1 Feb 2023 13:35:18 +0300
-Message-ID: <20230201103534.108136-6-okan.sahin@analog.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230201103534.108136-1-okan.sahin@analog.com>
-References: <20230201103534.108136-1-okan.sahin@analog.com>
+        with ESMTP id S232387AbjBALBn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Feb 2023 06:01:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0471D3A87
+        for <linux-iio@vger.kernel.org>; Wed,  1 Feb 2023 03:01:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1675249265;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xsJPEs1xNvrJKdezqUE6a0m4Nk6ERANm0Ve9kC3N7eg=;
+        b=NuP2Oe8puw0jaIzIOTeF5GDgxPuCpcXVTzYEd1/ttQuEQ3d5dnYZBxUEy7W1Av3jNh0vY+
+        PciZgjOn7g0b0jXkApvTf6orAChwvbqW8WjpQ60KpzObtFl4QP70zKKx6meb26Ba7dhv1n
+        UkMVtZhO8vs/YBvlY4TM9t5CKDygveY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-146-bWfVgx7kPXGmCiLVOmbjxA-1; Wed, 01 Feb 2023 06:01:03 -0500
+X-MC-Unique: bWfVgx7kPXGmCiLVOmbjxA-1
+Received: by mail-ed1-f72.google.com with SMTP id g14-20020a056402090e00b0046790cd9082so12646712edz.21
+        for <linux-iio@vger.kernel.org>; Wed, 01 Feb 2023 03:01:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xsJPEs1xNvrJKdezqUE6a0m4Nk6ERANm0Ve9kC3N7eg=;
+        b=glHD2q1Ryrqhg/1K9XeJXo4arnVmRLqdWTC3rlhPEDClEmDNThF9vdVSKWjbktRyQS
+         mmcZom4FvBJjb7wRDXqlqvzaEQhqCBmvT0pHZiYvfOZq9zlc4aLCtzYeqv9qy8T8BiMP
+         MohEJ4gkM36TtD/AtZ0p7ksnrCZD3l2npoDQ4bRzyTKUh8Li4GM0fxE90S1pb2LMuy7R
+         Z4pyLjEhde3/QL7V/+6SNNa8jYqjRIRCHk/X0bYcXl3FdT6ANMmFns+5i/Yu0RdlZZ7f
+         p1j7gTCTbWzTIkJJQucw4cTvKcTVfSuGbCemLu87AmFdXlFW5vhOZD8nvbDyN/7kpx+J
+         Mo+A==
+X-Gm-Message-State: AO0yUKXoWqc8PrxSn8HBnYdUe/Vx57lfavsxmi3MJ/2mSFT2Eq2nx/Gs
+        sWTmeQIrkqT6QqkC2bkH6zZa/79t54zzggoPNa4vA2sVxlF1amjViQ/zhQ8482rIxCeWWjkMMM6
+        hgvgSHnAYkcWeJGR8Uu58
+X-Received: by 2002:a17:906:2f88:b0:878:745c:b2cd with SMTP id w8-20020a1709062f8800b00878745cb2cdmr1517926eji.73.1675249258840;
+        Wed, 01 Feb 2023 03:00:58 -0800 (PST)
+X-Google-Smtp-Source: AK7set87RIsO2zfCyBYLjPPgBJMT/REChlIDlblfxWQwZsaRpemWANyF387nSkTzjBjJHJKNxZQ2uw==
+X-Received: by 2002:a17:906:2f88:b0:878:745c:b2cd with SMTP id w8-20020a1709062f8800b00878745cb2cdmr1517902eji.73.1675249258549;
+        Wed, 01 Feb 2023 03:00:58 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id e11-20020a1709062c0b00b0087bd629e9e4sm8567885ejh.179.2023.02.01.03.00.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Feb 2023 03:00:57 -0800 (PST)
+Message-ID: <c3207f3a-ecb9-0e69-e26a-71dc1b06db6a@redhat.com>
+Date:   Wed, 1 Feb 2023 12:00:57 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: Dcmly640AxIiLVJvJJFPEyC_0CLJcfUw
-X-Proofpoint-ORIG-GUID: Dcmly640AxIiLVJvJJFPEyC_0CLJcfUw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-02-01_03,2023-01-31_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=930 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- phishscore=0 impostorscore=0 bulkscore=0 spamscore=0 adultscore=0
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302010091
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
+ LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
+Content-Language: en-US, nl
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Darrell Kavanagh <darrell.kavanagh@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Bastien Nocera <hadess@hadess.net>
+References: <167493679618.4533.12181720504943588640.reportbug@debian-duet>
+ <Y9WGmBc9HG4Tx9gf@eldamar.lan>
+ <CAMxBKG1670TFuV3nHP7Yk8s6H+oBF7iiyiB-b=PvKv9hcH22xQ@mail.gmail.com>
+ <20230129182441.082f29d0@jic23-huawei>
+ <CAMxBKG0tyLSpaDPGBXsJbqgHSG9rH6owtSJsLw_ekmTA3Kyvdw@mail.gmail.com>
+ <CAMxBKG3zL_yvw=dHK+Gqd3EHWzvJmiLHVvKnf6UsYbMgcS6nrg@mail.gmail.com>
+ <20230130123113.00002c3f@Huawei.com>
+ <CAMxBKG3xOEj1gEs9pGzKb+rDjTLPqAq1YOp4bEFas4tQMzGZ+Q@mail.gmail.com>
+ <20230130173525.0000418d@huawei.com>
+ <CAMxBKG1yKcodDD2kvfwKvpYnPrXmgaOk9rTztRPFzKMCZ5F=tA@mail.gmail.com>
+ <20230130194110.256144e7@jic23-huawei>
+ <CAMxBKG3S6aJSrO-BAPCAhVpg2qF2kWfRJ9d0n2EmOY=JGNid-A@mail.gmail.com>
+ <20230130203110.60c96f37@jic23-huawei>
+ <CAMxBKG1+Vcaic2WzVvZZSrVDO7+PTYJZgPP77s_GPOdo+BKJAQ@mail.gmail.com>
+ <CAMxBKG0Q4H6Dv9a=oOAX8c5TS08ZJBBO0tTLRaUY9h-W1FTHCQ@mail.gmail.com>
+ <20230201102824.00002044@Huawei.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230201102824.00002044@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-MFD driver for MAX77541/MAX77540 to enable its sub
-devices.
+Hi,
 
-The MAX77541 is a multi-function devices. It includes
-buck converter and ADC.
+On 2/1/23 11:28, Jonathan Cameron wrote:
+> On Wed, 1 Feb 2023 01:40:49 +0000
+> Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+> 
+>> Hello, all.
+>>
+>> I've finally reached a conclusion on this, after testing all the
+>> combinations of the patches (with and without reading the acpi
+>> mounting matrix), window managers (wayland, xorg) and the presence or
+>> not of my custom kernel parms.
+>>
+>> What works well is the full set of patches with the custom kernel
+>> parms and a new hwdb entry for the sensor:
+>>
+>> sensor:modalias:acpi:SMO8B30*:dmi:*:svnLENOVO*:pn82AT:*
+>>  ACCEL_MOUNT_MATRIX=0, 1, 0; -1, 0, 0; 0, 0, 1
+>>
+>> The autorotate then works correctly in wayland and xorg, but for xorg,
+>> the settings say the screen is "portrait left" when in actual fact it
+>> is in standard laptop landscape orientation. Wayland does not have
+>> this problem (I guess because wayland's view of the screen is straight
+>> from the kernel).
+>>
+>> Without the hwdb entry, the orientation is 90 degrees out without
+>> using the acpi matrix and 180 degrees out when using it. I could have
+>> gone either way here with appropriate hwdb entries, but my view is
+>> that we *should* be using the matrix.
+> 
+> Added Hans de Goede as he has probably run into more of this mess
+> than anyone else.  Hans, any thoughts on if we are doing something
+> wrong on kernel side?  Or is the matrix just wrong *sigh*
 
-The MAX77540 is a high-efficiency buck converter
-with two 3A switching phases.
+I see below that this laptop has a panel which is mounted 90 degrees
+rotated, that likely explains why the ACPI matrix does not work.
+So the best thing to do here is to just override it with a hwdb entries.
 
-They have same regmap except for ADC part of MAX77541.
+IIRC there are already 1 or 2 other hwdb entries which actually
+override the ACPI provided matrix because of similar issues.
 
-Signed-off-by: Okan Sahin <okan.sahin@analog.com>
----
- drivers/mfd/Kconfig          |  13 ++
- drivers/mfd/Makefile         |   1 +
- drivers/mfd/max77541.c       | 244 +++++++++++++++++++++++++++++++++++
- include/linux/mfd/max77541.h | 108 ++++++++++++++++
- 4 files changed, 366 insertions(+)
- create mode 100644 drivers/mfd/max77541.c
- create mode 100644 include/linux/mfd/max77541.h
+Linux userspace expects the matrix in this case to be set so that
+it causes e.g. gnome's auto-rotation to put the image upright
+even with older gnome versions / mate / xfce which don't know about
+the panel being mounted 90 degrees.
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 8b93856de432..e6bf621cbc8e 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -791,6 +791,19 @@ config MFD_MAX14577
- 	  additional drivers must be enabled in order to use the functionality
- 	  of the device.
- 
-+config MFD_MAX77541
-+	tristate "Analog Devices MAX77541/77540 PMIC Support"
-+	depends on I2C=y
-+	select MFD_CORE
-+	select REGMAP_I2C
-+	select REGMAP_IRQ
-+	help
-+	  Say yes here to add support for Analog Devices
-+	  MAX77541 and MAX77540 Power Management ICs.This
-+	  driver provides common support for accessing the
-+	  device;additional drivers must be enabled in order
-+	  to use the functionality of the device.
-+
- config MFD_MAX77620
- 	bool "Maxim Semiconductor MAX77620 and MAX20024 PMIC Support"
- 	depends on I2C=y
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 7ed3ef4a698c..bf21228f5742 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -161,6 +161,7 @@ obj-$(CONFIG_MFD_DA9063)	+= da9063.o
- obj-$(CONFIG_MFD_DA9150)	+= da9150-core.o
- 
- obj-$(CONFIG_MFD_MAX14577)	+= max14577.o
-+obj-$(CONFIG_MFD_MAX77541)	+= max77541.o
- obj-$(CONFIG_MFD_MAX77620)	+= max77620.o
- obj-$(CONFIG_MFD_MAX77650)	+= max77650.o
- obj-$(CONFIG_MFD_MAX77686)	+= max77686.o
-diff --git a/drivers/mfd/max77541.c b/drivers/mfd/max77541.c
-new file mode 100644
-index 000000000000..f4d8f9e40ada
---- /dev/null
-+++ b/drivers/mfd/max77541.c
-@@ -0,0 +1,244 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2022 Analog Devices, Inc.
-+ * Driver for the MAX77540 and MAX77541
-+ */
-+
-+#include <linux/i2c.h>
-+#include <linux/interrupt.h>
-+#include <linux/mfd/core.h>
-+#include <linux/of_device.h>
-+#include <linux/mfd/max77541.h>
-+#include <linux/regmap.h>
-+
-+static const struct regmap_config max77541_regmap_config = {
-+	.reg_bits   = 8,
-+	.val_bits   = 8,
-+};
-+
-+static const struct regmap_irq max77541_src_irqs[] = {
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_INT_SRC_TOPSYS),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_INT_SRC_BUCK),
-+};
-+
-+static const struct regmap_irq_chip max77541_src_irq_chip = {
-+	.name		= "max77541-src",
-+	.status_base	= MAX77541_REG_INT_SRC,
-+	.mask_base	= MAX77541_REG_INT_SRC,
-+	.num_regs	= 1,
-+	.irqs		= max77541_src_irqs,
-+	.num_irqs       = ARRAY_SIZE(max77541_src_irqs),
-+};
-+
-+static const struct regmap_irq max77541_topsys_irqs[] = {
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_TOPSYS_INT_TJ_120C),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_TOPSYS_INT_TJ_140C),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_TOPSYS_INT_TSHDN),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_TOPSYS_INT_UVLO),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_TOPSYS_INT_ALT_SWO),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_TOPSYS_INT_EXT_FREQ_DET),
-+};
-+
-+static const struct regmap_irq_chip max77541_topsys_irq_chip = {
-+	.name		= "max77541-topsys",
-+	.status_base	= MAX77541_REG_TOPSYS_INT,
-+	.mask_base	= MAX77541_REG_TOPSYS_INT_M,
-+	.num_regs	= 1,
-+	.irqs		= max77541_topsys_irqs,
-+	.num_irqs	= ARRAY_SIZE(max77541_topsys_irqs),
-+};
-+
-+static const struct regmap_irq max77541_buck_irqs[] = {
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_BUCK_INT_M1_POK_FLT),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_BUCK_INT_M2_POK_FLT),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_BUCK_INT_M1_SCFLT),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_BUCK_INT_M2_SCFLT),
-+};
-+
-+static const struct regmap_irq_chip max77541_buck_irq_chip = {
-+	.name		= "max77541-buck",
-+	.status_base	= MAX77541_REG_BUCK_INT,
-+	.mask_base	= MAX77541_REG_BUCK_INT_M,
-+	.num_regs	= 1,
-+	.irqs		= max77541_buck_irqs,
-+	.num_irqs	= ARRAY_SIZE(max77541_buck_irqs),
-+};
-+
-+static const struct regmap_irq max77541_adc_irqs[] = {
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_ADC_INT_CH1_I),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_ADC_INT_CH2_I),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_ADC_INT_CH3_I),
-+	MAX77541_REGMAP_IRQ_REG(MAX77541_BIT_ADC_INT_CH6_I),
-+};
-+
-+static const struct regmap_irq_chip max77541_adc_irq_chip = {
-+	.name		= "max77541-adc",
-+	.status_base	= MAX77541_REG_ADC_INT,
-+	.mask_base	= MAX77541_REG_ADC_MSK,
-+	.num_regs	= 1,
-+	.irqs		= max77541_adc_irqs,
-+	.num_irqs	= ARRAY_SIZE(max77541_adc_irqs),
-+};
-+
-+static const struct mfd_cell max77540_devs[] = {
-+	MFD_CELL_OF("max77540-regulator", NULL, NULL, 0, 0,
-+		    "adi,max77540-regulator"),
-+};
-+
-+static const struct mfd_cell max77541_devs[] = {
-+	MFD_CELL_OF("max77541-regulator", NULL, NULL, 0, 0,
-+		    "adi,max77541-regulator"),
-+	MFD_CELL_OF("max77541-adc", NULL, NULL, 0, 0,
-+		    NULL),
-+};
-+
-+static const struct chip_info chip[] = {
-+	[MAX77540] = {
-+		.id = MAX77540,
-+		.n_devs = ARRAY_SIZE(max77540_devs),
-+		.devs = max77540_devs,
-+	},
-+	[MAX77541] = {
-+		.id = MAX77541,
-+		.n_devs = ARRAY_SIZE(max77541_devs),
-+		.devs = max77541_devs,
-+	},
-+};
-+
-+static int max77541_pmic_irq_init(struct device *dev)
-+{
-+	struct max77541 *max77541 = dev_get_drvdata(dev);
-+	int irq = max77541->i2c->irq;
-+	int ret;
-+
-+	ret = devm_regmap_add_irq_chip(dev, max77541->regmap, irq,
-+				       IRQF_ONESHOT | IRQF_SHARED, 0,
-+				       &max77541_src_irq_chip,
-+				       &max77541->irq_data);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_regmap_add_irq_chip(dev, max77541->regmap, irq,
-+				       IRQF_ONESHOT | IRQF_SHARED, 0,
-+				       &max77541_topsys_irq_chip,
-+				       &max77541->irq_topsys);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_regmap_add_irq_chip(dev, max77541->regmap, irq,
-+				       IRQF_ONESHOT | IRQF_SHARED, 0,
-+				       &max77541_buck_irq_chip,
-+				       &max77541->irq_buck);
-+	if (ret)
-+		return ret;
-+
-+	if (max77541->chip->id == MAX77541) {
-+		ret = devm_regmap_add_irq_chip(dev, max77541->regmap, irq,
-+					       IRQF_ONESHOT | IRQF_SHARED, 0,
-+					       &max77541_adc_irq_chip,
-+					       &max77541->irq_adc);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return ret;
-+}
-+
-+static int max77541_pmic_setup(struct device *dev)
-+{
-+	struct max77541 *max77541 = dev_get_drvdata(dev);
-+	unsigned int val;
-+	int ret;
-+
-+	ret = max77541_pmic_irq_init(dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to initialize IRQ\n");
-+
-+	ret = regmap_read(max77541->regmap, MAX77541_REG_INT_SRC, &val);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(max77541->regmap, MAX77541_REG_TOPSYS_INT, &val);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(max77541->regmap, MAX77541_REG_BUCK_INT, &val);
-+	if (ret)
-+		return ret;
-+
-+	ret = device_init_wakeup(dev, true);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Unable to init wakeup\n");
-+
-+	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
-+				    max77541->chip->devs,
-+				    max77541->chip->n_devs,
-+				    NULL, 0, NULL);
-+}
-+
-+static const struct i2c_device_id max77541_i2c_id[];
-+
-+static int max77541_i2c_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct max77541 *max77541;
-+
-+	max77541 = devm_kzalloc(&client->dev, sizeof(*max77541), GFP_KERNEL);
-+	if (!max77541)
-+		return -ENOMEM;
-+
-+	i2c_set_clientdata(client, max77541);
-+	max77541->i2c = client;
-+
-+	if (dev->of_node)
-+		max77541->chip  = of_device_get_match_data(dev);
-+	else
-+		max77541->chip  = (struct chip_info *)
-+					i2c_match_id(max77541_i2c_id,
-+						     client)->driver_data;
-+	if (!max77541->chip)
-+		return -EINVAL;
-+
-+	max77541->regmap = devm_regmap_init_i2c(client,
-+						&max77541_regmap_config);
-+	if (IS_ERR(max77541->regmap))
-+		return dev_err_probe(dev, PTR_ERR(max77541->regmap),
-+				     "Failed to allocate register map\n");
-+
-+	return max77541_pmic_setup(dev);
-+}
-+
-+static const struct of_device_id max77541_of_id[] = {
-+	{
-+		.compatible = "adi,max77540",
-+		.data = &chip[MAX77540],
-+	},
-+	{
-+		.compatible = "adi,max77541",
-+		.data = &chip[MAX77541],
-+	},
-+	{ /* sentinel */  }
-+};
-+MODULE_DEVICE_TABLE(of, max77541_of_id);
-+
-+static const struct i2c_device_id max77541_i2c_id[] = {
-+	{ "max77540", (kernel_ulong_t)&chip[MAX77540] },
-+	{ "max77541", (kernel_ulong_t)&chip[MAX77541] },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(i2c, max77541_i2c_id);
-+
-+static struct i2c_driver max77541_i2c_driver = {
-+	.driver = {
-+		.name = "max77541",
-+		.of_match_table = max77541_of_id,
-+	},
-+	.probe_new = max77541_i2c_probe,
-+	.id_table = max77541_i2c_id,
-+};
-+module_i2c_driver(max77541_i2c_driver);
-+
-+MODULE_DESCRIPTION("MAX7740/MAX7741 MFD Driver");
-+MODULE_AUTHOR("Okan Sahin <okan.sahin@analog.com>");
-+MODULE_LICENSE("GPL");
-+MODULE_VERSION("1.0");
-diff --git a/include/linux/mfd/max77541.h b/include/linux/mfd/max77541.h
-new file mode 100644
-index 000000000000..986f0f71c196
---- /dev/null
-+++ b/include/linux/mfd/max77541.h
-@@ -0,0 +1,108 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef __MAX77541_MFD_H__
-+#define __MAX77541_MFD_H__
-+
-+#include <linux/bits.h>
-+#include <linux/types.h>
-+
-+/*      REGISTERS       */
-+
-+/*      GLOBAL CONFIG1       */
-+#define MAX77541_REG_INT_SRC                    0x00
-+#define MAX77541_REG_INT_SRC_M                  0x01
-+#define MAX77541_REG_TOPSYS_INT                 0x02
-+#define MAX77541_REG_TOPSYS_INT_M               0x03
-+
-+#define MAX77541_REG_EN_CTRL                    0x0B
-+
-+/*      BUCK CONFIG       */
-+#define MAX77541_REG_BUCK_INT                   0x20
-+#define MAX77541_REG_BUCK_INT_M                 0x21
-+
-+#define MAX77541_REG_M1_VOUT                    0x23
-+#define MAX77541_REG_M1_CFG1                    0x25
-+
-+#define MAX77541_REG_M2_VOUT                    0x33
-+#define MAX77541_REG_M2_CFG1                    0x35
-+
-+/* INTERRUPT MASKS*/
-+#define MAX77541_REG_INT_SRC_MASK               0x00
-+#define MAX77541_REG_TOPSYS_INT_MASK            0x00
-+#define MAX77541_REG_BUCK_INT_MASK              0x00
-+
-+/*BITS OF REGISTERS*/
-+#define MAX77541_BIT_INT_SRC_TOPSYS             BIT(0)
-+#define MAX77541_BIT_INT_SRC_BUCK               BIT(1)
-+
-+#define MAX77541_BIT_TOPSYS_INT_TJ_120C         BIT(0)
-+#define MAX77541_BIT_TOPSYS_INT_TJ_140C         BIT(1)
-+#define MAX77541_BIT_TOPSYS_INT_TSHDN           BIT(2)
-+#define MAX77541_BIT_TOPSYS_INT_UVLO            BIT(3)
-+#define MAX77541_BIT_TOPSYS_INT_ALT_SWO         BIT(4)
-+#define MAX77541_BIT_TOPSYS_INT_EXT_FREQ_DET    BIT(5)
-+
-+#define MAX77541_BIT_BUCK_INT_M1_POK_FLT        BIT(0)
-+#define MAX77541_BIT_BUCK_INT_M2_POK_FLT        BIT(1)
-+#define MAX77541_BIT_BUCK_INT_M1_SCFLT          BIT(4)
-+#define MAX77541_BIT_BUCK_INT_M2_SCFLT          BIT(5)
-+
-+#define MAX77541_BIT_M1_EN                      BIT(0)
-+#define MAX77541_BIT_M2_EN                      BIT(1)
-+
-+#define MAX77541_BITS_MX_VOUT                   GENMASK(7, 0)
-+#define MAX77541_BITS_MX_CFG1_RNG               GENMASK(7, 6)
-+
-+/*      ADC       */
-+#define MAX77541_REG_ADC_INT                    0x70
-+#define MAX77541_REG_ADC_MSK                    0x71
-+
-+#define MAX77541_REG_ADC_DATA_CH1               0x72
-+#define MAX77541_REG_ADC_DATA_CH2               0x73
-+#define MAX77541_REG_ADC_DATA_CH3               0x74
-+#define MAX77541_REG_ADC_DATA_CH6               0x77
-+
-+#define MAX77541_BIT_ADC_INT_CH1_I              BIT(0)
-+#define MAX77541_BIT_ADC_INT_CH2_I              BIT(1)
-+#define MAX77541_BIT_ADC_INT_CH3_I              BIT(2)
-+#define MAX77541_BIT_ADC_INT_CH6_I              BIT(5)
-+
-+#define MAX77541_MAX_REGULATORS 2
-+
-+#define MAX77541_REGMAP_IRQ_REG(_mask)	\
-+	{ .mask = (_mask) }
-+
-+enum max7754x_ids {
-+	MAX77540,
-+	MAX77541,
-+};
-+
-+enum max77541_regulators {
-+	MAX77541_BUCK1 = 1,
-+	MAX77541_BUCK2,
-+};
-+
-+struct chip_info {
-+	enum max7754x_ids id;
-+	int n_devs;
-+	const struct mfd_cell *devs;
-+};
-+
-+struct regmap;
-+struct regmap_irq_chip_data;
-+struct i2c_client;
-+
-+struct max77541 {
-+	enum max7754x_ids id;
-+	const struct chip_info *chip;
-+
-+	struct regmap_irq_chip_data *irq_data;
-+	struct regmap_irq_chip_data *irq_buck;
-+	struct regmap_irq_chip_data *irq_topsys;
-+	struct regmap_irq_chip_data *irq_adc;
-+
-+	struct i2c_client *i2c;
-+	struct regmap *regmap;
-+};
-+
-+#endif /* __MAX77541_MFD_H__ */
--- 
-2.30.2
+So e.g. "monitor-sensor" will report left-side-up or right-side-up
+while the device is actually in normal clamshell mode with the
+display up-right.
+
+This reporting of left-side-up or right-side-up is actually "correct"
+looking from the native LCD panel orientation and as mentioned is
+done for backward compatibility. This is documented here:
+
+https://github.com/systemd/systemd/blob/main/hwdb.d/60-sensor.hwdb#L54
+
+The way we are handling this is likely incompatible with how Windows
+handles this special case of 90° rotated screen + ROTM. Or the
+matrix in the ACPI tables could be just wrong...
+
+> I think 'ROTM' is defined by MS. 
+> https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/sensors-acpi-entries
+
+Right and as such it would be good if we can still add support to
+it to the sensor driver in question. Because the ROTM info usually
+is correct and avoids the need for adding more and more hwdb entries.
+
+Note there already is existing support in some other sensor drivers.
+
+So we probably need to factor out some helper code for this and share
+that between sensor drivers.
+
+
+>> The only thing that concerns me is the need for custom kernel parms.
+>> It would be better if there was a way to avoid this, so that the user
+>> didn't have to mess around with their grub config. Though having said
+>> that, the sensors fix as we have it doesn't make things worse - under
+>> currently released kernels the screen always starts up sideways unless
+>> custom parms are added in grub.
+
+We actually have a quirk mechanism in the kernel for specifying
+the need for: video=DSI-1:panel_orientation=right_side_up  and this
+will also automatically fix the fbcon orientation, see:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/drm_panel_orientation_quirks.c
+
+If you submit a patch for this upstream please Cc me.
+
+Regards,
+
+Hans
+
+
+
+
+
+
+>>> On Mon, 30 Jan 2023 at 20:17, Jonathan Cameron <jic23@kernel.org> wrote:  
+>>>>
+>>>> On Mon, 30 Jan 2023 20:02:31 +0000
+>>>> Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+>>>>  
+>>>>> Thanks. To be clear, before I changed the grub command line, the
+>>>>> system always booted up "sideways", even when the sensor was not being
+>>>>> detected. This was true for everything, not just Gnome, except grub
+>>>>> itself.
+>>>>>
+>>>>> I added:
+>>>>>
+>>>>> GRUB_CMDLINE_LINUX_DEFAULT="fbcon=rotate:1
+>>>>> video=DSI-1:panel_orientation=right_side_up quiet splash"
+>>>>>
+>>>>> This fixed the orientation for pre-splash boot messages, the splash
+>>>>> screen and the desktop environment. But not, for example (as I saw
+>>>>> after adding my own module signing key for testing your fixes), the
+>>>>> MOK validation screens.
+>>>>>
+>>>>> Does this make sense?
+>>>>>
+>>>>> Does what you are proposing act at a lower level than changing the
+>>>>> systemd hwdb orientation matrix?  
+>>>>
+>>>> I'm not sure on the userspace side of things, but intent is that
+>>>> it will provide the orientation data to any users - though only after
+>>>> the kernel boots and software needs to be aware of it.  Give it a go,
+>>>> and if not Bastien (IIRC wrote iio-sensor-proxy) may be able to advise.
+>>>>
+>>>> For Bastien - patches for kernel side are:
+>>>> https://lore.kernel.org/linux-iio/20230130201018.981024-1-jic23@kernel.org/T/#t
+>>>>
+>>>> Darrell is going to test them after back porting to 6.1.
+>>>> With the first patch he gets the right result in gnome but we weren't
+>>>> picking up the rotation matrix at that point (ROTM in ACPI).
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Jonathan
+>>>>  
+>>>>>
+>>>>> Thanks,
+>>>>> Darrell
+>>>>>
+>>>>> On Mon, 30 Jan 2023 at 19:27, Jonathan Cameron <jic23@kernel.org> wrote:  
+>>>>>>
+>>>>>> On Mon, 30 Jan 2023 18:32:02 +0000
+>>>>>> Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+>>>>>>  
+>>>>>>> On Mon, 30 Jan 2023 at 17:35, Jonathan Cameron
+>>>>>>> <Jonathan.Cameron@huawei.com> wrote:
+>>>>>>>  
+>>>>>>>> That certainly looks like suitable matrix.
+>>>>>>>>
+>>>>>>>> If we are lucky it matches the handling in bmc150-accel-core.c for an identically
+>>>>>>>> named method.  That is going to swap the x and y axis which is I'd have thought would
+>>>>>>>> be rather bad if what you have is currently working well.
+>>>>>>>>  
+>>>>>>>
+>>>>>>> Actually, that would be good, because at present I have to rotate 90
+>>>>>>> degrees in my grub command line.  
+>>>>>> :)
+>>>>>>
+>>>>>> I'll see if I can roll a suitable patch.
+>>>>>>
+>>>>>> Jonathan
+>>>>>>  
+>>>>>>>
+>>>>>>> Darrell
+>>>>>>>  
+>>>>>>>>>             }
+>>>>>>>>>
+>>>>>>>>>             Method (PRIM, 0, NotSerialized)
+>>>>>>>>>             {
+>>>>>>>>>                 Name (RBUF, Buffer (One)
+>>>>>>>>>                 {
+>>>>>>>>>                      0x01                                             // .
+>>>>>>>>>                 })
+>>>>>>>>>                 Return (RBUF) /* \_SB_.PCI0.I2C5.DEV_.PRIM.RBUF */
+>>>>>>>>>             }
+>>>>>>>>>
+>>>>>>>>>             Method (_STA, 0, NotSerialized)  // _STA: Status
+>>>>>>>>>             {
+>>>>>>>>>                 If ((GAVT == 0x6A))
+>>>>>>>>>                 {
+>>>>>>>>>                     Return (0x0F)
+>>>>>>>>>                 }
+>>>>>>>>>                 Else
+>>>>>>>>>                 {
+>>>>>>>>>                     Return (Zero)
+>>>>>>>>>                 }
+>>>>>>>>>             }
+>>>>>>>>>
+>>>>>>>>>             Method (CALS, 1, NotSerialized)
+>>>>>>>>>             {
+>>>>>>>>>                 Local0 = Arg0
+>>>>>>>>>                 If (((Local0 == Zero) || (Local0 == Ones)))
+>>>>>>>>>                 {
+>>>>>>>>>                     Local0 = BAC1 /* \BAC1 */
+>>>>>>>>>                     Return (Local0)
+>>>>>>>>>                 }
+>>>>>>>>>                 Else
+>>>>>>>>>                 {
+>>>>>>>>>                     BAC1 = Local0
+>>>>>>>>>                     BACS = Local0
+>>>>>>>>>                     BSCA (0xB0)
+>>>>>>>>>                 }
+>>>>>>>>>             }
+>>>>>>>>>         }
+>>>>>>>>>     }
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Thanks,
+>>>>>>>>> Darrell
+>>>>>>>>>
+>>>>>>>>> On Mon, 30 Jan 2023 at 12:31, Jonathan Cameron
+>>>>>>>>> <Jonathan.Cameron@huawei.com> wrote:  
+>>>>>>>>>>
+>>>>>>>>>> On Mon, 30 Jan 2023 03:37:23 +0000
+>>>>>>>>>> Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+>>>>>>>>>>  
+>>>>>>>>>>> Forwarding because original html messages were rejected by the server...
+>>>>>>>>>>>
+>>>>>>>>>>> ---------- Forwarded message ---------
+>>>>>>>>>>> From: Darrell Kavanagh <darrell.kavanagh@gmail.com>
+>>>>>>>>>>> Date: Mon, 30 Jan 2023 at 02:52
+>>>>>>>>>>> Subject: Re: Bug#1029850: linux: Driver not loaded for ST
+>>>>>>>>>>> Microelectronics LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
+>>>>>>>>>>> To: Jonathan Cameron <jic23@kernel.org>
+>>>>>>>>>>> Cc: <lorenzo@kernel.org>, <lars@metafoo.de>,
+>>>>>>>>>>> <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+>>>>>>>>>>> <carnil@debian.org>
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> Hi Jonathan,
+>>>>>>>>>>>
+>>>>>>>>>>> Thank you. The driver has evolved quite a bit in 6.2 (I read somewhere
+>>>>>>>>>>> that 6.2 includes some i2c enhancements), but I adapted your changes
+>>>>>>>>>>> to fit my Debian 6.1 kernel and it works. Two IIO devices are created
+>>>>>>>>>>> in sysfs, iio-sensor-proxy.service starts up and automatic screen
+>>>>>>>>>>> rotation in Gnome just works.
+>>>>>>>>>>>
+>>>>>>>>>>> To get the modules to load on boot, I made a small change to your code
+>>>>>>>>>>> in st_lsm6dsx_i2c to add the acpi alias to modules.alias:
+>>>>>>>>>>>
+>>>>>>>>>>> adding a null element to st_lsm6dsx_i2c_acpi_match:
+>>>>>>>>>>>     static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
+>>>>>>>>>>>          { "SMO8B30", ST_LSM6DS3TRC_ID, },
+>>>>>>>>>>>          { },
+>>>>>>>>>>>     };
+>>>>>>>>>>> then:
+>>>>>>>>>>>    MODULE_DEVICE_TABLE(acpi, st_lsm6dsx_i2c_acpi_match);  
+>>>>>>>>>>
+>>>>>>>>>> doh! That was indeed sloppy of me to miss even for an untested hack.
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>>  
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> dmesg shows:
+>>>>>>>>>>>
+>>>>>>>>>>> [ 7366.120208] st_lsm6dsx_i2c i2c-SMO8B30:00: supply vdd not found,
+>>>>>>>>>>> using dummy regulator
+>>>>>>>>>>> [ 7366.120260] st_lsm6dsx_i2c i2c-SMO8B30:00: supply vddio not found,
+>>>>>>>>>>> using dummy regulator
+>>>>>>>>>>> [ 7366.650839] st_lsm6dsx_i2c i2c-SMO8B30:00: mounting matrix not
+>>>>>>>>>>> found: using identity...
+>>>>>>>>>>>
+>>>>>>>>>>> Is this a problem?  
+>>>>>>>>>>
+>>>>>>>>>> Those are all fine. For regulators that's expected on ACPI and should
+>>>>>>>>>> be harmless as it's up to the firmware to manage power (in DT it may
+>>>>>>>>>> be up to the kernel).
+>>>>>>>>>> For the mounting matrix, there is often something in ACPI DSDT
+>>>>>>>>>> (non standard though).  Could you
+>>>>>>>>>> cat /sys/firmware/acpi/tables/DSDT > ~/dsdt
+>>>>>>>>>> then run through iasl from acpitools
+>>>>>>>>>> iasl -d ~/dsdt
+>>>>>>>>>> and find the bit related to this device.
+>>>>>>>>>>
+>>>>>>>>>> If you can then share that there may be a _DSM or similar in there that
+>>>>>>>>>> is effectively the mounting matrix.  If we are lucky it will look like
+>>>>>>>>>> some existing versions we have code to handle and can add that support
+>>>>>>>>>> as well.
+>>>>>>>>>>
+>>>>>>>>>> Either way - I'll spin a formal patch with your fixes above and we can
+>>>>>>>>>> get this upstream for future kernels.  Mounting matrix can follow
+>>>>>>>>>> later if needed.
+>>>>>>>>>>
+>>>>>>>>>> Thanks,
+>>>>>>>>>>
+>>>>>>>>>> Jonathan
+>>>>>>>>>>
+>>>>>>>>>>  
+>>>>>>>>>>>
+>>>>>>>>>>> Thanks again.
+>>>>>>>>>>>
+>>>>>>>>>>> Darrell
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> On Sun, 29 Jan 2023 at 18:10, Jonathan Cameron <jic23@kernel.org> wrote:  
+>>>>>>>>>>>>
+>>>>>>>>>>>> On Sun, 29 Jan 2023 17:03:51 +0000
+>>>>>>>>>>>> Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
+>>>>>>>>>>>>  
+>>>>>>>>>>>>> Hi,
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I raised this bug in Debian, and have been asked to raise it upstream and
+>>>>>>>>>>>>> was given your addresses to do so. Will this email be OK, or should I raise
+>>>>>>>>>>>>> it in a bug tracking system somewhere?  
+>>>>>>>>>>>>
+>>>>>>>>>>>> Email is the right option.
+>>>>>>>>>>>>  
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Many thanks,
+>>>>>>>>>>>>> Darrell
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> ---------- Forwarded message ---------
+>>>>>>>>>>>>> From: Salvatore Bonaccorso <carnil@debian.org>
+>>>>>>>>>>>>> Date: Sat, 28 Jan 2023 at 20:33
+>>>>>>>>>>>>> Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
+>>>>>>>>>>>>> LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
+>>>>>>>>>>>>> To: Darrell Kavanagh <darrell.kavanagh@gmail.com>, <1029850@bugs.debian.org>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Hi Darrell,
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> On Sat, Jan 28, 2023 at 08:13:16PM +0000, Darrell Kavanagh wrote:  
+>>>>>>>>>>>>>> Package: src:linux
+>>>>>>>>>>>>>> Version: 6.1.4-1
+>>>>>>>>>>>>>> Severity: normal
+>>>>>>>>>>>>>> File: linux
+>>>>>>>>>>>>>> X-Debbugs-Cc: darrell.kavanagh@gmail.com
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> Dear Maintainer,
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> This is a convertable touchscreen tablet/laptop. The rotation sensor  
+>>>>>>>>>>>>> device  
+>>>>>>>>>>>>>> ST Microelectronics LSM6DS3TR-C does not work. It is detected via ACPI  
+>>>>>>>>>>>>> and the  
+>>>>>>>>>>>>>> sysfs trees are created at  
+>>>>>>>>>>>>> devices/pci0000:00/0000:00:17.1/i2c_designware.3/i2c-4/i2c-SMO8B30:00  
+>>>>>>>>>>>>>> and devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:3c/SMO8B30:00 with
+>>>>>>>>>>>>>> symlinks bus/acpi/devices/SMO8B30:00 and bus/i2c/devices/i2c-SMO8B30:00,  
+>>>>>>>>>>>>> but  
+>>>>>>>>>>>>>> no driver is loaded.  
+>>>>>>>>>>>>
+>>>>>>>>>>>> At least this is using the ST PNP ID which is better than average
+>>>>>>>>>>>> (long story!)
+>>>>>>>>>>>>
+>>>>>>>>>>>> The driver in question (ultimately drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+>>>>>>>>>>>> does not currently have an ACPI support.  It should be straight forwards
+>>>>>>>>>>>> to add though the driver first needs converting to use
+>>>>>>>>>>>> device_get_match_data() with appropriate fallback so that it will match on
+>>>>>>>>>>>> ACPI, OF or original spi_device_id tables
+>>>>>>>>>>>>
+>>>>>>>>>>>> Completely untested but something like the following
+>>>>>>>>>>>> (the offset in the enum is needed to allow us to tell if we got a result when
+>>>>>>>>>>>> calling device_get_match_data() as it returns NULL on failure IIRC)
+>>>>>>>>>>>>
+>>>>>>>>>>>> I'm not sure how sucessful the driver will be at finding any interrupts etc, but
+>>>>>>>>>>>> it may get you basic functionality.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Good luck and others more familiar with the driver may well tell me what I forgot
+>>>>>>>>>>>> when hacking the below ;)
+>>>>>>>>>>>>
+>>>>>>>>>>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>>>>>>>>>>>> index 499fcf8875b4..2617ce236ddc 100644
+>>>>>>>>>>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>>>>>>>>>>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+>>>>>>>>>>>> @@ -39,7 +39,7 @@
+>>>>>>>>>>>>  #define ST_ISM330IS_DEV_NAME   "ism330is"
+>>>>>>>>>>>>
+>>>>>>>>>>>>  enum st_lsm6dsx_hw_id {
+>>>>>>>>>>>> -       ST_LSM6DS3_ID,
+>>>>>>>>>>>> +       ST_LSM6DS3_ID = 1,
+>>>>>>>>>>>>         ST_LSM6DS3H_ID,
+>>>>>>>>>>>>         ST_LSM6DSL_ID,
+>>>>>>>>>>>>         ST_LSM6DSM_ID,
+>>>>>>>>>>>> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+>>>>>>>>>>>> index df5f60925260..ecfceb2fb3db 100644
+>>>>>>>>>>>> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+>>>>>>>>>>>> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+>>>>>>>>>>>> @@ -23,10 +23,15 @@ static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
+>>>>>>>>>>>>
+>>>>>>>>>>>>  static int st_lsm6dsx_i2c_probe(struct i2c_client *client)
+>>>>>>>>>>>>  {
+>>>>>>>>>>>> -       const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>>>>>>>>>>>> -       int hw_id = id->driver_data;
+>>>>>>>>>>>> +       int hw_id;
+>>>>>>>>>>>>         struct regmap *regmap;
+>>>>>>>>>>>>
+>>>>>>>>>>>> +       hw_id = (kernel_ulong_t)device_get_match_data(&client->dev);
+>>>>>>>>>>>> +       if (!hw_id)
+>>>>>>>>>>>> +               hw_id = i2c_client_get_device_id(client)->driver_data;
+>>>>>>>>>>>> +       if (!hw_id)
+>>>>>>>>>>>> +               return -EINVAL;
+>>>>>>>>>>>> +
+>>>>>>>>>>>>         regmap = devm_regmap_init_i2c(client, &st_lsm6dsx_i2c_regmap_config);
+>>>>>>>>>>>>         if (IS_ERR(regmap)) {
+>>>>>>>>>>>>                 dev_err(&client->dev, "Failed to register i2c regmap %ld\n", PTR_ERR(regmap));
+>>>>>>>>>>>> @@ -129,6 +134,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
+>>>>>>>>>>>>  };
+>>>>>>>>>>>>  MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
+>>>>>>>>>>>>
+>>>>>>>>>>>> +static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
+>>>>>>>>>>>> +       { "SMO8B30", ST_LSM6DS3TRC_ID, },
+>>>>>>>>>>>> +};
+>>>>>>>>>>>> +
+>>>>>>>>>>>>  static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
+>>>>>>>>>>>>         { ST_LSM6DS3_DEV_NAME, ST_LSM6DS3_ID },
+>>>>>>>>>>>>         { ST_LSM6DS3H_DEV_NAME, ST_LSM6DS3H_ID },
+>>>>>>>>>>>> @@ -161,6 +170,7 @@ static struct i2c_driver st_lsm6dsx_driver = {
+>>>>>>>>>>>>                 .name = "st_lsm6dsx_i2c",
+>>>>>>>>>>>>                 .pm = pm_sleep_ptr(&st_lsm6dsx_pm_ops),
+>>>>>>>>>>>>                 .of_match_table = st_lsm6dsx_i2c_of_match,
+>>>>>>>>>>>> +               .acpi_match_table = st_lsm6dsx_i2c_acpi_match,
+>>>>>>>>>>>>         },
+>>>>>>>>>>>>         .probe_new = st_lsm6dsx_i2c_probe,
+>>>>>>>>>>>>         .id_table = st_lsm6dsx_i2c_id_table,
+>>>>>>>>>>>>
+>>>>>>>>>>>>  
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> The device is identifying itself to the kernel with PNP id SMO8B30:
+>>>>>>>>>>>>>> physical_node:
+>>>>>>>>>>>>>>       modalias=acpi:SMO8B30:SMO8B30:
+>>>>>>>>>>>>>>       name=SMO8B30:00
+>>>>>>>>>>>>>>       uevent=MODALIAS=acpi:SMO8B30:SMO8B30:
+>>>>>>>>>>>>>>       waiting_for_supplier=0
+>>>>>>>>>>>>>> firmware_node:
+>>>>>>>>>>>>>>       hid=SMO8B30
+>>>>>>>>>>>>>>       modalias=acpi:SMO8B30:SMO8B30:
+>>>>>>>>>>>>>>       path=\_SB_.PCI0.I2C5.DEV_
+>>>>>>>>>>>>>>       status=15
+>>>>>>>>>>>>>>       uevent=MODALIAS=acpi:SMO8B30:SMO8B30:
+>>>>>>>>>>>>>>       uid=0
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> The kernel module for the appropriate driver (st_lsm6dsx_i2c) is not  
+>>>>>>>>>>>>> loaded on boot.  
+>>>>>>>>>>>>>> Modprobing it does not associate it with the device, as I would expect as
+>>>>>>>>>>>>>> the module does not provide an alias for the above acpi/pnp id.  
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Can you report this issue upstream? Gues to reach out are according to
+>>>>>>>>>>>>> get_maintainers.pl script:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Lorenzo Bianconi <lorenzo@kernel.org> (maintainer:ST LSM6DSx IMU IIO DRIVER)
+>>>>>>>>>>>>> Jonathan Cameron <jic23@kernel.org> (maintainer:IIO SUBSYSTEM AND DRIVERS)
+>>>>>>>>>>>>> Lars-Peter Clausen <lars@metafoo.de> (reviewer:IIO SUBSYSTEM AND DRIVERS)
+>>>>>>>>>>>>> linux-iio@vger.kernel.org (open list:ST LSM6DSx IMU IIO DRIVER)
+>>>>>>>>>>>>> linux-kernel@vger.kernel.org (open list)
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Please keep us in the loop.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Regards,
+>>>>>>>>>>>>> Salvatore  
+>>>>>>>>>>>>  
+>>>>>>>>>>  
+>>>>>>>>  
+>>>>>>  
+>>>>  
+> 
 

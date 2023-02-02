@@ -2,84 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED8D56884ED
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Feb 2023 17:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 271626884C4
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Feb 2023 17:48:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjBBQ6F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Feb 2023 11:58:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34190 "EHLO
+        id S230372AbjBBQsS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Feb 2023 11:48:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232494AbjBBQ6D (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Feb 2023 11:58:03 -0500
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1C4AFB76F;
-        Thu,  2 Feb 2023 08:58:02 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.97,267,1669042800"; 
-   d="scan'208";a="151446210"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 03 Feb 2023 01:58:01 +0900
-Received: from localhost.localdomain (unknown [10.226.92.118])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 027FD402DBB2;
-        Fri,  3 Feb 2023 01:57:57 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
-        Lee Jones <lee@kernel.org>,
-        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
-        "Thierry Reding" <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <chris.paterson2@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v12 5/6] MAINTAINERS: Add entries for Renesas RZ/G2L MTU3a counter driver
-Date:   Thu,  2 Feb 2023 16:57:31 +0000
-Message-Id: <20230202165732.305650-6-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230202165732.305650-1-biju.das.jz@bp.renesas.com>
-References: <20230202165732.305650-1-biju.das.jz@bp.renesas.com>
+        with ESMTP id S230094AbjBBQsR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Feb 2023 11:48:17 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113A730E80;
+        Thu,  2 Feb 2023 08:48:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AFA51B826EE;
+        Thu,  2 Feb 2023 16:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28E8C433D2;
+        Thu,  2 Feb 2023 16:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675356494;
+        bh=zXiQuKoym7NRi7lcy38mAnxrVWR77CSOjEB+TFWteRQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=MHElBPi1uMOh0unO60ZuSE6hBs8urJ0dUBNrNNgfuA7QVbYdEsroNReDP+A5WVRQA
+         gZDNeb8R3799DOdBVJyM48NgU9Ju65xwgwy0sKMIIefVM3FraEsOgHViN+bgG8Uc6e
+         h0oyOBzbCxBIobupZ1cGQ6dCh9P7PvzKgM2ydjAMRQVL37NrgpP9UatE4lsjNDBTt8
+         bX5Q6DLrWYdQpTkyEa+Zcb/S4PE+flS2E3sZ40UOrx4kz4xu33n8mgnEJSRXadAaFn
+         axsPWeE9SD0qGORfbXNSiYxtrKxp46sOZQWse7QwtMNnWOsmvYnmybmcTWr45ATzi1
+         px3GswoMI3/sw==
+Date:   Thu, 2 Feb 2023 17:02:12 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Arnd Bergmann <arnd@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrea Merello <andrea.merello@iit.it>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adis16480: select CONFIG_CRC32
+Message-ID: <20230202170212.0cc6273d@jic23-huawei>
+In-Reply-To: <2c8c64f95569a3bfb142761bad7a948c71a8d266.camel@gmail.com>
+References: <20230131094616.130238-1-arnd@kernel.org>
+        <2c8c64f95569a3bfb142761bad7a948c71a8d266.camel@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add the MAINTAINERS entries for the Renesas RZ/G2L MTU3a counter
-driver.
+On Tue, 31 Jan 2023 11:23:10 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v11->v12:
- * No change.
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> On Tue, 2023-01-31 at 10:46 +0100, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >=20
+> > In rare randconfig builds, the missing CRC32 helper causes
+> > a link error:
+> >=20
+> > ld.lld: error: undefined symbol: crc32_le =20
+> > > > > referenced by usercopy_64.c
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 vmlinux.o:(adis16480_trigger_handler) =20
+> >=20
+> > Fixes: 941f130881fa ("iio: adis16480: support burst read function")
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > --- =20
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>=20
+>=20
+Applied to the fixes-togreg branch of iio.git and marked
+for stable.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 590bcd047a7f..f55ad30fcb23 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17773,6 +17773,14 @@ S:	Supported
- F:	Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
- F:	drivers/iio/adc/rzg2l_adc.c
- 
-+RENESAS RZ/G2L MTU3a COUNTER DRIVER
-+M:	Biju Das <biju.das.jz@bp.renesas.com>
-+L:	linux-iio@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-+F:	drivers/counter/rz-mtu3-cnt.c
-+
- RENESAS RZ/N1 A5PSW SWITCH DRIVER
- M:	Clément Léger <clement.leger@bootlin.com>
- L:	linux-renesas-soc@vger.kernel.org
--- 
-2.25.1
+Thanks,
+
+Jonathan
+
 

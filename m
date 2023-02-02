@@ -2,54 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 271626884C4
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Feb 2023 17:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2406884E7
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Feb 2023 17:57:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbjBBQsS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Feb 2023 11:48:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56382 "EHLO
+        id S231391AbjBBQ5B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Feb 2023 11:57:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbjBBQsR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Feb 2023 11:48:17 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113A730E80;
-        Thu,  2 Feb 2023 08:48:16 -0800 (PST)
+        with ESMTP id S229608AbjBBQ47 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Feb 2023 11:56:59 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE7665EF4;
+        Thu,  2 Feb 2023 08:56:58 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AFA51B826EE;
-        Thu,  2 Feb 2023 16:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28E8C433D2;
-        Thu,  2 Feb 2023 16:48:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6488FB82746;
+        Thu,  2 Feb 2023 16:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8122BC433D2;
+        Thu,  2 Feb 2023 16:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675356494;
-        bh=zXiQuKoym7NRi7lcy38mAnxrVWR77CSOjEB+TFWteRQ=;
+        s=k20201202; t=1675357016;
+        bh=Gvq02b9P/lXWWu1impdnZP8MBf9Vgtl3EK37Xtq1PQY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MHElBPi1uMOh0unO60ZuSE6hBs8urJ0dUBNrNNgfuA7QVbYdEsroNReDP+A5WVRQA
-         gZDNeb8R3799DOdBVJyM48NgU9Ju65xwgwy0sKMIIefVM3FraEsOgHViN+bgG8Uc6e
-         h0oyOBzbCxBIobupZ1cGQ6dCh9P7PvzKgM2ydjAMRQVL37NrgpP9UatE4lsjNDBTt8
-         bX5Q6DLrWYdQpTkyEa+Zcb/S4PE+flS2E3sZ40UOrx4kz4xu33n8mgnEJSRXadAaFn
-         axsPWeE9SD0qGORfbXNSiYxtrKxp46sOZQWse7QwtMNnWOsmvYnmybmcTWr45ATzi1
-         px3GswoMI3/sw==
-Date:   Thu, 2 Feb 2023 17:02:12 +0000
+        b=g6munLSfCJTT/MJhvhOdAaWevLr6cf8ENrbjUT7sQ2y3l4t+9YxjG+959fqA1goDb
+         7HGK5SiYdhXksOCUMVmtkvPVGtXMvZy6GGdG8jBdS4nKgLgF4eEulQVO7Z0IelXdot
+         FoLevu/DV84ngi/wlAavP2+wOu9qRxA85iq/G485Ekuh3zvPns9M+jiKwLHM0yicKP
+         7rFr+nvh0LU2E1Zj5EW2BVQc8n+pTlnhUWKMWUC8TSCKMjwZbLJhtlmIMB6ktEjxrl
+         9H5HvWSkX5a3cdAg9SRrsDjmB0UJ0uwQXegFNSJlpfHbrnV4pVRLfYnOhBRprdKkYE
+         cPXI8tddOUi2Q==
+Date:   Thu, 2 Feb 2023 17:10:52 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Arnd Bergmann <arnd@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+To:     Marco Felsch <m.felsch@pengutronix.de>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Haibo Chen <haibo.chen@nxp.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrea Merello <andrea.merello@iit.it>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adis16480: select CONFIG_CRC32
-Message-ID: <20230202170212.0cc6273d@jic23-huawei>
-In-Reply-To: <2c8c64f95569a3bfb142761bad7a948c71a8d266.camel@gmail.com>
-References: <20230131094616.130238-1-arnd@kernel.org>
-        <2c8c64f95569a3bfb142761bad7a948c71a8d266.camel@gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/1] dt-bindings: iio: adc: add missing vref-supply
+Message-ID: <20230202171052.502ec666@jic23-huawei>
+In-Reply-To: <20230201121343.vk2t2dfpbvhflols@pengutronix.de>
+References: <20230131101323.606931-1-alexander.stein@ew.tq-group.com>
+        <20230131104816.w5sfpcdjulr2ogze@pengutronix.de>
+        <1850476.tdWV9SEqCh@steina-w>
+        <20230201121343.vk2t2dfpbvhflols@pengutronix.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,32 +66,101 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 31 Jan 2023 11:23:10 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Wed, 1 Feb 2023 13:13:43 +0100
+Marco Felsch <m.felsch@pengutronix.de> wrote:
 
-> On Tue, 2023-01-31 at 10:46 +0100, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >=20
-> > In rare randconfig builds, the missing CRC32 helper causes
-> > a link error:
-> >=20
-> > ld.lld: error: undefined symbol: crc32_le =20
-> > > > > referenced by usercopy_64.c
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 vmlinux.o:(adis16480_trigger_handler) =20
-> >=20
-> > Fixes: 941f130881fa ("iio: adis16480: support burst read function")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > --- =20
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
->=20
-Applied to the fixes-togreg branch of iio.git and marked
-for stable.
+> Hi Alexander,
+> 
+> On 23-01-31, Alexander Stein wrote:
+> > Hi Marco,
+> > 
+> > thanks for the feedback.
+> > 
+> > Am Dienstag, 31. Januar 2023, 11:48:16 CET schrieb Marco Felsch:  
+> > > Hi Alexander,
+> > > 
+> > > On 23-01-31, Alexander Stein wrote:  
+> > > > Although this property is used right now for IIO_CHAN_INFO_SCALE,
+> > > > this ADC has two internal reference voltages, which the driver currently
+> > > > doesn't make use of.
+> > > > 
+> > > > Fixes: db73419d8c06 ("dt-bindings: iio: adc: Add binding documentation for
+> > > > NXP IMX8QXP ADC") Signed-off-by: Alexander Stein
+> > > > <alexander.stein@ew.tq-group.com>
+> > > > ---
+> > > > 
+> > > >  .../devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml          | 4 ++++
+> > > >  1 file changed, 4 insertions(+)
+> > > > 
+> > > > diff --git
+> > > > a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> > > > b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml index
+> > > > 63369ba388e4..879768af0303 100644
+> > > > --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> > > > +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> > > > 
+> > > > @@ -39,6 +39,9 @@ properties:
+> > > >    power-domains:
+> > > >      maxItems: 1
+> > > > 
+> > > > +  vref-supply:
+> > > > +    description: External ADC reference voltage supply on VREFH pad.  
+> > > 
+> > > Please add it to the list of required properties, we can remove it as
+> > > soon as the driver has support for the internal reference voltages.  
+> > 
+> > I was thinking in doing so before as well. But DT describes the hardware, and 
+> > this ADC apparently would be functioning without a reference voltage on that 
+> > pad, using a different one. What the driver actual does is a different matter.  
+> 
+> I have also thought about it first but than I checked the RM which says
+> that "multi-reference selection" is chip dependent.
 
-Thanks,
+Oh goody. So is it detectable?
+
+If we are going to stick to a single compatible rather than adding them for
+the variants with and without this feature, should probably add a note at least
+to say it is required for some parts.
+
+Also, link if public would be good for purposes of discussion as my google
+fu didn't find relevant doc. (assuming it's public)
+
 
 Jonathan
 
+
+> 
+> Regards,
+>   Marco
+> 
+> 
+> > 
+> > Best regards,
+> > Alexander
+> >   
+> > > Regards,
+> > >   Marco
+> > >   
+> > > > +
+> > > > 
+> > > >    "#io-channel-cells":
+> > > >      const: 1
+> > > > 
+> > > > @@ -72,6 +75,7 @@ examples:
+> > > >              assigned-clocks = <&clk IMX_SC_R_ADC_0>;
+> > > >              assigned-clock-rates = <24000000>;
+> > > >              power-domains = <&pd IMX_SC_R_ADC_0>;
+> > > > 
+> > > > +            vref-supply = <&reg_1v8>;
+> > > > 
+> > > >              #io-channel-cells = <1>;
+> > > >          
+> > > >          };
+> > > >      
+> > > >      };  
+> > 
+> > 
+> > 
+> > 
+> >   
 

@@ -2,120 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A701687EAD
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Feb 2023 14:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49958687EC8
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Feb 2023 14:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230230AbjBBNax (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Feb 2023 08:30:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60580 "EHLO
+        id S232195AbjBBNhn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Feb 2023 08:37:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbjBBNaw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Feb 2023 08:30:52 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF6211B;
-        Thu,  2 Feb 2023 05:30:51 -0800 (PST)
+        with ESMTP id S230456AbjBBNhm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Feb 2023 08:37:42 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7001F79CA6;
+        Thu,  2 Feb 2023 05:37:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675344651; x=1706880651;
+  t=1675345059; x=1706881059;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ko6eIKDR7GQnGfkJ9453bCB4FUln9M60/sS1sBmialE=;
-  b=dnFZu2pWKbPJm147HmVVAoGTWUf+IdvFRH8rWHK1yPcvSmx50cWtt0Dp
-   4ioyr+dFV/yK/HPm81rMamPvvddRwjlBMGvSnRWg+IDsRYc/6ZoSHy3n+
-   6Qjoq3OWQnOiwWCV3hGDchGeHntIht6KipCqbBajhV3oVRsoy5P/LcUyX
-   5D8ZnpSIiIVUSb38JkW2Se804JVScGMkPk9mMYjiTYSck/LDBZHsNLfs+
-   j+h1zjEu2FzzfYdnLVCPbFR8LcgNf4d7EjJ1ZuDoEWpru/0yc+dYxjJhX
-   jG9xIWVcgL0+q2qU97noSE6M3pyZ2gT+REqkiM8r0bkZvSZNzZWVuXz4l
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10608"; a="308094351"
+  bh=fNsHPoLmzNmFWV96A75FXJ5j6D1Zh89HMU5oA0Mj6NU=;
+  b=G0AdybbEalquGCbHndHM+Da12x4PLQ2oW6PwzclxB446eC5FOk7r7jF4
+   8pjDjmHX87D052JiY7rOI+xUShRQol/BQwrHiQgkLZTiKLO3XVM2HsZI1
+   HzAAaow116m3IWhV4DVsEydvVc2G0x84NjpqXUJiJafTpaebtvdn8h4yx
+   xLABDysiX7F0shBU53xGKH1HbKYXefWX8ToZ0w36Ez4mVNR3PaTunJFW0
+   HAm/wVYjW4YS9Saij/reUqPXIEgcj+VwnCByDkTaAyNiiH9EaLOxcMGsp
+   z68bJm6UHQeWqt1Lg+PiFptNzQIwN9Gy/4HF/6T1Y45LY4fzM2+ngCsL8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10608"; a="329733207"
 X-IronPort-AV: E=Sophos;i="5.97,267,1669104000"; 
-   d="scan'208";a="308094351"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2023 05:30:51 -0800
+   d="scan'208";a="329733207"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2023 05:37:38 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10608"; a="665282268"
+X-IronPort-AV: E=McAfee;i="6500,9779,10608"; a="728859963"
 X-IronPort-AV: E=Sophos;i="5.97,267,1669104000"; 
-   d="scan'208";a="665282268"
+   d="scan'208";a="728859963"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 02 Feb 2023 05:30:46 -0800
+  by fmsmga008.fm.intel.com with ESMTP; 02 Feb 2023 05:37:34 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pNZfo-001Bo3-03;
-        Thu, 02 Feb 2023 15:30:44 +0200
-Date:   Thu, 2 Feb 2023 15:30:43 +0200
+        id 1pNZmN-001Bwx-32;
+        Thu, 02 Feb 2023 15:37:31 +0200
+Date:   Thu, 2 Feb 2023 15:37:31 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         William Breathitt Gray <william.gray@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] drivers: regulator: Add ADI MAX77541/MAX77540
- Regulator Support
-Message-ID: <Y9u7A096Tbe1Cj9d@smile.fi.intel.com>
+Subject: Re: [PATCH v4 3/5] drivers: iio: adc: Add ADI MAX77541 ADC Support
+Message-ID: <Y9u8m3EHux2b5Gip@smile.fi.intel.com>
 References: <20230201103534.108136-1-okan.sahin@analog.com>
- <20230201103534.108136-3-okan.sahin@analog.com>
+ <20230201103534.108136-4-okan.sahin@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230201103534.108136-3-okan.sahin@analog.com>
+In-Reply-To: <20230201103534.108136-4-okan.sahin@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Feb 01, 2023 at 01:35:15PM +0300, Okan Sahin wrote:
-> Regulator driver for both MAX77541 and MAX77540.
-> The MAX77541 is a high-efficiency step-down converter
-> with two 3A switching phases for single-cell Li+ battery
-> and 5VDC systems.
-> 
-> The MAX77540 is a high-efficiency step-down converter
-> with two 3A switching phases.
+On Wed, Feb 01, 2023 at 01:35:16PM +0300, Okan Sahin wrote:
+> The MAX77541 has an 8-bit Successive Approximation Register (SAR) ADC
+> with four multiplexers for supporting the telemetry feature.
 
 ...
 
-With
+> +struct max77541_adc_iio {
+> +	struct regmap	*regmap;
+> +};
 
-> +	struct device *dev = &pdev->dev;
-
-to be here the following can be shortened
-
-> +	struct max77541 *max77541 = dev_get_drvdata(pdev->dev.parent);
-
-	struct max77541 *max77541 = dev_get_drvdata(dev->parent);
-
-> +	struct regulator_config config = {};
-> +	const struct regulator_desc *desc;
-> +	struct device *dev = &pdev->dev;
-> +	struct regulator_dev *rdev;
-> +	int i;
-
-> +	config.dev = pdev->dev.parent;
-
-	config.dev = dev->parent;
+Is it really needed? See below.
 
 ...
 
-> +static const struct platform_device_id max77541_regulator_platform_id[] = {
-> +	{ "max77540-regulator", },
-> +	{ "max77541-regulator", },
+> +enum max77541_adc_channel {
+> +	MAX77541_ADC_VSYS_V = 0,
 
-Inner commas are not required.
+0 is the default in C enums, why do you need this explicitly? If these are
+HW related, you need to assign them all to be crystal clear.
+
+> +	MAX77541_ADC_VOUT1_V,
+> +	MAX77541_ADC_VOUT2_V,
+> +	MAX77541_ADC_TEMP,
+> +};
+
+...
+
+> +		reg_val = FIELD_GET(MAX77541_BITS_MX_CFG1_RNG, reg_val);
+
+> +
+
+Redundant blank line.
+
+> +		switch (reg_val) {
+> +		case LOW_RANGE:
+> +			*val = 6;
+> +			*val2 = 250000;
+> +			break;
+> +		case MID_RANGE:
+> +			*val = 12;
+> +			*val2 = 500000;
+> +			break;
+> +		case HIGH_RANGE:
+> +			*val = 25;
+> +			return IIO_VAL_INT;
+> +		default:
+> +			return -EINVAL;
+> +		}
+
+...
+
+	struct regmap **regmap;
+
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
+
+sizeof(*regmap)
+
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+
+> +	info = iio_priv(indio_dev);
+
+	regmap = iio_priv(...);
+
+> +	info->regmap = dev_get_regmap(dev->parent, NULL);
+
+	*regmap = ...;
+
+It won't probably gain anything in the code generation or memory footprint,
+so up to you. But in general depending on API it might be a benefit.
+
+...
+
+> +static const struct platform_device_id max77541_adc_platform_id[] = {
+> +	{ "max77541-adc", },
+
+Inner comma is not needed.
 
 > +	{  /* sentinel */  }
 > +};

@@ -2,29 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8111689B43
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Feb 2023 15:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCDA2689B7A
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Feb 2023 15:21:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbjBCONo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Feb 2023 09:13:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59436 "EHLO
+        id S231261AbjBCOVL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Feb 2023 09:21:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232755AbjBCON0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Feb 2023 09:13:26 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53721E1C3
-        for <linux-iio@vger.kernel.org>; Fri,  3 Feb 2023 06:12:33 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pNwnb-0005rJ-S7; Fri, 03 Feb 2023 15:12:19 +0100
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pNwnZ-0003oW-PY; Fri, 03 Feb 2023 15:12:17 +0100
-Date:   Fri, 3 Feb 2023 15:12:17 +0100
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+        with ESMTP id S231546AbjBCOVJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Feb 2023 09:21:09 -0500
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC59113CB;
+        Fri,  3 Feb 2023 06:20:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1675434044; x=1706970044;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nry1T94df9OQlSpOX/lRpiFLZljoy07EtiJ/B+IqtPI=;
+  b=LCVXp8H3dmWAvo9+5zNYclg+ZvXjOwb36E5VFLu3Yupt/9x5G14IVhpM
+   tU7mdltXPoeMblmq0egkaa0Ct2S2YK1uNtqoU1j72+cZ2B/fhreER0Nz6
+   YFOC34Oy1QsA0lzN4UvGG2MIxOMefBvhRTND8X0AUzjR6D0K6uVd+x08V
+   sL0T2AadarJuL8H7NTZNN3qeBa/QpXdKawZdgahSmKQQt+n2BQAAlq/Bt
+   NWF4kcmKwO53DJQEMLvVdXMYPtqKXUrZZG6xgGulVUF1Rn1B19eJuf7H7
+   1fCil9j5SoZrfDYuxaxb+TNStuHpbFIUt5YHNo3ic4a4K/eEWftb3Lw1B
+   g==;
+X-IronPort-AV: E=Sophos;i="5.97,270,1669071600"; 
+   d="scan'208";a="28858447"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 03 Feb 2023 15:20:42 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Fri, 03 Feb 2023 15:20:42 +0100
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Fri, 03 Feb 2023 15:20:42 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1675434042; x=1706970042;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nry1T94df9OQlSpOX/lRpiFLZljoy07EtiJ/B+IqtPI=;
+  b=Ue9oICqZ9cyvuPmumaZY4OzHIL1voMqd5YHRlRKyh7ZetB7Q/k0ai7ui
+   c9FH5Wmb/zppmRIMJQrtLgCpBCmz5JWBbIdivvZK4r2+CfIZbEGauP3aL
+   5LaudZRO14/Za+tlWdqSOmvWKWpjEdiWCSVuGAgrU8moY8eIgrO6/MDbx
+   PQaNjACUtMV06G3DDvv4zd3rW92zFvTM8ED1cFSdAuodq/aDYsRixvRSF
+   YpqdXP1qLZfvpPJhn5a6VJUMy7kPG/Z+7I7yehU8LQ9xsms0VC6WxhaE4
+   0AgSRvLWkwZuyIowZLzw9RYMB/rJOsLBPiBApx/dePR2aX4x8KF9sRMd3
+   g==;
+X-IronPort-AV: E=Sophos;i="5.97,270,1669071600"; 
+   d="scan'208";a="28858446"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 03 Feb 2023 15:20:41 +0100
+Received: from steina-w.localnet (unknown [10.123.53.21])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 81E7C280072;
+        Fri,  3 Feb 2023 15:20:41 +0100 (CET)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Marco Felsch <m.felsch@pengutronix.de>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Cai Huoqing <cai.huoqing@linux.dev>,
         Haibo Chen <haibo.chen@nxp.com>,
@@ -38,72 +73,90 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH 1/1] dt-bindings: iio: adc: add missing vref-supply
-Message-ID: <20230203141217.et55oxbtxcilg3ig@pengutronix.de>
-References: <20230131101323.606931-1-alexander.stein@ew.tq-group.com>
- <20230201121343.vk2t2dfpbvhflols@pengutronix.de>
- <20230202171052.502ec666@jic23-huawei>
- <1922814.PYKUYFuaPT@steina-w>
+Date:   Fri, 03 Feb 2023 15:20:41 +0100
+Message-ID: <3214924.aeNJFYEL58@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20230203141217.et55oxbtxcilg3ig@pengutronix.de>
+References: <20230131101323.606931-1-alexander.stein@ew.tq-group.com> <1922814.PYKUYFuaPT@steina-w> <20230203141217.et55oxbtxcilg3ig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1922814.PYKUYFuaPT@steina-w>
-User-Agent: NeoMutt/20180716
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-
-On 23-02-03, Alexander Stein wrote:
-
-...
-
-> > > > > > +  vref-supply:
-> > > > > > +    description: External ADC reference voltage supply on VREFH
-> > > > > > pad.
+Am Freitag, 3. Februar 2023, 15:12:17 CET schrieb Marco Felsch:
+> Hi,
+> 
+> On 23-02-03, Alexander Stein wrote:
+> 
+> ...
+> 
+> > > > > > > +  vref-supply:
+> > > > > > > +    description: External ADC reference voltage supply on VREFH
+> > > > > > > pad.
+> > > > > > 
+> > > > > > Please add it to the list of required properties, we can remove it
+> > > > > > as
+> > > > > > soon as the driver has support for the internal reference
+> > > > > > voltages.
 > > > > > 
-> > > > > Please add it to the list of required properties, we can remove it as
-> > > > > soon as the driver has support for the internal reference voltages.
+> > > > > I was thinking in doing so before as well. But DT describes the
+> > > > > hardware, and this ADC apparently would be functioning without a
+> > > > > reference voltage on that pad, using a different one. What the
+> > > > > driver
+> > > > > actual does is a different matter.>
 > > > > 
-> > > > I was thinking in doing so before as well. But DT describes the
-> > > > hardware, and this ADC apparently would be functioning without a
-> > > > reference voltage on that pad, using a different one. What the driver
-> > > > actual does is a different matter.> 
-> > > I have also thought about it first but than I checked the RM which says
-> > > that "multi-reference selection" is chip dependent.
+> > > > I have also thought about it first but than I checked the RM which
+> > > > says
+> > > > that "multi-reference selection" is chip dependent.
+> > 
+> > Nice for pointing this out. I wasn't aware that there are differences.
+> > 
+> > > Oh goody. So is it detectable?
+> > 
+> > That's my problem. I didn't find any source of information which chips do
+> > support multiple references and which don't.
+> > Marco, do you have some information on this?
 > 
-> Nice for pointing this out. I wasn't aware that there are differences.
+> You can download the RM from the NXP website but you need an account for
+> it:
+> https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/
+> i-mx-applications-processors/i-mx-8-applications-processors/i-mx-8-family-ar
+> m-cortex-a53-cortex-a72-virtualization-vision-3d-graphics-4k-video:i.MX8
 > 
-> > Oh goody. So is it detectable?
+> Or is this the wrong model? The naming scheme is quite confusing to me.
+
+That's i.MX8 (imx8qm), the bindings are for i.MX8X (imx8qxp/imx8dxp). But I 
+assume the ADC is similar/identical.
+
+> > > If we are going to stick to a single compatible rather than adding them
+> > > for
+> > > the variants with and without this feature, should probably add a note
+> > > at
+> > > least to say it is required for some parts.
+> > 
+> > That's a good idea. I'm okay with that, until there is more information
+> > available.
 > 
-> That's my problem. I didn't find any source of information which chips do 
-> support multiple references and which don't.
-> Marco, do you have some information on this?
+> According the RM there is a bit which can be read: Multi Vref
+> Implemented (MVI).
 
-You can download the RM from the NXP website but you need an account for
-it:
-https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-8-applications-processors/i-mx-8-family-arm-cortex-a53-cortex-a72-virtualization-vision-3d-graphics-4k-video:i.MX8
+Ah, nice. So there is a hardware feature. From the RM I have available it is 
+set for both imx8qm and imx8qxp. Given that I will not mark this as required, 
+but add a comment regarding this feature bit.
 
-Or is this the wrong model? The naming scheme is quite confusing to me.
+Best regards,
+Alexander
 
-> > If we are going to stick to a single compatible rather than adding them for
-> > the variants with and without this feature, should probably add a note at
-> > least to say it is required for some parts.
-> 
-> That's a good idea. I'm okay with that, until there is more information 
-> available.
+> Regards,
+>   Marco
 
-According the RM there is a bit which can be read: Multi Vref
-Implemented (MVI).
 
-Regards,
-  Marco
+
+

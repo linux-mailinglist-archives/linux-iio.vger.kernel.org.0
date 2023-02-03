@@ -2,78 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 830B468A1E8
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Feb 2023 19:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE5168A3D7
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Feb 2023 21:57:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233295AbjBCSXx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Feb 2023 13:23:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54428 "EHLO
+        id S232165AbjBCU5x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Feb 2023 15:57:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233449AbjBCSXw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Feb 2023 13:23:52 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FFB9D5A5;
-        Fri,  3 Feb 2023 10:23:51 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id a23so4181152pga.13;
-        Fri, 03 Feb 2023 10:23:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=srznEHSSTHCGYmDYgwAIF8BnfIywL9CSAGSFepLLDM0=;
-        b=CdaOChV0fSj82IzdYk6vxSmfcX66EGRnLCkbCck+Fjd7fb7+Uaz+nV71cl+HE1g3Hn
-         5tUve2BZqT2ov9fetkbJ4JM0Ayc5Cc56auCyUk1UGb+NDynuSm73V10GeCwc5vYLmy5F
-         uYftLHFt8+3rwiY+dZO2egobFWxGq9oocV9HkAiOwtdfkazD8YIDHOvwJXAmIFPiOls6
-         BH02BwMP8Ndw2w5VZCjk2yuAPWsNmbAoCjsTjEfoStnD2TSARyiiyhdAe1tbVqMGCigj
-         zphSj0C8EmbVMeOqyH54DPDIjl+2gvnELnmjfdvTJp3G7gW5p0GsKQCcn4ghV691EHld
-         HgQA==
+        with ESMTP id S229448AbjBCU5w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Feb 2023 15:57:52 -0500
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C104F928F2;
+        Fri,  3 Feb 2023 12:57:50 -0800 (PST)
+Received: by mail-ot1-f46.google.com with SMTP id 70-20020a9d084c000000b0068bccf754f1so1742405oty.7;
+        Fri, 03 Feb 2023 12:57:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=srznEHSSTHCGYmDYgwAIF8BnfIywL9CSAGSFepLLDM0=;
-        b=Ucu10uhAUn0nIsC8mr4tZuR5eQKGW6HqQrpJt+QDAzjLU8oF6lh1WklyMXmmQwOiib
-         Xtq0HyX84y/LKX0PQssu/7+lzPTAjXEvO24f2mCH0oaEWF1n3E/ZfW8vDnSOdGH7cnBY
-         FAzoutO3NPcXaUbXkc3biDi4M2oUX+FGf73AKbZOWR4OA1n1mgg4a5kNZbf1JhVypHAB
-         PbmBCLXE0D38MpWJGIGc8sPLms9ROvAtFiiRBqCTO1h6Xq7e42KKxLgVlh2AIamEOAUS
-         giDhb9yFBZERwIQ2KPwDxOCx1VkYMoKJfz6HnrLE/Z3aw+yLmqn/qsJW3VdX+m3RdX1t
-         AIdQ==
-X-Gm-Message-State: AO0yUKUzW4l/UqxCqy5nlpIh8GmRqb4YhwXKEnthwIUGSsxGr61OlgTf
-        HO2d3EMLH+d+B+mpF+Xd3xfvklofEbZ0YTcdlPMblWwW2Hc=
-X-Google-Smtp-Source: AK7set9T+s+3z/05VWZQifzItpjoataR4c3+2sv3JdmK+D41wDCWiDvNEg771EuaY+VLd8g1+7uw9qySypDswa+ganU=
-X-Received: by 2002:a05:6a00:190c:b0:593:a079:639a with SMTP id
- y12-20020a056a00190c00b00593a079639amr2750360pfi.44.1675448630482; Fri, 03
- Feb 2023 10:23:50 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DTUpcYkNxPIlJHACYCYR7pDb1Buy+e4lFP4bk5Zgp34=;
+        b=D6kjA0iDCoHbJoW0/A85Gd/DEhgeFoqvSv2XUAWEbb1o+0YfaV5M3siOzoHq6v+lem
+         V8B6SLkgyxx/W3zB640h3M9fhSuQRaR8LNQQOuiUzmt1QdoYEVcn76JrF6ewHHqp3BxN
+         Hy2T0sAe3/8AOzMRx9zYqk92gEFBgmAH0ufB0/8eI8xfuhJfuVaupJ3T1XZ1archyji/
+         Nola6qXtDnqlRQdvhMBBBSETrlm+Jd6/+GcxoM2hwr0JFnTnXCwe2grgSZIh27ikr6Um
+         mpX2POkA56H64IeN4GJVZ1uydAwgcMldwGbymiD8KpgUN+uUj18tRkFOctge3sIMEhyG
+         8cTg==
+X-Gm-Message-State: AO0yUKVPGuB7WkOnxV5ZFvTP+YeGM2mRoFmSfcEhOqt90HjqZ1lrYGhk
+        EH1ec8I1KvYGvqaHgJ3Iqw==
+X-Google-Smtp-Source: AK7set/idxy63+ygBDyPnMqtJWkCkCzx9MyU4A+nT1Br4FymPkR4Z0JILK7N/Htqiz/3btTinW8cgQ==
+X-Received: by 2002:a05:6830:1e57:b0:68b:b721:8f1c with SMTP id e23-20020a0568301e5700b0068bb7218f1cmr6718583otj.27.1675457869992;
+        Fri, 03 Feb 2023 12:57:49 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id c22-20020a9d6856000000b0068bd5af9b82sm1611458oto.43.2023.02.03.12.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Feb 2023 12:57:49 -0800 (PST)
+Received: (nullmailer pid 873929 invoked by uid 1000);
+        Fri, 03 Feb 2023 20:57:48 -0000
+Date:   Fri, 3 Feb 2023 14:57:48 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
+Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        krzysztof.kozlowski+dt@linaro.org, alexandre.torgue@foss.st.com,
+        vkoul@kernel.org, jic23@kernel.org, olivier.moysan@foss.st.com,
+        arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
+        fabrice.gasnier@foss.st.com, ulf.hansson@linaro.org,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] dt-bindings: treewide: add feature-domains
+ description in binding files
+Message-ID: <20230203205748.GA860175-robh@kernel.org>
+References: <20230127164040.1047583-1-gatien.chevallier@foss.st.com>
+ <20230127164040.1047583-3-gatien.chevallier@foss.st.com>
 MIME-Version: 1.0
-References: <167493679618.4533.12181720504943588640.reportbug@debian-duet>
- <20230129182441.082f29d0@jic23-huawei> <CAMxBKG0tyLSpaDPGBXsJbqgHSG9rH6owtSJsLw_ekmTA3Kyvdw@mail.gmail.com>
- <CAMxBKG3zL_yvw=dHK+Gqd3EHWzvJmiLHVvKnf6UsYbMgcS6nrg@mail.gmail.com>
- <20230130123113.00002c3f@Huawei.com> <CAMxBKG3xOEj1gEs9pGzKb+rDjTLPqAq1YOp4bEFas4tQMzGZ+Q@mail.gmail.com>
- <20230130173525.0000418d@huawei.com> <CAMxBKG1yKcodDD2kvfwKvpYnPrXmgaOk9rTztRPFzKMCZ5F=tA@mail.gmail.com>
- <20230130194110.256144e7@jic23-huawei> <CAMxBKG3S6aJSrO-BAPCAhVpg2qF2kWfRJ9d0n2EmOY=JGNid-A@mail.gmail.com>
- <20230130203110.60c96f37@jic23-huawei> <CAMxBKG1+Vcaic2WzVvZZSrVDO7+PTYJZgPP77s_GPOdo+BKJAQ@mail.gmail.com>
- <CAMxBKG0Q4H6Dv9a=oOAX8c5TS08ZJBBO0tTLRaUY9h-W1FTHCQ@mail.gmail.com>
- <20230201102824.00002044@Huawei.com> <c3207f3a-ecb9-0e69-e26a-71dc1b06db6a@redhat.com>
- <d9cec163f93922e59378a4aa351934ba1d702817.camel@hadess.net>
- <CAMxBKG3Nh5C1N5_SAftQxStkkj2Y0YRuymB4Z2av79p=1HPuMQ@mail.gmail.com> <7005e022-dd4c-835c-bdc2-11bbbd214071@redhat.com>
-In-Reply-To: <7005e022-dd4c-835c-bdc2-11bbbd214071@redhat.com>
-From:   Darrell Kavanagh <darrell.kavanagh@gmail.com>
-Date:   Fri, 3 Feb 2023 18:23:38 +0000
-Message-ID: <CAMxBKG1s5pqU08w2keOxf7J9UJakiwbCVve9iSDr1Vis0=6biQ@mail.gmail.com>
-Subject: Re: Bug#1029850: linux: Driver not loaded for ST Microelectronics
- LSM6DS3TR-C accelerometer (acpi:SMO8B30:SMO8B30:)
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Bastien Nocera <hadess@hadess.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230127164040.1047583-3-gatien.chevallier@foss.st.com>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,183 +78,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Finally got a 6.2.0-rc6 kernel built and installed, with the following
-patch, and everything is working as expected.
+On Fri, Jan 27, 2023 at 05:40:36PM +0100, Gatien Chevallier wrote:
+> feature-domains is an optional property that allows a peripheral to
+> refer to one or more feature domain controller(s).
+> 
+> Description of this property is added to all peripheral binding files of
+> the peripheral under the STM32 System Bus. It allows an accurate
+> representation of the hardware, where various peripherals are connected
+> to this firewall bus. The firewall can then check the peripheral accesses
+> before allowing it to probe.
+> 
+> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> ---
+> 
+> Patch not present in V1 and V2.
+> 
+>  Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml | 5 +++++
+>  Documentation/devicetree/bindings/dma/st,stm32-dma.yaml     | 5 +++++
+>  Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml  | 5 +++++
+>  Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml     | 5 +++++
+>  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml | 5 +++++
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml     | 5 +++++
+>  Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml | 5 +++++
+>  Documentation/devicetree/bindings/media/st,stm32-cec.yaml   | 5 +++++
+>  Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml  | 5 +++++
+>  .../bindings/memory-controllers/st,stm32-fmc2-ebi.yaml      | 5 +++++
+>  Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml | 5 +++++
+>  Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml  | 6 ++++++
+>  Documentation/devicetree/bindings/mmc/arm,pl18x.yaml        | 5 +++++
+>  Documentation/devicetree/bindings/net/stm32-dwmac.yaml      | 5 +++++
+>  .../devicetree/bindings/phy/phy-stm32-usbphyc.yaml          | 5 +++++
+>  .../devicetree/bindings/regulator/st,stm32-vrefbuf.yaml     | 5 +++++
+>  Documentation/devicetree/bindings/rng/st,stm32-rng.yaml     | 5 +++++
+>  Documentation/devicetree/bindings/serial/st,stm32-uart.yaml | 5 +++++
+>  Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml   | 5 +++++
+>  Documentation/devicetree/bindings/sound/st,stm32-sai.yaml   | 5 +++++
+>  .../devicetree/bindings/sound/st,stm32-spdifrx.yaml         | 5 +++++
+>  Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml    | 5 +++++
+>  Documentation/devicetree/bindings/spi/st,stm32-spi.yaml     | 5 +++++
+>  Documentation/devicetree/bindings/usb/dwc2.yaml             | 5 +++++
+>  24 files changed, 121 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+> index 4ccb335e8063..cb2ad7d5fdb5 100644
+> --- a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+> +++ b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+> @@ -41,6 +41,11 @@ properties:
+>      maximum: 2
+>      default: 0
+>  
+> +  feature-domains:
+> +    $ref: /schemas/feature-controllers/feature-domain-controller.yaml#/properties/feature-domains
 
-Moving on now to look at Bastien's suggestion.
+Not how common properties work. Consumer properties should be in a 
+schema with 'select: true' (the one you are referencing) and here you 
+just need to define the entries. Like clocks, power-domains, etc.
 
-Thanks,
-Darrell
+> +    minItems: 1
+> +    maxItems: 3
 
-diff --git a/kernel/drm_panel_orientation_quirks.c
-b/kernel/linux-6.2-rc6/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 3659f04..590bb7b 100644
---- a/kernel/drm_panel_orientation_quirks.c
-+++ b/kernel/linux-6.2-rc6/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -304,6 +304,12 @@ static const struct dmi_system_id orientation_data[] =
-=3D {
-                  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "Lenovo ideapad
-D330-10IGM"),
-                },
-                .driver_data =3D (void *)&lcd1200x1920_rightside_up,
-+       }, {    /* Lenovo IdeaPad Duet 3 10IGL5 */
-+               .matches =3D {
-+                 DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+                 DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "IdeaPad Duet 3 10IG=
-L5"),
-+               },
-+               .driver_data =3D (void *)&lcd1200x1920_rightside_up,
-        }, {    /* Lenovo Ideapad D330-10IGL (HD) */
-                .matches =3D {
-                  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+Why is this variable and what is each entry?
 
-On Wed, 1 Feb 2023 at 17:55, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 2/1/23 18:50, Darrell Kavanagh wrote:
-> > Thank you. I don't have anything that could be called a big machine.
-> > The fastest processor I have access to is a Core m3-8100Y - that's in
-> > a Chromebook with 4GB memory - it can run Linux in a chroot or
-> > officially in Google's VM. I also have an ancient gen 2 core i5-2410M
-> > machine which is slower than the m3 in theory, but that has 6GB of
-> > memory.
-> >
-> > Is the kernel build more processor or memory bound?
->
-> It is mostly processor bound, esp. wtih something like make -j4,
-> make -j16 will start taking some RAM, but with make -j4 I expect you
-> to be fully CPU bound.
->
-> Regards,
->
-> Hans
->
->
->
->
->
->
->
->
->
->
-> > On Wed, 1 Feb 2023 at 16:12, Bastien Nocera <hadess@hadess.net> wrote:
-> >>
-> >> On Wed, 2023-02-01 at 12:00 +0100, Hans de Goede wrote:
-> >>> Hi,
-> >>>
-> >>> On 2/1/23 11:28, Jonathan Cameron wrote:
-> >>>> On Wed, 1 Feb 2023 01:40:49 +0000
-> >>>> Darrell Kavanagh <darrell.kavanagh@gmail.com> wrote:
-> >>>>
-> >>>>> Hello, all.
-> >>>>>
-> >>>>> I've finally reached a conclusion on this, after testing all the
-> >>>>> combinations of the patches (with and without reading the acpi
-> >>>>> mounting matrix), window managers (wayland, xorg) and the
-> >>>>> presence or
-> >>>>> not of my custom kernel parms.
-> >>>>>
-> >>>>> What works well is the full set of patches with the custom kernel
-> >>>>> parms and a new hwdb entry for the sensor:
-> >>>>>
-> >>>>> sensor:modalias:acpi:SMO8B30*:dmi:*:svnLENOVO*:pn82AT:*
-> >>>>>  ACCEL_MOUNT_MATRIX=3D0, 1, 0; -1, 0, 0; 0, 0, 1
-> >>>>>
-> >>>>> The autorotate then works correctly in wayland and xorg, but for
-> >>>>> xorg,
-> >>>>> the settings say the screen is "portrait left" when in actual
-> >>>>> fact it
-> >>>>> is in standard laptop landscape orientation. Wayland does not
-> >>>>> have
-> >>>>> this problem (I guess because wayland's view of the screen is
-> >>>>> straight
-> >>>>> from the kernel).
-> >>>>>
-> >>>>> Without the hwdb entry, the orientation is 90 degrees out without
-> >>>>> using the acpi matrix and 180 degrees out when using it. I could
-> >>>>> have
-> >>>>> gone either way here with appropriate hwdb entries, but my view
-> >>>>> is
-> >>>>> that we *should* be using the matrix.
-> >>>>
-> >>>> Added Hans de Goede as he has probably run into more of this mess
-> >>>> than anyone else.  Hans, any thoughts on if we are doing something
-> >>>> wrong on kernel side?  Or is the matrix just wrong *sigh*
-> >>>
-> >>> I see below that this laptop has a panel which is mounted 90 degrees
-> >>> rotated, that likely explains why the ACPI matrix does not work.
-> >>> So the best thing to do here is to just override it with a hwdb
-> >>> entries.
-> >>>
-> >>> IIRC there are already 1 or 2 other hwdb entries which actually
-> >>> override the ACPI provided matrix because of similar issues.
-> >>>
-> >>> Linux userspace expects the matrix in this case to be set so that
-> >>> it causes e.g. gnome's auto-rotation to put the image upright
-> >>> even with older gnome versions / mate / xfce which don't know about
-> >>> the panel being mounted 90 degrees.
-> >>>
-> >>> So e.g. "monitor-sensor" will report left-side-up or right-side-up
-> >>> while the device is actually in normal clamshell mode with the
-> >>> display up-right.
-> >>>
-> >>> This reporting of left-side-up or right-side-up is actually "correct"
-> >>> looking from the native LCD panel orientation and as mentioned is
-> >>> done for backward compatibility. This is documented here:
-> >>>
-> >>> https://github.com/systemd/systemd/blob/main/hwdb.d/60-sensor.hwdb#L5=
-4
-> >>>
-> >>> The way we are handling this is likely incompatible with how Windows
-> >>> handles this special case of 90=C2=B0 rotated screen + ROTM. Or the
-> >>> matrix in the ACPI tables could be just wrong...
-> >>>
-> >>>> I think 'ROTM' is defined by MS.
-> >>>> https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/s=
-ensors-acpi-entries
-> >>>
-> >>> Right and as such it would be good if we can still add support to
-> >>> it to the sensor driver in question. Because the ROTM info usually
-> >>> is correct and avoids the need for adding more and more hwdb entries.
-> >>>
-> >>> Note there already is existing support in some other sensor drivers.
-> >>>
-> >>> So we probably need to factor out some helper code for this and share
-> >>> that between sensor drivers.
-> >>>
-> >>>
-> >>>>> The only thing that concerns me is the need for custom kernel
-> >>>>> parms.
-> >>>>> It would be better if there was a way to avoid this, so that the
-> >>>>> user
-> >>>>> didn't have to mess around with their grub config. Though having
-> >>>>> said
-> >>>>> that, the sensors fix as we have it doesn't make things worse -
-> >>>>> under
-> >>>>> currently released kernels the screen always starts up sideways
-> >>>>> unless
-> >>>>> custom parms are added in grub.
-> >>>
-> >>> We actually have a quirk mechanism in the kernel for specifying
-> >>> the need for: video=3DDSI-1:panel_orientation=3Dright_side_up  and th=
-is
-> >>> will also automatically fix the fbcon orientation, see:
-> >>>
-> >>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
-ee/drivers/gpu/drm/drm_panel_orientation_quirks.c
-> >>>
-> >>> If you submit a patch for this upstream please Cc me.
-> >>
-> >> And if after that change, and copy/pasting the orientation from the
-> >> DSDT into hwdb the sensor and screen move in the expected ways, then
-> >> maybe stealing the BMC150 driver's
-> >> bmc150_apply_bosc0200_acpi_orientation() might be a good idea.
-> >>
-> >> Once exported through "mount_matrix", iio-sensor-proxy should see it
-> >> and read it without the need for a hwdb entry.
-> >>
-> >> Cheers
-> >
->
+I still don't like the naming. Everything is a feature and a domain... 
+
+It might be a bit easier to come up with a name with multiple users of 
+this binding presented. I'm hesistant to define any new common binding 
+with only 1 user as I've said multiple times on this binding.
+
+Rob

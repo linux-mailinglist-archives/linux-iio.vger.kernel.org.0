@@ -2,43 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9B8689809
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Feb 2023 12:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFA56898B3
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Feb 2023 13:30:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232491AbjBCLsK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Feb 2023 06:48:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42750 "EHLO
+        id S232813AbjBCMaV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Feb 2023 07:30:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229785AbjBCLsJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Feb 2023 06:48:09 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1ED1B335;
-        Fri,  3 Feb 2023 03:48:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6570F61EFA;
-        Fri,  3 Feb 2023 11:48:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89106C433EF;
-        Fri,  3 Feb 2023 11:48:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675424885;
-        bh=sXBX1FG6ndVGefT904bnksV8B+g4LxIK97sutzKIqNE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OQ5/MYRvKvLBYmD0dA3PJdZ7Epr40/BTH7nbSlK7+wFZPoEBj5EmO4JWqecjeRxR+
-         B/iSweeCvTGY3fjdke/bBXjQtVykCLPdFqqGU9ktxc0N70sghU8BNDNuaNjzfDMWhS
-         9xRmj7NUziC4xCvRKjHJVNZOLGyot+RdeudHWY7IRVy13TkKgaDOYBJU9t6ynd5wQy
-         8feOq45sLlq6jWd1OVq10ZXObB6hZ7Ishp7lMHgECKl5O5z5sPGynRTQhdAmFwGN6/
-         ydAbA0R/fQhWdcJFsjLIHKeABeGhliAhtNPY7Cop+P0ZgWlFp3i2xIHg8Lh04A7wPg
-         waLBdhfqtax9g==
-Date:   Fri, 3 Feb 2023 11:47:57 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>, trivial@kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        with ESMTP id S232891AbjBCMaS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Feb 2023 07:30:18 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C9606D5E5
+        for <linux-iio@vger.kernel.org>; Fri,  3 Feb 2023 04:30:10 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id bg26so3773333wmb.0
+        for <linux-iio@vger.kernel.org>; Fri, 03 Feb 2023 04:30:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oliUtLWESo3lQu6iHKqwx+2QOwN2sNCjDu921E6eImU=;
+        b=PC6jnhprbBOYA5gQ8hht4uhJybrq7/0C64ACU2Gt9qfbW1pk9VfapwtzsEQiHMXbWG
+         1JppW/crId+0Ce/5NY+vbYD8aQrWah3VOr/cgyiKfrz+CsV1xjGADT9tWMUyPppehNBX
+         SC0wy/PcQSuekQwM7g/y6t2SL8B/Gkosz5mtmibN43bNv0b1mD4tCXB0banPcItFJwfc
+         i54CE0XoHTzA+jAmoTtBHleO+mnp2xAR7FyjhdHzEDNwwY9TdNXm+ghb8j6ArobpiwRR
+         9hn30hxFYj4ol+bMYzOz9KNKlsouP5G6WIVr/nA+qavbwuBMicrP2QKe1d5rCLF7jiXP
+         ViLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oliUtLWESo3lQu6iHKqwx+2QOwN2sNCjDu921E6eImU=;
+        b=hB3jGjj1lrosmIesJE2EPdw4riWmzFvIinWw19UJXCqzeaPxJR/7S25sJzRO8jUV/6
+         Qa6CmFEHH26JkOOCyNq3xisn6vGCc0Ab1ew00w5RTCbT+t0yjHqVJ2IyHBMHOlyDpI3f
+         UrPyej8Vk6j+EEUD+Nm9xiNhOzVslr+jBhnWxgTdOMqjAZnOiGrMXGbhDG/tCsYflVu5
+         a6DK45UL1tfwq/9aBgjbgoYSy6lflmKVgOCEhY8xKE4As57dp0Oic45APidSc5xtP927
+         w/NlHtklCrjFYpFgGDSi2d7kAe4lU7SeQC0QXMi7PUhrob5/NRsEGllze0LtopE/cRd5
+         CRKQ==
+X-Gm-Message-State: AO0yUKWA2j972NXMlIGbpnWUvq1NigjK3rdUBy/wluVmomU7oM5FnmD9
+        NB5ErZA9cZETz1vKWFoj+QyohA==
+X-Google-Smtp-Source: AK7set8hvfzN5yvSx0vn3SHDYBE0Cu37jFl12DeSADMr5lTBdrNCrV6wJaZ+esFXBrp8t+sFKTfd2w==
+X-Received: by 2002:a05:600c:4395:b0:3df:9858:c02c with SMTP id e21-20020a05600c439500b003df9858c02cmr4411370wmn.1.1675427409090;
+        Fri, 03 Feb 2023 04:30:09 -0800 (PST)
+Received: from [192.168.2.104] ([79.115.63.122])
+        by smtp.gmail.com with ESMTPSA id h27-20020a05600c2cbb00b003db12112fcfsm2871505wmc.4.2023.02.03.04.30.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Feb 2023 04:30:08 -0800 (PST)
+Message-ID: <e50fe7d3-0c73-d4af-9a61-74d1279202cc@linaro.org>
+Date:   Fri, 3 Feb 2023 12:30:06 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] tree-wide: trivial: s/ a SPI/ an SPI/
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     trivial@kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
         netdev@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-acpi@vger.kernel.org,
@@ -47,19 +71,17 @@ Cc:     Tudor Ambarus <tudor.ambarus@linaro.org>, trivial@kernel.org,
         linux-wireless@vger.kernel.org, chrome-platform@lists.linux.dev,
         linux-rtc@vger.kernel.org, linux-fbdev@vger.kernel.org,
         linux-staging@lists.linux.dev, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] tree-wide: trivial: s/ a SPI/ an SPI/
-Message-ID: <Y9z0bQ8TeFROA0Fj@sirena.org.uk>
 References: <20230203101624.474611-1-tudor.ambarus@linaro.org>
  <CAMuHMdVeDbTGLBAk5QWGQGf=o6g25t341FjGTmNsHw0_sDOceg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SpLBoke9z0+WTDIl"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVeDbTGLBAk5QWGQGf=o6g25t341FjGTmNsHw0_sDOceg@mail.gmail.com>
-X-Cookie: Pay toll ahead.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ <Y9z0bQ8TeFROA0Fj@sirena.org.uk>
+From:   Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <Y9z0bQ8TeFROA0Fj@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -67,45 +89,37 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---SpLBoke9z0+WTDIl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Fri, Feb 03, 2023 at 11:28:03AM +0100, Geert Uytterhoeven wrote:
-> On Fri, Feb 3, 2023 at 11:17 AM Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
+On 2/3/23 11:47, Mark Brown wrote:
+> On Fri, Feb 03, 2023 at 11:28:03AM +0100, Geert Uytterhoeven wrote:
+>> On Fri, Feb 3, 2023 at 11:17 AM Tudor Ambarus <tudor.ambarus@linaro.org> wrote:
+> 
+>>> The deciding factor for when a/an should be used is the sound
+>>> that begins the word which follows these indefinite articles,
+>>> rather than the letter which does. Use "an SPI" (SPI begins
+>>> with the consonant letter S, but the S is pronounced with its
+>>> letter name, "es.").
+> 
+>> While I agree with your pronunciation, I believe the SPI maintainer
+>> (which you forgot to CC) pronounces it in James Bond-style, i.e. rhymes
+>> with "spy" ;-)
+> 
+> Yes, I do.  To the best of my knowledge most people just say "spy"
+> rather than pronouncing the letters or anything.
+> 
+> In any case as I said in reply to one of the individual patches English
+> isn't regular enough to go with hard and fast rules on anything, and the
+> letter rule is much more commonly used where something is needed.  Using
+> an here looks wrong to me, and the fact that a is so widely used does
+> suggest that usage has escaped whatever rule there is.
 
-> > The deciding factor for when a/an should be used is the sound
-> > that begins the word which follows these indefinite articles,
-> > rather than the letter which does. Use "an SPI" (SPI begins
-> > with the consonant letter S, but the S is pronounced with its
-> > letter name, "es.").
+Indeed:
+$ git grep " a SPI" | wc -l
+131
+$ git grep " an SPI" | wc -l
+88
 
-> While I agree with your pronunciation, I believe the SPI maintainer
-> (which you forgot to CC) pronounces it in James Bond-style, i.e. rhymes
-> with "spy" ;-)
+Ok, let's drop this patch.
 
-Yes, I do.  To the best of my knowledge most people just say "spy"
-rather than pronouncing the letters or anything.
-
-In any case as I said in reply to one of the individual patches English
-isn't regular enough to go with hard and fast rules on anything, and the
-letter rule is much more commonly used where something is needed.  Using
-an here looks wrong to me, and the fact that a is so widely used does
-suggest that usage has escaped whatever rule there is.
-
---SpLBoke9z0+WTDIl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPc9GwACgkQJNaLcl1U
-h9BWWgf7B2SbxlDCRQ/tXsgEj6IpmRoheV/Rc6V7cDJ3WW0RDwuKuwr+iYGYH4wI
-JMhxrKQp0ohQOtyboaLZK7RSARZQtK65wRZ2Cnrc3ilSy9T0cwDCOwBQ8I14Rclq
-/g2LhsTjAgrRpbQDo70vY9TV1fgGhwKHTNkGBfUAlfdPRz38Q/xX53UXHBy6cVqC
-ZWmrmxiRWO0ERd1qkYXsmPVVrtor6skFKeuri+z1H/l/Rl+vj0R4zLIiek1nzhnm
-W92b3oRnp6fRbyoiNsBO24Hrvd4POfaUHRf006dJ3jQnJpFKQwP8sFCMJD3BLpIU
-flkBLxV/d8OAm+zvn+ZpbTQr/78vKQ==
-=4YMj
------END PGP SIGNATURE-----
-
---SpLBoke9z0+WTDIl--
+Cheers,
+ta

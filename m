@@ -2,53 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07E3568B082
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Feb 2023 16:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC4768B083
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Feb 2023 16:11:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjBEPJp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Feb 2023 10:09:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
+        id S229605AbjBEPLL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Feb 2023 10:11:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjBEPJp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Feb 2023 10:09:45 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BA671E1F2
-        for <linux-iio@vger.kernel.org>; Sun,  5 Feb 2023 07:09:44 -0800 (PST)
+        with ESMTP id S229457AbjBEPLK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Feb 2023 10:11:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075681E1F2;
+        Sun,  5 Feb 2023 07:11:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3B653B80C85
-        for <linux-iio@vger.kernel.org>; Sun,  5 Feb 2023 15:09:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E502FC433EF;
-        Sun,  5 Feb 2023 15:09:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95BCD6066C;
+        Sun,  5 Feb 2023 15:11:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E43C433D2;
+        Sun,  5 Feb 2023 15:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675609781;
-        bh=onZwIXt+bYLm7jU0MfUYNhhAP4gkRA2GnoXYrcBCAHU=;
+        s=k20201202; t=1675609867;
+        bh=zg3f33jEKWaqsclyMmhyvxPPRiKJwiClxq2jNy9p15Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MT0COwV0u3FmYjYwdV41Nv4OF0xJPvUEXCV7dXDtZ5nBiXKbn6UfNvwj01gtwIzBf
-         jiX8Ismggj1c7uUDxlWM5DOFWWsnh/FRHGJaMhRhh4DiciaM9pArAwuGvT30yS4tNq
-         I1/UWASu2glNC5AXG/p8gceDsEXdxcEi6brt5H7OGhUf9v+bD6cSi9ZZlN3gvF9uKt
-         oiosgs8srngdYTsLg22S+nw9x59R+kTrwrrWIfJBUilWmiBD9Dhb8XCfy3+vZEsmHs
-         +0N/gmxSm5vHLpWP4ehUKswar6uWGanwFGOr0iX+UbmCDrFCIzaXPtx9+4TotBoWrk
-         unRBB79OpgLMA==
-Date:   Sun, 5 Feb 2023 15:23:43 +0000
+        b=p44DreWERKL5UGyU9nDKk1vYwYhh44zXttPcvoenB0XQrc5k+mMk5uyrkudBowUEb
+         3LuWPfvGVtmlmWeKkiHpi6A5zQn8QQWWS0qnxI1ibS/JUcEkZfM9+dKBdAUUcSzObK
+         mjWFqo8I6UA4lk3FUFm7nuCoVt+kedapgLKqlL8wTxM/jcrLn0aAz46thlUyThk0uK
+         QK3+2njp9AQadymZBida8lPHJRpCtsRl+KNpQmXfFGnk50ZS8DVn05wie49ouHzoPf
+         F0fct6fY/1/dpJtN3JjgNA1ePbsoJEGteLo78BGKUynFXI+VfEud0j5yit/tGfgLcw
+         XxSkkUFTHUKew==
+Date:   Sun, 5 Feb 2023 15:25:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: Re: [PATCH] iio: proximity: sx_common: Drop documentation of non
- existent struct element.
-Message-ID: <20230205152343.527ad5bd@jic23-huawei>
-In-Reply-To: <CAE-0n502JpQWfZsN960KcA34ndrqMmkmznCNGY36eGJ=JPiy3g@mail.gmail.com>
-References: <20230114172928.80414-1-jic23@kernel.org>
-        <CAE-0n502JpQWfZsN960KcA34ndrqMmkmznCNGY36eGJ=JPiy3g@mail.gmail.com>
+To:     Andrew Hepp <andrew.hepp@ahepp.dev>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: temperature: Add MCP9600 thermocouple EMF
+ converter driver
+Message-ID: <20230205152508.778b010a@jic23-huawei>
+In-Reply-To: <20230112190551.4d9ac5f6@jic23-huawei>
+References: <Jonathan Cameron <jic23@kernel.org>
+        <20230108234503.2803-1-andrew.hepp@ahepp.dev>
+        <20230112190551.4d9ac5f6@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,27 +55,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 Jan 2023 17:54:28 -0600
-Stephen Boyd <swboyd@chromium.org> wrote:
+On Thu, 12 Jan 2023 19:05:51 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Quoting Jonathan Cameron (2023-01-14 09:29:28)
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > struct sx_common_data doesn't have a num_default_regs element so
-> > drop the documentation for it.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Gwendal Grignou <gwendal@chromium.org>
-> > Cc: Stephen Boyd <swboyd@chromium.org>
-> > ---  
+> On Sun,  8 Jan 2023 15:45:04 -0800
+> Andrew Hepp <andrew.hepp@ahepp.dev> wrote:
 > 
-> Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+> > From: "Andrew Hepp" <andrew.hepp@ahepp.dev>
+> > 
+> > Add support for the MCP9600 thermocouple EMF converter.
+> > 
+> > Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+> > Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>  
+> 
+> Driver looks good, but now I realise we don't have a device tree binding doc.
+> 
+> Please add one for v3.
+> 
+> Note that the binding doc is describing the hardware, not what the driver
+> currently supports alone, so include the 4 (or 6?) interrupt lines (and interrupt-names
+> as any random subset of them might be provided) + VDD regulator + anything else I've
+> not noticed in my 10 second look at the datashet.
 
-I rebased this on the new version of
-[PATCH v3] iio: proximity: sx_common: Add old register mapping
-which changed the context a bit.
+Hi Andrew,
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to look at it.
+If you aren't going to get to this sometime soon, feel free to say so and
+I might write binding docs for it if I get time.  I'd rather do that than
+lose a driver over some docs!
 
 Jonathan
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+

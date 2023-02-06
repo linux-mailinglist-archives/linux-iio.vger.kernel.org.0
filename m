@@ -2,149 +2,301 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DEC668C05B
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Feb 2023 15:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F69E68C51F
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Feb 2023 18:50:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231474AbjBFOmo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Feb 2023 09:42:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
+        id S229705AbjBFRup (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Feb 2023 12:50:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231446AbjBFOmn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Feb 2023 09:42:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76EC719F3D
-        for <linux-iio@vger.kernel.org>; Mon,  6 Feb 2023 06:41:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675694515;
+        with ESMTP id S229695AbjBFRup (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Feb 2023 12:50:45 -0500
+Received: from mail.multiname.org (h4.multiname.org [94.130.68.253])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C72C6E8D;
+        Mon,  6 Feb 2023 09:50:40 -0800 (PST)
+Received: from raab.fritz.box (unknown [IPv6:2a02:1748:dd5c:fec0:221:9bff:fe61:eebd])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.multiname.org (Postfix) with ESMTPSA id 4P9YhF1lp1zPLtZK;
+        Mon,  6 Feb 2023 18:50:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ccbib.org; s=20220806;
+        t=1675705837;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GI5zrOMuqq6hI/pVCzSKXBHfvX9lvifU/Z2Rz/c//h4=;
-        b=KrEQlw+R6tNfQZW5voQ+K21RW7Cnd1b3o4hFuLM3YLQMO2apTQ6+fYBKaMalpoSfDO+77/
-        FONB1ft4vjcrnJOprF/4UsYoTOwFShrm1Qqm3N8cgoYNKJtRutKsCuOLccApIN5qLyOt+X
-        SD9wSneKSJ6LbHY4gKV4p/Cz00+0PH8=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-606-ZwHoJyzkOuCVPQe2g0Z_YA-1; Mon, 06 Feb 2023 09:41:54 -0500
-X-MC-Unique: ZwHoJyzkOuCVPQe2g0Z_YA-1
-Received: by mail-ed1-f71.google.com with SMTP id s26-20020a056402037a00b004a25c2875d6so7752633edw.8
-        for <linux-iio@vger.kernel.org>; Mon, 06 Feb 2023 06:41:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GI5zrOMuqq6hI/pVCzSKXBHfvX9lvifU/Z2Rz/c//h4=;
-        b=pEcphJir20H6Af9KYAboNr+IDOvaIkbbCKaafXapoipk6xiPcAJnV/KpCgbPHzfABM
-         8HIGuXT+TirEHqF2enwtDK6fnugYVdjUg7Zkff5hIjxtQFaneiez4Dv/d1YiA1miQOv2
-         qaNSEfTTsgXJWbLLClPBNVAmQzZchoeFdk+bBj6XaTUoAWeN0AdKBqoBpp2qAJj8EEFW
-         SyfHLjs7rOi4ZKcKWMr2Oj8MXew49u5IHvPKXfaOogYezx+eCTNhlr4vsHwkpwkUK1IH
-         g0elM26ObdoJMEtdn9bRIoFYxrsSRMEn32mKgWsiQugiM2q8YNae9pnAGz2kULLYCgb6
-         bYOg==
-X-Gm-Message-State: AO0yUKWdzZQEWf4/M8iAdFnswMFy3J+CaFnRXUoyaEw8ulcdkF0iUEyN
-        7F9GQlzfdon5D3V+lpomlT017ihvetawoW750gdpdiBeJFTwCnNoCmPoX8S6t1muFNryOkQV03d
-        v4ycXAOf5u+PSVR5D2iFX
-X-Received: by 2002:a17:906:7e42:b0:86f:763c:2695 with SMTP id z2-20020a1709067e4200b0086f763c2695mr20230013ejr.17.1675694513275;
-        Mon, 06 Feb 2023 06:41:53 -0800 (PST)
-X-Google-Smtp-Source: AK7set8gvBjtb+8j/pHDXISiCix7QKuVSYJBhFPw/tQ3MT5Oet+UMNlzjTrdzeOzfn66LAf6oEd3fA==
-X-Received: by 2002:a17:906:7e42:b0:86f:763c:2695 with SMTP id z2-20020a1709067e4200b0086f763c2695mr20230004ejr.17.1675694513128;
-        Mon, 06 Feb 2023 06:41:53 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id n12-20020a1709065e0c00b0086a4bb74cf7sm5533299eju.212.2023.02.06.06.41.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Feb 2023 06:41:52 -0800 (PST)
-Message-ID: <0d57bcf5-0d82-1754-dc38-d4814b8bb138@redhat.com>
-Date:   Mon, 6 Feb 2023 15:41:52 +0100
+        bh=pgvTjhZIwd6T+wktgzrpaQ8ZtztqyWgYUhrRnVzADg4=;
+        b=XIyBBB6faefzJGcYtdv4HqL3IT3Tx/eQDGwY8zjt+tBnBeVtkDj2PCpOEFjetuLUwXYmcp
+        mT85mOI+Jj8Q+YoqxHWoG402COupTeGrIY+JQVum0h3iYRpIq/W+chfiKqc5kuxGls40qo
+        OozLsYRfSMaJgq4+SO7pwWJCVayJ/+Mf11PXeceo7ZTmNsJSm0+kogbFz7SY5UNtlvyKiP
+        840pyJQj0lCrORamWaKpI1B3a8Wb6CxeYE77Dw4fHeSIsN+btC04xMWkGsZ6GLjswmkmmD
+        CI8HwNIY7OaMOkvInb4u0yESiHw2rymhavrBLP0IY8vIjrFvyYqNo7+kuje72pixnga/K2
+        t9JAIO8V+/tcliLOYvvaRVhaByNowJESYeFWnkrIdOrW/qraQqMgSfBhp1y3A2iM3S53Lr
+        KrCGVc0yBmrlGrfgblOHmMNQx9HLIe9rGkJSdtRrgTTMD5Yd/vNwNUriNL5thH1Chg53R/
+        TYNbmxrSlZhevtGfo/mXx5y4UagPOI5i8Co9SOVQyTf3s4UMejMUVMEPVzWqfX5MZI81mp
+        rm4OPr7ZgD7CZsGCjua2PjoJ3BzXrOBJ6vNQf3OWhSwbpsAZ+sMOJwk/NBZ9/ymmhrF96j
+        SwzF56A3q0qdXYtCnQE2vSVA2b4ZLfbzAeRxjvU7Irjj2OxtRhFN4=
+Message-ID: <cd836eb7dba528ab97f580876cd6ad7d90287582.camel@ccbib.org>
+Subject: Re: [PATCH 1/2] iio: dht11: forked a driver version that polls
+ sensor's signal from GPIO
+From:   Harald Geyer <harald@ccbib.org>
+To:     pelzi@flying-snail.de
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Mon, 06 Feb 2023 18:50:36 +0100
+In-Reply-To: <3648e749-76de-01d3-f598-cb73de70d58a@feldner-bv.de>
+References: <Y9groXq2oI6lqFea@debian-qemu.internal.flying-snail.de>
+         <ee14f0c8bfbae887d21f827baece8b6e@ccbib.org>
+         <d03ec6a7-62c0-0a82-a0f0-d2030ed5723d@feldner-bv.de>
+         <9219a1dd4371a106f9eda9c90ef96066f9ff6446.camel@ccbib.org>
+         <3648e749-76de-01d3-f598-cb73de70d58a@feldner-bv.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH] iio: light: cm32181: Unregister second I2C client if
- present
-Content-Language: en-US, nl
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230206063616.981225-1-kai.heng.feng@canonical.com>
- <20230206143637.00001b00@Huawei.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230206143637.00001b00@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Am Sonntag, dem 05.02.2023 um 18:46 +0100 schrieb
+pelzi@flying-snail.de:
+> As it turned out, on my Allwinner H3 based BananaPi M2 Zero, it is
+> required to explicitly set a low IRQ debounce filter time, as there
+> is
+> a default debounce filter active that appears to filter something
+> around 150µs. This causes IRQs from DTH11/22 devices to be filtered
+> out, evenly over the transmission time.
 
-On 2/6/23 15:36, Jonathan Cameron wrote:
-> On Mon,  6 Feb 2023 14:36:16 +0800
-> Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
+Well, now this is embarrassing:
+I actually have " input-debounce = <1>;" in the custom DTS for my
+A20 based board. I completely forgot about this.
+
+> Are there any useful next steps arising from this observation?
+> Perhaps at least some Documentation?
+
+dht11 is far from the only bitbanging driver. Not sure where to put
+this. Maybe bring this up with the sunxi maintainers?
+
+> I'm even concerned about the default
+> setting being used by
 > 
->> If a second client that talks to the actual I2C address was created in
->> probe(), there should be a corresponding cleanup in remove() to avoid
->> leakage.
->>
->> So if the "client" is not the same one used by I2C core, unregister it
->> accordingly.
->>
->> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
->> Fixes: c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices with 2 I2C resources")
->> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
 > 
-> Whilst this fixes the leak, it introduces a race between unregistering
-> some of the hardware and the later removal of userspace interfaces. 
-> This needs to be handled via a devm_add_action_or_reset()
-> registered handler so it's automatically cleaned up at the right place
-> in the driver remove flow.
+> As far as I understand, this setting applies to the full IRQ bank,
+> appearently including GPIOs usable for UARTs including the separate
+> UART used for debugging (CON3).
 
-Good point, I missed that issue.
+Without actually reading the data sheet I'm fairly confident, that
+debouncing only happens in GPIO mode but not for any hardware
+peripherals. At least UARTs don't generate an interrupt for every
+bit.
 
-Regards,
+> OTOH, applying the dt overlay below relaxes a filter and could make
+> bounces show up in applications that do not currently experience
+> bouncing artefacts.
 
-Hans
+Most drivers have their own debouncing logic in software. Some extra
+load aside it shouldn't have any negative impact.
+
+In the end it is up to the board and SoC DTS maintainers to decide
+on sane defaults and maybe add some comments to their files.
+
+HTH,
+Harald
 
 
-
->> ---
->>  drivers/iio/light/cm32181.c | 10 ++++++++++
->>  1 file changed, 10 insertions(+)
->>
->> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
->> index b1674a5bfa368..37439e103d273 100644
->> --- a/drivers/iio/light/cm32181.c
->> +++ b/drivers/iio/light/cm32181.c
->> @@ -488,6 +488,15 @@ static int cm32181_probe(struct i2c_client *client)
->>  	return 0;
->>  }
->>  
->> +static void cm32181_remove(struct i2c_client *client)
->> +{
->> +	struct cm32181_chip *cm32181 = iio_priv(i2c_get_clientdata(client));
->> +
->> +	/* Unregister the dummy client */
->> +	if (cm32181->client != client)
->> +		i2c_unregister_device(cm32181->client);
->> +}
->> +
->>  static int cm32181_suspend(struct device *dev)
->>  {
->>  	struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
->> @@ -531,6 +540,7 @@ static struct i2c_driver cm32181_driver = {
->>  		.pm = pm_sleep_ptr(&cm32181_pm_ops),
->>  	},
->>  	.probe_new	= cm32181_probe,
->> +	.remove		= cm32181_remove,
->>  };
->>  
->>  module_i2c_driver(cm32181_driver);
+> Obviously, a polling version of the driver is not required in this
+> case,
+> I vote to rejecting it.
 > 
+> Cheers
+> 
+> Andreas
+> 
+> 
+> // Definitions for dht11 module
+> /*
+> Adapted from dht11.dts for Raspberrypi, by Keith Hall
+> Adapted by pelzi.
+> */
+> /dts-v1/;
+> /plugin/;
+> 
+> / {
+> 
+>          fragment@0 {
+>                  target-path = "/";
+>                  __overlay__ {
+> 
+>                          temperature_humidity: dht11@6 {
+>                                  compatible = "dht22", "dht11";
+>                                  pinctrl-names = "default";
+>                                  pinctrl-0 = <&dht11_pins>;
+>                                  gpios = <&pio 0 6 0>; /* PA6 (PIN
+> 7), 
+> active high */
+>                                  status = "okay";
+>                          };
+> 
+>                  };
+>          };
+> 
+>          fragment@1 {
+>                  target = <&pio>;
+>                  __overlay__ {
+>                          input-debounce = <5 0>; /* 5µs debounce on
+> IRQ 
+> bank 0, default on bank 1 */
+>                          dht11_pins: dht11_pins {
+>                                  pins = "PA6";
+>                                  function = "gpio_in";
+>                                  /*bias-pull-up; not required for 3-
+> pin 
+> version of sensor */
+>                          };
+>                  };
+>          };
+> 
+>          __overrides__ {
+>                  gpiopin =       <&dht11_pins>,"pins:0",
+> <&temperature_humidity>,"gpios:8";
+>          };
+> };
+> 
+> Am 02.02.23 um 21:53 schrieb Harald Geyer:
+> > Am Mittwoch, dem 01.02.2023 um 13:51 +0100 schrieb
+> > pelzi@flying-snail.de:
+> > > I understand that the first priority is in finding out if there
+> > > is
+> > > actually a proper
+> > > use case for a polling implementation at all. Only then, it might
+> > > be
+> > > worth to extend
+> > > the existing dht11 module by an polling alternative.
+> > > 
+> > > Am 31.01.23 um 11:18 schrieb harald@ccbib.org:
+> > > > On 2023-01-30 21:42, Andreas Feldner wrote:
+> > > > > On a BananaPi M2 Zero, the existing, IRQ based dht11 driver
+> > > > > is
+> > > > > not
+> > > > > working,
+> > > > > but missing most IRQs.
+> > > > That's quite surprising as the driver works well on many
+> > > > similar
+> > > > systems
+> > > > based on Allwinner SoCs. I suspect the problem is with your
+> > > > setup.
+> > > > Maybe
+> > > > some other (polling?) driver is slowing everything down.
+> > > Can you give me a hint how to look for signs of such a situation?
+> > The obvious things to try:
+> > 
+> > Enabling debug output for the dht11 driver, to look into which
+> > interrupts are actually missing: Is it a "block" of interrupts?
+> > Are they randomly distributed? Are they somewhat equally spaced?
+> > This should give some hints about the nature of the problem.
+> > 
+> > Try to reproduce the problem on a minimal system:
+> > Unload as many modules as possible.
+> > Maybe just use a system on a ram disk.
+> > As little user space programms running as possbile.
+> > You might find OpenWRT helpful.
+> > 
+> > Try other kernel versions. (Unlikely, but it might be some
+> > completely unrelated regression.)
+> > 
+> > Implement debugging output in your polling driver to investigate,
+> > why *that* performs so bad. It probably is the same issue.
+> > 
+> > If this doesn't lead anywhere, then it is a tough problem, so
+> > let's for now assume, you find something.
+> > 
+> > 
+> > > BTW I took some pride in building the board's system image from
+> > > reproduceable sources: Debian kernel package
+> > > linux-image-5.10.0-20-armmp-lpae, and the device tree from ﻿﻿﻿﻿
+> > > 
+> > > arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
+> > > 
+> > > So the setup should be reproducible, unlike other approaches
+> > > advertised
+> > > in the BananaPi forum...
+> > > 
+> > > What I did is
+> > > 
+> > > - check /proc/interrupts. The highest volume interrupts there are
+> > > two
+> > > instances of sunxi-mmc, one generating about 50 interrupts per
+> > > second,
+> > > the other about 25. Those (and most) interrupts are GICv2, but
+> > > the
+> > > GPIO
+> > > releated are sunxi-pio-{level,edge}
+> > > 
+> > > - check dmesg: literally no messages apart from dht11_poll itself
+> > > 
+> > > - check top: sugov:0 is reported to eat 10% of one cpu, but I
+> > > understand
+> > > that's expected and an artifact anyway. Changing the scaling
+> > > governor
+> > > to
+> > > "performance" eliminates this, but does not help in making the
+> > > irq
+> > > driven dht11 work.
+> > > 
+> > > - check vmstat: ir is between 50 and 200 apart from short spikes,
+> > > those
+> > > probably related to a certain cron job
+> > > 
+> > > - check sysstat cpu, mem, threads, mutex: each of the 4 cores has
+> > > a
+> > > low
+> > > performance (a factor of 15 lower than a Raspberrypi 3), but
+> > > constant,
+> > > low stddev, etc. No surprises running e.g. 8 threads instead of
+> > > 4.
+> > > 
+> > > So, apart from the fact that it is missing about 3/4 of the IRQs
+> > > the
+> > > dht11 driver should get, I have no indication that something
+> > > might be
+> > > wrong with the board or its setup. Where else should I look?
+> > There are many possible issues, that are difficult to investigate
+> > directly. E.g. cache poisoning, some code disabling interrupts just
+> > a bit to long etc. Thus the use of minimal systems.
+> > 
+> > > > > Following the hints in Harald Geyer's comments I
+> > > > > tried to implement a version of the driver that is polling
+> > > > > the
+> > > > > GPIO
+> > > > > sensor in a busy loop, not using IRQ altogether.
+> > > > IIRC one readout takes about 80 milliseconds. That's a very
+> > > > long
+> > > > time for
+> > > > a busy loop. I doubt this is acceptable for inclusion in the
+> > > > kernel. Of
+> > > > course also Jonathan's comments apply.
+> > > Seems to be a bit less, just in case that matters. Given the
+> > > timing
+> > > chart I'd expect
+> > > 
+> > > on average: 200µs + 40 * 100µs = 4,2ms
+> > > 
+> > > worst case (device trying to send all one-bits): 200µs + 40 *
+> > > 120µs =
+> > > 5,0ms
+> > > 
+> > Ack.
+> > 
+> > Good luck,
+> > Harald
+> > 
+> > 
+
 

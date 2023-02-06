@@ -2,194 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2681D68C045
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Feb 2023 15:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DEC668C05B
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Feb 2023 15:42:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229663AbjBFOiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Feb 2023 09:38:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
+        id S231474AbjBFOmo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Feb 2023 09:42:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231364AbjBFOiF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Feb 2023 09:38:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C7DD1A491
-        for <linux-iio@vger.kernel.org>; Mon,  6 Feb 2023 06:38:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00C3560F0B
-        for <linux-iio@vger.kernel.org>; Mon,  6 Feb 2023 14:38:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD8AC433D2;
-        Mon,  6 Feb 2023 14:38:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675694283;
-        bh=3eN6LHM49qbniARLLNLotRv7usFI65xgWIJGTgFw4Ww=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RC07gaIr+n8ez+rKGQrWHU2lepyYnW7YInV41j2iXR2U3LX48QP0jJcRkhXrAQIPT
-         penKnYzdRNSwfC/zHmLpNQHXWcYyHxNw8P6TF6waOFppVn+2XIyoFjy/hw3uibKkup
-         KF8PknpOcKjjCR0DED9sL+ic5bLReQhPHwbWLMkw+MVKZjdY46C9ITR6QReYCRNRoo
-         XYaI4trIqziVUgNCQa0Az82mAdyI2kTrvfKP3kdyBs5j5tP9MPxouDYmkBYDdY5ESL
-         zvM5KUQ7pGFdOsI3qWHhC15+iOPEI5dCIUxxTsRb0HvoPw09p30x9XpovHgLFzo27U
-         hBsxLR3F5nGSw==
-Date:   Mon, 6 Feb 2023 15:37:59 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Philippe De Muyter <phdm@macq.eu>, linux-iio@vger.kernel.org
-Subject: Re: st_lsm6dsx : first two values of ism330dlc_gyro are wrong
-Message-ID: <Y+EQx+GC/2Icb2cJ@lore-desk>
-References: <20230205101223.GA10729@frolo.macqel>
- <20230205141342.10dbc447@jic23-huawei>
- <Y+DPMBFHo9UxU+fK@lore-desk>
- <20230206143328.000056cc@Huawei.com>
+        with ESMTP id S231446AbjBFOmn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Feb 2023 09:42:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76EC719F3D
+        for <linux-iio@vger.kernel.org>; Mon,  6 Feb 2023 06:41:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1675694515;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GI5zrOMuqq6hI/pVCzSKXBHfvX9lvifU/Z2Rz/c//h4=;
+        b=KrEQlw+R6tNfQZW5voQ+K21RW7Cnd1b3o4hFuLM3YLQMO2apTQ6+fYBKaMalpoSfDO+77/
+        FONB1ft4vjcrnJOprF/4UsYoTOwFShrm1Qqm3N8cgoYNKJtRutKsCuOLccApIN5qLyOt+X
+        SD9wSneKSJ6LbHY4gKV4p/Cz00+0PH8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-606-ZwHoJyzkOuCVPQe2g0Z_YA-1; Mon, 06 Feb 2023 09:41:54 -0500
+X-MC-Unique: ZwHoJyzkOuCVPQe2g0Z_YA-1
+Received: by mail-ed1-f71.google.com with SMTP id s26-20020a056402037a00b004a25c2875d6so7752633edw.8
+        for <linux-iio@vger.kernel.org>; Mon, 06 Feb 2023 06:41:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GI5zrOMuqq6hI/pVCzSKXBHfvX9lvifU/Z2Rz/c//h4=;
+        b=pEcphJir20H6Af9KYAboNr+IDOvaIkbbCKaafXapoipk6xiPcAJnV/KpCgbPHzfABM
+         8HIGuXT+TirEHqF2enwtDK6fnugYVdjUg7Zkff5hIjxtQFaneiez4Dv/d1YiA1miQOv2
+         qaNSEfTTsgXJWbLLClPBNVAmQzZchoeFdk+bBj6XaTUoAWeN0AdKBqoBpp2qAJj8EEFW
+         SyfHLjs7rOi4ZKcKWMr2Oj8MXew49u5IHvPKXfaOogYezx+eCTNhlr4vsHwkpwkUK1IH
+         g0elM26ObdoJMEtdn9bRIoFYxrsSRMEn32mKgWsiQugiM2q8YNae9pnAGz2kULLYCgb6
+         bYOg==
+X-Gm-Message-State: AO0yUKWdzZQEWf4/M8iAdFnswMFy3J+CaFnRXUoyaEw8ulcdkF0iUEyN
+        7F9GQlzfdon5D3V+lpomlT017ihvetawoW750gdpdiBeJFTwCnNoCmPoX8S6t1muFNryOkQV03d
+        v4ycXAOf5u+PSVR5D2iFX
+X-Received: by 2002:a17:906:7e42:b0:86f:763c:2695 with SMTP id z2-20020a1709067e4200b0086f763c2695mr20230013ejr.17.1675694513275;
+        Mon, 06 Feb 2023 06:41:53 -0800 (PST)
+X-Google-Smtp-Source: AK7set8gvBjtb+8j/pHDXISiCix7QKuVSYJBhFPw/tQ3MT5Oet+UMNlzjTrdzeOzfn66LAf6oEd3fA==
+X-Received: by 2002:a17:906:7e42:b0:86f:763c:2695 with SMTP id z2-20020a1709067e4200b0086f763c2695mr20230004ejr.17.1675694513128;
+        Mon, 06 Feb 2023 06:41:53 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id n12-20020a1709065e0c00b0086a4bb74cf7sm5533299eju.212.2023.02.06.06.41.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Feb 2023 06:41:52 -0800 (PST)
+Message-ID: <0d57bcf5-0d82-1754-dc38-d4814b8bb138@redhat.com>
+Date:   Mon, 6 Feb 2023 15:41:52 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4zkmdsE3eiHA2hYL"
-Content-Disposition: inline
-In-Reply-To: <20230206143328.000056cc@Huawei.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH] iio: light: cm32181: Unregister second I2C client if
+ present
+Content-Language: en-US, nl
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230206063616.981225-1-kai.heng.feng@canonical.com>
+ <20230206143637.00001b00@Huawei.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230206143637.00001b00@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
---4zkmdsE3eiHA2hYL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2/6/23 15:36, Jonathan Cameron wrote:
+> On Mon,  6 Feb 2023 14:36:16 +0800
+> Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
+> 
+>> If a second client that talks to the actual I2C address was created in
+>> probe(), there should be a corresponding cleanup in remove() to avoid
+>> leakage.
+>>
+>> So if the "client" is not the same one used by I2C core, unregister it
+>> accordingly.
+>>
+>> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
+>> Fixes: c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices with 2 I2C resources")
+>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> 
+> Whilst this fixes the leak, it introduces a race between unregistering
+> some of the hardware and the later removal of userspace interfaces. 
+> This needs to be handled via a devm_add_action_or_reset()
+> registered handler so it's automatically cleaned up at the right place
+> in the driver remove flow.
 
-> On Mon, 6 Feb 2023 10:58:08 +0100
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->=20
-> > > On Sun, 5 Feb 2023 11:12:23 +0100
-> > > Philippe De Muyter <phdm@macq.eu> wrote:
-> > >  =20
-> > > > Hello Lorenzo and list,
-> > > >=20
-> > > > I use the imu/st_lsm6dsx (i2c) driver to drive a ism330dlc imu.
-> > > >=20
-> > > > Every time I start a new acquisition of gyro values, the first two
-> > > > values read are wrong, as can be see here :
-> > > >=20
-> > > >  $ sudo ./iio_generic_buffer -n ism330dlc_gyro -g -c 10 -a
-> > > >  iio device number being used is 1
-> > > >  trigger-less mode selected
-> > > >  No channels are enabled, enabling all channels
-> > > >  Enabling: in_anglvel_z_en
-> > > >  Enabling: in_timestamp_en
-> > > >  Enabling: in_anglvel_y_en
-> > > >  Enabling: in_anglvel_x_en
-> > > >  -0.138924 -0.915246 0.470628 1675591514696125669
-> > > >  -0.012699 -0.362151 0.143208 1675591514772675669
-> > > >  0.001989 -0.076500 0.035190 1675591514849250669
-> > > >  0.002295 -0.076194 0.035343 1675591514925825669
-> > > >  0.002142 -0.076041 0.035343 1675591515002400669
-> > > >  0.001989 -0.076041 0.035343 1675591515078975669
-> > > >  0.001836 -0.076347 0.035649 1675591515155525669
-> > > >  0.001836 -0.076500 0.035649 1675591515232075669
-> > > >  0.001989 -0.076500 0.035649 1675591515308625669
-> > > >  0.001989 -0.076347 0.035649 1675591515385200669
-> > > >  Disabling: in_anglvel_z_en
-> > > >  Disabling: in_timestamp_en
-> > > >  Disabling: in_anglvel_y_en
-> > > >  Disabling: in_anglvel_x_en
-> > > >  $
-> > > >=20
-> > > > Is that a normal behaviour for a gyro in that family or is it be ca=
-used
-> > > > by a software or hardware bug ? =20
-> > >=20
-> > > So, some random thoughts on what might be going on...
-> > > 1) Stale data in the fifo.  Could you run this experiment twice whils=
-t being
-> > >    careful not to move the device between the runs.  If we still see =
-the wrong
-> > >    values at the start then it's not that... =20
-> >=20
-> > When the device is powered-down we set the FIFO in bypass mode and in-f=
-light
-> > samples are discarded.
-> >=20
-> > >=20
-> > > 2) Device takes a little whilst to stabilize. Possibly this is down t=
-o the
-> > >    low pass filters requiring a few samples before they deliver stabl=
-e output.
-> > >    From a quick glance I don't think we provide any userspace control=
- of those
-> > >    filters and I think LPR1 is left in default state of disabled. =20
-> >=20
-> > I would say this issue is related to the "Accelerometer and gyroscope
-> > turn-on/off time" (section 3.9 in the sensor application note).
-> >=20
-> > https://www.st.com/resource/en/application_note/an5125-ism330dlc-3d-acc=
-elerometer-and-3d-gyroscope-with-digital-output-for-industrial-applications=
--stmicroelectronics.pdf
-> >=20
-> > @Jonathan: do you think we should discard these sample in the driver or=
- in the
-> > user-space app? I would say this can be a general issue. What do you th=
-ink?
->=20
-> In driver.  This isn't an uncommon problem for sensors and userspace woul=
-d in=20
-> general have no idea how many samples to drop.  Also dependent on the sam=
-pling
-> rates etc so if we support control of those, we'll want to have the driver
-> drop the right number of samples.  Though yikes at the top end. You can h=
-ave
-> to drop 540 samples... Ah well. That is at 6kHz sampling so still not ver=
-y long.
->=20
-> The only alternative would be to expose the current number to drop to use=
-rspace
-> but then existing userspace code would not drop them.  Hence I think it n=
-eeds
-> to be in driver.
-
-ack, I will work on it.
+Good point, I missed that issue.
 
 Regards,
-Lorenzo
 
->=20
-> Jonathan
->=20
->=20
-> >=20
-> > Regards,
-> > Lorenzo
-> >=20
-> > >=20
-> > > You could try messing with the sampling frequency as that may affect =
-the number
-> > > of bad samples you see and give us more of a clue (it affects lpf2 di=
-rectly).
-> > >=20
-> > > Jonathan
-> > >  =20
-> > > >=20
-> > > > Best regards
-> > > >=20
-> > > > Philippe
-> > > >  =20
-> > >  =20
-> >=20
->=20
+Hans
 
---4zkmdsE3eiHA2hYL
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY+EQxwAKCRA6cBh0uS2t
-rDGkAQCLRJso4EQoZvQOcK/1Q2jZzc81E6yMFLLYMXOVHl/5lwD+KsDC4fbcKs90
-flU5idboY1H7THTiK6iSZ4MgqeR/NAc=
-=gwuB
------END PGP SIGNATURE-----
+>> ---
+>>  drivers/iio/light/cm32181.c | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+>> index b1674a5bfa368..37439e103d273 100644
+>> --- a/drivers/iio/light/cm32181.c
+>> +++ b/drivers/iio/light/cm32181.c
+>> @@ -488,6 +488,15 @@ static int cm32181_probe(struct i2c_client *client)
+>>  	return 0;
+>>  }
+>>  
+>> +static void cm32181_remove(struct i2c_client *client)
+>> +{
+>> +	struct cm32181_chip *cm32181 = iio_priv(i2c_get_clientdata(client));
+>> +
+>> +	/* Unregister the dummy client */
+>> +	if (cm32181->client != client)
+>> +		i2c_unregister_device(cm32181->client);
+>> +}
+>> +
+>>  static int cm32181_suspend(struct device *dev)
+>>  {
+>>  	struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
+>> @@ -531,6 +540,7 @@ static struct i2c_driver cm32181_driver = {
+>>  		.pm = pm_sleep_ptr(&cm32181_pm_ops),
+>>  	},
+>>  	.probe_new	= cm32181_probe,
+>> +	.remove		= cm32181_remove,
+>>  };
+>>  
+>>  module_i2c_driver(cm32181_driver);
+> 
 
---4zkmdsE3eiHA2hYL--

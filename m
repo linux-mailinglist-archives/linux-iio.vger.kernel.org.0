@@ -2,166 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D489D68D456
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Feb 2023 11:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A57368D95A
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Feb 2023 14:32:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231434AbjBGKdl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Feb 2023 05:33:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60238 "EHLO
+        id S231873AbjBGNcQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Feb 2023 08:32:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231431AbjBGKdk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Feb 2023 05:33:40 -0500
-Received: from mail.multiname.org (h4.multiname.org [94.130.68.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05738526A;
-        Tue,  7 Feb 2023 02:33:23 -0800 (PST)
-Received: from webmail.multiname.org (unknown [10.0.10.104])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.multiname.org (Postfix) with ESMTPSA id 4P9zx24dG7zPLtYq;
-        Tue,  7 Feb 2023 11:33:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ccbib.org; s=20220806;
-        t=1675765990;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=IH4m9/aT70CL9qCSU6oRU8toMh0R6PwiQAQjFw7f5D8=;
-        b=Ew+bc/YPk9F3k1BsTsq0B4A4p0+ClwA6NJkd0x+a4YIWnLtWLg9hs2YzANA8F6kPMBZVG5
-        gKRUWAtIECRB7WTX6C7kb0EJYNOwNfpY+ugjG+45ELtEqxqic5f7t1kD2O+nXBW/D+d/A+
-        A3Hx8uiGgmUjnKR1fKwtVsqziZnDxvJFSlAftimx901A6ja8yuIx9gREn/vaJvfJhDvPfY
-        objzHwK8tolsIgOR3fW5jFc7s3kLP9FBSlK0WLJwcIRHjWaZslO2MHRdoQZdWLYHI6qGjl
-        b4K2UrVw4ehxBzvbb4684Gw3pIqto7BxGQabWhX8h3rILqXWPyasLNFGvQUGhhI3DeElgp
-        m2+Wk5U50uRrDYqkWLJvEZIoRMSFvZhJPR2PpQPhS8z8E6bBhGcmjSw5xrhVj/fvuNP9sE
-        FBTKtz0DPatYKrQk3dSqsxSD7Cp7WL7ZrpwpKSoqTZpO1rrIhZ4c1zSvJMQy/GvR+ezFEE
-        HzKjWeLne0YHMUbmUVya9LCfgWkBkdgWAGmrL/tuoMjGeyoYPntS51FFZ22SRdprOCyeez
-        jBIIaqsjYN7y2f+CtwHCY8AEtHUagD0dDSCJKx6No+HKTa+XzG8qVYRAKGKfJgFbdWDLsG
-        PTiAXkUc1nHfYxFKWS5qDzGxFj5Nf8VEkammEZCwIBpI2BBwpW4E0=
+        with ESMTP id S230303AbjBGNcP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Feb 2023 08:32:15 -0500
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2208B126EB;
+        Tue,  7 Feb 2023 05:32:12 -0800 (PST)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 317ArI1e008460;
+        Tue, 7 Feb 2023 14:31:34 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=DvaNpdrSgE+lHP2IkmzvxSLVAaIdRRvLf0BwPPBEci4=;
+ b=aQaSbkCpRXS5PTBvs/7A4rURHj3O8ll9TldW/dJbYL96OW9dyidgNbpqQ2IMwlJcHYfV
+ PCVnikmHA0+/GU/YHrkk37G8Rh1vwsakP87ID7Au4i9IPIaHZeIDNhs3YvOTq1WTSruH
+ P/8HpNo2WO25T81982igFgAtil5zgYjG1s7tQEMU059ZhJ/Ri0m3Ps7/HUr6/6js0yXH
+ 74wlbwkqH4zm93ascw8YJ8mG5y0V5j0ZKxb4kjWICzncOKYOnHM36Ik5nhtQdo8YyV1/
+ CkELeSEYnoaCyUnTE4l4Y2LIuOvGfr53WsS7P8Z1L0NcrxY6EwxnjvkuyxgzkO+gacI9 kw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3nhdcfk48x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 07 Feb 2023 14:31:34 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B91DA10002A;
+        Tue,  7 Feb 2023 14:31:21 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id F17372194F5;
+        Tue,  7 Feb 2023 14:31:20 +0100 (CET)
+Received: from [10.201.20.249] (10.201.20.249) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Tue, 7 Feb
+ 2023 14:31:19 +0100
+Message-ID: <d283ef50-7807-b928-83a5-63ef4565f9e4@foss.st.com>
+Date:   Tue, 7 Feb 2023 14:31:18 +0100
 MIME-Version: 1.0
-Date:   Tue, 07 Feb 2023 11:33:10 +0100
-From:   harald@ccbib.org
-To:     pelzi@flying-snail.de
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dht11: Read bit stream from IRQ on falling edges
- only
-In-Reply-To: <e1acd14e-400b-8896-bdc1-0b364cc52198@feldner-bv.de>
-References: <Y9a0RZ+inWs44Kn8@debian-qemu.internal.flying-snail.de>
- <20230130202216.42034309@jic23-huawei>
- <45efc11e5b4cdba3766f19190bb65840@ccbib.org>
- <e1acd14e-400b-8896-bdc1-0b364cc52198@feldner-bv.de>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <ac9ab2224ad19ac606de38fa474dce0c@ccbib.org>
-X-Sender: harald@ccbib.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v3 3/6] dt-bindings: bus: add STM32 System Bus
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
+        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
+        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linux-crypto@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Loic PALLARDY <loic.pallardy@st.com>
+References: <20230127164040.1047583-1-gatien.chevallier@foss.st.com>
+ <20230127164040.1047583-4-gatien.chevallier@foss.st.com>
+ <20230128154827.4f23534e@jic23-huawei>
+Content-Language: en-US
+From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+In-Reply-To: <20230128154827.4f23534e@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.249]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-07_05,2023-02-06_03,2022-06-22_01
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-02-05 21:41, pelzi@flying-snail.de wrote:
-> Following up on Harald's remark, I can provide some first comparison
-> data indeed:
-> 
-> Am 31.01.23 um 10:44 schrieb harald@ccbib.org:
->> This seems like a really small benefit. And we would lose the
->> low state timings in debug output, which I personally find quite
->> convenient. Unless there is data, that this change actually improves
->> something for somebody, I'd reject it.
-> 
-> Running test script against the original kernel module (see below where 
-> on):
-> 
-> #     real [s]    user [s]  sys [s]  success fails  err per succ
-> 1     222,068     0,515     0,506     83     96     115,66 %
-> 2     223,152     0,603     0,493     86     99     115,12 %
-> *3*   223,502     0,563     0,411     91     68     74,73 %
-> *4*   209,626     0,431     0,189     100    15     15,00 %
-> *5*   209,689     0,46      0,193     100    19     19,00 %
-> *6*   220,35      0,413     0,315     100    35     35,00 %
-> 
-> 
-> Running the patched module:
-> 
-> # 	Real 	User 	Sys 	Successes 	Failures 	Error rate
-> 1 	223,061 	0,459 	0,258 	88 	25 	28,41 %
-> 2 	222,431 	0,561 	0,367 	75 	57 	76,00 %
-> 3 	225,675 	0,436 	0,178 	92 	19 	20,65 %
-> 4 	222,746 	0,444 	0,194 	98 	23 	23,47 %
-> 5 	222,668 	0,416 	0,205 	97 	20 	20,62 %
-> *6* 	204,126 	0,34 	0,138 	100 	0 	0,00 %
-> *7* 	210,495 	0,393 	0,199 	100 	16 	16,00 %
-> *8* 	212,563 	0,447 	0,139 	100 	19 	19,00 %
-> 
-> All tests run on the same board, Allwinner H3 sold as BananaPi M2 Zero,
-> under kernel 6.2.0-rc5+. The devicetree overlay is setting the
-> input-debounce property of &pio to 5µs, or, because of the excessive
-> error rates of the original driver in this configuration, to 1µs (lines
-> marked with an asterisk).
-> 
-> The test simply tries to read temperature and humidity from the 
-> IIO/dht11
-> exposed input files every 2 seconds, immediately repeating after an 
-> error.
-> 
-> Real/User/Sys is determined by good ol' time command, successes and
-> failures are counted by the test script.
-> 
-> Two aspects strike:
-> 
-> 1) the patched version of the driver is working satisfactory even with
-> 5µs input-debounce filter, where the original driver shows more failed
-> than successful reads in this configuration.
-> 
-> 2) The error rate is consistently lower with the patched driver
-> (67,9% to 33,8% average)
-> 
-> I believe to see similar results, i.e. a noticable improvement on the 
-> error
-> rate, on my old trusted RaspberryPi 2B (without any devicetree 
-> fiddling, of
-> course), however without quantitative comparison and based on some 
-> Raspbian
-> patch level rather than based on kernel 6.2.0-rc5+.
-> 
-> Of course I have only access to a handful of DHT22 devices, most 
-> probably
-> from the same production batch. But I think at least I'd like to stick
-> with the patched version, tbh.
+Hello Jonathan,
 
-Aside from different chips (and mostly the old DHT11) there are many 
-things,
-that influence timing: cable lenght, input characteristic etc.
-
-It looks good, but we should still be careful.
-
-> Hope this helps, let me know if it'd pay to work on another version of
-> the patch!
-
-Thanks, these are indeed interresting results. If you want to move this
-forward, the next steps would be:
-1) Sharing your test script - yes it's trivial, but still ...
-2) A theoretical analysis about possible regressions depending on timer
-resolution as mentioned in an earlier message.
-3) Ideally figuring out, why your version performs better then what we
-currently have. I have some suspicions, but better understanding might
-lead to a better approach. E.g. maybe recording the other edges isn't
-the problem so long as we ignore them during decoding?
-
-As I see it, the main thing we are losing with your current proposal is
-some diagnostic features. If we keep them as much as possible and have
-regressions understood and covered, I see no reason to reject your idea.
-
-best regards,
-Harald
-
-> Best wishes
+On 1/28/23 16:48, Jonathan Cameron wrote:
+> On Fri, 27 Jan 2023 17:40:37 +0100
+> Gatien Chevallier <gatien.chevallier@foss.st.com> wrote:
 > 
-> Andreas
+>> Document STM32 System Bus. This bus is intended to control firewall
+>> access for the peripherals connected to it.
+>>
+>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>> Signed-off-by: Loic PALLARDY <loic.pallardy@st.com>
+> Trivial comment on formatting.
+> 
+>> +
+>> +examples:
+>> +  - |
+>> +    // In this example, the rng1 device refers to etzpc as its domain controller.
+>> +    // Same goes for fmc.
+>> +    // Access rights are verified before creating devices.
+>> +
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/clock/stm32mp1-clks.h>
+>> +    #include <dt-bindings/reset/stm32mp1-resets.h>
+>> +
+>> +    etzpc: bus@5c007000 {
+>> +        compatible = "st,stm32mp15-sys-bus";
+>> +        reg = <0x5c007000 0x400>;
+>> +        #address-cells = <1>;
+>> +        #size-cells = <1>;
+>> +        ranges;
+>> +        feature-domain-controller;
+>> +        #feature-domain-cells = <1>;
+>> +
+>> +        rng1: rng@54003000 {
+> 
+> Odd mixture of 4 spacing and 2 spacing in this example.
+> I'd suggest one or the other (slight preference for 4 space indents).
+> 
+
+Thank you for spotting this, I'll change to 4 space indents
+
+> 
+>> +          compatible = "st,stm32-rng";
+>> +          reg = <0x54003000 0x400>;
+>> +          clocks = <&rcc RNG1_K>;
+>> +          resets = <&rcc RNG1_R>;
+>> +          feature-domains = <&etzpc 7>;
+>> +          status = "disabled";
+>> +        };
+
+Best regards,
+Gatien

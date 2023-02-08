@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8053568E8DC
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Feb 2023 08:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 290DE68F109
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Feb 2023 15:42:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjBHHWd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Feb 2023 02:22:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51640 "EHLO
+        id S231539AbjBHOmv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Feb 2023 09:42:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229755AbjBHHWd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Feb 2023 02:22:33 -0500
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE620CDDE;
-        Tue,  7 Feb 2023 23:22:31 -0800 (PST)
-Received: from localhost.localdomain (unknown [10.101.196.174])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S231560AbjBHOms (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Feb 2023 09:42:48 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49881485BC
+        for <linux-iio@vger.kernel.org>; Wed,  8 Feb 2023 06:42:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 435493FD97;
-        Wed,  8 Feb 2023 07:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1675840949;
-        bh=Mavv5hLg9uxOVvBkQuQSXrZ8rXvqW5vmj4h9iT5B1Rw=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=Ygy8MBwuMZe59ty5RLOVYAdUmy6DZ4dzwkFqJwTxI93lqEiE6YAvp9oEE99fplhwl
-         jmnW/QJRAO2Es41Y8QGpGNPxZ8J9wd0T1ihgh9iORijDvZwofLD6yNkOVTVE+fwZxk
-         KlDTOPkgoBrs/6q/RDHE6W1/7MHYkx8QlvJGEFFGVSENpTtPNAlrT4k7sXZrXdk9fY
-         nY0ONXd7lMbbT9poLJUHiNXeP+n12GtNZcapLQi6o1ydWjECv1Gud77CgIJPAUsczG
-         IZMqrii5XWunOqUJzQCnS8NI84pcSXVLmco+h/Q6y1YisBmmC1bCBmXx1sA3A2tIfS
-         aTKH7oMrXzMiw==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de
-Cc:     hdegoede@redhat.com, Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: light: cm32181: Unregister second I2C client if present
-Date:   Wed,  8 Feb 2023 15:21:41 +0800
-Message-Id: <20230208072141.1103738-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8CEF2B81E28
+        for <linux-iio@vger.kernel.org>; Wed,  8 Feb 2023 14:42:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF18C433EF;
+        Wed,  8 Feb 2023 14:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675867360;
+        bh=6aeWQP6IjP/ULQzvF4v46aihU00Kv2WAnLwkYfUjbB8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=eLoDPKGGHJFXB+Ii78i28APr3m3Vvy3tqS6KPZFJIRbZlOyX3qDPBKzHFMKg3m5sZ
+         VS0sFUx7JLbM1rAl7/382Mp6S9itpIxcr/r/6Zz8bZjmJSqbdqSVT3D39dPfnbCCOg
+         bcBkhTcrHGmO5B3CLMCduw58qZ2ePIcAhLP4axXs7aSziacmht/t0Uf5R5Z0NzBgf9
+         Dgf8trWgwOvCN89GOR2J8DQuxuxok3msZ9wdgtfoixfays78l62aehbyzKtLiqn3oO
+         g9MKRqA1dJefFmTLpkj3AedCpMspdvDm1XajlbyJ9+ci3fN5L6mh2/GafZu3WBEIwD
+         RhpzOSNDzBSBA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     phdm@macq.eu, linux-iio@vger.kernel.org,
+        lorenzo.bianconi@redhat.com
+Subject: [PATCH] iio: imu: st_lsm6dsx: discard samples during filters settling time
+Date:   Wed,  8 Feb 2023 15:42:31 +0100
+Message-Id: <1228b9ed2060b99d0df0f5549a37c8b520ea5429.1675867224.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,58 +50,190 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-If a second client that talks to the actual I2C address was created in
-probe(), there should be a corresponding cleanup in remove() to avoid
-leakage.
+During digital filters settling time the driver is expected to drop
+samples since they can be corrupted. Introduce the capability to drop
+a given number of samples according to the configured ODR.
+Add the sample_to_discard data for LSM6DSM sensor.
 
-So if the "client" is not the same one used by I2C core, unregister it
-accordingly.
-
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
-Fixes: c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices with 2 I2C resources")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-v2:
- - Use devm_add_action_or_reset() instead of remove() callback to avoid
-   race.
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       | 11 ++++
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 58 +++++++++++++++----
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 18 ++++++
+ 3 files changed, 77 insertions(+), 10 deletions(-)
 
- drivers/iio/light/cm32181.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-index b1674a5bfa368..a3e5f56101c9f 100644
---- a/drivers/iio/light/cm32181.c
-+++ b/drivers/iio/light/cm32181.c
-@@ -429,6 +429,16 @@ static const struct iio_info cm32181_info = {
- 	.attrs			= &cm32181_attribute_group,
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 499fcf8875b4..8e119d78730b 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -137,6 +137,13 @@ struct st_lsm6dsx_odr_table_entry {
+ 	int odr_len;
  };
  
-+static void cm32181_disable(void *data)
-+{
-+	struct i2c_client *client = data;
-+	struct cm32181_chip *cm32181 = iio_priv(i2c_get_clientdata(client));
++struct st_lsm6dsx_samples_to_discard {
++	struct {
++		u32 milli_hz;
++		u16 samples;
++	} val[ST_LSM6DSX_ODR_LIST_SIZE];
++};
 +
-+	/* Unregister the dummy client */
-+	if (cm32181->client != client)
-+		i2c_unregister_device(cm32181->client);
-+}
-+
- static int cm32181_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-@@ -479,6 +489,12 @@ static int cm32181_probe(struct i2c_client *client)
- 		return ret;
+ struct st_lsm6dsx_fs {
+ 	u32 gain;
+ 	u8 val;
+@@ -291,6 +298,7 @@ struct st_lsm6dsx_ext_dev_settings {
+  * @irq_config: interrupts related registers.
+  * @drdy_mask: register info for data-ready mask (addr + mask).
+  * @odr_table: Hw sensors odr table (Hz + val).
++ * @samples_to_discard: Number of samples to discard for filters settling time.
+  * @fs_table: Hw sensors gain table (gain + val).
+  * @decimator: List of decimator register info (addr + mask).
+  * @batch: List of FIFO batching register info (addr + mask).
+@@ -323,6 +331,7 @@ struct st_lsm6dsx_settings {
+ 	} irq_config;
+ 	struct st_lsm6dsx_reg drdy_mask;
+ 	struct st_lsm6dsx_odr_table_entry odr_table[2];
++	struct st_lsm6dsx_samples_to_discard samples_to_discard[2];
+ 	struct st_lsm6dsx_fs_table_entry fs_table[2];
+ 	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
+ 	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
+@@ -353,6 +362,7 @@ enum st_lsm6dsx_fifo_mode {
+  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
+  * @gain: Configured sensor sensitivity.
+  * @odr: Output data rate of the sensor [Hz].
++ * @samples_to_discard: Number of samples to discard for filters settling time.
+  * @watermark: Sensor watermark level.
+  * @decimator: Sensor decimation factor.
+  * @sip: Number of samples in a given pattern.
+@@ -367,6 +377,7 @@ struct st_lsm6dsx_sensor {
+ 	u32 gain;
+ 	u32 odr;
+ 
++	u16 samples_to_discard;
+ 	u16 watermark;
+ 	u8 decimator;
+ 	u8 sip;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index 7dd5205aea5b..c1059a79f5ff 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -457,17 +457,29 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+ 			}
+ 
+ 			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
+-				iio_push_to_buffers_with_timestamp(
+-					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
+-					&hw->scan[ST_LSM6DSX_ID_GYRO],
+-					gyro_sensor->ts_ref + ts);
++				/* We need to discards gyro samples during
++				 * filters settling time
++				 */
++				if (gyro_sensor->samples_to_discard > 0)
++					gyro_sensor->samples_to_discard--;
++				else
++					iio_push_to_buffers_with_timestamp(
++						hw->iio_devs[ST_LSM6DSX_ID_GYRO],
++						&hw->scan[ST_LSM6DSX_ID_GYRO],
++						gyro_sensor->ts_ref + ts);
+ 				gyro_sip--;
+ 			}
+ 			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
+-				iio_push_to_buffers_with_timestamp(
+-					hw->iio_devs[ST_LSM6DSX_ID_ACC],
+-					&hw->scan[ST_LSM6DSX_ID_ACC],
+-					acc_sensor->ts_ref + ts);
++				/* We need to discards accel samples during
++				 * filters settling time
++				 */
++				if (acc_sensor->samples_to_discard > 0)
++					acc_sensor->samples_to_discard--;
++				else
++					iio_push_to_buffers_with_timestamp(
++						hw->iio_devs[ST_LSM6DSX_ID_ACC],
++						&hw->scan[ST_LSM6DSX_ID_ACC],
++						acc_sensor->ts_ref + ts);
+ 				acc_sip--;
+ 			}
+ 			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
+@@ -541,8 +553,12 @@ st_lsm6dsx_push_tagged_data(struct st_lsm6dsx_hw *hw, u8 tag,
  	}
  
-+	ret = devm_add_action_or_reset(dev, cm32181_disable, client);
-+	if (ret) {
-+		dev_err(dev, "%s: add devres action failed\n", __func__);
-+		return ret;
-+	}
+ 	sensor = iio_priv(iio_dev);
+-	iio_push_to_buffers_with_timestamp(iio_dev, data,
+-					   ts + sensor->ts_ref);
++	/* We need to discards gyro samples during filters settling time */
++	if (sensor->samples_to_discard > 0)
++		sensor->samples_to_discard--;
++	else
++		iio_push_to_buffers_with_timestamp(iio_dev, data,
++						   ts + sensor->ts_ref);
+ 
+ 	return 0;
+ }
+@@ -654,6 +670,25 @@ int st_lsm6dsx_flush_fifo(struct st_lsm6dsx_hw *hw)
+ 	return err;
+ }
+ 
++static void
++st_lsm6dsx_update_samples_to_discard(struct st_lsm6dsx_sensor *sensor)
++{
++	const struct st_lsm6dsx_samples_to_discard *data;
++	int i;
 +
- 	ret = devm_iio_device_register(dev, indio_dev);
- 	if (ret) {
- 		dev_err(dev, "%s: regist device failed\n", __func__);
++	if (sensor->id != ST_LSM6DSX_ID_GYRO &&
++	    sensor->id != ST_LSM6DSX_ID_ACC)
++		return;
++
++	data = &sensor->hw->settings->samples_to_discard[sensor->id];
++	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++) {
++		if (data->val[i].milli_hz == sensor->odr) {
++			sensor->samples_to_discard = data->val[i].samples;
++			return;
++		}
++	}
++}
++
+ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+ {
+ 	struct st_lsm6dsx_hw *hw = sensor->hw;
+@@ -673,6 +708,9 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+ 			goto out;
+ 	}
+ 
++	if (enable)
++		st_lsm6dsx_update_samples_to_discard(sensor);
++
+ 	err = st_lsm6dsx_device_set_enable(sensor, enable);
+ 	if (err < 0)
+ 		goto out;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 3f6060c64f32..966df6ffe874 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -634,6 +634,24 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.fs_len = 4,
+ 			},
+ 		},
++		.samples_to_discard = {
++			[ST_LSM6DSX_ID_ACC] = {
++				.val[0] = {  12500, 1 },
++				.val[1] = {  26000, 1 },
++				.val[2] = {  52000, 1 },
++				.val[3] = { 104000, 2 },
++				.val[4] = { 208000, 2 },
++				.val[5] = { 416000, 2 },
++			},
++			[ST_LSM6DSX_ID_GYRO] = {
++				.val[0] = {  12500,  2 },
++				.val[1] = {  26000,  5 },
++				.val[2] = {  52000,  7 },
++				.val[3] = { 104000, 12 },
++				.val[4] = { 208000, 20 },
++				.val[5] = { 416000, 36 },
++			},
++		},
+ 		.irq_config = {
+ 			.irq1 = {
+ 				.addr = 0x0d,
 -- 
-2.34.1
+2.39.1
 

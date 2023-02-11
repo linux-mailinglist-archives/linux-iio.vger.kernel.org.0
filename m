@@ -2,264 +2,380 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A240692755
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Feb 2023 20:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 762EB692BE8
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Feb 2023 01:24:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233741AbjBJTqC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Feb 2023 14:46:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55980 "EHLO
+        id S229512AbjBKAY3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Feb 2023 19:24:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233722AbjBJTp3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Feb 2023 14:45:29 -0500
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2061e.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e83::61e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A97D1D903;
-        Fri, 10 Feb 2023 11:44:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RBh59YWoNUeJ0OV2NiLIPX+dOg1Hngkr/rOhAxBwrxarZVDHP0aVkEgslIXY3RJeupeWUl7u6i6/IZj34Jw8eCL5+RdarSsOuAnETe3cBAY3MT/7i8dTMxsbbcjvMYC3KO/anJ6VmrHTyvzx08RMF5Zl09Rx+H/1UQt7Qrl6nUdVoRgg0R00eK4d9Z1S41vGOI4AiYyGFdew1bDHCEwqWWg0nvocAn6bulklExr3d+LZQouUuOJ2nhFfVBuIvm6os91HLlh231Zd7n/0OOaMF+Sdt52vnQjEV2nTcsKy3lEwygR/Czc8R2npp0a/s+ujn9sFx1CCjpx2EwM/LgZlFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2pEjyARU/iDHF4qEL808MswcLI+5ZEPTvCc976Kw1g4=;
- b=kmMAulDukidVJBGfPA07XsMyS/r2FhQCdk4iBKdqk5C4+g18fKyXKOoos+3f1QdgzXheqTUtyCzHNkHQGY+oXSP2NP2QhOacXB15xP++pWzXKBZEc8p9D1/AJ9HrkbWv1uZ6xcADS+HlhSK4mJcMiuRvZKZavhIxB7xmpS59kCB0VWLMzcuEAhXaDvU0RIhs6Gmo2v2L6QYSOnHlpfu4UnjZImCqwR5sOgvdJ6bzqDV4Nrk80VRuqefJDrQ37bBAZ7vIjxmeYfqmxzvZ8FoVjv4yiDQKoEQAPWf8ZeRxq9s2+4klMcrDDC6ni5R1fFPVLpEJ01Ze5jvXishgf7I/6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2pEjyARU/iDHF4qEL808MswcLI+5ZEPTvCc976Kw1g4=;
- b=nVKlxqAo4Bocpx2c+2xoaI1tTQxycj04jmV1zNZB6nWmgdE0XFcXqFY2Cmo4OHUaz/Yr4LixPFcEH+egWlP9lpwKQd6p9GG6+LOr4b5b3ykQt0rxsY9L5tbtQZJgEDeujORIkTKN6fwV3bMLqGmwzukuBPytpJMNNb9RbfsH8PM=
-Received: from MW4PR04CA0220.namprd04.prod.outlook.com (2603:10b6:303:87::15)
- by BL1PR12MB5030.namprd12.prod.outlook.com (2603:10b6:208:313::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.21; Fri, 10 Feb
- 2023 19:43:55 +0000
-Received: from CO1NAM11FT017.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:87:cafe::3c) by MW4PR04CA0220.outlook.office365.com
- (2603:10b6:303:87::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.21 via Frontend
- Transport; Fri, 10 Feb 2023 19:43:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CO1NAM11FT017.mail.protection.outlook.com (10.13.175.108) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6086.21 via Frontend Transport; Fri, 10 Feb 2023 19:43:54 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 10 Feb
- 2023 13:43:54 -0600
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 10 Feb
- 2023 13:43:53 -0600
-Received: from xhdsneeli40.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
- Transport; Fri, 10 Feb 2023 13:43:27 -0600
-From:   Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-To:     <broonie@kernel.org>, <miquel.raynal@bootlin.com>,
-        <richard@nod.at>, <vigneshr@ti.com>, <jic23@kernel.org>,
-        <tudor.ambarus@microchip.com>, <pratyush@kernel.org>,
-        <sanju.mehta@amd.com>, <chin-ting_kuo@aspeedtech.com>,
-        <clg@kaod.org>, <kdasu.kdev@gmail.com>, <f.fainelli@gmail.com>,
-        <rjui@broadcom.com>, <sbranden@broadcom.com>,
-        <eajames@linux.ibm.com>, <olteanv@gmail.com>, <han.xu@nxp.com>,
-        <john.garry@huawei.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <narmstrong@baylibre.com>,
-        <khilman@baylibre.com>, <matthias.bgg@gmail.com>,
-        <haibo.chen@nxp.com>, <linus.walleij@linaro.org>,
-        <daniel@zonque.org>, <haojian.zhuang@gmail.com>,
-        <robert.jarzmik@free.fr>, <agross@kernel.org>,
-        <bjorn.andersson@linaro.org>, <heiko@sntech.de>,
-        <krzysztof.kozlowski@linaro.org>, <andi@etezian.org>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-        <wens@csie.org>, <jernej.skrabec@gmail.com>, <samuel@sholland.org>,
-        <masahisa.kojima@linaro.org>, <jaswinder.singh@linaro.org>,
-        <rostedt@goodmis.org>, <mingo@redhat.com>,
-        <l.stelmach@samsung.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <alex.aring@gmail.com>, <stefan@datenfreihafen.org>,
-        <kvalo@kernel.org>, <james.schulman@cirrus.com>,
-        <david.rhodes@cirrus.com>, <tanureal@opensource.cirrus.com>,
-        <rf@opensource.cirrus.com>, <perex@perex.cz>, <tiwai@suse.com>,
-        <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
-        <mpe@ellerman.id.au>, <oss@buserror.net>, <windhl@126.com>,
-        <yangyingliang@huawei.com>
-CC:     <git@amd.com>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <radu_nicolae.pirea@upb.ro>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <claudiu.beznea@microchip.com>,
-        <bcm-kernel-feedback-list@broadcom.com>, <fancer.lancer@gmail.com>,
-        <kernel@pengutronix.de>, <festevam@gmail.com>, <linux-imx@nxp.com>,
-        <jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>,
-        <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
-        <tali.perry1@gmail.com>, <venture@google.com>, <yuenn@google.com>,
-        <benjaminfair@google.com>, <yogeshgaur.83@gmail.com>,
-        <konrad.dybcio@somainline.org>, <alim.akhtar@samsung.com>,
-        <ldewangan@nvidia.com>, <thierry.reding@gmail.com>,
-        <jonathanh@nvidia.com>, <michal.simek@amd.com>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-wpan@vger.kernel.org>,
-        <libertas-dev@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <linux-iio@vger.kernel.org>, <michael@walle.cc>,
-        <palmer@dabbelt.com>, <linux-riscv@lists.infradead.org>,
-        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
-        <linuxppc-dev@lists.ozlabs.org>, <amitrkcian2002@gmail.com>,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Subject: [PATCH v4 15/15] spi: spi-zynqmp-gqspi: Add parallel memories support in GQSPI driver
-Date:   Sat, 11 Feb 2023 01:06:46 +0530
-Message-ID: <20230210193647.4159467-16-amit.kumar-mahapatra@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230210193647.4159467-1-amit.kumar-mahapatra@amd.com>
-References: <20230210193647.4159467-1-amit.kumar-mahapatra@amd.com>
+        with ESMTP id S229450AbjBKAY3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Feb 2023 19:24:29 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D3F7BFEC
+        for <linux-iio@vger.kernel.org>; Fri, 10 Feb 2023 16:24:27 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id nn4-20020a17090b38c400b00233a6f118d0so4871838pjb.2
+        for <linux-iio@vger.kernel.org>; Fri, 10 Feb 2023 16:24:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oh/VP9v5CQTGyXK4pP4wTjrDYzTEZe84GaWFOEwSL3A=;
+        b=hcziV/KHy4jaQuDwnzP5MZ9QiTYCitURkCmjN7fQVn9RN0zLYJfn8fexsOO898QTy8
+         IIbwGPfI++09wXBkNqZRf2TabHYFh1qOb31YEUwZIAM+OdsQWV0Ako2kvjjUFyTdUv+x
+         yURtDRPKRbUkFJoMHoNDiIsNcVHVaFbXNbseg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Oh/VP9v5CQTGyXK4pP4wTjrDYzTEZe84GaWFOEwSL3A=;
+        b=Z+53YO1g91/XpLxExhBtJ9zGKtj69XY2scqLlT32eKmXKKzz0AvcudRIdjppYGf+jK
+         oZQZkwYTWzxmCfh32jw0twYlXfHVEyIIDhzNwamYrXq3uledAp5oqEiN+rBTsAlW2RLf
+         N/Q7u6cgdfK3isiDLX7HagueUzJ7abb4A56rDTHgDZXgMzW3Lyz1+nshSMJTzvn0YObu
+         +G7teLM6SZTLSLX+EI5RTq6opil3RRluCr1Dqlt2GtHg43GPQCkFkQmKPmexST/yGdY5
+         fR+CKsz/9CQiyRsOpk1Mq78DcnGw15TwJaJCK5Qc2n9m7wIXnHDH6VgDX57hMOR9Cy37
+         O8Sw==
+X-Gm-Message-State: AO0yUKWu/xSIKWx8XzzHy9ga56w7UUvAmMe+TzoBN9xNwmcxblrq4/pF
+        B25cQDFoX5QjKEVpNe3YEtBshw==
+X-Google-Smtp-Source: AK7set/Qrl/85Q6nlIbWLrD+0mMQ+F17OaZ6XBDFl2PrkYK7b+vfhcxjjXkSmPEK1kLAznnNVMmVVw==
+X-Received: by 2002:a05:6a21:6d88:b0:bf:3def:16cd with SMTP id wl8-20020a056a216d8800b000bf3def16cdmr20473844pzb.59.1676075066817;
+        Fri, 10 Feb 2023 16:24:26 -0800 (PST)
+Received: from localhost ([2620:15c:9d:2:f4a2:cfa3:814b:459d])
+        by smtp.gmail.com with UTF8SMTPSA id u9-20020a63a909000000b004790eb3fee1sm3428029pge.90.2023.02.10.16.24.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Feb 2023 16:24:25 -0800 (PST)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, dianders@chromium.org, swboyd@chromium.org
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v4] iio: proximity: sx_common: Add old register mapping
+Date:   Fri, 10 Feb 2023 16:24:21 -0800
+Message-Id: <20230211002421.3447060-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT017:EE_|BL1PR12MB5030:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a41c5ad-c5cb-49d1-dec8-08db0b9f2497
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ahkxxtplneOGUGnzkrkW4XoS/1TyIlwpHPNgptyHgBxYWr4qS0X91lcBWaJVeshoin3Cb6Svotu/t3O7pXJqpoz8oG/ZZEJP6ldNyex/OkvcNUwFpDdfeWrCMnIu5BLo8ovAA5UQC/B2k7c0OvSkL0hVdkA8zD5SjHJ3nIzv0qAdiVeIExAbxCD0KTJ7+z2qbDt7jde6svkhT5/c/adLWNPV+2c42LF/KBs188BCpvVjnAj26VoHAr48yGLYbIhfSZxoLsFM/q7VF1bZKgaced4rWChjTfR9p/3+j1Jec0KkIWvxVSwJ/57R8VufPbgJCXJchyC4uf32ngHbv3ah1dCAmQG1muIVSS80z2seh01n/8pjU/JAfxBqZ0NorI1ab6rwKogkU7i93dqSH/6w4XyCWppAFWzIxq0AMu1PlHk4RhjaP0GONHrd7N1zzxcu9YXxTYZlmRqx5yq+F+Off3a14mG4jb+J83NuuTt+36oHCkUuYwU22MUhqiOO35oEpmNHsKRqp23CZpc8XeQZmuwKhStzJTWe1nBV/GgXuqRB8wC+jxhvkbIUk781tW3sUb+xrGVS8ZxAWPJwvGADLRrO6XQw51xJSM5zuSSBOwfM5yv/WN6y3OzKmQ4VSyYjvmZg0aezXkHeSO9pyK2OzhbfsG+Q5budDqoRPoheM3nJgrgj/+KVo+2JdSUPuR7b5nQNW1RPncfC+In0hx0FI+bTQ/6S8yprEdVSdORnD1lXoC+kSeycZHBQkFiO78lBorEwYB6XaFf8w3zWKFErQmoJO6kRaFDHJPbmfX+s97KQU2mKhHsuws60hpNz8mecDYLbHvBKgTFBCTBQeBacocfSZKV6GrT5AHFCQHpQHDI=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230025)(4636009)(346002)(376002)(39860400002)(396003)(136003)(451199018)(36840700001)(46966006)(40470700004)(8676002)(316002)(110136005)(5660300002)(4326008)(8936002)(54906003)(70206006)(41300700001)(70586007)(82740400003)(81166007)(356005)(36756003)(86362001)(921005)(26005)(1076003)(6666004)(186003)(2616005)(7276002)(7336002)(7406005)(7416002)(7366002)(40460700003)(40480700001)(47076005)(1191002)(82310400005)(478600001)(2906002)(426003)(36860700001)(83380400001)(336012)(36900700001)(2101003)(83996005)(84006005)(41080700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2023 19:43:54.2664
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a41c5ad-c5cb-49d1-dec8-08db0b9f2497
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT017.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5030
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,SPF_HELO_PASS,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-During GQSPI driver probe set ctlr->multi-cs-cap for enabling multi CS
-capability of the controller. In parallel mode the controller can either
-split the data between both the flash or can send the same data to both the
-flashes, this is determined by the STRIPE bit. While sending commands to
-the flashes the GQSPI driver send the same command to both the flashes by
-resetting the STRIPE bit, but while writing/reading data to & from the
-flash the GQSPI driver splits the data evenly between both the flashes by
-setting the STRIPE bit.
+Older firmwares still send sensor configuration using a list of
+registers with opaque values defined during sensor tuning.
+sx9234 and sx9360 sensor on ACPI based devices are concerned.
+More schema to configure the sensors will be needed to support devices
+designed for windows, like Samsung Galaxy Book2.
 
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Support schema is: "<_HID>.<register_name>". For instance
+"STH9324,reg_adv_ctrl2" in:
+
+    Scope (\_SB.PCI0.I2C2)
+    {
+        Device (SX28)
+        {
+            Name (_HID, "STH9324")  // _HID: Hardware ID
+...
+            Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
+            {
+                ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /*
+Device Properties for _DSD */,
+                Package (0x3F)
+                {
+...
+                    Package (0x02)
+                    {
+                        "STH9324,reg_adv_ctrl2",
+                        Zero
+                    },`
+
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 39 +++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+Changes since v3:
+- Fix compilation issue when CONFIG_ACPI is not defined (ARM).
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 4759f704bf5c..9e44371bfda2 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -23,6 +23,7 @@
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
- #include <linux/spi/spi-mem.h>
-+#include <linux/mtd/spi-nor.h>
+Changes since v2:
+- Use snprintf instead of scnprintf
+- Use acpi_device_hid() from the ACPI companion device to get the device
+  name.
+
+Changes since v1:
+- remove double empty lines.
+- Add |property| field at end of structure to minimize changes.
+- Cache acpi_id entry, use standard API to retrieve it from parent
+  device.
+- Use that entry to see if a legacy APCI entry exists.
+
+ drivers/iio/proximity/sx9324.c    | 96 ++++++++++++++++---------------
+ drivers/iio/proximity/sx9360.c    | 32 +++++------
+ drivers/iio/proximity/sx_common.c | 21 +++++++
+ drivers/iio/proximity/sx_common.h |  5 ++
+ 4 files changed, 92 insertions(+), 62 deletions(-)
+
+diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+index 977cf17cec52b..9a40ca32bb1ca 100644
+--- a/drivers/iio/proximity/sx9324.c
++++ b/drivers/iio/proximity/sx9324.c
+@@ -783,73 +783,75 @@ static int sx9324_write_raw(struct iio_dev *indio_dev,
  
- /* Generic QSPI register offsets */
- #define GQSPI_CONFIG_OFST		0x00000100
-@@ -192,6 +193,7 @@ struct qspi_platform_data {
-  * @op_lock:		Operational lock
-  * @speed_hz:          Current SPI bus clock speed in hz
-  * @has_tapdelay:	Used for tapdelay register available in qspi
-+ * @is_parallel:		Used for multi CS support
-  */
- struct zynqmp_qspi {
- 	struct spi_controller *ctlr;
-@@ -214,8 +216,33 @@ struct zynqmp_qspi {
- 	struct mutex op_lock;
- 	u32 speed_hz;
- 	bool has_tapdelay;
-+	bool is_parallel;
+ static const struct sx_common_reg_default sx9324_default_regs[] = {
+ 	{ SX9324_REG_IRQ_MSK, 0x00 },
+-	{ SX9324_REG_IRQ_CFG0, 0x00 },
+-	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND },
+-	{ SX9324_REG_IRQ_CFG2, 0x00 },
+-	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS },
++	{ SX9324_REG_IRQ_CFG0, 0x00, "irq_cfg0" },
++	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND, "irq_cfg1" },
++	{ SX9324_REG_IRQ_CFG2, 0x00, "irq_cfg2" },
++	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS, "gnrl_ctrl0" },
+ 	/*
+ 	 * The lower 4 bits should not be set as it enable sensors measurements.
+ 	 * Turning the detection on before the configuration values are set to
+ 	 * good values can cause the device to return erroneous readings.
+ 	 */
+-	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL },
++	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL, "gnrl_ctrl1" },
+ 
+-	{ SX9324_REG_AFE_CTRL0, SX9324_REG_AFE_CTRL0_RINT_LOWEST },
+-	{ SX9324_REG_AFE_CTRL3, 0x00 },
++	{ SX9324_REG_AFE_CTRL0, SX9324_REG_AFE_CTRL0_RINT_LOWEST, "afe_ctrl0" },
++	{ SX9324_REG_AFE_CTRL3, 0x00, "afe_ctrl3" },
+ 	{ SX9324_REG_AFE_CTRL4, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
+-		SX9324_REG_AFE_CTRL4_RES_100 },
+-	{ SX9324_REG_AFE_CTRL6, 0x00 },
++		SX9324_REG_AFE_CTRL4_RES_100, "afe_ctrl4" },
++	{ SX9324_REG_AFE_CTRL6, 0x00, "afe_ctrl6" },
+ 	{ SX9324_REG_AFE_CTRL7, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
+-		SX9324_REG_AFE_CTRL4_RES_100 },
++		SX9324_REG_AFE_CTRL4_RES_100, "afe_ctrl7" },
+ 
+ 	/* TODO(gwendal): PHx use chip default or all grounded? */
+-	{ SX9324_REG_AFE_PH0, 0x29 },
+-	{ SX9324_REG_AFE_PH1, 0x26 },
+-	{ SX9324_REG_AFE_PH2, 0x1a },
+-	{ SX9324_REG_AFE_PH3, 0x16 },
++	{ SX9324_REG_AFE_PH0, 0x29, "afe_ph0" },
++	{ SX9324_REG_AFE_PH1, 0x26, "afe_ph1" },
++	{ SX9324_REG_AFE_PH2, 0x1a, "afe_ph2" },
++	{ SX9324_REG_AFE_PH3, 0x16, "afe_ph3" },
+ 
+ 	{ SX9324_REG_AFE_CTRL8, SX9324_REG_AFE_CTRL8_RESERVED |
+-		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM },
+-	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1 },
++		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM, "afe_ctrl8" },
++	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1, "afe_ctrl9" },
+ 
+ 	{ SX9324_REG_PROX_CTRL0,
+ 		SX9324_REG_PROX_CTRL0_GAIN_1 << SX9324_REG_PROX_CTRL0_GAIN_SHIFT |
+-		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
++		SX9324_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0" },
+ 	{ SX9324_REG_PROX_CTRL1,
+ 		SX9324_REG_PROX_CTRL0_GAIN_1 << SX9324_REG_PROX_CTRL0_GAIN_SHIFT |
+-		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
+-	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K },
++		SX9324_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl1" },
++	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K, "prox_ctrl2" },
+ 	{ SX9324_REG_PROX_CTRL3, SX9324_REG_PROX_CTRL3_AVGDEB_2SAMPLES |
+-		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K },
++		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K, "prox_ctrl3" },
+ 	{ SX9324_REG_PROX_CTRL4, SX9324_REG_PROX_CTRL4_AVGNEG_FILT_2 |
+-		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256 },
+-	{ SX9324_REG_PROX_CTRL5, 0x00 },
+-	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
+-	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
+-	{ SX9324_REG_ADV_CTRL0, 0x00 },
+-	{ SX9324_REG_ADV_CTRL1, 0x00 },
+-	{ SX9324_REG_ADV_CTRL2, 0x00 },
+-	{ SX9324_REG_ADV_CTRL3, 0x00 },
+-	{ SX9324_REG_ADV_CTRL4, 0x00 },
++		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256, "prox_ctrl4" },
++	{ SX9324_REG_PROX_CTRL5, 0x00, "prox_ctrl5" },
++	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32, "prox_ctrl6" },
++	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32, "prox_ctrl7" },
++	{ SX9324_REG_ADV_CTRL0, 0x00, "adv_ctrl0" },
++	{ SX9324_REG_ADV_CTRL1, 0x00, "adv_ctrl1" },
++	{ SX9324_REG_ADV_CTRL2, 0x00, "adv_ctrl2" },
++	{ SX9324_REG_ADV_CTRL3, 0x00, "adv_ctrl3" },
++	{ SX9324_REG_ADV_CTRL4, 0x00, "adv_ctrl4" },
+ 	{ SX9324_REG_ADV_CTRL5, SX9324_REG_ADV_CTRL5_STARTUP_SENSOR_1 |
+-		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1 },
+-	{ SX9324_REG_ADV_CTRL6, 0x00 },
+-	{ SX9324_REG_ADV_CTRL7, 0x00 },
+-	{ SX9324_REG_ADV_CTRL8, 0x00 },
+-	{ SX9324_REG_ADV_CTRL9, 0x00 },
++		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1, "adv_ctrl5" },
++	{ SX9324_REG_ADV_CTRL6, 0x00, "adv_ctrl6" },
++	{ SX9324_REG_ADV_CTRL7, 0x00, "adv_ctrl7" },
++	{ SX9324_REG_ADV_CTRL8, 0x00, "adv_ctrl8" },
++	{ SX9324_REG_ADV_CTRL9, 0x00, "adv_ctrl9" },
+ 	/* Body/Table threshold */
+-	{ SX9324_REG_ADV_CTRL10, 0x00 },
+-	{ SX9324_REG_ADV_CTRL11, 0x00 },
+-	{ SX9324_REG_ADV_CTRL12, 0x00 },
++	{ SX9324_REG_ADV_CTRL10, 0x00, "adv_ctrl10" },
++	{ SX9324_REG_ADV_CTRL11, 0x00, "adv_ctrl11" },
++	{ SX9324_REG_ADV_CTRL12, 0x00, "adv_ctrl12" },
+ 	/* TODO(gwendal): SAR currenly disabled */
+-	{ SX9324_REG_ADV_CTRL13, 0x00 },
+-	{ SX9324_REG_ADV_CTRL14, 0x00 },
+-	{ SX9324_REG_ADV_CTRL15, 0x00 },
+-	{ SX9324_REG_ADV_CTRL16, 0x00 },
+-	{ SX9324_REG_ADV_CTRL17, 0x00 },
+-	{ SX9324_REG_ADV_CTRL18, 0x00 },
+-	{ SX9324_REG_ADV_CTRL19, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
+-	{ SX9324_REG_ADV_CTRL20, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
++	{ SX9324_REG_ADV_CTRL13, 0x00, "adv_ctrl13" },
++	{ SX9324_REG_ADV_CTRL14, 0x00, "adv_ctrl14" },
++	{ SX9324_REG_ADV_CTRL15, 0x00, "adv_ctrl15" },
++	{ SX9324_REG_ADV_CTRL16, 0x00, "adv_ctrl16" },
++	{ SX9324_REG_ADV_CTRL17, 0x00, "adv_ctrl17" },
++	{ SX9324_REG_ADV_CTRL18, 0x00, "adv_ctrl18" },
++	{ SX9324_REG_ADV_CTRL19,
++		SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION, "adv_ctrl19" },
++	{ SX9324_REG_ADV_CTRL20,
++		SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION, "adv_ctrl20" },
  };
  
-+/**
-+ * zynqmp_gqspi_update_stripe - For GQSPI controller data stripe capabilities
-+ * @op:	Pointer to mem ops
-+ * Return:      Status of the data stripe
-+ *
-+ * Returns true if data stripe need to be enabled, else returns false
-+ */
-+bool zynqmp_gqspi_update_stripe(const struct spi_mem_op *op)
+ /* Activate all channels and perform an initial compensation. */
+@@ -889,13 +891,15 @@ sx9324_get_default_reg(struct device *dev, int idx,
+ 	const char *res;
+ 
+ 	memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
++
++	sx_common_get_raw_register_config(dev, reg_def);
+ 	switch (reg_def->reg) {
+ 	case SX9324_REG_AFE_PH0:
+ 	case SX9324_REG_AFE_PH1:
+ 	case SX9324_REG_AFE_PH2:
+ 	case SX9324_REG_AFE_PH3:
+ 		ph = reg_def->reg - SX9324_REG_AFE_PH0;
+-		scnprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
++		snprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
+ 
+ 		count = device_property_count_u32(dev, prop);
+ 		if (count != ARRAY_SIZE(pin_defs))
+diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
+index 6e19d22e6a015..a50d9176411a1 100644
+--- a/drivers/iio/proximity/sx9360.c
++++ b/drivers/iio/proximity/sx9360.c
+@@ -663,37 +663,37 @@ static int sx9360_write_raw(struct iio_dev *indio_dev,
+ 
+ static const struct sx_common_reg_default sx9360_default_regs[] = {
+ 	{ SX9360_REG_IRQ_MSK, 0x00 },
+-	{ SX9360_REG_IRQ_CFG, 0x00 },
++	{ SX9360_REG_IRQ_CFG, 0x00, "irq_cfg" },
+ 	/*
+ 	 * The lower 2 bits should not be set as it enable sensors measurements.
+ 	 * Turning the detection on before the configuration values are set to
+ 	 * good values can cause the device to return erroneous readings.
+ 	 */
+-	{ SX9360_REG_GNRL_CTRL0, 0x00 },
+-	{ SX9360_REG_GNRL_CTRL1, 0x00 },
+-	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS },
++	{ SX9360_REG_GNRL_CTRL0, 0x00, "gnrl_ctrl0" },
++	{ SX9360_REG_GNRL_CTRL1, 0x00, "gnrl_ctrl1" },
++	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS, "gnrl_ctrl2" },
+ 
+-	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS },
++	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS, "afe_ctrl0" },
+ 	{ SX9360_REG_AFE_PARAM0_PHR, SX9360_REG_AFE_PARAM0_RSVD |
+-		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
++		SX9360_REG_AFE_PARAM0_RESOLUTION_128, "afe_param0_phr" },
+ 	{ SX9360_REG_AFE_PARAM1_PHR, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
+-		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
++		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ, "afe_param1_phr" },
+ 	{ SX9360_REG_AFE_PARAM0_PHM, SX9360_REG_AFE_PARAM0_RSVD |
+-		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
++		SX9360_REG_AFE_PARAM0_RESOLUTION_128, "afe_param0_phm" },
+ 	{ SX9360_REG_AFE_PARAM1_PHM, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
+-		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
++		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ, "afe_param1_phm" },
+ 
+ 	{ SX9360_REG_PROX_CTRL0_PHR, SX9360_REG_PROX_CTRL0_GAIN_1 |
+-		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
++		SX9360_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0_phr" },
+ 	{ SX9360_REG_PROX_CTRL0_PHM, SX9360_REG_PROX_CTRL0_GAIN_1 |
+-		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
+-	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K },
++		SX9360_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0_phm" },
++	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K, "prox_ctrl1" },
+ 	{ SX9360_REG_PROX_CTRL2, SX9360_REG_PROX_CTRL2_AVGDEB_2SAMPLES |
+-		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K },
++		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K, "prox_ctrl2" },
+ 	{ SX9360_REG_PROX_CTRL3, SX9360_REG_PROX_CTRL3_AVGNEG_FILT_2 |
+-		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256 },
+-	{ SX9360_REG_PROX_CTRL4, 0x00 },
+-	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32 },
++		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256, "prox_ctrl3" },
++	{ SX9360_REG_PROX_CTRL4, 0x00, "prox_ctrl4" },
++	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32, "prox_ctrl5" },
+ };
+ 
+ /* Activate all channels and perform an initial compensation. */
+diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+index eba9256730ec1..fe07d1444ac37 100644
+--- a/drivers/iio/proximity/sx_common.c
++++ b/drivers/iio/proximity/sx_common.c
+@@ -424,6 +424,27 @@ static const struct iio_buffer_setup_ops sx_common_buffer_setup_ops = {
+ 	.postdisable = sx_common_buffer_postdisable,
+ };
+ 
++void sx_common_get_raw_register_config(struct device *dev,
++				       struct sx_common_reg_default *reg_def)
 +{
-+	if (op->cmd.opcode ==  SPINOR_OP_BE_4K ||
-+	    op->cmd.opcode ==  SPINOR_OP_BE_32K ||
-+	    op->cmd.opcode ==  SPINOR_OP_CHIP_ERASE ||
-+	    op->cmd.opcode ==  SPINOR_OP_SE ||
-+	    op->cmd.opcode ==  SPINOR_OP_BE_32K_4B ||
-+	    op->cmd.opcode ==  SPINOR_OP_SE_4B ||
-+	    op->cmd.opcode == SPINOR_OP_BE_4K_4B ||
-+	    op->cmd.opcode ==  SPINOR_OP_WRSR ||
-+	    op->cmd.opcode ==  SPINOR_OP_BRWR ||
-+	    (op->cmd.opcode ==  SPINOR_OP_WRSR2 && !op->addr.nbytes))
-+		return false;
++#ifdef CONFIG_ACPI
++	struct acpi_device *adev = ACPI_COMPANION(dev);
++	u32 raw = 0, ret;
++	char prop[80];
 +
-+	return true;
++	if (!reg_def->property || !adev)
++		return;
++
++	snprintf(prop, ARRAY_SIZE(prop), "%s,reg_%s", acpi_device_hid(adev), reg_def->property);
++	ret = device_property_read_u32(dev, prop, &raw);
++	if (ret)
++		return;
++
++	reg_def->def = raw;
++#endif
 +}
++EXPORT_SYMBOL_NS_GPL(sx_common_get_raw_register_config, SEMTECH_PROX);
 +
+ #define SX_COMMON_SOFT_RESET				0xde
+ 
+ static int sx_common_init_device(struct device *dev, struct iio_dev *indio_dev)
+diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
+index 49d4517103b0f..85bb5af7c6ea0 100644
+--- a/drivers/iio/proximity/sx_common.h
++++ b/drivers/iio/proximity/sx_common.h
+@@ -8,6 +8,7 @@
+ #ifndef IIO_SX_COMMON_H
+ #define IIO_SX_COMMON_H
+ 
++#include <linux/acpi.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
+ #include <linux/regulator/consumer.h>
+@@ -26,6 +27,7 @@ static_assert(SX_COMMON_MAX_NUM_CHANNELS < BITS_PER_LONG);
+ struct sx_common_reg_default {
+ 	u8 reg;
+ 	u8 def;
++	const char *property;
+ };
+ 
  /**
-  * zynqmp_gqspi_read - For GQSPI controller read operation
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-@@ -470,7 +497,14 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
+@@ -149,6 +151,9 @@ int sx_common_probe(struct i2c_client *client,
+ 		    const struct sx_common_chip_info *chip_info,
+ 		    const struct regmap_config *regmap_config);
  
- 	genfifoentry |= GQSPI_GENFIFO_MODE_SPI;
++void sx_common_get_raw_register_config(struct device *dev,
++				       struct sx_common_reg_default *reg_def);
++
+ /* 3 is the number of events defined by a single phase. */
+ extern const struct iio_event_spec sx_common_events[3];
  
--	if (qspi->cs_index_mask & GQSPI_SELECT_UPPER_CS) {
-+	if ((qspi->cs_index_mask & GQSPI_SELECT_LOWER_CS) &&
-+	    (qspi->cs_index_mask & GQSPI_SELECT_UPPER_CS)) {
-+		zynqmp_gqspi_selectslave(xqspi,
-+					 GQSPI_SELECT_FLASH_CS_BOTH,
-+					 GQSPI_SELECT_FLASH_BUS_BOTH);
-+		if (!xqspi->is_parallel)
-+			xqspi->is_parallel = true;
-+	} else if (qspi->cs_index_mask & GQSPI_SELECT_UPPER_CS) {
- 		zynqmp_gqspi_selectslave(xqspi,
- 					 GQSPI_SELECT_FLASH_CS_UPPER,
- 					 GQSPI_SELECT_FLASH_BUS_LOWER);
-@@ -1139,6 +1173,8 @@ static int zynqmp_qspi_exec_op(struct spi_mem *mem,
- 	}
- 
- 	if (op->data.nbytes) {
-+		if (xqspi->is_parallel && zynqmp_gqspi_update_stripe(op))
-+			genfifoentry |= GQSPI_GENFIFO_STRIPE;
- 		reinit_completion(&xqspi->data_completion);
- 		if (op->data.dir == SPI_MEM_DATA_OUT) {
- 			xqspi->txbuf = (u8 *)op->data.buf.out;
-@@ -1334,6 +1370,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctlr->dev.of_node = np;
- 	ctlr->auto_runtime_pm = true;
-+	ctlr->multi_cs_cap = true;
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
 -- 
-2.25.1
+2.39.1.581.gbfd45094c4-goog
 

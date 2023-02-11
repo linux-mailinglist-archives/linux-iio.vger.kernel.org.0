@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762EB692BE8
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Feb 2023 01:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2048692BEA
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Feb 2023 01:25:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjBKAY3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Feb 2023 19:24:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
+        id S229476AbjBKAZi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Feb 2023 19:25:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjBKAY3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Feb 2023 19:24:29 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D3F7BFEC
-        for <linux-iio@vger.kernel.org>; Fri, 10 Feb 2023 16:24:27 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id nn4-20020a17090b38c400b00233a6f118d0so4871838pjb.2
-        for <linux-iio@vger.kernel.org>; Fri, 10 Feb 2023 16:24:27 -0800 (PST)
+        with ESMTP id S229450AbjBKAZi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Feb 2023 19:25:38 -0500
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA897BFEC
+        for <linux-iio@vger.kernel.org>; Fri, 10 Feb 2023 16:25:36 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id v3so4888788pgh.4
+        for <linux-iio@vger.kernel.org>; Fri, 10 Feb 2023 16:25:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oh/VP9v5CQTGyXK4pP4wTjrDYzTEZe84GaWFOEwSL3A=;
-        b=hcziV/KHy4jaQuDwnzP5MZ9QiTYCitURkCmjN7fQVn9RN0zLYJfn8fexsOO898QTy8
-         IIbwGPfI++09wXBkNqZRf2TabHYFh1qOb31YEUwZIAM+OdsQWV0Ako2kvjjUFyTdUv+x
-         yURtDRPKRbUkFJoMHoNDiIsNcVHVaFbXNbseg=
+        d=chromium.org; s=google; t=1676075136;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VtnqhavMyOvZQPtQTex9KD7FvqZIlAAiIw/rBW5ddZU=;
+        b=KcuKx5bgm2jEMonR2R7TWafmGsaQ7L+edAh09gV1vGrHPAflGOm5WX2A9j+epkR15j
+         d2mGR9E/EHeYaxPmc43qRFVzTrGGMkqzbwcc8LmTeeYIOWVVrGSkgfWZ2w7mtSJe2tMH
+         NXJ7PF2AdRF7JU+SGdRMKEOeN1xexdqkVlNgM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20210112; t=1676075136;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Oh/VP9v5CQTGyXK4pP4wTjrDYzTEZe84GaWFOEwSL3A=;
-        b=Z+53YO1g91/XpLxExhBtJ9zGKtj69XY2scqLlT32eKmXKKzz0AvcudRIdjppYGf+jK
-         oZQZkwYTWzxmCfh32jw0twYlXfHVEyIIDhzNwamYrXq3uledAp5oqEiN+rBTsAlW2RLf
-         N/Q7u6cgdfK3isiDLX7HagueUzJ7abb4A56rDTHgDZXgMzW3Lyz1+nshSMJTzvn0YObu
-         +G7teLM6SZTLSLX+EI5RTq6opil3RRluCr1Dqlt2GtHg43GPQCkFkQmKPmexST/yGdY5
-         fR+CKsz/9CQiyRsOpk1Mq78DcnGw15TwJaJCK5Qc2n9m7wIXnHDH6VgDX57hMOR9Cy37
-         O8Sw==
-X-Gm-Message-State: AO0yUKWu/xSIKWx8XzzHy9ga56w7UUvAmMe+TzoBN9xNwmcxblrq4/pF
-        B25cQDFoX5QjKEVpNe3YEtBshw==
-X-Google-Smtp-Source: AK7set/Qrl/85Q6nlIbWLrD+0mMQ+F17OaZ6XBDFl2PrkYK7b+vfhcxjjXkSmPEK1kLAznnNVMmVVw==
-X-Received: by 2002:a05:6a21:6d88:b0:bf:3def:16cd with SMTP id wl8-20020a056a216d8800b000bf3def16cdmr20473844pzb.59.1676075066817;
-        Fri, 10 Feb 2023 16:24:26 -0800 (PST)
-Received: from localhost ([2620:15c:9d:2:f4a2:cfa3:814b:459d])
-        by smtp.gmail.com with UTF8SMTPSA id u9-20020a63a909000000b004790eb3fee1sm3428029pge.90.2023.02.10.16.24.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Feb 2023 16:24:25 -0800 (PST)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, dianders@chromium.org, swboyd@chromium.org
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v4] iio: proximity: sx_common: Add old register mapping
-Date:   Fri, 10 Feb 2023 16:24:21 -0800
-Message-Id: <20230211002421.3447060-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.39.1.581.gbfd45094c4-goog
+        bh=VtnqhavMyOvZQPtQTex9KD7FvqZIlAAiIw/rBW5ddZU=;
+        b=AGEIY8eqaJGpNDoevkRSBR73CayLZNkyruzIoMt2tRcdWM0HBq/8KVJqvLaYxulsl0
+         4zXXgX7WXd27hOUYU8+9QUCIPwkBGzXtlfTOUsPUHUsXBvdMBT/uBUBGVZ7b/DNSAyTN
+         Cn2udNHigyy7V2pl7aqBbP0PFMkWzfYagJGUSYg27pq+P+QasHPynZoI708AwO9iorCX
+         x5D2q1oXwYHq5gmzff7Rjk3YljICp0BqZ3IPE1VzuUPg+22PYc6Vs7F4+S3Pcxj5Twq2
+         JVWq2V1muv+0cXUnPCjPxRrfj76eY89p7bgdsFX95dporp2cbQ3uhmA3U+GNcP8+hazY
+         p44g==
+X-Gm-Message-State: AO0yUKUMR6x4dxTLAw9LOn6t9HWCy0Iy+VGafF/J1Z+Wlgdc76RQ2Bc0
+        nOS8NCXoBU5KfZOuCUfMx/CKRpcGhI5aRksnB21bX989BW189nxU
+X-Google-Smtp-Source: AK7set8WUWKg8UvUM/yp/EBUZEutpYURzxVkP/V/NwRvJWwkxthCgTqFApMgI1yRwoqMuvHWG95CCTCUwDfCj9TB/B8=
+X-Received: by 2002:a62:2903:0:b0:59d:553e:c81 with SMTP id
+ p3-20020a622903000000b0059d553e0c81mr3256334pfp.51.1676075136318; Fri, 10 Feb
+ 2023 16:25:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230129003753.1980309-1-gwendal@chromium.org>
+ <CAE-0n510nBDOdWXH43qhRtVsQOCPCbkeP1wCr2LvGXbbXyg5yg@mail.gmail.com>
+ <20230205145759.2ce9f274@jic23-huawei> <20230210171720.30ef1be9@jic23-huawei>
+In-Reply-To: <20230210171720.30ef1be9@jic23-huawei>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Fri, 10 Feb 2023 16:25:23 -0800
+Message-ID: <CAPUE2usxwfKBCSN8DAaZDZvjL+_5tXQBR2U40eY6i02_7HGWsA@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: proximity: sx_common: Add old register mapping
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Stephen Boyd <swboyd@chromium.org>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -63,319 +63,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Older firmwares still send sensor configuration using a list of
-registers with opaque values defined during sensor tuning.
-sx9234 and sx9360 sensor on ACPI based devices are concerned.
-More schema to configure the sensors will be needed to support devices
-designed for windows, like Samsung Galaxy Book2.
-
-Support schema is: "<_HID>.<register_name>". For instance
-"STH9324,reg_adv_ctrl2" in:
-
-    Scope (\_SB.PCI0.I2C2)
-    {
-        Device (SX28)
-        {
-            Name (_HID, "STH9324")  // _HID: Hardware ID
-...
-            Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
-            {
-                ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /*
-Device Properties for _DSD */,
-                Package (0x3F)
-                {
-...
-                    Package (0x02)
-                    {
-                        "STH9324,reg_adv_ctrl2",
-                        Zero
-                    },`
-
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
-Changes since v3:
-- Fix compilation issue when CONFIG_ACPI is not defined (ARM).
-
-Changes since v2:
-- Use snprintf instead of scnprintf
-- Use acpi_device_hid() from the ACPI companion device to get the device
-  name.
-
-Changes since v1:
-- remove double empty lines.
-- Add |property| field at end of structure to minimize changes.
-- Cache acpi_id entry, use standard API to retrieve it from parent
-  device.
-- Use that entry to see if a legacy APCI entry exists.
-
- drivers/iio/proximity/sx9324.c    | 96 ++++++++++++++++---------------
- drivers/iio/proximity/sx9360.c    | 32 +++++------
- drivers/iio/proximity/sx_common.c | 21 +++++++
- drivers/iio/proximity/sx_common.h |  5 ++
- 4 files changed, 92 insertions(+), 62 deletions(-)
-
-diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-index 977cf17cec52b..9a40ca32bb1ca 100644
---- a/drivers/iio/proximity/sx9324.c
-+++ b/drivers/iio/proximity/sx9324.c
-@@ -783,73 +783,75 @@ static int sx9324_write_raw(struct iio_dev *indio_dev,
- 
- static const struct sx_common_reg_default sx9324_default_regs[] = {
- 	{ SX9324_REG_IRQ_MSK, 0x00 },
--	{ SX9324_REG_IRQ_CFG0, 0x00 },
--	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND },
--	{ SX9324_REG_IRQ_CFG2, 0x00 },
--	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS },
-+	{ SX9324_REG_IRQ_CFG0, 0x00, "irq_cfg0" },
-+	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND, "irq_cfg1" },
-+	{ SX9324_REG_IRQ_CFG2, 0x00, "irq_cfg2" },
-+	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS, "gnrl_ctrl0" },
- 	/*
- 	 * The lower 4 bits should not be set as it enable sensors measurements.
- 	 * Turning the detection on before the configuration values are set to
- 	 * good values can cause the device to return erroneous readings.
- 	 */
--	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL },
-+	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL, "gnrl_ctrl1" },
- 
--	{ SX9324_REG_AFE_CTRL0, SX9324_REG_AFE_CTRL0_RINT_LOWEST },
--	{ SX9324_REG_AFE_CTRL3, 0x00 },
-+	{ SX9324_REG_AFE_CTRL0, SX9324_REG_AFE_CTRL0_RINT_LOWEST, "afe_ctrl0" },
-+	{ SX9324_REG_AFE_CTRL3, 0x00, "afe_ctrl3" },
- 	{ SX9324_REG_AFE_CTRL4, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
--		SX9324_REG_AFE_CTRL4_RES_100 },
--	{ SX9324_REG_AFE_CTRL6, 0x00 },
-+		SX9324_REG_AFE_CTRL4_RES_100, "afe_ctrl4" },
-+	{ SX9324_REG_AFE_CTRL6, 0x00, "afe_ctrl6" },
- 	{ SX9324_REG_AFE_CTRL7, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
--		SX9324_REG_AFE_CTRL4_RES_100 },
-+		SX9324_REG_AFE_CTRL4_RES_100, "afe_ctrl7" },
- 
- 	/* TODO(gwendal): PHx use chip default or all grounded? */
--	{ SX9324_REG_AFE_PH0, 0x29 },
--	{ SX9324_REG_AFE_PH1, 0x26 },
--	{ SX9324_REG_AFE_PH2, 0x1a },
--	{ SX9324_REG_AFE_PH3, 0x16 },
-+	{ SX9324_REG_AFE_PH0, 0x29, "afe_ph0" },
-+	{ SX9324_REG_AFE_PH1, 0x26, "afe_ph1" },
-+	{ SX9324_REG_AFE_PH2, 0x1a, "afe_ph2" },
-+	{ SX9324_REG_AFE_PH3, 0x16, "afe_ph3" },
- 
- 	{ SX9324_REG_AFE_CTRL8, SX9324_REG_AFE_CTRL8_RESERVED |
--		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM },
--	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1 },
-+		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM, "afe_ctrl8" },
-+	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1, "afe_ctrl9" },
- 
- 	{ SX9324_REG_PROX_CTRL0,
- 		SX9324_REG_PROX_CTRL0_GAIN_1 << SX9324_REG_PROX_CTRL0_GAIN_SHIFT |
--		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
-+		SX9324_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0" },
- 	{ SX9324_REG_PROX_CTRL1,
- 		SX9324_REG_PROX_CTRL0_GAIN_1 << SX9324_REG_PROX_CTRL0_GAIN_SHIFT |
--		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
--	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K },
-+		SX9324_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl1" },
-+	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K, "prox_ctrl2" },
- 	{ SX9324_REG_PROX_CTRL3, SX9324_REG_PROX_CTRL3_AVGDEB_2SAMPLES |
--		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K },
-+		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K, "prox_ctrl3" },
- 	{ SX9324_REG_PROX_CTRL4, SX9324_REG_PROX_CTRL4_AVGNEG_FILT_2 |
--		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256 },
--	{ SX9324_REG_PROX_CTRL5, 0x00 },
--	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
--	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
--	{ SX9324_REG_ADV_CTRL0, 0x00 },
--	{ SX9324_REG_ADV_CTRL1, 0x00 },
--	{ SX9324_REG_ADV_CTRL2, 0x00 },
--	{ SX9324_REG_ADV_CTRL3, 0x00 },
--	{ SX9324_REG_ADV_CTRL4, 0x00 },
-+		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256, "prox_ctrl4" },
-+	{ SX9324_REG_PROX_CTRL5, 0x00, "prox_ctrl5" },
-+	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32, "prox_ctrl6" },
-+	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32, "prox_ctrl7" },
-+	{ SX9324_REG_ADV_CTRL0, 0x00, "adv_ctrl0" },
-+	{ SX9324_REG_ADV_CTRL1, 0x00, "adv_ctrl1" },
-+	{ SX9324_REG_ADV_CTRL2, 0x00, "adv_ctrl2" },
-+	{ SX9324_REG_ADV_CTRL3, 0x00, "adv_ctrl3" },
-+	{ SX9324_REG_ADV_CTRL4, 0x00, "adv_ctrl4" },
- 	{ SX9324_REG_ADV_CTRL5, SX9324_REG_ADV_CTRL5_STARTUP_SENSOR_1 |
--		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1 },
--	{ SX9324_REG_ADV_CTRL6, 0x00 },
--	{ SX9324_REG_ADV_CTRL7, 0x00 },
--	{ SX9324_REG_ADV_CTRL8, 0x00 },
--	{ SX9324_REG_ADV_CTRL9, 0x00 },
-+		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1, "adv_ctrl5" },
-+	{ SX9324_REG_ADV_CTRL6, 0x00, "adv_ctrl6" },
-+	{ SX9324_REG_ADV_CTRL7, 0x00, "adv_ctrl7" },
-+	{ SX9324_REG_ADV_CTRL8, 0x00, "adv_ctrl8" },
-+	{ SX9324_REG_ADV_CTRL9, 0x00, "adv_ctrl9" },
- 	/* Body/Table threshold */
--	{ SX9324_REG_ADV_CTRL10, 0x00 },
--	{ SX9324_REG_ADV_CTRL11, 0x00 },
--	{ SX9324_REG_ADV_CTRL12, 0x00 },
-+	{ SX9324_REG_ADV_CTRL10, 0x00, "adv_ctrl10" },
-+	{ SX9324_REG_ADV_CTRL11, 0x00, "adv_ctrl11" },
-+	{ SX9324_REG_ADV_CTRL12, 0x00, "adv_ctrl12" },
- 	/* TODO(gwendal): SAR currenly disabled */
--	{ SX9324_REG_ADV_CTRL13, 0x00 },
--	{ SX9324_REG_ADV_CTRL14, 0x00 },
--	{ SX9324_REG_ADV_CTRL15, 0x00 },
--	{ SX9324_REG_ADV_CTRL16, 0x00 },
--	{ SX9324_REG_ADV_CTRL17, 0x00 },
--	{ SX9324_REG_ADV_CTRL18, 0x00 },
--	{ SX9324_REG_ADV_CTRL19, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
--	{ SX9324_REG_ADV_CTRL20, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
-+	{ SX9324_REG_ADV_CTRL13, 0x00, "adv_ctrl13" },
-+	{ SX9324_REG_ADV_CTRL14, 0x00, "adv_ctrl14" },
-+	{ SX9324_REG_ADV_CTRL15, 0x00, "adv_ctrl15" },
-+	{ SX9324_REG_ADV_CTRL16, 0x00, "adv_ctrl16" },
-+	{ SX9324_REG_ADV_CTRL17, 0x00, "adv_ctrl17" },
-+	{ SX9324_REG_ADV_CTRL18, 0x00, "adv_ctrl18" },
-+	{ SX9324_REG_ADV_CTRL19,
-+		SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION, "adv_ctrl19" },
-+	{ SX9324_REG_ADV_CTRL20,
-+		SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION, "adv_ctrl20" },
- };
- 
- /* Activate all channels and perform an initial compensation. */
-@@ -889,13 +891,15 @@ sx9324_get_default_reg(struct device *dev, int idx,
- 	const char *res;
- 
- 	memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
-+
-+	sx_common_get_raw_register_config(dev, reg_def);
- 	switch (reg_def->reg) {
- 	case SX9324_REG_AFE_PH0:
- 	case SX9324_REG_AFE_PH1:
- 	case SX9324_REG_AFE_PH2:
- 	case SX9324_REG_AFE_PH3:
- 		ph = reg_def->reg - SX9324_REG_AFE_PH0;
--		scnprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
-+		snprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
- 
- 		count = device_property_count_u32(dev, prop);
- 		if (count != ARRAY_SIZE(pin_defs))
-diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-index 6e19d22e6a015..a50d9176411a1 100644
---- a/drivers/iio/proximity/sx9360.c
-+++ b/drivers/iio/proximity/sx9360.c
-@@ -663,37 +663,37 @@ static int sx9360_write_raw(struct iio_dev *indio_dev,
- 
- static const struct sx_common_reg_default sx9360_default_regs[] = {
- 	{ SX9360_REG_IRQ_MSK, 0x00 },
--	{ SX9360_REG_IRQ_CFG, 0x00 },
-+	{ SX9360_REG_IRQ_CFG, 0x00, "irq_cfg" },
- 	/*
- 	 * The lower 2 bits should not be set as it enable sensors measurements.
- 	 * Turning the detection on before the configuration values are set to
- 	 * good values can cause the device to return erroneous readings.
- 	 */
--	{ SX9360_REG_GNRL_CTRL0, 0x00 },
--	{ SX9360_REG_GNRL_CTRL1, 0x00 },
--	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS },
-+	{ SX9360_REG_GNRL_CTRL0, 0x00, "gnrl_ctrl0" },
-+	{ SX9360_REG_GNRL_CTRL1, 0x00, "gnrl_ctrl1" },
-+	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS, "gnrl_ctrl2" },
- 
--	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS },
-+	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS, "afe_ctrl0" },
- 	{ SX9360_REG_AFE_PARAM0_PHR, SX9360_REG_AFE_PARAM0_RSVD |
--		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
-+		SX9360_REG_AFE_PARAM0_RESOLUTION_128, "afe_param0_phr" },
- 	{ SX9360_REG_AFE_PARAM1_PHR, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
--		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
-+		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ, "afe_param1_phr" },
- 	{ SX9360_REG_AFE_PARAM0_PHM, SX9360_REG_AFE_PARAM0_RSVD |
--		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
-+		SX9360_REG_AFE_PARAM0_RESOLUTION_128, "afe_param0_phm" },
- 	{ SX9360_REG_AFE_PARAM1_PHM, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
--		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
-+		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ, "afe_param1_phm" },
- 
- 	{ SX9360_REG_PROX_CTRL0_PHR, SX9360_REG_PROX_CTRL0_GAIN_1 |
--		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
-+		SX9360_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0_phr" },
- 	{ SX9360_REG_PROX_CTRL0_PHM, SX9360_REG_PROX_CTRL0_GAIN_1 |
--		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
--	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K },
-+		SX9360_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0_phm" },
-+	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K, "prox_ctrl1" },
- 	{ SX9360_REG_PROX_CTRL2, SX9360_REG_PROX_CTRL2_AVGDEB_2SAMPLES |
--		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K },
-+		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K, "prox_ctrl2" },
- 	{ SX9360_REG_PROX_CTRL3, SX9360_REG_PROX_CTRL3_AVGNEG_FILT_2 |
--		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256 },
--	{ SX9360_REG_PROX_CTRL4, 0x00 },
--	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32 },
-+		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256, "prox_ctrl3" },
-+	{ SX9360_REG_PROX_CTRL4, 0x00, "prox_ctrl4" },
-+	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32, "prox_ctrl5" },
- };
- 
- /* Activate all channels and perform an initial compensation. */
-diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-index eba9256730ec1..fe07d1444ac37 100644
---- a/drivers/iio/proximity/sx_common.c
-+++ b/drivers/iio/proximity/sx_common.c
-@@ -424,6 +424,27 @@ static const struct iio_buffer_setup_ops sx_common_buffer_setup_ops = {
- 	.postdisable = sx_common_buffer_postdisable,
- };
- 
-+void sx_common_get_raw_register_config(struct device *dev,
-+				       struct sx_common_reg_default *reg_def)
-+{
-+#ifdef CONFIG_ACPI
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
-+	u32 raw = 0, ret;
-+	char prop[80];
-+
-+	if (!reg_def->property || !adev)
-+		return;
-+
-+	snprintf(prop, ARRAY_SIZE(prop), "%s,reg_%s", acpi_device_hid(adev), reg_def->property);
-+	ret = device_property_read_u32(dev, prop, &raw);
-+	if (ret)
-+		return;
-+
-+	reg_def->def = raw;
-+#endif
-+}
-+EXPORT_SYMBOL_NS_GPL(sx_common_get_raw_register_config, SEMTECH_PROX);
-+
- #define SX_COMMON_SOFT_RESET				0xde
- 
- static int sx_common_init_device(struct device *dev, struct iio_dev *indio_dev)
-diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
-index 49d4517103b0f..85bb5af7c6ea0 100644
---- a/drivers/iio/proximity/sx_common.h
-+++ b/drivers/iio/proximity/sx_common.h
-@@ -8,6 +8,7 @@
- #ifndef IIO_SX_COMMON_H
- #define IIO_SX_COMMON_H
- 
-+#include <linux/acpi.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/types.h>
- #include <linux/regulator/consumer.h>
-@@ -26,6 +27,7 @@ static_assert(SX_COMMON_MAX_NUM_CHANNELS < BITS_PER_LONG);
- struct sx_common_reg_default {
- 	u8 reg;
- 	u8 def;
-+	const char *property;
- };
- 
- /**
-@@ -149,6 +151,9 @@ int sx_common_probe(struct i2c_client *client,
- 		    const struct sx_common_chip_info *chip_info,
- 		    const struct regmap_config *regmap_config);
- 
-+void sx_common_get_raw_register_config(struct device *dev,
-+				       struct sx_common_reg_default *reg_def);
-+
- /* 3 is the number of events defined by a single phase. */
- extern const struct iio_event_spec sx_common_events[3];
- 
--- 
-2.39.1.581.gbfd45094c4-goog
-
+On Fri, Feb 10, 2023 at 9:03 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sun, 5 Feb 2023 14:57:59 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> > On Mon, 30 Jan 2023 11:41:31 -0800
+> > Stephen Boyd <swboyd@chromium.org> wrote:
+> >
+> > > Quoting Gwendal Grignou (2023-01-28 16:37:53)
+> > > > Older firmwares still send sensor configuration using a list of
+> > > > registers with opaque values defined during sensor tuning.
+> > > > sx9234 and sx9360 sensor on ACPI based devices are concerned.
+> > > > More schema to configure the sensors will be needed to support devices
+> > > > designed for windows, like Samsung Galaxy Book2.
+> > > >
+> > > > Support schema is: "<_HID>.<register_name>". For instance
+> > > > "STH9324,reg_adv_ctrl2" in:
+> > > >
+> > > >     Scope (\_SB.PCI0.I2C2)
+> > > >     {
+> > > >         Device (SX28)
+> > > >         {
+> > > >             Name (_HID, "STH9324")  // _HID: Hardware ID
+> > > > ...
+> > > >             Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
+> > > >             {
+> > > >                 ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /*
+> > > > Device Properties for _DSD */,
+> > > >                 Package (0x3F)
+> > > >                 {
+> > > > ...
+> > > >                     Package (0x02)
+> > > >                     {
+> > > >                         "STH9324,reg_adv_ctrl2",
+> > > >                         Zero
+> > > >                     },`
+> > > >
+> > > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > > > ---
+> > >
+> > > Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+> > Applied to the togreg branch of iio.git and pushed out as testing.
+> >
+> > Timing wise, we are late in the cycle so this might not make it upstream
+> > until next cycle.
+> >
+>
+> Dropped for now as we need to fix an issue with acpi_device_hid()
+> not being defined with !CONFIG_ACPI that broke some builds in next.
+Fixed in v4 by using #ifdef CONFIG_ACPI in sx_common_get_raw_register_config().
+Thanks,
+Gwendal.
+>
+> Jonathan
+>
+>
+> > Thanks,
+> >
+> > Jonathan
+> >
+>

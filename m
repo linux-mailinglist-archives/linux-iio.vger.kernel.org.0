@@ -2,185 +2,299 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 156276933FE
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Feb 2023 22:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2455F6936DC
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Feb 2023 11:22:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbjBKVZv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Feb 2023 16:25:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42276 "EHLO
+        id S229557AbjBLKW1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Feb 2023 05:22:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjBKVZu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Feb 2023 16:25:50 -0500
-Received: from mail.multiname.org (h4.multiname.org [94.130.68.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB92B444;
-        Sat, 11 Feb 2023 13:25:47 -0800 (PST)
-Received: from webmail.multiname.org (unknown [10.0.10.104])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.multiname.org (Postfix) with ESMTPSA id 4PDkD913TjzPLtZ3;
-        Sat, 11 Feb 2023 22:25:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ccbib.org; s=20220806;
-        t=1676150745;
+        with ESMTP id S229468AbjBLKW0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Feb 2023 05:22:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4375BB1
+        for <linux-iio@vger.kernel.org>; Sun, 12 Feb 2023 02:21:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1676197301;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=k6EufGqREBPwPsUWjo0kh2zq6qE8EzqtdiieAXNT5C4=;
-        b=Uj9TZrucHMe1XdYpNPJDGIJOXKKfNcLBiJnmxKPpdUM0aku4c7Or/LKzJ35Pe9Uj38bB4o
-        kApbAOX1P5D2HI/p4IzwXM+9HREoHCtoqWzMW1ORn/lCBvWLNEtdKeSpCc/eadUGVmFJwl
-        5iwnv8tle/rOXgYMkSu0P9zTg6S6ZSP+DBCkew0oIfE+irotryKVNuXuqZaXylrhJargHP
-        tl3VQ/oVE3rT0KYaswa0EV+8qpQXeecImkvDBVSI601l5uGAMQohMWQBIib0Iep73DNTqa
-        dTwyVZhhjWvvEcjjYl4dkeHZADSIkHwqVvngrpfGRkam/ArL+uzRAjPiE80Q2jaaiQuL/W
-        6dVrlDlBqsmXqEInbiK5jeDdfef6vR+5OymQouCVGmxkQPktjBheMSFYJundoAtL1vhe6y
-        ijYXJxIArNAOsiS6SQZpLHnLvsh7+Ho+beU3oV0mztAqXO6tj91lN+OmVATLgCfVT0gPb/
-        SdhFKt+3bq9e+7icWhbyC3nV7+C0IdiYy8u2axbat90qLkrWA7ukbfMWcSiZyYydR6IXzk
-        o5f90FEUSvZlSNCrmW3Ng6a4pTrDL+yjWVfD+mOW1a8CTIUGp3luETd1vV5847f5Iphrgb
-        49tRY6uowU2vSzaDpj1dnbCaLRmyN6bpdDj1zeTkORBS4nNYZYJxw=
+        bh=n+ffbI/mVnaa3dNuBr2Nsr0yQ3UvaUYA58ZMXgXDZ9k=;
+        b=ijkekk6ye3MUCUOjjM8XZXM+WJ4JirNvIiQx4xGaA+1BcUP8VobN6JWc/9hYDbzYeqzXa7
+        96hjJCyFw24WuyzHjl5JJsVtoe5Q1pUV1CJJTJYvo7oFfAh9JtZRs6l1BusQBMBnBxUw9o
+        OPeaz7yLuW5uE8xBAPEpQ+QdZWqWWFw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-563-_KaYFvb8NX2mUG0zdaM0Sw-1; Sun, 12 Feb 2023 05:21:37 -0500
+X-MC-Unique: _KaYFvb8NX2mUG0zdaM0Sw-1
+Received: by mail-wm1-f69.google.com with SMTP id n4-20020a05600c3b8400b003dfe223de49so7384048wms.5
+        for <linux-iio@vger.kernel.org>; Sun, 12 Feb 2023 02:21:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n+ffbI/mVnaa3dNuBr2Nsr0yQ3UvaUYA58ZMXgXDZ9k=;
+        b=0ua4ENSbxeuRwnndqJy3nNlL6jjh5dwu8lT7sv3Sozy8+R4UEMb0btIOKT+CfYlODG
+         rDiR91BpG8rdLpgOywe65QNwI0egGrwRr/kZ1NiKMYfs9z0UepgqMaqmu633QwY4/G37
+         mXVCCP1aHjdVPS6L7kXEXgLT+KF/l/HHYacp0ewwFnrnOqGtLR872IgE8zFYI9scrAlA
+         ZrKK56Ql7BjTyUZUUmn+oQX2ANcp7loM5Q8/zMfuPCVl9nYRh1/adHY39I124GZ7sBsd
+         1TTf3lbFUz9LQbClh3JD0A1eMAR2JlMlMLLzzt0wVuv5jYTN4fSn6Rq5xDd/l1T+eqfh
+         so5A==
+X-Gm-Message-State: AO0yUKXbKmeF4AcWD0MOonU9xSwuOmDf2XfSc/8gKZ/NG4NimfPL9Rv9
+        ci3zeGhEiKEWju+gBTpryyK45YGtsAjO3tGoJmoq3qOU5ftWyVxbEUQshUTdBaGny2Bd5IyT74n
+        T3hBcqIt9AAkyXe5ftYKpeJUDmg==
+X-Received: by 2002:a05:600c:a686:b0:3e0:fad:5fa8 with SMTP id ip6-20020a05600ca68600b003e00fad5fa8mr16474009wmb.33.1676197295825;
+        Sun, 12 Feb 2023 02:21:35 -0800 (PST)
+X-Google-Smtp-Source: AK7set8piOLAOEtoy9k+j48kM5RQX+N1IsjHSBB/0yaSo1DPmhsa7yd0NDkdcOYaPyAXv7sgaVp1hg==
+X-Received: by 2002:a05:600c:a686:b0:3e0:fad:5fa8 with SMTP id ip6-20020a05600ca68600b003e00fad5fa8mr16474005wmb.33.1676197295590;
+        Sun, 12 Feb 2023 02:21:35 -0800 (PST)
+Received: from localhost (net-188-216-77-84.cust.vodafonedsl.it. [188.216.77.84])
+        by smtp.gmail.com with ESMTPSA id t8-20020a7bc3c8000000b003e00c9888besm13684677wmj.30.2023.02.12.02.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Feb 2023 02:21:34 -0800 (PST)
+Date:   Sun, 12 Feb 2023 11:21:32 +0100
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     jic23@kernel.org, phdm@macq.eu, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: discard samples during filters
+ settling time
+Message-ID: <Y+i9rImVqH7iVets@lore-desk>
+References: <1228b9ed2060b99d0df0f5549a37c8b520ea5429.1675867224.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-Date:   Sat, 11 Feb 2023 22:25:44 +0100
-From:   harald@ccbib.org
-To:     pelzi@flying-snail.de
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dht11: Read bit stream from IRQ on falling edges
- only
-In-Reply-To: <d96a7c1f-4a12-18c9-377d-df69b17168d2@feldner-bv.de>
-References: <Y9a0RZ+inWs44Kn8@debian-qemu.internal.flying-snail.de>
- <20230130202216.42034309@jic23-huawei>
- <45efc11e5b4cdba3766f19190bb65840@ccbib.org>
- <e1acd14e-400b-8896-bdc1-0b364cc52198@feldner-bv.de>
- <ac9ab2224ad19ac606de38fa474dce0c@ccbib.org>
- <d96a7c1f-4a12-18c9-377d-df69b17168d2@feldner-bv.de>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <130ee4a2c77ac9bd14a11aa38efa6d72@ccbib.org>
-X-Sender: harald@ccbib.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="GI803v822S32dPiG"
+Content-Disposition: inline
+In-Reply-To: <1228b9ed2060b99d0df0f5549a37c8b520ea5429.1675867224.git.lorenzo@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-02-11 11:41, pelzi@flying-snail.de wrote:
-> Am 07.02.23 um 11:33 schrieb harald@ccbib.org:
->> 2) A theoretical analysis about possible regressions depending on 
->> timer
->> resolution as mentioned in an earlier message.
-> 
-> This sounds as if you were doing such an analysis for the original
-> version. Can you share this work so I can attempt to repeat it
-> for the modified algorithm?
 
-The short version is in the comments. The relevant section is:
-/*
-  * Data transmission timing:
-  * Data bits are encoded as pulse length (high time) on the data line.
-  * 0-bit: 22-30uS -- typically 26uS (AM2302)
-  * 1-bit: 68-75uS -- typically 70uS (AM2302)
-  * The acutal timings also depend on the properties of the cable, with
-  * longer cables typically making pulses shorter.
-  *
-  * Our decoding depends on the time resolution of the system:
-  * timeres > 34uS ... don't know what a 1-tick pulse is
-  * 34uS > timeres > 30uS ... no problem (30kHz and 32kHz clocks)
-  * 30uS > timeres > 23uS ... don't know what a 2-tick pulse is
-  * timeres < 23uS ... no problem
+--GI803v822S32dPiG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The long version I probably don't have anymore, but it's not rocket
-science. Just multiples of the time resolution. Eg:
-34 = 68/2
-23 = 68/3
+> During digital filters settling time the driver is expected to drop
+> samples since they can be corrupted. Introduce the capability to drop
+> a given number of samples according to the configured ODR.
+> Add the sample_to_discard data for LSM6DSM sensor.
+>=20
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       | 11 ++++
+>  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 58 +++++++++++++++----
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 18 ++++++
+>  3 files changed, 77 insertions(+), 10 deletions(-)
 
->> 3) Ideally figuring out, why your version performs better then what we
->> currently have. I have some suspicions, but better understanding might
->> lead to a better approach. E.g. maybe recording the other edges isn't
->> the problem so long as we ignore them during decoding?
->> 
->> As I see it, the main thing we are losing with your current proposal 
->> is
->> some diagnostic features. If we keep them as much as possible and have
->> regressions understood and covered, I see no reason to reject your 
->> idea.
-> 
-> That's why I changed the script to separately count EIO and ETIMEDOUT.
-> The latter indicates missed edges, the former failure to interpret
-> the data read.
-> 
-> What I see is that the patched driver's errors mostly result from 
-> missed
-> IRQ (note in contrast to last results, I cut the number of reads):
-> 
-> #    real[s]    user[s]    sys[s]    success    EIO    timeout err per 
-> succ
-> 1     20.57    0.25    0.03    10    0    0    0
-> 2     24.74    0.25    0.07    10    0    4    0,4
-> 3     21.55    0.20    0.07    10    0    0    0
-> 4     25.81    0.25    0.08    10    0    5    0,5
-> 5     21.56    0.23    0.05    10    0    0    0
-> 6     21.58    0.22    0.05    10    1    0    0,1
-> 7     25.86    0.24    0.08    10    1    5    0,6
-> 8     22.69    0.27    0.05    10    1    1    0,2
-> 9     23.67    0.26    0.04    10    0    2    0,2
-> 10     20.55    0.23    0.04    10    0    0    0
-> 
-> Whereas the original driver has more errors resulting from
-> mis-interpreted data:
-> 
-> #    real[s]    user[s]    sys[s]    success    EIO    timeout err per 
-> succ
-> 1     24.88    0.26    0.07    10    5    4    0,9
-> 2     25.91    0.26    0.07    10    4    5    0,9
-> 3     31.27    0.31    0.10    10    6    10    1,6
-> 4     29.17    0.32    0.11    10    7    8    1,5
-> 5     22.73    0.24    0.08    10    4    2    0,6
-> 6     46.46    0.35    0.25    10    19    24    4,3
-> 7     23.79    0.23    0.09    10    3    3    0,6
-> 8     30.17    0.27    0.11    10    6    9    1,5
-> 9     23.77    0.26    0.06    10    3    2    0,5
-> 10     20.58    0.24    0.06    10    1    0    0,1
-> 
-> I tried a variant that reads falling and rising edges and
-> uses the redundany of information to eliminate some errors.
-> This did not work out at all.
+I forgot to say I tested this patch on my LSM6DSM and it works fine for me.
 
-That's an interesting data point. Care to share the code?
+Regards,
+Lorenzo
 
-> It seems a relevant source of
-> trouble is delayed call to the IRQ handler. The problem is
-> that only then you try to find out if this IRQ is due to
-> rising or falling edge by reading the current GPIO level. When
-> you are to late, this might already have changed and you read
-> a level, but for the edge of _this_ level you'll receive another
-> IRQ a few us later.
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
+_lsm6dsx/st_lsm6dsx.h
+> index 499fcf8875b4..8e119d78730b 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -137,6 +137,13 @@ struct st_lsm6dsx_odr_table_entry {
+>  	int odr_len;
+>  };
+> =20
+> +struct st_lsm6dsx_samples_to_discard {
+> +	struct {
+> +		u32 milli_hz;
+> +		u16 samples;
+> +	} val[ST_LSM6DSX_ODR_LIST_SIZE];
+> +};
+> +
+>  struct st_lsm6dsx_fs {
+>  	u32 gain;
+>  	u8 val;
+> @@ -291,6 +298,7 @@ struct st_lsm6dsx_ext_dev_settings {
+>   * @irq_config: interrupts related registers.
+>   * @drdy_mask: register info for data-ready mask (addr + mask).
+>   * @odr_table: Hw sensors odr table (Hz + val).
+> + * @samples_to_discard: Number of samples to discard for filters settlin=
+g time.
+>   * @fs_table: Hw sensors gain table (gain + val).
+>   * @decimator: List of decimator register info (addr + mask).
+>   * @batch: List of FIFO batching register info (addr + mask).
+> @@ -323,6 +331,7 @@ struct st_lsm6dsx_settings {
+>  	} irq_config;
+>  	struct st_lsm6dsx_reg drdy_mask;
+>  	struct st_lsm6dsx_odr_table_entry odr_table[2];
+> +	struct st_lsm6dsx_samples_to_discard samples_to_discard[2];
+>  	struct st_lsm6dsx_fs_table_entry fs_table[2];
+>  	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
+>  	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
+> @@ -353,6 +362,7 @@ enum st_lsm6dsx_fifo_mode {
+>   * @hw: Pointer to instance of struct st_lsm6dsx_hw.
+>   * @gain: Configured sensor sensitivity.
+>   * @odr: Output data rate of the sensor [Hz].
+> + * @samples_to_discard: Number of samples to discard for filters settlin=
+g time.
+>   * @watermark: Sensor watermark level.
+>   * @decimator: Sensor decimation factor.
+>   * @sip: Number of samples in a given pattern.
+> @@ -367,6 +377,7 @@ struct st_lsm6dsx_sensor {
+>  	u32 gain;
+>  	u32 odr;
+> =20
+> +	u16 samples_to_discard;
+>  	u16 watermark;
+>  	u8 decimator;
+>  	u8 sip;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio=
+/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index 7dd5205aea5b..c1059a79f5ff 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -457,17 +457,29 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+>  			}
+> =20
+>  			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
+> -				iio_push_to_buffers_with_timestamp(
+> -					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
+> -					&hw->scan[ST_LSM6DSX_ID_GYRO],
+> -					gyro_sensor->ts_ref + ts);
+> +				/* We need to discards gyro samples during
+> +				 * filters settling time
+> +				 */
+> +				if (gyro_sensor->samples_to_discard > 0)
+> +					gyro_sensor->samples_to_discard--;
+> +				else
+> +					iio_push_to_buffers_with_timestamp(
+> +						hw->iio_devs[ST_LSM6DSX_ID_GYRO],
+> +						&hw->scan[ST_LSM6DSX_ID_GYRO],
+> +						gyro_sensor->ts_ref + ts);
+>  				gyro_sip--;
+>  			}
+>  			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
+> -				iio_push_to_buffers_with_timestamp(
+> -					hw->iio_devs[ST_LSM6DSX_ID_ACC],
+> -					&hw->scan[ST_LSM6DSX_ID_ACC],
+> -					acc_sensor->ts_ref + ts);
+> +				/* We need to discards accel samples during
+> +				 * filters settling time
+> +				 */
+> +				if (acc_sensor->samples_to_discard > 0)
+> +					acc_sensor->samples_to_discard--;
+> +				else
+> +					iio_push_to_buffers_with_timestamp(
+> +						hw->iio_devs[ST_LSM6DSX_ID_ACC],
+> +						&hw->scan[ST_LSM6DSX_ID_ACC],
+> +						acc_sensor->ts_ref + ts);
+>  				acc_sip--;
+>  			}
+>  			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
+> @@ -541,8 +553,12 @@ st_lsm6dsx_push_tagged_data(struct st_lsm6dsx_hw *hw=
+, u8 tag,
+>  	}
+> =20
+>  	sensor =3D iio_priv(iio_dev);
+> -	iio_push_to_buffers_with_timestamp(iio_dev, data,
+> -					   ts + sensor->ts_ref);
+> +	/* We need to discards gyro samples during filters settling time */
+> +	if (sensor->samples_to_discard > 0)
+> +		sensor->samples_to_discard--;
+> +	else
+> +		iio_push_to_buffers_with_timestamp(iio_dev, data,
+> +						   ts + sensor->ts_ref);
+> =20
+>  	return 0;
+>  }
+> @@ -654,6 +670,25 @@ int st_lsm6dsx_flush_fifo(struct st_lsm6dsx_hw *hw)
+>  	return err;
+>  }
+> =20
+> +static void
+> +st_lsm6dsx_update_samples_to_discard(struct st_lsm6dsx_sensor *sensor)
+> +{
+> +	const struct st_lsm6dsx_samples_to_discard *data;
+> +	int i;
+> +
+> +	if (sensor->id !=3D ST_LSM6DSX_ID_GYRO &&
+> +	    sensor->id !=3D ST_LSM6DSX_ID_ACC)
+> +		return;
+> +
+> +	data =3D &sensor->hw->settings->samples_to_discard[sensor->id];
+> +	for (i =3D 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++) {
+> +		if (data->val[i].milli_hz =3D=3D sensor->odr) {
+> +			sensor->samples_to_discard =3D data->val[i].samples;
+> +			return;
+> +		}
+> +	}
+> +}
+> +
+>  int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+>  {
+>  	struct st_lsm6dsx_hw *hw =3D sensor->hw;
+> @@ -673,6 +708,9 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *=
+sensor, bool enable)
+>  			goto out;
+>  	}
+> =20
+> +	if (enable)
+> +		st_lsm6dsx_update_samples_to_discard(sensor);
+> +
+>  	err =3D st_lsm6dsx_device_set_enable(sensor, enable);
+>  	if (err < 0)
+>  		goto out;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 3f6060c64f32..966df6ffe874 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -634,6 +634,24 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  				.fs_len =3D 4,
+>  			},
+>  		},
+> +		.samples_to_discard =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D {
+> +				.val[0] =3D {  12500, 1 },
+> +				.val[1] =3D {  26000, 1 },
+> +				.val[2] =3D {  52000, 1 },
+> +				.val[3] =3D { 104000, 2 },
+> +				.val[4] =3D { 208000, 2 },
+> +				.val[5] =3D { 416000, 2 },
+> +			},
+> +			[ST_LSM6DSX_ID_GYRO] =3D {
+> +				.val[0] =3D {  12500,  2 },
+> +				.val[1] =3D {  26000,  5 },
+> +				.val[2] =3D {  52000,  7 },
+> +				.val[3] =3D { 104000, 12 },
+> +				.val[4] =3D { 208000, 20 },
+> +				.val[5] =3D { 416000, 36 },
+> +			},
+> +		},
+>  		.irq_config =3D {
+>  			.irq1 =3D {
+>  				.addr =3D 0x0d,
+> --=20
+> 2.39.1
+>=20
 
-I doubt this interpretation. Mostly I don't think you would even
-get a second interrupt in this case: It is just a flag that
-indicates something has changed, not a counter.
+--GI803v822S32dPiG
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I expect, that you just get one missing edge (which we don't notice,
-because we are tolerant about a missing preamble), which would
-show as two consecutive edges of the same value - not three as
-your explanation suggests.
+-----BEGIN PGP SIGNATURE-----
 
-I don't see, why it wouldn't be possible to recover from that,
-in cases, where the delay is small enough for your version to work.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY+i9rAAKCRA6cBh0uS2t
+rMFNAP94JvUry6XvxJRSV6VVGVECt8XOe8rrVHz4/U0jfg7hRAEAyhdGoer4P6mp
+taEmvl8hapxXpSofb/uPCyREUq6bJAA=
+=7k4i
+-----END PGP SIGNATURE-----
 
-> So the reason that this patch here is showing
-> lower error rates seems to be the lower probability of such
-> things happening by halving the IRQs to be handled, _plus_
-> the information from the hardware, that this IRQ was due
-> to a falling edge.
+--GI803v822S32dPiG--
 
-The first part is likely true at the moment and seems enough to
-explain the data you have shown. I still believe we could be
-smart about the second part in software.
-
-Thanks,
-Harald

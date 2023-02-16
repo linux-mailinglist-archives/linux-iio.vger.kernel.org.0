@@ -2,143 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 125E069969E
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Feb 2023 15:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 224C4699D95
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Feb 2023 21:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjBPOHq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Feb 2023 09:07:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
+        id S229490AbjBPUXE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Feb 2023 15:23:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjBPOHq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Feb 2023 09:07:46 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF6F1B335
-        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 06:07:44 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pSev9-0002pN-1z; Thu, 16 Feb 2023 15:07:35 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pSev4-005NMl-29; Thu, 16 Feb 2023 15:07:31 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pSev4-00432u-Av; Thu, 16 Feb 2023 15:07:30 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, kernel@pengutronix.de
-Cc:     Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: adc: meson_saradc: Better handle BL30 not releaseing the hardware
-Date:   Thu, 16 Feb 2023 15:07:25 +0100
-Message-Id: <20230216140725.1181867-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.1
+        with ESMTP id S229485AbjBPUXC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Feb 2023 15:23:02 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5063F4B53E
+        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 12:23:01 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id v11so4973689edx.12
+        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 12:23:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mzidyQ3wZuBv1iud8tGZi56YC5GTsOk6wvRWopBnqsg=;
+        b=pr2iOsPlhabVqkuailc8QYuZdoNOlCHe8vG+DaXCLrUZXjgkZ9CoCo55dBPN0Lx1J2
+         wuwhs7B5ZbX7wQSyRH1MMB1OkwJqCgY9FokwOBXlo8Mz5oThqDOX1kwUZiGMg2/MHmzy
+         kt2g3VrRGXpH6glZtClY96CJP5mLBUAL0SfODF/xW9RYs5WzNlaD4ofkVdClcL1k3KGA
+         67HYPoeNSSfmthuiJTco4U7iB+G9OggvRVLexXtSXbnrXhhvoiKdez8nfxxEb4hVxUHa
+         +L5+WGwWam4NxW7Oh2raldRh6Apb+qkKBZXaIksKORFAk1ZCP/K1hLAyQiRBpDFrg5F7
+         OI8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mzidyQ3wZuBv1iud8tGZi56YC5GTsOk6wvRWopBnqsg=;
+        b=S6hkAwWA4V+V8Jq7Uvt3Grygv4B9ni9U6rB7K5FGoShFK66NklwsA3tG6Kv3yizvLS
+         2zXEE8YtZC/ASx+m6mB5ZzN3SWiAeAIRa94VOj2nLMxQG/qBMKFLVegzmw0hNOLzdqvQ
+         n64DaH/S4ll7FxEWuTypGSlEhbxt6UgCv7wtPY6g1ezbM9t8lX7vJgldVOtcADoCZm/z
+         i54YxysmKUt6LGULW7NJ8OoT/F7FyTtBzGCS0mA6YuIPUdNEMAiKPQnjw+RmnLo03A04
+         N0FuEpEGIzJWkyrQXzXGz9gLViYDi6HSDmBWk/2+DNDT0zR/84PZbqEjXdk12tVyMKX+
+         NQ3A==
+X-Gm-Message-State: AO0yUKWGh+LO9CEkQR0I5z58HqLJwJJqb8/6xf7+SPWErv8tng0kWSj8
+        Hnec3hwuNkK2YMunpvDDymE=
+X-Google-Smtp-Source: AK7set8SPNqDcy7k41SJYRF4yb0H9TVuxadjDEg9PWy1yQpihm7OMMj8/R+fsY/Aem1RQ6AeYQkMrQ==
+X-Received: by 2002:aa7:c04d:0:b0:4ac:bdeb:6dce with SMTP id k13-20020aa7c04d000000b004acbdeb6dcemr6115333edo.39.1676578979672;
+        Thu, 16 Feb 2023 12:22:59 -0800 (PST)
+Received: from carbian ([2a02:8109:aa3f:ead8::af9d])
+        by smtp.gmail.com with ESMTPSA id k20-20020a170906a39400b008b14c5a82e7sm1188215ejz.127.2023.02.16.12.22.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Feb 2023 12:22:59 -0800 (PST)
+Date:   Thu, 16 Feb 2023 21:22:56 +0100
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     mazziesaccount@gmail.com, jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, mehdi.djait.k@gmail.com
+Subject: Questions: iio: accel: kionix-kx022a: timestamp when using the
+ data-rdy trigger?
+Message-ID: <Y+6QoBLh1k82cJVN@carbian>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2539; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=KZdpbbbUsYmkCke9LHHnK/zq1DqCnV5CR7J0anvetnE=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBj7jiZLIduR6lon2oWtpeLvCnuQmd4PLmHteVCZ Z6gIajQhR+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY+44mQAKCRDB/BR4rcrs CQBNB/928xQq4fPeOYoLbi0j2ro5FOg5WJAuYzDjfwf36vP+Bc5SzH6JIlqIDnp31ZidP/WKzKR 3yzzkuFEQqNH1x0oKvehaZpX1jaiKhxsIYRnUeNf4ir1TKT9XIXjbJYwXJjAn644+RvYiNGae5U 3aNVF3ksW7BGlY1R8X6FDOesyRkkkmQCXI7AlBZffcl+WcNoVyMw480/Ac8bp52Z4xR/8+JRzSz OF98G2eI9aPKkWeqv5RdifESBcnPA2ah4KIKcyQOghGcysDh1JTvWHgPATbRuVbr0N0UUQmg3jj LhGyJS8EzNPDSOjx4uItw+tqM1345BnMh0Ze9TmwEL9fuihO
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-meson_sar_adc_lock() might return an error if BL30 doesn't release its
-lock on the hardware. Just returning early from .remove() is wrong
-however as this keeps the clocks and regulators on which is never
-cleaned up later.
+Hi all,
 
-So only skip hardware accesses with an error message if
-meson_sar_adc_lock() fails, but disable clocks and regulator and return
-zero to suppress another error message by the driver core.
+DISCLAIMER: I'm new to kernel development.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
+I'm currently working on extending the kionix-kx022a driver to support
+kionix-kx132. My question is about the timestamp pushed in the trigger
+handler. The kionix-kx022a supports both FIFO and triggered buffer
+mode, for my questions the triggered buffer mode is used.
 
-maybe someone with more hardware specific knowledge can improve the
-procedure here. Maybe some HW access is fine even without the lock to
-quiescent it, or maybe the lock can be dropped completely? Or the
-ordering can be changed to reduce the number of if blocks.
+Before asking the question: I tried to read every documentation
+available, the kernel code and I found the Threads [1] [2] [3]
 
-Best regards
-Uwe
+To better explain my question here are the two relevant setup functions:
+A.  devm_iio_triggered_buffer_setup_ext(dev, idev,
+                                        &iio_pollfunc_store_time, 
+                                        kx022a_trigger_handler,
+                                        IIO_BUFFER_DIRECTION_IN,
+                                        &kx022a_buffer_ops,
+                                        kx022a_fifo_attributes)
 
- drivers/iio/adc/meson_saradc.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+B. devm_request_threaded_irq(data->dev, irq, kx022a_irq_handler,
+                             &kx022a_irq_thread_handler,
+                             IRQF_ONESHOT, name, idev);
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index 85b6826cc10c..636fee27b6b2 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -957,29 +957,30 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
- 	return ret;
- }
- 
--static int meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
-+static void meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
- {
- 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
- 	int ret;
- 
- 	ret = meson_sar_adc_lock(indio_dev);
- 	if (ret)
--		return ret;
-+		dev_err(indio_dev->dev.parent, "Failed to lock ADC (%pE)\n", ERR_PTR(ret));
- 
- 	clk_disable_unprepare(priv->adc_clk);
- 
--	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
--			   MESON_SAR_ADC_REG3_ADC_EN, 0);
-+	if (!ret) {
-+		regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
-+				   MESON_SAR_ADC_REG3_ADC_EN, 0);
- 
--	meson_sar_adc_set_bandgap(indio_dev, false);
-+		meson_sar_adc_set_bandgap(indio_dev, false);
-+	}
- 
- 	clk_disable_unprepare(priv->core_clk);
- 
- 	regulator_disable(priv->vref);
- 
--	meson_sar_adc_unlock(indio_dev);
--
--	return 0;
-+	if (!ret)
-+		meson_sar_adc_unlock(indio_dev);
- }
- 
- static irqreturn_t meson_sar_adc_irq(int irq, void *data)
-@@ -1283,7 +1284,9 @@ static int meson_sar_adc_remove(struct platform_device *pdev)
- 
- 	iio_device_unregister(indio_dev);
- 
--	return meson_sar_adc_hw_disable(indio_dev);
-+	meson_sar_adc_hw_disable(indio_dev);
-+
-+	return 0;
- }
- 
- static int meson_sar_adc_suspend(struct device *dev)
 
-base-commit: 1b929c02afd37871d5afb9d498426f83432e71c2
--- 
-2.39.1
+And here are the relevant steps after an IRQ occurs :
+1. IRQ context --> kx022a_irq_handler() --> gets the current timestamp
+with "data->timestamp = iio_get_time_ns(idev);" and returns
+IRQ_WAKE_THREAD
+
+2. kx022a_irq_thread_handler() -> checks that the trigger is enabled
+--> iio_trigger_poll_chained() --> handle_nested_irq(): which will only
+call the bottom half of the pollfuncs
+
+3. kx022a_trigger_handler() --> iio_push_to_buffers_with_timestamp(idev,
+data->buffer, pf->timestamp)
+
+
+My questions are:
+Question 1: Is iio_push_to_buffers_with_timestamp(idev, data->buffer,
+data->timestamp) instead of "pf->timestamp" better in the 
+trigger_handler ? I was first concerned that it would be racy with the 
+irq_handler, but the IRQF_ONESHOT flag is used, which means that the irq 
+line is disabled until the threaded handler has been run, i.e. until
+kx022a_trigger_handler runs and retruns IRQ_HANDLED (right?).
+
+Question 2: If the change proposed in question 1 is wrong, would this
+one be better iio_push_to_buffers_with_timestamp(idev, data->buffer,
+iio_get_time_ns(idev)). There is some delay between the IRQ occuring
+and trigger_handler being called but that is better than getting all 0
+timestamps like suggested in [2]
+
+I hope that I'm understating this correctly or at least not totally
+off :) If yes, I will send a patch.
+
+[1] https://lore.kernel.org/linux-iio/4FDB33CD.2090805@metafoo.de/
+[2] https://lore.kernel.org/linux-iio/20201205182659.7cd23d5b@archlinux/
+[3] https://lore.kernel.org/linux-iio/20220126191606.00003f37@Huawei.com/
+
+--
+Kind Regards
+Mehdi Djait
+
+
 

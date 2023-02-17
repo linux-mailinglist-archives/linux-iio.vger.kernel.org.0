@@ -2,86 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DE81699DF5
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Feb 2023 21:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F215469A49C
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Feb 2023 05:03:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjBPUjE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Feb 2023 15:39:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53076 "EHLO
+        id S229614AbjBQEDf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Feb 2023 23:03:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229556AbjBPUjC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Feb 2023 15:39:02 -0500
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7398F27D5F;
-        Thu, 16 Feb 2023 12:39:01 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.97,302,1669042800"; 
-   d="scan'208";a="153127628"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 17 Feb 2023 05:39:00 +0900
-Received: from localhost.localdomain (unknown [10.226.93.2])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 4AFB240121CC;
-        Fri, 17 Feb 2023 05:38:57 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
-        Lee Jones <lee@kernel.org>,
-        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
-        "Thierry Reding" <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <chris.paterson2@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v13 5/6] MAINTAINERS: Add entries for Renesas RZ/G2L MTU3a counter driver
-Date:   Thu, 16 Feb 2023 20:38:29 +0000
-Message-Id: <20230216203830.196632-6-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230216203830.196632-1-biju.das.jz@bp.renesas.com>
-References: <20230216203830.196632-1-biju.das.jz@bp.renesas.com>
+        with ESMTP id S229460AbjBQEDf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Feb 2023 23:03:35 -0500
+Received: from mail-oa1-x43.google.com (mail-oa1-x43.google.com [IPv6:2001:4860:4864:20::43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D073B202
+        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 20:03:32 -0800 (PST)
+Received: by mail-oa1-x43.google.com with SMTP id 586e51a60fabf-16e809949eeso3574860fac.9
+        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 20:03:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JRi4tRSy6zRd23FWaydNiS7HEvSQFffxzCA9iKLEHxM=;
+        b=L0XWA0D4tE18DwGdnny9UAzGp/vsZyQ4ezWCh77+kFOPEwl3BX8bajcgRhrBPDIqkt
+         mZ3LgNgVf+jdwyCdzS/mRQ6xgePT9d102V8EZG1n7TmebLXgHc+K+vMd8SLx2sgLb4+/
+         r2hiWRFRKpkHxYd4AKP6tZfD8IxK0QrhO0rDbZhDkZ4EP8djvnHUK2NU4aR51/loB0SQ
+         NYSPrTo+mCfuO2EiWWfws0xD+ai+llMLrO/lex6ZL6Eg2Tvpkur+jTjD6BlUeP8ZrNt+
+         WHqQ3go1vTrBQXH5rz5f26B7k3wOjMO9olgkVRtcN1Le2nyPX3fP6unRJcoO0W3Tr190
+         7PHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JRi4tRSy6zRd23FWaydNiS7HEvSQFffxzCA9iKLEHxM=;
+        b=G+9iWwY933I5DphJFSmjyW3VuOOLi6oiG+mq//ME9QCqaEEytEKCKqXh3RSgNiWNxq
+         1NfVkj1n8XWovyYFPpPoCj+kBv8XRqeT09Yiuj4AwEdhQ1XQ6B5llZs3nRJZV/CxLrI/
+         d88olo1od8o7ez3bxVLshQxSdIThg/kIUbg7swqRCjP0GUYNRMyzUIkD+EcaJmbInnDL
+         aBx77bE2JIsZLAz/BkDxHAfed23MngV5cgS2stlzq48/HW8/7pcp8xtrZcOLk4tGSX6I
+         kqLHWedUa+6ps7u8aJEwhoypRFg1WmO6GPNqezblz7Q3KXEbrzTkYwnZGiaGOUjdu/Dq
+         2k9w==
+X-Gm-Message-State: AO0yUKW0gfX4RyykuFaXOaBDIfzEtXZF2vG3fMuWo3WRVO6uWgFQt8MQ
+        8RtxWarJzFDLIgM0BO039X1P+2inkYbR5b+jGaI=
+X-Google-Smtp-Source: AK7set9seAGXdpopB0WePg/aF/IPE8KRdQTHRwhdWeYSXOWFPPcwrmBxTaUa26NEikwsILrdH9wFRcbo4OMBg7t1/3s=
+X-Received: by 2002:a05:6870:b492:b0:16e:369e:b9b7 with SMTP id
+ y18-20020a056870b49200b0016e369eb9b7mr422063oap.7.1676606611189; Thu, 16 Feb
+ 2023 20:03:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:7581:b0:ea:41e2:880b with HTTP; Thu, 16 Feb 2023
+ 20:03:30 -0800 (PST)
+From:   Hitesh lal <hiteshlal.s1973@gmail.com>
+Date:   Fri, 17 Feb 2023 04:03:30 +0000
+Message-ID: <CABOHdNrcnHCR=_3dtMO94UeyRALjiFMTFQzbmebahw+ko_UHgw@mail.gmail.com>
+Subject: Hi
+To:     hiteshlal.s1973@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add the MAINTAINERS entries for the Renesas RZ/G2L MTU3a counter
-driver.
-
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v12->v13:
- * No change.
-v11->v12:
- * No change.
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index be167c695c64..62caf5d7d0fe 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17841,6 +17841,14 @@ S:	Supported
- F:	Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
- F:	drivers/iio/adc/rzg2l_adc.c
- 
-+RENESAS RZ/G2L MTU3a COUNTER DRIVER
-+M:	Biju Das <biju.das.jz@bp.renesas.com>
-+L:	linux-iio@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-+F:	drivers/counter/rz-mtu3-cnt.c
-+
- RENESAS RZ/N1 A5PSW SWITCH DRIVER
- M:	Clément Léger <clement.leger@bootlin.com>
- L:	linux-renesas-soc@vger.kernel.org
--- 
-2.25.1
-
+Good Day,
+How are you doing today? Please, I wrote to you earlier without
+response from you. I have an important project that I would like to
+discuss with you.
+Regards  (mrgeorge.henry184@gmail.com)

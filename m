@@ -2,162 +2,295 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 796CF69AAE8
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Feb 2023 12:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 322D769AB84
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Feb 2023 13:30:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbjBQL70 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Feb 2023 06:59:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
+        id S229935AbjBQMaY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Feb 2023 07:30:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbjBQL7Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Feb 2023 06:59:25 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B9F66CF3
-        for <linux-iio@vger.kernel.org>; Fri, 17 Feb 2023 03:59:19 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id u22so1454338lfu.5
-        for <linux-iio@vger.kernel.org>; Fri, 17 Feb 2023 03:59:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uXGkAREaXgevxi9CrYKAKiP1fHncmM/rpoZVkhn4M4s=;
-        b=q6r2mvjyzvAOrrL1XIlXawg7stG771YkJO3Gi61YoUAXBb8TVl1vN5aNxsCzoKR1l/
-         Q4o0/j0dW8ARLELQomfBGxRxF80YyFfJmnNv5buI4bbInRisGI52T3I2+T0Uoob2C9S6
-         n6PE6aev21QAyLx9imcXE3HciECRnTPyK81CyT06Wde+PARRROZ2lgKJOajv2bY6Yg7G
-         S29iNRTHZnNcGWiY+eohPZRHIDfuk3mL25D89oFFY2dVCIZ0oiBo1UmCFxTOS+hjkDQO
-         FIWsirorIr6ZJsvgSK/UsxKHCcCzRGLFlulJIu7gjzrwtLyi2nMv3EPDyEUr0UvVvFv8
-         Yd8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uXGkAREaXgevxi9CrYKAKiP1fHncmM/rpoZVkhn4M4s=;
-        b=JPD+tJgDuCu1zNeS2ZHOCZelddNRVJhdNfRtHE24w2GmMRMEDtxuoEDfaylCO7HUti
-         ien4MjzUJrh5GVZE6cPcDxDVhiOCWM64v4xpkqqB8NYhz2Ye3jc7+kWb+XH5Y8wt66WM
-         GsXy+K4klFqTbgzxxugr2CgxSjlM93Unif+sdVRGdIFLFC3cQFVlgPy34lmH2EZGvBDs
-         9ge2iLWzdrGK2T/5ipLWyReucct/HlafdFc6H6nbp3HHfgA8zry1dQ2fROwf2w5lwP8U
-         09J0Iwmvqc/PsZV7Y4/ycGXffeLIQ67wNVkDwuW/pps7LJP18gs/Nfvxcyn0PaZ1p58e
-         jXmw==
-X-Gm-Message-State: AO0yUKUQPxm3tU1oWUXFwetelKUGGo+9k+0cgOpumCCtpCWDw8vzzgX5
-        YsqqbJTmttBAdaBwjgxuxSg=
-X-Google-Smtp-Source: AK7set80J3PwEj9kixe29JoMn1LVDN0m3+oWumJeihyJC9fjBrcErdbNnmC5ImbuvOYnD0Q5XsnrmQ==
-X-Received: by 2002:ac2:5545:0:b0:4d5:970e:a98a with SMTP id l5-20020ac25545000000b004d5970ea98amr2383342lfk.28.1676635157956;
-        Fri, 17 Feb 2023 03:59:17 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id u15-20020ac251cf000000b004b5789ecdd7sm656197lfm.274.2023.02.17.03.59.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Feb 2023 03:59:17 -0800 (PST)
-Message-ID: <a4e69c59-d5c5-be8e-da7c-1955cc8b0ad7@gmail.com>
-Date:   Fri, 17 Feb 2023 13:59:16 +0200
+        with ESMTP id S230281AbjBQMaX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Feb 2023 07:30:23 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F0C6604B;
+        Fri, 17 Feb 2023 04:30:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676637022; x=1708173022;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uB5GE4aij19r/69QX6c+gXXG7g+WqFcxiBif/JrCZgk=;
+  b=nooexdakomLcn2QsFRSD9Z1r3VRZWHbWxnIwkZ9MSdlxxTEBaWpcNseW
+   N5X/rOJL3Oxt/C4Yin6GMiMB9tY91YscMXcXqurgSf2ixUX5/mRXQ7MHJ
+   A8N3Ne4LFDxD6Q2oWNkmo0WjSbsHfp2Aq8mTcRF+I09A34nijdpLdx4wL
+   MBdWYDFvFuRXOQGNk+y8RNT3Ggnj4TwZP1SILZKMaRyh4CFmmOhUaOqro
+   EUsGHYomjZaZt0tIB4CxLQNFjjNWETIzMLCQn5nUgDfQwJNnSy1x5Fs/9
+   yEOU3zHGXgNjKReBroYn5ervMLeDt1fHCrhD1YhzPMAw0Xw4P3VzrIjFl
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="394452589"
+X-IronPort-AV: E=Sophos;i="5.97,304,1669104000"; 
+   d="scan'208";a="394452589"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2023 04:30:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="700889417"
+X-IronPort-AV: E=Sophos;i="5.97,304,1669104000"; 
+   d="scan'208";a="700889417"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP; 17 Feb 2023 04:30:02 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pSzsF-008CTf-2C;
+        Fri, 17 Feb 2023 14:29:59 +0200
+Date:   Fri, 17 Feb 2023 14:29:59 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: adc: Add driver for TI ADS1100 and ADS1000 chips
+Message-ID: <Y+9zR3bhlEMuma66@smile.fi.intel.com>
+References: <20230217093128.8344-1-mike.looijmans@topic.nl>
+ <20230217093128.8344-2-mike.looijmans@topic.nl>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org
-References: <Y+6QoBLh1k82cJVN@carbian>
- <de389f14-0c63-86ae-6718-e91fc9818fc6@gmail.com>
- <20230217114308.00004a31@Huawei.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: Questions: iio: accel: kionix-kx022a: timestamp when using the
- data-rdy trigger?
-In-Reply-To: <20230217114308.00004a31@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230217093128.8344-2-mike.looijmans@topic.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2/17/23 13:43, Jonathan Cameron wrote:
-> On Fri, 17 Feb 2023 07:56:22 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Hi Mehdi,
->>
->> On 2/16/23 22:22, Mehdi Djait wrote: >>> And here are the relevant steps after an IRQ occurs :
->>> 1. IRQ context --> kx022a_irq_handler() --> gets the current timestamp
->>> with "data->timestamp = iio_get_time_ns(idev);" and returns
->>> IRQ_WAKE_THREAD
->>>
->>> 2. kx022a_irq_thread_handler() -> checks that the trigger is enabled
->>> --> iio_trigger_poll_chained() --> handle_nested_irq(): which will only
->>> call the bottom half of the pollfuncs
->>
->> I don't get the kx022a at my hands until next week to test this, but it
->> seems to me your reasoning is right. iio_pollfunc_store_time() is
->> probably not called. I just wonder why I didn't see zero timestamps when
->> testing this. (OTOH, I had somewhat peculiar IRQ handling at first -
->> maybe I broke this along the way).
-> 
-> This is a common problem.  So far we've always solved it in the driver
-> by using the pf->timestamp only if it's been set - otherwise fallback
-> to grabbing a new one to pass into iio_push_to_buffer_with_timestamp()
-> in the threaded handler.
-> 
-> It might be possible to solve in a generic fashion but it's a bit
-> fiddly so I don't think anyone has ever looked at it.
+On Fri, Feb 17, 2023 at 10:31:28AM +0100, Mike Looijmans wrote:
+> The ADS1100 is a 16-bit ADC (at 8 samples per second).
+> The ADS1000 is similar, but has a fixed data rate.
 
-I agree it's "fiddly" :) I played with a though of conditionally adding 
-the timestamp in the iio_trigger_poll_chained() if the timestamp is zero 
-there. This, however, would require clearing the timestamp when it is 
-read - which gets "fiddly" soon. Hence I just suggested adding a note in 
-kerneldoc.
+Any Datasheet link available?
 
->>
->>> Question 2: If the change proposed in question 1 is wrong, would this
->>> one be better iio_push_to_buffers_with_timestamp(idev, data->buffer,
->>> iio_get_time_ns(idev)). There is some delay between the IRQ occuring
->>> and trigger_handler being called but that is better than getting all 0
->>> timestamps like suggested in [2]
->>
->> Please, use the data->timestamp as you suggested.
-> 
-> I'd suggest a bit of both.  If you have a timestamp from the irq handler
-> use it. If it's not available then grab one locally in the threaded handler.
+> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
 
-Hm. I don't think we will end up in the kx022a threaded handler so that 
-the data->timestamp is not populated in the IRQ handler. I am _far_ from 
-an IIO expert - but I guess the only way would be that some other 
-trigger invoked the threaded handler(?) Shouldn't the 
-kx022a_validate_trigger() prevent this?
+...
 
-Please, follow Jonathan's guidance if he does not tell othervice. You 
-clearly should not trust a random guy who obviously does not know how to 
-write these drivers in the first place XD
+> +#define ADS1100_DR_MASK		(BIT(3) | BIT(2))
 
->>
->>> I hope that I'm understating this correctly or at least not totally
->>> off :) If yes, I will send a patch.
->>
->> Thanks Mehdi! I think this was a great catch! Maybe - while at it - you
->> could also send a patch adding a small kerneldoc to the
->> iio_trigger_poll_chained() mentioning this particular issue. Yes, I
->> guess it should be obvious just by reading the function name *_chained()
->> - but I did fall on this trap (and according to your reference [2] so
->> has someone else).
->>
->>> [1] https://lore.kernel.org/linux-iio/4FDB33CD.2090805@metafoo.de/
->>> [2] https://lore.kernel.org/linux-iio/20201205182659.7cd23d5b@archlinux/
->>> [3] https://lore.kernel.org/linux-iio/20220126191606.00003f37@Huawei.com/
->>
->> Yours,
->> 	-- Matti
->>
-> 
+GENMASK()
+
+...
+
+> +#define ADS1100_PGA_MASK	(BIT(1) | BIT(0))
+
+Ditto.
+
+...
+
+> +static const int ads1100_data_rate[] = {128, 32, 16, 8};
+> +static const int ads1100_data_rate_scale[] = {2048, 8192, 16384, 32768};
+> +static const int ads1100_gain[] = {1, 2, 4, 8};
+
+Do you need all of them as tables? They all can be derived from a single table
+or without any table at all (just three values).
+
+...
+
+> +static const struct iio_chan_spec ads1100_channel = {
+> +	.type = IIO_VOLTAGE,
+
+> +	.differential = 0,
+> +	.indexed = 0,
+
+No need.
+
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +	.info_mask_shared_by_all =
+> +				BIT(IIO_CHAN_INFO_SCALE) |
+> +				BIT(IIO_CHAN_INFO_HARDWAREGAIN) |
+> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),
+> +	.info_mask_shared_by_all_available =
+> +				BIT(IIO_CHAN_INFO_HARDWAREGAIN) |
+> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),
+> +	.scan_type = {
+> +		.sign = 's',
+> +		.realbits = 16,
+> +		.storagebits = 16,
+
+> +		.shift = 0,
+
+No need.
+
+> +		.endianness = IIO_CPU,
+> +	},
+> +	.datasheet_name = "AIN",
+> +};
+
+...
+
+> +	u8 config = (data->config & ~mask) | value;
+
+Traditional pattern is
+
+	u8 config = (data->config & ~mask) | (value & mask);
+
+
+> +#ifdef CONFIG_PM
+
+Why?
+
+> +static int ads1100_set_power_state(struct ads1100_data *data, bool on)
+> +{
+> +	int ret;
+> +	struct device *dev = &data->client->dev;
+> +
+> +	if (on) {
+> +		ret = pm_runtime_resume_and_get(dev);
+> +	} else {
+> +		pm_runtime_mark_last_busy(dev);
+
+> +		ret = pm_runtime_put_autosuspend(dev);
+
+Yes, in !CONFIG_PM this will return an error, but why do you care?
+
+> +	}
+> +
+> +	return ret < 0 ? ret : 0;
+> +}
+> +
+> +#else /* !CONFIG_PM */
+> +
+> +static int ads1100_set_power_state(struct ads1100_data *data, bool on)
+> +{
+> +	return 0;
+> +}
+> +
+> +#endif /* !CONFIG_PM */
+
+...
+
+> +static int ads1100_get_adc_result(struct ads1100_data *data, int chan, int *val)
+> +{
+> +	int ret;
+
+> +	u8 buffer[2];
+
+__be16 buffer;
+
+> +
+> +	if (chan != 0)
+> +		return -EINVAL;
+> +
+> +	ret = i2c_master_recv(data->client, buffer, sizeof(buffer));
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "I2C read fail: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	*val = (s16)(((u16)buffer[0] << 8) | buffer[1]);
+
+	(s16)be16_to_cpu();
+
+But (s16) looks suspicious. Should you use sign_extend32()?
+
+> +	return 0;
+> +}
+
+...
+
+> +static int ads1100_set_gain(struct ads1100_data *data, int gain)
+> +{
+
+> +	int i;
+
+unsigned
+
+> +	for (i = 0; i < ARRAY_SIZE(ads1100_gain); ++i) {
+
+Pre-increment in the loops is non-standard in the kernel.
+Why do you need that?
+
+> +		if (ads1100_gain[i] == gain) {
+> +			return ads1100_set_config_bits(
+> +						data, ADS1100_PGA_MASK, i);
+
+Strange indentation.
+
+> +		}
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+
+...
+
+> +static int ads1100_set_data_rate(struct ads1100_data *data, int chan, int rate)
+
+Same comments as per above.
+
+...
+
+> +	dev_info(&data->client->dev, "%s %ld\n", __func__, mask);
+
+Useless noise in the logs.
+
+...
+
+> +	ret = iio_device_register(indio_dev);
+> +	if (ret < 0) {
+> +		dev_err(&client->dev, "Failed to register IIO device\n");
+> +		return ret;
+
+return dev_err_probe();
+
+> +	}
+
+...
+
+> +#ifdef CONFIG_PM
+
+Drop it and use proper macros below.
+
+> +#endif
+
+...
+
+> +static const struct dev_pm_ops ads1100_pm_ops = {
+> +	SET_RUNTIME_PM_OPS(ads1100_runtime_suspend,
+> +			   ads1100_runtime_resume, NULL)
+> +};
+
+...here and...
+
+...
+
+> +		.pm = &ads1100_pm_ops,
+
+...here.
+
+...
+
+> +
+
+Redundant blank line.
+
+> +module_i2c_driver(ads1100_driver);
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+With Best Regards,
+Andy Shevchenko
 
-~~ When things go utterly wrong vim users can always type :help! ~~
 

@@ -2,178 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C7769A564
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Feb 2023 06:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DE669A8C0
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Feb 2023 10:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbjBQF42 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Feb 2023 00:56:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53908 "EHLO
+        id S229796AbjBQJ7f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Feb 2023 04:59:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjBQF41 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Feb 2023 00:56:27 -0500
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F9A8AE
-        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 21:56:26 -0800 (PST)
-Received: by mail-lj1-x22f.google.com with SMTP id y14so5829ljq.10
-        for <linux-iio@vger.kernel.org>; Thu, 16 Feb 2023 21:56:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tlP5p8fHpwKYBipI5+tkTEH45tKbGnNGJwA3ezZ1NO8=;
-        b=nL6l+HyR2OydzvgVg2LWaTzXcUhxMoxqEJm+brOHHc6nEHof21SEW5/qh3NTPuPqks
-         w03XeC8EFBujghlZtZw0MzDAuMwaCtb4LeGB/JhH3LxjxreLVyZNfYDga+2BjrHUpZb2
-         be5dAHSAJzhfPOT3wB4RGeFDhldEo/nsUwPxeJOx3z570fL4pHhiOn/Y8mT85QLLQCCb
-         o1jVRfgrdokPiU/7dpX+dBoBHP3Fj4B7c+FlnWcO96/s7BBRrhdMQgzBeuzwD0d8HAni
-         FUy0bEsbBWLQBeYYNeEpY7XvgSgOnAJa09md5Q2vz4t4OhDTBVgzbUIRdCKUchlRZ9NO
-         YUPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlP5p8fHpwKYBipI5+tkTEH45tKbGnNGJwA3ezZ1NO8=;
-        b=UZ4GQfKbIXjgH1BZjLPYhLj+quahLiag7GSa+SuNgI35EJjdfbz6UjDL3LRHfaW5Ae
-         Iqtp2UdtmZ9JJGPry3nQAPYoUftzS5J+ua1KAfuO+5ljM+Ajy63Jkx7ZMibSIWR1zv2Y
-         2IxVLi4X/Z+KHm9osN87cebMRAKcRWTONKEdcmzz9h1caipV/F3fqKR88c6PvC5s7wb6
-         e9LpqVsmSv5d/b8aw0au/i9MeIp6FeI2mGcJAeNj8LhGjx6pReGI8oTSThhv0gyRyHXw
-         mpSmBkJK/jAWAYqJ2IdevCca1BRJN/Tiz5QRtLBeTCD4+Z0mM5VF5so6zXnWQV4uhilT
-         p+qQ==
-X-Gm-Message-State: AO0yUKWJhlSoum/gm23WVbQmtQ4wIrEJJQDfsEUQcWJg9m6fjqfHnHGV
-        eeXECIurPHcih5aaHf/cKN0=
-X-Google-Smtp-Source: AK7set96+EX5PTadb+eWrlB3pwRAoXTptRm0AV1nOwJ9AT76B9ifpP/C29EIBlhK8O3K5SKUS1p3BQ==
-X-Received: by 2002:a2e:9cd0:0:b0:28f:ae45:2021 with SMTP id g16-20020a2e9cd0000000b0028fae452021mr3224644ljj.42.1676613384321;
-        Thu, 16 Feb 2023 21:56:24 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id w12-20020a19c50c000000b004db297957e8sm567045lfe.305.2023.02.16.21.56.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Feb 2023 21:56:23 -0800 (PST)
-Message-ID: <de389f14-0c63-86ae-6718-e91fc9818fc6@gmail.com>
-Date:   Fri, 17 Feb 2023 07:56:22 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org
-References: <Y+6QoBLh1k82cJVN@carbian>
-Content-Language: en-US, en-GB
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: Questions: iio: accel: kionix-kx022a: timestamp when using the
- data-rdy trigger?
-In-Reply-To: <Y+6QoBLh1k82cJVN@carbian>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229724AbjBQJ7Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Feb 2023 04:59:25 -0500
+X-Greylist: delayed 1649 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Feb 2023 01:59:16 PST
+Received: from spamfilter04.delta.nl (spamfilter04.delta.nl [217.102.255.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC615DE1B;
+        Fri, 17 Feb 2023 01:59:16 -0800 (PST)
+Received: from host-ubmmyvj.static.zeelandnet.nl ([217.102.255.198] helo=mail.zeelandnet.nl)
+        by spamfilter04.delta.nl with esmtp (Exim 4.92)
+        (envelope-from <mike.looijmans@topic.nl>)
+        id 1pSx5g-0002F2-96; Fri, 17 Feb 2023 10:31:57 +0100
+X-Sender-IP: 204.168.188.16
+Received: from phenom.domain_not_set.invalid (016-188-168-204.dynamic.caiway.nl [204.168.188.16])
+        (Authenticated sender: glasveze@delta.nl)
+        by mail.zeelandnet.nl (Postfix) with ESMTPA;
+        Fri, 17 Feb 2023 10:31:28 +0100 (CET)
+From:   Mike Looijmans <mike.looijmans@topic.nl>
+To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: adc: Add driver for TI ADS1100 and ADS1000
+Date:   Fri, 17 Feb 2023 10:31:27 +0100
+Message-Id: <20230217093128.8344-1-mike.looijmans@topic.nl>
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: 217.102.255.198
+X-DELTA-Domain: zeelandnet.nl
+X-DELTA-Username: 217.102.255.198
+Authentication-Results: delta.nl; auth=pass smtp.auth=217.102.255.198@zeelandnet.nl
+X-DELTA-Outgoing-Class: ham
+X-DELTA-Outgoing-Evidence: Combined (0.04)
+X-Recommended-Action: accept
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT/JtpJ85U5oQJKJbxIe8gTePUtbdvnXkggZ
+ 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5xzeemUa7CfwmLuWRw6Ruql9Wrt/oF2ofKYeezPZTW+uL/H
+ seNZtCKdSRRS0Op9pfwEIJgF/Accv4lLtE4TWYNIjgZ0d6t6F7vRFkkblm+Z5L7uq2AYbiB7eX7C
+ A0Ee9FXnLqvnkE9k+JY3j0cID29DoODujL6FEsNqPMBZcb5VIYa36rQUNKpqI1Q4bofNkWUu8fTD
+ ZLzKN6k+QrhjNGJv3vMX8kxfmgvnPiAPWmoBuxmBwTME+9GFGInGiou45HNmtfv+FqJdBAzMzmkl
+ 3RebQxyzcaJWgnTP1X4liYqSLtlnibl3vcBqVmvQB4A18adDnQKevvKDWdWJ/wxJwe8KAVXirbLu
+ Jjy3NtnGWLbnBD5wBOYayDY3tUZW3y7uaAiYA/VUAhdIJZFus1IsgsCDrtkUVrXMjRtSszqFofHQ
+ kL+CgfasVEKELzhStrT89iLQPrbYmyedRWSaH5Jq+f9dFu3a+YmrU6Iy71ckAFY+TtvrQQT37tVB
+ F8TuA2zDxdadd1WxHO/mLVgwAb47uaav6rkstLAf90f4v3S1FulD9czOuJQrulh5Fko3Tg7NaUQc
+ YIYdvv9xV5Ex49z0ZSNkjgZ0d6t6F7vRFkkblm+Z5MW9qS2/3RCT5H9A6khsXlWGs9HjdrlYbXkZ
+ KU5GQmOJZsmqX57B1EDhkm+xMEreF4WyYiqdZEM01eRU4ONdoVEFBfQHNmmYaIBwRgEu+hlkUryY
+ cSJLFEwVd01VIyXuC84PLa7Kvs1vJgz+jb+KUZ4ZI4crFqIiLO9pmeAxg3M8BMj+y2IddO0/FlXY
+ D8b+M8bPMsyA7EJ+U7NdS2YrNZ05xOYqJ9Tq2b0GjLr7lMbCJ9uFCwxUz+7mzjTsriXxHrjdWiOx
+ jT+Uoc44sbCX7JxqjLaXu1AD0YHYM/EUhlEfE6TG2ORqQuRwhOvtgDJH0WotQdu7BL5WjlV6WURt
+ Nxb4RqrqGwDerCVKfZxBaa6lpe1/5cEtgGt7CHfC+dbEjaN+/GAFlUDQdIxEvZe3STQUwRm7JL7H
+ UFLEjZ4tI2w6weBlgtnhN6vUJqrLQEcK+vPvzy/hTW1WrcVDSDSSDu0wxuDU9J+Dmr/6e4fImcm4
+ 9R/2gMGq0KWAzmMf+ibVDqLZPzE7W9Cqnhlc7GZSDtYOqFKIG2trlPUTQYEjbgmVnZqbKIaNWdFw
+ SHKOTj4XQZ8i4WqksVTtjhZSepuHki+xkgmaS1TA/Dv/4AHP2EFtNptbHtgZAQM3rG32ibSwsxBN
+ fS19KOA46lF/j0xwFgg=
+X-Report-Abuse-To: spam@spamfilter03.delta.nl
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_FAIL,
+        SPF_HELO_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Mehdi,
+The ADS1100 is a 16-bit ADC (at 8 samples per second).
+The ADS1000 is similar, but has a fixed data rate.
 
-On 2/16/23 22:22, Mehdi Djait wrote:
-> Hi all,
-> 
-> DISCLAIMER: I'm new to kernel development.
-> 
-> I'm currently working on extending the kionix-kx022a driver to support
-> kionix-kx132.
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
 
-Thanks for working with this :) Support for the kx132, kx122 etc. is 
-very welcome!
+---
 
-> My question is about the timestamp pushed in the trigger
-> handler. The kionix-kx022a supports both FIFO and triggered buffer
-> mode, for my questions the triggered buffer mode is used.
-> 
-> Before asking the question: I tried to read every documentation
-> available, the kernel code and I found the Threads [1] [2] [3]
-> 
-> To better explain my question here are the two relevant setup functions:
-> A.  devm_iio_triggered_buffer_setup_ext(dev, idev,
->                                          &iio_pollfunc_store_time,
->                                          kx022a_trigger_handler,
->                                          IIO_BUFFER_DIRECTION_IN,
->                                          &kx022a_buffer_ops,
->                                          kx022a_fifo_attributes)
-> 
-> B. devm_request_threaded_irq(data->dev, irq, kx022a_irq_handler,
->                               &kx022a_irq_thread_handler,
->                               IRQF_ONESHOT, name, idev);
-> 
-> 
-> And here are the relevant steps after an IRQ occurs :
-> 1. IRQ context --> kx022a_irq_handler() --> gets the current timestamp
-> with "data->timestamp = iio_get_time_ns(idev);" and returns
-> IRQ_WAKE_THREAD
-> 
-> 2. kx022a_irq_thread_handler() -> checks that the trigger is enabled
-> --> iio_trigger_poll_chained() --> handle_nested_irq(): which will only
-> call the bottom half of the pollfuncs
+ .../bindings/iio/adc/ti,ads1100.yaml          | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml
 
-I don't get the kx022a at my hands until next week to test this, but it 
-seems to me your reasoning is right. iio_pollfunc_store_time() is 
-probably not called. I just wonder why I didn't see zero timestamps when 
-testing this. (OTOH, I had somewhat peculiar IRQ handling at first - 
-maybe I broke this along the way).
-
-> 3. kx022a_trigger_handler() --> iio_push_to_buffers_with_timestamp(idev,
-> data->buffer, pf->timestamp)
-> 
-> 
-> My questions are:
-> Question 1: Is iio_push_to_buffers_with_timestamp(idev, data->buffer,
-> data->timestamp) instead of "pf->timestamp" better in the
-> trigger_handler ?
-
-I don't see any "technical reasons" why it would be better. I think it 
-is more standard looking though - but seems like it is plain wrong here 
-as you pointed out.
-
-> I was first concerned that it would be racy with the
-> irq_handler, but the IRQF_ONESHOT flag is used, which means that the irq
-> line is disabled until the threaded handler has been run, i.e. until
-> kx022a_trigger_handler runs and retruns IRQ_HANDLED (right?).
-
-Yes. This is the purpose of IRQF_ONESHOT. (Well, AFAICS the IRQs are 
-re-enabled even if some other value is returned unless the IRQ_NONE is 
-returned repeatedly).
-
-> Question 2: If the change proposed in question 1 is wrong, would this
-> one be better iio_push_to_buffers_with_timestamp(idev, data->buffer,
-> iio_get_time_ns(idev)). There is some delay between the IRQ occuring
-> and trigger_handler being called but that is better than getting all 0
-> timestamps like suggested in [2]
-
-Please, use the data->timestamp as you suggested.
-
-> I hope that I'm understating this correctly or at least not totally
-> off :) If yes, I will send a patch.
-
-Thanks Mehdi! I think this was a great catch! Maybe - while at it - you 
-could also send a patch adding a small kerneldoc to the 
-iio_trigger_poll_chained() mentioning this particular issue. Yes, I 
-guess it should be obvious just by reading the function name *_chained() 
-- but I did fall on this trap (and according to your reference [2] so 
-has someone else).
-
-> [1] https://lore.kernel.org/linux-iio/4FDB33CD.2090805@metafoo.de/
-> [2] https://lore.kernel.org/linux-iio/20201205182659.7cd23d5b@archlinux/
-> [3] https://lore.kernel.org/linux-iio/20220126191606.00003f37@Huawei.com/
-
-Yours,
-	-- Matti
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml
+new file mode 100644
+index 000000000000..ad30af8453a1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml
+@@ -0,0 +1,37 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads1100.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI ADS1100/ADS1000 single channel I2C analog to digital converter
++
++maintainers:
++  - Mike Looijmans <mike.looijmans@topic.nl>
++
++description: |
++  Datasheet at: https://www.ti.com/lit/gpn/ads1100
++
++properties:
++  compatible:
++    enum:
++      - ti,ads1100
++      - ti,ads1000
++
++required:
++  - compatible
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@49 {
++            compatible = "ti,ads1100";
++            reg = <0x49>;
++        };
++    };
++...
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.17.1
 

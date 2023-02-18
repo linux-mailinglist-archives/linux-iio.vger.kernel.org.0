@@ -2,45 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B4869BA47
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Feb 2023 14:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C38F69BA48
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Feb 2023 14:44:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbjBRNmI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Feb 2023 08:42:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51974 "EHLO
+        id S229790AbjBRNoK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Feb 2023 08:44:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjBRNmH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Feb 2023 08:42:07 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A0719696
-        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 05:42:05 -0800 (PST)
+        with ESMTP id S229489AbjBRNoJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Feb 2023 08:44:09 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D3C013518
+        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 05:44:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1F3C9B801BD
-        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 13:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E551C433EF;
-        Sat, 18 Feb 2023 13:42:01 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 93318CE233A
+        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 13:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6B1C433EF;
+        Sat, 18 Feb 2023 13:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676727722;
-        bh=gNovSJnF0dKpxefyTfVwKvtB3ICPYFoCHK2ZbBf47ys=;
+        s=k20201202; t=1676727843;
+        bh=7FEWJrMqCIvYum6ik4X43RPu/TX2z2oWg+49x/4DRNI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IMSr9rdJVnwmGOeZPJg2fijneUCrRdQ4BSmQWCTHuXHJWCHFYtg8WrIQ9zXR/dnyL
-         DjP6LQcoNBiPByZDEMd69R/55J3+CEmt8+rCv49ZMo3yuIDA3ggyj0VKMPh9cSJ1Wk
-         cn8HQIwzGApdvBndQKCs0NYM3QxklfATy9r8UK5F9VWSw4qyIbcJZleAn0eE5qG9Kc
-         iANBSJGDYQbx5MZ6Lw+MKBrvt8/cRgs2V1x2hk75UTLmitOjP0UMAm9JPhlKVWwAHF
-         9e1aNLh7O4tW4NFpsNgEcEQEFRkTS0lnIIoHQpnDt1i2sdzUOIDdiea12wiqmhfYJI
-         7VRo4vCMYnMjA==
-Date:   Sat, 18 Feb 2023 13:56:22 +0000
+        b=SSCtMJPHGM2YLcecqGcCjF8FwiMQxb+zdnF61fv0Q3u2bqIHOfBelZB1hrmqolmBJ
+         4Ixr712KqKAW20GtE7ZWwHIUUWtoQr9vLE0NIDlT1q3jccwJQbE4L2Oj2JGPtOythp
+         zzPYZ0xogrQA2c4MIenqw0Xqp3cMEqkMF5xyicxvLkv5KjM5b5zJbR14fvD6yucRMs
+         JeK7c565u/4YINRCvL8fi/No3SfEk7csIOWDyrZH98dPugm5fxArxEKof9bU8gnqxg
+         eDP13Sdg0PNru1A+5qU2EYuMyeLU5gzWorNsBKuU4oqvU2EzakXlMZmEljlIUsT8ne
+         lauDnuSwpc96w==
+Date:   Sat, 18 Feb 2023 13:58:23 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     phdm@macq.eu, linux-iio@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: discard samples during filters
- settling time
-Message-ID: <20230218135622.6c5d4569@jic23-huawei>
-In-Reply-To: <1228b9ed2060b99d0df0f5549a37c8b520ea5429.1675867224.git.lorenzo@kernel.org>
-References: <1228b9ed2060b99d0df0f5549a37c8b520ea5429.1675867224.git.lorenzo@kernel.org>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     dianders@chromium.org, swboyd@chromium.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4] iio: proximity: sx_common: Add old register mapping
+Message-ID: <20230218135823.488c6094@jic23-huawei>
+In-Reply-To: <20230211002421.3447060-1-gwendal@chromium.org>
+References: <20230211002421.3447060-1-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,208 +53,328 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  8 Feb 2023 15:42:31 +0100
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Fri, 10 Feb 2023 16:24:21 -0800
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> During digital filters settling time the driver is expected to drop
-> samples since they can be corrupted. Introduce the capability to drop
-> a given number of samples according to the configured ODR.
-> Add the sample_to_discard data for LSM6DSM sensor.
+> Older firmwares still send sensor configuration using a list of
+> registers with opaque values defined during sensor tuning.
+> sx9234 and sx9360 sensor on ACPI based devices are concerned.
+> More schema to configure the sensors will be needed to support devices
+> designed for windows, like Samsung Galaxy Book2.
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Support schema is: "<_HID>.<register_name>". For instance
+> "STH9324,reg_adv_ctrl2" in:
+> 
+>     Scope (\_SB.PCI0.I2C2)
+>     {
+>         Device (SX28)
+>         {
+>             Name (_HID, "STH9324")  // _HID: Hardware ID
+> ...
+>             Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
+>             {
+>                 ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /*
+> Device Properties for _DSD */,
+>                 Package (0x3F)
+>                 {
+> ...
+>                     Package (0x02)
+>                     {
+>                         "STH9324,reg_adv_ctrl2",
+>                         Zero
+>                     },`
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Applied to the togreg branch of iio.git but for now I'll only push it out as
+testing until I can rebase that tree on rc1 in a few weeks time.
 
-Is this only necessary for the particular sensor you have provided
-values for?  Or is it more general?
-
-I think the code will currently just set the number of samples to discard
-to 0 for other cases (as no value set for those sensor types).
-That's fine if 0 is definitely the right value for those other sensors.
-
-Thanks,
+I'd slightly have preferred adding the stubs to the ACPI header but that
+can always happen at a later date.
 
 Jonathan
 
-
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       | 11 ++++
->  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 58 +++++++++++++++----
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 18 ++++++
->  3 files changed, 77 insertions(+), 10 deletions(-)
+> Changes since v3:
+> - Fix compilation issue when CONFIG_ACPI is not defined (ARM).
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> index 499fcf8875b4..8e119d78730b 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -137,6 +137,13 @@ struct st_lsm6dsx_odr_table_entry {
->  	int odr_len;
+> Changes since v2:
+> - Use snprintf instead of scnprintf
+> - Use acpi_device_hid() from the ACPI companion device to get the device
+>   name.
+> 
+> Changes since v1:
+> - remove double empty lines.
+> - Add |property| field at end of structure to minimize changes.
+> - Cache acpi_id entry, use standard API to retrieve it from parent
+>   device.
+> - Use that entry to see if a legacy APCI entry exists.
+> 
+>  drivers/iio/proximity/sx9324.c    | 96 ++++++++++++++++---------------
+>  drivers/iio/proximity/sx9360.c    | 32 +++++------
+>  drivers/iio/proximity/sx_common.c | 21 +++++++
+>  drivers/iio/proximity/sx_common.h |  5 ++
+>  4 files changed, 92 insertions(+), 62 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> index 977cf17cec52b..9a40ca32bb1ca 100644
+> --- a/drivers/iio/proximity/sx9324.c
+> +++ b/drivers/iio/proximity/sx9324.c
+> @@ -783,73 +783,75 @@ static int sx9324_write_raw(struct iio_dev *indio_dev,
+>  
+>  static const struct sx_common_reg_default sx9324_default_regs[] = {
+>  	{ SX9324_REG_IRQ_MSK, 0x00 },
+> -	{ SX9324_REG_IRQ_CFG0, 0x00 },
+> -	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND },
+> -	{ SX9324_REG_IRQ_CFG2, 0x00 },
+> -	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS },
+> +	{ SX9324_REG_IRQ_CFG0, 0x00, "irq_cfg0" },
+> +	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND, "irq_cfg1" },
+> +	{ SX9324_REG_IRQ_CFG2, 0x00, "irq_cfg2" },
+> +	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS, "gnrl_ctrl0" },
+>  	/*
+>  	 * The lower 4 bits should not be set as it enable sensors measurements.
+>  	 * Turning the detection on before the configuration values are set to
+>  	 * good values can cause the device to return erroneous readings.
+>  	 */
+> -	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL },
+> +	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL, "gnrl_ctrl1" },
+>  
+> -	{ SX9324_REG_AFE_CTRL0, SX9324_REG_AFE_CTRL0_RINT_LOWEST },
+> -	{ SX9324_REG_AFE_CTRL3, 0x00 },
+> +	{ SX9324_REG_AFE_CTRL0, SX9324_REG_AFE_CTRL0_RINT_LOWEST, "afe_ctrl0" },
+> +	{ SX9324_REG_AFE_CTRL3, 0x00, "afe_ctrl3" },
+>  	{ SX9324_REG_AFE_CTRL4, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
+> -		SX9324_REG_AFE_CTRL4_RES_100 },
+> -	{ SX9324_REG_AFE_CTRL6, 0x00 },
+> +		SX9324_REG_AFE_CTRL4_RES_100, "afe_ctrl4" },
+> +	{ SX9324_REG_AFE_CTRL6, 0x00, "afe_ctrl6" },
+>  	{ SX9324_REG_AFE_CTRL7, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
+> -		SX9324_REG_AFE_CTRL4_RES_100 },
+> +		SX9324_REG_AFE_CTRL4_RES_100, "afe_ctrl7" },
+>  
+>  	/* TODO(gwendal): PHx use chip default or all grounded? */
+> -	{ SX9324_REG_AFE_PH0, 0x29 },
+> -	{ SX9324_REG_AFE_PH1, 0x26 },
+> -	{ SX9324_REG_AFE_PH2, 0x1a },
+> -	{ SX9324_REG_AFE_PH3, 0x16 },
+> +	{ SX9324_REG_AFE_PH0, 0x29, "afe_ph0" },
+> +	{ SX9324_REG_AFE_PH1, 0x26, "afe_ph1" },
+> +	{ SX9324_REG_AFE_PH2, 0x1a, "afe_ph2" },
+> +	{ SX9324_REG_AFE_PH3, 0x16, "afe_ph3" },
+>  
+>  	{ SX9324_REG_AFE_CTRL8, SX9324_REG_AFE_CTRL8_RESERVED |
+> -		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM },
+> -	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1 },
+> +		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM, "afe_ctrl8" },
+> +	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1, "afe_ctrl9" },
+>  
+>  	{ SX9324_REG_PROX_CTRL0,
+>  		SX9324_REG_PROX_CTRL0_GAIN_1 << SX9324_REG_PROX_CTRL0_GAIN_SHIFT |
+> -		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
+> +		SX9324_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0" },
+>  	{ SX9324_REG_PROX_CTRL1,
+>  		SX9324_REG_PROX_CTRL0_GAIN_1 << SX9324_REG_PROX_CTRL0_GAIN_SHIFT |
+> -		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
+> -	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K },
+> +		SX9324_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl1" },
+> +	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K, "prox_ctrl2" },
+>  	{ SX9324_REG_PROX_CTRL3, SX9324_REG_PROX_CTRL3_AVGDEB_2SAMPLES |
+> -		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K },
+> +		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K, "prox_ctrl3" },
+>  	{ SX9324_REG_PROX_CTRL4, SX9324_REG_PROX_CTRL4_AVGNEG_FILT_2 |
+> -		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256 },
+> -	{ SX9324_REG_PROX_CTRL5, 0x00 },
+> -	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
+> -	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
+> -	{ SX9324_REG_ADV_CTRL0, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL1, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL2, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL3, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL4, 0x00 },
+> +		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256, "prox_ctrl4" },
+> +	{ SX9324_REG_PROX_CTRL5, 0x00, "prox_ctrl5" },
+> +	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32, "prox_ctrl6" },
+> +	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32, "prox_ctrl7" },
+> +	{ SX9324_REG_ADV_CTRL0, 0x00, "adv_ctrl0" },
+> +	{ SX9324_REG_ADV_CTRL1, 0x00, "adv_ctrl1" },
+> +	{ SX9324_REG_ADV_CTRL2, 0x00, "adv_ctrl2" },
+> +	{ SX9324_REG_ADV_CTRL3, 0x00, "adv_ctrl3" },
+> +	{ SX9324_REG_ADV_CTRL4, 0x00, "adv_ctrl4" },
+>  	{ SX9324_REG_ADV_CTRL5, SX9324_REG_ADV_CTRL5_STARTUP_SENSOR_1 |
+> -		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1 },
+> -	{ SX9324_REG_ADV_CTRL6, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL7, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL8, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL9, 0x00 },
+> +		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1, "adv_ctrl5" },
+> +	{ SX9324_REG_ADV_CTRL6, 0x00, "adv_ctrl6" },
+> +	{ SX9324_REG_ADV_CTRL7, 0x00, "adv_ctrl7" },
+> +	{ SX9324_REG_ADV_CTRL8, 0x00, "adv_ctrl8" },
+> +	{ SX9324_REG_ADV_CTRL9, 0x00, "adv_ctrl9" },
+>  	/* Body/Table threshold */
+> -	{ SX9324_REG_ADV_CTRL10, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL11, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL12, 0x00 },
+> +	{ SX9324_REG_ADV_CTRL10, 0x00, "adv_ctrl10" },
+> +	{ SX9324_REG_ADV_CTRL11, 0x00, "adv_ctrl11" },
+> +	{ SX9324_REG_ADV_CTRL12, 0x00, "adv_ctrl12" },
+>  	/* TODO(gwendal): SAR currenly disabled */
+> -	{ SX9324_REG_ADV_CTRL13, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL14, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL15, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL16, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL17, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL18, 0x00 },
+> -	{ SX9324_REG_ADV_CTRL19, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
+> -	{ SX9324_REG_ADV_CTRL20, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
+> +	{ SX9324_REG_ADV_CTRL13, 0x00, "adv_ctrl13" },
+> +	{ SX9324_REG_ADV_CTRL14, 0x00, "adv_ctrl14" },
+> +	{ SX9324_REG_ADV_CTRL15, 0x00, "adv_ctrl15" },
+> +	{ SX9324_REG_ADV_CTRL16, 0x00, "adv_ctrl16" },
+> +	{ SX9324_REG_ADV_CTRL17, 0x00, "adv_ctrl17" },
+> +	{ SX9324_REG_ADV_CTRL18, 0x00, "adv_ctrl18" },
+> +	{ SX9324_REG_ADV_CTRL19,
+> +		SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION, "adv_ctrl19" },
+> +	{ SX9324_REG_ADV_CTRL20,
+> +		SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION, "adv_ctrl20" },
 >  };
 >  
-> +struct st_lsm6dsx_samples_to_discard {
-> +	struct {
-> +		u32 milli_hz;
-> +		u16 samples;
-> +	} val[ST_LSM6DSX_ODR_LIST_SIZE];
-> +};
+>  /* Activate all channels and perform an initial compensation. */
+> @@ -889,13 +891,15 @@ sx9324_get_default_reg(struct device *dev, int idx,
+>  	const char *res;
+>  
+>  	memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
 > +
->  struct st_lsm6dsx_fs {
->  	u32 gain;
->  	u8 val;
-> @@ -291,6 +298,7 @@ struct st_lsm6dsx_ext_dev_settings {
->   * @irq_config: interrupts related registers.
->   * @drdy_mask: register info for data-ready mask (addr + mask).
->   * @odr_table: Hw sensors odr table (Hz + val).
-> + * @samples_to_discard: Number of samples to discard for filters settling time.
->   * @fs_table: Hw sensors gain table (gain + val).
->   * @decimator: List of decimator register info (addr + mask).
->   * @batch: List of FIFO batching register info (addr + mask).
-> @@ -323,6 +331,7 @@ struct st_lsm6dsx_settings {
->  	} irq_config;
->  	struct st_lsm6dsx_reg drdy_mask;
->  	struct st_lsm6dsx_odr_table_entry odr_table[2];
-> +	struct st_lsm6dsx_samples_to_discard samples_to_discard[2];
->  	struct st_lsm6dsx_fs_table_entry fs_table[2];
->  	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
->  	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-> @@ -353,6 +362,7 @@ enum st_lsm6dsx_fifo_mode {
->   * @hw: Pointer to instance of struct st_lsm6dsx_hw.
->   * @gain: Configured sensor sensitivity.
->   * @odr: Output data rate of the sensor [Hz].
-> + * @samples_to_discard: Number of samples to discard for filters settling time.
->   * @watermark: Sensor watermark level.
->   * @decimator: Sensor decimation factor.
->   * @sip: Number of samples in a given pattern.
-> @@ -367,6 +377,7 @@ struct st_lsm6dsx_sensor {
->  	u32 gain;
->  	u32 odr;
+> +	sx_common_get_raw_register_config(dev, reg_def);
+>  	switch (reg_def->reg) {
+>  	case SX9324_REG_AFE_PH0:
+>  	case SX9324_REG_AFE_PH1:
+>  	case SX9324_REG_AFE_PH2:
+>  	case SX9324_REG_AFE_PH3:
+>  		ph = reg_def->reg - SX9324_REG_AFE_PH0;
+> -		scnprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
+> +		snprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
 >  
-> +	u16 samples_to_discard;
->  	u16 watermark;
->  	u8 decimator;
->  	u8 sip;
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index 7dd5205aea5b..c1059a79f5ff 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -457,17 +457,29 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  			}
+>  		count = device_property_count_u32(dev, prop);
+>  		if (count != ARRAY_SIZE(pin_defs))
+> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
+> index 6e19d22e6a015..a50d9176411a1 100644
+> --- a/drivers/iio/proximity/sx9360.c
+> +++ b/drivers/iio/proximity/sx9360.c
+> @@ -663,37 +663,37 @@ static int sx9360_write_raw(struct iio_dev *indio_dev,
 >  
->  			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
-> -				iio_push_to_buffers_with_timestamp(
-> -					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
-> -					&hw->scan[ST_LSM6DSX_ID_GYRO],
-> -					gyro_sensor->ts_ref + ts);
-> +				/* We need to discards gyro samples during
-
-Trivial but wrong comment syntax. If that's all that comes up I'll fix it here
-and in other instances below when applying.
-
-> +				 * filters settling time
-> +				 */
-> +				if (gyro_sensor->samples_to_discard > 0)
-> +					gyro_sensor->samples_to_discard--;
-> +				else
-> +					iio_push_to_buffers_with_timestamp(
-> +						hw->iio_devs[ST_LSM6DSX_ID_GYRO],
-> +						&hw->scan[ST_LSM6DSX_ID_GYRO],
-> +						gyro_sensor->ts_ref + ts);
->  				gyro_sip--;
->  			}
->  			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
-> -				iio_push_to_buffers_with_timestamp(
-> -					hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> -					&hw->scan[ST_LSM6DSX_ID_ACC],
-> -					acc_sensor->ts_ref + ts);
-> +				/* We need to discards accel samples during
-> +				 * filters settling time
-> +				 */
-> +				if (acc_sensor->samples_to_discard > 0)
-> +					acc_sensor->samples_to_discard--;
-> +				else
-> +					iio_push_to_buffers_with_timestamp(
-> +						hw->iio_devs[ST_LSM6DSX_ID_ACC],
-> +						&hw->scan[ST_LSM6DSX_ID_ACC],
-> +						acc_sensor->ts_ref + ts);
->  				acc_sip--;
->  			}
->  			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
-> @@ -541,8 +553,12 @@ st_lsm6dsx_push_tagged_data(struct st_lsm6dsx_hw *hw, u8 tag,
->  	}
+>  static const struct sx_common_reg_default sx9360_default_regs[] = {
+>  	{ SX9360_REG_IRQ_MSK, 0x00 },
+> -	{ SX9360_REG_IRQ_CFG, 0x00 },
+> +	{ SX9360_REG_IRQ_CFG, 0x00, "irq_cfg" },
+>  	/*
+>  	 * The lower 2 bits should not be set as it enable sensors measurements.
+>  	 * Turning the detection on before the configuration values are set to
+>  	 * good values can cause the device to return erroneous readings.
+>  	 */
+> -	{ SX9360_REG_GNRL_CTRL0, 0x00 },
+> -	{ SX9360_REG_GNRL_CTRL1, 0x00 },
+> -	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS },
+> +	{ SX9360_REG_GNRL_CTRL0, 0x00, "gnrl_ctrl0" },
+> +	{ SX9360_REG_GNRL_CTRL1, 0x00, "gnrl_ctrl1" },
+> +	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS, "gnrl_ctrl2" },
 >  
->  	sensor = iio_priv(iio_dev);
-> -	iio_push_to_buffers_with_timestamp(iio_dev, data,
-> -					   ts + sensor->ts_ref);
-> +	/* We need to discards gyro samples during filters settling time */
-> +	if (sensor->samples_to_discard > 0)
-> +		sensor->samples_to_discard--;
-> +	else
-> +		iio_push_to_buffers_with_timestamp(iio_dev, data,
-> +						   ts + sensor->ts_ref);
+> -	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS },
+> +	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS, "afe_ctrl0" },
+>  	{ SX9360_REG_AFE_PARAM0_PHR, SX9360_REG_AFE_PARAM0_RSVD |
+> -		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
+> +		SX9360_REG_AFE_PARAM0_RESOLUTION_128, "afe_param0_phr" },
+>  	{ SX9360_REG_AFE_PARAM1_PHR, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
+> -		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
+> +		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ, "afe_param1_phr" },
+>  	{ SX9360_REG_AFE_PARAM0_PHM, SX9360_REG_AFE_PARAM0_RSVD |
+> -		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
+> +		SX9360_REG_AFE_PARAM0_RESOLUTION_128, "afe_param0_phm" },
+>  	{ SX9360_REG_AFE_PARAM1_PHM, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
+> -		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
+> +		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ, "afe_param1_phm" },
 >  
->  	return 0;
->  }
-> @@ -654,6 +670,25 @@ int st_lsm6dsx_flush_fifo(struct st_lsm6dsx_hw *hw)
->  	return err;
->  }
+>  	{ SX9360_REG_PROX_CTRL0_PHR, SX9360_REG_PROX_CTRL0_GAIN_1 |
+> -		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
+> +		SX9360_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0_phr" },
+>  	{ SX9360_REG_PROX_CTRL0_PHM, SX9360_REG_PROX_CTRL0_GAIN_1 |
+> -		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
+> -	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K },
+> +		SX9360_REG_PROX_CTRL0_RAWFILT_1P50, "prox_ctrl0_phm" },
+> +	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K, "prox_ctrl1" },
+>  	{ SX9360_REG_PROX_CTRL2, SX9360_REG_PROX_CTRL2_AVGDEB_2SAMPLES |
+> -		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K },
+> +		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K, "prox_ctrl2" },
+>  	{ SX9360_REG_PROX_CTRL3, SX9360_REG_PROX_CTRL3_AVGNEG_FILT_2 |
+> -		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256 },
+> -	{ SX9360_REG_PROX_CTRL4, 0x00 },
+> -	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32 },
+> +		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256, "prox_ctrl3" },
+> +	{ SX9360_REG_PROX_CTRL4, 0x00, "prox_ctrl4" },
+> +	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32, "prox_ctrl5" },
+>  };
 >  
-> +static void
-> +st_lsm6dsx_update_samples_to_discard(struct st_lsm6dsx_sensor *sensor)
+>  /* Activate all channels and perform an initial compensation. */
+> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+> index eba9256730ec1..fe07d1444ac37 100644
+> --- a/drivers/iio/proximity/sx_common.c
+> +++ b/drivers/iio/proximity/sx_common.c
+> @@ -424,6 +424,27 @@ static const struct iio_buffer_setup_ops sx_common_buffer_setup_ops = {
+>  	.postdisable = sx_common_buffer_postdisable,
+>  };
+>  
+> +void sx_common_get_raw_register_config(struct device *dev,
+> +				       struct sx_common_reg_default *reg_def)
 > +{
-> +	const struct st_lsm6dsx_samples_to_discard *data;
-> +	int i;
+> +#ifdef CONFIG_ACPI
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+> +	u32 raw = 0, ret;
+> +	char prop[80];
 > +
-> +	if (sensor->id != ST_LSM6DSX_ID_GYRO &&
-> +	    sensor->id != ST_LSM6DSX_ID_ACC)
+> +	if (!reg_def->property || !adev)
 > +		return;
 > +
-> +	data = &sensor->hw->settings->samples_to_discard[sensor->id];
-> +	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++) {
-> +		if (data->val[i].milli_hz == sensor->odr) {
-> +			sensor->samples_to_discard = data->val[i].samples;
-> +			return;
-> +		}
-> +	}
+> +	snprintf(prop, ARRAY_SIZE(prop), "%s,reg_%s", acpi_device_hid(adev), reg_def->property);
+> +	ret = device_property_read_u32(dev, prop, &raw);
+> +	if (ret)
+> +		return;
+> +
+> +	reg_def->def = raw;
+> +#endif
 > +}
+> +EXPORT_SYMBOL_NS_GPL(sx_common_get_raw_register_config, SEMTECH_PROX);
 > +
->  int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
->  {
->  	struct st_lsm6dsx_hw *hw = sensor->hw;
-> @@ -673,6 +708,9 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
->  			goto out;
->  	}
+>  #define SX_COMMON_SOFT_RESET				0xde
 >  
-> +	if (enable)
-> +		st_lsm6dsx_update_samples_to_discard(sensor);
+>  static int sx_common_init_device(struct device *dev, struct iio_dev *indio_dev)
+> diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
+> index 49d4517103b0f..85bb5af7c6ea0 100644
+> --- a/drivers/iio/proximity/sx_common.h
+> +++ b/drivers/iio/proximity/sx_common.h
+> @@ -8,6 +8,7 @@
+>  #ifndef IIO_SX_COMMON_H
+>  #define IIO_SX_COMMON_H
+>  
+> +#include <linux/acpi.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/types.h>
+>  #include <linux/regulator/consumer.h>
+> @@ -26,6 +27,7 @@ static_assert(SX_COMMON_MAX_NUM_CHANNELS < BITS_PER_LONG);
+>  struct sx_common_reg_default {
+>  	u8 reg;
+>  	u8 def;
+> +	const char *property;
+>  };
+>  
+>  /**
+> @@ -149,6 +151,9 @@ int sx_common_probe(struct i2c_client *client,
+>  		    const struct sx_common_chip_info *chip_info,
+>  		    const struct regmap_config *regmap_config);
+>  
+> +void sx_common_get_raw_register_config(struct device *dev,
+> +				       struct sx_common_reg_default *reg_def);
 > +
->  	err = st_lsm6dsx_device_set_enable(sensor, enable);
->  	if (err < 0)
->  		goto out;
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 3f6060c64f32..966df6ffe874 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -634,6 +634,24 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
->  				.fs_len = 4,
->  			},
->  		},
-> +		.samples_to_discard = {
-> +			[ST_LSM6DSX_ID_ACC] = {
-> +				.val[0] = {  12500, 1 },
-> +				.val[1] = {  26000, 1 },
-> +				.val[2] = {  52000, 1 },
-> +				.val[3] = { 104000, 2 },
-> +				.val[4] = { 208000, 2 },
-> +				.val[5] = { 416000, 2 },
-> +			},
-> +			[ST_LSM6DSX_ID_GYRO] = {
-> +				.val[0] = {  12500,  2 },
-> +				.val[1] = {  26000,  5 },
-> +				.val[2] = {  52000,  7 },
-> +				.val[3] = { 104000, 12 },
-> +				.val[4] = { 208000, 20 },
-> +				.val[5] = { 416000, 36 },
-> +			},
-> +		},
->  		.irq_config = {
->  			.irq1 = {
->  				.addr = 0x0d,
+>  /* 3 is the number of events defined by a single phase. */
+>  extern const struct iio_event_spec sx_common_events[3];
+>  
 

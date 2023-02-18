@@ -2,104 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 803CD69BAC7
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Feb 2023 16:50:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9449D69BACD
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Feb 2023 16:57:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbjBRPur (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Feb 2023 10:50:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38454 "EHLO
+        id S229536AbjBRP5Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Feb 2023 10:57:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjBRPuq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Feb 2023 10:50:46 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4CB017164
-        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 07:50:45 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id ez14so3448182edb.1
-        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 07:50:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MPO0b69EP2YB+k3ItVJXLMqeM3ohdWLRT3U4CQc63CQ=;
-        b=NzTqMNmtWa3r8OXtLW4FJBdcxOac+3ezvAGEhnzDhvbMPeBWU0mhRHZluqzKc0yzuP
-         ZYtqI3YxcKHf57SJMdRGkbTO1rEqnLN/ZHO/3/jM7pyAWGRs6XlVrSEbaKva4Fgi3whJ
-         w8CjDkcEkuRbTKV6SknJlneFJ6RjSkM4A6A/hOPw0jpzSp3PrUeY2kMEH3dDrgLYzGEW
-         2RP55hABpxQ0sn0hC3wJGK99UjWwTXb9rEAsiJQL1tSdf+5EDMX9AvzjnZfBSWM6N1Ab
-         9b+d0YRHWmAqqkK49ljzeq2zrTz8ZBvVnzPCof1Dz1rFt2kN5+W4O3IuShqYBMF5ZlRT
-         2prA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MPO0b69EP2YB+k3ItVJXLMqeM3ohdWLRT3U4CQc63CQ=;
-        b=HjHBYGT3eLFnDn2W+8omU/5sKeuDCJ5h0C+o/Mtw/m9TBv13uKqWDPOl8Ko+rXFri1
-         zuk5zmx2McGplf6wlEQApVDQxksaoFbkXswoQkdxsaqONJA6BglM4piXGOYKgpJDYIzr
-         yaKB+6rrUTt5DbZDY5HJ8WA3dCeJDNH6Ms2AmwttxhsiSYiLpwt7k3y0YcTTpLRfyMvj
-         xiZdjnyr4MiivpA+OUk1Fn4h+ZgYEoOhuWcGdnCoKMMh7/naxtJFxWusUuN8+AL2tfCU
-         cO9qDrdWNLxrn3lQXsaAoi+z01zouLt5lc/28Jc/WCTh4MUsrKrIGz28D+eaLJloaJXi
-         cqMQ==
-X-Gm-Message-State: AO0yUKW7cycT/GmUxPrNq54LxdruNTBC3wcncPBpOjhdMKCkWA+qth8E
-        509oxABzFPV+U7100gwFUGPcdrmspFWpnS0XjBU=
-X-Google-Smtp-Source: AK7set/xO7PKbDqF6SekE7NROkLUPWPRQn8n3JP96mu5HqRbij9lt3G1gWcFly6cSy1TmfIw5B6S9/m30ikATBkbo1k=
-X-Received: by 2002:a17:906:ce59:b0:8b1:7e1b:5ec1 with SMTP id
- se25-20020a170906ce5900b008b17e1b5ec1mr3046718ejb.6.1676735444390; Sat, 18
- Feb 2023 07:50:44 -0800 (PST)
+        with ESMTP id S229476AbjBRP5Q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Feb 2023 10:57:16 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B77FF1717E;
+        Sat, 18 Feb 2023 07:57:14 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 2EB44CE32D3;
+        Sat, 18 Feb 2023 15:57:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D167C4339B;
+        Sat, 18 Feb 2023 15:57:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676735831;
+        bh=ZeC2BrAHMzTNQu4Ad1PbQlNWapR/3luIWA6SiQG14ZQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gHzM1E5lfvJTrIUmSxn9Lwml8CJL6gxKuF2K47U38X1ZU1AT3Al5pPVvO3cegN9zl
+         41LEEc9xXdqsGqA6ZcEqP2RSt2qdE8su9LdM0tVeOQ/x6QjAoGMY3KOFfQk2muZgMw
+         3WD3nwjoXrUFnrhYZE2IJuzBXOXA05wCSbPEtYRUNlpF45yBOsAKgnhY5wAymaOcoB
+         njjjegCZuL9pp6VXeSQolO6gLkME9iEN2W7VlaFL1M9hCdVzOySIaPEaio87QCrI6X
+         zAIjQ8qAoGNohe7PUXAoWgNFa7EPCuLvCRv71nhEGC116v48jUCBvou6+CW2ZoVJSw
+         RNW93zpyR0W7g==
+Date:   Sat, 18 Feb 2023 16:11:30 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+Cc:     wens@csie.org, lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [RESEND PATCH v6 2/2] iio: adc: axp20x_adc: Replace adc_en2
+ flag with adc_en2_mask field
+Message-ID: <20230218161130.126fe7f8@jic23-huawei>
+In-Reply-To: <20230217153404.32481-2-aidanmacdonald.0x0@gmail.com>
+References: <20230217153404.32481-1-aidanmacdonald.0x0@gmail.com>
+        <20230217153404.32481-2-aidanmacdonald.0x0@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230216140725.1181867-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20230216140725.1181867-1-u.kleine-koenig@pengutronix.de>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Sat, 18 Feb 2023 16:50:33 +0100
-Message-ID: <CAFBinCC4zdu+rLk3oGOOyT5mcgoU2qmeF=vjHoarJ9vq1GO59w@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: meson_saradc: Better handle BL30 not releaseing
- the hardware
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, kernel@pengutronix.de,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Uwe,
+On Fri, 17 Feb 2023 15:34:04 +0000
+Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
 
-On Thu, Feb 16, 2023 at 3:07 PM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> meson_sar_adc_lock() might return an error if BL30 doesn't release its
-> lock on the hardware. Just returning early from .remove() is wrong
-> however as this keeps the clocks and regulators on which is never
-> cleaned up later.
->
-> So only skip hardware accesses with an error message if
-> meson_sar_adc_lock() fails, but disable clocks and regulator and return
-> zero to suppress another error message by the driver core.
-The clocks and regulators are shared with the BL30 firmware.
-In practice I have not seen meson_sar_adc_lock() fail yet.
+> The adc_en2 flag is essentially specific to axp20x-compatible devices
+> because it hardcodes register values. Replace it with a mask field
+> so the register value can be specified in device match data.
+> 
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+> ---
+> This is a resend of a preparatory patch from a larger series adding support
+> for the AXP192 PMIC[1]. Since I don't think there's much hope of getting it
+> merged in one development cycle, there's no point letting these cleanups sit
+> around unapplied -- apply them whenever convienient!
+> 
+> [1] https://lore.kernel.org/all/20221016234335.904212-1-aidanmacdonald.0x0@gmail.com/
+Both applied to the togreg branch of iio.git, however we are to late
+to hit this cycle, so these are queued up for next one and I'll only
+push them out as testing until I can rebase on rc1.
 
-I think it's enough to print an error message if locking fails, then
-continue as if nothing happened. Unlocking obviously has to be skipped
-as well in this case.
-There's not much we can do to recover from this and I consider the
-BL30 firmware to be hanging (or broken) if it doesn't release the
-lock.
+Thanks,
 
+Jonathan
 
-Best regards,
-Martin
+> 
+> ---
+>  drivers/iio/adc/axp20x_adc.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+> index ab25e6e1ff65..75bda94dbce1 100644
+> --- a/drivers/iio/adc/axp20x_adc.c
+> +++ b/drivers/iio/adc/axp20x_adc.c
+> @@ -623,9 +623,9 @@ struct axp_data {
+>  	int				num_channels;
+>  	struct iio_chan_spec const	*channels;
+>  	unsigned long			adc_en1_mask;
+> +	unsigned long			adc_en2_mask;
+>  	int				(*adc_rate)(struct axp20x_adc_iio *info,
+>  						    int rate);
+> -	bool				adc_en2;
+>  	struct iio_map			*maps;
+>  };
+>  
+> @@ -634,8 +634,8 @@ static const struct axp_data axp20x_data = {
+>  	.num_channels = ARRAY_SIZE(axp20x_adc_channels),
+>  	.channels = axp20x_adc_channels,
+>  	.adc_en1_mask = AXP20X_ADC_EN1_MASK,
+> +	.adc_en2_mask = AXP20X_ADC_EN2_MASK,
+>  	.adc_rate = axp20x_adc_rate,
+> -	.adc_en2 = true,
+>  	.maps = axp20x_maps,
+>  };
+>  
+> @@ -645,7 +645,6 @@ static const struct axp_data axp22x_data = {
+>  	.channels = axp22x_adc_channels,
+>  	.adc_en1_mask = AXP22X_ADC_EN1_MASK,
+>  	.adc_rate = axp22x_adc_rate,
+> -	.adc_en2 = false,
+>  	.maps = axp22x_maps,
+>  };
+>  
+> @@ -655,7 +654,6 @@ static const struct axp_data axp813_data = {
+>  	.channels = axp813_adc_channels,
+>  	.adc_en1_mask = AXP22X_ADC_EN1_MASK,
+>  	.adc_rate = axp813_adc_rate,
+> -	.adc_en2 = false,
+>  	.maps = axp22x_maps,
+>  };
+>  
+> @@ -713,10 +711,10 @@ static int axp20x_probe(struct platform_device *pdev)
+>  	/* Enable the ADCs on IP */
+>  	regmap_write(info->regmap, AXP20X_ADC_EN1, info->data->adc_en1_mask);
+>  
+> -	if (info->data->adc_en2)
+> -		/* Enable GPIO0/1 and internal temperature ADCs */
+> +	if (info->data->adc_en2_mask)
+>  		regmap_update_bits(info->regmap, AXP20X_ADC_EN2,
+> -				   AXP20X_ADC_EN2_MASK, AXP20X_ADC_EN2_MASK);
+> +				   info->data->adc_en2_mask,
+> +				   info->data->adc_en2_mask);
+>  
+>  	/* Configure ADCs rate */
+>  	info->data->adc_rate(info, 100);
+> @@ -741,7 +739,7 @@ static int axp20x_probe(struct platform_device *pdev)
+>  fail_map:
+>  	regmap_write(info->regmap, AXP20X_ADC_EN1, 0);
+>  
+> -	if (info->data->adc_en2)
+> +	if (info->data->adc_en2_mask)
+>  		regmap_write(info->regmap, AXP20X_ADC_EN2, 0);
+>  
+>  	return ret;
+> @@ -757,7 +755,7 @@ static int axp20x_remove(struct platform_device *pdev)
+>  
+>  	regmap_write(info->regmap, AXP20X_ADC_EN1, 0);
+>  
+> -	if (info->data->adc_en2)
+> +	if (info->data->adc_en2_mask)
+>  		regmap_write(info->regmap, AXP20X_ADC_EN2, 0);
+>  
+>  	return 0;
+

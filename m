@@ -2,52 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2670E69BB0E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Feb 2023 17:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC3069BB12
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Feb 2023 17:52:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbjBRQuo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Feb 2023 11:50:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
+        id S229461AbjBRQwx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Feb 2023 11:52:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjBRQuo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Feb 2023 11:50:44 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA68116AE3;
-        Sat, 18 Feb 2023 08:50:42 -0800 (PST)
+        with ESMTP id S229496AbjBRQww (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Feb 2023 11:52:52 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC9D46B0
+        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 08:52:50 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6900BB80502;
-        Sat, 18 Feb 2023 16:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A073EC433D2;
-        Sat, 18 Feb 2023 16:50:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 96DEDB80502
+        for <linux-iio@vger.kernel.org>; Sat, 18 Feb 2023 16:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65714C4339B;
+        Sat, 18 Feb 2023 16:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676739040;
-        bh=r2PYFoa1LeJkdoAVtv+Fd/pRC5ZdP+VNwx+M+lsmMB4=;
+        s=k20201202; t=1676739168;
+        bh=Oryyd5I5C6KWG3nkXYOikKirvkCpR9LqAxlupnRfqfM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MhObycJfmetXDMiU4s1nJi0S1RtRIsPXfnJjquagHVLdqWYfRxx6962ypkTdBNbJT
-         LoQ3mdlRMRFjFRS4IGMsbMmnBOtFa/sFqcK778aeD+cVniYaszTUmeC4wBcP7qc9/g
-         Z3uhUyAAab9pJH5V9Ni4X/yEXgTVTmjUkDEL8htq917tg6DHMT9Rcg59sqZajGq7BU
-         H0NjuktQowQ+uxpEvOsFHnTTPP/1vs1iqB0nv7PoR6bPF+skKF0XSjj3nnlo2j2qI3
-         XiE0Z/uqXVD9PBQBsUyt/rWbAIUTTqlJ+XhX4Li0l5GoF05IVo/OeGVH1QhvO4UxBD
-         At39Iz9iYhE+g==
-Date:   Sat, 18 Feb 2023 17:04:59 +0000
+        b=d2eQMp9U09QZ6hyKlbxuDNj0G24UODKJwewnwky2pzzT+HP6fz98JkQ/eEsb6DHoK
+         PJNGEBKp72+Jc7dqp4uhZSafzxE4PrJrreQO2WQY6h2TOSBc3/huNWCv+JBTIzZNKL
+         S9AjdZ7yMGloRk4AkxQgYZ1jj99eeCB+ONhl3tPeiJQG91mEvPe44CZ7Kro4XFl1gd
+         4rdHmHIv4Wsuvl/SFjQsnyWRFoSd+EoygoAX1QmAPrxk4wvIY4BupBzqcn3rDXFS5h
+         twS2YXPr4mdk6LDVXkr1bn1f51328/+DA1hzY6FHuSR40gRBzpDMcm8L3TlyPD1D2P
+         8tfAnOglvMR+w==
+Date:   Sat, 18 Feb 2023 17:07:07 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marco Felsch <m.felsch@pengutronix.de>
-Cc:     puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH v3 3/4] iio: temperature: tmp117: add TI TMP116 support
-Message-ID: <20230218170459.1aac6919@jic23-huawei>
-In-Reply-To: <20230217093711.1891564-4-m.felsch@pengutronix.de>
-References: <20230217093711.1891564-1-m.felsch@pengutronix.de>
-        <20230217093711.1891564-4-m.felsch@pengutronix.de>
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH] iio: adc: ad7791: fix IRQ flags
+Message-ID: <20230218170707.5c31252d@jic23-huawei>
+In-Reply-To: <e619b7ba249457a542f04a198133e4ba9255d16c.camel@gmail.com>
+References: <20230120124645.819910-1-nuno.sa@analog.com>
+        <20230121165852.5a302778@jic23-huawei>
+        <e60e97d614a03c5a6e1e86b330a3d3ae47d3d220.camel@gmail.com>
+        <e619b7ba249457a542f04a198133e4ba9255d16c.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,176 +57,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Feb 2023 10:37:10 +0100
-Marco Felsch <m.felsch@pengutronix.de> wrote:
+On Mon, 06 Feb 2023 12:13:50 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> The TMP116 is the predecessor of the TMP117. The TMP116 don't support
-> custom offset calibration data, instead this register is used as generic
-> EEPROM storage as well.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> On Mon, 2023-01-30 at 10:01 +0100, Nuno S=C3=A1 wrote:
+> > On Sat, 2023-01-21 at 16:58 +0000, Jonathan Cameron wrote: =20
+> > > On Fri, 20 Jan 2023 13:46:45 +0100
+> > > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> > >  =20
+> > > > The interrupt is triggered on the falling edge rather than being
+> > > > a
+> > > > level
+> > > > low interrupt.
+> > > >=20
+> > > > Fixes: da4d3d6bb9f6 ("iio: adc: ad-sigma-delta: Allow custom IRQ
+> > > > flags")
+> > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
+> > >=20
+> > > What are the symptoms of this?=C2=A0 Given the ad_sigma_delta.c irq
+> > > handler
+> > > disables the interrupt until after the data read is done (at which
+> > > point the
+> > > level is presumably high again), I don't immediately see why the
+> > > change
+> > > here has any impact - either we trigger on the fall, or on the fact
+> > > it
+> > > has become low..
+> > >=20
+> > >  =20
+> >=20
+> > Honestly I did not checked this in any HW. This was just by
+> > inspecting
+> > the datasheet and confirming that the LOW IRQ is not coherent with
+> > what
+> > we have in other sigma delta ADCs.
+> >=20
+> > However, after some git blaming, I found this [1] which shows that
+> > this
+> > might be an issue...
+> >=20
+> > Hmm, maybe makes sense to add a link to the bellow patch in the
+> > commit
+> > description...
+> > =C2=A0
+> > [1]:
+> > https://lore.kernel.org/linux-iio/20200113102653.20900-3-alexandru.tach=
+ici@analog.com
+> > /
+> >=20
+> > - Nuno S=C3=A1 =20
+>=20
+> Hi Jonathan,
+>=20
+> Anything that I should do in this one? As I did not tested it, it might
+> not be a real issue but I still think the patch is good even though it
+> might not deserve a Fixes tag...
+>=20
+> - Nuno S=C3=A1
 
-I failed to notice that the handling of fallback compatibles (not
-related to the fact we can't use them for the TMP116 as discussed)
-is less than ideal in the original driver.
-
-Given it already doesn't work, I'm fine with handling that in a
-a separate patch though if you would prefer. If you don't get to
-it I might eventually do so.  There are a lot of cases of this
-in IIO, but mostly we don't bother fixing them unless we are touching
-the driver for other reasons.
-
-I can fix the trivial alphabetical order thing up whilst applying.
+Applied to the fixes-togreg rbanch of iio.git.  I left the fixes tag
+but just to be awkward didn't mark it for stable (it'll get picked up anyway
+probably but I didn't want to imply there was any rush in doing so ;)
 
 Thanks,
 
 Jonathan
 
-
-> ---
-> v3:
-> - use switch case within probe() as well
-> - don't hide smbus_read error within tmp117_identify()
-> - add dedicated compatible
-> 
-> v2:
-> - no changes
-> 
->  drivers/iio/temperature/tmp117.c | 46 ++++++++++++++++++++++++--------
->  1 file changed, 35 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
-> index f9b8f2b570f6b..728538fbaf9ba 100644
-> --- a/drivers/iio/temperature/tmp117.c
-> +++ b/drivers/iio/temperature/tmp117.c
-> @@ -31,9 +31,11 @@
->  #define TMP117_REG_DEVICE_ID		0xF
->  
->  #define TMP117_RESOLUTION_10UC		78125
-> -#define TMP117_DEVICE_ID		0x0117
->  #define MICRODEGREE_PER_10MILLIDEGREE	10000
->  
-> +#define TMP116_DEVICE_ID		0x1116
-> +#define TMP117_DEVICE_ID		0x0117
-> +
->  struct tmp117_data {
->  	struct i2c_client *client;
->  	s16 calibbias;
-> @@ -105,6 +107,13 @@ static const struct iio_chan_spec tmp117_channels[] = {
->  		.type = IIO_TEMP,
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  			BIT(IIO_CHAN_INFO_CALIBBIAS) | BIT(IIO_CHAN_INFO_SCALE),
-> +};
-> +
-> +static const struct iio_chan_spec tmp116_channels[] = {
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE),
->  	},
->  };
->  
-> @@ -120,25 +129,29 @@ static int tmp117_identify(struct i2c_client *client)
->  	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
->  	if (dev_id < 0)
->  		return dev_id;
-> -	if (dev_id != TMP117_DEVICE_ID) {
-> -		dev_err(&client->dev, "TMP117 not found\n");
-> +
-> +	switch (dev_id) {
-> +	case TMP116_DEVICE_ID:
-> +	case TMP117_DEVICE_ID:
-> +		return dev_id;
-> +	default:
-> +		dev_err(&client->dev, "TMP116/117 not found\n");
-
-More a comment on the original code rather than your changes, but we should fix
-if whilst here...
-
-So this is always fun.  Ideally if we don't match a known device we should trust
-the compatible provided.  The intent here is that if a new device turns up
-with a different ID and does indeed have a valid fallback compatible then
-the driver should work. It's fine to warn, but we shouldn't fail the probe.
-
-As such a dance is needed.  First we need to associate some data with the
-device IDs (see below)
-
->  		return -ENODEV;
->  	}
-> -	return 0;
->  }
->  
->  static int tmp117_probe(struct i2c_client *client)
->  {
->  	struct tmp117_data *data;
->  	struct iio_dev *indio_dev;
-> -	int ret;
-> +	int dev_id;
->  
->  	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
->  		return -EOPNOTSUPP;
->  
-> -	ret = tmp117_identify(client);
-> -	if (ret < 0)
-> -		return ret;
-> +	dev_id = tmp117_identify(client);
-> +	if (dev_id < 0)
-
-Fallback ID related. See above. If this happens we should not error out,
-but rather fallback on assumption that the provided compatible is correct
-even though we don't know the new dev_id.  So look up the data here.
-Prefer data from the device_property_get_match_data() and if that fails
-fallback to i2c_client_get_device_id() and the data field from that.
-
-
-> +		return dev_id;
->  
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (!indio_dev)
-> @@ -148,24 +161,35 @@ static int tmp117_probe(struct i2c_client *client)
->  	data->client = client;
->  	data->calibbias = 0;
->  
-> -	indio_dev->name = "tmp117";
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->info = &tmp117_info;
->  
-> -	indio_dev->channels = tmp117_channels;
-> -	indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
-> +	switch (dev_id) {
-> +	case TMP116_DEVICE_ID:
-> +		indio_dev->channels = tmp116_channels;
-> +		indio_dev->num_channels = ARRAY_SIZE(tmp116_channels);
-> +		indio_dev->name = "tmp116";
-> +		break;
-> +	case TMP117_DEVICE_ID:
-> +		indio_dev->channels = tmp117_channels;
-> +		indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
-> +		indio_dev->name = "tmp117";
-> +		break;
-> +	}
->  
->  	return devm_iio_device_register(&client->dev, indio_dev);
->  }
->  
->  static const struct of_device_id tmp117_of_match[] = {
->  	{ .compatible = "ti,tmp117", },
-> +	{ .compatible = "ti,tmp116", },
-
-Alphabetical order preferred.
-
-Data here as below.
-
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, tmp117_of_match);
->  
->  static const struct i2c_device_id tmp117_id[] = {
->  	{ "tmp117", 0 },
-> +	{ "tmp116", 0 },
-Follow on from above: This needs data to distinguish the two so we can
-support future fallback compatibles to one of these.
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(i2c, tmp117_id);
 

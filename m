@@ -2,346 +2,263 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A8E169C188
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Feb 2023 18:04:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B65169C197
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Feb 2023 18:07:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230478AbjBSREZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Feb 2023 12:04:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40460 "EHLO
+        id S231137AbjBSRHr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Feb 2023 12:07:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230479AbjBSREX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Feb 2023 12:04:23 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E2312BC1;
-        Sun, 19 Feb 2023 09:04:04 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id b11so1381024wrw.5;
-        Sun, 19 Feb 2023 09:04:04 -0800 (PST)
+        with ESMTP id S230492AbjBSRHp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Feb 2023 12:07:45 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FD3612862
+        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 09:07:43 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id g7-20020a05600c310700b003dc4fd6e61dso686981wmo.5
+        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 09:07:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R5DznUOeG1bSZpiguL2OeIOBwVtC+RrZVMm6C8Ip3Ls=;
-        b=Bxxx1UfOrDCDm213wEbKLNFnQpw6xLyS8GqgDBFYmElba0m/lvUAXPI+CpoxkrPEEn
-         f21OvLta4AiZH6eQcJaGGeD69xNaUGphQdIIaSLPvpE/H5xoSfEdQr8iNdUzSGGrYRbZ
-         kJY4PA1jvbw4eA/+6YmCM1vGHPxY+jVQTuQ4jm3StAs/XJEA6PCtCTkPSCc89bYK2Zn2
-         8xOGQOSHEDbFrw7AGPqZvpXIfQlhoKnzaaGvxWTtC6zGWF6/tJvAb9SOwyTOsaPKvH4j
-         30Yuz7wP/dyqcFmU81hws22L+W8jkeaNBvEcoSccrC3NhV9Jk6NvomCqiw3HoxVpoPY5
-         mwTA==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6KxNFzRgs/0vUNP2uZncHosd2KHSBPqfvZ7J555gKlI=;
+        b=TqDmxeCqgjX/SCT0zS+PF6AfR/9dCo1FpS5mnG9j01BFC1+VD4Q7ubhlQfXhrmE083
+         0WYN1f0bIbo21XRTWifbJwcYTr2X1HSPBzZM87/35szohbgwJWtwst3ZB/Uyku+BZ1GT
+         fdjOk5jg86fdGhZQivHhMX1dUtyEtd0zEYACMvag1QVVQXdQ7R5c7aIxveMhWwkz75hR
+         8chbsS6v67DndN4W12l84nsUdBhyOjwMW1hwOqBmE6eyqzuIM8WMLxP7V5DN4UAzCAZX
+         vqLCw8gjWfj/gz3br1kNLOjZCJGA+sAEn8LyDTAn692JW1B2MJS3YSi60TU4KXtLsjqR
+         Lx/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R5DznUOeG1bSZpiguL2OeIOBwVtC+RrZVMm6C8Ip3Ls=;
-        b=QqgA3zSLjeU+EdpgHrw0s7mN+dioZ5FGAANREAQdo9y/pmrKSHi0kJxZtSxLwUi8xx
-         /D5bfkKeY0FnKP9TCBc7rEp8Vnj01k2pXI/g9lcRGvhorH77cA3mWRPSYuib+3Jda4S7
-         j2ABM52lmdusUisHEP7WDjJGSrbsmP1L/fdM4NZn5fpvfZwB8l6ssLsY7I+FY6cFnNWM
-         UsErM5xtHOaIihfy8vAde74QOuWLfDxPbpCtyNKf+FXJoXKDuiJQ0qS2UDSHheW8I056
-         /awXL+hWwepe8M/Ey+wF+1g0xoOMudJrsQ6skLzYoAUvJHCdPjT+1VOD/K3RbUEDK8D6
-         z6kA==
-X-Gm-Message-State: AO0yUKXLWp/3r93rHudQWhSbdr1XE/A96pCgnM1c/WT0GYf2cYJsqENd
-        3ekYAjRfPptzFq/IJ8iKkL1slmAeDsM=
-X-Google-Smtp-Source: AK7set88C/0F9UaqFtEhEStoYTf1q8gilq2iA2lZtMduEwk5QujHpkOZKqDDjd5TpM8RqCkUJ0K4+Q==
-X-Received: by 2002:a5d:4e51:0:b0:2c5:a605:80c0 with SMTP id r17-20020a5d4e51000000b002c5a60580c0mr441448wrt.11.1676826242875;
-        Sun, 19 Feb 2023 09:04:02 -0800 (PST)
-Received: from localhost.localdomain (6.red-83-37-22.dynamicip.rima-tde.net. [83.37.22.6])
-        by smtp.gmail.com with ESMTPSA id m11-20020a5d6a0b000000b002c55ec7f661sm9918548wru.5.2023.02.19.09.04.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Feb 2023 09:04:02 -0800 (PST)
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6KxNFzRgs/0vUNP2uZncHosd2KHSBPqfvZ7J555gKlI=;
+        b=knlopvY2jNhB/Z7xbov66UTwIo1pqsd73cKldTXfzf+7lfuGAwVGmXq9KC+1mHNp91
+         sZiNciwv9MuziIMv/qIVdcO8kTr/IlUSbCaetbNsIT1bzXmk/VCkFiKijpnfn1vZZXd6
+         zv5G6yQMJ4fkmkPpANksIFQhPRvJSWbUvcym/ADISx+vOmUzfCPIsUXSd/3nJyFEwoBl
+         DS+VcqfRi8gNtdOgjCGhEj7vYBSGqs09jV1W5c6i0xE+ExGdZaxLjdfALCAEf7RQbp5/
+         DWYvnziUxPAbgMu2IdmD8H/D143RaldNKWRtylE5N3twsHBxzPhiq+jo24SFcpOph6TN
+         50Mw==
+X-Gm-Message-State: AO0yUKUiiI15WENxQ1Sq/J0hWTKvKHfl91zbQAYltSpU7KK6h6ZMBWAz
+        Xgf4ZE5Jaey9ZW14Bk5e3SgQxQ==
+X-Google-Smtp-Source: AK7set83h6bWbda4YvPCa+ZBjfPRZ/9UdfQCE1sEN23gN10rONUKibwH121WMa44Jr/M6QZ46vWaSg==
+X-Received: by 2002:a05:600c:198e:b0:3e2:1f00:bff7 with SMTP id t14-20020a05600c198e00b003e21f00bff7mr7646707wmq.12.1676826461464;
+        Sun, 19 Feb 2023 09:07:41 -0800 (PST)
+Received: from ?IPV6:2a05:6e02:1041:c10:6f43:b92:7670:463? ([2a05:6e02:1041:c10:6f43:b92:7670:463])
+        by smtp.googlemail.com with ESMTPSA id n27-20020a05600c3b9b00b003e206cc7237sm15155832wms.24.2023.02.19.09.07.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Feb 2023 09:07:40 -0800 (PST)
+Message-ID: <4d8f1e68-8d2c-b70f-69c7-a1137ac4b05f@linaro.org>
+Date:   Sun, 19 Feb 2023 18:07:36 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v1 01/17] thermal/core: Add a thermal zone 'devdata'
+ accessor
+Content-Language: en-US
+To:     =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>
+Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 7/7] iio: pressure: bmp280: Add nvmem operations for BMP580
-Date:   Sun, 19 Feb 2023 18:03:06 +0100
-Message-Id: <f3f453d9b2c0f7820ca9c56e24e2165b6c39bb67.1676823250.git.ang.iglesiasg@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1676823250.git.ang.iglesiasg@gmail.com>
-References: <cover.1676823250.git.ang.iglesiasg@gmail.com>
-MIME-Version: 1.0
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Tim Zimmermann <tim@linux4.de>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        Jiang Jian <jiangjian@cdjrlc.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:ARM/Allwinner sunXi SoC support" 
+        <linux-sunxi@lists.linux.dev>,
+        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
+        <linux-input@vger.kernel.org>,
+        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
+        <linux-wireless@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:ARM/QUALCOMM SUPPORT" <linux-arm-msm@vger.kernel.org>,
+        "open list:RENESAS R-CAR THERMAL DRIVERS" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "open list:ARM/Rockchip SoC support" 
+        <linux-rockchip@lists.infradead.org>,
+        "open list:SAMSUNG THERMAL DRIVER" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
+ <20230219143657.241542-2-daniel.lezcano@linaro.org>
+ <Y/I7KA2Uqqk7ib6L@oden.dyn.berto.se>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <Y/I7KA2Uqqk7ib6L@oden.dyn.berto.se>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The pressure sensor BMP580 contains a non-volatile memory that stores
-trimming and configuration params. That memory provides an programmable
-user range of three 2-byte words.
+On 19/02/2023 16:07, Niklas Söderlund wrote:
+> Hi Daniel,
+> 
+> Thanks for your work.
+> 
+> On 2023-02-19 15:36:41 +0100, Daniel Lezcano wrote:
+>> The thermal zone device structure is exposed to the different drivers
+>> and obviously they access the internals while that should be
+>> restricted to the core thermal code.
+>>
+>> In order to self-encapsulate the thermal core code, we need to prevent
+>> the drivers accessing directly the thermal zone structure and provide
+>> accessor functions to deal with.
+>>
+>> Provide an accessor to the 'devdata' structure and make use of it in
+>> the different drivers.
+>>
+>> No functional changes intended.
+>>
+>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>> ---
+> 
+> ...
+> 
+>>   drivers/thermal/rcar_gen3_thermal.c              |  4 ++--
+>>   drivers/thermal/rcar_thermal.c                   |  3 +--
+> 
+> For R-Car,
+> 
+> Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> 
+> ...
+> 
+> 
+>> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+>> index 2bb4bf33f4f3..724b95662da9 100644
+>> --- a/include/linux/thermal.h
+>> +++ b/include/linux/thermal.h
+>> @@ -365,6 +365,8 @@ thermal_zone_device_register_with_trips(const char *, struct thermal_trip *, int
+>>   					void *, struct thermal_zone_device_ops *,
+>>   					struct thermal_zone_params *, int, int);
+>>   
+>> +void *thermal_zone_device_get_data(struct thermal_zone_device *tzd);
+>> +
+> 
+> bikeshedding:
+> 
+> Would it make sens to name this thermal_zone_device_get_priv_data(),
+> thermal_zone_device_get_priv() or something like that? To make it more
+> explicitly when reading the driver code this fetches the drivers private
+> data, and not some data belonging to the zone itself.
 
-Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+In the headers files, there are more occurrences with _name_priv():
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index a7d26d81ec08..1e7534d7c4a6 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -28,6 +28,7 @@
- #include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/module.h>
-+#include <linux/nvmem-provider.h>
- #include <linux/regmap.h>
- #include <linux/delay.h>
- #include <linux/iio/iio.h>
-@@ -1284,6 +1285,80 @@ static int bmp580_soft_reset(struct bmp280_data *data)
- 	return 0;
- }
- 
-+/**
-+ * bmp580_nvm_operation() - Helper function to commit NVM memory operations
-+ * @data: sensor data struct
-+ * @is_write: flag to signal write operation
-+ */
-+static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
-+{
-+	unsigned long timeout, poll;
-+	unsigned int reg;
-+	int ret;
-+
-+	/* Check NVM ready flag */
-+	ret = regmap_read(data->regmap, BMP580_REG_STATUS, &reg);
-+	if (ret) {
-+		dev_err(data->dev, "failed to check nvm status\n");
-+		return ret;
-+	}
-+	if (!(reg & BMP580_STATUS_NVM_RDY_MASK)) {
-+		dev_err(data->dev, "sensor's nvm is not ready\n");
-+		return -EIO;
-+	}
-+
-+	/* Start NVM operation sequence */
-+	ret = regmap_write(data->regmap, BMP580_REG_CMD, BMP580_CMD_NVM_OP_SEQ_0);
-+	if (ret) {
-+		dev_err(data->dev, "failed to send nvm operation's first sequence\n");
-+		return ret;
-+	}
-+	if (is_write) {
-+		/* Send NVM write sequence */
-+		ret = regmap_write(data->regmap, BMP580_REG_CMD,
-+				   BMP580_CMD_NVM_WRITE_SEQ_1);
-+		if (ret) {
-+			dev_err(data->dev, "failed to send nvm write sequence\n");
-+			return ret;
-+		}
-+		/* Datasheet says on 4.8.1.2 it takes approximately 10ms */
-+		poll = 2000;
-+		timeout = 12000;
-+	} else {
-+		/* Send NVM read sequence */
-+		ret = regmap_write(data->regmap, BMP580_REG_CMD,
-+				   BMP580_CMD_NVM_READ_SEQ_1);
-+		if (ret) {
-+			dev_err(data->dev, "failed to send nvm read sequence\n");
-+			return ret;
-+		}
-+		/* Datasheet says on 4.8.1.1 it takes approximately 200us */
-+		poll = 50;
-+		timeout = 400;
-+	}
-+	if (ret) {
-+		dev_err(data->dev, "failed to write command sequence\n");
-+		return -EIO;
-+	}
-+
-+	/* Wait until NVM is ready again */
-+	ret = regmap_read_poll_timeout(data->regmap, BMP580_REG_STATUS, reg,
-+				       (reg & BMP580_STATUS_NVM_RDY_MASK),
-+				       poll, timeout);
-+	if (ret) {
-+		dev_err(data->dev, "error checking nvm operation status\n");
-+		return ret;
-+	}
-+
-+	/* Check NVM error flags */
-+	if ((reg & BMP580_STATUS_NVM_ERR_MASK) || (reg & BMP580_STATUS_NVM_CMD_ERR_MASK)) {
-+		dev_err(data->dev, "error processing nvm operation\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Contrary to previous sensors families, compensation algorithm is builtin.
-  * We are only required to read the register raw data and adapt the ranges
-@@ -1379,8 +1454,140 @@ static const int bmp580_odr_table[][2] = {
- 	[BMP580_ODR_0_125HZ] =	{0, 125000},
- };
- 
-+const int bmp580_nvmem_addrs[] = { 0x20, 0x21, 0x22 };
-+
-+static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
-+			     size_t bytes)
-+{
-+	struct bmp280_data *data = priv;
-+	u16 *dst = val;
-+	int ret, addr;
-+
-+	pm_runtime_get_sync(data->dev);
-+	mutex_lock(&data->lock);
-+
-+	/* Set sensor in standby mode */
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-+				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-+				 BMP580_ODR_DEEPSLEEP_DIS |
-+				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-+	if (ret) {
-+		dev_err(data->dev, "failed to change sensor to standby mode\n");
-+		goto exit;
-+	}
-+	/* Wait standby transition time */
-+	usleep_range(2500, 3000);
-+
-+	while (bytes >= sizeof(*dst)) {
-+		addr = bmp580_nvmem_addrs[offset / sizeof(*dst)];
-+
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR,
-+				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-+		if (ret) {
-+			dev_err(data->dev, "error writing nvm address\n");
-+			goto exit;
-+		}
-+
-+		ret = bmp580_nvm_operation(data, false);
-+		if (ret)
-+			goto exit;
-+
-+		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-+				       sizeof(data->le16));
-+		if (ret) {
-+			dev_err(data->dev, "error reading nvm data regs\n");
-+			goto exit;
-+		}
-+
-+		*dst++ = le16_to_cpu(data->le16);
-+		bytes -= sizeof(*dst);
-+		offset += sizeof(*dst);
-+	}
-+exit:
-+	/* Restore chip config */
-+	data->chip_info->chip_config(data);
-+	mutex_unlock(&data->lock);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+	return ret;
-+}
-+
-+static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
-+			      size_t bytes)
-+{
-+	struct bmp280_data *data = priv;
-+	u16 *buf = val;
-+	int ret, addr;
-+
-+	pm_runtime_get_sync(data->dev);
-+	mutex_lock(&data->lock);
-+
-+	/* Set sensor in standby mode */
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-+				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-+				 BMP580_ODR_DEEPSLEEP_DIS |
-+				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-+	if (ret) {
-+		dev_err(data->dev, "failed to change sensor to standby mode\n");
-+		goto exit;
-+	}
-+	/* Wait standby transition time */
-+	usleep_range(2500, 3000);
-+
-+	while (bytes >= sizeof(*buf)) {
-+		addr = bmp580_nvmem_addrs[offset / sizeof(*buf)];
-+
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR, BMP580_NVM_PROG_EN |
-+				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-+		if (ret) {
-+			dev_err(data->dev, "error writing nvm address\n");
-+			goto exit;
-+		}
-+		data->le16 = cpu_to_le16(*buf++);
-+
-+		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-+					sizeof(data->le16));
-+		if (ret) {
-+			dev_err(data->dev, "error writing LSB NVM data regs\n");
-+			goto exit;
-+		}
-+
-+		ret = bmp580_nvm_operation(data, true);
-+		if (ret)
-+			goto exit;
-+
-+		/* Disable programming mode bit */
-+		ret = regmap_update_bits(data->regmap, BMP580_REG_NVM_ADDR,
-+					 BMP580_NVM_PROG_EN, 0);
-+		if (ret) {
-+			dev_err(data->dev, "error resetting nvm write\n");
-+			goto exit;
-+		}
-+
-+		bytes -= sizeof(*buf);
-+		offset += sizeof(*buf);
-+	}
-+exit:
-+	/* Restore chip config */
-+	data->chip_info->chip_config(data);
-+	mutex_unlock(&data->lock);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+	return ret;
-+}
-+
- static int bmp580_preinit(struct bmp280_data *data)
- {
-+	struct nvmem_config config = {
-+		.dev = data->dev,
-+		.priv = data,
-+		.name = "bmp580_nvmem",
-+		.word_size = sizeof(u16),
-+		.stride = sizeof(u16),
-+		.size = 3 * sizeof(u16),
-+		.reg_read = bmp580_nvmem_read,
-+		.reg_write = bmp580_nvmem_write,
-+	};
- 	unsigned int reg;
- 	int ret;
- 
-@@ -1408,7 +1615,8 @@ static int bmp580_preinit(struct bmp280_data *data)
- 		return -EIO;
- 	}
- 
--	return 0;
-+	/* Register nvmem device */
-+	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
- }
- 
- static int bmp580_chip_config(struct bmp280_data *data)
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index cd4c5be36ed7..5c0563ce7572 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -104,6 +104,9 @@
- #define BMP580_FILTER_63X		6
- #define BMP580_FILTER_127X		7
- 
-+#define BMP580_NVM_ROW_ADDR_MASK	GENMASK(5, 0)
-+#define BMP580_NVM_PROG_EN		BIT(6)
-+
- #define BMP580_TEMP_SKIPPED		0x7f7f7f
- #define BMP580_PRESS_SKIPPED		0x7f7f7f
- 
+# _name_priv()
+git grep priv include/linux/ | grep "priv(" | grep -v get | wc -l
+52
+
+# _name_private()
+git grep priv include/linux/ | grep "private(" | grep -v get | wc -l
+33
+
+# _name_get_private()
+git grep priv include/linux/ | grep "private(" | grep get | wc -l
+12
+
+# _name_get_priv()
+git grep priv include/linux/ | grep "priv(" | grep get | wc -l
+4
+
+
+What about thermal_zone_device_priv() ?
+
+
+
+
+
+
 -- 
-2.39.2
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

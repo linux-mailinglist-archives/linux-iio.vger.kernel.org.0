@@ -2,231 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E9469C126
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Feb 2023 16:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EAB269C172
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Feb 2023 18:00:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230432AbjBSPHj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Feb 2023 10:07:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57396 "EHLO
+        id S230372AbjBSRAP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Feb 2023 12:00:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230422AbjBSPH3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Feb 2023 10:07:29 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AE8B113D1
-        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 07:07:24 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id a36so836427ljq.11
-        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 07:07:24 -0800 (PST)
+        with ESMTP id S230346AbjBSRAO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Feb 2023 12:00:14 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C9F113C7;
+        Sun, 19 Feb 2023 09:00:13 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id g7so574861wrd.3;
+        Sun, 19 Feb 2023 09:00:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20210112.gappssmtp.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vfvHBPjFD3fnJEXsEdcPBmeh9w1ZDPtCXMtTzNwUMP4=;
-        b=2MT453GERnVCOXc+pZDXjhNske3WayAQFfKvKJjkTaSXaH9ypTF1xoFmHts7lcs6Tu
-         8awMK4Po/ABZ5dh9w4kEV1FldjJxMrBZVoiOQuoO90QinuTnKOP01zHiWmaOtrj+nQvd
-         F+ZaO4uYXLhJM+VztPHntmkaf7c2ZT1Q0aPQ00s5xppJj7swa9G6CIbKQNlCxZ/w13pb
-         K749pLo5Tg+B9AZJIM2QgMhbSb1PATOb59v0crPXiX4ae6edrBvt+0E1yX/NUh/mJvXP
-         jtQvKiAA2OdtGon53LBFrgDiJMJWAudwD546mUhHoHUTb6TiVX8ddk95TiBrWGbr05LD
-         zGSQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qgZZTiL8OE5qA01DYT9WBSfQOurPUqR3I7v32yZEImQ=;
+        b=ibGnr6Y3K8ev6t0zRn1AGQr23wKZ/vXEc73eeyf0TUo8CNb/3FnZeLVTNk5gj4Q/B2
+         kqipjH+IFIDXsq/NzFytIyI6puSR2X+nvR7KncsayC5tOWO0/XkOuPidRiwplXe8zA87
+         UEdefl/WxWrG03k6gYZutLItlKE6sWbpMQpu//Wqym2Gvr+uggoPaVhfmAnsuAnfd9BO
+         /KwUL3nlSHwn/jazogpiUEdUZsJxfM0UnM2u4kvexuDkmk+obAXQSEZJj7pGixFsv/ej
+         DDokcrDx38CmZKvOc0EKOpJDTZy0Xx76nXuVmLahrt+CI2vJIX+1Hd009PaXKjekdXU/
+         HsLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vfvHBPjFD3fnJEXsEdcPBmeh9w1ZDPtCXMtTzNwUMP4=;
-        b=TFDr2h/FD5lZQEFyRUy/Rf2/skTD63R3U24ku2m6mn09TKq6PV+53WvIN540eVK8/S
-         hPkR/lZsX7gqh/pybWjv2q9I5hqhYh/KdTS1JdKoQsy5uQlXOB7zJpOktMcbigku28uC
-         xyfxZDlAUK2y5kN5CZB0F6x4owHirzY26b3JqxZ0YZotLwQzaOrpL6x86+vZnvrXy802
-         fuZ+UQD8gUsDn1DlTgeGK70AjW6bCrltc2VpDfv5oNXt0K+xn1DM71utlIGQhbPqiuMR
-         A0zYoxDJxZ7Ek9z3i3ERAqowsjiWf6whluUARQaqIMAwot1rrgoTY+DVHMSpltRzhDlT
-         mugw==
-X-Gm-Message-State: AO0yUKV0GmmYtVvDmCNwxkfOWVtCTSFvMPgcjWSYZOpon9i6Ww3PTxOQ
-        ID/YgUQUleVwN2pZ8GQxJN3grA==
-X-Google-Smtp-Source: AK7set9/3IywPw1ycXkXfjTE1BOHzIfMRekgiKErVRCZRj2jjMurZbyZpbHyyTOgbRvkntf1piSbOg==
-X-Received: by 2002:a05:651c:1541:b0:293:14c8:f588 with SMTP id y1-20020a05651c154100b0029314c8f588mr403194ljp.27.1676819242130;
-        Sun, 19 Feb 2023 07:07:22 -0800 (PST)
-Received: from localhost (h-46-59-89-207.A463.priv.bahnhof.se. [46.59.89.207])
-        by smtp.gmail.com with ESMTPSA id f23-20020a2e9517000000b0029355185926sm1245807ljh.137.2023.02.19.07.07.21
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qgZZTiL8OE5qA01DYT9WBSfQOurPUqR3I7v32yZEImQ=;
+        b=hQ1l2rAP5Lvjb3BWaPlIo2VFY9R9PkKPJwZ/XYRq9ZVZNds2bZvj0e9dJtxOwKk4Nc
+         W/uRzBhFW3kjmW+ZlAn2SFRv0w3ioRhjTW8xmnhJ/Q8iYGoCvRU4/8fapc8jOoba63o7
+         R9icLDelRuinVlC+SXtcBzcqYMLO51Hxds3j9uql2VM7VVFXPu3+eJCR45uungMsMwcR
+         gnrpzU+GTcMfTUzP5ohRSKk734Z5t3/vaSUdDzkkxkVC48B0hguxtHiEGWc/QWxU9E53
+         FxObfdweo+avehqvJ4j0xuEMPnMZP7LXivOVnuCuxUsLB843aDSy8WfMymyxoftRKMx6
+         D6cw==
+X-Gm-Message-State: AO0yUKUkm6nfQpvGhWrozL6t9PWkKC7MyhJ0suVi5ItZ865DFWkoBRL/
+        /ABhXr9JnwrYZ9ld+nB+X1Pn/Tc2mlY=
+X-Google-Smtp-Source: AK7set85GYX7QZ3z8wiFcVP+I/oyZO176oogg7KLPzCorzwg1PahNL92MdFa0CMi4WdkhXkQVZNOpQ==
+X-Received: by 2002:a5d:4c50:0:b0:2c5:4cd0:4b86 with SMTP id n16-20020a5d4c50000000b002c54cd04b86mr1604127wrt.68.1676826011443;
+        Sun, 19 Feb 2023 09:00:11 -0800 (PST)
+Received: from localhost.localdomain (6.red-83-37-22.dynamicip.rima-tde.net. [83.37.22.6])
+        by smtp.gmail.com with ESMTPSA id v20-20020a5d5914000000b002c552c6c8c2sm366427wrd.87.2023.02.19.09.00.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Feb 2023 07:07:21 -0800 (PST)
-Date:   Sun, 19 Feb 2023 16:07:20 +0100
-From:   Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+        Sun, 19 Feb 2023 09:00:11 -0800 (PST)
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Tim Zimmermann <tim@linux4.de>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        Jiang Jian <jiangjian@cdjrlc.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "open list:ARM/Allwinner sunXi SoC support" 
-        <linux-sunxi@lists.linux.dev>,
-        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
-        <linux-input@vger.kernel.org>,
-        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
-        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
-        <linux-wireless@vger.kernel.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "open list:ARM/QUALCOMM SUPPORT" <linux-arm-msm@vger.kernel.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC support" 
-        <linux-rockchip@lists.infradead.org>,
-        "open list:SAMSUNG THERMAL DRIVER" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v1 01/17] thermal/core: Add a thermal zone 'devdata'
- accessor
-Message-ID: <Y/I7KA2Uqqk7ib6L@oden.dyn.berto.se>
-References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
- <20230219143657.241542-2-daniel.lezcano@linaro.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/7] Add support for pressure sensor Bosch BMP580
+Date:   Sun, 19 Feb 2023 17:57:58 +0100
+Message-Id: <cover.1676823250.git.ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230219143657.241542-2-daniel.lezcano@linaro.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Daniel,
+This patchset adds support for the new pressure sensors BMP580 extending
+the bmp280 driver.
 
-Thanks for your work.
+Patch 1 introduces a minor refactor of the driver structure to change how
+the device matching and driver initialization is performed. In place of
+the chips ids, the driver_data now contains a pointer to its chip_info.
+To perform this change, a series of declarations previously on the core
+file were migrated to the shared header file, to allow access to specific
+fields on the chip_info on the I2C and SPI drivers. This change is
+required because BMP380 and BMP580 have the same chip_id and values would
+collide using the chip_id as the driver_data value.
+Patch 2 introduces new preinit callback and unifies init logic across all
+supported variants.
+Patch 3 made calibration callback function optional.
+Patch 4 deletes misleading i2c reference on bmp280 Kconfig entry.
+Patch 5 extends the bmp280 driver with the new logic to read measurements
+and configure the operation parameters for the BMP580 sensors.
+Patch 6 updates the devicetree binding docs with the new sensor id.
+Patch 7 adds the NVMEM operations to read and program the NVM user range
+contained in the non-volatile memory of the BMP580 sensors.
 
-On 2023-02-19 15:36:41 +0100, Daniel Lezcano wrote:
-> The thermal zone device structure is exposed to the different drivers
-> and obviously they access the internals while that should be
-> restricted to the core thermal code.
-> 
-> In order to self-encapsulate the thermal core code, we need to prevent
-> the drivers accessing directly the thermal zone structure and provide
-> accessor functions to deal with.
-> 
-> Provide an accessor to the 'devdata' structure and make use of it in
-> the different drivers.
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
+Changes in v4:
+* Dropped redundant and excessive verbose comments.
+* Change BMP580 temp IIO return type to IIO_VAL_FRACTIONAL_LOG2
+* Dropped loop waiting for NVM operation completion and use
+  regmap_read_poll_timeout instead.
+* Fix various sizeof calls on NVMEM handling codepath.
 
-...
+Changes in v3:
+* Refactor driver structure to use chip_info structs as driver_data and
+  updated i2c and spi implementations device match codepaths.
+* Deleted Kconfig driver title misleading i2c reference.
+* Made calibration reading optional as a prerequisite patch in preparation
+  for the bmp580 built in compensation.
+* Break command helper function in soft-reset helper function and NVM
+  operation helper.
+* Fixed minor styling issues thorough patches.
 
->  drivers/thermal/rcar_gen3_thermal.c              |  4 ++--
->  drivers/thermal/rcar_thermal.c                   |  3 +--
+Changes in v2:
+* For patch 3, fixed missing retcodes reported by the kernel test robot.
+* For patch 5, fixed logic paths that left the sensor mutex locked
+  reported by the kernel test robot.
 
-For R-Car,
+Angel Iglesias (7):
+  iio: pressure: bmp280: Use chip_info pointers for each chip as driver
+    data
+  iio: pressure: bmp280: Add preinit callback
+  iio: pressure: bmp280: Make read calibration callback optional
+  iio: pressure: Kconfig: Delete misleading I2C reference on bmp280
+    title
+  iio: pressure: bmp280: Add support for new sensor BMP580
+  dt-bindings: iio: pressure: bmp085: Add BMP580 compatible string
+  iio: pressure: bmp280: Add nvmem operations for BMP580
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+ .../bindings/iio/pressure/bmp085.yaml         |   2 +
+ drivers/iio/pressure/Kconfig                  |   6 +-
+ drivers/iio/pressure/bmp280-core.c            | 765 +++++++++++++-----
+ drivers/iio/pressure/bmp280-i2c.c             |  45 +-
+ drivers/iio/pressure/bmp280-regmap.c          |  60 ++
+ drivers/iio/pressure/bmp280-spi.c             |  47 +-
+ drivers/iio/pressure/bmp280.h                 | 273 ++++++-
+ 7 files changed, 953 insertions(+), 245 deletions(-)
 
-...
 
-
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index 2bb4bf33f4f3..724b95662da9 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -365,6 +365,8 @@ thermal_zone_device_register_with_trips(const char *, struct thermal_trip *, int
->  					void *, struct thermal_zone_device_ops *,
->  					struct thermal_zone_params *, int, int);
->  
-> +void *thermal_zone_device_get_data(struct thermal_zone_device *tzd);
-> +
-
-bikeshedding:
-
-Would it make sens to name this thermal_zone_device_get_priv_data(), 
-thermal_zone_device_get_priv() or something like that? To make it more 
-explicitly when reading the driver code this fetches the drivers private 
-data, and not some data belonging to the zone itself.
-
->  int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
->  				     struct thermal_cooling_device *,
-
+base-commit: 91ba2700aa75859957613aedf307a04a83010cee
 -- 
-Kind Regards,
-Niklas Söderlund
+2.39.2
+

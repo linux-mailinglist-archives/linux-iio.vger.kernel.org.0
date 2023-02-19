@@ -2,268 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C695C69C1D6
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Feb 2023 19:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D8669C27D
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Feb 2023 21:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbjBSSXh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Feb 2023 13:23:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
+        id S231528AbjBSUpO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Feb 2023 15:45:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230500AbjBSSXe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Feb 2023 13:23:34 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4FCEC7A
-        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 10:23:24 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id c2so1265766lfp.6
-        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 10:23:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ragnatech-se.20210112.gappssmtp.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ofJSqx7zRI6EorpfBbQAKk970rJXU8Lshyo67tpjsLQ=;
-        b=xeLeOsLmY3pe81rt3ga3i6n8lIyX45qvBgDtiyY75SxtAK1EKPLEQqXyq1T1gn61Wl
-         SJ+jJyXEslG9XZjq5SVgthjWH+AkiKzov8phzcdx8q8u1wRZD2dSS62mDgcNoDTrJRRD
-         BGXSBGZw4wh0B5bjOFtjGs/lNfSujOK7nRSeBI4eM8qRDyPK0u0ttERgJvfd64NhAQOL
-         +GauQSBtxQusXIDfvDLOsegFBY0WgTEt2z+DzKpl1W3Bv4DRhTSQjKczNAPttxdfVqBM
-         dTEYKt9a7qM1Hh42++i5n3Yf5pFVYUGxLDKZ4ol99hiPHSnPg3ZKrbHR9P3kkfouE6yn
-         kpWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ofJSqx7zRI6EorpfBbQAKk970rJXU8Lshyo67tpjsLQ=;
-        b=pZ/JK+wYXmFk3w62RnVJenAZIg/+ZXwio23ZuhCM48/bYvH3I0x6PLpxJz5BmQ2wGR
-         h/o0hCyBkqRDarrdRKB2S5DPAyGx6LdyHVd76xoSywi68gWpL9Djzh6ekA0J8FireasT
-         2J3W6hTZ4PjAUEkpGWxFD29KSM41S8X8d56NeXKJVi+I2a3ECm5yg6QI1TGCzjv64eLu
-         92E08Utuw1IkOwq0KKcvMLF167A6MJAAiGaOspYBrpEuecDmC/sq7RycTs33rBUE5Hk8
-         s1f4uAH35d/7PHXTxIabos5ccqdjZDhaA9OZFyOPxjUrZeeGYWDXLteGxenRYrFb/UqO
-         ziQA==
-X-Gm-Message-State: AO0yUKX3YBIj6ICdPlpFc3cq4XMg/79oSU8PGWUfSxlA+IH2+XVCOXo2
-        +cR2RbN3KG/y7FGNatQcC36v9w==
-X-Google-Smtp-Source: AK7set+YZZSclvxF42ryv90+XULHABPVIVIEdoKcZJbE3Ao4Z3FCGIUuBB+mT3TOxDnV55f/X2PI5w==
-X-Received: by 2002:ac2:4c21:0:b0:4dc:4c1d:eec1 with SMTP id u1-20020ac24c21000000b004dc4c1deec1mr483829lfq.46.1676831003077;
-        Sun, 19 Feb 2023 10:23:23 -0800 (PST)
-Received: from localhost (h-46-59-89-207.A463.priv.bahnhof.se. [46.59.89.207])
-        by smtp.gmail.com with ESMTPSA id b26-20020ac2563a000000b004db51852e6csm56694lff.246.2023.02.19.10.23.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Feb 2023 10:23:22 -0800 (PST)
-Date:   Sun, 19 Feb 2023 19:23:21 +0100
-From:   Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
+        with ESMTP id S231550AbjBSUpN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Feb 2023 15:45:13 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237C2193D8
+        for <linux-iio@vger.kernel.org>; Sun, 19 Feb 2023 12:45:09 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pTqYG-0002Zv-Em; Sun, 19 Feb 2023 21:44:52 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pTqYB-0066oS-9b; Sun, 19 Feb 2023 21:44:48 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pTqYB-004trh-PA; Sun, 19 Feb 2023 21:44:47 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Neil Armstrong <neil.armstrong@linaro.org>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Tim Zimmermann <tim@linux4.de>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        Jiang Jian <jiangjian@cdjrlc.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "open list:ARM/Allwinner sunXi SoC support" 
-        <linux-sunxi@lists.linux.dev>,
-        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
-        <linux-input@vger.kernel.org>,
-        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
-        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
-        <linux-wireless@vger.kernel.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "open list:ARM/QUALCOMM SUPPORT" <linux-arm-msm@vger.kernel.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC support" 
-        <linux-rockchip@lists.infradead.org>,
-        "open list:SAMSUNG THERMAL DRIVER" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v1 01/17] thermal/core: Add a thermal zone 'devdata'
- accessor
-Message-ID: <Y/JpGT206/0r/jF5@oden.dyn.berto.se>
-References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
- <20230219143657.241542-2-daniel.lezcano@linaro.org>
- <Y/I7KA2Uqqk7ib6L@oden.dyn.berto.se>
- <4d8f1e68-8d2c-b70f-69c7-a1137ac4b05f@linaro.org>
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, kernel@pengutronix.de
+Subject: [PATCH v2] iio: adc: meson_saradc: Better handle BL30 not releaseing the hardware
+Date:   Sun, 19 Feb 2023 21:44:39 +0100
+Message-Id: <20230219204439.1641640-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2545; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=UFb/C7xXSmr0LKHXSvPXadmaMrdeCgJrt6qsOgXktPA=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBj8oo0s1jtpBKhA696qEv+cQLED42WqCqwi4fam y48gJ9dgVuJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY/KKNAAKCRDB/BR4rcrs CeejB/9OmUvOfyvHfDjjyWCsorSUvO1jy2RVvo6aU55Xu8NQspq9ntKSUpz1vwFymaYhjkcADr+ QoiCQMQqfkUtOeECpb0aIO4fuey/2+vUeydRiystje/dPU+xLg1YpAuDFD59SPjwreWOuFkUb6q dvetVwVIEi7SZQgrFPM8nweGWb7hFm/V6iTXT9vE4wzVeQdkINFJvZSvXOTm5Sv81DZEzd3BZ2N HoVxMdH8zMJ92VYp2ny+zCfzdr8eCu0P551TN/gE6uadx1YnuTo23FQadmMNWZKtQvqLhiYf5mD tlO3C+Kn+vCxAxowG7nMk43l3+TzCCpOyQN5mN5RPuE69adL
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4d8f1e68-8d2c-b70f-69c7-a1137ac4b05f@linaro.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-02-19 18:07:36 +0100, Daniel Lezcano wrote:
-> On 19/02/2023 16:07, Niklas Söderlund wrote:
-> > Hi Daniel,
-> > 
-> > Thanks for your work.
-> > 
-> > On 2023-02-19 15:36:41 +0100, Daniel Lezcano wrote:
-> > > The thermal zone device structure is exposed to the different drivers
-> > > and obviously they access the internals while that should be
-> > > restricted to the core thermal code.
-> > > 
-> > > In order to self-encapsulate the thermal core code, we need to prevent
-> > > the drivers accessing directly the thermal zone structure and provide
-> > > accessor functions to deal with.
-> > > 
-> > > Provide an accessor to the 'devdata' structure and make use of it in
-> > > the different drivers.
-> > > 
-> > > No functional changes intended.
-> > > 
-> > > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> > > ---
-> > 
-> > ...
-> > 
-> > >   drivers/thermal/rcar_gen3_thermal.c              |  4 ++--
-> > >   drivers/thermal/rcar_thermal.c                   |  3 +--
-> > 
-> > For R-Car,
-> > 
-> > Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-> > 
-> > ...
-> > 
-> > 
-> > > diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> > > index 2bb4bf33f4f3..724b95662da9 100644
-> > > --- a/include/linux/thermal.h
-> > > +++ b/include/linux/thermal.h
-> > > @@ -365,6 +365,8 @@ thermal_zone_device_register_with_trips(const char *, struct thermal_trip *, int
-> > >   					void *, struct thermal_zone_device_ops *,
-> > >   					struct thermal_zone_params *, int, int);
-> > > +void *thermal_zone_device_get_data(struct thermal_zone_device *tzd);
-> > > +
-> > 
-> > bikeshedding:
-> > 
-> > Would it make sens to name this thermal_zone_device_get_priv_data(),
-> > thermal_zone_device_get_priv() or something like that? To make it more
-> > explicitly when reading the driver code this fetches the drivers private
-> > data, and not some data belonging to the zone itself.
-> 
-> In the headers files, there are more occurrences with _name_priv():
-> 
-> # _name_priv()
-> git grep priv include/linux/ | grep "priv(" | grep -v get | wc -l
-> 52
-> 
-> # _name_private()
-> git grep priv include/linux/ | grep "private(" | grep -v get | wc -l
-> 33
-> 
-> # _name_get_private()
-> git grep priv include/linux/ | grep "private(" | grep get | wc -l
-> 12
-> 
-> # _name_get_priv()
-> git grep priv include/linux/ | grep "priv(" | grep get | wc -l
-> 4
-> 
-> 
-> What about thermal_zone_device_priv() ?
+meson_sar_adc_lock() might return an error if BL30 doesn't release its
+lock on the hardware. Just returning early from .remove() is wrong
+however as this keeps the clocks and regulators on which is never
+cleaned up later.
 
-Looks good to me.
+Given the BL30 not giving up its lock is a strong hint for broken
+behaviour, and there is nothing we can do about that: Just clean up
+ignoring the fact that we're not holding the lock.
 
-> 
-> 
-> 
-> 
-> 
-> 
-> -- 
-> <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-> 
-> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-> <http://twitter.com/#!/linaroorg> Twitter |
-> <http://www.linaro.org/linaro-blog/> Blog
-> 
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
 
+changes since (implicit) v1:
+
+ - Ignore failure to get the lock as suggested by Martin.
+ - Adapt a caller for meson_sar_adc_hw_disable() returning void now
+   (which used the return value)
+
+ drivers/iio/adc/meson_saradc.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 85b6826cc10c..18937a262af6 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -957,14 +957,18 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
+ 	return ret;
+ }
+ 
+-static int meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
++static void meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	int ret;
+ 
++	/*
++	 * If taking the lock fails we have to assume that BL30 is broken. The
++	 * best we can do then is to release the resources anyhow.
++	 */
+ 	ret = meson_sar_adc_lock(indio_dev);
+ 	if (ret)
+-		return ret;
++		dev_err(indio_dev->dev.parent, "Failed to lock ADC (%pE)\n", ERR_PTR(ret));
+ 
+ 	clk_disable_unprepare(priv->adc_clk);
+ 
+@@ -977,9 +981,8 @@ static int meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
+ 
+ 	regulator_disable(priv->vref);
+ 
+-	meson_sar_adc_unlock(indio_dev);
+-
+-	return 0;
++	if (!ret)
++		meson_sar_adc_unlock(indio_dev);
+ }
+ 
+ static irqreturn_t meson_sar_adc_irq(int irq, void *data)
+@@ -1283,14 +1286,18 @@ static int meson_sar_adc_remove(struct platform_device *pdev)
+ 
+ 	iio_device_unregister(indio_dev);
+ 
+-	return meson_sar_adc_hw_disable(indio_dev);
++	meson_sar_adc_hw_disable(indio_dev);
++
++	return 0;
+ }
+ 
+ static int meson_sar_adc_suspend(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 
+-	return meson_sar_adc_hw_disable(indio_dev);
++	meson_sar_adc_hw_disable(indio_dev);
++
++	return 0;
+ }
+ 
+ static int meson_sar_adc_resume(struct device *dev)
+
+base-commit: 925cf0457d7e62ce08878ffb789189ac08ca8677
 -- 
-Kind Regards,
-Niklas Söderlund
+2.39.1
+

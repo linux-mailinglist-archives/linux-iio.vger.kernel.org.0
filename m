@@ -2,126 +2,205 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F2869C9E4
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Feb 2023 12:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FDD69CAA4
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Feb 2023 13:19:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbjBTLbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Feb 2023 06:31:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55514 "EHLO
+        id S231805AbjBTMTT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Feb 2023 07:19:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjBTLbf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Feb 2023 06:31:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA37814EAD
-        for <linux-iio@vger.kernel.org>; Mon, 20 Feb 2023 03:31:34 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68EA160DEB
-        for <linux-iio@vger.kernel.org>; Mon, 20 Feb 2023 11:31:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC92C433D2;
-        Mon, 20 Feb 2023 11:31:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676892693;
-        bh=xYiGEHRtgaKWcfS3kkWMt7I879tbd9eUnWGBuSpo79o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=C9PHM8y+OlP39mjsPjJnzlFIhk6N9b6nK23PvgiD6SWUC1JTMl6Ef+XTCeL6kL2PE
-         Yv/moi6mrEC1eifan6RrAdPeYQibKuCrXze1D4B8ossbyn/vrHOoTX58RpfSE7pIpu
-         CJWSbsD7xkXP6GhdL+phZq6H2AyEWoi6/T3DZvMcPZx2N2ruYAmot2gQhLkN7BK72K
-         KzOVKPdV0Ql9ATCnlN9490tuwYaHmpdLwrJPLBDkSC8O/ND6bYFrWC3H/AkiheX5gA
-         99dXgFzXiycIscn9dvCRk0MdDX+aWjIAiB7VMuOEJi1fH4M9FyY7Bn5SWzOmfNadIE
-         a4FniZdG/UCeA==
-Date:   Mon, 20 Feb 2023 12:31:30 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Philippe De Muyter <phdm@macq.eu>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: discard samples during filters
- settling time
-Message-ID: <Y/NaEvSkSVkTJDUu@lore-desk>
-References: <1228b9ed2060b99d0df0f5549a37c8b520ea5429.1675867224.git.lorenzo@kernel.org>
- <20230218135622.6c5d4569@jic23-huawei>
- <Y/M5feqZB+4JP99M@lore-desk>
- <20230220112811.GA25621@frolo.macqel>
+        with ESMTP id S231694AbjBTMSy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Feb 2023 07:18:54 -0500
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A586C65C;
+        Mon, 20 Feb 2023 04:18:53 -0800 (PST)
+Received: by mail-qt1-f180.google.com with SMTP id v19so512904qtx.1;
+        Mon, 20 Feb 2023 04:18:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6Re6NLj3mYWi/PS1iVcG93D07BAspc2CGyOXyoSaH5I=;
+        b=Hv2om3mMlad73jLiyOltGX+vU7tUvhpeLSqRu6RuGSxvU/6x6QiVoYcmYWlkhgsBdK
+         4v6WofJLjv3eRjiD9MVM5P7eRZn6uZgpQbt5ZfDUnY9lfmes9kyhLyP/HXzd6yU4cxbx
+         rVapytEKP2P8uCG9w7HUZZXaGboBsSi1xQn3Mk7WtqVA4JUmwOP2J+Qq6m07ybqrEvZK
+         /r6OpiCgVa+7jER2nyIclqmHD6UIk42vZWOTLYHI4GR8/Vd8/xu+HDqNOAYftQPBiLui
+         GEHLWV45MJGdyyO/+aC+7W2y6Ab5ib63NNHayaC6Jex/Z6Ssfr6aOuarBnV/Iz616up2
+         ZAcw==
+X-Gm-Message-State: AO0yUKVpaNpYof5LDpPmDQuboV5Bl83O2dNy7WirqLYWpshvE2VoyF/0
+        Hc0q71GJvRGaw61VIGmZo/giDvfmACzzJ02U
+X-Google-Smtp-Source: AK7set+Nd09WGAMk7rH/9anu8D73O6lfdhS4LT5/yzwDDc9S8njlIVGCAwuqGENvmr71hLP61eee9Q==
+X-Received: by 2002:a05:622a:1213:b0:3b9:b6c8:6d5b with SMTP id y19-20020a05622a121300b003b9b6c86d5bmr2150244qtx.35.1676895531806;
+        Mon, 20 Feb 2023 04:18:51 -0800 (PST)
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
+        by smtp.gmail.com with ESMTPSA id m4-20020a37bc04000000b0074028d8a795sm1210904qkf.125.2023.02.20.04.18.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Feb 2023 04:18:50 -0800 (PST)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-536b7ffdd34so11523257b3.6;
+        Mon, 20 Feb 2023 04:18:49 -0800 (PST)
+X-Received: by 2002:a81:8606:0:b0:52e:e6ed:308e with SMTP id
+ w6-20020a818606000000b0052ee6ed308emr1847623ywf.526.1676895529736; Mon, 20
+ Feb 2023 04:18:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ZEDKOlY0IJgMTejn"
-Content-Disposition: inline
-In-Reply-To: <20230220112811.GA25621@frolo.macqel>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230219143657.241542-1-daniel.lezcano@linaro.org>
+ <20230219143657.241542-2-daniel.lezcano@linaro.org> <OS3PR01MB8460E7C2D1F9EEEDDC579FFEC2A49@OS3PR01MB8460.jpnprd01.prod.outlook.com>
+In-Reply-To: <OS3PR01MB8460E7C2D1F9EEEDDC579FFEC2A49@OS3PR01MB8460.jpnprd01.prod.outlook.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 20 Feb 2023 13:18:38 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWFn+LbKE=77mRBfGqSu3x5qsk3X-pQVeu3uZXEejyRRg@mail.gmail.com>
+Message-ID: <CAMuHMdWFn+LbKE=77mRBfGqSu3x5qsk3X-pQVeu3uZXEejyRRg@mail.gmail.com>
+Subject: Re: [PATCH v1 01/17] thermal/core: Add a thermal zone 'devdata' accessor
+To:     DLG Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        ye xingchen <ye.xingchen@zte.com.cn>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Tim Zimmermann <tim@linux4.de>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        Jiang Jian <jiangjian@cdjrlc.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        "open list:ARM/Allwinner sunXi SoC support" 
+        <linux-sunxi@lists.linux.dev>,
+        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
+        <linux-input@vger.kernel.org>,
+        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
+        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
+        <linux-wireless@vger.kernel.org>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        "open list:ARM/QUALCOMM SUPPORT" <linux-arm-msm@vger.kernel.org>,
+        "open list:RENESAS R-CAR THERMAL DRIVERS" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "open list:ARM/Rockchip SoC support" 
+        <linux-rockchip@lists.infradead.org>,
+        "open list:SAMSUNG THERMAL DRIVER" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Adam,
 
---ZEDKOlY0IJgMTejn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, Feb 20, 2023 at 12:14 PM DLG Adam Ward
+<DLG-Adam.Ward.opensource@dm.renesas.com> wrote:
+> On 19/02/23 14:37, Daniel Lezcano wrote:
+> >The thermal zone device structure is exposed to the different drivers and obviously they access the internals while that should be restricted to the core thermal code.
+> >
+> >In order to self-encapsulate the thermal core code, we need to prevent the drivers accessing directly the thermal zone structure and provide accessor functions to deal with.
+> >
+> >Provide an accessor to the 'devdata' structure and make use of it in the different drivers.
+> >No functional changes intended.
+> >
+> >Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> >---
+>
+> >drivers/thermal/da9062-thermal.c                 |  2 +-
+>
+> For da9062:
+>
+> Reviewed-by: Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com>
 
-> Hello Lorenzo and Jonathan,
->=20
-> On Mon, Feb 20, 2023 at 10:12:29AM +0100, Lorenzo Bianconi wrote:
-> > On Sat, Feb 18, 2023 at 01:56:22PM +0000, Jonathan Cameron wrote:
-> >=20
-> > > On Wed,  8 Feb 2023 15:42:31 +0100
-> > > Lorenzo Bianconi <lorenzo@kernel.org> wrote:
-> > >=20
-> > > > During digital filters settling time the driver is expected to drop
-> > > > samples since they can be corrupted. Introduce the capability to dr=
-op
-> > > > a given number of samples according to the configured ODR.
-> > > > Add the sample_to_discard data for LSM6DSM sensor.
-> > > >=20
-> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > >=20
-> > > Is this only necessary for the particular sensor you have provided
-> > > values for?  Or is it more general?
-> > >=20
-> > > I think the code will currently just set the number of samples to dis=
-card
-> > > to 0 for other cases (as no value set for those sensor types).
-> > > That's fine if 0 is definitely the right value for those other sensor=
-s.
-> >=20
-> >  I think all the sensors have this information in the datasheet/applica=
-tion
-> >  note. However, even if we add sample_to_discard just for LSM6DSM for t=
-he moment,
-> >  we do not introduce any regression for the other sensors with respect =
-to the
-> >  previous codebase since sample_to_discard will be just set to 0 (so we=
- do not
-> >  discard any sample). I can add sample_to_discard for LSM6DSO but at the
-> >  moment I do not have other devices for testing.
-> >  For LSM6DSO, do you prefer to add it in v2 or is it fine a follow-up p=
-atch?
->=20
-> How comes your patch really drops samples on my st,ism330dlc IMU ?
+Looks like Daniel has found the new Dialog maintainer he was looking
+for? Time to update MAINTAINERS?
 
-LSM6DSM and ISM330DLC share the register map.
+Thanks!
 
-Regards,
-Lorenzo
+Gr{oetje,eeting}s,
 
->=20
-> Best regards
->=20
-> Philippe
+                        Geert
 
---ZEDKOlY0IJgMTejn
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY/NaEQAKCRA6cBh0uS2t
-rMxmAP0TaHyutSkcd83ZBWSHxQXfLMizdZZ8ark1ebC2NR4CfQEA3W1y25rYopcD
-Ml8K2uP0xpz570yJBR6SWZBXIpgOXA8=
-=vcHl
------END PGP SIGNATURE-----
-
---ZEDKOlY0IJgMTejn--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

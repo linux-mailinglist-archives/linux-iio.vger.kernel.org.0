@@ -2,120 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4CAC69D0A3
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Feb 2023 16:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9572E69D467
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Feb 2023 21:05:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231392AbjBTPaR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Feb 2023 10:30:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
+        id S230076AbjBTUFe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Feb 2023 15:05:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229690AbjBTPaQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Feb 2023 10:30:16 -0500
+        with ESMTP id S230062AbjBTUFc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Feb 2023 15:05:32 -0500
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708BE7EDA;
-        Mon, 20 Feb 2023 07:30:15 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FC7A1E1F2;
+        Mon, 20 Feb 2023 12:05:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676907015; x=1708443015;
+  t=1676923531; x=1708459531;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=+HlrZP+jq3sz23IKR7YQHeZ/SCn5VW2Xfx4/ww7nx2M=;
-  b=Mh8nRjrV6izrqpKrM056BnvLxzq57LZGCaUsu7p22XbcydxUvqrFKu+a
-   466B5Kppa51OQJUtO+wTT+NeS6Q8UnajTAKGGML1Xn6ssLGRrbnPjnbvf
-   HbXO0viWPS0dle83xmYESAcmCqWSWvhLGs6jPsFZ8zdppClSuA3ZwAdko
-   dyqpkXYgnkJlKn9SGsF49bNBVTE8rJPLyCLTzEHs2u6fAozl409ewWMMY
-   rYFDR6b4dtuXgnD9vUc4exuuuWX+/36mchg1vSSWBDKlrwZGNW3TRSkyc
-   v5Xd010oKW5IWmr6c/2EWOoiVloKl7lXr/SZvkMnLxYkZLYw57zxrPwme
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="331091085"
-X-IronPort-AV: E=Sophos;i="5.97,312,1669104000"; 
-   d="scan'208";a="331091085"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2023 07:30:13 -0800
+  bh=0JjseAxJv1MQ5aoMkYPcofLggUQw/63rn0ahWH1W61w=;
+  b=BB69Rsf1g0h+6bWorBoCcj/3dTauqDAGVnWFQ3d+SCBTyd79Pk3HxbuA
+   XgidkXCkF7O6IoCEY3rS3I08Qs4IvR/W9LTKfoJfHDa0wOQ8p7px9z7Tx
+   Qi9UV1sS7VqMMq5UTqiyT5GNuZeBY84ooRrQwr1M8knB/2ojGRlIQVl9Y
+   HVSmo5VpFPXWNOk/JY5E0p3vd4k2GoV1PELIuBn1lTUESAEr8cwCXVvjr
+   Jvfj4jDTyaXKJPdnI4LfXzzf9mKXuG6e0CU5FBHG/Jyltxq8zJYtuVQda
+   BIB0M6LJcfGbbeIhxEnxiUp9rLWgq5FgLZ/panATjBX4/uq977gqLFJ4O
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="331145105"
+X-IronPort-AV: E=Sophos;i="5.97,313,1669104000"; 
+   d="scan'208";a="331145105"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2023 12:05:30 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="780686854"
-X-IronPort-AV: E=Sophos;i="5.97,312,1669104000"; 
-   d="scan'208";a="780686854"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 20 Feb 2023 07:30:09 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pU87C-009ZB3-39;
-        Mon, 20 Feb 2023 17:30:06 +0200
-Date:   Mon, 20 Feb 2023 17:30:06 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Sahin, Okan" <Okan.Sahin@analog.com>
-Cc:     Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v4 2/5] drivers: regulator: Add ADI MAX77541/MAX77540
- Regulator Support
-Message-ID: <Y/OR/pq8ene7sA2Z@smile.fi.intel.com>
-References: <20230201103534.108136-1-okan.sahin@analog.com>
- <20230201103534.108136-3-okan.sahin@analog.com>
- <Y9p3dIj+ix0A7SpR@sirena.org.uk>
- <MN2PR03MB516851FC99B1EDA2604B557FE7A49@MN2PR03MB5168.namprd03.prod.outlook.com>
+X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="1000368307"
+X-IronPort-AV: E=Sophos;i="5.97,313,1669104000"; 
+   d="scan'208";a="1000368307"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 20 Feb 2023 12:05:28 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pUCPf-000E9J-2I;
+        Mon, 20 Feb 2023 20:05:27 +0000
+Date:   Tue, 21 Feb 2023 04:04:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        marius.cristea@microchip.com
+Subject: Re: [PATCH v1 2/2] iio: adc: adding support for pac193x
+Message-ID: <202302210331.iKaMm4co-lkp@intel.com>
+References: <20230220123232.413029-3-marius.cristea@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <MN2PR03MB516851FC99B1EDA2604B557FE7A49@MN2PR03MB5168.namprd03.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230220123232.413029-3-marius.cristea@microchip.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Feb 20, 2023 at 02:58:47PM +0000, Sahin, Okan wrote:
-> Wed, 1 Feb 2023 5:30 PM
-> Mark Brown <broonie@kernel.org> wrote:
-> >On Wed, Feb 01, 2023 at 01:35:15PM +0300, Okan Sahin wrote:
+Hi,
 
-> >Please submit patches using subject lines reflecting the style for the subsystem,
-> >this makes it easier for people to identify relevant patches.
-> >Look at what existing commits in the area you're changing are doing and make
-> >sure your subject lines visually resemble what they're doing.
-> >There's no need to resubmit to fix this alone.
-> >
-> >> +	if (max77541->chip->id == MAX77540)
-> >> +		desc = max77540_regulators_desc;
-> >> +	else if (max77541->chip->id == MAX77541)
-> >> +		desc = max77541_regulators_desc;
-> >> +	else
-> >> +		return -EINVAL;
-> >
-> >Write this as a switch statement for extensibility.
-> >
-> >Otherwise this looks good.
+I love your patch! Perhaps something to improve:
 
-> Thank you for your feedback.  I am not sure that I fully understand your
-> feedback. What do you mean by "reflecting style for the subsystem". For
-> example, this patch includes files modified or added under regulator
-> directory as stated in the subject line. Do I need to say anything about mfd
-> as regulator is subdevice?
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.2 next-20230220]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-It's about Subject.
+url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-dt-bindings-for-PAC193X/20230220-203540
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20230220123232.413029-3-marius.cristea%40microchip.com
+patch subject: [PATCH v1 2/2] iio: adc: adding support for pac193x
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20230221/202302210331.iKaMm4co-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/fd3be916ffe18735a98bdc55ccc0cb5f3097582c
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review marius-cristea-microchip-com/dt-bindings-iio-adc-adding-dt-bindings-for-PAC193X/20230220-203540
+        git checkout fd3be916ffe18735a98bdc55ccc0cb5f3097582c
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/iio/adc/
 
-Just run `git log --online --no-merges -- drivers/regulator/max77*` and
-look closely at it.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202302210331.iKaMm4co-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/adc/pac193x.c: In function 'pac193x_acpi_get_acpi_match_entry':
+>> drivers/iio/adc/pac193x.c:1402:21: warning: variable 'status' set but not used [-Wunused-but-set-variable]
+    1402 |         acpi_status status;
+         |                     ^~~~~~
+
+
+vim +/status +1402 drivers/iio/adc/pac193x.c
+
+  1399	
+  1400	static char *pac193x_acpi_get_acpi_match_entry(acpi_handle handle)
+  1401	{
+> 1402		acpi_status status;
+  1403		union acpi_object *name_object;
+  1404		struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
+  1405	
+  1406		status = acpi_evaluate_object(handle, "_HID", NULL, &buffer);
+  1407		name_object = buffer.pointer;
+  1408	
+  1409		return name_object->string.pointer;
+  1410	}
+  1411	
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

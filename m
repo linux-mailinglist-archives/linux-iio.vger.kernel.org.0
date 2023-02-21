@@ -2,158 +2,229 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E4269E01C
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Feb 2023 13:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B00269E191
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Feb 2023 14:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234371AbjBUMTh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Feb 2023 07:19:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39830 "EHLO
+        id S233090AbjBUNoM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Feb 2023 08:44:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234076AbjBUMTf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Feb 2023 07:19:35 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46319265A8;
-        Tue, 21 Feb 2023 04:19:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676981954; x=1708517954;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=izryC7F06J5VIJp2EyElOCluBrFFbX9wzea4PSaNy8o=;
-  b=gzlkJcBMuCxBXFIXmyUyLpWVA3/W0tpCRHlqLITY0Fw/gVbYY5hMYB38
-   bo39665sZ97AkC+ziR86RkFYaoBOnO65GOnqyOPmdeKDORTHzbkxDdRGG
-   FT+zkPGLhjFJQDYapTgvMIBfaCENoTtdy3SOZG8csZ9v9Zh25OYfEX/5b
-   plfWdu+khs1TLXMe4zInvq1KdFhiylMD0eceBQZz9AQm878ET+4i5MkXF
-   8saIhz3Gmn4lR4a1Pr3u8uDQgNE6fxY0Trgr+h6fDIq1tRfOi/dvW78qG
-   eJNRX3Ya01ZyW/jxVye7yjDykbI5qsVgidvrrHLMGG3w0M++jxe1tppGL
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="397302705"
-X-IronPort-AV: E=Sophos;i="5.97,315,1669104000"; 
-   d="scan'208";a="397302705"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2023 04:18:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10627"; a="621479547"
-X-IronPort-AV: E=Sophos;i="5.97,315,1669104000"; 
-   d="scan'208";a="621479547"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 21 Feb 2023 04:18:48 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pURba-009wrF-0Y;
-        Tue, 21 Feb 2023 14:18:46 +0200
-Date:   Tue, 21 Feb 2023 14:18:45 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] regulator: max77541: Add ADI MAX77541/MAX77540
- Regulator Support
-Message-ID: <Y/S2pTZzzHCQzNY3@smile.fi.intel.com>
-References: <20230221103926.49597-1-okan.sahin@analog.com>
- <20230221103926.49597-3-okan.sahin@analog.com>
+        with ESMTP id S233226AbjBUNoM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Feb 2023 08:44:12 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F64C65B6;
+        Tue, 21 Feb 2023 05:44:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 9E7DDCE19E6;
+        Tue, 21 Feb 2023 13:44:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B7EC433D2;
+        Tue, 21 Feb 2023 13:44:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676987046;
+        bh=GzTJZs4LkVCiRQZTfYHn1K5tMQfcfIKi4fqDp/wozwM=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=WDct35pXKMDFI/inzGiFPLZoCif0IrzusYonBXqlrN6LumxQx0q0lmsfLI18trZiw
+         SH+mrcESPiUGz2bMvUQR/dGobex9EesYDALvAzXXQYFWxXen1EBYnGTiPJfz/P9ffq
+         Ee5nBNNEFk25spv1B07LI+0H22O0p0b3jtwFFC3JLLEDUMn9MokOAFVM3+RpLRmatG
+         FUDzZ5UHydkFgktVmR751zUgzGGKKtvMwtFaPpJMRZbOrD5gl7GRhDZYfpZcfpzTMu
+         GpyGr6F2GeTX37FL4WB1y8We0D1dPW5dci/sHp/0jhxhH5K3/Bm2LAywyzqFimcgKI
+         DT6udz5i30bUQ==
+Message-ID: <c38afa67-d24f-0390-f18a-81bee15b7eca@kernel.org>
+Date:   Tue, 21 Feb 2023 14:44:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230221103926.49597-3-okan.sahin@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: adding dt-bindings for
+ PAC193X
+Content-Language: en-US
+To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230220123232.413029-1-marius.cristea@microchip.com>
+ <20230220123232.413029-2-marius.cristea@microchip.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20230220123232.413029-2-marius.cristea@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Feb 21, 2023 at 01:39:10PM +0300, Okan Sahin wrote:
-> Regulator driver for both MAX77541 and MAX77540.
-> The MAX77541 is a high-efficiency step-down converter
-> with two 3A switching phases for single-cell Li+ battery
-> and 5VDC systems.
+On 20/02/2023 13:32, marius.cristea@microchip.com wrote:
+> From: Marius Cristea <marius.cristea@microchip.com>
+
+Subject: drop second/last, redundant "dt-bindings for". The
+"dt-bindings" prefix is already stating that these are bindings.
+
 > 
-> The MAX77540 is a high-efficiency step-down converter
-> with two 3A switching phases.
+> This is the device tree schema for iio driver for
+> Microchip PAC193X series of Power Monitors with Accumulator.
 
-...
+Do not use "This commit/patch".
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
 
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (c) 2022 Analog Devices, Inc.
-> + * ADI Regulator driver for the MAX77540 and MAX77541
-> + */
+Use imperative - also for subject.
 
-Dunno if Mark requires // comments for regulator new code.
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC.  It might happen, that command when run on an older
+kernel, gives you outdated entries.  Therefore please be sure you base
+your patches on recent Linux kernel.
 
-...
 
-> +#include <linux/i2c.h>
-
-Is there any user of this?
-
-...
-
-> +static int max77541_regulator_probe(struct platform_device *pdev)
-> +{
-> +	struct regulator_config config = {};
-> +	const struct regulator_desc *desc;
-> +	struct device *dev = &pdev->dev;
-> +	struct regulator_dev *rdev;
-> +	struct max77541 *max77541;
-
-> +	int i;
-
-unsigned ?
-
-> +	max77541 = dev_get_drvdata(dev->parent);
-
-Can be done in definition block (but it's up to you):
-
-	struct regulator_config config = {};
-	const struct regulator_desc *desc;
-	struct device *dev = &pdev->dev;
-	struct max77541 *max77541 = dev_get_drvdata(dev->parent);
-	struct regulator_dev *rdev;
-	unsigned int i;
-
-> +	config.dev = dev->parent;
+> 
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> ---
+>  .../bindings/iio/adc/microchip,pac193x.yaml   | 122 ++++++++++++++++++
+>  1 file changed, 122 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac193x.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac193x.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac193x.yaml
+> new file mode 100644
+> index 000000000000..e4ea560991e9
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac193x.yaml
+> @@ -0,0 +1,122 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac193x.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +	switch (max77541->chip->id) {
-> +	case MAX77540:
-> +		desc = max77540_regulators_desc;
-> +		break;
-> +	case MAX77541:
-> +		desc = max77541_regulators_desc;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
+> +title: Microchip PAC193X Power Monitors with Accumulator
 > +
-> +	for (i = 0; i < MAX77541_MAX_REGULATORS; i++) {
-> +		rdev = devm_regulator_register(dev, &desc[i], &config);
-> +		if (IS_ERR(rdev))
-> +			return dev_err_probe(dev, PTR_ERR(rdev),
-> +					     "Failed to register regulator\n");
-> +	}
+> +maintainers:
+> +  - Marius Cristea <marius.cristea@microchip.com>
 > +
-> +	return 0;
-> +}
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,pac1934
+> +      - microchip,pac1933
+> +      - microchip,pac1932
+> +      - microchip,pac1931
 
--- 
-With Best Regards,
-Andy Shevchenko
+Maybe order these numerically (ascending)?
 
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  microchip,samp-rate:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Sampling rate for all device's channels.
+
+What are the units? rate is usually in hz, which should be expressed in
+unit suffix (property name)
+
+> +    enum: [8, 64, 256, 1024]
+> +    default: 1024
+> +
+> +required:
+
+required goes after all properties, so after patternProperties
+
+> +  - compatible
+> +  - reg
+> +  - microchip,samp-rate
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +
+> +patternProperties:
+> +  "^channel([1-4])@[1-4]+$":
+
+Why first reg-pattern ([1-4])? For what do you need it?
+
+> +    $ref: "adc.yaml"
+
+Drop quotes
+
+> +    type: object
+> +    description: Represents the external channels which are connected to the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        description: The channel number.
+> +          It can have up to 4 channels, numbered from 1 to 4.
+> +        items:
+> +          - minimum: 1
+> +            maximum: 4
+> +
+> +      microchip,uohms-shunt-res:
+
+Not a correct unit suffix. Use standard properties:
+git grep shunt -- Documentation/devicetree/
+
+
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: |
+> +          Value in micro Ohms of the shunt resistor connected between
+> +          the SENSE+ and SENSE- inputs, across which the current is measured. Value
+> +          is needed to compute the scaling of the measured current.
+> +
+> +      microchip,rail-name:
+> +        $ref: /schemas/types.yaml#/definitions/string
+> +        description: Name of the monitored power rail.
+
+Why do you need it? Why this is a property of DT? Aren't you now
+duplicating label?
+
+> +
+> +      microchip,bi-directional:
+> +        description: Whether the channel is bi-directional.
+
+Describe here what is a "bi-directional" channel for ADC... Maybe it is
+obvious, maybe not. For me it is not and none of other devices have it.
+
+> +        type: boolean
+> +
+> +    required:
+> +      - reg
+> +      - microchip,uohms-shunt-res
+> +      - microchip,rail-name
+> +
+> +    additionalProperties: false
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        pac193x: pac193x@10 {
+
+Node names should be generic.
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+> +            compatible = "microchip,pac1934";
+> +            reg = <0x10>;
+> +
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +            microchip,samp-rate = <64>;
+> +
+> +            channel1@1 {
+
+1@1 is for sure not generic...
+
+
+
+Best regards,
+Krzysztof
 

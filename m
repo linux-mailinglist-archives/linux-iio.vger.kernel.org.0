@@ -2,147 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C8069F8D2
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Feb 2023 17:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B47C669F8EB
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Feb 2023 17:25:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbjBVQQc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Feb 2023 11:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37642 "EHLO
+        id S230284AbjBVQZF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Feb 2023 11:25:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232734AbjBVQQb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 11:16:31 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 452C13D925;
-        Wed, 22 Feb 2023 08:16:25 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id x24so10840941lfr.1;
-        Wed, 22 Feb 2023 08:16:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B9YMLBYcPz/4Hlblq1d7hFRHt4s8YknOklPReJ3GiyY=;
-        b=b1xBoyvL2h5smGjmn94Ham0JSyYLz8r2UnWaGNSQONcCY9PuAzhG/nJE8V1/+kg5em
-         97DVyp+687d7Ig4+iHDslu9bnDBr9q1UoBDHGnf6N63BRuEI1t9o831id2QmSwHYwDfr
-         7bAkslkNRa1vtIaKIHqm84MR0sl7uxH48LkgqMLNvYGvepcpk3N8zcD1V84bW0qSxO7d
-         tGn0cGXkskLBPYX/W9a0oIhCRXPcobfSQRnqd+Sqk/ksI8D4BfhpRvwUtZO6/4Mk4tQD
-         KZw39GDY8cs/poPxF11lPUCM+TLMouBbDkGGi4LJwaPTVg//KOaXBefhEjjEwMxerKeH
-         W2jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B9YMLBYcPz/4Hlblq1d7hFRHt4s8YknOklPReJ3GiyY=;
-        b=hz18BNHtAc2CZ4PSQPa8AYdqMS7/qWBIrKsuVHa9WGWnfEhkP/0aIy+e0OffArgNh6
-         xDX8tb9j+e5AgnTu0uaGI4iU/b8SVBrnBw+PrUX8s18Y/EbCPcEmJ8LtksoAOVgf4N3K
-         BVzerWPcvNB/c7BfhlG8tdFdU2SgxUxHmOksj7/LO4Vw93K5EHh+uoo5NxnZwLBegj3R
-         JM0AuSvN0CR2mV1PG4Hk6ydOrMymH3CIUJOWjK5h9TGnkmvfNED6cun4bbZvT5LnfzTi
-         zhVLqN0DzZ01DH+3qLBD9cI2qCW9xbCm4UfF2gq3gzMMHEHZrTQd9xhvUga+C01yJloE
-         xliQ==
-X-Gm-Message-State: AO0yUKUtnWtcak3qrOD9RyOdfZvIy2oX4v3IKvEezh3vwQzbrTU4IGyK
-        ynN1R1zqzv0SxUsxP4I+1LU=
-X-Google-Smtp-Source: AK7set/VuHemzuZuwIMi2PoQLRysxBPaa9lJAZXaeL3TFucxHl9nNqqCwNbM+Ex4gdZbddqGtL3HDA==
-X-Received: by 2002:ac2:5613:0:b0:4d6:ef7f:fc53 with SMTP id v19-20020ac25613000000b004d6ef7ffc53mr3252689lfd.34.1677082583575;
-        Wed, 22 Feb 2023 08:16:23 -0800 (PST)
-Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id p1-20020a19f001000000b004d57ca1c96csm359052lfc.172.2023.02.22.08.16.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Feb 2023 08:16:22 -0800 (PST)
-Date:   Wed, 22 Feb 2023 18:16:18 +0200
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Liam Beguin <liambeguin@gmail.com>,
-        Peter Rosin <peda@axentia.se>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        with ESMTP id S229980AbjBVQZF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 11:25:05 -0500
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C5EF3647C;
+        Wed, 22 Feb 2023 08:25:02 -0800 (PST)
+Received: from localhost.localdomain (unknown [10.101.196.174])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 4425A3FA87;
+        Wed, 22 Feb 2023 16:24:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1677083101;
+        bh=6PZoDVXhrOY89Anuzhd0k/e1jCsb5iCwDs2AL131Olw=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=Kpqz86SwHgCXxRYK2e7aTn45rpRE8l/VL/7Rgpsc3xqXvBcgruRCQ/O02OLyUtsn2
+         dAd9sIDbubB2oS4Ff5/f38lU5xq6hKvSglGwS5HGf6AN2cNQxt1Y+Is6gLZ15hLFRO
+         pJ0Njha8NZ1KcOpS3/Ka1Ysdo7P4cZeh9kmG6uSODtHK2W+9iqW+6SA5YjvSbqs316
+         y4sacGb2tWq42kJZ3SEeyIHMpCWPcyPq3M7JxcAmEOSyz465nMuHyY6VmxscBO5+/b
+         vE3LYRZbFrC48LgXq1xZiCA6B4D3MPGmoLDGYtuW68ntN/Y8lrAIYp3PTMyyjxi9T+
+         9QMBcvZC2BRSA==
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     hdegoede@redhat.com, Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kevin Tsai <ktsai@capellamicro.com>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 6/6] MAINTAINERS: Add ROHM BU27034
-Message-ID: <8dbdf68749389605cc4dff396ddd66d27fdb2a0d.1677080089.git.mazziesaccount@gmail.com>
-References: <cover.1677080089.git.mazziesaccount@gmail.com>
+Subject: [PATCH v3] iio: light: cm32181: Unregister second I2C client if present
+Date:   Thu, 23 Feb 2023 00:24:08 +0800
+Message-Id: <20230222162408.1996023-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="qOVCSwgf+lSCy3A0"
-Content-Disposition: inline
-In-Reply-To: <cover.1677080089.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+If a second dummy client that talks to the actual I2C address was
+created in probe(), there should be a proper cleanup on driver and
+device removal to avoid leakage.
 
---qOVCSwgf+lSCy3A0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+So unregister the dummy client via another callback.
 
-Add myself as a maintainer for ROHM BU27034 ALS driver.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices with 2 I2C resources")
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+v3:
+ - Use devm_add_action_or_reset() in a correct place.
+ - Wording.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 43f5a024daa2..8d31ef852372 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18090,6 +18090,11 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/light/bh1750.yaml
- F:	drivers/iio/light/bh1750.c
-=20
-+ROHM BU27034 AMBIENT LIGHT SENSOR DRIVER
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/light/rohm-bu27034.c
+v2:
+ - Use devm_add_action_or_reset() instead of remove() callback to avoid
+   race.
+
+ drivers/iio/light/cm32181.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+index b1674a5bfa368..b3da7a517aaea 100644
+--- a/drivers/iio/light/cm32181.c
++++ b/drivers/iio/light/cm32181.c
+@@ -429,6 +429,14 @@ static const struct iio_info cm32181_info = {
+ 	.attrs			= &cm32181_attribute_group,
+ };
+ 
++static void cm32181_unregister_dummy_client(void *data)
++{
++	struct i2c_client *client = data;
 +
- ROHM MULTIFUNCTION BD9571MWV-M PMIC DEVICE DRIVERS
- M:	Marek Vasut <marek.vasut+renesas@gmail.com>
- L:	linux-kernel@vger.kernel.org
---=20
-2.39.2
++	/* Unregister the dummy client */
++	i2c_unregister_device(client);
++}
++
+ static int cm32181_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+@@ -460,6 +468,12 @@ static int cm32181_probe(struct i2c_client *client)
+ 		client = i2c_acpi_new_device(dev, 1, &board_info);
+ 		if (IS_ERR(client))
+ 			return PTR_ERR(client);
++
++		ret = devm_add_action_or_reset(dev, cm32181_unregister_dummy_client, client);
++		if (ret) {
++			dev_err(dev, "%s: add devres action failed\n", __func__);
++			return ret;
++		}
+ 	}
+ 
+ 	cm32181 = iio_priv(indio_dev);
+-- 
+2.34.1
 
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---qOVCSwgf+lSCy3A0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmP2P9IACgkQeFA3/03a
-ocWKGwf+NYZPx7+q1bS8S0Nsm1l1Rvjcs4LfPWyq+Of5pwQyWLUrZC+RuFuEULX4
-/V1BiX6BoKCN9rpbX2NTPWquaN4qrNUa+o4qL9vNbfGEqv8bis2RxVmOfzyQeu+a
-rmsFG1vtyQY0AkRhAIbHgwWmgIkuPCFPkXfcR+qh5CIPmgKkK6n6ciQQZwJP12vV
-THIYElmdYEgWRxsnDB28sXtpxgHKE0bx6aQI4TvR9JSESfDbfKa0MexxxxDtkx5W
-qfRb+LNAnAFXXsNYPddPy4c3ciDSSDhGtav0vHSCeyvqi3Y5LAaauuVVkm+HES4v
-fwrWO6HovI5VDqnnLZ51o3HDzFDp2w==
-=VWJH
------END PGP SIGNATURE-----
-
---qOVCSwgf+lSCy3A0--

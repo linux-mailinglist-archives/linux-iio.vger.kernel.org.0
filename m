@@ -2,268 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FF8769E74C
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Feb 2023 19:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E542469F5EA
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Feb 2023 14:51:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230112AbjBUSVB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Feb 2023 13:21:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48266 "EHLO
+        id S231995AbjBVNvA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Feb 2023 08:51:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229925AbjBUSVA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Feb 2023 13:21:00 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 205FC2D146;
-        Tue, 21 Feb 2023 10:20:58 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id ck15so22106159edb.0;
-        Tue, 21 Feb 2023 10:20:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NEx60aGsOPq7IkDOpzyHIUcwhrl0mz7YlLyNt97/zzk=;
-        b=Vkiaa+8m8yu4NTxbblvl9Xy6xRY9QvaCJQQZbhyYuTZn8LBqKKDe7jY7cLga8bqrcE
-         YaFq3y0C2R5gLoZ44PHVCrMAdGGatzNgi+EosQ56cNauhD/qzPxPu9eWtArP/kQYf6rx
-         36GQyJWdRypl3dP6LvmlQomgaS1x7ac8qIOxKBv4iPYah7/H4U4h/V6DJktLKCDLkCNt
-         zam9FAexUE4ScIdFjriD/ldLT/qH7DYDTEMJw7I5irpI67gcvfxo0PhE5WzARIJUnSPa
-         wlya8h0DyOjyph7LZJFK7Rnd+iEZ0//cF85WuFwOA5cl7PpXtV4f/127McL5fndnVkaK
-         p+/A==
+        with ESMTP id S231828AbjBVNu7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 08:50:59 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE0238B5D
+        for <linux-iio@vger.kernel.org>; Wed, 22 Feb 2023 05:50:54 -0800 (PST)
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id BF5603F718
+        for <linux-iio@vger.kernel.org>; Wed, 22 Feb 2023 13:50:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1677073851;
+        bh=aBBPjXj3R0x04LVSzwbtWQea8aW4cQ9Kc9kRT/YpHbg=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=Xodyl9Xa6IaogPmJZmUsXkFlewRMUeMUknorwqIoHTef4j3zilySPOOyRBSn//Ozn
+         WH6ltcID0K6Ah3bRAoXf8YJ4H03Bft92anjXCLVdcTC9nB0i89NhqOKNDwQPNevyFn
+         dBZoyiBaQawC4XklYe6NY629Nmd67GyvNsBo6CweqVt4BqIzKVU2LGA22tOC52j2cW
+         lHisTAl0GMm9ejJs6BhEfql2x98SZ3+M093PRbM1kShG/ITVBH1bnSAsuAk6ttBdBX
+         hBkWxWdiD2rjlEKW37rLzxyLR1IKcjRXKlKY4CTgpowsXa1SE9f3H2GmAxiaSUB6u6
+         EPSD5JMMYtjaw==
+Received: by mail-pf1-f200.google.com with SMTP id t21-20020a056a00139500b005a8534314aeso3876653pfg.17
+        for <linux-iio@vger.kernel.org>; Wed, 22 Feb 2023 05:50:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NEx60aGsOPq7IkDOpzyHIUcwhrl0mz7YlLyNt97/zzk=;
-        b=EIveVhgabSP6qeor31DrF/UzwIQhNyjPrFBL0M+F+KtQKk3W6nhN0QXlKc3AfU6bLD
-         Nm4w7kerBxYUue9WnCh9vAupwZoeflQJK9SX2t4cbNu4xfGAggM8H53zqZBs0+Ddc1XF
-         8mNLsINIXwUHTZ8rfKQq0OLBMpfNJoFoa8SaQWUsGpDMrKzeV6j7mCftbyeyEgcOobXS
-         f7soEG6SQKQk2eaa6edZDfdFPDWw4b93HadSi2sr25NC1ZOA4M6yczfRUGQV9BvGt3b3
-         whGie6dj/egPaZmyDHC0M9VEjFfoI69QvYrVk9W0eHlV7S9ywUjn2z/7LJ2DASBl5OBH
-         DGrg==
-X-Gm-Message-State: AO0yUKWDnCkBf4BiTf1tmSCjzRTtmHA26Vz6qN6bTq8fyAUadoqDXnxR
-        sf3ibJai6iaRxPfNCvG9vvA=
-X-Google-Smtp-Source: AK7set/77DXP7YfI8zufkfadXlbWVnpTCpeUBy9C/lrv0XbiKTxHiGSVqDS5SHlnDvtOC7YRM2po7A==
-X-Received: by 2002:a17:906:3e43:b0:88a:2e57:9813 with SMTP id t3-20020a1709063e4300b0088a2e579813mr13728718eji.33.1677003656530;
-        Tue, 21 Feb 2023 10:20:56 -0800 (PST)
-Received: from jernej-laptop.localnet (82-149-1-233.dynamic.telemach.net. [82.149.1.233])
-        by smtp.gmail.com with ESMTPSA id p20-20020a1709060dd400b008be5b97ca49sm4790892eji.150.2023.02.21.10.20.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Feb 2023 10:20:55 -0800 (PST)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     rafael@kernel.org, daniel.lezcano@linaro.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Niklas =?ISO-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Mark Brown <broonie@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Petr Machata <petrm@nvidia.com>, Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Niklas =?ISO-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>, Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        ye xingchen <ye.xingchen@zte.com.cn>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Tim Zimmermann <tim@linux4.de>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jiang Jian <jiangjian@cdjrlc.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        "open list:ACPI THERMAL DRIVER" <linux-acpi@vger.kernel.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        "open list:ARM/Allwinner sunXi SoC support" 
-        <linux-sunxi@lists.linux.dev>,
-        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
-        <linux-input@vger.kernel.org>,
-        "open list:CXGB4 ETHERNET DRIVER (CXGB4)" <netdev@vger.kernel.org>,
-        "open list:INTEL WIRELESS WIFI LINK (iwlwifi)" 
-        <linux-wireless@vger.kernel.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "open list:QUALCOMM TSENS THERMAL DRIVER" 
-        <linux-arm-msm@vger.kernel.org>,
-        "open list:RENESAS R-CAR THERMAL DRIVERS" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "open list:ARM/Rockchip SoC support" 
-        <linux-rockchip@lists.infradead.org>,
-        "open list:SAMSUNG THERMAL DRIVER" 
-        <linux-samsung-soc@vger.kernel.org>,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH v2 01/16] thermal/core: Add a thermal zone 'devdata' accessor
-Date:   Tue, 21 Feb 2023 19:20:51 +0100
-Message-ID: <5907084.lOV4Wx5bFT@jernej-laptop>
-In-Reply-To: <20230221180710.2781027-2-daniel.lezcano@linaro.org>
-References: <20230221180710.2781027-1-daniel.lezcano@linaro.org>
- <20230221180710.2781027-2-daniel.lezcano@linaro.org>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aBBPjXj3R0x04LVSzwbtWQea8aW4cQ9Kc9kRT/YpHbg=;
+        b=xC7Rnrb8a0bImh4Kr3AWOAvnbt0kAJY/yzaGE+KxiPHIoeet8D0Lfe/7ilmbZRU2Ac
+         MGWitQuCERsSkVj15gstgal76nEk0HxPct3lsMybcygoJMJauPvzyN/SrUlG2Ub6cPKr
+         JJdKAgK7f32bARrMUVyA+qQmHMXSP11HLW7KbZzgoSBGKQtioa+8jZDJWLOBYT74rXR/
+         Qs84TU86fRIRnEGQDe1SvRrVYdrGHf2gjzOJIIhSpvJ4Wa7hqV/9oGSan3KHZ7PXN0mp
+         dfcozw32j/79peRDgi4hGVdsLuXbjxR9siEeiw5yCLBK92K/y8V/25IyK0YiEx0Aagke
+         A9fA==
+X-Gm-Message-State: AO0yUKVVqkIgMW1J27XA5MDfK6586j6NFMBhQxQlJyUSsXEz2BkPDAag
+        GHqdzyUwcOSJ3N2kwhnraLRbm9eYdte1Nusunf2EXm8t49zex6Bc7xlOlA3ylUhiGHhddJVvUfI
+        0nMOtTDdy38S8mSTDr/bfG+UoNr+dwkmiaMPsa37gsXr/bIaLeO0h/xVy26c=
+X-Received: by 2002:a17:90b:1f87:b0:237:1892:2548 with SMTP id so7-20020a17090b1f8700b0023718922548mr1340182pjb.44.1677073850286;
+        Wed, 22 Feb 2023 05:50:50 -0800 (PST)
+X-Google-Smtp-Source: AK7set+B3zDTZXstNxu3HjOIuVf5wfZ2H1F5t4UojQulon3L5InNWzIq/OjXiv/nRJvgbKp4tQAVRF4MEodaV/05Pds=
+X-Received: by 2002:a17:90b:1f87:b0:237:1892:2548 with SMTP id
+ so7-20020a17090b1f8700b0023718922548mr1340174pjb.44.1677073849964; Wed, 22
+ Feb 2023 05:50:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230208072141.1103738-1-kai.heng.feng@canonical.com> <7685a109-99fd-8b41-6911-5eba8924c0d6@redhat.com>
+In-Reply-To: <7685a109-99fd-8b41-6911-5eba8924c0d6@redhat.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Wed, 22 Feb 2023 21:50:38 +0800
+Message-ID: <CAAd53p5w0mszO9NWmc6M3Ff_GSV8-D6RA375mNcDC_85zqaUuw@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: light: cm32181: Unregister second I2C client if present
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dne torek, 21. februar 2023 ob 19:06:55 CET je Daniel Lezcano napisal(a):
-> The thermal zone device structure is exposed to the different drivers
-> and obviously they access the internals while that should be
-> restricted to the core thermal code.
->=20
-> In order to self-encapsulate the thermal core code, we need to prevent
-> the drivers accessing directly the thermal zone structure and provide
-> accessor functions to deal with.
->=20
-> Provide an accessor to the 'devdata' structure and make use of it in
-> the different drivers.
->=20
-> No functional changes intended.
->=20
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Acked-by: Guenter Roeck <linux@roeck-us.net> #hwmon
-> Reviewed-by: Niklas S=F6derlund <niklas.soderlund+renesas@ragnatech.se> #=
-R-Car
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com> #mlxsw
-> Reviewed-by: AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@collabora.com> #MediaTek auxadc and lvts
-> Reviewed-by: Balsam CHIHI <bchihi@baylibre.com> #Mediatek lvts
-> Acked-by: Gregory Greenman <gregory.greenman@intel.com> #iwlwifi
-> Reviewed-by: Adam Ward <DLG-Adam.Ward.opensource@dm.renesas.com> #da9062
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>  #spread
-> Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com> #power_supp=
-ly
-> ---
->  drivers/acpi/thermal.c                           | 16 ++++++++--------
->  drivers/ata/ahci_imx.c                           |  2 +-
->  drivers/hwmon/hwmon.c                            |  4 ++--
->  drivers/hwmon/pmbus/pmbus_core.c                 |  2 +-
->  drivers/hwmon/scmi-hwmon.c                       |  2 +-
->  drivers/hwmon/scpi-hwmon.c                       |  2 +-
->  drivers/iio/adc/sun4i-gpadc-iio.c                |  2 +-
->  drivers/input/touchscreen/sun4i-ts.c             |  2 +-
->  .../net/ethernet/chelsio/cxgb4/cxgb4_thermal.c   |  2 +-
->  .../net/ethernet/mellanox/mlxsw/core_thermal.c   | 14 +++++++-------
->  drivers/net/wireless/intel/iwlwifi/mvm/tt.c      |  4 ++--
->  drivers/power/supply/power_supply_core.c         |  2 +-
->  drivers/regulator/max8973-regulator.c            |  2 +-
->  drivers/thermal/armada_thermal.c                 |  4 ++--
->  drivers/thermal/broadcom/bcm2711_thermal.c       |  2 +-
->  drivers/thermal/broadcom/bcm2835_thermal.c       |  2 +-
->  drivers/thermal/broadcom/brcmstb_thermal.c       |  4 ++--
->  drivers/thermal/broadcom/ns-thermal.c            |  2 +-
->  drivers/thermal/broadcom/sr-thermal.c            |  2 +-
->  drivers/thermal/da9062-thermal.c                 |  2 +-
->  drivers/thermal/dove_thermal.c                   |  2 +-
->  drivers/thermal/hisi_thermal.c                   |  2 +-
->  drivers/thermal/imx8mm_thermal.c                 |  2 +-
->  drivers/thermal/imx_sc_thermal.c                 |  2 +-
->  drivers/thermal/imx_thermal.c                    |  6 +++---
->  drivers/thermal/intel/intel_pch_thermal.c        |  2 +-
->  drivers/thermal/intel/intel_soc_dts_iosf.c       | 13 +++++--------
->  drivers/thermal/intel/x86_pkg_temp_thermal.c     |  4 ++--
->  drivers/thermal/k3_bandgap.c                     |  2 +-
->  drivers/thermal/k3_j72xx_bandgap.c               |  2 +-
->  drivers/thermal/kirkwood_thermal.c               |  2 +-
->  drivers/thermal/max77620_thermal.c               |  2 +-
->  drivers/thermal/mediatek/auxadc_thermal.c        |  2 +-
->  drivers/thermal/mediatek/lvts_thermal.c          |  4 ++--
->  drivers/thermal/qcom/qcom-spmi-adc-tm5.c         |  4 ++--
->  drivers/thermal/qcom/qcom-spmi-temp-alarm.c      |  4 ++--
->  drivers/thermal/qoriq_thermal.c                  |  2 +-
->  drivers/thermal/rcar_gen3_thermal.c              |  4 ++--
->  drivers/thermal/rcar_thermal.c                   |  3 +--
->  drivers/thermal/rockchip_thermal.c               |  4 ++--
->  drivers/thermal/rzg2l_thermal.c                  |  2 +-
->  drivers/thermal/samsung/exynos_tmu.c             |  4 ++--
->  drivers/thermal/spear_thermal.c                  |  8 ++++----
->  drivers/thermal/sprd_thermal.c                   |  2 +-
->  drivers/thermal/sun8i_thermal.c                  |  2 +-
+Hi Hans,
 
-=46or sun8i_thermal:
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+On Mon, Feb 13, 2023 at 7:17 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> Thank you for working on this, some remarks inline.
+>
+> On 2/8/23 08:21, Kai-Heng Feng wrote:
+> > If a second client that talks to the actual I2C address was created in
+> > probe(), there should be a corresponding cleanup in remove() to avoid
+> > leakage.
+> >
+> > So if the "client" is not the same one used by I2C core, unregister it
+> > accordingly.
+> >
+> > Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
+> > Fixes: c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices with 2 I2C resources")
+> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > ---
+> > v2:
+> >  - Use devm_add_action_or_reset() instead of remove() callback to avoid
+> >    race.
+> >
+> >  drivers/iio/light/cm32181.c | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+> > index b1674a5bfa368..a3e5f56101c9f 100644
+> > --- a/drivers/iio/light/cm32181.c
+> > +++ b/drivers/iio/light/cm32181.c
+> > @@ -429,6 +429,16 @@ static const struct iio_info cm32181_info = {
+> >       .attrs                  = &cm32181_attribute_group,
+> >  };
+> >
+> > +static void cm32181_disable(void *data)
+> > +{
+> > +     struct i2c_client *client = data;
+> > +     struct cm32181_chip *cm32181 = iio_priv(i2c_get_clientdata(client));
+> > +
+> > +     /* Unregister the dummy client */
+> > +     if (cm32181->client != client)
+> > +             i2c_unregister_device(cm32181->client);
+> > +}
+> > +
+> >  static int cm32181_probe(struct i2c_client *client)
+> >  {
+> >       struct device *dev = &client->dev;
+> > @@ -479,6 +489,12 @@ static int cm32181_probe(struct i2c_client *client)
+> >               return ret;
+> >       }
+> >
+> > +     ret = devm_add_action_or_reset(dev, cm32181_disable, client);
+> > +     if (ret) {
+> > +             dev_err(dev, "%s: add devres action failed\n", __func__);
+> > +             return ret;
+> > +     }
+> > +
+>
+> This is too late, we will still exit without unregistering the client if
+> the cm32181_reg_init() call fails.
+>
+> It would be best to do this directly after the i2c_acpi_new_device()
+> call, so inside the "if (ACPI_HANDLE(dev) && client->addr == SMBUS_ALERT_RESPONSE_ADDRESS) {"
+> block.
 
-Best regards,
-Jernej
+You are right, not sure what I was thinking but this is much better.
 
->  drivers/thermal/tegra/tegra-bpmp-thermal.c       |  6 ++++--
->  drivers/thermal/tegra/tegra30-tsensor.c          |  4 ++--
->  drivers/thermal/thermal-generic-adc.c            |  2 +-
->  drivers/thermal/thermal_core.c                   |  6 ++++++
->  drivers/thermal/thermal_mmio.c                   |  2 +-
->  .../thermal/ti-soc-thermal/ti-thermal-common.c   |  4 ++--
->  drivers/thermal/uniphier_thermal.c               |  2 +-
->  include/linux/thermal.h                          |  7 +++++++
->  53 files changed, 102 insertions(+), 91 deletions(-)
+>
+> This way you can also remove the "if (cm32181->client != client)"
+> check from cm32181_disable() since it now only runs when the client
+> was registered in the first place.
+>
+> Also please rename cm32181_disable() to cm32181_unregister_dummy_client()
+> so that the name actually matches what it does.
 
+Sure, will change that in next version.
 
-
+>
+> Regards,
+>
+> Hans
+>
+>
+>
+>
+>
+> >       ret = devm_iio_device_register(dev, indio_dev);
+> >       if (ret) {
+> >               dev_err(dev, "%s: regist device failed\n", __func__);
+>

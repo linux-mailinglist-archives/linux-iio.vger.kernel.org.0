@@ -2,121 +2,222 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC5F69F83D
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Feb 2023 16:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D41769F8BB
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Feb 2023 17:13:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbjBVPl1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Feb 2023 10:41:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36432 "EHLO
+        id S231214AbjBVQNz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Feb 2023 11:13:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232622AbjBVPlR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 10:41:17 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7F694ECB;
-        Wed, 22 Feb 2023 07:41:13 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id D01E0CE1DFF;
-        Wed, 22 Feb 2023 15:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C59C433EF;
-        Wed, 22 Feb 2023 15:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677080163;
-        bh=6OiNrUoSk8IsC3LZqfhZGbwu+s0dh8vUE+MkRMC32tQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k1Ac4W6yP3Trp0BLB/e+PLHiL0YM3rPCd1BvvqbtGBQLpOjQeksrT80fa82ASs2xj
-         9YfuKL+EASoBMQXes/1aAYcXWEAnxBonhlXka42ux52xt8lcuBodf/U10cHn2fJGV6
-         v6893vMaV95VapS9TT5ThTnXhWTVHzR83Eo4MxPNpc+TkAPWPqjr6BOmOUpNYZdhxW
-         iBPNbKZukIQhjB3smw5c38EjusklrC+HNK5j52zz12pDm9mtlRf6eGvf2OL8b3bFye
-         BHxzbkLjwlPHz2O3AyutFmIm2OaWfMSuvt8az13QCqYuxiR4GBX50D02oOwO+CbVm1
-         M91nDV0JEsQAQ==
-Date:   Wed, 22 Feb 2023 15:35:57 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <chris.paterson2@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v13 4/6] counter: Add Renesas RZ/G2L MTU3a counter driver
-Message-ID: <Y/Y2XZ8Ns1DJkbSH@google.com>
-References: <20230216203830.196632-1-biju.das.jz@bp.renesas.com>
- <20230216203830.196632-5-biju.das.jz@bp.renesas.com>
- <Y/YwzGWKyR4jhoFt@google.com>
- <Y/YzylOMwUGK/Z0c@fedora>
+        with ESMTP id S230406AbjBVQNy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 11:13:54 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17792124;
+        Wed, 22 Feb 2023 08:13:52 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id s22so10610383lfi.9;
+        Wed, 22 Feb 2023 08:13:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O8HKJupUxTafko/9EYvv7Sk7sddF/f4G5xflzazxXqk=;
+        b=ayN+whCq+85Uy9GNDyl7tj63JhOiNXdqgvL721uCLLUFWMQ1P/MsgqOWTQYj3at6wI
+         KVbFQQpsvJKmRKQUsV6BdJGtEZLwFDBXTEJ4YM5Cqfizimhgfx1bctXLi+soh41quVz5
+         yS3wOem5ICtGGjYwq5gepGORdu/uxWgbtdv7EbrilYxJ9r8W4Hb8cOKSV7bTrVeAOEpH
+         fV0VMECyfBPEfYqyBik+feOZj8KtDz0WK+DSMLg0/L5j9QdFve8C7GSMpYThzkgRWMlo
+         ZhnAlV1NIuq5ve1PT9S3R+yPoRMuyDDWh9o4+/gDuPrqjScgTx6e7GqzClfiMJkPo6gR
+         D/ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O8HKJupUxTafko/9EYvv7Sk7sddF/f4G5xflzazxXqk=;
+        b=Twbmkc1t0rVTwvAFcLZqIGhv4qQmZjg4j/w32z250TimEtw5J2kjueS29cRoFLfvbf
+         AMal4Ek5wGPkAjMDEDmOJfWsUjjYt1uq34LwOfqiwy8mZziNNruwUYED2Ufts9pzB52b
+         O+qMOgvTuZevm13FxfPnpnICPTkjdTvACO3aWN8o0c3nx3xAugF/DM2pZo38eTG/Cmut
+         lxY3wvYuHK+Kk0NTCNQO5CDFLR14DHTA6NsyKkLs19ajqEF5iIJmzHA9h+46wNrrHgj4
+         nW3xqgH3NHri/SFX0gXFLleFTuiGzPfY25fZfZ6Lk431h5pBfFPm/RCNAJPopUwi9dmc
+         TJlA==
+X-Gm-Message-State: AO0yUKVuOCezOLZPFUv62wDsVFDzLuEcHWJQxxdath9pUH9kBWTdM4UC
+        49QDVBYnkKqXxI54scYx6pRf8qCEIbA=
+X-Google-Smtp-Source: AK7set+Bkxe/dNStb4QzNgsxhE1AuJ3i0LAbRneKND0gCBVBoxsML2ZXfX+OH8t+ZOdq2OvD6V1Fuw==
+X-Received: by 2002:ac2:51c9:0:b0:4db:2aaf:7367 with SMTP id u9-20020ac251c9000000b004db2aaf7367mr2823794lfm.33.1677082430191;
+        Wed, 22 Feb 2023 08:13:50 -0800 (PST)
+Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id e6-20020ac25466000000b004db4fe8fd0bsm697953lfn.87.2023.02.22.08.13.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Feb 2023 08:13:49 -0800 (PST)
+Date:   Wed, 22 Feb 2023 18:13:43 +0200
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Liam Beguin <liambeguin@gmail.com>,
+        Peter Rosin <peda@axentia.se>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/6] Support ROHM BU27034 ALS sensor
+Message-ID: <cover.1677080089.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="BlRpAQ1HKTL4mi9A"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y/YzylOMwUGK/Z0c@fedora>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Feb 2023, William Breathitt Gray wrote:
 
-> On Wed, Feb 22, 2023 at 03:12:12PM +0000, Lee Jones wrote:
-> > On Thu, 16 Feb 2023, Biju Das wrote:
-> > 
-> > > Add RZ/G2L MTU3a counter driver. This IP supports the following
-> > > phase counting modes on MTU1 and MTU2 channels
-> > > 
-> > > 1) 16-bit phase counting modes on MTU1 and MTU2 channels.
-> > > 2) 32-bit phase counting mode by cascading MTU1 and MTU2 channels.
-> > > 
-> > > This patch adds 3 counter value channels.
-> > > 	count0: 16-bit phase counter value channel on MTU1
-> > > 	count1: 16-bit phase counter value channel on MTU2
-> > > 	count2: 32-bit phase counter value channel by cascading
-> > >                 MTU1 and MTU2 channels.
-> > > 
-> > > The external input phase clock pin for the counter value channels
-> > > are as follows:
-> > > 	count0: "MTCLKA-MTCLKB"
-> > > 	count1: "MTCLKA-MTCLKB" or "MTCLKC-MTCLKD"
-> > > 	count2: "MTCLKA-MTCLKB" or "MTCLKC-MTCLKD"
-> > > 
-> > > Use the sysfs variable "external_input_phase_clock_select" to select the
-> > > external input phase clock pin and "cascade_counts_enable" to enable/
-> > > disable cascading of channels.
-> > > 
-> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> > > Reviewed-by: William Breathitt Gray <william.gray@linaro.org>
-> > 
-> > Hey William,
-> > 
-> > Is this a review or an ack?
-> > 
-> > It looks like there are deps on other patches in this set.  It's likely
-> > that the whole set with to in together via one tree (probably MFD),
-> > which I can make happen with the appropriate maintainer acks.
-> 
-> I reviewed just this patch in-depth so that's wherefore the Reviewed-by
-> tag. However, I do approve of these changes so please apply my Ack as
-> well if so neccessary to pick this up.
-> 
-> Acked-by: William Breathitt Gray <william.gray@linaro.org>
+--BlRpAQ1HKTL4mi9A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-An Acked-by implies that it's been reviewed.
+Support ROHM BU27034 ALS sensor
 
-> One minor suggestion is to include MAINTAINERS entries for the new
-> MTU3a core driver and PWM driver, but I'll yield to the respective
-> subsystem maintainers regarding that matter.
+This series adds support for ROHM BU27034 Ambient Light Sensor.
 
-It's not required for driver authors to become file maintainers.
-However, if they wish to, that's their prerogative.
+The BU27034 has configurable gain and measurement (integration) time
+settings. Both of these have direct, inversely proportional relation to
+the sensor's intensity channel scale.
 
-Thanks William, I hope all is well with you.
+Many users only set the scale, which means that many drivers attempt to
+'guess' the best gain+time combination to meet the scale. Usually this
+is the biggest integration time which allows setting the requested
+scale. Typically, increasing the integration time has better accuracy
+than increasing the gain, which often amplifies the noise as well as the
+real signal.
 
--- 
-Lee Jones [李琼斯]
+However, there may be cases where more responsive sensors are needed.
+So, in some cases the longest integration times may not be what the user
+prefers. The driver has no way of knowing this.
+
+Hence, the approach taken by this series is to allow user to set both
+the scale and the integration time with following logic:
+
+1. When scale is set, the existing integration time is tried to be
+   maintained as a first priority.
+   1a) If the requested scale can't be met by current time, then also
+       other time + gain combinations are searched. If scale can be met
+       by some other integration time, then the new time may be applied.
+       If the time setting is common for all channels, then also other
+       channels must be able to maintain their scale with this new time
+       (by changing their gain). The new times are scanned in the order
+       of preference (typically the longest times first).
+   1b) If the requested scale can be met using current time, then only
+       the gain for the channel is changed.
+
+2. When the integration time change - scale is maintained.
+   When integration time change is requested also gain for all impacted
+   channels is adjusted so that the scale is not changed. If gain can't
+   be changed for some channel, then the request is rejected.
+
+I think this fits the existing 'modes' where scale setting 'guesses' the
+best scale + integration time config - and integration time setting does
+not change the scale.
+
+This logic is really simple. When total gain (either caused by time or
+hw-gain) is doubled, the scale gets halved. Also, the supported times
+are given a 'multiplier' value which tells how much they increase the
+total gain. However, when I wrote this logic in bu27034 driver, I made
+quite a few errors on the way - and driver got pretty big. As I am
+writing drivers for two other sensors (RGB C/IR + flicker BU27010 and RGB
+C/IR BU27008) with similar gain-time-scale logic I thought that adding
+common helpers for these computations might be wise. I hope this way all
+the bugs will be concentrated in one place and not in every individual
+driver ;) Hence, this RFC also intriduces IIO gain-time-scale helpers +
+couple of KUnit tests for the most hairy parts.
+
+I can't help thinking that there should've been simpler way of computing
+the gain-time-scale conversions. Also, pretty good speed improvements
+might be available if some of the do_div()s could be replaced by >>.
+This, however, is not a priority for my light-sensor use-case where
+speed demands are not that big. I am open to all improvements and
+suggestions though!
+
+What is still missing is advertising the available scales / integration
+times. The list of available integration times is not static but depend
+on channel gain configurations. Hence, I wonder if there is a way to
+not only advertise available integration times with current gain
+configuration - but also the available scales with different gains?
+
+Finally, this patch series is an RFC becasue the helper logic could
+benefit from extra pairs of eyes - and because the sensor has been
+only very limitedly tested this far.
+
+
+Matti Vaittinen (6):
+  dt-bindings: iio: light: Support ROHM BU27034
+  iio: light: Add gain-time-scale helpers
+  iio: test: test gain-time-scale helpers
+  MAINTAINERS: Add IIO gain-time-scale helpers
+  iio: light: ROHM BU27034 Ambient Light Sensor
+  MAINTAINERS: Add ROHM BU27034
+
+ .../bindings/iio/light/rohm-bu27034.yaml      |   46 +
+ MAINTAINERS                                   |   13 +
+ drivers/iio/light/Kconfig                     |   16 +
+ drivers/iio/light/Makefile                    |    2 +
+ drivers/iio/light/gain-time-scale-helper.c    |  446 ++++++
+ drivers/iio/light/gain-time-scale-helper.h    |  111 ++
+ drivers/iio/light/rohm-bu27034.c              | 1212 +++++++++++++++++
+ drivers/iio/test/Kconfig                      |   15 +
+ drivers/iio/test/Makefile                     |    1 +
+ drivers/iio/test/iio-test-gts.c               |  331 +++++
+ 10 files changed, 2193 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/rohm-bu2703=
+4.yaml
+ create mode 100644 drivers/iio/light/gain-time-scale-helper.c
+ create mode 100644 drivers/iio/light/gain-time-scale-helper.h
+ create mode 100644 drivers/iio/light/rohm-bu27034.c
+ create mode 100644 drivers/iio/test/iio-test-gts.c
+
+
+base-commit: 5dc4c995db9eb45f6373a956eb1f69460e69e6d4
+--=20
+2.39.2
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--BlRpAQ1HKTL4mi9A
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmP2Px4ACgkQeFA3/03a
+ocUekggAtHqlwM8oq5roJKnU8YHnIE8rkZ/Bwd84+gt5erAyM1vdn4TTe5u9Z/ws
+sOL5ffbKdbJWMwsNQG2D4Bl+QgvTl4Sr2/mW53OL4hWBr6KosIvMnoXyl4MBFvuD
+pbpfca39xzmT5qUyrxWrsCfOOQ6wWW2C4opH8XGEt3w829TOIU9Bm8TOOxHO2jYX
+msfZ+3hMOFahaInsYiGKkk+LFHTNM/aaFiqEVe7+jYr5n5m8D8EwzJaQP/RUWy/E
+qaGhIKJz+/I53C2OnqcQkZKCw6gS/P9hVvzSimilTfAdE8ua2eWP5+a30wd/fXTd
+0r0h3Gr74MYBo33HCWwXAZeIoebKag==
+=Ye4V
+-----END PGP SIGNATURE-----
+
+--BlRpAQ1HKTL4mi9A--

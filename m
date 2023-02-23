@@ -2,63 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B11669FD3F
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Feb 2023 21:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDC56A0101
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Feb 2023 03:02:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbjBVU4s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Feb 2023 15:56:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58518 "EHLO
+        id S231312AbjBWCCA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Feb 2023 21:02:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjBVU4r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 15:56:47 -0500
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22253E0B2
-        for <linux-iio@vger.kernel.org>; Wed, 22 Feb 2023 12:56:44 -0800 (PST)
-Received: by mail-lj1-x22d.google.com with SMTP id f16so9147374ljq.10
-        for <linux-iio@vger.kernel.org>; Wed, 22 Feb 2023 12:56:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c3ml7RHO0nki+CdSWt9xcf+yF6MU1hgirFtbEyXAlGU=;
-        b=dDmLWB4Hx2wQQbITSJ/nnnTbBgmeoJGRMLo+QPAo8ADtj0xAXTNV5ZA+DECXMkCR1a
-         QOeyfwv0EJj3bEdbHx3KcpHYbhjKf2+A9C8ON0IL9L8qGtNvWjqhNzIXLnE90ltlRtvz
-         q+9el1t36iXUBDIImBsptr82uia5HraHqSeyE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c3ml7RHO0nki+CdSWt9xcf+yF6MU1hgirFtbEyXAlGU=;
-        b=Xw9ggO5/d4lm+celyyVZPRwHqW00fqiZ9VYvfsGa8WK1PXY2vr0koy52dB1NoGo5gI
-         GyKLW6GJoJikAVXPrjAdG+1v8baQmEva8qw9vbpb3OPRgKp5vSV+ViW6Vt3FhQGvqT1s
-         NCtZpl4hWjWMW2PEXfG4QFX3wOS/mi2pLRxwAflVsArweDcnmbKLAiZM+V1/I0LTDbAU
-         lTfU+mVyNQa83S5to7FTeRaAOvGdvHRGbCVXcUMUdJHWBYYx9m6RXpAHrcWFPjm5nn46
-         oCPA1OIfXXcUBLy57WV9uy1qgEvGjCPUTQw8plzf6ZGyadn6jVE/FuM4oPUhUgIO4ath
-         Wjrw==
-X-Gm-Message-State: AO0yUKUV3vVSYFNHxuqEYJXz54JJusnWDzJo/MUgNh6vKUTEFtKb3QN+
-        bonjIE9y0aMy+3LHvb/VlRf2ZuDf2/QvETOvty5IHg==
-X-Google-Smtp-Source: AK7set9dkEjA6Ruo1ht4hIu6ihGxBO3BC35+w6tSYCrwyHmJ4SxvG1dUEQt68wEr9UXD+Z+4471NNhqC5GubaGO6lmw=
-X-Received: by 2002:a05:651c:895:b0:295:9626:a1d9 with SMTP id
- d21-20020a05651c089500b002959626a1d9mr1853166ljq.1.1677099402835; Wed, 22 Feb
- 2023 12:56:42 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 22 Feb 2023 15:56:42 -0500
+        with ESMTP id S230435AbjBWCB4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Feb 2023 21:01:56 -0500
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7671CF77;
+        Wed, 22 Feb 2023 18:01:51 -0800 (PST)
+Received: from localhost.localdomain (unknown [10.101.196.174])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 51FD73F836;
+        Thu, 23 Feb 2023 02:01:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1677117710;
+        bh=U9a7rLpIP2hCUo6eMqKJBrvk9ya0IDzUiHVZwChKl1g=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=k49S7U0NgiJu83yL7x7GPeoyZuNTMSOO1TumMXe2/K3PmwWXsSpSAdunjhkPBgGF9
+         jn01djgQwF+0PPLRls3+8AzjYZ4QWIXYq7eNbAS5WWI9QIxKIQFV7WYSMrREGRevb/
+         xFGMSSkvyW3FOxpgzA8GrbD8larr/e2l4OOqB7G0YC0tqPE7ZdlEJn4xYlbO382ixt
+         Fx4E2WjapqOMusvqlGCpuy5u4+XUsZqarAOuPQcvIKLutqKqFuomzIvjTD3SGuaIM5
+         fkCAO4nw4S4FUfxEAMd/ZNIOVhl9bjPEh7BnKyew7JVo+Wo395YnqTAGiHutcYbE77
+         f1GqF+0IZcN2w==
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     hdegoede@redhat.com, Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kevin Tsai <ktsai@capellamicro.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4] iio: light: cm32181: Unregister second I2C client if present
+Date:   Thu, 23 Feb 2023 10:00:59 +0800
+Message-Id: <20230223020059.2013993-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <20230211002421.3447060-1-gwendal@chromium.org>
-References: <20230211002421.3447060-1-gwendal@chromium.org>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Wed, 22 Feb 2023 15:56:42 -0500
-Message-ID: <CAE-0n52mN83_vE4hbk-cE+T_11--QHV5FA-Srd08PqfQrhRtHg@mail.gmail.com>
-Subject: Re: [PATCH v4] iio: proximity: sx_common: Add old register mapping
-To:     Gwendal Grignou <gwendal@chromium.org>, dianders@chromium.org,
-        jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,36 +50,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2023-02-10 16:24:21)
-> Older firmwares still send sensor configuration using a list of
-> registers with opaque values defined during sensor tuning.
-> sx9234 and sx9360 sensor on ACPI based devices are concerned.
-> More schema to configure the sensors will be needed to support devices
-> designed for windows, like Samsung Galaxy Book2.
->
-> Support schema is: "<_HID>.<register_name>". For instance
-> "STH9324,reg_adv_ctrl2" in:
->
->     Scope (\_SB.PCI0.I2C2)
->     {
->         Device (SX28)
->         {
->             Name (_HID, "STH9324")  // _HID: Hardware ID
-> ...
->             Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
->             {
->                 ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /*
-> Device Properties for _DSD */,
->                 Package (0x3F)
->                 {
-> ...
->                     Package (0x02)
->                     {
->                         "STH9324,reg_adv_ctrl2",
->                         Zero
->                     },`
->
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
+If a second dummy client that talks to the actual I2C address was
+created in probe(), there should be a proper cleanup on driver and
+device removal to avoid leakage.
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+So unregister the dummy client via another callback.
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: c1e62062ff54 ("iio: light: cm32181: Handle CM3218 ACPI devices with 2 I2C resources")
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2152281
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+---
+v4:
+ - Remove logging kmalloc failures.
+
+v3:
+ - Use devm_add_action_or_reset() in a correct place.
+ - Wording.
+
+v2:
+ - Use devm_add_action_or_reset() instead of remove() callback to avoid
+   race.
+
+ drivers/iio/light/cm32181.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+index b1674a5bfa368..d4a34a3bf00d9 100644
+--- a/drivers/iio/light/cm32181.c
++++ b/drivers/iio/light/cm32181.c
+@@ -429,6 +429,14 @@ static const struct iio_info cm32181_info = {
+ 	.attrs			= &cm32181_attribute_group,
+ };
+ 
++static void cm32181_unregister_dummy_client(void *data)
++{
++	struct i2c_client *client = data;
++
++	/* Unregister the dummy client */
++	i2c_unregister_device(client);
++}
++
+ static int cm32181_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+@@ -460,6 +468,10 @@ static int cm32181_probe(struct i2c_client *client)
+ 		client = i2c_acpi_new_device(dev, 1, &board_info);
+ 		if (IS_ERR(client))
+ 			return PTR_ERR(client);
++
++		ret = devm_add_action_or_reset(dev, cm32181_unregister_dummy_client, client);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	cm32181 = iio_priv(indio_dev);
+-- 
+2.34.1
+

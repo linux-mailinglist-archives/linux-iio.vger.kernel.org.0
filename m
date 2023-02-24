@@ -2,74 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB5556A1A81
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Feb 2023 11:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14E286A1D87
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Feb 2023 15:36:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229940AbjBXKnl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Feb 2023 05:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39032 "EHLO
+        id S229557AbjBXOgq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Feb 2023 09:36:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbjBXKnC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Feb 2023 05:43:02 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD3CC2A157;
-        Fri, 24 Feb 2023 02:41:49 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id f41so17324270lfv.13;
-        Fri, 24 Feb 2023 02:41:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KQw4NVJFAFLSgoZBVcMoqNPGG17Af/T/X5oeh8AkTQ0=;
-        b=X6ENhphd+wZzM9gl/6cTr4GEyl2heOOInN5Fw8QqrKfFopQxA1Co3/9VBOkoLZxDae
-         wF9xsUbGUUooSGnij5fjxbPzUQijeguce7/nZEtms7anoVi5sp9xrVGP8VlZFdlAAvFA
-         X2oairdrWVv7VH9zCuMIl2HIDnx8yuL1iWuxTpPwouhvBksLlIOed6d8YyUId4B/Rdlm
-         TxbNV84zz5JERAzq0my7e4ohF5R4SJcH/5WuKKWqtj8Vveu0ApoypTshHn6KdziEIw9P
-         ulNXUR8/5tlO5uyIttIwgTjQDkeAkXgzcsou5RAnONbUcm7HLrwCHYmWKalTzF1zVLQg
-         u8Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KQw4NVJFAFLSgoZBVcMoqNPGG17Af/T/X5oeh8AkTQ0=;
-        b=ikWAkeXEpz0aPqkchHlFp54R2p6O5vLutZK1CkqWkshaau/ZNwmozSQ69BC1EbXCGF
-         fh1jlQA89yHybxxTzzqdfZaJKW4BB5JptUWdy6bdzEZ4YGjz4DL3xKnf2NumyvQlPIe7
-         5psVdB2keQcqeCmldIVYrbo1+8TwWMJGWKyYUrsJkag2C4ajwSbZ51ag986UC/Nq/wZI
-         YL2CVGzk7jlSxTrqa0HdKSgNeTEkkm0HPsej/6KZRD8f6H913qtGAS5w+Nb2yugd/X3a
-         RAU1w9WmGsFMvdLvI91XUwWErw4PHaKl5FjM+QHracoguvEaoIJD+CK/iySDlMOWOBt0
-         4quQ==
-X-Gm-Message-State: AO0yUKUYgE+TaPLLTr7mqBnMXBoPAWbZB+RmFcnrNq/3tzz66aJlx/lW
-        htuHgRhWsZzn5W0PEs9aLbw=
-X-Google-Smtp-Source: AK7set+X31MsOvhb4Gd5lEMAbTEf9y8axw33yhjVzJNDqQ7imwI3ateGBXGiuAInpl1tQ2MkOTogjQ==
-X-Received: by 2002:ac2:4479:0:b0:4db:4fa6:7c0c with SMTP id y25-20020ac24479000000b004db4fa67c0cmr4864298lfl.60.1677235307868;
-        Fri, 24 Feb 2023 02:41:47 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id m15-20020a19520f000000b004cb2995de37sm1628025lfb.265.2023.02.24.02.41.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Feb 2023 02:41:47 -0800 (PST)
-Message-ID: <02f948ee-34ee-c15e-09e4-d0d8c5161c9b@gmail.com>
-Date:   Fri, 24 Feb 2023 12:41:46 +0200
+        with ESMTP id S229484AbjBXOgp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Feb 2023 09:36:45 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE7967997;
+        Fri, 24 Feb 2023 06:36:42 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PNXTf6qvNz67CmC;
+        Fri, 24 Feb 2023 22:34:30 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Fri, 24 Feb
+ 2023 14:36:39 +0000
+Date:   Fri, 24 Feb 2023 14:36:38 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Andrea Merello <andrea.merello@iit.it>,
+        "Jagath Jog J" <jagathjog1996@gmail.com>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [RFC PATCH] iio: Add some kerneldoc for channel types
+Message-ID: <20230224143638.00003515@Huawei.com>
+In-Reply-To: <10a855f9adc1d710150b7f647500c3c6a769f9ca.1677243698.git.mazziesaccount@gmail.com>
+References: <10a855f9adc1d710150b7f647500c3c6a769f9ca.1677243698.git.mazziesaccount@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US, en-GB
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <cover.1677080089.git.mazziesaccount@gmail.com>
- <63a2dbedf54e2e00e3b63dd16aae190ff6596355.1677080089.git.mazziesaccount@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [RFC PATCH 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
-In-Reply-To: <63a2dbedf54e2e00e3b63dd16aae190ff6596355.1677080089.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,173 +51,197 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2/22/23 18:15, Matti Vaittinen wrote:
+On Fri, 24 Feb 2023 15:02:32 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-//snip
+> For occasional contributor like me navigating the IIO channel types and
+> modifiers may be a daunting task. One may have hard time finding out
+> what type of channel should be used for device data and what units the
+> data should be converted.
+> 
+> There is a great documentation for the sysfs interfaces though. What is
+> missing is mapping of the channel types and modifiers to the sysfs
+> documentation (and entries in documentation).
+> 
+> Give a hand to a driver writer by providing some documentation and by
+> pointing to the sysfs document from the kerneldocs of respective enums.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
++CC linux-iio
 
-> 	- Driver starts the measurement on the background when it is
-> 	  probed. This improves the respnse time to read-requests
-> 	  compared to starting the read only when data is requested.
-> 	  When the most accurate 400 mS measurement time is used, data reads
-> 	  would last quite long if measurement was started only on
-> 	  demand. This, however, is not appealing for users who would
-> 	  prefere power saving over measurement response time.
-
-//snip
-
-> +static bool bu27034_has_valid_sample(struct bu27034_data *data)
-> +{
-> +	int ret, val;
-> +
-> +	ret = regmap_read(data->regmap, BU27034_REG_MODE_CONTROL4, &val);
-> +	if (ret)
-> +		dev_err(data->dev, "Read failed %d\n", ret);
-> +
-> +	return (val & BU27034_MASK_VALID);
-> +}
-> +
-> +static void bu27034_invalidate_read_data(struct bu27034_data *data)
-> +{
-> +	bu27034_has_valid_sample(data);
-> +}
-> +
-> +static int _bu27034_get_result(struct bu27034_data *data, u16 *res, bool lock)
-> +{
-> +	int ret = 0;
-> +
-> +retry:
-> +	if (lock)
-> +		mutex_lock(&data->mutex);
-> +	/* Get new value from sensor if data is ready - or use cached value */
-> +	if (bu27034_has_valid_sample(data)) {
-> +		ret = regmap_bulk_read(data->regmap, BU27034_REG_DATA0_LO,
-> +				       &data->raw[0], sizeof(data->raw));
-> +		if (ret)
-> +			goto unlock_out;
-> +
-> +		data->cached = true;
-> +		bu27034_invalidate_read_data(data);
-> +	} else if (unlikely(!data->cached)) {
-> +		/* No new data in sensor and no value cached. Wait and retry */
-> +		if (lock)
-> +			mutex_unlock(&data->mutex);
-> +		msleep(25);
-> +
-> +		goto retry;
-> +	}
-> +	res[0] = le16_to_cpu(data->raw[0]);
-> +	res[1] = le16_to_cpu(data->raw[1]);
-> +	res[2] = le16_to_cpu(data->raw[2]);
-> +
-> +unlock_out:
-> +	if (lock)
-> +		mutex_unlock(&data->mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static int bu27034_get_result_unlocked(struct bu27034_data *data, u16 *res)
-> +{
-> +	return _bu27034_get_result(data, res, false);
-> +}
-> +
-> +static int bu27034_get_result(struct bu27034_data *data, u16 *res)
-> +{
-> +	return _bu27034_get_result(data, res, true);
-> +}
-
-//snip
-
-> +	case IIO_CHAN_INFO_RAW:
-> +	{
-> +		u16 res[3];
-> +
-> +		if (chan->type != IIO_INTENSITY)
-> +			return -EINVAL;
-> +
-> +		if (chan->channel < BU27034_CHAN_DATA0 ||
-> +		    chan->channel > BU27034_CHAN_DATA2)
-> +			return -EINVAL;
-> +		/*
-> +		 * Reading one channel at a time is inefficient.
-> +		 *
-> +		 * Hence we run the measurement on the background and always
-> +		 * read all the channels. There are following caveats:
-> +		 * 1) The VALID bit handling is racy. Valid bit clearing is not
-> +		 * tied to reading the data in the hardware. We clear the
-> +		 * valid-bit manually _after_ we have read the data - but this
-> +		 * means there is a small time-window where new result may
-> +		 * arrive between read and clear. This means we can miss a
-> +		 * sample. For normal use this should not be fatal because
-> +		 * usually the light is changing slowly. There might be
-> +		 * use-cases for measuring more rapidly changing light but this
-> +		 * driver is unsuitable for those cases anyways. (Smallest
-> +		 * measurement time we support is 55 mS.)
-> +		 * 2) Data readings more frequent than the meas_time will return
-> +		 * the same cached values. This should not be a problem for the
-> +		 * very same reason 1) is not a problem.
-> +		 */
-> +		ret = bu27034_get_result(data, &res[0]);
-> +		if (ret)
-> +			return ret;
-> +
-> +		*val = res[chan->channel - BU27034_CHAN_DATA0];
-> +
-> +		return IIO_VAL_INT;
-> +	}
-
-//snip
-
-> +static int bu27034_chip_init(struct bu27034_data *data)
-> +{
-
-//snip
-
-> +
-> +	/*
-> +	 * Consider disabling the measurement (and powering off the sensor) for
-> +	 * runtime pm
-> +	 */
-> +	ret = bu27034_meas_en(data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_add_action_or_reset(data->dev, bu27034_meas_stop, data);
-> +}
-
-Well, this "works on my machine" - but I am slightly unhappy with this. 
-I have a feeling I am effectively making a poor, reduced version of data 
-buffering here. I am starting to think that I should
-
-a) Not start measurement at chip init. (saves power)
-b) Start measurement at raw-read and just block for damn long for each 
-raw-read. Yep, it probably means that users who want to raw-read all 
-channels will be blocking 4 * measurement time when they are reading all 
-channels one after another. Yes, this is in worst case 4 * 400 mS. 
-Horrible. But see (c) below.
-c) Implement triggered_buffer mode. Here my lack of IIO-experience shows 
-up again. I have no idea if there is - or what is - the "de facto" way 
-for implementing this when our device has no IRQ? I could cook-up some 
-'tiny bit shorter than the measurement time' period timer which would 
-kick the driver to poll the VALID-bit - or, because we need anyways to 
-poll the valid bit from process context - just a kthread which polls the 
-VALID-bit. Naturally the thread/timer should be only activated when the 
-trigger is enabled.
-
-Actually, my question (with this driver, the big question in the RFC is 
-the gain-time-scale helper) seems to be - should I implement 
-triggered_buffer and do we have some generic IIO trigger (timer or 
-thread or whatever) the driver could use or should each driver (which 
-needs this) implement own one?
-
-
-Thanks for the patience :)
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+> ---
+> Please note that this RFC patch should not be applied as is. The docs
+> have TODO comments regarding units for IIO_ELECTRICALCONDUCTIVITY,
+> IIO_PHASE and IIO_RESISTANCE. I'll fix these TODOs, remove RFC and respin
+> if anyone familiar with the values provided via sysfs could provide me the
+> corret units for these channels. I am also open to any suggestions how
+> to better link from enum documentation to specific entry at the IIO sysfs
+> documetation.
+> 
+> Initial discussion about these docs can be found from:
+> https://lore.kernel.org/all/0e0d45b7-e582-82b2-9bac-1f70f9dad9f7@gmail.com/
+> ---
+>  include/uapi/linux/iio/types.h | 140 ++++++++++++++++++++++++++++++++-
+>  1 file changed, 139 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
+> index c79f2f046a0b..e6329d3cc055 100644
+> --- a/include/uapi/linux/iio/types.h
+> +++ b/include/uapi/linux/iio/types.h
+> @@ -10,7 +10,129 @@
+>  
+>  #ifndef _UAPI_IIO_TYPES_H_
+>  #define _UAPI_IIO_TYPES_H_
+> -
+> +/**
+> + * iio_chan_type - Type of data transferred via IIO channel.
+> + *
+> + * The 'main' type of data transferred via channel. Please note that most
+> + * devices need to specify also a more accurate 'sub category'. See the
+> + * enum iio_modifier for this. (For example, IIO_ACCEL channel often needs to
+> + * specify the direction. IIO_CONCENTRATION specifies the type of substance
+> + * it measures etc).
+> + *
+> + * Use of correct units is required but scale and offset that user must apply
+> + * to channel values can be advertised.
+> + *
+> + * Please find the detailed documentation for reported values from the
+> + * Documentation/ABI/testing/sysfs-bus-iio.
+> + *
+> + * IIO_ACCEL:		Acceleration, m/s^2
+> + *			Doc keyword: in_accel_x_raw
+> + *
+> + * IIO_ACTIVITY:	Activity state. For example a pedometer signaling
+> + *			jogging, walking or staying still.
+> + *			Doc keyword: in_activity_still_thresh_rising_en
+> + *
+> + * IIO_ALTVOLTAGE:
+> + *
+> + * IIO_ANGL:		Angle of rotation, radians.
+> + *			Doc keyword: in_angl_raw
+> + *
+> + * IIO_ANGL_VEL:	Angular velocity, rad/s
+> + *			Doc keyword: in_anglvel_x_raw
+> + *
+> + * IIO_CAPACITANCE:	Capacitance, nanofarads.
+> + *			Doc keyword: in_capacitanceY_raw
+> + *
+> + * IIO_CCT:
+> + *
+> + * IIO_CURRENT:		Current, milliamps
+> + *			Doc keyword: in_currentY_raw
+> + *
+> + * IIO_CONCENTRATION:	Reading of a substance, percents. Used for example by
+> + *			deviced measuring amount of CO2, O2, ethanol...
+> + *			Doc keyword: in_concentration_raw
+> + *
+> + * IIO_COUNT:		Deprecated, please use counter subsystem.
+> + *
+> + * IIO_DISTANCE:	Distance in meters. Typically used to report measured
+> + *			distance to an object or the distance covered by the
+> + *			user
+> + *			Doc keyword: in_distance_input
+> + *
+> + * IIO_ELECTRICALCONDUCTIVITY: electric conductivity, siemens per meter
+> + *			Doc keyword: in_electricalconductivity_raw
+> + *			TODO: What does "can be processed to siemens per meter"
+> + *			mean? Do we have unit requirement?
+> + *
+> + * IIO_ENERGY:		Energy in Joules. Typically reported by a device
+> + *			measuring energy burnt by the user.
+> + *			Doc keyword: in_energy_input
+> + *
+> + * IIO_GRAVITY:		Gravity, m/s^2
+> + *			Doc keyword: in_gravity_x_raw
+> + *
+> + * IIO_HUMIDITYRELATIVE: Relative humidity, percents
+> + *			Doc keyword: in_humidityrelative_raw
+> + *
+> + * IIO_INCLI:		Inclination, degrees
+> + *			Doc keyword: in_incli_x_raw
+> + *
+> + * IIO_INDEX:		Deprecated, please use Counter subsystem
+> + *
+> + * IIO_INTENSITY:	Unitless intensity.
+> + *			Doc keyword: in_intensityY_raw
+> + *
+> + * IIO_LIGHT:		Visible light intensity, lux
+> + *			Doc keyword: in_illuminance_raw
+> + *
+> + * IIO_MAGN:		Magnetic field, Gauss.
+> + *			Doc keyword: in_magn_x_raw
+> + *
+> + * IIO_MASSCONCENTRATION: Mass concentration, ug / m3
+> + *			Doc keyword: in_massconcentration_pm1_input
+> + *
+> + * IIO_PH:		pH reading, negative base-10 logarithm of hydrodium
+> + *			ions in a litre of water
+> + *			Doc keyword: in_ph_raw
+> + *
+> + * IIO_PHASE:		Phase difference, radians
+> + *			Doc keyword: in_phaseY_raw
+> + *			TODO: What does "can be processed to radians" mean? Do
+> + *			we have unit requirement?
+> + *
+> + * IIO_POSITIONRELATIVE: Relative position.
+> + *			Doc keyword: in_positionrelative_x_raw
+> + *
+> + * IIO_POWER:		Power, milliwatts
+> + *			Doc keyword: in_powerY_raw
+> + *
+> + * IIO_PRESSURE:	Pressure, kilopascal
+> + *			Doc keyword: in_pressureY_raw
+> + *
+> + * IIO_RESISTANCE:	Resistance, ohms
+> + *			Doc keyword: in_resistance_raw
+> + *			TODO: What means "can be processed..." Do we have unit
+> + *			requirement?
+> + *
+> + * IIO_ROT:		Euler angles, deg
+> + *			Doc keyword: in_rot_yaw_raw
+> + *
+> + * IIO_STEPS:		Steps taken by the user
+> + *			Doc keyword: in_steps_input
+> + *
+> + * IIO_TEMP:		Temperature, milli degrees Celsius
+> + *			Doc keyword: in_temp_raw
+> + *
+> + * IIO_UVINDEX:		UV light intensity index
+> + *			Doc keyword: in_uvindex_input
+> + *
+> + * IIO_VELOCITY:	Current speed (norm or magnitude of the velocity
+> + *			vector), m/s
+> + *			Doc keyword: in_velocity_sqrt(x^2+y^2+z^2)_input
+> + *
+> + * IIO_VOLTAGE:		Voltage, millivolts
+> + *			Doc keyword: in_voltageY_raw
+> + */
+>  enum iio_chan_type {
+>  	IIO_VOLTAGE,
+>  	IIO_CURRENT,
+> @@ -49,6 +171,22 @@ enum iio_chan_type {
+>  	IIO_MASSCONCENTRATION,
+>  };
+>  
+> +/**
+> + * iio_modifier - accurate class for channel data
+> + *
+> + * IIO_MOD_<X,Y,Z>:	Value represents <X,Y,Z>-axis data.
+> + *			Typically used by channels of type:
+> + *			IIO_ACCEL, IIO_TEMP, IIO_GRAVITY, IIO_POSITIONRELATIVE,
+> + *			IIO_ANGL_VEL, IIO_INCLI, IIO_MAGN
+> + * IIO_MOD_LIGHT_BOTH:	Value contains visible and infra red light components
+> + * IIO_MOD_LIGHT_IR:	Value represents infra-red radiation
+> + * IIO_MOD_LIGHT_<RED, GREEN, BLUE>:
+> + *			Value represents visible <red, green, blue>  light
+> + * IIO_MOD_LIGHT_CLEAR:	Value represents all visible light frequencies
+> + *
+> + * Please find the detailed documentation for reported values from the
+> + * Documentation/ABI/testing/sysfs-bus-iio.
+> + */
+>  enum iio_modifier {
+>  	IIO_NO_MOD,
+>  	IIO_MOD_X,
+> 
+> base-commit: c9c3395d5e3dcc6daee66c6908354d47bf98cb0c
 

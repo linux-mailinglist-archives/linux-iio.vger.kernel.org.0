@@ -2,281 +2,370 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4566A205A
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Feb 2023 18:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF4B6A2372
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Feb 2023 22:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbjBXRQh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Feb 2023 12:16:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45580 "EHLO
+        id S229925AbjBXVH0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Feb 2023 16:07:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjBXRQg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Feb 2023 12:16:36 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872F714E81;
-        Fri, 24 Feb 2023 09:16:33 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PNbyx1j0Jz686y1;
-        Sat, 25 Feb 2023 01:11:37 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Fri, 24 Feb
- 2023 17:16:30 +0000
-Date:   Fri, 24 Feb 2023 17:16:30 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andrea Merello <andrea.merello@iit.it>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [RFC PATCH] iio: Add some kerneldoc for channel types
-Message-ID: <20230224171630.00007d50@Huawei.com>
-In-Reply-To: <20230224143638.00003515@Huawei.com>
-References: <10a855f9adc1d710150b7f647500c3c6a769f9ca.1677243698.git.mazziesaccount@gmail.com>
-        <20230224143638.00003515@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229881AbjBXVHZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Feb 2023 16:07:25 -0500
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5006F406
+        for <linux-iio@vger.kernel.org>; Fri, 24 Feb 2023 13:07:12 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id m25-20020a7bcb99000000b003e7842b75f2so268574wmi.3
+        for <linux-iio@vger.kernel.org>; Fri, 24 Feb 2023 13:07:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0e9wKai03am79CRSK5WLZ1F5ap0ezDnNlxcN7b+lDFE=;
+        b=gEQoDMGG85UUYLbhj+CszX25rKahJvE6EsHrpVCD19nrYJY2UMAttAzvRvcvFN3yTT
+         u318zaSVLJsM6I6JVHi80qrxGGMn+9MkpPU6e4HRDU69KMDKaHBdMIKp3F4xD6yMnLcZ
+         7uMOqyx/xHwTW0kE3kyCw06W1Cp5G/4vo7a3v3AWFtoa82b5rlUctdGN6bhxRxevyJV5
+         M07S1+eVOOQwONkafWtcKeIkmyh2reb5YG0DaTLhmCl7cUzt6qPOUSXEfuM5K/cPq58T
+         5lF8wUwuqCnMOeK3TbXzD4RL5HT7RVYJYcLsDUU0X3RBls0Hd9vLX47GLU28ul3h30PX
+         17zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0e9wKai03am79CRSK5WLZ1F5ap0ezDnNlxcN7b+lDFE=;
+        b=IF4K/g2BTsm+roTL9IlE2932IfdDKBK1sAW/ifKYYVO39jhu8hNI0/jHL61PIEs+9r
+         hPfvGsoQRThYKqv7Tn5JILxUC4Ci29DYp87TsxmGA8K+IgnjY7EaplwBQ/6yOs7JZi95
+         /hC3jQMMy6xGQ6cquujBVCjAfH/rS8xQ8eWOtV7Df1w2QpgWLrUqxZCHLlu7xN0nj3kc
+         5HNuZ5S2dzs3Y7+jpCK9u2jpZzUgWoOFQguyGJ/7DC+p585ErSO+wFADqKPZBPkS5azD
+         Kh2cdsa4NJ8udxcr3lMEzSUKoVFCriPbh99wdt8GY4U6trnW/van7qIxdbqaoWzihqpd
+         AZsg==
+X-Gm-Message-State: AO0yUKWUi2RXsOMCUx1oX5//fLeJ0m3s9YUYil2GLmZ+l8MWs+ihUbxT
+        3x8KExA4DfLDxe86aM4hz1guSw==
+X-Google-Smtp-Source: AK7set/o5gusVY1R+OzmQQgCBRNYS3Y1I/Iq5pNaqgB60578gum3u5lnbg6rHhPkocyc7M2+2HFR2Q==
+X-Received: by 2002:a05:600c:1c28:b0:3e8:490b:e28b with SMTP id j40-20020a05600c1c2800b003e8490be28bmr10327809wms.25.1677272830367;
+        Fri, 24 Feb 2023 13:07:10 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708])
+        by smtp.gmail.com with ESMTPSA id b9-20020a5d4b89000000b002c794495f6fsm1947270wrt.117.2023.02.24.13.07.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Feb 2023 13:07:09 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rafael@kernel.org, daniel.lezcano@linaro.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH v3 00/17] Self-encapsulate the thermal zone device structure
+Date:   Fri, 24 Feb 2023 22:06:17 +0100
+Message-Id: <20230224210634.3994365-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 24 Feb 2023 14:36:38 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+The exported thermal headers expose the thermal core structure while those
+should be private to the framework. The initial idea was the thermal sensor
+drivers use the thermal zone device structure pointer to pass it around from
+the ops to the thermal framework API like a handler.
 
-> On Fri, 24 Feb 2023 15:02:32 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
-> > For occasional contributor like me navigating the IIO channel types and
-> > modifiers may be a daunting task. One may have hard time finding out
-> > what type of channel should be used for device data and what units the
-> > data should be converted.
-> > 
-> > There is a great documentation for the sysfs interfaces though. What is
-> > missing is mapping of the channel types and modifiers to the sysfs
-> > documentation (and entries in documentation).
-> > 
-> > Give a hand to a driver writer by providing some documentation and by
-> > pointing to the sysfs document from the kerneldocs of respective enums.
-> > 
-> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
-> +CC linux-iio
-> 
+Unfortunately, different drivers are using and abusing the internals of this
+structure to hook the associated struct device, read the internals values, take
+the lock, etc ...
 
-A few quick notes. I'll want to read this a lot more carefully.
-I'm not that keen on information in two places but this does have
-a lot of references.
+rn order to fix this situation, let's encapsulate the structure leaking the
+more in the different drivers: the thermal_zone_device structure.
 
-> > ---
-> > Please note that this RFC patch should not be applied as is. The docs
-> > have TODO comments regarding units for IIO_ELECTRICALCONDUCTIVITY,
-> > IIO_PHASE and IIO_RESISTANCE. I'll fix these TODOs, remove RFC and respin
-> > if anyone familiar with the values provided via sysfs could provide me the
-> > corret units for these channels. I am also open to any suggestions how
-> > to better link from enum documentation to specific entry at the IIO sysfs
-> > documetation.
-> > 
-> > Initial discussion about these docs can be found from:
-> > https://lore.kernel.org/all/0e0d45b7-e582-82b2-9bac-1f70f9dad9f7@gmail.com/
-> > ---
-> >  include/uapi/linux/iio/types.h | 140 ++++++++++++++++++++++++++++++++-
-> >  1 file changed, 139 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> > index c79f2f046a0b..e6329d3cc055 100644
-> > --- a/include/uapi/linux/iio/types.h
-> > +++ b/include/uapi/linux/iio/types.h
-> > @@ -10,7 +10,129 @@
-> >  
-> >  #ifndef _UAPI_IIO_TYPES_H_
-> >  #define _UAPI_IIO_TYPES_H_
-> > -
-> > +/**
-> > + * iio_chan_type - Type of data transferred via IIO channel.
-> > + *
-> > + * The 'main' type of data transferred via channel. Please note that most
-> > + * devices need to specify also a more accurate 'sub category'. See the
-> > + * enum iio_modifier for this. (For example, IIO_ACCEL channel often needs to
-> > + * specify the direction. IIO_CONCENTRATION specifies the type of substance
-> > + * it measures etc).
-> > + *
-> > + * Use of correct units is required but scale and offset that user must apply
-> > + * to channel values can be advertised.
-That's a little vague:.
+This series revisit the existing drivers using the thermal zone private
+structure internals to change the access to something else. For instance, the
+get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
+is not helpful, we can check the return value for the get_temp() ops in the
+call site and show the message in this place.
 
-These reflect the units of the measurement via processed or unit after application
-of scale and offset.
+With this set of changes, the thermal_zone_device is almost self-encapsulated.
+As usual, the acpi driver needs a more complex changes, so that will come in a
+separate series along with the structure moved the private core headers.
 
-> > + *
-> > + * Please find the detailed documentation for reported values from the
-> > + * Documentation/ABI/testing/sysfs-bus-iio.
-> > + *
-> > + * IIO_ACCEL:		Acceleration, m/s^2
-> > + *			Doc keyword: in_accel_x_raw
-> > + *
-> > + * IIO_ACTIVITY:	Activity state. For example a pedometer signaling
-> > + *			jogging, walking or staying still.
-> > + *			Doc keyword: in_activity_still_thresh_rising_en
-> > + *
-> > + * IIO_ALTVOLTAGE:
-IIRC Peak to peak voltage.. So same units as voltage.
+Changelog:
+	- V3:
+	   - Collected more tags
+	   - Added missing changes for ->devdata in some drivers
+	   - Added a 'type' accessor
+	   - Replaced the 'type' to 'id' changes by the 'type' accessor
+	   - Used the 'type' accessor in the drivers
+	- V2:
+	   - Collected tags
+	   - Added missing changes for ->devdata for the tsens driver
+	   - Renamed thermal_zone_device_get_data() to thermal_zone_priv()
+	   - Added stubs when CONFIG_THERMAL is not set
+	   - Dropped hwmon change where we remove the tz->lock usage
 
-> > + *
-> > + * IIO_ANGL:		Angle of rotation, radians.
-> > + *			Doc keyword: in_angl_raw
-> > + *
-> > + * IIO_ANGL_VEL:	Angular velocity, rad/s
-> > + *			Doc keyword: in_anglvel_x_raw
-> > + *
-> > + * IIO_CAPACITANCE:	Capacitance, nanofarads.
-> > + *			Doc keyword: in_capacitanceY_raw
-> > + *
-> > + * IIO_CCT:
-
-I had to got look at original patch of this one.  It's correlated color temperature.
-Base unit Kelvin, though we currently have no users...
+Thank you all for your comments
 
 
-> > + *
-> > + * IIO_CURRENT:		Current, milliamps
-> > + *			Doc keyword: in_currentY_raw
-> > + *
-> > + * IIO_CONCENTRATION:	Reading of a substance, percents. Used for example by
-> > + *			deviced measuring amount of CO2, O2, ethanol...
-> > + *			Doc keyword: in_concentration_raw
-> > + *
-> > + * IIO_COUNT:		Deprecated, please use counter subsystem.
-> > + *
-> > + * IIO_DISTANCE:	Distance in meters. Typically used to report measured
-> > + *			distance to an object or the distance covered by the
-> > + *			user
-> > + *			Doc keyword: in_distance_input
-> > + *
-> > + * IIO_ELECTRICALCONDUCTIVITY: electric conductivity, siemens per meter
-> > + *			Doc keyword: in_electricalconductivity_raw
-> > + *			TODO: What does "can be processed to siemens per meter"
-> > + *			mean? Do we have unit requirement?
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Amit Kucheria <amitk@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Markus Mayer <mmayer@broadcom.com>
+Cc: Support Opensource <support.opensource@diasemi.com>
+Cc: Andy Gross <agross@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>
+Cc: "Niklas Söderlund" <niklas.soderlund@ragnatech.se>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Vasily Khoruzhick <anarsoul@gmail.com>
+Cc: Yangtao Li <tiny.windzz@gmail.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Talel Shenhar <talel@amazon.com>
+Cc: Eduardo Valentin <edubezval@gmail.com>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc: Yang Li <yang.lee@linux.alibaba.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Daniel Golle <daniel@makrotopia.org>
+Cc: Balsam CHIHI <bchihi@baylibre.com>
+Cc: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-input@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org
 
-Hmm. I'd read that as meaning the unit is seimens per meter - after you've
-applied offset and scale to the raw value.
+Daniel Lezcano (17):
+  thermal/core: Add a thermal zone 'devdata' accessor
+  thermal/core: Show a debug message when get_temp() fails
+  thermal: Remove debug or error messages in get_temp() ops
+  thermal/hwmon: Do not set no_hwmon before calling
+    thermal_add_hwmon_sysfs()
+  thermal/hwmon: Use the right device for devm_thermal_add_hwmon_sysfs()
+  thermal: Don't use 'device' internal thermal zone structure field
+  thermal/core: Add 'type' accessor
+  thermal/drivers/spear: Don't use tz->device but pdev->dev
+  thermal: Add a thermal zone id accessor
+  thermal: Use thermal_zone_device_type() accessor
+  thermal/drivers/da9062: Don't access the thermal zone device fields
+  thermal/hwmon: Use the thermal_core.h header
+  thermal/drivers/tegra: Remove unneeded lock when setting a trip point
+  thermal/tegra: Do not enable the thermal zone, it is already enabled
+  thermal/drivers/acerhdf: Make interval setting only at module load
+    time
+  thermal/drivers/acerhdf: Remove pointless governor test
+  thermal/traces: Replace the thermal zone structure parameter with the
+    field value
 
+ drivers/acpi/thermal.c                        | 18 +++----
+ drivers/ata/ahci_imx.c                        |  2 +-
+ drivers/hwmon/hwmon.c                         |  4 +-
+ drivers/hwmon/pmbus/pmbus_core.c              |  2 +-
+ drivers/hwmon/scmi-hwmon.c                    |  4 +-
+ drivers/hwmon/scpi-hwmon.c                    |  2 +-
+ drivers/iio/adc/sun4i-gpadc-iio.c             |  2 +-
+ drivers/input/touchscreen/sun4i-ts.c          |  2 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  2 +-
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 16 +++----
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  4 +-
+ drivers/platform/x86/acerhdf.c                | 19 ++------
+ drivers/power/supply/power_supply_core.c      |  2 +-
+ drivers/regulator/max8973-regulator.c         |  2 +-
+ drivers/thermal/amlogic_thermal.c             |  4 +-
+ drivers/thermal/armada_thermal.c              | 14 ++----
+ drivers/thermal/broadcom/bcm2711_thermal.c    |  3 +-
+ drivers/thermal/broadcom/bcm2835_thermal.c    |  3 +-
+ drivers/thermal/broadcom/brcmstb_thermal.c    |  8 ++--
+ drivers/thermal/broadcom/ns-thermal.c         |  2 +-
+ drivers/thermal/broadcom/sr-thermal.c         |  2 +-
+ drivers/thermal/da9062-thermal.c              | 13 +++--
+ drivers/thermal/db8500_thermal.c              |  2 +-
+ drivers/thermal/dove_thermal.c                |  7 +--
+ drivers/thermal/gov_fair_share.c              |  4 +-
+ drivers/thermal/gov_power_allocator.c         |  6 ++-
+ drivers/thermal/gov_step_wise.c               |  4 +-
+ drivers/thermal/hisi_thermal.c                |  5 +-
+ drivers/thermal/imx8mm_thermal.c              |  4 +-
+ drivers/thermal/imx_sc_thermal.c              |  9 ++--
+ drivers/thermal/imx_thermal.c                 | 47 +++++--------------
+ .../intel/int340x_thermal/int3400_thermal.c   |  2 +-
+ .../int340x_thermal/int340x_thermal_zone.c    |  4 +-
+ .../processor_thermal_device_pci.c            |  4 +-
+ drivers/thermal/intel/intel_pch_thermal.c     |  2 +-
+ .../thermal/intel/intel_quark_dts_thermal.c   |  6 +--
+ drivers/thermal/intel/intel_soc_dts_iosf.c    | 13 ++---
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  4 +-
+ drivers/thermal/k3_bandgap.c                  |  4 +-
+ drivers/thermal/k3_j72xx_bandgap.c            |  2 +-
+ drivers/thermal/kirkwood_thermal.c            |  7 +--
+ drivers/thermal/max77620_thermal.c            |  6 +--
+ drivers/thermal/mediatek/auxadc_thermal.c     |  4 +-
+ drivers/thermal/mediatek/lvts_thermal.c       | 10 ++--
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c      |  6 +--
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c   |  6 +--
+ drivers/thermal/qcom/tsens.c                  |  6 +--
+ drivers/thermal/qoriq_thermal.c               |  4 +-
+ drivers/thermal/rcar_gen3_thermal.c           |  5 +-
+ drivers/thermal/rcar_thermal.c                |  8 +---
+ drivers/thermal/rockchip_thermal.c            |  8 +---
+ drivers/thermal/rzg2l_thermal.c               |  3 +-
+ drivers/thermal/samsung/exynos_tmu.c          |  4 +-
+ drivers/thermal/spear_thermal.c               | 10 ++--
+ drivers/thermal/sprd_thermal.c                |  2 +-
+ drivers/thermal/st/st_thermal.c               |  4 +-
+ drivers/thermal/st/stm_thermal.c              |  4 +-
+ drivers/thermal/sun8i_thermal.c               |  4 +-
+ drivers/thermal/tegra/soctherm.c              |  6 +--
+ drivers/thermal/tegra/tegra-bpmp-thermal.c    |  6 ++-
+ drivers/thermal/tegra/tegra30-tsensor.c       | 31 ++++++------
+ drivers/thermal/thermal-generic-adc.c         |  7 ++-
+ drivers/thermal/thermal_core.c                | 26 +++++++++-
+ drivers/thermal/thermal_helpers.c             |  3 ++
+ drivers/thermal/thermal_hwmon.c               |  9 ++--
+ drivers/thermal/thermal_hwmon.h               |  4 +-
+ drivers/thermal/thermal_mmio.c                |  2 +-
+ .../ti-soc-thermal/ti-thermal-common.c        | 10 ++--
+ drivers/thermal/uniphier_thermal.c            |  2 +-
+ include/linux/thermal.h                       | 19 ++++++++
+ include/trace/events/thermal.h                | 24 +++++-----
+ .../trace/events/thermal_power_allocator.h    | 12 ++---
+ 72 files changed, 251 insertions(+), 270 deletions(-)
 
-> > + *
-> > + * IIO_ENERGY:		Energy in Joules. Typically reported by a device
-> > + *			measuring energy burnt by the user.
-> > + *			Doc keyword: in_energy_input
-> > + *
-> > + * IIO_GRAVITY:		Gravity, m/s^2
-> > + *			Doc keyword: in_gravity_x_raw
-> > + *
-> > + * IIO_HUMIDITYRELATIVE: Relative humidity, percents
-> > + *			Doc keyword: in_humidityrelative_raw
-> > + *
-> > + * IIO_INCLI:		Inclination, degrees
-> > + *			Doc keyword: in_incli_x_raw
-> > + *
-> > + * IIO_INDEX:		Deprecated, please use Counter subsystem
-> > + *
-> > + * IIO_INTENSITY:	Unitless intensity.
-> > + *			Doc keyword: in_intensityY_raw
-> > + *
-> > + * IIO_LIGHT:		Visible light intensity, lux
-> > + *			Doc keyword: in_illuminance_raw
-> > + *
-> > + * IIO_MAGN:		Magnetic field, Gauss.
-> > + *			Doc keyword: in_magn_x_raw
-> > + *
-> > + * IIO_MASSCONCENTRATION: Mass concentration, ug / m3
-> > + *			Doc keyword: in_massconcentration_pm1_input
-> > + *
-> > + * IIO_PH:		pH reading, negative base-10 logarithm of hydrodium
-> > + *			ions in a litre of water
-> > + *			Doc keyword: in_ph_raw
-> > + *
-> > + * IIO_PHASE:		Phase difference, radians
-> > + *			Doc keyword: in_phaseY_raw
-> > + *			TODO: What does "can be processed to radians" mean? Do
-> > + *			we have unit requirement?
-
-yes radians.  Same as above. It's just roundabout / less than clear English
-usage.
-
-> > + *
-> > + * IIO_POSITIONRELATIVE: Relative position.
-> > + *			Doc keyword: in_positionrelative_x_raw
-> > + *
-> > + * IIO_POWER:		Power, milliwatts
-> > + *			Doc keyword: in_powerY_raw
-> > + *
-> > + * IIO_PRESSURE:	Pressure, kilopascal
-> > + *			Doc keyword: in_pressureY_raw
-> > + *
-> > + * IIO_RESISTANCE:	Resistance, ohms
-> > + *			Doc keyword: in_resistance_raw
-> > + *			TODO: What means "can be processed..." Do we have unit
-> > + *			requirement?
-
-Same as above. Unit is ohms.
-
-> > + *
-> > + * IIO_ROT:		Euler angles, deg
-> > + *			Doc keyword: in_rot_yaw_raw
-> > + *
-> > + * IIO_STEPS:		Steps taken by the user
-> > + *			Doc keyword: in_steps_input
-> > + *
-> > + * IIO_TEMP:		Temperature, milli degrees Celsius
-> > + *			Doc keyword: in_temp_raw
-> > + *
-> > + * IIO_UVINDEX:		UV light intensity index
-> > + *			Doc keyword: in_uvindex_input
-> > + *
-> > + * IIO_VELOCITY:	Current speed (norm or magnitude of the velocity
-> > + *			vector), m/s
-> > + *			Doc keyword: in_velocity_sqrt(x^2+y^2+z^2)_input
-> > + *
-> > + * IIO_VOLTAGE:		Voltage, millivolts
-> > + *			Doc keyword: in_voltageY_raw
-> > + */
-> >  enum iio_chan_type {
-> >  	IIO_VOLTAGE,
-> >  	IIO_CURRENT,
-> > @@ -49,6 +171,22 @@ enum iio_chan_type {
-> >  	IIO_MASSCONCENTRATION,
-> >  };
-> >  
-> > +/**
-> > + * iio_modifier - accurate class for channel data
-> > + *
-> > + * IIO_MOD_<X,Y,Z>:	Value represents <X,Y,Z>-axis data.
-> > + *			Typically used by channels of type:
-> > + *			IIO_ACCEL, IIO_TEMP, IIO_GRAVITY, IIO_POSITIONRELATIVE,
-> > + *			IIO_ANGL_VEL, IIO_INCLI, IIO_MAGN
-> > + * IIO_MOD_LIGHT_BOTH:	Value contains visible and infra red light components
-> > + * IIO_MOD_LIGHT_IR:	Value represents infra-red radiation
-> > + * IIO_MOD_LIGHT_<RED, GREEN, BLUE>:
-> > + *			Value represents visible <red, green, blue>  light
-> > + * IIO_MOD_LIGHT_CLEAR:	Value represents all visible light frequencies
-> > + *
-> > + * Please find the detailed documentation for reported values from the
-> > + * Documentation/ABI/testing/sysfs-bus-iio.
-> > + */
-> >  enum iio_modifier {
-> >  	IIO_NO_MOD,
-> >  	IIO_MOD_X,
-> > 
-> > base-commit: c9c3395d5e3dcc6daee66c6908354d47bf98cb0c  
-> 
-> 
+-- 
+2.34.1
 

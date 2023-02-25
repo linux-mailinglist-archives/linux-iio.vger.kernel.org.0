@@ -2,171 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA9D6A2A25
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Feb 2023 14:56:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8F26A2AB2
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Feb 2023 17:22:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjBYN4b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Feb 2023 08:56:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
+        id S229605AbjBYQWN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Feb 2023 11:22:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjBYN4a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Feb 2023 08:56:30 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDAE13DFB;
-        Sat, 25 Feb 2023 05:56:28 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id t14so1890935ljd.5;
-        Sat, 25 Feb 2023 05:56:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q5fi3vMtgShoH3fTT5V+ZWG+/EL8tE3fQZCBLYT0iXQ=;
-        b=KK6mQrLFErLtfpWOVIfKT+MonHolhZkfKMJpKMAitJXdyqK2RkaV5BokmMP45g3am9
-         I5aIFjuXC44Pecf1/q+WzbhhLYCZWuIXHqc3RANHAi3xor/7xzE546pgp2IulKrG+SLW
-         3zyhZLML13+TGSITRSB5qs4bLJJyqP7NvlxGd3DCJjxGTSH32DYhaKt07EHwlJ5cX10R
-         c9G1250G/ac9i/G4ayB3Un8cYEPi8pDZeiZsQtoX7zDceQ38r7IB59fDWM66xxTnihl5
-         teSLhtyTzls8o8vhQNoLzdoVmJgtQ5+J5PkduhsZRxV6WLzoUR7zP1cw4SP94nUmoIy8
-         0ixA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q5fi3vMtgShoH3fTT5V+ZWG+/EL8tE3fQZCBLYT0iXQ=;
-        b=oPqsre4SF2nGnlxxsWOexEVPYOz9/NNNlD2rOCRujom/hj5zoR62KZ5PHFjbd/z0yw
-         WK6QHPF5Bd0RTemog7Ik8BNtzbewjwtlppquutgT9I6T3UBTXtnq4wejeuKfcNyMVb+D
-         26UWChq3nyn9q5f17DVy0i3YTzCb7cBUTKwJZPNXKf6MKlfNRKn1VqBh6PMjmXMEBfJJ
-         QulxYwi2xp/PbfoA9Jglb1Or7tU0vhiZqjThOTsp7/gBIhY9oiPLuzRAR6MQrkXGveqR
-         JJOpBo3dqzwfBFyE8jft9ol9lA/R8czHmcUYnXBzl9Ni0H+KrTalBSr9OJ7KC+SibDPM
-         iqpw==
-X-Gm-Message-State: AO0yUKUQZQnBCt23TMG0G6hVVLWbPEJiNLPoYciFZbqbxVb37bXvMqNQ
-        954wnVIfVCSA2UuJ9POyrsiAw4yPgus=
-X-Google-Smtp-Source: AK7set/xqliacutc76cH3yk/k9WVc5FkgNhq5cmI12K16wEuE0IX0hJTLh5Qyabz7kttgR38X2qKLw==
-X-Received: by 2002:a2e:888c:0:b0:295:8f08:118b with SMTP id k12-20020a2e888c000000b002958f08118bmr5576580lji.18.1677333387126;
-        Sat, 25 Feb 2023 05:56:27 -0800 (PST)
-Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id s6-20020a05651c200600b002934b8d115csm173208ljo.51.2023.02.25.05.56.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Feb 2023 05:56:26 -0800 (PST)
-Date:   Sat, 25 Feb 2023 15:56:16 +0200
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229492AbjBYQWM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Feb 2023 11:22:12 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE05CC22
+        for <linux-iio@vger.kernel.org>; Sat, 25 Feb 2023 08:22:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BB0860B51
+        for <linux-iio@vger.kernel.org>; Sat, 25 Feb 2023 16:22:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A840C433EF;
+        Sat, 25 Feb 2023 16:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677342129;
+        bh=1so1HSVz0ETNHTl8zcCrxEfHypT4MW9Jll5ddDNa2XM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pPyX+1/vrCNryiHnMvBMYvsmLZaQUfpXAI+eG8GafqUiPkk6Yvn6K0oIgAN/Q+fGr
+         mkqgu9p9VtPR2sIiX01kcxmm+KDLPf35uv032WCBUOe90lhFshZnQiCWMMAmiIFQxb
+         1TRmzidCC2SwaJcPKsV2fB8+H95l7kIm0k2CNfeKvT1izMY1r1yvWBc9uYqRdid2nO
+         rX4xCQOEgY/fO+LuZ7FYmzI6r3v5n6JGk3eMVuPYRq+RpmNxa8FxJwrtbRGTEEf6Gu
+         fWoPTdHtA27PuBK7lNUbjX5kRupP5ZNuKwj83atcrO0gpVFTJ0+ZsVjsSjTyWRTXkd
+         TXCD8My4KJU0Q==
+Date:   Sat, 25 Feb 2023 16:36:32 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andrea Merello <andrea.merello@iit.it>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] doc: Make sysfs-bus-iio doc more exact
-Message-ID: <41eafb0caa510cddf650cf5ff940639a184f3005.1677331779.git.mazziesaccount@gmail.com>
-References: <cover.1677331779.git.mazziesaccount@gmail.com>
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, kernel@pengutronix.de
+Subject: Re: [PATCH v2] iio: adc: meson_saradc: Better handle BL30 not
+ releaseing the hardware
+Message-ID: <20230225163632.4891019e@jic23-huawei>
+In-Reply-To: <CAFBinCCF_wSt6qd125f=7wzCPm21iz6ZbJ2oHGnPNBJy30y_DA@mail.gmail.com>
+References: <20230219204439.1641640-1-u.kleine-koenig@pengutronix.de>
+        <CAFBinCCF_wSt6qd125f=7wzCPm21iz6ZbJ2oHGnPNBJy30y_DA@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hVlVlqIXRHAuNoVW"
-Content-Disposition: inline
-In-Reply-To: <cover.1677331779.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, 19 Feb 2023 22:05:16 +0100
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
 
---hVlVlqIXRHAuNoVW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-A few IIC channel descriptions explained used units as:
-data is in foo "that can be processed into an" [unit] value. The "can be
-processed into" is quite broad statement as it does not really explain
-what this processing means. This makes units pretty much useless.
-
-After discussion with Jonathan, it seems the units for these channels
-should also be well-defined as for all other channels. The processing
-means the standard scale and offset application that is used throughout
-the IIO. Let's make it more obvious by stating that the units are [unit]
-after scale ane offset are applied.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- Documentation/ABI/testing/sysfs-bus-iio | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/te=
-sting/sysfs-bus-iio
-index 6ba34c0d9789..b435c6f065ae 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -1807,8 +1807,8 @@ What:		/sys/bus/iio/devices/iio:deviceX/out_resistanc=
-eX_raw
- KernelVersion:	4.3
- Contact:	linux-iio@vger.kernel.org
- Description:
--		Raw (unscaled no offset etc.) resistance reading that can be processed
--		into an ohm value.
-+		Raw (unscaled no offset etc.) resistance reading.
-+		Units after application of scale and offset are ohms.
+> Hello Uwe,
+>=20
+> I think there's a typo in the subject line:
+> s/releaseing/releasing/
+>=20
+> On Sun, Feb 19, 2023 at 9:44 PM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+> >
+> > meson_sar_adc_lock() might return an error if BL30 doesn't release its
+> > lock on the hardware. Just returning early from .remove() is wrong
+> > however as this keeps the clocks and regulators on which is never
+> > cleaned up later.
+> >
+> > Given the BL30 not giving up its lock is a strong hint for broken
+> > behaviour, and there is nothing we can do about that: Just clean up
+> > ignoring the fact that we're not holding the lock.
+> >
+> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> =
 =20
- What:		/sys/bus/iio/devices/iio:deviceX/heater_enable
- KernelVersion:	4.1.0
-@@ -1894,8 +1894,9 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_electrical=
-conductivity_raw
- KernelVersion:	4.8
- Contact:	linux-iio@vger.kernel.org
- Description:
--		Raw (unscaled no offset etc.) electric conductivity reading that
--		can be processed to siemens per meter.
-+		Raw (unscaled no offset etc.) electric conductivity reading.
-+		Units after application of scale and offset are siemens per
-+		meter.
-=20
- What:		/sys/bus/iio/devices/iio:deviceX/in_countY_raw
- KernelVersion:	4.10
-@@ -1952,7 +1953,7 @@ KernelVersion:	4.18
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		Raw (unscaled) phase difference reading from channel Y
--		that can be processed to radians.
-+		Units after application of scale and offset are radians.
-=20
- What:		/sys/bus/iio/devices/iio:deviceX/in_massconcentration_pm1_input
- What:		/sys/bus/iio/devices/iio:deviceX/in_massconcentrationY_pm1_input
---=20
-2.39.2
+> Other than the typo (which maybe Jonathan can fix up while applying):
+> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixed up typo and applied to the togreg branch of iio.git.
 
+Note I'll not push that out other than as testing until I can rebase on rc1.
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+Thanks,
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
+Jonathan
 
---hVlVlqIXRHAuNoVW
-Content-Type: application/pgp-signature; name="signature.asc"
+>=20
+>=20
+> Thank you!
+> Martin
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmP6E38ACgkQeFA3/03a
-ocUK2gf8DmYtG9cG75iXpy0IOQASxrwsDDul7YJfOtk96ha8yGf2etB86JlhDBSA
-sZ5NmjzcN7DV4pdi9/N3OEJM+PyS6g13wXRLj1Qt9XxljDdor7diZjqe8KbcuhUs
-PKSmuNJn1CSasK/UHzaAjD9HPeFCmCehyDnKADPklaxOOcWYgt+F1EU3s3JQGL4j
-CJLQY8oe7M5rIMYtfC5bM/N4Rz0oWbEDUzDJgmixa21szLEaxKCRDd3NUtxeJI9x
-wFy33kHMdY9rPys55Th9AmbZ9gIuvkAvPFXEfiMhB2TOValF1ARBb0q4qPhcphVp
-51gdn2FQKSWASR9WGIIuuJxt+7/nLA==
-=jWjZ
------END PGP SIGNATURE-----
-
---hVlVlqIXRHAuNoVW--

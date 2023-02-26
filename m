@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B17EC6A331E
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Feb 2023 18:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88FF46A3320
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Feb 2023 18:15:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229861AbjBZRM1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Feb 2023 12:12:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46834 "EHLO
+        id S229605AbjBZRPt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Feb 2023 12:15:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbjBZRMT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Feb 2023 12:12:19 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3B4FF2B
-        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 09:12:16 -0800 (PST)
+        with ESMTP id S229578AbjBZRPt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Feb 2023 12:15:49 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3F71165C
+        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 09:15:47 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70E3260C3D
-        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 17:12:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4985C433EF;
-        Sun, 26 Feb 2023 17:12:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7784AB80BA8
+        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 17:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B9DC433EF;
+        Sun, 26 Feb 2023 17:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677431535;
-        bh=EhF8dPtrt6jNkC5fbTpS19q2MOhI5JIBO5PFeoB8GZQ=;
+        s=k20201202; t=1677431745;
+        bh=FD/l0bhTV/dA7q3BCbe3lHw7MELTT4DzCPXWNwHFQd4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mXOwHifs2vMNHQ9T/3x21DB4ZnGSPMlwC+6n7ph1zYETPT3RAdOYCeuvmZQE+q60X
-         RAaswedO9tdz8nyPIs3RUVnErfjnOdBz1QzWoOIjzKxH6Mdowc8hQv1kL0oIzvFfGe
-         jQbak8nVV8z5OIT32GSwfpbIw86rLwqvlAikOGK3TXAxiQYaGb2nxaqOC1a3VIgiDM
-         GjrVchFINL5697kwOXZJ+Fd3GVUIICpwsPjIibhzvGTAI+zQWXbTlY4joAy8bCnjQf
-         h8BM6PhisjYEJLyuVw2ODWRYpRcnfSZhPaKNsOFC3XKPlaUmmz28EAw3mYHf+1/00+
-         swaWHrHsUzDPQ==
-Date:   Sun, 26 Feb 2023 17:26:40 +0000
+        b=sQSOpBzhRpEZvShkQrrlz4+3gmDrr7oK2v9oic5760mPR+PYxWS8i9klVHKC9kD2G
+         yDinZ50KT2vefeTCflYcRIQ9JZJNKzIMV9wif9Eu+5Re6xVN+WNregn92VWxhxnfoh
+         ld/QDg2cFKJoP9Uluhn6H3+/sWNzGl4or6yD/kThEq6yomH1u7Z0F3sf5voqC4mYpo
+         F0GaDtui7okuYs/nT2Gky3jmVMY+LpMaG/Uw/Yh/Il2b5aVLqI39cvCZ7Mmp9lnS5x
+         2Wz5apFQ7++LZt0bD8UZydjHdaon+8VTSfJfUtoO5ic51xwu7nNxEqoiU7vqUVowrx
+         EXM7bgWy5L8Dw==
+Date:   Sun, 26 Feb 2023 17:30:10 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
@@ -39,7 +39,7 @@ Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
 Subject: Re: ROHM ALS, integration time
-Message-ID: <20230226172640.40e9accc@jic23-huawei>
+Message-ID: <20230226172958.1b4a87f2@jic23-huawei>
 In-Reply-To: <18a6709b-4d26-2672-b056-669750b4828c@gmail.com>
 References: <65c7c45a-c953-e418-f640-9e46841151a1@gmail.com>
         <20230130130231.000013b6@Huawei.com>
@@ -118,17 +118,21 @@ Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
 > Integration times are 50, 100, 200, 400 - which means that some of the 
 > 'mid range' scales can be only supported by some integration times.
-
-Tricky corner indeed. I'd be tempted to say don't always give people what
-they request.  Generally speaking (ignore the complexity of your case)
-the aim is to increase scale to the maximum that can be done without saturating
-for the range people care about.  It is rarely a problem if we undershoot a little
-in order to map to something that works on the hardware.  That freedom might help
-you a little in this case.
-
 > 
 > I will try to cook an RFC next week to show what I have drafted if there 
 > is no big surprizes on the road..
+
+Hmm. There is another approach that I'd not thought of in this case because
+in my head integration time is more continuous than it is for this part and
+that is to fiddle the _raw values (we do this for oversampling or SAR ADCs
+where things tend to be powers of 2).  The trick is to shift the raw value
+always so that the 'scale' due to (in this case) integration time remains
+constant.  That separates the two controls completely.
+
+However, I'm not sure that makes sense here where the thing we typically
+want to change when scaling due to saturation is integration time.
+
+Jonathan
 > 
 > Yours,
 > 	-- Matti

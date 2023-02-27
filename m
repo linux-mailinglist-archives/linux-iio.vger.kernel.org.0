@@ -2,70 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5960B6A3BC3
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 08:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59DD66A3EC5
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 10:55:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230001AbjB0Hhp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Feb 2023 02:37:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50556 "EHLO
+        id S229548AbjB0JzL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Feb 2023 04:55:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230000AbjB0Hho (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 02:37:44 -0500
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B06BE1B2F0
-        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 23:37:43 -0800 (PST)
-Received: by mail-il1-x12a.google.com with SMTP id h10so3500583ila.11
-        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 23:37:43 -0800 (PST)
+        with ESMTP id S230082AbjB0JzE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 04:55:04 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3FD1ADCC
+        for <linux-iio@vger.kernel.org>; Mon, 27 Feb 2023 01:55:02 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id h9so5803185ljq.2
+        for <linux-iio@vger.kernel.org>; Mon, 27 Feb 2023 01:55:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NhOT+g+3DEn8Sfr6OEJb+6uq9ViAaYHG5g53G3K0p/0=;
-        b=eQMRj9z0c9AJZ6T5bHbaxtWtNDHpkAkkcQxrHN9J158OMIsP0HRS5yUzYelF3AdJAk
-         dgJ1LU/4juZE7EVrrqoj7wdjwasQOH/GKeKDshAzcmkiagm+uWS7+A3gv/ACfi9Rxrzr
-         DurL230qmjdcYKDLhqKjou2vc3CnachPhGKSvkdMDoKPj8jmu6/TnP/QluWyKUW6L4Uv
-         +Af7RZQ9WOhNHDht5Wx2bZbIShcVj97phsleQdXGh7VsnIzXqCI6LrDujXpi27vFdkM0
-         85uls4L57RjxPqjPGAiP++OomspO+WfZKbNWnw5GXk0/x7xYU2P8Z7KddIO8NdILuR/8
-         JycQ==
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tNF+sXNCpFOnAYnc4Ajw1e5lTQrcWVIRH7k0PrCR49w=;
+        b=ig1I187VgN3nBpP0yGanrD2lY6h+8TwRLuuP3jWeGO4o0rg6AdRrBvvYIebdtH2TuB
+         gKIeKtGvmBb4/SEUYRL3WoxCRIy+qXTKRpO1RD11jyBHAflvpR0dM4U/AegIST7DBav3
+         555efUmTQ7NKb5PuK2ZS3w6MVW7Y9D4MSGjYJMMpUgsYQ/QqcK9ctrfkif6bWq6I1kje
+         XUJWqkeeqoUoAzzcRr4JwqJmZcehJ5sMPsmUSGAOIszf1aFlxWg5WiOQio40ejvJuJOx
+         OFVLSG2iQ2jkJFPRCzkGLyGOCIjS4F6Jmx1T8halBFx0GDndpfmuXDceUFtet7Izn3NX
+         Y14A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NhOT+g+3DEn8Sfr6OEJb+6uq9ViAaYHG5g53G3K0p/0=;
-        b=qu6mGGPujb0QIEPKe1kKeldKiHFAzzP4dIG/VoxIrIkW/db0NdLeioDl/ygpW1KA9Q
-         p1YEaQx9E8wZvktDhjhETa1LHfMt4uU+7xRzQ7DE+yIS5mM1s0AZ97O77CBUe5O8GToT
-         vGkbOrDvKsWhG92CjEFLHTUZkDmLkqIhop9VcQVPwMHg8mvQkKaEu0lMbQhZ8YuZrlmz
-         bCGQRxhjX6Kn3Ttk9JWFnxFh0Lb/PonayxftABGI8XSRYER4fb6EvZWgsSUJHJXDKM9A
-         v0vhvkPDq/qq0vbCk3fWClRuuQSfRgsv5BLPkfC5Cy+7iyxLJdwoYy/v2JOhCocCZiOp
-         cWCQ==
-X-Gm-Message-State: AO0yUKXtw9iSjC1oVQx7WQlMnk+kp27cY2BxUPbjBLacQTEJOkf33RFG
-        OaKCe8UiV36y14LJEmP+Kxjwkpip/Y8=
-X-Google-Smtp-Source: AK7set8m2Tn6rph8T2BM/X+80iiiqQWhWzhylVpBGHL1IIOqKI8FLXNuI4nwKLDoR3Ooh83Veos5pg==
-X-Received: by 2002:a05:6e02:1c22:b0:313:e6ae:3490 with SMTP id m2-20020a056e021c2200b00313e6ae3490mr20932696ilh.14.1677483462731;
-        Sun, 26 Feb 2023 23:37:42 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
-        by smtp.gmail.com with ESMTPSA id z14-20020a02ceae000000b003afc548c3cdsm1931588jaq.166.2023.02.26.23.37.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Feb 2023 23:37:42 -0800 (PST)
-Message-ID: <b0e25164a712c816f5dc227b5da21c653c57c4f1.camel@gmail.com>
-Subject: Re: [PATCH 3/3] iio: buffer: fix coding style warnings
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-iio@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Date:   Mon, 27 Feb 2023 08:39:37 +0100
-In-Reply-To: <20230216101452.591805-4-nuno.sa@analog.com>
-References: <20230216101452.591805-1-nuno.sa@analog.com>
-         <20230216101452.591805-4-nuno.sa@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tNF+sXNCpFOnAYnc4Ajw1e5lTQrcWVIRH7k0PrCR49w=;
+        b=4Etu+yGD4huG4Mf2jVD8Jy0/94364OUgRQIZwnV8FzagG8FlcnFA5aCet0ubMPatQD
+         XDRklVt/wcBBt+rZB8kNkBDqzGi2DrWO2cCJDz1Eqv2CfK8uyFveM0mf2L2mal8Lu1yX
+         1u70empieSN3YJEbDJiWrWRS7rORaFGrgMnit0fzrS4Vg33FuXxncpBidKhYa1GxMsMw
+         SRiyhS+zQsHZR78tHoVxWN8yDd8B0TDDoS7oPFumvjpxva+YibT0PKYkuY3rCsmFd+kU
+         sY5Lb9lq0LflLqto1VT/vRwAf1Qeo+XUX2N1YKI1Uie5uiJ9xsvCmbHkYsBaHBTA+7rI
+         ChyA==
+X-Gm-Message-State: AO0yUKXle4PK82qA52hN3fo03sbbfrjVDIyBHE1Rc9UfCM//YQh+ZDlN
+        Y3BylIqnzGrEdXrYbtsyqlM=
+X-Google-Smtp-Source: AK7set94ljVGuFWkHC7pdt+26jW691hAv5BlGu+C4mabxbXzzAJEeREq9MxSAapxhnoZlUxXBa2P3g==
+X-Received: by 2002:a2e:9c45:0:b0:295:b2a0:498d with SMTP id t5-20020a2e9c45000000b00295b2a0498dmr1289624ljj.12.1677491700449;
+        Mon, 27 Feb 2023 01:55:00 -0800 (PST)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id p16-20020a2e7410000000b00295b80aa93csm375377ljc.110.2023.02.27.01.54.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Feb 2023 01:55:00 -0800 (PST)
+Message-ID: <c6224b43-b77a-2e7d-2273-f496a7e72e5f@gmail.com>
+Date:   Mon, 27 Feb 2023 11:54:59 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
+References: <65c7c45a-c953-e418-f640-9e46841151a1@gmail.com>
+ <20230130130231.000013b6@Huawei.com>
+ <baec476f-c72e-23d7-76b1-4e5062173226@fi.rohmeurope.com>
+ <20230202165714.0a1c37ac@jic23-huawei>
+ <11722ea9-7149-0305-5593-7a66dc1d73f0@fi.rohmeurope.com>
+ <20230218172052.12c44aa5@jic23-huawei>
+ <18a6709b-4d26-2672-b056-669750b4828c@gmail.com>
+ <20230226172958.1b4a87f2@jic23-huawei>
+ <c88c1672-badd-18ae-fcb7-bf2696319aba@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: ROHM ALS, integration time
+In-Reply-To: <c88c1672-badd-18ae-fcb7-bf2696319aba@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,28 +84,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2023-02-16 at 11:14 +0100, Nuno S=C3=A1 wrote:
-> Just cosmetics. No functional change intended...
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
-> =C2=A0drivers/iio/industrialio-buffer.c | 98 +++++++++++++++-------------=
--
-> --
-> =C2=A01 file changed, 49 insertions(+), 49 deletions(-)
->=20
-> diff --git a/drivers/iio/industrialio-buffer.c
-> b/drivers/iio/industrialio-buffer.c
-> index 7e7ee307a3f7..e02a4cb3d491 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
->=20
+On 2/27/23 09:22, Matti Vaittinen wrote:
+> On 2/26/23 19:30, Jonathan Cameron wrote:
+>> On Sat, 18 Feb 2023 20:08:10 +0200
+>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>
+>>> Thanks a lot Jonathan,
+>>>
+>>> You have been super helpful :) Thanks!
+>>>
+>>> On 2/18/23 19:20, Jonathan Cameron wrote:
+>> Hmm. There is another approach that I'd not thought of in this case 
+>> because
+>> in my head integration time is more continuous than it is for this 
+>> part and
+>> that is to fiddle the _raw values (we do this for oversampling or SAR 
+>> ADCs
+>> where things tend to be powers of 2).  The trick is to shift the raw 
+>> value
+>> always so that the 'scale' due to (in this case) integration time remains
+>> constant.  That separates the two controls completely.
+> 
+> Holy cow! That's a neat trick which I didn't think of!
+> 
+> Basically, we could do >> 1 for the data when time is 100 mS, >> 2 when 
+> 200 mS and >> 3 when 400 mS. We would want to use 19-bit channel values 
+> then.
 
-Hi Jonathan,
+Please ignore my previous mail. It seems I am once again not knowing 
+what I am talking about. If we take this approach, we shift << 3 when 
+int time is 55, << 2 for 100 and << 1 for 200. With 400 mS we would not 
+shift.
 
-I noticed this one was left behind but I just waited another week to
-see what happened... Is there any special reason for not taking this
-one?
+>> However, I'm not sure that makes sense here where the thing we typically
+>> want to change when scaling due to saturation is integration time.
+> 
+> That's a bit problematic, yes. We could "fool" the user by doing the 
+> saturation check in driver, and then just returning the max value of all 
+> 19-bits set if the saturation is detected. This, however, would yield 
+> raw values that are slightly off. OTOH, with max sift of 3 bits that's 
+> only 7 'raw ticks' - which I hope is acceptable. I hope the user will 
+> then be switching to shorter integration time and start getting correct 
+> readings.
+> 
+> It's slightly sad to say "good bye" to the gain-time-scale helpers but I 
+> guess you just helped me to solve this with a _really_ simple way. We 
+> can keep those helpers in "back pocket" for the day when we need them ;)
+> 
+> I will see what comes out of this idea - thanks for the help again!
+> 
 
-- Nuno S=C3=A1
+But as you surely knew from the start, the saturation problems kick in 
+with the 'non maximum sifts' when the _highest_ bits never get set. 
+There the 'saturation detection' would cause a huge jump by suddenly 
+setting the high bits. So, yes - this does not seem like a feasible 
+option here :/
+
+/me feels stupid...
+
+Sorry for the noise!
+
+--Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

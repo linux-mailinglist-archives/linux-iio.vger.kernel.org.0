@@ -2,209 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8850A6A466A
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 16:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 288A66A491C
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 19:03:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229806AbjB0PsI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Feb 2023 10:48:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35334 "EHLO
+        id S230502AbjB0SDV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Feb 2023 13:03:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbjB0PsH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 10:48:07 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C79A27F;
-        Mon, 27 Feb 2023 07:48:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677512886; x=1709048886;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HNlXYdVcu8iYvoqJ6fSj0TqDF6B1s6Rt+D937qVXnp8=;
-  b=F7D4K7S6HmLxY0fyj9NuYyAwGURSeQFxJKF1YWc2QXjAD0w3DTRDY43Y
-   jEyFAL8tF8EciTUn7KyTo6FlfXiEzXAozfexIMKeff44X9BRA9S8I8ma4
-   OZV8W6ikLiWT0HQWksSUqDemsF0cg6f90syfKVgDYlxJzsd3RYHT5MxaR
-   1heWCDx0d2bLB9koV6V8OZikOtoDn15LyaYon+opflgZxyO6YagRVQ5Zr
-   whHs3kqjUzHpocEPS7Nf8UoKQqTvvPnIKWoz/CSYb6ivyxW98uG3kLegD
-   ZFcMo5B2cYBP3BVIVsXSZwgUlBMHQhcJ4BKztSNjFw3qUYuNsiNiKBl/b
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="332609580"
-X-IronPort-AV: E=Sophos;i="5.98,219,1673942400"; 
-   d="scan'208";a="332609580"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2023 07:47:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="623621427"
-X-IronPort-AV: E=Sophos;i="5.98,219,1673942400"; 
-   d="scan'208";a="623621427"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 27 Feb 2023 07:47:47 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pWfj8-0004Xf-2J;
-        Mon, 27 Feb 2023 15:47:46 +0000
-Date:   Mon, 27 Feb 2023 23:47:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Mike Looijmans <mike.looijmans@topic.nl>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <202302272311.tpyMXtCV-lkp@intel.com>
-References: <20230227133255.32301-2-mike.looijmans@topic.nl>
+        with ESMTP id S230503AbjB0SDE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 13:03:04 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017A226CF5;
+        Mon, 27 Feb 2023 10:02:05 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id d30so29317088eda.4;
+        Mon, 27 Feb 2023 10:02:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jA+Lt1N1sRGBhDWl8eAUrx1VsbjP+7nxRLZvfuV9NIM=;
+        b=ohCq7HCXVyQHmixjagY46TJdfqaPloWcT8pxPH/Gd/2KvejziMGkQjLtU9SyUIetjD
+         H49G8NSo/4F8TpHJoznnHd5KrKABX56Jj1H1tujuRv2qcoFWyeQHjLhJHiV6vu6misBO
+         NqEfblGMFx4qdez2g2YwY2XzMLwkgs75wOr9kg/f3X8zY1oiNErM+HtVe7+vJODfhj7J
+         KiEUTu+hb4yd5vRzGJGuqxTYRdn5p4RguOQOWQI3eJNMyil6NuN6qg6x4QbNayLwCDej
+         AsH0Q8X5iFvgh2lbwk2oKD0p5Jp0lHEInymlCpW3Pk6DwMcPdqS/ruBdvZ54xzJihYxm
+         Hc4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jA+Lt1N1sRGBhDWl8eAUrx1VsbjP+7nxRLZvfuV9NIM=;
+        b=arnJaMf+q7Xqge+SD39+fzTgbo/XgudHrNrQgFZsr9GVLBX4F0P7/gI6kqjaqm8JsY
+         i7X0e0o9k1AS7cKsVbQVcU23Ord9aU0Enx3JpmNHU3fmWio2PVtKNRMqjxNfI+QuQONj
+         wnxYGHC4wRSmG9E6+yjsle/Z9SMjA/Z51Ifa6Q741KJMfPHL5xdiD8KJ51wpOgoTXzo8
+         HixKeCUzMIP3rEPDnldwEBWFzh2M6+CC8CVkO4+Kj0ihFHlz56MGR23S99XP30dcOSRb
+         jv1wsFZXXrgcB6IluhDlY4WnWKXUPWGAelY80zbkqXJvcJhVijYzkqKYzpYYOASVnwq/
+         ETrA==
+X-Gm-Message-State: AO0yUKUgddVAJKiVIBDhheXTklrDtijGZsw4IMtW1ANBM/nSyeWOwKmm
+        WbZ8ma/5pxfNufykBdw8tv3Vk/f7HaM=
+X-Google-Smtp-Source: AK7set9U65ypVENKfxii9yz8Eom3G/RBCArjNLfMoocJz09WfGkr3p6/8QDtYUUxctM3O4CI3sXjRA==
+X-Received: by 2002:aa7:df93:0:b0:4aa:c354:a0e7 with SMTP id b19-20020aa7df93000000b004aac354a0e7mr439596edy.25.1677520856884;
+        Mon, 27 Feb 2023 10:00:56 -0800 (PST)
+Received: from carbian.corp.quobyte.com ([2a02:8109:aa3f:ead8::dc02])
+        by smtp.gmail.com with ESMTPSA id n30-20020a50935e000000b004af640933desm3423578eda.78.2023.02.27.10.00.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Feb 2023 10:00:55 -0800 (PST)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH 0/2] iio: Add kernel-doc and rename
+Date:   Mon, 27 Feb 2023 19:00:37 +0100
+Message-Id: <cover.1677520155.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230227133255.32301-2-mike.looijmans@topic.nl>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Mike,
+The main goal behind the kernel-docs is to give a hint where the
+functions are expected to be called. 
 
-Thank you for the patch! Yet something to improve:
+Renaming iio_trigger_poll_chained() to iio_trigger_poll_nested() came
+from a Jonathan's suggestion in [1]
 
-[auto build test ERROR on v6.2]
-[cannot apply to jic23-iio/togreg linus/master next-20230227]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I am a little bit unsure about moving the kernel-doc of iio_trigger_poll
+to industrialio-trigger.c 
+My motivation behind it:
+- having the source code together with the documentation tends to be 
+better for understanding 
+- make it easier to understand the _nested in iio_trigger_poll_nested 
+(the call to handle_nested_irq)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Looijmans/iio-adc-Add-TI-ADS1100-and-ADS1000/20230227-213529
-patch link:    https://lore.kernel.org/r/20230227133255.32301-2-mike.looijmans%40topic.nl
-patch subject: [PATCH v2 2/2] iio: adc: Add TI ADS1100 and ADS1000
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20230227/202302272311.tpyMXtCV-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/8bc0b6e697641a7c6274a492bf210faccdeb55bf
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Mike-Looijmans/iio-adc-Add-TI-ADS1100-and-ADS1000/20230227-213529
-        git checkout 8bc0b6e697641a7c6274a492bf210faccdeb55bf
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh SHELL=/bin/bash drivers/iio/
+[1] https://lore.kernel.org/linux-iio/Y+6QoBLh1k82cJVN@carbian/
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202302272311.tpyMXtCV-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/iio/adc/ti-ads1100.c: In function 'ads1100_data_bits':
->> drivers/iio/adc/ti-ads1100.c:87:39: error: implicit declaration of function 'FIELD_GET'; did you mean 'FOLL_GET'? [-Werror=implicit-function-declaration]
-      87 |         return ads1100_data_rate_bits[FIELD_GET(ADS1100_DR_MASK, data->config)];
-         |                                       ^~~~~~~~~
-         |                                       FOLL_GET
-   drivers/iio/adc/ti-ads1100.c: In function 'ads1100_set_data_rate':
->> drivers/iio/adc/ti-ads1100.c:156:41: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
-     156 |                                         FIELD_PREP(ADS1100_DR_MASK, i));
-         |                                         ^~~~~~~~~~
-   cc1: some warnings being treated as errors
+--
+Kind Regards
+Mehdi Djait
 
 
-vim +87 drivers/iio/adc/ti-ads1100.c
+Mehdi Djait (2):
+  iio: Improve the kernel-doc of iio_trigger_poll
+  iio: Rename iio_trigger_poll_chained and add kernel-doc
 
-    84	
-    85	static int ads1100_data_bits(struct ads1100_data *data)
-    86	{
-  > 87		return ads1100_data_rate_bits[FIELD_GET(ADS1100_DR_MASK, data->config)];
-    88	}
-    89	
-    90	static int ads1100_get_adc_result(struct ads1100_data *data, int chan, int *val)
-    91	{
-    92		int ret;
-    93		__be16 buffer;
-    94		s16 value;
-    95	
-    96		if (chan != 0)
-    97			return -EINVAL;
-    98	
-    99		ret = pm_runtime_resume_and_get(&data->client->dev);
-   100		if (ret < 0)
-   101			return ret;
-   102	
-   103		ret = i2c_master_recv(data->client, (char *)&buffer, sizeof(buffer));
-   104	
-   105		pm_runtime_mark_last_busy(&data->client->dev);
-   106		pm_runtime_put_autosuspend(&data->client->dev);
-   107	
-   108		if (ret < 0) {
-   109			dev_err(&data->client->dev, "I2C read fail: %d\n", ret);
-   110			return ret;
-   111		}
-   112	
-   113		/* Value is always 16-bit 2's complement */
-   114		value = be16_to_cpu(buffer);
-   115		/* Shift result to compensate for bit resolution vs. sample rate */
-   116		value <<= 16 - ads1100_data_bits(data);
-   117		*val = sign_extend32(value, 15);
-   118	
-   119		return 0;
-   120	}
-   121	
-   122	static int ads1100_set_scale(struct ads1100_data *data, int val, int val2)
-   123	{
-   124		int microvolts;
-   125		int gain;
-   126		int i;
-   127	
-   128		/* With Vdd between 2.7 and 5V, the scale is always below 1 */
-   129		if (val)
-   130			return -EINVAL;
-   131	
-   132		microvolts = regulator_get_voltage(data->reg_vdd);
-   133		/* Calculate: gain = ((microvolts / 1000) / (val2 / 1000000)) >> 15 */
-   134		gain = ((microvolts + BIT(14)) >> 15) * 1000 / val2;
-   135	
-   136		for (i = 0; i < 4; i++) {
-   137			if (BIT(i) == gain) {
-   138				ads1100_set_config_bits(data, ADS1100_PGA_MASK, i);
-   139				return 0;
-   140			}
-   141		}
-   142	
-   143		return -EINVAL;
-   144	}
-   145	
-   146	static int ads1100_set_data_rate(struct ads1100_data *data, int chan, int rate)
-   147	{
-   148		unsigned int i;
-   149		unsigned int size;
-   150	
-   151		size = data->supports_data_rate ? ARRAY_SIZE(ads1100_data_rate) : 1;
-   152		for (i = 0; i < size; ++i) {
-   153			if (ads1100_data_rate[i] == rate) {
-   154				return ads1100_set_config_bits(
-   155						data, ADS1100_DR_MASK,
- > 156						FIELD_PREP(ADS1100_DR_MASK, i));
-   157			}
-   158		}
-   159	
-   160		return -EINVAL;
-   161	}
-   162	
+ drivers/iio/accel/bma400_core.c               |  2 +-
+ drivers/iio/accel/kionix-kx022a.c             |  2 +-
+ drivers/iio/accel/mma8452.c                   |  2 +-
+ drivers/iio/accel/msa311.c                    |  2 +-
+ drivers/iio/adc/ad7606.c                      |  2 +-
+ drivers/iio/adc/at91-sama5d2_adc.c            |  2 +-
+ drivers/iio/adc/max11410.c                    |  2 +-
+ .../common/st_sensors/st_sensors_trigger.c    |  4 ++--
+ drivers/iio/gyro/fxas21002c_core.c            |  2 +-
+ drivers/iio/gyro/mpu3050-core.c               |  2 +-
+ drivers/iio/humidity/hts221_buffer.c          |  2 +-
+ drivers/iio/industrialio-trigger.c            | 19 +++++++++++++++++--
+ drivers/iio/light/acpi-als.c                  |  2 +-
+ drivers/iio/light/rpr0521.c                   |  2 +-
+ drivers/iio/light/st_uvis25_core.c            |  2 +-
+ drivers/iio/light/vcnl4000.c                  |  2 +-
+ drivers/iio/light/vcnl4035.c                  |  2 +-
+ drivers/iio/potentiostat/lmp91000.c           |  2 +-
+ drivers/iio/pressure/zpa2326.c                |  2 +-
+ drivers/iio/proximity/as3935.c                |  2 +-
+ drivers/iio/trigger/iio-trig-loop.c           |  2 +-
+ include/linux/iio/trigger.h                   |  8 +-------
+ 22 files changed, 39 insertions(+), 30 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.30.2
+

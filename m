@@ -2,128 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DBE86A4CD8
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 22:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49E716A4EED
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 23:51:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbjB0VMq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Feb 2023 16:12:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
+        id S229812AbjB0WvC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Feb 2023 17:51:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbjB0VMq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 16:12:46 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2BE21A32
-        for <linux-iio@vger.kernel.org>; Mon, 27 Feb 2023 13:12:40 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pWknQ-00050G-Vp; Mon, 27 Feb 2023 22:12:33 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pWknQ-000hza-8R; Mon, 27 Feb 2023 22:12:32 +0100
-Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1pWknP-000jXC-CV; Mon, 27 Feb 2023 22:12:31 +0100
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     puranjay12@gmail.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: [PATCH v5 5/5] iio: temperature: tmp117: cosmetic alignment cleanup
-Date:   Mon, 27 Feb 2023 22:12:30 +0100
-Message-Id: <20230227211230.165073-6-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230227211230.165073-1-m.felsch@pengutronix.de>
-References: <20230227211230.165073-1-m.felsch@pengutronix.de>
+        with ESMTP id S229716AbjB0WvC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 17:51:02 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5F62701;
+        Mon, 27 Feb 2023 14:50:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677538245; x=1709074245;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=K8EQEDnNgik7vnpTEjnl9m5Ob62pXFbz6h8ZFZUz/KE=;
+  b=k7CRWZMUHFfew86T0egTxu0AHaMtr2szeS4CgP/xUtv7Z6Ai0H1iZWqc
+   zpzqjaysKYPRirefTuTMCq/z5FTh3uqHqvBP/uL/y/cjiBi7aNoB0QMSN
+   56ROOdaK9SONsmYfkk8gDNDVQZjkHNqeduAMZSISUuGBYaf3I5XruNloL
+   n6kzqzLsk0UezDv+AK4pM4jQ23oMxDQ7H8fC8wh9uf68gemVgtly5jgyp
+   MJDZ/Ty1WQVzcmWQDz+jLHamadIauGdSD4LtKnHZgXC3P5ftvqFFmLKP0
+   gVBQQ/zUSY9lcLaO421GMZEE0pwelYexDfD/lDuk4JGGAKUHQO6GjderC
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="313662027"
+X-IronPort-AV: E=Sophos;i="5.98,220,1673942400"; 
+   d="scan'208";a="313662027"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2023 14:47:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="742737576"
+X-IronPort-AV: E=Sophos;i="5.98,220,1673942400"; 
+   d="scan'208";a="742737576"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 27 Feb 2023 14:47:37 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pWmHO-00D1zp-2q;
+        Tue, 28 Feb 2023 00:47:34 +0200
+Date:   Tue, 28 Feb 2023 00:47:34 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        oe-kbuild-all@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: Add TI ADS1100 and ADS1000
+Message-ID: <Y/0zBv/vyn2aU0Di@smile.fi.intel.com>
+References: <20230227133255.32301-2-mike.looijmans@topic.nl>
+ <202302272311.tpyMXtCV-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202302272311.tpyMXtCV-lkp@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Align the code correctly if possible and align the channel bit mask to
-make it easier to read.
+On Mon, Feb 27, 2023 at 11:47:08PM +0800, kernel test robot wrote:
+> Hi Mike,
+> 
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on v6.2]
+> [cannot apply to jic23-iio/togreg linus/master next-20230227]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Looijmans/iio-adc-Add-TI-ADS1100-and-ADS1000/20230227-213529
+> patch link:    https://lore.kernel.org/r/20230227133255.32301-2-mike.looijmans%40topic.nl
+> patch subject: [PATCH v2 2/2] iio: adc: Add TI ADS1100 and ADS1000
+> config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20230227/202302272311.tpyMXtCV-lkp@intel.com/config)
+> compiler: sh4-linux-gcc (GCC) 12.1.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/intel-lab-lkp/linux/commit/8bc0b6e697641a7c6274a492bf210faccdeb55bf
+>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+>         git fetch --no-tags linux-review Mike-Looijmans/iio-adc-Add-TI-ADS1100-and-ADS1000/20230227-213529
+>         git checkout 8bc0b6e697641a7c6274a492bf210faccdeb55bf
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh olddefconfig
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh SHELL=/bin/bash drivers/iio/
+> 
+> If you fix the issue, kindly add following tag where applicable
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Link: https://lore.kernel.org/oe-kbuild-all/202302272311.tpyMXtCV-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
-v5:
-- no changes
-v4:
-- no changes
-v3:
-- no changes
-v2:
-- no changes
+Missing bitgield.h (and actually bits.h as well).
 
- drivers/iio/temperature/tmp117.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
-index 6994e3d3d06b1..638e3a5bd6b84 100644
---- a/drivers/iio/temperature/tmp117.c
-+++ b/drivers/iio/temperature/tmp117.c
-@@ -43,8 +43,8 @@ struct tmp117_data {
- };
- 
- static int tmp117_read_raw(struct iio_dev *indio_dev,
--		struct iio_chan_spec const *channel, int *val,
--		int *val2, long mask)
-+			   struct iio_chan_spec const *channel, int *val,
-+			   int *val2, long mask)
- {
- 	struct tmp117_data *data = iio_priv(indio_dev);
- 	s32 ret;
-@@ -52,7 +52,7 @@ static int tmp117_read_raw(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		ret = i2c_smbus_read_word_swapped(data->client,
--						TMP117_REG_TEMP);
-+						  TMP117_REG_TEMP);
- 		if (ret < 0)
- 			return ret;
- 		*val = sign_extend32(ret, 15);
-@@ -60,7 +60,7 @@ static int tmp117_read_raw(struct iio_dev *indio_dev,
- 
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		ret = i2c_smbus_read_word_swapped(data->client,
--					TMP117_REG_TEMP_OFFSET);
-+						  TMP117_REG_TEMP_OFFSET);
- 		if (ret < 0)
- 			return ret;
- 		*val = sign_extend32(ret, 15);
-@@ -82,9 +82,8 @@ static int tmp117_read_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
--static int tmp117_write_raw(struct iio_dev *indio_dev,
--		struct iio_chan_spec const *channel, int val,
--		int val2, long mask)
-+static int tmp117_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec
-+			    const *channel, int val, int val2, long mask)
- {
- 	struct tmp117_data *data = iio_priv(indio_dev);
- 	s16 off;
-@@ -107,7 +106,9 @@ static const struct iio_chan_spec tmp117_channels[] = {
- 	{
- 		.type = IIO_TEMP,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--			BIT(IIO_CHAN_INFO_CALIBBIAS) | BIT(IIO_CHAN_INFO_SCALE),
-+				      BIT(IIO_CHAN_INFO_CALIBBIAS) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+	},
- };
- 
- static const struct iio_chan_spec tmp116_channels[] = {
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 

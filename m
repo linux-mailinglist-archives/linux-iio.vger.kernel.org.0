@@ -2,83 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D12A6A35F1
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 01:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 937736A3ADC
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 06:51:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjB0A24 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Feb 2023 19:28:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33256 "EHLO
+        id S229581AbjB0Fvl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Feb 2023 00:51:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjB0A2z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Feb 2023 19:28:55 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865009EFE
-        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 16:28:53 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id c18so3223689wmr.3
-        for <linux-iio@vger.kernel.org>; Sun, 26 Feb 2023 16:28:53 -0800 (PST)
+        with ESMTP id S229486AbjB0Fvk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 00:51:40 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39A941A663;
+        Sun, 26 Feb 2023 21:51:38 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id bp25so7089661lfb.0;
+        Sun, 26 Feb 2023 21:51:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xQnJvz9r//i40Q6M6D7Mlr1MIPxNoULnq+BRFHU1d6A=;
-        b=lNQRkBW3mXT698WKQQNDF5hVpWndz/ftRGGYzsDf9qNReqb1dAN6SKRYCTS9TtQ756
-         SCNUgp/WM2VfqWE94S0ov+2fQsu8+snNvvIOwqB9bn06NkpchnFUvxTRQlQ8HugrUgaq
-         o4jk0z+ftZpyqct7b82D1lVunGvO6PiS7GlNH1FPS0n/To6u/bSNm3IBiwc/2B7HKt8m
-         NoLn1NCMB9LLhwm6HvmPOzJorMWfgLtiCIPpg3rxHdEvFEZ1sU4X+eJox4SHhX5jgstG
-         6juJlG3KeK/Ypj+a9xla5KaU8/lAu1SWTliS7/YyVUTwfIgAJkTM14ObfN6fBYZFkwi7
-         9C8Q==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Pz1yizsyui2FqkdAA8FMl9zuctHHJgs12xaY9f2guwI=;
+        b=CCpkojk5zNYu/f616oRSZP+In6HPCcNRFWO3jgWuieZE7gO+2/byzhSarlKjnr+u/y
+         LDmJd27wp8rFljXbLNk3W85sk6C0qElg/umNI6+nYitY8MWD9SmR++bEorK0nAz067kM
+         FufbqzELGoznT3Ivhsdzpg/Fy+REMy53OUBstITy46jcTFlQ3FaRmJ3nJehFpM0JyZ9K
+         E3HDe/Ec2sYewjGCW1CcDB/OcX4avIVwyI+hR4PfKjSkTfkwpiG6zfm/CDEJMWIYw5tC
+         TW3E+dERGVHipWAeU0QKQ6Z9vtP2eHtIFtFqO25Z+XGlj09OwDVjqy1FwY1jmD+ICfHS
+         Hv3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xQnJvz9r//i40Q6M6D7Mlr1MIPxNoULnq+BRFHU1d6A=;
-        b=Z41wDXtnn7ewtWGkEkEGgpv+rNq8ZTAVKJyjCUlKoJZ5y0oHGFPvUhXYP8wf0PPJTo
-         cl6KtSP5yingbSZSxMDnexQRsJELc8WORnq8b6LIRqUCDJbphIM2gpYb9zsYyzS/XaVJ
-         +6ku5yik9OG3ROcUd+PC+zmzp7J1dh1YaL4w0ZOSUT3Tt7ImNM5UvPd4mpOi7Q3B/BGM
-         rF0jJQU/8I0tIrKHiFfyO33tY04sa1NU/BZnyjbM+2DWSU/TPsGiCW1cU9YGmjjL+dAe
-         aJzy8FyotzMNtqa66zgC5CjUX/B6WXdsDb7y7jxAZPl09e6yZUru6X2o+1m2GX5yyC1M
-         64Dw==
-X-Gm-Message-State: AO0yUKU3InDhQaiQWoqdsE1rLkaHb3QgmtbBXoiaw5N1sBTjGPSN/ig9
-        TfyS5MaQyO0zUrAYuhkp97dhc5pArGbZqqD6S+k=
-X-Google-Smtp-Source: AK7set9qfdmeSrd19nfTWM1cr3oKrPd+bMT1RRiC4G6nqiqI1AL6Rt8aouUNDZYDZZ7g83kYmA1mSZhrTbACKJY0Mpk=
-X-Received: by 2002:a05:600c:34d2:b0:3df:d8c9:ca84 with SMTP id
- d18-20020a05600c34d200b003dfd8c9ca84mr3196336wmq.1.1677457731758; Sun, 26 Feb
- 2023 16:28:51 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pz1yizsyui2FqkdAA8FMl9zuctHHJgs12xaY9f2guwI=;
+        b=VWrgZdX8jJefBI+09xe6iBMC3CvO7Xgm7P0el6F5JRHMF+wq8S9NHo237yzqfGOgge
+         IX6Kj6wPNs6dnr8IchkbNDR8VywbaRZHwBIXTXIZBLAj2d2lYA/dUbvK/pEW2JjqfHmE
+         DHqkAYs9d9s3DacU5XnhyENchR0TidZM9jiV1lf3maE5WM5oLEfh3uYEbC18GgKGnpLG
+         QJZMH0GCav5UF472ei8tHShjmBl594GipItbSt6k5B99WZbWrx4x54ceuIcbMl9aktjf
+         /uOiHJ4CR1x4EU9iOrMCcNmfgU3QXfdPcuegy3/tjRUnYXhNBLna46A2uJ/IwQmnnSR4
+         tbAg==
+X-Gm-Message-State: AO0yUKUdToZ8gswI3fOhTxLicEwIwTGPVODe97vGjHh/D9RCuX4sNVbC
+        Wtzhfi7ziab2YPWbAfNQG7o=
+X-Google-Smtp-Source: AK7set8eVtDP59cMapvu5MoQb5HB8n3l+kpwMnV1leKmsKzj4Hc49bk96fv6pdCE55ymq/tPP3Kegw==
+X-Received: by 2002:ac2:44b4:0:b0:4d1:616d:33a4 with SMTP id c20-20020ac244b4000000b004d1616d33a4mr7266170lfm.66.1677477096332;
+        Sun, 26 Feb 2023 21:51:36 -0800 (PST)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id l29-20020ac24a9d000000b004d862e9b453sm788052lfp.196.2023.02.26.21.51.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Feb 2023 21:51:35 -0800 (PST)
+Message-ID: <c2ad4682-16dc-6aa8-4931-d185f0d5332b@gmail.com>
+Date:   Mon, 27 Feb 2023 07:51:35 +0200
 MIME-Version: 1.0
-Received: by 2002:adf:d1ce:0:0:0:0:0 with HTTP; Sun, 26 Feb 2023 16:28:50
- -0800 (PST)
-From:   Raymond Dafter <raymonddafter4992@gmail.com>
-Date:   Sun, 26 Feb 2023 16:28:50 -0800
-Message-ID: <CAN3-JYnVJi_56NhjLMkaBzFr5O1K6FfdsKnMbyDE=PypPU6G0g@mail.gmail.com>
-Subject: We finance viable projects only
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC PATCH 6/6] MAINTAINERS: Add ROHM BU27034
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Liam Beguin <liambeguin@gmail.com>,
+        Peter Rosin <peda@axentia.se>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1677080089.git.mazziesaccount@gmail.com>
+ <8dbdf68749389605cc4dff396ddd66d27fdb2a0d.1677080089.git.mazziesaccount@gmail.com>
+ <20230226134200.423649e1@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230226134200.423649e1@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Attention: Sir
+On 2/26/23 15:42, Jonathan Cameron wrote:
+> On Wed, 22 Feb 2023 18:16:18 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> Add myself as a maintainer for ROHM BU27034 ALS driver.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> ---
+>>   MAINTAINERS | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 43f5a024daa2..8d31ef852372 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -18090,6 +18090,11 @@ S:	Maintained
+>>   F:	Documentation/devicetree/bindings/iio/light/bh1750.yaml
+>>   F:	drivers/iio/light/bh1750.c
+>>   
+>> +ROHM BU27034 AMBIENT LIGHT SENSOR DRIVER
+>> +M:	Matti Vaittinen <mazziesaccount@gmail.com>
+> Whilst the wild cards stuff for IIO should also catch this, it's (fairly)
+> conventional to still add the list entry to make it easy for
+> people reading the file directly.
 
-We are interested in discussing with you, Entrepreneurs, Corporations
-and Investors (start-up Owners included) with projects that require
-financing also in helping you grow your network and offering you Loan
-funds to complete and fund your existing Projects.
+Good catch, thanks! Will add:
+L:      linux-iio@vger.kernel.org
 
-We finance viable projects only. The board will need to review the
-detailed Business plan and executive summary of the project then
-negotiate on the terms and conditions if the project is deemed viable.
+for v2.
 
-If we can partner with you or your clients, We can send you our
-Company Terms and Condition after review of your project plan and
-executive summary of your project, if you are serious and Interested
-contact us for further Information:
+-- Matti
 
-Thanks and best regards
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-Raymond Dafter
+~~ When things go utterly wrong vim users can always type :help! ~~
+

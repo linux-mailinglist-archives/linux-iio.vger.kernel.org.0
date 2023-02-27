@@ -2,39 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CF7F6A4CD9
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 22:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F8456A4CDD
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Feb 2023 22:12:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbjB0VMr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Feb 2023 16:12:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49422 "EHLO
+        id S229613AbjB0VMt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Feb 2023 16:12:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbjB0VMq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 16:12:46 -0500
+        with ESMTP id S229791AbjB0VMr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 16:12:47 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388BA23D85
-        for <linux-iio@vger.kernel.org>; Mon, 27 Feb 2023 13:12:41 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DDF02687A
+        for <linux-iio@vger.kernel.org>; Mon, 27 Feb 2023 13:12:42 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <mfe@pengutronix.de>)
-        id 1pWknQ-00050D-Vq; Mon, 27 Feb 2023 22:12:33 +0100
+        id 1pWknQ-00050E-Vo; Mon, 27 Feb 2023 22:12:33 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <mfe@pengutronix.de>)
-        id 1pWknQ-000hzU-0i; Mon, 27 Feb 2023 22:12:32 +0100
+        id 1pWknQ-000hzX-4p; Mon, 27 Feb 2023 22:12:32 +0100
 Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <mfe@pengutronix.de>)
-        id 1pWknP-000jWy-98; Mon, 27 Feb 2023 22:12:31 +0100
+        id 1pWknP-000jX0-9r; Mon, 27 Feb 2023 22:12:31 +0100
 From:   Marco Felsch <m.felsch@pengutronix.de>
 To:     puranjay12@gmail.com, jic23@kernel.org, lars@metafoo.de,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         kernel@pengutronix.de
-Subject: [PATCH v5 0/5] Add TI TMP116 Support
-Date:   Mon, 27 Feb 2023 22:12:25 +0100
-Message-Id: <20230227211230.165073-1-m.felsch@pengutronix.de>
+Subject: [PATCH v5 1/5] dt-bindings: iio: ti,tmp117: fix documentation link
+Date:   Mon, 27 Feb 2023 22:12:26 +0100
+Message-Id: <20230227211230.165073-2-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230227211230.165073-1-m.felsch@pengutronix.de>
+References: <20230227211230.165073-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -49,22 +51,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Fix the broken link to point to the correct homepage.
 
-this small series adds the support for the TI TMP116 temperature sensor
-which is predecessor of the TMP117 but still in production.
+Fixes: 5e713b25d137 ("dt-bindings: iio: temperature: Add DT bindings for TMP117")
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+v5:
+- no changes
+v4:
+- no changes
+v3:
+- no changes
+v2:
+- added Krzysztof ack
 
-Marco Felsch (5):
-  dt-bindings: iio: ti,tmp117: fix documentation link
-  iio: temperature: tmp117: improve fallback capabilities
-  dt-bindings: iio: ti,tmp117: add binding for the TMP116
-  iio: temperature: tmp117: add TI TMP116 support
-  iio: temperature: tmp117: cosmetic alignment cleanup
+ .../devicetree/bindings/iio/temperature/ti,tmp117.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .../bindings/iio/temperature/ti,tmp117.yaml   |  8 +-
- drivers/iio/temperature/tmp117.c              | 80 ++++++++++++++-----
- 2 files changed, 66 insertions(+), 22 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+index 347bc16a4671b..8d1ec4d39b28c 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+@@ -9,7 +9,7 @@ title: "TI TMP117 - Digital temperature sensor with integrated NV memory"
+ description: |
+     TI TMP117 - Digital temperature sensor with integrated NV memory that supports
+     I2C interface.
+-      https://www.ti.com/lit/gpn/tmp1
++      https://www.ti.com/lit/gpn/tmp117
+ 
+ maintainers:
+   - Puranjay Mohan <puranjay12@gmail.com>
 -- 
 2.30.2
 

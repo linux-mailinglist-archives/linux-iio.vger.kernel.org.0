@@ -2,587 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0626A5305
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 07:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D395A6A54A8
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 09:45:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbjB1GcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Feb 2023 01:32:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54346 "EHLO
+        id S230467AbjB1IpR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Feb 2023 03:45:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbjB1GcU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Feb 2023 01:32:20 -0500
-Received: from spamfilter04.delta.nl (spamfilter04.delta.nl [217.102.255.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8137C206A0;
-        Mon, 27 Feb 2023 22:32:18 -0800 (PST)
-Received: from host-ubmmyvj.static.zeelandnet.nl ([217.102.255.198] helo=mail.zeelandnet.nl)
-        by spamfilter04.delta.nl with esmtp (Exim 4.92)
-        (envelope-from <mike.looijmans@topic.nl>)
-        id 1pWtX3-0006hK-Vd; Tue, 28 Feb 2023 07:32:16 +0100
-X-Sender-IP: 204.168.188.16
-Received: from phenom.domain_not_set.invalid (016-188-168-204.dynamic.caiway.nl [204.168.188.16])
-        (Authenticated sender: glasveze@delta.nl)
-        by mail.zeelandnet.nl (Postfix) with ESMTPA;
-        Tue, 28 Feb 2023 07:32:10 +0100 (CET)
-From:   Mike Looijmans <mike.looijmans@topic.nl>
-To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Date:   Tue, 28 Feb 2023 07:31:51 +0100
-Message-Id: <20230228063151.17598-2-mike.looijmans@topic.nl>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230228063151.17598-1-mike.looijmans@topic.nl>
-References: <20230228063151.17598-1-mike.looijmans@topic.nl>
-X-Originating-IP: 217.102.255.198
-X-DELTA-Domain: zeelandnet.nl
-X-DELTA-Username: 217.102.255.198
-Authentication-Results: delta.nl; auth=pass smtp.auth=217.102.255.198@zeelandnet.nl
-X-DELTA-Outgoing-Class: ham
-X-DELTA-Outgoing-Evidence: SB/global_tokens (0.000366237774469)
-X-Recommended-Action: accept
-X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT/+Qbjh7U2b8d2TYVAias4dPUtbdvnXkggZ
- 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5xzeemUa7CfwmLuWRw6Ruql9Wrt/oF2ofKYeezPZTW+uL/H
- seNZtCKdSRRS0Op9pfwEIJgF/Accv4lLtE4TWYNIjgZ0d6t6F7vRFkkblm+Z5NM7uAX91bCdERq+
- A7shw5HBQ2daKZyt52e93s8gLaWLOD0k0yEeil+YFQCKRVPBg3VHKL9hvGS2mqsPMKya0/ejQxXz
- IRCxU4zvVw/zK9ZrhDCTqV1WVopmRM14iUwHCYSLeUQrvOsxMVhiidR8nBk+R54Dzy39xxXBDVj+
- w40qD+tmOqLXWKwbkhDLVpmPyEpTtJ1Gicmo0ICJSZRGG8ZiK/Pufg+FEfYzB3vZNRC/MzyPAQic
- eiT3qi1WRRbMtHs/ZDw0ICQBCi4MkavZr+vdLKbqaxkIZ/IoDntXWGjGtxB4JzGERc7IIRNCyb5B
- 6YRxmUrjg0VurGjbcZ+qM12s0jLA62zuQ0p9vWMNk8RQhOMAjvfr/FcowH3inf/wyv+Bu4/uGdQr
- w1B0vCxVYoi1DXHSjWS59UydDDVvf8OzIOE8xrw2y5OvK1bfFc4cnEN4PFSAoOTb2oJsdjqqcu0r
- 0XmOPEDASD12MXhLEZMTz+HcJL/WCLPCvtHXE5vkSdL0MYqVRCIbgP5wlJ/3RlpfjKqeDxugWqGo
- bpUDNSEgBis5N/Mb7VKF7vApw75kdlX8QONNpNIWCQgbIih6o3WqFghyXFWLno8/IbNCcUbQAbnt
- l9Q3ZYtCuyQ7/XI/ws1IPwYBoYXfzgTCDFl2sunh8oBMeLVLbSDuV03m2JR3A9w00Uxphb0oecXq
- 9ECkdqyFtrWh9ptS9p5v+9khTJHICjtSWlckpyucRl3ZvRsd3WHA6paPC74rnDlfLah2d29R4BJZ
- 58JiPXkJGM8RdwuVhmtVCqQvr7F4+SqvrRW05YE5enyccp7RH4WQio3uGR3IVyyY45hYQ53sekyN
- ml6NKEqK8EtxFSDTRzT4w/6GTbSMmemAFVau2BE2tN2dJN1qbO+5byg1xa5b4pvlwySICJ8Oz3QZ
- bZo1Mwo55EapaK2ArLgvpIN/GYHSD3CRm+gSQrfrteadX1D5XPq1Q9jUWdr7yeeChZhecWpjdpxg
- B5hQ6nsDvccjqgmDvD9Wh85E84b+miNp/mfbnZfCkln/oVHmYKE2NEwqiQ6ujzl0lwKm4uYvOzq7
- p0gFhYOwkSRseOkfcllAVrX+xgByR9zY5D4EUGMfbBlPM9GaJdr/tWFtYdvXhamRpn73HslLxayW
- s9bYQYRBnNTIuPZHwrjVii7biXG/73E5JI68fYwVZuM7jUXIESohoO51xWmU8aVW4NQHG/HCuRbo
- rdpaefcI9P4j9C3XRsAbBbHfyYCv8Aca8wjA37gwTIS1VDWpR5gCZX+JmB/hR5Jyap+zYXPeNHk1
- 5VolAGHS5rCXQKDys+zV37+29PHf6citJcUoR5sicilDq6onO2DrAAUGU6f/eXLXHwWBIg9ewzd6
- roBovbbJOk8Ii0jxr6twdx43Hg==
-X-Report-Abuse-To: spam@spamfilter03.delta.nl
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_FAIL,
-        SPF_HELO_NONE autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S230185AbjB1Iol (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Feb 2023 03:44:41 -0500
+Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2100.outbound.protection.outlook.com [40.107.135.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FBC42CFD7;
+        Tue, 28 Feb 2023 00:43:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=krCYiIdwjeXLTPV1fGs6n/3UD3CAcVT/z3zPJkishlLTtyzNCzhSRGOUryxObszT0/2KAZNNhRwVhviDkUpqpZPJ2kst4/K9yYtd6ps86Nr5rpNYFmCCEIzeI46//segEKfJUtEasPxC/JpGbZ5E6bZQo3p2RKC2QZxMuJXtfNWbsH+yhIOMmTISC6t27NCYCsUcuV+iqZLP14Nt81wvLwKDpCT3btI+Qv41UThUZE28g5otUpC2hNKoeBgLwUnjITQ1n5iQrmHFDY7GQXqMmSNXhpvvEKcmpD1wPjj5fhjLVszgUWns3csPXPClYACfwJtH2hYwEDQu9ryyLsR0dA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m37HYBEMH6Q6zn5bLIufKlY7CCpzRDI43xoTacz5NBY=;
+ b=HOPwsznu1BFjzAJq93ZEy2W0HrUj+GUagHtfvS+rabvFIq99LDEXAnvCoqHImjurOtGnKTDg9HaRJarzirGZ3wZOUI2hXg/W/CjhNLhoDSwNueFhBSABhoSFpakqGU7S6mOSdt6P21au+FaljbBqdp+SoSnp/+H1x7t1RnOrj2OWSmMIoTJBhrjFwirPlEdGbh2DGSxFnFioS2ErG0YoD5JxPZZuwiYd4ILEJpwqwamBD27jp70kxiVciXHK4dJMsLwarnZH4WRRcld0LSFBhE/B1QkLTsLRfYWn3+YJ2w7gkBtmoU9MlpQWYrvQgVFt+FP+DzCfHwulyTYWHa6uJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
+ header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rohmsemiconductor.onmicrosoft.com;
+ s=selector2-rohmsemiconductor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m37HYBEMH6Q6zn5bLIufKlY7CCpzRDI43xoTacz5NBY=;
+ b=orEY4wpwSL8aUhWnvJUgI8pPbPs5KczhDcM8Tbf+INFJUkvv7qDmtSpRHPq+EFj42lyajX7ivaDgCj1HrD/z04mUIYWyDg8QAbn1aTjxZSoOr3JevjTg3SUlyB9vQHU66yYFf8ObGEbPV4F0lGS+E9pn50pOR01EgS4jJQFw5D0=
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
+ by BEZP281MB2674.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:71::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.30; Tue, 28 Feb
+ 2023 08:43:28 +0000
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::f504:16e7:71d4:2fd8]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::f504:16e7:71d4:2fd8%6]) with mapi id 15.20.6134.030; Tue, 28 Feb 2023
+ 08:43:28 +0000
+From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
+Thread-Topic: [RFC PATCH 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
+Thread-Index: AQHZRtj7z7K/u6iCTU+V9BreEYjFrq7d63wAgANZ5ACAAs5hgA==
+Date:   Tue, 28 Feb 2023 08:43:28 +0000
+Message-ID: <ec0d0f3a-c10a-4d55-486f-7b90db90a427@fi.rohmeurope.com>
+References: <cover.1677080089.git.mazziesaccount@gmail.com>
+ <63a2dbedf54e2e00e3b63dd16aae190ff6596355.1677080089.git.mazziesaccount@gmail.com>
+ <02f948ee-34ee-c15e-09e4-d0d8c5161c9b@gmail.com>
+ <20230226135216.3f962b51@jic23-huawei>
+In-Reply-To: <20230226135216.3f962b51@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BEZP281MB2454:EE_|BEZP281MB2674:EE_
+x-ms-office365-filtering-correlation-id: 89ec6c8a-7407-4e7b-79c0-08db1967dcda
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: UZELylY0lptAwS6/wXdS4WX1z244b30PXqB2FUfFUJ2Fhi37Nsi7J8PALOX3TWdet9AotUWH4ogxd7eIbH1vQ+4VpYdV8vuhsfmz7DqH8dLosdX9MuvvQq1aoY5QK9BqkmOUcm+Y12gShzmwEoktrOeurMHFH39zyLuI3tYBqoF6U9xurXnqDKZaD8T7kWQXdv7hDqJyKdw5E0DUh6F6BFKecCXenv9SgvgASqn/RTFFQ4dUtGNQeK76mGSIK5Sa38BiRXQxTR0dFXpgqIbW8qvEpB0MQczRu8lYCVX9MO5HuCQkxGX1XWeqAJUN0h3YnxkwDkZrF9+Yi+D+wfdYPGX8kYZlJZOLg3ThLBdZlAMpNKTTyQr0yVKcWbvADX9+wGw838N4dsYC7ViDo4z/2sEK2WqUFQFsW8eFU9aFyrloxuc0I9enO1YOy5uQPLul/n85zbj/gUGsPmSEsj5KiM28YDESxUPidxRvlYkk3BzXRYDey9bBTfPjvm403h2TsYHkBEVrTJFD3oAKzTHeIWRlj2yau3SwND9zLxWW4VQirrY+kzUyvvumZX2PGZNz55NRiLqRb9lddiEslDoceltbuKIihaUdHxIUUOCrF7wy5f8ruikg8SUVRHfGPVB1KmuH09iJm2zcSmRz3735g+sLx9G3zw0gVwXg0d2kVRphYgJO86dfp4z67zPwI4dy6gpmi0sHlhy11KUe5PPZe5abF7dT5Y4YwPxEOGbVNcDcKDItJZdTmaUtyCLf4JBrb6xJm6qp73C3d1heKauC2g==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(39850400004)(346002)(396003)(136003)(366004)(451199018)(2616005)(53546011)(186003)(122000001)(38100700002)(8936002)(41300700001)(38070700005)(91956017)(31696002)(8676002)(66446008)(66946007)(66556008)(66476007)(4326008)(64756008)(76116006)(86362001)(478600001)(83380400001)(316002)(5660300002)(110136005)(54906003)(2906002)(31686004)(6486002)(71200400001)(6506007)(6512007)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cVQ1cWdlNGdzOFlheU9idUZZdUVNMk1hbXh2T2NneUVvdERmaS9JM2dRNDZU?=
+ =?utf-8?B?aERYbEM5L3BjUDUvQi9HRzJ6MnBUYU13R3V1WGk3M0ozcmZjandNRDh6QUlW?=
+ =?utf-8?B?SEFlZWFvZmRlVFJ0TklHQXZsK3ZOb2E0RTlnOFlaRTQ3ZEl3TTQ3T1FPYWZv?=
+ =?utf-8?B?TEh5ZUJ5TW93NUhIOHVtbWRBRk9mem1PM2xnYzZ5QlozVWJHMmFoSjBkVHl2?=
+ =?utf-8?B?cTBrQkcyVkZTYWpPUjFRWDQvbTBScGx3QlB2WGs3Q28yTDVrZ0FqcVRuYmMz?=
+ =?utf-8?B?YlVHaStvc0U2bjZ6Qld5VUpWVXY3NFRzaDFlMFREaVZhcndzOTlEQm1TS21a?=
+ =?utf-8?B?UzkwT1BsYWlvb2QwVVBnbTlPWTFXWDR5bXRKR0VmZHl6dWNEWlFLeEEwY0p6?=
+ =?utf-8?B?cEpBOG0wVndwYmpTV0w1ZXVjM3ZkZTIwZnhGS1B6T2lyOSt4eHduT0dFZk5H?=
+ =?utf-8?B?UERBMC8wcXRGYStVTXMrNWgrTmw4NitteFhJbm1rSGZVWjlzQlZ4NUxMcmd4?=
+ =?utf-8?B?Z0JaMXgyZGkyRGo1dW9XaEZneUpzQ05sOWx4SEdsWW1Ua0s1bHpKZW5tU3gz?=
+ =?utf-8?B?SzBDWEJDcnBWbGRHb0lRT0VwV3NOMFdnNWEyWFBlOEtJR3dtYUpDUkdwTWdr?=
+ =?utf-8?B?Z2xYSmFBeVFjZTE2L1Fkckw2cDVQVmh0VXFQeWh1QW53MzMzOGVPNTFxTzUy?=
+ =?utf-8?B?R1BGUG1mMUFidkRHNjA2Z0l3SThkcEVRc3JOd3E2dXAvVXZWOTFCNkxXMVJq?=
+ =?utf-8?B?eFQwRXBwK2ZuYmRCeFZzWFBMQmtTb2NWL3cyNXFGUG9wTFpRVDRzSGFJSG90?=
+ =?utf-8?B?VFJQb0RrNkFqUnhVS0x3WnovQVhTa3VxUWJ5QXVSMWdKaFhVYStDTERlUFVE?=
+ =?utf-8?B?dG9EOVdhcmJ4ZHNTam5jRUROM0lZMmdxaEdoSFU2a0g1RE5UeDBOQ1EwZEtR?=
+ =?utf-8?B?VGpYUW5RRHNnUEptR0JrWUVKQ3M0M2hUOTdodFEzSEcvNnd4N2gvSS9tVDZK?=
+ =?utf-8?B?UE1WKzlubWNxdmJOSjV3d2pOaHo4RTdDdkd5K2h4c2FMdVBVcTR4a2ZiOENs?=
+ =?utf-8?B?d2FyNytxL1NOdXRvcjVWRzYxbmpPMDVJQ1dtRlViY1dqVW5ib3NNSEh1Q210?=
+ =?utf-8?B?aW4wemxlOXQ1RWxZME9VQ2tWZnZUL2xnNjJLeUlhekI3Tms0ZTNxNEl1SFdM?=
+ =?utf-8?B?UWRROUtaejVmaUx0Z1BDT0ZkL3dPSktrUUg3RG9hR3h6YjdEdE5oQlFwK0lW?=
+ =?utf-8?B?TTRuZmh3eVdIRGIwMzBrQmY4M3VZbkNkVVNsejBmVEZCeVFiakVUYStQTzJo?=
+ =?utf-8?B?SHcxRXk4cnZsMHE1ZytFMzNiR1luRFVWM0Nhb2VZSTgrV3NUMWR1L3BsSE1M?=
+ =?utf-8?B?S1pGZ3VCVmorbktkRUJoTWxEQjg2NER5UFpuMHlaZ2NleW5LYkRPRmpWOG9H?=
+ =?utf-8?B?N2RQdGdsZkNjaUxnYTBKMVlMOCtzTittdEs0aVpVZWZhQTc0ZmFBZlRsbllW?=
+ =?utf-8?B?cDdzaGk2L1NITWRHd3RhRytrZkVLQ0pZdEFxMHdVdEg0SlZHMm9pSlVzdGx2?=
+ =?utf-8?B?TzJwSWFZaXVsQkxOSGpIdkx5aGJHM3pUL1Y5KzYzcEllRWgxSVhjdm1qYWdv?=
+ =?utf-8?B?V0crRTQ2YTBJN1MvTC82RVNZNjdFOWdwK1VIOXJkZW41bDlmZ2cwdWRMaStv?=
+ =?utf-8?B?QmtidEFVNURPdTRlMzVNai9KWFpEbnBBbDFmZHp0TzAxL081ZEFDdlNEemJi?=
+ =?utf-8?B?UUxSTU1rYmExMHN3VFZxUFI4UGJFeHRvaUoyalhaTFowdnFabGt5MGlLNVg1?=
+ =?utf-8?B?bktiaUdabCtleTRkRGhmT0dyWFhNZENBNkM0OWdQYlNDa3BPM0lJWVFlSmtp?=
+ =?utf-8?B?a2pMNnZ2OUdaVFp4R3VhbUgyVHhQUTlwR2JkWUdrZzF2NmRQV1pISzhWR216?=
+ =?utf-8?B?Z1dEejRpUjRRTTFrajFPOTNhMVhuMEdBM0d1dVh4SzduOU5MOGx0NTE4RFZ0?=
+ =?utf-8?B?SGpQTm5PWHk5S0RsV2FFeUxSejIzMDJhNzZXUU5mKzRmaVZYcDJ0NVdaYVpG?=
+ =?utf-8?B?K1pnUnVGQnFWbHpvb1g2bFhmcEFpd25pekU5YmRUNDRBWnMxYnFMUGpURFhH?=
+ =?utf-8?B?QkJGSWY1alNSSHJGdEEvNjFYa2Vjb21mS0Juc3VhWnVXN01RUnQyWjRhdkhU?=
+ =?utf-8?Q?pNYhW2gtisy9Z+Gf+oDxC4U=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <807015422D85334FBB92E7C7637974B7@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: fi.rohmeurope.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89ec6c8a-7407-4e7b-79c0-08db1967dcda
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2023 08:43:28.0688
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pTDjPD/DErr4SYE2CywLa+BeZHcNofgq53yuP26v0b/q00PQ/JP9u2azKAEvq1p/9OrJSD1TCvjzLRcUuH38oXg4kbMKUquppg29hWGHu4DSu7G8luAh2y/t4eCIw0ix
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BEZP281MB2674
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The ADS1100 is a 16-bit ADC (at 8 samples per second).
-The ADS1000 is similar, but has a fixed data rate.
-
-Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-
----
-
-Changes in v3:
-Add #include linux/bitfield.h and linux/bits.h
-
-Changes in v2:
-Remove "driver for" from title
-Use proper PM_RUNTIME macros
-Fix indents
-Use dev_err_probe()
-Unsigned index and post-increment
-Use GENMASK and FIELD_GET
-remove ads1100_set_conv_mode
-remove Kconfig BUFFER dependencies
-remove unused #include
-Set SCALE instead of HARDWAREGAIN
-Use devm_add_action_or_reset
-
- drivers/iio/adc/Kconfig      |  10 +
- drivers/iio/adc/Makefile     |   1 +
- drivers/iio/adc/ti-ads1100.c | 434 +++++++++++++++++++++++++++++++++++
- 3 files changed, 445 insertions(+)
- create mode 100644 drivers/iio/adc/ti-ads1100.c
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 63f80d747cbd..257efb25a92e 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1207,6 +1207,16 @@ config TI_ADS1015
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-ads1015.
- 
-+config TI_ADS1100
-+	tristate "Texas Instruments ADS1100 and ADS1000 ADC"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for Texas Instruments ADS1100 and
-+	  ADS1000 ADC chips.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-ads1100.
-+
- config TI_ADS7950
- 	tristate "Texas Instruments ADS7950 ADC driver"
- 	depends on SPI && GPIOLIB
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 4ef41a7dfac6..61ef600fab99 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -107,6 +107,7 @@ obj-$(CONFIG_TI_ADC108S102) += ti-adc108s102.o
- obj-$(CONFIG_TI_ADC128S052) += ti-adc128s052.o
- obj-$(CONFIG_TI_ADC161S626) += ti-adc161s626.o
- obj-$(CONFIG_TI_ADS1015) += ti-ads1015.o
-+obj-$(CONFIG_TI_ADS1100) += ti-ads1100.o
- obj-$(CONFIG_TI_ADS7950) += ti-ads7950.o
- obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o
- obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
-diff --git a/drivers/iio/adc/ti-ads1100.c b/drivers/iio/adc/ti-ads1100.c
-new file mode 100644
-index 000000000000..1898bee9b784
---- /dev/null
-+++ b/drivers/iio/adc/ti-ads1100.c
-@@ -0,0 +1,434 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * ADS1100 - Texas Instruments Analog-to-Digital Converter
-+ *
-+ * Copyright (c) 2023, Topic Embedded Products
-+ *
-+ * Datasheet: https://www.ti.com/lit/gpn/ads1100
-+ * IIO driver for ADS1100 and ADS1000 ADC 16-bit I2C
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/delay.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/i2c.h>
-+#include <linux/mutex.h>
-+#include <linux/property.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/types.h>
-+
-+/* The ADS1100 has a single byte config register */
-+
-+/* Conversion in progress bit */
-+#define ADS1100_CFG_ST_BSY	BIT(7)
-+/* Single conversion bit */
-+#define ADS1100_CFG_SC		BIT(4)
-+/* Data rate */
-+#define ADS1100_DR_MASK		GENMASK(3, 2)
-+/* Gain */
-+#define ADS1100_PGA_MASK	GENMASK(1, 0)
-+
-+#define ADS1100_CONTINUOUS	0
-+#define	ADS1100_SINGLESHOT	ADS1100_CFG_SC
-+
-+#define ADS1100_SLEEP_DELAY_MS	2000
-+
-+static const int ads1100_data_rate[] = {128, 32, 16, 8};
-+static const int ads1100_data_rate_bits[] = {12, 14, 15, 16};
-+
-+struct ads1100_data {
-+	struct i2c_client *client;
-+	struct regulator *reg_vdd;
-+	struct mutex lock;
-+	int scale_avail[2 * 4]; /* 4 gain settings */
-+	u8 config;
-+	bool supports_data_rate; /* Only the ADS1100 can select the rate */
-+};
-+
-+static const struct iio_chan_spec ads1100_channel = {
-+	.type = IIO_VOLTAGE,
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+	.info_mask_shared_by_all =
-+				BIT(IIO_CHAN_INFO_SCALE) |
-+				BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+	.info_mask_shared_by_all_available =
-+				BIT(IIO_CHAN_INFO_SCALE) |
-+				BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+	.scan_type = {
-+		.sign = 's',
-+		.realbits = 16,
-+		.storagebits = 16,
-+		.endianness = IIO_CPU,
-+	},
-+	.datasheet_name = "AIN",
-+};
-+
-+static int ads1100_set_config_bits(struct ads1100_data *data, u8 mask, u8 value)
-+{
-+	int ret;
-+	u8 config = (data->config & ~mask) | (value & mask);
-+
-+	if (data->config == config)
-+		return 0; /* Already done */
-+
-+	ret = i2c_master_send(data->client, &config, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	data->config = config;
-+	return 0;
-+};
-+
-+static int ads1100_data_bits(struct ads1100_data *data)
-+{
-+	return ads1100_data_rate_bits[FIELD_GET(ADS1100_DR_MASK, data->config)];
-+}
-+
-+static int ads1100_get_adc_result(struct ads1100_data *data, int chan, int *val)
-+{
-+	int ret;
-+	__be16 buffer;
-+	s16 value;
-+
-+	if (chan != 0)
-+		return -EINVAL;
-+
-+	ret = pm_runtime_resume_and_get(&data->client->dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_master_recv(data->client, (char *)&buffer, sizeof(buffer));
-+
-+	pm_runtime_mark_last_busy(&data->client->dev);
-+	pm_runtime_put_autosuspend(&data->client->dev);
-+
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "I2C read fail: %d\n", ret);
-+		return ret;
-+	}
-+
-+	/* Value is always 16-bit 2's complement */
-+	value = be16_to_cpu(buffer);
-+	/* Shift result to compensate for bit resolution vs. sample rate */
-+	value <<= 16 - ads1100_data_bits(data);
-+	*val = sign_extend32(value, 15);
-+
-+	return 0;
-+}
-+
-+static int ads1100_set_scale(struct ads1100_data *data, int val, int val2)
-+{
-+	int microvolts;
-+	int gain;
-+	int i;
-+
-+	/* With Vdd between 2.7 and 5V, the scale is always below 1 */
-+	if (val)
-+		return -EINVAL;
-+
-+	microvolts = regulator_get_voltage(data->reg_vdd);
-+	/* Calculate: gain = ((microvolts / 1000) / (val2 / 1000000)) >> 15 */
-+	gain = ((microvolts + BIT(14)) >> 15) * 1000 / val2;
-+
-+	for (i = 0; i < 4; i++) {
-+		if (BIT(i) == gain) {
-+			ads1100_set_config_bits(data, ADS1100_PGA_MASK, i);
-+			return 0;
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int ads1100_set_data_rate(struct ads1100_data *data, int chan, int rate)
-+{
-+	unsigned int i;
-+	unsigned int size;
-+
-+	size = data->supports_data_rate ? ARRAY_SIZE(ads1100_data_rate) : 1;
-+	for (i = 0; i < size; ++i) {
-+		if (ads1100_data_rate[i] == rate) {
-+			return ads1100_set_config_bits(
-+					data, ADS1100_DR_MASK,
-+					FIELD_PREP(ADS1100_DR_MASK, i));
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static void ads1100_calc_scale_avail(struct ads1100_data *data)
-+{
-+	int millivolts = regulator_get_voltage(data->reg_vdd) / 1000;
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(data->scale_avail) / 2; i++) {
-+		data->scale_avail[i * 2] = millivolts;
-+		data->scale_avail[i * 2 + 1] = 15 + i;
-+	}
-+}
-+
-+static int ads1100_read_avail(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      const int **vals, int *type, int *length,
-+			      long mask)
-+{
-+	struct ads1100_data *data = iio_priv(indio_dev);
-+
-+	if (chan->type != IIO_VOLTAGE)
-+		return -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*type = IIO_VAL_INT;
-+		*vals = ads1100_data_rate;
-+		if (data->supports_data_rate)
-+			*length = ARRAY_SIZE(ads1100_data_rate);
-+		else
-+			*length = 1;
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SCALE:
-+		*type = IIO_VAL_FRACTIONAL_LOG2;
-+		*vals = data->scale_avail;
-+		*length = ARRAY_SIZE(data->scale_avail);
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ads1100_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan, int *val,
-+			    int *val2, long mask)
-+{
-+	int ret;
-+	struct ads1100_data *data = iio_priv(indio_dev);
-+
-+	mutex_lock(&data->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			break;
-+
-+		ret = ads1100_get_adc_result(data, chan->address, val);
-+		if (ret >= 0)
-+			ret = IIO_VAL_INT;
-+		iio_device_release_direct_mode(indio_dev);
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		/* full-scale is the supply voltage in millivolts */
-+		*val = regulator_get_voltage(data->reg_vdd) / 1000;
-+		*val2 = 15 + FIELD_GET(ADS1100_PGA_MASK, data->config);
-+		ret = IIO_VAL_FRACTIONAL_LOG2;
-+		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = ads1100_data_rate[
-+				FIELD_GET(ADS1100_DR_MASK, data->config)];
-+		ret = IIO_VAL_INT;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	mutex_unlock(&data->lock);
-+
-+	return ret;
-+}
-+
-+static int ads1100_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int val,
-+			     int val2, long mask)
-+{
-+	struct ads1100_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&data->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		ret = ads1100_set_scale(data, val, val2);
-+		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = ads1100_set_data_rate(data, chan->address, val);
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	mutex_unlock(&data->lock);
-+
-+	return ret;
-+}
-+
-+static const struct iio_info ads1100_info = {
-+	.read_avail	= ads1100_read_avail,
-+	.read_raw	= ads1100_read_raw,
-+	.write_raw	= ads1100_write_raw,
-+};
-+
-+static int ads1100_setup(struct ads1100_data *data)
-+{
-+	int ret;
-+	u8 buffer[3];
-+
-+	/* Setup continuous sampling mode at 8sps */
-+	buffer[0] = ADS1100_DR_MASK | ADS1100_CONTINUOUS;
-+	ret = i2c_master_send(data->client, buffer, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = i2c_master_recv(data->client, buffer, sizeof(buffer));
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Config register returned in third byte, strip away the busy status */
-+	data->config = buffer[2] & ~ADS1100_CFG_ST_BSY;
-+
-+	/* Detect the sample rate capability by checking the DR bits */
-+	data->supports_data_rate = FIELD_GET(ADS1100_DR_MASK, buffer[2]) != 0;
-+
-+	return 0;
-+}
-+
-+static void ads1100_reg_disable(void *reg)
-+{
-+	regulator_disable(reg);
-+}
-+
-+static void ads1100_disable_continuous(void *data)
-+{
-+	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
-+}
-+
-+static int ads1100_probe(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev;
-+	struct ads1100_data *data;
-+	struct device *dev = &client->dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	data->client = client;
-+	mutex_init(&data->lock);
-+
-+	indio_dev->name = "ads1100";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = &ads1100_channel;
-+	indio_dev->num_channels = 1;
-+	indio_dev->info = &ads1100_info;
-+
-+	data->reg_vdd = devm_regulator_get(dev, "vdd");
-+	if (IS_ERR(data->reg_vdd))
-+		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-+				     "Failed to get vdd regulator\n");
-+
-+	ret = regulator_enable(data->reg_vdd);
-+	if (ret < 0)
-+		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-+				     "Failed to enable vdd regulator\n");
-+
-+	ret = devm_add_action_or_reset(dev, ads1100_reg_disable, data->reg_vdd);
-+	if (ret)
-+		return ret;
-+
-+	ret = ads1100_setup(data);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Failed to communicate with device\n");
-+
-+	ret = devm_add_action_or_reset(dev, ads1100_disable_continuous, data);
-+	if (ret)
-+		return ret;
-+
-+	ads1100_calc_scale_avail(data);
-+
-+	pm_runtime_set_autosuspend_delay(dev, ADS1100_SLEEP_DELAY_MS);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_set_active(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to enable pm_runtime\n");
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+				     "Failed to register IIO device\n");
-+
-+	return 0;
-+}
-+
-+static int ads1100_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct ads1100_data *data = iio_priv(indio_dev);
-+
-+	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
-+	regulator_disable(data->reg_vdd);
-+
-+	return 0;
-+}
-+
-+static int ads1100_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct ads1100_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_enable(data->reg_vdd);
-+	if (ret) {
-+		dev_err(&data->client->dev, "Failed to enable Vdd\n");
-+		return ret;
-+	}
-+
-+	/*
-+	 * We'll always change the mode bit in the config register, so there is
-+	 * no need here to "force" a write to the config register. If the device
-+	 * has been power-cycled, we'll re-write its config register now.
-+	 */
-+	return ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_CONTINUOUS);
-+}
-+
-+static DEFINE_RUNTIME_DEV_PM_OPS(ads1100_pm_ops,
-+				 ads1100_runtime_suspend,
-+				 ads1100_runtime_resume,
-+				 NULL);
-+
-+static const struct i2c_device_id ads1100_id[] = {
-+	{ "ads1100", },
-+	{ "ads1000", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, ads1100_id);
-+
-+static const struct of_device_id ads1100_of_match[] = {
-+	{ .compatible = "ti,ads1100", },
-+	{ .compatible = "ti,ads1000", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, ads1100_of_match);
-+
-+static struct i2c_driver ads1100_driver = {
-+	.driver = {
-+		.name = "ads1100",
-+		.of_match_table = ads1100_of_match,
-+		.pm = pm_ptr(&ads1100_pm_ops),
-+	},
-+	.probe_new	= ads1100_probe,
-+	.id_table	= ads1100_id,
-+};
-+
-+module_i2c_driver(ads1100_driver);
-+
-+MODULE_AUTHOR("Mike Looijmans <mike.looijmans@topic.nl>");
-+MODULE_DESCRIPTION("Texas Instruments ADS1100 ADC driver");
-+MODULE_LICENSE("GPL");
--- 
-2.17.1
-
+T24gMi8yNi8yMyAxNTo1MiwgSm9uYXRoYW4gQ2FtZXJvbiB3cm90ZToNCj4gT24gRnJpLCAyNCBG
+ZWIgMjAyMyAxMjo0MTo0NiArMDIwMA0KPiBNYXR0aSBWYWl0dGluZW4gPG1henppZXNhY2NvdW50
+QGdtYWlsLmNvbT4gd3JvdGU6DQo+IA0KPj4gT24gMi8yMi8yMyAxODoxNSwgTWF0dGkgVmFpdHRp
+bmVuIHdyb3RlOg0KPj4NCj4+IFdlbGwsIHRoaXMgIndvcmtzIG9uIG15IG1hY2hpbmUiIC0gYnV0
+IEkgYW0gc2xpZ2h0bHkgdW5oYXBweSB3aXRoIHRoaXMuDQo+PiBJIGhhdmUgYSBmZWVsaW5nIEkg
+YW0gZWZmZWN0aXZlbHkgbWFraW5nIGEgcG9vciwgcmVkdWNlZCB2ZXJzaW9uIG9mIGRhdGENCj4+
+IGJ1ZmZlcmluZyBoZXJlLiBJIGFtIHN0YXJ0aW5nIHRvIHRoaW5rIHRoYXQgSSBzaG91bGQNCj4+
+DQo+PiBhKSBOb3Qgc3RhcnQgbWVhc3VyZW1lbnQgYXQgY2hpcCBpbml0LiAoc2F2ZXMgcG93ZXIp
+DQo+PiBiKSBTdGFydCBtZWFzdXJlbWVudCBhdCByYXctcmVhZCBhbmQganVzdCBibG9jayBmb3Ig
+ZGFtbiBsb25nIGZvciBlYWNoDQo+PiByYXctcmVhZC4gWWVwLCBpdCBwcm9iYWJseSBtZWFucyB0
+aGF0IHVzZXJzIHdobyB3YW50IHRvIHJhdy1yZWFkIGFsbA0KPj4gY2hhbm5lbHMgd2lsbCBiZSBi
+bG9ja2luZyA0ICogbWVhc3VyZW1lbnQgdGltZSB3aGVuIHRoZXkgYXJlIHJlYWRpbmcgYWxsDQo+
+PiBjaGFubmVscyBvbmUgYWZ0ZXIgYW5vdGhlci4gWWVzLCB0aGlzIGlzIGluIHdvcnN0IGNhc2Ug
+NCAqIDQwMCBtUy4NCj4+IEhvcnJpYmxlLiBCdXQgc2VlIChjKSBiZWxvdy4NCj4gDQo+IEhtbS4g
+TGlnaHQgc2Vuc29ycyB0ZW5kIHRvIGJlIHNsb3cgaW4gc29tZSBtb2RlcywgYnV0IHJhcmVseSBk
+byBwZW9wbGUgYWN0dWFsbHkNCj4gaGF2ZSBzdWNoIGxvdyBsaWdodCBsZXZlbHMgdGhhdCB0aGV5
+IGFyZSB1c2luZyB0aGVtIHdpdGggNDAwbVMgaW50ZWdyYXRpb24gdGltZXMuDQo+IA0KPj4gYykg
+SW1wbGVtZW50IHRyaWdnZXJlZF9idWZmZXIgbW9kZS4gSGVyZSBteSBsYWNrIG9mIElJTy1leHBl
+cmllbmNlIHNob3dzDQo+PiB1cCBhZ2Fpbi4gSSBoYXZlIG5vIGlkZWEgaWYgdGhlcmUgaXMgLSBv
+ciB3aGF0IGlzIC0gdGhlICJkZSBmYWN0byIgd2F5DQo+PiBmb3IgaW1wbGVtZW50aW5nIHRoaXMg
+d2hlbiBvdXIgZGV2aWNlIGhhcyBubyBJUlE/IEkgY291bGQgY29vay11cCBzb21lDQo+PiAndGlu
+eSBiaXQgc2hvcnRlciB0aGFuIHRoZSBtZWFzdXJlbWVudCB0aW1lJyBwZXJpb2QgdGltZXIgd2hp
+Y2ggd291bGQNCj4+IGtpY2sgdGhlIGRyaXZlciB0byBwb2xsIHRoZSBWQUxJRC1iaXQgLSBvciwg
+YmVjYXVzZSB3ZSBuZWVkIGFueXdheXMgdG8NCj4+IHBvbGwgdGhlIHZhbGlkIGJpdCBmcm9tIHBy
+b2Nlc3MgY29udGV4dCAtIGp1c3QgYSBrdGhyZWFkIHdoaWNoIHBvbGxzIHRoZQ0KPj4gVkFMSUQt
+Yml0LiBOYXR1cmFsbHkgdGhlIHRocmVhZC90aW1lciBzaG91bGQgYmUgb25seSBhY3RpdmF0ZWQg
+d2hlbiB0aGUNCj4+IHRyaWdnZXIgaXMgZW5hYmxlZC4NCj4gDQo+IEZpcnN0bHkgeW91IGRvbid0
+IGhhdmUgdG8gaGF2ZSBhIHRyaWdnZXIuIEluIGEgY2FzZSB3aGVyZSBpdCdzIGEgYml0IGhhY2t5
+DQo+IGFuZCB1bmxpa2VseSB0byBiZSBwYXJ0aWN1bGFybHkgdXNlZnVsIGZvciBvdGhlciBkZXZp
+Y2VzLCB5b3UgY2FuIGp1c3QgaW1wbGVtZW50DQo+IGEgYnVmZmVyIGRpcmVjdGx5Lg0KDQpUaGlz
+IGlzIHRoZSBhcHByb2FjaCBJIHRvb2sgZm9yIHRoZSBuZXh0IGF0dGVtcHQuIEkganVzdCB1c2Vk
+IHRoZSANCmlpb19rZmlmb19idWZmZXIuDQoNCj4gVGhlcmUgYXJlIHZhcmlvdXMgb3B0aW9ucyB0
+aGF0IGV4aXN0Li4NCj4gMSkgaWlvLXRyaWctbG9vcCAtIHRoaXMgaXMgbmFzdHkgYnV0IG9jY2Fz
+aW9uYWxseSB1c2VmdWwgYXBwcm9hY2guICBZb3UgdGhlbg0KPiAgICAgbWFrZSB0aGUgaWlvX3Bv
+bGxfZnVuYyB3YWl0IG9uIHRoZSBmbGFnLg0KDQpJIGFjdHVhbGx5IGRpZCB0YWtlIGEgbG9vayBh
+dCB0aGlzLiBUaGUgbG9vcCB0cmlnZ2VyIGhhZCBwcmV0dHkgbXVjaCANCmV2ZXJ5dGhpbmcgSSB3
+b3VsZCBoYXZlIG5lZWRlZCAtIGV4Y2VwdCBjb25maWd1cmFiaWxpdHkgZnJvbSB0aGUgZHJpdmVy
+LiANCkl0IGhhZCB0aGUgZW5hYmxlL2Rpc2FibGUgd2l0aCBwcm90ZWN0ZWQgc3RhcnQgb2YgdGhl
+IHRocmVhZCBhbmQgdGhlIA0KdGhyZWFkIHN0b3BwaW5nIGFsbCBpbiBwbGFjZS4gUmVhbGx5LCBh
+cyB5b3Ugc2FpZCwgdGhlIG9ubHkgdGhpbmcgdGhhdCANCndhcyBtaXNzaW5nIHdhcyAiaGludGlu
+ZyB0aGUgdGltaW5nIi4gRm9yIGEgbW9tZW50IEkgd2FzIHBsYXlpbmcgd2l0aCBhIA0KdGhvdWdo
+dCBvZiB0cnlpbmcgdG8gaW1wbGVtZW50IGEgc2ltcGxlIGdlbmVyaWMgdGhyZWFkLWxvb3AgY29k
+ZSB3aGljaCANCmNvdWxkIHRha2UgdGhlIHNsZWVwLXRpbWUgKyBjYWxsYmFjayBmb3IgJ2Vuc3Vy
+aW5nIHdlIHNsZXB0IGxvbmcgZW5vdWdoJyANCisgYSBjYWxsYmFjayBmb3IgY29kZSB0byBleGVj
+dXRlIChjb2xsZWN0IGRhdGEgKyAgcHVzaCB0byBidWZmZXJzKSAtIGJ1dCANCml0IGZlbHQgbGlr
+ZSByZS1pbXBsZW1lbnRpbmcgZXhpc3RpbmcgbWVjaGFuaXNtcy4gQmVzaWRlcywgYXMgeW91IHNh
+aWQsIA0KSSBkb24ndCBwcm9iYWJseSBuZWVkIGEgdHJpZ2dlci4NCg0KSSdsbCBkbyBzb21lIGNs
+ZWFuLXVwcyBhbmQgbG9vayB0aHJvdWdoIHRoZSBmZWVkYmFjayBhbmQgdHJ5IHRvIGdldCB0aGUg
+DQp2MiBvdXQgc3RpbGwgZHVyaW5nIHRoaXMgd2Vlay4NCg0KWW91cnMsDQoJLS0gTWF0dGkNCg0K
+LS0gDQpNYXR0aSBWYWl0dGluZW4NCkxpbnV4IGtlcm5lbCBkZXZlbG9wZXIgYXQgUk9ITSBTZW1p
+Y29uZHVjdG9ycw0KT3VsdSBGaW5sYW5kDQoNCn5+IFdoZW4gdGhpbmdzIGdvIHV0dGVybHkgd3Jv
+bmcgdmltIHVzZXJzIGNhbiBhbHdheXMgdHlwZSA6aGVscCEgfn4NCg0K

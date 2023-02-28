@@ -2,196 +2,374 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D84116A578F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 12:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27FB86A57AF
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 12:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbjB1LNa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Feb 2023 06:13:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
+        id S229574AbjB1LW4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Feb 2023 06:22:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbjB1LN3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Feb 2023 06:13:29 -0500
-Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2110.outbound.protection.outlook.com [40.107.135.110])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE2A1284A;
-        Tue, 28 Feb 2023 03:13:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lsfRNSX4vn6ZMMy5V/CeqPffWVjRzEfrR0wJYmMMl+mTzAuA7FJdiKGCJU/BR53vUrPbQvBVwby/Y3HmOAb9nvjwflUhdPh5B8xHwsRC6BSaNGjGPloCCiueuwLUZun6C5xsIYkYQXBgAqMdpUMHQZ1BQkakpE2ZQVLr+SDVdD0bku09L1JJ0nKE17F4VBci3a8cIkzX56iPuBrLtP36fRR86JROiJ78aVas/1Mp5Ot3AOYfhgRu7gHnzzoRvPPe2u/ZdYiwMoS3wMw8tPWRl591ZiYVRjNC0ShAq4sEsFFtpjYLLLxrHTSuQwLnyGLz/2wL/bR1M1JBXIn9MRcBnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2sxgHK0hBxM1zQpOeQWiQyNZsFBTI7IjUypZMlO9k/Y=;
- b=RRWU34C79/oijF0r6nGzmKdSE8YkLPmWdKGL/YHEELT5cRfEvreWij2jWgqoloPcCvE/vxHaHDO8qoOudyFo/Qumm/JknKfinNrPldlq/Ark0tl/vBuiGtw4NkbBAAWLtnZYuwWV2R4o+b1FPAXG76mo7WLDZ+z7E+NSm31U5PTv2bnjYLOG8SybUIPkHAlEWCXsKjd0AvvQ7sj6dVrM4JbxuJJ0K8LV5qSjsnBSrNlj4MP7OmQxeIki8Q6WU0bCz6ERDXYODomRZxUfWLgnFD0/vA7qjYiC02nTdV1KTzykkIUax2KUrQmFRDvTiA+Asz3OoFfMun6mshOOyeIq4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
- header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
+        with ESMTP id S231477AbjB1LWy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Feb 2023 06:22:54 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D72118A92
+        for <linux-iio@vger.kernel.org>; Tue, 28 Feb 2023 03:22:50 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id m14-20020a7bce0e000000b003e00c739ce4so5617352wmc.5
+        for <linux-iio@vger.kernel.org>; Tue, 28 Feb 2023 03:22:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rohmsemiconductor.onmicrosoft.com;
- s=selector2-rohmsemiconductor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2sxgHK0hBxM1zQpOeQWiQyNZsFBTI7IjUypZMlO9k/Y=;
- b=bsMtoPEU97JOhHxMAlH+8dQ7V0MrsbtynnVRK6B8xltkWiDoi3agiitn3ckhnoE8Fp/4Uz3tPQzRSN1prssl9k/dLunCxpRmW3Fn0s6UUmDpeW0N9gSa8wdlmWDG9EUpy/uUilPvhzwRBOhCRx/ZpuWedZemnDyXSN6g8D3MId4=
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
- by FR3P281MB1551.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:6c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.21; Tue, 28 Feb
- 2023 11:13:20 +0000
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::f504:16e7:71d4:2fd8]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::f504:16e7:71d4:2fd8%6]) with mapi id 15.20.6134.030; Tue, 28 Feb 2023
- 11:13:20 +0000
-From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Liam Beguin <liambeguin@gmail.com>,
-        Peter Rosin <peda@axentia.se>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 2/6] iio: light: Add gain-time-scale helpers
-Thread-Topic: [RFC PATCH 2/6] iio: light: Add gain-time-scale helpers
-Thread-Index: AQHZRtjRJ2RGNNtqq0+fFiw7bitmIK7hbyAAgALOgYA=
-Date:   Tue, 28 Feb 2023 11:13:20 +0000
-Message-ID: <914a94ac-934b-d268-0ddf-b00681fe42f8@fi.rohmeurope.com>
-References: <cover.1677080089.git.mazziesaccount@gmail.com>
- <3de52eafbf085e8f0048647a1cc01cb73842f367.1677080089.git.mazziesaccount@gmail.com>
- <20230226162142.3642f456@jic23-huawei>
-In-Reply-To: <20230226162142.3642f456@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BEZP281MB2454:EE_|FR3P281MB1551:EE_
-x-ms-office365-filtering-correlation-id: 0702d8c9-f91d-4758-70ea-08db197ccc8e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: FRMdSRjm5S4cWQY3CqYe57XrIWWiyxH78QpLhnxWELrlatk4KzxWwg2blcRMvfWAj7PpXA1WiOkFSoLJHN0VdpoYwgZ4aowwOESFsZCWikXg0wbFwOlrY7XpmR3iyL2BxeeqDAsr14BrRwZzMlnRonH9+UAdz7KDBEs971umO5vPJnUgjuqjYVEuETMFCj6i9osV8ExkhmoYKuQDJGXEx9s104vJIL6JpkOZHwXQRhvHKNQqrVJHah+by14QAUBay6KMWs4aDq45BuKWPpJD0PbBqWwwdUTM4PRs4XT9T6AIXC0HxeIF6YZi4IZMuWX13RqUSx9eTD7XTh8c9ufdCj283HsExtfU8WwqquO1s+wX34c/NgBrrs4UQ8hBXWAJsau6VCXWJevMlzYBfVqAhkSG7l8zmbAd5ZikxS61jgd23SrwpJRP9/rUoDUg4Ry4js/r+q4iLqNBf3rwzM9X18zUbNjdTwCZ4+wzMPFRoAl1vK/rJHMSckdjnaNTT0zr/IrbnY2uvCXLjU2nY93R1cBApJ1jKcpTMTiJPslq0N8/RaJRY0RLfauu064K6HdgvExYqMdrnddImUp0BIflUomDkljxJC64psHwOv2W23eHhm6SkNT7e6vfiZRUgCP0PnwHuUY0J07b1pM1CE6zAS47P/adwv1+ETFxKDIjq99maKk2+/HI13mFc0Fyz8neNRBoiW/OIUiKoPa0xDjPUA1xj2S1e5gFbUzudeCO7vc9lqGUFGJCsnehGRmFRQ2FBZubPJDB54DxHYqjDc2FCQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(136003)(346002)(376002)(366004)(39850400004)(451199018)(122000001)(38070700005)(86362001)(31696002)(38100700002)(2616005)(71200400001)(110136005)(478600001)(316002)(6486002)(54906003)(7416002)(5660300002)(66446008)(76116006)(64756008)(91956017)(66946007)(66476007)(41300700001)(2906002)(8676002)(83380400001)(8936002)(186003)(4326008)(66556008)(53546011)(6512007)(31686004)(6506007)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZEVpUXFJaURKL29kOGlOZGF5ejg0VFBKMUZLV1BDQkxlcnZZaWxKRTVBV25l?=
- =?utf-8?B?bHY2bXc3M3lpamNRbklaZk8wcVYvTEtlZVlyT3NJMmtBcml5VGhaNGdOczd1?=
- =?utf-8?B?dkRlR0h0aEtSZWhVY0VKSDlCSERnSlMwSFUyYVc3dm5xMEJGWlQ5OEhlVU94?=
- =?utf-8?B?OE9ydnQ4SGZBRjg5ejkvTGxFeFdPaFAzU1NlUlBySmNEbmNYaDYwblhRditn?=
- =?utf-8?B?ak5VbHk4VElUbmRBeVVtVFRmbi9zaDljVmx5Mnd5elhUdlNLTGlOR1N2YUwz?=
- =?utf-8?B?dXkxcnRieU04U0FlSmJNcElIckgvOS9uaTA3QXVhTUQ0SlNQcDc0NVFrQjFQ?=
- =?utf-8?B?Q0JFcldrQzFRWi9wOEx2NElOK2NGNVd5Q3dLVk1CaS9lVzlwYnJvNG9XVFQx?=
- =?utf-8?B?RmJoR0gzV3RZdm5XZGI5MzlrdFkxMWZHM0RRcHJhdi9aY0FBSDgva3RkQkti?=
- =?utf-8?B?TnlCelI3YmFwdzlRWTZOMFZualpySjBoVGhQUWJ3ZEVKWUxmbStqL1dKajhl?=
- =?utf-8?B?SGtPUENENVZ4dGY1RnlZdjc3Y1lPNWpoRStQMElidTFhM2RPRzh2d0xQVzdP?=
- =?utf-8?B?ZXJCVUdwRExCbzVnOVZ2bHpXWm9XL3ZCNjA0L3FpeXhDaXdrWk9aMHdxclpO?=
- =?utf-8?B?KzRHZGVEWlJ2bk9Va1p3eXJOaS8wK2htR1BEOEdhM1NLSnFvMVNlV290MWI1?=
- =?utf-8?B?aG1HOXdtUjJYcFQxSUh6cDFYd1NzdHlINlpnS3F1WityQlkrQzhGOHhCaC83?=
- =?utf-8?B?NlNZZWlNZG5SZnNuaGJIMTdKQkJpdS9SaDlUaUdDNlVCbFFiYVV4TzFsV3hS?=
- =?utf-8?B?YXM1M0cxeE5oNm9XK3JETExDanFkSkhaZk02RXNXM09HbWlTU1c3S2ExbFhx?=
- =?utf-8?B?eHZTSEtNTE1RdmVyemdaa04xUEJQa2lpOVVaZFNqclN6YVNMWFd4blR4Tk9T?=
- =?utf-8?B?Sm5UTFNab2NNSUhaQXB5ME5abFZQaUxsWkhoZTJNb20zNnpEQTNsSkZ4VklO?=
- =?utf-8?B?SFV2MzJBRkp0RUJCV1NERzZib1duYkYzUndaWXBmZElUbHM0Sk5VTGhUcFY3?=
- =?utf-8?B?b1Z1aVNBSVBENEh3bTZvUzNJUTVmNk5BMkFubVlieWQ4d0VQK1ZrRmI3SXh0?=
- =?utf-8?B?M1JRU1JnT01tQzF6aFplTW9rY1c2eTA1K3FSUGxRdlMwbkRTSWNNVEZkWHRm?=
- =?utf-8?B?UXdOYnVEQzEvSUhzV1Nvck1RMWJyUklKRTNMMzNydVdjR3lBSDlJNWxQb0Vk?=
- =?utf-8?B?UDUzRDQza0MyY0JYcGlGV0hTdWRWZ3o5cUVUcGZqcklCbGZzU2JBSWRGUVoy?=
- =?utf-8?B?dHNIdlpESTJCS1dwUUNrU0tCN1RnT1FqRlpjTHVERHJlMmFJaTMvbFhtZGJ2?=
- =?utf-8?B?MXlYYXAxaFBuUVdhc0ZLQzJTdkhnazRpdUttSW1Tc0djZnpCOWZscW53YlRS?=
- =?utf-8?B?b3VJUWY5NDUzd2pyRXhBTm1OM291dzQ2UFJFQ1ZzTGFLcHEvQnZRQ3R0MzEr?=
- =?utf-8?B?TVl6eW9CUXhseUlVOE84czBvUWdKa1VudTlPeG5wc2lEVWFuQTZOOXk5Tmlh?=
- =?utf-8?B?MmJUcjNBeW83TnlUclRhSHFxL0xwZW92T3lqZys5WW11V3hqS3BsU0ZJTGRW?=
- =?utf-8?B?RzgrcklvSXBOOUxmOVBXVUQrMythdUhxem8wbVBjZDY1WHhjbXd2dDRNOWlS?=
- =?utf-8?B?bGlra2w0TlliYktFWml5clVkNkM0MDdzYWpwVnJWbURpMnJnS05CTWJ6b3ZT?=
- =?utf-8?B?M29BaFYybDl5alBWdmVOLzRpdExxRk9wOFMwZ0pINHNlK2xuQmhEVkNQWGgw?=
- =?utf-8?B?M0gzUjFHcWhSOWNQV3A3RENVbUVWcVFla3JYZ1AyUDBRRTFKSEFQUmhlcXA1?=
- =?utf-8?B?VHlCZ0pjeVI4RmlUcW9ueDloc0paRmpMNXpEZmg5ZGx2ZTRIekNhelNTRmlG?=
- =?utf-8?B?YUdZYS9rTUo0QkVnaXRNdkdIUGx5VUhwL1JUQ2M1ZFBoK1lqRFBkcGowUHRW?=
- =?utf-8?B?QjFGZ1gyRmlPSVRyYjhYQ3BOOHMvYnhZVVlyelJsNzJXeEtPRXFKVU5iVkQ5?=
- =?utf-8?B?T3VIZ0x1MkppL0YzWDlGbnEwaHRxY3hBbm9XdjJKWG1jQWpyRHc3OElvOXNo?=
- =?utf-8?B?MDBtSXBNVUdwQzIvTWN3M3VLZzd4VGROZUxaTW91cnVabjBtL0NwMmc2UWNJ?=
- =?utf-8?Q?QJMu8WUXUk010TPPOv1gJhY=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AB0A6717C00BB2468CCA0DCAE0A809C1@DEUP281.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+        d=linaro.org; s=google; t=1677583369;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9u3avS53dP4bLZ/KQ4MlcvGbwd00ahwus1BaYxgHcWk=;
+        b=zSTSPLq0Sc8Dregfpit8qSU3LOq3N17gRSFq05Nd2J6jCiabXAViYBr9dyUUI57DNS
+         KXzvLJxgubeg+9FKPfDnMBixeGI1YS/KHtrxEFvtDiHxcnC22IfUBtpyUAYiXEjCgPW2
+         NGrSkeYVJ/BlNyxgZJfvGN3lmBvN624+1XUEOmaAyk+JcjFPAZPEx0JG+a+pCZe3CvAU
+         DokCFzOCFjJMFkRCgqUe6HZIlNORwKI2P0LvuOsMGAlGYax8zfezh/x1r9TFM6jlmU2b
+         huudGOEZRAmD1+eX2qtfLM9nmhLh8VLueddpyUcIXD9TegnQcT0vLA5hPXRNEnbj1BIo
+         041g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677583369;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9u3avS53dP4bLZ/KQ4MlcvGbwd00ahwus1BaYxgHcWk=;
+        b=1ayPm4XpCxvxraez+Zc2rM39jYrZRC3gDizuCyRBpcP+MAUvggmzxJwHveirT/L428
+         ZKV4TYErYu1gsRhiRdP1aDxJWj3gW6rMD8yPlVD3eWAdcQub6cWlsUgzXSgHb3JXCJun
+         iGAuOizoGBgA5kMADKXnWw5h4EZ/GXENK5XpPUwJs5SRNpMUd0ZrWgZMwi7DZr0Iqr5S
+         +u+sglQqWLaFsLlsZT7kM2V3rFqb4F+aACOlCGxgkfdDlG0pDA7jjKu8nYAzNdAssKhW
+         PX3uPVQBtQFoR09mXZmyG+teCxZpUJdJKjmFXYcY6apto4HwY94CuVMOT7+U7y0igSfN
+         LUXA==
+X-Gm-Message-State: AO0yUKX6+drqBIia+dY5PrLdSaqXPl05z8bho/frgmLamNK4CORgE/q6
+        e02DYnVXhVqmJxHHcFMg+tjmGQ==
+X-Google-Smtp-Source: AK7set/BWDie4qSThB1QZG0XDbGp1+sfK0fQVCBHGw+K1Mv3xY4WCqftw9soN9raT/rQBGEAAomcIw==
+X-Received: by 2002:a05:600c:35cf:b0:3eb:3104:efec with SMTP id r15-20020a05600c35cf00b003eb3104efecmr1866647wmq.16.1677583368710;
+        Tue, 28 Feb 2023 03:22:48 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6830:6390:2815:b6a5])
+        by smtp.gmail.com with ESMTPSA id z5-20020a5d6545000000b002c5501a5803sm9598130wrv.65.2023.02.28.03.22.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Feb 2023 03:22:48 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rafael@kernel.org, daniel.lezcano@linaro.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH v4 00/19] Self-encapsulate the thermal zone device structure
+Date:   Tue, 28 Feb 2023 12:22:19 +0100
+Message-Id: <20230228112238.2312273-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-OriginatorOrg: fi.rohmeurope.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0702d8c9-f91d-4758-70ea-08db197ccc8e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2023 11:13:20.1270
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ijIgtScSZVtrBqRMnDlcuCp+2USJid5C/xRQn12q5oQqLCqRKX4AfeVBvBb3joTHzO4h6EWSJpzFVklE0FMDx0NcrViLtls3+6IAzo4VRrPs0mkZcH/hCEcgWZk3gPal
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3P281MB1551
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgSm9uYXRoYW4sDQoNCkkgc3RhcnRlZCBmaXhpbmcgdGhlIGNvbW1lbnRzLiBJIHRoaW5rIEkg
-aGF2ZSBqdXN0IG9uZSB0aGluZyB0byBkaXNjdXNzIDspDQoNCk9uIDIvMjYvMjMgMTg6MjEsIEpv
-bmF0aGFuIENhbWVyb24gd3JvdGU6DQo+IE9uIFdlZCwgMjIgRmViIDIwMjMgMTg6MTQ6NDUgKzAy
-MDANCj4gTWF0dGkgVmFpdHRpbmVuIDxtYXp6aWVzYWNjb3VudEBnbWFpbC5jb20+IHdyb3RlOg0K
-PiANCj4+ICsNCj4+ICtzdGF0aWMgaW50IGlpb19ndHNfZ2V0X2dhaW4oY29uc3QgdTY0IG1heCwg
-dTY0IHNjYWxlKQ0KPiANCj4gdHJpdmlhbCBidXQgc2NhbGUgZXF1YWxseSBjb25zdCBpbiBoZXJl
-Lg0KDQpZZXMuIEZvciB0aGlzIGZ1bmN0aW9uIHRoYXQncyB0cnVlLiBJJ2xsIHVwZGF0ZSB0aGUg
-c2lnbmF0dXJlLiBTdGlsbCwgDQp0aGUgcmVhc29uIHdoeSBtYXggaXMgbWFya2VkIGNvbnN0IGlz
-IHRoYXQgdGhlIG1heCBzaG91bGQgcmVtYWluIGNvbnN0IA0KaW4gZ2VuZXJhbCwgdGhyb3VnaG91
-dCB0aGUgbGlmZXRpbWUgb2YgdGhlICJoZWxwZXIgb2JqZWN0Ii4gSXQgaXMgDQpmdW5kYW1lbnRh
-bGx5IGNvbnN0IHZhbHVlIHdoZXJlIGFzIHRoZSBnYWluLCBzY2FsZSBhbmQgaW50ZWdyYXRpb24g
-dGltZSANCm1heSBhbGwgY2hhbmdlIG92ZXIgdGhlIGNvdXJzZS4NCg0KPiBOb3QgaW1tZWRpYXRl
-bHkgb2J2aW91cyB3aGF0IHRoaXMgZnVuY3Rpb24gZG9lcyBmcm9tIG5hbWUsIHNvIGFkZA0KPiBz
-b21lIGRvY3MuDQoNCkkgYWRkZWQgZG9jIChidXQgbm90IGtlcm5lbCBkb2MpIGFzIEkgaG9wZSBp
-dCBoZWxwcyB0aGUgcmVhZGVycyAtIGJ1dCANCndvdWxkIGxpa2UgdG8gcG9pbnQgb3V0IHRoYXQg
-dGhpcyBpcyBtZWFudCB0byBiZSBpbnRlcm5hbCBvbmx5IGZ1bmN0aW9uLg0KDQo+PiAraW50IGlp
-b19pbml0X2lpb19ndHMoaW50IG1heF9zY2FsZV9pbnQsIGludCBtYXhfc2NhbGVfbmFubywNCj4+
-ICsJCSAgICAgY29uc3Qgc3RydWN0IGlpb19nYWluX3NlbF9wYWlyICpnYWluX3RibCwgaW50IG51
-bV9nYWluLA0KPj4gKwkJICAgICBjb25zdCBzdHJ1Y3QgaWlvX2l0aW1lX3NlbF9tdWwgKnRpbV90
-YmwsIGludCBudW1fdGltZXMsDQo+PiArCQkgICAgIHN0cnVjdCBpaW9fZ3RzICpndHMpDQo+PiAr
-ew0KPj4gKwlpbnQgcmV0Ow0KPj4gKw0KPj4gKwlyZXQgPSBpaW9fZ3RzX2xpbmVhcml6ZShtYXhf
-c2NhbGVfaW50LCBtYXhfc2NhbGVfbmFubywNCj4+ICsJCQkJICAgJmd0cy0+bWF4X3NjYWxlLCBO
-QU5PKTsNCj4+ICsJaWYgKHJldCkNCj4+ICsJCXJldHVybiByZXQ7DQo+PiArDQo+PiArCWd0cy0+
-aHdnYWluX3RhYmxlID0gZ2Fpbl90Ymw7DQo+PiArCWd0cy0+bnVtX2h3Z2FpbiA9IG51bV9nYWlu
-Ow0KPj4gKwlndHMtPml0aW1lX3RhYmxlID0gdGltX3RibDsNCj4+ICsJZ3RzLT5udW1faXRpbWUg
-PSBudW1fdGltZXM7DQo+IA0KPiBJIHRoaW5rIGFsbCB0aGVzZSBuZWVkIHRvIGJlIHByb3ZpZGVk
-IGZvciB0aGlzIHRvIGRvIGFueXRoaW5nIHVzZWZ1bC4NCg0KSSB3YXMgYWxzbyBwb25kZXJpbmcg
-dGhpcy4gSSBhY3R1YWxseSB0aGluayBJIGF0IHNvbWUgcG9pbnQgaGFkIGEgVE9ETyANCmNvbW1l
-bnQgc29tZXdoZXJlIGFib3V0IGRlY2lkaW5nIGlmIHRoZSBpbnRlZ3JhdGlvbiB0aW1lIHRhYmxl
-KHMpIHNob3VsZCANCmJlIHJlcXVpcmVkLg0KDQpXZWxsLCBkdXJpbmcgbXkgJ3RyaWFsIGFuZCBl
-cnJvcicgY2hhbmdlIGZvciBidTI3MDM0IGRpc2N1c3NlZCBpbiB0aGUgDQpvdGhlciB0aHJlYWQg
-KGF0dGVtcHRpbmcgdG8gc2hpZnQgdGhlIGRhdGEgdG8gaGlkZSB0aGUgc2NhbGUgaW1wYWN0IG9m
-IA0KaW50ZWdyYXRpb24gdGltZSkgSSBzdGlsbCBlbmRlZCB1cCB1c2luZyB0aGVzZSBoZWxwZXJz
-IGZvciB0aGUgZ2Fpbi4gSSANCmxpa2VkIHRoZSBhYmlsaXR5IG9mIHByb3ZpZGluZyB0aGUgZ2Fp
-biB0YWJsZSB3aXRob3V0IHJlLWludmVudGluZyB0aGUgDQp0YWJsZSBzdHJ1Y3RzIGFuZCBpbml0
-aWFsaXphdGlvbiBtYWNyb3MgaW4gZHJpdmVyLiBBZGRpdGlvbmFsbHkgSSBzdGlsbCANCnVzZWQg
-dGhlIHNlbGVjdG9yIDw9PiBnYWluIGNvbnZlcnNpb25zLiBGaW5hbGx5IEkgZGlkIGFkZCBhIHNj
-YWxlIDw9PiANCiJ0b3RhbF9nYWluIiBoZWxwZXJzIC0gd2hpY2ggYWxsb3dlZCBtZSB0byBkbyB0
-aGUgZ2V0L3NldCBzY2FsZSANCmZ1bmN0aW9ucyBpbiBhIHNpbXBsZSB3YXkuDQoNCkkgc3RpbGwg
-ZW5kZWQgdXAgaGF2aW5nIGFsc28gdGhlIGludGVncmF0aW9uIHRpbWUgdGFibGVzIGZvciB0aGUg
-dmVyeSANCnNhbWUgcmVhc29uIC0gYnV0IGp1c3Qgc2V0IHRoZSBtdWx0aXBsaWNhdGlvbiBmYWN0
-b3IgdG8gMSBmb3IgYWxsIHRpbWVzIA0KKGJlY2F1c2UgZGF0YSBzaGlmdGluZyB3YXMgc3VwcG9z
-ZWQgdG8gaGlkZSB0aGUgc2NhbGUgaW1wYWN0IHVudGlsIEkgDQpmaW5hbGx5IHVuZGVyc3Rvb2Qg
-d2hhdCB5b3UgbWVhbnQgd2l0aCB0aGUgc2F0dXJhdGlvbiBkZXRlY3Rpb24gDQpwcm9ibGVtLi4u
-IDxpbWFnaW5lIGEgZmFjZXBhbG0gZW1vamkgaGVyZT4pLg0KDQo+IFNvIGNoZWNrIHRoZW0gaGVy
-ZSBhbmQgZHJvcCB0aGUgY2hlY2tzIGluIHRoZSB2YXJpb3VzIG90aGVyIGZ1bmN0aW9ucy4NClRo
-ZSByZWhlYXJzYWwgZGVzY3JpYmVkIGFib3ZlIG1hZGUgbWUgdG8gdGhpbmsgdGhhdCAoc29tZSBv
-ZikgdGhlc2UgDQpoZWxwZXJzIGNhbiBiZSB1c2VmdWwgYWxzbyB3aGVuIHRoZXJlIGFyZSBvbmx5
-IGdhaW4gdGFibGVzIHByb3ZpZGVkLg0KDQoNCllvdXJzLA0KCS0tIE1hdHRpDQoNCi0tIA0KTWF0
-dGkgVmFpdHRpbmVuDQpMaW51eCBrZXJuZWwgZGV2ZWxvcGVyIGF0IFJPSE0gU2VtaWNvbmR1Y3Rv
-cnMNCk91bHUgRmlubGFuZA0KDQp+fiBXaGVuIHRoaW5ncyBnbyB1dHRlcmx5IHdyb25nIHZpbSB1
-c2VycyBjYW4gYWx3YXlzIHR5cGUgOmhlbHAhIH5+DQoNCg==
+The exported thermal headers expose the thermal core structure while those
+should be private to the framework. The initial idea was the thermal sensor
+drivers use the thermal zone device structure pointer to pass it around from
+the ops to the thermal framework API like a handler.
+
+Unfortunately, different drivers are using and abusing the internals of this
+structure to hook the associated struct device, read the internals values, take
+the lock, etc ...
+
+In order to fix this situation, let's encapsulate the structure leaking the
+more in the different drivers: the thermal_zone_device structure.
+
+This series revisit the existing drivers using the thermal zone private
+structure internals to change the access to something else. For instance, the
+get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
+is not helpful, we can check the return value for the get_temp() ops in the
+call site and show the message in this place.
+
+With this set of changes, the thermal_zone_device is almost self-encapsulated.
+As usual, the acpi driver needs a more complex changes, so that will come in a
+separate series along with the structure moved the private core headers.
+
+Changelog:
+	- V4:
+	   - Collected more tags
+	   - Fixed a typo therma_zone_device_priv() for db8500
+	   - Remove traces patch [20/20] to be submitted separetely
+	- V3:
+	   - Split the first patch into three to reduce the number of
+	     recipients per change
+	   - Collected more tags
+	   - Added missing changes for ->devdata in some drivers
+	   - Added a 'type' accessor
+	   - Replaced the 'type' to 'id' changes by the 'type' accessor
+	   - Used the 'type' accessor in the drivers
+	- V2:
+	   - Collected tags
+	   - Added missing changes for ->devdata for the tsens driver
+	   - Renamed thermal_zone_device_get_data() to thermal_zone_priv()
+	   - Added stubs when CONFIG_THERMAL is not set
+	   - Dropped hwmon change where we remove the tz->lock usage
+
+Thank you all for your comments
+
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Amit Kucheria <amitk@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Markus Mayer <mmayer@broadcom.com>
+Cc: Support Opensource <support.opensource@diasemi.com>
+Cc: Andy Gross <agross@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>
+Cc: "Niklas Söderlund" <niklas.soderlund@ragnatech.se>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Vasily Khoruzhick <anarsoul@gmail.com>
+Cc: Yangtao Li <tiny.windzz@gmail.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Talel Shenhar <talel@amazon.com>
+Cc: Eduardo Valentin <edubezval@gmail.com>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc: Yang Li <yang.lee@linux.alibaba.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Daniel Golle <daniel@makrotopia.org>
+Cc: Balsam CHIHI <bchihi@baylibre.com>
+Cc: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-input@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org
+
+Daniel Lezcano (19):
+  thermal/core: Add a thermal zone 'devdata' accessor
+  thermal/core: Use the thermal zone 'devdata' accessor in thermal
+    located drivers
+  thermal/core: Use the thermal zone 'devdata' accessor in hwmon located
+    drivers
+  thermal/core: Use the thermal zone 'devdata' accessor in remaining
+    drivers
+  thermal/core: Show a debug message when get_temp() fails
+  thermal: Remove debug or error messages in get_temp() ops
+  thermal/hwmon: Do not set no_hwmon before calling
+    thermal_add_hwmon_sysfs()
+  thermal/hwmon: Use the right device for devm_thermal_add_hwmon_sysfs()
+  thermal: Don't use 'device' internal thermal zone structure field
+  thermal/core: Add thermal_zone_device structure 'type' accessor
+  thermal/drivers/spear: Don't use tz->device but pdev->dev
+  thermal: Add a thermal zone id accessor
+  thermal: Use thermal_zone_device_type() accessor
+  thermal/drivers/da9062: Don't access the thermal zone device fields
+  thermal/hwmon: Use the thermal_core.h header
+  thermal/drivers/tegra: Remove unneeded lock when setting a trip point
+  thermal/tegra: Do not enable the thermal zone, it is already enabled
+  thermal/drivers/acerhdf: Make interval setting only at module load
+    time
+  thermal/drivers/acerhdf: Remove pointless governor test
+
+ drivers/acpi/thermal.c                        | 18 +++----
+ drivers/ata/ahci_imx.c                        |  2 +-
+ drivers/hwmon/hwmon.c                         |  4 +-
+ drivers/hwmon/pmbus/pmbus_core.c              |  2 +-
+ drivers/hwmon/scmi-hwmon.c                    |  4 +-
+ drivers/hwmon/scpi-hwmon.c                    |  2 +-
+ drivers/iio/adc/sun4i-gpadc-iio.c             |  2 +-
+ drivers/input/touchscreen/sun4i-ts.c          |  2 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  2 +-
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 16 +++----
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  4 +-
+ drivers/platform/x86/acerhdf.c                | 19 ++------
+ drivers/power/supply/power_supply_core.c      |  2 +-
+ drivers/regulator/max8973-regulator.c         |  2 +-
+ drivers/thermal/amlogic_thermal.c             |  4 +-
+ drivers/thermal/armada_thermal.c              | 14 ++----
+ drivers/thermal/broadcom/bcm2711_thermal.c    |  3 +-
+ drivers/thermal/broadcom/bcm2835_thermal.c    |  3 +-
+ drivers/thermal/broadcom/brcmstb_thermal.c    |  8 ++--
+ drivers/thermal/broadcom/ns-thermal.c         |  2 +-
+ drivers/thermal/broadcom/sr-thermal.c         |  2 +-
+ drivers/thermal/da9062-thermal.c              | 13 +++--
+ drivers/thermal/db8500_thermal.c              |  2 +-
+ drivers/thermal/dove_thermal.c                |  7 +--
+ drivers/thermal/hisi_thermal.c                |  5 +-
+ drivers/thermal/imx8mm_thermal.c              |  4 +-
+ drivers/thermal/imx_sc_thermal.c              |  9 ++--
+ drivers/thermal/imx_thermal.c                 | 47 +++++--------------
+ .../intel/int340x_thermal/int3400_thermal.c   |  2 +-
+ .../int340x_thermal/int340x_thermal_zone.c    |  4 +-
+ .../processor_thermal_device_pci.c            |  4 +-
+ drivers/thermal/intel/intel_pch_thermal.c     |  2 +-
+ .../thermal/intel/intel_quark_dts_thermal.c   |  6 +--
+ drivers/thermal/intel/intel_soc_dts_iosf.c    | 13 ++---
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  4 +-
+ drivers/thermal/k3_bandgap.c                  |  4 +-
+ drivers/thermal/k3_j72xx_bandgap.c            |  2 +-
+ drivers/thermal/kirkwood_thermal.c            |  7 +--
+ drivers/thermal/max77620_thermal.c            |  6 +--
+ drivers/thermal/mediatek/auxadc_thermal.c     |  4 +-
+ drivers/thermal/mediatek/lvts_thermal.c       | 10 ++--
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c      |  6 +--
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c   |  6 +--
+ drivers/thermal/qcom/tsens.c                  |  6 +--
+ drivers/thermal/qoriq_thermal.c               |  4 +-
+ drivers/thermal/rcar_gen3_thermal.c           |  5 +-
+ drivers/thermal/rcar_thermal.c                |  8 +---
+ drivers/thermal/rockchip_thermal.c            |  8 +---
+ drivers/thermal/rzg2l_thermal.c               |  3 +-
+ drivers/thermal/samsung/exynos_tmu.c          |  4 +-
+ drivers/thermal/spear_thermal.c               | 10 ++--
+ drivers/thermal/sprd_thermal.c                |  2 +-
+ drivers/thermal/st/st_thermal.c               |  5 +-
+ drivers/thermal/st/stm_thermal.c              |  4 +-
+ drivers/thermal/sun8i_thermal.c               |  4 +-
+ drivers/thermal/tegra/soctherm.c              |  6 +--
+ drivers/thermal/tegra/tegra-bpmp-thermal.c    |  6 ++-
+ drivers/thermal/tegra/tegra30-tsensor.c       | 31 ++++++------
+ drivers/thermal/thermal-generic-adc.c         |  7 ++-
+ drivers/thermal/thermal_core.c                | 18 +++++++
+ drivers/thermal/thermal_helpers.c             |  3 ++
+ drivers/thermal/thermal_hwmon.c               |  9 ++--
+ drivers/thermal/thermal_hwmon.h               |  4 +-
+ drivers/thermal/thermal_mmio.c                |  2 +-
+ .../ti-soc-thermal/ti-thermal-common.c        | 10 ++--
+ drivers/thermal/uniphier_thermal.c            |  2 +-
+ include/linux/thermal.h                       | 19 ++++++++
+ 67 files changed, 217 insertions(+), 247 deletions(-)
+
+-- 
+2.34.1
+

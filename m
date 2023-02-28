@@ -2,130 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA4B6A508A
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 02:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1A216A52FD
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 07:32:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbjB1BOR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Feb 2023 20:14:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55866 "EHLO
+        id S229518AbjB1GcO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Feb 2023 01:32:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjB1BOP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Feb 2023 20:14:15 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FF0F941;
-        Mon, 27 Feb 2023 17:14:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677546854; x=1709082854;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4UKwAIo3ykTG6MDrcG32IpOsot6nPS5XUQ9f4DsWH3c=;
-  b=cWj7tr02ghsrhVoaSVPHZ79dHeidP7o4ryqnf2JWcm1aQnLmlX1lBnF6
-   nqvNr/b1yI5+QLymmz3O39YdWL0uChlJNz2nhdSEz+5rxpC9aKZth4rmj
-   +BCKnBVpevt0lfG06hdd928eg1m/nUKJFaKl34Q0DveKZm6WG9bK8Uyuu
-   YYsHZrPRkie3cjx2qXNzA0Xo/ZuFDPGVBzNtyVutUq8LG1peavsdH1iDI
-   4AOGFxJQRMv1Xbtn+uz6boqjpdv+14pebvWspPvBuAHrQHjBigg8YPOzg
-   KI9V2sghmW3H50UjBDLZpn1Xk/Vzmxn9e6V0K9k7MG+jNjXWNd2ylH86o
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="398793102"
-X-IronPort-AV: E=Sophos;i="5.98,220,1673942400"; 
-   d="scan'208";a="398793102"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2023 17:14:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="667267732"
-X-IronPort-AV: E=Sophos;i="5.98,220,1673942400"; 
-   d="scan'208";a="667267732"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 27 Feb 2023 17:14:11 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pWoZG-0004xR-2G;
-        Tue, 28 Feb 2023 01:14:10 +0000
-Date:   Tue, 28 Feb 2023 09:13:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Marco Felsch <m.felsch@pengutronix.de>, puranjay12@gmail.com,
-        jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH v5 4/5] iio: temperature: tmp117: add TI TMP116 support
-Message-ID: <202302280821.OXqGp2Tq-lkp@intel.com>
-References: <20230227211230.165073-5-m.felsch@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230227211230.165073-5-m.felsch@pengutronix.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229451AbjB1GcN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Feb 2023 01:32:13 -0500
+Received: from spamfilter04.delta.nl (spamfilter04.delta.nl [217.102.255.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A898D2057D;
+        Mon, 27 Feb 2023 22:32:11 -0800 (PST)
+Received: from host-ubmmyvj.static.zeelandnet.nl ([217.102.255.198] helo=mail.zeelandnet.nl)
+        by spamfilter04.delta.nl with esmtp (Exim 4.92)
+        (envelope-from <mike.looijmans@topic.nl>)
+        id 1pWtX0-0006dr-W8; Tue, 28 Feb 2023 07:32:07 +0100
+X-Sender-IP: 204.168.188.16
+Received: from phenom.domain_not_set.invalid (016-188-168-204.dynamic.caiway.nl [204.168.188.16])
+        (Authenticated sender: glasveze@delta.nl)
+        by mail.zeelandnet.nl (Postfix) with ESMTPA;
+        Tue, 28 Feb 2023 07:31:52 +0100 (CET)
+From:   Mike Looijmans <mike.looijmans@topic.nl>
+To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] dt-bindings: iio: adc: Add TI ADS1100 and ADS1000
+Date:   Tue, 28 Feb 2023 07:31:50 +0100
+Message-Id: <20230228063151.17598-1-mike.looijmans@topic.nl>
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: 217.102.255.198
+X-DELTA-Domain: zeelandnet.nl
+X-DELTA-Username: 217.102.255.198
+Authentication-Results: delta.nl; auth=pass smtp.auth=217.102.255.198@zeelandnet.nl
+X-DELTA-Outgoing-Class: ham
+X-DELTA-Outgoing-Evidence: Combined (0.02)
+X-Recommended-Action: accept
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT+DcX9mBS87Sjkl3zt5DZ/JPUtbdvnXkggZ
+ 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5xzeemUa7CfwmLuWRw6Ruql9Wrt/oF2ofKYeezPZTW+uL/H
+ seNZtCKdSRRS0Op9pfwEIJgF/Accv4lLtE4TWYNIjgZ0d6t6F7vRFkkblm+Z5L7uq2AYbiB7eX7C
+ A0Ee9FXnLqvnkE9k+JY3j0cID29DoODujL6FEsNqPMBZcb5VIYa36rQUNKpqI1Q4bofNkWUu8fTD
+ ZLzKN6k+QrhjNGJv3vMX8kxfmgvnPiAPWmoBuxmBwTME+9GFGInGiou45HNmtfv+FqJdBAzMzmkl
+ 3RebQxyzcaJWgnTP1X4liYqSLtlnibl3vcBqVmvQB4A18ae2ZUrTg6FOOV02sP442WuqAVXirbLu
+ Jjy3NtnGWLbnBD5wBOYayDY3tUZW3y7uaAiYA/VUAhdIJZFus1IsgsCDp7g8tNbgTOJVkvPWcKve
+ fL+CgfasVEKELzhStrT89iLQPrbYmyedRWSaH5Jq+f9dFu3a+YmrU6Iy71ckAFY+TtvrQQT37tVB
+ F8TuA2zDxdadd1WxHO/mLVgwAb47uaav6rkstLAf90f4v3S1FulD9czOuJQrulh5Fko3Tg7NaUQc
+ YIYdvv9xV5Ex49z0ZSNkjgZ0d6t6F7vRFkkblm+Z5MW9qS2/3RCT5H9A6khsXlWGs9HjdrlYbXkZ
+ KU5GQmOJZsmqX57B1EDhkm+xMEreF4WyYiqdZEM01eRU4ONdoVEFBfQHNmmYaIBwRgEu+hlkUryY
+ cSJLFEwVd01VIyXuC84PLa7Kvs1vJgz+jb+KUZ4ZI4crFqIiLO9pmeAxg3M8BMj+y2IddO0/FlXY
+ D8b+M8bPMsyA7EJ+U7NdS2YrNZ05xOYqJ9Tq2b0GjLr7lMbCDjnM3rdD8NgG/HfNinI857jdWiOx
+ jT+Uoc44sbCX7JxqjLaXu1AD0YHYM/EUhlEfE6TG2ORqQuRwhOvtgDJH0WotQdu7BL5WjlV6WURt
+ Nxb4RqrqGwDerCVKfZxBaa6lpe1/5cEtgGt7CHfC+dbEjaN+/GAFlUDQdIxEvZe3STQis/XYTU9g
+ OFOXr5UdN6W4PtxMTp1vEgkwihjWmfmNVfPvzy/hTW1WrcVDSDSSDu0wxuDU9J+Dmr/6e4fImcm4
+ 9R/2gMGq0KWAzmMf+ibVDqLZPzE7W9Cqnhlc7GZSDtYOqFKIG2trlPUTQYEjbgmVnZqbKIaNWdFw
+ SHKOTj4XQZ8i4WqksVTtjhZSepuHki+xkgmaS1TA/Dv/4AHP2EFtNptbHtgZAQM3rG32ibSwsxBN
+ fS19KOA46lF/j0xwFgg=
+X-Report-Abuse-To: spam@spamfilter03.delta.nl
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_FAIL,
+        SPF_HELO_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Marco,
+The ADS1100 is a 16-bit ADC (at 8 samples per second).
+The ADS1000 is similar, but has a fixed data rate.
 
-Thank you for the patch! Yet something to improve:
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
 
-[auto build test ERROR on v6.2]
-[cannot apply to jic23-iio/togreg linus/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+---
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Felsch/dt-bindings-iio-ti-tmp117-fix-documentation-link/20230228-051305
-patch link:    https://lore.kernel.org/r/20230227211230.165073-5-m.felsch%40pengutronix.de
-patch subject: [PATCH v5 4/5] iio: temperature: tmp117: add TI TMP116 support
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20230228/202302280821.OXqGp2Tq-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/424113d7fdc257200d20da2991242a4050c04cb3
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Marco-Felsch/dt-bindings-iio-ti-tmp117-fix-documentation-link/20230228-051305
-        git checkout 424113d7fdc257200d20da2991242a4050c04cb3
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/iio/
+(no changes since v2)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202302280821.OXqGp2Tq-lkp@intel.com/
+Changes in v2:
+"reg" property is mandatory.
+Add vdd-supply and #io-channel-cells
 
-All errors (new ones prefixed by >>):
+ .../bindings/iio/adc/ti,ads1100.yaml          | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml
 
->> drivers/iio/temperature/tmp117.c:111:2: error: expected '}' before ';' token
-     111 | };
-         |  ^
-   drivers/iio/temperature/tmp117.c:106:55: note: to match this '{'
-     106 | static const struct iio_chan_spec tmp117_channels[] = {
-         |                                                       ^
-   drivers/iio/temperature/tmp117.c:106:35: warning: 'tmp117_channels' defined but not used [-Wunused-const-variable=]
-     106 | static const struct iio_chan_spec tmp117_channels[] = {
-         |                                   ^~~~~~~~~~~~~~~
-   drivers/iio/temperature/tmp117.c:85:12: warning: 'tmp117_write_raw' defined but not used [-Wunused-function]
-      85 | static int tmp117_write_raw(struct iio_dev *indio_dev,
-         |            ^~~~~~~~~~~~~~~~
-   drivers/iio/temperature/tmp117.c:45:12: warning: 'tmp117_read_raw' defined but not used [-Wunused-function]
-      45 | static int tmp117_read_raw(struct iio_dev *indio_dev,
-         |            ^~~~~~~~~~~~~~~
-
-
-vim +111 drivers/iio/temperature/tmp117.c
-
-   105	
-   106	static const struct iio_chan_spec tmp117_channels[] = {
-   107		{
-   108			.type = IIO_TEMP,
-   109			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-   110				BIT(IIO_CHAN_INFO_CALIBBIAS) | BIT(IIO_CHAN_INFO_SCALE),
- > 111	};
-   112	
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml
+new file mode 100644
+index 000000000000..970ccab15e1e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1100.yaml
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads1100.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI ADS1100/ADS1000 single channel I2C analog to digital converter
++
++maintainers:
++  - Mike Looijmans <mike.looijmans@topic.nl>
++
++description: |
++  Datasheet at: https://www.ti.com/lit/gpn/ads1100
++
++properties:
++  compatible:
++    enum:
++      - ti,ads1100
++      - ti,ads1000
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++  "#io-channel-cells":
++    const: 0
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@49 {
++            compatible = "ti,ads1100";
++            reg = <0x49>;
++        };
++    };
++...
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.17.1
+

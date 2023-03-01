@@ -2,151 +2,222 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A54306A6BEE
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Mar 2023 12:55:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FA26A6F74
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Mar 2023 16:30:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjCALzS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Mar 2023 06:55:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34606 "EHLO
+        id S230213AbjCAPaM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Mar 2023 10:30:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjCALzR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Mar 2023 06:55:17 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE932CC46
-        for <linux-iio@vger.kernel.org>; Wed,  1 Mar 2023 03:55:15 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id f16so13648680ljq.10
-        for <linux-iio@vger.kernel.org>; Wed, 01 Mar 2023 03:55:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=w85B/ds8bah1X1W6vnJsNpYqcqLRHd9ikwsnw5xxH4E=;
-        b=LDRjZdu0o8U35wWW9SM3dBhr4k26Z1BD/Gtfmy2AFX5eXEqKIUJrMjMFS9caVJ+9GJ
-         nznbO9mYSol07bh99sFoF1QTFRDI9PGdN4kGXSY44SP1rZ3PmPp17u9j+Cc9FKvI0fZu
-         8SyBPJgqYEJqLB26ukd9rN+EwDigc4zAN1c/g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w85B/ds8bah1X1W6vnJsNpYqcqLRHd9ikwsnw5xxH4E=;
-        b=NENmtsC/BqN+U/vmxy81LHw4qbZAcdMEz6FsHCE7B3tiPDUpZEctYF+Y+9jrp1m2SI
-         aeEmvr/TOHKSUQ54kb6YdIoEgnYUnBxsqXqO7cZbcURQns0TYT8YUEQC+E+qde0sXoi1
-         64s/cEqOP7TEXiYMEVgfEpVSWCypLt9708QXrJaV43yZG3bFXzKAwzYKT4Bu0nOURSn9
-         81eOGe0l+x+UG3e4s1PiFR1Ti7gIeHGwUOee9+8NjOm+RxBAk0oPSOSeFywmcidWmMpR
-         UduH1YGERpj/SRazO97wNI7CkD0YIF2YOM0WHNfJCRCO1mvoFeX4uS76ANO5OJHl2euV
-         H3Og==
-X-Gm-Message-State: AO0yUKX82GW0VkyL8EJQkmN8jiUMuEwq+DfjcF2eGqwoSmowZwN9vW8W
-        gbrjLtqQSrEP7MUMwC7N2vDmEhPoT7lzpDmFN7s=
-X-Google-Smtp-Source: AK7set+Dy+OLzKZpmJhRw/aLsvwG2zeUj/R3+rmUKLGFe8tnnOQkM0y6PqxAOpDpbLdwwQkYISnuIw==
-X-Received: by 2002:a2e:a4d3:0:b0:295:9c2e:72ed with SMTP id p19-20020a2ea4d3000000b002959c2e72edmr1898245ljm.50.1677671714033;
-        Wed, 01 Mar 2023 03:55:14 -0800 (PST)
-Received: from localhost.localdomain ([87.54.42.112])
-        by smtp.gmail.com with ESMTPSA id bi36-20020a05651c232400b002934b5c5c67sm1638885ljb.32.2023.03.01.03.55.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 03:55:13 -0800 (PST)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        with ESMTP id S229553AbjCAPaL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Mar 2023 10:30:11 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6176886B2;
+        Wed,  1 Mar 2023 07:30:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677684610; x=1709220610;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=awaxUVG91j1W8d8/DcAgSZV/A41b8Ct2cTPB4FCsBhQ=;
+  b=EPe20RfBcIL9inYMPY1C1Do52FwwmwKQ9RsDqk5UtJShjm7H/Ikml6C7
+   nnjXFmccF2qRqekFtSCf34JHFHt78BfY8p7EM9tiIeJsMFraw8TpjQ2oa
+   r/ABkm/yXpte7M5/lOJOVfpZJDioPZawxOjxWvjgyp3i2vP/qH9E1qy2O
+   w5KnlInWrJ6rqRrk7Fb6h5wKNhaEoNsB9agcVuA+Gbap8CxNs4g+T16M6
+   0gnW6g5ZPAfORH7bipYlwH0fNpAfVVI1oSCQNWzrq4g0jlWXUKVXBNhYF
+   u66nL+FpkczPkI+6FVVAL8qDeiOfbNo8WZltJCoZIL1DnNjLnkH6RXwf6
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="318236341"
+X-IronPort-AV: E=Sophos;i="5.98,225,1673942400"; 
+   d="scan'208";a="318236341"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 07:30:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10636"; a="817610698"
+X-IronPort-AV: E=Sophos;i="5.98,225,1673942400"; 
+   d="scan'208";a="817610698"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 01 Mar 2023 07:30:05 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pXOP5-00DoMH-2v;
+        Wed, 01 Mar 2023 17:30:03 +0200
+Date:   Wed, 1 Mar 2023 17:30:03 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: addac: ad74413r: fix Current Input, Loop Powered Mode
-Date:   Wed,  1 Mar 2023 12:55:11 +0100
-Message-Id: <20230301115511.849418-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.37.2
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
+Message-ID: <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
+References: <20230228063151.17598-1-mike.looijmans@topic.nl>
+ <20230228063151.17598-2-mike.looijmans@topic.nl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230228063151.17598-2-mike.looijmans@topic.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Currently, the driver handles CH_FUNC_CURRENT_INPUT_LOOP_POWER and
-CH_FUNC_CURRENT_INPUT_EXT_POWER completely identically. But that's not
-correct. In order for CH_FUNC_CURRENT_INPUT_LOOP_POWER to work, two
-changes must be made:
+On Tue, Feb 28, 2023 at 07:31:51AM +0100, Mike Looijmans wrote:
+> The ADS1100 is a 16-bit ADC (at 8 samples per second).
+> The ADS1000 is similar, but has a fixed data rate.
 
-(1) expose access to the DAC_CODE_x register so that the intended
-output current can be set, i.e. expose the channel as both current
-output and current input, and
+...
 
-(2) per the data sheet
+> +	/* Shift result to compensate for bit resolution vs. sample rate */
+> +	value <<= 16 - ads1100_data_bits(data);
+> +	*val = sign_extend32(value, 15);
 
-  When selecting the current input loop powered function, tie the
-  VIOUTN_x pin to ground via the on-chip 200 kΩ resistor by enabling
-  the CH_200K_TO_GND bit in the ADC_CONFIGx registers.
+Why not simply
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
-There's of course also CH_FUNC_CURRENT_INPUT_LOOP_POWER_HART which is
-likely to require a similar fix, but as I don't have a ad74413r I
-can't test that. 
+	*val = sign_extend32(value, ads1100_data_bits(data) - 1);
 
- drivers/iio/addac/ad74413r.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+?
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index f32c8c2fb26d..f5d072092709 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -99,6 +99,7 @@ struct ad74413r_state {
- #define AD74413R_REG_ADC_CONFIG_X(x)		(0x05 + (x))
- #define AD74413R_ADC_CONFIG_RANGE_MASK		GENMASK(7, 5)
- #define AD74413R_ADC_CONFIG_REJECTION_MASK	GENMASK(4, 3)
-+#define AD74413R_ADC_CONFIG_CH_200K_TO_GND	BIT(2)
- #define AD74413R_ADC_RANGE_10V			0b000
- #define AD74413R_ADC_RANGE_2P5V_EXT_POW		0b001
- #define AD74413R_ADC_RANGE_2P5V_INT_POW		0b010
-@@ -424,9 +425,20 @@ static int ad74413r_set_channel_dac_code(struct ad74413r_state *st,
- static int ad74413r_set_channel_function(struct ad74413r_state *st,
- 					 unsigned int channel, u8 func)
- {
--	return regmap_update_bits(st->regmap,
-+	int ret;
-+
-+	ret = regmap_update_bits(st->regmap,
- 				  AD74413R_REG_CH_FUNC_SETUP_X(channel),
- 				  AD74413R_CH_FUNC_SETUP_MASK, func);
-+	if (ret)
-+		return ret;
-+
-+	if (func == CH_FUNC_CURRENT_INPUT_LOOP_POWER)
-+		ret = regmap_set_bits(st->regmap,
-+				      AD74413R_REG_ADC_CONFIG_X(channel),
-+				      AD74413R_ADC_CONFIG_CH_200K_TO_GND);
-+
-+	return ret;
- }
- 
- static int ad74413r_set_adc_conv_seq(struct ad74413r_state *st,
-@@ -1112,6 +1124,11 @@ static struct iio_chan_spec ad74413r_current_input_channels[] = {
- 	AD74413R_ADC_CURRENT_CHANNEL,
- };
- 
-+static struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
-+	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
-+	AD74413R_ADC_CURRENT_CHANNEL,
-+};
-+
- static struct iio_chan_spec ad74413r_resistance_input_channels[] = {
- 	AD74413R_ADC_CHANNEL(IIO_RESISTANCE, BIT(IIO_CHAN_INFO_PROCESSED)),
- };
-@@ -1135,7 +1152,7 @@ static const struct ad74413r_channels ad74413r_channels_map[] = {
- 	[CH_FUNC_CURRENT_OUTPUT] = AD74413R_CHANNELS(current_output),
- 	[CH_FUNC_VOLTAGE_INPUT] = AD74413R_CHANNELS(voltage_input),
- 	[CH_FUNC_CURRENT_INPUT_EXT_POWER] = AD74413R_CHANNELS(current_input),
--	[CH_FUNC_CURRENT_INPUT_LOOP_POWER] = AD74413R_CHANNELS(current_input),
-+	[CH_FUNC_CURRENT_INPUT_LOOP_POWER] = AD74413R_CHANNELS(current_input_loop),
- 	[CH_FUNC_RESISTANCE_INPUT] = AD74413R_CHANNELS(resistance_input),
- 	[CH_FUNC_DIGITAL_INPUT_LOGIC] = AD74413R_CHANNELS(digital_input),
- 	[CH_FUNC_DIGITAL_INPUT_LOOP_POWER] = AD74413R_CHANNELS(digital_input),
+(Double check for off-by-one usage)
+
+...
+
+> +	/* Calculate: gain = ((microvolts / 1000) / (val2 / 1000000)) >> 15 */
+
+Can you use more math / plain English to describe the formula? Otherwise we can
+see the very same in the code and point of the comment is doubtful.
+
+> +	gain = ((microvolts + BIT(14)) >> 15) * 1000 / val2;
+
+Something from units.h?
+
+...
+
+> +	for (i = 0; i < 4; i++) {
+> +		if (BIT(i) == gain) {
+
+ffs()/__ffs() (look at the documentation for the difference and use proper one).
+
+> +			ads1100_set_config_bits(data, ADS1100_PGA_MASK, i);
+> +			return 0;
+> +		}
+> +	}
+
+...
+
+> +	for (i = 0; i < size; ++i) {
+
+Why pre-increment?
+
+> +		if (ads1100_data_rate[i] == rate) {
+> +			return ads1100_set_config_bits(
+> +					data, ADS1100_DR_MASK,
+
+Strange indentation.
+
+> +					FIELD_PREP(ADS1100_DR_MASK, i));
+> +		}
+
+Do you need {} ?
+
+> +	}
+
+...
+
+> +	int millivolts = regulator_get_voltage(data->reg_vdd) / 1000;
+
+units.h?
+
+...
+
+> +		data->scale_avail[i * 2] = millivolts;
+
+I would write ' * 2 + 0]', but it's up to you.
+
+> +		data->scale_avail[i * 2 + 1] = 15 + i;
+
+...
+
+> +		*val = regulator_get_voltage(data->reg_vdd) / 1000;
+
+units.h?
+
+...
+
+> +		*val = ads1100_data_rate[
+> +				FIELD_GET(ADS1100_DR_MASK, data->config)];
+
+Strange indentation, just use a single line.
+
+...
+
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret < 0)
+
+Why ' < 0'?
+
+> +		return dev_err_probe(dev, ret,
+> +				     "Failed to register IIO device\n");
+
+...
+
+> +static int ads1100_runtime_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> +	struct ads1100_data *data = iio_priv(indio_dev);
+> +
+> +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
+> +	regulator_disable(data->reg_vdd);
+
+Wrong devm / non-devm ordering.
+
+> +	return 0;
+> +}
+
+...
+
+> +static const struct i2c_device_id ads1100_id[] = {
+> +	{ "ads1100", },
+> +	{ "ads1000", },
+
+Inner commas are not needed.
+
+> +	{}
+> +};
+
+...
+
+> +static const struct of_device_id ads1100_of_match[] = {
+> +	{ .compatible = "ti,ads1100", },
+> +	{ .compatible = "ti,ads1000", },
+
+Ditto.
+
+> +	{}
+> +};
+
+...
+
+> +
+
+Redundant blank line.
+
+> +module_i2c_driver(ads1100_driver);
+
 -- 
-2.37.2
+With Best Regards,
+Andy Shevchenko
+
 

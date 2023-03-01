@@ -2,101 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 543216A5F77
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Feb 2023 20:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A54306A6BEE
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Mar 2023 12:55:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbjB1TRE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Feb 2023 14:17:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49652 "EHLO
+        id S229688AbjCALzS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Mar 2023 06:55:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbjB1TRD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Feb 2023 14:17:03 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 840E732CE5;
-        Tue, 28 Feb 2023 11:17:01 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id ec43so44389386edb.8;
-        Tue, 28 Feb 2023 11:17:01 -0800 (PST)
+        with ESMTP id S229595AbjCALzR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Mar 2023 06:55:17 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE932CC46
+        for <linux-iio@vger.kernel.org>; Wed,  1 Mar 2023 03:55:15 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id f16so13648680ljq.10
+        for <linux-iio@vger.kernel.org>; Wed, 01 Mar 2023 03:55:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jqQ/ShIAOZwCImjbSCQBE8GsaSJPKXSxwvHlxK05UmY=;
-        b=jJ8qnkfGfYeA95NGuJ93TBJeOQ9Aa7whuWUGRqCNILxZ3IsiqVkCascOvIzqgbxvlJ
-         PpBzTLQ3khPCzBaLj0s8AKeyFJqKxHLGpKl18ZzJApN8Sb42nyIckqhmtkLdtkeTZ6SU
-         ur0ZQC53mUXmunKCiUoJx4zunJuqqjrWbpM35A4cGAmFZPJTVqdKuSllTwFvjg3hy9jS
-         0amAOPjhUWbbmghamU97Jb9q5xDo8EZ5Psg1mIhRvqWMHgnVwU2a9l+s9/sPsTnM6+y7
-         Q7Taf+0bByzSCa8FHtqRE6qbeIQRwOVgPTR+Fpwz5rPTZpkO5zxP+cpK8wQtA8Ea0DjQ
-         J4+Q==
+        d=rasmusvillemoes.dk; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=w85B/ds8bah1X1W6vnJsNpYqcqLRHd9ikwsnw5xxH4E=;
+        b=LDRjZdu0o8U35wWW9SM3dBhr4k26Z1BD/Gtfmy2AFX5eXEqKIUJrMjMFS9caVJ+9GJ
+         nznbO9mYSol07bh99sFoF1QTFRDI9PGdN4kGXSY44SP1rZ3PmPp17u9j+Cc9FKvI0fZu
+         8SyBPJgqYEJqLB26ukd9rN+EwDigc4zAN1c/g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jqQ/ShIAOZwCImjbSCQBE8GsaSJPKXSxwvHlxK05UmY=;
-        b=dx+yUlGd5A6XEJrcDOHjxZzsfUZOebg01FZwDAioHO6f4VWQSB5TAyPmK4Ucynx4lq
-         8Z6MSMxSv9fJv3yC7EOh7RzpLkLZHm3PjflIo5Ro1kpcIGZlit7pnVI4N3qwgfbv0ntD
-         wm5PAF3oRUB6dUVX5xI812tE64trEXKsTLam0JE4y1bs5+VuAHUH4R5IhdDtTvEQfh1A
-         rfWiNRrYIkD/DasfAQQOP+9p2ey8uuzGfrTIuvkBAYahqCkn6c/cUe4hVge98w5E75el
-         YWP10Zah38HZEupAv1NlcFbOHnfSV2XWjM91mh/gCqJX/NnaVufpfFlSba23KRpAMhmR
-         D8vQ==
-X-Gm-Message-State: AO0yUKXdlyKNlQ5yHqhD+rmbzf5LO+jSjbD+rxxt/cocvVcKcUkDSMuh
-        83epSZmUjPEVjgcr17gEUbH/1anQujY=
-X-Google-Smtp-Source: AK7set+uFV6wxD/vgDd+fPNl+nF9Chu7bew7c8XGXkaHUXWMFIqXlSn8Z4Cd4caRg0YyD/yiultXuw==
-X-Received: by 2002:aa7:c90c:0:b0:4aa:b63f:a0e with SMTP id b12-20020aa7c90c000000b004aab63f0a0emr3994112edt.17.1677611819959;
-        Tue, 28 Feb 2023 11:16:59 -0800 (PST)
-Received: from carbian ([2a02:8109:aa3f:ead8::dc02])
-        by smtp.gmail.com with ESMTPSA id b31-20020a509f22000000b004af596a6bfcsm4680061edf.26.2023.02.28.11.16.58
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w85B/ds8bah1X1W6vnJsNpYqcqLRHd9ikwsnw5xxH4E=;
+        b=NENmtsC/BqN+U/vmxy81LHw4qbZAcdMEz6FsHCE7B3tiPDUpZEctYF+Y+9jrp1m2SI
+         aeEmvr/TOHKSUQ54kb6YdIoEgnYUnBxsqXqO7cZbcURQns0TYT8YUEQC+E+qde0sXoi1
+         64s/cEqOP7TEXiYMEVgfEpVSWCypLt9708QXrJaV43yZG3bFXzKAwzYKT4Bu0nOURSn9
+         81eOGe0l+x+UG3e4s1PiFR1Ti7gIeHGwUOee9+8NjOm+RxBAk0oPSOSeFywmcidWmMpR
+         UduH1YGERpj/SRazO97wNI7CkD0YIF2YOM0WHNfJCRCO1mvoFeX4uS76ANO5OJHl2euV
+         H3Og==
+X-Gm-Message-State: AO0yUKX82GW0VkyL8EJQkmN8jiUMuEwq+DfjcF2eGqwoSmowZwN9vW8W
+        gbrjLtqQSrEP7MUMwC7N2vDmEhPoT7lzpDmFN7s=
+X-Google-Smtp-Source: AK7set+Dy+OLzKZpmJhRw/aLsvwG2zeUj/R3+rmUKLGFe8tnnOQkM0y6PqxAOpDpbLdwwQkYISnuIw==
+X-Received: by 2002:a2e:a4d3:0:b0:295:9c2e:72ed with SMTP id p19-20020a2ea4d3000000b002959c2e72edmr1898245ljm.50.1677671714033;
+        Wed, 01 Mar 2023 03:55:14 -0800 (PST)
+Received: from localhost.localdomain ([87.54.42.112])
+        by smtp.gmail.com with ESMTPSA id bi36-20020a05651c232400b002934b5c5c67sm1638885ljb.32.2023.03.01.03.55.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Feb 2023 11:16:59 -0800 (PST)
-Date:   Tue, 28 Feb 2023 20:16:57 +0100
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: Improve the kernel-doc of iio_trigger_poll
-Message-ID: <Y/5TKSylDDT74YBT@carbian>
-References: <cover.1677520155.git.mehdi.djait.k@gmail.com>
- <219496d4d21755937a40c2c7dfbeca64660c9258.1677520155.git.mehdi.djait.k@gmail.com>
- <Y/0znth++tPsptKs@smile.fi.intel.com>
+        Wed, 01 Mar 2023 03:55:13 -0800 (PST)
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: addac: ad74413r: fix Current Input, Loop Powered Mode
+Date:   Wed,  1 Mar 2023 12:55:11 +0100
+Message-Id: <20230301115511.849418-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y/0znth++tPsptKs@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Andy, 
+Currently, the driver handles CH_FUNC_CURRENT_INPUT_LOOP_POWER and
+CH_FUNC_CURRENT_INPUT_EXT_POWER completely identically. But that's not
+correct. In order for CH_FUNC_CURRENT_INPUT_LOOP_POWER to work, two
+changes must be made:
 
-On Tue, Feb 28, 2023 at 12:50:06AM +0200, Andy Shevchenko wrote:
-> On Mon, Feb 27, 2023 at 07:00:38PM +0100, Mehdi Djait wrote:
-> > Move the kernel-doc of the function to industrialio-trigger.c
-> > Add a note on the context where the function is expected to be called.
-> 
-> ...
-> 
-> > + * This function needs to be called from an interrupt context.
-> 
-> > - * Typically called in relevant hardware interrupt handler.
-> 
-> These are not equivalent. Can you explain in the commit message why we move
-> from hardware to any interrupt context?
+(1) expose access to the DAC_CODE_x register so that the intended
+output current can be set, i.e. expose the channel as both current
+output and current input, and
 
-I read the definition of handle_irq_desc more carefully and [1]. I will
-change it to hard IRQ context. 
+(2) per the data sheet
 
-I got confused by the kernel-docs under /kernel/irq/irqdesc.c as it states
-that the function must be called from an IRQ context for generic_handle_irq 
-but explicitly states hard IRQ context for another funtion. 
+  When selecting the current input loop powered function, tie the
+  VIOUTN_x pin to ground via the on-chip 200 kΩ resistor by enabling
+  the CH_200K_TO_GND bit in the ADC_CONFIGx registers.
 
-[1] https://lore.kernel.org/all/1346922337-17088-1-git-send-email-lars@metafoo.de/
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+---
+There's of course also CH_FUNC_CURRENT_INPUT_LOOP_POWER_HART which is
+likely to require a similar fix, but as I don't have a ad74413r I
+can't test that. 
 
---
-Kind Regards
-Mehdi Djait
+ drivers/iio/addac/ad74413r.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index f32c8c2fb26d..f5d072092709 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -99,6 +99,7 @@ struct ad74413r_state {
+ #define AD74413R_REG_ADC_CONFIG_X(x)		(0x05 + (x))
+ #define AD74413R_ADC_CONFIG_RANGE_MASK		GENMASK(7, 5)
+ #define AD74413R_ADC_CONFIG_REJECTION_MASK	GENMASK(4, 3)
++#define AD74413R_ADC_CONFIG_CH_200K_TO_GND	BIT(2)
+ #define AD74413R_ADC_RANGE_10V			0b000
+ #define AD74413R_ADC_RANGE_2P5V_EXT_POW		0b001
+ #define AD74413R_ADC_RANGE_2P5V_INT_POW		0b010
+@@ -424,9 +425,20 @@ static int ad74413r_set_channel_dac_code(struct ad74413r_state *st,
+ static int ad74413r_set_channel_function(struct ad74413r_state *st,
+ 					 unsigned int channel, u8 func)
+ {
+-	return regmap_update_bits(st->regmap,
++	int ret;
++
++	ret = regmap_update_bits(st->regmap,
+ 				  AD74413R_REG_CH_FUNC_SETUP_X(channel),
+ 				  AD74413R_CH_FUNC_SETUP_MASK, func);
++	if (ret)
++		return ret;
++
++	if (func == CH_FUNC_CURRENT_INPUT_LOOP_POWER)
++		ret = regmap_set_bits(st->regmap,
++				      AD74413R_REG_ADC_CONFIG_X(channel),
++				      AD74413R_ADC_CONFIG_CH_200K_TO_GND);
++
++	return ret;
+ }
+ 
+ static int ad74413r_set_adc_conv_seq(struct ad74413r_state *st,
+@@ -1112,6 +1124,11 @@ static struct iio_chan_spec ad74413r_current_input_channels[] = {
+ 	AD74413R_ADC_CURRENT_CHANNEL,
+ };
+ 
++static struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
++	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
++	AD74413R_ADC_CURRENT_CHANNEL,
++};
++
+ static struct iio_chan_spec ad74413r_resistance_input_channels[] = {
+ 	AD74413R_ADC_CHANNEL(IIO_RESISTANCE, BIT(IIO_CHAN_INFO_PROCESSED)),
+ };
+@@ -1135,7 +1152,7 @@ static const struct ad74413r_channels ad74413r_channels_map[] = {
+ 	[CH_FUNC_CURRENT_OUTPUT] = AD74413R_CHANNELS(current_output),
+ 	[CH_FUNC_VOLTAGE_INPUT] = AD74413R_CHANNELS(voltage_input),
+ 	[CH_FUNC_CURRENT_INPUT_EXT_POWER] = AD74413R_CHANNELS(current_input),
+-	[CH_FUNC_CURRENT_INPUT_LOOP_POWER] = AD74413R_CHANNELS(current_input),
++	[CH_FUNC_CURRENT_INPUT_LOOP_POWER] = AD74413R_CHANNELS(current_input_loop),
+ 	[CH_FUNC_RESISTANCE_INPUT] = AD74413R_CHANNELS(resistance_input),
+ 	[CH_FUNC_DIGITAL_INPUT_LOGIC] = AD74413R_CHANNELS(digital_input),
+ 	[CH_FUNC_DIGITAL_INPUT_LOOP_POWER] = AD74413R_CHANNELS(digital_input),
+-- 
+2.37.2
+

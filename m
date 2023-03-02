@@ -2,132 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D23E6A8404
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 15:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC426A8415
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 15:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbjCBORn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 09:17:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
+        id S229592AbjCBOXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 09:23:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjCBORn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 09:17:43 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CECA3402F;
-        Thu,  2 Mar 2023 06:17:41 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id h14so16681913wru.4;
-        Thu, 02 Mar 2023 06:17:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BjohpdSIx4yaxuaDVY5TpnPa4luLE8HDX4jbWDHwIPc=;
-        b=K5p8NGxOe6DelD8nhXPy5T3e7evSJ+gBT1HgUA/ObGto9qjv+/k/4gM0+PkTk9E5uy
-         Ejwe2usdR6ovFl081nwdhE/kPKUv3TF7C8BpJ0KhgPN6XV13WAconCTfOs1TZoCqVPc+
-         KAQz3hi5c5PDaDYt2H1fvJvCr/MqRfunIatU2d5rOfMZFkKJftPAWf5jlkSNDQw/br4H
-         yjfncFyd53a8DG7JZZpkgdZFUYxmxnTzqFdMCNI/xs2kgDQT+OOiU6nQgjZ5PIY6B7Hp
-         o0XZLVITFavn1XR98sQStlGhjIWg3xYMm14173jzEDBSfZX18sT784XEyD8itvPQQgpI
-         OlmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BjohpdSIx4yaxuaDVY5TpnPa4luLE8HDX4jbWDHwIPc=;
-        b=Jw8A8hjZXu67lhvbg6nQX+92c7xyA/gPo/ap9NUTNFCyVxrfaVF6zlYqhEIQBTC92d
-         tt8ugCQITH1+1+6V7m74Dtaa5aXoq3Gv473+Osl2Had//JehBHnq4xCa/NtUA5ROXf3i
-         bpITgwoOsa43i0sy0cbxjlUUALslMgB7CQ7a57I/rpUP/nQefhNrY2R5BTrB0V+vLCp7
-         amV86rTulA9uv2BVVe/OkDl/ugoxox/3Vsk1nSsSEWNkH7ISv4VVeeZI+OtYPkKd+rds
-         ggMJKB7DGa8XtKw5t/B/JlTs79qqL843S0ir6qwh6NyJYhI6OhO3u2/OgdrsFkWt5023
-         b5vA==
-X-Gm-Message-State: AO0yUKV3T3CwcnsG+vr7qClPED/RDJYpLmhMBKsiojFf4oeDKSS+5K9S
-        KH1F0Li+KgE5i8ucI2ajl12ap7WFJp42Af7thf+r/VUsYMc=
-X-Google-Smtp-Source: AK7set/geGmdqqs74xRrdi+v0+/yQAYstdadBC5jK4HV+Z3RCoYO9Pvxt4kecOzcNGIrIsno1/5f+Rr/gE9wPUIdkes=
-X-Received: by 2002:adf:ea52:0:b0:2c4:80a:e849 with SMTP id
- j18-20020adfea52000000b002c4080ae849mr2069931wrn.1.1677766659703; Thu, 02 Mar
- 2023 06:17:39 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1677750859.git.mazziesaccount@gmail.com> <874d59be98703bb58a98fea72138de5b94d71a52.1677750859.git.mazziesaccount@gmail.com>
-In-Reply-To: <874d59be98703bb58a98fea72138de5b94d71a52.1677750859.git.mazziesaccount@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Date:   Thu, 2 Mar 2023 16:17:28 +0200
-Message-ID: <CANhJrGOnG0r+t02wGHfbwqJh6k7xVE=1ah=w4m0s9JjqAGV-9w@mail.gmail.com>
-Subject: Re: [PATCH v2 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229506AbjCBOXW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 09:23:22 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62D4193FE;
+        Thu,  2 Mar 2023 06:23:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677767000; x=1709303000;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=1xUvPOheqw1hT95eEnqs5hbaLI/RpHD0dWMUlZ70aOY=;
+  b=j8afqEY5GUIpkClBzFDQ9NTT4ZtEE0Dmgs8FGR+I9epNqV/xL+wOz9Se
+   mOppjAPOgqGVGqP1B/+sfUw+V2YYb8u17e2BJDFfaZR+fpN0tJccuPXr9
+   Qed4xeUQuWpB8vRj/+4HIkWpgqLGiaAAkkNkq5x6vf8O/Ut8VOrEA15v8
+   EbxNKQB8qHxIF+KTpm/MpEz9iMn4wV+vaxvG61MTAx0D+qC8Lc11qHLyW
+   +k+C3RyTMLsyDmNpaydNGLJ7H1zDjE2t4TobnUVMMiDlSmdYzp1AfmDfR
+   HulvUF406gzh7CDgZsWPXG9mCIFJOjY+M3xa+8lUekovXdjPSStOfepm+
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="362324884"
+X-IronPort-AV: E=Sophos;i="5.98,227,1673942400"; 
+   d="scan'208";a="362324884"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2023 06:23:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="677230474"
+X-IronPort-AV: E=Sophos;i="5.98,227,1673942400"; 
+   d="scan'208";a="677230474"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 02 Mar 2023 06:23:17 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pXjpz-00ENdZ-0o;
+        Thu, 02 Mar 2023 16:23:15 +0200
+Date:   Thu, 2 Mar 2023 16:23:14 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mike Looijmans <mike.looijmans@topic.nl>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
+Message-ID: <ZACxUpzCtlrMehrA@smile.fi.intel.com>
+References: <20230228063151.17598-1-mike.looijmans@topic.nl>
+ <20230228063151.17598-2-mike.looijmans@topic.nl>
+ <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0685d97e-4a28-499e-a9e3-3bafec126832@emailsignatures365.codetwo.com>
+ <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-to 2. maalisk. 2023 klo 12.59 Matti Vaittinen
-(mazziesaccount@gmail.com) kirjoitti:
->
-> ROHM BU27034 is an ambient light sesnor with 3 channels and 3 photo diodes
-> capable of detecting a very wide range of illuminance. Typical application
-> is adjusting LCD and backlight power of TVs and mobile phones.
->
-> Add initial  support for the ROHM BU27034 ambient light sensor.
->
-> NOTE:
->         - Driver exposes 4 channels. One IIO_LIGHT channel providing the
->           calculated lux values based on measured data from diodes #0 and
->           #1. Additionally 3 IIO_INTENSITY channels are emitting the raw
->           register data from all diodes for more intense user-space
->           computations.
->         - Sensor has adjustible GAIN values ranging from 1x to 4096x.
->         - Sensor has adjustible measurement times 5, 55, 100, 200 and
->           400 mS. Driver does not support 5 mS which has special
->           limitations.
->         - Driver exposes standard 'scale' adjustment which is
->           implemented by:
->                 1) Trying to adjust only the GAIN
->                 2) If GAIN adjustment only can't provide requested
->                    scale, adjusting both the time and the gain is
->                    attempted.
->         - Driver exposes writable INT_TIME property which can be used
->           for adjusting the measurement time. Time adjustment will also
->           cause the driver to adjust the GAIN so that the overall scale
->           is not changed.
->         - Runtime PM is not implemented.
->         - Driver starts the measurement on the background when it is
->           probed. This improves the respnse time to read-requests
+On Thu, Mar 02, 2023 at 08:49:22AM +0100, Mike Looijmans wrote:
+> On 01-03-2023 16:30, Andy Shevchenko wrote:
+> > On Tue, Feb 28, 2023 at 07:31:51AM +0100, Mike Looijmans wrote:
 
-Seems like I forgot to update the commit message. Note to self: change
-this when preparing the v3
+...
 
-,,,
+> > > +	/* Shift result to compensate for bit resolution vs. sample rate */
+> > > +	value <<= 16 - ads1100_data_bits(data);
+> > > +	*val = sign_extend32(value, 15);
+> > Why not simply
+> > 
+> > 	*val = sign_extend32(value, ads1100_data_bits(data) - 1);
+> > 
+> > ?
+> 
+> As discussed with  Jonathan Cameron, the register is right-justified and the
+> number of bits depend on the data rate. Rather than having the "scale"
+> change when the sample rate changes, we chose to adjust the sample result so
+> it's always left-justified.
 
-> +config ROHM_BU27034
-> +       tristate "ROHM BU27034 ambient light sensor"
-> +       depends on I2C
-> +       select REGMAP_I2C
-> +       select IIO_GTS_HELPER
+Hmm... OK, but it adds unneeded code I think.
 
-And, judging some other fixes - it seems this one would also need the
-select IIO_BUFFER and IIO_KFIFO_BUF now...
+...
 
+> > > +	for (i = 0; i < 4; i++) {
+> > > +		if (BIT(i) == gain) {
+> > ffs()/__ffs() (look at the documentation for the difference and use proper one).
+> 
+> Thought of it, but I'd rather have it return EINVAL for attempting to set
+> the analog gain to "7" (0nly 1,2,4,8 allowed).
+
+I'm not sure what you are implying.
+
+You have open coded something that has already to be a function which on some
+architectures become a single assembly instruction.
+
+That said, drop your for-loop if-cond and use one of the proposed directly.
+Then you may compare the result to what ever you want to be a limit and return
+whatever error code you want to.
+
+...
+
+> > > +	for (i = 0; i < size; ++i) {
+> > Why pre-increment?
+> 
+> Spent too much time with other coding guidelines, missed this one... Will
+> change.
+
+I don't remember that's in coding guidelines, but it's standard practice in the
+Linux kernel project. Yeah, we have a few hundreds of the pre-increments, but
+reasons may be quite different for those.
+
+...
+
+> > > +	int millivolts = regulator_get_voltage(data->reg_vdd) / 1000;
+> > units.h?
+> 
+> Should I write:
+> 
+> regulator_get_voltage(data->reg_vdd) / (MICROS / MILLIS);
+> 
+> I doubt that improves readability.
+
+Yeah, it should be something like MICROVOLT_PER_MILLIVOLT.
+But it's not defined yet.
+
+...
+
+> > > +static int ads1100_runtime_suspend(struct device *dev)
+> > > +{
+> > > +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> > > +	struct ads1100_data *data = iio_priv(indio_dev);
+> > > +
+> > > +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
+> > > +	regulator_disable(data->reg_vdd);
+> > Wrong devm / non-devm ordering.
+> 
+> Don't understand your remark, can you explain further please?
+> 
+> devm / non-devm ordering would be related to the "probe" function. As far as
+> I can tell, I'm not allocating resources after the devm calls. And the
+> "remove" is empty.
+
+Ah, it's my mistake, I misread it as ->remove().
 
 -- 
+With Best Regards,
+Andy Shevchenko
 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
 
-~~ When things go utterly wrong vim users can always type :help! ~~
-
-Discuss - Estimate - Plan - Report and finally accomplish this:
-void do_work(int time) __attribute__ ((const));

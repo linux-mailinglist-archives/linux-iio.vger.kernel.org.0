@@ -2,129 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06946A84A8
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 15:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C48F26A841A
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 15:25:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbjCBOxZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 09:53:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48368 "EHLO
+        id S229468AbjCBOZG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 09:25:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbjCBOxX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 09:53:23 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0FF4C30;
-        Thu,  2 Mar 2023 06:52:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677768773; x=1709304773;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ebv+yvAFYIWfjP1yIrOAZOb/TIWMmyj7FnJDi/XFutw=;
-  b=IaoMi5KDYPn0LkW8Tc5SFLC5ixqSqERRwasSf1DAGIjP+lZgL7GnPNDi
-   XOdRLQUkp3jEz1eFGIYv+2o3vWGACzHA5OPv6JnKPIkAyxDlX9OaE9IOZ
-   aMFn6Z3KoKgwN5aXZr+VbnH34vQDlntk56TtOLdoKJWszvvDUYV3NtLEC
-   Cv5UlwLTnmIYjRKe3yWveDcLyvXaf5wIfW8/vmT2+j8kcqgoeXJlyLX2f
-   t0Fj6QCMoqvQc7/i0ON3m/gBryiE7BQTtG+LN07uiyVPNAT0ICBkNGWsH
-   h1OG1oJwm2BUeH6w0151qOfpsK6zNJlW64PwO8c/xz9EX2yZGP85Q+Ola
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="323023336"
-X-IronPort-AV: E=Sophos;i="5.98,227,1673942400"; 
-   d="scan'208";a="323023336"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2023 06:24:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="764017574"
-X-IronPort-AV: E=Sophos;i="5.98,227,1673942400"; 
-   d="scan'208";a="764017574"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Mar 2023 06:24:09 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pXjqo-00ENf7-2z;
-        Thu, 02 Mar 2023 16:24:06 +0200
-Date:   Thu, 2 Mar 2023 16:24:06 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <ZACxhiwgR7/MYUAQ@smile.fi.intel.com>
-References: <20230228063151.17598-1-mike.looijmans@topic.nl>
- <20230228063151.17598-2-mike.looijmans@topic.nl>
- <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0685d97e-4a28-499e-a9e3-3bafec126832@emailsignatures365.codetwo.com>
- <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
- <87bc192e-45ae-9480-5e84-8fe0adfc12e7@metafoo.de>
- <b635b91e-1dcc-71ba-95d1-1f87a20dbaf2@metafoo.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+        with ESMTP id S229552AbjCBOZF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 09:25:05 -0500
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36CCA37548;
+        Thu,  2 Mar 2023 06:25:01 -0800 (PST)
+Received: by mail-vs1-f50.google.com with SMTP id s1so22537052vsk.5;
+        Thu, 02 Mar 2023 06:25:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8wDVKoxnSqfBIh2KA9I69m23GfuDCaWRKYYk9CbtV28=;
+        b=s965aUpIY1lbFNd9bzIr6F2lcdwZ1KNwXBG0x7nMUGvm8oKNl00CKi6bu11HLr7zhH
+         ycVEN0MBWYDNvTiLfpcykrYwNtcIBexEoqPQta3CREOZG8gQsN7IGy1gZy/Q89d1JK4Q
+         8ZOOYYtXSI/K0uSBIVI7Ane4XFAp0yAT6O5e0LSdBemxKtj1Wk0wS4z+TNW0/PYwwy7O
+         JU9PxiLgQbw0Cw5f+Np53HSOTRh5DNLOE3tpuLzzKE6rvuMk6F6iU6IsBk91FhN47qZY
+         PRgllyYcr64WHyOWPzCwwjn0lGaRxLUR53HzktU04SZI4kxZb9Att9GmnI7uTvcHhOH5
+         WIoQ==
+X-Gm-Message-State: AO0yUKXMvc+QpMjsthyzK5dgr7hlcOpPCBzgyMzPp0EJ6sJfYqJGWGO8
+        2jsSzfoDJy86z7UfsrAKNc3LvFum76Bo
+X-Google-Smtp-Source: AK7set8DcBKW2UHTl1N3Sx8zSZmipJcIPDcIoj4LHB6kl8FBAn53qpN6vh65KHTjOPO0RDA1pWLv/A==
+X-Received: by 2002:a67:e3ac:0:b0:412:4d64:8c00 with SMTP id j12-20020a67e3ac000000b004124d648c00mr4442928vsm.15.1677767100159;
+        Thu, 02 Mar 2023 06:25:00 -0800 (PST)
+Received: from robh_at_kernel.org ([209.91.220.210])
+        by smtp.gmail.com with ESMTPSA id t5-20020a675f05000000b0041f5ee512d7sm1681653vsb.3.2023.03.02.06.24.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Mar 2023 06:24:59 -0800 (PST)
+Received: (nullmailer pid 427877 invoked by uid 1000);
+        Thu, 02 Mar 2023 14:24:58 -0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b635b91e-1dcc-71ba-95d1-1f87a20dbaf2@metafoo.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <20230302134922.1120217-2-linux@rasmusvillemoes.dk>
+References: <20230302134922.1120217-1-linux@rasmusvillemoes.dk>
+ <20230302134922.1120217-2-linux@rasmusvillemoes.dk>
+Message-Id: <167776666863.418220.8691645201749142592.robh@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: ad74413r: allow setting sink
+ current for digital input
+Date:   Thu, 02 Mar 2023 08:24:58 -0600
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Mar 02, 2023 at 05:20:38AM -0800, Lars-Peter Clausen wrote:
-> On 3/2/23 05:16, Lars-Peter Clausen wrote:
-> > On 3/1/23 23:49, Mike Looijmans wrote:
 
-...
+On Thu, 02 Mar 2023 14:49:20 +0100, Rasmus Villemoes wrote:
+> Depending on the actual hardware wired up to a digital input channel,
+> it may be necessary to configure the ad74413r to sink a small
+> current. For example, in the case of a simple mechanical switch, the
+> charge on the external 68 nF capacitor (cf. the data sheet's Figure
+> 34) will keep the channel as reading high even after the switch is
+> turned off again.
+> 
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> ---
+>  .../devicetree/bindings/iio/addac/adi,ad74413r.yaml    | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
 
-> > > > > +static int ads1100_runtime_suspend(struct device *dev)
-> > > > > +{
-> > > > > +    struct iio_dev *indio_dev =
-> > > > > i2c_get_clientdata(to_i2c_client(dev));
-> > > > > +    struct ads1100_data *data = iio_priv(indio_dev);
-> > > > > +
-> > > > > +    ads1100_set_config_bits(data, ADS1100_CFG_SC,
-> > > > > ADS1100_SINGLESHOT);
-> > > > > +    regulator_disable(data->reg_vdd);
-> > > > Wrong devm / non-devm ordering.
-> > > 
-> > > Don't understand your remark, can you explain further please?
-> > > 
-> > > devm / non-devm ordering would be related to the "probe" function.
-> > > As far as I can tell, I'm not allocating resources after the devm
-> > > calls. And the "remove" is empty.
-> > 
-> > Strictly speaking we need to unregister the IIO device before disabling
-> > the regulator, otherwise there is a small window where the IIO device
-> > still exists, but doesn't work anymore. This is a very theoretical
-> > scenario though.
-> > 
-> > You are lucky :) There is a new function
-> > `devm_regulator_get_enable()`[1], which will manage the
-> > regulator_disable() for you. Using that will also reduce the boilerplate
-> > in `probe()` a bit
-> > 
-> > [1] https://lwn.net/Articles/904383/
-> > 
-> Sorry, just saw that Andy's comment was on the suspend() function, not
-> remove(). In that case there is of course no need for any devm things. But
-> still a good idea to use `devm_regulator_get_enable()` in probe for the
-> boiler plate.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Yeah, sorry, I mistakenly took it as ->remove().
+yamllint warnings/errors:
 
--- 
-With Best Regards,
-Andy Shevchenko
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml: patternProperties:^channel@[0-3]$:properties:drive-strength-microamp: '$ref' should not be valid under {'const': '$ref'}
+	hint: Standard unit suffix properties don't need a type $ref
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
 
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230302134922.1120217-2-linux@rasmusvillemoes.dk
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 

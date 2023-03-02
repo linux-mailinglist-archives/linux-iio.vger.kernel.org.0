@@ -2,154 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2E36A83CD
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 14:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D23E6A8404
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 15:17:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjCBNtl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 08:49:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46634 "EHLO
+        id S229716AbjCBORn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 09:17:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230059AbjCBNtb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 08:49:31 -0500
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859CD18164
-        for <linux-iio@vger.kernel.org>; Thu,  2 Mar 2023 05:49:28 -0800 (PST)
-Received: by mail-lj1-x234.google.com with SMTP id f16so17651672ljq.10
-        for <linux-iio@vger.kernel.org>; Thu, 02 Mar 2023 05:49:28 -0800 (PST)
+        with ESMTP id S229471AbjCBORn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 09:17:43 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CECA3402F;
+        Thu,  2 Mar 2023 06:17:41 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id h14so16681913wru.4;
+        Thu, 02 Mar 2023 06:17:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g+ofG8dUGNkU80FPnV9zgYPR7u97jlgEvn4xxyg8nqc=;
-        b=FjTnBw/d3uK0G5/Bu5xpEc3T16eLRNS45XsXzqBA/NMTjVt8E3FCPFH/Px+NCN1Tv2
-         3FfBr12gK6XmyNZFNcjfMeQ6mYgXJCJrHjKNDZWAXJ+hNBj+tq8fvpLoBbrCvii6vCoZ
-         1FyGU17ZZ5ifnaW2xjNHknJPgQL7vJJtp6t/o=
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BjohpdSIx4yaxuaDVY5TpnPa4luLE8HDX4jbWDHwIPc=;
+        b=K5p8NGxOe6DelD8nhXPy5T3e7evSJ+gBT1HgUA/ObGto9qjv+/k/4gM0+PkTk9E5uy
+         Ejwe2usdR6ovFl081nwdhE/kPKUv3TF7C8BpJ0KhgPN6XV13WAconCTfOs1TZoCqVPc+
+         KAQz3hi5c5PDaDYt2H1fvJvCr/MqRfunIatU2d5rOfMZFkKJftPAWf5jlkSNDQw/br4H
+         yjfncFyd53a8DG7JZZpkgdZFUYxmxnTzqFdMCNI/xs2kgDQT+OOiU6nQgjZ5PIY6B7Hp
+         o0XZLVITFavn1XR98sQStlGhjIWg3xYMm14173jzEDBSfZX18sT784XEyD8itvPQQgpI
+         OlmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g+ofG8dUGNkU80FPnV9zgYPR7u97jlgEvn4xxyg8nqc=;
-        b=1eq5ZcaHBXWMrWj5wpDN4TFoBvUjOX7EhVUIlDjmSqKSTGM1fgGBdSm0Fcrs4VHf44
-         5tOy6+pxX2C355w4/bqsO33gO1x2jCds3XnyyLiu8zzFvGZso/u/U4dDZsxmePy9Pwui
-         KQKVy5RHdeOTk1XXqMsvjSovJaguhPtTApVyPPR4IQJLD0acTlD3auP+EW//qfIJ9dp0
-         3sLL3kFXZ/wBOdAApqKyM2OE+x/Qh2Ib2u5HgT5JfGVxvcn0bG/BQE9/JkFejZe9uxtO
-         ghlcsvfUM5+a25yR2d4G+ApWY8SvSTqibA09SQuc5f73q7F6qKJZEFx5M9KmIkN0ool0
-         btkA==
-X-Gm-Message-State: AO0yUKUg3v639ciDkl48RWk7SyGX6F5zzKUnx73zJAlLygPSAzMbLm+l
-        FsLZ7fkqTrTK+OneIcMo57xsRg==
-X-Google-Smtp-Source: AK7set/O8Ekt9ie7aM7GDWhsjBP5dvMfJdAo29xBF3dJcnaylSSOtFq2jwnvQZpTT12Xegj//2LX7g==
-X-Received: by 2002:a2e:9415:0:b0:291:90bf:1cc4 with SMTP id i21-20020a2e9415000000b0029190bf1cc4mr2841936ljh.26.1677764966880;
-        Thu, 02 Mar 2023 05:49:26 -0800 (PST)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id s16-20020ac25ff0000000b004cb3e97bff8sm2139088lfg.284.2023.03.02.05.49.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 05:49:26 -0800 (PST)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: ad74413r: wire up support for drive-strength-microamp property
-Date:   Thu,  2 Mar 2023 14:49:21 +0100
-Message-Id: <20230302134922.1120217-3-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230302134922.1120217-1-linux@rasmusvillemoes.dk>
-References: <20230302134922.1120217-1-linux@rasmusvillemoes.dk>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BjohpdSIx4yaxuaDVY5TpnPa4luLE8HDX4jbWDHwIPc=;
+        b=Jw8A8hjZXu67lhvbg6nQX+92c7xyA/gPo/ap9NUTNFCyVxrfaVF6zlYqhEIQBTC92d
+         tt8ugCQITH1+1+6V7m74Dtaa5aXoq3Gv473+Osl2Had//JehBHnq4xCa/NtUA5ROXf3i
+         bpITgwoOsa43i0sy0cbxjlUUALslMgB7CQ7a57I/rpUP/nQefhNrY2R5BTrB0V+vLCp7
+         amV86rTulA9uv2BVVe/OkDl/ugoxox/3Vsk1nSsSEWNkH7ISv4VVeeZI+OtYPkKd+rds
+         ggMJKB7DGa8XtKw5t/B/JlTs79qqL843S0ir6qwh6NyJYhI6OhO3u2/OgdrsFkWt5023
+         b5vA==
+X-Gm-Message-State: AO0yUKV3T3CwcnsG+vr7qClPED/RDJYpLmhMBKsiojFf4oeDKSS+5K9S
+        KH1F0Li+KgE5i8ucI2ajl12ap7WFJp42Af7thf+r/VUsYMc=
+X-Google-Smtp-Source: AK7set/geGmdqqs74xRrdi+v0+/yQAYstdadBC5jK4HV+Z3RCoYO9Pvxt4kecOzcNGIrIsno1/5f+Rr/gE9wPUIdkes=
+X-Received: by 2002:adf:ea52:0:b0:2c4:80a:e849 with SMTP id
+ j18-20020adfea52000000b002c4080ae849mr2069931wrn.1.1677766659703; Thu, 02 Mar
+ 2023 06:17:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1677750859.git.mazziesaccount@gmail.com> <874d59be98703bb58a98fea72138de5b94d71a52.1677750859.git.mazziesaccount@gmail.com>
+In-Reply-To: <874d59be98703bb58a98fea72138de5b94d71a52.1677750859.git.mazziesaccount@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Date:   Thu, 2 Mar 2023 16:17:28 +0200
+Message-ID: <CANhJrGOnG0r+t02wGHfbwqJh6k7xVE=1ah=w4m0s9JjqAGV-9w@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use the value specified in the channel configuration node to populate
-the DIN_SINK field of the DIN_CONFIGx register.
+to 2. maalisk. 2023 klo 12.59 Matti Vaittinen
+(mazziesaccount@gmail.com) kirjoitti:
+>
+> ROHM BU27034 is an ambient light sesnor with 3 channels and 3 photo diodes
+> capable of detecting a very wide range of illuminance. Typical application
+> is adjusting LCD and backlight power of TVs and mobile phones.
+>
+> Add initial  support for the ROHM BU27034 ambient light sensor.
+>
+> NOTE:
+>         - Driver exposes 4 channels. One IIO_LIGHT channel providing the
+>           calculated lux values based on measured data from diodes #0 and
+>           #1. Additionally 3 IIO_INTENSITY channels are emitting the raw
+>           register data from all diodes for more intense user-space
+>           computations.
+>         - Sensor has adjustible GAIN values ranging from 1x to 4096x.
+>         - Sensor has adjustible measurement times 5, 55, 100, 200 and
+>           400 mS. Driver does not support 5 mS which has special
+>           limitations.
+>         - Driver exposes standard 'scale' adjustment which is
+>           implemented by:
+>                 1) Trying to adjust only the GAIN
+>                 2) If GAIN adjustment only can't provide requested
+>                    scale, adjusting both the time and the gain is
+>                    attempted.
+>         - Driver exposes writable INT_TIME property which can be used
+>           for adjusting the measurement time. Time adjustment will also
+>           cause the driver to adjust the GAIN so that the overall scale
+>           is not changed.
+>         - Runtime PM is not implemented.
+>         - Driver starts the measurement on the background when it is
+>           probed. This improves the respnse time to read-requests
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
- drivers/iio/addac/ad74413r.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Seems like I forgot to update the commit message. Note to self: change
+this when preparing the v3
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index f32c8c2fb26d..cbf0f66fdc74 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -39,6 +39,7 @@ struct ad74413r_chip_info {
- 
- struct ad74413r_channel_config {
- 	u32		func;
-+	u32		drive_strength;
- 	bool		gpo_comparator;
- 	bool		initialized;
- };
-@@ -111,6 +112,7 @@ struct ad74413r_state {
- #define AD74413R_REG_DIN_CONFIG_X(x)	(0x09 + (x))
- #define AD74413R_DIN_DEBOUNCE_MASK	GENMASK(4, 0)
- #define AD74413R_DIN_DEBOUNCE_LEN	BIT(5)
-+#define AD74413R_DIN_SINK_MASK		GENMASK(9, 6)
- 
- #define AD74413R_REG_DAC_CODE_X(x)	(0x16 + (x))
- #define AD74413R_DAC_CODE_MAX		GENMASK(12, 0)
-@@ -261,6 +263,19 @@ static int ad74413r_set_comp_debounce(struct ad74413r_state *st,
- 				  val);
- }
- 
-+static int ad74413r_set_comp_drive_strength(struct ad74413r_state *st,
-+					    unsigned int offset,
-+					    unsigned int strength)
-+{
-+	if (strength > 1800)
-+		strength = 1800;
-+
-+	return regmap_update_bits(st->regmap, AD74413R_REG_DIN_CONFIG_X(offset),
-+				  AD74413R_DIN_SINK_MASK,
-+				  FIELD_PREP(AD74413R_DIN_SINK_MASK, strength / 120));
-+}
-+
-+
- static void ad74413r_gpio_set(struct gpio_chip *chip,
- 			      unsigned int offset, int val)
- {
-@@ -1190,6 +1205,9 @@ static int ad74413r_parse_channel_config(struct iio_dev *indio_dev,
- 	config->gpo_comparator = fwnode_property_read_bool(channel_node,
- 		"adi,gpo-comparator");
- 
-+	fwnode_property_read_u32(channel_node, "drive-strength-microamp",
-+				 &config->drive_strength);
-+
- 	if (!config->gpo_comparator)
- 		st->num_gpo_gpios++;
- 
-@@ -1269,6 +1287,7 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
- 	unsigned int gpo_gpio_i = 0;
- 	unsigned int i;
- 	u8 gpo_config;
-+	u32 strength;
- 	int ret;
- 
- 	for (i = 0; i < AD74413R_CHANNEL_MAX; i++) {
-@@ -1285,6 +1304,11 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
- 		    config->func == CH_FUNC_DIGITAL_INPUT_LOOP_POWER)
- 			st->comp_gpio_offsets[comp_gpio_i++] = i;
- 
-+		strength = config->drive_strength;
-+		ret = ad74413r_set_comp_drive_strength(st, i, strength);
-+		if (ret)
-+			return ret;
-+
- 		ret = ad74413r_set_gpo_config(st, i, gpo_config);
- 		if (ret)
- 			return ret;
+,,,
+
+> +config ROHM_BU27034
+> +       tristate "ROHM BU27034 ambient light sensor"
+> +       depends on I2C
+> +       select REGMAP_I2C
+> +       select IIO_GTS_HELPER
+
+And, judging some other fixes - it seems this one would also need the
+select IIO_BUFFER and IIO_KFIFO_BUF now...
+
+
 -- 
-2.37.2
 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
+Discuss - Estimate - Plan - Report and finally accomplish this:
+void do_work(int time) __attribute__ ((const));

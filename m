@@ -2,90 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A016A85AC
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 16:54:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1976A8614
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 17:18:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbjCBPyK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 10:54:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54354 "EHLO
+        id S229540AbjCBQSV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 11:18:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjCBPyJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 10:54:09 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28B839CFF;
-        Thu,  2 Mar 2023 07:54:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677772448; x=1709308448;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Q/pGc/l0UZNElD4950MH0FyT13pafdH9fGL+HJomWsQ=;
-  b=LVX3dAg5RfhvVE4Q1+eH7tQV0UVWxT7xt4YD1CyA/kWbHFjo+H9qCf8B
-   V1v+QDncPHN4Cvi/IbtYhr0qh6tcJXP84Vn8pOJd6/QD4Pq9CRN5yHFae
-   QQUEp9iQQ2Xei3LCy8e4E8UxHm3yoyoxwqxN9Jem/3i9+tiTPvlZVxrE+
-   5HDAVroiDscVpMSqDEkp0s6bNtxVVijUgqT8yVdEnL1ljJiIilqGVTW4e
-   qzPMisS2USBEpayoPgrMXZWgAjW47X2wALYn6Z53HPTMdSwyPbf21zeTN
-   I+0XwGjYOtqY7rgfVOc1WixhLpkutm1b2Tya2TpeWyj4XhkZo826QHClu
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="421018389"
-X-IronPort-AV: E=Sophos;i="5.98,228,1673942400"; 
-   d="scan'208";a="421018389"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2023 07:54:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="1004150417"
-X-IronPort-AV: E=Sophos;i="5.98,228,1673942400"; 
-   d="scan'208";a="1004150417"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 02 Mar 2023 07:54:07 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pXlFt-00EPmp-24;
-        Thu, 02 Mar 2023 17:54:05 +0200
-Date:   Thu, 2 Mar 2023 17:54:05 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+        with ESMTP id S229511AbjCBQSU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 11:18:20 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815F17DA2;
+        Thu,  2 Mar 2023 08:18:19 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id f13so69736269edz.6;
+        Thu, 02 Mar 2023 08:18:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hp1ldzecMJSj8pyzkXvIFccXdSO3caSaRZEFVbzbQpM=;
+        b=ZIgL0StcY4gLMqogOHQ5KLRojn5BEKsBvtP1BEHXFLHChlWxRSnX05K+gptU/hIwlA
+         ykEwO0x3jX/7seiw3M2WBNf7868m7JzF+XaArapkLZTAj33XPe3kX4SoKiEXDEruTZ/d
+         s6FtC+OQBvU9u68cu+FmlDwsamUnOEWmZE3wIvwHMNf4bryITHwfPpaI31rG6wvi3+Ut
+         20cf3D9NWzVrMiOMXnUmlF6iFUMP7kiMDUqQJnErltrifLYdD89fCgbe7/yGBxC8u+Tr
+         ZSxaX9FQJCgSYSIqWA+Sjl3Al+HJ6fWhpS39AHAi89Y7cvH5Z16/FicXCAirc+ks56vv
+         Xa9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hp1ldzecMJSj8pyzkXvIFccXdSO3caSaRZEFVbzbQpM=;
+        b=UK5ijT9u1XnqnsyVJYeCynV4hEOhSdtqkod7r6bg8O7lmMKxX+9gRKqxZacwAIn8l2
+         MoMUt88253FF3kCGd8G6VyGJ2q2wnT91FIW+aY8Xsc3bUGLl6Qatt95uE+FpYsWW/fpi
+         C4THt3Ki4A8Kbg5YhkK6J9LowR9/eeov1vcmyL6XYbZDW5tPcUzVQCr8jlpRe+CUqwIw
+         pL1bKOSS+iQTLoRZ/QMXFF4STSFvuHf4BZ6hn+PmdF2iepfQAdqTW9Yx6Rk4bs161JWe
+         +WIJZUikksISkfbLdxBVLGC/VoV2cT6fFmrxIaD+Z+gGswZonyOU/j81Jqx7Ca4vF9+I
+         IytQ==
+X-Gm-Message-State: AO0yUKU8jRI1N94vLiVKHprnKzUD1WlIi1OBsbHMYK/Nbs1qEyfJK6ut
+        QXqG0EOgrWzRIVayp4GHv0c=
+X-Google-Smtp-Source: AK7set9hyd9h3fY6YyOtsU8yF2plr93raSsI7lGVrnNDp47AXDgEgDL/FpE9ZfvkvUPpTf1OAGVZbw==
+X-Received: by 2002:a17:907:a44:b0:8f4:6efd:833f with SMTP id be4-20020a1709070a4400b008f46efd833fmr14059066ejc.3.1677773897949;
+        Thu, 02 Mar 2023 08:18:17 -0800 (PST)
+Received: from carbian ([2a02:8109:aa3f:ead8::dc02])
+        by smtp.gmail.com with ESMTPSA id kg28-20020a17090776fc00b008c607dd7cefsm7253523ejc.79.2023.03.02.08.18.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Mar 2023 08:18:16 -0800 (PST)
+Date:   Thu, 2 Mar 2023 17:18:14 +0100
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] iio: Improve the kernel-doc of iio_trigger_poll
-Message-ID: <ZADGnRILByq1/1ch@smile.fi.intel.com>
+Message-ID: <ZADMRsDgxKZ/UfJj@carbian>
 References: <cover.1677761379.git.mehdi.djait.k@gmail.com>
  <bd84fc17e9d22eab998bf48720297f9a77689f45.1677761379.git.mehdi.djait.k@gmail.com>
+ <ZADGnRILByq1/1ch@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bd84fc17e9d22eab998bf48720297f9a77689f45.1677761379.git.mehdi.djait.k@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZADGnRILByq1/1ch@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Mar 02, 2023 at 02:04:35PM +0100, Mehdi Djait wrote:
-> Move the kernel-doc of the function to industrialio-trigger.c
-> Add a note on the context where the function is expected to be called.
+Hello Andy,
 
-...
+On Thu, Mar 02, 2023 at 05:54:05PM +0200, Andy Shevchenko wrote:
+> On Thu, Mar 02, 2023 at 02:04:35PM +0100, Mehdi Djait wrote:
+> > Move the kernel-doc of the function to industrialio-trigger.c
+> > Add a note on the context where the function is expected to be called.
+> 
+> ...
+> 
+> > v2:
+> > - Changed the expected context of from interrupt to hard IRQ context
+> 
+> Thank you for an update.
+> 
+> But it seems I messed up with this and my previous remark shouldn't be
+> taken into consideration.
+> 
+> The "relevant hardware interrupt handler" may be hard and threaded IRQ context,
+> which looks like your first version was correct.
+> 
+> Let's wait for Jonathan opinion on this as he is a native speaker.
 
-> v2:
-> - Changed the expected context of from interrupt to hard IRQ context
+If I understood the function correctly I think you were right. It should
+be hard IRQ context
 
-Thank you for an update.
+The relevant functions calls:
+iio_trigger_poll --> generic_handle_irq --> handle_irq_desc
 
-But it seems I messed up with this and my previous remark shouldn't be
-taken into consideration.
+handle_irq_desc: returns Operation not permitted if !in_hardirq() && handle_enforce_irqctx 
+and it is the reason why the sysfs trigger uses the irq_framework to call iio_trigger_poll 
+from hard IRQ context [1][2]
 
-The "relevant hardware interrupt handler" may be hard and threaded IRQ context,
-which looks like your first version was correct.
+[1] https://lwn.net/Articles/411605/ 
+[2] https://lore.kernel.org/all/1346922337-17088-1-git-send-email-lars@metafoo.de/
 
-Let's wait for Jonathan opinion on this as he is a native speaker.
-
--- 
-With Best Regards,
-Andy Shevchenko
+--
+Kind Regards
+Mehdi Djait
 
 

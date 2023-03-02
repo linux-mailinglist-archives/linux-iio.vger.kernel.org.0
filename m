@@ -2,112 +2,438 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C48F26A841A
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 15:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE19A6A84DD
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 16:05:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbjCBOZG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 09:25:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
+        id S229906AbjCBPFp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 10:05:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjCBOZF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 09:25:05 -0500
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36CCA37548;
-        Thu,  2 Mar 2023 06:25:01 -0800 (PST)
-Received: by mail-vs1-f50.google.com with SMTP id s1so22537052vsk.5;
-        Thu, 02 Mar 2023 06:25:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8wDVKoxnSqfBIh2KA9I69m23GfuDCaWRKYYk9CbtV28=;
-        b=s965aUpIY1lbFNd9bzIr6F2lcdwZ1KNwXBG0x7nMUGvm8oKNl00CKi6bu11HLr7zhH
-         ycVEN0MBWYDNvTiLfpcykrYwNtcIBexEoqPQta3CREOZG8gQsN7IGy1gZy/Q89d1JK4Q
-         8ZOOYYtXSI/K0uSBIVI7Ane4XFAp0yAT6O5e0LSdBemxKtj1Wk0wS4z+TNW0/PYwwy7O
-         JU9PxiLgQbw0Cw5f+Np53HSOTRh5DNLOE3tpuLzzKE6rvuMk6F6iU6IsBk91FhN47qZY
-         PRgllyYcr64WHyOWPzCwwjn0lGaRxLUR53HzktU04SZI4kxZb9Att9GmnI7uTvcHhOH5
-         WIoQ==
-X-Gm-Message-State: AO0yUKXMvc+QpMjsthyzK5dgr7hlcOpPCBzgyMzPp0EJ6sJfYqJGWGO8
-        2jsSzfoDJy86z7UfsrAKNc3LvFum76Bo
-X-Google-Smtp-Source: AK7set8DcBKW2UHTl1N3Sx8zSZmipJcIPDcIoj4LHB6kl8FBAn53qpN6vh65KHTjOPO0RDA1pWLv/A==
-X-Received: by 2002:a67:e3ac:0:b0:412:4d64:8c00 with SMTP id j12-20020a67e3ac000000b004124d648c00mr4442928vsm.15.1677767100159;
-        Thu, 02 Mar 2023 06:25:00 -0800 (PST)
-Received: from robh_at_kernel.org ([209.91.220.210])
-        by smtp.gmail.com with ESMTPSA id t5-20020a675f05000000b0041f5ee512d7sm1681653vsb.3.2023.03.02.06.24.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 06:24:59 -0800 (PST)
-Received: (nullmailer pid 427877 invoked by uid 1000);
-        Thu, 02 Mar 2023 14:24:58 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S230314AbjCBPFe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 10:05:34 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE10303C2;
+        Thu,  2 Mar 2023 07:05:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677769530; x=1709305530;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KK4AIe+7Vv+aU8wHv4HOjgFbzka6y1VpUbQbhpno2LI=;
+  b=MbWsoHfuNhBaUSAI6z/ClFYhn00SeXPumsNHzTbit9esGm6C1PTeeb/R
+   2gFKlJ5lq4yaivRzesJvDSqYQKgqXOxV2HyWrrEyOFsYYETtuefiTmG7a
+   IrwQjWdp9DqvtXdPINxM+vm5xor3KUL7ODplA0+Bw5k7pTUIBM4pyWPJS
+   aqI9+PjEtBmwyorr5qJGMKrW4I3iesvkZTIFev+XI+epvneGbhO1LNEO+
+   w6EGOFNEBPKx0GJrQv6+9KntvCYbhRhCQF1nMy+QGWOsMHg1ZrKvz2aP5
+   zwYDYTue6O9FFQRyiVSXBYfPo+Y3DNX6ci+bE4YrRsfUVQxL85VMfyhs3
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="421002703"
+X-IronPort-AV: E=Sophos;i="5.98,228,1673942400"; 
+   d="scan'208";a="421002703"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2023 07:05:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10637"; a="705297979"
+X-IronPort-AV: E=Sophos;i="5.98,228,1673942400"; 
+   d="scan'208";a="705297979"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP; 02 Mar 2023 07:05:21 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pXkUh-00EOgw-2R;
+        Thu, 02 Mar 2023 17:05:19 +0200
+Date:   Thu, 2 Mar 2023 17:05:19 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20230302134922.1120217-2-linux@rasmusvillemoes.dk>
-References: <20230302134922.1120217-1-linux@rasmusvillemoes.dk>
- <20230302134922.1120217-2-linux@rasmusvillemoes.dk>
-Message-Id: <167776666863.418220.8691645201749142592.robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: ad74413r: allow setting sink
- current for digital input
-Date:   Thu, 02 Mar 2023 08:24:58 -0600
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] iio: light: Add gain-time-scale helpers
+Message-ID: <ZAC7L8NQYgBcBTCF@smile.fi.intel.com>
+References: <cover.1677750859.git.mazziesaccount@gmail.com>
+ <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On Thu, 02 Mar 2023 14:49:20 +0100, Rasmus Villemoes wrote:
-> Depending on the actual hardware wired up to a digital input channel,
-> it may be necessary to configure the ad74413r to sink a small
-> current. For example, in the case of a simple mechanical switch, the
-> charge on the external 68 nF capacitor (cf. the data sheet's Figure
-> 34) will keep the channel as reading high even after the switch is
-> turned off again.
+On Thu, Mar 02, 2023 at 12:57:54PM +0200, Matti Vaittinen wrote:
+> Some light sensors can adjust both the HW-gain and integration time.
+> There are cases where adjusting the integration time has similar impact
+> to the scale of the reported values as gain setting has.
 > 
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->  .../devicetree/bindings/iio/addac/adi,ad74413r.yaml    | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> IIO users do typically expect to handle scale by a single writable 'scale'
+> entry. Driver should then adjust the gain/time accordingly.
 > 
+> It however is difficult for a driver to know whether it should change
+> gain or integration time to meet the requested scale. Usually it is
+> preferred to have longer integration time which usually improves
+> accuracy, but there may be use-cases where long measurement times can be
+> an issue. Thus it can be preferable to allow also changing the
+> integration time - but mitigate the scale impact by also changing the gain
+> underneath. Eg, if integration time change doubles the measured values,
+> the driver can reduce the HW-gain to half.
+> 
+> The theory of the computations of gain-time-scale is simple. However,
+> some people (undersigned) got that implemented wrong for more than once.
+> 
+> Add some gain-time-scale helpers in order to not dublicate errors in all
+> drivers needing these computations.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+...
 
-yamllint warnings/errors:
+> +/*
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml: patternProperties:^channel@[0-3]$:properties:drive-strength-microamp: '$ref' should not be valid under {'const': '$ref'}
-	hint: Standard unit suffix properties don't need a type $ref
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+Is it intentionally _not_ a kernel doc?
 
-doc reference errors (make refcheckdocs):
+> + * iio_gts_get_gain - Convert scale to total gain
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230302134922.1120217-2-linux@rasmusvillemoes.dk
+> + * Internal helper for converting scale to total gain.
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+Otherwise this line should go after the fields, I remember kernel doc warnings
+on the similar cases.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+> + * @max:	Maximum linearized scale. As an example, when scale is creted in
 
-pip3 install dtschema --upgrade
+creted?
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+IIRC I already pointed out to the very same mistake in your code in the past
+(sorry, if my memory doesn't serve me well).
+
+> + *		magnitude of NANOs and max scale is 64.1 - The linearized
+> + *		scale is 64 100 000 000.
+> + * @scale:	Linearized scale to compte the gain for.
+> + *
+> + * Return:	(floored) gain corresponding to the scales. -EINVAL if scale
+
+scales? (Plural?)
+
+> + *		is invalid.
+> + */
+
+Same remark to all of the comments.
+
+> +{
+> +	int tmp = 1;
+> +
+> +	if (scale > max || !scale)
+> +		return -EINVAL;
+> +
+> +	if (U64_MAX - max < scale) {
+> +		/* Risk of overflow */
+> +		if (max - scale < scale)
+> +			return 1;
+
+> +		while (max - scale > scale * (u64) tmp)
+
+Space is not required after casting.
+
+> +			tmp++;
+> +
+> +		return tmp + 1;
+
+Wondering why you can't simplify this to
+
+		max -= scale;
+		tmp++;
+
+> +	}
+> +
+> +	while (max > scale * (u64) tmp)
+> +		tmp++;
+> +
+> +	return tmp;
+> +}
+
+Missing blank line.
+
+> +/*
+> + * gain_get_scale_fraction - get the gain or time based on scale and known one
+> + *
+> + * Internal helper for computing unknown fraction of total gain.
+> + * Compute either gain or time based on scale and either the gain or time
+> + * depending on which one is known.
+> + *
+> + * @max:	Maximum linearized scale. As an example, when scale is creted in
+
+creted?
+
+Is it mistakenly stored in your spellcheck database? Or is it simply
+copy'n'paste typo?
+
+> + *		magnitude of NANOs and max scale is 64.1 - The linearized
+> + *		scale is 64 100 000 000.
+> + * @scale:	Linearized scale to compute the gain/time for.
+> + * @known:	Either integration time or gain depending on which one is known
+> + * @unknown:	Pointer to variable where the computed gain/time is stored
+> + *
+> + * Return:	0 on success
+> + */
+
+...
+
+> +static const struct iio_itime_sel_mul *
+> +			iio_gts_find_itime_by_time(struct iio_gts *gts, int time)
+
+Strange indentation.
+
+Ditto for all these types of cases.
+
+...
+
+> +	*lin_scale = (u64) scale_whole * (u64)scaler + (u64)(scale_nano
+> +		     / (NANO / scaler));
+
+Strange indentation. Split on the logical (math) parts better.
+
+...
+
+> +EXPORT_SYMBOL_GPL(iio_init_iio_gts);
+
+I haven't noticed if you put these all exports into a proper namespace.
+If no, please do.
+
+...
+
+> +		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
+> +		     NULL);
+
+One line is okay.
+
+...
+
+> +	all_gains = kcalloc(gts->num_itime * gts->num_hwgain, sizeof(int),
+
+Something from overflow.h is very suitable here.
+
+> +			    GFP_KERNEL);
+> +	if (!all_gains)
+> +		return -ENOMEM;
+
+...
+
+> +	memcpy(all_gains, gains[gts->num_itime - 1], gts->num_hwgain * sizeof(int));
+
+Maybe it's better to have a temporary which will be calculated as array_size()
+for allocation and reused here?
+
+...
+
+> +	for (i = gts->num_itime - 2; i >= 0; i--)
+
+Yeah, if you put this into temporary, like
+
+	i = gts->num_itime - 1;
+
+this becomes
+
+	while (i--) {
+
+Note, you missed {} for better reading.
+
+Note, you may re-use that i (maybe renamed to something better in the memcpy()
+above as well).
+
+> +		for (j = 0; j < gts->num_hwgain; j++) {
+> +			int candidate = gains[i][j];
+> +			int chk;
+> +
+> +			if (candidate > all_gains[new_idx - 1]) {
+> +				all_gains[new_idx] = candidate;
+> +				new_idx++;
+> +
+> +				continue;
+> +			}
+> +			for (chk = 0; chk < new_idx; chk++)
+> +				if (candidate <= all_gains[chk])
+> +					break;
+> +
+> +			if (candidate == all_gains[chk])
+> +				continue;
+> +
+> +			memmove(&all_gains[chk + 1], &all_gains[chk],
+> +				(new_idx - chk) * sizeof(int));
+> +			all_gains[chk] = candidate;
+> +			new_idx++;
+> +		}
+
+...
+
+> +	gts->avail_all_scales_table = kcalloc(gts->num_avail_all_scales,
+> +					      2 * sizeof(int), GFP_KERNEL);
+> +	if (!gts->avail_all_scales_table)
+> +		ret = -ENOMEM;
+> +	else
+> +		for (i = 0; !ret && i < gts->num_avail_all_scales; i++)
+
+Much easier to read if you move this...
+
+> +			ret = iio_gts_total_gain_to_scale(gts, all_gains[i],
+> +					&gts->avail_all_scales_table[i * 2],
+> +					&gts->avail_all_scales_table[i * 2 + 1]);
+
+...here as
+
+		if (ret)
+			break;
+
+> +	kfree(all_gains);
+> +	if (ret && gts->avail_all_scales_table)
+> +		kfree(gts->avail_all_scales_table);
+> +
+> +	return ret;
+
+But Wouldn't be better to use goto labels?
+
+...
+
+> +	while (i) {
+
+Instead of doing standard
+
+	while (i--) {
+
+> +		/*
+> +		 * It does not matter if i'th alloc was not succesfull as
+> +		 * kfree(NULL) is safe.
+> +		 */
+
+You add this comment, ...
+
+> +		kfree(per_time_gains[i]);
+> +		kfree(per_time_scales[i]);
+
+...an additional loop, ...
+
+> +
+> +		i--;
+
+...and a line of code.
+
+> +	}
+
+Why?
+
+> +	for (i = gts->num_itime - 1; i >= 0; i--) {
+
+	i = gts->num_itime;
+
+	while (i--) {
+
+> +		int new = gts->itime_table[i].time_us;
+> +
+> +		if (times[idx] < new) {
+> +			times[idx++] = new;
+> +			continue;
+> +		}
+> +
+> +		for (j = 0; j <= idx; j++) {
+> +			if (times[j] > new) {
+> +				memmove(&times[j + 1], &times[j], (idx - j) * sizeof(int));
+> +				times[j] = new;
+> +				idx++;
+> +			}
+> +		}
+> +	}
+
+...
+
+> +void iio_gts_purge_avail_time_table(struct iio_gts *gts)
+> +{
+> +	if (gts->num_avail_time_tables) {
+
+	if (!...)
+		return;
+
+> +		kfree(gts->avail_time_tables);
+> +		gts->avail_time_tables = NULL;
+> +		gts->num_avail_time_tables = 0;
+> +	}
+> +}
+
+...
+
+> +			if (!diff) {
+
+Why not positive conditional?
+
+			if (diff) {
+				...
+			} else {
+				...
+			}
+
+> +				diff = gain - gts->hwgain_table[i].gain;
+> +				best = i;
+> +			} else {
+> +				int tmp = gain - gts->hwgain_table[i].gain;
+> +
+> +				if (tmp < diff) {
+> +					diff = tmp;
+> +					best = i;
+> +				}
+> +			}
+
+...
+
+> +	ret = gain_get_scale_fraction(gts->max_scale, scale_linear, mul, gain);
+
+> +
+
+Redundant blank line.
+
+> +	if (ret || !iio_gts_valid_gain(gts, *gain))
+
+Why error code is shadowed?
+
+> +		return -EINVAL;
+> +
+
+...
+
+> +	ret = iio_gts_get_scale_linear(gts, old_gain, itime_old->time_us,
+> +				       &scale);
+
+Single line if fine.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = gain_get_scale_fraction(gts->max_scale, scale, itime_new->mul,
+> +				      new_gain);
+
+Ditto.
+
+> +	if (ret)
+> +		return -EINVAL;
+
+...
+
+> +#ifndef __GAIN_TIME_SCALE_HELPER__
+> +#define __GAIN_TIME_SCALE_HELPER__
+
+__IIO_... ?
+
+Missing types.h (at least, haven't checked for more).
+
+Missing some forward declarations, at least for struct device.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

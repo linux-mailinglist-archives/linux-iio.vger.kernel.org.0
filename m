@@ -2,243 +2,266 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 913D16A7C08
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 08:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 825026A807E
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 11:57:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbjCBHtj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 02:49:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60362 "EHLO
+        id S229518AbjCBK5R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 05:57:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjCBHti (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 02:49:38 -0500
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on0610.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0d::610])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BEE144A0;
-        Wed,  1 Mar 2023 23:49:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mCXq3Cf9k0Ce3JPZWz0/xQySZaJrcRRMUE7tdtvUEAk=;
- b=mCsq1CKO1j719a9eQr4Oebxt24GX99+8n9iHrKW19gIo7XUo2kWempTnpoGFN7S7XiaCCZR6OxWin2+OE4EQAYdepvZkkvvBF0qTK9P2UnA3SAnXu5JZzqfwqD3CyxqyuGCVrE1dyATlKF66bIw2sWQJ2CwgltT229tdYlNfVPm6IQTgT5eYdDDN5+a3WEDr7+nOV98mPzk/gNogorRVyBtBJ5N+iYq/oRbI9i7ZLDrfJRjo1A6/SkCFeuzYHMAxC9ve0Zmapr7iO2CtqHAKDA9wZZzuQCcwfAKFWDxUgPogCLvd9YIXOxsegsif59nQNX4cSWVMGK4Hpc+3nMU1vA==
-Received: from DB6PR0802CA0046.eurprd08.prod.outlook.com (2603:10a6:4:a3::32)
- by VE1PR04MB7213.eurprd04.prod.outlook.com (2603:10a6:800:1b3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.17; Thu, 2 Mar
- 2023 07:49:29 +0000
-Received: from DB5EUR01FT101.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:4:a3:cafe::5f) by DB6PR0802CA0046.outlook.office365.com
- (2603:10a6:4:a3::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.18 via Frontend
- Transport; Thu, 2 Mar 2023 07:49:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 13.93.42.39)
- smtp.mailfrom=topicproducts.com; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=topic.nl;
-Received-SPF: Pass (protection.outlook.com: domain of topicproducts.com
- designates 13.93.42.39 as permitted sender) receiver=protection.outlook.com;
- client-ip=13.93.42.39; helo=westeu12-emailsignatures-cloud.codetwo.com; pr=C
-Received: from westeu12-emailsignatures-cloud.codetwo.com (13.93.42.39) by
- DB5EUR01FT101.mail.protection.outlook.com (10.152.5.163) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6156.18 via Frontend Transport; Thu, 2 Mar 2023 07:49:28 +0000
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (104.47.18.108) by westeu12-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Thu, 02 Mar 2023 07:49:27 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ElOzymMxFAVQWjlwgm1bYA4ePOMw6Rkpg4tKPXMj50rq3vVnvccD+cc20mAxp7OTxqpeWcaOAMMslx6iqXVeqEkPJVjSYv5621tlxnc+U8g2kmKSzgIt8L7N/uSYT/iokKOEGobzK5Oo+pMTVw01D0oYVuid+B9HC1s3qbrAg0ZqPTqyBiON8muaYAC5QAcRAMjGv2UCPsIjF/zczrwHA3yBhAJIrW5vHsH/D6rxCw+S6zqveoRd/lZQHUL1I51dUHcsAxzKDSu4z+FCIMHZEuaL1keEC8rrWO8jg/DifNIeLIOu6nhij+bYZpC4ogfKrE1eAjG825lOR5WmnJoryQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j6BHd7qNe9fNXKzhbVcZgSnkTVbxHoJWYS4dhiSOs2w=;
- b=C5qRvfMruzktvpUsgOIXTH3P+HW5CIuCIqQ1Z5nqFqIJJ12IT7UzjvZcQPGgRA9f8ra5gMckwKuZ0mBNZAq/oVnEMqEHw8HX8YuHRpQRhKEgk5NN/KukZW2+eqccne0E1TmkZjvXQWYJDjLoQ27mrZK2y/sbtViX8G9l1edapxvapYdJznuLO4X90yu+3L5Tz8eVPNNtLpUAyRJeGmFszkrM5KU4uHTDWrpT+kf700GKmYt+00PTaALlYQ29cyTjrsFnXk88VmTzjysRVcJAwcJig+ih8BY3Rzr+ghD89XOduE4EpVIJ23iVKj7yUmU0AdXH+7kb/2i51NLFgpt6xQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=topicproducts.com; dmarc=pass action=none header.from=topic.nl;
- dkim=pass header.d=topic.nl; arc=none
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=topic.nl;
-Received: from DB8PR04MB6523.eurprd04.prod.outlook.com (2603:10a6:10:10f::26)
- by DB8PR04MB6969.eurprd04.prod.outlook.com (2603:10a6:10:11b::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.18; Thu, 2 Mar
- 2023 07:49:24 +0000
-Received: from DB8PR04MB6523.eurprd04.prod.outlook.com
- ([fe80::a7e7:768:5a54:777a]) by DB8PR04MB6523.eurprd04.prod.outlook.com
- ([fe80::a7e7:768:5a54:777a%7]) with mapi id 15.20.6156.017; Thu, 2 Mar 2023
- 07:49:24 +0000
-Message-ID: <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
-Date:   Thu, 2 Mar 2023 08:49:22 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-From:   Mike Looijmans <mike.looijmans@topic.nl>
-Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        with ESMTP id S229453AbjCBK5P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 05:57:15 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6303B85C;
+        Thu,  2 Mar 2023 02:57:13 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id g17so21589985lfv.4;
+        Thu, 02 Mar 2023 02:57:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=114/eZ9RurCaJ96ZbeIJgkIFNcEUDovf0vgvTRES6yc=;
+        b=Djeqvjo7F+aAexdTvuqhIDJ5ZoS2BlZAVwhKtwg8c9g3nmUsgpT0z+g0sSvYrHPycr
+         kkcbg6yRi8NXYL+zfVpajCkAkFkwUaCnAbmSWoelKsQ+KdFvQD7UNFLuXLATuR5zG33y
+         6wASyBikydL9aSuCPFx52CpjL+bBOlPIT8K/sqlM/BAI0l3TWhFLEZtUdJej2hfmziMk
+         liQ7qq3PUVgqK8P6XDWVtn/MSoV6iRbmzNsB7YR09BsKCer06/MUhZfVsq2EBdJFmuws
+         iCeUiQblRvT6kixvBrT0Pt+i3IUi5eWx0A/CUtA8AMLubH7KHjKJ4qq2edv8WAyVNxZc
+         fLtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=114/eZ9RurCaJ96ZbeIJgkIFNcEUDovf0vgvTRES6yc=;
+        b=impHFW5KjXBVLc8CEy6nFtJ5NS8WWYApfL9hsocqZuQ+L/ROmQeBKVSjEEVrBW/kDZ
+         D+QliTVI8lGkDew0mxrEwnJ8Ujo+o2viioi9fP2vmjoi99g/iwFgZg+gEcV+wVrs3aOr
+         2mWt+Oh0ScXl7TmV4XBoLy2/vvRZ+90Q9Mms4c1K3ideocR5SsEOkQSW7T2DPqYK5Vgn
+         hnb796uBXKBOvHu7y+g9RfZj/4V8Q3gLibAtPnRaPKtatDGcxSHbvVST2ujA3ZZ5LLPa
+         0TzZDIXXdNLXyGadoqvNhSy8iOIg2pjaAf2aLcyPF7YhpWBCWqSguYOzcMrGcyTkg+9b
+         zLAA==
+X-Gm-Message-State: AO0yUKWMrfkqXhbkIrxNnIFqLP55W6Q1CkQXnTPr9EgfaK/6LEDNmX6O
+        E56xtQHM30bsFFq2u+Rze08=
+X-Google-Smtp-Source: AK7set8S4IYy7w/DA72nwtLwQoCQjN+uXuMz+xZHSIyd5c3FxTxfKLNQbc/rOZFVtutpMYdFiXlfag==
+X-Received: by 2002:ac2:43b1:0:b0:4db:513f:fe2a with SMTP id t17-20020ac243b1000000b004db513ffe2amr2614576lfl.23.1677754631846;
+        Thu, 02 Mar 2023 02:57:11 -0800 (PST)
+Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id d5-20020ac244c5000000b004dc6070e121sm2078908lfm.83.2023.03.02.02.57.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Mar 2023 02:57:11 -0800 (PST)
+Date:   Thu, 2 Mar 2023 12:57:01 +0200
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
+        devicetree@vger.kernel.org, Zhigang Shi <Zhigang.Shi@liteon.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-References: <20230228063151.17598-1-mike.looijmans@topic.nl>
- <20230228063151.17598-2-mike.looijmans@topic.nl>
- <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0685d97e-4a28-499e-a9e3-3bafec126832@emailsignatures365.codetwo.com>
-Content-Language: en-US
-Organization: Topic
-In-Reply-To: <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: AM0PR10CA0120.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:e6::37) To DB8PR04MB6523.eurprd04.prod.outlook.com
- (2603:10a6:10:10f::26)
+        Paul Gazzillo <paul@pgazz.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Liam Beguin <liambeguin@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 0/6] Support ROHM BU27034 ALS sensor
+Message-ID: <cover.1677750859.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic: DB8PR04MB6523:EE_|DB8PR04MB6969:EE_|DB5EUR01FT101:EE_|VE1PR04MB7213:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea98b925-1dce-4ea8-6674-08db1af2a6d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: S09X1kmNgeeCi3DqTT9/Mk7NwprbsZcmOAEtbe2ZzagrhppDohhmeQTNtnMptIWLeH9nPqOhDvhnKAKLXLi+L2SWi+h6wr9ovWtR70kHMRCeAl6LAK31xut9LYkai/OhIlG6zQbDJFuUtLQzC9bxhWOxd6iTIjJZooGlv1rQYeXZrnZ2i7iI2qyZLfJ28RNENwXONGk6v5kxbjWVLTN21dvjrTMyfiPuIMdORBrNzhxFip0iT4AgkgpYyNXXCEngAscRRNNU0iwX21yvZyUbZ/ncthfSeLPmC5j1Lpbw38d4uN/8psARnasRppK9HAHfvB6LomOCmKON7TTuP3qCiVOHySuS3gXs0hCZiMaNQO63vhE3qolcihXbcZxfU8oS+61Q1KADceGr4rWQI2tNTXuvQiXaGVZmxM/SPOIzTFsUcq9wWLZFcGFiEtNzhqmdUR1dcvbEbta5uHDA7FFHQC92qbOFE2ArWuKU24sVeH7DE1/8d9aos8vNyf/jrN7vf/a8Ih7HF4SX14Itmb0aNswBFrBdd7BZVrG7CSsVNTtuENLQhIx6nfiQjYST6fYGyzW2k+kts1Xw1eX9RLMGII3LlIm2cP43ZEsjod1DgzTOh8CiJUSVLjVM31vBxfFApm9a7VAoVSRg1MAHvfhNxKux7Or8qHLf0DJX65QffjYFUdwEoPZmpN2JeZ3eVPAqVVyD0l/iusvzkeB7TWJh1e0tOhzzEwpb4znA7v1VFCpf4UnsxwGw+4DnekNYL/D8Vz3ljb1g9xLyMU0toMZxkw==
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6523.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(346002)(376002)(39840400004)(396003)(366004)(451199018)(36756003)(53546011)(4326008)(6512007)(6506007)(6486002)(2616005)(42882007)(26005)(186003)(41300700001)(52116002)(54906003)(316002)(66556008)(66946007)(8676002)(36916002)(44832011)(2906002)(6916009)(478600001)(8936002)(5660300002)(7416002)(38350700002)(31696002)(83170400001)(83380400001)(66476007)(38100700002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6969
-X-CodeTwo-MessageID: f30e88b5-1d77-4b2c-b498-93f30e2cfcb9.20230302074927@westeu12-emailsignatures-cloud.codetwo.com
-X-CodeTwoProcessed: true
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: DB5EUR01FT101.eop-EUR01.prod.protection.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 08161c04-fde7-48e6-1f3a-08db1af2a3fe
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OMBFLFBkUfem31sUozTiyyHG4IzMeMDzX0XuOchyKnsZMZ+kNqGnjdljzY3+XKPZqCP8YYhGDfpad0kdVd6NK1UZQ53JyMrq4jB8f51VpNyD29VBAYeeQXQDqSdw5MsyyThRb0UfQgIfm8Otl0o1U6X+LdGfhSllCi7ETRT5Ir29kLNazKNHXcpnCbXxVtTig9CVFdflCdXBzAlWvWdZU8jjEUOkXTOgKTqp8AS2/lzoyAvsoxZfp/IfxOV9z2VKxr2SO6kF/3DjeK0MDcWKnM1mhikGJ+QOHKDeHrHpLElGCI3QPQVh9oBoQXnHYI32b3XTzfnFAbyvqc0y/49IUYE5tXrtFuS8Gvrsi3+AC2OI38wZzFbWAbU/oqUO0pfDVCpvkZBxL5Lb3JTMVeyP1qoQjnX+6ouAKxzVDW0srhbhXK1OxB4BsSbYa1b767B1Vxfs7YivjSROtqmGpEbUKhoCI/8fJadtxoEUIjHU9Njh+inn7SnpfzHhXPKLzRVUmcLyp1gsVVgtAD4ATJGNrcSn7n8ks+xpULVyFjujBuwjVOht54vM+I460T8Jykenfv+j2P7DvtbHAKIgT9WTNt3q+LR/w6msA0uUmbnOJvpwCfv+RH1kvEyRKTpWk9amHD5IoPJP5Y59bdgFng03ODqQdLCGj4cEvSpAGjAXRXdRQ3Z5VCttB6l0GT4Z58on
-X-Forefront-Antispam-Report: CIP:13.93.42.39;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu12-emailsignatures-cloud.codetwo.com;PTR:westeu12-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230025)(4636009)(346002)(376002)(39840400004)(396003)(136003)(451199018)(36840700001)(46966006)(44832011)(7416002)(6916009)(4326008)(26005)(186003)(53546011)(6506007)(8676002)(7596003)(31686004)(5660300002)(70206006)(7636003)(478600001)(2906002)(70586007)(8936002)(82310400005)(36916002)(6486002)(54906003)(36756003)(15974865002)(6512007)(40480700001)(2616005)(316002)(31696002)(336012)(47076005)(83170400001)(356005)(83380400001)(41300700001)(42882007)(36860700001)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: topic.nl
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2023 07:49:28.3459
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea98b925-1dce-4ea8-6674-08db1af2a6d2
-X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[13.93.42.39];Helo=[westeu12-emailsignatures-cloud.codetwo.com]
-X-MS-Exchange-CrossTenant-AuthSource: DB5EUR01FT101.eop-EUR01.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7213
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="+FKPgEu2XZ2mxmSf"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Comments below. Mailserver has a top-post fetish and will inject a=20
-signature here somewhere...
 
-No further comment from me means "agree, will implement in v4"...
+--+FKPgEu2XZ2mxmSf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Support ROHM BU27034 ALS sensor
+
+This series adds support for ROHM BU27034 Ambient Light Sensor.
+
+The BU27034 has configurable gain and measurement (integration) time
+settings. Both of these have inversely proportional relation to the
+sensor's intensity channel scale.
+
+Many users only set the scale, which means that many drivers attempt to
+'guess' the best gain+time combination to meet the scale. Usually this
+is the biggest integration time which allows setting the requested
+scale. Typically, increasing the integration time has better accuracy
+than increasing the gain, which often amplifies the noise as well as the
+real signal.
+
+However, there may be cases where more responsive sensors are needed.
+So, in some cases the longest integration times may not be what the user
+prefers. The driver has no way of knowing this.
+
+Hence, the approach taken by this series is to allow user to set both
+the scale and the integration time with following logic:
+
+1. When scale is set, the existing integration time is tried to be
+   maintained as a first priority.
+   1a) If the requested scale can't be met by current time, then also
+       other time + gain combinations are searched. If scale can be met
+       by some other integration time, then the new time may be applied.
+       If the time setting is common for all channels, then also other
+       channels must be able to maintain their scale with this new time
+       (by changing their gain). The new times are scanned in the order
+       of preference (typically the longest times first).
+   1b) If the requested scale can be met using current time, then only
+       the gain for the channel is changed.
+
+2. When the integration time change - scale is tried to be maintained.
+   When integration time change is requested also gain for all impacted
+   channels is adjusted so that the scale is not changed, or is chaned
+   as little as possible. This is different from the RFCv1 where the
+   request was rejected if suitable gain couldn't be found for some
+   channel(s).
+
+This logic is simple. When total gain (either caused by time or hw-gain)
+is doubled, the scale gets halved. Also, the supported times are given a
+'multiplier' value which tells how much they increase the total gain.
+
+However, when I wrote this logic in bu27034 driver, I made quite a few
+errors on the way - and driver got pretty big. As I am writing drivers
+for two other sensors (RGB C/IR + flicker BU27010 and RGB C/IR BU27008)
+with similar gain-time-scale logic I thought that adding common helpers
+for these computations might be wise. I hope this way all the bugs will
+be concentrated in one place and not in every individual driver ;)
+
+Hence, this series also intriduces IIO gain-time-scale helpers
+(abbreviated as gts-helpers) + a couple of KUnit tests for the most
+hairy parts.
+
+I can't help thinking that there should've been simpler way of computing
+the gain-time-scale conversions. Also, pretty good speed improvements
+might be available if some of the do_div()s could be replaced by >>.
+This, however, is not a priority for my light-sensor use-case where
+speed demands are not that big.
+
+Finally, these added helpers do provide some value also for drivers
+which only:
+ a) allow gain change
+  or
+ b) allow changing both the time and gain but so that the time-change is
+    not reflected in register values.
+
+For a) we provide the gain - selector (register value) table format +
+selector to gain look-ups, gain <-> scale conversions and the available
+scales helpers.
+
+For latter case we also provide the time-tables, and actually all the
+APIs should be usable by setting the time multiplier to 1. (not testeted
+thoroughly though).
+
+Revision history:
+RFCv1 =3D> v2:
+  dt-bindings:
+	- Fix binding file name and id by using comma instead of a hyphen to
+	  separate the vendor and part names.
+  gts-helpers:
+	- fix include guardian
+	- Improve kernel doc for iio_init_iio_gts.
+	- Add iio_gts_scale_to_total_gain
+	- Add iio_gts_total_gain_to_scale
+	- Fix review comments from Jonathan
+	  - add documentation to few functions
+	  - replace 0xffffffffffffffffLLU by U64_MAX
+	  - some styling fixes
+	  - drop unnecessary NULL checks
+	  - order function arguments by  in / out purpose
+	  - drop GAIN_SCALE_ITIME_MS()
+	- Add helpers for available scales and times
+	- Rename to iio-gts-helpers
+  gts-tests:
+	- add tests for available scales/times helpers
+	- adapt to renamed iio-gts-helpers.h header
+  bu27034-driver:
+	- (really) protect read-only registers
+	- fix get and set gain
+	- buffered mode
+	- Protect the whole sequences including meas_en/meas_dis to avoid messing
+	  up the enable / disable order
+	- typofixes / doc improvements
+	- change dropped GAIN_SCALE_ITIME_MS() to GAIN_SCALE_ITIME_US()
+	- use more accurate scale for lux channel (milli lux)
+	- provide available scales / integration times (using helpers).
+	- adapt to renamed iio-gts-helpers.h file
+	- bu27034 - longer lines in Kconfig
+	- Drop bu27034_meas_en and bu27034_meas_dis wrappers.
+	- Change device-name from bu27034-als to bu27034
+  MAINTAINERS:
+	- Add iio-list
+
+---
+
+Matti Vaittinen (6):
+  dt-bindings: iio: light: Support ROHM BU27034
+  iio: light: Add gain-time-scale helpers
+  iio: test: test gain-time-scale helpers
+  MAINTAINERS: Add IIO gain-time-scale helpers
+  iio: light: ROHM BU27034 Ambient Light Sensor
+  MAINTAINERS: Add ROHM BU27034
+
+ .../bindings/iio/light/rohm,bu27034.yaml      |   46 +
+ MAINTAINERS                                   |   14 +
+ drivers/iio/light/Kconfig                     |   15 +
+ drivers/iio/light/Makefile                    |    2 +
+ drivers/iio/light/iio-gts-helper.c            | 1152 +++++++++++++
+ drivers/iio/light/iio-gts-helper.h            |  130 ++
+ drivers/iio/light/rohm-bu27034.c              | 1491 +++++++++++++++++
+ drivers/iio/test/Kconfig                      |   15 +
+ drivers/iio/test/Makefile                     |    1 +
+ drivers/iio/test/iio-test-gts.c               |  537 ++++++
+ 10 files changed, 3403 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu2703=
+4.yaml
+ create mode 100644 drivers/iio/light/iio-gts-helper.c
+ create mode 100644 drivers/iio/light/iio-gts-helper.h
+ create mode 100644 drivers/iio/light/rohm-bu27034.c
+ create mode 100644 drivers/iio/test/iio-test-gts.c
 
 
-
-Met vriendelijke groet / kind regards,=0A=
-=0A=
-Mike Looijmans=0A=
-System Expert=0A=
-=0A=
-=0A=
-TOPIC Embedded Products B.V.=0A=
-Materiaalweg 4, 5681 RJ Best=0A=
-The Netherlands=0A=
-=0A=
-T: +31 (0) 499 33 69 69=0A=
-E: mike.looijmans@topicproducts.com=0A=
-W: www.topic.nl=0A=
-=0A=
-Please consider the environment before printing this e-mail=0A=
-On 01-03-2023 16:30, Andy Shevchenko wrote:
-> On Tue, Feb 28, 2023 at 07:31:51AM +0100, Mike Looijmans wrote:
->> The ADS1100 is a 16-bit ADC (at 8 samples per second).
->> The ADS1000 is similar, but has a fixed data rate.
-> ...
->
->> +	/* Shift result to compensate for bit resolution vs. sample rate */
->> +	value <<=3D 16 - ads1100_data_bits(data);
->> +	*val =3D sign_extend32(value, 15);
-> Why not simply
->
-> 	*val =3D sign_extend32(value, ads1100_data_bits(data) - 1);
->
-> ?
-
-As discussed with=C2=A0 Jonathan Cameron, the register is right-justified a=
-nd=20
-the number of bits depend on the data rate. Rather than having the=20
-"scale" change when the sample rate changes, we chose to adjust the=20
-sample result so it's always left-justified.
-
-
->> +	/* Calculate: gain =3D ((microvolts / 1000) / (val2 / 1000000)) >> 15 =
-*/
-> Can you use more math / plain English to describe the formula? Otherwise =
-we can
-> see the very same in the code and point of the comment is doubtful.
-
-I'll try to explain it better.
-
-
->
->> +	gain =3D ((microvolts + BIT(14)) >> 15) * 1000 / val2;
-> Something from units.h?
-
-Could put MILLI here, but I doubt if that improves things. Its actually=20
-MICRO/(MICRO/MILLI) given the explanation above... Not helping much...
-
-
-> ...
->
->> +	for (i =3D 0; i < 4; i++) {
->> +		if (BIT(i) =3D=3D gain) {
-> ffs()/__ffs() (look at the documentation for the difference and use prope=
-r one).
-
-Thought of it, but I'd rather have it return EINVAL for attempting to=20
-set the analog gain to "7" (0nly 1,2,4,8 allowed).
-
-
-> ...
->> +	for (i =3D 0; i < size; ++i) {
-> Why pre-increment?
-
-Spent too much time with other coding guidelines, missed this one...=20
-Will change.
-
-
->
-> ...
->
->> +	int millivolts =3D regulator_get_voltage(data->reg_vdd) / 1000;
-> units.h?
-
-Should I write:
-
-regulator_get_voltage(data->reg_vdd) / (MICROS / MILLIS);
-
-I doubt that improves readability.
-
-> ...
-> ...
->
->> +static int ads1100_runtime_suspend(struct device *dev)
->> +{
->> +	struct iio_dev *indio_dev =3D i2c_get_clientdata(to_i2c_client(dev));
->> +	struct ads1100_data *data =3D iio_priv(indio_dev);
->> +
->> +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
->> +	regulator_disable(data->reg_vdd);
-> Wrong devm / non-devm ordering.
-
-Don't understand your remark, can you explain further please?
-
-devm / non-devm ordering would be related to the "probe" function. As=20
-far as I can tell, I'm not allocating resources after the devm calls.=20
-And the "remove" is empty.
-
+base-commit: c9c3395d5e3dcc6daee66c6908354d47bf98cb0c
+--=20
+2.39.2
 
 
 --=20
-Mike Looijmans
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--+FKPgEu2XZ2mxmSf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQAgPkACgkQeFA3/03a
+ocXv0wgAoXR7inbGUSxNdPMriLZMHLzBYOJUuubMDTZgJeYgMZCKYJ0SvJSsJ+wi
+E86fi7CWs0rwXUnvr/f1Gt5XTOvUjzMTowAJHsqqDzdmYD86cywbSSZ0lHkGlK+G
+Y7zTzmxWMUww+VYhYGQhJO1tOgWymHC7GX8NNi+9q6EkbL97AptqzmW4qd8TRrZC
+2tSTJgodUiHEBQM9kQ4Sp5PsrRL24S2syGCXAXAAR1XtfyqkXDr7mofc3pwEU7rS
+XXYyLzUgMwT9s+G8s9fNWPyaoRj10iM96AXAVtY+MGnBXub+RNRe0pX9eJsy9wKJ
+0i/tEKY2nUsR9gTkYM7wnbc532yRAw==
+=xCO+
+-----END PGP SIGNATURE-----
+
+--+FKPgEu2XZ2mxmSf--

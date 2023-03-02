@@ -2,421 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9190C6A8337
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 14:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9053F6A8350
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 14:17:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbjCBNFm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 08:05:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37454 "EHLO
+        id S229737AbjCBNRK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 08:17:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230007AbjCBNFl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 08:05:41 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D67536FFB;
-        Thu,  2 Mar 2023 05:05:38 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id g3so11830091eda.1;
-        Thu, 02 Mar 2023 05:05:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gyOazVhvz6WefZ2pFKJ+bCWZWTrgwzVFjWHxe+hRwjo=;
-        b=Uz3ATVtVgQuo8c13OQli1KBxNLp7mG8IfocOwvvxR3wHjTbN3x+/IoHDTR1zwhFmoU
-         RUq2QaZUrzLnIwyOuihZgaB5pE62qnRxl7Nwjg67n5km4Y9P+cnsWKGuCcqlq6jzL7/Y
-         uhrQMhFtj5C5Gt9Kg2wTBfrk9cqrDotGfgZSovDA0iwHkRPsnLv2I1COH31mHPfTDn6y
-         kj5ov1fhBE87U6Dn4KgMzb1hl0pQ7DezhDmm+eMt5LW6qioDC4zf+OrQcAoDD7udqk5c
-         lnpNWDFW8hdb+ShwBefOpeum1Pgok22SRJnK4ho/nqG+v+28coaqYeqIF0JfurDTH7jI
-         dfFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gyOazVhvz6WefZ2pFKJ+bCWZWTrgwzVFjWHxe+hRwjo=;
-        b=TkEzmkh3rcT49b62UcoX3hej/4bBFgVC3mm9HIAslCHyjauIYi05ajq1taUTxnSuwm
-         1AH8mfWSxbXzowlPa6zTFcSJHPw1nmW0DXxGgdJkio4Oe4ZZIcAzYZMqw7LhkZ+eLblq
-         R5Pr+s1A8bReUIVnjgmHIcf7cdtaftJKtoGmi09su7G7uLOzZBJDvPqRV9XBbqXgzh2A
-         QUsRxgykNDKc4ebNaLm2SSIKjbov5LZ+o1rDl2jvjYmiiOiMm6mxHq9Bc7L2t5d6BT4N
-         Ft5SUedYhTP0Rx8Id+VttjqoFA3b7hd1urwoG96QoM4/0avQ2GnHRixVWbUhZnJrwZCv
-         By8Q==
-X-Gm-Message-State: AO0yUKXed3dRQjH7sIrGKKd0Y86XneB5tSLZXlFjZTy9xh3DNzUjupTR
-        ZB2Yr5+UhCjS1Jmxk3qL/6bEGOwzj2Y=
-X-Google-Smtp-Source: AK7set/1LprXy12n5mT9h1Hn2VVF+Azx8VYSTRsODtbrmfyBYvE1YbKKziylzPLDO3VXafX0EcujYw==
-X-Received: by 2002:aa7:da81:0:b0:4aa:a280:55b5 with SMTP id q1-20020aa7da81000000b004aaa28055b5mr1842522eds.20.1677762337719;
-        Thu, 02 Mar 2023 05:05:37 -0800 (PST)
-Received: from carbian.corp.quobyte.com ([2a02:8109:aa3f:ead8::dc02])
-        by smtp.gmail.com with ESMTPSA id u7-20020a50d507000000b004af759bc79asm6932903edi.7.2023.03.02.05.05.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 05:05:37 -0800 (PST)
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     jic23@kernel.org, lars@metafoo.de,
-        andriy.shevchenko@linux.intel.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mehdi Djait <mehdi.djait.k@gmail.com>
-Subject: [PATCH v2 2/2] iio: Rename iio_trigger_poll_chained and add kernel-doc
-Date:   Thu,  2 Mar 2023 14:04:36 +0100
-Message-Id: <841b533cba28ca25a8e87280c44e45979166e8e2.1677761379.git.mehdi.djait.k@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1677761379.git.mehdi.djait.k@gmail.com>
-References: <cover.1677761379.git.mehdi.djait.k@gmail.com>
+        with ESMTP id S229523AbjCBNRK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 08:17:10 -0500
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C8338B46;
+        Thu,  2 Mar 2023 05:17:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=OSGo8od9/vvLzXzkl3lpRBXCnyJUu3KOtGdrSgduc+I=; b=lXFObTFlAUfcMFAcgGY34eRrdX
+        SK1qEVmYwzNAUCKZu/71M5QpprxdunY2xknX0+PPyymLmylKPHTM66CleDxT1E3pJ3nyrR0xqr/wW
+        JvBZV0+B+vm+DHGOynXAbf1Na1sRw0YdYM5EXmReRY5EWloctuiMnffnQsnYnrOB6OvltLWqNgQSS
+        2uFfhjxxQENtGpyf8r1+TwhuwIzHR8mZlhX5cnqN6x8+IuK8dwnTcbaV5h+qJjj/bcqhIvcEAYDTu
+        Q4PS6AlG3BsoqqJRui+63lAzCgPadUGrlV9v+vx5gNm2WoilGojhXT6WAHGOXPoqKlNO/u6Q4SUH2
+        YlfzGK7g==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pXins-000MgE-9B; Thu, 02 Mar 2023 14:17:00 +0100
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pXinr-000C9C-Ou; Thu, 02 Mar 2023 14:16:59 +0100
+Message-ID: <87bc192e-45ae-9480-5e84-8fe0adfc12e7@metafoo.de>
+Date:   Thu, 2 Mar 2023 05:16:54 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
+Content-Language: en-US
+To:     Mike Looijmans <mike.looijmans@topic.nl>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-kernel@vger.kernel.org
+References: <20230228063151.17598-1-mike.looijmans@topic.nl>
+ <20230228063151.17598-2-mike.looijmans@topic.nl>
+ <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
+ <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0685d97e-4a28-499e-a9e3-3bafec126832@emailsignatures365.codetwo.com>
+ <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26828/Thu Mar  2 07:36:42 2023)
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Rename the function to iio_trigger_poll_nested.
-Add kernel-doc with a note on the context where the
-function is expected to be called.
+On 3/1/23 23:49, Mike Looijmans wrote:
+>
+>
+>> ...
+>> ...
+>>
+>>> +static int ads1100_runtime_suspend(struct device *dev)
+>>> +{
+>>> +    struct iio_dev *indio_dev = 
+>>> i2c_get_clientdata(to_i2c_client(dev));
+>>> +    struct ads1100_data *data = iio_priv(indio_dev);
+>>> +
+>>> +    ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
+>>> +    regulator_disable(data->reg_vdd);
+>> Wrong devm / non-devm ordering.
+>
+> Don't understand your remark, can you explain further please?
+>
+> devm / non-devm ordering would be related to the "probe" function. As 
+> far as I can tell, I'm not allocating resources after the devm calls. 
+> And the "remove" is empty.
 
-Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
----
-v2:
-- no changes
+Strictly speaking we need to unregister the IIO device before disabling 
+the regulator, otherwise there is a small window where the IIO device 
+still exists, but doesn't work anymore. This is a very theoretical 
+scenario though.
 
- drivers/iio/accel/bma400_core.c                    |  2 +-
- drivers/iio/accel/kionix-kx022a.c                  |  2 +-
- drivers/iio/accel/mma8452.c                        |  2 +-
- drivers/iio/accel/msa311.c                         |  2 +-
- drivers/iio/adc/ad7606.c                           |  2 +-
- drivers/iio/adc/at91-sama5d2_adc.c                 |  2 +-
- drivers/iio/adc/max11410.c                         |  2 +-
- drivers/iio/common/st_sensors/st_sensors_trigger.c |  4 ++--
- drivers/iio/gyro/fxas21002c_core.c                 |  2 +-
- drivers/iio/gyro/mpu3050-core.c                    |  2 +-
- drivers/iio/humidity/hts221_buffer.c               |  2 +-
- drivers/iio/industrialio-trigger.c                 | 12 ++++++++++--
- drivers/iio/light/acpi-als.c                       |  2 +-
- drivers/iio/light/rpr0521.c                        |  2 +-
- drivers/iio/light/st_uvis25_core.c                 |  2 +-
- drivers/iio/light/vcnl4000.c                       |  2 +-
- drivers/iio/light/vcnl4035.c                       |  2 +-
- drivers/iio/potentiostat/lmp91000.c                |  2 +-
- drivers/iio/pressure/zpa2326.c                     |  2 +-
- drivers/iio/proximity/as3935.c                     |  2 +-
- drivers/iio/trigger/iio-trig-loop.c                |  2 +-
- include/linux/iio/trigger.h                        |  2 +-
- 22 files changed, 32 insertions(+), 24 deletions(-)
+You are lucky :) There is a new function 
+`devm_regulator_get_enable()`[1], which will manage the 
+regulator_disable() for you. Using that will also reduce the boilerplate 
+in `probe()` a bit
 
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index b612d0146d4d..0b78248596bc 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -1709,7 +1709,7 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
- 
- 	if (FIELD_GET(BMA400_INT_DRDY_MSK, le16_to_cpu(data->status))) {
- 		mutex_unlock(&data->mutex);
--		iio_trigger_poll_chained(data->trig);
-+		iio_trigger_poll_nested(data->trig);
- 		return IRQ_HANDLED;
- 	}
- 
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-index 1c3a72380fb8..6fc490a60e81 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -900,7 +900,7 @@ static irqreturn_t kx022a_irq_thread_handler(int irq, void *private)
- 	mutex_lock(&data->mutex);
- 
- 	if (data->trigger_enabled) {
--		iio_trigger_poll_chained(data->trig);
-+		iio_trigger_poll_nested(data->trig);
- 		ret = IRQ_HANDLED;
- 	}
- 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index f97fb68e3a71..ea14e3aaa30a 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1067,7 +1067,7 @@ static irqreturn_t mma8452_interrupt(int irq, void *p)
- 		return IRQ_NONE;
- 
- 	if (src & MMA8452_INT_DRDY) {
--		iio_trigger_poll_chained(indio_dev->trig);
-+		iio_trigger_poll_nested(indio_dev->trig);
- 		ret = IRQ_HANDLED;
- 	}
- 
-diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
-index af94d3adf6d8..6690fa37da8f 100644
---- a/drivers/iio/accel/msa311.c
-+++ b/drivers/iio/accel/msa311.c
-@@ -951,7 +951,7 @@ static irqreturn_t msa311_irq_thread(int irq, void *p)
- 	}
- 
- 	if (new_data_int_enabled)
--		iio_trigger_poll_chained(msa311->new_data_trig);
-+		iio_trigger_poll_nested(msa311->new_data_trig);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index dd6b603f65ea..1928d9ae5bcf 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -477,7 +477,7 @@ static irqreturn_t ad7606_interrupt(int irq, void *dev_id)
- 
- 	if (iio_buffer_enabled(indio_dev)) {
- 		gpiod_set_value(st->gpio_convst, 0);
--		iio_trigger_poll_chained(st->trig);
-+		iio_trigger_poll_nested(st->trig);
- 	} else {
- 		complete(&st->completion);
- 	}
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index ed4f8501bda8..f155609f1141 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1194,7 +1194,7 @@ static void at91_dma_buffer_done(void *data)
- {
- 	struct iio_dev *indio_dev = data;
- 
--	iio_trigger_poll_chained(indio_dev->trig);
-+	iio_trigger_poll_nested(indio_dev->trig);
- }
- 
- static int at91_adc_dma_start(struct iio_dev *indio_dev)
-diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
-index fdc9f03135b5..7acb2d0359d2 100644
---- a/drivers/iio/adc/max11410.c
-+++ b/drivers/iio/adc/max11410.c
-@@ -677,7 +677,7 @@ static irqreturn_t max11410_interrupt(int irq, void *dev_id)
- 	struct max11410_state *st = iio_priv(indio_dev);
- 
- 	if (iio_buffer_enabled(indio_dev))
--		iio_trigger_poll_chained(st->trig);
-+		iio_trigger_poll_nested(st->trig);
- 	else
- 		complete(&st->completion);
- 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 899b640c0a70..a0df9250a69f 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -85,7 +85,7 @@ static irqreturn_t st_sensors_irq_thread(int irq, void *p)
- 	 */
- 	if (sdata->hw_irq_trigger &&
- 	    st_sensors_new_samples_available(indio_dev, sdata)) {
--		iio_trigger_poll_chained(p);
-+		iio_trigger_poll_nested(p);
- 	} else {
- 		dev_dbg(indio_dev->dev.parent, "spurious IRQ\n");
- 		return IRQ_NONE;
-@@ -110,7 +110,7 @@ static irqreturn_t st_sensors_irq_thread(int irq, void *p)
- 		dev_dbg(indio_dev->dev.parent,
- 			"more samples came in during polling\n");
- 		sdata->hw_timestamp = iio_get_time_ns(indio_dev);
--		iio_trigger_poll_chained(p);
-+		iio_trigger_poll_nested(p);
- 	}
- 
- 	return IRQ_HANDLED;
-diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
-index 3ea1d4613080..c28d17ca6f5e 100644
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -813,7 +813,7 @@ static irqreturn_t fxas21002c_data_rdy_thread(int irq, void *private)
- 	if (!data_ready)
- 		return IRQ_NONE;
- 
--	iio_trigger_poll_chained(data->dready_trig);
-+	iio_trigger_poll_nested(data->dready_trig);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-index 6a6d84a3deda..a791ba3a693a 100644
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -939,7 +939,7 @@ static irqreturn_t mpu3050_irq_thread(int irq, void *p)
- 	if (!(val & MPU3050_INT_STATUS_RAW_RDY))
- 		return IRQ_NONE;
- 
--	iio_trigger_poll_chained(p);
-+	iio_trigger_poll_nested(p);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/hts221_buffer.c
-index 2a4107a79662..11ef38994a95 100644
---- a/drivers/iio/humidity/hts221_buffer.c
-+++ b/drivers/iio/humidity/hts221_buffer.c
-@@ -68,7 +68,7 @@ static irqreturn_t hts221_trigger_handler_thread(int irq, void *private)
- 	if (!(status & HTS221_RH_DRDY_MASK))
- 		return IRQ_NONE;
- 
--	iio_trigger_poll_chained(hw->trig);
-+	iio_trigger_poll_nested(hw->trig);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index bb0a44df8740..19cf36bd3de5 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -223,7 +223,15 @@ irqreturn_t iio_trigger_generic_data_rdy_poll(int irq, void *private)
- }
- EXPORT_SYMBOL(iio_trigger_generic_data_rdy_poll);
- 
--void iio_trigger_poll_chained(struct iio_trigger *trig)
-+/**
-+ * iio_trigger_poll_nested() - Call the threaded trigger handler of the
-+ * consumers
-+ * @trig: trigger which occurred
-+ *
-+ * This function needs to be called from a kernel thread context.
-+ *
-+ */
-+void iio_trigger_poll_nested(struct iio_trigger *trig)
- {
- 	int i;
- 
-@@ -238,7 +246,7 @@ void iio_trigger_poll_chained(struct iio_trigger *trig)
- 		}
- 	}
- }
--EXPORT_SYMBOL(iio_trigger_poll_chained);
-+EXPORT_SYMBOL(iio_trigger_poll_nested);
- 
- void iio_trigger_notify_done(struct iio_trigger *trig)
- {
-diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
-index e1ff6f524f4b..2d91caf24dd0 100644
---- a/drivers/iio/light/acpi-als.c
-+++ b/drivers/iio/light/acpi-als.c
-@@ -108,7 +108,7 @@ static void acpi_als_notify(struct acpi_device *device, u32 event)
- 	if (iio_buffer_enabled(indio_dev) && iio_trigger_using_own(indio_dev)) {
- 		switch (event) {
- 		case ACPI_ALS_NOTIFY_ILLUMINANCE:
--			iio_trigger_poll_chained(als->trig);
-+			iio_trigger_poll_nested(als->trig);
- 			break;
- 		default:
- 			/* Unhandled event */
-diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
-index 668e444f6049..9d0218b7426e 100644
---- a/drivers/iio/light/rpr0521.c
-+++ b/drivers/iio/light/rpr0521.c
-@@ -431,7 +431,7 @@ static irqreturn_t rpr0521_drdy_irq_thread(int irq, void *private)
- 	struct rpr0521_data *data = iio_priv(indio_dev);
- 
- 	if (rpr0521_is_triggered(data)) {
--		iio_trigger_poll_chained(data->drdy_trigger0);
-+		iio_trigger_poll_nested(data->drdy_trigger0);
- 		return IRQ_HANDLED;
- 	}
- 
-diff --git a/drivers/iio/light/st_uvis25_core.c b/drivers/iio/light/st_uvis25_core.c
-index c737d3e193ae..50f95c5d2060 100644
---- a/drivers/iio/light/st_uvis25_core.c
-+++ b/drivers/iio/light/st_uvis25_core.c
-@@ -161,7 +161,7 @@ static irqreturn_t st_uvis25_trigger_handler_thread(int irq, void *private)
- 	if (!(status & ST_UVIS25_REG_UV_DA_MASK))
- 		return IRQ_NONE;
- 
--	iio_trigger_poll_chained(hw->trig);
-+	iio_trigger_poll_nested(hw->trig);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 69c5bc987e26..5e041a491390 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -1068,7 +1068,7 @@ static irqreturn_t vcnl4010_irq_thread(int irq, void *p)
- 	}
- 
- 	if (isr & VCNL4010_INT_DRDY && iio_buffer_enabled(indio_dev))
--		iio_trigger_poll_chained(indio_dev->trig);
-+		iio_trigger_poll_nested(indio_dev->trig);
- 
- end:
- 	return IRQ_HANDLED;
-diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-index 84148b944000..14e29330e972 100644
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -89,7 +89,7 @@ static irqreturn_t vcnl4035_drdy_irq_thread(int irq, void *private)
- 							IIO_EV_TYPE_THRESH,
- 							IIO_EV_DIR_EITHER),
- 				iio_get_time_ns(indio_dev));
--		iio_trigger_poll_chained(data->drdy_trigger0);
-+		iio_trigger_poll_nested(data->drdy_trigger0);
- 		return IRQ_HANDLED;
- 	}
- 
-diff --git a/drivers/iio/potentiostat/lmp91000.c b/drivers/iio/potentiostat/lmp91000.c
-index b82f093f1e6a..0083e858c21e 100644
---- a/drivers/iio/potentiostat/lmp91000.c
-+++ b/drivers/iio/potentiostat/lmp91000.c
-@@ -118,7 +118,7 @@ static int lmp91000_read(struct lmp91000_data *data, int channel, int *val)
- 
- 	data->chan_select = channel != LMP91000_REG_MODECN_3LEAD;
- 
--	iio_trigger_poll_chained(data->trig);
-+	iio_trigger_poll_nested(data->trig);
- 
- 	ret = wait_for_completion_timeout(&data->completion, HZ);
- 	reinit_completion(&data->completion);
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index 67119a9b95fc..421e059d1f19 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -829,7 +829,7 @@ static irqreturn_t zpa2326_handle_threaded_irq(int irq, void *data)
- 	}
- 
- 	/* New sample available: dispatch internal trigger consumers. */
--	iio_trigger_poll_chained(priv->trigger);
-+	iio_trigger_poll_nested(priv->trigger);
- 
- 	if (cont)
- 		/*
-diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-index ebc95cf8f5f4..96fa97451cbf 100644
---- a/drivers/iio/proximity/as3935.c
-+++ b/drivers/iio/proximity/as3935.c
-@@ -257,7 +257,7 @@ static void as3935_event_work(struct work_struct *work)
- 
- 	switch (val) {
- 	case AS3935_EVENT_INT:
--		iio_trigger_poll_chained(st->trig);
-+		iio_trigger_poll_nested(st->trig);
- 		break;
- 	case AS3935_DISTURB_INT:
- 	case AS3935_NOISE_INT:
-diff --git a/drivers/iio/trigger/iio-trig-loop.c b/drivers/iio/trigger/iio-trig-loop.c
-index 96ec06bbe546..7aaed0611899 100644
---- a/drivers/iio/trigger/iio-trig-loop.c
-+++ b/drivers/iio/trigger/iio-trig-loop.c
-@@ -46,7 +46,7 @@ static int iio_loop_thread(void *data)
- 	set_freezable();
- 
- 	do {
--		iio_trigger_poll_chained(trig);
-+		iio_trigger_poll_nested(trig);
- 	} while (likely(!kthread_freezable_should_stop(NULL)));
- 
- 	return 0;
-diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
-index 42da55dc3aa7..51f52c5c6092 100644
---- a/include/linux/iio/trigger.h
-+++ b/include/linux/iio/trigger.h
-@@ -152,7 +152,7 @@ void iio_trigger_unregister(struct iio_trigger *trig_info);
- int iio_trigger_set_immutable(struct iio_dev *indio_dev, struct iio_trigger *trig);
- 
- void iio_trigger_poll(struct iio_trigger *trig);
--void iio_trigger_poll_chained(struct iio_trigger *trig);
-+void iio_trigger_poll_nested(struct iio_trigger *trig);
- 
- irqreturn_t iio_trigger_generic_data_rdy_poll(int irq, void *private);
- 
--- 
-2.30.2
+- Lars
+
+[1] https://lwn.net/Articles/904383/
 

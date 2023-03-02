@@ -2,66 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D283A6A808E
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 11:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C936A8331
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 14:05:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbjCBK7m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 05:59:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
+        id S229793AbjCBNFP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 08:05:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230002AbjCBK7h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 05:59:37 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0453D907;
-        Thu,  2 Mar 2023 02:59:28 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id k14so21544501lfj.7;
-        Thu, 02 Mar 2023 02:59:28 -0800 (PST)
+        with ESMTP id S229993AbjCBNFO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 08:05:14 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD2773400F;
+        Thu,  2 Mar 2023 05:05:12 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id s11so3299615edy.8;
+        Thu, 02 Mar 2023 05:05:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lZU83ck9nL38ZM2QNQUisMyQtOcrBNc5YvsQ6uxiWRs=;
-        b=ccAW2hJxOVK2lC8nG+r9tlvgUeNIS15ArQbmGAT6iFcue1ol2MacH0rlruCUintfOq
-         y3zxwNI7aCoamDvYz3B8XDii8+NzJtiAyVinEAavefRls9mcvOCKAKNFbfai9XdLiKb8
-         Knqd5alK+LTBjthtGA3yg0f+KlWywF8UWEuJDEyy/kA0HKS1tbzIT/wnlVkxYkoTZb7q
-         jTsiNYIkI03Xnmo2jJ6mEVRaeRCZmRW0gOBpjSfJHV7uJM8EqgVGDhiPWa1wCVTbNCu2
-         EZ5HdBz0eN+gD5CicQi0FPiNQnjG4Jtv2A1IhPx2Uadr7qwm4EThKFFbO4eoK/4qTAso
-         qRMA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NuLOWhWrC2ZYcXfdcOiL8yPuEBe7t2pO8CMXuZCt8xw=;
+        b=ktrq8nUVhNvC1Qu22L5/jX0bNGgKqOYkpcPF9GEnKyWlv9TUBPegtLkSmjT/ua2C4W
+         E/fWKL5aVyd8srHxUvyf2Dgh7z9CJY3GLV075C3XSzXJeqvnkpzPVmcAR1rrMVr2+Ki2
+         h6osqCEAsMdKDoSmD8VybU1bw3q+P8eu3MhxMm1EXRUdHpDwpg20pfkHOS8iYV2Vo5Tq
+         bhCa3Q46sKSTmtnpNH2mydP04cOGpNkiE6p6O7ptvh7wNLnFMzMY3xiES0lPz4Ua8CAW
+         AX53e/mHN8h46B9CGgduEq4sT4+2/6+IVGxWn+R0vTdGIZyH8UregVuwZakroFH+JTu7
+         aM9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lZU83ck9nL38ZM2QNQUisMyQtOcrBNc5YvsQ6uxiWRs=;
-        b=Ofidp9YDfc8J2xEOqsoSKBntoQ+6Q+ru1OOev6XEiI3xffb6emBY5Qac523PknmBXk
-         Tl9utbmGGVMjnixVhEfHI1zkJzoIJEKmctWQ042KfUearp46NbjVPz/HWB6PSVYn6lkC
-         EcbIVDNn5mcndJejx6JQ+Z/PrRe58x67yehdgMzYhx1u/seeYiQOneAM+sdUVNujoZs4
-         fsWGRVckedZNCLOJ3AS8R+WyGKKL7Z0ljiRVN4qOUUg3QMLi9308yXdDW6pFHprOQLla
-         XKa/2iryvOr+sN1yOKiGCFLtH9rIjOEs+c7fNCquuJfvCdQ2UJ/h4+/w1aa2QG3ux2g8
-         vW8Q==
-X-Gm-Message-State: AO0yUKXzTYzgeHC62ZwqZr+jzdnhFxuE5mX6VSl+grhistEmozBpoTnU
-        PVl6x6eKaFh49XaZ22AtGFo=
-X-Google-Smtp-Source: AK7set8g/5D1OZPbkh5jNtNyCafs5oyBV22cpQ3+MlJliGQHmedsPl8z1G0IUWixnkP81FLkj5Jwaw==
-X-Received: by 2002:a19:7408:0:b0:4d9:8773:7d76 with SMTP id v8-20020a197408000000b004d987737d76mr2625146lfe.11.1677754766407;
-        Thu, 02 Mar 2023 02:59:26 -0800 (PST)
-Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id h24-20020a197018000000b004b4b5da5f80sm2060404lfc.219.2023.03.02.02.59.25
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NuLOWhWrC2ZYcXfdcOiL8yPuEBe7t2pO8CMXuZCt8xw=;
+        b=tuc95lTbXjxF/E8TB1MfA/448Vk5ZYXYuqsavF7U9nbGJEvbjjDudZK+Tv+lRp1y5H
+         lDspMPA2a/qDNyUzVJffa8jc6XF09i+6jc6zS+iSomyHTFG+jqJlGAR1HgX9hmc7SDU+
+         VwvCUKmqTAGHAWbI89usTlRw98P9/kE5rh01tLQVJpGfUe5DbBBkheHnTnnHadwHuuv6
+         Xb5J8voZE2aw1NYUnt0tXdEdJwJf9H0PRTBZoXiCo140I5IXav++AIV0HvLC7PyAtv+q
+         5oZAbqCRxX4WK7wVtBUe065bJZa8421UtmxFvDzmuXaqbjXsEt1G9ZT27QOOO1JiAvZk
+         rUlQ==
+X-Gm-Message-State: AO0yUKXGs9ciwPUyEXQKTLE4szZ/sWaR+5VqH6+iTPUCBm6Cy47T7FSY
+        IDCTpfbJC/WXxnLdj2wrdDJ1+qrlGeo=
+X-Google-Smtp-Source: AK7set/jJ4KfZUe6vszyiFhHzlD7yUojvpO8zjksHWQah5yt+7I9bXne5ed3TwHNfDo3Gz/MtKlOww==
+X-Received: by 2002:aa7:c612:0:b0:4ad:7224:ce9d with SMTP id h18-20020aa7c612000000b004ad7224ce9dmr10155537edq.17.1677762311297;
+        Thu, 02 Mar 2023 05:05:11 -0800 (PST)
+Received: from carbian.corp.quobyte.com ([2a02:8109:aa3f:ead8::dc02])
+        by smtp.gmail.com with ESMTPSA id u7-20020a50d507000000b004af759bc79asm6932903edi.7.2023.03.02.05.05.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 02:59:25 -0800 (PST)
-Date:   Thu, 2 Mar 2023 12:59:21 +0200
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/6] MAINTAINERS: Add ROHM BU27034
-Message-ID: <3ca01c6cfab2c1ed51fddf43d31feae425d79de1.1677750859.git.mazziesaccount@gmail.com>
-References: <cover.1677750859.git.mazziesaccount@gmail.com>
+        Thu, 02 Mar 2023 05:05:10 -0800 (PST)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de,
+        andriy.shevchenko@linux.intel.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH v2 0/2] iio: Add kernel-docs and rename iio_trigger_poll_chained
+Date:   Thu,  2 Mar 2023 14:04:34 +0100
+Message-Id: <cover.1677761379.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6ziNQpaz/Y+XVXgT"
-Content-Disposition: inline
-In-Reply-To: <cover.1677750859.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -72,69 +69,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The main goal behind the kernel-docs is to give a hint where the
+functions are expected to be called. 
 
---6ziNQpaz/Y+XVXgT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Renaming iio_trigger_poll_chained() to iio_trigger_poll_nested() came
+from a Jonathan's suggestion in [1]
 
-Add myself as a maintainer for ROHM BU27034 ALS driver.
+I am a little bit unsure about moving the kernel-doc of iio_trigger_poll
+to industrialio-trigger.c 
+My motivation behind it:
+- having the source code together with the documentation tends to be 
+better for understanding 
+- make it easier to understand the _nested in iio_trigger_poll_nested 
+(the call to handle_nested_irq)
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+[1] https://lore.kernel.org/linux-iio/Y+6QoBLh1k82cJVN@carbian/
 
----
-Changes since RFCv1:
-- Add iio-list
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+--
+Kind Regards
+Mehdi Djait
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index af8516d5df36..f75b38e6052d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18102,6 +18102,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/light/bh1750.yaml
- F:	drivers/iio/light/bh1750.c
-=20
-+ROHM BU27034 AMBIENT LIGHT SENSOR DRIVER
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+F:	drivers/iio/light/rohm-bu27034.c
-+
- ROHM MULTIFUNCTION BD9571MWV-M PMIC DEVICE DRIVERS
- M:	Marek Vasut <marek.vasut+renesas@gmail.com>
- L:	linux-kernel@vger.kernel.org
---=20
-2.39.2
+Mehdi Djait (2):
+  iio: Improve the kernel-doc of iio_trigger_poll
+  iio: Rename iio_trigger_poll_chained and add kernel-doc
 
+ drivers/iio/accel/bma400_core.c               |  2 +-
+ drivers/iio/accel/kionix-kx022a.c             |  2 +-
+ drivers/iio/accel/mma8452.c                   |  2 +-
+ drivers/iio/accel/msa311.c                    |  2 +-
+ drivers/iio/adc/ad7606.c                      |  2 +-
+ drivers/iio/adc/at91-sama5d2_adc.c            |  2 +-
+ drivers/iio/adc/max11410.c                    |  2 +-
+ .../common/st_sensors/st_sensors_trigger.c    |  4 ++--
+ drivers/iio/gyro/fxas21002c_core.c            |  2 +-
+ drivers/iio/gyro/mpu3050-core.c               |  2 +-
+ drivers/iio/humidity/hts221_buffer.c          |  2 +-
+ drivers/iio/industrialio-trigger.c            | 19 +++++++++++++++++--
+ drivers/iio/light/acpi-als.c                  |  2 +-
+ drivers/iio/light/rpr0521.c                   |  2 +-
+ drivers/iio/light/st_uvis25_core.c            |  2 +-
+ drivers/iio/light/vcnl4000.c                  |  2 +-
+ drivers/iio/light/vcnl4035.c                  |  2 +-
+ drivers/iio/potentiostat/lmp91000.c           |  2 +-
+ drivers/iio/pressure/zpa2326.c                |  2 +-
+ drivers/iio/proximity/as3935.c                |  2 +-
+ drivers/iio/trigger/iio-trig-loop.c           |  2 +-
+ include/linux/iio/trigger.h                   |  8 +-------
+ 22 files changed, 39 insertions(+), 30 deletions(-)
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+-- 
+2.30.2
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---6ziNQpaz/Y+XVXgT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQAgYkACgkQeFA3/03a
-ocX+kgf+MgA8qc3YT2GFCNSi25ET53VrWw2MvQekLSh/4+0p0JmRqLZgjM5DXZtL
-8iX4hNBiNtVdnRh7vmCjpL91E4eErkqIki0XTu3DxM5jbNVy9E2VzWFjrhw931zl
-Vd6hMkenQisepuV4Xuqpkxb/fSsPXhSCwXCIyVMGkaMooK3WY7t8UUultFqgLqfw
-Ox1vsznrMxcejWBx73nCnH8znbjVxaTRqZeqylaQJBWdG2ipNIleH94NmkC4e4EA
-pxIYAlC7Egpf/pka/ssfBYS76AY/cD6ValOHJf7Jjb+SxgiAJlW8XJ+UQsxTJq6B
-CUA7I+YZVmhIZ5Ecfod7RT5S+MfLug==
-=Kj7n
------END PGP SIGNATURE-----
-
---6ziNQpaz/Y+XVXgT--

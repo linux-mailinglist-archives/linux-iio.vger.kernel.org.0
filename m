@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9053F6A8350
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 14:17:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC04A6A8367
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Mar 2023 14:20:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbjCBNRK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Mar 2023 08:17:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
+        id S229851AbjCBNUt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Mar 2023 08:20:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjCBNRK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 08:17:10 -0500
+        with ESMTP id S229589AbjCBNUs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Mar 2023 08:20:48 -0500
 Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C8338B46;
-        Thu,  2 Mar 2023 05:17:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9938A3BDAE;
+        Thu,  2 Mar 2023 05:20:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=OSGo8od9/vvLzXzkl3lpRBXCnyJUu3KOtGdrSgduc+I=; b=lXFObTFlAUfcMFAcgGY34eRrdX
-        SK1qEVmYwzNAUCKZu/71M5QpprxdunY2xknX0+PPyymLmylKPHTM66CleDxT1E3pJ3nyrR0xqr/wW
-        JvBZV0+B+vm+DHGOynXAbf1Na1sRw0YdYM5EXmReRY5EWloctuiMnffnQsnYnrOB6OvltLWqNgQSS
-        2uFfhjxxQENtGpyf8r1+TwhuwIzHR8mZlhX5cnqN6x8+IuK8dwnTcbaV5h+qJjj/bcqhIvcEAYDTu
-        Q4PS6AlG3BsoqqJRui+63lAzCgPadUGrlV9v+vx5gNm2WoilGojhXT6WAHGOXPoqKlNO/u6Q4SUH2
-        YlfzGK7g==;
+        bh=cF077q4Xpw478KVACo7Jr3CUZM3qv0sxeoqom2mWqIk=; b=LYxkdKM+9zq1I3A5p6OrWl7lWE
+        daNMhairBSdwrPWH5v4m6eUKwv2Fw8ksgQSrJGpzAo6eHRoMShewzeKnmruklBFEtTgL5idb8hagD
+        fbWNzMS2UqT9VERrvb3waHq04X6hcfm7diKGpN6hThWY9wjETaINSxPigEm2rtrF7zXznQf8TBUFC
+        aa5Ac3tNWm/89NLU+doo+Ine5//pQ1Vr3UZS2F5zgGF/sS/02kN35UheHELliaY/qmd0JwM67isQG
+        2CT09Z/W2AdAg2YlTilBv8PT3yJYLGvM3Fe3D3L99nqBppHq7OrFN8g7xVgheXZphtZhgxV8bBBqs
+        p+/aI9jQ==;
 Received: from sslproxy05.your-server.de ([78.46.172.2])
         by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <lars@metafoo.de>)
-        id 1pXins-000MgE-9B; Thu, 02 Mar 2023 14:17:00 +0100
+        id 1pXirU-000Ned-Ak; Thu, 02 Mar 2023 14:20:44 +0100
 Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
         by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <lars@metafoo.de>)
-        id 1pXinr-000C9C-Ou; Thu, 02 Mar 2023 14:16:59 +0100
-Message-ID: <87bc192e-45ae-9480-5e84-8fe0adfc12e7@metafoo.de>
-Date:   Thu, 2 Mar 2023 05:16:54 -0800
+        id 1pXirT-0002Yt-ON; Thu, 02 Mar 2023 14:20:43 +0100
+Message-ID: <b635b91e-1dcc-71ba-95d1-1f87a20dbaf2@metafoo.de>
+Date:   Thu, 2 Mar 2023 05:20:38 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.0
 Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
 Content-Language: en-US
+From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Mike Looijmans <mike.looijmans@topic.nl>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -59,8 +60,8 @@ References: <20230228063151.17598-1-mike.looijmans@topic.nl>
  <Y/9vez/fzLD5dRVF@smile.fi.intel.com>
  <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0685d97e-4a28-499e-a9e3-3bafec126832@emailsignatures365.codetwo.com>
  <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <a2ba706f-888b-0a72-03a5-cbf761dfaf19@topic.nl>
+ <87bc192e-45ae-9480-5e84-8fe0adfc12e7@metafoo.de>
+In-Reply-To: <87bc192e-45ae-9480-5e84-8fe0adfc12e7@metafoo.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Sender: lars@metafoo.de
@@ -74,39 +75,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/1/23 23:49, Mike Looijmans wrote:
->
->
->> ...
->> ...
+On 3/2/23 05:16, Lars-Peter Clausen wrote:
+> On 3/1/23 23:49, Mike Looijmans wrote:
 >>
->>> +static int ads1100_runtime_suspend(struct device *dev)
->>> +{
->>> +    struct iio_dev *indio_dev = 
->>> i2c_get_clientdata(to_i2c_client(dev));
->>> +    struct ads1100_data *data = iio_priv(indio_dev);
->>> +
->>> +    ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
->>> +    regulator_disable(data->reg_vdd);
->> Wrong devm / non-devm ordering.
+>>
+>>> ...
+>>> ...
+>>>
+>>>> +static int ads1100_runtime_suspend(struct device *dev)
+>>>> +{
+>>>> +    struct iio_dev *indio_dev = 
+>>>> i2c_get_clientdata(to_i2c_client(dev));
+>>>> +    struct ads1100_data *data = iio_priv(indio_dev);
+>>>> +
+>>>> +    ads1100_set_config_bits(data, ADS1100_CFG_SC, 
+>>>> ADS1100_SINGLESHOT);
+>>>> +    regulator_disable(data->reg_vdd);
+>>> Wrong devm / non-devm ordering.
+>>
+>> Don't understand your remark, can you explain further please?
+>>
+>> devm / non-devm ordering would be related to the "probe" function. As 
+>> far as I can tell, I'm not allocating resources after the devm calls. 
+>> And the "remove" is empty.
 >
-> Don't understand your remark, can you explain further please?
+> Strictly speaking we need to unregister the IIO device before 
+> disabling the regulator, otherwise there is a small window where the 
+> IIO device still exists, but doesn't work anymore. This is a very 
+> theoretical scenario though.
 >
-> devm / non-devm ordering would be related to the "probe" function. As 
-> far as I can tell, I'm not allocating resources after the devm calls. 
-> And the "remove" is empty.
-
-Strictly speaking we need to unregister the IIO device before disabling 
-the regulator, otherwise there is a small window where the IIO device 
-still exists, but doesn't work anymore. This is a very theoretical 
-scenario though.
-
-You are lucky :) There is a new function 
-`devm_regulator_get_enable()`[1], which will manage the 
-regulator_disable() for you. Using that will also reduce the boilerplate 
-in `probe()` a bit
-
-- Lars
-
-[1] https://lwn.net/Articles/904383/
+> You are lucky :) There is a new function 
+> `devm_regulator_get_enable()`[1], which will manage the 
+> regulator_disable() for you. Using that will also reduce the 
+> boilerplate in `probe()` a bit
+>
+> - Lars
+>
+> [1] https://lwn.net/Articles/904383/
+>
+Sorry, just saw that Andy's comment was on the suspend() function, not 
+remove(). In that case there is of course no need for any devm things. 
+But still a good idea to use `devm_regulator_get_enable()` in probe for 
+the boiler plate.
 

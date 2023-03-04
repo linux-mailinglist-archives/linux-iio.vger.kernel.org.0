@@ -2,118 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CE506AAC64
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 21:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 352416AAC68
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 21:26:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjCDUVl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Mar 2023 15:21:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52406 "EHLO
+        id S229539AbjCDU00 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Mar 2023 15:26:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjCDUVk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 15:21:40 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883991ACFB;
-        Sat,  4 Mar 2023 12:21:39 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id j11so3940278edq.4;
-        Sat, 04 Mar 2023 12:21:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677961298;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=INgV11plml1IBlee7DL8xge7m1ARbHsCq54faWydJTc=;
-        b=nUU5S+Po/pMhW9DpAzhK52bV2vJxlOw3ZQCPHOyTjXDfbo5Q3WZKBK4Uta0DeAuRpU
-         gcgQCwyiNb+avyHJwZaMSy+8HNTmnYGu/Lo9c2PuUcZrbDcQhRbXEzp8avs4hsbpR3+Y
-         kVn+C5lxbhmjUBvcNyela/KvSQX7yVXtMykr69g43Rn2J1zanTeo8+Lnk3r8h0Pm88GK
-         knrZ/L8WoC8kU09DK9TA7kJ7+uKCdUpMz4zTi6U/aSQN6iN0UjBCTTBt/Ia1CUS1r+S1
-         AyL9LQjcxNwT4/HXqMV8CDXRXH8MA/kiI1o7sVjReEKyD0I1aI/H0kTV/Kvu7BI4TvUK
-         aV5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677961298;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=INgV11plml1IBlee7DL8xge7m1ARbHsCq54faWydJTc=;
-        b=3v7ihDCDfxz758H9x6W+5mQYi4G2c4abndxCxrOc8eQgNiigntkLaw36OcqJqliGXM
-         bg1oIMjyvKJylhbk8Hvohw35UtMPzNK1ErBIoOL1L6oLDBIX8IBP77Tc0DkZKZlnWmV/
-         ePvg8RcaU084ymPi2BYSDhNAZJ/iAep/f89euVHLDo4RwudQIeDnq/GtpPr5RSM/PI/X
-         isP0T2fAx650idmilvwQI/Zzbb18GbwzLDANz8sZO+pZ2B6vgg8BE+5WNTHcW7yGztcP
-         tBMoQ3bVjnlAw4j97Cpa/h1bs1sF+ggIei3UxA6Oom4YF6OCNPjH750C4VCKXsjYfR33
-         n1mw==
-X-Gm-Message-State: AO0yUKUhfX8HStD7VK9qK3PGsp5z3EDlMg8793zsNlMz6CHTBLolz5Gn
-        Xj8haZjByBzH2ZGCs1+6JIxH6aRHZQ0=
-X-Google-Smtp-Source: AK7set+IA5I3dXRFwEY3Bo42AQxrAs3VEvUeUKBFvHfWTz4/rKjELqY0bjkOQNNeUi0gB4yAaiyAYw==
-X-Received: by 2002:a17:906:f84c:b0:8b1:3a8d:6fc5 with SMTP id ks12-20020a170906f84c00b008b13a8d6fc5mr5126150ejb.25.1677961297946;
-        Sat, 04 Mar 2023 12:21:37 -0800 (PST)
-Received: from carbian ([2a02:8109:aa3f:ead8::dc02])
-        by smtp.gmail.com with ESMTPSA id t19-20020a170906065300b008be996c1630sm2396208ejb.39.2023.03.04.12.21.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Mar 2023 12:21:37 -0800 (PST)
-Date:   Sat, 4 Mar 2023 21:21:35 +0100
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, andriy.shevchenko@linux.intel.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: Improve the kernel-doc of iio_trigger_poll
-Message-ID: <ZAOoT9IkzNT3BpZW@carbian>
-References: <cover.1677761379.git.mehdi.djait.k@gmail.com>
- <bd84fc17e9d22eab998bf48720297f9a77689f45.1677761379.git.mehdi.djait.k@gmail.com>
- <20230304164601.3888bbd4@jic23-huawei>
+        with ESMTP id S229455AbjCDU0Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 15:26:25 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EDF11ADCC
+        for <linux-iio@vger.kernel.org>; Sat,  4 Mar 2023 12:26:24 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4F3060A6E
+        for <linux-iio@vger.kernel.org>; Sat,  4 Mar 2023 20:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FBEC433D2;
+        Sat,  4 Mar 2023 20:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677961583;
+        bh=ZHkUA3d/JaqDwMS04dc0u/JDSuKeIt1BbTMxFLhM/gc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rEnLzlisJazoyTN4+tf7mEAzcwzHrgnd5uqpBOJOOBAK+9mDZ8h/ywfZehTN6rSbM
+         8GLjVhDONx4h8722uJa3rq7G5q8w9SVnVB4HzTXPSAxF+jFK2SNRELt0i0i5xi/X7B
+         iVPxdeLJlg75xG1Z4cTweAqoW0VgOPMZTyXvOYVffHTiGsMWYo7J0yo8FE8C2VgMq9
+         F3KnCWWtoOdP8jwEGueh5uM5GnKV02iDG/WnFx9Euc0BKpPRQKTytaunnrxM5bMNuq
+         YR/Col7177abqfEBKv9cFh0dQAhyHc7oV116ALYpdDyX7en5PKCHO4aK6KbsUqOnvn
+         jyN3/ah12jIqA==
+Date:   Sat, 4 Mar 2023 20:26:19 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [low prio, just pondering] About the light sensor "sensitivity
+ area"
+Message-ID: <20230304202619.7ea219a7@jic23-huawei>
+In-Reply-To: <71d17152-ad12-1465-2a5d-4dbe98057ca3@gmail.com>
+References: <65c7c45a-c953-e418-f640-9e46841151a1@gmail.com>
+        <20230130130231.000013b6@Huawei.com>
+        <baec476f-c72e-23d7-76b1-4e5062173226@fi.rohmeurope.com>
+        <20230202165714.0a1c37ac@jic23-huawei>
+        <11722ea9-7149-0305-5593-7a66dc1d73f0@fi.rohmeurope.com>
+        <71d17152-ad12-1465-2a5d-4dbe98057ca3@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230304164601.3888bbd4@jic23-huawei>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Mar 04, 2023 at 04:46:01PM +0000, Jonathan Cameron wrote:
-> On Thu,  2 Mar 2023 14:04:35 +0100
-> Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
-> 
-> > Move the kernel-doc of the function to industrialio-trigger.c
-> > Add a note on the context where the function is expected to be called.
-> > 
-> > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
-> > ---
-> > v2:
-> > - Changed the expected context of from interrupt to hard IRQ context
-> > 
-> >  drivers/iio/industrialio-trigger.c | 7 +++++++
-> >  include/linux/iio/trigger.h        | 6 ------
-> >  2 files changed, 7 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> > index a2f3cc2f65ef..bb0a44df8740 100644
-> > --- a/drivers/iio/industrialio-trigger.c
-> > +++ b/drivers/iio/industrialio-trigger.c
-> > @@ -192,6 +192,13 @@ static void iio_trigger_notify_done_atomic(struct iio_trigger *trig)
-> >  		schedule_work(&trig->reenable_work);
-> >  }
-> >  
-> > +/**
-> > + * iio_trigger_poll() - Call the IRQ trigger handler of the consumers
-> > + * @trig: trigger which occurred
-> > + *
-> > + * This function needs to be called from a hard IRQ context.
-> I tweaked this to drop the line below and to say
-> This function should only be called from a hard IRQ context.
-> 
-> Fun subtlety of English that reminds me of the sign on the London underground
-> escalators that said "Guide dogs must be carried" thus apparently limiting
-> their use to people who could find a guide dog to carry.
-> 
-> Here we don't want to oblige all code to call the function :)
+On Sat, 25 Feb 2023 11:35:14 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-I was even going for "must be called from hard IRQ context" first :) but
-then decided that I need more accepted patches before instructing others on 
-what must be done in the kernel :)
+> On 2/6/23 16:34, Vaittinen, Matti wrote:
+> > On 2/2/23 18:57, Jonathan Cameron wrote:  
+> >> On Tue, 31 Jan 2023 09:31:53 +0000
+> >> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+> >>  
+> >>> On 1/30/23 15:02, Jonathan Cameron wrote:  
+> >>>> On Mon, 30 Jan 2023 14:04:53 +0200
+> >>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:  
+> >>>
+> >>> As a side note - I had always thought measuring the light is just simple
+> >>> value reading from a sensor. I never regarded the fact that human eye
+> >>> sees only certain wavelengths or that the sensors sensitivity changes
+> >>> depending on the wavelength. It's funny how I always end up knowing less
+> >>> when I know more ;)  
+> >>
+> >> Light sensors are a pain in many ways!  We've had a few datasheets over the
+> >> years that have insisted that the color channels have well specified units
+> >> despite there being no such definition that I'm aware of (and no means
+> >> to define one for cheap sensors. What is standard Red? :))  All the
+> >> illuminance values are just approximations to the official curve.
+> >>
+> >> Sometime in the past we debated trying to describe the curves, but it's
+> >> hard to do as they aren't nice shapes (so 3DB points don't make much
+> >> sense).  
+> 
+> This is a low-priority mail with just some very initial pondering. Feel 
+> free to skip this if you're in a hurry.
+> 
+> I guess the problem of telling what the sensor values represent for 
+> sensors where the sensitivity is a poor match to a colour has been 
+> dwelling in the background :)
+> 
+> I don't have any long experience on these devices so I have seen only 
+> couple of the light sensor data-sheets, and mostly just for ROHM 
+> sensors. Maybe this is the reason why the common thing I have seen in 
+> these data-sheets representing the sensitivity to wave lengths has been 
+> a "spectral response" curve. All of the data-sheets have represented a 
+> curve where "sensor responsivity" is in the Y-Axis and wave length at 
+> the X-axis. And yes, in many cases this curve (especially for a CLEAR 
+> light) is of arbitrary shape for example like this:
 
---
-Kind Regards
-Mehdi Djait
+That is indeed typical info to find on a datasheet though IIRC the
+y axis meaning varies a bit (log values sometimes for example)
+
+> 
+> 
+> 
+> 
+> S                                           ***
+> e                                      *       *
+> n                                  *            *
+> s                        **       *             *
+> i                   *       **   *               *
+> t                *             *                  *
+> i              *                                  *
+> v             *                                    *
+> i         **                                       *
+> t      *                                           *
+> y    *                                             *
+>     *                                                ***
+>    *                                                     ******
+>   *                                                            *
+>   *                                                            *
+> 400		500		600		700		800nm
+>                 W a v e l e n g h t
+> 
+> 
+> Having this in mind it seems to be impossible to have just one or a few 
+> categories of sensitivity, or to describe it accurately by just some 
+> "peak-sensitivity" wave-lenght and a value representing "width of the 
+> curve".
+> 
+> So, maybe we should abandon the idea of having a great categorization / 
+> abstraction in-driver or IIO framework (other than the R,G,B,C,IR,UV - 
+
+Can't abandon them in general as ABI we need to carry on supporting and
+in many cases that's enough info for the application.  Can expand beyond
+them though.
+
+> which works fine for some sensors). What I could think of is providing a 
+> set of 'data points' representing the sensitivity curves. Say, we had 
+> in_sensitivity_wavelength_calibpoints and 
+> in_sensitivity_wavelength_num_calibpoints (or what ever could fit for 
+> the IIO naming scheme) - where user could get sensor provided datapoints 
+> that represent the sensitivity as a function of wavelength. Userland 
+> could then decide the best curve fitting for the data-points and compute 
+> the sensitivity according to the best available algorithms. I think this 
+> kind of curve-fitting-to-datapoints is quite standard stuff in the 
+> user-space these days - but it feels like an overwhelming task in the 
+> kernel land/drivers...
+
+A more general approach would be to mandate the curve fitting then require
+drivers to provide sufficient values that the approximation is within
+X percent of the value from the datasheet.
+
+Otherwise it becomes a question of what wavelengths to use.
+> 
+> This all is just some pondering. I do not have a proper use-case for 
+> this kind of a sensitivity curve data as I work for a component vendor 
+> instead of doing actual systems utilizing these components :/ It's 
+> actually a little sad as I seem to keep thinking what kind of a device I 
+> could build using these components - just to end up noticing that I am 
+> not in a position where I was building these devices :p (You wouldn't 
+> believe how cool imaginary clocking device for driving a camera clock 
+> with light sensor detecting flickering I just designed in my head the 
+> other night XD).
+
+They are fun. I'll admit my main experience of these has come with devices
+that 'happen to have them' rather than ever having designed them into
+anything (and last actual board design I got involved in was many years
+ago).
+
+> 
+> Well, I still hope I can help creating device driver/framework stuff 
+> people can use to build devices - in the end of the day it will also 
+> benefit the component vendor as the components are typically used in 
+> these devices ;)
+> 
+> Oh. Got carried away. Anyways, have you considered just offering an 
+> entry with sensitivity data-points instead of offering wavelength and 
+> 3DB-limits? Do you think that could be useful?
+
+As you've noted, 3DB doesn't work for this, but I think remains
+useful for time domain filters. 
+
+I think it would potentially be useful to have better data, but what
+we really need is a user to tell use what they need.
+
+Until that happens we may well be either over or under designing
+the solution.
+
+Jonathan
+ 
+> 
+> Yours,
+> 	-- Matti
+> 
+

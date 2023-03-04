@@ -2,100 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F5F6AA3F0
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Mar 2023 23:10:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49EBB6AA698
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 01:43:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231528AbjCCWK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Mar 2023 17:10:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55340 "EHLO
+        id S229509AbjCDAnI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Mar 2023 19:43:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233890AbjCCWKG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Mar 2023 17:10:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5273D6E6A2;
-        Fri,  3 Mar 2023 14:00:34 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05CCD61931;
-        Fri,  3 Mar 2023 21:49:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE501C4339C;
-        Fri,  3 Mar 2023 21:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677880195;
-        bh=B7NTi1FdHIGrYvLYxcYK2kZHRMsFpemC0yukXnWPFno=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VvZTYwgozCGoUdm3OJFmU7zagQWX+RCKh3H5VSmoLbcGNeGBv5yC2fPr9cM6FpwBf
-         2aVT+sGFnxqgCncoNiCocaM3y6DkXsuSr7sTh28AlxjobaqhHjVEV2dnHYN8zcmcBM
-         zdIPIv1acmtaGK4uVESX6fTQFssNobaXvaAegl7QFyTFwxfF6Ii80z2x8Y1rUjkemQ
-         7C7mp2/LqMINhA3GQuKTblR/nM1YxGttLpGFkeD0zWLwGHjFODEZ3RMny6b75xgbdW
-         0/vm/dSqiXOHcWWp0JpADQe1JBaC6vKMtLTYUXUkFNJs0m0ut+sMeTbGqomEUiNK7Z
-         tVB7EeweLo7JA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 07/11] iio: accel: mma9551_core: Prevent uninitialized variable in mma9551_read_config_word()
-Date:   Fri,  3 Mar 2023 16:49:33 -0500
-Message-Id: <20230303214938.1454767-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230303214938.1454767-1-sashal@kernel.org>
-References: <20230303214938.1454767-1-sashal@kernel.org>
+        with ESMTP id S229487AbjCDAnI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Mar 2023 19:43:08 -0500
+Received: from mail-108-mta249.mxroute.com (mail-108-mta249.mxroute.com [136.175.108.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8388613532
+        for <linux-iio@vger.kernel.org>; Fri,  3 Mar 2023 16:43:05 -0800 (PST)
+Received: from mail-111-mta2.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta249.mxroute.com (ZoneMTA) with ESMTPSA id 186aa127ca7000edb4.005
+ for <linux-iio@vger.kernel.org>
+ (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256);
+ Sat, 04 Mar 2023 00:43:03 +0000
+X-Zone-Loop: 805946428376b97d9114a27f066bbe7ca5b5354c686e
+X-Originating-IP: [136.175.111.2]
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
+        s=x; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:
+        From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+        References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+        List-Owner:List-Archive; bh=SqOZ+n7iiZ6IA5VrgdiO4hkN3wRJAXL1gzzEhu6P3/A=; b=P
+        2w5kZtkm+rWp0KL3eNs3jv+BoCWvae1HIPLXGu8jeGeCSbagsRR54rhY7cN2LbZsg1tLMgRypT2W+
+        O3dmWd77dABU4vCJc+KMePopYVEz5ags+yAzS064h/yCcVa2pezHwN266UpfKopZr2Sls7KnaHLJe
+        7mJiGXdgLKcx7YW67x/FUA4P//1cHXB9ByA07FzWd4SCvXOLrXwUvCwwB4oZ3IRHtY8BJbXc3cs8G
+        EiSyfgWmtQ1TBQFPakCAdP/yzBMXZWHAc31RKbw53KrPBvljf8yWvmXYHNOSPWHKubAtacGGarzzx
+        t9qplq1j9DUEu/LTVRsvCA/LkuQMvonRw==;
+From:   Andrew Hepp <andrew.hepp@ahepp.dev>
+To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     Andrew Hepp <andrew.hepp@ahepp.dev>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH v3 1/2] dt-bindings: iio: Add MCP9600 thermocouple EMF converter bindings
+Date:   Fri,  3 Mar 2023 16:41:08 -0800
+Message-Id: <20230304004109.78659-1-andrew.hepp@ahepp.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Authenticated-Id: andrew.hepp@ahepp.dev
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Add support for the MCP9600 thermocouple EMF converter.
 
-[ Upstream commit 64a68158738ec8f520347144352f7a09bdb9e169 ]
-
-Smatch Warns:
-drivers/iio/accel/mma9551_core.c:299
-	mma9551_read_config_word() error: uninitialized symbol 'v'.
-
-When (offset >= 1 << 12) is true mma9551_transfer() will return -EINVAL
-without 'v' being initialized, so check for the error and return.
-
-Note: No actual bug as caller checks the return value and does not
-use the parameter in the problem case.
-
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/r/20230126153610.3586243-1-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
 ---
- drivers/iio/accel/mma9551_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes for v3:
+- Added dt-bindings
+---
+ .../iio/temperature/microchip,mcp9600.yaml    | 72 +++++++++++++++++++
+ 1 file changed, 72 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
 
-diff --git a/drivers/iio/accel/mma9551_core.c b/drivers/iio/accel/mma9551_core.c
-index b4bbc83be4310..19b4fbc682e63 100644
---- a/drivers/iio/accel/mma9551_core.c
-+++ b/drivers/iio/accel/mma9551_core.c
-@@ -304,9 +304,12 @@ int mma9551_read_config_word(struct i2c_client *client, u8 app_id,
- 
- 	ret = mma9551_transfer(client, app_id, MMA9551_CMD_READ_CONFIG,
- 			       reg, NULL, 0, (u8 *)&v, 2);
-+	if (ret < 0)
-+		return ret;
+diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+new file mode 100644
+index 000000000000..584d0ae42502
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+@@ -0,0 +1,72 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	*val = be16_to_cpu(v);
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL(mma9551_read_config_word);
- 
++title: Microchip MCP9600 thermocouple EMF converter
++
++maintainers:
++  - Andrew Hepp <andrew.hepp@ahepp.dev>
++
++description: |
++  https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
++
++properties:
++  compatible:
++    const: microchip,mcp9600
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    maxItems: 6
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 6
++    items:
++      enum:
++        - open
++        - short
++        - alert1
++        - alert2
++        - alert3
++        - alert4
++
++  thermocouple-type:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Type of thermocouple (THERMOCOUPLE_TYPE_K if omitted).
++      Use defines in dt-bindings/iio/temperature/thermocouple.h.
++      Supported types are B, E, J, K, N, R, S, T.
++
++  vdd-supply:
++    description: Regulator that provides power to the sensor.
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/iio/temperature/thermocouple.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        mcp9600@60 {
++            compatible = "microchip,mcp9600";
++            reg = <0x60>;
++            interrupt-parent = <&gpio>;
++            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
++            interrupt-names = "open";
++            thermocouple-type = <THERMOCOUPLE_TYPE_K>;
++            vdd-supply = <&vdd>;
++        };
++    };
 -- 
-2.39.2
+2.30.2
 

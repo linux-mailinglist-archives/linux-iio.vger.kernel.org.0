@@ -2,55 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6028F6AABE4
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 19:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 649F36AABE9
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 19:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbjCDSgK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Mar 2023 13:36:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47576 "EHLO
+        id S229455AbjCDShU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Mar 2023 13:37:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjCDSgK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 13:36:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDBE1043E;
-        Sat,  4 Mar 2023 10:36:05 -0800 (PST)
+        with ESMTP id S229437AbjCDShT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 13:37:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A96010A85
+        for <linux-iio@vger.kernel.org>; Sat,  4 Mar 2023 10:37:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7B234B80861;
-        Sat,  4 Mar 2023 18:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E908C433D2;
-        Sat,  4 Mar 2023 18:36:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 057AA604EF
+        for <linux-iio@vger.kernel.org>; Sat,  4 Mar 2023 18:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1F0C433D2;
+        Sat,  4 Mar 2023 18:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677954963;
-        bh=nmOOQLHOiz7gJf5KiKJT2S4NsQF0YRA9zYaeEfQ/Fig=;
+        s=k20201202; t=1677955037;
+        bh=DR8uIlGnF82GAN84aJv/ynbYmSUNUp2flJj3sxj4xnw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lwHymCTciZYGvv9xb0dxF5gqsxfvHsJH6/1eqI3NaxhtgS9mX6JFVAg24jNZcglzn
-         7FY87XzMjPZuYAulADE+EYbKBCM+2e5aR+uwXnxa30jHFE5Z3LCqpPIHJJqNvjD64w
-         YmjATLPHhnjTJXeZqWwqupI7OuG3Du8uJii8uMQyEA9NHMQ4IQaVsgtmXrm+83UlD4
-         7RN+RG9Jc7w2jXuyjg9EuL1/4f03lulkCeaq44gT0xMAcyMjbO2LKjib9Wlqf+u9gw
-         B31MmlThnB329/8fkuHVWWQ59nlz+VYmvIZw3kcFKf4JNqxsenai5TX21fVwwv9GRv
-         xCCEuQQe8mbtw==
-Date:   Sat, 4 Mar 2023 18:35:57 +0000
+        b=eerONQnp+/rC1OtvRrWgeATDvEa6LjWCWhyU3Q99/2OnSW309AqkiQ5maCBku588U
+         JwfevQwnEdFo9/Ue7b/gllYDbVcd8QMQoIPF1nDOgOaskWU7zngX+KQhfZTD6dzOeT
+         eCz0WjLiDrGFF3Oz8InEMHTeCIpKOJVoN+QLta6uBPz7+kzV09flDlwUfybkUhucLd
+         7P6NCGTi0B3G/wazLISeYcEhsOp3HXpZ6FMNHs6DBYrCgxNajyxJHBu1YvVZlzywDM
+         C1ps1Q/EIv1VUpVdIxN6vr09Q5aMyLlBq5vsneGap4J3w+ZZSVvGbguMW+wqjSK6LT
+         AsmZyK67YXD3Q==
+Date:   Sat, 4 Mar 2023 18:37:13 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] iio: light: Add gain-time-scale helpers
-Message-ID: <20230304183557.2ea54737@jic23-huawei>
-In-Reply-To: <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
-References: <cover.1677750859.git.mazziesaccount@gmail.com>
-        <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
+Subject: Re: ROHM ALS, integration time
+Message-ID: <20230304183713.4cef5c88@jic23-huawei>
+In-Reply-To: <c6224b43-b77a-2e7d-2273-f496a7e72e5f@gmail.com>
+References: <65c7c45a-c953-e418-f640-9e46841151a1@gmail.com>
+        <20230130130231.000013b6@Huawei.com>
+        <baec476f-c72e-23d7-76b1-4e5062173226@fi.rohmeurope.com>
+        <20230202165714.0a1c37ac@jic23-huawei>
+        <11722ea9-7149-0305-5593-7a66dc1d73f0@fi.rohmeurope.com>
+        <20230218172052.12c44aa5@jic23-huawei>
+        <18a6709b-4d26-2672-b056-669750b4828c@gmail.com>
+        <20230226172958.1b4a87f2@jic23-huawei>
+        <c88c1672-badd-18ae-fcb7-bf2696319aba@gmail.com>
+        <c6224b43-b77a-2e7d-2273-f496a7e72e5f@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -60,46 +64,98 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2 Mar 2023 12:57:54 +0200
+On Mon, 27 Feb 2023 11:54:59 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Some light sensors can adjust both the HW-gain and integration time.
-> There are cases where adjusting the integration time has similar impact
-> to the scale of the reported values as gain setting has.
-> 
-> IIO users do typically expect to handle scale by a single writable 'scale'
-> entry. Driver should then adjust the gain/time accordingly.
-> 
-> It however is difficult for a driver to know whether it should change
-> gain or integration time to meet the requested scale. Usually it is
-> preferred to have longer integration time which usually improves
-> accuracy, but there may be use-cases where long measurement times can be
-> an issue. Thus it can be preferable to allow also changing the
-> integration time - but mitigate the scale impact by also changing the gain
-> underneath. Eg, if integration time change doubles the measured values,
-> the driver can reduce the HW-gain to half.
-> 
-> The theory of the computations of gain-time-scale is simple. However,
-> some people (undersigned) got that implemented wrong for more than once.
-> 
-> Add some gain-time-scale helpers in order to not dublicate errors in all
-> drivers needing these computations.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> On 2/27/23 09:22, Matti Vaittinen wrote:
+> > On 2/26/23 19:30, Jonathan Cameron wrote: =20
+> >> On Sat, 18 Feb 2023 20:08:10 +0200
+> >> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >> =20
+> >>> Thanks a lot Jonathan,
+> >>>
+> >>> You have been super helpful :) Thanks!
+> >>>
+> >>> On 2/18/23 19:20, Jonathan Cameron wrote: =20
+> >> Hmm. There is another approach that I'd not thought of in this case=20
+> >> because
+> >> in my head integration time is more continuous than it is for this=20
+> >> part and
+> >> that is to fiddle the _raw values (we do this for oversampling or SAR=
+=20
+> >> ADCs
+> >> where things tend to be powers of 2).=C2=A0 The trick is to shift the =
+raw=20
+> >> value
+> >> always so that the 'scale' due to (in this case) integration time rema=
+ins
+> >> constant.=C2=A0 That separates the two controls completely. =20
+> >=20
+> > Holy cow! That's a neat trick which I didn't think of!
+> >=20
+> > Basically, we could do >> 1 for the data when time is 100 mS, >> 2 when=
+=20
+> > 200 mS and >> 3 when 400 mS. We would want to use 19-bit channel values=
+=20
+> > then. =20
+>=20
+> Please ignore my previous mail. It seems I am once again not knowing=20
+> what I am talking about. If we take this approach, we shift << 3 when=20
+> int time is 55, << 2 for 100 and << 1 for 200. With 400 mS we would not=20
+> shift.
 
-Probably makes sense to put the exports in their own namespace.
+Spot on.
 
-I've been meaning to finish namespacing the rest of IIO but not
-gotten around to it yet.
-As this is a separate library probably makes sense to have a unique
-namespace for it that the users opt in on.
-Perhaps IIO_GTS makes sense?
+>=20
+> >> However, I'm not sure that makes sense here where the thing we typical=
+ly
+> >> want to change when scaling due to saturation is integration time. =20
+> >=20
+> > That's a bit problematic, yes. We could "fool" the user by doing the=20
+> > saturation check in driver, and then just returning the max value of al=
+l=20
+> > 19-bits set if the saturation is detected. This, however, would yield=20
+> > raw values that are slightly off. OTOH, with max sift of 3 bits that's=
+=20
+> > only 7 'raw ticks' - which I hope is acceptable. I hope the user will=20
+> > then be switching to shorter integration time and start getting correct=
+=20
+> > readings.
+> >=20
+> > It's slightly sad to say "good bye" to the gain-time-scale helpers but =
+I=20
+> > guess you just helped me to solve this with a _really_ simple way. We=20
+> > can keep those helpers in "back pocket" for the day when we need them ;)
+> >=20
+> > I will see what comes out of this idea - thanks for the help again!
+> >  =20
+>=20
+> But as you surely knew from the start, the saturation problems kick in=20
+> with the 'non maximum sifts' when the _highest_ bits never get set.
 
-Otherwise, as Andy's done a detailed review of this version I'll let
-you update it for those comments and take another look at v3.
+Yes, thats what we'd expect to see as we can only measure high light levels
+if the integration time is short.
 
-Thanks,
+> There the 'saturation detection' would cause a huge jump by suddenly=20
+> setting the high bits. So, yes - this does not seem like a feasible=20
+> option here :/
+
+Yes, there is no consistent value for saturation if you are changing
+the integration time as the real light levels that cause saturation are
+dependent on the integration time.
+
+>=20
+> /me feels stupid...
+>=20
+> Sorry for the noise!
+No problem.  It's interesting to understand where the limitations on
+some of these techniques lie and I hadn't thought about the issue
+of saturation as previous times we've done this have typically been
+on ADCs doing oversampling or similar where we don't get the same problem.
 
 Jonathan
 
+>=20
+> --Matti
+>=20
 

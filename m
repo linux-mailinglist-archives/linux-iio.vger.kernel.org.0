@@ -2,54 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3787E6AABBC
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 18:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BD066AABC8
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 19:19:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbjCDR6C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Mar 2023 12:58:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58726 "EHLO
+        id S229461AbjCDSS5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Mar 2023 13:18:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjCDR6C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 12:58:02 -0500
+        with ESMTP id S229445AbjCDSS5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 13:18:57 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67AD9038;
-        Sat,  4 Mar 2023 09:57:59 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E169CC38;
+        Sat,  4 Mar 2023 10:18:56 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0D879B808D2;
-        Sat,  4 Mar 2023 17:57:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933FDC433D2;
-        Sat,  4 Mar 2023 17:57:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AA8FAB80025;
+        Sat,  4 Mar 2023 18:18:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E41C433D2;
+        Sat,  4 Mar 2023 18:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677952676;
-        bh=c22VmOXtCWp19NR5qWXq8B8thkC+XNY/HmS2rJv/mfU=;
+        s=k20201202; t=1677953933;
+        bh=+C1QoL465S0DAWnHmb+L3BJQ0GC03oKwtV2RZFdpm+8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kp6P2G07p5ui1mR7XpjTXs8SnDm+3uR5g4IUfkOShW/jHWik9km3ysyKXmk6Rdqao
-         804Uoq9juqH/if0n7BAnnw3iDGWVzTbLZ5jBfpGyp9YwqFA0/JV7YX1Xe1ddoCpPtG
-         lYauQuuL+Vb2Y3I8CSlAv3Zk68CFWXBPhoxlxlQLP5nVkrF2BHn8cVjI4yemjg3ER2
-         HJplHLB9khHmSU2+1iw9WOzpSTaxVAo04t5QwqwuvjNvIIz4FEHDLUpirjt+C+hr4Z
-         aZM3E33LitiJnY8kqWrj3OOfjPjn5+9ZMmG4o64fnqCTH9cj8nvQBg9fDwpjPElLoC
-         AkcZp229syAPA==
-Date:   Sat, 4 Mar 2023 17:57:51 +0000
+        b=Ze4whC1mREMSC+Bg+JwcKRIqNgIAfStzcwtEs2DxvTOfkPn1Ry7LcN1QbqsIETif4
+         nZJ/neYd7l+HDEPAFB4CaqLT3AW+vg3+bKPRgpevPoci7anK9E2a47DDwkGaUR7Iry
+         zA3NNaxWS55zILE62lT1qOsxZ6sRW7Q8JuGdeSjbAi44Lr4vkx1yTHJH8qujeyF34K
+         JFVmV++yMLibkMRb2I3bnh15uOFpLucBWz0KdMeLSDJzlaQne2W7RZQV0i43QAMs1w
+         MJXSQYTyYYMmY/gXZeiMHLYSdpTIrf9LbZYpqvFcxJQ/nkKujYtreU9Xbr2mQ8CFS/
+         N+5PmJWR8gJ+Q==
+Date:   Sat, 4 Mar 2023 18:18:48 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <20230304175751.2daae308@jic23-huawei>
-In-Reply-To: <20230228063151.17598-2-mike.looijmans@topic.nl>
-References: <20230228063151.17598-1-mike.looijmans@topic.nl>
-        <20230228063151.17598-2-mike.looijmans@topic.nl>
+To:     Marco Felsch <m.felsch@pengutronix.de>
+Cc:     puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v6 2/5] iio: temperature: tmp117: improve fallback
+ capabilities
+Message-ID: <20230304181848.5020a8a6@jic23-huawei>
+In-Reply-To: <20230228090518.529811-3-m.felsch@pengutronix.de>
+References: <20230228090518.529811-1-m.felsch@pengutronix.de>
+        <20230228090518.529811-3-m.felsch@pengutronix.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,209 +56,140 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Feb 2023 07:31:51 +0100
-Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On Tue, 28 Feb 2023 10:05:15 +0100
+Marco Felsch <m.felsch@pengutronix.de> wrote:
 
-> The ADS1100 is a 16-bit ADC (at 8 samples per second).
-> The ADS1000 is similar, but has a fixed data rate.
+> Don't error if the device-id found don't match the device-id for the
+> TMP117 sensor since other TMPxxx might be compatible to the TMP117. The
+> fallback mechanism tries to gather the required information from the
+> of_device_id or from the i2c_client information.
 > 
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+> The commit also prepares the driver for adding new devices more easily
+> by making use of switch-case at the relevant parts.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+> v6:
+> - no changes
+> v5:
+> - identify: make use of v6.2 available i2c_client_get_device_id()
+> - identify: adapt dev_err() message
+> - probe: keep ret variable
+> v4:
+> - new patch to implement possible fallback (Jonathan)
+> 
+>  drivers/iio/temperature/tmp117.c | 44 ++++++++++++++++++++++++--------
+>  1 file changed, 34 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
+> index f9b8f2b570f6b..8a3992d9ee937 100644
+> --- a/drivers/iio/temperature/tmp117.c
+> +++ b/drivers/iio/temperature/tmp117.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/types.h>
+>  #include <linux/kernel.h>
+>  #include <linux/limits.h>
+> +#include <linux/property.h>
+>  
+>  #include <linux/iio/iio.h>
+>  
+> @@ -115,23 +116,40 @@ static const struct iio_info tmp117_info = {
+>  
+>  static int tmp117_identify(struct i2c_client *client)
+>  {
+> +	const struct i2c_device_id *id;
+> +	unsigned long match_data;
+>  	int dev_id;
+>  
+>  	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
+>  	if (dev_id < 0)
+>  		return dev_id;
+> -	if (dev_id != TMP117_DEVICE_ID) {
+> -		dev_err(&client->dev, "TMP117 not found\n");
+> -		return -ENODEV;
+> +
+> +	switch (dev_id) {
+> +	case TMP117_DEVICE_ID:
+> +		return dev_id;
+>  	}
+> -	return 0;
+> +
+> +	dev_info(&client->dev, "Unknown device id (0x%x), use fallback compatible\n",
+> +		 dev_id);
+> +
+> +	match_data = (uintptr_t)device_get_match_data(&client->dev);
+> +	if (match_data)
+> +		return match_data;
+> +
+> +	id = i2c_client_get_device_id(client);
+This particular path is a bit of an oddity as unlike the dt one we don't expect
+to get a case where the part present doesn't match. However, I guess it might happen
+if someone updates to a newer part number but for some reason doesn't update their
+board file or other use of this type of id.  That extra flexibility doesn't really
+hurt us so might as well leave it here.
 
-Hi Mike,
-
-A few minor things + one request for a test as trying to chase a possible
-ref count overflow around the runtime_pm was giving me a enough of a headache
-that it's easier to ask you just to poke it and see.  If it doesn't fail as
-I expect I'll take a closer look!
+So looking at this again, I'm fine with the prints you have here.
 
 Jonathan
 
-
-> +static int ads1100_set_scale(struct ads1100_data *data, int val, int val2)
-> +{
-> +	int microvolts;
-> +	int gain;
-> +	int i;
+> +	if (id)
+> +		return id->driver_data;
 > +
-> +	/* With Vdd between 2.7 and 5V, the scale is always below 1 */
-> +	if (val)
-> +		return -EINVAL;
+> +	dev_err(&client->dev, "Failed to identify unsupported device\n");
 > +
-> +	microvolts = regulator_get_voltage(data->reg_vdd);
-> +	/* Calculate: gain = ((microvolts / 1000) / (val2 / 1000000)) >> 15 */
-> +	gain = ((microvolts + BIT(14)) >> 15) * 1000 / val2;
+> +	return -ENODEV;
+>  }
+>  
+>  static int tmp117_probe(struct i2c_client *client)
+>  {
+>  	struct tmp117_data *data;
+>  	struct iio_dev *indio_dev;
+> -	int ret;
+> +	int ret, dev_id;
+>  
+>  	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+>  		return -EOPNOTSUPP;
+> @@ -140,6 +158,8 @@ static int tmp117_probe(struct i2c_client *client)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	dev_id = ret;
 > +
-> +	for (i = 0; i < 4; i++) {
-> +		if (BIT(i) == gain) {
-> +			ads1100_set_config_bits(data, ADS1100_PGA_MASK, i);
-> +			return 0;
-> +		}
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+> @@ -148,24 +168,28 @@ static int tmp117_probe(struct i2c_client *client)
+>  	data->client = client;
+>  	data->calibbias = 0;
+>  
+> -	indio_dev->name = "tmp117";
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->info = &tmp117_info;
+>  
+> -	indio_dev->channels = tmp117_channels;
+> -	indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
+> +	switch (dev_id) {
+> +	case TMP117_DEVICE_ID:
+> +		indio_dev->channels = tmp117_channels;
+> +		indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
+> +		indio_dev->name = "tmp117";
+> +		break;
 > +	}
-Andy's suggestion of something like..
-	if (!gain)
-		return -EINVAL;
-	i = ffs(gain);
-	if (i >= 4 || BIT(i) != gain)
-		return -EINVAL;
-
-	ads...
-
-Is perhaps nicer than the loop.
-
-	 
-> +
-> +	return -EINVAL;
-> +}
-
-
-> +static void ads1100_disable_continuous(void *data)
-> +{
-> +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
-> +}
-> +
-> +static int ads1100_probe(struct i2c_client *client)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct ads1100_data *data;
-> +	struct device *dev = &client->dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-
-You can avoid the slightly nasty mix of i2c_set_clientdata vs dev_get_drvdata()
-below by taking advantage of the fact you have a local dev pointer.
-
-	dev_set_drvdata(dev, indio_dev);
-and no confusing mix is left.  Of course it's doing the same thing but to my
-mind slightly nicer to use the same one.
-
-> +	data->client = client;
-> +	mutex_init(&data->lock);
-> +
-> +	indio_dev->name = "ads1100";
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = &ads1100_channel;
-> +	indio_dev->num_channels = 1;
-> +	indio_dev->info = &ads1100_info;
-> +
-> +	data->reg_vdd = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(data->reg_vdd))
-> +		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-> +				     "Failed to get vdd regulator\n");
-> +
-> +	ret = regulator_enable(data->reg_vdd);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-> +				     "Failed to enable vdd regulator\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, ads1100_reg_disable, data->reg_vdd);
-> +	if (ret)
-> +		return ret;
-
-Please could you check a subtle interaction of runtime pm and this devm managed
-flow.
-
-I think we can hit the following flow.
-1) In runtime suspend (wait long enough for this to happen).
-2) Unbind the driver (rmmod will do)
-3) During the unbind we exit suspend then enter it again before we call remove
-   (that's just part of the normal remove flow).
-4) We then end up calling regulator disable when it's already disabled.
-
-We've traditionally avoided that by having the remove explicitly call
-pm_runtime_get_sync() before we then disable runtime pm.  I don't
-think that happens with devm_pm_runtime_enable() but I could be missing
-a path where it does.
-
-If the sequence goes wrong you should get a warning about an unbalanced regulator
-disable.  The fix would be an extra devm_add_action_or_reset() before the
-devm_iio_device_register() below that just calls pm_runtime_get_sync()
-to force the state to on.
-
-Gah. These subtle paths always give me a headache.
-We don't normally have too much problem with this because many
-runtime_resume / suspend functions don't change reference counts.
-
-
-
-> +
-> +	ret = ads1100_setup(data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to communicate with device\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, ads1100_disable_continuous, data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ads1100_calc_scale_avail(data);
-> +
-> +	pm_runtime_set_autosuspend_delay(dev, ADS1100_SLEEP_DELAY_MS);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_set_active(dev);
-> +	ret = devm_pm_runtime_enable(dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to enable pm_runtime\n");
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to register IIO device\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads1100_runtime_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-
-Fine to just short cut this dance with 
-struct iio_dev *indio_dev = dev_get_drvdata(dev);
-
-It's a bit nasty from a readability point of view, but the pattern is
-so common we've kind of gotten used to it.
-
-
-
-> +	struct ads1100_data *data = iio_priv(indio_dev);
-
-As you don't need the indio_dev, can combine all this into
-
-	struct ads110_data *data = iio_priv(dev_get_drvdata(dev));
-
-> +
-> +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
-> +	regulator_disable(data->reg_vdd);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads1100_runtime_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-
-As above.
-
-> +	struct ads1100_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regulator_enable(data->reg_vdd);
-> +	if (ret) {
-> +		dev_err(&data->client->dev, "Failed to enable Vdd\n");
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * We'll always change the mode bit in the config register, so there is
-> +	 * no need here to "force" a write to the config register. If the device
-> +	 * has been power-cycled, we'll re-write its config register now.
-> +	 */
-> +	return ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_CONTINUOUS);
-> +}
-> +
+>  
+>  	return devm_iio_device_register(&client->dev, indio_dev);
+>  }
+>  
+>  static const struct of_device_id tmp117_of_match[] = {
+> -	{ .compatible = "ti,tmp117", },
+> +	{ .compatible = "ti,tmp117", .data = (void *)TMP117_DEVICE_ID },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, tmp117_of_match);
+>  
+>  static const struct i2c_device_id tmp117_id[] = {
+> -	{ "tmp117", 0 },
+> +	{ "tmp117", TMP117_DEVICE_ID },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(i2c, tmp117_id);
 

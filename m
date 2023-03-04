@@ -2,44 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF756AAB66
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 18:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 026486AAB73
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Mar 2023 18:10:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjCDRG1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Mar 2023 12:06:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
+        id S229633AbjCDRKF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Mar 2023 12:10:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjCDRG0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 12:06:26 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6061E2B2
-        for <linux-iio@vger.kernel.org>; Sat,  4 Mar 2023 09:06:25 -0800 (PST)
+        with ESMTP id S229519AbjCDRKF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Mar 2023 12:10:05 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF9113510;
+        Sat,  4 Mar 2023 09:10:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 156DA60A0B
-        for <linux-iio@vger.kernel.org>; Sat,  4 Mar 2023 17:06:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F41C433D2;
-        Sat,  4 Mar 2023 17:06:23 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BBC33B8085B;
+        Sat,  4 Mar 2023 17:10:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C3CC433D2;
+        Sat,  4 Mar 2023 17:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677949584;
-        bh=ZBPnbSKFHiO35toU1s5uH6sqdcvesLEODxNloce+RKM=;
+        s=k20201202; t=1677949801;
+        bh=NrlHNbC0RBF/brfBYIQ1V0X3Mby6WLA9TCmdFEMGJzk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HzAfCqD+hSAj/D8FmMoDlgWmMXrY/StiRT4nZIQnb1OmJa6QyKd7uGm+I4hGIgmeG
-         sF6sWKdSL29XdINnIokrlbnwVgQD5G/dxLBdE0ZwW5Bkr0DUG5620fud/TLrLNnMGs
-         HtB6rFcFpOS46A3UbRqRLXCBJJFdeG7ungNh7iDm8/sZeo0TBTuAp0Hte7ly/A5sTV
-         cR6iq+OyF/KqZ2QW2f7/VkrbzXOUgxCazqHNcNWlrn+oGmOsJX0DWj13Mg/cmQkylP
-         AP5M6+26IT+spvzouD75Kh4nveRkNsjF3rbpr1HsTGOTvHqiWx2a/fvbmAEFD5gwrJ
-         fgF8C/8jhLFzw==
-Date:   Sat, 4 Mar 2023 17:06:20 +0000
+        b=cnUz6wY4IY2OIdskNR8GlA/BKXzWYIKitsEmYEsPzCqZPsCYI7JM7Xffhj8pGMhCS
+         dsOhjm3CGtp9SqsVQuxj1xSX01cbepdvnZOR6cK83g9VrPHSJry+XZg9T/58hmbP+3
+         eiFnNOskVtCLz1FZaP7diqSJ8EPXPiYK3JtG9WPx9omSeRAQw+OPXqTawtMfMKT279
+         4+kolmxS79iTLX1GcNVHKofFo7Iu0ZF8YsdhSwG1G4Kb06fS+PG6CP/sY2kjZ1rls0
+         OrQkKnlDqUa4x+r0foIabK5nY9+IfcXF74I687fJM80Y02nV9FF4IaJxfx8Kn+CKRU
+         Ep/+C+tchSySA==
+Date:   Sat, 4 Mar 2023 17:09:57 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Andres Heinloo" <andres@gfz-potsdam.de>
-Cc:     "Jonathan Cameron" <Jonathan.Cameron@Huawei.com>,
-        "Eddie James" <eajames@linux.ibm.com>, linux-iio@vger.kernel.org
-Subject: Re: Bugs in dps310 Linux driver
-Message-ID: <20230304170620.795f4d99@jic23-huawei>
-In-Reply-To: <web-1200302@cgp-be2-mgmt.gfz-potsdam.de>
-References: <web-1200302@cgp-be2-mgmt.gfz-potsdam.de>
+To:     Andrew Hepp <andrew.hepp@ahepp.dev>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: Add MCP9600 thermocouple EMF
+ converter bindings
+Message-ID: <20230304170957.4748bf10@jic23-huawei>
+In-Reply-To: <20230304004109.78659-1-andrew.hepp@ahepp.dev>
+References: <20230304004109.78659-1-andrew.hepp@ahepp.dev>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,67 +55,111 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 03 Mar 2023 12:10:00 +0100
-"Andres Heinloo" <andres@gfz-potsdam.de> wrote:
+On Fri,  3 Mar 2023 16:41:08 -0800
+Andrew Hepp <andrew.hepp@ahepp.dev> wrote:
 
-> Hello,
+> Add support for the MCP9600 thermocouple EMF converter.
 > 
-> I've been struggling with the dps310 driver, which gives incorrect 
-> pressure values and in particular different values than manufacturers 
-> code (https://github.com/Infineon/RaspberryPi_DPS).
+> Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+> Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+> ---
+> Changes for v3:
+> - Added dt-bindings
+> ---
+>  .../iio/temperature/microchip,mcp9600.yaml    | 72 +++++++++++++++++++
+>  1 file changed, 72 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
 > 
-> I think I've found where the problem is. Firstly, there is a mistake 
-> in bit numbering at 
-> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L51
-> 
-> According to datasheet, correct is:
-> 
-> #define  DPS310_INT_HL          BIT(7)
-> #define  DPS310_TMP_SHIFT_EN    BIT(3)
-> #define  DPS310_PRS_SHIFT_EN    BIT(2)
-> #define  DPS310_FIFO_EN         BIT(1)
-> #define  DPS310_SPI_EN          BIT(0)
-> 
-> Eg., the current code is using wrong bit (4) for DPS310_PRS_SHIFT_EN, 
-> which means that pressure shift is never enabled.
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> new file mode 100644
+> index 000000000000..584d0ae42502
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> @@ -0,0 +1,72 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip MCP9600 thermocouple EMF converter
+> +
+> +maintainers:
+> +  - Andrew Hepp <andrew.hepp@ahepp.dev>
+> +
+> +description: |
+> +  https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: microchip,mcp9600
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 6
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    maxItems: 6
+> +    items:
+> +      enum:
+> +        - open
 
-Checking the datasheet, seems like you are right.
-https://www.infineon.com/dgdl/Infineon-DPS310-DataSheet-v01_02-EN.pdf?fileId=5546d462576f34750157750826c42242
-Section 7: 
+Perhaps make it more explicit?  open-circuit
 
-Though that's not the only bit that is wrong.  Looks like FIFO enable is as well.
-So any fix should deal with that as well.
+> +        - short
 
-The differences between the register map and the datasheet I'm looking at make
-me think that perhaps the driver was developed against a prototype part.
-The registers are in a different order for starters with the B0, B1 and B2
-sets in reverse order.  Any fix patch should tidy that up as well.
+Same here? short-circuit
 
+> +        - alert1
+> +        - alert2
+> +        - alert3
+> +        - alert4
+> +
+> +  thermocouple-type:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Type of thermocouple (THERMOCOUPLE_TYPE_K if omitted).
+> +      Use defines in dt-bindings/iio/temperature/thermocouple.h.
+> +      Supported types are B, E, J, K, N, R, S, T.
+> +
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor.
 
-> 
-> Secondly, there is a problem with overflows starting at 
-> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L654
-> 
-> Since p is a 24-bit value,
-> 
-> nums[3] = p * p * p * (s64)data->c30;
-> 
-> can and does overflow.
+I'd count that one as so common it doesn't need a description.
+    vdd-supply: true
 
-Makes sense, though I can't immediately see a good solution as we need
-to maintain the remainder part.
-
-> 
-> Second overflow problem is at 
-> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L684
-> 
-> In fact, I don't understand why 1000000000LL is needed. Since only 7 
-> values are summed, using 10LL should give the same precision.
-Whilst the existing  value seems large - I'm not great with precision calcs so could
-you lay out why 10LL is sufficient?
+would be sufficient.
 
 
-> 
-> Best regards,
-> Andres
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/iio/temperature/thermocouple.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mcp9600@60 {
+> +            compatible = "microchip,mcp9600";
+> +            reg = <0x60>;
+> +            interrupt-parent = <&gpio>;
+> +            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +            interrupt-names = "open";
+> +            thermocouple-type = <THERMOCOUPLE_TYPE_K>;
+> +            vdd-supply = <&vdd>;
+> +        };
+> +    };
 

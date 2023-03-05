@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A976AAF77
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Mar 2023 13:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F0C6AAFD9
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Mar 2023 14:10:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229507AbjCEMW5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Mar 2023 07:22:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37274 "EHLO
+        id S229613AbjCENKo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Mar 2023 08:10:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjCEMW4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Mar 2023 07:22:56 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA85A19B9;
-        Sun,  5 Mar 2023 04:22:54 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id z42so6853149ljq.13;
-        Sun, 05 Mar 2023 04:22:54 -0800 (PST)
+        with ESMTP id S229495AbjCENKn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Mar 2023 08:10:43 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31457F973;
+        Sun,  5 Mar 2023 05:10:41 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id i9so9328360lfc.6;
+        Sun, 05 Mar 2023 05:10:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678018973;
+        d=gmail.com; s=20210112; t=1678021839;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Fxa3JSdBjR11ggW+4GvWfjNtDCdDCa14Je0bJ6V+ye0=;
-        b=MGVCQe3n1eOH7uafvXwqLYaGUe9gMVE32oAwU0R6AgYkBJ32ZyhE8JL85rBXS+uWtM
-         tkvBv8Ws4Ie8eGx/TgOXaf0aPbvERmzggWBBbi9RLgQzZ38KsNqCbveeAN6gYPezW2px
-         zgbmKjaWVNbjDXAVsuYbeQf1UrSuQYJo8aLu6ZHQxFTa6dC06M2crkeFmd6Udao6sScE
-         XPyJuvyYUl8RKCjfl6XGHR6yNSvHBsepZnHCGo6Ushwl3MXbJF8xPo+WcVI/krDWAfNu
-         fgN74n/22IIWVBkYV9FEha+mNohQU+VtjlksLGMM43+96lGX/evJRABAZ5+eVIcq1X6Z
-         rfKw==
+        bh=QZpGpbya4cC8VQNzo8570FkIU7Kuap43WsN/Qj+Dn38=;
+        b=SiGcrmp1QVUlYYXHcGQo1auWNJ4RbclHtoCVFS1QU9xBmFvhoP9///wXHSA08aOcDH
+         dvKW3YDvqHD7rQKQPCcZ02ADkZdrwxDlTcEouYspQ50U4ar/paW75tPkB77Ywy/23rnR
+         J4yvagX1vdBFAUgjdSCMXxIib1uWXpEYJCYkExfJ2pGWQeaNfiVOfkWPYtlcykfPVfBW
+         p/UH4Q27PW2DdrxYt4aab5AwP28Ig9cDyYJTQtmsKQRX13geY70iQaSQMfY/I+p+y83e
+         2LGEXTcLHb/R2VRN8OnFZ5yj7vCCtAnuW7OUMsRswPpdvlf06jU6g6Icf137Tn0GZ061
+         y1lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678018973;
+        d=1e100.net; s=20210112; t=1678021839;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fxa3JSdBjR11ggW+4GvWfjNtDCdDCa14Je0bJ6V+ye0=;
-        b=6DJrTsNz6tPYE3wtAnk8GkqcgU2BbHrh2t3bjgXMe2dnKyicsUp92rkninL/uRT8QO
-         QCTK3E9D44oOwh27l4x9O/5MUbNB7QrJmi2AG4IDCDHtd8GOSvyqp3PiRPMz/2SQ9kkD
-         zWqLLBlOAhSROZe8S6fNnn1A324gCXfa6a5HQIj5s8Zr9q+JLWAkP/m/uvkiLB5HOLt6
-         LSwlISm+VtQrvmzVockaZZIwFtnlhLtVkVhSEr2qAOZMnbG7DBBRzTMY5b/eZvPY5rfY
-         nKKkdqpVV6lGZ4prilf/RVE5PtguYXFgD9HrIxPBLpF0Ye/gc7E5gvIo3r2a42JehKgl
-         tO3A==
-X-Gm-Message-State: AO0yUKW1fOvMNsgWeP8qt1fiW6/BFpz1Jjgm9NgdgZ1bEgtnJG/2wgsI
-        ua6Prz0SPwYvqB1O9PBIFEg=
-X-Google-Smtp-Source: AK7set/3S6rVVdv63wz55P4MryjwzL61IpmXOF+dG4AmBan/kGNyis3Ixuouanc4XgBPrbJMNSnDAg==
-X-Received: by 2002:a2e:9011:0:b0:295:a96d:66fa with SMTP id h17-20020a2e9011000000b00295a96d66famr1832146ljg.20.1678018972655;
-        Sun, 05 Mar 2023 04:22:52 -0800 (PST)
+        bh=QZpGpbya4cC8VQNzo8570FkIU7Kuap43WsN/Qj+Dn38=;
+        b=oQkePdxUemEv6ofIeWW9vDF8WVGi38THB+Hl3BtZXNpzhZWaj91UOFUB4eivtTHTkX
+         uJSkKfAFZ64cMAHdFcTy5c2S0/qqj1wlRSeLJZH32p9HXdkyRgGr4ocidFP4yucPdK1U
+         D+GAylZ4OBVpUZX5Uz5Edtzi9t0r/PR1zpXs7rHdDyGcez+5tR709AY2rZ2ExOv4DyW6
+         jheDnPOaY9IL0GWKcTqYqrsZjt/QMxeYaF18NZJXvwi3MPV69IAtjTYldk2u7hqEWonn
+         24OP2HeeRiGouXGQe5NxI4zvdXXppxE/oCA/Z5DUsXUwg1L+0CBBbu02cZ9L+HHJXkYc
+         kpqA==
+X-Gm-Message-State: AO0yUKV/R7nZxPhs9PGVl5qqLTpLrBllIDu4GHCdrkAy8dbuwuP1BWdP
+        lcYE26f0SJElY4+7hEB8izQ=
+X-Google-Smtp-Source: AK7set/L14bynE66l+B6jQavDAeILUdr9LlxkHmhCyTnL9Yo/cFSswGu6Qf2GgmEKSBnZsnoaIHdSg==
+X-Received: by 2002:a05:6512:20f:b0:4dd:995b:feaa with SMTP id a15-20020a056512020f00b004dd995bfeaamr1944786lfo.24.1678021839417;
+        Sun, 05 Mar 2023 05:10:39 -0800 (PST)
 Received: from ?IPV6:2001:14ba:16f3:4a00::6? (dc75zzyyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::6])
-        by smtp.gmail.com with ESMTPSA id p8-20020a2e9ac8000000b0029353201fddsm1249539ljj.129.2023.03.05.04.22.52
+        by smtp.gmail.com with ESMTPSA id u3-20020ac243c3000000b004dc4cb4f9c4sm1195561lfl.35.2023.03.05.05.10.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 Mar 2023 04:22:52 -0800 (PST)
-Message-ID: <c16d372f-a122-16d6-ad08-1fbffb01d9ff@gmail.com>
-Date:   Sun, 5 Mar 2023 14:22:51 +0200
+        Sun, 05 Mar 2023 05:10:39 -0800 (PST)
+Message-ID: <4beef812-8f4f-3857-c814-efd9173d49e6@gmail.com>
+Date:   Sun, 5 Mar 2023 15:10:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
@@ -71,7 +71,7 @@ From:   Matti Vaittinen <mazziesaccount@gmail.com>
 Subject: Re: [PATCH v2 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
 In-Reply-To: <20230304201720.2d554f07@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -86,165 +86,52 @@ On 3/4/23 22:17, Jonathan Cameron wrote:
 > On Thu, 2 Mar 2023 12:58:59 +0200
 > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> +/*
->> + * The BU27034 does not have interrupt or any other mechanism of triggering
->> + * the data read when measurement has finished. Hence we poll the VALID bit in
->> + * a thread. We will try to wake the thread BU27034_MEAS_WAIT_PREMATURE_MS
->> + * milliseconds before the expected sampling time to prevent the drifting. Eg,
->> + * If we constantly wake up a bit too late we would eventually skip a sample.
+> As per other branch of the thread.
 > 
-> Lazier approach would be to just sent the sampling frequency at twice the
-> expected frequency and you'll never miss a sample unless you the wake up is
-> delayed massively for some reason.  Particularly 'fresh' data might not matter
-> enough that half a cycle late is a problem.
+> 	ch0 = max(1, le16_to_cpu(res[0]);
+>  > would be cleaner.
 
-Hmm. Do I read this right - You suggest we drop the polling loop for 
-valid bit and just always sleep for int_time / 2 if data was not valid?
+I tried this out. Comparing u16 to literal 1 results comparison of 
+values with different sizes:
 
-I don't know. That would probably make the time-stamps for buffered 
-results to be jumping quite a bit - especially with the longer 
-integration times.
-
->> + * And because the sleep can't wake up _exactly_ at given time this would be
->> + * inevitable even if the sensor clock would be perfectly phase-locked to CPU
->> + * clock - which we can't say is the case.
->> + *
->> + * This is still fragile. No matter how big advance do we have, we will still
->> + * risk of losing a sample because things can in a rainy-day skenario be
->> + * delayed a lot. Yet, more we reserve the time for polling, more we also lose
->> + * the performance by spending cycles polling the register. So, selecting this
->> + * value is a balancing dance between severity of wasting CPU time and severity
->> + * of losing samples.
->> + *
->> + * In most cases losing the samples is not _that_ crucial because light levels
->> + * tend to change slowly.
->> + */
->> +#define BU27034_MEAS_WAIT_PREMATURE_MS	5
->> +#define BU27034_DATA_WAIT_TIME_US	1000
->> +#define BU27034_TOTAL_DATA_WAIT_TIME_US (BU27034_MEAS_WAIT_PREMATURE_MS * 1000)
-> 
->> +static const struct iio_chan_spec bu27034_channels[] = {
->> +	{
->> +		.type = IIO_LIGHT,
->> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
->> +				      BIT(IIO_CHAN_INFO_SCALE),
-> 
-> What is this scale for?
-
-The scale is to inform users that we return data using milli lux.
-
-> Given the channel is computed from various different inputs, is there a
-> clear definition of how it is scaled?  What does a write to it mean?
-
-Nothing. writing anything else but milli lux scale fails with -EINVAL.
-
-I guess I am doing something in an unusual way here :) Do you have a 
-suggestion for me?
+./include/linux/minmax.h:20:28: warning: comparison of distinct pointer 
+types lacks a cast
+   (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+                             ^
+./include/linux/minmax.h:26:4: note: in expansion of macro ‘__typecheck’
+    (__typecheck(x, y) && __no_side_effects(x, y))
+     ^~~~~~~~~~~
+./include/linux/minmax.h:36:24: note: in expansion of macro ‘__safe_cmp’
+   __builtin_choose_expr(__safe_cmp(x, y), \
+                         ^~~~~~~~~~
+./include/linux/minmax.h:74:19: note: in expansion of macro ‘__careful_cmp’
+  #define max(x, y) __careful_cmp(x, y, >)
+                    ^~~~~~~~~~~~~
+drivers/iio/light/rohm-bu27034.c:1057:8: note: in expansion of macro ‘max’
+   ch0 = max(1, ch0);
 
 
->> +			/*
->> +			 * As Jonathan put it, if caller requests for
-> 
-> Probably don't reference me directly in a driver.  Keep the 'blame' for the
-> email threads :)  Comment is fine otherwise.
+I could work around this by doing:
 
-Okay, okay :) I just liked the expression and didn't want to take the 
-credit for it ;)
+const u16 min_ch_val = 1;
 
->> +
->> +	/*
->> +	 * The new integration time can be supported while keeping the scale of
->> +	 * channels intact by tuning the gains.
-> 
-> This comment is in a path that is hit event if we go through the warnings
-> above that say this isn't true.
+...
 
-Oh! Valid point! This changed when I allowed gain to be changed - need 
-to drop the comment. Thanks!
+ch0 = max(min_ch_val, le16_to_cpu(res[0]));
 
->> +
->> +static int bu27034_calc_lux(struct bu27034_data *data, __le16 *res, int *val)
-> 
-> As you are going to put it in the buffer, make val a fixed size integer.
-> The current approach of calculate in an int and copy to a u32 is a bit nasty.
-> Of course if there is a chance of a large enough value you'll have to be careful
-> for the unsigned to signed conversion on 32 bit platforms. I doubt there is, but
-> a comment saying why not would be great in the code that is hit from read_raw()
+but I think that would really be obfuscating the meaning. I assume
 
-This same ..._calc_lux() is used also from the read_raw. I'd rather keep 
-this using ints so there would be no need for involving u32 in 
-read_raw() path. However, you are correct in that the current calling 
-from buffered read where we pass pointer to u32 here - is nasty. I'll 
-add temporary int in the calling function there, and add casting with a 
-comment when storing value to scan.lux. Thanks for pointing this out! 
-There was also missing an error return problem - see below.
+ch0 = max((u16)1, le16_to_cpu(res[0]));
 
->> +
->> +	if (d1_d0_ratio_scaled < 87)
->> +		*val = bu27034_fixp_calc_lx(ch0, ch1, gain0, gain1, meastime, 0);
->> +	else if (d1_d0_ratio_scaled < 100)
->> +		*val = bu27034_fixp_calc_lx(ch0, ch1, gain0, gain1, meastime, 1);
->> +	else
->> +		*val = bu27034_fixp_calc_lx(ch0, ch1, gain0, gain1, meastime, 2);
->> +
+might work too - but to me it's pretty ugly.
 
-The bu27034_fixp_calc_lx() might return -EINVAL - which we missed here. 
-I'll fix also this one.
+The more I am looking at this, the stronger I feel we should really just 
+write this as it was. Check if res[0] contains the only unsafe data 
+"!res[0]" - and if yes, set it to 1. The comment above it will clarify 
+it to a reader wondering what happens.
 
->> +
->> +	case IIO_CHAN_INFO_PROCESSED:
->> +		if (chan->type != IIO_LIGHT)
->> +			return -EINVAL;
->> +
->> +		/* Don't mess with measurement enabling while buffering */
->> +		ret = iio_device_claim_direct_mode(idev);
->> +		if (ret)
->> +			return ret;
->> +
->> +		mutex_lock(&data->mutex);
-> 
-> See below. I would factor out the rest of this so that you can
-> unconditionally unlock and then check the return value.
-
-Yes. moving measurement start/stop in bu27034_get_lux() makes this much 
-nicer. I wonder how I didn't see that myself - thanks.
-
->> +
->> +	ret = regmap_read(regmap, BU27034_REG_SYSTEM_CONTROL, &part_id);
-> 
-> As it's not all of the register I'd rename the temporary variable to
-> val or reg or something along those lines.
-
-I still like having the variable named part_id - as it makes the check 
-obvious. What I did was adding another temporary variable 'reg' and doing:
-
-part_id = FIELD_GET(BU27034_MASK_PART_ID, reg);
-
-and then using the part_id in if() and dev_warn().
-
-> 
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "Failed to access sensor\n");
->> +
->> +	part_id &= BU27034_MASK_PART_ID;
-> 
-> FIELD_GET() even when it's lower bits as then there is no need for
-> a reviewer to confirm that it is the lower bits.
-> Then you can just do
-> 
-> 	if (FIELD_GET(BU27034_MASK_PART_ID, reg) != BU27034_ID)
-> 
->> +
->> +	if (part_id != BU27034_ID)
->> +		dev_warn(dev, "unsupported device 0x%x\n", part_id);
-> 
-> I'd adjust that to "unknown device" or "unrecognised device" as it might
-> well be supported just fine based on the compatible fallback, we just have
-> no way of knowing if it is.
-> 
-
-Hmm. Won't promise but maybe I have the time to finish v3 tonight. We 
-can then continue discussions towards the v4 :)
+I will leave it like it was in v2 for v3. If you still feel strong about 
+it then we need to continue rubbing it.
 
 Yours,
 	-- Matti

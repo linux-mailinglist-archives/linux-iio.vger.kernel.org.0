@@ -2,129 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F4F66AC42C
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 15:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DED176AC4D4
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 16:27:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbjCFO6w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Mar 2023 09:58:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41192 "EHLO
+        id S229663AbjCFP1o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Mar 2023 10:27:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjCFO6v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 09:58:51 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F5F26A8;
-        Mon,  6 Mar 2023 06:58:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678114727; x=1709650727;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=q77ZwhYUij5+bpp+XhatvdvLOPOkge/IB45qu1ZrHgc=;
-  b=e8GBlaJGGPv8e6l/S+gZK3gqnLXkKSaU/+dWjENiLybo6DXJyhoIPhZU
-   upo+/qNyjtGj8tTJ5IRFWh8Zm+oabNNI3NOEUkdKKDsaDvHazsrDF7T7V
-   1yejoNYTZUncsC72ppHAMvv9LpBiOTV5I65OTe1ukaiMJl3n8xzsoFM4a
-   WEIAX3y4zmB/tdDkZwnYOKGeo9N9EObzslAWWbz4d+H9KmwaryH+b0yiO
-   58794rOVERWEWWoCKkbxa5f3OTxPkUBoRKEJq3xcIXS853dFVdTxvzHda
-   rleW1uwPp+QecAADkCWDKoqXhZPiPXnKCoATKCgGyDf4yeW3JI+8UYKtC
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="323880049"
-X-IronPort-AV: E=Sophos;i="5.98,238,1673942400"; 
-   d="scan'208";a="323880049"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 06:58:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="786261119"
-X-IronPort-AV: E=Sophos;i="5.98,238,1673942400"; 
-   d="scan'208";a="786261119"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 06 Mar 2023 06:58:31 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pZCIH-00GUGD-0p;
-        Mon, 06 Mar 2023 16:58:29 +0200
-Date:   Mon, 6 Mar 2023 16:58:28 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        with ESMTP id S231248AbjCFP1l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 10:27:41 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1ECEB311E9;
+        Mon,  6 Mar 2023 07:27:37 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39E2212FC;
+        Mon,  6 Mar 2023 07:28:20 -0800 (PST)
+Received: from e127643.broadband (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3437D3F71A;
+        Mon,  6 Mar 2023 07:27:34 -0800 (PST)
+From:   James Clark <james.clark@arm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     James Clark <james.clark@arm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <ZAX/lGR9srDRIzl7@smile.fi.intel.com>
-References: <20230306131312.7170-1-mike.looijmans@topic.nl>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0270109b-145d-4024-b8ff-05d54be2ad97@emailsignatures365.codetwo.com>
- <20230306131312.7170-2-mike.looijmans@topic.nl>
- <ZAXqwaKA3Uh6TH2q@smile.fi.intel.com>
- <8a1dc110-97fe-a9c8-ce53-918f403a16eb@topic.nl>
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: [PATCH 0/4] devres: Provide krealloc_array
+Date:   Mon,  6 Mar 2023 15:27:19 +0000
+Message-Id: <20230306152723.3090195-1-james.clark@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8a1dc110-97fe-a9c8-ce53-918f403a16eb@topic.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 06, 2023 at 03:44:23PM +0100, Mike Looijmans wrote:
-> On 06-03-2023 14:29, Andy Shevchenko wrote:
+Hi,
 
-...
+I had a use for a devm realloc_array in a separate change, so I've
+added one and updated all the obvious existing uses of it that I could
+find. This is basically a copy paste of the one in slab.h
 
-> Combining it all, I'd arrive at this code:
-> 
->     gain = DIV_ROUNDUP_CLOSEST(microvolts, BIT(15)) * MILLI / val2;
->     if (gain < BIT(0) || gain > BIT(3))
->         return -EINVAL;
-> 
->     ads1100_set_config_bits(data, ADS1100_PGA_MASK, ffs(gain) - 1);
+Applies to v6.3-rc1
 
-Fine by me.
+Thanks
+James
 
-...
+James Clark (4):
+  devres: Provide krealloc_array
+  hwmon: pmbus: Use devm_krealloc_array
+  iio: adc: Use devm_krealloc_array
+  serial: qcom_geni: Use devm_krealloc_array
 
-> > > +			return ads1100_set_config_bits(
-> > > +					data, ADS1100_DR_MASK,
-> > > +					FIELD_PREP(ADS1100_DR_MASK, i));
-> > Wrong indentation.
-> > Please, check all your code for this kind of issues.
-> > 
-> I always run it through checkpatch.pl but that didn't report on this
-> indentation.
-
-Checkpatch is:
-
-1) not comprehensive;
-2) not must-to-follow;
-
-tool.
-
-Use your common sense. You have a lot of room on the previous line at least
-for 'data'. Trailing opening ( is not good indentation. But sometimes might
-be unavoidable.
-
-> A bit of digging in the scripts directory yields "Lindent". Feeding my file
-> to that indeed changes those lines (and some others too). I'll run my next
-> patch through that.
-
-If it will look nice, why not?
+ .../driver-api/driver-model/devres.rst          |  1 +
+ drivers/hwmon/pmbus/pmbus_core.c                |  6 +++---
+ drivers/iio/adc/xilinx-ams.c                    |  9 +++------
+ drivers/iio/adc/xilinx-xadc-core.c              | 17 +++++++----------
+ drivers/tty/serial/qcom_geni_serial.c           |  6 +++---
+ include/linux/device.h                          | 10 ++++++++++
+ 6 files changed, 27 insertions(+), 22 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 

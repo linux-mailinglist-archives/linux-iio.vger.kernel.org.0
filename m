@@ -2,160 +2,392 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E53866ABF68
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 13:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4E56ABFEA
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 13:53:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbjCFMZ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Mar 2023 07:25:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49868 "EHLO
+        id S229961AbjCFMxF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Mar 2023 07:53:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbjCFMZ0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 07:25:26 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F110A279AD;
-        Mon,  6 Mar 2023 04:25:24 -0800 (PST)
+        with ESMTP id S229826AbjCFMxE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 07:53:04 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3005E3B4;
+        Mon,  6 Mar 2023 04:53:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678105524; x=1709641524;
+  t=1678107182; x=1709643182;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=W8RPdrA6zsq5zgKn1+vk/ssD+rDKRswAS+XkKih0rHw=;
-  b=eBeMP4ZOaLjG9xXdfJ1mEx1KLnXFjRpV6Ar/hsUwEOFHam98+GF9XC6z
-   1tJi5D8QZLP7VB2dUlAo5pBAjHcgqAzidAk8ghI0XlTaip8ve/y7E82nq
-   iL01bpfMx468m4EMTkFNZWVnmCEEYj7RvrFxOTXinGUlob1zc+XMtba0N
-   c86X63z8JsA0IYH/MQQvtd+X79DQi/mZgnackyonDN7g+GnVFO7mkStVU
-   WP7eHpKCMWIzjOvTVEW7p6pxkKQv19cKRPj9b/imm09oguGvuwN2jlbu1
-   /8WhLgudZFCySnrXS7e4iYnhBsMZfjCUZvwEIDxCO9KxztlVN30Nlyuz1
+  bh=RbKUHtHzcKHVa59ymAsKJF2jSVbjpn2iBY52eRzH2p4=;
+  b=GnBUpgwwkvr33IEOOGciE07Huly5SYOsWR4O9mo7QQ7YQ2sX99DzZT3R
+   IGYfKPOU/tZ46vlywZixRCr+8rARDimYattgcLEBMDPrf7RsY3b5T0c84
+   in/4U54Un42Gf9uEW6TpooqdhbSEELTMCJH+aOr/Krp0GhAbS4UxBnl6K
+   P5PC69QKoff8Ge/0E5+kKdL48LD9C8+NQPhUC88D5eQDHwbAkjm41XGFK
+   3Icr4T1eJrB2AchlF3mj6qPRkFBynnMtsSTICEAIeeLLRV9A2enzhPbRP
+   mV38x2N/k9ywvcLnjcR3jNn37aGIxmAvzimsvXeC+NAd1/kHlJM9RbA4P
    w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10640"; a="363157714"
+X-IronPort-AV: E=McAfee;i="6500,9779,10640"; a="421815526"
 X-IronPort-AV: E=Sophos;i="5.98,236,1673942400"; 
-   d="scan'208";a="363157714"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 04:25:24 -0800
+   d="scan'208";a="421815526"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 04:53:02 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10640"; a="678461002"
+X-IronPort-AV: E=McAfee;i="6500,9779,10640"; a="708640569"
 X-IronPort-AV: E=Sophos;i="5.98,236,1673942400"; 
-   d="scan'208";a="678461002"
+   d="scan'208";a="708640569"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007.fm.intel.com with ESMTP; 06 Mar 2023 04:25:20 -0800
+  by orsmga001.jf.intel.com with ESMTP; 06 Mar 2023 04:52:59 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pZ9u2-00GLSW-0t;
-        Mon, 06 Mar 2023 14:25:18 +0200
-Date:   Mon, 6 Mar 2023 14:25:18 +0200
+        id 1pZAKn-00GM8k-1w;
+        Mon, 06 Mar 2023 14:52:57 +0200
+Date:   Mon, 6 Mar 2023 14:52:57 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        devicetree@vger.kernel.org, Zhigang Shi <Zhigang.Shi@liteon.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
         Paul Gazzillo <paul@pgazz.com>,
-        Rob Herring <robh+dt@kernel.org>,
         Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Liam Beguin <liambeguin@gmail.com>
-Subject: Re: [PATCH v3 0/6] Support ROHM BU27034 ALS sensor
-Message-ID: <ZAXbrtXUmWXWDby1@smile.fi.intel.com>
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
+Message-ID: <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
 References: <cover.1678093787.git.mazziesaccount@gmail.com>
+ <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1678093787.git.mazziesaccount@gmail.com>
+In-Reply-To: <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 06, 2023 at 11:15:10AM +0200, Matti Vaittinen wrote:
-> Support ROHM BU27034 ALS sensor
+On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
+> Some light sensors can adjust both the HW-gain and integration time.
+> There are cases where adjusting the integration time has similar impact
+> to the scale of the reported values as gain setting has.
 > 
-> This series adds support for ROHM BU27034 Ambient Light Sensor.
+> IIO users do typically expect to handle scale by a single writable 'scale'
+> entry. Driver should then adjust the gain/time accordingly.
 > 
-> The BU27034 has configurable gain and measurement (integration) time
-> settings. Both of these have inversely proportional relation to the
-> sensor's intensity channel scale.
+> It however is difficult for a driver to know whether it should change
+> gain or integration time to meet the requested scale. Usually it is
+> preferred to have longer integration time which usually improves
+> accuracy, but there may be use-cases where long measurement times can be
+> an issue. Thus it can be preferable to allow also changing the
+> integration time - but mitigate the scale impact by also changing the gain
+> underneath. Eg, if integration time change doubles the measured values,
+> the driver can reduce the HW-gain to half.
 > 
-> Many users only set the scale, which means that many drivers attempt to
-> 'guess' the best gain+time combination to meet the scale. Usually this
-> is the biggest integration time which allows setting the requested
-> scale. Typically, increasing the integration time has better accuracy
-> than increasing the gain, which often amplifies the noise as well as the
-> real signal.
+> The theory of the computations of gain-time-scale is simple. However,
+> some people (undersigned) got that implemented wrong for more than once.
 > 
-> However, there may be cases where more responsive sensors are needed.
-> So, in some cases the longest integration times may not be what the user
-> prefers. The driver has no way of knowing this.
-> 
-> Hence, the approach taken by this series is to allow user to set both
-> the scale and the integration time with following logic:
-> 
-> 1. When scale is set, the existing integration time is tried to be
->    maintained as a first priority.
->    1a) If the requested scale can't be met by current time, then also
->        other time + gain combinations are searched. If scale can be met
->        by some other integration time, then the new time may be applied.
->        If the time setting is common for all channels, then also other
->        channels must be able to maintain their scale with this new time
->        (by changing their gain). The new times are scanned in the order
->        of preference (typically the longest times first).
->    1b) If the requested scale can be met using current time, then only
->        the gain for the channel is changed.
-> 
-> 2. When the integration time change - scale is tried to be maintained.
->    When integration time change is requested also gain for all impacted
->    channels is adjusted so that the scale is not changed, or is chaned
->    as little as possible. This is different from the RFCv1 where the
->    request was rejected if suitable gain couldn't be found for some
->    channel(s).
-> 
-> This logic is simple. When total gain (either caused by time or hw-gain)
-> is doubled, the scale gets halved. Also, the supported times are given a
-> 'multiplier' value which tells how much they increase the total gain.
-> 
-> However, when I wrote this logic in bu27034 driver, I made quite a few
-> errors on the way - and driver got pretty big. As I am writing drivers
-> for two other sensors (RGB C/IR + flicker BU27010 and RGB C/IR BU27008)
-> with similar gain-time-scale logic I thought that adding common helpers
-> for these computations might be wise. I hope this way all the bugs will
-> be concentrated in one place and not in every individual driver ;)
-> 
-> Hence, this series also intriduces IIO gain-time-scale helpers
-> (abbreviated as gts-helpers) + a couple of KUnit tests for the most
-> hairy parts.
-> 
-> I can't help thinking that there should've been simpler way of computing
-> the gain-time-scale conversions. Also, pretty good speed improvements
-> might be available if some of the do_div()s could be replaced by >>.
-> This, however, is not a priority for my light-sensor use-case where
-> speed demands are not that big.
-> 
-> Finally, these added helpers do provide some value also for drivers
-> which only:
->  a) allow gain change
->   or
->  b) allow changing both the time and gain but so that the time-change is
->     not reflected in register values.
-> 
-> For a) we provide the gain - selector (register value) table format +
-> selector to gain look-ups, gain <-> scale conversions and the available
-> scales helpers.
-> 
-> For latter case we also provide the time-tables, and actually all the
-> APIs should be usable by setting the time multiplier to 1. (not testeted
-> thoroughly though).
+> Add some gain-time-scale helpers in order to not dublicate errors in all
+> drivers needing these computations.
 
-A few comments can still be applied here.
-Can you comment on the discussion against the previous version?
+...
+
+> +/*
+
+If it's deliberately not a kernel doc, why to bother to have it looking as one?
+It's really a provocative to some people who will come with a patches to "fix"
+this...
+
+> + * iio_gts_get_gain - Convert scale to total gain
+> + *
+> + * Internal helper for converting scale to total gain.
+> + *
+> + * @max:	Maximum linearized scale. As an example, when scale is created
+> + *		in magnitude of NANOs and max scale is 64.1 - The linearized
+> + *		scale is 64 100 000 000.
+> + * @scale:	Linearized scale to compte the gain for.
+> + *
+> + * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
+> + *		is invalid.
+> + */
+> +static int iio_gts_get_gain(const u64 max, const u64 scale)
+> +{
+> +	int tmp = 1;
+> +
+> +	if (scale > max || !scale)
+> +		return -EINVAL;
+> +
+> +	if (U64_MAX - max < scale) {
+> +		/* Risk of overflow */
+> +		if (max - scale < scale)
+> +			return 1;
+
+> +		while (max - scale > scale * (u64)tmp)
+> +			tmp++;
+> +
+> +		return tmp + 1;
+
+Can you wait for the comments to appear a bit longer, please?
+I have answered to your query in the previous discussion.
+
+> +	}
+> +
+> +	while (max > scale * (u64) tmp)
+
+No space for castings?
+
+> +		tmp++;
+> +
+> +	return tmp;
+> +}
+
+...
+
+> +	/*
+> +	 * Expect scale to be (mostly) NANO or MICRO. Divide divider instead of
+> +	 * multiplication followed by division to avoid overflow
+
+Missing period.
+
+> +	 */
+> +	if (scaler > NANO || !scaler)
+> +		return -EINVAL;
+
+Shouldn't be OVERFLOW for the first one?
+
+...
+
+> +	*lin_scale = (u64) scale_whole * (u64)scaler +
+
+No space for casting?
+
+> +		     (u64)(scale_nano / (NANO / scaler));
+
+...
+
+> +EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);
+
+I would say _HELPER part is too much, but fine with me.
+
+...
+
+> +	ret = iio_gts_linearize(max_scale_int, max_scale_nano, NANO,
+> +				   &gts->max_scale);
+> +	if (ret)
+> +		return ret;
+> +
+> +	gts->hwgain_table = gain_tbl;
+> +	gts->num_hwgain = num_gain;
+> +	gts->itime_table = tim_tbl;
+> +	gts->num_itime = num_times;
+> +	gts->per_time_avail_scale_tables = NULL;
+> +	gts->avail_time_tables = NULL;
+> +	gts->avail_all_scales_table = NULL;
+> +	gts->num_avail_all_scales = 0;
+
+Just wondering why we can't simply
+
+	memset(0)
+
+beforehand and drop all these 0 assignments?
+
+...
+
+> +		/*
+> +		 * Sort the tables for nice output and for easier finding of
+> +		 * unique values
+
+Missing period. Please, check the style of multi-line comments. I believe it's
+even mentioned in the documentation.
+
+> +		 */
+
+...
+
+> +		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
+> +		     NULL);
+
+One line reads better?
+
+...
+
+> +	if (ret && gts->avail_all_scales_table)
+
+In one case you commented that free(NULL) is okay, in the other, you add
+a duplicative check. Why?
+
+> +		kfree(gts->avail_all_scales_table);
+
+...
+
+> +	per_time_gains = kcalloc(gts->num_itime, sizeof(int *), GFP_KERNEL);
+
+sizeof(type) is error prone in comparison to sizeof(*var).
+
+> +	if (!per_time_gains)
+> +		return ret;
+> +
+> +	per_time_scales = kcalloc(gts->num_itime, sizeof(int *), GFP_KERNEL);
+
+Ditto.
+
+> +	if (!per_time_scales)
+> +		goto free_gains;
+
+...
+
+> +err_free_out:
+> +	while (i) {
+> +		/*
+> +		 * It does not matter if i'th alloc was not succesfull as
+> +		 * kfree(NULL) is safe.
+> +		 */
+
+Instead, can be just a free of the known allocated i:th member first followed
+by traditional pattern. In that case comment will become redundant.
+
+> +		kfree(per_time_scales[i]);
+> +		kfree(per_time_gains[i]);
+> +
+> +		i--;
+> +	}
+
+...
+
+> +	for (i = gts->num_itime - 1; i >= 0; i--) {
+
+	while (i--) {
+
+makes it easier to parse.
+
+> +/**
+> + * iio_gts_all_avail_scales - helper for listing all available scales
+> + * @gts:	Gain time scale descriptor
+> + * @vals:	Returned array of supported scales
+> + * @type:	Type of returned scale values
+> + * @length:	Amount of returned values in array
+> + *
+> + * Returns a value suitable to be returned from read_avail or a negative error
+
+Missing a return section. Have you run kernel doc to validate this?
+Missing period.
+
+Seems these problems occur in many function descriptions.
+
+> + */
+
+...
+
+> +	/*
+> +	 * Using this function prior building the tables is a driver-error
+> +	 * which should be fixed when the driver is tested for a first time
+
+Missing period.
+
+> +	 */
+> +	if (WARN_ON(!gts->num_avail_all_scales))
+
+Does this justify panic? Note, that any WARN() can become an Oops followed by
+panic and reboot.
+
+> +		return -EINVAL;
+
+...
+
+> +	for (i = 0; i < gts->num_hwgain; i++) {
+> +		/*
+> +		 * It is not expected this function is called for an exactly
+> +		 * matching gain.
+> +		 */
+> +		if (unlikely(gain == gts->hwgain_table[i].gain)) {
+> +			*in_range = true;
+> +			return gain;
+> +		}
+
+> +		if (!min)
+> +			min = gts->hwgain_table[i].gain;
+> +		else
+> +			min = min(min, gts->hwgain_table[i].gain);
+
+I was staring at this and have got no clue why it's not a dead code.
+
+> +		if (gain > gts->hwgain_table[i].gain) {
+> +			if (!diff) {
+> +				diff = gain - gts->hwgain_table[i].gain;
+> +				best = i;
+> +			} else {
+> +				int tmp = gain - gts->hwgain_table[i].gain;
+> +
+> +				if (tmp < diff) {
+> +					diff = tmp;
+> +					best = i;
+> +				}
+> +			}
+
+			int tmp = gain - gts->hwgain_table[i].gain;
+
+			if (!diff || tmp < diff) {
+				diff = tmp;
+				best = i;
+			}
+
+?
+
+Or did you miss using 'min'? (And I'm wondering how variable name and min()
+macro are not conflicting with each other.
+
+> +		} else {
+> +			/*
+> +			 * We found valid hwgain which is greater than
+> +			 * reference. So, unless we return a failure below we
+> +			 * will have found an in-range gain
+> +			 */
+> +			*in_range = true;
+> +		}
+> +	}
+> +	/* The requested gain was smaller than anything we support */
+> +	if (!diff) {
+> +		*in_range = false;
+> +
+> +		return -EINVAL;
+> +	}
+> +
+> +	return gts->hwgain_table[best].gain;
+
+...
+
+> +	ret = iio_gts_get_scale_linear(gts, old_gain, itime_old->time_us,
+> +				       &scale);
+
+Still can be one line.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = gain_get_scale_fraction(gts->max_scale, scale, itime_new->mul,
+> +				      new_gain);
+
+Ditto.
+
+> +	if (ret)
+> +		return -EINVAL;
+
+...
+
+> +++ b/drivers/iio/light/iio-gts-helper.h
+
+Is it _only_ for a Light type of sensors?
+
+...
+
+> +#ifndef __IIO_GTS_HELPER__
+> +#define __IIO_GTS_HELPER__
+
+If yes, perhaps adding LIGHT here?
 
 -- 
 With Best Regards,

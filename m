@@ -2,154 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 821D26ABA33
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 10:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 819476ABC5B
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 11:26:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbjCFJnP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Mar 2023 04:43:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56328 "EHLO
+        id S229628AbjCFK0y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Mar 2023 05:26:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjCFJnO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 04:43:14 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D6821A27
-        for <linux-iio@vger.kernel.org>; Mon,  6 Mar 2023 01:43:10 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id x6so8969117ljq.1
-        for <linux-iio@vger.kernel.org>; Mon, 06 Mar 2023 01:43:10 -0800 (PST)
+        with ESMTP id S230453AbjCFK0a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 05:26:30 -0500
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8EB26852
+        for <linux-iio@vger.kernel.org>; Mon,  6 Mar 2023 02:26:01 -0800 (PST)
+Received: by mail-oo1-xc2e.google.com with SMTP id p6-20020a4ab386000000b005252182b0e0so1446222ooo.6
+        for <linux-iio@vger.kernel.org>; Mon, 06 Mar 2023 02:26:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1678095789;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zmz2nBmbaTO3qG2SmBLPZDQGKtRO+Ieydz7Ye8FP4As=;
-        b=AvTMfeE/Sh6nyegcz8yd+g1v/9paXcicB1uPpofJwnbvMQyAlt7cBCR8azL8NTTpaX
-         3/LNu8m+KawTxRa1AAlYWkPCX9viBpSIceGoQaeV+TqMVaYZao7zTjIaFnmjqtwmTfcy
-         Hmw9mlQu0XaZlACc8SoMglt1BlDV8OpzJJoEw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678095789;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20210112; t=1678098351;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zmz2nBmbaTO3qG2SmBLPZDQGKtRO+Ieydz7Ye8FP4As=;
-        b=68l+EIbFgqjos4U3Zxd2IUxrMxjXfgwljNGlEr45azOuMJgLRT0c8HgT+dvwF2A/6f
-         dQ4Q4T3fPvSHZMe2KZp8vWCaPstc/ERi8HEXjnSuSyaNg/RBl7TFE/v2meBuR0SbHdmP
-         QyKT2dvOf9sCiWmiIF0IdNiftT2smqduyskkkdlaxdCm+TnyvDe26Lt8mFeZ8COimObH
-         vQU5zrG0JDGlTZRD67mxUyYJJs9qBGqJnj/GF5L+/mGzdpxDLSJMVwBJr7sng4BePBJV
-         ZTA4cuUTyQbFlDEaRpdfZC3QdlVFzD2SdhMImc2F7QdNJUAJ44fLW+U+OURTKKlArUrz
-         G4ug==
-X-Gm-Message-State: AO0yUKXs1yK6QZ1NC9Ddq64UOIeN/8EUp47owN3K6ubGKEAEUpLBNpF2
-        xay1GtMAgBESwrTqropk9BCixw==
-X-Google-Smtp-Source: AK7set/pXVTPqmW95TTuDKezJ3g8v2qM1LMEWSb93i6C5mD8Y/D4z3Xo+hq6TQN0mrhY9LP5UzwdMQ==
-X-Received: by 2002:a2e:1505:0:b0:295:ba28:a42 with SMTP id s5-20020a2e1505000000b00295ba280a42mr3214076ljd.20.1678095788912;
-        Mon, 06 Mar 2023 01:43:08 -0800 (PST)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id a22-20020a2e9816000000b002934ed148afsm1620091ljj.52.2023.03.06.01.43.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Mar 2023 01:43:08 -0800 (PST)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: ad74413r: wire up support for drive-strength-microamp property
-Date:   Mon,  6 Mar 2023 10:43:01 +0100
-Message-Id: <20230306094301.1357543-3-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230306094301.1357543-1-linux@rasmusvillemoes.dk>
-References: <20230302134922.1120217-1-linux@rasmusvillemoes.dk>
- <20230306094301.1357543-1-linux@rasmusvillemoes.dk>
+        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
+        b=EDbhPO1WKzSJy97Cp1KR4Ue1wIcLFSscoH9L1E67CyPoJvstONJwP7RxKCqsDiuar/
+         4XZc6UhnyOFrEHlIQ3KmGU6oX8xWOyZpiVA4bD6F27cjopM5KQeiwoXnQq1r2hu/0hkW
+         LgiQ9FGonNq8AsMsEKBqZEvtwgOfW2lv3iUKapY2ocqE+LRWfsVifUNA3eNbIcULbvPT
+         nBBU0ns0xWwmvS7ETCAh5Z5lhdCiLVSRis+m63aq8CObwyUrMLAjGQpDeSf4OVAOQav5
+         5TuEH4NOUnTGCqcHGRIE0/tBavRRplzW4HaWY1DRs+pas+nyfL/37adPjYmqfexbl/Di
+         PS3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678098351;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
+        b=V1jtS8G/n8X+/GL3jVcXNiKf08DBfNhAxA6s2T1jFKKLz2BYCVUeSY8GwlEAf1l2u7
+         D1ZGE2iYTVJvkcyPcf3ZKxTPYSL1WIrSieXLmSIZJHgKSXhT4MoEx/Uh/s1Vt0X3BMYB
+         J0Pca+ml99YXsZPQlcXoFA+qHU35YkHpUYVjA8yJCNykyweS2CJR4mGq9VP9NaFbvxnk
+         NTQpmPEZIXRVz3ECdSkOTWMvIy3kXLGcg/rN9CHELiQGzUw+cUyHs09GIPrV8QHHtduW
+         A67PSxNihHYsVdo54T9feovRryPZLsg9GS85dQqvrkjKjimzBWIKqJj6tnFepMCjrTSE
+         lUlw==
+X-Gm-Message-State: AO0yUKUmnoWMGLGn90r+png/QNjA2UbY/3tMIhsFi0pAmgcAW9vz2Cte
+        JT/2BKo0GcSIGsXYIJ51m61gCta6FOD1dvc931L5qnLVSrg=
+X-Google-Smtp-Source: AK7set9YqazPiOkBuGm+YrFZOLe51O90+qKBrIr6WBjXtnVrmZ9RIOYyWRLBWcHI+/rsVoNhMQhwnCpcR6G8n2Z6mzE=
+X-Received: by 2002:a05:6102:e44:b0:402:999f:44d3 with SMTP id
+ p4-20020a0561020e4400b00402999f44d3mr6975472vst.1.1678098330725; Mon, 06 Mar
+ 2023 02:25:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Received: by 2002:a59:ce6f:0:b0:3ae:930b:3e70 with HTTP; Mon, 6 Mar 2023
+ 02:25:30 -0800 (PST)
+Reply-To: madis.scarl@terlera.it
+From:   "Ms Eve from U.N" <denisagotou@gmail.com>
+Date:   Mon, 6 Mar 2023 11:25:30 +0100
+Message-ID: <CAD6bNBi6bPCYboaF4-xBgmeUTFn6JMXqU6TNepQig=NRMqhdUg@mail.gmail.com>
+Subject: Re: Claim of Fund:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_SCAM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use the value specified in the channel configuration node to populate
-the DIN_SINK field of the DIN_CONFIGx register.
+Hello Good Morning,
+This is to bring to your notice that all our efforts to contact you
+through this your email ID failed Please Kindly contact Barrister.
+Steven Mike { mbarrsteven@gmail.com } on his private email for the
+claim of your compensation entitlement
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
- drivers/iio/addac/ad74413r.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index f32c8c2fb26d..4395758dbaa6 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -39,6 +39,7 @@ struct ad74413r_chip_info {
- 
- struct ad74413r_channel_config {
- 	u32		func;
-+	u32		drive_strength;
- 	bool		gpo_comparator;
- 	bool		initialized;
- };
-@@ -111,6 +112,7 @@ struct ad74413r_state {
- #define AD74413R_REG_DIN_CONFIG_X(x)	(0x09 + (x))
- #define AD74413R_DIN_DEBOUNCE_MASK	GENMASK(4, 0)
- #define AD74413R_DIN_DEBOUNCE_LEN	BIT(5)
-+#define AD74413R_DIN_SINK_MASK		GENMASK(9, 6)
- 
- #define AD74413R_REG_DAC_CODE_X(x)	(0x16 + (x))
- #define AD74413R_DAC_CODE_MAX		GENMASK(12, 0)
-@@ -261,6 +263,18 @@ static int ad74413r_set_comp_debounce(struct ad74413r_state *st,
- 				  val);
- }
- 
-+static int ad74413r_set_comp_drive_strength(struct ad74413r_state *st,
-+					    unsigned int offset,
-+					    unsigned int strength)
-+{
-+	strength = min(strength, 1800U);
-+
-+	return regmap_update_bits(st->regmap, AD74413R_REG_DIN_CONFIG_X(offset),
-+				  AD74413R_DIN_SINK_MASK,
-+				  FIELD_PREP(AD74413R_DIN_SINK_MASK, strength / 120));
-+}
-+
-+
- static void ad74413r_gpio_set(struct gpio_chip *chip,
- 			      unsigned int offset, int val)
- {
-@@ -1190,6 +1204,9 @@ static int ad74413r_parse_channel_config(struct iio_dev *indio_dev,
- 	config->gpo_comparator = fwnode_property_read_bool(channel_node,
- 		"adi,gpo-comparator");
- 
-+	fwnode_property_read_u32(channel_node, "drive-strength-microamp",
-+				 &config->drive_strength);
-+
- 	if (!config->gpo_comparator)
- 		st->num_gpo_gpios++;
- 
-@@ -1269,6 +1286,7 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
- 	unsigned int gpo_gpio_i = 0;
- 	unsigned int i;
- 	u8 gpo_config;
-+	u32 strength;
- 	int ret;
- 
- 	for (i = 0; i < AD74413R_CHANNEL_MAX; i++) {
-@@ -1285,6 +1303,11 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
- 		    config->func == CH_FUNC_DIGITAL_INPUT_LOOP_POWER)
- 			st->comp_gpio_offsets[comp_gpio_i++] = i;
- 
-+		strength = config->drive_strength;
-+		ret = ad74413r_set_comp_drive_strength(st, i, strength);
-+		if (ret)
-+			return ret;
-+
- 		ret = ad74413r_set_gpo_config(st, i, gpo_config);
- 		if (ret)
- 			return ret;
--- 
-2.37.2
-
+Note: You have to pay for the delivery fee.
+Yours Sincerely
+Mrs EVE LEWIS

@@ -2,36 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2911F6ACFF8
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 22:15:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8F56AD037
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 22:28:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbjCFVPW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Mar 2023 16:15:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38748 "EHLO
+        id S229768AbjCFV2H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Mar 2023 16:28:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbjCFVPV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 16:15:21 -0500
-Received: from mail.gfz-potsdam.de (rz-vm483.gfz-potsdam.de [139.17.229.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EAF28207
-        for <linux-iio@vger.kernel.org>; Mon,  6 Mar 2023 13:15:17 -0800 (PST)
-Received: from [84.186.199.243] (account andres@gfz-potsdam.de)
-  by gfz-potsdam.de (CommuniGate Pro WEBUSER 7.1.3)
-  with HTTP id 1202829; Mon, 06 Mar 2023 22:15:15 +0100
-From:   "Andres Heinloo" <andres@gfz-potsdam.de>
-Subject: Re: Bugs in dps310 Linux driver
-To:     "Jonathan Cameron" <jic23@kernel.org>
-Cc:     "Eddie James" <eajames@linux.ibm.com>, linux-iio@vger.kernel.org
-X-Mailer: CommuniGate Pro WebUser v7.1.3
-Date:   Mon, 06 Mar 2023 22:15:15 +0100
-Message-ID: <web-1202839@cgp-be2-mgmt.gfz-potsdam.de>
-In-Reply-To: <web-1201064@cgp-be2-mgmt.gfz-potsdam.de>
-References: <web-1200302@cgp-be2-mgmt.gfz-potsdam.de>
- <20230304170620.795f4d99@jic23-huawei>
- <web-1201064@cgp-be2-mgmt.gfz-potsdam.de>
+        with ESMTP id S229669AbjCFV2G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 16:28:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137A22057B;
+        Mon,  6 Mar 2023 13:28:02 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A8056B81135;
+        Mon,  6 Mar 2023 21:28:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA102C433A1;
+        Mon,  6 Mar 2023 21:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678138079;
+        bh=OPscq8j4gixbBXyx4rYRiqcOtug0pajWX+t3LwK0uPE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PsQMxWTNyqmjmOyLA6f4aBxEbqjXLjGnQvTHUoE4f6zTvuB0TEbKKoow7O0Bl6lqg
+         gYnqSQeBrO1rJ29HWmn+yvMly1eyD9pru67Ei5XhYPhftQR6cu4eDx5Y2uE63s5KIt
+         s3zsZ4FOYFUkiy7gTDlGyR2DhiXrF2ddTXSUbWfDk94k+YWjCuHsJXdkT6LOyMmw3/
+         OBMkdU9AXHfmpJlFP0bcKZdHq+IuioXEaW+oivplUHjLiBGkJeMjuBmdvu2rgkgh5Q
+         WG7SALFgV1PPXh9MrSvGscl5OUXQrlqRl1aL8dYkfSYDeEvI72A6J1sMyBNHxpS7Fw
+         LxAw7Z0FF0jTA==
+Date:   Mon, 6 Mar 2023 21:27:32 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Cc:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        jic23@kernel.org, tudor.ambarus@microchip.com, pratyush@kernel.org,
+        Sanju.Mehta@amd.com, chin-ting_kuo@aspeedtech.com, clg@kaod.org,
+        kdasu.kdev@gmail.com, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, eajames@linux.ibm.com, olteanv@gmail.com,
+        han.xu@nxp.com, john.garry@huawei.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, narmstrong@baylibre.com,
+        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
+        linus.walleij@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        agross@kernel.org, bjorn.andersson@linaro.org, heiko@sntech.de,
+        krzysztof.kozlowski@linaro.org, andi@etezian.org,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org,
+        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
+        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
+        kvalo@kernel.org, james.schulman@cirrus.com,
+        david.rhodes@cirrus.com, tanureal@opensource.cirrus.com,
+        rf@opensource.cirrus.com, perex@perex.cz, tiwai@suse.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
+        oss@buserror.net, windhl@126.com, yangyingliang@huawei.com,
+        william.zhang@broadcom.com, kursad.oney@broadcom.com,
+        jonas.gorski@gmail.com, anand.gore@broadcom.com, rafal@milecki.pl,
+        git@amd.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
+        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
+        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
+        alim.akhtar@samsung.com, ldewangan@nvidia.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-mtd@lists.infradead.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        michael@walle.cc, palmer@dabbelt.com,
+        linux-riscv@lists.infradead.org, alsa-devel@alsa-project.org,
+        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
+        amitrkcian2002@gmail.com, Dhruva Gole <d-gole@ti.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>
+Subject: Re: [PATCH V5 01/15] spi: Replace all spi->chip_select and
+ spi->cs_gpiod references with function call
+Message-ID: <00684da3-520f-459d-b6bd-55e728e93ebf@sirena.org.uk>
+References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
+ <20230306172109.595464-2-amit.kumar-mahapatra@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=utf-8; format="flowed"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="RfYQ7lwbbyjtjTUN"
+Content-Disposition: inline
+In-Reply-To: <20230306172109.595464-2-amit.kumar-mahapatra@amd.com>
+X-Cookie: teamwork, n.:
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -39,100 +109,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 05 Mar 2023 03:05:01 +0100
-  "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
-> On Sat, 4 Mar 2023 17:06:20 +0000
->  Jonathan Cameron <jic23@kernel.org> wrote:
->> On Fri, 03 Mar 2023 12:10:00 +0100
->> "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
->> 
->>> Hello,
->>> 
->>> I've been struggling with the dps310 driver, which gives incorrect 
->>>pressure values and in particular different values than manufacturers 
->>>code (https://github.com/Infineon/RaspberryPi_DPS).
->>> 
->>> I think I've found where the problem is. Firstly, there is a mistake 
->>>in bit numbering at 
->>>https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L51
->>> 
->>> According to datasheet, correct is:
->>> 
->>> #define  DPS310_INT_HL          BIT(7)
->>> #define  DPS310_TMP_SHIFT_EN    BIT(3)
->>> #define  DPS310_PRS_SHIFT_EN    BIT(2)
->>> #define  DPS310_FIFO_EN         BIT(1)
->>> #define  DPS310_SPI_EN          BIT(0)
->>> 
->>> Eg., the current code is using wrong bit (4) for 
->>>DPS310_PRS_SHIFT_EN, which means that pressure shift is never 
->>>enabled.
->> 
->> Checking the datasheet, seems like you are right.
->> https://www.infineon.com/dgdl/Infineon-DPS310-DataSheet-v01_02-EN.pdf?fileId=5546d462576f34750157750826c42242
->> Section 7: 
->> Though that's not the only bit that is wrong.  Looks like FIFO 
->>enable is as well.
->> So any fix should deal with that as well.
-> 
-> Yes, DPS310_PRS_SHIFT_EN, DPS310_FIFO_EN, DPS310_SPI_EN are all 
->wrong, but the latter 2 are not used by the driver.
-> 
-> 
->> The differences between the register map and the datasheet I'm 
->>looking at make
->> me think that perhaps the driver was developed against a prototype 
->>part.
->> The registers are in a different order for starters with the B0, B1 
->>and B2
->> sets in reverse order.  Any fix patch should tidy that up as well.
-> 
-> Yes, but that's just different naming. MSB is called B2 in the 
->datasheet and B0 in the driver.
-> 
-> 
->>> Secondly, there is a problem with overflows starting at 
->>>https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L654
->>> 
->>> Since p is a 24-bit value,
->>> 
->>> nums[3] = p * p * p * (s64)data->c30;
->>> 
->>> can and does overflow.
->> 
->> Makes sense, though I can't immediately see a good solution as we 
->>need
->> to maintain the remainder part.
-> 
-> I don't have a good solution either, but there must be other IIO 
->sensors that have something similar that could be possibly reused.
-> 
-> 
->>> Second overflow problem is at 
->>>https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L684
->>> 
->>> In fact, I don't understand why 1000000000LL is needed. Since only 7 
->>>values are summed, using 10LL should give the same precision.
->> Whilst the existing  value seems large - I'm not great with 
->>precision calcs so could
->> you lay out why 10LL is sufficient?
-> 
-> Unless I overlooked something, the error of integer division (eg., 
->discarding fractional part) is <1. In this case, the results of 7 
->integer divisions are summed, so the error is <7. When multiplying 
->numerators by 10LL, the error would be <0.7. Which is OK, since we 
->are interested only in the integer part.
 
-Unfortunately it seems that there may be more problems with the 
-driver. I've noticed that my device has lost sample rate and precision 
-settings few times. When looking at the code, it seems the settings 
-are not restored when dps310_reset_reinit() is called at 
-https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L438
+--RfYQ7lwbbyjtjTUN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Apparently I've also ended up with data->timeout_recovery_failed == 
-true at 
-https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L443, 
-but the device worked fine after just reloading the kernel module. 
-This is difficult to reproduce, though.
+On Mon, Mar 06, 2023 at 10:50:55PM +0530, Amit Kumar Mahapatra wrote:
 
-Andres
+>  drivers/spi/spi-omap-100k.c       |  2 +-
+
+This is also not against -rc1, this file was removed in bcace9c4c9270292
+("spi: remove omap 100K driver").
+
+--RfYQ7lwbbyjtjTUN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQGWsMACgkQJNaLcl1U
+h9C7Fwf+MqZVyi3PlI6YIKPDaaFyWnmjZtweIjxd+4E2eEmTZq9MbcCHS/W56cUk
+TPWusPOjIa33XHC376rZpTYGqNTRjvOo8UwttJFAFQFbtMNui8BfC1bnrROwoyUE
+AxcOxhCAi3r1P0nRIkS126TepySOo1qXD1gf6YUQydf6/iDxzq7VddVjfqtt3dPF
+6rnt0G5xA5O0Z75Kc76h4ePCX7kXMqJhJSaJf7HFcGwD2P5HIeRcRyucD2q4Ddnr
+KzkdziV90/s6X7Q9cfiA620jfm8jVdqqN3yC+JX/L2Iu8kpeefFFgD49yG2aMtxv
+zgXP6uMpvQm5g7F9e/wo/JMWhjfh8g==
+=uJRe
+-----END PGP SIGNATURE-----
+
+--RfYQ7lwbbyjtjTUN--

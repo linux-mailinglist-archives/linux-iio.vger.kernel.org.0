@@ -2,268 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA2126AB299
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Mar 2023 22:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5E06AB5C0
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 05:48:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbjCEVg3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Mar 2023 16:36:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46406 "EHLO
+        id S229520AbjCFEsZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Mar 2023 23:48:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjCEVg1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Mar 2023 16:36:27 -0500
-Received: from mail-108-mta116.mxroute.com (mail-108-mta116.mxroute.com [136.175.108.116])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3A116306
-        for <linux-iio@vger.kernel.org>; Sun,  5 Mar 2023 13:36:22 -0800 (PST)
-Received: from mail-111-mta2.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta116.mxroute.com (ZoneMTA) with ESMTPSA id 186b3b4415c000edb4.005
- for <linux-iio@vger.kernel.org>
- (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256);
- Sun, 05 Mar 2023 21:36:20 +0000
-X-Zone-Loop: 90c0a17cdca51afe067a99c3fd446566851bc25833a0
-X-Originating-IP: [136.175.111.2]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
-        s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=q6EBpm2rBwq4M720lLYEa96QeKDZjOEHZKfUMvuzUnc=; b=u/pfv8SYBsphPBkDLyLKLG/icr
-        PEIrJNcao1aGADrp3s3FUtZbh1Avb1HG2S0dL+hb5VApXqFMJzT8MBAwDKnuPOZS4BST5Bo8Eu6yH
-        xXr+lEzQnAIAE1gyFuPcysHCod9mr+HNcsW2A1tam661Xe22lANtXphzANM26Weeb0FFb8mYJO4Qt
-        3PKbV/vrqNCBDNbhvpB5sRz3U3yJANPLdsujlizpfq3paHbAdlpkUAJShiUltkSM3xqPb536zsg6a
-        99yEtls0SfIC49DslgI90OhsXIblbaTvz+li9YyEJydHMzYSwZKPZWjfPvR9bgCAeogjXVMlDGnP5
-        EvK+zBPg==;
-From:   Andrew Hepp <andrew.hepp@ahepp.dev>
-To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andrew Hepp <andrew.hepp@ahepp.dev>
-Subject: [PATCH v5 2/2] iio: temperature: Add MCP9600 thermocouple EMF converter
-Date:   Sun,  5 Mar 2023 13:36:04 -0800
-Message-Id: <20230305213604.4747-3-andrew.hepp@ahepp.dev>
-In-Reply-To: <20230305213604.4747-1-andrew.hepp@ahepp.dev>
-References: <20230305213604.4747-1-andrew.hepp@ahepp.dev>
+        with ESMTP id S229509AbjCFEsY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Mar 2023 23:48:24 -0500
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A093483DB
+        for <linux-iio@vger.kernel.org>; Sun,  5 Mar 2023 20:48:21 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id s17so4765753pgv.4
+        for <linux-iio@vger.kernel.org>; Sun, 05 Mar 2023 20:48:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mechatrax-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sw1hBC9A/T7c7/6d29lQBMKDggNhBUc0s3wWoSHxwag=;
+        b=0RRJTh1gw5TSMZxTJLsBLxRCc3WZaciWFXRunYIzdp6UPfb0c1cDSwWdftQP8WtiGG
+         noREEZweu5+4eSsKDTLAaoa0x3Hx5suDR3z7kL5kLoiFB8RyswEMlA7LXkmC3axY7gdJ
+         GO1mmDkzQhBkzL9BpTIxCLrBBPdNSeM2BkPdSMqowgVAp+NfCzTa5ynU+vchFLFedmrp
+         Z5nfdDkgUgUxQk3z9LfquPuNaB65T+VeVo9LQLe5sg/8KNRfmQLKDCoDNcLzlCLF7qAN
+         Ot4KCElN/1pz3Aj1N7Ftad2kJN9xRUgoBKYuw0I1MP7hEBiOcAsivJCLs02An8cfPP6b
+         +5vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Sw1hBC9A/T7c7/6d29lQBMKDggNhBUc0s3wWoSHxwag=;
+        b=QQo+zbTHqonBIteDmMhkuhHS2GcZdCMreSqIBmEMctbknM4I4gZ1aEOkCkVOjbTTu/
+         98vBCx50MoOZin0ga65jH7OZXPpUHh2uv2nrjmk8hrRj0RwwXAzQArMEIzYdpFb5wS+M
+         Z0kgpfQRIBl1RBHZRJVr75QlkV2BBnDKlx16dp66G1UPz8XAcPjD4pMWR6DdwpGRfOLg
+         74G8HVNGbHgIML1+msMXdgeM/otGWMvSJs/F2FDlwlsAK20KZrrMyNUrr7iDWkxdJcNL
+         2S6nJP8wx09bNl6RNhOHZ+cZXoVHEPheQc9Qu6R2Yf8u/6lWEfKdCuh/KtA0n/MnGoSw
+         UUsQ==
+X-Gm-Message-State: AO0yUKUcMqIJzzpZbju4tL6003bRLJVIhYCx4ODOvF+uyxVjGl93yJbl
+        M8pJdeSKnpi5NmhO2Wa5ei833H7P2uGQFUkaQ3U=
+X-Google-Smtp-Source: AK7set8FOzS5wy746xZoFwpLWq3BLunrGC7FI3jFRV9tMJ3lqi2hzeXqmi1VNH6sIghehZVfFyENBw==
+X-Received: by 2002:a05:6a00:2d28:b0:5a8:4ae7:25d5 with SMTP id fa40-20020a056a002d2800b005a84ae725d5mr15343961pfb.8.1678078101072;
+        Sun, 05 Mar 2023 20:48:21 -0800 (PST)
+Received: from localhost ([2400:4152:be0:9900:9c88:7abb:2dbd:9df7])
+        by smtp.gmail.com with UTF8SMTPSA id h16-20020aa786d0000000b005921c46cbadsm5442052pfo.99.2023.03.05.20.48.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Mar 2023 20:48:20 -0800 (PST)
+From:   Masahiro Honda <honda@mechatrax.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Masahiro Honda <honda@mechatrax.com>
+Subject: [PATCH] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+Date:   Mon,  6 Mar 2023 13:47:37 +0900
+Message-Id: <20230306044737.862-1-honda@mechatrax.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: andrew.hepp@ahepp.dev
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for the MCP9600 thermocouple EMF converter.
+ADC using ad7793.ko, such as AD7794, may read incorrect data.
+Extra interrupt is pending if the data on DOUT contains a falling edge.
+Therefore, wait_for_completion_timeout returns immediately.
+This patch fixes the issue by setting IRQ_DISABLE_UNLAZY flag.
 
-Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
-Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+Signed-off-by: Masahiro Honda <honda@mechatrax.com>
 ---
-Changes for v5:
-- remove "driver" from subject
-Changes for v4:
-- none
-Changes for v3:
-- none
-Changes for v2:
-- remove unused sysfs include
-- remove unused scan fields from channel
-- warn rather than fail when probing unknown device
-- register device through devm
-- clean up style and prints
----
- drivers/iio/temperature/Kconfig   |  10 ++
- drivers/iio/temperature/Makefile  |   1 +
- drivers/iio/temperature/mcp9600.c | 146 ++++++++++++++++++++++++++++++
- 3 files changed, 157 insertions(+)
- create mode 100644 drivers/iio/temperature/mcp9600.c
+ drivers/iio/adc/ad_sigma_delta.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index ed384f33e0c7..ea2ce364b2e9 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -158,4 +158,14 @@ config MAX31865
- 	  This driver can also be build as a module. If so, the module
- 	  will be called max31865.
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index d8570f620..364051809 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -584,6 +584,7 @@ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_de
+ 	init_completion(&sigma_delta->completion);
  
-+config MCP9600
-+	tristate "MCP9600 thermocouple EMF converter"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for MCP9600
-+	  thermocouple EMF converter connected via I2C.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called mcp9600.
-+
- endmenu
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index dfec8c6d3019..9330d4a39598 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
- obj-$(CONFIG_MAX30208) += max30208.o
- obj-$(CONFIG_MAX31856) += max31856.o
- obj-$(CONFIG_MAX31865) += max31865.o
-+obj-$(CONFIG_MCP9600) += mcp9600.o
- obj-$(CONFIG_MLX90614) += mlx90614.o
- obj-$(CONFIG_MLX90632) += mlx90632.o
- obj-$(CONFIG_TMP006) += tmp006.o
-diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-new file mode 100644
-index 000000000000..d938e09632cf
---- /dev/null
-+++ b/drivers/iio/temperature/mcp9600.c
-@@ -0,0 +1,146 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * mcp9600.c - Support for Microchip MCP9600 thermocouple EMF converter
-+ *
-+ * Copyright (c) 2022 Andrew Hepp
-+ * Author: <andrew.hepp@ahepp.dev>
-+ */
-+
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/init.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+
-+#include <linux/iio/iio.h>
-+
-+/* MCP9600 registers */
-+#define MCP9600_HOT_JUNCTION 0x0
-+#define MCP9600_COLD_JUNCTION 0x2
-+#define MCP9600_DEVICE_ID 0x20
-+
-+/* MCP9600 device id value */
-+#define MCP9600_DEVICE_ID_MCP9600 0x40
-+
-+static const struct iio_chan_spec mcp9600_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.address = MCP9600_HOT_JUNCTION,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+	{
-+		.type = IIO_TEMP,
-+		.address = MCP9600_COLD_JUNCTION,
-+		.channel2 = IIO_MOD_TEMP_AMBIENT,
-+		.modified = 1,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
-+};
-+
-+struct mcp9600_data {
-+	struct i2c_client *client;
-+	struct mutex read_lock; /* lock to prevent concurrent reads */
-+};
-+
-+static int mcp9600_read(struct mcp9600_data *data,
-+			struct iio_chan_spec const *chan, int *val)
-+{
-+	__be16 buf;
-+	int ret;
-+
-+	mutex_lock(&data->read_lock);
-+	ret = i2c_smbus_read_i2c_block_data(data->client, chan->address, 2,
-+					    (u8 *)&buf);
-+	mutex_unlock(&data->read_lock);
-+
-+	if (ret < 0)
-+		return ret;
-+	*val = be16_to_cpu(buf);
-+
-+	return 0;
-+}
-+
-+static int mcp9600_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan, int *val,
-+			    int *val2, long mask)
-+{
-+	struct mcp9600_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = mcp9600_read(data, chan, val);
-+		if (ret)
-+			return ret;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 62;
-+		*val2 = 500000;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info mcp9600_info = {
-+	.read_raw = mcp9600_read_raw,
-+};
-+
-+static int mcp9600_probe(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev;
-+	struct mcp9600_data *data;
-+	int ret;
-+
-+	ret = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
-+	if (ret < 0)
-+		return ret;
-+	if (ret != MCP9600_DEVICE_ID_MCP9600)
-+		dev_warn(&client->dev, "Expected ID %x, got %x\n",
-+				MCP9600_DEVICE_ID_MCP9600, ret);
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->client = client;
-+	mutex_init(&data->read_lock);
-+
-+	indio_dev->info = &mcp9600_info;
-+	indio_dev->name = "mcp9600";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = mcp9600_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(mcp9600_channels);
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct i2c_device_id mcp9600_id[] = {
-+	{ "mcp9600" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, mcp9600_id);
-+
-+static const struct of_device_id mcp9600_of_match[] = {
-+	{ .compatible = "microchip,mcp9600" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, mcp9600_of_match);
-+
-+static struct i2c_driver mcp9600_driver = {
-+	.driver = {
-+		.name = "mcp9600",
-+		.of_match_table = mcp9600_of_match,
-+	},
-+	.probe_new = mcp9600_probe,
-+	.id_table = mcp9600_id
-+};
-+module_i2c_driver(mcp9600_driver);
-+
-+MODULE_AUTHOR("Andrew Hepp <andrew.hepp@ahepp.dev>");
-+MODULE_DESCRIPTION("Microchip MCP9600 thermocouple EMF converter driver");
-+MODULE_LICENSE("GPL");
+ 	sigma_delta->irq_dis = true;
++	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
+ 	ret = devm_request_irq(dev, sigma_delta->spi->irq,
+ 			       ad_sd_data_rdy_trig_poll,
+ 			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
 -- 
-2.30.2
+2.34.1
 

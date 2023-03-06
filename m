@@ -2,59 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F8166ACAC7
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 18:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 979366ACC80
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 19:26:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjCFRi5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Mar 2023 12:38:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49686 "EHLO
+        id S230002AbjCFS0g convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 6 Mar 2023 13:26:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbjCFRi4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 12:38:56 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 278DA66D28;
-        Mon,  6 Mar 2023 09:38:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA866102A;
-        Mon,  6 Mar 2023 16:09:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EC0C433EF;
-        Mon,  6 Mar 2023 16:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678118944;
-        bh=+uB7D1gwrBQ8/0Era4Cxa/LZ06zO3DpKV4QfZb0Dfug=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=bbJqmerTmVbHwb+bJzKgtxIiT+sVvc/Zs7PuTNgBt9hsoaa9uM1MKDPSa5FPt7Wva
-         YoZ6q1ThDQ764DoX6GExQ8WxY39xTy1yk2qHe9Of6HC/KyrVjOp0PpMjSNrENXfOay
-         5kx4n69Jv4NdDEENm77Jy205wOT4RS0GD20pHAqTOHqYdOQRzsira9uoDTS78+X9gv
-         8P3dI2elnyk3j5FOeTEoRYmdzTLvkNaF2K/IvhL2Y3zxuNNjHqQP/LWEEVgZiFLPkH
-         0szMqP4+dD9YHGgG4STS3XZt/cLakker2p5Q5sevSOeceKIzSKz6VhmyygACvoCqEm
-         aF4NHHE5OnTKg==
-Message-ID: <6247adab-2004-5159-69ca-9e1dd30f4c38@kernel.org>
-Date:   Mon, 6 Mar 2023 17:09:00 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
+        with ESMTP id S230096AbjCFS0d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 13:26:33 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00BC174A47;
+        Mon,  6 Mar 2023 10:26:03 -0800 (PST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PVkTq6Jy8z6J7Kr;
+        Tue,  7 Mar 2023 00:26:07 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Mon, 6 Mar
+ 2023 16:26:33 +0000
+Date:   Mon, 6 Mar 2023 16:26:32 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     <Marius.Cristea@microchip.com>
+CC:     <jic23@kernel.org>, <krzk@kernel.org>,
+        <devicetree@vger.kernel.org>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <robh+dt@kernel.org>,
+        <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: adding dt-bindings for
  PAC193X
-Content-Language: en-US
-To:     Marius.Cristea@microchip.com, jic23@kernel.org
-Cc:     devicetree@vger.kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230220123232.413029-1-marius.cristea@microchip.com>
- <20230220123232.413029-2-marius.cristea@microchip.com>
- <c38afa67-d24f-0390-f18a-81bee15b7eca@kernel.org>
- <20230225171723.15e822ec@jic23-huawei>
- <2f1a14522a7a8d46e3b037a285af4c3dd9b17cbc.camel@microchip.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
+Message-ID: <20230306162632.00005edd@Huawei.com>
 In-Reply-To: <2f1a14522a7a8d46e3b037a285af4c3dd9b17cbc.camel@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230220123232.413029-1-marius.cristea@microchip.com>
+        <20230220123232.413029-2-marius.cristea@microchip.com>
+        <c38afa67-d24f-0390-f18a-81bee15b7eca@kernel.org>
+        <20230225171723.15e822ec@jic23-huawei>
+        <2f1a14522a7a8d46e3b037a285af4c3dd9b17cbc.camel@microchip.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,8 +55,9 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 06/03/2023 14:53, Marius.Cristea@microchip.com wrote:
-> 
+On Mon, 6 Mar 2023 13:53:27 +0000
+<Marius.Cristea@microchip.com> wrote:
+
 > Hi Jonathan,
 > 
 >    Thank you so much! I'm happy to contribute to IIO.
@@ -74,22 +68,22 @@ On 06/03/2023 14:53, Marius.Cristea@microchip.com wrote:
 > 
 > 
 > On Sat, 2023-02-25 at 17:17 +0000, Jonathan Cameron wrote:
->>>> +
->>>> +Â  microchip,samp-rate:
->>>> +Â Â Â  $ref: /schemas/types.yaml#/definitions/uint32
->>>> +Â Â Â  description: Sampling rate for all device's channels.
->>>
->>> What are the units? rate is usually in hz, which should be
->>> expressed in
->>> unit suffix (property name)]
->>
->> It's unusual for sampling rate to be a property of the hardware and
->> hence
->> suitable for DT binding. Normally we make this a userspace control
->> instead.
->> If there is a reason for doing it from DT, that wants to be mentioned
->> here.
->>
+> > > > +
+> > > > +  microchip,samp-rate:
+> > > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > > +    description: Sampling rate for all device's channels.  
+> > > 
+> > > What are the units? rate is usually in hz, which should be
+> > > expressed in
+> > > unit suffix (property name)]  
+> > 
+> > It's unusual for sampling rate to be a property of the hardware and
+> > hence
+> > suitable for DT binding. Normally we make this a userspace control
+> > instead.
+> > If there is a reason for doing it from DT, that wants to be mentioned
+> > here.
+> >   
 > 
 > Here I could change it into the datarate (as in
 > iio/adc/ti,ads1015.yaml). The units are samples per second. My
@@ -100,11 +94,50 @@ On 06/03/2023 14:53, Marius.Cristea@microchip.com wrote:
 > increase with the sampling rate - default the chip will start with the
 > maximum samples per second).
 
-Then maybe the default should be just lowest rate and user will adjust
-it further? Since this is user-space knob, why this should be even
-configurable per board?
+Feel free to have the driver set it to the minimum frequency unconditionally
+in probe.
 
+> 
+> 
+> >   
+> 
+> >   
+> > >   
+> > > > +
+> > > > +      microchip,bi-directional:
+> > > > +        description: Whether the channel is bi-directional.  
+> > > 
+> > > Describe here what is a "bi-directional" channel for ADC... Maybe
+> > > it is
+> > > obvious, maybe not. For me it is not and none of other devices have
+> > > it.
+> > >   
+> > From datasheet this seems to be a novel description of whether the
+> > ADC
+> > is measuring just positive or allows for negative voltage as well
+> > (i.e.
+> > the current through the shut resistor is going on the other
+> > direction).
+> > Can we relate this to a biopolar / unipolar decision on a simple
+> > voltage ADC?
+> > For that we have standard DT bindings in iio/adc/adc.yaml
+> >   
+> 
+> Yes, the PAC device can measure voltages as unipolar or bipolar but
+> also current as unidirectional or bidirectional (we are measuring the
+> voltage across a shunt resistor). We are also reporting power and is
+> not a "usual" thing to report power as unipolar or bipolar. Bi-
+> directional power makes more sens if you are thinking to monitor a
+> charge discharge cycle for a battery pack.
 
-Best regards,
-Krzysztof
+I'm still a little confused. If you are bipolar and hence can measure
+postive and negative voltage between two pins, how is that different
+to bidirectional? Other than for bidirection we are talking current
+rather than voltage.
+
+> 
+> 
+> 
+> Thanks,
+> Marius
 

@@ -2,74 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D130E6AC0E9
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 14:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B67576AC0F1
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Mar 2023 14:30:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230429AbjCFN3p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Mar 2023 08:29:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41180 "EHLO
+        id S231225AbjCFNag (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Mar 2023 08:30:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230048AbjCFN3o (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 08:29:44 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AAE23671;
-        Mon,  6 Mar 2023 05:29:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678109384; x=1709645384;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dWELgJ6UKYulLa0yVyGSUh1o9vmjbEAcGp3BvCpR7/0=;
-  b=Ny6Bdmhyf+d/e8qS/LLEUEaaP9YCwje2Vn9J9bihSRqJPy1TH0+/TYIb
-   ZDQqMccGUINYeC9XZScfzLytp/baib9pFIGOFBP1bPCHa4in9X3QLPhv2
-   hMREARdufyrHtXFynlFFsb2chSgnBTaWWvTiYt9Pu7yjxacvfbZxhE7tN
-   6Kd+ker27OyjxxOEpU9QD6v+YzEXUqMglXwsQwerjcen2wvliIBtzJFlm
-   f62qt7Awsc4gayySv96/3TwxVNfEyovcCSFmEA9gQAJpsB8Y2C0oO6KiL
-   nqMXhy6i+KH4b8E2Bd/sjqO/yp2G2qoRrXXW8JLs4NuKqCcq5y5ce7jjf
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="400372283"
-X-IronPort-AV: E=Sophos;i="5.98,236,1673942400"; 
-   d="scan'208";a="400372283"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2023 05:29:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="799994608"
-X-IronPort-AV: E=Sophos;i="5.98,236,1673942400"; 
-   d="scan'208";a="799994608"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 06 Mar 2023 05:29:39 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pZAuH-00GRQZ-2v;
-        Mon, 06 Mar 2023 15:29:37 +0200
-Date:   Mon, 6 Mar 2023 15:29:37 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S231247AbjCFNa1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Mar 2023 08:30:27 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17AB62A6F2;
+        Mon,  6 Mar 2023 05:30:22 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id g3so38643498eda.1;
+        Mon, 06 Mar 2023 05:30:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678109420;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WlUIZeGKWllbgJ8I0debpUyJbB/h2BZZK7zfLl+T+sw=;
+        b=JDGDyESZLrKV4bbADwCK/CkVk5mWHbYgn45N/lZG4Fh9dy1jtaa8LDP1uPSM1maEvg
+         mv+JoSG/l1iq5uQb/jLx4vpTMu4lDwWKVrjlSmQpaZbKV1CdPMenpq6fNee0KgYBf2ds
+         lvNORzWfPyu9OQNj8I+NRVPeqVSLmhn9v0K5dtqRJlTXIGfwmNQ7X717POL3QkCkXbYQ
+         +aa2+2TdC+Xty7f844ZOfQmMUHfZ33N5D+5YmNyHpEpfin2riYM73UwagUQT4Tu/6Oye
+         1gWNtH1lKOa5zEQGcwA7L/tp5I3BU1nWI22XGeBDmRqXDCTKILBcVaytIHs+h5fyrpyW
+         xMig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678109420;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WlUIZeGKWllbgJ8I0debpUyJbB/h2BZZK7zfLl+T+sw=;
+        b=UJLHc4JrtgJqSKM9EBbSXRbcnWNoW6APtrpEEz3Est9edgsjcOdAn99vrvAZEv5TMO
+         G/Nf4JhYugaOnuP06S66ZJTyI1gdTXCfekMCb9FD3RB5Vd7r/DnehGRgK290ArX4s0MT
+         lx8iCyPw4YfI+VdSAZEGGnL8aSoTn/VDYfi19pM4fcFxGMVAkQNLMKuv3CLWtvAuaczc
+         P1q1CA4eDE5U/1nrrRb2Xas5C7GiBnDD0+uJC+ciRye226d65ErJZBjdWVCdlqayUP+z
+         vmhkjtOXtApjmPJAVYs7yPoAmjO7YtrB4l1pJDhMcMhXj9MmnCTjhd4MknTIVwhchOmX
+         WawA==
+X-Gm-Message-State: AO0yUKWd9ny8kVykzU3wIS+ao7mT2GEB/5sCzrlskBgvzbPbv6pEB0um
+        CVjrp9ZuxXtTDBj9zyrx/gLxmRu2Dug=
+X-Google-Smtp-Source: AK7set/G2hQg8fRoZARn35+XEBYXA+yPVfpiIMJpRFYoZgbAOVgnNNIyS7EEMlBAHZZ2ZQEJn1dbZg==
+X-Received: by 2002:aa7:d385:0:b0:4ac:d8a1:7385 with SMTP id x5-20020aa7d385000000b004acd8a17385mr10737354edq.3.1678109420395;
+        Mon, 06 Mar 2023 05:30:20 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id t26-20020a508d5a000000b004a9b5c957bfsm5149564edt.77.2023.03.06.05.30.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Mar 2023 05:30:19 -0800 (PST)
+Message-ID: <6e1fe1015235ae7d7eb9ef2526fd64b6d6d628d7.camel@gmail.com>
+Subject: Re: [PATCH] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Masahiro Honda <honda@mechatrax.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <ZAXqwaKA3Uh6TH2q@smile.fi.intel.com>
-References: <20230306131312.7170-1-mike.looijmans@topic.nl>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.0270109b-145d-4024-b8ff-05d54be2ad97@emailsignatures365.codetwo.com>
- <20230306131312.7170-2-mike.looijmans@topic.nl>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 06 Mar 2023 14:32:18 +0100
+In-Reply-To: <20230306044737.862-1-honda@mechatrax.com>
+References: <20230306044737.862-1-honda@mechatrax.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230306131312.7170-2-mike.looijmans@topic.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,74 +74,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 06, 2023 at 02:13:12PM +0100, Mike Looijmans wrote:
-> The ADS1100 is a 16-bit ADC (at 8 samples per second).
-> The ADS1000 is similar, but has a fixed data rate.
+On Mon, 2023-03-06 at 13:47 +0900, Masahiro Honda wrote:
+> ADC using ad7793.ko, such as AD7794, may read incorrect data.
+> Extra interrupt is pending if the data on DOUT contains a falling
+> edge.
+> Therefore, wait_for_completion_timeout returns immediately.
+> This patch fixes the issue by setting IRQ_DISABLE_UNLAZY flag.
+>=20
+> Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+> ---
+> =C2=A0drivers/iio/adc/ad_sigma_delta.c | 1 +
+> =C2=A01 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c
+> b/drivers/iio/adc/ad_sigma_delta.c
+> index d8570f620..364051809 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -584,6 +584,7 @@ static int devm_ad_sd_probe_trigger(struct device
+> *dev, struct iio_dev *indio_de
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0init_completion(&sigma_de=
+lta->completion);
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sigma_delta->irq_dis =3D =
+true;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0irq_set_status_flags(sigma_del=
+ta->spi->irq,
+> IRQ_DISABLE_UNLAZY);
 
-...
+Hmmm this looks to be a very likely issue for any device having to
+brute force IRQ disabling by disabling the line (disable_irq()). That
+said, I think the commit message can (needs) to be improved. The
+message feels a bit confusing to me. Also, having a reference to
 
-> +	/* Value is always 16-bit 2's complement */
-> +	value = be16_to_cpu(buffer);
+commit e9849777d0e2 ("genirq: Add flag to force mask in
+disable_irq[_nosync]()")=20
 
-+ Blank line?
+would be nice to give some background on why this can be an issue.
 
-> +	/* Shift result to compensate for bit resolution vs. sample rate */
-> +	value <<= 16 - ads1100_data_bits(data);
-
-+ Blank line?
-
-> +	*val = sign_extend32(value, 15);
-
-...
-
-> +	microvolts = regulator_get_voltage(data->reg_vdd);
-> +	/*
-> +	 * val2 is in 'micro' units, n = val2 / 1000000
-> +	 * result must be millivolts, d = microvolts / 1000
-> +	 * the full-scale value is d/n, corresponds to 2^15,
-> +	 * hence the gain = (d / n) >> 15, factoring out the 1000 and moving the
-> +	 * bitshift so everything fits in 32-bits yields this formula.
-> +	 */
-> +	gain = ((microvolts + BIT(14)) >> 15) * 1000 / val2;
-
-Perhaps adding MICROVOLT_PER_MILLIVOLT (to units.h) and use it here?
-
-Besides that it's seems like
-
-	microvolts = regulator_get_voltage(data->reg_vdd);
-	gain = DIV_ROUNDUP_CLOSEST(microvolts, BIT(15)) *
-	       MICROVOLT_PER_MILLIVOLT / val2;
-
-> +	if (gain <= 0 || gain > 8)
-> +		return -EINVAL;
-
-As I commented out in the previous discussion (please, give a chance to the
-reviewers to answer before issuing a new version of the series) this better
-to be
-
-	if (gain < BIT(0) || gain > BIT(3))
-
-which will show the nature of power of two implicitly.
-
-> +	regval = ffs(gain) - 1;
-> +	ads1100_set_config_bits(data, ADS1100_PGA_MASK, regval);
-
-Can be unified in one line.
-
-> +	return 0;
-> +}
-
-...
-
-> +			return ads1100_set_config_bits(
-> +					data, ADS1100_DR_MASK,
-> +					FIELD_PREP(ADS1100_DR_MASK, i));
-
-Wrong indentation.
-Please, check all your code for this kind of issues.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Another thing that came to my mind is if the data is totally
+garbage/wrong or is it just some outstanding sample?
 
 
+Some research on this also seems to point that we should (need?) call
+irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing the IRQ.
+
+I also wonder if we should keep this out of the library and have a per
+device config? Sure, this won't make anything wrong but it will hurt
+performance. OTOH, even though no one else ever reported this before,
+it looks like this can be an issue for all of the supported sigma delta
+ADCs.
+
+- Nuno S=C3=A1

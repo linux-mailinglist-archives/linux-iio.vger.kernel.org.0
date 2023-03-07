@@ -2,75 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51BDB6ADEA2
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Mar 2023 13:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CC06AEA2C
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Mar 2023 18:31:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231442AbjCGMYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Mar 2023 07:24:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
+        id S231676AbjCGRbW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Mar 2023 12:31:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231428AbjCGMYy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Mar 2023 07:24:54 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37E9437F31;
-        Tue,  7 Mar 2023 04:24:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678191892; x=1709727892;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gcu+E5qYJfV98BPM+GFa1LRfbtFr1k5858cQIYjQGko=;
-  b=TUR6ASt+84aq0tYeJnUDZR03gs0+GcG8G/ysCJ1b7e6dA789Hym9fnsT
-   6H+W5oWOVxmM07FLikUnLKdact5dltjx+4sGj4EUpaCnNTVatYj0q7rn6
-   0zwpkmjEa/78UJVKdvfQgG8okP2sR/SoV2DzLKY91WEAvtBn69EFQrZgd
-   YOBsxalRYoHa2fAXCwz9eDgrjsLZC6owndQY8GWw2y0FtYEvjztPgri0j
-   wvMMgbPrx9jTjhQfUxSdOKtxFpUVikUL/wPktbdv8hPr5/ETLq7fzuvqK
-   CYz0WoiAF0eV4UDad+Yb/zUp31MyB5CddLxeNUoYObE2906nU2qklS4Oq
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="319667810"
-X-IronPort-AV: E=Sophos;i="5.98,240,1673942400"; 
-   d="scan'208";a="319667810"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2023 04:24:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10641"; a="819745083"
-X-IronPort-AV: E=Sophos;i="5.98,240,1673942400"; 
-   d="scan'208";a="819745083"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Mar 2023 04:24:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pZWN2-00Guew-2p;
-        Tue, 07 Mar 2023 14:24:44 +0200
-Date:   Tue, 7 Mar 2023 14:24:44 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        with ESMTP id S231627AbjCGRbC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Mar 2023 12:31:02 -0500
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F3594766;
+        Tue,  7 Mar 2023 09:26:22 -0800 (PST)
+Received: from [192.168.1.141] ([37.4.248.41]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1Mf0FY-1qEyER18xu-00gZxI; Tue, 07 Mar 2023 18:25:25 +0100
+Message-ID: <a2a39419-86e9-2dff-644a-391248b51a0e@i2se.com>
+Date:   Tue, 7 Mar 2023 18:25:23 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH 7/8] ARM: dts: imx6ull: Add chargebyte Tarragon support
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <ZActDOEsT+tNMfZ1@smile.fi.intel.com>
-References: <20230307065535.7927-1-mike.looijmans@topic.nl>
- <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.812861c4-ffbd-402e-bb22-77232c1fbafb@emailsignatures365.codetwo.com>
- <20230307065535.7927-2-mike.looijmans@topic.nl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230307065535.7927-2-mike.looijmans@topic.nl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc:     linux-imx@nxp.com, Li Yang <leoyang.li@nxp.com>,
+        Denis Ciocca <denis.ciocca@st.com>, soc@kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Stefan Wahren <stefan.wahren@chargebyte.com>
+References: <20230306172249.74003-1-stefan.wahren@i2se.com>
+ <20230306172249.74003-8-stefan.wahren@i2se.com>
+ <d77c2938-bcef-4586-77b5-1cb93b113eb5@linaro.org>
+Content-Language: en-US
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+In-Reply-To: <d77c2938-bcef-4586-77b5-1cb93b113eb5@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:RsDQrIo2ZQR3Aq166ZFWN07AvwnhS8DDvMRDPETRCZhn/+TB7ii
+ 6kZVydNHo2h6howXdFkNg6ncj8kI5RJl94Ct85BJ2uei8Q074aI9mmECdz4W4boTT6vpx5h
+ XeJRJyRpCblEQE7qrGC04LErqLO/0eTnw7iRRYTNy4Wb6qcKr/qGVooH+UG4Rjo84Dxh5C/
+ 3TvgWVRwv1VQEWhCgSgLg==
+UI-OutboundReport: notjunk:1;M01:P0:ekZsYtJg+Sw=;16NcdWSP67Kqrg6684a4vhOYYdr
+ l4rKFy6hs00kdbrPE1TX+V7+qgfHqpX2VMlL7GvN1C4OcjzK39BVGt6rIAaI+Frd0s1BC30Es
+ pkCyWnN/F+3yAP+IPYLGHpSwpRfvLx962pon6dB3bmZhK002itpGEtgW4CUGBvYdMgv+jJ07+
+ qCKKYYgVQ17w6TZE5O9BK0ecsWqFvrDUubW5i9BmG6eFWWIQXWzAxQ0AmHQ6n56Yc3eNT/KoA
+ nymj5cLb/Zfjg2ndwylq5bC3VKwlI/vyUYXW9tUYqMmHYTHlHrQ4cVtL8K73z/gEVZUDTB3no
+ SXT4oWV1tY94olO7i6XNiY5ZLiJEuwjsaIiURd1NAeRbcH4G7ZPQoV0lku/eR9jWhCqIxQFJS
+ 3kTQQUQUmzldeokjZ630Bkf/oVS/R+YzkaHUPZNALbFdamJR6+6Pr+en32croiZ2dPD+Qpd/v
+ a1YTwAnSgyydKqiLzR9YybV2/KpNWx+XeWMI4REhCzBHx3lfaU5lz2M1zvJDLXiFWD0wo82a+
+ Vzrhm6Jan6EoSBVwLY9c6q8VxjtP3syuwy3qbeWXez8QQh1jyR96l4zQMv3dR2kV5COQZniQw
+ Bubl9k7f2VSyIQyLIHKsBNPBOQULnD7Rqjz/RnTdbJjDcTC4f+UjxrKpAlp0Oxkw8qel4nAMj
+ 0fixENq35Kt5TfiUrZ7r+DPLM6AiqZBiYtLhrCvCdg==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,560 +70,256 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 07, 2023 at 07:55:34AM +0100, Mike Looijmans wrote:
-> The ADS1100 is a 16-bit ADC (at 8 samples per second).
-> The ADS1000 is similar, but has a fixed data rate.
+Hi Krzysztof,
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Am 07.03.23 um 09:30 schrieb Krzysztof Kozlowski:
+> On 06/03/2023 18:22, Stefan Wahren wrote:
+>> From: Stefan Wahren <stefan.wahren@chargebyte.com>
+>>
+>> This adds the support for chargebyte Tarragon, which is an Electrical
+>> Vehicle Supply Equipment (EVSE) for AC charging stations
+>> (according to IEC 61851, ISO 15118).
+>>
+>> The Tarragon board is based on an i.MX6ULL SoC and is available in
+>> 4 variants (Master, Slave, SlaveXT, Micro), which provide more or
+>> less peripherals.
+>>
+>> Supported features:
+>>    * 512 MB DDR RAM
+>>    * eMMC
+>>    * Debug UART
+>>    * 100 Mbit Ethernet
+>>    * USB 2.0 Host interface
+>>    * Powerline communication (QCA700x)
+>>    * 2x RS485
+>>    * Digital in- and outputs (12 V)
+>>    * One-Wire master for external temp sensors
+>>    * 2x relay outputs
+>>    * 2x motor interfaces
+>>
+>> Link: https://chargebyte.com/products/charging-station-communication/charge-control-c
+>> Signed-off-by: Stefan Wahren <stefan.wahren@chargebyte.com>
+>> Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+>> ---
+>>   arch/arm/boot/dts/Makefile                    |   4 +
+>>   .../arm/boot/dts/imx6ull-tarragon-common.dtsi | 858 ++++++++++++++++++
+>>   arch/arm/boot/dts/imx6ull-tarragon-master.dts |  82 ++
+>>   arch/arm/boot/dts/imx6ull-tarragon-micro.dts  |  10 +
+>>   arch/arm/boot/dts/imx6ull-tarragon-slave.dts  |  32 +
+>>   .../arm/boot/dts/imx6ull-tarragon-slavext.dts |  64 ++
+>>   6 files changed, 1050 insertions(+)
+>>   create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-common.dtsi
+>>   create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-master.dts
+>>   create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-micro.dts
+>>   create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-slave.dts
+>>   create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-slavext.dts
+>>
+>> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+>> index efe4152e5846..aae52a6380bc 100644
+>> --- a/arch/arm/boot/dts/Makefile
+>> +++ b/arch/arm/boot/dts/Makefile
+>> @@ -755,6 +755,10 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
+>>   	imx6ull-phytec-segin-lc-rdk-nand.dtb \
+>>   	imx6ull-phytec-tauri-emmc.dtb \
+>>   	imx6ull-phytec-tauri-nand.dtb \
+>> +	imx6ull-tarragon-master.dtb \
+>> +	imx6ull-tarragon-micro.dtb \
+>> +	imx6ull-tarragon-slave.dtb \
+>> +	imx6ull-tarragon-slavext.dtb \
+>>   	imx6ull-tqma6ull2-mba6ulx.dtb \
+>>   	imx6ull-tqma6ull2l-mba6ulx.dtb \
+>>   	imx6ulz-14x14-evk.dtb \
+>> diff --git a/arch/arm/boot/dts/imx6ull-tarragon-common.dtsi b/arch/arm/boot/dts/imx6ull-tarragon-common.dtsi
+>> new file mode 100644
+>> index 000000000000..1099dd688e80
+>> --- /dev/null
+>> +++ b/arch/arm/boot/dts/imx6ull-tarragon-common.dtsi
+>> @@ -0,0 +1,858 @@
+>> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+>> +//
+>> +// Copyright (C) 2023 chargebyte GmbH
+>> +
+>> +/dts-v1/;
+>> +
+>> +#include <dt-bindings/input/input.h>
+>> +#include <dt-bindings/leds/common.h>
+>> +#include <dt-bindings/pwm/pwm.h>
+>> +#include "imx6ull.dtsi"
+>> +
+>> +/ {
+>> +	aliases {
+>> +		mmc0 = &usdhc2; /* eMMC */
+>> +	};
+>> +
+>> +	chosen {
+>> +		stdout-path = &uart4;
+>> +	};
+>> +
+>> +	memory@80000000 {
+>> +		device_type = "memory";
+>> +		reg = <0x80000000 0x20000000>;
+>> +	};
+>> +
+>> +	emmc_pwrseq: emmc-pwrseq {
+>> +		compatible = "mmc-pwrseq-emmc";
+>> +		pinctrl-0 = <&pinctrl_emmc_rst>;
+>> +		pinctrl-names = "default";
+>> +		reset-gpios = <&gpio4 10 GPIO_ACTIVE_LOW>;
+>> +	};
+>> +
+>> +	reg_dcdc_3v3: regulator-dcdc-3v3 {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "dcdc-3v3";
+>> +		regulator-min-microvolt = <3300000>;
+>> +		regulator-max-microvolt = <3300000>;
+>> +		regulator-boot-on;
+>> +		regulator-always-on;
+>> +	};
+>> +
+>> +	reg_1v8: regulator-1v8 {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "ldo-1v8";
+>> +		regulator-min-microvolt = <1800000>;
+>> +		regulator-max-microvolt = <1800000>;
+>> +		regulator-boot-on;
+>> +		regulator-always-on;
+>> +	};
+>> +
+>> +	leds {
+>> +		compatible = "gpio-leds";
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&pinctrl_status_leds>;
+>> +
+>> +		led1 {
+> Does not look like you tested the DTS against bindings. Please run `make
+> dtbs_check` (see Documentation/devicetree/bindings/writing-schema.rst
+> for instructions).
 
-But see below.
+I ran make dtbs_check before sending this series. All of these issues in 
+the included dtsi files makes it hard to spot DTS specific issues. This 
+is the output of make dtbs_check:
 
-> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-> 
-> ---
-> 
-> Changes in v5:
-> Use scripts/Lindent to auto-format
-> Use DIV_ROUNDUP_CLOSEST in gain calculation
-> 
-> Changes in v4:
-> Use post-increment
-> Formatting fixes (commas, indents, empty line)
-> Use 'ffs' and explain gain formula
-> Use dev_set_drvdata/dev_get_drvdata for pm_ methods
-> Use units.h for micro-to-milli conversion
-> 
-> Changes in v3:
-> Add #include linux/bitfield.h and linux/bits.h
-> 
-> Changes in v2:
-> Remove "driver for" from title
-> Use proper PM_RUNTIME macros
-> Fix indents
-> Use dev_err_probe()
-> Unsigned index and post-increment
-> Use GENMASK and FIELD_GET
-> remove ads1100_set_conv_mode
-> remove Kconfig BUFFER dependencies
-> remove unused #include
-> Set SCALE instead of HARDWAREGAIN
-> Use devm_add_action_or_reset
-> 
->  drivers/iio/adc/Kconfig      |  10 +
->  drivers/iio/adc/Makefile     |   1 +
->  drivers/iio/adc/ti-ads1100.c | 444 +++++++++++++++++++++++++++++++++++
->  3 files changed, 455 insertions(+)
->  create mode 100644 drivers/iio/adc/ti-ads1100.c
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 63f80d747cbd..257efb25a92e 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -1207,6 +1207,16 @@ config TI_ADS1015
->  	  This driver can also be built as a module. If so, the module will be
->  	  called ti-ads1015.
->  
-> +config TI_ADS1100
-> +	tristate "Texas Instruments ADS1100 and ADS1000 ADC"
-> +	depends on I2C
-> +	help
-> +	  If you say yes here you get support for Texas Instruments ADS1100 and
-> +	  ADS1000 ADC chips.
-> +
-> +	  This driver can also be built as a module. If so, the module will be
-> +	  called ti-ads1100.
-> +
->  config TI_ADS7950
->  	tristate "Texas Instruments ADS7950 ADC driver"
->  	depends on SPI && GPIOLIB
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 4ef41a7dfac6..61ef600fab99 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -107,6 +107,7 @@ obj-$(CONFIG_TI_ADC108S102) += ti-adc108s102.o
->  obj-$(CONFIG_TI_ADC128S052) += ti-adc128s052.o
->  obj-$(CONFIG_TI_ADC161S626) += ti-adc161s626.o
->  obj-$(CONFIG_TI_ADS1015) += ti-ads1015.o
-> +obj-$(CONFIG_TI_ADS1100) += ti-ads1100.o
->  obj-$(CONFIG_TI_ADS7950) += ti-ads7950.o
->  obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o
->  obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
-> diff --git a/drivers/iio/adc/ti-ads1100.c b/drivers/iio/adc/ti-ads1100.c
-> new file mode 100644
-> index 000000000000..ce386c18618f
-> --- /dev/null
-> +++ b/drivers/iio/adc/ti-ads1100.c
-> @@ -0,0 +1,444 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADS1100 - Texas Instruments Analog-to-Digital Converter
-> + *
-> + * Copyright (c) 2023, Topic Embedded Products
-> + *
-> + * Datasheet: https://www.ti.com/lit/gpn/ads1100
-> + * IIO driver for ADS1100 and ADS1000 ADC 16-bit I2C
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +#include <linux/init.h>
-> +#include <linux/i2c.h>
-> +#include <linux/mutex.h>
-> +#include <linux/property.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/units.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/types.h>
-> +
-> +/* The ADS1100 has a single byte config register */
-> +
-> +/* Conversion in progress bit */
-> +#define ADS1100_CFG_ST_BSY	BIT(7)
-> +/* Single conversion bit */
-> +#define ADS1100_CFG_SC		BIT(4)
-> +/* Data rate */
-> +#define ADS1100_DR_MASK		GENMASK(3, 2)
-> +/* Gain */
-> +#define ADS1100_PGA_MASK	GENMASK(1, 0)
-> +
-> +#define ADS1100_CONTINUOUS	0
-> +#define	ADS1100_SINGLESHOT	ADS1100_CFG_SC
-> +
-> +#define ADS1100_SLEEP_DELAY_MS	2000
-> +
-> +static const int ads1100_data_rate[] = { 128, 32, 16, 8 };
-> +static const int ads1100_data_rate_bits[] = { 12, 14, 15, 16 };
-> +
-> +struct ads1100_data {
-> +	struct i2c_client *client;
-> +	struct regulator *reg_vdd;
-> +	struct mutex lock;
-> +	int scale_avail[2 * 4]; /* 4 gain settings */
-> +	u8 config;
-> +	bool supports_data_rate; /* Only the ADS1100 can select the rate */
-> +};
-> +
-> +static const struct iio_chan_spec ads1100_channel = {
-> +	.type = IIO_VOLTAGE,
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +	.info_mask_shared_by_all =
-> +	    BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> +	.info_mask_shared_by_all_available =
-> +	    BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> +	.scan_type = {
-> +		      .sign = 's',
-> +		      .realbits = 16,
-> +		      .storagebits = 16,
-> +		      .endianness = IIO_CPU,
-> +		       },
-> +	.datasheet_name = "AIN",
-> +};
-> +
-> +static int ads1100_set_config_bits(struct ads1100_data *data, u8 mask, u8 value)
-> +{
-> +	int ret;
-> +	u8 config = (data->config & ~mask) | (value & mask);
-> +
-> +	if (data->config == config)
-> +		return 0;	/* Already done */
-> +
-> +	ret = i2c_master_send(data->client, &config, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	data->config = config;
-> +	return 0;
-> +};
-> +
-> +static int ads1100_data_bits(struct ads1100_data *data)
-> +{
-> +	return ads1100_data_rate_bits[FIELD_GET(ADS1100_DR_MASK, data->config)];
-> +}
-> +
-> +static int ads1100_get_adc_result(struct ads1100_data *data, int chan, int *val)
-> +{
-> +	int ret;
-> +	__be16 buffer;
-> +	s16 value;
-> +
-> +	if (chan != 0)
-> +		return -EINVAL;
-> +
-> +	ret = pm_runtime_resume_and_get(&data->client->dev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = i2c_master_recv(data->client, (char *)&buffer, sizeof(buffer));
-> +
-> +	pm_runtime_mark_last_busy(&data->client->dev);
-> +	pm_runtime_put_autosuspend(&data->client->dev);
-> +
-> +	if (ret < 0) {
-> +		dev_err(&data->client->dev, "I2C read fail: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	/* Value is always 16-bit 2's complement */
-> +	value = be16_to_cpu(buffer);
-> +
-> +	/* Shift result to compensate for bit resolution vs. sample rate */
-> +	value <<= 16 - ads1100_data_bits(data);
-> +
-> +	*val = sign_extend32(value, 15);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads1100_set_scale(struct ads1100_data *data, int val, int val2)
-> +{
-> +	int microvolts;
-> +	int gain;
-> +
-> +	/* With Vdd between 2.7 and 5V, the scale is always below 1 */
-> +	if (val)
-> +		return -EINVAL;
-> +
-> +	if (!val2)
-> +		return -EINVAL;
-> +
-> +	microvolts = regulator_get_voltage(data->reg_vdd);
-> +	/*
-> +	 * val2 is in 'micro' units, n = val2 / 1000000
-> +	 * result must be millivolts, d = microvolts / 1000
-> +	 * the full-scale value is d/n, corresponds to 2^15,
-> +	 * hence the gain = (d / n) >> 15, factoring out the 1000 and moving the
-> +	 * bitshift so everything fits in 32-bits yields this formula.
-> +	 */
-> +	gain = DIV_ROUND_CLOSEST(microvolts, BIT(15)) * MILLI / val2;
-> +	if (gain < BIT(0) || gain > BIT(3))
-> +		return -EINVAL;
-> +
-> +	ads1100_set_config_bits(data, ADS1100_PGA_MASK, ffs(gain) - 1);
-> +	return 0;
-> +}
-> +
-> +static int ads1100_set_data_rate(struct ads1100_data *data, int chan, int rate)
-> +{
-> +	unsigned int i;
-> +	unsigned int size;
-> +
-> +	size = data->supports_data_rate ? ARRAY_SIZE(ads1100_data_rate) : 1;
-> +	for (i = 0; i < size; i++) {
-> +		if (ads1100_data_rate[i] == rate)
-> +			return ads1100_set_config_bits(data, ADS1100_DR_MASK,
+   DTC_CHK arch/arm/boot/dts/imx6ull-tarragon-master.dtb
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+nand-controller@1806000: #size-cells:0:0: 0 was expected
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/mtd/nand-controller.yaml
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+nand-controller@1806000: #size-cells:0:0: 0 was expected
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/mtd/gpmi-nand.yaml
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/spba-bus@2000000/spi@200c000/ethernet@0: failed to 
+match any schema with compatible: ['qca,qca7000']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/spba-bus@2000000/spi@2014000/ethernet@0: failed to 
+match any schema with compatible: ['qca,qca7000']
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+serial@2018000: Unevaluated properties are not allowed ('clock-names', 
+'clocks' were unexpected)
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/serial/fsl-imx-uart.yaml
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+serial@2020000: Unevaluated properties are not allowed ('clock-names', 
+'clocks' were unexpected)
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/serial/fsl-imx-uart.yaml
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/spba-bus@2000000/asrc@2034000: failed to match any 
+schema with compatible: ['fsl,imx6ul-asrc', 'fsl,imx53-asrc']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/spba-bus@2000000/asrc@2034000: failed to match any 
+schema with compatible: ['fsl,imx6ul-asrc', 'fsl,imx53-asrc']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/tsc@2040000: failed to match any schema with 
+compatible: ['fsl,imx6ul-tsc']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/anatop@20c8000: failed to match any schema with 
+compatible: ['fsl,imx6ul-anatop', 'fsl,imx6q-anatop', 'syscon', 
+'simple-mfd']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/anatop@20c8000: failed to match any schema with 
+compatible: ['fsl,imx6ul-anatop', 'fsl,imx6q-anatop', 'syscon', 
+'simple-mfd']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/usbphy@20c9000: failed to match any schema with 
+compatible: ['fsl,imx6ul-usbphy', 'fsl,imx23-usbphy']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/usbphy@20c9000: failed to match any schema with 
+compatible: ['fsl,imx6ul-usbphy', 'fsl,imx23-usbphy']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/usbphy@20ca000: failed to match any schema with 
+compatible: ['fsl,imx6ul-usbphy', 'fsl,imx23-usbphy']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/usbphy@20ca000: failed to match any schema with 
+compatible: ['fsl,imx6ul-usbphy', 'fsl,imx23-usbphy']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/snvs@20cc000: failed to match any schema with 
+compatible: ['fsl,sec-v4.0-mon', 'syscon', 'simple-mfd']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/snvs@20cc000/snvs-rtc-lp: failed to match any schema 
+with compatible: ['fsl,sec-v4.0-mon-rtc-lp']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/snvs@20cc000/snvs-powerkey: failed to match any schema 
+with compatible: ['fsl,sec-v4.0-pwrkey']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/pinctrl@20e0000: failed to match any schema with 
+compatible: ['fsl,imx6ul-iomuxc']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/iomuxc-gpr@20e4000: failed to match any schema with 
+compatible: ['fsl,imx6ul-iomuxc-gpr', 'fsl,imx6q-iomuxc-gpr', 'syscon']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2000000/iomuxc-gpr@20e4000: failed to match any schema with 
+compatible: ['fsl,imx6ul-iomuxc-gpr', 'fsl,imx6q-iomuxc-gpr', 'syscon']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/usb@2184000: failed to match any schema with 
+compatible: ['fsl,imx6ul-usb', 'fsl,imx27-usb']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/usb@2184000: failed to match any schema with 
+compatible: ['fsl,imx6ul-usb', 'fsl,imx27-usb']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/usb@2184200: failed to match any schema with 
+compatible: ['fsl,imx6ul-usb', 'fsl,imx27-usb']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/usb@2184200: failed to match any schema with 
+compatible: ['fsl,imx6ul-usb', 'fsl,imx27-usb']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/usbmisc@2184800: failed to match any schema with 
+compatible: ['fsl,imx6ul-usbmisc', 'fsl,imx6q-usbmisc']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/usbmisc@2184800: failed to match any schema with 
+compatible: ['fsl,imx6ul-usbmisc', 'fsl,imx6q-usbmisc']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/weim@21b8000: failed to match any schema with 
+compatible: ['fsl,imx6ul-weim', 'fsl,imx6q-weim']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2100000/weim@21b8000: failed to match any schema with 
+compatible: ['fsl,imx6ul-weim', 'fsl,imx6q-weim']
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+serial@21f0000: Unevaluated properties are not allowed ('clock-names', 
+'clocks' were unexpected)
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/serial/fsl-imx-uart.yaml
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+serial@21f4000: Unevaluated properties are not allowed ('clock-names', 
+'clocks' were unexpected)
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/serial/fsl-imx-uart.yaml
+/home/stefanw/mainline/arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+serial@21fc000: Unevaluated properties are not allowed ('clock-names', 
+'clocks' were unexpected)
+     From schema: 
+/home/stefanw/mainline/Documentation/devicetree/bindings/serial/fsl-imx-uart.yaml
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: 
+/soc/bus@2200000/iomuxc-snvs@2290000: failed to match any schema with 
+compatible: ['fsl,imx6ull-iomuxc-snvs']
+arch/arm/boot/dts/imx6ull-tarragon-master.dtb: /pwm-fan: failed to match 
+any schema with compatible: ['pwm-fan']
 
-> +						       FIELD_PREP
-> +						       (ADS1100_DR_MASK, i));
+Can you please point me, what is wrong or did you refer just to the 
+deprecated "label" property which doesn't throw a warning in my case?
 
-This is better on a single line.
+Did i missed a parameter?
 
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int ads1100_get_vdd_millivolts(struct ads1100_data *data)
-> +{
-> +	return regulator_get_voltage(data->reg_vdd) / (MICRO / MILLI);
-> +}
-> +
-> +static void ads1100_calc_scale_avail(struct ads1100_data *data)
-> +{
-> +	int millivolts = ads1100_get_vdd_millivolts(data);
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(data->scale_avail) / 2; i++) {
-> +		data->scale_avail[i * 2 + 0] = millivolts;
-> +		data->scale_avail[i * 2 + 1] = 15 + i;
-> +	}
-> +}
-> +
-> +static int ads1100_read_avail(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      const int **vals, int *type, int *length,
-> +			      long mask)
-> +{
-> +	struct ads1100_data *data = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*type = IIO_VAL_INT;
-> +		*vals = ads1100_data_rate;
-> +		if (data->supports_data_rate)
-> +			*length = ARRAY_SIZE(ads1100_data_rate);
-> +		else
-> +			*length = 1;
-> +		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*type = IIO_VAL_FRACTIONAL_LOG2;
-> +		*vals = data->scale_avail;
-> +		*length = ARRAY_SIZE(data->scale_avail);
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int ads1100_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan, int *val,
-> +			    int *val2, long mask)
-> +{
-> +	int ret;
-> +	struct ads1100_data *data = iio_priv(indio_dev);
-> +
-> +	mutex_lock(&data->lock);
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = iio_device_claim_direct_mode(indio_dev);
-> +		if (ret)
-> +			break;
-> +
-> +		ret = ads1100_get_adc_result(data, chan->address, val);
-> +		if (ret >= 0)
-> +			ret = IIO_VAL_INT;
-> +		iio_device_release_direct_mode(indio_dev);
-> +		break;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		/* full-scale is the supply voltage in millivolts */
-> +		*val = ads1100_get_vdd_millivolts(data);
-> +		*val2 = 15 + FIELD_GET(ADS1100_PGA_MASK, data->config);
-> +		ret = IIO_VAL_FRACTIONAL_LOG2;
-> +		break;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val = ads1100_data_rate[FIELD_GET(ADS1100_DR_MASK,
-> +						   data->config)];
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +	mutex_unlock(&data->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int ads1100_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan, int val,
-> +			     int val2, long mask)
-> +{
-> +	struct ads1100_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&data->lock);
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		ret = ads1100_set_scale(data, val, val2);
-> +		break;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		ret = ads1100_set_data_rate(data, chan->address, val);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +	mutex_unlock(&data->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct iio_info ads1100_info = {
-> +	.read_avail = ads1100_read_avail,
-> +	.read_raw = ads1100_read_raw,
-> +	.write_raw = ads1100_write_raw,
-> +};
-> +
-> +static int ads1100_setup(struct ads1100_data *data)
-> +{
-> +	int ret;
-> +	u8 buffer[3];
-> +
-> +	/* Setup continuous sampling mode at 8sps */
-> +	buffer[0] = ADS1100_DR_MASK | ADS1100_CONTINUOUS;
-> +	ret = i2c_master_send(data->client, buffer, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = i2c_master_recv(data->client, buffer, sizeof(buffer));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Config register returned in third byte, strip away the busy status */
-> +	data->config = buffer[2] & ~ADS1100_CFG_ST_BSY;
-> +
-> +	/* Detect the sample rate capability by checking the DR bits */
-> +	data->supports_data_rate = FIELD_GET(ADS1100_DR_MASK, buffer[2]) != 0;
-> +
-> +	return 0;
-> +}
-> +
-> +static void ads1100_reg_disable(void *reg)
-> +{
-> +	regulator_disable(reg);
-> +}
-> +
-> +static void ads1100_disable_continuous(void *data)
-> +{
-> +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
-> +}
-> +
-> +static int ads1100_probe(struct i2c_client *client)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct ads1100_data *data;
-> +	struct device *dev = &client->dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	dev_set_drvdata(dev, data);
-> +	data->client = client;
-> +	mutex_init(&data->lock);
-> +
-> +	indio_dev->name = "ads1100";
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = &ads1100_channel;
-> +	indio_dev->num_channels = 1;
-> +	indio_dev->info = &ads1100_info;
-> +
-> +	data->reg_vdd = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(data->reg_vdd))
-> +		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-> +				     "Failed to get vdd regulator\n");
-> +
-> +	ret = regulator_enable(data->reg_vdd);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-> +				     "Failed to enable vdd regulator\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, ads1100_reg_disable, data->reg_vdd);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ads1100_setup(data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to communicate with device\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, ads1100_disable_continuous, data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ads1100_calc_scale_avail(data);
-> +
-> +	pm_runtime_set_autosuspend_delay(dev, ADS1100_SLEEP_DELAY_MS);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_set_active(dev);
-> +	ret = devm_pm_runtime_enable(dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to enable pm_runtime\n");
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to register IIO device\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads1100_runtime_suspend(struct device *dev)
-> +{
-> +	struct ads1100_data *data = dev_get_drvdata(dev);
-> +
-> +	ads1100_set_config_bits(data, ADS1100_CFG_SC, ADS1100_SINGLESHOT);
-> +	regulator_disable(data->reg_vdd);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads1100_runtime_resume(struct device *dev)
-> +{
-> +	struct ads1100_data *data = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	ret = regulator_enable(data->reg_vdd);
-> +	if (ret) {
-> +		dev_err(&data->client->dev, "Failed to enable Vdd\n");
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * We'll always change the mode bit in the config register, so there is
-> +	 * no need here to "force" a write to the config register. If the device
-> +	 * has been power-cycled, we'll re-write its config register now.
-> +	 */
-> +	return ads1100_set_config_bits(data, ADS1100_CFG_SC,
-> +				       ADS1100_CONTINUOUS);
-> +}
-> +
-> +static DEFINE_RUNTIME_DEV_PM_OPS(ads1100_pm_ops,
-> +				 ads1100_runtime_suspend,
-> +				 ads1100_runtime_resume,
-> +				 NULL);
-> +
-> +static const struct i2c_device_id ads1100_id[] = {
-> +	{ "ads1100" },
-> +	{ "ads1000" },
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(i2c, ads1100_id);
-> +
-> +static const struct of_device_id ads1100_of_match[] = {
-> +	{.compatible = "ti,ads1100" },
-> +	{.compatible = "ti,ads1000" },
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, ads1100_of_match);
-> +
-> +static struct i2c_driver ads1100_driver = {
-> +	.driver = {
-> +		   .name = "ads1100",
-> +		   .of_match_table = ads1100_of_match,
-> +		   .pm = pm_ptr(&ads1100_pm_ops),
-> +		    },
-> +	.probe_new = ads1100_probe,
-> +	.id_table = ads1100_id,
-> +};
-> +
-> +module_i2c_driver(ads1100_driver);
-> +
-> +MODULE_AUTHOR("Mike Looijmans <mike.looijmans@topic.nl>");
-> +MODULE_DESCRIPTION("Texas Instruments ADS1100 ADC driver");
-> +MODULE_LICENSE("GPL");
-> -- 
-> 2.17.1
-> 
-> 
-> Met vriendelijke groet / kind regards,
-> 
-> Mike Looijmans
-> System Expert
-> 
-> 
-> TOPIC Embedded Products B.V.
-> Materiaalweg 4, 5681 RJ Best
-> The Netherlands
-> 
-> T: +31 (0) 499 33 69 69
-> E: mike.looijmans@topicproducts.com
-> W: www.topic.nl
-> 
-> Please consider the environment before printing this e-mail
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards
 

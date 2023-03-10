@@ -2,119 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 876E56B3B96
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Mar 2023 11:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C842C6B3BCF
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Mar 2023 11:15:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231300AbjCJKBm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Mar 2023 05:01:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43284 "EHLO
+        id S231204AbjCJKPU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Mar 2023 05:15:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231320AbjCJKBk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Mar 2023 05:01:40 -0500
-Received: from hust.edu.cn (mail.hust.edu.cn [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 368DC10974F;
-        Fri, 10 Mar 2023 02:01:39 -0800 (PST)
-Received: from [IPV6:2001:250:4000:5122:1445:2b8c:756a:57dd] ([172.16.0.254])
-        (user=dzm91@hust.edu.cn mech=PLAIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 32AA0q3B020092-32AA0q3C020092
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Fri, 10 Mar 2023 18:00:54 +0800
-Message-ID: <2c5bac7f-737e-cfcf-a34c-21b2b4ba651b@hust.edu.cn>
-Date:   Fri, 10 Mar 2023 17:58:16 +0800
+        with ESMTP id S231544AbjCJKPC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Mar 2023 05:15:02 -0500
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F3210DE6B;
+        Fri, 10 Mar 2023 02:14:46 -0800 (PST)
+Received: from [192.168.1.141] ([37.4.248.41]) by mrelayeu.kundenserver.de
+ (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1M3UEW-1pa1iL1EO2-000brJ; Fri, 10 Mar 2023 11:08:51 +0100
+Message-ID: <3c5992f3-269f-8af5-0062-7653c53feffb@i2se.com>
+Date:   Fri, 10 Mar 2023 11:08:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] drivers: iio: remove dead code in at91_adc_probe
+ Thunderbird/102.7.1
+Subject: Re: [PATCH 6/8] dt-bindings: ARM: fsl: Add chargebyte Tarragon
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc:     linux-imx@nxp.com, Li Yang <leoyang.li@nxp.com>,
+        Denis Ciocca <denis.ciocca@st.com>, soc@kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Stefan Wahren <stefan.wahren@chargebyte.com>
+References: <20230306172249.74003-1-stefan.wahren@i2se.com>
+ <20230306172249.74003-7-stefan.wahren@i2se.com>
+ <a38cb5d4-91d3-0d9a-41d3-44fed9d39512@linaro.org>
 Content-Language: en-US
-To:     Claudiu.Beznea@microchip.com
-Cc:     chengziqiu@hust.edu.cn, eugen.hristev@collabora.com,
-        jic23@kernel.org, lars@metafoo.de, Nicolas.Ferre@microchip.com,
-        alexandre.belloni@bootlin.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20230309150502.400312-1-chengziqiu@hust.edu.cn>
- <cc97cfe5-e90a-d901-147a-2bb829a4409d@microchip.com>
- <774cfa3a.25898.186cae584b7.Coremail.dzm91@hust.edu.cn>
- <9b4ff6bf-3ba3-10bd-f766-c1e8cb34a111@microchip.com>
-From:   Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <9b4ff6bf-3ba3-10bd-f766-c1e8cb34a111@microchip.com>
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+In-Reply-To: <a38cb5d4-91d3-0d9a-41d3-44fed9d39512@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-FEAS-AUTH-USER: dzm91@hust.edu.cn
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Yab78HLcW38z97dZXDiHJYvgDjmQKxZOV7txq5k0FzHEPtlAm2X
+ 94lggD0+R3CkrZRs4t5PeeIgmB1+1zKAccV732G8LShJ0PvgxU37GFJeD3PMxWSKLMZybzh
+ B2XpKMGuxqWfcjKRYao5A6rLQbNgC/EgraYZg6xBZX6OqYjzCYEA+eH9CtZKOU+V0gWoCRu
+ wSB40w2QBfE4MeRYSjRAw==
+UI-OutboundReport: notjunk:1;M01:P0:SWcLCySneCw=;W8h4oD+D8eYiskSf5UZ6zqYKNjr
+ 51kdxFAksai4A3fNbOPEneUE8r8TSjDSURYnV9PjtaDEyxJSMZop0ocIS95HX/NcUZzbjR0ed
+ U/ZS8Hkpq46lWKE84Ujv2qh+67erUDnXvgFdDfCWSUQ5KlbUpEviZhPMdFAs/3aZhHrhpiaXB
+ 1hfWXVbNeDJl9xPKNPv+hZBpdU1SfWkAOX2lVXdFb6t6Q8QuWYLxf2hH//LLYDfsNtIpNj/9x
+ ZjlW6uHiiaWgubfd3XzaZc5a8qOoRpeTrSuzXH2sFgSwfoX3DmObJg+7pouw5B2ADkFmCEe2N
+ XtnUqvkG/G/LX+tHFaxQYVTndL5xlGThPJdxOd7+8oc+dI1DtVhUUClrko8GRy4+tWEeMi/ZC
+ UDQOcpM8DP+iHTlgGGTmYcdpf2+0ZT/R0EZnxC/3ny01ak9D5V9Xctb1kcRYU94AYE9TEZRJC
+ BVzXtblJ6pI8OlSmJlOnV9JIZerBtq04C3x3Qt3En+whwcKJ0rDkCP9I9AEAb8WD3ZRnuVIiT
+ dZKfFem0A7mVxCQJspjgiIPriJ6KGYpSBVhDMZ7O0tt+B4OqNjdKpFn1M6eioNdoFUgg0aXpb
+ W5vJVCZeU4oo60crnA1JDiY4UpQxXfUOrxKVPf1szze2dJ7e8jFMmwS38+y6NUFNIkgTC+rLG
+ 43QprqC9ZuenI+beCoPmQI18cTlq2Mng2auj3CPpow==
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Krzysztof,
 
+Am 07.03.23 um 09:24 schrieb Krzysztof Kozlowski:
+> On 06/03/2023 18:22, Stefan Wahren wrote:
+>> From: Stefan Wahren <stefan.wahren@chargebyte.com>
+>>
+>> This adds the compatibles for the chargebyte Tarragon boards.
+>>
+>> Signed-off-by: Stefan Wahren <stefan.wahren@chargebyte.com>
+>> Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+>> ---
+>>   Documentation/devicetree/bindings/arm/fsl.yaml | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+>> index dece3e9ba7fd..2b430e20a7a6 100644
+>> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+>> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+>> @@ -781,6 +781,15 @@ properties:
+>>             - const: tq,imx6ull-tqma6ull2l      # MCIMX6Y2, LGA SoM variant
+>>             - const: fsl,imx6ull
+>>   
+>> +      - description: chargebyte Tarragon Boards
+>> +        items:
+>> +          - enum:
+>> +              - chargebyte,imx6ull-tarragon-master
+>> +              - chargebyte,imx6ull-tarragon-micro
+>> +              - chargebyte,imx6ull-tarragon-slave
+>> +              - chargebyte,imx6ull-tarragon-slavext
+>> +          - const: fsl,imx6ull
+> I don't think you put it in correct place. Didn't you just stuff it at
+> the end?
 
-On 3/10/23 17:55, Claudiu.Beznea@microchip.com wrote:
-> On 10.03.2023 11:41, 慕冬亮 wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
->>
->>> -----原始邮件-----
->>> 发件人: Claudiu.Beznea@microchip.com
->>> 发送时间: 2023-03-10 17:14:56 (星期五)
->>> 收件人: chengziqiu@hust.edu.cn, eugen.hristev@collabora.com, jic23@kernel.org, lars@metafoo.de, Nicolas.Ferre@microchip.com, alexandre.belloni@bootlin.com
->>> 抄送: dzm91@hust.edu.cn, linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
->>> 主题: Re: [PATCH] drivers: iio: remove dead code in at91_adc_probe
->>>
->>> On 09.03.2023 17:05, Cheng Ziqiu wrote:
->>>> >From the comment of platform_get_irq, it only returns non-zero IRQ
->>>> number and negative error number, other than zero.
->>>>
->>>> Fix this by removing the if condition.
->>>>
->>>> Signed-off-by: Cheng Ziqiu <chengziqiu@hust.edu.cn>
->>>
->>> I see From and 1st SoB matches but
->>>
->>>> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
->>>
->>> this SoB seems extra. What is the contribution of Dongliang Mu to this patch?
->>
->> I reviewed this patch locally since this student is the first time to submit patch to the kernel mailing list.
-> 
-> Then please use "Reviewed-by" tag.
+Yes, i just put it at the end. But to be honest, i'm not sure about the 
+order:
 
-Sure. I will ask him to send a v2 patch.
+armadeus,imx6ull-opos6uldev
+..
+dh,imx6ull-dhcom-drc02
+..
+phytec,imx6ull-pbacd10-emmc
+..
+toradex,colibri-imx6ull-aster
+..
+kontron,bl-imx6ull
+..
+tq,imx6ull-tqma6ull2-mba6ulx
 
-> 
->>
->> In my lab, I encourage all students to fix kernel issues. However, their patches should be reviewed by me first before sending the mailing list.
->>
->>>
->>>> ---
->>>>   drivers/iio/adc/at91-sama5d2_adc.c | 6 +-----
->>>>   1 file changed, 1 insertion(+), 5 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
->>>> index 50d02e5fc6fc..168399092590 100644
->>>> --- a/drivers/iio/adc/at91-sama5d2_adc.c
->>>> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
->>>> @@ -2400,12 +2400,8 @@ static int at91_adc_probe(struct platform_device *pdev)
->>>>          st->dma_st.phys_addr = res->start;
->>>>
->>>>          st->irq = platform_get_irq(pdev, 0);
->>>> -       if (st->irq <= 0) {
->>>> -               if (!st->irq)
->>>> -                       st->irq = -ENXIO;
->>>> -
->>>> +       if (st->irq < 0)
->>>>                  return st->irq;
->>>> -       }
->>>>
->>>>          st->per_clk = devm_clk_get(&pdev->dev, "adc_clk");
->>>>          if (IS_ERR(st->per_clk))
->>>> --
->>>> 2.34.1
->>>>
->>>
->>
->>
->> --
->> Best regards,
->> Dongliang Mu
-> 
+Does the order depend on the compatibles and vendor is relevant?
+
+So your expectation was between armadeus and dh?
+
+>
+> Best regards,
+> Krzysztof
+>

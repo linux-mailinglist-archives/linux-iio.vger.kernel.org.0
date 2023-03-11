@@ -2,122 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB9F6B5FF5
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 20:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A39916B6025
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 20:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbjCKTCL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Mar 2023 14:02:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39126 "EHLO
+        id S229514AbjCKTXI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 11 Mar 2023 14:23:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbjCKTCI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 14:02:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6955E64B2D;
-        Sat, 11 Mar 2023 11:02:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07DD160DD8;
-        Sat, 11 Mar 2023 19:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0275CC433D2;
-        Sat, 11 Mar 2023 19:02:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678561325;
-        bh=aRIPsVzahV4VaJZIFCg+vIsGtMpis+9um6e1rA2rVAc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=C+j+kZCat2117EEqGxts5x3SZZDixNF9zpT2XnUIqEHZlQp95CM5+y+uSy1rZnrE1
-         Z/5gClmxlQofaa+n3mg9HcR4EZkWWPqoZSw/O/554J+0IgZHlDPN/oiL5/NASKz+1R
-         MFXulOEzEx/yj6yNox+iX7rbqnBDm5bX8hv2I3ehoJGRUymVe/JnuxTL9IFraOjjHe
-         erWoFcsMZ8kYZgesrgeUpJn6cQkp5KEJBI3NYirUQ4TPh/bLhgersK/6HE6XT3gkvz
-         MokA7pKp+QEam/lKA3eAkmGzlSfdOKf0cw3bIoVKw7uuF1I1miQdoOI4J1eN3iBazj
-         U6LBsN4CXyI5Q==
-Date:   Sat, 11 Mar 2023 19:02:08 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     James Clark <james.clark@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
-        michal.simek@amd.com, Jonathan Corbet <corbet@lwn.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] devres: Provide krealloc_array
-Message-ID: <20230311190208.7eca8c12@jic23-huawei>
-In-Reply-To: <20230309150334.216760-2-james.clark@arm.com>
-References: <20230309150334.216760-1-james.clark@arm.com>
-        <20230309150334.216760-2-james.clark@arm.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229494AbjCKTXH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 14:23:07 -0500
+X-Greylist: delayed 398 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 11 Mar 2023 11:23:02 PST
+Received: from mb.alirandigital.com (mb.alirandigital.com [103.228.53.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A77D6A270
+        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 11:23:02 -0800 (PST)
+Received: from mailborder.perlis.gov.my (mailborder.perlis.gov.my [110.159.230.210])
+        by mb.alirandigital.com (Postfix) with ESMTPS id 1254883EE2;
+        Sun, 12 Mar 2023 03:16:19 +0800 (+08)
+X-Mailborder-Info: host=mailborder.perlis.gov.my, gmt_time=1678562178, scan_time=8.46s
+X-Mailborder-Spam-Score: 0.9
+X-Mailborder-Spam-Report: ALL_TRUSTED, BAYES_50, SPF_FAIL, MB_DMARC_NONE, 
+Received: from email.perlis.gov.my (mail.perlis.gov.my [10.156.51.195])
+        by mailborder.perlis.gov.my (Postfix) with ESMTPS id 512D1140CBA;
+        Sun, 12 Mar 2023 02:34:14 +0800 (+08)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mailborder.perlis.gov.my 512D1140CBA
+Authentication-Results: mailborder.perlis.gov.my; dmarc=none (p=none dis=none) header.from=perlis.gov.my
+Authentication-Results: mailborder.perlis.gov.my; spf=fail smtp.mailfrom=ahmad.hafiz@perlis.gov.my
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailborder.perlis.gov.my 512D1140CBA
+Received: from localhost (localhost [127.0.0.1])
+        by email.perlis.gov.my (Postfix) with ESMTP id A85DB678816;
+        Sun, 12 Mar 2023 01:32:27 +0800 (+08)
+Received: from email.perlis.gov.my ([127.0.0.1])
+        by localhost (email.perlis.gov.my [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id SM5hwRYfD927; Sun, 12 Mar 2023 01:32:27 +0800 (+08)
+Received: from localhost (localhost [127.0.0.1])
+        by email.perlis.gov.my (Postfix) with ESMTP id 07665677AF3;
+        Sun, 12 Mar 2023 01:32:27 +0800 (+08)
+X-Virus-Scanned: amavisd-new at perlis.gov.my
+Received: from email.perlis.gov.my ([127.0.0.1])
+        by localhost (email.perlis.gov.my [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Kw21Mv0wibb1; Sun, 12 Mar 2023 01:32:26 +0800 (+08)
+Received: from [192.168.43.154] (unknown [106.66.139.210])
+        by email.perlis.gov.my (Postfix) with ESMTPSA id C76E06764F8;
+        Sun, 12 Mar 2023 01:32:22 +0800 (+08)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: re:
+To:     Recipients <ahmad.hafiz@perlis.gov.my>
+From:   ahmad.hafiz@perlis.gov.my
+Date:   Sat, 11 Mar 2023 09:58:56 -0800
+Message-Id: <20230311173222.C76E06764F8@email.perlis.gov.my>
+X-mb-MailScanner-Information: Please contact the ISP for more information
+X-mb-MailScanner-ID: 1254883EE2.A6C01
+X-mb-MailScanner: Found to be clean
+X-mb-MailScanner-SpamScore: s
+X-mb-MailScanner-From: ahmad.hafiz@perlis.gov.my
+X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_99,BAYES_999,
+        SPF_HELO_PASS,T_SPF_PERMERROR autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  9 Mar 2023 15:03:30 +0000
-James Clark <james.clark@arm.com> wrote:
+We offer Commercial and Personal L.o.a.n.s with very Minimal annual Interest Rates as Low as 2% Interested Persons should contact us: @  vententuresfortisglobal@gmail.com
 
-> There is no krealloc_array equivalent in devres. Users would have to
-> do their own multiplication overflow check so provide one.
-> 
-> Signed-off-by: James Clark <james.clark@arm.com>
-
-Trivial comment inline, but otherwise seems reasonable to me.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
->  Documentation/driver-api/driver-model/devres.rst |  1 +
->  include/linux/device.h                           | 10 ++++++++++
->  2 files changed, 11 insertions(+)
-> 
-> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-> index 4249eb4239e0..8be086b3f829 100644
-> --- a/Documentation/driver-api/driver-model/devres.rst
-> +++ b/Documentation/driver-api/driver-model/devres.rst
-> @@ -364,6 +364,7 @@ MEM
->    devm_kmalloc_array()
->    devm_kmemdup()
->    devm_krealloc()
-> +  devm_krealloc_array()
->    devm_kstrdup()
->    devm_kstrdup_const()
->    devm_kvasprintf()
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 1508e637bb26..0dd5956c8516 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -223,6 +223,16 @@ static inline void *devm_kcalloc(struct device *dev,
->  {
->  	return devm_kmalloc_array(dev, n, size, flags | __GFP_ZERO);
->  }
-> +static inline __realloc_size(3, 4) void * __must_check
-> +devm_krealloc_array(struct device *dev, void *p, size_t new_n, size_t new_size, gfp_t flags)
-> +{
-> +	size_t bytes;
-> +
-> +	if (unlikely(check_mul_overflow(new_n, new_size, &bytes)))
-> +		return NULL;
-
-For consistency with krealloc_array and other stuff in device.h that is
-of similar 'shape' add a blank line here.
-
-> +	return devm_krealloc(dev, p, bytes, flags);
-> +}
-> +
->  void devm_kfree(struct device *dev, const void *p);
->  char *devm_kstrdup(struct device *dev, const char *s, gfp_t gfp) __malloc;
->  const char *devm_kstrdup_const(struct device *dev, const char *s, gfp_t gfp);
+Ms. Vilija Macenaite
+Fortis Global Venture
 

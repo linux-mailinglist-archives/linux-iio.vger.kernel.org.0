@@ -2,63 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289176B5C51
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 14:40:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EDD06B5C9A
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 15:07:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbjCKNkb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Mar 2023 08:40:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33660 "EHLO
+        id S229891AbjCKOG6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Mar 2023 09:06:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbjCKNk2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 08:40:28 -0500
+        with ESMTP id S229872AbjCKOG4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 09:06:56 -0500
 Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062BE120EBD
-        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 05:40:27 -0800 (PST)
-Received: by mail-qt1-x82a.google.com with SMTP id c18so8770573qte.5
-        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 05:40:26 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87AA12D4AE
+        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 06:06:50 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id w23so8813032qtn.6
+        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 06:06:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678542026;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f3Xj1IbOZVq4+100AodKd8uUFRcQmpC1YabmNJYx1GY=;
-        b=DwqjHMJqnvC3bo5YaJX+03dQiq/NDGU7RWFsMfAa5Ebd9NXfSXv5V5yhCm8N6IYVLY
-         hcREekK4pddCGwEtVgS732qysuAagLIlvIQHdFniLJDcCMnn4C/Zu5JBxKYcvxftOBCp
-         8QBP54dqbRQNLgvZYcNVwOEnF1dmpQjGtOmHaWEAI7sGHcY2att2D33GA2kiPVlxzTwR
-         EmPSw7t2mC0ZiSIBGxw00HROzEoMnuHnOFOuqxYRi1gZg6Qt78J3s8Dy6dvNIjzYB1TK
-         YZc0LUajOiVf/qJpBDz4eNNJsfk/yQSyDwzKc/UhwxHgpnHnsuu75QCtqvO65iznD2Wn
-         YAjg==
+        d=linaro.org; s=google; t=1678543610;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3jr4lYUE4LbhKnqlf9KsV9sgPswlPNrF5JvpcjFIiws=;
+        b=efew17kBKesrHCtgPKacE9tv9x5k9D6/aVivtmVfC33CxWRbighjnL4ScqzyTiREvH
+         B5OfLtmgmIMhpaMiBUkTSSZWSuY5v9NSYVNStNRzb+/fXrwYMaHcOdbmy60EkJulaI+U
+         hLSAm9AChR9v/FxmKTczURztQl21LhyAQ9SpiJfEyN5Kay2GhlyYWTVw8/onpeSGZ6V2
+         DMVyPIYduyWwuayiVVMBo+ow6Y/2OF2YA4/ZfcL+zPTNIiSrI+DYLFP1EWTE5uUcCBTM
+         9705XMcbloVI7uIfAb8dOdTw0ivy3oSnbgqXJyZyiBarklCN03im771s18fd9lbthMXq
+         uL2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678542026;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f3Xj1IbOZVq4+100AodKd8uUFRcQmpC1YabmNJYx1GY=;
-        b=RXDc1wSY8IoSfJdN6yC7AlhnVwlAChIQ+Z5P3fYf+rGRiq3Wf8y+IhkbDw2CxVXUoq
-         W53NL9AwrV9HCxNS+JSLGMw9pd7oOWTxuDmyTCgzxs5y/mqEROk9OzctrvZblNMQ0/dw
-         rXdSQ7v2dT4cFt69T1WvU3XSIpXRwh5bcFjijsDf0ZqO9sys+2bOPAlTE9l2KoZNkQFa
-         J44DNVuWBYyQrg0iYWURhblHOrFDtk7EAVzMBFn4X/VIzOwtXBqpqy+r87FCc7phWEng
-         e2v33Seh3iHInfNqYjVjqpqL1CjbVfZ8vGccDBm/9BhjCAqgQIfzCuV0vB2Cn6mkOWn3
-         9qbQ==
-X-Gm-Message-State: AO0yUKVT/75i4n6/8XHOrsn1whqrKpxw6RJMPr3CLUPFIsLrhpU+Nqqr
-        QQeY6t9chcn7F+jJqBlOBvmtfs8d7FUtFSIh8Q4=
-X-Google-Smtp-Source: AK7set+AhlAqXzQOT10DhjtxzJQjQDFaEX2GE4eUT/a+0T8Uh4R4xV6Q3i5JWgsfQZz1vtJkbuTi4w==
-X-Received: by 2002:a05:622a:144c:b0:3bf:c458:3b0c with SMTP id v12-20020a05622a144c00b003bfc4583b0cmr47698460qtx.30.1678542026073;
-        Sat, 11 Mar 2023 05:40:26 -0800 (PST)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id f10-20020ac8464a000000b003bd0e7ff466sm1900995qto.7.2023.03.11.05.40.24
+        d=1e100.net; s=20210112; t=1678543610;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3jr4lYUE4LbhKnqlf9KsV9sgPswlPNrF5JvpcjFIiws=;
+        b=oY4rLNPEmIOzLZREjdmRW7mPYGtAtqtLtJVKeazzxIq4s55KJynIGJd8wrYHsPxF9M
+         37B8hP3HxwPB3Jmbhhw4G/VUcvnshGdl5i7za/fujKVceZ5kyRjIPD8y2TfqAKt7u7mo
+         7GUNBRxGg5MflWvVvscQXypSS5i1Icn9NPpp07t6JZQgT+zL3MVtDY2rIRqaTTrjdhQp
+         EKp2duW7+Dpb/y626JE1l3xHcYNpd9cZTBgb+CGq3gIEiovjCe53P17Z6uZVLYlBGpOG
+         w5FsCbF+P897o1KJHdIik7en1ZsIz8niXPqRxSVcvpNxWfFLATgflMDbyox7ilX4Nous
+         xffw==
+X-Gm-Message-State: AO0yUKWuPIDTTgHbuAx8D1NUxKP/W4r1Vs82WmE7b4QBKYlOZRPx6nOa
+        nOG5V/9JeeI5y/2oRbIzlf5J6g==
+X-Google-Smtp-Source: AK7set/UIRTG09WzBMk7wO+Lb/OIZ7rFPpLWper7l1UdVQLZnr7HkB4ITdvRNJIXWNz8gLzEII479g==
+X-Received: by 2002:ac8:5dce:0:b0:3bf:e2ff:4c35 with SMTP id e14-20020ac85dce000000b003bfe2ff4c35mr20068022qtx.1.1678543609806;
+        Sat, 11 Mar 2023 06:06:49 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id 140-20020a370792000000b0073b69922cfesm1824928qkh.85.2023.03.11.06.06.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Mar 2023 05:40:25 -0800 (PST)
+        Sat, 11 Mar 2023 06:06:49 -0800 (PST)
+Date:   Sat, 11 Mar 2023 08:57:02 -0500
 From:   William Breathitt Gray <william.gray@linaro.org>
 To:     jic23@kernel.org, lars@metafoo.de
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH] iio: dac: cio-dac: Migrate to the regmap API
-Date:   Sat, 11 Mar 2023 08:40:12 -0500
-Message-Id: <20230311134012.70822-1-william.gray@linaro.org>
-X-Mailer: git-send-email 2.39.2
+Subject: Re: [PATCH] iio: dac: cio-dac: Migrate to the regmap API
+Message-ID: <ZAyIrrLrhmMJqq2w@fedora>
+References: <20230311134012.70822-1-william.gray@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7eaGiRj104sy96DY"
+Content-Disposition: inline
+In-Reply-To: <20230311134012.70822-1-william.gray@linaro.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -69,178 +71,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The regmap API supports IO port accessors so we can take advantage of
-regmap abstractions rather than handling access to the device registers
-directly in the driver.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- drivers/iio/dac/Kconfig   |  1 +
- drivers/iio/dac/cio-dac.c | 71 +++++++++++++++++++++++++++++----------
- 2 files changed, 54 insertions(+), 18 deletions(-)
+--7eaGiRj104sy96DY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index d3f90cf86143..3acd9c3f388e 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -277,6 +277,7 @@ config CIO_DAC
- 	tristate "Measurement Computing CIO-DAC IIO driver"
- 	depends on X86 && (ISA_BUS || PC104)
- 	select ISA_BUS_API
-+	select REGMAP_MMIO
- 	help
- 	  Say yes here to build support for the Measurement Computing CIO-DAC
- 	  analog output device family (CIO-DAC16, CIO-DAC08, PC104-DAC06). The
-diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
-index 791dd999cf29..13438f022f8e 100644
---- a/drivers/iio/dac/cio-dac.c
-+++ b/drivers/iio/dac/cio-dac.c
-@@ -6,16 +6,15 @@
-  * This driver supports the following Measurement Computing devices: CIO-DAC16,
-  * CIO-DAC06, and PC104-DAC06.
-  */
--#include <linux/bitops.h>
-+#include <linux/bits.h>
- #include <linux/device.h>
--#include <linux/errno.h>
-+#include <linux/err.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/types.h>
--#include <linux/io.h>
--#include <linux/ioport.h>
- #include <linux/isa.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
-+#include <linux/regmap.h>
- #include <linux/types.h>
- 
- #define CIO_DAC_NUM_CHAN 16
-@@ -35,25 +34,51 @@ static unsigned int num_cio_dac;
- module_param_hw_array(base, uint, ioport, &num_cio_dac, 0);
- MODULE_PARM_DESC(base, "Measurement Computing CIO-DAC base addresses");
- 
-+#define CIO_DAC_BASE 0x00
-+#define CIO_DAC_CHANNEL_STRIDE 2
-+
-+static bool cio_dac_precious_reg(struct device *dev, unsigned int reg)
-+{
-+	/*
-+	 * All registers are considered precious; if the XFER jumper is set on
-+	 * the device, then no update occurs until a DAC register is read.
-+	 */
-+	return true;
-+}
-+
-+static const struct regmap_config cio_dac_regmap_config = {
-+	.reg_bits = 16,
-+	.reg_stride = 2,
-+	.val_bits = 16,
-+	.io_port = true,
-+	.max_register = 0x1F,
-+	.precious_reg = cio_dac_precious_reg,
-+};
-+
- /**
-  * struct cio_dac_iio - IIO device private data structure
-- * @chan_out_states:	channels' output states
-- * @base:		base memory address of the DAC device
-+ * @map: Regmap for the device
-  */
- struct cio_dac_iio {
--	int chan_out_states[CIO_DAC_NUM_CHAN];
--	u16 __iomem *base;
-+	struct regmap *map;
- };
- 
- static int cio_dac_read_raw(struct iio_dev *indio_dev,
- 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
- {
- 	struct cio_dac_iio *const priv = iio_priv(indio_dev);
-+	const unsigned int offset = chan->channel * CIO_DAC_CHANNEL_STRIDE;
-+	int err;
-+	unsigned int dac_val;
- 
- 	if (mask != IIO_CHAN_INFO_RAW)
- 		return -EINVAL;
- 
--	*val = priv->chan_out_states[chan->channel];
-+	err = regmap_read(priv->map, CIO_DAC_BASE + offset, &dac_val);
-+	if (err)
-+		return err;
-+
-+	*val = dac_val;
- 
- 	return IIO_VAL_INT;
- }
-@@ -62,6 +87,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_dev,
- 	struct iio_chan_spec const *chan, int val, int val2, long mask)
- {
- 	struct cio_dac_iio *const priv = iio_priv(indio_dev);
-+	const unsigned int offset = chan->channel * CIO_DAC_CHANNEL_STRIDE;
- 
- 	if (mask != IIO_CHAN_INFO_RAW)
- 		return -EINVAL;
-@@ -70,10 +96,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_dev,
- 	if ((unsigned int)val > 65535)
- 		return -EINVAL;
- 
--	priv->chan_out_states[chan->channel] = val;
--	iowrite16(val, priv->base + chan->channel);
--
--	return 0;
-+	return regmap_write(priv->map, CIO_DAC_BASE + offset, val);
- }
- 
- static const struct iio_info cio_dac_info = {
-@@ -92,7 +115,10 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
- {
- 	struct iio_dev *indio_dev;
- 	struct cio_dac_iio *priv;
-+	void __iomem *regs;
- 	unsigned int i;
-+	unsigned int offset;
-+	int err;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
- 	if (!indio_dev)
-@@ -105,11 +131,16 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
- 		return -EBUSY;
- 	}
- 
--	priv = iio_priv(indio_dev);
--	priv->base = devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
--	if (!priv->base)
-+	regs = devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
-+	if (!regs)
- 		return -ENOMEM;
- 
-+	priv = iio_priv(indio_dev);
-+	priv->map = devm_regmap_init_mmio(dev, regs, &cio_dac_regmap_config);
-+	if (IS_ERR(priv->map))
-+		return dev_err_probe(dev, PTR_ERR(priv->map),
-+				     "Unable to initialize register map\n");
-+
- 	indio_dev->info = &cio_dac_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = cio_dac_channels;
-@@ -117,8 +148,12 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
- 	indio_dev->name = dev_name(dev);
- 
- 	/* initialize DAC outputs to 0V */
--	for (i = 0; i < CIO_DAC_NUM_CHAN; i++)
--		iowrite16(0, priv->base + i);
-+	for (i = 0; i < CIO_DAC_NUM_CHAN; i++) {
-+		offset = i * CIO_DAC_CHANNEL_STRIDE;
-+		err = regmap_write(priv->map, CIO_DAC_BASE + offset, 0);
-+		if (err)
-+			return err;
-+	}
- 
- 	return devm_iio_device_register(dev, indio_dev);
- }
+On Sat, Mar 11, 2023 at 08:40:12AM -0500, William Breathitt Gray wrote:
+> The regmap API supports IO port accessors so we can take advantage of
+> regmap abstractions rather than handling access to the device registers
+> directly in the driver.
+>=20
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
--- 
-2.39.2
+[...]
 
+> @@ -117,8 +148,12 @@ static int cio_dac_probe(struct device *dev, unsigne=
+d int id)
+>  	indio_dev->name =3D dev_name(dev);
+> =20
+>  	/* initialize DAC outputs to 0V */
+> -	for (i =3D 0; i < CIO_DAC_NUM_CHAN; i++)
+> -		iowrite16(0, priv->base + i);
+> +	for (i =3D 0; i < CIO_DAC_NUM_CHAN; i++) {
+> +		offset =3D i * CIO_DAC_CHANNEL_STRIDE;
+> +		err =3D regmap_write(priv->map, CIO_DAC_BASE + offset, 0);
+> +		if (err)
+> +			return err;
+> +	}
+> =20
+>  	return devm_iio_device_register(dev, indio_dev);
+>  }
+
+As soon as I sent this I realized this last hunk is no longer necessary
+because the chan_out_states array is gone so we don't need to match its
+initialized state. I'll remove this block as superfluous and submit a v2
+patch shortly.
+
+William Breathitt Gray
+
+--7eaGiRj104sy96DY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZAyIrgAKCRC1SFbKvhIj
+K1z2AQCXC7YVVHrA7LJgDJsARq//xniX0yAewpIY+ix0wlp33QD9He4DCxaHI52t
+Q4te1JECKhcAK2HyQaQcA7JQMK/j+A8=
+=btlL
+-----END PGP SIGNATURE-----
+
+--7eaGiRj104sy96DY--

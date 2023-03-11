@@ -2,110 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33CEC6B5BAD
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 13:30:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 346FC6B5BB7
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 13:31:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbjCKMaP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Mar 2023 07:30:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35310 "EHLO
+        id S229845AbjCKMbx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Mar 2023 07:31:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230284AbjCKMaN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 07:30:13 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB66512DC2E
-        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 04:30:03 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id da10so31228973edb.3
-        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 04:30:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678537802;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yjUhnHyDUJ5wg8HgLp7R2j6/UQh7qFkqjXC6cud7wFA=;
-        b=NaF5Ipx6n2Sl2HxZZipEbRVnt/v/6N6IYCoCCu4OCVg0HDbVKNyh59h6wCsPqL84/Z
-         lN1aKk4uVw2tADThdJierZuVSbNSkZmwQ4Fc8CcGB+xPoJACaROQCXFFAWlVa9Q88zfQ
-         lv82QDWfIUpvDa+GftxlBRqJ93GQeO+RQUsMSc5i7hBHnTgcCJ3EzrvCKRHHTc4IceXP
-         ViCn1Jldd51NbX2laUXcbEkeuQZHP9G1oo0KmKAFObwmozQG219jMaP0S3bBj6oJ3lHo
-         wD9Bnp29yZJAj1HcDhDDtNI0VWtMxsgLPzNXS0xjHWsn3PTOnV/e72eCa3tB3qmuodMz
-         HqAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678537802;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yjUhnHyDUJ5wg8HgLp7R2j6/UQh7qFkqjXC6cud7wFA=;
-        b=RR63giKTdQUWvr7x5K2rJG091SQ50zMSyMivdlFw0IeotIN1AN7vHbGUt8Mo2LYGBE
-         P6ycnOturXYPnG2a6PeizAPNpBTAH0TDA1Ht9nGU38XL99PqFZG97BIQ0JArlWVGw0zu
-         iMCuSPKIEZRd5ECEovVE/6vW+3GBsJKnnCaQAHUkr8cBdh07cF2qqw4uOhRU1fBo9B40
-         dXgUP5FkiZg1JZiIgmOfwQXxgWZGDlwxljw+jrOu6b07s1vwj2zrSVvU19XFnDjSqwYX
-         fHCJm52GXl1cJkQhTlN48++QvFURQP7oYVaSsosxcZFr4hDtyCVEqtS45pzQwoehkoXV
-         DnPg==
-X-Gm-Message-State: AO0yUKU5sf3XdH/yNLn0/RkdMTAkWWydIz6PR5nQmQNX5cDlw4FVcvEn
-        eHW8LR5N//bcqbfa6U3Zt9rO+Q==
-X-Google-Smtp-Source: AK7set/2o8ivcKMwc0mQHra9eJumNEYv6mhH+0exAy0texGLIvUhlh2ftWQaJ8F01uSG1mo/Mr5EtA==
-X-Received: by 2002:a17:907:ca85:b0:922:3a53:46f8 with SMTP id ul5-20020a170907ca8500b009223a5346f8mr882715ejc.64.1678537802201;
-        Sat, 11 Mar 2023 04:30:02 -0800 (PST)
-Received: from ?IPV6:2a02:810d:15c0:828:fa97:2d7c:bdd7:e1b? ([2a02:810d:15c0:828:fa97:2d7c:bdd7:e1b])
-        by smtp.gmail.com with ESMTPSA id jg30-20020a170907971e00b0091ec885e016sm1030730ejc.54.2023.03.11.04.30.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Mar 2023 04:30:01 -0800 (PST)
-Message-ID: <c66c3f92-fa33-5af1-6f19-79b6d3530862@linaro.org>
-Date:   Sat, 11 Mar 2023 13:30:01 +0100
+        with ESMTP id S230365AbjCKMbq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 07:31:46 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B2C12DDC7;
+        Sat, 11 Mar 2023 04:31:45 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4312760BA0;
+        Sat, 11 Mar 2023 12:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C60EC4339B;
+        Sat, 11 Mar 2023 12:31:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678537904;
+        bh=p5iWwHAklWT0bySItEhojZIf18mXXNFhFCDhXndKyK8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=AamS5nNCIINdQ5gPbG0tS4TRoqFwguJYVQAPQdOqT8UJOgKafXRkL45eh6CrmqzJH
+         3mSVmkZ2tsZvKuorrMmIP+YCyrxb7McFpweGnfNcVXbf9crDhcgeqV+OExB7JCMdNT
+         OqFxDd+l3/imn6lB3eH9suY82ns7sXwGbjCP5El79TRmhR7CyhoLxs43J95oKQAPrg
+         m9gw9o0Il0dzGUxaMgBVCVt7A5KnIcBtq1uC8L4t5HJx2UomOTurm1ghRFSDgPFDJX
+         HQwhgPXRqRKkri7tWvX8xPGncaijbaMKwJ7hmeCZFVW5cCTxKWO/LGsjmX4WxczRt7
+         uIRHR+Mp1vLTA==
+Date:   Sat, 11 Mar 2023 12:31:48 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Philipp Jungkamp <p.jungkamp@gmx.net>
+Cc:     Todd Brandt <todd.e.brandt@intel.com>, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        todd.e.brandt@linux.intel.com, srinivas.pandruvada@linux.intel.com,
+        jikos@kernel.org
+Subject: Re: [PATCH] Fix buffer overrun in HID-SENSOR name.
+Message-ID: <20230311123148.0fbe1091@jic23-huawei>
+In-Reply-To: <b9dab02783e5eeaa74b291d4394150689e7c7b8a.camel@gmx.net>
+References: <20230310235414.12467-1-todd.e.brandt@intel.com>
+        <b9dab02783e5eeaa74b291d4394150689e7c7b8a.camel@gmx.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 4/4] iio: proximity: sx9500: Mark ACPI and OF related data
- as maybe unused
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Marek Vasut <marek.vasut@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Robert Eshleman <bobbyeshleman@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230311111457.251475-1-krzysztof.kozlowski@linaro.org>
- <20230311111457.251475-4-krzysztof.kozlowski@linaro.org>
- <20230311122833.03b5a3d7@jic23-huawei>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230311122833.03b5a3d7@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/03/2023 13:28, Jonathan Cameron wrote:
-> On Sat, 11 Mar 2023 12:14:57 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> The driver can be compile tested with !CONFIG_OF or !CONFIG_ACPI making
->> certain data unused:
->>
->>   drivers/iio/proximity/sx9500.c:1039:34: error: ‘sx9500_of_match’ defined but not used [-Werror=unused-const-variable=]
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> Hi Krysztof
-> 
-> Thanks for looking at these warnings. 
-> 
-> Drop the protection macros instead.  The tables are trivial in size and
-> the of_match_ptr() breaks some ways this driver can be used.
-> ACPI_PTR() isn't as bad, but is pretty much pointless given this size of
-> the array. 
-> 
+On Sat, 11 Mar 2023 01:53:22 +0100
+Philipp Jungkamp <p.jungkamp@gmx.net> wrote:
 
-For ACPI platform, ACPI table is used, so nothing for PRP0001. For OF
-platform, OF table is used.
+> This is exactly the fix I proposed. Thank you for testing and properly
+> submitting it.
+>=20
+> Regards,
+> Philipp Jungkamp
 
-What usage exactly is broken here? What ways?
+Looks good to me as well.
 
-Best regards,
-Krzysztof
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+>=20
+> On Fri, 2023-03-10 at 15:54 -0800, Todd Brandt wrote:
+> > Philipp Jungkamp created this fix, I'm simply submitting it. I've
+> > verified it fixes bugzilla issue 217169.
+> >=20
+> > Reported-and-tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217169
+> > Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
+> > ---
+> > =C2=A0drivers/hid/hid-sensor-custom.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
+> > sensor-custom.c
+> > index 3e3f89e01d81..d85398721659 100644
+> > --- a/drivers/hid/hid-sensor-custom.c
+> > +++ b/drivers/hid/hid-sensor-custom.c
+> > @@ -940,7 +940,7 @@ hid_sensor_register_platform_device(struct
+> > platform_device *pdev,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct h=
+id_sensor_hub_device
+> > *hsdev,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const st=
+ruct
+> > hid_sensor_custom_match *match)
+> > =C2=A0{
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char real_usage[HID_SENSOR_U=
+SAGE_LENGTH];
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char real_usage[HID_SENSOR_U=
+SAGE_LENGTH] =3D { 0 };
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct platform_device =
+*custom_pdev;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const char *dev_name;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *c; =20
+>=20
 

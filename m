@@ -2,87 +2,245 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F325C6B5BD2
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 13:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 289176B5C51
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Mar 2023 14:40:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229819AbjCKMg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Mar 2023 07:36:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48484 "EHLO
+        id S230024AbjCKNkb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Mar 2023 08:40:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230221AbjCKMgz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 07:36:55 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AAD136D23;
-        Sat, 11 Mar 2023 04:36:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF5DC60BA1;
-        Sat, 11 Mar 2023 12:36:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BA9C433D2;
-        Sat, 11 Mar 2023 12:36:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678538201;
-        bh=BIBTybdKqwJEt/RSZb7asrosSP61EvkNuvxZC5nACGg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VNMaEaZxclm0/bjw6FVY/hL6lW7mOr7hQiQoLv5jKE5fma0ltMZwSnIwMSUYH56MF
-         w5q/hWH3LwZaisgP94bzZYTytUFI2rDYoz5jklPTWxTtrLxGuV4sKuwrlehIbWJhzc
-         Tw9CtF6lkjrhS5pbgMhKA/lwn9zbdX9isamHiHw285RftrcWwJxw66W/TmZX2UvsrQ
-         Mrnl9SCqY88lGIZ9ZqYCCe8nwjjq5mBMS/UQzYIn3Jt0b0EUvT606YCaW02Dx2fhE6
-         ZYVK1ubclK81VJzRi6ZHHRahswQRdJx4/9CFo3oOXxF4saL8ckrY+nYOd+VIcGMLR2
-         CPGkvyOMG2c1Q==
-Date:   Sat, 11 Mar 2023 12:36:45 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: cio-dac: Fix typo in comment listing
- supported devices
-Message-ID: <20230311123645.208b7bc1@jic23-huawei>
-In-Reply-To: <20230311002434.8761-1-william.gray@linaro.org>
-References: <20230311002434.8761-1-william.gray@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S230062AbjCKNk2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Mar 2023 08:40:28 -0500
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062BE120EBD
+        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 05:40:27 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id c18so8770573qte.5
+        for <linux-iio@vger.kernel.org>; Sat, 11 Mar 2023 05:40:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678542026;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f3Xj1IbOZVq4+100AodKd8uUFRcQmpC1YabmNJYx1GY=;
+        b=DwqjHMJqnvC3bo5YaJX+03dQiq/NDGU7RWFsMfAa5Ebd9NXfSXv5V5yhCm8N6IYVLY
+         hcREekK4pddCGwEtVgS732qysuAagLIlvIQHdFniLJDcCMnn4C/Zu5JBxKYcvxftOBCp
+         8QBP54dqbRQNLgvZYcNVwOEnF1dmpQjGtOmHaWEAI7sGHcY2att2D33GA2kiPVlxzTwR
+         EmPSw7t2mC0ZiSIBGxw00HROzEoMnuHnOFOuqxYRi1gZg6Qt78J3s8Dy6dvNIjzYB1TK
+         YZc0LUajOiVf/qJpBDz4eNNJsfk/yQSyDwzKc/UhwxHgpnHnsuu75QCtqvO65iznD2Wn
+         YAjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678542026;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f3Xj1IbOZVq4+100AodKd8uUFRcQmpC1YabmNJYx1GY=;
+        b=RXDc1wSY8IoSfJdN6yC7AlhnVwlAChIQ+Z5P3fYf+rGRiq3Wf8y+IhkbDw2CxVXUoq
+         W53NL9AwrV9HCxNS+JSLGMw9pd7oOWTxuDmyTCgzxs5y/mqEROk9OzctrvZblNMQ0/dw
+         rXdSQ7v2dT4cFt69T1WvU3XSIpXRwh5bcFjijsDf0ZqO9sys+2bOPAlTE9l2KoZNkQFa
+         J44DNVuWBYyQrg0iYWURhblHOrFDtk7EAVzMBFn4X/VIzOwtXBqpqy+r87FCc7phWEng
+         e2v33Seh3iHInfNqYjVjqpqL1CjbVfZ8vGccDBm/9BhjCAqgQIfzCuV0vB2Cn6mkOWn3
+         9qbQ==
+X-Gm-Message-State: AO0yUKVT/75i4n6/8XHOrsn1whqrKpxw6RJMPr3CLUPFIsLrhpU+Nqqr
+        QQeY6t9chcn7F+jJqBlOBvmtfs8d7FUtFSIh8Q4=
+X-Google-Smtp-Source: AK7set+AhlAqXzQOT10DhjtxzJQjQDFaEX2GE4eUT/a+0T8Uh4R4xV6Q3i5JWgsfQZz1vtJkbuTi4w==
+X-Received: by 2002:a05:622a:144c:b0:3bf:c458:3b0c with SMTP id v12-20020a05622a144c00b003bfc4583b0cmr47698460qtx.30.1678542026073;
+        Sat, 11 Mar 2023 05:40:26 -0800 (PST)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id f10-20020ac8464a000000b003bd0e7ff466sm1900995qto.7.2023.03.11.05.40.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Mar 2023 05:40:25 -0800 (PST)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH] iio: dac: cio-dac: Migrate to the regmap API
+Date:   Sat, 11 Mar 2023 08:40:12 -0500
+Message-Id: <20230311134012.70822-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Mar 2023 19:24:34 -0500
-William Breathitt Gray <william.gray@linaro.org> wrote:
+The regmap API supports IO port accessors so we can take advantage of
+regmap abstractions rather than handling access to the device registers
+directly in the driver.
 
-> This driver supports the CIO-DAC08 device and not "CIO-DAC06".
-> 
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Applied to the togreg branch of iio.git.
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+ drivers/iio/dac/Kconfig   |  1 +
+ drivers/iio/dac/cio-dac.c | 71 +++++++++++++++++++++++++++++----------
+ 2 files changed, 54 insertions(+), 18 deletions(-)
 
-Thanks,
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index d3f90cf86143..3acd9c3f388e 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -277,6 +277,7 @@ config CIO_DAC
+ 	tristate "Measurement Computing CIO-DAC IIO driver"
+ 	depends on X86 && (ISA_BUS || PC104)
+ 	select ISA_BUS_API
++	select REGMAP_MMIO
+ 	help
+ 	  Say yes here to build support for the Measurement Computing CIO-DAC
+ 	  analog output device family (CIO-DAC16, CIO-DAC08, PC104-DAC06). The
+diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
+index 791dd999cf29..13438f022f8e 100644
+--- a/drivers/iio/dac/cio-dac.c
++++ b/drivers/iio/dac/cio-dac.c
+@@ -6,16 +6,15 @@
+  * This driver supports the following Measurement Computing devices: CIO-DAC16,
+  * CIO-DAC06, and PC104-DAC06.
+  */
+-#include <linux/bitops.h>
++#include <linux/bits.h>
+ #include <linux/device.h>
+-#include <linux/errno.h>
++#include <linux/err.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
+-#include <linux/io.h>
+-#include <linux/ioport.h>
+ #include <linux/isa.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
++#include <linux/regmap.h>
+ #include <linux/types.h>
+ 
+ #define CIO_DAC_NUM_CHAN 16
+@@ -35,25 +34,51 @@ static unsigned int num_cio_dac;
+ module_param_hw_array(base, uint, ioport, &num_cio_dac, 0);
+ MODULE_PARM_DESC(base, "Measurement Computing CIO-DAC base addresses");
+ 
++#define CIO_DAC_BASE 0x00
++#define CIO_DAC_CHANNEL_STRIDE 2
++
++static bool cio_dac_precious_reg(struct device *dev, unsigned int reg)
++{
++	/*
++	 * All registers are considered precious; if the XFER jumper is set on
++	 * the device, then no update occurs until a DAC register is read.
++	 */
++	return true;
++}
++
++static const struct regmap_config cio_dac_regmap_config = {
++	.reg_bits = 16,
++	.reg_stride = 2,
++	.val_bits = 16,
++	.io_port = true,
++	.max_register = 0x1F,
++	.precious_reg = cio_dac_precious_reg,
++};
++
+ /**
+  * struct cio_dac_iio - IIO device private data structure
+- * @chan_out_states:	channels' output states
+- * @base:		base memory address of the DAC device
++ * @map: Regmap for the device
+  */
+ struct cio_dac_iio {
+-	int chan_out_states[CIO_DAC_NUM_CHAN];
+-	u16 __iomem *base;
++	struct regmap *map;
+ };
+ 
+ static int cio_dac_read_raw(struct iio_dev *indio_dev,
+ 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
+ {
+ 	struct cio_dac_iio *const priv = iio_priv(indio_dev);
++	const unsigned int offset = chan->channel * CIO_DAC_CHANNEL_STRIDE;
++	int err;
++	unsigned int dac_val;
+ 
+ 	if (mask != IIO_CHAN_INFO_RAW)
+ 		return -EINVAL;
+ 
+-	*val = priv->chan_out_states[chan->channel];
++	err = regmap_read(priv->map, CIO_DAC_BASE + offset, &dac_val);
++	if (err)
++		return err;
++
++	*val = dac_val;
+ 
+ 	return IIO_VAL_INT;
+ }
+@@ -62,6 +87,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_dev,
+ 	struct iio_chan_spec const *chan, int val, int val2, long mask)
+ {
+ 	struct cio_dac_iio *const priv = iio_priv(indio_dev);
++	const unsigned int offset = chan->channel * CIO_DAC_CHANNEL_STRIDE;
+ 
+ 	if (mask != IIO_CHAN_INFO_RAW)
+ 		return -EINVAL;
+@@ -70,10 +96,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_dev,
+ 	if ((unsigned int)val > 65535)
+ 		return -EINVAL;
+ 
+-	priv->chan_out_states[chan->channel] = val;
+-	iowrite16(val, priv->base + chan->channel);
+-
+-	return 0;
++	return regmap_write(priv->map, CIO_DAC_BASE + offset, val);
+ }
+ 
+ static const struct iio_info cio_dac_info = {
+@@ -92,7 +115,10 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
+ {
+ 	struct iio_dev *indio_dev;
+ 	struct cio_dac_iio *priv;
++	void __iomem *regs;
+ 	unsigned int i;
++	unsigned int offset;
++	int err;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
+ 	if (!indio_dev)
+@@ -105,11 +131,16 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
+ 		return -EBUSY;
+ 	}
+ 
+-	priv = iio_priv(indio_dev);
+-	priv->base = devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
+-	if (!priv->base)
++	regs = devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
++	if (!regs)
+ 		return -ENOMEM;
+ 
++	priv = iio_priv(indio_dev);
++	priv->map = devm_regmap_init_mmio(dev, regs, &cio_dac_regmap_config);
++	if (IS_ERR(priv->map))
++		return dev_err_probe(dev, PTR_ERR(priv->map),
++				     "Unable to initialize register map\n");
++
+ 	indio_dev->info = &cio_dac_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = cio_dac_channels;
+@@ -117,8 +148,12 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
+ 	indio_dev->name = dev_name(dev);
+ 
+ 	/* initialize DAC outputs to 0V */
+-	for (i = 0; i < CIO_DAC_NUM_CHAN; i++)
+-		iowrite16(0, priv->base + i);
++	for (i = 0; i < CIO_DAC_NUM_CHAN; i++) {
++		offset = i * CIO_DAC_CHANNEL_STRIDE;
++		err = regmap_write(priv->map, CIO_DAC_BASE + offset, 0);
++		if (err)
++			return err;
++	}
+ 
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
 
-Jonathan
-
-> ---
->  drivers/iio/dac/cio-dac.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
-> index 791dd999cf29..bb67d3340c9f 100644
-> --- a/drivers/iio/dac/cio-dac.c
-> +++ b/drivers/iio/dac/cio-dac.c
-> @@ -4,7 +4,7 @@
->   * Copyright (C) 2016 William Breathitt Gray
->   *
->   * This driver supports the following Measurement Computing devices: CIO-DAC16,
-> - * CIO-DAC06, and PC104-DAC06.
-> + * CIO-DAC08, and PC104-DAC06.
->   */
->  #include <linux/bitops.h>
->  #include <linux/device.h>
-> 
-> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+-- 
+2.39.2
 

@@ -2,177 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 274326B6705
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 14:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A09906B6716
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 15:12:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbjCLN4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 09:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
+        id S229712AbjCLOMz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 10:12:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229764AbjCLN4i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 09:56:38 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B103B3F0
-        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 06:56:37 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id r5so10733621qtp.4
-        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 06:56:37 -0700 (PDT)
+        with ESMTP id S229578AbjCLOMy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 10:12:54 -0400
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDDF3BDB5;
+        Sun, 12 Mar 2023 07:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678629396;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xdv/nKoVodfRSCXXPZls965lkF2DuhBP1O95BqsvqfQ=;
-        b=wMAa8mqg48tbhpWIknbfZQtmokxdWupbNy4mSs3/HC2T9bJ2HG4GFMa9ZiJuKV38Hg
-         0e7/KfpYwV65oCoHNDY0ktRkWOe57esT5E015BgMNNxJFuDnjL1bPM7F1D6U+jlR50L5
-         83OFXBIXkgI8BwD7M+ahph+LWyYsZrwTyqpLAECDoh/Z1makdxuJToInayJ/ZUgLCRBH
-         oIDASbOy93HOlunXywycoIWN8Raff17OM8BKxz/4OkAtBmXvs38sPyTdxPSYauvDjNjq
-         rz4uMye23SZpnB2MOeV4ifz7Da+6PmYgE0BfkoTRCMxXqmF18RJRdNVsxjHkMIZHXgb4
-         h/Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678629396;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xdv/nKoVodfRSCXXPZls965lkF2DuhBP1O95BqsvqfQ=;
-        b=ZWi7quUzot08uwbhOp1puliFxZ2vWsO6aVjt6tFYo1IevqVLeGYawxo1r5Wzq/Y4gi
-         5WMKotzxL4QuZ2VzfZPZzMbxMI6VRD/OBduWaBKVgSyfCrBNjnn4vp0jX358t/RWXxN2
-         02hHNa4mb3DZbiOfsC3fY3grOBWU0CY8nVwS9xVATXQHIMvooWfjbGYDXcxbV7pR5YqK
-         4DPWClAGNF2xMYo32F0iVV2oqWTYpFFslKeP4qr5VFkNXuU6n6imBc6z+amDie71vlem
-         F76TCE8yOtw8drTlaFxlb1AcdIuaIw1X/teqvVxWJLUUcY8vvR2EluCOS0gfVlCc9MJx
-         UwbQ==
-X-Gm-Message-State: AO0yUKXLko+uV3FUItAIkRHsNTurortiK/pRIZtwFuA0r928ZYoO00hK
-        SwU8wsaOQYo5ectTzc55oVRphMbsZmhOy6mwHu4=
-X-Google-Smtp-Source: AK7set+tIj4FYOx3Db03rrSQ2035wDIOWDIvXfhE4rme5kZCPwBNv0ed+qE14Wx2pzlw21we6H9Grg==
-X-Received: by 2002:ac8:5f09:0:b0:3ba:1167:72d7 with SMTP id x9-20020ac85f09000000b003ba116772d7mr19692788qta.61.1678629395989;
-        Sun, 12 Mar 2023 06:56:35 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id u28-20020a37ab1c000000b007449a3ee9a4sm2717930qke.35.2023.03.12.06.56.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Mar 2023 06:56:35 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH] counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
-Date:   Sun, 12 Mar 2023 09:56:25 -0400
-Message-Id: <20230312135625.125312-1-william.gray@linaro.org>
-X-Mailer: git-send-email 2.39.2
+  d=inria.fr; s=dc;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=Sh+uFbFcoNlwdgGV/4sI5udPXzj2znbd+ERSzswWHME=;
+  b=pduNCQ/z+hOAQR+D7AlHkgsFHO97hTPfr7Ok8EgXV3dyLZnnJ/UaM+1s
+   pekDkGCmTI+9DdcsTIjuqEYZs4uczZ6ZtozLDGuQyzlcn5garnOFjfaOf
+   c6okVnz1RIpVJ0iwXsXQXnC73w16QPGwzY9ZPHbvlXJ9GVepv8g6+Vy9N
+   k=;
+Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="5.98,254,1673910000"; 
+   d="scan'208";a="49927439"
+Received: from 231.85.89.92.rev.sfr.net (HELO hadrien) ([92.89.85.231])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2023 15:12:48 +0100
+Date:   Sun, 12 Mar 2023 15:12:47 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>
+cc:     outreachy@lists.linux.dev, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: iio: meter: enclose Macros with complex values
+ in parentheses
+In-Reply-To: <20230312133347.120944-1-eng.mennamahmoud.mm@gmail.com>
+Message-ID: <alpine.DEB.2.22.394.2303121507450.2865@hadrien>
+References: <20230312133347.120944-1-eng.mennamahmoud.mm@gmail.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-1354038481-1678630367=:2865"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The Counter (CNTR) register is 24 bits wide, but we can have an
-effective 25-bit count value by setting bit 24 to the XOR of the Borrow
-flag and Carry flag. The flags can be read from the FLAG register, but a
-race condition exists: the Borrow flag and Carry flag are instantaneous
-and could change by the time the count value is read from the CNTR
-register.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Since the race condition could result in an incorrect 25-bit count
-value, remove support for 25-bit count values from this driver;
-hard-coded maximum count values are replaced by a LS7267_CNTR_MAX define
-for consistency and clarity.
+--8323329-1354038481-1678630367=:2865
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface support")
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- drivers/counter/104-quad-8.c | 29 +++++++----------------------
- 1 file changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index deed4afadb29..dba04b5e80b7 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -97,10 +97,6 @@ struct quad8 {
- 	struct quad8_reg __iomem *reg;
- };
- 
--/* Borrow Toggle flip-flop */
--#define QUAD8_FLAG_BT BIT(0)
--/* Carry Toggle flip-flop */
--#define QUAD8_FLAG_CT BIT(1)
- /* Error flag */
- #define QUAD8_FLAG_E BIT(4)
- /* Up/Down flag */
-@@ -133,6 +129,9 @@ struct quad8 {
- #define QUAD8_CMR_QUADRATURE_X2 0x10
- #define QUAD8_CMR_QUADRATURE_X4 0x18
- 
-+/* Each Counter is 24 bits wide */
-+#define LS7267_CNTR_MAX GENMASK(23, 0)
-+
- static int quad8_signal_read(struct counter_device *counter,
- 			     struct counter_signal *signal,
- 			     enum counter_signal_level *level)
-@@ -156,19 +155,9 @@ static int quad8_count_read(struct counter_device *counter,
- {
- 	struct quad8 *const priv = counter_priv(counter);
- 	struct channel_reg __iomem *const chan = priv->reg->channel + count->id;
--	unsigned int flags;
--	unsigned int borrow;
--	unsigned int carry;
- 	unsigned long irqflags;
- 	int i;
- 
--	flags = ioread8(&chan->control);
--	borrow = flags & QUAD8_FLAG_BT;
--	carry = !!(flags & QUAD8_FLAG_CT);
--
--	/* Borrow XOR Carry effectively doubles count range */
--	*val = (unsigned long)(borrow ^ carry) << 24;
--
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
- 	/* Reset Byte Pointer; transfer Counter to Output Latch */
-@@ -191,8 +180,7 @@ static int quad8_count_write(struct counter_device *counter,
- 	unsigned long irqflags;
- 	int i;
- 
--	/* Only 24-bit values are supported */
--	if (val > 0xFFFFFF)
-+	if (val > LS7267_CNTR_MAX)
- 		return -ERANGE;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
-@@ -806,8 +794,7 @@ static int quad8_count_preset_write(struct counter_device *counter,
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned long irqflags;
- 
--	/* Only 24-bit values are supported */
--	if (preset > 0xFFFFFF)
-+	if (preset > LS7267_CNTR_MAX)
- 		return -ERANGE;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
-@@ -834,8 +821,7 @@ static int quad8_count_ceiling_read(struct counter_device *counter,
- 		*ceiling = priv->preset[count->id];
- 		break;
- 	default:
--		/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
--		*ceiling = 0x1FFFFFF;
-+		*ceiling = LS7267_CNTR_MAX;
- 		break;
- 	}
- 
-@@ -850,8 +836,7 @@ static int quad8_count_ceiling_write(struct counter_device *counter,
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned long irqflags;
- 
--	/* Only 24-bit values are supported */
--	if (ceiling > 0xFFFFFF)
-+	if (ceiling > LS7267_CNTR_MAX)
- 		return -ERANGE;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
 
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
--- 
-2.39.2
+On Sun, 12 Mar 2023, Menna Mahmoud wrote:
 
+> enclose Macros with complex values in parentheses is especially useful
+> in making macro definitions “safe” (so that they
+> evaluate each operand exactly once).
+
+enclose -> Enclose, and Macros -> macros
+
+I don't understand the above comment though.  How does adding parentheses
+around the body of a macro cause the operands to be evaluated only once?
+And the macros that you have changed don't have any operands.
+
+The value of adding parentheses is normally to ensure that the body of the
+macro doesn't interact with the context in a weird way.  For example, you
+could have
+
+#define ADD 3 + 4
+
+Then if you use your macro as 6 * ADD, you will end up evaluating
+6 * 3 + 4, ie 18 + 4, when you might have expected 6 * 7.  The issue is
+that * has higher precedence than +.
+
+But I don't think that such a problem can arise with a cast expression, so
+parentheses around it should not be necessary.
+
+> this error reported by chechpatch.pl
+
+this error is reported by checkpatch.
+
+>
+> "ERROR: Macros with complex values should be enclosed in parentheses"
+>
+> for ADE7854_SPI_SLOW, ADE7854_SPI_BURST and ADE7854_SPI_FAST
+> macros and this error fixed by enclose these macros in parentheses.
+
+The last two lines aren't needed.  One can easily see that from looking at
+the patch.
+
+julia
+
+> Signed-off-by: Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>
+> ---
+>  drivers/staging/iio/meter/ade7854.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/staging/iio/meter/ade7854.h b/drivers/staging/iio/meter/ade7854.h
+> index 7a49f8f1016f..41eeedef569b 100644
+> --- a/drivers/staging/iio/meter/ade7854.h
+> +++ b/drivers/staging/iio/meter/ade7854.h
+> @@ -139,9 +139,9 @@
+>  #define ADE7854_MAX_RX    7
+>  #define ADE7854_STARTUP_DELAY 1000
+>
+> -#define ADE7854_SPI_SLOW	(u32)(300 * 1000)
+> -#define ADE7854_SPI_BURST	(u32)(1000 * 1000)
+> -#define ADE7854_SPI_FAST	(u32)(2000 * 1000)
+> +#define ADE7854_SPI_SLOW	((u32)(300 * 1000))
+> +#define ADE7854_SPI_BURST	((u32)(1000 * 1000))
+> +#define ADE7854_SPI_FAST	((u32)(2000 * 1000))
+>
+>  /**
+>   * struct ade7854_state - device instance specific data
+> --
+> 2.34.1
+>
+>
+>
+--8323329-1354038481-1678630367=:2865--

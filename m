@@ -2,54 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF3E6B685D
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 17:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 201916B6867
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 17:51:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbjCLQpa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 12:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57586 "EHLO
+        id S231148AbjCLQu5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 12:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjCLQp3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 12:45:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0676E22028;
-        Sun, 12 Mar 2023 09:45:29 -0700 (PDT)
+        with ESMTP id S229561AbjCLQu4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 12:50:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091B42594D;
+        Sun, 12 Mar 2023 09:50:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98C1E60F72;
-        Sun, 12 Mar 2023 16:45:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EFDC433EF;
-        Sun, 12 Mar 2023 16:45:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93FEB60F58;
+        Sun, 12 Mar 2023 16:50:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A030C433EF;
+        Sun, 12 Mar 2023 16:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678639528;
-        bh=v3YW+tOhU6NvghcU8ePtg4xxv5KLn6KJH5+dYosdrs4=;
+        s=k20201202; t=1678639855;
+        bh=hPzcJThCdsn360QBSnBHKSMxI56LwWBFsVsg49Nj5Q0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YxEhMVNmplQlUkDoURJ6/oWUfonRqx5KpBJu10rV0eLrnqHaorOkAVV7huoxYSFtb
-         Iien4gP05Tai+KoNRCuVIdfRbQcUoNZ3wow2CeDyGCOP7cfMEsn+JRMHeffimZwAyO
-         H3CRhVgMix5GRB2ngsV3TJV0rlk+PByrpf/h+7woM9fD4TSLdo/HqZyPZMrmOC3TeI
-         Fi9h502KnJo0Sf3TihbtghihzvSONAyxnCnZ6B/pV8OeIYWjpSE37gLmQ7I6dR+Kdv
-         srW0OxuoI6Ro9R6HR6Lz66p/n6iEowymBrc5id8fEBGAWMdZti8mm4I6kO6EH59o0C
-         YUKytdNb4YOrg==
-Date:   Sun, 12 Mar 2023 16:45:33 +0000
+        b=ICPnV+9q65APqi03nYFJYg2+Qv0EWT4xBajUHbIFCsqkWfMty9ATj9rT6DHyXBOs4
+         Pjt/V5ghFzUYUpVR5XEJs5D+cZc2AqDBphMCYEfa0DqL1DUw0pWSBrDWWx0tKBRw1h
+         keG1frEuxKFftRPwvF3A+9KL7/JjJp5IIzRUOdm/ysboVtYRL2k2kYqZ6VFoWLCz8U
+         yqrQMBVaJHgxrWSBeZXpNbMWpQm1qaMCAqQoka1vweTTgvXbnRAf6619FcqPYrojtS
+         yqwcGSEgY99SaJZeUcu++Ms1lwacdr7l5OODYfKuDGls+c7BBGh7s00zIwligbtvi/
+         bG0EfR78+vupA==
+Date:   Sun, 12 Mar 2023 16:51:00 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <Marius.Cristea@microchip.com>
-Cc:     <devicetree@vger.kernel.org>, <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <robh+dt@kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 0/2] adding support for Microchip PAC193X Power
- Monitor
-Message-ID: <20230312164533.491a7402@jic23-huawei>
-In-Reply-To: <178ee962c5fc7ee7806475cb38527b8bdbfa8d09.camel@microchip.com>
-References: <20230220123232.413029-1-marius.cristea@microchip.com>
-        <20230225171139.65238b62@jic23-huawei>
-        <178ee962c5fc7ee7806475cb38527b8bdbfa8d09.camel@microchip.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
+Message-ID: <20230312165100.45de0c9b@jic23-huawei>
+In-Reply-To: <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
+References: <cover.1678093787.git.mazziesaccount@gmail.com>
+        <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
+        <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,91 +61,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Mar 2023 14:03:52 +0000
-<Marius.Cristea@microchip.com> wrote:
+On Mon, 6 Mar 2023 14:52:57 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Hi Jonathan,
->=20
->   Please, see my comments below...
->=20
->=20
-> On Sat, 2023-02-25 at 17:11 +0000, Jonathan Cameron wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you
-> > know the content is safe
-> >=20
-> > On Mon, 20 Feb 2023 14:32:30 +0200
-> > <marius.cristea@microchip.com> wrote:
-> >  =20
-> > > From: Marius Cristea <marius.cristea@microchip.com>
-> > >=20
-> > > Adding support for Microchip PAC193X series of Power Monitor with
-> > > Accumulator chip family. =20
-> >=20
-> > This device is at the messy boundary between IIO and HWMON. Perhaps
-> > call out
-> > the reasons you think IIO is more appropriate in this cover letter.
-> > + Often a good idea for these borderline parts to cc both mailing
-> > lists and
-> > maintainers.
-> >=20
-> > Often the conclusion is that it is fine to have these in IIO because
-> > we can
-> > bridge to hwmon anyway with the iio-hwmon driver.
-> >  =20
->=20
-> Indeed the driver (the device) is at the boundary between IIO and
-> HWMON. I was thinking to start with a simple driver (this one that is
-> more apropiate to be a HWMON) and add more functionality later (like
-> data buffering that is quite important for example if someone wants to
-> profile power consumtion of the procesor itself, or a pheriperic, or a
-> battery)
->=20
+> On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
+> > Some light sensors can adjust both the HW-gain and integration time.
+> > There are cases where adjusting the integration time has similar impact
+> > to the scale of the reported values as gain setting has.
+> > 
+> > IIO users do typically expect to handle scale by a single writable 'scale'
+> > entry. Driver should then adjust the gain/time accordingly.
+> > 
+> > It however is difficult for a driver to know whether it should change
+> > gain or integration time to meet the requested scale. Usually it is
+> > preferred to have longer integration time which usually improves
+> > accuracy, but there may be use-cases where long measurement times can be
+> > an issue. Thus it can be preferable to allow also changing the
+> > integration time - but mitigate the scale impact by also changing the gain
+> > underneath. Eg, if integration time change doubles the measured values,
+> > the driver can reduce the HW-gain to half.
+> > 
+> > The theory of the computations of gain-time-scale is simple. However,
+> > some people (undersigned) got that implemented wrong for more than once.
+> > 
+> > Add some gain-time-scale helpers in order to not dublicate errors in all
+> > drivers needing these computations.  
+> 
+> ...
+> 
+> > +/*  
+> 
+> If it's deliberately not a kernel doc, why to bother to have it looking as one?
+> It's really a provocative to some people who will come with a patches to "fix"
+> this...
 
-OK. List out some of the things you want to do later as the reasoning
-+CC hmwon maintainers just to be sure.  They are usually fine with this
-sort of reasoning, but it is best to check anyway.
+Just make it kernel-doc.
 
-Thanks,
+> 
+> > + * iio_gts_get_gain - Convert scale to total gain
+> > + *
+> > + * Internal helper for converting scale to total gain.
+> > + *
+> > + * @max:	Maximum linearized scale. As an example, when scale is created
+> > + *		in magnitude of NANOs and max scale is 64.1 - The linearized
+> > + *		scale is 64 100 000 000.
+> > + * @scale:	Linearized scale to compte the gain for.
+> > + *
+> > + * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
+> > + *		is invalid.
+> > + */
+
+> ...
+> 
+> > +EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);  
+> 
+> I would say _HELPER part is too much, but fine with me.
+
+Hmm. I think I like the HELPER bit as separates it from being a driver.
+Of course I might change my mind after a few sleeps.
+
+
+
+
+
+> > +++ b/drivers/iio/light/iio-gts-helper.h  
+> 
+> Is it _only_ for a Light type of sensors?
+
+I'd move it up a directory and allow for other users.
 
 Jonathan
-
-
->=20
-> > >=20
-> > > Differences related to previous patch:
-> > >=20
-> > > v1:
-> > > - first version comitted to review
-> > >=20
-> > >=20
-> > > Marius Cristea (2):
-> > > =C2=A0 dt-bindings: iio: adc: adding dt-bindings for PAC193X
-> > > =C2=A0 iio: adc: adding support for pac193x
-> > >=20
-> > > =C2=A0.../bindings/iio/adc/microchip,pac193x.yaml=C2=A0=C2=A0 |=C2=A0=
- 122 +
-> > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0=C2=A0=C2=A0 7 +
-> > > =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 12 +
-> > > =C2=A0drivers/iio/adc/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
-> > > =C2=A0drivers/iio/adc/pac193x.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 2072
-> > > +++++++++++++++++
-> > > =C2=A05 files changed, 2214 insertions(+)
-> > > =C2=A0create mode 100644
-> > > Documentation/devicetree/bindings/iio/adc/microchip,pac193x.yaml
-> > > =C2=A0create mode 100644 drivers/iio/adc/pac193x.c
-> > >  =20
-> >  =20
->=20
-> Thanks,
-> Marius
->=20
-

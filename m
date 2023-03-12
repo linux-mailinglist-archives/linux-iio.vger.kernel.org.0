@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 201916B6867
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 17:51:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB5766B689B
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 18:06:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbjCLQu5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 12:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36372 "EHLO
+        id S229550AbjCLRGi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 13:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjCLQu4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 12:50:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091B42594D;
-        Sun, 12 Mar 2023 09:50:56 -0700 (PDT)
+        with ESMTP id S229516AbjCLRGh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 13:06:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5D1410A7;
+        Sun, 12 Mar 2023 10:06:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93FEB60F58;
-        Sun, 12 Mar 2023 16:50:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A030C433EF;
-        Sun, 12 Mar 2023 16:50:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1A5DCB80D17;
+        Sun, 12 Mar 2023 17:06:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5F7C433EF;
+        Sun, 12 Mar 2023 17:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678639855;
-        bh=hPzcJThCdsn360QBSnBHKSMxI56LwWBFsVsg49Nj5Q0=;
+        s=k20201202; t=1678640793;
+        bh=PyzYRS0ls4ILE+hD0pkd/YVTfhoqLZM/cvnCV4lSPrY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ICPnV+9q65APqi03nYFJYg2+Qv0EWT4xBajUHbIFCsqkWfMty9ATj9rT6DHyXBOs4
-         Pjt/V5ghFzUYUpVR5XEJs5D+cZc2AqDBphMCYEfa0DqL1DUw0pWSBrDWWx0tKBRw1h
-         keG1frEuxKFftRPwvF3A+9KL7/JjJp5IIzRUOdm/ysboVtYRL2k2kYqZ6VFoWLCz8U
-         yqrQMBVaJHgxrWSBeZXpNbMWpQm1qaMCAqQoka1vweTTgvXbnRAf6619FcqPYrojtS
-         yqwcGSEgY99SaJZeUcu++Ms1lwacdr7l5OODYfKuDGls+c7BBGh7s00zIwligbtvi/
-         bG0EfR78+vupA==
-Date:   Sun, 12 Mar 2023 16:51:00 +0000
+        b=MHwlfP0cweWalrF6xXdAoED9oZiW8B66o5aABsaYlBWYUfVQzTJ0ocea0erWvXyV8
+         gH5E9fw8Jy0bysQoHpy7q46XaexEUhq60iWp/yxcRVnotoHavXAxQlfujQ6n1HjK0B
+         c5wxDjbWJ3u/vB4MZCB9/fZ49wOJRw+yLu7V20eQ6Nhz1OCpUF98BW0fZrt+WTJ/qs
+         C7oYVLlWfetMfW1uB9ed3QW28gsJTKvOIYFcc/9MspcutnfgK9QM+sCtdkY1EB0Bei
+         1lxpWwGLsahbszvKhvajJZwkKQ8J3dhI6In0LjFGDSl3T095mtyqH1S3I8C6Dm95dj
+         FGZtab8v7t3kA==
+Date:   Sun, 12 Mar 2023 17:06:38 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Shreeya Patel <shreeya.patel@collabora.com>,
         Paul Gazzillo <paul@pgazz.com>,
         Dmitry Osipenko <dmitry.osipenko@collabora.com>,
         Zhigang Shi <Zhigang.Shi@liteon.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
 Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
-Message-ID: <20230312165100.45de0c9b@jic23-huawei>
-In-Reply-To: <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
+Message-ID: <20230312170638.3e6807b7@jic23-huawei>
+In-Reply-To: <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
 References: <cover.1678093787.git.mazziesaccount@gmail.com>
         <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
-        <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,73 +60,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Mar 2023 14:52:57 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Mon, 6 Mar 2023 11:17:15 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
-> > Some light sensors can adjust both the HW-gain and integration time.
-> > There are cases where adjusting the integration time has similar impact
-> > to the scale of the reported values as gain setting has.
-> > 
-> > IIO users do typically expect to handle scale by a single writable 'scale'
-> > entry. Driver should then adjust the gain/time accordingly.
-> > 
-> > It however is difficult for a driver to know whether it should change
-> > gain or integration time to meet the requested scale. Usually it is
-> > preferred to have longer integration time which usually improves
-> > accuracy, but there may be use-cases where long measurement times can be
-> > an issue. Thus it can be preferable to allow also changing the
-> > integration time - but mitigate the scale impact by also changing the gain
-> > underneath. Eg, if integration time change doubles the measured values,
-> > the driver can reduce the HW-gain to half.
-> > 
-> > The theory of the computations of gain-time-scale is simple. However,
-> > some people (undersigned) got that implemented wrong for more than once.
-> > 
-> > Add some gain-time-scale helpers in order to not dublicate errors in all
-> > drivers needing these computations.  
+> Some light sensors can adjust both the HW-gain and integration time.
+> There are cases where adjusting the integration time has similar impact
+> to the scale of the reported values as gain setting has.
 > 
-> ...
+> IIO users do typically expect to handle scale by a single writable 'scale'
+> entry. Driver should then adjust the gain/time accordingly.
 > 
-> > +/*  
+> It however is difficult for a driver to know whether it should change
+> gain or integration time to meet the requested scale. Usually it is
+> preferred to have longer integration time which usually improves
+> accuracy, but there may be use-cases where long measurement times can be
+> an issue. Thus it can be preferable to allow also changing the
+> integration time - but mitigate the scale impact by also changing the gain
+> underneath. Eg, if integration time change doubles the measured values,
+> the driver can reduce the HW-gain to half.
 > 
-> If it's deliberately not a kernel doc, why to bother to have it looking as one?
-> It's really a provocative to some people who will come with a patches to "fix"
-> this...
-
-Just make it kernel-doc.
-
+> The theory of the computations of gain-time-scale is simple. However,
+> some people (undersigned) got that implemented wrong for more than once.
 > 
-> > + * iio_gts_get_gain - Convert scale to total gain
-> > + *
-> > + * Internal helper for converting scale to total gain.
-> > + *
-> > + * @max:	Maximum linearized scale. As an example, when scale is created
-> > + *		in magnitude of NANOs and max scale is 64.1 - The linearized
-> > + *		scale is 64 100 000 000.
-> > + * @scale:	Linearized scale to compte the gain for.
-> > + *
-> > + * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
-> > + *		is invalid.
-> > + */
-
-> ...
+> Add some gain-time-scale helpers in order to not dublicate errors in all
+> drivers needing these computations.
 > 
-> > +EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);  
-> 
-> I would say _HELPER part is too much, but fine with me.
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-Hmm. I think I like the HELPER bit as separates it from being a driver.
-Of course I might change my mind after a few sleeps.
+Trying not to duplicate what Andy has raised...
 
 
+At some stage I want to go through the maths very carefully but it's
+not happening today and I don't want to delay resolving other remaining comments
+so that can wait for a later version. I'm sure it's fine but I like to be
+paranoid :)
+
+> +int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
+> +{
+> +	const struct iio_itime_sel_mul *itime;
+> +
+> +	if (!iio_gts_valid_gain(gts, gain))
+> +		return -EINVAL;
+> +
+> +	if (!gts->num_itime)
+> +		return gain;
+> +
+> +	itime = iio_gts_find_itime_by_time(gts, time);
+> +	if (!itime)
+> +		return -EINVAL;
+> +
+> +	return gain * itime->mul;
+> +}
+> +EXPORT_SYMBOL(iio_gts_get_total_gain);
+
+All of them want to be in the namespace.
 
 
 
-> > +++ b/drivers/iio/light/iio-gts-helper.h  
-> 
-> Is it _only_ for a Light type of sensors?
+> diff --git a/drivers/iio/light/iio-gts-helper.h b/drivers/iio/light/iio-gts-helper.h
+> new file mode 100644
+> index 000000000000..4b5a417946f4
+> --- /dev/null
+> +++ b/drivers/iio/light/iio-gts-helper.h
 
-I'd move it up a directory and allow for other users.
+...
 
-Jonathan
+> +int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
+> +					       int old_gain, int old_time_sel,
+> +					       int new_time_sel, int *new_gain);
+> +int iio_gts_build_avail_tables(struct iio_gts *gts);
+> +int devm_iio_gts_build_avail_tables(struct device *dev, struct iio_gts *gts);
+> +int iio_gts_build_avail_scale_table(struct iio_gts *gts);
+> +int devm_iio_gts_build_avail_scale_table(struct device *dev, struct iio_gts *gts);
+> +int iio_gts_build_avail_time_table(struct iio_gts *gts);
+> +int devm_iio_gts_build_avail_time_table(struct device *dev, struct iio_gts *gts);
+
+Given most modern IIO drivers use fully devm_ based probing, for now I would not
+expose anything else.  That will reduce the interface a lot which I think
+is probably a good thing at this stage. 
+
+Keep the non devm stuff internally though as it is a nice structure to have
+an I can see we may want some of these in non devm form in the future.
+
+Similarly - for now don't expose the individual table building functions
+as we may never need them in drivers.  We (more or less) only support interfaces
+that are used and so far they aren't.
+
+For other functions it's worth thinking about whether to not export them
+initially. I haven't been through them all to figure out what is not currently used.
+
+> +void iio_gts_purge_avail_scale_table(struct iio_gts *gts);
+> +void iio_gts_purge_avail_time_table(struct iio_gts *gts);
+> +void iio_gts_purge_avail_tables(struct iio_gts *gts);
+> +int iio_gts_avail_times(struct iio_gts *gts,  const int **vals, int *type,
+> +			int *length);
+> +int iio_gts_all_avail_scales(struct iio_gts *gts, const int **vals, int *type,
+> +			     int *length);
+> +int iio_gts_avail_scales_for_time(struct iio_gts *gts, int time,
+> +				  const int **vals, int *type, int *length);
+> +
+> +#endif
+

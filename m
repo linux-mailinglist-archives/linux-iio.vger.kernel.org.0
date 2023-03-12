@@ -2,63 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E51C6B6751
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 15:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EED26B6760
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 15:57:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbjCLOxH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 10:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55366 "EHLO
+        id S229490AbjCLO5u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 10:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbjCLOxG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 10:53:06 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86731EF96;
-        Sun, 12 Mar 2023 07:53:04 -0700 (PDT)
+        with ESMTP id S229723AbjCLO5s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 10:57:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563F94DBF7;
+        Sun, 12 Mar 2023 07:57:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id AEFAECE069D;
-        Sun, 12 Mar 2023 14:53:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FD1C433EF;
-        Sun, 12 Mar 2023 14:52:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 953DE60F08;
+        Sun, 12 Mar 2023 14:57:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729A3C433EF;
+        Sun, 12 Mar 2023 14:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678632780;
-        bh=yd7yqh1vwSOJpxM4gHsDAaAWQeJmPNZpXxRvTN7GOC4=;
+        s=k20201202; t=1678633063;
+        bh=hmVluJ74k9bGf2V4XsDxkL3lSx2FrFjREzIKR1behe4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=trcSuCKQdZ42hlM39kSq4pSG9r18PDrP2SPAhDuByuH4Ssj/vcNqIZQwYDPChslFF
-         4dcwxAXGT/tAb9ccgfUrKzM5eAuTS7zEmVJ92yaUEFPnGu2oKAY9+m9APVlViKn89P
-         ssZpbDLa7Man2XQwN3KeIfeWpTGk7fUDqWdZdUEgC5MUiRGDkI4BPeWd0CDvY6KTvh
-         1uc00zQs67xg8f0TGISqWujRnFvRC5DfGxqCj1CG5Lp9VsT5yPlzWbaPJCYgDre0kQ
-         Ov/Qwp2PzulsTcm/5dTo8t++KjphFjhmJEJ7L/9JOFdtIONSIGlb+/VNxr0Xp/u8iu
-         V1laxh1ItxC9A==
-Date:   Sun, 12 Mar 2023 14:53:04 +0000
+        b=C2uMZjFY9Qo9l03SuD3KNdLQAnlh5SDgGjOfoyOmeWoVI+EcBooXbuYxFl0bVZNbz
+         1Rzas8k2/l/uRJHC1AqD3iRaJLYdJFwe5GDTr+mxG8u1gt4n519SC9G0kPRNwxWpmP
+         KcJG3GkYmaEt68iep8TfWD16mT8W9UUZDpDDl2IUx5P18bpkT3NcEFTIDIyXhzz5zu
+         /cvkf4ue8TwzgtS2AfUWwQl/NFjeMgyMK8IOyB8FiV7N3rQ5pQmlX1wm8trqGXb+QH
+         /duw+awxONvqQKd904mqWyKx+l5sCZjnYsiczCgLvpC5tYvtZi0bUCqLwbQLEATJHv
+         qzi4dB2BqSoOw==
+Date:   Sun, 12 Mar 2023 14:57:47 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mike Looijmans <mike.looijmans@topic.nl>
-Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
         Caleb Connolly <caleb.connolly@linaro.org>,
         ChiYuan Huang <cy_huang@richtek.com>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
         Ramona Bolboaca <ramona.bolboaca@analog.com>,
         William Breathitt Gray <william.gray@linaro.org>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS1100 and ADS1000
-Message-ID: <20230312145304.3c9b9123@jic23-huawei>
-In-Reply-To: <f91d6d0a-e197-a66b-61b7-f2ea668429f7@topic.nl>
-References: <20230228063151.17598-1-mike.looijmans@topic.nl>
-        <20230228063151.17598-2-mike.looijmans@topic.nl>
-        <20230304175751.2daae308@jic23-huawei>
-        <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.c6259f01-fccb-4a0c-a50a-69f2dcd4ea5b@emailsignatures365.codetwo.com>
-        <f91d6d0a-e197-a66b-61b7-f2ea668429f7@topic.nl>
+Subject: Re: [PATCH v5 2/2] iio: adc: Add TI ADS1100 and ADS1000
+Message-ID: <20230312145747.268ae10a@jic23-huawei>
+In-Reply-To: <ZActDOEsT+tNMfZ1@smile.fi.intel.com>
+References: <20230307065535.7927-1-mike.looijmans@topic.nl>
+        <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.812861c4-ffbd-402e-bb22-77232c1fbafb@emailsignatures365.codetwo.com>
+        <20230307065535.7927-2-mike.looijmans@topic.nl>
+        <ZActDOEsT+tNMfZ1@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,104 +68,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Mar 2023 12:21:44 +0100
-Mike Looijmans <mike.looijmans@topic.nl> wrote:
+On Tue, 7 Mar 2023 14:24:44 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Met vriendelijke groet / kind regards,
+> On Tue, Mar 07, 2023 at 07:55:34AM +0100, Mike Looijmans wrote:
+> > The ADS1100 is a 16-bit ADC (at 8 samples per second).
+> > The ADS1000 is similar, but has a fixed data rate.  
 > 
-> Mike Looijmans
-> System Expert
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> 
-> TOPIC Embedded Products B.V.
-> Materiaalweg 4, 5681 RJ Best
-> The Netherlands
-> 
-> T: +31 (0) 499 33 69 69
-> E: mike.looijmans@topicproducts.com
-> W: www.topic.nl
-> 
-> Please consider the environment before printing this e-mail
-> On 04-03-2023 18:57, Jonathan Cameron wrote:
-> > On Tue, 28 Feb 2023 07:31:51 +0100
-> > Mike Looijmans <mike.looijmans@topic.nl> wrote:
-> >  
-> >> The ADS1100 is a 16-bit ADC (at 8 samples per second).
-> >> The ADS1000 is similar, but has a fixed data rate.
-> >>
-> >> Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>  
-> > Hi Mike,
-> >
-> > A few minor things + one request for a test as trying to chase a possible
-> > ref count overflow around the runtime_pm was giving me a enough of a headache
-> > that it's easier to ask you just to poke it and see.  If it doesn't fail as
-> > I expect I'll take a closer look!
-> >
-> > Jonathan
-> >
-> > ...  
-> >> +	data->client = client;
-> >> +	mutex_init(&data->lock);
-> >> +
-> >> +	indio_dev->name = "ads1100";
-> >> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> >> +	indio_dev->channels = &ads1100_channel;
-> >> +	indio_dev->num_channels = 1;
-> >> +	indio_dev->info = &ads1100_info;
-> >> +
-> >> +	data->reg_vdd = devm_regulator_get(dev, "vdd");
-> >> +	if (IS_ERR(data->reg_vdd))
-> >> +		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-> >> +				     "Failed to get vdd regulator\n");
-> >> +
-> >> +	ret = regulator_enable(data->reg_vdd);
-> >> +	if (ret < 0)
-> >> +		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
-> >> +				     "Failed to enable vdd regulator\n");
-> >> +
-> >> +	ret = devm_add_action_or_reset(dev, ads1100_reg_disable, data->reg_vdd);
-> >> +	if (ret)
-> >> +		return ret;  
-> > Please could you check a subtle interaction of runtime pm and this devm managed
-> > flow.
-> >
-> > I think we can hit the following flow.
-> > 1) In runtime suspend (wait long enough for this to happen).
-> > 2) Unbind the driver (rmmod will do)
-> > 3) During the unbind we exit suspend then enter it again before we call remove
-> >     (that's just part of the normal remove flow).
-> > 4) We then end up calling regulator disable when it's already disabled.
-> >
-> > We've traditionally avoided that by having the remove explicitly call
-> > pm_runtime_get_sync() before we then disable runtime pm.  I don't
-> > think that happens with devm_pm_runtime_enable() but I could be missing
-> > a path where it does.
-> >
-> > If the sequence goes wrong you should get a warning about an unbalanced regulator
-> > disable.  The fix would be an extra devm_add_action_or_reset() before the
-> > devm_iio_device_register() below that just calls pm_runtime_get_sync()
-> > to force the state to on.
-> >
-> > Gah. These subtle paths always give me a headache.
-> > We don't normally have too much problem with this because many
-> > runtime_resume / suspend functions don't change reference counts.  
-> 
-> Just did this test, waited a few seconds, checked 
-> /sys/kernel/debug/regulator... that the regulator had been disabled.
-> 
-> Then executed:
-> echo -n 3-004a > /sys/bus/i2c/drivers/ads1100/unbind
-> 
-> to unload the driver, and no messages were added to the kernel log.
-> 
-> I could see the driver going away and removing itself from iio and 
-> regulators.
-> 
-> Tried this a couple of times (using bind/unbind), and no problem reported.
-> 
-> Hopes this helps with your headaches...
+> But see below.
 
-Thanks!
+I tidied that up and made a few other trivial whitespace tweaks whilst
+applying.
+
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find anything we missed.
+
+Thanks,
+
+Jonathan
 
 > 
+> > Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+
+> > +
+> > +static int ads1100_set_scale(struct ads1100_data *data, int val, int val2)
+> > +{
+> > +	int microvolts;
+> > +	int gain;
+> > +
+> > +	/* With Vdd between 2.7 and 5V, the scale is always below 1 */
+> > +	if (val)
+> > +		return -EINVAL;
+> > +
+> > +	if (!val2)
+> > +		return -EINVAL;
+> > +
+> > +	microvolts = regulator_get_voltage(data->reg_vdd);
+> > +	/*
+> > +	 * val2 is in 'micro' units, n = val2 / 1000000
+> > +	 * result must be millivolts, d = microvolts / 1000
+> > +	 * the full-scale value is d/n, corresponds to 2^15,
+> > +	 * hence the gain = (d / n) >> 15, factoring out the 1000 and moving the
+> > +	 * bitshift so everything fits in 32-bits yields this formula.
+> > +	 */
+> > +	gain = DIV_ROUND_CLOSEST(microvolts, BIT(15)) * MILLI / val2;
+> > +	if (gain < BIT(0) || gain > BIT(3))
+> > +		return -EINVAL;
+> > +
+> > +	ads1100_set_config_bits(data, ADS1100_PGA_MASK, ffs(gain) - 1);
+
+I added a blank line here and in one other place for consistency + I like
+them before simple return statements.
+
+> > +	return 0;
+> > +}
+> > +
+> > +static int ads1100_set_data_rate(struct ads1100_data *data, int chan, int rate)
+> > +{
+> > +	unsigned int i;
+> > +	unsigned int size;
+> > +
+> > +	size = data->supports_data_rate ? ARRAY_SIZE(ads1100_data_rate) : 1;
+> > +	for (i = 0; i < size; i++) {
+> > +		if (ads1100_data_rate[i] == rate)
+> > +			return ads1100_set_config_bits(data, ADS1100_DR_MASK,  
+> 
+> > +						       FIELD_PREP
+> > +						       (ADS1100_DR_MASK, i));  
+> 
+> This is better on a single line.
+
+Fixed up whilst applying.
+
+> 
+> > +	}
+> > +
+> > +	return -EINVAL;
+> > +}
+> > +
+
 

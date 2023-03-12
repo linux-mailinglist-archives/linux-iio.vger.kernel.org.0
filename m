@@ -2,89 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7BE66B6BAE
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 22:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97BBA6B6BC0
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 22:24:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjCLVJn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 17:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33430 "EHLO
+        id S231276AbjCLVYC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 17:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbjCLVJm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 17:09:42 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 922A623649
-        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 14:09:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=04GA5pIu/hBYNK1Hk1wD+nRNsL2iEY6YXTo9hY22+i0=; b=TY3+kamFrISLYls/pwZjE7wUUw
-        dE7bMoMADTVh+fuKzpzK+W4V7vVd2H4mIJJk5Xd2uCJKetBa3GXAP/o4qk/1RqomlfNIXX7yWCkHm
-        QxAq5QOt91E9d9URX2E5xkwCGIc6xY7DY8pufKl5aeT/pe0zVZl35dB7hS9J4EnSIgJQbyoYwIDBT
-        p/2jm7h7SKHkeAMVEi9VwxRn3RvvZHNakiYcUDq/pNr6uEIFFzLG7XZH7BIhpS4qs68DtUOrVh+32
-        iSttiygs0SYuSTv8tljKdwWTI0rNBzX2V7FLc+g2801GPkV+2PPTGqAaswwLGsTK+U8gvTtKAf4oT
-        33PJt/SQ==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1pbSwl-000Jqf-C2; Sun, 12 Mar 2023 22:09:39 +0100
-Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b] (helo=lars-desktop.lan)
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1pbSwk-000Q5l-TD; Sun, 12 Mar 2023 22:09:39 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     David Lechner <david@lechnology.com>,
-        Justin Chen <justinpopo6@gmail.com>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: adc: ti-ads7950: Set `can_sleep` flag for GPIO chip
-Date:   Sun, 12 Mar 2023 14:09:33 -0700
-Message-Id: <20230312210933.2275376-1-lars@metafoo.de>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S230274AbjCLVYC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 17:24:02 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9FFE2D165
+        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 14:23:59 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id w23so11421566qtn.6
+        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 14:23:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678656239;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZVLyQ0XiKSvnucCxXN1dJowGWmlgB/Dt3IZETGB50oM=;
+        b=NZwlJLjToy+H13MwnYz3wpVEi3eqcyI3Ky/Z95chVi1Etbb7yll674a2Y2UmTnpnmX
+         tWd2uorn3U/JuT9zzPi9GmyVOjdMmGBCP0opBRpZGY7fnpIJzGuEX2F/RvENibzPZhix
+         T3xaDhFQxPl2+HZSt7MphB9HbflbScriwBEW+c7fgfgV3KgqCKNlYtb3keBmvPRCRl4n
+         6xzHBHiHz70dAsqYR307Aee8/G/kQ6m2JPlQ7AQsItuaZabiNL7EONHNOPi/fBmb+Dey
+         EBmu2HenQPEd7+/FcfWmlOR5R9ZKizQ394fe6zjr7yjMx5Tu7Np27KHNlF0T+9XQPBsz
+         1rMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678656239;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZVLyQ0XiKSvnucCxXN1dJowGWmlgB/Dt3IZETGB50oM=;
+        b=cjNkUGqjgEiQZcFgGabczPPp/pIq7dWwuLP1+A0JkV+NK2GjE3makNs1Ga/fx0fABc
+         lc4/lWRTPHYfERL2g5jTHaTlKfFQVgGYMhslTYfTQxx7T+pY7X+ZlMmIWxM7fZ2U/LWg
+         bkbhEZK2ur4eNCUa6+XxJuNeFLUDZl6srsyoXmVJZP3WKN1tuQ59BoSUuWwoUcWizEPl
+         AgnIRywoxQoQLDHPKrX5QZX77hvTU8CKWWBqA4AGYxRpMWWwuI0o7i+2KyB7VO4Okx+g
+         LsR+p5BUgGYjGcsIlVnsGYUyN/eLMeOhhVRE7EV08LSEDb0pIa4QErpelt01lJPK6CfR
+         UH9g==
+X-Gm-Message-State: AO0yUKWVM66ZlRdTENBoEPO8y7eNrERy9cKvRgvEiXUTLP3GdZUrJSzS
+        XTqA94eNBYnvMwVVVKUOQloZXkbuhi9EY3fJ0U0=
+X-Google-Smtp-Source: AK7set/3JWlfc/2ZRHjNketi/SeZBKZTydDQmqOhfdBs0PJV6yIC3rVOfTjHRFuIIEip70Ig9+V9vg==
+X-Received: by 2002:a05:622a:178b:b0:3bf:daae:7f34 with SMTP id s11-20020a05622a178b00b003bfdaae7f34mr26411301qtk.41.1678656238686;
+        Sun, 12 Mar 2023 14:23:58 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id j23-20020ac85517000000b0039cc0fbdb61sm4285274qtq.53.2023.03.12.14.23.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Mar 2023 14:23:58 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     jic23@kernel.org, linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
+Date:   Sun, 12 Mar 2023 17:23:47 -0400
+Message-Id: <20230312212347.129756-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26839/Sun Mar 12 09:22:48 2023)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The ads7950 uses a mutex as well as SPI transfers in its GPIO callbacks.
-This means these callbacks can sleep and the `can_sleep` flag should be
-set.
+The Counter (CNTR) register is 24 bits wide, but we can have an
+effective 25-bit count value by setting bit 24 to the XOR of the Borrow
+flag and Carry flag. The flags can be read from the FLAG register, but a
+race condition exists: the Borrow flag and Carry flag are instantaneous
+and could change by the time the count value is read from the CNTR
+register.
 
-Having the flag set will make sure that warnings are generated when calling
-any of the callbacks from a potentially non-sleeping context.
+Since the race condition could result in an incorrect 25-bit count
+value, remove support for 25-bit count values from this driver;
+hard-coded maximum count values are replaced by a LS7267_CNTR_MAX define
+for consistency and clarity.
 
-Fixes: c97dce792dc8 ("iio: adc: ti-ads7950: add GPIO support")
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 104-QUAD-8")
+Cc: stable@vger.kernel.org
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 ---
-Sorry if you received this twice. Forgot to cc the mailinglist on the first
-try.
----
- drivers/iio/adc/ti-ads7950.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v2:
+ - Correct Fixes tag line in commit description
+ - Add Cc tag line for stable@vger.kernel.org
 
-diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
-index 2cc9a9bd9db6..263fc3a1b87e 100644
---- a/drivers/iio/adc/ti-ads7950.c
-+++ b/drivers/iio/adc/ti-ads7950.c
-@@ -634,6 +634,7 @@ static int ti_ads7950_probe(struct spi_device *spi)
- 	st->chip.label = dev_name(&st->spi->dev);
- 	st->chip.parent = &st->spi->dev;
- 	st->chip.owner = THIS_MODULE;
-+	st->chip.can_sleep = true;
- 	st->chip.base = -1;
- 	st->chip.ngpio = TI_ADS7950_NUM_GPIOS;
- 	st->chip.get_direction = ti_ads7950_get_direction;
+ drivers/counter/104-quad-8.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index deed4afadb29..dba04b5e80b7 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -97,10 +97,6 @@ struct quad8 {
+ 	struct quad8_reg __iomem *reg;
+ };
+ 
+-/* Borrow Toggle flip-flop */
+-#define QUAD8_FLAG_BT BIT(0)
+-/* Carry Toggle flip-flop */
+-#define QUAD8_FLAG_CT BIT(1)
+ /* Error flag */
+ #define QUAD8_FLAG_E BIT(4)
+ /* Up/Down flag */
+@@ -133,6 +129,9 @@ struct quad8 {
+ #define QUAD8_CMR_QUADRATURE_X2 0x10
+ #define QUAD8_CMR_QUADRATURE_X4 0x18
+ 
++/* Each Counter is 24 bits wide */
++#define LS7267_CNTR_MAX GENMASK(23, 0)
++
+ static int quad8_signal_read(struct counter_device *counter,
+ 			     struct counter_signal *signal,
+ 			     enum counter_signal_level *level)
+@@ -156,19 +155,9 @@ static int quad8_count_read(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter_priv(counter);
+ 	struct channel_reg __iomem *const chan = priv->reg->channel + count->id;
+-	unsigned int flags;
+-	unsigned int borrow;
+-	unsigned int carry;
+ 	unsigned long irqflags;
+ 	int i;
+ 
+-	flags = ioread8(&chan->control);
+-	borrow = flags & QUAD8_FLAG_BT;
+-	carry = !!(flags & QUAD8_FLAG_CT);
+-
+-	/* Borrow XOR Carry effectively doubles count range */
+-	*val = (unsigned long)(borrow ^ carry) << 24;
+-
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	/* Reset Byte Pointer; transfer Counter to Output Latch */
+@@ -191,8 +180,7 @@ static int quad8_count_write(struct counter_device *counter,
+ 	unsigned long irqflags;
+ 	int i;
+ 
+-	/* Only 24-bit values are supported */
+-	if (val > 0xFFFFFF)
++	if (val > LS7267_CNTR_MAX)
+ 		return -ERANGE;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+@@ -806,8 +794,7 @@ static int quad8_count_preset_write(struct counter_device *counter,
+ 	struct quad8 *const priv = counter_priv(counter);
+ 	unsigned long irqflags;
+ 
+-	/* Only 24-bit values are supported */
+-	if (preset > 0xFFFFFF)
++	if (preset > LS7267_CNTR_MAX)
+ 		return -ERANGE;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+@@ -834,8 +821,7 @@ static int quad8_count_ceiling_read(struct counter_device *counter,
+ 		*ceiling = priv->preset[count->id];
+ 		break;
+ 	default:
+-		/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
+-		*ceiling = 0x1FFFFFF;
++		*ceiling = LS7267_CNTR_MAX;
+ 		break;
+ 	}
+ 
+@@ -850,8 +836,7 @@ static int quad8_count_ceiling_write(struct counter_device *counter,
+ 	struct quad8 *const priv = counter_priv(counter);
+ 	unsigned long irqflags;
+ 
+-	/* Only 24-bit values are supported */
+-	if (ceiling > 0xFFFFFF)
++	if (ceiling > LS7267_CNTR_MAX)
+ 		return -ERANGE;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
 -- 
-2.30.2
+2.39.2
 

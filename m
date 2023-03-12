@@ -2,80 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 317BD6B677A
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 16:19:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C49226B677E
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 16:26:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbjCLPTo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 11:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58896 "EHLO
+        id S229473AbjCLP0g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 11:26:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjCLPTn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 11:19:43 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D6F32E64
-        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 08:19:41 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id cn21so8991530edb.0
-        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 08:19:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678634380;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LVue5v1bjIYpSWd7Xr5GiMxJOUCv46TrvHF2pUWpaNM=;
-        b=SPMSjKFbw78R5hFIzLA21d+55ItXHdOoI0ydoP6CFZj4XfjY2hKE9eF825ot1TqTqK
-         sua+dlSVE+2hgk1s1iby2zs2JRcgBdMaufz3Q3RRJ1W0+vhdWQ4EkR5U8KJg3fqSKa6J
-         inKFbRy2Nde5qO4vkz3EEoPXx+TGKf53qOLg21cCD5CXRU9lqx5xf4JgjUY2pyD4t4sg
-         +cN4LEkaJ9IlLoqQvvVWVbKBiBq5ktKvTdLRu2BmuKG3pWimO/nFdG0f4YsmcgJHmcoR
-         8gX64xah+XEsmVBWCycDJP/iA0H0/Xe9jnOJFI1hKeEiLVKEnP34zYtbGxxV+LnnKuSR
-         99jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678634380;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LVue5v1bjIYpSWd7Xr5GiMxJOUCv46TrvHF2pUWpaNM=;
-        b=JwXA5+EFAUugwKEw34kEDBsl4DkKQtwHfUS+oE9/3PgZip12iMVQF1ngmKz+64RHa+
-         AJXRc5lrLEEUssT+OhyrBT97Gh00/vjIA3OOLTt8sLaaO6chr2n2N+rK+uG6G6smZDfr
-         y38AG2F+dSIwfcqvKQMZ/uJGESyjnNcpEGL8zzROyZoUjXQdRLVCz6FxYuuit0khkMr6
-         bLTp1/bS/97/tRIAiREnjKmuoeTIo4CFGhPZJ0g3lAgEu3fyhceEdtNIWm4C4riSNrsI
-         wZvODpSXnkSFzdVq0l/iVMLht+Zwgtb70s0FN1ZtPCF5x5hlOc6hRm+FnhQs6kNyJPvH
-         TNrA==
-X-Gm-Message-State: AO0yUKWYPYpP5DE8TWyM3G1L3Pg61G404+pnoMEXg/7m0DieE/6NPh4u
-        XZjAEfGBAUcZa3kRkCtldabOPFQsLwuBqkon0uY=
-X-Google-Smtp-Source: AK7set83jYWggd0C8gdw0aivv176gRlj4pod8YXwDdaCcYZYR77PbnA35xCqj7GautJq4loiXTkhjw==
-X-Received: by 2002:a17:907:c60c:b0:7c0:e30a:d3e5 with SMTP id ud12-20020a170907c60c00b007c0e30ad3e5mr38141519ejc.18.1678634380356;
-        Sun, 12 Mar 2023 08:19:40 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:d9f6:3e61:beeb:295a? ([2a02:810d:15c0:828:d9f6:3e61:beeb:295a])
-        by smtp.gmail.com with ESMTPSA id g2-20020a1709062da200b008cf377e8795sm2303259eji.199.2023.03.12.08.19.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Mar 2023 08:19:39 -0700 (PDT)
-Message-ID: <4935158b-84fc-ffc0-348a-2044d3de5ec6@linaro.org>
-Date:   Sun, 12 Mar 2023 16:19:39 +0100
+        with ESMTP id S229568AbjCLP0f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 11:26:35 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175CE3B65F
+        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 08:26:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 6087ECE0B11
+        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 15:26:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7960C433D2;
+        Sun, 12 Mar 2023 15:26:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678634790;
+        bh=0XFY8Pb8FbZ5qZGKPTLEAtGUUuclwFUr5/bUvyfDDqk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=iQSz/hLZ7PF9wxi6CCHfdlu1+MFzDbxG0hpVNHWxbEWnb/a/Tljzw1n+AX81aVYAq
+         17bA04bVTsSyO9HmHO5itITDEfDeyqpOKgBtxM55GTdU+0Bmknoh2jaff2S5/9cRQF
+         w5GR3SDL4dWgNoP0pexOnzStGr+XvMjGcjNUwkAF2Zn1aWKBrfjmWe6SeDThSDYFLG
+         TrwTMCXgucRMYFq6/oopb/9rS5VIg16L9CzlSHF9xXpcMd4HexR1wvWy+6vbPGOh3+
+         aNYq4paDIn69wJtKTHLlywUSYZ8H2x3gQjr3H0P3gWkPQzRrYCCTkEjkRRZYHU/qKH
+         D7p6i3wnbJEmw==
+Date:   Sun, 12 Mar 2023 15:26:36 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>
+Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] iio: adc: max11410: fix read_poll_timeout() usage
+Message-ID: <20230312152636.2baee309@jic23-huawei>
+In-Reply-To: <CY4PR03MB24888E9F4583FA53C7D8076596B59@CY4PR03MB2488.namprd03.prod.outlook.com>
+References: <20230307095303.713251-1-nuno.sa@analog.com>
+        <CY4PR03MB24888E9F4583FA53C7D8076596B59@CY4PR03MB2488.namprd03.prod.outlook.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 4/4] iio: proximity: sx9500: Mark ACPI and OF related data
- as maybe unused
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Marek Vasut <marek.vasut@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Robert Eshleman <bobbyeshleman@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230311111457.251475-1-krzysztof.kozlowski@linaro.org>
- <20230311111457.251475-4-krzysztof.kozlowski@linaro.org>
- <20230311122833.03b5a3d7@jic23-huawei>
- <c66c3f92-fa33-5af1-6f19-79b6d3530862@linaro.org>
- <20230311184440.22a1ff0f@jic23-huawei>
- <e3deb29a-9468-a937-b95f-ace165aa8085@linaro.org>
- <20230312141413.49a130bc@jic23-huawei>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230312141413.49a130bc@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,91 +55,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/03/2023 15:14, Jonathan Cameron wrote:
-> On Sun, 12 Mar 2023 11:17:05 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> On 11/03/2023 19:44, Jonathan Cameron wrote:
->>> On Sat, 11 Mar 2023 13:30:01 +0100
->>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->>>   
->>>> On 11/03/2023 13:28, Jonathan Cameron wrote:  
->>>>> On Sat, 11 Mar 2023 12:14:57 +0100
->>>>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->>>>>     
->>>>>> The driver can be compile tested with !CONFIG_OF or !CONFIG_ACPI making
->>>>>> certain data unused:
->>>>>>
->>>>>>   drivers/iio/proximity/sx9500.c:1039:34: error: ‘sx9500_of_match’ defined but not used [-Werror=unused-const-variable=]
->>>>>>
->>>>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>    
->>>>>
->>>>> Hi Krysztof
->>>>>
->>>>> Thanks for looking at these warnings. 
->>>>>
->>>>> Drop the protection macros instead.  The tables are trivial in size and
->>>>> the of_match_ptr() breaks some ways this driver can be used.
->>>>> ACPI_PTR() isn't as bad, but is pretty much pointless given this size of
->>>>> the array. 
->>>>>     
->>>>
->>>> For ACPI platform, ACPI table is used, so nothing for PRP0001. For OF
->>>> platform, OF table is used.  
->>>
->>> So you would think, but nope.. That's not how it works (I was surprised
->>> when I came across this the first time too)
->>>  
->>> PRP0001 is magic and requires no specific support in an individual
->>> driver beyond not using that of_match_ptr() macro!  
->>
->> I know, we talk about ACPI table.
-> 
-> I'm not sure I follow.   I thought by ACPI table you meant the acpi_device_id
-> table pointed to by acpi_match_table in struct device_driver.
-> 
-> That one is not needed for PRP0001.  It is irrelevant if there is one or not.
-> 
-> Maybe the confusion is that you think the presence of an acpi_match table means
-> we don't also check PRP0001?  As you can see here
-> https://elixir.bootlin.com/linux/latest/source/drivers/acpi/bus.c#L886
-> it is checked in all cases.
-> 
-> If you meant the DSDT table being provide by the firmware I don't see the relevance
-> to this discussion.
-> 
->>
->>>
->>> https://elixir.bootlin.com/linux/latest/source/drivers/acpi/bus.c#L754
->>> Docs here
->>> https://elixir.bootlin.com/linux/latest/source/Documentation/firmware-guide/acpi/enumeration.rst#L450  
->>
->> The code is compile when CONFIG_ACPI is defined, right? Then you have
->> ACPI table, so what for ACPI platform is missing? ACPI platform has ACPI
->> table.
-> 
-> I don't follow.  A given ACPI platform may provide in DSDT one of two choices
-> to bind to this driver.
+On Thu, 9 Mar 2023 12:37:54 +0000
+"Tilki, Ibrahim" <Ibrahim.Tilki@analog.com> wrote:
 
-OK, I understand your point. I assumed we do not care at all about
-PRP0001 if ACPI is enabled, because then we simply use ACPI table. But
-indeed they might for example be not in sync...
+> > Even though we are passing 'ret' as stop condition for
+> > read_poll_timeout(), that return code is still being ignored. The reason
+> > is that the poll will stop if the passed condition is true which will
+> > happen if the passed op() returns error. However, read_poll_timeout()
+> > returns 0 if the *complete* condition evaluates to true. Therefore, the
+> > error code returned by op() will be ignored.
+> >=20
+> > To fix this we need to check for both error codes:
+> >  * The one returned by read_poll_timeout() which is either 0 or
+> > ETIMEDOUT.
+> >  * The one returned by the passed op().
+> >=20
+> > Fixes: a44ef7c46097 ("iio: adc: add max11410 adc driver")
+> > Signed-off-by: Nuno S=C3=83=C2=A1 <nuno.sa@analog.com> =20
+>=20
+> Acked-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+>=20
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-> 
-> Either it provides an entry from the acpi_device_id table, or it must
-> use PRP0001 and a compatible entry from the of_device_id table.  That only works
-> if of_match_ptr() is not used.
-> 
-> As a side note, both the IDs in the ACPI match table are not valid IDs for use
-> in DSDT.  We are supporting them only because they have been used on shipping devices.
-> Semtech does have a PNP ID of STH but that's not the one used.
-> 
-> Anyhow, to be clear. For IIO drivers, don't use of_match_ptr()
-> or ACPI_PTR(). There are some legacy cases that we haven't cleaned up
-> yet, but I'm not taking patches that add any new ones without a very very
-> strong argument in favour and so far no one has successfully made one.
+Thanks,
 
+Jonathan
 
-Best regards,
-Krzysztof
+>=20
+> > ---
+> >  drivers/iio/adc/max11410.c | 22 +++++++++++++++-------
+> >  1 file changed, 15 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
+> > index 237b2ce3f264..6af829349b4e 100644
+> > --- a/drivers/iio/adc/max11410.c
+> > +++ b/drivers/iio/adc/max11410.c
+> > @@ -414,13 +414,17 @@ static int max11410_sample(struct max11410_state =
+*st, int *sample_raw,
+> >  		if (!ret)
+> >  			return -ETIMEDOUT;
+> >  	} else {
+> > +		int ret2;
+> > +
+> >  		/* Wait for status register Conversion Ready flag */
+> > -		ret =3D read_poll_timeout(max11410_read_reg, ret,
+> > -					ret || (val & MAX11410_STATUS_CONV_READY_BIT),
+> > +		ret =3D read_poll_timeout(max11410_read_reg, ret2,
+> > +					ret2 || (val & MAX11410_STATUS_CONV_READY_BIT),
+> >  					5000, MAX11410_CONVERSION_TIMEOUT_MS * 1000,
+> >  					true, st, MAX11410_REG_STATUS, &val);
+> >  		if (ret)
+> >  			return ret;
+> > +		if (ret2)
+> > +			return ret2;
+> >  	}
+> > =20
+> >  	/* Read ADC Data */
+> > @@ -851,17 +855,21 @@ static int max11410_init_vref(struct device *dev,
+> > =20
+> >  static int max11410_calibrate(struct max11410_state *st, u32 cal_type)
+> >  {
+> > -	int ret, val;
+> > +	int ret, ret2, val;
+> > =20
+> >  	ret =3D max11410_write_reg(st, MAX11410_REG_CAL_START, cal_type);
+> >  	if (ret)
+> >  		return ret;
+> > =20
+> >  	/* Wait for status register Calibration Ready flag */
+> > -	return read_poll_timeout(max11410_read_reg, ret,
+> > -				 ret || (val & MAX11410_STATUS_CAL_READY_BIT),
+> > -				 50000, MAX11410_CALIB_TIMEOUT_MS * 1000, true,
+> > -				 st, MAX11410_REG_STATUS, &val);
+> > +	ret =3D read_poll_timeout(max11410_read_reg, ret2,
+> > +				ret2 || (val & MAX11410_STATUS_CAL_READY_BIT),
+> > +				50000, MAX11410_CALIB_TIMEOUT_MS * 1000, true,
+> > +				st, MAX11410_REG_STATUS, &val);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return ret2;
+> >  }
+> > =20
+> >  static int max11410_self_calibrate(struct max11410_state *st) =20
 

@@ -2,108 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 792B66B66BB
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 14:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 274326B6705
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Mar 2023 14:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbjCLNeC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Mar 2023 09:34:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
+        id S229552AbjCLN4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Mar 2023 09:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbjCLNeB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 09:34:01 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D040C30293;
-        Sun, 12 Mar 2023 06:33:59 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id l1so8984940wry.12;
-        Sun, 12 Mar 2023 06:33:59 -0700 (PDT)
+        with ESMTP id S229764AbjCLN4i (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Mar 2023 09:56:38 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B103B3F0
+        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 06:56:37 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id r5so10733621qtp.4
+        for <linux-iio@vger.kernel.org>; Sun, 12 Mar 2023 06:56:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678628038;
+        d=linaro.org; s=google; t=1678629396;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eiPifvN1XyvobUmqZyfiK5INxKhDqGlZtgkMioL3vMo=;
-        b=GD6j0vNGy5Lk6teLi7snFXICeRLvcvAeHQgKz0wMKKq51ZXiBSetiG1myusJCpWqVe
-         MCbUrIEUent2OpbRaxrwkbESipcSRMf0O54/mi2vOxROjfEbdnMdZhOiWn3RvMY7H1s8
-         RmkgPL6SsjyEdNMajkghtLSIz5+I1ObSj5m/cfnSaLwlT3Lvqej8N0secVKSpfU1Ei4V
-         /jJM9HTgGarrtGxNwo1RWQgHcnB+qkeJXQhQ6z6h+MxUtyVICwYD9VTZPrw5SoNFt+Js
-         zIjJ0qTAykb4W5c0GPQS/MKs17RVVFfND2owpMimAUJMdQdNFmhVZ9PXrEwBX9hLn2eq
-         zpqg==
+        bh=xdv/nKoVodfRSCXXPZls965lkF2DuhBP1O95BqsvqfQ=;
+        b=wMAa8mqg48tbhpWIknbfZQtmokxdWupbNy4mSs3/HC2T9bJ2HG4GFMa9ZiJuKV38Hg
+         0e7/KfpYwV65oCoHNDY0ktRkWOe57esT5E015BgMNNxJFuDnjL1bPM7F1D6U+jlR50L5
+         83OFXBIXkgI8BwD7M+ahph+LWyYsZrwTyqpLAECDoh/Z1makdxuJToInayJ/ZUgLCRBH
+         oIDASbOy93HOlunXywycoIWN8Raff17OM8BKxz/4OkAtBmXvs38sPyTdxPSYauvDjNjq
+         rz4uMye23SZpnB2MOeV4ifz7Da+6PmYgE0BfkoTRCMxXqmF18RJRdNVsxjHkMIZHXgb4
+         h/Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678628038;
+        d=1e100.net; s=20210112; t=1678629396;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eiPifvN1XyvobUmqZyfiK5INxKhDqGlZtgkMioL3vMo=;
-        b=JfWQfOL88hvo9zf+NYeCpErrwVPfybhk4isvf4oYZnObh4UidEj2ptPxVA49w/BOGD
-         26xYpGSQbSwV3FPDwy7QTDlZ5bHPktOSm8kemYug1D02gdY6ZP3jt7uwgac2pBqEPfg4
-         t+VbT38WHUDXXwmb3v1Oc1JekIfsMCY4kjtT5Mim8hzLEK8qNYcbnCW+RPo+GSVcojXA
-         HayTHbnXZfwpjc4s6KTWewOyxVO78cIiND/qF3l+6rmQIaG9BvgJ1WP1W10BnfRoSmeT
-         Kl2sqEk7ztmt3R8YOvsZOlvRAHTZjUI2wFWLNhf8IkQYwI5jZ+LHWY75fCLS1upEWv0E
-         CEGw==
-X-Gm-Message-State: AO0yUKUbD8DZGN7aWAWoHJsBm5QhhG7afe1osHIqukm/ZcwtrhZwxy54
-        Zz2O6hRK0CdyU7hHpWculJN6I6ewZ58=
-X-Google-Smtp-Source: AK7set/puNB5iYM3sVYz/qm/8L3NnuFuYKU862+lC/uC5s4YoS4lGRh4xVvFdbe9kTag0BdON6cycA==
-X-Received: by 2002:adf:df8f:0:b0:2ce:a758:d6fb with SMTP id z15-20020adfdf8f000000b002cea758d6fbmr3149122wrl.1.1678628038167;
-        Sun, 12 Mar 2023 06:33:58 -0700 (PDT)
-Received: from alaa-emad.. ([41.42.177.251])
-        by smtp.gmail.com with ESMTPSA id x3-20020a5d6503000000b002c55306f6edsm5144594wru.54.2023.03.12.06.33.56
+        bh=xdv/nKoVodfRSCXXPZls965lkF2DuhBP1O95BqsvqfQ=;
+        b=ZWi7quUzot08uwbhOp1puliFxZ2vWsO6aVjt6tFYo1IevqVLeGYawxo1r5Wzq/Y4gi
+         5WMKotzxL4QuZ2VzfZPZzMbxMI6VRD/OBduWaBKVgSyfCrBNjnn4vp0jX358t/RWXxN2
+         02hHNa4mb3DZbiOfsC3fY3grOBWU0CY8nVwS9xVATXQHIMvooWfjbGYDXcxbV7pR5YqK
+         4DPWClAGNF2xMYo32F0iVV2oqWTYpFFslKeP4qr5VFkNXuU6n6imBc6z+amDie71vlem
+         F76TCE8yOtw8drTlaFxlb1AcdIuaIw1X/teqvVxWJLUUcY8vvR2EluCOS0gfVlCc9MJx
+         UwbQ==
+X-Gm-Message-State: AO0yUKXLko+uV3FUItAIkRHsNTurortiK/pRIZtwFuA0r928ZYoO00hK
+        SwU8wsaOQYo5ectTzc55oVRphMbsZmhOy6mwHu4=
+X-Google-Smtp-Source: AK7set+tIj4FYOx3Db03rrSQ2035wDIOWDIvXfhE4rme5kZCPwBNv0ed+qE14Wx2pzlw21we6H9Grg==
+X-Received: by 2002:ac8:5f09:0:b0:3ba:1167:72d7 with SMTP id x9-20020ac85f09000000b003ba116772d7mr19692788qta.61.1678629395989;
+        Sun, 12 Mar 2023 06:56:35 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id u28-20020a37ab1c000000b007449a3ee9a4sm2717930qke.35.2023.03.12.06.56.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Mar 2023 06:33:57 -0700 (PDT)
-From:   Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>
-To:     outreachy@lists.linux.dev
-Cc:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        eng.mennamahmoud.mm@gmail.com
-Subject: [PATCH] staging: iio: meter: enclose Macros with complex values in parentheses
-Date:   Sun, 12 Mar 2023 15:33:47 +0200
-Message-Id: <20230312133347.120944-1-eng.mennamahmoud.mm@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sun, 12 Mar 2023 06:56:35 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH] counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
+Date:   Sun, 12 Mar 2023 09:56:25 -0400
+Message-Id: <20230312135625.125312-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-enclose Macros with complex values in parentheses is especially useful
-in making macro definitions “safe” (so that they
-evaluate each operand exactly once).
+The Counter (CNTR) register is 24 bits wide, but we can have an
+effective 25-bit count value by setting bit 24 to the XOR of the Borrow
+flag and Carry flag. The flags can be read from the FLAG register, but a
+race condition exists: the Borrow flag and Carry flag are instantaneous
+and could change by the time the count value is read from the CNTR
+register.
 
-this error reported by chechpatch.pl
+Since the race condition could result in an incorrect 25-bit count
+value, remove support for 25-bit count values from this driver;
+hard-coded maximum count values are replaced by a LS7267_CNTR_MAX define
+for consistency and clarity.
 
-"ERROR: Macros with complex values should be enclosed in parentheses"
-
-for ADE7854_SPI_SLOW, ADE7854_SPI_BURST and ADE7854_SPI_FAST
-macros and this error fixed by enclose these macros in parentheses.
-
-Signed-off-by: Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>
+Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface support")
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 ---
- drivers/staging/iio/meter/ade7854.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/counter/104-quad-8.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/staging/iio/meter/ade7854.h b/drivers/staging/iio/meter/ade7854.h
-index 7a49f8f1016f..41eeedef569b 100644
---- a/drivers/staging/iio/meter/ade7854.h
-+++ b/drivers/staging/iio/meter/ade7854.h
-@@ -139,9 +139,9 @@
- #define ADE7854_MAX_RX    7
- #define ADE7854_STARTUP_DELAY 1000
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index deed4afadb29..dba04b5e80b7 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -97,10 +97,6 @@ struct quad8 {
+ 	struct quad8_reg __iomem *reg;
+ };
  
--#define ADE7854_SPI_SLOW	(u32)(300 * 1000)
--#define ADE7854_SPI_BURST	(u32)(1000 * 1000)
--#define ADE7854_SPI_FAST	(u32)(2000 * 1000)
-+#define ADE7854_SPI_SLOW	((u32)(300 * 1000))
-+#define ADE7854_SPI_BURST	((u32)(1000 * 1000))
-+#define ADE7854_SPI_FAST	((u32)(2000 * 1000))
+-/* Borrow Toggle flip-flop */
+-#define QUAD8_FLAG_BT BIT(0)
+-/* Carry Toggle flip-flop */
+-#define QUAD8_FLAG_CT BIT(1)
+ /* Error flag */
+ #define QUAD8_FLAG_E BIT(4)
+ /* Up/Down flag */
+@@ -133,6 +129,9 @@ struct quad8 {
+ #define QUAD8_CMR_QUADRATURE_X2 0x10
+ #define QUAD8_CMR_QUADRATURE_X4 0x18
  
- /**
-  * struct ade7854_state - device instance specific data
++/* Each Counter is 24 bits wide */
++#define LS7267_CNTR_MAX GENMASK(23, 0)
++
+ static int quad8_signal_read(struct counter_device *counter,
+ 			     struct counter_signal *signal,
+ 			     enum counter_signal_level *level)
+@@ -156,19 +155,9 @@ static int quad8_count_read(struct counter_device *counter,
+ {
+ 	struct quad8 *const priv = counter_priv(counter);
+ 	struct channel_reg __iomem *const chan = priv->reg->channel + count->id;
+-	unsigned int flags;
+-	unsigned int borrow;
+-	unsigned int carry;
+ 	unsigned long irqflags;
+ 	int i;
+ 
+-	flags = ioread8(&chan->control);
+-	borrow = flags & QUAD8_FLAG_BT;
+-	carry = !!(flags & QUAD8_FLAG_CT);
+-
+-	/* Borrow XOR Carry effectively doubles count range */
+-	*val = (unsigned long)(borrow ^ carry) << 24;
+-
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+ 	/* Reset Byte Pointer; transfer Counter to Output Latch */
+@@ -191,8 +180,7 @@ static int quad8_count_write(struct counter_device *counter,
+ 	unsigned long irqflags;
+ 	int i;
+ 
+-	/* Only 24-bit values are supported */
+-	if (val > 0xFFFFFF)
++	if (val > LS7267_CNTR_MAX)
+ 		return -ERANGE;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+@@ -806,8 +794,7 @@ static int quad8_count_preset_write(struct counter_device *counter,
+ 	struct quad8 *const priv = counter_priv(counter);
+ 	unsigned long irqflags;
+ 
+-	/* Only 24-bit values are supported */
+-	if (preset > 0xFFFFFF)
++	if (preset > LS7267_CNTR_MAX)
+ 		return -ERANGE;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+@@ -834,8 +821,7 @@ static int quad8_count_ceiling_read(struct counter_device *counter,
+ 		*ceiling = priv->preset[count->id];
+ 		break;
+ 	default:
+-		/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
+-		*ceiling = 0x1FFFFFF;
++		*ceiling = LS7267_CNTR_MAX;
+ 		break;
+ 	}
+ 
+@@ -850,8 +836,7 @@ static int quad8_count_ceiling_write(struct counter_device *counter,
+ 	struct quad8 *const priv = counter_priv(counter);
+ 	unsigned long irqflags;
+ 
+-	/* Only 24-bit values are supported */
+-	if (ceiling > 0xFFFFFF)
++	if (ceiling > LS7267_CNTR_MAX)
+ 		return -ERANGE;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
 -- 
-2.34.1
+2.39.2
 

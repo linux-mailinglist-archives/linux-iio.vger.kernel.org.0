@@ -2,135 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E27F6B79CC
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 15:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E68F26B7A2A
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 15:18:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjCMOBE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 10:01:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47474 "EHLO
+        id S231287AbjCMOSS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 10:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231373AbjCMOAa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 10:00:30 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF5A6F4AA;
-        Mon, 13 Mar 2023 07:00:00 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id by8so12714991ljb.7;
-        Mon, 13 Mar 2023 06:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678715994;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TSz5ErZZ4x/NRLe7JN2WWQR6b9KCGMkpJUx1wnV62dU=;
-        b=JMIfrOgH0MQMlYkc5oFNSSCP0sSLQapnv7/cbFNREe8eFAM2TKGtpcVNFZupArIW+I
-         QvAn/N84HrNghyhmWxTzW8SrruCdIzqF4C1bbvKEv8/CvKMVzGHejKbhem5GKh3e2y+8
-         b3n/eW8BRSrROq6BfERYGI+Jg+1S3HWLL6CQB7GcQ+qlf6cOX8BULslHmZsU9zf/rWMf
-         l1hWm53CF6q/DJN/CzPgeKNpPmhqtm9O9fwCUyXTbAYie3+r5/+gw33OhYc0jaiay7OT
-         WYj41pIsgU7MGY7fjK0R953+9Zos97aTg9I1M/2+5IbSuqRetrOI5cMhBsGSgq2HB2EF
-         vhbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678715994;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TSz5ErZZ4x/NRLe7JN2WWQR6b9KCGMkpJUx1wnV62dU=;
-        b=tBSFddQPp4o5J1sPSOs36L6vNAxHj9LPcQSiRuXrziA6DFVjYf8xfSB6cnkrunWNcM
-         C0XLJ0AIMFAhM5SblE4T8Fteqk8vrTA+RYw739nwUkD5i8PXje/XhXHgB7FqKnB5S9y8
-         3fp0PvCLs9Rfv8g/wU44RG9eJR93Ke/ufg4+4bHkAkq9Tij5oYhhXRaTePmz5wAy6201
-         kma0c16TupcC+hFqaIkzzlhaqf14AFEqV1/w3HRsIqq6h/bgRluJ//fZ23FYhQrEOTwF
-         qSbRZrW6eHgCRoR8WYEUf6GPaZaDbXeggSYsD9gSPO6tHxrZD9obx7JVK6+7bzarEoFa
-         TiEg==
-X-Gm-Message-State: AO0yUKUccX1XQ+osaOuwDLwhjE3QDX77WO7cWR/3djNl1rV8RfoVO53p
-        iT5KUia7I0elfQ8Sudcxlz8=
-X-Google-Smtp-Source: AK7set+ip2QPITMQmcKMI13u5vDZflDrbwxL1G5HDy+jPmQFsEC5H6OsWYNrm/ajbPgOV1AvvCjg5g==
-X-Received: by 2002:a2e:9545:0:b0:295:8fd5:da00 with SMTP id t5-20020a2e9545000000b002958fd5da00mr11925903ljh.22.1678715993746;
-        Mon, 13 Mar 2023 06:59:53 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::6? (dc75zzyyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::6])
-        by smtp.gmail.com with ESMTPSA id m9-20020ac24249000000b004db1cd5efcesm993929lfl.241.2023.03.13.06.59.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Mar 2023 06:59:52 -0700 (PDT)
-Message-ID: <39a7b489-4856-8dc1-d0a6-f27d0c1324a2@gmail.com>
-Date:   Mon, 13 Mar 2023 15:59:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
-Content-Language: en-US, en-GB
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        with ESMTP id S231318AbjCMOSK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 10:18:10 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7086EBBBD;
+        Mon, 13 Mar 2023 07:17:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678717077; x=1710253077;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vnCVt+wdWALDJ5asvXR3HRX+LKXTlmdftdrQVlu2wDw=;
+  b=jEyZw3xt5g1heQ3eiRU+N5H6UanZPziyfDhZOaG4cjJU6nb90zW6Sm+N
+   OCNxTavZKzudTY8QNblDoRxOy5YugGSBlwyStp8303qHlevM5xGUkM4Vo
+   KtlpOmXi1HfQMIFN3QjMOBtyyRwzA4xZKfX0HpnpfXe1LoIWOmezX872L
+   xx3mDkkaD5CoO+9vgAqk456rKB1Pz+xzl/eM5n+HFZGSGHsTUc+9kbrtN
+   UVIAKCPWl4C2QkJHfDZ865QVzIGDkETW+Zou6h2HtDq2doXO0FmrfmJGG
+   zY9GALTYhFDX/2jWAcbcGCxudJnJDf+5HV0zJbMnpDuT33WTje5N/AUrN
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="423423944"
+X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
+   d="scan'208";a="423423944"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 07:17:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="821988528"
+X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
+   d="scan'208";a="821988528"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Mar 2023 07:17:54 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pbizo-002fW4-1b;
+        Mon, 13 Mar 2023 16:17:52 +0200
+Date:   Mon, 13 Mar 2023 16:17:52 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Shreeya Patel <shreeya.patel@collabora.com>,
         Paul Gazzillo <paul@pgazz.com>,
         Dmitry Osipenko <dmitry.osipenko@collabora.com>,
         Zhigang Shi <Zhigang.Shi@liteon.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
+Message-ID: <ZA8wkMhShRbyE/wm@smile.fi.intel.com>
 References: <cover.1678093787.git.mazziesaccount@gmail.com>
  <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
- <20230312170638.3e6807b7@jic23-huawei> <20230312170848.651b5b2c@jic23-huawei>
- <ZA8Z08U1sMOhc+V5@smile.fi.intel.com>
- <31d8bc33-eabe-9084-71c3-7d1e29f51863@gmail.com>
- <ZA8lNBPCB4BNnfUq@smile.fi.intel.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <ZA8lNBPCB4BNnfUq@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
+ <e507c171-bebc-84f6-c326-ff129b42fb7f@gmail.com>
+ <ZA8kTx4exvGwUfNn@smile.fi.intel.com>
+ <b4bf8587-d3cd-ff88-0276-7e394c110757@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b4bf8587-d3cd-ff88-0276-7e394c110757@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/13/23 15:29, Andy Shevchenko wrote:
-> On Mon, Mar 13, 2023 at 03:11:52PM +0200, Matti Vaittinen wrote:
->> On 3/13/23 14:40, Andy Shevchenko wrote:
->>> On Sun, Mar 12, 2023 at 05:08:48PM +0000, Jonathan Cameron wrote:
->>>> On Sun, 12 Mar 2023 17:06:38 +0000
->>>> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> ...
-> 
->>>> Ah. I forgot the tests that don't have a device so can't use devm.
->>>
->>> Why not? I have seen, IIRC, test cases inside the kernel that fakes the device
->>> for that.
->>
->> I'd appreciated any pointer for such an example if you have one at hand. (I
->> can do the digging if you don't though!)
->>
->> I am not a fan of unit tests. They add huge amount of inertia to
->> development, and in worst case, they stop people from contributing where
->> improving a feature requires test code modification(s). And harder the test
->> code is to understand, worse the unwanted side-effects. Also, harder the
->> test code is to read, more time and effort it requires to analyze a test
->> failure... Hence, I am _very_ conservative what comes to adding size of test
->> code with anything that is not strictly required.
->>
->> After that being said, unit tests are a great tool when carefully used - and
->> I assume/hope stubbing a device for devm_ tests does not add much extra...
->> But let me see if I can find an example :)
-> 
-> drivers/gpu/drm/tests/drm_managed_test.c ?
-> 
-> (somewhere underneath:
-> 
->   ret = platform_driver_register(&fake_platform_driver);
-> 
-> which suggests... what exactly? :-)
-> 
+On Mon, Mar 13, 2023 at 03:59:03PM +0200, Matti Vaittinen wrote:
+> On 3/13/23 15:25, Andy Shevchenko wrote:
+> > On Mon, Mar 13, 2023 at 02:47:45PM +0200, Matti Vaittinen wrote:
+> > > On 3/6/23 14:52, Andy Shevchenko wrote:
+> > > > On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
 
-Thanks!
+...
 
---Matti
+> > > > > +	if (ret && gts->avail_all_scales_table)
+> > > > 
+> > > > In one case you commented that free(NULL) is okay, in the other, you add
+> > > > a duplicative check. Why?
+> > > 
+> > > Sorry but what do you mean by dublicative check?
+> > > 
+> > > Usually I avoid the kfree(NULL). That's why I commented on it in that
+> > > another case where it was not explicitly disallowed. I'll change that for v4
+> > > to avoid kfree(NULL) as you suggested.
+> > 
+> > So, and with it you put now a double check for NULL, do you think it's okay?
+> > I don't.
+> 
+> I don't see the double check. I see only one check just above the kfree()?
+> Where is the other check?
+
+	if (... gts->avail_all_scales_table)
+
+is a double to one, which is inside kfree(). I.o.w. kfree() is NULL-aware
+and you know that.
+
+> > > > > +		kfree(gts->avail_all_scales_table);
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+With Best Regards,
+Andy Shevchenko
 
-~~ When things go utterly wrong vim users can always type :help! ~~
 

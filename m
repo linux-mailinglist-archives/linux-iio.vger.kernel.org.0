@@ -2,147 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E0E6B7E14
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 17:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C04246B7E3C
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 17:56:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbjCMQuY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 12:50:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
+        id S230360AbjCMQ41 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 12:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229622AbjCMQuX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 12:50:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A271D915;
-        Mon, 13 Mar 2023 09:50:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3214161382;
-        Mon, 13 Mar 2023 16:49:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD418C433EF;
-        Mon, 13 Mar 2023 16:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678726182;
-        bh=8KYXMoHAD5Z4NBIseAq6bsT/0yPZHnSTiR9g+F3H6mQ=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=a2JoV3Ky1b2rAYHvjxOxSJk1TNI3heElPwvSF5YrOvneNeV0VdzwNhQXiUrffvmto
-         JA7P0WeiStnDt/6J8n1J9O5jnVgObXfH8lS4KXLMLBqO4DJUKBDJIvP6ivTa/Y09Sn
-         HR1pOKRuwrPDI/baAtt5wUZ6Gocqmmqr2buMgjA/aCshs3yaJSkT/BdMx60/VeJQN4
-         dkvphu6x3RN4fI6sEcajBAho9BdeW92stv1wsZ7bHVNaqIqINFZydvDFvpdEiWiF0m
-         eG/X/a/XjC1FXr2cscVZU8Cm2pQpTkDOWTAiQQum9/Cqx4Qc/c+wOmHVG5htVbTJPc
-         eI6rbG1xa4RhQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        jic23@kernel.org, pratyush@kernel.org, Sanju.Mehta@amd.com,
-        chin-ting_kuo@aspeedtech.com, clg@kaod.org, kdasu.kdev@gmail.com,
-        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
-        eajames@linux.ibm.com, olteanv@gmail.com, han.xu@nxp.com,
-        john.garry@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
-        linus.walleij@linaro.org, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        agross@kernel.org, heiko@sntech.de, krzysztof.kozlowski@linaro.org,
-        andi@etezian.org, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, wens@csie.org,
-        jernej.skrabec@gmail.com, samuel@sholland.org,
-        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
-        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
-        kvalo@kernel.org, james.schulman@cirrus.com,
-        david.rhodes@cirrus.com, tanureal@opensource.cirrus.com,
-        rf@opensource.cirrus.com, perex@perex.cz, tiwai@suse.com,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
-        oss@buserror.net, windhl@126.com, yangyingliang@huawei.com,
-        william.zhang@broadcom.com, kursad.oney@broadcom.com,
-        jonas.gorski@gmail.com, anand.gore@broadcom.com, rafal@milecki.pl,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Cc:     git@amd.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
-        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
-        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
-        alim.akhtar@samsung.com, ldewangan@nvidia.com,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-mtd@lists.infradead.org, lars@metafoo.de,
-        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
-        michael@walle.cc, palmer@dabbelt.com,
-        linux-riscv@lists.infradead.org, alsa-devel@alsa-project.org,
-        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
-        amitrkcian2002@gmail.com
-In-Reply-To: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
-References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
-Subject: Re: (subset) [PATCH V5 00/15] spi: Add support for
- stacked/parallel memories
-Message-Id: <167872615942.75015.12960472969249845825.b4-ty@kernel.org>
-Date:   Mon, 13 Mar 2023 16:49:19 +0000
+        with ESMTP id S230325AbjCMQ4W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 12:56:22 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BDBF559CE;
+        Mon, 13 Mar 2023 09:56:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678726581; x=1710262581;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=YG8ab328VKxI7RnIDAuiIqCFxzEn9D3+VAvNv07H3HI=;
+  b=XLCfz/4iVdIs3Dv7xSiO35CbI/4CoqllW6xoCjoy9wocdqczL6euqNB1
+   GnXCeQR++rDGKarzddzun4dK1/ICrP2hCtbXI5v74LSgvnV8dh32f5VcK
+   NXptKHNgWR9pDgHSxgZPvZrel8W62u/aZTYbVITD9zlUFcn/Xz5aXxQRL
+   asvbmnQcJRTodrTxKWJZYFlgdz9Ie5IwI6ZTexGBPpFbRTACuS+qkYsJX
+   moBKuMX/vR9gEJHVZnheUR4ObSHHnYNKOSebGMaxGb2delKMVvZWUFEiZ
+   0U8Takcu1n2jmgGKEHZ0TQ/D2E8Gq/kev4BhIKt96FqmxP1tgCFaGm4ft
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="321053880"
+X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
+   d="scan'208";a="321053880"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 09:56:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="822034540"
+X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
+   d="scan'208";a="822034540"
+Received: from igodinez-mobl.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.209.87.244])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 09:56:19 -0700
+Message-ID: <39f2b66cca60d8f0bd4ff6b691b864dff3e449b9.camel@linux.intel.com>
+Subject: Re: [PATCH] Fix buffer overrun in HID-SENSOR name.
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Todd Brandt <todd.e.brandt@intel.com>, linux-input@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     todd.e.brandt@linux.intel.com, jic23@kernel.org, jikos@kernel.org,
+        p.jungkamp@gmx.net
+Date:   Mon, 13 Mar 2023 09:56:18 -0700
+In-Reply-To: <20230310235414.12467-1-todd.e.brandt@intel.com>
+References: <20230310235414.12467-1-todd.e.brandt@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-bd1bf
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 06 Mar 2023 22:50:54 +0530, Amit Kumar Mahapatra wrote:
-> This patch is in the continuation to the discussions which happened on
-> 'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
-> adding dt-binding support for stacked/parallel memories.
+On Fri, 2023-03-10 at 15:54 -0800, Todd Brandt wrote:
+> Philipp Jungkamp created this fix, I'm simply submitting it. I've
+> verified it fixes bugzilla issue 217169.
 > 
-> This patch series updated the spi-nor, spi core and the spi drivers
-> to add stacked and parallel memories support.
-> 
-> [...]
+Not the correct change log. Something like below:
 
-Applied to
+On some platforms there are some platform device is created with
+invalid name. For example:
+"HID-SENSOR-INT-020b?.39.auto" instead of "HID-SENSOR-INT-020b.39.auto"
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+This string include some invalid character, hence it will fail to
+properly load the driver which will handle this custom sensor. Also
+it is a problem for some user space tools, which parses the device
+names.
 
-Thanks!
+This is because the string real_usage is not NULL terminated and
+printed with %s to form device name.
 
-[01/15] spi: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: 9e264f3f85a56cc109cc2d6010a48aa89d5c1ff1
+To address this initialize the real_usage string with 0s.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+> Reported-and-tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217169
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Fixes: 98c062e82451 ("HID: hid-sensor-custom: Allow more custom iio
+sensors")
+
+Suggest-by: Philipp Jungkamp p.jungkamp@gmx.net
+
+> Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
 
 Thanks,
-Mark
+Srinivas
+
+> ---
+>  drivers/hid/hid-sensor-custom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
+> sensor-custom.c
+> index 3e3f89e01d81..d85398721659 100644
+> --- a/drivers/hid/hid-sensor-custom.c
+> +++ b/drivers/hid/hid-sensor-custom.c
+> @@ -940,7 +940,7 @@ hid_sensor_register_platform_device(struct
+> platform_device *pdev,
+>                                     struct hid_sensor_hub_device
+> *hsdev,
+>                                     const struct
+> hid_sensor_custom_match *match)
+>  {
+> -       char real_usage[HID_SENSOR_USAGE_LENGTH];
+> +       char real_usage[HID_SENSOR_USAGE_LENGTH] = { 0 };
+>         struct platform_device *custom_pdev;
+>         const char *dev_name;
+>         char *c;
 

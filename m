@@ -2,150 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFDD96B7A8E
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 15:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12CF16B7DC6
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 17:37:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbjCMOkT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 10:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59568 "EHLO
+        id S230303AbjCMQhb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 12:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbjCMOkT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 10:40:19 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921644FA87;
-        Mon, 13 Mar 2023 07:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678718389; x=1710254389;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yIYe5/v6dUngnsJgAoMfhyz+8kpMTemdNKlv8oITocw=;
-  b=BKbNjgvqLP1vnWvLKQvDijfZOc/mLJKjL/HLC6fFLnT/bZnGvrWSLOdK
-   Gm9hR19/MD8IPV8l1hoZ3v9H0vHIVMrwV5olOLqiWlCKFhDpDcgUF8Xqa
-   rpbAWFhFmjeXTKwOmV/BeJSRkJP6nIii0dOYuIA039h0pcFGw8bvRyUHY
-   poi9RcmUoG+OTUSaDPNRDkAYOUBhcI++Q8WL6rRHqyE+AJDdi5IJFfnJt
-   Ms+hDD6TZZBRUZ4I/S2d8alyQQpJTuoEqnds6LJUXTNgJYSkh98EAZJgo
-   zm4Eo0MJPjZTAPfEZzCkXdYJumnmYtzFyAR5skhlJvd4o5BmCTT8penvA
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="399753838"
-X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
-   d="scan'208";a="399753838"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 07:39:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="711150620"
-X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
-   d="scan'208";a="711150620"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 13 Mar 2023 07:39:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pbjKw-002gGG-36;
-        Mon, 13 Mar 2023 16:39:42 +0200
-Date:   Mon, 13 Mar 2023 16:39:42 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/6] iio: light: Add gain-time-scale helpers
-Message-ID: <ZA81rpWgwvP2bigt@smile.fi.intel.com>
-References: <cover.1677750859.git.mazziesaccount@gmail.com>
- <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
- <ZAC7L8NQYgBcBTCF@smile.fi.intel.com>
- <7e537200-37ab-f6e6-c4e0-c3997128c01b@fi.rohmeurope.com>
- <ZAXK9Hn2NuQPJ7eo@smile.fi.intel.com>
- <1dbfc336-7d09-cd44-dfa2-9c4bedf257e1@gmail.com>
+        with ESMTP id S229927AbjCMQh2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 12:37:28 -0400
+Received: from mail.gfz-potsdam.de (mail.gfz.de [139.17.229.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B34A823123
+        for <linux-iio@vger.kernel.org>; Mon, 13 Mar 2023 09:37:03 -0700 (PDT)
+Received: from [139.17.75.55] (account andres@gfz-potsdam.de HELO [139.17.75.55])
+  by gfz-potsdam.de (CommuniGate Pro SMTP 7.1.3)
+  with ESMTPSA id 67239601; Mon, 13 Mar 2023 17:36:00 +0100
+Message-ID: <45414cf9-4ba2-86ff-e040-4e0b762efdf1@gfz-potsdam.de>
+Date:   Mon, 13 Mar 2023 17:36:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1dbfc336-7d09-cd44-dfa2-9c4bedf257e1@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: Bugs in dps310 Linux driver
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Eddie James <eajames@linux.ibm.com>, linux-iio@vger.kernel.org
+References: <web-1200302@cgp-be2-mgmt.gfz-potsdam.de>
+ <20230304170620.795f4d99@jic23-huawei>
+ <web-1201064@cgp-be2-mgmt.gfz-potsdam.de>
+ <web-1202839@cgp-be2-mgmt.gfz-potsdam.de>
+ <20230312154348.257ddf87@jic23-huawei>
+From:   Andres Heinloo <andres@gfz-potsdam.de>
+In-Reply-To: <20230312154348.257ddf87@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 01:31:42PM +0200, Matti Vaittinen wrote:
-> On 3/6/23 13:13, Andy Shevchenko wrote:
-> > On Fri, Mar 03, 2023 at 07:54:22AM +0000, Vaittinen, Matti wrote:
-> > > On 3/2/23 17:05, Andy Shevchenko wrote:
-> > > > On Thu, Mar 02, 2023 at 12:57:54PM +0200, Matti Vaittinen wrote:
-
-...
-
-> > > > > +		for (i = 0; !ret && i < gts->num_avail_all_scales; i++)
-> > > > 
-> > > > Much easier to read if you move this...
-> > > > 
-> > > > > +			ret = iio_gts_total_gain_to_scale(gts, all_gains[i],
-> > > > > +					&gts->avail_all_scales_table[i * 2],
-> > > > > +					&gts->avail_all_scales_table[i * 2 + 1]);
-> > > > 
-> > > > ...here as
-> > > > 
-> > > > 		if (ret)
-> > > > 			break;
-> > > 
-> > > I think the !ret in loop condition is obvious. Adding break and brackets
-> > > would not improve this.
-> > 
-> > It moves it to the regular pattern. Yours is not so distributed in the kernel.
+On 3/12/23 16:43, Jonathan Cameron wrote:
+> On Mon, 06 Mar 2023 22:15:15 +0100
+> "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
 > 
-> I believe we can find examples of both patterns in kernel. I don't think the
-> "many people use different pattern" is a great reason to add break +
-> brackets which (in my eyes) give no additional value to code I am planning
-> to keep reading also in the future...
-
-The problem is that your pattern is not so standard (distributed) and hence
-less maintainable.
-
-...
-
-> > > > > +			if (!diff) {
-> > > > 
-> > > > Why not positive conditional?
-> > > 
-> > > Because !diff is a special condition and we check explicitly for it.
-> > 
-> > And how my suggestion makes it different?
+>> On Sun, 05 Mar 2023 03:05:01 +0100
+>>    "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
+>>> On Sat, 4 Mar 2023 17:06:20 +0000
+>>>   Jonathan Cameron <jic23@kernel.org> wrote:
+>>>> On Fri, 03 Mar 2023 12:10:00 +0100
+>>>> "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
+>>>>    
+>>>>> Hello,
+>>>>>
+>>>>> I've been struggling with the dps310 driver, which gives incorrect
+>>>>> pressure values and in particular different values than manufacturers
+>>>>> code (https://github.com/Infineon/RaspberryPi_DPS).
+>>>>>
+>>>>> I think I've found where the problem is. Firstly, there is a mistake
+>>>>> in bit numbering at
+>>>>> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L51
+>>>>>
+>>>>> According to datasheet, correct is:
+>>>>>
+>>>>> #define  DPS310_INT_HL          BIT(7)
+>>>>> #define  DPS310_TMP_SHIFT_EN    BIT(3)
+>>>>> #define  DPS310_PRS_SHIFT_EN    BIT(2)
+>>>>> #define  DPS310_FIFO_EN         BIT(1)
+>>>>> #define  DPS310_SPI_EN          BIT(0)
+>>>>>
+>>>>> Eg., the current code is using wrong bit (4) for
+>>>>> DPS310_PRS_SHIFT_EN, which means that pressure shift is never
+>>>>> enabled.
+>>>>
+>>>> Checking the datasheet, seems like you are right.
+>>>> https://www.infineon.com/dgdl/Infineon-DPS310-DataSheet-v01_02-EN.pdf?fileId=5546d462576f34750157750826c42242
+>>>> Section 7:
+>>>> Though that's not the only bit that is wrong.  Looks like FIFO
+>>>> enable is as well.
+>>>> So any fix should deal with that as well.
+>>>
+>>> Yes, DPS310_PRS_SHIFT_EN, DPS310_FIFO_EN, DPS310_SPI_EN are all
+>>> wrong, but the latter 2 are not used by the driver.
+>>>
+>>>    
+>>>> The differences between the register map and the datasheet I'm
+>>>> looking at make
+>>>> me think that perhaps the driver was developed against a prototype
+>>>> part.
+>>>> The registers are in a different order for starters with the B0, B1
+>>>> and B2
+>>>> sets in reverse order.  Any fix patch should tidy that up as well.
+>>>
+>>> Yes, but that's just different naming. MSB is called B2 in the
+>>> datasheet and B0 in the driver.
+>>>
+>>>    
+>>>>> Secondly, there is a problem with overflows starting at
+>>>>> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L654
+>>>>>
+>>>>> Since p is a 24-bit value,
+>>>>>
+>>>>> nums[3] = p * p * p * (s64)data->c30;
+>>>>>
+>>>>> can and does overflow.
+>>>>
+>>>> Makes sense, though I can't immediately see a good solution as we
+>>>> need
+>>>> to maintain the remainder part.
+>>>
+>>> I don't have a good solution either, but there must be other IIO
+>>> sensors that have something similar that could be possibly reused.
+>>>
+>>>    
+>>>>> Second overflow problem is at
+>>>>> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L684
+>>>>>
+>>>>> In fact, I don't understand why 1000000000LL is needed. Since only 7
+>>>>> values are summed, using 10LL should give the same precision.
+>>>> Whilst the existing  value seems large - I'm not great with
+>>>> precision calcs so could
+>>>> you lay out why 10LL is sufficient?
+>>>
+>>> Unless I overlooked something, the error of integer division (eg.,
+>>> discarding fractional part) is <1. In this case, the results of 7
+>>> integer divisions are summed, so the error is <7. When multiplying
+>>> numerators by 10LL, the error would be <0.7. Which is OK, since we
+>>> are interested only in the integer part.
+>>
+>> Unfortunately it seems that there may be more problems with the
+>> driver. I've noticed that my device has lost sample rate and precision
+>> settings few times. When looking at the code, it seems the settings
+>> are not restored when dps310_reset_reinit() is called at
+>> https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L438
+>>
 > 
-> In example you gave we would be checking if the value is anything else but
-> the specific value we are checking for. It is counter intuitive.
-> 
-> > (Note, it's easy to miss the ! in the conditionals, that's why positive ones
-> >   are preferable.)
-> 
-> Thank you for explaining me the rationale behind the "positive checks". I
-> didn't know missing '!' was seen as a thing.
-> 
-> I still don't think being afraid of missing '!' is a good reason to switch
-> to counter intuitive checks. A check "if (!foo)" is a pattern in-kernel if
-> anything and in my opinion people really should be aware of it.
-> 
-> (I would much more say that having a constant value on left side of a
-> "equality" check is beneficial as people do really occasionally miss one '='
-> when meaning '=='. Still, this is not strong enough reason to make
-> counter-intuitive checks. In my books 'avoiding negative checks' is much
-> less of a reason as people (in my experience) do not really miss the '!'.)
+> Agreed. Looks like that stuff is missing.  This reset path is pretty horrible
+> in general, so I'm not surprised a few things got missed. Should be easy enough
+> to add a cache of those and and set them again if you want to try that.
 
-It's not a problem when it's a common pattern (like you mentioned
-if (!foo) return -ENOMEM; or alike), but in your case it's not.
-I would rather see if (diff == 0) which definitely shows the intention
-and I wouldn't tell a word against it.
+One option would be adding sample_rate and oversampling_ratio to 
+dps310_data struct, but some questions remain.
 
--- 
-With Best Regards,
-Andy Shevchenko
+I think doing a silent reset is not good, because it can cause bad 
+samples. When looking at data, you don't know if there was an actual 
+pressure spike or if it was caused by a reset. I think a better solution 
+would be immediately returning an error (-EIO?) to inform user space 
+about an intermittent failure.
+
+(I suspect that in case of some errors, the IIO subsystem retries 
+internally and hides the error.)
+
+The purpose of timeout_recovery_failed seems questionable, because if 
+you end up with timeout_recovery_failed == true, the only way to recover 
+from timeout is reloading the kernel module.
+
+I'm afraid I'm not able to provide a patch to fix the problems soon.
 
 
+>> Apparently I've also ended up with data->timeout_recovery_failed ==
+>> true at
+>> https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L443,
+>> but the device worked fine after just reloading the kernel module.
+>> This is difficult to reproduce, though.
+> 
+> Hmm. There are a few things that could cause that.  Maybe something running slow, or
+> an intermittent write failure (noisy environment or bad wire / track maybe?)
+
+(Off-topic) Write failures is a different problem that is very annoying. 
+I'm not sure if this could be the case with dps310, but I have an 
+ADXL355 device that is connected via SPI and often register writes fail 
+silently. I have a short cable that is well connected and SPI should be 
+running at max 1Mhz according to .../of_node/spi-max-frequency. I ended 
+up wrapping regmap functions to check register value after each write. I 
+haven't noticed errors when reading registers. (I'm using Raspberry Pi.)
+
+Andres

@@ -2,98 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2980A6B847A
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 23:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C425E6B85D9
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 00:07:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229968AbjCMWG6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 18:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40756 "EHLO
+        id S229494AbjCMXHt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 19:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjCMWG5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 18:06:57 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10FEA3AAB;
-        Mon, 13 Mar 2023 15:06:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678745216; x=1710281216;
-  h=from:to:cc:subject:date:message-id;
-  bh=pxSJXOAP6+FkS4KwMiPDKrgeUrDK7Fjyk3nrgSzvo5Y=;
-  b=eJJADclN1iYXvdqD6SyljyipXeVL9VCHaM0oWQ51T7OeAA6GTTxH2NfX
-   9HMdoO1ZxWKfN2603+Gpq2/0xQli+DRhyYp0TUYRkIs0uFql/F5UJVy7N
-   ydxb9F2xYnPFDO8ft3k7l0wgBLpI3cY3AAcO/Xcy8PR1CAWVuG+a9SNEs
-   dfkonGFnIgAkrAN5+5pGdjO2AvDmvdF0IQAgbRSmvFmvt93Qsk8SEog1D
-   98II3XTJ4GoWInPdRcB311Azr/YrVxhvIwB46t5vCDA8GMUN8H/7ALAAB
-   gct178QiziSSlQUQMsuEFAJ8X9exv99Xm6tLE8uxPQM+pzpNiTStaf5N4
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="402142779"
-X-IronPort-AV: E=Sophos;i="5.98,258,1673942400"; 
-   d="scan'208";a="402142779"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 15:06:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="822117433"
-X-IronPort-AV: E=Sophos;i="5.98,258,1673942400"; 
-   d="scan'208";a="822117433"
-Received: from wopr.jf.intel.com ([10.54.75.136])
-  by fmsmga001.fm.intel.com with ESMTP; 13 Mar 2023 15:06:54 -0700
-From:   Todd Brandt <todd.e.brandt@intel.com>
-To:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     todd.e.brandt@linux.intel.com, todd.e.brandt@intel.com,
+        with ESMTP id S229578AbjCMXHs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 19:07:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A9810254;
+        Mon, 13 Mar 2023 16:07:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45CCB6154C;
+        Mon, 13 Mar 2023 23:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9CBC433EF;
+        Mon, 13 Mar 2023 23:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678748835;
+        bh=JlkQRxZUbcfwnQ9VdkB1aYg4+loILNLrAAOVONzCXAU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PN5KhCdkOBYJxn9HQVR3vakp+DP+XyeR6paoTO3aMo0XnRgNQBGKszzEiLYJgzwvo
+         UsPR8F8NTxcBO2VxSyDYghNFEfZJDs57Jl/oeWuwOHgpYUWN665UOZWAxz/+ZAjJFS
+         3hA8LL6GFkxf7d6lEQeBI/UplY1fBlHzqxvdPHBSt0+7BzCh9OZN9ILPCERC1GXFb4
+         MQKjNJVJ2lh49gts+vqAMuTKSX4lUb3HHQ0JTUP4vyBI9rT/HpNLbkRR8RwB09L8cm
+         zoAvrVCpfL3HEaD+WolrJe90zyRFK0eZoBoNfB55WFzr5XKv9jMXwUZoAtjYxk5TRf
+         GWLBvfhzmPbTw==
+Date:   Tue, 14 Mar 2023 00:07:12 +0100
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Todd Brandt <todd.e.brandt@intel.com>
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, todd.e.brandt@linux.intel.com,
         srinivas.pandruvada@linux.intel.com, jic23@kernel.org,
         jikos@kernel.org, p.jungkamp@gmx.net
-Subject: [PATCH v2] Fix buffer overrun in HID-SENSOR name string
-Date:   Mon, 13 Mar 2023 15:06:53 -0700
-Message-Id: <20230313220653.3996-1-todd.e.brandt@intel.com>
-X-Mailer: git-send-email 2.17.1
+Subject: Re: [PATCH v2] Fix buffer overrun in HID-SENSOR name string
+Message-ID: <20230313230712.6xboy3w5ocrvj3vn@intel.intel>
+References: <20230313220653.3996-1-todd.e.brandt@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230313220653.3996-1-todd.e.brandt@intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On some platforms there are some platform devices created with
-invalid names. For example: "HID-SENSOR-INT-020b?.39.auto" instead
-of "HID-SENSOR-INT-020b.39.auto"
+Hi Todd,
 
-This string include some invalid characters, hence it will fail to
-properly load the driver which will handle this custom sensor. Also
-it is a problem for some user space tools, which parse the device
-names from ftrace and dmesg.
+On Mon, Mar 13, 2023 at 03:06:53PM -0700, Todd Brandt wrote:
+> On some platforms there are some platform devices created with
+> invalid names. For example: "HID-SENSOR-INT-020b?.39.auto" instead
+> of "HID-SENSOR-INT-020b.39.auto"
+> 
+> This string include some invalid characters, hence it will fail to
+> properly load the driver which will handle this custom sensor. Also
+> it is a problem for some user space tools, which parse the device
+> names from ftrace and dmesg.
+> 
+> This is because the string, real_usage, is not NULL terminated and
+> printed with %s to form device name.
+> 
+> To address this, we initialize the real_usage string with 0s.
+> 
+> Philipp Jungkamp created this fix, I'm simply submitting it. I've
+> verified it fixes bugzilla issue 217169
+> 
+> Reported-and-tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217169
+> Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
 
-This is because the string, real_usage, is not NULL terminated and
-printed with %s to form device name.
+Why is not Philip in the SoB list?
 
-To address this, we initialize the real_usage string with 0s.
+Anyway the original patch made it to stable, so:
 
-Philipp Jungkamp created this fix, I'm simply submitting it. I've
-verified it fixes bugzilla issue 217169
+Fixes: 98c062e82451 ("HID: hid-sensor-custom: Allow more custom iio sensors")
+Cc: stable@vger.kernel.org
 
-Reported-and-tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217169
-Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
----
- drivers/hid/hid-sensor-custom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+and with those you can add:
 
-diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-index 3e3f89e01d81..d85398721659 100644
---- a/drivers/hid/hid-sensor-custom.c
-+++ b/drivers/hid/hid-sensor-custom.c
-@@ -940,7 +940,7 @@ hid_sensor_register_platform_device(struct platform_device *pdev,
- 				    struct hid_sensor_hub_device *hsdev,
- 				    const struct hid_sensor_custom_match *match)
- {
--	char real_usage[HID_SENSOR_USAGE_LENGTH];
-+	char real_usage[HID_SENSOR_USAGE_LENGTH] = { 0 };
- 	struct platform_device *custom_pdev;
- 	const char *dev_name;
- 	char *c;
--- 
-2.17.1
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
 
+Andi

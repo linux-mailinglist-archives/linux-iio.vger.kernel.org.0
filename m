@@ -2,181 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12CF16B7DC6
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 17:37:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E0E6B7E14
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 17:50:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbjCMQhb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 12:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42206 "EHLO
+        id S229722AbjCMQuY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 12:50:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbjCMQh2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 12:37:28 -0400
-Received: from mail.gfz-potsdam.de (mail.gfz.de [139.17.229.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B34A823123
-        for <linux-iio@vger.kernel.org>; Mon, 13 Mar 2023 09:37:03 -0700 (PDT)
-Received: from [139.17.75.55] (account andres@gfz-potsdam.de HELO [139.17.75.55])
-  by gfz-potsdam.de (CommuniGate Pro SMTP 7.1.3)
-  with ESMTPSA id 67239601; Mon, 13 Mar 2023 17:36:00 +0100
-Message-ID: <45414cf9-4ba2-86ff-e040-4e0b762efdf1@gfz-potsdam.de>
-Date:   Mon, 13 Mar 2023 17:36:00 +0100
+        with ESMTP id S229622AbjCMQuX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 12:50:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A271D915;
+        Mon, 13 Mar 2023 09:50:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3214161382;
+        Mon, 13 Mar 2023 16:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD418C433EF;
+        Mon, 13 Mar 2023 16:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678726182;
+        bh=8KYXMoHAD5Z4NBIseAq6bsT/0yPZHnSTiR9g+F3H6mQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=a2JoV3Ky1b2rAYHvjxOxSJk1TNI3heElPwvSF5YrOvneNeV0VdzwNhQXiUrffvmto
+         JA7P0WeiStnDt/6J8n1J9O5jnVgObXfH8lS4KXLMLBqO4DJUKBDJIvP6ivTa/Y09Sn
+         HR1pOKRuwrPDI/baAtt5wUZ6Gocqmmqr2buMgjA/aCshs3yaJSkT/BdMx60/VeJQN4
+         dkvphu6x3RN4fI6sEcajBAho9BdeW92stv1wsZ7bHVNaqIqINFZydvDFvpdEiWiF0m
+         eG/X/a/XjC1FXr2cscVZU8Cm2pQpTkDOWTAiQQum9/Cqx4Qc/c+wOmHVG5htVbTJPc
+         eI6rbG1xa4RhQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        jic23@kernel.org, pratyush@kernel.org, Sanju.Mehta@amd.com,
+        chin-ting_kuo@aspeedtech.com, clg@kaod.org, kdasu.kdev@gmail.com,
+        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
+        eajames@linux.ibm.com, olteanv@gmail.com, han.xu@nxp.com,
+        john.garry@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
+        linus.walleij@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        agross@kernel.org, heiko@sntech.de, krzysztof.kozlowski@linaro.org,
+        andi@etezian.org, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, wens@csie.org,
+        jernej.skrabec@gmail.com, samuel@sholland.org,
+        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
+        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
+        kvalo@kernel.org, james.schulman@cirrus.com,
+        david.rhodes@cirrus.com, tanureal@opensource.cirrus.com,
+        rf@opensource.cirrus.com, perex@perex.cz, tiwai@suse.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
+        oss@buserror.net, windhl@126.com, yangyingliang@huawei.com,
+        william.zhang@broadcom.com, kursad.oney@broadcom.com,
+        jonas.gorski@gmail.com, anand.gore@broadcom.com, rafal@milecki.pl,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Cc:     git@amd.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
+        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
+        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
+        alim.akhtar@samsung.com, ldewangan@nvidia.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-mtd@lists.infradead.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        michael@walle.cc, palmer@dabbelt.com,
+        linux-riscv@lists.infradead.org, alsa-devel@alsa-project.org,
+        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
+        amitrkcian2002@gmail.com
+In-Reply-To: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
+References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
+Subject: Re: (subset) [PATCH V5 00/15] spi: Add support for
+ stacked/parallel memories
+Message-Id: <167872615942.75015.12960472969249845825.b4-ty@kernel.org>
+Date:   Mon, 13 Mar 2023 16:49:19 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: Bugs in dps310 Linux driver
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Eddie James <eajames@linux.ibm.com>, linux-iio@vger.kernel.org
-References: <web-1200302@cgp-be2-mgmt.gfz-potsdam.de>
- <20230304170620.795f4d99@jic23-huawei>
- <web-1201064@cgp-be2-mgmt.gfz-potsdam.de>
- <web-1202839@cgp-be2-mgmt.gfz-potsdam.de>
- <20230312154348.257ddf87@jic23-huawei>
-From:   Andres Heinloo <andres@gfz-potsdam.de>
-In-Reply-To: <20230312154348.257ddf87@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mailer: b4 0.13-dev-bd1bf
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/12/23 16:43, Jonathan Cameron wrote:
-> On Mon, 06 Mar 2023 22:15:15 +0100
-> "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
+On Mon, 06 Mar 2023 22:50:54 +0530, Amit Kumar Mahapatra wrote:
+> This patch is in the continuation to the discussions which happened on
+> 'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
+> adding dt-binding support for stacked/parallel memories.
 > 
->> On Sun, 05 Mar 2023 03:05:01 +0100
->>    "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
->>> On Sat, 4 Mar 2023 17:06:20 +0000
->>>   Jonathan Cameron <jic23@kernel.org> wrote:
->>>> On Fri, 03 Mar 2023 12:10:00 +0100
->>>> "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
->>>>    
->>>>> Hello,
->>>>>
->>>>> I've been struggling with the dps310 driver, which gives incorrect
->>>>> pressure values and in particular different values than manufacturers
->>>>> code (https://github.com/Infineon/RaspberryPi_DPS).
->>>>>
->>>>> I think I've found where the problem is. Firstly, there is a mistake
->>>>> in bit numbering at
->>>>> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L51
->>>>>
->>>>> According to datasheet, correct is:
->>>>>
->>>>> #define  DPS310_INT_HL          BIT(7)
->>>>> #define  DPS310_TMP_SHIFT_EN    BIT(3)
->>>>> #define  DPS310_PRS_SHIFT_EN    BIT(2)
->>>>> #define  DPS310_FIFO_EN         BIT(1)
->>>>> #define  DPS310_SPI_EN          BIT(0)
->>>>>
->>>>> Eg., the current code is using wrong bit (4) for
->>>>> DPS310_PRS_SHIFT_EN, which means that pressure shift is never
->>>>> enabled.
->>>>
->>>> Checking the datasheet, seems like you are right.
->>>> https://www.infineon.com/dgdl/Infineon-DPS310-DataSheet-v01_02-EN.pdf?fileId=5546d462576f34750157750826c42242
->>>> Section 7:
->>>> Though that's not the only bit that is wrong.  Looks like FIFO
->>>> enable is as well.
->>>> So any fix should deal with that as well.
->>>
->>> Yes, DPS310_PRS_SHIFT_EN, DPS310_FIFO_EN, DPS310_SPI_EN are all
->>> wrong, but the latter 2 are not used by the driver.
->>>
->>>    
->>>> The differences between the register map and the datasheet I'm
->>>> looking at make
->>>> me think that perhaps the driver was developed against a prototype
->>>> part.
->>>> The registers are in a different order for starters with the B0, B1
->>>> and B2
->>>> sets in reverse order.  Any fix patch should tidy that up as well.
->>>
->>> Yes, but that's just different naming. MSB is called B2 in the
->>> datasheet and B0 in the driver.
->>>
->>>    
->>>>> Secondly, there is a problem with overflows starting at
->>>>> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L654
->>>>>
->>>>> Since p is a 24-bit value,
->>>>>
->>>>> nums[3] = p * p * p * (s64)data->c30;
->>>>>
->>>>> can and does overflow.
->>>>
->>>> Makes sense, though I can't immediately see a good solution as we
->>>> need
->>>> to maintain the remainder part.
->>>
->>> I don't have a good solution either, but there must be other IIO
->>> sensors that have something similar that could be possibly reused.
->>>
->>>    
->>>>> Second overflow problem is at
->>>>> https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L684
->>>>>
->>>>> In fact, I don't understand why 1000000000LL is needed. Since only 7
->>>>> values are summed, using 10LL should give the same precision.
->>>> Whilst the existing  value seems large - I'm not great with
->>>> precision calcs so could
->>>> you lay out why 10LL is sufficient?
->>>
->>> Unless I overlooked something, the error of integer division (eg.,
->>> discarding fractional part) is <1. In this case, the results of 7
->>> integer divisions are summed, so the error is <7. When multiplying
->>> numerators by 10LL, the error would be <0.7. Which is OK, since we
->>> are interested only in the integer part.
->>
->> Unfortunately it seems that there may be more problems with the
->> driver. I've noticed that my device has lost sample rate and precision
->> settings few times. When looking at the code, it seems the settings
->> are not restored when dps310_reset_reinit() is called at
->> https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L438
->>
+> This patch series updated the spi-nor, spi core and the spi drivers
+> to add stacked and parallel memories support.
 > 
-> Agreed. Looks like that stuff is missing.  This reset path is pretty horrible
-> in general, so I'm not surprised a few things got missed. Should be easy enough
-> to add a cache of those and and set them again if you want to try that.
+> [...]
 
-One option would be adding sample_rate and oversampling_ratio to 
-dps310_data struct, but some questions remain.
+Applied to
 
-I think doing a silent reset is not good, because it can cause bad 
-samples. When looking at data, you don't know if there was an actual 
-pressure spike or if it was caused by a reset. I think a better solution 
-would be immediately returning an error (-EIO?) to inform user space 
-about an intermittent failure.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-(I suspect that in case of some errors, the IIO subsystem retries 
-internally and hides the error.)
+Thanks!
 
-The purpose of timeout_recovery_failed seems questionable, because if 
-you end up with timeout_recovery_failed == true, the only way to recover 
-from timeout is reloading the kernel module.
+[01/15] spi: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        commit: 9e264f3f85a56cc109cc2d6010a48aa89d5c1ff1
 
-I'm afraid I'm not able to provide a patch to fix the problems soon.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
->> Apparently I've also ended up with data->timeout_recovery_failed ==
->> true at
->> https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L443,
->> but the device worked fine after just reloading the kernel module.
->> This is difficult to reproduce, though.
-> 
-> Hmm. There are a few things that could cause that.  Maybe something running slow, or
-> an intermittent write failure (noisy environment or bad wire / track maybe?)
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-(Off-topic) Write failures is a different problem that is very annoying. 
-I'm not sure if this could be the case with dps310, but I have an 
-ADXL355 device that is connected via SPI and often register writes fail 
-silently. I have a short cable that is well connected and SPI should be 
-running at max 1Mhz according to .../of_node/spi-max-frequency. I ended 
-up wrapping regmap functions to check register value after each write. I 
-haven't noticed errors when reading registers. (I'm using Raspberry Pi.)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Andres
+Thanks,
+Mark
+

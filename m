@@ -2,62 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A99616B7824
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 13:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B5CD6B788B
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 14:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbjCMM5G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 08:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45512 "EHLO
+        id S230319AbjCMNMQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 09:12:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230237AbjCMM5E (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 08:57:04 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA8969205;
-        Mon, 13 Mar 2023 05:57:02 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id t14so12516724ljd.5;
-        Mon, 13 Mar 2023 05:57:02 -0700 (PDT)
+        with ESMTP id S229573AbjCMNMQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 09:12:16 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A84AD6A9CA;
+        Mon, 13 Mar 2023 06:11:55 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id z5so12553205ljc.8;
+        Mon, 13 Mar 2023 06:11:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678712221;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6Gr2AaLEFSBaR68Q/TLef3iDpRGM3N9OJo/Ps9/urIs=;
-        b=QM9kK++WQKVMo0QzCl9qqpKqmS8gCLckHPLkfDoEPyupjiV4t9sxQzdDupZExj+xaT
-         z4Ol6h8FdcX7IQC5t1S+3gkHDMcd6/aslfaqFz2BN00NyTGP6wrtwlIX3HPlA3H6Vij3
-         TnilpDtCJQ1wOMf1PsStRa49Si35HVepxaFPehqjIwNK0WDqHvYbmVeHwVrOxeM0UINf
-         jOvXo0rtTd0Dy1hbJa4eHgbGCRwTZgRJILbJqPBywUnYq2obrz7E4JOtoeS9cG2igSVS
-         31GidUkFZ8Ltqwe/2ISQTTOfMOoWXRA9EynVxCr1iHP1xHIwI2HKh2bn+HqNAbDvSRmq
-         W0Rg==
+        d=gmail.com; s=20210112; t=1678713114;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RdumDddMGTo/lxSp6U39dpdHLeeUajQBgrqlqp/Lqwo=;
+        b=YyRViZ2tMVCQ5HOYVxbJgGPwNQbgZLwtpviCB4sehgaq82qshs1fb5+O8yvTZKF55h
+         lbEaiFY4QszCFAkUuzCZLxpyUk/ysFGT6TaNLiRdqfdXsEEXn+g3qao1LO+ZQrxWm2pN
+         O06H17E3tbxp5u69zRByccDCR3TmOmcQ1GAS7YVITbEhrfl+P7otdIRIwNsKJ6I4I3nT
+         b1MSH5I9u4obst97d45yqacAMS7OWqyjCfFLlLdDRFAr/cS1TGXl74RkFDiOnmrKpejS
+         J1ZCJmN8+Ke32YzA7dhApSFv1FCyTNPM+StuqF/OKGBcGpAkLsWLSqZ84RdbWqfwmXAD
+         Np1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678712221;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1678713114;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Gr2AaLEFSBaR68Q/TLef3iDpRGM3N9OJo/Ps9/urIs=;
-        b=TBpW9C2IQzz9tMoXkN21NqBXNLISc7rTtmQoZvjTeBsKYZX0765AKy2EWiQX9B+gVG
-         tRU9xscR5AxREQZsFsLE30rkiYrwzytAvbYodMOvPZwR367ND4XYId5/SkJ3rP4a8CGv
-         +Sp6cAeOya2se/lGBo+Yq8IxVycCR5DedW+/YkACz7ZSbZ0JQlEZ3mf9HmW78U3J160E
-         Z7srSl/j2kGximnEWCByTXo3qaLi8nj7kjcYkdNZ7X7Ro3B+q86zi74x3O10quFScoAL
-         Qtz+N1OqYnf/o2Co6u33z3eM14j8QRJjCmW1KnmKozDeqb5oIajzftVz5EkGAUDSan2/
-         fcPg==
-X-Gm-Message-State: AO0yUKV2RqXyrsJBlPryG2TWoI+hkpMOEjumaWUNX97S08vaAY5YF8PB
-        2kLI/CAbmN0CI27Iyyqk58k=
-X-Google-Smtp-Source: AK7set92az/R+d1x4QbCOkrOBKf6u40h2+NWzf6Le0e09ZBD6zL5gqnRtd7GxexvX/SK8KPZXUg8TQ==
-X-Received: by 2002:a2e:b94a:0:b0:293:1565:4353 with SMTP id 10-20020a2eb94a000000b0029315654353mr10259443ljs.10.1678712220646;
-        Mon, 13 Mar 2023 05:57:00 -0700 (PDT)
+        bh=RdumDddMGTo/lxSp6U39dpdHLeeUajQBgrqlqp/Lqwo=;
+        b=lLL5JXJKBhSHxFKH9kanD5uNAsXr6fdsU94xa3XmJEuM5VvTBmlLL4uWJITaQtTJ6L
+         96/3/KtX96LDpkAA3NmRa0Tx/HZmd2aYKp21xpN3Y3KQDIgDBqt0TgJf+KYkmy2kawcY
+         3+PSJZTxa+su7iGZ4XIXbyOLIXCh1uQReBXdfyg5FrrAPBSGWsYMJ5VJbOwiwY2uHpgx
+         8roFK+uZhDdtdExmYYACc7B75GxJZTV/txvD42qh+8e/wHFJR50C5vJiM6Q+L9QjlL7R
+         +35EnwxEofQCNSsT1MggMoCTFHedasGheizIaYWFefSnFyANN/t2c0p04JwhDAHSWWlE
+         jPDA==
+X-Gm-Message-State: AO0yUKWUofFldFJPRB8Cm9VoJSaixT/R8Ap2gFpUOFeRDJWk4KoLPPTK
+        T7GBtIfaQjklfyHCATP028A=
+X-Google-Smtp-Source: AK7set+j7k6zCYH2XDZt6UocFTT0dsbmNt3I+8pboVGgC2Br/or+Myzd7ZaFp4agajWReTebtxmJQA==
+X-Received: by 2002:a2e:a4bb:0:b0:293:524a:9164 with SMTP id g27-20020a2ea4bb000000b00293524a9164mr10377947ljm.34.1678713113951;
+        Mon, 13 Mar 2023 06:11:53 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::6? (dc75zzyyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::6])
-        by smtp.gmail.com with ESMTPSA id f23-20020a2e3817000000b002987088bda4sm981837lja.69.2023.03.13.05.56.59
+        by smtp.gmail.com with ESMTPSA id a18-20020a05651c031200b002934a7c04efsm1019486ljp.98.2023.03.13.06.11.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Mar 2023 05:57:00 -0700 (PDT)
-Message-ID: <bad05e06-3b37-b435-bfac-962aef36cc97@gmail.com>
-Date:   Mon, 13 Mar 2023 14:56:59 +0200
+        Mon, 13 Mar 2023 06:11:53 -0700 (PDT)
+Message-ID: <31d8bc33-eabe-9084-71c3-7d1e29f51863@gmail.com>
+Date:   Mon, 13 Mar 2023 15:11:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
 Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Shreeya Patel <shreeya.patel@collabora.com>,
@@ -67,9 +66,11 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
 References: <cover.1678093787.git.mazziesaccount@gmail.com>
  <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
- <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com> <20230312165100.45de0c9b@jic23-huawei>
+ <20230312170638.3e6807b7@jic23-huawei> <20230312170848.651b5b2c@jic23-huawei>
+ <ZA8Z08U1sMOhc+V5@smile.fi.intel.com>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20230312165100.45de0c9b@jic23-huawei>
+Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
+In-Reply-To: <ZA8Z08U1sMOhc+V5@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -82,89 +83,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/12/23 18:51, Jonathan Cameron wrote:
-> On Mon, 6 Mar 2023 14:52:57 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On 3/13/23 14:40, Andy Shevchenko wrote:
+> On Sun, Mar 12, 2023 at 05:08:48PM +0000, Jonathan Cameron wrote:
+>> On Sun, 12 Mar 2023 17:06:38 +0000
+>> Jonathan Cameron <jic23@kernel.org> wrote:
+>>> On Mon, 6 Mar 2023 11:17:15 +0200
+>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
->>> Some light sensors can adjust both the HW-gain and integration time.
->>> There are cases where adjusting the integration time has similar impact
->>> to the scale of the reported values as gain setting has.
+> ...
+> 
+>>> Given most modern IIO drivers use fully devm_ based probing, for now I would not
+>>> expose anything else.  That will reduce the interface a lot which I think
+>>> is probably a good thing at this stage.
+
+Probably at any stage :)
+
 >>>
->>> IIO users do typically expect to handle scale by a single writable 'scale'
->>> entry. Driver should then adjust the gain/time accordingly.
+>>> Keep the non devm stuff internally though as it is a nice structure to have
+>>> an I can see we may want some of these in non devm form in the future.
+
+Ok. I was pondering this while writing these APIs. I was just thinking 
+that _maybe_ someone has an driver where they do not use devm for a 
+reason. Allowing a "non devm" variants for such is likely to be needed. 
+Hence, I was thinking that having a non devm version could be beneficial 
+from the start to avoid someone being tempted to just mix the readily 
+available devm with manual unwinding...
+
 >>>
->>> It however is difficult for a driver to know whether it should change
->>> gain or integration time to meet the requested scale. Usually it is
->>> preferred to have longer integration time which usually improves
->>> accuracy, but there may be use-cases where long measurement times can be
->>> an issue. Thus it can be preferable to allow also changing the
->>> integration time - but mitigate the scale impact by also changing the gain
->>> underneath. Eg, if integration time change doubles the measured values,
->>> the driver can reduce the HW-gain to half.
+>>> Similarly - for now don't expose the individual table building functions
+>>> as we may never need them in drivers.  We (more or less) only support interfaces
+>>> that are used and so far they aren't.
+
+I was thinking of this too. It was just the small 'avoid extra 
+operations [like unnecessary endianess conversions :p] when 
+needed'-voice in me that started screaming when I though of exporting 
+only the 'build all' and 'purge all' APIs...
+
 >>>
->>> The theory of the computations of gain-time-scale is simple. However,
->>> some people (undersigned) got that implemented wrong for more than once.
+>>> For other functions it's worth thinking about whether to not export them
+>>> initially. I haven't been through them all to figure out what is not currently used.
+
+I think I can go through them. There are a few that aren't currently used.
+
 >>>
->>> Add some gain-time-scale helpers in order to not dublicate errors in all
->>> drivers needing these computations.
->>
->> ...
->>
->>> +/*
->>
->> If it's deliberately not a kernel doc, why to bother to have it looking as one?
->> It's really a provocative to some people who will come with a patches to "fix"
->> this...
+>> Ah. I forgot the tests that don't have a device so can't use devm.
 > 
-> Just make it kernel-doc.
-> 
+> Why not? I have seen, IIRC, test cases inside the kernel that fakes the device
+> for that.
 
-Are you sure...? I don't like the idea of polluting generated docs with 
-documentation for this type of tiny internal pieces not usable outside 
-this component anyways...
+I'd appreciated any pointer for such an example if you have one at hand. 
+(I can do the digging if you don't though!)
 
->>
->>> + * iio_gts_get_gain - Convert scale to total gain
->>> + *
->>> + * Internal helper for converting scale to total gain.
->>> + *
->>> + * @max:	Maximum linearized scale. As an example, when scale is created
->>> + *		in magnitude of NANOs and max scale is 64.1 - The linearized
->>> + *		scale is 64 100 000 000.
->>> + * @scale:	Linearized scale to compte the gain for.
->>> + *
->>> + * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
->>> + *		is invalid.
->>> + */
-> 
->> ...
->>
->>> +EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);
->>
->> I would say _HELPER part is too much, but fine with me.
-> 
-> Hmm. I think I like the HELPER bit as separates it from being a driver.
-> Of course I might change my mind after a few sleeps.
+I am not a fan of unit tests. They add huge amount of inertia to 
+development, and in worst case, they stop people from contributing where 
+improving a feature requires test code modification(s). And harder the 
+test code is to understand, worse the unwanted side-effects. Also, 
+harder the test code is to read, more time and effort it requires to 
+analyze a test failure... Hence, I am _very_ conservative what comes to 
+adding size of test code with anything that is not strictly required.
 
-Ever considered a career as a politician? ;) (No offense intended - and 
-feel free to change your mind on this. I don't expect this to be done 
-tomorrow)
-
-> 
->>> +++ b/drivers/iio/light/iio-gts-helper.h
->>
->> Is it _only_ for a Light type of sensors?
-> 
-> I'd move it up a directory and allow for other users.
-> 
-
-Ok. I'll do the move for the next version.
+After that being said, unit tests are a great tool when carefully used - 
+and I assume/hope stubbing a device for devm_ tests does not add much 
+extra... But let me see if I can find an example :)
 
 Yours,
 	-- Matti
-
-> Jonathan
 
 -- 
 Matti Vaittinen

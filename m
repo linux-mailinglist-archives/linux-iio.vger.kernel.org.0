@@ -2,62 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE416B79B8
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 14:59:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E27F6B79CC
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Mar 2023 15:01:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230382AbjCMN7o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Mar 2023 09:59:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45646 "EHLO
+        id S229638AbjCMOBE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Mar 2023 10:01:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231151AbjCMN7c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 09:59:32 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C18BF11E94;
-        Mon, 13 Mar 2023 06:59:06 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id z5so12707803ljc.8;
-        Mon, 13 Mar 2023 06:59:06 -0700 (PDT)
+        with ESMTP id S231373AbjCMOAa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Mar 2023 10:00:30 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF5A6F4AA;
+        Mon, 13 Mar 2023 07:00:00 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id by8so12714991ljb.7;
+        Mon, 13 Mar 2023 06:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678715945;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Br9dbZsECDN6znzio7e4ndSZQRXJUPgWqvgP0KX2jNs=;
-        b=OLlTHv0I0+9OnNHoHLNUQmgBnSgLPuYOuJEBBhb0vpNO7dnSIRIG0GKws9xu55voGE
-         vCID6Ka4c/6zDPuvWAQkJisw6z5YjwKoM8vfu2ACKH7KSFvjSo4HtNNN2x86lrHeCrDz
-         6PstVrVaq5Bcgo16Sn1bltxXscsd2+8mEhiTsxgyqFjQg8Edwy/lRVo9oCnR+HhRPO0F
-         20FJiJ302YzmI1ZBxlHh4d43v/RHlcsw5VOkX/yF7n2jagzjyTFBXWi4+MQJ2dvDvbHK
-         MEQBtMFDtf8KiPRh/o3WFPWecPBaonWsaaSTeTgj4Nd/ohOr99rO9AuRlpdNpKXlZT2w
-         qfmA==
+        d=gmail.com; s=20210112; t=1678715994;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TSz5ErZZ4x/NRLe7JN2WWQR6b9KCGMkpJUx1wnV62dU=;
+        b=JMIfrOgH0MQMlYkc5oFNSSCP0sSLQapnv7/cbFNREe8eFAM2TKGtpcVNFZupArIW+I
+         QvAn/N84HrNghyhmWxTzW8SrruCdIzqF4C1bbvKEv8/CvKMVzGHejKbhem5GKh3e2y+8
+         b3n/eW8BRSrROq6BfERYGI+Jg+1S3HWLL6CQB7GcQ+qlf6cOX8BULslHmZsU9zf/rWMf
+         l1hWm53CF6q/DJN/CzPgeKNpPmhqtm9O9fwCUyXTbAYie3+r5/+gw33OhYc0jaiay7OT
+         WYj41pIsgU7MGY7fjK0R953+9Zos97aTg9I1M/2+5IbSuqRetrOI5cMhBsGSgq2HB2EF
+         vhbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678715945;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1678715994;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Br9dbZsECDN6znzio7e4ndSZQRXJUPgWqvgP0KX2jNs=;
-        b=R5PtxiGX0Q6kQkZqTLJ5rhuF278lbfNCs2xT5DH+rRi1Cc+uT7DViBnlwmMd3jkDXq
-         QbsavxIRQnvrx/b88RIDkc0CQa6yWx1kTHpI0/F0aM19TlNbiDhAv8JbhoDh2RKF6Fww
-         MzJB2FBNYk6pDWOUp22kdsXaJ4Gr4+/9QeuG+C+yjAm4bckJ3MJgzzci/ERpck9vw7Ph
-         RLj2vkov0xd1+GfNMSUedPSJT0wzKdnjnHRlRS3st3fyZc5X6l6P6TgOr8tE2SX06NEL
-         fxoCzJeuRdywJmPgczCFt8b37SQebt+rIM/5grR2M4z9NruPhO2GWfxIJtT1FVQ4Mn0C
-         zq2Q==
-X-Gm-Message-State: AO0yUKVJNg8ngaAi0lAuibNpjus2E+H28Of9XwpBNZnZOP0ulmm9tiGE
-        fMtbjczRbCZlH2x34NDrlO4A37EA8js=
-X-Google-Smtp-Source: AK7set+AeBlk3MeVeF61/R37ov8TRcwJgzWhbOa4eNw9bTXtWV8m6SYaD2RFMz/rn7785U4IsvGZgg==
-X-Received: by 2002:a05:651c:2122:b0:293:40ce:b08e with SMTP id a34-20020a05651c212200b0029340ceb08emr15833898ljq.16.1678715944850;
-        Mon, 13 Mar 2023 06:59:04 -0700 (PDT)
+        bh=TSz5ErZZ4x/NRLe7JN2WWQR6b9KCGMkpJUx1wnV62dU=;
+        b=tBSFddQPp4o5J1sPSOs36L6vNAxHj9LPcQSiRuXrziA6DFVjYf8xfSB6cnkrunWNcM
+         C0XLJ0AIMFAhM5SblE4T8Fteqk8vrTA+RYw739nwUkD5i8PXje/XhXHgB7FqKnB5S9y8
+         3fp0PvCLs9Rfv8g/wU44RG9eJR93Ke/ufg4+4bHkAkq9Tij5oYhhXRaTePmz5wAy6201
+         kma0c16TupcC+hFqaIkzzlhaqf14AFEqV1/w3HRsIqq6h/bgRluJ//fZ23FYhQrEOTwF
+         qSbRZrW6eHgCRoR8WYEUf6GPaZaDbXeggSYsD9gSPO6tHxrZD9obx7JVK6+7bzarEoFa
+         TiEg==
+X-Gm-Message-State: AO0yUKUccX1XQ+osaOuwDLwhjE3QDX77WO7cWR/3djNl1rV8RfoVO53p
+        iT5KUia7I0elfQ8Sudcxlz8=
+X-Google-Smtp-Source: AK7set+ip2QPITMQmcKMI13u5vDZflDrbwxL1G5HDy+jPmQFsEC5H6OsWYNrm/ajbPgOV1AvvCjg5g==
+X-Received: by 2002:a2e:9545:0:b0:295:8fd5:da00 with SMTP id t5-20020a2e9545000000b002958fd5da00mr11925903ljh.22.1678715993746;
+        Mon, 13 Mar 2023 06:59:53 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::6? (dc75zzyyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::6])
-        by smtp.gmail.com with ESMTPSA id y3-20020a197503000000b0049c29389b98sm982887lfe.151.2023.03.13.06.59.03
+        by smtp.gmail.com with ESMTPSA id m9-20020ac24249000000b004db1cd5efcesm993929lfl.241.2023.03.13.06.59.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Mar 2023 06:59:04 -0700 (PDT)
-Message-ID: <b4bf8587-d3cd-ff88-0276-7e394c110757@gmail.com>
-Date:   Mon, 13 Mar 2023 15:59:03 +0200
+        Mon, 13 Mar 2023 06:59:52 -0700 (PDT)
+Message-ID: <39a7b489-4856-8dc1-d0a6-f27d0c1324a2@gmail.com>
+Date:   Mon, 13 Mar 2023 15:59:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
+Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
 Content-Language: en-US, en-GB
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Shreeya Patel <shreeya.patel@collabora.com>,
         Paul Gazzillo <paul@pgazz.com>,
@@ -66,12 +67,12 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
 References: <cover.1678093787.git.mazziesaccount@gmail.com>
  <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
- <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
- <e507c171-bebc-84f6-c326-ff129b42fb7f@gmail.com>
- <ZA8kTx4exvGwUfNn@smile.fi.intel.com>
+ <20230312170638.3e6807b7@jic23-huawei> <20230312170848.651b5b2c@jic23-huawei>
+ <ZA8Z08U1sMOhc+V5@smile.fi.intel.com>
+ <31d8bc33-eabe-9084-71c3-7d1e29f51863@gmail.com>
+ <ZA8lNBPCB4BNnfUq@smile.fi.intel.com>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
-In-Reply-To: <ZA8kTx4exvGwUfNn@smile.fi.intel.com>
+In-Reply-To: <ZA8lNBPCB4BNnfUq@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -84,154 +85,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/13/23 15:25, Andy Shevchenko wrote:
-> On Mon, Mar 13, 2023 at 02:47:45PM +0200, Matti Vaittinen wrote:
->> On 3/6/23 14:52, Andy Shevchenko wrote:
->>> On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
+On 3/13/23 15:29, Andy Shevchenko wrote:
+> On Mon, Mar 13, 2023 at 03:11:52PM +0200, Matti Vaittinen wrote:
+>> On 3/13/23 14:40, Andy Shevchenko wrote:
+>>> On Sun, Mar 12, 2023 at 05:08:48PM +0000, Jonathan Cameron wrote:
+>>>> On Sun, 12 Mar 2023 17:06:38 +0000
+>>>> Jonathan Cameron <jic23@kernel.org> wrote:
 > 
 > ...
 > 
->>>> +/*
+>>>> Ah. I forgot the tests that don't have a device so can't use devm.
 >>>
->>> If it's deliberately not a kernel doc, why to bother to have it looking as one?
->>> It's really a provocative to some people who will come with a patches to "fix"
->>> this...
+>>> Why not? I have seen, IIRC, test cases inside the kernel that fakes the device
+>>> for that.
 >>
->> I just liked the kernel-doc format. It's a standard way of explaining the
->> parameters and returned value. Function however is intended to be internal
->> and thus I don't see a need to make this "official kernel doc".
-> 
-> The problem as I pointed out with your approach it's unmaintainable. And
-> I even explained why I consider it this way.
-
-Yes. You told me that it asks for people to turn it to kernel doc. If 
-that happens, apply the patch and it is kernel doc. I don't see how 
-unmaintainable it is. I think this is just creating a problem we may 
-never face - and if we do, we can solve it by applying the 'problem' then.
-
-> 
->>>> +		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
->>>> +		     NULL);
->>>
->>> One line reads better?
+>> I'd appreciated any pointer for such an example if you have one at hand. (I
+>> can do the digging if you don't though!)
 >>
->> I try mostly to keep the good old 80 chars as I often have 3 terminal
->> windows fitted on my laptop screen. It works best with the short lines.
-> 
-> With it on one line
-> 
-> 		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp, NULL);
-> 
-> You have N at the last column which quite likely suggests that it's NULL.
-> So, I don't think it's a big issue to put on a single line.
-
-Trusting suggestions like this in a kernel code would be a big problem 
-to me. I would ask myself - "do you feel lucky"?
-
-Well, my favourite editor would wrap the line - so I would see the NULL 
-at the next row. Not indented properly causing it to be harder to read 
-than the code which is properly manually split and indented. It is much 
-less of a problem for me to "waste" a row here and see the line properly 
-split.
-
->>>> +	if (ret && gts->avail_all_scales_table)
->>>
->>> In one case you commented that free(NULL) is okay, in the other, you add
->>> a duplicative check. Why?
+>> I am not a fan of unit tests. They add huge amount of inertia to
+>> development, and in worst case, they stop people from contributing where
+>> improving a feature requires test code modification(s). And harder the test
+>> code is to understand, worse the unwanted side-effects. Also, harder the
+>> test code is to read, more time and effort it requires to analyze a test
+>> failure... Hence, I am _very_ conservative what comes to adding size of test
+>> code with anything that is not strictly required.
 >>
->> Sorry but what do you mean by dublicative check?
->>
->> Usually I avoid the kfree(NULL). That's why I commented on it in that
->> another case where it was not explicitly disallowed. I'll change that for v4
->> to avoid kfree(NULL) as you suggested.
+>> After that being said, unit tests are a great tool when carefully used - and
+>> I assume/hope stubbing a device for devm_ tests does not add much extra...
+>> But let me see if I can find an example :)
 > 
-> So, and with it you put now a double check for NULL, do you think it's okay?
-> I don't.
-
-I don't see the double check. I see only one check just above the 
-kfree()? Where is the other check?
-
+> drivers/gpu/drm/tests/drm_managed_test.c ?
 > 
->>>> +		kfree(gts->avail_all_scales_table);
+> (somewhere underneath:
 > 
-> ...
+>   ret = platform_driver_register(&fake_platform_driver);
 > 
->>>> +	per_time_gains = kcalloc(gts->num_itime, sizeof(int *), GFP_KERNEL);
->>>
->>> sizeof(type) is error prone in comparison to sizeof(*var).
->>
->> Yes and no. In majority of cases where we see sizeof(*var) - the *var is no
->> longer a pointer as having pointers to pointers is not _that_ common. When
->> we see sizeof(type *) - we instantly know it is a size of a pointer and not
->> a size of some other type.
->>
->> So yes, while having sizeof(*var) makes us tolerant to errors caused by
->> variable type changes - it makes us prone to human reader errors. Also, if
->> someone changes type of *var from pointer to some other type - then he/she
->> is likely to in any case need to revise the array alloactions too.
->>
->> While I in general agree with you that the sizeof(variable) is better than
->> sizeof(type) - I see that in cases like this the sizeof(type *) is clearer.
-> 
-> Still get a fundamental disagreement on this. I would insist, but I'm not
-> a maintainer, so you are lucky :-) if Jonathan will not force you to follow
-> my way.
-
-In a code you are maintaining it is good to have it in your way as 
-you're responsible for it. This is also why I insist on having things in 
-a way I can read best for a code I plan to maintain - unless the 
-subsystem maintainers see it hard to maintain for them. So, let's see if 
-Jonathan has strong opinions on this one :)
-
-> ...
-> 
->>>> +	for (i = gts->num_itime - 1; i >= 0; i--) {
->>>
->>> 	while (i--) {
->>>
->>> makes it easier to parse.
->>
->> This is also something I replied for v2. I think we have a fundamental
->> disagreement on this one :/
-> 
-> Yes, and I will continue insisting on while (foo--).
-> That why I won't give you my tags :-)
-
-Well, I am planning to keep reading this code when/if it is being 
-patched. Hence I am so reluctant to change it to something that makes it 
-harder for me to follow. Meanwhile, I understand that you don't want to 
-tag something you don't agree with.
-
-> ...
-> 
->>>> +		if (!min)
->>>> +			min = gts->hwgain_table[i].gain;
->>>> +		else
->>>> +			min = min(min, gts->hwgain_table[i].gain);
->>>
->>> I was staring at this and have got no clue why it's not a dead code.
->>
->> Nor can I. It seems obvious to me that the one who wrote this had no idea
->> what he was doing XD
->>
->> Well, I must have had some initial idea of using the minimum value to
->> something - but I can't remember what would've been the use. Maybe I was
->> initially thinking that I'll return the smallest value in-range if the gain
->> given as a parameter was smaller than any of the supported ones.
->>
->> Thank you for reading this carefully and pointing it out! Well spotted!
-> 
-> Hint: run always `make W=1` when building kernel.
-
-Ah. I thought I had that and sparse enabled. It seems I disabled all 
-extra checks from my build scripts a while ago to speed-up compilation 
-when I was bisecting...
-
-> It will show defined but not used cases and combined with nowadays
-> default -Werror won't be compilable.
+> which suggests... what exactly? :-)
 > 
 
-Thanks for the review.
+Thanks!
 
 --Matti
 

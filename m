@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0082E6B9D00
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 18:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B18636B9DF9
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 19:13:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbjCNR2k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Mar 2023 13:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
+        id S229832AbjCNSNC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Mar 2023 14:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjCNR2j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 13:28:39 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C1930EAD;
-        Tue, 14 Mar 2023 10:28:37 -0700 (PDT)
+        with ESMTP id S229712AbjCNSNA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 14:13:00 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D4022056B;
+        Tue, 14 Mar 2023 11:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678814917; x=1710350917;
+  t=1678817579; x=1710353579;
   h=from:to:cc:subject:date:message-id;
-  bh=DaQNsZPNuwEZmQfv4ilWdbGgK7Acovm7M+l1yC6x52w=;
-  b=Q7awHz96/bdxnfWtK03TKuqnsrk44W618mOS2KnspoHum9kyhP+Hg+l0
-   npGK3BHFz3ohGzFl++byxuId7eb2W7r1r4t4Zz/G+dmZnj7W1JR6D0ECI
-   OtK0gaqXuAVZDHhu3VPGeVCn7LsnchX2rYdThHT7aGjDU8eVdY8KIDXQQ
-   Kj+OosNe1H8aEsnj1sY/5o27UxPruBtHfO1EK+tO5JWeDCbeOvY4yYPPq
-   m94gqVy3ZVKFaVJMsgrojhW2hKFRZrq39GNBLTcA5LJq+Yfe5Sv5xl3ra
-   dDisUtI4NMv9HcSkbo0dQj88eX61Z16TPG9HctL9obhRp984BLpSIjCmk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="339036762"
+  bh=oqXGmQtiMupxkL7i9Ioi1Rh0YrW847lN+KRJps8IgrY=;
+  b=Hiw4bW0mbaTm38GHHcmDYd/O4zjAzT5RKCOfLbRKR39cmWKpJg1haWJw
+   xzwq3b23kMhbDlfden0soq/saUBd3QRjTA4SFlMvO9aoA2ncbgwaKYlfx
+   s3llTwl+w/V+FTyTz6jxKqfmksnnRtb7+k3ic7Rd7TeNkvW8I3a1kfJ39
+   fN+uHxT2V1l4VfnQduig3bBwXa+0V5vshdMbVS2x1/3d7hJztnUiLknhi
+   4R97BtB+TZQdDHz4NuPj2J8EdhSke3nEMLlx7WhzLXY5yM9fW8q1Po655
+   1YF0xa/rAjl5IlelBF+bWOJ7VMOLsDSDXfcL5S6n0awDBOWKcZHbyenKA
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="402372584"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="339036762"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:28:36 -0700
+   d="scan'208";a="402372584"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 11:12:58 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="748090937"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="1008524939"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="748090937"
+   d="scan'208";a="1008524939"
 Received: from wopr.jf.intel.com ([10.54.75.136])
-  by fmsmga004.fm.intel.com with ESMTP; 14 Mar 2023 10:28:35 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 14 Mar 2023 11:12:57 -0700
 From:   Todd Brandt <todd.e.brandt@intel.com>
 To:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc:     todd.e.brandt@linux.intel.com, todd.e.brandt@intel.com,
         srinivas.pandruvada@linux.intel.com, jic23@kernel.org,
-        jikos@kernel.org, p.jungkamp@gmx.net
-Subject: [PATCH v3] HID:hid-sensor-custom: Fix buffer overrun in device name
-Date:   Tue, 14 Mar 2023 10:28:34 -0700
-Message-Id: <20230314172834.13175-1-todd.e.brandt@intel.com>
+        jikos@kernel.org, p.jungkamp@gmx.net, stable@vger.kernel.org
+Subject: [PATCH v4] HID:hid-sensor-custom: Fix buffer overrun in device name
+Date:   Tue, 14 Mar 2023 11:12:56 -0700
+Message-Id: <20230314181256.15283-1-todd.e.brandt@intel.com>
 X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -73,12 +73,23 @@ To address this, initialize the real_usage string with 0s.
 
 Reported-and-tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=217169
+Fixes: 98c062e82451 ("HID: hid-sensor-custom: Allow more custom iio sensors")
+Cc: stable@vger.kernel.org
 Suggested-by: Philipp Jungkamp <p.jungkamp@gmx.net>
 Signed-off-by: Philipp Jungkamp <p.jungkamp@gmx.net>
 Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
 Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
+Changes in v4:
+- add the Fixes line
+- add patch version change list
+Changes in v3:
+- update the changelog
+- add proper reviewed/signed/suggested links
+Changes in v2:
+- update the changelog
+
  drivers/hid/hid-sensor-custom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 

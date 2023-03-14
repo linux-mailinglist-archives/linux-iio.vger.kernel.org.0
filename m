@@ -2,55 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6556B9FDC
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 20:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A71EE6BA0EB
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 21:42:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230395AbjCNThX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Mar 2023 15:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53506 "EHLO
+        id S229475AbjCNUmg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Mar 2023 16:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230502AbjCNThU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 15:37:20 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6886D30B10;
-        Tue, 14 Mar 2023 12:37:18 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id m4so8451598lfj.2;
-        Tue, 14 Mar 2023 12:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678822636;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6n80OO2p0+yXsir8JhHPkqdbw+rH/st/LRf0u/i9phg=;
-        b=KW/skMhjVyfqHnNbh+GsnTN6Mmmbazd6Ln+DuQUYGmVqkmdrwW/k7YpdNxOW66ljf/
-         hFO3KmaQtG+Yo8GijJcttE8VgUOPiVzP2VL3gQx2UMlglwDt1VbI69FRvLVhOqbgItrL
-         6HIUrnDWQH5cXbSEJOSHBr78IqMUq8AqBbcap5d1Al8Ls0cgWXzdtH2jNZ6gHYMpoEjZ
-         G6jBaYeIe5MB1mxGExOB6walb7SbOdVGegs9YrFZYozTT/ybOOV5OlgRDMf4I7B6e5mV
-         UTh7vHhLvBBMW4GcyUAJftYQPGuqSRF/dQmv+usb3q0YH848kjFuZC5JRdGhlYnQ+J2Q
-         kpdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678822636;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6n80OO2p0+yXsir8JhHPkqdbw+rH/st/LRf0u/i9phg=;
-        b=bfQPkz9txRzOx3scTgykqlqFU/za1yteozN2eWPUfNYMmfq4ineLP70AtURa1g15n2
-         xdIiu5TcLZ73CGcqxbFaNr5C2XHAMbop2MuEsQuvjl1+NAM50L+cwTQAMyKP7GMO5f3W
-         i07S/4UV5u5pTCGKJW+NVJ09MWEpjSWAFk6JyIk9dpsK7q/geTr2K8wuGUdldEwMyXIV
-         6x4jZleZyZdYdmo3uYJ+xmZF1DmkG4lAO2TRc7/BCukk9AoDtoIZ77PumX2S6yC9AMLj
-         hkccD8NhX220A25taOI54bCA/C7M6Up1Cmw0oXXjPUMCd236xXvUCGACpIFUU93g77wo
-         BKeg==
-X-Gm-Message-State: AO0yUKW1AEjPq3LYv2U/aVb8Rnewx3i37auUPMIUY4umJLkmQ5icze5O
-        XADE3n9qnOHyCcGWeVSSejk=
-X-Google-Smtp-Source: AK7set8quM8ygAx5/FCTuKrJMk0KUxoiB161DkMDpjqQkayM20GcKZn76VClTiuk/fZb/wkBOz6MkA==
-X-Received: by 2002:ac2:4a91:0:b0:4e8:3f36:414a with SMTP id l17-20020ac24a91000000b004e83f36414amr1216390lfp.55.1678822636404;
-        Tue, 14 Mar 2023 12:37:16 -0700 (PDT)
-Received: from ruslan.. ([178.176.76.61])
-        by smtp.gmail.com with ESMTPSA id p15-20020a05651238cf00b004dc4d26c30dsm513859lft.63.2023.03.14.12.37.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 12:37:15 -0700 (PDT)
-From:   Kasumov Ruslan <xhxgldhlpfy@gmail.com>
-To:     Andy Gross <agross@kernel.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
+        with ESMTP id S229473AbjCNUmf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 16:42:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEDF1B2F8;
+        Tue, 14 Mar 2023 13:42:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F1305B81903;
+        Tue, 14 Mar 2023 20:42:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF28C433EF;
+        Tue, 14 Mar 2023 20:42:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678826551;
+        bh=3F8VJYaSb8vhtJbEMBhDsBJmQehPisrUw1hBFyo1xBk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FPwtHhGOxpFeiFu6PFlu8voRzvh7S77cxk4eSgqif6VNIlqDb1TnRXyYuhNJtWL7e
+         lC0wyV0S7JW2JIGEhXAS+YxDyCGbxUYPMaKuPncBi+aXwS8G2O2boKus0R4N/CN9NZ
+         dqYIkKozqSjraU9x8MH6d9F7gw4I/nv/HKY4j5I5J/B1DzmOZ/s0dRqq09xB1rns0m
+         AA1xxpZy0OEPliAsC8ViZAK1jvA8l/EFpcIza9AtmoTGuCJVP9HeQ8f5vOalQMl/df
+         eL/TD917cGGg+cfKVyk5k6o/JGRVty7oGFA3wayMRZkDX/vlhjkp3MouchapFy+D9r
+         rPZ+ze/7Jl+1w==
+Date:   Tue, 14 Mar 2023 21:42:28 +0100
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Kasumov Ruslan <xhxgldhlpfy@gmail.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -58,50 +43,63 @@ Cc:     Bjorn Andersson <andersson@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
         Kasumov Ruslan <s02210418@gse.cs.msu.ru>
-Subject: [PATCH] iio: adc: qcom-pm8xxx-xoadc: Remove useless condition in pm8xxx_xoadc_parse_channel()
-Date:   Tue, 14 Mar 2023 22:37:09 +0300
-Message-Id: <20230314193709.15208-1-xhxgldhlpfy@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] iio: adc: qcom-pm8xxx-xoadc: Remove useless condition in
+ pm8xxx_xoadc_parse_channel()
+Message-ID: <20230314204228.m3rbmobsv2lyknhm@intel.intel>
+References: <20230314193709.15208-1-xhxgldhlpfy@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230314193709.15208-1-xhxgldhlpfy@gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The left side of the loop condition never becomes false.
-hwchan cannot be NULL, because it points to elements of the
-hw_channels array that takes one of 4 predefined values:
-pm8018_xoadc_channels, pm8038_xoadc_channels,
-pm8058_xoadc_channels, pm8921_xoadc_channels.
+On Tue, Mar 14, 2023 at 10:37:09PM +0300, Kasumov Ruslan wrote:
+> The left side of the loop condition never becomes false.
+> hwchan cannot be NULL, because it points to elements of the
+> hw_channels array that takes one of 4 predefined values:
+> pm8018_xoadc_channels, pm8038_xoadc_channels,
+> pm8058_xoadc_channels, pm8921_xoadc_channels.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 63c3ecd946d4 ("iio: adc: add a driver for Qualcomm PM8xxx HK/XOADC")
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+It wasn't broken before, it wasn't causing any harm. It's not a
+fix, it's a cleanup. Please, remove remove the "Fixes:" tag.
 
-Fixes: 63c3ecd946d4 ("iio: adc: add a driver for Qualcomm PM8xxx HK/XOADC")
-Signed-off-by: Kasumov Ruslan <s02210418@gse.cs.msu.ru>
----
- drivers/iio/adc/qcom-pm8xxx-xoadc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Signed-off-by: Kasumov Ruslan <s02210418@gse.cs.msu.ru>
+> ---
+>  drivers/iio/adc/qcom-pm8xxx-xoadc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> index eb424496ee1d..64a3aeb6261c 100644
+> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> @@ -758,7 +758,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
+>  	/* Find the right channel setting */
+>  	chid = 0;
+>  	hwchan = &hw_channels[0];
+> -	while (hwchan && hwchan->datasheet_name) {
+> +	while (hwchan->datasheet_name) {
 
-diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-index eb424496ee1d..64a3aeb6261c 100644
---- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-+++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-@@ -758,7 +758,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
- 	/* Find the right channel setting */
- 	chid = 0;
- 	hwchan = &hw_channels[0];
--	while (hwchan && hwchan->datasheet_name) {
-+	while (hwchan->datasheet_name) {
- 		if (hwchan->pre_scale_mux == pre_scale_mux &&
- 		    hwchan->amux_channel == amux_channel)
- 			break;
--- 
-2.34.1
+With the fixes tag removed:
 
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+
+Thanks,
+Andi
+
+>  		if (hwchan->pre_scale_mux == pre_scale_mux &&
+>  		    hwchan->amux_channel == amux_channel)
+>  			break;
+> -- 
+> 2.34.1
+> 

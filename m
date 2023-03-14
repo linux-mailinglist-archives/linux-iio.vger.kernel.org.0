@@ -2,71 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70C6D6B9145
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 12:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B04DC6B91A5
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 12:31:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231233AbjCNLOY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Mar 2023 07:14:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
+        id S230346AbjCNLbo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Mar 2023 07:31:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231231AbjCNLOP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 07:14:15 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E81EF751;
-        Tue, 14 Mar 2023 04:13:44 -0700 (PDT)
+        with ESMTP id S229886AbjCNLbo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 07:31:44 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EAA92F0C;
+        Tue, 14 Mar 2023 04:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678792424; x=1710328424;
+  t=1678793502; x=1710329502;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Q0VhbocRzI5W9YCF9QPYOuHdETuAjlALdIDW6JAj/Us=;
-  b=LM293hD4eWyccWMEatxf8yL2I0c1AaMjF24Q2XT4hRxXCoTIKt39t6HQ
-   QVQe9hxA1J9tfZD/grV4wrhaF1UKeavhpVBbR37m/ZiNPoc9m3LEgmVXi
-   IdnRwUnx8IRKq15EtGx1DUvK5VJdc4nV1QUOv+7IX7ZuZYk3jwpkV4w0m
-   mlncpthAEPaYLMSSqroc9OOdRKunS7ReOfV9yzqlQURQ8Lyzx24PyLDch
-   +ZZ4fy2+4oXl0tir9uVvlWPJiIzYqcjYWArtaLbL3cDHE69IAv35Carb7
-   PZtZVCBnNhu53DRylqt4maqg9wa6Jx0ybvqJQx8T+PXfZUnWrvG77Jydw
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="337419412"
+  bh=B2JIdZFnOgODiCPaS156p+1hgs/76WeFRt2PCzonJqQ=;
+  b=k7iVdOl/Pgf063zyRD9v9NMwFeRm4Cy+Zd1HKn22LQI+9OyCbe4Kajq1
+   oemWMwPsOKCBuY6AhU3Jn/rGONrM1cxlAxQv73t71ySjfAgDEfi6el5MM
+   xxUskhuT1QHabbnPiICrPzT39/LuPlJxt0kbADqNqmVzrfykthniue5QC
+   LIb+AmlLhC/y2+MdL6C3qnH1rySLUuYtQ0kmhhpYoHmUJ9QjIXAeTtnX+
+   FHPveWViWYMsri7AW8GhNIHJfkgyHgGtU9IwcRdLqGky8QflDyjyz9nrw
+   T+y5xfV8ub+Y7oXv5ufkp5rgRU9odt+JOQnGs3J6fJTm77/OZUmSuGZPu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="399985105"
 X-IronPort-AV: E=Sophos;i="5.98,259,1673942400"; 
-   d="scan'208";a="337419412"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 04:12:27 -0700
+   d="scan'208";a="399985105"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 04:31:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="822334471"
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="709247031"
 X-IronPort-AV: E=Sophos;i="5.98,259,1673942400"; 
-   d="scan'208";a="822334471"
+   d="scan'208";a="709247031"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 14 Mar 2023 04:12:25 -0700
+  by orsmga008.jf.intel.com with ESMTP; 14 Mar 2023 04:31:08 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pc2Zr-003B29-1B;
-        Tue, 14 Mar 2023 13:12:23 +0200
-Date:   Tue, 14 Mar 2023 13:12:23 +0200
+        id 1pc2ry-003Bcf-05;
+        Tue, 14 Mar 2023 13:31:06 +0200
+Date:   Tue, 14 Mar 2023 13:31:05 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
         Paul Gazzillo <paul@pgazz.com>,
         Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
         Zhigang Shi <Zhigang.Shi@liteon.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
-Message-ID: <ZBBWlyDtyinbZBNJ@smile.fi.intel.com>
-References: <cover.1678093787.git.mazziesaccount@gmail.com>
- <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
- <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com>
- <20230312165100.45de0c9b@jic23-huawei>
- <bad05e06-3b37-b435-bfac-962aef36cc97@gmail.com>
- <ZA8ho4YfhBkSMFxS@smile.fi.intel.com>
- <d2986a9e-c516-ea6d-8f94-5cd4723312bd@fi.rohmeurope.com>
+Subject: Re: [PATCH v2 2/6] iio: light: Add gain-time-scale helpers
+Message-ID: <ZBBa+e9VXj/eyT4J@smile.fi.intel.com>
+References: <cover.1677750859.git.mazziesaccount@gmail.com>
+ <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
+ <ZAC7L8NQYgBcBTCF@smile.fi.intel.com>
+ <7e537200-37ab-f6e6-c4e0-c3997128c01b@fi.rohmeurope.com>
+ <ZAXK9Hn2NuQPJ7eo@smile.fi.intel.com>
+ <1dbfc336-7d09-cd44-dfa2-9c4bedf257e1@gmail.com>
+ <ZA81rpWgwvP2bigt@smile.fi.intel.com>
+ <9d63c161-0449-7e56-5873-2909587f17af@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d2986a9e-c516-ea6d-8f94-5cd4723312bd@fi.rohmeurope.com>
+In-Reply-To: <9d63c161-0449-7e56-5873-2909587f17af@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -77,58 +78,119 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 14, 2023 at 06:19:35AM +0000, Vaittinen, Matti wrote:
-> On 3/13/23 15:14, Andy Shevchenko wrote:
-> > On Mon, Mar 13, 2023 at 02:56:59PM +0200, Matti Vaittinen wrote:
-> >> On 3/12/23 18:51, Jonathan Cameron wrote:
-> >>> On Mon, 6 Mar 2023 14:52:57 +0200
-> >>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >>>> On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
+On Tue, Mar 14, 2023 at 12:28:43PM +0200, Matti Vaittinen wrote:
+> On 3/13/23 16:39, Andy Shevchenko wrote:
+> > On Mon, Mar 13, 2023 at 01:31:42PM +0200, Matti Vaittinen wrote:
+> > > On 3/6/23 13:13, Andy Shevchenko wrote:
+> > > > On Fri, Mar 03, 2023 at 07:54:22AM +0000, Vaittinen, Matti wrote:
+> > > > > On 3/2/23 17:05, Andy Shevchenko wrote:
+> > > > > > On Thu, Mar 02, 2023 at 12:57:54PM +0200, Matti Vaittinen wrote:
 
 ...
 
-> >>>>> +EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);
-> >>>>
-> >>>> I would say _HELPER part is too much, but fine with me.
-> >>>
-> >>> Hmm. I think I like the HELPER bit as separates it from being a driver.
-> >>> Of course I might change my mind after a few sleeps.
-> >>
-> >> Ever considered a career as a politician? ;) (No offense intended - and feel
-> >> free to change your mind on this. I don't expect this to be done tomorrow)
+> > > > > > > +		for (i = 0; !ret && i < gts->num_avail_all_scales; i++)
+> > > > > > 
+> > > > > > Much easier to read if you move this...
+> > > > > > 
+> > > > > > > +			ret = iio_gts_total_gain_to_scale(gts, all_gains[i],
+> > > > > > > +					&gts->avail_all_scales_table[i * 2],
+> > > > > > > +					&gts->avail_all_scales_table[i * 2 + 1]);
+> > > > > > 
+> > > > > > ...here as
+> > > > > > 
+> > > > > > 		if (ret)
+> > > > > > 			break;
+> > > > > 
+> > > > > I think the !ret in loop condition is obvious. Adding break and brackets
+> > > > > would not improve this.
+> > > > 
+> > > > It moves it to the regular pattern. Yours is not so distributed in the kernel.
+> > > 
+> > > I believe we can find examples of both patterns in kernel. I don't think the
+> > > "many people use different pattern" is a great reason to add break +
+> > > brackets which (in my eyes) give no additional value to code I am planning
+> > > to keep reading also in the future...
 > > 
-> > It will be a one liner in the provider if you use DEFAULT_SYMBOL_NAMESPACE
-> > definition.
+> > The problem is that your pattern is not so standard (distributed) and hence
+> > less maintainable.
 > 
-> Oh. I didn't know about DEFAULT_SYMBOL_NAMESPACE - or if I did, I had 
-> forgot it. My memory has never been great and seems to be getting worse 
-> all the time...
-> 
-> I don't know what to think of this define though. I can imagine that 
-> someone who is not familiar with it could be very confused as to why the 
-> symbols are not found even though EXPORT_SYMBOL or EXPORT_SYMBOL_GPL are 
-> used. OTOH, I think I once saw an error about symbols being in a 
-> namespace (when trying to use one without the namespace). This should 
-> probably just be a good enough hint for finding out what's going on.
-> 
-> Luckily, I think all the exports in this case were oneliners even with 
-> the namespace explicitly spelled. Well, I think that for one or two 
-> exports the semicolon did slip to col 81 or 82 - but I am not sure if 
-> fixing this weighs more than the clarity of explicitly showing the 
-> namespace in export.
-> 
-> Well, I guess I can go with either of these ways - do you have a strong 
-> opinion on using the DEFAULT_SYMBOL_NAMESPACE?
+> I am sorry but I can't really agree with you on this one. For me adding the
+> break and brackets would just complicate the flow and thus decrease the
+> maintainability.
 
-If you asking me, I'm fine with either way. Usually the latter makes sense
-when we expect APIs in the certain module to:
-1) always belong to the single namespace, *and / or*
-2) be expanded in the future w/o bothering about their (default) NS, *and not*
-3) be a single exported function for the feasible future.
+So, we may start to have a "fundamental disagreements between Matti and Andy on
+the code style in the Linux kernel" document that we won't clash on this again.
+At least the amount of these disagreements seems not decreasing in time.
 
-Also you made a good point about line length, but with all respect, I prefer
-100 than 80 and I do not believe we ever will have function name + NS longer
-than that.
+...
+
+> > > > > > > +			if (!diff) {
+> > > > > > 
+> > > > > > Why not positive conditional?
+> > > > > 
+> > > > > Because !diff is a special condition and we check explicitly for it.
+> > > > 
+> > > > And how my suggestion makes it different?
+> > > 
+> > > In example you gave we would be checking if the value is anything else but
+> > > the specific value we are checking for. It is counter intuitive.
+> > > 
+> > > > (Note, it's easy to miss the ! in the conditionals, that's why positive ones
+> > > >    are preferable.)
+> > > 
+> > > Thank you for explaining me the rationale behind the "positive checks". I
+> > > didn't know missing '!' was seen as a thing.
+> > > I still don't think being afraid of missing '!' is a good reason to switch
+> > > to counter intuitive checks. A check "if (!foo)" is a pattern in-kernel if
+> > > anything and in my opinion people really should be aware of it.
+> > > 
+> > > (I would much more say that having a constant value on left side of a
+> > > "equality" check is beneficial as people do really occasionally miss one '='
+> > > when meaning '=='. Still, this is not strong enough reason to make
+> > > counter-intuitive checks. In my books 'avoiding negative checks' is much
+> > > less of a reason as people (in my experience) do not really miss the '!'.)
+> > 
+> > It's not a problem when it's a common pattern (like you mentioned
+> > if (!foo) return -ENOMEM; or alike), but in your case it's not.
+> 
+> I think we can find plenty of cases where the if (!foo) is used also for
+
+Pleading to the quantity and not quality is not an argument, right?
+
+> other type of checks. To me the argument about people easily missing the !
+> in if () just do not sound reasonable.
+
+You may theoretically discuss this, I'm telling from my review background
+and real cases.
+
+> > I would rather see if (diff == 0) which definitely shows the intention
+> > and I wouldn't tell a word against it.
+> 
+> I think this depends much of the corner of the kernel you have been working
+> with. As far as I remember, in some parts the kernel the check
+> (foo == 0) was actually discouraged, and check (!foo) was preferred.
+
+Don't you use your common sense?
+
+> Personally I like !foo much more - but I can tolerate the (foo == 0) in
+> cases where the purpose is to really see if some measure equals to zero.
+> 
+> Other uses where I definitely don't want to use "== 0" are for example
+> checking if a flag is clear, pointer is NULL or "magic value" is zero.
+> 
+> In this case we are checking for a magic value. Having this check written
+> as: (diff == 0), would actually falsely suggest me we are checking for the
+> difference of gains being zero. That would really be a clever obfuscation
+> and I am certain the code readers would fall on that trap quite easily.
+
+Testing with !diff sounds like it's a boolean kind and makes a false
+impression that all other values are almost the same meaning which is
+not the case. Am I right? That's why diff == 0 shows the exact intention
+here "I would like to check if diff is 0 because this is *special case*".
+
+Making !diff creates less visibility on this.
+
+Result: Fundamental disagreement between us.
 
 -- 
 With Best Regards,

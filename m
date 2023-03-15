@@ -2,125 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8796BB451
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Mar 2023 14:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 466126BB52E
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Mar 2023 14:51:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231977AbjCONRt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Mar 2023 09:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41066 "EHLO
+        id S231452AbjCONvc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Mar 2023 09:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjCONRk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Mar 2023 09:17:40 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B3CA4031;
-        Wed, 15 Mar 2023 06:17:32 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id fd5so41528401edb.7;
-        Wed, 15 Mar 2023 06:17:32 -0700 (PDT)
+        with ESMTP id S231979AbjCONva (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Mar 2023 09:51:30 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16391B54D;
+        Wed, 15 Mar 2023 06:51:23 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id d36so24392832lfv.8;
+        Wed, 15 Mar 2023 06:51:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678886250;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20210112; t=1678888282;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rxURf+psBqe1s2q26pfxC4QOrHgw3rDqBW2xfMo8qjE=;
-        b=ZbpCbllL5NG5xKpwbFyUvB9kj3Gd2mgMQwGrxsNn8opc98RzOSeOsdkpfZBYJ8Hoi2
-         J7XE7+sEp0Ls+A3kGgJOHbgCeBwXhFSgkFs6Nab0UPvqyMEKRXD7YysnFYmIcfdKXfq1
-         rttuTphm8XPZg7hkmQYHUWROHMAAQjkh3dzBMm3JVLzrM6Dw7pqDACOYLqRGzYhhMrVD
-         MEEsjVDI5dXY4rdBip8lLSqJ1cgFhv2tj08w4xtpC0fPFT6jzuOj7QGjKB4gvzZu/Neu
-         8/fQ8a8yAPK6Ke+48lrANUwyPJvWhYjGr/18vlQ+uZzRzMnZosbJymqpEda2SQIIuNRI
-         CjhA==
+        bh=/LPqzmTzeR64UgWjKdiepqf9072TIZPdOTEG0IRI2qM=;
+        b=KW8A7CP/ivTmXI71sqXwlrPI6QQ0bjZkFCk79qvwLFGrCnfOoV6IDva97eDzyzwUh1
+         sAMDAwrkuV8ByrzsRbS/dCgbWBdQUTFpZ3fJrbhCHQWflqjS0u9pmCcXVDExu8CU+yC8
+         3XrZ/GhiVqmWT5PX6lU8Qam4jpPy52stRfl4UBXkOTZe6TyUOisqeZIdkTBw35ESC/Pk
+         oBmQrA4huxgXFMusp8ggXyjabGhOdatFlZRHWOW/aAsRX9a6Hp+qf+OhNULFisy+VQUu
+         FjzhutNu8kHI6+56QZZZZNVoAZ+1t/J+IvA63tPD/+RJPHOFR6deL91n2gs/TZ0loSmF
+         siVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678886250;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rxURf+psBqe1s2q26pfxC4QOrHgw3rDqBW2xfMo8qjE=;
-        b=ZXw0weO50TeoxI6Pp2ZlkmMx9Mcyxsdg2JphfDMyv2UnxuohY/9J0H10PGjLl2kuHT
-         MKvbeMAZGTrXgp+lNhjki6bSwibKAUvMHcs+bKkkVJVh9knWqP/RbOGX0q/gFhFmz1MC
-         fqiN+UEc5i6DlYiDzbbZWJ9FSQ/ZQ/gdgk2SLMRxIfWv8kD+T87/p3YtzSpk9U2ly+gP
-         0RcpMPrRN/BzYniaLzM6XkkuDLiR50g3IcfuTqvwUH/K5WrTnvYymfPXJ20LuozE/NP7
-         qqsPSPtJTZC4aPw7gXN3idfIfnsQR3geDzVHr06rADnKjpow2V6+72pQbPl4+17HgYbw
-         yp6g==
-X-Gm-Message-State: AO0yUKVou468J9tVi0QLJ3Cq7ASysj3dIvoEqxDyfK5AIAZU9bltrMXm
-        /wOSUTn6aMP49KzMD5TIDW73M3BOhP4=
-X-Google-Smtp-Source: AK7set91wtHjhXetIVBcBhjO6ED4bASi3NFH/TWqHxikavMlL85x4i+gvUsCw5stT7YBbbyv+/iEBQ==
-X-Received: by 2002:a17:907:385:b0:8f1:da18:c6ca with SMTP id ss5-20020a170907038500b008f1da18c6camr5658278ejb.3.1678886250262;
-        Wed, 15 Mar 2023 06:17:30 -0700 (PDT)
-Received: from [192.168.1.16] ([41.42.177.251])
-        by smtp.gmail.com with ESMTPSA id sd5-20020a170906ce2500b009222eec8097sm2500281ejb.75.2023.03.15.06.17.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Mar 2023 06:17:29 -0700 (PDT)
-Message-ID: <ec13bbba-88ec-64b0-58ae-eee8617990b8@gmail.com>
-Date:   Wed, 15 Mar 2023 15:17:28 +0200
+        d=1e100.net; s=20210112; t=1678888282;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/LPqzmTzeR64UgWjKdiepqf9072TIZPdOTEG0IRI2qM=;
+        b=nqCdcJ1L5HHeQnGBFdYskeaum9Cx1Al/hncsV42YItd2vlrmxHmKrSX4TTJnD4OOK7
+         16Zxsz3NsqGx+Zh6iQS4/vEPqD9DLOOw/u4MA+KOauOU7aJYmE3Wts9yp9O/JzjdRRbc
+         0btBT2Jjtxi6N7efkUqAse2IsV5IT+lBzMpAJ2aRJUQh24VdwKWq0iM56U63e0SnkLak
+         ZH6xbBWKhwbS1CModrr9SQcbTrFoYv/N9L/Fxb1zrX3Mz2+/0hK2d2MO58J2FxgVjQNn
+         HrUZ6jbFVFpFBjSsQveQILIXy7QEduM4m44REH/ZCDiuq3VMt+KiRVYfUls2IO5sWI4s
+         AlWg==
+X-Gm-Message-State: AO0yUKXNtH9+YVx2eMOyaoXffEA/M+AuvRmzHP1Rl0hOzWzy1lZP1030
+        ykko7hAA6MoHURzS5apNNiM=
+X-Google-Smtp-Source: AK7set8tgh0+uDN6B3KQerWnMOpSS8b5YgkQbTwrdGp4i+L3fO1DABQN5i3lRHWdlEbI1RIx+cVjHQ==
+X-Received: by 2002:ac2:46c7:0:b0:4e8:5392:492c with SMTP id p7-20020ac246c7000000b004e85392492cmr1456797lfo.43.1678888281632;
+        Wed, 15 Mar 2023 06:51:21 -0700 (PDT)
+Received: from ruslan.. ([178.176.76.115])
+        by smtp.gmail.com with ESMTPSA id b5-20020ac25625000000b004e84a8c3d86sm832460lff.42.2023.03.15.06.51.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Mar 2023 06:51:21 -0700 (PDT)
+From:   Kasumov Ruslan <xhxgldhlpfy@gmail.com>
+To:     Andy Gross <agross@kernel.org>
+Cc:     Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+        Kasumov Ruslan <s02210418@gse.cs.msu.ru>
+Subject: [PATCH v2] iio: adc: qcom-pm8xxx-xoadc: Remove useless condition in pm8xxx_xoadc_parse_channel()
+Date:   Wed, 15 Mar 2023 16:51:14 +0300
+Message-Id: <20230315135114.22684-1-xhxgldhlpfy@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230314193709.15208-1-xhxgldhlpfy@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US
-To:     Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Outreachy Linux Kernel <outreachy@lists.linux.dev>
-From:   Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>
-Subject: Outreachy
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        LOCALPART_IN_SUBJECT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Mentors,
+The left side of the loop condition never becomes false.
+hwchan cannot be NULL, because it points to elements of the
+hw_channels array that takes one of 4 predefined values:
+pm8018_xoadc_channels, pm8038_xoadc_channels,
+pm8058_xoadc_channels, pm8921_xoadc_channels.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-I am Menna, Outreachy applicant and I work on my clean-up patches.
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Kasumov Ruslan <s02210418@gse.cs.msu.ru>
+---
+v2: Removed "Fixes" tag as Andi Shyti <andi.shyti@kernel.org> suggested.
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Is it Okay to work on this error reported by checkpatch script?
-
-
-drivers/staging/iio/frequency/ad9832.c
---------------------------------------
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#256: FILE: drivers/staging/iio/frequency/ad9832.c:256:
-+static IIO_DEV_ATTR_FREQ(0, 1, 0200, NULL, ad9832_write, AD9832_FREQ1HM);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#257: FILE: drivers/staging/iio/frequency/ad9832.c:257:
-+static IIO_DEV_ATTR_FREQSYMBOL(0, 0200, NULL, ad9832_write, 
-AD9832_FREQ_SYM);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#260: FILE: drivers/staging/iio/frequency/ad9832.c:260:
-+static IIO_DEV_ATTR_PHASE(0, 0, 0200, NULL, ad9832_write, AD9832_PHASE0H);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#261: FILE: drivers/staging/iio/frequency/ad9832.c:261:
-+static IIO_DEV_ATTR_PHASE(0, 1, 0200, NULL, ad9832_write, AD9832_PHASE1H);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#262: FILE: drivers/staging/iio/frequency/ad9832.c:262:
-+static IIO_DEV_ATTR_PHASE(0, 2, 0200, NULL, ad9832_write, AD9832_PHASE2H);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#263: FILE: drivers/staging/iio/frequency/ad9832.c:263:
-+static IIO_DEV_ATTR_PHASE(0, 3, 0200, NULL, ad9832_write, AD9832_PHASE3H);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#264: FILE: drivers/staging/iio/frequency/ad9832.c:264:
-+static IIO_DEV_ATTR_PHASESYMBOL(0, 0200, NULL,
-+                ad9832_write, AD9832_PHASE_SYM);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#268: FILE: drivers/staging/iio/frequency/ad9832.c:268:
-+static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL,
-+                ad9832_write, AD9832_PINCTRL_EN);
-ERROR: Use 4 digit octal (0777) not decimal permissions
-#270: FILE: drivers/staging/iio/frequency/ad9832.c:270:
-+static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL,
-+                ad9832_write, AD9832_OUTPUT_EN);
-total: 9 errors, 0 warnings, 0 checks, 462 lines checked
-
-
-
-Thanks in advance,
-
-Menna
-
-
+diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+index eb424496ee1d..64a3aeb6261c 100644
+--- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
++++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+@@ -758,7 +758,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
+ 	/* Find the right channel setting */
+ 	chid = 0;
+ 	hwchan = &hw_channels[0];
+-	while (hwchan && hwchan->datasheet_name) {
++	while (hwchan->datasheet_name) {
+ 		if (hwchan->pre_scale_mux == pre_scale_mux &&
+ 		    hwchan->amux_channel == amux_channel)
+ 			break;
+-- 
+2.34.1
 

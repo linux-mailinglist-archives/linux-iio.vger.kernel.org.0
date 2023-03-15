@@ -2,89 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A25AA6BA2A6
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Mar 2023 23:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7174F6BA404
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Mar 2023 01:25:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbjCNWmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Mar 2023 18:42:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35992 "EHLO
+        id S229705AbjCOAZP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Mar 2023 20:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231256AbjCNWl7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 18:41:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B1C37541;
-        Tue, 14 Mar 2023 15:41:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 318CF61A47;
-        Tue, 14 Mar 2023 22:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A4DC433D2;
-        Tue, 14 Mar 2023 22:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678833717;
-        bh=s6IlrideidXiP2FRDZyepR6OUAPx5CL/GzNBpxy/lyA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KjWPkr1+9gglz/7YFCYrvIRAAcuskx48dxq6RXDQROZhnIya6h3HhSKYhE0nTSf5t
-         OrXC260lip8lFK8+4Pm9XfjUAdmK58eimPvgXFXtDAkozgninx/vF7g2EusBBcikjH
-         gPoES119tn804hA+3fXCBA3MZ7PDH92TbGrG28RmHkALJ9da/Qso8bLY1q1iRNxpXh
-         IH/XHB5mZKXHqu+G+uCpIQTtHpZls1IF2YzARdSxW7ixG9Y1xj9Qxn/E3+TSCqI0W6
-         a2RR35RzpZYeUWYjoOMaKOT/Ou0AioOTdSbonL+DM6YBjPaE87mt/2iF0NU79daUxN
-         DylGDWdztvrbw==
-Date:   Tue, 14 Mar 2023 23:41:54 +0100
-From:   Andi Shyti <andi.shyti@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        lvc-project@linuxtesting.org,
-        Kasumov Ruslan <xhxgldhlpfy@gmail.com>,
-        linux-arm-msm@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-iio@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Kasumov Ruslan <s02210418@gse.cs.msu.ru>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [lvc-project] [PATCH] iio: adc: qcom-pm8xxx-xoadc: Remove
- useless condition in pm8xxx_xoadc_parse_channel()
-Message-ID: <20230314224154.7gctfkt2mlaz3geg@intel.intel>
-References: <20230314193709.15208-1-xhxgldhlpfy@gmail.com>
- <CACRpkdan0Vt_T3aRVAK4rd=hQV=MOARm9Wq7sD8rjoisTW6Dkw@mail.gmail.com>
- <20230314212851.hqbzs5hhed5apcv5@intel.intel>
- <9aec4249-6457-4e3b-13dd-baf02d4fbfad@ispras.ru>
- <CACRpkdb2CFckKo=VGb4gkyS0pXmqDrRBtJNeT1PjetctRquBVQ@mail.gmail.com>
+        with ESMTP id S229667AbjCOAZL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Mar 2023 20:25:11 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E3A11654;
+        Tue, 14 Mar 2023 17:25:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678839909; x=1710375909;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=U1zdj8Dquc6MZUtI6kfFO20iWgohrm20xN5v1gR/6P0=;
+  b=lDoRGj1edS0WWURCwW6t29BmcTdAiRFX/yns0h52AAWb7+hkIqF81hrY
+   dvDtsDLDsgAM6GptpX+MIfrDuRNw4XXrwm4T1GOqGEqEeIy5X07sDKu76
+   yGXMrjw1HOfy+HzipZyx0ZuvirtViluRuM/rjLEucCiF+c8F1Vk4GEgcj
+   Sa5612+8wRCM6JUNC4EJSxGkJ1OBHux1PzpOBD3C8jLTFepVwiEeNQ/BZ
+   jkUJvReqOWZnl9LdRTUEtjgaAUbPa4CcwmBBBC4vSB06JOFu00GIXCMDi
+   M/73waLAesG46c91k/O/RdwZb4Ikc0FQQQBpqDoTEaK/qGmD25dzOPaOc
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="400157895"
+X-IronPort-AV: E=Sophos;i="5.98,261,1673942400"; 
+   d="scan'208";a="400157895"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 17:25:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="709480399"
+X-IronPort-AV: E=Sophos;i="5.98,261,1673942400"; 
+   d="scan'208";a="709480399"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.212.140.184])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 17:25:07 -0700
+Date:   Tue, 14 Mar 2023 17:25:06 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Julia Lawall <julia.lawall@inria.fr>,
+        Dan Carpenter <error27@gmail.com>
+Cc:     Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>,
+        outreachy@lists.linux.dev, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: iio: meter: enclose Macros with complex values
+ in parentheses
+Message-ID: <ZBEQYp/z+C/JeR98@aschofie-mobl2>
+References: <20230312133347.120944-1-eng.mennamahmoud.mm@gmail.com>
+ <alpine.DEB.2.22.394.2303121507450.2865@hadrien>
+ <174e4d14-8b3e-67f7-d901-bd77b054f7c3@gmail.com>
+ <alpine.DEB.2.22.394.2303121525270.2865@hadrien>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdb2CFckKo=VGb4gkyS0pXmqDrRBtJNeT1PjetctRquBVQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <alpine.DEB.2.22.394.2303121525270.2865@hadrien>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Alexey and Ruslan,
-
-On Tue, Mar 14, 2023 at 11:07:19PM +0100, Linus Walleij wrote:
-> On Tue, Mar 14, 2023 at 11:03 PM Alexey Khoroshilov
-> <khoroshilov@ispras.ru> wrote:
+On Sun, Mar 12, 2023 at 03:25:37PM +0100, Julia Lawall wrote:
 > 
-> > As far as I can see sentinel is an "empty" element of xoadc_channel in
-> > the array, i.e. hwchan->datasheet_name works as a sentinel while hwchan
-> > is always non NULL.
 > 
-> You're right, I was unable to understand my own code :(
+> On Sun, 12 Mar 2023, Menna Mahmoud wrote:
+> 
+> >
+> > On ١٢/٣/٢٠٢٣ ١٦:١٢, Julia Lawall wrote:
+> > >
+> > > On Sun, 12 Mar 2023, Menna Mahmoud wrote:
+> > >
+> > > > enclose Macros with complex values in parentheses is especially useful
+> > > > in making macro definitions “safe” (so that they
+> > > > evaluate each operand exactly once).
+> > > enclose -> Enclose, and Macros -> macros
+> > >
+> > > I don't understand the above comment though.  How does adding parentheses
+> > > around the body of a macro cause the operands to be evaluated only once?
+> > > And the macros that you have changed don't have any operands.
+> > >
+> > > The value of adding parentheses is normally to ensure that the body of the
+> > > macro doesn't interact with the context in a weird way.  For example, you
+> > > could have
+> > >
+> > > #define ADD 3 + 4
+> > >
+> > > Then if you use your macro as 6 * ADD, you will end up evaluating
+> > > 6 * 3 + 4, ie 18 + 4, when you might have expected 6 * 7.  The issue is
+> > > that * has higher precedence than +.
+> >
+> >
+> > yes, I mean that but i couldn't explain it well, thanks for your feedback.
+> >
+> >
+> > >
+> > > But I don't think that such a problem can arise with a cast expression, so
+> > > parentheses around it should not be necessary.
+> >
+> >
+> > So, no need for this patch?
+> 
+> No, I don't think so.
+> 
+> julia
 
-At this time of the day I got alarmed too. Happens :)
+Looping in Dan C explicitly.
 
-Please ignore my previous comment but still no need for the
-Fixes: tag from the commit log as it's a cleanup and not a bug
-fix.
+Can we revisit this one?  It actually leads to a checkpatch ERROR.
+So, anyone hoping to get an error free checkpatch run on this file,
+is out of luck.
 
-Thanks,
-Andi
+Is this something that checkpatch can learn about and allow, or
+should we add the parens here, to dare I say, appease the checkpatch
+god ;)
+
+Alison
+
+
+> 
+> >
+> >
+> > > > this error reported by chechpatch.pl
+> > > this error is reported by checkpatch.
+> > >
+> > > > "ERROR: Macros with complex values should be enclosed in parentheses"
+> > > >
+> > > > for ADE7854_SPI_SLOW, ADE7854_SPI_BURST and ADE7854_SPI_FAST
+> > > > macros and this error fixed by enclose these macros in parentheses.
+> > > The last two lines aren't needed.  One can easily see that from looking at
+> > > the patch.
+> >
+> >
+> > Got it, Thank you.
+> >
+> > Menna
+> >
+> > > julia
+> > >
+> > > > Signed-off-by: Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>
+> > > > ---
+> > > >   drivers/staging/iio/meter/ade7854.h | 6 +++---
+> > > >   1 file changed, 3 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/drivers/staging/iio/meter/ade7854.h
+> > > > b/drivers/staging/iio/meter/ade7854.h
+> > > > index 7a49f8f1016f..41eeedef569b 100644
+> > > > --- a/drivers/staging/iio/meter/ade7854.h
+> > > > +++ b/drivers/staging/iio/meter/ade7854.h
+> > > > @@ -139,9 +139,9 @@
+> > > >   #define ADE7854_MAX_RX    7
+> > > >   #define ADE7854_STARTUP_DELAY 1000
+> > > >
+> > > > -#define ADE7854_SPI_SLOW	(u32)(300 * 1000)
+> > > > -#define ADE7854_SPI_BURST	(u32)(1000 * 1000)
+> > > > -#define ADE7854_SPI_FAST	(u32)(2000 * 1000)
+> > > > +#define ADE7854_SPI_SLOW	((u32)(300 * 1000))
+> > > > +#define ADE7854_SPI_BURST	((u32)(1000 * 1000))
+> > > > +#define ADE7854_SPI_FAST	((u32)(2000 * 1000))
+> > > >
+> > > >   /**
+> > > >    * struct ade7854_state - device instance specific data
+> > > > --
+> > > > 2.34.1
+> > > >
+> > > >
+> > > >
+> >
+

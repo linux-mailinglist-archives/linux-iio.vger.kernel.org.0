@@ -2,99 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 814416BDBE2
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Mar 2023 23:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BE06BDD24
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 00:48:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbjCPWo7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Mar 2023 18:44:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
+        id S230033AbjCPXsu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Mar 2023 19:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbjCPWo6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Mar 2023 18:44:58 -0400
-X-Greylist: delayed 36099 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Mar 2023 15:44:55 PDT
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB39D52F40
-        for <linux-iio@vger.kernel.org>; Thu, 16 Mar 2023 15:44:55 -0700 (PDT)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id D2DD2402E6;
-        Thu, 16 Mar 2023 23:44:52 +0100 (CET)
-Date:   Thu, 16 Mar 2023 23:44:50 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
- generic ADC node name
-Message-ID: <20230316224450.onx2bldlisfwwp23@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>, iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-References: <20230201204447.542385-1-marijn.suijten@somainline.org>
- <20230201204447.542385-3-marijn.suijten@somainline.org>
- <20230203212501.GA908601-robh@kernel.org>
- <20230205150645.549ff062@jic23-huawei>
- <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
- <20230316174428.00003c4c@Huawei.com>
+        with ESMTP id S229567AbjCPXst (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Mar 2023 19:48:49 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3B223D81;
+        Thu, 16 Mar 2023 16:48:48 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id cy23so14005178edb.12;
+        Thu, 16 Mar 2023 16:48:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679010527;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6CcKQfQ3li/OQy0XLK7pgN4pP6FbzFrSofkOie9NH4=;
+        b=ARhQMkkcRHRju2Mco0fL2F9mLgQuG1l9gUzuIIwO1ajhxS1dK6kT5sg2NAQD/8j747
+         NMYhTn0uPfX/NcuGFX5CPYsSb2JxeqNPBDI9njH3whLXXutoo28MIFqkqqrE+XYisqhV
+         prndGKEgEcijBj5JcJisDrtreOWSgIMsG4jxV5cvInqJfueZCP00tIPzm4dnX4S1I86r
+         3gfTEAXFvRtqbmpu8oS6wkrPAP4Un+1wjTRA0eUeBNh4hquDiMK05rH6rJD/PI9bxvNn
+         TRNOPTSULk04cgXr244le466heWOwi8YI9ruQrJjHo/XjdAZSrcAA5SrpQTK3UxcfURv
+         V/CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679010527;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x6CcKQfQ3li/OQy0XLK7pgN4pP6FbzFrSofkOie9NH4=;
+        b=WC018x2zFndQcrp591thK9iIUuOh//z7loXMD+tMYncsSgXAwSNUYMCzmyLOeU5XwO
+         8TbjX5e+QQDtabwM2kCSPkG4fWpOzANfyx7P7ldS30ovr0wb2n7HL2i7sIU5jBrcLsge
+         PRkCrYdI1wdTE07PlxxLZNTEGtatvZ9kEGpqRGfQ8V9Imuh34NZQYttCj8uXCQYYWBPw
+         DlrJFLJ0IHKFyUywmsfdhO1BOPFIiPPtqFWT0HkUsQOX/Gz/FBEKoeEOBQ8UUFPK1Jrw
+         pCmJm7q1GZaSl23CcEtXk4h+MTJk4d4r4udmJ1HToIhyv+qbKAMVTorFcVEoz7tL2ztI
+         w9BA==
+X-Gm-Message-State: AO0yUKWCkA8Ya7ksZ5x9t+LxQdbRPvbNyITXBLQO2F3uaj0ugA5GkQNe
+        0ONTmeqsKiJtjlob3TI4qoQ=
+X-Google-Smtp-Source: AK7set88K1g3guSHAqEW0yiw3gxUkxpaqyAds3f35L8epGGiQzX6te7ztmZ2sYhw6qeIG0lwLJIOHA==
+X-Received: by 2002:a17:906:f2c9:b0:931:bc4a:ce08 with SMTP id gz9-20020a170906f2c900b00931bc4ace08mr468010ejb.36.1679010526637;
+        Thu, 16 Mar 2023 16:48:46 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8109:aa3f:ead8::a442])
+        by smtp.gmail.com with ESMTPSA id h24-20020a1709062dd800b008db605598b9sm226896eji.67.2023.03.16.16.48.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Mar 2023 16:48:46 -0700 (PDT)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, mazziesaccount@gmail.com
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH 0/3] iio: accel: Add support for Kionix/ROHM KX132 accelerometer 
+Date:   Fri, 17 Mar 2023 00:48:34 +0100
+Message-Id: <cover.1679009443.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230316174428.00003c4c@Huawei.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-03-16 17:44:28, Jonathan Cameron wrote:
-<snip>
-> > Should it inherit the common binding, or was it omitted for a reason?
-> 
-> Harmless but little point as far as I can see given we don't happen
-> to have any of the generic elements defined in the generic channel
-> binding.
+KX132 accelerometer is a sensor which:
+	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+	- can be connected to I2C or SPI
+	- has internal HW FIFO buffer
+	- supports various ODRs (output data rates)
 
-Supposedly the reg property, and now also the node name.  Up to you to
-say whether I should inherit this (and strip out the common bits) or
-just focus on renaming the node name in the existing binding to channel.
+The KX132 accelerometer is very similair to the KX022A. 
+One key difference is number of bits to report the number of data bytes that 
+have been stored in the sample buffer: 8 bits for KX022A vs 10 bits for KX132.
 
-- Marijn
+A complete list of differences is listed in [1]
+
+
+[1] https://kionixfs.azureedge.net/en/document/AN112-Transitioning-to-KX132-1211-Accelerometer.pdf1
+
+Mehdi Djait (3):
+  dt-bindings: iio: Add KX132 accelerometer
+  iio: accel: kionix-kx022a: Add chip_info structure
+  iio: accel: Add support for Kionix/ROHM KX132 accelerometer
+
+ .../bindings/iio/accel/kionix,kx022a.yaml     |  13 +-
+ drivers/iio/accel/kionix-kx022a-i2c.c         |  21 +-
+ drivers/iio/accel/kionix-kx022a-spi.c         |  24 +-
+ drivers/iio/accel/kionix-kx022a.c             | 413 +++++++++++-------
+ drivers/iio/accel/kionix-kx022a.h             | 181 +++++++-
+ 5 files changed, 464 insertions(+), 188 deletions(-)
+
+-- 
+2.30.2
+

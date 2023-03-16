@@ -2,99 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A5136BCAC6
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Mar 2023 10:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 314226BCFDE
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Mar 2023 13:50:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230494AbjCPJ1f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Mar 2023 05:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46850 "EHLO
+        id S229985AbjCPMuA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Mar 2023 08:50:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjCPJ1e (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Mar 2023 05:27:34 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6D2B8540
-        for <linux-iio@vger.kernel.org>; Thu, 16 Mar 2023 02:27:21 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id ek18so4913658edb.6
-        for <linux-iio@vger.kernel.org>; Thu, 16 Mar 2023 02:27:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678958840;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9Am4l6xMhb1vP5dilYwx3GXsl0GLDDzlZh+2OHdXw3E=;
-        b=S22BQSMOhc67lmchHChq56D944nMKduaS8BUh0D5MlnB9rjlgF4lVssG12DMHX38Mo
-         QXguqzMx45O2HNy8Z3wso8HRnxs7NrqIf+Qpq36QplqA4FbZE1guN64Q4oNM+4qhEapp
-         SjX/YRhU0LPtaBxw9+SygEMYf+paRqFBhjcIGo0fe6Uv4EKUTHpx5pJvpncmJuo44jXb
-         xYNlU5VB+zZ97kMaytRGJqaehWne3nXMcCoys6usNVXz3l7OSRUENCY2qYHwGzN2bVaU
-         dfpGNU6UyU3Ra/OcLNXNSb1F+W1Lo1vYLXvQVZHBU34v63qztMe6BJ/x0xaOh2tEsdcG
-         oHZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678958840;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Am4l6xMhb1vP5dilYwx3GXsl0GLDDzlZh+2OHdXw3E=;
-        b=YkO93qyOPfWkim9pL1rjfpiul+bXaOsZf5pnlwnUhwYkObvr5ryo017WJ4tEXZ5i02
-         B2dSlH6I8Pm8b7bj7vWUiAhB7gPPuQpf0+SqdVXPuJZJgQ6VBprX/xrjSxagysuZ6CEw
-         lby6zQiZCDiBfOrQnS6VPMkmqqnXzNiqfDxZRpFPGuUQL2zq/iQpYhHizLHe6eBnTrBS
-         WZzJHMcsBP7urZZGoHXz41I8WZoHmHwxQ08tsH1PtB/NFLVbK+SzEB2jcfiWnFjBO4np
-         7gm5FbT3lUCMhI9Ld2hfE0okxY2Sv1UpSFWEw2UThpnBJDVG2+QavqMrQ+KwFJUhF7W7
-         qOMg==
-X-Gm-Message-State: AO0yUKU45lZAPP5ujxxaXTxKQS/ft6NgkqVvAzWId0WtkDQJd30kiAVB
-        iGbdeiHt+16YBY6VwaikbwRrdpoq0WTQnssPIQc=
-X-Google-Smtp-Source: AK7set/rd7n6OFPsMVd8VZUnfm+DpVbLao1YgEyh16GEnT/5dmhBspHPgbr+AipmDEs8NStAwYll7V5pNP6ku8Uz1y4=
-X-Received: by 2002:a17:907:8a12:b0:92f:cf96:e1f6 with SMTP id
- sc18-20020a1709078a1200b0092fcf96e1f6mr1742286ejc.11.1678958839900; Thu, 16
- Mar 2023 02:27:19 -0700 (PDT)
+        with ESMTP id S229659AbjCPMt6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Mar 2023 08:49:58 -0400
+X-Greylist: delayed 402 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Mar 2023 05:49:55 PDT
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C633E38007
+        for <linux-iio@vger.kernel.org>; Thu, 16 Mar 2023 05:49:55 -0700 (PDT)
+Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 62ABA40287;
+        Thu, 16 Mar 2023 13:43:09 +0100 (CET)
+Date:   Thu, 16 Mar 2023 13:43:07 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
+ generic ADC node name
+Message-ID: <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
+References: <20230201204447.542385-1-marijn.suijten@somainline.org>
+ <20230201204447.542385-3-marijn.suijten@somainline.org>
+ <20230203212501.GA908601-robh@kernel.org>
+ <20230205150645.549ff062@jic23-huawei>
 MIME-Version: 1.0
-Received: by 2002:a05:6f02:3a4:b0:46:2cca:b161 with HTTP; Thu, 16 Mar 2023
- 02:27:19 -0700 (PDT)
-Reply-To: wormer.amos@aol.com
-From:   Wormer Amos <claudiayahya2022@gmail.com>
-Date:   Thu, 16 Mar 2023 10:27:19 +0100
-Message-ID: <CAEbGVRkP_Mn7fLQ8qRwtyi7VbV2V+bZYAEMfJbMqN47rc62sDg@mail.gmail.com>
-Subject: FOR INVESTMENT PROPOSAL ONLY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230205150645.549ff062@jic23-huawei>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:52d listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6031]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [claudiayahya2022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [claudiayahya2022[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Please are you capable for investment in your country. i
-need serious investment project with good background, kindly connect
-me to discuss details immediately. i will appreciate you to contact me
-on this email address Thanks and awaiting your quick response,
+On 2023-02-05 15:06:45, Jonathan Cameron wrote:
+> On Fri, 3 Feb 2023 15:25:01 -0600
+> Rob Herring <robh@kernel.org> wrote:
+> 
+> > On Wed, Feb 01, 2023 at 09:44:46PM +0100, Marijn Suijten wrote:
+> > > Update the example to reflect a future requirement for the generic
+> > > adc-chan node name on ADC channel nodes, while conveying the board name
+> > > of the channel in a label instead.  
+> > 
+> > I don't think we've defined 'adc-chan' as THE generic name. Looks like 
+> > we have:
+> > 
+> > adc-chan
+> > adc-channel
+> > channel
+> > 
+> > 'channel' is the most common (except for QCom).
+> Good spot.
+> 
+> We also have that defined as the channel name in 
+> bindings/iio/adc.yaml
 
-Yours
-Amos,
+Good point, let's match adc.yaml and use 'channel' instead.  I'll
+respin this series with thas, as well as rebasing on -next to solve
+conflicts with 8013295662f5 ("arm64: dts: qcom: sc8280xp: Add label
+property to vadc channel nodes"): supposedly that DT originally relied
+on the `@XX` suffix bug :)
+
+> Now this particular binding doesn't use anything from that
+> generic binding (other than trivial use of reg) but better to be
+> consistent with it than not!
+
+Should it inherit the common binding, or was it omitted for a reason?
+
+- Marijn

@@ -2,149 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C5F76BEBB3
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 15:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2F96BEF5F
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 18:17:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230435AbjCQOss (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Mar 2023 10:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
+        id S229925AbjCQRRX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Mar 2023 13:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbjCQOsq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 10:48:46 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F95714494;
-        Fri, 17 Mar 2023 07:48:44 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id g17so6812122lfv.4;
-        Fri, 17 Mar 2023 07:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679064522;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VK1KzYy/5H9i6btPM5HWOxKnSEHvSGLN6SWcopPygK0=;
-        b=pLeS9TSnE8P0Qkcrg6o7ZWG9Z4SvbtpUvOdJRVKRXu6kmScSQoAiHA/bG4hlrZO9bh
-         AHOg+1cBNQ9o4/c5jQhHZ7LVm59N+VmET5YP07ZwDaz57kR3E0m/Vktjl/IZ76rMxFQp
-         W6e63r2ozSkFVVs4CL9fE8t4NIIQItJWsvnHhWVL1XXr4BeSAFoAFOtPjPpjMgrj2PpK
-         9aHMYXxVFWrelQpnT0lT03q8r/4OstLcSu1PfSKP0LnMtfKEcpFSEjHbff5nAH4azhrw
-         TBZhv9fi5LsPn8X0E1Ah4TGuHY+j8EzWnWjqIazsDxYbHfV3NGbB0b02wMpE/TIdYnS3
-         Mbqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679064522;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VK1KzYy/5H9i6btPM5HWOxKnSEHvSGLN6SWcopPygK0=;
-        b=DoAMXaCBpxOTUHqn9a/8Z7tLbiU/z8QwCADp8BH/oqL88xiky2swJ00wAvKoFaLV4J
-         pjUICyhyOi9PKIiV+86emg/cH8K5um7bSFBhcUlPpDNyOZMrzRr2XSmmYjp4GjRl/VhE
-         6v6OgTqbjtPd4TLrkI4teZlIKSqYpML0/CC1KDL+J3ZTLzjfv+wxASem+hgC5vrZLQho
-         X5Hz3dvcZ8KssacRrGwUWxWMoA8/WNNhMACg+6oXhC28nHTRbTP4pn5AypEinuf0HAJc
-         yqQYRNhkWSwXuNj3ygqg5KEoOobQiumi2q+qmmkKzLsTOPIzhi+WY1t7fUzhzMp+hLnk
-         YhMA==
-X-Gm-Message-State: AO0yUKX6nHJwF1CsranQZgAWQjvrkKZ0dmMSrbxhCmw/bUZwJJIAvcIZ
-        0q0EzpBiPlhBeefiHbipttI=
-X-Google-Smtp-Source: AK7set/kAC3oqG4fJA2gLuteYlSIvY5IZlT7p8MeOMk6ANibXIrPuykNaLUzEBu8ztRXgUkDaWN/+A==
-X-Received: by 2002:ac2:59d0:0:b0:4de:7a23:23e2 with SMTP id x16-20020ac259d0000000b004de7a2323e2mr4174573lfn.21.1679064522463;
-        Fri, 17 Mar 2023 07:48:42 -0700 (PDT)
-Received: from [172.16.196.130] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id f22-20020a2e3816000000b00295b0eead9asm442065lja.114.2023.03.17.07.48.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Mar 2023 07:48:42 -0700 (PDT)
-Message-ID: <61169e7e-b839-eb06-046f-e41bd3eabcec@gmail.com>
-Date:   Fri, 17 Mar 2023 16:48:41 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v4 7/8] iio: light: ROHM BU27034 Ambient Light Sensor
-Content-Language: en-US, en-GB
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229813AbjCQRRW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 13:17:22 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FCA4C48A8;
+        Fri, 17 Mar 2023 10:17:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679073439; x=1710609439;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=i7Um5WgX0/Ow2OiYnXCvKojE79q9wI7ohWbytUP/Llc=;
+  b=mUgpyvmczhsTdb5mLmKFGvuIUCGKr8fBLAVGKjNrR4yDa69StWDoEf5I
+   DXPIPPOkh4Is0KDLGCR7x/5lPpeo9gHaWphhgm56dfJm6FCiYjvaWMXBc
+   3mgWtFdIIiTcsHLSaHJsUnh4rN5ru63F7cjZgIZ5PXT3cjJgv1cVjgGaU
+   WZVATTu8wBTxQqRhV0Pk/Ezjmx1SPXP1a60f4/icuRCQokS+U5cRG7jjX
+   gmduxuT8E9IBVxO8vObNfObYxMgb2M8U9AOOQ7dfivwz9fQw9RxJO5ExV
+   We7IL9RCu4opc6UoeuFaahhjhMuqXBQYiUFrvZ+0yDF9oxTGhemAQiFCi
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10652"; a="318718293"
+X-IronPort-AV: E=Sophos;i="5.98,268,1673942400"; 
+   d="scan'208";a="318718293"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2023 10:17:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10652"; a="712817421"
+X-IronPort-AV: E=Sophos;i="5.98,268,1673942400"; 
+   d="scan'208";a="712817421"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 17 Mar 2023 10:17:15 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pdDhb-0009VG-0Q;
+        Fri, 17 Mar 2023 17:17:15 +0000
+Date:   Sat, 18 Mar 2023 01:16:37 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Liam Beguin <liambeguin@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <cover.1679062529.git.mazziesaccount@gmail.com>
- <feb7e7f6785e93af45510ca22d9aecc28e436cf2.1679062529.git.mazziesaccount@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <feb7e7f6785e93af45510ca22d9aecc28e436cf2.1679062529.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v4 5/8] iio: test: test gain-time-scale helpers
+Message-ID: <202303180046.bcS0xv8j-lkp@intel.com>
+References: <31cf5765078b2d808d9e66eb623cde70ee6478ac.1679062529.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31cf5765078b2d808d9e66eb623cde70ee6478ac.1679062529.git.mazziesaccount@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/17/23 16:44, Matti Vaittinen wrote:
-> ROHM BU27034 is an ambient light sensor with 3 channels and 3 photo diodes
-> capable of detecting a very wide range of illuminance. Typical application
-> is adjusting LCD and backlight power of TVs and mobile phones.
-> 
-> Add initial  support for the ROHM BU27034 ambient light sensor.
-> 
-> NOTE:
-> 	- Driver exposes 4 channels. One IIO_LIGHT channel providing the
-> 	  calculated lux values based on measured data from diodes #0 and
-> 	  #1. In addition, 3 IIO_INTENSITY channels are emitting the raw
-> 	  register data from all diodes for more intense user-space
-> 	  computations.
-> 	- Sensor has GAIN values that can be adjusted from 1x to 4096x.
-> 	- Sensor has adjustible measurement times of 5, 55, 100, 200 and
-> 	  400 mS. Driver does not support 5 mS which has special
-> 	  limitations.
-> 	- Driver exposes standard 'scale' adjustment which is
-> 	  implemented by:
-> 		1) Trying to adjust only the GAIN
-> 		2) If GAIN adjustment alone can't provide requested
-> 		   scale, adjusting both the time and the gain is
-> 		   attempted.
-> 	- Driver exposes writable INT_TIME property that can be used
-> 	  for adjusting the measurement time. Time adjustment will also
-> 	  cause the driver to try to adjust the GAIN so that the
-> 	  overall scale is kept as close to the original as possible.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> ---
-> Changes
-> v3 => v4:
-> - use min_t() for division by zero check
-> - adapt to new GTS helper header location
-> - calculate luxes not milli luxes
-> - drop scale for PROCESSED channel
-> - comment improvements
-> - do not allow changing gain (scale) for channel 2.
->     - 'tie' channel 2 scale to channel 0 scale
->       This is because channel 0 and channel 2 GAIN settings share part of
->       the bits in the register. This means that setting one will also
->       impact the other. The v3 of the patches attempted to work-around
->       this by only disallowing the channel 2 gain setting to set the bits
->       which were shared with channel 0 gain. This does not work because
->       setting channel 0 gain (which was allowed to set also the shared
->       bits) could result unsupported bit combinations for channel 2 gain.
->       Thus it is safest to always set also the channel 2 gain to same
->       value as channel 0 gain.
-> - Use the correct integration time (55 mS) in the gain table as the
->    calcuations can be done based on the time multiplier.
-> - styling
-> 
+Hi Matti,
 
-And right after sending out this version I realized I forgot to run 
-spell-checker for the comments. I will do that for v5 - please bear with me.
+I love your patch! Yet something to improve:
 
-Yours,
-	-- Matti
+[auto build test ERROR on eeac8ede17557680855031c6f305ece2378af326]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/drm-tests-helpers-rename-generic-helpers/20230317-224949
+base:   eeac8ede17557680855031c6f305ece2378af326
+patch link:    https://lore.kernel.org/r/31cf5765078b2d808d9e66eb623cde70ee6478ac.1679062529.git.mazziesaccount%40gmail.com
+patch subject: [PATCH v4 5/8] iio: test: test gain-time-scale helpers
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20230318/202303180046.bcS0xv8j-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/37a2c62820ca249a8d3ab9f1b80eaa71e0d5749b
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Matti-Vaittinen/drm-tests-helpers-rename-generic-helpers/20230317-224949
+        git checkout 37a2c62820ca249a8d3ab9f1b80eaa71e0d5749b
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh SHELL=/bin/bash drivers/base/test/ drivers/iio/test/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303180046.bcS0xv8j-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/test/iio-test-gts.c:7:10: fatal error: kunit/platform_device.h: No such file or directory
+       7 | #include <kunit/platform_device.h>
+         |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+   compilation terminated.
+--
+>> drivers/base/test/test_kunit_device.c:11:10: fatal error: kunit/platform_device.h: No such file or directory
+      11 | #include <kunit/platform_device.h>
+         |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+   compilation terminated.
+
+
+vim +7 drivers/iio/test/iio-test-gts.c
+
+   > 7	#include <kunit/platform_device.h>
+     8	#include <kunit/test.h>
+     9	#include <linux/iio/iio-gts-helper.h>
+    10	#include <linux/iio/types.h>
+    11	
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

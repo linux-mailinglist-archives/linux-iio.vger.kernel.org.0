@@ -2,121 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 446C16BE87C
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 12:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3158A6BE8CA
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 13:07:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjCQLnC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Mar 2023 07:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38780 "EHLO
+        id S229985AbjCQMHE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Mar 2023 08:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230396AbjCQLmt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 07:42:49 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 95436A7295;
-        Fri, 17 Mar 2023 04:42:29 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4C621480;
-        Fri, 17 Mar 2023 04:35:33 -0700 (PDT)
-Received: from [10.57.17.87] (unknown [10.57.17.87])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D06D3F885;
-        Fri, 17 Mar 2023 04:34:47 -0700 (PDT)
-Message-ID: <74d8b579-6ea8-d6f3-170f-ea13534b4565@arm.com>
-Date:   Fri, 17 Mar 2023 11:34:49 +0000
+        with ESMTP id S229982AbjCQMHC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 08:07:02 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B3A46A2F1;
+        Fri, 17 Mar 2023 05:07:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679054820; x=1710590820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lB7z9JTEaPfgVe/3yaQB+3xyKnwK8qEpyWv6LLW5lHk=;
+  b=deiWSrWeElKunYrY2shzuf04AoUlhPk6rzWJk2CCJBRYLH/GYQOus2cS
+   TpQdwSbzkjQqNMtk0xZS+3/uyvpX0yUFe+orf+AoNBC/ZK2MssMHDDMzm
+   N+XNaWKTo8NXn0gZfqaIEqptV6cL0wXgwCbFYVEXjaBaujxv8Lxhd+bj1
+   REVBJJCb/5eBWkpEjzHxh3dAlyq2fcX69BCqtEioGDZNbcBTA9hCgRGqi
+   4UtfhidzQXu5Bt59X+ZE+XvyweTHaHTjtG6Ch2TitXXhKKsftRSVh4b+3
+   lJztjlS3EPJXZ3X89hhnHVfsfZ/JKxBo1iSw5G0v9BUfdHxeb8KIzB/1W
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="424517196"
+X-IronPort-AV: E=Sophos;i="5.98,268,1673942400"; 
+   d="scan'208";a="424517196"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2023 05:06:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="673533085"
+X-IronPort-AV: E=Sophos;i="5.98,268,1673942400"; 
+   d="scan'208";a="673533085"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 17 Mar 2023 05:06:41 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pd8r1-0050lS-2z;
+        Fri, 17 Mar 2023 14:06:39 +0200
+Date:   Fri, 17 Mar 2023 14:06:39 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: accel: kionix-kx022a: Add chip_info structure
+Message-ID: <ZBRXzymSWZaRDyhq@smile.fi.intel.com>
+References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
+ <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2 4/4] serial: qcom_geni: Use devm_krealloc_array
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
-        michal.simek@amd.com, Jonathan Corbet <corbet@lwn.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
-References: <20230309150334.216760-1-james.clark@arm.com>
- <20230309150334.216760-5-james.clark@arm.com>
- <20230311191800.74ec2b84@jic23-huawei>
-From:   James Clark <james.clark@arm.com>
-In-Reply-To: <20230311191800.74ec2b84@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, Mar 17, 2023 at 12:48:36AM +0100, Mehdi Djait wrote:
+> Refactor the kx022a driver implementation to make it more
+> generic and extensible.
+> Add the chip_info structure will to the driver's private
+> data to hold all the device specific infos.
+> Move the enum, struct and constants definitions to the header
+> file.
+
+Please, compile and test before sending.
+
+...
+
+>  	.driver = {
+> -		.name   = "kx022a-spi",
+> +		.name	= "kx022a-spi",
+>  		.of_match_table = kx022a_of_match,
+>  	},
+
+What was changed here?
+
+...
+
+> -	.id_table = kx022a_id,
+> +	.id_table = kx022a_spi_id,
+
+Why do we need this change?
+
+...
+
+> -	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-kx022a",
+> +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-accel",
+>  			      dev_name(data->dev));
+
+Shouldn't you use the name from chip info?
+
+...
+
+> +#define KX_MASK_BRES16			    BIT(6)
+> +
+> +
+
+One blank line is enough.
+
+>  #define KX022A_REG_WHO		0x0f
+>  #define KX022A_ID		0xc8
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-On 11/03/2023 19:18, Jonathan Cameron wrote:
-> On Thu,  9 Mar 2023 15:03:33 +0000
-> James Clark <james.clark@arm.com> wrote:
-> 
->> Now that it exists, use it instead of doing the multiplication manually.
->>
->> Signed-off-by: James Clark <james.clark@arm.com>
-> 
-> Hmm. I've stared at the users of this for a bit, and it's not actually obvious
-> that it's being used as an array of u32.  The only typed user of this is as
-> the 2nd parameter of  
-> tty_insert_flip_string() which is an unsigned char *
-> 
-> I wonder if that sizeof(u32) isn't a 'correct' description of where the 4 is coming
-> from even if it has the right value?  Perhaps the fifo depth is just a multiple of 4?
-> 
-> Jonathan
-> 
-
-The commit that added it (b8caf69a6946) seems to hint that something
-reads from it in words. And I see this:
-
-  /* We always configure 4 bytes per FIFO word */
-  #define BYTES_PER_FIFO_WORD		4U
-
-Perhaps sizeof(u32) isn't as accurate of a description as using
-BYTES_PER_FIFO_WORD but I'd be reluctant to make a change because I
-don't really understand the implications.
-
-There is also this in handle_rx_console():
-
-  unsigned char buf[sizeof(u32)];
-
-James
-
-> 
-> 
->> ---
->>  drivers/tty/serial/qcom_geni_serial.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
->> index d69592e5e2ec..23fc33d182ac 100644
->> --- a/drivers/tty/serial/qcom_geni_serial.c
->> +++ b/drivers/tty/serial/qcom_geni_serial.c
->> @@ -1056,9 +1056,9 @@ static int setup_fifos(struct qcom_geni_serial_port *port)
->>  		(port->tx_fifo_depth * port->tx_fifo_width) / BITS_PER_BYTE;
->>  
->>  	if (port->rx_buf && (old_rx_fifo_depth != port->rx_fifo_depth) && port->rx_fifo_depth) {
->> -		port->rx_buf = devm_krealloc(uport->dev, port->rx_buf,
->> -					     port->rx_fifo_depth * sizeof(u32),
->> -					     GFP_KERNEL);
->> +		port->rx_buf = devm_krealloc_array(uport->dev, port->rx_buf,
->> +						   port->rx_fifo_depth, sizeof(u32),
->> +						   GFP_KERNEL);
->>  		if (!port->rx_buf)
->>  			return -ENOMEM;
->>  	}
-> 

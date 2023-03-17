@@ -2,345 +2,231 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DC8B6BDD2B
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 00:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0208F6BDDDE
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 02:01:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjCPXtO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Mar 2023 19:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
+        id S229534AbjCQBB4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Mar 2023 21:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230173AbjCPXtI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Mar 2023 19:49:08 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8F0DC0B3;
-        Thu, 16 Mar 2023 16:49:02 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id fd5so14069702edb.7;
-        Thu, 16 Mar 2023 16:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679010540;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BHOfwF0qK+PrkQHja2Ho0/BROuWEHxqoREiF1AMr5eI=;
-        b=RNY0x7B3VY7kmKriNYwgDQUa7CnCICtuqYL249NG47SNTiFQNuHrvszideNSzGVAuM
-         JUSoI9VPbWg5fRshq6Qm+G2KVxXQnbeDdYytppXZ6hkXEpKtDCoc+vdNf1zY0e/kHqX+
-         TDKBN0kHj1Y+LXuvVhW0QXHkUQXDSm3JaIQxiYGomnkmC7Ms+IPu+wLDwVehDt467nPC
-         sM4iqH2v66k/vQ9U7vDkKOrznbUBAKlKhRiYxxLxbMK/8QPKK7pyf+e7Pdwvkq5ZEK2O
-         EWd0vPzZ8igZ4QVJpa7enP+5g4XuX0C0AOTko0S8+xrQ/CjS16InMbUNw5EIu6GdvpLX
-         hecw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679010540;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BHOfwF0qK+PrkQHja2Ho0/BROuWEHxqoREiF1AMr5eI=;
-        b=klAQHsQSqxt/fcHzty4jueSlWUjKP2YOZxUGe3Z27ZsRlBEKVPEWBZmYX8S/vYhZzc
-         sFGZTxmffxv82r/U5J/oS5rH36dZtf8GF+Ak1T5Nabc44KXEU09YYGo7sPFk8Lh9bEfM
-         9YAxBoaUBuvLK0/b0cZJZV2Tu5uQ6QEEOiKS/Ch+82alnEkJV4Jk/QpAK7LLKkf2KkzM
-         BZ/yoa+HnZRNEf52l1Kw8hPxAy0CxtAuQ48gxzrzvyfjhVOKd5dwa1oxs11ULUw0VEhl
-         lvMUpLp5kj5rVv0ykb1/7lCMyDVE3skoUCXxgSPiRNbbc3kR0nldbIFJHKbeHN7FMxlp
-         gkLg==
-X-Gm-Message-State: AO0yUKXKihQLuVHf/M0pOVJo3Yxco9gnG8MYXiA/6wUDOxqpAwdnHNUK
-        ZNwGPye1Eyd/ev7e3NxoHfM=
-X-Google-Smtp-Source: AK7set+0QvON2JoWzf4kKzlBuBYCVjOYcxJzwENaWWBVec49pD87vX8KVPn3QnjetcOAq/EOI2zzKQ==
-X-Received: by 2002:a17:906:1751:b0:8b0:f277:5cde with SMTP id d17-20020a170906175100b008b0f2775cdemr12932793eje.32.1679010540022;
-        Thu, 16 Mar 2023 16:49:00 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:8109:aa3f:ead8::a442])
-        by smtp.gmail.com with ESMTPSA id h24-20020a1709062dd800b008db605598b9sm226896eji.67.2023.03.16.16.48.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Mar 2023 16:48:58 -0700 (PDT)
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     jic23@kernel.org, mazziesaccount@gmail.com
-Cc:     krzysztof.kozlowski+dt@linaro.org,
+        with ESMTP id S229436AbjCQBBz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Mar 2023 21:01:55 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576ECB6D19;
+        Thu, 16 Mar 2023 18:01:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679014913; x=1710550913;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=90aXFT30DnFK60tUbNIT7GTgbDigZvOI9/EjEEL+EKw=;
+  b=TPUuqqpS38x4KPGyXpQOm2XV6FhbtqelJgOU4RQuUHtJSdO3lhwigzfR
+   nHp7XOW6G+8keIn5Qf9H+4dCXHOa977gAvG7289Cu0AeuY5QkJF6Wj9p0
+   S52x2NVMTBDnmUgP1lqsa4r9MhDmts6n0/PuevGClhNhbOkFg6YmvzB6M
+   ul6MFvSUDerDnOtCcQPvglk9+ibs2IzOdLDUXBaPhsrDohKRMQcy3DY0T
+   L/poWvhm3VWSYa/ShWuIJpPbyJq1+RwWMRUP04JTwb8V4kRPndG+9OhsP
+   EFkmNxo4oofvHrFIHsJuCbX/Cer+FJrI7t15+TngORCXj/4iR3+gDA3bD
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="317806976"
+X-IronPort-AV: E=Sophos;i="5.98,267,1673942400"; 
+   d="scan'208";a="317806976"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 18:01:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="710335151"
+X-IronPort-AV: E=Sophos;i="5.98,267,1673942400"; 
+   d="scan'208";a="710335151"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 16 Mar 2023 18:01:50 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pcyTd-0008wQ-23;
+        Fri, 17 Mar 2023 01:01:49 +0000
+Date:   Fri, 17 Mar 2023 09:01:47 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org,
+        mazziesaccount@gmail.com
+Cc:     oe-kbuild-all@lists.linux.dev, krzysztof.kozlowski+dt@linaro.org,
         andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Mehdi Djait <mehdi.djait.k@gmail.com>
-Subject: [PATCH 3/3] iio: accel: Add support for Kionix/ROHM KX132 accelerometer
-Date:   Fri, 17 Mar 2023 00:48:37 +0100
-Message-Id: <6f31fe7dbd142c01315891f6868ff75f7d7cde32.1679009443.git.mehdi.djait.k@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1679009443.git.mehdi.djait.k@gmail.com>
-References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
+Subject: Re: [PATCH 2/3] iio: accel: kionix-kx022a: Add chip_info structure
+Message-ID: <202303170813.jSOLGCL5-lkp@intel.com>
+References: <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for the basic accelerometer features such as getting the
-acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
-using the WMI IRQ).
+Hi Mehdi,
 
-Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
-Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
----
- drivers/iio/accel/kionix-kx022a-i2c.c |   2 +
- drivers/iio/accel/kionix-kx022a-spi.c |   2 +
- drivers/iio/accel/kionix-kx022a.c     | 126 ++++++++++++++++++++++++++
- drivers/iio/accel/kionix-kx022a.h     |  53 +++++++++++
- 4 files changed, 183 insertions(+)
+Thank you for the patch! Perhaps something to improve:
 
-diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kionix-kx022a-i2c.c
-index 21c4c0ae1a68..f9b2383c43f1 100644
---- a/drivers/iio/accel/kionix-kx022a-i2c.c
-+++ b/drivers/iio/accel/kionix-kx022a-i2c.c
-@@ -38,12 +38,14 @@ static int kx022a_i2c_probe(struct i2c_client *i2c)
- 
- static const struct i2c_device_id kx022a_i2c_id[] = {
- 	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx_chip_info[KX022A] },
-+	{ .name = "kx132",  .driver_data = (kernel_ulong_t)&kx_chip_info[KX132] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
- 
- static const struct of_device_id kx022a_of_match[] = {
- 	{ .compatible = "kionix,kx022a", .data = &kx_chip_info[KX022A] },
-+	{ .compatible = "kionix,kx132",  .data = &kx_chip_info[KX132] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a-spi.c b/drivers/iio/accel/kionix-kx022a-spi.c
-index ec076af0f261..86a10d6d33ff 100644
---- a/drivers/iio/accel/kionix-kx022a-spi.c
-+++ b/drivers/iio/accel/kionix-kx022a-spi.c
-@@ -38,12 +38,14 @@ static int kx022a_spi_probe(struct spi_device *spi)
- 
- static const struct spi_device_id kx022a_spi_id[] = {
- 	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx_chip_info[KX022A] },
-+	{ .name = "kx132",  .driver_data = (kernel_ulong_t)&kx_chip_info[KX132] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, kx022a_spi_id);
- 
- static const struct of_device_id kx022a_of_match[] = {
- 	{ .compatible = "kionix,kx022a", .data = &kx_chip_info[KX022A] },
-+	{ .compatible = "kionix,kx132",  .data = &kx_chip_info[KX132] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-index 27e8642aa8f5..3cacec99f792 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -128,6 +128,101 @@ static const struct regmap_config kx022a_regmap_config = {
- 	.cache_type = REGCACHE_RBTREE,
- };
- 
-+/* Regmap configs kx132 */
-+static const struct regmap_range kx132_volatile_ranges[] = {
-+	{
-+		.range_min = KX132_REG_XADP_L,
-+		.range_max = KX132_REG_COTR,
-+	}, {
-+		.range_min = KX132_REG_TSCP,
-+		.range_max = KX132_REG_INT_REL,
-+	}, {
-+		/* The reset bit will be cleared by sensor */
-+		.range_min = KX132_REG_CNTL2,
-+		.range_max = KX132_REG_CNTL2,
-+	}, {
-+		.range_min = KX132_REG_BUF_STATUS_1,
-+		.range_max = KX132_REG_BUF_READ,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_volatile_regs = {
-+	.yes_ranges = &kx132_volatile_ranges[0],
-+	.n_yes_ranges = ARRAY_SIZE(kx132_volatile_ranges),
-+};
-+
-+static const struct regmap_range kx132_precious_ranges[] = {
-+	{
-+		.range_min = KX132_REG_INT_REL,
-+		.range_max = KX132_REG_INT_REL,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_precious_regs = {
-+	.yes_ranges = &kx132_precious_ranges[0],
-+	.n_yes_ranges = ARRAY_SIZE(kx132_precious_ranges),
-+};
-+
-+static const struct regmap_range kx132_read_only_ranges[] = {
-+	{
-+		.range_min = KX132_REG_XADP_L,
-+		.range_max = KX132_REG_INT_REL,
-+	}, {
-+		.range_min = KX132_REG_BUF_STATUS_1,
-+		.range_max = KX132_REG_BUF_STATUS_2,
-+	}, {
-+		.range_min = KX132_REG_BUF_READ,
-+		.range_max = KX132_REG_BUF_READ,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_ro_regs = {
-+	.no_ranges = &kx132_read_only_ranges[0],
-+	.n_no_ranges = ARRAY_SIZE(kx132_read_only_ranges),
-+};
-+
-+static const struct regmap_range kx132_write_only_ranges[] = {
-+	{
-+		.range_min = KX132_REG_MAN_WAKE,
-+		.range_max = KX132_REG_MAN_WAKE,
-+	}, {
-+		.range_min = KX132_REG_SELF_TEST,
-+		.range_max = KX132_REG_SELF_TEST,
-+	}, {
-+		.range_min = KX132_REG_BUF_CLEAR,
-+		.range_max = KX132_REG_BUF_CLEAR,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_wo_regs = {
-+	.no_ranges = &kx132_write_only_ranges[0],
-+	.n_no_ranges = ARRAY_SIZE(kx132_write_only_ranges),
-+};
-+
-+static const struct regmap_range kx132_noinc_read_ranges[] = {
-+	{
-+		.range_min = KX132_REG_BUF_READ,
-+		.range_max = KX132_REG_BUF_READ,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_nir_regs = {
-+	.yes_ranges = &kx132_noinc_read_ranges[0],
-+	.n_yes_ranges = ARRAY_SIZE(kx132_noinc_read_ranges),
-+};
-+
-+static const struct regmap_config kx132_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.volatile_table = &kx132_volatile_regs,
-+	.rd_table = &kx132_wo_regs,
-+	.wr_table = &kx132_ro_regs,
-+	.rd_noinc_table = &kx132_nir_regs,
-+	.precious_table = &kx132_precious_regs,
-+	.max_register = KX132_MAX_REGISTER,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+
- static const struct iio_mount_matrix *
- kx022a_get_mount_matrix(const struct iio_dev *idev,
- 			const struct iio_chan_spec *chan)
-@@ -175,6 +270,13 @@ static const struct iio_chan_spec kx022a_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
-+static const struct iio_chan_spec kx132_channels[] = {
-+	KX022A_ACCEL_CHAN(X, 0, KX132),
-+	KX022A_ACCEL_CHAN(Y, 1, KX132),
-+	KX022A_ACCEL_CHAN(Z, 2, KX132),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
- /*
-  * The sensor HW can support ODR up to 1600 Hz, which is beyond what most of the
-  * Linux CPUs can handle without dropping samples. Also, the low power mode is
-@@ -249,6 +351,30 @@ const struct kx022a_chip_info kx_chip_info[] = {
- 		.inc6		  = KX022A_REG_INC6,
- 		.xout_l		  = KX022A_REG_XOUT_L,
- 	},
-+	[KX132] = {
-+		.name		  = "kx132",
-+		.type		  = KX132,
-+		.regmap_config	  = &kx132_regmap_config,
-+		.channels	  = kx132_channels,
-+		.num_channels	  = ARRAY_SIZE(kx132_channels),
-+		.fifo_length	  = KX132_FIFO_LENGTH,
-+		.who		  = KX132_REG_WHO,
-+		.id		  = KX132_ID,
-+		.cntl		  = KX132_REG_CNTL,
-+		.cntl2		  = KX132_REG_CNTL2,
-+		.odcntl		  = KX132_REG_ODCNTL,
-+		.buf_cntl1	  = KX132_REG_BUF_CNTL1,
-+		.buf_cntl2	  = KX132_REG_BUF_CNTL2,
-+		.buf_clear	  = KX132_REG_BUF_CLEAR,
-+		.buf_status1	  = KX132_REG_BUF_STATUS_1,
-+		.buf_smp_lvl_mask = KX132_MASK_BUF_SMP_LVL,
-+		.buf_read	  = KX132_REG_BUF_READ,
-+		.inc1		  = KX132_REG_INC1,
-+		.inc4		  = KX132_REG_INC4,
-+		.inc5		  = KX132_REG_INC5,
-+		.inc6		  = KX132_REG_INC6,
-+		.xout_l		  = KX132_REG_XOUT_L,
-+	},
- };
- EXPORT_SYMBOL_NS_GPL(kx_chip_info, IIO_KX022A);
- 
-diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-index 3bb40e9f5613..7e43bdb37156 100644
---- a/drivers/iio/accel/kionix-kx022a.h
-+++ b/drivers/iio/accel/kionix-kx022a.h
-@@ -90,8 +90,61 @@
- #define KX022A_REG_SELF_TEST	0x60
- #define KX022A_MAX_REGISTER	0x60
- 
-+
-+#define KX132_REG_WHO		0x13
-+#define KX132_ID		0x3d
-+
-+#define KX132_FIFO_LENGTH	86
-+
-+#define KX132_REG_CNTL2		0x1c
-+#define KX132_REG_CNTL		0x1b
-+#define KX132_MASK_RES		BIT(6)
-+#define KX132_GSEL_2		0x0
-+#define KX132_GSEL_4		BIT(3)
-+#define KX132_GSEL_8		BIT(4)
-+#define KX132_GSEL_16		GENMASK(4, 3)
-+
-+#define KX132_REG_INS2		0x17
-+#define KX132_MASK_INS2_WMI	BIT(5)
-+
-+#define KX132_REG_XADP_L	0x02
-+#define KX132_REG_XOUT_L	0x08
-+#define KX132_REG_YOUT_L	0x0a
-+#define KX132_REG_ZOUT_L	0x0c
-+#define KX132_REG_COTR		0x12
-+#define KX132_REG_TSCP		0x14
-+#define KX132_REG_INT_REL	0x1a
-+
-+#define KX132_REG_ODCNTL	0x21
-+
-+#define KX132_REG_BTS_WUF_TH	0x4a
-+#define KX132_REG_MAN_WAKE	0x4d
-+
-+#define KX132_REG_BUF_CNTL1	0x5e
-+#define KX132_REG_BUF_CNTL2	0x5f
-+#define KX132_REG_BUF_STATUS_1	0x60
-+#define KX132_REG_BUF_STATUS_2	0x61
-+#define KX132_MASK_BUF_SMP_LVL	GENMASK(9, 0)
-+#define KX132_REG_BUF_CLEAR	0x62
-+#define KX132_REG_BUF_READ	0x63
-+#define KX132_ODR_SHIFT		3
-+#define KX132_FIFO_MAX_WMI_TH	86
-+
-+#define KX132_REG_INC1		0x22
-+#define KX132_REG_INC5		0x26
-+#define KX132_REG_INC6		0x27
-+#define KX132_IPOL_LOW		0
-+#define KX132_IPOL_HIGH		KX_MASK_IPOL
-+#define KX132_ITYP_PULSE	KX_MASK_ITYP
-+
-+#define KX132_REG_INC4		0x25
-+
-+#define KX132_REG_SELF_TEST	0x5d
-+#define KX132_MAX_REGISTER	0x76
-+
- enum kx022a_device_type {
- 	KX022A,
-+	KX132,
- };
- 
- enum {
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on next-20230316]
+[cannot apply to linus/master v6.3-rc2]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Mehdi-Djait/dt-bindings-iio-Add-KX132-accelerometer/20230317-075056
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k%40gmail.com
+patch subject: [PATCH 2/3] iio: accel: kionix-kx022a: Add chip_info structure
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230317/202303170813.jSOLGCL5-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/40c75341c42d0e5bea5d73961202978a4be41cd2
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Mehdi-Djait/dt-bindings-iio-Add-KX132-accelerometer/20230317-075056
+        git checkout 40c75341c42d0e5bea5d73961202978a4be41cd2
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/iio/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303170813.jSOLGCL5-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/accel/kionix-kx022a.c: In function '__kx022a_fifo_flush':
+>> drivers/iio/accel/kionix-kx022a.c:598:9: warning: ISO C90 forbids variable length array 'buffer' [-Wvla]
+     598 |         __le16 buffer[data->chip_info->fifo_length * 3];
+         |         ^~~~~~
+--
+   drivers/iio/accel/kionix-kx022a-i2c.c: In function 'kx022a_i2c_probe':
+>> drivers/iio/accel/kionix-kx022a-i2c.c:27:19: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+      27 |         chip_info = device_get_match_data(&i2c->dev);
+         |                   ^
+   drivers/iio/accel/kionix-kx022a-i2c.c:29:27: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+      29 |                 chip_info = (const struct kx022a_chip_info *) id->driver_data;
+         |                           ^
+--
+   drivers/iio/accel/kionix-kx022a-spi.c: In function 'kx022a_spi_probe':
+>> drivers/iio/accel/kionix-kx022a-spi.c:27:19: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+      27 |         chip_info = device_get_match_data(&spi->dev);
+         |                   ^
+   drivers/iio/accel/kionix-kx022a-spi.c:29:27: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+      29 |                 chip_info = (const struct kx022a_chip_info *) id->driver_data;
+         |                           ^
+
+
+vim +/buffer +598 drivers/iio/accel/kionix-kx022a.c
+
+   593	
+   594	static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+   595				       bool irq)
+   596	{
+   597		struct kx022a_data *data = iio_priv(idev);
+ > 598		__le16 buffer[data->chip_info->fifo_length * 3];
+   599		uint64_t sample_period;
+   600		int count, fifo_bytes;
+   601		bool renable = false;
+   602		int64_t tstamp;
+   603		int ret, i;
+   604	
+   605		fifo_bytes = kx022a_get_fifo_bytes(data);
+   606		count = fifo_bytes / KX_FIFO_SAMPLES_SIZE_BYTES;
+   607		if (!count)
+   608			return 0;
+   609	
+   610		/*
+   611		 * If we are being called from IRQ handler we know the stored timestamp
+   612		 * is fairly accurate for the last stored sample. Otherwise, if we are
+   613		 * called as a result of a read operation from userspace and hence
+   614		 * before the watermark interrupt was triggered, take a timestamp
+   615		 * now. We can fall anywhere in between two samples so the error in this
+   616		 * case is at most one sample period.
+   617		 */
+   618		if (!irq) {
+   619			/*
+   620			 * We need to have the IRQ disabled or we risk of messing-up
+   621			 * the timestamps. If we are ran from IRQ, then the
+   622			 * IRQF_ONESHOT has us covered - but if we are ran by the
+   623			 * user-space read we need to disable the IRQ to be on a safe
+   624			 * side. We do this usng synchronous disable so that if the
+   625			 * IRQ thread is being ran on other CPU we wait for it to be
+   626			 * finished.
+   627			 */
+   628			disable_irq(data->irq);
+   629			renable = true;
+   630	
+   631			data->old_timestamp = data->timestamp;
+   632			data->timestamp = iio_get_time_ns(idev);
+   633		}
+   634	
+   635		/*
+   636		 * Approximate timestamps for each of the sample based on the sampling
+   637		 * frequency, timestamp for last sample and number of samples.
+   638		 *
+   639		 * We'd better not use the current bandwidth settings to compute the
+   640		 * sample period. The real sample rate varies with the device and
+   641		 * small variation adds when we store a large number of samples.
+   642		 *
+   643		 * To avoid this issue we compute the actual sample period ourselves
+   644		 * based on the timestamp delta between the last two flush operations.
+   645		 */
+   646		if (data->old_timestamp) {
+   647			sample_period = data->timestamp - data->old_timestamp;
+   648			do_div(sample_period, count);
+   649		} else {
+   650			sample_period = data->odr_ns;
+   651		}
+   652		tstamp = data->timestamp - (count - 1) * sample_period;
+   653	
+   654		if (samples && count > samples) {
+   655			/*
+   656			 * Here we leave some old samples to the buffer. We need to
+   657			 * adjust the timestamp to match the first sample in the buffer
+   658			 * or we will miscalculate the sample_period at next round.
+   659			 */
+   660			data->timestamp -= (count - samples) * sample_period;
+   661			count = samples;
+   662		}
+   663	
+   664		fifo_bytes = count * KX_FIFO_SAMPLES_SIZE_BYTES;
+   665		ret = regmap_noinc_read(data->regmap, data->chip_info->buf_read,
+   666					&buffer[0], fifo_bytes);
+   667		if (ret)
+   668			goto renable_out;
+   669	
+   670		for (i = 0; i < count; i++) {
+   671			__le16 *sam = &buffer[i * 3];
+   672			__le16 *chs;
+   673			int bit;
+   674	
+   675			chs = &data->scan.channels[0];
+   676			for_each_set_bit(bit, idev->active_scan_mask, AXIS_MAX)
+   677				chs[bit] = sam[bit];
+   678	
+   679			iio_push_to_buffers_with_timestamp(idev, &data->scan, tstamp);
+   680	
+   681			tstamp += sample_period;
+   682		}
+   683	
+   684		ret = count;
+   685	
+   686	renable_out:
+   687		if (renable)
+   688			enable_irq(data->irq);
+   689	
+   690		return ret;
+   691	}
+   692	
+
 -- 
-2.30.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

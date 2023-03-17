@@ -2,247 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4093A6BE673
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 11:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A37F46BE6D8
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 11:33:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229959AbjCQKUJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Mar 2023 06:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58772 "EHLO
+        id S230271AbjCQKdt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Mar 2023 06:33:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbjCQKUF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 06:20:05 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3877A21A0;
-        Fri, 17 Mar 2023 03:20:02 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 825FF32000EB;
-        Fri, 17 Mar 2023 06:20:00 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 17 Mar 2023 06:20:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1679048400; x=1679134800; bh=R2
-        PhvQmlrawFBySIsOtkrlNsyj6Omx2RMGhf6x3YrHg=; b=aMOdgnRWlv3W/79Yr5
-        zwaKq4mM6VXVcYqKC3K9jQxDpE5O0i3CjPqVUROdZUJUQtdbn+wQSAK2IwiDCC6+
-        dY/fhdNpbDeDvOchyUl+KOEUNDmKvjz64XOs1WgwYR+PMX4hox3DYcScn9b/iNPT
-        cPl8tfXPP1Ch5bstZR/rc8otFtfo8hCYKODiOUy1BZ80g/nxA6b1twizN3rHLS1h
-        ZfKXEAhkoa3ra9nk3Kk5mlyYI/focJ5/nUyWtVCBcwRsvPHPG1cj29IESAo+9FGx
-        7VqaFKq59gLzsxs5gNm8Cl5Sn953afEpZTy7eID0fL1xM9HqE3IwY+THHTEuV01V
-        iBpw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1679048400; x=1679134800; bh=R2PhvQmlrawFB
-        ySIsOtkrlNsyj6Omx2RMGhf6x3YrHg=; b=G3Myr2ALwXfc7bS4pAyC21hkfLSWP
-        Bt7f9a2hDwk8/FITqun7YedWwyJB6XT5yCPBWw4ty3OH6LboomKwl2ltF2adRCqh
-        VUm/kJAWX2Px+jXlioRKVLesI9beBG824riZuy/qj7aiSV6HkF49V8vmXZ/bGNcV
-        lkaeMhSovdTdO86t9OldI9hjN/4E1uOKQmYMTk+ZHKmi19P2s9TjK+4Y27c52MwC
-        lsbsFIuPHDb6EiDNuF8K5JvOJh8ehiJOf6QCrHAOqM/NBtVKt2veBP0KNpApeXLJ
-        YHZWwUh6NrMLzzEzKKr10EBCLH8AWaiqjGjOqbiNbaTEZ1Yz5ttiiJAGg==
-X-ME-Sender: <xms:zz4UZHWQfWN-MtJcTvoPXbsAc0uxWjPPAnFI20xZlciDE4754n0GDg>
-    <xme:zz4UZPm7ERboPe--aNUskBx5j7tezaSGEgdoYEdL1_gqbznb7h8Jkz-iTF7VoeSqT
-    o-CnUS7Fi2MRwcf0w4>
-X-ME-Received: <xmr:zz4UZDYXW4P-RtBCsYfVzfPT-MQjKsWXgaeTTNV3a4821uVthIPEPlxrEn7ZGHtPL7R7H9GddV5m9foRsGq1mXO7YOwoV0w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdefvddgudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtudenucfhrhhomhepofgrgihi
-    mhgvucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrg
-    htthgvrhhnpeeljeeugfegveetleevkeetffegudevieetieeugeeugeeivddtjeejvdef
-    feetgfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggt
-    hh
-X-ME-Proxy: <xmx:zz4UZCXSTkPgh-JxRP1U_s-0Y1Dr1XsknTYlfkUebozHCzArYj9oog>
-    <xmx:zz4UZBl8vIWvypKuUZ7Feh3RcC6RTGF1M-ImaWiRaDn5lCy4wjigfA>
-    <xmx:zz4UZPfosd6z-B4n5wG7YTvqk_AJJJEm4Y5uVV039trqmgUsKgSJng>
-    <xmx:0D4UZDUJ1Yv8dPxz9Oin7ogxcvGm_uFVKE1oD1TkrrudmVR7vammfQ>
-Feedback-ID: i8771445c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Mar 2023 06:19:58 -0400 (EDT)
-Date:   Fri, 17 Mar 2023 11:19:56 +0100
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S230235AbjCQKds (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 06:33:48 -0400
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2087.outbound.protection.outlook.com [40.107.104.87])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ABA7637D3;
+        Fri, 17 Mar 2023 03:33:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GNBi3qH2JzvJqNhK1XCsk3YXfFTJgAYabvd+kDGFVD2g58XNumcG341cbcTXrmGuFAk/kn/Jsk39GPYfteHRpplHDW9Taw0J3iCJND6+TgO8xyxhUHovPiAnVXNmXIUSYX59ATFdM6e5DH27QyZ/a7lSbG5eoFYexOxrcbY5eVGE25ORZGL9KhuWpexZgsKds7nz6SM/d5gWRNyhCwYIhjhJDJZYY0eD6+nuW9wX1/J189ppR5WLV12WYQcfJXzPHxZMykHeuQciWXTC7t7H7HjvCs7AAa4B8+MHAzoeYCSvAJKDz8nAEM162MwsJXhn2XkYW2i703iKe/3h4J/wPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zpH89EnSxr7rEcdtBsoYimy48Gk4J00Ygp0DlPik1qc=;
+ b=f69SVgAvJyi8ZQgNgFG1eikVUsetI8XMR7/amCgdyuOlRqPRt6cfS+04EO05W0abnFJzYrPw0slcM3nHwojpKhw8IjZQLsUK2gqVMsnDmF9ZhNPmgHvqZOdB9OMb+Zn15aHOG0lE1zycpHZjpZoaC2uUsu6WPL5YK4e5at9QFnoq8DLJvV9vA6QeDh+FUeks6RpzTbGPEmOogqnPsVr8ZmpcVzywj/swoNwYOVJhFyWXuOcbdFNopnf/zQUKQDZppNYvQj5+1q42d3STupbRGVHkm8+uLZJ5Kn1GNXzf2fKJWocS/2dl6jU8VBCaSCP/d/G997WVmlb003LXGmbh7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=chargebyte.com; dmarc=pass action=none
+ header.from=chargebyte.com; dkim=pass header.d=chargebyte.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c4c.onmicrosoft.com;
+ s=selector2-c4c-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zpH89EnSxr7rEcdtBsoYimy48Gk4J00Ygp0DlPik1qc=;
+ b=M1SbV9p50WOhRJP7g9lDhpQgDkOgd2q0Zsn05ZIh6Ae/R7JiPeFUa+8XkaMcyMz6STf+ZNzuZdYx2kN7YqsimvXIxGTdmueUcA/B1EUqBgnwejeTypVBo+FY121ViuUcynM6r0aB1gOMMpztFa+NiaoQ1gvJ92E/ZuhteWDYJTI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=chargebyte.com;
+Received: from DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:33f::5)
+ by DB8PR10MB3863.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:168::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.10; Fri, 17 Mar
+ 2023 10:33:40 +0000
+Received: from DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::92e9:73c9:940:579e]) by DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::92e9:73c9:940:579e%5]) with mapi id 15.20.6222.008; Fri, 17 Mar 2023
+ 10:33:40 +0000
+From:   Stefan Wahren <stefan.wahren@chargebyte.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
-Message-ID: <20230317101956.ebe4bhpwybjhvsq6@houat>
-References: <cover.1678093787.git.mazziesaccount@gmail.com>
- <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
- <20230312170638.3e6807b7@jic23-huawei>
- <20230312170848.651b5b2c@jic23-huawei>
- <ZA8Z08U1sMOhc+V5@smile.fi.intel.com>
- <31d8bc33-eabe-9084-71c3-7d1e29f51863@gmail.com>
- <ZA8lNBPCB4BNnfUq@smile.fi.intel.com>
- <39a7b489-4856-8dc1-d0a6-f27d0c1324a2@gmail.com>
- <a41874be-f0bd-1570-8a4a-5b28079b9fed@gmail.com>
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+Cc:     linux-imx@nxp.com, Li Yang <leoyang.li@nxp.com>,
+        Denis Ciocca <denis.ciocca@st.com>, soc@kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stefan.wahren@i2se.com,
+        Stefan Wahren <stefan.wahren@chargebyte.com>
+Subject: [PATCH V2 0/8] ARM: dts: imx6ull: Add chargebyte Tarragon support
+Date:   Fri, 17 Mar 2023 11:33:15 +0100
+Message-Id: <20230317103323.7741-1-stefan.wahren@chargebyte.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: FR2P281CA0125.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9d::19) To DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:10:33f::5)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xdcm5g2kingdnkbe"
-Content-Disposition: inline
-In-Reply-To: <a41874be-f0bd-1570-8a4a-5b28079b9fed@gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR10MB5211:EE_|DB8PR10MB3863:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f58159b-bad3-47d8-beaa-08db26d3130f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ULe4zf8M7nBle0seR0jKDiyU0JNBj3AxSgwcOwP3nAv5U8qvm3xOlq2n49ulHmWoYKWVhwe4QdDDNDJzu4vcLMwlgb5LzBCvcgT8LRGSiQvLWHZX7CAKWFz46RzLy+XzlLeyE56lqDYS6Wep4+eebUnPK5/gwwibE0IQaxaQg8bJh959zP96gRFU5f96QSLpJ9kMMpc7IfSkJ28k9Zn304gZOuZMThcsyY6gOzq65TYE7qhlUoaIX0+tBPzb3AryNeldOPHM3E35PHYsr3qBtMbMXVwtpph2F0iLMl6b0f54ZfeCr860yF8AyX8pb2Do8OitdiHGEK9vFVwp7tb8sIAlsScm2k5MScamd1GqzkRV1dOnfLYWmJuEGC2no8Sys3yLN3l0CmCdydZSwtRiD/o/AmtArOLfQSkCM4yaN+DDjdsaiiG48MvQcjhkf00C6gIrBfjtwjXqqcz6sdAmIVNIhzubiYn7uOeUs1lMSaOwLZRMp1Cnsc3gvLNQ0rFL+RchgMsRLjP0aOImbQYogsZYMyBRlOS1+en0vestpAgiGxxSslE28Vfi3O9bn0zk+2qQaM9Bn2sS/xi1kq0Tky17sN5Lg/HimykrfOS/a/dwVCUZP9OJxKJASw9EUyJ5emsqRuAuclK7P/NX5OijSI1/rKnRO2CMnLkPFRVo+leB9DHTsSKvews2bcioPEtyF9VeBh9F1+53TR07iUw6v90i845Oq/muh2JjU0n5NFA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(376002)(346002)(136003)(39850400004)(366004)(451199018)(921005)(38350700002)(38100700002)(66946007)(36756003)(7416002)(478600001)(86362001)(4326008)(2906002)(5660300002)(44832011)(8936002)(110136005)(8676002)(54906003)(316002)(41300700001)(66556008)(83380400001)(52116002)(6506007)(6486002)(966005)(66476007)(2616005)(107886003)(26005)(186003)(6512007)(6666004)(1076003)(32563001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?r+mmJG9Zqq/zogdrPaumuDmiTkNJpBADbXg2AwviJfLzSzycG5X29OkHMyf4?=
+ =?us-ascii?Q?F508aOtA2VKh2vzXj8ZFG+Ble5ZrvfX9B5iCRdX+5zTcQzCOua03oh5akSGy?=
+ =?us-ascii?Q?hl5za0n4U3N4imXDVy/Ak/6xBL/0qBR5hCJMY3x/VwB74lzeuIdsX9y7wAaU?=
+ =?us-ascii?Q?dwLoKF7oUsgddh0lXA1rPu3qKljSQeCFP4sIUKNr+SoZ3AZ9e2MTzYmynGya?=
+ =?us-ascii?Q?d4YGrt0QTan6kDIWpXxSlZW19onCzxxB0KO4M+0aInK7XquV8CjrdOfbLgEK?=
+ =?us-ascii?Q?BfooXGpJuA07aivaGfaM4zDqdAAtPQGMpHtiN/PjFuJe1+EX0KgsuRZDtETV?=
+ =?us-ascii?Q?xjjnpQl60b0GWr9v2XTJyJzwSUmiOIiaIaLdYPGyVeKRjjSMaVeJV2lWlHSC?=
+ =?us-ascii?Q?fspLdFgaqzkADdySHUftOiWo6t+YnGrwIKfjfM0cRLx02wlkkSIZZkKIsWDi?=
+ =?us-ascii?Q?mBE0iWatJ0v5wdW8qJXHHJhnyJrfDVvIgoWeRmCZ4R5WqAFsRstXwT/8IXVY?=
+ =?us-ascii?Q?krQJ0xQ5YqzbhimkVT1ezpuUrhEmL2cQxAXSpcb9oG87vAL3RUZwwe2JGVm7?=
+ =?us-ascii?Q?qS4zU3HOoqjJv+o8I7zIhJQ296IYN/KNgLc3j2eN3ESeXkF8sK2zTonxnosB?=
+ =?us-ascii?Q?Fo+6PQQBg1G8oXsQcvq/g0GLuTCgoxdIP6EhGjSwqlTsk7whSyiY89tq4VR8?=
+ =?us-ascii?Q?G3qUXQWOTRKSqUSRCS7W/AZ1dop+ZtkpOAgfe9gDqucyYEG3G0cx3Pl/0ECN?=
+ =?us-ascii?Q?j+mO2BqyaoPi8KofSw6poOhAoSILnsEgL9+5pGu8+dJqdZBBJtAGd9LNEvLu?=
+ =?us-ascii?Q?bfbX6Bgm7tQ4W8cpkqOI0u+0Fop0Rl9TPuEkXbMU8l5xmFrXitNZiqv7tr63?=
+ =?us-ascii?Q?ev0O9ZviXWoA3pBMuedU6mkPr+vGK5CNNYmwgoBsFsdIY1b4nH3XifFxx9ak?=
+ =?us-ascii?Q?TKGjc/DPBNLyfKsKY98y/VvmGgVms+aEYIc624JqrLTqYoIFAFSKyXrvvUve?=
+ =?us-ascii?Q?GU/o2rwKjDmOhD5tytgfUWkpYWOPLyVSKuE/2QvfHuyWnl1CXoG7tGyO+AQi?=
+ =?us-ascii?Q?GNSiqo4zStiDudl9FTornynfVXa2Txuv+BCucw2ETrimLhaGKmi3AgeE1LAI?=
+ =?us-ascii?Q?Xz6UNTleweuVbOhtIX/3mDgI/pfNPps2i8swZkabB+swloz0fxzS7BA0PAHW?=
+ =?us-ascii?Q?nif1fbvLsK7qdVFeQunShpAe10+CECjnGvv12skhQPivYzlYQeMVEdFn64Tt?=
+ =?us-ascii?Q?k0lvQL7uP9H38vhlVdDVAW3SSELCzMrLxdX83AMXoLAKpz9taBiDuza8l+5i?=
+ =?us-ascii?Q?rKneAiSdAsrL1Yz97GMAHGuctetYm2h1F48rhziPuCG9yucIou9jfcoSK4jc?=
+ =?us-ascii?Q?JlbwbVVxBrKeovu32aRzWOz0+PN8OCtWob5nr8vu5Of30/DjW4pyqwVhR0mo?=
+ =?us-ascii?Q?XKKAHIX7oNQtLBVL2JT9V6NVrp20zmKpC8SZQjstT2hTNE8JvRvHBie2xK+H?=
+ =?us-ascii?Q?NnNaGe5vFt0rI+oDFpJNvAMhPvbxvJ9fZRd9bYrfZBzgVIFUwyAgq58AOZBL?=
+ =?us-ascii?Q?M+bIGgxd4oMzjbq2XJsH1ic38s6T0Hdjr5ZG3s2apex+1Qu+qg1aOydN502G?=
+ =?us-ascii?Q?+g=3D=3D?=
+X-OriginatorOrg: chargebyte.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f58159b-bad3-47d8-beaa-08db26d3130f
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2023 10:33:40.4221
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 30547194-0d55-4a2f-900d-687893d3bdc0
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TkMqmCZ6h6VWV20du14wwrb12AxZcEFO2iSMsGX4iTVr3E/h9weclxTOwV4fqvOj2pv3Fh+UM8+b6bCFnxKromA5ExuzWZ6Z3bobi7GAci4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3863
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This series adds the support for chargebyte Tarragon, which is an Electrical
+Vehicle Supply Equipment (EVSE) for AC charging stations
+(according to IEC 61851, ISO 15118).
 
---xdcm5g2kingdnkbe
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The Tarragon board is based on an i.MX6ULL SoC and is available in
+4 variants (Master, Slave, SlaveXT, Micro), which provide more or
+less peripherals.
 
-On Wed, Mar 15, 2023 at 12:51:26PM +0200, Matti Vaittinen wrote:
-> On 3/13/23 15:59, Matti Vaittinen wrote:
-> > On 3/13/23 15:29, Andy Shevchenko wrote:
-> > > On Mon, Mar 13, 2023 at 03:11:52PM +0200, Matti Vaittinen wrote:
-> > > > On 3/13/23 14:40, Andy Shevchenko wrote:
-> > > > > On Sun, Mar 12, 2023 at 05:08:48PM +0000, Jonathan Cameron wrote:
-> > > > > > On Sun, 12 Mar 2023 17:06:38 +0000
-> > > > > > Jonathan Cameron <jic23@kernel.org> wrote:
-> > >=20
-> > > ...
-> > >=20
-> > > > > > Ah. I forgot the tests that don't have a device so can't use de=
-vm.
-> > > > >=20
-> > > > > Why not? I have seen, IIRC, test cases inside the kernel
-> > > > > that fakes the device
-> > > > > for that.
-> > > >=20
-> > > > I'd appreciated any pointer for such an example if you have one
-> > > > at hand. (I
-> > > > can do the digging if you don't though!)
-> > > >=20
-> > > > I am not a fan of unit tests. They add huge amount of inertia to
-> > > > development, and in worst case, they stop people from contributing =
-where
-> > > > improving a feature requires test code modification(s). And
-> > > > harder the test
-> > > > code is to understand, worse the unwanted side-effects. Also, harde=
-r the
-> > > > test code is to read, more time and effort it requires to analyze a=
- test
-> > > > failure... Hence, I am _very_ conservative what comes to adding
-> > > > size of test
-> > > > code with anything that is not strictly required.
-> > > >=20
-> > > > After that being said, unit tests are a great tool when
-> > > > carefully used - and
-> > > > I assume/hope stubbing a device for devm_ tests does not add
-> > > > much extra...
-> > > > But let me see if I can find an example :)
-> > >=20
-> > > drivers/gpu/drm/tests/drm_managed_test.c ?
-> > >=20
-> > > (somewhere underneath:
-> > >=20
-> > > =A0 ret =3D platform_driver_register(&fake_platform_driver);
-> > >=20
-> > > which suggests... what exactly? :-)
->=20
-> Thanks to pointer from Andy I found the
-> drm_kunit_helper_[alloc/free]_device() functions. I renamed them to
-> test_kunit_helper_[alloc/free]_device(), move them to drivers/base, add
-> declarations to include/kunit/test-helpers.h fixed KConfigs and existing
-> callers + added the tests for managed interfaces. I have this in place in=
- my
-> personal playground where I am working towards the v4 of the series.
->=20
-> ...
->=20
-> After that I asked from Maxime if he had a reason to not make those gener=
-ic
-> and available to other subsystems besides drm in the first place...
->=20
-> And Maxime was kind enough to point me to the fact that something like th=
-is
-> was done in the CCF context:
-> https://lore.kernel.org/all/20230302013822.1808711-1-sboyd@kernel.org/
->=20
-> I like the 'single function to get the dummy device which can be passed to
-> devm'-approach used in drm helpers. I do also like Stephen's idea of havi=
-ng
-> the prototypes in kunit/platform_device.h which matches the
-> linux/platform_device.h.
->=20
-> However, I don't know when Stephen's work will be finished and merged to
-> IIO-tree so that it could be used/extended for the needs of these tests.
->=20
-> Meanwhile, I don't think it makes sense to go forward with my changes
-> splitting the helpers out of drm until we see what Stephen's changes will
-> bring us. On the other hand, I don't like delaying the gts-helpers or the
-> sensor drivers.
->=20
-> So, any suggestions what I should do? I see following options:
->=20
-> 1) Drop the tests for managed interfaces for now.
-> 2) Add the tests with a yet-another duplicate implementation of the
->    dummy device for devm.
-> 3) Add the tests using the helpers from drm as they are now.
->=20
-> option 1):
-> I like it as it would be an easy way (for now) - but I hate it as it may =
-be
-> a hard way as well. In my experience, when a driver/helper lands upstream=
- it
-> will get first few fixes quite fast - and not having a test available
-> upstream when this happens is bad. Bad because it means the out-of-tree t=
-est
-> may get broken, and bad because there is no easy way to test the fixes.
->=20
-> option 2):
-> I hate it because it makes the test code more complex - and duplicates the
-> kernel code which is never nice. This could be reworked later when Stephe=
-ns
-> work is done though.
->=20
-> option 3):
-> It's in general not nice to use functions exported for some other
-> subsystem's specific purposes. This would however keep the test code at
-> minimum, while leaving the same "I swear I'll fix this later when
-> dependencies have settled" - possibility as option 2) did.
->=20
-> Oh, in theory there is option 4) to just send out the changes I did(*) wh=
-ich
-> pull the drm_kunit_helper_[alloc/free]_device() out of the DRM - but I gu=
-ess
-> that would lead some extra work to merge this later with stuff Stephen's
-> series does introduce.
->=20
-> Any suggestions which of the options to proceed with?
+Supported features:
+  * 512 MB DDR RAM
+  * eMMC
+  * Debug UART
+  * 100 Mbit Ethernet
+  * USB 2.0 Host interface
+  * Powerline communication (QCA700x)
+  * 2x RS485
+  * Digital in- and outputs (12 V)
+  * One-Wire master for external temp sensors
+  * 2x relay outputs
+  * 2x motor interfaces
+  
+The Tarragon hardware is bundled with a charging stack under the name Charge Control C: 
+https://chargebyte.com/products/charging-station-communication/charge-control-c
 
-I think the best course of action would be to synchronize with Stephen,
-and make sure that whatever patch you're doing can be used for his work.
+This series is rebased on top of:
+https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git?h=for-next
 
-Once it works for both of you, then I guess it can go through the kunit
-tree and you will use it both.
+Changes in V2:
+- after fixing technical problems send patches directly from chargebyte address
+  and drop the related signed-off-by
+- add Krzysztof's Acked-by
+- improve commit messages (patch 3, 4, 5)
+- make iis328dq fallback to lis331dl as suggested by Jonathan
+- fix order of Tarragon entries in FSL schema
+- improve Tarragon led node names and drop label as suggested by Krzysztof
+- change Tarragon SVNS pinctrl settings after internal discussion
+  with chargebyte hardware team
+- drop broken-cd in Tarragon common DTSI which is not necessary for eMMC
+- add no-sd and no-sdio for eMMC interface of Tarragon
 
-Maxime
+Stefan Wahren (8):
+  dt-bindings: vendor-prefixes: add chargebyte
+  dt-bindings: Add DS2482/DS2484 as trivial device
+  w1: ds2482: add i2c id for DS2484
+  dt-bindings: iio: st-sensors: Add IIS328DQ accelerometer
+  iio: accel: add support for IIS328DQ variant
+  dt-bindings: ARM: fsl: Add chargebyte Tarragon
+  ARM: dts: imx6ull: Add chargebyte Tarragon support
+  ARM: imx_v6_v7_defconfig: Enable Tarragon peripheral drivers
 
---xdcm5g2kingdnkbe
-Content-Type: application/pgp-signature; name="signature.asc"
+ .../devicetree/bindings/arm/fsl.yaml          |   9 +
+ .../bindings/iio/st,st-sensors.yaml           |   3 +
+ .../devicetree/bindings/trivial-devices.yaml  |   4 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ arch/arm/boot/dts/Makefile                    |   4 +
+ .../arm/boot/dts/imx6ull-tarragon-common.dtsi | 856 ++++++++++++++++++
+ arch/arm/boot/dts/imx6ull-tarragon-master.dts |  82 ++
+ arch/arm/boot/dts/imx6ull-tarragon-micro.dts  |  10 +
+ arch/arm/boot/dts/imx6ull-tarragon-slave.dts  |  32 +
+ .../arm/boot/dts/imx6ull-tarragon-slavext.dts |  64 ++
+ arch/arm/configs/imx_v6_v7_defconfig          |   6 +
+ drivers/iio/accel/st_accel.h                  |   1 +
+ drivers/iio/accel/st_accel_core.c             |   1 +
+ drivers/iio/accel/st_accel_i2c.c              |   5 +
+ drivers/iio/accel/st_accel_spi.c              |   5 +
+ drivers/w1/masters/ds2482.c                   |   1 +
+ 16 files changed, 1085 insertions(+)
+ create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-common.dtsi
+ create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-master.dts
+ create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-micro.dts
+ create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-slave.dts
+ create mode 100644 arch/arm/boot/dts/imx6ull-tarragon-slavext.dts
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.17.1
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZBQ+xwAKCRDj7w1vZxhR
-xbR2AQC+odcZGk8eMOMQcm+pwGNMtd0mUNgViVvhCvCb+4hsCwEAuMAEFb9Uw46L
-3O7y7a29aijAc0yWDlTk8ABO7hZxHAk=
-=/7fP
------END PGP SIGNATURE-----
-
---xdcm5g2kingdnkbe--

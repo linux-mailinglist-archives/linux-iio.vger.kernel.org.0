@@ -2,44 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DEDE6BE6DA
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 11:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 237ED6BE6DC
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 11:34:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbjCQKdx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Mar 2023 06:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52808 "EHLO
+        id S230263AbjCQKd6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Mar 2023 06:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230235AbjCQKdu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 06:33:50 -0400
+        with ESMTP id S229616AbjCQKd5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 06:33:57 -0400
 Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2087.outbound.protection.outlook.com [40.107.104.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B01A30EAA;
-        Fri, 17 Mar 2023 03:33:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40FA72CC42;
+        Fri, 17 Mar 2023 03:33:50 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NncOqRHqFtmNYzuMAipozyPfXpcdiHpqUtocvSrPUnPQDi6Row9iJaS9oMz1DJC+Kp4JU55Kfrs7Scn7cR7O1uHykOHZn6q/exIesU47wJToefpIfP9nUjg2ErlXdHK1WSjpRywSLBsOSs7yyH9y/PCQCTemFNTsZP9jB9qoNFe+ljMUqW4njQ4gZI8GFFfI/FkbUtZbXYzquxvoHJ8oc3WnYLFgYWIYK6aAH03noIu0UxILlF6oYyUGt2vIm7roz2ZA2Cv9hagJPtpIFtSpcwB/swQskEIX3gTejrZJu7OUEzWOrrkSJf5rqZEb9sdL1m/ZD+UPSvWe7qpuPTs6/A==
+ b=Ys99zSaafY8w02Zx8CTBFjHxDzs6rBYJyJ+zqWE1W53XeWraPMr7T+YTlRF7yNntsZ1BF1YM/on+2ioGP9KwD9iPKO5c6A0y6N7HynKiUGbPA6Ad91ggpcXzbR6MotX6SrAs5B27ZBYprH+dg39+borX6tQH/+yWOL1mu/BctEmeHiZ1KO6nutwBH2Pcy2NQnJlGKi4ypo2/NgmOuoWLkuLhO8Cuw/fmYpbBzMtQaSUhheNhPL6l4cAEBcq55ffLdA85jGjuPcwLMumnjlQP9jhbfXDOwP0so4lsZcOjqzFo0ui0s1HaacB+WA1IY6NgNC4MasS9ulbEu/XdrwqkQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Chp7th0QoE3lCiI0yzGk6wSlZzn3QyI0CK3YfwMwZKE=;
- b=nf6NFT04Yy6a3XFdjdI3OhlZMPR+QgVZRprG+0839aUjwjptBE0kWYOIp+KnLLGPE9/tdfBWT3glEJSOSL3gA1Jl1mLB5byXYfaoJb+y3zVE5Josn94GFY5r4EtqOvXeRnXBdhDvQlDDdoPMKRWr4USy0+tkcpUuGCnw6q2pdxphatEWlgPWKFBY3qsPlEzVNjzRtJ+XZkS4Bv5iq3VAmbHO2b/HUSBoV7O+snLR46LyAUrtuO0SKY9oyjGwEXyG8bovCHL8VuQ61rTCSpFPHHW0JCigchlIx6c7/A4yzDMQgQ7Bpm6t22fv7SS5zOz0+oS3OZMMU/IOSxrWk5e7PQ==
+ bh=RtjZ184xP4sUDld4v5sEvavh+sm1SVUsnjrJB7OS2Kw=;
+ b=DzhOgyU2epc5uwI15UMOk0hAaP1HvOwtARlLbyFEO4897d784hbzIDqPcLb7ZvALnc59MbQJ4EGJ0KzFLxeIXGJbkjZgk6KwuW8xZOX8MllfaMP/6mNfCQyqsU22RHT+OnuKAY0yr1szXZq1RjZM76V1Xvic2+GbcxKwYgIGHKejmum92NsWrzW4vrgH9rchgD84XUGyrt6eTz3blOYrkylJNy5l9oRQRDR6ztSLTD719S3StHSechnhFkB7dalv+cBtEDkjpTHFrDIR/nNGVUl6OEo13wh9MG5fWXMsJN9FxL20MXCekUy0RRljQgcWLLL9wxprZA/EqdedFbb7YA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=chargebyte.com; dmarc=pass action=none
  header.from=chargebyte.com; dkim=pass header.d=chargebyte.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c4c.onmicrosoft.com;
  s=selector2-c4c-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Chp7th0QoE3lCiI0yzGk6wSlZzn3QyI0CK3YfwMwZKE=;
- b=kejLR5ESMSolMB+6IlpnQ6SMyB/XESojLW+hzaZQsRA2oGlphLi1Om/EdeVV71eTJcW7F8NrfemmapmRcvPHD6p+uO/IqnRh/nYDndNeEgeDF29P9V6O8dp4oAewvs6pOcXJLHShj6+/jNDb+CT5kb+6KWlFVf+LHEeIiqo08WM=
+ bh=RtjZ184xP4sUDld4v5sEvavh+sm1SVUsnjrJB7OS2Kw=;
+ b=cQ7pxvUuPwcTgUIvKyETgmsrHgX/VCIwifv3JcwPjCUQ35moMoPJzVFtYF7Cutd4ypW0D8mEwlmKCV7JYMS0YZifyTsJC2wbzM6AKyL4qlAeSZCl/tlwAiV7e282h7NMaVeE8KmZbJmygERcxTBIeXMmv48NtH1jn0ru6xY3DC0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=chargebyte.com;
 Received: from DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:33f::5)
  by DB8PR10MB3863.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:168::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.10; Fri, 17 Mar
- 2023 10:33:41 +0000
+ 2023 10:33:43 +0000
 Received: from DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::92e9:73c9:940:579e]) by DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::92e9:73c9:940:579e%5]) with mapi id 15.20.6222.008; Fri, 17 Mar 2023
- 10:33:41 +0000
+ 10:33:43 +0000
 From:   Stefan Wahren <stefan.wahren@chargebyte.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -54,10 +54,11 @@ Cc:     linux-imx@nxp.com, Li Yang <leoyang.li@nxp.com>,
         Denis Ciocca <denis.ciocca@st.com>, soc@kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, stefan.wahren@i2se.com,
-        Stefan Wahren <stefan.wahren@chargebyte.com>
-Subject: [PATCH V2 1/8] dt-bindings: vendor-prefixes: add chargebyte
-Date:   Fri, 17 Mar 2023 11:33:16 +0100
-Message-Id: <20230317103323.7741-2-stefan.wahren@chargebyte.com>
+        Stefan Wahren <stefan.wahren@chargebyte.com>,
+        Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH V2 2/8] dt-bindings: Add DS2482/DS2484 as trivial device
+Date:   Fri, 17 Mar 2023 11:33:17 +0100
+Message-Id: <20230317103323.7741-3-stefan.wahren@chargebyte.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230317103323.7741-1-stefan.wahren@chargebyte.com>
 References: <20230317103323.7741-1-stefan.wahren@chargebyte.com>
@@ -68,84 +69,85 @@ X-ClientProxiedBy: FR2P281CA0125.DEUP281.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9PR10MB5211:EE_|DB8PR10MB3863:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1670cf85-fd3f-4a3b-42bf-08db26d313cc
+X-MS-Office365-Filtering-Correlation-Id: b40ebc37-a6cd-49a4-22d7-08db26d314c9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lXAKjGu5/Y6SWVF60ROgBozg2d5LbrtTZ75PVl/mPwtLiTQUyf7m4R6pPUjMJ5tUmcjou08z4bUuFZ+lxkx00nvZRJlrUaDvNjGWn0zu3EjkpqFeR3uQ0RB8tQ+juUeo3jLRKFFf+R/zZqQE2vkuMQApaRuiSpDL21NO9TfsWZ3Imav5nCYagdPS2Lj9KmMMTMvQoixzHSEXJWdMY1w9j9i4v8ewyXrkRSATo6Ly+WcdSOVi4tqdPM4SmNwUh3R1CW146H+7H2/WiE4y9LiAwnh5A4t1NXab/SIX7PlLjv+sknqALYS5AQvcNOBjuxk1ObO7CwrND/JcBsn3Wjc50Bfhf5wfC8n6EMJAf7Q5CM8wpREUuoP5zUCd0GG7cT+bH3IwVzDZAVC8b1XrhWjGYtD8wFrbTgWh0UBo9eCiXYxaj3nuWzw5/j84sbDBbE73hul6Rb9cJHAeuDdRWV5jFHaG/Luw1+lNaV3IleKjqLf1wb+VSId6jwqXAILZ7mqaBEFLWdL3pFA/KDOob+Q36nJjaAmwpMIBZpUkYSurYDDGTXlLvEFKrNLoh00YsDSNKlNUR8/zNWh4tF7MO9uElB/b3NBrPdQ4YBVw6zoMdj/lp2zSCfAFxPKzoRnS8cyZXPepBCMQeZHuaV4XALai9TQqnnD+Y9YoYtxuOwP5yXpx+sW0WlhihO4oGnpcQhbLCe342H3mLeOev9ScZTH+Zw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(376002)(346002)(136003)(39850400004)(366004)(451199018)(921005)(38350700002)(38100700002)(66946007)(36756003)(7416002)(478600001)(86362001)(4326008)(4744005)(2906002)(5660300002)(44832011)(8936002)(110136005)(8676002)(54906003)(316002)(41300700001)(66556008)(52116002)(6506007)(6486002)(966005)(66476007)(2616005)(107886003)(26005)(186003)(6512007)(6666004)(1076003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Vn00X3g/+entfFxjDd4eMhgy3ToKx/ZGv3MC8zdUh3w+ItWyqAksTQUefaxCgdMFTLpxeSvqroA/N5f6teSfTY1ndT36D3t6v5+AlC3ehT+J8hSo5GpnaDMzL6t+JQnlX/3vdqDJQD+09p2Gm0Pj3hLYXGREuc2as0y3BzKmUyqf1tQZBRnNfoHzwn6IxJvm92pyAMTYaKJKCrlgQo+mmxdlMIti1h9C5XdUXhIRnGhAHNJsfThDLNwBVKj8BhD57pkZyXPNqGRwzorzHaUMA3nTTRPwUyOuGZVf98meAzjdU2IXKiysuxmdiGFa5wVibi5irY7LNeN/w5yTx6xI/aHEuc0JoPc+gIAYQoM0903/Sl69ZFD3lKtWtrh93UeP8fi9fdEtmEKztNoekivy6zOj9iRCYQX2UIH1V2/vV/Ma5KD/tvp5SuD2dwSzvbY22iEeCTAzLNO2WUCMHAfa5Lp8imaxUie2uv6etlQ3fHSGFViunsCqG/5QHI8mMB7FIsryzUn+rcnC2gmVNaSfBW1hxaFpLdKhp1ikjMAQgBGw6Sm/QWG4ZscoU036FXiDaaKF6dwRHFi9ZEHM4xuWs1ZABPHh+mQ8hwh+Sxz2vichlLOIgIFQkQgt0SMDdOB0G3fRxLK6W3cub9w6+kjpxfjH9eGotl3XfA/CiZdhXFqPFluB2a3Yujq3NH5RBUit6Gvgiff2kuAdjap4z4M0Gzg+mjRjZA14lsmEk2fuzv0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(376002)(346002)(136003)(39850400004)(366004)(451199018)(921005)(38350700002)(38100700002)(66946007)(36756003)(7416002)(478600001)(86362001)(4326008)(4744005)(2906002)(5660300002)(44832011)(8936002)(110136005)(8676002)(54906003)(316002)(41300700001)(66556008)(52116002)(6506007)(6486002)(66476007)(2616005)(26005)(186003)(6512007)(6666004)(1076003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6fpauRnI/BLMMcCO9eGU0sGRcdCodz4vnDtzWsWJtoEREyF2+1MXhJjSBVhr?=
- =?us-ascii?Q?lpThgE3kNG+f9n2yGAKpBENXUzLwHk5A8uuR09f5ZIi9uhuXxP0a/DBdLhMM?=
- =?us-ascii?Q?vUiHF2YjiO1fu217ZzBjFMHPEFnoBdmLTo9D5Ziicg5rxufw2zQ2wL/S7Ixr?=
- =?us-ascii?Q?b6lMjMatZAgXp34hLiOTf4Vb6xTsnd5ZpkZ6HzpBpcmeJJYwVBcOaCl+WiaX?=
- =?us-ascii?Q?74fBFhXzMhMqvvmPi7tU9eUiKzRweAhxe79iwp2gIXicsTLcrp0h5mQRhXeX?=
- =?us-ascii?Q?kclT5TejP//lcNOt16C+UMxKY6155bCvZZFs1kbcpJwWnlXKMNzRml75eFqB?=
- =?us-ascii?Q?HbYcQ2S7gSvmV1JUmsaNmOi4IQSWo7hnVD4BVlDaeB8IY9qI2XMrb2RI5gE+?=
- =?us-ascii?Q?uN3pnQbKJuRvOIsuY5Hr7sGmmuhKYnJJZdSYKkOnB+bqOzJfNMIl8gUA/KQ9?=
- =?us-ascii?Q?1pgKr4hjuIhkcFTvkD0/Trytk8SLTMop3lQ58Asj7pqGvGnrKwb1YR/6gLjw?=
- =?us-ascii?Q?JJ9iZfCaFV8ciIUYtJyXkWv+VHUyO02y2o2q+TYH2BqDWLY/GYuhKvwapoMV?=
- =?us-ascii?Q?kSBZKV8/mYnCAlyj55viX/W6SmeqHA3KvUXR5O3RXYDrlSDdj07C6cFlJpc+?=
- =?us-ascii?Q?avlGEl1/HfCRQ6j68YsCGPMVbMNp4PT8kqzV41MgC+TXeWJFqscNMx/P2OLm?=
- =?us-ascii?Q?pH4hmEaa2uTTz0q44/ZQ7h8u0devhSuMXaflzDSRDD/swJIyYNl04CltQqa2?=
- =?us-ascii?Q?dnkiA5GMYgmoiz3IrXi9+3rOHYuhxsLsQwGkyVwddJfTkNvb33/HnkPVXGci?=
- =?us-ascii?Q?+MlQ1fZuQ9SnyQs3zsBQuAQJcnwF063EvsANFQVb4uH9sC0+RfHxmcrc6X45?=
- =?us-ascii?Q?q8z7ly7oo+gZdY10y1H7fHu+mBo4qAxg77L5sFsggyzHPLHHrp7PTDirF6zN?=
- =?us-ascii?Q?Ezi8zWJOWUxl/sZPbPh5Qqg9F4pSKEmE0ch7gIn7otaSjche+gSb8ICHtz7o?=
- =?us-ascii?Q?gAOYPr6Dni9W16TCRcBpVQ73hlXiQQ5VONwOPh8PEfdV9d8iDyXbUteXBGeY?=
- =?us-ascii?Q?TczRX64ksJ7q98jAN6+rVWrgGHwabdoyWycG/IXwC4rc97B4OjBnFmE732ud?=
- =?us-ascii?Q?Kftpahq9Y+ZbNXq7Frx8xjbqXWUz9UzGfiB1Rbk8QS6e710Skeyvj7IUwuo+?=
- =?us-ascii?Q?wfk1Zpp/qyZT/ACMde9Ab08La/LMZhswNKbIuBkUthD6dq5yLd5Ozq8/4A63?=
- =?us-ascii?Q?nBPkuW1vyWOs2niUnIpVhZhvUV16aou4FBMA1cwV6CyOnDdm03ulstHs6rjE?=
- =?us-ascii?Q?EeXZZo89tCrkwJJ1GAUVsNMseX0/s3NqcAZKsYLQoDURYJimkOrKrMp5b8iI?=
- =?us-ascii?Q?bRbns2GxhQKbpKGRVhZOp67uDgrluVs0eZqU9iaOjUyLGxcWqF/qr1O4ej1r?=
- =?us-ascii?Q?3WoGrZzpPL9QN7mMSwUpT+hI3kOsV4uxXjLO/y92iBVeEPA3brlvcj0HahqH?=
- =?us-ascii?Q?uxOE31ycsLj8A7mZQFOTJxkCYlNMeNHxF8BgEGJ6HybRylHwISLvpbHv9vmg?=
- =?us-ascii?Q?FtAG4ZpPTZCJIrSM0C1jvtIfNsKdT8rKe6UIazp12axLtxYhgxSUXqG7qtjQ?=
- =?us-ascii?Q?zg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?498fyFzClZVNDuq9yPYw7525Zu+WrobbjspiyZDk1ic67AmMl1LJeLLghCWw?=
+ =?us-ascii?Q?qSZBYqAamw3l9cxV/baYzcwOw1Gkec7Mv7eIwEVNqbEbGSpleF2jNpNbOCl2?=
+ =?us-ascii?Q?klNOrmSudwq8HJzkMnd9fPS+YpelIV8u+grN06yUpjFJEI7J56KPUzkBj9oM?=
+ =?us-ascii?Q?DSj49H/8byQpDIiKkL2tn2lsbsH/kCy7vaMYcluHxrVNLQo6K/sA7Zva6AJi?=
+ =?us-ascii?Q?c9BLr26+o4b12QW3iOETH43tba1OPiZqDqA7kHFhJEzWk6bXwsJFNVdez2mn?=
+ =?us-ascii?Q?NnaKoAyoa/cY//2i/J4S7MShEvFRkVW86YEd9mijE/FiRI+l5YGB3x9qWfHx?=
+ =?us-ascii?Q?znaHmYCGTUN4AGS9JG8pCBcYjZuQ7ok/4mXS/yOhCHKdy2Xgii/tQjRclYQx?=
+ =?us-ascii?Q?BtCS34VXwJGTKAU+KaS7ub4LApxChlxhfZ3IZ/+TF5S+bYWslcA1XsktmTKI?=
+ =?us-ascii?Q?RmASK/kuGgcrhMtb10uAMzl1+6ZtjQTiFzQLAvtutgrXMxSQgN+uyq0rLW4y?=
+ =?us-ascii?Q?8/cMK4c8Ud5sC57ZrTim31LoSf7p7k+7G1HZFytAaR/Ae8NMdpF9KYYu4hxb?=
+ =?us-ascii?Q?i3po9bXI77R2neQlj3IKhSsamLRiQcesB5Qlpx+OHkE6S7Or6re1OVbCcIdM?=
+ =?us-ascii?Q?q1RtMnM8chM/+izVCsjfjnwRxkmwMboRwtveDczFD3xHryoOiNb/C+hBZep4?=
+ =?us-ascii?Q?zwRtYPsOoY8NWyjkAToIgvAPNqfSBCXVWuVQ0jqvOus6mhJJ1BPGKUyPN3M9?=
+ =?us-ascii?Q?wpKFLRHW0XXrNHegBm0eWLEw+uYdAhP7uCjyTlPbr7Yi/6u+kAMhhrS3nAtR?=
+ =?us-ascii?Q?R85sIxIRJHjgZoHFHjIaKHdwAZ+r1Rg+CCe6ELjhexYbzdalfou9zzhxdaVR?=
+ =?us-ascii?Q?qJQsljtQ6lnEmvfkcBpNQKhijF2Wpir3QH1wOJVgdGNNo3i7i6djJ47JqSqD?=
+ =?us-ascii?Q?dq7XvZu+GDOyzbojIp+pEdhXNU5j4fU1LOYZjrvIzPA1OxRV5bKCuryQp2lK?=
+ =?us-ascii?Q?iTqb3hJx+HPuvC1beIgYzTwjcwWZo8jJbeTClIjqXtqTtvcAJmYQlT+Xvkr8?=
+ =?us-ascii?Q?yhuk6NtNnS9YdG/ZuFNG06uvmU9vlPG1zhMsWRPTcRaiWbrIQzoULvQTHA2m?=
+ =?us-ascii?Q?D0peQamLLA1XCOdTElcEoOCQl3IReSjPYh0C/BZGzwoD5qQkvVPJWrA884Nd?=
+ =?us-ascii?Q?t+6m/wj/rpRyK8uP+D0FC9SormznwXZ3eF10dYfOHtbochDc7vHKsZbO6jbA?=
+ =?us-ascii?Q?GJuvmJFzWdhcC0rqS3mIkBxvmwzbwXdd7fihtreae7gYxkrb8Zz4ZGivPxlU?=
+ =?us-ascii?Q?giNhEYFJjN2orvHgEczLvHmpD9epagX7GjDLexJv/XPKWrFS4KtF/DuuXA5F?=
+ =?us-ascii?Q?fn9mR6bRWuPmqSYzX0ErEbLJqP28CUpSQKLuCQCyMDvRjK3KBt03TwGDoLax?=
+ =?us-ascii?Q?uugMcWIJ0Uy8lFZQKNzBuC2Eq215dWiTWx0qE4B+yq+t6Gcqu/6m73vEIRzy?=
+ =?us-ascii?Q?Ve0NM3Urk2LwN8Qj/0TxvSpzZVxxpVnx7izoJdPGvkdaGrz18q9SmZ+fR1fi?=
+ =?us-ascii?Q?vW45F/gGuqYNDfw6hV6JXnrhz1z2x22UqXVoKdUdxD0QR5Hcz0vne1X9eaS+?=
+ =?us-ascii?Q?3g=3D=3D?=
 X-OriginatorOrg: chargebyte.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1670cf85-fd3f-4a3b-42bf-08db26d313cc
+X-MS-Exchange-CrossTenant-Network-Message-Id: b40ebc37-a6cd-49a4-22d7-08db26d314c9
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR10MB5211.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2023 10:33:41.7636
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2023 10:33:43.3564
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 30547194-0d55-4a2f-900d-687893d3bdc0
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: REBjV4rIFugRTFLlmygB40W/SqKtSU6dxU1u/rwaNaKyeY7Gxwpu5CBQVSpuyXLqraZftm/DpujMeLYItOqcF5H+sZCydzx/mYs6Lb+tl+o=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0Dxi9i5ktyj/CkI2Wdp4khJ+N+DpDd7509pMc3DOzZSo8c5Cc5qpcOy03uMYwt0nWcDZOEokNIPbstnv76MZoBrsBpBeAihjVN+ElOfinhg=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3863
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-chargebyte supplies hardware and software products for all
-aspects of charging communication.
-https://chargebyte.com/
+Both chips are I2C to 1-wire bridges.
 
 Signed-off-by: Stefan Wahren <stefan.wahren@chargebyte.com>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index ed64e06ecca4..b8d8fa1d1fd6 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -240,6 +240,8 @@ patternProperties:
-     description: CellWise Microelectronics Co., Ltd
-   "^ceva,.*":
-     description: Ceva, Inc.
-+  "^chargebyte,.*":
-+    description: chargebyte GmbH
-   "^checkpoint,.*":
-     description: Check Point Software Technologies Ltd.
-   "^chefree,.*":
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 6f482a254a1d..9b7b24989359 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -183,6 +183,10 @@ properties:
+           - maxim,ds1803-050
+             # 100 kOhm digital potentiometer with I2C interface
+           - maxim,ds1803-100
++            # I2C to 1-wire bridge
++          - maxim,ds2482
++            # I2C to 1-wire bridge
++          - maxim,ds2484
+             # 10 kOhm digital potentiometer with I2C interface
+           - maxim,ds3502
+             # Low-Power, 4-/12-Channel, 2-Wire Serial, 12-Bit ADCs
 -- 
 2.17.1
 

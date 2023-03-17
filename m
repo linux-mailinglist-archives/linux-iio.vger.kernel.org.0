@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3158A6BE8CA
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 13:07:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F278D6BE8D1
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Mar 2023 13:07:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbjCQMHE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Mar 2023 08:07:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
+        id S229541AbjCQMHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Mar 2023 08:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229982AbjCQMHC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 08:07:02 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B3A46A2F1;
-        Fri, 17 Mar 2023 05:07:00 -0700 (PDT)
+        with ESMTP id S229516AbjCQMHy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Mar 2023 08:07:54 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA4A62FD6;
+        Fri, 17 Mar 2023 05:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679054820; x=1710590820;
+  t=1679054873; x=1710590873;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lB7z9JTEaPfgVe/3yaQB+3xyKnwK8qEpyWv6LLW5lHk=;
-  b=deiWSrWeElKunYrY2shzuf04AoUlhPk6rzWJk2CCJBRYLH/GYQOus2cS
-   TpQdwSbzkjQqNMtk0xZS+3/uyvpX0yUFe+orf+AoNBC/ZK2MssMHDDMzm
-   N+XNaWKTo8NXn0gZfqaIEqptV6cL0wXgwCbFYVEXjaBaujxv8Lxhd+bj1
-   REVBJJCb/5eBWkpEjzHxh3dAlyq2fcX69BCqtEioGDZNbcBTA9hCgRGqi
-   4UtfhidzQXu5Bt59X+ZE+XvyweTHaHTjtG6Ch2TitXXhKKsftRSVh4b+3
-   lJztjlS3EPJXZ3X89hhnHVfsfZ/JKxBo1iSw5G0v9BUfdHxeb8KIzB/1W
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="424517196"
+  bh=vNLnjZikE4RdId1Cq2J9A17DtYNPqaFjScBpOb1vhXw=;
+  b=aQTe3xGKWuo4KWV9mUkkL9Cfa1EIm1zZ41yleWZ2XGH8h4j7W7t0vnec
+   1K6oYL3XF4NzkTEvz+oxAeXe1v9ivPjjB8QlhoL4sBqECdCOEOqCg9okA
+   gapMyQlzubiOCGgJPk9XtKTxSWcfJC3qwF/XPEVOVKavcdxlpTynwo+p2
+   46+ZxuqOlDBtgL6HVh/ApIMkMA9RlfrcWbT8f9EDa4MdAQtqcdQCZ/TIF
+   CaYf7olQxImdO8/kBJCwfsw+CBjEvxJney6H6eng1OdCnocYBMM8qxPVa
+   qgfoh8678XBsklLkFFU6iVuas7NLyVfs33yuthDcezBHfJJt4n+y9+bKh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="336944820"
 X-IronPort-AV: E=Sophos;i="5.98,268,1673942400"; 
-   d="scan'208";a="424517196"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2023 05:06:43 -0700
+   d="scan'208";a="336944820"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2023 05:07:53 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="673533085"
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="749233351"
 X-IronPort-AV: E=Sophos;i="5.98,268,1673942400"; 
-   d="scan'208";a="673533085"
+   d="scan'208";a="749233351"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 17 Mar 2023 05:06:41 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 17 Mar 2023 05:07:51 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pd8r1-0050lS-2z;
-        Fri, 17 Mar 2023 14:06:39 +0200
-Date:   Fri, 17 Mar 2023 14:06:39 +0200
+        id 1pd8sA-0050nr-0Z;
+        Fri, 17 Mar 2023 14:07:50 +0200
+Date:   Fri, 17 Mar 2023 14:07:49 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mehdi Djait <mehdi.djait.k@gmail.com>
 Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
         krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: accel: kionix-kx022a: Add chip_info structure
-Message-ID: <ZBRXzymSWZaRDyhq@smile.fi.intel.com>
+Subject: Re: [PATCH 0/3] iio: accel: Add support for Kionix/ROHM KX132
+ accelerometer
+Message-ID: <ZBRYFb7iGSRsRvgT@smile.fi.intel.com>
 References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
- <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
+In-Reply-To: <cover.1679009443.git.mehdi.djait.k@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -66,51 +66,21 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 17, 2023 at 12:48:36AM +0100, Mehdi Djait wrote:
-> Refactor the kx022a driver implementation to make it more
-> generic and extensible.
-> Add the chip_info structure will to the driver's private
-> data to hold all the device specific infos.
-> Move the enum, struct and constants definitions to the header
-> file.
+On Fri, Mar 17, 2023 at 12:48:34AM +0100, Mehdi Djait wrote:
+> KX132 accelerometer is a sensor which:
+> 	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+> 	- can be connected to I2C or SPI
+> 	- has internal HW FIFO buffer
+> 	- supports various ODRs (output data rates)
+> 
+> The KX132 accelerometer is very similair to the KX022A. 
+> One key difference is number of bits to report the number of data bytes that 
+> have been stored in the sample buffer: 8 bits for KX022A vs 10 bits for KX132.
+> 
+> A complete list of differences is listed in [1]
+> [1] https://kionixfs.azureedge.net/en/document/AN112-Transitioning-to-KX132-1211-Accelerometer.pdf1
 
-Please, compile and test before sending.
-
-...
-
->  	.driver = {
-> -		.name   = "kx022a-spi",
-> +		.name	= "kx022a-spi",
->  		.of_match_table = kx022a_of_match,
->  	},
-
-What was changed here?
-
-...
-
-> -	.id_table = kx022a_id,
-> +	.id_table = kx022a_spi_id,
-
-Why do we need this change?
-
-...
-
-> -	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-kx022a",
-> +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-accel",
->  			      dev_name(data->dev));
-
-Shouldn't you use the name from chip info?
-
-...
-
-> +#define KX_MASK_BRES16			    BIT(6)
-> +
-> +
-
-One blank line is enough.
-
->  #define KX022A_REG_WHO		0x0f
->  #define KX022A_ID		0xc8
+Is it really the first version of this contribution?
 
 -- 
 With Best Regards,

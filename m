@@ -2,47 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C696BFB79
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 703F16BFB7F
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:23:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjCRQPx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 12:15:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41024 "EHLO
+        id S229473AbjCRQXQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 12:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjCRQPw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:15:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45A42D175
-        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 09:15:50 -0700 (PDT)
+        with ESMTP id S229575AbjCRQXP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:23:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04691DBB5
+        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 09:23:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B3CB60EC9
-        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 16:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19AFC433EF;
-        Sat, 18 Mar 2023 16:15:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 59B20B80861
+        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 16:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC55C433D2;
+        Sat, 18 Mar 2023 16:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679156149;
-        bh=DZNVe7U1+EpIpS+aGcyiw0CjbwrDOauszNFx3YY3Cko=;
-        h=From:To:Cc:Subject:Date:From;
-        b=cS56kIYIaObhm8gsKmCZmLKZcI7iGLmexcQo4t6ktyfm7Ossb3yLv9HXbKmbd0dhW
-         cuppXCywZ4nCJzY2uuHQdoegVbp4dwwFioyw5wmVoeM/4soaJIKdrwYsp8WRUry2Bi
-         wUaZG+E78M+tix+Dh5f6S54xuInuUK+nYRekLOss4RkEaVZM3XQIiFLQSoth0TeL9K
-         KxF4t2tRP2B2m7AcIQQ1CrvdyfyCRY1EJsaq4HXXO/4pYGUkgKgibpFdiCDfnkkPq3
-         3Tee7J8rUmGLZLZ0FlBzDpQ4Ma+FwC86+5j5x9wnrS1LaenuvDCpttThG3zNqx8W10
-         bKidYdmC3R7HQ==
+        s=k20201202; t=1679156591;
+        bh=nIQSbiUibh8ratHfMNZimLD7A+68RLLClrrpebJZOvY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=m94WuffTYWwT+GUIHURS8IyxDoA2wqSron60mc5rTCwdFbgHjTko4Cjz0qkBNORXN
+         92RbxBqcQFkyFYGxRbmvya97ZP55FRD+NM4TV4fUh7jqg/M5YTvuu9h4ewuReE0v/y
+         QTme1LkGiZjkpYBpZgMif59Eetp/c29jx9qBgRdm78ax8+vYfizBO3Cf21a5JKBO0K
+         vi8mmjUAkQ20pStsSEKD7sWfvFHUF37TyE3UPPD0ubr0PTa6tmiE0zRvzO+OdziR7h
+         4E0ruA4uGuWGljoX86se7UsRo5QgUDi3zQEyrW7rS7fi1i6ZyGekm/c0gujl5O9P+S
+         lVvIkE5VaE6dg==
+Date:   Sat, 18 Mar 2023 16:38:04 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        =?UTF-8?q?Signed-off-by=20=3A=20Patrik=20Dahlstr=C3=B6m?= 
-        <risca@dalakolonin.se>
-Subject: [PATCH] iio: adc: palmas: Take probe fully device managed.
-Date:   Sat, 18 Mar 2023 16:30:39 +0000
-Message-Id: <20230318163039.56115-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.40.0
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v2] iio: frequency: admv1013: Benefit from
+ devm_clk_get_enabled() to simplify
+Message-ID: <20230318163804.517619e7@jic23-huawei>
+In-Reply-To: <20230313185333.2776785-1-u.kleine-koenig@pengutronix.de>
+References: <20230313185333.2776785-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,185 +58,101 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, 13 Mar 2023 19:53:33 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
-Review of a recent fix highlighted that this driver could be trivially
-converted to be entirely devm managed.
+> Make use of devm_clk_get_enabled() to replace some code that effectively
+> open codes this new function.
+>=20
+> To retain ordering move the request to a place that is executed later.
+> This way the time of enable keeps the same.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-That fix should be applied to resolve the fix in a fashion easy to back port
-even though this change removes the relevant code.
+Looks good to me.  If we were reviewing this driver for the first time
+I'd be tempted to also pull the regulator get out of the
+properties parsing function on basis that neither that nor this clk
+retrieval are as simple as parsing the firmware.
 
-[1] https://patchwork.kernel.org/project/linux-iio/patch/20230313205029.1881745-1-risca@dalakolonin.se/
+Probably not worth making that shuffle now though - people can cope
+with the small dissonance :)=20
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Signed-off-by: Patrik Dahlström <risca@dalakolonin.se>
----
- drivers/iio/adc/palmas_gpadc.c | 110 +++++++++++++--------------------
- 1 file changed, 42 insertions(+), 68 deletions(-)
+Applied to the togreg branch of iio.git and pushed out as testing for
+0-day to take a poke at it.  Still time for others to comment though
+as I will rebase it if any comments coming before I push it out as togreg
+(probably end of next week)
 
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index 849a697a467e..2921186458e0 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -493,6 +493,11 @@ static int palmas_gpadc_get_adc_dt_data(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static void palmas_disable_wakeup(void *dev)
-+{
-+	device_wakeup_disable(dev);
-+}
-+
- static int palmas_gpadc_probe(struct platform_device *pdev)
- {
- 	struct palmas_gpadc *adc;
-@@ -532,36 +537,30 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
- 
- 	adc->auto_conversion_period = gpadc_pdata->auto_conversion_period_ms;
- 	adc->irq = palmas_irq_get_virq(adc->palmas, PALMAS_GPADC_EOC_SW_IRQ);
--	if (adc->irq < 0) {
--		dev_err(adc->dev,
--			"get virq failed: %d\n", adc->irq);
--		ret = adc->irq;
--		goto out;
--	}
--	ret = request_threaded_irq(adc->irq, NULL,
--		palmas_gpadc_irq,
--		IRQF_ONESHOT, dev_name(adc->dev),
--		adc);
--	if (ret < 0) {
--		dev_err(adc->dev,
--			"request irq %d failed: %d\n", adc->irq, ret);
--		goto out;
--	}
-+	if (adc->irq < 0)
-+		return dev_err_probe(adc->dev, adc->irq, "get virq failed\n");
-+
-+	ret = devm_request_threaded_irq(&pdev->dev, adc->irq, NULL,
-+					palmas_gpadc_irq,
-+					IRQF_ONESHOT, dev_name(adc->dev),
-+					adc);
-+	if (ret < 0)
-+		return dev_err_probe(adc->dev, ret,
-+				     "request irq %d failed\n", adc->irq);
- 
- 	if (gpadc_pdata->adc_wakeup1_data) {
- 		memcpy(&adc->wakeup1_data, gpadc_pdata->adc_wakeup1_data,
- 			sizeof(adc->wakeup1_data));
- 		adc->wakeup1_enable = true;
- 		adc->irq_auto_0 =  platform_get_irq(pdev, 1);
--		ret = request_threaded_irq(adc->irq_auto_0, NULL,
--				palmas_gpadc_irq_auto,
--				IRQF_ONESHOT,
--				"palmas-adc-auto-0", adc);
--		if (ret < 0) {
--			dev_err(adc->dev, "request auto0 irq %d failed: %d\n",
--				adc->irq_auto_0, ret);
--			goto out_irq_free;
--		}
-+		ret = devm_request_threaded_irq(&pdev->dev, adc->irq_auto_0,
-+						NULL, palmas_gpadc_irq_auto,
-+						IRQF_ONESHOT,
-+						"palmas-adc-auto-0", adc);
-+		if (ret < 0)
-+			return dev_err_probe(adc->dev, ret,
-+					     "request auto0 irq %d failed\n",
-+					     adc->irq_auto_0);
- 	}
- 
- 	if (gpadc_pdata->adc_wakeup2_data) {
-@@ -569,15 +568,14 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
- 				sizeof(adc->wakeup2_data));
- 		adc->wakeup2_enable = true;
- 		adc->irq_auto_1 =  platform_get_irq(pdev, 2);
--		ret = request_threaded_irq(adc->irq_auto_1, NULL,
--				palmas_gpadc_irq_auto,
--				IRQF_ONESHOT,
--				"palmas-adc-auto-1", adc);
--		if (ret < 0) {
--			dev_err(adc->dev, "request auto1 irq %d failed: %d\n",
--				adc->irq_auto_1, ret);
--			goto out_irq_auto0_free;
--		}
-+		ret = devm_request_threaded_irq(&pdev->dev, adc->irq_auto_1,
-+						NULL, palmas_gpadc_irq_auto,
-+						IRQF_ONESHOT,
-+						"palmas-adc-auto-1", adc);
-+		if (ret < 0)
-+			return dev_err_probe(adc->dev, ret,
-+					     "request auto1 irq %d failed\n",
-+					     adc->irq_auto_1);
- 	}
- 
- 	/* set the current source 0 (value 0/5/15/20 uA => 0..3) */
-@@ -608,11 +606,10 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
- 	indio_dev->channels = palmas_gpadc_iio_channel;
- 	indio_dev->num_channels = ARRAY_SIZE(palmas_gpadc_iio_channel);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret < 0) {
--		dev_err(adc->dev, "iio_device_register() failed: %d\n", ret);
--		goto out_irq_auto1_free;
--	}
-+	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-+	if (ret < 0)
-+		return dev_err_probe(adc->dev, ret,
-+				     "iio_device_register() failed\n");
- 
- 	device_set_wakeup_capable(&pdev->dev, 1);
- 	for (i = 0; i < PALMAS_ADC_CH_MAX; i++) {
-@@ -620,36 +617,14 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
- 			palmas_gpadc_calibrate(adc, i);
- 	}
- 
--	if (adc->wakeup1_enable || adc->wakeup2_enable)
-+	if (adc->wakeup1_enable || adc->wakeup2_enable) {
- 		device_wakeup_enable(&pdev->dev);
--
--	return 0;
--
--out_irq_auto1_free:
--	if (gpadc_pdata->adc_wakeup2_data)
--		free_irq(adc->irq_auto_1, adc);
--out_irq_auto0_free:
--	if (gpadc_pdata->adc_wakeup1_data)
--		free_irq(adc->irq_auto_0, adc);
--out_irq_free:
--	free_irq(adc->irq, adc);
--out:
--	return ret;
--}
--
--static int palmas_gpadc_remove(struct platform_device *pdev)
--{
--	struct iio_dev *indio_dev = dev_get_drvdata(&pdev->dev);
--	struct palmas_gpadc *adc = iio_priv(indio_dev);
--
--	if (adc->wakeup1_enable || adc->wakeup2_enable)
--		device_wakeup_disable(&pdev->dev);
--	iio_device_unregister(indio_dev);
--	free_irq(adc->irq, adc);
--	if (adc->wakeup1_enable)
--		free_irq(adc->irq_auto_0, adc);
--	if (adc->wakeup2_enable)
--		free_irq(adc->irq_auto_1, adc);
-+		ret = devm_add_action_or_reset(&pdev->dev,
-+					       palmas_disable_wakeup,
-+					       &pdev->dev);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	return 0;
- }
-@@ -834,7 +809,6 @@ MODULE_DEVICE_TABLE(of, of_palmas_gpadc_match_tbl);
- 
- static struct platform_driver palmas_gpadc_driver = {
- 	.probe = palmas_gpadc_probe,
--	.remove = palmas_gpadc_remove,
- 	.driver = {
- 		.name = MOD_NAME,
- 		.pm = pm_sleep_ptr(&palmas_pm_ops),
--- 
-2.40.0
+Thanks,
+
+Jonathan
+
+> ---
+> Hello,
+>=20
+> (implicit) v1 of this patch was part of a bigger series some time
+> ago[1].
+>=20
+> In v1 the call to devm_clk_get_enabled() was where devm_clk_get used to
+> be. Jonathan had the valid concern that this changes ordering which
+> might introduce subtle regressions. Andy suggested to move the call to
+> the later place.
+>=20
+> Best regards
+> Uwe
+>=20
+> [1] https://lore.kernel.org/linux-iio/20220808204740.307667-11-u.kleine-k=
+oenig@pengutronix.de
+>=20
+>  drivers/iio/frequency/admv1013.c | 21 ++++-----------------
+>  1 file changed, 4 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/adm=
+v1013.c
+> index ed8167271358..9bf8337806fc 100644
+> --- a/drivers/iio/frequency/admv1013.c
+> +++ b/drivers/iio/frequency/admv1013.c
+> @@ -490,11 +490,6 @@ static int admv1013_init(struct admv1013_state *st)
+>  					  st->input_mode);
+>  }
+> =20
+> -static void admv1013_clk_disable(void *data)
+> -{
+> -	clk_disable_unprepare(data);
+> -}
+> -
+>  static void admv1013_reg_disable(void *data)
+>  {
+>  	regulator_disable(data);
+> @@ -559,11 +554,6 @@ static int admv1013_properties_parse(struct admv1013=
+_state *st)
+>  		return dev_err_probe(&spi->dev, PTR_ERR(st->reg),
+>  				     "failed to get the common-mode voltage\n");
+> =20
+> -	st->clkin =3D devm_clk_get(&spi->dev, "lo_in");
+> -	if (IS_ERR(st->clkin))
+> -		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
+> -				     "failed to get the LO input clock\n");
+> -
+>  	return 0;
+>  }
+> =20
+> @@ -601,13 +591,10 @@ static int admv1013_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	ret =3D clk_prepare_enable(st->clkin);
+> -	if (ret)
+> -		return ret;
+> -
+> -	ret =3D devm_add_action_or_reset(&spi->dev, admv1013_clk_disable, st->c=
+lkin);
+> -	if (ret)
+> -		return ret;
+> +	st->clkin =3D devm_clk_get_enabled(&spi->dev, "lo_in");
+> +	if (IS_ERR(st->clkin))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
+> +				     "failed to get the LO input clock\n");
+> =20
+>  	st->nb.notifier_call =3D admv1013_freq_change;
+>  	ret =3D devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
 

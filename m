@@ -2,112 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A2126BFBD6
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 18:24:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF3A66BFC31
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 19:57:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjCRRYZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 13:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57428 "EHLO
+        id S229618AbjCRS5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 14:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjCRRYY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 13:24:24 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A64513DD0;
-        Sat, 18 Mar 2023 10:24:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A8CA6B8094F;
-        Sat, 18 Mar 2023 17:24:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B0FC433D2;
-        Sat, 18 Mar 2023 17:24:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679160260;
-        bh=km80eU5RmvZRE3qaaPVThX2oqEMEuAb2kMX8o2Jo2zI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iohfQk6S4zqFwANk01KYfDsBtZ1Xg+EoSIuNGoO8bptSs74tcq63nexZk8yBYuLFF
-         HL1HTkXUTxJ8fBT/12h58OCJzOl7iD81KrQcIgaBJOw0LXk7Fa8jFKbXIsqpWJQHXA
-         cp9ZESyC+8f9CVfCmZgpSiEbwi1PnMCqlGRp3jWcgVusck2z5npVNfeYmOKM4e+5qv
-         OIqdkxe6ExoBnjDdbJk4KiCI2HSbzLX052+S8F3urSmxzhRhveMyiEhqyXP+ys1hHp
-         2nWO0kws2XIXwhc25nMJmQopPXm8nsA35vGQGCCyPRos9n9BPOceYtz8/KVCdE6kiT
-         9iuyedohiwvhg==
-Date:   Sat, 18 Mar 2023 17:39:13 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Zheng Wang <zyytlz.wz@163.com>
-Cc:     eugen.hristev@collabora.com, lars@metafoo.de,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        claudiu.beznea@microchip.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: at91-sama5d2_adc: Fix use after free bug in
- at91_adc_remove due to race condition
-Message-ID: <20230318173913.19e8a1b1@jic23-huawei>
-In-Reply-To: <20230310091239.1440279-1-zyytlz.wz@163.com>
-References: <20230310091239.1440279-1-zyytlz.wz@163.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229562AbjCRS5S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 14:57:18 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B9922A3F
+        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 11:57:17 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id s12so9031252qtq.11
+        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 11:57:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679165836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U9p5+zyAgFkAG9dLgSgddG8iFTTXioCt2wTTeMFMwUg=;
+        b=t0SOCfi0456bxlx3kT/HT8yKzIJApxgDGUSYN6gQfZyMOj4+CCYTWhZAhYOygiEY97
+         cFB6YH6HtPzMBk9ER2ngbZnq+UdVQGdGAciRiAbItO2o4+yOay1myrPl6Atnnnv1dSBQ
+         KxCg+mNlrIRh811blVFO31gr6bOHpiVUXPImuK3dZYnBRmJswIeLAxwFAuZn/GkRclOZ
+         oIVCvL3FS3h52SHjd4PEYkKGa2GDUgEkfVwBs5tnplD6SO2ClZgwsfMwMcGILpWcfd/I
+         f6bgEKTx51pjhEmMHWWaY3Di0BtlnjKCra7JpdWMrtoMGuB7oTWUGJkDYGZRRkMXccgp
+         AD4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679165836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U9p5+zyAgFkAG9dLgSgddG8iFTTXioCt2wTTeMFMwUg=;
+        b=1JZ1r+mLO+Dw++LXACOquZZBkcGcs+IFUSo3l3A5/96Pf9f8O2VDDsVRFP65SadK/b
+         tNCKs3AHA58xJaMZi/unNapGA/hVYPCc1TtI3rehM7nXpY7QikrNs5QGDFUDQv5mUuhq
+         vEAYFeo23ngwCrmlQyfLuThrvHS25psbAV6eENjHw4Y9NImkbaNNVUKLWpfFBFTOh+Sm
+         tRiEGphlPopaELv7ruJt9XA0Pv8YVz0ITGx7TiPBB+gjTZNW3c4jktrHAOTn5ogGyRV6
+         DOk+XUX39qNNRSQMNDwHfMpsz1qnEclS5nykBrf8FoECC9CPu4ANN1MWHeadzms6f7Lt
+         AlXQ==
+X-Gm-Message-State: AO0yUKVU+ZNOKLD3YjWikrvkc/hLKp4rNmt82ejlhBswZMLvAIABdPk8
+        FzBjRDJ1PrTa87CpUN0IytIT3ZaLDtojJBvp4e8=
+X-Google-Smtp-Source: AK7set8lMPpQsoSkBEqN7HNixlYuyN13IE9XbUy7MesLMTnWbXDcj/+5F69DglHkHGHUqvVO3mj/zg==
+X-Received: by 2002:a05:622a:c4:b0:3bf:e2d8:28d4 with SMTP id p4-20020a05622a00c400b003bfe2d828d4mr19537496qtw.14.1679165836561;
+        Sat, 18 Mar 2023 11:57:16 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id b6-20020ac87546000000b003d29e23e214sm3388046qtr.82.2023.03.18.11.57.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Mar 2023 11:57:16 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH] iio: addac: stx104: Replace bitops.h header inclusion with bits.h
+Date:   Sat, 18 Mar 2023 14:55:03 -0400
+Message-Id: <20230318185503.341914-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Mar 2023 17:12:39 +0800
-Zheng Wang <zyytlz.wz@163.com> wrote:
+The <linux/bitops.h> header is included in the stx104 driver so that we
+can use the BIT() macro. This macro is actually defined in the
+<linux/bits.h> header, so replace the <linux/bitops.h> header inclusion
+with <linux/bits.h>.
 
-> In at91_adc_probe, &st->touch_st.workq is bound with
-> at91_adc_workq_handler. Then it will be started by irq
-> handler at91_adc_touch_data_handler
-> 
-> If we remove the driver which will call at91_adc_remove
->   to make cleanup, there may be a unfinished work.
-> 
-> The possible sequence is as follows:
-> 
-> Fix it by finishing the work before cleanup in the at91_adc_remove
-> 
-> CPU0                  CPU1
-> 
->                     |at91_adc_workq_handler
-> at91_adc_remove     |
-> iio_device_unregister|
-> iio_dev_release     |
-> kfree(iio_dev_opaque);|
->                     |
->                     |iio_push_to_buffers
->                     |&iio_dev_opaque->buffer_list
->                     |//use
-> Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index 50d02e5fc6fc..1b95d18d9e0b 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -2495,6 +2495,8 @@ static int at91_adc_remove(struct platform_device *pdev)
->  	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
->  	struct at91_adc_state *st = iio_priv(indio_dev);
->  
-> +	disable_irq_nosync(st->irq);
-> +	cancel_work_sync(&st->touch_st.workq);
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+ drivers/iio/addac/stx104.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'd like some input form someone more familiar with this driver than I am.
+diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
+index 48a91a95e597..e45b70aa5bb7 100644
+--- a/drivers/iio/addac/stx104.c
++++ b/drivers/iio/addac/stx104.c
+@@ -3,7 +3,7 @@
+  * IIO driver for the Apex Embedded Systems STX104
+  * Copyright (C) 2016 William Breathitt Gray
+  */
+-#include <linux/bitops.h>
++#include <linux/bits.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+ #include <linux/gpio/driver.h>
 
-In particular, whilst it fixes the bug seen I'm not sure what the most
-logical ordering for the disable is or the best way to do it.
-
-I'd prefer to see the irq cut off at source by disabling it at the device
-feature that is generating the irq followed by cancelling or waiting for
-completion of any in flight work.
-
->  	iio_device_unregister(indio_dev);
->  
->  	at91_adc_dma_disable(st);
+base-commit: 87a1ff66a0e57d9022665d24793f31fc54de182d
+-- 
+2.39.2
 

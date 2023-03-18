@@ -2,184 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53AC36BFBE0
+	by mail.lfdr.de (Postfix) with ESMTP id A999B6BFBE1
 	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 18:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjCRRgA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 13:36:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39060 "EHLO
+        id S229746AbjCRRgP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 13:36:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjCRRf7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 13:35:59 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F0F31BF4;
-        Sat, 18 Mar 2023 10:35:56 -0700 (PDT)
-Received: from [192.168.1.141] ([37.4.248.18]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1Mgf4k-1q9Kq51Vfw-00h9iT; Sat, 18 Mar 2023 18:35:21 +0100
-Message-ID: <c0b0929c-41b5-6b9e-8667-e76ac9305981@i2se.com>
-Date:   Sat, 18 Mar 2023 18:35:19 +0100
+        with ESMTP id S229640AbjCRRgO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 13:36:14 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D9D31E3E;
+        Sat, 18 Mar 2023 10:36:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=r7A7mdmBsBY9f3U2r41zJO5Uw7IfyxYxQsJX4tWnBic=; b=ANiUAJRwfDdBEzPXgKut6x0e7H
+        JifM0Ql1RokHy27pqRMCgLTo+kgBNrfw+amBnQUeMac085ALnseR2o87hsa+0Fp3UVzZV97g3lVvg
+        hSH8eLGSD5HFX40bVyxj2+O6vXgIhPSicCJYD2s+URiSoDrFhe5XvmH7YpkzEbRsqRrQzXLyFjRIJ
+        8LFGn83oHsgorJkYIGoAMTF/dpHl56qcJ+QwX62uVDH4j2Mo9yw2KcfOqqJ5iWKGTy/ZCOIr3Pwzi
+        RNYC+QkK0AViteORpAy4p9ukYreIeJ8aVtieJBPn50InwMjrxZ6phI6WCDiKY7yVhn1XjKrLU3mnM
+        k68LbttQ==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pdaTP-0001Cp-Hi; Sat, 18 Mar 2023 18:36:07 +0100
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pdaTP-000Nhv-3p; Sat, 18 Mar 2023 18:36:07 +0100
+Message-ID: <d62ece80-4d88-36a6-9561-fa0f5afc40c1@metafoo.de>
+Date:   Sat, 18 Mar 2023 10:36:04 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH V2 5/8] iio: accel: add support for IIS328DQ variant
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, linux-imx@nxp.com,
-        Li Yang <leoyang.li@nxp.com>,
-        Denis Ciocca <denis.ciocca@st.com>, soc@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Stefan Wahren <stefan.wahren@chargebyte.com>
-References: <20230317103323.7741-1-stefan.wahren@chargebyte.com>
- <20230317103323.7741-6-stefan.wahren@chargebyte.com>
- <20230318155811.0bcf85e1@jic23-huawei>
+Subject: Re: [PATCH] iio: at91-sama5d2_adc: Fix use after free bug in
+ at91_adc_remove due to race condition
 Content-Language: en-US
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-In-Reply-To: <20230318155811.0bcf85e1@jic23-huawei>
+To:     Jonathan Cameron <jic23@kernel.org>, Zheng Wang <zyytlz.wz@163.com>
+Cc:     eugen.hristev@collabora.com, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20230310091239.1440279-1-zyytlz.wz@163.com>
+ <20230318173913.19e8a1b1@jic23-huawei>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <20230318173913.19e8a1b1@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:dHLkmQBUUBfuNICi6lW+Y88CFIl7yl3WDnzKeRq0UO7C0b91y9g
- 2G8Z7vHaxdiIbJ7OgrktXJjegzGeULbkGZb5hnMcXpk5bwjNX4KoCbuOgYQkgs7G87DvVKO
- o1ZUanrHfbB9E3vh+9uGnfp8U7OuCHSnbJ9EN9kc8O/3cANaZkLeqv9o8hwtgDUGjWLg4lj
- vVlFt6jB5kpdPVUHlPXnQ==
-UI-OutboundReport: notjunk:1;M01:P0:dcx4nZPZQ9g=;2oy2bb6pk2vcr8L6q7wJeGC3nr3
- KJuBnfBAcIs7Eopztt90O2xitOiH3MuMTNnEszSXQLjYJzn9Lna150O5aMS5lbVHxMLtkweBt
- gCnrKbP7ASitGDxn86tXKDrk5ZVrmTDxxh3AIefuvmAFprwTTvzacxcXomrmg+bCMtzzxD5Cl
- vfghDkQ/51VYSW5ktt+Sut77DIdoI2GQIf0XI8NCqGaopNn3nY28pwz/g506mUgJO8wv0Rm8S
- K0+Zw+Uvn8toxhneSTXBFzBAACYDiaYnhiicMM5Lj6L43A3QQ3RBbexdMJgnGXDx3QQDGA/I6
- 63YpTyEGp3mbWODqjZnNt0XCwxEg5nPXmApk8qt2ebFCcVakoYw2hrznv8C2R3oaxueKN0/oL
- MDmLaqhDhGChEXdtKSbpvidqQDyPcKjRR24mRZyU3bSRkStJFktcJ8DnF5PIP9jDRsVkCzXaC
- jt209fUEEf0HJn9DDlePKBy6nAXiMHkwrRmIiqf4z7IuPt9gDuTASgLT+YllRKHWbp/VT6hcq
- /cAxfd9wpijKc6802T2c8y41WMVzl6y5tqvEf7vSL/S6aUTaCHz51YbbQtHnqUg5x06p33Eru
- Z6C941GgXPtDhJ0U7wixrDriRIX7Xw+dNsuM+ubOT5EgBw4X/MF5O4WzVT2DBrYHjEgAzykIc
- 7Rrk5xD1EXeY4tPkIwOoB0FssUrV91JZSRI+5v3/Jg==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26847/Sat Mar 18 08:21:32 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-
-Am 18.03.23 um 16:58 schrieb Jonathan Cameron:
-> On Fri, 17 Mar 2023 11:33:20 +0100
-> Stefan Wahren <stefan.wahren@chargebyte.com> wrote:
+On 3/18/23 10:39, Jonathan Cameron wrote:
+> On Fri, 10 Mar 2023 17:12:39 +0800
+> Zheng Wang <zyytlz.wz@163.com> wrote:
 >
->> Since the ST IIS328DQ accelerometer is compatible to the ST LIS331DL,
->> just add the new compatible to the st_accel framework.
+>> In at91_adc_probe, &st->touch_st.workq is bound with
+>> at91_adc_workq_handler. Then it will be started by irq
+>> handler at91_adc_touch_data_handler
 >>
->> Link: https://www.st.com/resource/en/datasheet/iis328dq.pdf
->> Signed-off-by: Stefan Wahren <stefan.wahren@chargebyte.com>
-> Hi Stefan,
->
-> Assuming the DT binding is fine with the DT maintainers, I plan to
-> pick the pair of IIO fixes up through my tree.  Is there any strong
-> reason they should go via another route?
-
-i'm a little bit confused about consider this as "fixes", but i'm fine 
-with them going your tree.
-
-Best regards
-
->
-> It's common for the dts files to go via ARM soc in cases like this
-> and we tend not to worry that they are 'broken' until the binding docs
-> are visible via other trees. Other than that I can't see an obvious
-> reason not to split these up.
->
-> Thanks,
->
-> Jonathan
->
+>> If we remove the driver which will call at91_adc_remove
+>>    to make cleanup, there may be a unfinished work.
+>>
+>> The possible sequence is as follows:
+>>
+>> Fix it by finishing the work before cleanup in the at91_adc_remove
+>>
+>> CPU0                  CPU1
+>>
+>>                      |at91_adc_workq_handler
+>> at91_adc_remove     |
+>> iio_device_unregister|
+>> iio_dev_release     |
+>> kfree(iio_dev_opaque);|
+>>                      |
+>>                      |iio_push_to_buffers
+>>                      |&iio_dev_opaque->buffer_list
+>>                      |//use
+>> Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
+>> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
 >> ---
->>   drivers/iio/accel/st_accel.h      | 1 +
->>   drivers/iio/accel/st_accel_core.c | 1 +
->>   drivers/iio/accel/st_accel_i2c.c  | 5 +++++
->>   drivers/iio/accel/st_accel_spi.c  | 5 +++++
->>   4 files changed, 12 insertions(+)
+>>   drivers/iio/adc/at91-sama5d2_adc.c | 2 ++
+>>   1 file changed, 2 insertions(+)
 >>
->> diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
->> index 56ed0c776d4a..e7525615712b 100644
->> --- a/drivers/iio/accel/st_accel.h
->> +++ b/drivers/iio/accel/st_accel.h
->> @@ -39,6 +39,7 @@
->>   #define LIS302DL_ACCEL_DEV_NAME		"lis302dl"
->>   #define LSM303C_ACCEL_DEV_NAME		"lsm303c_accel"
->>   #define SC7A20_ACCEL_DEV_NAME		"sc7a20"
->> +#define IIS328DQ_ACCEL_DEV_NAME		"iis328dq"
+>> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+>> index 50d02e5fc6fc..1b95d18d9e0b 100644
+>> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+>> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+>> @@ -2495,6 +2495,8 @@ static int at91_adc_remove(struct platform_device *pdev)
+>>   	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+>>   	struct at91_adc_state *st = iio_priv(indio_dev);
 >>   
->>   
->>   #ifdef CONFIG_IIO_BUFFER
->> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
->> index 6b8562f684d5..5f7d81b44b1d 100644
->> --- a/drivers/iio/accel/st_accel_core.c
->> +++ b/drivers/iio/accel/st_accel_core.c
->> @@ -517,6 +517,7 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
->>   		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
->>   		.sensors_supported = {
->>   			[0] = H3LIS331DL_ACCEL_DEV_NAME,
->> +			[1] = IIS328DQ_ACCEL_DEV_NAME,
->>   		},
->>   		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
->>   		.odr = {
->> diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
->> index 3f02fd5d5946..fb9e2d6f4210 100644
->> --- a/drivers/iio/accel/st_accel_i2c.c
->> +++ b/drivers/iio/accel/st_accel_i2c.c
->> @@ -119,6 +119,10 @@ static const struct of_device_id st_accel_of_match[] = {
->>   		.compatible = "silan,sc7a20",
->>   		.data = SC7A20_ACCEL_DEV_NAME,
->>   	},
->> +	{
->> +		.compatible = "st,iis328dq",
->> +		.data = IIS328DQ_ACCEL_DEV_NAME,
->> +	},
->>   	{},
->>   };
->>   MODULE_DEVICE_TABLE(of, st_accel_of_match);
->> @@ -157,6 +161,7 @@ static const struct i2c_device_id st_accel_id_table[] = {
->>   	{ LIS302DL_ACCEL_DEV_NAME },
->>   	{ LSM303C_ACCEL_DEV_NAME },
->>   	{ SC7A20_ACCEL_DEV_NAME },
->> +	{ IIS328DQ_ACCEL_DEV_NAME },
->>   	{},
->>   };
->>   MODULE_DEVICE_TABLE(i2c, st_accel_id_table);
->> diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
->> index 5740dc1820bd..f72a24f45322 100644
->> --- a/drivers/iio/accel/st_accel_spi.c
->> +++ b/drivers/iio/accel/st_accel_spi.c
->> @@ -100,6 +100,10 @@ static const struct of_device_id st_accel_of_match[] = {
->>   		.compatible = "st,lsm303c-accel",
->>   		.data = LSM303C_ACCEL_DEV_NAME,
->>   	},
->> +	{
->> +		.compatible = "st,iis328dq",
->> +		.data = IIS328DQ_ACCEL_DEV_NAME,
->> +	},
->>   	{}
->>   };
->>   MODULE_DEVICE_TABLE(of, st_accel_of_match);
->> @@ -157,6 +161,7 @@ static const struct spi_device_id st_accel_id_table[] = {
->>   	{ LIS3DE_ACCEL_DEV_NAME },
->>   	{ LIS302DL_ACCEL_DEV_NAME },
->>   	{ LSM303C_ACCEL_DEV_NAME },
->> +	{ IIS328DQ_ACCEL_DEV_NAME },
->>   	{},
->>   };
->>   MODULE_DEVICE_TABLE(spi, st_accel_id_table);
+>> +	disable_irq_nosync(st->irq);
+>> +	cancel_work_sync(&st->touch_st.workq);
+> I'd like some input form someone more familiar with this driver than I am.
 >
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> In particular, whilst it fixes the bug seen I'm not sure what the most
+> logical ordering for the disable is or the best way to do it.
+>
+> I'd prefer to see the irq cut off at source by disabling it at the device
+> feature that is generating the irq followed by cancelling or waiting for
+> completion of any in flight work.
+The usually way you'd do this by calling free_irq() before the 
+cancel_work_sync().
+
+

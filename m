@@ -2,50 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5451F6BFBCC
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 18:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B0D36BFBD3
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 18:19:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229987AbjCRRQX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 13:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
+        id S229660AbjCRRTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 13:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbjCRRQW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 13:16:22 -0400
+        with ESMTP id S229502AbjCRRTe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 13:19:34 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBA0C265A3;
-        Sat, 18 Mar 2023 10:16:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B567FE39E;
+        Sat, 18 Mar 2023 10:19:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6CCA1B803F5;
-        Sat, 18 Mar 2023 17:16:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F802C433D2;
-        Sat, 18 Mar 2023 17:16:11 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 70136B806A1;
+        Sat, 18 Mar 2023 17:19:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74683C433D2;
+        Sat, 18 Mar 2023 17:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679159773;
-        bh=9A2fgv5oQbxynJAYMRA2toHVpzS70vkHPEQb8wWQvP4=;
+        s=k20201202; t=1679159970;
+        bh=TlLbFe2AtUWFg73uowAriW9X3Ln7J8/MMonCpaLQ7qw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=O/h5RHcd+9uw139/ETE4kVAQuQT9Vm1lkk8uwwZUn30CtHULLYoCs6p0sOU6ScoYa
-         CeChAuaeHKSdU68FeKmc2FzKADSK2dgS+/lY0X/QtRX4ABIGfo2AOKg4NX3pZ1yM93
-         umQ089CWba7cdJnj2h82cZA2bYEsrhgKhB26s/vVPVNlo2wT+33dvUZ5k2RGikm1aW
-         QmFZLnFUmM+ZwEGkSL74702LRCvmTp/QhXAAOV8xV4er27wWc0y8dXbt7V0kgXazfo
-         PxDwKl7ZcDjjiONfOhEyRP3j/JdK8uNIOVfC5HNLlFmEsh9j40N/P5X6WhTfkRU6SE
-         Ugty5DdQ+8Eog==
-Date:   Sat, 18 Mar 2023 17:31:06 +0000
+        b=nufTb8rQPNuar3fPQ0dMH5Hyw3V10Gjszee7hb7wLvSi4HMEM4AKOrAlbY723QHtT
+         dgs2tVBu5NTzPy8C1UQFSgTnHumqLc2Td2TDVIRjk7+uMUh2qU4B4rs3Kilbl0/RjV
+         hgeHeQkQpNycHhjGgtPfOgetWn1e98Y4QviFiJEE/BkAsKdz4RCincWl0TyacvNuel
+         0olbewnw3DCuIRvLdZadXBxLqiLt9Wl1FoFEOMcc5hswgCrg3vEXd1y3uJD6m6Mf8x
+         JjoIO2oH1yoafj9jNqSWbCi5ridX/xu3BkB9hUKVnHLog8B/4pEHwjeTgdL7+RsWO5
+         mmm321tY7dzEQ==
+Date:   Sat, 18 Mar 2023 17:34:21 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <error27@gmail.com>
-Cc:     Irina Tirdea <irina.tirdea@intel.com>,
+To:     James Clark <james.clark@arm.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-kernel@vger.kernel.org, linux@roeck-us.net,
+        michal.simek@amd.com, Jonathan Corbet <corbet@lwn.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: magn: bmc150: add a lower bounds in
- bmc150_magn_write_raw()
-Message-ID: <20230318173106.78ae91d7@jic23-huawei>
-In-Reply-To: <23e6a7db-895a-4674-9a2d-acbb15342fd0@kili.mountain>
-References: <94939714-a232-4107-8741-8867038b03ae@kili.mountain>
-        <20230312144551.2baf3e8b@jic23-huawei>
-        <23e6a7db-895a-4674-9a2d-acbb15342fd0@kili.mountain>
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] serial: qcom_geni: Use devm_krealloc_array
+Message-ID: <20230318173402.20a4f60d@jic23-huawei>
+In-Reply-To: <74d8b579-6ea8-d6f3-170f-ea13534b4565@arm.com>
+References: <20230309150334.216760-1-james.clark@arm.com>
+        <20230309150334.216760-5-james.clark@arm.com>
+        <20230311191800.74ec2b84@jic23-huawei>
+        <74d8b579-6ea8-d6f3-170f-ea13534b4565@arm.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,78 +69,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Mar 2023 15:04:28 +0300
-Dan Carpenter <error27@gmail.com> wrote:
+On Fri, 17 Mar 2023 11:34:49 +0000
+James Clark <james.clark@arm.com> wrote:
 
-> On Sun, Mar 12, 2023 at 02:45:51PM +0000, Jonathan Cameron wrote:
-> > On Wed, 8 Mar 2023 12:12:37 +0300
-> > Dan Carpenter <error27@gmail.com> wrote:
+> On 11/03/2023 19:18, Jonathan Cameron wrote:
+> > On Thu,  9 Mar 2023 15:03:33 +0000
+> > James Clark <james.clark@arm.com> wrote:
 > >   
-> > > The "val" variable comes from the user via iio_write_channel_info().
-> > > This code puts an upper bound on "val" but it doesn't check for
-> > > negatives so Smatch complains.  I don't think either the bounds
-> > > checking is really required, but it's just good to be conservative.
-> > > 
-> > > Fixes: 5990dc970367 ("iio: magn: bmc150_magn: add oversampling ratio")
-> > > Signed-off-by: Dan Carpenter <error27@gmail.com>  
+> >> Now that it exists, use it instead of doing the multiplication manually.
+> >>
+> >> Signed-off-by: James Clark <james.clark@arm.com>  
 > > 
-> > Hi Dan,
+> > Hmm. I've stared at the users of this for a bit, and it's not actually obvious
+> > that it's being used as an array of u32.  The only typed user of this is as
+> > the 2nd parameter of  
+> > tty_insert_flip_string() which is an unsigned char *
 > > 
-> > I think this is more complex than it initially appears.
+> > I wonder if that sizeof(u32) isn't a 'correct' description of where the 4 is coming
+> > from even if it has the right value?  Perhaps the fifo depth is just a multiple of 4?
 > > 
-> > bmc150_magn_set_odr() matches against a table of possible value
-> > (precise matching) and as such you'd assume neither check is necessary.
-> > 
-> > However, for a given configuration not all values in that table can
-> > actually be set due to max_odr actually changing depending on other settings.
-> > 
-> > My immediate thought was "why not push this check into bmc150_magn_set_odr()"
-> > where this will be more obvious.  Turns out that max_odr isn't available until
-> > later in bmc150_magn_init() than the initial call of bmc150_magn_set_odr()
-> >  
-> > Whilst I 'think' you could move that around so that max_odr was set, that's not quite
-> > obvious enough for me to want to do it without testing the result.
-> > 
-> > So question becomes is it wroth adding the val < 0 check here.
-> > My gut feeling is that actually makes it more confusing because we are checking
-> > something that doesn't restrict the later results alongside something that does.
-> > 
-> > Am I missing something, or was smatch just being overly careful?  
+> > Jonathan
+> >   
 > 
-> Okay, fair enough.  The upper bounds is required and the lower bounds is
-> not.
+> The commit that added it (b8caf69a6946) seems to hint that something
+> reads from it in words. And I see this:
 > 
-> However, passing negatives is still not best practice and I feel like it
-> wasn't intentional here.  Let me resend the commit, but with a different
-> commit message that doesn't say the upper bound is not required.
+>   /* We always configure 4 bytes per FIFO word */
+>   #define BYTES_PER_FIFO_WORD		4U
+> 
+> Perhaps sizeof(u32) isn't as accurate of a description as using
+> BYTES_PER_FIFO_WORD but I'd be reluctant to make a change because I
+> don't really understand the implications.
 
-That works for me.
+Agreed with your analysis.  + fully understand why you don't want to change
+it. 
 
-> 
-> The Smatch warning feels intuitively correct.  If you're going to have
-> an upper bounds check then you need to have a lower bounds check to
-> prevent negative values.  In practice it works pretty well.  The only
-> major issue with this check is that sometimes Smatch thinks a variable
-> can be negative when it cannot.
-> 
-> This patch is an example where passing a negative is harmless and I had
-> a similar warning last week where it was passing a negative param was
-> harmless as well.  The parameter was used as loop limit:
-> 
-> 	for (i = 0; i < param; i++) {
-> 
-> It's a no-op since param is negative, but all all it needs is for
-> someone declare the iterator as "unsigned int i;" and then it becomes
-> a memory corruption issue.
-> 
-> So occasionally passing negatives is harmless but mostly it's bad.
+I'd be tempted to take the view that whilst it's allocated in 4 byte chunks
+because it's accessed elsewhere as a set of 1 byte entries, krealloc_array
+isn't appropriate and so just leave it with devm_krealloc()
 
-Agreed.
-
+Risk is that a steady stream of patches will turn up 'fixing' this as
+it will be easy for people to find with a script.  Maybe better to just add
+a comment (either with or without your patch).
 > 
-> regards,
-> dan carpenter
+> There is also this in handle_rx_console():
 > 
+>   unsigned char buf[sizeof(u32)];
 > 
+> James
 > 
+> > 
+> >   
+> >> ---
+> >>  drivers/tty/serial/qcom_geni_serial.c | 6 +++---
+> >>  1 file changed, 3 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+> >> index d69592e5e2ec..23fc33d182ac 100644
+> >> --- a/drivers/tty/serial/qcom_geni_serial.c
+> >> +++ b/drivers/tty/serial/qcom_geni_serial.c
+> >> @@ -1056,9 +1056,9 @@ static int setup_fifos(struct qcom_geni_serial_port *port)
+> >>  		(port->tx_fifo_depth * port->tx_fifo_width) / BITS_PER_BYTE;
+> >>  
+> >>  	if (port->rx_buf && (old_rx_fifo_depth != port->rx_fifo_depth) && port->rx_fifo_depth) {
+> >> -		port->rx_buf = devm_krealloc(uport->dev, port->rx_buf,
+> >> -					     port->rx_fifo_depth * sizeof(u32),
+> >> -					     GFP_KERNEL);
+> >> +		port->rx_buf = devm_krealloc_array(uport->dev, port->rx_buf,
+> >> +						   port->rx_fifo_depth, sizeof(u32),
+> >> +						   GFP_KERNEL);
+> >>  		if (!port->rx_buf)
+> >>  			return -ENOMEM;
+> >>  	}  
+> >   
 

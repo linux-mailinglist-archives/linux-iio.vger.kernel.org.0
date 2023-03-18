@@ -2,98 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 973476BFB5E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 16:55:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D6CF6BFB59
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 16:53:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbjCRPzt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 11:55:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48052 "EHLO
+        id S229478AbjCRPxf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 11:53:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjCRPzs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 11:55:48 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7517DD51C;
-        Sat, 18 Mar 2023 08:55:46 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id fd5so31339968edb.7;
-        Sat, 18 Mar 2023 08:55:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679154945;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G3UO8wzFd4aDziiIRlbrp66em8AxKDsXrNqmK59j0eU=;
-        b=T1kpCmA2VnCK8TwDDuxgKqbAw4Ap11fR0DgIXgLOtdaI2KiQ4Yof1xVDuZpWdl8eRB
-         EKn1tC5AlGXEGkLYVNnv2bXOHljJUl1FTPpu1xW60bnPuLB0u7m/cD2Ii3+Kymv/OKmR
-         GvMfH+vVXgw8w2POChIHOIURVGwXrerXVbyBpsHjglIrHmBPcFX9BGZ4opPujmNBLX3w
-         n9XGh7nNZx2KcYSvXs4ocPzKZmX3KMuQ3hXoyLDsqkeB2gRY/IbRZ+ntmW2MwQwQetZ3
-         uOLXwSGQzdwP4OB0GLzZGJUN2wt/cQ8UUWSt+/3UaUaCVjkHX/popBj3OyTNzrebnj32
-         xerw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679154945;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G3UO8wzFd4aDziiIRlbrp66em8AxKDsXrNqmK59j0eU=;
-        b=0yDWVMVCKxvjfZ3WzXm67DIPWvkqjGEelzRcZW0s861LmZ1ECkEgS3/glNABr5KZmI
-         sbL3rWj40335JT1IbZrEfSBqnEufouHPARt/frk8ehEZ/EsS4ievMbOSy3s0LRQBvhAP
-         xu7J0lqta0NLG+aFm1Ccar9f062KpD6wua8zUKUPx+gePSGfvekgU6ArhBLQ1mo8V0vn
-         fYWKUggHkiY51+FP9iJf46OJbL9QRCfQ+HPcFW3KZ9n8HEyqBGsSyxjejVjpRdW+sIkz
-         fs+Ht5VQPsVXOCbv67cJtr1tWmJreYFOaEo+3jKurXiSIlN46MtnDYmKjCeVFuxxucFC
-         N5QQ==
-X-Gm-Message-State: AO0yUKXG87ubvJi0VaP51NVznlDNBHtRvGNV9reRyhfjGMr9YxvAjQay
-        KwPg7FYD574Ns/WmO1m24m3FKS1VlRA=
-X-Google-Smtp-Source: AK7set8s/BKHh9Uy1ISUENON8/STQ03PR59ZEiKoxmPNVkM2ouU8+2AmaFxMMFxU04SWFW0g+zf3VA==
-X-Received: by 2002:a17:906:6886:b0:924:d90a:6f97 with SMTP id n6-20020a170906688600b00924d90a6f97mr2891041ejr.13.1679154944901;
-        Sat, 18 Mar 2023 08:55:44 -0700 (PDT)
-Received: from carbian ([2a02:8109:aa3f:ead8::a9c0])
-        by smtp.gmail.com with ESMTPSA id b7-20020a1709063f8700b008eddbd46d7esm2308886ejj.31.2023.03.18.08.55.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Mar 2023 08:55:44 -0700 (PDT)
-Date:   Sat, 18 Mar 2023 16:55:42 +0100
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 0/3] iio: accel: Add support for Kionix/ROHM KX132
- accelerometer
-Message-ID: <ZBXe/uHMg9WapRgX@carbian>
-References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
- <ZBRYFb7iGSRsRvgT@smile.fi.intel.com>
+        with ESMTP id S229842AbjCRPxZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 11:53:25 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06032B2BE;
+        Sat, 18 Mar 2023 08:53:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8A802B8074D;
+        Sat, 18 Mar 2023 15:53:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F873C433EF;
+        Sat, 18 Mar 2023 15:53:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679154793;
+        bh=VIC8yNIF5gb8H4Ss/veeFWQBDBzRAUYMI7xaHoyLXNI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=g1/XvBucTyM/JnLrfOELRPJPtmSKDTeJRTmatUDoM8fO5ATOgavaQY5wFYWEQvfIA
+         y3u/5DCZkGN5iwFbY0zdAdIpTfKsnrIOH1pyg37/TjWwZDWHKaFj9in0Wtkrgt7ZUB
+         99oHWm5JpQdMJEDxltGQAhcec+9YW/9CgKfZE9oMMPY0ZD1uXVTeQP/MHBQY2Zxru4
+         xQXfUhh0HJmv81l4sk1Z3ke6MbFrfmV8T6bjH/p6ZA+uPJtVwx1QmqL84btdWaFf+G
+         WfrHYefnyf5jQsf8ak0j3jsUlJUIGYh9E9nw2aMvytKDgvhLd2rw8l7+iemGfhdgeP
+         YqlHISFdlZTCQ==
+Date:   Sat, 18 Mar 2023 16:08:06 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     <Claudiu.Beznea@microchip.com>
+Cc:     <chengziqiu@hust.edu.cn>, <eugen.hristev@collabora.com>,
+        <lars@metafoo.de>, <Nicolas.Ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <dzm91@hust.edu.cn>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] iio: adc: at91-sama5d2_adc: remove dead code in
+ `at91_adc_probe`
+Message-ID: <20230318160806.7943aba4@jic23-huawei>
+In-Reply-To: <f1afaf48-e884-4902-8cff-41da234df9e9@microchip.com>
+References: <20230314070130.60581-1-chengziqiu@hust.edu.cn>
+        <f1afaf48-e884-4902-8cff-41da234df9e9@microchip.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZBRYFb7iGSRsRvgT@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy, 
+On Tue, 14 Mar 2023 10:12:23 +0000
+<Claudiu.Beznea@microchip.com> wrote:
 
-On Fri, Mar 17, 2023 at 02:07:49PM +0200, Andy Shevchenko wrote:
-> On Fri, Mar 17, 2023 at 12:48:34AM +0100, Mehdi Djait wrote:
-> > KX132 accelerometer is a sensor which:
-> > 	- supports G-ranges of (+/-) 2, 4, 8, and 16G
-> > 	- can be connected to I2C or SPI
-> > 	- has internal HW FIFO buffer
-> > 	- supports various ODRs (output data rates)
+> On 14.03.2023 09:01, Cheng Ziqiu wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> >   
+> >>From the comment of platform_get_irq, it only returns non-zero IRQ  
+> > number and negative error number, other than zero.
 > > 
-> > The KX132 accelerometer is very similair to the KX022A. 
-> > One key difference is number of bits to report the number of data bytes that 
-> > have been stored in the sample buffer: 8 bits for KX022A vs 10 bits for KX132.
+> > Fix this by removing the if condition.
 > > 
-> > A complete list of differences is listed in [1]
-> > [1] https://kionixfs.azureedge.net/en/document/AN112-Transitioning-to-KX132-1211-Accelerometer.pdf1
+> > Signed-off-by: Cheng Ziqiu <chengziqiu@hust.edu.cn>
+> > Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>  
 > 
-> Is it really the first version of this contribution?
-> 
-Yes this is my first series for the KX132 Support. 
+> Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Applied to the togreg branch of iio.git - initially pushed out as testing for 0-day to
+take a look at it.
 
---
-Kind Regards
-Mehdi Djait
+Thanks,
+
+Jonathan
+
+> 
+> 
+> > ---
+> > v2->v3: Change subject to make it regular.
+> > v1->v2: Change commit message from SoB to Reviewed-by.
+> >  drivers/iio/adc/at91-sama5d2_adc.c | 6 +-----
+> >  1 file changed, 1 insertion(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> > index 50d02e5fc6fc..168399092590 100644
+> > --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> > +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> > @@ -2400,12 +2400,8 @@ static int at91_adc_probe(struct platform_device *pdev)
+> >         st->dma_st.phys_addr = res->start;
+> > 
+> >         st->irq = platform_get_irq(pdev, 0);
+> > -       if (st->irq <= 0) {
+> > -               if (!st->irq)
+> > -                       st->irq = -ENXIO;
+> > -
+> > +       if (st->irq < 0)
+> >                 return st->irq;
+> > -       }
+> > 
+> >         st->per_clk = devm_clk_get(&pdev->dev, "adc_clk");
+> >         if (IS_ERR(st->per_clk))
+> > --
+> > 2.34.1
+> >   
+> 
+

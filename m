@@ -2,113 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6CF6BFB59
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 16:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A87446BFB70
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjCRPxf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 11:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43248 "EHLO
+        id S229488AbjCRQMI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 12:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbjCRPxZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 11:53:25 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06032B2BE;
-        Sat, 18 Mar 2023 08:53:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8A802B8074D;
-        Sat, 18 Mar 2023 15:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F873C433EF;
-        Sat, 18 Mar 2023 15:53:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679154793;
-        bh=VIC8yNIF5gb8H4Ss/veeFWQBDBzRAUYMI7xaHoyLXNI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=g1/XvBucTyM/JnLrfOELRPJPtmSKDTeJRTmatUDoM8fO5ATOgavaQY5wFYWEQvfIA
-         y3u/5DCZkGN5iwFbY0zdAdIpTfKsnrIOH1pyg37/TjWwZDWHKaFj9in0Wtkrgt7ZUB
-         99oHWm5JpQdMJEDxltGQAhcec+9YW/9CgKfZE9oMMPY0ZD1uXVTeQP/MHBQY2Zxru4
-         xQXfUhh0HJmv81l4sk1Z3ke6MbFrfmV8T6bjH/p6ZA+uPJtVwx1QmqL84btdWaFf+G
-         WfrHYefnyf5jQsf8ak0j3jsUlJUIGYh9E9nw2aMvytKDgvhLd2rw8l7+iemGfhdgeP
-         YqlHISFdlZTCQ==
-Date:   Sat, 18 Mar 2023 16:08:06 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     <Claudiu.Beznea@microchip.com>
-Cc:     <chengziqiu@hust.edu.cn>, <eugen.hristev@collabora.com>,
-        <lars@metafoo.de>, <Nicolas.Ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <dzm91@hust.edu.cn>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] iio: adc: at91-sama5d2_adc: remove dead code in
- `at91_adc_probe`
-Message-ID: <20230318160806.7943aba4@jic23-huawei>
-In-Reply-To: <f1afaf48-e884-4902-8cff-41da234df9e9@microchip.com>
-References: <20230314070130.60581-1-chengziqiu@hust.edu.cn>
-        <f1afaf48-e884-4902-8cff-41da234df9e9@microchip.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229640AbjCRQMI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:12:08 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E4D1EFD8;
+        Sat, 18 Mar 2023 09:12:07 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id z21so31513110edb.4;
+        Sat, 18 Mar 2023 09:12:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679155925;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yDOQo2oi01br/hq0Q8teN7ROHv1Pi/RknnKhbHvLQ04=;
+        b=hgLbXmJrfSUpdCdlq6mrDkRiNsJXXXMhNzi5UYUskhpvkA+Yh+E9aeaZkC8yOvi+3h
+         kg65zIGj0l7lRcQE7Qf6v+hwZS5RRolgfPdTURBNAIl2dy0nwfkVceX9auXIEblK2AOg
+         EBE4uIhP2YYzi5P/cxP50uZXgYgZOF9Lz3chIT19djjPU3Br+Fz+ZjGA0pFi2W6uIAKV
+         nINcdCNJqacxep5u8UXUkGZLw20rEXzMF3X/sI5EnxzogM94ioqWzwMIE2qC1uf7PCft
+         qha8VN3HoNk+C5WDM/jASK62mnRWcAZGg7GVaB+bYnb0Q3G9rbDmjYokTGfw7/YMTWn4
+         tA5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679155925;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yDOQo2oi01br/hq0Q8teN7ROHv1Pi/RknnKhbHvLQ04=;
+        b=M3iXfAE7olpNIi+bY1J9ziOEQeE4BYw9c9XqPu7a9JYyV1AHvK53ASLM1r8bRce5X/
+         Scg/X3FT9MhIPfZxXcXYFhnaW+V7bR3aXWSbYgmelKj3wpb4DY3sJsdDEoiiEYSnljgI
+         T2CjQO9pdYN+26TWJratdKFIAl46tC4x4GbvJb1M1mTW48KX9evWhQuEKpAYcdQVNcNb
+         uHZaqy8nzZNdUJV0NJPPM48Xd7OBrxmP2iv427eOnRu4uQoOpRA6QkHHeeNPpSMW3vqZ
+         9b0vKHhM9SPaPXAbnGUJsCqeKBVIdsF3e4GpsEeQWqziwWj6DYIOsSzVCDV6rXf8kfVz
+         75pA==
+X-Gm-Message-State: AO0yUKUiLjhKihIDSA9D4/e1ee1vu2409NMe+Gctwyz5GLS8c7KmW2FY
+        F9uG/OQ8FUJbep76LeFqitg=
+X-Google-Smtp-Source: AK7set/rc+rM+znYsJq2SQJj4XR4rOcdBb+eKAHgbkBpmBxGOghVKizBEcTMViBwFihuJpYQgtBQVw==
+X-Received: by 2002:a17:906:b1d6:b0:8b1:3467:d71b with SMTP id bv22-20020a170906b1d600b008b13467d71bmr3432056ejb.48.1679155925482;
+        Sat, 18 Mar 2023 09:12:05 -0700 (PDT)
+Received: from carbian ([2a02:8109:aa3f:ead8::a9c0])
+        by smtp.gmail.com with ESMTPSA id g19-20020a17090613d300b00931db712768sm2130526ejc.4.2023.03.18.09.12.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Mar 2023 09:12:05 -0700 (PDT)
+Date:   Sat, 18 Mar 2023 17:12:03 +0100
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: accel: kionix-kx022a: Add chip_info structure
+Message-ID: <ZBXi05HpZSHYs2wm@carbian>
+References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
+ <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
+ <ZBRXzymSWZaRDyhq@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZBRXzymSWZaRDyhq@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Mar 2023 10:12:23 +0000
-<Claudiu.Beznea@microchip.com> wrote:
+Hi Andy,
 
-> On 14.03.2023 09:01, Cheng Ziqiu wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> >   
-> >>From the comment of platform_get_irq, it only returns non-zero IRQ  
-> > number and negative error number, other than zero.
-> > 
-> > Fix this by removing the if condition.
-> > 
-> > Signed-off-by: Cheng Ziqiu <chengziqiu@hust.edu.cn>
-> > Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>  
+On Fri, Mar 17, 2023 at 02:06:39PM +0200, Andy Shevchenko wrote:
+> On Fri, Mar 17, 2023 at 12:48:36AM +0100, Mehdi Djait wrote:
+> > Refactor the kx022a driver implementation to make it more
+> > generic and extensible.
+> > Add the chip_info structure will to the driver's private
+> > data to hold all the device specific infos.
+> > Move the enum, struct and constants definitions to the header
+> > file.
 > 
-> Reviewed-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Applied to the togreg branch of iio.git - initially pushed out as testing for 0-day to
-take a look at it.
+> Please, compile and test before sending.
 
-Thanks,
-
-Jonathan
+My bad, I ignored the warnings... 
+I will fix it.
 
 > 
+> ...
 > 
-> > ---
-> > v2->v3: Change subject to make it regular.
-> > v1->v2: Change commit message from SoB to Reviewed-by.
-> >  drivers/iio/adc/at91-sama5d2_adc.c | 6 +-----
-> >  1 file changed, 1 insertion(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> > index 50d02e5fc6fc..168399092590 100644
-> > --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> > +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> > @@ -2400,12 +2400,8 @@ static int at91_adc_probe(struct platform_device *pdev)
-> >         st->dma_st.phys_addr = res->start;
-> > 
-> >         st->irq = platform_get_irq(pdev, 0);
-> > -       if (st->irq <= 0) {
-> > -               if (!st->irq)
-> > -                       st->irq = -ENXIO;
-> > -
-> > +       if (st->irq < 0)
-> >                 return st->irq;
-> > -       }
-> > 
-> >         st->per_clk = devm_clk_get(&pdev->dev, "adc_clk");
-> >         if (IS_ERR(st->per_clk))
-> > --
-> > 2.34.1
-> >   
+> >  	.driver = {
+> > -		.name   = "kx022a-spi",
+> > +		.name	= "kx022a-spi",
+> >  		.of_match_table = kx022a_of_match,
+> >  	},
+> 
+> What was changed here?
+
+Nothing. I will fix it
+
+> 
+> ...
+> 
+> > -	.id_table = kx022a_id,
+> > +	.id_table = kx022a_spi_id,
+> 
+> Why do we need this change?
 > 
 
+For consistency:
+i2c: .id_table = kx022a_i2c_id,
+spi: .id_table = kx022a_spi_id,
+
+> ...
+> 
+> > -	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-kx022a",
+> > +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-accel",
+> >  			      dev_name(data->dev));
+> 
+> Shouldn't you use the name from chip info?
+
+I can use the name from chip info. 
+dev_name(data->dev) is the original implementation
+
+> 
+> ...
+> 
+> > +#define KX_MASK_BRES16			    BIT(6)
+> > +
+> > +
+> 
+> One blank line is enough.
+
+I will change it in v2
+
+--
+Kind Regards
+Mehdi Djait

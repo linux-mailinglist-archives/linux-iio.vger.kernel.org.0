@@ -2,58 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BBDF6BFB91
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CCD6BFB95
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:39:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjCRQeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 12:34:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33102 "EHLO
+        id S229817AbjCRQjw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 12:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjCRQeV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:34:21 -0400
+        with ESMTP id S229478AbjCRQjs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:39:48 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02ABA35ED2;
-        Sat, 18 Mar 2023 09:34:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B8F729E;
+        Sat, 18 Mar 2023 09:39:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9A773B8010F;
-        Sat, 18 Mar 2023 16:34:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6846FC433EF;
-        Sat, 18 Mar 2023 16:34:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 463F6B806A1;
+        Sat, 18 Mar 2023 16:39:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF0BC433D2;
+        Sat, 18 Mar 2023 16:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679157256;
-        bh=P83LJcLdhyh1KSfLVhNDG8VtTGDadRLfj8sYgOvrXV4=;
+        s=k20201202; t=1679157583;
+        bh=tKPG9dHPLQB/k1SGdONx3xhAxtV67PvL9B18fnSQG8Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gvy55D3aIms95994EJPnIxuC5Z08gcrSdRUZKl6JZySBmeVjV/2hgSoSSClhVtWx3
-         xeqyka2sWSKR5ukT36yDxQQK35wrGW/gEoCW4EC9kwKV3ojk5GnuYFJG+qrx0azseF
-         CUTmXt/DVWflU3nbti6SD/ZPZ4lxFmouuIoR3MId25hIT2FWO1j5SvC3+KM82EUHED
-         XiJ3w2aV9i7s51JMSCAZRspOzwL1IKAafmn3B+GAWwVCsna7d7aJXPR3n2VXMEO7+S
-         mi5Lf7yyr5EogTSUNqaVrTf5gThPPDgbC8eK2YJawR+gDHPf0AGlRUs3MsvzHI2bCR
-         NBX5IgL4H2Ggw==
-Date:   Sat, 18 Mar 2023 16:49:09 +0000
+        b=a42tKpPrwuLbY42ggu74fUTg8DFcY0VjOdmDYag6NB0cBZEyxf5nopMiO8A2zkI1M
+         kZIl9oib4vZ/1Umstfc1N8JR+PKJLHyTU07owkl/wovuT1hNK6qKQwdYx/H9DynKF1
+         FTYqiRuP4Hi6UrinwNhdVOlRSQ3R5IJ/GQzOKyL++pCn93HaEQu48/oNZl5WyUKzq0
+         y+3XOPGoFpmtGzfHDQUoehwKunPLVfS4ed7xkrDb9sDnVooVGzxC/pOawJEMW2BH2b
+         WxgY2GrM94vcplY6/TiREaNB4vGNwlbgTW41VJbR7YhltrNG6gv/tJ37o8poRAd6I+
+         0ktUf7HvMmpaQ==
+Date:   Sat, 18 Mar 2023 16:54:36 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
         Zhigang Shi <Zhigang.Shi@liteon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 2/6] iio: light: Add gain-time-scale helpers
-Message-ID: <20230318164909.06123384@jic23-huawei>
-In-Reply-To: <9d63c161-0449-7e56-5873-2909587f17af@gmail.com>
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] iio: light: ROHM BU27034 Ambient Light Sensor
+Message-ID: <20230318165436.480f1a9a@jic23-huawei>
+In-Reply-To: <1b55adf6-32ce-1fd3-78cf-b2011f023eac@gmail.com>
 References: <cover.1677750859.git.mazziesaccount@gmail.com>
-        <9895826669118a1aa1db3f85c2610fa759426c33.1677750859.git.mazziesaccount@gmail.com>
-        <ZAC7L8NQYgBcBTCF@smile.fi.intel.com>
-        <7e537200-37ab-f6e6-c4e0-c3997128c01b@fi.rohmeurope.com>
-        <ZAXK9Hn2NuQPJ7eo@smile.fi.intel.com>
-        <1dbfc336-7d09-cd44-dfa2-9c4bedf257e1@gmail.com>
-        <ZA81rpWgwvP2bigt@smile.fi.intel.com>
-        <9d63c161-0449-7e56-5873-2909587f17af@gmail.com>
+        <874d59be98703bb58a98fea72138de5b94d71a52.1677750859.git.mazziesaccount@gmail.com>
+        <20230304201720.2d554f07@jic23-huawei>
+        <c16d372f-a122-16d6-ad08-1fbffb01d9ff@gmail.com>
+        <20230312153655.052d5730@jic23-huawei>
+        <1b55adf6-32ce-1fd3-78cf-b2011f023eac@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -67,50 +64,93 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Mar 2023 12:28:43 +0200
+On Mon, 13 Mar 2023 11:39:06 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 3/13/23 16:39, Andy Shevchenko wrote:
-> > On Mon, Mar 13, 2023 at 01:31:42PM +0200, Matti Vaittinen wrote:  
-> >> On 3/6/23 13:13, Andy Shevchenko wrote:  
-> >>> On Fri, Mar 03, 2023 at 07:54:22AM +0000, Vaittinen, Matti wrote:  
-> >>>> On 3/2/23 17:05, Andy Shevchenko wrote:  
-> >>>>> On Thu, Mar 02, 2023 at 12:57:54PM +0200, Matti Vaittinen wrote:  
-> > 
-> > ...
+> On 3/12/23 17:36, Jonathan Cameron wrote:
+> > On Sun, 5 Mar 2023 14:22:51 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > >   
-> >>>>>> +		for (i = 0; !ret && i < gts->num_avail_all_scales; i++)  
-> >>>>>
-> >>>>> Much easier to read if you move this...
-> >>>>>  
-> >>>>>> +			ret = iio_gts_total_gain_to_scale(gts, all_gains[i],
-> >>>>>> +					&gts->avail_all_scales_table[i * 2],
-> >>>>>> +					&gts->avail_all_scales_table[i * 2 + 1]);  
-> >>>>>
-> >>>>> ...here as
-> >>>>>
-> >>>>> 		if (ret)
-> >>>>> 			break;  
-> >>>>
-> >>>> I think the !ret in loop condition is obvious. Adding break and brackets
-> >>>> would not improve this.  
-> >>>
-> >>> It moves it to the regular pattern. Yours is not so distributed in the kernel.  
-> >>
-> >> I believe we can find examples of both patterns in kernel. I don't think the
-> >> "many people use different pattern" is a great reason to add break +
-> >> brackets which (in my eyes) give no additional value to code I am planning
-> >> to keep reading also in the future...  
-> > 
-> > The problem is that your pattern is not so standard (distributed) and hence
-> > less maintainable.  
+> >> On 3/4/23 22:17, Jonathan Cameron wrote:  
+> >>> On Thu, 2 Mar 2023 12:58:59 +0200
+> >>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >>>      
 > 
-> I am sorry but I can't really agree with you on this one. For me adding 
-> the break and brackets would just complicate the flow and thus decrease 
-> the maintainability.
+> // snip
+> 
+> >>>> +static const struct iio_chan_spec bu27034_channels[] = {
+> >>>> +	{
+> >>>> +		.type = IIO_LIGHT,
+> >>>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> >>>> +				      BIT(IIO_CHAN_INFO_SCALE),  
+> >>>
+> >>> What is this scale for?  
+> >>
+> >> The scale is to inform users that we return data using milli lux.
+> >>  
+> >>> Given the channel is computed from various different inputs, is there a
+> >>> clear definition of how it is scaled?  What does a write to it mean?  
+> >>
+> >> Nothing. writing anything else but milli lux scale fails with -EINVAL.
+> >>
+> >> I guess I am doing something in an unusual way here :) Do you have a
+> >> suggestion for me?  
+> > 
+> > Return data in lux?  
+> 
+> That's what I did originally have. But then I noticed we can get 
+> slightly better accuracy than that. Hence I switched to mLux and added 
+> the scale.
+> 
+> >  Or return it as INFO_RAW - thus making it clear
+> > that the reading is not in expected units and a conversion must be
+> > applied by userspace.  SCALE is not applied to PROCESSED by userspace.  
+> 
+> Ah. This makes sense then. Maybe it would be worth adding a warning to 
+> IIO-core if drivers set both the SCALE and PROCESSED info bits?
 
-I'm with the if (ret) break;
-school of thought on this one.  Never like for loops with complex conditions,
-I guess because I've trained my eyes to ignore them ;)
+Hmm. I'm not sure that we don't have valid users of it even if they
+are unusual.  We also have some historical messes that do RAW + SCALE +
+PROCESSED so we can't really have a warning on it.
 
+Warning generally is that the test tools that come with the kernel
+will give you the wrong reading. :)
+
+> 
+> So, I need to select between the simplicity or better accuracy here? :/ 
+> I really hate ending up making choices like this without knowing all the 
+> real use-cases :( And it happens a lot for me. Well, I guess I'll drop 
+> the scale, use luxes and go with the PROCESSED data. My understanding is 
+> that the "thing" with the sensor is a wide-range for wavelengths, not 
+> the accuracy. So, maybe luxes are just good enough - and again, users 
+> needing something more accurate can utilize the raw intensity channels.
+
+Hmm. For the sysfs case you could use VAL_INT_PLUS_MICRO but that doesn't
+then work well with the buffered path.
+
+It is perfectly valid to just have this as _RAW and keep your _SCALE so
+that's probably the best option
+_RAW doesn't have to mean totally raw, it just means userspace is expected
+to applying a linear conversion to get a reading in the 'base' units for the channel.
+
+
+> 
+> > 
+> > In the rare case where you do get SCALE and PROCESSED it's there to allow
+> > for changes in the underlying signal measurement that are eaten up in the
+> > computation needed to get to PROCESSED - that is they have no visible
+> > affect (beyond range changes etc).  
+> 
+> Oh, Ok. So there is a valid case for setting both SCALE and PROCESSED. 
+> Then we can't add teh warning I assume :(
+
+They are obscure but IIRC there are some.
+
+Jonathan
+
+> 
+> 
+> Yours,
+> 	-- Matti
+> 
 

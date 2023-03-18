@@ -2,96 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF6B6BFAB0
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 15:11:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCAD86BFB0D
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 16:00:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229708AbjCROLJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 10:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42978 "EHLO
+        id S229618AbjCRPAI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 11:00:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjCROLI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 10:11:08 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A5AC2701
-        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 07:11:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7CD25B81A65
-        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 14:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C293FC433EF;
-        Sat, 18 Mar 2023 14:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679148658;
-        bh=c5BvFbGl7rblWnb3eyZ9yJNYuxjL1GxwjpHzxDg/Jgs=;
-        h=Date:From:To:Cc:Subject:From;
-        b=o//jZFhKH6+F/QR3nkLIZx5fyZEar89dWzA8KMe0G0appwq/AWK1JF57YNSJSNBW7
-         uL4/O4OgE7KTvdtiphRcRxtnyewtcFRqZKGvhYA4pX7tSujXAspctoG3UR4YliOqS9
-         At9r9+OO8jXWWO466cEjhhb51Fflss10gJylpJRc7JIER29oYir9Wv6p0OB5EzFcYG
-         50VP0XdMJDDseWVWd9AhXUz0J03CMJafXpaCQpktzyPD76HehP8Z2GYITox0yOdb73
-         hZ/d9BF8vyZ/9RhkAUXqwO7Fx3jt7VYhIyy95Li6GymglXJwHEv5GLCTR71qKEqHGh
-         rE3uLqgvLlwIA==
-Date:   Sat, 18 Mar 2023 10:10:55 -0400
-From:   William Breathitt Gray <wbg@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, william.gray@linaro.org
-Subject: [GIT PULL] First set of Counter driver fixes for 6.3
-Message-ID: <ZBXGb2rwkcGtkArk@ishi>
+        with ESMTP id S229488AbjCRPAG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 11:00:06 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D84FE2528A
+        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 08:00:03 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id ek9so8638942qtb.10
+        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 08:00:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679151603;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0O2Se05WZykb6gnl2tgkCz0qj3TrHgbValu61eHs1Ig=;
+        b=f1H3d6rT8sOXwm8g5R2YhTL5c6LGovcedBeMAXNfaa0gdFKC+ddWlepsEY5T0+7KS1
+         ZOhYfeyHEmtkcUn+DnZl72OWv0CYuxCndrWZSqeSN+2b73ladCEqw7xpAd+QNkLAzwGp
+         yrJZePsSofZvzjAyzVK9vqdaqohQl0ZAl9zKxSYHfDBaPeCJOKrXHYlrjrQyn6+ET8Vz
+         /68JLo2HE8U20FCK/kj2xjHBQ9nkq3P/Cy0bxeqcoeEwfqETlyyL0mI2Pvq9ToDDfBqK
+         a6ZITvdLt0PAs6fPgTv64fV2Y45x+sOcH8vtfIfPNyAPjEkBUUU6nh63aBdmZG2U+Wug
+         UnJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679151603;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0O2Se05WZykb6gnl2tgkCz0qj3TrHgbValu61eHs1Ig=;
+        b=rGu64faOwAXoiactFfXDXmX9H9krHyYA10HevREUpYaI3WzpTkLb0U9ihxJr0F58t2
+         sLqlKAJGK1zBF7xgH2MVcGlL5Kc84gauLesaVLMLMmpWYCPC4RsxlhRyQ8v5G3aMuQVH
+         xrpbmI9Z6XHQyTfF4TuN9fDuRSVQYZimqGeXayI1ca8vzujNmCMGciLVyRONKUVYmAE3
+         DO13RGl4FrMBBlRu2GpyWGyL5WVTNRsXOpe73mOdVSpMEM5YbKg8U7NVqYahGfZKbf8n
+         JA8NcWTYg1QsDANKG+Pu8V1C++QlESecIYuz2JNmMgcYcWKsm38siXmrnwanjuvKk7ja
+         VTPQ==
+X-Gm-Message-State: AO0yUKXtWNpk1Ys0maJ4aWTCk2Dv78R2Pl0fR+GzEWvwsMnL5CfDwhjd
+        KIzLpy5HnVaFWGEo8q+VLiTky8EbrHniDpzXH+o=
+X-Google-Smtp-Source: AK7set80/4ii9N8RbVKZ/Jx8z5jCS6iho/1z5zvzCd4CEPc3rQ4iSkcD42pxAoO5p+QgvaZ8MIA2kA==
+X-Received: by 2002:a05:622a:1106:b0:3dd:eed:93b3 with SMTP id e6-20020a05622a110600b003dd0eed93b3mr3557058qty.46.1679151602759;
+        Sat, 18 Mar 2023 08:00:02 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id f67-20020a37d246000000b00745daadd210sm3709162qkj.71.2023.03.18.08.00.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Mar 2023 08:00:02 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH 0/4] Refactor 104-quad-8 to match device operations
+Date:   Sat, 18 Mar 2023 10:59:47 -0400
+Message-Id: <cover.1679149542.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Fp1mM+j+blawsLNC"
-Content-Disposition: inline
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The 104-quad-8 driver was initially introduced to the IIO subsystem
+where it didn't quite fit with the existing paradigm [0]; these
+differences eventually led to the creation of the Counter subsystem[1].
+As a result of its awkward beginnings, the design of the 104-quad-8
+driver was structured around maintaining abstract state buffers that
+would eventually be converted to match the actual device registers
+states on-the-fly as needed.
 
---Fp1mM+j+blawsLNC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The original design approach for the 104-quad-8 driver was neither
+efficient nor easy to troubleshoot, but it did allow us to focus on
+implementing and supporting necessary APIs for the nascent Counter
+subsystem. Now that development for the 104-quad-8 driver has shifted
+to maintenance, it is a good time to refactor and clean up the code to
+match closer to what is actually happening on the device. This patchset
+is an attempt to rectify the situation as such.
 
-The following changes since commit fe15c26ee26efa11741a7b632e9f23b01aca4cc6:
+The primary change is a transition from maintaining individual
+configuration states independently, to storing buffers of the device
+register configurations. To that end, the bitfield API is leveraged to
+access and retrieve field states. Modifying bitfields is a common code
+pattern so a FIELD_MODIFY macro is introduced to facililate such.
+Finally some helper functions are introduced to abstract the handling of
+the PR, FLAG, and PSC registers.
 
-  Linux 6.3-rc1 (2023-03-05 14:52:03 -0800)
+Modifying a buffer state in-place is a common pattern, so should we also
+consider adding a field_replace() function similar to bitmap_replace()?
 
-are available in the Git repository at:
+[0] https://lore.kernel.org/r/b43e2942b763b87afc85bfa9fe36e5695cba4c44.1475079578.git.vilhelm.gray@gmail.com/
+[1] https://lore.kernel.org/r/cover.1554184734.git.vilhelm.gray@gmail.com/
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-6.3a
+William Breathitt Gray (4):
+  counter: 104-quad-8: Utilize bitfield access macros
+  bitfield: Introduce the FIELD_MODIFY() macro
+  counter: 104-quad-8: Refactor to buffer states for CMR, IOR, and IDR
+  counter: 104-quad-8: Utilize helper functions to handle PR, FLAG and
+    PSC
 
-for you to fetch changes up to 00f4bc5184c19cb33f468f1ea409d70d19f8f502:
+ drivers/counter/104-quad-8.c | 526 ++++++++++++++++++-----------------
+ include/linux/bitfield.h     |  18 +-
+ 2 files changed, 283 insertions(+), 261 deletions(-)
 
-  counter: 104-quad-8: Fix Synapse action reported for Index signals (2023-03-18 09:26:40 -0400)
 
-----------------------------------------------------------------
-First set of Counter driver fixes for 6.3
+base-commit: 00f4bc5184c19cb33f468f1ea409d70d19f8f502
+-- 
+2.39.2
 
-This set consists of two fixes for the 104-quad-8 driver:
-	- fix a read race condition between the FLAG and CNTR registers
-	  (as a result 25-bit count values are no longer supported)
-	- invert condition check to report correct Index Synapse action
-
-----------------------------------------------------------------
-William Breathitt Gray (2):
-      counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
-      counter: 104-quad-8: Fix Synapse action reported for Index signals
-
- drivers/counter/104-quad-8.c | 31 +++++++++----------------------
- 1 file changed, 9 insertions(+), 22 deletions(-)
-
---Fp1mM+j+blawsLNC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZBXGbwAKCRC1SFbKvhIj
-K/weAQDtLhIR0XAj0jxIRN0osWRQhX+yCtMm/YU02R0eCej8wgD7BMvkqqgZcSVm
-KFgYBqxjrs+Wgb+BSAHGk/dBu3jbiwc=
-=0H6+
------END PGP SIGNATURE-----
-
---Fp1mM+j+blawsLNC--

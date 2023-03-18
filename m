@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C42276BFB82
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 472146BFB89
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Mar 2023 17:28:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbjCRQZy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Mar 2023 12:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
+        id S229737AbjCRQ25 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Mar 2023 12:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbjCRQZx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:25:53 -0400
+        with ESMTP id S229677AbjCRQ24 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Mar 2023 12:28:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12D5126F3
-        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 09:25:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B3D2333D;
+        Sat, 18 Mar 2023 09:28:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4366160E93
-        for <linux-iio@vger.kernel.org>; Sat, 18 Mar 2023 16:25:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D90C433EF;
-        Sat, 18 Mar 2023 16:25:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA5D260EC3;
+        Sat, 18 Mar 2023 16:28:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1699C433EF;
+        Sat, 18 Mar 2023 16:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679156751;
-        bh=6R/1P2Quynr5mNcruOicXmQT70ahwWfQg9go4fzL1rM=;
+        s=k20201202; t=1679156934;
+        bh=6u+K4+K5Z74SQQmluznTbauRm8INr+Z3QXBoXsZzHmA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EEKXFZNbwlRlDWj+6eh6KYWNvbbBAJ5OKPuPOFKPJVTmca9cY3liZ88vUi8zLFZ6/
-         0EG3oNt0ZwytpF3MdlJ5SYhJbvQzHgu/vyuRI4GuR/bVAsiNsL1Gk+9jQKOJw8XV4V
-         +n6aXHqXHI1aMPKd9//W2UnCzygPhOqPGjWEpzTptUNcnbraxeqptz9dD7F2WQwLqP
-         BkQ+lEQjD6FcLk8CxzHa2YO/E3O8gej05TTw/1/7hh4wJ9/ioZ2ebX7BPEZS8JZ0QV
-         YO0/iW7OtgFgODwDDSA/WcgFHCpJDFRBVV+b3nb1JuxQCIX9esz1zJetdPyJTWzdou
-         JoBpkQ+Qqc+Wg==
-Date:   Sat, 18 Mar 2023 16:40:45 +0000
+        b=hyCF1CoZ0amuXKk21MGVPfZL4EahjCfww0pWejX3fmSSXENLO9m9UqRIi/URQxzDN
+         UqiFuQoqOqNJI5J2LS6b9iw7u798gby89vPRCvFBy8pG/Q4K0U3b4NoV4npiPItWmh
+         Q/Hgit38vrQ6HdjuJbsMc5OW5wb/q1J81SIr3lFkOhSmrwz/nCdNnVHWBBUVrDP8nA
+         GQsvlB2Rek7UClcy60rJdD3JG1rUExymT0Yw2uY4jiFs3GkfWPMAXgykAeoHUx7daQ
+         j457owuSlLxKIX/ZY56EAyOg8TCqRHAcETWDdgisZA1LamVPXcOdwyAKhoRubqTwRZ
+         f8Trx4+StfG/A==
+Date:   Sat, 18 Mar 2023 16:43:47 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     David Lechner <david@lechnology.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Justin Chen <justinpopo6@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads7950: Set `can_sleep` flag for GPIO
- chip
-Message-ID: <20230318164045.4a5f4d35@jic23-huawei>
-In-Reply-To: <603a73ae-5c67-0837-ed26-9a98ad3fec74@lechnology.com>
-References: <20230312210933.2275376-1-lars@metafoo.de>
-        <603a73ae-5c67-0837-ed26-9a98ad3fec74@lechnology.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2] iio: dac: cio-dac: Migrate to the regmap API
+Message-ID: <20230318164347.1e96325c@jic23-huawei>
+In-Reply-To: <ZAzQ6LyfllSjN16j@fedora>
+References: <20230311140218.74920-1-william.gray@linaro.org>
+        <20230311185719.7af38a8a@jic23-huawei>
+        <ZAzQ6LyfllSjN16j@fedora>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,26 +56,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Mar 2023 13:44:33 -0500
-David Lechner <david@lechnology.com> wrote:
+On Sat, 11 Mar 2023 14:05:12 -0500
+William Breathitt Gray <william.gray@linaro.org> wrote:
 
-> On 3/12/23 4:09 PM, Lars-Peter Clausen wrote:
-> > The ads7950 uses a mutex as well as SPI transfers in its GPIO callbacks.
-> > This means these callbacks can sleep and the `can_sleep` flag should be
-> > set.
+> On Sat, Mar 11, 2023 at 06:57:19PM +0000, Jonathan Cameron wrote:
+> > On Sat, 11 Mar 2023 09:02:18 -0500
+> > William Breathitt Gray <william.gray@linaro.org> wrote:  
+> > > diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
+> > > index 791dd999cf29..759833a6bd29 100644
+> > > --- a/drivers/iio/dac/cio-dac.c
+> > > +++ b/drivers/iio/dac/cio-dac.c
+> > > @@ -6,16 +6,15 @@
+> > >   * This driver supports the following Measurement Computing devices: CIO-DAC16,
+> > >   * CIO-DAC06, and PC104-DAC06.
+> > >   */
+> > > -#include <linux/bitops.h>
+> > > +#include <linux/bits.h>  
 > > 
-> > Having the flag set will make sure that warnings are generated when calling
-> > any of the callbacks from a potentially non-sleeping context.
+> > I'm not immediately spotting why this change is part of the regmap
+> > conversion.
 > > 
-> > Fixes: c97dce792dc8 ("iio: adc: ti-ads7950: add GPIO support")
-> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > ---  
+> > It may well make sense, but if unrelated, should probably be in a different patch.  
 > 
-> Acked-by: David Lechner <david@lechnology.com>
+> No you're right, this is an unrelated cleanup that I should probably
+> have pulled out to its own dedicated patch. If there is a need for a v3,
+> I'll split this off and submit it separately.
 > 
-> 
+Not other comments, so meh. I've had my moan :)
 
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to see if it can find anything we missed.
 
 Thanks,
+
 Jonathan
+
+> William Breathitt Gray
+

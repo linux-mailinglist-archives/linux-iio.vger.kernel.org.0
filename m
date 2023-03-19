@@ -2,53 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE7EF6C02FD
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 17:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6A16C0338
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 17:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230413AbjCSQIm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Mar 2023 12:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42342 "EHLO
+        id S230032AbjCSQm6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Mar 2023 12:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjCSQHQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 12:07:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF0761DBA3;
-        Sun, 19 Mar 2023 09:07:14 -0700 (PDT)
+        with ESMTP id S229652AbjCSQm5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 12:42:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4300A18B18;
+        Sun, 19 Mar 2023 09:42:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 273E961085;
-        Sun, 19 Mar 2023 16:07:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C33C433D2;
-        Sun, 19 Mar 2023 16:07:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA5EA6112F;
+        Sun, 19 Mar 2023 16:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADBEC433D2;
+        Sun, 19 Mar 2023 16:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679242033;
-        bh=P7bbJX36lPIR7yaBb2uG4GtPhVToyN0Jes7PnkyVOKg=;
+        s=k20201202; t=1679244174;
+        bh=m3sw+XMw5dhiv51zM8Qz+hZaNj1/M9NgJPRnsGEcfMI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RzU8Pn/aIzLsAzR9FxTrg7zjBZc/cka+x1MhIaf0lMYWVt4BoGWbb9cKrI0sUn8Ko
-         mcTwANEdYJr9JCKDwAH0G0TKPSmbts903CZMiuQOiXcSm1d9QLnF1bNA7LaL37T/Cv
-         u4ciGPjvcH3WyDUzTAGhZPzk6UNw+QiPJq8ELvPF+qPdUSwAq0Ftuj2chCiSl5+RoC
-         Pp37xxURjBgqxUdcz/F/w70WIRvKCiJ9YsM/yS25AmYb9KHLggGCGATdxWbCXwfSlw
-         S8dJWFjvFHpJdK2ryZYRBEpitGTkrNhArSIzIP0pl3NRUmxqVoftpdVsW98uhM7vTO
-         +NrM/aXUHBqoQ==
-Date:   Sun, 19 Mar 2023 16:22:07 +0000
+        b=ip9eElWgROXjI51RtuYe4l8KWQeEtlbGygArtNQjnrdrNcd0kP8gof5qDnbDGDvpW
+         zM3p/K94E4mjaRiqHRD8n8PgOnAEQxW6o02esXSQO4lEU1aL8C4Ls8pqgh7kAbwiON
+         D9I/2eyvFpXFbNgU48cji/75VAb/ZHaWq7iUvqRBQTdQV2KpHYcRIAcst/rJsYYnQ2
+         2gMK/psN50XePqbkk0mk0xXy4B2jVEwxAQ+04UM7cavU0jLZocJ0GVbOfeR7OI4iYF
+         eYqRpShmxefMK7Fqy0xYisPV2vbA4ROJaSFzLmvHj9wkWIWR/Rb+1mKWkgnc8m2mle
+         xFyxd83qmONJA==
+Date:   Sun, 19 Mar 2023 16:57:44 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     mazziesaccount@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: accel: Add support for Kionix/ROHM KX132
- accelerometer
-Message-ID: <20230319162207.77ef0686@jic23-huawei>
-In-Reply-To: <6f31fe7dbd142c01315891f6868ff75f7d7cde32.1679009443.git.mehdi.djait.k@gmail.com>
-References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
-        <6f31fe7dbd142c01315891f6868ff75f7d7cde32.1679009443.git.mehdi.djait.k@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Noralf =?UTF-8?B?VHLDuG5uZXM=?= <noralf@tronnes.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Gazzillo <paul@pgazz.com>,
+        =?UTF-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Emma Anholt <emma@anholt.net>,
+        Liam Beguin <liambeguin@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        David Airlie <airlied@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH v4 0/8] Support ROHM BU27034 ALS sensor
+Message-ID: <20230319165744.10e49cc0@jic23-huawei>
+In-Reply-To: <cover.1679062529.git.mazziesaccount@gmail.com>
+References: <cover.1679062529.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,290 +78,210 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 17 Mar 2023 00:48:37 +0100
-Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
+On Fri, 17 Mar 2023 16:40:16 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Add support for the basic accelerometer features such as getting the
-> acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
-> using the WMI IRQ).
-> 
-> Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
-> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+> Support ROHM BU27034 ALS sensor
 
-Nothing much specific to this patch, most changes will be as a result
-of bringing this inline with the changes suggested for patch 2.
+Hi Matti,
 
-thanks,
+For ease of when this is ready to apply, better to just keep
+key mailing lists and individuals cc'd on all patches.
+
+Mind you cc list is random enough I'm guessing it wasn't
+deliberate (like the maintainers patch 8 only went to lkml
+where no one will notice it)
+
+I can scrape these all of lore, but it's a step that not
+all reviewers are going to bother with.
 
 Jonathan
 
-> ---
->  drivers/iio/accel/kionix-kx022a-i2c.c |   2 +
->  drivers/iio/accel/kionix-kx022a-spi.c |   2 +
->  drivers/iio/accel/kionix-kx022a.c     | 126 ++++++++++++++++++++++++++
->  drivers/iio/accel/kionix-kx022a.h     |  53 +++++++++++
->  4 files changed, 183 insertions(+)
+
+
 > 
-> diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kionix-kx022a-i2c.c
-> index 21c4c0ae1a68..f9b2383c43f1 100644
-> --- a/drivers/iio/accel/kionix-kx022a-i2c.c
-> +++ b/drivers/iio/accel/kionix-kx022a-i2c.c
-> @@ -38,12 +38,14 @@ static int kx022a_i2c_probe(struct i2c_client *i2c)
->  
->  static const struct i2c_device_id kx022a_i2c_id[] = {
->  	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx_chip_info[KX022A] },
-> +	{ .name = "kx132",  .driver_data = (kernel_ulong_t)&kx_chip_info[KX132] },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
->  
->  static const struct of_device_id kx022a_of_match[] = {
->  	{ .compatible = "kionix,kx022a", .data = &kx_chip_info[KX022A] },
-> +	{ .compatible = "kionix,kx132",  .data = &kx_chip_info[KX132] },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, kx022a_of_match);
-> diff --git a/drivers/iio/accel/kionix-kx022a-spi.c b/drivers/iio/accel/kionix-kx022a-spi.c
-> index ec076af0f261..86a10d6d33ff 100644
-> --- a/drivers/iio/accel/kionix-kx022a-spi.c
-> +++ b/drivers/iio/accel/kionix-kx022a-spi.c
-> @@ -38,12 +38,14 @@ static int kx022a_spi_probe(struct spi_device *spi)
->  
->  static const struct spi_device_id kx022a_spi_id[] = {
->  	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx_chip_info[KX022A] },
-> +	{ .name = "kx132",  .driver_data = (kernel_ulong_t)&kx_chip_info[KX132] },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(spi, kx022a_spi_id);
->  
->  static const struct of_device_id kx022a_of_match[] = {
->  	{ .compatible = "kionix,kx022a", .data = &kx_chip_info[KX022A] },
-> +	{ .compatible = "kionix,kx132",  .data = &kx_chip_info[KX132] },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, kx022a_of_match);
-> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-> index 27e8642aa8f5..3cacec99f792 100644
-> --- a/drivers/iio/accel/kionix-kx022a.c
-> +++ b/drivers/iio/accel/kionix-kx022a.c
-> @@ -128,6 +128,101 @@ static const struct regmap_config kx022a_regmap_config = {
->  	.cache_type = REGCACHE_RBTREE,
->  };
->  
-> +/* Regmap configs kx132 */
-> +static const struct regmap_range kx132_volatile_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_XADP_L,
-> +		.range_max = KX132_REG_COTR,
-> +	}, {
-> +		.range_min = KX132_REG_TSCP,
-> +		.range_max = KX132_REG_INT_REL,
-> +	}, {
-> +		/* The reset bit will be cleared by sensor */
-> +		.range_min = KX132_REG_CNTL2,
-> +		.range_max = KX132_REG_CNTL2,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_STATUS_1,
-> +		.range_max = KX132_REG_BUF_READ,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_volatile_regs = {
-> +	.yes_ranges = &kx132_volatile_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(kx132_volatile_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_precious_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_INT_REL,
-> +		.range_max = KX132_REG_INT_REL,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_precious_regs = {
-> +	.yes_ranges = &kx132_precious_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(kx132_precious_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_read_only_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_XADP_L,
-> +		.range_max = KX132_REG_INT_REL,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_STATUS_1,
-> +		.range_max = KX132_REG_BUF_STATUS_2,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_READ,
-> +		.range_max = KX132_REG_BUF_READ,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_ro_regs = {
-> +	.no_ranges = &kx132_read_only_ranges[0],
-> +	.n_no_ranges = ARRAY_SIZE(kx132_read_only_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_write_only_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_MAN_WAKE,
-> +		.range_max = KX132_REG_MAN_WAKE,
-> +	}, {
-> +		.range_min = KX132_REG_SELF_TEST,
-> +		.range_max = KX132_REG_SELF_TEST,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_CLEAR,
-> +		.range_max = KX132_REG_BUF_CLEAR,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_wo_regs = {
-> +	.no_ranges = &kx132_write_only_ranges[0],
-> +	.n_no_ranges = ARRAY_SIZE(kx132_write_only_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_noinc_read_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_BUF_READ,
-> +		.range_max = KX132_REG_BUF_READ,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_nir_regs = {
-> +	.yes_ranges = &kx132_noinc_read_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(kx132_noinc_read_ranges),
-> +};
-> +
-> +static const struct regmap_config kx132_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.volatile_table = &kx132_volatile_regs,
-> +	.rd_table = &kx132_wo_regs,
-> +	.wr_table = &kx132_ro_regs,
-> +	.rd_noinc_table = &kx132_nir_regs,
-> +	.precious_table = &kx132_precious_regs,
-> +	.max_register = KX132_MAX_REGISTER,
-> +	.cache_type = REGCACHE_RBTREE,
-> +};
-> +
->  static const struct iio_mount_matrix *
->  kx022a_get_mount_matrix(const struct iio_dev *idev,
->  			const struct iio_chan_spec *chan)
-> @@ -175,6 +270,13 @@ static const struct iio_chan_spec kx022a_channels[] = {
->  	IIO_CHAN_SOFT_TIMESTAMP(3),
->  };
->  
-> +static const struct iio_chan_spec kx132_channels[] = {
-> +	KX022A_ACCEL_CHAN(X, 0, KX132),
-> +	KX022A_ACCEL_CHAN(Y, 1, KX132),
-> +	KX022A_ACCEL_CHAN(Z, 2, KX132),
-> +	IIO_CHAN_SOFT_TIMESTAMP(3),
-> +};
-> +
->  /*
->   * The sensor HW can support ODR up to 1600 Hz, which is beyond what most of the
->   * Linux CPUs can handle without dropping samples. Also, the low power mode is
-> @@ -249,6 +351,30 @@ const struct kx022a_chip_info kx_chip_info[] = {
->  		.inc6		  = KX022A_REG_INC6,
->  		.xout_l		  = KX022A_REG_XOUT_L,
->  	},
-> +	[KX132] = {
-> +		.name		  = "kx132",
-> +		.type		  = KX132,
-> +		.regmap_config	  = &kx132_regmap_config,
-> +		.channels	  = kx132_channels,
-> +		.num_channels	  = ARRAY_SIZE(kx132_channels),
-> +		.fifo_length	  = KX132_FIFO_LENGTH,
-> +		.who		  = KX132_REG_WHO,
-> +		.id		  = KX132_ID,
-> +		.cntl		  = KX132_REG_CNTL,
-> +		.cntl2		  = KX132_REG_CNTL2,
-> +		.odcntl		  = KX132_REG_ODCNTL,
-> +		.buf_cntl1	  = KX132_REG_BUF_CNTL1,
-> +		.buf_cntl2	  = KX132_REG_BUF_CNTL2,
-> +		.buf_clear	  = KX132_REG_BUF_CLEAR,
-> +		.buf_status1	  = KX132_REG_BUF_STATUS_1,
-> +		.buf_smp_lvl_mask = KX132_MASK_BUF_SMP_LVL,
-> +		.buf_read	  = KX132_REG_BUF_READ,
-> +		.inc1		  = KX132_REG_INC1,
-> +		.inc4		  = KX132_REG_INC4,
-> +		.inc5		  = KX132_REG_INC5,
-> +		.inc6		  = KX132_REG_INC6,
-> +		.xout_l		  = KX132_REG_XOUT_L,
-> +	},
->  };
->  EXPORT_SYMBOL_NS_GPL(kx_chip_info, IIO_KX022A);
->  
-> diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-> index 3bb40e9f5613..7e43bdb37156 100644
-> --- a/drivers/iio/accel/kionix-kx022a.h
-> +++ b/drivers/iio/accel/kionix-kx022a.h
-> @@ -90,8 +90,61 @@
->  #define KX022A_REG_SELF_TEST	0x60
->  #define KX022A_MAX_REGISTER	0x60
->  
-> +
-
-Push these down into the c file.
-
-> +#define KX132_REG_WHO		0x13
-> +#define KX132_ID		0x3d
-> +
-> +#define KX132_FIFO_LENGTH	86
-> +
-> +#define KX132_REG_CNTL2		0x1c
-> +#define KX132_REG_CNTL		0x1b
-> +#define KX132_MASK_RES		BIT(6)
-> +#define KX132_GSEL_2		0x0
-> +#define KX132_GSEL_4		BIT(3)
-> +#define KX132_GSEL_8		BIT(4)
-> +#define KX132_GSEL_16		GENMASK(4, 3)
-> +
-> +#define KX132_REG_INS2		0x17
-> +#define KX132_MASK_INS2_WMI	BIT(5)
-> +
-> +#define KX132_REG_XADP_L	0x02
-> +#define KX132_REG_XOUT_L	0x08
-> +#define KX132_REG_YOUT_L	0x0a
-> +#define KX132_REG_ZOUT_L	0x0c
-> +#define KX132_REG_COTR		0x12
-> +#define KX132_REG_TSCP		0x14
-> +#define KX132_REG_INT_REL	0x1a
-> +
-> +#define KX132_REG_ODCNTL	0x21
-> +
-> +#define KX132_REG_BTS_WUF_TH	0x4a
-> +#define KX132_REG_MAN_WAKE	0x4d
-> +
-> +#define KX132_REG_BUF_CNTL1	0x5e
-> +#define KX132_REG_BUF_CNTL2	0x5f
-> +#define KX132_REG_BUF_STATUS_1	0x60
-> +#define KX132_REG_BUF_STATUS_2	0x61
-> +#define KX132_MASK_BUF_SMP_LVL	GENMASK(9, 0)
-> +#define KX132_REG_BUF_CLEAR	0x62
-> +#define KX132_REG_BUF_READ	0x63
-> +#define KX132_ODR_SHIFT		3
-> +#define KX132_FIFO_MAX_WMI_TH	86
-> +
-> +#define KX132_REG_INC1		0x22
-> +#define KX132_REG_INC5		0x26
-> +#define KX132_REG_INC6		0x27
-> +#define KX132_IPOL_LOW		0
-> +#define KX132_IPOL_HIGH		KX_MASK_IPOL
-> +#define KX132_ITYP_PULSE	KX_MASK_ITYP
-> +
-> +#define KX132_REG_INC4		0x25
-> +
-> +#define KX132_REG_SELF_TEST	0x5d
-> +#define KX132_MAX_REGISTER	0x76
-> +
->  enum kx022a_device_type {
->  	KX022A,
-> +	KX132,
-As mentioned in previous review, I think this would be neater
-done by just exporting the chip_info structures directly rather than
-putting them in an array.
-
->  };
->  
->  enum {
+> This series adds support for ROHM BU27034 Ambient Light Sensor.
+> 
+> The BU27034 has configurable gain and measurement (integration) time
+> settings. Both of these have inversely proportional relation to the
+> sensor's intensity channel scale.
+> 
+> Many users only set the scale, which means that many drivers attempt to
+> 'guess' the best gain+time combination to meet the scale. Usually this
+> is the biggest integration time which allows setting the requested
+> scale. Typically, increasing the integration time has better accuracy
+> than increasing the gain, which often amplifies the noise as well as the
+> real signal.
+> 
+> However, there may be cases where more responsive sensors are needed.
+> So, in some cases the longest integration times may not be what the user
+> prefers. The driver has no way of knowing this.
+> 
+> Hence, the approach taken by this series is to allow user to set both
+> the scale and the integration time with following logic:
+> 
+> 1. When scale is set, the existing integration time is tried to be
+>    maintained as a first priority.
+>    1a) If the requested scale can't be met by current time, then also
+>        other time + gain combinations are searched. If scale can be met
+>        by some other integration time, then the new time may be applied.
+>        If the time setting is common for all channels, then also other
+>        channels must be able to maintain their scale with this new time
+>        (by changing their gain). The new times are scanned in the order
+>        of preference (typically the longest times first).
+>    1b) If the requested scale can be met using current time, then only
+>        the gain for the channel is changed.
+> 
+> 2. When the integration time change - scale is tried to be maintained.
+>    When integration time change is requested also gain for all impacted
+>    channels is adjusted so that the scale is not changed, or is chaned
+>    as little as possible. This is different from the RFCv1 where the
+>    request was rejected if suitable gain couldn't be found for some
+>    channel(s).
+> 
+> This logic is simple. When total gain (either caused by time or hw-gain)
+> is doubled, the scale gets halved. Also, the supported times are given a
+> 'multiplier' value which tells how much they increase the total gain.
+> 
+> However, when I wrote this logic in bu27034 driver, I made quite a few
+> errors on the way - and driver got pretty big. As I am writing drivers
+> for two other sensors (RGB C/IR + flicker BU27010 and RGB C/IR BU27008)
+> with similar gain-time-scale logic I thought that adding common helpers
+> for these computations might be wise. I hope this way all the bugs will
+> be concentrated in one place and not in every individual driver ;)
+> 
+> Hence, this series also intriduces IIO gain-time-scale helpers
+> (abbreviated as gts-helpers) + a couple of KUnit tests for the most
+> hairy parts.
+> 
+> Speaking of which - testing the devm interfaces requires a 'dummy
+> device'. There were neat helpers in DRM tests for creating and freeing
+> such a device. This series moves those helpers to more generic location.
+> What is worth noting is that there is something similar ongoing in the
+> CCF territory:
+> https://lore.kernel.org/all/20230302013822.1808711-1-sboyd@kernel.org/
+> These efforts should be somehow coordinated in order to avoid any ajor
+> conflicts.
+> 
+> Finally, these added helpers do provide some value also for drivers
+> which only:
+>  a) allow gain change
+>   or
+>  b) allow changing both the time and gain while trying to maintain the
+>     scale.
+> 
+> For a) we provide the gain - selector (register value) table format +
+> selector to gain look-ups, gain <-> scale conversions and the available
+> scales helpers.
+> 
+> For latter case we also provide the time-tables, and actually all the
+> APIs should be usable by setting the time multiplier to 1. (not testeted
+> thoroughly though).
+> 
+> Revision history:
+> v3 => v4: (Stil ostly fixes to review comments from Andy and Jonathan)
+> - more accurate change-log in individual patches
+> - dt-binding and maintainer patches unchanged.
+> - dropped unused helpers and converted ones currently used only internally
+>   to static.
+> - extracted "dummy device" creation helpers from DRM tests.
+> - added tests for devm APIs
+> - dropped scale for PROCESSED channel in BU27034 and converted mLux
+>   values to luxes
+> - dropped channel 2 GAIN setting which can't be done due to HW
+>   limitations.
+> 
+> v2 => v3: (Mostly fixes to review comments from Andy and Jonathan)
+> - dt-binding and maintainer patches unchanged.
+> - iio-gts-helper tests: Use namespaces
+> - iio-gts-helpers + bu27034 plenty of changes. See more comprehensive
+>   changelog in individual patches.
+> 
+> RFCv1 => v2:
+>   dt-bindings:
+> 	- Fix binding file name and id by using comma instead of a hyphen to
+> 	  separate the vendor and part names.
+>   gts-helpers:
+> 	- fix include guardian
+> 	- Improve kernel doc for iio_init_iio_gts.
+> 	- Add iio_gts_scale_to_total_gain
+> 	- Add iio_gts_total_gain_to_scale
+> 	- Fix review comments from Jonathan
+> 	  - add documentation to few functions
+> 	  - replace 0xffffffffffffffffLLU by U64_MAX
+> 	  - some styling fixes
+> 	  - drop unnecessary NULL checks
+> 	  - order function arguments by  in / out purpose
+> 	  - drop GAIN_SCALE_ITIME_MS()
+> 	- Add helpers for available scales and times
+> 	- Rename to iio-gts-helpers
+>   gts-tests:
+> 	- add tests for available scales/times helpers
+> 	- adapt to renamed iio-gts-helpers.h header
+>   bu27034-driver:
+> 	- (really) protect read-only registers
+> 	- fix get and set gain
+> 	- buffered mode
+> 	- Protect the whole sequences including meas_en/meas_dis to avoid messing
+> 	  up the enable / disable order
+> 	- typofixes / doc improvements
+> 	- change dropped GAIN_SCALE_ITIME_MS() to GAIN_SCALE_ITIME_US()
+> 	- use more accurate scale for lux channel (milli lux)
+> 	- provide available scales / integration times (using helpers).
+> 	- adapt to renamed iio-gts-helpers.h file
+> 	- bu27034 - longer lines in Kconfig
+> 	- Drop bu27034_meas_en and bu27034_meas_dis wrappers.
+> 	- Change device-name from bu27034-als to bu27034
+>   MAINTAINERS:
+> 	- Add iio-list
+> 
+> ---
+> 
+> 
+> 
+> Matti Vaittinen (8):
+>   drm/tests: helpers: rename generic helpers
+>   kunit: drm/tests: move generic helpers
+>   dt-bindings: iio: light: Support ROHM BU27034
+>   iio: light: Add gain-time-scale helpers
+>   iio: test: test gain-time-scale helpers
+>   MAINTAINERS: Add IIO gain-time-scale helpers
+>   iio: light: ROHM BU27034 Ambient Light Sensor
+>   MAINTAINERS: Add ROHM BU27034
+> 
+>  .../bindings/iio/light/rohm,bu27034.yaml      |   46 +
+>  MAINTAINERS                                   |   14 +
+>  drivers/base/test/Kconfig                     |    5 +
+>  drivers/base/test/Makefile                    |    2 +
+>  drivers/base/test/test_kunit_device.c         |   83 +
+>  drivers/gpu/drm/Kconfig                       |    2 +
+>  .../gpu/drm/tests/drm_client_modeset_test.c   |    5 +-
+>  drivers/gpu/drm/tests/drm_kunit_helpers.c     |   69 -
+>  drivers/gpu/drm/tests/drm_managed_test.c      |    5 +-
+>  drivers/gpu/drm/tests/drm_modes_test.c        |    5 +-
+>  drivers/gpu/drm/tests/drm_probe_helper_test.c |    5 +-
+>  drivers/gpu/drm/vc4/Kconfig                   |    1 +
+>  drivers/gpu/drm/vc4/tests/vc4_mock.c          |    3 +-
+>  .../gpu/drm/vc4/tests/vc4_test_pv_muxing.c    |    9 +-
+>  drivers/iio/Kconfig                           |    3 +
+>  drivers/iio/Makefile                          |    1 +
+>  drivers/iio/industrialio-gts-helper.c         |  990 +++++++++++
+>  drivers/iio/light/Kconfig                     |   14 +
+>  drivers/iio/light/Makefile                    |    1 +
+>  drivers/iio/light/rohm-bu27034.c              | 1491 +++++++++++++++++
+>  drivers/iio/test/Kconfig                      |   16 +
+>  drivers/iio/test/Makefile                     |    1 +
+>  drivers/iio/test/iio-test-gts.c               |  461 +++++
+>  include/drm/drm_kunit_helpers.h               |    7 +-
+>  include/linux/iio/iio-gts-helper.h            |  113 ++
+>  25 files changed, 3265 insertions(+), 87 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
+>  create mode 100644 drivers/base/test/test_kunit_device.c
+>  create mode 100644 drivers/iio/industrialio-gts-helper.c
+>  create mode 100644 drivers/iio/light/rohm-bu27034.c
+>  create mode 100644 drivers/iio/test/iio-test-gts.c
+>  create mode 100644 include/linux/iio/iio-gts-helper.h
+> 
+> 
+> base-commit: eeac8ede17557680855031c6f305ece2378af326
 

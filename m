@@ -2,92 +2,222 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB3166C02BF
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 16:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0F216C02EC
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 16:51:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbjCSPWd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Mar 2023 11:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58030 "EHLO
+        id S229768AbjCSPvL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Mar 2023 11:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjCSPWc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 11:22:32 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3590822006;
-        Sun, 19 Mar 2023 08:22:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C1D51B80BE8;
-        Sun, 19 Mar 2023 15:22:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B885C433EF;
-        Sun, 19 Mar 2023 15:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679239347;
-        bh=hTRqeLTVCKIVZQ35MSCsugL9JXMjOSPwKA3wkXaV3a0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ekl5fwVG3X73dGj3DAN1avWo0IVXZJ9Ru4Ck5e7Cdmnm+ioAPdDvaLueRjxZGukoH
-         9GvrFqh/opXrN3ID3CoLh4teTMdFtHM3OpnPDUuFPUU3SQDE4bHsElzai2V74KSINg
-         +qZb0xKrxsA1ZdD0hcSeM5YaFLN+v/ePx3Nb+E66ot6lsDg7HddY0D0u0rt0KYNJo1
-         yTZqO1+yX4IW5t3Pm1tslXArOCjNDt/5DcqooGBKfOEHEPW8kbA0+WRDAMGbWyg2Q0
-         +S4ZSKMzrx0pD/5asRM7mrAuIiHF+a40TBHcBASfLRzIBF8LBb6vBIjly0L9G4XLAQ
-         UPKMn5lqBz8kg==
-Date:   Sun, 19 Mar 2023 15:37:21 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: addac: stx104: Replace bitops.h header inclusion
- with bits.h
-Message-ID: <20230319153721.55f1e723@jic23-huawei>
-In-Reply-To: <20230318185503.341914-1-william.gray@linaro.org>
-References: <20230318185503.341914-1-william.gray@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229481AbjCSPvK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 11:51:10 -0400
+X-Greylist: delayed 176 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 19 Mar 2023 08:51:08 PDT
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D5A18B15
+        for <linux-iio@vger.kernel.org>; Sun, 19 Mar 2023 08:51:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1679240705; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=lYES3QlF3QmrXZYcdoDCPhNWQdSqgrKzVJbPyPgMJkqa+9Fnmd/EC3fBFiuwkwTrgo
+    brVJOQlxo+JYx6HDas+DlXD9AxPpohDZdg8b4+8a8k02BC+aKGbgv2PswgnbYB0gb3TD
+    xZK9yXU63j36KI//Vi7rl2r00m5oI+/WXYngYQY9FHT33Yjge2sRAFTdxMD6+T1E4do4
+    LcxxcQDdJWkYnNGu5F1ASAFzYfwLK+PR+ReF5fHoNUYLA84EBUQ1AJ/rX/3pndsrSriz
+    OUXyslMEbJZyhBCfepF5okiOf2EFHOvZFEPCQ2unk+zrTXt/KrYCrJ2CfWTLMMMEi1dj
+    TrPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1679240705;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=9wQs119PXqsvkmTqga6J7BT0j7oJCOBDr6Npuah27t4=;
+    b=HlSFXCMUHYA5Bj4kE9RrwHKxhJ/h/pLnyFglNZYNqXs2367KtjxdjybE8UxYcHnm6c
+    HG4U2FP5nVznDQTJTC5XhujEnLyMlJcj1yOSvPxBR7+Ma8kXweV9t1pVn/sTI9k5R1pj
+    iDpmH7odbPUgwh+CVwwYIxSV/wNlITml8iIFprUyd1qXDsEvvpmBhHD8/alNdozAeNDP
+    yk1swfv8HM4pmJgHqfeJTvRwbyD5Q2UrhDFbOjeHCP52wqtZf1MHRNIBMC9Oj7fvbQ7b
+    KuBml7UWrNiFZ9+rIand82i3mJxS4KPOCCmUwTdjHIVIcs9xycQKT0Ps0/Mi2eP9eEf+
+    zb4w==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1679240704;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=9wQs119PXqsvkmTqga6J7BT0j7oJCOBDr6Npuah27t4=;
+    b=W1DndjcWUKeGrKdri+7ffA6mu+nzNh9OnRN3fbFlrHmqPGBaCT2TTNWHVzZUB1CbE8
+    OaCIVHIgwU5TuhUFhN8hG/gRtumrZtAQksPoTv0KgHHA/Jtx76IbCZGVAaOKJfzW7W4s
+    CHwsTXsftVZWBqBIW0AvecJZDAApNZm+3JPmxoz6nDEBjMOpgH9uPcaVtmPTwIsBpxBG
+    jIcBS897DDoJfA7xG/QPU3QiR8TYRUgk6igVHPHJ/ZWC92TPU1wanx60deICJE+/aINq
+    ifxUJdgAwb1VRc7B5R3eDU1G3XIjNDD2lNIMhlrG592omJ1QK+/AEcGtAWpMQkqPJ1he
+    4Yvw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGZjDY="
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 49.3.1 DYNA|AUTH)
+    with ESMTPSA id R24ce1z2JFj4Cbc
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Sun, 19 Mar 2023 16:45:04 +0100 (CET)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: [PATCH] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20230319153203.54a40887@jic23-huawei>
+Date:   Sun, 19 Mar 2023 16:45:03 +0100
+Cc:     =?utf-8?Q?Patrik_Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        Pradeep Goudagunta <pgoudagunta@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5EE49843-DF4D-427F-A628-80D657D643E6@goldelico.com>
+References: <20230313205029.1881745-1-risca@dalakolonin.se>
+ <20230318163033.161d6fd5@jic23-huawei>
+ <20230318192253.GB3605556@dalakolonin.se>
+ <20230319153203.54a40887@jic23-huawei>
+To:     Jonathan Cameron <jic23@kernel.org>
+X-Mailer: Apple Mail (2.3445.104.21)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Mar 2023 14:55:03 -0400
-William Breathitt Gray <william.gray@linaro.org> wrote:
+Hi there,
 
-> The <linux/bitops.h> header is included in the stx104 driver so that we
-> can use the BIT() macro. This macro is actually defined in the
-> <linux/bits.h> header, so replace the <linux/bitops.h> header inclusion
-> with <linux/bits.h>.
-> 
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+> Am 19.03.2023 um 16:32 schrieb Jonathan Cameron <jic23@kernel.org>:
+>=20
+> On Sat, 18 Mar 2023 20:22:53 +0100
+> Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
+>=20
+>> On Sat, Mar 18, 2023 at 04:30:33PM +0000, Jonathan Cameron wrote:
+>>> On Mon, 13 Mar 2023 21:50:29 +0100
+>>> Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
+>>>=20
+>>>> Calling dev_to_iio_dev() on a platform device pointer is undefined =
+and
+>>>> will make adc NULL.
+>>>>=20
+>>>> Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> =20
+>>>=20
+>>> Hi Patrik,
+>>>=20
+>>> Looks good so applied to the fixes-togreg branch of iio.git.
+>>>=20
+>>> Whilst we are here, this would be a trivial driver to take fully =
+device
+>>> managed.  The only slightly messy bit is that it would need
+>>> a devm_add_action_or_reset() + custom callback to handle the
+>>> device_wakeup_enable().
+>>>=20
+>>> On the off chance you can test it I'll send a patch in a few mins.
+>>> Note that will depend on this one going up stream first and that
+>>> I haven't done more than build test it. =20
+>> I got the patch and it looks good, but it will take a few days before =
+I
+>> have the time to test it.
+>>=20
+>> I have some more patches coming for this driver to configure the adc
+>> thresholds from userspace,
 
-Applied to the togreg branch of iio.git and pushed out as testing
-for all the normal reasons.
+Yes, that is a useful feature.
 
-Thanks,
+>> employing the iio channel event subsystem, but
+>> they need a bit more work. In particular, to ensure backwards =
+compatibility
+>> with the adc_wakeupX_data platform data. However, I don't see this =
+platform
+>> data being used by anyone.
+>> How important is it to retain support for adc_wakeupX_data?
+>=20
+> It's a somewhat unusual feature, so I doubt it was implemented without =
+someone
+> needing it.  However as you observe there is no upstream user.
+>=20
+> As it is causing you problems, I'd just rip out the =
+palmas_adc_platform_data
+> completely and see if anyone objects.  You can do that as a standalone =
+patch
+> prior to posting your events stuff if you like.  Or hopefully
+> H. Nikolaus Schaller might be able to give us some background on why
+> that feature is there but not used.
 
-Jonathan
+I also have no idea.
 
-> ---
->  drivers/iio/addac/stx104.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
-> index 48a91a95e597..e45b70aa5bb7 100644
-> --- a/drivers/iio/addac/stx104.c
-> +++ b/drivers/iio/addac/stx104.c
-> @@ -3,7 +3,7 @@
->   * IIO driver for the Apex Embedded Systems STX104
->   * Copyright (C) 2016 William Breathitt Gray
->   */
-> -#include <linux/bitops.h>
-> +#include <linux/bits.h>
->  #include <linux/device.h>
->  #include <linux/errno.h>
->  #include <linux/gpio/driver.h>
-> 
-> base-commit: 87a1ff66a0e57d9022665d24793f31fc54de182d
+The original author was Pradeep Goudagunta <pgoudagunta@nvidia.com> and =
+I just copied it from
+
+	=
+https://android.googlesource.com/kernel/tegra/+/aaabb2e045f31e5a970109ffda=
+ae900dd403d17e/drivers/staging/iio/adc/palmas_gpadc.c
+
+polished the code and made it compile & work some years ago.
+
+So it may have been useful in a some Tegra Android kernel from 2013. =
+Maybe it is
+for special power management (at least that is how I interpret the =
+"wakeup").
+
+But I found some hint which device it is good for:
+
+	=
+https://lore.kernel.org/all/1379509642-19227-2-git-send-email-ldewangan@nv=
+idia.com/T/
+
+"PALMAS PMIC is used on Dalmore platform."
+
+	=
+https://docs.nvidia.com/gameworks/content/devices/dalmore_devkit_main.htm
+
+And there seems to be an upstream DTS: =
+arch/arm/boot/dts/tegra114-dalmore.dts
+but without gpadc support. That is quite common that upstream DTS are =
+incomplete
+so we can't deduce that there are no users of a feature.
+
+BR,
+Nikolaus
+
+>=20
+>>>=20
+>>> Thanks,
+>>>=20
+>>> Jonathan =20
+>>=20
+>> Thank you for going the extra mile :)
+>=20
+> No problem.  I jumped on the opportunity to get it tested - takes way =
+longer
+> than writing a little patch like that ;)
+>=20
+> Jonathan
+>=20
+>>>=20
+>>>=20
+>>>> ---
+>>>> drivers/iio/adc/palmas_gpadc.c | 2 +-
+>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>=20
+>>>> diff --git a/drivers/iio/adc/palmas_gpadc.c =
+b/drivers/iio/adc/palmas_gpadc.c
+>>>> index 61e80bf3d05e..6db6f3bc768a 100644
+>>>> --- a/drivers/iio/adc/palmas_gpadc.c
+>>>> +++ b/drivers/iio/adc/palmas_gpadc.c
+>>>> @@ -638,7 +638,7 @@ static int palmas_gpadc_probe(struct =
+platform_device *pdev)
+>>>>=20
+>>>> static int palmas_gpadc_remove(struct platform_device *pdev)
+>>>> {
+>>>> -	struct iio_dev *indio_dev =3D dev_to_iio_dev(&pdev->dev);
+>>>> +	struct iio_dev *indio_dev =3D dev_get_drvdata(&pdev->dev);
+>>>> 	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
+>>>>=20
+>>>> 	if (adc->wakeup1_enable || adc->wakeup2_enable) =20
+>>>=20
+>=20
 

@@ -2,131 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F22BB6C0573
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 22:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D946C0612
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 23:39:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229632AbjCSVZ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Mar 2023 17:25:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43346 "EHLO
+        id S230012AbjCSWjo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 19 Mar 2023 18:39:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjCSVZZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 17:25:25 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B39513529;
-        Sun, 19 Mar 2023 14:25:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679261124; x=1710797124;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L03xG3XmXz3MyMO1JoMvMx28hZVkFt9QVmLsPGLzWIM=;
-  b=Z2oVCbQXY1J8frpv+epo+EFSdu4p7euzLj88cPHjMrrtpyqCUkiMbBfX
-   BOoIHz0kV9ydMf2gR4fXG/dNXyWk1aENSx4+cjwQjihy0rFNheAVN76sC
-   k7ny1osdYEOkZf0Sqhhd7U49zHfztMYRHMZwJbLtljcKk8MUo8euzM4Fr
-   kzA9kSF19EREYUGahgpMXQu0psIO2cg0KAviCbu9R3lGshe4rsYU3TjOn
-   mSJJ3QjXBkOnQKByI5z3ABuNiIkwChrcgY3ubtqKfx1NBoSkaSqVbrfh7
-   LGSrW9J5ujr2V0PbMjT219nPpzJE1+Kv/XUxI7+cBvrlGgMwIjTy7m5fK
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="340080954"
-X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
-   d="scan'208";a="340080954"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2023 14:25:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="749866876"
-X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
-   d="scan'208";a="749866876"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 19 Mar 2023 14:25:21 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pe0Wn-000Af4-0D;
-        Sun, 19 Mar 2023 21:25:21 +0000
-Date:   Mon, 20 Mar 2023 05:24:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Hepp <andrew.hepp@ahepp.dev>, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andrew Hepp <andrew.hepp@ahepp.dev>
-Subject: Re: [PATCH 2/2] iio: temperature: Add MCP9600 thermocouple EMF
- converter
-Message-ID: <202303200531.buTbR2TA-lkp@intel.com>
-References: <20230319184728.49232-3-andrew.hepp@ahepp.dev>
+        with ESMTP id S229806AbjCSWjk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 18:39:40 -0400
+Received: from pio-pvt-msa3.bahnhof.se (pio-pvt-msa3.bahnhof.se [79.136.2.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27B11B541;
+        Sun, 19 Mar 2023 15:39:37 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 9F96E3F3B7;
+        Sun, 19 Mar 2023 23:39:35 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+X-Spam-Score: -1.9
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_FAIL,
+        SPF_HELO_NONE autolearn=no autolearn_force=no version=3.4.6
+Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id OY0vT4vyatet; Sun, 19 Mar 2023 23:39:34 +0100 (CET)
+Received: by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 1736D3F39F;
+        Sun, 19 Mar 2023 23:39:32 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 962118EBD3;
+        Sun, 19 Mar 2023 22:39:26 +0000 (UTC)
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id yI31fl9Supw9; Sun, 19 Mar 2023 22:39:20 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 7C0CF8EBB8;
+        Sun, 19 Mar 2023 22:39:20 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at dalakolonin.se
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Vio5i0WGLQvN; Sun, 19 Mar 2023 22:39:20 +0000 (UTC)
+Received: from rack-server-1.dalakolonin.se (unknown [172.17.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id 26FFC8EBB4;
+        Sun, 19 Mar 2023 22:39:20 +0000 (UTC)
+From:   =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, pgoudagunta@nvidia.com,
+        hns@goldelico.com, jic23@kernel.org, lars@metafoo.de,
+        =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+Subject: [PATCH 0/3] iio: adc: palmas_gpadc: add iio events
+Date:   Sun, 19 Mar 2023 23:39:05 +0100
+Message-Id: <20230319223908.108540-1-risca@dalakolonin.se>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230319184728.49232-3-andrew.hepp@ahepp.dev>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andrew,
+These changes are based on [1] and [2].
 
-Thank you for the patch! Perhaps something to improve:
+The palmas gpadc block has support for monitoring up to 2 ADC channels
+and issue an interrupt if they reach past a set threshold. This can be
+configured statically with device tree todayi, but it only gets enabled
+when reaching sleep mode. Also, it doesn't look like anyone is using it.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.3-rc2 next-20230317]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Instead of this one special case, change the code so userspace can
+configure the ADC channels to their own needs through the iio events
+subsystem.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrew-Hepp/dt-bindings-iio-Add-MCP9600-thermocouple-EMF-converter/20230320-024950
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230319184728.49232-3-andrew.hepp%40ahepp.dev
-patch subject: [PATCH 2/2] iio: temperature: Add MCP9600 thermocouple EMF converter
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20230320/202303200531.buTbR2TA-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/dc26dd0d9cb47654a6910bf35d8531b90ae88ece
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andrew-Hepp/dt-bindings-iio-Add-MCP9600-thermocouple-EMF-converter/20230320-024950
-        git checkout dc26dd0d9cb47654a6910bf35d8531b90ae88ece
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 olddefconfig
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/iio/temperature/
+Thresholds and events were tested on omap5-uevm board. It should still
+be possible to wake up from sleep mode on events, but my board don't
+like sleep. A userspace tool for monitoring events and adjusting
+thresholds can be found at [3].
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303200531.buTbR2TA-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/iio/temperature/mcp9600.c: In function 'mcp9600_read':
->> drivers/iio/temperature/mcp9600.c:51:16: warning: unused variable 'buf' [-Wunused-variable]
-      51 |         __be16 buf;
-         |                ^~~
+[1] https://patchwork.kernel.org/project/linux-iio/patch/20230318163039.56115-1-jic23@kernel.org/
+[2] https://patchwork.kernel.org/project/linux-iio/patch/20230313205029.1881745-1-risca@dalakolonin.se/
+[3] https://github.com/Risca/pyra_vol_mon
 
 
-vim +/buf +51 drivers/iio/temperature/mcp9600.c
+Patrik Dahlström (3):
+  iio: adc: palmas_gpadc: add support for iio threshold events
+  iio: adc: palmas_gpadc: remove adc_wakeupX_data
+  iio: adc: palmas_gpadc: remove palmas_adc_wakeup_property
 
-    47	
-    48	static int mcp9600_read(struct mcp9600_data *data,
-    49				struct iio_chan_spec const *chan, int *val)
-    50	{
-  > 51		__be16 buf;
-    52		int ret;
-    53	
-    54		mutex_lock(&data->read_lock);
-    55		ret = i2c_smbus_read_word_swapped(data->client, chan->address);
-    56		mutex_unlock(&data->read_lock);
-    57	
-    58		if (ret < 0)
-    59			return ret;
-    60		*val = ret;
-    61	
-    62		return 0;
-    63	}
-    64	
+ drivers/iio/adc/palmas_gpadc.c | 527 +++++++++++++++++++++++++++------
+ include/linux/mfd/palmas.h     |   8 -
+ 2 files changed, 434 insertions(+), 101 deletions(-)
 
+
+base-commit: 37fd83916da2e4cae03d350015c82a67b1b334c4
+prerequisite-patch-id: 9b1f55610800b91b721d042bf7f33b58179237d1
+prerequisite-patch-id: b0418c707db13f514400956596e9ebe91c25bba0
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.25.1
+

@@ -2,63 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6576C03E3
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 19:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22ECD6C03F6
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 19:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbjCSSwa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Mar 2023 14:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57214 "EHLO
+        id S229864AbjCSS7u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Mar 2023 14:59:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjCSSw3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 14:52:29 -0400
-Received: from mail-108-mta58.mxroute.com (mail-108-mta58.mxroute.com [136.175.108.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B445C17146
-        for <linux-iio@vger.kernel.org>; Sun, 19 Mar 2023 11:52:27 -0700 (PDT)
-Received: from mail-111-mta2.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta58.mxroute.com (ZoneMTA) with ESMTPSA id 186fb373848000edb4.005
- for <linux-iio@vger.kernel.org>
- (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256);
- Sun, 19 Mar 2023 18:52:25 +0000
-X-Zone-Loop: a657c4882e50a357295889504405ac2790ae53024fb1
-X-Originating-IP: [136.175.111.2]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
-        s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:
-        To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=dZMU2BTrk9q0jA1qNGUA8NOqhmuyxANNbZoUYfZCcQo=; b=Lcggyi2KNwphaxudWb6jNRIL85
-        NFKzyH7f4FP2eSYWZo296fXlCs1xPaR9kO7K6T2y4u8GIHAU6QIbxtu9B195u4DKzu/WGrq8yaWrm
-        Na1FUpOTMBVqqWxJ3Q9dOuQ0yawVh3fqYvlfzFswk8obA1k34Ya9WvG3t+P+ua/GgmMzac0Btnyez
-        kqBMU9agtagzfe6OEcg53UcAAijsr6apGT2RtW5YadJ49SJkdHlixRieFK1WGCPnKW2YgKVv6gTLn
-        dav4f1HbDpqRBV/Y5CTEZXSCyK2asrC/Kw88hKy2ZtWHPH2r9JNuFLu9+kJbwl2kSGdUAE6oWZbzi
-        u6cEaqYw==;
-Message-ID: <47bb33b4-92fe-eeb1-0ad9-e65f4cedb43d@ahepp.dev>
-Date:   Sun, 19 Mar 2023 11:52:22 -0700
+        with ESMTP id S229881AbjCSS7t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 14:59:49 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C6FBDE9;
+        Sun, 19 Mar 2023 11:59:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=gm+vwa4niTorHwn4WVT5rk7kngMTXqQx8Wa5rnhBg1U=; b=ibw7QCcHT6x5emBAFL/bCQkmjV
+        CZhkM2YYTh7wDcqZRTtEsNtVOjWq8bY7+FFWG1ZbOxcFJwz00nq0ngwbogFaUQZIz2QE1cjXJws3Z
+        Zr9ie2plRtro6iOezlzHAOh5Z3DF2mXd2rWqlVYUDgSZ9fYGi7NEU0l2NMIptJthB4fo01YcAhg0k
+        kKCN/aa03LgLL+bOdoIeWxD3JcC5OfFCCQCSKUbp1UhDvjyCfYCIB3dPGbmNd97OnVigrclyLPbBT
+        WuehhHeC5hFf4NUVmUUZQ5h0rBGB2FX9fHzonjVnC6C4QbSj33w8EXvkay03bpdxY2kRi5hIbP+Ad
+        7DO9AuCg==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pdyFo-0004yV-Ux; Sun, 19 Mar 2023 19:59:40 +0100
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pdyFo-000Sm1-Ih; Sun, 19 Mar 2023 19:59:40 +0100
+Message-ID: <89271a29-5b02-34fe-409b-373e3b8044ef@metafoo.de>
+Date:   Sun, 19 Mar 2023 11:59:38 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH 0/2] Add support for the MCP9600 thermocouple EMF
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 2/2] iio: temperature: Add MCP9600 thermocouple EMF
  converter
-To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Language: en-US
+To:     Andrew Hepp <andrew.hepp@ahepp.dev>, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>
 References: <20230319184728.49232-1-andrew.hepp@ahepp.dev>
-Content-Language: en-US
-From:   Andrew Hepp <andrew.hepp@ahepp.dev>
-In-Reply-To: <20230319184728.49232-1-andrew.hepp@ahepp.dev>
+ <20230319184728.49232-3-andrew.hepp@ahepp.dev>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <20230319184728.49232-3-andrew.hepp@ahepp.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: andrew.hepp@ahepp.dev
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26848/Sun Mar 19 08:23:18 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-My apologies, I forgot to add "v6" to the subject line.
+This looks really good. I have some small comments, and I apologize for 
+only having them so late in the review cycle.
+
+On 3/19/23 11:47, Andrew Hepp wrote:
+> Add support for the MCP9600 thermocouple EMF converter.
+
+Would be nice to have a very short description of the capabilities of 
+the sensor in the commit message.
+
+>
+> Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+> Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+> ---
+> [...]
+> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+> new file mode 100644
+> index 000000000000..b6d8ffb90c36
+> --- /dev/null
+> +++ b/drivers/iio/temperature/mcp9600.c
+> @@ -0,0 +1,145 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> [...]
+> +static const struct iio_chan_spec mcp9600_channels[] = {
+> +	{
+> +		.type = IIO_TEMP,
+> +		.address = MCP9600_HOT_JUNCTION,
+> +		.info_mask_separate =
+> +			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> +	},
+> +	{
+> +		.type = IIO_TEMP,
+> +		.address = MCP9600_COLD_JUNCTION,
+> +		.channel2 = IIO_MOD_TEMP_AMBIENT,
+> +		.modified = 1,
+> +		.info_mask_separate =
+> +			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> +	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(2),
+If you do not have supported for buffered capture there is no need to 
+include a timestamp in the channel spec. There is no way to read it 
+without buffered support.
+> +};
+> +
+> +struct mcp9600_data {
+> +	struct i2c_client *client;
+> +	struct mutex read_lock; /* lock to prevent concurrent reads */
+> +};
+> +
+> +static int mcp9600_read(struct mcp9600_data *data,
+> +			struct iio_chan_spec const *chan, int *val)
+> +{
+> +	__be16 buf;
+buf does not seem to be used.
+> +	int ret;
+> +
+> +	mutex_lock(&data->read_lock);
+Do you actually need the custom lock? i2c_smbus_read_word_swapped itself 
+should provide locking and there is only a single operation under your 
+custom lock, which will already be atomic.
+> +	ret = i2c_smbus_read_word_swapped(data->client, chan->address);
+> +	mutex_unlock(&data->read_lock);
+> +
+> +	if (ret < 0)
+> +		return ret;
+> +	*val = ret;
+> +
+> +	return 0;
+> +}
+> +
+> [...]
+> +static int mcp9600_probe(struct i2c_client *client)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct mcp9600_data *data;
+> +	int ret;
+> +
+> +	ret = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
+> +	if (ret < 0)
+> +		return ret;
+
+Might as well throw an error message in here for better diagnostics.
+
+     return dev_err_probe(&client->dev, ret, "Failed to read device ID\n");
+
+

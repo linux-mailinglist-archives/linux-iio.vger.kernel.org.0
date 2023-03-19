@@ -2,53 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE4FA6C0297
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 16:07:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CC126C02A2
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 16:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbjCSPHg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Mar 2023 11:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42422 "EHLO
+        id S229550AbjCSPRO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Mar 2023 11:17:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjCSPHf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 11:07:35 -0400
+        with ESMTP id S229676AbjCSPRN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 11:17:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FBE91B567;
-        Sun, 19 Mar 2023 08:07:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E9216338;
+        Sun, 19 Mar 2023 08:17:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DFAF61024;
-        Sun, 19 Mar 2023 15:07:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F5DC433EF;
-        Sun, 19 Mar 2023 15:07:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBCB56103A;
+        Sun, 19 Mar 2023 15:17:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3034DC433EF;
+        Sun, 19 Mar 2023 15:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679238450;
-        bh=+Ua4oAyAvYWiCkH03swFQ8O+jZwZiF2kyOP2DApe9A8=;
+        s=k20201202; t=1679239029;
+        bh=ZNjkIU2Gg45vXdRXZGDZjrv9hYr8qsdYciUmSSwkVqc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GRuksVUP1IqIB4Y/zWADLhGPxeC/5k6MRyK8viYfGbIg/8JquilsSuIFf68V0qRkU
-         8RRPDv70iZ+iINM6Rad2EwIg4Hg8LBCmKFQt56kA5Rus0UBBtOih76xcPIpw52CVSX
-         dQCY4ifKMUReWYlFICtDxSXh01AItW9HGFPGPKJMAdiRZ94xgrgv/qLFKNOUT7SsaS
-         HsPmsrI9L6f0pUgYNVvN4t5Q+MX1vATBG+1Zu2LO1XqHmFWweQp0j2oehB2YVnpFos
-         0JQs4a7l2vvHGZI9B/HSCWendDx4oCUQU+zldym6L+BrJ2npTwf4UEIIjYBn3+M/4V
-         l29g+cOmCIH9g==
-Date:   Sun, 19 Mar 2023 15:22:22 +0000
+        b=KTTi7NYIqE2Hihc+wnBzgFXS1ZtQqfgVghnw9bxEHvPbik9nTWAnc4W5Ow1FvQ0NV
+         iW66I5tx5Ton3UhIAvOr6aWrrN+/fJ10EWf0072143IHSWsmBljS6bxQ/fZhv9GCU9
+         NMZXfG9CKBvXeMznKJdKcN4j/g2FMuLv2cLGx1vx13EHuywQ+fhi5ShgozF07z1QXZ
+         ibBHFCpreyAyvR8ty/VhSynTOG2iy1VSTVsFXvR83dUzVupn7qyeKyMD+4x94C3Vs4
+         BsFpipNnMw2MrqeuTB/sDW5Ah3EP+ZQW7GZrmRE29Tpp7rV23sBqrVwuTA1m/TkK8u
+         djhLth73hpbcA==
+Date:   Sun, 19 Mar 2023 15:32:03 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Zheng Wang <zyytlz.wz@163.com>, eugen.hristev@collabora.com,
-        nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-        claudiu.beznea@microchip.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: at91-sama5d2_adc: Fix use after free bug in
- at91_adc_remove due to race condition
-Message-ID: <20230319152222.0b02fb51@jic23-huawei>
-In-Reply-To: <d62ece80-4d88-36a6-9561-fa0f5afc40c1@metafoo.de>
-References: <20230310091239.1440279-1-zyytlz.wz@163.com>
-        <20230318173913.19e8a1b1@jic23-huawei>
-        <d62ece80-4d88-36a6-9561-fa0f5afc40c1@metafoo.de>
+To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hns@goldelico.com
+Subject: Re: [PATCH] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+Message-ID: <20230319153203.54a40887@jic23-huawei>
+In-Reply-To: <20230318192253.GB3605556@dalakolonin.se>
+References: <20230313205029.1881745-1-risca@dalakolonin.se>
+        <20230318163033.161d6fd5@jic23-huawei>
+        <20230318192253.GB3605556@dalakolonin.se>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,68 +55,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Mar 2023 10:36:04 -0700
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sat, 18 Mar 2023 20:22:53 +0100
+Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
 
-> On 3/18/23 10:39, Jonathan Cameron wrote:
-> > On Fri, 10 Mar 2023 17:12:39 +0800
-> > Zheng Wang <zyytlz.wz@163.com> wrote:
-> >  
-> >> In at91_adc_probe, &st->touch_st.workq is bound with
-> >> at91_adc_workq_handler. Then it will be started by irq
-> >> handler at91_adc_touch_data_handler
-> >>
-> >> If we remove the driver which will call at91_adc_remove
-> >>    to make cleanup, there may be a unfinished work.
-> >>
-> >> The possible sequence is as follows:
-> >>
-> >> Fix it by finishing the work before cleanup in the at91_adc_remove
-> >>
-> >> CPU0                  CPU1
-> >>
-> >>                      |at91_adc_workq_handler
-> >> at91_adc_remove     |
-> >> iio_device_unregister|
-> >> iio_dev_release     |
-> >> kfree(iio_dev_opaque);|
-> >>                      |
-> >>                      |iio_push_to_buffers
-> >>                      |&iio_dev_opaque->buffer_list
-> >>                      |//use
-> >> Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-> >> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> >> ---
-> >>   drivers/iio/adc/at91-sama5d2_adc.c | 2 ++
-> >>   1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> >> index 50d02e5fc6fc..1b95d18d9e0b 100644
-> >> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> >> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> >> @@ -2495,6 +2495,8 @@ static int at91_adc_remove(struct platform_device *pdev)
-> >>   	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> >>   	struct at91_adc_state *st = iio_priv(indio_dev);
-> >>   
-> >> +	disable_irq_nosync(st->irq);
-> >> +	cancel_work_sync(&st->touch_st.workq);  
-> > I'd like some input form someone more familiar with this driver than I am.
-> >
-> > In particular, whilst it fixes the bug seen I'm not sure what the most
-> > logical ordering for the disable is or the best way to do it.
-> >
-> > I'd prefer to see the irq cut off at source by disabling it at the device
-> > feature that is generating the irq followed by cancelling or waiting for
-> > completion of any in flight work.  
-> The usually way you'd do this by calling free_irq() before the 
-> cancel_work_sync().
+> On Sat, Mar 18, 2023 at 04:30:33PM +0000, Jonathan Cameron wrote:
+> > On Mon, 13 Mar 2023 21:50:29 +0100
+> > Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
+> >  =20
+> > > Calling dev_to_iio_dev() on a platform device pointer is undefined and
+> > > will make adc NULL.
+> > >=20
+> > > Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> =20
+> >=20
+> > Hi Patrik,
+> >=20
+> > Looks good so applied to the fixes-togreg branch of iio.git.
+> >=20
+> > Whilst we are here, this would be a trivial driver to take fully device
+> > managed.  The only slightly messy bit is that it would need
+> > a devm_add_action_or_reset() + custom callback to handle the
+> > device_wakeup_enable().
+> >=20
+> > On the off chance you can test it I'll send a patch in a few mins.
+> > Note that will depend on this one going up stream first and that
+> > I haven't done more than build test it. =20
+> I got the patch and it looks good, but it will take a few days before I
+> have the time to test it.
+>=20
+> I have some more patches coming for this driver to configure the adc
+> thresholds from userspace, employing the iio channel event subsystem, but
+> they need a bit more work. In particular, to ensure backwards compatibili=
+ty
+> with the adc_wakeupX_data platform data. However, I don't see this platfo=
+rm
+> data being used by anyone.
+> How important is it to retain support for adc_wakeupX_data?
 
-I'd go a little further than that and disable the interrupt source at the
-device (if possible) then call free_irq() then cancel_work_sync()
+It's a somewhat unusual feature, so I doubt it was implemented without some=
+one
+needing it.  However as you observe there is no upstream user.
 
-Otherwise the device is merrily monitoring something and generating interrupts
-that we don't care about.  Might well be wasting power doing that, though I haven't
-checked the flow in this particular case.
+As it is causing you problems, I'd just rip out the palmas_adc_platform_data
+completely and see if anyone objects.  You can do that as a standalone patch
+prior to posting your events stuff if you like.  Or hopefully
+H. Nikolaus Schaller might be able to give us some background on why
+that feature is there but not used.
+
+> >=20
+> > Thanks,
+> >=20
+> > Jonathan =20
+>=20
+> Thank you for going the extra mile :)
+
+No problem.  I jumped on the opportunity to get it tested - takes way longer
+than writing a little patch like that ;)
 
 Jonathan
+
+> >=20
+> >  =20
+> > > ---
+> > >  drivers/iio/adc/palmas_gpadc.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
+gpadc.c
+> > > index 61e80bf3d05e..6db6f3bc768a 100644
+> > > --- a/drivers/iio/adc/palmas_gpadc.c
+> > > +++ b/drivers/iio/adc/palmas_gpadc.c
+> > > @@ -638,7 +638,7 @@ static int palmas_gpadc_probe(struct platform_dev=
+ice *pdev)
+> > > =20
+> > >  static int palmas_gpadc_remove(struct platform_device *pdev)
+> > >  {
+> > > -	struct iio_dev *indio_dev =3D dev_to_iio_dev(&pdev->dev);
+> > > +	struct iio_dev *indio_dev =3D dev_get_drvdata(&pdev->dev);
+> > >  	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
+> > > =20
+> > >  	if (adc->wakeup1_enable || adc->wakeup2_enable) =20
+> >  =20
 

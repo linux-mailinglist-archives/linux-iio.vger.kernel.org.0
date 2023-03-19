@@ -2,284 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE636C0262
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 15:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 779346C0268
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Mar 2023 15:28:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbjCSOYH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Mar 2023 10:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58124 "EHLO
+        id S230032AbjCSO2m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Mar 2023 10:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjCSOYG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 10:24:06 -0400
-Received: from mail.gfz-potsdam.de (mail.gfz-potsdam.de [139.17.229.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8482616335
-        for <linux-iio@vger.kernel.org>; Sun, 19 Mar 2023 07:24:02 -0700 (PDT)
-Received: from [84.186.207.222] (account andres@gfz-potsdam.de)
-  by gfz-potsdam.de (CommuniGate Pro WEBUSER 7.1.3)
-  with HTTP id 1561185; Sun, 19 Mar 2023 15:24:00 +0100
-From:   "Andres Heinloo" <andres@gfz-potsdam.de>
-Subject: Re: Bugs in dps310 Linux driver
-To:     "Jonathan Cameron" <jic23@kernel.org>
-Cc:     "Eddie James" <eajames@linux.ibm.com>, linux-iio@vger.kernel.org
-X-Mailer: CommuniGate Pro WebUser v7.1.3
-Date:   Sun, 19 Mar 2023 15:24:00 +0100
-Message-ID: <web-1561194@cgp-be1-mgmt.gfz-potsdam.de>
-In-Reply-To: <20230318170917.4a00a07c@jic23-huawei>
-References: <web-1200302@cgp-be2-mgmt.gfz-potsdam.de>
-        <20230304170620.795f4d99@jic23-huawei>
-        <web-1201064@cgp-be2-mgmt.gfz-potsdam.de>
-        <web-1202839@cgp-be2-mgmt.gfz-potsdam.de>
-        <20230312154348.257ddf87@jic23-huawei>
-        <45414cf9-4ba2-86ff-e040-4e0b762efdf1@gfz-potsdam.de>
- <20230318170917.4a00a07c@jic23-huawei>
+        with ESMTP id S229472AbjCSO2l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Mar 2023 10:28:41 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E6293FF;
+        Sun, 19 Mar 2023 07:28:39 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id q16so1108057lfe.10;
+        Sun, 19 Mar 2023 07:28:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679236116;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=06ucLjv2LW0bfQ/Mk1CUtTKw0iV9aRZCdjCSv1bO3Fk=;
+        b=LNsOrqJTsODq5F1FoN0E4946GfJkRR9BPDI9myJJnLdmHnKC/sTDjSJ3XCa7CvRlnN
+         vIrpZ7eIFp71MjFO6bF0vvQiElGplbiWkXkgFmLT70ZyiYZJOcnDwBqOZeY5+ehYL2LJ
+         jHYJpHfOWhimgvjVRl434p7FPtvCN6oZjn9VXa68RqX0M3yogEzZ3apTs3hUmA3XSmOg
+         K9L+MXF7gYUJfgiTnWzhxOkVR21J/y+FltdySdRnkZjjfFMz7Ee0MhQ4m1XAdid9/1uV
+         EWVQF7cfCQwThZT2k7wO8qGHARpHf4rxjEV7uZybooFWNxmSCgdBm7OScZz7nT3BmEg/
+         r6KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679236116;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=06ucLjv2LW0bfQ/Mk1CUtTKw0iV9aRZCdjCSv1bO3Fk=;
+        b=261yOdVj1tNrnC3GQ5JXAyRpWFM5Ovb9e/wogwzxCKakyXEvhyc06ZnEzO0aQ/H13o
+         QELWO/tZM2Ii7l7iHrmluXH+Dz57U9OgUC0Qx4gvtKoe5kIj8960K9SucXrHx6hJnUW6
+         4bCbpUTl4RtuP3s8XtrpigD4mSLigHNHQCdzH1rvyV7rgt2UUWNiSlgye/NsfGZN+hS6
+         MMjAldP6Ke3VPla3MNsNuHdlI+4MTkDjV8vh8InApNrObtAnTcsYPdFPluEbBN1qrrMY
+         gTF66v4G+LMEHTEhkaACI+MQTlrFGl3pxeJr7qK4jaFMRe0Jh+9sJ1T0RAg2xiy4p+g+
+         krPA==
+X-Gm-Message-State: AO0yUKX2fz61LLiVOM5nOBm2+bQpenPqd4huQbAhuiZFVeBvUTyT7zHU
+        KKbpjYOHojVAYsQa1SGS7iY+dFdKptc=
+X-Google-Smtp-Source: AK7set8uBy8PkFHbyTSX4ZnWN5EUHF/1xnL3ynzdEpaQkDfqDjV4XM3LWZr6ag+4dFLrkmYbpYyRwA==
+X-Received: by 2002:a19:c20e:0:b0:4d5:ae35:b221 with SMTP id l14-20020a19c20e000000b004d5ae35b221mr5696921lfc.34.1679236116442;
+        Sun, 19 Mar 2023 07:28:36 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id b25-20020ac24119000000b004db266f3978sm1266829lfi.174.2023.03.19.07.28.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Mar 2023 07:28:36 -0700 (PDT)
+Message-ID: <9931f19a-31f7-d98a-1540-979e2db30eaf@gmail.com>
+Date:   Sun, 19 Mar 2023 16:28:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;charset=utf-8; format="flowed"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v3 2/6] iio: light: Add gain-time-scale helpers
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <cover.1678093787.git.mazziesaccount@gmail.com>
+ <a4cb9a34ca027867ac014ffe93ca7e8245ce263f.1678093787.git.mazziesaccount@gmail.com>
+ <ZAXiKfRbsXpHhwAJ@smile.fi.intel.com> <20230312165100.45de0c9b@jic23-huawei>
+ <bad05e06-3b37-b435-bfac-962aef36cc97@gmail.com>
+ <ZA8ho4YfhBkSMFxS@smile.fi.intel.com>
+ <d2986a9e-c516-ea6d-8f94-5cd4723312bd@fi.rohmeurope.com>
+ <20230318171751.75911d26@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230318171751.75911d26@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Mar 2023 17:09:17 +0000
-  Jonathan Cameron <jic23@kernel.org> wrote:
-> On Mon, 13 Mar 2023 17:36:00 +0100
-> Andres Heinloo <andres@gfz-potsdam.de> wrote:
+On 3/18/23 19:17, Jonathan Cameron wrote:
+> On Tue, 14 Mar 2023 06:19:35 +0000
+> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
 > 
->> On 3/12/23 16:43, Jonathan Cameron wrote:
->> > On Mon, 06 Mar 2023 22:15:15 +0100
->> > "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
->> >   
->> >> On Sun, 05 Mar 2023 03:05:01 +0100
->> >>    "Andres Heinloo" <andres@gfz-potsdam.de> wrote:  
->> >>> On Sat, 4 Mar 2023 17:06:20 +0000
->> >>>   Jonathan Cameron <jic23@kernel.org> wrote:  
->> >>>> On Fri, 03 Mar 2023 12:10:00 +0100
->> >>>> "Andres Heinloo" <andres@gfz-potsdam.de> wrote:
->> >>>>      
->> >>>>> Hello,
->> >>>>>
->> >>>>> I've been struggling with the dps310 driver, which gives 
->>incorrect
->> >>>>> pressure values and in particular different values than 
->>manufacturers
->> >>>>> code (https://github.com/Infineon/RaspberryPi_DPS).
->> >>>>>
->> >>>>> I think I've found where the problem is. Firstly, there is a 
->>mistake
->> >>>>> in bit numbering at
->> >>>>> 
->>https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L51
->> >>>>>
->> >>>>> According to datasheet, correct is:
->> >>>>>
->> >>>>> #define  DPS310_INT_HL          BIT(7)
->> >>>>> #define  DPS310_TMP_SHIFT_EN    BIT(3)
->> >>>>> #define  DPS310_PRS_SHIFT_EN    BIT(2)
->> >>>>> #define  DPS310_FIFO_EN         BIT(1)
->> >>>>> #define  DPS310_SPI_EN          BIT(0)
->> >>>>>
->> >>>>> Eg., the current code is using wrong bit (4) for
->> >>>>> DPS310_PRS_SHIFT_EN, which means that pressure shift is never
->> >>>>> enabled.  
->> >>>>
->> >>>> Checking the datasheet, seems like you are right.
->> >>>> 
->>https://www.infineon.com/dgdl/Infineon-DPS310-DataSheet-v01_02-EN.pdf?fileId=5546d462576f34750157750826c42242
->> >>>> Section 7:
->> >>>> Though that's not the only bit that is wrong.  Looks like FIFO
->> >>>> enable is as well.
->> >>>> So any fix should deal with that as well.  
->> >>>
->> >>> Yes, DPS310_PRS_SHIFT_EN, DPS310_FIFO_EN, DPS310_SPI_EN are all
->> >>> wrong, but the latter 2 are not used by the driver.
->> >>>
->> >>>      
->> >>>> The differences between the register map and the datasheet I'm
->> >>>> looking at make
->> >>>> me think that perhaps the driver was developed against a 
->>prototype
->> >>>> part.
->> >>>> The registers are in a different order for starters with the 
->>B0, B1
->> >>>> and B2
->> >>>> sets in reverse order.  Any fix patch should tidy that up as 
->>well.  
->> >>>
->> >>> Yes, but that's just different naming. MSB is called B2 in the
->> >>> datasheet and B0 in the driver.
->> >>>
->> >>>      
->> >>>>> Secondly, there is a problem with overflows starting at
->> >>>>> 
->>https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L654
->> >>>>>
->> >>>>> Since p is a 24-bit value,
->> >>>>>
->> >>>>> nums[3] = p * p * p * (s64)data->c30;
->> >>>>>
->> >>>>> can and does overflow.  
->> >>>>
->> >>>> Makes sense, though I can't immediately see a good solution as 
->>we
->> >>>> need
->> >>>> to maintain the remainder part.  
->> >>>
->> >>> I don't have a good solution either, but there must be other IIO
->> >>> sensors that have something similar that could be possibly 
->>reused.
->> >>>
->> >>>      
->> >>>>> Second overflow problem is at
->> >>>>> 
->>https://github.com/torvalds/linux/blob/857f1268a591147f7be7509f249dbb3aba6fc65c/drivers/iio/pressure/dps310.c#L684
->> >>>>>
->> >>>>> In fact, I don't understand why 1000000000LL is needed. Since 
->>only 7
->> >>>>> values are summed, using 10LL should give the same precision. 
->> 
->> >>>> Whilst the existing  value seems large - I'm not great with
->> >>>> precision calcs so could
->> >>>> you lay out why 10LL is sufficient?  
->> >>>
->> >>> Unless I overlooked something, the error of integer division 
->>(eg.,
->> >>> discarding fractional part) is <1. In this case, the results of 
->>7
->> >>> integer divisions are summed, so the error is <7. When 
->>multiplying
->> >>> numerators by 10LL, the error would be <0.7. Which is OK, since 
->>we
->> >>> are interested only in the integer part.  
->> >>
->> >> Unfortunately it seems that there may be more problems with the
->> >> driver. I've noticed that my device has lost sample rate and 
->>precision
->> >> settings few times. When looking at the code, it seems the 
->>settings
->> >> are not restored when dps310_reset_reinit() is called at
->> >> 
->>https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L438
->> >>  
->> > 
->> > Agreed. Looks like that stuff is missing.  This reset path is 
->>pretty horrible
->> > in general, so I'm not surprised a few things got missed. Should 
->>be easy enough
->> > to add a cache of those and and set them again if you want to try 
->>that.  
->> 
->> One option would be adding sample_rate and oversampling_ratio to 
->> dps310_data struct, but some questions remain.
+>> On 3/13/23 15:14, Andy Shevchenko wrote:
+>>> On Mon, Mar 13, 2023 at 02:56:59PM +0200, Matti Vaittinen wrote:
+>>>> On 3/12/23 18:51, Jonathan Cameron wrote:
+>>>>> On Mon, 6 Mar 2023 14:52:57 +0200
+>>>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>>>>>> On Mon, Mar 06, 2023 at 11:17:15AM +0200, Matti Vaittinen wrote:
+>>>
+>>> ...
+>>>    
+>>>>>>> +EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);
+>>>>>>
+>>>>>> I would say _HELPER part is too much, but fine with me.
+>>>>>
+>>>>> Hmm. I think I like the HELPER bit as separates it from being a driver.
+>>>>> Of course I might change my mind after a few sleeps.
+>>>>
+>>>> Ever considered a career as a politician? ;) (No offense intended - and feel
+>>>> free to change your mind on this. I don't expect this to be done tomorrow)
+>>>
+>>> It will be a one liner in the provider if you use DEFAULT_SYMBOL_NAMESPACE
+>>> definition.
+>>
+>> Oh. I didn't know about DEFAULT_SYMBOL_NAMESPACE - or if I did, I had
+>> forgot it. My memory has never been great and seems to be getting worse
+>> all the time...
 > 
-> That's what I'd do here.
+>>
+>> I don't know what to think of this define though. I can imagine that
+>> someone who is not familiar with it could be very confused as to why the
+>> symbols are not found even though EXPORT_SYMBOL or EXPORT_SYMBOL_GPL are
+>> used. OTOH, I think I once saw an error about symbols being in a
+>> namespace (when trying to use one without the namespace). This should
+>> probably just be a good enough hint for finding out what's going on.
+>>
+>> Luckily, I think all the exports in this case were oneliners even with
+>> the namespace explicitly spelled. Well, I think that for one or two
+>> exports the semicolon did slip to col 81 or 82 - but I am not sure if
+>> fixing this weighs more than the clarity of explicitly showing the
+>> namespace in export.
+>>
+>> Well, I guess I can go with either of these ways - do you have a strong
+>> opinion on using the DEFAULT_SYMBOL_NAMESPACE?
+>>
 > 
->> 
->> I think doing a silent reset is not good, because it can cause bad 
->> samples. When looking at data, you don't know if there was an actual 
->> pressure spike or if it was caused by a reset. I think a better 
->>solution 
->> would be immediately returning an error (-EIO?) to inform user space 
->> about an intermittent failure.
+> If it's in the C file, then I can cope with doing it this way.
+> Don't do it in the compiler options though.  That got ripped out of CXL
+> because it was considered a bad idea to hide the namespace away like that.
 > 
-> Userspace may well not retry because for vast majority of devices a 
->failure
-> like this indicates something went very wrong (or bad hardware). So 
->it might
-> well just log the error somewhere and quit.  Here we have a device 
->that as
-> I understand it has a reasonably frequent lock up condition so we 
->kind of
-> need to paper over that in the kernel to present what userspace 
->expects.
+> Personally I prefer the namespace of the symbols explicit in each export
+> as they are easy to find that way.
 
-I don't have experience with many IIO devices, but for example dht11 
-has very frequent errors due to unreliable bitbanging protocol and if 
-taking a reading fails, it returns I/O error to userspace and the 
-userspace just retries.
+I share the same view on this. I did use the DEFAULT_SYMBOL_NAMESPACE 
+for v4 - but I'll drop that for v5 and go back with the explicit 
+name-space usage.
 
+Yours,
+	-- Matti
 
-> A rate limited print to the kernel log might be a good idea though 
->so
-> at least there is some record of it happening.
-> 
->> 
->> (I suspect that in case of some errors, the IIO subsystem retries 
->> internally and hides the error.)
-> 
-> I can't immediately think of a path were the subsystem does retries.
-> Tend to just pass them up to userspace.
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-I'm not 100% sure, but when I debugged dps310, I noticed that when 
--ERANGE is returned at 
-https://github.com/torvalds/linux/blob/a3671bd86a9770e34969522d29bb30a1b66fd88a/drivers/iio/pressure/dps310.c#L688, 
-dps310_calculate_pressure() seems to be executed 2 times internally 
-before -ERANGE is returned to userspace.
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-
->> The purpose of timeout_recovery_failed seems questionable, because 
->>if 
->> you end up with timeout_recovery_failed == true, the only way to 
->>recover 
->> from timeout is reloading the kernel module.
-> 
-> In theory if that happens we've concluded the device is dead. So 
->expected
-> fix is reset the board.  The fact it recovers after some other 
->sequence
-> means the work around isn't working.
-> 
->> 
->> I'm afraid I'm not able to provide a patch to fix the problems soon.
-> 
-> Understood, we may have to wait on someone with hardware who has the 
->time.
-> The wrong bit definitions are easier so maybe we can fix those up.
-> 
->> 
->> 
->> >> Apparently I've also ended up with data->timeout_recovery_failed 
->>==
->> >> true at
->> >> 
->>https://github.com/torvalds/linux/blob/8ca09d5fa3549d142c2080a72a4c70ce389163cd/drivers/iio/pressure/dps310.c#L443,
->> >> but the device worked fine after just reloading the kernel 
->>module.
->> >> This is difficult to reproduce, though.  
->> > 
->> > Hmm. There are a few things that could cause that.  Maybe 
->>something running slow, or
->> > an intermittent write failure (noisy environment or bad wire / 
->>track maybe?)  
->> 
->> (Off-topic) Write failures is a different problem that is very 
->>annoying. 
->> I'm not sure if this could be the case with dps310, but I have an 
->> ADXL355 device that is connected via SPI and often register writes 
->>fail 
->> silently. I have a short cable that is well connected and SPI should 
->>be 
->> running at max 1Mhz according to .../of_node/spi-max-frequency. I 
->>ended 
->> up wrapping regmap functions to check register value after each 
->>write. I 
->> haven't noticed errors when reading registers. (I'm using Raspberry 
->>Pi.)
-> 
-> Some of these sensors are very sensitive.  I have one or two that 
->basically
-> don't work over cables (including one that only works if I attach an 
->oscilloscope
-> with a long test lead...)
-> 
-> You could perhaps propose an addition to regmap to verify a write so 
->that
-> at least we know it failed.
-
-Actually my wrapper does not only verify, but also retries up to 10 
-times, because those write failures are really frequent (haven't 
-counted exactly, but I think up to 10% of the writes).
-
-Andres

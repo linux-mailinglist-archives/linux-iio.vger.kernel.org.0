@@ -2,105 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D3F6C1ADC
+	by mail.lfdr.de (Postfix) with ESMTP id 836F46C1ADD
 	for <lists+linux-iio@lfdr.de>; Mon, 20 Mar 2023 17:05:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231717AbjCTQFi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Mar 2023 12:05:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57430 "EHLO
+        id S232077AbjCTQFj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Mar 2023 12:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233414AbjCTQEv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Mar 2023 12:04:51 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B2153D092;
-        Mon, 20 Mar 2023 08:54:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679327654; x=1710863654;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HPFt5wbvwAzTASQxl4om3089Cr96nMrFu47+XtnfK5s=;
-  b=C5svXfCizWhZkNfhyLQt6Lx9p6vWDg+ls+NXaOb8hJ0nhTkbm1LjVJH3
-   Dwjs8FcpnvZrD4Sonwvq0PZ1Y9tx4lFAzzOrqHD1bXExJtQtnHsjj1YIC
-   WclJSVbV7k/XL9lOJdB6yvoSlBy6WPjDsYxs9I6LSyVN7yJihN7yKU0Md
-   fv2ymmBAURp10CZC8PRUxuwdU5jzbFi6q1SzcDJDfyExzeT9nz98Y4ZYI
-   7KIdHQ/Xhrfnr+WSxmQ1fmztvvLrAnyd5TYnlZ3fE7Woudadaf87DK5VC
-   4gNxbIkdD3sbpx4UVUbnCI7sev3PHUAnI5D6ND2rKRYOjCRyhZ4s9K4mo
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="336204541"
-X-IronPort-AV: E=Sophos;i="5.98,276,1673942400"; 
-   d="scan'208";a="336204541"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 08:51:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="1010523400"
-X-IronPort-AV: E=Sophos;i="5.98,276,1673942400"; 
-   d="scan'208";a="1010523400"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 20 Mar 2023 08:51:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1peHnI-006Ktu-1N;
-        Mon, 20 Mar 2023 17:51:32 +0200
-Date:   Mon, 20 Mar 2023 17:51:32 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: addac: stx104: Migrate to the regmap API
-Message-ID: <ZBiBBJOmjOAHGUn0@smile.fi.intel.com>
-References: <20230319202256.352939-1-william.gray@linaro.org>
+        with ESMTP id S233394AbjCTQEm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Mar 2023 12:04:42 -0400
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58523BDA6
+        for <linux-iio@vger.kernel.org>; Mon, 20 Mar 2023 08:54:04 -0700 (PDT)
+Received: by mail-qv1-xf2f.google.com with SMTP id c26so2029274qvz.5
+        for <linux-iio@vger.kernel.org>; Mon, 20 Mar 2023 08:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679327619;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W7s3A/DGwv7WBw7dO5oMKHGvu+Ybq7w8ym82QotVAyU=;
+        b=xRBVBA4AWMnAeXoNfvb8DfBdx9mKeAJx9CeWVlyFYZZa22obu4POITze1ulkKMAjvC
+         p06+Mt/yE6xxDNieSxA+DzWIoWIOr+Tl9H7YBRQo/SgfjI70xeITdCZlpU+hrx8jrUpY
+         kGlsEhDtRrfM20L6MbEQs7/8i8/vNNdDoE2qvFr0gAieKhmp1ID+t9bxAtLN0eBQGVGO
+         mQjUyxMNV5mHObdAAf+TsjU3AcxazJHkaykkwcCS60U6C91jAprsJPKGdzSv8bAWy4wu
+         4Tu2cfWrEt42jQuOXyprKaSXKKailMlRICknD5ISrAHjklKLw2ySIZIanKCluv3nLujb
+         BMsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679327619;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W7s3A/DGwv7WBw7dO5oMKHGvu+Ybq7w8ym82QotVAyU=;
+        b=4cmXhjJx0baqkzFwhfu7MbsK4Oo0mCKAjIxF5EtdHuayC1oEX5sLK71NhS3mjVuo3c
+         UVn8F1WmBAk7YxNORjNA6uR5PvvkOsczCO1+dIyhPipusBk4U2bYzMzJi7Lm8N64gi9X
+         ksQKo7Gpxx7V63wa5yNxjXBwJFFnxuZJWaiyoSvvbTHUS10sTYao7LpArmpgyGs1aXFk
+         iAkuRMb6cyo4Re44yDfYRlU72XHDZ1zV95PFT2Zjz7RW9LN3AvndDVsfJSXHn/tTbdRN
+         TZxfsE7rPgoqzVPzyEApsz0aKsmfRAkhO9Q0JZIlqAPnM1BmsMpOJ6rNSQI/S78qMAec
+         iiRw==
+X-Gm-Message-State: AO0yUKXJ0DA9j0bPFA8wuyl3cYfSKbyCUBeRVqK5BBfgmYbc7cMBJnO/
+        O1M70VkF47+WBn5EtXuuBzJ/Bw==
+X-Google-Smtp-Source: AK7set8SsZh5sDU2a1+miGf74SmmwC+TO6/pKMiXl2I+ROIaJLT1U4etn6imHdyNiWJOjQA/k7I0aA==
+X-Received: by 2002:a05:6214:2347:b0:56e:9da4:82ff with SMTP id hu7-20020a056214234700b0056e9da482ffmr54125794qvb.50.1679327619121;
+        Mon, 20 Mar 2023 08:53:39 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id f8-20020a05620a280800b0074269db4699sm694652qkp.46.2023.03.20.08.53.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Mar 2023 08:53:38 -0700 (PDT)
+Date:   Mon, 20 Mar 2023 11:53:36 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] counter: 104-quad-8: Utilize helper functions to
+ handle PR, FLAG and PSC
+Message-ID: <ZBiBgI5mVHAg/59Y@fedora>
+References: <cover.1679149542.git.william.gray@linaro.org>
+ <71496f9295e68388ce07f3051bf5882177be83c5.1679149543.git.william.gray@linaro.org>
+ <ZBhRb+v/8+vSwjz6@smile.fi.intel.com>
+ <ZBh8O5oOL0TB9wzT@fedora>
+ <ZBh9cUwvV+hi5We8@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fyOpXYjtQdJyq73T"
 Content-Disposition: inline
-In-Reply-To: <20230319202256.352939-1-william.gray@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZBh9cUwvV+hi5We8@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 19, 2023 at 04:22:56PM -0400, William Breathitt Gray wrote:
-> The regmap API supports IO port accessors so we can take advantage of
-> regmap abstractions rather than handling access to the device registers
-> directly in the driver.
 
-...
+--fyOpXYjtQdJyq73T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> -/**
-> - * struct stx104_iio - IIO device private data structure
+On Mon, Mar 20, 2023 at 05:36:17PM +0200, Andy Shevchenko wrote:
+> On Mon, Mar 20, 2023 at 11:31:07AM -0400, William Breathitt Gray wrote:
+> > On Mon, Mar 20, 2023 at 02:28:31PM +0200, Andy Shevchenko wrote:
+> > > On Sat, Mar 18, 2023 at 10:59:51AM -0400, William Breathitt Gray wrot=
+e:
+> > > > The Preset Register (PR), Flag Register (FLAG), and Filter Clock
+> > > > Prescaler (PSC) have common usage patterns. Wrap up such usage into
+> > > > dedicated functions to improve code clarity.
+>=20
+> ...
+>=20
+> > > > +static void quad8_preset_register_set(struct quad8 *const priv, co=
+nst size_t id,
+> > > > +				      const unsigned long preset)
+> > > > +{
+> > > > +	struct channel_reg __iomem *const chan =3D priv->reg->channel + i=
+d;
+> > > > +	int i;
+> > > > +
+> > > > +	/* Reset Byte Pointer */
+> > > > +	iowrite8(SELECT_RLD | RESET_BP, &chan->control);
+> > > > +
+> > > > +	/* Set Preset Register */
+> > > > +	for (i =3D 0; i < 3; i++)
+> > > > +		iowrite8(preset >> (8 * i), &chan->data);
+> > > > +}
+> > >=20
+> > > May we add generic __iowrite8_copy() / __ioread8_copy() instead?
+> > >=20
+> > > It seems that even current __ioread32_copy() and __iowrite32_copy() h=
+as to
+> > > be amended to support IO.
+>=20
+> > Sure, I would use __iowrite8_copy() / __ioread8_copy() for these
+> > situations if it were available.
+>=20
+> If needed, you may always introduce ones.
+>=20
+> > Is something equivalent available for the regmap API? I'm planning to
+> > migrate this driver to the regmap API soon after this patch series is
+> > merged, so the *_copy() calls would need to migrated as well.
+>=20
+> Yes. It's regmap bulk operations.
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
 
-I believe this...
+After reading through the implementation for these functions I realized
+they are actually doing something different than what's happening here.
+The 104-QUAD-8 device exposes the 24-bit register by consecutive 8-bit
+I/O operations on the same address; however, the iomap_copy and regmap
+bulk functions operate on different addresses.
 
-> - * @chan_out_states:	channels' output states
-> - * @reg:		I/O address offset for the device registers
-> - */
+I'm not sure if there really is a way to make the 104-QUAD-8 operation
+more generic for other drivers because it configures the current byte
+pointer through a separate register from the data register (all of this
+feel rather device specific), so I suspect keeping this function local
+to 104-quad-8 is best for now.
 
-> -struct stx104_iio {
+William Breathitt Gray
 
-...and this can be left here. With that the diff won't be too disrupted.
+--fyOpXYjtQdJyq73T
+Content-Type: application/pgp-signature; name="signature.asc"
 
-(You are using only pointers to the generic data types in the struct
- definition, that's why its location can be almost anywhere before the
- first its real user.)
+-----BEGIN PGP SIGNATURE-----
 
-> -	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
-> -	struct stx104_reg __iomem *reg;
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZBiBgAAKCRC1SFbKvhIj
+K0wDAP93HV0Gj4xeiDWBbHeWFLfyhiSf9flnQYpPqdmqPGdVbgEAwZeASq9k6oCj
+N8Y4mIL7yRicTVlpTwZScTJC72bLnww=
+=ZNfg
+-----END PGP SIGNATURE-----
 
-...
-
-> +struct stx104_iio {
-> +	struct regmap *aio_data_map;
-> +	struct regmap *aio_ctl_map;
->  };
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--fyOpXYjtQdJyq73T--

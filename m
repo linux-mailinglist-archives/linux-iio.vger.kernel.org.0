@@ -2,61 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F103D6C1278
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Mar 2023 13:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65BA36C1606
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Mar 2023 16:01:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231723AbjCTM61 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Mar 2023 08:58:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
+        id S232064AbjCTPBg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Mar 2023 11:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231703AbjCTM57 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Mar 2023 08:57:59 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E74D02106
-        for <linux-iio@vger.kernel.org>; Mon, 20 Mar 2023 05:57:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7D5F5B80DD3
-        for <linux-iio@vger.kernel.org>; Mon, 20 Mar 2023 12:57:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5BCC433EF;
-        Mon, 20 Mar 2023 12:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1679317058;
-        bh=IACcB8dypFQCyo15WqsoPfRlXH/E5MQkesKzKb6GI2k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CLHyTH1XTqWnd0/OpUSW8tajOSlgkbfWdxF/dIF24DJZxfsUDjDyQBsjn7gUGaLAu
-         9IdI+C1MXT0rgA8bVEnum4DWVze5P6u7DgQV8+GFUsAb/J19fqujCsJPQ9iJl3isvc
-         t35T2fCzh+Qt7w8g5EyRsEU3ZKXpp08p4lFOq11s=
-Date:   Mon, 20 Mar 2023 13:57:34 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     William Breathitt Gray <wbg@kernel.org>
-Cc:     linux-iio@vger.kernel.org, william.gray@linaro.org
-Subject: Re: [GIT PULL] First set of Counter driver fixes for 6.3
-Message-ID: <ZBhYPiKxhHDnmFQQ@kroah.com>
-References: <ZBXGb2rwkcGtkArk@ishi>
+        with ESMTP id S231479AbjCTPBP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Mar 2023 11:01:15 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 067B9144A3;
+        Mon, 20 Mar 2023 07:57:54 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A1E7FAD7;
+        Mon, 20 Mar 2023 07:58:02 -0700 (PDT)
+Received: from e127643.arm.com (unknown [10.57.18.95])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 87D3B3F71E;
+        Mon, 20 Mar 2023 07:57:15 -0700 (PDT)
+From:   James Clark <james.clark@arm.com>
+To:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
+        michal.simek@amd.com, Jonathan.Cameron@huawei.com
+Cc:     James Clark <james.clark@arm.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: [PATCH v3 0/4] devres: Provide krealloc_array
+Date:   Mon, 20 Mar 2023 14:57:05 +0000
+Message-Id: <20230320145710.1120469-1-james.clark@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZBXGb2rwkcGtkArk@ishi>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Mar 18, 2023 at 10:10:55AM -0400, William Breathitt Gray wrote:
-> The following changes since commit fe15c26ee26efa11741a7b632e9f23b01aca4cc6:
-> 
->   Linux 6.3-rc1 (2023-03-05 14:52:03 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-6.3a
+Changes since v2:
+ 
+ * Remove change in qcom_geni_serial.c in the last commmit and replace
+   it with a comment instead
+ * Whitespace fix
 
-Pulled and pushed out, thanks,
+Changes since v1:
 
-greg k-h
+ * Style fix
+
+-----------------------
+
+Hi,
+
+I had a use for a devm realloc_array in a separate change, so I've
+added one and updated all the obvious existing uses of it that I could
+find. This is basically a copy paste of the one in slab.h
+
+Applies to v6.3-rc3
+
+Thanks
+James
+
+James Clark (4):
+  devres: Provide krealloc_array
+  hwmon: pmbus: Use devm_krealloc_array
+  iio: adc: Use devm_krealloc_array
+  serial: qcom_geni: Comment use of devm_krealloc rather than
+    devm_krealloc_array
+
+ .../driver-api/driver-model/devres.rst          |  1 +
+ drivers/hwmon/pmbus/pmbus_core.c                |  6 +++---
+ drivers/iio/adc/xilinx-ams.c                    |  9 +++------
+ drivers/iio/adc/xilinx-xadc-core.c              | 17 +++++++----------
+ drivers/tty/serial/qcom_geni_serial.c           |  5 +++++
+ include/linux/device.h                          | 11 +++++++++++
+ 6 files changed, 30 insertions(+), 19 deletions(-)
+
+-- 
+2.34.1
+

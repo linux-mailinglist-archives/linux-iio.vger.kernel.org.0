@@ -2,70 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C98326C3653
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Mar 2023 16:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5486C36FD
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Mar 2023 17:34:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230495AbjCUP4x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Mar 2023 11:56:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46348 "EHLO
+        id S229799AbjCUQeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Mar 2023 12:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbjCUP4w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Mar 2023 11:56:52 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5274850FAD;
-        Tue, 21 Mar 2023 08:56:47 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id r11so61592133edd.5;
-        Tue, 21 Mar 2023 08:56:47 -0700 (PDT)
+        with ESMTP id S229683AbjCUQeV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Mar 2023 12:34:21 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 725DC32520;
+        Tue, 21 Mar 2023 09:34:19 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id y4so62122345edo.2;
+        Tue, 21 Mar 2023 09:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679414205;
+        d=gmail.com; s=20210112; t=1679416458;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Avxg+wqBheAZBOFL4DRSDNWUNaL22DnyGnVWnYTFkUc=;
-        b=BGFUA/vTAoKrvp1XiMnjzwiBRikzw9EI3kIEyJid3gpdbWhJRhGr8REYMcKymQRBHE
-         KLh2K1Fz4WD0tVcav03cxcGTRDeVWiMTnS1WpjSDFC4HB3ggG16ZvAE8ft4lF0rv8tTL
-         +0K5mrsowODR+zXpgxUioti3txwEAdlQey0r2d5mg23pJJWP2lih4wLKdTJtGH/Cb+II
-         al19FGOxCWuyNr0Ije0g+eZOrzlvU8jvemgLHd4ILOW1j4oO9JdQhWyEVZwGly8G46o4
-         V5p/glr2MJuQBJYS0a2S132z8O600YZHTVcJvAtFsEUnFt7bfG8OWIQ1UetpCLEZiNL2
-         t7+Q==
+        bh=zNGolYpDrXdQ4yw85TNBwydhoA3Qk61HxNkRR+pIP84=;
+        b=YJR8N4eQya8afKsJpfIgoPzvkwi62Zcu8UGAUtvod1XEqiXg6gAtvpEGuJ7hweuTyx
+         R7tHzH0kj5NyWJmFx6huhVHExcxEM7u+4ha3QNOzvayCZ1snmL4CkY5EP7msaSiaPcGy
+         WXi10NWg24LzHg69KqcqOakcTWfENixFfBDgBV7vf6O2T9LKCTTJuruTNiTu95LY60PD
+         7vSOftSuV3G6xDmHO5wDge3y3oqT7H9kBiUNJVPjSaMMA5liPBTVg8gHa/O8wwZGo7F/
+         AzUTgJhyaF+tqZzFR0J480/Nh+foVd0GM2tv2Y2bx7p4LDg8XrY67u3u10v+8Ib4zG3/
+         rO3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679414205;
+        d=1e100.net; s=20210112; t=1679416458;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Avxg+wqBheAZBOFL4DRSDNWUNaL22DnyGnVWnYTFkUc=;
-        b=f2F5iMo42EHwedzNhV9QeQ8KdmXOoLiOWStirPPQiV7Ueg3bJgYcStXcop1TSsqdp2
-         zKc64oeXT80Wp2p/47NSciT0RXOTwEvFVoLtZGBil/O1ynWaetVYrP52dqlSykM1CcL4
-         ZRmxLmZ29P8hJFcWZ/xPGDw4MTJO82LSP4x2BIz27Bf4QzmKYYOGHlCTCW4kjF3jdQDz
-         2PMxN7PFbReOQjM62X+PonIUKc7xScZXIUnvfxsn6UXigNlvNS/mzMDONLzuJkW4u2NJ
-         20fC6LyDqFhe/Tzg3z8klAuMC/igGQX7UVZ5Ia1B5PyWZbOsFUkbPCM9o9VDUSMnwyaC
-         IOfA==
-X-Gm-Message-State: AO0yUKVZI0rjxjcHN4BGPsyP8XrNr8iYT/+rks6NirjX5ffWcIkASJ0x
-        U4+bsJ7iLBi80jtNUF2KzF8=
-X-Google-Smtp-Source: AK7set9zJtJATgBFmUbEPELSo4KADQnNTfcPzJvVliB52XwsopA65iCr2MFLwxuxd6dIJYMvmu6KLw==
-X-Received: by 2002:a17:906:180c:b0:92c:8e4a:1a42 with SMTP id v12-20020a170906180c00b0092c8e4a1a42mr3309080eje.32.1679414205533;
-        Tue, 21 Mar 2023 08:56:45 -0700 (PDT)
+        bh=zNGolYpDrXdQ4yw85TNBwydhoA3Qk61HxNkRR+pIP84=;
+        b=FQmA0wWzypNu60y6YpEAc41pCDzY+KAiZseK5DrNgAwPZgiXKNcYSASpc+LNLFhPyo
+         iZs8PnrjhGUbSgalQEkWD0xFIAnfj1jG4Duh4bn8LeB5YOahQp/5nFiqtZd/VB6uG4/v
+         UMcocNS8YpNWZGD+s09+vlpzn7o36dy4PbECKHzuIAzmd9lQvaGPhexVIBexFgiBzIJf
+         QZUyg1mKOeycWNTWsTpHbSqOW2msns2fcobJwHKaPMw3oHa4UnI/fEKXlueTCdchmO9Y
+         x4iZS/Sn+8ljJmF1rQvfQQx7Cjp4kadKr6Xzai7v1wRAsWicrrIbk8duxKCYg64ztXFL
+         BDjA==
+X-Gm-Message-State: AO0yUKWP8xyVGamf0WBOJKh93nbFPVTLiOrQjQF99pRsl02YkAoWVRpa
+        6tiin289gAsrmXgbQqUbLP8=
+X-Google-Smtp-Source: AK7set83D/mgQ4qoK/5/etmILfDSp8t6HFjpc7DEZSv2/LTC4BFOA5pGFplW5Si7c2xzArvJCGkeQg==
+X-Received: by 2002:a17:906:b185:b0:939:90ee:e086 with SMTP id w5-20020a170906b18500b0093990eee086mr3698059ejy.28.1679416458000;
+        Tue, 21 Mar 2023 09:34:18 -0700 (PDT)
 Received: from carbian ([2a02:8109:aa3f:ead8::a9c0])
-        by smtp.gmail.com with ESMTPSA id ot9-20020a170906ccc900b009331450d04esm4824055ejb.178.2023.03.21.08.56.44
+        by smtp.gmail.com with ESMTPSA id kx1-20020a170907774100b0091fdd2ee44bsm5977632ejc.197.2023.03.21.09.34.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Mar 2023 08:56:45 -0700 (PDT)
-Date:   Tue, 21 Mar 2023 16:56:43 +0100
+        Tue, 21 Mar 2023 09:34:17 -0700 (PDT)
+Date:   Tue, 21 Mar 2023 17:34:15 +0100
 From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     mazziesaccount@gmail.com, krzysztof.kozlowski+dt@linaro.org,
         andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: accel: kionix-kx022a: Add chip_info structure
-Message-ID: <ZBnTuykAqse5vBhO@carbian>
+Subject: Re: [PATCH 3/3] iio: accel: Add support for Kionix/ROHM KX132
+ accelerometer
+Message-ID: <ZBnch1tSKyR4fA7H@carbian>
 References: <cover.1679009443.git.mehdi.djait.k@gmail.com>
- <3ddca10a4c03c3a64afb831cc9dd1e01fe89d305.1679009443.git.mehdi.djait.k@gmail.com>
- <4c28925d-c07c-61b7-8863-9c00e6846687@gmail.com>
+ <6f31fe7dbd142c01315891f6868ff75f7d7cde32.1679009443.git.mehdi.djait.k@gmail.com>
+ <20230319162207.77ef0686@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4c28925d-c07c-61b7-8863-9c00e6846687@gmail.com>
+In-Reply-To: <20230319162207.77ef0686@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,132 +74,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Matti,
+Hello Jonathan,
 
-> > +static int kx022a_get_fifo_bytes(struct kx022a_data *data)
-> > +{
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	__le16 buf_status;
-> > +	int ret, fifo_bytes;
+On Sun, Mar 19, 2023 at 04:22:07PM +0000, Jonathan Cameron wrote:
+> On Fri, 17 Mar 2023 00:48:37 +0100
+> Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
+> 
+> > Add support for the basic accelerometer features such as getting the
+> > acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
+> > using the WMI IRQ).
+> > 
+> > Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
+> > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+> 
+> Nothing much specific to this patch, most changes will be as a result
+> of bringing this inline with the changes suggested for patch 2.
+> 
+> thanks,
+> 
+> Jonathan
+> >  
+> > diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
+> > index 3bb40e9f5613..7e43bdb37156 100644
+> > --- a/drivers/iio/accel/kionix-kx022a.h
+> > +++ b/drivers/iio/accel/kionix-kx022a.h
+> > @@ -90,8 +90,61 @@
+> >  #define KX022A_REG_SELF_TEST	0x60
+> >  #define KX022A_MAX_REGISTER	0x60
+> >  
 > > +
-> > +	ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1, &buf_status, sizeof(buf_status));
-> > +	if (ret) {
-> > +		dev_err(dev, "Error reading buffer status\n");
-> > +		return ret;
-> > +	}
+> 
+> Push these down into the c file.
+
+Do you mean all REG and MASK defines ? 
+Even kx022a defines them in the h file, or am I misunderstanding your
+comment ?
+
+> 
+> > +#define KX132_REG_WHO		0x13
+> > +#define KX132_ID		0x3d
 > > +
-> > +	buf_status &= data->chip_info->buf_smp_lvl_mask;
-> > +	fifo_bytes = le16_to_cpu(buf_status);
+> > +#define KX132_FIFO_LENGTH	86
 > > +
-> > +	/*
-> > +	 * The KX022A has FIFO which can store 43 samples of HiRes data from 2
-> > +	 * channels. This equals to 43 (samples) * 3 (channels) * 2 (bytes/sample) to
-> > +	 * 258 bytes of sample data. The quirk to know is that the amount of bytes in
-> > +	 * the FIFO is advertised via 8 bit register (max value 255). The thing to note
-> > +	 * is that full 258 bytes of data is indicated using the max value 255.
-> > +	 */
-> > +	if (data->chip_info->type == KX022A && fifo_bytes == KX022A_FIFO_FULL_VALUE)
-> > +		fifo_bytes = KX022A_FIFO_MAX_BYTES;
+> > +#define KX132_REG_CNTL2		0x1c
+> > +#define KX132_REG_CNTL		0x1b
+> > +#define KX132_MASK_RES		BIT(6)
+> > +#define KX132_GSEL_2		0x0
+> > +#define KX132_GSEL_4		BIT(3)
+> > +#define KX132_GSEL_8		BIT(4)
+> > +#define KX132_GSEL_16		GENMASK(4, 3)
 > > +
-> > +	if (fifo_bytes % KX_FIFO_SAMPLES_SIZE_BYTES)
-> > +		dev_warn(data->dev, "Bad FIFO alignment. Data may be corrupt\n");
+> > +#define KX132_REG_INS2		0x17
+> > +#define KX132_MASK_INS2_WMI	BIT(5)
 > > +
-> > +	return fifo_bytes;
-> > +}
-> 
-> I like adding this function. Here I agree with Jonathan - having a device
-> specific functions would clarify this a bit. The KX022A "quirk" is a bit
-> confusing. You could then get rid of the buf_smp_lvl_mask.
-
-my bad here, I should have made a separate patch and explained more ...
-buf_smp_lvl_mask is essential because kionix products use different
-number of bits to report "the number of data bytes that have been stored in the 
-sample buffer" using the registers BUF_STATUS_1 and BUF_STATUS_2
-
-kx022a: 8bits
-kx132: 10bits
-kx12x: 11bits
-kx126: 12bits
-
-I think this function is quite generic and can be used for different
-kionix devices: 
-
-- It reads BUF_STATUS_1 and BUF_STATUS_2 and then uses a chip specific
-mask 
-- It takes care of the quirk of kx022a which is just a simple if statement 
-
-> 
+> > +#define KX132_REG_XADP_L	0x02
+> > +#define KX132_REG_XOUT_L	0x08
+> > +#define KX132_REG_YOUT_L	0x0a
+> > +#define KX132_REG_ZOUT_L	0x0c
+> > +#define KX132_REG_COTR		0x12
+> > +#define KX132_REG_TSCP		0x14
+> > +#define KX132_REG_INT_REL	0x1a
 > > +
-> >   static int kx022a_drop_fifo_contents(struct kx022a_data *data)
-> >   {
-> >   	/*
-> > @@ -593,35 +588,22 @@ static int kx022a_drop_fifo_contents(struct kx022a_data *data)
-> >   	 */
-> >   	data->timestamp = 0;
-> > -	return regmap_write(data->regmap, KX022A_REG_BUF_CLEAR, 0x0);
-> > +	return regmap_write(data->regmap, data->chip_info->buf_clear, 0x0);
-> >   }
-> >   static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
-> >   			       bool irq)
-> >   {
-> >   	struct kx022a_data *data = iio_priv(idev);
-> > -	struct device *dev = regmap_get_device(data->regmap);
-> > -	__le16 buffer[KX022A_FIFO_LENGTH * 3];
-> > +	__le16 buffer[data->chip_info->fifo_length * 3];
-> 
-> I don't like this. Having the length of an array decided at run-time is not
-> something I appreciate. Maybe you could just always reserve the memory so
-> that the largest FIFO gets supported. I am just wondering how large arrays
-> we can safely allocate from the stack?
+> > +#define KX132_REG_ODCNTL	0x21
+> > +
+> > +#define KX132_REG_BTS_WUF_TH	0x4a
+> > +#define KX132_REG_MAN_WAKE	0x4d
+> > +
+> > +#define KX132_REG_BUF_CNTL1	0x5e
+> > +#define KX132_REG_BUF_CNTL2	0x5f
+> > +#define KX132_REG_BUF_STATUS_1	0x60
+> > +#define KX132_REG_BUF_STATUS_2	0x61
+> > +#define KX132_MASK_BUF_SMP_LVL	GENMASK(9, 0)
+> > +#define KX132_REG_BUF_CLEAR	0x62
+> > +#define KX132_REG_BUF_READ	0x63
+> > +#define KX132_ODR_SHIFT		3
+> > +#define KX132_FIFO_MAX_WMI_TH	86
+> > +
+> > +#define KX132_REG_INC1		0x22
+> > +#define KX132_REG_INC5		0x26
+> > +#define KX132_REG_INC6		0x27
+> > +#define KX132_IPOL_LOW		0
+> > +#define KX132_IPOL_HIGH		KX_MASK_IPOL
+> > +#define KX132_ITYP_PULSE	KX_MASK_ITYP
+> > +
+> > +#define KX132_REG_INC4		0x25
+> > +
+> > +#define KX132_REG_SELF_TEST	0x5d
+> > +#define KX132_MAX_REGISTER	0x76
+> > +
+> >  enum kx022a_device_type {
+> >  	KX022A,
+> > +	KX132,
+> As mentioned in previous review, I think this would be neater
+> done by just exporting the chip_info structures directly rather than
+> putting them in an array.
 
-I was stupid enough to ignore the warnings... 
-I will take care of it in the v2
-
-> 
-> 
-> > @@ -812,14 +792,14 @@ static int kx022a_fifo_enable(struct kx022a_data *data)
-> >   		goto unlock_out;
-> >   	/* Enable buffer */
-> > -	ret = regmap_set_bits(data->regmap, KX022A_REG_BUF_CNTL2,
-> > -			      KX022A_MASK_BUF_EN);
-> > +	ret = regmap_set_bits(data->regmap, data->chip_info->buf_cntl2,
-> > +			      KX_MASK_BUF_EN);
-> >   	if (ret)
-> >   		goto unlock_out;
-> > -	data->state |= KX022A_STATE_FIFO;
-> > +	data->state |= KX_STATE_FIFO;
-> >   	ret = regmap_set_bits(data->regmap, data->ien_reg,
-> > -			      KX022A_MASK_WMI);
-> > +			      KX_MASK_WMI);
-> 
-> I think this fits to one line now. (even on my screen)
-> 
-> >   	if (ret)
-> >   		goto unlock_out;
-> 
-> > -int kx022a_probe_internal(struct device *dev)
-> > +int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_info *chip_info)
-> 
-> As mentioned elsewhere, this might also work if the chip-type enum was
-> passed here as parameter. That way the bus specific part would not need to
-> know about the struct chip_info...
-> 
-> >   {
-> >   	static const char * const regulator_names[] = {"io-vdd", "vdd"};
-> >   	struct iio_trigger *indio_trig;
-> > @@ -1023,6 +1003,7 @@ int kx022a_probe_internal(struct device *dev)
-> >   		return -ENOMEM;
-> >   	data = iio_priv(idev);
-> > +	data->chip_info = chip_info;
-> 
-> ...Here you could then pick the correct chip_info based on the chip-type
-> enum. In that case I'd like to get the regmap_config(s) in own file. Not
-> sure how that would look like though.
-> 
-> All in all, I like how this looks like. Nice job!
-
-Thank you for the feedback :)
+I gave the reason in a response to the previous review.
 
 --
-Kind Regards 
+Kind Regards
 Mehdi Djait

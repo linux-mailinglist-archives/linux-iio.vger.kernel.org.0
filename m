@@ -2,62 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E00396C45C9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 10:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BD836C45CE
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 10:10:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230296AbjCVJJp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Mar 2023 05:09:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
+        id S229629AbjCVJKp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Mar 2023 05:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjCVJJk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 05:09:40 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 310DD5DCAE
-        for <linux-iio@vger.kernel.org>; Wed, 22 Mar 2023 02:09:16 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id n19so768239wms.0
-        for <linux-iio@vger.kernel.org>; Wed, 22 Mar 2023 02:09:16 -0700 (PDT)
+        with ESMTP id S229826AbjCVJKo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 05:10:44 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE1513DCD;
+        Wed, 22 Mar 2023 02:10:20 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id e11so9495588lji.8;
+        Wed, 22 Mar 2023 02:10:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679476153;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aIo8FbyobGdeQjgMiSgscC07gnUNe4wDdBq9sEfgL3Y=;
-        b=IChelLMXRukvs9WOpZNMbJr/z8qLXldPHwd6gwf3UGMDe4/HQfQS3iK4SdveWmwKFS
-         /5PhqdfubZ1kppRWKsGrFCXD1Ly26Nwcn6T9nvQyUbeEayuETnEiqUpDThw2BcOJlzGD
-         vYMPv14fIXAbRa50hz9cxcrRX5km8c5Lyv62nJQB2sgwN0FHyy+mUS+9pRUGZ9Lbhvbz
-         iv2Rce3/s+MssFY0hqwKWLxBT3BT2l4dGWyEFrkfYZXJaTroYhUBmrHhW05x2KRuwnP2
-         +YSmEhFpEvM0RlRsaGAMiVdfovbGI+KhiWAVjzRO11IFaHQ496SPkwkt3ZDOUz3m2rCG
-         z2Lg==
+        d=gmail.com; s=20210112; t=1679476217;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AF22QWtPbI8hINiApqhTErR3ndgD6Cy9pQ4ZYgJ918g=;
+        b=KOGMrzF069kGvgjRowcJfrvOsfMHK7XdV6sh1GiQ9Zk8X4rAVrlGE46hCRmy348sAx
+         Zoy/6S/Il4cL8z+di7A8QAaJefXlnDx+iIt2yf/UqVJe3wYnsVyuftHwukNn6zVun5zc
+         soDsoUH+QSNoEVpHqYl+b5Y6nLLj8TGfFWLa7woGPuEqw4GHhAfo22xxoku5L47+HBxx
+         hjlmJ0/wBto3LfCPadSNTjPKm/+rP/qxfH9A/4OnXJ1jcR9tCcvikmf3sr+R5M35sq0f
+         mnvpsl23C3H3vaJzW2Y0LD4Us4GdKQzQkjhn846iT16Yk0chJoqOuDBlKH/X6Sv0n30q
+         SvHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679476153;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20210112; t=1679476217;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aIo8FbyobGdeQjgMiSgscC07gnUNe4wDdBq9sEfgL3Y=;
-        b=R26yqGVY2xJZ/YGeAi2i9c/XL3BEk6ZPAtQAW2AmRLKtYC3CGuj+KT5m3r1ySycMLB
-         iRpgv6L5UZjWycaskMFXUichtZUWni3nSl6ltQkYzWyGcoyfQrbWUxxA7+OHgyoVpEN9
-         E1gRGC+KRmizdnrAXN4CLaCgLpx30aHwj/NcVJnmZuliM4I7+wRrbypdJpTziXGhnRzi
-         /OJN8Y0Mpqqbbt07LVZrmEqccfo0TV6BIz4UuLNRgQQzzR+qkb8g+ycMOC0DgNGSf1wY
-         flBJkI9GIYoMy+GsJN0RZWdCyBX3QW9fQBzoPDMdftAwd7HZywF7lT0VSluLiMH+K9FL
-         +34w==
-X-Gm-Message-State: AO0yUKX5d0VNtrAvJvZVrdASwgMj766BYwWCjUhd4QCrPVclZto7G0yK
-        BTTjMEd4EhGV4EbL2zQO0P8=
-X-Google-Smtp-Source: AK7set/7KBK6RzSBPHAV0hi3ti2lczAaduMHlJIynOzG0aT4H2ux2QPRgqtC8xwj7xY+KtkJx7FjhQ==
-X-Received: by 2002:a05:600c:295:b0:3ed:492f:7f37 with SMTP id 21-20020a05600c029500b003ed492f7f37mr4579386wmk.10.1679476153158;
-        Wed, 22 Mar 2023 02:09:13 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id c16-20020adffb50000000b002c56179d39esm13379671wrs.44.2023.03.22.02.09.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 02:09:12 -0700 (PDT)
-Date:   Wed, 22 Mar 2023 12:09:09 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     linus.walleij@linaro.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [bug report] iio: adc: add a driver for Qualcomm PM8xxx HK/XOADC
-Message-ID: <02034937-12e2-44f5-8311-10d960dc7dc4@kili.mountain>
+        bh=AF22QWtPbI8hINiApqhTErR3ndgD6Cy9pQ4ZYgJ918g=;
+        b=G3GV508uw+wKiSzlxRKMSTMKZFN18K9jPDCbpvXZujbTM+6a7zx7zX8yiwz4wV0KJe
+         OBnmKBhWhGMPE/6wfuuQ+f7QQ+HrB157/HlvS7VSJEQXlnK+dei7hW8XGDNbfLly3dB7
+         Ae10XITZ9KRkJ/kKKfcS4GnyGK36BOh1XXcntyDNdu1RpjSszH3363uW3oCSi8Gzazb/
+         ydypXQA82HqDxpy7+xYDR+1AO+riJroAXgjBeV2zFBECKvjsMxdkwQuTye/7JThGN1KR
+         gkK41j/gW5NacYp94H4Wxo+VgVHrxgmraRl1AB3WMmJdN4V/GSuEvt3ZvzwMsNDdYVYM
+         vLWQ==
+X-Gm-Message-State: AO0yUKV/7O52DXejpmdtreBGdwDfafNe4neH9cgR3RqamVh9RUyr6MDs
+        jM6Hyhm+BgmzEuhq4DETllY=
+X-Google-Smtp-Source: AK7set+3wn7STykeLRSK/EVhjKe0sVN8+qh/LxMrchI26llUaRCvlhy6QgxhgJwScru1r9jjqwewHg==
+X-Received: by 2002:a2e:7407:0:b0:295:908d:f6c6 with SMTP id p7-20020a2e7407000000b00295908df6c6mr1892656ljc.9.1679476217418;
+        Wed, 22 Mar 2023 02:10:17 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id k7-20020a2e2407000000b0029477417d80sm2517941ljk.85.2023.03.22.02.10.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 02:10:17 -0700 (PDT)
+Message-ID: <4cbc8d6a-c8e0-68a0-e1a4-a552c3a968d7@gmail.com>
+Date:   Wed, 22 Mar 2023 11:10:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v4 4/8] iio: light: Add gain-time-scale helpers
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <cover.1679062529.git.mazziesaccount@gmail.com>
+ <e5b93a3d2424b16d842e847c98f05f1a9befb2e1.1679062529.git.mazziesaccount@gmail.com>
+ <20230319180828.452a603c@jic23-huawei>
+ <5ba4ab3d-90ab-113e-1b95-86118d3a7392@gmail.com>
+Content-Language: en-US, en-GB
+In-Reply-To: <5ba4ab3d-90ab-113e-1b95-86118d3a7392@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,41 +78,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-[ No idea why this warning is showing up after 6 years. -dan ]
+On 3/20/23 14:01, Matti Vaittinen wrote:
+> On 3/19/23 20:08, Jonathan Cameron wrote:
+>> On Fri, 17 Mar 2023 16:43:23 +0200
+>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>
+>> I think a bit more care is need with storage of time (unsigned) + decide
+>> whether to allow for negative gains.
+> 
+> My approach was just pretty simple "int is big enough for the times" 
+> (2000+ seconds when using usec as time units felt like more than enough 
+> for light sensors) and "gains are always positive".
+> 
+> I have not tested the negative gains at all - but I agree this should've 
+> been documented. Currently there is no gts-helper users who need 
+> negative gain (or large times for that matter) - so I was not handling 
+> them.
+> 
+> I'll try to check what it would mean code-wise if we converted times to 
+> unsigned. Negative times make no sense but allowing negative error 
+> values is a simple way to go.
+> 
+> As for the negative gains - I have no problem of someone adding a 
+> support for those if needed, but I don't currently see much point in 
+> investing time in that...
+> 
+>> Whilst they happen I'm not that bothered
+>> if that subtlety becomes a device driver problem when calling this.  
+>> I'm not
+>> sure I've seen a sensor that does both positive and negative gains for 
+>> a single
+>> channel.
+> 
+> I agree. If driver needs negative gains, then the driver needs to deal 
+> with it. I have no objections if driver authors want to improve these 
+> helpers by adding support for negative gains, but if they don't, then 
+> they have the exactly same problem they would have without these helpers :)
 
-Hello Linus Walleij,
+Back at this. I started reworking things to use unsigned times / gains 
+but I am not really happy about how it starts to look like. Using the 
+int values but reserving negative values to denote errors keeps things 
+cleaner. Also, I don't think we need the extra bit for extending the 
+range of supported values - It's hard for me to think we would really 
+need gains or times exceeding the maximum signed int. I think negative 
+gains are actually more likely so keeping int as type may help one who 
+wants to add support for negative gains.
 
-This is a semi-automatic email about new static checker warnings.
+(Although, I assume the integration time multiplying logic with negative 
+gains would not work in a same way as with positive gains - so 
+supporting negative gains would probably require more than that, or work 
+only as a dummy selector <=> gain converter without the time tables).
 
-The patch 63c3ecd946d4: "iio: adc: add a driver for Qualcomm PM8xxx
-HK/XOADC" from Apr 4, 2017, leads to the following Smatch complaint:
+So, the v5 will likely still use int as type for times and gain but also 
+have a check in initialization enforcing this. I will also document this 
+restriction in the gain/time struct and init function documentation.
 
-    drivers/iio/adc/qcom-pm8xxx-xoadc.c:769 pm8xxx_xoadc_parse_channel()
-    error: we previously assumed 'hwchan' could be null (see line 761)
+I don't think the v5 is final version, especially because it will be the 
+first version looping in the Kunit people. So we can keep iterating this 
+for v6 if you still feel using ints is unacceptable :)
 
-drivers/iio/adc/qcom-pm8xxx-xoadc.c
-   760		hwchan = &hw_channels[0];
+Yours,
+	-- Matti
 
-Here the hw_channels is variant->channels so it potentially is NULL
-(maybe?  I don't know the context very well).
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-   761		while (hwchan && hwchan->datasheet_name) {
-                       ^^^^^^
-Check for NULL.
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-   762			if (hwchan->pre_scale_mux == pre_scale_mux &&
-   763			    hwchan->amux_channel == amux_channel)
-   764				break;
-   765			hwchan++;
-   766			chid++;
-   767		}
-   768		/* The sentinel does not have a name assigned */
-   769		if (!hwchan->datasheet_name) {
-                     ^^^^^^^^^^^^^^^^^^^^^^
-Unchecked dereference.
 
-   770			dev_err(dev, "could not locate channel %02x/%02x\n",
-   771				pre_scale_mux, amux_channel);
-
-regards,
-dan carpenter

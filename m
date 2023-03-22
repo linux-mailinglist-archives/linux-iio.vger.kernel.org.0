@@ -2,65 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 567BD6C45AC
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 10:07:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C1AE6C45B1
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 10:07:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbjCVJHe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Mar 2023 05:07:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56422 "EHLO
+        id S229810AbjCVJHt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Mar 2023 05:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbjCVJHd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 05:07:33 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062AC5B5C9;
-        Wed, 22 Mar 2023 02:07:08 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id g18so18148364ljl.3;
-        Wed, 22 Mar 2023 02:07:07 -0700 (PDT)
+        with ESMTP id S230213AbjCVJHo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 05:07:44 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3185CC12;
+        Wed, 22 Mar 2023 02:07:25 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id y15so22414466lfa.7;
+        Wed, 22 Mar 2023 02:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679476025;
+        d=gmail.com; s=20210112; t=1679476043;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HEDpcdDLW0LDG0Tfzka5HyLbnqjDAKHt0KaDMz2lmR8=;
-        b=jS+0a5RCVHbIfvT0TAS1obR56wZXaj1bixx/od6GE2GgcavbKCUKdVZq0LKaOKnsBo
-         Z++fYCS9GsWx9a6D2lD+HPFy4dnqVvbYhQcVO1sEVVQ8Qc4LzHNQsMv+ECiH125eL5sG
-         5+0tBp3O3oTgzczB5IAZXVCFgifbJnQHuu5ut2Oht8dQCk3h2sbe8DHN3fCq9/uuQqw/
-         RMo4RkQ7+FK3XpSQOd10+7YJw6CrMiFBsIfE6WKc3FWRvUja9TVKM6Uhd62GmlMb3hD9
-         RtDf3c6/ZvNtGMiD8p+0ikFM08fM9qxvfHRg97kuBYnNiVOd7Msbnd42hhJV1ckotmhX
-         4uBg==
+        bh=WXdyQFGJMKH7LF/uzYPxb5LGja400NKaxr+OlaN6Dg4=;
+        b=hTBZ7wNeGVI1xLa4EzEU8uJCOXRUGDXkwoiFlv/NPn+/saKrBvjrwsX6oBzK2RhBXP
+         pXOnzmoyUr9j9cYRePQZqsKoz79aWGCYSMzf7+2rSbdPMdjogAmHvkvlblahTrjeH8Di
+         aEnikg4jVOy+z766aXFaX8tBPPHquc13ziqCOhWEhUhwMVn8fncIL81PXHd8lrwbo4oK
+         UibAYy+8o+TDUGYsCZIGXmmre/eCXpKNzhXyYMaR8zSzjX//vIb+XRRGxQQ24K7bsObT
+         2fQaspPsquy3abxQyEXj/0YpYx0XAHoKfU1KOAGOoNTmrUdg5bmbaaC9LdWzRcsmEsf+
+         j15A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679476025;
+        d=1e100.net; s=20210112; t=1679476043;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HEDpcdDLW0LDG0Tfzka5HyLbnqjDAKHt0KaDMz2lmR8=;
-        b=OC24s291unuI3jqZjp63+EDtXv7FRJ/IZe80npWjQJt4MzR2dan4q3GG/+3Y+EebiE
-         hZ19GSrCj4bKK0ucGbgGyKZnq2ZsSN+B5yPet1DsAnTQ7j9cFNvkhMvRu/rH1+Pb22W7
-         bzl1+FNOXwt95e6JqMtyPfS3K2gwYemUd9vWt3gof+WAh3mQKBn2PK8nqrUBBKIzkgYX
-         rW9kEhA19YvvkRGmtHhpGSsf0uE8G4rueJXCz2Q5GtRWVe4cFLarY5d5aBQEj1aBHzdW
-         XqyuSkp9W0cFXDVMQQB3Yil5pRBo5l+Pb0yxT83RPkqlEreOhl2AowXsqLYFfqbmH2gV
-         FMzw==
-X-Gm-Message-State: AO0yUKUZXsS1CX70k4XlZm5sXtr2eQrHH5d8AHBx7auMGIuvLUqcoJPc
-        2ZANQDkiv3BU+YIl+SmSjOnw9maK69g=
-X-Google-Smtp-Source: AK7set/wuIDV24McvrEvh4qfbbqwbKt9kAaEhy3NfeLrupQRioVmx6c4IN8n8IbMbtFhGXFUh28B7A==
-X-Received: by 2002:a05:651c:210:b0:295:b0c4:845e with SMTP id y16-20020a05651c021000b00295b0c4845emr1940329ljn.39.1679476025165;
-        Wed, 22 Mar 2023 02:07:05 -0700 (PDT)
+        bh=WXdyQFGJMKH7LF/uzYPxb5LGja400NKaxr+OlaN6Dg4=;
+        b=R0A/U6J9Ncf02MGTwIP7P7rSBRsyXmUdjbVol4mt5+Df9crorvaFZ2kBl0ovc5h1GP
+         pebWIHmhZLRjkjvtMsVQgKzvc0tHiV8px6T8EYGb00BjBN+FW2kd9WZ+sjEv6NkhW5JW
+         4GRjXeXa7cG7H9WSB/X9aLSQOdEF7jAS4I9I18622Z2dH+AbGWbFgNfsSkDK4TSSrCX+
+         yy7OrX6ypAM6PBeaYeNwJpyHk4WiZDeRK8jhtqYZ2+/TttobMubZD6ek9I8iM0nXnq+v
+         3Fv/E73bDzr66Q3v8eR7U74VqVZrde6ZSSsQtawDfTxyvVzd//rnESZcV/asMVmWHDbq
+         0Y/A==
+X-Gm-Message-State: AO0yUKVes9RlxJYSqOE6eECJMwXXu3iwXgABMDwPYEaquspYEXBwL4Qz
+        8QGzhOYClZW0hcmpylTddn4=
+X-Google-Smtp-Source: AK7set+mUpMww1UQE7LwlSBo9dl3dc7XmR5BY0yt1wnI5b7WMKYvsDPoH9AX0e16WkKLYMTQxI8z8Q==
+X-Received: by 2002:ac2:522c:0:b0:4ca:98ec:7d9a with SMTP id i12-20020ac2522c000000b004ca98ec7d9amr1729403lfl.15.1679476042998;
+        Wed, 22 Mar 2023 02:07:22 -0700 (PDT)
 Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id a23-20020a2e8317000000b0029588e503ebsm2549270ljh.7.2023.03.22.02.07.04
+        by smtp.gmail.com with ESMTPSA id d12-20020ac241cc000000b004cc7026d95asm2529242lfi.259.2023.03.22.02.07.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 02:07:04 -0700 (PDT)
-Date:   Wed, 22 Mar 2023 11:06:59 +0200
+        Wed, 22 Mar 2023 02:07:22 -0700 (PDT)
+Date:   Wed, 22 Mar 2023 11:07:18 +0200
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH v5 4/8] iio: light: Add gain-time-scale helpers
-Message-ID: <8f23eb9fe0cc42862d0328565b213c73b066a688.1679474247.git.mazziesaccount@gmail.com>
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Liam Beguin <liambeguin@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Stephen Boyd <sboyd@kernel.org>,
+        Maxime Ripard <maxime@cerno.tech>
+Subject: [PATCH v5 5/8] iio: test: test gain-time-scale helpers
+Message-ID: <3f33fc551c0698b4cddb0d39911dddf7599c6317.1679474247.git.mazziesaccount@gmail.com>
 References: <cover.1679474247.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ybdhuABL+D1Qf9a3"
+        protocol="application/pgp-signature"; boundary="kBHIsKE5d46xWpYs"
 Content-Disposition: inline
 In-Reply-To: <cover.1679474247.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -74,7 +80,7 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---ybdhuABL+D1Qf9a3
+--kBHIsKE5d46xWpYs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -97,1446 +103,626 @@ the driver can reduce the HW-gain to half.
 
 The theory of the computations of gain-time-scale is simple. However,
 some people (undersigned) got that implemented wrong for more than once.
+Hence some gain-time-scale helpers were introduced.
 
-Add some gain-time-scale helpers in order to not dublicate errors in all
-drivers needing these computations.
+Add some simple tests to verify the most hairy functions.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
-Currently it is only BU27034 using these in this series. I am however worki=
-ng
-with drivers for RGB sensors BU27008 and BU27010 which have similar
-[gain - integration time - scale] - relation. I hope sending those
-follows soon after the BU27034 is done.
-
 Changes:
 v4 =3D> v5:
-- drop DEFAULT_SYMBOL_NAMESPACE again
-- spellcheck
-- always build availability tables
-- combine table-build and gts-init. Drop no longer needed interfaces
-- check for invalid values at init
-- document limitations of gain, time, selector and multiplier values
-- document all exported functions
-- move and inline valid gain / valid time and related functions to header.
-  NOTE: As a side-effect this makes the internal iteration functions
-  public as well.
-- drop unlikely() from "cold path"
-- add iio_gts_find_new_gain_by_old_gain_time()
+- remove empty lines from Kconfig
+- adapt to drop of the non devm iio_init
+- test also init with couple of invalid tables
 
 v3 =3D> v4:
-- doc styling
-- use memset to zero the helper struct at init
-- drop unnecessary min calculation at iio_find_closest_gain_low()
-- use namespace to all exports
-- many minor stylings
-- make available outside iio/light (move code to drivers/iio and move the
-  header under include
-- rename to look like other files under drivers/iio (s/iio/industrialio)
-- drop unused functions
-- don't export only internally used functions and make them static
-  Note, I decided to keep iio_gts_total_gain_to_scale() exported as it is
-  currently needed by the tests outside the helpers.
+- use dummy device to test devm interfaces
+- adapt to the new header location
+- drop tests for dropped interfaces
 
-v2 =3D> v3: (mostly fixes based on review by Andy)
-- Fix typos
-- Styling fixes
-- Use namespace for exported symbols
-- Protect allocs against argument overflow
-- Fix include protection name
-- add types.h inclusion and struct device forward declaration
+v2 =3D> v3:
+- Use namespace for iio-gts-helpers
 
 RFCv1 =3D> v2:
-- fix include guardian
-- Improve kernel doc for iio_init_iio_gts.
-- Add iio_gts_scale_to_total_gain
-- Add iio_gts_total_gain_to_scale
-- Fix review comments from Jonathan
-  - add documentation to few functions
-  - replace 0xffffffffffffffffLLU by U64_MAX
-  - some styling fixes
-  - drop unnecessary NULL checks
-  - order function arguments by  in / out purpose
-  - drop GAIN_SCALE_ITIME_MS()
-- Add helpers for available scales and times
-- Rename to iio-gts-helpers
+- add tests for available scales/times helpers
+- adapt to renamed iio-gts-helpers.h header
 ---
- drivers/iio/Kconfig                   |    3 +
- drivers/iio/Makefile                  |    1 +
- drivers/iio/industrialio-gts-helper.c | 1064 +++++++++++++++++++++++++
- include/linux/iio/iio-gts-helper.h    |  206 +++++
- 4 files changed, 1274 insertions(+)
- create mode 100644 drivers/iio/industrialio-gts-helper.c
- create mode 100644 include/linux/iio/iio-gts-helper.h
+ drivers/iio/test/Kconfig        |  14 +
+ drivers/iio/test/Makefile       |   1 +
+ drivers/iio/test/iio-test-gts.c | 542 ++++++++++++++++++++++++++++++++
+ 3 files changed, 557 insertions(+)
+ create mode 100644 drivers/iio/test/iio-test-gts.c
 
-diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-index b190846c3dc2..52eb46ef84c1 100644
---- a/drivers/iio/Kconfig
-+++ b/drivers/iio/Kconfig
-@@ -30,6 +30,9 @@ config IIO_CONFIGFS
- 	  (e.g. software triggers). For more info see
- 	  Documentation/iio/iio_configfs.rst.
+diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
+index 0b6e4e278a2f..33cca49c8058 100644
+--- a/drivers/iio/test/Kconfig
++++ b/drivers/iio/test/Kconfig
+@@ -4,6 +4,20 @@
+ #
 =20
-+config IIO_GTS_HELPER
-+	tristate
+ # Keep in alphabetical order
++config IIO_GTS_KUNIT_TEST
++	tristate "Test IIO formatting functions" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	select IIO_GTS_HELPER
++	select TEST_KUNIT_DEVICE_HELPERS
++	default KUNIT_ALL_TESTS
++	help
++	  build unit tests for the IIO light sensor gain-time-scale helpers.
 +
- config IIO_TRIGGER
- 	bool "Enable triggered sampling support"
- 	help
-diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-index 3be08cdadd7e..9622347a1c1b 100644
---- a/drivers/iio/Makefile
-+++ b/drivers/iio/Makefile
-@@ -9,6 +9,7 @@ industrialio-$(CONFIG_IIO_BUFFER) +=3D industrialio-buffer.o
- industrialio-$(CONFIG_IIO_TRIGGER) +=3D industrialio-trigger.o
-=20
- obj-$(CONFIG_IIO_CONFIGFS) +=3D industrialio-configfs.o
-+obj-$(CONFIG_IIO_GTS_HELPER) +=3D industrialio-gts-helper.o
- obj-$(CONFIG_IIO_SW_DEVICE) +=3D industrialio-sw-device.o
- obj-$(CONFIG_IIO_SW_TRIGGER) +=3D industrialio-sw-trigger.o
- obj-$(CONFIG_IIO_TRIGGERED_EVENT) +=3D industrialio-triggered-event.o
-diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
-io-gts-helper.c
++	  For more information on KUnit and unit tests in general, please refer
++	  to the KUnit documentation in Documentation/dev-tools/kunit/.
++
++	  If unsure, say N. Keep in alphabetical order
++
+ config IIO_RESCALE_KUNIT_TEST
+ 	tristate "Test IIO rescale conversion functions" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && IIO_RESCALE
+diff --git a/drivers/iio/test/Makefile b/drivers/iio/test/Makefile
+index d76eaf36da82..e9a4cf1ff57f 100644
+--- a/drivers/iio/test/Makefile
++++ b/drivers/iio/test/Makefile
+@@ -6,4 +6,5 @@
+ # Keep in alphabetical order
+ obj-$(CONFIG_IIO_RESCALE_KUNIT_TEST) +=3D iio-test-rescale.o
+ obj-$(CONFIG_IIO_FORMAT_KUNIT_TEST) +=3D iio-test-format.o
++obj-$(CONFIG_IIO_GTS_KUNIT_TEST) +=3D iio-test-gts.o
+ CFLAGS_iio-test-format.o +=3D $(DISABLE_STRUCTLEAK_PLUGIN)
+diff --git a/drivers/iio/test/iio-test-gts.c b/drivers/iio/test/iio-test-gt=
+s.c
 new file mode 100644
-index 000000000000..39cb437ff581
+index 000000000000..fb806a79a08f
 --- /dev/null
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -0,0 +1,1064 @@
++++ b/drivers/iio/test/iio-test-gts.c
+@@ -0,0 +1,542 @@
 +// SPDX-License-Identifier: GPL-2.0-only
-+/* gain-time-scale conversion helpers for IIO light sensors
++/* Unit tests for IIO light sensor gain-time-scale helpers
 + *
 + * Copyright (c) 2023 Matti Vaittinen <mazziesaccount@gmail.com>
 + */
 +
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/export.h>
-+#include <linux/minmax.h>
-+#include <linux/module.h>
-+#include <linux/overflow.h>
-+#include <linux/slab.h>
-+#include <linux/sort.h>
-+#include <linux/types.h>
-+#include <linux/units.h>
-+
++#include <kunit/platform_device.h>
++#include <kunit/test.h>
 +#include <linux/iio/iio-gts-helper.h>
 +#include <linux/iio/types.h>
 +
-+/**
-+ * iio_gts_get_gain - Convert scale to total gain
++/*
++ * Please, read the "rant" from the top of the lib/test_linear_ranges.c if
++ * you see a line of helper code which is not being tested.
 + *
-+ * Internal helper for converting scale to total gain.
++ * Then, please look at the line which is not being tested. Is this line
++ * somehow unusually complex? If answer is "no", then chances are that the
++ * "development inertia" caused by adding a test exceeds the benefits.
 + *
-+ * @max:	Maximum linearized scale. As an example, when scale is created
-+ *		in magnitude of NANOs and max scale is 64.1 - The linearized
-+ *		scale is 64 100 000 000.
-+ * @scale:	Linearized scale to compute the gain for.
-+ *
-+ * Return:	(floored) gain corresponding to the scale. -EINVAL if scale
-+ *		is invalid.
++ * If yes, then adding a test is probably a good idea but please stop for a
++ * moment and consider the effort of changing all the tests when code gets
++ * refactored. Eventually it neeeds to be.
 + */
-+static int iio_gts_get_gain(const u64 max, const u64 scale)
-+{
-+	u64 full =3D max;
-+	int tmp =3D 1;
 +
-+	if (scale > full || !scale)
++#define TEST_TSEL_50		1
++#define TEST_TSEL_X_MIN		TEST_TSEL_50
++#define TEST_TSEL_100		0
++#define TEST_TSEL_200		2
++#define TEST_TSEL_400		4
++#define TEST_TSEL_X_MAX		TEST_TSEL_400
++
++#define TEST_GSEL_1		0x00
++#define TEST_GSEL_X_MIN		TEST_GSEL_1
++#define TEST_GSEL_4		0x08
++#define TEST_GSEL_16		0x0a
++#define TEST_GSEL_32		0x0b
++#define TEST_GSEL_64		0x0c
++#define TEST_GSEL_256		0x18
++#define TEST_GSEL_512		0x19
++#define TEST_GSEL_1024		0x1a
++#define TEST_GSEL_2048		0x1b
++#define TEST_GSEL_4096		0x1c
++#define TEST_GSEL_X_MAX		TEST_GSEL_4096
++
++#define TEST_SCALE_1X		64
++#define TEST_SCALE_MIN_X	TEST_SCALE_1X
++#define TEST_SCALE_2X		32
++#define TEST_SCALE_4X		16
++#define TEST_SCALE_8X		8
++#define TEST_SCALE_16X		4
++#define TEST_SCALE_32X		2
++#define TEST_SCALE_64X		1
++
++#define TEST_SCALE_NANO_128X	500000000
++#define TEST_SCALE_NANO_256X	250000000
++#define TEST_SCALE_NANO_512X	125000000
++#define TEST_SCALE_NANO_1024X	62500000
++#define TEST_SCALE_NANO_2048X	31250000
++#define TEST_SCALE_NANO_4096X	15625000
++#define TEST_SCALE_NANO_4096X2	7812500
++#define TEST_SCALE_NANO_4096X4	3906250
++#define TEST_SCALE_NANO_4096X8	1953125
++
++#define TEST_SCALE_NANO_MAX_X TEST_SCALE_NANO_4096X8
++
++static const struct iio_gain_sel_pair gts_test_gains[] =3D {
++	GAIN_SCALE_GAIN(1, TEST_GSEL_1),
++	GAIN_SCALE_GAIN(4, TEST_GSEL_4),
++	GAIN_SCALE_GAIN(16, TEST_GSEL_16),
++	GAIN_SCALE_GAIN(32, TEST_GSEL_32),
++	GAIN_SCALE_GAIN(64, TEST_GSEL_64),
++	GAIN_SCALE_GAIN(256, TEST_GSEL_256),
++	GAIN_SCALE_GAIN(512, TEST_GSEL_512),
++	GAIN_SCALE_GAIN(1024, TEST_GSEL_1024),
++	GAIN_SCALE_GAIN(2048, TEST_GSEL_2048),
++	GAIN_SCALE_GAIN(4096, TEST_GSEL_4096),
++#define HWGAIN_MAX 4096
++};
++
++static const struct iio_itime_sel_mul gts_test_itimes[] =3D {
++	GAIN_SCALE_ITIME_US(400 * 1000, TEST_TSEL_400, 8),
++	GAIN_SCALE_ITIME_US(200 * 1000, TEST_TSEL_200, 4),
++	GAIN_SCALE_ITIME_US(100 * 1000, TEST_TSEL_100, 2),
++	GAIN_SCALE_ITIME_US(50 * 1000, TEST_TSEL_50, 1),
++#define TIMEGAIN_MAX 8
++};
++#define TOTAL_GAIN_MAX	(HWGAIN_MAX * TIMEGAIN_MAX)
++
++struct gts_test {
++	struct kunit *test;
++	struct device *dev;
++};
++
++static int __test_init_iio_gain_scale(struct kunit *test, struct gts_test =
+*gt,
++			struct iio_gts *gts, int max_scale_int, int max_scale_nano,
++			const struct iio_gain_sel_pair *g_table, int num_g,
++			const struct iio_itime_sel_mul *i_table, int num_i)
++{
++	int ret;
++
++	gt->test =3D test;
++	gt->dev =3D test_kunit_helper_alloc_device(test);
++	KUNIT_EXPECT_NOT_ERR_OR_NULL(test, gt->dev);
++	if (!gt->dev)
 +		return -EINVAL;
 +
-+	if (U64_MAX - full < scale) {
-+		/* Risk of overflow */
-+		if (full - scale < scale)
-+			return 1;
++	ret =3D devm_iio_init_iio_gts(gt->dev, max_scale_int, max_scale_nano,
++				    g_table, num_g, i_table, num_i, gts);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	if (ret)
++		test_kunit_helper_free_device(gt->test, gt->dev);
 +
-+		full -=3D scale;
-+		tmp++;
-+	}
++	return ret;
 +
-+	while (full > scale * (u64)tmp)
-+		tmp++;
-+
-+	return tmp;
 +}
 +
-+/**
-+ * gain_get_scale_fraction - get the gain or time based on scale and known=
- one
-+ *
-+ * @max:	Maximum linearized scale. As an example, when scale is created
-+ *		in magnitude of NANOs and max scale is 64.1 - The linearized
-+ *		scale is 64 100 000 000.
-+ * @scale:	Linearized scale to compute the gain/time for.
-+ * @known:	Either integration time or gain depending on which one is known
-+ * @unknown:	Pointer to variable where the computed gain/time is stored
-+ *
-+ * Internal helper for computing unknown fraction of total gain.
-+ * Compute either gain or time based on scale and either the gain or time
-+ * depending on which one is known.
-+ *
-+ * Return:	0 on success.
-+ */
-+static int gain_get_scale_fraction(const u64 max, u64 scale, int known,
-+				   int *unknown)
++static void test_free_gts(struct gts_test *gt)
 +{
-+	int tot_gain;
-+
-+	tot_gain =3D iio_gts_get_gain(max, scale);
-+	if (tot_gain < 0)
-+		return tot_gain;
-+
-+	*unknown =3D tot_gain / known;
-+
-+	/* We require total gain to be exact multiple of known * unknown */
-+	if (!*unknown || *unknown * known !=3D tot_gain)
-+		return -EINVAL;
-+
-+	return 0;
++	test_kunit_helper_free_device(gt->test, gt->dev);
 +}
 +
-+static int iio_gts_delinearize(u64 lin_scale, unsigned long scaler,
-+			       int *scale_whole, int *scale_nano)
++static int test_init_iio_gain_scale(struct kunit *test, struct gts_test *g=
+t,
++				    struct iio_gts *gts, int max_scale_int,
++				    int max_scale_nano)
 +{
-+	int frac;
-+
-+	if (scaler > NANO)
-+		return -EOVERFLOW;
-+
-+	if (!scaler)
-+		return -EINVAL;
-+
-+	frac =3D do_div(lin_scale, scaler);
-+
-+	*scale_whole =3D lin_scale;
-+	*scale_nano =3D frac * (NANO / scaler);
-+
-+	return 0;
++	return __test_init_iio_gain_scale(test, gt, gts, max_scale_int,
++				max_scale_nano, gts_test_gains,
++				ARRAY_SIZE(gts_test_gains), gts_test_itimes,
++				ARRAY_SIZE(gts_test_itimes));
 +}
 +
-+static int iio_gts_linearize(int scale_whole, int scale_nano,
-+			     unsigned long scaler, u64 *lin_scale)
++static void test_init_iio_gts_invalid(struct kunit *test)
 +{
++	struct iio_gts gts;
++	struct device *dev;
++	int ret;
++	const struct iio_itime_sel_mul itimes_neg[] =3D {
++		GAIN_SCALE_ITIME_US(-10, TEST_TSEL_400, 8),
++		GAIN_SCALE_ITIME_US(200 * 1000, TEST_TSEL_200, 4),
++	};
++	const struct iio_gain_sel_pair gains_neg[] =3D {
++		GAIN_SCALE_GAIN(1, TEST_GSEL_1),
++		GAIN_SCALE_GAIN(2, TEST_GSEL_4),
++		GAIN_SCALE_GAIN(-2, TEST_GSEL_16),
++	};
++	/* 55555 * 38656 =3D 2147534080 =3D> overflows 32bit int */
++	const struct iio_itime_sel_mul itimes_overflow[] =3D {
++		GAIN_SCALE_ITIME_US(400 * 1000, TEST_TSEL_400, 55555),
++		GAIN_SCALE_ITIME_US(200 * 1000, TEST_TSEL_200, 4),
++	};
++	const struct iio_gain_sel_pair gains_overflow[] =3D {
++		GAIN_SCALE_GAIN(1, TEST_GSEL_1),
++		GAIN_SCALE_GAIN(2, TEST_GSEL_4),
++		GAIN_SCALE_GAIN(38656, TEST_GSEL_16),
++	};
++
++	dev =3D test_kunit_helper_alloc_device(test);
++	KUNIT_EXPECT_NOT_ERR_OR_NULL(test, dev);
++	if (!dev)
++		return;
++
++	/* Ok gains, negative time */
++	ret =3D devm_iio_init_iio_gts(dev, TEST_SCALE_1X, 0, gts_test_gains,
++				    ARRAY_SIZE(gts_test_gains), itimes_neg,
++				    ARRAY_SIZE(itimes_neg), &gts);
++	KUNIT_EXPECT_EQ(test, -EINVAL, ret);
++
++	/* Ok times, negative gain */
++	ret =3D devm_iio_init_iio_gts(dev, TEST_SCALE_1X, 0, gains_neg,
++				    ARRAY_SIZE(gains_neg), gts_test_itimes,
++				    ARRAY_SIZE(gts_test_itimes), &gts);
++	KUNIT_EXPECT_EQ(test, -EINVAL, ret);
++
++	/* gain * time overflow int */
++	ret =3D devm_iio_init_iio_gts(dev, TEST_SCALE_1X, 0, gains_overflow,
++				    ARRAY_SIZE(gains_overflow), itimes_overflow,
++				    ARRAY_SIZE(itimes_overflow), &gts);
++	KUNIT_EXPECT_EQ(test, -EOVERFLOW, ret);
++	test_kunit_helper_free_device(test, dev);
++}
++
++static void test_iio_gts_find_gain_for_scale_using_time(struct kunit *test)
++{
++	struct gts_test gt;
++	struct iio_gts gts;
++	int ret, gain_sel;
++
++	ret =3D test_init_iio_gain_scale(test, &gt, &gts, TEST_SCALE_1X, 0);
++	if (ret)
++		return;
++
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_100,
++						TEST_SCALE_8X, 0, &gain_sel);
 +	/*
-+	 * Expect scale to be (mostly) NANO or MICRO. Divide divider instead of
-+	 * multiplication followed by division to avoid overflow.
++	 * Meas time 100 =3D> gain by time 2x
++	 * TEST_SCALE_8X matches total gain 8x
++	 * =3D> required HWGAIN 4x
 +	 */
-+	if (scaler > NANO || !scaler)
-+		return -EINVAL;
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, TEST_GSEL_4, gain_sel);
 +
-+	*lin_scale =3D (u64)scale_whole * (u64)scaler +
-+		     (u64)(scale_nano / (NANO / scaler));
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_200, 0,
++						TEST_SCALE_NANO_256X, &gain_sel);
++	/*
++	 * Meas time 200 =3D> gain by time 4x
++	 * TEST_SCALE_256X matches total gain 256x
++	 * =3D> required HWGAIN 256/4 =3D> 64x
++	 */
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, TEST_GSEL_64, gain_sel);
 +
-+	return 0;
++	/* Min time, Min gain */
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_X_MIN,
++						TEST_SCALE_MIN_X, 0, &gain_sel);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, TEST_GSEL_1, gain_sel);
++
++	/* Max time, Max gain */
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_X_MAX,
++					0, TEST_SCALE_NANO_MAX_X, &gain_sel);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, TEST_GSEL_4096, gain_sel);
++
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_100, 0,
++						TEST_SCALE_NANO_256X, &gain_sel);
++	/*
++	 * Meas time 100 =3D> gain by time 2x
++	 * TEST_SCALE_256X matches total gain 256x
++	 * =3D> required HWGAIN 256/2 =3D> 128x (not in gain-table - unsupported)
++	 */
++	KUNIT_EXPECT_NE(test, 0, ret);
++
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_200, 0,
++						TEST_SCALE_NANO_MAX_X, &gain_sel);
++	/* We can't reach the max gain with integration time smaller than MAX */
++	KUNIT_EXPECT_NE(test, 0, ret);
++
++	ret =3D iio_gts_find_gain_sel_for_scale_using_time(&gts, TEST_TSEL_50, 0,
++						TEST_SCALE_NANO_MAX_X, &gain_sel);
++	/* We can't reach the max gain with integration time smaller than MAX */
++	KUNIT_EXPECT_NE(test, 0, ret);
++	test_free_gts(&gt);
 +}
 +
-+/**
-+ * iio_gts_total_gain_to_scale - convert gain to scale
-+ * @gts:	Gain time scale descriptor
-+ * @total_gain:	the gain to be converted
-+ * @scale_int:	Pointer to integral part of the scale (typically val1)
-+ * @scale_nano:	Pointer to fractional part of the scale (nano or ppb)
-+ *
-+ * Convert the total gain value to scale. NOTE: This does not separate gain
-+ * generated by HW-gain or integration time. It is up to caller to decide =
-what
-+ * part of the total gain is due to integration time and what due to HW-ga=
-in.
-+ *
-+ * Return: 0 on success. Negative errno on failure.
-+ */
-+int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
-+				int *scale_int, int *scale_nano)
++static void test_iio_gts_find_new_gain_sel_by_old_gain_time(struct kunit *=
+test)
 +{
-+	u64 tmp;
++	struct gts_test gt;
++	struct iio_gts gts;
++	int ret, old_gain, new_gain, old_time_sel, new_time_sel;
 +
-+	tmp =3D gts->max_scale;
++	ret =3D test_init_iio_gain_scale(test, &gt, &gts, TEST_SCALE_1X, 0);
++	if (ret)
++		return;
 +
-+	do_div(tmp, total_gain);
++	old_gain =3D 32;
++	old_time_sel =3D TEST_TSEL_200;
++	new_time_sel =3D TEST_TSEL_400;
 +
-+	return iio_gts_delinearize(tmp, NANO, scale_int, scale_nano);
++	ret =3D iio_gts_find_new_gain_sel_by_old_gain_time(&gts, old_gain,
++					old_time_sel, new_time_sel, &new_gain);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	/*
++	 * Doubling the integration time doubles the total gain - so old
++	 * (hw)gain must be divided by two to compensate. =3D> 32 / 2 =3D> 16
++	 */
++	KUNIT_EXPECT_EQ(test, 16, new_gain);
++
++	old_gain =3D 4;
++	old_time_sel =3D TEST_TSEL_50;
++	new_time_sel =3D TEST_TSEL_200;
++	ret =3D iio_gts_find_new_gain_sel_by_old_gain_time(&gts, old_gain,
++					old_time_sel, new_time_sel, &new_gain);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	/*
++	 * gain by time 1x =3D> 4x - (hw)gain 4x =3D> 1x
++	 */
++	KUNIT_EXPECT_EQ(test, 1, new_gain);
++
++	old_gain =3D 512;
++	old_time_sel =3D TEST_TSEL_400;
++	new_time_sel =3D TEST_TSEL_50;
++	ret =3D iio_gts_find_new_gain_sel_by_old_gain_time(&gts, old_gain,
++					old_time_sel, new_time_sel, &new_gain);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	/*
++	 * gain by time 8x =3D> 1x - (hw)gain 512x =3D> 4096x)
++	 */
++	KUNIT_EXPECT_EQ(test, 4096, new_gain);
++
++	/* Unsupported gain 2x */
++	old_gain =3D 4;
++	old_time_sel =3D TEST_TSEL_200;
++	new_time_sel =3D TEST_TSEL_400;
++	ret =3D iio_gts_find_new_gain_sel_by_old_gain_time(&gts, old_gain,
++					old_time_sel, new_time_sel, &new_gain);
++	KUNIT_EXPECT_NE(test, 0, ret);
++
++	/* Too small gain */
++	old_gain =3D 4;
++	old_time_sel =3D TEST_TSEL_50;
++	new_time_sel =3D TEST_TSEL_400;
++	ret =3D iio_gts_find_new_gain_sel_by_old_gain_time(&gts, old_gain,
++					old_time_sel, new_time_sel, &new_gain);
++	KUNIT_EXPECT_NE(test, 0, ret);
++
++	/* Too big gain */
++	old_gain =3D 1024;
++	old_time_sel =3D TEST_TSEL_400;
++	new_time_sel =3D TEST_TSEL_50;
++	ret =3D iio_gts_find_new_gain_sel_by_old_gain_time(&gts, old_gain,
++					old_time_sel, new_time_sel, &new_gain);
++	KUNIT_EXPECT_NE(test, 0, ret);
++
++	test_free_gts(&gt);
 +}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);
 +
-+/**
-+ * iio_gts_purge_avail_scale_table - free-up the available scale tables
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Free the space reserved by iio_gts_build_avail_scale_table(). Please no=
-te
-+ * that the helpers for getting available scales like the
-+ * iio_gts_all_avail_scales() are not usable after this call. Thus, this s=
-hould
-+ * be only called after these helpers can no longer be called (Eg. after
-+ * the iio-device has been deregistered).
-+ */
-+static void iio_gts_purge_avail_scale_table(struct iio_gts *gts)
++static void test_iio_find_closest_gain_low(struct kunit *test)
 +{
++	struct gts_test gt;
++	struct iio_gts gts;
++	bool in_range;
++	int ret;
++
++	const struct iio_gain_sel_pair gts_test_gains_gain_low[] =3D {
++		GAIN_SCALE_GAIN(4, TEST_GSEL_4),
++		GAIN_SCALE_GAIN(16, TEST_GSEL_16),
++		GAIN_SCALE_GAIN(32, TEST_GSEL_32),
++	};
++
++	ret =3D test_init_iio_gain_scale(test, &gt, &gts, TEST_SCALE_1X, 0);
++	if (ret)
++		return;
++
++	ret =3D iio_find_closest_gain_low(&gts, 2, &in_range);
++	KUNIT_EXPECT_EQ(test, 1, ret);
++	KUNIT_EXPECT_EQ(test, true, in_range);
++
++	ret =3D iio_find_closest_gain_low(&gts, 1, &in_range);
++	KUNIT_EXPECT_EQ(test, 1, ret);
++	KUNIT_EXPECT_EQ(test, true, in_range);
++
++	ret =3D iio_find_closest_gain_low(&gts, 4095, &in_range);
++	KUNIT_EXPECT_EQ(test, 2048, ret);
++	KUNIT_EXPECT_EQ(test, true, in_range);
++
++	ret =3D iio_find_closest_gain_low(&gts, 4097, &in_range);
++	KUNIT_EXPECT_EQ(test, 4096, ret);
++	KUNIT_EXPECT_EQ(test, false, in_range);
++
++	test_free_gts(&gt);
++
++	ret =3D __test_init_iio_gain_scale(test, &gt, &gts, TEST_SCALE_1X, 0,
++				gts_test_gains_gain_low,
++				ARRAY_SIZE(gts_test_gains_gain_low),
++				gts_test_itimes, ARRAY_SIZE(gts_test_itimes));
++
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	if (ret)
++		return;
++
++	ret =3D iio_find_closest_gain_low(&gts, 3, &in_range);
++	KUNIT_EXPECT_EQ(test, -EINVAL, ret);
++	KUNIT_EXPECT_EQ(test, false, in_range);
++
++	test_free_gts(&gt);
++}
++
++static void test_iio_gts_total_gain_to_scale(struct kunit *test)
++{
++	struct gts_test gt;
++	struct iio_gts gts;
++	int ret, scale_int, scale_nano;
++
++	ret =3D test_init_iio_gain_scale(test, &gt, &gts, TEST_SCALE_1X, 0);
++	if (ret)
++		return;
++
++	ret =3D iio_gts_total_gain_to_scale(&gts, 1, &scale_int, &scale_nano);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, TEST_SCALE_1X, scale_int);
++	KUNIT_EXPECT_EQ(test, 0, scale_nano);
++
++	ret =3D iio_gts_total_gain_to_scale(&gts, 1, &scale_int, &scale_nano);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, TEST_SCALE_1X, scale_int);
++	KUNIT_EXPECT_EQ(test, 0, scale_nano);
++
++	ret =3D iio_gts_total_gain_to_scale(&gts, 4096 * 8, &scale_int,
++					  &scale_nano);
++	KUNIT_EXPECT_EQ(test, 0, ret);
++	KUNIT_EXPECT_EQ(test, 0, scale_int);
++	KUNIT_EXPECT_EQ(test, TEST_SCALE_NANO_4096X8, scale_nano);
++
++	test_free_gts(&gt);
++}
++
++static void test_iio_gts_chk_times(struct kunit *test, const int *vals)
++{
++	static const int expected[] =3D {50000, 100000, 200000, 400000};
 +	int i;
 +
-+	if (gts->per_time_avail_scale_tables) {
-+		for (i =3D 0; i < gts->num_itime; i++)
-+			kfree(gts->per_time_avail_scale_tables[i]);
-+
-+		kfree(gts->per_time_avail_scale_tables);
-+		gts->per_time_avail_scale_tables =3D NULL;
-+	}
-+
-+	kfree(gts->avail_all_scales_table);
-+	gts->avail_all_scales_table =3D NULL;
-+
-+	gts->num_avail_all_scales =3D 0;
++	for (i =3D 0; i < ARRAY_SIZE(expected); i++)
++		KUNIT_EXPECT_EQ(test, expected[i], vals[i]);
 +}
 +
-+static int iio_gts_gain_cmp(const void *a, const void *b)
++static void test_iio_gts_chk_scales_all(struct kunit *test, struct iio_gts=
+ *gts,
++					const int *vals, int len)
 +{
-+	return *(int *)a - *(int *)b;
-+}
++	static const int gains[] =3D {1, 2, 4, 8, 16, 32, 64, 128, 256, 512,
++				    1024, 2048, 4096, 4096 * 2, 4096 * 4,
++				    4096 * 8};
 +
-+static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **sca=
-les)
-+{
-+	int ret, i, j, new_idx, time_idx;
-+	int *all_gains;
-+	size_t gain_bytes;
++	int expected[ARRAY_SIZE(gains) * 2];
++	int i, ret;
++	int exp_len =3D ARRAY_SIZE(gains) * 2;
 +
-+	for (i =3D 0; i < gts->num_itime; i++) {
-+		/*
-+		 * Sort the tables for nice output and for easier finding of
-+		 * unique values.
-+		 */
-+		sort(gains[i], gts->num_hwgain, sizeof(int), iio_gts_gain_cmp,
-+		     NULL);
++	KUNIT_EXPECT_EQ(test, exp_len, len);
++	if (len !=3D exp_len)
++		return;
 +
-+		/* Convert gains to scales */
-+		for (j =3D 0; j < gts->num_hwgain; j++) {
-+			ret =3D iio_gts_total_gain_to_scale(gts, gains[i][j],
-+							  &scales[i][2 * j],
-+							  &scales[i][2 * j + 1]);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	gain_bytes =3D array_size(gts->num_hwgain, sizeof(int));
-+	all_gains =3D kcalloc(gts->num_itime, gain_bytes, GFP_KERNEL);
-+	if (!all_gains)
-+		return -ENOMEM;
-+
-+	/*
-+	 * We assume all the gains for same integration time were unique.
-+	 * It is likely the first time table had greatest time multiplier as
-+	 * the times are in the order of preference and greater times are
-+	 * usually preferred. Hence we start from the last table which is likely
-+	 * to have the smallest total gains.
-+	 */
-+	time_idx =3D gts->num_itime - 1;
-+	memcpy(all_gains, gains[time_idx], gain_bytes);
-+	new_idx =3D gts->num_hwgain;
-+
-+	while (time_idx--) {
-+		for (j =3D 0; j < gts->num_hwgain; j++) {
-+			int candidate =3D gains[time_idx][j];
-+			int chk;
-+
-+			if (candidate > all_gains[new_idx - 1]) {
-+				all_gains[new_idx] =3D candidate;
-+				new_idx++;
-+
-+				continue;
-+			}
-+			for (chk =3D 0; chk < new_idx; chk++)
-+				if (candidate <=3D all_gains[chk])
-+					break;
-+
-+			if (candidate =3D=3D all_gains[chk])
-+				continue;
-+
-+			memmove(&all_gains[chk + 1], &all_gains[chk],
-+				(new_idx - chk) * sizeof(int));
-+			all_gains[chk] =3D candidate;
-+			new_idx++;
-+		}
-+	}
-+
-+	gts->avail_all_scales_table =3D kcalloc(new_idx, 2 * sizeof(int),
-+					      GFP_KERNEL);
-+	if (!gts->avail_all_scales_table) {
-+		ret =3D -ENOMEM;
-+		goto free_out;
-+	}
-+	gts->num_avail_all_scales =3D new_idx;
-+
-+	for (i =3D 0; i < gts->num_avail_all_scales; i++) {
-+		ret =3D iio_gts_total_gain_to_scale(gts, all_gains[i],
-+					&gts->avail_all_scales_table[i * 2],
-+					&gts->avail_all_scales_table[i * 2 + 1]);
-+
-+		if (ret) {
-+			kfree(gts->avail_all_scales_table);
-+			gts->num_avail_all_scales =3D 0;
-+			goto free_out;
-+		}
-+	}
-+
-+free_out:
-+	kfree(all_gains);
-+
-+	return ret;
-+}
-+
-+/**
-+ * iio_gts_build_avail_scale_table - create tables of available scales
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Build the tables which can represent the available scales based on the
-+ * originally given gain and time tables. When both time and gain tables a=
-re
-+ * given this results:
-+ * 1. A set of tables representing available scales for each supported
-+ *    integration time.
-+ * 2. A single table listing all the unique scales that any combination of
-+ *    supported gains and times can provide.
-+ *
-+ * NOTE: Space allocated for the tables must be freed using
-+ * iio_gts_purge_avail_scale_table() when the tables are no longer needed.
-+ *
-+ * Return: 0 on success.
-+ */
-+static int iio_gts_build_avail_scale_table(struct iio_gts *gts)
-+{
-+	int **per_time_gains, **per_time_scales, i, j, ret =3D -ENOMEM;
-+
-+	per_time_gains =3D kcalloc(gts->num_itime, sizeof(*per_time_gains), GFP_K=
-ERNEL);
-+	if (!per_time_gains)
-+		return ret;
-+
-+	per_time_scales =3D kcalloc(gts->num_itime, sizeof(*per_time_scales), GFP=
-_KERNEL);
-+	if (!per_time_scales)
-+		goto free_gains;
-+
-+	for (i =3D 0; i < gts->num_itime; i++) {
-+		per_time_scales[i] =3D kcalloc(gts->num_hwgain, 2 * sizeof(int),
-+					     GFP_KERNEL);
-+		if (!per_time_scales[i])
-+			goto err_free_out;
-+
-+		per_time_gains[i] =3D kcalloc(gts->num_hwgain, sizeof(int),
-+					    GFP_KERNEL);
-+		if (!per_time_gains[i]) {
-+			kfree(per_time_scales[i]);
-+			goto err_free_out;
-+		}
-+
-+		for (j =3D 0; j < gts->num_hwgain; j++)
-+			per_time_gains[i][j] =3D gts->hwgain_table[j].gain *
-+					       gts->itime_table[i].mul;
-+	}
-+
-+	ret =3D gain_to_scaletables(gts, per_time_gains, per_time_scales);
-+	if (ret)
-+		goto err_free_out;
-+
-+	kfree(per_time_gains);
-+	gts->per_time_avail_scale_tables =3D per_time_scales;
-+
-+	return 0;
-+
-+err_free_out:
-+	for (i--; i; i--) {
-+		kfree(per_time_scales[i]);
-+		kfree(per_time_gains[i]);
-+	}
-+	kfree(per_time_scales);
-+free_gains:
-+	kfree(per_time_gains);
-+
-+	return ret;
-+}
-+
-+/**
-+ * iio_gts_build_avail_time_table - build table of available integration t=
-imes
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Build the table which can represent the available times to be returned
-+ * to users using the read_avail-callback.
-+ *
-+ * NOTE: Space allocated for the tables must be freed using
-+ * iio_gts_purge_avail_time_table() when the tables are no longer needed.
-+ *
-+ * Return: 0 on success.
-+ */
-+static int iio_gts_build_avail_time_table(struct iio_gts *gts)
-+{
-+	int *times, i, j, idx =3D 0;
-+
-+	if (!gts->num_itime)
-+		return 0;
-+
-+	times =3D kcalloc(gts->num_itime, sizeof(int), GFP_KERNEL);
-+	if (!times)
-+		return -ENOMEM;
-+
-+	for (i =3D gts->num_itime - 1; i >=3D 0; i--) {
-+		int new =3D gts->itime_table[i].time_us;
-+
-+		if (times[idx] < new) {
-+			times[idx++] =3D new;
-+			continue;
-+		}
-+
-+		for (j =3D 0; j <=3D idx; j++) {
-+			if (times[j] > new) {
-+				memmove(&times[j + 1], &times[j],
-+					(idx - j) * sizeof(int));
-+				times[j] =3D new;
-+				idx++;
-+			}
-+		}
-+	}
-+	gts->avail_time_tables =3D times;
-+	/*
-+	 * This is just to survive a unlikely corner-case where times in the
-+	 * given time table were not unique. Else we could just trust the
-+	 * gts->num_itime.
-+	 */
-+	gts->num_avail_time_tables =3D idx;
-+
-+	return 0;
-+}
-+
-+/**
-+ * iio_gts_purge_avail_time_table - free-up the available integration time=
- table
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Free the space reserved by iio_gts_build_avail_time_table(). Please note
-+ * that the helpers for getting available integration times like the
-+ * iio_gts_avail_times() are not usable after this call. Thus, this should
-+ * be only called after these helpers can no longer be called (Eg. after
-+ * the iio-device has been deregistered).
-+ */
-+static void iio_gts_purge_avail_time_table(struct iio_gts *gts)
-+{
-+	if (gts->num_avail_time_tables) {
-+		kfree(gts->avail_time_tables);
-+		gts->avail_time_tables =3D NULL;
-+		gts->num_avail_time_tables =3D 0;
-+	}
-+}
-+
-+/**
-+ * iio_gts_build_avail_tables - create tables of available scales and int =
-times
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Build the tables which can represent the available scales and available
-+ * integration times. Availability tables are built based on the originally
-+ * given gain and given time tables.
-+ *
-+ * When both time and gain tables are
-+ * given this results:
-+ * 1. A set of sorted tables representing available scales for each suppor=
-ted
-+ *    integration time.
-+ * 2. A single sorted table listing all the unique scales that any combina=
-tion
-+ *    of supported gains and times can provide.
-+ * 3. A sorted table of supported integration times
-+ *
-+ * After these tables are built one can use the iio_gts_all_avail_scales(),
-+ * iio_gts_avail_scales_for_time() and iio_gts_avail_times() helpers to
-+ * implement the read_avail operations.
-+ *
-+ * NOTE: Space allocated for the tables must be freed using
-+ * iio_gts_purge_avail_tables() when the tables are no longer needed.
-+ *
-+ * Return: 0 on success.
-+ */
-+static int iio_gts_build_avail_tables(struct iio_gts *gts)
-+{
-+	int ret;
-+
-+	ret =3D iio_gts_build_avail_scale_table(gts);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D iio_gts_build_avail_time_table(gts);
-+	if (ret)
-+		iio_gts_purge_avail_scale_table(gts);
-+
-+	return ret;
-+}
-+
-+/**
-+ * iio_gts_purge_avail_tables - free-up the availability tables
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Free the space reserved by iio_gts_build_avail_tables(). Frees both the
-+ * integration time and scale tables.
-+ */
-+static void iio_gts_purge_avail_tables(struct iio_gts *gts)
-+{
-+	iio_gts_purge_avail_time_table(gts);
-+	iio_gts_purge_avail_scale_table(gts);
-+}
-+
-+static void devm_iio_gts_avail_all_drop(void *res)
-+{
-+	iio_gts_purge_avail_tables(res);
-+}
-+
-+/**
-+ * devm_iio_gts_build_avail_tables - manged add availability tables
-+ * @dev:	Pointer to the device whose lifetime tables are bound
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Build the tables which can represent the available scales and available
-+ * integration times. Availability tables are built based on the originally
-+ * given gain and given time tables.
-+ *
-+ * When both time and gain tables are given this results:
-+ * 1. A set of sorted tables representing available scales for each suppor=
-ted
-+ *    integration time.
-+ * 2. A single sorted table listing all the unique scales that any combina=
-tion
-+ *    of supported gains and times can provide.
-+ * 3. A sorted table of supported integration times
-+ *
-+ * After these tables are built one can use the iio_gts_all_avail_scales(),
-+ * iio_gts_avail_scales_for_time() and iio_gts_avail_times() helpers to
-+ * implement the read_avail operations.
-+ *
-+ * The tables are automatically released upon device detach.
-+ *
-+ * Return: 0 on success.
-+ */
-+static int devm_iio_gts_build_avail_tables(struct device *dev,
-+					   struct iio_gts *gts)
-+{
-+	int ret;
-+
-+	ret =3D iio_gts_build_avail_tables(gts);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(dev, devm_iio_gts_avail_all_drop, gts);
-+}
-+
-+static int sanity_check_time(const struct iio_itime_sel_mul *t)
-+{
-+	if (t->sel < 0 || t->time_us < 0 || t->mul <=3D 0)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int sanity_check_gain(const struct iio_gain_sel_pair *g)
-+{
-+	if (g->sel < 0 || g->gain <=3D 0)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int iio_gts_sanity_check(struct iio_gts *gts)
-+{
-+	int g, t, ret;
-+
-+	if (!gts->num_hwgain && !gts->num_itime)
-+		return -EINVAL;
-+
-+	for (t =3D 0; t < gts->num_itime; t++) {
-+		ret =3D sanity_check_time(&gts->itime_table[t]);
++	for (i =3D 0; i < ARRAY_SIZE(gains); i++) {
++		ret =3D iio_gts_total_gain_to_scale(gts, gains[i],
++						  &expected[2 * i],
++						  &expected[2 * i + 1]);
++		KUNIT_EXPECT_EQ(test, 0, ret);
 +		if (ret)
-+			return ret;
++			return;
 +	}
 +
-+	for (g =3D 0; g < gts->num_hwgain; g++) {
-+		ret =3D sanity_check_gain(&gts->hwgain_table[g]);
++	for (i =3D 0; i < ARRAY_SIZE(expected); i++)
++		KUNIT_EXPECT_EQ(test, expected[i], vals[i]);
++}
++
++static void test_iio_gts_chk_scales_t200(struct kunit *test, struct iio_gt=
+s *gts,
++					 const int *vals, int len)
++{
++	/* The gain caused by time 200 is 4x */
++	static const int gains[] =3D {
++		1 * 4,
++		4 * 4,
++		16 * 4,
++		32 * 4,
++		64 * 4,
++		256 * 4,
++		512 * 4,
++		1024 * 4,
++		2048 * 4,
++		4096 * 4
++	};
++	int expected[ARRAY_SIZE(gains) * 2];
++	int i, ret;
++
++	KUNIT_EXPECT_EQ(test, 2 * ARRAY_SIZE(gains), len);
++	if (len < 2 * ARRAY_SIZE(gains))
++		return;
++
++	for (i =3D 0; i < ARRAY_SIZE(gains); i++) {
++		ret =3D iio_gts_total_gain_to_scale(gts, gains[i],
++						  &expected[2 * i],
++						  &expected[2 * i + 1]);
++		KUNIT_EXPECT_EQ(test, 0, ret);
 +		if (ret)
-+			return ret;
++			return;
 +	}
 +
-+	for (g =3D 0; g < gts->num_hwgain; g++) {
-+		for (t =3D 0; t < gts->num_itime; t++) {
-+			int gain, mul, res;
-+
-+			gain =3D gts->hwgain_table[g].gain;
-+			mul =3D gts->itime_table[t].mul;
-+
-+			if (check_mul_overflow(gain, mul, &res))
-+				return -EOVERFLOW;
-+		}
-+	}
-+
-+	return 0;
++	for (i =3D 0; i < ARRAY_SIZE(expected); i++)
++		KUNIT_EXPECT_EQ(test, expected[i], vals[i]);
 +}
 +
-+static int iio_init_iio_gts(int max_scale_int, int max_scale_nano,
-+			const struct iio_gain_sel_pair *gain_tbl, int num_gain,
-+			const struct iio_itime_sel_mul *tim_tbl, int num_times,
-+			struct iio_gts *gts)
++static void test_iio_gts_avail_test(struct kunit *test)
 +{
++	struct gts_test gt;
++	struct iio_gts gts;
 +	int ret;
++	int type, len;
++	const int *vals;
 +
-+	memset(gts, 0, sizeof(*gts));
-+
-+	ret =3D iio_gts_linearize(max_scale_int, max_scale_nano, NANO,
-+				   &gts->max_scale);
++	ret =3D test_init_iio_gain_scale(test, &gt, &gts, TEST_SCALE_1X, 0);
 +	if (ret)
-+		return ret;
++		return;
 +
-+	gts->hwgain_table =3D gain_tbl;
-+	gts->num_hwgain =3D num_gain;
-+	gts->itime_table =3D tim_tbl;
-+	gts->num_itime =3D num_times;
-+
-+	return iio_gts_sanity_check(gts);
-+}
-+
-+/**
-+ * devm_iio_init_iio_gts - Initialize the gain-time-scale helper
-+ * @dev:		Pointer to the device whose lifetime gts resources are
-+ *			bound
-+ * @max_scale_int:	integer part of the maximum scale value
-+ * @max_scale_nano:	fraction part of the maximum scale value
-+ * @gain_tbl:		table describing supported gains
-+ * @num_gain:		number of gains in the gain table
-+ * @tim_tbl:		table describing supported integration times. Provide
-+ *			the integration time table sorted so that the preferred
-+ *			integration time is in the first array index. The search
-+ *			functions like the
-+ *			iio_gts_find_time_and_gain_sel_for_scale() start search
-+ *			from first provided time.
-+ * @num_times:		number of times in the time table
-+ * @gts:		pointer to the helper struct
-+ *
-+ * Initialize the gain-time-scale helper for use. Note, gains, times, sele=
-ctors
-+ * and multipliers must be positive. Negative values are reserved for error
-+ * checking. The total gain (maximum gain * maximum time multiplier) must =
-not
-+ * overflow int. The allocated resources will be released upon device deta=
-ch.
-+ *
-+ * Return: 0 on success.
-+ */
-+int devm_iio_init_iio_gts(struct device *dev, int max_scale_int, int max_s=
-cale_nano,
-+			  const struct iio_gain_sel_pair *gain_tbl, int num_gain,
-+			  const struct iio_itime_sel_mul *tim_tbl, int num_times,
-+			  struct iio_gts *gts)
-+{
-+	int ret;
-+
-+	ret =3D iio_init_iio_gts(max_scale_int, max_scale_nano, gain_tbl,
-+			       num_gain, tim_tbl, num_times, gts);
++	/* test table building for times and iio_gts_avail_times() */
++	ret =3D iio_gts_avail_times(&gts, &vals, &type, &len);
++	KUNIT_EXPECT_EQ(test, IIO_AVAIL_LIST, ret);
 +	if (ret)
-+		return ret;
++		goto drop_testdev;
 +
-+	return devm_iio_gts_build_avail_tables(dev, gts);
-+}
-+EXPORT_SYMBOL_NS_GPL(devm_iio_init_iio_gts, IIO_GTS_HELPER);
++	KUNIT_EXPECT_EQ(test, IIO_VAL_INT, type);
++	KUNIT_EXPECT_EQ(test, 4, len);
++	if (len < 4)
++		goto drop_testdev;
 +
-+/**
-+ * iio_gts_all_avail_scales - helper for listing all available scales
-+ * @gts:	Gain time scale descriptor
-+ * @vals:	Returned array of supported scales
-+ * @type:	Type of returned scale values
-+ * @length:	Amount of returned values in array
-+ *
-+ * Return: a value suitable to be returned from read_avail or a negative e=
-rror.
-+ */
-+int iio_gts_all_avail_scales(struct iio_gts *gts, const int **vals, int *t=
-ype,
-+			     int *length)
-+{
-+	if (!gts->num_avail_all_scales)
-+		return -EINVAL;
++	test_iio_gts_chk_times(test, vals);
 +
-+	*vals =3D gts->avail_all_scales_table;
-+	*type =3D IIO_VAL_INT_PLUS_NANO;
-+	*length =3D gts->num_avail_all_scales * 2;
-+
-+	return IIO_AVAIL_LIST;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_all_avail_scales, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_gts_avail_scales_for_time - list scales for integration time
-+ * @gts:	Gain time scale descriptor
-+ * @time:	Integration time for which the scales are listed
-+ * @vals:	Returned array of supported scales
-+ * @type:	Type of returned scale values
-+ * @length:	Amount of returned values in array
-+ *
-+ * Drivers which do not allow scale setting to change integration time can
-+ * use this helper to list only the scales which are valid for given integ=
-ration
-+ * time.
-+ *
-+ * Return: a value suitable to be returned from read_avail or a negative e=
-rror.
-+ */
-+int iio_gts_avail_scales_for_time(struct iio_gts *gts, int time,
-+				  const int **vals, int *type, int *length)
-+{
-+	int i;
-+
-+	for (i =3D 0; i < gts->num_itime; i++)
-+		if (gts->itime_table[i].time_us =3D=3D time)
-+			break;
-+
-+	if (i =3D=3D gts->num_itime)
-+		return -EINVAL;
-+
-+	*vals =3D gts->per_time_avail_scale_tables[i];
-+	*type =3D IIO_VAL_INT_PLUS_NANO;
-+	*length =3D gts->num_hwgain * 2;
-+
-+	return IIO_AVAIL_LIST;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_avail_scales_for_time, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_gts_avail_times - helper for listing available integration times
-+ * @gts:	Gain time scale descriptor
-+ * @vals:	Returned array of supported times
-+ * @type:	Type of returned scale values
-+ * @length:	Amount of returned values in array
-+ *
-+ * Return: a value suitable to be returned from read_avail or a negative e=
-rror.
-+ */
-+int iio_gts_avail_times(struct iio_gts *gts,  const int **vals, int *type,
-+			int *length)
-+{
-+	if (!gts->num_avail_time_tables)
-+		return -EINVAL;
-+
-+	*vals =3D gts->avail_time_tables;
-+	*type =3D IIO_VAL_INT;
-+	*length =3D gts->num_avail_time_tables;
-+
-+	return IIO_AVAIL_LIST;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_avail_times, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_gts_find_sel_by_gain - find selector corresponding to a HW-gain
-+ * @gts:	Gain time scale descriptor
-+ * @gain:	HW-gain for which matching selector is searched for
-+ *
-+ * Return:	a selector matching given HW-gain or -EINVAL if selector was
-+ *		not found.
-+ */
-+int iio_gts_find_sel_by_gain(struct iio_gts *gts, int gain)
-+{
-+	int i;
-+
-+	for (i =3D 0; i < gts->num_hwgain; i++)
-+		if (gts->hwgain_table[i].gain =3D=3D gain)
-+			return gts->hwgain_table[i].sel;
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_find_sel_by_gain, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_gts_find_gain_by_sel - find HW-gain corresponding to a selector
-+ * @gts:	Gain time scale descriptor
-+ * @sel:	selector for which matching HW-gain is searched for
-+ *
-+ * Return:	a HW-gain matching given selector or -EINVAL if HW-gain was not
-+ *		found.
-+ */
-+int iio_gts_find_gain_by_sel(struct iio_gts *gts, int sel)
-+{
-+	int i;
-+
-+	for (i =3D 0; i < gts->num_hwgain; i++)
-+		if (gts->hwgain_table[i].sel =3D=3D sel)
-+			return gts->hwgain_table[i].gain;
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_by_sel, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_gts_get_min_gain - find smallest valid HW-gain
-+ * @gts:	Gain time scale descriptor
-+ *
-+ * Return:	The smallest HW-gain -EINVAL if no HW-gains were in the tables.
-+ */
-+int iio_gts_get_min_gain(struct iio_gts *gts)
-+{
-+	int i, min =3D -EINVAL;
-+
-+	for (i =3D 0; i < gts->num_hwgain; i++) {
-+		int gain =3D gts->hwgain_table[i].gain;
-+
-+		if (min =3D=3D -EINVAL)
-+			min =3D gain;
-+		else
-+			min =3D min(min, gain);
-+	}
-+
-+	return min;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_get_min_gain, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_find_closest_gain_low - Find the closest lower matching gain
-+ * @gts:	Gain time scale descriptor
-+ * @gain:	HW-gain for which the closest match is searched
-+ * @in_range:	indicate if the @gain was actually in the range of
-+ *		supported gains.
-+ *
-+ * Search for closest supported gain that is lower than or equal to the
-+ * gain given as a parameter. This is usable for drivers which do not requ=
-ire
-+ * user to request exact matching gain but rather for rounding to a suppor=
-ted
-+ * gain value which is equal or lower (setting lower gain is typical for
-+ * avoiding saturation)
-+ *
-+ * Return:	The closest matching supported gain or -EINVAL if @gain
-+ *		was smaller than the smallest supported gain.
-+ */
-+int iio_find_closest_gain_low(struct iio_gts *gts, int gain, bool *in_rang=
-e)
-+{
-+	int i, diff =3D 0;
-+	int best =3D -1;
-+
-+	*in_range =3D false;
-+
-+	for (i =3D 0; i < gts->num_hwgain; i++) {
-+		if (gain =3D=3D gts->hwgain_table[i].gain) {
-+			*in_range =3D true;
-+			return gain;
-+		}
-+
-+		if (gain > gts->hwgain_table[i].gain) {
-+			if (!diff) {
-+				diff =3D gain - gts->hwgain_table[i].gain;
-+				best =3D i;
-+			} else {
-+				int tmp =3D gain - gts->hwgain_table[i].gain;
-+
-+				if (tmp < diff) {
-+					diff =3D tmp;
-+					best =3D i;
-+				}
-+			}
-+		} else {
-+			/*
-+			 * We found valid HW-gain which is greater than
-+			 * reference. So, unless we return a failure below we
-+			 * will have found an in-range gain
-+			 */
-+			*in_range =3D true;
-+		}
-+	}
-+	/* The requested gain was smaller than anything we support */
-+	if (!diff) {
-+		*in_range =3D false;
-+
-+		return -EINVAL;
-+	}
-+
-+	return gts->hwgain_table[best].gain;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_find_closest_gain_low, IIO_GTS_HELPER);
-+
-+static int iio_gts_get_int_time_gain_multiplier_by_sel(struct iio_gts *gts,
-+						       int sel)
-+{
-+	const struct iio_itime_sel_mul *time;
-+
-+	time =3D iio_gts_find_itime_by_sel(gts, sel);
-+	if (!time)
-+		return -EINVAL;
-+
-+	return time->mul;
-+}
-+
-+/**
-+ * iio_gts_find_gain_for_scale_using_time - Find gain by time and scale
-+ * @gts:	Gain time scale descriptor
-+ * @time_sel:	Integration time selector corresponding to the time gain is
-+ *		searched for
-+ * @scale_int:	Integral part of the scale (typically val1)
-+ * @scale_nano:	Fractional part of the scale (nano or ppb)
-+ * @gain:	Pointer to value where gain is stored.
-+ *
-+ * In some cases the light sensors may want to find a gain setting which
-+ * corresponds given scale and integration time. Sensors which fill the
-+ * gain and time tables may use this helper to retrieve the gain.
-+ *
-+ * Return:	0 on success. -EINVAL if gain matching the parameters is not
-+ *		found.
-+ */
-+static int iio_gts_find_gain_for_scale_using_time(struct iio_gts *gts, int=
- time_sel,
-+						  int scale_int, int scale_nano,
-+						  int *gain)
-+{
-+	u64 scale_linear;
-+	int ret, mul;
-+
-+	ret =3D iio_gts_linearize(scale_int, scale_nano, NANO, &scale_linear);
++	/* Test table building for all scales and iio_gts_all_avail_scales() */
++	ret =3D iio_gts_all_avail_scales(&gts, &vals, &type, &len);
++	KUNIT_EXPECT_EQ(test, IIO_AVAIL_LIST, ret);
 +	if (ret)
-+		return ret;
++		goto drop_testdev;
 +
-+	ret =3D iio_gts_get_int_time_gain_multiplier_by_sel(gts, time_sel);
-+	if (ret < 0)
-+		return ret;
++	KUNIT_EXPECT_EQ(test, IIO_VAL_INT_PLUS_NANO, type);
 +
-+	mul =3D ret;
++	test_iio_gts_chk_scales_all(test, &gts, vals, len);
 +
-+	ret =3D gain_get_scale_fraction(gts->max_scale, scale_linear, mul, gain);
++	/*
++	 * Test table building for scales/time and
++	 * iio_gts_avail_scales_for_time()
++	 */
++	ret =3D iio_gts_avail_scales_for_time(&gts, 200000, &vals, &type, &len);
++	KUNIT_EXPECT_EQ(test, IIO_AVAIL_LIST, ret);
 +	if (ret)
-+		return ret;
++		goto drop_testdev;
 +
-+	if (!iio_gts_valid_gain(gts, *gain))
-+		return -EINVAL;
++	KUNIT_EXPECT_EQ(test, IIO_VAL_INT_PLUS_NANO, type);
++	test_iio_gts_chk_scales_t200(test, &gts, vals, len);
 +
-+	return 0;
++drop_testdev:
++	test_free_gts(&gt);
 +}
 +
-+/**
-+ * iio_gts_find_gain_sel_for_scale_using_time - Fetch gain selector.
-+ * @gts:	Gain time scale descriptor
-+ * @time_sel:	Integration time selector corresponding to the time gain is
-+ *		searched for
-+ * @scale_int:	Integral part of the scale (typically val1)
-+ * @scale_nano:	Fractional part of the scale (nano or ppb)
-+ * @gain_sel:	Pointer to value where gain selector is stored.
-+ *
-+ * See iio_gts_find_gain_for_scale_using_time() for more information
-+ */
-+int iio_gts_find_gain_sel_for_scale_using_time(struct iio_gts *gts, int ti=
-me_sel,
-+					       int scale_int, int scale_nano,
-+					       int *gain_sel)
-+{
-+	int gain, ret;
++static struct kunit_case iio_gts_test_cases[] =3D {
++		KUNIT_CASE(test_init_iio_gts_invalid),
++		KUNIT_CASE(test_iio_gts_find_gain_for_scale_using_time),
++		KUNIT_CASE(test_iio_gts_find_new_gain_sel_by_old_gain_time),
++		KUNIT_CASE(test_iio_find_closest_gain_low),
++		KUNIT_CASE(test_iio_gts_total_gain_to_scale),
++		KUNIT_CASE(test_iio_gts_avail_test),
++		{}
++};
 +
-+	ret =3D iio_gts_find_gain_for_scale_using_time(gts, time_sel, scale_int,
-+						     scale_nano, &gain);
-+	if (ret)
-+		return ret;
++static struct kunit_suite iio_gts_test_suite =3D {
++	.name =3D "iio-gain-time-scale",
++	.test_cases =3D iio_gts_test_cases,
++};
 +
-+	ret =3D iio_gts_find_sel_by_gain(gts, gain);
-+	if (ret < 0)
-+		return ret;
-+
-+	*gain_sel =3D ret;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_sel_for_scale_using_time, IIO_GTS_H=
-ELPER);
-+
-+static int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
-+{
-+	const struct iio_itime_sel_mul *itime;
-+
-+	if (!iio_gts_valid_gain(gts, gain))
-+		return -EINVAL;
-+
-+	if (!gts->num_itime)
-+		return gain;
-+
-+	itime =3D iio_gts_find_itime_by_time(gts, time);
-+	if (!itime)
-+		return -EINVAL;
-+
-+	return gain * itime->mul;
-+}
-+
-+static int iio_gts_get_scale_linear(struct iio_gts *gts, int gain, int tim=
-e,
-+				    u64 *scale)
-+{
-+	int total_gain;
-+	u64 tmp;
-+
-+	total_gain =3D iio_gts_get_total_gain(gts, gain, time);
-+	if (total_gain < 0)
-+		return total_gain;
-+
-+	tmp =3D gts->max_scale;
-+
-+	do_div(tmp, total_gain);
-+
-+	*scale =3D tmp;
-+
-+	return 0;
-+}
-+
-+/**
-+ * iio_gts_get_scale - get scale based on integration time and HW-gain
-+ * @gts:	Gain time scale descriptor
-+ * @gain:	HW-gain for which the scale is computed
-+ * @time:	Integration time for which the scale is computed
-+ * @scale_int:	Integral part of the scale (typically val1)
-+ * @scale_nano:	Fractional part of the scale (nano or ppb)
-+ *
-+ * Compute scale matching the integration time and HW-gain given as parame=
-ter.
-+ *
-+ * Return: 0 on success.
-+ */
-+int iio_gts_get_scale(struct iio_gts *gts, int gain, int time, int *scale_=
-int,
-+		      int *scale_nano)
-+{
-+	u64 lin_scale;
-+	int ret;
-+
-+	ret =3D iio_gts_get_scale_linear(gts, gain, time, &lin_scale);
-+	if (ret)
-+		return ret;
-+
-+	return iio_gts_delinearize(lin_scale, NANO, scale_int, scale_nano);
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_get_scale, IIO_GTS_HELPER);
-+
-+/**
-+ * iio_gts_find_new_gain_sel_by_old_gain_time - compensate for time change
-+ * @gts:		Gain time scale descriptor
-+ * @old_gain:		Previously set gain
-+ * @old_time_sel:	Selector corresponding previously set time
-+ * @new_time_sel:	Selector corresponding new time to be set
-+ * @new_gain:		Pointer to value where new gain is to be written
-+ *
-+ * We may want to mitigate the scale change caused by setting a new integr=
-ation
-+ * time (for a light sensor) by also updating the (HW)gain. This helper co=
-mputes
-+ * new gain value to maintain the scale with new integration time.
-+ *
-+ * Return: 0 on success. -EINVAL if gain matching the new time is not foun=
-d.
-+ */
-+int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
-+					       int old_gain, int old_time_sel,
-+					       int new_time_sel, int *new_gain)
-+{
-+	const struct iio_itime_sel_mul *itime_old, *itime_new;
-+	u64 scale;
-+	int ret;
-+
-+	itime_old =3D iio_gts_find_itime_by_sel(gts, old_time_sel);
-+	if (!itime_old)
-+		return -EINVAL;
-+
-+	itime_new =3D iio_gts_find_itime_by_sel(gts, new_time_sel);
-+	if (!itime_new)
-+		return -EINVAL;
-+
-+	ret =3D iio_gts_get_scale_linear(gts, old_gain, itime_old->time_us,
-+				       &scale);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D gain_get_scale_fraction(gts->max_scale, scale, itime_new->mul,
-+				      new_gain);
-+	if (ret)
-+		return ret;
-+
-+	if (!iio_gts_valid_gain(gts, *new_gain))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_find_new_gain_sel_by_old_gain_time, IIO_GTS_H=
-ELPER);
-+
-+/**
-+ * iio_gts_find_new_gain_by_old_gain_time - compensate for time change
-+ * @gts:		Gain time scale descriptor
-+ * @old_gain:		Previously set gain
-+ * @old_time:		Selector corresponding previously set time
-+ * @new_time:		Selector corresponding new time to be set
-+ * @new_gain:		Pointer to value where new gain is to be written
-+ *
-+ * We may want to mitigate the scale change caused by setting a new integr=
-ation
-+ * time (for a light sensor) by also updating the (HW)gain. This helper co=
-mputes
-+ * new gain value to maintain the scale with new integration time.
-+ *
-+ * Return: 0 on success. -EINVAL if gain matching the new time is not foun=
-d.
-+ */
-+int iio_gts_find_new_gain_by_old_gain_time(struct iio_gts *gts, int old_ga=
-in,
-+					   int old_time, int new_time,
-+					   int *new_gain)
-+{
-+	const struct iio_itime_sel_mul *itime_new;
-+	u64 scale;
-+	int ret;
-+
-+	itime_new =3D iio_gts_find_itime_by_time(gts, new_time);
-+	if (!itime_new)
-+		return -EINVAL;
-+
-+	ret =3D iio_gts_get_scale_linear(gts, old_gain, old_time, &scale);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D gain_get_scale_fraction(gts->max_scale, scale, itime_new->mul,
-+				      new_gain);
-+	if (ret)
-+		return ret;
-+
-+	if (!iio_gts_valid_gain(gts, *new_gain))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_gts_find_new_gain_by_old_gain_time, IIO_GTS_HELPE=
-R);
++kunit_test_suite(iio_gts_test_suite);
 +
 +MODULE_LICENSE("GPL");
 +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
-+MODULE_DESCRIPTION("IIO light sensor gain-time-scale helpers");
-diff --git a/include/linux/iio/iio-gts-helper.h b/include/linux/iio/iio-gts=
--helper.h
-new file mode 100644
-index 000000000000..dd64e544a3da
---- /dev/null
-+++ b/include/linux/iio/iio-gts-helper.h
-@@ -0,0 +1,206 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* gain-time-scale conversion helpers for IIO light sensors
-+ *
-+ * Copyright (c) 2023 Matti Vaittinen <mazziesaccount@gmail.com>
-+ */
++MODULE_DESCRIPTION("Test IIO light sensor gain-time-scale helpers");
++MODULE_IMPORT_NS(IIO_GTS_HELPER);
 +
-+#ifndef __IIO_GTS_HELPER__
-+#define __IIO_GTS_HELPER__
-+
-+#include <linux/types.h>
-+
-+struct device;
-+
-+/**
-+ * struct iio_gain_sel_pair - gain - selector values
-+ *
-+ * In many cases devices like light sensors allow setting signal amplifica=
-tion
-+ * (gain) using a register interface. This structure describes amplificati=
-on
-+ * and corresponding selector (register value)
-+ *
-+ * @gain:	Gain (multiplication) value. Gain must be positive, negative
-+ *		values are reserved for error handling.
-+ * @sel:	Selector (usually register value) used to indicate this gain.
-+ *		NOTE: Only selectors >=3D 0 supported.
-+ */
-+struct iio_gain_sel_pair {
-+	int gain;
-+	int sel;
-+};
-+
-+/**
-+ * struct iio_itime_sel_mul - integration time description
-+ *
-+ * In many cases devices like light sensors allow setting the duration of
-+ * collecting data. Typically this duration has also an impact to the magn=
-itude
-+ * of measured values (gain). This structure describes the relation of
-+ * integration time and amplification as well as corresponding selector
-+ * (register value).
-+ *
-+ * An example could be a sensor allowing 50, 100, 200 and 400 mS times. The
-+ * respective multiplication values could be 50 mS =3D> 1, 100 mS =3D> 2,
-+ * 200 mS =3D> 4 and 400 mS =3D> 8 assuming the impact of integration time=
- would be
-+ * linear in a way that when collecting data for 50 mS caused value X, dou=
-bling
-+ * the data collection time caused value 2X etc.
-+ *
-+ * @time_us:	Integration time in microseconds. Time values must be positiv=
-e,
-+ *		negative values are reserved for error handling.
-+ * @sel:	Selector (usually register value) used to indicate this time
-+ *		NOTE: Only selectors >=3D 0 supported.
-+ * @mul:	Multiplication to the values caused by this time.
-+ *		NOTE: Only multipliers > 0 supported.
-+ */
-+struct iio_itime_sel_mul {
-+	int time_us;
-+	int sel;
-+	int mul;
-+};
-+
-+struct iio_gts {
-+	u64 max_scale;
-+	const struct iio_gain_sel_pair *hwgain_table;
-+	int num_hwgain;
-+	const struct iio_itime_sel_mul *itime_table;
-+	int num_itime;
-+	int **per_time_avail_scale_tables;
-+	int *avail_all_scales_table;
-+	int num_avail_all_scales;
-+	int *avail_time_tables;
-+	int num_avail_time_tables;
-+};
-+
-+#define GAIN_SCALE_GAIN(_gain, _sel)			\
-+{							\
-+	.gain =3D (_gain),				\
-+	.sel =3D (_sel),					\
-+}
-+
-+#define GAIN_SCALE_ITIME_US(_itime, _sel, _mul)		\
-+{							\
-+	.time_us =3D (_itime),				\
-+	.sel =3D (_sel),					\
-+	.mul =3D (_mul),					\
-+}
-+
-+static inline const struct iio_itime_sel_mul *
-+iio_gts_find_itime_by_time(struct iio_gts *gts, int time)
-+{
-+	int i;
-+
-+	if (!gts->num_itime)
-+		return NULL;
-+
-+	for (i =3D 0; i < gts->num_itime; i++)
-+		if (gts->itime_table[i].time_us =3D=3D time)
-+			return &gts->itime_table[i];
-+
-+	return NULL;
-+}
-+
-+static inline const struct iio_itime_sel_mul *
-+iio_gts_find_itime_by_sel(struct iio_gts *gts, int sel)
-+{
-+	int i;
-+
-+	for (i =3D 0; i < gts->num_itime; i++)
-+		if (gts->itime_table[i].sel =3D=3D sel)
-+			return &gts->itime_table[i];
-+
-+	return NULL;
-+}
-+
-+int devm_iio_init_iio_gts(struct device *dev, int max_scale_int, int max_s=
-cale_nano,
-+			  const struct iio_gain_sel_pair *gain_tbl, int num_gain,
-+			  const struct iio_itime_sel_mul *tim_tbl, int num_times,
-+			  struct iio_gts *gts);
-+/**
-+ * iio_gts_find_int_time_by_sel - find integration time matching a selector
-+ * @gts:	Gain time scale descriptor
-+ * @sel:	selector for which matching integration time is searched for
-+ *
-+ * Return:	integration time matching given selector or -EINVAL if
-+ *		integration time was not found.
-+ */
-+static inline int iio_gts_find_int_time_by_sel(struct iio_gts *gts, int se=
-l)
-+{
-+	const struct iio_itime_sel_mul *itime;
-+
-+	itime =3D iio_gts_find_itime_by_sel(gts, sel);
-+	if (!itime)
-+		return -EINVAL;
-+
-+	return itime->time_us;
-+}
-+
-+/**
-+ * iio_gts_find_sel_by_int_time - find selector matching integration time
-+ * @gts:	Gain time scale descriptor
-+ * @gain:	HW-gain for which matching selector is searched for
-+ *
-+ * Return:	a selector matching given integration time or -EINVAL if
-+ *		selector was not found.
-+ */
-+static inline int iio_gts_find_sel_by_int_time(struct iio_gts *gts, int ti=
-me)
-+{
-+	const struct iio_itime_sel_mul *itime;
-+
-+	itime =3D iio_gts_find_itime_by_time(gts, time);
-+	if (!itime)
-+		return -EINVAL;
-+
-+	return itime->sel;
-+}
-+
-+/**
-+ * iio_gts_valid_time - check if given integration time is valid
-+ * @gts:	Gain time scale descriptor
-+ * @time_us:	Integration time to check
-+ *
-+ * Return:	True if given time is supported by device. False if not.
-+ */
-+static inline bool iio_gts_valid_time(struct iio_gts *gts, int time_us)
-+{
-+	return iio_gts_find_itime_by_time(gts, time_us) !=3D NULL;
-+}
-+
-+int iio_gts_find_sel_by_gain(struct iio_gts *gts, int gain);
-+
-+/**
-+ * iio_gts_valid_gain - check if given HW-gain is valid
-+ * @gts:	Gain time scale descriptor
-+ * @gain:	HW-gain to check
-+ *
-+ * Return:	True if given time is supported by device. False if not.
-+ */
-+static inline bool iio_gts_valid_gain(struct iio_gts *gts, int gain)
-+{
-+	return iio_gts_find_sel_by_gain(gts, gain) >=3D 0;
-+}
-+
-+int iio_find_closest_gain_low(struct iio_gts *gts, int gain, bool *in_rang=
-e);
-+int iio_gts_find_gain_by_sel(struct iio_gts *gts, int sel);
-+int iio_gts_get_min_gain(struct iio_gts *gts);
-+int iio_gts_find_int_time_by_sel(struct iio_gts *gts, int sel);
-+int iio_gts_find_sel_by_int_time(struct iio_gts *gts, int time);
-+
-+int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
-+				int *scale_int, int *scale_nano);
-+int iio_gts_find_gain_sel_for_scale_using_time(struct iio_gts *gts, int ti=
-me_sel,
-+					       int scale_int, int scale_nano,
-+					       int *gain_sel);
-+int iio_gts_get_scale(struct iio_gts *gts, int gain, int time, int *scale_=
-int,
-+		      int *scale_nano);
-+int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
-+					       int old_gain, int old_time_sel,
-+					       int new_time_sel, int *new_gain);
-+int iio_gts_find_new_gain_by_old_gain_time(struct iio_gts *gts, int old_ga=
-in,
-+					   int old_time, int new_time,
-+					   int *new_gain);
-+int iio_gts_avail_times(struct iio_gts *gts,  const int **vals, int *type,
-+			int *length);
-+int iio_gts_all_avail_scales(struct iio_gts *gts, const int **vals, int *t=
-ype,
-+			     int *length);
-+int iio_gts_avail_scales_for_time(struct iio_gts *gts, int time,
-+				  const int **vals, int *type, int *length);
-+
-+#endif
 --=20
 2.39.2
 
@@ -1553,19 +739,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---ybdhuABL+D1Qf9a3
+--kBHIsKE5d46xWpYs
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQaxTMACgkQeFA3/03a
-ocUOdAf/U+R1tlU+4RC6E2vJkk7wf00Rh9liDXxpWg73xqBrblHQmaqWMgKrGMmW
-b094dL4pfPohBosA3NCl9eV1IvnD3LhaRMK3bMWS2D5VND1rv2HIH2Hqr5s5gTnw
-LPvui02KMsM4lHlWM8DkqpUuVN4PMoIt5bMSZ6Zb7IwYIly8dprK/4n7LsafWFf5
-CMFQ+Vi6shlQ8GUBZMmuE9fFnRmzMU9AZ+X2bxWCTNT6eSO9VmwgyNIYQN5sBm2g
-REIiVXVHAZsfg0em6qGddBgwZ1lAx0A6Z7fiF+AhUGS8l/1/a9+8RzMXAFSh6ca0
-LuQJ4YjZ2KFt3h3NNL1KRlADEZXfww==
-=GwjJ
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQaxUYACgkQeFA3/03a
+ocV5bQf9HLEcHUby/DOM3wrCDZg3NhCMkKyjeHURdh++sDGxe7XVm09GRNuDb+j0
+mhHEz8/TzJ7dOA8UmnINSDREqFv14Tx6ociPSPe7ReyUpSIOdEW2L6vPF7tWNlec
+GzBfq1vZjRkLZyhzwrSt1Q5n6oy9B9NCxUJ5bOVWbG5dad/8FrW3y4TZ84ADdASk
+NVV0ToMD2l6/x9Qn+BADZGhdO3qcvX6ZpJ4RWW1nKWOQSbImuxdR1LiCPDzXemWk
+965d6j+eowTmk4dkj+girFctCPrJf8sfvhoQZfLIt1zGmuJi2uIqlHt6WWCX4r4i
+o9ukRTBOwZvhaw0YQPa2yRoT89QYwg==
+=EZLi
 -----END PGP SIGNATURE-----
 
---ybdhuABL+D1Qf9a3--
+--kBHIsKE5d46xWpYs--

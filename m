@@ -2,153 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43EC66C4FCF
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 16:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5DE6C546B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 20:00:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjCVP6t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Mar 2023 11:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58204 "EHLO
+        id S230482AbjCVS77 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Mar 2023 14:59:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbjCVP6s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 11:58:48 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5165F36FE7;
-        Wed, 22 Mar 2023 08:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=Khd9ZkkHV56yKylwQkQUjI8LC8lCPiD84A4vvthz0NM=; b=Ym5UsdJU+V8MwR6QVIemE10FSk
-        ctO4TuyLB1J4sjdIGDcbc7k0SNq+ZHCC4aIkVPuZftYgnH/BwmdragB3qwnMi7+xDiO/AS73WhNHo
-        lr5+fTrh+pH88TZfnAp32Q569SqQc0c1IzpdowK7PFX+B68vSpigjOezGW3pECjbOljPNtId/fX8E
-        YTEKcLkWqDtOqVA+L8AwN3+X8kSu8KRI1E7EfKdqthZT6KqERDXkE4XR/KrQ3Run3/8Ww5drCW+eM
-        S00flVqp6sQ4FLZQqQeR9aShTQGCrMbSRpQBgnbDSHlwO9j4ofZfjTeOuOHESjr7F8RS0OTOfil5D
-        uURTjkkQ==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1pf0rJ-000Ihk-MW; Wed, 22 Mar 2023 16:58:41 +0100
-Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1pf0rJ-000QwQ-Bx; Wed, 22 Mar 2023 16:58:41 +0100
-Message-ID: <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
-Date:   Wed, 22 Mar 2023 08:58:39 -0700
+        with ESMTP id S231293AbjCVS6z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 14:58:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 942B169CCD;
+        Wed, 22 Mar 2023 11:57:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E776CB81DB5;
+        Wed, 22 Mar 2023 18:57:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FB8C433EF;
+        Wed, 22 Mar 2023 18:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1679511432;
+        bh=/imnV0x8iGBAk5tPyVtciG7NBjjG0y02B1qw0YmV2Yc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wnz6xohsZpdBarPAm4bU+cZ6XESC6K7V9uQqtrnOP0bxjU1Mvh98bPHJ61lb3g7x2
+         WxV7ToBC8kwblA27wHEHT8zodzSgsE4p8cE1mw8gBCswLp5rVNctyHSu+pJXGfPBdf
+         giRiuA5LFAoMZI2wrPLXaDAkbRHcH2nRwCwD7Zzk=
+Date:   Wed, 22 Mar 2023 19:57:10 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        David Gow <davidgow@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
+        Maxime Ripard <maxime@cerno.tech>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
+ creation
+Message-ID: <ZBtPhoelZo4U5jwC@kroah.com>
+References: <cover.1679474247.git.mazziesaccount@gmail.com>
+ <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
+ <ZBrvhfX/NNrJefgt@kroah.com>
+ <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
-Content-Language: en-US
-To:     Naresh Solanki <naresh.solanki@9elements.com>,
-        Lee Jones <lee@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26851/Wed Mar 22 08:22:49 2023)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Wed, Mar 22, 2023 at 03:48:00PM +0200, Matti Vaittinen wrote:
+> Hi Greg,
+> 
+> Thanks for looking at this.
+> 
+> On 3/22/23 14:07, Greg Kroah-Hartman wrote:
+> > On Wed, Mar 22, 2023 at 11:05:55AM +0200, Matti Vaittinen wrote:
+> > > --- /dev/null
+> > > +++ b/drivers/base/test/test_kunit_device.c
+> > > @@ -0,0 +1,83 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +/*
+> > > + * These helpers have been extracted from drm test code at
+> > > + * drm_kunit_helpers.c which was authored by
+> > > + * Maxime Ripard <maxime@cerno.tech>
+> > > + */
+> > > +
+> > > +#include <linux/device.h>
+> > > +#include <linux/platform_device.h>
+> > > +
+> > > +#include <kunit/platform_device.h>
+> > > +
+> > > +#define KUNIT_DEVICE_NAME	"test-kunit-mock-device"
+> > > +
+> > > +static int fake_probe(struct platform_device *pdev)
+> > 
+> > Please do not abuse platform devices and drivers for things that are not
+> > actually platform devices and drivers.
+> > 
+> > > +{
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int fake_remove(struct platform_device *pdev)
+> > > +{
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static struct platform_driver fake_platform_driver = {
+> > > +	.probe	= fake_probe,
+> > > +	.remove	= fake_remove,
+> > > +	.driver = {
+> > > +		.name	= KUNIT_DEVICE_NAME,
+> > > +	},
+> > > +};
+> > 
+> > Why do you need this fake platform driver at all?
+> > 
+> > Why not just use a virtual device?
+> 
+> I can only answer on my behalf. In my case the answer to why I used
+> platform_devices is practicality. I wanted to test devm_ APIs using KUnit
+> tests and I was pointed to an existing implementation in DRM (seen in these
+> patches). It didn't seem to make any sense to re-invent the wheel by writing
+> another implementation for the existing in-tree functionality.
 
-This looks really good. A few minor comments inline.
+That's fine, but please, let's do this right if it's going to be in the
+driver core, that way we can actually test the driver core code as well.
 
-On 3/22/23 05:43, Naresh Solanki wrote:
-> [...]
-> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
-> +				struct iio_chan_spec const *chan,
-> +				int *val, int *val2, long info)
-> +{
-> +	int ret;
-> +	struct max597x_iio *data = iio_priv(iio_dev);
-> +	unsigned int reg_l, reg_h;
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = regmap_read(data->regmap, chan->address, &reg_l);
-> +		if (ret < 0)
-> +			return ret;
-> +		ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
-> +		if (ret < 0)
-> +			return ret;
-Is there any chance of a race condition of getting inconsistent data 
-when splitting this over two reads? I.e. registers being updated with 
-new values in between the two reads.
-> +		*val = (reg_h << 2) | (reg_l & 3);
-> +
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +
-> +		switch (chan->address) {
-> +		case MAX5970_REG_CURRENT_L(0):
-> +			fallthrough;
+> > > +/**
+> > > + * test_kunit_helper_alloc_device - Allocate a mock device for a KUnit test
+> > > + * @test: The test context object
+> > > + *
+> > > + * This allocates a fake struct &device to create a mock for a KUnit
+> > > + * test. The device will also be bound to a fake driver. It will thus be
+> > > + * able to leverage the usual infrastructure and most notably the
+> > > + * device-managed resources just like a "real" device.
+> > 
+> > What specific "usual infrastructure" are you wanting to access here?
+> > 
+> > And again, if you want a fake device, make a virtual one, by just
+> > calling device_create().
+> > 
+> > Or are you wanting to do "more" with that device pointer than
+> > device_create() can give you?
+> 
+> Personally, I was (am) only interested in devm_ unwinding. I guess the
+> device_create(), device_add(), device_remove()... (didn't study this
+> sequence in details so sorry if there is errors) could've been sufficient
+> for me. I haven't looked how much of the code that there is for 'platform
+> devices' should be duplicated to support that sequence for testability
+> purposes.
 
-`fallthrough` should not be needed for multiple case statements right on top of each other with no code in between. Same below
+Any device can access devm_ code, there's no need for it to be a
+platform device at all.
 
-> +		case MAX5970_REG_CURRENT_L(1):
-> +			/* in A, convert to mA */
-> +			*val = data->irng[chan->channel] * 1000;
-> +			*val2 =
-> +			    data->shunt_micro_ohms[chan->channel] * ADC_MASK;
-ADC_MASK should really have a MAX5970_ prefix, but I guess it is defined 
-in max597x.h
-> +			return IIO_VAL_FRACTIONAL;
-> +
-> +		case MAX5970_REG_VOLTAGE_L(0):
-> +			fallthrough;
-> +		case MAX5970_REG_VOLTAGE_L(1):
-> +			/* in uV, convert to mV */
-> +			*val = data->mon_rng[chan->channel];
-> +			*val2 = ADC_MASK * 1000;
-> +			return IIO_VAL_FRACTIONAL;
-> +		}
-> +
-> +		break;
-> +	}
-> +	return -EINVAL;
-> +}
-> [..]
-> +static int max597x_iio_probe(struct platform_device *pdev)
-> +{
-> +	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
-> +	struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
-> +	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
-> +	struct iio_dev *indio_dev;
-> +	struct max597x_iio *priv;
-> +	int ret, i;
-> +
-> +	if (!regmap)
-> +		return -EPROBE_DEFER;
-> +
-> +	if (!max597x || !max597x->num_switches)
-> +		return -EPROBE_DEFER;
-> +
-> +	/* registering iio */
-> +	indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*priv));
-For the devm allocations we should be using &pdev->dev and not the I2C 
-device, since this is the device to which the allocations belong and 
-where they should be freed when the device is removed.
-> +	if (!indio_dev) {
-> +		dev_err(&i2c->dev, "failed allocating iio device\n");
-Consider using dev_err_probe() for error message printing. This will 
-give a consistent formatting of the messages. Also again use &pdev->dev 
-instead of I2C device to get the right device listed in the error messages.
-> +		return -ENOMEM;
-> +	}
-> +	indio_dev->name = dev_name(&i2c->dev);
-The IIO ABI wants the type of the chip for the name. E.g. "max5970", 
-using dev_name() of the parent I2C device will result in something else.
-> [...]
+> The biggest thing for me is that I don't like the idea of creating own 'test
+> device' in <add subsystem here> while we already have some in DRM (or
+> others). Thus, I do see value in adding generic helpers for supporting
+> running KUnit tests on devm_* APIs. Hence it'd be good to have _some_
+> support for it.
+
+I agree, let's use a virtual device and a virtual bus (you can use the
+auxbus code for this as that's all there for this type of thing) and
+then you can test the devm_* code, _AND_ you can test the driver core at
+the same time.
+
+> And having them in drivers/base/test seemed like a correct
+> place to me. What I really don't know is if there are legitimate use-cases
+> for using platform_devices in DRM tests. Perhaps Maxime can shed light on
+> that.
+
+I agree that this could be in drivers/base/test/ but then let's test the
+driver core, not just provide a dummy platform device.
+
+If you want to test the platform driver/device api, that would be great
+too, that can be plaform device/driver specific, but don't use one for
+some other random driver core functionality please.
+
+thanks,
+
+greg k-h

@@ -2,296 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C28D6C4AE9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 13:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F34C6C4C44
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 14:48:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbjCVMnb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Mar 2023 08:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54572 "EHLO
+        id S229782AbjCVNst (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Mar 2023 09:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjCVMna (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 08:43:30 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B681B2C3
-        for <linux-iio@vger.kernel.org>; Wed, 22 Mar 2023 05:43:28 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id bg16-20020a05600c3c9000b003eb34e21bdfso12948644wmb.0
-        for <linux-iio@vger.kernel.org>; Wed, 22 Mar 2023 05:43:28 -0700 (PDT)
+        with ESMTP id S230115AbjCVNss (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 09:48:48 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6ED5A6E7;
+        Wed, 22 Mar 2023 06:48:13 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id q16so12660452lfe.10;
+        Wed, 22 Mar 2023 06:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1679489007;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gL2q9nK2sCWoMHOPkHjxQjCYyzKcPYLR8xpxNLwvnUw=;
-        b=AmKpP1kIq1wAiLzeGy0jiXwfdhNgXGVu8ljLYUjM7x3KEXSe7QtPo4u2sm+P34YW5I
-         P4YQL4eHrx7loh85gIfwpZGagDbIFtLsZMueyAsU7SmHtHhkYFRiTdk70ab7t8n74W+k
-         sCEmiDL1GD275/5K7yvWceS21vyfM4Y4wHfVfILFo1NedrAw7TkC3Gcy7lbSueSc9GIN
-         BvbVxOyy03nH2vf0I/5LCRj2edug2PcRzAhVbVG6b/Nv0UrsTJckkVUfe44FbXWH4JcK
-         50cARqTwsFLDpqnCbHHfcO7enULY4/v29PZ4ebnZAjqGpRUPoHGRk6oHRKjFXyfeSsG/
-         9TCg==
+        d=gmail.com; s=20210112; t=1679492892;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=92oTNP+sKoipbZFz7skaTllICxMbhqwCfT6iOU7a8rc=;
+        b=cCPyYH9pJ1b9o0ofAqIlqifdD12pUu1NQwYP9kb8lXRzfL4HmGVqyGma3L5K3RXifB
+         inMJCpIgXEXhLtUjonU+VlUmg4st6QF7DI2JB5dw0urxuQiL8g+O6GWrtDt88+ZSgGXo
+         Pnbd03wYUq1i3wpe4uA8IwDnHdMpoimsBnAbV+DgFkoVGfnz05X+m81o0Ghab6d/sd9r
+         z70Fg6v5MTR4WCX7JEhpzzLlKZo40T2ebswSQSC7BY2O3SvljC6N5qRbmZhpifbCaZik
+         y/7pETxnAeXnqqKeLUL/TAaMESuQmzmci8xgkQ99u44b9EwFabcI/Sr2xsq5d60uQLbg
+         zi6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679489007;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gL2q9nK2sCWoMHOPkHjxQjCYyzKcPYLR8xpxNLwvnUw=;
-        b=kLwAPnFZ0H6/M1hsYktMZiHtiwC4cX1w6qBnXD7CBLo5tHois0Ud/sOviKvdPE26fY
-         W3P9u22NXHpBVjNKJEg7c0u/3J0OWXa0umc19TNgkitSVyZSHbLzD/uZXWOGSk1k2PEt
-         ssXfxTD/LbvF/OeX+qMExsyHV41tSlsFQsrX9xMUP644fWbEjWEyC1jYp/S/qSzRSPkQ
-         GRAdlOpBpIW1Uwu+rwkaSJNwbbmlep2CZ2NKIgeETxKkGFsLgyn8Cu1gdwxhvW3R7RUj
-         NaWXnPLjKSJvQD92a3XWyuY7ODemw1nMQDXc53BujUPkb04hLUIsjhmKXo+h00Wn0bH1
-         MI6A==
-X-Gm-Message-State: AO0yUKVh910o3eqlxh+dnbdnZoYpb3bAnJDY5BOm4k+6yRxTmIoIUlJf
-        RgIMsPMIXSdLjB6JQVjke/8oaw==
-X-Google-Smtp-Source: AK7set/uHO9U604T2CSuRiOjl1lBA0+jDlA7G3i0723BCf2qZ574qwCZKpIBvCcy8YaxjDfgymkZ7Q==
-X-Received: by 2002:a1c:4c13:0:b0:3ee:3d2d:841a with SMTP id z19-20020a1c4c13000000b003ee3d2d841amr4314452wmf.24.1679489007382;
-        Wed, 22 Mar 2023 05:43:27 -0700 (PDT)
-Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
-        by smtp.gmail.com with ESMTPSA id c15-20020adfef4f000000b002c7066a6f77sm13748526wrp.31.2023.03.22.05.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 05:43:27 -0700 (PDT)
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
-To:     Lee Jones <lee@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Naresh Solanki <Naresh.Solanki@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH 1/2] iio: max597x: Add support for max597x
-Date:   Wed, 22 Mar 2023 13:43:15 +0100
-Message-Id: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
-X-Mailer: git-send-email 2.39.1
+        d=1e100.net; s=20210112; t=1679492892;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=92oTNP+sKoipbZFz7skaTllICxMbhqwCfT6iOU7a8rc=;
+        b=zy2I2LqdzUkhdlUwX60ps+LLV9IAjPIegu7w1IzejxDTTm6hBtmWq38bphx5ibvBGp
+         HXDhAelkLyQvOt/uOqy4qDXjYU8LfCxGVpjrCr7dO9tXchduji1Rj1uUFJdp3ZwM166Z
+         cJfdd0wd+dnC6pJ5ZCK13LRJp3UbKMEx5lu0D1txU9wJayIOUMqEIMEVkhseuV9I/Lc3
+         PqqwauMHf2pVpy+jK0/sUqBQo3UyLr9dScNVaz/PDUODGuNF9pKNUh9QWpycGa0/jjpb
+         jkWunttGtq2iMj1s2sfTGq1gFRlwkqjqmyt7G6lrbjw8AV+mxGRXgK3CASuwCuSFUsBb
+         9TSw==
+X-Gm-Message-State: AO0yUKXZFICd/vlrrHK8V7kQjZkfcsb+juKBm2QP45Qt8TmPKkGUYCrv
+        9lOoQHqFu7ru0RNPOnBbsTo=
+X-Google-Smtp-Source: AK7set/DsbRSjiFXY1QVWeKBJ5mRkh2cXJeChEojpUx0NG2pipiDPmSEh3CZhu7PWl8H4ITE4/x62Q==
+X-Received: by 2002:a19:c206:0:b0:4e8:3f1f:3646 with SMTP id l6-20020a19c206000000b004e83f1f3646mr1898313lfc.55.1679492891602;
+        Wed, 22 Mar 2023 06:48:11 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id t18-20020ac25492000000b004d58bf6a61asm2545811lfk.230.2023.03.22.06.48.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 06:48:11 -0700 (PDT)
+Message-ID: <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
+Date:   Wed, 22 Mar 2023 15:48:00 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: en-US, en-GB
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        David Gow <davidgow@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
+        Maxime Ripard <maxime@cerno.tech>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+References: <cover.1679474247.git.mazziesaccount@gmail.com>
+ <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
+ <ZBrvhfX/NNrJefgt@kroah.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
+ creation
+In-Reply-To: <ZBrvhfX/NNrJefgt@kroah.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Patrick Rudolph <patrick.rudolph@9elements.com>
+Hi Greg,
 
-max597x has 10bit ADC for voltage & current monitoring.
-Use iio framework to expose the same in sysfs.
+Thanks for looking at this.
 
-Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
-Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
----
- drivers/iio/adc/Kconfig       |  15 ++++
- drivers/iio/adc/Makefile      |   1 +
- drivers/iio/adc/max597x-iio.c | 162 ++++++++++++++++++++++++++++++++++
- 3 files changed, 178 insertions(+)
- create mode 100644 drivers/iio/adc/max597x-iio.c
+On 3/22/23 14:07, Greg Kroah-Hartman wrote:
+> On Wed, Mar 22, 2023 at 11:05:55AM +0200, Matti Vaittinen wrote:
+>> --- /dev/null
+>> +++ b/drivers/base/test/test_kunit_device.c
+>> @@ -0,0 +1,83 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * These helpers have been extracted from drm test code at
+>> + * drm_kunit_helpers.c which was authored by
+>> + * Maxime Ripard <maxime@cerno.tech>
+>> + */
+>> +
+>> +#include <linux/device.h>
+>> +#include <linux/platform_device.h>
+>> +
+>> +#include <kunit/platform_device.h>
+>> +
+>> +#define KUNIT_DEVICE_NAME	"test-kunit-mock-device"
+>> +
+>> +static int fake_probe(struct platform_device *pdev)
+> 
+> Please do not abuse platform devices and drivers for things that are not
+> actually platform devices and drivers.
+> 
+>> +{
+>> +	return 0;
+>> +}
+>> +
+>> +static int fake_remove(struct platform_device *pdev)
+>> +{
+>> +	return 0;
+>> +}
+>> +
+>> +static struct platform_driver fake_platform_driver = {
+>> +	.probe	= fake_probe,
+>> +	.remove	= fake_remove,
+>> +	.driver = {
+>> +		.name	= KUNIT_DEVICE_NAME,
+>> +	},
+>> +};
+> 
+> Why do you need this fake platform driver at all?
+> 
+> Why not just use a virtual device?
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 45af2302be53..0d1a3dea0b7d 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -735,6 +735,21 @@ config MAX1363
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called max1363.
- 
-+config MAX597X_IIO
-+	tristate "Maxim 597x power switch and monitor"
-+	depends on I2C && OF
-+	select MFD_MAX597X
-+	help
-+	  This driver enables support for the Maxim 597x smart switch and
-+	  voltage/current monitoring interface using the Industrial I/O (IIO)
-+	  framework. The Maxim 597x is a power switch and monitor that can
-+	  provide voltage and current measurements via the I2C bus. Enabling
-+	  this driver will allow user space applications to read the voltage
-+	  and current measurements using IIO interfaces.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called max597x-iio.
-+
- config MAX9611
- 	tristate "Maxim max9611/max9612 ADC driver"
- 	depends on I2C
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 36c18177322a..7ec0c2cf7bbb 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
- obj-$(CONFIG_MAX11410) += max11410.o
- obj-$(CONFIG_MAX1241) += max1241.o
- obj-$(CONFIG_MAX1363) += max1363.o
-+obj-$(CONFIG_MAX597X_IIO) += max597x-iio.o
- obj-$(CONFIG_MAX9611) += max9611.o
- obj-$(CONFIG_MCP320X) += mcp320x.o
- obj-$(CONFIG_MCP3422) += mcp3422.o
-diff --git a/drivers/iio/adc/max597x-iio.c b/drivers/iio/adc/max597x-iio.c
-new file mode 100644
-index 000000000000..a35bab926313
---- /dev/null
-+++ b/drivers/iio/adc/max597x-iio.c
-@@ -0,0 +1,162 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Device driver for regulators in MAX5970 and MAX5978 IC
-+ *
-+ * Copyright (c) 2022 9elements GmbH
-+ *
-+ * Author: Patrick Rudolph <patrick.rudolph@9elements.com>
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/module.h>
-+#include <linux/io.h>
-+#include <linux/iio/iio.h>
-+#include <linux/of.h>
-+#include <linux/i2c.h>
-+#include <linux/mfd/max597x.h>
-+#include <linux/regmap.h>
-+#include <linux/version.h>
-+#include <linux/platform_device.h>
-+
-+struct max597x_iio {
-+	struct regmap *regmap;
-+	int shunt_micro_ohms[MAX5970_NUM_SWITCHES];
-+	unsigned int irng[MAX5970_NUM_SWITCHES];
-+	unsigned int mon_rng[MAX5970_NUM_SWITCHES];
-+};
-+
-+#define MAX597X_ADC_CHANNEL(_idx, _type) {			\
-+	.type = IIO_ ## _type,					\
-+	.indexed = 1,						\
-+	.channel = (_idx),					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-+			      BIT(IIO_CHAN_INFO_SCALE),		\
-+	.address = MAX5970_REG_ ## _type ## _L(_idx),		\
-+}
-+
-+static const struct iio_chan_spec max5978_adc_iio_channels[] = {
-+	MAX597X_ADC_CHANNEL(0, VOLTAGE),
-+	MAX597X_ADC_CHANNEL(0, CURRENT),
-+};
-+
-+static const struct iio_chan_spec max5970_adc_iio_channels[] = {
-+	MAX597X_ADC_CHANNEL(0, VOLTAGE),
-+	MAX597X_ADC_CHANNEL(0, CURRENT),
-+	MAX597X_ADC_CHANNEL(1, VOLTAGE),
-+	MAX597X_ADC_CHANNEL(1, CURRENT),
-+};
-+
-+static int max597x_iio_read_raw(struct iio_dev *iio_dev,
-+				struct iio_chan_spec const *chan,
-+				int *val, int *val2, long info)
-+{
-+	int ret;
-+	struct max597x_iio *data = iio_priv(iio_dev);
-+	unsigned int reg_l, reg_h;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = regmap_read(data->regmap, chan->address, &reg_l);
-+		if (ret < 0)
-+			return ret;
-+		ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
-+		if (ret < 0)
-+			return ret;
-+		*val = (reg_h << 2) | (reg_l & 3);
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+
-+		switch (chan->address) {
-+		case MAX5970_REG_CURRENT_L(0):
-+			fallthrough;
-+		case MAX5970_REG_CURRENT_L(1):
-+			/* in A, convert to mA */
-+			*val = data->irng[chan->channel] * 1000;
-+			*val2 =
-+			    data->shunt_micro_ohms[chan->channel] * ADC_MASK;
-+			return IIO_VAL_FRACTIONAL;
-+
-+		case MAX5970_REG_VOLTAGE_L(0):
-+			fallthrough;
-+		case MAX5970_REG_VOLTAGE_L(1):
-+			/* in uV, convert to mV */
-+			*val = data->mon_rng[chan->channel];
-+			*val2 = ADC_MASK * 1000;
-+			return IIO_VAL_FRACTIONAL;
-+		}
-+
-+		break;
-+	}
-+	return -EINVAL;
-+}
-+
-+static const struct iio_info max597x_adc_iio_info = {
-+	.read_raw = &max597x_iio_read_raw,
-+};
-+
-+static int max597x_iio_probe(struct platform_device *pdev)
-+{
-+	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
-+	struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
-+	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
-+	struct iio_dev *indio_dev;
-+	struct max597x_iio *priv;
-+	int ret, i;
-+
-+	if (!regmap)
-+		return -EPROBE_DEFER;
-+
-+	if (!max597x || !max597x->num_switches)
-+		return -EPROBE_DEFER;
-+
-+	/* registering iio */
-+	indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*priv));
-+	if (!indio_dev) {
-+		dev_err(&i2c->dev, "failed allocating iio device\n");
-+		return -ENOMEM;
-+	}
-+	indio_dev->name = dev_name(&i2c->dev);
-+	indio_dev->info = &max597x_adc_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	switch (max597x->num_switches) {
-+	case MAX597x_TYPE_MAX5970:
-+		indio_dev->channels = max5970_adc_iio_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(max5970_adc_iio_channels);
-+		break;
-+	case MAX597x_TYPE_MAX5978:
-+		indio_dev->channels = max5978_adc_iio_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(max5978_adc_iio_channels);
-+		break;
-+	}
-+
-+	priv = iio_priv(indio_dev);
-+	priv->regmap = regmap;
-+	for (i = 0; i < indio_dev->num_channels; i++) {
-+		priv->irng[i] = max597x->irng[i];
-+		priv->mon_rng[i] = max597x->mon_rng[i];
-+		priv->shunt_micro_ohms[i] = max597x->shunt_micro_ohms[i];
-+	}
-+
-+	ret = devm_iio_device_register(&i2c->dev, indio_dev);
-+	if (ret)
-+		dev_err(&i2c->dev, "could not register iio device");
-+
-+	return ret;
-+}
-+
-+static struct platform_driver max597x_iio_driver = {
-+	.driver = {
-+		.name = "max597x-iio",
-+	},
-+	.probe = max597x_iio_probe,
-+};
-+
-+module_platform_driver(max597x_iio_driver);
-+
-+MODULE_AUTHOR("Patrick Rudolph <patrick.rudolph@9elements.com>");
-+MODULE_DESCRIPTION("MAX5970_hot-swap controller driver");
-+MODULE_LICENSE("GPL");
+I can only answer on my behalf. In my case the answer to why I used 
+platform_devices is practicality. I wanted to test devm_ APIs using 
+KUnit tests and I was pointed to an existing implementation in DRM (seen 
+in these patches). It didn't seem to make any sense to re-invent the 
+wheel by writing another implementation for the existing in-tree 
+functionality.
 
-base-commit: 368eb79f738a21e16c2bdbcac2444dfa96b01aaa
+Maybe Maxime had a better reason to go with the platform devices.
+
+>> +/**
+>> + * test_kunit_helper_alloc_device - Allocate a mock device for a KUnit test
+>> + * @test: The test context object
+>> + *
+>> + * This allocates a fake struct &device to create a mock for a KUnit
+>> + * test. The device will also be bound to a fake driver. It will thus be
+>> + * able to leverage the usual infrastructure and most notably the
+>> + * device-managed resources just like a "real" device.
+> 
+> What specific "usual infrastructure" are you wanting to access here?
+> 
+> And again, if you want a fake device, make a virtual one, by just
+> calling device_create().
+> 
+> Or are you wanting to do "more" with that device pointer than
+> device_create() can give you?
+
+Personally, I was (am) only interested in devm_ unwinding. I guess the
+device_create(), device_add(), device_remove()... (didn't study this 
+sequence in details so sorry if there is errors) could've been 
+sufficient for me. I haven't looked how much of the code that there is 
+for 'platform devices' should be duplicated to support that sequence for 
+testability purposes.
+
+The biggest thing for me is that I don't like the idea of creating own 
+'test device' in <add subsystem here> while we already have some in DRM 
+(or others). Thus, I do see value in adding generic helpers for 
+supporting running KUnit tests on devm_* APIs. Hence it'd be good to 
+have _some_ support for it. And having them in drivers/base/test seemed 
+like a correct place to me. What I really don't know is if there are 
+legitimate use-cases for using platform_devices in DRM tests. Perhaps 
+Maxime can shed light on that.
+
+Yours,
+	-- Matti
+
 -- 
-2.39.1
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

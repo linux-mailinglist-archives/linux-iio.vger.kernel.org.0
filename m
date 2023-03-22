@@ -2,187 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F34C6C4C44
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 14:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93E196C4F9B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 16:43:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbjCVNst (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Mar 2023 09:48:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44348 "EHLO
+        id S229688AbjCVPnv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Mar 2023 11:43:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230115AbjCVNss (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 09:48:48 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6ED5A6E7;
-        Wed, 22 Mar 2023 06:48:13 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id q16so12660452lfe.10;
-        Wed, 22 Mar 2023 06:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679492892;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=92oTNP+sKoipbZFz7skaTllICxMbhqwCfT6iOU7a8rc=;
-        b=cCPyYH9pJ1b9o0ofAqIlqifdD12pUu1NQwYP9kb8lXRzfL4HmGVqyGma3L5K3RXifB
-         inMJCpIgXEXhLtUjonU+VlUmg4st6QF7DI2JB5dw0urxuQiL8g+O6GWrtDt88+ZSgGXo
-         Pnbd03wYUq1i3wpe4uA8IwDnHdMpoimsBnAbV+DgFkoVGfnz05X+m81o0Ghab6d/sd9r
-         z70Fg6v5MTR4WCX7JEhpzzLlKZo40T2ebswSQSC7BY2O3SvljC6N5qRbmZhpifbCaZik
-         y/7pETxnAeXnqqKeLUL/TAaMESuQmzmci8xgkQ99u44b9EwFabcI/Sr2xsq5d60uQLbg
-         zi6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679492892;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=92oTNP+sKoipbZFz7skaTllICxMbhqwCfT6iOU7a8rc=;
-        b=zy2I2LqdzUkhdlUwX60ps+LLV9IAjPIegu7w1IzejxDTTm6hBtmWq38bphx5ibvBGp
-         HXDhAelkLyQvOt/uOqy4qDXjYU8LfCxGVpjrCr7dO9tXchduji1Rj1uUFJdp3ZwM166Z
-         cJfdd0wd+dnC6pJ5ZCK13LRJp3UbKMEx5lu0D1txU9wJayIOUMqEIMEVkhseuV9I/Lc3
-         PqqwauMHf2pVpy+jK0/sUqBQo3UyLr9dScNVaz/PDUODGuNF9pKNUh9QWpycGa0/jjpb
-         jkWunttGtq2iMj1s2sfTGq1gFRlwkqjqmyt7G6lrbjw8AV+mxGRXgK3CASuwCuSFUsBb
-         9TSw==
-X-Gm-Message-State: AO0yUKXZFICd/vlrrHK8V7kQjZkfcsb+juKBm2QP45Qt8TmPKkGUYCrv
-        9lOoQHqFu7ru0RNPOnBbsTo=
-X-Google-Smtp-Source: AK7set/DsbRSjiFXY1QVWeKBJ5mRkh2cXJeChEojpUx0NG2pipiDPmSEh3CZhu7PWl8H4ITE4/x62Q==
-X-Received: by 2002:a19:c206:0:b0:4e8:3f1f:3646 with SMTP id l6-20020a19c206000000b004e83f1f3646mr1898313lfc.55.1679492891602;
-        Wed, 22 Mar 2023 06:48:11 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id t18-20020ac25492000000b004d58bf6a61asm2545811lfk.230.2023.03.22.06.48.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Mar 2023 06:48:11 -0700 (PDT)
-Message-ID: <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
-Date:   Wed, 22 Mar 2023 15:48:00 +0200
+        with ESMTP id S229549AbjCVPnu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 11:43:50 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF142311F;
+        Wed, 22 Mar 2023 08:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679499829; x=1711035829;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3y52vmnpU1zrtrzsFH1G+PtYutUm6m2sFkJR0sAJnPQ=;
+  b=RrOlyLjhVS739Zo5g3i0mZuBtMXDXDoyvVIP1jw9AEdSCLZyAY8w7mL4
+   YrdoNQLdrmB+HbcotPZiahVTftheLdgZcVS8B3AVf4MfNomHbCsGaF6Jg
+   dxNiUkpckV1RKe/LswEF54qUwOcJJW1rQAiNKqcf5HUcwRjstGE8Qjgl7
+   1HVwmgdErH/c8g+8cPc2eV/+eQheOmIfBhvfC4PML07RI/HwfP/pUoxqI
+   f1peLN+h/6Aygn609VHCiae8AMdpnmmu26e9h/FkYvj4Psk2/HHQQjf6R
+   xfQ7ZQ8Ao4cZNYLanjG1hGS6wa9W1js082Z/bcnvVMB9FrEMOqjjS81js
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="339286253"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="339286253"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 08:43:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="659216178"
+X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
+   d="scan'208";a="659216178"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 22 Mar 2023 08:43:44 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pf0co-000DRM-2u;
+        Wed, 22 Mar 2023 15:43:42 +0000
+Date:   Wed, 22 Mar 2023 23:43:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Naresh Solanki <naresh.solanki@9elements.com>,
+        Lee Jones <lee@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
+Message-ID: <202303222333.PPnq1J4t-lkp@intel.com>
+References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US, en-GB
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-References: <cover.1679474247.git.mazziesaccount@gmail.com>
- <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
- <ZBrvhfX/NNrJefgt@kroah.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-In-Reply-To: <ZBrvhfX/NNrJefgt@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Greg,
+Hi Naresh,
 
-Thanks for looking at this.
+I love your patch! Perhaps something to improve:
 
-On 3/22/23 14:07, Greg Kroah-Hartman wrote:
-> On Wed, Mar 22, 2023 at 11:05:55AM +0200, Matti Vaittinen wrote:
->> --- /dev/null
->> +++ b/drivers/base/test/test_kunit_device.c
->> @@ -0,0 +1,83 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * These helpers have been extracted from drm test code at
->> + * drm_kunit_helpers.c which was authored by
->> + * Maxime Ripard <maxime@cerno.tech>
->> + */
->> +
->> +#include <linux/device.h>
->> +#include <linux/platform_device.h>
->> +
->> +#include <kunit/platform_device.h>
->> +
->> +#define KUNIT_DEVICE_NAME	"test-kunit-mock-device"
->> +
->> +static int fake_probe(struct platform_device *pdev)
-> 
-> Please do not abuse platform devices and drivers for things that are not
-> actually platform devices and drivers.
-> 
->> +{
->> +	return 0;
->> +}
->> +
->> +static int fake_remove(struct platform_device *pdev)
->> +{
->> +	return 0;
->> +}
->> +
->> +static struct platform_driver fake_platform_driver = {
->> +	.probe	= fake_probe,
->> +	.remove	= fake_remove,
->> +	.driver = {
->> +		.name	= KUNIT_DEVICE_NAME,
->> +	},
->> +};
-> 
-> Why do you need this fake platform driver at all?
-> 
-> Why not just use a virtual device?
+[auto build test WARNING on 368eb79f738a21e16c2bdbcac2444dfa96b01aaa]
 
-I can only answer on my behalf. In my case the answer to why I used 
-platform_devices is practicality. I wanted to test devm_ APIs using 
-KUnit tests and I was pointed to an existing implementation in DRM (seen 
-in these patches). It didn't seem to make any sense to re-invent the 
-wheel by writing another implementation for the existing in-tree 
-functionality.
+url:    https://github.com/intel-lab-lkp/linux/commits/Naresh-Solanki/leds-max597x-Add-support-for-max597x/20230322-204408
+base:   368eb79f738a21e16c2bdbcac2444dfa96b01aaa
+patch link:    https://lore.kernel.org/r/20230322124316.2147143-1-Naresh.Solanki%409elements.com
+patch subject: [PATCH 1/2] iio: max597x: Add support for max597x
+reproduce:
+        make versioncheck
 
-Maybe Maxime had a better reason to go with the platform devices.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303222333.PPnq1J4t-lkp@intel.com/
 
->> +/**
->> + * test_kunit_helper_alloc_device - Allocate a mock device for a KUnit test
->> + * @test: The test context object
->> + *
->> + * This allocates a fake struct &device to create a mock for a KUnit
->> + * test. The device will also be bound to a fake driver. It will thus be
->> + * able to leverage the usual infrastructure and most notably the
->> + * device-managed resources just like a "real" device.
-> 
-> What specific "usual infrastructure" are you wanting to access here?
-> 
-> And again, if you want a fake device, make a virtual one, by just
-> calling device_create().
-> 
-> Or are you wanting to do "more" with that device pointer than
-> device_create() can give you?
-
-Personally, I was (am) only interested in devm_ unwinding. I guess the
-device_create(), device_add(), device_remove()... (didn't study this 
-sequence in details so sorry if there is errors) could've been 
-sufficient for me. I haven't looked how much of the code that there is 
-for 'platform devices' should be duplicated to support that sequence for 
-testability purposes.
-
-The biggest thing for me is that I don't like the idea of creating own 
-'test device' in <add subsystem here> while we already have some in DRM 
-(or others). Thus, I do see value in adding generic helpers for 
-supporting running KUnit tests on devm_* APIs. Hence it'd be good to 
-have _some_ support for it. And having them in drivers/base/test seemed 
-like a correct place to me. What I really don't know is if there are 
-legitimate use-cases for using platform_devices in DRM tests. Perhaps 
-Maxime can shed light on that.
-
-Yours,
-	-- Matti
+versioncheck warnings: (new ones prefixed by >>)
+   INFO PATH=/opt/cross/clang/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 3h /usr/bin/make W=1 --keep-going HOSTCC=gcc-11 CC=gcc-11 -j32 ARCH=x86_64 versioncheck
+   find ./* \( -name SCCS -o -name BitKeeper -o -name .svn -o -name CVS -o -name .pc -o -name .hg -o -name .git \) -prune -o \
+   	-name '*.[hcS]' -type f -print | sort \
+   	| xargs perl -w ./scripts/checkversion.pl
+   ./drivers/accessibility/speakup/genmap.c: 13 linux/version.h not needed.
+   ./drivers/accessibility/speakup/makemapdata.c: 13 linux/version.h not needed.
+>> ./drivers/iio/adc/max597x-iio.c: 20 linux/version.h not needed.
+   ./drivers/net/ethernet/qlogic/qede/qede.h: 10 linux/version.h not needed.
+   ./drivers/net/ethernet/qlogic/qede/qede_ethtool.c: 7 linux/version.h not needed.
+   ./drivers/soc/tegra/cbb/tegra-cbb.c: 19 linux/version.h not needed.
+   ./drivers/soc/tegra/cbb/tegra194-cbb.c: 26 linux/version.h not needed.
+   ./drivers/soc/tegra/cbb/tegra234-cbb.c: 27 linux/version.h not needed.
+   ./drivers/staging/media/atomisp/include/linux/atomisp.h: 23 linux/version.h not needed.
+   ./samples/trace_events/trace_custom_sched.c: 11 linux/version.h not needed.
+   ./sound/soc/codecs/cs42l42.c: 14 linux/version.h not needed.
+   ./tools/lib/bpf/bpf_helpers.h: 289: need linux/version.h
+   ./tools/perf/tests/bpf-script-example.c: 60: need linux/version.h
+   ./tools/perf/tests/bpf-script-test-kbuild.c: 21: need linux/version.h
+   ./tools/perf/tests/bpf-script-test-prologue.c: 49: need linux/version.h
+   ./tools/perf/tests/bpf-script-test-relocation.c: 51: need linux/version.h
+   ./tools/testing/selftests/bpf/progs/dev_cgroup.c: 9 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/netcnt_prog.c: 3 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_map_lock.c: 4 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_send_signal_kern.c: 4 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_spin_lock.c: 4 linux/version.h not needed.
+   ./tools/testing/selftests/bpf/progs/test_tcp_estats.c: 37 linux/version.h not needed.
+   ./tools/testing/selftests/wireguard/qemu/init.c: 27 linux/version.h not needed.
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

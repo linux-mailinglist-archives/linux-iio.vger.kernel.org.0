@@ -2,120 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93E196C4F9B
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 16:43:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43EC66C4FCF
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Mar 2023 16:58:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjCVPnv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Mar 2023 11:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35536 "EHLO
+        id S230195AbjCVP6t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Mar 2023 11:58:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjCVPnu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 11:43:50 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF142311F;
-        Wed, 22 Mar 2023 08:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679499829; x=1711035829;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3y52vmnpU1zrtrzsFH1G+PtYutUm6m2sFkJR0sAJnPQ=;
-  b=RrOlyLjhVS739Zo5g3i0mZuBtMXDXDoyvVIP1jw9AEdSCLZyAY8w7mL4
-   YrdoNQLdrmB+HbcotPZiahVTftheLdgZcVS8B3AVf4MfNomHbCsGaF6Jg
-   dxNiUkpckV1RKe/LswEF54qUwOcJJW1rQAiNKqcf5HUcwRjstGE8Qjgl7
-   1HVwmgdErH/c8g+8cPc2eV/+eQheOmIfBhvfC4PML07RI/HwfP/pUoxqI
-   f1peLN+h/6Aygn609VHCiae8AMdpnmmu26e9h/FkYvj4Psk2/HHQQjf6R
-   xfQ7ZQ8Ao4cZNYLanjG1hGS6wa9W1js082Z/bcnvVMB9FrEMOqjjS81js
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="339286253"
-X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="339286253"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 08:43:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="659216178"
-X-IronPort-AV: E=Sophos;i="5.98,282,1673942400"; 
-   d="scan'208";a="659216178"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 22 Mar 2023 08:43:44 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pf0co-000DRM-2u;
-        Wed, 22 Mar 2023 15:43:42 +0000
-Date:   Wed, 22 Mar 2023 23:43:13 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Naresh Solanki <naresh.solanki@9elements.com>,
-        Lee Jones <lee@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        Naresh Solanki <Naresh.Solanki@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
-Message-ID: <202303222333.PPnq1J4t-lkp@intel.com>
-References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
+        with ESMTP id S229843AbjCVP6s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Mar 2023 11:58:48 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5165F36FE7;
+        Wed, 22 Mar 2023 08:58:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=Khd9ZkkHV56yKylwQkQUjI8LC8lCPiD84A4vvthz0NM=; b=Ym5UsdJU+V8MwR6QVIemE10FSk
+        ctO4TuyLB1J4sjdIGDcbc7k0SNq+ZHCC4aIkVPuZftYgnH/BwmdragB3qwnMi7+xDiO/AS73WhNHo
+        lr5+fTrh+pH88TZfnAp32Q569SqQc0c1IzpdowK7PFX+B68vSpigjOezGW3pECjbOljPNtId/fX8E
+        YTEKcLkWqDtOqVA+L8AwN3+X8kSu8KRI1E7EfKdqthZT6KqERDXkE4XR/KrQ3Run3/8Ww5drCW+eM
+        S00flVqp6sQ4FLZQqQeR9aShTQGCrMbSRpQBgnbDSHlwO9j4ofZfjTeOuOHESjr7F8RS0OTOfil5D
+        uURTjkkQ==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pf0rJ-000Ihk-MW; Wed, 22 Mar 2023 16:58:41 +0100
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pf0rJ-000QwQ-Bx; Wed, 22 Mar 2023 16:58:41 +0100
+Message-ID: <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
+Date:   Wed, 22 Mar 2023 08:58:39 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
+Content-Language: en-US
+To:     Naresh Solanki <naresh.solanki@9elements.com>,
+        Lee Jones <lee@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
 In-Reply-To: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26851/Wed Mar 22 08:22:49 2023)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Naresh,
+Hi,
 
-I love your patch! Perhaps something to improve:
+This looks really good. A few minor comments inline.
 
-[auto build test WARNING on 368eb79f738a21e16c2bdbcac2444dfa96b01aaa]
+On 3/22/23 05:43, Naresh Solanki wrote:
+> [...]
+> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
+> +				struct iio_chan_spec const *chan,
+> +				int *val, int *val2, long info)
+> +{
+> +	int ret;
+> +	struct max597x_iio *data = iio_priv(iio_dev);
+> +	unsigned int reg_l, reg_h;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = regmap_read(data->regmap, chan->address, &reg_l);
+> +		if (ret < 0)
+> +			return ret;
+> +		ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
+> +		if (ret < 0)
+> +			return ret;
+Is there any chance of a race condition of getting inconsistent data 
+when splitting this over two reads? I.e. registers being updated with 
+new values in between the two reads.
+> +		*val = (reg_h << 2) | (reg_l & 3);
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +
+> +		switch (chan->address) {
+> +		case MAX5970_REG_CURRENT_L(0):
+> +			fallthrough;
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Naresh-Solanki/leds-max597x-Add-support-for-max597x/20230322-204408
-base:   368eb79f738a21e16c2bdbcac2444dfa96b01aaa
-patch link:    https://lore.kernel.org/r/20230322124316.2147143-1-Naresh.Solanki%409elements.com
-patch subject: [PATCH 1/2] iio: max597x: Add support for max597x
-reproduce:
-        make versioncheck
+`fallthrough` should not be needed for multiple case statements right on top of each other with no code in between. Same below
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303222333.PPnq1J4t-lkp@intel.com/
-
-versioncheck warnings: (new ones prefixed by >>)
-   INFO PATH=/opt/cross/clang/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 3h /usr/bin/make W=1 --keep-going HOSTCC=gcc-11 CC=gcc-11 -j32 ARCH=x86_64 versioncheck
-   find ./* \( -name SCCS -o -name BitKeeper -o -name .svn -o -name CVS -o -name .pc -o -name .hg -o -name .git \) -prune -o \
-   	-name '*.[hcS]' -type f -print | sort \
-   	| xargs perl -w ./scripts/checkversion.pl
-   ./drivers/accessibility/speakup/genmap.c: 13 linux/version.h not needed.
-   ./drivers/accessibility/speakup/makemapdata.c: 13 linux/version.h not needed.
->> ./drivers/iio/adc/max597x-iio.c: 20 linux/version.h not needed.
-   ./drivers/net/ethernet/qlogic/qede/qede.h: 10 linux/version.h not needed.
-   ./drivers/net/ethernet/qlogic/qede/qede_ethtool.c: 7 linux/version.h not needed.
-   ./drivers/soc/tegra/cbb/tegra-cbb.c: 19 linux/version.h not needed.
-   ./drivers/soc/tegra/cbb/tegra194-cbb.c: 26 linux/version.h not needed.
-   ./drivers/soc/tegra/cbb/tegra234-cbb.c: 27 linux/version.h not needed.
-   ./drivers/staging/media/atomisp/include/linux/atomisp.h: 23 linux/version.h not needed.
-   ./samples/trace_events/trace_custom_sched.c: 11 linux/version.h not needed.
-   ./sound/soc/codecs/cs42l42.c: 14 linux/version.h not needed.
-   ./tools/lib/bpf/bpf_helpers.h: 289: need linux/version.h
-   ./tools/perf/tests/bpf-script-example.c: 60: need linux/version.h
-   ./tools/perf/tests/bpf-script-test-kbuild.c: 21: need linux/version.h
-   ./tools/perf/tests/bpf-script-test-prologue.c: 49: need linux/version.h
-   ./tools/perf/tests/bpf-script-test-relocation.c: 51: need linux/version.h
-   ./tools/testing/selftests/bpf/progs/dev_cgroup.c: 9 linux/version.h not needed.
-   ./tools/testing/selftests/bpf/progs/netcnt_prog.c: 3 linux/version.h not needed.
-   ./tools/testing/selftests/bpf/progs/test_map_lock.c: 4 linux/version.h not needed.
-   ./tools/testing/selftests/bpf/progs/test_send_signal_kern.c: 4 linux/version.h not needed.
-   ./tools/testing/selftests/bpf/progs/test_spin_lock.c: 4 linux/version.h not needed.
-   ./tools/testing/selftests/bpf/progs/test_tcp_estats.c: 37 linux/version.h not needed.
-   ./tools/testing/selftests/wireguard/qemu/init.c: 27 linux/version.h not needed.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+> +		case MAX5970_REG_CURRENT_L(1):
+> +			/* in A, convert to mA */
+> +			*val = data->irng[chan->channel] * 1000;
+> +			*val2 =
+> +			    data->shunt_micro_ohms[chan->channel] * ADC_MASK;
+ADC_MASK should really have a MAX5970_ prefix, but I guess it is defined 
+in max597x.h
+> +			return IIO_VAL_FRACTIONAL;
+> +
+> +		case MAX5970_REG_VOLTAGE_L(0):
+> +			fallthrough;
+> +		case MAX5970_REG_VOLTAGE_L(1):
+> +			/* in uV, convert to mV */
+> +			*val = data->mon_rng[chan->channel];
+> +			*val2 = ADC_MASK * 1000;
+> +			return IIO_VAL_FRACTIONAL;
+> +		}
+> +
+> +		break;
+> +	}
+> +	return -EINVAL;
+> +}
+> [..]
+> +static int max597x_iio_probe(struct platform_device *pdev)
+> +{
+> +	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
+> +	struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
+> +	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
+> +	struct iio_dev *indio_dev;
+> +	struct max597x_iio *priv;
+> +	int ret, i;
+> +
+> +	if (!regmap)
+> +		return -EPROBE_DEFER;
+> +
+> +	if (!max597x || !max597x->num_switches)
+> +		return -EPROBE_DEFER;
+> +
+> +	/* registering iio */
+> +	indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*priv));
+For the devm allocations we should be using &pdev->dev and not the I2C 
+device, since this is the device to which the allocations belong and 
+where they should be freed when the device is removed.
+> +	if (!indio_dev) {
+> +		dev_err(&i2c->dev, "failed allocating iio device\n");
+Consider using dev_err_probe() for error message printing. This will 
+give a consistent formatting of the messages. Also again use &pdev->dev 
+instead of I2C device to get the right device listed in the error messages.
+> +		return -ENOMEM;
+> +	}
+> +	indio_dev->name = dev_name(&i2c->dev);
+The IIO ABI wants the type of the chip for the name. E.g. "max5970", 
+using dev_name() of the parent I2C device will result in something else.
+> [...]

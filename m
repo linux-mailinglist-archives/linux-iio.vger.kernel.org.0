@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7E76C6589
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 11:46:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EE0A6C6600
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 12:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231673AbjCWKq2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 06:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44434 "EHLO
+        id S230367AbjCWLAj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 07:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231639AbjCWKqM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 06:46:12 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7D912047;
-        Thu, 23 Mar 2023 03:43:46 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id t14so21888643ljd.5;
-        Thu, 23 Mar 2023 03:43:46 -0700 (PDT)
+        with ESMTP id S230009AbjCWLAh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 07:00:37 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB4710411;
+        Thu, 23 Mar 2023 04:00:30 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id br6so27122459lfb.11;
+        Thu, 23 Mar 2023 04:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679568224;
+        d=gmail.com; s=20210112; t=1679569229;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bVkvbssOApWk1Mg8YWF2gO2sXRG9eKmEnBzQZ0sEbEs=;
-        b=LSx+fSmSFu0xOqUzgmqBX5akSGRbx3sTmlQ7o/ff0sO5LQFNBJzCHodyUXhcsJUVEs
-         aJUsGgYgt3i+JLshum/WokARce3iKWQuMOLB2D4BQAPNyfwx1SqluAE5RiC/4KFNn2bV
-         1PBvXyWeUFGdYbuOhpRKdXdBLGMckkbQm3f1Qnm833a0E7kQBUwIO60GBvCrETxmh2lk
-         ZymvOnQUt0A1dJHPHtBqCfb6w5jBvw+65grCAecqk6R0oUKbrzR0hHf+tSkHkhF/GaFi
-         u1A39W5KRhaceGkx85jZ9/3B6GVXxilIic/5fjEYJGGqDwBUhz5Zi07bJBTnXO0XEjWu
-         Ka4A==
+        bh=jhgaXnoFQYfR1j7Dc6foxNzXPnSyFAAXMgSYay3WrLk=;
+        b=ey9bSKQclIG6iwUzhcWkN9niFX0lQv/AuX8whFxeOdF/WNtFNVnwV5QVJXJYdboRxU
+         L9aRS4+8tHJnzgG70kjEvw7l1qu6gb7li2OzqK67PjZeFQaxNhtxnhTGNk2efniSuA4o
+         EG+YC7m5bAoz3UkcjKhOjQ2HU2pyzSd7wCBZ8cJkQo/K7A4HQDNdylaesV6kTeixSbni
+         s+LKns3XysNjbshB4RDNUdfFsBhKtfnJX6jEbDAdqG+Lai2ljAxwq0lSnLldvYWaszgy
+         znTX+EJzpZQzNKL34P/qccHCsNXecaUiau/pVKv7PEXeVeeLvb0bLHfZuawL1w4vhCIJ
+         eiDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679568224;
+        d=1e100.net; s=20210112; t=1679569229;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVkvbssOApWk1Mg8YWF2gO2sXRG9eKmEnBzQZ0sEbEs=;
-        b=PEm9zZsdKdULjqoEbKp8N0DRV3yoaMUIZoY4Gz7Rp5DfwLjA9I7RGi/UKRt2T6xB24
-         VFoKv9U9PcvDInP+QehzCITuhVLTA2KrGvAa2xmtvVgAzvJToRr8SVtSGybr3LFzUPcT
-         O3GjsDXiBgvoFitCGhfODL3E5aZc4zYgLHXcTjic1yQIwUC1KwLnUzys2DDYcfb46HHL
-         2KONdBF8rHwjv6VSQQPQpC6TUIzYIcz/Whx8xqgMEdrIq+AbHWJjn69o/KU1xOD+69zp
-         cGGVcVgnivbqySicRtLOf4euvCUp984esPBJ1xM8P6bTu9PGd6aCyY1fQov2fx+jRZwm
-         fnmg==
-X-Gm-Message-State: AO0yUKWELKyJUGCZtRCx/uVWdU6O8Ppo4EMOiMfLhXMXCoWxmGEMFbjy
-        r1MIbYlZg2iQ1cFOAtUcAvY=
-X-Google-Smtp-Source: AK7set/NShKiLbJhp8swuS56t5O1tRm9yOZ9M6BwW+IetbR/dWGogsrTHM0X2on6LbT0yM0nq57v6w==
-X-Received: by 2002:a2e:9b17:0:b0:29e:e7ad:c8e1 with SMTP id u23-20020a2e9b17000000b0029ee7adc8e1mr3592888lji.28.1679568224327;
-        Thu, 23 Mar 2023 03:43:44 -0700 (PDT)
+        bh=jhgaXnoFQYfR1j7Dc6foxNzXPnSyFAAXMgSYay3WrLk=;
+        b=gvIF2G7oiVMt122iaLyJhf65Bo2DPe1suINllHbfFmvX7GglHjN1Et5K9vnRQoPB7r
+         cBYVP5smyWzjBDKhd07CIY8ZnYDeVQkf8UsXsbefaoLmhq1uhIPkp0C234m8H2LDmsoe
+         ABk+xXzCe6qH2ZkQLlwJvcF8dJFXqO5wP55YmHXSUUje+bHsosYEVmt6IjMumgAms3dZ
+         Fd6BZr929aYCRrJPVrnPDkr5ixQ3U6PLSrtmGj9hg0GU12yNM9049/0zs9DDD+/3u6e+
+         +g54yZsLPpqE+ScBdJJiX8dYClmhih4qM3fzFU5BJD4ryy7G+JTxyW98EMZDNTK0IaiH
+         lsSQ==
+X-Gm-Message-State: AO0yUKWIlLKzAMqbDudT+u3JSoSqksDE3Tsal6viwnX+u4FMLTmN0TXu
+        1K2IpqDRfSdJhHBKnhmAVfc=
+X-Google-Smtp-Source: AK7set/DGFOMZ2ej8yISjoeVXeEWBsKlYEq+58IK3fQLcaUlF2R2qowgDqVhKtH0q/ySq9iR7CdvPw==
+X-Received: by 2002:a19:7606:0:b0:4e8:49c7:b3d2 with SMTP id c6-20020a197606000000b004e849c7b3d2mr3067790lff.19.1679569228997;
+        Thu, 23 Mar 2023 04:00:28 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id y11-20020a2e9d4b000000b00295a5aa9d05sm2920059ljj.120.2023.03.23.03.43.43
+        by smtp.gmail.com with ESMTPSA id p15-20020a2e9a8f000000b002986d2069d4sm2943652lji.82.2023.03.23.04.00.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 03:43:43 -0700 (PDT)
-Message-ID: <ec3a8aad-b36b-d814-9616-ae5d65ab4879@gmail.com>
-Date:   Thu, 23 Mar 2023 12:43:42 +0200
+        Thu, 23 Mar 2023 04:00:28 -0700 (PDT)
+Message-ID: <f1390b01-c77e-3f67-acfc-7434f87d4856@gmail.com>
+Date:   Thu, 23 Mar 2023 13:00:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
@@ -74,12 +74,12 @@ References: <cover.1679474247.git.mazziesaccount@gmail.com>
  <ZBrvhfX/NNrJefgt@kroah.com> <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
  <ZBtPhoelZo4U5jwC@kroah.com>
  <12ea1d68-2a3c-0aa7-976c-7bd3eef35239@fi.rohmeurope.com>
- <ZBwUp/fRIjQZtjF7@kroah.com> <3c09bda1-330d-6d49-ade5-aab567b3a0c4@gmail.com>
- <ZBwpNcd/A15/Azjr@kroah.com>
+ <ZBwUp/fRIjQZtjF7@kroah.com> <91c8dc84-8eae-15d9-3d55-976c2c806421@gmail.com>
+ <ZBwpfRGoXT/0sxlU@kroah.com>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
  creation
-In-Reply-To: <ZBwpNcd/A15/Azjr@kroah.com>
+In-Reply-To: <ZBwpfRGoXT/0sxlU@kroah.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -92,10 +92,8 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is a low priority babbling - feel free to skip if busy.
-
-On 3/23/23 12:25, Greg Kroah-Hartman wrote:
-> On Thu, Mar 23, 2023 at 11:20:33AM +0200, Matti Vaittinen wrote:
+On 3/23/23 12:27, Greg Kroah-Hartman wrote:
+> On Thu, Mar 23, 2023 at 12:01:15PM +0200, Matti Vaittinen wrote:
 >> On 3/23/23 10:58, Greg Kroah-Hartman wrote:
 >>> On Thu, Mar 23, 2023 at 07:17:40AM +0000, Vaittinen, Matti wrote:
 >>>> On 3/22/23 20:57, Greg Kroah-Hartman wrote:
@@ -107,102 +105,62 @@ On 3/23/23 12:25, Greg Kroah-Hartman wrote:
 >>>>>> On 3/22/23 14:07, Greg Kroah-Hartman wrote:
 >>>>>>> On Wed, Mar 22, 2023 at 11:05:55AM +0200, Matti Vaittinen wrote:
 >>
->>>> I am very conservative what comes to adding unit tests due to the huge
->>>> inertia they add to any further development. I usually only add tests to
->>>> APIs which I know won't require changing (I don't know such in-kernel
->>>> APIs)
+>>>>>> The biggest thing for me is that I don't like the idea of creating own 'test
+>>>>>> device' in <add subsystem here> while we already have some in DRM (or
+>>>>>> others). Thus, I do see value in adding generic helpers for supporting
+>>>>>> running KUnit tests on devm_* APIs. Hence it'd be good to have _some_
+>>>>>> support for it.
+>>>>>
+>>>>> I agree, let's use a virtual device and a virtual bus (you can use the
+>>>>> auxbus code for this as that's all there for this type of thing)
+>>>>
+>>>> Hm. The auxiliary_devices require parent. What would be the best way to
+>>>> deal with that in KUnit tests?
 >>>
->>> So anything that is changing doesn't get a test?
+>>> If you use NULL as the parent, it goes into the root.
 >>
->> No. I think you misread me. I didn't say I don't like adding tests to code
->> which changes. I said, I don't like adding tests to APIs which change.
-> 
-> Then you should not be writing any in-kernel tests as all of our APIs
-> change all the time.
-> 
->>   If you only test
->>> things that don't change then no tests fail, and so, why have the test
->>> at all?
+>> As far as I read this is not the case with auxiliary devices. Judging the
+>> docs they were intended to be representing some part of a (parent) device. I
+>> see the auxiliary_device_init() has explicit check for parent being
+>> populated:
 >>
->> Because implementation cascading into functions below an API may change even
->> if the API stays unchanged.
-> 
-> Then it needs to be fixed.
-> 
->>> On the contrary, tests should be used to verify things that are changing
->>> all the time, to ensure that we don't break things.
+>> int auxiliary_device_init(struct auxiliary_device *auxdev)
+>> {
+>>          struct device *dev = &auxdev->dev;
 >>
->> This is only true when your test code stays valid. Problem with excessive
->> amount of tests is that more we have callers for an API, harder changing
->> that API becomes. I've seen a point where people stop fixing "unimportant"
->> things just because the amount of work fixing all impacted UT-cases would
->> take. I know that many things went wrong before that project ended up to the
->> point - but what I picked up with me is that carelessly added UTs do really
->> hinder further development.
+>>          if (!dev->parent) {
+>>                  pr_err("auxiliary_device has a NULL dev->parent\n");
+>>                  return -EINVAL;
+>>          }
 > 
-> Again, in-kernel apis change at any moment.
+> Yes as it wants to "split" a device up into smaller devices.  So make a
+> real device that it can hang off of.
 
-I agree. This is why I initially wrote:
+Yep. This is what led me to the root_device_register()... :rolleyes: And 
+seein the root-device alone could do what I need - adding auxiliary 
+device on top of it just for the sake of adding one seems a bit of an 
+over-engineering to me :)
 
- >>>> APIs which I know won't require changing (I don't know such in-kernel
- >>>> APIs)
-
-> Don't get stuck into thinking that you can only
-> write tests for stuff that is "stable" as nothing in the kernel is
-> "stable" and can change at any point in time.
-
-I don't. But I don't either think that UTs come with no cost. Thus I do 
-only write tests when I see a _real need_ for one. If the APIs would be 
-guaranteed not to change, then I would understand writing the tests for 
-each and every "thing" without much of thinking if "the thing" is worth 
-the test.
-
->  You fix up all the
-> in-kernel users of the api, and the tests, and all is good.  That's how
-> kernel development works.
-
-Sure. This is how it works and how I think it should work. But I also 
-have seen how this 'UT work overhead' has made people to decide not to 
-touch things. Not in kernel but in other project. This is a real thing 
-which can happen - many engineers like me are lazy bastards :)
-
->>   That's why we need
->>> them, not to just validate that old code still is going ok.
->>>
->>> The driver core is changing, and so, I would love to see tests for it to
->>> ensure that I don't break anything over time.  That should NOT slow down
->>> development but rather, speed it up as it ensures that things still work
->>> properly.
->>
->> I agree that there are cases where UTs are very handy and can add confidence
->> that things work as intended. Still, my strong opinion is that people should
->> consider what parts of code are really worth testing - and how to do the
->> tests so that the amount of maintenance required by the tests stays low.
->> It's definitely _not fun_ to do refactoring for minor improvement when 400+
->> unit-test cases break. It's a point when many developers start seeing fixing
->> this minor culprit much less important... And when people stop fixing minor
->> things ... major things start to be just around the corner.
+>> As I wrote in another mail, I thought of using a root_device for this IIO
+>> test as was suggested by David. To tell the truth, implementing a kunit bus
+>> device is starting to feel a bit overwhelming... I started just adding a
+>> driver for a light sensor, ended up adding a helper for IIO gain-time-scale
+>> conversions and I am slightly reluctant to going the extra-extra mile of
+>> adding some UT infrastructure in the context of this driver work...
 > 
-> If people stop fixing minor things then the kernel development process
-> is dead.  Based on all the changes that go into it right now, we are far
-> from having that problem.
+> I think it is worth it as the driver core has no tests.  So it obviously
+> must be correct, right?  :)
 
-And I am so happy for that. Kernel/drivers are still fun to work with. 
-My personal preference is to keep it that way :)
+Doh. Greg, I hate you :) How could one argue with something like this? I 
+think I will submit the v6 with the root_device_register() due to the 
+aux-device requiring it in any case. I know that will end up to your 
+table still as IIO is going through your hands anyways.
 
-> So write valid tests, if we get to the point where we have too much of a
-> problem fixing up the tests than the real users of apis, then we can
-> revisit it.  But for now, that's not an issue.
-
-The beginning of your sentence hits the point. Write valid tests. I just 
-encourage people to occasionally ask if the test they write is really a 
-valid one. :)
-
-> And again, remember, and api can, and will, change at any moment in
-> time, you can never know what will be "stable" as we do not have such a
-> thing.
-
-We agree on this.
+I will however take a look at what Maxime said about devm unwinding not 
+being done w/o a bus because I think I saw the unwinding done in these 
+IIO tests even when using the root_device_register() 
+root_device_unregister(). If the unwinding really is not done, then I 
+will come back to this auxiliary device rehearsal
 
 -- 
 Matti Vaittinen

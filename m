@@ -2,123 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DBBE6C6908
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 14:02:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD3D86C6921
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 14:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjCWNCO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 09:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
+        id S229702AbjCWNIO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 09:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231442AbjCWNCN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 09:02:13 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B70F31E2F;
-        Thu, 23 Mar 2023 06:02:07 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id i13so11940394lfe.9;
-        Thu, 23 Mar 2023 06:02:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679576525;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tcDN4yLObJ91VpozedlyiBLgn6rGqURr9Yuhok2Y+PA=;
-        b=P9YYByKLmgGDibnq/rP1BZQfemo0fBl8D6TnLrSBncDfJdN+NJwfTBfZSQztaByYza
-         VYON0dKQBtNI0nLdNUIl1RQDbOEbgATojc8xGo+u24vkXeXtq6IclmD4RXKu45xYZGxK
-         JUY1dEeR80lqHDlHJV0RcQBXkk3kK56eyRAVFfyQLzxXoTz0bYGEcX5tGu+YlnaKV61/
-         o0nWH3/zDQdXmC6jAo/xDFp2r8cXtGV5IYx+r/z23WyVidpAyofkzx3s6mX4ViwBY9W0
-         I725KRdUfwzqXCIGIoxGhZxdSWQXrQfHtvkNuM9if2SvxKFqdX2AHIA9v1TezwGhAK/p
-         HR+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679576525;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tcDN4yLObJ91VpozedlyiBLgn6rGqURr9Yuhok2Y+PA=;
-        b=yKrtTlp5o2Pz5D9adGysDOKxrQGZsgmw2LEEzfsuwNvfVYA4O1R8+2nenEGmJ1U9ub
-         ZrKK61y7OD+Whl1/UjMMkZhdKrysh1eRRYrR8Lxdamc51rv49NeWJtEVRiCBcmtO1zJM
-         PoHuWPsSub8c/llhtferllptfD6ZUzl9/YJx+9PEX5XpvwbQz4MrexICD9ih9oTwxooV
-         7PBvct8sLwVDe7K2f23Ndit0syTAgXcZ/1RFfdwLY0y4hPu29UxkbPxRY5Nmqns0D3t8
-         My74PdrHS0rO9ch6RrcjqnnZJiymyj3aoScM8yhAL6p/m/b2ZbmfcNtpXV+QSdzOfG9j
-         5sOw==
-X-Gm-Message-State: AO0yUKUt4qvNXUJDIr2gGwHMMAa3224DJt0NLW0lQ4wXKO1js2NhsR39
-        R6BhGr/oa5WENCbjV8Uv8e4=
-X-Google-Smtp-Source: AK7set+W8n4uIYXwqNHfqW8BE/2LJLNEU5F3JtARAr9XGBckvjabyntzWh8SW6QGar1nj3fcm3GMmQ==
-X-Received: by 2002:ac2:55ac:0:b0:4a4:68b7:f86d with SMTP id y12-20020ac255ac000000b004a468b7f86dmr3714637lfg.17.1679576525021;
-        Thu, 23 Mar 2023 06:02:05 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id q5-20020a19a405000000b004db513b017esm2944811lfc.45.2023.03.23.06.02.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 06:02:04 -0700 (PDT)
-Message-ID: <590189b3-42d9-ab12-fccd-37338595cb6f@gmail.com>
-Date:   Thu, 23 Mar 2023 15:02:03 +0200
+        with ESMTP id S230257AbjCWNIN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 09:08:13 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F8A3252C;
+        Thu, 23 Mar 2023 06:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=lR1kDIljz9mk7Z+jDAJ/8E94RHyMpc5juD6t09t1Rmg=; b=hLswf0FCCx4LsTAvIbxpnyG0Fn
+        Wv+ItuF8s9mAtJKBa1e55GOYLjGevgIor3tw1RV6vwIy5/qgLL7VmUoCVM+vxo8GY4+a9FRBByd25
+        kAnn++9xwOb/2NUSaEREDgVr74l7/foAwcxWCrhvomPwexE6rRB+MG4Qq8dO5FctH73bywrbLCvFR
+        kuPwosmAfB4PQU3IeSrG4dpx/pn2t1pLShK4QcQETe2Q9jjvYTEx6ni+XqtD9VM/dp7ccYBbqOqLc
+        gB/rK12bQ1s8OKBPlOWwt4osLYW9jmqMkAjWEwdisWVp6L7WBUjNbs+VyvU0/VcqqcCbzhlXMjURn
+        XxUTQZ5w==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pfKfM-000FK5-9O; Thu, 23 Mar 2023 14:07:40 +0100
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pfKfL-0000WK-Tm; Thu, 23 Mar 2023 14:07:40 +0100
+Message-ID: <65b08184-0c6b-0a43-df80-4d5ae537a709@metafoo.de>
+Date:   Thu, 23 Mar 2023 06:07:36 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US, en-GB
-To:     Maxime Ripard <maxime@cerno.tech>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-References: <cover.1679474247.git.mazziesaccount@gmail.com>
- <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
- <ZBrvhfX/NNrJefgt@kroah.com> <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
- <ZBtPhoelZo4U5jwC@kroah.com> <20230323101216.w56kz3rudlj23vab@houat>
- <ZBwoRgc2ICBJX/Lq@kroah.com> <8a03a6fb-39b9-cd17-cc10-ece71111357d@gmail.com>
- <20230323122925.kqdnomr7i46qnyo4@houat>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-In-Reply-To: <20230323122925.kqdnomr7i46qnyo4@houat>
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
+Content-Language: en-US
+To:     Naresh Solanki <naresh.solanki@9elements.com>,
+        Lee Jones <lee@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
+ <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
+ <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26852/Thu Mar 23 08:22:35 2023)
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/23/23 14:29, Maxime Ripard wrote:
-> On Thu, Mar 23, 2023 at 02:16:52PM +0200, Matti Vaittinen wrote:
-> 
-> This is the description of what was happening:
-> https://lore.kernel.org/dri-devel/20221117165311.vovrc7usy4efiytl@houat/
-Thanks Maxime. Do I read this correcty. The devm_ unwinding not being 
-done when root_device_register() is used is not because 
-root_device_unregister() would not trigger the unwinding - but rather 
-because DRM code on top of this device keeps the refcount increased?
+On 3/23/23 05:01, Naresh Solanki wrote:
+> Hi,
+>
+> On 22-03-2023 09:28 pm, Lars-Peter Clausen wrote:
+>> Hi,
+>>
+>> This looks really good. A few minor comments inline.
+>>
+>> On 3/22/23 05:43, Naresh Solanki wrote:
+>>> [...]
+>>> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
+>>> +                struct iio_chan_spec const *chan,
+>>> +                int *val, int *val2, long info)
+>>> +{
+>>> +    int ret;
+>>> +    struct max597x_iio *data = iio_priv(iio_dev);
+>>> +    unsigned int reg_l, reg_h;
+>>> +
+>>> +    switch (info) {
+>>> +    case IIO_CHAN_INFO_RAW:
+>>> +        ret = regmap_read(data->regmap, chan->address, &reg_l);
+>>> +        if (ret < 0)
+>>> +            return ret;
+>>> +        ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
+>>> +        if (ret < 0)
+>>> +            return ret;
+>> Is there any chance of a race condition of getting inconsistent data 
+>> when splitting this over two reads? I.e. registers being updated with 
+>> new values in between the two reads.
+> yes, reg_l holds lower 2 bits. due to latency in reads, value may differ.
+>>> +        *val = (reg_h << 2) | (reg_l & 3);
+>>> +
+>>> +        return IIO_VAL_INT;
+>>> +    case IIO_CHAN_INFO_SCALE:
+>>> +
+>>> +        switch (chan->address) {
+>>> +        case MAX5970_REG_CURRENT_L(0):
+>>> +            fallthrough;
+>>
+>> `fallthrough` should not be needed for multiple case statements right 
+>> on top of each other with no code in between. Same below
+> Sure.
+>>
+>>> +        case MAX5970_REG_CURRENT_L(1):
+>>> +            /* in A, convert to mA */
+>>> +            *val = data->irng[chan->channel] * 1000;
+>>> +            *val2 =
+>>> +                data->shunt_micro_ohms[chan->channel] * ADC_MASK;
+>> ADC_MASK should really have a MAX5970_ prefix, but I guess it is 
+>> defined in max597x.h
+> Yes its taken from max597x.h
+>>> +            return IIO_VAL_FRACTIONAL;
+>>> +
+>>> +        case MAX5970_REG_VOLTAGE_L(0):
+>>> +            fallthrough;
+>>> +        case MAX5970_REG_VOLTAGE_L(1):
+>>> +            /* in uV, convert to mV */
+>>> +            *val = data->mon_rng[chan->channel];
+>>> +            *val2 = ADC_MASK * 1000;
+>>> +            return IIO_VAL_FRACTIONAL;
+>>> +        }
+>>> +
+>>> +        break;
+>>> +    }
+>>> +    return -EINVAL;
+>>> +}
+>>> [..]
+>>> +static int max597x_iio_probe(struct platform_device *pdev)
+>>> +{
+>>> +    struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
+>>> +    struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
+>>> +    struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
+>>> +    struct iio_dev *indio_dev;
+>>> +    struct max597x_iio *priv;
+>>> +    int ret, i;
+>>> +
+>>> +    if (!regmap)
+>>> +        return -EPROBE_DEFER;
+>>> +
+>>> +    if (!max597x || !max597x->num_switches)
+>>> +        return -EPROBE_DEFER;
+>>> +
+>>> +    /* registering iio */
+>>> +    indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*priv));
+>> For the devm allocations we should be using &pdev->dev and not the 
+>> I2C device, since this is the device to which the allocations belong 
+>> and where they should be freed when the device is removed.
+> Sure. Will use &pdev->dev
+>>> +    if (!indio_dev) {
+>>> +        dev_err(&i2c->dev, "failed allocating iio device\n");
+>> Consider using dev_err_probe() for error message printing. This will 
+>> give a consistent formatting of the messages. Also again use 
+>> &pdev->dev instead of I2C device to get the right device listed in 
+>> the error messages.
+> Sure. Will use
+> dev_err_probe(&pdev->dev, ret, "could not register iio device");
+>>> +        return -ENOMEM;
+>>> +    }
+>>> +    indio_dev->name = dev_name(&i2c->dev);
+>> The IIO ABI wants the type of the chip for the name. E.g. "max5970", 
+>> using dev_name() of the parent I2C device will result in something else.
+> Sure. Will make it:
+> indio_dev->name = dev_name(&pdev->dev);
+>
+dev_name() in general should not be used for indio_dev->name, it does 
+not meet the ABI requirements for the IIO ABI. Move this into the switch 
+block below and then assign "max5970" or "max5978" depending on the 
+device type.
 
-If this is the case, then it sounds like a DRM specific issue to me. 
-Whether it is a feature or bug is beyond my knowledge. Still, I would 
-not say using the root_device_[un]register() in generic code is not 
-feasible - unless all other subsytems have similar refcount handling.
-
-Sure thing using root_device_register() root_device_unregister() in DRM 
-does not work as such. This, however, does not mean the generic kunit 
-helpers should use platform_devices to force unwinding?
-
-Well, It's almost the best season for ice-fishing in Finland so opening 
-a can of worms is not that bad, right? :)
-
-Thanks for the education people! I did learn a thing or two Today.
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
 

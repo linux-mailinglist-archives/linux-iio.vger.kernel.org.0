@@ -2,175 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90D9C6C6DDA
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 17:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9C7A6C7023
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 19:21:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232334AbjCWQja (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 12:39:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
+        id S230350AbjCWSVJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 14:21:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232369AbjCWQjL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 12:39:11 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EF835EF8;
-        Thu, 23 Mar 2023 09:37:23 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id EDCF75C00BA;
-        Thu, 23 Mar 2023 12:36:41 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 23 Mar 2023 12:36:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1679589401; x=1679675801; bh=E4
-        if9a3f9X77bOqnOjkoI5r0nXevqMRV38iVxaTmEaw=; b=g6/3/dAPpfW7mZxRyV
-        jPOpRzoyHXVPTKrALp/6Zwe9xO10hFRBcAvyZBM2dEjgYOK6hbiHF9bjSYJnWIT1
-        wylR3m+93h12OQAGpv5Lf9/gNEFez2Ptzd3HIC3pDoU1s8GC31LpE0CfmszvhIv0
-        3OklsofQDnBz3CGwMygcgs2lBOiGnJP1PJYGbkxemSIEP43Cx+YTeYD0rS3reD1k
-        rWyJfDhqc3JllW5a4/Lpe16UFPI2P0qEWXgH/niYJG8NKDsm0FLs7nBSEM7OLiO7
-        UQ9BGLry/ceQugSHSnjRSQ7Zd/QFs6mso1RWbMSe06G4yAXWripOvAWfCPI1W0KW
-        /1Ng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1679589401; x=1679675801; bh=E4if9a3f9X77b
-        OqnOjkoI5r0nXevqMRV38iVxaTmEaw=; b=f7pdvdHCS5EL5R+baqKkwkuQa5f8G
-        UOzxn6XsttwT0bX91cNI16WTUD787PcZ9N+MZW8lmNjSpExH/MG1c5aT0BfV8bFY
-        76kmdLfLewjpc8fBRmVWsCZKmpUXC7Oor0co5mTlQh8slQdyE3EaMQMlB9RYC0iC
-        qoiCAa4PxGNmLjPFP7PqGarH+xJufg8s3kAg9DD4EzD4XxRaCSnz6J3iSH7iXp46
-        hPuSmcarS7w7EHjMzgMpdRlfGZ42A7IHEMcD91M9rHJJdmIZzvcNI/NdsLOIcCd7
-        gQ07OG+n6yDvxH8zhK1a5HAY9tFk22A21HB5YJFC4kPoPN+bFEuKAeU/w==
-X-ME-Sender: <xms:GYAcZHvRlh92ce2nlDK0uguK8ZvXANlPy5NmN5XVfxPIA0zCxeI8mQ>
-    <xme:GYAcZIfPxQKW2_xqbBciptLp86l3JI4Ynzf8TCd4QBAqdK7bjEEe_a6zIlxmpBJep
-    cMIvgYFfz_6ZcRK0cE>
-X-ME-Received: <xmr:GYAcZKz-gEDOXL1E_Za4TxYfMWnklLV1yHT2dpRtjl9Lyd0IH7WQDlN4YI9RfPpO2I60B6_K2ZrYQKDVvR3SpeOmBM9KIug>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeggedgkeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihi
-    mhgvucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtffrrg
-    htthgvrhhnpedtleekjeeiudefvdfhieffteelhfeivdeliefgieeugffhvdelieffjeei
-    geetjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggt
-    hh
-X-ME-Proxy: <xmx:GYAcZGNjLo9mhGVw_9lWJto-Wf-giSOmya4wa_v8DmRdrG1QdnpXBA>
-    <xmx:GYAcZH8Hk1nukBpZy9jJv0BsViw9_scgz8WFJvDIi3GB32EGrGhGUQ>
-    <xmx:GYAcZGXnUMjfr3ZrNmfcYsbzQCldaNTfXKlHc4J5Nfet_9nAACwjtQ>
-    <xmx:GYAcZLQWr1de6_fr9of5v4tTBxCm-YoY7V_mgoCHwc5kZ3NR8y1TlA>
-Feedback-ID: i8771445c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Mar 2023 12:36:41 -0400 (EDT)
-Date:   Thu, 23 Mar 2023 17:36:39 +0100
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-Message-ID: <20230323163639.xtwpid2uunwnzai4@houat>
-References: <cover.1679474247.git.mazziesaccount@gmail.com>
- <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
- <ZBrvhfX/NNrJefgt@kroah.com>
- <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
- <ZBtPhoelZo4U5jwC@kroah.com>
- <20230323101216.w56kz3rudlj23vab@houat>
- <ZBwoRgc2ICBJX/Lq@kroah.com>
- <8a03a6fb-39b9-cd17-cc10-ece71111357d@gmail.com>
- <20230323122925.kqdnomr7i46qnyo4@houat>
- <590189b3-42d9-ab12-fccd-37338595cb6f@gmail.com>
+        with ESMTP id S229773AbjCWSVI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 14:21:08 -0400
+Received: from mail-108-mta62.mxroute.com (mail-108-mta62.mxroute.com [136.175.108.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89A514E91
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 11:21:04 -0700 (PDT)
+Received: from mail-111-mta2.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta62.mxroute.com (ZoneMTA) with ESMTPSA id 1870fb3e23b000edb4.006
+ for <linux-iio@vger.kernel.org>
+ (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256);
+ Thu, 23 Mar 2023 18:20:59 +0000
+X-Zone-Loop: 7fe5e265ba714985c7d342f89ade47de7b03b4279577
+X-Originating-IP: [136.175.111.2]
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
+        s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Cc:To:
+        Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=PwAQ2FqPkhYuKaw3PFrFV9jQAqQU/fJg4xycW+3dre0=; b=t19pnxjhD0zTWu4/eQcTOTFCfH
+        vZ3keIovVj03/1U/1GLyh528v+4Mm+H7c6XzJU4G/ihoRqbHP0M+TXtvjrEZPmISHjhqToWN8DT0T
+        h1NZ8wzCbYPD6NIJ7FzeZ5ZLQY49Y8epY0GmPheirRRmEXbwcSUiuLYH5vbSDmec0fBvX7ittvaiM
+        Q6NBld2xlvgwGYUfwAhQ+uxGM9Zwy5jTeccpF8+AULv74d4M6F6bR6/CPfNIIxxzmcleyOqT7Rzvw
+        5pR6tvCu0OHppcXtnraL82bUt4lpLVwsHp2souhGV2o2kLzDS+AAA4B9ims34yo8wWrwUBPJYrYSb
+        aq5aiubw==;
+Message-ID: <59c33dc5-bc97-8016-72cf-e56c73943eda@ahepp.dev>
+Date:   Thu, 23 Mar 2023 11:20:55 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="siftfz462ycziuwe"
-Content-Disposition: inline
-In-Reply-To: <590189b3-42d9-ab12-fccd-37338595cb6f@gmail.com>
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+From:   Andrew Hepp <andrew.hepp@ahepp.dev>
+Subject: Re: [PATCH 2/2] iio: temperature: Add MCP9600 thermocouple EMF
+ converter
+To:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>
+References: <20230319184728.49232-1-andrew.hepp@ahepp.dev>
+ <20230319184728.49232-3-andrew.hepp@ahepp.dev>
+ <89271a29-5b02-34fe-409b-373e3b8044ef@metafoo.de>
+Content-Language: en-US
+In-Reply-To: <89271a29-5b02-34fe-409b-373e3b8044ef@metafoo.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: andrew.hepp@ahepp.dev
+X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
+        NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 3/19/23 11:59 AM, Lars-Peter Clausen wrote:
+> This looks really good. I have some small comments, and I apologize for 
+> only having them so late in the review cycle.
 
---siftfz462ycziuwe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No worries at all! I really appreciate the time and effort you, 
+Jonathan, and Krzysztof have put into reviewing this.
 
-On Thu, Mar 23, 2023 at 03:02:03PM +0200, Matti Vaittinen wrote:
-> On 3/23/23 14:29, Maxime Ripard wrote:
-> > On Thu, Mar 23, 2023 at 02:16:52PM +0200, Matti Vaittinen wrote:
-> >=20
-> > This is the description of what was happening:
-> > https://lore.kernel.org/dri-devel/20221117165311.vovrc7usy4efiytl@houat/
->
-> Thanks Maxime. Do I read this correcty. The devm_ unwinding not being done
-> when root_device_register() is used is not because root_device_unregister=
-()
-> would not trigger the unwinding - but rather because DRM code on top of t=
-his
-> device keeps the refcount increased?
+> 
+> On 3/19/23 11:47, Andrew Hepp wrote:
+>> Add support for the MCP9600 thermocouple EMF converter.
+> 
+> Would be nice to have a very short description of the capabilities of 
+> the sensor in the commit message.
+> 
 
-There's a difference of behaviour between a root_device and any device
-with a bus: the root_device will only release the devm resources when
-it's freed (in device_release), but a bus device will also do it in
-device_del (through bus_remove_device() -> device_release_driver() ->
-device_release_driver_internal() -> __device_release_driver() ->
-device_unbind_cleanup(), which are skipped (in multiple places) if
-there's no bus and no driver attached to the device).
+That seems like a good idea! Should the message be about the 
+capabilities of the sensor, or the capabilities of the driver? The 
+sensor supports a lot of advanced features that the driver currently 
+doesn't support.
 
-It does affect DRM, but I'm pretty sure it will affect any framework
-that deals with device hotplugging by deferring the framework structure
-until the last (userspace) user closes its file descriptor. So I'd
-assume that v4l2 and cec at least are also affected, and most likely
-others.
+Currently I'm leaning towards
 
-> If this is the case, then it sounds like a DRM specific issue to me.
+"Add support for the MCP9600 thermocouple EMF converter. The sensor has 
+integrated cold junction compensation and a typical accuracy of 0.5 
+degrees Celsius. The driver supports a resolution of 0.0625 degrees 
+Celsius."
 
-I mean, I guess. One could also argue that it's because IIO doesn't
-properly deal with hotplugging. I'm not sure how that helps. Those are
-common helpers which should accommodate every framework, and your second
-patch breaks the kunit tests for DRM anyway.
+>>
+>> Datasheet: 
+>> https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
+>> Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+>> ---
+>> [...]
+>> diff --git a/drivers/iio/temperature/mcp9600.c 
+>> b/drivers/iio/temperature/mcp9600.c
+>> new file mode 100644
+>> index 000000000000..b6d8ffb90c36
+>> --- /dev/null
+>> +++ b/drivers/iio/temperature/mcp9600.c
+>> @@ -0,0 +1,145 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> [...]
+>> +static const struct iio_chan_spec mcp9600_channels[] = {
+>> +    {
+>> +        .type = IIO_TEMP,
+>> +        .address = MCP9600_HOT_JUNCTION,
+>> +        .info_mask_separate =
+>> +            BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+>> +    },
+>> +    {
+>> +        .type = IIO_TEMP,
+>> +        .address = MCP9600_COLD_JUNCTION,
+>> +        .channel2 = IIO_MOD_TEMP_AMBIENT,
+>> +        .modified = 1,
+>> +        .info_mask_separate =
+>> +            BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+>> +    },
+>> +    IIO_CHAN_SOFT_TIMESTAMP(2),
+> If you do not have supported for buffered capture there is no need to 
+> include a timestamp in the channel spec. There is no way to read it 
+> without buffered support.
 
-> Whether it is a feature or bug is beyond my knowledge. Still, I would
-> not say using the root_device_[un]register() in generic code is not
-> feasible - unless all other subsytems have similar refcount handling.
->=20
-> Sure thing using root_device_register() root_device_unregister() in DRM d=
-oes
-> not work as such. This, however, does not mean the generic kunit helpers
-> should use platform_devices to force unwinding?
+Ack
 
-platform_devices were a quick way to get a device that would have a bus
-and a driver bound to fall into the right patch above. We probably
-shouldn't use platform_devices and a kunit_device sounds like the best
-idea, but the test linked in the original mail I pointed you to should
-work with whatever we come up with. It works with multiple (platform,
-PCI, USB, etc) buses, so the mock we create should behave like their
-real world equivalents.
+>> +};
+>> +
+>> +struct mcp9600_data {
+>> +    struct i2c_client *client;
+>> +    struct mutex read_lock; /* lock to prevent concurrent reads */
+>> +};
+>> +
+>> +static int mcp9600_read(struct mcp9600_data *data,
+>> +            struct iio_chan_spec const *chan, int *val)
+>> +{
+>> +    __be16 buf;
+> buf does not seem to be used.
 
-Maxime
+Oops, sorry about that, I'll make sure to build with warnings as errors 
+next submission. I tested the module after changing from 
+i2c_smbus_read_block_data but looks like I got a bit ahead of myself 
+submitting.
 
---siftfz462ycziuwe
-Content-Type: application/pgp-signature; name="signature.asc"
+>> +    int ret; >> +
+>> +    mutex_lock(&data->read_lock);
+> Do you actually need the custom lock? i2c_smbus_read_word_swapped itself 
+> should provide locking and there is only a single operation under your 
+> custom lock, which will already be atomic.
 
------BEGIN PGP SIGNATURE-----
+That seems like a convincing argument to me. It certainly doesn't seem 
+like the lock is doing anything, since i2c_smbus_read_word_swapped 
+provides locking.
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZByAFwAKCRDj7w1vZxhR
-xZYoAQD0EfI8ZCSq1KpU73P+V49HUzeC9ingQ95MQn3oUWcu3wD9HQRLsSfxvM7A
-K3Xa8SyESe39WCse9VZjO2fd9YvqoQM=
-=9U43
------END PGP SIGNATURE-----
+>> +    ret = i2c_smbus_read_word_swapped(data->client, chan->address);
+>> +    mutex_unlock(&data->read_lock);
+>> +
+>> +    if (ret < 0)
+>> +        return ret;
+>> +    *val = ret;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> [...]
+>> +static int mcp9600_probe(struct i2c_client *client)
+>> +{
+>> +    struct iio_dev *indio_dev;
+>> +    struct mcp9600_data *data;
+>> +    int ret;
+>> +
+>> +    ret = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
+>> +    if (ret < 0)
+>> +        return ret;
+> 
+> Might as well throw an error message in here for better diagnostics.
+> 
+>      return dev_err_probe(&client->dev, ret, "Failed to read device ID\n");
+> 
+> 
 
---siftfz462ycziuwe--
+I think this is how I did it in my original submission, but it sounds 
+like the preferred way of doing things is to warn without returning an 
+error, in order to support fallback compatibilities?

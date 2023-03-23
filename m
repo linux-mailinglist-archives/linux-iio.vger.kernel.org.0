@@ -2,187 +2,291 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9C7A6C7023
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 19:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C64FA6C7143
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 20:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230350AbjCWSVJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 14:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
+        id S230502AbjCWTp5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 15:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229773AbjCWSVI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 14:21:08 -0400
-Received: from mail-108-mta62.mxroute.com (mail-108-mta62.mxroute.com [136.175.108.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89A514E91
-        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 11:21:04 -0700 (PDT)
-Received: from mail-111-mta2.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta62.mxroute.com (ZoneMTA) with ESMTPSA id 1870fb3e23b000edb4.006
- for <linux-iio@vger.kernel.org>
- (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256);
- Thu, 23 Mar 2023 18:20:59 +0000
-X-Zone-Loop: 7fe5e265ba714985c7d342f89ade47de7b03b4279577
-X-Originating-IP: [136.175.111.2]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
-        s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Cc:To:
-        Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=PwAQ2FqPkhYuKaw3PFrFV9jQAqQU/fJg4xycW+3dre0=; b=t19pnxjhD0zTWu4/eQcTOTFCfH
-        vZ3keIovVj03/1U/1GLyh528v+4Mm+H7c6XzJU4G/ihoRqbHP0M+TXtvjrEZPmISHjhqToWN8DT0T
-        h1NZ8wzCbYPD6NIJ7FzeZ5ZLQY49Y8epY0GmPheirRRmEXbwcSUiuLYH5vbSDmec0fBvX7ittvaiM
-        Q6NBld2xlvgwGYUfwAhQ+uxGM9Zwy5jTeccpF8+AULv74d4M6F6bR6/CPfNIIxxzmcleyOqT7Rzvw
-        5pR6tvCu0OHppcXtnraL82bUt4lpLVwsHp2souhGV2o2kLzDS+AAA4B9ims34yo8wWrwUBPJYrYSb
-        aq5aiubw==;
-Message-ID: <59c33dc5-bc97-8016-72cf-e56c73943eda@ahepp.dev>
-Date:   Thu, 23 Mar 2023 11:20:55 -0700
+        with ESMTP id S230501AbjCWTp4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 15:45:56 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E8E24705
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 12:45:54 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id o7so21795030wrg.5
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 12:45:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=9elements.com; s=google; t=1679600753;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LQ1nJXr1Ls+1dU6XKA8MmxhSLFVWreUpD8IWDUhzFhY=;
+        b=MrXgf3wlMHGA+NOsifBp9w7Ns+rO6KX/55+LtSllE7Vp5KcFOG2qMazmy66L67akqP
+         n3atKBeRnZ/FAkDp5RuUG2D4TVbaHKkBoWhAaCr96CxlrNxaZIzbvU7yhIHq0xHJNyuR
+         J1JsbDwdLyeyWkgd2nE8Bqeh5mUYry+91pEpm3JIfaFgXM+tX+RcIUXt/idZROwQqZ90
+         LO/lJGPZhAv9LX2bLAYn2rR5ARBYUlifkH1UEhEUsSAxw4LZXGLTZIFZ8MIi4s7SVm3m
+         5WtW1OfHzCHHALYdjhMkLVpdVNBt1LY1RTGBTACMzKHXlOh9LyQI+2Mk0Xk52/+HT5YB
+         nv3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679600753;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LQ1nJXr1Ls+1dU6XKA8MmxhSLFVWreUpD8IWDUhzFhY=;
+        b=7r6Q82VRq4/2gfRiUWvzQm1eBirpNjzxaA6Dk7jr1YgBVmc7NDaUUPS47ectIj/q6n
+         Zf6TnVyeCfhuhM25Qq/lo8TWTQ0+woq9Ux7j2vfghwFip9hOKPrIx00v8pLaoA+hseA6
+         +7wWVE72PV+bO0MJ8LvDObmL9Wcsxrh6VJypvcfxOo8xSP+r4bse2joMjpeYQysiIA5D
+         Ayi2aqF1rrM1BqHBIIXplpH6WrW0ITXu1SnecXe/+nh9/+suMZUHbuOElrDGL2O9e5yT
+         q7/mkY15QUK7gXcVjNb5O+GJrGmQTJ/3+Nfcpl0Nz7uMRCbC748MN8t2NEad6zFVCnlT
+         Gsfg==
+X-Gm-Message-State: AAQBX9cCGVBj+NZqd7/T8ZqaX1TEHpRXmDItXZwtw5sFfzQtW81ATvAx
+        ECc0ukyQJIQOfw3jFIGnVmGn3s4t1zh74ejxMqXSgg==
+X-Google-Smtp-Source: AKy350YEGVoIcL/zKJfvk5b3GWb4QMPSs9Qz0kIcvCQnRXL0M1zqyTKtaRHhPmmyczaGdBkzEbH35Q==
+X-Received: by 2002:a5d:5687:0:b0:2c5:518a:f6e0 with SMTP id f7-20020a5d5687000000b002c5518af6e0mr212822wrv.6.1679600753132;
+        Thu, 23 Mar 2023 12:45:53 -0700 (PDT)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id s17-20020a5d4251000000b002d1801018e2sm16829348wrr.63.2023.03.23.12.45.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Mar 2023 12:45:52 -0700 (PDT)
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
+To:     Lee Jones <lee@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH v2 1/2] iio: max597x: Add support for max597x
+Date:   Thu, 23 Mar 2023 20:45:48 +0100
+Message-Id: <20230323194550.1914725-1-Naresh.Solanki@9elements.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-From:   Andrew Hepp <andrew.hepp@ahepp.dev>
-Subject: Re: [PATCH 2/2] iio: temperature: Add MCP9600 thermocouple EMF
- converter
-To:     Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-References: <20230319184728.49232-1-andrew.hepp@ahepp.dev>
- <20230319184728.49232-3-andrew.hepp@ahepp.dev>
- <89271a29-5b02-34fe-409b-373e3b8044ef@metafoo.de>
-Content-Language: en-US
-In-Reply-To: <89271a29-5b02-34fe-409b-373e3b8044ef@metafoo.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: andrew.hepp@ahepp.dev
-X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
-        NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/19/23 11:59 AM, Lars-Peter Clausen wrote:
-> This looks really good. I have some small comments, and I apologize for 
-> only having them so late in the review cycle.
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
 
-No worries at all! I really appreciate the time and effort you, 
-Jonathan, and Krzysztof have put into reviewing this.
+max597x has 10bit ADC for voltage & current monitoring.
+Use iio framework to expose the same in sysfs.
 
-> 
-> On 3/19/23 11:47, Andrew Hepp wrote:
->> Add support for the MCP9600 thermocouple EMF converter.
-> 
-> Would be nice to have a very short description of the capabilities of 
-> the sensor in the commit message.
-> 
+Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+...
+Changes in V2:
+- Remove fallthrough
+- Use pdev->dev instead of i2c->dev
+- Init indio_dev->name based on device type.
+---
+ drivers/iio/adc/Kconfig       |  15 ++++
+ drivers/iio/adc/Makefile      |   1 +
+ drivers/iio/adc/max597x-iio.c | 152 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 168 insertions(+)
+ create mode 100644 drivers/iio/adc/max597x-iio.c
 
-That seems like a good idea! Should the message be about the 
-capabilities of the sensor, or the capabilities of the driver? The 
-sensor supports a lot of advanced features that the driver currently 
-doesn't support.
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 45af2302be53..0d1a3dea0b7d 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -735,6 +735,21 @@ config MAX1363
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called max1363.
+ 
++config MAX597X_IIO
++	tristate "Maxim 597x power switch and monitor"
++	depends on I2C && OF
++	select MFD_MAX597X
++	help
++	  This driver enables support for the Maxim 597x smart switch and
++	  voltage/current monitoring interface using the Industrial I/O (IIO)
++	  framework. The Maxim 597x is a power switch and monitor that can
++	  provide voltage and current measurements via the I2C bus. Enabling
++	  this driver will allow user space applications to read the voltage
++	  and current measurements using IIO interfaces.
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called max597x-iio.
++
+ config MAX9611
+ 	tristate "Maxim max9611/max9612 ADC driver"
+ 	depends on I2C
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 36c18177322a..7ec0c2cf7bbb 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
+ obj-$(CONFIG_MAX11410) += max11410.o
+ obj-$(CONFIG_MAX1241) += max1241.o
+ obj-$(CONFIG_MAX1363) += max1363.o
++obj-$(CONFIG_MAX597X_IIO) += max597x-iio.o
+ obj-$(CONFIG_MAX9611) += max9611.o
+ obj-$(CONFIG_MCP320X) += mcp320x.o
+ obj-$(CONFIG_MCP3422) += mcp3422.o
+diff --git a/drivers/iio/adc/max597x-iio.c b/drivers/iio/adc/max597x-iio.c
+new file mode 100644
+index 000000000000..8a9fc27ff71e
+--- /dev/null
++++ b/drivers/iio/adc/max597x-iio.c
+@@ -0,0 +1,152 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device driver for IIO in MAX5970 and MAX5978 IC
++ *
++ * Copyright (c) 2022 9elements GmbH
++ *
++ * Author: Patrick Rudolph <patrick.rudolph@9elements.com>
++ */
++
++#include <linux/iio/iio.h>
++#include <linux/mfd/max597x.h>
++#include <linux/platform_device.h>
++#include <linux/regmap.h>
++
++struct max597x_iio {
++	struct regmap *regmap;
++	int shunt_micro_ohms[MAX5970_NUM_SWITCHES];
++	unsigned int irng[MAX5970_NUM_SWITCHES];
++	unsigned int mon_rng[MAX5970_NUM_SWITCHES];
++};
++
++#define MAX597X_ADC_CHANNEL(_idx, _type) {			\
++	.type = IIO_ ## _type,					\
++	.indexed = 1,						\
++	.channel = (_idx),					\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
++			      BIT(IIO_CHAN_INFO_SCALE),		\
++	.address = MAX5970_REG_ ## _type ## _L(_idx),		\
++}
++
++static const struct iio_chan_spec max5978_adc_iio_channels[] = {
++	MAX597X_ADC_CHANNEL(0, VOLTAGE),
++	MAX597X_ADC_CHANNEL(0, CURRENT),
++};
++
++static const struct iio_chan_spec max5970_adc_iio_channels[] = {
++	MAX597X_ADC_CHANNEL(0, VOLTAGE),
++	MAX597X_ADC_CHANNEL(0, CURRENT),
++	MAX597X_ADC_CHANNEL(1, VOLTAGE),
++	MAX597X_ADC_CHANNEL(1, CURRENT),
++};
++
++static int max597x_iio_read_raw(struct iio_dev *iio_dev,
++				struct iio_chan_spec const *chan,
++				int *val, int *val2, long info)
++{
++	int ret;
++	struct max597x_iio *data = iio_priv(iio_dev);
++	unsigned int reg_l, reg_h;
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		ret = regmap_read(data->regmap, chan->address, &reg_l);
++		if (ret < 0)
++			return ret;
++		ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
++		if (ret < 0)
++			return ret;
++		*val = (reg_h << 2) | (reg_l & 3);
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++
++		switch (chan->address) {
++		case MAX5970_REG_CURRENT_L(0):
++		case MAX5970_REG_CURRENT_L(1):
++			/* in A, convert to mA */
++			*val = data->irng[chan->channel] * 1000;
++			*val2 =
++			    data->shunt_micro_ohms[chan->channel] * ADC_MASK;
++			return IIO_VAL_FRACTIONAL;
++
++		case MAX5970_REG_VOLTAGE_L(0):
++		case MAX5970_REG_VOLTAGE_L(1):
++			/* in uV, convert to mV */
++			*val = data->mon_rng[chan->channel];
++			*val2 = ADC_MASK * 1000;
++			return IIO_VAL_FRACTIONAL;
++		}
++
++		break;
++	}
++	return -EINVAL;
++}
++
++static const struct iio_info max597x_adc_iio_info = {
++	.read_raw = &max597x_iio_read_raw,
++};
++
++static int max597x_iio_probe(struct platform_device *pdev)
++{
++	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
++	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
++	struct iio_dev *indio_dev;
++	struct max597x_iio *priv;
++	int ret, i;
++
++	if (!regmap)
++		return -EPROBE_DEFER;
++
++	if (!max597x || !max597x->num_switches)
++		return -EPROBE_DEFER;
++
++	/* registering iio */
++	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
++	if (!indio_dev)
++		return dev_err_probe(&pdev->dev, -ENOMEM,
++				     "failed to allocate iio device\n");
++
++	indio_dev->info = &max597x_adc_iio_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++
++	switch (max597x->num_switches) {
++	case MAX597x_TYPE_MAX5970:
++		indio_dev->channels = max5970_adc_iio_channels;
++		indio_dev->num_channels = ARRAY_SIZE(max5970_adc_iio_channels);
++		indio_dev->name = "max5970";
++		break;
++	case MAX597x_TYPE_MAX5978:
++		indio_dev->channels = max5978_adc_iio_channels;
++		indio_dev->num_channels = ARRAY_SIZE(max5978_adc_iio_channels);
++		indio_dev->name = "max5978";
++		break;
++	}
++
++	priv = iio_priv(indio_dev);
++	priv->regmap = regmap;
++	for (i = 0; i < indio_dev->num_channels; i++) {
++		priv->irng[i] = max597x->irng[i];
++		priv->mon_rng[i] = max597x->mon_rng[i];
++		priv->shunt_micro_ohms[i] = max597x->shunt_micro_ohms[i];
++	}
++
++	ret = devm_iio_device_register(&pdev->dev, indio_dev);
++	if (ret)
++		dev_err_probe(&pdev->dev, ret, "could not register iio device");
++
++	return ret;
++}
++
++static struct platform_driver max597x_iio_driver = {
++	.driver = {
++		.name = "max597x-iio",
++	},
++	.probe = max597x_iio_probe,
++};
++
++module_platform_driver(max597x_iio_driver);
++
++MODULE_AUTHOR("Patrick Rudolph <patrick.rudolph@9elements.com>");
++MODULE_DESCRIPTION("MAX5970_hot-swap controller driver");
++MODULE_LICENSE("GPL");
 
-Currently I'm leaning towards
+base-commit: 368eb79f738a21e16c2bdbcac2444dfa96b01aaa
+-- 
+2.39.1
 
-"Add support for the MCP9600 thermocouple EMF converter. The sensor has 
-integrated cold junction compensation and a typical accuracy of 0.5 
-degrees Celsius. The driver supports a resolution of 0.0625 degrees 
-Celsius."
-
->>
->> Datasheet: 
->> https://ww1.microchip.com/downloads/en/DeviceDoc/MCP960X-Data-Sheet-20005426.pdf
->> Signed-off-by: Andrew Hepp <andrew.hepp@ahepp.dev>
->> ---
->> [...]
->> diff --git a/drivers/iio/temperature/mcp9600.c 
->> b/drivers/iio/temperature/mcp9600.c
->> new file mode 100644
->> index 000000000000..b6d8ffb90c36
->> --- /dev/null
->> +++ b/drivers/iio/temperature/mcp9600.c
->> @@ -0,0 +1,145 @@
->> +// SPDX-License-Identifier: GPL-2.0+
->> [...]
->> +static const struct iio_chan_spec mcp9600_channels[] = {
->> +    {
->> +        .type = IIO_TEMP,
->> +        .address = MCP9600_HOT_JUNCTION,
->> +        .info_mask_separate =
->> +            BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
->> +    },
->> +    {
->> +        .type = IIO_TEMP,
->> +        .address = MCP9600_COLD_JUNCTION,
->> +        .channel2 = IIO_MOD_TEMP_AMBIENT,
->> +        .modified = 1,
->> +        .info_mask_separate =
->> +            BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
->> +    },
->> +    IIO_CHAN_SOFT_TIMESTAMP(2),
-> If you do not have supported for buffered capture there is no need to 
-> include a timestamp in the channel spec. There is no way to read it 
-> without buffered support.
-
-Ack
-
->> +};
->> +
->> +struct mcp9600_data {
->> +    struct i2c_client *client;
->> +    struct mutex read_lock; /* lock to prevent concurrent reads */
->> +};
->> +
->> +static int mcp9600_read(struct mcp9600_data *data,
->> +            struct iio_chan_spec const *chan, int *val)
->> +{
->> +    __be16 buf;
-> buf does not seem to be used.
-
-Oops, sorry about that, I'll make sure to build with warnings as errors 
-next submission. I tested the module after changing from 
-i2c_smbus_read_block_data but looks like I got a bit ahead of myself 
-submitting.
-
->> +    int ret; >> +
->> +    mutex_lock(&data->read_lock);
-> Do you actually need the custom lock? i2c_smbus_read_word_swapped itself 
-> should provide locking and there is only a single operation under your 
-> custom lock, which will already be atomic.
-
-That seems like a convincing argument to me. It certainly doesn't seem 
-like the lock is doing anything, since i2c_smbus_read_word_swapped 
-provides locking.
-
->> +    ret = i2c_smbus_read_word_swapped(data->client, chan->address);
->> +    mutex_unlock(&data->read_lock);
->> +
->> +    if (ret < 0)
->> +        return ret;
->> +    *val = ret;
->> +
->> +    return 0;
->> +}
->> +
->> [...]
->> +static int mcp9600_probe(struct i2c_client *client)
->> +{
->> +    struct iio_dev *indio_dev;
->> +    struct mcp9600_data *data;
->> +    int ret;
->> +
->> +    ret = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
->> +    if (ret < 0)
->> +        return ret;
-> 
-> Might as well throw an error message in here for better diagnostics.
-> 
->      return dev_err_probe(&client->dev, ret, "Failed to read device ID\n");
-> 
-> 
-
-I think this is how I did it in my original submission, but it sounds 
-like the preferred way of doing things is to warn without returning an 
-error, in order to support fallback compatibilities?

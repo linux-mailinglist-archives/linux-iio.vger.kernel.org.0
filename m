@@ -2,203 +2,429 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4D16C607B
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 08:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB93C6C60C9
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 08:31:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbjCWHRr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 03:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34496 "EHLO
+        id S231234AbjCWHbO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 03:31:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjCWHRq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 03:17:46 -0400
-Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2126.outbound.protection.outlook.com [40.107.135.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C762A234D1;
-        Thu, 23 Mar 2023 00:17:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KM6uvVebmmA5qRumDWp3031P60cJkAC6YHJnmIply3oVIfGhOtj5SggWgeEKp8MNZPC66hu45t+puCZsShv6G2DUpxK9cYwikdGqXHqg6QhX/dFb6N8hhbrFJ7cFX5ZSNMrxOqZdRdzZ3djU+xDiTuHfaRdAbR77wdsB6cQbo9Asn3B1CyFkxeFELIKE4yS2vgpivZ8BKXwEpTeQMPE6qMSLX9YjpenDg+tExuqsVM4XFDVha3Gyvj8y3UrqLPhWF929ePJ5cAkaNh/hGD6U9waLIU4FddeXS/j5hR6mbmU1+CS13LIoGPIfwSFk90zz95xWo2IVAUCkOwGUqAXCTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=drXVQ+PmIvE73f84r4WXGIOGseJKKXK3oTzZfuq8y/Y=;
- b=jeHQ3viDN3JFqg4m4U439YVM2uLZPaygc3zlnT5J43KHErNCzGwSD5hqKZGcZSyJL2c4ZO4BjoumjeBJiVjAytjU42leVgFWdHCirgUYy1AnbghoHw9cQmQwiToxGRS27L2h1SSZdwXKE0JMe8EI9dtAhA4Haxx/0GmigC9TB4957cq9wifcNUzrwlcgFFqK9z0fMOJijgLOsoSzRE4CVzcBIErtjRPqX4P2/M3XICeaYA6sm1xjRS1veCleECZxHjcyh8i1KD+mXJ90nwOshkcYCTNvv9cnjsQyzA6WamzJJGio1HyoZeyD279VG++P2V/NzcOU8R4/rGTJ6wu+hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
- header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
+        with ESMTP id S231158AbjCWHbM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 03:31:12 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F50E18B3E
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 00:30:49 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-541a05e4124so381105697b3.1
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 00:30:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rohmsemiconductor.onmicrosoft.com;
- s=selector2-rohmsemiconductor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=drXVQ+PmIvE73f84r4WXGIOGseJKKXK3oTzZfuq8y/Y=;
- b=al7b/02xGDZ0d0TOsgkJw2XT3ovp1n0/zngROj1kwMgZmHZEyxO8WxXnqdZXyU9tUwsAPvUMANnSLT6jr+NKJTnR9ZkxaxeZEzDV7wRdiB8U4/3jxmAzhaD1xGTRxXhYmL4gP6u9190MBeiKuPBf5vcY81A56ntICA0iD/qHxEc=
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
- by BE1P281MB2497.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:69::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Thu, 23 Mar
- 2023 07:17:40 +0000
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3657:656:f6f6:dc8f]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3657:656:f6f6:dc8f%5]) with mapi id 15.20.6178.038; Thu, 23 Mar 2023
- 07:17:40 +0000
-From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        d=google.com; s=20210112; t=1679556648;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/a0R6kKuNZ/z+EN+RxMt8oxQfA78fsupaPj4xkbujqM=;
+        b=WBpLTXdKaoXBFXNEmZq6KWaPBbDL0yWbXzhMa9uBkm+ZJ0Tsv5qGSju5XxQn3XI58p
+         CiEBHpm4FWj1MH+OcodP/+pIzPc+u5NLyf+UKmncxXKwKsGFAVwMs6aW8vVr4kXO9hUb
+         wGedUaPKQTRgfXlMq1bIbtg3rl2qpGQkSEWOKGhWc2OEpHaFhS/TgWAq940Uasf6Y6J6
+         vr2fVC75KoOlI1Et7cf5XvTXNDufFovSNDt0wQy9cKckptLpkffXdk15Fhf4WQguV8f+
+         2W4+EeyXpiSeK+NLQj0VRJbdAWDgetk6oKLqoYibaLhLoFrv3nq1R3ffc0Aou1ap0zHi
+         c1fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679556648;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/a0R6kKuNZ/z+EN+RxMt8oxQfA78fsupaPj4xkbujqM=;
+        b=d5YphxzuHWoSDvrLaydO18uqnKqrgnRQKMDPilmMvzRWz23i4Uq4A+finovKX8+cjS
+         fP/95Gf3sQSntP5z+/H7uWWtovB+2X2DCQ6jkcSVwjykZS0higYNyb+rG6igz9F2knSY
+         OjuYEUIKoO0FthVJm51QCbToGAqmnCoBP1+ZfWWCxxPO4D3b+QVVGfAp/6PnEK8FHJEo
+         /hRRKNodgag+LMcmtVB1XVASKtAvCtm5SSnDNNLi/r1uafi2+jIa9XZyiWTZS7UwZIDX
+         Gd78bps4oydjNtQAz5QM/uXlQdB20UZzP3ek9Yzt4wax/ZrNWiucK8525BQxbZny2zXp
+         s3cg==
+X-Gm-Message-State: AAQBX9dFcb0965cGZCZM7lyUp3MMFFsK+FrsgMeDlw9cXaNdrbiuClYF
+        G1pO0K8uNr6vzVLZBZLlHDj8HnxIaUnfkDK+/mwmsg==
+X-Google-Smtp-Source: AKy350Zr3/bsC8HMJr79Ki3V1zJSQEQ7UB4oeK7ej/6KDeIZA8o7EtLz7VX3T9RLPjj/vCtvysI/Is120+XpGkII+LQ=
+X-Received: by 2002:a81:507:0:b0:533:a15a:d33e with SMTP id
+ 7-20020a810507000000b00533a15ad33emr1449251ywf.5.1679556648373; Thu, 23 Mar
+ 2023 00:30:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1679474247.git.mazziesaccount@gmail.com> <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
+In-Reply-To: <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
+From:   David Gow <davidgow@google.com>
+Date:   Thu, 23 Mar 2023 15:30:34 +0800
+Message-ID: <CABVgOS=KUg+18wJe=O29tgOB0tQghAk030kONEm5fOzJHgKLgw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device creation
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "kunit-dev@googlegroups.com" <kunit-dev@googlegroups.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
         Maxime Ripard <maxime@cerno.tech>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-Thread-Topic: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-Thread-Index: AQHZXJ2KQN96MANwdEGQLkX9Bk1XRa8GtIiAgAAcEQCAAFZiAIAAzuOA
-Date:   Thu, 23 Mar 2023 07:17:40 +0000
-Message-ID: <12ea1d68-2a3c-0aa7-976c-7bd3eef35239@fi.rohmeurope.com>
-References: <cover.1679474247.git.mazziesaccount@gmail.com>
- <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
- <ZBrvhfX/NNrJefgt@kroah.com> <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
- <ZBtPhoelZo4U5jwC@kroah.com>
-In-Reply-To: <ZBtPhoelZo4U5jwC@kroah.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BEZP281MB2454:EE_|BE1P281MB2497:EE_
-x-ms-office365-filtering-correlation-id: 00050615-13c1-4380-be8a-08db2b6eb006
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: c1OqSw4Xevc1f1gl6ZkSR8n9L4nsuvU/aIID8qYfb1BDmTtP0nMGHCdYoHCTSABSkOvTwnIzn2K93EmsIn050viZXNdB7YbnI/fewVndP5dqEgViRCyGtP2GB9E1BDjHOgui5ga2NMZStFSJQvMbVpuPy8khrjPbiFdF711i5NCIbelaAsxHI1Vsf2WJ0lNnBsVK+MjlN3cApSpvMBpy+BHwHI0mxC4XSERBrHDiY+LH1IR/WsKZoN4lRXShmWMZXa5UEDXGAZahlk8LFHn67ik/L70vWHxA0FpKz3GkLkiEgOqwbSoit1ed6JLzA5+IKHhtbAHqS9+bqaVZxnajof+DjlEQqGDLrULtAEsFj0MmW6CQ2RolRc1Rfq+wQ+7YbKdIHFR2wmfG1Hif68iQFAjP34d0mYwa4RVVCA8U3kTUeJhVXX8OkoOMlxbKJQxjLId5wmphVVnudZjuDWS5PmFiobunKjwd7j8uNINwd1cVaLhoj/4rxBeLoc7+jAbtOYn1f8B/trmtXzX7A00IDOiLPTaxMotXqTAEcalOAa31WtiyXcTxwibkyD4iKncf5QnSOYcFAvy6yomXXHJKKkIi6dnXofJs69A9kaVFNz/1w3A4k0Qs8cBlz6tKSw91Zg7RxxLaYx8PFdPPqbqT73JuipT538UJ/5QmwJA97ZZDl3gqMM9g2ypyw5TzmeDlWvE8VGVMFffjBV1egs0o39Gi9l7lBlK+1WVP+72BFRXzzENVUedbgNfQ6EdbG4cUpU7drh09MfAwiu3mZFgMCuBWw8Oe32GzIfwgaXKRK7E=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39850400004)(346002)(136003)(366004)(396003)(376002)(451199018)(38100700002)(110136005)(31696002)(71200400001)(66476007)(7416002)(64756008)(54906003)(316002)(91956017)(8676002)(66946007)(66556008)(41300700001)(66446008)(8936002)(5660300002)(76116006)(86362001)(478600001)(83380400001)(2906002)(4326008)(122000001)(53546011)(2616005)(38070700005)(31686004)(186003)(6512007)(6506007)(6486002)(66899018)(41533002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?LzJMdlpjVmNKTGZoN01DNFpiUVdMOVc5Zk1wZUVlZVVrcnZYK2hXVUhkWTZ5?=
- =?utf-8?B?eGczeUxsSU5YU1FUWldsdEpsZ1ZQeXJDWW55UStTTjcwVTlLcVNWU0Fqb1lV?=
- =?utf-8?B?Z055a29GSTMveEZmN1NPcWFxVk1paXRick9GblV6VkJ2RkRHQ3hVaVo1QWRt?=
- =?utf-8?B?b0JjKzdNNEEyU1lnelp4eWVSV2VOUkkwd29SYWlrK2lFK0o4SVprend2a1VR?=
- =?utf-8?B?K3ZHMzZ2WVpUVWRZM0JTMjhrdktNaUJZT2QwREwvM0pJNlNMdENQR0o3WHVt?=
- =?utf-8?B?TWliTC9jMzhhdE5XbkNHUFJrcXNsU2FqMkxCekE5MnF5RHJSNWRtcmJDL3lD?=
- =?utf-8?B?WFdXUkdWaDJ6RWliZ2hHMDBxYXZaSWVDQkdnYWpMZThoVS94U3U5VjNKTzYr?=
- =?utf-8?B?YjhGTDFGYzE4OE8rZnhNc2ZuamF5WmdpK0dFZkZiRWdtVUROY2RlakhpelpM?=
- =?utf-8?B?OHoxdVVwcERJQUdLamdlTUV3anFSL2lJc0E4WFR6NjJ0T3dWVFdWVnUrNVZR?=
- =?utf-8?B?dUIzK1ZzRzZWTnhER0p0cUN2elRaTk93S01YL092WG5aenlkeWloTlVmMGxz?=
- =?utf-8?B?NlN2QzBrUzNuVEZVbGNrYjM3OGxTNHcxZWVua0NLUUUySFNOZEE0T24yVzhS?=
- =?utf-8?B?SXZkSHN6QzZaL3hLUXoycUdqRlUvSHpkWm1xdG5ZNmt6YVQzRVN4Sk1YZW5N?=
- =?utf-8?B?M0MzWGhMQnRVSnhoaHZTTDdKdXFBQTJyejJOMVJMR24rZlpRWHd5akdYRDVm?=
- =?utf-8?B?N1Rzdjl3Y0N3QnlIaWRzU1VaRzJWbWk2NGp1NHZMNFdtTGpGd1dEaDRZc2w0?=
- =?utf-8?B?SncyQldqQmpNTVVncW42UWNvdEFmWDNXWnJzNVBlSUszTWo0M1dvRnFvSGZy?=
- =?utf-8?B?NEFXeDZNMk1iQ0EwYnM4UGZiYWNYSDJwR3lHUGs1UjdnRnZHelRuUW1jdDE3?=
- =?utf-8?B?NlNOM1NxSGJaMm5vR3o4MDJtZmRwSHFqcVRscng1M2ViSFJHdmE5S0xzelpF?=
- =?utf-8?B?eG1oNkl3Mk03WHJQM3BJYUlvRVF4WGthMFVRMHV6bnl5S3NtNUJ4WEIzYmJI?=
- =?utf-8?B?N2oxZW1uSWhsa0o0akJsbFQ3VVdvUU1yUmczTUlvQUhYZzNibmNOV1pIZzZW?=
- =?utf-8?B?ZzFvc0ZXU3NmcHIxWkRwMXF1SUE1ZldweDAxTGhGb0pwUkErRHcvb0FGSEZi?=
- =?utf-8?B?UlJ1MkRMbGtEbzFTamNhRUxENWZnNTdnU0lMQUE0UFZidUhtdEFpcGt2TW4z?=
- =?utf-8?B?YjN4YmRJdHpMWTNNQTdSZFp6ZmgwS1JGTVlIQ0ZFSjB1N21XSVQxRnpFTUxy?=
- =?utf-8?B?NXphazJxMExmVWVEcHFEOEJsVEg1WWxhUnJoME1kNm5TZjIrZ1FTS21lOW9r?=
- =?utf-8?B?UjcyeFpCd21JY3VRdno1VDRrbkR3a3puSUlKVnFuMmdzQ29KbmpKVHI2OVE2?=
- =?utf-8?B?VExEdVFlb2gxeWYrQUt4dzJMSzhnd2Z4cEtjMmNGbWk3RDZKUjAwMUFKTDNT?=
- =?utf-8?B?akFvOUZKY28zM2JqNUpSQjlLSWE3TEIxTzBNZ3o1QXlzVUlCTThWTnhLTmJL?=
- =?utf-8?B?TUpZR24xVjljbWIzZkk3OGRJWHF1VUN1ZkZ4VmYyaUlQK0VzUW42MnIyazFC?=
- =?utf-8?B?Nmh3TTNrKzBqZGpuVEhKeVBrYndpVys4ejRRME5oWHFodDBmZE54emFjYlli?=
- =?utf-8?B?MUdtWjJNUitFZitEY3BWY2FUQytsWGF2NHRvR2YzR0NIemhrS1NnQzZSN0ll?=
- =?utf-8?B?RkdyZ05vWENmSGRmVlBjVk9pSzVGUGVFamVsUlNSSnJIREozMG9LUUNudEsr?=
- =?utf-8?B?UnB5R2RYT1BwZEdOdm0rYWI5b2VyeWl6ckowdnZ4WFBmS3E1c0ZYVld4RzBS?=
- =?utf-8?B?TFZsY0dGS0dNSnVySHZ1dWhrMWU5UEdvMVhmM3lGL1l2eHJDZlg1ZVoxMUpo?=
- =?utf-8?B?Z2dLMnRMclFVNEtJdTRBL2RqQVlNZm5pQUFyV3ZkVDd1bXRSdVRQYVFGV2Vo?=
- =?utf-8?B?SU8vamZFTTUvK2tiUnQ4YkpvZDZXSG4xZWJxQUVjc21VOFY2Y2l1Q3BuOHMv?=
- =?utf-8?B?aXVzZlRONlFFbCs1QUVCWmtteDJUUEc2WmVjNWwrNGxBc0VnSEo4eTQ1ODNk?=
- =?utf-8?B?Skh5MEU2MUtERVNNa2N3Y3JWWkZqVzFoczgvYmE5ektqeENUakhRc1V0NHJw?=
- =?utf-8?Q?U+gvH0zr741ov4uTWnHOT48=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B42F2F8D4355CF44804585E3E14CEB8F@DEUP281.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: fi.rohmeurope.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00050615-13c1-4380-be8a-08db2b6eb006
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2023 07:17:40.2529
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cv57XspsIquyb7S+wuwN26P0oI6xrgznL6mhYFu941LgVsyujrwEMQqm20lfeEzpZJh5yEIi3VQJAeU6UZDv4A+4W9DqJkBNz/nu7DerepudOWOqaDmSpLCha1Qa2zpv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BE1P281MB2497
-X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000006eec8005f78c4104"
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gMy8yMi8yMyAyMDo1NywgR3JlZyBLcm9haC1IYXJ0bWFuIHdyb3RlOg0KPiBPbiBXZWQsIE1h
-ciAyMiwgMjAyMyBhdCAwMzo0ODowMFBNICswMjAwLCBNYXR0aSBWYWl0dGluZW4gd3JvdGU6DQo+
-PiBIaSBHcmVnLA0KPj4NCj4+IFRoYW5rcyBmb3IgbG9va2luZyBhdCB0aGlzLg0KPj4NCj4+IE9u
-IDMvMjIvMjMgMTQ6MDcsIEdyZWcgS3JvYWgtSGFydG1hbiB3cm90ZToNCj4+PiBPbiBXZWQsIE1h
-ciAyMiwgMjAyMyBhdCAxMTowNTo1NUFNICswMjAwLCBNYXR0aSBWYWl0dGluZW4gd3JvdGU6DQo+
-Pj4+ICsvKioNCj4+Pj4gKyAqIHRlc3Rfa3VuaXRfaGVscGVyX2FsbG9jX2RldmljZSAtIEFsbG9j
-YXRlIGEgbW9jayBkZXZpY2UgZm9yIGEgS1VuaXQgdGVzdA0KPj4+PiArICogQHRlc3Q6IFRoZSB0
-ZXN0IGNvbnRleHQgb2JqZWN0DQo+Pj4+ICsgKg0KPj4+PiArICogVGhpcyBhbGxvY2F0ZXMgYSBm
-YWtlIHN0cnVjdCAmZGV2aWNlIHRvIGNyZWF0ZSBhIG1vY2sgZm9yIGEgS1VuaXQNCj4+Pj4gKyAq
-IHRlc3QuIFRoZSBkZXZpY2Ugd2lsbCBhbHNvIGJlIGJvdW5kIHRvIGEgZmFrZSBkcml2ZXIuIEl0
-IHdpbGwgdGh1cyBiZQ0KPj4+PiArICogYWJsZSB0byBsZXZlcmFnZSB0aGUgdXN1YWwgaW5mcmFz
-dHJ1Y3R1cmUgYW5kIG1vc3Qgbm90YWJseSB0aGUNCj4+Pj4gKyAqIGRldmljZS1tYW5hZ2VkIHJl
-c291cmNlcyBqdXN0IGxpa2UgYSAicmVhbCIgZGV2aWNlLg0KPj4+DQo+Pj4gV2hhdCBzcGVjaWZp
-YyAidXN1YWwgaW5mcmFzdHJ1Y3R1cmUiIGFyZSB5b3Ugd2FudGluZyB0byBhY2Nlc3MgaGVyZT8N
-Cj4+Pg0KPj4+IEFuZCBhZ2FpbiwgaWYgeW91IHdhbnQgYSBmYWtlIGRldmljZSwgbWFrZSBhIHZp
-cnR1YWwgb25lLCBieSBqdXN0DQo+Pj4gY2FsbGluZyBkZXZpY2VfY3JlYXRlKCkuDQo+Pj4NCj4+
-PiBPciBhcmUgeW91IHdhbnRpbmcgdG8gZG8gIm1vcmUiIHdpdGggdGhhdCBkZXZpY2UgcG9pbnRl
-ciB0aGFuDQo+Pj4gZGV2aWNlX2NyZWF0ZSgpIGNhbiBnaXZlIHlvdT8NCj4+DQo+PiBQZXJzb25h
-bGx5LCBJIHdhcyAoYW0pIG9ubHkgaW50ZXJlc3RlZCBpbiBkZXZtXyB1bndpbmRpbmcuIEkgZ3Vl
-c3MgdGhlDQo+PiBkZXZpY2VfY3JlYXRlKCksIGRldmljZV9hZGQoKSwgZGV2aWNlX3JlbW92ZSgp
-Li4uIChkaWRuJ3Qgc3R1ZHkgdGhpcw0KPj4gc2VxdWVuY2UgaW4gZGV0YWlscyBzbyBzb3JyeSBp
-ZiB0aGVyZSBpcyBlcnJvcnMpIGNvdWxkJ3ZlIGJlZW4gc3VmZmljaWVudA0KPj4gZm9yIG1lLiBJ
-IGhhdmVuJ3QgbG9va2VkIGhvdyBtdWNoIG9mIHRoZSBjb2RlIHRoYXQgdGhlcmUgaXMgZm9yICdw
-bGF0Zm9ybQ0KPj4gZGV2aWNlcycgc2hvdWxkIGJlIGR1cGxpY2F0ZWQgdG8gc3VwcG9ydCB0aGF0
-IHNlcXVlbmNlIGZvciB0ZXN0YWJpbGl0eQ0KPj4gcHVycG9zZXMuDQo+IA0KPiBBbnkgZGV2aWNl
-IGNhbiBhY2Nlc3MgZGV2bV8gY29kZSwgdGhlcmUncyBubyBuZWVkIGZvciBpdCB0byBiZSBhDQo+
-IHBsYXRmb3JtIGRldmljZSBhdCBhbGwuDQo+IA0KPj4gVGhlIGJpZ2dlc3QgdGhpbmcgZm9yIG1l
-IGlzIHRoYXQgSSBkb24ndCBsaWtlIHRoZSBpZGVhIG9mIGNyZWF0aW5nIG93biAndGVzdA0KPj4g
-ZGV2aWNlJyBpbiA8YWRkIHN1YnN5c3RlbSBoZXJlPiB3aGlsZSB3ZSBhbHJlYWR5IGhhdmUgc29t
-ZSBpbiBEUk0gKG9yDQo+PiBvdGhlcnMpLiBUaHVzLCBJIGRvIHNlZSB2YWx1ZSBpbiBhZGRpbmcg
-Z2VuZXJpYyBoZWxwZXJzIGZvciBzdXBwb3J0aW5nDQo+PiBydW5uaW5nIEtVbml0IHRlc3RzIG9u
-IGRldm1fKiBBUElzLiBIZW5jZSBpdCdkIGJlIGdvb2QgdG8gaGF2ZSBfc29tZV8NCj4+IHN1cHBv
-cnQgZm9yIGl0Lg0KPiANCj4gSSBhZ3JlZSwgbGV0J3MgdXNlIGEgdmlydHVhbCBkZXZpY2UgYW5k
-IGEgdmlydHVhbCBidXMgKHlvdSBjYW4gdXNlIHRoZQ0KPiBhdXhidXMgY29kZSBmb3IgdGhpcyBh
-cyB0aGF0J3MgYWxsIHRoZXJlIGZvciB0aGlzIHR5cGUgb2YgdGhpbmcpDQoNCkhtLiBUaGUgYXV4
-aWxpYXJ5X2RldmljZXMgcmVxdWlyZSBwYXJlbnQuIFdoYXQgd291bGQgYmUgdGhlIGJlc3Qgd2F5
-IHRvIA0KZGVhbCB3aXRoIHRoYXQgaW4gS1VuaXQgdGVzdHM/DQoNCj4gdGhlbiB5b3UgY2FuIHRl
-c3QgdGhlIGRldm1fKiBjb2RlLCBfQU5EXyB5b3UgY2FuIHRlc3QgdGhlIGRyaXZlciBjb3JlIGF0
-DQo+IHRoZSBzYW1lIHRpbWUuDQo+IA0KPj4gQW5kIGhhdmluZyB0aGVtIGluIGRyaXZlcnMvYmFz
-ZS90ZXN0IHNlZW1lZCBsaWtlIGEgY29ycmVjdA0KPj4gcGxhY2UgdG8gbWUuIFdoYXQgSSByZWFs
-bHkgZG9uJ3Qga25vdyBpcyBpZiB0aGVyZSBhcmUgbGVnaXRpbWF0ZSB1c2UtY2FzZXMNCj4+IGZv
-ciB1c2luZyBwbGF0Zm9ybV9kZXZpY2VzIGluIERSTSB0ZXN0cy4gUGVyaGFwcyBNYXhpbWUgY2Fu
-IHNoZWQgbGlnaHQgb24NCj4+IHRoYXQuDQo+IA0KPiBJIGFncmVlIHRoYXQgdGhpcyBjb3VsZCBi
-ZSBpbiBkcml2ZXJzL2Jhc2UvdGVzdC8gYnV0IHRoZW4gbGV0J3MgdGVzdCB0aGUNCj4gZHJpdmVy
-IGNvcmUsIG5vdCBqdXN0IHByb3ZpZGUgYSBkdW1teSBwbGF0Zm9ybSBkZXZpY2UuDQo+IA0KPiBJ
-ZiB5b3Ugd2FudCB0byB0ZXN0IHRoZSBwbGF0Zm9ybSBkcml2ZXIvZGV2aWNlIGFwaSwgdGhhdCB3
-b3VsZCBiZSBncmVhdA0KPiB0b28sIHRoYXQgY2FuIGJlIHBsYWZvcm0gZGV2aWNlL2RyaXZlciBz
-cGVjaWZpYywgYnV0IGRvbid0IHVzZSBvbmUgZm9yDQo+IHNvbWUgb3RoZXIgcmFuZG9tIGRyaXZl
-ciBjb3JlIGZ1bmN0aW9uYWxpdHkgcGxlYXNlLg0KDQpJIGFtIHZlcnkgY29uc2VydmF0aXZlIHdo
-YXQgY29tZXMgdG8gYWRkaW5nIHVuaXQgdGVzdHMgZHVlIHRvIHRoZSBodWdlIA0KaW5lcnRpYSB0
-aGV5IGFkZCB0byBhbnkgZnVydGhlciBkZXZlbG9wbWVudC4gSSB1c3VhbGx5IG9ubHkgYWRkIHRl
-c3RzIHRvIA0KQVBJcyB3aGljaCBJIGtub3cgd29uJ3QgcmVxdWlyZSBjaGFuZ2luZyAoSSBkb24n
-dCBrbm93IHN1Y2ggaW4ta2VybmVsIA0KQVBJcykgLSBvciB0byBmdW5jdGlvbnMgd2hpY2ggSSB0
-aGluayBhcmUgZXJyb3ItcHJvbmUuIFNvLCBJIGFtIHByb2JhYmx5IA0Kb25lIG9mIHRoZSBsYXN0
-IHBlcnNvbnMgYWRkaW5nIFVUcyB0byBjb2RlIEkgZG9uJ3Qga25vdyA6KQ0KDQpZb3VycywNCgkt
-LSBNYXR0aQ0KDQotLSANCk1hdHRpIFZhaXR0aW5lbg0KTGludXgga2VybmVsIGRldmVsb3BlciBh
-dCBST0hNIFNlbWljb25kdWN0b3JzDQpPdWx1IEZpbmxhbmQNCg0Kfn4gV2hlbiB0aGluZ3MgZ28g
-dXR0ZXJseSB3cm9uZyB2aW0gdXNlcnMgY2FuIGFsd2F5cyB0eXBlIDpoZWxwISB+fg0KDQo=
+--0000000000006eec8005f78c4104
+Content-Type: text/plain; charset="UTF-8"
+
+On Wed, 22 Mar 2023 at 17:06, Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>
+> The creation of a dummy device in order to test managed interfaces is a
+> generally useful test feature. The drm test helpers
+> drm_kunit_helper_alloc_device() and drm_kunit_helper_free_device()
+> are doing exactly this. It makes no sense that each and every component
+> which intends to be testing managed interfaces will create similar
+> helpers so stole these for more generic use.
+>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>
+> ---
+> Changes:
+> v4 => v5:
+> - Add accidentally dropped header and email recipients
+> - do not rename + move helpers from DRM but add temporary dublicates to
+>   simplify merging. (This patch does not touch DRM and can be merged
+>   separately. DRM patch and IIO test patch still depend on this one).
+>
+> Please note that there's something similar ongoing in the CCF:
+> https://lore.kernel.org/all/20230302013822.1808711-1-sboyd@kernel.org/
+>
+> I do like the simplicity of these DRM-originated helpers so I think
+> they're worth. I do equally like the Stephen's idea of having the
+> "dummy platform device" related helpers under drivers/base and the
+> header being in include/kunit/platform_device.h which is similar to real
+> platform device under include/linux/platform_device.h
+> ---
+
+Thanks for sending this my way.
+
+It's clear we need some way of creating "fake" devices for KUnit
+tests. Given that there are now (at least) three different drivers
+looking to use this, we'll ultimately need something which works for
+everyone.
+
+I think the questions we therefore need to answer are:
+- Do we specifically need a platform_device (or, any other specific
+device struct), or would any old struct device work? I can see why we
+would need a platform device for cases where we're testing things like
+device-tree properties (or, in the future, having e.g. USB-specific
+helpers which create usb_device). Most tests just use
+root_device_register() thus far, though.
+- What helpers do we need to make creating, using, and cleaning up
+these devices as simple as possible.
+
+I think that in this particular case, we don't actually need a struct
+platform_device. Replacing these helpers with simple calls to
+root_device_register() and root_device_unregister() seems to work fine
+with this patch series for me. (It does break the
+drm_test_managed_run_action test, though.) So I don't think having
+these helpers actually help this series at the moment.
+
+That being said, if they used the KUnit resource system to
+automatically clean up the device when the test is finished (or
+otherwise exits), that would seem like a real advantage. The clk and
+drm examples both do this, and I'm hoping to add an API to make it
+even simpler going forward. (With the work-in-progress API described
+here[1], the whole thing should boil down to "struct device *dev =
+root_device_register(name); kunit_defer(root_device_unregister,
+dev);".)
+
+So, I guess we have three cases we need to look at:
+- A test just needs any old struct device. Tests thus far have
+hardcoded, or had their own wrappers around root_device_register() for
+this.
+- A test needs a device attached to a bus (but doesn't care which
+bus). Thus far, people have used struct platform_device for this (see
+the DRM helpers, which use a platform device for managed resource
+tests[2]). Maybe the right solution here is something like a struct
+kunit_device?
+- A test needs a device attached to a specific bus. We'll probably
+need some more detailed faking of that bus. This covers cases like
+having fake USB devices, devicetree integration, etc.
+
+I'd suggest that, for the majority of cases which only care about the
+first case, let's just use root_device_register() directly, or have a
+thin wrapper like the old root_device-based version of the DRM
+helpers[3]. This will probable serve us well enough while we work out
+how to handle the other two cases properly (which is already being
+looked at for the CLK/DeviceTree patches and the DRM stuff).
+
+If the resulting helpers are generally useful enough, they can
+probably sit in either drivers/base or lib/kunit. I'd rather not have
+code that's really specific to certain busses sitting in lib/kunit
+rather than alongside the device/bus code in drivers/base or some
+other subsystem/driver path, but I can tolerate it for the very
+generic struct device.
+
+Regardless, I've left a few notes on the patch itself below.
+
+Cheers,
+-- David
+
+[1]: https://kunit-review.googlesource.com/c/linux/+/5434/3/include/kunit/resource.h
+[2]: https://lore.kernel.org/all/20221123-rpi-kunit-tests-v3-8-4615a663a84a@cerno.tech/
+[3]: https://elixir.bootlin.com/linux/v6.2/source/drivers/gpu/drm/tests/drm_kunit_helpers.c#L39
+>  drivers/base/test/Kconfig             |  5 ++
+>  drivers/base/test/Makefile            |  2 +
+>  drivers/base/test/test_kunit_device.c | 83 +++++++++++++++++++++++++++
+>  include/kunit/platform_device.h       | 13 +++++
+>  4 files changed, 103 insertions(+)
+>  create mode 100644 drivers/base/test/test_kunit_device.c
+>  create mode 100644 include/kunit/platform_device.h
+>
+> diff --git a/drivers/base/test/Kconfig b/drivers/base/test/Kconfig
+> index 610a1ba7a467..642b5b183c10 100644
+> --- a/drivers/base/test/Kconfig
+> +++ b/drivers/base/test/Kconfig
+> @@ -1,4 +1,9 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> +
+> +config TEST_KUNIT_DEVICE_HELPERS
+> +       depends on KUNIT
+> +       tristate
+> +
+>  config TEST_ASYNC_DRIVER_PROBE
+>         tristate "Build kernel module to test asynchronous driver probing"
+>         depends on m
+> diff --git a/drivers/base/test/Makefile b/drivers/base/test/Makefile
+> index 7f76fee6f989..49926524ec6f 100644
+> --- a/drivers/base/test/Makefile
+> +++ b/drivers/base/test/Makefile
+> @@ -1,5 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_TEST_ASYNC_DRIVER_PROBE)  += test_async_driver_probe.o
+>
+> +obj-$(CONFIG_TEST_KUNIT_DEVICE_HELPERS) += test_kunit_device.o
+> +
+>  obj-$(CONFIG_DRIVER_PE_KUNIT_TEST) += property-entry-test.o
+>  CFLAGS_property-entry-test.o += $(DISABLE_STRUCTLEAK_PLUGIN)
+> diff --git a/drivers/base/test/test_kunit_device.c b/drivers/base/test/test_kunit_device.c
+> new file mode 100644
+> index 000000000000..75790e15b85c
+> --- /dev/null
+> +++ b/drivers/base/test/test_kunit_device.c
+> @@ -0,0 +1,83 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * These helpers have been extracted from drm test code at
+> + * drm_kunit_helpers.c which was authored by
+> + * Maxime Ripard <maxime@cerno.tech>
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/platform_device.h>
+> +
+> +#include <kunit/platform_device.h>
+> +
+> +#define KUNIT_DEVICE_NAME      "test-kunit-mock-device"
+
+Personally, I'd really rather this be a name passed in by the test.
+What if a test needs to create multiple distinct devices?
+
+> +
+> +static int fake_probe(struct platform_device *pdev)
+> +{
+> +       return 0;
+> +}
+> +
+> +static int fake_remove(struct platform_device *pdev)
+> +{
+> +       return 0;
+> +}
+> +
+> +static struct platform_driver fake_platform_driver = {
+> +       .probe  = fake_probe,
+> +       .remove = fake_remove,
+> +       .driver = {
+> +               .name   = KUNIT_DEVICE_NAME,
+> +       },
+> +};
+> +
+> +/**
+> + * test_kunit_helper_alloc_device - Allocate a mock device for a KUnit test
+> + * @test: The test context object
+> + *
+> + * This allocates a fake struct &device to create a mock for a KUnit
+> + * test. The device will also be bound to a fake driver. It will thus be
+> + * able to leverage the usual infrastructure and most notably the
+> + * device-managed resources just like a "real" device.
+> + *
+> + * Callers need to make sure test_kunit_helper_free_device() on the
+> + * device when done.
+> + *
+> + * Returns:
+> + * A pointer to the new device, or an ERR_PTR() otherwise.
+> + */
+> +struct device *test_kunit_helper_alloc_device(struct kunit *test)
+> +{
+> +       struct platform_device *pdev;
+> +       int ret;
+> +
+> +       ret = platform_driver_register(&fake_platform_driver);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       pdev = platform_device_alloc(KUNIT_DEVICE_NAME, PLATFORM_DEVID_NONE);
+> +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pdev);
+> +
+> +       ret = platform_device_add(pdev);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       return &pdev->dev;
+> +}
+> +EXPORT_SYMBOL_GPL(test_kunit_helper_alloc_device);
+> +
+> +/**
+> + * test_kunit_helper_free_device - Frees a mock device
+> + * @test: The test context object
+> + * @dev: The device to free
+> + *
+> + * Frees a device allocated with test_kunit_helper_alloc_device().
+> + */
+
+This really should be automatically called when the test exits,
+probably using kunit reources. Ideally, there'd also be a function to
+free it earlier, which can be done by calling kunit_remove_resource()
+to lower the refcount.
+
+> +void test_kunit_helper_free_device(struct kunit *test, struct device *dev)
+> +{
+> +       struct platform_device *pdev = to_platform_device(dev);
+> +
+> +       platform_device_unregister(pdev);
+> +       platform_driver_unregister(&fake_platform_driver);
+> +}
+> +EXPORT_SYMBOL_GPL(test_kunit_helper_free_device);
+> +
+> +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/kunit/platform_device.h b/include/kunit/platform_device.h
+> new file mode 100644
+> index 000000000000..2a9c7bdd75eb
+> --- /dev/null
+> +++ b/include/kunit/platform_device.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef __KUNIT_PLATFORM_DEVICE__
+> +#define __KUNIT_PLATFORM_DEVICE__
+> +
+> +#include <kunit/test.h>
+> +
+> +struct device;
+> +
+> +struct device *test_kunit_helper_alloc_device(struct kunit *test);
+> +void test_kunit_helper_free_device(struct kunit *test, struct device *dev);
+
+If these helpers are supposed to guarantee that the resulting device
+is a platform device, let's reflect that in their names. Otherwise,
+let's not put this in a platform_device.h header, but maybe something
+more general, like kunit/device.h.
+
+> +
+> +#endif
+> --
+> 2.39.2
+>
+>
+> --
+> Matti Vaittinen, Linux device drivers
+> ROHM Semiconductors, Finland SWDC
+> Kiviharjunlenkki 1E
+> 90220 OULU
+> FINLAND
+>
+> ~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+> Simon says - in Latin please.
+> ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+> Thanks to Simon Glass for the translation =]
+
+--0000000000006eec8005f78c4104
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+64VRg2IjDI2fJVE9RD6aMEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQA2lZLYRLu7foeR
+cHo1VeNA974FZBiCm08Kd44/aCMEzdTJvxAE9xbUJf7hS1i6eW49qxuSp3/YLn6U7uatwAcmZcwp
+Zma19ftf3LH+9Hvffk+X8fbPKe6uHkJhR2LktrhRzF159jj67NvXyGQv8J4n7UNeEVP0d5ByvRwv
+tF2bJwlOwRGLoxasKSyDHIyUpwTfWYPq7XvjoGqQ/tDS7Khcc5WncJl0/ZEj7EKjtoGbsDbLdXEF
+m/6vdcYKJzF9ghHewtV3YIU4RE3pEM4aCWWRtJwbExzeue6fI7RqURbNCAyQuSpWv0YQvzsX3ZX3
+c1otrs50n1N0Sf8/rfJxq7sWMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABxy1wm0tAmHKHFkLS9RWPMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDi
+ch0mE7rBc0a2+AdEcEAhnOHDyXe2BhNrPQNNAzpIHTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzAzMjMwNzMwNDhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEApPJUBNe5iVhCmuNwpchl
+Xa9rvZ306yqRVKVGF9+in/L3jk/Egvxg25lqOQcIGpN6FCV4V/VupJ2jtS5Gr4oGtHqACWuYI65N
+etjFLZ4mxfVf/foStLDdrxRHoGdPXv8V8TBV/cbI7eKittARfP7PE8vlhRY+mdNcutMuxlCB0MPz
+mRgdZWtewQXpZUuVBApR9vhvuPk2YtS1rZCYLvHCNOWAxQZNhXgqPR3slTLWFU+0EfbCjAeS+/S3
+DE5P/Cayq/FRB/S5kEkm3yXm5Q+/yoim+iL7LRZvklW6tkiXKf4rbE6YvBjTBQOfR5Nh8dqvG9EV
+VqpcT9+SsK0X6VC0HQ==
+--0000000000006eec8005f78c4104--

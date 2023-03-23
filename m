@@ -2,170 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE0A6C6600
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 12:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F23396C6788
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 13:03:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230367AbjCWLAj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 07:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60428 "EHLO
+        id S231823AbjCWMDR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 08:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbjCWLAh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 07:00:37 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB4710411;
-        Thu, 23 Mar 2023 04:00:30 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id br6so27122459lfb.11;
-        Thu, 23 Mar 2023 04:00:30 -0700 (PDT)
+        with ESMTP id S231794AbjCWMC5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 08:02:57 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB2036FD4
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 05:01:22 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id le6so22018428plb.12
+        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 05:01:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679569229;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jhgaXnoFQYfR1j7Dc6foxNzXPnSyFAAXMgSYay3WrLk=;
-        b=ey9bSKQclIG6iwUzhcWkN9niFX0lQv/AuX8whFxeOdF/WNtFNVnwV5QVJXJYdboRxU
-         L9aRS4+8tHJnzgG70kjEvw7l1qu6gb7li2OzqK67PjZeFQaxNhtxnhTGNk2efniSuA4o
-         EG+YC7m5bAoz3UkcjKhOjQ2HU2pyzSd7wCBZ8cJkQo/K7A4HQDNdylaesV6kTeixSbni
-         s+LKns3XysNjbshB4RDNUdfFsBhKtfnJX6jEbDAdqG+Lai2ljAxwq0lSnLldvYWaszgy
-         znTX+EJzpZQzNKL34P/qccHCsNXecaUiau/pVKv7PEXeVeeLvb0bLHfZuawL1w4vhCIJ
-         eiDA==
+        d=9elements.com; s=google; t=1679572881;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NqKCt/HzAeVjL0jwsjWER+U22DnB4fv/DX4FqfpOi6A=;
+        b=Gl4P9YWHBoDUo6X0J6my+1rig0zuWw/4B+I5zl1tJqiHdDIHhps2DYaUktHy6rKt7I
+         1sWON9A/YKfUzyskgj0SOOFud9rTGbuEVOI1Z5wVjiovWubOSpmhXf8hsZsBi6t/uiJX
+         EVEavFHHlUIV0LX8avirEsmdn9DHJjyvUqTcH86cgtNrcSva5vViEWM680KiOpX5dchp
+         Q2jatQ/XzjBVS0wVTK63ArCV6p2APoC8JcuvlFBtCSJNPDqIFwBKbbkDlYlhDYCiPFf2
+         39cWpX/ASTgOTHwA1yKbifiDGJAijD4QhABHoWC5pLUH8/AT2a42Z9w+oAiP4akAb/zC
+         U/8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679569229;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1679572881;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jhgaXnoFQYfR1j7Dc6foxNzXPnSyFAAXMgSYay3WrLk=;
-        b=gvIF2G7oiVMt122iaLyJhf65Bo2DPe1suINllHbfFmvX7GglHjN1Et5K9vnRQoPB7r
-         cBYVP5smyWzjBDKhd07CIY8ZnYDeVQkf8UsXsbefaoLmhq1uhIPkp0C234m8H2LDmsoe
-         ABk+xXzCe6qH2ZkQLlwJvcF8dJFXqO5wP55YmHXSUUje+bHsosYEVmt6IjMumgAms3dZ
-         Fd6BZr929aYCRrJPVrnPDkr5ixQ3U6PLSrtmGj9hg0GU12yNM9049/0zs9DDD+/3u6e+
-         +g54yZsLPpqE+ScBdJJiX8dYClmhih4qM3fzFU5BJD4ryy7G+JTxyW98EMZDNTK0IaiH
-         lsSQ==
-X-Gm-Message-State: AO0yUKWIlLKzAMqbDudT+u3JSoSqksDE3Tsal6viwnX+u4FMLTmN0TXu
-        1K2IpqDRfSdJhHBKnhmAVfc=
-X-Google-Smtp-Source: AK7set/DGFOMZ2ej8yISjoeVXeEWBsKlYEq+58IK3fQLcaUlF2R2qowgDqVhKtH0q/ySq9iR7CdvPw==
-X-Received: by 2002:a19:7606:0:b0:4e8:49c7:b3d2 with SMTP id c6-20020a197606000000b004e849c7b3d2mr3067790lff.19.1679569228997;
-        Thu, 23 Mar 2023 04:00:28 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id p15-20020a2e9a8f000000b002986d2069d4sm2943652lji.82.2023.03.23.04.00.28
+        bh=NqKCt/HzAeVjL0jwsjWER+U22DnB4fv/DX4FqfpOi6A=;
+        b=uuEXJV+OyLXHsoyQLyQJHMZlAaSIQ/bhQp9ps4d/N5h26Kqg7QxBmnDFhVXUhgl67g
+         qr2m+RG8bFC/Klj+uBnnrP9sdPYaf37xKVNwHwMMU6TytC9ocMdt9sr8arFr553TJox2
+         jxTY63Li32kV7SC3XQPZJTaMFUSYdtKz/o3ld1wQjFxh2E7ZoYWygkjl+FukFMCeZkPK
+         jWilDjhZjvdm6oHlMvlwHOFIJK/sr9An7K7BcBqu0ITg/ZXSu/gRWxNepPgU3LFvfBt4
+         U5K5NM98+1XOYaYLYJTx4LfaLABgaz/UGgQEHnrihzJFb6qO0c8g5ZPR/W6X8L0anEO+
+         4+cw==
+X-Gm-Message-State: AO0yUKXW+zHxq+3bfMMlON/KQ1LiQq4h9dn/RZ5B5r7Xip5pqQ5eeSPU
+        2EsdGUZaMZc0EKR+p9NQAr5LPA==
+X-Google-Smtp-Source: AK7set+0QeW1jJR2xjZjBhgvmhIqM+7SS+rqkzLYgriC0p00kpbxGMt3U9zb038BA8JPcnxTLApF9w==
+X-Received: by 2002:a17:903:20c9:b0:1a1:7c2b:4aea with SMTP id i9-20020a17090320c900b001a17c2b4aeamr5107766plb.0.1679572881544;
+        Thu, 23 Mar 2023 05:01:21 -0700 (PDT)
+Received: from ?IPV6:2405:201:d02f:d899:2028:7962:400:43b6? ([2405:201:d02f:d899:2028:7962:400:43b6])
+        by smtp.gmail.com with ESMTPSA id w4-20020a1709029a8400b0019a773419a6sm12149611plp.170.2023.03.23.05.01.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 04:00:28 -0700 (PDT)
-Message-ID: <f1390b01-c77e-3f67-acfc-7434f87d4856@gmail.com>
-Date:   Thu, 23 Mar 2023 13:00:27 +0200
+        Thu, 23 Mar 2023 05:01:21 -0700 (PDT)
+Message-ID: <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
+Date:   Thu, 23 Mar 2023 17:31:18 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US, en-GB
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "kunit-dev@googlegroups.com" <kunit-dev@googlegroups.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-References: <cover.1679474247.git.mazziesaccount@gmail.com>
- <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
- <ZBrvhfX/NNrJefgt@kroah.com> <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
- <ZBtPhoelZo4U5jwC@kroah.com>
- <12ea1d68-2a3c-0aa7-976c-7bd3eef35239@fi.rohmeurope.com>
- <ZBwUp/fRIjQZtjF7@kroah.com> <91c8dc84-8eae-15d9-3d55-976c2c806421@gmail.com>
- <ZBwpfRGoXT/0sxlU@kroah.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-In-Reply-To: <ZBwpfRGoXT/0sxlU@kroah.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
+To:     Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
+ <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
+Content-Language: en-US
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+In-Reply-To: <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/23/23 12:27, Greg Kroah-Hartman wrote:
-> On Thu, Mar 23, 2023 at 12:01:15PM +0200, Matti Vaittinen wrote:
->> On 3/23/23 10:58, Greg Kroah-Hartman wrote:
->>> On Thu, Mar 23, 2023 at 07:17:40AM +0000, Vaittinen, Matti wrote:
->>>> On 3/22/23 20:57, Greg Kroah-Hartman wrote:
->>>>> On Wed, Mar 22, 2023 at 03:48:00PM +0200, Matti Vaittinen wrote:
->>>>>> Hi Greg,
->>>>>>
->>>>>> Thanks for looking at this.
->>>>>>
->>>>>> On 3/22/23 14:07, Greg Kroah-Hartman wrote:
->>>>>>> On Wed, Mar 22, 2023 at 11:05:55AM +0200, Matti Vaittinen wrote:
->>
->>>>>> The biggest thing for me is that I don't like the idea of creating own 'test
->>>>>> device' in <add subsystem here> while we already have some in DRM (or
->>>>>> others). Thus, I do see value in adding generic helpers for supporting
->>>>>> running KUnit tests on devm_* APIs. Hence it'd be good to have _some_
->>>>>> support for it.
->>>>>
->>>>> I agree, let's use a virtual device and a virtual bus (you can use the
->>>>> auxbus code for this as that's all there for this type of thing)
->>>>
->>>> Hm. The auxiliary_devices require parent. What would be the best way to
->>>> deal with that in KUnit tests?
->>>
->>> If you use NULL as the parent, it goes into the root.
->>
->> As far as I read this is not the case with auxiliary devices. Judging the
->> docs they were intended to be representing some part of a (parent) device. I
->> see the auxiliary_device_init() has explicit check for parent being
->> populated:
->>
->> int auxiliary_device_init(struct auxiliary_device *auxdev)
->> {
->>          struct device *dev = &auxdev->dev;
->>
->>          if (!dev->parent) {
->>                  pr_err("auxiliary_device has a NULL dev->parent\n");
->>                  return -EINVAL;
->>          }
+Hi,
+
+On 22-03-2023 09:28 pm, Lars-Peter Clausen wrote:
+> Hi,
 > 
-> Yes as it wants to "split" a device up into smaller devices.  So make a
-> real device that it can hang off of.
-
-Yep. This is what led me to the root_device_register()... :rolleyes: And 
-seein the root-device alone could do what I need - adding auxiliary 
-device on top of it just for the sake of adding one seems a bit of an 
-over-engineering to me :)
-
->> As I wrote in another mail, I thought of using a root_device for this IIO
->> test as was suggested by David. To tell the truth, implementing a kunit bus
->> device is starting to feel a bit overwhelming... I started just adding a
->> driver for a light sensor, ended up adding a helper for IIO gain-time-scale
->> conversions and I am slightly reluctant to going the extra-extra mile of
->> adding some UT infrastructure in the context of this driver work...
+> This looks really good. A few minor comments inline.
 > 
-> I think it is worth it as the driver core has no tests.  So it obviously
-> must be correct, right?  :)
+> On 3/22/23 05:43, Naresh Solanki wrote:
+>> [...]
+>> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
+>> +                struct iio_chan_spec const *chan,
+>> +                int *val, int *val2, long info)
+>> +{
+>> +    int ret;
+>> +    struct max597x_iio *data = iio_priv(iio_dev);
+>> +    unsigned int reg_l, reg_h;
+>> +
+>> +    switch (info) {
+>> +    case IIO_CHAN_INFO_RAW:
+>> +        ret = regmap_read(data->regmap, chan->address, &reg_l);
+>> +        if (ret < 0)
+>> +            return ret;
+>> +        ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
+>> +        if (ret < 0)
+>> +            return ret;
+> Is there any chance of a race condition of getting inconsistent data 
+> when splitting this over two reads? I.e. registers being updated with 
+> new values in between the two reads.
+yes, reg_l holds lower 2 bits. due to latency in reads, value may differ.
+>> +        *val = (reg_h << 2) | (reg_l & 3);
+>> +
+>> +        return IIO_VAL_INT;
+>> +    case IIO_CHAN_INFO_SCALE:
+>> +
+>> +        switch (chan->address) {
+>> +        case MAX5970_REG_CURRENT_L(0):
+>> +            fallthrough;
+> 
+> `fallthrough` should not be needed for multiple case statements right on 
+> top of each other with no code in between. Same below
+Sure.
+> 
+>> +        case MAX5970_REG_CURRENT_L(1):
+>> +            /* in A, convert to mA */
+>> +            *val = data->irng[chan->channel] * 1000;
+>> +            *val2 =
+>> +                data->shunt_micro_ohms[chan->channel] * ADC_MASK;
+> ADC_MASK should really have a MAX5970_ prefix, but I guess it is defined 
+> in max597x.h
+Yes its taken from max597x.h
+>> +            return IIO_VAL_FRACTIONAL;
+>> +
+>> +        case MAX5970_REG_VOLTAGE_L(0):
+>> +            fallthrough;
+>> +        case MAX5970_REG_VOLTAGE_L(1):
+>> +            /* in uV, convert to mV */
+>> +            *val = data->mon_rng[chan->channel];
+>> +            *val2 = ADC_MASK * 1000;
+>> +            return IIO_VAL_FRACTIONAL;
+>> +        }
+>> +
+>> +        break;
+>> +    }
+>> +    return -EINVAL;
+>> +}
+>> [..]
+>> +static int max597x_iio_probe(struct platform_device *pdev)
+>> +{
+>> +    struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
+>> +    struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
+>> +    struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
+>> +    struct iio_dev *indio_dev;
+>> +    struct max597x_iio *priv;
+>> +    int ret, i;
+>> +
+>> +    if (!regmap)
+>> +        return -EPROBE_DEFER;
+>> +
+>> +    if (!max597x || !max597x->num_switches)
+>> +        return -EPROBE_DEFER;
+>> +
+>> +    /* registering iio */
+>> +    indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*priv));
+> For the devm allocations we should be using &pdev->dev and not the I2C 
+> device, since this is the device to which the allocations belong and 
+> where they should be freed when the device is removed.
+Sure. Will use &pdev->dev
+>> +    if (!indio_dev) {
+>> +        dev_err(&i2c->dev, "failed allocating iio device\n");
+> Consider using dev_err_probe() for error message printing. This will 
+> give a consistent formatting of the messages. Also again use &pdev->dev 
+> instead of I2C device to get the right device listed in the error messages.
+Sure. Will use
+dev_err_probe(&pdev->dev, ret, "could not register iio device");
+>> +        return -ENOMEM;
+>> +    }
+>> +    indio_dev->name = dev_name(&i2c->dev);
+> The IIO ABI wants the type of the chip for the name. E.g. "max5970", 
+> using dev_name() of the parent I2C device will result in something else.
+Sure. Will make it:
+indio_dev->name = dev_name(&pdev->dev);
+>> [...]
 
-Doh. Greg, I hate you :) How could one argue with something like this? I 
-think I will submit the v6 with the root_device_register() due to the 
-aux-device requiring it in any case. I know that will end up to your 
-table still as IIO is going through your hands anyways.
-
-I will however take a look at what Maxime said about devm unwinding not 
-being done w/o a bus because I think I saw the unwinding done in these 
-IIO tests even when using the root_device_register() 
-root_device_unregister(). If the unwinding really is not done, then I 
-will come back to this auxiliary device rehearsal
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Regards,
+Naresh

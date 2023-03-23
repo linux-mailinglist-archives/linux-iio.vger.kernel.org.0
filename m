@@ -2,182 +2,199 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F23396C6788
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 13:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E0BE6C67F1
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Mar 2023 13:17:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231823AbjCWMDR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Mar 2023 08:03:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
+        id S229702AbjCWMRe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Mar 2023 08:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231794AbjCWMC5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 08:02:57 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB2036FD4
-        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 05:01:22 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id le6so22018428plb.12
-        for <linux-iio@vger.kernel.org>; Thu, 23 Mar 2023 05:01:22 -0700 (PDT)
+        with ESMTP id S231356AbjCWMRR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Mar 2023 08:17:17 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79ACB26CEC;
+        Thu, 23 Mar 2023 05:16:55 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id h25so15765603lfv.6;
+        Thu, 23 Mar 2023 05:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1679572881;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NqKCt/HzAeVjL0jwsjWER+U22DnB4fv/DX4FqfpOi6A=;
-        b=Gl4P9YWHBoDUo6X0J6my+1rig0zuWw/4B+I5zl1tJqiHdDIHhps2DYaUktHy6rKt7I
-         1sWON9A/YKfUzyskgj0SOOFud9rTGbuEVOI1Z5wVjiovWubOSpmhXf8hsZsBi6t/uiJX
-         EVEavFHHlUIV0LX8avirEsmdn9DHJjyvUqTcH86cgtNrcSva5vViEWM680KiOpX5dchp
-         Q2jatQ/XzjBVS0wVTK63ArCV6p2APoC8JcuvlFBtCSJNPDqIFwBKbbkDlYlhDYCiPFf2
-         39cWpX/ASTgOTHwA1yKbifiDGJAijD4QhABHoWC5pLUH8/AT2a42Z9w+oAiP4akAb/zC
-         U/8g==
+        d=gmail.com; s=20210112; t=1679573813;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r4FMFp8xZJkslMtqkMHvYjpvWPx8OtcUtmZPOURHrHs=;
+        b=fCrEeeGxIrSJDv30dMQJ0t8W2AyzqNni2FqDtX9h5Hbc9Gn1UdD8yM3d1olg6bysBO
+         g8RC83P9FLxsFjrQ4X21nlIRWAZM5cJ9Vq2ywYAqEzRPkKbRqQfAcNYEJC0xbWls1btN
+         nA9+HGtPfpKE9EmueaRgdNJs4J2rP75tkcbiBi8SgJ8IC3zkUGorYS4fySTYlq3hpUQi
+         hv7wHlNXUcfpqB32/5MtSENS+NZQGs9Vncd3SZnk7OpfsQfs/T3+VQca5zAwuWsHbXnx
+         /mV/ZRQIYZKij5DnZ8N1H8qlhjyc7hxQpu8MxxVH2lrGCKD1itXx3osfSU6hJn7R5cUH
+         sE5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679572881;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1679573813;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NqKCt/HzAeVjL0jwsjWER+U22DnB4fv/DX4FqfpOi6A=;
-        b=uuEXJV+OyLXHsoyQLyQJHMZlAaSIQ/bhQp9ps4d/N5h26Kqg7QxBmnDFhVXUhgl67g
-         qr2m+RG8bFC/Klj+uBnnrP9sdPYaf37xKVNwHwMMU6TytC9ocMdt9sr8arFr553TJox2
-         jxTY63Li32kV7SC3XQPZJTaMFUSYdtKz/o3ld1wQjFxh2E7ZoYWygkjl+FukFMCeZkPK
-         jWilDjhZjvdm6oHlMvlwHOFIJK/sr9An7K7BcBqu0ITg/ZXSu/gRWxNepPgU3LFvfBt4
-         U5K5NM98+1XOYaYLYJTx4LfaLABgaz/UGgQEHnrihzJFb6qO0c8g5ZPR/W6X8L0anEO+
-         4+cw==
-X-Gm-Message-State: AO0yUKXW+zHxq+3bfMMlON/KQ1LiQq4h9dn/RZ5B5r7Xip5pqQ5eeSPU
-        2EsdGUZaMZc0EKR+p9NQAr5LPA==
-X-Google-Smtp-Source: AK7set+0QeW1jJR2xjZjBhgvmhIqM+7SS+rqkzLYgriC0p00kpbxGMt3U9zb038BA8JPcnxTLApF9w==
-X-Received: by 2002:a17:903:20c9:b0:1a1:7c2b:4aea with SMTP id i9-20020a17090320c900b001a17c2b4aeamr5107766plb.0.1679572881544;
-        Thu, 23 Mar 2023 05:01:21 -0700 (PDT)
-Received: from ?IPV6:2405:201:d02f:d899:2028:7962:400:43b6? ([2405:201:d02f:d899:2028:7962:400:43b6])
-        by smtp.gmail.com with ESMTPSA id w4-20020a1709029a8400b0019a773419a6sm12149611plp.170.2023.03.23.05.01.19
+        bh=r4FMFp8xZJkslMtqkMHvYjpvWPx8OtcUtmZPOURHrHs=;
+        b=USwqPZFj/9Ff6p2+lE1nLhW+bFw1IDi9fAM9NgfekSncNEDUVXlGRa/17ZmxBzi938
+         Vc5juVHo0DCjVwZLdFXRSDbBNaQiuYkO2YBa+TOECyLSy8W03eQJgB1hOMponH04kj2C
+         ydeC+64W4iutFclanMkWmLPB2IhQabXUxntiadGysA+ldNpR7fGq56im61TzlTG4NkAX
+         phiGURTAnAIZi1MGQGrIxVS0o+jwNHV9ScO6cDX4JkkbcVSGlO+q/EjFKpW8ser0wZIr
+         mEWDpYi8lQOCRdoLpeRfqON2ekH2QB40c1I+doTxqRXPMMAiaqZMaIsaCqE4284PqJWa
+         uklA==
+X-Gm-Message-State: AO0yUKUcxqC1EqIzwHM2TL6kOJJdIVup1nxO6FA6yw9PrlTBidEwkt33
+        PIRDjIr5cro49mdhVnB8LXo=
+X-Google-Smtp-Source: AKy350abhup12ow4rSUua5TqFCwNGxYQ/ojoiRU+QQbRNNopwW7nh6q1tIGqklSZm8cBBLBhb6bEuw==
+X-Received: by 2002:a05:6512:218d:b0:4ea:f6f2:7a7f with SMTP id b13-20020a056512218d00b004eaf6f27a7fmr1813648lft.34.1679573813329;
+        Thu, 23 Mar 2023 05:16:53 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id w16-20020a05651203d000b004e843d6244csm2905060lfp.99.2023.03.23.05.16.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 05:01:21 -0700 (PDT)
-Message-ID: <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
-Date:   Thu, 23 Mar 2023 17:31:18 +0530
+        Thu, 23 Mar 2023 05:16:53 -0700 (PDT)
+Message-ID: <8a03a6fb-39b9-cd17-cc10-ece71111357d@gmail.com>
+Date:   Thu, 23 Mar 2023 14:16:52 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
-To:     Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
- <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
-Content-Language: en-US
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-In-Reply-To: <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: en-US, en-GB
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Maxime Ripard <maxime@cerno.tech>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        David Gow <davidgow@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+References: <cover.1679474247.git.mazziesaccount@gmail.com>
+ <bad670ee135391eb902bd34b8bcbe777afabc7fd.1679474247.git.mazziesaccount@gmail.com>
+ <ZBrvhfX/NNrJefgt@kroah.com> <25f9758f-0010-0181-742a-b18a344110cf@gmail.com>
+ <ZBtPhoelZo4U5jwC@kroah.com> <20230323101216.w56kz3rudlj23vab@houat>
+ <ZBwoRgc2ICBJX/Lq@kroah.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
+ creation
+In-Reply-To: <ZBwoRgc2ICBJX/Lq@kroah.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Hi Maxime, all
 
-On 22-03-2023 09:28 pm, Lars-Peter Clausen wrote:
-> Hi,
+On 3/23/23 12:21, Greg Kroah-Hartman wrote:
+> On Thu, Mar 23, 2023 at 11:12:16AM +0100, Maxime Ripard wrote:
+>> On Wed, Mar 22, 2023 at 07:57:10PM +0100, Greg Kroah-Hartman wrote:
+>>>>>> +/**
+>>>>>> + * test_kunit_helper_alloc_device - Allocate a mock device for a KUnit test
+>>>>>> + * @test: The test context object
+>>>>>> + *
+>>>>>> + * This allocates a fake struct &device to create a mock for a KUnit
+>>>>>> + * test. The device will also be bound to a fake driver. It will thus be
+>>>>>> + * able to leverage the usual infrastructure and most notably the
+>>>>>> + * device-managed resources just like a "real" device.
+>>>>>
+>>>>> What specific "usual infrastructure" are you wanting to access here?
+>>>>>
+>>>>> And again, if you want a fake device, make a virtual one, by just
+>>>>> calling device_create().
+>>>>>
+>>>>> Or are you wanting to do "more" with that device pointer than
+>>>>> device_create() can give you?
+>>>>
+>>>> Personally, I was (am) only interested in devm_ unwinding. I guess the
+>>>> device_create(), device_add(), device_remove()... (didn't study this
+>>>> sequence in details so sorry if there is errors) could've been sufficient
+>>>> for me. I haven't looked how much of the code that there is for 'platform
+>>>> devices' should be duplicated to support that sequence for testability
+>>>> purposes.
+>>>
+>>> Any device can access devm_ code, there's no need for it to be a
+>>> platform device at all.
+>>
+>> Sure but the resources are only released if the device is part of a bus,
+>> so it can't be a root_device (or bare device) either
 > 
-> This looks really good. A few minor comments inline.
-> 
-> On 3/22/23 05:43, Naresh Solanki wrote:
->> [...]
->> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
->> +                struct iio_chan_spec const *chan,
->> +                int *val, int *val2, long info)
->> +{
->> +    int ret;
->> +    struct max597x_iio *data = iio_priv(iio_dev);
->> +    unsigned int reg_l, reg_h;
->> +
->> +    switch (info) {
->> +    case IIO_CHAN_INFO_RAW:
->> +        ret = regmap_read(data->regmap, chan->address, &reg_l);
->> +        if (ret < 0)
->> +            return ret;
->> +        ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
->> +        if (ret < 0)
->> +            return ret;
-> Is there any chance of a race condition of getting inconsistent data 
-> when splitting this over two reads? I.e. registers being updated with 
-> new values in between the two reads.
-yes, reg_l holds lower 2 bits. due to latency in reads, value may differ.
->> +        *val = (reg_h << 2) | (reg_l & 3);
->> +
->> +        return IIO_VAL_INT;
->> +    case IIO_CHAN_INFO_SCALE:
->> +
->> +        switch (chan->address) {
->> +        case MAX5970_REG_CURRENT_L(0):
->> +            fallthrough;
-> 
-> `fallthrough` should not be needed for multiple case statements right on 
-> top of each other with no code in between. Same below
-Sure.
-> 
->> +        case MAX5970_REG_CURRENT_L(1):
->> +            /* in A, convert to mA */
->> +            *val = data->irng[chan->channel] * 1000;
->> +            *val2 =
->> +                data->shunt_micro_ohms[chan->channel] * ADC_MASK;
-> ADC_MASK should really have a MAX5970_ prefix, but I guess it is defined 
-> in max597x.h
-Yes its taken from max597x.h
->> +            return IIO_VAL_FRACTIONAL;
->> +
->> +        case MAX5970_REG_VOLTAGE_L(0):
->> +            fallthrough;
->> +        case MAX5970_REG_VOLTAGE_L(1):
->> +            /* in uV, convert to mV */
->> +            *val = data->mon_rng[chan->channel];
->> +            *val2 = ADC_MASK * 1000;
->> +            return IIO_VAL_FRACTIONAL;
->> +        }
->> +
->> +        break;
->> +    }
->> +    return -EINVAL;
->> +}
->> [..]
->> +static int max597x_iio_probe(struct platform_device *pdev)
->> +{
->> +    struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
->> +    struct i2c_client *i2c = to_i2c_client(pdev->dev.parent);
->> +    struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
->> +    struct iio_dev *indio_dev;
->> +    struct max597x_iio *priv;
->> +    int ret, i;
->> +
->> +    if (!regmap)
->> +        return -EPROBE_DEFER;
->> +
->> +    if (!max597x || !max597x->num_switches)
->> +        return -EPROBE_DEFER;
->> +
->> +    /* registering iio */
->> +    indio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*priv));
-> For the devm allocations we should be using &pdev->dev and not the I2C 
-> device, since this is the device to which the allocations belong and 
-> where they should be freed when the device is removed.
-Sure. Will use &pdev->dev
->> +    if (!indio_dev) {
->> +        dev_err(&i2c->dev, "failed allocating iio device\n");
-> Consider using dev_err_probe() for error message printing. This will 
-> give a consistent formatting of the messages. Also again use &pdev->dev 
-> instead of I2C device to get the right device listed in the error messages.
-Sure. Will use
-dev_err_probe(&pdev->dev, ret, "could not register iio device");
->> +        return -ENOMEM;
->> +    }
->> +    indio_dev->name = dev_name(&i2c->dev);
-> The IIO ABI wants the type of the chip for the name. E.g. "max5970", 
-> using dev_name() of the parent I2C device will result in something else.
-Sure. Will make it:
-indio_dev->name = dev_name(&pdev->dev);
->> [...]
+> The resources are not cleaned up when the device is freed no matter if
+> it's on a bus or not?  If so, then that's a bug that needs to be fixed,
+> and tested :)
 
-Regards,
-Naresh
+This is strange. I just ran a test on a beaglebone black using Linux 
+6.3.0-rc2 + the IIO patches we se here (but the IIO test patch modified 
+to use the root_device_register() and root_device_unregister().
+
+I passed the device pointer from root_device_register() to the 
+devm_iio_init_iio_gts()
+
+// snip
+         dev = root_device_register(IIO_GTS_TEST_DEV);
+         KUNIT_EXPECT_NOT_ERR_OR_NULL(test, dev);
+         if (IS_ERR_OR_NULL(dev))
+                 return NULL;
+
+         ret = devm_iio_init_iio_gts(dev, TEST_SCALE_1X, 0, g_table, num_g,
+                                     i_table, num_i, gts);
+
+  - and saw the tables for available scales allocated:
+
+  if (gts.num_avail_all_scales)
+                 pr_info("GTS: table allocation succeeded\n");
+         else
+                 pr_info("GTS: table allocation failed\n");
+
+         pr_info("gts: num_avail_all_scales %d\n", 
+gts.num_avail_all_scales);
+
+(this printed:
+[   52.132966]     # Subtest: iio-gain-time-scale
+[   52.132982]     1..7
+[   52.157455] GTS: table allocation succeeded
+[   52.164077] gts: num_avail_all_scales 16
+
+Next I unregister the root-device and check if the unwinding code which 
+frees the tables and zeroes the scale count was ran:
+
+         root_device_unregister(dev);
+         pr_info("gts: num_avail_all_scales %d\n", 
+gts.num_avail_all_scales);
+
+         if (gts.num_avail_all_scales)
+                 pr_info("devm unwinding not done\n");
+         else
+                 pr_info("devm unwinding succeeded\n");
+
+Which printed:
+[   52.168101] gts: num_avail_all_scales 0
+[   52.171957] devm unwinding succeeded
+
+I can send patch(es) just for testing this on other machines if someone 
+want's to see if the lack of devm unwinding is somehow architecture 
+specific (which sounds very strange to me) - although using this IIO 
+series just for checking the unwinding is a bit of an overkill. I just 
+happened to have these tests at my hands / in my tree for testing.
+
+In any case, devm unwinding using root_device_[un]register() seems to 
+"work on my machine".
+
+Naxime, what was the environment where you observed lack of unwinding? 
+(Huh, I am so afraid of sending this post out - I've experienced too 
+many "Oh, boy - how I didn't notice THAT" moments in the past and maybe 
+I am again overlooking something...)
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

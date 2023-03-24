@@ -2,44 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 869276C7F9C
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Mar 2023 15:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8419B6C8151
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Mar 2023 16:35:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232122AbjCXONs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Mar 2023 10:13:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49866 "EHLO
+        id S232469AbjCXPfd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Mar 2023 11:35:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230404AbjCXONp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Mar 2023 10:13:45 -0400
-Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 878E9D307;
-        Fri, 24 Mar 2023 07:13:37 -0700 (PDT)
-X-MailGates: (flag:4,DYNAMIC,BADHELO,RELAY,NOHOST:PASS)(compute_score:DE
-        LIVER,40,3)
-Received: from 192.168.10.47
-        by mg.richtek.com with MailGates ESMTP Server V5.0(26690:0:AUTH_RELAY)
-        (envelope-from <chiaen_wu@richtek.com>); Fri, 24 Mar 2023 22:13:05 +0800 (CST)
-Received: from ex3.rt.l (192.168.10.46) by ex4.rt.l (192.168.10.47) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.25; Fri, 24 Mar
- 2023 22:13:05 +0800
-Received: from linuxcarl2.richtek.com (192.168.10.154) by ex3.rt.l
- (192.168.10.45) with Microsoft SMTP Server id 15.2.1118.25 via Frontend
- Transport; Fri, 24 Mar 2023 22:13:05 +0800
-From:   ChiaEn Wu <chiaen_wu@richtek.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>, <peterwu.pub@gmail.com>,
-        <cy_huang@richtek.com>, ChiaEn Wu <chiaen_wu@richtek.com>
-Subject: [PATCH] iio: adc: mt6370: Fix ibus and ibat scaling value of some specific vendor ID chips
-Date:   Fri, 24 Mar 2023 22:12:47 +0800
-Message-ID: <1679667167-16261-1-git-send-email-chiaen_wu@richtek.com>
-X-Mailer: git-send-email 1.8.3.1
+        with ESMTP id S232282AbjCXPfb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Mar 2023 11:35:31 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2340A1F4B1
+        for <linux-iio@vger.kernel.org>; Fri, 24 Mar 2023 08:35:07 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5447d217bc6so39425287b3.7
+        for <linux-iio@vger.kernel.org>; Fri, 24 Mar 2023 08:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679672106;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cit55CUjU58GshHnPftuk6box9yTHYhOt3pQ8Q8rdLE=;
+        b=KZJkjna7k/X1TGqk6FYZ2yPaKYuZvZiAkBynkUcoxqPEYRazzDHuQFXDPIZccsYuWJ
+         XJ4wyVRojdHmZoAYbJqAI69OgwWCg5bOXJf+824wfpC0gyzYgWLuwEYDDWIudCUMuB6b
+         L8w0dkEKfcl/NTe8G9IcZjHX6xRx9B4cY6kcnW84dzjx39CCGfE+i/c/eXDPCc/yc3/i
+         F+jRpwYsHXMug0XIOb7xqj5UDMdkR/zQdoy4nw6dveGVii3iif+e88KcTGRKAb/IyctY
+         0wWf++S+ZEyybRIDAGql6c4bDRL6ckHu07Bt0WXhJAjrM8Dvlmi9aqipIUGgohgKBRXZ
+         4Y+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679672106;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cit55CUjU58GshHnPftuk6box9yTHYhOt3pQ8Q8rdLE=;
+        b=pzwdEdiTqjhSb4jupQq4ov0GnuYE1Q+1SntrcXGU9V1NBNKvOOglXAX2JOQoaWfaAq
+         LoEeJCgPh5/+uNtpQ+x1VNq1ZZ0TiAuYj537JkWHqPMsesu/OdkVVzJqUro4VTGdERxj
+         SQGKZ0M+CcybfPIbPkQVs/epeseCubLPwH+JeV5njdinIk1A4XdxG5v9DnheiVlrE5TR
+         UzKsaQVau7A3lXqZhVQMcowTCw7s15uUGWD8sdJB+WBAup7ntl4J0nt0hK2l5ncGaKHP
+         v/qglwDTeYF5U2A0+6rCC1Bt7xqW3oy4hhZ/J4V3DsBjrn2AGMLJ0lks4J4PZWeAaFQx
+         oqxA==
+X-Gm-Message-State: AAQBX9fNMGdqDtxgKRML8FNZsRVq3gOm0As8lXMwKaC0cpYsqpuzM9DX
+        c1XYB08wjKfoFV7fNkhX+Xd6kQ==
+X-Google-Smtp-Source: AKy350aHJ1exqUT3VW+t6sElKSDIePYATo1ZDMaDjHCWoDZJTROkrtzhUMcxbIV12/FC+QrPqeyJYA==
+X-Received: by 2002:a0d:c401:0:b0:541:8b0f:caa9 with SMTP id g1-20020a0dc401000000b005418b0fcaa9mr2284447ywd.31.1679672106188;
+        Fri, 24 Mar 2023 08:35:06 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id 137-20020a81128f000000b00545a081848bsm463539yws.27.2023.03.24.08.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Mar 2023 08:35:05 -0700 (PDT)
+Date:   Fri, 24 Mar 2023 11:35:02 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] counter: 104-quad-8: Refactor to buffer states
+ for CMR, IOR, and IDR
+Message-ID: <ZB3DJjQLa48AodSD@fedora>
+References: <cover.1679605919.git.william.gray@linaro.org>
+ <c5adb13b4b0887beb1df40b34d2ef03d63a2860d.1679605919.git.william.gray@linaro.org>
+ <ZB2OG4zZXsqqyN8v@smile.fi.intel.com>
+ <ZB2Ob9VGe3GoEVko@smile.fi.intel.com>
+ <ZB2k9m7rL7Hpy/zU@fedora>
+ <ZB2qI7k/Igws5khg@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="SdN1MVy4I4UAX10+"
+Content-Disposition: inline
+In-Reply-To: <ZB2qI7k/Igws5khg@smile.fi.intel.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,130 +79,164 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The scale value of ibus and ibat on the datasheet is incorrect due to the
-customer report after the experimentation with some specific vendor ID
-chips.
 
-Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
----
- drivers/iio/adc/mt6370-adc.c | 48 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+--SdN1MVy4I4UAX10+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/adc/mt6370-adc.c b/drivers/iio/adc/mt6370-adc.c
-index bc62e5a..eea7223 100644
---- a/drivers/iio/adc/mt6370-adc.c
-+++ b/drivers/iio/adc/mt6370-adc.c
-@@ -19,6 +19,7 @@
- 
- #include <dt-bindings/iio/adc/mediatek,mt6370_adc.h>
- 
-+#define MT6370_REG_DEV_INFO		0x100
- #define MT6370_REG_CHG_CTRL3		0x113
- #define MT6370_REG_CHG_CTRL7		0x117
- #define MT6370_REG_CHG_ADC		0x121
-@@ -27,6 +28,7 @@
- #define MT6370_ADC_START_MASK		BIT(0)
- #define MT6370_ADC_IN_SEL_MASK		GENMASK(7, 4)
- #define MT6370_AICR_ICHG_MASK		GENMASK(7, 2)
-+#define MT6370_VENID_MASK		GENMASK(7, 4)
- 
- #define MT6370_AICR_100_mA		0x0
- #define MT6370_AICR_150_mA		0x1
-@@ -47,6 +49,10 @@
- #define ADC_CONV_TIME_MS		35
- #define ADC_CONV_POLLING_TIME_US	1000
- 
-+#define MT6370_VID_RT5081		0x8
-+#define MT6370_VID_RT5081A		0xA
-+#define MT6370_VID_MT6370		0xE
-+
- struct mt6370_adc_data {
- 	struct device *dev;
- 	struct regmap *regmap;
-@@ -55,6 +61,7 @@ struct mt6370_adc_data {
- 	 * from being read at the same time.
- 	 */
- 	struct mutex adc_lock;
-+	int vid;
- };
- 
- static int mt6370_adc_read_channel(struct mt6370_adc_data *priv, int chan,
-@@ -98,6 +105,26 @@ static int mt6370_adc_read_channel(struct mt6370_adc_data *priv, int chan,
- 	return ret;
- }
- 
-+static int mt6370_adc_get_ibus_scale(struct mt6370_adc_data *priv)
-+{
-+	if (priv->vid == MT6370_VID_RT5081  ||
-+	    priv->vid == MT6370_VID_RT5081A ||
-+	    priv->vid == MT6370_VID_MT6370)
-+		return 3350;
-+	else
-+		return 3875;
-+}
-+
-+static int mt6370_adc_get_ibat_scale(struct mt6370_adc_data *priv)
-+{
-+	if (priv->vid == MT6370_VID_RT5081  ||
-+	    priv->vid == MT6370_VID_RT5081A ||
-+	    priv->vid == MT6370_VID_MT6370)
-+		return 2680;
-+	else
-+		return 3870;
-+}
-+
- static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
- 				 int chan, int *val1, int *val2)
- {
-@@ -123,7 +150,7 @@ static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
- 		case MT6370_AICR_250_mA:
- 		case MT6370_AICR_300_mA:
- 		case MT6370_AICR_350_mA:
--			*val1 = 3350;
-+			*val1 = mt6370_adc_get_ibus_scale(priv);
- 			break;
- 		default:
- 			*val1 = 5000;
-@@ -150,7 +177,7 @@ static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
- 		case MT6370_ICHG_600_mA:
- 		case MT6370_ICHG_700_mA:
- 		case MT6370_ICHG_800_mA:
--			*val1 = 2680;
-+			*val1 = mt6370_adc_get_ibat_scale(priv);
- 			break;
- 		default:
- 			*val1 = 5000;
-@@ -251,6 +278,19 @@ static const struct iio_chan_spec mt6370_adc_channels[] = {
- 	MT6370_ADC_CHAN(TEMP_JC, IIO_TEMP, 12, BIT(IIO_CHAN_INFO_OFFSET)),
- };
- 
-+static int mt6370_get_vendor_info(struct mt6370_adc_data *priv)
-+{
-+	unsigned int dev_info;
-+	int ret;
-+
-+	ret = regmap_read(priv->regmap, MT6370_REG_DEV_INFO, &dev_info);
-+	if (ret)
-+		return ret;
-+
-+	priv->vid = FIELD_GET(MT6370_VENID_MASK, dev_info);
-+	return 0;
-+}
-+
- static int mt6370_adc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -263,6 +303,10 @@ static int mt6370_adc_probe(struct platform_device *pdev)
- 	if (!regmap)
- 		return dev_err_probe(dev, -ENODEV, "Failed to get regmap\n");
- 
-+	ret = mt6370_get_vendor_info(priv);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get vid\n");
-+
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
- 	if (!indio_dev)
- 		return -ENOMEM;
--- 
-2.7.4
+On Fri, Mar 24, 2023 at 03:48:19PM +0200, Andy Shevchenko wrote:
+> On Fri, Mar 24, 2023 at 09:26:14AM -0400, William Breathitt Gray wrote:
+> > On Fri, Mar 24, 2023 at 01:50:07PM +0200, Andy Shevchenko wrote:
+> > > On Fri, Mar 24, 2023 at 01:48:43PM +0200, Andy Shevchenko wrote:
+> > > > On Thu, Mar 23, 2023 at 05:25:28PM -0400, William Breathitt Gray wr=
+ote:
+>=20
+> ...
+>=20
+> > > > > +static void quad8_control_register_update(struct quad8 *const pr=
+iv, u8 *const buf,
+> > > > > +					  const size_t channel, const u8 val, const u8 field)
+> > > > > +{
+> > > > > +	u8p_replace_bits(&buf[channel], val, field);
+> > > > > +	iowrite8(buf[channel], &priv->reg->channel[channel].control);
+> > > > > +}
+> > > >=20
+> > > > How did you compile this?
+> > > > Due to nature of *_replace_bits() this may only be a macro.
+> > > >=20
+> > > > That's what LKP is telling about I think.
+> > >=20
+> > > Ah, no, that's because the last parameter is not constant in the last=
+ patch in
+> > > the series.
+>=20
+> > I'm having trouble cross-compiling for riscv, but I'm unable to recreate
+> > the build error when I compile for x86_64. However, I'd like to
+> > understand this error so I can fix it properly.
+> >=20
+> > Is the problem here due to the "const u8 field" parameter? Instead of a
+> > constant variable, does this need to be a constant literal value for
+> > u8p_replace_bits()? I don't think that parameter changed in the last
+> > patch of the series, so why is the build error occurring for the last
+> > patch and not this penultimate patch here?
+>=20
+> Good question. Perhaps my understanding is incorrect.
+>=20
+> > Would qualifying the
+> > quad8_control_register_update() function with "__always_inline" resolve
+> > this issue?
+>=20
+> Hmm... Don't know. You can always download a toolchain specifically build=
+ for
+> building kernels: https://mirrors.edge.kernel.org/pub/tools/crosstool/.
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
+>=20
+>=20
 
+I tried to build using crosstools, so I followed the reproduce sequence
+=66rom the kernel test robot message: download make.cross, fetch branch
+and checkout commit, and then I executed the following (I'm on an arm64
+system):
+
+        URL=3Dhttps://cdn.kernel.org/pub/tools/crosstool/files/bin/arm64 CO=
+MPILER_INSTALL_PATH=3D$HOME/Projects/Linux/testwilliam/0day COMPILER=3Dgcc-=
+12.1.0 ../make.cross W=3D1 O=3Dbuild_dir ARCH=3Driscv olddefconfig
+        URL=3Dhttps://cdn.kernel.org/pub/tools/crosstool/files/bin/arm64 CO=
+MPILER_INSTALL_PATH=3D$HOME/Projects/Linux/testwilliam/0day COMPILER=3Dgcc-=
+12.1.0 ../make.cross W=3D1 O=3Dbuild_dir ARCH=3Driscv SHELL=3D/bin/bash dri=
+vers/
+
+I encountered the following errors regarding GCC plugins:
+
+        cc1: error: cannot load plugin ./scripts/gcc-plugins/randomize_layo=
+ut_plugin.so: ./scripts/gcc-plugins/randomize_layout_plugin.so: undefined s=
+ymbol: _ZN8opt_pass14set_pass_paramEjb
+        cc1: error: cannot load plugin ./scripts/gcc-plugins/latent_entropy=
+_plugin.so: ./scripts/gcc-plugins/latent_entropy_plugin.so: undefined symbo=
+l: _ZN8opt_pass14set_pass_paramEjb
+        cc1: error: cannot load plugin ./scripts/gcc-plugins/randomize_layo=
+ut_plugin.so: ./scripts/gcc-plugins/randomize_layout_plugin.so: undefined s=
+ymbol: _ZN8opt_pass14set_pass_paramEjb
+        make[2]: *** [../scripts/Makefile.build:252: scripts/mod/empty.o] E=
+rror 1
+        cc1: error: cannot load plugin ./scripts/gcc-plugins/latent_entropy=
+_plugin.so: ./scripts/gcc-plugins/latent_entropy_plugin.so: undefined symbo=
+l: _ZN8opt_pass14set_pass_paramEjb
+
+I'm not quite sure how to resolve that plugin issue, but regardless I
+continued investigating the original build error reported by the kernel
+test robot.
+
+There are eight calls to quad8_control_register_update() in 104-quad-8:
+
+        quad8_control_register_update(priv, priv->idr, id, DISABLE_INDEX_MO=
+DE, INDEX_MODE);
+        quad8_control_register_update(priv, priv->cmr, id, mode_cfg, QUADRA=
+TURE_MODE);
+        quad8_control_register_update(priv, priv->ior, event_node->channel,=
+ flg_pins, FLG_PINS);
+        quad8_control_register_update(priv, priv->idr, channel_id, index_po=
+larity, INDEX_POLARITY);
+        quad8_control_register_update(priv, priv->idr, channel_id, synchron=
+ous_mode, INDEX_MODE);
+        quad8_control_register_update(priv, priv->cmr, count->id, count_mod=
+e, COUNT_MODE);
+        quad8_control_register_update(priv, priv->ior, count->id, enable, A=
+B_GATE);
+        quad8_control_register_update(priv, priv->ior, count->id, !preset_e=
+nable, LOAD_PIN);
+
+The field arguments for these calls are all preprocessor defines:
+
+        #define INDEX_MODE BIT(0)
+        #define QUADRATURE_MODE GENMASK(4, 3)
+        #define FLG_PINS GENMASK(4, 3)
+        #define INDEX_POLARITY BIT(1)
+        #define COUNT_MODE GENMASK(2, 1)
+        #define AB_GATE BIT(0)
+        #define LOAD_PIN BIT(1)
+
+Removing the duplicates, we get the following four field masks:
+
+        BIT(0)
+        BIT(1)
+        GENMASK(2, 1)
+        GENMASK(4, 3)
+
+I don't think there's a problem with these masks (unless there's
+something broken in the BIT() or GENMASK() implementations for riscv) so
+I'm suspecting something is wrong in bitfields.h. Here's the relevant
+function:
+
+        extern void __compiletime_error("bad bitfield mask")
+        __bad_mask(void);
+        static __always_inline u64 field_multiplier(u64 field)
+        {
+        	if ((field | (field - 1)) & ((field | (field - 1)) + 1))
+        		__bad_mask();
+        	return field & -field;
+        }
+
+If I compute the conditional check by hand, it evaluates to false for
+all four possible field masks. Is it possible the compiler is ignoring
+the if statement evaluation and attempting the __bad_mask() compilation
+regardless of the field passed in?
+
+William Breathitt Gray
+
+--SdN1MVy4I4UAX10+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZB3DJgAKCRC1SFbKvhIj
+KwNvAQDPISHW5wBfP+llsJByQcYGcT54LInfCmGzX4By5hiNTAEAtwkj0b3JK8pE
+pRXOES9WDuZFqyVVT0cFnArND8r8VgY=
+=ghod
+-----END PGP SIGNATURE-----
+
+--SdN1MVy4I4UAX10+--

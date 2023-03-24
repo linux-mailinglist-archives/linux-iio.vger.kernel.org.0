@@ -2,97 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F476C7E7A
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Mar 2023 14:10:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 595A96C7EBC
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Mar 2023 14:26:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbjCXNKU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Mar 2023 09:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57264 "EHLO
+        id S230426AbjCXN0c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Mar 2023 09:26:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbjCXNKT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Mar 2023 09:10:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9481795;
-        Fri, 24 Mar 2023 06:10:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23AA662ACB;
-        Fri, 24 Mar 2023 13:10:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979ACC433D2;
-        Fri, 24 Mar 2023 13:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679663417;
-        bh=F0HFFIS62//+IDqQarAuRmb4u+Etmm9kj8vJ4jyMrVY=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=KNRX96BfZOHJpemk4BPtqYbiYzfz+E+F9ajdXWKCVSrwZ1qiXrUHjUAtXY/3Sz6LG
-         l+oTBqGBSK/OCpWMDAqtpage16IZT4lncVS+nwyBETT4ZaFHNf41Jn+SIASll3mMcI
-         iZ31FtHtpdQdDTsumsQAyZe3g6nDIj5lUeAd85fLrLfcbGgA2HnFsGOoMYeKi8BBxl
-         7vzXiwXUGGBlu0OIX9QCQnmLSrvfB4374pnvkb38AkBDmsv9IiDn2ViP/YRGMOM3Ve
-         V46+hG/38UeCyBQvmP2YyRXLgHyRjF5GF4a2JExT+lqPUL3xujI8GA+Kg3eEvTJ1CL
-         LAA1xvx3vaU2A==
-Date:   Fri, 24 Mar 2023 14:10:13 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Todd Brandt <todd.e.brandt@intel.com>
-cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, todd.e.brandt@linux.intel.com,
-        srinivas.pandruvada@linux.intel.com, jic23@kernel.org,
-        p.jungkamp@gmx.net, stable@vger.kernel.org
-Subject: Re: [PATCH v4] HID:hid-sensor-custom: Fix buffer overrun in device
- name
-In-Reply-To: <20230314181256.15283-1-todd.e.brandt@intel.com>
-Message-ID: <nycvar.YFH.7.76.2303241409580.1142@cbobk.fhfr.pm>
-References: <20230314181256.15283-1-todd.e.brandt@intel.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        with ESMTP id S231872AbjCXN02 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Mar 2023 09:26:28 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B011C7E3
+        for <linux-iio@vger.kernel.org>; Fri, 24 Mar 2023 06:26:17 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-544f7c176easo32489177b3.9
+        for <linux-iio@vger.kernel.org>; Fri, 24 Mar 2023 06:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679664377;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/4+hgYW6apNidWZ2eWxndApVq4c9LGlZUgQ8HGnG/YM=;
+        b=wIxqgZulTguPL2eBnY7KKFTiLFfWsB5DxTGHxGyzaJDvUiT32yMYu6zbYRKhmPU+UF
+         dReG9qGEJJSCXjVLX+j35LEn1tnjyzTCG3ayZO07kVHhGJuxO3BBvoWW22h4XKLywkc5
+         F24YZ1VBvBuDeKm0ehW+fJV0vSBEY4AtR+AXwx8Rm4JVvj2MFZqS1oMlBS5ajplr93yS
+         VI88s/iEkqLRh57LholqpmYHqa7jz4wgSoP7+AvgJ12j7eGHZMrFgfs12Aqgv2r8HiJG
+         HaqIEYIgi9TRyP3t8AIYF/k9K6nY13mvLODxXVpAraVXhTnH0ngBaEQdZdtk3pfHANKV
+         Sdng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679664377;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/4+hgYW6apNidWZ2eWxndApVq4c9LGlZUgQ8HGnG/YM=;
+        b=5ZXmoeanh/SOPb4fTeslAsQUF7bxMpbK78z6bHPH1kOiwAxqX0jHDXMp63iBTOjb3h
+         1a8B1lyMp9QF4JDepvTWxB0vOc4aETVOrn5cXBDZcxtU0A31V6D6dCN26RbvjDvJ7L1C
+         XzydOEuSRuhDkqYRl5Ym56eecbO3bxIcaAprV8BXD1U0rjzEcE+KMfmFC7XRPtOmnvpn
+         +jt3wxGMi4i/QJinOBMm5fUxftT1OXolOdXldvYHuykcN1INL7R5kbCGD/jQo/qvAo+9
+         l8/s4bs6z5FOokOGI8PZfi3B/gyM5kCXTyphIlmUHhV9ev9m116h8AR10QgQvepQ/jRT
+         lePQ==
+X-Gm-Message-State: AAQBX9eZc+rqKMwp08+g3rLa0qIqe/mSabGeBqdsa1s2n8Sa0oZue7tb
+        rmzf48JeKsLGM1thnv0M+/Dhb9glORm9o/GdhZxQiQ==
+X-Google-Smtp-Source: AKy350a+oQQcX2Rv3Fysb0IwdJWRYo/W9Xhr2WxWZ8stfA1Ib+ZJCeVkiOatLvDRHmdDAcW/3Vcnfg==
+X-Received: by 2002:a81:d348:0:b0:539:4475:ff64 with SMTP id d8-20020a81d348000000b005394475ff64mr2203598ywl.40.1679664376892;
+        Fri, 24 Mar 2023 06:26:16 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id b2-20020a81bc42000000b00545a08184a7sm402507ywl.55.2023.03.24.06.26.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Mar 2023 06:26:16 -0700 (PDT)
+Date:   Fri, 24 Mar 2023 09:26:14 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] counter: 104-quad-8: Refactor to buffer states
+ for CMR, IOR, and IDR
+Message-ID: <ZB2k9m7rL7Hpy/zU@fedora>
+References: <cover.1679605919.git.william.gray@linaro.org>
+ <c5adb13b4b0887beb1df40b34d2ef03d63a2860d.1679605919.git.william.gray@linaro.org>
+ <ZB2OG4zZXsqqyN8v@smile.fi.intel.com>
+ <ZB2Ob9VGe3GoEVko@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="a1iK5qxqblY7GTai"
+Content-Disposition: inline
+In-Reply-To: <ZB2Ob9VGe3GoEVko@smile.fi.intel.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Mar 2023, Todd Brandt wrote:
 
-> On some platforms there are some platform devices created with
-> invalid names. For example: "HID-SENSOR-INT-020b?.39.auto" instead
-> of "HID-SENSOR-INT-020b.39.auto"
-> 
-> This string include some invalid characters, hence it will fail to
-> properly load the driver which will handle this custom sensor. Also
-> it is a problem for some user space tools, which parses the device
-> names from ftrace and dmesg.
-> 
-> This is because the string, real_usage, is not NULL terminated and
-> printed with %s to form device name.
-> 
-> To address this, initialize the real_usage string with 0s.
-> 
-> Reported-and-tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217169
-> Fixes: 98c062e82451 ("HID: hid-sensor-custom: Allow more custom iio sensors")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Philipp Jungkamp <p.jungkamp@gmx.net>
-> Signed-off-by: Philipp Jungkamp <p.jungkamp@gmx.net>
-> Signed-off-by: Todd Brandt <todd.e.brandt@intel.com>
-> Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> Changes in v4:
-> - add the Fixes line
-> - add patch version change list
-> Changes in v3:
-> - update the changelog
-> - add proper reviewed/signed/suggested links
-> Changes in v2:
-> - update the changelog
+--a1iK5qxqblY7GTai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied to for-6.3/upstream-fixes, thanks.
+On Fri, Mar 24, 2023 at 01:50:07PM +0200, Andy Shevchenko wrote:
+> On Fri, Mar 24, 2023 at 01:48:43PM +0200, Andy Shevchenko wrote:
+> > On Thu, Mar 23, 2023 at 05:25:28PM -0400, William Breathitt Gray wrote:
+>=20
+> ...
+>=20
+> > > +static void quad8_control_register_update(struct quad8 *const priv, =
+u8 *const buf,
+> > > +					  const size_t channel, const u8 val, const u8 field)
+> > > +{
+> > > +	u8p_replace_bits(&buf[channel], val, field);
+> > > +	iowrite8(buf[channel], &priv->reg->channel[channel].control);
+> > > +}
+> >=20
+> > How did you compile this?
+> > Due to nature of *_replace_bits() this may only be a macro.
+> >=20
+> > That's what LKP is telling about I think.
+>=20
+> Ah, no, that's because the last parameter is not constant in the last pat=
+ch in
+> the series.
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
 
--- 
-Jiri Kosina
-SUSE Labs
+I'm having trouble cross-compiling for riscv, but I'm unable to recreate
+the build error when I compile for x86_64. However, I'd like to
+understand this error so I can fix it properly.
 
+Is the problem here due to the "const u8 field" parameter? Instead of a
+constant variable, does this need to be a constant literal value for
+u8p_replace_bits()? I don't think that parameter changed in the last
+patch of the series, so why is the build error occurring for the last
+patch and not this penultimate patch here? Would qualifying the
+quad8_control_register_update() function with "__always_inline" resolve
+this issue?
+
+William Breathitt Gray
+
+--a1iK5qxqblY7GTai
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZB2k9gAKCRC1SFbKvhIj
+K41wAPwOf8OqdfF6dz3HKHzBtD3U1U1Ro93BWneFPEE7DoA5HAEAz2MYQ+iTfAXb
+8emsDRSyFLpKXsQo0etP8qqlqS85sQc=
+=7y20
+-----END PGP SIGNATURE-----
+
+--a1iK5qxqblY7GTai--

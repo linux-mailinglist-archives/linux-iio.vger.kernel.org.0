@@ -2,63 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ADA26C9052
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Mar 2023 19:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A556C905F
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Mar 2023 20:11:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbjCYS7a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Mar 2023 14:59:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56812 "EHLO
+        id S229805AbjCYTLN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Mar 2023 15:11:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjCYS7a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Mar 2023 14:59:30 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46ACF5276;
-        Sat, 25 Mar 2023 11:59:29 -0700 (PDT)
+        with ESMTP id S229659AbjCYTLM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Mar 2023 15:11:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00B9E050;
+        Sat, 25 Mar 2023 12:11:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E3FEDB80782;
-        Sat, 25 Mar 2023 18:59:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1DAC433EF;
-        Sat, 25 Mar 2023 18:59:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3967C60C95;
+        Sat, 25 Mar 2023 19:11:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48324C433EF;
+        Sat, 25 Mar 2023 19:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679770766;
-        bh=cvkDQ5VUSugi/Mx0cXn8GHD+HIhy+RhvFVUaPPEbIaA=;
+        s=k20201202; t=1679771470;
+        bh=Sr64iYwMmramkuXW283DFJe6tl6JGpQNQCfz+yCLHNA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uQRaY0SdvHsMw3Qz1+oQ2OU67uhbpMc7NB4AyXGTJ/vep30XWbPOqxbW3fg1+ojV7
-         u34Y4IGvGvMqEtc+iLwpwoTEuXWcGUAMUFnV4umx8fuJI/ian4Ct+25DM5Hw7wsZD1
-         YCqfBlyPp/njAWIl8h2dhWigJZxZqHb1TOpTn3rGnreTCcepKTiFfZpaYBRj8SdtW3
-         7CpscxCm13XMUTxOgl7D5w3IG+8/oWhQl6wla27yb3TaNTBgy6GM1kvwNftE35OWZ7
-         ZGnP2ZtMyFSJiS4krHyoeBCpP7ehAbQarDoYa/F5JY5S3eGZ/zsYlUVhDwT3HI2G86
-         jkBrUKeIdDG5Q==
-Date:   Sat, 25 Mar 2023 19:14:26 +0000
+        b=pb5D9leq9LNy7YwchEndf1oiHONuZCSi5f5AZ6U2h4syr9r6dv2n0AAmIDpsmBO3m
+         9TMsqBmCQkZrv96JKeaaHSk8/3yzYnIUyG9gvTuhGYS9F+koiH/n7Hrf7Ce9pRDKeW
+         oblb/Rox2Ce6YV/JNZ5/9+P3DqbKHWCyg1TeQrSHhV1XFW4SmuV9RvDs5C3gPgeSwr
+         okG//XxruFTD7STSVn93gBd6Hwhdfimjtw41ecPCAe6fihRmJwRXYjc0jKKIKLqzO/
+         85y4cm7AlFohxJa1r1fHR58QbJu4tF1qq2tIMGwVTYUpSbo8Kk5p4KHkofunxLmFID
+         p9Zip7+HmQh5Q==
+Date:   Sat, 25 Mar 2023 19:26:12 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     James Clark <james.clark@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
-        michal.simek@amd.com, Jonathan.Cameron@huawei.com,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jean Delvare <jdelvare@suse.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] serial: qcom_geni: Comment use of devm_krealloc
- rather than devm_krealloc_array
-Message-ID: <20230325191426.5810b644@jic23-huawei>
-In-Reply-To: <20230320145710.1120469-5-james.clark@arm.com>
-References: <20230320145710.1120469-1-james.clark@arm.com>
-        <20230320145710.1120469-5-james.clark@arm.com>
+To:     Naresh Solanki <naresh.solanki@9elements.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
+Message-ID: <20230325192612.6181b07e@jic23-huawei>
+In-Reply-To: <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
+References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
+        <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
+        <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -68,36 +56,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 20 Mar 2023 14:57:09 +0000
-James Clark <james.clark@arm.com> wrote:
+On Thu, 23 Mar 2023 17:31:18 +0530
+Naresh Solanki <naresh.solanki@9elements.com> wrote:
 
-> Now that devm_krealloc_array is available, add a comment justifying not
-> changing this occurrence to avoid any future auto fixups.
-> 
-> Link: https://lore.kernel.org/all/20230318173402.20a4f60d@jic23-huawei/
-> Signed-off-by: James Clark <james.clark@arm.com>
-LGTM
+> Hi,
+>=20
+> On 22-03-2023 09:28 pm, Lars-Peter Clausen wrote:
+> > Hi,
+> >=20
+> > This looks really good. A few minor comments inline.
+> >=20
+> > On 3/22/23 05:43, Naresh Solanki wrote: =20
+> >> [...]
+> >> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 int *val, int *val2, long info)
+> >> +{
+> >> +=C2=A0=C2=A0=C2=A0 int ret;
+> >> +=C2=A0=C2=A0=C2=A0 struct max597x_iio *data =3D iio_priv(iio_dev);
+> >> +=C2=A0=C2=A0=C2=A0 unsigned int reg_l, reg_h;
+> >> +
+> >> +=C2=A0=C2=A0=C2=A0 switch (info) {
+> >> +=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_RAW:
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D regmap_read(data->=
+regmap, chan->address, &reg_l);
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+turn ret;
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D regmap_read(data->=
+regmap, chan->address - 1, &reg_h);
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+turn ret; =20
+> > Is there any chance of a race condition of getting inconsistent data=20
+> > when splitting this over two reads? I.e. registers being updated with=20
+> > new values in between the two reads. =20
+> yes, reg_l holds lower 2 bits. due to latency in reads, value may differ.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Normally there is a way to avoid the tearing via a bulk read of some type.
+Is that not possible here?  If not, there are various tricks such as
+repeated reads until stable that can be used.
 
-> ---
->  drivers/tty/serial/qcom_geni_serial.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-> index 28fbc927a546..8ae1fb7c2636 100644
-> --- a/drivers/tty/serial/qcom_geni_serial.c
-> +++ b/drivers/tty/serial/qcom_geni_serial.c
-> @@ -1055,6 +1055,11 @@ static int setup_fifos(struct qcom_geni_serial_port *port)
->  		(port->tx_fifo_depth * port->tx_fifo_width) / BITS_PER_BYTE;
->  
->  	if (port->rx_buf && (old_rx_fifo_depth != port->rx_fifo_depth) && port->rx_fifo_depth) {
-> +		/*
-> +		 * Use krealloc rather than krealloc_array because rx_buf is
-> +		 * accessed as 1 byte entries as well as 4 byte entries so it's
-> +		 * not necessarily an array.
-> +		 */
->  		port->rx_buf = devm_krealloc(uport->dev, port->rx_buf,
->  					     port->rx_fifo_depth * sizeof(u32),
->  					     GFP_KERNEL);
+
+Looks like the device has a block read format that might work.
 

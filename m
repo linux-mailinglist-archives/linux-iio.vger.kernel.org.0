@@ -2,53 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A556C905F
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Mar 2023 20:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D0C26C906A
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Mar 2023 20:21:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjCYTLN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Mar 2023 15:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34434 "EHLO
+        id S230038AbjCYTVl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Mar 2023 15:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbjCYTLM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Mar 2023 15:11:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00B9E050;
-        Sat, 25 Mar 2023 12:11:11 -0700 (PDT)
+        with ESMTP id S229460AbjCYTVk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Mar 2023 15:21:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DD26137;
+        Sat, 25 Mar 2023 12:21:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3967C60C95;
-        Sat, 25 Mar 2023 19:11:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48324C433EF;
-        Sat, 25 Mar 2023 19:11:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CD6460CF7;
+        Sat, 25 Mar 2023 19:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D0AC433EF;
+        Sat, 25 Mar 2023 19:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679771470;
-        bh=Sr64iYwMmramkuXW283DFJe6tl6JGpQNQCfz+yCLHNA=;
+        s=k20201202; t=1679772098;
+        bh=6xCaygKTpM7f2IXd1A2Yon4aW1OSBIDkSxs37Hy1ziw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pb5D9leq9LNy7YwchEndf1oiHONuZCSi5f5AZ6U2h4syr9r6dv2n0AAmIDpsmBO3m
-         9TMsqBmCQkZrv96JKeaaHSk8/3yzYnIUyG9gvTuhGYS9F+koiH/n7Hrf7Ce9pRDKeW
-         oblb/Rox2Ce6YV/JNZ5/9+P3DqbKHWCyg1TeQrSHhV1XFW4SmuV9RvDs5C3gPgeSwr
-         okG//XxruFTD7STSVn93gBd6Hwhdfimjtw41ecPCAe6fihRmJwRXYjc0jKKIKLqzO/
-         85y4cm7AlFohxJa1r1fHR58QbJu4tF1qq2tIMGwVTYUpSbo8Kk5p4KHkofunxLmFID
-         p9Zip7+HmQh5Q==
-Date:   Sat, 25 Mar 2023 19:26:12 +0000
+        b=aW7yWjYzOyw6MWMqTSplKgJOnqiDxMG1L2e0Ddr30DjnMS0vltB9Tg/bMRgRJNvLT
+         6KKgy5Ql1RpFFsA+XYQ+UfubLPAcdrRE4VM5iWNUHglCXyCMgiTWeajVvAYBpXBilE
+         4kXcFTWBo0Obf8KoZcvSxvJVdDEoUWAD8rE7hU/fg5VxzqhQj95eoLou+aSvzH7vHA
+         SOHxf8ODWrq3E4acFc4ymwJTxyqw8BYxLobnnvf1b3s/VfBWXw5EdNPwf1cKawhHqU
+         dn7zm7mIcSt645xVQx6n85WdDF/64hcWQVnXOMJmK9MZVtC+1ger2GOqj2exYKd9ie
+         ARXcwL90rn1Fg==
+Date:   Sat, 25 Mar 2023 19:36:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Naresh Solanki <naresh.solanki@9elements.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+Cc:     Lee Jones <lee@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
         Patrick Rudolph <patrick.rudolph@9elements.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: max597x: Add support for max597x
-Message-ID: <20230325192612.6181b07e@jic23-huawei>
-In-Reply-To: <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
-References: <20230322124316.2147143-1-Naresh.Solanki@9elements.com>
-        <826f5de9-3aeb-6f7a-59e6-0504f8e92180@metafoo.de>
-        <34756312-8a25-5a10-4ea5-59aeeb9e199b@9elements.com>
+Subject: Re: [PATCH v2 1/2] iio: max597x: Add support for max597x
+Message-ID: <20230325193640.3dc8b330@jic23-huawei>
+In-Reply-To: <20230323194550.1914725-1-Naresh.Solanki@9elements.com>
+References: <20230323194550.1914725-1-Naresh.Solanki@9elements.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,49 +54,163 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 23 Mar 2023 17:31:18 +0530
+On Thu, 23 Mar 2023 20:45:48 +0100
 Naresh Solanki <naresh.solanki@9elements.com> wrote:
 
-> Hi,
->=20
-> On 22-03-2023 09:28 pm, Lars-Peter Clausen wrote:
-> > Hi,
-> >=20
-> > This looks really good. A few minor comments inline.
-> >=20
-> > On 3/22/23 05:43, Naresh Solanki wrote: =20
-> >> [...]
-> >> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 int *val, int *val2, long info)
-> >> +{
-> >> +=C2=A0=C2=A0=C2=A0 int ret;
-> >> +=C2=A0=C2=A0=C2=A0 struct max597x_iio *data =3D iio_priv(iio_dev);
-> >> +=C2=A0=C2=A0=C2=A0 unsigned int reg_l, reg_h;
-> >> +
-> >> +=C2=A0=C2=A0=C2=A0 switch (info) {
-> >> +=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_RAW:
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D regmap_read(data->=
-regmap, chan->address, &reg_l);
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn ret;
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D regmap_read(data->=
-regmap, chan->address - 1, &reg_h);
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn ret; =20
-> > Is there any chance of a race condition of getting inconsistent data=20
-> > when splitting this over two reads? I.e. registers being updated with=20
-> > new values in between the two reads. =20
-> yes, reg_l holds lower 2 bits. due to latency in reads, value may differ.
+> From: Patrick Rudolph <patrick.rudolph@9elements.com>
+> 
+> max597x has 10bit ADC for voltage & current monitoring.
+> Use iio framework to expose the same in sysfs.
+> 
+> Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
 
-Normally there is a way to avoid the tearing via a bulk read of some type.
-Is that not possible here?  If not, there are various tricks such as
-repeated reads until stable that can be used.
+I'm not a fan of wild cards in driver names. This doesn't
+for example support the max5974, max5971 etc
+
+Much better to name it after one of the supported parts.
+Obviously can't do much about the mfd driver now, but I'd prefer
+not to carry that through to the IIO driver if possible.
+
+One concern I have here is that from the max5978 datasheet I see
+this device supports features that are very much directed at hwmon
+type usecases.  In particular warning and critical threshold detection.
+We don't support multiple thresholds (in same direction) for a single
+channel via IIO.  If you want those features in the future you may want
+to consider using the hwmon subsystem.
+
+We tend to be flexible with devices that sit near the boundary of IIO
+and hwmon because we can bridge many of the features using the iio-hwmon
+bridge driver.  That doesn't work for more complex event handling and
+I suspect some of the other features this device provides.
+  
+> ...
+> Changes in V2:
+> - Remove fallthrough
+> - Use pdev->dev instead of i2c->dev
+> - Init indio_dev->name based on device type.
+> ---
+>  drivers/iio/adc/Kconfig       |  15 ++++
+>  drivers/iio/adc/Makefile      |   1 +
+>  drivers/iio/adc/max597x-iio.c | 152 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 168 insertions(+)
+>  create mode 100644 drivers/iio/adc/max597x-iio.c
+> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 45af2302be53..0d1a3dea0b7d 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -735,6 +735,21 @@ config MAX1363
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called max1363.
+>  
+> +config MAX597X_IIO
+> +	tristate "Maxim 597x power switch and monitor"
+> +	depends on I2C && OF
+> +	select MFD_MAX597X
+> +	help
+> +	  This driver enables support for the Maxim 597x smart switch and
+> +	  voltage/current monitoring interface using the Industrial I/O (IIO)
+> +	  framework. The Maxim 597x is a power switch and monitor that can
+> +	  provide voltage and current measurements via the I2C bus. Enabling
+> +	  this driver will allow user space applications to read the voltage
+> +	  and current measurements using IIO interfaces.
+
+Call out the actual part numbers supported in this help text to make it easy
+to grep for them.
+
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called max597x-iio.
+> +
+
+...
 
 
-Looks like the device has a block read format that might work.
+> +
+> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
+> +				struct iio_chan_spec const *chan,
+> +				int *val, int *val2, long info)
+> +{
+> +	int ret;
+> +	struct max597x_iio *data = iio_priv(iio_dev);
+> +	unsigned int reg_l, reg_h;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = regmap_read(data->regmap, chan->address, &reg_l);
+> +		if (ret < 0)
+> +			return ret;
+> +		ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = (reg_h << 2) | (reg_l & 3);
+
+I replied late to previous patch, but I'd prefer to see a bulk read if
+possible.  It might ensure a matched pair, or if not reduce the chance of
+tearing (when reg_l & 3 transitions from 3 to 0 for example and
+reg_h & 1 is going from 0 to 1)
+
+You could try a repeated read if the sampling rate is fairly low as
+simply getting same high bits on either side of the low bit read is probably
+enough to say tearing didn't happen.
+
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +
+> +		switch (chan->address) {
+> +		case MAX5970_REG_CURRENT_L(0):
+> +		case MAX5970_REG_CURRENT_L(1):
+> +			/* in A, convert to mA */
+> +			*val = data->irng[chan->channel] * 1000;
+> +			*val2 =
+> +			    data->shunt_micro_ohms[chan->channel] * ADC_MASK;
+Don't worry about 80 char limit when it hurts readability.  Just put that
+on one line.
+
+> +			return IIO_VAL_FRACTIONAL;
+> +
+> +		case MAX5970_REG_VOLTAGE_L(0):
+> +		case MAX5970_REG_VOLTAGE_L(1):
+> +			/* in uV, convert to mV */
+> +			*val = data->mon_rng[chan->channel];
+> +			*val2 = ADC_MASK * 1000;
+> +			return IIO_VAL_FRACTIONAL;
+> +		}
+> +
+> +		break;
+> +	}
+> +	return -EINVAL;
+> +}
+> +
+> +static const struct iio_info max597x_adc_iio_info = {
+> +	.read_raw = &max597x_iio_read_raw,
+> +};
+> +
+> +static int max597x_iio_probe(struct platform_device *pdev)
+> +{
+> +	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
+> +	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
+> +	struct iio_dev *indio_dev;
+> +	struct max597x_iio *priv;
+> +	int ret, i;
+> +
+> +	if (!regmap)
+> +		return -EPROBE_DEFER;
+> +
+> +	if (!max597x || !max597x->num_switches)
+> +		return -EPROBE_DEFER;
+> +
+> +	/* registering iio */
+
+Comment doesn't add anything is is wrong anyway as this doesn't do the
+majority of the registration. Dropt he comment.
+
+> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
+> +	if (!indio_dev)
+> +		return dev_err_probe(&pdev->dev, -ENOMEM,
+> +				     "failed to allocate iio device\n");
+
+...
 

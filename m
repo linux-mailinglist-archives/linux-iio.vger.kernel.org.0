@@ -2,78 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9757A6C9720
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Mar 2023 19:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C796C97FA
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Mar 2023 23:13:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjCZRRF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Mar 2023 13:17:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58162 "EHLO
+        id S229651AbjCZVNY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Mar 2023 17:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjCZRRE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Mar 2023 13:17:04 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A78072A8;
-        Sun, 26 Mar 2023 10:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=TtKgtk9kregiWGn+VAskA/UgDBK371iiirhB/FRAS84=; b=WIjafrfM0VhCtg0Rftxur3EcIi
-        33eOaJfGUoR3z9Zg/YPms7LmoijJJL2LOb0baTMBgzNlAGctC6cWCvZ7s8Bo6WHBWQsNG2wXcsBFw
-        5CtFFszNX7jdn+uzWqvcwIFKZz78bzRt4pF2aLVRHluM3Lh/adQoPYnYv4tPLLwVZ5BU1yE0mFKQI
-        2o7mSlO4i07it4BXSYaGgs4n9am9gitqPd2zC5pNp8rLBpsghjLcJYWupr3QSLCvIKLcbFk1kiA7A
-        IRAjIkMpYy2W8ANK6poc9KRzctnd7DB73pblSQI0iwNMDLWNEceMsEYamRKc0WP9N4VOb+vB2156L
-        WsOEQYrg==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1pgTzH-000NaI-03; Sun, 26 Mar 2023 19:16:59 +0200
-Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
-        by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1pgTzG-000Foh-Cf; Sun, 26 Mar 2023 19:16:58 +0200
-Message-ID: <d9d4894e-d386-dba5-3e6a-c48c5d143e45@metafoo.de>
-Date:   Sun, 26 Mar 2023 10:16:54 -0700
+        with ESMTP id S229596AbjCZVNX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Mar 2023 17:13:23 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD81E525C
+        for <linux-iio@vger.kernel.org>; Sun, 26 Mar 2023 14:13:22 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-545cb3c9898so60843007b3.7
+        for <linux-iio@vger.kernel.org>; Sun, 26 Mar 2023 14:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679865201;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8F1bPVXXV4xIf8rTIiWOuXJZOQOnAzCoZb2gtyfVG1k=;
+        b=eEi4mN1ifGfJY7+0b8y3SZsLIF0xWt00MBSvDklScSp9b9wk1ykG7b++GPCC1KHF14
+         RQViyq9mhox8y2tzT/vu09qYj16Cbm1C4XOQMmUjDyaBBsKZVvHSTGvMsqYI5bRFWLyv
+         LUQcyry4IlnAITJ5J4Sc4qs0sLlAI6ztv3zcp8RDx473feeFdLQ2sIZ0jWk5hsheYKXE
+         sPU4OwgJZhkAjJ7s1ESL4crUdpKPg27aKxstqvv2/UAFifWkICu84WhqL3mAyhbpRd+g
+         pOTVvNjEOvNbnHeVj+2xZv840wJyy3Hd8dOs7AYMm5TdhK2IYDTfQMdYoAyQNQ2CU+03
+         SXZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679865201;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8F1bPVXXV4xIf8rTIiWOuXJZOQOnAzCoZb2gtyfVG1k=;
+        b=htQan0RXENLEQeA7ly/tkvDfaEtLH0FFjDwfxO+nkSIP2Isi6xWhgA5RgKzf+3vU28
+         VGpk8jwFFfTIgrs5UKp6pG6yITsdCHKeIEijXK96TYcv93b0S94ODx5VMrIlRC2siRT8
+         MUESR08st3Z2KQQq7AE8F8KE8bszjNyW+yH9H3n1cg4Z+6nzu8jY6f//7SDxIYQu7UdK
+         1FxidOeoB4Cbpd1Qmtm1qWdECtH9aC6ICz6EtU613KpIZaQlZLqf/rU+AGyCRMFSfO+g
+         qLdT8Y9uPc2zUd2yk2XmzvelKqsCmKBhd5auVMV/K1D+qXHbbquSwQiEdFWT0yY2Gzoc
+         7tXg==
+X-Gm-Message-State: AAQBX9dETT4Pqjcxh1u2D/PVQP+yz1gt3+er9Zqfz46/3JBrL68jJC1D
+        SAY48zAq83eg1g0TPBMl7pNBXcDZxZT+oJ6x3V0cfw==
+X-Google-Smtp-Source: AKy350ZUklvuXpG/TVmgpH3Zi3KwYxjqvrRWLvfNvJS030p6UApvbjN5NVOirP1Z8b+o5CKWs0wq7A==
+X-Received: by 2002:a81:d348:0:b0:539:4475:ff64 with SMTP id d8-20020a81d348000000b005394475ff64mr10144773ywl.40.1679865201591;
+        Sun, 26 Mar 2023 14:13:21 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id dc8-20020a05690c0f0800b00545a08184besm1640929ywb.78.2023.03.26.14.13.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Mar 2023 14:13:20 -0700 (PDT)
+Date:   Sun, 26 Mar 2023 17:13:18 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2] iio: addac: stx104: Migrate to the regmap API
+Message-ID: <ZCC1bhdHymSBMQOX@fedora>
+References: <20230324030916.396569-1-william.gray@linaro.org>
+ <20230326164920.1e4575f9@jic23-huawei>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Maxime Ripard <maxime@cerno.tech>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
-        linux-iio@vger.kernel.org
-References: <ZBrvhfX/NNrJefgt@kroah.com>
- <25f9758f-0010-0181-742a-b18a344110cf@gmail.com> <ZBtPhoelZo4U5jwC@kroah.com>
- <20230323101216.w56kz3rudlj23vab@houat> <ZBwoRgc2ICBJX/Lq@kroah.com>
- <8a03a6fb-39b9-cd17-cc10-ece71111357d@gmail.com>
- <20230323122925.kqdnomr7i46qnyo4@houat>
- <590189b3-42d9-ab12-fccd-37338595cb6f@gmail.com>
- <20230323163639.xtwpid2uunwnzai4@houat>
- <a0e8b1da-3645-4141-6518-e035ad80a23d@gmail.com>
- <20230324123157.bbwvfq4gsxnlnfwb@houat>
- <20230325175044.7bee9e7d@jic23-huawei>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20230325175044.7bee9e7d@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26855/Sun Mar 26 09:23:02 2023)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="1hFa8m5aSKcaoSMl"
+Content-Disposition: inline
+In-Reply-To: <20230326164920.1e4575f9@jic23-huawei>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,92 +72,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/25/23 10:50, Jonathan Cameron wrote:
-> On Fri, 24 Mar 2023 13:31:57 +0100
-> Maxime Ripard <maxime@cerno.tech> wrote:
->
->> On Fri, Mar 24, 2023 at 08:11:52AM +0200, Matti Vaittinen wrote:
->>> On 3/23/23 18:36, Maxime Ripard wrote:
->>>> On Thu, Mar 23, 2023 at 03:02:03PM +0200, Matti Vaittinen wrote:
->>>>> On 3/23/23 14:29, Maxime Ripard wrote:
->>>>>> On Thu, Mar 23, 2023 at 02:16:52PM +0200, Matti Vaittinen wrote:
->>>>>>
->>>>>> This is the description of what was happening:
->>>>>> https://lore.kernel.org/dri-devel/20221117165311.vovrc7usy4efiytl@houat/
->>>>> Thanks Maxime. Do I read this correcty. The devm_ unwinding not being done
->>>>> when root_device_register() is used is not because root_device_unregister()
->>>>> would not trigger the unwinding - but rather because DRM code on top of this
->>>>> device keeps the refcount increased?
->>>> There's a difference of behaviour between a root_device and any device
->>>> with a bus: the root_device will only release the devm resources when
->>>> it's freed (in device_release), but a bus device will also do it in
->>>> device_del (through bus_remove_device() -> device_release_driver() ->
->>>> device_release_driver_internal() -> __device_release_driver() ->
->>>> device_unbind_cleanup(), which are skipped (in multiple places) if
->>>> there's no bus and no driver attached to the device).
->>>>
->>>> It does affect DRM, but I'm pretty sure it will affect any framework
->>>> that deals with device hotplugging by deferring the framework structure
->>>> until the last (userspace) user closes its file descriptor. So I'd
->>>> assume that v4l2 and cec at least are also affected, and most likely
->>>> others.
->>> Thanks for the explanation and patience :)
->>>    
->>>>    
->>>>> If this is the case, then it sounds like a DRM specific issue to me.
->>>> I mean, I guess. One could also argue that it's because IIO doesn't
->>>> properly deal with hotplugging.
->>> I must say I haven't been testing the IIO registration API. I've only tested
->>> the helper API which is not backed up by any "IIO device". (This is fine for
->>> the helper because it must by design be cleaned-up only after the
->>> IIO-deregistration).
->>>
->>> After your explanation here, I am not convinced IIO wouldn't see the same
->>> issue if I was testing the devm_iio_device_alloc() & co.
->> It depends really. The issue DRM is trying to solve is that, when a
->> device is gone, some application might still have an open FD and could
->> still poke into the kernel, while all the resources would have been
->> free'd if it was using devm.
->>
->> So everything is kept around until the last fd is closed, so you still
->> have a reference to the device (even though it's been removed from its
->> bus) until that time.
->>
->> It could be possible that IIO just doesn't handle that case at all. I
->> guess most of the devices aren't hotpluggable, and there's not much to
->> interact with from a userspace PoV iirc, so it might be why.
-> Lars-Peter Clausen (IIRC) fixed up the IIO handling of the similar cases a
-> long time ago now. It's simpler that for some other subsystems as we don't
-> have as many interdependencies as occur in DRM etc.
->
-> I 'think' we are fine in general with the IIO approach to this (I think we
-> did have one report of a theoretical race condition in the remove path that
-> was never fully addressed).
->
-> For IIO we also have fds that can be open but all accesses to them are proxied
-> through the IIO core and one of the things iio_device_unregister() or the devm
-> equivalent does is to set indio_dev->info = NULL  (+ wake up anyone waiting on
-> data etc). Alongside removing the callbacks, that is also used as a flag
-> to indicate the device has gone.
->
-> Note that we keep a reference to the struct indio_dev->dev (rather that the
-> underlying device) so that is not freed until the last fd is closed.
-> Thus, although devm unwinding has occurred that doesn't mean all the data
-> that was allocated with devm_xx calls is cleared up immediately.
 
-IIO is fully hot-plug and hot-unplug capable. And it will have the same 
-issue. When using managed device registration that establishes a parent 
-child relationship between the devices and in combination with a device 
-where the managed unwinding does not happen on unbind, but rather on in 
-the release callback you create a cyclic reference dependency. The child 
-device holds a reference to the parent, but the reference is only 
-released in the parents release callback. And since that release 
-callback is not called until the last reference is dropped you end up 
-with a resource leak.
+--1hFa8m5aSKcaoSMl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-There are even some other places where IIO drivers run into this. E.g. 
-any driver that does `devm_iio_trigger_register(&indio_dev->dev, ...)` 
-creates a resource leak on the trigger and the IIO device. The indio_dev 
-is not a bus device, hence no unbind and the trigger holds a reference 
-so the release callback will never be called either.
+On Sun, Mar 26, 2023 at 04:49:20PM +0100, Jonathan Cameron wrote:
+> On Thu, 23 Mar 2023 23:09:16 -0400
+> William Breathitt Gray <william.gray@linaro.org> wrote:
+>=20
+> > The regmap API supports IO port accessors so we can take advantage of
+> > regmap abstractions rather than handling access to the device registers
+> > directly in the driver.
+> >=20
+> > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+>=20
+> I would have preferred slightly if you had avoided reording the probe
+> (previously gpio chip was registered before iio device and now it is afte=
+r)
+> but it make no real difference so I'm not that bothered.
+>=20
+> A few other minor comments. Biggest one being that the defines should be
+> prefixed.
+>=20
+> Thanks,
+>=20
+> Jonathan
 
+Hi Jonathan,
+
+I'll be submitting a v3 soon addressing your comments as well as some
+minor fixes to v2; I'll make the regmap_read_poll_timeout() change as a
+follow-up patch as suggested.
+
+Regarding the GPIO code reordering in the probe, I decided to move it
+after the iio device registration so that all the IIO-related code is
+grouped together and finished before we deal with GPIO-related stuff.
+Given that all the original gpio chip code is removed anyway in this
+patch, I figure this is a minor enough cleanup to perform here. If you
+aren't too strongly opposed to this change I'll keep it in v3 as it
+avoids the hassle of creating a separate patch for such a trivial
+change.
+
+William Breathitt Gray
+
+--1hFa8m5aSKcaoSMl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZCC1bgAKCRC1SFbKvhIj
+K3gKAP4im9weEqAgUf5gXPQ5DqmrLHtP+vf1hUdjwMTWuLxulwD+Nxc7CxSgYBky
+olZG9H8YrFmtmtgBft7xrYp1AoTWWQw=
+=8rwi
+-----END PGP SIGNATURE-----
+
+--1hFa8m5aSKcaoSMl--

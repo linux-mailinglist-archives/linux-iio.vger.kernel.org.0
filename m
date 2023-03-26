@@ -2,151 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D046C9705
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Mar 2023 18:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9757A6C9720
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Mar 2023 19:17:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjCZQ7q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Mar 2023 12:59:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47076 "EHLO
+        id S229640AbjCZRRF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Mar 2023 13:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232406AbjCZQ7n (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Mar 2023 12:59:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25DC5FE1
-        for <linux-iio@vger.kernel.org>; Sun, 26 Mar 2023 09:59:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B78B5B8070D
-        for <linux-iio@vger.kernel.org>; Sun, 26 Mar 2023 16:59:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9C0C4339B;
-        Sun, 26 Mar 2023 16:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679849979;
-        bh=VTcMIlx6ZZI+HaFtCIO2QEbdEQCArgBjiebh0U/JRTE=;
-        h=Date:From:To:Subject:From;
-        b=p0iUlkA1Ko0k3NBKAaOjZ5UItml2P03ZKHllCHxYgfnKJSI8p+YIMtGDOoQL/gXAj
-         P3FofsRdrReD2aDrwv9WzUbcCCTNlKP3mfweJyemktEpGqZK9CNn9KAkovRUL4g80f
-         ORhN8dcaL5rRQ+Z9b89gSXc+JIM8onhxRld8EJ3TlDiDMqt3W+oSgPo+pofZmAN8oT
-         ZgW1rQ0QWqB0JGv42kT/wHZxJrFOe6ntcK8uAxkOahUX48IY7fyrG1x4wXMA8r8Vxm
-         eZzONMY6z0JdI6MqFP69d8r7f1Kw773e4SDjUYsf/N7KnURj3+yNNAxyJE0Qc/3TSV
-         HCKb1lAsH5NSA==
-Date:   Sun, 26 Mar 2023 18:14:42 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO fixes for 6.3 - set 1
-Message-ID: <20230326181442.3475d522@jic23-huawei>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229483AbjCZRRE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Mar 2023 13:17:04 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A78072A8;
+        Sun, 26 Mar 2023 10:17:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=TtKgtk9kregiWGn+VAskA/UgDBK371iiirhB/FRAS84=; b=WIjafrfM0VhCtg0Rftxur3EcIi
+        33eOaJfGUoR3z9Zg/YPms7LmoijJJL2LOb0baTMBgzNlAGctC6cWCvZ7s8Bo6WHBWQsNG2wXcsBFw
+        5CtFFszNX7jdn+uzWqvcwIFKZz78bzRt4pF2aLVRHluM3Lh/adQoPYnYv4tPLLwVZ5BU1yE0mFKQI
+        2o7mSlO4i07it4BXSYaGgs4n9am9gitqPd2zC5pNp8rLBpsghjLcJYWupr3QSLCvIKLcbFk1kiA7A
+        IRAjIkMpYy2W8ANK6poc9KRzctnd7DB73pblSQI0iwNMDLWNEceMsEYamRKc0WP9N4VOb+vB2156L
+        WsOEQYrg==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pgTzH-000NaI-03; Sun, 26 Mar 2023 19:16:59 +0200
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pgTzG-000Foh-Cf; Sun, 26 Mar 2023 19:16:58 +0200
+Message-ID: <d9d4894e-d386-dba5-3e6a-c48c5d143e45@metafoo.de>
+Date:   Sun, 26 Mar 2023 10:16:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
+ creation
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Maxime Ripard <maxime@cerno.tech>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        David Gow <davidgow@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
+        linux-iio@vger.kernel.org
+References: <ZBrvhfX/NNrJefgt@kroah.com>
+ <25f9758f-0010-0181-742a-b18a344110cf@gmail.com> <ZBtPhoelZo4U5jwC@kroah.com>
+ <20230323101216.w56kz3rudlj23vab@houat> <ZBwoRgc2ICBJX/Lq@kroah.com>
+ <8a03a6fb-39b9-cd17-cc10-ece71111357d@gmail.com>
+ <20230323122925.kqdnomr7i46qnyo4@houat>
+ <590189b3-42d9-ab12-fccd-37338595cb6f@gmail.com>
+ <20230323163639.xtwpid2uunwnzai4@houat>
+ <a0e8b1da-3645-4141-6518-e035ad80a23d@gmail.com>
+ <20230324123157.bbwvfq4gsxnlnfwb@houat>
+ <20230325175044.7bee9e7d@jic23-huawei>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <20230325175044.7bee9e7d@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26855/Sun Mar 26 09:23:02 2023)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit 2acd031347f645871959a799238a7caf6803aa18:
+On 3/25/23 10:50, Jonathan Cameron wrote:
+> On Fri, 24 Mar 2023 13:31:57 +0100
+> Maxime Ripard <maxime@cerno.tech> wrote:
+>
+>> On Fri, Mar 24, 2023 at 08:11:52AM +0200, Matti Vaittinen wrote:
+>>> On 3/23/23 18:36, Maxime Ripard wrote:
+>>>> On Thu, Mar 23, 2023 at 03:02:03PM +0200, Matti Vaittinen wrote:
+>>>>> On 3/23/23 14:29, Maxime Ripard wrote:
+>>>>>> On Thu, Mar 23, 2023 at 02:16:52PM +0200, Matti Vaittinen wrote:
+>>>>>>
+>>>>>> This is the description of what was happening:
+>>>>>> https://lore.kernel.org/dri-devel/20221117165311.vovrc7usy4efiytl@houat/
+>>>>> Thanks Maxime. Do I read this correcty. The devm_ unwinding not being done
+>>>>> when root_device_register() is used is not because root_device_unregister()
+>>>>> would not trigger the unwinding - but rather because DRM code on top of this
+>>>>> device keeps the refcount increased?
+>>>> There's a difference of behaviour between a root_device and any device
+>>>> with a bus: the root_device will only release the devm resources when
+>>>> it's freed (in device_release), but a bus device will also do it in
+>>>> device_del (through bus_remove_device() -> device_release_driver() ->
+>>>> device_release_driver_internal() -> __device_release_driver() ->
+>>>> device_unbind_cleanup(), which are skipped (in multiple places) if
+>>>> there's no bus and no driver attached to the device).
+>>>>
+>>>> It does affect DRM, but I'm pretty sure it will affect any framework
+>>>> that deals with device hotplugging by deferring the framework structure
+>>>> until the last (userspace) user closes its file descriptor. So I'd
+>>>> assume that v4l2 and cec at least are also affected, and most likely
+>>>> others.
+>>> Thanks for the explanation and patience :)
+>>>    
+>>>>    
+>>>>> If this is the case, then it sounds like a DRM specific issue to me.
+>>>> I mean, I guess. One could also argue that it's because IIO doesn't
+>>>> properly deal with hotplugging.
+>>> I must say I haven't been testing the IIO registration API. I've only tested
+>>> the helper API which is not backed up by any "IIO device". (This is fine for
+>>> the helper because it must by design be cleaned-up only after the
+>>> IIO-deregistration).
+>>>
+>>> After your explanation here, I am not convinced IIO wouldn't see the same
+>>> issue if I was testing the devm_iio_device_alloc() & co.
+>> It depends really. The issue DRM is trying to solve is that, when a
+>> device is gone, some application might still have an open FD and could
+>> still poke into the kernel, while all the resources would have been
+>> free'd if it was using devm.
+>>
+>> So everything is kept around until the last fd is closed, so you still
+>> have a reference to the device (even though it's been removed from its
+>> bus) until that time.
+>>
+>> It could be possible that IIO just doesn't handle that case at all. I
+>> guess most of the devices aren't hotpluggable, and there's not much to
+>> interact with from a userspace PoV iirc, so it might be why.
+> Lars-Peter Clausen (IIRC) fixed up the IIO handling of the similar cases a
+> long time ago now. It's simpler that for some other subsystems as we don't
+> have as many interdependencies as occur in DRM etc.
+>
+> I 'think' we are fine in general with the IIO approach to this (I think we
+> did have one report of a theoretical race condition in the remove path that
+> was never fully addressed).
+>
+> For IIO we also have fds that can be open but all accesses to them are proxied
+> through the IIO core and one of the things iio_device_unregister() or the devm
+> equivalent does is to set indio_dev->info = NULL  (+ wake up anyone waiting on
+> data etc). Alongside removing the callbacks, that is also used as a flag
+> to indicate the device has gone.
+>
+> Note that we keep a reference to the struct indio_dev->dev (rather that the
+> underlying device) so that is not freed until the last fd is closed.
+> Thus, although devm unwinding has occurred that doesn't mean all the data
+> that was allocated with devm_xx calls is cleared up immediately.
 
-  iio: imu: fxos8700: fix MAGN sensor scale and unit (2023-01-21 18:15:19 +=
-0000)
+IIO is fully hot-plug and hot-unplug capable. And it will have the same 
+issue. When using managed device registration that establishes a parent 
+child relationship between the devices and in combination with a device 
+where the managed unwinding does not happen on unbind, but rather on in 
+the release callback you create a cyclic reference dependency. The child 
+device holds a reference to the parent, but the reference is only 
+released in the parents release callback. And since that release 
+callback is not called until the last reference is dropped you end up 
+with a resource leak.
 
-are available in the Git repository at:
+There are even some other places where IIO drivers run into this. E.g. 
+any driver that does `devm_iio_trigger_register(&indio_dev->dev, ...)` 
+creates a resource leak on the trigger and the IIO device. The indio_dev 
+is not a bus device, hence no unbind and the trigger holds a reference 
+so the release callback will never be called either.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fi=
-xes-for-6.3a
-
-for you to fetch changes up to 363c7dc72f79edd55bf1c4380e0fbf7f1bbc2c86:
-
-  iio: adc: ti-ads7950: Set `can_sleep` flag for GPIO chip (2023-03-18 16:3=
-9:35 +0000)
-
-----------------------------------------------------------------
-1st set of IIO fixes for 6.3
-
-Usual mixed bag:
-
-- core - output buffers
-  Fix return of bytes written when only some succeed.
-  Fix O_NONBLOCK handling to not block.
-
-- adi,ad7791
-  Fix IRQ type.  Not confirmed to have any impact but good to correct it an=
-yway
-
-- adi,adis16400
-  Missing CONFIG_CRC32
-
-- capella,cm32181
-  Unregister 2nd I2C client if one is used.
-
-- cio-dac
-  Fix bitdepth for range check on write.
-
-- linear,ltc2497
-  Fix a wrong shift of the LSB introduced when switching to be24 handling.
-
-- maxim,max11410
-  Fix handling of return code in read_poll_timeout()
-
-- qcom,spmi-adc
-  Fix an accidental change of channel name to include the reg value from OF.
-
-- ti,palmas
-  Fix a null dereference on remove due to wrong function used to get the
-  drvdata.
-
-- ti,ads7950
-  Mark GPIO as can sleep.
-
-----------------------------------------------------------------
-Andy Shevchenko (1):
-      iio: adc: qcom-spmi-adc5: Fix the channel name
-
-Arnd Bergmann (1):
-      iio: adis16480: select CONFIG_CRC32
-
-Ian Ray (1):
-      drivers: iio: adc: ltc2497: fix LSB shift
-
-Kai-Heng Feng (1):
-      iio: light: cm32181: Unregister second I2C client if present
-
-Lars-Peter Clausen (1):
-      iio: adc: ti-ads7950: Set `can_sleep` flag for GPIO chip
-
-Mehdi Djait (1):
-      iio: accel: kionix-kx022a: Get the timestamp from the driver's privat=
-e data in the trigger_handler
-
-M=C3=A5rten Lindahl (1):
-      iio: light: vcnl4000: Fix WARN_ON on uninitialized lock
-
-Nuno S=C3=A1 (4):
-      iio: buffer: correctly return bytes written in output buffers
-      iio: buffer: make sure O_NONBLOCK is respected
-      iio: adc: ad7791: fix IRQ flags
-      iio: adc: max11410: fix read_poll_timeout() usage
-
-Patrik Dahlstr=C3=B6m (1):
-      iio: adc: palmas_gpadc: fix NULL dereference on rmmod
-
-William Breathitt Gray (1):
-      iio: dac: cio-dac: Fix max DAC write value check for 12-bit
-
- drivers/iio/accel/kionix-kx022a.c |  2 +-
- drivers/iio/adc/ad7791.c          |  2 +-
- drivers/iio/adc/ltc2497.c         |  6 ++----
- drivers/iio/adc/max11410.c        | 22 +++++++++++++++-------
- drivers/iio/adc/palmas_gpadc.c    |  2 +-
- drivers/iio/adc/qcom-spmi-adc5.c  | 10 +++++++++-
- drivers/iio/adc/ti-ads7950.c      |  1 +
- drivers/iio/dac/cio-dac.c         |  4 ++--
- drivers/iio/imu/Kconfig           |  1 +
- drivers/iio/industrialio-buffer.c | 21 ++++++++++++---------
- drivers/iio/light/cm32181.c       | 12 ++++++++++++
- drivers/iio/light/vcnl4000.c      |  3 ++-
- 12 files changed, 59 insertions(+), 27 deletions(-)

@@ -2,49 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A25C6C9632
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Mar 2023 17:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743416C969D
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Mar 2023 18:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230206AbjCZPlF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Mar 2023 11:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36322 "EHLO
+        id S232591AbjCZQFr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Mar 2023 12:05:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbjCZPlE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Mar 2023 11:41:04 -0400
+        with ESMTP id S232615AbjCZQFq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Mar 2023 12:05:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D33119BA;
-        Sun, 26 Mar 2023 08:41:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604C37ABD;
+        Sun, 26 Mar 2023 09:05:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0836D60DE7;
-        Sun, 26 Mar 2023 15:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D533C433D2;
-        Sun, 26 Mar 2023 15:41:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1D4160F08;
+        Sun, 26 Mar 2023 16:04:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385B8C433EF;
+        Sun, 26 Mar 2023 16:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679845262;
-        bh=21uEPRsfEI6Bmn4l2Yo3fQlTwIXz1UGKObvRJC3gEzY=;
+        s=k20201202; t=1679846689;
+        bh=WKccT1h5XfTtlzLxHv3J7Dgzv4Ryg5YYOKnQQmn72H0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=W8UV2+C20/Ija6ZI/S572nlTDADojVrGdQ31d3VqGtzPothV7yLPpcN73LCcBY9/v
-         LBURlPry05C4uENgAOfQjGxzcLpNGk8EksOGlPsJOIRDIsFP/c2j5pbmXTi9WQO2Jm
-         Dr9hMyewDKdIwPmgw1sXDfjQo0mnTL/k7Ek1S951FQHLKAUTH/skK1DHc8hTC4GMpX
-         +jw/2Shj2oVOANbym7tOoUYtFkYMmDRF4UA/mN19HhKdlQ8Zno+Fp1fPZVmIMhLyV7
-         P3KxigVaIZ/uRjRu8+SVaAzGPnEZb6lOdqdFAWFRgXF0U6mpSFK32bj9kqB0Xn8yRu
-         Yu31MHVyBCy6g==
-Date:   Sun, 26 Mar 2023 16:56:04 +0100
+        b=sI+HbKR+65CNu5jrwNIFK533ioyoPaGWeIt0lGYMPBK/YHU+0S1ThbZ0qq9tu/SmY
+         0p5puTIWZQQ3/ezyHg8HycJPLgjBvFEF/+iBOuyX448qidEb/sFc8HDzkw2K2MvWvR
+         CZeFD2uk/vnKXWCBtEU5uXc8ChK9Glp5VcrexMAz2ENaJWxRDmN6DpSvyyD8Z1RBB2
+         +US660vcMMbO2tpmO0WZKFXqP7DekOxafB87lcdZMnpve6rLh2CJ8eIkMKkBqsyiTh
+         5kEnCoaG3k3PPhuxp8K2E+9Vk6ZpO/MGMPP/rB6P5ZXmvo0xKXfcdag5uP6h2t7j4m
+         PzcMtMcvNeIUw==
+Date:   Sun, 26 Mar 2023 17:19:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     ChiaEn Wu <chiaen_wu@richtek.com>
-Cc:     <lars@metafoo.de>, <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>, <peterwu.pub@gmail.com>,
-        <cy_huang@richtek.com>
-Subject: Re: [PATCH] iio: adc: mt6370: Fix ibus and ibat scaling value of
- some specific vendor ID chips
-Message-ID: <20230326165604.27338cc6@jic23-huawei>
-In-Reply-To: <1679667167-16261-1-git-send-email-chiaen_wu@richtek.com>
-References: <1679667167-16261-1-git-send-email-chiaen_wu@richtek.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 7/8] iio: light: ROHM BU27034 Ambient Light Sensor
+Message-ID: <20230326171951.0e815ec3@jic23-huawei>
+In-Reply-To: <af8901957884c9c658be21ee89f837d5ca4ddac9.1679474247.git.mazziesaccount@gmail.com>
+References: <cover.1679474247.git.mazziesaccount@gmail.com>
+        <af8901957884c9c658be21ee89f837d5ca4ddac9.1679474247.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,111 +60,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 24 Mar 2023 22:12:47 +0800
-ChiaEn Wu <chiaen_wu@richtek.com> wrote:
+On Wed, 22 Mar 2023 11:07:56 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The scale value of ibus and ibat on the datasheet is incorrect due to the
-> customer report after the experimentation with some specific vendor ID
-> chips.
+> ROHM BU27034 is an ambient light sensor with 3 channels and 3 photo diodes
+> capable of detecting a very wide range of illuminance. Typical application
+> is adjusting LCD and backlight power of TVs and mobile phones.
 > 
-> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> Add initial  support for the ROHM BU27034 ambient light sensor.
+> 
+> NOTE:
+> 	- Driver exposes 4 channels. One IIO_LIGHT channel providing the
+> 	  calculated lux values based on measured data from diodes #0 and
+> 	  #1. In addition, 3 IIO_INTENSITY channels are emitting the raw
+> 	  register data from all diodes for more intense user-space
+> 	  computations.
+> 	- Sensor has GAIN values that can be adjusted from 1x to 4096x.
+> 	- Sensor has adjustible measurement times of 5, 55, 100, 200 and
+> 	  400 mS. Driver does not support 5 mS which has special
+> 	  limitations.
+> 	- Driver exposes standard 'scale' adjustment which is
+> 	  implemented by:
+> 		1) Trying to adjust only the GAIN
+> 		2) If GAIN adjustment alone can't provide requested
+> 		   scale, adjusting both the time and the gain is
+> 		   attempted.
+> 	- Driver exposes writable INT_TIME property that can be used
+> 	  for adjusting the measurement time. Time adjustment will also
+> 	  cause the driver to try to adjust the GAIN so that the
+> 	  overall scale is kept as close to the original as possible.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+Hi Matti,
 
-Hi. Only significant issue here is the one the build bot found.
-A few other trivial formatting suggestions inline.
+A few minor comments inline.  I'll take a closer look at the rest of the
+series when the discussions around the tests and devices to be used
+for them settle down.
 
 Thanks,
 
 Jonathan
 
-
->  
->  static int mt6370_adc_read_channel(struct mt6370_adc_data *priv, int chan,
-> @@ -98,6 +105,26 @@ static int mt6370_adc_read_channel(struct mt6370_adc_data *priv, int chan,
->  	return ret;
->  }
->  
-> +static int mt6370_adc_get_ibus_scale(struct mt6370_adc_data *priv)
+> +
+> +static u64 bu27034_fixp_calc_t1(unsigned int coeff, unsigned int ch0,
+> +				unsigned int ch1, unsigned int gain0,
+> +				unsigned int gain1)
 > +{
-> +	if (priv->vid == MT6370_VID_RT5081  ||
-> +	    priv->vid == MT6370_VID_RT5081A ||
-> +	    priv->vid == MT6370_VID_MT6370)
-> +		return 3350;
-> +	else
+> +	unsigned int helper, tmp;
+> +	u64 helper64;
+> +
+> +	/*
+> +	 * Here we could overflow even the 64bit value. Hence we
+> +	 * multiply with gain0 only after the divisions - even though
+> +	 * it may result loss of accuracy
+> +	 */
+> +	helper64 = (u64)coeff * (u64)ch1 * (u64)ch1;
+> +	helper = coeff * ch1 * ch1;
+> +	tmp = helper * gain0;
+> +
+> +	if (helper == helper64 && (tmp / gain0 == helper))
 
-I'd drop the else.  We are special casing the matches above, so it makes sense
-for them to be out of line.  The 'normal' case doesn't need to be indented.
+Similar to below.  Don't bother with the non 64 bit version.
 
-> +		return 3875;
+> +		return tmp / (gain1 * gain1) / ch0;
+> +
+> +	helper = gain1 * gain1;
+> +	if (helper > ch0) {
+> +		do_div(helper64, helper);
+> +
+> +		return gain_mul_div_helper(helper64, gain0, ch0);
+> +	}
+> +
+> +	do_div(helper64, ch0);
+> +
+> +	return gain_mul_div_helper(helper64, gain0, helper);
 > +}
 > +
-> +static int mt6370_adc_get_ibat_scale(struct mt6370_adc_data *priv)
+> +static u64 bu27034_fixp_calc_t23(unsigned int coeff, unsigned int ch,
+> +				 unsigned int gain)
 > +{
-> +	if (priv->vid == MT6370_VID_RT5081  ||
-> +	    priv->vid == MT6370_VID_RT5081A ||
-> +	    priv->vid == MT6370_VID_MT6370)
-> +		return 2680;
-> +	else
-> +		return 3870;
-> +}
+> +	unsigned int helper;
+> +	u64 helper64;
 > +
->  static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
->  				 int chan, int *val1, int *val2)
->  {
-> @@ -123,7 +150,7 @@ static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
->  		case MT6370_AICR_250_mA:
->  		case MT6370_AICR_300_mA:
->  		case MT6370_AICR_350_mA:
-> -			*val1 = 3350;
-> +			*val1 = mt6370_adc_get_ibus_scale(priv);
->  			break;
->  		default:
->  			*val1 = 5000;
-> @@ -150,7 +177,7 @@ static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
->  		case MT6370_ICHG_600_mA:
->  		case MT6370_ICHG_700_mA:
->  		case MT6370_ICHG_800_mA:
-> -			*val1 = 2680;
-> +			*val1 = mt6370_adc_get_ibat_scale(priv);
->  			break;
->  		default:
->  			*val1 = 5000;
-> @@ -251,6 +278,19 @@ static const struct iio_chan_spec mt6370_adc_channels[] = {
->  	MT6370_ADC_CHAN(TEMP_JC, IIO_TEMP, 12, BIT(IIO_CHAN_INFO_OFFSET)),
->  };
->  
-> +static int mt6370_get_vendor_info(struct mt6370_adc_data *priv)
+> +	helper64 = (u64)coeff * (u64)ch;
+> +	helper = coeff * ch;
+> +
+> +	if (helper == helper64)
+> +		return helper / gain;
+> +
+> +	do_div(helper64, gain);
+> +
+> +	return helper64;
+
+I suspect that this is a premature bit of optimization so I'd just
+do it in 64 bits always.
+
+Also, if you did want to do this, check_mul_overflow() etc would help.
+(linux/overflow.h)
+
+
+> +}
+
+> +
+> +static int bu27034_calc_mlux(struct bu27034_data *data, __le16 *res, int *val)
 > +{
-> +	unsigned int dev_info;
+> +	unsigned int gain0, gain1, meastime;
+> +	unsigned int d1_d0_ratio_scaled;
+> +	u16  ch0, ch1;
+
+Stray space after the u16
+
+> +	u64 helper64;
 > +	int ret;
 > +
-> +	ret = regmap_read(priv->regmap, MT6370_REG_DEV_INFO, &dev_info);
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv->vid = FIELD_GET(MT6370_VENID_MASK, dev_info);
+> +	/*
+> +	 * We return 0 luxes if calculation fails. This should be reasonably
 
-Blank line preferred before a simple return like this.  Makes the code a tiny
-bit more readable.
+0 lux 
+(I think)
 
-> +	return 0;
-> +}
-> +
->  static int mt6370_adc_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> @@ -263,6 +303,10 @@ static int mt6370_adc_probe(struct platform_device *pdev)
->  	if (!regmap)
->  		return dev_err_probe(dev, -ENODEV, "Failed to get regmap\n");
->  
-> +	ret = mt6370_get_vendor_info(priv);
-
-The build bot spotted this one.  Can't use priv yet as it doesn't exist
-for a few more lines.
-
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to get vid\n");
-> +
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
->  	if (!indio_dev)
->  		return -ENOMEM;
-
+> +	 * easy to spot from the buffers especially if raw-data channels show
+> +	 * valid values
+> +	 */

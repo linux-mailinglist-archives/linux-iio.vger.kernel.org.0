@@ -2,72 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A386B6CAD8B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Mar 2023 20:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D436B6CAF54
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Mar 2023 22:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjC0So5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Mar 2023 14:44:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
+        id S229456AbjC0UDG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Mar 2023 16:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232809AbjC0Sou (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Mar 2023 14:44:50 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E264049FF
-        for <linux-iio@vger.kernel.org>; Mon, 27 Mar 2023 11:44:25 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id w4so9305108plg.9
-        for <linux-iio@vger.kernel.org>; Mon, 27 Mar 2023 11:44:25 -0700 (PDT)
+        with ESMTP id S230033AbjC0UDG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Mar 2023 16:03:06 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD7A100
+        for <linux-iio@vger.kernel.org>; Mon, 27 Mar 2023 13:03:05 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id s19so5911111pgi.0
+        for <linux-iio@vger.kernel.org>; Mon, 27 Mar 2023 13:03:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1679942660;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AJKx3ROuPpySoPkX6h0zejKSYpDoyvBuCqcSMWc1HBE=;
-        b=DhxyllRrGjGxXzpcWb4vZl7CeKF31v40Y7PdwURQmEjaADYpjQ+hWQJpPMYZg67Exs
-         ERHiJdPEmweYMBwQjohUxD/G2EZMnhHv/1KFQdhNfOTVDqmP92v0IO+IJ8VV/ALW3XPG
-         wxqMOSinQF5TdHvEIT0kieKUewlnMaCqLEsWlpxsP/8WulxP29xVHShBfJLA735O7xzI
-         6HiECuXwjaIqg02mrCfRnN2YL+oZLn8g7OYz3ONLvXm7dQIJsiYnvJY6sjIW++t+tbTo
-         xnxcpQLqVtRYHNLJ8nI3ZbyW/qAFJV0lzn5VBIEF8mfF01pTBNBEQiyRz6hYB7o4Bv3d
-         NMLw==
+        d=gmail.com; s=20210112; t=1679947385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=o5Vyacj7zk8g56K1xGjD+ilMAoimLmLqD6/UKNxPpRs=;
+        b=Ckr2jyVhRU5qOVNQ9f2GUi/vOrjCS0gOmT3pzDFLuGIt/4ECdvsiISuSu4eo6zy908
+         DHfEVVxGU7XhCbVKvtlP7z4P2MQnnkhK8HkxVmvP402xxA7gnXqeLBXtjtB+BwhzX4qS
+         JYCGGqncKzlC7MBUwDU86IRQALpkJQRC8+haI9MXurV1DU8pnXAOKUJi7ECI4qpHAhXH
+         DuzqiszFvgQMBNSxbT8emF3IF+XW1S90xUrQHJTeBbIbQGjwqlbbMjDeJjiXze5KknfO
+         j3HXcvRcaIyBkFHkZp+GrZgGMcELhMudUb5yEHMv+0wHefnS/7kklsbifvkjPd7HKJLa
+         1HMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679942660;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AJKx3ROuPpySoPkX6h0zejKSYpDoyvBuCqcSMWc1HBE=;
-        b=4VmvPoU6NDU5wVh/6+SLQYKJWA9ISDyvXB92Vy4ZVfG77Q2QCls/35+P+U/9Vb/5pP
-         SJRnb//cVzzi632021HJCX/qz3rGHRIxj+zCL0yCnJ/hDx5Cs1NJgsgknJWs0GzV+hy0
-         awgwOZB08bveYNLuG7O+ym+dFiUVeoHlit2NeNoi1846dpSiFMO/LzEog+Y+bSOJ4zJ3
-         eZCSTH8FIYpuN6SA6PTW7bGuq7J2aKWXJ9TaN/vwCg7dz7Ra+U36HJNLzWUQoIX7sFQ3
-         TI6DSZ1TqwXvuVs9ZT3o5ZLH2NCoPOuQMVbneavmNg2xn0tqS3ToXqUBluGza1j5jFVi
-         cV4A==
-X-Gm-Message-State: AO0yUKWbPGinW8nw7u08Z48n9dRT2kF3jr8cdSV6ygg5u9eniTvCDtPg
-        e6nHzX10M+JK0NCTmSyo+Ugjhg==
-X-Google-Smtp-Source: AK7set+rOMcqkVOWFpNJgx1CTMAC5km2y8uA+KMSrqRZLixDgdJZjuKFYMmeJHfP9AWRsMODY+IpZw==
-X-Received: by 2002:a05:6a20:2921:b0:cc:ca9:4fde with SMTP id t33-20020a056a20292100b000cc0ca94fdemr10696672pzf.33.1679942659976;
-        Mon, 27 Mar 2023 11:44:19 -0700 (PDT)
-Received: from ?IPV6:2405:201:d02f:d899:2028:7962:400:43b6? ([2405:201:d02f:d899:2028:7962:400:43b6])
-        by smtp.gmail.com with ESMTPSA id 23-20020aa79117000000b005a8173829d5sm17393736pfh.66.2023.03.27.11.44.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 11:44:19 -0700 (PDT)
-Message-ID: <4188a480-15dd-0e17-b3e9-7572eee3ea0c@9elements.com>
-Date:   Tue, 28 Mar 2023 00:14:16 +0530
+        d=1e100.net; s=20210112; t=1679947385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o5Vyacj7zk8g56K1xGjD+ilMAoimLmLqD6/UKNxPpRs=;
+        b=hZOMuRyY9ZN43pTQAAe2RTbKmcgivvFWyW7tINLjsu9Zc8d3AjhOi1OdRchxg5a1JN
+         kjMSpouWYanCXVwWCTke2WLXWmXKKJT1Ax+/qvhPHl17bcgSW0MbwohgnDXk9zvQ0kWS
+         7uHRgK+rhKHqhtZenBhzKWor6QhpJpAwb0jtZ3iwW2zSJDMlYzszfLIENZqudFiSgsV8
+         nn/fenEzBTK89zEu4fJTsZ6GyOpNQdmbp2XzpfXtK/ymAmDcwVa1TKXtCtAz0STQedR/
+         LLGboweHIxWHPeuITnNU3tWq1DcIjkFGDrFdpELZN81WfWQWqqgxd0Q8ZVGUFvkMYKyZ
+         XblA==
+X-Gm-Message-State: AAQBX9dIlJB5TYk06VKNm9Jd5yDbK0CXVn/9A/okNA8P77+BYk/YRUHh
+        XaNlPyNEi/bfF8spxj1Pjt+6KfSUDzJlG2p/mLjT0cRcjxBddL0iElk=
+X-Google-Smtp-Source: AKy350adQHLabWoW9SLfgZ5gLrjv7shoq9GZVPFZwFxBKCGbf6r/Rbxk9rs7qAkyeHr+Bo/iXTAMoSIv2/K2msqmq7U=
+X-Received: by 2002:a05:6a00:99d:b0:5e6:f9a1:e224 with SMTP id
+ u29-20020a056a00099d00b005e6f9a1e224mr6907317pfg.6.1679947384840; Mon, 27 Mar
+ 2023 13:03:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v2 1/2] iio: max597x: Add support for max597x
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lee Jones <lee@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20230323194550.1914725-1-Naresh.Solanki@9elements.com>
- <20230325193640.3dc8b330@jic23-huawei>
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-In-Reply-To: <20230325193640.3dc8b330@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Date:   Mon, 27 Mar 2023 22:02:48 +0200
+Message-ID: <CAPJMGm4GDVdAmwB4sHVkg78UhtVpmbCL6KT8-KbEY7cRSD5UZg@mail.gmail.com>
+Subject: [PATCH 1/2] ad7192 driver: fix null pointer dereference in probe when
+ populating adc input ranges
+To:     alexandru.tachici@analog.com
+Cc:     linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,183 +65,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+Fix ad7192.c NULL pointer dereference in ad7192_setup() when accessing
+indio_dev structure while populating input rages, causing a kernel
+panic.
+Fixed by calling spi_set_drvdata after indio_dev is allocated.
 
-On 26-03-2023 01:06 am, Jonathan Cameron wrote:
-> On Thu, 23 Mar 2023 20:45:48 +0100
-> Naresh Solanki <naresh.solanki@9elements.com> wrote:
-> 
->> From: Patrick Rudolph <patrick.rudolph@9elements.com>
->>
->> max597x has 10bit ADC for voltage & current monitoring.
->> Use iio framework to expose the same in sysfs.
->>
->> Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
->> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
-> 
-> I'm not a fan of wild cards in driver names. This doesn't
-> for example support the max5974, max5971 etc
-> 
-> Much better to name it after one of the supported parts.
-> Obviously can't do much about the mfd driver now, but I'd prefer
-> not to carry that through to the IIO driver if possible.
-> 
-> One concern I have here is that from the max5978 datasheet I see
-> this device supports features that are very much directed at hwmon
-> type usecases.  In particular warning and critical threshold detection.
-> We don't support multiple thresholds (in same direction) for a single
-> channel via IIO.  If you want those features in the future you may want
-> to consider using the hwmon subsystem.
-> 
-> We tend to be flexible with devices that sit near the boundary of IIO
-> and hwmon because we can bridge many of the features using the iio-hwmon
-> bridge driver.  That doesn't work for more complex event handling and
-> I suspect some of the other features this device provides.
-I believe it is the most appropriate approach for our use case at the 
-moment. If we decide to incorporate more complex event handling or need 
-to support multiple thresholds in the future, we will definitely 
-consider using the hwmon subsystem. Thank for your input.
->    
->> ...
->> Changes in V2:
->> - Remove fallthrough
->> - Use pdev->dev instead of i2c->dev
->> - Init indio_dev->name based on device type.
->> ---
->>   drivers/iio/adc/Kconfig       |  15 ++++
->>   drivers/iio/adc/Makefile      |   1 +
->>   drivers/iio/adc/max597x-iio.c | 152 ++++++++++++++++++++++++++++++++++
->>   3 files changed, 168 insertions(+)
->>   create mode 100644 drivers/iio/adc/max597x-iio.c
->>
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index 45af2302be53..0d1a3dea0b7d 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -735,6 +735,21 @@ config MAX1363
->>   	  To compile this driver as a module, choose M here: the module will be
->>   	  called max1363.
->>   
->> +config MAX597X_IIO
->> +	tristate "Maxim 597x power switch and monitor"
->> +	depends on I2C && OF
->> +	select MFD_MAX597X
->> +	help
->> +	  This driver enables support for the Maxim 597x smart switch and
->> +	  voltage/current monitoring interface using the Industrial I/O (IIO)
->> +	  framework. The Maxim 597x is a power switch and monitor that can
->> +	  provide voltage and current measurements via the I2C bus. Enabling
->> +	  this driver will allow user space applications to read the voltage
->> +	  and current measurements using IIO interfaces.
-> 
-> Call out the actual part numbers supported in this help text to make it easy
-> to grep for them.
-Sure. Will mention max5970 & max5978 in help section.
-> 
->> +
->> +	  To compile this driver as a module, choose M here: the module will be
->> +	  called max597x-iio.
->> +
-> 
-> ...
-> 
-> 
->> +
->> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
->> +				struct iio_chan_spec const *chan,
->> +				int *val, int *val2, long info)
->> +{
->> +	int ret;
->> +	struct max597x_iio *data = iio_priv(iio_dev);
->> +	unsigned int reg_l, reg_h;
->> +
->> +	switch (info) {
->> +	case IIO_CHAN_INFO_RAW:
->> +		ret = regmap_read(data->regmap, chan->address, &reg_l);
->> +		if (ret < 0)
->> +			return ret;
->> +		ret = regmap_read(data->regmap, chan->address - 1, &reg_h);
->> +		if (ret < 0)
->> +			return ret;
->> +		*val = (reg_h << 2) | (reg_l & 3);
-> 
-> I replied late to previous patch, but I'd prefer to see a bulk read if
-> possible.  It might ensure a matched pair, or if not reduce the chance of
-> tearing (when reg_l & 3 transitions from 3 to 0 for example and
-> reg_h & 1 is going from 0 to 1)
-> 
-> You could try a repeated read if the sampling rate is fairly low as
-> simply getting same high bits on either side of the low bit read is probably
-> enough to say tearing didn't happen.
-Yes. will use something like:
-		ret = regmap_bulk_read(data->regmap, chan->address - 1, &reg_l, 2);
-		if (ret < 0)
-			return ret;
-		reg_h = reg_l & 0xff;
-		reg_l = (reg_l >> 8) & 0xff;
-		*val = (reg_h << 2) | (reg_l & 3);
-> 
->> +
->> +		return IIO_VAL_INT;
->> +	case IIO_CHAN_INFO_SCALE:
->> +
->> +		switch (chan->address) {
->> +		case MAX5970_REG_CURRENT_L(0):
->> +		case MAX5970_REG_CURRENT_L(1):
->> +			/* in A, convert to mA */
->> +			*val = data->irng[chan->channel] * 1000;
->> +			*val2 =
->> +			    data->shunt_micro_ohms[chan->channel] * ADC_MASK;
-> Don't worry about 80 char limit when it hurts readability.  Just put that
-> on one line.
-Sure
-> 
->> +			return IIO_VAL_FRACTIONAL;
->> +
->> +		case MAX5970_REG_VOLTAGE_L(0):
->> +		case MAX5970_REG_VOLTAGE_L(1):
->> +			/* in uV, convert to mV */
->> +			*val = data->mon_rng[chan->channel];
->> +			*val2 = ADC_MASK * 1000;
->> +			return IIO_VAL_FRACTIONAL;
->> +		}
->> +
->> +		break;
->> +	}
->> +	return -EINVAL;
->> +}
->> +
->> +static const struct iio_info max597x_adc_iio_info = {
->> +	.read_raw = &max597x_iio_read_raw,
->> +};
->> +
->> +static int max597x_iio_probe(struct platform_device *pdev)
->> +{
->> +	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
->> +	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
->> +	struct iio_dev *indio_dev;
->> +	struct max597x_iio *priv;
->> +	int ret, i;
->> +
->> +	if (!regmap)
->> +		return -EPROBE_DEFER;
->> +
->> +	if (!max597x || !max597x->num_switches)
->> +		return -EPROBE_DEFER;
->> +
->> +	/* registering iio */
-> 
-> Comment doesn't add anything is is wrong anyway as this doesn't do the
-> majority of the registration. Dropt he comment.
-Sure.
-> 
->> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
->> +	if (!indio_dev)
->> +		return dev_err_probe(&pdev->dev, -ENOMEM,
->> +				     "failed to allocate iio device\n");
-> 
-> ...
-> 
+Additional details
 
-BR,
-Naresh
+Kernel panic log
+[    5.763067] Unable to handle kernel NULL pointer dereference at
+virtual address 00000208
+[...]
+[    6.265076] [<c063b94c>] (driver_register) from [<c070e59c>]
+(__spi_register_driver+0xd8/0xe4)
+[    6.273757]  r5:c0b88c7c r4:00000000
+[    6.277351] [<c070e4c4>] (__spi_register_driver) from [<c0e4c288>]
+(ad7192_driver_init+0x20/0x28)
+[    6.286305]  r9:c107fe00 r8:c107fe00 r7:00000000 r6:c0e56854
+r5:c0e4c268 r4:c40fa000
+[    6.294070] [<c0e4c268>] (ad7192_driver_init) from [<c01023d0>]
+(do_one_initcall+0x58/0x2ac)
+[    6.302569] [<c0102378>] (do_one_initcall) from [<c0e01594>]
+(kernel_init_freeable+0x1c4/0x254)
+[...]
+[    6.387349] Kernel panic - not syncing: Attempted to kill init!
+exitcode=3D0x0000000b
+[    6.395049] ---[ end Kernel panic - not syncing: Attempted to kill
+init! exitcode=3D0x0000000b ]
+
+The patch is against the current tree, but it applies without
+modifications to 5.x (the driver has not changed much since then).
+Reproduced in kernel version 5.15.x. Newer driver versions are
+affected by the same issue.
+
+Pointer to indio_dev structure is obtained via spi_get_drvdata() at
+the beginning of function ad7192_setup(), but the
+spi->dev->driver_data member is not initialized here, hence a NULL
+pointer is returned.
+
+By comparing every other iio adc driver, whenever there is a call to
+spi_get_drvdata() there is also one to spi_set_drvdata() within probe
+function.
+It should also be noted that the indio_dev structure is accessed just
+to get the number of bits for the converter, and no other driver calls
+spi_get_drvdata within probe.
+After the patch is applied the system boots correctly and the ADC is
+mapped within sysfs.
+
+Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+--- linux/drivers/iio/adc/ad7192.c=E2=80=82=E2=80=822023-03-13 19:32:42.646=
+239506 +0100
++++ linux/drivers/iio/adc/ad7192.c=E2=80=82=E2=80=822023-03-13 19:33:41.654=
+803797 +0100
+@@ -997,7 +997,7 @@ static int ad7192_probe(struct spi_devic
+ =E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82=
+=E2=80=82=E2=80=82=E2=80=82return -ENOMEM;
+
+ =E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82st =3D iio_priv(indio_dev);
+-
++=E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82spi_set_drvdata(spi, indio_de=
+v);
+ =E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82mutex_init(&st->lock);
+
+ =E2=80=82=E2=80=82=E2=80=82=E2=80=82=E2=80=82st->avdd =3D devm_regulator_g=
+et(&spi->dev, "avdd");

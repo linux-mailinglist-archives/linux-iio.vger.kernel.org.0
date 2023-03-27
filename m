@@ -2,92 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E416C9ED4
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Mar 2023 11:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F1F66CA094
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Mar 2023 11:55:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232661AbjC0JER (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Mar 2023 05:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
+        id S233171AbjC0JzW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Mar 2023 05:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232614AbjC0JDf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Mar 2023 05:03:35 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7CA3A8E
-        for <linux-iio@vger.kernel.org>; Mon, 27 Mar 2023 02:01:51 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id mp3-20020a17090b190300b0023fcc8ce113so11124841pjb.4
-        for <linux-iio@vger.kernel.org>; Mon, 27 Mar 2023 02:01:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mechatrax-com.20210112.gappssmtp.com; s=20210112; t=1679907711;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EqsTkBs6N6moVAGndgySpKN2a5Zh6cCjYlIjBQjIbQk=;
-        b=OAspQ+mNtEjnF5DPf+PUklx9ud9YCxl5EO9S3cilH85NbyMHB2szIRjaHvleaGgTiL
-         BxFr0jHL0xvnFXZSr9nMK7wjvlTyCa1TEs01Bt+fHyk+YXzYWTCD+QRnaPLwV9hRuy2j
-         XoURpLFbhnVuC9/u5QOHyJdz/IjunP/+wBFN55W6ds76BKzf87FK1WJFMeJ7W4wsvvKh
-         NGRVDHwf7IJvTArPUppleuFN+nJMZDPwcoyTkXiita73AkMlHzEEGY+P1b+Jx2YeGDKt
-         zmWhuwjBAPp2JJBEjloySXmnSKPIaBmIY4SzFRiViwp1dTGEu4255OGZyfZkAKnO54jl
-         zwLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679907711;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EqsTkBs6N6moVAGndgySpKN2a5Zh6cCjYlIjBQjIbQk=;
-        b=sbkGu+6qNd2b68AShc00whYRBiPASszGswGPcd4CpzSgc85nhRaaa05EArpv4Z7Wm4
-         wvhnLurW6/U8M3Zc9KRq80iS7a853LtBE31tS5ORQXwmEFZNDwbzWbE93ivIJZoUqHPf
-         7LSECeV30+iSEfqJYpvtW+8MkQxE8Bdsmd8hzzwk72iHleO2R2A7DayTgSdGP97XIVEO
-         NA1wIbRsEaRhVhhTX8Srlp86F7y85or+/auM+Xn1kH+BNmodCKvTkz/NKmI67DjGErez
-         QT6HBdDLIzC/nEYu0d53YJuUHFYV8k6isD7PL5odR0ljEt3in6cBq02Dp3Rf9aYAmBVC
-         zZmA==
-X-Gm-Message-State: AAQBX9cqPeaPROyuAfwegM2fxIXmtc/m9MhiXhXvm/uCEG580v+HipXE
-        +pxQ+9emepCF7QZzqHCM9/JurcXdEBOeGDGnUMo2HQ==
-X-Google-Smtp-Source: AKy350b3PrgzVh7g0IGsxImabv1+jPWAgKuzUjuvlvhyjri3TLAf0eGYOM19z3ngLKMVIHgy/1vmUEksSPGp2ltCKmE=
-X-Received: by 2002:a17:902:8f8c:b0:1a2:1ec5:e11f with SMTP id
- z12-20020a1709028f8c00b001a21ec5e11fmr3305343plo.6.1679907711300; Mon, 27 Mar
- 2023 02:01:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230306044737.862-1-honda@mechatrax.com> <6e1fe1015235ae7d7eb9ef2526fd64b6d6d628d7.camel@gmail.com>
- <CA+Tz-SHQxNzx=eS8ex=3Hps0th5bTY+K1qSWrZqWC8ryv+d0RA@mail.gmail.com>
-In-Reply-To: <CA+Tz-SHQxNzx=eS8ex=3Hps0th5bTY+K1qSWrZqWC8ryv+d0RA@mail.gmail.com>
-From:   Masahiro Honda <honda@mechatrax.com>
-Date:   Mon, 27 Mar 2023 18:01:14 +0900
-Message-ID: <CA+Tz-SFbt2RAz3POMRoTHqz+tNyQOn3UsssZV9EvHUhhR+XJbQ@mail.gmail.com>
-Subject: Re: [PATCH] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
-To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        with ESMTP id S233122AbjC0JzR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Mar 2023 05:55:17 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD6A49EA;
+        Mon, 27 Mar 2023 02:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679910909; x=1711446909;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7IhxYtUl63wNn0Vd3goQKvs/9xlUppgTbWbUbCY2K5A=;
+  b=izrSIpBH0siZv76fdxseD2jQDGcJy3POY0jvCqkpkuJdyDaLlSb5oMm+
+   bRYMKpoOoap1cn7eil/j1WaoBS58OsjdNbo5xWgnKqZ3vzXr4vceIx43z
+   V7ScG+hNHwcOeTNP26JHTqgjLFwH6iUjN2NzuaI6+1GtKKaojiBzxPy/u
+   B3gnRLnshn192MEgWXH54+3xZpGWStV4t31zC0Zh0DFkjXhFe0Wom3RJS
+   DocBXtEey1j+BJBcIyrdHH8i5ZxMtU27xLGMBT/CKRH7BGKqjV5ZTbuFK
+   cd1Nq2I0yfzqPFEowmMuy0OIrERPEHI4ZYvpxvbc0sYE+Eytcg1V3RM8Q
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="320626300"
+X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
+   d="scan'208";a="320626300"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 02:55:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="826983666"
+X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
+   d="scan'208";a="826983666"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP; 27 Mar 2023 02:55:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pgjZA-009AMh-2f;
+        Mon, 27 Mar 2023 12:55:04 +0300
+Date:   Mon, 27 Mar 2023 12:55:04 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     William Breathitt Gray <william.gray@linaro.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Al Viro <viro@zeniv.linux.org.uk>, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2 2/3] counter: 104-quad-8: Refactor to buffer states
+ for CMR, IOR, and IDR
+Message-ID: <ZCFn+A6oAVNOe3yp@smile.fi.intel.com>
+References: <cover.1679605919.git.william.gray@linaro.org>
+ <c5adb13b4b0887beb1df40b34d2ef03d63a2860d.1679605919.git.william.gray@linaro.org>
+ <ZB2OG4zZXsqqyN8v@smile.fi.intel.com>
+ <ZB2Ob9VGe3GoEVko@smile.fi.intel.com>
+ <ZB2k9m7rL7Hpy/zU@fedora>
+ <ZB2qI7k/Igws5khg@smile.fi.intel.com>
+ <ZB3DJjQLa48AodSD@fedora>
+ <ZCDc0zPtPSyDgOaF@fedora>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZCDc0zPtPSyDgOaF@fedora>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi, Nuno
++Cc clang (for the ideas you might have, while the issue seems related to GCC[?] )
 
-> On Mon, Mar 6, 2023 at 10:30=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.c=
-om> wrote:
-> > Another thing that came to my mind is if the data is totally
-> > garbage/wrong or is it just some outstanding sample?
+On Sun, Mar 26, 2023 at 08:01:23PM -0400, William Breathitt Gray wrote:
+> On Fri, Mar 24, 2023 at 11:35:02AM -0400, William Breathitt Gray wrote:
+> > There are eight calls to quad8_control_register_update() in 104-quad-8:
+> > 
+> >         quad8_control_register_update(priv, priv->idr, id, DISABLE_INDEX_MODE, INDEX_MODE);
+> >         quad8_control_register_update(priv, priv->cmr, id, mode_cfg, QUADRATURE_MODE);
+> >         quad8_control_register_update(priv, priv->ior, event_node->channel, flg_pins, FLG_PINS);
+> >         quad8_control_register_update(priv, priv->idr, channel_id, index_polarity, INDEX_POLARITY);
+> >         quad8_control_register_update(priv, priv->idr, channel_id, synchronous_mode, INDEX_MODE);
+> >         quad8_control_register_update(priv, priv->cmr, count->id, count_mode, COUNT_MODE);
+> >         quad8_control_register_update(priv, priv->ior, count->id, enable, AB_GATE);
+> >         quad8_control_register_update(priv, priv->ior, count->id, !preset_enable, LOAD_PIN);
+> 
+> I attempted the cross-compiling using an x86-64 system and I was able to
+> recreate the build error. I tried to isolate the problem line by
+> commenting out quad8_control_register_update() calls and discover that
+> this appears to be an inline issue after all: if there are more than six
+> calls to quad8_control_register_update() are in the code, then the
+> '__bad_mask' build error occurs.
+> 
+> The build error doesn't occur if I force the inline via __always_inline,
+> so I'll add that to quad8_control_register_update() to resolve this
+> issue and submit a v3 patchset later this week.
 
-I'm sorry for not answering your question. The data is the same as
-the previous conversion even if the input voltage is changed. At this
-time, a logic analyzer shows that the read operation is performed
-immediately after the conversion is performed. The read operation
-returns the previous conversion result because it is performed before
-the completion of the conversion.
+Doe it mean it's a compiler error? Or is it a code error?
 
-> > Some research on this also seems to point that we should (need?) call
-> > irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing the IRQ.
+I'm wondering if clang also fails here.
 
-I have understood that I need to call irq_clear_status_flags. However,
-I cannot find a code to free the IRQ in ad_sigma_delta.c and other
-Sigma-Delta ADC driver source files. So, I would like to implement
-only irq_set_status_flags.
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

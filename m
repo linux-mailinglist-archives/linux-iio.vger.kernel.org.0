@@ -2,107 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7188B6CA434
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Mar 2023 14:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D937A6CA530
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Mar 2023 15:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232525AbjC0MiV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Mar 2023 08:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35830 "EHLO
+        id S229640AbjC0NHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Mar 2023 09:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232477AbjC0MiU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Mar 2023 08:38:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37BECAF;
-        Mon, 27 Mar 2023 05:38:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF5B861206;
-        Mon, 27 Mar 2023 12:38:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916B3C433D2;
-        Mon, 27 Mar 2023 12:38:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1679920697;
-        bh=KxbO7jAho7Gxlmbj4qdAOWGx1lnUEAI6qIGD0FU9SII=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cad8Xbf1NAyZ5Rbhr2WBgcGtsvzvKx+StVK+y4x0TGIEQIcbR4YnaZPA5jcRVMgXN
-         PXDjBbg94fIVx75JUxTqYvUpWs+oa0kfL1aJzpjDBKSBcyxtnUYm9ASAWFuIt/bZDh
-         SDNHWnFLsw8Nzjtd8DXgbL4pIjjoHc1p33GUkb9E=
-Date:   Mon, 27 Mar 2023 14:38:14 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v6 3/7] kunit: Add kunit wrappers for (root) device
- creation
-Message-ID: <ZCGONl0mC8oyBj-0@kroah.com>
-References: <cover.1679915278.git.mazziesaccount@gmail.com>
- <f2c7f7b04f7e4ee7b9cef73ecba672f5fa40eb73.1679915278.git.mazziesaccount@gmail.com>
- <ZCGFgypeuJXqNwQt@kroah.com>
- <e027fc0c-83e0-be6f-d62b-dac00ce9b761@gmail.com>
+        with ESMTP id S229456AbjC0NHy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Mar 2023 09:07:54 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA5FCD;
+        Mon, 27 Mar 2023 06:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679922473; x=1711458473;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xEhSDxvMVUikwKT6OOXXJ0JooLf8U/9nqWd8K7Tx3NA=;
+  b=Mxkpou81NujpZaLERV5HwO6FK+YcthQDrTymhN5fQ2nFEhackd7aQae2
+   oHdIGH4wYb3N08ur6zWndrxEV3uP4LAowmJh1Df6etri/P0xQ5FGpMX9O
+   jMmmzJoDrr38T7DxdlWEr6n+u+CQM5ci0mKnQ9A3ZRFkigYOZz9hwpYVB
+   0/+fzTC29XgZ6+V4klGTjPvxb70vOH7EDYFxJWaQDfu/S9vnXWHPVu1on
+   9Bly3DlXWTvnoMZPEQ7V3hrpYHvjUNtz1OQS03yoqMmkiOTatakZNFi6P
+   pp+6UQk9RcS5sEanKbfNAHJzxNRHl2b9VXjqzFd9339kLh8Y0/0QKXkSk
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="402852982"
+X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
+   d="scan'208";a="402852982"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2023 06:07:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10661"; a="772695912"
+X-IronPort-AV: E=Sophos;i="5.98,294,1673942400"; 
+   d="scan'208";a="772695912"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by FMSMGA003.fm.intel.com with ESMTP; 27 Mar 2023 06:07:50 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pgmZg-009Exk-1J;
+        Mon, 27 Mar 2023 16:07:48 +0300
+Date:   Mon, 27 Mar 2023 16:07:48 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Tom Rix <trix@redhat.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, nathan@kernel.org,
+        ndesaulniers@google.com, u.kleine-koenig@pengutronix.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH] iio: tsl2772: remove unused prox_diode_mask variable
+Message-ID: <ZCGVJOSBjKO3FKD6@smile.fi.intel.com>
+References: <20230327120823.1369700-1-trix@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e027fc0c-83e0-be6f-d62b-dac00ce9b761@gmail.com>
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <20230327120823.1369700-1-trix@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Mar 27, 2023 at 03:20:06PM +0300, Matti Vaittinen wrote:
-> On 3/27/23 15:01, Greg Kroah-Hartman wrote:
-> > On Mon, Mar 27, 2023 at 02:34:02PM +0300, Matti Vaittinen wrote:
-> > > A few tests need to have a valid struct device. One such example is
-> > > tests which want to be testing devm-managed interfaces.
-> > > 
-> > > Add kunit wrapper for root_device_[un]register(), which create a root
-> > > device and also add a kunit managed clean-up routine for the device
-> > > destruction upon test exit.
-> > 
-> > I really do not like this as a "root device" is a horrible hack and
-> > should only be used if you have to hang other devices off of it and you
-> > don't have a real device to tie those devices to.
-> > 
-> > Here you are abusing it and attempting to treat it as a real device,
-> > which it is not at all, because:
-> > 
-> > > Special note: In some cases the device reference-count does not reach
-> > > zero and devm-unwinding is not done if device is not sitting on a bus.
-> > > The root_device_[un]register() are dealing with such devices and thus
-> > > this interface may not be usable by all in its current form. More
-> > > information can be found from:
-> > > https://lore.kernel.org/dri-devel/20221117165311.vovrc7usy4efiytl@houat/
-> > 
-> > See, not a real device, doesn't follow normal "struct device" rules and
-> > lifetimes, don't try to use it for a test as it will only cause problems
-> > and you will be forced to work around that in a test.
-> 
-> Ok. I understood using the root-device has been a work-around in some other
-> tests. Thus continuing use it for tests where we don't need the bus until we
-> have a proper alternative was suggested by David.
-> 
-> > Do the right thing here, create a fake bus and add devices to it.
-> > 
-> > Heck, I'll even write that code if you want it, what's the requirement,
-> > something like:
-> > 	struct device *kunit_device_create(struct kunit *test, const char *name);
-> > 	void kunit_device_destroy(struct device *dev);
-> 
-> Thanks for the offer Greg. This, however, is being already worked on by
-> David. I don't want to step on his toes by writing the same thing, nor do I
-> think I should be pushing him to rush on his work.
+On Mon, Mar 27, 2023 at 08:08:23AM -0400, Tom Rix wrote:
+> clang with W=1 reports
+> drivers/iio/light/tsl2772.c:576:24: error: variable
+>   'prox_diode_mask' set but not used [-Werror,-Wunused-but-set-variable]
+>         int i, ret, num_leds, prox_diode_mask;
+>                               ^
+> This variable is not used so remove it.
 
-Ok, David, my offer stands, if you want me to write this I will be glad
-to do so.
+While from the compilation point of view this is a correct fix, I think
+we need to hear from the author (or interested stakeholders) about this
+feature. Perhaps it should be enabled / fixed differently.
 
-thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-greg k-h
+

@@ -2,38 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 442CA6CC156
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Mar 2023 15:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 263AE6CC1DE
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Mar 2023 16:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjC1NrF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Mar 2023 09:47:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55186 "EHLO
+        id S232719AbjC1OQr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Mar 2023 10:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232833AbjC1Nqw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 09:46:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062C0CA2E;
-        Tue, 28 Mar 2023 06:46:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 725F0617BB;
-        Tue, 28 Mar 2023 13:46:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C061C433D2;
-        Tue, 28 Mar 2023 13:46:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680011208;
-        bh=Mt2fPpoCHv3etx/7+GSXPHM6kWNp/CtAN1iv470diNg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ma6q4h3V/SJ64ME5bOW7EdCe+sFNLNZa/J5CRX7A6PXzQ8XdGeo8JXAMTEuIRHrup
-         ozXFaQSxdNy3d53+uAkjJyw2JkrSa8BbiN1UAmlxIC1FSeLdw4r9o75i66HQERu1Ae
-         Y/mqH6dZR3vU5Uih1yKoDKBzcrypGS5JOcduMngz51H3TeYPpokMP04yVV3Hub8qpU
-         BOtE2krS3kig0ps8/L3LYiJv9NBJ10U349A2yuJ8pskXq3ZmiBttfEma1GmeU5DskR
-         iIgKd7nprIXMyCMQcYSU6o6DRvLf0pGR5gMNCqBUOEJ2oatoJiT/h/l5NDmwRm8wCx
-         flL0DkpKeGCHA==
-Date:   Tue, 28 Mar 2023 14:46:40 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+        with ESMTP id S233143AbjC1OQb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 10:16:31 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1A1C667;
+        Tue, 28 Mar 2023 07:16:28 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id eh3so50275559edb.11;
+        Tue, 28 Mar 2023 07:16:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680012986;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=o8BF/ehITJBHp3Ju3uwCdwMFMpGd+i7nMGTmDLnuUcI=;
+        b=hnPE4C0Q7h9pxUBmBlrL7oDdySDwCyieYVRBR+zPXoe+EnhBlsUGmJ+Lo9m2V1Urme
+         BsFyMcJdDhSXIHKtizp8DscRzIJX5ob0sk9TRziJMz7nOuqmSUL+v78U+dTlak+xOzOs
+         3s6n1CVJ4/5J+Nz9QBQOP3I6D76p0zV354KnkuHUumz+RweDv7aB3V0qJHJZGQKqABrT
+         egSq6hS4nf7lJUdLwfe0xVur05L58oagCe3pVXY7C0jHN3jCm2eALB2yi8dqe9r/UEwb
+         ies3Z+shbXPoWjpFNDLGcNldcuYd4NBlmDh3t2FlmfOO63RfqnSa2HTWWkoVd2EC8gfY
+         RS5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680012986;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o8BF/ehITJBHp3Ju3uwCdwMFMpGd+i7nMGTmDLnuUcI=;
+        b=I2AWDYR3rQ+WM0qs6UTXQBoupmRAdi1YlU4tkS8GNJiJyVRDyHnuPIU/m6fTneCuTU
+         x5sEhunNZNkSgw5It5hwMQfzKgfPZaA31r8cZKXfTGZfXSiRrJbqT4r+knTCcusUmgJK
+         0OLyIYeANdUdOcUuv+tWGXn63aAGT8lDfvI9gRVMtis77z43VqAX4+cfsLbWPkzGBt+N
+         fCao8N1+b0MGpp9vzgCoxAgTuz5SUvYPTAULccWN4bj5JMzpVJlnPguU9L9V0iEKVf+t
+         Yi/1hZOthDJXUqt5FtdAvfbvh48f/DOirkAzqyPVL+PHJvRJZnSZtfXZr4bu0aH8dQ3f
+         sQLw==
+X-Gm-Message-State: AAQBX9cpOIKZ5nUfisiHPLSyArKNB2FfZe21K4zXe1ZNV5kMuDsub4DU
+        cuHaStRxOzlrnhJ+HKEll9U=
+X-Google-Smtp-Source: AKy350aUbgxsVvLvkC0uqI0pB9Kdq2Lm2z5i6pe5hO+ehJ4J+6KSXoRcrVBESwc7JSsIgNRgUdlnkw==
+X-Received: by 2002:a17:906:a11a:b0:878:54e3:e3e1 with SMTP id t26-20020a170906a11a00b0087854e3e3e1mr15619559ejy.73.1680012986464;
+        Tue, 28 Mar 2023 07:16:26 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id e8-20020a170906c00800b008e1509dde19sm15205685ejz.205.2023.03.28.07.16.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Mar 2023 07:16:26 -0700 (PDT)
+Message-ID: <fc07de9af0b691fbd3a5915c8293f0c7ad4c4e06.camel@gmail.com>
+Subject: Re: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
+ Support
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Mark Brown <broonie@kernel.org>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "Sahin, Okan" <Okan.Sahin@analog.com>, Lee Jones <lee@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -55,59 +75,43 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Message-ID: <d2bed74b-9eb9-45af-8f45-ad2c2889024a@sirena.org.uk>
+Date:   Tue, 28 Mar 2023 16:18:30 +0200
+In-Reply-To: <d2bed74b-9eb9-45af-8f45-ad2c2889024a@sirena.org.uk>
 References: <20230307112835.81886-1-okan.sahin@analog.com>
- <20230307112835.81886-6-okan.sahin@analog.com>
- <20230315175223.GI9667@google.com>
- <20230315175257.GJ9667@google.com>
- <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
- <ZCLi6MB/aHIf4lMr@smile.fi.intel.com>
- <cdd53e29ca3d8dbfdfa1a2520935e2bf9418313d.camel@gmail.com>
+         <20230307112835.81886-6-okan.sahin@analog.com>
+         <20230315175223.GI9667@google.com> <20230315175257.GJ9667@google.com>
+         <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
+         <ZCLi6MB/aHIf4lMr@smile.fi.intel.com>
+         <cdd53e29ca3d8dbfdfa1a2520935e2bf9418313d.camel@gmail.com>
+         <d2bed74b-9eb9-45af-8f45-ad2c2889024a@sirena.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="C+bD4dpjGg+/NmqP"
-Content-Disposition: inline
-In-Reply-To: <cdd53e29ca3d8dbfdfa1a2520935e2bf9418313d.camel@gmail.com>
-X-Cookie: Oh, wow!  Look at the moon!
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 2023-03-28 at 14:46 +0100, Mark Brown wrote:
+> On Tue, Mar 28, 2023 at 03:26:44PM +0200, Nuno S=C3=A1 wrote:
+>=20
+> > IIRC, regmap_read() is not really reentrant and it is used in the
+> > IIO
+> > driver on the sysfs interface. So, yeah, I think you need the
+> > regmap
+> > lock and better just leave the config as is. Yes, the lock is opt-
+> > out
+> > so let's not disable it :)
+>=20
+> All the regmap operations are fully thread safe.
 
---C+bD4dpjGg+/NmqP
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Even if 'config->disable_locking' is set? I think that is what's being
+discussed in here...
 
-On Tue, Mar 28, 2023 at 03:26:44PM +0200, Nuno S=E1 wrote:
-
-> IIRC, regmap_read() is not really reentrant and it is used in the IIO
-> driver on the sysfs interface. So, yeah, I think you need the regmap
-> lock and better just leave the config as is. Yes, the lock is opt-out
-> so let's not disable it :)
-
-All the regmap operations are fully thread safe.
-
---C+bD4dpjGg+/NmqP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQi778ACgkQJNaLcl1U
-h9A3jAf/Swfu/yUS1Pclj62j2mBsLC7dH8S8kyafjuDnOqTnv3o6WZJ63VvbqN/P
-4pC3PgTLKZV8GFZL6J6m5n0Km4dO8IseWDSF8fahYnVsSQ0DaBVBLEJNpu01GxDf
-fulyCDV6bA3zwZ5FNOBGtKr9GT2MlBkxIbjo8ZJ6e1l8Imy661DcU8o5mhiv3x0w
-7DvMzE+2BAOjRkp/AH7+8BZ1VbqRTj9NGjl63DycHMg5ADfJD/LfOpNwh8PzjsI+
-MX4aE1SSl2iyLKXKxuBfi+Ciqx3rMr+NJvKBdLLBUQpo+1Ls8YlhqbeNMFzNi/PJ
-0C9FrJbyIZ83jd/GUbd8Bx/YB2PYrw==
-=E507
------END PGP SIGNATURE-----
-
---C+bD4dpjGg+/NmqP--
+- Nuno S=C3=A1

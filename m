@@ -2,241 +2,291 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBAF96CB95A
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Mar 2023 10:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D633B6CBB63
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Mar 2023 11:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230288AbjC1I1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Mar 2023 04:27:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45340 "EHLO
+        id S232641AbjC1Joa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Mar 2023 05:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbjC1I1b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 04:27:31 -0400
-Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B703595;
-        Tue, 28 Mar 2023 01:27:30 -0700 (PDT)
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32S8InHG032280;
-        Tue, 28 Mar 2023 04:26:44 -0400
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2105.outbound.protection.outlook.com [104.47.70.105])
-        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3phwk8dm9v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 28 Mar 2023 04:26:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X9ATAKb7pt/ja4VBgplQcdgIgMHjydJEM/Y2XkXOLNlhLyCB8z3VuG5va+jWzAEn4g5LJADFBuY96i+YS2MwkH3T0vQzNKNLKt8EyqnUEazOJo9/OBRhJ4v+vicFN+47Cm22nFNMW/A8WxdGQQqRcJwgEkJglBx4jJrRMMA1vt/M9K79rn7wE85zKBvw+62gtjS+l7J94Vx0rAl3+Dwm6gbt+WnrQfNQCG0SpEfGpmSL2EoPxByHp8Flbtm0Q1ET52J/XmzPGWkmYI0D/ELlkDpIJutOceh0bNnAkIs//sqB6OM1za0OATFQse0LePr39Rid+celnA7ax9n3ItJ5pQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zwqhja7KyovJgBThAKG61OK3i0yMCQriNubA/xa/xNw=;
- b=HLBFVXPxSpWa7RcYF9me4g3SOhkO1UGIcB2F6DrfdYvJbLHS6HrKdWcjWo/3Z4x8NMSBtYn2C9LNW0xjn4q9hY7LPDe3Poq6DsksfgnJFyzJ1KrAbsuQAROzoxKXqj+/+64FaU+Eh1sGootEO18sbM2p4ttWj8RDS5LXrk5WDzabtSLkqS5u1bQVWP4SpGuVE2FT3TZV6OnyJBPpFySbeJOtqc4aTCN5H5hikNh/SKTMR7UduWfejKpVrzyxVibZYGOgFMtjqiDePphCUJDUB2Cn0WVH1dXZg7RVBxqaYjzmGeAbqgJFRnX3RPBoliL+KuMF1Zsu3ync6IBAN5YvSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        with ESMTP id S232955AbjC1JoW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 05:44:22 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9416A5FC6
+        for <linux-iio@vger.kernel.org>; Tue, 28 Mar 2023 02:44:20 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id s13so6519898wmr.4
+        for <linux-iio@vger.kernel.org>; Tue, 28 Mar 2023 02:44:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zwqhja7KyovJgBThAKG61OK3i0yMCQriNubA/xa/xNw=;
- b=BJ5pmAO3CLuAOYnVeZQKMaKq/3J39YkFGIyYD7R+sPgmgWkYG3BTOYnROecFf8KDnBnH6ixAIPrInAfAiSnJ3G3wSdAbGR5fSpPtcgpFqamcPbAnVM3M/yF6ZNTXZdpmpPxNRQLtBBYWAKg/nXVwKK22SGKWWJWTH+G2BFZ9eEA=
-Received: from MN2PR03MB5168.namprd03.prod.outlook.com (2603:10b6:208:1ec::19)
- by SJ0PR03MB6256.namprd03.prod.outlook.com (2603:10b6:a03:303::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.33; Tue, 28 Mar
- 2023 08:26:41 +0000
-Received: from MN2PR03MB5168.namprd03.prod.outlook.com
- ([fe80::8f99:7745:fa5d:3dea]) by MN2PR03MB5168.namprd03.prod.outlook.com
- ([fe80::8f99:7745:fa5d:3dea%4]) with mapi id 15.20.6222.029; Tue, 28 Mar 2023
- 08:26:41 +0000
-From:   "Sahin, Okan" <Okan.Sahin@analog.com>
-To:     Lee Jones <lee@kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Thread-Topic: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Thread-Index: AQHZUOiqG6ZyiGxaUE6S5aTx5qv2Ta78K/mAgAAAKICAE8FVcA==
-Date:   Tue, 28 Mar 2023 08:26:41 +0000
-Message-ID: <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
-References: <20230307112835.81886-1-okan.sahin@analog.com>
- <20230307112835.81886-6-okan.sahin@analog.com>
- <20230315175223.GI9667@google.com> <20230315175257.GJ9667@google.com>
-In-Reply-To: <20230315175257.GJ9667@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYjJ0aGJpNXpZV2hwYmx4aGNIQmtZWFJoWEhKdllXMXBibWRjTURsa09E?=
- =?utf-8?B?UTVZall0TXpKa015MDBZVFF3TFRnMVpXVXRObUk0TkdKaE1qbGxNelZpWEcx?=
- =?utf-8?B?elozTmNiWE5uTFRObVl6WTNZemsxTFdOa05ESXRNVEZsWkMxaVpXSmtMVFU0?=
- =?utf-8?B?Tm1NeU5XUXpZek5sTkZ4aGJXVXRkR1Z6ZEZ3elptTTJOMk01TnkxalpEUXlM?=
- =?utf-8?B?VEV4WldRdFltVmlaQzAxT0Raak1qVmtNMk16WlRSaWIyUjVMblI0ZENJZ2Mz?=
- =?utf-8?B?bzlJakkyTWpJaUlIUTlJakV6TXpJME5EWTFOVGsxTURNNU9ESTFPQ0lnYUQw?=
- =?utf-8?B?aVoxWkdRa05MUVZBdlZHaDFSMFZvY1ZWbFRHY3pORzFVYm1oSlBTSWdhV1E5?=
- =?utf-8?B?SWlJZ1ltdzlJakFpSUdKdlBTSXhJaUJqYVQwaVkwRkJRVUZGVWtoVk1WSlRV?=
- =?utf-8?B?bFZHVGtOblZVRkJSVzlEUVVGQmVXZDVVVU5VTWtoYVFWVlVRa3BXZFZGS1VW?=
- =?utf-8?B?VjZVazFGYkZjMVFXeENWRTFFUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVWhCUVVGQlJHRkJVVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVVkJRVkZCUWtGQlFVRlJaR2xyTlZGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZLTkVGQlFVSm9RVWRSUVdGUlFtWkJTRTFCV2xGQ2FrRklWVUZqWjBKc1FV?=
- =?utf-8?B?WTRRV05CUW5sQlJ6aEJZV2RDYkVGSFRVRmtRVUo2UVVZNFFWcG5RbWhCUjNk?=
- =?utf-8?B?QlkzZENiRUZHT0VGYVowSjJRVWhOUVdGUlFqQkJSMnRCWkdkQ2JFRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlJVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRm5RVUZCUVVGQmJtZEJRVUZIUlVGYVFVSndRVVk0UVdOM1FteEJSMDFC?=
- =?utf-8?B?WkZGQ2VVRkhWVUZZZDBKM1FVaEpRV0ozUW5GQlIxVkJXWGRDTUVGSVRVRllk?=
- =?utf-8?B?MEl3UVVkclFWcFJRbmxCUkVWQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VkZCUVVGQlFVRkJRVUZEUVVGQlFVRkJRMlZCUVVGQldWRkNhMEZIYTBGWWQw?=
- =?utf-8?B?SjZRVWRWUVZsM1FqRkJTRWxCV2xGQ1prRklRVUZqWjBKMlFVZHZRVnBSUW1w?=
- =?utf-8?B?QlNGRkJZM2RDWmtGSVVVRmhVVUpzUVVoSlFVMW5RVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVKQlFVRkJRVUZCUVVGQlNVRkJRVUZCUVVFOVBTSXZQand2?=
- =?utf-8?Q?bWV0YT4=3D?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN2PR03MB5168:EE_|SJ0PR03MB6256:EE_
-x-ms-office365-filtering-correlation-id: ef2b1700-171f-4d53-6865-08db2f662849
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: h/Tx2S/Vy2AVBKsZDP6jPsTMR+Q1MIstGMnE/HaszdvUhZ52VOo+jELQH0IfV25kuY8aRBAzfbMxUsHNrA1Njn4Ju25Qc9C4wkUUkE0kc4v9T3YglmgoCXGxti9l2MQdsWqiFIMXCzXFpNjHCdN7FSx9PKGtsqso2PYtPf1bVyVHk3aesBZtzs7G7JLHDhnPlXVbZ4esuOinTbba8t9/hGMhVGFqOJdzzp4OyxyucYxmt7512RwF9zrj0T/uFYH0NkZ2MTqN/oOIPiApJf4qq7wngEFJMw5F9GSgxsw9WdrU6nKu/D9SHuZ9vkEZB5o1nBMJ4rz9DaSoteAPKe/+enUBKJBGmDjd7ZGC5UaX15UtgIKlp6Gexc9j1Y0bJB0GqBM4VAqZuvcKZI5nFijTXthhLFl8CAkgYwapoOjfMpHE/UdMMYTccg+pbNeqNnXwe19N/SMj8gTxuOVkKpsv1p82PE5sUeRfT5p1v1Yt+hL5EompsBhEIlsG7i3INCj36cqPrpjJf9mtj247PM77bDpZ4Otjb1JI98fG90IgaSTQxHRAAcannHQPWeW8AqVXvzqnvgOfEdc+KEzKZs8K1t/iO4mxGKcniEK9egQll/xHefeNluc2vSD1o10N2nAT
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR03MB5168.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(366004)(396003)(136003)(346002)(451199021)(7696005)(71200400001)(186003)(38070700005)(478600001)(66946007)(316002)(54906003)(9686003)(6506007)(26005)(83380400001)(8676002)(66446008)(66476007)(66556008)(64756008)(76116006)(122000001)(41300700001)(8936002)(4326008)(6916009)(52536014)(7416002)(5660300002)(38100700002)(2906002)(55016003)(86362001)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SU9KM3ZJWjhCYmtXMHFPRzU0cjFWWTZ0cFNyMkZkcUlSOEk2OVV4blovVVli?=
- =?utf-8?B?eC9BdFJIQXVwZXlBSXBGbEhRbSs0Y1JFNUFOYlRseUZlUlFtcURTZXdSbmsr?=
- =?utf-8?B?aVVLS3Z4bm4yZkw2dnQvTGVaYmErZUQzcm94NkFrNCtHQmV6QkErRTR5TXJS?=
- =?utf-8?B?UU1RNVB4M0lxbEl3cmIzK044eHl4Q2dlVEVjMHdsY0g4M3A0dnFDdTJzOVZO?=
- =?utf-8?B?RXVRemZoTHlJYkM5Q1A4RjJHWmhZcEI2RjhoQ0dzS1hqMjZqTHZrL0lOVjZX?=
- =?utf-8?B?Y3VyMWRueGkxTEoydDUybWJuMUZHaW1JNjY5dGIzWjFhTnQ1ZXdWU0VMT0ow?=
- =?utf-8?B?UzFLWDRoQ29GQkpVd0xkTm8xUENxLytmakpGcWMxRHNTdTFSV2I4Yk1EQ2VO?=
- =?utf-8?B?ckJlZHo3OTdyKzEzMHFzeXVYalp5U25scnQrREtCMXNLa0FSNi96dHd5TkFm?=
- =?utf-8?B?bk1NbExWU2VUWUlOaFl2Vm81Ykh1VUo3NFd2cXhZUFFpNGhBaVVmZHFZZUVG?=
- =?utf-8?B?SDVSZzJWSzArYU0xTUN1eXZjVVpRMFF2NHNESDdicDVzR3pvZWRjeUFjbHA1?=
- =?utf-8?B?VjJjME5Rd2RMWG03Y3lLV1V0dDdQdTlRTUsway8vc2VORU1HbENQYWh5YUlK?=
- =?utf-8?B?NE5vVXFvRFV6eXVIaHhIeGRkMFV2V1dBU0E4cVFMQXBENTl3UHRHNWRxUFhY?=
- =?utf-8?B?Ulo5bjRMMER4bWNxK1FzbzZMM3h1R29mcE1FY3FLbnN3U1FDS0JUV0x5aTM0?=
- =?utf-8?B?RGI1ZnBMNlh4OHh3QnJpbjVoUERjcStubVdtMjI0TldCSnhuWkZsTjV2UEV5?=
- =?utf-8?B?VXFuUVBCNVhUWTdteFFoV1BNZ0dYditlZ05WTTJhZnF3TGFSeUVGRkxCbElp?=
- =?utf-8?B?N29kTGcxcHNHVmNzT2xRN3F2a0FCUVltN1lHR25rcTNIMHIyNkUxOGp3YzRw?=
- =?utf-8?B?cFFWRW1HV3JiRWp6VmlESjl4QXJLbTI0Wk5zUXA2amVCR20yV2g4NUI4Y1lH?=
- =?utf-8?B?ZTNHRFdjN3U0S2luRUFnNFBBS0VBaCtvaFgvV2l0T2l1TDY3dWJnaXc2ZVY0?=
- =?utf-8?B?R1V0TWsyNDd2VzJhR21taTFwTExZTWora2EzRW1PUUVudDdycTBIeXFod2Nx?=
- =?utf-8?B?M2QzUHVKMnNna3doanByaHE5QVdGQlNsRXYvbzhjbTd6eVZBdUZsblBncW5u?=
- =?utf-8?B?TVlwSWVvem9mUFduQlNLNGhiTzZFWHZ5S1k2RUs1K0ZrdENoK3BvU2xxbC83?=
- =?utf-8?B?TlJTTng5Y0xwNmRrNzFPRmpYRGo0c1ZDVWlqbTUvc3lERTFXb3g4VWxJZXVt?=
- =?utf-8?B?QXNpTE1xcXZlaHdydVUxZXAwU3Nzbkowb0F1alp6UjBSTSs2SURDc1JXUmhi?=
- =?utf-8?B?aklobjdwc1pGT2YxK3NmaTI1M0I4Y0tITU0yekgrWTdvUEN3SmRTV3FFTlN1?=
- =?utf-8?B?YzUwT3BzRG1qQS8zUEFmNkczL1RnVHFKalhSc0t2QzZLVTI0N0F1TTZhVld2?=
- =?utf-8?B?bEIvV3lwR0dKM08xbWNvR3c2ZS9GNnZTdWhTZ0IvSVlUcHJ1VVREQnAyR3JS?=
- =?utf-8?B?TWM0UU5BdzhINW91UWlvY2xmc2wzZktjL1hPOXhReXJaWW9KTjJKa09kUzRk?=
- =?utf-8?B?OG9nUERBenBVOXEyRFhoQld0ck9vK2x1eVp4NTJUeW01Yko0NXZPd0tmSDhz?=
- =?utf-8?B?dktoWmVkQ0FhQUdJUFZNV0VrMFR1SDZIenFWSVUzb1FibGdMMDZEMVRLaDZV?=
- =?utf-8?B?SFI4amFJRXEwQ2Y3T1pJa1VySlRXcjFodGRZV2NpZWhZcU5MeC9RbUVOT3BL?=
- =?utf-8?B?YlVtRDRKQ2VFZFlEdW9LczRTMkdScU5GNkZKZnE1WUJiTnZwcTVaUldPSWlK?=
- =?utf-8?B?UEsvUm1HclpzS1NTUTNERDFOSjBIUGxuRlZMcDdvL0czbGowSnVORG92Z2V1?=
- =?utf-8?B?NVFiOXZFTGtzQXZjUGhGQ0JuSk04WUQ5Mjh1QjEyWm9YTkYwb01pSlV1WnMr?=
- =?utf-8?B?bitrSHBqak8yN2pNNHA2Y1RXSTc0cm15Q3NaSGM3ZnZ5WjhZc0ptRXVqeDI1?=
- =?utf-8?B?YkpoTGI3TVAvR0piYW5aZG03azg3aGJPakhLZHd4VkFrQkRranRSRVJ0QlVi?=
- =?utf-8?Q?XVP8UBMFxHGf9jFLmGLV1WnkO?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=9elements.com; s=google; t=1679996659;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=os0uDoAihK463Kxke7kC6hpuq3Q8sz+Qzd9rJytLYis=;
+        b=Un4Bg3/38pp5xM40D+62vjDtK/TNHfyDEdz7+gr+AJO7OYetwOGUmecbMfc+WGiWh1
+         4qc7VQ3iekAUy6LNYunRqGnLSvG49PGnl3uUC1DnAgEvSNIm2vyrHAlSY+8n8IaFRVDY
+         m5zL2Uo5ru7Jy6mdj41sKHPwWEFNYGiSoPAv3cr3nSrOTDreFHVVo7WwqeanrMPpiyst
+         dOHeHsD6380TeD6XzRKEQ8vT57OBnzv6/cZkBW9sfjZKzIGjEazSb1xaRWbXRosrusvV
+         BWDR0epDHX6IfiCDlhQThftpdXeYzqhZly4K04e6ykWu8ytdyUpqYoKDkJKUNye/j6qn
+         fRnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679996659;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=os0uDoAihK463Kxke7kC6hpuq3Q8sz+Qzd9rJytLYis=;
+        b=48hE1dYoOvm90UYZSMHXvUSNL3A+JW0w1jvUEwZv3PN3BwRC3mRqvV9NRD7ImXM0Tk
+         EsFvipJFp3IVFHbP8EU7OChSlOSe1/h8bIoNrth0BHJDJOwhaTlwFIHfON1EqftDN8WS
+         h1BKnYfinfmXguk/g9IIG5U+oPgWpVWS7oE0OY7P0MTJlZl+5CC//AUw2t35AUER9gEl
+         XA57jFhntT1hb+X3pYQSst6Vnsn5C1nl3RwzlpKXqZleAveWGGBN/ddTamNG5pPXLfUE
+         cMaxVR8iGm9fY/kzuXfYZMOyzozzMwrACGEHIq1AU86guogAdeRn5mGBt31EmH44ou4y
+         cnMQ==
+X-Gm-Message-State: AO0yUKXCjTwxL2yeNpL124i1TkmYnEf4PCnGsX69IASI+HcHg9iSuQk7
+        YuPZC+nZCpaOnqUTVF0ysn3feg==
+X-Google-Smtp-Source: AK7set/QEicgtU2DVi3nFca023KDoBzlIwLp0zstcLrjL3bkmzKrgmRe679qUND/WGL9EN+wi7D5kQ==
+X-Received: by 2002:a1c:cc19:0:b0:3ed:4b9b:f0a1 with SMTP id h25-20020a1ccc19000000b003ed4b9bf0a1mr11622223wmb.27.1679996659085;
+        Tue, 28 Mar 2023 02:44:19 -0700 (PDT)
+Received: from stroh80.sec.9e.network (ip-078-094-000-051.um19.pools.vodafone-ip.de. [78.94.0.51])
+        by smtp.gmail.com with ESMTPSA id f6-20020a05600c154600b003ef7058ea02sm5387953wmg.29.2023.03.28.02.44.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Mar 2023 02:44:18 -0700 (PDT)
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+X-Google-Original-From: Naresh Solanki <Naresh.Solanki@9elements.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Patrick Rudolph <patrick.rudolph@9elements.com>,
+        Naresh Solanki <Naresh.Solanki@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH v3 1/2] iio: max597x: Add support for max597x
+Date:   Tue, 28 Mar 2023 11:44:14 +0200
+Message-Id: <20230328094416.3851801-1-Naresh.Solanki@9elements.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR03MB5168.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef2b1700-171f-4d53-6865-08db2f662849
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Mar 2023 08:26:41.1746
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XzSnPcSGRZ8+HW4Nz+1RkvE/B9jipveS6Xp11fVx+17LvKT+NsSRqo3cYO3aYJSEH7MH72Cy4c4blH6okrRKUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB6256
-X-Proofpoint-GUID: QI5vm_s_KwYrCmLdVXMNdmSWseL-RUUa
-X-Proofpoint-ORIG-GUID: QI5vm_s_KwYrCmLdVXMNdmSWseL-RUUa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-24_11,2023-03-27_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- adultscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 clxscore=1011 spamscore=0 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2303280069
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Pk9uIFdlZCwgMTUgTWFyIDIwMjMsIExlZSBKb25lcyB3cm90ZToNCj4NCj4+IE9uIFR1ZSwgMDcg
-TWFyIDIwMjMsIE9rYW4gU2FoaW4gd3JvdGU6DQo+Pg0KPj4gPiBNRkQgZHJpdmVyIGZvciBNQVg3
-NzU0MS9NQVg3NzU0MCB0byBlbmFibGUgaXRzIHN1YiBkZXZpY2VzLg0KPj4gPg0KPj4gPiBUaGUg
-TUFYNzc1NDEgaXMgYSBtdWx0aS1mdW5jdGlvbiBkZXZpY2VzLiBJdCBpbmNsdWRlcyBidWNrIGNv
-bnZlcnRlcg0KPj4gPiBhbmQgQURDLg0KPj4gPg0KPj4gPiBUaGUgTUFYNzc1NDAgaXMgYSBoaWdo
-LWVmZmljaWVuY3kgYnVjayBjb252ZXJ0ZXIgd2l0aCB0d28gM0ENCj4+ID4gc3dpdGNoaW5nIHBo
-YXNlcy4NCj4+ID4NCj4+ID4gVGhleSBoYXZlIHNhbWUgcmVnbWFwIGV4Y2VwdCBmb3IgQURDIHBh
-cnQgb2YgTUFYNzc1NDEuDQo+PiA+DQo+PiA+IFNpZ25lZC1vZmYtYnk6IE9rYW4gU2FoaW4gPG9r
-YW4uc2FoaW5AYW5hbG9nLmNvbT4NCj4+ID4gLS0tDQo+PiA+ICBkcml2ZXJzL21mZC9LY29uZmln
-ICAgICAgICAgIHwgIDEzICsrDQo+PiA+ICBkcml2ZXJzL21mZC9NYWtlZmlsZSAgICAgICAgIHwg
-ICAxICsNCj4+ID4gIGRyaXZlcnMvbWZkL21heDc3NTQxLmMgICAgICAgfCAyMjQNCj4rKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gPiAgaW5jbHVkZS9saW51eC9tZmQvbWF4
-Nzc1NDEuaCB8ICA5NyArKysrKysrKysrKysrKysNCj4+ID4gIDQgZmlsZXMgY2hhbmdlZCwgMzM1
-IGluc2VydGlvbnMoKykNCj4+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL21mZC9tYXg3
-NzU0MS5jICBjcmVhdGUgbW9kZSAxMDA2NDQNCj4+ID4gaW5jbHVkZS9saW51eC9tZmQvbWF4Nzc1
-NDEuaA0KPj4NCj4+IEZZSTogSSdtIG5vdCByZS1yZXZpZXdpbmcgdGhpcyBzaW5jZSB5b3UndmUg
-Y2hvc2VuIHRvIGlnbm9yZSBzb21lIG9mDQo+PiBteSBwcmV2aW91cyByZXZpZXcgY29tbWVudHMu
-ICBJc3N1ZXMgaGlnaGxpZ2h0ZWQgYnkgcmV2aWV3IGNvbW1lbnRzDQo+PiBkb24ndCBqdXN0IGdv
-IGF3YXkgb24gcmVzdWJtaXNzaW9uLg0KPg0KPi4uLiBhbmQgdGhlIHN1YmplY3QgaXMgbWFsZm9y
-bWVkLg0KPg0KPi0tDQo+TGVlIEpvbmVzIFvmnY7nkLzmlq9dDQoNCkhpIExlZSwNCg0KSSBhbSBz
-b3JyeSBpZiBJIG1pc3NlZCB5b3VyIHJldmlldyBjb21tZW50cywgdGhpcyB3YXMgbm90IG15IGlu
-dGVudGlvbi4gSSB3YW50IHRvIHRoYW5rIHlvdSBmb3IgeW91ciBjb250cmlidXRpb24uIFlvdXIg
-ZmVlZGJhY2tzIGFyZSB2ZXJ5IHZhbHVhYmxlLCBhbmQgSSBhbSB0cnlpbmcgdG8gdW5kZXJzdGFu
-ZCBhbmQgZml4IGVhY2ggb25lIGJlZm9yZSBzZW5kaW5nIHRoZSBwYXRjaC4gSW5kZWVkLCBJIHNv
-cnRlZCB5b3VyIGZlZWRiYWNrIG9uIHByZXZpb3VzIHBhdGNoZXMuIEFzIGZhciBhcyBJIGtub3cs
-IEkgaGF2ZSBmaXhlZCBhbGwgb2YgdGhlbSwgaXMgdGhlcmUgYSBwcm9ibGVtIHdpdGggYW55IG9m
-IHRoZW0gdGhhdCBJIGZpeGVkLCBvciBpcyB0aGVyZSBhbnkgbWlzc2luZyByZXZpZXc/IEZyb20g
-eW91LCB0aGVyZSB3ZXJlIHNvbWUgY29tbWVudHMgbGlrZSAid2h5IGRpZCB5b3UgdXNlIHRoaXM/
-IiwgSSBzdXBwb3NlIEkgbmVlZCB0byByZXNwb25kIHRoZW0gYmVmb3JlIHNlbmRpbmcgZm9sbG93
-aW5nIHBhdGNoZXMuIEkgdGhvdWdodCBJIHNob3VsZCBub3QgYm90aGVyIHRoZSBtYWludGFpbmVy
-cyB1bm5lY2Vzc2FyaWx5LiBJIGFtIHNvcnJ5IGZvciB0aGVtLg0KCQ0KRm9yIHByZXZpb3VzIHBh
-dGNoKHY1KSwgVGhlcmUgd2FzIGZlZWRiYWNrIGZyb20gQW5keS4gSSBkaWQgbm90IGZpeCB0aGVt
-LiANCg0KMSkgDQo+IFRoZXkgaGF2ZSBzYW1lIHJlZ21hcCBleGNlcHQgZm9yIEFEQyBwYXJ0IG9m
-IE1BWDc3NTQxLg0KDQpFeHRyYSBzcGFjZSBpbiB0aGUgU3ViamVjdC4NCg0KLi4uDQoNCj4gKyNp
-bmNsdWRlIDxsaW51eC9vZl9kZXZpY2UuaA0KDQpUaGlzIGlzIG15IGZhdWx0LCBJIG1pc3NlZCB0
-aGlzIGNvbW1lbnQuIEkgd2lsbCBmaXggaW4gZm9sbG93aW5nIHBhdGNoKHY3KS4NCg0KMikNCi4u
-Lg0KDQo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IHJlZ21hcF9jb25maWcgbWF4Nzc1NDFfcmVnbWFw
-X2NvbmZpZyA9IHsNCj4gKwkucmVnX2JpdHMgICA9IDgsDQo+ICsJLnZhbF9iaXRzICAgPSA4LA0K
-DQpEbyB5b3UgbmVlZCBsb2NrIG9mIHJlZ21hcD8NCg0KPiArfTsNCg0KLi4uDQoNClNpbmNlIEkg
-ZG8gbm90IG5lZWQgbG9jayBvZiByZWdtYXAsIEkgZGlkIG5vdCBjaGFuZ2UgYW55dGhpbmcgaW4g
-cmVnbWFwX2NvbmZpZyAodjYpLiBEbyBJIG5lZWQgdG8gYW5zd2VyIHRoaXMgcXVlc3Rpb24gZXZl
-biBpZiBJIGRvbid0IG5lZWQgbG9jayBvZiByZWdtYXA/DQoNCkZvciB0aGUgb3RoZXIgcmV2aWV3
-cywgSSBmaXhlZCB0aGVtIGFzIHlvdSBzYWlkLiBUaGFuayB5b3UgZm9yIHlvdXIgdGltZSwgYW5k
-IGVmZm9ydC4gU29ycnkgZm9yIHRoZSBtaXN1bmRlcnN0YW5kaW5nIGFuZCBjb25mdXNpb24uDQoN
-ClJlZ2FyZHMsDQpPa2FuDQo=
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
+
+max5970 & max5978 has 10bit ADC for voltage & current
+monitoring.
+Use iio framework to expose the same in sysfs.
+
+Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+...
+Changes in V3:
+- Use bulk read
+- Remove line split
+Changes in V2:
+- Remove fallthrough
+- Use pdev->dev instead of i2c->dev
+- Init indio_dev->name based on device type.
+---
+ drivers/iio/adc/Kconfig       |  15 ++++
+ drivers/iio/adc/Makefile      |   1 +
+ drivers/iio/adc/max597x-iio.c | 148 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 164 insertions(+)
+ create mode 100644 drivers/iio/adc/max597x-iio.c
+
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 45af2302be53..69310af5c665 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -735,6 +735,21 @@ config MAX1363
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called max1363.
+ 
++config MAX597X_IIO
++	tristate "Maxim 597x power switch and monitor"
++	depends on I2C && OF
++	select MFD_MAX597X
++	help
++	  This driver enables support for the Maxim 5970 & 5978 smart switch
++	  and voltage/current monitoring interface using the Industrial I/O
++	  (IIO) framework. The Maxim 597x is a power switch and monitor that can
++	  provide voltage and current measurements via the I2C bus. Enabling
++	  this driver will allow user space applications to read the voltage
++	  and current measurements using IIO interfaces.
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called max597x-iio.
++
+ config MAX9611
+ 	tristate "Maxim max9611/max9612 ADC driver"
+ 	depends on I2C
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 36c18177322a..7ec0c2cf7bbb 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
+ obj-$(CONFIG_MAX11410) += max11410.o
+ obj-$(CONFIG_MAX1241) += max1241.o
+ obj-$(CONFIG_MAX1363) += max1363.o
++obj-$(CONFIG_MAX597X_IIO) += max597x-iio.o
+ obj-$(CONFIG_MAX9611) += max9611.o
+ obj-$(CONFIG_MCP320X) += mcp320x.o
+ obj-$(CONFIG_MCP3422) += mcp3422.o
+diff --git a/drivers/iio/adc/max597x-iio.c b/drivers/iio/adc/max597x-iio.c
+new file mode 100644
+index 000000000000..f158e49b5a56
+--- /dev/null
++++ b/drivers/iio/adc/max597x-iio.c
+@@ -0,0 +1,148 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device driver for IIO in MAX5970 and MAX5978 IC
++ *
++ * Copyright (c) 2022 9elements GmbH
++ *
++ * Author: Patrick Rudolph <patrick.rudolph@9elements.com>
++ */
++
++#include <linux/iio/iio.h>
++#include <linux/mfd/max597x.h>
++#include <linux/platform_device.h>
++#include <linux/regmap.h>
++
++struct max597x_iio {
++	struct regmap *regmap;
++	int shunt_micro_ohms[MAX5970_NUM_SWITCHES];
++	unsigned int irng[MAX5970_NUM_SWITCHES];
++	unsigned int mon_rng[MAX5970_NUM_SWITCHES];
++};
++
++#define MAX597X_ADC_CHANNEL(_idx, _type) {			\
++	.type = IIO_ ## _type,					\
++	.indexed = 1,						\
++	.channel = (_idx),					\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
++			      BIT(IIO_CHAN_INFO_SCALE),		\
++	.address = MAX5970_REG_ ## _type ## _L(_idx),		\
++}
++
++static const struct iio_chan_spec max5978_adc_iio_channels[] = {
++	MAX597X_ADC_CHANNEL(0, VOLTAGE),
++	MAX597X_ADC_CHANNEL(0, CURRENT),
++};
++
++static const struct iio_chan_spec max5970_adc_iio_channels[] = {
++	MAX597X_ADC_CHANNEL(0, VOLTAGE),
++	MAX597X_ADC_CHANNEL(0, CURRENT),
++	MAX597X_ADC_CHANNEL(1, VOLTAGE),
++	MAX597X_ADC_CHANNEL(1, CURRENT),
++};
++
++static int max597x_iio_read_raw(struct iio_dev *iio_dev,
++				struct iio_chan_spec const *chan,
++				int *val, int *val2, long info)
++{
++	int ret;
++	struct max597x_iio *data = iio_priv(iio_dev);
++	u16 reg_l, reg_h;
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		ret = regmap_bulk_read(data->regmap, chan->address - 1, &reg_l, 2);
++		if (ret < 0)
++			return ret;
++		reg_h = reg_l & 0xff;
++		reg_l = (reg_l >> 8) & 0xff;
++		*val = (reg_h << 2) | (reg_l & 3);
++		return IIO_VAL_INT;
++
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->address) {
++		case MAX5970_REG_CURRENT_L(0):
++		case MAX5970_REG_CURRENT_L(1):
++			/* in A, convert to mA */
++			*val = data->irng[chan->channel] * 1000;
++			*val2 = data->shunt_micro_ohms[chan->channel] * ADC_MASK;
++			return IIO_VAL_FRACTIONAL;
++
++		case MAX5970_REG_VOLTAGE_L(0):
++		case MAX5970_REG_VOLTAGE_L(1):
++			/* in uV, convert to mV */
++			*val = data->mon_rng[chan->channel];
++			*val2 = ADC_MASK * 1000;
++			return IIO_VAL_FRACTIONAL;
++		}
++
++		break;
++	}
++	return -EINVAL;
++}
++
++static const struct iio_info max597x_adc_iio_info = {
++	.read_raw = &max597x_iio_read_raw,
++};
++
++static int max597x_iio_probe(struct platform_device *pdev)
++{
++	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
++	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
++	struct iio_dev *indio_dev;
++	struct max597x_iio *priv;
++	int ret, i;
++
++	if (!regmap)
++		return -EPROBE_DEFER;
++
++	if (!max597x || !max597x->num_switches)
++		return -EPROBE_DEFER;
++
++	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
++	if (!indio_dev)
++		return dev_err_probe(&pdev->dev, -ENOMEM,
++				     "failed to allocate iio device\n");
++
++	indio_dev->info = &max597x_adc_iio_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++
++	switch (max597x->num_switches) {
++	case MAX597x_TYPE_MAX5970:
++		indio_dev->channels = max5970_adc_iio_channels;
++		indio_dev->num_channels = ARRAY_SIZE(max5970_adc_iio_channels);
++		indio_dev->name = "max5970";
++		break;
++	case MAX597x_TYPE_MAX5978:
++		indio_dev->channels = max5978_adc_iio_channels;
++		indio_dev->num_channels = ARRAY_SIZE(max5978_adc_iio_channels);
++		indio_dev->name = "max5978";
++		break;
++	}
++
++	priv = iio_priv(indio_dev);
++	priv->regmap = regmap;
++	for (i = 0; i < indio_dev->num_channels; i++) {
++		priv->irng[i] = max597x->irng[i];
++		priv->mon_rng[i] = max597x->mon_rng[i];
++		priv->shunt_micro_ohms[i] = max597x->shunt_micro_ohms[i];
++	}
++
++	ret = devm_iio_device_register(&pdev->dev, indio_dev);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "could not register iio device\n");
++
++	return 0;
++}
++
++static struct platform_driver max597x_iio_driver = {
++	.driver = {
++		.name = "max597x-iio",
++	},
++	.probe = max597x_iio_probe,
++};
++
++module_platform_driver(max597x_iio_driver);
++
++MODULE_AUTHOR("Patrick Rudolph <patrick.rudolph@9elements.com>");
++MODULE_DESCRIPTION("MAX5970_hot-swap controller driver");
++MODULE_LICENSE("GPL");
+
+base-commit: 368eb79f738a21e16c2bdbcac2444dfa96b01aaa
+-- 
+2.39.1
+

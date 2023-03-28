@@ -2,167 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 871906CC08F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Mar 2023 15:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2986CC0A3
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Mar 2023 15:24:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbjC1NWq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Mar 2023 09:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39600 "EHLO
+        id S232970AbjC1NYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Mar 2023 09:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjC1NWp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 09:22:45 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BD87285;
-        Tue, 28 Mar 2023 06:22:43 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id br6so15769538lfb.11;
-        Tue, 28 Mar 2023 06:22:43 -0700 (PDT)
+        with ESMTP id S232996AbjC1NYs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 09:24:48 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D222C162;
+        Tue, 28 Mar 2023 06:24:42 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id ew6so49629438edb.7;
+        Tue, 28 Mar 2023 06:24:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680009762;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/e6hzu72dowoGBX7SULV30FXFNndxb6X/e6UQcdzccI=;
-        b=m52tPZgyugHSriVGqtsrEaMwvAHvPdVNoFPqS2XyW951RpPrJxie9sWp8mzzqdMO7r
-         q85Rvkkrunq/5OET9916/DZFrBC/E10qDAdOLMIVqhe0ZtA9mHpIMdhqb3OIJxfLxOR+
-         3nTr6kS1YuQQ6zXzwUtw+R0Rdj/e16JxguTZ3DA5yJGe5HHQpgzcsNXDgC4kBS10LDxr
-         iBi6cVJHQMXlW7uSMpnHZp5ST7x2AmAqTzspJtrg4zQztRtm55akAg7h5rSbQHuq8duJ
-         ZBvuT8BCaeBATZPHlXtUQhuCvqRZcxnrNB0fNv8+vqOJvumXWeQASjrwuZ5lIXCd/EdO
-         gf1A==
+        d=gmail.com; s=20210112; t=1680009881;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+KWs/7qE29dhX0C1aUgCVlOHp1vpOTI4G8XwllRUWlQ=;
+        b=nPcmCxPpuEGMnayu2JBOM6USR1geb8exzybI185mDnxflIoyxplHa1lzYQPRfOO8Fa
+         NQ+r3o9Fq5EkxdgNiNdySxaCd22UnNvuRvqcWGCUkl0OJCfjBc0XHQaLlA/jBa7RUFKY
+         d/4zktWvdMSztnZK6kO1mZnfMUwDx2Wkry5Bcdi8Sd45+E5Aaxf9L1wcOCnurHm3Ddal
+         hiM0LX2JdLAddy8zFVZ1OSp40JiW+0yWsPefkhyggyI0cj4i9YpeKAhonKRhso1T07ZR
+         gJFVuMAG/nnh5bTRPuFrzj/vqrp7raPLVYBD/4s4B/nNLDYY/lpOJ4Ry7GbNwcuAiu96
+         X0nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680009762;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/e6hzu72dowoGBX7SULV30FXFNndxb6X/e6UQcdzccI=;
-        b=6gBBubCIGt/jNrJYxLYRebHuetBXEL0v2vavK/+nl+7t/ClGLNLKP0wuihJ4GN/aWG
-         MOn+FqU3iYR89koIvOQrXsW5GrYX+sCo+Fdt9WtGmlqNvPCztZ1d69OpEKkEoQxYYZcH
-         XDq8QHcWSLKWvTsDytbMc+0eHBnIXRBdBiqmP0LYR8LyQS8I13zdGXs5FMZVFbNWYhtp
-         rSvb1pJWjDhDLC9PiNoW8m1yzLNuJej7wM0Y7oQgsPO8xh3qcvZzdQ5DPpj60VCKhWEZ
-         jx4o61D0i0EEiFaooFimfuQ4ZNrUhWaFdGNE/l1WPCt6l1Rm5vV7CW2S9Qkamef7rkj1
-         mMig==
-X-Gm-Message-State: AAQBX9ed2JOP8sPCwQGTXesA2KXB0WbjRu9goxMKYBS/BX7yrfLl08WV
-        WuBOPG2aW5+bZw7gc2mniKE=
-X-Google-Smtp-Source: AKy350bPyQayaZ2agMiFg4NkWQ/BywBUB/RCVmAfCsHPD52OyXEIDUY1RCwdZULvYIkYMvKcY0Cl5Q==
-X-Received: by 2002:ac2:519c:0:b0:4e9:8cae:c620 with SMTP id u28-20020ac2519c000000b004e98caec620mr5343204lfi.61.1680009761810;
-        Tue, 28 Mar 2023 06:22:41 -0700 (PDT)
-Received: from [172.16.196.130] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id p15-20020a2ea40f000000b00295a8d1ecc7sm5091282ljn.18.2023.03.28.06.22.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Mar 2023 06:22:41 -0700 (PDT)
-Message-ID: <e9619a2a-b6c8-e7f9-6018-45541608d0c5@gmail.com>
-Date:   Tue, 28 Mar 2023 16:22:35 +0300
+        d=1e100.net; s=20210112; t=1680009881;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+KWs/7qE29dhX0C1aUgCVlOHp1vpOTI4G8XwllRUWlQ=;
+        b=rytMxc6nRNSZ4d3eyNreOnaJ4B7qkDCHxvJTrZe3AvNfJM5kQ9J2oe8atc0UcTZf3l
+         fSzAZ/PGe1YbuapOGLjZfbdDKsJrhbTGMc58FdOsZ9t45eHbwSFs5XnVP0AGNoq/TQHJ
+         NmEqno54VpDb3BXxk1Ki2J+vHu+/pFVPZAYodw2wpjBzx6I1RiASW1knWI9U0afEiaHR
+         yMgtVI3tAsXP32vQpS7NzxtfiZ5r/+G+o+QX1RhtKPFxrR9c0My3Ij2d7/Wq20ly14dM
+         D3k5ZOeowHJP6WIjm7CO9Krzn+9Ep1S46i4MVFp1m5KkkKTJ1uMY7mX6f3LcT9ShrXtS
+         iZqw==
+X-Gm-Message-State: AAQBX9ezvpDo7RHRaT64q6+n7N1YQE658wPi36KZzPIc/CaEfNU8EZuj
+        9abcplZfD8jC3lgmJDcl6R8=
+X-Google-Smtp-Source: AKy350ZMjyewdCvMumQJ9VaaGx0l2rpgx1eEAcfy90fSQ2qGqG5DS1yACXK+4keMTCWil9yR8e8YyQ==
+X-Received: by 2002:aa7:d885:0:b0:4fd:2155:74ef with SMTP id u5-20020aa7d885000000b004fd215574efmr15750497edq.19.1680009880722;
+        Tue, 28 Mar 2023 06:24:40 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id c14-20020a509f8e000000b005003fd12eafsm15674860edf.63.2023.03.28.06.24.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Mar 2023 06:24:40 -0700 (PDT)
+Message-ID: <cdd53e29ca3d8dbfdfa1a2520935e2bf9418313d.camel@gmail.com>
+Subject: Re: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
+ Support
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Sahin, Okan" <Okan.Sahin@analog.com>
+Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Date:   Tue, 28 Mar 2023 15:26:44 +0200
+In-Reply-To: <ZCLi6MB/aHIf4lMr@smile.fi.intel.com>
+References: <20230307112835.81886-1-okan.sahin@analog.com>
+         <20230307112835.81886-6-okan.sahin@analog.com>
+         <20230315175223.GI9667@google.com> <20230315175257.GJ9667@google.com>
+         <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
+         <ZCLi6MB/aHIf4lMr@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Content-Language: en-US, en-GB
-To:     David Gow <davidgow@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Maxime Ripard <maxime@cerno.tech>
-References: <cover.1679915278.git.mazziesaccount@gmail.com>
- <f2c7f7b04f7e4ee7b9cef73ecba672f5fa40eb73.1679915278.git.mazziesaccount@gmail.com>
- <ZCGFgypeuJXqNwQt@kroah.com> <e027fc0c-83e0-be6f-d62b-dac00ce9b761@gmail.com>
- <ZCGONl0mC8oyBj-0@kroah.com>
- <CABVgOSnUCsxPf1mAL03GQzaw_kFtgf5J7aTPodo=j6O+wYZ2iQ@mail.gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v6 3/7] kunit: Add kunit wrappers for (root) device
- creation
-In-Reply-To: <CABVgOSnUCsxPf1mAL03GQzaw_kFtgf5J7aTPodo=j6O+wYZ2iQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David & Greg and thanks for working with this!
+On Tue, 2023-03-28 at 15:51 +0300, Andy Shevchenko wrote:
+> On Tue, Mar 28, 2023 at 08:26:41AM +0000, Sahin, Okan wrote:
+> > > On Wed, 15 Mar 2023, Lee Jones wrote:
+> > > > On Tue, 07 Mar 2023, Okan Sahin wrote:
+>=20
+> ...
+>=20
+> > For previous patch(v5), There was feedback from Andy. I did not fix
+> > them.=20
+>=20
+> Why not? :-)
+>=20
+> > 1)=20
+> > > They have same regmap except for ADC part of MAX77541.
+> >=20
+> > Extra space in the Subject.
+> >=20
+> > ...
+> >=20
+> > > +#include <linux/of_device.h
+> >=20
+> > This is my fault, I missed this comment. I will fix in following
+> > patch(v7).
+> >=20
+> > 2)
+> > ...
+> >=20
+> > > +static const struct regmap_config max77541_regmap_config =3D {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.reg_bits=C2=A0=C2=A0 =3D =
+8,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.val_bits=C2=A0=C2=A0 =3D =
+8,
+> >=20
+> > Do you need lock of regmap?
+> >=20
+> > > +};
+> >=20
+> > ...
+> >=20
+> > Since I do not need lock of regmap, I did not change anything in
+> > regmap_config (v6). Do I need to answer this question even if I
+> > don't need
+> > lock of regmap?
+>=20
+> IIRC the lock is opt-out. You need to explicitly disable it if not
+> needed.
+>=20
 
-On 3/28/23 15:45, David Gow wrote:
-> Thanks, Gred and Matti.
-> 
-> On Mon, 27 Mar 2023 at 20:38, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->>
->> On Mon, Mar 27, 2023 at 03:20:06PM +0300, Matti Vaittinen wrote:
->>> On 3/27/23 15:01, Greg Kroah-Hartman wrote:
->>>> On Mon, Mar 27, 2023 at 02:34:02PM +0300, Matti Vaittinen wrote:
-> 
-> I'm happy to keep working on this, but would definitely appreciate
-> your feedback.
-> 
-> I've put my work-in-progress code here:
-> https://kunit.googlesource.com/linux/+/refs/heads/kunit/device-helpers%5E%21/#F0
-> 
-> It creates a "kunit" bus, and adds a few helpers to create both
-> devices and drivers on that bus, and clean them up when the test
-> exits. It seems to work on all of the tests which used
-> root_device_register so far (except those -- only
-> test_iio_find_closest_gain_low so far -- which create multiple devices
-> with the same name, as the driver name won't be unique),
+IIRC, regmap_read() is not really reentrant and it is used in the IIO
+driver on the sysfs interface. So, yeah, I think you need the regmap
+lock and better just leave the config as is. Yes, the lock is opt-out
+so let's not disable it :)
 
-I wouldn't worry about it for as long as it's just because an iio-gts 
-test does something silly. Those tests are currently only in my personal 
-playground and changing those tests should be pretty trivial.
-
-And right after saying that - the test_iio_find_closest_gain_low test does
-
-a) register a 'test' device
-b) perform test on devm_ API
-c) unregister the 'test' device
-
-d) register a 'test' device (same name as at step a)
-e) perform test on devm_ API
-f) unregister the 'test' device
-
-My assumption is that the test device would be gone after step c) 
-because there should be no references to it anywhere. Hence, I wonder 
-why registering at step d) fails? (Or did I misunderstand something?)
-
-> and the drm
-> tests work fine when ported to it as well.
-> 
-> There's still a lot of cleanup to do and questions which need
-> answering, including:
-> - Working out how best to provide an owning module (it's currently
-> just kunit, but probably should be the module which contains the
-> actual tests)
-
-Maybe there is something I am not seeing but how about wrapping the 
-kunit_device_register() in a macro and getting the THIS_MODULE in 
-caller's context?
-
-> In any case, does this seem like the right way forward?
-
-I am by no means an expert on this but this does look good to me. I 
-would keep this as clean, lean and simple as possible in order to keep 
-understanding / debugging the problems exposed by the tests as simple as 
-possible. At some point someone is wondering why a test fails, and ends 
-up looking through these helpers to ensure problem is no lurking 
-there... Hence, I'd kept the code there in minimum - meaning, I might 
-not add kunit class or even a driver until tests require that. (Even if 
-it would not look as good in the sysfs - as far as I understand the 
-kunit sysfs entries are a 'test feature' which should not be present in 
-'production systems'. This is not an excuse to make things bad - but (in 
-my opinion) this is a good reason to prioritize simplicity.
-
-Anyways, thanks for the work!
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+- Nuno S=C3=A1

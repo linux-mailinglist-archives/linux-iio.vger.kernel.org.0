@@ -2,68 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F2A76CD4D7
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 10:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E736CD7DD
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 12:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229622AbjC2IjW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Mar 2023 04:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
+        id S230133AbjC2KqL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Mar 2023 06:46:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229787AbjC2IjV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 04:39:21 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933161AC
-        for <linux-iio@vger.kernel.org>; Wed, 29 Mar 2023 01:39:20 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id j7so18383399ybg.4
-        for <linux-iio@vger.kernel.org>; Wed, 29 Mar 2023 01:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680079160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hii9Pv392323NVbPSWjKgjzlCyDkUixB781jbHMzcds=;
-        b=ByBD9gixBbHYEaWqoA3BnSmcJGc2fYKFV0IWIdciv9nSZjDA+qaVd2Q9KqKokMUcuH
-         57bgryObyHgqecMufUre5Nbw+epTaN71b4FlQbhdGPou0toI8asrex9a/nse30ryR1Q8
-         Jci3r/v6dKQr6Q71vOwGwBpYcRdDlmCnB8GaqOSbPVBtJeiKmLT3HHwH8Stf/TH/7W4r
-         Xcz+nRWMDn54xb0aRKcmb+wnksa2zWeYvBVucjT3aMMv4OjCeMVvIsTbsBMneTE+wz1y
-         l/KHgYhm4TIuCCOa7OCVcrHHqV5jP9ob9FwncTtiq1QgFeDm8Ygdu1HetBwAyqLDW+JF
-         eX3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680079160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hii9Pv392323NVbPSWjKgjzlCyDkUixB781jbHMzcds=;
-        b=plB6bbAzK97RzXERNmFmGKm+cw1zdqsp8TvL0ASK3LtZFyXQxH6P4bCoQLS0CFpXjL
-         FEzPDIo9+2OaNiqi1W4gh5GoH4iiH4BtzloTV2Tdyj9Jb8hJoq3Fkl9gY9GKQk5lMmVE
-         ghuOR2CfIzWzqhY8AzfV1onnVzkJsOOCMvy4+Wrw6Dwob7yK4CB015+lmFjF5tRiXBfw
-         AgjWa7diPOJOdBCZb9HCw8cT5XaLbex9mpCQvl3PE3X3jvbuytiilEXfGU0jawv73z3C
-         Aa2UGLgaDcggzx85vpur6WrYhfZWSfFRpM2JHDllnoT1jH/v7Ni0h+FAlN3dqkGrAs9p
-         KnAQ==
-X-Gm-Message-State: AAQBX9fm/thf2EbHCnUpwLTJihPxdF1hDI+aykRT2GGwLXcLyx1A/6Tp
-        SUvUGS3HHbOkqGN80o6tcWHuw6sIQsQMpkxjLvdhBw==
-X-Google-Smtp-Source: AKy350bxp7UZ3mjGvig+dK8Sj3jxW0id1gM3+tFFHPekrN78Twkfzq0mg3i8vILowosyl1tMagLq8UYXJP0C7MZI3mI=
-X-Received: by 2002:a25:d0d0:0:b0:b6e:b924:b96f with SMTP id
- h199-20020a25d0d0000000b00b6eb924b96fmr1044917ybg.3.1680079159790; Wed, 29
- Mar 2023 01:39:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230329074614.1037625-1-linus.walleij@linaro.org> <23b2de4b-1198-bfcc-fd74-285da9af4fb3@linaro.org>
-In-Reply-To: <23b2de4b-1198-bfcc-fd74-285da9af4fb3@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 29 Mar 2023 10:39:08 +0200
-Message-ID: <CACRpkdbM_Dron8irHbP77MW2=Yq6o2MAUdYSTE1jcfSHsXZfQg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: st-sensors: Fix repeated text
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Denis Ciocca <denis.ciocca@st.com>, devicetree@vger.kernel.org,
-        Diederik de Haas <didi.debian@cknow.org>
+        with ESMTP id S229918AbjC2KqK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 06:46:10 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE80B1FDA
+        for <linux-iio@vger.kernel.org>; Wed, 29 Mar 2023 03:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1680086764;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=IIoawS2cEwdzSNh0L849uGxIy27juukQ/WXP/fSMp0M=;
+        b=c5l+//x9DXU9s9TEafVEWIFMSjfxdGIjScN4/ygH81br1HbObOk40DTdwa0rRlFx9D3Kp7
+        d+4eud4kSzMz8u0QwOI1alk9lTsHhOfTP1Q1xfM6oPnectvJFARdL9vMoHGVTdX+MOkM9r
+        3R/84cEo9gL+YXCDhGND6bMEUzadT6s=
+Message-ID: <f3365b540d6a6789cb3a18cf531e652673320855.camel@crapouillou.net>
+Subject: AD7192 driver mess
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+Date:   Wed, 29 Mar 2023 12:46:00 +0200
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,22 +41,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 10:25=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+Hi Jonathan,
 
-> Please drop the autogenerated scripts/get_maintainer.pl CC-entries from
-> commit msg (Jonathan's, Lars', Rob's, mine, DT list). There is no single
-> need to store automated output of get_maintainers.pl in the git log. It
-> can be easily re-created at any given time, thus its presence in the git
-> history is redundant and obfuscates the log.
->
-> If you need it for your own patch management purposes, keep it under the
-> --- separator.
+I noticed that the upstream AD7192 driver (drivers/iio/adc/ad7192.c) we
+have two IIO channels with the same identifier:
 
-Oh yeah I've seen that people do this these days, just (old) bad habits.
+AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M)
 
-I am trying to use b4 for this going forward, it always does the right thin=
-g.
+and:
+AD719x_CHANNEL(5, 2, AD7192_CH_AIN2)
 
-Thanks!
-Linus Walleij
+Both macros create a iio_chan_spec with .channel =3D 2.
+
+This results in having this mess in sysfs:
+in_voltage2_en
+in_voltage2_index
+in_voltage2_shorted_en
+in_voltage2_shorted_index
+
+In turn, this causes Libiio to detect it as a single IIO channel whose
+identifier is "in_voltage2", with attributes "en", "index",
+"shorted_en" and "shorted_index".
+
+My question is, is it okay for the driver to do this? I would expect
+the .channel field to contain an identifier, and it would be invalid
+for two channels to have the same identifier.
+
+Cheers,
+-Paul

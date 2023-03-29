@@ -2,49 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 189B56CEC0F
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 16:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 943426CEC40
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 16:56:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230371AbjC2OqX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Mar 2023 10:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50390 "EHLO
+        id S229939AbjC2O4s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Mar 2023 10:56:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbjC2OqH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 10:46:07 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1FB693C0;
-        Wed, 29 Mar 2023 07:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680101039; x=1711637039;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mF5KcYfESzULnMbcHpPg9/Y3X1FNg6NDTzgQz7ayaEc=;
-  b=nMByuSNhu5KCr70AFM0k4PV9tT6hInOq9Wds5kSn2a4KZ5ztdxyLypvF
-   pqBx0tNgNIKEhk4qiDYQ7rEBeRUZh1y2WO4zBxdYB118RKbuIaVJ1Bw6M
-   o1LoK7/22yzOgO8peYoPW4fam750R4oxPHqxYwwVd042Ok76QdSYSr3yV
-   1/RiUlZQrCdtBFWxMqhlgfUzHJ9kDO/ZC36WmWkJgUVWWvcrj5o6bEgif
-   fu8VRTvXbnxhFN0Qf3avVopCApzZIXvUFSs5iyabuK0W1G8M9xpEcyqKQ
-   wIUWsBg1+Ln8IHJcQH6f3KcNdChMX7+7ffH7HCiHxMELzwcsyrf3jkP8Q
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="338393917"
-X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
-   d="scan'208";a="338393917"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 07:43:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="716906281"
-X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
-   d="scan'208";a="716906281"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 29 Mar 2023 07:43:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1phX1k-00A41k-0n;
-        Wed, 29 Mar 2023 17:43:52 +0300
-Date:   Wed, 29 Mar 2023 17:43:51 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Lee Jones <lee@kernel.org>
+        with ESMTP id S229525AbjC2O4r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 10:56:47 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BE712E;
+        Wed, 29 Mar 2023 07:56:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 80B28B8235D;
+        Wed, 29 Mar 2023 14:56:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F10C433EF;
+        Wed, 29 Mar 2023 14:56:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680101804;
+        bh=FCJy/eYSZT7WLb3OmK/7JeXcs8+xQniddc7s7LZp8ko=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CZlNV5JjqH5js/0zQleguzsHeOZkCCPx4jL1M1Y+jBMvpkJ4pvL277nYQ+sGqk2qe
+         4SaOYNFvs/9Q1inf4qDJfx7hQm/4FWZBnQmLbmWFUT0wJMyIn4+rKAXCYtcjlQ9aU7
+         hxzUqHVtVqo/g8ej+ooE9wQEZLslhGn/LFd1FTmo7Sf3inqF9thLJG03Q5QP9aTTcA
+         kXSEAnyKzL9TY/Byv0OpBztC1Dr/4gmr1gxviXXlcVI3HSXvpgxVqXW9JpiNslorVN
+         aYU/dPg06KkIG7Vp45x9JNFH3sEjPCwTKgqEm7NCm1aogS8QwJ58wrn5IJMJQ8mGC7
+         mt4VfNjupKBug==
+Date:   Wed, 29 Mar 2023 15:56:36 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "Sahin, Okan" <Okan.Sahin@analog.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -68,51 +57,55 @@ Cc:     "Sahin, Okan" <Okan.Sahin@analog.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
 Subject: Re: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
  Support
-Message-ID: <ZCROpw0il1VQCLPu@smile.fi.intel.com>
+Message-ID: <20230329145636.GV2673958@google.com>
 References: <20230307112835.81886-1-okan.sahin@analog.com>
  <20230307112835.81886-6-okan.sahin@analog.com>
  <20230315175223.GI9667@google.com>
  <20230315175257.GJ9667@google.com>
  <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
  <20230329143615.GS2673958@google.com>
+ <ZCROpw0il1VQCLPu@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230329143615.GS2673958@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZCROpw0il1VQCLPu@smile.fi.intel.com>
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 03:36:15PM +0100, Lee Jones wrote:
-> On Tue, 28 Mar 2023, Sahin, Okan wrote:
-> > >On Wed, 15 Mar 2023, Lee Jones wrote:
-> > >> On Tue, 07 Mar 2023, Okan Sahin wrote:
+On Wed, 29 Mar 2023, Andy Shevchenko wrote:
 
-...
+> On Wed, Mar 29, 2023 at 03:36:15PM +0100, Lee Jones wrote:
+> > On Tue, 28 Mar 2023, Sahin, Okan wrote:
+> > > >On Wed, 15 Mar 2023, Lee Jones wrote:
+> > > >> On Tue, 07 Mar 2023, Okan Sahin wrote:
+>
+> ...
+>
+> > > +static const struct i2c_device_id max77541_i2c_id[] = {
+> > > +	{ "max77540", (kernel_ulong_t)&chip[MAX77540] },
+> > > +	{ "max77541", (kernel_ulong_t)&chip[MAX77541] },
+> >
+> > Just 'MAX77540' is fine.
+>
+> I tend to disagree.
+>
+> There is an error prone approach esp. when we talk with some functions
+> that unifies OF/ACPI driver data retrieval with legacy ID tables.
+> In such a case the 0 from enum is hard to distinguish from NULL when
+> the driver data is not set or not found. On top of that the simple integer
+> in the legacy driver data will require additional code to be added in
+> the ->probe().
 
-> > +static const struct i2c_device_id max77541_i2c_id[] = {
-> > +	{ "max77540", (kernel_ulong_t)&chip[MAX77540] },
-> > +	{ "max77541", (kernel_ulong_t)&chip[MAX77541] },
-> 
-> Just 'MAX77540' is fine.
+Use a !0 enum?
 
-I tend to disagree.
+The extra handling is expected and normal.
 
-There is an error prone approach esp. when we talk with some functions
-that unifies OF/ACPI driver data retrieval with legacy ID tables.
-In such a case the 0 from enum is hard to distinguish from NULL when
-the driver data is not set or not found. On top of that the simple integer
-in the legacy driver data will require additional code to be added in
-the ->probe().
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--
+Lee Jones [李琼斯]

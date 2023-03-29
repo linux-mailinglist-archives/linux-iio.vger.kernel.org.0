@@ -2,100 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA966CD138
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 06:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190CD6CD264
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 08:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjC2Efm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Mar 2023 00:35:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
+        id S229453AbjC2G7a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Mar 2023 02:59:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjC2Efk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 00:35:40 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33982705;
-        Tue, 28 Mar 2023 21:35:38 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id e18so14287873wra.9;
-        Tue, 28 Mar 2023 21:35:38 -0700 (PDT)
+        with ESMTP id S229448AbjC2G73 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 02:59:29 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 527EC213B;
+        Tue, 28 Mar 2023 23:59:28 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id w9so59298958edc.3;
+        Tue, 28 Mar 2023 23:59:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680064537;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aO3iffgYttit+KiwJOjw8k7a3mJdpVLTgTWfTOHkxBc=;
-        b=OSQIyj5UMb+VqBOWmCUC4uqftFYo1FvjIVo/t8efei/yAJbjsWtvx75HuGP8Y6c2N6
-         lT6RSQL0gYpgFWNF+Jt3DSACrWm+H2A0YuS+xyY7rltgE3xWLUo7kjXbHyrFnugZ+fgg
-         yYy2KZ+ydlEX9y2JkgYqcQ55BbtqkxNWvAhYkYwHw2heFNXRRKn9wCYpGxujdi6ACr6r
-         sNkvQrcQMJhnyKupUHGu5qlnKdnsK5i/ZaOgWBFwi+ZvsPSwb32kwmXBRTkY5GZbL5LU
-         OmNvYzy/cHC/gYjev/hpBZZfOgmLp/NB9Mj2udP6NA0y/NL2hpGjFl9RDjvYp7nzrMWr
-         xZjg==
+        d=gmail.com; s=20210112; t=1680073167;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gKh61HV7ZVYfkPUeFh0z5LhhqycdLMzOgNFh+Ol0kxQ=;
+        b=lpeVmmR0EPpW0ZAxv3DjLEVL/YaVkHvRlye2oXLbKgp6r/mZYErD+gPgqNAVh9ayda
+         iZPjydr0jV8Tz4CdcDgpDWlrJEXMnjPMlwy51sqAdMmsFSPxzvIC49M5Hfo7afMlBvX0
+         4/syYPxCt1FvlzwobrKgZB7lV4ttCUkWPI+xg6AhVFNM8EqaG5poM6kL5XbDzIY1AYlU
+         a/63gNDX4+hloupulcaqUp944Jgw5fX2lZp40vcNUj5EfOcP1WT+hYFzU4ab63JBB618
+         84iF3RwNXEG22y4lcwxOcjDcRBK3jQ9vfFvdcVb/HmUkXI2Dq2d5eIxsgmenq/2l6RXF
+         zPqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680064537;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aO3iffgYttit+KiwJOjw8k7a3mJdpVLTgTWfTOHkxBc=;
-        b=cWMpKbbJN49/UesEcqgotTebRUGmAPwcusFQQnUHNYoYhXPzGVWcnCGdGPPFUDjcT4
-         7uLfI5+jrWaitlxPYlEjjZ545Wa1tM3fHv4n3MFaw9PfHXJvIurbAphNl4jPVoEAdA8I
-         p8iMkK4wFN6xu4x5rlOlVvs4rCsC4nQj2VLInDbr4SGJw1CZwPgpf16RC+hx3reEbzHc
-         guTFlJCVT11/lcpCvq7uzlUHHXAn1Q1tmlCV9FPeQUy/ah04nNgAyz97feXMlC7d5NaK
-         SOqsih+c4uhgA/FgG3+4ZwmyvlMnHc/ssh+JnO/hd9JT5XQK/vpzCT6bhRSdwyWHdma6
-         Jd7g==
-X-Gm-Message-State: AAQBX9cEBmOGHwVhePl8UMW9y1PBTNcEvkizBiftJZTagD+92yu0M72G
-        y5XKk/il7azUK7XxJjV+UsQ=
-X-Google-Smtp-Source: AKy350YlW5rNRwSVW5XehFVdz8qPl2Zx0q16OVLZlfYmLNqT30jqo+K3VAkc6JJ3Ks773XQXjx6g4A==
-X-Received: by 2002:a5d:424a:0:b0:2d2:39d3:ce7c with SMTP id s10-20020a5d424a000000b002d239d3ce7cmr13870821wrr.70.1680064537161;
-        Tue, 28 Mar 2023 21:35:37 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id z6-20020a056000110600b002c557f82e27sm28961465wrw.99.2023.03.28.21.35.35
+        d=1e100.net; s=20210112; t=1680073167;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gKh61HV7ZVYfkPUeFh0z5LhhqycdLMzOgNFh+Ol0kxQ=;
+        b=21gBXB5KVj9zgsim8asJJCN4uEPcqOf3bvOwCsN6WLWuQp3fBfFBhLhFmfE1XTcb8x
+         J9BdQ/bYsQaaeHJsQinuM9DGWCPsYbswFsSWxyvyoqOLLaVDLMGbXiinP+C43kxhsXvQ
+         /bnVaKYKm/4YPBM6hAhXtH0pXHe002h92hmkuK0VYO1gJSDARW9cT1fH0TTmbWWFuHTl
+         EifDJwxtshEcAz1Ma6iZqsnO0mOMG9GW/bUSDzAippVs3fyywD1dCCNC7+GXD7Rsbw3A
+         GohXFrxLFVFS5RFzITKFnz8twurjIVz9dsZnhw4vt9Sk7rokhXnzvp/1trqFYJ36KoN1
+         ZLMQ==
+X-Gm-Message-State: AAQBX9eN71BDvcTXihhZWw+qptFi3i7PUVMNQ5nCOjC/1yCANFGYn0jd
+        Ataz3FiMmAuqiU9XoyAasFM=
+X-Google-Smtp-Source: AKy350bYA3PBfYsT2LcUD/djbyPYHeT3YVY9Pbf3IHF9f+2hnCZlWCMJIpi8Gp3ILGgeJBCoF8fipw==
+X-Received: by 2002:a17:906:6dd7:b0:931:c99c:480 with SMTP id j23-20020a1709066dd700b00931c99c0480mr19637141ejt.69.1680073166574;
+        Tue, 28 Mar 2023 23:59:26 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id d14-20020a1709064c4e00b009336df45226sm13696666ejw.64.2023.03.28.23.59.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Mar 2023 21:35:36 -0700 (PDT)
-Date:   Wed, 29 Mar 2023 07:35:32 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Eugen Hristev <eugen.hristev@collabora.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Tue, 28 Mar 2023 23:59:26 -0700 (PDT)
+Message-ID: <9ba3c559e2fb685c941b02fcfddaeb82aefed6f7.camel@gmail.com>
+Subject: Re: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
+ Support
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        "Sahin, Okan" <Okan.Sahin@analog.com>, Lee Jones <lee@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: adc: at91-sama5d2_adc: fix an error code in
- at91_adc_allocate_trigger()
-Message-ID: <5d728f9d-31d1-410d-a0b3-df6a63a2c8ba@kili.mountain>
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Date:   Wed, 29 Mar 2023 09:01:30 +0200
+In-Reply-To: <ZCMMHl5ENSuCstFV@smile.fi.intel.com>
+References: <20230307112835.81886-6-okan.sahin@analog.com>
+         <20230315175223.GI9667@google.com> <20230315175257.GJ9667@google.com>
+         <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
+         <ZCLi6MB/aHIf4lMr@smile.fi.intel.com>
+         <cdd53e29ca3d8dbfdfa1a2520935e2bf9418313d.camel@gmail.com>
+         <d2bed74b-9eb9-45af-8f45-ad2c2889024a@sirena.org.uk>
+         <fc07de9af0b691fbd3a5915c8293f0c7ad4c4e06.camel@gmail.com>
+         <ZCL7J5a7UZVayQVS@smile.fi.intel.com>
+         <60bbad1b38b8e3c9c3efefb0fb7b8d3cad7fa98c.camel@gmail.com>
+         <ZCMMHl5ENSuCstFV@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The at91_adc_allocate_trigger() function is supposed to return error
-pointers.  Returning a NULL will cause an Oops.
+On Tue, 2023-03-28 at 18:47 +0300, Andy Shevchenko wrote:
+> On Tue, Mar 28, 2023 at 04:51:18PM +0200, Nuno S=C3=A1 wrote:
+> > On Tue, 2023-03-28 at 17:35 +0300, Andy Shevchenko wrote:
+> > > On Tue, Mar 28, 2023 at 04:18:30PM +0200, Nuno S=C3=A1 wrote:
+> > > > On Tue, 2023-03-28 at 14:46 +0100, Mark Brown wrote:
+> > > > > On Tue, Mar 28, 2023 at 03:26:44PM +0200, Nuno S=C3=A1 wrote:
+> > > > >=20
+> > > > > > IIRC, regmap_read() is not really reentrant and it is used
+> > > > > > in
+> > > > > > the
+> > > > > > IIO
+> > > > > > driver on the sysfs interface. So, yeah, I think you need
+> > > > > > the
+> > > > > > regmap
+> > > > > > lock and better just leave the config as is. Yes, the lock
+> > > > > > is
+> > > > > > opt-
+> > > > > > out
+> > > > > > so let's not disable it :)
+> > > > >=20
+> > > > > All the regmap operations are fully thread safe.
+> > > >=20
+> > > > Even if 'config->disable_locking' is set? I think that is
+> > > > what's
+> > > > being
+> > > > discussed in here...
+> > >=20
+> > > In case the driver has its own lock to serialize IO how on earth
+> > > the
+> > > regmap
+> > > lock is needed. That's what I asked the author of the driver. He
+> > > told
+> > > the code
+> >=20
+> > Well, if the driver has it's own locking, then sure we do not need
+> > regmap's lock...
+> >=20
+> > > doesn't require the regmap lock, and I tend to believe the
+> > > author.
+> > > So, why to
+> > > keep it?
+> >=20
+> > However, if you look at the adc driver, I can see plain
+> > regmap_read()
+> > calls without any "outside" locking.
+>=20
+> Then author of the code should know what they are doing. Right?
+>=20
 
-Fixes: 5e1a1da0f8c9 ("iio: adc: at91-sama5d2_adc: add hw trigger and buffer support")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
----
- drivers/iio/adc/at91-sama5d2_adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+In theory yes, but you know that's not always the case :)
 
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index b5d0c9ee284c..2a9fdc5b7edf 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1409,7 +1409,7 @@ static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *indio,
- 	trig = devm_iio_trigger_alloc(&indio->dev, "%s-dev%d-%s", indio->name,
- 				iio_device_id(indio), trigger_name);
- 	if (!trig)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	trig->dev.parent = indio->dev.parent;
- 	iio_trigger_set_drvdata(trig, indio);
--- 
-2.39.1
-
+- Nuno S=C3=A1

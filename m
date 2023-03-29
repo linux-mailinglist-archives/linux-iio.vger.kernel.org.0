@@ -2,56 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B9F6CDBBA
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 16:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D966CEBD9
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 16:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjC2ONc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Mar 2023 10:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
+        id S230272AbjC2OkX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Mar 2023 10:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230425AbjC2ONN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 10:13:13 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA455B89;
-        Wed, 29 Mar 2023 07:12:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680099152; x=1711635152;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=t+cFAo3OQ94dUA1L9AhJeb3oPM2T+vipPQ9bX36bWLQ=;
-  b=YmznFoOHSivUtFZH6IYVkhsKJNHFiZiILRm3bZk/DxWlbzlbxkVfBt7z
-   4vKev2TrWwtCuNyKXUFN5RVDxIj3xTUa+6ZdxlAqN1s8AxErGSaqoxQKH
-   InjIc5qJxVIXrWz1qOZU9Bnl6DKjmGHkCi89YR64hdIHyAkxl6xDcDKug
-   Fr3kKGdUmZCYDuB5E39G+3TR/Whc3J1wS6X8WGbDvg4mQAXztX1Bwixy5
-   hOea12O2FGSTe/SoNQuJuJWxvb/zdVZHe+4JvKnpN2Y88ODk+DxXL0j8/
-   GN0KxzFRkqN39OqVrC0vnFrQlJrUXVhKsfSOit9XmUqbuymUTUi9o9+b0
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="403513253"
-X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
-   d="scan'208";a="403513253"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 07:11:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="827905449"
-X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
-   d="scan'208";a="827905449"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Mar 2023 07:11:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1phWVy-00A3QU-2l;
-        Wed, 29 Mar 2023 17:11:02 +0300
-Date:   Wed, 29 Mar 2023 17:11:02 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229704AbjC2OkF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 10:40:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72AB5B8E;
+        Wed, 29 Mar 2023 07:37:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4BB10B82105;
+        Wed, 29 Mar 2023 14:36:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D49C433EF;
+        Wed, 29 Mar 2023 14:36:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680100583;
+        bh=GTgl/O6Eui3d3tW6bMCePAq+WtWAQCIjEIQN5bKQGYg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nDRgvs3EMmFPOm9DEWuZVcOpe6NSZKG0+WB0LNY3MBa/Jv3gmntEME0nk8jtatU+1
+         /3SNWzBtX8kN42r5qroG41cUmkfgi+oigh5OCgCqjEFQfTR5yE8L39L3zXRIpatfv/
+         xgvUsBGqdQAulgmcKg/t25jprTTZwwPZmweN8q5QSkp4iS6ugQHewbIYZNldN/jFEy
+         jZ6YNxSBSg+qHRsOWo5qhUnMx7jewcTvu2iGxkhmglFubOuStC5Mm1/qMsUVYJZLKm
+         rjIx0IWkPsgPWUgl1SX6s2uOw8BrJRHg5UQfictIcHyvQCjYMDNhi8d5a3F7Uxpnmd
+         nw3mJ/287kOag==
+Date:   Wed, 29 Mar 2023 15:36:15 +0100
+From:   Lee Jones <lee@kernel.org>
 To:     "Sahin, Okan" <Okan.Sahin@analog.com>
-Cc:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Caleb Connolly <caleb.connolly@linaro.org>,
@@ -68,94 +57,114 @@ Cc:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
 Subject: Re: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
  Support
-Message-ID: <ZCRG9uilzFjkAtsJ@smile.fi.intel.com>
-References: <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
- <ZCLi6MB/aHIf4lMr@smile.fi.intel.com>
- <cdd53e29ca3d8dbfdfa1a2520935e2bf9418313d.camel@gmail.com>
- <d2bed74b-9eb9-45af-8f45-ad2c2889024a@sirena.org.uk>
- <fc07de9af0b691fbd3a5915c8293f0c7ad4c4e06.camel@gmail.com>
- <ZCL7J5a7UZVayQVS@smile.fi.intel.com>
- <60bbad1b38b8e3c9c3efefb0fb7b8d3cad7fa98c.camel@gmail.com>
- <ZCMMHl5ENSuCstFV@smile.fi.intel.com>
- <MN2PR03MB51688CAF5DDF0628ED6B0B06E7889@MN2PR03MB5168.namprd03.prod.outlook.com>
- <ZCRGa76BqswH7Bez@smile.fi.intel.com>
+Message-ID: <20230329143615.GS2673958@google.com>
+References: <20230307112835.81886-1-okan.sahin@analog.com>
+ <20230307112835.81886-6-okan.sahin@analog.com>
+ <20230315175223.GI9667@google.com>
+ <20230315175257.GJ9667@google.com>
+ <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZCRGa76BqswH7Bez@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 05:08:44PM +0300, Andy Shevchenko wrote:
-> On Tue, Mar 28, 2023 at 04:01:21PM +0000, Sahin, Okan wrote:
-> > >On Tue, Mar 28, 2023 at 04:51:18PM +0200, Nuno S� wrote:
-> > >> On Tue, 2023-03-28 at 17:35 +0300, Andy Shevchenko wrote:
-> > >> > On Tue, Mar 28, 2023 at 04:18:30PM +0200, Nuno S� wrote:
-> > >> > > On Tue, 2023-03-28 at 14:46 +0100, Mark Brown wrote:
-> > >> > > > On Tue, Mar 28, 2023 at 03:26:44PM +0200, Nuno S� wrote:
-> > >> > > >
-> > >> > > > > IIRC, regmap_read() is not really reentrant and it is used in
-> > >> > > > > the IIO driver on the sysfs interface. So, yeah, I think you
-> > >> > > > > need the regmap lock and better just leave the config as is.
-> > >> > > > > Yes, the lock is
-> > >> > > > > opt-
-> > >> > > > > out
-> > >> > > > > so let's not disable it :)
-> > >> > > >
-> > >> > > > All the regmap operations are fully thread safe.
-> > >> > >
-> > >> > > Even if 'config->disable_locking' is set? I think that is what's
-> > >> > > being discussed in here...
-> > >> >
-> > >> > In case the driver has its own lock to serialize IO how on earth the
-> > >> > regmap lock is needed. That's what I asked the author of the driver.
-> > >> > He told the code
-> > >>
-> > >> Well, if the driver has it's own locking, then sure we do not need
-> > >> regmap's lock...
-> > >>
-> > >> > doesn't require the regmap lock, and I tend to believe the author.
-> > >> > So, why to
-> > >> > keep it?
-> > >>
-> > >> However, if you look at the adc driver, I can see plain regmap_read()
-> > >> calls without any "outside" locking.
-> > >
-> > >Then author of the code should know what they are doing. Right?
-> 
-> > Actually, I do not want to disable regmap lock that's why I did not update it.
-> 
-> If you have something like 
-> 
-> func1()
-> 	regmap_read(reg1)
-> 	regmap_read/write(reg2)
-> 
-> func2()
-> 	regmap_read/write(regX) // X may or may not be 1 or 2
-> 
-> and func1() and func2() can be run in parallel then the code is racy.
+On Tue, 28 Mar 2023, Sahin, Okan wrote:
 
-I have to add that it's racy depending on the hardware of course.
-In some cases it may be not a problem, in some it can. _Strictly_
-speaking it's racy.
+> >On Wed, 15 Mar 2023, Lee Jones wrote:
+> >
+> >> On Tue, 07 Mar 2023, Okan Sahin wrote:
+> >>
+> >> > MFD driver for MAX77541/MAX77540 to enable its sub devices.
+> >> >
+> >> > The MAX77541 is a multi-function devices. It includes buck converter
+> >> > and ADC.
+> >> >
+> >> > The MAX77540 is a high-efficiency buck converter with two 3A
+> >> > switching phases.
+> >> >
+> >> > They have same regmap except for ADC part of MAX77541.
+> >> >
+> >> > Signed-off-by: Okan Sahin <okan.sahin@analog.com>
+> >> > ---
+> >> >  drivers/mfd/Kconfig          |  13 ++
+> >> >  drivers/mfd/Makefile         |   1 +
+> >> >  drivers/mfd/max77541.c       | 224
+> >+++++++++++++++++++++++++++++++++++
+> >> >  include/linux/mfd/max77541.h |  97 +++++++++++++++
+> >> >  4 files changed, 335 insertions(+)
+> >> >  create mode 100644 drivers/mfd/max77541.c  create mode 100644
+> >> > include/linux/mfd/max77541.h
+> >>
+> >> FYI: I'm not re-reviewing this since you've chosen to ignore some of
+> >> my previous review comments.  Issues highlighted by review comments
+> >> don't just go away on resubmission.
+> >
+> >... and the subject is malformed.
+> >
+> >--
+> >Lee Jones [李琼斯]
+>
+> Hi Lee,
+>
+> I am sorry if I missed your review comments, this was not my intention. I want to thank you for your contribution. Your feedbacks are very valuable, and I am trying to understand and fix each one before sending the patch. Indeed, I sorted your feedback on previous patches. As far as I know, I have fixed all of them, is there a problem with any of them that I fixed, or is there any missing review? From you, there were some comments like "why did you use this?", I suppose I need to respond them before sending following patches. I thought I should not bother the maintainers unnecessarily. I am sorry for them.
 
-> Do you have such in your code?
+Please ask your email client to line-wrap.
 
-Please, double check that. It's recommended to explain your locking schema
-somewhere in the code top comment so anybody who reads it later and tries
-to modify will know what to expect.
+Here is the part of the review you ignored:
 
--- 
-With Best Regards,
-Andy Shevchenko
+[...]
 
+> +static const struct chip_info chip[] = {
 
+Why do you need this require sub-structure?
+
+> +	[MAX77540] = {
+> +		.id = MAX77540,
+> +		.n_devs = ARRAY_SIZE(max77540_devs),
+> +		.devs = max77540_devs,
+> +	},
+> +	[MAX77541] = {
+> +		.id = MAX77541,
+> +		.n_devs = ARRAY_SIZE(max77541_devs),
+> +		.devs = max77541_devs,
+> +	},
+> +};
+
+[...]
+
+> +static const struct of_device_id max77541_of_id[] = {
+> +	{
+> +		.compatible = "adi,max77540",
+> +		.data = &chip[MAX77540],
+> +	},
+> +	{
+> +		.compatible = "adi,max77541",
+> +		.data = &chip[MAX77541],
+> +	},
+> +	{ /* sentinel */  }
+> +};
+> +MODULE_DEVICE_TABLE(of, max77541_of_id);
+> +
+> +static const struct i2c_device_id max77541_i2c_id[] = {
+> +	{ "max77540", (kernel_ulong_t)&chip[MAX77540] },
+> +	{ "max77541", (kernel_ulong_t)&chip[MAX77541] },
+
+Just 'MAX77540' is fine.
+
+> +	{ /* sentinel */ }
+
+Remove the comment, we know how terminators work.
+
+Same comments for max77541_of_id.
+
+--
+Lee Jones [李琼斯]

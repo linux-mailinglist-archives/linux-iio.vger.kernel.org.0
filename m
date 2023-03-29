@@ -2,230 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7177F6CF393
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 21:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E01856CF522
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 23:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231276AbjC2Trh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Mar 2023 15:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57256 "EHLO
+        id S229694AbjC2VVo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Mar 2023 17:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230459AbjC2TrV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 15:47:21 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C1197ED1;
-        Wed, 29 Mar 2023 12:46:13 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 78BFA32007F1;
-        Wed, 29 Mar 2023 15:46:11 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 29 Mar 2023 15:46:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1680119171; x=1680205571; bh=zo
-        jQa1YLfWakbyG6by6LrH71dsPpXEzFqhE+LyL8iNE=; b=f94NQcHS7VQkFwhd2T
-        lQmPb/+vs32rNGXlq8MK65yIssXnmd7EmKp+o/fL01cI0ueUUZ9vYhypWMA1T0rB
-        jCDrorQRxAG03EWO6IunfBk66GlAxo4S6MeNZwpEVYBjXBy+J0f+G+xau2ojokju
-        ZSSX0vwaqQh1dLcVHFBpcOZlVMpUeab5LYVEAEEGPjV2SrSGY9fVeFvObpnOyd0M
-        vqgNJRgHx3phaHNOIS3hW4/ghEghuyZYhkxqYFKyQ15VSyk1CMbLoXbr3va0iCEt
-        CDZOFluulLlgjhBzjYrX8HGEZ912MpH/WzdOW4qN/6KZ6Ap3B+mIfuG5CxSlWge8
-        7B0g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1680119171; x=1680205571; bh=zojQa1YLfWakb
-        yG6by6LrH71dsPpXEzFqhE+LyL8iNE=; b=fu8eitjJyrwP8Dm2aWwPOnMFuesE7
-        IvCqhd9eduPE7dKnPswR8K9JADc/nTiA9hL0aaPZxt2BcXUhU3b15xsCgrvX2PCc
-        yDWM43mhtALwBlI6Y56e2iQ20CjGrgPHV7pPNPAtT/z9qzZCnmZmFyzjub0B8iDN
-        9Lxu+0TfzEOTULOEnu9mIQIA9niIWO9sszInE06a6PGvtTGxbbDF1Bg5Ur+eHcXj
-        T3ZuI0zTfUG0mMakfBv9trI65wO8syiqyLcqHwu/NSVBYF0O67476B/ot2hrPA/6
-        CJjLZCX/9bi1nHv0EySZqdq/VdGPgsgEzelieKImuNJ5AbWok53xftUOQ==
-X-ME-Sender: <xms:gpUkZAQvLCQskVD20nQyHx97BwU8jejN8-2xyh66OY7_I4czTEbSWA>
-    <xme:gpUkZNy4szB7l33j11gvKjWuc77tAfd41f8hYWdm630RZmAcn_rUl3kgOYxAt_PZY
-    ayTewqoQr-lYmxecdM>
-X-ME-Received: <xmr:gpUkZN21y14C_7xnOwqXxBC0Vd0oQpp9sGs7Zwjy3m0KTCxPzd1xsWumGw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehiedgudegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeforgig
-    ihhmvgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecuggftrf
-    grthhtvghrnheptdelkeejiedufedvhfeiffetlefhiedvleeigfeiuefghfdvleeiffej
-    ieegteejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrgigihhmvgestggvrhhnohdrthgv
-    tghh
-X-ME-Proxy: <xmx:g5UkZEBpwPSEZ_8uEFhbK1MofzLIozz1zdNDcuvuk_srfLeWZ6OzqQ>
-    <xmx:g5UkZJgUwNdYM1HRkmgIZbZlFSBNil6tmi1ffKI2r188jCYr7hhZtA>
-    <xmx:g5UkZArxT7xn2Tmoo5oOug5xquSGRfJTe_7S3Ho2yZ7wvmhxprjRpQ>
-    <xmx:g5UkZMTMqIuUPOQPjOfr1WGA1wHIZ8OMuAbxrPeH4SkG1bjabdOjlg>
-Feedback-ID: i8771445c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Mar 2023 15:46:10 -0400 (EDT)
-Date:   Wed, 29 Mar 2023 21:46:09 +0200
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <davidgow@google.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, Stephen Boyd <sboyd@kernel.org>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v5 1/8] drivers: kunit: Generic helpers for test device
- creation
-Message-ID: <20230329194609.7u2hgidxdk34emsf@penduick>
-References: <ZBtPhoelZo4U5jwC@kroah.com>
- <20230323101216.w56kz3rudlj23vab@houat>
- <ZBwoRgc2ICBJX/Lq@kroah.com>
- <8a03a6fb-39b9-cd17-cc10-ece71111357d@gmail.com>
- <20230323122925.kqdnomr7i46qnyo4@houat>
- <590189b3-42d9-ab12-fccd-37338595cb6f@gmail.com>
- <20230323163639.xtwpid2uunwnzai4@houat>
- <a0e8b1da-3645-4141-6518-e035ad80a23d@gmail.com>
- <20230324123157.bbwvfq4gsxnlnfwb@houat>
- <20230325175044.7bee9e7d@jic23-huawei>
+        with ESMTP id S229436AbjC2VVn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Mar 2023 17:21:43 -0400
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2343F1711;
+        Wed, 29 Mar 2023 14:21:42 -0700 (PDT)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-17683b570b8so17659270fac.13;
+        Wed, 29 Mar 2023 14:21:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680124901;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c5JObOnJhn7Qa3BJtOdllaC7YuPWVzUh4uR8zZIj5qw=;
+        b=UIMWJFisKjBZbJG8KhqaOmyLuuUtyjz8jPVeNiOlU57ccMw+ibuLsl2TBGsRh/kLPC
+         g1AjoF1BpfCRBQgo3LNO8y83kB3vh9uyEqjrIWrRKcA+2WC1HQhFkjH9Phy7cHKq2OJ9
+         pCb+5JIOiBi80T4pzxR4mkoia+J1WjZGzGnfyvq09Zd4uMk4DkFe1d19K1C/h/QUulpt
+         lYaEKARCs5UVUhTGhCK7fUdcXlXSeRMjUDuEiphQUXumoUn9RGgR7CnoBSKWZBirpDJz
+         V0IXorir+CWkm7uJaXM2e3rwEVyev4d4G39KaeaokfCRfII6PSmjnI/W16weU7slwvcf
+         RoYQ==
+X-Gm-Message-State: AAQBX9dnl+6X/WcZxAmL5mxG8hyBcG5PA1TO9LNR//DRtp7XA4P4bwVB
+        Jd165V53Ft3MrxCwOfSfUFR45FrRWA==
+X-Google-Smtp-Source: AK7set/kayRJ98J+4lkqmTCrvYqUbSg+NPKMc5ZxUa6OI9imoPRJExO5faQF3fCKQ5rShmnmkvcw7Q==
+X-Received: by 2002:a05:6870:899c:b0:17b:1a4f:adfe with SMTP id f28-20020a056870899c00b0017b1a4fadfemr11592033oaq.10.1680124901366;
+        Wed, 29 Mar 2023 14:21:41 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id tk6-20020a05687189c600b0017703cd8ff6sm12167748oab.7.2023.03.29.14.21.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Mar 2023 14:21:40 -0700 (PDT)
+Received: (nullmailer pid 86888 invoked by uid 1000);
+        Wed, 29 Mar 2023 21:21:39 -0000
+From:   Rob Herring <robh@kernel.org>
+Subject: [PATCH 0/5] Remove acpi.h implicit include of of.h
+Date:   Wed, 29 Mar 2023 16:20:41 -0500
+Message-Id: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="l6s2nrpwzcaaz3jq"
-Content-Disposition: inline
-In-Reply-To: <20230325175044.7bee9e7d@jic23-huawei>
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKmrJGQC/x2N0QrCMAwAf2Xk2cDWaJn+iviQddEGSi0pE2Hs3
+ w0+3sFxO3QxlQ63YQeTj3Z9V4fpNEDKXF+CujpDGAONFK7IqSlm4VUMUxGuW8MYL0TTHOYzRfB
+ y4S64GNeUva1bKS6byVO//9X9cRw/n6ivRnoAAAA=
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org
+X-Mailer: b4 0.13-dev
+X-Spam-Status: No, score=0.7 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+In the process of cleaning up DT includes, I found that some drivers 
+using DT functions could build without any explicit DT include. I traced 
+the include to be coming from acpi.h via irqdomain.h.
 
---l6s2nrpwzcaaz3jq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I was pleasantly surprised that there were not 100s or even 10s of 
+warnings when breaking the include chain. So here's the resulting 
+series.
 
-On Sat, Mar 25, 2023 at 05:50:44PM +0000, Jonathan Cameron wrote:
-> On Fri, 24 Mar 2023 13:31:57 +0100
-> Maxime Ripard <maxime@cerno.tech> wrote:
->=20
-> > On Fri, Mar 24, 2023 at 08:11:52AM +0200, Matti Vaittinen wrote:
-> > > On 3/23/23 18:36, Maxime Ripard wrote: =20
-> > > > On Thu, Mar 23, 2023 at 03:02:03PM +0200, Matti Vaittinen wrote: =
-=20
-> > > > > On 3/23/23 14:29, Maxime Ripard wrote: =20
-> > > > > > On Thu, Mar 23, 2023 at 02:16:52PM +0200, Matti Vaittinen wrote:
-> > > > > >=20
-> > > > > > This is the description of what was happening:
-> > > > > > https://lore.kernel.org/dri-devel/20221117165311.vovrc7usy4efiy=
-tl@houat/ =20
-> > > > >=20
-> > > > > Thanks Maxime. Do I read this correcty. The devm_ unwinding not b=
-eing done
-> > > > > when root_device_register() is used is not because root_device_un=
-register()
-> > > > > would not trigger the unwinding - but rather because DRM code on =
-top of this
-> > > > > device keeps the refcount increased? =20
-> > > >=20
-> > > > There's a difference of behaviour between a root_device and any dev=
-ice
-> > > > with a bus: the root_device will only release the devm resources wh=
-en
-> > > > it's freed (in device_release), but a bus device will also do it in
-> > > > device_del (through bus_remove_device() -> device_release_driver() =
-->
-> > > > device_release_driver_internal() -> __device_release_driver() ->
-> > > > device_unbind_cleanup(), which are skipped (in multiple places) if
-> > > > there's no bus and no driver attached to the device).
-> > > >=20
-> > > > It does affect DRM, but I'm pretty sure it will affect any framework
-> > > > that deals with device hotplugging by deferring the framework struc=
-ture
-> > > > until the last (userspace) user closes its file descriptor. So I'd
-> > > > assume that v4l2 and cec at least are also affected, and most likely
-> > > > others. =20
-> > >=20
-> > > Thanks for the explanation and patience :)
-> > >  =20
-> > > >  =20
-> > > > > If this is the case, then it sounds like a DRM specific issue to =
-me. =20
-> > > >=20
-> > > > I mean, I guess. One could also argue that it's because IIO doesn't
-> > > > properly deal with hotplugging. =20
-> > >=20
-> > > I must say I haven't been testing the IIO registration API. I've only=
- tested
-> > > the helper API which is not backed up by any "IIO device". (This is f=
-ine for
-> > > the helper because it must by design be cleaned-up only after the
-> > > IIO-deregistration).
-> > >=20
-> > > After your explanation here, I am not convinced IIO wouldn't see the =
-same
-> > > issue if I was testing the devm_iio_device_alloc() & co. =20
-> >=20
-> > It depends really. The issue DRM is trying to solve is that, when a
-> > device is gone, some application might still have an open FD and could
-> > still poke into the kernel, while all the resources would have been
-> > free'd if it was using devm.
-> >=20
-> > So everything is kept around until the last fd is closed, so you still
-> > have a reference to the device (even though it's been removed from its
-> > bus) until that time.
-> >=20
-> > It could be possible that IIO just doesn't handle that case at all. I
-> > guess most of the devices aren't hotpluggable, and there's not much to
-> > interact with from a userspace PoV iirc, so it might be why.
->=20
-> Lars-Peter Clausen (IIRC) fixed up the IIO handling of the similar cases a
-> long time ago now. It's simpler that for some other subsystems as we don't
-> have as many interdependencies as occur in DRM etc.
->=20
-> I 'think' we are fine in general with the IIO approach to this (I think we
-> did have one report of a theoretical race condition in the remove path th=
-at
-> was never fully addressed).
->=20
-> For IIO we also have fds that can be open but all accesses to them are pr=
-oxied
-> through the IIO core and one of the things iio_device_unregister() or the=
- devm
-> equivalent does is to set indio_dev->info =3D NULL  (+ wake up anyone wai=
-ting on
-> data etc). Alongside removing the callbacks, that is also used as a flag
-> to indicate the device has gone.
+I'd suggest Rafael take the whole series. Alternatively,the fixes can be 
+applied in 6.4 and then the last patch either after rc1 or the 
+following cycle.
 
-Sorry if it came as trying to put IIO under a bad light, it certainly
-wasn't my intention. I was trying to come up with possible explanations
-as to why IIO's design was simpler than DRM is :)
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Rob Herring (5):
+      iio: adc: ad7292: Add explicit include for of.h
+      staging: iio: resolver: ad2s1210: Add explicit include for of.h
+      net: rfkill-gpio: Add explicit include for of.h
+      serial: 8250_tegra: Add explicit include for of.h
+      ACPI: Replace irqdomain.h include with struct declarations
 
-> Note that we keep a reference to the struct indio_dev->dev (rather that t=
-he
-> underlying device) so that is not freed until the last fd is closed.
-> Thus, although devm unwinding has occurred that doesn't mean all the data
-> that was allocated with devm_xx calls is cleared up immediately.
+ drivers/iio/adc/ad7292.c                | 1 +
+ drivers/staging/iio/resolver/ad2s1210.c | 1 +
+ drivers/tty/serial/8250/8250_tegra.c    | 1 +
+ include/linux/acpi.h                    | 4 +++-
+ net/rfkill/rfkill-gpio.c                | 1 +
+ 5 files changed, 7 insertions(+), 1 deletion(-)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230329-acpi-header-cleanup-665331828436
 
-I'm not sure I get that part though. devm unwinding can happen even if the =
-refcount is > 1
+Best regards,
+-- 
+Rob Herring <robh@kernel.org>
 
-Maxime
-
---l6s2nrpwzcaaz3jq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZCSVgQAKCRDj7w1vZxhR
-xaenAP950SFm/YscP/OZNbX+eEpJynPuAwfDyd1PtJuqNfChOQD+LJmD189z9X+y
-U5CselZugPJllYdyXVUeK0Apq+k7KAE=
-=+cge
------END PGP SIGNATURE-----
-
---l6s2nrpwzcaaz3jq--

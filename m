@@ -2,215 +2,268 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DB9D6CCE90
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 02:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0EB96CCEA8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Mar 2023 02:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjC2AIp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Mar 2023 20:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50146 "EHLO
+        id S229665AbjC2AVI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Mar 2023 20:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbjC2AIn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 20:08:43 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB0DE1738
-        for <linux-iio@vger.kernel.org>; Tue, 28 Mar 2023 17:08:41 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id c29so18014787lfv.3
-        for <linux-iio@vger.kernel.org>; Tue, 28 Mar 2023 17:08:41 -0700 (PDT)
+        with ESMTP id S229436AbjC2AVI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Mar 2023 20:21:08 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB351BF6
+        for <linux-iio@vger.kernel.org>; Tue, 28 Mar 2023 17:21:06 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id y35so11862733ljq.4
+        for <linux-iio@vger.kernel.org>; Tue, 28 Mar 2023 17:21:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680048521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ebf7jyLJf0YeFfOywV30tQ3Yu3KMKIOaI0KbggP0I44=;
-        b=fpDNoe37hld0GXJbbw6UMapmDlKUTjH3G/UFe0O+iDb8qFCa4jRRIl2tEqTYLbSUQ7
-         DM1XVGjDgNSbgM+kpz6I2jgFc9DL1CwqBkhem7aEW08WWhaWoVvMT0UMdNZYElI2OwFj
-         Y5vuAL1bzjdJOD1vr7VWWsRSD5Udg7eVKsNnU6inMM5uNnZ4y9+e89HGei/fWjxEDSF7
-         i45XpB3teDhsxzROXVpKCEplzek4ZLkc6eo39hPEAxgcpL2DU4NS6lDfJjbyzdUnUI1I
-         8n/Kp+f5VCRNpX2smqZDlnDxM3FL8RuUnzVD8RQU+bP1WVFjRo2TEt7zQBQ+VjreCZ9L
-         bPfg==
+        d=linaro.org; s=google; t=1680049264;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5Yv+4+rojIx0/DMTZ2oZjQ4of/uoIMErYg/VElerO+o=;
+        b=u39uBkOIe03pbUlBbU097LRrcOyEOYP0NeuYwpqyc9Q/WceYyLsPHNr14tV3sS9+SY
+         6YWVnfHf9irl6R4O+BYj/Jz0Gz/WNyCdPWNILZrHgvnFndHnz4Qjo4zGiT7K8msJZl1N
+         Y+Ax9QjjlG065XaQ1iv3Fy5/pIubh8AkondGDI1xbM9VfU1AOUBeYcH/brh3vds2Ykob
+         J8KTVVUQt2ZevihCETKVzuEGpEEanzk8JdXhaZ++6dJ9wi5XeFtLox9IAD9KqEgCWanw
+         shOAZIxx63ub/5bNjq7aV6sRYoSylEZR0W0PNlfv2uRKIzjcQThaE0CDlqAqVahSz7/+
+         3gOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680048521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ebf7jyLJf0YeFfOywV30tQ3Yu3KMKIOaI0KbggP0I44=;
-        b=bBVSLE1DhOVWVcTztTZjfTfj3uRv66JmbogxoQWN+s84qclzXwRZFvlCQfoJxSE/Rs
-         O50JtM4TqD9OPOiYJHsSpl84Q8T0qAuyT4QYQDgI4SN9svIc9hH9Z6m0ZNuSwmmks3xo
-         GiIyDin36SYcWcu75ZzztdjjGJwLfZs3wp6ZuJERCQozJ149Ihm3DI0Gg7oHzvZqE/qX
-         3K5bq/4OLpMP79fkLfruIcV7593VAqTHuN4eMGci7RaHeMNXckxhOgNz1ORx7lx+6qTX
-         WL7ji96J/8lhAYEe+xdt2sc2u7NhrPs5PwfWZpM5givOxS+nSgvHk8SwwriPeVHt4zuR
-         s1hg==
-X-Gm-Message-State: AAQBX9cT32fywuGityhu7DzhdLoAK455sMgTjMv7tvZuoMX3Q1Ffn2z8
-        d/bHBkD9aB2RtoCcd+zT6QjyBE3NZ7EgzYAd8w0=
-X-Google-Smtp-Source: AKy350Y/2LQyLvqfj8TEXfojvFP6bCipVPpkwxs4RmfJABUBSMk7uf2ZuaVRC85iF6aENDARp0e1zA==
-X-Received: by 2002:ac2:5519:0:b0:4de:e802:b7e3 with SMTP id j25-20020ac25519000000b004dee802b7e3mr5071162lfk.19.1680048521127;
-        Tue, 28 Mar 2023 17:08:41 -0700 (PDT)
-Received: from umbar.unikie.fi ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id p21-20020ac246d5000000b004e8011cbaa0sm5238341lfo.111.2023.03.28.17.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Mar 2023 17:08:40 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
+        d=1e100.net; s=20210112; t=1680049264;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Yv+4+rojIx0/DMTZ2oZjQ4of/uoIMErYg/VElerO+o=;
+        b=43glxpm3xd8hDspghBQmWjv9F+aoUHn8FrNb1HnZPgh2/vTBGnWgcftjCHEgiQzuFf
+         5nGupfQOba/FKMtKe7Z/0UDDd0Hhng9xtyl8/jvPc81KLvH5GFBUsVRBWE59aLAuhASJ
+         DBI2YMW8uDaR/SkMOTaTbkWjKMaAWgUKtOz2SsVjDPKDuaumhLE9HnGpMn8oLP9EHcfp
+         BzazyS9oaDDeAYlZ2aUuQ5zr5sA2WtkkTtZmY2J5gxLFEx5wsnzPTXgVVm/IaOYqPIXk
+         aUYtTOVXPKC5NN5EiQk7E9RtgilN75n18psS2TWDAzs7Mei46f/Mfur9r393BWmt1Fu+
+         +PSw==
+X-Gm-Message-State: AAQBX9c7FT2B2Ov9cooPiTsw6KJcsfhPZgHPEmSIpbFww2DwM4Qxb95b
+        YgdMwiipFBQ+yLuy/4wsxNtVPw==
+X-Google-Smtp-Source: AKy350ZBEkL34AEiSRudLefIgRPIcKCrBId08FtvCqyPeONNbmyGo4ecdv7ogR90FtJfjsVm1xsZjg==
+X-Received: by 2002:a05:651c:1028:b0:2a2:c618:1f51 with SMTP id w8-20020a05651c102800b002a2c6181f51mr5201906ljm.24.1680049264560;
+        Tue, 28 Mar 2023 17:21:04 -0700 (PDT)
+Received: from [192.168.1.101] (abxj225.neoplus.adsl.tpnet.pl. [83.9.3.225])
+        by smtp.gmail.com with ESMTPSA id b17-20020a2e9891000000b0029bd1e3f9easm4672440ljj.32.2023.03.28.17.21.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Mar 2023 17:21:04 -0700 (PDT)
+Message-ID: <6da7382d-dbf2-e1cb-550e-6c5bb38c8974@linaro.org>
+Date:   Wed, 29 Mar 2023 02:21:02 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 1/6] dt-bindings: iio: qcom,spmi-adc7-pmk8350.h: include
+ sid into defines
+Content-Language: en-US
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org,
         Johan Hovold <johan+linaro@kernel.org>,
         devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: [PATCH 6/6] arm64: dts: qcom: sc8280xp*: use pm8350c.dtsi and pmr735a.dtsi
-Date:   Wed, 29 Mar 2023 03:08:33 +0300
-Message-Id: <20230329000833.2507594-7-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230329000833.2507594-1-dmitry.baryshkov@linaro.org>
 References: <20230329000833.2507594-1-dmitry.baryshkov@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20230329000833.2507594-2-dmitry.baryshkov@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230329000833.2507594-2-dmitry.baryshkov@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Stop duplicating declarations of pm8350c and pmr735a PMICs, use existing
-files to prevent possible future issues.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- arch/arm64/boot/dts/qcom/sc8280xp-crd.dts     |  6 +--
- .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    |  6 +--
- arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi  | 51 ++-----------------
- 3 files changed, 11 insertions(+), 52 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-index 58a14c39633b..aabdacc15aab 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-@@ -24,7 +24,7 @@ aliases {
- 
- 	backlight: backlight {
- 		compatible = "pwm-backlight";
--		pwms = <&pmc8280c_lpg 3 1000000>;
-+		pwms = <&pm8350c_pwm 3 1000000>;
- 		enable-gpios = <&pm8350_1_gpios 8 GPIO_ACTIVE_HIGH>;
- 		power-supply = <&vreg_edp_bl>;
- 
-@@ -555,7 +555,7 @@ &pcie4_phy {
- 	status = "okay";
- };
- 
--&pmc8280c_lpg {
-+&pm8350c_pwm {
- 	status = "okay";
- };
- 
-@@ -710,7 +710,7 @@ wwan_sw_en: wwan-sw-en-state {
- 	};
- };
- 
--&pmc8280c_gpios {
-+&pm8350c_gpios {
- 	edp_bl_pwm: edp-bl-pwm-state {
- 		pins = "gpio8";
- 		function = "func1";
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 023ccb7725ef..7e589e5f6a2e 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -54,7 +54,7 @@ wcd938x: audio-codec {
- 
- 	backlight: backlight {
- 		compatible = "pwm-backlight";
--		pwms = <&pmc8280c_lpg 3 1000000>;
-+		pwms = <&pm8350c_pwm 3 1000000>;
- 		enable-gpios = <&pm8350_1_gpios 8 GPIO_ACTIVE_HIGH>;
- 		power-supply = <&vreg_edp_bl>;
- 
-@@ -725,7 +725,7 @@ &pcie4_phy {
- 	status = "okay";
- };
- 
--&pmc8280c_lpg {
-+&pm8350c_pwm {
- 	status = "okay";
- };
- 
-@@ -1172,7 +1172,7 @@ wwan_sw_en: wwan-sw-en-state {
- 	};
- };
- 
--&pmc8280c_gpios {
-+&pm8350c_gpios {
- 	edp_bl_pwm: edp-bl-pwm-state {
- 		pins = "gpio8";
- 		function = "func1";
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-index 505bb8f9a13c..a37fe4b1458c 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-@@ -15,53 +15,12 @@
- #include "pm8350.dtsi"
- #undef PM8350_SID
- 
-+/* SID 2 */
-+#include "pm8350c.dtsi"
-+
- #define PM8350_SID 3
- #include "pm8350.dtsi"
- #undef PM8350_SID
- 
--&spmi_bus {
--	pmc8280c: pmic@2 {
--		compatible = "qcom,pm8350c", "qcom,spmi-pmic";
--		reg = <0x2 SPMI_USID>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		pmc8280c_gpios: gpio@8800 {
--			compatible = "qcom,pm8350c-gpio", "qcom,spmi-gpio";
--			reg = <0x8800>;
--			gpio-controller;
--			gpio-ranges = <&pmc8280c_gpios 0 0 9>;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--
--		pmc8280c_lpg: pwm {
--			compatible = "qcom,pm8350c-pwm";
--
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			#pwm-cells = <2>;
--
--			status = "disabled";
--		};
--	};
--
--	pmr735a: pmic@4 {
--		compatible = "qcom,pmr735a", "qcom,spmi-pmic";
--		reg = <0x4 SPMI_USID>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		pmr735a_gpios: gpio@8800 {
--			compatible = "qcom,pmr735a-gpio", "qcom,spmi-gpio";
--			reg = <0x8800>;
--			gpio-controller;
--			gpio-ranges = <&pmr735a_gpios 0 0 4>;
--			#gpio-cells = <2>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--		};
--	};
--};
-+/* SID 4 */
-+#include "pmr735a.dtsi"
--- 
-2.30.2
+On 29.03.2023 02:08, Dmitry Baryshkov wrote:
+> pmk8350 can take different addresses on SPMI bus. Rather than having a
+> default SID, follow the pm8350's example and make the sid explicit when
+> specifying ADC channels.
+> 
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
+Konrad
+>  .../bindings/iio/adc/qcom,spmi-vadc.yaml      |  2 +-
+>  .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |  4 +-
+>  arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |  2 +-
+>  arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |  2 +-
+>  .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    |  4 +-
+>  .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |  2 +-
+>  .../dt-bindings/iio/qcom,spmi-adc7-pmk8350.h  | 52 +++++++++----------
+>  7 files changed, 32 insertions(+), 36 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> index bd6e0d6f6e0c..df317901e7d0 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+> @@ -293,7 +293,7 @@ examples:
+>  
+>              /* Other properties are omitted */
+>              xo-therm@44 {
+> -                reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
+> +                reg = <PMK8350_ADC7_AMUX_THM1_100K_PU(0)>;
+>                  qcom,ratiometric;
+>                  qcom,hw-settle-time = <200>;
+>              };
+> diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> index 52ec18cf1eda..ff07d27775dc 100644
+> --- a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> +++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
+> @@ -218,7 +218,7 @@ examples:
+>  
+>              /* Other properties are omitted */
+>              xo-therm@44 {
+> -                reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
+> +                reg = <PMK8350_ADC7_AMUX_THM1_100K_PU(0)>;
+>                  qcom,ratiometric;
+>                  qcom,hw-settle-time = <200>;
+>              };
+> @@ -240,7 +240,7 @@ examples:
+>  
+>              pmk8350-xo-therm@0 {
+>                  reg = <0>;
+> -                io-channels = <&pmk8350_vadc PMK8350_ADC7_AMUX_THM1_100K_PU>;
+> +                io-channels = <&pmk8350_vadc PMK8350_ADC7_AMUX_THM1_100K_PU(0)>;
+>                  qcom,decimation = <340>;
+>                  qcom,ratiometric;
+>                  qcom,hw-settle-time-us = <200>;
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+> index 5dc9bee28e7f..14c9bdaa46ed 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+> @@ -433,7 +433,7 @@ &pcie1_phy {
+>  
+>  &pmk8350_vadc {
+>  	pmk8350-die-temp@3 {
+> -		reg = <PMK8350_ADC7_DIE_TEMP>;
+> +		reg = <PMK8350_ADC7_DIE_TEMP(0)>;
+>  		label = "pmk8350_die_temp";
+>  		qcom,pre-scaling = <1 1>;
+>  	};
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi b/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+> index cb0cc2ba2fa3..e3919e074ebd 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+> @@ -389,7 +389,7 @@ &pm8350c_pwm {
+>  
+>  &pmk8350_vadc {
+>  	pmk8350-die-temp@3 {
+> -		reg = <PMK8350_ADC7_DIE_TEMP>;
+> +		reg = <PMK8350_ADC7_DIE_TEMP(0)>;
+>  		label = "pmk8350_die_temp";
+>  		qcom,pre-scaling = <1 1>;
+>  	};
+> diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+> index 46c7fdafb840..590400985055 100644
+> --- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+> +++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+> @@ -824,13 +824,13 @@ &pmk8280_vadc {
+>  	status = "okay";
+>  
+>  	pmic-die-temp@3 {
+> -		reg = <PMK8350_ADC7_DIE_TEMP>;
+> +		reg = <PMK8350_ADC7_DIE_TEMP(0)>;
+>  		qcom,pre-scaling = <1 1>;
+>  		label = "pmk8350_die_temp";
+>  	};
+>  
+>  	xo-therm@44 {
+> -		reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
+> +		reg = <PMK8350_ADC7_AMUX_THM1_100K_PU(0)>;
+>  		qcom,hw-settle-time = <200>;
+>  		qcom,ratiometric;
+>  		label = "pmk8350_xo_therm";
+> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> index 7ae6aba5d2ec..af6cf4fbddc7 100644
+> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> @@ -516,7 +516,7 @@ &pmk8350_rtc {
+>  
+>  &pmk8350_vadc {
+>  	adc-chan@644 {
+> -		reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
+> +		reg = <PMK8350_ADC7_AMUX_THM1_100K_PU(0)>;
+>  		qcom,ratiometric;
+>  		qcom,hw-settle-time = <200>;
+>  		qcom,pre-scaling = <1 1>;
+> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h b/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
+> index 6c296870e95b..ca85a2d69453 100644
+> --- a/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
+> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h
+> @@ -6,41 +6,37 @@
+>  #ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H
+>  #define _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H
+>  
+> -#ifndef PMK8350_SID
+> -#define PMK8350_SID					0
+> -#endif
+> -
+>  /* ADC channels for PMK8350_ADC for PMIC7 */
+> -#define PMK8350_ADC7_REF_GND			(PMK8350_SID << 8 | 0x0)
+> -#define PMK8350_ADC7_1P25VREF			(PMK8350_SID << 8 | 0x01)
+> -#define PMK8350_ADC7_VREF_VADC			(PMK8350_SID << 8 | 0x02)
+> -#define PMK8350_ADC7_DIE_TEMP			(PMK8350_SID << 8 | 0x03)
+> +#define PMK8350_ADC7_REF_GND(sid)			((sid) << 8 | 0x0)
+> +#define PMK8350_ADC7_1P25VREF(sid)			((sid) << 8 | 0x01)
+> +#define PMK8350_ADC7_VREF_VADC(sid)			((sid) << 8 | 0x02)
+> +#define PMK8350_ADC7_DIE_TEMP(sid)			((sid) << 8 | 0x03)
+>  
+> -#define PMK8350_ADC7_AMUX_THM1			(PMK8350_SID << 8 | 0x04)
+> -#define PMK8350_ADC7_AMUX_THM2			(PMK8350_SID << 8 | 0x05)
+> -#define PMK8350_ADC7_AMUX_THM3			(PMK8350_SID << 8 | 0x06)
+> -#define PMK8350_ADC7_AMUX_THM4			(PMK8350_SID << 8 | 0x07)
+> -#define PMK8350_ADC7_AMUX_THM5			(PMK8350_SID << 8 | 0x08)
+> +#define PMK8350_ADC7_AMUX_THM1(sid)			((sid) << 8 | 0x04)
+> +#define PMK8350_ADC7_AMUX_THM2(sid)			((sid) << 8 | 0x05)
+> +#define PMK8350_ADC7_AMUX_THM3(sid)			((sid) << 8 | 0x06)
+> +#define PMK8350_ADC7_AMUX_THM4(sid)			((sid) << 8 | 0x07)
+> +#define PMK8350_ADC7_AMUX_THM5(sid)			((sid) << 8 | 0x08)
+>  
+>  /* 30k pull-up1 */
+> -#define PMK8350_ADC7_AMUX_THM1_30K_PU		(PMK8350_SID << 8 | 0x24)
+> -#define PMK8350_ADC7_AMUX_THM2_30K_PU		(PMK8350_SID << 8 | 0x25)
+> -#define PMK8350_ADC7_AMUX_THM3_30K_PU		(PMK8350_SID << 8 | 0x26)
+> -#define PMK8350_ADC7_AMUX_THM4_30K_PU		(PMK8350_SID << 8 | 0x27)
+> -#define PMK8350_ADC7_AMUX_THM5_30K_PU		(PMK8350_SID << 8 | 0x28)
+> +#define PMK8350_ADC7_AMUX_THM1_30K_PU(sid)		((sid) << 8 | 0x24)
+> +#define PMK8350_ADC7_AMUX_THM2_30K_PU(sid)		((sid) << 8 | 0x25)
+> +#define PMK8350_ADC7_AMUX_THM3_30K_PU(sid)		((sid) << 8 | 0x26)
+> +#define PMK8350_ADC7_AMUX_THM4_30K_PU(sid)		((sid) << 8 | 0x27)
+> +#define PMK8350_ADC7_AMUX_THM5_30K_PU(sid)		((sid) << 8 | 0x28)
+>  
+>  /* 100k pull-up2 */
+> -#define PMK8350_ADC7_AMUX_THM1_100K_PU		(PMK8350_SID << 8 | 0x44)
+> -#define PMK8350_ADC7_AMUX_THM2_100K_PU		(PMK8350_SID << 8 | 0x45)
+> -#define PMK8350_ADC7_AMUX_THM3_100K_PU		(PMK8350_SID << 8 | 0x46)
+> -#define PMK8350_ADC7_AMUX_THM4_100K_PU		(PMK8350_SID << 8 | 0x47)
+> -#define PMK8350_ADC7_AMUX_THM5_100K_PU		(PMK8350_SID << 8 | 0x48)
+> +#define PMK8350_ADC7_AMUX_THM1_100K_PU(sid)		((sid) << 8 | 0x44)
+> +#define PMK8350_ADC7_AMUX_THM2_100K_PU(sid)		((sid) << 8 | 0x45)
+> +#define PMK8350_ADC7_AMUX_THM3_100K_PU(sid)		((sid) << 8 | 0x46)
+> +#define PMK8350_ADC7_AMUX_THM4_100K_PU(sid)		((sid) << 8 | 0x47)
+> +#define PMK8350_ADC7_AMUX_THM5_100K_PU(sid)		((sid) << 8 | 0x48)
+>  
+>  /* 400k pull-up3 */
+> -#define PMK8350_ADC7_AMUX_THM1_400K_PU		(PMK8350_SID << 8 | 0x64)
+> -#define PMK8350_ADC7_AMUX_THM2_400K_PU		(PMK8350_SID << 8 | 0x65)
+> -#define PMK8350_ADC7_AMUX_THM3_400K_PU		(PMK8350_SID << 8 | 0x66)
+> -#define PMK8350_ADC7_AMUX_THM4_400K_PU		(PMK8350_SID << 8 | 0x67)
+> -#define PMK8350_ADC7_AMUX_THM5_400K_PU		(PMK8350_SID << 8 | 0x68)
+> +#define PMK8350_ADC7_AMUX_THM1_400K_PU(sid)		((sid) << 8 | 0x64)
+> +#define PMK8350_ADC7_AMUX_THM2_400K_PU(sid)		((sid) << 8 | 0x65)
+> +#define PMK8350_ADC7_AMUX_THM3_400K_PU(sid)		((sid) << 8 | 0x66)
+> +#define PMK8350_ADC7_AMUX_THM4_400K_PU(sid)		((sid) << 8 | 0x67)
+> +#define PMK8350_ADC7_AMUX_THM5_400K_PU(sid)		((sid) << 8 | 0x68)
+>  
+>  #endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PMK8350_H */

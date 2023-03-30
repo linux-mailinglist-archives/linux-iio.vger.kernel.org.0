@@ -2,79 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF416CFD52
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Mar 2023 09:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 961416CFD6A
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Mar 2023 09:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjC3Hu3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Mar 2023 03:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51978 "EHLO
+        id S229495AbjC3Hxl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Mar 2023 03:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbjC3HuN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Mar 2023 03:50:13 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0422859FA
-        for <linux-iio@vger.kernel.org>; Thu, 30 Mar 2023 00:49:56 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id bx10so361182ljb.8
-        for <linux-iio@vger.kernel.org>; Thu, 30 Mar 2023 00:49:55 -0700 (PDT)
+        with ESMTP id S229584AbjC3Hxd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Mar 2023 03:53:33 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5931E133
+        for <linux-iio@vger.kernel.org>; Thu, 30 Mar 2023 00:53:32 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id eh3so72971861edb.11
+        for <linux-iio@vger.kernel.org>; Thu, 30 Mar 2023 00:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680162594;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2EdrKMv5yzbDVcAYao26EMed7hVuHX+IgfAd0MIl9X8=;
-        b=ISqK2HaGJ2ShTAAwlV5iKz8SRQT3UrSxld0YKVEPMYK+pscqM0R/6U+bckeojLi1Wj
-         7OmqxJ4mUEWR+i8/t1Y+DPt3+FYqLnH6iqV0bExn/Cu740BjY1LMyyUjWeo5rfPAwo54
-         ubr5i2m9oE2eRD6ZWnE0NWK6k5Mz+EUpCKL2G/hBI41qCTZqS+2krl6QaldSDy12Vflh
-         Mj1jEIc7LWu1zg37tZtsITfX7FchrTj7m82D8wykYn6MPJDsl0ipwLk67Bf3ZiWn7kfn
-         6o6e4aNvLnBsLu3NDM1Ojdejag+8vN5lqQgK7frGDdD5XB57rJoWsm1/j1lyxOsPNrB4
-         A14w==
+        d=gmail.com; s=20210112; t=1680162811;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=o7yvdbKzy0WkmXHywiAzLR6FDroxyETUOdt+5J6dXog=;
+        b=oEDChhEgZiXuXP8+K1eGL66cEuL1Yj9gz99OQHsVxohz7jqgHmBJ0pKvLhEF00zrQ/
+         VjoO6DQ5aeE+PLEjXEVSTc43ALr+ziTXlKpWj8HnDF982ix5zlM5ZRjozHm7y1Sforf+
+         nMV2C6ePkZi0RF5KX6xt9aCh8jNREEPbdrRh7qV1iElpwfSG91zG0jiI92rx+0omwaSb
+         +zj2ePYsu1SAih1KEfnMktC0r6icF5panrqajOchzEs5Ulron+3aWeQutkgScieKkQ4k
+         MgVTDCXG8vo5+ly2OTcCVWIZCtO+FlH5o5U2oL5ApTkYKiZ28HfwDMy7tBbWWrkm3RAU
+         GUhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680162594;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2EdrKMv5yzbDVcAYao26EMed7hVuHX+IgfAd0MIl9X8=;
-        b=ijVDiNFyGbMdRT4OwxR0YmVJTGy7Y9Ip/zvRRTmB0ROzaFLOGZmC3MBUnFSh48GRVm
-         0xmNgJ6VQKsE6JH651RmEZdmGd+b9YFWwBtHHGw7b81d6TuRjnUMBINQxF2hrH8ILmUh
-         RsJsD44fpUuKOhfvd2ayynAebvcOocNmKdogTMczyeE6wk9XMH/vhfNfLjdyv5AEankN
-         EI0FPdYyE/hU5QlvK22ePZ/Jl2K4+GjVzBVvb6pc6PCLQGt+1nWHGWCunUtn+jmf1urA
-         CZCdXKk6QdSsNTRmVOD3pCnoz0Fpw1woRS3jNcNwcR6nWoHMuSBiQzwpJWLFyMBoYjMd
-         UPUg==
-X-Gm-Message-State: AAQBX9flwgbEqtb3KXxvc5TSIzLKaXYOXvCXGyVQBgjtafSdCxL9UxG3
-        nVDk6jAYc9nL4gOEp//6DQvrcw==
-X-Google-Smtp-Source: AKy350ZVqvxbpiA5Vt+73QEB9UtSOk1/Gm1un2/nbvhOOGoier9ju3WuVATMpwAVVkLM5aXBmqPswg==
-X-Received: by 2002:a2e:7019:0:b0:299:c03a:1cf9 with SMTP id l25-20020a2e7019000000b00299c03a1cf9mr6747402ljc.10.1680162594243;
-        Thu, 30 Mar 2023 00:49:54 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id z26-20020a05651c023a00b00295b842c2dbsm5827780ljn.133.2023.03.30.00.49.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Mar 2023 00:49:53 -0700 (PDT)
-Message-ID: <5d1d2d56-06c2-718f-2bb9-26bd447dd30f@linaro.org>
-Date:   Thu, 30 Mar 2023 09:49:52 +0200
+        d=1e100.net; s=20210112; t=1680162811;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o7yvdbKzy0WkmXHywiAzLR6FDroxyETUOdt+5J6dXog=;
+        b=Nh3zPYHgVdNFA4w058W4yfQsM59jE4/rUZxXMiCoeEfatgOWqI8QpINRDJH+sTCWmw
+         ruzLEWI2iZmQvomos53aNi/U+Hk7Ui4bv6VD6pzsc4m6SlFxsGg4gQLEVEeVrNhEVzMU
+         n7yNNPj7W8hQ3fkvAg5ptnbFEGumILl7Ih5jP8JPkrasQKuMp+ZWCVj80ZbK/BAo1Kfh
+         lnZQUE3UhWX6ibi0g5KJfermBjJaw+OyJb2XdFqjSDLt8umU+R0ZgCjsr276SHaGK2lA
+         iJNbN1DOyPIGASq5edg2ciaZPL9L1pWY1v13xedL6LTFlkY12X6jGP56ZAuIgcGnBPL/
+         DiRA==
+X-Gm-Message-State: AAQBX9dfpP7hFub1ulb8UhK2QSI3I2pHbZv+PxrFMa4bvjXT9MZQFeNN
+        IanxUPDbTJgpWz+bIjVBn2w=
+X-Google-Smtp-Source: AKy350bP8E+yFfGpYGR/z4wnnRTORQRS4baUGvhl8lbNGHX7cz2niLH2lk7TEXh1lRrp13wi3Vd6UA==
+X-Received: by 2002:a17:907:7784:b0:930:e2c:ddc3 with SMTP id ky4-20020a170907778400b009300e2cddc3mr22352522ejc.72.1680162810727;
+        Thu, 30 Mar 2023 00:53:30 -0700 (PDT)
+Received: from ?IPv6:2001:a61:2b4b:9d01:5416:2b94:da5d:3156? ([2001:a61:2b4b:9d01:5416:2b94:da5d:3156])
+        by smtp.gmail.com with ESMTPSA id sc36-20020a1709078a2400b0093e39b921c8sm7875297ejc.164.2023.03.30.00.53.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Mar 2023 00:53:30 -0700 (PDT)
+Message-ID: <11450376865596c3c1ef6cf54a71fc63924e7d90.camel@gmail.com>
+Subject: Re: [PATCH 2/2] ad7192 driver: fixed unexpected internal clock
+ fallback when no mclk clock is defined.
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Cc:     alexandru.tachici@analog.com, linux-iio@vger.kernel.org
+Date:   Thu, 30 Mar 2023 09:53:29 +0200
+In-Reply-To: <CAPJMGm7qQ-TgnG9ocXDDQX+Fhc9ridHyS1Ztxuq9mX+Q+DL=sA@mail.gmail.com>
+References: <CAPJMGm4StRvJ4zTyrOb7ebo47LrR9bBuZ46p7VOxkDfwWSG=PA@mail.gmail.com>
+         <4ef51234de8e496791bcb7cd190a7ccf31626c1e.camel@gmail.com>
+         <CAPJMGm7qQ-TgnG9ocXDDQX+Fhc9ridHyS1Ztxuq9mX+Q+DL=sA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/6] dt-bindings: iio: qcom,spmi-adc7-pmk8350.h: include
- sid into defines
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-References: <20230329000833.2507594-1-dmitry.baryshkov@linaro.org>
- <20230329000833.2507594-2-dmitry.baryshkov@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230329000833.2507594-2-dmitry.baryshkov@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -83,16 +74,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 29/03/2023 02:08, Dmitry Baryshkov wrote:
-> pmk8350 can take different addresses on SPMI bus. Rather than having a
-> default SID, follow the pm8350's example and make the sid explicit when
-> specifying ADC channels.
-> 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+On Wed, 2023-03-29 at 23:23 +0200, Fabrizio Lamarque wrote:
+> On Wed, Mar 29, 2023 at 5:15=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.c=
+om>
+> wrote:
+> >=20
+> > On Mon, 2023-03-27 at 22:21 +0200, Fabrizio Lamarque wrote:
+> > > Allow the use of external clock when mclk clock is defined.
+> > > When defining a mclk clock source in device tree with adi,clock-
+> > > xtal
+> > > property, the external crystal oscillator is not turned on.
+> > > Without the change, the driver always uses the internal clock
+> > > even
+> > > when mclk clock is defined.
+> > >=20
+> > > Current implementation seems to contain a typo, since it expected
+> > > st->mclk to be NULL within ad7192_of_clock_select() in order to
+> > > select
+> > > the external clock, but, if null, external clock cannot loaded
+> > > correctly (out of bounds due to invalid mclk) in ad7192_probe().
+> > >=20
+> > > I believe this patch follows the author's intended behavior.
+> > > =C2=A0After applying this patch, the external oscillator is started a=
+s
+> > > expected.
+> > >=20
+> >=20
+> > Yes, looks like a valid fix... Just missing a Fixes tag.
+>=20
+> Thank you for having this patch reviewed.
+> Here is a backwards compatibility note I believe you should be aware
+> of.
+>=20
+> Without this patch, the DT node shall contain (any) clock property
+> for the driver to be loaded properly.
+> The clock frequency is ignored, as it is ignored adi,clock-xtal
+> property.
+> In case clock property is not set, the initialization always fails.
+> There is no way to use an external clock source.
+> As you already verified from source code, this was not intentional.
+>=20
+> While the proposed patch should make the DT config load as intended,
+> there is a possible side effect on existing implementations relying
+> on
+> internal clock source only, that would be deactivated when clock
+> property
+> is defined in DT.=C2=A0
 
+Hmm, I see. I would argue anyone relying on that should have just
+stepped forward and fix the real issue as you did :). So, maybe there's
+no one actually relying on this but that's a big __maybe__... Not
+really sure how to handle this. I'm not sure we want to keep
+compatibility with something that's clearly wrong but often we need to
+"live" with past messes.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Jonathan I guess your input will be valuable here :)?
 
-Best regards,
-Krzysztof
+> In addition, bindings documentation states clock
+> property is mandatory.
+>=20
 
+This looks at least suspicious to me given the fact we have an internal
+alternative. Clearly looks wrong to me...
+
+- Nuno S=C3=A1
+>=20

@@ -2,213 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42F1E6D22C9
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Mar 2023 16:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A989E6D2992
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Mar 2023 22:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232195AbjCaOku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Mar 2023 10:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46068 "EHLO
+        id S232317AbjCaUn3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Mar 2023 16:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231766AbjCaOkt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Mar 2023 10:40:49 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 214251DF91
-        for <linux-iio@vger.kernel.org>; Fri, 31 Mar 2023 07:40:47 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id ew6so90453940edb.7
-        for <linux-iio@vger.kernel.org>; Fri, 31 Mar 2023 07:40:47 -0700 (PDT)
+        with ESMTP id S229909AbjCaUn2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Mar 2023 16:43:28 -0400
+Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E6E1EFF2
+        for <linux-iio@vger.kernel.org>; Fri, 31 Mar 2023 13:43:27 -0700 (PDT)
+Received: by mail-oo1-xc36.google.com with SMTP id f24-20020a4aeb18000000b0053b78077c9dso3701673ooj.12
+        for <linux-iio@vger.kernel.org>; Fri, 31 Mar 2023 13:43:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680273645;
-        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
-         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=IxoCI6+BZAajVY5RGldbiVD7cA7zHiucXSrDGn2ZSLY=;
-        b=osA/7nCptfzSE3Zgw+QigQ/P7Bl0tYkJUZb6CKT9tt7i3BaZfNJEdyfDQwUz1+ncdc
-         /fyROMiH5ohSKYijhKoMVIDUQdHhH/N2L6T7aZ06qyoDPEpzXGCe8xASb4ng0Mo+op+J
-         5DjQa6f5Ho1foOXDIWnD4kojhU61T2a1ZMh7UJIoBatliAz1VgvoZbT8O+WRet0ttiHf
-         I7bKf8GxECxHxbzBEnRU+KrDyncLxs43JPceE3wOAY9xhAAWB/b06v/ZtKkdd2gPw78C
-         G2+U3XebfOUGysrmHuinI+xlHTLnxBkqKs1yUl0u3EsVzMprTtwhpsVbu/LV9ItBJ6+R
-         kQqg==
+        d=linaro.org; s=google; t=1680295406;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gbJR1JChzmLTsVV+iWqp2hMTIHEnfqkgzoCIgyYNt9Y=;
+        b=mtQb5LlUhEmXR/NfZBfC1qdFoj8FmXhaVQdtj43GHYsXr2rrb+9cdRt06c3M45CSq3
+         CdIqt8RN9MPw67cGIDn6tbZBifoKYWQayevCowTwzuKXA9LcZDH/uTRF4i6KD4MkKeIm
+         zY9L0U6VQajiEHIt4WHLNyD3ghRPr8IYOK1FWQ6PPvybLHSmu2q0a9A3r//DoLjWfoJm
+         7Iaz0/oJGeW2Xl0JuZ63eUS5Yb6Nhs22ACUPmD2qwidlfgKQtSmlodVROXoiJVI03Lwl
+         L+9sGfl4kyfgE2nMqzHmufT9VqCoGmxqL315JG5dlb+UiiAre2ySiwovpDOuJl9mEcDf
+         5w7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680273645;
-        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
-         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20210112; t=1680295406;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IxoCI6+BZAajVY5RGldbiVD7cA7zHiucXSrDGn2ZSLY=;
-        b=G9ov0cuj38WVjMShwv1jbV39Cpz7L/TYCAuP4NkzB3Rty00ERQxt4Rpg89f4PUwkdC
-         LSi4HOPiN1viUGlMoLb4qEHVjSdh6lN8IZlUo7WSfFmq3MCdYbjnwiwafFqW60+jUUMy
-         i+qJ4buSD3N6MjQYSxgzsjDHDGYwPLzJGemZ+yOawuQP7l3J4Lhp7arMYJwcMjDm5qwF
-         r7A9s7zG2zdCm9OrmTIcl/U5Y0uDnb2TF1JKG5eFRP/qqsHbPouUQ0KwLbZ3Efyhbv0n
-         abVIjyuLfmRwzvlT6VNDgExAnbA1aiwg+VkONf2kUYey8E9MwZ2PvcSdc2lgLNYdpjj0
-         PXyQ==
-X-Gm-Message-State: AAQBX9fHDrhAWQY7RgFi12Y7Z0PyYNcIX8Pt96tGReXO3tyhRqiBIJL6
-        yFdkH3FFvdE49IMrnFiKbvUXojodlQMLeA==
-X-Google-Smtp-Source: AKy350YtsYHpXADfQzyjsyQIMMRAJfMyViBZEDm7R/JB29JMspO7f0tmx/5Z5S+N6pvZxNvWawalag==
-X-Received: by 2002:aa7:da57:0:b0:4fb:80cf:89e6 with SMTP id w23-20020aa7da57000000b004fb80cf89e6mr27024753eds.8.1680273645461;
-        Fri, 31 Mar 2023 07:40:45 -0700 (PDT)
-Received: from ?IPv6:2001:a61:2b4b:9d01:5416:2b94:da5d:3156? ([2001:a61:2b4b:9d01:5416:2b94:da5d:3156])
-        by smtp.gmail.com with ESMTPSA id l2-20020a50c102000000b004fa012332ecsm1136716edf.1.2023.03.31.07.40.44
+        bh=gbJR1JChzmLTsVV+iWqp2hMTIHEnfqkgzoCIgyYNt9Y=;
+        b=u8SdBxbGsByR62rZUgEhOxpheVZHfLfPGIQzdFGIkmPeLDkNeSFF+MOHWANrPkcUCW
+         sZmAtTGj313JJ9FPRAfEZtkEwWea+AzEFEzEeY6AeTJl4A+sPqNV41CVnUM7T1cG1Bd4
+         eNYYOz06xwob4jyEJGdsluv5lQH/qgwBITz+Itqw95c2OzawTYnddhU+PYz3DTUzdmEk
+         r6njraaBKLMv/KAGZVZ8qkntJ7Ly8OnnDUQKeNgJzmQaPNO+g5yNy3Z8+2CiUHtN2Fbk
+         RIumjBOj9vD/n124C32+z+2RKROMQGnF3pqKadZnHb7xP5FYEL0Il45F0XUqGiT6LCWJ
+         kn4g==
+X-Gm-Message-State: AO0yUKWkCEiXQC1fh3/CMVIHwO0qWxTtAk55umiLH9PAWNUHgI47Hhpz
+        X9A2s3+k12fqKygUEim9sK9lXEZVRoaLlO8qjbAfnQ==
+X-Google-Smtp-Source: AK7set8V3Ca+tICQ9ImYTvIekiytSecy9jsH4rdXe0Ny8GVw06BgVSCnoiUhP9+fRLKJDMrgoj4ILA==
+X-Received: by 2002:a4a:2c86:0:b0:53b:5510:9594 with SMTP id o128-20020a4a2c86000000b0053b55109594mr14082165ooo.1.1680295406387;
+        Fri, 31 Mar 2023 13:43:26 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id 188-20020a4a1dc5000000b00529cc3986c8sm1235060oog.40.2023.03.31.13.43.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Mar 2023 07:40:45 -0700 (PDT)
-Message-ID: <dac3967805d7ddbd4653ead6d50e614844e0b70b.camel@gmail.com>
-Subject: adi-axi-adc issues and how to properly support this designs
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Date:   Fri, 31 Mar 2023 16:40:44 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        Fri, 31 Mar 2023 13:43:25 -0700 (PDT)
+Date:   Fri, 31 Mar 2023 14:24:28 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] counter: 104-quad-8: Refactor to buffer states
+ for CMR, IOR, and IDR
+Message-ID: <ZCclXMQ2NIUOdjas@fedora>
+References: <cover.1679605919.git.william.gray@linaro.org>
+ <c5adb13b4b0887beb1df40b34d2ef03d63a2860d.1679605919.git.william.gray@linaro.org>
+ <ZB2OG4zZXsqqyN8v@smile.fi.intel.com>
+ <ZB2Ob9VGe3GoEVko@smile.fi.intel.com>
+ <ZB2k9m7rL7Hpy/zU@fedora>
+ <ZB2qI7k/Igws5khg@smile.fi.intel.com>
+ <ZB3DJjQLa48AodSD@fedora>
+ <ZCDc0zPtPSyDgOaF@fedora>
+ <ZCFn+A6oAVNOe3yp@smile.fi.intel.com>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="G5V++XAWDcOgjajm"
+Content-Disposition: inline
+In-Reply-To: <ZCFn+A6oAVNOe3yp@smile.fi.intel.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
 
-There are some major issues with the implementation we have upstream
-for the adi-axi-adc driver. The only user is the ad9467 driver. In the
-rest of the email I will refer to ad9467 as the converter device and
-axi-adc as the IP core.=20
+--G5V++XAWDcOgjajm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Let me start to state that these designs, in a very a basic way, have a
-converter connected to a IP core that typically lives in a FPGA. This
-core connects to a DMA core (which is used by the DMA buffer
-implementation) so we can keep up with the high rates of these
-converters. So there's a link between these devices and we try to
-implement that so far looking at them as one single IIO device.
+On Mon, Mar 27, 2023 at 12:55:04PM +0300, Andy Shevchenko wrote:
+> +Cc clang (for the ideas you might have, while the issue seems related to=
+ GCC[?] )
+>=20
+> On Sun, Mar 26, 2023 at 08:01:23PM -0400, William Breathitt Gray wrote:
+> > On Fri, Mar 24, 2023 at 11:35:02AM -0400, William Breathitt Gray wrote:
+> > > There are eight calls to quad8_control_register_update() in 104-quad-=
+8:
+> > >=20
+> > >         quad8_control_register_update(priv, priv->idr, id, DISABLE_IN=
+DEX_MODE, INDEX_MODE);
+> > >         quad8_control_register_update(priv, priv->cmr, id, mode_cfg, =
+QUADRATURE_MODE);
+> > >         quad8_control_register_update(priv, priv->ior, event_node->ch=
+annel, flg_pins, FLG_PINS);
+> > >         quad8_control_register_update(priv, priv->idr, channel_id, in=
+dex_polarity, INDEX_POLARITY);
+> > >         quad8_control_register_update(priv, priv->idr, channel_id, sy=
+nchronous_mode, INDEX_MODE);
+> > >         quad8_control_register_update(priv, priv->cmr, count->id, cou=
+nt_mode, COUNT_MODE);
+> > >         quad8_control_register_update(priv, priv->ior, count->id, ena=
+ble, AB_GATE);
+> > >         quad8_control_register_update(priv, priv->ior, count->id, !pr=
+eset_enable, LOAD_PIN);
+> >=20
+> > I attempted the cross-compiling using an x86-64 system and I was able to
+> > recreate the build error. I tried to isolate the problem line by
+> > commenting out quad8_control_register_update() calls and discover that
+> > this appears to be an inline issue after all: if there are more than six
+> > calls to quad8_control_register_update() are in the code, then the
+> > '__bad_mask' build error occurs.
+> >=20
+> > The build error doesn't occur if I force the inline via __always_inline,
+> > so I'll add that to quad8_control_register_update() to resolve this
+> > issue and submit a v3 patchset later this week.
+>=20
+> Doe it mean it's a compiler error? Or is it a code error?
+>=20
+> I'm wondering if clang also fails here.
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
 
-Let's go to the major issues now:
+Al, I think you were the one who introduced the field_multiplier()
+implementation in commit 00b0c9b82663ac ("Add primitives for
+manipulating bitfields both in host- and fixed-endian."). Is this build
+error [0] expected in your opinion?
 
-1) There is a circular dependency between the two device. And when
-compiled as modules for example, we cannot really rmmod the modules
-anymore:
+I see that the field specification must be a constant according to the
+commit description, so does that mean a "const u8 field" parameter is
+valid? Does the field_multiplier() implementation have an expectation
+that the condition check will be evaluated by the compiler during the
+build and bypass the __bad_mask() compile time error so that it doesn't
+appear?
 
-"root@analog:~# rmmod ad9467
-rmmod: ERROR: Module ad9467 is in use
+William Breathitt Gray
 
-root@analog:~# rmmod adi-axi-adc.ko
-rmmod: ERROR: Module adi_axi_adc is in use by: ad9467
-"
+[0] https://lore.kernel.org/all/202303241128.WBKc4LIy-lkp@intel.com/
 
-This easy to understand as the ad9467 driver as a direct symbol
-dependency on the axi-adc one. And this one calls 'module_get()' as
-soon as it attaches to a "client"
+--G5V++XAWDcOgjajm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-2) It's fairly easy to crash the kernel:
+-----BEGIN PGP SIGNATURE-----
 
-"
-root@analog:/sys/bus/spi/drivers/ad9467# echo spi0.0 > unbind
-root@analog:/sys/bus/iio/devices/iio:device2# echo 1 >
-buffer0/in_voltage0_en
-root@analog:/sys/bus/iio/devices/iio:device2# echo 1 > buffer0/enable
-[  132.349133] 8<--- cut here ---
-[  132.352193] Unable to handle kernel paging request at virtual
-address e0940000 when read
-[  132.360333] [e0940000] *pgd=3D0208b811, *pte=3D00000000, *ppte=3D0000000=
-0
-[  132.366668] Internal error: Oops: 7 [#1] SMP ARM
-[  132.371289] Modules linked in: ad9467 adi_axi_adc ad9517
-[  132.376609] CPU: 1 PID: 444 Comm: bash Not tainted 6.2.9-dirty #3
-[  132.382701] Hardware name: Xilinx Zynq Platform
-[  132.387223] PC is at adi_axi_adc_update_scan_mode+0x34/0x88
-[adi_axi_adc]
-[  132.394020] LR is at arm_heavy_mb+0x1c/0x38
-[  132.398212] pc : [<bf0060c4>]    lr : [<c031820c>]    psr: a0000013
-[  132.404392] sp : e0929e30  ip : deaddead  fp : c4430270
-[  132.409678] r10: c8a0bc18  r9 : deaddeac  r8 : c89b1c00
-[  132.414895] r7 : c4430340  r6 : c45db7c0  r5 : e093ffc0  r4 :
-000003f0
-[  132.421413] r3 : 00010000  r2 : e0940000  r1 : 00000000  r0 :
-00000000
-"
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZCclXAAKCRC1SFbKvhIj
+K78CAPwPh4AKoC34hyvsngmJT9sInLAPMmuoK926accTBjmCxwEAm2Vg3mw6/mBU
+VHdlglwqFRrfFerddC9Mct8nmG89hwY=
+=K6oT
+-----END PGP SIGNATURE-----
 
-3) This solution does not really scale. There are designs where we have
-multiple instances of the IP core attached to the client (typically if
-a converter like this has more than one channel, we have one instance
-of the core per channel). The way we have it know, that would not me
-feasable.
-
-Issues number 2) and 3) would more or less be easy to solve moving from
-of_parse_phandle() and from devm_ (using plain kmalloc() + krefs). The
-big issue to me is 1) because, for example, in the driver we have out
-of tree for ad9467, we do a tuning on the adc LVDS interface that we do
-not do in the upstream version. And why is this problematic? Because
-this means the converter driver has to do some configurations on the IP
-core device and hence we have a bidirectional link between these 2
-devices which, while doable, is far from ideal and can become complex
-to keep it sane.
-
-To be fair, what we have in upstream today is inspired a lot in what
-ADI has out of tree (likely even better) but I truly think we need to
-do it better. As I want to start working on this, I want to share some
-ideas that I have on my head and hopefuly get some feedback on the
-direction to go. So, here it goes:
-
-1) The obvious one is to flip the logic of the "communication" link.
-Right now callbacks are done from the IP core driver to the converter.
-As stated, the converter might need to access the IP core to ask/do
-some configurations. Well, from what I've seen in other projects we
-have, I'm positive everything can be done by being the converter the
-"entry point". This effectively means, that IP core devices would
-register somewhere (I'm thinking in a tiny interface module that can
-likely be reused for the axi-dac counterpart of the axi-adc) and the
-converter device would "get" it during probe.
-
-2) With respect to 1), while treating the devices as 1 might look
-appealing, I'm not really sure it's the right thing to do. This,
-because these devices are effectively two different devices: the
-converter is typically a SPI device while the IP core is a MMIO device.
-Treating them as 1, makes things like the IIO direct_reg_access not
-doable (unless we duplicate some code and manually add the second
-debugfs interface). Another thing not ideal with 1) is that the DMA
-buffer interface really belongs on the IP core (looking on how the HW
-is designed) and not on the converter driver. However, one thing that
-I'm not sure it will be ideal with having two devices is synchronizing
-accesses to the IP core. For example, the axi-dac driver (that I also
-intend to bring upstream as part of this work) also has an userspace
-interface so we need to be carefull. But I guess this is no different
-for devices which are accessed by the in-kernel IIO interface.
-
-I'm way more inclined to go with 2).
-
-Another thing that I've been thinking is how should we implement the IP
-core driver... As stated, there are usecases where we have mulitple
-instances of these devices. Well, that is how we've been doing things
-in ADI tree but essentially the core is just one big "block/device"
-[1]. However, the way we've been doing things is actually ok because
-every sub-block on these IPs have their own memory map allowing to
-control everything needed by the sub-blocks.
-
-Another option and now that we support output buffers and multiple
-buffers per device would be to support these cores as one device
-(likely in the addac folder). However, I think that keeping each block
-as a standalone device might keep things more simple. But I assume it's
-tempting to get a first user to the multi buffer support :)
-
-
-Now for the big elephant of all the above... Everything that I've been
-saying means breaking the current ABI. I'm fairly confident that we
-should not have any upstream user for these drivers because it lacks a
-lot of features that are only present in ADI tree. So, I think it's ok
-to destroy the ABI but of course I cannot guarantee there are no users
-:).
-
-So, would it be fine for me to not care about the current ABI while
-working on this? Because, it will be very difficult to come up with
-something that is compatible with what we have. Well, there's always
-the option of coming up with a -v2 (or something like that) for these
-drivers keeping the ones we have now, untouched. Ideas?
-
-So... feedback is very much appreciated :)
-
-[1]:=C2=A0https://wiki.analog.com/resources/eval/user-guides/adrv9002/axi_a=
-drv9002
-https://wiki.analog.com/resources/eval/user-guides/adrv9002/axi_adrv9002
-https://wiki.analog.com/resources/eval/user-guides/adrv9002/axi_adrv9002
-
-- Nuno S=C3=A1
+--G5V++XAWDcOgjajm--

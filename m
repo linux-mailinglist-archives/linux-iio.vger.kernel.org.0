@@ -2,55 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C24756D3130
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 16:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 861786D313C
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 16:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjDAOFW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 10:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
+        id S230110AbjDAOJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 10:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjDAOFV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 10:05:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4790FB45E;
-        Sat,  1 Apr 2023 07:05:21 -0700 (PDT)
+        with ESMTP id S229540AbjDAOJT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 10:09:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D40E5244
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 07:09:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DEAEA60AD1;
-        Sat,  1 Apr 2023 14:05:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F240DC433D2;
-        Sat,  1 Apr 2023 14:05:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6D1E60D33
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 14:09:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAA0C433EF;
+        Sat,  1 Apr 2023 14:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680357920;
-        bh=MZ44pijlcbwqZoRd2llf2veubGkW4dMJTr6PLEgL0wY=;
+        s=k20201202; t=1680358157;
+        bh=/NP6u1OO/poncE3FQalvAEtaOieaxtHQ2eiWvr4zUKY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NqM4nLnKP4gbENhoIgQOGTWfbGeuJSxqlEjtpt7lpmSEqlMKKgrjtINPe1r6mCT5/
-         ZvGhgAcG3krRSPgvEUVYLd2N+XtN0aBY9KqK8vUl421b3aAzPhJIzTDAIkusRLuEoJ
-         dJhERA/0ioZOQki2R8Mvo72rZYIFvPda8jiCGUsAuQZubGPk5zjjf4x4ZAIXBeidm8
-         pxzAFfaVujODZLDbK1glMw0aY2DFfnMWwul3aR/NHwixyNw54mVRgZf9LpLw4Xz2xI
-         nIt6ZLp0c2QWkXU7hTv5UqaymlXLvz8T2QMVp+nFSjSydhPl3qYr/8MqiemhR2Z7NF
-         EIZ6uLm/mQDSg==
-Date:   Sat, 1 Apr 2023 15:20:28 +0100
+        b=YJe8ltEE7aetWJhV4seD2A8rIhzDMza+K0uqR0J2xp+heAWyxrPXkM6l1jHETNJhq
+         Fl4i+I1C9S4iV+i5E5EwtHg18Dt8zyPbQST+uDnpROmRqS6ZWFFc6KX4+s5KwaDqdY
+         v5wABrY0FIkhNa6FvBKUm4wZ/agEQufL1iT1QzqYJzwj/xoA6p8TUkY/LATslrBikA
+         obJvQ7LFidGZmj0eR/RraCyuCS15Epu59mRGMt3seQgrWT+5Cd+UsnJV1J8suDHVCZ
+         52n1N0nT7+5fYdTqvOjasfO13Ose1QRP6zLrzViqL37kHOpYqtwJGwYah05PoLnvgR
+         Z6+t+EJJsx3dg==
+Date:   Sat, 1 Apr 2023 15:24:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Tom Rix <trix@redhat.com>, lars@metafoo.de, nathan@kernel.org,
-        ndesaulniers@google.com, u.kleine-koenig@pengutronix.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, Chuhong Yuan <hslester96@gmail.com>,
-        Brian Masney <bmasney@redhat.com>,
-        Brian Masney <masneyb@onstation.org>
-Subject: Re: [PATCH] iio: tsl2772: remove unused prox_diode_mask variable
-Message-ID: <20230401152028.30344b48@jic23-huawei>
-In-Reply-To: <ZCGVJOSBjKO3FKD6@smile.fi.intel.com>
-References: <20230327120823.1369700-1-trix@redhat.com>
-        <ZCGVJOSBjKO3FKD6@smile.fi.intel.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-staging@lists.linux.dev>, <linux-iio@vger.kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] staging: iio: resolver: ads1210: fix config mode
+Message-ID: <20230401152425.2dae5505@jic23-huawei>
+In-Reply-To: <20230327145414.1505537-1-nuno.sa@analog.com>
+References: <20230327145414.1505537-1-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,25 +55,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Mar 2023 16:07:48 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Mon, 27 Mar 2023 16:54:14 +0200
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> On Mon, Mar 27, 2023 at 08:08:23AM -0400, Tom Rix wrote:
-> > clang with W=1 reports
-> > drivers/iio/light/tsl2772.c:576:24: error: variable
-> >   'prox_diode_mask' set but not used [-Werror,-Wunused-but-set-variable]
-> >         int i, ret, num_leds, prox_diode_mask;
-> >                               ^
-> > This variable is not used so remove it.  
-> 
-> While from the compilation point of view this is a correct fix, I think
-> we need to hear from the author (or interested stakeholders) about this
-> feature. Perhaps it should be enabled / fixed differently.
-> 
+> As stated in the device datasheet [1], bits a0 and a1 have to be set to
+> 1 for the configuration mode.
+>=20
+> [1]: https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad2s1210.pdf
+>=20
+> Fixes: b19e9ad5e2cb9 ("staging:iio:resolver:ad2s1210 general driver clean=
+up")
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Superficially it looks like this value should have been stored to
-chip->settings.prox_diode
+Oops. Younger more foolish me bug (back in 2011 so I'll cut myself some sla=
+ck)
 
-+CC people who might know...
+Applied to the togreg branch of iio.git (not rushing something in that is i=
+n staging
+and has been broken a while without anyone commenting!)
+
+I don't suppose this means you are going to get this ready to move out of s=
+taging?
+*looks hopeful*
+
+Thanks,
 
 Jonathan
+=20
+> ---
+>  drivers/staging/iio/resolver/ad2s1210.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/ii=
+o/resolver/ad2s1210.c
+> index e4cf42438487..636c45b12843 100644
+> --- a/drivers/staging/iio/resolver/ad2s1210.c
+> +++ b/drivers/staging/iio/resolver/ad2s1210.c
+> @@ -101,7 +101,7 @@ struct ad2s1210_state {
+>  static const int ad2s1210_mode_vals[4][2] =3D {
+>  	[MOD_POS] =3D { 0, 0 },
+>  	[MOD_VEL] =3D { 0, 1 },
+> -	[MOD_CONFIG] =3D { 1, 0 },
+> +	[MOD_CONFIG] =3D { 1, 1 },
+>  };
+> =20
+>  static inline void ad2s1210_set_mode(enum ad2s1210_mode mode,
+

@@ -2,116 +2,402 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B87F36D3324
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 20:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB9976D333C
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 20:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjDAS3I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 14:29:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53790 "EHLO
+        id S229495AbjDASpT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 14:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjDAS3H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 14:29:07 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE351BF4C;
-        Sat,  1 Apr 2023 11:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=DHIjBw8q8o7HwiSFrp1UBh7BKrSxY4k3nqqzolvVuUU=; b=e/rJd21mkM22+PJJcC01YmpLKW
-        3kU7QEWSc5VIqRFUBO3WWcIzQqelw7BppWDqTMDIXhBHOT6KdZlFRCY0ikB0MNsrZG984JiP1q10Y
-        ve/9EMsB9Dl1Btjg+XpsYO7WiB3fzgxdMcv/Mvtbw7sfQbNfAtAMcG51pol7SU2kumFi4j0M31+jV
-        UrDQ1pGPqt6ViBBqTo0OBrDvsAVGfczJfEnwqtN2SPU1J1LE2/Ln0n/oTbLutJjgtpNEp15bUa3CY
-        4wFhIg2MV9+L6+A/W1eeXmBtM9AimvbeW45r23OzzjHL4XsmCfCWKRmtKu9fYWK2j5ShXw5hViEVR
-        MOaGUmGQ==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1pifyJ-000P2F-IU; Sat, 01 Apr 2023 20:29:03 +0200
-Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1pifyJ-000Nvc-6P; Sat, 01 Apr 2023 20:29:03 +0200
-Message-ID: <5c142a1b-c413-66b2-86d9-b8c95ed46241@metafoo.de>
-Date:   Sat, 1 Apr 2023 11:29:00 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 2/3] iio: pressure: Honeywell mpr pressure sensor
-Content-Language: en-US
-To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-References: <ZCf085W4XL2PtQf6@arbad>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <ZCf085W4XL2PtQf6@arbad>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26862/Sat Apr  1 09:22:47 2023)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+        with ESMTP id S229441AbjDASpT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 14:45:19 -0400
+Received: from ste-pvt-msa2.bahnhof.se (ste-pvt-msa2.bahnhof.se [213.80.101.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1AEF7694
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 11:45:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by ste-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 8C77B3F4C8;
+        Sat,  1 Apr 2023 20:45:14 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+X-Spam-Score: -2.099
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
+Authentication-Results: ste-ftg-msa2.bahnhof.se (amavisd-new);
+        dkim=pass (2048-bit key) header.d=dalakolonin.se
+Received: from ste-pvt-msa2.bahnhof.se ([127.0.0.1])
+        by localhost (ste-ftg-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id F4gAwZKkJC6h; Sat,  1 Apr 2023 20:45:13 +0200 (CEST)
+Received: by ste-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 5BAF03F468;
+        Sat,  1 Apr 2023 20:45:12 +0200 (CEST)
+Authentication-Results: ste-pvt-msa2.bahnhof.se;
+        dkim=pass (2048-bit key; unprotected) header.d=dalakolonin.se header.i=@dalakolonin.se header.b="C38Ho4ej";
+        dkim-atps=neutral
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id EE3B193057;
+        Sat,  1 Apr 2023 18:45:11 +0000 (UTC)
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id qf9yfS-UmghS; Sat,  1 Apr 2023 18:45:09 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 5857493054;
+        Sat,  1 Apr 2023 18:45:09 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se 5857493054
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dalakolonin.se;
+        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680374709;
+        bh=xI8PDsY7vWgEfxc6/1Pav5lMDphx3ss3aPKQetrT2eM=;
+        h=Date:From:To:Message-ID:MIME-Version;
+        b=C38Ho4ejJAJ4urwW2WK5TI6ZYqkdePv361JafqdTop1lMRJaV4bzwjV5sccvuvVEv
+         Kz6ZC1bGedqzz2FlOxTqQWF5IdHQk9rEtzhqDpbqrf9LBOaXgUhPAd93uaPwcwJjSh
+         Lwc7IGw8k67oTzyaKnPTtr0XQbKtWMXdba5Wmh9rAV+0yvxd/u36NzXusIK3kwIWAP
+         KWt96yR93bxXz9q8ml1JXVWdv8hNSZXo7EfzuPdHUXx+JKiEfPXyy1/jl9ZqwzSdxN
+         T4IrjlJz6a1Fvsl1pxm09LWGp9LeUGLdHUMtq38CBIgVVdHX0wn7dA2jPfBUbOGa0p
+         zgUuVATyFolnw==
+X-Virus-Scanned: amavisd-new at dalakolonin.se
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 5fGVd1bJ6xGG; Sat,  1 Apr 2023 18:45:09 +0000 (UTC)
+Received: from dalakolonin.se (unknown [172.17.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id EFDEB9304F;
+        Sat,  1 Apr 2023 18:45:08 +0000 (UTC)
+Date:   Sat, 1 Apr 2023 20:45:07 +0200
+From:   Patrik =?iso-8859-1?Q?Dahlstr=F6m?= <risca@dalakolonin.se>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        pgoudagunta@nvidia.com, hns@goldelico.com, lars@metafoo.de
+Subject: Re: [PATCH 1/3] iio: adc: palmas_gpadc: add support for iio
+ threshold events
+Message-ID: <20230401184507.GB2403322@dalakolonin.se>
+References: <20230319223908.108540-1-risca@dalakolonin.se>
+ <20230319223908.108540-2-risca@dalakolonin.se>
+ <20230326175101.0ef2d6ae@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20230326175101.0ef2d6ae@jic23-huawei>
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Sun, Mar 26, 2023 at 05:51:01PM +0100, Jonathan Cameron wrote:
+> On Sun, 19 Mar 2023 23:39:06 +0100
+> Patrik Dahlstr=F6m <risca@dalakolonin.se> wrote:
+>=20
+> > The palmas gpadc block has support for monitoring up to 2 ADC channel=
+s
+> > and issue an interrupt if they reach past a set threshold. The gpadc
+> > driver had limited support for this through the adc_wakeup{1,2}_data
+> > platform data. This however only allow a fixed threshold to be set at
+> > boot, and would only enable it when entering sleep mode.
+> >=20
+> > This change hooks into the IIO events system and exposes to userspace
+> > the ability to configure threshold values for each channel individual=
+ly,
+> > but only allow up to 2 such thresholds to be enabled at any given tim=
+e.
+>=20
+> Add a comment here on what happens if userspace tries to set more than =
+two.
+> It's not as obvious as you'd think as we have some drivers that use a f=
+ifo
+> approach so on setting the third event they push the oldest one out.
 
-Looks pretty good. Jonathan already covered most of it, a few additional 
-comments.
+Will do!
 
-On 4/1/23 02:10, Andreas Klinger wrote:
-> [...]
-> +struct mpr_data {
-> +	struct device		*dev;
-> +	void			*client;
+Is there any preference to any one approach?
 
-Any reason not to use `struct i2c_client` for the type?
+>=20
+> >=20
+> > The logic around suspend and resume had to be adjusted so that user
+> > space configuration don't get reset on resume. Instead, any configure=
+d
+> > adc auto wakeup gets enabled during probe.
+> >=20
+> > Enabling a threshold from userspace will overwrite the adc wakeup
+> > configuration set during probe. Depending on how you look at it, this
+> > could also mean we allow userspace to update the adc wakeup threshold=
+s.
+>=20
+> I'm not sure I read the code right, but can you end up enabling a wakeu=
+p
+> that wasn't previously present?  That seems likely something we should
+> not be doing after boot.
+>=20
+> One option here would be to make it either wakeup is supported, or even=
+ts
+> are supported.  I suspect no one uses the wakeup anyway so that shouldn=
+'t
+> matter much (+ you remove it in next patch - do that first and this cod=
+e
+> becomes more obvious).
+>=20
 
-> +	struct mutex		lock;
-> +	s32			pmin;
-> +	s32			pmax;
-> +	struct gpio_desc	*gpiod_reset;
-> +	int			irq;
-> +	struct completion	completion;
-> +	s64			channel[2] __aligned(8);
-> +};
-> +
-> [...]
-> +static int mpr_read_pressure(struct mpr_data *data, s64 *press)
-> +{
-> +	int ret, i;
-> +	u8 wdata[] = {0xAA, 0x00, 0x00};
-> +	s32 status;
-> +	int nloops = 10;
-> +	char buf[5];
-The tx buffer is `u8`, the rx buffer is `char`. This should be consistent.
-> +	s64 press_cnt;
-> +	s64 outputmin = 1677722;
-> +	s64 outputmax = 15099494;
-> +
-> +	reinit_completion(&data->completion);
-> +
-> +	ret = i2c_master_send(data->client, wdata, sizeof(wdata));
+My use case is for monitoring a volume wheel connected to one of the ADC
+inputs of the palmas chip. By off-loading the monitoring to a separate
+chip, the SoC can go to sleep and only wake up when the wheel is moved.
 
-The i2c family of transfer functions returns the number of bytes 
-transferred, this can be less than what you expect if you get an early 
-NACK. Its always good to check that all the data was transferred. E.g.
+It made sense for my use case, but I see your point. IIO events and wakeu=
+p
+triggers should be treated as separate things. I will look into defining
+the dev_pm_info of the device. Then userspace should be able to control
+wakeup from /sys/devices/.../power/wakeup.
 
-if (ret >= 0 && ret != sizeof(wdata))
+However, suspend and resume is a bit flaky on my board so testing might b=
+e
+too. If the board reacts and at least tries to resume should indicate tha=
+t
+the code works, no?
 
-    ret = -EIO;
+In any case, I will remove the old wakeup code first in v2.
 
-Same for the receive later on.
+>=20
+> A few trivial comments inline.
 
-[...]
+I will adress them in v2. They all made perfect sense.
+
+> >=20
+> > Signed-off-by: Patrik Dahlstr=F6m <risca@dalakolonin.se>
+>=20
+> > =20
+> > @@ -280,6 +326,9 @@ static int palmas_gpadc_read_prepare(struct palma=
+s_gpadc *adc, int adc_chan)
+> >  {
+> >  	int ret;
+> > =20
+> > +	if (palmas_gpadc_channel_is_freerunning(adc, adc_chan))
+> > +		return 0; // ADC already running
+>=20
+> /* */
+>=20
+> ...
+>=20
+> > =20
+> > +static int palmas_gpadc_get_high_threshold_raw(struct palmas_gpadc *=
+adc,
+> > +					       struct palmas_adc_event *ev)
+> > +{
+> > +	const int INL =3D 2;
+> > +	const int adc_chan =3D ev->channel;
+> > +	const int orig =3D adc->thresh_data[adc_chan].high_thresh;
+> > +	int val =3D orig;
+> > +	int gain_drift;
+> > +	int offset_drift;
+> > +
+> > +	if (!val)
+> > +		return 0;
+> > +
+> > +	val =3D (val * 1000) / adc->adc_info[adc_chan].gain;
+> > +
+> > +	if (!adc->adc_info[adc_chan].is_uncalibrated) {
+> > +		val =3D (val * adc->adc_info[adc_chan].gain_error +
+> > +		       adc->adc_info[adc_chan].offset) /
+> > +			1000;
+> > +		gain_drift =3D 1002;
+> > +		offset_drift =3D 2;
+> > +	}
+> > +	else {
+> > +		gain_drift =3D 1022;
+> > +		offset_drift =3D 36;
+> > +	}
+> > +
+> > +	// add tolerance to threshold
+> > +	val =3D ((val + INL) * gain_drift) / 1000 + offset_drift;
+> > +
+> > +	// clamp to max possible value
+> /* clamp .. */
+> val =3D min(val, 0xFFF);
+>=20
+>=20
+> > +	if (val > 0xFFF)
+> > +		val =3D 0xFFF;
+> > +
+> > +	return val;
+> > +}
+> > +
+> > +static int palmas_gpadc_get_low_threshold_raw(struct palmas_gpadc *a=
+dc,
+> > +					      struct palmas_adc_event *ev)
+> > +{
+> > +	const int INL =3D 2;
+> > +	const int adc_chan =3D ev->channel;
+> > +	const int orig =3D adc->thresh_data[adc_chan].low_thresh;
+> > +	int val =3D orig;
+> > +	int gain_drift;
+> > +	int offset_drift;
+> > +
+> > +	if (!val)
+> > +		return val;
+> > +
+> > +	val =3D (val * 1000) / adc->adc_info[adc_chan].gain;
+> > +
+> > +        if (!adc->adc_info[adc_chan].is_uncalibrated) {
+> > +            val =3D (val * adc->adc_info[adc_chan].gain_error -
+> > +		   adc->adc_info[adc_chan].offset) /
+> > +		    1000;
+> > +            gain_drift =3D 998;
+> > +            offset_drift =3D 2;
+> > +        }
+> > +        else {
+> > +            gain_drift =3D 978;
+> > +            offset_drift =3D 36;
+> > +        }
+> > +
+> > +	// calculate tolerances
+> /* */
+>=20
+> + I think this could do with more information on why a tweak is needed.
+>=20
+> > +	val =3D ((val - INL) * gain_drift) / 1000 - offset_drift;
+> > +
+> > +	// clamp to minimum 0
+>=20
+> /* */ for all comments.=20
+>=20
+> val =3D max(0, val); then comment may not be needed.
+>=20
+> > +	if (val < 0)
+> > +		val =3D 0;
+> > +
+> > +	return val;
+> > +}
+>=20
+> > +static int palmas_gpadc_reconfigure_event_channels(struct palmas_gpa=
+dc *adc)
+> > +{
+> > +	bool was_enabled =3D adc->wakeup1_enable || adc->wakeup2_enable;
+> > +	bool enable;
+> > +
+> > +	adc->wakeup1_enable =3D adc->event0.channel =3D=3D -1 ? false : tru=
+e;
+> > +	adc->wakeup2_enable =3D adc->event1.channel =3D=3D -1 ? false : tru=
+e;
+> > +
+> > +	enable =3D adc->wakeup1_enable || adc->wakeup2_enable;
+> > +	if (!was_enabled && enable)
+> > +		device_wakeup_enable(adc->dev);
+> > +	else if (was_enabled && !enable)
+> > +		device_wakeup_disable(adc->dev);
+> > +
+> > +	if (!enable)
+> > +		return palmas_adc_wakeup_reset(adc);
+> > +
+> > +	// adjust levels
+>=20
+> /* adjust levels */=20
+>=20
+> > +	if (adc->wakeup1_enable)
+> > +		palmas_adc_event_to_wakeup(adc, &adc->event0, &adc->wakeup1_data);
+> > +	if (adc->wakeup2_enable)
+> > +		palmas_adc_event_to_wakeup(adc, &adc->event1, &adc->wakeup2_data);
+> > +
+> > +	return palmas_adc_wakeup_configure(adc);
+> > +}
+> > +
+> > +static int palmas_gpadc_enable_event_config(struct palmas_gpadc *adc=
+,
+> > +	const struct iio_chan_spec *chan, enum iio_event_direction dir)
+> > +{
+> > +	struct palmas_adc_event *ev;
+> > +	int adc_chan =3D chan->channel;
+> > +
+> > +	if (palmas_gpadc_get_event_channel(adc, adc_chan, dir))
+> > +		/* already enabled */
+> > +		return 0;
+> > +
+> > +	if (adc->event0.channel =3D=3D -1)
+>=20
+> I'd add brackets for all legs of this if / else once one of them needs
+> it. Tends to end up more readable.
+>=20
+> > +		ev =3D &adc->event0;
+> > +	else if (adc->event1.channel =3D=3D -1) {
+> > +		/* event0 has to be the lowest channel */
+> > +		if (adc_chan < adc->event0.channel) {
+> > +			adc->event1 =3D adc->event0;
+> > +			ev =3D &adc->event0;
+> > +		}
+> > +		else
+> > +			ev =3D &adc->event1;
+> > +	}
+>=20
+> } else /*...
+>=20
+> > +	else /* both AUTO channels already in use */ {
+> > +		dev_warn(adc->dev, "event0 - %d, event1 - %d\n",
+> > +			 adc->event0.channel, adc->event1.channel);
+> > +		return -EBUSY;
+> > +	}
+> > +
+> > +	ev->channel =3D adc_chan;
+> > +	ev->direction =3D dir;
+> > +
+> > +	return palmas_gpadc_reconfigure_event_channels(adc);
+> > +}
+>=20
+> > +
+> > +static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
+> > +	const struct iio_chan_spec *chan, enum iio_event_type type,
+> > +	enum iio_event_direction dir, enum iio_event_info info, int val,
+> > +	int val2)
+>=20
+> Prefer parameters aligned just after (
+>=20
+> > +{
+> ...
+>=20
+>=20
+> > =20
+> >  static int palmas_gpadc_probe(struct platform_device *pdev)
+>=20
+> ...
+>=20
+> >  	/* set the current source 0 (value 0/5/15/20 uA =3D> 0..3) */
+> >  	if (gpadc_pdata->ch0_current <=3D 1)
+> >  		adc->ch0_current =3D PALMAS_ADC_CH0_CURRENT_SRC_0;
+> > @@ -610,20 +998,23 @@ static int palmas_gpadc_probe(struct platform_d=
+evice *pdev)
+> >  		return dev_err_probe(adc->dev, ret,
+> >  				     "iio_device_register() failed\n");
+> > =20
+> > -	device_set_wakeup_capable(&pdev->dev, 1);
+> >  	for (i =3D 0; i < PALMAS_ADC_CH_MAX; i++) {
+> >  		if (!(adc->adc_info[i].is_uncalibrated))
+> >  			palmas_gpadc_calibrate(adc, i);
+> >  	}
+> > =20
+> > +	device_set_wakeup_capable(&pdev->dev, 1);
+> >  	if (adc->wakeup1_enable || adc->wakeup2_enable) {
+> > -		device_wakeup_enable(&pdev->dev);
+> > -		ret =3D devm_add_action_or_reset(&pdev->dev,
+> > -					       palmas_disable_wakeup,
+> > -					       &pdev->dev);
+> > +		ret =3D palmas_adc_wakeup_configure(adc);
+> >  		if (ret)
+> >  			return ret;
+> > +		device_wakeup_enable(&pdev->dev);
+>=20
+> >  	}
+> > +	ret =3D devm_add_action_or_reset(&pdev->dev,
+>=20
+> Add a comment for this to explain why it might need disabling even if
+> it wasn't enabled above.  I think if you just drop wakeup support in
+> general that will be fine given we have no known users.
+>=20
+
+I'm one such user.
+
+>=20
+> > +				       palmas_disable_wakeup,
+> > +				       adc);
+> > +	if (ret)
+> > +		return ret;
+> > =20
+> >  	return 0;
+> >  }
+>=20
+>=20
+>=20

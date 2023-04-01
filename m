@@ -2,54 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5F846D31B7
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 17:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 753166D31D9
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 17:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229967AbjDAPAn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 11:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
+        id S229458AbjDAPHK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 11:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbjDAPAm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 11:00:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C4311FD15;
-        Sat,  1 Apr 2023 08:00:30 -0700 (PDT)
+        with ESMTP id S229543AbjDAPHK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 11:07:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DED51CBAE;
+        Sat,  1 Apr 2023 08:06:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B092608C4;
-        Sat,  1 Apr 2023 15:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4A4C4339C;
-        Sat,  1 Apr 2023 15:00:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 17554B80B8E;
+        Sat,  1 Apr 2023 15:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32960C433D2;
+        Sat,  1 Apr 2023 15:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680361229;
-        bh=tBvxCKnC7dkXLKyIXibho57HiZ0ol0RWN0+BvHDt4p0=;
+        s=k20201202; t=1680361616;
+        bh=eWcVLmXAyk7tSxPhC2OzEJekG3r3oryXZpDIeJwufmw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SAmu/zhFfEg1yLPiIxmglcKEg/mXs22MZ04hbs4Zm9XPMahPrRLvvLzgjOrxiAOOO
-         DHMplbNYPGfri5r+nnRb4J9BjgH6sKr8dEPQVMbtmlChhHPAdIfro4CovQXv+wxTdt
-         Qss9u+/ZXlX/8/JpjBRatzk4dnLuhjGFRWhI7pbnPA7YRhzdQcqiUZGrswJBBoshVt
-         RCAPBnKh6VpJZ4BQT+VG/vIH7ZySXcV5IAlaUG89OMuiNVnGQgdLIhPhHBOCc/4fVr
-         aadOXkiq4g5gqHZJuP0iIdQ4oCmwIKr9cpyQkc7Rtf5gAdlr41/yxfPcx5sNo4JQ0a
-         8mi6XpF0U7ofw==
-Date:   Sat, 1 Apr 2023 16:15:37 +0100
+        b=BJb0n7v17H5lXS37AtJDN1lUce8/JT8Xvt/YBpZAu8d9ah9pf/p6BbJraxG/8n/MH
+         lzV9RDthwlt05kF51HqhN3ssgKzbKbaxmJZY+1pPOWFch4HufpcZTHi53lJ2Y6R50h
+         4rbzhgpbuJQjO9S6zLmtKYBYlF4F96Z+zOl+Tttg1cYh+9ET9VT64hjRXJhIQh1M9k
+         49HDpGbb5eBusZFiE/nyqRLV/v/q/f86wXn8UK20pIx0GSno0sBoK50w7ZwHlXyy0k
+         +/XnvPgwDS9zV/z+xNuwbN0Lz9CKTSkqHHaRYzpLvrgaJuY4d25tnWMYCun+e8f6qi
+         vkSr1AXpKLM/w==
+Date:   Sat, 1 Apr 2023 16:22:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Denis Ciocca <denis.ciocca@st.com>, devicetree@vger.kernel.org,
-        Diederik de Haas <didi.debian@cknow.org>
-Subject: Re: [PATCH] dt-bindings: iio: st-sensors: Fix repeated text
-Message-ID: <20230401161537.687e6ff8@jic23-huawei>
-In-Reply-To: <CACRpkdbM_Dron8irHbP77MW2=Yq6o2MAUdYSTE1jcfSHsXZfQg@mail.gmail.com>
-References: <20230329074614.1037625-1-linus.walleij@linaro.org>
-        <23b2de4b-1198-bfcc-fd74-285da9af4fb3@linaro.org>
-        <CACRpkdbM_Dron8irHbP77MW2=Yq6o2MAUdYSTE1jcfSHsXZfQg@mail.gmail.com>
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Support Honeywell mpr
+ sensors
+Message-ID: <20230401162205.021bc413@jic23-huawei>
+In-Reply-To: <ZCf01btsJRXcIOce@arbad>
+References: <ZCf01btsJRXcIOce@arbad>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -59,31 +58,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 29 Mar 2023 10:39:08 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Sat, 1 Apr 2023 11:09:41 +0200
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> On Wed, Mar 29, 2023 at 10:25=E2=80=AFAM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
->=20
-> > Please drop the autogenerated scripts/get_maintainer.pl CC-entries from
-> > commit msg (Jonathan's, Lars', Rob's, mine, DT list). There is no single
-> > need to store automated output of get_maintainers.pl in the git log. It
-> > can be easily re-created at any given time, thus its presence in the git
-> > history is redundant and obfuscates the log.
-> >
-> > If you need it for your own patch management purposes, keep it under the
-> > --- separator. =20
->=20
-> Oh yeah I've seen that people do this these days, just (old) bad habits.
->=20
-> I am trying to use b4 for this going forward, it always does the right th=
-ing.
->=20
-> Thanks!
-> Linus Walleij
+> Honeywell mpr is a pressure sensor family. There are many different
+> types with different pressure ranges. The range needs to be set up in
+> the dt. Therefore new properties honeywell,pmin and honeywell,pmax are
+> introduced.
+> 
+> Add dt-bindings.
+> 
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> ---
+>  .../bindings/iio/pressure/honeywell,mpr.yaml  | 74 +++++++++++++++++++
+>  1 file changed, 74 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+> new file mode 100644
+> index 000000000000..d6fad6f841cf
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+> @@ -0,0 +1,74 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mpr.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Honeywell mpr pressure sensor
+> +
+> +maintainers:
+> +  - Andreas Klinger <ak@it-klinger.de>
+> +
+> +description: |
+> +  Honeywell pressure sensor of type mpr. This sensor has an I2C and SPI interface. Only the I2C
+> +  interface is implemented.
+> +
+> +  There are many subtypes with different pressure ranges available. Therefore the minimum and
+> +  maximum pressure values of the specific sensor needs to be specified in Pascal.
+> +
+> +  Specifications about the devices can be found at:
+> +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/  \
+> +      pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/          \
+> +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
 
-Applied with suggested tweaks.
+Ouch. Anyone want to suggest to honeywell that they add some short paths for this stuff!
 
-Thanks,
+Please add regulator for VDD.  May well be a fixed reg on the boards you care about, but
+it's still good document it's existence.
 
-Jonathan
+> +
+> +properties:
+> +  compatible:
+> +    const: honeywell,mpr
+> +

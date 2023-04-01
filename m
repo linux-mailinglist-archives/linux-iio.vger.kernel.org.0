@@ -2,120 +2,172 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 228506D3125
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 15:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3996D3135
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 16:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbjDANtw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 09:49:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37618 "EHLO
+        id S230088AbjDAOGp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 10:06:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230025AbjDANts (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 09:49:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E3A01C1F9
-        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 06:49:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BB6460B5C
-        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 13:49:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87440C433EF;
-        Sat,  1 Apr 2023 13:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680356987;
-        bh=Bglj6s3hC2A4Jat0iWcKmXuE9VRM7vxUoKqNUIt6jbU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FSm+hfJpWo8ul/1DnYBxTueeOLd/NMYMH6EEJaOCUqqehZiKxwpJHk+CHJb5Wufyq
-         YrP5YK5XSxelo3mW6RylnbM5JrilmCoadjeoA8hVD/QLQVoSAq/mSQ6ucMKN26nEj3
-         CO4ln81T0tfAqWwwXmV8yN6Y8PHnr5zq20Yhh5UJ9fhfjHkpdLZ+CIyI/lSYGzzV58
-         uMzxuYYx8k1Ha4jG119Da2A+6c4FYh/d1Y6chm7qse61g6C49a6Cl/HwmLy6t8I4AY
-         7dH4pE1YtuzhScKWjNH/+8qX/QeRTGkiCpt4/V5oVaWIhGoBcWpK5vAF8Vg2qsjd8Y
-         kIzzH95oHSnhg==
-Date:   Sat, 1 Apr 2023 15:04:55 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     Sean Nyekjaer <sean@geanix.com>, <lars@metafoo.de>,
-        <alexandre.torgue@foss.st.com>, <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [Linux-stm32] [PATCH 1/3] iio: adc: stm32-adc: warn if dt uses
- legacy channel config
-Message-ID: <20230401150455.3e426d1e@jic23-huawei>
-In-Reply-To: <56c019d4-832e-17e1-19f8-7d8bd927c1bb@foss.st.com>
-References: <20230327083449.1098174-1-sean@geanix.com>
-        <56c019d4-832e-17e1-19f8-7d8bd927c1bb@foss.st.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229519AbjDAOGo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 10:06:44 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0DCB474
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 07:06:43 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id i6so30324363ybu.8
+        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 07:06:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680358002;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3wPDaCqdxNaWMMs3wQlLt6E3mfPbGjDIw/Hm+74bU44=;
+        b=LW3TJoTv75yQ65vG5bWQB/oLy5fdK6HkW+bxvYAgHVgK2mAkrWFOUh9BHkm9q4dr+J
+         1HCRe+Ej45FDpoI/sefcKKGUgvlV1JSg0092/7aWaQbU4tLdv6YjVwQpLekCxWK9Nh7Q
+         fcV2sljSIrK5njcXAhNgQ1ZMF0PympZo4sd5xTpqfMpYvJU4aFthlyid9uT+2cOzO+SA
+         RcZBN4kXsuYk7TdXlnBpEuRY9Z/M3ZeRJfioocULmsYdhuPkQxNlVWkMC8ZpTC0QzHgO
+         aS2ctw30oT57REadH7//SfPjaANaWSFzk59xf80akaOyfjGzALYxkrgpBmVg1ISbwJNl
+         +umA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680358002;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3wPDaCqdxNaWMMs3wQlLt6E3mfPbGjDIw/Hm+74bU44=;
+        b=MvxLtMwDssLesV99YpPp0xuSOBZqTQfMqSLFacVOEk4WSgluniNKzN5c7lvm17kOn2
+         VQOjm6DHZLfwPc33eTJUY+kB0Xd3A/8XHBoxrINHQSjs4Tt8XSXzbA6qrg7fUVjwx+ty
+         kd6QbxsZWDr9RUQ/35A0IUFKJjNfBFfnUfPlCEu50V0PctpNoyMcscO7C8gLxUwUioP6
+         crDIZ22WXMLNHatRxEoJjamGOPiFTRAUzqTqI0iTFCbExNWHy4ruCLvuk6F+RU+fnq8Q
+         PTr3Bjzmgq6N4UHTMdH0enAXdMoZF0cAa39rFmsaprEfrOMgSqz8g8/bVgqtw8W22QR7
+         yJ1w==
+X-Gm-Message-State: AAQBX9dOlABI0rEgHlfwryFj8dd/aO4/X1YwZB2Gobv7ZBX56qzrf+bS
+        CySABBTFZgSAQY5a0U99+no0Y3g9pEN5vUQE8O1aZQ==
+X-Google-Smtp-Source: AKy350ZQ1/tJ4mGhUx5o70JfOu6p/yd+B/eNIRi1NomrtEBRPj0mD4MzyXimvi7YlHQL5AcPJtabFg==
+X-Received: by 2002:a05:6902:1029:b0:b3e:dbf8:ba34 with SMTP id x9-20020a056902102900b00b3edbf8ba34mr31574597ybt.36.1680358002139;
+        Sat, 01 Apr 2023 07:06:42 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id x8-20020a056902102800b00b7767ca746asm1239823ybt.7.2023.04.01.07.06.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Apr 2023 07:06:40 -0700 (PDT)
+Date:   Sat, 1 Apr 2023 10:06:38 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: addac: stx104: Migrate to the regmap API
+Message-ID: <ZCg6bhkxGKmkMloM@fedora>
+References: <cover.1679867815.git.william.gray@linaro.org>
+ <4ebc1b6b609a086846420954b893e914fd395384.1679867815.git.william.gray@linaro.org>
+ <ZCGBIAvr7OQLwNXv@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/yW4sqb6LeVhtg6s"
+Content-Disposition: inline
+In-Reply-To: <ZCGBIAvr7OQLwNXv@smile.fi.intel.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 30 Mar 2023 17:30:32 +0200
-Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 
-> On 3/27/23 10:34, Sean Nyekjaer wrote:
-> > Since nearly all stm32 dt's are using the legacy adc channel config,
-> > we should warn users about using it.
-> > 
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > ---
-> >  drivers/iio/adc/stm32-adc.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> > index 1aadb2ad2cab..d8e755d0cc52 100644
-> > --- a/drivers/iio/adc/stm32-adc.c
-> > +++ b/drivers/iio/adc/stm32-adc.c
-> > @@ -1993,6 +1993,8 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
-> >  	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
-> >  	int num_channels = 0, ret;
-> >  
-> > +	dev_warn(&indio_dev->dev, "using legacy channel config\n");
-> > +  
-> 
-> Hi Sean,
-> 
-> I'd recommend to avoid adding a dev_warn() on a per driver basis, for
-> depreacted DT properties. Still I'm not sure if there's some policy in
-> this area.
-> 
-> IMHO, deprecated properties should be checked by using dt tools
-> (dt_binding_check / dtbs_check or other mean?). But I have no idea if
-> this is going to report warnings and when. Purpose would be to avoid
-> introducing no dts files with these. As commented by Olivier on Patch 3,
-> we've some downstream patches to adopt the generic bindings (not
-> upstream 'yet').
-> 
-> Another downside is regarding backward compatibility. In case an old dtb
-> is used to boot the kernel, as long as there's no functionality loss,
-> I'd advise not to use any warning here. That's a valid use of an old dt.
-> 
-> In all case, thanks for pointing issues (e.g. Patch 2 & 3), regarding
-> this patch, I'd nack adding this warning. Please drop this change if you
-> re-submit or turn this into a dev_dbg().
-> 
+--/yW4sqb6LeVhtg6s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Agreed. Better to change to dev_dbg().
+On Mon, Mar 27, 2023 at 02:42:24PM +0300, Andy Shevchenko wrote:
+> On Sun, Mar 26, 2023 at 06:05:57PM -0400, William Breathitt Gray wrote:
+> > The regmap API supports IO port accessors so we can take advantage of
+> > regmap abstractions rather than handling access to the device registers
+> > directly in the driver.
+>=20
+> ...
+>=20
+> > +static const struct regmap_config aio_ctl_regmap_config =3D {
+> > +	.name =3D "aio_ctl",
+> > +	.reg_bits =3D 8,
+> > +	.reg_stride =3D 1,
+> > +	.reg_base =3D STX104_AIO_BASE,
+> > +	.val_bits =3D 8,
+> > +	.io_port =3D true,
+> > +	.max_register =3D 0x11,
+>=20
+> Not sure if define would be better for this, so it will be grouped with
+> register offset definitions. (Same for the other configs)
 
-Other two patches look good to me, but will leave a bit more time for others
-to comment before I pick them up.  As a small side note. They are fixes and
-this first patch is not, so they should have been before it in the series
-so I can route them to mainline faster than the non fix.
+Actually, I'll remove this max_register line because it's superfluous
+when we define both rd_table and wr_table.
 
-Jonathan
+However, I explain my reasoning for hardcoding the max_register value in
+a response to the ebc-c384_wdt watchdog driver conversion [0]. To
+summarize, it's not immediately obvious whether a FOO_REGISTER comes
+before or after a BAR_REGISTER so someone reading the code would need to
+verify the define; there are cases as well, such as GPIO drivers, where
+the only the base register is defined but the max register would be an
+extent from there; and finally, a reviewer would ultimately need to
+check against the datasheet to verify that the max_register is actually
+at the named defined register location, whereas it is far easier to
+lookup the address range in the datasheet rather than named registers.
+These things make hardcoding max_register to be not only clearer code to
+read and verify but also less likely to be set to the wrong address.
 
-> Best Regards,
-> Fabrice
-> 
-> >  	ret = device_property_count_u32(dev, "st,adc-channels");
-> >  	if (ret > adc_info->max_channels) {
-> >  		dev_err(&indio_dev->dev, "Bad st,adc-channels?\n");  
+[0] https://lore.kernel.org/all/ZAyY3VGlo4N4SLZQ@fedora/
 
+> > +	.wr_table =3D &aio_ctl_wr_table,
+> > +	.rd_table =3D &aio_ctl_rd_table,
+> > +	.volatile_table =3D &aio_ctl_volatile_table,
+> > +	.cache_type =3D REGCACHE_FLAT,
+> > +};
+>=20
+> Do we need regmap lock?
+
+I think the regmap lock is opt-out, so I don't think we need to set an
+custom lock callback for the regmaps in this driver.
+
+Jonathan, do read_raw() and write_raw() require explicit locking?
+
+> > +		err =3D regmap_read(priv->aio_ctl_map, STX104_ADC_CONFIGURATION, &ad=
+c_config);
+> > +		if (err)
+> > +			return err;
+> > =20
+> > -		*val =3D 1 << gain;
+> > +		*val =3D 1 << u8_get_bits(adc_config, STX104_GAIN);
+>=20
+> Maybe not for this change, but why not BIT()?
+
+This probably should have been BIT(gain) when it was originally
+introduced. I'm avoiding it here just to keep this migration patch more
+straight-forward to review; but perhaps I'll make this change afterall
+in a v4 submission.
+
+> >  	case IIO_CHAN_INFO_RAW:
+> >  		if (chan->output) {
+>=20
+> You can decrease indentation by
+>=20
+> 		if (!chan->output)
+> 			return -EINVAL;
+>=20
+> here.
+
+Sure I can make this change as well in a v4.
+
+William Breathitt Gray
+
+--/yW4sqb6LeVhtg6s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZCg6bgAKCRC1SFbKvhIj
+K9ZyAQDUzIF5/JKTWriFyF4UIAK/m3LufltaEhYoY2e9UMm7HAEAjjbhh8T6QNrn
+xZDGS5LJrKuhlUrkheaVBPHtp8N1sAs=
+=814R
+-----END PGP SIGNATURE-----
+
+--/yW4sqb6LeVhtg6s--

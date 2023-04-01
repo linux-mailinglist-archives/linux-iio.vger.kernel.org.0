@@ -2,59 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9C26D2F6C
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 11:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E9C6D2F73
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 11:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjDAJi1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 05:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53436 "EHLO
+        id S229676AbjDAJmV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 05:42:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjDAJi0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 05:38:26 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 851993A97
-        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 02:38:25 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id y14so24728460wrq.4
-        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 02:38:25 -0700 (PDT)
+        with ESMTP id S229536AbjDAJmU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 05:42:20 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B07D503
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 02:42:19 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id h17so24701022wrt.8
+        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 02:42:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680341904;
+        d=linaro.org; s=google; t=1680342137;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7y4QObQjB8Gj761x2HaPGgKP0RKXZVV70/mLt0he7Vg=;
-        b=k7v4l0o0N7KDt8NrpBfKXc5a/hZScb4HmLJYiVpO575TRB+vv/AtIUb5dUGLW6gddw
-         Sj8JHt0j/7qKQuReJMPJ0XMQ3OOwg11BzxNYj/VbaF50eeaMQmQcHji9/eL6LPZjKzwR
-         n8cA8jZlTl+Ej0NdQQ1wyQztA+ar+n4DKwe/05Op28BMZpkDtudyJ9L6NxuMuRZx9FQE
-         LXBVSax2ClH92U7vsxhJUJh3p433UrKzGPBVMfITwxOjhV4n+aNY9xDeKbQcVfjUxIPt
-         JvbHb6nTpq7IfkX+8S3mbqZKHyqCa0mLPwhtRc5GqAfvARQRxaNDtLe3uQOm1U2nINcv
-         893w==
+        bh=Fu9gPLfW7KtEv2IIXvaOXu6pnvnnIoGSqbS5YRQSMzA=;
+        b=ucK0Cs/61lk20Ig8uaid8/nFHg/p8O1F9ptRB99lJXNPHCCkL6emOD9PdVgrHSPI2+
+         ZS25kl5VhzjR3qpLixn5UWt7LdllMyYcIF/bCdYrXmRRd6Rxocg2l1ZeRzY3aOtcMaWT
+         XHb25UeW++5WBKdRRG8uvByqoqnzCdcKQfvz6RR7Z0Nqm5A4h27XeV6WPB1mbvgiY+2U
+         zp98QeXst9VUm/uZEurKOyiQmTedV24uHTRVGFl67pUqxE89EyvfJa/YUbddEzgK6pYs
+         +hxOkpWzrL+yaiLKIMDnNWcH+19dt4rg1nY0dZq5wvjkWAC3PVfLA/+5C+d5GKUlDdw+
+         XNJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680341904;
+        d=1e100.net; s=20210112; t=1680342137;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7y4QObQjB8Gj761x2HaPGgKP0RKXZVV70/mLt0he7Vg=;
-        b=foLldjmN9y5Vjcjajf4LFuFSsVSnGISbHS8YVS6cgmpBUuruqahTJm7X5dDZD5Zce9
-         u64BL7wIoyr5WwOLZDsKuOf7nAHyKB/2SUmIebvSURlfHsFaAW3Gy+/xklPElwEElMF/
-         JTVOx60dtegBzX7Y0WOu7CyJooMjTcbJZFvJsPMsFUsrLVOmvmQzTGxl469XWZTmfHA2
-         jn/f8FFJsz1otBh7W8QD/GmiIIok/fIV8sGK2v+1laKtwIcLAiDgWNIDv5r7FUKYoTiq
-         phQJAMIBo/q4FKO6YWlgGmKmChLyyyV87lZle3558TWgvAJTCUaJQhkPUogUH6+YaFNW
-         STFw==
-X-Gm-Message-State: AAQBX9f8zXpdh7VzM3exWhYXaaUDY0s4ODrAzaQBkECyDnVhoa6baBhF
-        izk2aG+63MWLUnmkpu2znqyPyw==
-X-Google-Smtp-Source: AKy350YT94N4vYS2YYwzi3p7MzDvppiiKQEgYsVoO99YGOnea2g2/EBTUwNszOjH2rMTWeX+hAQR+A==
-X-Received: by 2002:adf:ff85:0:b0:2e4:aa42:787e with SMTP id j5-20020adfff85000000b002e4aa42787emr6679300wrr.51.1680341904016;
-        Sat, 01 Apr 2023 02:38:24 -0700 (PDT)
+        bh=Fu9gPLfW7KtEv2IIXvaOXu6pnvnnIoGSqbS5YRQSMzA=;
+        b=7Q713yey1BTznRw5N1feTZSt7sPWBp0hTUB20+QBT75sgQl/H9gBGcrJ67LR4VVf0i
+         BvQGZlas47sFFDF2J3BxiYSXKQTO6C1cRIlWKKyBUa4GrcAsCAB8Sgu9twLw+9PxMAyd
+         M5rk0P7MddBFMxhv7MMRVeK2BJyT7uV808tfUIxBQBf/EoBtg0wd3hxmYxC6IggiF/i4
+         pDesMtUS5lHObD413HLMMF+5JBxGWetOknByPcYC1io+40OAKgJ30kCkJoSK8LmKCsuY
+         NuB9JVBgntbUO58kkG5C945chTdtQDYXrlaBeEoEO7VLPZ7mrNaOt4FddXmIFcSqFlum
+         Boyg==
+X-Gm-Message-State: AAQBX9fJHJDDAKaa7obziiDO0kh95t42UsX096iTNJHJTWDqEFxxs2+7
+        1A3xbVgXjCM04vl0QwRXcdcMsQ==
+X-Google-Smtp-Source: AKy350ZNywWmraefRumCeoc7z8qpk9hbW1aIxktKLZVn7vMJFr6GDtmm5oKw4VPswANZcnL/llP7ow==
+X-Received: by 2002:adf:fd51:0:b0:2ce:adda:f45a with SMTP id h17-20020adffd51000000b002ceaddaf45amr21986074wrs.62.1680342137511;
+        Sat, 01 Apr 2023 02:42:17 -0700 (PDT)
 Received: from [172.50.14.32] (5-226-109-132.static.ip.netia.com.pl. [5.226.109.132])
-        by smtp.gmail.com with ESMTPSA id m17-20020adfe0d1000000b002d1e49cff35sm4440930wri.40.2023.04.01.02.38.23
+        by smtp.gmail.com with ESMTPSA id h14-20020adffd4e000000b002c71a32394dsm4404362wrs.64.2023.04.01.02.42.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Apr 2023 02:38:23 -0700 (PDT)
-Message-ID: <afe6b710-9f95-e225-27ca-655b104939c9@linaro.org>
-Date:   Sat, 1 Apr 2023 11:38:22 +0200
+        Sat, 01 Apr 2023 02:42:16 -0700 (PDT)
+Message-ID: <27a1d0f4-3a02-c7fd-36a0-07729a136e20@linaro.org>
+Date:   Sat, 1 Apr 2023 11:42:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH 0/3] Support Honeywell mpr pressure sensor
+Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Support Honeywell mpr
+ sensors
 Content-Language: en-US
 To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org
@@ -64,9 +65,9 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Angel Iglesias <ang.iglesiasg@gmail.com>,
         linux-kernel@vger.kernel.org
-References: <ZCf0wM4RT5bFWlhF@arbad>
+References: <ZCf01btsJRXcIOce@arbad>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <ZCf0wM4RT5bFWlhF@arbad>
+In-Reply-To: <ZCf01btsJRXcIOce@arbad>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -80,13 +81,103 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 01/04/2023 11:09, Andreas Klinger wrote:
-> Support Honeywell mpr pressure sensor.
+> Honeywell mpr is a pressure sensor family. There are many different
+> types with different pressure ranges. The range needs to be set up in
+> the dt. Therefore new properties honeywell,pmin and honeywell,pmax are
+> introduced.
 > 
-> This patch series adds support for Honeywell mpr pressure sensors. There are a variety of sensors
-> with different pressure range supported. The pressure range needs to be set up in the device tree as
-> minimum and maximum pressure in Pascal.
+> Add dt-bindings.
 > 
-Your threading is missing thus patches are scattered all over the inbox.
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> ---
+>  .../bindings/iio/pressure/honeywell,mpr.yaml  | 74 +++++++++++++++++++
+>  1 file changed, 74 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+> new file mode 100644
+> index 000000000000..d6fad6f841cf
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+> @@ -0,0 +1,74 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mpr.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Honeywell mpr pressure sensor
+> +
+> +maintainers:
+> +  - Andreas Klinger <ak@it-klinger.de>
+> +
+> +description: |
+> +  Honeywell pressure sensor of type mpr. This sensor has an I2C and SPI interface. Only the I2C
+
+Doesn't look wrapped according to Linux coding style (see Coding style).
+
+> +  interface is implemented.
+> +
+> +  There are many subtypes with different pressure ranges available. Therefore the minimum and
+> +  maximum pressure values of the specific sensor needs to be specified in Pascal.
+> +
+> +  Specifications about the devices can be found at:
+> +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/  \
+> +      pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/          \
+> +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+
+Lines are not continued, so drop \
+
+> +
+> +properties:
+> +  compatible:
+> +    const: honeywell,mpr
+
+You need device specific compatible, not some generic one. Rename also
+then the filename (should match the compatible).
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description:
+> +      Optional GPIO for resetting the device. If not present the device is not resetted.
+
+Are you sure it is wrapped properly?
+
+> +    maxItems: 1
+> +
+> +  honeywell,pmin:
+> +    description:
+> +      Minimum pressure value the sensor can measure in pascal.
+
+Use standard unit suffix:
+https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  honeywell,pmax:
+> +    description:
+> +      Maximum pressure value the sensor can measure in pascal.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+
+Same.
+
+Why these values are suitable for DT? Does it depend on type of sensor
+(thus it is implied from compatible) or on system setup?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - honeywell,pmin
+> +  - honeywell,pmax
+> +
+
 
 Best regards,
 Krzysztof

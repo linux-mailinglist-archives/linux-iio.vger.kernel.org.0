@@ -2,107 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 791236D30A4
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 14:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18DE26D3100
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 15:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229770AbjDAMGf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 08:06:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36030 "EHLO
+        id S229826AbjDANXY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 09:23:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjDAMGe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 08:06:34 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 522A193F7;
-        Sat,  1 Apr 2023 05:06:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680350793; x=1711886793;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GhN/zLgZPhjtxMWToJxXXsvcAbSsvRGheQVMGCpow7w=;
-  b=bHnXxtjecow8+mruu2cNG0S9yw7pyfRp5OwFbNv8i+HteKW6dSgl8i3x
-   LzgBURD+01a9ktr6zzmyb7tNofDniL9vT5g2BpKoWZ1ZvlE703Z1BmsoJ
-   tK5eymx0Va3op25/a9QECcnAzCTsSuMg1jz4oOEYRKLlYM48U5rbIgGHM
-   wHJFfeCQCnd09EmTIiqiFYbeC8k4N2ylnhqQufOkczXAfk+Y3yyVUbsyA
-   9c8pGJcwamC1RFdHkuU1oZrYD4UHkgKIlr9+doPTEu7jmlIxmuJAX+vdz
-   EARE338GZMbZoFq0E7HPmYbhUq9FPpPCxmA7sVxGiP0VXoi/4ZuRyfUJT
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10666"; a="427927556"
-X-IronPort-AV: E=Sophos;i="5.98,310,1673942400"; 
-   d="scan'208";a="427927556"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2023 05:06:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10666"; a="859651603"
-X-IronPort-AV: E=Sophos;i="5.98,310,1673942400"; 
-   d="scan'208";a="859651603"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 01 Apr 2023 05:06:26 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pia01-000MkP-1w;
-        Sat, 01 Apr 2023 12:06:25 +0000
-Date:   Sat, 1 Apr 2023 20:05:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229807AbjDANXY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 09:23:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150491E73D;
+        Sat,  1 Apr 2023 06:22:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 81BF6B80B4B;
+        Sat,  1 Apr 2023 13:22:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB37BC433EF;
+        Sat,  1 Apr 2023 13:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680355366;
+        bh=Ra/4hhwYWCbPyqLnOztSvMODqSrn8z/BivmlaVY6Q7A=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dfEJPBrM9UHPPWBWYkNQ5cfFMSycRxXTLablSZTXNPWnzi0KyEjqzlvaE6vNkKxuz
+         I3wPeZNuwPbLWfYRFdyOA+db0I8uWBuFX9luy9Uv76ArvU7qlaNlzJVkSfaUMuOcWm
+         x13+fCHO6kPPUDl4B+cBJVQ4y/wmO1eFFTObGVWE9poQe0cL1t9d32kYgXl2hQGU3N
+         u1h2RiHTTt/Bf41zdcRen8Ld5rvCAM8d6W/ASDTuirFRzz9cVWp/9o8hSA6Ou20Puw
+         98v+n+94oGvJNlfdqZDVQtPt8mzWohjXDOagS1FlyKdgCf+S2zTep8Yb22E1fnTQlR
+         bVUXq39e9yqbg==
+Date:   Sat, 1 Apr 2023 14:37:54 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dan Carpenter <error27@gmail.com>
+Cc:     Mike Looijmans <mike.looijmans@topic.nl>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: pressure: Honeywell mpr pressure sensor
-Message-ID: <202304011957.pKSWQHyS-lkp@intel.com>
-References: <ZCf085W4XL2PtQf6@arbad>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1100: fix error code in probe()
+Message-ID: <20230401143754.1e561d0b@jic23-huawei>
+In-Reply-To: <36fa2aeb-f392-4793-8b38-ae15514033c8@kili.mountain>
+References: <36fa2aeb-f392-4793-8b38-ae15514033c8@kili.mountain>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZCf085W4XL2PtQf6@arbad>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andreas,
+On Thu, 23 Mar 2023 18:23:56 +0300
+Dan Carpenter <error27@gmail.com> wrote:
 
-I love your patch! Yet something to improve:
+> This code has a copy and paste bug so it accidentally returns
+> "PTR_ERR(data->reg_vdd)" which is a valid pointer cast to int. It
+> should return "ret" instead.
+> 
+> Fixes: 541880542f2b ("iio: adc: Add TI ADS1100 and ADS1000")
+> Signed-off-by: Dan Carpenter <error27@gmail.com>
+Applied to the togreg branch of iio.git as this driver is not yet upstream.
 
-[auto build test ERROR on jic23-iio/togreg]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mpr-sensors/20230401-171226
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/ZCf085W4XL2PtQf6%40arbad
-patch subject: [PATCH 2/3] iio: pressure: Honeywell mpr pressure sensor
-config: m68k-randconfig-r023-20230401 (https://download.01.org/0day-ci/archive/20230401/202304011957.pKSWQHyS-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/6a49dae45811d8a644c56dc18b6cdbc6ea67df98
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mpr-sensors/20230401-171226
-        git checkout 6a49dae45811d8a644c56dc18b6cdbc6ea67df98
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash
+Jonathan
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304011957.pKSWQHyS-lkp@intel.com/
+> ---
+>  drivers/iio/adc/ti-ads1100.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ti-ads1100.c b/drivers/iio/adc/ti-ads1100.c
+> index 6a478efb108b..6b5aebb82455 100644
+> --- a/drivers/iio/adc/ti-ads1100.c
+> +++ b/drivers/iio/adc/ti-ads1100.c
+> @@ -344,7 +344,7 @@ static int ads1100_probe(struct i2c_client *client)
+>  
+>  	ret = regulator_enable(data->reg_vdd);
+>  	if (ret < 0)
+> -		return dev_err_probe(dev, PTR_ERR(data->reg_vdd),
+> +		return dev_err_probe(dev, ret,
+>  				     "Failed to enable vdd regulator\n");
+>  
+>  	ret = devm_add_action_or_reset(dev, ads1100_reg_disable, data->reg_vdd);
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "__divdi3" [drivers/iio/pressure/mpr.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests

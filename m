@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C839F6D3487
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 00:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E658B6D3489
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 00:08:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjDAWIS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 18:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
+        id S230209AbjDAWIT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 18:08:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbjDAWIP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 18:08:15 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43730FF0D
+        with ESMTP id S230195AbjDAWIQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 18:08:16 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E927AB6
         for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 15:08:14 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 20so26677361lju.0
+Received: by mail-lj1-x22e.google.com with SMTP id e9so11382377ljq.4
         for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 15:08:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680386892;
+        d=linaro.org; s=google; t=1680386893;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AggToq1LerLWW8VVOtxwYKPnVhm1iAj3sd5znRZbW7E=;
-        b=b3TISBuujfIMLfND7fbsWNW3TLzKR+YacZ6TIAbqjKcaa9vbFl+Lo41HZKzBzFv9Q3
-         JWnOor3VFJqrGoQiwjhUrLkC2pnCfKV3bhuD5QjX1ACrX2ls2NBGkW42WOZi6H0kI8Ol
-         T/h/NnzLHnPszfzTnbi90Sa2yAx9hP6UoXPFZR5iysNkgaOjfo86IzBWvAk1XyMJw52r
-         XSuJmeM+ZsfVxAbHM2ObZd6f5sozQh/TZLI0RCRmtrWPkUIFdHJvODe3CmFGhzuHtnuq
-         VT232aQkNtJBsvaPg7OjFmpyn9m741+ArVLddbOOD/bb7rFyOIwq1TNmsJhhUJ99hkbI
-         5ViQ==
+        bh=nFzU/RoZm6eZTzjO9SylWYXHFKUfHNnvYIBQnLL1hz4=;
+        b=OLQ5z9ab/AYzJPGYpJPW7PIEuthr4UqQQJOmecbXz44JAr6M6SwvXp4Nbeg234uusD
+         BuACEu2ROamWJ7A7MSxbbY1go87El2ldsV9FqlA3O7XC1UkkuboJDaTrNQDs24lCg2Fe
+         QKf9n2XPz12uVt7M0I2EnuF8HL6S19d9TiJklJcUoWPlF2zaNwDjALejNJfQwlMWWS47
+         ukxKt1qXSQ4jnNwn14IcNN/dlUyWGxl9elncOgv0/iTVq/1zlh1/9h9qwCgDn4sDY0rJ
+         pGdLl9LTAxetb9FOnIVzcHNUeZ+nqq6tgC6pb221ml+MvbllmiDa00opuzpvVSs12fxa
+         /rkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680386892;
+        d=1e100.net; s=20210112; t=1680386893;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AggToq1LerLWW8VVOtxwYKPnVhm1iAj3sd5znRZbW7E=;
-        b=5m9rrE1NXGZRU43VxHeW0u7+IIey/ki4JqL2RSXQzpRsq3iGnN0od2EEi7KPWI/dmH
-         FIDHsXGUjMu/ErmcbyQ4LleEcjDBSbGNqoV40jClfezagHOgxBAOu4XwIpIUT64vM84C
-         j47b47NsRaOmB3Jrq1cLI2pV/JlHifhyTkalVuuDDh58IvvllZhhVXzkyZK4FxhG6Z3i
-         vgFMaWbqOYe/e5ckiAXYARmoXK75ImfLODjlWjoUAXZeoEpuIwLkEhZ+MHRieexgKxCN
-         UT3SloZB78lrEC9CSlbRpY7Ql+GyKar+2SitSVd+mfMwMdDEURkmXJDHdTlPq2jaxyk2
-         eOiw==
-X-Gm-Message-State: AAQBX9c/gCldsNcOIm+AMiNGrjmwBNj9whMzH6aIVPGb6ROv93FPq6/U
-        5v9mjILPqo4CoatUBEoWvEQqWw==
-X-Google-Smtp-Source: AKy350aiQGt1kwAWWmJxnSdDFlBt+Wu2X9kjyZezW2VbG9k6HLGbnlhvPf7VznQkv4uihVW8Nqz33w==
-X-Received: by 2002:a2e:988a:0:b0:29b:d235:2c50 with SMTP id b10-20020a2e988a000000b0029bd2352c50mr9219932ljj.25.1680386892586;
-        Sat, 01 Apr 2023 15:08:12 -0700 (PDT)
+        bh=nFzU/RoZm6eZTzjO9SylWYXHFKUfHNnvYIBQnLL1hz4=;
+        b=vH+87HgIwysQUyP++0CDKpYG/sDzRz6vK35obXMih+VhSqjpA3LiAwnpxD/w3HsqZZ
+         v+HIuHbuROtGUff1Ag7tcMOukJ8GOxK+R5cqaa7yg1prSszbkyeOA6legu5ydcuuxMx6
+         7fq1fJKqzGwUJ1TIbc/Tnt9BK5qDJUOA+FM8jjJD9sCl0tJCmZnBuLqsS/5l7oQZx3Aq
+         jPDCvMjF0q8LAqiISFAApwQncbViBen4TCPxJjOIun6Edt2vyoFgt8TllUu2P62UNSvd
+         fW+byrpBAA5gp0lyt+DmOlFr1Qp7b6asaXVzGN0zbetNaal+lkvWLMK23BUBj3+aqHfp
+         X4Dw==
+X-Gm-Message-State: AAQBX9dOIqipYkygnLXnnCPBPDmCumm7R78m6fI8SL5t07w9TFr9kfuA
+        u2Ly6K5+qE21xCuJtAxP28yJ7w==
+X-Google-Smtp-Source: AKy350YfduvZUjFyAhN1cJuc78kmuFkWFASvlJSIoiIOn9AjnzwJB5UoUNwosWtAYG0ORgrgazhgTQ==
+X-Received: by 2002:a2e:82d5:0:b0:2a6:16b5:c656 with SMTP id n21-20020a2e82d5000000b002a616b5c656mr3094350ljh.46.1680386893213;
+        Sat, 01 Apr 2023 15:08:13 -0700 (PDT)
 Received: from umbar.unikie.fi ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id k17-20020a2e9211000000b0029bd4d0d3f2sm997590ljg.33.2023.04.01.15.08.11
+        by smtp.gmail.com with ESMTPSA id k17-20020a2e9211000000b0029bd4d0d3f2sm997590ljg.33.2023.04.01.15.08.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sat, 01 Apr 2023 15:08:12 -0700 (PDT)
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
@@ -59,9 +59,9 @@ Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Johan Hovold <johan+linaro@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: [PATCH v2 02/22] arm64: dts: qcom: pm8350b: fix thermal zone node name
-Date:   Sun,  2 Apr 2023 01:07:50 +0300
-Message-Id: <20230401220810.3563708-3-dmitry.baryshkov@linaro.org>
+Subject: [PATCH v2 03/22] arm64: dts: qcom: sc8280xp-pmics: use pmk8350 specifics for pon device
+Date:   Sun,  2 Apr 2023 01:07:51 +0300
+Message-Id: <20230401220810.3563708-4-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
 References: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
@@ -76,42 +76,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Correct the thermal zone node name to remove the clash with
-pm8350c.dtsi. Remove unused labels.
+Following the commit c0ee8e0ba5cc ("arm64: dts: qcom: pmk8350: Use the
+correct PON compatible") and commit f46ef374e0dc ("arm64: dts: qcom:
+pmk8350: Specify PBS register for PON") use "qcom,pmk8350-pon" compat
+string and add RBS region to the PON device.
 
-Fixes: 5c1399299d9d ("arm64: dts: qcom: pm8350b: add temp sensor and thermal zone config")
+Fixes: ccd3517faf18 ("arm64: dts: qcom: sc8280xp: Add reference device")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- arch/arm64/boot/dts/qcom/pm8350b.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/pm8350b.dtsi b/arch/arm64/boot/dts/qcom/pm8350b.dtsi
-index f1c7bd9d079c..95e971b80ccc 100644
---- a/arch/arm64/boot/dts/qcom/pm8350b.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm8350b.dtsi
-@@ -8,19 +8,19 @@
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
+index c35e7f6bd657..a3c7369f9594 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
+@@ -59,8 +59,8 @@ pmk8280: pmic@0 {
+ 		#size-cells = <0>;
  
- / {
- 	thermal-zones {
--		pm8350b_thermal: pm8350c-thermal {
-+		pm8350b-thermal {
- 			polling-delay-passive = <100>;
- 			polling-delay = <0>;
- 			thermal-sensors = <&pm8350b_temp_alarm>;
+ 		pmk8280_pon: pon@1300 {
+-			compatible = "qcom,pm8998-pon";
+-			reg = <0x1300>;
++			compatible = "qcom,pmk8350-pon";
++			reg = <0x1300>, <0x800>;
  
- 			trips {
--				pm8350b_trip0: trip0 {
-+				trip0 {
- 					temperature = <95000>;
- 					hysteresis = <0>;
- 					type = "passive";
- 				};
- 
--				pm8350b_crit: pm8350c-crit {
-+				crit {
- 					temperature = <115000>;
- 					hysteresis = <0>;
- 					type = "critical";
+ 			pmk8280_pon_pwrkey: pwrkey {
+ 				compatible = "qcom,pmk8350-pwrkey";
 -- 
 2.30.2
 

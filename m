@@ -2,85 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 396F16D3046
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 13:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 791236D30A4
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 14:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjDALuu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 07:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
+        id S229770AbjDAMGf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 08:06:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229719AbjDALut (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 07:50:49 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0393D1D2DC
-        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 04:50:47 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id n14so24106278qta.10
-        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 04:50:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680349846;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WqGpnxzWplzffE6Th9lsSK73X294LhiCIk+YQ6eCW7g=;
-        b=IdaItY++KSAxKZE2GD7GhsNxkwQbc3fvdwXlQ+Sjtrc48U8WTU3hEPD5sqs6zdkhNX
-         xGO8CSES2iZbIQIfV5q8HejzNhF8E/r+ofM8CfqVTVrljE+NxCMFunXeSlx/OE2uzId7
-         GtMnDszaMXZwsQRnceuVPTkRhCADmo0VbY9A7rzQ9k4UZNuFdOCqbYufQRjJr2JCxoYD
-         WemBqCfxxkPqVC9dfzVnm1R+x/QNMlV3IcrjCOWeXGT6bZ8axblx2JywtqEg1HaI1pmW
-         y+rSDk7qke7iKxHL9AQGoJDbD6sJFEGrt2i3mlbQsfP72jrh9YP9s8nQCSj/Xkf78hgO
-         +52w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680349846;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WqGpnxzWplzffE6Th9lsSK73X294LhiCIk+YQ6eCW7g=;
-        b=k7FhQaB7HSbgEQQSbAQVklZfiSbL0McaaBkPVKL4y3LVj+LjsiJTbL4IU4haXBhdm/
-         nzgWwoZlp0u1E3VQMCzVJcRPmwestAZrXCvIzFh6b8S1OSyaU2C72kMF+hzHGU1nwcm2
-         KmXESLYPVfL+3JVe9/9mvNKc+zbXy3taZVveGcpL2KWbKgDRdj8KFa7g3AuuzfdFuTcA
-         mypNmJ/DeQjkGbzEEzrwKF+jKjsIFUcickiOviaQzYAc0wJ+NedbC3hUJ9pSjhT5bzXP
-         cF+dtAus3R1iBuYGI5Cnqn0kZTVOBu0MT1nY54/yhjT5qml7muPrdPXsChrmld5n8b5t
-         zEJg==
-X-Gm-Message-State: AO0yUKU3Zte9k85kuKsCwDa/wsjOoJts8n4mlQ/CFbj3CmLEN4swa+iN
-        +MLYESfZf/zBVgUNm19/5+UDcrqKYqD4rRUZxrE=
-X-Google-Smtp-Source: AK7set+Dny1YsnqENzHhY58L7BiqyweUljQb8ebkmBz6OxDPgQHOV1UidTkmkSWv/lZK/1QRnSR1ptHaOUWbawlx7yQ=
-X-Received: by 2002:a05:622a:b:b0:3df:58e7:4aa5 with SMTP id
- x11-20020a05622a000b00b003df58e74aa5mr11649376qtw.0.1680349845799; Sat, 01
- Apr 2023 04:50:45 -0700 (PDT)
+        with ESMTP id S229441AbjDAMGe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 08:06:34 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 522A193F7;
+        Sat,  1 Apr 2023 05:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680350793; x=1711886793;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GhN/zLgZPhjtxMWToJxXXsvcAbSsvRGheQVMGCpow7w=;
+  b=bHnXxtjecow8+mruu2cNG0S9yw7pyfRp5OwFbNv8i+HteKW6dSgl8i3x
+   LzgBURD+01a9ktr6zzmyb7tNofDniL9vT5g2BpKoWZ1ZvlE703Z1BmsoJ
+   tK5eymx0Va3op25/a9QECcnAzCTsSuMg1jz4oOEYRKLlYM48U5rbIgGHM
+   wHJFfeCQCnd09EmTIiqiFYbeC8k4N2ylnhqQufOkczXAfk+Y3yyVUbsyA
+   9c8pGJcwamC1RFdHkuU1oZrYD4UHkgKIlr9+doPTEu7jmlIxmuJAX+vdz
+   EARE338GZMbZoFq0E7HPmYbhUq9FPpPCxmA7sVxGiP0VXoi/4ZuRyfUJT
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10666"; a="427927556"
+X-IronPort-AV: E=Sophos;i="5.98,310,1673942400"; 
+   d="scan'208";a="427927556"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2023 05:06:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10666"; a="859651603"
+X-IronPort-AV: E=Sophos;i="5.98,310,1673942400"; 
+   d="scan'208";a="859651603"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 01 Apr 2023 05:06:26 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pia01-000MkP-1w;
+        Sat, 01 Apr 2023 12:06:25 +0000
+Date:   Sat, 1 Apr 2023 20:05:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: pressure: Honeywell mpr pressure sensor
+Message-ID: <202304011957.pKSWQHyS-lkp@intel.com>
+References: <ZCf085W4XL2PtQf6@arbad>
 MIME-Version: 1.0
-Sender: hraymar912@gmail.com
-Received: by 2002:a05:622a:58c:b0:3bf:da51:aaa with HTTP; Sat, 1 Apr 2023
- 04:50:45 -0700 (PDT)
-From:   Mrs Aisha Al-Qaddafi <mrsaishag16@gmail.com>
-Date:   Sat, 1 Apr 2023 11:50:45 +0000
-X-Google-Sender-Auth: QTiV8JK1yWJs26jwwPn5Wk8J3n4
-Message-ID: <CAAm86_aCTZFxwuyVrOWjE91UUFXFRQTmpwCt+htH-Rs-cYR10Q@mail.gmail.com>
-Subject: Can i trust you My beloved One, I need your assistance.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZCf085W4XL2PtQf6@arbad>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In the name of Allah the Merciful,Peace be upon you and God's mercy
-and blessings be upon you
-Please bear with me. I am writing this letter to you with tears and
-sorrow from my heart.
-I am sending this message to you from where i am now, Aisha Ghaddafi
-is my name, I am presently living here,i am a Widow and single Mother
-with three Children, the only biological Daughter of late Libyan
-President (Late Colonel Muammar Ghaddafi) and presently I am under
-political asylum protection by the government of this country.
+Hi Andreas,
 
-I have funds worth $27.500.000.00 US Dollars "Twenty Seven Million
-Five Hundred Thousand United State Dollars" which I want to entrust to
-you for investment project assistance in your country.
+I love your patch! Yet something to improve:
 
-Kindly reply urgently for more details.
-Yours Truly
-Aisha
+[auto build test ERROR on jic23-iio/togreg]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mpr-sensors/20230401-171226
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/ZCf085W4XL2PtQf6%40arbad
+patch subject: [PATCH 2/3] iio: pressure: Honeywell mpr pressure sensor
+config: m68k-randconfig-r023-20230401 (https://download.01.org/0day-ci/archive/20230401/202304011957.pKSWQHyS-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/6a49dae45811d8a644c56dc18b6cdbc6ea67df98
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mpr-sensors/20230401-171226
+        git checkout 6a49dae45811d8a644c56dc18b6cdbc6ea67df98
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202304011957.pKSWQHyS-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "__divdi3" [drivers/iio/pressure/mpr.ko] undefined!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

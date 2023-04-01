@@ -2,183 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E9C6D2F73
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 11:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 396F16D3046
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 13:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbjDAJmV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 05:42:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54982 "EHLO
+        id S229738AbjDALuu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 07:50:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjDAJmU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 05:42:20 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B07D503
-        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 02:42:19 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id h17so24701022wrt.8
-        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 02:42:18 -0700 (PDT)
+        with ESMTP id S229719AbjDALut (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 07:50:49 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0393D1D2DC
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 04:50:47 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id n14so24106278qta.10
+        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 04:50:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680342137;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Fu9gPLfW7KtEv2IIXvaOXu6pnvnnIoGSqbS5YRQSMzA=;
-        b=ucK0Cs/61lk20Ig8uaid8/nFHg/p8O1F9ptRB99lJXNPHCCkL6emOD9PdVgrHSPI2+
-         ZS25kl5VhzjR3qpLixn5UWt7LdllMyYcIF/bCdYrXmRRd6Rxocg2l1ZeRzY3aOtcMaWT
-         XHb25UeW++5WBKdRRG8uvByqoqnzCdcKQfvz6RR7Z0Nqm5A4h27XeV6WPB1mbvgiY+2U
-         zp98QeXst9VUm/uZEurKOyiQmTedV24uHTRVGFl67pUqxE89EyvfJa/YUbddEzgK6pYs
-         +hxOkpWzrL+yaiLKIMDnNWcH+19dt4rg1nY0dZq5wvjkWAC3PVfLA/+5C+d5GKUlDdw+
-         XNJA==
+        d=gmail.com; s=20210112; t=1680349846;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WqGpnxzWplzffE6Th9lsSK73X294LhiCIk+YQ6eCW7g=;
+        b=IdaItY++KSAxKZE2GD7GhsNxkwQbc3fvdwXlQ+Sjtrc48U8WTU3hEPD5sqs6zdkhNX
+         xGO8CSES2iZbIQIfV5q8HejzNhF8E/r+ofM8CfqVTVrljE+NxCMFunXeSlx/OE2uzId7
+         GtMnDszaMXZwsQRnceuVPTkRhCADmo0VbY9A7rzQ9k4UZNuFdOCqbYufQRjJr2JCxoYD
+         WemBqCfxxkPqVC9dfzVnm1R+x/QNMlV3IcrjCOWeXGT6bZ8axblx2JywtqEg1HaI1pmW
+         y+rSDk7qke7iKxHL9AQGoJDbD6sJFEGrt2i3mlbQsfP72jrh9YP9s8nQCSj/Xkf78hgO
+         +52w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680342137;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1680349846;
+        h=to:subject:message-id:date:from:sender:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fu9gPLfW7KtEv2IIXvaOXu6pnvnnIoGSqbS5YRQSMzA=;
-        b=7Q713yey1BTznRw5N1feTZSt7sPWBp0hTUB20+QBT75sgQl/H9gBGcrJ67LR4VVf0i
-         BvQGZlas47sFFDF2J3BxiYSXKQTO6C1cRIlWKKyBUa4GrcAsCAB8Sgu9twLw+9PxMAyd
-         M5rk0P7MddBFMxhv7MMRVeK2BJyT7uV808tfUIxBQBf/EoBtg0wd3hxmYxC6IggiF/i4
-         pDesMtUS5lHObD413HLMMF+5JBxGWetOknByPcYC1io+40OAKgJ30kCkJoSK8LmKCsuY
-         NuB9JVBgntbUO58kkG5C945chTdtQDYXrlaBeEoEO7VLPZ7mrNaOt4FddXmIFcSqFlum
-         Boyg==
-X-Gm-Message-State: AAQBX9fJHJDDAKaa7obziiDO0kh95t42UsX096iTNJHJTWDqEFxxs2+7
-        1A3xbVgXjCM04vl0QwRXcdcMsQ==
-X-Google-Smtp-Source: AKy350ZNywWmraefRumCeoc7z8qpk9hbW1aIxktKLZVn7vMJFr6GDtmm5oKw4VPswANZcnL/llP7ow==
-X-Received: by 2002:adf:fd51:0:b0:2ce:adda:f45a with SMTP id h17-20020adffd51000000b002ceaddaf45amr21986074wrs.62.1680342137511;
-        Sat, 01 Apr 2023 02:42:17 -0700 (PDT)
-Received: from [172.50.14.32] (5-226-109-132.static.ip.netia.com.pl. [5.226.109.132])
-        by smtp.gmail.com with ESMTPSA id h14-20020adffd4e000000b002c71a32394dsm4404362wrs.64.2023.04.01.02.42.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Apr 2023 02:42:16 -0700 (PDT)
-Message-ID: <27a1d0f4-3a02-c7fd-36a0-07729a136e20@linaro.org>
-Date:   Sat, 1 Apr 2023 11:42:15 +0200
+        bh=WqGpnxzWplzffE6Th9lsSK73X294LhiCIk+YQ6eCW7g=;
+        b=k7FhQaB7HSbgEQQSbAQVklZfiSbL0McaaBkPVKL4y3LVj+LjsiJTbL4IU4haXBhdm/
+         nzgWwoZlp0u1E3VQMCzVJcRPmwestAZrXCvIzFh6b8S1OSyaU2C72kMF+hzHGU1nwcm2
+         KmXESLYPVfL+3JVe9/9mvNKc+zbXy3taZVveGcpL2KWbKgDRdj8KFa7g3AuuzfdFuTcA
+         mypNmJ/DeQjkGbzEEzrwKF+jKjsIFUcickiOviaQzYAc0wJ+NedbC3hUJ9pSjhT5bzXP
+         cF+dtAus3R1iBuYGI5Cnqn0kZTVOBu0MT1nY54/yhjT5qml7muPrdPXsChrmld5n8b5t
+         zEJg==
+X-Gm-Message-State: AO0yUKU3Zte9k85kuKsCwDa/wsjOoJts8n4mlQ/CFbj3CmLEN4swa+iN
+        +MLYESfZf/zBVgUNm19/5+UDcrqKYqD4rRUZxrE=
+X-Google-Smtp-Source: AK7set+Dny1YsnqENzHhY58L7BiqyweUljQb8ebkmBz6OxDPgQHOV1UidTkmkSWv/lZK/1QRnSR1ptHaOUWbawlx7yQ=
+X-Received: by 2002:a05:622a:b:b0:3df:58e7:4aa5 with SMTP id
+ x11-20020a05622a000b00b003df58e74aa5mr11649376qtw.0.1680349845799; Sat, 01
+ Apr 2023 04:50:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Support Honeywell mpr
- sensors
-Content-Language: en-US
-To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-References: <ZCf01btsJRXcIOce@arbad>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <ZCf01btsJRXcIOce@arbad>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Sender: hraymar912@gmail.com
+Received: by 2002:a05:622a:58c:b0:3bf:da51:aaa with HTTP; Sat, 1 Apr 2023
+ 04:50:45 -0700 (PDT)
+From:   Mrs Aisha Al-Qaddafi <mrsaishag16@gmail.com>
+Date:   Sat, 1 Apr 2023 11:50:45 +0000
+X-Google-Sender-Auth: QTiV8JK1yWJs26jwwPn5Wk8J3n4
+Message-ID: <CAAm86_aCTZFxwuyVrOWjE91UUFXFRQTmpwCt+htH-Rs-cYR10Q@mail.gmail.com>
+Subject: Can i trust you My beloved One, I need your assistance.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 01/04/2023 11:09, Andreas Klinger wrote:
-> Honeywell mpr is a pressure sensor family. There are many different
-> types with different pressure ranges. The range needs to be set up in
-> the dt. Therefore new properties honeywell,pmin and honeywell,pmax are
-> introduced.
-> 
-> Add dt-bindings.
-> 
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> ---
->  .../bindings/iio/pressure/honeywell,mpr.yaml  | 74 +++++++++++++++++++
->  1 file changed, 74 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
-> new file mode 100644
-> index 000000000000..d6fad6f841cf
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
-> @@ -0,0 +1,74 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mpr.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Honeywell mpr pressure sensor
-> +
-> +maintainers:
-> +  - Andreas Klinger <ak@it-klinger.de>
-> +
-> +description: |
-> +  Honeywell pressure sensor of type mpr. This sensor has an I2C and SPI interface. Only the I2C
+In the name of Allah the Merciful,Peace be upon you and God's mercy
+and blessings be upon you
+Please bear with me. I am writing this letter to you with tears and
+sorrow from my heart.
+I am sending this message to you from where i am now, Aisha Ghaddafi
+is my name, I am presently living here,i am a Widow and single Mother
+with three Children, the only biological Daughter of late Libyan
+President (Late Colonel Muammar Ghaddafi) and presently I am under
+political asylum protection by the government of this country.
 
-Doesn't look wrapped according to Linux coding style (see Coding style).
+I have funds worth $27.500.000.00 US Dollars "Twenty Seven Million
+Five Hundred Thousand United State Dollars" which I want to entrust to
+you for investment project assistance in your country.
 
-> +  interface is implemented.
-> +
-> +  There are many subtypes with different pressure ranges available. Therefore the minimum and
-> +  maximum pressure values of the specific sensor needs to be specified in Pascal.
-> +
-> +  Specifications about the devices can be found at:
-> +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/  \
-> +      pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/          \
-> +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
-
-Lines are not continued, so drop \
-
-> +
-> +properties:
-> +  compatible:
-> +    const: honeywell,mpr
-
-You need device specific compatible, not some generic one. Rename also
-then the filename (should match the compatible).
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description:
-> +      Optional GPIO for resetting the device. If not present the device is not resetted.
-
-Are you sure it is wrapped properly?
-
-> +    maxItems: 1
-> +
-> +  honeywell,pmin:
-> +    description:
-> +      Minimum pressure value the sensor can measure in pascal.
-
-Use standard unit suffix:
-https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +  honeywell,pmax:
-> +    description:
-> +      Maximum pressure value the sensor can measure in pascal.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-
-Same.
-
-Why these values are suitable for DT? Does it depend on type of sensor
-(thus it is implied from compatible) or on system setup?
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - honeywell,pmin
-> +  - honeywell,pmax
-> +
-
-
-Best regards,
-Krzysztof
-
+Kindly reply urgently for more details.
+Yours Truly
+Aisha

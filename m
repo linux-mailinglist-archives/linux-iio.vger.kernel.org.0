@@ -2,172 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B3996D3135
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 16:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C24756D3130
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 16:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbjDAOGp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 10:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
+        id S229638AbjDAOFW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 10:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjDAOGo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 10:06:44 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0DCB474
-        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 07:06:43 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id i6so30324363ybu.8
-        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 07:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680358002;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3wPDaCqdxNaWMMs3wQlLt6E3mfPbGjDIw/Hm+74bU44=;
-        b=LW3TJoTv75yQ65vG5bWQB/oLy5fdK6HkW+bxvYAgHVgK2mAkrWFOUh9BHkm9q4dr+J
-         1HCRe+Ej45FDpoI/sefcKKGUgvlV1JSg0092/7aWaQbU4tLdv6YjVwQpLekCxWK9Nh7Q
-         fcV2sljSIrK5njcXAhNgQ1ZMF0PympZo4sd5xTpqfMpYvJU4aFthlyid9uT+2cOzO+SA
-         RcZBN4kXsuYk7TdXlnBpEuRY9Z/M3ZeRJfioocULmsYdhuPkQxNlVWkMC8ZpTC0QzHgO
-         aS2ctw30oT57REadH7//SfPjaANaWSFzk59xf80akaOyfjGzALYxkrgpBmVg1ISbwJNl
-         +umA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680358002;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3wPDaCqdxNaWMMs3wQlLt6E3mfPbGjDIw/Hm+74bU44=;
-        b=MvxLtMwDssLesV99YpPp0xuSOBZqTQfMqSLFacVOEk4WSgluniNKzN5c7lvm17kOn2
-         VQOjm6DHZLfwPc33eTJUY+kB0Xd3A/8XHBoxrINHQSjs4Tt8XSXzbA6qrg7fUVjwx+ty
-         kd6QbxsZWDr9RUQ/35A0IUFKJjNfBFfnUfPlCEu50V0PctpNoyMcscO7C8gLxUwUioP6
-         crDIZ22WXMLNHatRxEoJjamGOPiFTRAUzqTqI0iTFCbExNWHy4ruCLvuk6F+RU+fnq8Q
-         PTr3Bjzmgq6N4UHTMdH0enAXdMoZF0cAa39rFmsaprEfrOMgSqz8g8/bVgqtw8W22QR7
-         yJ1w==
-X-Gm-Message-State: AAQBX9dOlABI0rEgHlfwryFj8dd/aO4/X1YwZB2Gobv7ZBX56qzrf+bS
-        CySABBTFZgSAQY5a0U99+no0Y3g9pEN5vUQE8O1aZQ==
-X-Google-Smtp-Source: AKy350ZQ1/tJ4mGhUx5o70JfOu6p/yd+B/eNIRi1NomrtEBRPj0mD4MzyXimvi7YlHQL5AcPJtabFg==
-X-Received: by 2002:a05:6902:1029:b0:b3e:dbf8:ba34 with SMTP id x9-20020a056902102900b00b3edbf8ba34mr31574597ybt.36.1680358002139;
-        Sat, 01 Apr 2023 07:06:42 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id x8-20020a056902102800b00b7767ca746asm1239823ybt.7.2023.04.01.07.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Apr 2023 07:06:40 -0700 (PDT)
-Date:   Sat, 1 Apr 2023 10:06:38 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] iio: addac: stx104: Migrate to the regmap API
-Message-ID: <ZCg6bhkxGKmkMloM@fedora>
-References: <cover.1679867815.git.william.gray@linaro.org>
- <4ebc1b6b609a086846420954b893e914fd395384.1679867815.git.william.gray@linaro.org>
- <ZCGBIAvr7OQLwNXv@smile.fi.intel.com>
+        with ESMTP id S229519AbjDAOFV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 10:05:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4790FB45E;
+        Sat,  1 Apr 2023 07:05:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEAEA60AD1;
+        Sat,  1 Apr 2023 14:05:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F240DC433D2;
+        Sat,  1 Apr 2023 14:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680357920;
+        bh=MZ44pijlcbwqZoRd2llf2veubGkW4dMJTr6PLEgL0wY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NqM4nLnKP4gbENhoIgQOGTWfbGeuJSxqlEjtpt7lpmSEqlMKKgrjtINPe1r6mCT5/
+         ZvGhgAcG3krRSPgvEUVYLd2N+XtN0aBY9KqK8vUl421b3aAzPhJIzTDAIkusRLuEoJ
+         dJhERA/0ioZOQki2R8Mvo72rZYIFvPda8jiCGUsAuQZubGPk5zjjf4x4ZAIXBeidm8
+         pxzAFfaVujODZLDbK1glMw0aY2DFfnMWwul3aR/NHwixyNw54mVRgZf9LpLw4Xz2xI
+         nIt6ZLp0c2QWkXU7hTv5UqaymlXLvz8T2QMVp+nFSjSydhPl3qYr/8MqiemhR2Z7NF
+         EIZ6uLm/mQDSg==
+Date:   Sat, 1 Apr 2023 15:20:28 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Tom Rix <trix@redhat.com>, lars@metafoo.de, nathan@kernel.org,
+        ndesaulniers@google.com, u.kleine-koenig@pengutronix.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, Chuhong Yuan <hslester96@gmail.com>,
+        Brian Masney <bmasney@redhat.com>,
+        Brian Masney <masneyb@onstation.org>
+Subject: Re: [PATCH] iio: tsl2772: remove unused prox_diode_mask variable
+Message-ID: <20230401152028.30344b48@jic23-huawei>
+In-Reply-To: <ZCGVJOSBjKO3FKD6@smile.fi.intel.com>
+References: <20230327120823.1369700-1-trix@redhat.com>
+        <ZCGVJOSBjKO3FKD6@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/yW4sqb6LeVhtg6s"
-Content-Disposition: inline
-In-Reply-To: <ZCGBIAvr7OQLwNXv@smile.fi.intel.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 27 Mar 2023 16:07:48 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
---/yW4sqb6LeVhtg6s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Mon, Mar 27, 2023 at 08:08:23AM -0400, Tom Rix wrote:
+> > clang with W=1 reports
+> > drivers/iio/light/tsl2772.c:576:24: error: variable
+> >   'prox_diode_mask' set but not used [-Werror,-Wunused-but-set-variable]
+> >         int i, ret, num_leds, prox_diode_mask;
+> >                               ^
+> > This variable is not used so remove it.  
+> 
+> While from the compilation point of view this is a correct fix, I think
+> we need to hear from the author (or interested stakeholders) about this
+> feature. Perhaps it should be enabled / fixed differently.
+> 
 
-On Mon, Mar 27, 2023 at 02:42:24PM +0300, Andy Shevchenko wrote:
-> On Sun, Mar 26, 2023 at 06:05:57PM -0400, William Breathitt Gray wrote:
-> > The regmap API supports IO port accessors so we can take advantage of
-> > regmap abstractions rather than handling access to the device registers
-> > directly in the driver.
->=20
-> ...
->=20
-> > +static const struct regmap_config aio_ctl_regmap_config =3D {
-> > +	.name =3D "aio_ctl",
-> > +	.reg_bits =3D 8,
-> > +	.reg_stride =3D 1,
-> > +	.reg_base =3D STX104_AIO_BASE,
-> > +	.val_bits =3D 8,
-> > +	.io_port =3D true,
-> > +	.max_register =3D 0x11,
->=20
-> Not sure if define would be better for this, so it will be grouped with
-> register offset definitions. (Same for the other configs)
+Superficially it looks like this value should have been stored to
+chip->settings.prox_diode
 
-Actually, I'll remove this max_register line because it's superfluous
-when we define both rd_table and wr_table.
++CC people who might know...
 
-However, I explain my reasoning for hardcoding the max_register value in
-a response to the ebc-c384_wdt watchdog driver conversion [0]. To
-summarize, it's not immediately obvious whether a FOO_REGISTER comes
-before or after a BAR_REGISTER so someone reading the code would need to
-verify the define; there are cases as well, such as GPIO drivers, where
-the only the base register is defined but the max register would be an
-extent from there; and finally, a reviewer would ultimately need to
-check against the datasheet to verify that the max_register is actually
-at the named defined register location, whereas it is far easier to
-lookup the address range in the datasheet rather than named registers.
-These things make hardcoding max_register to be not only clearer code to
-read and verify but also less likely to be set to the wrong address.
-
-[0] https://lore.kernel.org/all/ZAyY3VGlo4N4SLZQ@fedora/
-
-> > +	.wr_table =3D &aio_ctl_wr_table,
-> > +	.rd_table =3D &aio_ctl_rd_table,
-> > +	.volatile_table =3D &aio_ctl_volatile_table,
-> > +	.cache_type =3D REGCACHE_FLAT,
-> > +};
->=20
-> Do we need regmap lock?
-
-I think the regmap lock is opt-out, so I don't think we need to set an
-custom lock callback for the regmaps in this driver.
-
-Jonathan, do read_raw() and write_raw() require explicit locking?
-
-> > +		err =3D regmap_read(priv->aio_ctl_map, STX104_ADC_CONFIGURATION, &ad=
-c_config);
-> > +		if (err)
-> > +			return err;
-> > =20
-> > -		*val =3D 1 << gain;
-> > +		*val =3D 1 << u8_get_bits(adc_config, STX104_GAIN);
->=20
-> Maybe not for this change, but why not BIT()?
-
-This probably should have been BIT(gain) when it was originally
-introduced. I'm avoiding it here just to keep this migration patch more
-straight-forward to review; but perhaps I'll make this change afterall
-in a v4 submission.
-
-> >  	case IIO_CHAN_INFO_RAW:
-> >  		if (chan->output) {
->=20
-> You can decrease indentation by
->=20
-> 		if (!chan->output)
-> 			return -EINVAL;
->=20
-> here.
-
-Sure I can make this change as well in a v4.
-
-William Breathitt Gray
-
---/yW4sqb6LeVhtg6s
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZCg6bgAKCRC1SFbKvhIj
-K9ZyAQDUzIF5/JKTWriFyF4UIAK/m3LufltaEhYoY2e9UMm7HAEAjjbhh8T6QNrn
-xZDGS5LJrKuhlUrkheaVBPHtp8N1sAs=
-=814R
------END PGP SIGNATURE-----
-
---/yW4sqb6LeVhtg6s--
+Jonathan

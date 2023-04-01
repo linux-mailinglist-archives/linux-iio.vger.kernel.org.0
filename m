@@ -2,66 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D41C6D3415
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Apr 2023 23:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0F756D3481
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 00:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjDAVcr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Apr 2023 17:32:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34036 "EHLO
+        id S230090AbjDAWIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Apr 2023 18:08:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjDAVcq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 17:32:46 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27139EFD;
-        Sat,  1 Apr 2023 14:32:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680384763; x=1711920763;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Hm6iKi12m6qOMRGW9i867PuVG7qZH1Ke4QnQNHTAwaY=;
-  b=PUPw8Cqr16gT3s37Qmz7dGs0XkxwbtemS1m5t8tpw3WghS0Z+Euo5D0W
-   fT0edPNsIz/+wSijX9newCCyHAwjfaXV+DxXtXyAQJix5wFSrpuYaMz3n
-   XWws6ia8mZBUgNAKB3Ph4jxrWB7eJAxuw67IWAa2SbfqX3f20fEvqXydy
-   fV70Kub3Jzk1voVt0vELkMcoz1/RcUjZLqPLFxBnoAwXkuQfz5qHMctD2
-   SgPBLtYX0dQqeWZl3GmsoAOM8bxayQ5RZ/Oj7ow0cyX5BJ/ItAYL1o4Ju
-   VtqtcTb3wqa2SrY2PoAq8AB7wTIorck8T3aXZ7QZSprTV1ExZhtog6Ja6
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10667"; a="369483028"
-X-IronPort-AV: E=Sophos;i="5.98,311,1673942400"; 
-   d="scan'208";a="369483028"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2023 14:32:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10667"; a="715826777"
-X-IronPort-AV: E=Sophos;i="5.98,311,1673942400"; 
-   d="scan'208";a="715826777"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 01 Apr 2023 14:32:40 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1piipz-000N3p-2F;
-        Sat, 01 Apr 2023 21:32:39 +0000
-Date:   Sun, 2 Apr 2023 05:32:37 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        with ESMTP id S229719AbjDAWIO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Apr 2023 18:08:14 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33737EFB
+        for <linux-iio@vger.kernel.org>; Sat,  1 Apr 2023 15:08:12 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 20so26677331lju.0
+        for <linux-iio@vger.kernel.org>; Sat, 01 Apr 2023 15:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680386891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=has59VHh1bBQ36gANW59HJL3NztiYKM/e6Q9Kg9nML0=;
+        b=y2QCWQypHgScBzEHDMGbZrx6ZfsgwbrudlnZ4mmCfUUg+8VwZRzsAfs4NPH5IoZ0lM
+         UQWMtkWo5KNPy3wj2tPluqE97Xt03GjNtVQuColTAZ+hjMUvV8DySoyGxFymmwKMoZIG
+         0KbeTgM6NF9myKZ2EubKq8EITJSxGoQadeKPl2LpFqzGY5idzRnAUZyvgWlTpTJmSyCs
+         BGebZLbZitZt1OE8FaN+A/Atmm/dxUvXeVvs0HzViw7pAsS4baIMRT118+NJ+TRL+00k
+         xH/ziAa6y+1PG1yPaAso160Y9ndwdWB3e9sPV4JscVKZaAzqMSd3wL43/rzCOuGTchHZ
+         n0EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680386891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=has59VHh1bBQ36gANW59HJL3NztiYKM/e6Q9Kg9nML0=;
+        b=RuYkpwf2bPCyfdX7IBfGpbmCzNaq3lasx87RUh+rartlO4nYtoNFO6f52alNSO8qBh
+         GVrJrHLbjfDZjfYXGx55Tlxdv/2Cgxm5hFw5vjOv7n59aWEND5LUhuTaEu8Qgsv4Q3pY
+         n0PsBdXyqvmTNyU+sm5i0DRshuUr5ltHvkVG4L8ayFMkDgkJ1rYvZjsaYuBZfHE5z/or
+         O0hVLiO/IFw6CijYMycX0HRuEFE6GXx3MQN3n8+GU/aMlyR36tWXJo42TEN+erDkDUEm
+         v3S9ETAABaCgr/rkeKEjc9/i44cnzyz7yDzIBjFO+WyUSQnmLvlohGG4No0S+4fgPSvx
+         vnKQ==
+X-Gm-Message-State: AAQBX9fcWXiJcniwCUIZi57GyZPdTCzNhtVTFFM6csejIuof2t9Rtp0i
+        SyWjR31MDVD87k3LwHnSNm0PMw==
+X-Google-Smtp-Source: AKy350bv02Wrh2B+P78hHqR4lsGybPviSr1C1aLSuS+lChYI89rOUApskFsRMUutkfygogAKhjsvVQ==
+X-Received: by 2002:a2e:6817:0:b0:29f:7c5b:8795 with SMTP id c23-20020a2e6817000000b0029f7c5b8795mr9288247lja.9.1680386891193;
+        Sat, 01 Apr 2023 15:08:11 -0700 (PDT)
+Received: from umbar.unikie.fi ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id k17-20020a2e9211000000b0029bd4d0d3f2sm997590ljg.33.2023.04.01.15.08.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Apr 2023 15:08:10 -0700 (PDT)
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] MAINTAINERS: Add Honeywell mpr sensor
-Message-ID: <202304020552.JHWqEIwX-lkp@intel.com>
-References: <ZCf1B9kfw/N0UX8Q@arbad>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Subject: [PATCH v2 00/22] arm64: dts: qcom: remove duplication in PMIC declarations
+Date:   Sun,  2 Apr 2023 01:07:48 +0300
+Message-Id: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZCf1B9kfw/N0UX8Q@arbad>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,37 +73,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andreas,
+The sc8280xp platform uses its own copy of PMIC declarations. This can
+easily end up with the issues that are fixed in the main PMIC include
+file, but are not fixed for sc8280xp (and vice versa). For example
+commit c0ee8e0ba5cc ("arm64: dts: qcom: pmk8350: Use the correct PON
+compatible") changed pmk8350 to use "qcom,pmk8350-pon" compat for the
+PON device, while sc8280xp-pmic.dtsi still has the incorrect
+"qcom,pm8998-pon".
 
-I love your patch! Perhaps something to improve:
+Another example is pm8280_2_temp_alarm device, which uses interrupts
+tied to SID 2, while having SID 3. This can be easily left unnoticed.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.3-rc4 next-20230331]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Employ a small amount of C preprocessor magic to make
+sc8280xp-pmics.dtsi use standard PMIC include files
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mpr-sensors/20230401-171226
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/ZCf1B9kfw%2FN0UX8Q%40arbad
-patch subject: [PATCH 3/3] MAINTAINERS: Add Honeywell mpr sensor
-reproduce:
-        # https://github.com/intel-lab-lkp/linux/commit/a6d0553e9b84f7572a2808e9d4653957e6bd27cf
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mpr-sensors/20230401-171226
-        git checkout a6d0553e9b84f7572a2808e9d4653957e6bd27cf
-        make menuconfig
-        # enable CONFIG_COMPILE_TEST, CONFIG_WARN_MISSING_DOCUMENTS, CONFIG_WARN_ABI_ERRORS
-        make htmldocs
+Also apply the same approach to sa8540p-pmics/pm8150.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304020552.JHWqEIwX-lkp@intel.com/
+Jonathan Cameron Acked merging the dt-bindigns patch together with the
+rest of the patches to simplify merge process.
 
-All warnings (new ones prefixed by >>):
+Dmitry Baryshkov (22):
+  arm64: dts: qcom: pm8350: fix thermal zone node name
+  arm64: dts: qcom: pm8350b: fix thermal zone node name
+  arm64: dts: qcom: sc8280xp-pmics: use pmk8350 specifics for pon device
+  arm64: dts: qcom: sc8280xp-pmics: correct interrupt routing for
+    pm8280_2_temp_alarm
+  dt-bindings: iio: qcom,spmi-adc7-pmk8350.h: include sid into defines
+  arm64: dts: qcom: pmk8350: rename pon label
+  arm64: dts: qcom: pmk8350: port sdam_6 device from sc8280xp-pmics
+  arm64: dts: qcom: pmk8350: rename PMK8350_SID to PMIC_SID
+  arm64: dts: qcom: pmk8350: allow overriding the label
+  arm64: dts: qcom: pmk8350: use interrupts-extended for IRQ
+    specification
+  arm64: dts: qcom: sc8280xp*: use pmk8350.dtsi
+  arm64: dts: qcom: pm8350: allow overriding SID and label
+  arm64: dts: qcom: pm8350: use interrupts-extended for IRQ
+    specification
+  arm64: dts: qcom: sc8280xp*: use pm8350.dtsi
+  arm64: dts: qcom: pm8350c: move thermal zone declaration to the top
+  arm64: dts: qcom: pm8350c: allow overriding SID and label
+  arm64: dts: qcom: pm8350c: use interrupts-extended for IRQ
+    specification
+  arm64: dts: qcom: sc8280xp*: use pm8350c.dtsi
+  arm64: dts: qcom: sc8280xp*: use pmr735a.dtsi
+  arm64: dts: qcom: pm8150: convert to use dynamic SID/LABEL
+  arch: arm64: dts: qcom: pm8150: support SID greater that 9
+  arm64: dts: qcom sa8540p-pmics: switch to pm8150.dtsi
 
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/iio/pressure/mpr.yaml
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      |   2 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |   4 +-
+ arch/arm64/boot/dts/qcom/pm8150.dtsi          |  53 +++--
+ arch/arm64/boot/dts/qcom/pm8350.dtsi          |  33 ++-
+ arch/arm64/boot/dts/qcom/pm8350b.dtsi         |   6 +-
+ arch/arm64/boot/dts/qcom/pm8350c.dtsi         |  73 +++---
+ arch/arm64/boot/dts/qcom/pmic-dyn-footer.dtsi |  23 ++
+ arch/arm64/boot/dts/qcom/pmic-dyn-header.dtsi |  26 +++
+ arch/arm64/boot/dts/qcom/pmk8350.dtsi         |  51 ++--
+ arch/arm64/boot/dts/qcom/sa8540p-pmics.dtsi   |  96 ++------
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |   2 +-
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |   2 +-
+ arch/arm64/boot/dts/qcom/sc8280xp-crd.dts     |   4 +-
+ .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    |   8 +-
+ arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi  | 221 ++----------------
+ .../qcom/sm6375-sony-xperia-murray-pdx225.dts |   7 +-
+ .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |   8 +-
+ arch/arm64/boot/dts/qcom/sm8350-mtp.dts       |   8 +-
+ .../dts/qcom/sm8350-sony-xperia-sagami.dtsi   |   8 +-
+ .../dts/qcom/sm8450-sony-xperia-nagara.dtsi   |   4 +-
+ .../dt-bindings/iio/qcom,spmi-adc7-pmk8350.h  |  52 ++---
+ 21 files changed, 279 insertions(+), 412 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/pmic-dyn-footer.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/pmic-dyn-header.dtsi
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.30.2
+

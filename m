@@ -2,124 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3496F6D3980
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 19:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04E536D3903
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 18:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230113AbjDBRkz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Apr 2023 13:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53114 "EHLO
+        id S230494AbjDBQn2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Apr 2023 12:43:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjDBRky (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 13:40:54 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 519EFCC17
-        for <linux-iio@vger.kernel.org>; Sun,  2 Apr 2023 10:40:52 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5445009c26bso511622557b3.8
-        for <linux-iio@vger.kernel.org>; Sun, 02 Apr 2023 10:40:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680457251;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NJpTsvE1EuL9/USYXCTsI8NfHm4n9LB4JRYujq1u5b8=;
-        b=lIOyUIFZXVU085qpGi3Cz3gY+GJ4NrjN6YPjm6oq9gCAThs3IG45H1VZy/xisolQfc
-         /QqAJZNvEe3cUufI8ec4AwifJnVvZ8pDglYS1mo23C6tTMmNfSCllM5T0816UtUmM74j
-         cnjvM6NZonAR3oyQbksvqoLs1BxXtrS1iA3yX8/G7QO12wfsWjOyj/KWyl613R6RqS+P
-         Afwmo0+nQaOh/iPDwMfPJiYhe1dDQxU9UVqcgYxKSUKsUfqwfjSUHzJ7zwm5ywnhLmtR
-         6R6sBCxkQ4IHzkxFtGQBjeh6H/CFw6liaiKutHmqw2l5sPvBc1KE2UFDhElGBnfnPZfS
-         +YDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680457251;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NJpTsvE1EuL9/USYXCTsI8NfHm4n9LB4JRYujq1u5b8=;
-        b=N+e+tjPHyEg0zya3wdT8TJiTm9vuVjnRSceRfc/3+y9k53HfQk74kD8cGhSJwWKvEW
-         /1HpA4aD6Hdkv31ohjem5BnQj5n3LY6SapSGj6vJo9uH641uVAIWjt0Nz0f91RuIwC8F
-         slrsIjPe5KbV77gq5FeGWdCbrnPghQHTop7jG/eg7+iVlL9SxhuQnjPWIO4qwccC9mbd
-         LJMAgudaU169VHaumVZtHeKswGakUy5gb7LsKYa5HtPr+ONOccCoZY+Wv0G7o1nAG1CW
-         88Cl5ueDsJrVfh4DJwUAXyxhHs84X/R+ofW9sd6CkoHfGrZSsztIFTAq3kTxAkBCTodq
-         Qkyw==
-X-Gm-Message-State: AAQBX9cyuTTPMvGR8xX1FfIvzAUtp2zvzg67DG8kVoBE6EZYrKl0qf9a
-        mbCevfynU5dTHabxmx8h2VcH8w==
-X-Google-Smtp-Source: AKy350Y9pn+fv4dLQtkOD+UCspvVtT89Yf/yzkAotSwBDV23/Hua3fUCMEQ6UFKWB+IuHM+KmJqstQ==
-X-Received: by 2002:a0d:d505:0:b0:541:7193:e136 with SMTP id x5-20020a0dd505000000b005417193e136mr31935308ywd.23.1680457251476;
-        Sun, 02 Apr 2023 10:40:51 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id q65-20020a819944000000b0054601a8399csm2017755ywg.119.2023.04.02.10.40.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Apr 2023 10:40:50 -0700 (PDT)
-Date:   Sun, 2 Apr 2023 10:51:19 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] iio: addac: stx104: Migrate to the regmap API
-Message-ID: <ZCmWZyEOnfknvSLg@fedora>
-References: <cover.1679867815.git.william.gray@linaro.org>
- <4ebc1b6b609a086846420954b893e914fd395384.1679867815.git.william.gray@linaro.org>
- <ZCGBIAvr7OQLwNXv@smile.fi.intel.com>
- <ZCg6bhkxGKmkMloM@fedora>
- <20230402174657.55159879@jic23-huawei>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yEXAaY2iei/+iClt"
-Content-Disposition: inline
-In-Reply-To: <20230402174657.55159879@jic23-huawei>
+        with ESMTP id S230141AbjDBQn1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 12:43:27 -0400
+Received: from pio-pvt-msa3.bahnhof.se (pio-pvt-msa3.bahnhof.se [79.136.2.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5041EB54;
+        Sun,  2 Apr 2023 09:43:22 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 3F8483F417;
+        Sun,  2 Apr 2023 18:43:20 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+X-Spam-Score: -2.1
+X-Spam-Level: 
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
+Authentication-Results: pio-pvt-msa3.bahnhof.se (amavisd-new);
+        dkim=pass (2048-bit key) header.d=dalakolonin.se
+Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CtEccJModFEV; Sun,  2 Apr 2023 18:43:19 +0200 (CEST)
+Received: by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 131903F401;
+        Sun,  2 Apr 2023 18:43:17 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 8B5FE93782;
+        Sun,  2 Apr 2023 16:43:17 +0000 (UTC)
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id V3Ezy4A6zUhb; Sun,  2 Apr 2023 16:43:14 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id D3F909376D;
+        Sun,  2 Apr 2023 16:43:13 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se D3F909376D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dalakolonin.se;
+        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680453793;
+        bh=cgM57hJm5k2oui+gMMCv8ZY471CwtzcndNIPu6989Ds=;
+        h=From:To:Date:Message-Id:MIME-Version;
+        b=mcQyqI7SP0xQ8pJ27+crN8V1MJw2iVrPRhFUnoHUcg9qz4gP3kdPMub7r3XudGyJG
+         rLr9jNtFMELk/97K09AczhdFPhJQ7z7HNGKxj8Z5pn7HEnAXnLazzgANgeX+BhXvlz
+         xWrFivxm8gL8lJz6qyP1J1sIiYF7ML765iKwxxlWKvHOL1VJxYtEtsvloxySLK3mHu
+         X5oG5dmTjXpRWrbCvmxdCuYZmYrbsSEKvNVsS7I52w5vzhvJY+AOEt1U41bN/l0bDI
+         C6oYbiaO/ZbshvLuwQF0qd3Z+gZb8SSPXr+lDymmaH67NNPI9Us/DyGHjVpPomS1mM
+         JGNyCKDIPSS5w==
+X-Virus-Scanned: amavisd-new at dalakolonin.se
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id yuFgG64aUGIw; Sun,  2 Apr 2023 16:43:13 +0000 (UTC)
+Received: from rack-server-1.dalakolonin.se (unknown [172.17.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id 8212393767;
+        Sun,  2 Apr 2023 16:43:13 +0000 (UTC)
+From:   =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, pgoudagunta@nvidia.com,
+        hns@goldelico.com, jic23@kernel.org, lars@metafoo.de,
+        linux-omap@vger.kernel.org,
+        =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+Subject: [PATCH v2 0/7] iio: adc: palmas_gpadc: add iio events
+Date:   Sun,  2 Apr 2023 18:42:40 +0200
+Message-Id: <20230402164247.3089146-1-risca@dalakolonin.se>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The palmas gpadc block has support for monitoring up to 2 ADC channels
+and issue an interrupt if they reach past a set threshold. This can be
+configured statically with device tree today, but it only gets enabled
+when reaching sleep mode. Also, it doesn't look like anyone is using it.
 
---yEXAaY2iei/+iClt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Instead of this one special case, change the code so userspace can
+configure the ADC channels to their own needs through the iio events
+subsystem. The high and low threshold values can be set for every
+channel, but only 2 thresholds can be enabled at a time. Trying to
+enable more than 2 thresholds will result in an error.
 
-On Sun, Apr 02, 2023 at 05:46:57PM +0100, Jonathan Cameron wrote:
->=20
-> > > > +	.wr_table =3D &aio_ctl_wr_table,
-> > > > +	.rd_table =3D &aio_ctl_rd_table,
-> > > > +	.volatile_table =3D &aio_ctl_volatile_table,
-> > > > +	.cache_type =3D REGCACHE_FLAT,
-> > > > +}; =20
-> > >=20
-> > > Do we need regmap lock? =20
-> >=20
-> > I think the regmap lock is opt-out, so I don't think we need to set an
-> > custom lock callback for the regmaps in this driver.
-> >=20
-> > Jonathan, do read_raw() and write_raw() require explicit locking?
->=20
-> The don't provide their own locking.  Depending on the access pattern the
-> underlying bus locking may be sufficient.  If you have read modify write
-> cycles though you'll want locking at the appropriate level for that
-> which might well be at the level of regmap.
->=20
-> Jonathan
+The configured thresholds will wake up the system from sleep mode if
+wakeup is enabled in /sys/devices/.../power/wakeup.
 
-If read_raw() can be called concurrently multiple times then we risk
-changing the ADC channel while the analog-to-digital conversion is in
-progress, thus resulting in an incorrect reported value. Looks like
-we'll need an explicit lock for this after all, so I'll create a
-precursor patch addressing that.
+The old platform data was removed.
 
-William Breathitt Gray
+Thresholds, events, and wakeup were tested on omap5-uevm board. It wakes
+up from sleep mode when wakeup is enabled and a threshold is passed. A
+userspace tool for monitoring events and adjusting thresholds can be
+found at [3].
 
---yEXAaY2iei/+iClt
-Content-Type: application/pgp-signature; name="signature.asc"
+Patrik Dahlstr=C3=B6m (7):
+  iio: adc: palmas: remove adc_wakeupX_data
+  iio: adc: palmas: replace "wakeup" with "event"
+  iio: adc: palmas: use iio_event_direction for threshold polarity
+  iio: adc: palmas: move eventX_enable into palmas_adc_event
+  iio: adc: palmas: always reset events on unload
+  iio: adc: palmas: add support for iio threshold events
+  iio: adc: palmas: don't alter event config on suspend/resume
 
------BEGIN PGP SIGNATURE-----
+ drivers/iio/adc/palmas_gpadc.c | 550 +++++++++++++++++++++++++++------
+ include/linux/mfd/palmas.h     |   8 -
+ 2 files changed, 455 insertions(+), 103 deletions(-)
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZCmWZwAKCRC1SFbKvhIj
-KwOXAQCxIk2C5V1TsQ/IO+hSQKNUJQofrl9yPD5Cj7Hqhm8krAD+LwqxOaNPKZ86
-T4S/v73bD/2MaFkSBaC1sEQcyfSBqA4=
-=jsa1
------END PGP SIGNATURE-----
 
---yEXAaY2iei/+iClt--
+base-commit: 37fd83916da2e4cae03d350015c82a67b1b334c4
+prerequisite-patch-id: 9b1f55610800b91b721d042bf7f33b58179237d1
+prerequisite-patch-id: b0418c707db13f514400956596e9ebe91c25bba0
+--=20
+2.25.1
+

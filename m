@@ -2,135 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF7776D3915
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 18:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67F446D38F9
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 18:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231223AbjDBQnl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Apr 2023 12:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55466 "EHLO
+        id S230458AbjDBQ2n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Apr 2023 12:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231187AbjDBQnf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 12:43:35 -0400
-Received: from ste-pvt-msa1.bahnhof.se (ste-pvt-msa1.bahnhof.se [213.80.101.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2129D18FAA;
-        Sun,  2 Apr 2023 09:43:34 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id CA8F43FB38;
-        Sun,  2 Apr 2023 18:43:32 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-X-Spam-Score: -2.1
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
-Authentication-Results: ste-pvt-msa1.bahnhof.se (amavisd-new);
-        dkim=pass (2048-bit key) header.d=dalakolonin.se
-Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id hRrvXlEvjyb2; Sun,  2 Apr 2023 18:43:32 +0200 (CEST)
-Received: by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 0A8193FA8F;
-        Sun,  2 Apr 2023 18:43:32 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.dalakolonin.se (Postfix) with ESMTP id 8F7B0937C0;
-        Sun,  2 Apr 2023 16:43:31 +0000 (UTC)
-Received: from zimbra.dalakolonin.se ([127.0.0.1])
-        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id JKD4FSV4JqrC; Sun,  2 Apr 2023 16:43:22 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.dalakolonin.se (Postfix) with ESMTP id E6B38937B0;
-        Sun,  2 Apr 2023 16:43:21 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se E6B38937B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dalakolonin.se;
-        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680453801;
-        bh=sSdmlIjoRWn1yhuvWO68xTpxveh96xI8zNrDWx1+g80=;
-        h=From:To:Date:Message-Id:MIME-Version;
-        b=QN37+ZQlGkNnqNukzY2lOZdWzQIlxyBP7dIa83CocW7N78+4cYRz76YT17Y9E2dlG
-         pFuIGkAM+ck2lpRT4KHurFg/uHeCUqD6ri0mwQMhdWH5IWWGUC3ebcpYzS4mnZuLmh
-         EfcEjGFRqx+1d4jLwjrVd1wG9OOdAXYPLRhn8B0YdKglGdbbDhAes5xNBg8mcsphml
-         HvZXEyESMDF9/ZvNM1wRKSfRw61WAZ/bk3vzj9Fw7Hq0xmKEP15GqasrSUUzHeMgdp
-         O3gnaK9DpwMMyHgmKN6HcTg60NOMzdNcALkDXxdSFOdgHqXg/LW/Ym40XP17g3VDXb
-         yiCSSiZA+v/TA==
-X-Virus-Scanned: amavisd-new at dalakolonin.se
-Received: from zimbra.dalakolonin.se ([127.0.0.1])
-        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 5a8U8w8BseHi; Sun,  2 Apr 2023 16:43:21 +0000 (UTC)
-Received: from rack-server-1.dalakolonin.se (unknown [172.17.0.1])
-        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id 65C38937A7;
-        Sun,  2 Apr 2023 16:43:20 +0000 (UTC)
-From:   =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, pgoudagunta@nvidia.com,
-        hns@goldelico.com, jic23@kernel.org, lars@metafoo.de,
-        linux-omap@vger.kernel.org,
-        =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
-Subject: [PATCH v2 7/7] iio: adc: palmas: don't alter event config on suspend/resume
-Date:   Sun,  2 Apr 2023 18:42:47 +0200
-Message-Id: <20230402164247.3089146-8-risca@dalakolonin.se>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230402164247.3089146-1-risca@dalakolonin.se>
-References: <20230402164247.3089146-1-risca@dalakolonin.se>
+        with ESMTP id S230246AbjDBQ2n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 12:28:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F46CC38;
+        Sun,  2 Apr 2023 09:28:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6B71AB80E8D;
+        Sun,  2 Apr 2023 16:28:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9538DC433EF;
+        Sun,  2 Apr 2023 16:28:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680452919;
+        bh=cuTBAuoULmrxBtyY0st+jaww9kfkYIFHqyfOSXRfx3g=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WtXbyvJgxVnQR4eGofeazpC1szyjZW7cMj1/uq0dVaeapUIrHute/RD1pogJez5uA
+         RKjTuHsqwnbkeDU0tWCQJCuT7WvsCe4lZ9RFozZ8mRCV/90nT+Wz4wLiy4ypQ3jqNr
+         xsyRLVQSigcpp3kCuUuuvMc6W/Y9UITbg65MlcL4osQA1Yi6hWCL+Rf+x5G7L5qHpq
+         u0/3hYzDJPuwlhI07lbSsBJ4LZtDLvYlVsQmYaGY37ncXAsbuGoiN0uVfwPo0NNkbZ
+         KmwokFwkxs4V2w3zgOngdaO8E0KOPT7rhylmPJmX4OO89CoelifeuFxQUjZYmNc3EF
+         M/XEPTCC7Pwww==
+Date:   Sun, 2 Apr 2023 17:43:47 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        pgoudagunta@nvidia.com, hns@goldelico.com, lars@metafoo.de
+Subject: Re: [PATCH 1/3] iio: adc: palmas_gpadc: add support for iio
+ threshold events
+Message-ID: <20230402174347.25e5ff06@jic23-huawei>
+In-Reply-To: <20230401184507.GB2403322@dalakolonin.se>
+References: <20230319223908.108540-1-risca@dalakolonin.se>
+        <20230319223908.108540-2-risca@dalakolonin.se>
+        <20230326175101.0ef2d6ae@jic23-huawei>
+        <20230401184507.GB2403322@dalakolonin.se>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The event config is controlled through the IIO events subsystem and
-device wakeup is controlled by /sys/devices/.../power/wakeup. Let's keep
-those two knobs independent.
+On Sat, 1 Apr 2023 20:45:07 +0200
+Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
 
-Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
----
- drivers/iio/adc/palmas_gpadc.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+> On Sun, Mar 26, 2023 at 05:51:01PM +0100, Jonathan Cameron wrote:
+> > On Sun, 19 Mar 2023 23:39:06 +0100
+> > Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
+> >  =20
+> > > The palmas gpadc block has support for monitoring up to 2 ADC channels
+> > > and issue an interrupt if they reach past a set threshold. The gpadc
+> > > driver had limited support for this through the adc_wakeup{1,2}_data
+> > > platform data. This however only allow a fixed threshold to be set at
+> > > boot, and would only enable it when entering sleep mode.
+> > >=20
+> > > This change hooks into the IIO events system and exposes to userspace
+> > > the ability to configure threshold values for each channel individual=
+ly,
+> > > but only allow up to 2 such thresholds to be enabled at any given tim=
+e. =20
+> >=20
+> > Add a comment here on what happens if userspace tries to set more than =
+two.
+> > It's not as obvious as you'd think as we have some drivers that use a f=
+ifo
+> > approach so on setting the third event they push the oldest one out. =20
+>=20
+> Will do!
+>=20
+> Is there any preference to any one approach?
 
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpad=
-c.c
-index f693d69a10a8..d4e1e80296d0 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -1127,16 +1127,10 @@ static int palmas_gpadc_suspend(struct device *de=
-v)
- {
- 	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
- 	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
--	int wakeup =3D adc->event0.enabled || adc->event1.enabled;
--	int ret;
-=20
--	if (!device_may_wakeup(dev) || !wakeup)
-+	if (!device_may_wakeup(dev))
- 		return 0;
-=20
--	ret =3D palmas_adc_configure_events(adc);
--	if (ret < 0)
--		return ret;
--
- 	if (adc->event0.enabled)
- 		enable_irq_wake(adc->irq_auto_0);
-=20
-@@ -1150,16 +1144,10 @@ static int palmas_gpadc_resume(struct device *dev=
-)
- {
- 	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
- 	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
--	int wakeup =3D adc->event0.enabled || adc->event1.enabled;
--	int ret;
-=20
--	if (!device_may_wakeup(dev) || !wakeup)
-+	if (!device_may_wakeup(dev))
- 		return 0;
-=20
--	ret =3D palmas_adc_reset_events(adc);
--	if (ret < 0)
--		return ret;
--
- 	if (adc->event0.enabled)
- 		disable_irq_wake(adc->irq_auto_0);
-=20
---=20
-2.25.1
+Not really.  Userspace should be checking either for an error, or that
+the setup matches what it thinks it configured (after finishing configuring)
+so it should cope with either.
+
+>=20
+> >  =20
+> > >=20
+> > > The logic around suspend and resume had to be adjusted so that user
+> > > space configuration don't get reset on resume. Instead, any configured
+> > > adc auto wakeup gets enabled during probe.
+> > >=20
+> > > Enabling a threshold from userspace will overwrite the adc wakeup
+> > > configuration set during probe. Depending on how you look at it, this
+> > > could also mean we allow userspace to update the adc wakeup threshold=
+s. =20
+> >=20
+> > I'm not sure I read the code right, but can you end up enabling a wakeup
+> > that wasn't previously present?  That seems likely something we should
+> > not be doing after boot.
+> >=20
+> > One option here would be to make it either wakeup is supported, or even=
+ts
+> > are supported.  I suspect no one uses the wakeup anyway so that shouldn=
+'t
+> > matter much (+ you remove it in next patch - do that first and this code
+> > becomes more obvious).
+> >  =20
+>=20
+> My use case is for monitoring a volume wheel connected to one of the ADC
+> inputs of the palmas chip. By off-loading the monitoring to a separate
+> chip, the SoC can go to sleep and only wake up when the wheel is moved.
+>=20
+> It made sense for my use case, but I see your point. IIO events and wakeup
+> triggers should be treated as separate things. I will look into defining
+> the dev_pm_info of the device. Then userspace should be able to control
+> wakeup from /sys/devices/.../power/wakeup.
+>=20
+> However, suspend and resume is a bit flaky on my board so testing might be
+> too. If the board reacts and at least tries to resume should indicate that
+> the code works, no?
+
+That will be fine. Obviously good to debug the other issues with resume tho=
+ugh!
+
+>=20
+> In any case, I will remove the old wakeup code first in v2.
+>=20
+> >=20
+> > A few trivial comments inline. =20
+>=20
+> I will adress them in v2. They all made perfect sense.
+>> > > +	ret =3D devm_add_action_or_reset(&pdev->dev, =20
+> >=20
+> > Add a comment for this to explain why it might need disabling even if
+> > it wasn't enabled above.  I think if you just drop wakeup support in
+> > general that will be fine given we have no known users.
+> >  =20
+>=20
+> I'm one such user.
+Fair enough :)
+
+Jonathan
+
+>=20
+> >  =20
+> > > +				       palmas_disable_wakeup,
+> > > +				       adc);
+> > > +	if (ret)
+> > > +		return ret;
+> > > =20
+> > >  	return 0;
+> > >  } =20
+> >=20
+> >=20
+> >  =20
 

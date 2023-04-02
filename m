@@ -2,95 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA9F6D3A5A
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 22:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 570366D3A6D
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 23:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbjDBU62 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Apr 2023 16:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57446 "EHLO
+        id S229681AbjDBVba (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Apr 2023 17:31:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbjDBU61 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 16:58:27 -0400
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F1C93D1
-        for <linux-iio@vger.kernel.org>; Sun,  2 Apr 2023 13:58:26 -0700 (PDT)
-Received: from pop-os.home ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id j4mJp3wID985Cj4mJp2a4R; Sun, 02 Apr 2023 22:58:24 +0200
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Apr 2023 22:58:24 +0200
-X-ME-IP: 86.243.2.178
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org
-Subject: [PATCH v2] iio: accel: bmi088: Correctly compute the address of the struct spi_device
-Date:   Sun,  2 Apr 2023 22:58:18 +0200
-Message-Id: <8da05ad95015e048e3058f275bd57d382420b46f.1680469082.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229448AbjDBVb3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 17:31:29 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8101C2128;
+        Sun,  2 Apr 2023 14:31:28 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id b20so109968625edd.1;
+        Sun, 02 Apr 2023 14:31:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680471087; x=1683063087;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tRcdbAiOdrJ5veV0jDWcxYBST8KB/0aFbH3RrJ9CMio=;
+        b=U+Brdooy/wDtRztRowqzLI7f6VBPEUm7bdD9GVfpzw7YgjmedFnsTf/OwsH9fcM4nb
+         GZM0P+EVF4otlvDsK/bgfhUGYGmenGW1vwsfHqLMsM9Qt5LTFNUSPyNcXtd6tYAQhYtC
+         65cXyLipR7xBQLNHL3edI/xfx6QWa9ZDnlfwntCuSMqV0ogl3umUDPkStV4/dkDI3rEG
+         65IKknbSdFrzI3HYqbcZbajwJVGxjygxiEgzxSDfxOoFxwHnfLXzK9nbyl8Nedxl8Jf+
+         frmW1zUP7aXXyIqrKcOgcB+u5P6OIvlgqDiyfTcMn2WyqTLmS8Sw72dbZpfwCMOmW8iq
+         PYxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680471087; x=1683063087;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tRcdbAiOdrJ5veV0jDWcxYBST8KB/0aFbH3RrJ9CMio=;
+        b=7zWsmDCmH4GpmmZzvd9Gk98P6H/JgMldO2BFQxxayrvig7o8KNeqlV9LgZxETsp843
+         tvG0tuYp67D0UD1OdyReZltwxBz+bpsXvbCssxW79lzRdhRiFScOTE4WpzZ7nU1RBzx9
+         Z7rZNPB5JNv/nZCuTD7hu/zO8QfG3FbzvXq7Rb4e3nyYZGO2A+ARfyTW2urlt5zkwqCG
+         9GRQt02d4Km/3ZQF+HLNyTHJkC/mnZ9tJ157oBmPa+yAkBcuMD4CcMC6UYj8g9FH3ZxC
+         zV34Pldc6ygq3LJsuixAuy6LOLFKCJtBbpO0NZVeqZT+z6mcHAlmbgrBsgFmHT/jrHSw
+         Cokw==
+X-Gm-Message-State: AAQBX9fioKJMWEksXtm93CAY6/f2JJGApAEE17iRViPKFKdqz1R8Pq9C
+        poDgr5FegHBY7W13Rd82bWF4Ahs3AuOsOg==
+X-Google-Smtp-Source: AKy350YftkgE+Jyfi9zAHnb/auUj/WhUFP7v5wv6uqXRd6uzVTvyhop39NrfTaokhgalk7tYkvX/IQ==
+X-Received: by 2002:aa7:ccce:0:b0:501:cf67:97f3 with SMTP id y14-20020aa7ccce000000b00501cf6797f3mr31787222edt.25.1680471086959;
+        Sun, 02 Apr 2023 14:31:26 -0700 (PDT)
+Received: from daniel-Precision-5530 ([86.127.67.151])
+        by smtp.gmail.com with ESMTPSA id k1-20020a1709062a4100b009477ba90a85sm3625500eje.69.2023.04.02.14.31.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Apr 2023 14:31:26 -0700 (PDT)
+Date:   Mon, 3 Apr 2023 00:31:21 +0300
+From:   Daniel Matyas <daniel.matyas23@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-i2c@vger.kernel.org, linux-hwmon@vger.kernel.org
+Subject: Creating a driver for MAX31827 temperature switch
+Message-ID: <ZCn0KeOQFJclqiAK@daniel-Precision-5530>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-bmi088_regmap_spi_write() is said to be similar to the SPI generic write
-function.
-However, regmap_spi_write() calls to_spi_device() in order to find the
-reference to the "struct spi_device", instead of considering that 'context'
-is already the correct value.
+Dear Kernel community,
 
-This works because "struct device	dev" is the first entry of
-"struct spi_device".
+I am developing an IIO driver for a temperature switch, which communicates through I2C at Analog Devices Inc.
 
-Align bmi088_regmap_spi_write() and regmap_spi_write() to be more
-future proof, should "struct spi_device" be shuffled one day.
+When implementing the event handling for the comparator mode of the device, I faced a problem: I don't know how to differentiate the underTemp event from the overTemp event. To understand better, I suggest you check out the device's data sheet for Address map (page 12), Configuration Register Definition (page 13) and OT/UT Status Bits and ALARM Pin Behavior (page 15) - https://www.analog.com/media/en/technical-documentation/data-sheets/MAX31827-MAX31829.pdf
 
-Also update bmi088_regmap_spi_read() in the same way.
+I had the idea to make 2 channels with the exact same attributes, but with different indexes, so that I can store the overTemp related events on channel 0 and underTemp related events on channel 1. Even so, I don't really feel like this is the right solution. Can anyone give me some advice on this?
 
-Fixes: c19ae6be7555 ("iio: accel: Add support for the Bosch-Sensortec BMI088")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-v2: do the same for bmi088_regmap_spi_read()
----
- drivers/iio/accel/bmi088-accel-spi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Also, I was suggested that I convert my driver from IIO to HWMON. Do you think that this is needed?
 
-diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-index ee540edd8412..79e4b5392312 100644
---- a/drivers/iio/accel/bmi088-accel-spi.c
-+++ b/drivers/iio/accel/bmi088-accel-spi.c
-@@ -15,7 +15,8 @@
- 
- static int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
- {
--	struct spi_device *spi = context;
-+	struct device *dev = context;
-+	struct spi_device *spi = to_spi_device(dev);
- 
- 	/* Write register is same as generic SPI */
- 	return spi_write(spi, data, count);
-@@ -24,7 +25,8 @@ static int bmi088_regmap_spi_write(void *context, const void *data, size_t count
- static int bmi088_regmap_spi_read(void *context, const void *reg,
- 				size_t reg_size, void *val, size_t val_size)
- {
--	struct spi_device *spi = context;
-+	struct device *dev = context;
-+	struct spi_device *spi = to_spi_device(dev);
- 	u8 addr[2];
- 
- 	addr[0] = *(u8 *)reg;
--- 
-2.34.1
-
+Yours faithfully,
+Daniel Matyas

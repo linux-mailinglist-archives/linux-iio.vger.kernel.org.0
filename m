@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B9FA6D3A51
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 22:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EA9F6D3A5A
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Apr 2023 22:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbjDBUtR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Apr 2023 16:49:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55506 "EHLO
+        id S229536AbjDBU62 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Apr 2023 16:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjDBUtR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 16:49:17 -0400
-Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5175F30C0
-        for <linux-iio@vger.kernel.org>; Sun,  2 Apr 2023 13:49:15 -0700 (PDT)
+        with ESMTP id S229492AbjDBU61 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Apr 2023 16:58:27 -0400
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F1C93D1
+        for <linux-iio@vger.kernel.org>; Sun,  2 Apr 2023 13:58:26 -0700 (PDT)
 Received: from pop-os.home ([86.243.2.178])
         by smtp.orange.fr with ESMTPA
-        id j4dRpeQhaB8bjj4dRpk4Bs; Sun, 02 Apr 2023 22:49:12 +0200
+        id j4mJp3wID985Cj4mJp2a4R; Sun, 02 Apr 2023 22:58:24 +0200
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Apr 2023 22:49:12 +0200
+X-ME-Date: Sun, 02 Apr 2023 22:58:24 +0200
 X-ME-IP: 86.243.2.178
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mike Looijmans <mike.looijmans@topic.nl>
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Linus Walleij <linus.walleij@linaro.org>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-iio@vger.kernel.org
-Subject: [PATCH] iio: accel: bmi088: Correctly compute the address of the struct spi_device
-Date:   Sun,  2 Apr 2023 22:49:08 +0200
-Message-Id: <e3dea6f158c936fc3f0186965f4b8edd78241cd6.1680468525.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2] iio: accel: bmi088: Correctly compute the address of the struct spi_device
+Date:   Sun,  2 Apr 2023 22:58:18 +0200
+Message-Id: <8da05ad95015e048e3058f275bd57d382420b46f.1680469082.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -57,14 +57,18 @@ This works because "struct device	dev" is the first entry of
 Align bmi088_regmap_spi_write() and regmap_spi_write() to be more
 future proof, should "struct spi_device" be shuffled one day.
 
+Also update bmi088_regmap_spi_read() in the same way.
+
 Fixes: c19ae6be7555 ("iio: accel: Add support for the Bosch-Sensortec BMI088")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/iio/accel/bmi088-accel-spi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v2: do the same for bmi088_regmap_spi_read()
+---
+ drivers/iio/accel/bmi088-accel-spi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-index ee540edd8412..e3447c277947 100644
+index ee540edd8412..79e4b5392312 100644
 --- a/drivers/iio/accel/bmi088-accel-spi.c
 +++ b/drivers/iio/accel/bmi088-accel-spi.c
 @@ -15,7 +15,8 @@
@@ -77,6 +81,16 @@ index ee540edd8412..e3447c277947 100644
  
  	/* Write register is same as generic SPI */
  	return spi_write(spi, data, count);
+@@ -24,7 +25,8 @@ static int bmi088_regmap_spi_write(void *context, const void *data, size_t count
+ static int bmi088_regmap_spi_read(void *context, const void *reg,
+ 				size_t reg_size, void *val, size_t val_size)
+ {
+-	struct spi_device *spi = context;
++	struct device *dev = context;
++	struct spi_device *spi = to_spi_device(dev);
+ 	u8 addr[2];
+ 
+ 	addr[0] = *(u8 *)reg;
 -- 
 2.34.1
 

@@ -2,249 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7C16D4E91
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 19:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CE46D4EF1
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 19:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbjDCRBp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 13:01:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42914 "EHLO
+        id S233149AbjDCR2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 13:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231730AbjDCRBn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 13:01:43 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 03 Apr 2023 10:01:41 PDT
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFACFEC;
-        Mon,  3 Apr 2023 10:01:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1680540578; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=JZCEDBqe94ZP+XqIriJZ9uXVomODIgXyqxwS8soNUd+f9GhPpFdeE/SXyTTIFXa0Xj
-    T/T3/8cotjDzA1bM8actFKRfgtiDSWqBeNCgIcjJui04H7ZoutCv53GMvqSvPRtMwIDx
-    neDm0UBZ18vFOnVjvwVdC3p40fgpPN0Qn52nIdgAC8b+OLgftcAFy5cRj92sDeMxoSzI
-    oh0CVu29QPbQvAhtM0NiDRQtQeG/VpsbY0kty2kiidW5MV3LKitCM9/PMeySkpXSMUE+
-    r3Lj3wZJWeng+F+z37Ua0TaLqApxQfe8dizuSwPuP9PkJezptHejQqtsB6efA2oJjCJl
-    bOzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1680540578;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=KSDue1p+VZ4KJNR/gP4suPyEpJHTiWImzDH5HEo47SU=;
-    b=hu/xe9sFUw0clqQLDtC4bYCRbCzkuHRobuzDAP1gxhB4PQGXrnlP4cj+SVJ+KDW1FJ
-    eMXr3p2Th/IFfjl81pZkHvaMFRyVPPrTOvBTGPLv+mwrGhySo7OBQw1aiLYDTYjZ9IDq
-    jNZpvcBScbli7X04m+GJRcvr7C4hYH/sZK6dAPZepnPGDnP752KQXMoOZ2VuiDFiNmk1
-    ZXujvkt3xqQFxZFAqCTEsnxYfriTuW0l7H89XpmjTDgydC/GWSCc7pCpBbL1kdDpvkX/
-    Bs+dh7blyUTIAQOWQzsvdh4167gE+9I85fqvhwWg57Hdo0PDGft06E1KK97ULyHu1lXw
-    tFJw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1680540578;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=KSDue1p+VZ4KJNR/gP4suPyEpJHTiWImzDH5HEo47SU=;
-    b=cO5xUHnF7ezpPDzISHKDwgEMxGdBaip7ULpF/GlLF/BYS7DnQC7DTRjvpvyIPVU1o7
-    MLsiCSNsbGJlPzRYW20jsZTPKoaMeLuVKPydzTCdzKFPSfeKH1klrnWRwaQzHEsj/lMg
-    KCUIxEKgK2yIHyzbMaCXrKt276TzNdlDWExurlXyNgfuJO8ykJtplggdiraTuk7aFsPH
-    2OAmLzMyBACczjz43AoZEX4CxlP9sqNtxP8tbitsyxa21Yko9XiFEH4rWQjZfGr3tnms
-    TXPwHho5AlSz6pQfuG2SAGWAHeVAkUhXCI3zpQBNPQhvOYe/AL16vJm8dmv8ZHa6wuxJ
-    bUxQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1680540578;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=KSDue1p+VZ4KJNR/gP4suPyEpJHTiWImzDH5HEo47SU=;
-    b=zIJDepv/2+iWSrU0G6sBAC2zWD6JY19BJza19zwpEZea8J++xTgYbEscTfhLOiBXzS
-    zKQxz0/9chqCiH0hvnBQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGYk/8="
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
-    with ESMTPSA id C9fe35z33Gnc0HT
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Mon, 3 Apr 2023 18:49:38 +0200 (CEST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [PATCH v2 1/7] iio: adc: palmas: remove adc_wakeupX_data
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20230402164247.3089146-2-risca@dalakolonin.se>
-Date:   Mon, 3 Apr 2023 18:49:36 +0200
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        pgoudagunta@nvidia.com, jic23@kernel.org, lars@metafoo.de,
-        linux-omap@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ED6919A6-CE57-4C31-9AE5-2C31D288A810@goldelico.com>
-References: <20230402164247.3089146-1-risca@dalakolonin.se>
- <20230402164247.3089146-2-risca@dalakolonin.se>
-To:     =?utf-8?Q?Patrik_Dahlstr=C3=B6m?= <risca@dalakolonin.se>
-X-Mailer: Apple Mail (2.3445.104.21)
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S233109AbjDCR2i (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 13:28:38 -0400
+Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732CF198A
+        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 10:28:35 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id jNynpkUGwB8bjjNyopm0fW; Mon, 03 Apr 2023 19:28:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1680542913;
+        bh=5Np8023Y6FAt/94NM8u49tVSNsULJ4IHT6grFImpIW4=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=as3/9nh1jKYq0g3MGVyo9lUN2uMiXBM0L5xt++SqOqLzzQSfVoVGvMSKBBDUypyRZ
+         E2s4pAePuf/px+rmHV5ViDQ6jBD0Q+EYsj6/F2fgdOG4zCT+qoMwT8wecoMjh+g1M2
+         LrvAgfwDb2vgW1/WR64cZyysmPxae6YitJx74vtmYKwv/VVNAsRuWbasI0dD5zCbQU
+         OK3tOJHGr+d7cZr3chHZPEl5saqEDoRWBSA6SgcqvnWyvykPRo+HnjMsM13MDn3FCf
+         UeelKMtt4ik1qaGAoSfagDQtFr1FnxvnYjuvNyHeuDHtRa7zeV341oGj3c00ZV54jM
+         JRKCVeje8gFyg==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 03 Apr 2023 19:28:33 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <9085c8bb-1419-9381-242f-98d8d5be5e8d@wanadoo.fr>
+Date:   Mon, 3 Apr 2023 19:28:29 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2] iio: accel: bmi088: Correctly compute the address of
+ the struct spi_device
+To:     Jonathan.Cameron@huawei.com, jic23@kernel.org, lars@metafoo.de,
+        linus.walleij@linaro.org, mike.looijmans@topic.nl
+Cc:     kernel-janitors@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <8da05ad95015e048e3058f275bd57d382420b46f.1680469082.git.christophe.jaillet@wanadoo.fr>
+Content-Language: fr
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <8da05ad95015e048e3058f275bd57d382420b46f.1680469082.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Patrik,
+Le 02/04/2023 à 22:58, Christophe JAILLET a écrit :
+> bmi088_regmap_spi_write() is said to be similar to the SPI generic write
+> function.
+> However, regmap_spi_write() calls to_spi_device() in order to find the
+> reference to the "struct spi_device", instead of considering that 'context'
+> is already the correct value.
 
-> Am 02.04.2023 um 18:42 schrieb Patrik Dahlstr=C3=B6m =
-<risca@dalakolonin.se>:
->=20
-> It does not seem to be used by anyone and later patches in this series
-> are made simpler by first removing this. There is now a lot of dead =
-code
-> that cannot be reached, until later patches revive it. Arguably, this =
-is
-> preferred over removing the code only to add it again.
->=20
-> Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
+Just NACK.
+The patch looks just plain wrong.
+
+Sorry for the noise.
+
+CJ
+
+
+> 
+> This works because "struct device	dev" is the first entry of
+> "struct spi_device".
+> 
+> Align bmi088_regmap_spi_write() and regmap_spi_write() to be more
+> future proof, should "struct spi_device" be shuffled one day.
+> 
+> Also update bmi088_regmap_spi_read() in the same way.
+> 
+> Fixes: c19ae6be7555 ("iio: accel: Add support for the Bosch-Sensortec BMI088")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
 > ---
-> drivers/iio/adc/palmas_gpadc.c | 50 ++++------------------------------
-> include/linux/mfd/palmas.h     |  8 ------
-> 2 files changed, 6 insertions(+), 52 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/palmas_gpadc.c =
-b/drivers/iio/adc/palmas_gpadc.c
-> index 24d7c096e4b8..943ac579eb1f 100644
-> --- a/drivers/iio/adc/palmas_gpadc.c
-> +++ b/drivers/iio/adc/palmas_gpadc.c
-> @@ -76,6 +76,12 @@ static struct palmas_gpadc_info palmas_gpadc_info[] =
-=3D {
-> 	PALMAS_ADC_INFO(IN15, 0, 0, 0, 0, INVALID, INVALID, true),
-> };
->=20
-> +struct palmas_adc_wakeup_property {
-> +	int adc_channel_number;
-> +	int adc_high_threshold;
-> +	int adc_low_threshold;
-> +};
-> +
-> /*
->  * struct palmas_gpadc - the palmas_gpadc structure
->  * @ch0_current:	channel 0 current source setting
-> @@ -492,11 +498,6 @@ static int palmas_gpadc_get_adc_dt_data(struct =
-platform_device *pdev,
-> 	return 0;
-> }
->=20
-> -static void palmas_disable_wakeup(void *dev)
-
-something seems to be mixed up here.
-
-There is no palmas_disable_wakeup() upstream that can be removed. So =
-this patch
-can not be applied as 1/7 to any upstream kernel.
-
-Please rebase your series on either linus/master or linux-next/master.
-
-BR,
-Nikolaus
-
-> -{
-> -	device_wakeup_disable(dev);
-> -}
-> -
-> static int palmas_gpadc_probe(struct platform_device *pdev)
-> {
-> 	struct palmas_gpadc *adc;
-> @@ -547,36 +548,6 @@ static int palmas_gpadc_probe(struct =
-platform_device *pdev)
-> 		return dev_err_probe(adc->dev, ret,
-> 				     "request irq %d failed\n", =
-adc->irq);
->=20
-> -	if (gpadc_pdata->adc_wakeup1_data) {
-> -		memcpy(&adc->wakeup1_data, =
-gpadc_pdata->adc_wakeup1_data,
-> -			sizeof(adc->wakeup1_data));
-> -		adc->wakeup1_enable =3D true;
-> -		adc->irq_auto_0 =3D  platform_get_irq(pdev, 1);
-> -		ret =3D devm_request_threaded_irq(&pdev->dev, =
-adc->irq_auto_0,
-> -						NULL, =
-palmas_gpadc_irq_auto,
-> -						IRQF_ONESHOT,
-> -						"palmas-adc-auto-0", =
-adc);
-> -		if (ret < 0)
-> -			return dev_err_probe(adc->dev, ret,
-> -					     "request auto0 irq %d =
-failed\n",
-> -					     adc->irq_auto_0);
-> -	}
-> -
-> -	if (gpadc_pdata->adc_wakeup2_data) {
-> -		memcpy(&adc->wakeup2_data, =
-gpadc_pdata->adc_wakeup2_data,
-> -				sizeof(adc->wakeup2_data));
-> -		adc->wakeup2_enable =3D true;
-> -		adc->irq_auto_1 =3D  platform_get_irq(pdev, 2);
-> -		ret =3D devm_request_threaded_irq(&pdev->dev, =
-adc->irq_auto_1,
-> -						NULL, =
-palmas_gpadc_irq_auto,
-> -						IRQF_ONESHOT,
-> -						"palmas-adc-auto-1", =
-adc);
-> -		if (ret < 0)
-> -			return dev_err_probe(adc->dev, ret,
-> -					     "request auto1 irq %d =
-failed\n",
-> -					     adc->irq_auto_1);
-> -	}
-> -
-> 	/* set the current source 0 (value 0/5/15/20 uA =3D> 0..3) */
-> 	if (gpadc_pdata->ch0_current <=3D 1)
-> 		adc->ch0_current =3D PALMAS_ADC_CH0_CURRENT_SRC_0;
-> @@ -616,15 +587,6 @@ static int palmas_gpadc_probe(struct =
-platform_device *pdev)
-> 			palmas_gpadc_calibrate(adc, i);
-> 	}
->=20
-> -	if (adc->wakeup1_enable || adc->wakeup2_enable) {
-> -		device_wakeup_enable(&pdev->dev);
-> -		ret =3D devm_add_action_or_reset(&pdev->dev,
-> -					       palmas_disable_wakeup,
-> -					       &pdev->dev);
-> -		if (ret)
-> -			return ret;
-> -	}
-> -
-> 	return 0;
-> }
->=20
-> diff --git a/include/linux/mfd/palmas.h b/include/linux/mfd/palmas.h
-> index 1e61c7e9f50d..55f22adb1a9e 100644
-> --- a/include/linux/mfd/palmas.h
-> +++ b/include/linux/mfd/palmas.h
-> @@ -129,12 +129,6 @@ struct palmas_pmic_driver_data {
-> 			    struct regulator_config config);
-> };
->=20
-> -struct palmas_adc_wakeup_property {
-> -	int adc_channel_number;
-> -	int adc_high_threshold;
-> -	int adc_low_threshold;
-> -};
-> -
-> struct palmas_gpadc_platform_data {
-> 	/* Channel 3 current source is only enabled during conversion */
-> 	int ch3_current;	/* 0: off; 1: 10uA; 2: 400uA; 3: 800 uA =
-*/
-> @@ -153,8 +147,6 @@ struct palmas_gpadc_platform_data {
-> 	int start_polarity;
->=20
-> 	int auto_conversion_period_ms;
-> -	struct palmas_adc_wakeup_property *adc_wakeup1_data;
-> -	struct palmas_adc_wakeup_property *adc_wakeup2_data;
-> };
->=20
-> struct palmas_reg_init {
-> --=20
-> 2.25.1
->=20
+> v2: do the same for bmi088_regmap_spi_read()
+> ---
+>   drivers/iio/accel/bmi088-accel-spi.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
+> index ee540edd8412..79e4b5392312 100644
+> --- a/drivers/iio/accel/bmi088-accel-spi.c
+> +++ b/drivers/iio/accel/bmi088-accel-spi.c
+> @@ -15,7 +15,8 @@
+>   
+>   static int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
+>   {
+> -	struct spi_device *spi = context;
+> +	struct device *dev = context;
+> +	struct spi_device *spi = to_spi_device(dev);
+>   
+>   	/* Write register is same as generic SPI */
+>   	return spi_write(spi, data, count);
+> @@ -24,7 +25,8 @@ static int bmi088_regmap_spi_write(void *context, const void *data, size_t count
+>   static int bmi088_regmap_spi_read(void *context, const void *reg,
+>   				size_t reg_size, void *val, size_t val_size)
+>   {
+> -	struct spi_device *spi = context;
+> +	struct device *dev = context;
+> +	struct spi_device *spi = to_spi_device(dev);
+>   	u8 addr[2];
+>   
+>   	addr[0] = *(u8 *)reg;
 

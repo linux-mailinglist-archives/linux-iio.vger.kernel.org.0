@@ -2,111 +2,174 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1DF36D3FB7
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 11:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D10E96D409A
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 11:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231786AbjDCJJ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 05:09:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57394 "EHLO
+        id S231706AbjDCJaO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 05:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbjDCJJ0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 05:09:26 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9E9EC4C
-        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 02:09:23 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id eg48so114346428edb.13
-        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 02:09:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680512962;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r1Pie9vLpSoU3Q5Det2G8XSc6g11vynQ88xBxnFyU1o=;
-        b=lLaZshO//K2mzRsps+ik6PQi8aCsNNpx5qVHs0MyrsqixikW2NaPhTg3VbY/xqph4G
-         jdtFy02/fSrwtCLykKrzdqwFXHJ0+15krQDuoIk56LNiZWCmggffxgAsLJwS8mspz0mU
-         QQD2vns8/DeVLSd0vdTQ4DMoQF5wc5xxeQpeDGAjdkiLY1cKb7H5Lp/gr7irePE67PEK
-         VSOFkPtItTB0xAjpCBwY3AIdvOIIvNqcG1yg4KpxpRrqiNkqBCnqNdadNej0glatAjR+
-         foP+CEk3JWMH8rkH24YLB1q2to1sPJCeFwhUTciYuW1RO0F18Ky1zmSSvxzJ2rohROB8
-         SIxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680512962;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r1Pie9vLpSoU3Q5Det2G8XSc6g11vynQ88xBxnFyU1o=;
-        b=Qe0GteWj6qg6M+hIfE1a6CY9VYTmC4qwL7XQA02d7zEGDsQyKOUzpoxTdMzOP3Ci+8
-         sSKHkuSFO/lu+MZRPLNDXCuGOIPj25ADCN4wwipZGpvi2eeTsYkmeIfWd0p9mDfBq/Zh
-         Sh0OzxDQh0Wk29OslE+3c4q5XsBXpvLMOjXFlIvoLK6QwOvvEOZYhqS7qJtsZmYDU4ye
-         gtB6RWR7DGTGWPI5jDkIOn0130i2buZC7YARFAFCITPeoEjxUZ+0R4fMloLIgqUcQZbQ
-         SCZ4LWWFew7WLmxe+zFvzDc7PNt+VGYNOeRIrzQDBuK+Jy3+HNHnXQVi+QvOvyGWgxco
-         hu9A==
-X-Gm-Message-State: AAQBX9e3CCuRci3zH9Y5HENvcMazc8RBiSG+uLWz69OUI/b7Ytgm3Q7K
-        T3LnK0XpLbPmFAfyZDLchB8hZA==
-X-Google-Smtp-Source: AKy350aBG8Lw3tiTi4uyEzvdUWZZ8/wJbCudRE48u/GHRB7fv3HG8fwgC+JXiU5egzSazrIqYWAfCg==
-X-Received: by 2002:a17:907:c248:b0:931:ce20:db8e with SMTP id tj8-20020a170907c24800b00931ce20db8emr36625621ejc.51.1680512962044;
-        Mon, 03 Apr 2023 02:09:22 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:ae90:d80:1069:4805? ([2a02:810d:15c0:828:ae90:d80:1069:4805])
-        by smtp.gmail.com with ESMTPSA id c10-20020a170906d18a00b00923f05b2931sm4245192ejz.118.2023.04.03.02.09.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Apr 2023 02:09:21 -0700 (PDT)
-Message-ID: <f31cfa7d-08cf-efc1-322f-a8e4bbe76476@linaro.org>
-Date:   Mon, 3 Apr 2023 11:09:20 +0200
+        with ESMTP id S229670AbjDCJaN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 05:30:13 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 608E1273B
+        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 02:30:12 -0700 (PDT)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3338Cqw1009872;
+        Mon, 3 Apr 2023 11:29:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=D4P9laXrmA/FeNU6BwSI6EO7GivyJSWZ483Tfs0dNL4=;
+ b=r9kliuGN4mZu2l+ze8b1MT6yPe7c+zy33NppexRrf5CGPAcYGM8+uzUUIkr73o3Qh88o
+ 7pPw34Qaug/KNscu7SXY9TSk3BQQ/lyiR4xYQfCKpK9CUrn1il60xTVXIBYAfFla3Mr5
+ zLr253vQSCvTzuVOMNxvwFuHFkqbtLz3VpEGr1V9zUIm+L5Mj6hd6UKCSV9wYJBesUDU
+ kkUKtFrwf6TCi9cwAB7a3FSA72ie2C+S2FqGy2sUi56XKsglCh0hTSJcfwOSW2b5Cw9m
+ spAgGEWh9PqJI9k+450zs+fc3NBPydHay7dYYs5DWQakEqboPCUIM9akLrO7uYXLYCEa Sw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3pqu38rgbd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 03 Apr 2023 11:29:43 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E7A3410002A;
+        Mon,  3 Apr 2023 11:29:41 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D6AE1214D26;
+        Mon,  3 Apr 2023 11:29:41 +0200 (CEST)
+Received: from [10.252.15.35] (10.252.15.35) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.17; Mon, 3 Apr
+ 2023 11:29:41 +0200
+Message-ID: <019c8081-d7e0-931e-2bdf-87ba93a552f1@foss.st.com>
+Date:   Mon, 3 Apr 2023 11:29:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v2 02/22] arm64: dts: qcom: pm8350b: fix thermal zone node
- name
+ Thunderbird/102.7.1
+Subject: Re: [Linux-stm32] [PATCH 3/3] iio: adc: stm32-adc: skip adc-channels
+ setup if none is present
 Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-References: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
- <20230401220810.3563708-3-dmitry.baryshkov@linaro.org>
- <47efb05a-d1e7-a3c5-c423-4eb53fe86386@linaro.org>
- <33430a31-b9da-5f1c-bae0-9ec6f24fda99@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <33430a31-b9da-5f1c-bae0-9ec6f24fda99@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+To:     Sean Nyekjaer <sean@geanix.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <alexandre.torgue@foss.st.com>,
+        <nuno.sa@analog.com>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+References: <20230327083449.1098174-1-sean@geanix.com>
+ <20230327083449.1098174-3-sean@geanix.com>
+From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
+In-Reply-To: <20230327083449.1098174-3-sean@geanix.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.252.15.35]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-03_06,2023-03-31_01,2023-02-09_01
+X-Spam-Status: No, score=-2.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 02/04/2023 13:02, Dmitry Baryshkov wrote:
-> On 02/04/2023 13:34, Krzysztof Kozlowski wrote:
->> On 02/04/2023 00:07, Dmitry Baryshkov wrote:
->>> Correct the thermal zone node name to remove the clash with
->>> pm8350c.dtsi. Remove unused labels.
->>>
->>> Fixes: 5c1399299d9d ("arm64: dts: qcom: pm8350b: add temp sensor and thermal zone config")
->>
->> Please describe the observable bug from that commit being fixed here.
->> Any future clash, which did not exist that time, is not a bug. It's future.
->>
->> Naming changes here are more a matter of style, because the old names
->> were correct according to our coding guidelines, just not precise (c
->> instead of b). But node names anyway are not important from the point of
->> view fixes and adding such tag will cause a needless backport.
+Hi Sean,
+
+Thanks for your patch.
+You're right. The DT updates to use the generic bindings are not yet 
+upstreamed, and there are some regressions on legacy bindings support.
+Please, find here after some comments.
+
+BRs
+Olivier
+
+On 3/27/23 10:34, Sean Nyekjaer wrote:
+> If only adc differential channels are defined driver will fail with
+> stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
 > 
-> It is needed. Including both pm8350c.dtsi and pm8350b.dtsi will result 
-> in one thermal zone overriding another one.
+> Fix this by skipping the initialization if no channels are defined.
+> 
+> This applies only to the legacy way of initializing adc channels.
+> 
+> Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+>   drivers/iio/adc/stm32-adc.c | 38 +++++++++++++++++++------------------
+>   1 file changed, 20 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index a04fcb2dc80a..6d87cfaadb5d 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -2065,28 +2065,30 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
+>   		}
+>   	}
+>   
 
-I don't understand. You used future tense "will", but we talk about
-past. So where is the bug in commit 5c1399299d9d?
+In PIO mode an extra channel channel is defined for timestamps. This 
+additional channel must be ignored in channel count when initializing 
+single and diff channels.
 
-Best regards,
-Krzysztof
+This can be handled in stm32_adc_legacy_chan_init() call from 
+stm32_adc_legacy_chan_init() function:
 
+         ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels, 
+timestamping ? num_channels - 1 : num_channels);
+
+> -	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
+> -					     nchans);
+> -	if (ret)
+> -		return ret;
+> -
+> -	for (c = 0; c < nchans; c++) {
+> -		if (chans[c] >= adc_info->max_channels) {
+> -			dev_err(&indio_dev->dev, "Invalid channel %d\n",
+> -				chans[c]);
+> -			return -EINVAL;
+> -		}
+> +	if (nchans - num_diff > 0) {
+> +		ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
+> +				nchans);
+
+num_se = nchans - num_diff represents single ended channels number.
+single ended count has to be used also in 
+device_property_read_u32_array() call:
+ret = device_property_read_u32_array(dev, "st,adc-channels", chans, 
+num_se);
+
+> +		if (ret)
+> +			return ret;
+> 
+> -		/* Channel can't be configured both as single-ended & diff */
+> -		for (i = 0; i < num_diff; i++) {
+> -			if (chans[c] == diff[i].vinp) {
+> -				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
+> +		for (c = 0; c < nchans; c++) {
+
+and also in this for loop:
+for (c = 0; c < num_se; c++) {
+
+> +			if (chans[c] >= adc_info->max_channels) {
+> +				dev_err(&indio_dev->dev, "Invalid channel %d\n",
+> +						chans[c]);
+>   				return -EINVAL;
+>   			}
+> -		}
+> -		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
+> +
+> +			/* Channel can't be configured both as single-ended & diff */
+> +			for (i = 0; i < num_diff; i++) {
+> +				if (chans[c] == diff[i].vinp) {
+> +					dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
+> +					return -EINVAL;
+> +				}
+> +			}
+> +			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
+>   					chans[c], 0, scan_index, false);
+> -		scan_index++;
+> +			scan_index++;
+> +		}
+>   	}
+>   
+>   	if (adc->nsmps > 0) {

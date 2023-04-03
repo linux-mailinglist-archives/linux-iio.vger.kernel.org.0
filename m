@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3E16D418C
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 12:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332C76D4195
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 12:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231895AbjDCKHY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 06:07:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58224 "EHLO
+        id S232018AbjDCKJb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 06:09:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231321AbjDCKHX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 06:07:23 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61A6F526E
-        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 03:07:21 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id br6so37293565lfb.11
-        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 03:07:21 -0700 (PDT)
+        with ESMTP id S231626AbjDCKJa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 06:09:30 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F555BB7
+        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 03:09:29 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id k37so37391618lfv.0
+        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 03:09:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680516439;
+        d=linaro.org; s=google; t=1680516567;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=okbVzjpphuSURTBwLwWsz3d/UlpOfVGoKqvP11/IIQU=;
-        b=kzHcRw145Tq/JE+dEAFtzVZmKjjSoP2eaaYfw0szz1lZettc8oUTufHAVffNbF7PxO
-         QXbPvRwQeHbEa1d47xqMmXh4eTncbQ1Ljt4GkFUrnG1dfeWv7t8U54qhtRzNQHyJ0vcr
-         LDWZ/ghGyygFkA+MrOG70NLEKjSFfOWyAuwWvOnCyAFt4516VzHT4Aq4/J9YWYtpg/uo
-         ctp4kMxlYAxEqTS7w8z/sPX9x8Y5tssOEo/XJ5UeaMqPHSmS42VKOiz3QWYq1DFr51qu
-         aGlpwFPiAwJ2f02XoKG3AaKXvfNw5FopUdjIw01UNtLhhIJGlDXPU5HDzDJp/dZ0a21L
-         DCew==
+        bh=lEKBIQMVSwi7thWGtQAMQlcGo3/5DT7we91ULSwa0lY=;
+        b=zsO93/BXsw5KQimncatEXOZFyOcU8LDkmEDih+q3xT2EMWLwsV5LlJ1OErYxJrrhYv
+         hYolkArUXzP1tZm4M1bZm3AYBzFV7HojQaNx3tEumtejRsZeJPrBhJsEOdVxe3RsuLOG
+         7Xh8thaEFoT0wrgEaZf0jDB3uSNnYcIGCOF77x07q6zsnRGZMzGYEGcM0bbnlTFkgJzf
+         HgE+E5qcrzWiQuOs842NRGZroqRi8ivNsAe2LgWlhukgRSw1qW8fz4v0Czz+Abjr4HNk
+         IefRjAG8tmt0WO4dTxeX1H+g6frpFM1DgR+uNJFtlrbepX3tZ+tmQQr06PcbuJZAlk26
+         1/eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680516439;
+        d=1e100.net; s=20210112; t=1680516567;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=okbVzjpphuSURTBwLwWsz3d/UlpOfVGoKqvP11/IIQU=;
-        b=arndET8j+tGT7yNFF8rxNW4hisfe4VSPzVoF1EJtmo4uHQJYpTHdal1i8uvjXwaeKn
-         amBmF/mIWHZwjJh5+NyZ7/LME6DgsdTERXWR+bKPGyxeBrjpY7mS7qLgddafFMAJlFq0
-         eIctjWq4ah5ilK37gb9co3OJmPlMolLdiEq3aqI/+NdIt+1gZqj44v8PaQ8hNAqkKLYC
-         ZJ9+Vea+otJ10Pld4ow2QHff1nG92bRo8S1gwFDnDlAkqktLqXEd+B2iT8f/EPuSs2WI
-         wfqiTshQxXbb8gVPItzeA3iyMt0ng726goF+wiDZkHWJuO4MbS0F4GnxRg2DHJuBl6Qp
-         kbxg==
-X-Gm-Message-State: AAQBX9fBTfKhUm5UQ+FRLveN10ssdWFYGic4nYgtNX64lc5ZtNUbuRAz
-        CefbDokQUrJne1UgvinmamSoBA==
-X-Google-Smtp-Source: AKy350bEVPXVYmqwfOkf81gG9dW9SP4lc7NBMKw+Vwl7C+AeAKsHhRRe4JaSoZR6Vqo8JL9DsE/ToA==
-X-Received: by 2002:ac2:522c:0:b0:4dd:ad88:ba65 with SMTP id i12-20020ac2522c000000b004ddad88ba65mr8747235lfl.67.1680516439665;
-        Mon, 03 Apr 2023 03:07:19 -0700 (PDT)
+        bh=lEKBIQMVSwi7thWGtQAMQlcGo3/5DT7we91ULSwa0lY=;
+        b=7Ju+iIrG9eh3zLAzGCsJtNIfpLT6d68+4Ul8rjdbM0nHkAUryzmUEDY+8AUPlrwoXm
+         PY9RKeeCBj5sJxPAdbsqHfjaepTxSYMLAP2v/Ov9C6gG0/5lJYrCjMb+s3WYPK5lVK6P
+         XrThnN41eS4mdsk9P44LtZpq2czN00u8fjVHRNXWXUe47CzGdCzHlLwd5rIMn4MiMdsr
+         UccnAM1jEOwp8/oeewfIapZNP+xQIAk/inRuT5qEGvEaAe59FGlDqcJLanl3vGUbhBr9
+         eaM/LTbcA9Y26y+QRf8c7Lk7EwIUPb7/F0dLRNPf2OkfN6n9hNUc5BMt4VCOmPwqxKW4
+         5+Eg==
+X-Gm-Message-State: AAQBX9f1A/c8OSsYHFQ4OIsw2Sx5/r+4KUOiUsTmcMdCbqFRJ5CzjwDj
+        CFoJozmvP7mC7Nves0XStb762A==
+X-Google-Smtp-Source: AKy350YJlSUS28rlZPFdnniaUqY7Rg6PwE1ZZ8qVKe/m/UYMOMzGbG/65uo81f6WkfTOqZpLkEIsCQ==
+X-Received: by 2002:ac2:4903:0:b0:4eb:2b32:feab with SMTP id n3-20020ac24903000000b004eb2b32feabmr3303232lfi.50.1680516567353;
+        Mon, 03 Apr 2023 03:09:27 -0700 (PDT)
 Received: from [192.168.1.101] (abxj135.neoplus.adsl.tpnet.pl. [83.9.3.135])
-        by smtp.gmail.com with ESMTPSA id p13-20020a05651238cd00b004e84b79de9bsm1678722lft.254.2023.04.03.03.07.18
+        by smtp.gmail.com with ESMTPSA id t16-20020ac24c10000000b004db3d57c3a8sm1709326lfq.96.2023.04.03.03.09.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Apr 2023 03:07:19 -0700 (PDT)
-Message-ID: <e95b347a-83dc-b530-b242-8f335996b7ce@linaro.org>
-Date:   Mon, 3 Apr 2023 12:07:17 +0200
+        Mon, 03 Apr 2023 03:09:27 -0700 (PDT)
+Message-ID: <3072147a-c9b6-7884-9836-76164653c766@linaro.org>
+Date:   Mon, 3 Apr 2023 12:09:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH v2 04/22] arm64: dts: qcom: sc8280xp-pmics: correct
- interrupt routing for pm8280_2_temp_alarm
+Subject: Re: [PATCH v2 07/22] arm64: dts: qcom: pmk8350: port sdam_6 device
+ from sc8280xp-pmics
 Content-Language: en-US
 To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Andy Gross <agross@kernel.org>,
@@ -67,9 +67,9 @@ Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
 References: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
- <20230401220810.3563708-5-dmitry.baryshkov@linaro.org>
+ <20230401220810.3563708-8-dmitry.baryshkov@linaro.org>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230401220810.3563708-5-dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230401220810.3563708-8-dmitry.baryshkov@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -85,29 +85,37 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 On 2.04.2023 00:07, Dmitry Baryshkov wrote:
-> The PMIC pm8280_2 has SID equal to 3, thus it interrupts-extended should
-> use 3 as the first argument value. Fix the interrupts-extended value for
-> pm8280_2_temp_alarm device node.
+> sc8280xp-pmics.dtsi contains a copy of pmk8350 with one extra device,
+> nvram (sdam). Port its definition from sc8280xp-pmics.dtsi into main
+> pmk8350.dtsi file.
 > 
-> Fixes: 6c82f40ec94e ("arm64: dts: qcom: sc8280xp-pmics: Add temp alarm for PM8280_{1/2} PMICs")
 > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 > ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Downstream uses the name `pmk8350_sdam_22` for this reg and
+sdam_1 corresponds to 0x7000, with 0x100 increments. Was the
+sc8280xp definition wrong wrt this, or do they differ?
 
 Konrad
->  arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm64/boot/dts/qcom/pmk8350.dtsi | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-> index a3c7369f9594..254337345e45 100644
-> --- a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-> @@ -176,7 +176,7 @@ pmc8280_2: pmic@3 {
->  		pm8280_2_temp_alarm: temp-alarm@a00 {
->  			compatible = "qcom,spmi-temp-alarm";
->  			reg = <0xa00>;
-> -			interrupts-extended = <&spmi_bus 0x2 0xa 0x0 IRQ_TYPE_EDGE_BOTH>;
-> +			interrupts-extended = <&spmi_bus 0x3 0xa 0x0 IRQ_TYPE_EDGE_BOTH>;
->  			#thermal-sensor-cells = <0>;
+> diff --git a/arch/arm64/boot/dts/qcom/pmk8350.dtsi b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+> index 455ffffb5f5c..26e40dbfc173 100644
+> --- a/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+> @@ -66,6 +66,15 @@ pmk8350_rtc: rtc@6100 {
+>  			status = "disabled";
 >  		};
 >  
+> +		pmk8350_sdam_6: nvram@8500 {
+> +			compatible = "qcom,spmi-sdam";
+> +			reg = <0x8500>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +			ranges = <0 0x8500 0x100>;
+> +			status = "disabled";
+> +		};
+> +
+>  		pmk8350_gpios: gpio@b000 {
+>  			compatible = "qcom,pmk8350-gpio", "qcom,spmi-gpio";
+>  			reg = <0xb000>;

@@ -2,102 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A1C6D3D5C
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 08:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3501E6D3D9B
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 08:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbjDCGbs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 02:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43714 "EHLO
+        id S229797AbjDCGwt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 02:52:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230053AbjDCGbr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 02:31:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EF1D52B;
-        Sun,  2 Apr 2023 23:31:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5058614F5;
-        Mon,  3 Apr 2023 06:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243EAC433EF;
-        Mon,  3 Apr 2023 06:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680503503;
-        bh=i8cq8H4Yhw1CAAarD0GVgGxvxr3tNkVZXqgsXfxngYk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=u4cYoVxSOhOfhTpWPKpbOBVRgTIJqWOhnbnVJl9YmnirdokLMeggLXfs9zcBoPeC/
-         NU0V4hF+sufLI1eU9Az7+F+EiH5PEbuC/ZXg9YinnX2Hng2VyAc0R98yq3KYnvjmKt
-         o6839xRuPf13GmSk2W+YLAfKzOXywqtuxVRLvwlk5JESfop0foME+5G/4TKdcujnJ0
-         UxNDt1zAYokIkrAVT3zO1CF7sAV2IT8VozWY8TSgurBZ8ltCgVsxC90I23OwbFYxdP
-         2/39ptU+iuKnpBjjzkNXSLV6juY9f+vfAkfCb+1rtEbPkk5DM5jyN95lcc/Mohqc9C
-         WZ6IQGWIFKUwg==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1pjDjZ-0004o9-NJ; Mon, 03 Apr 2023 08:32:06 +0200
-Date:   Mon, 3 Apr 2023 08:32:05 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 03/22] arm64: dts: qcom: sc8280xp-pmics: use pmk8350
- specifics for pon device
-Message-ID: <ZCpy5TUWacjtVo05@hovoldconsulting.com>
-References: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
- <20230401220810.3563708-4-dmitry.baryshkov@linaro.org>
+        with ESMTP id S229454AbjDCGwt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 02:52:49 -0400
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53AC630D1
+        for <linux-iio@vger.kernel.org>; Sun,  2 Apr 2023 23:52:48 -0700 (PDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id dw2so3296451qvb.11
+        for <linux-iio@vger.kernel.org>; Sun, 02 Apr 2023 23:52:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680504767;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ScELMrj/DoIDUcUWC7sj2bAmfQjlVNhGGYZVGhw9aYo=;
+        b=AXGBCtNlSyF6Bm+Wx4W8B50HFUyZ5J1uz2x3FgtNKOO5pinP85hqxxDvnJvqFiR7Ch
+         RDnb/H/zomSuHcNyC48R/cAiQ/yhNsV0/lUnxf2ET6E6fIpAJ/UzJxcw+SJp1pxdE2Ps
+         SatS3XAouc1piiTKLz/5ioOAk40Tph5CQGv8kbER5IKgelcEpwschPNPimOYWmbQKgP/
+         k/xA6SvD33H7q94cuLP+RJz8UWjCOUp2ubI/3/uszI8S9H/wlHgdRKkIrOhK+0Ta5i4e
+         E6GRAtlKlSNUNOtv2GWFzDf9RZpe3nk7tJmwPVWyrg36SKnyZ5OGQlo/KHBUj2zkYCqq
+         Qlkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680504767;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ScELMrj/DoIDUcUWC7sj2bAmfQjlVNhGGYZVGhw9aYo=;
+        b=SAqq6BeM5r7MLRUkaM2wBt8VGuVy1/Bpz4i4TiA85TQdMgyxMOkSCSVbfqi6ThRmQP
+         bEEuFhFzj+WMStdciv88QfIUUyeewKwCtTMllJDnQ8DwOvnkanBfmqJDwm5WFJ0ln1k3
+         WNScGQPZqbrhzMWIMpS5yXCEZkl6MVXHWxGwGPd42EV2s1Ex/+kQtni8vhLgsflu9nbW
+         cmJWSm1Saes31zQyHpAU64j19uuqDSjFM16LqiHNNsWa9ozDIjPTtUNKuNw7QGEMZsIl
+         TWRUXtywcCJceiLz/AxPHJiS3eSNnVUAXtdO8oKqS//1m/HT7F2pRh+yjY0DB/KbiBnl
+         4nqQ==
+X-Gm-Message-State: AAQBX9d8leau/zaOu3FPnaqNFHXjy0Fs6GxcvRl+seXAPKnpBvXbqMXJ
+        1lNSEJqOJFXo/VzSx7CMZ0a2YnyIdjThAFWC
+X-Google-Smtp-Source: AKy350Y3xTSmIDbtZpBPsLaYrgPJeXVB/xCCpaISJmh0sryLwSNXwoAPt9syxale8IeV3i1yDakHQg==
+X-Received: by 2002:ad4:594d:0:b0:5a4:548e:4ed6 with SMTP id eo13-20020ad4594d000000b005a4548e4ed6mr56509613qvb.40.1680504767275;
+        Sun, 02 Apr 2023 23:52:47 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id mm17-20020a0562145e9100b005dd8b9345f4sm2390844qvb.140.2023.04.02.23.52.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Apr 2023 23:52:46 -0700 (PDT)
+Message-ID: <0fc93adff7ef33857881ffa94bbd77433abab362.camel@gmail.com>
+Subject: Re: [PATCH] staging: iio: resolver: ads1210: fix config mode
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-staging@lists.linux.dev, linux-iio@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Date:   Mon, 03 Apr 2023 08:54:44 +0200
+In-Reply-To: <20230401152425.2dae5505@jic23-huawei>
+References: <20230327145414.1505537-1-nuno.sa@analog.com>
+         <20230401152425.2dae5505@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230401220810.3563708-4-dmitry.baryshkov@linaro.org>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 02, 2023 at 01:07:51AM +0300, Dmitry Baryshkov wrote:
-> Following the commit c0ee8e0ba5cc ("arm64: dts: qcom: pmk8350: Use the
-> correct PON compatible") and commit f46ef374e0dc ("arm64: dts: qcom:
-> pmk8350: Specify PBS register for PON") use "qcom,pmk8350-pon" compat
-> string and add RBS region to the PON device.
-> 
-> Fixes: ccd3517faf18 ("arm64: dts: qcom: sc8280xp: Add reference device")
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+On Sat, 2023-04-01 at 15:24 +0100, Jonathan Cameron wrote:
+> On Mon, 27 Mar 2023 16:54:14 +0200
+> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>=20
+> > As stated in the device datasheet [1], bits a0 and a1 have to be
+> > set to
+> > 1 for the configuration mode.
+> >=20
+> > [1]:
+> > https://www.analog.com/media/en/technical-documentation/data-sheets/ad2=
+s1210.pdf
+> >=20
+> > Fixes: b19e9ad5e2cb9 ("staging:iio:resolver:ad2s1210 general driver
+> > cleanup")
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>=20
+> Oops. Younger more foolish me bug (back in 2011 so I'll cut myself
+> some slack)
+>=20
+> Applied to the togreg branch of iio.git (not rushing something in
+> that is in staging
+> and has been broken a while without anyone commenting!)
+>=20
+> I don't suppose this means you are going to get this ready to move
+> out of staging?
+> *looks hopeful*
+>=20
 
-I already sent a fix for this last Monday:
+Eeheh, Unfortunately not on the top of my list right now... But, if I
+happen to find some hardware hanging around, I might eventually get
+into it.
 
-	https://lore.kernel.org/all/20230327122948.4323-1-johan+linaro@kernel.org/
+Funny enough, this was actually reported to us in one of our support
+channels which means there are people actually using the driver even
+being it on staging.
 
-> ---
->  arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-> index c35e7f6bd657..a3c7369f9594 100644
-> --- a/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi
-> @@ -59,8 +59,8 @@ pmk8280: pmic@0 {
->  		#size-cells = <0>;
->  
->  		pmk8280_pon: pon@1300 {
-> -			compatible = "qcom,pm8998-pon";
-> -			reg = <0x1300>;
-> +			compatible = "qcom,pmk8350-pon";
-> +			reg = <0x1300>, <0x800>;
+- Nuno S=C3=A1
 
-This is missing 'reg-names'.
 
->  
->  			pmk8280_pon_pwrkey: pwrkey {
->  				compatible = "qcom,pmk8350-pwrkey";
-
-Johan

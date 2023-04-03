@@ -2,78 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98076D44FC
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 14:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF78E6D4514
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 15:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231910AbjDCM5E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 08:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48630 "EHLO
+        id S229603AbjDCNBC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 09:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231532AbjDCM5D (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 08:57:03 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 583AE55AB
-        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 05:57:02 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id t10so116785273edd.12
-        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 05:57:02 -0700 (PDT)
+        with ESMTP id S231401AbjDCNBB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 09:01:01 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA75A3C39
+        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 06:00:59 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id ew6so116927273edb.7
+        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 06:00:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680526621;
+        d=linaro.org; s=google; t=1680526858;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=N9PXbgDl7LeRBeujLG4sJDCnMB4TWVsRHSKuyMeCJLc=;
-        b=Ovu9SuSRZuBTPFeZVLE4CtW9jF4sSj8AI99HjwWXOch+RnqponLdZXviwvIFo8d4Ga
-         HfKie88WuwpL10J+WMmIdyb+nryWYi+Hvynb3tEJGxaWVSf7hfCKvhbRB1BFaACgNIuT
-         mMAmeKPdSvtSMD+YFDtLMNj/ntAGWzz30l4eS9uURoBevGJ4dz0nTIniwp6/YjCkB6Az
-         eBqe+OqNnQtOsA+1ue5FcRb5vmY5WZY9QAqO7hWETr5A1YD/56nARDy2GQoTE7KizoYd
-         PajbNil5N8AygAcMFA5zN7tNgARwt/KEI1Zak6kSjn54GE8HWFIhEUVytADY33h6omCn
-         fJWQ==
+        bh=16UcNG/PukjzRElXQ0FZ/prdEavSXuL0hY9oDia7Fqw=;
+        b=eycy1+5anorySr0EFsfJZnLN8eQhIR5TfCplDiItBZdFqBp2M6BsniseXTJiP8SoAS
+         pSN8Bk+cdLzpMkjXTcvNgyt4LWQbT1STGcJ1VmYAFhbKbWgOACfOQDft9s7L4ueR7YUY
+         Ppl09mPH+/NKn+33LmC/c4165oi+RSn9dJip2JCgOwhiZFWqVSx8cntBiPvFPRXwAbym
+         VpTgJC5Wws9vHFG4EGWzl2IFCuE+i8ZdbFqGXlk+b+8ahyeKxOvCDhgr9/Ekn3DHHHc6
+         QZHVSsfHj/eKd1nXglpsL3+DRbzgTvcavCB1S1MuKsUrlhT0Ef8wJJmCoV2jeQq7iJ/F
+         AWWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680526621;
+        d=1e100.net; s=20210112; t=1680526858;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N9PXbgDl7LeRBeujLG4sJDCnMB4TWVsRHSKuyMeCJLc=;
-        b=4I36ZYzjstvnTr1/w8dhvG1z0R+il0rB9/GVKb7uj2GgopjVUCuUwDae+anVMdObGd
-         726h9kuQUC1Mn1WrFNAwpg53mUxepnVdRsuyn+Kin/ZPwiqmPjNrLzFRj0bPkJQidx6N
-         Tc7v8QAaKGWfpwcF/ROBh933Fvoi3Sf+uu2wU7KgdA7Sxo77wF2F5cg9cSPjENgM3fcs
-         x17b5o80Sx7WlrfvCA61abbESr9CCSXF61gCNyO+3IXK7ma3/wNQyCQXSVrwdPoISsqn
-         NoXdr0fRv12j6LhigFZxa+cseD5Ww/Y4zt2pOWrNHQZPvBGr9ZcoJO3RUKe0KVR9A1mm
-         OFWA==
-X-Gm-Message-State: AAQBX9enZmivRVQRQBfxNwgGEkpjSt17DRBicannMSyGTEjY1FrWIUrF
-        1Oqx4IClgV9vVeLiJzXYbx/h/Q==
-X-Google-Smtp-Source: AKy350abfZ6sIteFU0M7hfXJkWONPCgcKYoCCqznwTV3GlqPHt5XHyN3ybOGekoNoWZk7JDL60xBlg==
-X-Received: by 2002:aa7:d806:0:b0:4fc:3777:f630 with SMTP id v6-20020aa7d806000000b004fc3777f630mr33601867edq.0.1680526620839;
-        Mon, 03 Apr 2023 05:57:00 -0700 (PDT)
+        bh=16UcNG/PukjzRElXQ0FZ/prdEavSXuL0hY9oDia7Fqw=;
+        b=kIFgNZABol0OzoNAiYVq37EfoMW3qH+Vos2GxQbcq2LI4sHV2W5KzCeVJeef0iMwuo
+         T4SECMvzSOXZNV+fY8CPSH4D8PzN1A0QDVcpTe1WbRkIHuw85ZcLryfukXTvGVIe86WS
+         CnxoZ858Dxk12tmJIErh+5OaulFQyB9kOZ+xA12LJVGe8pwtrnxPbDU69jE2o02/RWPj
+         uRpTF+OddgotSBwuJgqo/+63fZHfmOX/1PfzjfLu0uPNjIk0rwP3REddSywZ4n7P9c7v
+         XOQv3XyJ2AHkpMOcxloe3AKVEfqS09dLIMHUCRfOrcs1zuxTCNySti0VvEIDHPXSc7lo
+         woTw==
+X-Gm-Message-State: AAQBX9e5gHWjL7EHyYvsn/aaLqCz3N9rsclQkwtdb+phUqHChBjr+0si
+        18an/+8Nm0T5AAIr6zqnzEmLdA==
+X-Google-Smtp-Source: AKy350b2E4l2oBqoAIHFcKHDtPoNN3TqQLCC/1CYg/oSDuyx1JvMR7UiSyE/Rixg0Bz1LHvkV/VLUw==
+X-Received: by 2002:a17:906:bc57:b0:933:12d1:d168 with SMTP id s23-20020a170906bc5700b0093312d1d168mr33724368ejv.10.1680526858206;
+        Mon, 03 Apr 2023 06:00:58 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:ae90:d80:1069:4805? ([2a02:810d:15c0:828:ae90:d80:1069:4805])
-        by smtp.gmail.com with ESMTPSA id d12-20020a50f68c000000b004af73333d6esm4605441edn.53.2023.04.03.05.56.59
+        by smtp.gmail.com with ESMTPSA id xb7-20020a170907070700b00948c2f245a9sm672737ejb.110.2023.04.03.06.00.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Apr 2023 05:57:00 -0700 (PDT)
-Message-ID: <46658cbb-fff5-e98b-fdad-88fa683a9c75@linaro.org>
-Date:   Mon, 3 Apr 2023 14:56:59 +0200
+        Mon, 03 Apr 2023 06:00:57 -0700 (PDT)
+Message-ID: <d30402fc-d7a1-f0bf-2f8b-04b4982b53d6@linaro.org>
+Date:   Mon, 3 Apr 2023 15:00:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v2 21/22] arch: arm64: dts: qcom: pm8150: support SID
- greater that 9
+Subject: Re: [PATCH v2 00/22] arm64: dts: qcom: remove duplication in PMIC
+ declarations
 Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Johan Hovold <johan+linaro@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
 References: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
- <20230401220810.3563708-22-dmitry.baryshkov@linaro.org>
- <af18b9a3-2960-8fbb-0d19-ee7d3b3f89ab@linaro.org>
- <b33337de-1a09-aa72-7f1f-fabf85ddcd9d@linaro.org>
- <CAA8EJprnv0uqEq=uJ8z+Az-izwk-kscXiELVqrP9BPBFQpJE4A@mail.gmail.com>
+ <10626c79-46da-3f66-0327-66576b3e5f2c@linaro.org>
+ <c6f20137-299a-afb1-c42d-35f7386b1e27@linaro.org>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CAA8EJprnv0uqEq=uJ8z+Az-izwk-kscXiELVqrP9BPBFQpJE4A@mail.gmail.com>
+In-Reply-To: <c6f20137-299a-afb1-c42d-35f7386b1e27@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -86,25 +84,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 03/04/2023 13:45, Dmitry Baryshkov wrote:
->> Konrad
->>>> +
->>>>  #undef PMIC_SID
->>>>  #undef PMIC_SID1
->>>>  #undef PMIC_LABEL
->>>
->>> Same comment as for previous patches - all undefs must be gone.
+On 03/04/2023 12:44, Konrad Dybcio wrote:
 > 
-> This means that we can not include two copies of the same PMIC (which
-> do have on both platforms).
+> 
+> On 2.04.2023 11:55, Krzysztof Kozlowski wrote:
+>> On 02/04/2023 00:07, Dmitry Baryshkov wrote:
+>>> The sc8280xp platform uses its own copy of PMIC declarations. This can
+>>> easily end up with the issues that are fixed in the main PMIC include
+>>> file, but are not fixed for sc8280xp (and vice versa). For example
+>>> commit c0ee8e0ba5cc ("arm64: dts: qcom: pmk8350: Use the correct PON
+>>> compatible") changed pmk8350 to use "qcom,pmk8350-pon" compat for the
+>>> PON device, while sc8280xp-pmic.dtsi still has the incorrect
+>>> "qcom,pm8998-pon".
+>>>
+>>> Another example is pm8280_2_temp_alarm device, which uses interrupts
+>>> tied to SID 2, while having SID 3. This can be easily left unnoticed.
+>>>
+>>> Employ a small amount of C preprocessor magic to make
+>>> sc8280xp-pmics.dtsi use standard PMIC include files
+>>
+>> Preprocessor magic is disliked in DTS. We allow only simple defines, no
+>> undefs. Sometimes some nodes or strings could be concatenated, but in
+>> obvious way. You should not parametrize it and have different, generated
+>> labels in DTS based on something coming external to that DTS.
+> This again begs the question, is it time we start moving parts of the
+> dts code to be autogenerated?
 
-Consider spi15 and spi16:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/qcom/sm8250.dtsi?h=v6.3-rc5&id=7e364e56293bb98cae1b55fd835f5991c4e96e7d#n1045
+Do we auto-generate C-code? Just a bit, but in general no. There are
+exceptions but coding style is here clear:
+https://elixir.bootlin.com/linux/v6.1-rc2/source/Documentation/process/coding-style.rst#L828
 
-Do you see it written as #include "qcom-sm8250-spi.dtsi" with
-parametrizing the reg/unit address, interrupts etc?
+Pre-processor generated code should be narrowed to some cases or simpler
+structures.
 
-No. Neither PMIC should be. It is not a special device.
+For DTS we actually are even stricter.
+
 
 Best regards,
 Krzysztof

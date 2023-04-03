@@ -2,116 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67CE46D4EF1
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 19:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909A16D50BB
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 20:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233149AbjDCR2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 13:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
+        id S232662AbjDCShc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 14:37:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233109AbjDCR2i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 13:28:38 -0400
-Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732CF198A
-        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 10:28:35 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id jNynpkUGwB8bjjNyopm0fW; Mon, 03 Apr 2023 19:28:33 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1680542913;
-        bh=5Np8023Y6FAt/94NM8u49tVSNsULJ4IHT6grFImpIW4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=as3/9nh1jKYq0g3MGVyo9lUN2uMiXBM0L5xt++SqOqLzzQSfVoVGvMSKBBDUypyRZ
-         E2s4pAePuf/px+rmHV5ViDQ6jBD0Q+EYsj6/F2fgdOG4zCT+qoMwT8wecoMjh+g1M2
-         LrvAgfwDb2vgW1/WR64cZyysmPxae6YitJx74vtmYKwv/VVNAsRuWbasI0dD5zCbQU
-         OK3tOJHGr+d7cZr3chHZPEl5saqEDoRWBSA6SgcqvnWyvykPRo+HnjMsM13MDn3FCf
-         UeelKMtt4ik1qaGAoSfagDQtFr1FnxvnYjuvNyHeuDHtRa7zeV341oGj3c00ZV54jM
-         JRKCVeje8gFyg==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 03 Apr 2023 19:28:33 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <9085c8bb-1419-9381-242f-98d8d5be5e8d@wanadoo.fr>
-Date:   Mon, 3 Apr 2023 19:28:29 +0200
+        with ESMTP id S232354AbjDCShc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 14:37:32 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9308899;
+        Mon,  3 Apr 2023 11:37:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1680547048;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bnQrvEz/F0HtMo61MRMevGwpunBFI0o/+wdfXFhszQw=;
+        b=wmGIpaAeX3wlUIVZdWVbWY5RMVdmTF8B40N5sXTdehP85NEPptugaqHw+XJX2cPDclj4WM
+        atYeygViHa62jb9sd3JFz3XJkkiptTMr2M6qClT8yr7YS7UCHzJiq2HgKhRuPR2z7rVKai
+        SbXDqG7PskUUFgyASdtczeEkdEVJmqg=
+Message-ID: <6a75a551b3ef3fc7cf9281db0b69167a570130c2.camel@crapouillou.net>
+Subject: Re: [PATCH v3 11/11] Documentation: iio: Document high-speed DMABUF
+ based API
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Vinod Koul <vkoul@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc:     linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-doc@vger.kernel.org
+Date:   Mon, 03 Apr 2023 20:37:26 +0200
+In-Reply-To: <87zg7p7xz4.fsf@meer.lwn.net>
+References: <20230403154800.215924-1-paul@crapouillou.net>
+         <20230403154955.216148-1-paul@crapouillou.net>
+         <20230403154955.216148-2-paul@crapouillou.net>
+         <87zg7p7xz4.fsf@meer.lwn.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v2] iio: accel: bmi088: Correctly compute the address of
- the struct spi_device
-To:     Jonathan.Cameron@huawei.com, jic23@kernel.org, lars@metafoo.de,
-        linus.walleij@linaro.org, mike.looijmans@topic.nl
-Cc:     kernel-janitors@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <8da05ad95015e048e3058f275bd57d382420b46f.1680469082.git.christophe.jaillet@wanadoo.fr>
-Content-Language: fr
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <8da05ad95015e048e3058f275bd57d382420b46f.1680469082.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le 02/04/2023 à 22:58, Christophe JAILLET a écrit :
-> bmi088_regmap_spi_write() is said to be similar to the SPI generic write
-> function.
-> However, regmap_spi_write() calls to_spi_device() in order to find the
-> reference to the "struct spi_device", instead of considering that 'context'
-> is already the correct value.
+Hi Jonathan,
 
-Just NACK.
-The patch looks just plain wrong.
+Le lundi 03 avril 2023 =C3=A0 10:05 -0600, Jonathan Corbet a =C3=A9crit=C2=
+=A0:
+> Paul Cercueil <paul@crapouillou.net> writes:
+>=20
+> One nit:
+>=20
+> > Document the new DMABUF based API.
+> >=20
+> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > Cc: Jonathan Corbet <corbet@lwn.net>
+> > Cc: linux-doc@vger.kernel.org
+> >=20
+> > ---
+> > v2: - Explicitly state that the new interface is optional and is
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 not implemented by all drivers.
+> > =C2=A0=C2=A0=C2=A0 - The IOCTLs can now only be called on the buffer FD=
+ returned
+> > by
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO_BUFFER_GET_FD_IOCTL.
+> > =C2=A0=C2=A0=C2=A0 - Move the page up a bit in the index since it is co=
+re stuff
+> > and not
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 driver-specific.
+> > v3: Update the documentation to reflect the new API.
+> > ---
+> > =C2=A0Documentation/iio/dmabuf_api.rst | 59
+> > ++++++++++++++++++++++++++++++++
+> > =C2=A0Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+ 2 ++
+> > =C2=A02 files changed, 61 insertions(+)
+> > =C2=A0create mode 100644 Documentation/iio/dmabuf_api.rst
+> >=20
+> > diff --git a/Documentation/iio/dmabuf_api.rst
+> > b/Documentation/iio/dmabuf_api.rst
+> > new file mode 100644
+> > index 000000000000..4d70372c7ebd
+> > --- /dev/null
+> > +++ b/Documentation/iio/dmabuf_api.rst
+> > @@ -0,0 +1,59 @@
+> > +.. SPDX-License-Identifier: GPL-2.0
+> > +
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +High-speed DMABUF interface for IIO
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +1. Overview
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +The Industrial I/O subsystem supports access to buffers through a
+> > +file-based interface, with read() and write() access calls through
+> > the
+> > +IIO device's dev node.
+> > +
+> > +It additionally supports a DMABUF based interface, where the
+> > userspace
+> > +can attach DMABUF objects (externally created) to a IIO buffer,
+> > and
+> > +subsequently use them for data transfers.
+> > +
+> > +A userspace application can then use this interface to share
+> > DMABUF
+> > +objects between several interfaces, allowing it to transfer data
+> > in a
+> > +zero-copy fashion, for instance between IIO and the USB stack.
+> > +
+> > +The userspace application can also memory-map the DMABUF objects,
+> > and
+> > +access the sample data directly. The advantage of doing this vs.
+> > the
+> > +read() interface is that it avoids an extra copy of the data
+> > between the
+> > +kernel and userspace. This is particularly useful for high-speed
+> > devices
+> > +which produce several megabytes or even gigabytes of data per
+> > second.
+> > +It does however increase the userspace-kernelspace synchronization
+> > +overhead, as the DMA_BUF_SYNC_START and DMA_BUF_SYNC_END IOCTLs
+> > have to
+> > +be used for data integrity.
+> > +
+> > +2. User API
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +As part of this interface, three new IOCTLs have been added. These
+> > three
+> > +IOCTLs have to be performed on the IIO buffer's file descriptor,
+> > +obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
+> > +
+> > +``IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)``
+> > +----------------------------------------------------------------
+> > +
+> > +Attach the DMABUF object, identified by its file descriptor, to
+> > the IIO
+> > +buffer. Returns zero on success, and a negative errno value on
+> > error.
+>=20
+> Rather than abusing subsections, this would be better done as a
+> description list:
+>=20
+> =C2=A0 IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Attach the DMABUF object, identified by it=
+s file descriptor, to
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the IIO buffer. Returns zero on success, a=
+nd a negative errno
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 value on error.
 
-Sorry for the noise.
+Noted, thanks.
 
-CJ
-
-
-> 
-> This works because "struct device	dev" is the first entry of
-> "struct spi_device".
-> 
-> Align bmi088_regmap_spi_write() and regmap_spi_write() to be more
-> future proof, should "struct spi_device" be shuffled one day.
-> 
-> Also update bmi088_regmap_spi_read() in the same way.
-> 
-> Fixes: c19ae6be7555 ("iio: accel: Add support for the Bosch-Sensortec BMI088")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
-> ---
-> v2: do the same for bmi088_regmap_spi_read()
-> ---
->   drivers/iio/accel/bmi088-accel-spi.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-> index ee540edd8412..79e4b5392312 100644
-> --- a/drivers/iio/accel/bmi088-accel-spi.c
-> +++ b/drivers/iio/accel/bmi088-accel-spi.c
-> @@ -15,7 +15,8 @@
->   
->   static int bmi088_regmap_spi_write(void *context, const void *data, size_t count)
->   {
-> -	struct spi_device *spi = context;
-> +	struct device *dev = context;
-> +	struct spi_device *spi = to_spi_device(dev);
->   
->   	/* Write register is same as generic SPI */
->   	return spi_write(spi, data, count);
-> @@ -24,7 +25,8 @@ static int bmi088_regmap_spi_write(void *context, const void *data, size_t count
->   static int bmi088_regmap_spi_read(void *context, const void *reg,
->   				size_t reg_size, void *val, size_t val_size)
->   {
-> -	struct spi_device *spi = context;
-> +	struct device *dev = context;
-> +	struct spi_device *spi = to_spi_device(dev);
->   	u8 addr[2];
->   
->   	addr[0] = *(u8 *)reg;
-
+Cheers,
+-Paul

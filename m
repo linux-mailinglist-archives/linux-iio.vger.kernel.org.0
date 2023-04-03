@@ -2,72 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3501E6D3D9B
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 08:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1DF36D3FB7
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 11:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjDCGwt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 02:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54586 "EHLO
+        id S231786AbjDCJJ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 05:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjDCGwt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 02:52:49 -0400
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53AC630D1
-        for <linux-iio@vger.kernel.org>; Sun,  2 Apr 2023 23:52:48 -0700 (PDT)
-Received: by mail-qv1-xf2c.google.com with SMTP id dw2so3296451qvb.11
-        for <linux-iio@vger.kernel.org>; Sun, 02 Apr 2023 23:52:48 -0700 (PDT)
+        with ESMTP id S230090AbjDCJJ0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 05:09:26 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9E9EC4C
+        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 02:09:23 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id eg48so114346428edb.13
+        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 02:09:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680504767;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ScELMrj/DoIDUcUWC7sj2bAmfQjlVNhGGYZVGhw9aYo=;
-        b=AXGBCtNlSyF6Bm+Wx4W8B50HFUyZ5J1uz2x3FgtNKOO5pinP85hqxxDvnJvqFiR7Ch
-         RDnb/H/zomSuHcNyC48R/cAiQ/yhNsV0/lUnxf2ET6E6fIpAJ/UzJxcw+SJp1pxdE2Ps
-         SatS3XAouc1piiTKLz/5ioOAk40Tph5CQGv8kbER5IKgelcEpwschPNPimOYWmbQKgP/
-         k/xA6SvD33H7q94cuLP+RJz8UWjCOUp2ubI/3/uszI8S9H/wlHgdRKkIrOhK+0Ta5i4e
-         E6GRAtlKlSNUNOtv2GWFzDf9RZpe3nk7tJmwPVWyrg36SKnyZ5OGQlo/KHBUj2zkYCqq
-         Qlkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680504767;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=linaro.org; s=google; t=1680512962;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ScELMrj/DoIDUcUWC7sj2bAmfQjlVNhGGYZVGhw9aYo=;
-        b=SAqq6BeM5r7MLRUkaM2wBt8VGuVy1/Bpz4i4TiA85TQdMgyxMOkSCSVbfqi6ThRmQP
-         bEEuFhFzj+WMStdciv88QfIUUyeewKwCtTMllJDnQ8DwOvnkanBfmqJDwm5WFJ0ln1k3
-         WNScGQPZqbrhzMWIMpS5yXCEZkl6MVXHWxGwGPd42EV2s1Ex/+kQtni8vhLgsflu9nbW
-         cmJWSm1Saes31zQyHpAU64j19uuqDSjFM16LqiHNNsWa9ozDIjPTtUNKuNw7QGEMZsIl
-         TWRUXtywcCJceiLz/AxPHJiS3eSNnVUAXtdO8oKqS//1m/HT7F2pRh+yjY0DB/KbiBnl
-         4nqQ==
-X-Gm-Message-State: AAQBX9d8leau/zaOu3FPnaqNFHXjy0Fs6GxcvRl+seXAPKnpBvXbqMXJ
-        1lNSEJqOJFXo/VzSx7CMZ0a2YnyIdjThAFWC
-X-Google-Smtp-Source: AKy350Y3xTSmIDbtZpBPsLaYrgPJeXVB/xCCpaISJmh0sryLwSNXwoAPt9syxale8IeV3i1yDakHQg==
-X-Received: by 2002:ad4:594d:0:b0:5a4:548e:4ed6 with SMTP id eo13-20020ad4594d000000b005a4548e4ed6mr56509613qvb.40.1680504767275;
-        Sun, 02 Apr 2023 23:52:47 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
-        by smtp.gmail.com with ESMTPSA id mm17-20020a0562145e9100b005dd8b9345f4sm2390844qvb.140.2023.04.02.23.52.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Apr 2023 23:52:46 -0700 (PDT)
-Message-ID: <0fc93adff7ef33857881ffa94bbd77433abab362.camel@gmail.com>
-Subject: Re: [PATCH] staging: iio: resolver: ads1210: fix config mode
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-staging@lists.linux.dev, linux-iio@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Date:   Mon, 03 Apr 2023 08:54:44 +0200
-In-Reply-To: <20230401152425.2dae5505@jic23-huawei>
-References: <20230327145414.1505537-1-nuno.sa@analog.com>
-         <20230401152425.2dae5505@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 
+        bh=r1Pie9vLpSoU3Q5Det2G8XSc6g11vynQ88xBxnFyU1o=;
+        b=lLaZshO//K2mzRsps+ik6PQi8aCsNNpx5qVHs0MyrsqixikW2NaPhTg3VbY/xqph4G
+         jdtFy02/fSrwtCLykKrzdqwFXHJ0+15krQDuoIk56LNiZWCmggffxgAsLJwS8mspz0mU
+         QQD2vns8/DeVLSd0vdTQ4DMoQF5wc5xxeQpeDGAjdkiLY1cKb7H5Lp/gr7irePE67PEK
+         VSOFkPtItTB0xAjpCBwY3AIdvOIIvNqcG1yg4KpxpRrqiNkqBCnqNdadNej0glatAjR+
+         foP+CEk3JWMH8rkH24YLB1q2to1sPJCeFwhUTciYuW1RO0F18Ky1zmSSvxzJ2rohROB8
+         SIxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680512962;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r1Pie9vLpSoU3Q5Det2G8XSc6g11vynQ88xBxnFyU1o=;
+        b=Qe0GteWj6qg6M+hIfE1a6CY9VYTmC4qwL7XQA02d7zEGDsQyKOUzpoxTdMzOP3Ci+8
+         sSKHkuSFO/lu+MZRPLNDXCuGOIPj25ADCN4wwipZGpvi2eeTsYkmeIfWd0p9mDfBq/Zh
+         Sh0OzxDQh0Wk29OslE+3c4q5XsBXpvLMOjXFlIvoLK6QwOvvEOZYhqS7qJtsZmYDU4ye
+         gtB6RWR7DGTGWPI5jDkIOn0130i2buZC7YARFAFCITPeoEjxUZ+0R4fMloLIgqUcQZbQ
+         SCZ4LWWFew7WLmxe+zFvzDc7PNt+VGYNOeRIrzQDBuK+Jy3+HNHnXQVi+QvOvyGWgxco
+         hu9A==
+X-Gm-Message-State: AAQBX9e3CCuRci3zH9Y5HENvcMazc8RBiSG+uLWz69OUI/b7Ytgm3Q7K
+        T3LnK0XpLbPmFAfyZDLchB8hZA==
+X-Google-Smtp-Source: AKy350aBG8Lw3tiTi4uyEzvdUWZZ8/wJbCudRE48u/GHRB7fv3HG8fwgC+JXiU5egzSazrIqYWAfCg==
+X-Received: by 2002:a17:907:c248:b0:931:ce20:db8e with SMTP id tj8-20020a170907c24800b00931ce20db8emr36625621ejc.51.1680512962044;
+        Mon, 03 Apr 2023 02:09:22 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:ae90:d80:1069:4805? ([2a02:810d:15c0:828:ae90:d80:1069:4805])
+        by smtp.gmail.com with ESMTPSA id c10-20020a170906d18a00b00923f05b2931sm4245192ejz.118.2023.04.03.02.09.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Apr 2023 02:09:21 -0700 (PDT)
+Message-ID: <f31cfa7d-08cf-efc1-322f-a8e4bbe76476@linaro.org>
+Date:   Mon, 3 Apr 2023 11:09:20 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 02/22] arm64: dts: qcom: pm8350b: fix thermal zone node
+ name
+Content-Language: en-US
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+References: <20230401220810.3563708-1-dmitry.baryshkov@linaro.org>
+ <20230401220810.3563708-3-dmitry.baryshkov@linaro.org>
+ <47efb05a-d1e7-a3c5-c423-4eb53fe86386@linaro.org>
+ <33430a31-b9da-5f1c-bae0-9ec6f24fda99@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <33430a31-b9da-5f1c-bae0-9ec6f24fda99@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,42 +85,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2023-04-01 at 15:24 +0100, Jonathan Cameron wrote:
-> On Mon, 27 Mar 2023 16:54:14 +0200
-> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->=20
-> > As stated in the device datasheet [1], bits a0 and a1 have to be
-> > set to
-> > 1 for the configuration mode.
-> >=20
-> > [1]:
-> > https://www.analog.com/media/en/technical-documentation/data-sheets/ad2=
-s1210.pdf
-> >=20
-> > Fixes: b19e9ad5e2cb9 ("staging:iio:resolver:ad2s1210 general driver
-> > cleanup")
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
-> Oops. Younger more foolish me bug (back in 2011 so I'll cut myself
-> some slack)
->=20
-> Applied to the togreg branch of iio.git (not rushing something in
-> that is in staging
-> and has been broken a while without anyone commenting!)
->=20
-> I don't suppose this means you are going to get this ready to move
-> out of staging?
-> *looks hopeful*
->=20
+On 02/04/2023 13:02, Dmitry Baryshkov wrote:
+> On 02/04/2023 13:34, Krzysztof Kozlowski wrote:
+>> On 02/04/2023 00:07, Dmitry Baryshkov wrote:
+>>> Correct the thermal zone node name to remove the clash with
+>>> pm8350c.dtsi. Remove unused labels.
+>>>
+>>> Fixes: 5c1399299d9d ("arm64: dts: qcom: pm8350b: add temp sensor and thermal zone config")
+>>
+>> Please describe the observable bug from that commit being fixed here.
+>> Any future clash, which did not exist that time, is not a bug. It's future.
+>>
+>> Naming changes here are more a matter of style, because the old names
+>> were correct according to our coding guidelines, just not precise (c
+>> instead of b). But node names anyway are not important from the point of
+>> view fixes and adding such tag will cause a needless backport.
+> 
+> It is needed. Including both pm8350c.dtsi and pm8350b.dtsi will result 
+> in one thermal zone overriding another one.
 
-Eeheh, Unfortunately not on the top of my list right now... But, if I
-happen to find some hardware hanging around, I might eventually get
-into it.
+I don't understand. You used future tense "will", but we talk about
+past. So where is the bug in commit 5c1399299d9d?
 
-Funny enough, this was actually reported to us in one of our support
-channels which means there are people actually using the driver even
-being it on staging.
-
-- Nuno S=C3=A1
-
+Best regards,
+Krzysztof
 

@@ -2,173 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 909A16D50BB
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 20:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C530C6D5049
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Apr 2023 20:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232662AbjDCShc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 14:37:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42654 "EHLO
+        id S232805AbjDCS1j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 14:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232354AbjDCShc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 14:37:32 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9308899;
-        Mon,  3 Apr 2023 11:37:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1680547048;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bnQrvEz/F0HtMo61MRMevGwpunBFI0o/+wdfXFhszQw=;
-        b=wmGIpaAeX3wlUIVZdWVbWY5RMVdmTF8B40N5sXTdehP85NEPptugaqHw+XJX2cPDclj4WM
-        atYeygViHa62jb9sd3JFz3XJkkiptTMr2M6qClT8yr7YS7UCHzJiq2HgKhRuPR2z7rVKai
-        SbXDqG7PskUUFgyASdtczeEkdEVJmqg=
-Message-ID: <6a75a551b3ef3fc7cf9281db0b69167a570130c2.camel@crapouillou.net>
-Subject: Re: [PATCH v3 11/11] Documentation: iio: Document high-speed DMABUF
- based API
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Jonathan Corbet <corbet@lwn.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Vinod Koul <vkoul@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc:     linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        linux-doc@vger.kernel.org
-Date:   Mon, 03 Apr 2023 20:37:26 +0200
-In-Reply-To: <87zg7p7xz4.fsf@meer.lwn.net>
-References: <20230403154800.215924-1-paul@crapouillou.net>
-         <20230403154955.216148-1-paul@crapouillou.net>
-         <20230403154955.216148-2-paul@crapouillou.net>
-         <87zg7p7xz4.fsf@meer.lwn.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S231411AbjDCS1h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 14:27:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B7A2139;
+        Mon,  3 Apr 2023 11:27:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8413461D30;
+        Mon,  3 Apr 2023 18:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B65C433D2;
+        Mon,  3 Apr 2023 18:27:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680546454;
+        bh=WCjt2Jv/YW91V4m2oQrs7DJ0U7kfjPlwg2HS+dwFJMU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qTSuFeV/ddExWkrit1fhvuaqyysRalSl+c5u+xVaLct1OfS8y1W9IX7BqLqlZQjPV
+         4UTtK8W5xMYYR6g7E0aJ81X2NTH9ZMsAp4pYFNcyq9+m9VHtCyJhg25c/a7oLSvx25
+         lfUmJ7JOvNC1s3JB7Egsb0K6n8Rd7nIQyKt00Kp4B3noI+vlm89FVFdFu4SOHh7ZoP
+         zsPLddqwka9U+KlUr83K2A88bpd0Bup5rvNNuScRQdqvy9l9S23yFUnU8979SZ3MzI
+         XvCzo+1l+n2AFXVvguS5lnqUOWqDQRn+DoWXZkWXDaeg/1+oqSOzuzdpuLw7n7iSMU
+         7SQQP8B+rjupA==
+Date:   Mon, 3 Apr 2023 19:42:46 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Daniel Matyas <daniel.matyas23@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-hwmon@vger.kernel.org
+Subject: Re: Creating a driver for MAX31827 temperature switch
+Message-ID: <20230403194246.10a56b59@jic23-huawei>
+In-Reply-To: <ZCn0KeOQFJclqiAK@daniel-Precision-5530>
+References: <ZCn0KeOQFJclqiAK@daniel-Precision-5530>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Mon, 3 Apr 2023 00:31:21 +0300
+Daniel Matyas <daniel.matyas23@gmail.com> wrote:
 
-Le lundi 03 avril 2023 =C3=A0 10:05 -0600, Jonathan Corbet a =C3=A9crit=C2=
-=A0:
-> Paul Cercueil <paul@crapouillou.net> writes:
->=20
-> One nit:
->=20
-> > Document the new DMABUF based API.
-> >=20
-> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > Cc: Jonathan Corbet <corbet@lwn.net>
-> > Cc: linux-doc@vger.kernel.org
-> >=20
-> > ---
-> > v2: - Explicitly state that the new interface is optional and is
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 not implemented by all drivers.
-> > =C2=A0=C2=A0=C2=A0 - The IOCTLs can now only be called on the buffer FD=
- returned
-> > by
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO_BUFFER_GET_FD_IOCTL.
-> > =C2=A0=C2=A0=C2=A0 - Move the page up a bit in the index since it is co=
-re stuff
-> > and not
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 driver-specific.
-> > v3: Update the documentation to reflect the new API.
-> > ---
-> > =C2=A0Documentation/iio/dmabuf_api.rst | 59
-> > ++++++++++++++++++++++++++++++++
-> > =C2=A0Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
- 2 ++
-> > =C2=A02 files changed, 61 insertions(+)
-> > =C2=A0create mode 100644 Documentation/iio/dmabuf_api.rst
-> >=20
-> > diff --git a/Documentation/iio/dmabuf_api.rst
-> > b/Documentation/iio/dmabuf_api.rst
-> > new file mode 100644
-> > index 000000000000..4d70372c7ebd
-> > --- /dev/null
-> > +++ b/Documentation/iio/dmabuf_api.rst
-> > @@ -0,0 +1,59 @@
-> > +.. SPDX-License-Identifier: GPL-2.0
-> > +
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +High-speed DMABUF interface for IIO
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +1. Overview
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +The Industrial I/O subsystem supports access to buffers through a
-> > +file-based interface, with read() and write() access calls through
-> > the
-> > +IIO device's dev node.
-> > +
-> > +It additionally supports a DMABUF based interface, where the
-> > userspace
-> > +can attach DMABUF objects (externally created) to a IIO buffer,
-> > and
-> > +subsequently use them for data transfers.
-> > +
-> > +A userspace application can then use this interface to share
-> > DMABUF
-> > +objects between several interfaces, allowing it to transfer data
-> > in a
-> > +zero-copy fashion, for instance between IIO and the USB stack.
-> > +
-> > +The userspace application can also memory-map the DMABUF objects,
-> > and
-> > +access the sample data directly. The advantage of doing this vs.
-> > the
-> > +read() interface is that it avoids an extra copy of the data
-> > between the
-> > +kernel and userspace. This is particularly useful for high-speed
-> > devices
-> > +which produce several megabytes or even gigabytes of data per
-> > second.
-> > +It does however increase the userspace-kernelspace synchronization
-> > +overhead, as the DMA_BUF_SYNC_START and DMA_BUF_SYNC_END IOCTLs
-> > have to
-> > +be used for data integrity.
-> > +
-> > +2. User API
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +As part of this interface, three new IOCTLs have been added. These
-> > three
-> > +IOCTLs have to be performed on the IIO buffer's file descriptor,
-> > +obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
-> > +
-> > +``IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)``
-> > +----------------------------------------------------------------
-> > +
-> > +Attach the DMABUF object, identified by its file descriptor, to
-> > the IIO
-> > +buffer. Returns zero on success, and a negative errno value on
-> > error.
->=20
-> Rather than abusing subsections, this would be better done as a
-> description list:
->=20
-> =C2=A0 IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Attach the DMABUF object, identified by it=
-s file descriptor, to
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the IIO buffer. Returns zero on success, a=
-nd a negative errno
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 value on error.
+> Dear Kernel community,
+> 
+> I am developing an IIO driver for a temperature switch, which communicates through I2C at Analog Devices Inc.
+> 
+> When implementing the event handling for the comparator mode of the device, I faced a problem: I don't know how to differentiate the underTemp event from the overTemp event. To understand better, I suggest you check out the device's data sheet for Address map (page 12), Configuration Register Definition (page 13) and OT/UT Status Bits and ALARM Pin Behavior (page 15) - https://www.analog.com/media/en/technical-documentation/data-sheets/MAX31827-MAX31829.pdf
+> 
+> I had the idea to make 2 channels with the exact same attributes, but with different indexes, so that I can store the overTemp related events on channel 0 and underTemp related events on channel 1. Even so, I don't really feel like this is the right solution. Can anyone give me some advice on this?
 
-Noted, thanks.
+If it's just a question of over and under temp, I'd imagine these map to two
+different directions of IIO event. You can have one channel with RISING and FALLING
+events on it.
 
-Cheers,
--Paul
+e.g.
+https://elixir.bootlin.com/linux/v6.2.9/source/drivers/iio/adc/max1363.c#L451
+
+The place we run into IIO limitations is if you have two events in the same direction
+(warn and critical for example)  When that happens it is almost always a device
+that fits better in hwmon anyway so we've never figured out how to enable this sort
+of thing.  Doesn't seem to apply here though.
+> 
+> Also, I was suggested that I convert my driver from IIO to HWMON. Do you think that this is needed?
+
+No obvious reason why this benefits from being in IIO so I'm agreeing with the others who have
+replied that this looks more suited to hwmon.
+
+Jonathan
+
+
+> 
+> Yours faithfully,
+> Daniel Matyas
+

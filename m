@@ -2,145 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 726076D5907
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 08:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDEB56D5943
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 09:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjDDG50 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Apr 2023 02:57:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
+        id S230235AbjDDHOI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Apr 2023 03:14:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230491AbjDDG5U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 02:57:20 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4779268C
-        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 23:57:18 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-17786581fe1so33434213fac.10
-        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 23:57:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680591438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V2zcVLWRJStR8vsKQViB/xj+X74pI3lArdaI518I1/o=;
-        b=BmdGsDihxTkHY8MUfqjQF0bV6rLxqM4osL/uj2PXHZryKSrbc/WcJih2gC436tLPm3
-         ZWQHWHJOvcLLhNvQ8bbP3Fox4QjiTslMB2phxKeIkDG9D0buEQBNNq/nekvYuQrnVtni
-         XxZbWnH0i6h41ciOWP+aeekyHPmlHZ6SZAdFS48YUhCa6XLgUlLJe9mepdqg2gq9La0K
-         uOghCaMUKBBqc9z6lv/sV9b6F3ehzgyWwka2O5ugEfd9mNC6O+c74u2YQK/EBXeSVQ4g
-         7UP9iISKUCH+IYENUEueJSodJxhQmDQlNh7vwHzaYbil8t908zv2AuS8NnzoPra1dGPm
-         VErQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680591438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V2zcVLWRJStR8vsKQViB/xj+X74pI3lArdaI518I1/o=;
-        b=obziKflmpEmNxuNQqZyUjfXjtsDVhYI7uGh1eNvQW5LxJn5rGOgOXE2UtmI63nfV8i
-         DqZ/JuEf/Dn6Ddv30SOfjhl1XjN778x4UNk6IfQhuYJoQ0kwxTRREAWZDe0yYRZFHXQO
-         aq0uji/gEtsKo3NFiRmbYQxEvur1jilr96beJS/ELBgK7Qk0N6qh1wf87trHeCZaa7Ef
-         24igoV0wNpVpKim4cJfDBA3qOOPW71QIHgWgq/OTQkvXDpKFj/xvD0wf2slUMAHDm5tS
-         3pwEaHcW21mqcyxBV7fh1FimeQs5DynrXoULW3E3R1l7Ux628lPY89ZqkKlCBoAIek+m
-         aGvQ==
-X-Gm-Message-State: AAQBX9e/zAN+JGgpixyAxpur6W/4ZSZZtOFqYWoGNI+4XaEEJP1r+VRx
-        p3hgOo4mQTBPFFD8vN0qqBr2tIfSmOX0PcdMoBEbTtNxxIM94Q==
-X-Google-Smtp-Source: AKy350YrD6VitPDM4MoUqn7BiQC4dXpCjRHMMOPr5PEF2EJYQH9GKSVvCuNYTqxYw+nvUaFupSOWd8fz3nYCzMnJD8w=
-X-Received: by 2002:a05:6871:784:b0:177:bf3e:5d4f with SMTP id
- o4-20020a056871078400b00177bf3e5d4fmr831293oap.8.1680591438100; Mon, 03 Apr
- 2023 23:57:18 -0700 (PDT)
+        with ESMTP id S233345AbjDDHOH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 03:14:07 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA7A1FCB;
+        Tue,  4 Apr 2023 00:14:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680592446; x=1712128446;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Fs9ICErJMuFJLYufHC7Tzkwk+zfF6AjFHSEBP32HYIQ=;
+  b=FFcT8NS1HD8ffmZGmtHqmF8pzb6Madfc3uYZzdzNr/hfyIwhJjcK3Brc
+   mp/8HCaYzuhwDJ0aeQSTrYAs2c4p+sQxZjlSdxOWWug6+7GeHwHYKefaP
+   jFohYRkeMWoKwyKyPML0hoFlU6A8UVzg7cwNPOo0mxUNMr+0+xI1ZuaJ5
+   N4IltE5Ldk0KU6GrzcjjcwVDOPM0oU9T6hrQsguaEQmq+54DFuycDI3ge
+   3Ny/UtANj5DBxigp4ByIVXgAZGjakzkRULXtg0/1rya4krgNvOoFpO4Vy
+   rqreiM7X+N7l8TscIyS0W7M8uUgNrIrxax/e74hd5yuuxcFOShbc4NDzH
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10669"; a="428396687"
+X-IronPort-AV: E=Sophos;i="5.98,317,1673942400"; 
+   d="scan'208";a="428396687"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2023 00:14:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10669"; a="679784416"
+X-IronPort-AV: E=Sophos;i="5.98,317,1673942400"; 
+   d="scan'208";a="679784416"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 04 Apr 2023 00:13:59 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pjare-000PJV-2r;
+        Tue, 04 Apr 2023 07:13:58 +0000
+Date:   Tue, 4 Apr 2023 15:13:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Brian Masney <bmasney@redhat.com>, jic23@kernel.org
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        andriy.shevchenko@linux.intel.com, trix@redhat.com,
+        lars@metafoo.de, nathan@kernel.org, ndesaulniers@google.com,
+        u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, hslester96@gmail.com
+Subject: Re: [PATCH] iio: light: tsl2772: fix reading proximity-diodes from
+ device tree
+Message-ID: <202304041451.gj8oasQp-lkp@intel.com>
+References: <20230404011455.339454-1-bmasney@redhat.com>
 MIME-Version: 1.0
-References: <CAPJMGm4GDVdAmwB4sHVkg78UhtVpmbCL6KT8-KbEY7cRSD5UZg@mail.gmail.com>
- <20230401152827.179d1a01@jic23-huawei>
-In-Reply-To: <20230401152827.179d1a01@jic23-huawei>
-From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Date:   Tue, 4 Apr 2023 08:57:07 +0200
-Message-ID: <CAPJMGm4FkOmQkQ3H00kNR_gUCu7mAUiQS7OPi4jGEBccLEVv=A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ad7192 driver: fix null pointer dereference in probe
- when populating adc input ranges
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     alexandru.tachici@analog.com, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230404011455.339454-1-bmasney@redhat.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Apr 1, 2023 at 4:13=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
-wrote:
->
-> On Mon, 27 Mar 2023 22:02:48 +0200
-> Fabrizio Lamarque <fl.scratchpad@gmail.com> wrote:
->
-> > Fix ad7192.c NULL pointer dereference in ad7192_setup() when accessing
-> > indio_dev structure while populating input rages, causing a kernel
-> > panic.
-> > Fixed by calling spi_set_drvdata after indio_dev is allocated.
-> >
-> > Pointer to indio_dev structure is obtained via spi_get_drvdata() at
-> > the beginning of function ad7192_setup(), but the
-> > spi->dev->driver_data member is not initialized here, hence a NULL
-> > pointer is returned.
-> >
-> > By comparing every other iio adc driver, whenever there is a call to
-> > spi_get_drvdata() there is also one to spi_set_drvdata() within probe
-> > function.
-> > It should also be noted that the indio_dev structure is accessed just
-> > to get the number of bits for the converter, and no other driver calls
-> > spi_get_drvdata within probe.
-> > After the patch is applied the system boots correctly and the ADC is
-> > mapped within sysfs.
->
-> I'd prefer to fix this by changing the ad7192_setup() to take the
-> struct iio_dev (available at it's call site) and avoid the dance
-> that is currently going on entirely.
-> Drop the struct ad7192_state *st parameter and get that via
-> st =3D iio_priv(indio_dev);
->
-> Thanks,
->
-> Jonathan
->
+Hi Brian,
 
-Fix NULL pointer dereference in ad7192_setup() (ad7192.c) when accessing
-indio_dev structure while populating input rages, causing a kernel panic.
+kernel test robot noticed the following build errors:
 
-Changed ad7192_setup() signature to take pointer to struct
-iio_dev, and got ad7192_state pointer via st =3D iio_priv(indio_dev);
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.3-rc5 next-20230403]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: bd5dcdeb3fd0 iio: adc: ad7192: convert to device-managed functions
-Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
----
-V1 -> Revised after suggestions from Jonathan, removed Reviewed-by
- since the entire patch changed its content.
+url:    https://github.com/intel-lab-lkp/linux/commits/Brian-Masney/iio-light-tsl2772-fix-reading-proximity-diodes-from-device-tree/20230404-091630
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20230404011455.339454-1-bmasney%40redhat.com
+patch subject: [PATCH] iio: light: tsl2772: fix reading proximity-diodes from device tree
+config: x86_64-randconfig-a001-20230403 (https://download.01.org/0day-ci/archive/20230404/202304041451.gj8oasQp-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/9701bd10d6409568197894b603f8a1e23280e82b
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Brian-Masney/iio-light-tsl2772-fix-reading-proximity-diodes-from-device-tree/20230404-091630
+        git checkout 9701bd10d6409568197894b603f8a1e23280e82b
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/iio/light/
 
- drivers/iio/adc/ad7192.c | 6 +++---
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -380,9 +380,9 @@ static int ad7192_of_clock_select(struct ad7192_state *=
-st)
-     return clock_sel;
- }
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202304041451.gj8oasQp-lkp@intel.com/
 
--static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
-+static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
- {
--    struct iio_dev *indio_dev =3D spi_get_drvdata(st->sd.spi);
-+    struct ad7192_state *st =3D iio_priv(indio_dev);
-     bool rej60_en, refin2_en;
-     bool buf_en, bipolar, burnout_curr_en;
-     unsigned long long scale_uv;
-@@ -1073,7 +1073,7 @@ static int ad7192_probe(struct spi_device *spi)
-         }
-     }
+All errors (new ones prefixed by >>):
 
--    ret =3D ad7192_setup(st, spi->dev.of_node);
-+    ret =3D ad7192_setup(indio_dev, spi->dev.of_node);
-     if (ret)
-         return ret;
+>> drivers/iio/light/tsl2772.c:599:30: error: use of undeclared identifier 'prox_diode_mask'; did you mean 'protnone_mask'?
+           chip->settings.prox_diode = prox_diode_mask;
+                                       ^~~~~~~~~~~~~~~
+                                       protnone_mask
+   arch/x86/include/asm/pgtable-invert.h:22:19: note: 'protnone_mask' declared here
+   static inline u64 protnone_mask(u64 val)
+                     ^
+   1 error generated.
 
---=20
-2.34.1
+
+vim +599 drivers/iio/light/tsl2772.c
+
+   572	
+   573	static int tsl2772_read_prox_diodes(struct tsl2772_chip *chip)
+   574	{
+   575		struct device *dev = &chip->client->dev;
+   576		int i, ret, num_leds;
+   577		u32 leds[TSL2772_MAX_PROX_LEDS];
+   578	
+   579		ret = device_property_count_u32(dev, "amstaos,proximity-diodes");
+   580		if (ret < 0)
+   581			return ret;
+   582	
+   583		num_leds = ret;
+   584		if (num_leds > TSL2772_MAX_PROX_LEDS)
+   585			num_leds = TSL2772_MAX_PROX_LEDS;
+   586	
+   587		ret = device_property_read_u32_array(dev, "amstaos,proximity-diodes", leds, num_leds);
+   588		if (ret < 0) {
+   589			dev_err(dev, "Invalid value for amstaos,proximity-diodes: %d.\n", ret);
+   590			return ret;
+   591		}
+   592	
+   593		for (i = 0; i < num_leds; i++) {
+   594			if (leds[i] > 1) {
+   595				dev_err(dev, "Invalid value %d in amstaos,proximity-diodes.\n", leds[i]);
+   596				return -EINVAL;
+   597			}
+   598		}
+ > 599		chip->settings.prox_diode = prox_diode_mask;
+   600	
+   601		return 0;
+   602	}
+   603	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

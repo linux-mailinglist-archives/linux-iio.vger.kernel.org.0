@@ -2,601 +2,342 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAEB6D5B89
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 11:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B156D5CA6
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 12:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234333AbjDDJIZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Apr 2023 05:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
+        id S234272AbjDDKH1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Apr 2023 06:07:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234276AbjDDJIK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 05:08:10 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ED2E136;
-        Tue,  4 Apr 2023 02:07:57 -0700 (PDT)
+        with ESMTP id S234251AbjDDKH1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 06:07:27 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDEC91BD0
+        for <linux-iio@vger.kernel.org>; Tue,  4 Apr 2023 03:07:24 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id ml21so8035002pjb.4
+        for <linux-iio@vger.kernel.org>; Tue, 04 Apr 2023 03:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1680599278;
-  x=1712135278;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=//l1anF0ErG+9eF77MZU7maawnQRHoL2bQ8f9i6FqaE=;
-  b=bLMP9jd1JuXbTp9lfKKjAUru0ME3NQhQY0+RBdCt89MRMtdQ5GEoX7DK
-   0rEn4ELmTLIvROkCaf8zryxttPARQphT4FQRfHtVH3XRYG6h+DnIOzonY
-   imzkeHm8DytrYrKEAoycYderL/HGDcUifhh0i70LS1izGSp15qDB4LwPJ
-   wSjnVMOIKpkDh3akWjRFDMiigs8dqCZNGuLa/I/K+eT8KJP2LxPpcvzV3
-   P7hFldDDjg/ZGtrHuqHW2XX3B2X2w8zeeLL/nV819piQTYkPhLu/KYsce
-   N5dRgkrCDxCLxuXQwuqQcTkrPI6A70qxs+pU9Lt8KUppAUPJO7OmKfuwA
-   w==;
-From:   Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Date:   Tue, 4 Apr 2023 11:07:43 +0200
-Subject: [PATCH 2/2] iio: light: Add support for TI OPT4001 light sensor
+        d=9elements.com; s=google; t=1680602844;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0naYlH38qDPlxYqIhqWjzrElNtaC1EIByyzISKIVm5I=;
+        b=hUXeQRJ2IkL3FHCz5472bpj5Avec2dfWS98yb687j7IC+zBQGS4OSHGAIpG/LW9/tj
+         FC6UKgp3mbMtzSj26yFACNFsHJ9vGkVh4NA61fu1Ihi3H4vilivnqwurzPvgLNhDSWda
+         hj90vs6wOOoyPeMuRT/SZDjDIiWSA8DsWTxmFPYGdhGlb+t+CXTZ9ox5DBHYtv7eKZuT
+         AvZoLFtUHVL5PNhKfUNmmY3/7KE+0B5JlyNOTSJ2z/dC4R8HaF7T3DnVJQyuyIoyZsLP
+         Ftgekqkn2UyW63qcr8k+IZZkPtnue7Hw8P4bMUTjz1PCmZQ+6hCGWYW7Yjt3FRuo1CCk
+         U3kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680602844;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0naYlH38qDPlxYqIhqWjzrElNtaC1EIByyzISKIVm5I=;
+        b=5P6paZzAvj0iDpYHZRTzCTMV9rsKwUgtRLq3UndIcQKC5K2DPNvYc1XhxUxX77evH6
+         m4e4kly/1qMKSdRDPs2fM7OHPTVkbuZx8VAfLP9c4dPTYZYLNQZ5Y7mYnQG4wbEh4HKM
+         445s3ih+Y6PrpDq2WZXi2fEyO6aiDSbfrEpJJ3OFrLT47ftIn9zg8iY6f09WfDnE6RL2
+         jubXyhD2NxlY5+0scRoIaskwYP0CxxwP9CR5UIzwBV5kv3OO47zxzWrXkqZu1VtZhZxS
+         S4Yf6axJkJXYLq6KW+bs0UiIQ3QCuSVIdHKxYqV74jZKk+KMfbvpNlv5Xlj+++Vec1Cq
+         sePA==
+X-Gm-Message-State: AAQBX9fXXjg6buAwUx5pr9KC04b+WWnCULSTdS9cFHVsTRgvrgMsfbWz
+        /zhF6iFowGYI/rPDNlTeTHVyeWh+EihMrCHclhU=
+X-Google-Smtp-Source: AKy350a/NYtTpDxDGMHqKHRNq4Ks26w1ekraxpVVAIQNOOX2wpIdNfRyWa0Uw8DkPY++8VaakBfWOQ==
+X-Received: by 2002:a17:902:ec8f:b0:1a1:7da3:ef5b with SMTP id x15-20020a170902ec8f00b001a17da3ef5bmr2381734plg.7.1680602844317;
+        Tue, 04 Apr 2023 03:07:24 -0700 (PDT)
+Received: from ?IPV6:2405:201:d02f:d899:2028:7962:400:43b6? ([2405:201:d02f:d899:2028:7962:400:43b6])
+        by smtp.gmail.com with ESMTPSA id t6-20020a170902bc4600b001a19f3a661esm7974713plz.138.2023.04.04.03.07.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Apr 2023 03:07:24 -0700 (PDT)
+Message-ID: <c8f709d3-1a8e-c98c-6917-839a0ca4d4ff@9elements.com>
+Date:   Tue, 4 Apr 2023 15:37:21 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v3 1/2] iio: max597x: Add support for max597x
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Patrick Rudolph <patrick.rudolph@9elements.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20230328094416.3851801-1-Naresh.Solanki@9elements.com>
+ <20230402180123.0fc1cfde@jic23-huawei>
+Content-Language: en-US
+From:   Naresh Solanki <naresh.solanki@9elements.com>
+In-Reply-To: <20230402180123.0fc1cfde@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <20230323-add-opt4001-driver-v1-2-1451dcc1bc8a@axis.com>
-References: <20230323-add-opt4001-driver-v1-0-1451dcc1bc8a@axis.com>
-In-Reply-To: <20230323-add-opt4001-driver-v1-0-1451dcc1bc8a@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        <kernel@axis.com>
-X-Mailer: b4 0.12.2
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This driver uses the continuous mode of the chip and integration
-time can be configured through sysfs.
-The constants for calculating lux value differs between packaging
-so it uses different compatible string for the two versions
-"ti,opt4001-picostar" and "ti,opt4001-sot-5x3" since the device id
-is the same.
+Hi Jonathan,
 
-Datasheet: https://www.ti.com/lit/gpn/opt4001
-Signed-off-by: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
----
- drivers/iio/light/Kconfig   |  11 +
- drivers/iio/light/Makefile  |   1 +
- drivers/iio/light/opt4001.c | 487 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 499 insertions(+)
+On 02-04-2023 10:31 pm, Jonathan Cameron wrote:
+> On Tue, 28 Mar 2023 11:44:14 +0200
+> Naresh Solanki <naresh.solanki@9elements.com> wrote:
+> 
+>> From: Patrick Rudolph <patrick.rudolph@9elements.com>
+>>
+>> max5970 & max5978 has 10bit ADC for voltage & current
+>> monitoring.
+>> Use iio framework to expose the same in sysfs.
+>>
+>> Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+>> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
+>> ...
+> 
+> --- not ...
+> 
+> As I mentioned in my reply to v2 thread (which crossed with this v3)
+> I'd like this series to be cc'd to the list and maintainers for Hwmon
+> with a cover letter explaining the reasoning for it being an IIO driver
+> + the restrictions that potentially brings.
+Sure.
+> 
+> A few other comments inline from taking another look.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+>> Changes in V3:
+>> - Use bulk read
+>> - Remove line split
+>> Changes in V2:
+>> - Remove fallthrough
+>> - Use pdev->dev instead of i2c->dev
+>> - Init indio_dev->name based on device type.
+>> ---
+>>   drivers/iio/adc/Kconfig       |  15 ++++
+>>   drivers/iio/adc/Makefile      |   1 +
+>>   drivers/iio/adc/max597x-iio.c | 148 ++++++++++++++++++++++++++++++++++
+>>   3 files changed, 164 insertions(+)
+>>   create mode 100644 drivers/iio/adc/max597x-iio.c
+>>
+>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+>> index 45af2302be53..69310af5c665 100644
+>> --- a/drivers/iio/adc/Kconfig
+>> +++ b/drivers/iio/adc/Kconfig
+>> @@ -735,6 +735,21 @@ config MAX1363
+>>   	  To compile this driver as a module, choose M here: the module will be
+>>   	  called max1363.
+>>   
+>> +config MAX597X_IIO
+>> +	tristate "Maxim 597x power switch and monitor"
+>> +	depends on I2C && OF
+>> +	select MFD_MAX597X
+>> +	help
+>> +	  This driver enables support for the Maxim 5970 & 5978 smart switch
+>> +	  and voltage/current monitoring interface using the Industrial I/O
+>> +	  (IIO) framework. The Maxim 597x is a power switch and monitor that can
+>> +	  provide voltage and current measurements via the I2C bus. Enabling
+>> +	  this driver will allow user space applications to read the voltage
+>> +	  and current measurements using IIO interfaces.
+>> +
+>> +	  To compile this driver as a module, choose M here: the module will be
+>> +	  called max597x-iio.
+>> +
+>>   config MAX9611
+>>   	tristate "Maxim max9611/max9612 ADC driver"
+>>   	depends on I2C
+>> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+>> index 36c18177322a..7ec0c2cf7bbb 100644
+>> --- a/drivers/iio/adc/Makefile
+>> +++ b/drivers/iio/adc/Makefile
+>> @@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
+>>   obj-$(CONFIG_MAX11410) += max11410.o
+>>   obj-$(CONFIG_MAX1241) += max1241.o
+>>   obj-$(CONFIG_MAX1363) += max1363.o
+>> +obj-$(CONFIG_MAX597X_IIO) += max597x-iio.o
+>>   obj-$(CONFIG_MAX9611) += max9611.o
+>>   obj-$(CONFIG_MCP320X) += mcp320x.o
+>>   obj-$(CONFIG_MCP3422) += mcp3422.o
+>> diff --git a/drivers/iio/adc/max597x-iio.c b/drivers/iio/adc/max597x-iio.c
+>> new file mode 100644
+>> index 000000000000..f158e49b5a56
+>> --- /dev/null
+>> +++ b/drivers/iio/adc/max597x-iio.c
+>> @@ -0,0 +1,148 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Device driver for IIO in MAX5970 and MAX5978 IC
+>> + *
+>> + * Copyright (c) 2022 9elements GmbH
+>> + *
+>> + * Author: Patrick Rudolph <patrick.rudolph@9elements.com>
+>> + */
+>> +
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/mfd/max597x.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/regmap.h>
+>> +
+>> +struct max597x_iio {
+>> +	struct regmap *regmap;
+>> +	int shunt_micro_ohms[MAX5970_NUM_SWITCHES];
+>> +	unsigned int irng[MAX5970_NUM_SWITCHES];
+>> +	unsigned int mon_rng[MAX5970_NUM_SWITCHES];
+>> +};
+>> +
+>> +#define MAX597X_ADC_CHANNEL(_idx, _type) {			\
+>> +	.type = IIO_ ## _type,					\
+>> +	.indexed = 1,						\
+>> +	.channel = (_idx),					\
+>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
+>> +			      BIT(IIO_CHAN_INFO_SCALE),		\
+>> +	.address = MAX5970_REG_ ## _type ## _L(_idx),		\
+>> +}
+>> +
+>> +static const struct iio_chan_spec max5978_adc_iio_channels[] = {
+>> +	MAX597X_ADC_CHANNEL(0, VOLTAGE),
+>> +	MAX597X_ADC_CHANNEL(0, CURRENT),
+>> +};
+>> +
+>> +static const struct iio_chan_spec max5970_adc_iio_channels[] = {
+>> +	MAX597X_ADC_CHANNEL(0, VOLTAGE),
+>> +	MAX597X_ADC_CHANNEL(0, CURRENT),
+>> +	MAX597X_ADC_CHANNEL(1, VOLTAGE),
+>> +	MAX597X_ADC_CHANNEL(1, CURRENT),
+>> +};
+>> +
+>> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
+>> +				struct iio_chan_spec const *chan,
+>> +				int *val, int *val2, long info)
+>> +{
+>> +	int ret;
+>> +	struct max597x_iio *data = iio_priv(iio_dev);
+>> +	u16 reg_l, reg_h;
+>> +
+>> +	switch (info) {
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		ret = regmap_bulk_read(data->regmap, chan->address - 1, &reg_l, 2);
+> 
+> This crossed with my reply to the v2 thread.  If reading two separate registers that
+> don't directly correspond to a large packed value, read them into an array
+> of u8.  Then get the relevant parts from that.
+Sure
+> 
+> The following use is not endian safe (it won't work on a big endian machine)
+Sure
+> 
+>> +		if (ret < 0)
+>> +			return ret;
+>> +		reg_h = reg_l & 0xff;
+>> +		reg_l = (reg_l >> 8) & 0xff;
+>> +		*val = (reg_h << 2) | (reg_l & 3);
+>> +		return IIO_VAL_INT;
+>> +
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		switch (chan->address) {
+>> +		case MAX5970_REG_CURRENT_L(0):
+>> +		case MAX5970_REG_CURRENT_L(1):
+>> +			/* in A, convert to mA */
+>> +			*val = data->irng[chan->channel] * 1000;
+>> +			*val2 = data->shunt_micro_ohms[chan->channel] * ADC_MASK;
+>> +			return IIO_VAL_FRACTIONAL;
+>> +
+>> +		case MAX5970_REG_VOLTAGE_L(0):
+>> +		case MAX5970_REG_VOLTAGE_L(1):
+>> +			/* in uV, convert to mV */
+>> +			*val = data->mon_rng[chan->channel];
+>> +			*val2 = ADC_MASK * 1000;
+>> +			return IIO_VAL_FRACTIONAL;
+>> +		}
+>> +
+>> +		break;
+>> +	}
+>> +	return -EINVAL;
+> 
+> I'd prefer this pushed up as a default: in each of the two switch statements.
+> Makes it clear to compilers and readers that only listing some case values is
+> deliberate.
+Sure
+> 
+>> +}
+>> +
+>> +static const struct iio_info max597x_adc_iio_info = {
+>> +	.read_raw = &max597x_iio_read_raw,
+>> +};
+>> +
+>> +static int max597x_iio_probe(struct platform_device *pdev)
+>> +{
+>> +	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
+>> +	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
+>> +	struct iio_dev *indio_dev;
+>> +	struct max597x_iio *priv;
+>> +	int ret, i;
+>> +
+>> +	if (!regmap)
+>> +		return -EPROBE_DEFER;
+>> +
+>> +	if (!max597x || !max597x->num_switches)
+>> +		return -EPROBE_DEFER;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
+>> +	if (!indio_dev)
+>> +		return dev_err_probe(&pdev->dev, -ENOMEM,
+>> +				     "failed to allocate iio device\n");
+>> +
+>> +	indio_dev->info = &max597x_adc_iio_info;
+>> +	indio_dev->modes = INDIO_DIRECT_MODE;
+>> +
+>> +	switch (max597x->num_switches) {
+> 
+> Having a value 'num_switches' that maps to a set of enums called _TYPE_ is unusual.
+> Perhaps rename it to type.
+Will add a local variable type to track the same within with driver.
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 0d4447df7200..c4064fb35f1f 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -399,6 +399,17 @@ config OPT3001
- 	  If built as a dynamically linked module, it will be called
- 	  opt3001.
- 
-+config OPT4001
-+	tristate "Texas Instruments OPT4001 Light Sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  If you say Y or M here, you get support for Texas Instruments
-+	  OPT4001 Ambient Light Sensor.
-+
-+	  If built as a dynamically linked module, it will be called
-+	  opt4001.
-+
- config PA12203001
- 	tristate "TXC PA12203001 light and proximity sensor"
- 	depends on I2C
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index 6f23817fae6f..4e0a908948db 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -37,6 +37,7 @@ obj-$(CONFIG_MAX44000)		+= max44000.o
- obj-$(CONFIG_MAX44009)		+= max44009.o
- obj-$(CONFIG_NOA1305)		+= noa1305.o
- obj-$(CONFIG_OPT3001)		+= opt3001.o
-+obj-$(CONFIG_OPT4001)		+= opt4001.o
- obj-$(CONFIG_PA12203001)	+= pa12203001.o
- obj-$(CONFIG_RPR0521)		+= rpr0521.o
- obj-$(CONFIG_SENSORS_TSL2563)	+= tsl2563.o
-diff --git a/drivers/iio/light/opt4001.c b/drivers/iio/light/opt4001.c
-new file mode 100644
-index 000000000000..1ddcb10e997b
---- /dev/null
-+++ b/drivers/iio/light/opt4001.c
-@@ -0,0 +1,487 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2023 Axis Communications AB
-+ *
-+ * Datasheet: https://www.ti.com/lit/gpn/opt4001
-+ *
-+ * Device driver for the Texas Instruments OPT4001.
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/math64.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/of_device.h>
-+#include <linux/regmap.h>
-+
-+/* OPT4001 register set */
-+#define OPT4001_LIGHT1_MSB    0x00
-+#define OPT4001_LIGHT1_LSB    0x01
-+#define OPT4001_CTRL          0x0A
-+#define OPT4001_DEVICE_ID     0x11
-+
-+/* OPT4001 register mask */
-+#define OPT4001_EXPONENT_MASK    GENMASK(15, 12)
-+#define OPT4001_MSB_MASK         GENMASK(11, 0)
-+#define OPT4001_LSB_MASK         GENMASK(15, 8)
-+#define OPT4001_COUNTER_MASK     GENMASK(7, 4)
-+#define OPT4001_CRC_MASK         GENMASK(3, 0)
-+
-+/* OPT4001 device id mask */
-+#define OPT4001_DEVICE_ID_MASK   GENMASK(11, 0)
-+
-+/* OPT4001 control registers mask */
-+#define OPT4001_CTRL_QWAKE_MASK          GENMASK(15, 15)
-+#define OPT4001_CTRL_RANGE_MASK          GENMASK(13, 10)
-+#define OPT4001_CTRL_CONV_TIME_MASK      GENMASK(9, 6)
-+#define OPT4001_CTRL_OPER_MODE_MASK      GENMASK(5, 4)
-+#define OPT4001_CTRL_LATCH_MASK          GENMASK(3, 3)
-+#define OPT4001_CTRL_INT_POL_MASK        GENMASK(2, 2)
-+#define OPT4001_CTRL_FAULT_COUNT         GENMASK(0, 1)
-+
-+/* OPT4001 constants */
-+#define OPT4001_DEVICE_ID_VAL            0x121
-+/* OPT4001 needs different constants to calculate lux for different packaging */
-+#define OPT4001_PICOSTAR_MUL_CONST       3125
-+#define OPT4001_SOT_5x3_MUL_CONST        4375
-+#define OPT4001_PACKAGE_DIV_CONST        10000000
-+
-+/* OPT4001 operating modes */
-+#define OPT4001_CTRL_OPER_MODE_OFF        0x0
-+#define OPT4001_CTRL_OPER_MODE_FORCED     0x1
-+#define OPT4001_CTRL_OPER_MODE_ONE_SHOT   0x2
-+#define OPT4001_CTRL_OPER_MODE_CONTINUOUS 0x3
-+
-+/* OPT4001 conversion control register definitions */
-+#define OPT4001_CTRL_CONVERSION_0_6MS   0x0
-+#define OPT4001_CTRL_CONVERSION_1MS     0x1
-+#define OPT4001_CTRL_CONVERSION_1_8MS   0x2
-+#define OPT4001_CTRL_CONVERSION_3_4MS   0x3
-+#define OPT4001_CTRL_CONVERSION_6_5MS   0x4
-+#define OPT4001_CTRL_CONVERSION_12_7MS  0x5
-+#define OPT4001_CTRL_CONVERSION_25MS    0x6
-+#define OPT4001_CTRL_CONVERSION_50MS    0x7
-+#define OPT4001_CTRL_CONVERSION_100MS   0x8
-+#define OPT4001_CTRL_CONVERSION_200MS   0x9
-+#define OPT4001_CTRL_CONVERSION_400MS   0xa
-+#define OPT4001_CTRL_CONVERSION_800MS   0xb
-+
-+/* OPT4001 scale light level range definitions */
-+#define OPT4001_CTRL_LIGHT_SCALE_AUTO   12
-+
-+/* OPT4001 default values */
-+#define OPT4001_DEFAULT_CONVERSION_TIME OPT4001_CTRL_CONVERSION_800MS
-+
-+struct opt4001_package_const {
-+	int mul;
-+	int div;
-+};
-+
-+struct opt4001_settings {
-+	/* Index of the chosen integration time */
-+	u8 int_time;
-+	u8 chip_type;
-+};
-+
-+struct opt4001_chip {
-+	struct opt4001_settings light_settings;
-+	struct regmap *regmap;
-+	struct i2c_client *client;
-+	const struct opt4001_package_const *package_constants;
-+	/*
-+	 * Keep light_settings in sync with hardware state
-+	 * and ensure multiple readers are serialized.
-+	 */
-+	struct mutex als_mutex;
-+};
-+
-+static const struct opt4001_package_const opt4001_sot_5x3_const = {
-+	.mul = OPT4001_SOT_5x3_MUL_CONST,
-+	.div = OPT4001_PACKAGE_DIV_CONST,
-+};
-+
-+static const struct opt4001_package_const opt4001_picostar_const = {
-+	.mul = OPT4001_PICOSTAR_MUL_CONST,
-+	.div = OPT4001_PACKAGE_DIV_CONST,
-+};
-+
-+static const int opt4001_int_time_available[][2] = {
-+	{ 0,    600 },
-+	{ 0,   1000 },
-+	{ 0,   1800 },
-+	{ 0,   3400 },
-+	{ 0,   6500 },
-+	{ 0,  12700 },
-+	{ 0,  25000 },
-+	{ 0,  50000 },
-+	{ 0, 100000 },
-+	{ 0, 200000 },
-+	{ 0, 400000 },
-+	{ 0, 800000 },
-+};
-+
-+/*
-+ * Conversion time is integration time + time to set register
-+ * this is used as integration time.
-+ */
-+static const int opt4001_int_time_reg[][2] = {
-+	{    600,  OPT4001_CTRL_CONVERSION_0_6MS  },
-+	{   1000,  OPT4001_CTRL_CONVERSION_1MS    },
-+	{   1800,  OPT4001_CTRL_CONVERSION_1_8MS  },
-+	{   3400,  OPT4001_CTRL_CONVERSION_3_4MS  },
-+	{   6500,  OPT4001_CTRL_CONVERSION_6_5MS  },
-+	{  12700,  OPT4001_CTRL_CONVERSION_12_7MS },
-+	{  25000,  OPT4001_CTRL_CONVERSION_25MS   },
-+	{  50000,  OPT4001_CTRL_CONVERSION_50MS   },
-+	{ 100000,  OPT4001_CTRL_CONVERSION_100MS  },
-+	{ 200000,  OPT4001_CTRL_CONVERSION_200MS  },
-+	{ 400000,  OPT4001_CTRL_CONVERSION_400MS  },
-+	{ 800000,  OPT4001_CTRL_CONVERSION_800MS  },
-+};
-+
-+static int opt4001_als_time_to_index(const u32 als_integration_time)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(opt4001_int_time_available); i++) {
-+		if (als_integration_time == opt4001_int_time_available[i][1])
-+			return i;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int opt4001_calculate_crc(int exp, int mantissa, int count)
-+{
-+	int crc;
-+
-+	crc = (hweight32(mantissa) + hweight32(exp) + hweight32(count)) % 2;
-+	crc |= ((hweight32(mantissa & 0xAAAAA) + hweight32(exp & 0xA)
-+		 + hweight32(count & 0xA)) % 2) << 1;
-+	crc |= ((hweight32(mantissa & 0x88888) + hweight32(exp & 0x8)
-+		 + hweight32(count & 0x8)) % 2) << 2;
-+	crc |= (hweight32(mantissa & 0x80808) % 2) << 3;
-+	return crc;
-+}
-+
-+static int opt4001_read_lux_value(struct iio_dev *indio_dev,
-+				  int *val, int *val2)
-+{
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+	struct device *dev = &chip->client->dev;
-+	uint light1;
-+	uint light2;
-+	uint msb;
-+	uint lsb;
-+	uint exp;
-+	uint count;
-+	uint crc;
-+	uint calc_crc;
-+	unsigned long long lux_raw;
-+	int ret;
-+
-+	ret = regmap_read(chip->regmap, OPT4001_LIGHT1_MSB, &light1);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to read data bytes");
-+		return ret;
-+	}
-+
-+	ret = regmap_read(chip->regmap, OPT4001_LIGHT1_LSB, &light2);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to read data bytes");
-+		return ret;
-+	}
-+
-+	count = (OPT4001_COUNTER_MASK & light2) >> 4;
-+	exp = (OPT4001_EXPONENT_MASK & light1) >> 12;
-+	crc = (OPT4001_CRC_MASK & light2);
-+	msb = (OPT4001_MSB_MASK & light1);
-+	lsb = (OPT4001_LSB_MASK & light2) >> 8;
-+	lux_raw = (msb << 8) + lsb;
-+	calc_crc = opt4001_calculate_crc(exp, lux_raw, count);
-+	if (calc_crc != crc)
-+		return -EIO;
-+
-+	lux_raw = lux_raw << exp;
-+	lux_raw = lux_raw * chip->package_constants->mul;
-+	*val = div_u64_rem(lux_raw, chip->package_constants->div, val2);
-+	*val2 = *val2 * 100;
-+
-+	return IIO_VAL_INT_PLUS_NANO;
-+}
-+
-+static int opt4001_set_conf(struct opt4001_chip *chip)
-+{
-+	struct opt4001_settings light_settings = chip->light_settings;
-+	struct device *dev = &chip->client->dev;
-+	u16 reg;
-+	int ret;
-+
-+	reg = FIELD_PREP(OPT4001_CTRL_RANGE_MASK, OPT4001_CTRL_LIGHT_SCALE_AUTO);
-+	reg |= FIELD_PREP(OPT4001_CTRL_CONV_TIME_MASK, light_settings.int_time);
-+	reg |= FIELD_PREP(OPT4001_CTRL_OPER_MODE_MASK, OPT4001_CTRL_OPER_MODE_CONTINUOUS);
-+
-+	ret = regmap_write(chip->regmap, OPT4001_CTRL, reg);
-+	if (ret)
-+		dev_err(dev, "Failed to set configuration\n");
-+
-+	return ret;
-+}
-+
-+static int opt4001_power_down(struct opt4001_chip *chip)
-+{
-+	int ret;
-+	struct device *dev = &chip->client->dev;
-+	uint reg;
-+
-+	ret = regmap_read(chip->regmap, OPT4001_DEVICE_ID, &reg);
-+	if (ret) {
-+		dev_err(dev, "Failed to read configuration\n");
-+		return ret;
-+	}
-+
-+	/* MODE_OFF is 0x0 so just set bits to 0 */
-+	reg &= ~OPT4001_CTRL_OPER_MODE_MASK;
-+
-+	ret = regmap_write(chip->regmap, OPT4001_CTRL, reg);
-+	if (ret)
-+		dev_err(dev, "Failed to set configuration to power down\n");
-+
-+	return ret;
-+}
-+
-+static const struct iio_chan_spec opt4001_channels[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME)
-+	},
-+};
-+
-+static int opt4001_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&chip->als_mutex);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+		ret = opt4001_read_lux_value(indio_dev, val, val2);
-+		break;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*val = 0;
-+		*val2 = opt4001_int_time_reg[chip->light_settings.int_time][0];
-+		ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	mutex_unlock(&chip->als_mutex);
-+
-+	return ret;
-+}
-+
-+static int opt4001_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+	int int_time;
-+	int ret = 0;
-+
-+	mutex_lock(&chip->als_mutex);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		int_time = opt4001_als_time_to_index(val2);
-+		if (int_time < 0) {
-+			ret = int_time;
-+		} else {
-+			chip->light_settings.int_time = int_time;
-+			ret = opt4001_set_conf(chip);
-+		}
-+
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+
-+
-+	mutex_unlock(&chip->als_mutex);
-+	return ret;
-+}
-+
-+static int opt4001_read_available(struct iio_dev *indio_dev,
-+				  struct iio_chan_spec const *chan,
-+				  const int **vals, int *type, int *length,
-+				  long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*length = ARRAY_SIZE(opt4001_int_time_available) * 2;
-+		*vals = (const int *)opt4001_int_time_available;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_AVAIL_LIST;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info opt4001_info_no_irq = {
-+	.read_raw = opt4001_read_raw,
-+	.write_raw = opt4001_write_raw,
-+	.read_avail = opt4001_read_available,
-+};
-+
-+static int opt4001_load_defaults(struct opt4001_chip *chip)
-+{
-+	chip->light_settings.int_time = OPT4001_DEFAULT_CONVERSION_TIME;
-+
-+	return opt4001_set_conf(chip);
-+}
-+
-+static bool opt4001_readable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case OPT4001_LIGHT1_MSB:
-+	case OPT4001_LIGHT1_LSB:
-+	case OPT4001_CTRL:
-+	case OPT4001_DEVICE_ID:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool opt4001_writable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case OPT4001_CTRL:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool opt4001_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case OPT4001_LIGHT1_MSB:
-+	case OPT4001_LIGHT1_LSB:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static const struct regmap_config opt4001_regmap_config = {
-+	.name = "opt4001",
-+	.reg_bits = 8,
-+	.val_bits = 16,
-+	.cache_type = REGCACHE_RBTREE,
-+	.max_register = OPT4001_DEVICE_ID,
-+	.readable_reg = opt4001_readable_reg,
-+	.writeable_reg = opt4001_writable_reg,
-+	.volatile_reg = opt4001_volatile_reg,
-+	.disable_locking = true,
-+	.val_format_endian = REGMAP_ENDIAN_BIG,
-+};
-+
-+/*
-+ * The compatible string determines which constants to use depending on
-+ * opt4001 packaging
-+ */
-+static const struct of_device_id opt4001_of_match[] = {
-+	{ .compatible = "ti,opt4001-sot-5x3", .data = &opt4001_sot_5x3_const},
-+	{ .compatible = "ti,opt4001-picostar", .data = &opt4001_picostar_const},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, opt4001_of_match);
-+
-+static int opt4001_probe(struct i2c_client *client)
-+{
-+	struct opt4001_chip *chip;
-+	struct iio_dev *indio_dev;
-+	const struct of_device_id *of_id;
-+	int ret;
-+	uint dev_id;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	chip = iio_priv(indio_dev);
-+
-+	chip->regmap = devm_regmap_init_i2c(client, &opt4001_regmap_config);
-+	if (IS_ERR(chip->regmap))
-+		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
-+				     "regmap initialization failed\n");
-+
-+	i2c_set_clientdata(client, indio_dev);
-+	chip->client = client;
-+
-+	indio_dev->info = &opt4001_info_no_irq;
-+
-+	mutex_init(&chip->als_mutex);
-+
-+	ret = regmap_reinit_cache(chip->regmap, &opt4001_regmap_config);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+				     "failed to reinit regmap cache\n");
-+
-+	ret = regmap_read(chip->regmap, OPT4001_DEVICE_ID, &dev_id);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+			"Failed to read the device ID register\n");
-+
-+	dev_id = FIELD_GET(OPT4001_DEVICE_ID_MASK, dev_id);
-+	if (dev_id != OPT4001_DEVICE_ID_VAL) {
-+		dev_err(&client->dev, "Device ID: %#04x unknown\n", dev_id);
-+		return -EINVAL;
-+	}
-+
-+	indio_dev->channels = opt4001_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(opt4001_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->name = chip->client->name;
-+
-+	of_id = of_match_device(of_match_ptr(opt4001_of_match), &client->dev);
-+	chip->package_constants = of_id->data;
-+
-+	ret = opt4001_load_defaults(chip);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Failed to set sensor defaults\n");
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static void opt4001_remove(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+
-+	opt4001_power_down(chip);
-+}
-+
-+static struct i2c_driver opt4001_driver = {
-+	.driver = {
-+		.name = "opt4001",
-+		.of_match_table = of_match_ptr(opt4001_of_match),
-+	},
-+	.probe_new = opt4001_probe,
-+	.remove = opt4001_remove
-+};
-+module_i2c_driver(opt4001_driver);
-+
-+MODULE_AUTHOR("Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>");
-+MODULE_DESCRIPTION("Texas Instruments opt4001 ambient light sensor driver");
-+MODULE_LICENSE("GPL");
+> 
+> 
+>> +	case MAX597x_TYPE_MAX5970:
+>> +		indio_dev->channels = max5970_adc_iio_channels;
+>> +		indio_dev->num_channels = ARRAY_SIZE(max5970_adc_iio_channels);
+>> +		indio_dev->name = "max5970";
+>> +		break;
+>> +	case MAX597x_TYPE_MAX5978:
+>> +		indio_dev->channels = max5978_adc_iio_channels;
+>> +		indio_dev->num_channels = ARRAY_SIZE(max5978_adc_iio_channels);
+>> +		indio_dev->name = "max5978";
+>> +		break;
+>> +	}
+>> +
+>> +	priv = iio_priv(indio_dev);
+>> +	priv->regmap = regmap;
+>> +	for (i = 0; i < indio_dev->num_channels; i++) {
+>> +		priv->irng[i] = max597x->irng[i];
+>> +		priv->mon_rng[i] = max597x->mon_rng[i];
+>> +		priv->shunt_micro_ohms[i] = max597x->shunt_micro_ohms[i];
+>> +	}
+>> +
+>> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+>> +	if (ret)
+>> +		return dev_err_probe(&pdev->dev, ret, "could not register iio device\n");
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static struct platform_driver max597x_iio_driver = {
+>> +	.driver = {
+>> +		.name = "max597x-iio",
+>> +	},
+>> +	.probe = max597x_iio_probe,
+>> +};
+>> +
+>> +module_platform_driver(max597x_iio_driver);
+>> +
+>> +MODULE_AUTHOR("Patrick Rudolph <patrick.rudolph@9elements.com>");
+>> +MODULE_DESCRIPTION("MAX5970_hot-swap controller driver");
+>> +MODULE_LICENSE("GPL");
+>>
+>> base-commit: 368eb79f738a21e16c2bdbcac2444dfa96b01aaa
+> 
 
--- 
-2.30.2
-
+Regards,
+Naresh

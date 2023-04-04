@@ -2,70 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 878886D55C4
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 03:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951086D562E
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 03:39:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbjDDBPq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Apr 2023 21:15:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39274 "EHLO
+        id S232711AbjDDBja (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Apr 2023 21:39:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbjDDBPp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 21:15:45 -0400
+        with ESMTP id S230200AbjDDBja (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Apr 2023 21:39:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6C810D5
-        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 18:15:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36541B4
+        for <linux-iio@vger.kernel.org>; Mon,  3 Apr 2023 18:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1680570905;
+        s=mimecast20190719; t=1680572321;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding;
-        bh=TSYL1BZlYm691L/hIPylGQ0hs5V7ipUIWqwof30ZZdE=;
-        b=Slp+ZmmxIEDJw0dr0arbVUIE1OnkMz8AO1nnPczt90VgwHCDQVHIeLgT9VaQ+yyt3QDpq4
-        i/ehpGXPL1Gi9SMPt3fkWPaMwpA1hHKKxhhWtXH58EX5YfT59+gfZreqDzAsgIz640V1XE
-        MRT4l5TWfCzGKrZjnTFePI5eVWRFPdc=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=8FIZEq9E2w7U9M1Y7V5ZDCr+Z6XlIynNUoEqvuqDtMY=;
+        b=JIxCb6BPMqrB4szEVWGLgRUsqYhtMRQWe6EUT6NQMOnJkOUJ1x4nZEcUiI0eIZN0x11A4z
+        l5OjjhFJRH+R0cPesi3jqo/OpQqviKaHdIHZWMYtrMHhw9EiGnbuN7h6Wg4ktkcU/hbiLj
+        +x25+/WNAo56MYqVFyCwgV+f80u8d38=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-Ky6_xyDuOj20dcUsFvXIPQ-1; Mon, 03 Apr 2023 21:15:04 -0400
-X-MC-Unique: Ky6_xyDuOj20dcUsFvXIPQ-1
-Received: by mail-qt1-f198.google.com with SMTP id y10-20020a05622a164a00b003e38e0a3cc3so20925121qtj.14
-        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 18:15:04 -0700 (PDT)
+ us-mta-267-I87R7NWRNkaoqchJkhSaPQ-1; Mon, 03 Apr 2023 21:38:40 -0400
+X-MC-Unique: I87R7NWRNkaoqchJkhSaPQ-1
+Received: by mail-qv1-f70.google.com with SMTP id oo15-20020a056214450f00b005a228adfcefso14077935qvb.2
+        for <linux-iio@vger.kernel.org>; Mon, 03 Apr 2023 18:38:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680570903;
+        d=1e100.net; s=20210112; t=1680572320;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TSYL1BZlYm691L/hIPylGQ0hs5V7ipUIWqwof30ZZdE=;
-        b=SGupeOQCYRmmorD5PpUjho7rqek8T2gYap5R9gFgMN6dFUKVhhbh+Dh5FWiHLEmdQ/
-         3xUduYqC+MZFPUFouRVFy5YhkTDQ8tAtV9DjA3R3druJcrGaQL3di6K3drECSEDcS/wX
-         vUW00ZX+lWMkhLWyqF4sV91DcLYq/Hwo/1PcfNykaDITMNE8h9i/1fweXCV77USUWyrV
-         Kqdj+jRck0yY/JNYH3Kj/IqUeDZUL0V97fFQHyGA8aunnL3vxFr0rN7B+BnrVC540IZF
-         rjaRcQLc3gePPhk8LOP9PB6GdlB9pwC2cMD3jiPdCWVQHRqGF4oKaV4Y5VyLryQI9eHn
-         gY3Q==
-X-Gm-Message-State: AAQBX9fwFSN7RG1DejJ6JhxTn675CXjFcGfLPZUdPl3LnnuV0vRIA1We
-        rxrnIuEIEVjROdyFKK6u8UrAVNpeJxDEs2Ul+yvYzLWGJW7JAEo+q6rwZzSnYUgFJbqsi+6r65b
-        UrCwJyQ7+5xvFlHF0wvA6
-X-Received: by 2002:a05:622a:38a:b0:3e4:ee22:a50e with SMTP id j10-20020a05622a038a00b003e4ee22a50emr964221qtx.7.1680570903643;
-        Mon, 03 Apr 2023 18:15:03 -0700 (PDT)
-X-Google-Smtp-Source: AKy350YsLbWLWr5isuULSaje0HfJTg3w21vMJIabPGBUBuVjvosJ9+6FCPfpIcKBSdDq3UYLsgnu6A==
-X-Received: by 2002:a05:622a:38a:b0:3e4:ee22:a50e with SMTP id j10-20020a05622a038a00b003e4ee22a50emr964205qtx.7.1680570903369;
-        Mon, 03 Apr 2023 18:15:03 -0700 (PDT)
-Received: from x1.. (c-73-214-169-22.hsd1.pa.comcast.net. [73.214.169.22])
-        by smtp.gmail.com with ESMTPSA id o26-20020ac841da000000b003de4e646d63sm2919574qtm.32.2023.04.03.18.15.02
+        bh=8FIZEq9E2w7U9M1Y7V5ZDCr+Z6XlIynNUoEqvuqDtMY=;
+        b=w5HqXVHXKobgxg/GvKDAVqGk3d7QuPFuPab55xr7//QXPWDYwsfX5btt/qoE/U7mqr
+         tNq7P7O32/D2eGZ8ldsM5wJyZPtbY2KCTYY2u57mzYu8hGFodCmPSE3uEQXGK40j0IgN
+         iHWdvukgHM9Gxl+5JDzvj8k+qXp18p4+bUB46GvftZsJX0UxRS5EmAIOgZODfcb3zUYx
+         uTs3xJEGxti0y1Bdm7ZDRdOQvboDYiKK6nRW9y/toDw4/WAdRqJaYY7CYboFd5SzYz3U
+         KRo4pq7Ia1Z7ThhzLs/MTo71oWkh9fuCVtTolgn5pT3+M4oL0PG6rUXa/f3EdJZoxiAP
+         UU+Q==
+X-Gm-Message-State: AAQBX9fu8ZPHlzeLJJoNBSuTde1Bt2TLTUkj8UGZVj54grNiE3EaFmpa
+        dPh4wZHZJy3LyYf6sAtQSIWfx7rNDBbOVHlmS4dzv/PxInfdJ6fsb2WqCw71dsVrxbtC6azIVLX
+        q+ZNtm3oZKidzX8Ley9VU
+X-Received: by 2002:a05:6214:1cc2:b0:5a3:44a1:788d with SMTP id g2-20020a0562141cc200b005a344a1788dmr1391823qvd.29.1680572319791;
+        Mon, 03 Apr 2023 18:38:39 -0700 (PDT)
+X-Google-Smtp-Source: AKy350YH1YAZKMJbzI7OrgDA5mb6wosGMJ8r7spqB43M2GMR7OluqQRsFKZTRBtZDPJDic0qUhHBFw==
+X-Received: by 2002:a05:6214:1cc2:b0:5a3:44a1:788d with SMTP id g2-20020a0562141cc200b005a344a1788dmr1391809qvd.29.1680572319550;
+        Mon, 03 Apr 2023 18:38:39 -0700 (PDT)
+Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id k5-20020a0cebc5000000b005dd8b9345d3sm3005993qvq.107.2023.04.03.18.38.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Apr 2023 18:15:02 -0700 (PDT)
-From:   Brian Masney <bmasney@redhat.com>
-To:     jic23@kernel.org
-Cc:     andriy.shevchenko@linux.intel.com, trix@redhat.com,
-        lars@metafoo.de, nathan@kernel.org, ndesaulniers@google.com,
-        u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hslester96@gmail.com
-Subject: [PATCH] iio: light: tsl2772: fix reading proximity-diodes from device tree
-Date:   Mon,  3 Apr 2023 21:14:55 -0400
-Message-Id: <20230404011455.339454-1-bmasney@redhat.com>
-X-Mailer: git-send-email 2.39.2
+        Mon, 03 Apr 2023 18:38:39 -0700 (PDT)
+From:   Tom Rix <trix@redhat.com>
+To:     jic23@kernel.org, lars@metafoo.de, angelo.dureghello@timesys.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] iio: dac: set varaiable max5522_channels storage-class-specifier to static
+Date:   Mon,  3 Apr 2023 21:38:28 -0400
+Message-Id: <20230404013828.1914523-1-trix@redhat.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -77,31 +74,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-tsl2772_read_prox_diodes() will correctly parse the properties from
-device tree to determine which proximity diode(s) to read from, however
-it didn't actually set this value on the struct tsl2772_settings. Let's
-go ahead and fix that.
+smatch reports
+drivers/iio/dac/max5522.c:55:28: warning: symbol
+  'max5522_channels' was not declared. Should it be static?
 
-Reported-by: Tom Rix <trix@redhat.com>
-Link: https://lore.kernel.org/lkml/20230327120823.1369700-1-trix@redhat.com/
-Fixes: 94cd1113aaa0 ("iio: tsl2772: add support for reading proximity led settings from device tree")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+This variable is only used in one file so it should be static.
+
+Signed-off-by: Tom Rix <trix@redhat.com>
 ---
- drivers/iio/light/tsl2772.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/dac/max5522.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-index ad50baa0202c..e823c145f679 100644
---- a/drivers/iio/light/tsl2772.c
-+++ b/drivers/iio/light/tsl2772.c
-@@ -601,6 +601,7 @@ static int tsl2772_read_prox_diodes(struct tsl2772_chip *chip)
- 			return -EINVAL;
- 		}
- 	}
-+	chip->settings.prox_diode = prox_diode_mask;
- 
- 	return 0;
+diff --git a/drivers/iio/dac/max5522.c b/drivers/iio/dac/max5522.c
+index 00ba4e98fb9c..05034a306597 100644
+--- a/drivers/iio/dac/max5522.c
++++ b/drivers/iio/dac/max5522.c
+@@ -52,7 +52,7 @@ struct max5522_state {
+ 	} \
  }
+ 
+-const struct iio_chan_spec max5522_channels[] = {
++static const struct iio_chan_spec max5522_channels[] = {
+ 	MAX5522_CHANNEL(0),
+ 	MAX5522_CHANNEL(1),
+ };
 -- 
-2.39.2
+2.27.0
 

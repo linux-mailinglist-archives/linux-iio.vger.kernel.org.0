@@ -2,342 +2,249 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B156D5CA6
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 12:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B54236D5D90
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 12:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234272AbjDDKH1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Apr 2023 06:07:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
+        id S229551AbjDDKdk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Apr 2023 06:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234251AbjDDKH1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 06:07:27 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDEC91BD0
-        for <linux-iio@vger.kernel.org>; Tue,  4 Apr 2023 03:07:24 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id ml21so8035002pjb.4
-        for <linux-iio@vger.kernel.org>; Tue, 04 Apr 2023 03:07:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=9elements.com; s=google; t=1680602844;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0naYlH38qDPlxYqIhqWjzrElNtaC1EIByyzISKIVm5I=;
-        b=hUXeQRJ2IkL3FHCz5472bpj5Avec2dfWS98yb687j7IC+zBQGS4OSHGAIpG/LW9/tj
-         FC6UKgp3mbMtzSj26yFACNFsHJ9vGkVh4NA61fu1Ihi3H4vilivnqwurzPvgLNhDSWda
-         hj90vs6wOOoyPeMuRT/SZDjDIiWSA8DsWTxmFPYGdhGlb+t+CXTZ9ox5DBHYtv7eKZuT
-         AvZoLFtUHVL5PNhKfUNmmY3/7KE+0B5JlyNOTSJ2z/dC4R8HaF7T3DnVJQyuyIoyZsLP
-         Ftgekqkn2UyW63qcr8k+IZZkPtnue7Hw8P4bMUTjz1PCmZQ+6hCGWYW7Yjt3FRuo1CCk
-         U3kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680602844;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0naYlH38qDPlxYqIhqWjzrElNtaC1EIByyzISKIVm5I=;
-        b=5P6paZzAvj0iDpYHZRTzCTMV9rsKwUgtRLq3UndIcQKC5K2DPNvYc1XhxUxX77evH6
-         m4e4kly/1qMKSdRDPs2fM7OHPTVkbuZx8VAfLP9c4dPTYZYLNQZ5Y7mYnQG4wbEh4HKM
-         445s3ih+Y6PrpDq2WZXi2fEyO6aiDSbfrEpJJ3OFrLT47ftIn9zg8iY6f09WfDnE6RL2
-         jubXyhD2NxlY5+0scRoIaskwYP0CxxwP9CR5UIzwBV5kv3OO47zxzWrXkqZu1VtZhZxS
-         S4Yf6axJkJXYLq6KW+bs0UiIQ3QCuSVIdHKxYqV74jZKk+KMfbvpNlv5Xlj+++Vec1Cq
-         sePA==
-X-Gm-Message-State: AAQBX9fXXjg6buAwUx5pr9KC04b+WWnCULSTdS9cFHVsTRgvrgMsfbWz
-        /zhF6iFowGYI/rPDNlTeTHVyeWh+EihMrCHclhU=
-X-Google-Smtp-Source: AKy350a/NYtTpDxDGMHqKHRNq4Ks26w1ekraxpVVAIQNOOX2wpIdNfRyWa0Uw8DkPY++8VaakBfWOQ==
-X-Received: by 2002:a17:902:ec8f:b0:1a1:7da3:ef5b with SMTP id x15-20020a170902ec8f00b001a17da3ef5bmr2381734plg.7.1680602844317;
-        Tue, 04 Apr 2023 03:07:24 -0700 (PDT)
-Received: from ?IPV6:2405:201:d02f:d899:2028:7962:400:43b6? ([2405:201:d02f:d899:2028:7962:400:43b6])
-        by smtp.gmail.com with ESMTPSA id t6-20020a170902bc4600b001a19f3a661esm7974713plz.138.2023.04.04.03.07.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Apr 2023 03:07:24 -0700 (PDT)
-Message-ID: <c8f709d3-1a8e-c98c-6917-839a0ca4d4ff@9elements.com>
-Date:   Tue, 4 Apr 2023 15:37:21 +0530
+        with ESMTP id S233699AbjDDKdj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 06:33:39 -0400
+Received: from ste-pvt-msa1.bahnhof.se (ste-pvt-msa1.bahnhof.se [213.80.101.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2F41713;
+        Tue,  4 Apr 2023 03:33:36 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTP id AF7F63F4F7;
+        Tue,  4 Apr 2023 12:33:33 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+X-Spam-Score: -2.099
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
+Authentication-Results: ste-pvt-msa1.bahnhof.se (amavisd-new);
+        dkim=pass (2048-bit key) header.d=dalakolonin.se
+Received: from ste-pvt-msa1.bahnhof.se ([127.0.0.1])
+        by localhost (ste-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 7v9jF2qnx6hJ; Tue,  4 Apr 2023 12:33:32 +0200 (CEST)
+Received: by ste-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id D22683F462;
+        Tue,  4 Apr 2023 12:33:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 6CE9A9441E;
+        Tue,  4 Apr 2023 10:33:31 +0000 (UTC)
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ArcmOD99wZcW; Tue,  4 Apr 2023 10:33:30 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id C53999441B;
+        Tue,  4 Apr 2023 10:33:29 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se C53999441B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dalakolonin.se;
+        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680604409;
+        bh=3CdfL+g8jYqfBGZVji9bGfsXzXTHIklsS2W/mc7CNXg=;
+        h=Date:From:To:Message-ID:MIME-Version;
+        b=j/BD9kF7UAGmhCcFf/B8Ycfh4JC1+4L9IrVCdwDtxPYceWT2Bev0fWE4pKNJBfHKN
+         Ot5VslcxDr/PbSPXFBPKot2WZoKOId6NUBmt7Fja867C9q8hKxy3jNXx/aKvXKalF6
+         TqWCbdzaiJhgIhega2dyZQyK8mQTE5pFNZ8rIezGtthXZbc8JjkmE3WzXzUOITt8A1
+         3ZudvhLntwrAciPRIh4+Eh8/ZVnBeCnvxw4FJge8YBT15pgf76DgJmIXm7IdYTXdLq
+         se4l4EdM3x5YHOO4LKdclHOEcH9fO/ZnBg0teVeLJsFY6cJ64lGCgU0I2hhfZhthS/
+         ReDxVVyKQjk5g==
+X-Virus-Scanned: amavisd-new at dalakolonin.se
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id rZWjrWUB--dI; Tue,  4 Apr 2023 10:33:29 +0000 (UTC)
+Received: from dalakolonin.se (unknown [172.17.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id 7A52594416;
+        Tue,  4 Apr 2023 10:33:29 +0000 (UTC)
+Date:   Tue, 4 Apr 2023 12:33:28 +0200
+From:   Patrik =?iso-8859-1?Q?Dahlstr=F6m?= <risca@dalakolonin.se>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        pgoudagunta@nvidia.com, jic23@kernel.org, lars@metafoo.de,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] iio: adc: palmas: remove adc_wakeupX_data
+Message-ID: <20230404103328.GD2403322@dalakolonin.se>
+References: <20230402164247.3089146-1-risca@dalakolonin.se>
+ <20230402164247.3089146-2-risca@dalakolonin.se>
+ <ED6919A6-CE57-4C31-9AE5-2C31D288A810@goldelico.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v3 1/2] iio: max597x: Add support for max597x
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Patrick Rudolph <patrick.rudolph@9elements.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20230328094416.3851801-1-Naresh.Solanki@9elements.com>
- <20230402180123.0fc1cfde@jic23-huawei>
-Content-Language: en-US
-From:   Naresh Solanki <naresh.solanki@9elements.com>
-In-Reply-To: <20230402180123.0fc1cfde@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <ED6919A6-CE57-4C31-9AE5-2C31D288A810@goldelico.com>
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Mon, Apr 03, 2023 at 06:49:36PM +0200, H. Nikolaus Schaller wrote:
+> Hi Patrik,
+>=20
+> > Am 02.04.2023 um 18:42 schrieb Patrik Dahlstr=F6m <risca@dalakolonin.=
+se>:
+> >=20
+> > It does not seem to be used by anyone and later patches in this serie=
+s
+> > are made simpler by first removing this. There is now a lot of dead c=
+ode
+> > that cannot be reached, until later patches revive it. Arguably, this=
+ is
+> > preferred over removing the code only to add it again.
+> >=20
+> > Signed-off-by: Patrik Dahlstr=F6m <risca@dalakolonin.se>
+> > ---
+> > drivers/iio/adc/palmas_gpadc.c | 50 ++++-----------------------------=
+-
+> > include/linux/mfd/palmas.h     |  8 ------
+> > 2 files changed, 6 insertions(+), 52 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
+gpadc.c
+> > index 24d7c096e4b8..943ac579eb1f 100644
+> > --- a/drivers/iio/adc/palmas_gpadc.c
+> > +++ b/drivers/iio/adc/palmas_gpadc.c
+> > @@ -76,6 +76,12 @@ static struct palmas_gpadc_info palmas_gpadc_info[=
+] =3D {
+> > 	PALMAS_ADC_INFO(IN15, 0, 0, 0, 0, INVALID, INVALID, true),
+> > };
+> >=20
+> > +struct palmas_adc_wakeup_property {
+> > +	int adc_channel_number;
+> > +	int adc_high_threshold;
+> > +	int adc_low_threshold;
+> > +};
+> > +
+> > /*
+> >  * struct palmas_gpadc - the palmas_gpadc structure
+> >  * @ch0_current:	channel 0 current source setting
+> > @@ -492,11 +498,6 @@ static int palmas_gpadc_get_adc_dt_data(struct p=
+latform_device *pdev,
+> > 	return 0;
+> > }
+> >=20
+> > -static void palmas_disable_wakeup(void *dev)
+>=20
+> something seems to be mixed up here.
+>=20
+> There is no palmas_disable_wakeup() upstream that can be removed. So th=
+is patch
+> can not be applied as 1/7 to any upstream kernel.
+>=20
+> Please rebase your series on either linus/master or linux-next/master.
 
-On 02-04-2023 10:31 pm, Jonathan Cameron wrote:
-> On Tue, 28 Mar 2023 11:44:14 +0200
-> Naresh Solanki <naresh.solanki@9elements.com> wrote:
-> 
->> From: Patrick Rudolph <patrick.rudolph@9elements.com>
->>
->> max5970 & max5978 has 10bit ADC for voltage & current
->> monitoring.
->> Use iio framework to expose the same in sysfs.
->>
->> Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
->> Signed-off-by: Naresh Solanki <Naresh.Solanki@9elements.com>
->> ...
-> 
-> --- not ...
-> 
-> As I mentioned in my reply to v2 thread (which crossed with this v3)
-> I'd like this series to be cc'd to the list and maintainers for Hwmon
-> with a cover letter explaining the reasoning for it being an IIO driver
-> + the restrictions that potentially brings.
-Sure.
-> 
-> A few other comments inline from taking another look.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
->> Changes in V3:
->> - Use bulk read
->> - Remove line split
->> Changes in V2:
->> - Remove fallthrough
->> - Use pdev->dev instead of i2c->dev
->> - Init indio_dev->name based on device type.
->> ---
->>   drivers/iio/adc/Kconfig       |  15 ++++
->>   drivers/iio/adc/Makefile      |   1 +
->>   drivers/iio/adc/max597x-iio.c | 148 ++++++++++++++++++++++++++++++++++
->>   3 files changed, 164 insertions(+)
->>   create mode 100644 drivers/iio/adc/max597x-iio.c
->>
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index 45af2302be53..69310af5c665 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -735,6 +735,21 @@ config MAX1363
->>   	  To compile this driver as a module, choose M here: the module will be
->>   	  called max1363.
->>   
->> +config MAX597X_IIO
->> +	tristate "Maxim 597x power switch and monitor"
->> +	depends on I2C && OF
->> +	select MFD_MAX597X
->> +	help
->> +	  This driver enables support for the Maxim 5970 & 5978 smart switch
->> +	  and voltage/current monitoring interface using the Industrial I/O
->> +	  (IIO) framework. The Maxim 597x is a power switch and monitor that can
->> +	  provide voltage and current measurements via the I2C bus. Enabling
->> +	  this driver will allow user space applications to read the voltage
->> +	  and current measurements using IIO interfaces.
->> +
->> +	  To compile this driver as a module, choose M here: the module will be
->> +	  called max597x-iio.
->> +
->>   config MAX9611
->>   	tristate "Maxim max9611/max9612 ADC driver"
->>   	depends on I2C
->> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
->> index 36c18177322a..7ec0c2cf7bbb 100644
->> --- a/drivers/iio/adc/Makefile
->> +++ b/drivers/iio/adc/Makefile
->> @@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
->>   obj-$(CONFIG_MAX11410) += max11410.o
->>   obj-$(CONFIG_MAX1241) += max1241.o
->>   obj-$(CONFIG_MAX1363) += max1363.o
->> +obj-$(CONFIG_MAX597X_IIO) += max597x-iio.o
->>   obj-$(CONFIG_MAX9611) += max9611.o
->>   obj-$(CONFIG_MCP320X) += mcp320x.o
->>   obj-$(CONFIG_MCP3422) += mcp3422.o
->> diff --git a/drivers/iio/adc/max597x-iio.c b/drivers/iio/adc/max597x-iio.c
->> new file mode 100644
->> index 000000000000..f158e49b5a56
->> --- /dev/null
->> +++ b/drivers/iio/adc/max597x-iio.c
->> @@ -0,0 +1,148 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Device driver for IIO in MAX5970 and MAX5978 IC
->> + *
->> + * Copyright (c) 2022 9elements GmbH
->> + *
->> + * Author: Patrick Rudolph <patrick.rudolph@9elements.com>
->> + */
->> +
->> +#include <linux/iio/iio.h>
->> +#include <linux/mfd/max597x.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/regmap.h>
->> +
->> +struct max597x_iio {
->> +	struct regmap *regmap;
->> +	int shunt_micro_ohms[MAX5970_NUM_SWITCHES];
->> +	unsigned int irng[MAX5970_NUM_SWITCHES];
->> +	unsigned int mon_rng[MAX5970_NUM_SWITCHES];
->> +};
->> +
->> +#define MAX597X_ADC_CHANNEL(_idx, _type) {			\
->> +	.type = IIO_ ## _type,					\
->> +	.indexed = 1,						\
->> +	.channel = (_idx),					\
->> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
->> +			      BIT(IIO_CHAN_INFO_SCALE),		\
->> +	.address = MAX5970_REG_ ## _type ## _L(_idx),		\
->> +}
->> +
->> +static const struct iio_chan_spec max5978_adc_iio_channels[] = {
->> +	MAX597X_ADC_CHANNEL(0, VOLTAGE),
->> +	MAX597X_ADC_CHANNEL(0, CURRENT),
->> +};
->> +
->> +static const struct iio_chan_spec max5970_adc_iio_channels[] = {
->> +	MAX597X_ADC_CHANNEL(0, VOLTAGE),
->> +	MAX597X_ADC_CHANNEL(0, CURRENT),
->> +	MAX597X_ADC_CHANNEL(1, VOLTAGE),
->> +	MAX597X_ADC_CHANNEL(1, CURRENT),
->> +};
->> +
->> +static int max597x_iio_read_raw(struct iio_dev *iio_dev,
->> +				struct iio_chan_spec const *chan,
->> +				int *val, int *val2, long info)
->> +{
->> +	int ret;
->> +	struct max597x_iio *data = iio_priv(iio_dev);
->> +	u16 reg_l, reg_h;
->> +
->> +	switch (info) {
->> +	case IIO_CHAN_INFO_RAW:
->> +		ret = regmap_bulk_read(data->regmap, chan->address - 1, &reg_l, 2);
-> 
-> This crossed with my reply to the v2 thread.  If reading two separate registers that
-> don't directly correspond to a large packed value, read them into an array
-> of u8.  Then get the relevant parts from that.
-Sure
-> 
-> The following use is not endian safe (it won't work on a big endian machine)
-Sure
-> 
->> +		if (ret < 0)
->> +			return ret;
->> +		reg_h = reg_l & 0xff;
->> +		reg_l = (reg_l >> 8) & 0xff;
->> +		*val = (reg_h << 2) | (reg_l & 3);
->> +		return IIO_VAL_INT;
->> +
->> +	case IIO_CHAN_INFO_SCALE:
->> +		switch (chan->address) {
->> +		case MAX5970_REG_CURRENT_L(0):
->> +		case MAX5970_REG_CURRENT_L(1):
->> +			/* in A, convert to mA */
->> +			*val = data->irng[chan->channel] * 1000;
->> +			*val2 = data->shunt_micro_ohms[chan->channel] * ADC_MASK;
->> +			return IIO_VAL_FRACTIONAL;
->> +
->> +		case MAX5970_REG_VOLTAGE_L(0):
->> +		case MAX5970_REG_VOLTAGE_L(1):
->> +			/* in uV, convert to mV */
->> +			*val = data->mon_rng[chan->channel];
->> +			*val2 = ADC_MASK * 1000;
->> +			return IIO_VAL_FRACTIONAL;
->> +		}
->> +
->> +		break;
->> +	}
->> +	return -EINVAL;
-> 
-> I'd prefer this pushed up as a default: in each of the two switch statements.
-> Makes it clear to compilers and readers that only listing some case values is
-> deliberate.
-Sure
-> 
->> +}
->> +
->> +static const struct iio_info max597x_adc_iio_info = {
->> +	.read_raw = &max597x_iio_read_raw,
->> +};
->> +
->> +static int max597x_iio_probe(struct platform_device *pdev)
->> +{
->> +	struct max597x_data *max597x = dev_get_drvdata(pdev->dev.parent);
->> +	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
->> +	struct iio_dev *indio_dev;
->> +	struct max597x_iio *priv;
->> +	int ret, i;
->> +
->> +	if (!regmap)
->> +		return -EPROBE_DEFER;
->> +
->> +	if (!max597x || !max597x->num_switches)
->> +		return -EPROBE_DEFER;
->> +
->> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
->> +	if (!indio_dev)
->> +		return dev_err_probe(&pdev->dev, -ENOMEM,
->> +				     "failed to allocate iio device\n");
->> +
->> +	indio_dev->info = &max597x_adc_iio_info;
->> +	indio_dev->modes = INDIO_DIRECT_MODE;
->> +
->> +	switch (max597x->num_switches) {
-> 
-> Having a value 'num_switches' that maps to a set of enums called _TYPE_ is unusual.
-> Perhaps rename it to type.
-Will add a local variable type to track the same within with driver.
+I'm sorry for the confusion. I should have been more clear in the cover
+letter.
 
-> 
-> 
->> +	case MAX597x_TYPE_MAX5970:
->> +		indio_dev->channels = max5970_adc_iio_channels;
->> +		indio_dev->num_channels = ARRAY_SIZE(max5970_adc_iio_channels);
->> +		indio_dev->name = "max5970";
->> +		break;
->> +	case MAX597x_TYPE_MAX5978:
->> +		indio_dev->channels = max5978_adc_iio_channels;
->> +		indio_dev->num_channels = ARRAY_SIZE(max5978_adc_iio_channels);
->> +		indio_dev->name = "max5978";
->> +		break;
->> +	}
->> +
->> +	priv = iio_priv(indio_dev);
->> +	priv->regmap = regmap;
->> +	for (i = 0; i < indio_dev->num_channels; i++) {
->> +		priv->irng[i] = max597x->irng[i];
->> +		priv->mon_rng[i] = max597x->mon_rng[i];
->> +		priv->shunt_micro_ohms[i] = max597x->shunt_micro_ohms[i];
->> +	}
->> +
->> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
->> +	if (ret)
->> +		return dev_err_probe(&pdev->dev, ret, "could not register iio device\n");
->> +
->> +	return 0;
->> +}
->> +
->> +static struct platform_driver max597x_iio_driver = {
->> +	.driver = {
->> +		.name = "max597x-iio",
->> +	},
->> +	.probe = max597x_iio_probe,
->> +};
->> +
->> +module_platform_driver(max597x_iio_driver);
->> +
->> +MODULE_AUTHOR("Patrick Rudolph <patrick.rudolph@9elements.com>");
->> +MODULE_DESCRIPTION("MAX5970_hot-swap controller driver");
->> +MODULE_LICENSE("GPL");
->>
->> base-commit: 368eb79f738a21e16c2bdbcac2444dfa96b01aaa
-> 
+This series is based on Jonathan Cameron's iio tree[1], plus the patches =
+at
+[2] and [3]. The first patch is already part of linux-next and I was unde=
+r
+the impression that [3] would be soon too.
 
-Regards,
-Naresh
+Would it be best to rebase this series on linux-next instead?
+
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
+[2] https://patchwork.kernel.org/project/linux-iio/patch/20230313205029.1=
+881745-1-risca@dalakolonin.se/
+[3] https://patchwork.kernel.org/project/linux-iio/patch/20230318163039.5=
+6115-1-jic23@kernel.org/
+
+>=20
+> BR,
+> Nikolaus
+>=20
+> > -{
+> > -	device_wakeup_disable(dev);
+> > -}
+> > -
+> > static int palmas_gpadc_probe(struct platform_device *pdev)
+> > {
+> > 	struct palmas_gpadc *adc;
+> > @@ -547,36 +548,6 @@ static int palmas_gpadc_probe(struct platform_de=
+vice *pdev)
+> > 		return dev_err_probe(adc->dev, ret,
+> > 				     "request irq %d failed\n", adc->irq);
+> >=20
+> > -	if (gpadc_pdata->adc_wakeup1_data) {
+> > -		memcpy(&adc->wakeup1_data, gpadc_pdata->adc_wakeup1_data,
+> > -			sizeof(adc->wakeup1_data));
+> > -		adc->wakeup1_enable =3D true;
+> > -		adc->irq_auto_0 =3D  platform_get_irq(pdev, 1);
+> > -		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_0,
+> > -						NULL, palmas_gpadc_irq_auto,
+> > -						IRQF_ONESHOT,
+> > -						"palmas-adc-auto-0", adc);
+> > -		if (ret < 0)
+> > -			return dev_err_probe(adc->dev, ret,
+> > -					     "request auto0 irq %d failed\n",
+> > -					     adc->irq_auto_0);
+> > -	}
+> > -
+> > -	if (gpadc_pdata->adc_wakeup2_data) {
+> > -		memcpy(&adc->wakeup2_data, gpadc_pdata->adc_wakeup2_data,
+> > -				sizeof(adc->wakeup2_data));
+> > -		adc->wakeup2_enable =3D true;
+> > -		adc->irq_auto_1 =3D  platform_get_irq(pdev, 2);
+> > -		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_1,
+> > -						NULL, palmas_gpadc_irq_auto,
+> > -						IRQF_ONESHOT,
+> > -						"palmas-adc-auto-1", adc);
+> > -		if (ret < 0)
+> > -			return dev_err_probe(adc->dev, ret,
+> > -					     "request auto1 irq %d failed\n",
+> > -					     adc->irq_auto_1);
+> > -	}
+> > -
+> > 	/* set the current source 0 (value 0/5/15/20 uA =3D> 0..3) */
+> > 	if (gpadc_pdata->ch0_current <=3D 1)
+> > 		adc->ch0_current =3D PALMAS_ADC_CH0_CURRENT_SRC_0;
+> > @@ -616,15 +587,6 @@ static int palmas_gpadc_probe(struct platform_de=
+vice *pdev)
+> > 			palmas_gpadc_calibrate(adc, i);
+> > 	}
+> >=20
+> > -	if (adc->wakeup1_enable || adc->wakeup2_enable) {
+> > -		device_wakeup_enable(&pdev->dev);
+> > -		ret =3D devm_add_action_or_reset(&pdev->dev,
+> > -					       palmas_disable_wakeup,
+> > -					       &pdev->dev);
+> > -		if (ret)
+> > -			return ret;
+> > -	}
+> > -
+> > 	return 0;
+> > }
+> >=20
+> > diff --git a/include/linux/mfd/palmas.h b/include/linux/mfd/palmas.h
+> > index 1e61c7e9f50d..55f22adb1a9e 100644
+> > --- a/include/linux/mfd/palmas.h
+> > +++ b/include/linux/mfd/palmas.h
+> > @@ -129,12 +129,6 @@ struct palmas_pmic_driver_data {
+> > 			    struct regulator_config config);
+> > };
+> >=20
+> > -struct palmas_adc_wakeup_property {
+> > -	int adc_channel_number;
+> > -	int adc_high_threshold;
+> > -	int adc_low_threshold;
+> > -};
+> > -
+> > struct palmas_gpadc_platform_data {
+> > 	/* Channel 3 current source is only enabled during conversion */
+> > 	int ch3_current;	/* 0: off; 1: 10uA; 2: 400uA; 3: 800 uA */
+> > @@ -153,8 +147,6 @@ struct palmas_gpadc_platform_data {
+> > 	int start_polarity;
+> >=20
+> > 	int auto_conversion_period_ms;
+> > -	struct palmas_adc_wakeup_property *adc_wakeup1_data;
+> > -	struct palmas_adc_wakeup_property *adc_wakeup2_data;
+> > };
+> >=20
+> > struct palmas_reg_init {
+> > --=20
+> > 2.25.1
+> >=20
+>=20

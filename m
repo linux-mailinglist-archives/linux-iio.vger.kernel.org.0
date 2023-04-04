@@ -2,69 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEEE56D6040
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 14:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA77F6D60DB
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 14:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234529AbjDDMZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Apr 2023 08:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34478 "EHLO
+        id S234511AbjDDMhX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Apr 2023 08:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234882AbjDDMZl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 08:25:41 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E701B90;
-        Tue,  4 Apr 2023 05:25:39 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id bi9so42147005lfb.12;
-        Tue, 04 Apr 2023 05:25:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680611138;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RGrcJymg+ckaukDnkYkL45EafR2fD169G3iZOtvge2g=;
-        b=BTa8G3OTbNddd1DNHPTZfluySBVtJTcU+LjqTGxB5GfHbOu+ALGZTpnZkdDREd01Xa
-         xAG4j6S1wYdSFnFIcY7r7wlO5MC8w6LrcRwftMKSUqnPOUK8YF1/qH/rB38MYUGa0WQY
-         Z2TqYm9O5jOKEguCJ6pqBPUovbTIXDaenrzYamibmsPabXDQZ61Aemv6bAW4zIE1ECBX
-         WAH5XVNBk/QVjybOCG5uWYG2lD4lkWPA0YeDvy2TT+a+hQB2gj0n+lKIAtyl0p2jC14d
-         jci/aUVbUHzUyF5UMpW+afWtv47wIo5i7V3EmK78BkICyPi4pWzA8k5XQbP0iArVpmJe
-         IH6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680611138;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RGrcJymg+ckaukDnkYkL45EafR2fD169G3iZOtvge2g=;
-        b=RSBOs0AoHfYdaDm6+jTKOsS2A2vuVpt6Uimq5KVP9jVdwDSbgt0vvp8pTam8SvKGOx
-         XmH4erMqpkgzqzIpgEpDt1/PD34wUszTDwnDQRYrhsRyDo6L2nsOsdper9f+8BW3evg4
-         iKOrVpRbYPB957WZYIl54Fiog09FUW1Ba0cXb1tFb7nijti2T6rP46pB4bF0F8RNJ15g
-         sRaSmQarWrerFOYgZItxj6AI2BdtCb/kAOB+sWQ07pTJddaiMCGsjYkHmV/nV+4OlpIR
-         egxXSZOLlG7r7f12JydFrKOQMfmkpACTUwtpsE27t0alzJ10CWM1y7aA5wraGF+3FG3G
-         lFDQ==
-X-Gm-Message-State: AAQBX9fy/dEwwc+Wg6TaTLIAdpOcZkZNAGJF21rTT+XShFQBUiDjnF7K
-        bB50gx/xyoI3yyceUvGbxAU=
-X-Google-Smtp-Source: AKy350Y0jpe/w9Uo3Kh8yAlk4zEOOyeI6H2j666l0rrxtXxYRejpjj+llllY0nfTyPhStpAjByRXzg==
-X-Received: by 2002:ac2:558d:0:b0:4e6:9b01:b92b with SMTP id v13-20020ac2558d000000b004e69b01b92bmr566067lfg.67.1680611138251;
-        Tue, 04 Apr 2023 05:25:38 -0700 (PDT)
-Received: from fedora ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id j27-20020ac253bb000000b004eaf8b20014sm2296281lfh.76.2023.04.04.05.25.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Apr 2023 05:25:37 -0700 (PDT)
-Date:   Tue, 4 Apr 2023 15:25:35 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH v2 3/3] doc: Make sysfs-bus-iio doc more exact
-Message-ID: <4cbc9dd1dc5974f06be0c90e435970e1105f4636.1680610554.git.mazziesaccount@gmail.com>
-References: <cover.1680610554.git.mazziesaccount@gmail.com>
+        with ESMTP id S234864AbjDDMhS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 08:37:18 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DF1E65
+        for <linux-iio@vger.kernel.org>; Tue,  4 Apr 2023 05:36:45 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pjft5-00085U-4q; Tue, 04 Apr 2023 14:35:47 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pjft3-008v3a-DB; Tue, 04 Apr 2023 14:35:45 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pjft2-00AVgL-In; Tue, 04 Apr 2023 14:35:44 +0200
+Date:   Tue, 4 Apr 2023 14:35:44 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Brian Masney <bmasney@redhat.com>
+Cc:     kernel test robot <lkp@intel.com>, jic23@kernel.org,
+        llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        andriy.shevchenko@linux.intel.com, trix@redhat.com,
+        lars@metafoo.de, nathan@kernel.org, ndesaulniers@google.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        hslester96@gmail.com
+Subject: Re: [PATCH] iio: light: tsl2772: fix reading proximity-diodes from
+ device tree
+Message-ID: <20230404123544.6m5juesxwf4tklkm@pengutronix.de>
+References: <20230404011455.339454-1-bmasney@redhat.com>
+ <202304041451.gj8oasQp-lkp@intel.com>
+ <ZCwGP6rBLgbDGvkv@x1>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oE4Bg3zikhBh1VXn"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="czfim3jbpqegyq4m"
 Content-Disposition: inline
-In-Reply-To: <cover.1680610554.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+In-Reply-To: <ZCwGP6rBLgbDGvkv@x1>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,95 +60,46 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---oE4Bg3zikhBh1VXn
-Content-Type: text/plain; charset=us-ascii
+--czfim3jbpqegyq4m
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-A few IIC channel descriptions explained used units as:
-data is in foo "that can be processed into an" [unit] value. The "can be
-processed into" is quite broad statement as it does not really explain
-what this processing means. This makes units pretty much useless.
+Hello Brian,
 
-After discussion with Jonathan, it seems the units for these channels
-should also be well-defined as for all other channels. The processing
-means the standard scale and offset application that is used throughout
-the IIO. Let's make it more obvious by stating that the units are [unit]
-after scale ane offset are applied.
+On Tue, Apr 04, 2023 at 07:13:03AM -0400, Brian Masney wrote:
+> This doesn't contain the code that's in iio/togreg [1], and that's why
+> the build failed. I originally developed / built this against
+> next-20230330. I just checked linus/master, next-20230404, iio/testing,
+> and all have the expected code that defines prox_diode_mask.
+>=20
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/dr=
+ivers/iio/light/tsl2772.c?h=3Dtogreg#n593
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- Documentation/ABI/testing/sysfs-bus-iio | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+You might want to make use of the --base parameter to git format-patch
+for you next submission. With that the auto builders have a chance to
+test on the right tree.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/te=
-sting/sysfs-bus-iio
-index 6ba34c0d9789..b435c6f065ae 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -1807,8 +1807,8 @@ What:		/sys/bus/iio/devices/iio:deviceX/out_resistanc=
-eX_raw
- KernelVersion:	4.3
- Contact:	linux-iio@vger.kernel.org
- Description:
--		Raw (unscaled no offset etc.) resistance reading that can be processed
--		into an ohm value.
-+		Raw (unscaled no offset etc.) resistance reading.
-+		Units after application of scale and offset are ohms.
-=20
- What:		/sys/bus/iio/devices/iio:deviceX/heater_enable
- KernelVersion:	4.1.0
-@@ -1894,8 +1894,9 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_electrical=
-conductivity_raw
- KernelVersion:	4.8
- Contact:	linux-iio@vger.kernel.org
- Description:
--		Raw (unscaled no offset etc.) electric conductivity reading that
--		can be processed to siemens per meter.
-+		Raw (unscaled no offset etc.) electric conductivity reading.
-+		Units after application of scale and offset are siemens per
-+		meter.
-=20
- What:		/sys/bus/iio/devices/iio:deviceX/in_countY_raw
- KernelVersion:	4.10
-@@ -1952,7 +1953,7 @@ KernelVersion:	4.18
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		Raw (unscaled) phase difference reading from channel Y
--		that can be processed to radians.
-+		Units after application of scale and offset are radians.
-=20
- What:		/sys/bus/iio/devices/iio:deviceX/in_massconcentration_pm1_input
- What:		/sys/bus/iio/devices/iio:deviceX/in_massconcentrationY_pm1_input
---=20
-2.39.2
-
+Best regards
+Uwe
 
 --=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---oE4Bg3zikhBh1VXn
+--czfim3jbpqegyq4m
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQsFz4ACgkQeFA3/03a
-ocUr9wgAiu3ubVp27IMsxoQqIez73QDUdxWdNu6iAhWEKQPeyDDtgl32Pbz3jBKa
-qz+QMdm5SDVYdYfVswHpYWOpnvCG94vVOwtCc4rqm8IK/i0MIUGVjcqVBx/2LxVu
-TEdy9qNO5wD/da5/AetJeEuEKoTkZPq9oy19Lbi4EXXuAWbgBT3NbM6XcFIS/snZ
-7XjH+i1pu9Qw/EgOfpNUEhC//83yb3Rf6K4Ie4BqL6g3JYIynbej0RyHELYl2yIs
-3neUwhJD21/5KR/CvqyxVrfBO2etW1/j/UaX/7sm89cU09pAs0FpJkMbHouL+wV2
-30p4W8R1EQaFEldMr6hV+qQvB/3Ohw==
-=rku9
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQsGZ8ACgkQj4D7WH0S
+/k61mwf/ThD/ELYPWS+2DGG+2K5E/kOiiSJCCu985Ejv52/bRiUU9GH9VVFOoPU5
+BmHaG2iqF8nbShTHifTEdA0bTCa6A+ipCx12P4ztQEI4AIgY9zoiqZ2sWbUiAM4r
+hEdEPRy2fF6b5FUarVBNN3ySxgmika/6O3+VMG+T0SGwg8tqgCRpB0jGsOLvCjKa
+V4xCW7UvkgSWz2MyIdlfI5aoea18sSMZpREWsNFjevyB9b+jZ9WC46PQS37TidUA
+4Y59J5acABYXE1Ou/8BJGWT3Qbc1cgYiKnZbjOXVRNZNFM3gSb3qlH9hKXYAgSqa
+ff4wQKOyGv1nIGJgI8WqfxqdCuflJg==
+=E1z2
 -----END PGP SIGNATURE-----
 
---oE4Bg3zikhBh1VXn--
+--czfim3jbpqegyq4m--

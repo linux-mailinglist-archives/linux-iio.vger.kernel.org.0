@@ -2,126 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 311036D64E4
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 16:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DDD46D67A1
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Apr 2023 17:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235769AbjDDOMS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Apr 2023 10:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
+        id S235797AbjDDPkN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Apr 2023 11:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235739AbjDDOMO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 10:12:14 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8903ABD
-        for <linux-iio@vger.kernel.org>; Tue,  4 Apr 2023 07:12:10 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id m16so18497510ybk.0
-        for <linux-iio@vger.kernel.org>; Tue, 04 Apr 2023 07:12:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680617530;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qDg8gjgCK4cCzQVwhhCZvTIORe+B4i8BW2+BbUTMc8k=;
-        b=DiobnlWTCEyBk4WPYFAHKg30bRzkskmSJ72Wcz0czZXBfiyEDWRHKO9j7HFFgmztHX
-         xTXtdNMXXSAw/AMwjYmqyhquuzlygHqo1/eOGOM8k1x+2K95ixzBaZ3AzQVnLBYkVssL
-         is9Dub6pRZJl9zSbNIakbfXudTP0IXFFXRKemRvFcXaYEfRE+jMAgdIu9rqNCsCKcqH+
-         NH2mMYvnftLWNjIjTz9qQEeVS04uRRKlmWRk2lVyO526Mp6wwBPvwvi7OOh9JxSVRmAv
-         Dq3fsXDYkQoXuTcX4jJE2kPlWqfV+GN7mu/Hnmvpj4yC8MNr7lkMYkVANC/PFdK8DxEG
-         jVTA==
+        with ESMTP id S235788AbjDDPkL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Apr 2023 11:40:11 -0400
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F37B359E;
+        Tue,  4 Apr 2023 08:39:49 -0700 (PDT)
+Received: by mail-oi1-f181.google.com with SMTP id w133so24516910oib.1;
+        Tue, 04 Apr 2023 08:39:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680617530;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qDg8gjgCK4cCzQVwhhCZvTIORe+B4i8BW2+BbUTMc8k=;
-        b=QRizWtuJI63+DxCdoH3nMGVUiHjPgcw1k++BX199yq7p4cH4qYFVZXMDaz6PRk+BmZ
-         MDXUzs021HL85r+L7xfzxuVRMQp8Qc77R6nIVKFmUPGK83xB2sEY/q95kgHaFDff6cod
-         K7Als+ENQidouydFd3mqclkFhctXUIu39f5QZeGkkIwBVdt0d/WWUcfKSMKDKryPywG+
-         54H57f7WyKylUk5g3jMi/cZLj0cOxaypa7bWYh9WL+o3pBTeKrRy8YMG4++oHCxCAa6H
-         ieGZwT610CbImFp6FdAyJouuARYsVkqls4q/NSEoqGotzuQxpCZmm/6G0osUUWX2DQ0k
-         Jh9g==
-X-Gm-Message-State: AAQBX9cCp3X9NRJJU0WXnH5qsQNQBgTyp0OBlKeqRxuYYJtkDo4q3Khd
-        K1J3xvf+MG7UcfLlWM1d2Vtxdw==
-X-Google-Smtp-Source: AKy350aJGwj3RDu4Ip5Xdz/OSHSTb1FUZElsBmHZwE/xAe13jchQE1CQ2cXbPFPEjl7DmWZ7kx4QeA==
-X-Received: by 2002:a25:aa53:0:b0:b05:af93:c3d7 with SMTP id s77-20020a25aa53000000b00b05af93c3d7mr2826487ybi.62.1680617529787;
-        Tue, 04 Apr 2023 07:12:09 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id d195-20020a811dcc000000b00545a08184d8sm3202750ywd.104.2023.04.04.07.12.09
+        d=1e100.net; s=20210112; t=1680622788;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h2O+0AGvBEdzeTS5JN4tGFGz92A4xFSMh9AjZcNoJIw=;
+        b=Y1c2QmodRxXXKc0Rq4piI3/hp43E2O2QvxFEqfufdo51JJkwGl/lC75ZK5Qn3gAR4w
+         fTSd3WVjM2y5lDxSXQOhpTrpO2wEKaCwawLEc03Nwqu0UcCWW+sIOgPbPOMypbQWchev
+         j1rdgh7+8tzyp4sWz6e8CaffnxKsFn6oCievDHWlAqHMPRhyde4UbkX7VYFvayC99pk5
+         Z1g7lfkz5jLCffNIa2Bn/XnCV9UTpDtE+z2XRFDB/2l4bUfxINhQwcKqDJ+WansdTwsN
+         2A2xFylybwWTtfcToijpimpwjA0aplGrzKkmMe/sRkw3doirbU0hd8OJtqjsAnGOX6td
+         5ezA==
+X-Gm-Message-State: AAQBX9dVtQ3Zab/gK2zmX55R7Wh8B/cwea+mdb2QVCksBBq+XjxAcaxS
+        weTzzLpSqGaS6Nmv+C3BLTirm6aFZA==
+X-Google-Smtp-Source: AKy350bDQydgyv/j+HyVtVq0pxr7h2sYmXDwLX4OquRt8l1QjupxiXSuJyqlwtBUghCsa7+uTjb3vA==
+X-Received: by 2002:a05:6808:2a05:b0:387:53ce:4eb3 with SMTP id ez5-20020a0568082a0500b0038753ce4eb3mr1523464oib.48.1680622788523;
+        Tue, 04 Apr 2023 08:39:48 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id h38-20020a4a9429000000b0051a6cb524b6sm5522176ooi.2.2023.04.04.08.39.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Apr 2023 07:12:09 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH v4 5/5] iio: addac: stx104: Use regmap_read_poll_timeout() for conversion poll
-Date:   Tue,  4 Apr 2023 10:12:02 -0400
-Message-Id: <f7fa811a002d0572c63b5a5ab7a478a5383ff840.1680564468.git.william.gray@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1680564468.git.william.gray@linaro.org>
-References: <cover.1680564468.git.william.gray@linaro.org>
+        Tue, 04 Apr 2023 08:39:48 -0700 (PDT)
+Received: (nullmailer pid 4036268 invoked by uid 1000);
+        Tue, 04 Apr 2023 15:39:47 -0000
+Date:   Tue, 4 Apr 2023 10:39:47 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@axis.com
+Subject: Re: [PATCH 1/2] dt-bindings: Document TI OPT4001 light sensor
+ bindings
+Message-ID: <20230404153947.GA4034118-robh@kernel.org>
+References: <20230323-add-opt4001-driver-v1-0-1451dcc1bc8a@axis.com>
+ <20230323-add-opt4001-driver-v1-1-1451dcc1bc8a@axis.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230323-add-opt4001-driver-v1-1-1451dcc1bc8a@axis.com>
+X-Spam-Status: No, score=0.7 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ADC sample captures take a certain amount of time to complete after
-initiated; this conversion time range can be anywhere from 5 uSec to
-53.68 Seconds depending on the configuration of the Analog Input Frame
-Timer register. When the conversion is in progress, the ADC Status
-register CNV bit is high. Utilize regmap_read_poll_timeout() to poll
-until the ADC conversion is completed (or timeout if more than 53.68
-Seconds passes).
+On Tue, Apr 04, 2023 at 11:07:42AM +0200, Stefan Windfeldt-Prytz wrote:
+> Add devicetree bindings for opt4001 ambient light sensor.
+> 
+> Signed-off-by: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+> ---
+>  .../devicetree/bindings/iio/light/ti,opt4001.yaml  | 42 ++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/ti,opt4001.yaml b/Documentation/devicetree/bindings/iio/light/ti,opt4001.yaml
+> new file mode 100644
+> index 000000000000..cfd6b8b92c17
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/light/ti,opt4001.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/light/ti,opt4001.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments OPT4001 Ambient Light Sensor
+> +
+> +maintainers:
+> +  - Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
+> +
+> +description: |
+> +  Ambient light sensor with an i2c interface.
+> +  https://www.ti.com/lit/gpn/opt4001
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,opt4001-picostar
+> +      - ti,opt4001-sot-5x3
 
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
-Changes in v4: none
+Please explain in the commit message or description of the device what 
+picostar and sot-5x3 mean.
 
- drivers/iio/addac/stx104.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
-index f300cce52787..0cdb824b6bb6 100644
---- a/drivers/iio/addac/stx104.c
-+++ b/drivers/iio/addac/stx104.c
-@@ -206,19 +206,22 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 
- 		/* trigger ADC sample capture by writing to the 8-bit
- 		 * Software Strobe Register and wait for completion
-+		 * Range is 5 uSec to 53.68 Seconds in steps of 25 nanoseconds.
-+		 * The actual Analog Input Frame Timer time interval is calculated as:
-+		 * ai_time_frame_ns = ( AIFT + 1 ) * ( 25 nSec ).
-+		 * Where 0 <= AIFT <= 2147483648.
- 		 */
- 		err = regmap_write(priv->aio_ctl_map, STX104_SOFTWARE_STROBE, 0);
- 		if (err) {
- 			mutex_unlock(&priv->lock);
- 			return err;
- 		}
--		do {
--			err = regmap_read(priv->aio_ctl_map, STX104_ADC_STATUS, &adc_status);
--			if (err) {
--				mutex_unlock(&priv->lock);
--				return err;
--			}
--		} while (u8_get_bits(adc_status, STX104_CNV));
-+		err = regmap_read_poll_timeout(priv->aio_ctl_map, STX104_ADC_STATUS, adc_status,
-+					       !u8_get_bits(adc_status, STX104_CNV), 0, 53687092);
-+		if (err) {
-+			mutex_unlock(&priv->lock);
-+			return err;
-+		}
- 
- 		err = regmap_read(priv->aio_data_map, STX104_ADC_DATA, &value);
- 		if (err) {
--- 
-2.39.2
-
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@44 {
+> +            compatible = "ti,opt4001-picostar";
+> +            reg = <0x44>;
+> +        };
+> +    };
+> +...
+> 
+> -- 
+> 2.30.2
+> 

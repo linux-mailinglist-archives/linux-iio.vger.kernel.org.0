@@ -2,109 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DF846D7F1E
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 16:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 881CF6D7F2D
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 16:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238560AbjDEOTO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Apr 2023 10:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43092 "EHLO
+        id S238333AbjDEOUW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Apr 2023 10:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238509AbjDEOSe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 10:18:34 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3067A59D6;
-        Wed,  5 Apr 2023 07:18:02 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id l27so36391948wrb.2;
-        Wed, 05 Apr 2023 07:18:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680704276;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/qTSurywyiFi8YJ1Mq+URH6Inry7VQ8qeInnb5aX3H8=;
-        b=kwq8npzjgNar3wa8bPxkoQH5Tcoj3rquzHsEXc9qX7MNE712UR8GVYpCZCuBdmN/7O
-         Tesu2Wdqs9NaZp5dfj9orjc0PrDdhZMwZPgE5YhA1LfQIEhxkgHi4Pjbd7F/VzAaUJ82
-         iciLCG8NeJlHNgd6tCxLXGwWVqlMxsTFBRedizxxZUv6QFOpa5nayh53DP9mC/evpusP
-         sIOQq/l/WuSOFPhW80jS3nNJdE+sYOaQYXTG/YWfOZpfmnABbAnXriGSCNapv+apTOZ9
-         0RcMQScZo6bFhg5O4D50o66Fn2DFG1ErpqGPwnOHpIfCytwu3mksWimXwXC40+jZ8LN7
-         6MUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680704276;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/qTSurywyiFi8YJ1Mq+URH6Inry7VQ8qeInnb5aX3H8=;
-        b=IBjzINx7dldIJ8rp7vleiIHvL8ql8HVqPw3dtxxUSMyd+Aj+cc8slNVy0GWpAQzkfC
-         vy1T5M5UjaSMbK+AT7Et68XPGL2LjVE3qcg9B2dGG68iS0XBg3exkdEJCQ9PjcWkEBJI
-         n4iOYMaoXL9AgMozHx2Ltlh4E5Cca+tBlvCXlZ/TtmbxHnIq4IAQf6z6ek8w6yduYKv0
-         HQEBzMKuDMjmsUOXl+WfGO3AnFzicPKHTaVRJF6rGgyFxCQJv91K5acsvxY6gF/R/B9p
-         1ReMhD5VG1QWjI97RilMP+sNQrJStUp+bdWSvzmGZI4MwDu3a80W3QBMdiC8XrmNRf1f
-         D1nw==
-X-Gm-Message-State: AAQBX9cDDXy1mlJElPxXABidjIpTR2J11Fas+Tf4oph+HTcUO444gl0G
-        vrwLRajKza2L5JOtZQr/FQ0=
-X-Google-Smtp-Source: AKy350bHGfe0sUG0mZh0J5q2qp9rZhMeNPEJUOccPaQhxv4yWAHEJgMYZuCJTo9mORajhnN8znp3OQ==
-X-Received: by 2002:adf:f492:0:b0:2ce:a7df:c115 with SMTP id l18-20020adff492000000b002cea7dfc115mr4167077wro.41.1680704275852;
-        Wed, 05 Apr 2023 07:17:55 -0700 (PDT)
-Received: from archbook.localnet (84-72-105-84.dclient.hispeed.ch. [84.72.105.84])
-        by smtp.gmail.com with ESMTPSA id k4-20020a5d4284000000b002cefcac0c62sm15300877wrq.9.2023.04.05.07.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 07:17:55 -0700 (PDT)
-From:   Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] dt-bindings: iio: dac: add mcp4822
-Date:   Wed, 05 Apr 2023 16:17:54 +0200
-Message-ID: <4357039.nDxAD4yF8u@archbook>
-In-Reply-To: <748c4391-1c8c-8fc2-cef9-6091512c77ef@linaro.org>
-References: <20230405140114.99011-1-frattaroli.nicolas@gmail.com>
- <20230405140114.99011-4-frattaroli.nicolas@gmail.com>
- <748c4391-1c8c-8fc2-cef9-6091512c77ef@linaro.org>
+        with ESMTP id S238471AbjDEOT5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 10:19:57 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F906E97;
+        Wed,  5 Apr 2023 07:19:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=nr9B9YoFHcdAnOk7XIXV4TXm5HEeAm6xhWvRCkvPnGM=; b=lg1cvw0Ep9UfBxMr4NkkCG2qNy
+        Vo2pSByM8dzATy23gBaOsMupsW2sOxcdSAK3k4B2GwHL0S7DTWM7U/lWiWZbPe4UAgqgA9Qr4LOcf
+        ImiXZtqi3eo6X3x8Wwq4m8U92HJA97/1GFKLsNDrQn1QD+2449d84Mr7YEOIFOPeR2aHiA16Gj6p4
+        nt5YQ2YP90y5PLSQEFNHyINfL2MC7CxLEh37JTE30r6xe8d21LDkYHIgy+wKY8CgvrJ+UsLUDkecv
+        SbWV+OIjUydKC5gHLZ8UuMGegMh+iljDpYOME4X0ABdXJuw7PUpbYOlFaxU2dDCiBYiw8jS5soJUX
+        tqfwA2PQ==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pk3yL-0004CV-2A; Wed, 05 Apr 2023 16:18:49 +0200
+Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pk3yK-000UOi-Na; Wed, 05 Apr 2023 16:18:48 +0200
+Message-ID: <9a203f56-c19a-48f2-f10c-ca0794ce79ed@metafoo.de>
+Date:   Wed, 5 Apr 2023 07:18:46 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 4/4] iio: dac: mcp4922: add support for mcp48xx series
+ chips
+Content-Language: en-US
+To:     Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230405140114.99011-1-frattaroli.nicolas@gmail.com>
+ <20230405140114.99011-5-frattaroli.nicolas@gmail.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+In-Reply-To: <20230405140114.99011-5-frattaroli.nicolas@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26866/Wed Apr  5 09:23:41 2023)
+X-Spam-Status: No, score=-1.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mittwoch, 5. April 2023 16:10:10 CEST Krzysztof Kozlowski wrote:
-> On 05/04/2023 16:01, Nicolas Frattaroli wrote:
-> > The MCP4801, MCP4802, MCP4811, MCP4812, MCP4821, and MCP4822 are
-> > SPI digital-to-analog converters by Microchip, which have an
-> > internal voltage reference, in contrast to the MCP49xx series
-> > of DACs which use an external voltage reference.
-> > 
-> > Thus, these need a separate binding, as to not overcomplicate
-> > the mcp4922 binding.
-> 
-> The difference is just one property which is very easy to handle - one
-> allOf:if:then: with
->     vref-supply: false
-> 
-> Are there any other differences?
-> 
-> Best regards,
-> Krzysztof
-> 
-> 
+Hi,
 
-In place of the external vref input, the MCP48XX series chips also
-have a "SHDN" input, which is an active-low pin to disable the whole
-chip and put it in a low power state. Future users of the bindings
-may want to model this as being tied to some GPIO, though I haven't
-done it here since I don't care about this feature.
+Looks very good. A few small comments inline.
+[...]
+> @@ -50,6 +58,35 @@ struct mcp4922_state {
+>   	},						\
+>   }
+>   
+> +static bool mcp4922_needs_vref(int device_id)
 
-Kind regards,
-Nicolas Frattaroli
+`enum mcp4922_supported_device_ids` instead of `int`. Same for num_channels() below.
+
+> +{
+> +	switch (device_id) {
+> +	case ID_MCP4902:
+> +	case ID_MCP4912:
+> +	case ID_MCP4921:
+> +	case ID_MCP4922:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> [...]
+>   static int mcp4922_spi_write(struct mcp4922_state *state, u8 addr, u32 val)
+>   {
+>   	state->mosi[1] = val & 0xff;
+> @@ -108,11 +145,17 @@ static int mcp4922_write_raw(struct iio_dev *indio_dev,
+>   	}
+>   }
+>   
+> -static const struct iio_chan_spec mcp4922_channels[4][MCP4922_NUM_CHANNELS] = {
+> +static const struct iio_chan_spec mcp4922_channels[10][MCP4922_NUM_CHANNELS] = {
+
+mcp4922_channels[][MCP4922_NUM_CHANNELS]
+
+So it does not have to be changed again when adding additional devices 
+in the future.
+
+> [...]
+> @@ -197,11 +244,14 @@ static void mcp4922_remove(struct spi_device *spi)
+>   {
+>   	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+>   	struct mcp4922_state *state;
+> +	const struct spi_device_id *id = spi_get_device_id(spi);
+>   
+>   	iio_device_unregister(indio_dev);
+>   	state = iio_priv(indio_dev);
+>   	regulator_disable(state->vdd_reg);
+> -	regulator_disable(state->vref_reg);
+> +	if (mcp4922_needs_vref(id->driver_data)) {
+Could be `if (state->vref_reg)`, this way you don't need to lookup the 
+spi_device_id. But either way is fine.
+> +		regulator_disable(state->vref_reg);
+> +	}
+>   }
+>   
+> [...]
 
 

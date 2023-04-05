@@ -2,87 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0DE36D7F3C
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 16:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD9346D8033
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 16:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238166AbjDEOWR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Apr 2023 10:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48618 "EHLO
+        id S238298AbjDEO7q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Apr 2023 10:59:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238020AbjDEOWK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 10:22:10 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232956A78;
-        Wed,  5 Apr 2023 07:21:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=RlSya1VZO04tbvTr32DVbhwmJW8HiaJeC6eL8lHWHWA=; b=SHzPG1uuWOCDVVbEFqxYLqaf2q
-        DT/spNbKS5KtXNR+u/3y3kcIBA1fcsZQ/94xb/BnKmUWQwec5gyvXMAUCZf/x0TFK0ubNMHmTqWXj
-        dX2v41o+zkjbhtYakbhJf2A3hg0HaQPxt0Wy6NIF0g5nM9lTvfWxEM8DJAnCp6VciczbJEG7xA1OL
-        0xoK4h/8Y3xhZkfCkl5ZmHq1oeT5hb94LpaVA6lOT8MnqUt+FMhw52mEdvCkLZEWvirMFTxH+4cSH
-        1JVpjfgJ9JJjCU14ov8+b21R4FcM9/zJgyIJEmh/dq8mYKPaAeDKOPW7vddqiWAS3Cmwsv8ZGoKyB
-        drYGeOrA==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1pk40U-0004Lw-Or; Wed, 05 Apr 2023 16:21:02 +0200
-Received: from [2604:5500:c0e5:eb00:da5e:d3ff:feff:933b]
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1pk40U-000DiZ-DL; Wed, 05 Apr 2023 16:21:02 +0200
-Message-ID: <ee6a428b-905c-82ac-48fd-0b440d90e014@metafoo.de>
-Date:   Wed, 5 Apr 2023 07:21:00 -0700
+        with ESMTP id S229879AbjDEO7p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 10:59:45 -0400
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CB61FF7;
+        Wed,  5 Apr 2023 07:59:44 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id t10so141660331edd.12;
+        Wed, 05 Apr 2023 07:59:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680706782;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PIwPFSHZcZTOVeokZaz942Rb6z1/6U2kl/cQF2ZCigE=;
+        b=5bS2HCsY35fAE37qkFgV8uZnvsrcEf1jzxU2tn9nGp+zJIh1LIW1m4M/jwBCSSHBKV
+         su7HMqesWIDztCB5kTGfAclcRu0hyZEJwprGFpfwHnIbKdMlPl+P2WG3afpLcu/BnCa/
+         RXhm+ey2ysrTga10wgSbYSzmidWdMEh9UiwknM4ttqv43oTOrru09szjeDKMHitJ6VuN
+         5wYRL4uuddVSHvuDBHW07f8yNKknSYzlOh2O8XzOaAYR6i3YLcNeAI7LaEpuw0qfdYsJ
+         xkKolKpiQCp3F3YgvH4KUIAu49iFWv1lpDNRg8LGlNM/vbw94as5yov4R2aW/rJkoFxG
+         3S2Q==
+X-Gm-Message-State: AAQBX9cYyPRrgMnrA+1LcF29aj4alA9+jUc7zJPTNx1R3K5nrgojX61v
+        mboDFX7NhwuFnwfKS0ivL4WBXemNFCWTpv3w2/4=
+X-Google-Smtp-Source: AKy350a4pvA7bHYbF3tn7kupoBqb+rMIx2cjRVXOEUqiuhWhUrNUA75BhjkFXftrDZzlVLFANv2u1dboAZf4nW2MZkk=
+X-Received: by 2002:a17:907:3f92:b0:934:b5d6:14d0 with SMTP id
+ hr18-20020a1709073f9200b00934b5d614d0mr1986841ejc.2.1680706782565; Wed, 05
+ Apr 2023 07:59:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 2/4] iio: dac: mcp4922: get and enable vdd regulator
-Content-Language: en-US
-To:     Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230405140114.99011-1-frattaroli.nicolas@gmail.com>
- <20230405140114.99011-3-frattaroli.nicolas@gmail.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20230405140114.99011-3-frattaroli.nicolas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26866/Wed Apr  5 09:23:41 2023)
-X-Spam-Status: No, score=-1.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org> <20230329-acpi-header-cleanup-v1-5-8dc5cd3c610e@kernel.org>
+In-Reply-To: <20230329-acpi-header-cleanup-v1-5-8dc5cd3c610e@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 5 Apr 2023 16:59:31 +0200
+Message-ID: <CAJZ5v0h8pEq4Tx-Q=VPT-XR73NRk=_XQg6vgr-wA-CFesuuSLg@mail.gmail.com>
+Subject: Re: [PATCH 5/5] ACPI: Replace irqdomain.h include with struct declarations
+To:     Rob Herring <robh@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/5/23 07:01, Nicolas Frattaroli wrote:
-> [...]
-> +	state->vdd_reg = devm_regulator_get(&spi->dev, "vdd");
-> +	if (IS_ERR(state->vdd_reg)) {
-> +		ret = dev_err_probe(&spi->dev, PTR_ERR(state->vdd_reg),
-> +				    "vdd regulator not specified\n");
-> +		goto error_disable_vref_reg;
-> +	}
-> +	ret = regulator_enable(state->vdd_reg);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Failed to enable vdd regulator: %d\n",
-> +			ret);
-> +		goto error_disable_vref_reg;
-> +	}
-The two above can be combined into `devm_regulator_get_enable()`. This 
-will also take care of automatically disabling the regulator on the 
-error path and on remove.
+Hi Rob,
+
+On Wed, Mar 29, 2023 at 11:21 PM Rob Herring <robh@kernel.org> wrote:
+>
+> linux/acpi.h includes irqdomain.h which includes of.h. Break the include
+> chain by replacing the irqdomain include with forward declarations for
+> struct irq_domain and irq_domain_ops which is sufficient for acpi.h.
+>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  include/linux/acpi.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index efff750f326d..169c17c0b0dc 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -10,12 +10,14 @@
+>
+>  #include <linux/errno.h>
+>  #include <linux/ioport.h>      /* for struct resource */
+> -#include <linux/irqdomain.h>
+>  #include <linux/resource_ext.h>
+>  #include <linux/device.h>
+>  #include <linux/property.h>
+>  #include <linux/uuid.h>
+>
+> +struct irq_domain;
+> +struct irq_domain_ops;
 > +
->   	spi_set_drvdata(spi, indio_dev);
->   	id = spi_get_device_id(spi);
->   	indio_dev->info = &mcp4922_info;
-> [...]
+>  #ifndef _LINUX
+>  #define _LINUX
+>  #endif
+>
+> --
 
+This causes build issues in linux-next, so I've dropped the series.  I
+will be happy to pick it up again when the build issues are addressed,
+though.
 
+Thanks!

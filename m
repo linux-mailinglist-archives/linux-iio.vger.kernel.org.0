@@ -2,136 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B0656D884C
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 22:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C62F46D8975
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 23:22:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234193AbjDEU1f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Apr 2023 16:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40110 "EHLO
+        id S233431AbjDEVW5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Apr 2023 17:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233955AbjDEU1a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 16:27:30 -0400
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645E176A9;
-        Wed,  5 Apr 2023 13:27:26 -0700 (PDT)
-Received: by mail-oi1-f181.google.com with SMTP id bx42so12025182oib.6;
-        Wed, 05 Apr 2023 13:27:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680726445;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=amARnlOF1iPOroaq57gvCO3EUIjXtRKKLgV+BAa7GyA=;
-        b=oNWBdf+LJQeupNotyx3roKGHF2oYc0YiILjtkYmJvehMr5/wxkeHGosGb0bTzOweuA
-         4h8IGp9M7u3BekL8X8G4FUjRKMAcSjxzvZ8fIQiSAantTZmAgubAz4pybtH6B0wVT9FQ
-         GBL6s8eNhlYr0Ctr0OHe5BDj0wHD90vKOwsln7BUj7mdxVfAB6pJHrWtftd03uMNox8L
-         31feFQEogsD9Nbs6HRHghcdTc9m3FPT4aTtXCPxo/qNZqXYBLnsFcDVolwAOI+5+0CVT
-         4nT6nzUuGy0558tTyOvbRsE2zw3WbbY7MbQBC2HUr0c7JkiZxn/CVCfH7JzA4Bb+c+Xi
-         O5dw==
-X-Gm-Message-State: AAQBX9eZrNhhLYHSF/kMOFlWdWlq+TwT9Ek0wE0TDpmidHb8oeltfidp
-        dD7qxUlKiG6/Pf0WgcW1ZQ==
-X-Google-Smtp-Source: AKy350ajTaLy0qTbb9yH+lxLfyhHHpsFZm2vXmFygDhy0JelJ9qq76gGsOP0SKY6SaEK7ABF4E+UaA==
-X-Received: by 2002:a05:6808:1a09:b0:389:4f05:5fa8 with SMTP id bk9-20020a0568081a0900b003894f055fa8mr1613117oib.9.1680726445531;
-        Wed, 05 Apr 2023 13:27:25 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r204-20020acadad5000000b00383eaf88e75sm6759620oig.39.2023.04.05.13.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 13:27:25 -0700 (PDT)
-Received: (nullmailer pid 425898 invoked by uid 1000);
-        Wed, 05 Apr 2023 20:27:17 -0000
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 05 Apr 2023 15:27:24 -0500
-Subject: [PATCH v2 10/10] ACPI: Replace irqdomain.h include with struct
- declarations
+        with ESMTP id S229553AbjDEVW4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 17:22:56 -0400
+Received: from pio-pvt-msa3.bahnhof.se (pio-pvt-msa3.bahnhof.se [79.136.2.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58DB61BF;
+        Wed,  5 Apr 2023 14:22:52 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id CE9563F7F6;
+        Wed,  5 Apr 2023 23:22:49 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at bahnhof.se
+X-Spam-Score: -2.099
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
+Authentication-Results: pio-pvt-msa3.bahnhof.se (amavisd-new);
+        dkim=pass (2048-bit key) header.d=dalakolonin.se
+Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CSjlo38pbiCi; Wed,  5 Apr 2023 23:22:48 +0200 (CEST)
+Received: by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id 4FFD83F737;
+        Wed,  5 Apr 2023 23:22:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id CBADB94DC3;
+        Wed,  5 Apr 2023 21:22:46 +0000 (UTC)
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id gYLVWoSoLt8J; Wed,  5 Apr 2023 21:22:42 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 7F8A194DBF;
+        Wed,  5 Apr 2023 21:22:42 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se 7F8A194DBF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dalakolonin.se;
+        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680729762;
+        bh=aj7BJRGxp0A9WS53Fydt2hDFp/YXbSvFyWVqf4RUrfw=;
+        h=From:To:Date:Message-Id:MIME-Version;
+        b=bgdIWoBUGPYAQhu1xrYc6MAx9vWBNBCKkO0zkm/3GJ7H+ZPNaZ1vHbDdpEgfP2m8N
+         fP4UiShsNJRTysFzMLYkDm1iCBLhmFnH64PMxWTqyZ9CHobGLArlkW0QlrnPKUiSf4
+         j8SSIlGa6HG5+SAnG+epPRZuLR4ZsooJTdMpHp9Ck2p0nDW3ExWxuMXBLalfBdnPPa
+         v4VZ+9PHJbEsuQ+igZD3xcy3zF4Wpy4Yjt9LwO0EJbWFl1HwY5bO7X2ADT9OCMv4Eq
+         /LULOV3xEZr+u9PN02g2qjQVfh4bkgXzz/KIcwjFzTrMpdz0IWuuB61fL5YGZ/oaTS
+         /vj95R3EoynCg==
+X-Virus-Scanned: amavisd-new at dalakolonin.se
+Received: from zimbra.dalakolonin.se ([127.0.0.1])
+        by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id brz31VNIynod; Wed,  5 Apr 2023 21:22:42 +0000 (UTC)
+Received: from rack-server-1.dalakolonin.se (unknown [172.17.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id F0FE394DBC;
+        Wed,  5 Apr 2023 21:22:41 +0000 (UTC)
+From:   =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, pgoudagunta@nvidia.com,
+        hns@goldelico.com, jic23@kernel.org, lars@metafoo.de,
+        linux-omap@vger.kernel.org,
+        =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+Subject: [PATCH v3 0/7] iio: adc: palmas_gpadc: add iio events
+Date:   Wed,  5 Apr 2023 23:22:26 +0200
+Message-Id: <20230405212233.4167986-1-risca@dalakolonin.se>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-acpi-header-cleanup-v2-10-c902e581923b@kernel.org>
-References: <20230329-acpi-header-cleanup-v2-0-c902e581923b@kernel.org>
-In-Reply-To: <20230329-acpi-header-cleanup-v2-0-c902e581923b@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Marc Zyngier <maz@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Jacob Keller <jacob.e.keller@intel.com>
-X-Mailer: b4 0.13-dev
-X-Spam-Status: No, score=0.8 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-linux/acpi.h includes irqdomain.h which includes of.h. Break the include
-chain by replacing the irqdomain include with forward declarations for
-struct irq_domain and irq_domain_ops which is sufficient for acpi.h.
+This series is based on linux-next/master [1] and [2].
 
-of.h also includes mod_devicetable.h which many drivers implicitly
-depend on. As acpi.h already includes it, just move it out of the
-'#ifdef CONFIG_ACPI'.
+The palmas gpadc block has support for monitoring up to 2 ADC channels
+and issue an interrupt if they reach past a set threshold. This can be
+configured statically with device tree today, but it only gets enabled
+when reaching sleep mode. Also, it doesn't look like anyone is using it.
 
-Cc: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-v2:
- - Move mod_devicetable.h out of #ifdef
----
- include/linux/acpi.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Instead of this one special case, change the code so userspace can
+configure the ADC channels to their own needs through the iio events
+subsystem. The high and low threshold values can be set for every
+channel, but only 2 thresholds can be enabled at a time. Trying to
+enable more than 2 thresholds will result in an error.
 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index efff750f326d..96bd672dc336 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -10,12 +10,15 @@
- 
- #include <linux/errno.h>
- #include <linux/ioport.h>	/* for struct resource */
--#include <linux/irqdomain.h>
- #include <linux/resource_ext.h>
- #include <linux/device.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/property.h>
- #include <linux/uuid.h>
- 
-+struct irq_domain;
-+struct irq_domain_ops;
-+
- #ifndef _LINUX
- #define _LINUX
- #endif
-@@ -24,7 +27,6 @@
- #ifdef	CONFIG_ACPI
- 
- #include <linux/list.h>
--#include <linux/mod_devicetable.h>
- #include <linux/dynamic_debug.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
+The configured thresholds will wake up the system from sleep mode if
+wakeup is enabled in /sys/devices/.../power/wakeup.
 
--- 
-2.39.2
+The old platform data was removed.
+
+Thresholds, events, and wakeup were tested on omap5-uevm board. It wakes
+up from sleep mode when wakeup is enabled and a threshold is passed. A
+userspace tool for monitoring events and adjusting thresholds can be
+found at [3].
+
+V2 -> V3:
+* Rebased to linux-next.
+* Avoid reconfiguring events on error and when old =3D=3D new value.
+V1 -> V2:
+* Begin by removing adc_wakeupX_data instead of doing it last.
+* Split changes in smaller patches
+
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+[2] https://lore.kernel.org/linux-iio/20230318163039.56115-1-jic23@kernel=
+.org/
+[3] https://github.com/Risca/pyra_vol_mon
+
+Patrik Dahlstr=C3=B6m (7):
+  iio: adc: palmas: remove adc_wakeupX_data
+  iio: adc: palmas: replace "wakeup" with "event"
+  iio: adc: palmas: use iio_event_direction for threshold polarity
+  iio: adc: palmas: move eventX_enable into palmas_adc_event
+  iio: adc: palmas: always reset events on unload
+  iio: adc: palmas: add support for iio threshold events
+  iio: adc: palmas: don't alter event config on suspend/resume
+
+ drivers/iio/adc/palmas_gpadc.c | 559 +++++++++++++++++++++++++++------
+ include/linux/mfd/palmas.h     |   8 -
+ 2 files changed, 464 insertions(+), 103 deletions(-)
+
+
+base-commit: 8417c8f5007bf4567ccffda850a3157c7d905f67
+prerequisite-patch-id: b0418c707db13f514400956596e9ebe91c25bba0
+--=20
+2.25.1
 

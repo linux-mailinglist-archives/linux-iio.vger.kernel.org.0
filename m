@@ -2,49 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5666D85B9
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 20:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09E426D8837
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 22:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231140AbjDESMI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Apr 2023 14:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42132 "EHLO
+        id S232536AbjDEU1V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Apr 2023 16:27:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjDESMH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 14:12:07 -0400
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728A71A8;
-        Wed,  5 Apr 2023 11:12:06 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id eh3so143194259edb.11;
-        Wed, 05 Apr 2023 11:12:06 -0700 (PDT)
+        with ESMTP id S229520AbjDEU1U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 16:27:20 -0400
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77C14C31;
+        Wed,  5 Apr 2023 13:27:19 -0700 (PDT)
+Received: by mail-ot1-f50.google.com with SMTP id cm7-20020a056830650700b006a11f365d13so18377957otb.0;
+        Wed, 05 Apr 2023 13:27:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680718325;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y/h1wnReky+bpZGjcFPhU9qtus+mzxkSsVtUudoN3sc=;
-        b=vQX4/PwL95AZ9I2LZTH0RXnvpskQLWjMiVIwVIlOgJDMFZaLBx3GotY7TD7NMwE/ZY
-         Ntzi3VKCSf3O5VOXPgiBdkcGTAu088fjmifg58YQ4QZaSh1vJfKA8t5ggQRWxxTPazIi
-         1VF08eMwU6WUtv7ROFZCyt8Gu6XLzVE88hue+w33pfID8UlqvqlN1LgfWKfjpw4IrQdB
-         3GtAOOKf6u1r5tv8LfpCH/irngvcgCQpaltb/Vrw09D3RJH+v6rDHF4n18zZRz3xDzfu
-         qgbqWmThrgHBgIg56BsSM3oGsM2S7q33RekU5iZxBDfANOGKQ3T0nbnDUGEZOLAX/kaT
-         xuZg==
-X-Gm-Message-State: AAQBX9dCS+FCM2foabbPmfJZ1VypqnfyEdsC63/BWQrfYKH+tUc8dxwF
-        Nv6yPSBtrNmY+maFNJBhGIXDtKVb7tOgBrsjpfQ=
-X-Google-Smtp-Source: AKy350a4/1UgQtuZi96LdxsX2CgTr+CU3hxhJSZ5/OXGn3TAfH7X6v13QHnOxtyoiPa1CwRyJPG+X/O/1zQCiXxYReY=
-X-Received: by 2002:a17:906:6d55:b0:947:c623:2c84 with SMTP id
- a21-20020a1709066d5500b00947c6232c84mr2032299ejt.2.1680718324772; Wed, 05 Apr
- 2023 11:12:04 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680726439;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jhywZUom6FVbbnxuIEEwYSdDwpixbUY1lehHpDBSgWw=;
+        b=5pNzdKM5+3J7NdFyI3ogXXEVkfTncpWchTsVGkAav5LKsJu28NHmPnneFHfX6N5CCf
+         msI7zdmn4NCtQegC3tlH0/1XImQ92vBZBaY8Y3tGQac9Cn7BL15HoauI6EFcFqbLe88w
+         /YASGBI7JEj5xK9R7fu1t7DzVkZTcQmGOM/448k2TkNblccIsAEQsRURth7Uc3AaTfG0
+         /XU2XeJR5fO7JLkiAJEVJtofDdOdbExnB0wC5kyaMRAo/8vqBE4CYmryDNwpgbbLZdf2
+         FoXKWapPHdTerBFSLMsybNf9ZYIoX7z8EEXmXOOnHAsCS+FhJIxwqOyW7V/RJrLCs389
+         BoKg==
+X-Gm-Message-State: AAQBX9eL5suZAC1issydy/PT24GSbh+SDtMVrGRTH2VKfFCH6vi12ls+
+        7QDHkiGVv+5w2KtTXIE49A==
+X-Google-Smtp-Source: AKy350Y6PkxJ1TeFc3rYqzBfJAZxJAKrftIpgaCSmMTQOsLNxNqW3HlLQ0Djx2CJiGesOvR3DIQFAA==
+X-Received: by 2002:a9d:4f16:0:b0:697:3da3:e404 with SMTP id d22-20020a9d4f16000000b006973da3e404mr3621048otl.38.1680726439129;
+        Wed, 05 Apr 2023 13:27:19 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id w3-20020a9d6383000000b006a11c15a097sm7271960otk.4.2023.04.05.13.27.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 13:27:18 -0700 (PDT)
+Received: (nullmailer pid 425877 invoked by uid 1000);
+        Wed, 05 Apr 2023 20:27:17 -0000
+From:   Rob Herring <robh@kernel.org>
+Subject: [PATCH v2 00/10] Remove acpi.h implicit include of of.h
+Date:   Wed, 05 Apr 2023 15:27:14 -0500
+Message-Id: <20230329-acpi-header-cleanup-v2-0-c902e581923b@kernel.org>
 MIME-Version: 1.0
-References: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
- <20230329-acpi-header-cleanup-v1-5-8dc5cd3c610e@kernel.org>
- <CAJZ5v0h8pEq4Tx-Q=VPT-XR73NRk=_XQg6vgr-wA-CFesuuSLg@mail.gmail.com> <CAL_JsqKVg_1T2SkMRryDFyYho1Kz+ppNkqozPdyyX_t4EFBJpg@mail.gmail.com>
-In-Reply-To: <CAL_JsqKVg_1T2SkMRryDFyYho1Kz+ppNkqozPdyyX_t4EFBJpg@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 5 Apr 2023 20:11:53 +0200
-Message-ID: <CAJZ5v0gjJsEe4hUgTcCUXghKkWd+0ChPfDndPavioj2XMC_gMQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] ACPI: Replace irqdomain.h include with struct declarations
-To:     Rob Herring <robh@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKLZLWQC/32NSwrCMBQAryJZ+yQfG6or7yFdpC/PJhjS8mKLU
+ np3Yw/gcgaGWUUhjlTE9bAKpiWWOOYK+ngQGFweCKKvLLTURhp9AYdThEDOEwMmcnmewNrGGNX
+ q9mysqGXvCkHPLmOobZ5TqnJiesT3vrp3lUMsr5E/+3lRP/t/siiQ0Hps0Bu0StLtSZwpnUYeR
+ Ldt2xfkJNhrzAAAAA==
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -59,73 +65,76 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
-        Marc Zyngier <maz@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        Marc Zyngier <maz@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Mailer: b4 0.13-dev
+X-Spam-Status: No, score=0.8 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 5, 2023 at 6:48 PM Rob Herring <robh@kernel.org> wrote:
->
-> On Wed, Apr 5, 2023 at 9:59 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > Hi Rob,
-> >
-> > On Wed, Mar 29, 2023 at 11:21 PM Rob Herring <robh@kernel.org> wrote:
-> > >
-> > > linux/acpi.h includes irqdomain.h which includes of.h. Break the include
-> > > chain by replacing the irqdomain include with forward declarations for
-> > > struct irq_domain and irq_domain_ops which is sufficient for acpi.h.
-> > >
-> > > Cc: Marc Zyngier <maz@kernel.org>
-> > > Signed-off-by: Rob Herring <robh@kernel.org>
-> > > ---
-> > >  include/linux/acpi.h | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > > index efff750f326d..169c17c0b0dc 100644
-> > > --- a/include/linux/acpi.h
-> > > +++ b/include/linux/acpi.h
-> > > @@ -10,12 +10,14 @@
-> > >
-> > >  #include <linux/errno.h>
-> > >  #include <linux/ioport.h>      /* for struct resource */
-> > > -#include <linux/irqdomain.h>
-> > >  #include <linux/resource_ext.h>
-> > >  #include <linux/device.h>
-> > >  #include <linux/property.h>
-> > >  #include <linux/uuid.h>
-> > >
-> > > +struct irq_domain;
-> > > +struct irq_domain_ops;
-> > > +
-> > >  #ifndef _LINUX
-> > >  #define _LINUX
-> > >  #endif
-> > >
-> > > --
-> >
-> > This causes build issues in linux-next, so I've dropped the series.  I
-> > will be happy to pick it up again when the build issues are addressed,
-> > though.
->
-> Is it just the one in pata_macio.c or are there others you are aware of?
+In the process of cleaning up DT includes, I found that some drivers 
+using DT functions could build without any explicit DT include. I traced 
+the include to be coming from acpi.h via irqdomain.h.
 
-I'm aware of a few:
+I was pleasantly surprised that there were not 100s or even 10s of 
+warnings when breaking the include chain. So here's the resulting 
+series.
 
-https://lore.kernel.org/lkml/20230403201801.02839c9a@canb.auug.org.au/
-https://lore.kernel.org/lkml/20230403112514.47ff91bb@canb.auug.org.au/
-https://lore.kernel.org/lkml/20230403111605.7658ec62@canb.auug.org.au/
-https://lore.kernel.org/lkml/20230403110650.6b13cb71@canb.auug.org.au/
+I'd suggest Rafael take the whole series. Alternatively,the fixes can be 
+applied in 6.4 and then the last patch either after rc1 or the 
+following cycle.
+
+Compile tested on x86 and powerpc allmodconfig and arm64 allmodconfig 
+minus CONFIG_ACPI.
+
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Changes in v2:
+- More explicit include fixes reported by Stephen
+- Link to v1: https://lore.kernel.org/r/20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org
+
+---
+Rob Herring (10):
+      iio: adc: ad7292: Add explicit include for of.h
+      staging: iio: resolver: ad2s1210: Add explicit include for of.h
+      net: rfkill-gpio: Add explicit include for of.h
+      serial: 8250_tegra: Add explicit include for of.h
+      ata: pata_macio: Add explicit include of irqdomain.h
+      pata: ixp4xx: Add explicit include for of.h
+      virtio-mmio: Add explicit include for of.h
+      tpm: atmel: Add explicit include for of.h
+      fpga: lattice-sysconfig-spi: Add explicit include for of.h
+      ACPI: Replace irqdomain.h include with struct declarations
+
+ drivers/ata/pata_ixp4xx_cf.c            | 1 +
+ drivers/ata/pata_macio.c                | 1 +
+ drivers/char/tpm/tpm_atmel.h            | 2 +-
+ drivers/fpga/lattice-sysconfig-spi.c    | 1 +
+ drivers/iio/adc/ad7292.c                | 1 +
+ drivers/staging/iio/resolver/ad2s1210.c | 1 +
+ drivers/tty/serial/8250/8250_tegra.c    | 1 +
+ drivers/virtio/virtio_mmio.c            | 1 +
+ include/linux/acpi.h                    | 6 ++++--
+ net/rfkill/rfkill-gpio.c                | 1 +
+ 10 files changed, 13 insertions(+), 3 deletions(-)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230329-acpi-header-cleanup-665331828436
+
+Best regards,
+-- 
+Rob Herring <robh@kernel.org>
+

@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A509F6D774C
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 10:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE4E6D7760
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Apr 2023 10:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236931AbjDEIuQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Apr 2023 04:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45742 "EHLO
+        id S236842AbjDEIyU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Apr 2023 04:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237267AbjDEIuN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 04:50:13 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876952D4B;
-        Wed,  5 Apr 2023 01:50:12 -0700 (PDT)
+        with ESMTP id S236840AbjDEIyU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Apr 2023 04:54:20 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E81F3;
+        Wed,  5 Apr 2023 01:54:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680684612; x=1712220612;
+  t=1680684859; x=1712220859;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=d4X4l4eWoadoe9XjyDvXrCm6FLnUWU6WjWeqxYZpAPE=;
-  b=NiVTKeFPG9TF6LBjkESp76rXPrmNXcKMNxjWbCpcd26V2etLjV6+o4lo
-   iKlrY+ZLjXsyuQgHdi6/CN+hnHvs31B6xmbsbeMElW43bC9dXGzmZ9wYF
-   NDo6WlHzU+5qDAijzoYhAGdXzkkQVzG4R15IuvM4kB303wmeMpZHoDWLw
-   FjjSZp4/0WYpYYW1xjkG9ACESbihMgjhPvcO/CrGVQkuLtSqZCkZ6XjvQ
-   PxFcGQ+SDHtGgGbB2KkOvx5WCuL+nOegaGenOll1QAQwEv9CWgdtYVpJg
-   SSbeij3L7HfAGTj2WE6ojEcbrW/all5Y7WwgchRLbcM3oJrihLEdsN/xd
+  bh=V+zTDzqniCNLAugrQ5YEmCW1Vqzv6gfhvHx8dIPWqRw=;
+  b=fbr3EXKOj6Mb75mmsTXTMZLfjnSTZEHQQi35NsT4vv0JUk9ZOOp83XWj
+   5QGjalk5CBqnuj83TOUIQE+F9sMM8M34zzCM6kGF/wFS/vm41IsVUDiqf
+   syVT6xTUmAVOuoMufABa2lINPKl937O102q1XJQFKldaahqkGkHqckfd6
+   5Xr5PYKNMqYyHHADcPna7MB+CHI4y6GcoxsFi8IKDHqdn1HxJ2G7lBuyu
+   FKUyUbz8plUUXE3IOTNWmV97eY5IwKh/4z+vK0+loUNhzc8dROuyQUDZM
+   fbyXxhvdn9qOD0StokUnj6h5IIAGFAdD1FVGpfGWyhkdKrJ1ADv8VgLD2
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="428688275"
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="344980579"
 X-IronPort-AV: E=Sophos;i="5.98,319,1673942400"; 
-   d="scan'208";a="428688275"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2023 01:50:12 -0700
+   d="scan'208";a="344980579"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2023 01:54:18 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="680209122"
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="860898214"
 X-IronPort-AV: E=Sophos;i="5.98,319,1673942400"; 
-   d="scan'208";a="680209122"
+   d="scan'208";a="860898214"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 05 Apr 2023 01:50:10 -0700
+  by orsmga005.jf.intel.com with ESMTP; 05 Apr 2023 01:54:17 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pjyqG-00Ckxq-2z;
-        Wed, 05 Apr 2023 11:50:08 +0300
-Date:   Wed, 5 Apr 2023 11:50:08 +0300
+        id 1pjyuF-00Cl4B-28;
+        Wed, 05 Apr 2023 11:54:15 +0300
+Date:   Wed, 5 Apr 2023 11:54:15 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     William Breathitt Gray <william.gray@linaro.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/5] iio: addac: stx104: Improve indentation in
- stx104_write_raw()
-Message-ID: <ZC02QAYZodp/cgi5@smile.fi.intel.com>
+Subject: Re: [PATCH v4 5/5] iio: addac: stx104: Use
+ regmap_read_poll_timeout() for conversion poll
+Message-ID: <ZC03N4lTqJQWClz4@smile.fi.intel.com>
 References: <cover.1680564468.git.william.gray@linaro.org>
- <ac00afab032039350d23cfc9752f8e9225537fd0.1680564468.git.william.gray@linaro.org>
+ <f7fa811a002d0572c63b5a5ab7a478a5383ff840.1680564468.git.william.gray@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ac00afab032039350d23cfc9752f8e9225537fd0.1680564468.git.william.gray@linaro.org>
+In-Reply-To: <f7fa811a002d0572c63b5a5ab7a478a5383ff840.1680564468.git.william.gray@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
@@ -67,22 +67,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 04, 2023 at 10:12:00AM -0400, William Breathitt Gray wrote:
-> By bailing out early if chan->output is false for the IIO_CHAN_INFO_RAW,
-> indentation can be decreased by a tab and code readability improved.
+On Tue, Apr 04, 2023 at 10:12:02AM -0400, William Breathitt Gray wrote:
+> ADC sample captures take a certain amount of time to complete after
+> initiated; this conversion time range can be anywhere from 5 uSec to
+> 53.68 Seconds depending on the configuration of the Analog Input Frame
+> Timer register. When the conversion is in progress, the ADC Status
+> register CNV bit is high. Utilize regmap_read_poll_timeout() to poll
+> until the ADC conversion is completed (or timeout if more than 53.68
+> Seconds passes).
 
 ...
 
-> +		/* DAC can only accept up to a 16-bit value */
-> +		if ((unsigned int)val > 65535)
-> +			return -EINVAL;
+>  		/* trigger ADC sample capture by writing to the 8-bit
 
-While the patch is good per se, I don't like two things (which are also in the
-original code):
-- explicit casting (can it be avoided?)
-- would be good to have U16_MAX or ?.. instead of hard coded number
+Perhaps fix the style here while at it?
 
-Can it be addressed with (additional) patches?
+		/*
+		 * Trigger ADC sample capture by writing to the 8-bit
+
+>  		 * Software Strobe Register and wait for completion
+> +		 * Range is 5 uSec to 53.68 Seconds in steps of 25 nanoseconds.
+
+seconds (in SI the small letter is for the unit(s) of seconds).
+
+Same for the commit message.
+
+> +		 * The actual Analog Input Frame Timer time interval is calculated as:
+> +		 * ai_time_frame_ns = ( AIFT + 1 ) * ( 25 nSec ).
+
+nSec --> nanosecond
+
+> +		 * Where 0 <= AIFT <= 2147483648.
+>  		 */
 
 -- 
 With Best Regards,

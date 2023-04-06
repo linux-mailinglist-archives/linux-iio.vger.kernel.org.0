@@ -2,116 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 393906DA06D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Apr 2023 20:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D3946DA1C9
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Apr 2023 21:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239871AbjDFS6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Apr 2023 14:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
+        id S237586AbjDFToZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Apr 2023 15:44:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238668AbjDFS6K (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Apr 2023 14:58:10 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CBC2735
-        for <linux-iio@vger.kernel.org>; Thu,  6 Apr 2023 11:58:09 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id 11so3732814ejw.0
-        for <linux-iio@vger.kernel.org>; Thu, 06 Apr 2023 11:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680807487;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z4laVqvDzX6NVLaZ7/XvxDcJwyPyRVfzt8CESBHu0Is=;
-        b=VAr8/ifN5KAg3loChJriSbYYFNzuy9HoEtWTu7+b37s0CEC9NvOyH1AYzOgS88W0A3
-         blYZjuR1jHENqHvoxPy4bdy8DXQyPXzXLc86KcPBZJjDXtmEU1GsNS0RbwAUVTuce+l2
-         wsISQDGSV0q37EjjhxOzblhH9T5MRYdY+9TAcYJhPWBmZiDV6eax0BazAd/OCayoVZ52
-         IYpKMW86Mw1Cqm87jQTVv0yDjm/NKX3o+3cli66+/L6cZmuUAFuHWJs6PvMgdO02qOCp
-         XBKBykeVGZsP+SlUh3NmtijtJycs8dVwyszLif+bjTtQIwekEk0F/KrhoJ6XBMwjVd80
-         dcNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680807487;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z4laVqvDzX6NVLaZ7/XvxDcJwyPyRVfzt8CESBHu0Is=;
-        b=sNma3O0K4jGIqmdaBCf/wAaohu/omOfHhZpVYbGHTDm8cILjnDNEJJn/1f1ucoqa+2
-         LlfZlh7QLcoKgKZpcdKJrej1RgfSSkliqUQtp0Zt/YQCpDANhAdYIQDZZG7EMUzC1OiE
-         GcqBk+Poclm3w7KHJprCgeDFD/XDVUtVwanohbPp52rzzS3ne8dbN6ItqPHSo7T16GZG
-         E+/oYYzfQkeY6wERSXP8iKVgc5bPkR2j7y3uCxOvfcvhnRBUkqUf2FYbPrNvr0U4E9hs
-         eo9d2sPuzgupWOsklMf5BqPcXpXnbboInTbpcM7ZnyMDRPtL8srgy80FJnxtQbjL2Y4a
-         lRCg==
-X-Gm-Message-State: AAQBX9dy0GK5s+GO2Kl76KEYLpeG88CPgH3lY7YRE9eUPFte/oy3+jxN
-        5RtAP1RJcMzfZvUEybp4vhFTVA==
-X-Google-Smtp-Source: AKy350b+jnaYTB7EvEGGB3HZJ57CP7XCCDhy1CDUWipMsmKS+z/iO6WOJEDrDVeYp/cHH5uNjDZLag==
-X-Received: by 2002:a17:906:828f:b0:931:462f:f141 with SMTP id h15-20020a170906828f00b00931462ff141mr6222885ejx.20.1680807487576;
-        Thu, 06 Apr 2023 11:58:07 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed? ([2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed])
-        by smtp.gmail.com with ESMTPSA id gv11-20020a1709072bcb00b009273859a9bdsm1129456ejc.122.2023.04.06.11.58.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Apr 2023 11:58:07 -0700 (PDT)
-Message-ID: <df75afe8-0926-6725-f7aa-f26d6a6be79f@linaro.org>
-Date:   Thu, 6 Apr 2023 20:58:06 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 3/4] dt-bindings: iio: dac: add mcp4822
-Content-Language: en-US
-To:     Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S237372AbjDFToS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Apr 2023 15:44:18 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B342386B4;
+        Thu,  6 Apr 2023 12:44:15 -0700 (PDT)
+Received: from localhost ([31.220.116.195]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MzR0i-1qfvUj2ofg-00vLXw; Thu, 06 Apr 2023 21:43:57 +0200
+Date:   Thu, 6 Apr 2023 21:43:57 +0200
+From:   Andreas Klinger <ak@it-klinger.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
         linux-kernel@vger.kernel.org
-References: <20230405140114.99011-1-frattaroli.nicolas@gmail.com>
- <20230405140114.99011-4-frattaroli.nicolas@gmail.com>
- <748c4391-1c8c-8fc2-cef9-6091512c77ef@linaro.org>
- <4357039.nDxAD4yF8u@archbook>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <4357039.nDxAD4yF8u@archbook>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH 2/3] iio: pressure: Honeywell mpr pressure sensor
+Message-ID: <ZC8g/dfMYWZcW4zg@arbad>
+References: <20230401185717.1b971617@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230401185717.1b971617@jic23-huawei>
+X-Provags-ID: V03:K1:eSF7yy9nXHf5SFVRJlz/mjUZOLX5Kpo0ju039iOa+ryPGz/lmSr
+ XxpS0TGoqUT/ys9jdA38+uDHQ+GviypepRIftFGiVu/nJA7OUssQWU1l8ZQCSepvNtX5D4j
+ TWOhKOOt00311MgH4hB91ZH6lAafrF7P4nxnTyhWCO4k3+cTknZb6r4FhA06+CI4eBW0QLO
+ fMBNLH8JMVfoObtvi9RWg==
+UI-OutboundReport: notjunk:1;M01:P0:QYJIZEuSZU4=;rtzbL/dL5fcU4v/ErbYUA7oc8Zo
+ 9Fem+P98U7oEvwhh+Xj8CL6HfDP7ocUjH8LgISr2Jcf2UbAwmsZcOD7tfyaLWPqkL8RsgiUDX
+ qYaASNl5B8vvDAGf/BOZCQtlmKvScCiEiRwLZzz+1BW8/nPiEKdk1r9dxBEXtjQHysoUs+l2Y
+ Hymv7oDNWcfIODBz4pc9chg4wpFXK8LNUy0fBFMFpxJWAfU9/5BhumqcSl7Q778kBc4ivlb19
+ XdRgldANPjZL+V7iD2s+tetc0Z79y4BYSiTJl5itzy8B7pY8RJaUp0kON2xL8fV1fFACyjwec
+ EjiKvOryRLhwPgBsTEtoqzpClwLOzJI8bsuG0y8+S0u4x2tr4ufk7z/zwKjWK4ZQ3rpy/JLOK
+ 0RiaNODS1VzqzBoWW+FTCpPShX6VNbhylxi4P8hQtSeb8P9MniBG0Y0PwDgiBPDHICoNGoRnS
+ U5pCU4GyfSIeFYrOfLLbbno7jhm5CAS7etYWYJxinsBbxrMDDkrdNGbrTuL/ZuOEd5/np+WwK
+ RsPnyRMbfXGR//FniJKMg2KQ0EBRikveYMFSPmaGZsq13yf0mbMrUnygPSK9MS1OcTauQinLe
+ +ostEJRhc+jVKi1jfUa6a0xoun4093tRL6nQrDzCGbApJ8mnuOrKY/0DREShe7eobl0Zcxcmv
+ +JULuUgmgLasBVXjAI4KrazSAS9+l+iaWYZkr+lOaQ==
+X-Spam-Status: No, score=-0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 05/04/2023 16:17, Nicolas Frattaroli wrote:
-> On Mittwoch, 5. April 2023 16:10:10 CEST Krzysztof Kozlowski wrote:
->> On 05/04/2023 16:01, Nicolas Frattaroli wrote:
->>> The MCP4801, MCP4802, MCP4811, MCP4812, MCP4821, and MCP4822 are
->>> SPI digital-to-analog converters by Microchip, which have an
->>> internal voltage reference, in contrast to the MCP49xx series
->>> of DACs which use an external voltage reference.
->>>
->>> Thus, these need a separate binding, as to not overcomplicate
->>> the mcp4922 binding.
->>
->> The difference is just one property which is very easy to handle - one
->> allOf:if:then: with
->>     vref-supply: false
->>
->> Are there any other differences?
->>
->> Best regards,
->> Krzysztof
->>
->>
+Hi Jonathan,
+
+thanks for the extensive review. Most of it is clear but one questions remain.
+See below.
+
+Jonathan Cameron <jic23@kernel.org> schrieb am Sa, 01. Apr 18:57:
+> > +static void mpr_reset(struct mpr_data *data)
+> > +{
+> > +	if (data->gpiod_reset) {
+> > +		gpiod_set_value(data->gpiod_reset, 0);
+> > +		udelay(10);
+> > +		gpiod_set_value(data->gpiod_reset, 1);
+> > +	}
 > 
-> In place of the external vref input, the MCP48XX series chips also
-> have a "SHDN" input, which is an active-low pin to disable the whole
-> chip and put it in a low power state. Future users of the bindings
-> may want to model this as being tied to some GPIO, though I haven't
-> done it here since I don't care about this feature.
+> If there isn't a reset signal, I'd like to see an attempt at least to write
+> all configuration registers to a known value (same as the one you'd
+> get after reset).  
 
-OK to keep them separate, but then you should add here powerdown-gpios.
-Bindings should be complete.
+There is no configuration register in the sensor I could write to. But maybe I
+didn't comprehend your point.
 
-Best regards,
-Krzysztof
+Andreas
 

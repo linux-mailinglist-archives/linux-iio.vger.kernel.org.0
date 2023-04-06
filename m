@@ -2,139 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AE886D90F3
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Apr 2023 10:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5422A6D9AB7
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Apr 2023 16:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235394AbjDFIAm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Apr 2023 04:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41070 "EHLO
+        id S230070AbjDFOmZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Apr 2023 10:42:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235162AbjDFIAk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Apr 2023 04:00:40 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2CE2E62;
-        Thu,  6 Apr 2023 01:00:38 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id eh3so147227535edb.11;
-        Thu, 06 Apr 2023 01:00:38 -0700 (PDT)
+        with ESMTP id S239306AbjDFOmF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Apr 2023 10:42:05 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D2DA27D
+        for <linux-iio@vger.kernel.org>; Thu,  6 Apr 2023 07:40:33 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id f14so15650536oiw.10
+        for <linux-iio@vger.kernel.org>; Thu, 06 Apr 2023 07:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680768037;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CQH+iRWXQXzrMch9aFmJkKfa79kh+f41Jg9zUvyUDYc=;
-        b=IzH1LBufvIiF5rjtHs2OViOTXLaUQ/nT0dvzEtNTVKku7M2CyskBPXnebDVe/qA0aR
-         FusvQs0umKVGxpL/VTQ0zwtxVwYQPwvXR2akjtb/iV1UkJZYhJlzwof2ojROi0PmDAJG
-         jvbqQ9+83P9+lvKfeB9y/itUyMR5fqY/xoRvOLFVcd8DzX6Ug/KMAag65CqjQgsStuTc
-         FO5wHPzoDfkHBSjioRBu5486GaRhP2qMTsgc210CuUEMvdXz+HT3YunOSDi9a/Oy9GIb
-         8fu52k0CNbdwc/s3N6aDZnO84/uixLGPYXKSKmfMV2POalKrRWGUYRhL2F0SeI9ItmvP
-         SS8w==
+        d=linaro.org; s=google; t=1680792033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=haQfQLtIHX3AMbhEtmhPzNtAxG8NcBrSOSgfDzvgaZY=;
+        b=F3Pny9qKyanQubI7PdZw9QaNyLe7fQBOJpafO6/1MP6WO9qK8J764Dz1ugy4uiUt+Y
+         J6DhtffYYSyxZjEqblmuzrAEFhyM7I9h66VXSxGlu8GlU+AGzegBnNH88A9hO+3jneGS
+         n/bmxHJ1Y9s/Q1i7PsIlgY1+DC49LBNpCtZ/CcQqDkSYkY6RckBpnSLH+0cSQkfilidO
+         03fzOTVcyQkou7OrImqXWBRQev3FnX34TMphjc1hUPqEeldktCYsPTI+qM3+b4FgF+gQ
+         Zn7o7M1weH0i1P72NDArqhDujrnobGXt/rxWvAyf9kU7/dHeuaUxn84C3XbbHKnXXEXH
+         8Xjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680768037;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CQH+iRWXQXzrMch9aFmJkKfa79kh+f41Jg9zUvyUDYc=;
-        b=5Abx5pe6n5EWTtYAiP42uAPLN4Ljwyp2PttL5l5E9Mwk31t4Kbwn76NOsKMU7tFnh5
-         w3tBxdbfYeK/V6FWrMx1LQ9yf5hitJHNm90oGckjxiy0XmJSVi9qAutP792lkEs+U4Dg
-         L8zl2RdwTR9zAQuPdfz+T4bFpuIGFAzhb0R0858WtXD19NcPsWMp966I6rRpvBtS2DXC
-         wyuWHqWe6dzZfU+L9h63UIj9T3BW0rPkiKAszHFTZiAQktNQx82EK1O5Nd2kcs4g9S8B
-         X7kAbP1Kj9Kv4Cc8dpXn8S1bbDLr0CjizNg2uWOPzgYUPvGEw8av7opSGJJEFae2xwW2
-         /QsA==
-X-Gm-Message-State: AAQBX9dax8qyvgkXQ7uCKChe1DyLqg/m+OXxFyWXRq/+oLS3H6cLRSDT
-        I1lazfbmv1tgdlRqYmpFfT4=
-X-Google-Smtp-Source: AKy350Zln1rHkseAywxn36shRvYFdkWQ7QSVBFsGgDypBCXbFctm0iaYDiDxGcFUUhAKWrU2spc3MA==
-X-Received: by 2002:a17:906:fa9b:b0:945:d94e:7054 with SMTP id lt27-20020a170906fa9b00b00945d94e7054mr6300868ejb.36.1680768036990;
-        Thu, 06 Apr 2023 01:00:36 -0700 (PDT)
-Received: from orome (p200300e41f1c0800f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1c:800:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id xf4-20020a17090731c400b00938041aef83sm452290ejb.169.2023.04.06.01.00.35
+        d=1e100.net; s=20210112; t=1680792033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=haQfQLtIHX3AMbhEtmhPzNtAxG8NcBrSOSgfDzvgaZY=;
+        b=ICqccvXa4iR/o2ymO4Ft1gjuM6WNcxXRN2szspVHY2flZFVThJU85ZNdHEpTOQKNPR
+         IUeTrV0RyZtIutnCr449g0B5UWQ0mOExty+2u/OJo4iK80UrO956u/0sT1tAbMScUYPB
+         xYx2QshIYGTUi2Mx6HnL8mg3eA1mARhu7KgmKL44Ai8KA0by409Qq+X1KaoTVKkxXgNo
+         efJ5Xjwz9Es6s8zjfy0B54x06sXMFbOr+f5HWGedvNSfzGVTzs83D2Ecgy3hEBT5QZhf
+         kK4vxrBgAwZzPhzr6lHUNLv7mpcRffEyBMK+F1/ZNoyPr29L+gLRubtxM7ckmF6vLsSG
+         sqJQ==
+X-Gm-Message-State: AAQBX9eYNpLt7GcMKS4ZuFW4azhlo9ESI5x9ZuZqJFLZDixRPO4UdLOD
+        s2D0yDrQrIiDk3tqbvv6sxvGLnYLyujhwwOEW5Iryg==
+X-Google-Smtp-Source: AKy350Z+rx9pS7nPz2tJ11Na3ScH3fQ4x2FkN7YmH1OHKykbJ8eGSxYJ1CdnNtTp3SYGmtJdF0TpdQ==
+X-Received: by 2002:aca:c0c1:0:b0:389:6b33:fe9e with SMTP id q184-20020acac0c1000000b003896b33fe9emr3282758oif.58.1680792032654;
+        Thu, 06 Apr 2023 07:40:32 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id q7-20020acaf207000000b0037d7f4eb7e8sm726209oih.31.2023.04.06.07.40.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Apr 2023 01:00:36 -0700 (PDT)
-Date:   Thu, 6 Apr 2023 10:00:34 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Marc Zyngier <maz@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH v2 04/10] serial: 8250_tegra: Add explicit include for
- of.h
-Message-ID: <ZC58Ikn9_BUFg_-h@orome>
-References: <20230329-acpi-header-cleanup-v2-0-c902e581923b@kernel.org>
- <20230329-acpi-header-cleanup-v2-4-c902e581923b@kernel.org>
+        Thu, 06 Apr 2023 07:40:32 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH v5 0/6] Migrate STX104 to the regmap API
+Date:   Thu,  6 Apr 2023 10:40:09 -0400
+Message-Id: <cover.1680790580.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="E3hFsuwxav/nr+wF"
-Content-Disposition: inline
-In-Reply-To: <20230329-acpi-header-cleanup-v2-4-c902e581923b@kernel.org>
-User-Agent: Mutt/2.2.10 (2023-03-25)
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Changes in v5:
+ - Explicitly check for negative val for IIO_CHAN_INFO_RAW case in
+   stx104_write_raw(); this avoids the explicit case previously used
+ - Use U16_MAX rather than hardcoding unsigned 16-bit maximum value
+ - Improve ADC conversion comment format and use proper SI units format
+Changes in v4:
+ - Fix race conditions in stx104_read_raw() and stx104_write_raw() by
+   utilizing a mutex
+ - Improve indentation in stx104_write_raw() by bailing out early if
+   chan->output is false in for the IIO_CHAN_INFO_RAW case
+ - Remove regmap_config max_register lines as superfluous
+ - Utilize BIT() for gain calculation in stx104_read_raw()
+Changes in v3:
+ - Add STX104_ prefixes to defines to avoid potential name classes
+ - Rename SAME_CHANNEL() to STX104_SINGLE_CHANNEL() to convey intention
+   better
+ - Utilize u8_encode_bits() to define STX104_SOFTWARE_TRIGGER
+ - Adjust to utilize reg_base members in regmap_config structures
+ - Fix off-by-one errors in aio_data_wr_ranges[], aio_data_rd_ranges[],
+   and aio_data_regmap_config max_register
+ - Inline gpio_config initialization to avoid zeroing it at declaration
+ - Add blank lines between register map init blocks for clarity
+ - Utilize regmap_read_poll_timeout() for ADC conversion status poll
+Changes in v2:
+ - Relocate struct stx104_iio for the sake of a clearer patch diff
+ - Replace FIELD_PREP() and FIELD_GET() with u8_encode_bits() and
+   u8_get_bits()
 
---E3hFsuwxav/nr+wF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The regmap API supports IO port accessors so we can take advantage of
+regmap abstractions rather than handling access to the device registers
+directly in the driver.
 
-On Wed, Apr 05, 2023 at 03:27:18PM -0500, Rob Herring wrote:
-> With linux/acpi.h no longer implicitly including of.h, add an explicit
-> include of of.h to fix the following error:
->=20
-> drivers/tty/serial/8250/8250_tegra.c:68:15: error: implicit declaration o=
-f function 'of_alias_get_id' [-Werror=3Dimplicit-function-declaration]
->=20
-> Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  drivers/tty/serial/8250/8250_tegra.c | 1 +
->  1 file changed, 1 insertion(+)
+To make the git history cleaner, precursor patches to use a define
+rather than hardcoded limit and to improve indentation in
+stx104_write_raw(), and a follow-up patch to utilize
+regmap_read_poll_timeout() for polling the ADC conversion status are
+included.
 
-Acked-by: Thierry Reding <treding@nvidia.com>
+William Breathitt Gray (6):
+  iio: addac: stx104: Fix race condition for stx104_write_raw()
+  iio: addac: stx104: Fix race condition when converting
+    analog-to-digital
+  iio: addac: stx104: Use define rather than hardcoded limit for write
+    val
+  iio: addac: stx104: Improve indentation in stx104_write_raw()
+  iio: addac: stx104: Migrate to the regmap API
+  iio: addac: stx104: Use regmap_read_poll_timeout() for conversion poll
 
---E3hFsuwxav/nr+wF
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/iio/addac/Kconfig  |   2 +
+ drivers/iio/addac/stx104.c | 460 +++++++++++++++++++++----------------
+ 2 files changed, 264 insertions(+), 198 deletions(-)
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmQufCIACgkQ3SOs138+
-s6F+KA/7Bm/KfMbX17OH6FnJh9eMe6ljjpv/iZNRAm7bGZO0mhFGi50XBZsNztqA
-VNB3JF2eIsl5fLvZBh3scXkKTB1CEYLOAuhQtUehAXCTDLIgRUn9IzRjit6RBnnU
-XTeYRtdEyWtdS90j2nK0edHGOcfOMxYyn1UV/Whtawnx16Ub/ZdIHmTvg454Upqd
-2Dv4LpcZIfLFJdPl5B+bYP/Q6Dg9mLDYr7U5V2zxziaDKMOb2L7gN5GMOCL0S+rw
-9yHOVa0YxfP6B1zvUjJ8xW0e0XPcRO2f1zApQ0SYpN9DVyKozeB1/U+itoq2wkXS
-zVAYUCydZ7TGrFL/NkksLddPwzdLiLeAVDTjwHadnaQERW8NGQkN0Dy+GKSGFFAo
-Vsd3TxyP107px9msXa9QHVlPnC2mVgwkg5ZJeWRonPo5lFTC/XpbPe1pnbtn3yjg
-o+CKRA75MyFgOIytYdgGK/3/9OJu85zmc0WEQy+0kJnnjLe45y7V7tpMHObl3dGa
-KqGTSfMmnf3G7cFAfE1PDdOh/vMO/z2oCc0XR9GdAsEbTXd2E0lrGuw5zrbZYWLO
-CeYAiWdsUDmqLEWwKwUT04Z9315lKkJvueZGXfxlGtsz/1j7jVDeC7lUl0u9zt9h
-pEq0jCI12awFhFZmUO+3w5b9DBTnKowjD+JwRlg+hs5o0OD1d88=
-=T9ol
------END PGP SIGNATURE-----
+base-commit: f73df43e957a6fc705a9bd6d143585bdf1b13365
+-- 
+2.39.2
 
---E3hFsuwxav/nr+wF--

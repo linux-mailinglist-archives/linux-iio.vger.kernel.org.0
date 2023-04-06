@@ -2,133 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6CA6D9AC1
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Apr 2023 16:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C0C6DA006
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Apr 2023 20:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239402AbjDFOmm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Apr 2023 10:42:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43166 "EHLO
+        id S240267AbjDFSk0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 6 Apr 2023 14:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239185AbjDFOmT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Apr 2023 10:42:19 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E13BBA3
-        for <linux-iio@vger.kernel.org>; Thu,  6 Apr 2023 07:40:39 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id f14so15650773oiw.10
-        for <linux-iio@vger.kernel.org>; Thu, 06 Apr 2023 07:40:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680792039;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OFjEsgotUCqG/Q9AAJkwtGeznbu0uxLBMZfxP03HZSU=;
-        b=dm0NPDE41iKMFj+9B6Oo+4IxfPmFQMlB4O7g0/RrSd1IqLw56L3OGQK9UGtqWUEXhV
-         LijwBLp0kng8rZtcWFkk+h6X+d3ggUw2QxWyRpC9Yec/gaK+aWn5iHPs1tO8+nS8fR0a
-         vOShwOPuhMjVgDXTP+wTXUMpjnBHURxJ6yUQ3zWPghXSdToNmz6c20oucq7vkWIO09nm
-         LGRPiMoWxE2Eh96ywqsawuj/YEkxSRcVvsOqJs4ZmRU8jXhBrH+N8ZFYMXa8yD5hUJR2
-         W2ITcc9n3/RnYPWycNhvyk5A38cVFKRIebGJbBHd5wDVnXISKd42PkJ/UQPrzm4sfdY4
-         kl5A==
+        with ESMTP id S240269AbjDFSkV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Apr 2023 14:40:21 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B319E9004;
+        Thu,  6 Apr 2023 11:40:19 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id n21so3635257ejz.4;
+        Thu, 06 Apr 2023 11:40:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680792039;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1680806418;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OFjEsgotUCqG/Q9AAJkwtGeznbu0uxLBMZfxP03HZSU=;
-        b=MkE+7CTBRZ+prz36mxAgltDggDMnNHJ1Nu1Z7ORWtofzzGYk79AbKfFr57+fLb7h+m
-         Alu9R9CpsuMidUeyw+yiPnz/5kpUmmGqF86B6h3l5Y/wvAg6tbV5HrIuD1rUWXpfPtr0
-         czFcQ08+0AxNWAxhbx0Uzam0ORZ/OuoqppFccjjL7jMsmz49bHc8h0//Nt2gqk+aVbKm
-         lHGYj0vA10kKgKyKNOxZTliR9eTrF0forn0mK6moWRNSRmQXdYfpIOCZKkHkPKJGQybj
-         tM/cuJDinKuGe1lm2glFMrvYf1tf/vIvUw1wa9HshUxqVDg5vmPgoMzlLDQX5HJwKl+/
-         A+WQ==
-X-Gm-Message-State: AAQBX9cjYLLLXUR7FFKxMFN2CK6iZ2JrF83kPV2o7gzq12FEvHFHykUs
-        trKLciBeq247RML1YNue7CPcrw==
-X-Google-Smtp-Source: AKy350Z59V90K5rlPYbC8tfLr2K8aOiRiJjKIgsM24opnyT30WreZ2c3+OmAZehvTXpbk9767pqgow==
-X-Received: by 2002:a54:440e:0:b0:38b:7347:1f62 with SMTP id k14-20020a54440e000000b0038b73471f62mr1644786oiw.22.1680792039246;
-        Thu, 06 Apr 2023 07:40:39 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id q7-20020acaf207000000b0037d7f4eb7e8sm726209oih.31.2023.04.06.07.40.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Apr 2023 07:40:38 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH v5 6/6] iio: addac: stx104: Use regmap_read_poll_timeout() for conversion poll
-Date:   Thu,  6 Apr 2023 10:40:15 -0400
-Message-Id: <9ef433f107afd1d4dcd2d97ef0e932d7045c2bbd.1680790580.git.william.gray@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1680790580.git.william.gray@linaro.org>
-References: <cover.1680790580.git.william.gray@linaro.org>
+        bh=r/vRP03cMBwPFFIUCdAcydaIAi3iMXexWFOT2Es7xP4=;
+        b=bhbfocKb8mLoFnQdo74RoKfdGZ3ROqWgotKj9SfRaO9P6y61Irej53CDQRX0hNPri7
+         MKSwki1240ReGL6GPN+d+sShlopUgP0g+fYbASj/FypVXfobh4r5wXN41/jezZapWtyN
+         qeUnu7/Rg8RdRovt5szvTQwIN16ROmPR19MWmrRXTWnAOW9rfp/45jwl4VxcA2lwmXzJ
+         /o30oHCRazzVhfjNEJ1ji+IcWY53EGf1g5llRX0ldWMTSCsXDVSeHWgPkWnLJL+JqHxP
+         Y9JLpVgA3Qr5uyqB1S8xoR7J2KAnjytq+sc/e5h7CEqghsbnoegG0JP4J8XmLzwxots5
+         w+CA==
+X-Gm-Message-State: AAQBX9fTWGgnLukcYTI9FQ2CsAqwqbX+xV8OdvYHtU2d1nXkBYaA9qL5
+        2Mwcu4Y9FkgXTzxASzpBjoIo+d/Qre9gUX22J+A=
+X-Google-Smtp-Source: AKy350bccWL6lt0+zXbInPBQWvnVq/LZTLhcL/dc5uLFWGZYlhaLZYqBvMQBJhuHAdHL0grMZu37PeKYaqj61CBd4QU=
+X-Received: by 2002:a17:907:8c18:b0:93e:c1ab:ae67 with SMTP id
+ ta24-20020a1709078c1800b0093ec1abae67mr3885095ejc.2.1680806417910; Thu, 06
+ Apr 2023 11:40:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230329-acpi-header-cleanup-v2-0-c902e581923b@kernel.org>
+In-Reply-To: <20230329-acpi-header-cleanup-v2-0-c902e581923b@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 6 Apr 2023 20:40:05 +0200
+Message-ID: <CAJZ5v0j+DP=PB8thzFPMPQgTATGdo9ZA70Q6heUy=OLo3aU96g@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] Remove acpi.h implicit include of of.h
+To:     Rob Herring <robh@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.5 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ADC sample captures take a certain amount of time to complete after
-initiated; this conversion time range can be anywhere from 5
-microseconds to 53.68 seconds depending on the configuration of the
-Analog Input Frame Timer register. When the conversion is in progress,
-the ADC Status register CNV bit is high. Call regmap_read_poll_timeout()
-to poll until the ADC conversion is completed (or timeout if more than
-53.68 seconds passes).
+On Wed, Apr 5, 2023 at 10:27 PM Rob Herring <robh@kernel.org> wrote:
+>
+> In the process of cleaning up DT includes, I found that some drivers
+> using DT functions could build without any explicit DT include. I traced
+> the include to be coming from acpi.h via irqdomain.h.
+>
+> I was pleasantly surprised that there were not 100s or even 10s of
+> warnings when breaking the include chain. So here's the resulting
+> series.
+>
+> I'd suggest Rafael take the whole series. Alternatively,the fixes can be
+> applied in 6.4 and then the last patch either after rc1 or the
+> following cycle.
+>
+> Compile tested on x86 and powerpc allmodconfig and arm64 allmodconfig
+> minus CONFIG_ACPI.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+> Changes in v2:
+> - More explicit include fixes reported by Stephen
+> - Link to v1: https://lore.kernel.org/r/20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org
+>
+> ---
+> Rob Herring (10):
+>       iio: adc: ad7292: Add explicit include for of.h
+>       staging: iio: resolver: ad2s1210: Add explicit include for of.h
+>       net: rfkill-gpio: Add explicit include for of.h
+>       serial: 8250_tegra: Add explicit include for of.h
+>       ata: pata_macio: Add explicit include of irqdomain.h
+>       pata: ixp4xx: Add explicit include for of.h
+>       virtio-mmio: Add explicit include for of.h
+>       tpm: atmel: Add explicit include for of.h
+>       fpga: lattice-sysconfig-spi: Add explicit include for of.h
+>       ACPI: Replace irqdomain.h include with struct declarations
+>
+>  drivers/ata/pata_ixp4xx_cf.c            | 1 +
+>  drivers/ata/pata_macio.c                | 1 +
+>  drivers/char/tpm/tpm_atmel.h            | 2 +-
+>  drivers/fpga/lattice-sysconfig-spi.c    | 1 +
+>  drivers/iio/adc/ad7292.c                | 1 +
+>  drivers/staging/iio/resolver/ad2s1210.c | 1 +
+>  drivers/tty/serial/8250/8250_tegra.c    | 1 +
+>  drivers/virtio/virtio_mmio.c            | 1 +
+>  include/linux/acpi.h                    | 6 ++++--
+>  net/rfkill/rfkill-gpio.c                | 1 +
+>  10 files changed, 13 insertions(+), 3 deletions(-)
+> ---
+> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+> change-id: 20230329-acpi-header-cleanup-665331828436
 
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
-Changes in v5:
- - Improve ADC conversion comment format and use proper SI units format
-Changes in v4: none
-
- drivers/iio/addac/stx104.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
-index 798f98a8872e..d1f7ce033b46 100644
---- a/drivers/iio/addac/stx104.c
-+++ b/drivers/iio/addac/stx104.c
-@@ -205,21 +205,25 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 			return err;
- 		}
- 
--		/* trigger ADC sample capture by writing to the 8-bit
--		 * Software Strobe Register and wait for completion
-+		/*
-+		 * Trigger ADC sample capture by writing to the 8-bit Software Strobe Register and
-+		 * wait for completion; the conversion time range is 5 microseconds to 53.68 seconds
-+		 * in steps of 25 nanoseconds. The actual Analog Input Frame Timer time interval is
-+		 * calculated as:
-+		 * ai_time_frame_ns = ( AIFT + 1 ) * ( 25 nanoseconds ).
-+		 * Where 0 <= AIFT <= 2147483648.
- 		 */
- 		err = regmap_write(priv->aio_ctl_map, STX104_SOFTWARE_STROBE, 0);
- 		if (err) {
- 			mutex_unlock(&priv->lock);
- 			return err;
- 		}
--		do {
--			err = regmap_read(priv->aio_ctl_map, STX104_ADC_STATUS, &adc_status);
--			if (err) {
--				mutex_unlock(&priv->lock);
--				return err;
--			}
--		} while (u8_get_bits(adc_status, STX104_CNV));
-+		err = regmap_read_poll_timeout(priv->aio_ctl_map, STX104_ADC_STATUS, adc_status,
-+					       !u8_get_bits(adc_status, STX104_CNV), 0, 53687092);
-+		if (err) {
-+			mutex_unlock(&priv->lock);
-+			return err;
-+		}
- 
- 		err = regmap_read(priv->aio_data_map, STX104_ADC_DATA, &value);
- 		if (err) {
--- 
-2.39.2
-
+All applied as 6.4 material, thanks!

@@ -2,45 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54BC06DB0B0
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 18:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E8386DB0BF
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 18:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjDGQe1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Apr 2023 12:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45250 "EHLO
+        id S229794AbjDGQge (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Apr 2023 12:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbjDGQeZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 12:34:25 -0400
+        with ESMTP id S229795AbjDGQgd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 12:36:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E34C4C08;
-        Fri,  7 Apr 2023 09:34:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE164C01;
+        Fri,  7 Apr 2023 09:36:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E78F611A8;
-        Fri,  7 Apr 2023 16:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF4FC433D2;
-        Fri,  7 Apr 2023 16:34:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D7C462D10;
+        Fri,  7 Apr 2023 16:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89123C433EF;
+        Fri,  7 Apr 2023 16:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680885263;
-        bh=uFreq4aHevhnTAF6ygcgF7VPCtfXDPHg/Zs6GZ7KnNA=;
+        s=k20201202; t=1680885391;
+        bh=etitddCZwTTTG1EgyGdc17CuU1cpdOMzVjNv6qZw6k4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GxyFBwlcyzKdC9d/QKzAHy30rocb1MznxnlzsnyMAVD7jRZaH+ttI4b6x67UPLjXC
-         3ZvYinB2PWkwzZqjrKi3B5T5XXMvfLQLbgpl0FD1ilz6wX+BBsRO9AZQlVId5Wc4FL
-         s8zSH5Q4ovwK1oa3/awLJbiLMMuuDqqyat0m5dOi7cumFBU5HP5awETn3gd9kUMUys
-         SyLHbgXuD9EzqHSr2EOPIn3GThJLWY1lCt8gxWW4LTxvjujI/Remxsevk3jJQv6nZ4
-         1l7wCaCpp/tU5G4l1ciW7nTWSMMxmkHwmWgnJCedVSOY9O++vWOUlbnHYaSoGAFix4
-         iQtAc9OV0BADg==
-Date:   Fri, 7 Apr 2023 17:49:31 +0100
+        b=diUNrEnZ8yN6WitBb8SYFLMAdzIAzokKc5ubq9dq5Z033RANnKcbvqwRXhLmgFkBO
+         oQtGh5WRnUnAYKsYSJA4Cl0zJ2ycRt82xOJfRrtr2Y9whppi+2BvwH8xTXEWsHISm1
+         0B6syMX8ppnTAtMhrp3A42u9FIYP3GfBLxroqR0uve6yOO81bgVKST/UsXtf1VsePs
+         HNLOx0GlDFwH9bimJSV89ys1CPIBVF3PMPXRRrkffm4QfHvvFInoYOvmInXDimqqPy
+         rQOu3xSZ4Yw0O4pZSwGtc4TZKDx59vzESXm8zwAZoE9QLTCQcE1/5zFKost/3WsA5W
+         EhEXu1pdCKtMg==
+Date:   Fri, 7 Apr 2023 17:51:47 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     William Breathitt Gray <william.gray@linaro.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v5 0/6] Migrate STX104 to the regmap API
-Message-ID: <20230407174841.2ca510f5@jic23-huawei>
-In-Reply-To: <cover.1680790580.git.william.gray@linaro.org>
+Subject: Re: [PATCH v5 1/6] iio: addac: stx104: Fix race condition for
+ stx104_write_raw()
+Message-ID: <20230407175147.180f9f44@jic23-huawei>
+In-Reply-To: <c95c9a77fcef36b2a052282146950f23bbc1ebdc.1680790580.git.william.gray@linaro.org>
 References: <cover.1680790580.git.william.gray@linaro.org>
+        <c95c9a77fcef36b2a052282146950f23bbc1ebdc.1680790580.git.william.gray@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,70 +56,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  6 Apr 2023 10:40:09 -0400
+On Thu,  6 Apr 2023 10:40:10 -0400
 William Breathitt Gray <william.gray@linaro.org> wrote:
 
-Series applied to the togreg branch of iio.git and pushed out initially as
-testing.  If anyone wants to offer tags / remaining comments there will
-still be a few days before I push this out in a non rebasing form.
+> The priv->chan_out_states array and actual DAC value can become
+> mismatched if stx104_write_raw() is called concurrently. Prevent such a
+> race condition by utilizing a mutex.
+> 
+> Fixes: 97a445dad37a ("iio: Add IIO support for the DAC on the Apex Embedded Systems STX104")
+> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Marked these first two patches for stable as probably worth a backport
+even if no one notices the affect of the race. I'll queue them for the
+next merge window though as we are fairly late in this cycle and I don't
+want to delay the 4 patches that follow a whole cycle.
 
 Thanks,
 
 Jonathan
 
-
-> Changes in v5:
->  - Explicitly check for negative val for IIO_CHAN_INFO_RAW case in
->    stx104_write_raw(); this avoids the explicit case previously used
->  - Use U16_MAX rather than hardcoding unsigned 16-bit maximum value
->  - Improve ADC conversion comment format and use proper SI units format
-> Changes in v4:
->  - Fix race conditions in stx104_read_raw() and stx104_write_raw() by
->    utilizing a mutex
->  - Improve indentation in stx104_write_raw() by bailing out early if
->    chan->output is false in for the IIO_CHAN_INFO_RAW case
->  - Remove regmap_config max_register lines as superfluous
->  - Utilize BIT() for gain calculation in stx104_read_raw()
-> Changes in v3:
->  - Add STX104_ prefixes to defines to avoid potential name classes
->  - Rename SAME_CHANNEL() to STX104_SINGLE_CHANNEL() to convey intention
->    better
->  - Utilize u8_encode_bits() to define STX104_SOFTWARE_TRIGGER
->  - Adjust to utilize reg_base members in regmap_config structures
->  - Fix off-by-one errors in aio_data_wr_ranges[], aio_data_rd_ranges[],
->    and aio_data_regmap_config max_register
->  - Inline gpio_config initialization to avoid zeroing it at declaration
->  - Add blank lines between register map init blocks for clarity
->  - Utilize regmap_read_poll_timeout() for ADC conversion status poll
-> Changes in v2:
->  - Relocate struct stx104_iio for the sake of a clearer patch diff
->  - Replace FIELD_PREP() and FIELD_GET() with u8_encode_bits() and
->    u8_get_bits()
+> ---
+> Changes in v5: none
 > 
-> The regmap API supports IO port accessors so we can take advantage of
-> regmap abstractions rather than handling access to the device registers
-> directly in the driver.
+>  drivers/iio/addac/stx104.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> To make the git history cleaner, precursor patches to use a define
-> rather than hardcoded limit and to improve indentation in
-> stx104_write_raw(), and a follow-up patch to utilize
-> regmap_read_poll_timeout() for polling the ADC conversion status are
-> included.
-> 
-> William Breathitt Gray (6):
->   iio: addac: stx104: Fix race condition for stx104_write_raw()
->   iio: addac: stx104: Fix race condition when converting
->     analog-to-digital
->   iio: addac: stx104: Use define rather than hardcoded limit for write
->     val
->   iio: addac: stx104: Improve indentation in stx104_write_raw()
->   iio: addac: stx104: Migrate to the regmap API
->   iio: addac: stx104: Use regmap_read_poll_timeout() for conversion poll
-> 
->  drivers/iio/addac/Kconfig  |   2 +
->  drivers/iio/addac/stx104.c | 460 +++++++++++++++++++++----------------
->  2 files changed, 264 insertions(+), 198 deletions(-)
-> 
-> 
-> base-commit: f73df43e957a6fc705a9bd6d143585bdf1b13365
+> diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
+> index e45b70aa5bb7..4239aafe42fc 100644
+> --- a/drivers/iio/addac/stx104.c
+> +++ b/drivers/iio/addac/stx104.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/moduleparam.h>
+> +#include <linux/mutex.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/types.h>
+>  
+> @@ -69,10 +70,12 @@ struct stx104_reg {
+>  
+>  /**
+>   * struct stx104_iio - IIO device private data structure
+> + * @lock: synchronization lock to prevent I/O race conditions
+>   * @chan_out_states:	channels' output states
+>   * @reg:		I/O address offset for the device registers
+>   */
+>  struct stx104_iio {
+> +	struct mutex lock;
+>  	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
+>  	struct stx104_reg __iomem *reg;
+>  };
+> @@ -178,9 +181,12 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
+>  			if ((unsigned int)val > 65535)
+>  				return -EINVAL;
+>  
+> +			mutex_lock(&priv->lock);
+> +
+>  			priv->chan_out_states[chan->channel] = val;
+>  			iowrite16(val, &priv->reg->dac[chan->channel]);
+>  
+> +			mutex_unlock(&priv->lock);
+>  			return 0;
+>  		}
+>  		return -EINVAL;
+> @@ -351,6 +357,8 @@ static int stx104_probe(struct device *dev, unsigned int id)
+>  
+>  	indio_dev->name = dev_name(dev);
+>  
+> +	mutex_init(&priv->lock);
+> +
+>  	/* configure device for software trigger operation */
+>  	iowrite8(0, &priv->reg->acr);
+>  
 

@@ -2,46 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11AD06DB1A0
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 19:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 970386DB1A6
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 19:34:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbjDGRbC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Apr 2023 13:31:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35594 "EHLO
+        id S229747AbjDGReQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Apr 2023 13:34:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjDGRbB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 13:31:01 -0400
+        with ESMTP id S229458AbjDGReP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 13:34:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A71AD0A;
-        Fri,  7 Apr 2023 10:31:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBF4B463;
+        Fri,  7 Apr 2023 10:34:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91AA26125C;
-        Fri,  7 Apr 2023 17:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05371C433D2;
-        Fri,  7 Apr 2023 17:30:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B21A9652AB;
+        Fri,  7 Apr 2023 17:34:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0044C433EF;
+        Fri,  7 Apr 2023 17:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680888660;
-        bh=ApDacg564yr5uR1+DT8HL2ziSN/TMUAvPNtZ6acpD3w=;
+        s=k20201202; t=1680888853;
+        bh=k39ojLugdZzlydji/uAprODGtjuwBnxp5qDd/32ojsM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VHUNZdR24huVQ3g2RLjQ1xdAaKubYbmcrRB2kQPYzhpspIc4v06WFLP+PS8ylUO51
-         08qSoDjKIUCw2cA1FlPWJjVYGomByikHqHy0WmwyT8QOGlMojM3dsL2qT4sTzh7ecM
-         aAUZqV9KkGmw2wglP+snCPhkOOhMtFt+7CflxUjJS85QtRoiQztPO2UxC0xJH/Xqg7
-         /zT8VlGzCCspVKWpOXgtvJ0vn/2oE4joc83/d7Cw0OIwg+cmei7eW/JGTqmnTPsEGk
-         qMr9aFovFQQsSGHNY2JKntiBj81kWzFvGRFHC96f+HEKEkfMUlhQMZhDjczaU8aV15
-         bCBPnA9xIGDXw==
-Date:   Fri, 7 Apr 2023 18:46:16 +0100
+        b=HOFnsOX28/9Fgo47FkYTcewM/vmizzt11vguHO4KUobFRITA8GIMnl+DofpKHj55y
+         M4ELJNfszyfEB1FSOD6tm+fErdIuVcgjAiog1wJ/JMzjdeVvM6FPFoh7hZfomkWdB0
+         4xgZuzkvtYSe6XlyPPLXdDirYf4gXUVmaWfrORraBfRIRaDfsqa5sbxm/nmDjFLRUU
+         YBkCYAvyqqspcPLPZnEkhSdoeSM6Y6l/PyEM1hsckv0IDZmDiU5LGa1d4dOIwbizbl
+         E5AXs27B3EgQq3zeSKk55A5KyfqvV3vb0m3jFRJ8ADB7auUdQZnfqTUBZlysTYoKTI
+         umpsbjRulrmew==
+Date:   Fri, 7 Apr 2023 18:49:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] iio: dac: mcp4922: get and enable vdd regulator
-Message-ID: <20230407184616.2fd2d52a@jic23-huawei>
-In-Reply-To: <ee6a428b-905c-82ac-48fd-0b440d90e014@metafoo.de>
-References: <20230405140114.99011-1-frattaroli.nicolas@gmail.com>
-        <20230405140114.99011-3-frattaroli.nicolas@gmail.com>
-        <ee6a428b-905c-82ac-48fd-0b440d90e014@metafoo.de>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: temperature: ltc2983: Fix child
+ node unevaluated properties
+Message-ID: <20230407184928.43f6d730@jic23-huawei>
+In-Reply-To: <20230404205014.644336-1-robh@kernel.org>
+References: <20230404205014.644336-1-robh@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,39 +58,153 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 5 Apr 2023 07:21:00 -0700
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Tue,  4 Apr 2023 15:50:13 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-> On 4/5/23 07:01, Nicolas Frattaroli wrote:
-> > [...]
-> > +	state->vdd_reg = devm_regulator_get(&spi->dev, "vdd");
-> > +	if (IS_ERR(state->vdd_reg)) {
-> > +		ret = dev_err_probe(&spi->dev, PTR_ERR(state->vdd_reg),
-> > +				    "vdd regulator not specified\n");
-> > +		goto error_disable_vref_reg;
-> > +	}
-> > +	ret = regulator_enable(state->vdd_reg);
-> > +	if (ret) {
-> > +		dev_err(&spi->dev, "Failed to enable vdd regulator: %d\n",
-> > +			ret);
-> > +		goto error_disable_vref_reg;
-> > +	}  
-> The two above can be combined into `devm_regulator_get_enable()`. This 
-> will also take care of automatically disabling the regulator on the 
-> error path and on remove.
+> The child node schemas are missing 'unevaluatedProperties' constraints,
+> so any unknown properties are allowed. The current structure with
+> multiple patternProperties schemas doesn't work for
+> unevaluatedProperties as each sub-schema is evaluated independently. To
+> fix this, move the sub-schema for all child nodes to a $defs entry and
+> reference it from each named child node.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-I'm not keen on the ordering of probe wrt to remove that results from mixing
-devm and not.   Note that already happens because of the gets vs enables
-so another reason to take this driver fully devm_ based.
+Nice. Series applied to the togreg branch of iio.git and pushed out as
+testing so 0-day can poke at it.
+
+Thanks,
 
 Jonathan
 
-
-> > +
-> >   	spi_set_drvdata(spi, indio_dev);
-> >   	id = spi_get_device_id(spi);
-> >   	indio_dev->info = &mcp4922_info;
-> > [...]  
+> ---
+>  .../bindings/iio/temperature/adi,ltc2983.yaml | 65 +++++++++++--------
+>  1 file changed, 38 insertions(+), 27 deletions(-)
 > 
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> index f44fc32ce87e..e04f961ab92c 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> @@ -18,6 +18,28 @@ description: |
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/29861fa.pdf
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/ltm2985.pdf
+>  
+> +$defs:
+> +  sensor-node:
+> +    type: object
+> +    description: Sensor node common constraints
+> +
+> +    properties:
+> +      reg:
+> +        description:
+> +          Channel number. Connects the sensor to the channel with this number
+> +          of the device.
+> +        minimum: 1
+> +        maximum: 20
+> +
+> +      adi,sensor-type:
+> +        description: Type of sensor connected to the device.
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +    required:
+> +      - reg
+> +      - adi,sensor-type
+> +
+> +
+>  properties:
+>    compatible:
+>      oneOf:
+> @@ -64,28 +86,10 @@ properties:
+>      const: 0
+>  
+>  patternProperties:
+> -  "@([0-9a-f]+)$":
+> -    type: object
+> -    description: Sensor.
+> -
+> -    properties:
+> -      reg:
+> -        description:
+> -          Channel number. Connects the sensor to the channel with this number
+> -          of the device.
+> -        minimum: 1
+> -        maximum: 20
+> -
+> -      adi,sensor-type:
+> -        description: Type of sensor connected to the device.
+> -        $ref: /schemas/types.yaml#/definitions/uint32
+> -
+> -    required:
+> -      - reg
+> -      - adi,sensor-type
+> -
+>    "^thermocouple@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+> +
+>      description: Thermocouple sensor.
+>  
+>      properties:
+> @@ -141,7 +145,9 @@ patternProperties:
+>              - adi,custom-thermocouple
+>  
+>    "^diode@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+> +
+>      description: Diode sensor.
+>  
+>      properties:
+> @@ -184,7 +190,8 @@ patternProperties:
+>          default: 0
+>  
+>    "^rtd@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+>      description: RTD sensor.
+>  
+>      properties:
+> @@ -282,7 +289,8 @@ patternProperties:
+>              - adi,custom-rtd
+>  
+>    "^thermistor@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+>      description: Thermistor sensor.
+>  
+>      properties:
+> @@ -383,7 +391,8 @@ patternProperties:
+>              - adi,custom-thermistor
+>  
+>    "^adc@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+>      description: Direct ADC sensor.
+>  
+>      properties:
+> @@ -397,7 +406,8 @@ patternProperties:
+>          type: boolean
+>  
+>    "^temp@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+>      description: Active analog temperature sensor.
+>  
+>      properties:
+> @@ -426,7 +436,8 @@ patternProperties:
+>        - adi,custom-temp
+>  
+>    "^rsense@":
+> -    type: object
+> +    $ref: '#/$defs/sensor-node'
+> +    unevaluatedProperties: false
+>      description: Sense resistor sensor.
+>  
+>      properties:
 

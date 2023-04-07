@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 970386DB1A6
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 19:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3424F6DB1F6
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 19:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229747AbjDGReQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Apr 2023 13:34:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37642 "EHLO
+        id S229868AbjDGRnp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Apr 2023 13:43:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjDGReP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 13:34:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBF4B463;
-        Fri,  7 Apr 2023 10:34:14 -0700 (PDT)
+        with ESMTP id S229452AbjDGRno (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 13:43:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B603C11D;
+        Fri,  7 Apr 2023 10:43:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B21A9652AB;
-        Fri,  7 Apr 2023 17:34:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0044C433EF;
-        Fri,  7 Apr 2023 17:34:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34BD763F57;
+        Fri,  7 Apr 2023 17:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E19C433D2;
+        Fri,  7 Apr 2023 17:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680888853;
-        bh=k39ojLugdZzlydji/uAprODGtjuwBnxp5qDd/32ojsM=;
+        s=k20201202; t=1680889422;
+        bh=vZCY3vWqhnV/znGFdnyCODHfQSKhgHz1S2DYLWPOqYU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HOFnsOX28/9Fgo47FkYTcewM/vmizzt11vguHO4KUobFRITA8GIMnl+DofpKHj55y
-         M4ELJNfszyfEB1FSOD6tm+fErdIuVcgjAiog1wJ/JMzjdeVvM6FPFoh7hZfomkWdB0
-         4xgZuzkvtYSe6XlyPPLXdDirYf4gXUVmaWfrORraBfRIRaDfsqa5sbxm/nmDjFLRUU
-         YBkCYAvyqqspcPLPZnEkhSdoeSM6Y6l/PyEM1hsckv0IDZmDiU5LGa1d4dOIwbizbl
-         E5AXs27B3EgQq3zeSKk55A5KyfqvV3vb0m3jFRJ8ADB7auUdQZnfqTUBZlysTYoKTI
-         umpsbjRulrmew==
-Date:   Fri, 7 Apr 2023 18:49:28 +0100
+        b=VZ5byXXtG+h3HYdpQ+Wsg6iPq3cNOvRUq/xwy6nOA/smdWag7D6cl9FAvr4JdfkKu
+         ZzM6evYJ8IsDtN6kwpYk/yqndr15AGlIjYtvCX+WEBl4BHFwAQ0NOlcJRF0yTCT65e
+         QGyOx0U9bimHexh9ZFxUd3exXoaYJ+Encajz3pA40n0TDm5O2unGYU+JJzPncifSl5
+         WG7RCJaa416FosrHDOk03+hAkUuY/rX727/9nxOyFZZHvSI5r7VIOK7CePFapjqD0c
+         +YZ5rR1bz3mR4MIk4OcOS+ukBYnTdjQwqsFs2zjSizoPVcs84xUh7ggr1X0OPteaJo
+         ytp45vasbBqHw==
+Date:   Fri, 7 Apr 2023 18:58:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
+To:     Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: temperature: ltc2983: Fix child
- node unevaluated properties
-Message-ID: <20230407184928.43f6d730@jic23-huawei>
-In-Reply-To: <20230404205014.644336-1-robh@kernel.org>
-References: <20230404205014.644336-1-robh@kernel.org>
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
+Subject: Re: [PATCH 1/2] dt-bindings: Document TI OPT4001 light sensor
+ bindings
+Message-ID: <20230407185858.1cd624e0@jic23-huawei>
+In-Reply-To: <20230323-add-opt4001-driver-v1-1-1451dcc1bc8a@axis.com>
+References: <20230323-add-opt4001-driver-v1-0-1451dcc1bc8a@axis.com>
+        <20230323-add-opt4001-driver-v1-1-1451dcc1bc8a@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,153 +58,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  4 Apr 2023 15:50:13 -0500
-Rob Herring <robh@kernel.org> wrote:
+On Tue, 4 Apr 2023 11:07:42 +0200
+Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com> wrote:
 
-> The child node schemas are missing 'unevaluatedProperties' constraints,
-> so any unknown properties are allowed. The current structure with
-> multiple patternProperties schemas doesn't work for
-> unevaluatedProperties as each sub-schema is evaluated independently. To
-> fix this, move the sub-schema for all child nodes to a $defs entry and
-> reference it from each named child node.
+> Add devicetree bindings for opt4001 ambient light sensor.
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
 
-Nice. Series applied to the togreg branch of iio.git and pushed out as
-testing so 0-day can poke at it.
+Hi Stefan,
+
+Please add the VDD regulator and interrupt pin to the DT binding.
+Whilst the driver might not use them, the binding should describe the device
+fully anyway both so that we can potentially enable control of the regulator
+and use of interrupt in Linux and because other software picks up these
+bindings and might need them.
+
+The regulator is easy to handle in the driver now we have
+devm_regulator_get_enable() so that probably is worth supporting from the start
+even if your board has it hard wired on.
 
 Thanks,
 
 Jonathan
 
 > ---
->  .../bindings/iio/temperature/adi,ltc2983.yaml | 65 +++++++++++--------
->  1 file changed, 38 insertions(+), 27 deletions(-)
+>  .../devicetree/bindings/iio/light/ti,opt4001.yaml  | 42 ++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> index f44fc32ce87e..e04f961ab92c 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> @@ -18,6 +18,28 @@ description: |
->    https://www.analog.com/media/en/technical-documentation/data-sheets/29861fa.pdf
->    https://www.analog.com/media/en/technical-documentation/data-sheets/ltm2985.pdf
->  
-> +$defs:
-> +  sensor-node:
-> +    type: object
-> +    description: Sensor node common constraints
+> diff --git a/Documentation/devicetree/bindings/iio/light/ti,opt4001.yaml b/Documentation/devicetree/bindings/iio/light/ti,opt4001.yaml
+> new file mode 100644
+> index 000000000000..cfd6b8b92c17
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/light/ti,opt4001.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/light/ti,opt4001.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +    properties:
-> +      reg:
-> +        description:
-> +          Channel number. Connects the sensor to the channel with this number
-> +          of the device.
-> +        minimum: 1
-> +        maximum: 20
+> +title: Texas Instruments OPT4001 Ambient Light Sensor
 > +
-> +      adi,sensor-type:
-> +        description: Type of sensor connected to the device.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +maintainers:
+> +  - Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
 > +
-> +    required:
-> +      - reg
-> +      - adi,sensor-type
+> +description: |
+> +  Ambient light sensor with an i2c interface.
+> +  https://www.ti.com/lit/gpn/opt4001
 > +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,opt4001-picostar
+> +      - ti,opt4001-sot-5x3
 > +
->  properties:
->    compatible:
->      oneOf:
-> @@ -64,28 +86,10 @@ properties:
->      const: 0
->  
->  patternProperties:
-> -  "@([0-9a-f]+)$":
-> -    type: object
-> -    description: Sensor.
-> -
-> -    properties:
-> -      reg:
-> -        description:
-> -          Channel number. Connects the sensor to the channel with this number
-> -          of the device.
-> -        minimum: 1
-> -        maximum: 20
-> -
-> -      adi,sensor-type:
-> -        description: Type of sensor connected to the device.
-> -        $ref: /schemas/types.yaml#/definitions/uint32
-> -
-> -    required:
-> -      - reg
-> -      - adi,sensor-type
-> -
->    "^thermocouple@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
+> +  reg:
+> +    maxItems: 1
 > +
->      description: Thermocouple sensor.
->  
->      properties:
-> @@ -141,7 +145,9 @@ patternProperties:
->              - adi,custom-thermocouple
->  
->    "^diode@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
+> +additionalProperties: false
 > +
->      description: Diode sensor.
->  
->      properties:
-> @@ -184,7 +190,8 @@ patternProperties:
->          default: 0
->  
->    "^rtd@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
->      description: RTD sensor.
->  
->      properties:
-> @@ -282,7 +289,8 @@ patternProperties:
->              - adi,custom-rtd
->  
->    "^thermistor@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
->      description: Thermistor sensor.
->  
->      properties:
-> @@ -383,7 +391,8 @@ patternProperties:
->              - adi,custom-thermistor
->  
->    "^adc@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
->      description: Direct ADC sensor.
->  
->      properties:
-> @@ -397,7 +406,8 @@ patternProperties:
->          type: boolean
->  
->    "^temp@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
->      description: Active analog temperature sensor.
->  
->      properties:
-> @@ -426,7 +436,8 @@ patternProperties:
->        - adi,custom-temp
->  
->    "^rsense@":
-> -    type: object
-> +    $ref: '#/$defs/sensor-node'
-> +    unevaluatedProperties: false
->      description: Sense resistor sensor.
->  
->      properties:
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@44 {
+> +            compatible = "ti,opt4001-picostar";
+> +            reg = <0x44>;
+> +        };
+> +    };
+> +...
+> 
 

@@ -2,47 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CAE76DB0FD
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 18:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE6B46DB115
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Apr 2023 19:04:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbjDGQy3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Apr 2023 12:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34346 "EHLO
+        id S229516AbjDGREg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Apr 2023 13:04:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229970AbjDGQy2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 12:54:28 -0400
+        with ESMTP id S229523AbjDGREf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Apr 2023 13:04:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E721EAD25;
-        Fri,  7 Apr 2023 09:54:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708DEAD1A;
+        Fri,  7 Apr 2023 10:04:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 797E161A2D;
-        Fri,  7 Apr 2023 16:54:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D955C433A0;
-        Fri,  7 Apr 2023 16:54:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C89461284;
+        Fri,  7 Apr 2023 17:04:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19C9C433EF;
+        Fri,  7 Apr 2023 17:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680886465;
-        bh=jzYiWqGmDKhKdoV1OI22S0EpcmnPG3H9nbZqDc6Qt9A=;
+        s=k20201202; t=1680887072;
+        bh=84GG4GqddxbvAIsmuTYd6nCuYTWPg+lSmfhnPE4ojYk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TQt56cfMAs9QWC2HBg7TmfJwrMnUhenKmjOfutykg+qy+1NfOxoieXqrOl7srerRC
-         AQUVgX13cWClFs50qjd7+0t8+Dj95ce0EJgA+UPh/kaKWfUPzFThlI1nC2WJX/OED+
-         ihGqN6UZUmIGeo9WL0siFzhqW9p8SQ/l+eHkpMxpVTJ7iXDWv31ZiDOtIqYwIzlv3F
-         88GI5TIzhdyM1wyg91BbH6tkF0DzSm2QjDisI3BpIVUw+r7KoaPjnfbmthJpAz2E9w
-         AtLwdPAYJK3pr7LxRusro9gr88CRjSe1cwxLTsyRZim0KVsT3FhZWG+YWGBXTChfeA
-         5hwXJsBIPFjZw==
-Date:   Fri, 7 Apr 2023 18:09:41 +0100
+        b=XemRHQHH5RiDgK2T26wY95xXRCWrJq5xvSG2AvR1R1VCdkSZANtkIHoIihwqfAt3v
+         XIav9VvxZZTls2AfIhpx+tDliAsdn34WtUrTXp3o9t5QNIZl7qq/1ZGDxx/VTvzXv3
+         HD6Ou89Ha/EoFSwbLpO9+vpckiQaDHAtCrIyr8hWky5lbkQW5vDi74P0iL0VP0Vj3N
+         NpASHU/wowBf7RtRrVHs6KDXIiVJfUBRbuZf7rc9rblpUSIX1tDsoUQ1JqS4HRDGEp
+         SELYYG+ylapIpXPxwqC7VTKOZH7GXzAlqjQ9RJaXMUZKR1GzoVd1GcrD69EEYlHPXc
+         BE9TXcm51gwzw==
+Date:   Fri, 7 Apr 2023 18:19:47 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
         pgoudagunta@nvidia.com, hns@goldelico.com, lars@metafoo.de,
         linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3 0/7] iio: adc: palmas_gpadc: add iio events
-Message-ID: <20230407180941.2e79469e@jic23-huawei>
-In-Reply-To: <20230407180435.048a8636@jic23-huawei>
+Subject: Re: [PATCH v3 6/7] iio: adc: palmas: add support for iio threshold
+ events
+Message-ID: <20230407181947.667614ed@jic23-huawei>
+In-Reply-To: <20230405212233.4167986-7-risca@dalakolonin.se>
 References: <20230405212233.4167986-1-risca@dalakolonin.se>
-        <20230407180435.048a8636@jic23-huawei>
+        <20230405212233.4167986-7-risca@dalakolonin.se>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,94 +57,259 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 7 Apr 2023 18:04:35 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed,  5 Apr 2023 23:22:32 +0200
+Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
 
-> On Wed,  5 Apr 2023 23:22:26 +0200
-> Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
+> The palmas gpadc block has support for monitoring up to 2 ADC channels
+> and issue an interrupt if they reach past a set threshold. This change
+> hooks into the IIO events system and exposes to userspace the ability to
+> configure these threshold values for each channel, but only allow up to
+> 2 such thresholds to be enabled at any given time. Trying to enable a
+> third channel will result in an error.
 >=20
-> > This series is based on linux-next/master [1] and [2].
-> >=20
-> > The palmas gpadc block has support for monitoring up to 2 ADC channels
-> > and issue an interrupt if they reach past a set threshold. This can be
-> > configured statically with device tree today, but it only gets enabled
-> > when reaching sleep mode. Also, it doesn't look like anyone is using it.
-> >=20
-> > Instead of this one special case, change the code so userspace can
-> > configure the ADC channels to their own needs through the iio events
-> > subsystem. The high and low threshold values can be set for every
-> > channel, but only 2 thresholds can be enabled at a time. Trying to
-> > enable more than 2 thresholds will result in an error.
-> >=20
-> > The configured thresholds will wake up the system from sleep mode if
-> > wakeup is enabled in /sys/devices/.../power/wakeup.
-> >=20
-> > The old platform data was removed.
-> >=20
-> > Thresholds, events, and wakeup were tested on omap5-uevm board. It wakes
-> > up from sleep mode when wakeup is enabled and a threshold is passed. A
-> > userspace tool for monitoring events and adjusting thresholds can be
-> > found at [3].
-> >=20
-> > V2 -> V3:
-> > * Rebased to linux-next. =20
+> Userspace is expected to input calibrated, as opposed to raw, values as
+> threshold. However, it is not enough to do the opposite of what is done
+> when converting the other way around. To account for tolerances in the
+> ADC, the calculated raw threshold should be adjusted based on the ADC
+> specifications for the device. These specifications include the integral
+> nonlinearity (INL), offset, and gain error. To adjust the high
+> threshold, use the following equation:
 >=20
-> As per reply to the earlier thread.  Don't base on linux-next.
-> It can be very unstable though not so much later in a cycle like this.
+>   (calibrated value + INL) * Gain error + offset =3D maximum value  [1]
 >=20
-> If there isn't a lot of churn going on in the driver, fine to base on
-> previous release kernel or rc1 (good to say if it is an rc1)
+> Likewise, use the following equation for the low threshold:
 >=20
-> If there is churn underway (which is true here) then iio/togreg + extra
-> patches lists that need to be applied listed in this cover letter.
+>   (calibrated value - INL) * Gain error - offset =3D minimum value
+>=20
+> The gain error is a combination of gain error, as listed in the
+> datasheet, and gain error drift due to temperature and supply. The exact
+> values for these specifications vary between palmas devices. This patch
+> sets the values found in TWL6035, TWL6037 datasheet.
+>=20
+> [1] TI Application Report, SLIA087A, Guide to Using the GPADC in
+>     TPS65903x, TPS65917-Q1, TPS65919-Q1, and TPS65916 Devices.
+>=20
+> Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
+Hi Patrik,
 
-Just goes to show I focused on the change log and skipped the rest :)
-As you have it here is fine though change log could have mentioned the
-extra patch as well even if just "Rebased to linux-next + devm patch."
-
-In this case linux-next is close enough for this driver to the
-iio/togreg tree that it doesn't matter that it shouldn't be used as a base
-(no impact in this particular case I think).
-
-Anyhow, all good. I noticed I'd misinterpreted what you'd done here
-when I saw the context in one of the patches.  oops :)
+A few really trivial formatting things inline. If we don't end up
+with a v4 for other reasons I can tidy this stuff up whilst applying.
 
 Jonathan
 
 
->=20
-> I'm also fine with you just adding the devm patch to this series as
-> the first patch.
->=20
-> Jonathan
->=20
->=20
->=20
-> > * Avoid reconfiguring events on error and when old =3D=3D new value.
-> > V1 -> V2:
-> > * Begin by removing adc_wakeupX_data instead of doing it last.
-> > * Split changes in smaller patches
-> >=20
-> > [1] git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> > [2] https://lore.kernel.org/linux-iio/20230318163039.56115-1-jic23@kern=
-el.org/
-> > [3] https://github.com/Risca/pyra_vol_mon
-> >=20
-> > Patrik Dahlstr=C3=B6m (7):
-> >   iio: adc: palmas: remove adc_wakeupX_data
-> >   iio: adc: palmas: replace "wakeup" with "event"
-> >   iio: adc: palmas: use iio_event_direction for threshold polarity
-> >   iio: adc: palmas: move eventX_enable into palmas_adc_event
-> >   iio: adc: palmas: always reset events on unload
-> >   iio: adc: palmas: add support for iio threshold events
-> >   iio: adc: palmas: don't alter event config on suspend/resume
-> >=20
-> >  drivers/iio/adc/palmas_gpadc.c | 559 +++++++++++++++++++++++++++------
-> >  include/linux/mfd/palmas.h     |   8 -
-> >  2 files changed, 464 insertions(+), 103 deletions(-)
-> >=20
-> >=20
-> > base-commit: 8417c8f5007bf4567ccffda850a3157c7d905f67
-> > prerequisite-patch-id: b0418c707db13f514400956596e9ebe91c25bba0 =20
->=20
+> =20
+> +/**
 
+Not kernel-doc so /* only
+Even if it were the indent for the following should align the * with the fi=
+rst * not
+the second one.
+
+> +  * The high and low threshold values are calculated based on the advice=
+ given
+> +  * in TI Application Report SLIA087A, "Guide to Using the GPADC in PS65=
+903x,
+> +  * TPS65917-Q1, TPS65919-Q1, and TPS65916 Devices". This document recom=
+mend
+> +  * taking ADC tolerances into account and is based on the device integr=
+al non-
+> +  * linearity (INL), offset error and gain error:
+> +  *
+> +  *   raw high threshold =3D (ideal threshold + INL) * gain error + offs=
+et error
+> +  *
+> +  * The gain error include both gain error, as specified in the datashee=
+t, and
+> +  * the gain error drift. These paramenters vary depending on device and=
+ whether
+> +  * the the channel is calibrated (trimmed) or not.
+> +  */
+> +static int palmas_gpadc_threshold_with_tolerance(int val, const int INL,
+> +						 const int gain_error,
+> +						 const int offset_error)
+> +{
+> +	val =3D ((val + INL) * (1000 + gain_error)) / 1000 + offset_error;
+> +
+> +	return clamp(val, 0, 0xFFF);
+> +}
+> +
+> +/**
+
+/*
+
+> +  * The values below are taken from the datasheet of TWL6035, TWL6037.
+> +  * todo: get max INL, gain error, and offset error from OF.
+> +  */
+> +static int palmas_gpadc_get_high_threshold_raw(struct palmas_gpadc *adc,
+> +					       struct palmas_adc_event *ev)
+> +{
+> +	const int adc_chan =3D ev->channel;
+> +	int val =3D adc->thresholds[adc_chan].high;
+> +	/* integral nonlinearity, measured in LSB */
+> +	const int max_INL =3D 2;
+> +	/* measured in LSB */
+> +	int max_offset_error;
+> +	/* 0.2% when calibrated */
+> +	int max_gain_error =3D 2;
+> +
+> +	val =3D (val * 1000) / adc->adc_info[adc_chan].gain;
+> +
+> +	if (adc->adc_info[adc_chan].is_uncalibrated) {
+> +		/* 2% worse */
+> +		max_gain_error +=3D 20;
+> +		max_offset_error =3D 36;
+> +	} else {
+> +		val =3D (val * adc->adc_info[adc_chan].gain_error +
+> +		       adc->adc_info[adc_chan].offset) /
+> +			1000;
+> +		max_offset_error =3D 2;
+> +	}
+> +
+> +	return palmas_gpadc_threshold_with_tolerance(val,
+> +						     max_INL,
+> +						     max_gain_error,
+> +						     max_offset_error);
+> +}
+> +
+> +/**
+
+This isn't kernel-doc so just /*=20
+
+> +  * The values below are taken from the datasheet of TWL6035, TWL6037.
+> +  * todo: get min INL, gain error, and offset error from OF.
+> +  */
+> +static int palmas_gpadc_get_low_threshold_raw(struct palmas_gpadc *adc,
+> +					      struct palmas_adc_event *ev)
+> +{
+> +	const int adc_chan =3D ev->channel;
+> +	int val =3D adc->thresholds[adc_chan].low;
+> +	/* integral nonlinearity, measured in LSB */
+> +	const int min_INL =3D -2;
+> +	/* measured in LSB */
+> +	int min_offset_error;
+> +	/* -0.6% when calibrated */
+> +	int min_gain_error =3D -6;
+> +
+> +	val =3D (val * 1000) / adc->adc_info[adc_chan].gain;
+> +
+> +        if (adc->adc_info[adc_chan].is_uncalibrated) {
+> +		/* 2% worse */
+> +		min_gain_error -=3D 20;
+> +		min_offset_error =3D -36;
+> +        } else {
+> +		val =3D (val * adc->adc_info[adc_chan].gain_error -
+> +		       adc->adc_info[adc_chan].offset) /
+> +			1000;
+> +		min_offset_error =3D -2;
+> +        }
+> +
+> +	return palmas_gpadc_threshold_with_tolerance(val,
+> +						     min_INL,
+> +						     min_gain_error,
+> +						     min_offset_error);
+> +}
+> +
+>  static int palmas_gpadc_read_raw(struct iio_dev *indio_dev,
+>  	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
+>  {
+> @@ -437,8 +586,221 @@ static int palmas_gpadc_read_raw(struct iio_dev *in=
+dio_dev,
+>  	return ret;
+>  }
+> =20
+> +static int palmas_gpadc_read_event_config(struct iio_dev *indio_dev,
+> +					  const struct iio_chan_spec *chan,
+> +					  enum iio_event_type type,
+> +					  enum iio_event_direction dir)
+> +{
+> +	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
+> +	int adc_chan =3D chan->channel;
+> +	int ret =3D 0;
+> +
+> +	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&adc->lock);
+> +
+> +	if (palmas_gpadc_get_event(adc, adc_chan, dir)) {
+> +		ret =3D 1;
+
+Trivial: No brackets needed here for kernel style.
+
+> +	}
+> +
+> +	mutex_unlock(&adc->lock);
+> +
+> +	return ret;
+> +}
+...
+
+> +static int palmas_gpadc_write_event_config(struct iio_dev *indio_dev,
+> +					   const struct iio_chan_spec *chan,
+> +					   enum iio_event_type type,
+> +					   enum iio_event_direction dir,
+> +					   int state)
+> +{
+> +	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
+> +	int adc_chan =3D chan->channel;
+> +	int ret =3D 0;
+
+This initial value isn't used so shouldn't be set.
+One of the static analysis tools will spot this so if we don't tidy it up
+now chances of it getting 'fixed' later is high.  Better to avoid the
+overhead of such a patch.
+
+> +
+> +	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&adc->lock);
+> +
+> +	if (state)
+> +		ret =3D palmas_gpadc_enable_event_config(adc, chan, dir);
+> +	else
+> +		ret =3D palmas_gpadc_disable_event_config(adc, chan, dir);
+> +
+> +	mutex_unlock(&adc->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int palmas_gpadc_read_event_value(struct iio_dev *indio_dev,
+> +					 const struct iio_chan_spec *chan,
+> +					 enum iio_event_type type,
+> +					 enum iio_event_direction dir,
+> +					 enum iio_event_info info,
+> +					 int *val, int *val2)
+> +{
+> +	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
+> +	int adc_chan =3D chan->channel;
+> +	int ret =3D 0;
+
+Trivial: I can't see a path where this initial value is used so it
+shouldn't be initialized here.
+
+> +
+> +	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&adc->lock);
+> +
+> +	switch (info) {
+> +	case IIO_EV_INFO_VALUE:
+> +		*val =3D (dir =3D=3D IIO_EV_DIR_RISING) ?
+> +			adc->thresholds[adc_chan].high :
+> +			adc->thresholds[adc_chan].low;
+> +		ret =3D IIO_VAL_INT;
+> +		break;
+> +	default:
+> +		ret =3D -EINVAL;
+> +		break;
+> +	}
+> +
+> +	mutex_unlock(&adc->lock);
+> +
+> +	return ret;
+> +}
+> +

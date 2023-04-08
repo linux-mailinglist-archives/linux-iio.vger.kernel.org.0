@@ -2,76 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E296DBA85
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 13:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD0C6DBA88
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 13:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230338AbjDHLrP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Apr 2023 07:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33774 "EHLO
+        id S230331AbjDHLsZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Apr 2023 07:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230367AbjDHLrN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 07:47:13 -0400
-Received: from pio-pvt-msa3.bahnhof.se (pio-pvt-msa3.bahnhof.se [79.136.2.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05B7FF37;
-        Sat,  8 Apr 2023 04:46:59 -0700 (PDT)
+        with ESMTP id S229698AbjDHLsV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 07:48:21 -0400
+Received: from pio-pvt-msa2.bahnhof.se (pio-pvt-msa2.bahnhof.se [79.136.2.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07474EFB3;
+        Sat,  8 Apr 2023 04:48:16 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTP id 9FD0B3F6DD;
-        Sat,  8 Apr 2023 13:46:57 +0200 (CEST)
+        by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTP id 1FD19403F0;
+        Sat,  8 Apr 2023 13:48:15 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at bahnhof.se
 X-Spam-Score: -2.1
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
-Authentication-Results: pio-pvt-msa3.bahnhof.se (amavisd-new);
+Authentication-Results: pio-pvt-msa2.bahnhof.se (amavisd-new);
         dkim=pass (2048-bit key) header.d=dalakolonin.se
-Received: from pio-pvt-msa3.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa3.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id TV1ARSLbVha0; Sat,  8 Apr 2023 13:46:56 +0200 (CEST)
-Received: by pio-pvt-msa3.bahnhof.se (Postfix) with ESMTPA id A8FF03F645;
-        Sat,  8 Apr 2023 13:46:56 +0200 (CEST)
+Received: from pio-pvt-msa2.bahnhof.se ([127.0.0.1])
+        by localhost (pio-pvt-msa2.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id GKDU6M2RlR7I; Sat,  8 Apr 2023 13:48:14 +0200 (CEST)
+Received: by pio-pvt-msa2.bahnhof.se (Postfix) with ESMTPA id 235583F602;
+        Sat,  8 Apr 2023 13:48:14 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by zimbra.dalakolonin.se (Postfix) with ESMTP id 4C64095F46;
-        Sat,  8 Apr 2023 11:46:56 +0000 (UTC)
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 064CB95F7B;
+        Sat,  8 Apr 2023 11:48:13 +0000 (UTC)
 Received: from zimbra.dalakolonin.se ([127.0.0.1])
         by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id TXAn8zRf6FVy; Sat,  8 Apr 2023 11:46:54 +0000 (UTC)
+        with ESMTP id UDX3bIRx1dzy; Sat,  8 Apr 2023 11:48:10 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-        by zimbra.dalakolonin.se (Postfix) with ESMTP id CF6BD95F42;
-        Sat,  8 Apr 2023 11:46:53 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se CF6BD95F42
+        by zimbra.dalakolonin.se (Postfix) with ESMTP id 3A4AA95F76;
+        Sat,  8 Apr 2023 11:48:10 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.dalakolonin.se 3A4AA95F76
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dalakolonin.se;
-        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680954413;
-        bh=8oCsKoWj+OT4dqdz4wKUl0ESprUGM0ZozVBAf1AeyA0=;
-        h=From:To:Date:Message-Id:MIME-Version;
-        b=nDIG0lmBvcF8jmEvZZF4zN/YChcDQWKTGKZxmoUU5VlV3iwKWGmTlkhr/QHgBkOsr
-         3qp2Uq8to6NteGqWK4NuXUBg4pDpLmkn/KtUUcYFISboofE9D4LTODCTRXYtgShxgM
-         3rSRUGBFpw1QN8YV29YCpueTAVqQPLSwLmsHMIju3oVCndb4L+WQOLCaXdpbKUMWIX
-         ZQgMQWWN1kXcuZ4TBUQ94R/aUV+F2Kj4MUXx/JXn2UzDq6x0HMzcypM2PNlt3ZSos4
-         1sUq3DhqcNe78ehfEXNqGAVX/Vk3lMDI0Dc+WMlXxn4f0O64yZPd9cY8MwvPuMy9Qo
-         7lNxh4gG6YCPw==
+        s=D374B428-D0A7-11ED-A657-75977B426508; t=1680954490;
+        bh=1Xfs4QuNk7u1JxFK8khGp6dL+3lELpSbAKZZs5QjY3A=;
+        h=Date:From:To:Message-ID:MIME-Version;
+        b=LPPEtJE/IBcdbYgyuq/Bt0NKaZo743fmotlz7zEtnyNSr5gx5Amz/rwxo26q+6fdC
+         2G18bgha6xSnvp1gk87GGePhsEpDNJ2bC+xuvxO16mljojVYU6GZKEwA8VoUeyUKmj
+         F9cHGlrDPUEBWH/+6YZvlIW69WfyFVPFVTF8ymdaoB98U7W7jrU7ozDax41IpAXFmy
+         /tDQhC4XsQwhZ+UIvxPni2cLc2bKVcawVtzhMAmohVHD6dHGBZtIUE2+tBwd95Ns/7
+         d4eiV6FrQJbhD0PP4Q0W55ml+Xvp6oQEGMwPZfYYxL7oQJUP+QRNXuCG1hGUa+Fd6u
+         +rD4Q5B8LtXfg==
 X-Virus-Scanned: amavisd-new at dalakolonin.se
 Received: from zimbra.dalakolonin.se ([127.0.0.1])
         by localhost (zimbra.dalakolonin.se [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id s7CCfjFJXs7L; Sat,  8 Apr 2023 11:46:53 +0000 (UTC)
-Received: from rack-server-1.dalakolonin.se (unknown [172.17.0.1])
-        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id 35F6A95F3F;
-        Sat,  8 Apr 2023 11:46:53 +0000 (UTC)
-From:   =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
+        with ESMTP id 60b1eQ-IxT-5; Sat,  8 Apr 2023 11:48:10 +0000 (UTC)
+Received: from dalakolonin.se (unknown [172.17.0.1])
+        by zimbra.dalakolonin.se (Postfix) with ESMTPSA id 03E6695F72;
+        Sat,  8 Apr 2023 11:48:10 +0000 (UTC)
+Date:   Sat, 8 Apr 2023 13:48:08 +0200
+From:   Patrik =?iso-8859-1?Q?Dahlstr=F6m?= <risca@dalakolonin.se>
 To:     linux-iio@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
         kernel@pyra-handheld.com, pgoudagunta@nvidia.com,
         hns@goldelico.com, jic23@kernel.org, lars@metafoo.de,
-        linux-omap@vger.kernel.org,
-        =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>
-Subject: [PATCH v3 3/7] iio: adc: palmas: use iio_event_direction for threshold polarity
-Date:   Sat,  8 Apr 2023 13:46:20 +0200
-Message-Id: <20230408114624.824144-4-risca@dalakolonin.se>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230408114624.824144-1-risca@dalakolonin.se>
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH v3 0/7] iio: adc: palmas_gpadc: add iio events
+Message-ID: <20230408114808.GC141200@dalakolonin.se>
 References: <20230408114624.824144-1-risca@dalakolonin.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20230408114624.824144-1-risca@dalakolonin.se>
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,90 +78,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Instead of having high_threshold > 0 as an indicator for upper threshold
-event and lower threshold event otherwise, use enum iio_event_direction
-instead. This is hopefully less ambiguous.
+Please dis-regard this. I sent the wrong version :/
 
-Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
----
- drivers/iio/adc/palmas_gpadc.c | 36 ++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpad=
-c.c
-index 55fdf59ef711..205a7628b235 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -77,9 +77,9 @@ static struct palmas_gpadc_info palmas_gpadc_info[] =3D=
- {
- };
-=20
- struct palmas_adc_event {
--	int adc_channel_number;
--	int adc_high_threshold;
--	int adc_low_threshold;
-+	int channel;
-+	int raw_thresh;
-+	enum iio_event_direction direction;
- };
-=20
- /*
-@@ -618,16 +618,21 @@ static int palmas_adc_configure_events(struct palma=
-s_gpadc *adc)
-=20
- 	conv =3D 0;
- 	if (adc->event0_enable) {
-+		struct palmas_adc_event *ev =3D &adc->event0;
- 		int polarity;
-=20
--		ch0 =3D adc->event0.adc_channel_number;
-+		ch0 =3D ev->channel;
-+		thres =3D ev->raw_thresh;
- 		conv |=3D PALMAS_GPADC_AUTO_CTRL_AUTO_CONV0_EN;
--		if (adc->event0.adc_high_threshold > 0) {
--			thres =3D adc->event0.adc_high_threshold;
-+		switch (ev->direction) {
-+		case IIO_EV_DIR_RISING:
- 			polarity =3D 0;
--		} else {
--			thres =3D adc->event0.adc_low_threshold;
-+			break;
-+		case IIO_EV_DIR_FALLING:
- 			polarity =3D PALMAS_GPADC_THRES_CONV0_MSB_THRES_CONV0_POL;
-+			break;
-+		default:
-+			return -EINVAL;
- 		}
-=20
- 		ret =3D palmas_write(adc->palmas, PALMAS_GPADC_BASE,
-@@ -649,16 +654,21 @@ static int palmas_adc_configure_events(struct palma=
-s_gpadc *adc)
- 	}
-=20
- 	if (adc->event1_enable) {
-+		struct palmas_adc_event *ev =3D &adc->event1;
- 		int polarity;
-=20
--		ch1 =3D adc->event1.adc_channel_number;
-+		ch1 =3D ev->channel;
-+		thres =3D ev->raw_thresh;
- 		conv |=3D PALMAS_GPADC_AUTO_CTRL_AUTO_CONV1_EN;
--		if (adc->event1.adc_high_threshold > 0) {
--			thres =3D adc->event1.adc_high_threshold;
-+		switch (ev->direction) {
-+		case IIO_EV_DIR_RISING:
- 			polarity =3D 0;
--		} else {
--			thres =3D adc->event1.adc_low_threshold;
-+			break;
-+		case IIO_EV_DIR_FALLING:
- 			polarity =3D PALMAS_GPADC_THRES_CONV1_MSB_THRES_CONV1_POL;
-+			break;
-+		default:
-+			return -EINVAL;
- 		}
-=20
- 		ret =3D palmas_write(adc->palmas, PALMAS_GPADC_BASE,
---=20
-2.25.1
-
+On Sat, Apr 08, 2023 at 01:46:17PM +0200, Patrik Dahlstr=F6m wrote:
+> This series is based on linux-next/master [1] and [2].
+>=20
+> The palmas gpadc block has support for monitoring up to 2 ADC channels
+> and issue an interrupt if they reach past a set threshold. This can be
+> configured statically with device tree today, but it only gets enabled
+> when reaching sleep mode. Also, it doesn't look like anyone is using it=
+.
+>=20
+> Instead of this one special case, change the code so userspace can
+> configure the ADC channels to their own needs through the iio events
+> subsystem. The high and low threshold values can be set for every
+> channel, but only 2 thresholds can be enabled at a time. Trying to
+> enable more than 2 thresholds will result in an error.
+>=20
+> The configured thresholds will wake up the system from sleep mode if
+> wakeup is enabled in /sys/devices/.../power/wakeup.
+>=20
+> The old platform data was removed.
+>=20
+> Thresholds, events, and wakeup were tested on omap5-uevm board. It wake=
+s
+> up from sleep mode when wakeup is enabled and a threshold is passed. A
+> userspace tool for monitoring events and adjusting thresholds can be
+> found at [3].
+>=20
+> V2 -> V3:
+> * Rebased to linux-next.
+> * Avoid reconfiguring events on error and when old =3D=3D new value.
+> V1 -> V2:
+> * Begin by removing adc_wakeupX_data instead of doing it last.
+> * Split changes in smaller patches
+>=20
+> [1] git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> [2] https://lore.kernel.org/linux-iio/20230318163039.56115-1-jic23@kern=
+el.org/
+> [3] https://github.com/Risca/pyra_vol_mon
+>=20
+> Patrik Dahlstr=F6m (7):
+>   iio: adc: palmas: remove adc_wakeupX_data
+>   iio: adc: palmas: replace "wakeup" with "event"
+>   iio: adc: palmas: use iio_event_direction for threshold polarity
+>   iio: adc: palmas: move eventX_enable into palmas_adc_event
+>   iio: adc: palmas: always reset events on unload
+>   iio: adc: palmas: add support for iio threshold events
+>   iio: adc: palmas: don't alter event config on suspend/resume
+>=20
+>  drivers/iio/adc/palmas_gpadc.c | 559 +++++++++++++++++++++++++++------
+>  include/linux/mfd/palmas.h     |   8 -
+>  2 files changed, 464 insertions(+), 103 deletions(-)
+>=20
+>=20
+> base-commit: 8417c8f5007bf4567ccffda850a3157c7d905f67
+> prerequisite-patch-id: b0418c707db13f514400956596e9ebe91c25bba0
+> --=20
+> 2.25.1
+>=20

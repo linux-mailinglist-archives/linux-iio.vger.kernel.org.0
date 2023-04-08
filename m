@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1507F6DBA00
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 12:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02AE26DBA05
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 12:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjDHKDx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Apr 2023 06:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34292 "EHLO
+        id S229614AbjDHKPY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Apr 2023 06:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjDHKDw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 06:03:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83722EA;
-        Sat,  8 Apr 2023 03:03:51 -0700 (PDT)
+        with ESMTP id S229587AbjDHKPY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 06:15:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29371C15F;
+        Sat,  8 Apr 2023 03:15:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C1116069C;
-        Sat,  8 Apr 2023 10:03:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD4EC4339B;
-        Sat,  8 Apr 2023 10:03:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B73CC60A6C;
+        Sat,  8 Apr 2023 10:15:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A752C433D2;
+        Sat,  8 Apr 2023 10:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680948230;
-        bh=V4a+tdNZ5VyCXSK9xKm7scGsOqxXzP9qP6i9zQ4cOl0=;
+        s=k20201202; t=1680948915;
+        bh=pzDyD8tzAlAD9Jp5Dut6PZOwqm6w5Ddo7OcNDD0eZCY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=B/6vUlFX2NoPdRGrpBBksMGsrKewmDauqJSV5PQ2QuXxL1BCywys0Tf6ftnhWOO2z
-         LDXhCpIeLPZl1+Q3mpVF7OK0yh3BKxeb92C5dxoBajIxJ4/JF56RvqmmMX+KMvieaZ
-         FMyIlP6wm53vo+1W9fxEt1vThW+uDpRQ/Yvy7eunFiI33Hnk63WD1utkdy4kYBhM7F
-         4jEs1rtQslv+1SZvVsnb4FgY62DHEh6/iEzqGdwyLQh3Ki9ZfUZzjZFqzeNbmvSqzO
-         s6YTWxEdp7l+DG6xL7fAoYjtZ26zIxwAU3cWinwfC9pEtETIfPM8rrI7eGE7TB26Jp
-         djxqlP/mfF1MA==
-Date:   Sat, 8 Apr 2023 11:18:49 +0100
+        b=SAMygo/kshU4hIim9jlXUqAl5D227Cv8aqj5/rvKHz/uEUe2jhCg4hpUlvvqoEch+
+         l8WlToW3+8OKsKt+Tozb2EzrUye9K2qU6mr/RUusAJQ9wEfnFD4zPJYjfS6VOTpAZl
+         xCvX88xn/8wrMr0EThCItNYiEO98INci+EY3egQ5ZnjUlIq7mrj3whJeaWN+OggxEP
+         gzo5gKYXDQsFnJBQgD3iN/H+hq5YNb91AXuOrNwgfL5HlczqvbgATHBS7coPu6PVpa
+         w7SV7X1dL9fBJxk1D4r9d8QZDpYu+UhwWywjdjfQ46zRy1j7H46aMkajZrqspje3VN
+         EC/CcbCDvoZFg==
+Date:   Sat, 8 Apr 2023 11:30:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
@@ -40,17 +40,17 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jagath Jog J <jagathjog1996@gmail.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: Add some kerneldoc for channel types
-Message-ID: <20230408111849.77af363e@jic23-huawei>
-In-Reply-To: <987b37ea10ace60f0e67a19f76c4b84dea3050c8.1677331779.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: add documentation for iio_chan_info_enum
+Message-ID: <20230408113029.35429440@jic23-huawei>
+In-Reply-To: <884c8f386541ac572939b8993df7aea6ad99613b.1677331779.git.mazziesaccount@gmail.com>
 References: <cover.1677331779.git.mazziesaccount@gmail.com>
-        <987b37ea10ace60f0e67a19f76c4b84dea3050c8.1677331779.git.mazziesaccount@gmail.com>
+        <884c8f386541ac572939b8993df7aea6ad99613b.1677331779.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,256 +58,124 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 25 Feb 2023 15:54:30 +0200
+On Sat, 25 Feb 2023 15:55:25 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> For occasional contributor like me navigating the IIO channel types and
-> modifiers may be a daunting task. One may have hard time finding out
-> what type of channel should be used for device data and what units the
-> data should be converted.
+> Values in the iio_chan_info_enum are crucial for understanding the
+> characteristics of an IIO channel and the data delivered via IIO channel.
+> Give a hand to developers who do their first set of IIO drivers.
 > 
-> There is a great documentation for the sysfs interfaces though. What is
-> missing is mapping of the channel types and modifiers to the sysfs
-> documentation (and entries in documentation).
-> 
-> Give a hand to a driver writer by providing some documentation and by
-> pointing to the sysfs document from the kernel doc of respective enums.
+> Add some documentation to these channel specifiers.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> ---
+> Please note that I did only add documentation for entries I am familiar
+> with. I did still add doc placeholders for all of the enum entries to
+> ease seeing which entries could still be documented. Hopefully this
+> encourages people to add missing pieces of documentation.
 
-If following seems a little over 'picky' I blame the bit of my day
-job that involves reviewing far to many specifications...
+Good to hear the optimism :) 
 
-Some of what follows probably applies to the ABI docs as well.
-
+I'll add it to my activities for boring journeys (with good internet
+as probably need datasheets).  Note I'm reviewing this on a train
+(having ignored it for a few weeks ;)
 
 > ---
-> Changelog RFCv1 => v2:
-> - add missing channel type docs provided by Jonathan
-> - add @in front of member names and fix typos pointed by Andy
-> - drop TODOs as Jonathan clarified the units
+>  include/linux/iio/types.h | 46 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 45 insertions(+), 1 deletion(-)
 > 
-> Initial discussion about these docs can be found from:
-> https://lore.kernel.org/all/0e0d45b7-e582-82b2-9bac-1f70f9dad9f7@gmail.com/
-> ---
->  include/uapi/linux/iio/types.h | 134 +++++++++++++++++++++++++++++++++
->  1 file changed, 134 insertions(+)
-> 
-> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> index c79f2f046a0b..78f4cfdc5e45 100644
-> --- a/include/uapi/linux/iio/types.h
-> +++ b/include/uapi/linux/iio/types.h
-> @@ -11,6 +11,124 @@
->  #ifndef _UAPI_IIO_TYPES_H_
->  #define _UAPI_IIO_TYPES_H_
->  
-> +/**
-> + * iio_chan_type - Type of data transferred via IIO channel.
-I worry 'Type of data' could end up with people thinking '16 bit 2's complment'
-
-Perhaps something more general would work?
-
-- What is being measured / output by the channel.
-
-> + *
-> + * The 'main' type of data transferred via channel. Please note that most
-
-type is fine here because it's more broken down than the short description.
-
-most -> many
-
-I can't be bothered to count actual devices and we have a lot of ADCs
-and DACs that don't.  Just relaxing that to "many" avoids this being
-or becoming inaccurate.
-
-> + * devices also need to specify a more accurate 'sub category'. See the
-> + * enum iio_modifier for this. (For example, IIO_ACCEL channel often needs to
-> + * specify the direction. IIO_CONCENTRATION specifies the type of substance
-> + * it measures etc).
-> + *
-> + * These reflect the units of the measurement via processed or unit after
-> + * application of scale and offset. See the enum iio_chan_info_enum for
-> + * scale and offset.
-> + *
-> + * Please find the detailed documentation for reported values from the
-
-in Documentation/...
-
-> + * Documentation/ABI/testing/sysfs-bus-iio.
-
-Unusual to document an enum in a different order to the enum.
-I'm in two minds on whether this is a good idea here.
-
-> + *
-> + * @IIO_ACCEL:		Acceleration, m/s^2
-> + *			Doc keyword: in_accel_x_raw
-> + *
-> + * @IIO_ACTIVITY:	Activity state. For example a pedometer signaling
-> + *			jogging, walking or staying still.
-> + *			Doc keyword: in_activity_still_thresh_rising_en
-
-Use in_activity_still_input
-rather than the event control related to that here.
-
-> + *
-> + * @IIO_ALTVOLTAGE:	Peak to peak voltage, millivolts
-
-Reference out_altvoltageY_raw
-
-(the fun and complex game of DDS devices)
-
-> + *
-> + * @IIO_ANGL:		Angle of rotation, radians.
-> + *			Doc keyword: in_angl_raw
-> + *
-> + * @IIO_ANGL_VEL:	Angular velocity, rad/s
-> + *			Doc keyword: in_anglvel_x_raw
-> + *
-> + * @IIO_CAPACITANCE:	Capacitance, nanofarads.
-> + *			Doc keyword: in_capacitanceY_raw
-> + *
-> + * @IIO_CCT:		Correlated color temperature, Kelvins
-> + *
-> + * @IIO_CURRENT:	Current, milliamps
-> + *			Doc keyword: in_currentY_raw
-> + *
-> + * @IIO_CONCENTRATION:	Reading of a substance, percents. Used for example by
-
-percentage
-
-> + *			devices measuring amount of CO2, O2, ethanol...
-concentration of CO2 ...
-
-> + *			Doc keyword: in_concentration_raw
-> + *
-> + * @IIO_COUNT:		Deprecated, please use counter subsystem.
-> + *
-> + * @IIO_DISTANCE:	Distance in meters. Typically used to report measured
-> + *			distance to an object or the distance covered by the
-> + *			user
-> + *			Doc keyword: in_distance_input
-> + *
-> + * @IIO_ELECTRICALCONDUCTIVITY: electric conductivity, siemens per meter
-> + *			Doc keyword: in_electricalconductivity_raw
-> + *
-> + * @IIO_ENERGY:		Energy in Joules. Typically reported by a device
-> + *			measuring energy burnt by the user.
-> + *			Doc keyword: in_energy_input
-> + *
-> + * @IIO_GRAVITY:	Gravity, m/s^2
-This needs more to differentiate from IIO_ACCEL.  Hmm. Something like
-Acceleration due to gravity alone, independent of other accelerations due
-to device movement.  (Which way is down!)
-
-I'd forgotten this one even existed ;)
-
-> + *			Doc keyword: in_gravity_x_raw
-> + *
-> + * @IIO_HUMIDITYRELATIVE: Relative humidity, percents
-> + *			Doc keyword: in_humidityrelative_raw
-> + *
-> + * @IIO_INCLI:		Inclination, degrees
-> + *			Doc keyword: in_incli_x_raw
-
-(nothing to change here, but gah - an oddity in the ABI as all other angles
-are radians)...
-
-> + *
-> + * @IIO_INDEX:		Deprecated, please use Counter subsystem
-> + *
-> + * @IIO_INTENSITY:	Unitless intensity.
-
-This could do with an example.  "Used for measurements of light where
-the exact meaning is dependent on the sensitivity curve."
-
-> + *			Doc keyword: in_intensityY_raw
-> + *
-> + * @IIO_LIGHT:		Visible light intensity, lux
-
-Not an intensity as depends on approx human eye sensitivity.
-Raiding wikipedia - perhaps something like:
-
-"Wave length weighted measure of light correlated with human
-brightness perception." 
-
-> + *			Doc keyword: in_illuminance_raw
-> + *
-> + * @IIO_MAGN:		Magnetic field, Gauss.
-> + *			Doc keyword: in_magn_x_raw
-> + *
-> + * @IIO_MASSCONCENTRATION: Mass concentration, ug / m3
-> + *			Doc keyword: in_massconcentration_pm1_input
-> + *
-> + * @IIO_PH:		pH reading, negative base-10 logarithm of hydrodium
-> + *			ions in a litre of water
-> + *			Doc keyword: in_ph_raw
-> + *
-> + * @IIO_PHASE:		Phase difference, radians
-> + *			Doc keyword: in_phaseY_raw
-> + *
-> + * @IIO_POSITIONRELATIVE: Relative position.
-Hohum. Another odd unit (however careful we are with this, some oddities
-have made it in) Milipercent of 'pad' size.
-
-> + *			Doc keyword: in_positionrelative_x_raw
-> + *
-> + * @IIO_POWER:		Power, milliwatts
-> + *			Doc keyword: in_powerY_raw
-> + *
-> + * @IIO_PRESSURE:	Pressure, kilopascal
-> + *			Doc keyword: in_pressureY_raw
-> + *
-> + * @IIO_RESISTANCE:	Resistance, ohms
-> + *			Doc keyword: in_resistance_raw
-> + *
-> + * @IIO_ROT:		Euler angles, deg
-> + *			Doc keyword: in_rot_yaw_raw
-> + *
-> + * @IIO_STEPS:		Steps taken by the user
-> + *			Doc keyword: in_steps_input
-> + *
-> + * @IIO_TEMP:		Temperature, milli degrees Celsius
-> + *			Doc keyword: in_temp_raw
-> + *
-> + * @IIO_UVINDEX:	UV light intensity index
-> + *			Doc keyword: in_uvindex_input
-> + *
-> + * @IIO_VELOCITY:	Current speed (norm or magnitude of the velocity
-> + *			vector), m/s
-> + *			Doc keyword: in_velocity_sqrt(x^2+y^2+z^2)_input
-> + *
-> + * @IIO_VOLTAGE:	Voltage, millivolts
-> + *			Doc keyword: in_voltageY_raw
-> + */
->  enum iio_chan_type {
->  	IIO_VOLTAGE,
->  	IIO_CURRENT,
-> @@ -49,6 +167,22 @@ enum iio_chan_type {
->  	IIO_MASSCONCENTRATION,
+> diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+> index 82faa98c719a..c8e3288ca24b 100644
+> --- a/include/linux/iio/types.h
+> +++ b/include/linux/iio/types.h
+> @@ -35,7 +35,51 @@ enum iio_available_type {
+>  	IIO_AVAIL_LIST,
+>  	IIO_AVAIL_RANGE,
 >  };
->  
+> -
 > +/**
-> + * iio_modifier - accurate class for channel data
-accurate class -> sub class or direction for channel data
+> + * enum iio_chan_info_enum - Information related to a IIO channel
 > + *
-> + * @IIO_MOD_<X,Y,Z>:	Value represents <X,Y,Z>-axis data.
-> + *			Typically used by channels of type:
-> + *			IIO_ACCEL, IIO_TEMP, IIO_GRAVITY, IIO_POSITIONRELATIVE,
-> + *			IIO_ANGL_VEL, IIO_INCLI, IIO_MAGN
-> + * @IIO_MOD_LIGHT_BOTH:	Value contains visible and infrared light components
-> + * @IIO_MOD_LIGHT_IR:	Value represents infrared radiation
-> + * @IIO_MOD_LIGHT_<RED, GREEN, BLUE>:
-> + *			Value represents visible <red, green, blue>  light
-> + * @IIO_MOD_LIGHT_CLEAR:	Value represents all visible light frequencies
+> + * Many IIO channels have extra properties. Typically these properties can be
+"extra" glosses over the fact that some of these almost always exist.
+E.g. raw.
 
-I guess a partial list is better than nothing here.  We can try and fill many
-of the others in a future patch set.
+IIO channels have a range of properties that may be read from userspace
+(via sysfs attributes) or from other drivers using the in kernel IIO consumer
+interfaces.  These properties are read / written using the read_raw...
 
+
+> + * read / written by user using the read_raw or write_raw callbacks in the
+> + * struct iio_info.
 > + *
-> + * Please find the detailed documentation for reported values from the
-> + * Documentation/ABI/testing/sysfs-bus-iio.
+> + * @IIO_CHAN_INFO_RAW:		Raw channel data as provided by device. Scale
+> + *				and offset are often required to convert these
+> + *				values to meaningful units.
+
+to base units as defined in the IIO ABI (link)
+
+> + * @IIO_CHAN_INFO_PROCESSED:	Processed data. Typically driver performs
+> + *				computations to convert device data to more
+> + *				meaningfull processed values.
+
+Typically a driver performs computations to convert device data to the 
+base units defined in the IIO ABI (link)
+
+> + * @IIO_CHAN_INFO_SCALE:	Scale to be applied to data in order to convert
+> + *				it to units mandated by the channel type.
+> + * @IIO_CHAN_INFO_OFFSET:	Offset to be applied to data in order to convert
+> + *				it to units mandated by the channel type.
+
+Add ordering info.  "Applied before scale."
+
+> + * @IIO_CHAN_INFO_CALIBSCALE:
+> + * @IIO_CHAN_INFO_CALIBBIAS:
+> + * @IIO_CHAN_INFO_PEAK:		Peak value (TODO: Since measurement start?)
+
+IIRC not that consistent. Some devices have it from device reset (so start), some
+do it on a short time scale (thing of a voltage channel measuring a sine wave -
+instantaneous reading is the current voltage, peak can be the peak in the cycle).
+Others again do it on an 'event detection basis'. 
+Sometimes constructive ambiguity can be handy in documentation ;)
+
+> + * @IIO_CHAN_INFO_PEAK_SCALE:	Scale to be applied to the peak value in order
+> + *				to convert it to units mandated by the channel
+> + *				type.
+> + * @IIO_CHAN_INFO_QUADRATURE_CORRECTION_RAW:
+> + * @IIO_CHAN_INFO_AVERAGE_RAW:	Average of raw values (TODO: Since measurement
+> + *				start or just for some undefined time?)
+
+Again, not that tightly defined (IIRC).  Average of raw values over a device specific time period.
+
+> + * @IIO_CHAN_INFO_SAMP_FREQ:	Sampling frequency for device.
+> + * @IIO_CHAN_INFO_FREQUENCY:
+> + * @IIO_CHAN_INFO_PHASE:
+> + * @IIO_CHAN_INFO_HARDWAREGAIN:	Amplification applied by the hardware.
+Given how often this is done wrong I'd love to call out something like:
+"SCALE should be used for control if the HARDWAREGAIN directly affects the
+ channel RAW measurement". Examples of HARDWAREGAIN include amplification of
+ the light signal in a time of flight sensor."
+
+
+> + * @IIO_CHAN_INFO_HYSTERESIS:
+> + * @IIO_CHAN_INFO_HYSTERESIS_RELATIVE:
+> + * @IIO_CHAN_INFO_INT_TIME:	Integration time. Time during which the data is
+> + *				accumulated by the device.
+
+Unit? (seconds I think).
+
+> + * @IIO_CHAN_INFO_ENABLE:
+> + * @IIO_CHAN_INFO_CALIBHEIGHT:
+> + * @IIO_CHAN_INFO_CALIBWEIGHT:
+> + * @IIO_CHAN_INFO_DEBOUNCE_COUNT:
+> + * @IIO_CHAN_INFO_DEBOUNCE_TIME:
+> + * @IIO_CHAN_INFO_CALIBEMISSIVITY:
+> + * @IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> + * @IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
+> + * @IIO_CHAN_INFO_CALIBAMBIENT:
+> + * @IIO_CHAN_INFO_ZEROPOINT:
 > + */
->  enum iio_modifier {
->  	IIO_NO_MOD,
->  	IIO_MOD_X,
+>  enum iio_chan_info_enum {
+>  	IIO_CHAN_INFO_RAW = 0,
+>  	IIO_CHAN_INFO_PROCESSED,
 

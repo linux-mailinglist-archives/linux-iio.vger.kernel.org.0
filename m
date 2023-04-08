@@ -2,53 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE4186DB9D8
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 11:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D110D6DB9E1
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 11:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbjDHJbv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Apr 2023 05:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44868 "EHLO
+        id S229896AbjDHJep (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Apr 2023 05:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjDHJbu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 05:31:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FADFC140;
-        Sat,  8 Apr 2023 02:31:49 -0700 (PDT)
+        with ESMTP id S230030AbjDHJed (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 05:34:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C0EBD307;
+        Sat,  8 Apr 2023 02:34:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E437A611AE;
-        Sat,  8 Apr 2023 09:31:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF76C433EF;
-        Sat,  8 Apr 2023 09:31:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C254F612BC;
+        Sat,  8 Apr 2023 09:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2FEC433EF;
+        Sat,  8 Apr 2023 09:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680946308;
-        bh=StJNO4de7jBrcTpA+nFUKFtj9EXHG30Gz3JlLFkKPyI=;
+        s=k20201202; t=1680946463;
+        bh=mgnnpPs+zBxUnMqnn4j6QunZO36sjCNHfxBatEKORik=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PvBUwzjtr76bPsYzGahl89tM4xiOgWiJXfh9UzZ+4N7PztOaqcneGsB3hIiXXjYuY
-         ztxTG3rnLZ0czLhLHpRRWp5d6Ft6rmCMChvY1BFlmdAy8vNH+4HlsRW4lhzohKuGnX
-         6R8tUUv7xoU7ZoqJkFY9jD+yKzmqZLE9wX8p6pX4ah4F0pq+O4rYev5ljECAO2Ow5j
-         +bO2tTbUhnWMG5SON7cqNixhaCI4g+Ms467R1HsMWRVwb9Oey8t/4hKhLWc/TmUgiF
-         LgHR+f73Ka7wblqquHjE8jO0QuadqCzycqlpGVJeVRSfFSg8YEok3SE488hW6rrWmg
-         UgDbFK0tf3egA==
-Date:   Sat, 8 Apr 2023 10:47:03 +0100
+        b=TL8lbZPLxcsSYRxXuunkUy1S823biVJdrjBRStPe4fpRxkIbBQ9QO1PSp37Ul7zqi
+         nCJi1w/6dUBUa3d6fkCaUHO7AkRHrZ1kYChL1psm0nyG9f8sqTsXjLu3j4NUIlG+bX
+         jyuoD3Lod9Tf+yXgICKEGQYczQiihU31YCmZFeGb6nnIJEf1wQEnfVO0DAS6vbLVgi
+         gWDp/Yjcwlmvrm0qvBhOoYa1AIHYYs0YLtksPZhY3nKdHBLMUi3PkUVD2JpduT4PT+
+         oZ6wpP3qEitcqwxiWzsqd6t4oInbBucJSFznMBlV/oV2xDBZ/pO1tF/k80R8JNrhKg
+         JcurP2XQJkueg==
+Date:   Sat, 8 Apr 2023 10:49:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Brian Masney <bmasney@redhat.com>
-Cc:     andriy.shevchenko@linux.intel.com, trix@redhat.com,
-        lars@metafoo.de, nathan@kernel.org, ndesaulniers@google.com,
-        u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hslester96@gmail.com
-Subject: Re: [PATCH] iio: light: tsl2772: fix reading proximity-diodes from
- device tree
-Message-ID: <20230408104703.758cb5c0@jic23-huawei>
-In-Reply-To: <20230404011455.339454-1-bmasney@redhat.com>
-References: <20230404011455.339454-1-bmasney@redhat.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andrea Merello <andrea.merello@iit.it>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jagath Jog J <jagathjog1996@gmail.com>
+Subject: Re: [RESEND PATCH v2 0/3] Improve kernel docs
+Message-ID: <20230408104938.74a36f7a@jic23-huawei>
+In-Reply-To: <cover.1680610554.git.mazziesaccount@gmail.com>
+References: <cover.1680610554.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,39 +58,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  3 Apr 2023 21:14:55 -0400
-Brian Masney <bmasney@redhat.com> wrote:
+On Tue, 4 Apr 2023 15:24:15 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> tsl2772_read_prox_diodes() will correctly parse the properties from
-> device tree to determine which proximity diode(s) to read from, however
-> it didn't actually set this value on the struct tsl2772_settings. Let's
-> go ahead and fix that.
+> IIO has very nice facilities for efficiently providing data from a
+> device to user (and probably also vice-versa - but I've not used that
+> direction). Getting started with IIO may not be so simple though - some
+> of the concepts like triggers and buffers are quite unique.
 > 
-> Reported-by: Tom Rix <trix@redhat.com>
-> Link: https://lore.kernel.org/lkml/20230327120823.1369700-1-trix@redhat.com/
-> Fixes: 94cd1113aaa0 ("iio: tsl2772: add support for reading proximity led settings from device tree")
-> Signed-off-by: Brian Masney <bmasney@redhat.com>
+> This series tries to make it easier for a newcomer to write his/her first
+> IIO driver by adding some documentation to used enums. Series does not
+> provide extensive documentation but just documents those few entries I
+> have become familiar with - but it still aims to be a starting point for
+> others to add missing bits and pieces.
+> 
+> This series is marked as v2 because the patch 1 was previously sent as a
+> stan-alone RFC to collect the missing channel units. RFC can be seen
+> here:
+> https://lore.kernel.org/all/10a855f9adc1d710150b7f647500c3c6a769f9ca.1677243698.git.mazziesaccount@gmail.com/
+> 
+> Patches 2 and 3 were added as a result of discussion followed by the
+> RFC.
 
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-
-thanks,
+Something odd happened on this resend. Patch 1 didn't make it to me
+or patchwork.  I'll reply to previous posting instead.
 
 Jonathan
 
-> ---
->  drivers/iio/light/tsl2772.c | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
-> index ad50baa0202c..e823c145f679 100644
-> --- a/drivers/iio/light/tsl2772.c
-> +++ b/drivers/iio/light/tsl2772.c
-> @@ -601,6 +601,7 @@ static int tsl2772_read_prox_diodes(struct tsl2772_chip *chip)
->  			return -EINVAL;
->  		}
->  	}
-> +	chip->settings.prox_diode = prox_diode_mask;
->  
->  	return 0;
->  }
+> Revision history:
+> v2 resend:
+>     - rebased on v6.3-rc2
+> RFCv1 => v2:
+>     - added patches 2 and 3
+>     - added missing channel type docs provided by Jonathan
+>     - added @in front of member names and fix typos pointed by Andy
+>     - dropped TODOs as Jonathan clarified the units
+> 
+> ---
+> 
+> Matti Vaittinen (3):
+>   iio: Add some kerneldoc for channel types
+>   iio: add documentation for iio_chan_info_enum
+>   doc: Make sysfs-bus-iio doc more exact
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio |  11 +-
+>  include/linux/iio/types.h               |  46 +++++++-
+>  include/uapi/linux/iio/types.h          | 134 ++++++++++++++++++++++++
+>  3 files changed, 185 insertions(+), 6 deletions(-)
+> 
+> 
+> base-commit: eeac8ede17557680855031c6f305ece2378af326
 

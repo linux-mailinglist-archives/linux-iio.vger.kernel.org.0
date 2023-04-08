@@ -2,53 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5DE46DBA08
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 12:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 876676DBA0B
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Apr 2023 12:21:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjDHKST (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Apr 2023 06:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43952 "EHLO
+        id S229654AbjDHKVu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Apr 2023 06:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229756AbjDHKSQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 06:18:16 -0400
+        with ESMTP id S229839AbjDHKVp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Apr 2023 06:21:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE689FF37;
-        Sat,  8 Apr 2023 03:17:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C2F1026B
+        for <linux-iio@vger.kernel.org>; Sat,  8 Apr 2023 03:21:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6666D60B2C;
-        Sat,  8 Apr 2023 10:17:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5091C433EF;
-        Sat,  8 Apr 2023 10:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CCD960AC0
+        for <linux-iio@vger.kernel.org>; Sat,  8 Apr 2023 10:21:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE6BC433EF;
+        Sat,  8 Apr 2023 10:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680949062;
-        bh=OS7M6JsgPcLSen82d+Ovfck6eKq2zAt8J1ftQXEqbWg=;
+        s=k20201202; t=1680949260;
+        bh=IMjB/iBdmVhDk8wW7B5WUDd6TW2LDcDNFlY+rRIXgCs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FkGEXPTV+Rr6JPZUGqxWFt4BBeJfZjs3X1y0XKPFtqvJxhwtwi8lL4AoIs+BNfP6O
-         2tqWiclqYrdZaN5y0or8mPVxoIdqRmus7zk8xchyi0mTCQCGk1rRrb8C+L6ZCvB+Qt
-         ai51HNu5RTcK4xr6v/2KawCx7PkB1sMYnolnv8rM9LNLYUV97vNIGGG6OWaFbYWoJ+
-         wnnWfCl3ByueNfZsA+OPNE6kOOtomRtcrMEV8wNNES4e0PjS+80MYGsRuRlFiYRnwx
-         pTxicKU9FDINBQWuZykzIcPFLfzcfIlXPEEkaFdlyaPLhdtfdwf5ttv5lN1poK0hzI
-         ZmxDk07C4kKtA==
-Date:   Sat, 8 Apr 2023 11:32:58 +0100
+        b=SyLSHzoK9tj9NsI9GZwtNFQaua4Usc5FPgRVDOjvy3dTzndb+PCQRl3eAaC6JUuQJ
+         0bPdGfhZac5UXtzOxZqWO52qfh00V9RzArYtTRktupJAm3o3/20btsTn2Wy7aH7zg6
+         zo5dIdvcQ28OOfdbpvwaFXobXfuVvzh/LkwO7Rd05PCxRoXI1uVhV7K9pUNChV4coW
+         1Xwtib9HpHY967zjdG/vRNaEQppt+bQ5Kwk0LFYqf6HzGb88l5ckl+flT4uYDQjaI0
+         Vqtw9tvGIa+NC93mWBVx5krcSTPCoXdxPyT8bKzjrNgnYs2MigDKGu2YidrKqBPwXj
+         mJueGedpXd+nA==
+Date:   Sat, 8 Apr 2023 11:36:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andrea Merello <andrea.merello@iit.it>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] doc: Make sysfs-bus-iio doc more exact
-Message-ID: <20230408113258.15a39576@jic23-huawei>
-In-Reply-To: <41eafb0caa510cddf650cf5ff940639a184f3005.1677331779.git.mazziesaccount@gmail.com>
-References: <cover.1677331779.git.mazziesaccount@gmail.com>
-        <41eafb0caa510cddf650cf5ff940639a184f3005.1677331779.git.mazziesaccount@gmail.com>
+To:     Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Cc:     alexandru.tachici@analog.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] ad7192 driver: fix null pointer dereference in
+ probe when populating adc input ranges
+Message-ID: <20230408113616.7a9e887e@jic23-huawei>
+In-Reply-To: <CAPJMGm4FkOmQkQ3H00kNR_gUCu7mAUiQS7OPi4jGEBccLEVv=A@mail.gmail.com>
+References: <CAPJMGm4GDVdAmwB4sHVkg78UhtVpmbCL6KT8-KbEY7cRSD5UZg@mail.gmail.com>
+        <20230401152827.179d1a01@jic23-huawei>
+        <CAPJMGm4FkOmQkQ3H00kNR_gUCu7mAUiQS7OPi4jGEBccLEVv=A@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -58,67 +55,89 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 25 Feb 2023 15:56:16 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Tue, 4 Apr 2023 08:57:07 +0200
+Fabrizio Lamarque <fl.scratchpad@gmail.com> wrote:
 
-> A few IIC channel descriptions explained used units as:
-IIO?
-> data is in foo "that can be processed into an" [unit] value. The "can be
-> processed into" is quite broad statement as it does not really explain
-> what this processing means. This makes units pretty much useless.
-> 
-> After discussion with Jonathan, it seems the units for these channels
-> should also be well-defined as for all other channels. The processing
-> means the standard scale and offset application that is used throughout
-> the IIO. Let's make it more obvious by stating that the units are [unit]
-> after scale ane offset are applied.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Excellent. Thanks for doing this. I'll pick this patch up now.
+> On Sat, Apr 1, 2023 at 4:13=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+> >
+> > On Mon, 27 Mar 2023 22:02:48 +0200
+> > Fabrizio Lamarque <fl.scratchpad@gmail.com> wrote:
+> > =20
+> > > Fix ad7192.c NULL pointer dereference in ad7192_setup() when accessing
+> > > indio_dev structure while populating input rages, causing a kernel
+> > > panic.
+> > > Fixed by calling spi_set_drvdata after indio_dev is allocated.
+> > >
+> > > Pointer to indio_dev structure is obtained via spi_get_drvdata() at
+> > > the beginning of function ad7192_setup(), but the
+> > > spi->dev->driver_data member is not initialized here, hence a NULL
+> > > pointer is returned.
+> > >
+> > > By comparing every other iio adc driver, whenever there is a call to
+> > > spi_get_drvdata() there is also one to spi_set_drvdata() within probe
+> > > function.
+> > > It should also be noted that the indio_dev structure is accessed just
+> > > to get the number of bits for the converter, and no other driver calls
+> > > spi_get_drvdata within probe.
+> > > After the patch is applied the system boots correctly and the ADC is
+> > > mapped within sysfs. =20
+> >
+> > I'd prefer to fix this by changing the ad7192_setup() to take the
+> > struct iio_dev (available at it's call site) and avoid the dance
+> > that is currently going on entirely.
+> > Drop the struct ad7192_state *st parameter and get that via
+> > st =3D iio_priv(indio_dev);
+> >
+> > Thanks,
+> >
+> > Jonathan
+> > =20
+>=20
+> Fix NULL pointer dereference in ad7192_setup() (ad7192.c) when accessing
+> indio_dev structure while populating input rages, causing a kernel panic.
+>=20
+> Changed ad7192_setup() signature to take pointer to struct
+> iio_dev, and got ad7192_state pointer via st =3D iio_priv(indio_dev);
+>=20
+> Fixes: bd5dcdeb3fd0 iio: adc: ad7192: convert to device-managed functions
+> Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Looks good. If you haven't already (I'm behind with emails)
+please send this out as a full patch etc so it gets correctly picked up
+by patchwork / b4 etc.
 
-Applied to the togreg branch of iio.git and pushed out as testing
-(in this case to be mostly ignored by 0-day ;)
+Thanks
 
 Jonathan
 
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 6ba34c0d9789..b435c6f065ae 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -1807,8 +1807,8 @@ What:		/sys/bus/iio/devices/iio:deviceX/out_resistanceX_raw
->  KernelVersion:	4.3
->  Contact:	linux-iio@vger.kernel.org
->  Description:
-> -		Raw (unscaled no offset etc.) resistance reading that can be processed
-> -		into an ohm value.
-> +		Raw (unscaled no offset etc.) resistance reading.
-> +		Units after application of scale and offset are ohms.
->  
->  What:		/sys/bus/iio/devices/iio:deviceX/heater_enable
->  KernelVersion:	4.1.0
-> @@ -1894,8 +1894,9 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_electricalconductivity_raw
->  KernelVersion:	4.8
->  Contact:	linux-iio@vger.kernel.org
->  Description:
-> -		Raw (unscaled no offset etc.) electric conductivity reading that
-> -		can be processed to siemens per meter.
-> +		Raw (unscaled no offset etc.) electric conductivity reading.
-> +		Units after application of scale and offset are siemens per
-> +		meter.
->  
->  What:		/sys/bus/iio/devices/iio:deviceX/in_countY_raw
->  KernelVersion:	4.10
-> @@ -1952,7 +1953,7 @@ KernelVersion:	4.18
->  Contact:	linux-iio@vger.kernel.org
->  Description:
->  		Raw (unscaled) phase difference reading from channel Y
-> -		that can be processed to radians.
-> +		Units after application of scale and offset are radians.
->  
->  What:		/sys/bus/iio/devices/iio:deviceX/in_massconcentration_pm1_input
->  What:		/sys/bus/iio/devices/iio:deviceX/in_massconcentrationY_pm1_input
+> V1 -> Revised after suggestions from Jonathan, removed Reviewed-by
+>  since the entire patch changed its content.
+>=20
+>  drivers/iio/adc/ad7192.c | 6 +++---
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -380,9 +380,9 @@ static int ad7192_of_clock_select(struct ad7192_state=
+ *st)
+>      return clock_sel;
+>  }
+>=20
+> -static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
+> +static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *n=
+p)
+>  {
+> -    struct iio_dev *indio_dev =3D spi_get_drvdata(st->sd.spi);
+> +    struct ad7192_state *st =3D iio_priv(indio_dev);
+>      bool rej60_en, refin2_en;
+>      bool buf_en, bipolar, burnout_curr_en;
+>      unsigned long long scale_uv;
+> @@ -1073,7 +1073,7 @@ static int ad7192_probe(struct spi_device *spi)
+>          }
+>      }
+>=20
+> -    ret =3D ad7192_setup(st, spi->dev.of_node);
+> +    ret =3D ad7192_setup(indio_dev, spi->dev.of_node);
+>      if (ret)
+>          return ret;
+>=20
 

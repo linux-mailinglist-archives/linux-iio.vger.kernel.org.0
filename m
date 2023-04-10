@@ -2,851 +2,200 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF036DC7AC
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Apr 2023 16:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8A06DC8ED
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Apr 2023 18:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbjDJONG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Apr 2023 10:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S230129AbjDJQB6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Apr 2023 12:01:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjDJONF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 10:13:05 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33078558F
-        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 07:13:02 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-54c0dd7e2f3so214671267b3.8
-        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 07:13:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681135981; x=1683727981;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bPhvUqIDFexLZWuM4h1MkmFYx3sEyt9Da5Z7A3k+GF8=;
-        b=Y44KjVllcbmUeYLdtN/3HZFxktnaDWYEZfzyxYgu/XnO/yJq0FCdszjTgaKjK2LFwd
-         kv3BoDeK20e3xt1vSDy2CyR61DdT7aaIeJxCCh0q69bT1ljzZsrL/GixvDq9QWxEDM2W
-         /oChwlHQajF3SSBrc5pW+bSXW7lGXu3QO8wweftgiy23Y0yZr8/7ZyLaGN3oyysbgxIV
-         bDdgpZayX1hIsMSSiYyzx3ZIdh1FSKgFfhA7Rt9rs65O7ds4ymbDvtdhG46sPnIUm/0J
-         3fKw04qkqeNXvb7La+PjYYosneUREd2NLgTlItTwzwr9R8GMQMob/p0rprtwKDfbsfF4
-         4xXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681135981; x=1683727981;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bPhvUqIDFexLZWuM4h1MkmFYx3sEyt9Da5Z7A3k+GF8=;
-        b=W7YPsofUWjETNDNy+Tr3EaVSBW63tG2KuXoSkXmBmCRLgFmS0SwoV/bRBpQ0vFg0gs
-         rRVC5tYsChr5BMZdCWHdhbOb3Ml5QQcAgph7G0Psnb91ENAp9+sFP8XEy2GNUtM4SLZ7
-         MFiG4K1p2IoyBIxO5iA2NwsKHK6g7GJAt9J/1zgQvK60O/sb/70m4qxrP+iSl8VB8DJc
-         +OqPnpJKfBxksD22UBvyE5RVPW57zOeRYsVhoq6staJYIh7pKF7qgs9Od3JWtTSEmMKM
-         zEIX6jQgeLScAtTx/82dyw55TDn57EZgSG131OXZbHvsThwuiVvBKBWv45/Z8YjAcMXT
-         fOYg==
-X-Gm-Message-State: AAQBX9fUz3nXhbtsfxF85Y2JDjDMm3j0NiqnM6aXluGwAQMNCovyCfnE
-        xA3QmB/GTPR9T9Izfure9Ppkrv+pLq+WslTCkhOkNA==
-X-Google-Smtp-Source: AKy350YCXlP2CpJrOME2wgK3jzAsF4Zn6cGG85G1g+teEIOqCjY6xqjuw0rz+/K+7/20AKLIEnzlkA==
-X-Received: by 2002:a81:6354:0:b0:541:90fc:6ee2 with SMTP id x81-20020a816354000000b0054190fc6ee2mr4863698ywb.25.1681135980953;
-        Mon, 10 Apr 2023 07:13:00 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id k19-20020a81ac13000000b00545b02d4af5sm2824580ywh.48.2023.04.10.07.13.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Apr 2023 07:13:00 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH] counter: 104-quad-8: Migrate to the regmap API
-Date:   Mon, 10 Apr 2023 10:12:52 -0400
-Message-Id: <20230410141252.143998-1-william.gray@linaro.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S230199AbjDJQBw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 12:01:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192951718
+        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 09:01:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B36161359
+        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 16:01:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC1EC433D2;
+        Mon, 10 Apr 2023 16:01:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681142494;
+        bh=FJeWT+C+euJtFT9e+IQ4o+S5unA3jy0XfT9LzpVwFJc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gbZQ4Wri4YaFwT30inHZTOxeACKDglnCBdhzbAFBNdM6e8MvNxrQcPpcjePGQi8+q
+         32hsru0RDnuwhvxe1ytchA9k+djDNUudW5hULUjYHcrtbTO+kM+VHWRHVisRYVZMAv
+         hvLf22YUzNInBj9e7ux01/IJ39Hyc38cYmazR0YmGqw9oUdvq0lOnLyoz9wimt04Iv
+         LoqQFlmS2GoUNAuj13OA1Udro+W2rL6uLhg9CZIjvV8uGuOzLVFwWQTZXYxpwmEwHq
+         /wk1jRgW2fZENuOZdRn3PJC1xwwVS8hDCNI/7MJOKxus3O8mAxHXunQKwaRPVkgPOl
+         s95DTPgzkkWtg==
+Date:   Mon, 10 Apr 2023 17:16:54 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: ROHM BU27008 RGB sensor
+Message-ID: <20230410171654.66605efe@jic23-huawei>
+In-Reply-To: <5942c0c2-3997-e10f-0872-30d201bc52ae@gmail.com>
+References: <5942c0c2-3997-e10f-0872-30d201bc52ae@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The regmap API supports IO port accessors so we can take advantage of
-regmap abstractions rather than handling access to the device registers
-directly in the driver.
+On Tue, 4 Apr 2023 15:04:38 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
-This patch depends on the 104-quad-8 refactor series [0].
+> Hi deeee Ho peeps,
+> 
+> The ROHM BU27034 work seems to be slowly converging :) So, it is a good 
+> time to start working with the next sensor sitting on my table.
+> 
+> This time I am dealing with an RGB+c+IR sensor, which once again has 
+> some peculiarities. I would again be very grateful for any and all 
+> pointers so I could head to the right direction.
+> 
+> The IC has 4 data channels. First two being always RED and GREEN. Third 
+> can be configured to BLUE or CLEAR and fourth can be set to CLEAR or IR.
 
-[0] https://lore.kernel.org/all/cover.1681134558.git.william.gray@linaro.org/
+Guessing games, but are we talking a case where we are effectively
+looking at a pair of two way muxes on the last two channels?
+Or is this a case of one big mux and an oddly designed sequencer?
+Doesn't actually make any difference. This is just odd enough that I'm curious.
 
- drivers/counter/104-quad-8.c | 345 ++++++++++++++++++++++-------------
- drivers/counter/Kconfig      |   1 +
- 2 files changed, 219 insertions(+), 127 deletions(-)
+> 
+> I think I have the basic driver done. I expose all of the RGBC and IR as 
+> own channels. Raw read is supported for all, and channels 3 and 4 are 
+> configured for the read depending on channel to be read being B, C or IR.
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index c171d0a80ef9..3e9e70d8d5ca 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -9,7 +9,7 @@
- #include <linux/bits.h>
- #include <linux/counter.h>
- #include <linux/device.h>
--#include <linux/errno.h>
-+#include <linux/err.h>
- #include <linux/io.h>
- #include <linux/ioport.h>
- #include <linux/interrupt.h>
-@@ -18,8 +18,9 @@
- #include <linux/list.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
--#include <linux/types.h>
-+#include <linux/regmap.h>
- #include <linux/spinlock.h>
-+#include <linux/types.h>
- 
- #define QUAD8_EXTENT 32
- 
-@@ -35,56 +36,57 @@ MODULE_PARM_DESC(irq, "ACCES 104-QUAD-8 interrupt line numbers");
- 
- #define QUAD8_NUM_COUNTERS 8
- 
--/**
-- * struct channel_reg - channel register structure
-- * @data:	Count data
-- * @control:	Channel flags and control
-- */
--struct channel_reg {
--	u8 data;
--	u8 control;
--};
--
--/**
-- * struct quad8_reg - device register structure
-- * @channel:		quadrature counter data and control
-- * @interrupt_status:	channel interrupt status
-- * @channel_oper:	enable/reset counters and interrupt functions
-- * @index_interrupt:	enable channel interrupts
-- * @reserved:		reserved for Factory Use
-- * @index_input_levels:	index signal logical input level
-- * @cable_status:	differential encoder cable status
-- */
--struct quad8_reg {
--	struct channel_reg channel[QUAD8_NUM_COUNTERS];
--	u8 interrupt_status;
--	u8 channel_oper;
--	u8 index_interrupt;
--	u8 reserved[3];
--	u8 index_input_levels;
--	u8 cable_status;
--};
-+#define QUAD8_DATA(_channel) ((_channel) * 2)
-+#define QUAD8_CONTROL(_channel) (QUAD8_DATA(_channel) + 1)
-+#define QUAD8_INTERRUPT_STATUS 0x10
-+#define QUAD8_CHANNEL_OPERATION 0x11
-+#define QUAD8_INDEX_INTERRUPT 0x12
-+#define QUAD8_INDEX_INPUT_LEVELS 0x16
-+#define QUAD8_CABLE_STATUS 0x17
- 
- /**
-  * struct quad8 - device private data structure
-  * @lock:		lock to prevent clobbering device states during R/W ops
-+ * @map:		regmap for the device
-  * @cmr:		array of Counter Mode Register states
-  * @ior:		array of Input / Output Control Register states
-  * @idr:		array of Index Control Register states
-  * @fck_prescaler:	array of filter clock prescaler configurations
-  * @preset:		array of preset values
-  * @cable_fault_enable:	differential encoder cable status enable configurations
-- * @reg:		I/O address offset for the device registers
-  */
- struct quad8 {
- 	spinlock_t lock;
-+	struct regmap *map;
- 	u8 cmr[QUAD8_NUM_COUNTERS];
- 	u8 ior[QUAD8_NUM_COUNTERS];
- 	u8 idr[QUAD8_NUM_COUNTERS];
- 	unsigned int fck_prescaler[QUAD8_NUM_COUNTERS];
- 	unsigned int preset[QUAD8_NUM_COUNTERS];
- 	unsigned int cable_fault_enable;
--	struct quad8_reg __iomem *reg;
-+};
-+
-+static const struct regmap_range quad8_wr_ranges[] = {
-+	regmap_reg_range(0x0, 0xF), regmap_reg_range(0x11, 0x12), regmap_reg_range(0x17, 0x17),
-+};
-+static const struct regmap_range quad8_rd_ranges[] = {
-+	regmap_reg_range(0x0, 0x12), regmap_reg_range(0x16, 0x18),
-+};
-+static const struct regmap_access_table quad8_wr_table = {
-+	.yes_ranges = quad8_wr_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(quad8_wr_ranges),
-+};
-+static const struct regmap_access_table quad8_rd_table = {
-+	.yes_ranges = quad8_rd_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(quad8_rd_ranges),
-+};
-+static const struct regmap_config quad8_regmap_config = {
-+	.reg_bits = 8,
-+	.reg_stride = 1,
-+	.val_bits = 8,
-+	.io_port = true,
-+	.wr_table = &quad8_wr_table,
-+	.rd_table = &quad8_rd_table,
- };
- 
- /* Error flag */
-@@ -200,12 +202,12 @@ struct quad8 {
- /* Each Counter is 24 bits wide */
- #define LS7267_CNTR_MAX GENMASK(23, 0)
- 
--static __always_inline void quad8_control_register_update(struct quad8 *const priv, u8 *const buf,
--							  const size_t channel, const u8 val,
--							  const u8 field)
-+static __always_inline int quad8_control_register_update(struct regmap *const map, u8 *const buf,
-+							 const size_t channel, const u8 val,
-+							 const u8 field)
- {
- 	u8p_replace_bits(&buf[channel], val, field);
--	iowrite8(buf[channel], &priv->reg->channel[channel].control);
-+	return regmap_write(map, QUAD8_CONTROL(channel), buf[channel]);
- }
- 
- static int quad8_signal_read(struct counter_device *counter,
-@@ -213,13 +215,15 @@ static int quad8_signal_read(struct counter_device *counter,
- 			     enum counter_signal_level *level)
- {
- 	const struct quad8 *const priv = counter_priv(counter);
--	unsigned int state;
-+	int state;
- 
- 	/* Only Index signal levels can be read */
- 	if (signal->id < 16)
- 		return -EINVAL;
- 
--	state = ioread8(&priv->reg->index_input_levels) & BIT(signal->id - 16);
-+	state = regmap_test_bits(priv->map, QUAD8_INDEX_INPUT_LEVELS, BIT(signal->id - 16));
-+	if (state < 0)
-+		return state;
- 
- 	*level = (state) ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
- 
-@@ -230,44 +234,52 @@ static int quad8_count_read(struct counter_device *counter,
- 			    struct counter_count *count, u64 *val)
- {
- 	struct quad8 *const priv = counter_priv(counter);
--	struct channel_reg __iomem *const chan = priv->reg->channel + count->id;
- 	unsigned long irqflags;
-+	int ret;
- 
- 	*val = 0;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
--	iowrite8(SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL, &chan->control);
--	ioread8_rep(&chan->data, val, 3);
-+	ret = regmap_write(priv->map, QUAD8_CONTROL(count->id),
-+			   SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL);
-+	if (ret)
-+		goto exit_unlock;
-+	ret = regmap_noinc_read(priv->map, QUAD8_DATA(count->id), val, 3);
- 
-+exit_unlock:
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
--static void quad8_preset_register_set(struct quad8 *const priv, const size_t id,
--				      const unsigned long preset)
-+static int quad8_preset_register_set(struct quad8 *const priv, const size_t id,
-+				     const unsigned long preset)
- {
--	struct channel_reg __iomem *const chan = priv->reg->channel + id;
-+	int err;
- 
--	iowrite8(SELECT_RLD | RESET_BP, &chan->control);
--	iowrite8_rep(&chan->data, &preset, 3);
-+	err = regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | RESET_BP);
-+	if (err)
-+		return err;
-+	return regmap_noinc_write(priv->map, QUAD8_DATA(id), &preset, 3);
- }
- 
--static void quad8_flag_register_reset(struct quad8 *const priv, const size_t id)
-+static int quad8_flag_register_reset(struct quad8 *const priv, const size_t id)
- {
--	struct channel_reg __iomem *const chan = priv->reg->channel + id;
-+	int err;
- 
--	iowrite8(SELECT_RLD | RESET_BT_CT_CPT_S_IDX, &chan->control);
--	iowrite8(SELECT_RLD | RESET_E, &chan->control);
-+	err = regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | RESET_BT_CT_CPT_S_IDX);
-+	if (err)
-+		return err;
-+	return regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | RESET_E);
- }
- 
- static int quad8_count_write(struct counter_device *counter,
- 			     struct counter_count *count, u64 val)
- {
- 	struct quad8 *const priv = counter_priv(counter);
--	struct channel_reg __iomem *const chan = priv->reg->channel + count->id;
- 	unsigned long irqflags;
-+	int ret;
- 
- 	if (val > LS7267_CNTR_MAX)
- 		return -ERANGE;
-@@ -275,17 +287,24 @@ static int quad8_count_write(struct counter_device *counter,
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
- 	/* Counter can only be set via Preset Register */
--	quad8_preset_register_set(priv, count->id, val);
--	iowrite8(SELECT_RLD | TRANSFER_PR_TO_CNTR, &chan->control);
-+	ret = quad8_preset_register_set(priv, count->id, val);
-+	if (ret)
-+		goto exit_unlock;
-+	ret = regmap_write(priv->map, QUAD8_CONTROL(count->id), SELECT_RLD | TRANSFER_PR_TO_CNTR);
-+	if (ret)
-+		goto exit_unlock;
- 
--	quad8_flag_register_reset(priv, count->id);
-+	ret = quad8_flag_register_reset(priv, count->id);
-+	if (ret)
-+		goto exit_unlock;
- 
- 	/* Set Preset Register back to original value */
--	quad8_preset_register_set(priv, count->id, priv->preset[count->id]);
-+	ret = quad8_preset_register_set(priv, count->id, priv->preset[count->id]);
- 
-+exit_unlock:
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static const enum counter_function quad8_count_functions_list[] = {
-@@ -343,6 +362,7 @@ static int quad8_function_write(struct counter_device *counter,
- 	unsigned long irqflags;
- 	unsigned int mode_cfg;
- 	bool synchronous_mode;
-+	int ret;
- 
- 	switch (function) {
- 	case COUNTER_FUNCTION_PULSE_DIRECTION:
-@@ -366,14 +386,19 @@ static int quad8_function_write(struct counter_device *counter,
- 
- 	/* Synchronous function not supported in non-quadrature mode */
- 	synchronous_mode = u8_get_bits(priv->idr[id], INDEX_MODE) == ENABLE_INDEX_MODE;
--	if (synchronous_mode && mode_cfg == NON_QUADRATURE)
--		quad8_control_register_update(priv, priv->idr, id, DISABLE_INDEX_MODE, INDEX_MODE);
-+	if (synchronous_mode && mode_cfg == NON_QUADRATURE) {
-+		ret = quad8_control_register_update(priv->map, priv->idr, id, DISABLE_INDEX_MODE,
-+						    INDEX_MODE);
-+		if (ret)
-+			goto exit_unlock;
-+	}
- 
--	quad8_control_register_update(priv, priv->cmr, id, mode_cfg, QUADRATURE_MODE);
-+	ret = quad8_control_register_update(priv->map, priv->cmr, id, mode_cfg, QUADRATURE_MODE);
- 
-+exit_unlock:
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_direction_read(struct counter_device *counter,
-@@ -381,10 +406,12 @@ static int quad8_direction_read(struct counter_device *counter,
- 				enum counter_count_direction *direction)
- {
- 	const struct quad8 *const priv = counter_priv(counter);
--	u8 __iomem *const flag_addr = &priv->reg->channel[count->id].control;
--	u8 flag;
-+	int err;
-+	unsigned int flag;
- 
--	flag = ioread8(flag_addr);
-+	err = regmap_read(priv->map, QUAD8_CONTROL(count->id), &flag);
-+	if (err)
-+		return err;
- 	*direction = (u8_get_bits(flag, FLAG_UD) == UP) ? COUNTER_COUNT_DIRECTION_FORWARD :
- 		COUNTER_COUNT_DIRECTION_BACKWARD;
- 
-@@ -475,6 +502,7 @@ static int quad8_events_configure(struct counter_device *counter)
- 	unsigned long irqflags;
- 	struct counter_event_node *event_node;
- 	u8 flg_pins;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
-@@ -494,8 +522,8 @@ static int quad8_events_configure(struct counter_device *counter)
- 			break;
- 		default:
- 			/* should never reach this path */
--			spin_unlock_irqrestore(&priv->lock, irqflags);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto exit_unlock;
- 		}
- 
- 		/* Enable IRQ line */
-@@ -506,15 +534,18 @@ static int quad8_events_configure(struct counter_device *counter)
- 			continue;
- 
- 		/* Save new IRQ function configuration */
--		quad8_control_register_update(priv, priv->ior, event_node->channel, flg_pins,
--					      FLG_PINS);
-+		ret = quad8_control_register_update(priv->map, priv->ior, event_node->channel,
-+						    flg_pins, FLG_PINS);
-+		if (ret)
-+			goto exit_unlock;
- 	}
- 
--	iowrite8(irq_enabled, &priv->reg->index_interrupt);
-+	ret = regmap_write(priv->map, QUAD8_INDEX_INTERRUPT, irq_enabled);
- 
-+exit_unlock:
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_watch_validate(struct counter_device *counter,
-@@ -575,14 +606,16 @@ static int quad8_index_polarity_set(struct counter_device *counter,
- 	struct quad8 *const priv = counter_priv(counter);
- 	const size_t channel_id = signal->id - 16;
- 	unsigned long irqflags;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
--	quad8_control_register_update(priv, priv->idr, channel_id, index_polarity, INDEX_POLARITY);
-+	ret = quad8_control_register_update(priv->map, priv->idr, channel_id, index_polarity,
-+					    INDEX_POLARITY);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_polarity_read(struct counter_device *counter,
-@@ -637,21 +670,24 @@ static int quad8_synchronous_mode_set(struct counter_device *counter,
- 	const size_t channel_id = signal->id - 16;
- 	u8 quadrature_mode;
- 	unsigned long irqflags;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
- 	/* Index function must be non-synchronous in non-quadrature mode */
- 	quadrature_mode = u8_get_bits(priv->idr[channel_id], QUADRATURE_MODE);
- 	if (synchronous_mode && quadrature_mode == NON_QUADRATURE) {
--		spin_unlock_irqrestore(&priv->lock, irqflags);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto exit_unlock;
- 	}
- 
--	quad8_control_register_update(priv, priv->idr, channel_id, synchronous_mode, INDEX_MODE);
-+	ret = quad8_control_register_update(priv->map, priv->idr, channel_id, synchronous_mode,
-+					    INDEX_MODE);
- 
-+exit_unlock:
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_count_floor_read(struct counter_device *counter,
-@@ -694,6 +730,7 @@ static int quad8_count_mode_write(struct counter_device *counter,
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned int count_mode;
- 	unsigned long irqflags;
-+	int ret;
- 
- 	switch (cnt_mode) {
- 	case COUNTER_COUNT_MODE_NORMAL:
-@@ -715,11 +752,12 @@ static int quad8_count_mode_write(struct counter_device *counter,
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
--	quad8_control_register_update(priv, priv->cmr, count->id, count_mode, COUNT_MODE);
-+	ret = quad8_control_register_update(priv->map, priv->cmr, count->id, count_mode,
-+					    COUNT_MODE);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_count_enable_read(struct counter_device *counter,
-@@ -737,14 +775,15 @@ static int quad8_count_enable_write(struct counter_device *counter,
- {
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned long irqflags;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
--	quad8_control_register_update(priv, priv->ior, count->id, enable, AB_GATE);
-+	ret = quad8_control_register_update(priv->map, priv->ior, count->id, enable, AB_GATE);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static const char *const quad8_noise_error_states[] = {
-@@ -756,10 +795,12 @@ static int quad8_error_noise_get(struct counter_device *counter,
- 				 struct counter_count *count, u32 *noise_error)
- {
- 	const struct quad8 *const priv = counter_priv(counter);
--	u8 __iomem *const flag_addr = &priv->reg->channel[count->id].control;
--	u8 flag;
-+	int err;
-+	unsigned int flag;
- 
--	flag = ioread8(flag_addr);
-+	err = regmap_read(priv->map, QUAD8_CONTROL(count->id), &flag);
-+	if (err)
-+		return err;
- 	*noise_error = u8_get_bits(flag, FLAG_E);
- 
- 	return 0;
-@@ -780,6 +821,7 @@ static int quad8_count_preset_write(struct counter_device *counter,
- {
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned long irqflags;
-+	int ret;
- 
- 	if (preset > LS7267_CNTR_MAX)
- 		return -ERANGE;
-@@ -787,11 +829,11 @@ static int quad8_count_preset_write(struct counter_device *counter,
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
- 	priv->preset[count->id] = preset;
--	quad8_preset_register_set(priv, count->id, preset);
-+	ret = quad8_preset_register_set(priv, count->id, preset);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_count_ceiling_read(struct counter_device *counter,
-@@ -823,6 +865,7 @@ static int quad8_count_ceiling_write(struct counter_device *counter,
- {
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned long irqflags;
-+	int ret;
- 
- 	if (ceiling > LS7267_CNTR_MAX)
- 		return -ERANGE;
-@@ -834,14 +877,16 @@ static int quad8_count_ceiling_write(struct counter_device *counter,
- 	case RANGE_LIMIT:
- 	case MODULO_N:
- 		priv->preset[count->id] = ceiling;
--		quad8_preset_register_set(priv, count->id, ceiling);
--		spin_unlock_irqrestore(&priv->lock, irqflags);
--		return 0;
-+		ret = quad8_preset_register_set(priv, count->id, ceiling);
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
- 	}
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return -EINVAL;
-+	return ret;
- }
- 
- static int quad8_count_preset_enable_read(struct counter_device *counter,
-@@ -862,15 +907,17 @@ static int quad8_count_preset_enable_write(struct counter_device *counter,
- {
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned long irqflags;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
- 	/* Preset enable is active low in Input/Output Control register */
--	quad8_control_register_update(priv, priv->ior, count->id, !preset_enable, LOAD_PIN);
-+	ret = quad8_control_register_update(priv->map, priv->ior, count->id, !preset_enable,
-+					    LOAD_PIN);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_signal_cable_fault_read(struct counter_device *counter,
-@@ -881,7 +928,7 @@ static int quad8_signal_cable_fault_read(struct counter_device *counter,
- 	const size_t channel_id = signal->id / 2;
- 	unsigned long irqflags;
- 	bool disabled;
--	unsigned int status;
-+	int status;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
-@@ -892,13 +939,16 @@ static int quad8_signal_cable_fault_read(struct counter_device *counter,
- 		return -EINVAL;
- 	}
- 
--	/* Logic 0 = cable fault */
--	status = ioread8(&priv->reg->cable_status);
-+	status = regmap_test_bits(priv->map, QUAD8_CABLE_STATUS, BIT(channel_id));
-+	if (status < 0) {
-+		spin_unlock_irqrestore(&priv->lock, irqflags);
-+		return status;
-+	}
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	/* Mask respective channel and invert logic */
--	*cable_fault = !(status & BIT(channel_id));
-+	/* Logic 0 = cable fault */
-+	*cable_fault = !status;
- 
- 	return 0;
- }
-@@ -923,6 +973,7 @@ static int quad8_signal_cable_fault_enable_write(struct counter_device *counter,
- 	const size_t channel_id = signal->id / 2;
- 	unsigned long irqflags;
- 	unsigned int cable_fault_enable;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
-@@ -934,11 +985,11 @@ static int quad8_signal_cable_fault_enable_write(struct counter_device *counter,
- 	/* Enable is active low in Differential Encoder Cable Status register */
- 	cable_fault_enable = ~priv->cable_fault_enable;
- 
--	iowrite8(cable_fault_enable, &priv->reg->cable_status);
-+	ret = regmap_write(priv->map, QUAD8_CABLE_STATUS, cable_fault_enable);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static int quad8_signal_fck_prescaler_read(struct counter_device *counter,
-@@ -952,14 +1003,18 @@ static int quad8_signal_fck_prescaler_read(struct counter_device *counter,
- 	return 0;
- }
- 
--static void quad8_filter_clock_prescaler_set(struct quad8 *const priv, const size_t id,
--					     const u8 prescaler)
-+static int quad8_filter_clock_prescaler_set(struct quad8 *const priv, const size_t id,
-+					    const u8 prescaler)
- {
--	struct channel_reg __iomem *const chan = priv->reg->channel + id;
-+	int err;
- 
--	iowrite8(SELECT_RLD | RESET_BP, &chan->control);
--	iowrite8(prescaler, &chan->data);
--	iowrite8(SELECT_RLD | TRANSFER_PR0_TO_PSC, &chan->control);
-+	err = regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | RESET_BP);
-+	if (err)
-+		return err;
-+	err = regmap_write(priv->map, QUAD8_DATA(id), prescaler);
-+	if (err)
-+		return err;
-+	return regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | TRANSFER_PR0_TO_PSC);
- }
- 
- static int quad8_signal_fck_prescaler_write(struct counter_device *counter,
-@@ -969,15 +1024,16 @@ static int quad8_signal_fck_prescaler_write(struct counter_device *counter,
- 	struct quad8 *const priv = counter_priv(counter);
- 	const size_t channel_id = signal->id / 2;
- 	unsigned long irqflags;
-+	int ret;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
- 	priv->fck_prescaler[channel_id] = prescaler;
--	quad8_filter_clock_prescaler_set(priv, channel_id, prescaler);
-+	ret = quad8_filter_clock_prescaler_set(priv, channel_id, prescaler);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return ret;
- }
- 
- static struct counter_comp quad8_signal_ext[] = {
-@@ -1130,15 +1186,20 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
- {
- 	struct counter_device *counter = private;
- 	struct quad8 *const priv = counter_priv(counter);
-+	int err;
-+	unsigned int status;
- 	unsigned long irq_status;
- 	unsigned long channel;
- 	unsigned int flg_pins;
- 	u8 event;
- 
--	irq_status = ioread8(&priv->reg->interrupt_status);
--	if (!irq_status)
-+	err = regmap_read(priv->map, QUAD8_INTERRUPT_STATUS, &status);
-+	if (err)
-+		return err;
-+	if (!status)
- 		return IRQ_NONE;
- 
-+	irq_status = status;
- 	for_each_set_bit(channel, &irq_status, QUAD8_NUM_COUNTERS) {
- 		flg_pins = u8_get_bits(priv->ior[channel], FLG_PINS);
- 		switch (flg_pins) {
-@@ -1164,40 +1225,52 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
- 		counter_push_event(counter, event, channel);
- 	}
- 
--	/* Clear pending interrupts on device */
--	iowrite8(CLEAR_PENDING_INTERRUPTS, &priv->reg->channel_oper);
-+	err = regmap_write(priv->map, QUAD8_CHANNEL_OPERATION, CLEAR_PENDING_INTERRUPTS);
-+	if (err)
-+		return err;
- 
- 	return IRQ_HANDLED;
- }
- 
--static void quad8_init_counter(struct quad8 *const priv, const size_t channel)
-+static int quad8_init_counter(struct quad8 *const priv, const size_t channel)
- {
--	struct channel_reg __iomem *const chan = priv->reg->channel + channel;
-+	int err;
- 
--	quad8_filter_clock_prescaler_set(priv, channel, 0);
--	quad8_preset_register_set(priv, channel, 0);
--	quad8_flag_register_reset(priv, channel);
-+	err = quad8_filter_clock_prescaler_set(priv, channel, 0);
-+	if (err)
-+		return err;
-+	err = quad8_preset_register_set(priv, channel, 0);
-+	if (err)
-+		return err;
-+	err = quad8_flag_register_reset(priv, channel);
-+	if (err)
-+		return err;
- 
- 	/* Binary encoding; Normal count; non-quadrature mode */
- 	priv->cmr[channel] = SELECT_CMR | BINARY | u8_encode_bits(NORMAL_COUNT, COUNT_MODE) |
- 			     u8_encode_bits(NON_QUADRATURE, QUADRATURE_MODE);
--	iowrite8(priv->cmr[channel], &chan->control);
-+	err = regmap_write(priv->map, QUAD8_CONTROL(channel), priv->cmr[channel]);
-+	if (err)
-+		return err;
- 
- 	/* Disable A and B inputs; preset on index; FLG1 as Carry */
- 	priv->ior[channel] = SELECT_IOR | DISABLE_AB | u8_encode_bits(LOAD_CNTR, LOAD_PIN) |
- 			     u8_encode_bits(FLG1_CARRY_FLG2_BORROW, FLG_PINS);
--	iowrite8(priv->ior[channel], &chan->control);
-+	err = regmap_write(priv->map, QUAD8_CONTROL(channel), priv->ior[channel]);
-+	if (err)
-+		return err;
- 
- 	/* Disable index function; negative index polarity */
- 	priv->idr[channel] = SELECT_IDR | u8_encode_bits(DISABLE_INDEX_MODE, INDEX_MODE) |
- 			     u8_encode_bits(NEGATIVE_INDEX_POLARITY, INDEX_POLARITY);
--	iowrite8(priv->idr[channel], &chan->control);
-+	return regmap_write(priv->map, QUAD8_CONTROL(channel), priv->idr[channel]);
- }
- 
- static int quad8_probe(struct device *dev, unsigned int id)
- {
- 	struct counter_device *counter;
- 	struct quad8 *priv;
-+	void __iomem *regs;
- 	unsigned long i;
- 	int err;
- 
-@@ -1212,10 +1285,15 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 		return -ENOMEM;
- 	priv = counter_priv(counter);
- 
--	priv->reg = devm_ioport_map(dev, base[id], QUAD8_EXTENT);
--	if (!priv->reg)
-+	regs = devm_ioport_map(dev, base[id], QUAD8_EXTENT);
-+	if (!regs)
- 		return -ENOMEM;
- 
-+	priv->map = devm_regmap_init_mmio(dev, regs, &quad8_regmap_config);
-+	if (IS_ERR(priv->map))
-+		return dev_err_probe(dev, PTR_ERR(priv->map),
-+				     "Unable to initialize register map\n");
-+
- 	/* Initialize Counter device and driver data */
- 	counter->name = dev_name(dev);
- 	counter->parent = dev;
-@@ -1228,16 +1306,29 @@ static int quad8_probe(struct device *dev, unsigned int id)
- 	spin_lock_init(&priv->lock);
- 
- 	/* Reset Index/Interrupt Register */
--	iowrite8(0x00, &priv->reg->index_interrupt);
-+	err = regmap_write(priv->map, QUAD8_INDEX_INTERRUPT, 0x00);
-+	if (err)
-+		return err;
- 	/* Reset all counters and disable interrupt function */
--	iowrite8(RESET_COUNTERS | DISABLE_INTERRUPT_FUNCTION, &priv->reg->channel_oper);
-+	err = regmap_write(priv->map, QUAD8_CHANNEL_OPERATION,
-+			   RESET_COUNTERS | DISABLE_INTERRUPT_FUNCTION);
-+	if (err)
-+		return err;
- 	/* Set initial configuration for all counters */
--	for (i = 0; i < QUAD8_NUM_COUNTERS; i++)
--		quad8_init_counter(priv, i);
-+	for (i = 0; i < QUAD8_NUM_COUNTERS; i++) {
-+		err = quad8_init_counter(priv, i);
-+		if (err)
-+			return err;
-+	}
- 	/* Disable Differential Encoder Cable Status for all channels */
--	iowrite8(0xFF, &priv->reg->cable_status);
-+	err = regmap_write(priv->map, QUAD8_CABLE_STATUS, GENMASK(7, 0));
-+	if (err)
-+		return err;
- 	/* Enable all counters and enable interrupt function */
--	iowrite8(ENABLE_COUNTERS | ENABLE_INTERRUPT_FUNCTION, &priv->reg->channel_oper);
-+	err = regmap_write(priv->map, QUAD8_CHANNEL_OPERATION,
-+			   ENABLE_COUNTERS | ENABLE_INTERRUPT_FUNCTION);
-+	if (err)
-+		return err;
- 
- 	err = devm_request_irq(&counter->dev, irq[id], quad8_irq_handler,
- 			       IRQF_SHARED, counter->name, counter);
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index b5ba8fb02cf7..52e80c0b6168 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -16,6 +16,7 @@ config 104_QUAD_8
- 	tristate "ACCES 104-QUAD-8 driver"
- 	depends on (PC104 && X86) || COMPILE_TEST
- 	select ISA_BUS_API
-+	select REGMAP_MMIO
- 	help
- 	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
- 	  encoder counter/interface device family (104-QUAD-8, 104-QUAD-4).
+Sounds good.
 
-base-commit: 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
-prerequisite-patch-id: 5e21ab4071e143908bcc7d55872964f822fc7176
-prerequisite-patch-id: e1f91a1c2f9863f2ffbe31dbfceece48b8a6898c
-prerequisite-patch-id: 9151845864e86341b1206e8c6bb98c9ed3c2694d
--- 
-2.39.2
+> 
+> The device has a "data ready" IRQ, which is used for a trigger. 
+> Triggered buffer is supported and channel configuration is written at 
+> buffer enable, based on the active_scan_mask. The available_scan_masks 
+> field is populated to prevent enabling all of the B, C and IR at same 
+> time (because only 2 of them can be measured at same time as only 2 
+> channels can be configured for B, C and IR).
+> 
+Sounds good.
+	
+> 
+> I have following questions:
+> 
+> 1) I have no good knowledge as to what units the register values 
+> represent. I know the greater value informs greater color intensity - 
+> but that's about it. I currently just send out the raw register values 
+> via IIO_INTENSITY raw channel - but I don't know if this is usual or if 
+> typical user-space would expect the values to be some how 'normalized'? 
+
+Given these colour curves are normally devices specific, it's often very hard
+to give them any units that can be compared across devices.  There are standard
+colour spaces, (CIE 1931 RGB for example) but basic sensors tend not to be matched
+to these. Sometimes there are documented approximate conversion calculations
+(similar to the ones you get for illuminance calculations).  In some cases
+these are highly non linear with different approximations for different parts
+of the colour space.
+
+> With the current setup user-space needs to either just compare the 
+> different channel values to each other to decide which colour dominates 
+> - or perform some manual calibration using known light sources. I have 
+> no idea if this is usual approach with RGB sensors? 
+> It seems to me that 
+> for example the adjd_s311.c just returns raw register values - but I 
+> don't know what the format is. Any insight on if the values should 
+> represent some 'units' or if they can really just be 'register values 
+> proportional to intensity of measured colour'.
+
+There isn't usually a way of measuring which colour dominates.  That depends
+on all sorts of things that affect human perception of colour. All you can
+measure is that the intensity of a particular colour is itself increasing
+or decreasing. 
+
+> 
+> 2) The gain setting is once again ... eh ... complicated. The RGB and C 
+> channels are sharing gain setting. There are a few supported gain values 
+> - ranging from 1X to 1024X. The IR channel _shares_ again the high bits 
+> of GAIN setting with the RGBC channels. Two lowest bits can be set 
+> independently - but again, quite a few gain 'selector' field values are 
+> marked as forbidden.
+> 
+> To make it worse, the IR gain values matching the selector field are 
+> same as for RGBC - except the first selector. The sel 0 equals to gain 
+> 1X on RGBC, but gain 2X for IR. (1X is not supported for IR). So, 
+> changing gain selector from 0 => 1 will cause gain to jump from 1X => 4X 
+> for RGBC but from 2X => 4X for IR channel.
+> 
+
+That's "novel".  Feel free to tell the Rohm hardware folk that I think they
+are crazy in a really unhelpful way.
+
+> I see two options:
+> 
+> 1) Use fixed high bits which means supporting only 4X and 16X gains - 
+> for which changing the low selector bits is enough. In this case the 
+> RGBC would have own gain setting, IR would have own and there would be 
+> no shared bits.
+
+That's pretty nasty as I suspect the high bits are the useful ones.
+
+> 
+> 2) Allow full range of supported gains to be set for RGBC - and disallow 
+> setting gain for IR. However, change the IR gain to have same selector 
+> as RGBC gain when RGBC gain is changed. (This prevents IR gain selector 
+> from changing to an unsupported value when RGBC gain is changed). This 
+> means that if user-space changes the gain for RGBC, it should also 
+> read-back the gain for IR to detect the change. I have no idea if 
+> existing user-space apps do this.
+
+We've had other cases where setting a gain affects a subset of channels
+(shared gains for pairs of channels for instance). In those cases userspace
+has to read back the values.  I suspect there are no userspace programs
+that do anything more complex than setting gain to a value in a config
+file.  So if that's valid then all is good.
+
+> 
+> I think that no matter if we select option 1) or option 2) - we must 
+> have own scale entries for all channels. This is needed for option 2) 
+> because of the 1X vs 2X difference mentioned above.
+> 
+> I have currently implemented the option 2) because it supports wider 
+> variety of gains - but I am unsure if this is "the right thing to do".
+> 
+> Any insight is appreciated!
+
+Hmm. Given the pairwise case I mention above requires that any write to
+gain can change any other and there is no strong reason it must change it
+to the same value as the one written.  So setting channel 1 scale to x2 might
+result in channel 2 scale doubling from x2 to x4 (think of a fixed x2 multiplier
+on channel 2 with a pga in front of it (this craziness happens on SoC ADCs
+sometimes) I think you can be more generic about this.
+
+Have all channels have their own scale + scale_available.
+A write to any of them changes the value with exception of when it affects only
+the lower bits where you can separate off the IR channel.  If the change requires
+changing the upper bits than fine it changes the IR gain as well.
+
+Another option comes to mind.  Just have one scale value and don't allow the
+lowest gain value.  That way you can always program the scales to the same value
+by setting both registers.  So basically hid the oddity of that different
+1x vs 2x initial scale by not supporting it.
+
+Jonathan
+
+
+> 
+> Yours,
+> 	-- Matti
+> 
 

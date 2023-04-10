@@ -2,55 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E276DD1B4
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 07:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0277A6DCC1F
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Apr 2023 22:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbjDKFfb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 11 Apr 2023 01:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46096 "EHLO
+        id S229777AbjDJU3e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Apr 2023 16:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjDKFfa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 01:35:30 -0400
-Received: from zimbra-dc.paul-scerri.ch (dc.paul-scerri.ch [62.220.130.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48461271B;
-        Mon, 10 Apr 2023 22:35:29 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTP id 37B375A243C;
-        Mon, 10 Apr 2023 22:28:09 +0200 (CEST)
-Received: from zimbra-dc.paul-scerri.ch ([127.0.0.1])
-        by localhost (zimbra-dc.paul-scerri.ch [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 7zW8pthRC8Wk; Mon, 10 Apr 2023 22:28:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTP id 89C725BE1EE;
-        Mon, 10 Apr 2023 22:13:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at zimbra-dc.paul-scerri.ch
-Received: from zimbra-dc.paul-scerri.ch ([127.0.0.1])
-        by localhost (zimbra-dc.paul-scerri.ch [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id agKCknRzC2bp; Mon, 10 Apr 2023 22:13:51 +0200 (CEST)
-Received: from [185.169.4.108] (unknown [185.169.4.108])
-        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTPSA id 219AC5C3049;
-        Mon, 10 Apr 2023 21:34:31 +0200 (CEST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229741AbjDJU3d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 16:29:33 -0400
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A596173C;
+        Mon, 10 Apr 2023 13:29:31 -0700 (PDT)
+Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id EBB9A3FA35;
+        Mon, 10 Apr 2023 22:29:26 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: [PATCH v4 0/5] dts: qcom: Use labels with generic node names for ADC channels
+Date:   Mon, 10 Apr 2023 22:29:12 +0200
+Message-Id: <20230410202917.247666-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re
-To:     Recipients <wiki@paul-scerri.ch>
-From:   "Maria-Elisabeth Schaeffler" <wiki@paul-scerri.ch>
-Date:   Mon, 10 Apr 2023 12:34:30 -0700
-Reply-To: mariaelisabeths457@gmail.com
-Message-Id: <20230410193431.219AC5C3049@zimbra-dc.paul-scerri.ch>
-X-Spam-Status: No, score=2.8 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Your email account has been selected for a donation of €1,700,000. Please contact for more information.
+As discussed in [1] it is more convenient to use a generic `channel`
+node name for ADC channels while storing a friendly - board-specific
+instead of PMIC-specific - name in the label, if/when desired to
+overwrite the channel description already contained (but previously
+unused) in the driver [2].
 
-Mrs Maria Elisabeth Schaeffler
-CEO SCHAEFFLER.
+The same `channel` node name pattern has also been set in
+iio/adc/adc.yaml, but this generic binding is not inherited as base for
+qcom,spmi-vadc bindings due to not having any other generic elements in
+common, besides the node name rule and reg property.
+
+Replace the .* name pattern with the `channel` literal, but leave the
+label property optional for bindings to choose to fall back a channel
+label hardcoded in the driver [2] instead.
+
+[1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+[2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+
+Changes since v3:
+- Switch generic node name to `channel`, matching iio/adc/adc.yaml;
+- Besides switching arbitrary names to `channel`, now also rename all
+  existing `adc-chan` names to `channel`, including ARM tree;
+- Rebase on next-20230406 and apply rename to newer PMIC files.
+
+v3: https://lore.kernel.org/linux-arm-msm/20230201204447.542385-1-marijn.suijten@somainline.org/T/#u
+
+Changes since v2:
+- Reorder DT changes before dt-bindings changes;
+- Update adc-chan generic node name in tm5 example bindings.
+
+v2: https://lore.kernel.org/linux-arm-msm/20230119212632.185881-1-marijn.suijten@somainline.org/T/#u
+
+Changes since v1:
+- Require adc-chan name in dt-bindings;
+- Replace more node names with adc-chan and a descriptive label, that
+  were found by running dtbs_check on adjusted bindings;
+- sm8250-mtp.dts: Fix accidental adc-chan2 node name with pa_therm
+  label, which should have been adc-chan with pa_therm2 label.
+
+v1: https://lore.kernel.org/linux-arm-msm/20221209215308.1781047-1-marijn.suijten@somainline.org/
+
+
+Marijn Suijten (5):
+  ARM: dts: qcom: Use labels with generic node names for ADC channels
+  arm64: dts: qcom: Use labels with generic node names for ADC channels
+  dt-bindings: thermal: Use generic ADC node name in examples
+  dt-bindings: mfd: qcom,spmi-pmic: Use generic ADC node name in
+    examples
+  dt-bindings: iio: adc: Require generic `channel` name for channel
+    nodes
+
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 26 +++++++------
+ .../bindings/mfd/qcom,spmi-pmic.yaml          |  4 +-
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml |  4 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |  9 +++--
+ arch/arm/boot/dts/qcom-pm8226.dtsi            | 12 +++---
+ arch/arm/boot/dts/qcom-pm8941.dtsi            | 14 +++----
+ arch/arm/boot/dts/qcom-pma8084.dtsi           | 12 +++---
+ arch/arm/boot/dts/qcom-pmx55.dtsi             |  8 ++--
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          | 18 ++++++---
+ arch/arm64/boot/dts/qcom/pm6150.dtsi          |  2 +-
+ arch/arm64/boot/dts/qcom/pm6150l.dtsi         |  8 ++--
+ arch/arm64/boot/dts/qcom/pm660.dtsi           | 33 ++++++++++------
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi         | 24 ++++++------
+ arch/arm64/boot/dts/qcom/pm8150.dtsi          |  6 +--
+ arch/arm64/boot/dts/qcom/pm8150b.dtsi         |  8 ++--
+ arch/arm64/boot/dts/qcom/pm8150l.dtsi         |  6 +--
+ arch/arm64/boot/dts/qcom/pm8916.dtsi          | 14 +++----
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          | 39 ++++++++++++-------
+ arch/arm64/boot/dts/qcom/pm8953.dtsi          | 12 +++---
+ arch/arm64/boot/dts/qcom/pm8994.dtsi          | 12 +++---
+ arch/arm64/boot/dts/qcom/pm8998.dtsi          |  2 +-
+ arch/arm64/boot/dts/qcom/pmi8950.dtsi         | 12 +++---
+ arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi     |  6 +--
+ arch/arm64/boot/dts/qcom/pmm8155au_2.dtsi     |  6 +--
+ arch/arm64/boot/dts/qcom/pmp8074.dtsi         | 27 ++++++++-----
+ arch/arm64/boot/dts/qcom/pms405.dtsi          | 21 ++++++----
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      | 15 ++++---
+ .../dts/qcom/sc7180-trogdor-coachz-r1.dts     |  4 +-
+ .../boot/dts/qcom/sc7180-trogdor-coachz.dtsi  |  3 +-
+ .../dts/qcom/sc7180-trogdor-homestar.dtsi     |  3 +-
+ .../boot/dts/qcom/sc7180-trogdor-lazor.dtsi   |  2 +-
+ .../dts/qcom/sc7180-trogdor-pompom-r1.dts     |  2 +-
+ .../dts/qcom/sc7180-trogdor-pompom-r2.dts     |  2 +-
+ .../boot/dts/qcom/sc7180-trogdor-pompom.dtsi  |  3 +-
+ .../dts/qcom/sc7180-trogdor-wormdingler.dtsi  |  3 +-
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi  |  3 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dts       |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |  4 +-
+ .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 26 ++++++-------
+ arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi    | 10 ++---
+ arch/arm64/boot/dts/qcom/sdm845-mtp.dts       | 12 +++---
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 15 ++++---
+ .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |  6 +--
+ arch/arm64/boot/dts/qcom/sm8250-mtp.dts       | 21 ++++++----
+ 45 files changed, 278 insertions(+), 205 deletions(-)
+
+--
+2.40.0
+

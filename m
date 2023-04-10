@@ -2,122 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CEA86DC16E
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Apr 2023 22:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E869B6DC5AA
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Apr 2023 12:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229462AbjDIUwy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Apr 2023 16:52:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56104 "EHLO
+        id S229630AbjDJKQh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Apr 2023 06:16:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjDIUwx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Apr 2023 16:52:53 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991C62D40;
-        Sun,  9 Apr 2023 13:52:50 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-54ee108142eso72473637b3.2;
-        Sun, 09 Apr 2023 13:52:50 -0700 (PDT)
+        with ESMTP id S229603AbjDJKQg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 06:16:36 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601DB19A9;
+        Mon, 10 Apr 2023 03:16:35 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id s2so785050wra.7;
+        Mon, 10 Apr 2023 03:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1681073570; x=1683665570;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iWDJkJCIMfD3Kc4tPHZpx264Y8VggWfYYjExdEZeVUA=;
-        b=hGIn2oFDiiMXHAYEJ+Il928p2j8GFr42d9CCihEQup6zJgTMCa1Y9nCDqRyfYSPbJ/
-         XL9dqO9DIb8po94gQB4Tlrg5CuFmu5mMSlrG6FlNNzmxzQoTsF/Q07V4JVvwug9kpQ91
-         OPmB6NZXYmnJNzpj85Q5L562qNauW6K+LWIBkZksw/Bls25vAbSQowan1j0JD75PA5Ia
-         u+QOBg+Ewce8xG43sgYndoDUg0a0cxujhb/pOz/+Mk3IB9wA39f8nUNVacg1owrSBb4S
-         5dSsmfmPzZdo2TculFC9ufyHewt5AfqbC5KfZzYykwkSSb4jBvSTrE8Agx4Vtr31NGV5
-         a2zQ==
+        d=gmail.com; s=20210112; t=1681121794;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y87tZFoC/KdScQr6abhaMOpEnoPUy3mE3ceR7Hpef7c=;
+        b=XGe4Iz0EmXtSua5NiypvfHiGB/IVZKzquVds3lD+x0SgFvYbDsmasHmrv70MVqcoKo
+         IjvemB+CjzKMliRNv1qjJphwpwtiyYRA+tfZ+xvGfv6Sd8nXQi92aYKhjBYRv+ztwpNE
+         SxVHk6TUCUwMgKKcDzMiFwpyNNlvxy+SNL8Fcs2Nophf/lum+oh2PQBBC2pvHajUHHbV
+         MC1W79WVFmKASAn7BLbBP7ZDskLnbuf6sTmuORI67WBeaZ7YCaghvi4pL+IQJoRYnn3l
+         DW6GIYP5v9lPQJvpQWYgbl0+z22j21B6aCwFRrRvpqZYaVV9ctZNDwjocyP8IH/C63RV
+         u9zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681073570; x=1683665570;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iWDJkJCIMfD3Kc4tPHZpx264Y8VggWfYYjExdEZeVUA=;
-        b=sk1YAjrYtPD4IbfYSk3y+ALyCZLLbJYbOtNy5mZObeO+7LGSGfP2bXlfrvy8phKYN/
-         xKaykQMqkxjoT21e/G9JYfMKRrtF/zkYx1lBC+ZXh7nkp5YOyzmRqA6+3mO/KS01eYX4
-         D0WJ5u/+VnY1U/+3CRw9b3yUmeHavANY8nHIDfr+GPdEiU9ezBgl99Kd42UScWPCK8Wo
-         tzpQCa25dOui1Guda8RxbyJW4xZno3sRa6/+o71FfPSDiZdZbfdZ9JrE6XQRAwyHuG8W
-         aULu/6yMkC8H9N5F71Rm6l3FQmMQ+CnvMEAjNE5bcBml76eVlvx7ZEbiMn8czEfkil4O
-         D5yQ==
-X-Gm-Message-State: AAQBX9f0UEAxMIP35ZYAHty5ZpBr7jiuebP82nQXaLqmtkQ3tXPQIdiy
-        oIUZaWsplzXBtr/ctqEzwe0=
-X-Google-Smtp-Source: AKy350aMaMR30Pw2QgrZXxwCBFksk0Va/Sj38dcKtOTotD/MknwF4x67zHoc+6gfayFyLInJj5rFOQ==
-X-Received: by 2002:a0d:d142:0:b0:545:638f:2688 with SMTP id t63-20020a0dd142000000b00545638f2688mr3430722ywd.8.1681073569683;
-        Sun, 09 Apr 2023 13:52:49 -0700 (PDT)
-Received: from deathstar ([173.28.157.68])
-        by smtp.gmail.com with ESMTPSA id da12-20020a05690c0d8c00b0054c0118bdb1sm2397672ywb.60.2023.04.09.13.52.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Apr 2023 13:52:48 -0700 (PDT)
-Sender: Michael Welling <mwelling79@gmail.com>
-Date:   Sun, 9 Apr 2023 15:52:46 -0500
-From:   Michael Welling <mwelling@ieee.org>
-To:     Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: iio: dac: mcp4922: add vdd-supply
- property
-Message-ID: <ZDMlnj3+CpU4BPdt@deathstar>
-References: <20230405140114.99011-1-frattaroli.nicolas@gmail.com>
- <20230405140114.99011-2-frattaroli.nicolas@gmail.com>
+        d=1e100.net; s=20210112; t=1681121794;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y87tZFoC/KdScQr6abhaMOpEnoPUy3mE3ceR7Hpef7c=;
+        b=qP4UuFpHBBuaXfg5w4Tm49Ud727l6Fet/upQrnmD7DjQb8m1MKXkcOXpBbpz50koEl
+         xUc9l6abW2g7T9Yz27CLaXbz8paCqiWHfUi+aLnh/HujpV8rV75poZEa/yb4VNXRT7Ob
+         wz2BrvtMMNeZFvgPdVLLnq6kpdwlleQf1GdvJk5+1mO6yY9nEB2WtE4kErDgXCQ8FcLD
+         X+ZnJN+G3gGWyVwSjEQdbr/EAVmH80X4jSOPdCKdE0ZhZcCS/qE0W3c6zAqQuPMw5VIm
+         NmGt991qYzMKKpQOGOV4Pko2El0xjE0xKmgnc9J386sX5p/lgj0ksq5Sd6pDAvnI/Gpc
+         r/BA==
+X-Gm-Message-State: AAQBX9en/64BdYI6qfDRo5hCVtaNz0h1NfTcWPOLuBeT7V4WpG7fMaCz
+        4se0ulSRLKOTzsCCOb7a/2RqgpBnm4X5F0irXho=
+X-Google-Smtp-Source: AKy350biPu21FdDFHs9CmRz24gJ63Y/R+xvNeM/1dfBNjgthiKxQ2qdP4cgvG66pNRoCbkQhwwCgu0IOnqKS+NFTs9g=
+X-Received: by 2002:a5d:6391:0:b0:2e6:e4df:a7bd with SMTP id
+ p17-20020a5d6391000000b002e6e4dfa7bdmr1348525wru.7.1681121793754; Mon, 10 Apr
+ 2023 03:16:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230405140114.99011-2-frattaroli.nicolas@gmail.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,
-        FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <cover.1680610554.git.mazziesaccount@gmail.com> <20230408104938.74a36f7a@jic23-huawei>
+In-Reply-To: <20230408104938.74a36f7a@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Date:   Mon, 10 Apr 2023 13:16:22 +0300
+Message-ID: <CANhJrGPBdJwaoDFy=Rp38k_uSsZrzzMSSKxswwbur67YGG0ZrQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH v2 0/3] Improve kernel docs
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andrea Merello <andrea.merello@iit.it>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jagath Jog J <jagathjog1996@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 05, 2023 at 04:01:11PM +0200, Nicolas Frattaroli wrote:
-> These chips have a vdd supply input, which should be modelled in
-> the bindings as well. Vref is only the voltage reference supply for
-> the string DAC.
-> 
-> Signed-off-by: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
+la 8. huhtik. 2023 klo 12.34 Jonathan Cameron (jic23@kernel.org) kirjoitti:
+>
+> On Tue, 4 Apr 2023 15:24:15 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>
+> > IIO has very nice facilities for efficiently providing data from a
+> > device to user (and probably also vice-versa - but I've not used that
+> > direction). Getting started with IIO may not be so simple though - some
+> > of the concepts like triggers and buffers are quite unique.
+> >
+> > This series tries to make it easier for a newcomer to write his/her first
+> > IIO driver by adding some documentation to used enums. Series does not
+> > provide extensive documentation but just documents those few entries I
+> > have become familiar with - but it still aims to be a starting point for
+> > others to add missing bits and pieces.
+> >
+> > This series is marked as v2 because the patch 1 was previously sent as a
+> > stan-alone RFC to collect the missing channel units. RFC can be seen
+> > here:
+> > https://lore.kernel.org/all/10a855f9adc1d710150b7f647500c3c6a769f9ca.1677243698.git.mazziesaccount@gmail.com/
+> >
+> > Patches 2 and 3 were added as a result of discussion followed by the
+> > RFC.
+>
+> Something odd happened on this resend. Patch 1 didn't make it to me
+> or patchwork.  I'll reply to previous posting instead.
+>
 
-Acked-by: Michael Welling <mwelling@ieee.org>
+It seems checkpatch.pl + some of the patches were only picking the
+huawei.com address. Maybe that is the reason?
 
-> ---
->  .../devicetree/bindings/iio/dac/microchip,mcp4922.yaml        | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4922.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4922.yaml
-> index 19374401e509..a3e80e90eeca 100644
-> --- a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4922.yaml
-> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4922.yaml
-> @@ -21,11 +21,14 @@ properties:
->    reg:
->      maxItems: 1
->  
-> +  vdd-supply: true
-> +
->    vref-supply: true
->  
->  required:
->    - compatible
->    - reg
-> +  - vdd-supply
->    - vref-supply
->  
->  allOf:
-> @@ -42,6 +45,7 @@ examples:
->          dac@0 {
->              compatible = "microchip,mcp4912";
->              reg = <0>;
-> +            vdd-supply = <&dac_reg>;
->              vref-supply = <&dac_vref>;
->          };
->      };
-> -- 
-> 2.40.0
-> 
+This really was a resend with no changes other than rebasing it -
+hence reviewing the v2 was absolutely fine. Thanks for the review!
+I'll check the suggestions and send v3 later this week.
+
+Yours,
+  -- Matti

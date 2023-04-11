@@ -2,54 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A9D6DDC60
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 15:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A91E6DDCCE
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 15:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230013AbjDKNku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Apr 2023 09:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52926 "EHLO
+        id S230526AbjDKNuj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Apr 2023 09:50:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229883AbjDKNkp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 09:40:45 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DC05244;
-        Tue, 11 Apr 2023 06:40:37 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Pwn1C1jJtz67gjn;
-        Tue, 11 Apr 2023 21:36:15 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 11 Apr
- 2023 14:40:33 +0100
-Date:   Tue, 11 Apr 2023 14:40:31 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: Re: [RFC PATCH 0/2] Support for Avago APDS9306 Ambient Light Sensor
-Message-ID: <20230411144031.000077c7@Huawei.com>
-In-Reply-To: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
-References: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S230504AbjDKNue (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 09:50:34 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 779D035B3;
+        Tue, 11 Apr 2023 06:50:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681221020; x=1712757020;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JFPGu+gyKqMOZ64dcu+rRARx61M4gkcolxvEsNoV1FM=;
+  b=JyB7ksgP40Ym1rsgSvYqJO+sxmqOV2d+2CHw/MDuOfcludv9iTtyo8m0
+   MU/DtpqgGsBep9a7EfZTy/0QBUR0gxbrDiiFbnwH9emu0j3RyZ4+vyHuY
+   W8+iyAU0JDZYWjNauopCWgtkpWawKaJM3jjG0phkhyoHJecYpn8GbNGXA
+   osaOfdc7UZUtVHQX0MU+k37gjUrYvOQWD61nqM7zyeiyBWZHIfFl9nhds
+   0L3v15IFxYAgFomlvl7inPbTZ2KOczV4mmiEVFkqor7h97ax0yYU5bo5V
+   8OOOWQJoh9tUQeaimNoS6ZD0blDMuLOG6k5ZgOOJ2FGsOEVsNzRgLVcSU
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="345403987"
+X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
+   d="scan'208";a="345403987"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 06:50:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="721200052"
+X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
+   d="scan'208";a="721200052"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 11 Apr 2023 06:50:05 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pmENn-00FHll-1U;
+        Tue, 11 Apr 2023 16:50:03 +0300
+Date:   Tue, 11 Apr 2023 16:50:03 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v3 3/3] counter: 104-quad-8: Utilize helper functions to
+ handle PR, FLAG and PSC
+Message-ID: <ZDVli05x7u/bg7Zc@smile.fi.intel.com>
+References: <cover.1681134558.git.william.gray@linaro.org>
+ <669c8f782f11fe27c4568e4fc3ba459c4f954874.1681134558.git.william.gray@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <669c8f782f11fe27c4568e4fc3ba459c4f954874.1681134558.git.william.gray@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,59 +72,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Apr 2023 09:12:01 +0800
-Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
+On Mon, Apr 10, 2023 at 10:03:13AM -0400, William Breathitt Gray wrote:
+> The Preset Register (PR), Flag Register (FLAG), and Filter Clock
+> Prescaler (PSC) have common usage patterns. Wrap up such usage into
+> dedicated functions to improve code clarity.
 
-> This series adds support for Avago (Broadcom) APDS9306 Ambient Light
-> Sensor.
-> 
-> Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
-> 
-> Following features are supported:
-> - I2C interface
-> - 2 channels - als and clear
-> - Up to 20 bit resolution
-> - 20 bit data register for each channel
-> - Common Configurable items for both channels
->     - Integration Time
->     - Measurement Frequency
->     - Scale
-> - High and Low threshold interrupts for each channel
-> 
-> - Selection of interrupt channel - als or clear
-> - Selection of interrupt mode - threshold or adaptive
-> - Level selection for adaptive threshold interrupts
-> - Persistence (Period) level selection for interrupts
-> 
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Hi Subhajit,
+...
 
-No need to sign off a cover letter.  The content isn't captured in the
-git tree anyway.
+>  	*val = 0;
 
-For an RFC, I'd expect to see a clear statement in the cover letter of
-why it is an RFC rather than a formal patch submission.  What specifically
-are you looking for comments on?
+Is not needed now as always being initialized by below call.
 
-Point us in the right direction and we might answer the questions quicker.
+>  	spin_lock_irqsave(&priv->lock, irqflags);
+>  
+>  	iowrite8(SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL, &chan->control);
+> -
+> -	for (i = 0; i < 3; i++)
+> -		*val |= (unsigned long)ioread8(&chan->data) << (8 * i);
+> +	ioread8_rep(&chan->data, val, 3);
+>  
+>  	spin_unlock_irqrestore(&priv->lock, irqflags);
 
-Thanks,
+...
 
-Jonathan
+> +	struct channel_reg __iomem *const chan = priv->reg->channel + id;
 
-> 
-> Subhajit Ghosh (2):
->   dt-bindings: Document APDS9306 Light Sensor bindings
->   iio: light: Add support for APDS9306 Light Sensor
-> 
->  .../bindings/iio/light/avago,apds9306.yaml    |   47 +
->  drivers/iio/light/Kconfig                     |   11 +
->  drivers/iio/light/Makefile                    |    1 +
->  drivers/iio/light/apds9306.c                  | 1146 +++++++++++++++++
->  4 files changed, 1205 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
->  create mode 100644 drivers/iio/light/apds9306.c
-> 
-> 
-> base-commit: 0d3eb744aed40ffce820cded61d7eac515199165
+Not sure if array representation will look better here and elsewhere.
+
+	struct channel_reg __iomem *const chan = &priv->reg->channel[id];
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

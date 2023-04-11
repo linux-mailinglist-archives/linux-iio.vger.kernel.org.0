@@ -2,57 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4A296DDE2D
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 16:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4B696DDE56
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 16:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230326AbjDKOiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Apr 2023 10:38:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53580 "EHLO
+        id S229932AbjDKOn6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Apr 2023 10:43:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229799AbjDKOht (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 10:37:49 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A71452100;
-        Tue, 11 Apr 2023 07:37:35 -0700 (PDT)
+        with ESMTP id S229896AbjDKOn5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 10:43:57 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9917BDE;
+        Tue, 11 Apr 2023 07:43:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681223855; x=1712759855;
+  t=1681224236; x=1712760236;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=fPtmDzX4bkCD1h/FIx2OlULjDZBI3uztavNwtzp0d9s=;
-  b=T+Jz3JApzXeckpYeA1WmpuokrJyOFkwev3mXd1FwzfFHdoi7V1ASD+Fq
-   5un7ICFgsEoOGpJ5zHNbkAlrXI0AKxBl/SimhI7umRMDYLdYPc2LCJoRj
-   5JokNGbsuT6lnvp3A/1EIT1RMOBggHMutCpY0owTxLrzU0hFjbTKMxyFF
-   J3z3ge7M5tKoxd0CHEDoqSIdIFXSXH5NOymRJH7NbJWef+XoVD6wEWAOK
-   11yw+cgi2NzVSWCpznIzFqc4KsSpYCUQX2hi09CBpGqlikhyy67cg3qKF
-   O+OIW1O1QMIpGdZ9ASHsoSdTj8SiBCuUUGOI/ySVLxzKkgXkDfa1uby+x
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="343635961"
+  bh=gXL3iYzbDFw+nViapfU/ZBKVCbSgeQskzRbek/ecmps=;
+  b=R4RbUB21x+tToAU+l1W7NFFdV4H73VYLMp5MEKNih3op23TyJrmsBPNH
+   InrDBqmOMrN6jaH5llTxeiYc0th37fA/e6JiFHBE3dExvF/fV/DuxSrqj
+   AKM7wHavQC4MC+BjT7b8gdVFNuG0OsVhHxL0zF1Rr87WLCfaqay/WPGhd
+   gx7ysCcyaNwkmHkvk8pSZtm4DOjxZLraU2/QB410Zg7/RljnTUvznf9t9
+   5VO/ZVdqfePYAPRdBGmyQjZuvF/rCIwK4rrUkBWqTNBl7VdjhG2zdVDr8
+   yRxtCLKWGEEKcEXgn39kq8YGDGx7LRXjMoUfKX2knQaLAb1QkrdaEj0He
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="342394020"
 X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
-   d="scan'208";a="343635961"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 07:37:35 -0700
+   d="scan'208";a="342394020"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 07:43:53 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="666000024"
+X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="753167413"
 X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
-   d="scan'208";a="666000024"
+   d="scan'208";a="753167413"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 11 Apr 2023 07:37:33 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 11 Apr 2023 07:43:51 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pmF7k-00FK4v-1Y;
-        Tue, 11 Apr 2023 17:37:32 +0300
-Date:   Tue, 11 Apr 2023 17:37:32 +0300
+        id 1pmFDp-00FKHZ-1l;
+        Tue, 11 Apr 2023 17:43:49 +0300
+Date:   Tue, 11 Apr 2023 17:43:49 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: 104-quad-8: Migrate to the regmap API
-Message-ID: <ZDVwrEZh1y88Hw8b@smile.fi.intel.com>
-References: <20230410141252.143998-1-william.gray@linaro.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v3 3/3] counter: 104-quad-8: Utilize helper functions to
+ handle PR, FLAG and PSC
+Message-ID: <ZDVyJV8TfC31TYP2@smile.fi.intel.com>
+References: <cover.1681134558.git.william.gray@linaro.org>
+ <669c8f782f11fe27c4568e4fc3ba459c4f954874.1681134558.git.william.gray@linaro.org>
+ <ZDVli05x7u/bg7Zc@smile.fi.intel.com>
+ <ZDVpJb9DyIU+5eJf@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230410141252.143998-1-william.gray@linaro.org>
+In-Reply-To: <ZDVpJb9DyIU+5eJf@fedora>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
@@ -63,65 +73,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 10, 2023 at 10:12:52AM -0400, William Breathitt Gray wrote:
-> The regmap API supports IO port accessors so we can take advantage of
-> regmap abstractions rather than handling access to the device registers
-> directly in the driver.
-
-Looking at the statistics it's a bit unfortunate that LoCs are risen,
-perhaps you can add more points why regmap is better than direct IO
-accessors.
+On Tue, Apr 11, 2023 at 10:05:25AM -0400, William Breathitt Gray wrote:
+> On Tue, Apr 11, 2023 at 04:50:03PM +0300, Andy Shevchenko wrote:
+> > On Mon, Apr 10, 2023 at 10:03:13AM -0400, William Breathitt Gray wrote:
+> > > The Preset Register (PR), Flag Register (FLAG), and Filter Clock
+> > > Prescaler (PSC) have common usage patterns. Wrap up such usage into
+> > > dedicated functions to improve code clarity.
 
 ...
 
-> +	int state;
+> > >  	*val = 0;
+> > 
+> > Is not needed now as always being initialized by below call.
+> 
+> The regmap_noinc_read() call only reads the number of bytes requested.
+> Since we request 3 bytes, the upper bytes of the u64 val remain
+> uninitialized, so that is why we need to set *val = 0. This isn't
+> immediately clear in the code, so I can add a comment to make it
+> explicit.
 
-state...
+Hmm...
+Since we are using byte array for the value, can we actually use
+memset() to show that explicitly? Perhaps in that way it will be more visible?
 
-> +	state = regmap_test_bits(priv->map, QUAD8_INDEX_INPUT_LEVELS, BIT(signal->id - 16));
-> +	if (state < 0)
-> +		return state;
+> > >  	spin_lock_irqsave(&priv->lock, irqflags);
+> > >  
+> > >  	iowrite8(SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL, &chan->control);
+> > > -
+> > > -	for (i = 0; i < 3; i++)
+> > > -		*val |= (unsigned long)ioread8(&chan->data) << (8 * i);
+> > > +	ioread8_rep(&chan->data, val, 3);
 
-...
+But hold on, wouldn't this have an endianess issue? The call fills in LE,
+while here you use the CPU order.
 
-> +	int ret;
+> > >  	spin_unlock_irqrestore(&priv->lock, irqflags);
 
-ret...
+That said, I think you should have something like
 
-> +	ret = regmap_write(priv->map, QUAD8_CONTROL(count->id),
-> +			   SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL);
-> +	if (ret)
-> +		goto exit_unlock;
+	u8 value[3];
 
-...
+	ioread8_rep(..., value, sizeof(value));
 
-> +	int err;
-
-err...
-
-> +	err = regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | RESET_BP);
-> +	if (err)
-> +		return err;
-
-...
-
-Maybe a bit of consistency?
-
-
-...
-
-> +	int err;
-> +	unsigned int status;
->  	unsigned long irq_status;
->  	unsigned long channel;
->  	unsigned int flg_pins;
->  	u8 event;
-
-Perhaps longer lines first? Hence
-
-	int ret;
-
-to be here.
+	*val = get_unaligned_le24(value);
 
 -- 
 With Best Regards,

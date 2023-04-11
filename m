@@ -2,1359 +2,255 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 431506DCEDE
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 03:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36A096DD175
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 07:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbjDKBNC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Apr 2023 21:13:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48934 "EHLO
+        id S229864AbjDKFS3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Apr 2023 01:18:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229833AbjDKBNA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 21:13:00 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A7AC30D1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 18:12:55 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id 90-20020a17090a0fe300b0023b4bcf0727so6291850pjz.0
-        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 18:12:55 -0700 (PDT)
+        with ESMTP id S229688AbjDKFS2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 01:18:28 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83746E7C
+        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 22:18:26 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id m4so8714087lfj.13
+        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 22:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1681175575;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F7+gSuuTv0f9bq9QIeDp09SyV94ikt70k4SDIEX1Jhk=;
-        b=KRz4nqT6ZQ+VIaEgAPwliPVNyomhf5KuyAt543VG1ey0h6o6kUJVc0vT32Z58MNWXB
-         hg5qmk8nxXAeaBkNq0uUaJxy2QaiKN4Q4ZemThfHO4DQG8oiyEVdoy9Fd8Zbk+N3Ei8t
-         gxzOH9aeD6lDbCVh4b0mQr3XpJozxOPvT/0SWjLcvDiEdeWHKja+5xc5w2NNITTbPAxH
-         O5DX7ocHsJFiZwToHfoHuzOT23F1sMCGxjhNUDZVQMi9/47JM1dlWbHaEo2qCgxRC/am
-         I497FxFYy1cZ+vRWwapEIZrVK9InUB4ciTmLnZoIoCREVtbWWAI7TvUJJWcqkCmCKIcP
-         +xkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681175575;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20210112; t=1681190305;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F7+gSuuTv0f9bq9QIeDp09SyV94ikt70k4SDIEX1Jhk=;
-        b=n7YsLHP3h2nKH69fjNvcGjboofBeQWGePoP1GGH3facelb+LivlqbDCrQn96vnkd8Q
-         E1Dc8otnWI9oL8eQ1gRNpy5zSkpLYlEvjAID1db5hR1YepEz9wpJY5Fb3KHL88ZDvfqG
-         fnoXTjroAuVQc2iWfT6cjoM32gmPf0gnFondFwrcx63FZXh2/Fl8UiZrOS8cyyE86R6g
-         uKp4HJ1T0nzDK4aTWV0G8va1RmGWRkbaQYV3WIWilgFziJAyXoC0wmRb/fMfdOUuf4hZ
-         URZ1pOAMKFdYQ5b8DMfJDG8sEOqMJG/8qQl388wAjf/tT0TT2UVYSwGb5kVbprXHedF0
-         tODg==
-X-Gm-Message-State: AAQBX9dife040S1q2/9p8nDPGFFu6w00SY6hEhjaZ0qGzNV2bpCDJ3dR
-        w+bD5IRLDASBhAEoDqpJ2BskJA==
-X-Google-Smtp-Source: AKy350bSBtZXFKLeW4rQPnsfdE2WGmurdYRh850nvcD/aWoZ8kS1ScFj3YlZP29o0V0zWJz/4N03gw==
-X-Received: by 2002:a17:90b:17c5:b0:246:8497:37c5 with SMTP id me5-20020a17090b17c500b00246849737c5mr9757844pjb.46.1681175575250;
-        Mon, 10 Apr 2023 18:12:55 -0700 (PDT)
-Received: from subhajit-ThinkPad-Yoga-370.. ([124.148.71.115])
-        by smtp.gmail.com with ESMTPSA id k91-20020a17090a4ce400b00246b1b4a3ffsm2220957pjh.0.2023.04.10.18.12.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Apr 2023 18:12:54 -0700 (PDT)
-From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [RFC PATCH 2/2] iio: light: Add support for APDS9306 Light Sensor
-Date:   Tue, 11 Apr 2023 09:12:03 +0800
-Message-Id: <20230411011203.5013-3-subhajit.ghosh@tweaklogic.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
-References: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
+        bh=055G5++0hrj+lGE+bpYDHnB1n7dRzj5SrUQtAgHYbb4=;
+        b=qCMmZ6/7fc+5qqfrXQZp4giePZXvu5nQnjih/LB8tc2xfVWrLyOLOk13I3VTAsefGn
+         noB7uH3lcuzaJkLwT/22M6Qj84Oy9ZvnowIdhZP1oXo9lRvOzFDlfoS/Q2VVzbwuKpcr
+         f8LBsPqcPUTLvc3MCaIRJQjwehpCuW7mZ4M8PksWWqSjZqdOnTJqqQ/c7hcCt86vH+Jv
+         lR/gUuuatIMJJ8T92uIo0zL+7ImPQkA2jsYwphne+yI0kt3fNN6wweLDBLP9cSkItKoK
+         KeXaOM/pg2H2WAcpi9JmegQP0DLZ6KkimVnQ5jUXMVwoKiMgIv+uKIoFLBTHlqEFKwMe
+         njQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681190305;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=055G5++0hrj+lGE+bpYDHnB1n7dRzj5SrUQtAgHYbb4=;
+        b=Q2pdA8fQElDoD/m0V7zEvWc/RjeogXAZuCyjmgLs2IUxQgS9iFmffn2G19loCUDqvM
+         1GjPvaPPzqP9G7+MtBP8PnDJM1Kae9iOsm8PydHFJdX289ly2HasBAjT4OCf0lvFP4cJ
+         xb+xJYugBXQh3f6OiNLxi9Xmtbq2W+Kye2TlFTxJR+yPOjuuvFiSQe9bQmxQkO3/7t5X
+         xawtJpuxjmrpIkerrpA7RLDV+nEPgaCqnI7CmNWXMG3ziLuczjXckjNdDHVCiro+hfgY
+         nXE/B5lFNLesVv0eurSkj9URl8EkT0fwInsexXByXnIaBSI1m2BIgdtGyDs8lKykLbsa
+         AWXQ==
+X-Gm-Message-State: AAQBX9ebhwd0pC/JXHEYQkkCOeWwOlOCwV2BJexCXkXYfDqeJineg+ee
+        HjRYweqAPGmZt1Yl8BeCPW+IKYqKvUQ=
+X-Google-Smtp-Source: AKy350b8cv3X8R+4HXQ2wN1oscbVBnTCECN88RT5W5bVZ2m9HEV86G+ZBGcsYGPDB7dAKLQyMiHmUw==
+X-Received: by 2002:a19:f613:0:b0:4dd:a57e:9960 with SMTP id x19-20020a19f613000000b004dda57e9960mr409008lfe.5.1681190304465;
+        Mon, 10 Apr 2023 22:18:24 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id k18-20020a2e8892000000b002958a51df76sm2596820lji.92.2023.04.10.22.18.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Apr 2023 22:18:24 -0700 (PDT)
+Message-ID: <8e61fb87-2533-9a81-1682-2e5ee376389d@gmail.com>
+Date:   Tue, 11 Apr 2023 08:18:23 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+References: <5942c0c2-3997-e10f-0872-30d201bc52ae@gmail.com>
+ <20230410171654.66605efe@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: ROHM BU27008 RGB sensor
+In-Reply-To: <20230410171654.66605efe@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Driver support for Avago (Broadcom) APDS9306
-Ambient Light Sensor with als and clear channels.
-This driver exposes raw values for both the channels.
+On 4/10/23 19:16, Jonathan Cameron wrote:
+> On Tue, 4 Apr 2023 15:04:38 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> Hi deeee Ho peeps,
+>> I have following questions:
+>>
+>> 1) I have no good knowledge as to what units the register values
+>> represent. I know the greater value informs greater color intensity -
+>> but that's about it. I currently just send out the raw register values
+>> via IIO_INTENSITY raw channel - but I don't know if this is usual or if
+>> typical user-space would expect the values to be some how 'normalized'?
+> 
+> Given these colour curves are normally devices specific, it's often very hard
+> to give them any units that can be compared across devices.  There are standard
+> colour spaces, (CIE 1931 RGB for example) but basic sensors tend not to be matched
+> to these. Sometimes there are documented approximate conversion calculations
+> (similar to the ones you get for illuminance calculations).  In some cases
+> these are highly non linear with different approximations for different parts
+> of the colour space.
+Okay. In that case I'll probably just go with the raw register values, 
+thanks!
 
-Datasheet at https://docs.broadcom.com/doc/AV02-4755EN
+> 
+>> With the current setup user-space needs to either just compare the
+>> different channel values to each other to decide which colour dominates
+>> - or perform some manual calibration using known light sources. I have
+>> no idea if this is usual approach with RGB sensors?
+>> It seems to me that
+>> for example the adjd_s311.c just returns raw register values - but I
+>> don't know what the format is. Any insight on if the values should
+>> represent some 'units' or if they can really just be 'register values
+>> proportional to intensity of measured colour'.
+> 
+> There isn't usually a way of measuring which colour dominates.  That depends
+> on all sorts of things that affect human perception of colour. All you can
+> measure is that the intensity of a particular colour is itself increasing
+> or decreasing.
 
-Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 
----
+> 
+>>
+>> 2) The gain setting is once again ... eh ... complicated. The RGB and C
+>> channels are sharing gain setting. There are a few supported gain values
+>> - ranging from 1X to 1024X. The IR channel _shares_ again the high bits
+>> of GAIN setting with the RGBC channels. Two lowest bits can be set
+>> independently - but again, quite a few gain 'selector' field values are
+>> marked as forbidden.
+>>
+>> To make it worse, the IR gain values matching the selector field are
+>> same as for RGBC - except the first selector. The sel 0 equals to gain
+>> 1X on RGBC, but gain 2X for IR. (1X is not supported for IR). So,
+>> changing gain selector from 0 => 1 will cause gain to jump from 1X => 4X
+>> for RGBC but from 2X => 4X for IR channel.
+>>
+> 
+> That's "novel".  Feel free to tell the Rohm hardware folk that I think they
+> are crazy in a really unhelpful way.
 
-Software reset feature is not implemented as it causes I2C bus error,
-the I2C bus driver throws an ugly error message.
+As a ROHM employee, I should probably be a bit taken aback - but this 
+actually made me laugh. Well, I was on a vacation when I read this so 
+maybe it is Ok ;)
 
-Could not locate the Lux calculations from datasheet, only exporting
-raw values.
+Well, ROHM hardware folks have a long history of making hardware, and 
+typically hardware for a specific customer and for a specific need. 
+They're actually truly novel at times - and they tend to solve pretty 
+impossible problems with pretty "out of the box" solutions (at times). 
+Unfortunately, these novel solutions which solved a specific problem for 
+a specific customer tend to be inherited to next products where these 
+'hacks' may no longer have a purpose. Furthermore, (as far as I know) 
+for a long period of time, the software for ROHM ICs was also written 
+either by a customer, or by a subcontractor. The (driver) SW was written 
+for a specific project and it was not necessary to make it fit for 
+generic use-cases - hence, things like this 1X Vs 2X gain did not really 
+matter as SW could be tailored to just do the right thing for a specific 
+product. When the product was out the project was done.
 
-Reading of the Status register clears the Data Ready and the Interrupt
-Status flags. It makes it tricky to read oneshot values together with
-interrupts enabled as the IRQ handler clears the status on receipt
-of an interrupt signal.
-Not checking the status in IRQ handler will make the interrupt line
-unsharable and it does not reset the interrupt line if the Interrupt
-status flag is not cleared.
+This means that there has been no "feed-back" loop from SW engineers to 
+many of the ROHM HW colleagues. So, even though you hit to the spot with 
+the comment - there is a very understandable reasons behind things being 
+somewhat ... peculiar ;)
 
-Many applications don't need interrupts. It is good to have support
-for both in the driver.
+And yes, I have been and continue to be giving feed-back to hardware 
+colleagues. And even though I am very much tempted of using your quote 
+as my email signature, I guess it is more productive to try a bit more 
+gentle approach with the feed-back. XD
 
-Sysfs structure with interrupt line defined in DT:
-root@stm32mp1:~# tree -I 'dev|name|of_node|power|subsystem|uevent' \
-  /sys/bus/iio/devices/iio:device0/
-/sys/bus/iio/devices/iio:device0/
-|-- events
-|   |-- thresh_adaptive_either_en
-|   |-- thresh_adaptive_either_value
-|   |-- thresh_adaptive_either_values_available
-|   |-- thresh_channel_select
-|   |-- thresh_channels_available
-|   |-- thresh_either_en
-|   |-- thresh_either_period
-|   |-- thresh_either_period_available
-|   |-- thresh_falling_value
-|   `-- thresh_rising_value
-|-- in_illuminance_raw
-|-- in_intensity_clear_raw
-|-- integration_time
-|-- integration_time_available
-|-- sampling_frequency
-|-- sampling_frequency_available
-|-- scale
-`-- scale_available
+> 
+>> I see two options:
+>>
+>> 1) Use fixed high bits which means supporting only 4X and 16X gains -
+>> for which changing the low selector bits is enough. In this case the
+>> RGBC would have own gain setting, IR would have own and there would be
+>> no shared bits.
+> 
+> That's pretty nasty as I suspect the high bits are the useful ones.
 
-Sysfs structure with no interrupt:
-root@stm32mp1:~# tree -I 'dev|name|of_node|power|subsystem|uevent' \
-  /sys/bus/iio/devices/iio:device0/
-/sys/bus/iio/devices/iio:device0/
-|-- in_illuminance_raw
-|-- in_intensity_clear_raw
-|-- integration_time
-|-- integration_time_available
-|-- sampling_frequency
-|-- sampling_frequency_available
-|-- scale
-`-- scale_available
+I kind of agree. So, while that would be the simplest thing, it would 
+also drop most of the gains the HW is capable of.
 
-As there is a single interrupt enable option, using the existing
-IIO bitmasks to cater for channel selection - als or clear and
-interrupt type selection - threshold or adaptive
-was looking ambiguous. I am open to any other implementations.
+>>
+>> 2) Allow full range of supported gains to be set for RGBC - and disallow
+>> setting gain for IR. However, change the IR gain to have same selector
+>> as RGBC gain when RGBC gain is changed. (This prevents IR gain selector
+>> from changing to an unsupported value when RGBC gain is changed). This
+>> means that if user-space changes the gain for RGBC, it should also
+>> read-back the gain for IR to detect the change. I have no idea if
+>> existing user-space apps do this.
+> 
+> We've had other cases where setting a gain affects a subset of channels
+> (shared gains for pairs of channels for instance). In those cases userspace
+> has to read back the values.  I suspect there are no userspace programs
+> that do anything more complex than setting gain to a value in a config
+> file.  So if that's valid then all is good.
 
-I could not find any _available implementations for the event
-interface.
+Oh, interesting. I don't know how userspace apps utilize these sensors. 
+Nor do I know what these RGB sensors are mostly used for. I however 
+thought userspace apps would be detecting saturation / measurement 
+values going close to zero, and did dynamically change scale based on 
+this. Config file sounds like most of the apps just use a static 
+settings - which indeed simplifies things.
 
-Created one sysfs attribute for interrupt channel selection
-and one RO attribute for channel availability.
+>> I think that no matter if we select option 1) or option 2) - we must
+>> have own scale entries for all channels. This is needed for option 2)
+>> because of the 1X vs 2X difference mentioned above.
+>>
+>> I have currently implemented the option 2) because it supports wider
+>> variety of gains - but I am unsure if this is "the right thing to do".
+>>
+>> Any insight is appreciated!
+> 
+> Hmm. Given the pairwise case I mention above requires that any write to
+> gain can change any other and there is no strong reason it must change it
+> to the same value as the one written.  So setting channel 1 scale to x2 might
+> result in channel 2 scale doubling from x2 to x4 (think of a fixed x2 multiplier
+> on channel 2 with a pga in front of it (this craziness happens on SoC ADCs
+> sometimes) I think you can be more generic about this.
+> 
+> Have all channels have their own scale + scale_available.
 
-Created two RO attributes for interrupt period and threshold
-adaptive value available ranges.
+Ok. My current draft did not have 'scale_available' for IR because 
+setting scale for IR was forbidden.
 
-The ALS Measurement Rate (Sampling Frequency) has max values
-of 2000ms and 2000ms for both 110b and 111b respectively.
-This is not a typo. Found out experimentally that assigning
-either values, interrupt is generated 2 secs apart when
-interrupt conditions are met.
+> A write to any of them changes the value with exception of when it affects only
+> the lower bits where you can separate off the IR channel.  If the change requires
+> changing the upper bits than fine it changes the IR gain as well.
 
- drivers/iio/light/Kconfig    |   11 +
- drivers/iio/light/Makefile   |    1 +
- drivers/iio/light/apds9306.c | 1146 ++++++++++++++++++++++++++++++++++
- 3 files changed, 1158 insertions(+)
- create mode 100644 drivers/iio/light/apds9306.c
+Thanks for the suggestion. In my head this felt too complex but now that 
+you wrote it down, it does not really be that complex. We can simply 
+compare the old and new values for high bits and set the lower bits for 
+other channels only when high bits change. (I wrote it like this because 
+I am at the same time working with yet another RGB sensor model, with 
+yet another messy 'shared bits' gain setting. The other sensor has 
+individual 'low bits' for all channels, while having shared high bits...)
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 0d4447df7200..8bd5aa13f49e 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -73,6 +73,17 @@ config APDS9300
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called apds9300.
- 
-+config APDS9306
-+	tristate "Avago APDS9306 Ambient Light Sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  If you say Y or M here, you get support for Avago APDS9306
-+	  Ambient Light Sensor.
-+
-+	  If built as a dynamically linked module, it will be called
-+	  apds9306.
-+
- config APDS9960
- 	tristate "Avago APDS9960 gesture/RGB/ALS/proximity sensor"
- 	select REGMAP_I2C
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index d74d2b5ff14c..978ec4b3de4f 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_ADUX1020)		+= adux1020.o
- obj-$(CONFIG_AL3010)		+= al3010.o
- obj-$(CONFIG_AL3320A)		+= al3320a.o
- obj-$(CONFIG_APDS9300)		+= apds9300.o
-+obj-$(CONFIG_APDS9306)		+= apds9306.o
- obj-$(CONFIG_APDS9960)		+= apds9960.o
- obj-$(CONFIG_AS73211)		+= as73211.o
- obj-$(CONFIG_BH1750)		+= bh1750.o
-diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-new file mode 100644
-index 000000000000..d57fb7aaa24d
---- /dev/null
-+++ b/drivers/iio/light/apds9306.c
-@@ -0,0 +1,1146 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * APDS-9306/APDS-9306-065 Ambient Light Sensor
-+ *
-+ * Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
-+ *
-+ * I2C Address: 0x52
-+ *
-+ * Copyright (C) 2023 Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-+ */
-+
-+#include <linux/pm.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/module.h>
-+#include <linux/i2c.h>
-+#include <linux/err.h>
-+#include <linux/mutex.h>
-+#include <linux/delay.h>
-+#include <linux/regmap.h>
-+#include <linux/interrupt.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/events.h>
-+#include <linux/regulator/consumer.h>
-+#include <asm/unaligned.h>
-+
-+#define APDS9306_MAIN_CTRL	0x00
-+#define APDS9306_ALS_MEAS_RATE	0x04
-+#define APDS9306_ALS_GAIN	0x05
-+#define APDS9306_PART_ID	0x06
-+#define APDS9306_MAIN_STATUS	0x07
-+#define APDS9306_CLEAR_DATA_0	0x0A
-+#define APDS9306_CLEAR_DATA_1	0x0B
-+#define APDS9306_CLEAR_DATA_2	0x0C
-+#define APDS9306_ALS_DATA_0	0x0D
-+#define APDS9306_ALS_DATA_1	0x0E
-+#define APDS9306_ALS_DATA_2	0x0F
-+#define APDS9306_INT_CFG	0x19
-+#define APDS9306_INT_PERSISTENCE	0x1A
-+#define APDS9306_ALS_THRES_UP_0	0x21
-+#define APDS9306_ALS_THRES_UP_1	0x22
-+#define APDS9306_ALS_THRES_UP_2	0x23
-+#define APDS9306_ALS_THRES_LOW_0	0x24
-+#define APDS9306_ALS_THRES_LOW_1	0x25
-+#define APDS9306_ALS_THRES_LOW_2	0x26
-+#define APDS9306_ALS_THRES_VAR	0x27
-+
-+#define APDS9306_ALS_INT_STAT_MASK	BIT(4)
-+#define APDS9306_ALS_DATA_STAT_MASK	BIT(3)
-+
-+enum apds9306_power_states {
-+	standby,
-+	active,
-+};
-+
-+enum apds9306_int_channels {
-+	clear,
-+	als,
-+};
-+
-+/* Integration Time (ALS Resolution) uSec */
-+static const int apds9306_intg_time[][2] = {
-+	{0, 400000},
-+	{0, 200000},
-+	{0, 100000},
-+	{0, 50000},
-+	{0, 25000},
-+	{0, 3125},
-+};
-+
-+/* Sampling Frequency in uHz */
-+static const int apds9306_repeat_rate_freq[][2] = {
-+	{40, 0},
-+	{20, 0},
-+	{10, 0},
-+	{5,  0},
-+	{2,  0},
-+	{1,  0},
-+	{0, 500000},
-+};
-+
-+/* Sampling Frequency in uSec */
-+static const int apds9306_repeat_rate_period[] = {
-+	25000, 50000, 100000, 200000, 500000, 1000000,
-+	2000000
-+};
-+
-+/* ALS Gain Range (Scale) */
-+static const int apds9306_gain[] = {
-+	1, 3, 6, 9, 18
-+};
-+
-+struct apds9306_data {
-+	struct i2c_client *client;
-+	struct iio_dev *indio_dev;
-+	/*
-+	 * Protect single als reads and device
-+	 * power states.
-+	 */
-+	struct mutex mutex;
-+
-+	struct regmap *regmap;
-+	/* Reg: MAIN_CTRL, Field: SW_Reset */
-+	struct regmap_field *regfield_sw_reset;
-+	/* Reg: MAIN_CTRL, Field: ALS_EN */
-+	struct regmap_field *regfield_en;
-+	/* Reg: ALS_MEAS_RATE, Field: ALS Resolution/Bit Width */
-+	struct regmap_field *regfield_intg_time;
-+	/* Reg: ALS_MEAS_RATE, Field: ALS Measurement Rate */
-+	struct regmap_field *regfield_repeat_rate;
-+	/* Reg: ALS_GAIN, Field: ALS Gain Range */
-+	struct regmap_field *regfield_scale;
-+	/* Reg: INT_CFG, Field: ALS Interrupt Source */
-+	struct regmap_field *regfield_int_src;
-+	/* Reg: INT_CFG, Field: ALS Variation Interrupt Mode */
-+	struct regmap_field *regfield_int_thresh_var_en;
-+	/* Reg: INT_CFG, Field: ALS Interrupt Enable */
-+	struct regmap_field *regfield_int_en;
-+	/* Reg: INT_PERSISTENCE, Field: ALS_PERSIST */
-+	struct regmap_field *regfield_int_persist_val;
-+	/* Reg: ALS_THRESH_VAR, Field: ALS_THRES_VAR */
-+	struct regmap_field *regfield_int_thresh_var_val;
-+
-+	u8 intg_time_idx;
-+	u8 repeat_rate_idx;
-+	u8 gain_idx;
-+	u8 int_ch;
-+};
-+
-+static const struct regmap_range apds9306_readable_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_CTRL, APDS9306_ALS_THRES_VAR)
-+};
-+
-+static const struct regmap_range apds9306_writable_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_CTRL, APDS9306_ALS_GAIN),
-+	regmap_reg_range(APDS9306_INT_CFG, APDS9306_ALS_THRES_VAR)
-+};
-+
-+static const struct regmap_range apds9306_volatile_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_STATUS, APDS9306_MAIN_STATUS),
-+	regmap_reg_range(APDS9306_CLEAR_DATA_0, APDS9306_ALS_DATA_2)
-+};
-+
-+static const struct regmap_range apds9306_precious_ranges[] = {
-+	regmap_reg_range(APDS9306_MAIN_STATUS, APDS9306_MAIN_STATUS)
-+};
-+
-+static const struct regmap_access_table apds9306_readable_table = {
-+	.yes_ranges = apds9306_readable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_readable_ranges)
-+};
-+
-+static const struct regmap_access_table apds9306_writable_table = {
-+	.yes_ranges = apds9306_writable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_writable_ranges)
-+};
-+
-+static const struct regmap_access_table apds9306_volatile_table = {
-+	.yes_ranges = apds9306_volatile_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_volatile_ranges)
-+};
-+
-+static const struct regmap_access_table apds9306_precious_table = {
-+	.yes_ranges = apds9306_precious_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(apds9306_precious_ranges)
-+};
-+
-+static const struct regmap_config apds9306_regmap = {
-+	.name = "apds9306_regmap",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.rd_table = &apds9306_readable_table,
-+	.wr_table = &apds9306_writable_table,
-+	.volatile_table = &apds9306_volatile_table,
-+	.precious_table = &apds9306_precious_table,
-+	.max_register = APDS9306_ALS_THRES_VAR,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+
-+static const struct reg_field apds9306_regfield_sw_reset =
-+	REG_FIELD(APDS9306_MAIN_CTRL, 4, 4);
-+
-+static const struct reg_field apds9306_regfield_en =
-+	REG_FIELD(APDS9306_MAIN_CTRL, 1, 1);
-+
-+static const struct reg_field apds9306_regfield_intg_time =
-+	REG_FIELD(APDS9306_ALS_MEAS_RATE, 4, 6);
-+
-+static const struct reg_field apds9306_regfield_repeat_rate =
-+	REG_FIELD(APDS9306_ALS_MEAS_RATE, 0, 2);
-+
-+static const struct reg_field apds9306_regfield_scale =
-+	REG_FIELD(APDS9306_ALS_GAIN, 0, 2);
-+
-+static const struct reg_field apds9306_regfield_int_src =
-+	REG_FIELD(APDS9306_INT_CFG, 4, 5);
-+
-+static const struct reg_field apds9306_regfield_int_thresh_var_en =
-+	REG_FIELD(APDS9306_INT_CFG, 3, 3);
-+
-+static const struct reg_field apds9306_regfield_int_en =
-+	REG_FIELD(APDS9306_INT_CFG, 2, 2);
-+
-+static const struct reg_field apds9306_regfield_int_persist_val =
-+	REG_FIELD(APDS9306_INT_PERSISTENCE, 4, 7);
-+
-+static const struct reg_field apds9306_regfield_int_thresh_var_val =
-+	REG_FIELD(APDS9306_ALS_THRES_VAR, 0, 2);
-+
-+static struct iio_event_spec apds9306_event_spec[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_PERIOD),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH_ADAPTIVE,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
-+			BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
-+static struct iio_chan_spec apds9306_channels[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_all =  BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 20,
-+			.storagebits = 32,
-+		},
-+		.event_spec = apds9306_event_spec,
-+		.num_event_specs = ARRAY_SIZE(apds9306_event_spec),
-+	},
-+	{
-+		.type = IIO_INTENSITY,
-+		.channel2 = IIO_MOD_LIGHT_CLEAR,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_all =  BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 20,
-+			.storagebits = 32,
-+		},
-+		.modified = 1,
-+	},
-+};
-+
-+static struct iio_chan_spec apds9306_channels_no_events[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_all =  BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 20,
-+			.storagebits = 32,
-+		},
-+	},
-+	{
-+		.type = IIO_INTENSITY,
-+		.channel2 = IIO_MOD_LIGHT_CLEAR,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_shared_by_all =  BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 20,
-+			.storagebits = 32,
-+		},
-+		.modified = 1,
-+	},
-+};
-+
-+static ssize_t thresh_channel_select_show(struct device *dev,
-+		struct device_attribute *attr, char *buff)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (data->int_ch == 1)
-+		ret = sprintf(buff, "als\n");
-+	else if (data->int_ch == 0)
-+		ret = sprintf(buff, "clear\n");
-+	else
-+		ret = -EINVAL;
-+
-+	return ret;
-+}
-+
-+static ssize_t thresh_channel_select_store(struct device *dev,
-+		struct device_attribute *attr, const char *buff, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, channel;
-+
-+	if (len <= 0 || len > 6)
-+		return -EINVAL;
-+
-+	if (!strncmp(buff, "als", 3))
-+		channel = 1;
-+	else if (!strncmp(buff, "clear", 5))
-+		channel = 0;
-+	else
-+		return -EINVAL;
-+
-+	ret = regmap_field_write(data->regfield_int_src, channel);
-+	if (ret)
-+		return ret;
-+
-+	data->int_ch = channel;
-+
-+	return len;
-+}
-+
-+/* INT_PERSISTENCE available */
-+IIO_CONST_ATTR(thresh_either_period_available, "[0 15]");
-+
-+/* ALS_THRESH_VAR available */
-+IIO_CONST_ATTR(thresh_adaptive_either_values_available, "[0 7]");
-+
-+/* Interrupt channel selection available */
-+IIO_CONST_ATTR(thresh_channels_available, "clear als");
-+IIO_DEVICE_ATTR_RW(thresh_channel_select, 0);
-+
-+static struct attribute *apds9306_event_attributes[] = {
-+	&iio_const_attr_thresh_either_period_available.dev_attr.attr,
-+	&iio_const_attr_thresh_channels_available.dev_attr.attr,
-+	&iio_const_attr_thresh_adaptive_either_values_available.dev_attr.attr,
-+	&iio_dev_attr_thresh_channel_select.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group apds9306_event_attr_group = {
-+	.attrs = apds9306_event_attributes,
-+};
-+
-+static int apds9306_regfield_init(struct apds9306_data *data)
-+{
-+	struct device *dev = &data->client->dev;
-+	struct regmap *regmap = data->regmap;
-+
-+	data->regfield_sw_reset = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_sw_reset);
-+	if (IS_ERR(data->regfield_sw_reset))
-+		return PTR_ERR(data->regfield_sw_reset);
-+
-+	data->regfield_en = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_en);
-+	if (IS_ERR(data->regfield_en))
-+		return PTR_ERR(data->regfield_en);
-+
-+	data->regfield_intg_time = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_intg_time);
-+	if (IS_ERR(data->regfield_intg_time))
-+		return PTR_ERR(data->regfield_intg_time);
-+
-+	data->regfield_repeat_rate = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_repeat_rate);
-+	if (IS_ERR(data->regfield_repeat_rate))
-+		return PTR_ERR(data->regfield_repeat_rate);
-+
-+	data->regfield_scale = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_scale);
-+	if (IS_ERR(data->regfield_scale))
-+		return PTR_ERR(data->regfield_scale);
-+
-+	data->regfield_int_src = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_int_src);
-+	if (IS_ERR(data->regfield_int_src))
-+		return PTR_ERR(data->regfield_int_src);
-+
-+	data->regfield_int_thresh_var_en = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_int_thresh_var_en);
-+	if (IS_ERR(data->regfield_int_thresh_var_en))
-+		return PTR_ERR(data->regfield_int_thresh_var_en);
-+
-+	data->regfield_int_en = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_int_en);
-+	if (IS_ERR(data->regfield_int_en))
-+		return PTR_ERR(data->regfield_int_en);
-+
-+	data->regfield_int_persist_val = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_int_persist_val);
-+	if (IS_ERR(data->regfield_int_persist_val))
-+		return PTR_ERR(data->regfield_int_en);
-+
-+	data->regfield_int_thresh_var_val = devm_regmap_field_alloc(dev, regmap,
-+			apds9306_regfield_int_thresh_var_val);
-+	if (IS_ERR(data->regfield_int_thresh_var_val))
-+		return PTR_ERR(data->regfield_int_thresh_var_en);
-+
-+	return 0;
-+}
-+
-+static int apds9306_power_state(struct apds9306_data *data,
-+		enum apds9306_power_states state)
-+{
-+	int ret;
-+
-+	/* Reset not included as it causes ugly I2C bus error */
-+	switch (state) {
-+	case standby:
-+		return regmap_field_write(data->regfield_en, 0);
-+	case active:
-+		ret = regmap_field_write(data->regfield_en, 1);
-+		if (ret)
-+			return ret;
-+		/* 5ms wake up time */
-+		usleep_range(5000, 10000);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int apds9306_runtime_power(struct apds9306_data *data, int en)
-+{
-+	struct device *dev = &data->client->dev;
-+	int ret = 0;
-+
-+	if (en) {
-+		ret = pm_runtime_resume_and_get(dev);
-+		if (ret < 0) {
-+			dev_err(dev, "runtime resume failed: %d\n", ret);
-+			return ret;
-+		}
-+		ret = 0;
-+	} else {
-+		pm_runtime_mark_last_busy(dev);
-+		pm_runtime_put_autosuspend(dev);
-+	}
-+
-+	return ret;
-+}
-+
-+static int apds9306_read_data(struct apds9306_data *data, int *val, int reg)
-+{
-+	struct device *dev = &data->client->dev;
-+	int ret, delay, status, int_en;
-+	int retries = 4;
-+	u8 buff[3];
-+
-+	ret = apds9306_runtime_power(data, 1);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Whichever is greater - integration time period or
-+	 * sampling period.
-+	 */
-+	delay = max(apds9306_intg_time[data->intg_time_idx][1],
-+			apds9306_repeat_rate_period[data->repeat_rate_idx]);
-+
-+	/*
-+	 * If interrupts are enabled then Status resistor cannot be
-+	 * relied upon as all the status bits are cleared by the
-+	 * interrupt handler in case of an event.
-+	 */
-+	ret = regmap_field_read(data->regfield_int_en, &int_en);
-+	if (ret) {
-+		dev_err(dev, "read interrupt status failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	if (!int_en) {
-+		while (retries--) {
-+			ret = regmap_read(data->regmap, APDS9306_MAIN_STATUS,
-+					&status);
-+			if (ret) {
-+				dev_err(dev, "read status failed: %d\n", ret);
-+				return ret;
-+			}
-+			if (status & APDS9306_ALS_DATA_STAT_MASK)
-+				break;
-+			/*
-+			 * In case of continuous one-shot read from userspace,
-+			 * new data is available after sampling period.
-+			 * Delays are in the range of 25ms to 2secs.
-+			 */
-+			fsleep(delay);
-+		}
-+	} else
-+		fsleep(delay);
-+
-+	if (!retries)
-+		return -EBUSY;
-+
-+	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
-+	if (ret) {
-+		dev_err(&data->client->dev, "read data failed\n");
-+		return ret;
-+	}
-+
-+	*val = get_unaligned_le24(&buff[0]);
-+
-+	ret = apds9306_runtime_power(data, 0);
-+	if (ret)
-+		return ret;
-+
-+	return ret;
-+}
-+
-+static int apds9306_intg_time_get(struct apds9306_data *data, int *val,
-+		int *val2)
-+{
-+	if (data->intg_time_idx > ARRAY_SIZE(apds9306_intg_time))
-+		return -EINVAL;
-+
-+	*val = apds9306_intg_time[data->intg_time_idx][0];
-+	*val2 = apds9306_intg_time[data->intg_time_idx][1];
-+
-+	return 0;
-+}
-+
-+static int apds9306_intg_time_set(struct apds9306_data *data, int val,
-+		int val2)
-+{
-+	int i, ret = -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(apds9306_intg_time); i++)
-+		if (apds9306_intg_time[i][0] ==  val &&
-+				apds9306_intg_time[i][1] ==  val2) {
-+			ret = regmap_field_write(data->regfield_intg_time, i);
-+			if (ret)
-+				return ret;
-+			data->intg_time_idx = i;
-+			break;
-+		}
-+
-+	return ret;
-+}
-+
-+static int apds9306_sampling_freq_get(struct apds9306_data *data, int *val,
-+		int *val2)
-+{
-+	if (data->repeat_rate_idx > ARRAY_SIZE(apds9306_repeat_rate_freq))
-+		return -EINVAL;
-+
-+	*val = apds9306_repeat_rate_freq[data->repeat_rate_idx][0];
-+	*val2 = apds9306_repeat_rate_freq[data->repeat_rate_idx][1];
-+
-+	return 0;
-+}
-+
-+static int apds9306_sampling_freq_set(struct apds9306_data *data, int val,
-+		int val2)
-+{
-+	int i, ret = -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(apds9306_repeat_rate_freq); i++)
-+		if (apds9306_repeat_rate_freq[i][0] ==  val &&
-+				apds9306_repeat_rate_freq[i][1] ==  val2) {
-+			ret = regmap_field_write(data->regfield_repeat_rate, i);
-+			if (ret)
-+				return ret;
-+			data->repeat_rate_idx = i;
-+			break;
-+		}
-+
-+	return ret;
-+}
-+
-+static int apds9306_gain_get(struct apds9306_data *data, int *val)
-+{
-+	if (data->gain_idx > ARRAY_SIZE(apds9306_gain))
-+		return -EINVAL;
-+
-+	*val = apds9306_gain[data->gain_idx];
-+
-+	return 0;
-+}
-+
-+static int apds9306_gain_set(struct apds9306_data *data, int val)
-+{
-+	int i, ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(apds9306_gain); i++)
-+		if (apds9306_gain[i] ==  val) {
-+			ret = regmap_field_write(data->regfield_scale, i);
-+			if (ret)
-+				return ret;
-+			data->gain_idx = i;
-+		}
-+
-+	return 0;
-+}
-+
-+static int apds9306_event_period_get(struct apds9306_data *data, int *val)
-+{
-+	int period, ret;
-+
-+	ret = regmap_field_read(data->regfield_int_persist_val, &period);
-+	if (ret)
-+		return ret;
-+
-+	if (period > 15)
-+		return -EINVAL;
-+
-+	*val = period;
-+
-+	return ret;
-+}
-+
-+static int apds9306_event_period_set(struct apds9306_data *data, int val)
-+{
-+	if (val < 0 || val > 15)
-+		return -EINVAL;
-+
-+	return regmap_field_write(data->regfield_int_persist_val, val);
-+}
-+
-+static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data,
-+		int *val)
-+{
-+	int thad, ret;
-+
-+	ret = regmap_field_read(data->regfield_int_thresh_var_val, &thad);
-+	if (ret)
-+		return ret;
-+
-+	if (thad > 7)
-+		return -EINVAL;
-+
-+	*val = thad;
-+
-+	return ret;
-+}
-+
-+static int apds9306_event_thresh_adaptive_set(struct apds9306_data *data,
-+		int val)
-+{
-+	if (val < 0 || val > 7)
-+		return -EINVAL;
-+
-+	return regmap_field_write(data->regfield_int_thresh_var_val, val);
-+}
-+
-+static int apds9306_read_raw(struct iio_dev *indio_dev,
-+				struct iio_chan_spec const *chan,
-+				int *val, int *val2, long mask)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, reg;
-+
-+	mutex_lock(&data->mutex);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		if (chan->channel2 == IIO_MOD_LIGHT_CLEAR)
-+			reg = APDS9306_CLEAR_DATA_0;
-+		else
-+			reg = APDS9306_ALS_DATA_0;
-+		ret = apds9306_read_data(data, val, reg);
-+		if (!ret)
-+			ret = IIO_VAL_INT;
-+		*val2 = 0;
-+		break;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		ret = apds9306_intg_time_get(data, val, val2);
-+		if (!ret)
-+			ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = apds9306_sampling_freq_get(data, val, val2);
-+		if (!ret)
-+			ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		ret = apds9306_gain_get(data, val);
-+		if (!ret)
-+			ret = IIO_VAL_INT;
-+		*val2 = 0;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+};
-+
-+static int apds9306_read_avail(struct iio_dev *indio_dev,
-+			struct iio_chan_spec const *chan, const int **vals,
-+			int *type, int *length, long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*length = ARRAY_SIZE(apds9306_intg_time) * 2;
-+		*vals = (const int *)apds9306_intg_time;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*length = ARRAY_SIZE(apds9306_repeat_rate_freq) * 2;
-+		*vals = (const int *)apds9306_repeat_rate_freq;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SCALE:
-+		*length = ARRAY_SIZE(apds9306_gain);
-+		*vals = apds9306_gain;
-+		*type = IIO_VAL_INT;
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int apds9306_write_raw(struct iio_dev *indio_dev,
-+			struct iio_chan_spec const *chan,
-+			int val, int val2, long mask)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+
-+	mutex_lock(&data->mutex);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		ret = apds9306_intg_time_set(data, val, val2);
-+		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = apds9306_sampling_freq_set(data, val, val2);
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		if (val2 != 0)
-+			break;
-+		ret = apds9306_gain_set(data, val);
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static const struct iio_info apds9306_info_no_events = {
-+		.read_raw = apds9306_read_raw,
-+		.read_avail = apds9306_read_avail,
-+		.write_raw = apds9306_write_raw,
-+};
-+
-+static irqreturn_t apds9306_irq_handler(int irq, void *priv)
-+{
-+	struct iio_dev *indio_dev = priv;
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, status;
-+
-+	/* The interrupt line is released and the interrupt flag is
-+	 * cleared as a result of reading the status register
-+	 */
-+	ret = regmap_read(data->regmap, APDS9306_MAIN_STATUS, &status);
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "status reg read failed\n");
-+		return IRQ_HANDLED;
-+	}
-+
-+	if ((status & APDS9306_ALS_INT_STAT_MASK)) {
-+		iio_push_event(indio_dev, IIO_UNMOD_EVENT_CODE(IIO_LIGHT,
-+				data->int_ch, IIO_EV_TYPE_THRESH, IIO_EV_DIR_EITHER),
-+		iio_get_time_ns(indio_dev));
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int apds9306_read_event(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir,
-+				enum iio_event_info info,
-+				int *val, int *val2)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	u8 buff[3];
-+	int var, ret;
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		if (dir == IIO_EV_DIR_EITHER && info == IIO_EV_INFO_PERIOD) {
-+			ret = apds9306_event_period_get(data, val);
-+			if (ret)
-+				return ret;
-+			break;
-+		}
-+
-+		if (dir == IIO_EV_DIR_RISING)
-+			var = APDS9306_ALS_THRES_UP_0;
-+		else if (dir == IIO_EV_DIR_FALLING)
-+			var = APDS9306_ALS_THRES_LOW_0;
-+		else
-+			return -EINVAL;
-+
-+		ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
-+		if (ret)
-+			return ret;
-+		*val = get_unaligned_le24(&buff[0]);
-+	break;
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		ret = apds9306_event_thresh_adaptive_get(data, val);
-+		if (ret)
-+			return ret;
-+	break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	*val2 = 0;
-+	return IIO_VAL_INT;
-+}
-+
-+static int apds9306_write_event(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir,
-+				enum iio_event_info info,
-+				int val, int val2)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	unsigned int var;
-+	u8 buff[3];
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		if (dir == IIO_EV_DIR_EITHER && info == IIO_EV_INFO_PERIOD)
-+			return apds9306_event_period_set(data, val);
-+		if (dir == IIO_EV_DIR_RISING)
-+			var = APDS9306_ALS_THRES_UP_0;
-+		else if (dir == IIO_EV_DIR_FALLING)
-+			var = APDS9306_ALS_THRES_LOW_0;
-+		else
-+			return -EINVAL;
-+
-+		if (val < 0 || val > 0xFFFFF)
-+			return -EINVAL;
-+
-+		put_unaligned_le24(val, buff);
-+		return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		return apds9306_event_thresh_adaptive_set(data, val);
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int apds9306_read_event_config(struct iio_dev *indio_dev,
-+					const struct iio_chan_spec *chan,
-+					enum iio_event_type type,
-+					enum iio_event_direction dir)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	unsigned int val;
-+	int ret;
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		ret = regmap_field_read(data->regfield_int_en, &val);
-+		if (ret)
-+			return ret;
-+		return val;
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		ret = regmap_field_read(data->regfield_int_thresh_var_en, &val);
-+		if (ret)
-+			return ret;
-+		return val;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int apds9306_write_event_config(struct iio_dev *indio_dev,
-+					const struct iio_chan_spec *chan,
-+					enum iio_event_type type,
-+					enum iio_event_direction dir,
-+					int state)
-+{
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret, curr_state;
-+
-+	state = !!state;
-+	switch (type) {
-+	case IIO_EV_TYPE_THRESH:
-+		ret = regmap_field_read(data->regfield_int_en, &curr_state);
-+		if (ret)
-+			return ret;
-+		if (curr_state == state)
-+			return 0;
-+		ret = regmap_field_write(data->regfield_int_en, state);
-+		if (ret)
-+			return ret;
-+		mutex_lock(&data->mutex);
-+		ret = apds9306_runtime_power(data, state);
-+		mutex_unlock(&data->mutex);
-+		if (ret)
-+			return ret;
-+		break;
-+	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-+		ret = regmap_field_write(data->regfield_int_thresh_var_en, state);
-+		if (ret)
-+			return ret;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static const struct iio_info apds9306_info = {
-+		.event_attrs = &apds9306_event_attr_group,
-+		.read_raw = apds9306_read_raw,
-+		.read_avail = apds9306_read_avail,
-+		.write_raw = apds9306_write_raw,
-+		.read_event_value = apds9306_read_event,
-+		.write_event_value = apds9306_write_event,
-+		.read_event_config = apds9306_read_event_config,
-+		.write_event_config = apds9306_write_event_config,
-+};
-+
-+static void apds9306_powerdown(void *ptr)
-+{
-+	struct apds9306_data *data = (struct apds9306_data *)ptr;
-+	int status;
-+
-+	/* Disable interrupts */
-+	regmap_field_write(data->regfield_int_thresh_var_en, 0);
-+	regmap_field_write(data->regfield_int_en, 0);
-+	/* Clear status */
-+	regmap_read(data->regmap, APDS9306_MAIN_STATUS, &status);
-+	/* Put the device in standby mode */
-+	apds9306_power_state(data, standby);
-+}
-+
-+static int apds9306_init_device(struct apds9306_data *data)
-+{
-+	struct device *dev = &data->client->dev;
-+	int ret;
-+
-+	ret = apds9306_power_state(data, active);
-+	if (ret)
-+		return ret;
-+
-+	ret = pm_runtime_set_active(dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
-+
-+	pm_runtime_set_autosuspend_delay(dev, 5000);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	ret = regmap_reinit_cache(data->regmap, &apds9306_regmap);
-+	if (ret)
-+		return ret;
-+
-+	/* Integration time: 100 msec */
-+	ret = apds9306_intg_time_set(data, 0, 100000);
-+	if (ret)
-+		return ret;
-+
-+	/* Sampling frequency: 100 msec, 10 Hz */
-+	ret = apds9306_sampling_freq_set(data, 10, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Scale: x3 */
-+	ret = apds9306_gain_set(data, 3);
-+	if (ret)
-+		return ret;
-+
-+	/* Interrupt source channel: als */
-+	ret = regmap_field_write(data->regfield_int_src, 1);
-+	if (ret)
-+		return ret;
-+	data->int_ch = 1;
-+
-+	/* Interrupts disabled */
-+	ret = regmap_field_write(data->regfield_int_en, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Threshold Variance disabled */
-+	ret = regmap_field_write(data->regfield_int_thresh_var_en, 0);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int apds9306_probe(struct i2c_client *client)
-+{
-+	struct apds9306_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->indio_dev = indio_dev;
-+
-+	mutex_init(&data->mutex);
-+
-+	data->regmap = devm_regmap_init_i2c(client, &apds9306_regmap);
-+	if (IS_ERR(data->regmap))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),
-+					"regmap initialization failed\n");
-+
-+	i2c_set_clientdata(client, indio_dev);
-+	data->client = client;
-+
-+	ret = apds9306_regfield_init(data);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+					"regfield initialization failed\n");
-+
-+	ret = devm_regulator_get_enable(&client->dev, "vin");
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+					"Failed to enable regulator\n");
-+
-+	indio_dev->name = "apds9306";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	if (client->irq) {
-+		indio_dev->info = &apds9306_info;
-+		indio_dev->channels = apds9306_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(apds9306_channels);
-+		ret = devm_request_threaded_irq(&client->dev, client->irq, NULL,
-+				apds9306_irq_handler, IRQF_TRIGGER_FALLING |
-+				IRQF_ONESHOT, "apds9306_event", indio_dev);
-+		if (ret)
-+			return dev_err_probe(&client->dev, ret,
-+					"failed to assign interrupt.\n");
-+	} else {
-+		indio_dev->info = &apds9306_info_no_events;
-+		indio_dev->channels = apds9306_channels_no_events;
-+		indio_dev->num_channels = ARRAY_SIZE(apds9306_channels_no_events);
-+	}
-+
-+	ret = devm_add_action_or_reset(&client->dev, apds9306_powerdown, data);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+				"failed to add action on driver unwind\n");
-+
-+	ret = apds9306_init_device(data);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret, "failed to init device\n");
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static int apds9306_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = apds9306_power_state(data, standby);
-+	if (ret)
-+		regcache_cache_only(data->regmap, true);
-+
-+	return ret;
-+}
-+
-+static int apds9306_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct apds9306_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	regcache_cache_only(data->regmap, false);
-+	ret = regcache_sync(data->regmap);
-+	if (!ret) {
-+		ret = apds9306_power_state(data, active);
-+		if (ret)
-+			regcache_cache_only(data->regmap, true);
-+	}
-+
-+	return ret;
-+}
-+
-+static DEFINE_RUNTIME_DEV_PM_OPS(apds9306_pm_ops, apds9306_runtime_suspend,
-+				apds9306_runtime_resume, NULL);
-+
-+static const struct i2c_device_id apds9306_id[] = {
-+	{ "apds9306" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, apds9306_id);
-+
-+static const struct of_device_id apds9306_of_match[] = {
-+		{ .compatible = "avago,apds9306" },
-+		{}
-+};
-+MODULE_DEVICE_TABLE(of, apds9306_of_match);
-+
-+static struct i2c_driver apds9306_driver = {
-+	.driver = {
-+		.name = "apds9306",
-+		.pm = pm_ptr(&apds9306_pm_ops),
-+		.of_match_table = apds9306_of_match,
-+	},
-+	.probe_new = apds9306_probe,
-+	.id_table = apds9306_id,
-+};
-+
-+module_i2c_driver(apds9306_driver);
-+
-+MODULE_AUTHOR("Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>");
-+MODULE_DESCRIPTION("APDS9306 Ambient Light Sensor driver");
-+MODULE_LICENSE("GPL");
+> Another option comes to mind.  Just have one scale value and don't allow the
+> lowest gain value.  That way you can always program the scales to the same value
+> by setting both registers.  So basically hid the oddity of that different
+> 1x vs 2x initial scale by not supporting it.
+
+Yes. That would be an option. Not supporting 1X makes the 'saturation 
+point' for RGBC to jump 4X lower though... I will see how the code looks 
+like when implementing the 'check if high bits changed' logic you 
+suggested. Well, thanks a LOT for the help! This means I will soon(ish) 
+pour some more patches to your review queue :) (Might be I do some PMIC 
+work before that though).
+
+
+Thanks,
+	-- Matti
+
+
 -- 
-2.34.1
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

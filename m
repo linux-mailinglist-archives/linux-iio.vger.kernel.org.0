@@ -2,75 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E95646DDD3A
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 16:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4A296DDE2D
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 16:38:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbjDKOFe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Apr 2023 10:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35114 "EHLO
+        id S230326AbjDKOiD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Apr 2023 10:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229990AbjDKOF3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 10:05:29 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD90A3C3B
-        for <linux-iio@vger.kernel.org>; Tue, 11 Apr 2023 07:05:28 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id e127so8218559ybf.8
-        for <linux-iio@vger.kernel.org>; Tue, 11 Apr 2023 07:05:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681221928; x=1683813928;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I0vFaskCpZmNJeRc0/nVEC/5T8uA71WB290yTzRzGdo=;
-        b=VgDdIvVTkOiDV708jd0URUaPP2R0GhLmuy84YnDfCC8l4QK5WRMAeEGfxc6SsvIrNn
-         5KhIU4DBXIjusjgqkTJBZ+ptq8kOVofQdOOSnefC7QTRODqCF3TEoNCvvRsuVfHAPeiM
-         YLTavuwZYARDQ4V8CppMkXuKfIgmc6nIDOK7sYR/+A6QAlZQh9caB2tPMwMMfphCRQmp
-         +vpw4zeLIl1aa35veoPcSrBttTYsserRG0rE0Yu9Run6BV65hvWipgi/+CpA51xJxnZo
-         5h327lq7WGbhGGgDnK3rnO7XRAJf5+gMbdbl0e4fJ1lhoXGSiHP0YxgQWhEaMRLOZeKg
-         EyLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681221928; x=1683813928;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I0vFaskCpZmNJeRc0/nVEC/5T8uA71WB290yTzRzGdo=;
-        b=BNxGhT+C4kjS+Jk7TJ0wWMfpow4/um4jkp983v1h8cgmNSsYepCnhDJOouemjbJQv4
-         jbRWn1wdJRxl2HQGMT6wab+6q3rsKEt+SIr+hVUzLUfGRQB7CJ4QsTK/Ct0eimqlgEr5
-         otWf5JFhaTmPsxC7w3uGJAf8Nxv2sY5L8HYubl2Ye3ThXgo1UTBD+lR7uwLE9Ue5MHCS
-         1bn/bP0pQkze/nnbz+9THNRdFPwGIGphpgn+STgdvN8m0aymLnVrSBezUHzswHvWc5xc
-         soxbMZTcR2Q7CTH4hLBuGw413Qift4bvU5obzKCOPKOFnxHs+2TAG7hvmamd3c90VEdw
-         cBsg==
-X-Gm-Message-State: AAQBX9c3dQmJDNSmzJ02KuIJrl0GoksoMNkaEZSPwBrTvUHX6qZr4n+j
-        T7lvMdmZqN5bA3gOPWJx4d6REg==
-X-Google-Smtp-Source: AKy350b5bYtpIsKCWn3lVRtZx+gH/IQvKDmS8WixA4HXanBaMMo4Bcx0pmk8k7zhvETs8fIN4J6k/w==
-X-Received: by 2002:a25:dc90:0:b0:b8b:f8c5:27d1 with SMTP id y138-20020a25dc90000000b00b8bf8c527d1mr1798866ybe.24.1681221927887;
-        Tue, 11 Apr 2023 07:05:27 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id 187-20020a8103c4000000b00545a081847fsm3511942ywd.15.2023.04.11.07.05.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Apr 2023 07:05:27 -0700 (PDT)
-Date:   Tue, 11 Apr 2023 10:05:25 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH v3 3/3] counter: 104-quad-8: Utilize helper functions to
- handle PR, FLAG and PSC
-Message-ID: <ZDVpJb9DyIU+5eJf@fedora>
-References: <cover.1681134558.git.william.gray@linaro.org>
- <669c8f782f11fe27c4568e4fc3ba459c4f954874.1681134558.git.william.gray@linaro.org>
- <ZDVli05x7u/bg7Zc@smile.fi.intel.com>
+        with ESMTP id S229799AbjDKOht (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Apr 2023 10:37:49 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A71452100;
+        Tue, 11 Apr 2023 07:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681223855; x=1712759855;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fPtmDzX4bkCD1h/FIx2OlULjDZBI3uztavNwtzp0d9s=;
+  b=T+Jz3JApzXeckpYeA1WmpuokrJyOFkwev3mXd1FwzfFHdoi7V1ASD+Fq
+   5un7ICFgsEoOGpJ5zHNbkAlrXI0AKxBl/SimhI7umRMDYLdYPc2LCJoRj
+   5JokNGbsuT6lnvp3A/1EIT1RMOBggHMutCpY0owTxLrzU0hFjbTKMxyFF
+   J3z3ge7M5tKoxd0CHEDoqSIdIFXSXH5NOymRJH7NbJWef+XoVD6wEWAOK
+   11yw+cgi2NzVSWCpznIzFqc4KsSpYCUQX2hi09CBpGqlikhyy67cg3qKF
+   O+OIW1O1QMIpGdZ9ASHsoSdTj8SiBCuUUGOI/ySVLxzKkgXkDfa1uby+x
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="343635961"
+X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
+   d="scan'208";a="343635961"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 07:37:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="666000024"
+X-IronPort-AV: E=Sophos;i="5.98,336,1673942400"; 
+   d="scan'208";a="666000024"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006.jf.intel.com with ESMTP; 11 Apr 2023 07:37:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pmF7k-00FK4v-1Y;
+        Tue, 11 Apr 2023 17:37:32 +0300
+Date:   Tue, 11 Apr 2023 17:37:32 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: 104-quad-8: Migrate to the regmap API
+Message-ID: <ZDVwrEZh1y88Hw8b@smile.fi.intel.com>
+References: <20230410141252.143998-1-william.gray@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="OjifHeE5SWJCA/bY"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZDVli05x7u/bg7Zc@smile.fi.intel.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <20230410141252.143998-1-william.gray@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,67 +63,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, Apr 10, 2023 at 10:12:52AM -0400, William Breathitt Gray wrote:
+> The regmap API supports IO port accessors so we can take advantage of
+> regmap abstractions rather than handling access to the device registers
+> directly in the driver.
 
---OjifHeE5SWJCA/bY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looking at the statistics it's a bit unfortunate that LoCs are risen,
+perhaps you can add more points why regmap is better than direct IO
+accessors.
 
-On Tue, Apr 11, 2023 at 04:50:03PM +0300, Andy Shevchenko wrote:
-> On Mon, Apr 10, 2023 at 10:03:13AM -0400, William Breathitt Gray wrote:
-> > The Preset Register (PR), Flag Register (FLAG), and Filter Clock
-> > Prescaler (PSC) have common usage patterns. Wrap up such usage into
-> > dedicated functions to improve code clarity.
->=20
-> ...
->=20
-> >  	*val =3D 0;
->=20
-> Is not needed now as always being initialized by below call.
+...
 
-The regmap_noinc_read() call only reads the number of bytes requested.
-Since we request 3 bytes, the upper bytes of the u64 val remain
-uninitialized, so that is why we need to set *val =3D 0. This isn't
-immediately clear in the code, so I can add a comment to make it
-explicit.
+> +	int state;
 
->=20
-> >  	spin_lock_irqsave(&priv->lock, irqflags);
-> > =20
-> >  	iowrite8(SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL, &chan->control);
-> > -
-> > -	for (i =3D 0; i < 3; i++)
-> > -		*val |=3D (unsigned long)ioread8(&chan->data) << (8 * i);
-> > +	ioread8_rep(&chan->data, val, 3);
-> > =20
-> >  	spin_unlock_irqrestore(&priv->lock, irqflags);
->=20
-> ...
->=20
-> > +	struct channel_reg __iomem *const chan =3D priv->reg->channel + id;
->=20
-> Not sure if array representation will look better here and elsewhere.
->=20
-> 	struct channel_reg __iomem *const chan =3D &priv->reg->channel[id];
+state...
 
-Perhaps so, but all these struct channel_reg lines will go away in the
-next patch [0] migrating to the regmap API, so for the sake of stability
-of this patch I hesitate to change these lines.
+> +	state = regmap_test_bits(priv->map, QUAD8_INDEX_INPUT_LEVELS, BIT(signal->id - 16));
+> +	if (state < 0)
+> +		return state;
 
-William Breathitt Gray
+...
 
-[0] https://lore.kernel.org/all/20230410141252.143998-1-william.gray@linaro=
-=2Eorg/
+> +	int ret;
 
---OjifHeE5SWJCA/bY
-Content-Type: application/pgp-signature; name="signature.asc"
+ret...
 
------BEGIN PGP SIGNATURE-----
+> +	ret = regmap_write(priv->map, QUAD8_CONTROL(count->id),
+> +			   SELECT_RLD | RESET_BP | TRANSFER_CNTR_TO_OL);
+> +	if (ret)
+> +		goto exit_unlock;
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZDVpJQAKCRC1SFbKvhIj
-K1QNAP9X/VRSYKcIROBO8Z/a3tPqYka7FBDZ4yVZcuyEYLY5NwD9HijhOiOYe4/S
-3MLRTNY1lrcDilW1/R1pPt6uDjf9dAM=
-=WFt0
------END PGP SIGNATURE-----
+...
 
---OjifHeE5SWJCA/bY--
+> +	int err;
+
+err...
+
+> +	err = regmap_write(priv->map, QUAD8_CONTROL(id), SELECT_RLD | RESET_BP);
+> +	if (err)
+> +		return err;
+
+...
+
+Maybe a bit of consistency?
+
+
+...
+
+> +	int err;
+> +	unsigned int status;
+>  	unsigned long irq_status;
+>  	unsigned long channel;
+>  	unsigned int flg_pins;
+>  	u8 event;
+
+Perhaps longer lines first? Hence
+
+	int ret;
+
+to be here.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

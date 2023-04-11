@@ -2,51 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4724C6DCC31
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Apr 2023 22:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71A66DCED7
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Apr 2023 03:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjDJU3m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Apr 2023 16:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50182 "EHLO
+        id S229838AbjDKBMr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Apr 2023 21:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbjDJU3i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 16:29:38 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A29E1712;
-        Mon, 10 Apr 2023 13:29:35 -0700 (PDT)
-Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id CC58A3FA84;
-        Mon, 10 Apr 2023 22:29:33 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229507AbjDKBMq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Apr 2023 21:12:46 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73AF62697
+        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 18:12:45 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id q15-20020a17090a2dcf00b0023efab0e3bfso9282949pjm.3
+        for <linux-iio@vger.kernel.org>; Mon, 10 Apr 2023 18:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1681175565;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/RniW0EaX9rcvwsouXvZAHmibtnb+Rd+T7KCE24nNCY=;
+        b=gpsiyl3tfNAOPR0m9cBJ/TsIQ63Y4mPkjCNTA+VYKozlxBjFWEzvd64Aq70fLCazDa
+         1uyMQ+AZ3/ALLk2DY+vvAv/Buhv9+pgp4yyGF5lGMopZ/TUxbu+5Gvk1nwhksrGswrXO
+         RVRIKItN+5FVk9g1akwV0E1bRqgaxvQIZpRcBTanTr3oAebtOIUl1lkE8gqeA0CiYfJu
+         vKrMXKqTVKF+ZSLSaZLa5UVX/SV+ePk7mFlrb7qMPsw83dCiT/l5I2SWnf88TnZmW5vu
+         3wnhO57QQRFkwuYqs8GXtUV8PBMKdNg3bHN9zlDFv4wFW0QMue6O/55nO9EPhrefKRFB
+         Om0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681175565;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/RniW0EaX9rcvwsouXvZAHmibtnb+Rd+T7KCE24nNCY=;
+        b=17/HLkU4BkF7Y5uuhvHBhQSwFhoyQ2kz6DZYYo+DnjpoJg+zPZ5d4608H8LtQf8TtV
+         BRK1RCkzFSAAkEF/XcKFfoBaLSVDXgialkKqpzixpApDOxbWI+HysXmq6F7p4Q+fW/SY
+         f6S+8eCBVjK/hs3Uvq8/y4l16ZSQge6UKuOfJ/VT7/TjZEoAj0W1gXUu3GbTTBJU8raV
+         x+U6BXXeePh/szLJ0a4EBaBr2ki96PciIp9DOkK6nq16muDS8TXxiXEtCZCNx1kkPP4O
+         6aRvB6/PJDcP9eqapZyB+n2KMJesYP8G+7748/leZwBrmtVQyQf0bU3Rj1Ej5rmDblgD
+         e8ag==
+X-Gm-Message-State: AAQBX9eMLkHUYx9xp1JgvUfrqWwmW0privyzEW4WBvVHUomfmKOWAT3v
+        PKx/mb+DXpg7f/BlvL05e1yXmw==
+X-Google-Smtp-Source: AKy350b/YCyY5J5TT5ia537tAFnYcxY6r12iwzfl8tCwiUKhnfagcrfekRkxq9YwRoyvVKoEBdtdTw==
+X-Received: by 2002:a17:90a:e114:b0:246:cade:8725 with SMTP id c20-20020a17090ae11400b00246cade8725mr2719986pjz.22.1681175564941;
+        Mon, 10 Apr 2023 18:12:44 -0700 (PDT)
+Received: from subhajit-ThinkPad-Yoga-370.. ([124.148.71.115])
+        by smtp.gmail.com with ESMTPSA id k91-20020a17090a4ce400b00246b1b4a3ffsm2220957pjh.0.2023.04.10.18.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Apr 2023 18:12:44 -0700 (PDT)
+From:   Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel` name for channel nodes
-Date:   Mon, 10 Apr 2023 22:29:17 +0200
-Message-Id: <20230410202917.247666-6-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230410202917.247666-1-marijn.suijten@somainline.org>
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [RFC PATCH 0/2] Support for Avago APDS9306 Ambient Light Sensor
+Date:   Tue, 11 Apr 2023 09:12:01 +0800
+Message-Id: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,132 +76,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As discussed in [1] it is more convenient to use a generic `channel`
-node name for ADC channels while storing a friendly - board-specific
-instead of PMIC-specific - name in the label, if/when desired to
-overwrite the channel description already contained (but previously
-unused) in the driver [2].
+This series adds support for Avago (Broadcom) APDS9306 Ambient Light
+Sensor.
 
-The same `channel` node name pattern has also been set in
-iio/adc/adc.yaml, but this generic binding is not inherited as base for
-qcom,spmi-vadc bindings due to not having any other generic elements in
-common, besides the node name rule and reg property.
+Datasheet: https://docs.broadcom.com/doc/AV02-4755EN
 
-Replace the .* name pattern with the `channel` literal, but leave the
-label property optional for bindings to choose to fall back a channel
-label hardcoded in the driver [2] instead.
+Following features are supported:
+- I2C interface
+- 2 channels - als and clear
+- Up to 20 bit resolution
+- 20 bit data register for each channel
+- Common Configurable items for both channels
+    - Integration Time
+    - Measurement Frequency
+    - Scale
+- High and Low threshold interrupts for each channel
 
-[1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-[2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+- Selection of interrupt channel - als or clear
+- Selection of interrupt mode - threshold or adaptive
+- Level selection for adaptive threshold interrupts
+- Persistence (Period) level selection for interrupts
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-index bd6e0d6f6e0c..f30114424b92 100644
---- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-@@ -54,7 +54,7 @@ required:
-   - '#io-channel-cells'
- 
- patternProperties:
--  "^.*@[0-9a-f]+$":
-+  "^channel@[0-9a-f]+$":
-     type: object
-     additionalProperties: false
-     description: |
-@@ -148,7 +148,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 512, 1024, 2048, 4096 ]
-@@ -171,7 +171,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 256, 512, 1024 ]
-@@ -194,7 +194,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 250, 420, 840 ]
-@@ -217,7 +217,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 85, 340, 1360 ]
-@@ -249,7 +249,7 @@ examples:
-             #io-channel-cells = <1>;
- 
-             /* Channel node */
--            adc-chan@39 {
-+            channel@39 {
-                 reg = <0x39>;
-                 qcom,decimation = <512>;
-                 qcom,ratiometric;
-@@ -258,19 +258,19 @@ examples:
-                 qcom,pre-scaling = <1 3>;
-             };
- 
--            adc-chan@9 {
-+            channel@9 {
-                 reg = <0x9>;
-             };
- 
--            adc-chan@a {
-+            channel@a {
-                 reg = <0xa>;
-             };
- 
--            adc-chan@e {
-+            channel@e {
-                 reg = <0xe>;
-             };
- 
--            adc-chan@f {
-+            channel@f {
-                 reg = <0xf>;
-             };
-         };
-@@ -292,16 +292,18 @@ examples:
-             #io-channel-cells = <1>;
- 
-             /* Other properties are omitted */
--            xo-therm@44 {
-+            channel@44 {
-                 reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "xo_therm";
-             };
- 
--            conn-therm@47 {
-+            channel@47 {
-                 reg = <PM8350_ADC7_AMUX_THM4_100K_PU(1)>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "conn_therm";
-             };
-         };
-     };
+Subhajit Ghosh (2):
+  dt-bindings: Document APDS9306 Light Sensor bindings
+  iio: light: Add support for APDS9306 Light Sensor
+
+ .../bindings/iio/light/avago,apds9306.yaml    |   47 +
+ drivers/iio/light/Kconfig                     |   11 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/apds9306.c                  | 1146 +++++++++++++++++
+ 4 files changed, 1205 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9306.yaml
+ create mode 100644 drivers/iio/light/apds9306.c
+
+
+base-commit: 0d3eb744aed40ffce820cded61d7eac515199165
 -- 
-2.40.0
+2.34.1
 

@@ -2,124 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9376E0012
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 22:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0D16E01E4
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 00:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjDLUoJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 16:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55030 "EHLO
+        id S229760AbjDLWhE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 18:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjDLUoJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 16:44:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5987E4EC5;
-        Wed, 12 Apr 2023 13:44:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229441AbjDLWhC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 18:37:02 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EDC340D3;
+        Wed, 12 Apr 2023 15:37:00 -0700 (PDT)
+Received: from smtp202.mailbox.org (unknown [10.196.197.202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E89AD622CC;
-        Wed, 12 Apr 2023 20:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C8BC433EF;
-        Wed, 12 Apr 2023 20:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681332247;
-        bh=aoAHy7DEiYr/xln2kAunwsb8zReQcW/Oo/qN/Fl7/8k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VDKWuY8vNj6YxhcCZ+ic86Utd60bh/CErc5li9e+X7YBlPXuQHxBoOIAX9RBDBL6u
-         qSJoAisF4GNfADV3HeQznFPynj3k8PoLmxZb4mvepSgi52FtL6x0yFYiOBNfVQlRwE
-         5awcIAvR64OUZP2q6prjoJZvh+BOg/YFkeuPqJMMlewGLEHf6nwKjUwFNuFhJxWM14
-         o+XlU7sxPeRxGpuAKmxX/IycKhfxqmfNficR3WZpSR6+1sop50DL/gyoidBjwMxpEP
-         oQngrjxAkCUV46Hx5oiWm7EK8FvKl1gakHTBxpIh/wC3ydVliozftnvDfBoqu44HkM
-         DtVzz6YWRI19Q==
-Date:   Wed, 12 Apr 2023 21:44:03 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Pxcyf1p09z9spl;
+        Thu, 13 Apr 2023 00:36:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mariushoch.de;
+        s=MBO0001; t=1681339018;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=8mgjeVjD9sRPII4svu+aADfY4kCFBWLziUbj6NK6oOs=;
+        b=P8Fo76BPo3QvCyGmspEq0DUx91nBvLxrWka/EeqyrkXu41DCG/kyPBvxvQjr1seYO68dMR
+        hs6HbLRspT5uezHHMtioCgiBpTrwz4vBjupDeUfQxatGlbi3UwPZK6IaUxkalREatcj0fn
+        MFpzJ9JAkG+qBUcm/7DZ6VKhBeOq+O20W3z8sUjMvCdJsTGD+nK5O5lrb/bdWARZXQYdHg
+        Jv5INJTrzwx5HSpjp59fvWcxGPl3WNbr+nNFCL+Dj6qYh5gkX5IvtXZeEGM5MFqwpJzQyQ
+        XHji0q0sPGGD7xlDVyzFoJCPCmmjw6GmZzxx8GHRU9iPO1SZGtWyJI5IrwVj5Q==
+From:   mail@mariushoch.de
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: Re: [RFC PATCH 0/2] Support for Avago APDS9306 Ambient Light Sensor
-Message-ID: <20230412214403.5c053ed6@jic23-huawei>
-In-Reply-To: <eefdbad5-35ed-04c6-0955-87c99a4d345d@tweaklogic.com>
-References: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
-        <20230411144031.000077c7@Huawei.com>
-        <eefdbad5-35ed-04c6-0955-87c99a4d345d@tweaklogic.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Marius Hoch <mail@mariushoch.de>
+Subject: [PATCH] iio: st_sensors: Add lsm303d support
+Date:   Thu, 13 Apr 2023 00:36:21 +0200
+Message-Id: <20230412223627.442963-1-mail@mariushoch.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 12 Apr 2023 12:46:49 +0800
-Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
+From: Marius Hoch <mail@mariushoch.de>
 
-> Hi Jonathan,
-> Thank you for getting back.
-> 
-> > Hi Subhajit,
-> > 
-> > No need to sign off a cover letter.  The content isn't captured in the
-> > git tree anyway.
-> > 
-> > For an RFC, I'd expect to see a clear statement in the cover letter of
-> > why it is an RFC rather than a formal patch submission.  What specifically
-> > are you looking for comments on?
-> > 
-> > Point us in the right direction and we might answer the questions quicker.
-> > 
-> > Thanks,
-> > 
-> > Jonathan  
-> Thank you for clearing it up.
-> Next version of RFC I will put specific reasons.
-> Before submitting a formal patch I wanted to check if my implementation of
-> single reads of ALS data raw values from userspace when interrupts are
-> enabled is the right thing to do or not. Also wanted to check if my event
-> related userspace ABI implementation is in line with IIO subsystem.
-> I will put it into better words in the next cover letter.
-> 
-> Can you also help me out with the git tree I should use to format the
-> patches? As per my understanding it is the subsystem maintainer tree
-> and the main branch but the macros and functions which you have suggested
-> in other reviews are available in Linux mainline.
+Hi!
 
-For a new driver it rarely matters and I'd advise simply using
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-which is the mainline tree.  Please base either on the previous
-release (currently 6.2) or rc1 of the current release (v6.3-rc1)
-if doing this.
+This patch series adds support for the LSM303D accelerometer and
+magnetometer. As the LSM303D is basically, as far as I can tell,
+the LSM9DS0 without gyroscope, we can easily re-use its definitions.
 
-If you need a feature that has only been applied in the same cycle, or
-are building on recent work that has been applied to the iio tree then
-for fixes you want:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git fixes-togreg
-for new stuff you want:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+This was tested on a Lenovo Yoga Tablet 2 1051-F.
 
-The IIO tree routes through Greg KH's char-misc tree so will see the togreg
-branch move forwards to be based on that as Greg takes pull requests from me.
-Usually this happens once or twice a kernel cycle.  Don't worry too much about
-this. If it should affect a patch because some changes crossed I'll generally
-fix it up whilst applying whichever gets applied second and ask the
-authors to check I didn't make a mistake.
+Cheers,
+Marius
 
-Joanthan
-> 
-> Regards,
-> Subhajit Ghosh
-> 
+Marius Hoch (6):
+  iio: accel: st_accel: Add LSM303D
+  iio: magnetometer: st_accel: Add LSM303D
+  iio: st_sensors: Add lsm303d support to the LSM9DS0 IMU driver
+  iio: st_sensors: Add ACPI support for lsm303d to the LSM9DS0 IMU
+    driver
+  iio: Comment that the LSM303D also has the Magnetometer DRDY
+  dt-bindings: iio: st-sensors: Add LSM303D accelerometer+magnetometer
+
+ .../devicetree/bindings/iio/st,st-sensors.yaml    |  1 +
+ drivers/iio/accel/st_accel_core.c                 |  1 +
+ drivers/iio/imu/st_lsm9ds0/Kconfig                |  3 ++-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c       | 15 +++++++++++++++
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c       | 15 +++++++++++++++
+ drivers/iio/magnetometer/st_magn_core.c           |  1 +
+ include/linux/iio/common/st_sensors.h             |  1 +
+ include/linux/platform_data/st_sensors_pdata.h    |  2 +-
+ 8 files changed, 37 insertions(+), 2 deletions(-)
+
+-- 
+2.39.2
 

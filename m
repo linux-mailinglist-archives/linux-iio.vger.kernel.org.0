@@ -2,233 +2,230 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3837E6DF221
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 12:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131CD6DF3B7
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 13:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbjDLKpQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 06:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47844 "EHLO
+        id S231364AbjDLLbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 07:31:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229881AbjDLKpP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 06:45:15 -0400
+        with ESMTP id S231610AbjDLLbY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 07:31:24 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F091A558B;
-        Wed, 12 Apr 2023 03:45:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C15276A9;
+        Wed, 12 Apr 2023 04:29:59 -0700 (PDT)
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33CAgWx3002898;
-        Wed, 12 Apr 2023 06:44:41 -0400
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2170.outbound.protection.outlook.com [104.47.59.170])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3pu248xu1u-1
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33CAgW7V002898;
+        Wed, 12 Apr 2023 07:13:54 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3pu248y0c1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 Apr 2023 06:44:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IhWYNcnV06IP+KJIYvLzlYxD61AgdN5DUaFoiD+nmWM7mIkGmx/Ihct5QucJ5SEPmUzAzL1lNo06YQdDi6mC4+zjewed3WvKaSeHUJyGRHNFoEcBYhVuDiYEFUslZjCb7TPlPUhPtK59kB+CwTWUvlolzYK+ZRHUs+qQpuOPsvjOtOaiQSEFTBP+dY8UzDSQU+3oTZxmMbLoDZBD2aAU6Fnu4j69FCtZAuq15dIfW1h5ipUqc21If/7KIOEE7+4Lf0wTB56yitfM5DdPNRZC6hbC/pHvOXoITSyUodQEsXSuHCUOxZR54qvTwqAB4UY9kceJf8TRg3b8j7P2O+dzAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DxlWGOlxBzu5TairbO62aAKsJDcrk3gOEX9RVpY/auc=;
- b=iSQaMYgsly5OYiyefUGCJNOH/MpKiQvPpvB627cJXC1Jb2Q3USCCVACDpTNcGs5V2Tu+co/3uP+gGGDNKvPdqWH/WkayX0Cg9qD1mZgOIOtw3QSTqqj4NPFJvhFSdJtqolC+F1mh1ZP3SWA7KBQMAlWhN/z3PDlomkt83BQc2muEY27fBus8aUNdIM/xpPRNiIbjHfUd3vFS2076/HBRW/db3P2JZx6qalOpRMAfhI68Jdflp7RLdBwpNlOmEW1a62i9Rz49DHZ0lAdr9wY/1hEoJeZ2duySr4+PB54aS+pblyCS3BIBBvdSvjBzLgtktedRE37u0X3LXr1+3dgNUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DxlWGOlxBzu5TairbO62aAKsJDcrk3gOEX9RVpY/auc=;
- b=MNHwgp1OjtUKPgePdouTkBGKZVxV6qg/BHK7nl2ZDIBwqKyGQz+CAEX5dUe1a5cnn54ZHOoGMsO7DHs2P0xjW4+j6097tI+x8AyRBquupbdoaluZTDOIqifkMHodzjmK7l21ClNPyv1rn0LT8M3hHkIpdMUVVtRApxOwB3CKGr4=
-Received: from MN2PR03MB5168.namprd03.prod.outlook.com (2603:10b6:208:1ec::19)
- by CH2PR03MB5192.namprd03.prod.outlook.com (2603:10b6:610:90::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.30; Wed, 12 Apr
- 2023 10:44:38 +0000
-Received: from MN2PR03MB5168.namprd03.prod.outlook.com
- ([fe80::8f99:7745:fa5d:3dea]) by MN2PR03MB5168.namprd03.prod.outlook.com
- ([fe80::8f99:7745:fa5d:3dea%4]) with mapi id 15.20.6298.030; Wed, 12 Apr 2023
- 10:44:38 +0000
-From:   "Sahin, Okan" <Okan.Sahin@analog.com>
-To:     Lee Jones <lee@kernel.org>
-CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        Wed, 12 Apr 2023 07:13:53 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 33CBDqjY011743
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 12 Apr 2023 07:13:52 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 12 Apr
+ 2023 07:13:51 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 12 Apr 2023 07:13:48 -0400
+Received: from okan.localdomain ([10.158.19.61])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 33CBD6Dp007710;
+        Wed, 12 Apr 2023 07:13:09 -0400
+From:   Okan Sahin <okan.sahin@analog.com>
+To:     <okan.sahin@analog.com>
+CC:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        Haibo Chen <haibo.chen@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
         ChiYuan Huang <cy_huang@richtek.com>,
-        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
         William Breathitt Gray <william.gray@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Thread-Topic: [PATCH v6 5/5]  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Thread-Index: AQHZUOiqG6ZyiGxaUE6S5aTx5qv2Ta78K/mAgAAAKICAE8FVcIACCFqAgAdrk0CAAGi0AIACx3qAgABUvwCABnhK0IAES9GAgAAK2pA=
-Date:   Wed, 12 Apr 2023 10:44:37 +0000
-Message-ID: <MN2PR03MB51681A3425C38EAE5DE986CBE79B9@MN2PR03MB5168.namprd03.prod.outlook.com>
-References: <20230307112835.81886-6-okan.sahin@analog.com>
- <20230315175223.GI9667@google.com> <20230315175257.GJ9667@google.com>
- <MN2PR03MB5168249900206433A082875EE7889@MN2PR03MB5168.namprd03.prod.outlook.com>
- <20230329143615.GS2673958@google.com>
- <MN2PR03MB51685B1F84AA679FB604E738E7929@MN2PR03MB5168.namprd03.prod.outlook.com>
- <20230403140950.GF548901@google.com> <ZC0zA1bVsrg0XEld@smile.fi.intel.com>
- <20230405133938.GD8371@google.com>
- <MN2PR03MB51681CCFD911F63CE32E914AE7949@MN2PR03MB5168.namprd03.prod.outlook.com>
- <20230412100407.GA8371@google.com>
-In-Reply-To: <20230412100407.GA8371@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYjJ0aGJpNXpZV2hwYmx4aGNIQmtZWFJoWEhKdllXMXBibWRjTURsa09E?=
- =?utf-8?B?UTVZall0TXpKa015MDBZVFF3TFRnMVpXVXRObUk0TkdKaE1qbGxNelZpWEcx?=
- =?utf-8?B?elozTmNiWE5uTFdabU4yTm1NMll5TFdRNU1XVXRNVEZsWkMxaVpXTTNMVFU0?=
- =?utf-8?B?Tm1NeU5XUXpZek5sTkZ4aGJXVXRkR1Z6ZEZ4bVpqZGpaak5tTkMxa09URmxM?=
- =?utf-8?B?VEV4WldRdFltVmpOeTAxT0Raak1qVmtNMk16WlRSaWIyUjVMblI0ZENJZ2Mz?=
- =?utf-8?B?bzlJak0yTVRRaUlIUTlJakV6TXpJMU56WTVPRFk0TnpVd09UVTFOU0lnYUQw?=
- =?utf-8?B?aWVWWkZjbU4wTDIxcWFTOVFSbEE1Y0ZKaVZWWk5kVXh4V0haQlBTSWdhV1E5?=
- =?utf-8?B?SWlJZ1ltdzlJakFpSUdKdlBTSXhJaUJqYVQwaVkwRkJRVUZGVWtoVk1WSlRV?=
- =?utf-8?B?bFZHVGtOblZVRkJSVzlEUVVGQmVqVk9ja0pMTWpOYVFXSlVkRVZCUVdNeFQx?=
- =?utf-8?B?azRkRTh3VVVGQ2VsVTFhbmRFUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVWhCUVVGQlJHRkJVVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVVkJRVkZCUWtGQlFVRlJaR2xyTlZGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZLTkVGQlFVSm9RVWRSUVdGUlFtWkJTRTFCV2xGQ2FrRklWVUZqWjBKc1FV?=
- =?utf-8?B?WTRRV05CUW5sQlJ6aEJZV2RDYkVGSFRVRmtRVUo2UVVZNFFWcG5RbWhCUjNk?=
- =?utf-8?B?QlkzZENiRUZHT0VGYVowSjJRVWhOUVdGUlFqQkJSMnRCWkdkQ2JFRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlJVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRm5RVUZCUVVGQmJtZEJRVUZIUlVGYVFVSndRVVk0UVdOM1FteEJSMDFC?=
- =?utf-8?B?WkZGQ2VVRkhWVUZZZDBKM1FVaEpRV0ozUW5GQlIxVkJXWGRDTUVGSVRVRllk?=
- =?utf-8?B?MEl3UVVkclFWcFJRbmxCUkVWQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VkZCUVVGQlFVRkJRVUZEUVVGQlFVRkJRMlZCUVVGQldWRkNhMEZIYTBGWWQw?=
- =?utf-8?B?SjZRVWRWUVZsM1FqRkJTRWxCV2xGQ1prRklRVUZqWjBKMlFVZHZRVnBSUW1w?=
- =?utf-8?B?QlNGRkJZM2RDWmtGSVVVRmhVVUpzUVVoSlFVMW5RVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVKQlFVRkJRVUZCUVVGQlNVRkJRVUZCUVVFOVBTSXZQand2?=
- =?utf-8?Q?bWV0YT4=3D?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN2PR03MB5168:EE_|CH2PR03MB5192:EE_
-x-ms-office365-filtering-correlation-id: eb47947a-c36a-4747-ef60-08db3b42e9e5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zOk50CqQI/BCLQtqrPK7dTkHnT0ANixsW5JAcOPrXoGFwK+aPhqVKfw1v/M58IVmNxC+HU7OSZLO9G98mBBbVVmjHLeT/Zcy85lEseZpWsPdk+yF9MjGooqE+OhhGVASBG2ORoD6kWEPdWB+tNSXBFol94611hxf1cLfAumUKs6ArDiGAJocdW5x40NSEs3/xL1Viqcre2rMT6uCqomLZ7NKMsqeflgXRx7SRu6A0dLjESIz5mYngFgUdk1Y7OippvY6ZZKus5f1t5afFYQYCRC4bqyLxtassoksZw/Jgo+UlC2mFV6e9dCXbgnt9zrzL03Z1CCMAPnP3DntVV/2thsHF5UF/OkR5ZBw6BY5uvQiNEEi55FCWUKWVwSeSdUWsoXtBk3YBo7K5qlIs+86ZywffMRqZOMah8rOan8RCzFWfsA0fuILoQPydphmNOz81/MMjZRd6R1yoNKGdqlEKKTAfMDy8NxYXB/kT5qe/+0h3j6gP1vutrmIQNSwM2iue6Q+EqRoupWK2BMCfQpeXF0nX+Fq9KK7SE4fKeuwlmvkSqi/ol4TpuJRdgVrmTkLz0ZlG50qW9/TA0VW8GK//5oPM2cpaUM5adrAkZTLxD9PifHXv1BmxCpo3B9vWV7p
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR03MB5168.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(136003)(366004)(376002)(39860400002)(451199021)(38070700005)(26005)(66556008)(66476007)(64756008)(4326008)(66946007)(76116006)(55016003)(66446008)(6506007)(9686003)(71200400001)(2906002)(83380400001)(7696005)(186003)(6916009)(54906003)(7416002)(86362001)(52536014)(5660300002)(122000001)(8936002)(8676002)(38100700002)(33656002)(478600001)(41300700001)(316002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NVQzMzg1Y2ViMFNTV1BJb05nc0pXWmc5aHFVemFtMHptcHA3R0dUc3NJRkpB?=
- =?utf-8?B?WDFmV2hHcTBIQ0lxQ2VlZi9JTHJEMGpNbmRhTW5RWWFMcXpPSUNZRmFrZ1VN?=
- =?utf-8?B?dWtST2RTQk1OU01UbHVxblhxS09iYXZZSUc4RlJmSGQyMDVPd1dYZFNKcVh4?=
- =?utf-8?B?M3BsRkEwNURlLzZyUUlyNWY1Z0hYR0hVc1lWUlhNL0tRZWtWZ2ZCZ1VGTkNR?=
- =?utf-8?B?VFVoMTFlL0xaSFN0ZFJDSmlFN25DUUN2aS9veW9NWlk3S3BOa1VRNVBud3Zs?=
- =?utf-8?B?TjlCMTU0MzlVaWt1Q3cwaTQ4NHRoQVltV01LUlVMZ1Zia3kyWVYzaHJrWUtt?=
- =?utf-8?B?VGxrUXgwd3psaEtCekpuS1VVcDlSUzJqYTV0RmRzVXA2dlQwUmJ2MGUyRWNo?=
- =?utf-8?B?QitQR2d0cTVqWVRZWlMzZnRRRWZxWlhuR3JJT0lhNGU4ZFJFc251SG90aksx?=
- =?utf-8?B?NFpESWlEeGpPYUVnRkt2ZXM2eUJ5TW40Z05QckZRSnZ0czNNWW9UVUw3aWhB?=
- =?utf-8?B?YnRwWnJIR3BzWDRyUXlncmRVUkw0STJMWS9yc0lqUWtDVVZqVy9mTGx6Qktj?=
- =?utf-8?B?SWJWUFd4N3FNS045bCtFT1B3UHpWdnJ2Q2pkcENkRGRwY3QxQUZTQlJnV0Mx?=
- =?utf-8?B?VjY2ZU5GTUpNV09MMDI5a3lVeU1McjlyZFhRYnVQdlkzNWt3dC9iUk5WTm5Q?=
- =?utf-8?B?MGx0K2pPa2J2SWJLZHNmbUcwKzZzeThGNGZac2pGZUkzNjJyWkhVZUY4Qlls?=
- =?utf-8?B?a09UeWxXRGtZbnp2SndrTUpEUC9ZUEpON1VmUk4xeDA1cEptQWFKbGJGVEpM?=
- =?utf-8?B?NUFocnhwVFJMMTcvWDZYT2g0Z25ZeG1aeVAvWHh2ckxwckI1RWRsSkVkaG0v?=
- =?utf-8?B?dmZybjdQNG5pN0R0VGd3VDFPOUVLZlJoNG9PZklSUEVTOXU3VTV0V1BQa25j?=
- =?utf-8?B?bnEwSUE3MlN5Tjc3Q2grNm1MVEtTWm5VdmRBKzFzTXFnbk9Ec2R5TldEdTJR?=
- =?utf-8?B?MHRHTWk4cU40azBzVGUxZ0NCZGt2Sys4Ri9VeG5QdTdYa3ByK3VMdXBEd1pi?=
- =?utf-8?B?eVk2enNYODUrMExKQUtmVVF3WUp0dDFjVVRNT3pQTWIxU1ZwdWxPVE1wZGN2?=
- =?utf-8?B?UFE3VVJVak9CSFI3VGsyenhHcGFyMXU0VXBZdkRJY2xCV25BbDZNSG0vdElJ?=
- =?utf-8?B?aFlJYTJqR0dOVXZxaWVVMmFZeE5GTXIxYjBZWVZxSFpIc3h5LytUR1MyVWlj?=
- =?utf-8?B?MlQzblBVRFBMYlkwUzVMQ3BCbE5uanpSamhTS3pkY0RhNjU1dzNJZ25uenlV?=
- =?utf-8?B?RTZpZmszYXJ4NDI1UmVmL0JaSlZFdWF0SGFFcy9lelRXcGMzRzBQTUpkUkRB?=
- =?utf-8?B?OWdsanFILzBCRGxLWTRlWTJ2aGlOUnJFVkNMZVRXVFRDVnA4WDFzVWpwRDdS?=
- =?utf-8?B?NnVqc053QzBqbXpRS2JwMnRFeE41NnJndWtTM3c5Myt2SDFSeDJiS3hEMlU1?=
- =?utf-8?B?cysxd2VVNU9vYmx5RElTRUxCNngyYVluVmI3ZzM0VitxcGNtQm40Y3VBN0ZT?=
- =?utf-8?B?SE95cS9CTGtOMmZzWDRwZ1dTbjZ5TmNpRkFKMzE2cmRJTWxUZERmLzAremsv?=
- =?utf-8?B?NFhsSE5Da0Y5YW5nZ2tIT1NKdUFNVjYyVTRIbDZaVzNERmRUZkZ5WVAxN3Yw?=
- =?utf-8?B?TWZveHpFWTQxMEZOd0xnY2JBb3M4VWFneXJLUGdhcUx6enIxa2wxamdob1hV?=
- =?utf-8?B?amhlUDlXL2ZZR3dnUy9UZnNiTzZOeHMzaGpEazVzMmRWdy9QdUVlWlEvd0d5?=
- =?utf-8?B?d1c3aE9ndGloaG9VVksyeHZTRGJMVy9qVVd5cXRiM1g1NGRKNzlkTTBGQ1NB?=
- =?utf-8?B?eU9iWDhaeE1LOC9MSXlGdUM1YmQ5VEV1YlU0ZlVtMzJhN285Smgwb084c0dn?=
- =?utf-8?B?YzhVSytXWEJOb1JVRnBmbnlKSVlDaHFZSXM1VnBraWlBNmU1UFB2eVRSa3E5?=
- =?utf-8?B?TjZFUmZJaHA3aW9Fa2k5R0ZRQVYrV0ZlemJxOG9uYi9qaDZRdlQ2UGhneWhq?=
- =?utf-8?B?OXp2WldueFdRWENrMGZ1dlo2QWlYdWV2Wk8zYXQwSW1Xa0I5Slg5UmMvTllw?=
- =?utf-8?Q?u9FNHWgY+Zr23B/jUtvjiJxRS?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>
+Subject: [PATCH v7 0/5] Add MAX77541/MAX77540 PMIC Support
+Date:   Wed, 12 Apr 2023 14:12:41 +0300
+Message-ID: <20230412111256.40013-1-okan.sahin@analog.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR03MB5168.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb47947a-c36a-4747-ef60-08db3b42e9e5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Apr 2023 10:44:38.0903
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VdKjYb6RIlnIPxKDHIy+zn56bD1kS0aVRrLhhWtBM4U/CcLQFOVRtVDVvm1zRGCxc1At6vqpdwSvCrMjkkiP9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5192
-X-Proofpoint-ORIG-GUID: lMv3VmD0ytr63TcF8Mie_ETJ8WDyy9_R
-X-Proofpoint-GUID: lMv3VmD0ytr63TcF8Mie_ETJ8WDyy9_R
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: yLITWLFEOVMMa6r1OWIF5LBN_6sjt97T
+X-Proofpoint-GUID: yLITWLFEOVMMa6r1OWIF5LBN_6sjt97T
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-12_02,2023-04-12_01,2023-02-09_01
+ definitions=2023-04-12_03,2023-04-12_01,2023-02-09_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
  bulkscore=0 priorityscore=1501 mlxlogscore=999 adultscore=0 suspectscore=0
  spamscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
  clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304120097
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+ engine=8.12.0-2303200000 definitions=main-2304120099
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Pk9uIFN1biwgMDkgQXByIDIwMjMsIFNhaGluLCBPa2FuIHdyb3RlOg0KPg0KPj4gPk9uIFdlZCwg
-MDUgQXByIDIwMjMsIEFuZHkgU2hldmNoZW5rbyB3cm90ZToNCj4+ID4NCj4+ID4+IE9uIE1vbiwg
-QXByIDAzLCAyMDIzIGF0IDAzOjA5OjUwUE0gKzAxMDAsIExlZSBKb25lcyB3cm90ZToNCj4+ID4+
-ID4gT24gTW9uLCAwMyBBcHIgMjAyMywgU2FoaW4sIE9rYW4gd3JvdGU6DQo+PiA+Pg0KPj4gPj4g
-Li4uDQo+PiA+Pg0KPj4gPj4NCj4+ID4+ID4gPiBJbiBmYWN0LCBvbmUgb2YgdGhlIG1haW50YWlu
-ZXJzIHN1Z2dlc3RlZCBhc3NpZ25pbmcgY2hpcF9pbmZvIHRvIGRhdGENCj4+ID4+ID4gPiBpbnN0
-ZWFkIG9mIGVudW1lcmF0aW9uLiBUaGVuIEkgYWRkZWQgY2hpcF9pbmZvIGFuZCBwdXQgZGV2aWNl
-cyBpbnRvDQo+PiA+PiA+ID4gc3ViLXN0cnVjdHVyZSBhYm92ZS4gSSB3aWxsIHJlcGxhY2UgY2hp
-cF9pbmZvIHdpdGggaWQgc3RydWN0dXJlIGluIG1heDc3NTQxDQo+PiA+PiA+ID4gZGV2aWNlIHN0
-cnVjdHVyZSwgcmlnaHQ/IEkgd2lsbCB1c2UgZW51bWVyYXRpb24gZm9yIGRhdGEgYXMgSSB3aWxs
-IGFzc2lnbg0KPj4gPj4gPiA+IGl0IHRvIGlkLCBhbmQgZGlzdGluZ3Vpc2ggZGlmZmVyZW50IGRl
-dmljZXMuDQo+PiA+PiA+DQo+PiA+PiA+IFllcywgdGhhdCdzIGNvcnJlY3QuICBQbGVhc2UgcmVt
-b3ZlIGNoaXBfaW5mbyBhbHRvZ2V0aGVyLg0KPj4gPj4NCj4+ID4+IFRoZW4gaXQgd2lsbCBwcm92
-b2tlIGNhc3RpbmcgaW4gdGhlIE9GIElEIHRhYmxlIHdoaWNoIEkgYmVsaWV2ZSBpcyBub3Qgd2hh
-dA0KPj4gPj4gd2Ugd2FudC4gSSB3b3VsZCBhZ3JlZSBvbiB5b3VyIGZpcnN0IHN1Z2dlc3Rpb24g
-dG8gaGF2ZSBhIHBsYWluIG51bWJlciBpbiBJwrJDDQo+PiA+PiBJRCB0YWJsZSwgYnV0IEknbSBh
-Z2FpbnN0IGl0IGluIE9GIGFuZC9vciBBQ1BJIElEIHRhYmxlLg0KPj4gPg0KPj4gPkFuZCBJJ20g
-YWdhaW5zdCBwYXNzaW5nIE1GRCBpbmZvcm1hdGlvbiB0aHJvdWdoIHRoZSBPRi9BQ1BJIEFQSXMu
-DQo+PiA+DQo+PiA+WW91IGNhbiBwdXQgdGhyb3VnaCByYXcgcGxhdGZvcm0gZGF0YSBvciBhIGRl
-dmljZSBkZXNjcmlwdG9yLg0KPj4gPg0KPj4gPlJlZjogZ2l0IGdyZXAgLUE1ICJzdHJ1Y3Qgb2Zf
-ZGV2aWNlX2lkLip7IiAtLSBkcml2ZXJzL21mZA0KPj4gPg0KPj4gPi0tDQo+PiA+TGVlIEpvbmVz
-IFvmnY7nkLzmlq9dDQo+Pg0KPj4gSGkgTGVlLA0KPj4NCj4+IFJpZ2h0IG5vdywgYXMgeW91IHN1
-Z2dlc3RlZCBJIHJld3JvdGUgY29kZSBsaWtlIGJlbG93DQo+PiBGb3Igb2ZfZGV2aWNlX2lkLA0K
-Pj4gCS4gZGF0YSA9ICh2b2lkICopTUFYNzc1NDAsDQo+PiAJLmRhdGEgPSAodm9pZCAqKU1BWDc3
-NTQxLA0KPj4gRm9yIGkyY19kZXZpY2VfaWQsDQo+PiAJLmRhdGEgID0gTUFYNzc1NDAsDQo+PiAJ
-LmRhdGEgPSBNQVg3NzU0MQ0KPj4gSSBhbHNvIHJld3JvdGUgb3RoZXIgcGFydCBhcyBjaGlwX2lu
-Zm8gaXMgZXhjbHVkZWQuIEkgd2FudCB0byBiZSBzdXJlIGJlZm9yZQ0KPj4gc2VuZGluZyBuZXcg
-cGF0Y2guDQo+Pg0KPj4gRG9lcyBpdCBzZWVtIGNvcnJlY3Q/DQo+DQo+VGhpcyBpcyBvbmUgc3Vp
-dGFibGUgbWV0aG9kLCB5ZXMuDQo+DQo+LS0NCj5MZWUgSm9uZXMgW+adjueQvOaWr10NCg0KSGkg
-TGVlLA0KDQpUaGFuayB5b3UgZm9yIHlvdXIgc3VwcG9ydC4NCg0KUmVnYXJkcywNCk9rYW4gU2Fo
-aW4NCg==
+MFD, regulator and ADC driver and related bindings for MAX77540/MAX77541.
+The patches are required to be applied in sequence.
+
+Changes in v7:
+* Patch 1: "dt-bindings: regulator: max77541: Add ADI MAX77541/MAX77540 Regulator"
+  * NO CHANGE
+* Patch 2: "regulator: max77541: Add ADI MAX77541/MAX77540 Regulator Support"
+  * Add explanation into Kconfig 
+* Patch 3: "iio: adc: : max77541 Add ADI MAX77541 ADC Support"
+  * NO CHANGE
+* Patch 4: "dt-bindings: mfd: max77541: adi,max77541.yaml Add MAX77541 bindings"
+  * NO CHANGE
+* Patch 5: "mfd: max77541: Add MAX77541/MAX77540 PMIC Support"
+  * Drop chip_info structure, use only id.
+  * Use plain number as data.
+
+Changes in v6:
+* Patch 1: "dt-bindings: regulator: max77541: Add ADI MAX77541/MAX77540 Regulator"
+  * NO CHANGE
+* Patch 2: "regulator: max77541: Add ADI MAX77541/MAX77540 Regulator Support"
+  * Drop unnecessary headers
+* Patch 3: "iio: adc: : max77541 Add ADI MAX77541 ADC Support"
+  * Drop unnecessary headers
+* Patch 4: "dt-bindings: mfd: max77541: adi,max77541.yaml Add MAX77541 bindings"
+  * NO CHANGE
+* Patch 5: "mfd: max77541: Add MAX77541/MAX77540 PMIC Support"
+  * Add more explanation to Kconfig
+  * Drop unnecessary headers
+  * Change differentiate method for different IC's
+  * Modify order of registers in header file
+
+Changes in v5:
+* Patch 1: "dt-bindings: regulator: max77541: Add ADI MAX77541/MAX77540 Regulator"
+  * Drop compatible properties.
+* Patch 2: "regulator: max77541: Add ADI MAX77541/MAX77540 Regulator Support"
+  * Change if-else ladder to switch case for chip->id
+  * Drop driver_data in platform_device_id
+* Patch 3: "iio: adc: : max77541 Add ADI MAX77541 ADC Support"
+  * Drop max77541_adc_iio struct
+* Patch 4: "dt-bindings: mfd: max77541: adi,max77541.yaml Add MAX77541 bindings"
+  * Drop allOf
+* Patch 5: "mfd: max77541: Add MAX77541/MAX77540 PMIC Support"
+  * Dont use compatible when using MFD_CELL_OF MACRO
+
+Changes in v4:
+* Patch 1: "dt-bindings: regulator: Add ADI MAX77541/MAX77540 Regulator"
+  * NO CHANGE
+* Patch 2: "drivers: regulator: Add ADI MAX77541/MAX77540 Regulator Support"
+  * Drop OF ID Table
+  * Drop driver_data in platform_device_id
+* Patch 3: "drivers: iio: adc: Add ADI MAX77541 ADC Support"
+  * Add missing blank line
+* Patch 4: "dt-bindings: mfd: adi,max77541.yaml Add MAX77541 bindings"
+  * NO CHANGE(Order of patchset changed, and [4/5] has dependency to [1/5])
+* Patch 5: "drivers: mfd: Add MAX77541/MAX77540 PMIC Support"
+  * Use pointers in the driver_data
+  * Use probe_new instead of probe
+  * Use PLATFORM_DEVID_NONE macro instead of "-1"
+
+Changes in v3:
+* Patch 1: "drivers: mfd: Add ADI MAX77541/MAX77540 PMIC Support"
+  * Change struct name from max77541_dev to max77541
+  * Adjust max-line-length lower than 80
+* Patch 2: "dt-bindings: mfd: Add ADI MAX77541/MAX77540"
+  * Remove adc object as we do not need
+  * Remove adc node from example
+* Patch 3: "drivers: regulator: Add ADI MAX77541/MAX77540 Regulator Support"
+  * Change node name from "BUCK#_id" to "buck#_id" in regulator desc
+* Patch 4: "dt-bindings: regulator: Add ADI MAX77541/MAX77540 Regulator"
+  * Change node name from "BUCK" to "buck" in regulators
+* Patch 5: "drivers: iio: adc: Add ADI MAX77541 ADC Support"
+  * Convert voltage values from V to mV for scaling.
+  * Convert temperature values from C to miliC for scale and offset
+  * Do not set offset bit in info_mask_separate for voltage that does not need offset
+  * Remove unnecessary dev_get_drvdata() instead of it use dev_get_regmap to have regmap.
+  * Assing hard coded name for adc dev name
+
+Changes in v2:
+* Patch 1: "drivers: mfd: Add MAX77541/MAX77540 PMIC Support"
+  * Drop "this patch adds" from commit message.
+  * Drop redundant blank lines.
+  * Drop module version
+  * Use definition for parameter of devm_mfd_add_devices(.., -1,..)
+  * Use desc in chip_info to adding desc for different devices.
+  * Add missing headers and forward declarations.
+  * Drop unused elements from max77541_dev struct
+  * Add chip_info into max77541_dev struct to identify different devices.
+* Patch 2: "dt-bindings: mfd: adi,max77541.yaml Add MAX77541 bindings"
+  * Drop "this patch adds" from commit message.
+  * Fix $ref path
+  * Drop adc part under allOf
+  * Keep only one example (more complex one)
+  * Fix make dt_binding_check errors.(trailing space, No newline)
+* Patch 3: "drivers: regulator: Add MAX77541 Regulator Support"
+  * Drop "this patch adds" from commit message.
+  * Add trailing comma for required structs.
+  * Fix wrong indentation.
+  * Drop redundant blank lines.
+  * Drop max77541_regulator_dev struct.
+  * Use "regulator_desc *desc" for both regulator
+    regarding to "max77541->id"
+* Patch 4: "dt-bindings: regulator: max77541-regulator.yaml Add MAX77541
+            Regulator bindings"
+  * Drop "this patch adds" from commit message.
+  * Chance filename (matching compatible), so adi,max77541-regulator.yaml
+  * Fix make dt_binding_check errors.(trailing space, No newline)
+* Patch 5: "drivers: iio: adc: Add MAX77541 ADC Support"
+  * Drop "this patch adds" from commit message.
+  * Drop redundant blank lines.
+  * Fix wrong include path.
+  * Use switch instead of if-else for range setting in max77541_adc_scale
+  * Move max77541_adc_range enum from max77541.h to here.
+  * Use definition from units.h
+  * Drop unused elements from max77541_adc_iio struct
+  * Drop the .data from platform_device_id
+
+Okan Sahin (5):
+  dt-bindings: regulator: max77541: Add ADI MAX77541/MAX77540 Regulator
+  regulator: max77541: Add ADI MAX77541/MAX77540 Regulator Support
+  iio: adc: max77541: Add ADI MAX77541 ADC Support
+  dt-bindings: mfd: max77541: Add ADI MAX77541/MAX77540
+  mfd: max77541: Add ADI MAX77541/MAX77540 PMIC Support
+
+ .../devicetree/bindings/mfd/adi,max77541.yaml |  68 ++++++
+ .../regulator/adi,max77541-regulator.yaml     |  38 +++
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max77541-adc.c                | 194 +++++++++++++++
+ drivers/mfd/Kconfig                           |  13 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/max77541.c                        | 224 ++++++++++++++++++
+ drivers/regulator/Kconfig                     |  11 +
+ drivers/regulator/Makefile                    |   1 +
+ drivers/regulator/max77541-regulator.c        | 153 ++++++++++++
+ include/linux/mfd/max77541.h                  |  91 +++++++
+ 12 files changed, 806 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+ create mode 100644 Documentation/devicetree/bindings/regulator/adi,max77541-regulator.yaml
+ create mode 100644 drivers/iio/adc/max77541-adc.c
+ create mode 100644 drivers/mfd/max77541.c
+ create mode 100644 drivers/regulator/max77541-regulator.c
+ create mode 100644 include/linux/mfd/max77541.h
+
+-- 
+2.30.2
+

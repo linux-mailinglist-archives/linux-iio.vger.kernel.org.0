@@ -2,148 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0E86DF53B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 14:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 916FD6DF760
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 15:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbjDLM37 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 08:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41408 "EHLO
+        id S229978AbjDLNiG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 09:38:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbjDLM3t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 08:29:49 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC9E72B1;
-        Wed, 12 Apr 2023 05:29:12 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id q26so2275942lfe.9;
-        Wed, 12 Apr 2023 05:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681302551;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=siCdH4i793Fr0Wj+21nPqmHI0RDFnIElDQrnU73xJYE=;
-        b=VQeCgQHI1EcjcFspsDA0zh1lWNC/OCP9F8kU/YlAwXgU5fTRTIXy7bmnnl4+N7zA+p
-         6IA34k911R6zsbWb73+5Z4Q/6GHydO4fCAqHpV0/Vpq3c7U5RY1EGSlvGUR7Td3fpzwi
-         TSD63KOFu/GsWRmacMpazKGJzQxEX64GgltaFsMgj3n+2RrUATCwS252Xo1Cz3H0i7S6
-         X888/cR9bclHvDmJjkuF7XVHguwYS+fBrPjh0zUvagF0HYfVVHO58kbujExExX8VuoJS
-         CLTAZq0aEhmDsLfXXuzLoph0kIexzAwKXQ+Vce3NidURTMIYEBGNE65nAtIIOHuEFPWX
-         4phg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681302551;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=siCdH4i793Fr0Wj+21nPqmHI0RDFnIElDQrnU73xJYE=;
-        b=q2BUy0mMUhev7NcibrK6zz0D7cQtZuwjYE0nedHdDrh6oIA2U9nfi1QCNSAfLQ0CiI
-         P490+4BDmL+Ukf/hD8awsZSgtK0YCoKpRIvUj99fLz1bMbWY0L2Rj1eiMYfKP2vwdIm9
-         GfVZT5s2xfG87vb9OVQy8CWthbVXf00G1G5cBHFOIq0LGQZGZkrY2HYgSSWR3Dlqumpy
-         5itpweHUXno53HXitFyFJ6J9BD4xpAoKnLLq55yn4t0cJWe5WKo669Xxc4uZnkGuT1py
-         dzYGL1VdQOINiIANz3oy7zZiUp7QBLterlUhTzLVgB+pQzXqPPONmZ6cYKanlaqWMH1B
-         j7QQ==
-X-Gm-Message-State: AAQBX9c8OTWAspTe3e9++XDqmYQe857n1KjV1VAz5sYqe4aRskDuLvv3
-        jayQ/BTqk6U9ZYulWU8gdJ0=
-X-Google-Smtp-Source: AKy350YoQXSzO91Dyj+lPCb5tSWpcCDLY/OAJLAUkM8P1zlP2mEfymzfXSK3UmKtyEid6KjzXadmhw==
-X-Received: by 2002:a05:6512:203:b0:4e9:d158:d56b with SMTP id a3-20020a056512020300b004e9d158d56bmr512162lfo.62.1681302550783;
-        Wed, 12 Apr 2023 05:29:10 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id n12-20020a19550c000000b004e7d6eb9cbfsm2973522lfe.190.2023.04.12.05.29.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Apr 2023 05:29:10 -0700 (PDT)
-Date:   Wed, 12 Apr 2023 15:29:01 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+        with ESMTP id S229523AbjDLNiE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 09:38:04 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719491709;
+        Wed, 12 Apr 2023 06:38:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681306682; x=1712842682;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pnUjDJ/xUCsHQjHZB7cPemWJJbBm5AuX1hvD8ONxtnY=;
+  b=BdkbXRm6HE3LEU7IkzTiyAOuUWq64mFlkicXZOFDUDqfw2AbzjIRlldq
+   R5OcaMj/05R1c0mCwLLMl9AoGdXq8oa/6+hL5+cxQfkKpQouGlg6gk/bg
+   icttqWGOlAo0UKLFb655agU+YiIldiURQ3Uyamou0IbQB701iRAndcTco
+   kEaY7Qqe2Fzwh7Jk66AW3DI+1SQ/sz87gUpdZlIWBsuq42B01K8YOQCgt
+   2RHiKBc5m5DCdCej3lvR8m9cMY5Ig4NyDO78CrTCZ9D2xvmv92wDbpvdJ
+   7LBWi/P8bZJIIV8dLlXnDVPUcxeiiTv2vRJr9oGrO2ENQQyUlqPTaV+bI
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="323520851"
+X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
+   d="scan'208";a="323520851"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 06:38:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="1018745687"
+X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
+   d="scan'208";a="1018745687"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP; 12 Apr 2023 06:37:58 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pmafc-00FxVI-2F;
+        Wed, 12 Apr 2023 16:37:56 +0300
+Date:   Wed, 12 Apr 2023 16:37:56 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] iio: bu27034: Fix integration time units
-Message-ID: <a3bc95f4a16f876925cfc157aaf5d78f3dbc513d.1681301472.git.mazziesaccount@gmail.com>
-References: <cover.1681301472.git.mazziesaccount@gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: Re: [RFC PATCH 2/2] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <ZDa0NIot/4aRJ0pI@smile.fi.intel.com>
+References: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
+ <20230411011203.5013-3-subhajit.ghosh@tweaklogic.com>
+ <ZDVWB9xV9Cdbwyqd@smile.fi.intel.com>
+ <ab1d9746-4d23-efcc-0ee1-d2b8c634becd@tweaklogic.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vA0ECADkg+SHgofM"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <cover.1681301472.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab1d9746-4d23-efcc-0ee1-d2b8c634becd@tweaklogic.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Apr 12, 2023 at 12:29:15PM +0800, Subhajit Ghosh wrote:
 
---vA0ECADkg+SHgofM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-The integration time was presented by BU27034 in micro seconds. The ABI
-documentation says this should be in seconds.
+> > > +static const struct regmap_config apds9306_regmap = {
+> > > +	.name = "apds9306_regmap",
+> > > +	.reg_bits = 8,
+> > > +	.val_bits = 8,
+> > > +	.rd_table = &apds9306_readable_table,
+> > > +	.wr_table = &apds9306_writable_table,
+> > > +	.volatile_table = &apds9306_volatile_table,
+> > > +	.precious_table = &apds9306_precious_table,
+> > > +	.max_register = APDS9306_ALS_THRES_VAR,
+> > > +	.cache_type = REGCACHE_RBTREE,
+> > 
+> > Do you need an internal regmap lock? If so, why?
+> For event interface - interrupt enable, adaptive interrupt enable,
+> upper and lower threshold values, selection of clear or als
+> channels for interrupt, the mutex in the driver's private data structure
+> is not used.
+> I thought to use the regmap's internal locking mechanism for
+> mutual exclusion as the values are directly written to or read from
+> the device registers form the write_event(), read_event(),
+> write_event_config() and read_event_config().
+> What do you think?
 
-Fix integration time to be in seconds.
+I didn't get. If you have a sequence of registers to be read/write/modified/etc
+in IRQ handler and/or elsewhere and at the same time in IRQ or elsewhere you
+have even a single IO access to the hardware you have to be sure that the IO
+ordering has no side effects. regmap API does not guarantee that. It only works
+on a simple read/write/modify of a _single_ register, or a coupled group of
+registers (like bulk ops), if your case is sparse, you on your own and probably
+lucky enough not to have an issue during the testing. So, take your time and
+think more about what you are doing in the driver and what locking schema
+should take place.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- drivers/iio/light/rohm-bu27034.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+...
 
-diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27=
-034.c
-index e486dcf35eba..6044db52abfa 100644
---- a/drivers/iio/light/rohm-bu27034.c
-+++ b/drivers/iio/light/rohm-bu27034.c
-@@ -1171,7 +1171,7 @@ static int bu27034_read_raw(struct iio_dev *idev,
- 		if (*val < 0)
- 			return *val;
-=20
--		return IIO_VAL_INT;
-+		return IIO_VAL_INT_MICRO;
-=20
- 	case IIO_CHAN_INFO_SCALE:
- 		return bu27034_get_scale(data, chan->channel, val, val2);
-@@ -1229,7 +1229,10 @@ static int bu27034_write_raw(struct iio_dev *idev,
- 		ret =3D bu27034_set_scale(data, chan->channel, val, val2);
- 		break;
- 	case IIO_CHAN_INFO_INT_TIME:
--		ret =3D bu27034_try_set_int_time(data, val);
-+		if (val)
-+			return -EINVAL;
-+
-+		ret =3D bu27034_try_set_int_time(data, val2);
- 		break;
- 	default:
- 		ret =3D -EINVAL;
---=20
-2.39.2
+> > > +static int apds9306_power_state(struct apds9306_data *data,
+> > > +		enum apds9306_power_states state)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	/* Reset not included as it causes ugly I2C bus error */
+> > > +	switch (state) {
+> > > +	case standby:
+> > > +		return regmap_field_write(data->regfield_en, 0);
+> > > +	case active:
+> > > +		ret = regmap_field_write(data->regfield_en, 1);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +		/* 5ms wake up time */
+> > > +		usleep_range(5000, 10000);
+> > > +		break;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > 
+> > > +	return 0;
+> > 
+> > Move that to a single user of this line inside the switch-case.
+> Sorry, I did not get you. Can you please elaborate?
+
+The user of this return is only one case in the switch. Instead of breaking
+the switch-case, just move this return statement to there.
+
+...
+
+> > > +	struct device *dev = &data->client->dev;
+> > 
+> > Why data contains I²C client pointer, what for?
+> I copied the implementation. It will be re-implemented.
+
+I mean, how client pointer is used in comparison to the plain pointer to the
+generic device object.
+
+...
+
+> > > +		while (retries--) {
+> > > +			ret = regmap_read(data->regmap, APDS9306_MAIN_STATUS,
+> > > +					&status);
+> > > +			if (ret) {
+> > > +				dev_err(dev, "read status failed: %d\n", ret);
+> > > +				return ret;
+> > > +			}
+> > > +			if (status & APDS9306_ALS_DATA_STAT_MASK)
+> > > +				break;
+> > > +			/*
+> > > +			 * In case of continuous one-shot read from userspace,
+> > > +			 * new data is available after sampling period.
+> > > +			 * Delays are in the range of 25ms to 2secs.
+> > > +			 */
+> > > +			fsleep(delay);
+> > > +		}
+> > 
+> > regmap_read_poll_timeout().
+> According to the regmap_read_poll_timeout() documentation, the maximum time
+> to sleep between reads should be less than ~20ms as it uses usleep_range().
+> 
+> If userspace is doing continuous reads, then data is available after sampling
+> period (25ms to 2sec) or integration time (3.125ms to 400ms) whichever is
+> greater.
+> 
+> The runtime_suspend() function is called after 5 seconds, so the device is
+> still active and running.
+> 
+> If the ALS data bit is not set in status reg, it is efficient to sleep for
+> one sampling period rather than continuously checking the status reg
+> within ~20ms if we use regmap_read_poll_timeout().
+> 
+> Do you have any suggestions?
+
+Yes, Use proposed API. It takes _two_ timeout parameters, one of which is the
+same as your delay. You may actually resplit it by multiplying retries and
+decreasing delay to satisfy the regmap_read_poll_timeout() recommendation.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---vA0ECADkg+SHgofM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQ2pA0ACgkQeFA3/03a
-ocWH3wf8DaSDIHX7rDqA/ad9esTevVATPHgoYuabnwMXKq3CotOxP94wplRCTiG8
-dT0MOD/b+l91++exduQfwxMEgvsQ0U0RMdfyJxF7NYamj0fJanyl49piWjpTi8G2
-8wGg/+6sRJ/ZOcYWxpKoKgbwVh8PaCF/8FMTBf0SeWsfdpH3CYlq3S5RBUqDKpG4
-6AT6S6iK5TgxEX8B2m9sUoHs0NyvswA/EIaGtYlQ4blDeZMLvsi+ETpDdWV/H5Vi
-fXkxWizLQg0rLiz6vm8azwPPbFImAmKyDd14zItcaDcvtyhkUVSU1lZWN2gz4mSX
-TzX6xozVJENpSgZRitq9c5roJjbBKQ==
-=x8/X
------END PGP SIGNATURE-----
-
---vA0ECADkg+SHgofM--

@@ -2,119 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6346DFA5B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 17:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B39436DFC9E
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 19:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbjDLPhd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 11:37:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
+        id S230044AbjDLRXc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 13:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230340AbjDLPha (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 11:37:30 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0070A6584
-        for <linux-iio@vger.kernel.org>; Wed, 12 Apr 2023 08:37:28 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pmcX6-0003bP-Ac; Wed, 12 Apr 2023 17:37:16 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pmcX4-00AlqQ-Hk; Wed, 12 Apr 2023 17:37:14 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pmcX3-00CeDT-To; Wed, 12 Apr 2023 17:37:13 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     Olivier Moysan <olivier.moysan@foss.st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de, Lee Jones <lee@kernel.org>,
-        linux-iio@vger.kernel.org
-Subject: [PATCH] counter: stm32-timer-cnt: Reset TIM_TISEL and TIM_SMCR to their default value
-Date:   Wed, 12 Apr 2023 17:37:09 +0200
-Message-Id: <20230412153709.3557323-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229638AbjDLRXb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 13:23:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5BB01726;
+        Wed, 12 Apr 2023 10:23:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 838CD631A2;
+        Wed, 12 Apr 2023 17:23:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687D7C433EF;
+        Wed, 12 Apr 2023 17:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681320209;
+        bh=wMn7qeUFacSworH32ghtZecf85ca3gEEa1FOPqctaOs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UtCKNUkJ1fWxyC3Ue+qYiqPBVuXsOtAJBrv6CAyb19WO6wRiD55elkG5mecRp41Lm
+         GS1sFGz9igYMfsGC1Vd0zivXoEqjILDQPp2i9fyrKd+KmZIe4T9lVKtuS2nPo7+Ys+
+         0/ZPgDNtiQcUb/ONHlQ24q1iT2BJ4t3zTZaQzPwpcL7t+BLt9hNGGXimubXbPU9+pc
+         pgAl1ZOEphhvIuG6WXH242+8x3cZ6Vce3cajzsSX0DM2FW5gwziq0P/49CWqtUsu0r
+         PriJDV3vvgo4XR+5PWpf+g4ZtC7ocEV63DnrrdkHDQOIFVel/ppvrgRmIL73vv6Trz
+         DoJjzZvfsu01w==
+Date:   Wed, 12 Apr 2023 22:53:26 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH v3 01/11] dmaengine: Add API function
+ dmaengine_prep_slave_dma_array()
+Message-ID: <ZDbpDptOcuBLFctc@matsya>
+References: <20230403154800.215924-1-paul@crapouillou.net>
+ <20230403154800.215924-2-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2196; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=zc5B2LGRs54BHs4aCdePhpxua9fygSYRDSyPsSaXvAQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkNtAjdw2NqpObCpDcSjUHHwcgtWq3IXeDtu5dJ I147vXR/4mJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZDbQIwAKCRCPgPtYfRL+ Tp3rB/9E4lY5pFlQ/4pLFl+7NMDzGTrTBIIBMaxCTZWaTETyfr5PUiCqal1MUl/FpK3Khbuvta3 JcXl5LfsAqib1UZUiBlJ66qf5ZlmzRh3T6t6W7GVkse1jkXL09lVsqYrSpkmWWer9Lw0nOIqoxX hKeAtgq8QLP58Uobmjj8roK9B0ksBexK5ExKmelOXbM+cRKpLPuUE1EKrk8Gfo06jg8M9TbbQiH JhFDgnqpvQjAtn9TKsW4myrklpeCbHSKt+W0SLtiPP2lSyi8Xsk3RV51ZjwrmTa4uIARJuISjLL HSucF4MYaDb5abCW18X9ZzjwO8SQVmjyLDrBmbfNuzMZEu9r
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230403154800.215924-2-paul@crapouillou.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver assumes that the input selection register (TIM_TISEL) is at
-its reset default value. Usually this is the case, but the bootloader
-might have modified it. Also reset the SMCR register while at it.
+On 03-04-23, 17:47, Paul Cercueil wrote:
+> This function can be used to initiate a scatter-gather DMA transfer
+> where the DMA addresses and lengths are located inside arrays.
+> 
+> The major difference with dmaengine_prep_slave_sg() is that it supports
+> specifying the lengths of each DMA transfer; as trying to override the
+> length of the transfer with dmaengine_prep_slave_sg() is a very tedious
+> process. The introduction of a new API function is also justified by the
+> fact that scatterlists are on their way out.
 
-This bases on the effectively same patch submitted by Olivier Moysan for
-pwm-stm32.
+Do we need a new API for this? why not use device_prep_interleaved_dma?
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> 
+> ---
+> v3: New patch
+> ---
+>  include/linux/dmaengine.h | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index c3656e590213..62efa28c009a 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -912,6 +912,11 @@ struct dma_device {
+>  	struct dma_async_tx_descriptor *(*device_prep_dma_interrupt)(
+>  		struct dma_chan *chan, unsigned long flags);
+>  
+> +	struct dma_async_tx_descriptor *(*device_prep_slave_dma_array)(
+> +		struct dma_chan *chan, dma_addr_t *addrs,
+> +		size_t *lengths, size_t nb,
+> +		enum dma_transfer_direction direction,
+> +		unsigned long flags);
+>  	struct dma_async_tx_descriptor *(*device_prep_slave_sg)(
+>  		struct dma_chan *chan, struct scatterlist *sgl,
+>  		unsigned int sg_len, enum dma_transfer_direction direction,
+> @@ -974,6 +979,17 @@ static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
+>  						  dir, flags, NULL);
+>  }
+>  
+> +static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_dma_array(
+> +	struct dma_chan *chan, dma_addr_t *addrs, size_t *lengths,
+> +	size_t nb, enum dma_transfer_direction dir, unsigned long flags)
+> +{
+> +	if (!chan || !chan->device || !chan->device->device_prep_slave_dma_array)
+> +		return NULL;
+> +
+> +	return chan->device->device_prep_slave_dma_array(chan, addrs, lengths,
+> +							 nb, dir, flags);
+> +}
+> +
+>  static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_sg(
+>  	struct dma_chan *chan, struct scatterlist *sgl,	unsigned int sg_len,
+>  	enum dma_transfer_direction dir, unsigned long flags)
+> -- 
+> 2.39.2
 
-note that the patch by Olivier Moysan[1] for pwm-stm32 is expected to
-appear in Thierry's tree soon. It added the definition of TIM_TISEL in
-the same way, so the two patches should merge just fine. Alternatively
-you can commit it to a tree that already has the pwm change (and then
-drop the change to include/linux/mfd/stm32-timers.h from this one).
-
-Best regards
-Uwe
-
-[1] https://lore.kernel.org/linux-pwm/20221213102707.1096345-1-olivier.moysan@foss.st.com
-
- drivers/counter/stm32-timer-cnt.c | 4 ++++
- include/linux/mfd/stm32-timers.h  | 1 +
- 2 files changed, 5 insertions(+)
-
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 9bf20a5d6bda..d001d77f17ac 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -342,6 +342,10 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, priv);
- 
-+	/* Reset input selector to its default input and disable slave mode */
-+	regmap_write(priv->regmap, TIM_TISEL, 0x0);
-+	regmap_write(priv->regmap, TIM_SMCR, 0x0);
-+
- 	/* Register Counter device */
- 	ret = devm_counter_add(dev, counter);
- 	if (ret < 0)
-diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
-index 5f5c43fd69dd..1b94325febb3 100644
---- a/include/linux/mfd/stm32-timers.h
-+++ b/include/linux/mfd/stm32-timers.h
-@@ -31,6 +31,7 @@
- #define TIM_BDTR	0x44	/* Break and Dead-Time Reg */
- #define TIM_DCR		0x48	/* DMA control register    */
- #define TIM_DMAR	0x4C	/* DMA register for transfer */
-+#define TIM_TISEL	0x68	/* Input Selection         */
- 
- #define TIM_CR1_CEN	BIT(0)	/* Counter Enable	   */
- #define TIM_CR1_DIR	BIT(4)  /* Counter Direction	   */
-
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
 -- 
-2.39.2
-
+~Vinod

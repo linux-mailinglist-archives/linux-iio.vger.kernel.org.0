@@ -2,302 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 684A66DFF76
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 22:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8616DFF92
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 22:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229604AbjDLUMF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 16:12:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58774 "EHLO
+        id S229674AbjDLUWU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 16:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjDLUME (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 16:12:04 -0400
+        with ESMTP id S229520AbjDLUWT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 16:22:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9037761B3
-        for <linux-iio@vger.kernel.org>; Wed, 12 Apr 2023 13:12:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0CB5586;
+        Wed, 12 Apr 2023 13:22:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AA19633C2
-        for <linux-iio@vger.kernel.org>; Wed, 12 Apr 2023 20:12:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F183C433EF;
-        Wed, 12 Apr 2023 20:12:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 605E1633C2;
+        Wed, 12 Apr 2023 20:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CBDC433D2;
+        Wed, 12 Apr 2023 20:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681330322;
-        bh=9ZKrB52rWKoD4jdAgNVjoS60CXfm7qnyXMrx+5NudHg=;
+        s=k20201202; t=1681330936;
+        bh=A8Ztthf5vpIeWzvIFyeemrhpgL0mny/z5Tc424nFPW8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iauusLbE0pLzWpWcYtBZj83WAXbGlKMMPC1n6S/VdzFRvh43HSI7r/9H9MFXfwKn+
-         +2Gbr7xtQ8ESDUvFVH1Ti2Yrb5Tev8DOkIdmSXMN6uNFVT6NgHaoOx2A6GbfwJV6U1
-         qKSUonutHCsq3/XbwTiXPvVPnISgx51DMudUUqtk1JfesYQSaNmyGUMaKSVjzBIopR
-         WvjywWZqp9TLYF9ZtJdspweNiNO0Pk4ooV8zKRPTRvxMH9ZhN5mGntRnOid8e6lZQb
-         7mx5lo3/YNP3b1Gasv9x3Jv7KI6DZzOYorXYGA89dEaUzV/BTenwWdoUZD0aFP/Uxw
-         VGjfdK/6ELiuw==
-Date:   Wed, 12 Apr 2023 21:11:59 +0100
+        b=n4Et6VbZkBD7rIBP4456XXnbgLf123tNC4vbd/ZaVbIiStGchi+gfwbWFQsQx6RzJ
+         aKrL5OHYknG4E1+3B4ldpNBFYkZnRlDp2i58AkHxYCEAfNyqQKqnEai7FdvsMJOpwK
+         dTFy8WNOhidzyvT10Tntb4d+FiwcHR4ozNHDZzvAwCJ2kdPuCG62Gzu4TkBbojRVND
+         Vu551a29x2dT+JEk2guShMcYm+xCECfSni860X5Pax6mzEff/GEMODswLHMXCRZwgT
+         tMUNv4+Ls35wYGRdDWtRH94p8Pr22j1h8+ZCZQ/9xyZJPDf39BJmem8YLkWPI84yfZ
+         /W5iHLP9pvxHg==
+Date:   Wed, 12 Apr 2023 21:22:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [PATCH] iio: adc: palmas: Take probe fully device managed.
-Message-ID: <20230412211159.5b9515d8@jic23-huawei>
-In-Reply-To: <20230319153621.5205ecf4@jic23-huawei>
-References: <20230318163039.56115-1-jic23@kernel.org>
-        <20230319142106.GA3806863@dalakolonin.se>
-        <20230319153621.5205ecf4@jic23-huawei>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        pgoudagunta@nvidia.com, hns@goldelico.com, lars@metafoo.de,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH v4 0/9] iio: adc: palmas_gpadc: add iio events
+Message-ID: <20230412212213.614c9683@jic23-huawei>
+In-Reply-To: <20230408114825.824505-1-risca@dalakolonin.se>
+References: <20230408114825.824505-1-risca@dalakolonin.se>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 19 Mar 2023 15:36:21 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat,  8 Apr 2023 13:48:16 +0200
+Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
 
-> On Sun, 19 Mar 2023 15:21:06 +0100
-> Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
->=20
-> > The changes look good and I've tested it on Omap5-uevm board:
-> > * module loads and unloads without issues
-> > * I'm able to read ADC values
-> > * the values change when I turn my potentiometer
-> >=20
-> > Feel free to add the relevant tags, e.g. Tested-by or Reviewed-by. I'm
-> > still new to the kernel development process. =20
-> Hi Patrik,
->=20
-> Both make sense here given your comments.  You tried it so Tested-by
-> and you said it looks good which is Reviewed-by
->=20
-> I failed to cc the original author of this driver though, so +CC HNS for =
-that
-> and this will have to wait for your fix to be available in upstream so it
-> will take a while.
->=20
-> If you are sending additional patches on top of this and your patch,
-> state that in the cover letter for those additional patches as I'll proba=
-bly
-> forget otherwise and wonder why they don't apply.
 Hi Patrik,
 
-Applied this version because I wanted the link that automatically includes
-to include your TB and RB comment above.
+Patches 3-9 applied from this posting to the togreg branch of iio.git
+which will initially be pushed out as testing so 0-day can poke at it
+tomorrow.
 
-At the moment I'm cheating a bit and using Greg's char-misc-testing tree
-because I want to get this and your series on top of it into the hands of 0=
--day
-asap with the intent to sneak out a last minute pull request on Friday or S=
-aturday.
+Thanks,
 
 Jonathan
 
 
+> This series is based on iio/togreg [1] and includes one patch ("fix NULL
+> dereference on rmmod") which is already in linux-next and another patch
+> from Jonathan Cameron ("Take probe fully device managed") to make the
+> rest of the patches apply cleanly to iio/togreg.
 >=20
-> Thanks
+> The palmas gpadc block has support for monitoring up to 2 ADC channels
+> and issue an interrupt if they reach past a set threshold. This can be
+> configured statically with device tree today, but it only gets enabled
+> when reaching sleep mode. Also, it doesn't look like anyone is using it.
 >=20
-> Jonathan
+> Instead of this one special case, change the code so userspace can
+> configure the ADC channels to their own needs through the iio events
+> subsystem. The high and low threshold values can be set for every
+> channel, but only 2 thresholds can be enabled at a time. Trying to
+> enable more than 2 thresholds will result in an error.
+>=20
+> The configured thresholds will wake up the system from sleep mode if
+> wakeup is enabled in /sys/devices/.../power/wakeup.
+>=20
+> The old platform data was removed.
+>=20
+> Thresholds, events, and wakeup were tested on omap5-uevm board. It wakes
+> up from sleep mode when wakeup is enabled and a threshold is passed. A
+> userspace tool for monitoring events and adjusting thresholds can be
+> found at [2].
+>=20
+> For more background and the use case for these patches, see [3].
+>=20
+> V3 -> V4:
+> * Reabased to iio/togreg and included required patches.
+> * Avoid initializing variables unnecessarily.
+> * Minor cosmetic fixes to comments.
+> V2 -> V3:
+> * Rebased to linux-next.
+> * Avoid reconfiguring events on error and when old =3D=3D new value.
+> V1 -> V2:
+> * Begin by removing adc_wakeupX_data instead of doing it last.
+> * Split changes in smaller patches
+>=20
+> [1] git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
+> [2] https://github.com/Risca/pyra_vol_mon
+> [3] https://pyra-handheld.com/boards/threads/improve-volume-wheel-daemon-=
+bounty.99430/post-1711410
+>=20
+> Jonathan Cameron (1):
+>   iio: adc: palmas: Take probe fully device managed.
+>=20
+> Patrik Dahlstr=C3=B6m (8):
+>   iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+>   iio: adc: palmas: remove adc_wakeupX_data
+>   iio: adc: palmas: replace "wakeup" with "event"
+>   iio: adc: palmas: use iio_event_direction for threshold polarity
+>   iio: adc: palmas: move eventX_enable into palmas_adc_event
+>   iio: adc: palmas: always reset events on unload
+>   iio: adc: palmas: add support for iio threshold events
+>   iio: adc: palmas: don't alter event config on suspend/resume
+>=20
+>  drivers/iio/adc/palmas_gpadc.c | 616 +++++++++++++++++++++++++--------
+>  include/linux/mfd/palmas.h     |   8 -
+>  2 files changed, 478 insertions(+), 146 deletions(-)
 >=20
 >=20
-> >=20
-> > On Sat, Mar 18, 2023 at 04:30:39PM +0000, Jonathan Cameron wrote: =20
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >=20
-> > > Review of a recent fix highlighted that this driver could be trivially
-> > > converted to be entirely devm managed.
-> > >=20
-> > > That fix should be applied to resolve the fix in a fashion easy to ba=
-ck port
-> > > even though this change removes the relevant code.
-> > >=20
-> > > [1] https://patchwork.kernel.org/project/linux-iio/patch/202303132050=
-29.1881745-1-risca@dalakolonin.se/
-> > >=20
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
-> > > ---
-> > >  drivers/iio/adc/palmas_gpadc.c | 110 +++++++++++++------------------=
---
-> > >  1 file changed, 42 insertions(+), 68 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
-gpadc.c
-> > > index 849a697a467e..2921186458e0 100644
-> > > --- a/drivers/iio/adc/palmas_gpadc.c
-> > > +++ b/drivers/iio/adc/palmas_gpadc.c
-> > > @@ -493,6 +493,11 @@ static int palmas_gpadc_get_adc_dt_data(struct p=
-latform_device *pdev,
-> > >  	return 0;
-> > >  }
-> > > =20
-> > > +static void palmas_disable_wakeup(void *dev)
-> > > +{
-> > > +	device_wakeup_disable(dev);
-> > > +}
-> > > +
-> > >  static int palmas_gpadc_probe(struct platform_device *pdev)
-> > >  {
-> > >  	struct palmas_gpadc *adc;
-> > > @@ -532,36 +537,30 @@ static int palmas_gpadc_probe(struct platform_d=
-evice *pdev)
-> > > =20
-> > >  	adc->auto_conversion_period =3D gpadc_pdata->auto_conversion_period=
-_ms;
-> > >  	adc->irq =3D palmas_irq_get_virq(adc->palmas, PALMAS_GPADC_EOC_SW_I=
-RQ);
-> > > -	if (adc->irq < 0) {
-> > > -		dev_err(adc->dev,
-> > > -			"get virq failed: %d\n", adc->irq);
-> > > -		ret =3D adc->irq;
-> > > -		goto out;
-> > > -	}
-> > > -	ret =3D request_threaded_irq(adc->irq, NULL,
-> > > -		palmas_gpadc_irq,
-> > > -		IRQF_ONESHOT, dev_name(adc->dev),
-> > > -		adc);
-> > > -	if (ret < 0) {
-> > > -		dev_err(adc->dev,
-> > > -			"request irq %d failed: %d\n", adc->irq, ret);
-> > > -		goto out;
-> > > -	}
-> > > +	if (adc->irq < 0)
-> > > +		return dev_err_probe(adc->dev, adc->irq, "get virq failed\n");
-> > > +
-> > > +	ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq, NULL,
-> > > +					palmas_gpadc_irq,
-> > > +					IRQF_ONESHOT, dev_name(adc->dev),
-> > > +					adc);
-> > > +	if (ret < 0)
-> > > +		return dev_err_probe(adc->dev, ret,
-> > > +				     "request irq %d failed\n", adc->irq);
-> > > =20
-> > >  	if (gpadc_pdata->adc_wakeup1_data) {
-> > >  		memcpy(&adc->wakeup1_data, gpadc_pdata->adc_wakeup1_data,
-> > >  			sizeof(adc->wakeup1_data));
-> > >  		adc->wakeup1_enable =3D true;
-> > >  		adc->irq_auto_0 =3D  platform_get_irq(pdev, 1);
-> > > -		ret =3D request_threaded_irq(adc->irq_auto_0, NULL,
-> > > -				palmas_gpadc_irq_auto,
-> > > -				IRQF_ONESHOT,
-> > > -				"palmas-adc-auto-0", adc);
-> > > -		if (ret < 0) {
-> > > -			dev_err(adc->dev, "request auto0 irq %d failed: %d\n",
-> > > -				adc->irq_auto_0, ret);
-> > > -			goto out_irq_free;
-> > > -		}
-> > > +		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_0,
-> > > +						NULL, palmas_gpadc_irq_auto,
-> > > +						IRQF_ONESHOT,
-> > > +						"palmas-adc-auto-0", adc);
-> > > +		if (ret < 0)
-> > > +			return dev_err_probe(adc->dev, ret,
-> > > +					     "request auto0 irq %d failed\n",
-> > > +					     adc->irq_auto_0);
-> > >  	}
-> > > =20
-> > >  	if (gpadc_pdata->adc_wakeup2_data) {
-> > > @@ -569,15 +568,14 @@ static int palmas_gpadc_probe(struct platform_d=
-evice *pdev)
-> > >  				sizeof(adc->wakeup2_data));
-> > >  		adc->wakeup2_enable =3D true;
-> > >  		adc->irq_auto_1 =3D  platform_get_irq(pdev, 2);
-> > > -		ret =3D request_threaded_irq(adc->irq_auto_1, NULL,
-> > > -				palmas_gpadc_irq_auto,
-> > > -				IRQF_ONESHOT,
-> > > -				"palmas-adc-auto-1", adc);
-> > > -		if (ret < 0) {
-> > > -			dev_err(adc->dev, "request auto1 irq %d failed: %d\n",
-> > > -				adc->irq_auto_1, ret);
-> > > -			goto out_irq_auto0_free;
-> > > -		}
-> > > +		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_1,
-> > > +						NULL, palmas_gpadc_irq_auto,
-> > > +						IRQF_ONESHOT,
-> > > +						"palmas-adc-auto-1", adc);
-> > > +		if (ret < 0)
-> > > +			return dev_err_probe(adc->dev, ret,
-> > > +					     "request auto1 irq %d failed\n",
-> > > +					     adc->irq_auto_1);
-> > >  	}
-> > > =20
-> > >  	/* set the current source 0 (value 0/5/15/20 uA =3D> 0..3) */
-> > > @@ -608,11 +606,10 @@ static int palmas_gpadc_probe(struct platform_d=
-evice *pdev)
-> > >  	indio_dev->channels =3D palmas_gpadc_iio_channel;
-> > >  	indio_dev->num_channels =3D ARRAY_SIZE(palmas_gpadc_iio_channel);
-> > > =20
-> > > -	ret =3D iio_device_register(indio_dev);
-> > > -	if (ret < 0) {
-> > > -		dev_err(adc->dev, "iio_device_register() failed: %d\n", ret);
-> > > -		goto out_irq_auto1_free;
-> > > -	}
-> > > +	ret =3D devm_iio_device_register(&pdev->dev, indio_dev);
-> > > +	if (ret < 0)
-> > > +		return dev_err_probe(adc->dev, ret,
-> > > +				     "iio_device_register() failed\n");
-> > > =20
-> > >  	device_set_wakeup_capable(&pdev->dev, 1);
-> > >  	for (i =3D 0; i < PALMAS_ADC_CH_MAX; i++) {
-> > > @@ -620,36 +617,14 @@ static int palmas_gpadc_probe(struct platform_d=
-evice *pdev)
-> > >  			palmas_gpadc_calibrate(adc, i);
-> > >  	}
-> > > =20
-> > > -	if (adc->wakeup1_enable || adc->wakeup2_enable)
-> > > +	if (adc->wakeup1_enable || adc->wakeup2_enable) {
-> > >  		device_wakeup_enable(&pdev->dev);
-> > > -
-> > > -	return 0;
-> > > -
-> > > -out_irq_auto1_free:
-> > > -	if (gpadc_pdata->adc_wakeup2_data)
-> > > -		free_irq(adc->irq_auto_1, adc);
-> > > -out_irq_auto0_free:
-> > > -	if (gpadc_pdata->adc_wakeup1_data)
-> > > -		free_irq(adc->irq_auto_0, adc);
-> > > -out_irq_free:
-> > > -	free_irq(adc->irq, adc);
-> > > -out:
-> > > -	return ret;
-> > > -}
-> > > -
-> > > -static int palmas_gpadc_remove(struct platform_device *pdev)
-> > > -{
-> > > -	struct iio_dev *indio_dev =3D dev_get_drvdata(&pdev->dev);
-> > > -	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
-> > > -
-> > > -	if (adc->wakeup1_enable || adc->wakeup2_enable)
-> > > -		device_wakeup_disable(&pdev->dev);
-> > > -	iio_device_unregister(indio_dev);
-> > > -	free_irq(adc->irq, adc);
-> > > -	if (adc->wakeup1_enable)
-> > > -		free_irq(adc->irq_auto_0, adc);
-> > > -	if (adc->wakeup2_enable)
-> > > -		free_irq(adc->irq_auto_1, adc);
-> > > +		ret =3D devm_add_action_or_reset(&pdev->dev,
-> > > +					       palmas_disable_wakeup,
-> > > +					       &pdev->dev);
-> > > +		if (ret)
-> > > +			return ret;
-> > > +	}
-> > > =20
-> > >  	return 0;
-> > >  }
-> > > @@ -834,7 +809,6 @@ MODULE_DEVICE_TABLE(of, of_palmas_gpadc_match_tbl=
-);
-> > > =20
-> > >  static struct platform_driver palmas_gpadc_driver =3D {
-> > >  	.probe =3D palmas_gpadc_probe,
-> > > -	.remove =3D palmas_gpadc_remove,
-> > >  	.driver =3D {
-> > >  		.name =3D MOD_NAME,
-> > >  		.pm =3D pm_sleep_ptr(&palmas_pm_ops),
-> > > --=20
-> > > 2.40.0
-> > >    =20
->=20
+> base-commit: f73df43e957a6fc705a9bd6d143585bdf1b13365
 

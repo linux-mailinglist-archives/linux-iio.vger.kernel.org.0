@@ -2,342 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C0C26DF77E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 15:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6346DFA5B
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 17:37:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjDLNlq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 09:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
+        id S231550AbjDLPhd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 11:37:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230397AbjDLNln (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 09:41:43 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C666183FC;
-        Wed, 12 Apr 2023 06:41:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681306897; x=1712842897;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vT0LqjKFDK/5Av6PJjxxq20lgHvDiGW3TQWTthosmyI=;
-  b=O3cSYzkttwtPh1LQuYGfiDco8tjzLyF6ADMqxS7judXIDZVbXPj3oknV
-   US4XRQNC/TnDytBzQN6xI2Mg0Jy8+GolePv4XxkojljtiQFP0jYKCJJEH
-   ocubtNvYB4CGyiQdC0dqm0WSBXX8CvZaN0t9yB0iiNWC18Zl9oWFtCnM7
-   /gC0FDCioWY8hum4wnC2eeTe5eYOhxnRVdQhuY/E0UUrNEcFSQW7C/V2Z
-   5BUro3ZURUhJ7odB2oElJ+emFZ2KK8lGYBk2LOdwM1FSRzeIQtNH6EKxv
-   oyCg5UJBiCnxiGQ8g/ggzA4X5xkw6SMMb6lxvAg6R/M2AYJdUWLVjXIyk
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="343903492"
-X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="343903492"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 06:41:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="800330743"
-X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="800330743"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 12 Apr 2023 06:41:32 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pmaj3-00Fxbw-1d;
-        Wed, 12 Apr 2023 16:41:29 +0300
-Date:   Wed, 12 Apr 2023 16:41:29 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
+        with ESMTP id S230340AbjDLPha (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 11:37:30 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0070A6584
+        for <linux-iio@vger.kernel.org>; Wed, 12 Apr 2023 08:37:28 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmcX6-0003bP-Ac; Wed, 12 Apr 2023 17:37:16 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmcX4-00AlqQ-Hk; Wed, 12 Apr 2023 17:37:14 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pmcX3-00CeDT-To; Wed, 12 Apr 2023 17:37:13 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         William Breathitt Gray <william.gray@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v7 3/5] iio: adc: max77541: Add ADI MAX77541 ADC Support
-Message-ID: <ZDa1CWY1owgPNwh8@smile.fi.intel.com>
-References: <20230412111256.40013-1-okan.sahin@analog.com>
- <20230412111256.40013-4-okan.sahin@analog.com>
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc:     Olivier Moysan <olivier.moysan@foss.st.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de, Lee Jones <lee@kernel.org>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH] counter: stm32-timer-cnt: Reset TIM_TISEL and TIM_SMCR to their default value
+Date:   Wed, 12 Apr 2023 17:37:09 +0200
+Message-Id: <20230412153709.3557323-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230412111256.40013-4-okan.sahin@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2196; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=zc5B2LGRs54BHs4aCdePhpxua9fygSYRDSyPsSaXvAQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkNtAjdw2NqpObCpDcSjUHHwcgtWq3IXeDtu5dJ I147vXR/4mJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZDbQIwAKCRCPgPtYfRL+ Tp3rB/9E4lY5pFlQ/4pLFl+7NMDzGTrTBIIBMaxCTZWaTETyfr5PUiCqal1MUl/FpK3Khbuvta3 JcXl5LfsAqib1UZUiBlJ66qf5ZlmzRh3T6t6W7GVkse1jkXL09lVsqYrSpkmWWer9Lw0nOIqoxX hKeAtgq8QLP58Uobmjj8roK9B0ksBexK5ExKmelOXbM+cRKpLPuUE1EKrk8Gfo06jg8M9TbbQiH JhFDgnqpvQjAtn9TKsW4myrklpeCbHSKt+W0SLtiPP2lSyi8Xsk3RV51ZjwrmTa4uIARJuISjLL HSucF4MYaDb5abCW18X9ZzjwO8SQVmjyLDrBmbfNuzMZEu9r
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 12, 2023 at 02:12:44PM +0300, Okan Sahin wrote:
-> The MAX77541 has an 8-bit Successive Approximation Register (SAR) ADC
-> with four multiplexers for supporting the telemetry feature.
+The driver assumes that the input selection register (TIM_TISEL) is at
+its reset default value. Usually this is the case, but the bootloader
+might have modified it. Also reset the SMCR register while at it.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+This bases on the effectively same patch submitted by Olivier Moysan for
+pwm-stm32.
 
-> Signed-off-by: Okan Sahin <okan.sahin@analog.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/iio/adc/Kconfig        |  11 ++
->  drivers/iio/adc/Makefile       |   1 +
->  drivers/iio/adc/max77541-adc.c | 194 +++++++++++++++++++++++++++++++++
->  3 files changed, 206 insertions(+)
->  create mode 100644 drivers/iio/adc/max77541-adc.c
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 45af2302be53..518e7bd453aa 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -735,6 +735,17 @@ config MAX1363
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called max1363.
->  
-> +config MAX77541_ADC
-> +	tristate "Analog Devices MAX77541 ADC driver"
-> +	depends on MFD_MAX77541
-> +	help
-> +	  This driver controls a Analog Devices MAX77541 ADC
-> +	  via I2C bus. This device has one adc. Say yes here to build
-> +	  support for Analog Devices MAX77541 ADC interface.
-> +
-> +	  To compile this driver as a module, choose M here:
-> +	  the module will be called max77541-adc.
-> +
->  config MAX9611
->  	tristate "Maxim max9611/max9612 ADC driver"
->  	depends on I2C
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 36c18177322a..f8433b560c3b 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -67,6 +67,7 @@ obj-$(CONFIG_MAX11205) += max11205.o
->  obj-$(CONFIG_MAX11410) += max11410.o
->  obj-$(CONFIG_MAX1241) += max1241.o
->  obj-$(CONFIG_MAX1363) += max1363.o
-> +obj-$(CONFIG_MAX77541_ADC) += max77541-adc.o
->  obj-$(CONFIG_MAX9611) += max9611.o
->  obj-$(CONFIG_MCP320X) += mcp320x.o
->  obj-$(CONFIG_MCP3422) += mcp3422.o
-> diff --git a/drivers/iio/adc/max77541-adc.c b/drivers/iio/adc/max77541-adc.c
-> new file mode 100644
-> index 000000000000..21d024bde16b
-> --- /dev/null
-> +++ b/drivers/iio/adc/max77541-adc.c
-> @@ -0,0 +1,194 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (c) 2022 Analog Devices, Inc.
-> + * ADI MAX77541 ADC Driver with IIO interface
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <linux/units.h>
-> +
-> +#include <linux/mfd/max77541.h>
-> +
-> +enum max77541_adc_range {
-> +	LOW_RANGE,
-> +	MID_RANGE,
-> +	HIGH_RANGE,
-> +};
-> +
-> +enum max77541_adc_channel {
-> +	MAX77541_ADC_VSYS_V,
-> +	MAX77541_ADC_VOUT1_V,
-> +	MAX77541_ADC_VOUT2_V,
-> +	MAX77541_ADC_TEMP,
-> +};
-> +
-> +static int max77541_adc_offset(struct iio_dev *indio_dev,
-> +			       struct iio_chan_spec const *chan,
-> +			       int *val, int *val2)
-> +{
-> +	switch (chan->channel) {
-> +	case MAX77541_ADC_TEMP:
-> +		*val = DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS, 1725);
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int max77541_adc_scale(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      int *val, int *val2)
-> +{
-> +	struct regmap **regmap = iio_priv(indio_dev);
-> +	unsigned int reg_val;
-> +	int ret;
-> +
-> +	switch (chan->channel) {
-> +	case MAX77541_ADC_VSYS_V:
-> +		*val = 25;
-> +		return IIO_VAL_INT;
-> +	case MAX77541_ADC_VOUT1_V:
-> +	case MAX77541_ADC_VOUT2_V:
-> +		ret = regmap_read(*regmap, MAX77541_REG_M2_CFG1, &reg_val);
-> +		if (ret)
-> +			return ret;
-> +
-> +		reg_val = FIELD_GET(MAX77541_BITS_MX_CFG1_RNG, reg_val);
-> +		switch (reg_val) {
-> +		case LOW_RANGE:
-> +			*val = 6;
-> +			*val2 = 250000;
-> +			break;
-> +		case MID_RANGE:
-> +			*val = 12;
-> +			*val2 = 500000;
-> +			break;
-> +		case HIGH_RANGE:
-> +			*val = 25;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case MAX77541_ADC_TEMP:
-> +		*val = 1725;
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int max77541_adc_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val)
-> +{
-> +	struct regmap **regmap = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regmap_read(*regmap, chan->address, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +#define MAX77541_ADC_CHANNEL_V(_channel, _name, _type, _reg) \
-> +	{							\
-> +		.type = _type,					\
-> +		.indexed = 1,					\
-> +		.channel = _channel,				\
-> +		.address = _reg,				\
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
-> +				      BIT(IIO_CHAN_INFO_SCALE), \
-> +		.datasheet_name = _name,			\
-> +	}
-> +
-> +#define MAX77541_ADC_CHANNEL_TEMP(_channel, _name, _type, _reg) \
-> +	{							\
-> +		.type = _type,					\
-> +		.indexed = 1,					\
-> +		.channel = _channel,				\
-> +		.address = _reg,				\
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
-> +				      BIT(IIO_CHAN_INFO_SCALE) |\
-> +				      BIT(IIO_CHAN_INFO_OFFSET),\
-> +		.datasheet_name = _name,			\
-> +	}
-> +
-> +static const struct iio_chan_spec max77541_adc_channels[] = {
-> +	MAX77541_ADC_CHANNEL_V(MAX77541_ADC_VSYS_V, "vsys_v", IIO_VOLTAGE,
-> +			       MAX77541_REG_ADC_DATA_CH1),
-> +	MAX77541_ADC_CHANNEL_V(MAX77541_ADC_VOUT1_V, "vout1_v", IIO_VOLTAGE,
-> +			       MAX77541_REG_ADC_DATA_CH2),
-> +	MAX77541_ADC_CHANNEL_V(MAX77541_ADC_VOUT2_V, "vout2_v", IIO_VOLTAGE,
-> +			       MAX77541_REG_ADC_DATA_CH3),
-> +	MAX77541_ADC_CHANNEL_TEMP(MAX77541_ADC_TEMP, "temp", IIO_TEMP,
-> +				  MAX77541_REG_ADC_DATA_CH6),
-> +};
-> +
-> +static int max77541_adc_read_raw(struct iio_dev *indio_dev,
-> +				 struct iio_chan_spec const *chan,
-> +				 int *val, int *val2, long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		return max77541_adc_offset(indio_dev, chan, val, val2);
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return max77541_adc_scale(indio_dev, chan, val, val2);
-> +	case IIO_CHAN_INFO_RAW:
-> +		return max77541_adc_raw(indio_dev, chan, val);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info max77541_adc_info = {
-> +	.read_raw = max77541_adc_read_raw,
-> +};
-> +
-> +static int max77541_adc_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct regmap **regmap;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*regmap));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	regmap = iio_priv(indio_dev);
-> +
-> +	*regmap = dev_get_regmap(dev->parent, NULL);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	indio_dev->name = "max77541";
-> +	indio_dev->info = &max77541_adc_info;
-> +	indio_dev->channels = max77541_adc_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(max77541_adc_channels);
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
-> +static const struct platform_device_id max77541_adc_platform_id[] = {
-> +	{ "max77541-adc" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(platform, max77541_adc_platform_id);
-> +
-> +static struct platform_driver max77541_adc_driver = {
-> +	.driver = {
-> +		.name = "max77541-adc",
-> +	},
-> +	.probe = max77541_adc_probe,
-> +	.id_table = max77541_adc_platform_id,
-> +};
-> +module_platform_driver(max77541_adc_driver);
-> +
-> +MODULE_AUTHOR("Okan Sahin <Okan.Sahin@analog.com>");
-> +MODULE_DESCRIPTION("MAX77541 ADC driver");
-> +MODULE_LICENSE("GPL");
-> -- 
-> 2.30.2
-> 
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
 
+note that the patch by Olivier Moysan[1] for pwm-stm32 is expected to
+appear in Thierry's tree soon. It added the definition of TIM_TISEL in
+the same way, so the two patches should merge just fine. Alternatively
+you can commit it to a tree that already has the pwm change (and then
+drop the change to include/linux/mfd/stm32-timers.h from this one).
+
+Best regards
+Uwe
+
+[1] https://lore.kernel.org/linux-pwm/20221213102707.1096345-1-olivier.moysan@foss.st.com
+
+ drivers/counter/stm32-timer-cnt.c | 4 ++++
+ include/linux/mfd/stm32-timers.h  | 1 +
+ 2 files changed, 5 insertions(+)
+
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 9bf20a5d6bda..d001d77f17ac 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -342,6 +342,10 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, priv);
+ 
++	/* Reset input selector to its default input and disable slave mode */
++	regmap_write(priv->regmap, TIM_TISEL, 0x0);
++	regmap_write(priv->regmap, TIM_SMCR, 0x0);
++
+ 	/* Register Counter device */
+ 	ret = devm_counter_add(dev, counter);
+ 	if (ret < 0)
+diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
+index 5f5c43fd69dd..1b94325febb3 100644
+--- a/include/linux/mfd/stm32-timers.h
++++ b/include/linux/mfd/stm32-timers.h
+@@ -31,6 +31,7 @@
+ #define TIM_BDTR	0x44	/* Break and Dead-Time Reg */
+ #define TIM_DCR		0x48	/* DMA control register    */
+ #define TIM_DMAR	0x4C	/* DMA register for transfer */
++#define TIM_TISEL	0x68	/* Input Selection         */
+ 
+ #define TIM_CR1_CEN	BIT(0)	/* Counter Enable	   */
+ #define TIM_CR1_DIR	BIT(4)  /* Counter Direction	   */
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 

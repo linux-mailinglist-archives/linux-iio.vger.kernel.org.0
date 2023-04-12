@@ -2,64 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8AA36DF524
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 14:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD4F56DF52E
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 14:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjDLM0f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 08:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
+        id S229744AbjDLM1k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 08:27:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbjDLM0e (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 08:26:34 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01526B8;
-        Wed, 12 Apr 2023 05:26:29 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id o1so14492521lfc.2;
-        Wed, 12 Apr 2023 05:26:29 -0700 (PDT)
+        with ESMTP id S231643AbjDLM1g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 08:27:36 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5017030EE;
+        Wed, 12 Apr 2023 05:27:26 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id t20so14439552lfd.5;
+        Wed, 12 Apr 2023 05:27:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681302388;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6Y8SzNN5mNDbUKXbv/hNMw3cqHQa6RWiGGetlO0vZAE=;
-        b=pY14FIRGL13fp0Yzw9a0vHJbqBq/ju2gGL7K57ycDWmv7h1jnFb5pOwCSD3cB4BzsR
-         apNA5e72eDHkXwlFAjt7C8K1kiHY005ticcR1I0hk9xLg/BuCvNYxgr1j8CdtYvMUeEy
-         kczSw0q6C3DfObBhjIxlUXatdxhQVRqzaSWus8/FapfzCmcvkqfuKq3SMusZfApH9IS4
-         NnPFnuHgewo8D94Q4hCWRBe8f5gKB2fIMPO5nuWbFnPwuAkSCWJIN5v1vDEIm2itq1+n
-         /blvFkQ5AlHFMq2phtwcJDYu4Z24v9lf1l2sIjXJxvwU+Oguerq5Yt8ImWIofj0cbLmc
-         2ryw==
+        d=gmail.com; s=20221208; t=1681302444;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sgOwPu+FboPmTEq+F0N4Fog/45+TxGJHI0yCy72fcPY=;
+        b=bUGFSLOHSf8IOPs0vBg4h3142MTO/Uar2S7LbKDhUcqBXArUyeIogzmCBzqZpLXbOv
+         6LEcsgmaK5Iz536y7HqVscXtUbwLtyt6isKczHv7M851ZqYxFF2C1PLxawMExL1/rJtx
+         cXQJ1wkeyR4oiJNPQX/aoYi5FapO4QAG/EyARlWXGnLD5ZUrUe9jOznW2cmp7hVS1u7A
+         g+dZaNUjXBPvbBlef8wczMA5/f7iyn0hByjFS4Yw+aeL2O6vt3I/VBiQHPdJ06vbJv7n
+         UJprE3rDrj7y9Ud3K/iJDpBQ/NGBuzJtbkyPoutOGfEePpFB9DeLjzsmIW0y7dHDflxU
+         e8/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681302388;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Y8SzNN5mNDbUKXbv/hNMw3cqHQa6RWiGGetlO0vZAE=;
-        b=M3mc5G48hhINb4YQGXZ8ecwjoez98YdaaRMAl7xQvywOdxvoWepVUNP+ziupaVc0RR
-         omBDjl80KMaXCUlYm37a+N+XhSX95Q7+4qt9C+YvSFqE/PR44JwusgebeEFX811Tr2TO
-         VPdrpDvcAwT2dMUeEScijkFULuZZksUzF48K87XwSef08atnu2tQ/0kRHVa5TfioLoGa
-         q9BsJxdNFfJtLHWFhLN5UTv+ePjC3JAs1P0eIC95PdBhOK5rDYtBPOEih+zTLtbjga/d
-         znIu2xtUpZS3QwtF8Q1hIx8LEFdpacFh79Y+p4P3H1fG845laIvIPQ7oV3VrRgsgXgfU
-         AYlw==
-X-Gm-Message-State: AAQBX9fIqrOJiAg7OVt7WFgzKEAAyRRF4P+p2efAOdostv8uFU+YDvKV
-        n1lbdVxp6ZEfwldLjIKlDJnmHN7b2IA=
-X-Google-Smtp-Source: AKy350ZTc0CEBb8ibbY1LpjpBJIAw5pqqxdbi5V14jj1NpSmg6wAjZ54W8pJ2MMnFlZ6aWFYHUiiyA==
-X-Received: by 2002:a05:6512:3905:b0:4dc:807a:d144 with SMTP id a5-20020a056512390500b004dc807ad144mr3735161lfu.39.1681302388010;
-        Wed, 12 Apr 2023 05:26:28 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1681302444;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sgOwPu+FboPmTEq+F0N4Fog/45+TxGJHI0yCy72fcPY=;
+        b=TS5j7l6NxcNnqz7+K/xK1agVy9J4dTwwwwTjmylQyXSAhk6npRxGPNdhrx8jSaSCCp
+         thfYXXYHqeufASOMljDSVHz7vrAZniuXhNXxyQBZAiV7CTcbuv9dSWHAUJyYiwPmN2Cm
+         NfVl5aRVFEDLJDBrcHvGEnojVemmRB1Uq/7+hyOBq/T2YwY5mJnNxlWNHaCqDDOyqmxn
+         f3+O5NPGsRkk3dXGRBHrm82EjFCFipmknU3I/OwctaQiX7vrk0bXqPappjodRS5x452G
+         e1No0WMoT6T2fQudhCiSBOclc9uZviIPPViBZjV7x9Ymd4K9mKj7bsmuPRsQkSs7+fWc
+         hC2w==
+X-Gm-Message-State: AAQBX9cGY4msQ/gspEF4jkcUs1KFw6f0jbUhXAOGg5Eue6rexyrJys/w
+        6WupzRcNq/2H95rZM9LQkuc=
+X-Google-Smtp-Source: AKy350aBtZqbgVz7RlRlx7n4YpwLva9wu/Kfqr4nf7VKOrm3wlO+oRyizn3t5nCyVXo4+TKAfWEffw==
+X-Received: by 2002:ac2:44a3:0:b0:4e9:bf52:7898 with SMTP id c3-20020ac244a3000000b004e9bf527898mr566918lfm.37.1681302444438;
+        Wed, 12 Apr 2023 05:27:24 -0700 (PDT)
 Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id p22-20020a19f016000000b004ec834cc59fsm1945032lfc.267.2023.04.12.05.26.26
+        by smtp.gmail.com with ESMTPSA id z20-20020ac25df4000000b004d85895d7e0sm2984411lfq.147.2023.04.12.05.27.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Apr 2023 05:26:27 -0700 (PDT)
-Date:   Wed, 12 Apr 2023 15:26:15 +0300
+        Wed, 12 Apr 2023 05:27:23 -0700 (PDT)
+Date:   Wed, 12 Apr 2023 15:27:14 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Matti Vaittinen <mazziesaccount@gmail.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] iio: Fix integration time units for iio-gts
-Message-ID: <cover.1681301472.git.mazziesaccount@gmail.com>
+Subject: [PATCH 1/3] iio: core: add IIO_VAL_INT_MICRO
+Message-ID: <d31f2ebf08837337d3bbc6a00fd4b5eb3c86a04e.1681301472.git.mazziesaccount@gmail.com>
+References: <cover.1681301472.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="VB6YwPETZFQ4go9u"
+        protocol="application/pgp-signature"; boundary="gz1hgTNomGVmMv2T"
 Content-Disposition: inline
+In-Reply-To: <cover.1681301472.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -71,46 +74,72 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---VB6YwPETZFQ4go9u
+--gz1hgTNomGVmMv2T
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The newly added iio-gts-helper (gain time scale helper) errorneously
-reports available integration times as micro seconds. The same mistake
-is in newly added BU27034 light sensor driver. Fix these by adding new
-IIO_VAL type, IIO_VAL_INT_MICRO - which can be used for micro <unit>
-values where the integer part is zero.
+There are a few cases like light sensor integration times, where values
+returned from *_available() and read_raw() are smaller than 1 and often
+in the units of micro. (Like micro second scale integration times,
+always smaller than 1 second). Currently those are often handled using
+IIO_VAL_INT_PLUS_MICRO, which requires drivers to initialize the integer
+part to zero. Furthermore, using IIO_VAL_INT_PLUS_MICRO in iio lists
+requires one to always allocate the 'dummy' integer part too.
 
-NOTE:
-I did not have the time to test the gts-helpers with integration times
-which are greater than 1 second. Currently there is no other in-tree users
-besides the bu27034, which does always use integration times smaller
-than 1 second. When greater than 1 second times are needed, this needs
-to be revised. (Or, when the devm_* interface kunit test support gets
-added). Right now this should be a quick fix to integration time
-handling before the bug manifests itself in the user-space).
+Introduce IIO_VAL_INT_MICRO which allows omitting the always zero integer.
 
-I am planning to test (and re-work if needed) the gts-helpers available
-integration time list for > 1Sec times - but I most probably don't have
-the time for that during this or next week. (Don't know about the
-weekend though - but probably not.)
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
+ drivers/iio/industrialio-core.c | 4 ++++
+ include/linux/iio/types.h       | 1 +
+ 2 files changed, 5 insertions(+)
 
---
-
-Matti Vaittinen (3):
-  iio: core: add IIO_VAL_INT_MICRO
-  iio: gts: fix units of available integration times
-  iio: bu27034: Fix integration time units
-
- drivers/iio/industrialio-core.c       | 4 ++++
- drivers/iio/industrialio-gts-helper.c | 2 +-
- drivers/iio/light/rohm-bu27034.c      | 7 +++++--
- include/linux/iio/types.h             | 1 +
- 4 files changed, 11 insertions(+), 3 deletions(-)
-
-
-base-commit: c86b0e73f0bebbb0245ef2bac4cf269d61ff828c
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-cor=
+e.c
+index c117f50d0cf3..c5ae965e9961 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -628,6 +628,8 @@ static ssize_t __iio_format_value(char *buf, size_t off=
+set, unsigned int type,
+ 	switch (type) {
+ 	case IIO_VAL_INT:
+ 		return sysfs_emit_at(buf, offset, "%d", vals[0]);
++	case IIO_VAL_INT_MICRO:
++		return sysfs_emit_at(buf, offset, "0.%06u", vals[0]);
+ 	case IIO_VAL_INT_PLUS_MICRO_DB:
+ 		scale_db =3D true;
+ 		fallthrough;
+@@ -758,6 +760,7 @@ static ssize_t iio_format_list(char *buf, const int *va=
+ls, int type, int length,
+=20
+ 	switch (type) {
+ 	case IIO_VAL_INT:
++	case IIO_VAL_INT_MICRO:
+ 		stride =3D 1;
+ 		break;
+ 	default:
+@@ -952,6 +955,7 @@ static ssize_t iio_write_channel_info(struct device *de=
+v,
+ 		case IIO_VAL_INT_PLUS_MICRO_DB:
+ 			scale_db =3D true;
+ 			fallthrough;
++		case IIO_VAL_INT_MICRO:
+ 		case IIO_VAL_INT_PLUS_MICRO:
+ 			fract_mult =3D 100000;
+ 			break;
+diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+index 82faa98c719a..b4e316172c7f 100644
+--- a/include/linux/iio/types.h
++++ b/include/linux/iio/types.h
+@@ -30,6 +30,7 @@ enum iio_event_info {
+ #define IIO_VAL_FRACTIONAL 10
+ #define IIO_VAL_FRACTIONAL_LOG2 11
+ #define IIO_VAL_CHAR 12
++#define IIO_VAL_INT_MICRO 13 /* val is micro <units>. Integer part is 0 */
+=20
+ enum iio_available_type {
+ 	IIO_AVAIL_LIST,
 --=20
 2.39.2
 
@@ -127,19 +156,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---VB6YwPETZFQ4go9u
+--gz1hgTNomGVmMv2T
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQ2oy4ACgkQeFA3/03a
-ocU0OQf/VGWbJ030HpBqIOqIku7QspaMH1CCuQrqcMR5ax4aqCCRJQIx1sQC0oAd
-UKjq9JxdSRx5z51k6lx90llOPb8F43jN7RPnegO0tr9A3vCb32VPOq5g5Mi4Prr+
-IgKXfkpggoGDiDdYpeXbFGxT9S3kU+BezBxGT8dMQbJZVRneyPeF37rX266aIE0p
-ABXga939QRTRjvIkWI7VdFpCbrmP1yVIWdD53y03xMov+BgDgdb8Q8yIrzhUD3Aa
-sVqLagZIf/3ssoZwW7i6N1DV2sH9A8SDUBiiL7d/Cv2xcBQuuppZTnwzSE+UvEbj
-JbdV+OZiiRU+aUEARIqVbxs6X2+lCg==
-=sSAi
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQ2o6IACgkQeFA3/03a
+ocW9dwgAm5gXd6P5IM7E20MDnCZ13JMqH+T+CaLy/qNgH/Omql1WMqmx10qCE5rV
+ORaDYyfQlC5T9S8I0aGhttmkY/DFmaRF+lvFWPJa53331PZ9LfHKfIGOzzOivdGR
+RjNFHICWrdqKMHthTNw859gSQcn5Hs6U7+4YPWLiDAlvPzG5eyPCv0PmYiZMQQIy
+l/kwweLcycCJLy8j9Nc9WIU0CJDCjEktf+vkfRBCRFmfAyf0etQrzoNzY1J+cAGp
+Lat0xH7PTRerwIOdvt4RMM+M1SVGxJ7JDaenrlMvbe3GhY5jcaWh0hIUWJ4J+Q8P
+vuHeQ5NUV1/mzn19tpLkeTO0ysUC+Q==
+=e+OH
 -----END PGP SIGNATURE-----
 
---VB6YwPETZFQ4go9u--
+--gz1hgTNomGVmMv2T--

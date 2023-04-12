@@ -2,58 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39436DFC9E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 19:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 684A66DFF76
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 22:12:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbjDLRXc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 13:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33544 "EHLO
+        id S229604AbjDLUMF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 16:12:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229638AbjDLRXb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 13:23:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5BB01726;
-        Wed, 12 Apr 2023 10:23:30 -0700 (PDT)
+        with ESMTP id S229451AbjDLUME (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 16:12:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9037761B3
+        for <linux-iio@vger.kernel.org>; Wed, 12 Apr 2023 13:12:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 838CD631A2;
-        Wed, 12 Apr 2023 17:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687D7C433EF;
-        Wed, 12 Apr 2023 17:23:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AA19633C2
+        for <linux-iio@vger.kernel.org>; Wed, 12 Apr 2023 20:12:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F183C433EF;
+        Wed, 12 Apr 2023 20:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681320209;
-        bh=wMn7qeUFacSworH32ghtZecf85ca3gEEa1FOPqctaOs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UtCKNUkJ1fWxyC3Ue+qYiqPBVuXsOtAJBrv6CAyb19WO6wRiD55elkG5mecRp41Lm
-         GS1sFGz9igYMfsGC1Vd0zivXoEqjILDQPp2i9fyrKd+KmZIe4T9lVKtuS2nPo7+Ys+
-         0/ZPgDNtiQcUb/ONHlQ24q1iT2BJ4t3zTZaQzPwpcL7t+BLt9hNGGXimubXbPU9+pc
-         pgAl1ZOEphhvIuG6WXH242+8x3cZ6Vce3cajzsSX0DM2FW5gwziq0P/49CWqtUsu0r
-         PriJDV3vvgo4XR+5PWpf+g4ZtC7ocEV63DnrrdkHDQOIFVel/ppvrgRmIL73vv6Trz
-         DoJjzZvfsu01w==
-Date:   Wed, 12 Apr 2023 22:53:26 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
-Subject: Re: [PATCH v3 01/11] dmaengine: Add API function
- dmaengine_prep_slave_dma_array()
-Message-ID: <ZDbpDptOcuBLFctc@matsya>
-References: <20230403154800.215924-1-paul@crapouillou.net>
- <20230403154800.215924-2-paul@crapouillou.net>
+        s=k20201202; t=1681330322;
+        bh=9ZKrB52rWKoD4jdAgNVjoS60CXfm7qnyXMrx+5NudHg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=iauusLbE0pLzWpWcYtBZj83WAXbGlKMMPC1n6S/VdzFRvh43HSI7r/9H9MFXfwKn+
+         +2Gbr7xtQ8ESDUvFVH1Ti2Yrb5Tev8DOkIdmSXMN6uNFVT6NgHaoOx2A6GbfwJV6U1
+         qKSUonutHCsq3/XbwTiXPvVPnISgx51DMudUUqtk1JfesYQSaNmyGUMaKSVjzBIopR
+         WvjywWZqp9TLYF9ZtJdspweNiNO0Pk4ooV8zKRPTRvxMH9ZhN5mGntRnOid8e6lZQb
+         7mx5lo3/YNP3b1Gasv9x3Jv7KI6DZzOYorXYGA89dEaUzV/BTenwWdoUZD0aFP/Uxw
+         VGjfdK/6ELiuw==
+Date:   Wed, 12 Apr 2023 21:11:59 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH] iio: adc: palmas: Take probe fully device managed.
+Message-ID: <20230412211159.5b9515d8@jic23-huawei>
+In-Reply-To: <20230319153621.5205ecf4@jic23-huawei>
+References: <20230318163039.56115-1-jic23@kernel.org>
+        <20230319142106.GA3806863@dalakolonin.se>
+        <20230319153621.5205ecf4@jic23-huawei>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230403154800.215924-2-paul@crapouillou.net>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,63 +56,248 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 03-04-23, 17:47, Paul Cercueil wrote:
-> This function can be used to initiate a scatter-gather DMA transfer
-> where the DMA addresses and lengths are located inside arrays.
-> 
-> The major difference with dmaengine_prep_slave_sg() is that it supports
-> specifying the lengths of each DMA transfer; as trying to override the
-> length of the transfer with dmaengine_prep_slave_sg() is a very tedious
-> process. The introduction of a new API function is also justified by the
-> fact that scatterlists are on their way out.
+On Sun, 19 Mar 2023 15:36:21 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Do we need a new API for this? why not use device_prep_interleaved_dma?
+> On Sun, 19 Mar 2023 15:21:06 +0100
+> Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
+>=20
+> > The changes look good and I've tested it on Omap5-uevm board:
+> > * module loads and unloads without issues
+> > * I'm able to read ADC values
+> > * the values change when I turn my potentiometer
+> >=20
+> > Feel free to add the relevant tags, e.g. Tested-by or Reviewed-by. I'm
+> > still new to the kernel development process. =20
+> Hi Patrik,
+>=20
+> Both make sense here given your comments.  You tried it so Tested-by
+> and you said it looks good which is Reviewed-by
+>=20
+> I failed to cc the original author of this driver though, so +CC HNS for =
+that
+> and this will have to wait for your fix to be available in upstream so it
+> will take a while.
+>=20
+> If you are sending additional patches on top of this and your patch,
+> state that in the cover letter for those additional patches as I'll proba=
+bly
+> forget otherwise and wonder why they don't apply.
+Hi Patrik,
 
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> 
-> ---
-> v3: New patch
-> ---
->  include/linux/dmaengine.h | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-> index c3656e590213..62efa28c009a 100644
-> --- a/include/linux/dmaengine.h
-> +++ b/include/linux/dmaengine.h
-> @@ -912,6 +912,11 @@ struct dma_device {
->  	struct dma_async_tx_descriptor *(*device_prep_dma_interrupt)(
->  		struct dma_chan *chan, unsigned long flags);
->  
-> +	struct dma_async_tx_descriptor *(*device_prep_slave_dma_array)(
-> +		struct dma_chan *chan, dma_addr_t *addrs,
-> +		size_t *lengths, size_t nb,
-> +		enum dma_transfer_direction direction,
-> +		unsigned long flags);
->  	struct dma_async_tx_descriptor *(*device_prep_slave_sg)(
->  		struct dma_chan *chan, struct scatterlist *sgl,
->  		unsigned int sg_len, enum dma_transfer_direction direction,
-> @@ -974,6 +979,17 @@ static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
->  						  dir, flags, NULL);
->  }
->  
-> +static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_dma_array(
-> +	struct dma_chan *chan, dma_addr_t *addrs, size_t *lengths,
-> +	size_t nb, enum dma_transfer_direction dir, unsigned long flags)
-> +{
-> +	if (!chan || !chan->device || !chan->device->device_prep_slave_dma_array)
-> +		return NULL;
-> +
-> +	return chan->device->device_prep_slave_dma_array(chan, addrs, lengths,
-> +							 nb, dir, flags);
-> +}
-> +
->  static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_sg(
->  	struct dma_chan *chan, struct scatterlist *sgl,	unsigned int sg_len,
->  	enum dma_transfer_direction dir, unsigned long flags)
-> -- 
-> 2.39.2
+Applied this version because I wanted the link that automatically includes
+to include your TB and RB comment above.
 
--- 
-~Vinod
+At the moment I'm cheating a bit and using Greg's char-misc-testing tree
+because I want to get this and your series on top of it into the hands of 0=
+-day
+asap with the intent to sneak out a last minute pull request on Friday or S=
+aturday.
+
+Jonathan
+
+
+>=20
+> Thanks
+>=20
+> Jonathan
+>=20
+>=20
+> >=20
+> > On Sat, Mar 18, 2023 at 04:30:39PM +0000, Jonathan Cameron wrote: =20
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >=20
+> > > Review of a recent fix highlighted that this driver could be trivially
+> > > converted to be entirely devm managed.
+> > >=20
+> > > That fix should be applied to resolve the fix in a fashion easy to ba=
+ck port
+> > > even though this change removes the relevant code.
+> > >=20
+> > > [1] https://patchwork.kernel.org/project/linux-iio/patch/202303132050=
+29.1881745-1-risca@dalakolonin.se/
+> > >=20
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > Cc: Signed-off-by: Patrik Dahlstr=C3=B6m <risca@dalakolonin.se>
+> > > ---
+> > >  drivers/iio/adc/palmas_gpadc.c | 110 +++++++++++++------------------=
+--
+> > >  1 file changed, 42 insertions(+), 68 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
+gpadc.c
+> > > index 849a697a467e..2921186458e0 100644
+> > > --- a/drivers/iio/adc/palmas_gpadc.c
+> > > +++ b/drivers/iio/adc/palmas_gpadc.c
+> > > @@ -493,6 +493,11 @@ static int palmas_gpadc_get_adc_dt_data(struct p=
+latform_device *pdev,
+> > >  	return 0;
+> > >  }
+> > > =20
+> > > +static void palmas_disable_wakeup(void *dev)
+> > > +{
+> > > +	device_wakeup_disable(dev);
+> > > +}
+> > > +
+> > >  static int palmas_gpadc_probe(struct platform_device *pdev)
+> > >  {
+> > >  	struct palmas_gpadc *adc;
+> > > @@ -532,36 +537,30 @@ static int palmas_gpadc_probe(struct platform_d=
+evice *pdev)
+> > > =20
+> > >  	adc->auto_conversion_period =3D gpadc_pdata->auto_conversion_period=
+_ms;
+> > >  	adc->irq =3D palmas_irq_get_virq(adc->palmas, PALMAS_GPADC_EOC_SW_I=
+RQ);
+> > > -	if (adc->irq < 0) {
+> > > -		dev_err(adc->dev,
+> > > -			"get virq failed: %d\n", adc->irq);
+> > > -		ret =3D adc->irq;
+> > > -		goto out;
+> > > -	}
+> > > -	ret =3D request_threaded_irq(adc->irq, NULL,
+> > > -		palmas_gpadc_irq,
+> > > -		IRQF_ONESHOT, dev_name(adc->dev),
+> > > -		adc);
+> > > -	if (ret < 0) {
+> > > -		dev_err(adc->dev,
+> > > -			"request irq %d failed: %d\n", adc->irq, ret);
+> > > -		goto out;
+> > > -	}
+> > > +	if (adc->irq < 0)
+> > > +		return dev_err_probe(adc->dev, adc->irq, "get virq failed\n");
+> > > +
+> > > +	ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq, NULL,
+> > > +					palmas_gpadc_irq,
+> > > +					IRQF_ONESHOT, dev_name(adc->dev),
+> > > +					adc);
+> > > +	if (ret < 0)
+> > > +		return dev_err_probe(adc->dev, ret,
+> > > +				     "request irq %d failed\n", adc->irq);
+> > > =20
+> > >  	if (gpadc_pdata->adc_wakeup1_data) {
+> > >  		memcpy(&adc->wakeup1_data, gpadc_pdata->adc_wakeup1_data,
+> > >  			sizeof(adc->wakeup1_data));
+> > >  		adc->wakeup1_enable =3D true;
+> > >  		adc->irq_auto_0 =3D  platform_get_irq(pdev, 1);
+> > > -		ret =3D request_threaded_irq(adc->irq_auto_0, NULL,
+> > > -				palmas_gpadc_irq_auto,
+> > > -				IRQF_ONESHOT,
+> > > -				"palmas-adc-auto-0", adc);
+> > > -		if (ret < 0) {
+> > > -			dev_err(adc->dev, "request auto0 irq %d failed: %d\n",
+> > > -				adc->irq_auto_0, ret);
+> > > -			goto out_irq_free;
+> > > -		}
+> > > +		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_0,
+> > > +						NULL, palmas_gpadc_irq_auto,
+> > > +						IRQF_ONESHOT,
+> > > +						"palmas-adc-auto-0", adc);
+> > > +		if (ret < 0)
+> > > +			return dev_err_probe(adc->dev, ret,
+> > > +					     "request auto0 irq %d failed\n",
+> > > +					     adc->irq_auto_0);
+> > >  	}
+> > > =20
+> > >  	if (gpadc_pdata->adc_wakeup2_data) {
+> > > @@ -569,15 +568,14 @@ static int palmas_gpadc_probe(struct platform_d=
+evice *pdev)
+> > >  				sizeof(adc->wakeup2_data));
+> > >  		adc->wakeup2_enable =3D true;
+> > >  		adc->irq_auto_1 =3D  platform_get_irq(pdev, 2);
+> > > -		ret =3D request_threaded_irq(adc->irq_auto_1, NULL,
+> > > -				palmas_gpadc_irq_auto,
+> > > -				IRQF_ONESHOT,
+> > > -				"palmas-adc-auto-1", adc);
+> > > -		if (ret < 0) {
+> > > -			dev_err(adc->dev, "request auto1 irq %d failed: %d\n",
+> > > -				adc->irq_auto_1, ret);
+> > > -			goto out_irq_auto0_free;
+> > > -		}
+> > > +		ret =3D devm_request_threaded_irq(&pdev->dev, adc->irq_auto_1,
+> > > +						NULL, palmas_gpadc_irq_auto,
+> > > +						IRQF_ONESHOT,
+> > > +						"palmas-adc-auto-1", adc);
+> > > +		if (ret < 0)
+> > > +			return dev_err_probe(adc->dev, ret,
+> > > +					     "request auto1 irq %d failed\n",
+> > > +					     adc->irq_auto_1);
+> > >  	}
+> > > =20
+> > >  	/* set the current source 0 (value 0/5/15/20 uA =3D> 0..3) */
+> > > @@ -608,11 +606,10 @@ static int palmas_gpadc_probe(struct platform_d=
+evice *pdev)
+> > >  	indio_dev->channels =3D palmas_gpadc_iio_channel;
+> > >  	indio_dev->num_channels =3D ARRAY_SIZE(palmas_gpadc_iio_channel);
+> > > =20
+> > > -	ret =3D iio_device_register(indio_dev);
+> > > -	if (ret < 0) {
+> > > -		dev_err(adc->dev, "iio_device_register() failed: %d\n", ret);
+> > > -		goto out_irq_auto1_free;
+> > > -	}
+> > > +	ret =3D devm_iio_device_register(&pdev->dev, indio_dev);
+> > > +	if (ret < 0)
+> > > +		return dev_err_probe(adc->dev, ret,
+> > > +				     "iio_device_register() failed\n");
+> > > =20
+> > >  	device_set_wakeup_capable(&pdev->dev, 1);
+> > >  	for (i =3D 0; i < PALMAS_ADC_CH_MAX; i++) {
+> > > @@ -620,36 +617,14 @@ static int palmas_gpadc_probe(struct platform_d=
+evice *pdev)
+> > >  			palmas_gpadc_calibrate(adc, i);
+> > >  	}
+> > > =20
+> > > -	if (adc->wakeup1_enable || adc->wakeup2_enable)
+> > > +	if (adc->wakeup1_enable || adc->wakeup2_enable) {
+> > >  		device_wakeup_enable(&pdev->dev);
+> > > -
+> > > -	return 0;
+> > > -
+> > > -out_irq_auto1_free:
+> > > -	if (gpadc_pdata->adc_wakeup2_data)
+> > > -		free_irq(adc->irq_auto_1, adc);
+> > > -out_irq_auto0_free:
+> > > -	if (gpadc_pdata->adc_wakeup1_data)
+> > > -		free_irq(adc->irq_auto_0, adc);
+> > > -out_irq_free:
+> > > -	free_irq(adc->irq, adc);
+> > > -out:
+> > > -	return ret;
+> > > -}
+> > > -
+> > > -static int palmas_gpadc_remove(struct platform_device *pdev)
+> > > -{
+> > > -	struct iio_dev *indio_dev =3D dev_get_drvdata(&pdev->dev);
+> > > -	struct palmas_gpadc *adc =3D iio_priv(indio_dev);
+> > > -
+> > > -	if (adc->wakeup1_enable || adc->wakeup2_enable)
+> > > -		device_wakeup_disable(&pdev->dev);
+> > > -	iio_device_unregister(indio_dev);
+> > > -	free_irq(adc->irq, adc);
+> > > -	if (adc->wakeup1_enable)
+> > > -		free_irq(adc->irq_auto_0, adc);
+> > > -	if (adc->wakeup2_enable)
+> > > -		free_irq(adc->irq_auto_1, adc);
+> > > +		ret =3D devm_add_action_or_reset(&pdev->dev,
+> > > +					       palmas_disable_wakeup,
+> > > +					       &pdev->dev);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +	}
+> > > =20
+> > >  	return 0;
+> > >  }
+> > > @@ -834,7 +809,6 @@ MODULE_DEVICE_TABLE(of, of_palmas_gpadc_match_tbl=
+);
+> > > =20
+> > >  static struct platform_driver palmas_gpadc_driver =3D {
+> > >  	.probe =3D palmas_gpadc_probe,
+> > > -	.remove =3D palmas_gpadc_remove,
+> > >  	.driver =3D {
+> > >  		.name =3D MOD_NAME,
+> > >  		.pm =3D pm_sleep_ptr(&palmas_pm_ops),
+> > > --=20
+> > > 2.40.0
+> > >    =20
+>=20
+

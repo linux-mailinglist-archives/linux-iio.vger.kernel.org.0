@@ -2,178 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A83F6DF45B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 13:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8AA36DF524
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Apr 2023 14:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230103AbjDLLzj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 07:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
+        id S229491AbjDLM0f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 08:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbjDLLzi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 07:55:38 -0400
-Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2138.outbound.protection.outlook.com [40.107.135.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537A730FF;
-        Wed, 12 Apr 2023 04:55:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aWow9GcSclmF2qMr0w24hHwkFt107koly3lI5AwE0KQwfDOQet9z+PxYFK9xAV7xZ7MPmDNiOInQA07sIL7nJYg3kFX5kkEvrch1CGR4SSgyudo35PpWJ/zwz2YqvO8O9IgfLKm8cuy4UMBJn6KyYCrakiSrWbo6OJcQ6Rxs9CZV5twGocW3fUSOhWDA117JkFjdBLeobh/ERBWLRkLADcOzMm/OoHzMVVV0dLwmPHokdU6AM+7WPS+poI9gvfl0b3Q23l5PEn0h8cBtlthz069ODfVg+uoqU1MWiPLrAnazTt+NQFJTKG8lSFCOw9aeR75AvJkFWt3OSQk1GAH7Fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4KtsOnYhlMDoTEZVkMy3Y4xxZR6MvxklcnAzHm6UQSo=;
- b=itZHV+7cLIzd0zxMUs8yFgW7ys9U+7HxK0aiWjs3IQvP6zu0qU8yd3DR5gguCkh5HU6e5GQBQ7w7vOkajiD51nS4lW/XRNTNkqVGPosKHvVT+Kwr6d+XQXRcbHZ9OAC3Qr75REDl+UBAJf3dt6ybV0t9HY7GV/B0YLFJI7bJOIZLk6/ktb91DD3JII+LvvNtR7YPfrqm5py0gNrXdKWUISu5cz51/Swb4Ffprw0UVC00rjc4KFlACMD81mNSW51O/GlcCxjzQi1GS0YeYE5ddb/ZZGlNXZaCa71ZC6asVQMC05j94lHEws2zqzi78h9aKqwtUzPFF6tBnecdvmxxhQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
- header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
+        with ESMTP id S230009AbjDLM0e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 08:26:34 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01526B8;
+        Wed, 12 Apr 2023 05:26:29 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id o1so14492521lfc.2;
+        Wed, 12 Apr 2023 05:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rohmsemiconductor.onmicrosoft.com;
- s=selector2-rohmsemiconductor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4KtsOnYhlMDoTEZVkMy3Y4xxZR6MvxklcnAzHm6UQSo=;
- b=wHBNdkJHe1ksUHBG5yCmuXomFuqYWUUQkzGDm9iy43ePIdxN2eKCxAMzed+Kkq93OhSedpknctFmTlhemg0G+4l2V23tlNwf7dQPK2N2MEB4LP872veGmI6r8k06fPC6TaK6iOpANpyYBSPunBwLdQ9bCZK7adRNw56B2bAXlVs=
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
- by BE1P281MB1601.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:18::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.30; Wed, 12 Apr
- 2023 11:55:27 +0000
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3657:656:f6f6:dc8f]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::3657:656:f6f6:dc8f%4]) with mapi id 15.20.6298.030; Wed, 12 Apr 2023
- 11:55:26 +0000
-From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v7 4/5] iio: light: ROHM BU27034 Ambient Light Sensor
-Thread-Topic: [PATCH v7 4/5] iio: light: ROHM BU27034 Ambient Light Sensor
-Thread-Index: AQHZY85bPT2a8xlB7E+uwSrykMRZ968hUPcAgAMYiQCAAzo6AA==
-Date:   Wed, 12 Apr 2023 11:55:26 +0000
-Message-ID: <c14e3897-0186-681e-45b6-d079111c893e@fi.rohmeurope.com>
-References: <cover.1680263956.git.mazziesaccount@gmail.com>
- <2a7efb6f335da5526fbe34b95137c5e45db5c5d3.1680263956.git.mazziesaccount@gmail.com>
- <20230408122140.25332d15@jic23-huawei>
- <eeb96226-2ad6-954c-7054-b4762942ac0d@gmail.com>
-In-Reply-To: <eeb96226-2ad6-954c-7054-b4762942ac0d@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BEZP281MB2454:EE_|BE1P281MB1601:EE_
-x-ms-office365-filtering-correlation-id: 4e74dc26-0f7e-49fa-5324-08db3b4cce40
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ywuEb3Vu3+akViXQTSiBAs2WTKtlXI82YwcuTABSL9kcDS40ZyzGuuEZIrjs/sa7apkPmM7eOKkCjPSjM9uVKquXh6qeXULonA8Dp53N3DIxGu0M3Uw1s0Re1+R9DUDd03ryHCO1URTkXhE0UPEgUJ0l9TVLcUon/MMGtfBgI+vDd1GAAELJoSY/Z6mR5dwor3lqHwx44vH4wme9B78kb1HIyYFywbtK/zzT4QKq+wOGuncFupXf9q16bdnhEf5brfKWdMNnJ+DqGePRtNNpKaMcVVyxi2MSCHj/E+01tA4vF/wr6+AsPHimIfW5xwx8USrYukxrwq4oISSLaQmH2cWoel1CmDe0KtvvS4RhdGCInYyExisTrGiDFXiqXnkJL9c1nEP+mygS76xPSjFl0HidmoC1BjcpRkkNe8nZeiZpGOJVT7yFeY2uYD+3YNZwuPISYGLT4JfbRa8spM1co3csxessi/FjaLnHVJ66rgEXmDQVC5RFL2pKhWYtju6eA/BhOLRuCxahwDYRv+krvlnXlsYji7E5n29Hzh+kl3u0EkLY+Dd4Bboqbbw7WGIz851s+qTe3EFUlehK8rB2IrG+1Le9kytYvhf4jTmIvoEr/WZQs1Vbc0ey/vi6LOe6w79zgVKiZT09AlfPf1/VPW5vxMmDkxy4X+o86th/7MHEqlk0Z9QtnNLb+98Ffcj8
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(346002)(39850400004)(136003)(376002)(451199021)(4326008)(31686004)(66556008)(76116006)(66946007)(316002)(91956017)(64756008)(66476007)(8676002)(2906002)(8936002)(41300700001)(5660300002)(83380400001)(66446008)(54906003)(478600001)(110136005)(6486002)(71200400001)(6512007)(6506007)(53546011)(26005)(2616005)(186003)(38100700002)(38070700005)(86362001)(31696002)(122000001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dmYrRm11eXRhbTQ5UlhEUWp2ZE1YMUs1UDYwK3Q0UDg1VUM3TTNyWE83YS8z?=
- =?utf-8?B?TDdsV2x3TDVsblRySmdISys2ZmY4aUhsbEE4a0hTUXRsTER4R0QxV2RjTzZN?=
- =?utf-8?B?ZGNYb0RncWRrZnhQdzRNM1BIVTdjMnUyOVI0L0JuYzVJT3E2OGZYNnZ2akcr?=
- =?utf-8?B?RjJaQVpjRXY0cDJKdjA4ZEJ4TEg2RzhWUzNrZ3dINUlzWjVhM1VhYU8xT1Np?=
- =?utf-8?B?TFo0c09yVVlvRzc1eGlzaStYT2xKeWMrZFFxUlB3OXBwQThxbDVoTjVaZnZl?=
- =?utf-8?B?K1AyNmttUWdHbndFOEx3K1hlS2tsd1RmbXlPaDdGeVQzUXJaUWJvbU5NcWpW?=
- =?utf-8?B?aWNPVlFScmpwTnQweXg5VFFvbE9kbXRGWlBBWEs2a05MZENSc3ZLRW05R0hp?=
- =?utf-8?B?empPS1ZJWWdTNzZKcHNGOC8zVDZOWjZsbjFEU01yU1B4L0x2bVN6S2RzQjRx?=
- =?utf-8?B?TFN0WUJEbGpPVUc0d3R3ZUxScHBpcTFBRTh3RFlTNjQzdWFHMjNUN0U0WWZS?=
- =?utf-8?B?VUlhWGlRRkNqL0FNZm1aZlozbnB5Wk9zUm5qSXRjT0VWbER6UFdYYkZ6c1Jh?=
- =?utf-8?B?NUlWTnQxRlVJSHg4M3NESUxDeEFIUjhZU24wV0ZIRUdlaC91dEpjUm9jbExJ?=
- =?utf-8?B?cmV5U1JHNUJkT3BOMDMxd2pOemdBQVVscU1KL0pxNXEraWdGTzAyVUNHNGlk?=
- =?utf-8?B?bWp3TTkra3FFVU4zYjI4T0c1SFZEV0d0eXBiTzBpalNuK0FkTTYzbmxTNTUr?=
- =?utf-8?B?eFlPZzhIWElLdHpSeFpNSGVqUWhkNkZlcm9rSGdoQkxReS9nVmo0azJGdHlN?=
- =?utf-8?B?UzZicGFMa0kycUtrZUhqZE9udStnVWFRbUZUZzdkWlVyWElpVy82UHpMR1Ex?=
- =?utf-8?B?ejU3eC9EZzNVUFVGY3o4YmQrNXlLNWVReFlHNG10M3VRVlplTDNGa25tOWpS?=
- =?utf-8?B?V3p6eUtJMWNHUHhqWG90a0hWS1BlWU9teEJvVFlILzZJUDErRkxBdFIrcWg0?=
- =?utf-8?B?MG9XWERucE9Ybzc1T1dsRTZ3SHExQnBnNmwzR3A3WXZHVFA4RzFNR09zYmxk?=
- =?utf-8?B?Y2t3a0dOaSs4U0UxWGdkUHg1aEMyZXkwSzlOcjUvanF3eEhJQ2pkcnVHbVVE?=
- =?utf-8?B?N0d5bCttTHQxUThnN0FjZzdVNEVGSUY2NXdTVStXM2RidHVjc0l4ZGpRbUtt?=
- =?utf-8?B?RTZBaTBlMWsyUWRDbkVNQU03ampsakU1dHJyait6di94QVJQaGdETnR2TTB0?=
- =?utf-8?B?a0srSjlOTVg0bGc5a1dmS2FkZVJFU1U3a05YQm0xcm9oalpYa0VhM29mbkFu?=
- =?utf-8?B?dExpYXdtY0V3TnZJUUg2Wk5xRFRhYU1aMllsd1pCbzUzTFRCNi9vWXJXRktK?=
- =?utf-8?B?TCt2NkhTUkk3Y1U0MUJqRnNhYUxrL1BqdTBxTlIxVHpEcitENEpvaVEzUlpR?=
- =?utf-8?B?RFcvdEpteWt1K2Q1VHAycWtpelpQQ0xHVkVUcU1mTE1LTktkb2haall3ZHRS?=
- =?utf-8?B?STR4WnU0bURCanhVdzg1d2NwNWxUbWZCV2hJTDBFWlFaSllhUjlOVWdiUCs5?=
- =?utf-8?B?SmRBUy9aeUFPSVFGdkJNZVFtNUQwRkx4a2pOQWM2QkVsWHZMRGwzUk1mcG9Z?=
- =?utf-8?B?aWJmd3AvUzRidWs0NnlNblZDQ0twUEtCTm5TanA3OW1MaXpMVlV6UmorYUxG?=
- =?utf-8?B?YkgvYjRyem12dnZMRUFTdHlRVXcwbTQyQitpN0Q5ZWZmTmg2UUFIM1dyNTZl?=
- =?utf-8?B?bGpsWkNOOUZ1K2w0UzM5a29pKzAyZFBtTDBPeUhPMTRLaStOQ0h4Z1A2cy9R?=
- =?utf-8?B?U1Q2VnI4Q0syUlBNV1ZiczRzcmtjTnA2UEMxV1Z4a2xTaDBIdHJSek9ucCtV?=
- =?utf-8?B?Z09TNXlpN1QwZXhVV1MxUzBaRGRuY2x6ZHNXSUlNQ0Y5ZjNXbVdnSUVJZ1hO?=
- =?utf-8?B?OWdFcjRXYVZ0R0NudkNDQkVaQnFoejZjWDYvRFRkZWUvSWRJbG5wTitzYVBO?=
- =?utf-8?B?ajQvMG9JZ3ZSSmRBWlU2dGhDb3RmMzhtUUNJQ3dOWFpxQ0l1UmIzbSt0dDUw?=
- =?utf-8?B?Tk4wQmFPbkRxcEtxNGdJenI3d0VrK0FpY0o4REFjQWJNck8zam1ta1lnSmJP?=
- =?utf-8?B?SE5yc3NvTkE1MTJ6ZkhQQjMva0o1Vkc0N2FiWnVaMHdNNWt6T0xVdlN4NUx4?=
- =?utf-8?B?bEE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E8ED68E30C903A4B9253EFA7BA5D22C8@DEUP281.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20221208; t=1681302388;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6Y8SzNN5mNDbUKXbv/hNMw3cqHQa6RWiGGetlO0vZAE=;
+        b=pY14FIRGL13fp0Yzw9a0vHJbqBq/ju2gGL7K57ycDWmv7h1jnFb5pOwCSD3cB4BzsR
+         apNA5e72eDHkXwlFAjt7C8K1kiHY005ticcR1I0hk9xLg/BuCvNYxgr1j8CdtYvMUeEy
+         kczSw0q6C3DfObBhjIxlUXatdxhQVRqzaSWus8/FapfzCmcvkqfuKq3SMusZfApH9IS4
+         NnPFnuHgewo8D94Q4hCWRBe8f5gKB2fIMPO5nuWbFnPwuAkSCWJIN5v1vDEIm2itq1+n
+         /blvFkQ5AlHFMq2phtwcJDYu4Z24v9lf1l2sIjXJxvwU+Oguerq5Yt8ImWIofj0cbLmc
+         2ryw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681302388;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6Y8SzNN5mNDbUKXbv/hNMw3cqHQa6RWiGGetlO0vZAE=;
+        b=M3mc5G48hhINb4YQGXZ8ecwjoez98YdaaRMAl7xQvywOdxvoWepVUNP+ziupaVc0RR
+         omBDjl80KMaXCUlYm37a+N+XhSX95Q7+4qt9C+YvSFqE/PR44JwusgebeEFX811Tr2TO
+         VPdrpDvcAwT2dMUeEScijkFULuZZksUzF48K87XwSef08atnu2tQ/0kRHVa5TfioLoGa
+         q9BsJxdNFfJtLHWFhLN5UTv+ePjC3JAs1P0eIC95PdBhOK5rDYtBPOEih+zTLtbjga/d
+         znIu2xtUpZS3QwtF8Q1hIx8LEFdpacFh79Y+p4P3H1fG845laIvIPQ7oV3VrRgsgXgfU
+         AYlw==
+X-Gm-Message-State: AAQBX9fIqrOJiAg7OVt7WFgzKEAAyRRF4P+p2efAOdostv8uFU+YDvKV
+        n1lbdVxp6ZEfwldLjIKlDJnmHN7b2IA=
+X-Google-Smtp-Source: AKy350ZTc0CEBb8ibbY1LpjpBJIAw5pqqxdbi5V14jj1NpSmg6wAjZ54W8pJ2MMnFlZ6aWFYHUiiyA==
+X-Received: by 2002:a05:6512:3905:b0:4dc:807a:d144 with SMTP id a5-20020a056512390500b004dc807ad144mr3735161lfu.39.1681302388010;
+        Wed, 12 Apr 2023 05:26:28 -0700 (PDT)
+Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id p22-20020a19f016000000b004ec834cc59fsm1945032lfc.267.2023.04.12.05.26.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Apr 2023 05:26:27 -0700 (PDT)
+Date:   Wed, 12 Apr 2023 15:26:15 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] iio: Fix integration time units for iio-gts
+Message-ID: <cover.1681301472.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: fi.rohmeurope.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e74dc26-0f7e-49fa-5324-08db3b4cce40
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Apr 2023 11:55:26.6512
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ru2YAhfVUWWrtFYqhYThDf/0GSzc1hnS6wi+iHLKqpWcPYn6D/La5WXlrU/Bv2078v78Vh/97oB1qWPA6spHwfcc/R9ELLWf7PgGFdQrOoCNivtz9fDvT59piutGr3/W
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BE1P281MB1601
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="VB6YwPETZFQ4go9u"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gNC8xMC8yMyAxMzozOCwgTWF0dGkgVmFpdHRpbmVuIHdyb3RlOg0KPiBPbiA0LzgvMjMgMTQ6
-MjEsIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6DQo+PiBPbiBGcmksIDMxIE1hciAyMDIzIDE1OjQx
-OjU4ICswMzAwDQo+PiBNYXR0aSBWYWl0dGluZW4gPG1henppZXNhY2NvdW50QGdtYWlsLmNvbT4g
-d3JvdGU6DQo+Pg0KPj4+IFJPSE0gQlUyNzAzNCBpcyBhbiBhbWJpZW50IGxpZ2h0IHNlbnNvciB3
-aXRoIDMgY2hhbm5lbHMgYW5kIDMgcGhvdG8gDQo+Pj4gZGlvZGVzDQo+Pj4gY2FwYWJsZSBvZiBk
-ZXRlY3RpbmcgYSB2ZXJ5IHdpZGUgcmFuZ2Ugb2YgaWxsdW1pbmFuY2UuIFR5cGljYWwgDQo+Pj4g
-YXBwbGljYXRpb24NCj4+PiBpcyBhZGp1c3RpbmcgTENEIGFuZCBiYWNrbGlnaHQgcG93ZXIgb2Yg
-VFZzIGFuZCBtb2JpbGUgcGhvbmVzLg0KPj4+DQo+Pj4gQWRkIGluaXRpYWzCoCBzdXBwb3J0IGZv
-ciB0aGUgUk9ITSBCVTI3MDM0IGFtYmllbnQgbGlnaHQgc2Vuc29yLg0KPj4+DQo+Pj4gTk9URToN
-Cj4+PiDCoMKgwqDCoC0gRHJpdmVyIGV4cG9zZXMgNCBjaGFubmVscy4gT25lIElJT19MSUdIVCBj
-aGFubmVsIHByb3ZpZGluZyB0aGUNCj4+PiDCoMKgwqDCoMKgIGNhbGN1bGF0ZWQgbHV4IHZhbHVl
-cyBiYXNlZCBvbiBtZWFzdXJlZCBkYXRhIGZyb20gZGlvZGVzICMwIGFuZA0KPj4+IMKgwqDCoMKg
-wqAgIzEuIEluIGFkZGl0aW9uLCAzIElJT19JTlRFTlNJVFkgY2hhbm5lbHMgYXJlIGVtaXR0aW5n
-IHRoZSByYXcNCj4+PiDCoMKgwqDCoMKgIHJlZ2lzdGVyIGRhdGEgZnJvbSBhbGwgZGlvZGVzIGZv
-ciBtb3JlIGludGVuc2UgdXNlci1zcGFjZQ0KPj4+IMKgwqDCoMKgwqAgY29tcHV0YXRpb25zLg0K
-Pj4+IMKgwqDCoMKgLSBTZW5zb3IgaGFzIEdBSU4gdmFsdWVzIHRoYXQgY2FuIGJlIGFkanVzdGVk
-IGZyb20gMXggdG8gNDA5NnguDQo+Pj4gwqDCoMKgwqAtIFNlbnNvciBoYXMgYWRqdXN0aWJsZSBt
-ZWFzdXJlbWVudCB0aW1lcyBvZiA1LCA1NSwgMTAwLCAyMDAgYW5kDQo+Pj4gwqDCoMKgwqDCoCA0
-MDAgbVMuIERyaXZlciBkb2VzIG5vdCBzdXBwb3J0IDUgbVMgd2hpY2ggaGFzIHNwZWNpYWwNCj4+
-PiDCoMKgwqDCoMKgIGxpbWl0YXRpb25zLg0KPj4+IMKgwqDCoMKgLSBEcml2ZXIgZXhwb3NlcyBz
-dGFuZGFyZCAnc2NhbGUnIGFkanVzdG1lbnQgd2hpY2ggaXMNCj4+PiDCoMKgwqDCoMKgIGltcGxl
-bWVudGVkIGJ5Og0KPj4+IMKgwqDCoMKgwqDCoMKgIDEpIFRyeWluZyB0byBhZGp1c3Qgb25seSB0
-aGUgR0FJTg0KPj4+IMKgwqDCoMKgwqDCoMKgIDIpIElmIEdBSU4gYWRqdXN0bWVudCBhbG9uZSBj
-YW4ndCBwcm92aWRlIHJlcXVlc3RlZA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgIHNjYWxlLCBh
-ZGp1c3RpbmcgYm90aCB0aGUgdGltZSBhbmQgdGhlIGdhaW4gaXMNCj4+PiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBhdHRlbXB0ZWQuDQo+Pj4gwqDCoMKgwqAtIERyaXZlciBleHBvc2VzIHdyaXRhYmxl
-IElOVF9USU1FIHByb3BlcnR5IHRoYXQgY2FuIGJlIHVzZWQNCj4+PiDCoMKgwqDCoMKgIGZvciBh
-ZGp1c3RpbmcgdGhlIG1lYXN1cmVtZW50IHRpbWUuIFRpbWUgYWRqdXN0bWVudCB3aWxsIGFsc28N
-Cj4+PiDCoMKgwqDCoMKgIGNhdXNlIHRoZSBkcml2ZXIgdG8gdHJ5IHRvIGFkanVzdCB0aGUgR0FJ
-TiBzbyB0aGF0IHRoZQ0KPj4+IMKgwqDCoMKgwqAgb3ZlcmFsbCBzY2FsZSBpcyBrZXB0IGFzIGNs
-b3NlIHRvIHRoZSBvcmlnaW5hbCBhcyBwb3NzaWJsZS4NCj4+Pg0KPj4+IFNpZ25lZC1vZmYtYnk6
-IE1hdHRpIFZhaXR0aW5lbiA8bWF6emllc2FjY291bnRAZ21haWwuY29tPg0KDQpBcyBJIHdyb3Rl
-IGluIHRoZSBvdGhlciAoc3lzZnMpIG1haWwgLSB0aGlzIGRyaXZlciB2ZXJzaW9uIGlzIGJ1Z2d5
-IGFzIA0KaXQgaGFuZGxlcyBJTlRfVElNRXMgaW4gbWljcm8gc2Vjb25kcy4gVGhlIGNvcnJlY3Qg
-dW5pdCB3b3VsZCBiZSBzZWNvbmRzLg0KDQpJJ2xsIHNlbmQgYW4gaW5jcmVtZW50YWwgZml4IHRv
-IHRoaXMgYW5kIHRoZSBndHMtaGVscGVycyBvbiB0b3Agb2YgdGhlIA0KaWlvL3RvZ3JlZyAoaG9w
-ZWZ1bGx5IHNvb24pLg0KDQpZb3VycywNCgktLSBNYXR0aQ0KDQotLSANCk1hdHRpIFZhaXR0aW5l
-bg0KTGludXgga2VybmVsIGRldmVsb3BlciBhdCBST0hNIFNlbWljb25kdWN0b3JzDQpPdWx1IEZp
-bmxhbmQNCg0Kfn4gV2hlbiB0aGluZ3MgZ28gdXR0ZXJseSB3cm9uZyB2aW0gdXNlcnMgY2FuIGFs
-d2F5cyB0eXBlIDpoZWxwISB+fg0KDQo=
+
+--VB6YwPETZFQ4go9u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The newly added iio-gts-helper (gain time scale helper) errorneously
+reports available integration times as micro seconds. The same mistake
+is in newly added BU27034 light sensor driver. Fix these by adding new
+IIO_VAL type, IIO_VAL_INT_MICRO - which can be used for micro <unit>
+values where the integer part is zero.
+
+NOTE:
+I did not have the time to test the gts-helpers with integration times
+which are greater than 1 second. Currently there is no other in-tree users
+besides the bu27034, which does always use integration times smaller
+than 1 second. When greater than 1 second times are needed, this needs
+to be revised. (Or, when the devm_* interface kunit test support gets
+added). Right now this should be a quick fix to integration time
+handling before the bug manifests itself in the user-space).
+
+I am planning to test (and re-work if needed) the gts-helpers available
+integration time list for > 1Sec times - but I most probably don't have
+the time for that during this or next week. (Don't know about the
+weekend though - but probably not.)
+
+--
+
+Matti Vaittinen (3):
+  iio: core: add IIO_VAL_INT_MICRO
+  iio: gts: fix units of available integration times
+  iio: bu27034: Fix integration time units
+
+ drivers/iio/industrialio-core.c       | 4 ++++
+ drivers/iio/industrialio-gts-helper.c | 2 +-
+ drivers/iio/light/rohm-bu27034.c      | 7 +++++--
+ include/linux/iio/types.h             | 1 +
+ 4 files changed, 11 insertions(+), 3 deletions(-)
+
+
+base-commit: c86b0e73f0bebbb0245ef2bac4cf269d61ff828c
+--=20
+2.39.2
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--VB6YwPETZFQ4go9u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQ2oy4ACgkQeFA3/03a
+ocU0OQf/VGWbJ030HpBqIOqIku7QspaMH1CCuQrqcMR5ax4aqCCRJQIx1sQC0oAd
+UKjq9JxdSRx5z51k6lx90llOPb8F43jN7RPnegO0tr9A3vCb32VPOq5g5Mi4Prr+
+IgKXfkpggoGDiDdYpeXbFGxT9S3kU+BezBxGT8dMQbJZVRneyPeF37rX266aIE0p
+ABXga939QRTRjvIkWI7VdFpCbrmP1yVIWdD53y03xMov+BgDgdb8Q8yIrzhUD3Aa
+sVqLagZIf/3ssoZwW7i6N1DV2sH9A8SDUBiiL7d/Cv2xcBQuuppZTnwzSE+UvEbj
+JbdV+OZiiRU+aUEARIqVbxs6X2+lCg==
+=sSAi
+-----END PGP SIGNATURE-----
+
+--VB6YwPETZFQ4go9u--

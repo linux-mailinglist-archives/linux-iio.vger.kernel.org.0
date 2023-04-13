@@ -2,126 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F82E6E0331
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 02:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CC406E042A
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 04:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbjDMA1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Apr 2023 20:27:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        id S229527AbjDMCgi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Apr 2023 22:36:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjDMA1b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 20:27:31 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FD4449D;
-        Wed, 12 Apr 2023 17:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681345651; x=1712881651;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=91ps9yc2BHF8OTu7wTRMHp/SHeLcXz0RITidFgNOBe8=;
-  b=VyhHedk361fRRuCamWpL3YDNrBQpm+1gMMlqHjBe/A4decLEgCTrYEpX
-   ilXwQCcAzQtyV6+rVIlgLuhCo1ShzadVL7tBbvfO5ItcY+0Z0H++ycQlg
-   ei0j1EXTDP4Vhu4XJHhJnNzVnKFJIgrp+QjgiHurGIuWDbf3o3djwDrMv
-   XsAaqsIIy4oZffoBRxENSlkwYyH4uPx+2RWfI6dJkqe7uefLZJtR12/JB
-   AXVoY0nqF3HFED5vvl/s2VvCvwhKarhEjrUhlvMysSO8GiLwryjQlosQI
-   fXKXqERWiSMKRY9UfSzBtD3lkgI5ftSYpTD+Auib1Jb4gk2e6q8o5i7hh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="323676684"
-X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="323676684"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 17:27:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="721784440"
-X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="721784440"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 12 Apr 2023 17:27:28 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pmkoB-000YAh-14;
-        Thu, 13 Apr 2023 00:27:27 +0000
-Date:   Thu, 13 Apr 2023 08:27:25 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     mail@mariushoch.de, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Marius Hoch <mail@mariushoch.de>
-Subject: Re: [PATCH] iio: st_sensors: Add ACPI support for lsm303d to the
- LSM9DS0 IMU driver
-Message-ID: <202304130858.DbtHpwcV-lkp@intel.com>
-References: <20230412223627.442963-5-mail@mariushoch.de>
+        with ESMTP id S229526AbjDMCg3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Apr 2023 22:36:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7BE7EF0;
+        Wed, 12 Apr 2023 19:36:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3059A63A8B;
+        Thu, 13 Apr 2023 02:36:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97EAC433EF;
+        Thu, 13 Apr 2023 02:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681353377;
+        bh=0tlCgn/g2uLNgXFgxB/PsjI7UdfHzqyRNbDgd1eDnxc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Q9n5pSiOyLSUsI7ini0x4T1/72aCk9c0NSLgs5B4gkzo0E2muQNpAH1q3c0ql0/tE
+         ryZdFdIyrnstcybf/nzGk4LLKd9gbhCCyNg9AYMfCvuLy4KulCcSzCRUMgaq0Uqqwd
+         GMoZdkzGhI7Jc8XTwjSDkXNSRJpeUjpk8eYbNcourRRP7ihxbjfwlxzY3y0THhmNjG
+         sV2ioyYX2DifNcRAsW8gW2g0pqRBercdESz/Ty7fGZ0Vqbp1LewYjTi8b/OLF/8+VN
+         qBuo4Z8PTXdoU0vwcAst37BPBb8JexnZ6vhheAQ3189ll2Y/IsF631TWD7GHuRL7Tu
+         Tg/sy0wwV9Ptw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.2 06/20] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+Date:   Wed, 12 Apr 2023 22:35:44 -0400
+Message-Id: <20230413023601.74410-6-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230413023601.74410-1-sashal@kernel.org>
+References: <20230413023601.74410-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230412223627.442963-5-mail@mariushoch.de>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+From: Patrik Dahlström <risca@dalakolonin.se>
 
-kernel test robot noticed the following build errors:
+[ Upstream commit 49f76c499d38bf67803438eee88c8300d0f6ce09 ]
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.3-rc6 next-20230412]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Calling dev_to_iio_dev() on a platform device pointer is undefined and
+will make adc NULL.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/mail-mariushoch-de/iio-st_sensors-Add-ACPI-support-for-lsm303d-to-the-LSM9DS0-IMU-driver/20230413-064417
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230412223627.442963-5-mail%40mariushoch.de
-patch subject: [PATCH] iio: st_sensors: Add ACPI support for lsm303d to the LSM9DS0 IMU driver
-config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20230413/202304130858.DbtHpwcV-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-8) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/ec35631841a31e357cf4f6781b4c8f78a468a4ef
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review mail-mariushoch-de/iio-st_sensors-Add-ACPI-support-for-lsm303d-to-the-LSM9DS0-IMU-driver/20230413-064417
-        git checkout ec35631841a31e357cf4f6781b4c8f78a468a4ef
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 olddefconfig
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/iio/
+Signed-off-by: Patrik Dahlström <risca@dalakolonin.se>
+Link: https://lore.kernel.org/r/20230313205029.1881745-1-risca@dalakolonin.se
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/adc/palmas_gpadc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304130858.DbtHpwcV-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c:38:38: error: 'LSM303D_IMU_DEV_NAME' undeclared here (not in a function); did you mean 'LSM9DS0_IMU_DEV_NAME'?
-      38 |         {"ACCL0001", (kernel_ulong_t)LSM303D_IMU_DEV_NAME},
-         |                                      ^~~~~~~~~~~~~~~~~~~~
-         |                                      LSM9DS0_IMU_DEV_NAME
---
->> drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c:38:38: error: 'LSM303D_IMU_DEV_NAME' undeclared here (not in a function); did you mean 'LSM9DS0_IMU_DEV_NAME'?
-      38 |         {"ACCL0001", (kernel_ulong_t)LSM303D_IMU_DEV_NAME},
-         |                                      ^~~~~~~~~~~~~~~~~~~~
-         |                                      LSM9DS0_IMU_DEV_NAME
-
-
-vim +38 drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-
-    35	
-    36	#ifdef CONFIG_ACPI
-    37	static const struct acpi_device_id st_lsm9ds0_acpi_match[] = {
-  > 38		{"ACCL0001", (kernel_ulong_t)LSM303D_IMU_DEV_NAME},
-    39		{ },
-    40	};
-    41	MODULE_DEVICE_TABLE(acpi, st_lsm9ds0_acpi_match);
-    42	#endif
-    43	
-
+diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+index fd000345ec5cf..849a697a467e5 100644
+--- a/drivers/iio/adc/palmas_gpadc.c
++++ b/drivers/iio/adc/palmas_gpadc.c
+@@ -639,7 +639,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
+ 
+ static int palmas_gpadc_remove(struct platform_device *pdev)
+ {
+-	struct iio_dev *indio_dev = dev_to_iio_dev(&pdev->dev);
++	struct iio_dev *indio_dev = dev_get_drvdata(&pdev->dev);
+ 	struct palmas_gpadc *adc = iio_priv(indio_dev);
+ 
+ 	if (adc->wakeup1_enable || adc->wakeup2_enable)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.2
+

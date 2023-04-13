@@ -2,149 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA9BD6E116D
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 17:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2837F6E11CE
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 18:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbjDMPuU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Apr 2023 11:50:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
+        id S230229AbjDMQIL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 12:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230145AbjDMPuB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 11:50:01 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9F2977C;
-        Thu, 13 Apr 2023 08:49:53 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33DDcXxo015973;
-        Thu, 13 Apr 2023 17:49:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=10v21qlgUMLfu5kPMNcmhdYRHZiJpyjT0L0dJsmLtvw=;
- b=v6OhYbbvrpPLx1JwxegMChOboBtJzz6Ylcpk0rKNJucPUsYQ9fGbD3rZjZvsLZRYgMaS
- n7rSO28G+PgKy6Cf/wXXzO4Msz4+5s4qAT42Fx8Fj8UzZqnz7/jIfMfabs2yVX/tf0OB
- cH1eIMCvtn7kXWBtR+mdOmNT4kzDwTk2AfKSvJYBwHnTU/oNblBWA6ydFj1CkHbu3KoE
- gdZ5k3T6A3ivRznb9021jFKHjzrnbqQOHFb47c9+mi+MaIoLZ3HcjZWusxDn+BihZQPD
- 2l8Gyjjkt8iwP5LdmUpd5jkocIvnJHVt3iWCDj69TV78dTiKqj2SvHnxNE9bZLrDcUcT tA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3pxf2qah42-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Apr 2023 17:49:26 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id F24BE10002A;
-        Thu, 13 Apr 2023 17:49:23 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id EACB9227885;
-        Thu, 13 Apr 2023 17:49:23 +0200 (CEST)
-Received: from [10.48.1.102] (10.48.1.102) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 13 Apr
- 2023 17:49:22 +0200
-Message-ID: <434b4497-0dd4-4818-b4f7-f57264d8b2a7@foss.st.com>
-Date:   Thu, 13 Apr 2023 17:49:21 +0200
+        with ESMTP id S230148AbjDMQIK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 12:08:10 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4725B465
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 09:07:43 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-187a1387021so881979fac.3
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 09:07:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681402061; x=1683994061;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fl+z9ZvGo3NkmkVU4doQJLUodL1Mn6geuAd/z8bA8PY=;
+        b=oC6ku1M2DvzGVhux1BuI81qxhWLdNvd4A3a6PrW/nUgeilTIYyow3/cEh8Zx4XahgJ
+         vU/Ky0chbb8EdSnbnIJ2uOztPIQSnLtRHAOcYhOkmgq8Ur+VWhkyHeJsUIyS12rCBna4
+         gsQpOAg6ISE2sjNNRmOyimkTKKnJ8/QoNTjULH7ySzUaLn5FPKWH3+7P638qaHojctQC
+         62pG5vT3EwdKJ7TyMxxNUOiQlk7OVcQzYtYkxKvHaNyyxfSAS/BltcTBM7XwcMEOpVts
+         4D+tWM0xFRJNEmaTyUrv6ndZrdDg1Yi6JmJ9nmVGHaqbnWunAqIyiVpEaGFbRCWNa+HK
+         aEHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681402061; x=1683994061;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fl+z9ZvGo3NkmkVU4doQJLUodL1Mn6geuAd/z8bA8PY=;
+        b=g4AFY8PbGnposVeaZ7ii7t4CL+d5CrDWkDPvC2bS75vw3P/93K2Cf7DrTyu7Cj+0bJ
+         +AzHO7lnSG94VZURMSG3dXaNsXm7uBrnG4u+zEw5ISKJVivOMYRRNiKXcNTo1n3c9Y9l
+         jdmhPNSYcXQCXNRC+UALmhKXn94aZBXJBPWuPnYCCZVu+BAZ+DnkwddEBSbKXggtzJUv
+         cpqOKKd2wGQwxVepKHAj2qybJa9NB9VDLt+etRKainBQTUu59u8frRR1KbtTcWd7gcpL
+         fSeZokNvZP1N1v15BsxPWa2odEuoqUez46H81AxKlYC6Pnr2fuQFCstH49Rtb9BQjvZ0
+         3XFA==
+X-Gm-Message-State: AAQBX9ctW/bDbPmFzvdVVJlwnErx3mjVT41jP5bR9Zrjr873JUJeHFXq
+        jgCM06vpF+X4Fb4n796cYB9Q5FSQ+Jwg2jVtXI5ZGJLo6r0=
+X-Google-Smtp-Source: AKy350ZhVCacBuTTjtdKmql+u1ntNJ7hTxfLh5c0/LLNa1/Gww3Q3paTzVmU/b18GBiM1ZJIQM1N4bdpTtF91CVz/kA=
+X-Received: by 2002:a05:6870:7029:b0:177:b258:5a06 with SMTP id
+ u41-20020a056870702900b00177b2585a06mr1439451oae.8.1681402061008; Thu, 13 Apr
+ 2023 09:07:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] counter: stm32-timer-cnt: Reset TIM_TISEL and TIM_SMCR to
- their default value
-Content-Language: en-US
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-CC:     Olivier Moysan <olivier.moysan@foss.st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@pengutronix.de>,
-        Lee Jones <lee@kernel.org>, <linux-iio@vger.kernel.org>
-References: <20230412153709.3557323-1-u.kleine-koenig@pengutronix.de>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <20230412153709.3557323-1-u.kleine-koenig@pengutronix.de>
+References: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
+ <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
+ <CAPJMGm4YhDNOLku_vWUJA8cYbUinoVoP+NmP4Te+fpa-bjfHfQ@mail.gmail.com>
+ <CAPJMGm7mgSi4-Td+8XMqBWLj_tiSVrbxVP7WYbhZnL+_8jJhng@mail.gmail.com> <0e86cb99-dfea-5a89-3301-894a90f0964a@kernel.org>
+In-Reply-To: <0e86cb99-dfea-5a89-3301-894a90f0964a@kernel.org>
+From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Date:   Thu, 13 Apr 2023 18:07:30 +0200
+Message-ID: <CAPJMGm58m8-Uo2AdABgJNuigtrLE2=_qh1eZnj=1mg+hVPV3EA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: adc: ad7192: Clarify binding documentation
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.48.1.102]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-13_11,2023-04-13_01,2023-02-09_01
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/12/23 17:37, Uwe Kleine-König wrote:
-> The driver assumes that the input selection register (TIM_TISEL) is at
-> its reset default value. Usually this is the case, but the bootloader
-> might have modified it. Also reset the SMCR register while at it.
-> 
-> This bases on the effectively same patch submitted by Olivier Moysan for
-> pwm-stm32.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
-> 
-> note that the patch by Olivier Moysan[1] for pwm-stm32 is expected to
-> appear in Thierry's tree soon. It added the definition of TIM_TISEL in
-> the same way, so the two patches should merge just fine. Alternatively
-> you can commit it to a tree that already has the pwm change (and then
-> drop the change to include/linux/mfd/stm32-timers.h from this one).
-> 
-> Best regards
-> Uwe
-> 
-> [1] https://lore.kernel.org/linux-pwm/20221213102707.1096345-1-olivier.moysan@foss.st.com
-> 
->  drivers/counter/stm32-timer-cnt.c | 4 ++++
->  include/linux/mfd/stm32-timers.h  | 1 +
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-> index 9bf20a5d6bda..d001d77f17ac 100644
-> --- a/drivers/counter/stm32-timer-cnt.c
-> +++ b/drivers/counter/stm32-timer-cnt.c
-> @@ -342,6 +342,10 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, priv);
->  
-> +	/* Reset input selector to its default input and disable slave mode */
-> +	regmap_write(priv->regmap, TIM_TISEL, 0x0);
-> +	regmap_write(priv->regmap, TIM_SMCR, 0x0);
+On Thu, Apr 13, 2023 at 4:21=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 13/04/2023 10:36, Fabrizio Lamarque wrote:
+> > Added undocumented properties:
+>
+> Use imperative.
+> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/sub=
+mitting-patches.rst#L95
+>
+> >
+> > - adi,clock-xtal
+> > - adi,int-clock-output-enable
+> >
+> > Removed clocks from required properties.
+>
+> Why?
 
-Hi Uwe,
+Current documentation does not follow existing source code implementation.
+Patch 2/3 fixes a commit that caused an unwanted logical inversion and
+thus prevented the use of  external clock/crystal.
+The driver has been originally designed to operate with the internal
+clock when clocks property is omitted.
 
-Just on SMCR: the function_write routine will take care of setting it
-depending on the count function (increase, encoder mode...). So it looks
-like useless to disable slave mode during probe.
-Could it be removed ?
+I thought the reason is clear from patch 2, but, as Nuno S=C3=A1 already
+suggested, I will describe the reasons in full again, each time I post
+a revised patch set, even if it is quite verbose.
 
-With that, you can add my:
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com
+>
+> > Renamed avdd-supply to vreg-supply, while keeping backward compatibilit=
+y
+> > (deprecated avdd-supply).
+>
+> Why?
 
-Best Regards,
-Fabrice
+From AD7192 datasheet, you may see AVDD pin/voltage has no
+relationship with VREF pin/voltage.
+avdd-supply name is misleading, since it is treated in code as AVDD
+pin and iio reference voltage instead.
+The option to change the regulator name or add a third regulator would
+have broken compatibility.
+Other ADI drivers already have the vref-supply property in place.
 
-> +
->  	/* Register Counter device */
->  	ret = devm_counter_add(dev, counter);
->  	if (ret < 0)
-> diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
-> index 5f5c43fd69dd..1b94325febb3 100644
-> --- a/include/linux/mfd/stm32-timers.h
-> +++ b/include/linux/mfd/stm32-timers.h
-> @@ -31,6 +31,7 @@
->  #define TIM_BDTR	0x44	/* Break and Dead-Time Reg */
->  #define TIM_DCR		0x48	/* DMA control register    */
->  #define TIM_DMAR	0x4C	/* DMA register for transfer */
-> +#define TIM_TISEL	0x68	/* Input Selection         */
->  
->  #define TIM_CR1_CEN	BIT(0)	/* Counter Enable	   */
->  #define TIM_CR1_DIR	BIT(4)  /* Counter Direction	   */
-> 
-> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+Here again I partially left the reasons in the first thread, sorry.
+
+In any case I will remove this change on a revised patch set.
+I will leave the avdd-supply name but I'll change the description in
+documentation.
+
+>
+> Use subject prefixes matching the subsystem (which you can get for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching).
+>
+
+The single change on documentation will be prepended by
+dt-bindings: iio: ad7192:
+The invalid change I suggested intended to change avdd to vref name in
+the driver too.
+I misinterpreted the meaning of a single "logical change", sorry.
+
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC.  It might happen, that command when run on an older
+> kernel, gives you outdated entries.  Therefore please be sure you base
+> your patches on recent Linux kernel.
+>
+> You decided to ignore quite a lot of entries, but most important - also
+> lists, so it won't even be tested.
+
+The patch is indeed based on the latest version; however the driver
+maintainer does not work in ADI any more; the first time I sent a
+message I got the email bounced back.
+I see I omitted a necessary step though.
+
+You are right in saying that I did not follow carefully the
+instructions provided, but it was not deliberate. It's the first time
+I am trying to send back the changes.
+I appreciate the feedback and corrections; in the next patch set I
+will try to remedy everything you indicated.
+
+>
+> > ---
+> >  .../bindings/iio/adc/adi,ad7192.yaml          | 28 +++++++++++++++----
+>
+> Bindings are always separate patches.
+>
+> Corrupted patch.
+>
+> Run checkpatch, test your patches with dt_binding_check. This really
+> needs a lot of work.
+
+I kindly ask you whether the entire (corrected) change on the
+documentation file only (without any change on the driver source code)
+could be accepted as a single patch.
+
+Unless I was wrong in doing copy/paste, the only feedback I got from
+the tests is a warning message telling that the changes to
+documentation should be isolated from source code changes.
+I will make sure these tests pass without any warning.
+
+Thank you and best regards,
+Fabrizio Lamarque

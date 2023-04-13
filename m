@@ -2,49 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFFD26E0B63
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 12:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B566E0BA9
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 12:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbjDMK2i convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 13 Apr 2023 06:28:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
+        id S229744AbjDMKrX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 06:47:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjDMK2g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 06:28:36 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246002737;
-        Thu, 13 Apr 2023 03:28:34 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PxwkY5Tgbz67QKJ;
-        Thu, 13 Apr 2023 18:27:33 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 13 Apr
- 2023 11:28:32 +0100
-Date:   Thu, 13 Apr 2023 11:28:30 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Patrik =?ISO-8859-1?Q?Dahlstr=F6m?= <risca@dalakolonin.se>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <letux-kernel@openphoenux.org>, <kernel@pyra-handheld.com>,
-        <pgoudagunta@nvidia.com>, <hns@goldelico.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v4 8/9] iio: adc: palmas: add support for iio threshold
- events
-Message-ID: <20230413112830.00006279@Huawei.com>
-In-Reply-To: <20230408114825.824505-9-risca@dalakolonin.se>
-References: <20230408114825.824505-1-risca@dalakolonin.se>
-        <20230408114825.824505-9-risca@dalakolonin.se>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229516AbjDMKrW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 06:47:22 -0400
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2558CA
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 03:47:18 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id ca22-20020a056830611600b006a3c1e2b6d2so9335428otb.13
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 03:47:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681382838; x=1683974838;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=taUnqldTSyaj/RaRk2S+QI3M39rxfsxRJ5gawmQUKWE=;
+        b=e6EaDIXIRjF/SyclyrF4FecAm5miOm+YcmECov0ecCtBpqVibQ5nh7vAeknbsGU0eq
+         /4i5mEmqh8sXaUmCFYlysd70aSDeFsQwLwFy1HSU9dAWKWr846sbZWnCn61+JH/6KMDO
+         4eHcXtVIafyZpV4M2OIHhJGN74tBdqgqMbVRA45d7kduHKyG78V4myez/5OdtZTQTncv
+         z7W7eVNJD3Ygq3I+9lWHJG5m8vL+k3YK34reTGLY6pjx8IcdBcQLZv4M3cDiJMGOTs/C
+         2K/JFqeHHX4MnTJqQefyO9NjfOLMCzmqYVoiDVpjmhs/LxyD/mQq3QOvm7r37lLkKckS
+         PBfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681382838; x=1683974838;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=taUnqldTSyaj/RaRk2S+QI3M39rxfsxRJ5gawmQUKWE=;
+        b=i0FdCjqUu/L1L+z2tt2SKcnhki0ld2NSTxlkY0wbG04F13baj6sjPsw7hPN0ix79Lk
+         i5LGx6TpWycgSzP1OUEOtGKcHG9FAiqM5lqlIeyK/mrOgu9ylgZSpZEQoHHghLic6ScK
+         Oe61rY5tQc14Kb2BAsns+3R68Ajfw6dVxE2QqLi2NslHJFnMJDJMGl080yBr7Urwz8hO
+         5vEjSmj0QbUyEUKXEtR0NVKC7FRhi6zGa5oXxMSDt5vU6Ml4SqdLTtk1dIpyuEWgcIir
+         468ySsD49cq1GBAgP8PZ5NkY/NfXTD+jTXsGfPZpxR4YyNvXNurMLrKZ6dfkC0y9hvnx
+         1bSw==
+X-Gm-Message-State: AAQBX9fKo7VDruO54pVcvwovjYKAG2iy3SHS3ZK1Cs2zaqmh0zd3kOe3
+        nkgz+qaI+/AMJgwnFtwCr+B+OZ7uwDGzh/XYy8uLh0Or4SU=
+X-Google-Smtp-Source: AKy350Zf323GuiBs1409WNgPJmEgNP0iP2etJCij/85gljOO+y9Tmm65HQ3j879/LzPWRs48ByrNd12ZekT3mj3wg/M=
+X-Received: by 2002:a05:6830:22ce:b0:6a3:dfc9:12db with SMTP id
+ q14-20020a05683022ce00b006a3dfc912dbmr422172otc.3.1681382837961; Thu, 13 Apr
+ 2023 03:47:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
+ <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
+ <CAPJMGm4YhDNOLku_vWUJA8cYbUinoVoP+NmP4Te+fpa-bjfHfQ@mail.gmail.com>
+ <CAPJMGm7mgSi4-Td+8XMqBWLj_tiSVrbxVP7WYbhZnL+_8jJhng@mail.gmail.com> <ae323663d6f8306dff8283b192e014eba25af160.camel@gmail.com>
+In-Reply-To: <ae323663d6f8306dff8283b192e014eba25af160.camel@gmail.com>
+From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Date:   Thu, 13 Apr 2023 12:47:06 +0200
+Message-ID: <CAPJMGm47CB6BrzRCkK6DTcDE7C9uA3DQXb9x5PXvxNJwUtD6HQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: adc: ad7192: Clarify binding documentation
+To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,97 +70,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  8 Apr 2023 13:48:24 +0200
-Patrik Dahlström <risca@dalakolonin.se> wrote:
+On Thu, Apr 13, 2023 at 12:13=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.co=
+m> wrote:
+>
+> On Thu, 2023-04-13 at 10:36 +0200, Fabrizio Lamarque wrote:
+> > ---
+> >  .../bindings/iio/adc/adi,ad7192.yaml          | 28 +++++++++++++++----
+> >  drivers/iio/adc/ad7192.c                      | 18 ++++++------
+> >  2 files changed, 32 insertions(+), 14 deletions(-)
+> >
 
-> The palmas gpadc block has support for monitoring up to 2 ADC channels
-> and issue an interrupt if they reach past a set threshold. This change
-> hooks into the IIO events system and exposes to userspace the ability to
-> configure these threshold values for each channel, but only allow up to
-> 2 such thresholds to be enabled at any given time. Trying to enable a
-> third channel will result in an error.
-> 
-> Userspace is expected to input calibrated, as opposed to raw, values as
-> threshold. However, it is not enough to do the opposite of what is done
-> when converting the other way around. To account for tolerances in the
-> ADC, the calculated raw threshold should be adjusted based on the ADC
-> specifications for the device. These specifications include the integral
-> nonlinearity (INL), offset, and gain error. To adjust the high
-> threshold, use the following equation:
-> 
->   (calibrated value + INL) * Gain error + offset = maximum value  [1]
-> 
-> Likewise, use the following equation for the low threshold:
-> 
->   (calibrated value - INL) * Gain error - offset = minimum value
-> 
-> The gain error is a combination of gain error, as listed in the
-> datasheet, and gain error drift due to temperature and supply. The exact
-> values for these specifications vary between palmas devices. This patch
-> sets the values found in TWL6035, TWL6037 datasheet.
-> 
-> [1] TI Application Report, SLIA087A, Guide to Using the GPADC in
->     TPS65903x, TPS65917-Q1, TPS65919-Q1, and TPS65916 Devices.
-> 
-> Signed-off-by: Patrik Dahlström <risca@dalakolonin.se>
+> You should not mix bindings changes with driver changes... They should go=
+ in
+> separate patches.
 
-0-day found some stuff we'd missed in here.
-
-I've fixed it up and pushed out again.
-
-> ---
-...
-> +static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
-> +					  const struct iio_chan_spec *chan,
-> +					  enum iio_event_type type,
-> +					  enum iio_event_direction dir,
-> +					  enum iio_event_info info,
-> +					  int val, int val2)
-> +{
-> +	struct palmas_gpadc *adc = iio_priv(indio_dev);
-> +	int adc_chan = chan->channel;
-> +	int old;
-> +	int ret;
+> +  adi,clock-xtal:
+> +    description: |
+> +      This bit selects whether an external crystal oscillator or an exte=
+rnal
+> +      clock is applied as master (mclk) clock. It is ignored when clocks
+> +      property is not set.
+> +    type: boolean
 > +
-> +	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&adc->lock);
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		if (val < 0 || val > 0xFFF) {
-> +			ret = -EINVAL;
-> +			break;
 
-Should be goto out_unlock; Found because old is undefined.
+It looks like you could use a dependency... Grep for "dependencies:" in the
+bindings folder.
 
-> +		}
-> +		if (dir == IIO_EV_DIR_RISING) {
-> +			old = adc->thresholds[adc_chan].high;
-> +			adc->thresholds[adc_chan].high = val;
-> +		}
+> > -    st->avdd =3D devm_regulator_get(&spi->dev, "avdd");
+> > -    if (IS_ERR(st->avdd))
+> > -        return PTR_ERR(st->avdd);
+> > +    st->vref =3D devm_regulator_get(&spi->dev, "vref");
+> > +    if (IS_ERR(st->vref))
+> > +        st->vref =3D devm_regulator_get(&spi->dev, "avdd");
+> > +    if (IS_ERR(st->vref))
+> > +        return PTR_ERR(st->vref);
+> >
+> I'm also not sure this will work as you expect. If no regulator is found,=
+ you'll
+> still get a dummy one which means you won't ever reach the point to get "=
+avdd".
+> Look here:
+>
+> https://elixir.bootlin.com/linux/latest/source/drivers/regulator/core.c#L=
+2137
+>
+> So I guess you could devm_regulator_get_optional() for "vref" and then mo=
+ve
+> forward to look for "avdd" if you get -ENODEV from the first call. But us=
+ing
+> devm_regulator_get_optional() like this is really an __hack__ and not how=
+ it's
+> supposed to be used. So maybe this is cumbersome enough to just let it be=
+ as
+> before? You can just update the description in the bindings.
+>
+> - Nuno S=C3=A1
 
-Whilst here should be } else {
+You are right. I missed it.
+I kindly ask you to confirm if, as per your suggestion, I should send
+a v3 patch series with the proper "fixes" tag and this last one
+changed as follows:
 
-Tidied both up force an update on the testing branch.
+ - No changes on driver side (keep avdd-supply instead of vref-supply)
+ - Indicate in bindings documentation that avdd-supply is vref instead
+(with the "Phandle to reference voltage regulator")
+ - Add dependencies to yaml bindings
 
-> +		else {
-> +			old = adc->thresholds[adc_chan].low;
-> +			adc->thresholds[adc_chan].low = val;
-> +		}
-> +		ret = 0;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (val != old && palmas_gpadc_get_event(adc, adc_chan, dir))
-> +		ret = palmas_gpadc_reconfigure_event_channels(adc);
-> +
-> +out_unlock:
-> +	mutex_unlock(&adc->lock);
-> +
-> +	return ret;
-> +}
-> +
+Thank you for your patience and for having this one reviewed again.
+
+Fabrizio Lamarque

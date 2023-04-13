@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A41886E1843
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 01:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5486E1853
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 01:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjDMX1Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Apr 2023 19:27:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57200 "EHLO
+        id S229567AbjDMXdv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 19:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230110AbjDMX1P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 19:27:15 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0630F1BFD
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 16:27:13 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id d7so32336628lfj.3
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 16:27:12 -0700 (PDT)
+        with ESMTP id S229794AbjDMXdu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 19:33:50 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AFF1BC8
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 16:33:47 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id u12so3553077lfu.5
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 16:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681428431; x=1684020431;
+        d=linaro.org; s=google; t=1681428826; x=1684020826;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=LDZlals2AhM6iFKk8CuFKyiuev/5cgFhIr68WCwH9Qo=;
-        b=Wv6hVcCngoI35x88x7bwLf/VHBqa8jRQpvAI3yzbpWLWGL9UoyeFwRGxV9FV92oOQf
-         v94C6X4mKZUm3CcstLNi9ir9eAYOmkshxd03gi9FD+cdrdCNbiehGRbH5r/s6ViYl5aM
-         GmlJM70V9rvj6kl9JluEc5RDAtBVj/r7zvMfnTSq08L4JUvJI68ADJS2L4Xnys0IlkzF
-         pfMMgB7f7dDiJ0MX3gOe8UF99eaM8cpvLd2wcMgzdcce0cmG1nywFzaB8hZrrNXTQPsI
-         kLwyM/viNBaCgTU4mAtFY4/RpO+Vhk54vnMdayCtXV+4SKGSl5l94A92VIuyPy4Pw/3t
-         s8uw==
+        bh=LwF7snSUE/NLFeUZMrStjP7tt1VryQB7xouzwE9Xx/o=;
+        b=vubxqTEh+mKF04vi0bv7De2MyxeRxkA4IY7Gp9n4lL5w8zBTxuZoMv0DGnO4oKccyb
+         +Qk7pPt0b3PPCjid37KTUAQmVHI+H74uPeD4UvrE8G8VYFppEDTDN/WzZd6OwLkjFwGV
+         yyFsM2LFEUj19VaG9yDK82b4rvIvklEXoVHKy0R1g12YSIet1k1bWGj1x8JDmIntSn3G
+         Gor/ORZQjMbhLA2zOvu3VH9C7nhtNy+Xvk0LSPs/mIJ8qxN5yLdy5m1AOv5ngTsuNQtb
+         zs6rKxg34+4KV208wIYFOcoTvDEysVxVlNiWFj0PaxbOk7zZHU/u2EUAf530b6Oar0yv
+         ybdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681428431; x=1684020431;
+        d=1e100.net; s=20221208; t=1681428826; x=1684020826;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LDZlals2AhM6iFKk8CuFKyiuev/5cgFhIr68WCwH9Qo=;
-        b=AnksUPPLZ4uV3DBgGqW+ysCeie8O4QXIqbEMXWSsvWCWQLmtUzA0QbgE+zyysjFxCi
-         RjXaiOCYYX+Mp4BcmZOwP3OH3yrJkxrHgXbHerBHiIeDYCpO8WgCenBCrDFD22w1dF7R
-         8+lNGrxHRO3qFWQFAIso9ijPtEPnlqscuEZivTvhVF3zaK7+SjmcQIyTKxZAPHultUjB
-         OeTYqnLpX+yndm5kTyYhnq1ybCfq/fZk9Gp/mbLM69hd/nI0gl9jIIunzFwDqj29J1jS
-         +mw6huXuO4d4U28HRdol54IYOz88FA/TNNHGJLfisgwiLzmR9l7L7PdBcvhmtEVC0paZ
-         Kmfg==
-X-Gm-Message-State: AAQBX9efgJEvUHcr9CC1FLoec0kqNPseieZhEqFX4RMeT2er7cIdUbcs
-        fqnWSAmzORsjVEiDQ+ZPpWAblA==
-X-Google-Smtp-Source: AKy350b+mUzgp9QuG6LU3b7Pc2Qk3aIajq0NjsAmWUs0GH6DglNwGwqV4f2yaceMx2dzjVeW89B1WA==
-X-Received: by 2002:a19:740e:0:b0:4eb:c3c:fb19 with SMTP id v14-20020a19740e000000b004eb0c3cfb19mr1305137lfe.30.1681428431243;
-        Thu, 13 Apr 2023 16:27:11 -0700 (PDT)
+        bh=LwF7snSUE/NLFeUZMrStjP7tt1VryQB7xouzwE9Xx/o=;
+        b=imoLjquIXLearNIBA9aYO0DHAVc+eKsH55fuKvryL0tG31ePc1Oz2zvgGKXbDk/rFJ
+         cRM1POy+fnQ9a532f77GCvhhcNi20Ek9OW+wBVgj5fTwknmPvh6gZ51YpecZxJX171XE
+         SIRG4SmH4zkOktTJaQzIQJfz8ZCS33aNyg2B9/4zh5WA+X8dxBFEw1xzTGNsg6D7DSQM
+         TAr+5KC1Gs5/XFaQd9DWp3/lMZyEGZ6YsHqpWKAHw9ioXUgnCVsb6qpmhl4Mbtdy2Hn3
+         tkrZM4z9Dr0duOTqI7Br3UrbjStvX/LRv23M97jkc0tNF04dhOCdtWM3HX1s/D5pQq58
+         0s/Q==
+X-Gm-Message-State: AAQBX9et6o1cpHqssxrv/xzPSPULiYJYUK1Z+zSCC2MJ/TMNsg/BmiF1
+        AB+M7/3utRseGrP0GxfoIv1Klw==
+X-Google-Smtp-Source: AKy350bOC3dwpph5K/wDMOrsZ3SIXqH8umA7KKx/Gl6dQdSJ1VCK/vHsmwWchQ1B6nzz4qVlOQAKew==
+X-Received: by 2002:ac2:44c1:0:b0:4de:7a23:23e2 with SMTP id d1-20020ac244c1000000b004de7a2323e2mr1420800lfm.21.1681428826060;
+        Thu, 13 Apr 2023 16:33:46 -0700 (PDT)
 Received: from [192.168.1.101] (abyl123.neoplus.adsl.tpnet.pl. [83.9.31.123])
-        by smtp.gmail.com with ESMTPSA id p18-20020a19f012000000b004edb103db3csm194817lfc.274.2023.04.13.16.27.09
+        by smtp.gmail.com with ESMTPSA id e3-20020a056512090300b004ec508e3a9bsm506364lft.276.2023.04.13.16.33.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Apr 2023 16:27:10 -0700 (PDT)
-Message-ID: <fb3c0ce6-046d-35e7-9feb-85f5059ec6b2@linaro.org>
-Date:   Fri, 14 Apr 2023 01:27:08 +0200
+        Thu, 13 Apr 2023 16:33:45 -0700 (PDT)
+Message-ID: <197870c5-4ef4-ed21-9e03-5169f4100bc6@linaro.org>
+Date:   Fri, 14 Apr 2023 01:33:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH 2/8] pinctrl: qcom: spmi-gpio: Add PMI632 support
+Subject: Re: [PATCH 4/8] leds: qcom-lpg: Add support for PMI632 LPG
 Content-Language: en-US
 To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
@@ -70,9 +70,9 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-leds@vger.kernel.org, linux-iio@vger.kernel.org
 References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
- <20230414-pmi632-v1-2-fe94dc414832@z3ntu.xyz>
+ <20230414-pmi632-v1-4-fe94dc414832@z3ntu.xyz>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230414-pmi632-v1-2-fe94dc414832@z3ntu.xyz>
+In-Reply-To: <20230414-pmi632-v1-4-fe94dc414832@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -88,41 +88,54 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 On 14.04.2023 01:17, Luca Weiss wrote:
-> Add support for the 8 GPIOs found on PMI632.
+> The PMI632 PMIC contains 5 PWM channels, 3 of which can be used for
+> LEDs.
+> 
+> For the LED pattern it doesn't have LUT like other PMICs but uses SDAM
+> instead. This is not currently implemented in the driver but since LPG
+> works fine without it, add support for the PMIC now.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
-As I've started doing more and more lately, I'll hijack this
-patch to discuss the general approach..
+Matches everything i see in 4.19!
 
-I have a feeling that you'll get some comments about
-this match list growing, especially since the driver data
-is already filled in dt (gpio-ranges).. perhaps we can improve
-this..
-
-Especially considering the "qcom,spmi-gpio" fallback is there
-(unless we care about 2015 DTs like 0804308fdd3c) that are
-unlikely to still work nowadays. Old DTs also used interrupts=<>
-to list out all the GPIOs (among the other SPMI fluff) individually
-(see e.g. 5f540fb4821a).
-
-Krzysztof, WDYT? Would it be worth taking all of that old junk into
-account, or should we keep it as-is?
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
->  drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/leds/rgb/leds-qcom-lpg.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
-> diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> index ea3485344f06..40cab13e5a83 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> @@ -1232,6 +1232,7 @@ static const struct of_device_id pmic_gpio_of_match[] = {
->  	{ .compatible = "qcom,pm8994-gpio", .data = (void *) 22 },
->  	{ .compatible = "qcom,pm8998-gpio", .data = (void *) 26 },
->  	{ .compatible = "qcom,pma8084-gpio", .data = (void *) 22 },
-> +	{ .compatible = "qcom,pmi632-gpio", .data = (void *) 8 },
->  	{ .compatible = "qcom,pmi8950-gpio", .data = (void *) 2 },
->  	{ .compatible = "qcom,pmi8994-gpio", .data = (void *) 10 },
->  	{ .compatible = "qcom,pmi8998-gpio", .data = (void *) 14 },
+> diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+> index 67f48f222109..51763ecb8c1e 100644
+> --- a/drivers/leds/rgb/leds-qcom-lpg.c
+> +++ b/drivers/leds/rgb/leds-qcom-lpg.c
+> @@ -1353,6 +1353,20 @@ static const struct lpg_data pm8994_lpg_data = {
+>  	},
+>  };
+>  
+> +/* PMI632 uses SDAM instead of LUT for pattern */
+> +static const struct lpg_data pmi632_lpg_data = {
+> +	.triled_base = 0xd000,
+> +
+> +	.num_channels = 5,
+> +	.channels = (const struct lpg_channel_data[]) {
+> +		{ .base = 0xb300, .triled_mask = BIT(7) },
+> +		{ .base = 0xb400, .triled_mask = BIT(6) },
+> +		{ .base = 0xb500, .triled_mask = BIT(5) },
+> +		{ .base = 0xb600 },
+> +		{ .base = 0xb700 },
+> +	},
+> +};
+> +
+>  static const struct lpg_data pmi8994_lpg_data = {
+>  	.lut_base = 0xb000,
+>  	.lut_size = 24,
+> @@ -1436,6 +1450,7 @@ static const struct of_device_id lpg_of_table[] = {
+>  	{ .compatible = "qcom,pm8916-pwm", .data = &pm8916_pwm_data },
+>  	{ .compatible = "qcom,pm8941-lpg", .data = &pm8941_lpg_data },
+>  	{ .compatible = "qcom,pm8994-lpg", .data = &pm8994_lpg_data },
+> +	{ .compatible = "qcom,pmi632-lpg", .data = &pmi632_lpg_data },
+>  	{ .compatible = "qcom,pmi8994-lpg", .data = &pmi8994_lpg_data },
+>  	{ .compatible = "qcom,pmi8998-lpg", .data = &pmi8998_lpg_data },
+>  	{ .compatible = "qcom,pmc8180c-lpg", .data = &pm8150l_lpg_data },
 > 

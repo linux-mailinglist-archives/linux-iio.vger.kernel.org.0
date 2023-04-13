@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04FE46E08E7
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 10:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B5D6E08FA
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 10:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbjDMI2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Apr 2023 04:28:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
+        id S229707AbjDMIdx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 04:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjDMI2X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 04:28:23 -0400
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B79AF2685
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:28:22 -0700 (PDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1842df7cb53so16989188fac.10
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:28:22 -0700 (PDT)
+        with ESMTP id S229734AbjDMIdv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 04:33:51 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E802D7F
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:33:44 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id bm45so3772526oib.4
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:33:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681374502; x=1683966502;
+        d=gmail.com; s=20221208; t=1681374823; x=1683966823;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3lVC0QIahWICPUq2qmNtFjM9vCzRJJrRAYj3XSJFtR4=;
-        b=Ll5bzTd9Zo3pxJCXNWIq1d/D5RufxKWgFf4ZG+qAJ4wFkRsvu+/vg/diWSShedfArH
-         cbn67u70O9g4ivni3kEBudYPY3UuH6h1N6FriBHXtz2JJhB7C0ryHCBIBmD2LwGwFP2K
-         lF5dFmWVXteeG2z5il+l1tWnXO1W1ovOw5H35z/tG2vQ+5NxBEPa2eROBJ9Bai9vrR+3
-         y00kReBbAUr7T6odBsmHogkpoxCGm8ewPKkMs0Rjox4rnoDaKmKgThHkckguPhP6D+Ux
-         o+WD6iJI7wvgeo9Sf9lFUGjYc0BuqgPPOh3B9NWoOzMq9KGkXUlnH9EKwMlDgj8mTo65
-         H4yw==
+        bh=MkMEzm5Bx+QwNMXwUVJE0CRyJbdWVf8/MgbsIc/reEk=;
+        b=BumFeyqwA36Fj16Pq20+nre14YxBJvUrBmQ37WYLkexmyykG0AikAHIIN8hPww1HTw
+         Cbiookm218ZwhMtsCTC2PC8WkVuAqgoI85wX8i6RAaK/H5pAAwimB97vDpwhyGt/3RBZ
+         5a+Kn7FzI2VXwdRJt4nPSItU8eD/CZaoapkGakrT3zxVNfkQ0g6kpedsRcmVqyzMmeHe
+         Ib5vL6WcHhpv2GxCJUOVl8FGVINQTOkNclqV0o7tVvGujKlpLhIp5VouOLdaWKBX+plW
+         IbccxXO0YZ3ZM8vvCnPO6tbi7tBgkbjskCNs0Vd+zl5QJJWxOe734mOQWAQSKzkFSuWj
+         txMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681374502; x=1683966502;
+        d=1e100.net; s=20221208; t=1681374823; x=1683966823;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3lVC0QIahWICPUq2qmNtFjM9vCzRJJrRAYj3XSJFtR4=;
-        b=A6wuhmoEUQGd8s+ptJO1lthk41waDIuumzzBxt9XMlHoNSOJWtu6g0iNSV6ab5uCJM
-         iTSq2KHQ5XRDz6voBI5A2/67R4nxDfSRbrzeKC/83SIiTSDiu/f2aPGqTaygqOaXOWSQ
-         hXNxWAngMBQiC3zck9aN7D02XrvEvs6wP3w60OhMZMwf4flsrxn8yJomKwsObGbTbesh
-         +RX3nkaGL6OMCEfHl66xIs/oc6HNP2dIcCEa1cFNvKO0PCcKY3VA1JsGCe+JKIXI0DkH
-         gka6Wjl9NEPqKoapNh28AOfbbtTt0qzHrj1Rwa/hZA8bQIuYipBSKLlu2CzCfOoHaZSV
-         cL7Q==
-X-Gm-Message-State: AAQBX9dNMTNqyYqhrxScOkC6HiIFpzlx6ESpL7ahqwy90q2B5n++JnyR
-        bApwqbXFSal3H2Xqm7L8EXGFUmgaZvy/wQkwBGnnvwsTFa0=
-X-Google-Smtp-Source: AKy350at+3KAu/ysiXmBQRGHdTbiseSU9DNjoDR0xCWir5/KG5LzHG35x7sV42wjK6iEbBIZrJylaeIvWSfFnaYHs9c=
-X-Received: by 2002:a05:6870:2e0e:b0:187:7524:9a8d with SMTP id
- oi14-20020a0568702e0e00b0018775249a8dmr2007003oab.4.1681374501888; Thu, 13
- Apr 2023 01:28:21 -0700 (PDT)
+        bh=MkMEzm5Bx+QwNMXwUVJE0CRyJbdWVf8/MgbsIc/reEk=;
+        b=Ot+DNz1e1E14N4zyYuCFw6R6iuGrZ81yjmtSsT2OLzjRcYxr97uOR9uMPeXIlKPe/1
+         ZdcY23cwvfVokuByC8/1sXv4z2+rWNaX5ebvxPbUESp1zxClhOv1NBLbiC9cOAaJiIHB
+         HFYgqg2DtJwS7mrshqPQslpzCaYlm4iYcUaywHUQbYHyScpqpgNpr0gNM3pGTfnK2rG+
+         z3Px5Eu1cYuEj1NYjNJ8lD9CRBxzsdBHzG1H051wDcyhFTuvKAJnjVL0aPzhKk5+9TOh
+         l/Bn8HM63GmUmEq+RrvGXbZYDvMNzd2C0w/FvuDJPMpUDS4B1AcoC7+Q7M7+V2gg6Up1
+         5mdw==
+X-Gm-Message-State: AAQBX9cuZybnkGKyVjOhXW3T1pJ0uk6xXvSX4fo+dnIgephcdNx+3FFB
+        Mz8beaDH/e+k1spUGWZ36DtR6PKEl3OM2FNNHIXyU7KftJM=
+X-Google-Smtp-Source: AKy350bODJ1Ik81e+LL9IflbvdqZdPkk9L6ywy27gSSjwHxLofIrrCwNH0nSFQiz6qSEDPKh8K/0vC2K3FEePK+0GIQ=
+X-Received: by 2002:aca:120c:0:b0:38b:f7fa:40ac with SMTP id
+ 12-20020aca120c000000b0038bf7fa40acmr313205ois.8.1681374823427; Thu, 13 Apr
+ 2023 01:33:43 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
-In-Reply-To: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
+ <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
+In-Reply-To: <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
 From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Date:   Thu, 13 Apr 2023 10:28:11 +0200
-Message-ID: <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
-Subject: [PATCH v2 1/3] iio: adc: ad7192: Fix null pointer dereference on probe
+Date:   Thu, 13 Apr 2023 10:33:32 +0200
+Message-ID: <CAPJMGm4YhDNOLku_vWUJA8cYbUinoVoP+NmP4Te+fpa-bjfHfQ@mail.gmail.com>
+Subject: [PATCH 2/3] iio: adc: ad7192: Fix internal/external clock selection
 To:     linux-iio@vger.kernel.org
 Cc:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>
@@ -66,47 +67,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Pointer to indio_dev structure is obtained via spi_get_drvdata() at
-the beginning of function ad7192_setup(), but the spi->dev->driver_data
-member is not initialized, hence a NULL pointer is returned.
+Fixed wrong selection of internal clock when mclk is defined.
 
-Fixed by changing ad7192_setup() signature to take pointer to struct
-iio_dev, and get ad7192_state pointer via st = iio_priv(indio_dev);
+Resolved a logical inversion introduced in c9ec2cb328e3.
 
-Fixes: bd5dcdeb3fd0 iio: adc: ad7192: convert to device-managed functions
+Fixes: c9ec2cb328e3 iio: adc: ad7192: use devm_clk_get_optional() for mclk
 Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
 ---
-Changes in v2: obtained ad7192_state from iio_dev pointer as suggested
-by Jonathan, removed Reviewed-by since the entire patch changed its
-content.
-
- drivers/iio/adc/ad7192.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7192.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 55a6ab591016..94a9cf34a255 100644
+index 94a9cf34a255..5a9c8898f8af 100644
 --- a/drivers/iio/adc/ad7192.c
 +++ b/drivers/iio/adc/ad7192.c
-@@ -380,9 +380,9 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
-  return clock_sel;
- }
+@@ -367,7 +367,7 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
+     clock_sel = AD7192_CLK_INT;
 
--static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
-+static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
- {
-- struct iio_dev *indio_dev = spi_get_drvdata(st->sd.spi);
-+ struct ad7192_state *st = iio_priv(indio_dev);
-  bool rej60_en, refin2_en;
-  bool buf_en, bipolar, burnout_curr_en;
-  unsigned long long scale_uv;
-@@ -1073,7 +1073,7 @@ static int ad7192_probe(struct spi_device *spi)
-  }
-  }
-
-- ret = ad7192_setup(st, spi->dev.of_node);
-+ ret = ad7192_setup(indio_dev, spi->dev.of_node);
-  if (ret)
-  return ret;
-
---
+     /* use internal clock */
+-    if (st->mclk) {
++    if (!st->mclk) {
+         if (of_property_read_bool(np, "adi,int-clock-output-enable"))
+             clock_sel = AD7192_CLK_INT_CO;
+     } else {
+-- 
 2.34.1

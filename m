@@ -2,110 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B10A86E1667
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 23:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340B56E181C
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 01:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjDMVXw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Apr 2023 17:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50304 "EHLO
+        id S229735AbjDMXTY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 19:19:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjDMVXw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 17:23:52 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317D249D1
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 14:23:51 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pn4Py-0004rB-4n; Thu, 13 Apr 2023 23:23:46 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pn4Pu-00B3Td-SR; Thu, 13 Apr 2023 23:23:42 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pn4Pu-00CzGq-3G; Thu, 13 Apr 2023 23:23:42 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     Olivier Moysan <olivier.moysan@foss.st.com>,
-        linux-iio@vger.kernel.org, Lee Jones <lee@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        kernel@pengutronix.de, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2] counter: stm32-timer-cnt: Reset TIM_TISEL to its default value in probe
-Date:   Thu, 13 Apr 2023 23:23:39 +0200
-Message-Id: <20230413212339.3611722-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229492AbjDMXTX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 19:19:23 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07158449B;
+        Thu, 13 Apr 2023 16:18:57 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 1630FD07B4;
+        Thu, 13 Apr 2023 23:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1681427893; bh=CRTWj+yIkiq12Ol3HBaiMX1cMs/LluSumeZfXP8P+4U=;
+        h=From:Subject:Date:To:Cc;
+        b=rdrGTDB8DvBZ2oSC07ZXnZqn+HjTQ3DwwUEZq2hsxarn2LFcC92daygpQEVw8H9mO
+         VFb06Cc6zd5pnPB92fKXwKXqUXf2UL4ubAyzzJtOwqoHXlVI8rofiv+Qw5M3hwni+V
+         9/BdLoVbrx2CCa++9Qhhn3gEZrBoVICWrOeS9QbY=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/8] Add PMI632 PMIC and RGB LED on sdm632-fairphone-fp3
+Date:   Fri, 14 Apr 2023 01:17:44 +0200
+Message-Id: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1841; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=vxtaBmxwNsBkr9CdtdCf+mVLWRBggCM6EPnGO9VbZeY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkOHLZP6hHl9jieHDPCcxLcjQxJ/8Ne4sNwuePK TlBhuZ4IxyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZDhy2QAKCRCPgPtYfRL+ Tr6DB/4tCTTgUX3YN1QgGIcU6A0L0zrWPI1weshKJPCTfVssBBfSkNNltw6R4oGgeyTytC/KvRR B1g+lOIxVkWzJJjTrgJth/kIJBddPzXIl6RyLxna/0Yan0+cr3enI0HaNwgOLQsQBSdFUoKzIwa gV6SFTAoB9RfTuXoWXz6wYCsodwZHOMdMrjLdq54ivczK+Uco86JTA8QGaShoROWnhU8gFo5xB1 1pZRzOt1g+OOLQ/A8LN8nFOUsPJkFDwsNgyoLuMPU9fsrrpNFFhBFiZmUMzUad2c00WuxpIwjm2 NZwXX1xo1R+oEvZYObv5E50hyEYQPfhYm165gP5OaKV7QBSd
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJiNOGQC/x3NwQqDMAyA4VeRnBetSVXYq4wdoouag7W0IAPx3
+ Vd3/OGD/4SsyTTDszoh6WHZ9lCifVQwrRIWRfuUBnLEzrce42Y9E3pRx0Sd6NBBwaNkxTFJmNa
+ b9zXXrtnEAs6RbxCTzvb9n17v6/oBWepSi3kAAAA=
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1408; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=CRTWj+yIkiq12Ol3HBaiMX1cMs/LluSumeZfXP8P+4U=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkOI2bAIaCCSnfYMwzpW9XoiSE5rpK0s1oysYuy
+ NLpWHjEBhiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZDiNmwAKCRBy2EO4nU3X
+ VofBD/9sWBHdLNm2RZU2Onpy9t9Gd6jZy7oYSBwsMTJc5u1mfsWrmQjHU/5Ny8NHPyLC6m1wv1v
+ GyAvAEd/YQlmAPOJZMdxxEIdU3g00Ti+RQEVQTEBlACBJxLYB2aBB5QSkftFz5wzc2akSaXY2bm
+ GBU7OIoW8fTyZiySOdWhSFsmTU+nt2vhrUqmX9rw57LE3DqK72WdsWkStXDbKw69UIABuF4F5t8
+ ZFe8O7vJYaEMsh3azORJivjJdMt5I34qQ+WnsKTZI0MFd5y1uGD5RY/T8Ol5q18sPHjwhvIfzKQ
+ 9IM0yvEMx64BOcIWXx2WoZFKO4E/XZnv7JtbPAZmnj24Al75ZHjQBdykB4a5hqn6LgVpyqWyvq3
+ c6YVkGeuQiEHROSnHrVvPCwmw8Ibc54jy40RNyDVKr6M+hGkXG493W+Y+4O8jAe7al81sOTuaEM
+ FnydnkQIixfqDlYQFJ1qf6KkoAhz78zGhNAJjg2Ed/ooM5qi+A1dzOli6DnYGTBKVNeenhBu7Eb
+ 3EmwwQOQNitifGincr1m7zhmlfoly2in1dwE59Sq08Ps5TskG0lWYGIjREq6PTxEM4V1yPfPpDU
+ iyBde1Y5HGTsta9lZnqGC0pKBKf+IXK6GM8tU0YEImgDUWYqNsV4rEjiFn3CKtTScwz2L+2kxia
+ tgfIB/g15aYipsg==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver assumes that the input selection register (TIM_TISEL) is at
-its reset default value. Usually this is the case, but the bootloader
-might have modified it.
+Add support for the PMI632 PMIC in the spmi-gpio & qcom-lpg driver, add
+the dtsi for the PMIC and enable the notification LED on fairphone-fp3.
 
-This bases on a similar patch submitted by Olivier Moysan for pwm-stm32.
-
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
-Changes since (implicit) v1 sent with Message-Id:
-20230412153709.3557323-1-u.kleine-koenig@pengutronix.de .
+Luca Weiss (8):
+      dt-bindings: pinctrl: qcom,pmic-gpio: add PMI632
+      pinctrl: qcom: spmi-gpio: Add PMI632 support
+      dt-bindings: leds: qcom-lpg: Add compatible for PMI632 LPG block
+      leds: qcom-lpg: Add support for PMI632 LPG
+      dt-bindings: iio: adc: qcom,spmi-vadc: Allow 1/16 for pre-scaling
+      dt-bindings: mfd: qcom-spmi-pmic: Add PMI632 compatible
+      arm64: dts: qcom: Add PMI632 PMIC
+      arm64: dts: qcom: sdm632-fairphone-fp3: Add notification LED
 
- - Only reset TIM_TISEL as suggested by Fabrice
- - Add Fabrice's Review tag
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml           |   2 +-
+ .../devicetree/bindings/leds/leds-qcom-lpg.yaml    |   1 +
+ .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |   1 +
+ .../bindings/pinctrl/qcom,pmic-gpio.yaml           |   2 +
+ arch/arm64/boot/dts/qcom/pmi632.dtsi               | 165 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts  |  29 ++++
+ drivers/leds/rgb/leds-qcom-lpg.c                   |  15 ++
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c           |   1 +
+ 8 files changed, 215 insertions(+), 1 deletion(-)
+---
+base-commit: c83fb1e4acf528c29b0729525cf23544f8121b3d
+change-id: 20230414-pmi632-4ae03225ae75
 
- drivers/counter/stm32-timer-cnt.c | 3 +++
- include/linux/mfd/stm32-timers.h  | 1 +
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 9bf20a5d6bda..6206d2dc3d47 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -342,6 +342,9 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, priv);
- 
-+	/* Reset input selector to its default input */
-+	regmap_write(priv->regmap, TIM_TISEL, 0x0);
-+
- 	/* Register Counter device */
- 	ret = devm_counter_add(dev, counter);
- 	if (ret < 0)
-diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
-index 5f5c43fd69dd..1b94325febb3 100644
---- a/include/linux/mfd/stm32-timers.h
-+++ b/include/linux/mfd/stm32-timers.h
-@@ -31,6 +31,7 @@
- #define TIM_BDTR	0x44	/* Break and Dead-Time Reg */
- #define TIM_DCR		0x48	/* DMA control register    */
- #define TIM_DMAR	0x4C	/* DMA register for transfer */
-+#define TIM_TISEL	0x68	/* Input Selection         */
- 
- #define TIM_CR1_CEN	BIT(0)	/* Counter Enable	   */
- #define TIM_CR1_DIR	BIT(4)  /* Counter Direction	   */
-
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+Best regards,
 -- 
-2.39.2
+Luca Weiss <luca@z3ntu.xyz>
 

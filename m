@@ -2,53 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 153A96E08E2
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 10:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04FE46E08E7
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Apr 2023 10:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbjDMI1A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Apr 2023 04:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33608 "EHLO
+        id S229746AbjDMI2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 04:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjDMI07 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 04:26:59 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CFD4B5
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:26:58 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1842e8a8825so16912045fac.13
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:26:58 -0700 (PDT)
+        with ESMTP id S229548AbjDMI2X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 04:28:23 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B79AF2685
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:28:22 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1842df7cb53so16989188fac.10
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 01:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681374417; x=1683966417;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Fcoig/3rqF+Gt2Kg2v/+kJhcnHA2KTveUI1hxCDfrFQ=;
-        b=cOPVKd3ual1QWBBwq4Nt7qY5YtIVbu/s1iRKt6yixPKbZsoGI2wMClKucDuJJVPgUt
-         oiHI/eDnlqlv1HYdryu30LlqS2yemSW8lfnANdZFk1izlCjHjwqt6WRjCGiS875Dpfae
-         MCIYD3lFug++WBW70dyTL5LKz+LcYFNFQ0wHL654K0DLYUSblycUy/T4NoxGQpbDhKNY
-         4jhP5MU+BmEYfcn9f6weGHEodwaGYbadzj+c+d1W7oDyTCXG4eOjirlTDRsB3nO0X3ev
-         rdBpFrNN3B5DWg+iYdEbTNAV0Lt5eXB83PQawT2Pb0rpmnM2qQ/kEK6rW4LSfG+bW+xc
-         6Xfg==
+        d=gmail.com; s=20221208; t=1681374502; x=1683966502;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3lVC0QIahWICPUq2qmNtFjM9vCzRJJrRAYj3XSJFtR4=;
+        b=Ll5bzTd9Zo3pxJCXNWIq1d/D5RufxKWgFf4ZG+qAJ4wFkRsvu+/vg/diWSShedfArH
+         cbn67u70O9g4ivni3kEBudYPY3UuH6h1N6FriBHXtz2JJhB7C0ryHCBIBmD2LwGwFP2K
+         lF5dFmWVXteeG2z5il+l1tWnXO1W1ovOw5H35z/tG2vQ+5NxBEPa2eROBJ9Bai9vrR+3
+         y00kReBbAUr7T6odBsmHogkpoxCGm8ewPKkMs0Rjox4rnoDaKmKgThHkckguPhP6D+Ux
+         o+WD6iJI7wvgeo9Sf9lFUGjYc0BuqgPPOh3B9NWoOzMq9KGkXUlnH9EKwMlDgj8mTo65
+         H4yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681374417; x=1683966417;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Fcoig/3rqF+Gt2Kg2v/+kJhcnHA2KTveUI1hxCDfrFQ=;
-        b=j2Tnq7HcyO02hC9MGbG3cwAZg3IFz2dLqon3n6l2FxSImAdpdJpGrvoE3VtIIrlVcC
-         1tYTUe9e65E2gvDQlxXpKhYsfoibX7wta1Ls8RMdv2VALWyzh3ZKdoOaBPjgm3vXGCvQ
-         hMNhpfkym+26aX9QKCaGTkFbbh4TLDsp3NV8nLY5ppPpezbIiK0khPwsHZodgFJ0VGfL
-         ve+J9rqNjnhxbO+NuSFfDDCHAPvqMkK5PjZiv2JsK0iEb7ztu7JRVT9BaY5/oUscKM7c
-         VW9gVm9TvyOuEunO2pZh5TcgfnfCIftgTHVGfaD8imoggYnuAmCPCQQS0mFR7k7ihF+Z
-         kwpQ==
-X-Gm-Message-State: AAQBX9fmfNLFzMU5GaA32SbCNkDt9wj1qMhC71NFr6BLNt0MqSJsovCX
-        diB0J98WVhbLlpbSwrJcnijZ3PVJOmer1t0Yse13YqY93QA=
-X-Google-Smtp-Source: AKy350ZLgsJfkX/g6vBIbV2GMPFktmJ/VGYWhrbmx4A/dtimQiuexFqjpjAN3YxjtW+vfOipkXe71gvixgGW8SCWG+w=
-X-Received: by 2002:a05:6870:d0c5:b0:183:f343:f8ce with SMTP id
- k5-20020a056870d0c500b00183f343f8cemr842603oaa.8.1681374417693; Thu, 13 Apr
- 2023 01:26:57 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681374502; x=1683966502;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3lVC0QIahWICPUq2qmNtFjM9vCzRJJrRAYj3XSJFtR4=;
+        b=A6wuhmoEUQGd8s+ptJO1lthk41waDIuumzzBxt9XMlHoNSOJWtu6g0iNSV6ab5uCJM
+         iTSq2KHQ5XRDz6voBI5A2/67R4nxDfSRbrzeKC/83SIiTSDiu/f2aPGqTaygqOaXOWSQ
+         hXNxWAngMBQiC3zck9aN7D02XrvEvs6wP3w60OhMZMwf4flsrxn8yJomKwsObGbTbesh
+         +RX3nkaGL6OMCEfHl66xIs/oc6HNP2dIcCEa1cFNvKO0PCcKY3VA1JsGCe+JKIXI0DkH
+         gka6Wjl9NEPqKoapNh28AOfbbtTt0qzHrj1Rwa/hZA8bQIuYipBSKLlu2CzCfOoHaZSV
+         cL7Q==
+X-Gm-Message-State: AAQBX9dNMTNqyYqhrxScOkC6HiIFpzlx6ESpL7ahqwy90q2B5n++JnyR
+        bApwqbXFSal3H2Xqm7L8EXGFUmgaZvy/wQkwBGnnvwsTFa0=
+X-Google-Smtp-Source: AKy350at+3KAu/ysiXmBQRGHdTbiseSU9DNjoDR0xCWir5/KG5LzHG35x7sV42wjK6iEbBIZrJylaeIvWSfFnaYHs9c=
+X-Received: by 2002:a05:6870:2e0e:b0:187:7524:9a8d with SMTP id
+ oi14-20020a0568702e0e00b0018775249a8dmr2007003oab.4.1681374501888; Thu, 13
+ Apr 2023 01:28:21 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
+In-Reply-To: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
 From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Date:   Thu, 13 Apr 2023 10:26:46 +0200
-Message-ID: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
-Subject: [PATCH v2 0/3] iio: adc: ad7192: Functional fixes
+Date:   Thu, 13 Apr 2023 10:28:11 +0200
+Message-ID: <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
+Subject: [PATCH v2 1/3] iio: adc: ad7192: Fix null pointer dereference on probe
 To:     linux-iio@vger.kernel.org
 Cc:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>
@@ -63,36 +66,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch series fixes two bugs introduced in ad7192 ADC driver in
-the last commits and adds related bindings documentation.
+Pointer to indio_dev structure is obtained via spi_get_drvdata() at
+the beginning of function ad7192_setup(), but the spi->dev->driver_data
+member is not initialized, hence a NULL pointer is returned.
 
-Changes in v2:
- - Obtained ad7192_state from iio_dev pointer
- - Added patch on bindings documentation
+Fixed by changing ad7192_setup() signature to take pointer to struct
+iio_dev, and get ad7192_state pointer via st = iio_priv(indio_dev);
 
-Backported patches have been tested on a custom board (ARM v7, NXP)
-with kernel 5.15.
+Fixes: bd5dcdeb3fd0 iio: adc: ad7192: convert to device-managed functions
+Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+---
+Changes in v2: obtained ad7192_state from iio_dev pointer as suggested
+by Jonathan, removed Reviewed-by since the entire patch changed its
+content.
 
-There is still an unresolved issue with the IRQ management on the
-shared SPI-SDO/RDY pin causing single samples to be discarded. More
-information and possible solutions here:
-https://lore.kernel.org/all/CAPJMGm4GaSjD6bdqMwCr2EVZGenWzT-nCCf3BMRaD1TSfAabpA@mail.gmail.com/
+ drivers/iio/adc/ad7192.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-In addition, this patch is required to make libiio start up correctly:
-https://lore.kernel.org/all/20230330102100.17590-1-paul@crapouillou.net/
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 55a6ab591016..94a9cf34a255 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -380,9 +380,9 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
+  return clock_sel;
+ }
 
-Links to v1:
-- https://lore.kernel.org/linux-iio/CAPJMGm4GDVdAmwB4sHVkg78UhtVpmbCL6KT8-KbEY7cRSD5UZg@mail.gmail.com/
-- https://lore.kernel.org/linux-iio/CAPJMGm4StRvJ4zTyrOb7ebo47LrR9bBuZ46p7VOxkDfwWSG=PA@mail.gmail.com/
+-static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
++static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
+ {
+- struct iio_dev *indio_dev = spi_get_drvdata(st->sd.spi);
++ struct ad7192_state *st = iio_priv(indio_dev);
+  bool rej60_en, refin2_en;
+  bool buf_en, bipolar, burnout_curr_en;
+  unsigned long long scale_uv;
+@@ -1073,7 +1073,7 @@ static int ad7192_probe(struct spi_device *spi)
+  }
+  }
 
-Fabrizio Lamarque (3):
-  iio: adc: ad7192: Fix null ad7192_state pointer access
-  iio: adc: ad7192: Fix internal/external clock selection
-  iio: adc: ad7192: Clarify binding documentation
+- ret = ad7192_setup(st, spi->dev.of_node);
++ ret = ad7192_setup(indio_dev, spi->dev.of_node);
+  if (ret)
+  return ret;
 
- .../bindings/iio/adc/adi,ad7192.yaml          | 28 +++++++++++++++----
- drivers/iio/adc/ad7192.c                      | 26 +++++++++--------
- 2 files changed, 36 insertions(+), 18 deletions(-)
-
--- 
+--
 2.34.1

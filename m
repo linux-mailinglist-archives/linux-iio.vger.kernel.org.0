@@ -2,151 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 109516E185A
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 01:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2262A6E19CB
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 03:38:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbjDMXgp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 13 Apr 2023 19:36:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60118 "EHLO
+        id S229492AbjDNBiP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Apr 2023 21:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjDMXgo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 19:36:44 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1CC81739
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 16:36:42 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id h37so4472068lfv.0
-        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 16:36:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681429001; x=1684021001;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r9ajKjdjmVKYZR0o2RYS00gCwWXzx+OByS0IkZ5vWrg=;
-        b=SVEjyBOGaxj1mckia8+8F4tBz1UaxMbdTgcRhw3El6pgcSSVVULIgBzGaISjFEobmy
-         7Op5etGGtc7DIeL/p/C9F6/9iiyv5+0EMT9PawHnseed2spJ62pcQR3F6SxwPZVGMPBG
-         JL9uX9mVXLQYa3bK+ZfNJv4rJNlH+EUBJZrT3/ck3yaJWv6py781rpgZrk4w49itUKck
-         GH37nQ5NHr5WAn1z3tlVFiar3bOZrTX55x3zEm1ujXpjmrN46OFDXwhbk/yW0lNg8MST
-         IrLLXnQTT8LFYMmjBLa7Bjuc5fr4PJXga0qXvOHLLFwHTtLglYDWmLGCVrTobGV9oHqW
-         ixxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681429001; x=1684021001;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9ajKjdjmVKYZR0o2RYS00gCwWXzx+OByS0IkZ5vWrg=;
-        b=mFEKsuHUfyvZXTHkTKGzXXhzpJTlgIklzDJeWr2kBTA627xhza6FVhsQE38gk22a0G
-         jpHJYO8VxW1c+jjy8v/pi4YHiqpW/Ma32fBDnC0zTOY/0sEUachbvH22+B+sZtAhTQmd
-         +Hj8KKtmwjItV+GqreHlFlpXpZdFK4aezkskKY9rY0VRLtVoFQne8XO8w52tQ2uz5yVg
-         9EHxtsb4kUw0/AodgIcbZThU/9XCIMsw8HaZjL2iGfGgqCREc/Hn7Ij5gWWJ0w48evDQ
-         d5VOYgXZEcpoM17oEE737fInMkCuIwS//b192q31el3LQHJNP7h2LH+/pMqSClel0vXx
-         NEdw==
-X-Gm-Message-State: AAQBX9fXMS193DbGDLxDwXvMrD8Joc5aa5/H57PKgElbmhH24Zau7xHE
-        F50A84p+gRkb1hLO7Mu8WnRcBg==
-X-Google-Smtp-Source: AKy350Zo99hWzMgWvX+LgY/9CK+7rZVz2nOI2ypxTsltEFwJGq7j79xeqJ8GdXR+H5DJke5A5SynGg==
-X-Received: by 2002:ac2:51a2:0:b0:4de:ca63:b2d2 with SMTP id f2-20020ac251a2000000b004deca63b2d2mr1316274lfk.26.1681429000930;
-        Thu, 13 Apr 2023 16:36:40 -0700 (PDT)
-Received: from [192.168.1.101] (abyl123.neoplus.adsl.tpnet.pl. [83.9.31.123])
-        by smtp.gmail.com with ESMTPSA id i15-20020ac25d2f000000b004e26bd0a533sm510735lfb.288.2023.04.13.16.36.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Apr 2023 16:36:40 -0700 (PDT)
-Message-ID: <96180862-6dbf-77e1-4aca-9a3b9ee39294@linaro.org>
-Date:   Fri, 14 Apr 2023 01:36:38 +0200
+        with ESMTP id S229530AbjDNBiP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Apr 2023 21:38:15 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18095103
+        for <linux-iio@vger.kernel.org>; Thu, 13 Apr 2023 18:38:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+        s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
+        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=gPGZNX9pQHW6WahdEHbQCaGGm0RUBEWhOrb8ferroNY=; b=mOTLqZEVucApTQnPnc51foZTKx
+        8SBn9TsfaL9bZfvunplDK9XGTdkmcP4Kd1wPj+Ggob7RZXNHHH6k+nFNSxQDWnnL22z5ddVfl9FlM
+        9kBy0FZIT1xSccNuYnylRw7PcPrVE2HGmO5Sr5IcSLTL2j95FRXsWg4GyQz/1nBdoBo07TlzyFgKQ
+        9DcZ4+Rrwp9Qp6xR8h4qUa6/tLLDME62kFRE1EL1EgRrXT7h+i0nfN7wZzCQNMe+ls/F9e0gYaKwG
+        mgdrvdLtEjCOPBXRG5XmFCEfVAETXmxEf9bb4Z9Js+/DVBQtT012bDU21TUWokOM63YsCpT3GfWIN
+        mXKunWNw==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <lars@metafoo.de>)
+        id 1pn8OA-000OJ3-GS; Fri, 14 Apr 2023 03:38:10 +0200
+Received: from [136.25.87.181] (helo=lars-desktop.lan)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1pn8OA-000Lz8-1m; Fri, 14 Apr 2023 03:38:10 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Gerald Loacker <gerald.loacker@wolfvision.net>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH] iio: tmag5273: Fix runtime PM leak on measurement error
+Date:   Thu, 13 Apr 2023 18:37:52 -0700
+Message-Id: <20230414013752.498767-1-lars@metafoo.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 8/8] arm64: dts: qcom: sdm632-fairphone-fp3: Add
- notification LED
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
- <20230414-pmi632-v1-8-fe94dc414832@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230414-pmi632-v1-8-fe94dc414832@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26874/Thu Apr 13 09:30:39 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The tmag5273 gets a runtime PM reference before reading a measurement and
+releases it when done. But if the measurement fails the tmag5273_read_raw()
+function exits before releasing the reference.
 
+Make sure that this error path also releases the runtime PM reference.
 
-On 14.04.2023 01:17, Luca Weiss wrote:
-> The phone features a notification LED connected to the pmi632. Configure
-> the RGB led found on it.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 29 +++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> index 70e683b7e4fc..301eca9a4f31 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> @@ -4,8 +4,10 @@
->   */
->  /dts-v1/;
->  
-> +#include <dt-bindings/leds/common.h>
->  #include "sdm632.dtsi"
->  #include "pm8953.dtsi"
-> +#include "pmi632.dtsi"
->  
->  / {
->  	model = "Fairphone 3";
-> @@ -83,6 +85,33 @@ &pm8953_resin {
->  	linux,code = <KEY_VOLUMEDOWN>;
->  };
->  
-> +&pmi632_lpg {
-qcom,power-source?
+Fixes: 866a1389174b ("iio: magnetometer: add ti tmag5273 driver")
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ drivers/iio/magnetometer/tmag5273.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Konrad
-> +	status = "okay";
-> +
-> +	multi-led {
-> +		color = <LED_COLOR_ID_RGB>;
-> +		function = LED_FUNCTION_STATUS;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		led@1 {
-> +			reg = <1>;
-> +			color = <LED_COLOR_ID_RED>;
-> +		};
-> +
-> +		led@2 {
-> +			reg = <2>;
-> +			color = <LED_COLOR_ID_GREEN>;
-> +		};
-> +
-> +		led@3 {
-> +			reg = <3>;
-> +			color = <LED_COLOR_ID_BLUE>;
-> +		};
-> +	};
-> +};
-> +
->  &sdhc_1 {
->  	status = "okay";
->  	vmmc-supply = <&pm8953_l8>;
-> 
+diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
+index 28bb7efe8df8..e155a75b3cd2 100644
+--- a/drivers/iio/magnetometer/tmag5273.c
++++ b/drivers/iio/magnetometer/tmag5273.c
+@@ -296,12 +296,13 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
+ 
+ 		ret = tmag5273_get_measure(data, &t, &x, &y, &z, &angle, &magnitude);
+-		if (ret)
+-			return ret;
+ 
+ 		pm_runtime_mark_last_busy(data->dev);
+ 		pm_runtime_put_autosuspend(data->dev);
+ 
++		if (ret)
++			return ret;
++
+ 		switch (chan->address) {
+ 		case TEMPERATURE:
+ 			*val = t;
+-- 
+2.30.2
+

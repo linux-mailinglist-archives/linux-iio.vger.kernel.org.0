@@ -2,24 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628DC6E1D21
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 09:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E25B6E1D85
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 09:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbjDNH1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Apr 2023 03:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
+        id S229902AbjDNHwp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Apr 2023 03:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbjDNH1w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Apr 2023 03:27:52 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7BD85598;
-        Fri, 14 Apr 2023 00:27:46 -0700 (PDT)
-Received: from localhost ([31.220.118.10]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MhlXE-1qIAwk0mzA-00dmP8; Fri, 14 Apr 2023 09:27:30 +0200
-Date:   Fri, 14 Apr 2023 09:27:29 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        with ESMTP id S229457AbjDNHwo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Apr 2023 03:52:44 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E3EA61B3
+        for <linux-iio@vger.kernel.org>; Fri, 14 Apr 2023 00:52:42 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id z9so16501927ejx.11
+        for <linux-iio@vger.kernel.org>; Fri, 14 Apr 2023 00:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681458760; x=1684050760;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5fmp8ZchOpiNG2bgVM43cfy9xBWr8LX0uUR8ohtYJtM=;
+        b=NhTG8MUt4iHQzYV6YPU7qTPMofyphuSSGfhtCRTm04PdA21nzE3WKgV7lTo8RvLHT/
+         shbLR4LH7iSxoJ4P6+DPJiNCp63R9ttGSrGPP9Y5fERIoFW3dKpeyvEIrzpiljn67qWa
+         JQYWYuKcqaH6p9+i6hAbeobR3eNWvRlxfK0faxtqfvZgzpu0QoPVVrxuV7tEivsD6GXg
+         k1AiMYpviS7qw3F64GKi1/KUdpk6k6qMvec6dviOfnnmzIk+AeuW+AMJTWPZ6AuUDwfz
+         MrswjXWz7fujQRjuRbYOChHhJPIkxgSs+ckj2mXX9CaF2jmcb3xzPLJJUFKg92/bfG3O
+         hIJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681458760; x=1684050760;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5fmp8ZchOpiNG2bgVM43cfy9xBWr8LX0uUR8ohtYJtM=;
+        b=DI1Pp1POJgUxdnLOpDf6mtyemK47hHwnFMhKK8Yy37FuBJiUeXAfVYnGIzQyZauAf5
+         10hvBdseA0C/CkWEuvCuyg9A+0460Wb9fG1PsGH3/vPxeeps039zmJGb7pfIzKI6yfEy
+         ORthKw1VWu//1lFrn54k5iMWkg0w2gyxNieqSHS2EUcSiQhzZuecYeUFRT5wirTz2smX
+         aZOKvUOhla1nhvWyqaD/YUznaTfxD39l/ZYeAOg3IT9dQv0CIS20E00rYGydH/p+Gkfd
+         WQeDjCUCt/2WShXVS+wglokWHIu7U5sHZ9KRuvH1tbzGWLy7+TnCNRNG/9lyOTx3dXNK
+         HvjA==
+X-Gm-Message-State: AAQBX9dOqFXbQyqVtLXfyMZejndyCHnRgx/+y/SaAieh7MvHtvwaVeP0
+        8r1FBh9F60KX3UOnS5VPa3DzGQ==
+X-Google-Smtp-Source: AKy350YRsKtcInsagYhjMIH/3kqN+TRsFF3Y3YqqByEyRxT3vMGvMkCd8dpb/v4jEQkCj6iATO+xUw==
+X-Received: by 2002:a17:906:3a42:b0:947:a6d7:e2b4 with SMTP id a2-20020a1709063a4200b00947a6d7e2b4mr5115571ejf.8.1681458760511;
+        Fri, 14 Apr 2023 00:52:40 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:8a60:6b0f:105a:eefb? ([2a02:810d:15c0:828:8a60:6b0f:105a:eefb])
+        by smtp.gmail.com with ESMTPSA id z10-20020a1709063a0a00b0094a6cf3b642sm2076345eje.142.2023.04.14.00.52.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Apr 2023 00:52:40 -0700 (PDT)
+Message-ID: <7f2716c6-ea0c-d55b-490c-7fe0e0a14c65@linaro.org>
+Date:   Fri, 14 Apr 2023 09:52:39 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Support Honeywell mpr
+ sensors
+Content-Language: en-US
+To:     Andreas Klinger <ak@it-klinger.de>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -27,166 +65,150 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Angel Iglesias <ang.iglesiasg@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: Support Honeywell mpr
- sensors
-Message-ID: <ZDkAYZV9z6cKCZQo@arbad>
 References: <20230401185717.1b971617@jic23-huawei>
- <27a1d0f4-3a02-c7fd-36a0-07729a136e20@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <27a1d0f4-3a02-c7fd-36a0-07729a136e20@linaro.org>
-X-Provags-ID: V03:K1:9bByc2/Vv78HO6SCY14ArSj2OgJdGpsVQD+YvlmuJV70NcKh5g1
- 5feRyxelQggg0IStorXBSyXJiqkPsMVjgY+M9wNiIfxv5Z7CLeTtrzAd/Zl4mutuzpMahAh
- ChF5O/lG/DpnFoXUIIbi18KcHV4G4LC7Lg/0htwHKO8/BVgmQxKeWdxQn6VeXE2qYmV68U5
- tiaPaPDiFkowEMica0NeQ==
-UI-OutboundReport: notjunk:1;M01:P0:EvaFxQY3prM=;A1KkZ9f6gBjD/LlKX7nFAzyO9kc
- yp3xmnl7HIwSYpaWeV/isHVZXMejfEZOjc3QUMsGXf1HWRKfMtqhPMP8YAe4ZwbRPXUgnylsw
- g32reJ7RC0q5r2IdYQTSKxQ79ncahzT2UY3WRfWXBVzQCNd4cqqN9wROqR8WWNS4LN2c9yQH+
- MM6t0DuyOkDfA67pnaSfTVnVLYUyyLbTSbVMxkxrnJ7INrH3tF5l8pEgcQKgK4ipsLeWrP291
- v4/9kggRtf4MPNRSh9+hEX1TSwoILqc0VAmDBRk1DJsR9LAu4fzjE59gCJvp63umMs88sVd5q
- LnzSuyJ754IpXJR8W/43Oo0lx3dWjxz8keyQthGyD4jKXa1dVpTazt6yIvmiTkIl/w8Z3/B1w
- noPpTXXaV9i69subRWSFNiYlqN10b5nSP1vnLwgGK9k77z5D2xPSDMSdGl8iqIW84D8FRBxe0
- 0eLeQf2Shnt0GzhZ55VsrUFC7b2pT0PkSBM2UQwSOjDni3Xv2iJu2SCpVuIMi9pNJD/p9gYCR
- I3ldxYMrjfHZ74JpLYsMNeBqkLptsugwsy4+rOL/Wsqo7EhjUsFswUd6ixBeut2AP+OpLL2ng
- 7brpjkelIQ8/SP+sXQllbP07s60vq8nvTcEzcAj8I4mGne0QvkymY+M38tcvi84entEVm01BX
- c1lgl2lCNnnr2NUvHnjhSLRT9976z47m1LVVuQiKjw==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <27a1d0f4-3a02-c7fd-36a0-07729a136e20@linaro.org> <ZDkAYZV9z6cKCZQo@arbad>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <ZDkAYZV9z6cKCZQo@arbad>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Krzysztof,
-
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> schrieb am Sa, 01. Apr 11:42:
-> On 01/04/2023 11:09, Andreas Klinger wrote:
-> > Honeywell mpr is a pressure sensor family. There are many different
-> > types with different pressure ranges. The range needs to be set up in
-> > the dt. Therefore new properties honeywell,pmin and honeywell,pmax are
-> > introduced.
-> > 
-> > Add dt-bindings.
-> > 
-> > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> > ---
-> >  .../bindings/iio/pressure/honeywell,mpr.yaml  | 74 +++++++++++++++++++
-> >  1 file changed, 74 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
-> > new file mode 100644
-> > index 000000000000..d6fad6f841cf
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
-> > @@ -0,0 +1,74 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mpr.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Honeywell mpr pressure sensor
-> > +
-> > +maintainers:
-> > +  - Andreas Klinger <ak@it-klinger.de>
-> > +
-> > +description: |
-> > +  Honeywell pressure sensor of type mpr. This sensor has an I2C and SPI interface. Only the I2C
+On 14/04/2023 09:27, Andreas Klinger wrote:
+> Hi Krzysztof,
 > 
-> Doesn't look wrapped according to Linux coding style (see Coding style).
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> schrieb am Sa, 01. Apr 11:42:
+>> On 01/04/2023 11:09, Andreas Klinger wrote:
+>>> Honeywell mpr is a pressure sensor family. There are many different
+>>> types with different pressure ranges. The range needs to be set up in
+>>> the dt. Therefore new properties honeywell,pmin and honeywell,pmax are
+>>> introduced.
+>>>
+>>> Add dt-bindings.
+>>>
+>>> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+>>> ---
+>>>  .../bindings/iio/pressure/honeywell,mpr.yaml  | 74 +++++++++++++++++++
+>>>  1 file changed, 74 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+>>> new file mode 100644
+>>> index 000000000000..d6fad6f841cf
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mpr.yaml
+>>> @@ -0,0 +1,74 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mpr.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Honeywell mpr pressure sensor
+>>> +
+>>> +maintainers:
+>>> +  - Andreas Klinger <ak@it-klinger.de>
+>>> +
+>>> +description: |
+>>> +  Honeywell pressure sensor of type mpr. This sensor has an I2C and SPI interface. Only the I2C
+>>
+>> Doesn't look wrapped according to Linux coding style (see Coding style).
+>>
+>>> +  interface is implemented.
+>>> +
+>>> +  There are many subtypes with different pressure ranges available. Therefore the minimum and
+>>> +  maximum pressure values of the specific sensor needs to be specified in Pascal.
+>>> +
+>>> +  Specifications about the devices can be found at:
+>>> +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/  \
+>>> +      pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/          \
+>>> +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+>>
+>> Lines are not continued, so drop \
+>>
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: honeywell,mpr
+>>
+>> You need device specific compatible, not some generic one. Rename also
+>> then the filename (should match the compatible).
+>>
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  interrupts:
+>>> +    maxItems: 1
+>>> +
+>>> +  reset-gpios:
+>>> +    description:
+>>> +      Optional GPIO for resetting the device. If not present the device is not resetted.
+>>
+>> Are you sure it is wrapped properly?
+>>
+>>> +    maxItems: 1
+>>> +
+>>> +  honeywell,pmin:
+>>> +    description:
+>>> +      Minimum pressure value the sensor can measure in pascal.
+>>
+>> Use standard unit suffix:
+>> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
 > 
-> > +  interface is implemented.
-> > +
-> > +  There are many subtypes with different pressure ranges available. Therefore the minimum and
-> > +  maximum pressure values of the specific sensor needs to be specified in Pascal.
-> > +
-> > +  Specifications about the devices can be found at:
-> > +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/  \
-> > +      pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/          \
-> > +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+> There are only kilopascal as standard unit suffix. But with kilopascal as
+> integer the accuracy of the driver is very rough. Therefore I would like to use
+> pascal. E. g.:
 > 
-> Lines are not continued, so drop \
+> honeywell,pmin-pascal
 > 
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: honeywell,mpr
+>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>> +
+>>> +  honeywell,pmax:
+>>> +    description:
+>>> +      Maximum pressure value the sensor can measure in pascal.
+>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>
+>> Same.
+>>
+>> Why these values are suitable for DT?
 > 
-> You need device specific compatible, not some generic one. Rename also
-> then the filename (should match the compatible).
+> Technically from the software perspective the sensors are identical with the
+> only difference of having different pressure ranges, measurement units and
+> transfer functions.
 > 
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  reset-gpios:
-> > +    description:
-> > +      Optional GPIO for resetting the device. If not present the device is not resetted.
+> If we omit the pressure values and transfer function we'll need 96 compatibles
+> and also 96 I2C ids.
+
+Compatibles are expected to be specific. You used something generic, so
+not correct, although I understand the reason behind.
+
+If we go with generic compatible, do you guarantee that all Honeywell
+mpr sensors - now and in 50 years - will be 100% compatible with this
+set here?
+
+Your description calls it "type mpr", not "model mpr", so I assume you
+can have entirely different sensors coming soon which will not be
+compatible.
+
 > 
-> Are you sure it is wrapped properly?
-> 
-> > +    maxItems: 1
-> > +
-> > +  honeywell,pmin:
-> > +    description:
-> > +      Minimum pressure value the sensor can measure in pascal.
-> 
-> Use standard unit suffix:
-> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
+> But there are also custom sensor types. For covering them we'll need another
+> compatible and just for this case the pressure values and transfer function.
 
-There are only kilopascal as standard unit suffix. But with kilopascal as
-integer the accuracy of the driver is very rough. Therefore I would like to use
-pascal. E. g.:
+OK, but isn't this the case in all devices? I could accept family of
+identical devices with identical programming model where difference in
+supported measurement range is described via this property.
 
-honeywell,pmin-pascal
-
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +
-> > +  honeywell,pmax:
-> > +    description:
-> > +      Maximum pressure value the sensor can measure in pascal.
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> 
-> Same.
-> 
-> Why these values are suitable for DT?
-
-Technically from the software perspective the sensors are identical with the
-only difference of having different pressure ranges, measurement units and
-transfer functions.
-
-If we omit the pressure values and transfer function we'll need 96 compatibles
-and also 96 I2C ids.
-
-But there are also custom sensor types. For covering them we'll need another
-compatible and just for this case the pressure values and transfer function.
-
-> Does it depend on type of sensor (thus it is implied from compatible) or on
-> system setup?
-
-For the standard types it can be derived from the type of sensor but for the
-custom types it's not possible.
-
-So sum up it'll look like this:
-
-standard types:
-96 compatibles, e. g. "honeywell,mpr-0025pa-a"
-
-custom types:
-1 compatible: "honeywell,mpr-custom"
-honeywell,pmin-pascal
-honeywell,pmax-pascal
-honeywell,transfer-function
-
+Unfortunately you did not model it that way. Instead it represents all
+possible devices even with incompatible programming model.
 
 Best regards,
-
-Andreas
+Krzysztof
 

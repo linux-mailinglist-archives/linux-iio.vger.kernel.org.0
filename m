@@ -2,171 +2,194 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7C716E20B8
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 12:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9E36E20C0
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 12:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjDNK2c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Apr 2023 06:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S230146AbjDNK3r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Apr 2023 06:29:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjDNK2b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Apr 2023 06:28:31 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE6710FC
-        for <linux-iio@vger.kernel.org>; Fri, 14 Apr 2023 03:28:28 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id k65-20020a17090a3ec700b00247131783f7so3873466pjc.0
-        for <linux-iio@vger.kernel.org>; Fri, 14 Apr 2023 03:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mechatrax-com.20221208.gappssmtp.com; s=20221208; t=1681468108; x=1684060108;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Hoqg9PT2dw5gAcaoud/8G0yli71lPUri/20PXRlKVs=;
-        b=QWekuhVNVuPy18llgcFdz0XtXgFv3BcC99Cbp8mjeVlXIx5sYad7UNNe88KLDxzuoo
-         zi/BLS5dZo3glevzOI0AkE2tFzU8hl3tiEii5GEwoJ1gtPCGXIaYTcsxse535MpfuaKs
-         lT7DCMha3HURgsWztU6wwM9ZYHi4ap7qHtAxpL/4EnDJcWxfvqHT3bA8Jkoct0DdEOeQ
-         e/al5lQevPVLEqKnRzqxklxKhd8J6EguN84yCHxINbKW5pFCTgsyu6aUKlT/xR3xAEXe
-         0Kb8lspyF2YDtEwrhdgbttYEzhSoU8jK/0lzY5oz2T0HiniE1cghRVRU5ea8jA8KHPhu
-         t67w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681468108; x=1684060108;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1Hoqg9PT2dw5gAcaoud/8G0yli71lPUri/20PXRlKVs=;
-        b=F0q838Cv8GijUpcNCqehiTa2bD/1sCqbbhVezPL79fVCHmRtAHptBuKwlgTKic3wUP
-         D2Lz46ETFM8ToVIPwcW/gnZLYyZKd0M5ZZiOP4BLi1opa2cZJ5quxY1sUUMaiGA5bdlk
-         UFLchP4lMab6SQhSG84PQFdOrHKUHIzwNGSnyETpee0PwO7f2ROh+0UryTAVJy9vd25F
-         AW+6w0lRlozvkFegUg37cZ34u2shk2zxqmEy5b6YTF+8l3z0P2xcGkOsHTrou4qkS/5x
-         yeSsrYRz7zHRNVWMEQmvI2OscGpkefC0yvSHFLktkX2NKiZWe2iFNZJENHqFCAw3+qwo
-         WhOQ==
-X-Gm-Message-State: AAQBX9dzRJAkAfsB9AQdjtfVrz8g+1CLdzNXbmM871Gt1hCTg4MNpw7z
-        HRX8JN2IbarZTRjt/kLizM1p1A==
-X-Google-Smtp-Source: AKy350YVOz4Nfh6+PimgQxz5h6bnLGiPwbxVtqq5GYBiuCieLnBJdbHpDiuz89skTI3UU/yl1sB/Gw==
-X-Received: by 2002:a05:6a20:2896:b0:eb:bbd1:6d6c with SMTP id q22-20020a056a20289600b000ebbbd16d6cmr5142757pzf.21.1681468107966;
-        Fri, 14 Apr 2023 03:28:27 -0700 (PDT)
-Received: from localhost ([2400:4152:be0:9900:cc28:70ed:6925:f8a1])
-        by smtp.gmail.com with UTF8SMTPSA id q11-20020a65684b000000b0051b1aef8032sm2662248pgt.38.2023.04.14.03.28.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Apr 2023 03:28:27 -0700 (PDT)
-From:   Masahiro Honda <honda@mechatrax.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Masahiro Honda <honda@mechatrax.com>
-Subject: [PATCH v2] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
-Date:   Fri, 14 Apr 2023 19:27:44 +0900
-Message-Id: <20230414102744.150-1-honda@mechatrax.com>
+        with ESMTP id S230135AbjDNK3q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Apr 2023 06:29:46 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78577E57;
+        Fri, 14 Apr 2023 03:29:45 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33E7YLmn004374;
+        Fri, 14 Apr 2023 06:29:31 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3px96s9dmc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Apr 2023 06:29:30 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 33EATTXp060505
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 14 Apr 2023 06:29:29 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 14 Apr 2023 06:29:28 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 14 Apr 2023 06:29:28 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 14 Apr 2023 06:29:28 -0400
+Received: from kimedia-VirtualBox.analog.com (KPALLER2-L02.ad.analog.com [10.116.185.143])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 33EATCbZ003623;
+        Fri, 14 Apr 2023 06:29:17 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+To:     <lars@metafoo.de>, <jic23@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC:     <kimseer.paller@analog.com>
+Subject: [PATCH 1/2] dt-bindings:iio:adc: add max14001 bindings
+Date:   Fri, 14 Apr 2023 18:28:44 +0800
+Message-ID: <20230414102844.21579-1-kimseer.paller@analog.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: b0FwTUOJrS_KqYt9ce2My3XCS1Lm3tK2
+X-Proofpoint-ORIG-GUID: b0FwTUOJrS_KqYt9ce2My3XCS1Lm3tK2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-14_04,2023-04-14_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0 spamscore=0
+ clxscore=1011 bulkscore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304140095
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
-line to indicate the completion of a conversion. However, some devices
-cannot properly detect the completion of a conversion by an interrupt.
-This is for the reason mentioned in the following commit.
+Add bindings for MAX14001.
 
-commit e9849777d0e2 ("genirq: Add flag to force mask in
-                      disable_irq[_nosync]()")
+The MAX14001 is configurable, isolated 10-bit ADCs for multi-range
+binary inputs.
 
-A read operation is performed by an extra interrupt before the complete
-conversion. This patch provides an option to fix the issue by setting
-IRQ_DISABLE_UNLAZY flag.
-
-Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 ---
-v2:
- - Rework commit message.
- - Add a new entry in the Kconfig.
- - Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing the IRQ.
-v1: https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatrax.com/
+ .../bindings/iio/adc/adi,max14001.yaml        | 83 +++++++++++++++++++
+ MAINTAINERS                                   |  7 ++
+ 2 files changed, 90 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
 
- drivers/iio/adc/Kconfig          | 14 ++++++++++++++
- drivers/iio/adc/ad_sigma_delta.c | 31 ++++++++++++++++++++++++++-----
- 2 files changed, 40 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 45af2302b..78ab6e2d8 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -21,6 +21,20 @@ config AD_SIGMA_DELTA
- 	select IIO_BUFFER
- 	select IIO_TRIGGERED_BUFFER
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+new file mode 100644
+index 000000000..4546bf595
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+@@ -0,0 +1,83 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,max14001.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: MAX14001 ADC device driver
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++
++description: |
++    Single channel 10 bit ADC with SPI interface. Datasheet
++    can be found here:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/MAX14001-MAX14002.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,max14001
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 5000000
++
++  vref-supply:
++    description: Voltage reference to establish input scaling.
++
++  adi,use-fadc:
++    $ref: /schemas/types.yaml#/definitions/flag
++    type: boolean
++    description: If set, the filtered ADC data (FADC register) will be read,
++                  otherwise the unfiltered ADC data (ADC register) will be read.
++
++  adi,inrush-mode:
++    $ref: /schemas/types.yaml#/definitions/flag
++    type: boolean
++    description: If set, the device will use FAST inrush mode,
++                  otherwise the device will use ADC controlled inrush mode.
++
++  adi,filter:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1, 2, 3 ]
++    description: |
++      0: Filtering off
++      1: Average 2 readings
++      2: Average 4 readings
++      3: Average 8 readings
++
++  adi,current-source:
++    $ref: /schemas/types.yaml#/definitions/flag
++    type: boolean
++    description: If set, the 70uA current source will be connected to the REFIN pin,
++                  otherwise the current source will be turned off.
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        status = "okay";
++
++        adc@0 {
++            compatible = "adi,max14001";
++            reg = <0>;
++            spi-max-frequency = <5000000>;
++            vref-supply = <&vref_reg>;
++            adi,use-fadc;
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0e64787aa..766847ad2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12573,6 +12573,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/max9860.txt
+ F:	sound/soc/codecs/max9860.*
  
-+if AD_SIGMA_DELTA
++MAX14001 IIO ADC DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/dac/adi,max14001.yaml
 +
-+config AD_SIGMA_DELTA_USE_LAZY_IRQ
-+	bool "Use lazy IRQ for sigma-delta ADCs"
-+	depends on AD_SIGMA_DELTA
-+	default n
-+	help
-+	  Some interrupt controllers have data read problem with ADCs depends on
-+	  AD_SIGMA_DELTA.
-+	  Say yes here to avoid the problem at the cost of performance overhead.
-+	  If unsure, say N (but it's safe to say "Y").
-+
-+endif # if AD_SIGMA_DELTA
-+
- config AD4130
- 	tristate "Analog Device AD4130 ADC Driver"
- 	depends on SPI
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index d8570f620..b9eae1e80 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -565,6 +565,16 @@ int ad_sd_validate_trigger(struct iio_dev *indio_dev, struct iio_trigger *trig)
- }
- EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trigger, IIO_AD_SIGMA_DELTA);
- 
-+static void ad_sd_free_irq(void *sd)
-+{
-+	struct ad_sigma_delta *sigma_delta = sd;
-+
-+#ifdef CONFIG_AD_SIGMA_DELTA_USE_LAZY_IRQ
-+	irq_clear_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
-+#endif
-+	free_irq(sigma_delta->spi->irq, sigma_delta);
-+}
-+
- static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
-@@ -584,11 +594,22 @@ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_de
- 	init_completion(&sigma_delta->completion);
- 
- 	sigma_delta->irq_dis = true;
--	ret = devm_request_irq(dev, sigma_delta->spi->irq,
--			       ad_sd_data_rdy_trig_poll,
--			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
--			       indio_dev->name,
--			       sigma_delta);
-+#ifdef CONFIG_AD_SIGMA_DELTA_USE_LAZY_IRQ
-+	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
-+#endif
-+	ret = request_irq(sigma_delta->spi->irq,
-+			  ad_sd_data_rdy_trig_poll,
-+			  sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
-+			  indio_dev->name,
-+			  sigma_delta);
-+	if (ret) {
-+#ifdef CONFIG_AD_SIGMA_DELTA_USE_LAZY_IRQ
-+		irq_clear_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
-+#endif
-+		return ret;
-+	}
-+
-+	ret = devm_add_action_or_reset(dev, ad_sd_free_irq, sigma_delta);
- 	if (ret)
- 		return ret;
- 
+ MAXBOTIX ULTRASONIC RANGER IIO DRIVER
+ M:	Andreas Klinger <ak@it-klinger.de>
+ L:	linux-iio@vger.kernel.org
 -- 
 2.34.1
 

@@ -2,127 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8346E2A25
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 20:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFF956E2B33
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Apr 2023 22:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbjDNSh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Apr 2023 14:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32820 "EHLO
+        id S229908AbjDNUkm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Apr 2023 16:40:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjDNSh6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Apr 2023 14:37:58 -0400
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A8755B4;
-        Fri, 14 Apr 2023 11:37:57 -0700 (PDT)
-Received: by mail-ot1-f50.google.com with SMTP id w19-20020a9d6393000000b006a43ff0f57cso1600284otk.5;
-        Fri, 14 Apr 2023 11:37:57 -0700 (PDT)
+        with ESMTP id S229749AbjDNUkl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Apr 2023 16:40:41 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C74E5B93
+        for <linux-iio@vger.kernel.org>; Fri, 14 Apr 2023 13:40:40 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id jg21so48299129ejc.2
+        for <linux-iio@vger.kernel.org>; Fri, 14 Apr 2023 13:40:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681504838; x=1684096838;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UBTBZBV3j3XB818AQf6y4VMhCZ7BnWynW+AV/+QQYBo=;
+        b=tp0VjrVfgR1zQjAQH+CD1I/8euDbaKkRk9I76jq+BQpOOkHe8U4KC2T2/MDNJmVE1H
+         9E0c/3UEZKeHN4fXTQFuoQWcVjyEYPk6NlMI7Dufg1YwIH3i41eUoydNEie4evhWbnoA
+         kMIfibomcSlZ2z3OEM1xpdj/zAQkjrj0iGOgv2mNYI7e4f3J2VcJQ2Tfn7oaanLvMksu
+         s8mwTNFlyOJKxehn26TiJLcprJYYRAFQil3YROQIVikzdBEqmks5C45h5ZX74VEd2XjV
+         1wjQJWYX7PatO/YcO2qLPUhzDM1wB6KAgLsphV3YlBPvWSiXV5M28eNzylUAuHDchfc4
+         FBTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681497476; x=1684089476;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=esLUoAYEUiCqLSENFicfSVfYmj0WlNAWG2ZggPbHEGc=;
-        b=XGG4gvTRfNyKuUoCwUMAAuC4kBEqjqCLg8S5JGfputNxEt30neGlPOzExOzmUf1L9f
-         SMkpeb0C/7wT9biydCqIIsOcJZWdIZ1+7gOeR1ctfm5AGZLRCGqeeQ2YsYNbMP1BEiXK
-         Aaz+DYEIOkWk9CedWy2B8Nip2Sgqqh229V0N8znLY1aRiqk61BIf8JTFTTrsuwfMb5px
-         soUkx+Hu9DMCjL65djRTbxAYSyyWg2kCZsntxPjoyyhvby+p9CxiSOATJopmc2V9AB20
-         9CVb/ChwznE2x+MXzd9YWQpbqctk7RlmEFKO68J2p6R4fHhQgB2tbJGVbASiLSxr+7uF
-         f7OQ==
-X-Gm-Message-State: AAQBX9cSYJ8zMiHv7o7kLM/Zu3SNX63c7IQN36IpCyt/ZR0a47xyzDXt
-        +sOT+FpaeSSD4lwxD7yShw==
-X-Google-Smtp-Source: AKy350Yb7Wxpz60VAMD1VMkHDAMWwCgvcXgm479C4o7Hkyqu53KhC9PtSXkFDuHi7qQxnYtXpwT9Fw==
-X-Received: by 2002:a05:6830:2049:b0:68d:416e:3d9d with SMTP id f9-20020a056830204900b0068d416e3d9dmr3353438otp.7.1681497476228;
-        Fri, 14 Apr 2023 11:37:56 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id k7-20020a056830150700b0069fa6ca584bsm1998493otp.40.2023.04.14.11.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Apr 2023 11:37:55 -0700 (PDT)
-Received: (nullmailer pid 105410 invoked by uid 1000);
-        Fri, 14 Apr 2023 18:37:55 -0000
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20221208; t=1681504838; x=1684096838;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UBTBZBV3j3XB818AQf6y4VMhCZ7BnWynW+AV/+QQYBo=;
+        b=DX9nCmzbaFNzp7XqXrQoAinDD+152gN6HEYFeF+RgCQSoPVf0vjOlun9X3Hs25g3we
+         LN8NpTxFmvxWF+NpEJ87v7YYH32D4A/Rlkvpqwc2q642TFcyV6nuksvRqh0NkNkkoxY9
+         sh2Wkqt74zt1VjxO5nP4XVq+YDYJDfS2tv6JUTkliO9fdBwUzjPB/iEgzDNT+P0MXkZc
+         I/CXMfZ3yUV9PF2e1AcC6sWnK6PzjPrzoCAR5UN22sPRYfvWjEMqelMIruuUilfNbdCb
+         9FRVmffKN3x0AA2lyfOIRttQmvjjZ7H2MPhjYqyGOe8dPxMZprFTR/T6of9UbWa49qgi
+         EF0Q==
+X-Gm-Message-State: AAQBX9clv6fooy9jWWqfr6gz3RIWJoN++qz+uVpYqdqU1aiYziqaSWFM
+        A0Y5pzhpNQ9ZsT7Q6Ds3KvlpXA==
+X-Google-Smtp-Source: AKy350YWtYEZbla3D055wcBJGgPIjcQpUqqBDPJcyqq+YttwcjwgN5hzwEo067Hfi0VH3CmPoKV7Nw==
+X-Received: by 2002:a17:906:8602:b0:94a:a1e2:ce29 with SMTP id o2-20020a170906860200b0094aa1e2ce29mr408724ejx.23.1681504838502;
+        Fri, 14 Apr 2023 13:40:38 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:ffae:8aab:ae5a:4688? ([2a02:810d:15c0:828:ffae:8aab:ae5a:4688])
+        by smtp.gmail.com with ESMTPSA id fh8-20020a1709073a8800b0094f0f0de1bcsm168733ejc.200.2023.04.14.13.40.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Apr 2023 13:40:38 -0700 (PDT)
+Message-ID: <d577bc44-780f-f25d-29c6-ed1d353b540c@linaro.org>
+Date:   Fri, 14 Apr 2023 22:40:37 +0200
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <ZDlLmCIiKSMa7Hah@arbad>
-References: <ZDlLmCIiKSMa7Hah@arbad>
-Message-Id: <168149742968.103828.12005372013452240608.robh@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
 Subject: Re: [PATCH v2 1/1] dt-bindings: iio: pressure: Support Honeywell
  mprls0025pa sensor
-Date:   Fri, 14 Apr 2023 13:37:55 -0500
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Language: en-US
+To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        linux-kernel@vger.kernel.org
+References: <ZDlLmCIiKSMa7Hah@arbad>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <ZDlLmCIiKSMa7Hah@arbad>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On Fri, 14 Apr 2023 14:48:24 +0200, Andreas Klinger wrote:
+On 14/04/2023 14:48, Andreas Klinger wrote:
 > Honeywell mpr is a pressure sensor series. There are many different models with different pressure
 > ranges, units and transfer functions.
 > 
 > The range and transfer function need to be set up in the dt. Therefore new properties
 > honeywell,pmin-pascal, honeywell,pmax-pascal, honeywell,transfer-function are introduced.
+
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v5.18-rc4/source/Documentation/process/submitting-patches.rst#L586
+
 > 
 > Add dt-bindings.
 > 
 > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+
+Patches 2 and 3 are missing. At least they were mentioned in the
+changelog but this is 1/1.
+
 > ---
 >  .../iio/pressure/honeywell,mprls0025pa.yaml   | 93 +++++++++++++++++++
 >  1 file changed, 93 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> new file mode 100644
+> index 000000000000..c0eb3c4be16f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> @@ -0,0 +1,93 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mprls0025pa.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Honeywell mpr series pressure sensor
+> +
+> +maintainers:
+> +  - Andreas Klinger <ak@it-klinger.de>
+> +
+> +description: |
+> +  Honeywell pressure sensor of model mprls0025pa.
+> +
+> +  This sensor has an I2C and SPI interface. Only the I2C interface is implemented.
+> +
+> +  There are many models with different pressure ranges available. The vendor calls them "mpr
+> +  series". All of them have the identical programming model and differ in the pressure range, unit
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Wrap according to Linux coding style, so at 80.
 
-yamllint warnings/errors:
+> +  and transfer function.
+> +
+> +  To support different models one need to specify the pressure range as well as the transfer
+> +  function. Pressure range needs to be converted from its unit to pascal.
+> +
+> +  The transfer function defines the ranges of numerical values delivered by the sensor. The minimal
+> +  range value stands for the minimum pressure and the maximum value also for the maximum pressure
+> +  with linear relation inside the range.
+> +
+> +  Specifications about the devices can be found at:
+> +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/
+> +      pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/
+> +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: honeywell,mprls0025pa
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml: properties:honeywell,transfer-function: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml: properties:honeywell,transfer-function: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml: properties:honeywell,transfer-function: 'oneOf' conditional failed, one must be fixed:
-		'$ref' is a required property
-		'allOf' is a required property
-		hint: A vendor property needs a $ref to types.yaml
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.example.dtb: pressure@18: 'honeywell,pmax', 'honeywell,pmin' do not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+So this is one compatible for entire family of 96 separate devices.
+Looks like reasonable compromise, although I will wait for Rob's
+approval on that.
 
-doc reference errors (make refcheckdocs):
+Anyway you need to fix the coding style.
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/ZDlLmCIiKSMa7Hah@arbad
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Best regards,
+Krzysztof
 

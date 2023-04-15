@@ -2,95 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8898B6E3261
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Apr 2023 18:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DE66E3267
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Apr 2023 18:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjDOQUU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Apr 2023 12:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
+        id S229869AbjDOQZt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Apr 2023 12:25:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjDOQUQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Apr 2023 12:20:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3204230;
-        Sat, 15 Apr 2023 09:20:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57CF3612ED;
-        Sat, 15 Apr 2023 16:20:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8FCC433EF;
-        Sat, 15 Apr 2023 16:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681575610;
-        bh=DTWP6xThhLREOoWWAUdntoavtxBw4x/BgKGr7En2G+I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GmUNzIsw/k9u6mHIPjmMJSdolY4BlTCHrz6o7gYdxbGZ4PeqtrXozfp7Q0xrDnbiC
-         N6ekHJxPfDEloG4V6MmfkCTixSIWH1HgBN+y1e31mC07b0+LhDW0C7uMoCN/A/BhTi
-         jUvvq4lR3/PsJM4LKq8P622ks4HUD+ow7FgYUcGyuPPF338khCSriVkmAo8+iMuIcL
-         HpcSRkBGLZcccS36Cc+ZDyy8vRsL7XDfWkoY+X6I3k3wFeExu1KK/hteM8F+nK+guS
-         ib5saxEInFemsZ9wUM71gB7w4pIgdeqdZvHr5xOpxOy1pq+gMq4Er0BxK1bjFZYFSl
-         njkcndZEX5djw==
-Date:   Sat, 15 Apr 2023 17:20:09 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+        with ESMTP id S229678AbjDOQZr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Apr 2023 12:25:47 -0400
+Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BEDD4205
+        for <linux-iio@vger.kernel.org>; Sat, 15 Apr 2023 09:25:45 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id niicpmmuPuZFDniidpv4WH; Sat, 15 Apr 2023 18:25:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=orange.fr;
+        s=t20230301; t=1681575943;
+        bh=0ZTOsuOe5l/P6twE7yNwHhcSMb6Pv10MoGFjviDm2bw=;
+        h=From:To:Cc:Subject:Date;
+        b=WnBrPLQlml6/G/jNEyBVszuiG/RwCDn37wK4n8S+LoObPNkZ9TcP2hFH7w6ol2xBN
+         rtO1i01P4QcRbBhjWuJEPbGNaGWocBaeITZxDtjT7PUvHy9KkkLt+OeFM6bR1F2dWR
+         G3T/rIkPkbsLEMuNgpxFinU5HWsW6SAV+6pu/44vRMHMCKocHWVDpODZ3pvoXu5X4h
+         1hVdfTszaFhd23+HoB0bzCP0PEI5V/NtPPtHWQ5qMMvv3FF3cerxybjkdTSbaTKwa/
+         jmQDaCigvvvFIs60bIOUBSnd4w8XL6FQrsN7y4elxI1NjNjkQKnx8l4W8NpXSuxyrB
+         4gE+WdoZOhUZQ==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 15 Apr 2023 18:25:43 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH 5/8] dt-bindings: iio: adc: qcom,spmi-vadc: Allow 1/16
- for pre-scaling
-Message-ID: <20230415172009.529d91c5@jic23-huawei>
-In-Reply-To: <577ecd98-94eb-3795-4859-ffad03192f89@linaro.org>
-References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
-        <20230414-pmi632-v1-5-fe94dc414832@z3ntu.xyz>
-        <577ecd98-94eb-3795-4859-ffad03192f89@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+Subject: [PATCH] iio: accel: bma400: Simplify an error message
+Date:   Sat, 15 Apr 2023 18:25:41 +0200
+Message-Id: <9373d41b0a1f3dc3fc0d31c1daaa19d9a7ec4dcd.1681575924.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Apr 2023 09:56:07 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+dev_err_probe() already display the error code. There is no need to
+duplicate it explicitly in the error message.
 
-> On 14/04/2023 01:17, Luca Weiss wrote:
-> > The channel ADC5_USB_IN_V_16 is using 1/16 pre-scaling on at least
-> > pm7250b and pmi632. Allow that in the schema.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >   
-> 
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> Best regards,
-> Krzysztof
-> 
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/iio/accel/bma400_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Applied this patch to the IIO togreg branch initially pushed out as testing
-for 0-day to poke at it.
+diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+index a68b845f5b4f..e90e2f01550a 100644
+--- a/drivers/iio/accel/bma400_core.c
++++ b/drivers/iio/accel/bma400_core.c
+@@ -868,8 +868,7 @@ static int bma400_init(struct bma400_data *data)
+ 					     ARRAY_SIZE(regulator_names),
+ 					     regulator_names);
+ 	if (ret)
+-		return dev_err_probe(data->dev, ret, "Failed to get regulators: %d\n",
+-				     ret);
++		return dev_err_probe(data->dev, ret, "Failed to get regulators\n");
+ 
+ 	/* Try to read chip_id register. It must return 0x90. */
+ 	ret = regmap_read(data->regmap, BMA400_CHIP_ID_REG, &val);
+-- 
+2.34.1
 
-I'm doubtful this one will make the upcoming merge window but seems unlikely
-the rest will all make it either so that shouldn't be a problem.
-
-Jonathan

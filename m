@@ -2,102 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39DC6E2FBD
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Apr 2023 10:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123596E3214
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Apr 2023 17:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjDOIba (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Apr 2023 04:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55636 "EHLO
+        id S229772AbjDOPUv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Apr 2023 11:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbjDOIb2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Apr 2023 04:31:28 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D352112;
-        Sat, 15 Apr 2023 01:31:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681547486; x=1713083486;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Bt+KZdRCXHcYjBL+CJ4plANJoXCVg/BAm9vKQVmi004=;
-  b=QIG0JjEuN3t0FB0SPVBLHCm3XFJUjLfjQWZHyV4P/P6wK6wPKYgNKvXz
-   10TIq2z4WbY2AUwAw3d1C+2I44Vf82X8rkOQux4BNK/ivY2gQPfWIU5AS
-   8xLtGNi9dl3VFrxPzXpOEuYuvfMNHkYJ6dQGSrLiaxFwgHXrex50yPK7L
-   dMIj/SLY2VmmUzlsIBj+3V0ExHsyOlNDoVdiRSyFVUgwKXLN/vVevkZuq
-   V2+s2xLxkAHYPRK6bu6BSoR+oBx2YTEV1L2ZKEiyuRzeqIbxkWNNY1UlO
-   lVkebqPQpMHiUXA0oNSYU7pzQroU2Qf53bWKnXNY24DUBFj8Zune6FXjo
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10680"; a="346470702"
-X-IronPort-AV: E=Sophos;i="5.99,199,1677571200"; 
-   d="scan'208";a="346470702"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2023 01:31:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10680"; a="692720900"
-X-IronPort-AV: E=Sophos;i="5.99,199,1677571200"; 
-   d="scan'208";a="692720900"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 15 Apr 2023 01:31:22 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pnbJa-000ajf-0s;
-        Sat, 15 Apr 2023 08:31:22 +0000
-Date:   Sat, 15 Apr 2023 16:30:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kim Seer Paller <kimseer.paller@analog.com>, lars@metafoo.de,
-        jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, kimseer.paller@analog.com
-Subject: Re: [PATCH 1/2] dt-bindings:iio:adc: add max14001 bindings
-Message-ID: <202304151615.k0j79iDf-lkp@intel.com>
-References: <20230414102844.21579-1-kimseer.paller@analog.com>
+        with ESMTP id S229535AbjDOPUv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Apr 2023 11:20:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC673C11
+        for <linux-iio@vger.kernel.org>; Sat, 15 Apr 2023 08:20:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F3082603F7
+        for <linux-iio@vger.kernel.org>; Sat, 15 Apr 2023 15:20:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E729C433EF;
+        Sat, 15 Apr 2023 15:20:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681572048;
+        bh=ClyZVPK6rpue/2Mw5K3gJs7mBW1F3/aYu+M1A/FQ7aM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=lhObwP0UTeN+6fGGVu3l3tx90Ja8iJSDf1xOAaqVYsajt2vLrO9qFAUpQpZip7Y82
+         hrrDQAAKSCQr4VSvgEZGiv2Qw63nFGuE4CbtVwRNCAn15sEBledQ8GBvxmFG5LYG14
+         nHiels4USrwGRxAqaAAGfm5ixXoqBSYQmOSpfpwfO6mTJYeWEvsuc2eZSa3chaDhvy
+         RhgBXGYoTxtCrQ6w2TyJ+XLbTNyITIXcU8CZHJHr+O4uly6nthLZTyqD3yLO+1SydW
+         AtGZwZkg6hHby01gBnjDaI9ANU0dxsR3JW1Zeu1cSd3GBXLvP1SYgfRXGdwB/PL1CO
+         G86k+aRBCoc5w==
+Date:   Sat, 15 Apr 2023 16:20:49 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Gerald Loacker <gerald.loacker@wolfvision.net>
+Cc:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: tmag5273: Fix runtime PM leak on measurement error
+Message-ID: <20230415162049.25566ce3@jic23-huawei>
+In-Reply-To: <8d5256ae-3b06-aadd-de5c-73105cb91d74@wolfvision.net>
+References: <20230414013752.498767-1-lars@metafoo.de>
+        <ce69fcd4ed928cf5cb47847235826668e9b61beb.camel@gmail.com>
+        <8d5256ae-3b06-aadd-de5c-73105cb91d74@wolfvision.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230414102844.21579-1-kimseer.paller@analog.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Kim,
+On Fri, 14 Apr 2023 12:17:36 +0200
+Gerald Loacker <gerald.loacker@wolfvision.net> wrote:
 
-kernel test robot noticed the following build warnings:
+> Am 14.04.2023 um 07:57 schrieb Nuno S=C3=A1:
+> > On Thu, 2023-04-13 at 18:37 -0700, Lars-Peter Clausen wrote: =20
+> >> The tmag5273 gets a runtime PM reference before reading a measurement
+> >> and
+> >> releases it when done. But if the measurement fails the
+> >> tmag5273_read_raw()
+> >> function exits before releasing the reference.
+> >>
+> >> Make sure that this error path also releases the runtime PM
+> >> reference.
+> >>
+> >> Fixes: 866a1389174b ("iio: magnetometer: add ti tmag5273 driver")
+> >> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> >> --- =20
+> >=20
+> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> >  =20
+>=20
+> Acked-by: Gerald Loacker <gerald.loacker@wolfvision.net>
+Applied to the fixes-togreg branch of iio.git.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.3-rc6]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I'm not going to rush this in before the merge window. It might
+even wait until after rc1 as it would have had any time in linux-next
+before I send final pull request for the merge window.=20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kim-Seer-Paller/iio-adc-add-max14001-support/20230414-183416
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230414102844.21579-1-kimseer.paller%40analog.com
-patch subject: [PATCH 1/2] dt-bindings:iio:adc: add max14001 bindings
-reproduce:
-        # https://github.com/intel-lab-lkp/linux/commit/8e4267ba9a592dc820ad029c5e602098ec981159
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Kim-Seer-Paller/iio-adc-add-max14001-support/20230414-183416
-        git checkout 8e4267ba9a592dc820ad029c5e602098ec981159
-        make menuconfig
-        # enable CONFIG_COMPILE_TEST, CONFIG_WARN_MISSING_DOCUMENTS, CONFIG_WARN_ABI_ERRORS
-        make htmldocs
+Jonathan
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304151615.k0j79iDf-lkp@intel.com/
+>=20
+> >> =C2=A0drivers/iio/magnetometer/tmag5273.c | 5 +++--
+> >> =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/magnetometer/tmag5273.c
+> >> b/drivers/iio/magnetometer/tmag5273.c
+> >> index 28bb7efe8df8..e155a75b3cd2 100644
+> >> --- a/drivers/iio/magnetometer/tmag5273.c
+> >> +++ b/drivers/iio/magnetometer/tmag5273.c
+> >> @@ -296,12 +296,13 @@ static int tmag5273_read_raw(struct iio_dev
+> >> *indio_dev,
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+return ret;
+> >> =C2=A0
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D tmag5273_get_measure(data, &t, &x, &y, &=
+z,
+> >> &angle, &magnitude);
+> >> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0if (ret)
+> >> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return=
+ ret;
+> >> =C2=A0
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0pm_runtime_mark_last_busy(data->dev);
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0pm_runtime_put_autosuspend(data->dev);
+> >> =C2=A0
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0if (ret)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return=
+ ret;
+> >> +
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0switch (chan->address) {
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0case TEMPERATURE:
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+*val =3D t; =20
+> >  =20
 
-All warnings (new ones prefixed by >>):
-
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/iio/dac/adi,max14001.yaml
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests

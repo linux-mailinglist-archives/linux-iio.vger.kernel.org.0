@@ -2,60 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9CF6E3289
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Apr 2023 18:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 336706E3292
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Apr 2023 18:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbjDOQtq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Apr 2023 12:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
+        id S229887AbjDOQvH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Apr 2023 12:51:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjDOQtq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Apr 2023 12:49:46 -0400
+        with ESMTP id S229622AbjDOQvF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Apr 2023 12:51:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52245E1;
-        Sat, 15 Apr 2023 09:49:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAD34699;
+        Sat, 15 Apr 2023 09:51:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E14D86118B;
-        Sat, 15 Apr 2023 16:49:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A85C433EF;
-        Sat, 15 Apr 2023 16:49:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BAF161251;
+        Sat, 15 Apr 2023 16:51:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C57C433D2;
+        Sat, 15 Apr 2023 16:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681577384;
-        bh=HzfT7C9pxZUKfBOzD0bn0wIBd5ovSSU49etyxQMRn4s=;
+        s=k20201202; t=1681577463;
+        bh=n0oePJtWdj05yVNtBX56JZ7CGqEDY5FheJdpHy8D2dM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aBYgLqucsTTarCKTBL3wdnwg6i8sqBa804UW2EET+CKcXHntwF3129XIKFpOEhB74
-         5bj5xri8We8v9A+D08305ckbNN91Rtfm/Gr4W4awR6XD0C8iqS7/HvhON+nfc80uYB
-         Y9ykEn/YDDdsiwALjAy4XMLfafRnUV6reZ8hliEb1BeCr7M+sHsS4C2R6Yf+jpOGVX
-         1AcI3IbBksAxbLurcRqzVEeLm0z9G7JHmwE5q536S1/xasJpntZaTWZKzEnDRR4EVC
-         YjIrBDvqauhSg5VPr2ahuQM9ByvNSG34ccFZMG+Ts6vgDM34WH4eXx29T5ZTT9jOVk
-         XRmheW/YpuW5A==
-Date:   Sat, 15 Apr 2023 17:49:43 +0100
+        b=qfHroG1/Jh8JlgMHRXDTAp48D/jUd4WysjMx//m7PNio9qzYlcEARajJiMtmKZlzx
+         /JFR1Zr6dvdxNjzXx2Sh+R5FKl7Ei5SMOVvPtO4lA1FUcLIEXHhtqVtiFZrmTBtN9j
+         ZHqPvF3h8BZixI3fXhYiLI6mPr5LCkCUAP085quVsj+lrfjjcp/47S8ADYZx3Ka39d
+         ZB51pfDyJe4ivCzjlz8N7YQoZe0V3PkKS/ZEd9oyIzqKiYymBaMQ1St3m2QDTXlgWA
+         8MjfDJl/qIWrqtlFALtHPt/s4uiA3wCZkVnFW29dwMdpjVC5bGZtyGe4/qzWZa87W4
+         I4WyYi3+J5vTw==
+Date:   Sat, 15 Apr 2023 17:51:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Marius Hoch <mail@mariushoch.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel`
- name for channel nodes
-Message-ID: <20230415174943.2b731203@jic23-huawei>
-In-Reply-To: <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
-        <20230410202917.247666-6-marijn.suijten@somainline.org>
-        <20230412212756.0b4b69f3@jic23-huawei>
-        <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH v2 6/6] dt-bindings: iio: st-sensors: Add LSM303D
+ accelerometer+magnetometer
+Message-ID: <20230415175104.3f8f4e09@jic23-huawei>
+In-Reply-To: <501892f8-cad3-d1c7-7d24-6226eefe7edd@kernel.org>
+References: <20230413024013.450165-1-mail@mariushoch.de>
+        <20230413024013.450165-7-mail@mariushoch.de>
+        <501892f8-cad3-d1c7-7d24-6226eefe7edd@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -69,58 +58,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 12 Apr 2023 22:31:46 +0200
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
+On Thu, 13 Apr 2023 10:07:04 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> On 2023-04-12 21:27:56, Jonathan Cameron wrote:
-> > On Mon, 10 Apr 2023 22:29:17 +0200
-> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> >   
-> > > As discussed in [1] it is more convenient to use a generic `channel`
-> > > node name for ADC channels while storing a friendly - board-specific
-> > > instead of PMIC-specific - name in the label, if/when desired to
-> > > overwrite the channel description already contained (but previously
-> > > unused) in the driver [2].
-> > > 
-> > > The same `channel` node name pattern has also been set in
-> > > iio/adc/adc.yaml, but this generic binding is not inherited as base for
-> > > qcom,spmi-vadc bindings due to not having any other generic elements in
-> > > common, besides the node name rule and reg property.
-> > > 
-> > > Replace the .* name pattern with the `channel` literal, but leave the
-> > > label property optional for bindings to choose to fall back a channel
-> > > label hardcoded in the driver [2] instead.
-> > > 
-> > > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> > > [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
-> > > 
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>  
+> On 13/04/2023 04:40, Marius Hoch wrote:
+> > Same as the lsm9ds0, except that the lsm303d doesn't
+> > feature a gyroscope.
 > > 
-> > There are various ways we could pick up this patch set...
-> > a) Binding changes via individual subsystem trees,
-> > b) All in on go.
-> > 
-> > I think it's late to guarantee to land the changes from (a) in the coming merge window
-> > so if someone else is willing to do (b) then
-> > 
-> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Otherwise we can do (a) early in next cycle.  Feel free to poke me if we are doing (b)
-> > and I seem to have forgotten to pick up this patch!  
+> > Signed-off-by: Marius Hoch <mail@mariushoch.de>  
 > 
-> Thanks!  I hope we don't get many conflicts (+ new bindings adhering to
-> the old(er) formats) otherwise I'll resend if we do (a).  Around what
-> time would be good, rc2?
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC.  It might happen, that command when run on an older
+> kernel, gives you outdated entries.  Therefore please be sure you base
+> your patches on recent Linux kernel.
 
-Sure. If rebase is needed send a v5 with that done.  If not, a simple
-reminder reply to this thread will probably work.
-
-Thanks,
+Just to avoid any confusion.  Point here is that the dt-binding
+maintainers and list should be cc'd on series that touch bindings.
 
 Jonathan
 
 > 
-> [..]
+> Best regards,
+> Krzysztof
 > 
-> - Marijn
 

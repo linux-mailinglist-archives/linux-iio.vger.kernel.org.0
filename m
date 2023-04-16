@@ -2,115 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 461EA6E391E
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 16:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D11B6E3931
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 16:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229976AbjDPORR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Apr 2023 10:17:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38874 "EHLO
+        id S230456AbjDPOYZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Apr 2023 10:24:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230332AbjDPORR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 10:17:17 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0CE91FF0
-        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 07:17:14 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id u3so5625066ejj.12
-        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 07:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681654633; x=1684246633;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=V/3dcuion13sJsfdfeJ1nJXQOfv7UJn9geOzy4vdmqI=;
-        b=RkvtvgW+braPr1bHHGazAD5qn9gK5OvQe94UzPT1UkvqARIdsvB/x+GXiqSygrWCus
-         wMFbF+CPKZWY6gBpg/Pxg9svSQ0kJ3SGOh01bZpPwT+sGNMBnc6ZS5ujPwAsx+mlk96F
-         RkB5w3VklOTTOEVxzL/13WbNBw44/z9PMSsZqS6+fmI1C6B1nJ/Ezj4+mDqy+uxRVbYU
-         oBV5+DFcM8XnM1lO5MyZg1KTZ1kDPrnO8ehkpVQDuTBvM0pRBAGc1lomOLGmqt4thAML
-         y6wiOAJ0dBwPW0FjnL37cr/zsmqizT0QxLiORtvZbeKwr4E0q07sobjYpwZzcfVXadAE
-         r2Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681654633; x=1684246633;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V/3dcuion13sJsfdfeJ1nJXQOfv7UJn9geOzy4vdmqI=;
-        b=dBAWk0Kk4aJ1WlDfdMDMY+CIvLyY8pqToi1qezoh4P/92rphqlFum4wEjttGpljz0I
-         Yly+9FiPZTug69rd3JoSXjsJZkesF5bWeYvCfPtYJA7G+tVORKm0LAIpumX+8ViUVwf3
-         6/79skvNgqVNEkNpCpJbKMm07Qy8QESS29f0Z33VRusKobnnbib7RFB6OdNsrUUuHOVi
-         GtHEJ4lHLKseCZQhSf8o73pn12COv2hsaG+HKBXXu10PLl9P4fcXp9FCiofyn/i7W9Xu
-         LWhtvEpfPtjky+xxMwDBm7Qf1MCDd34+BcHMJpwF3HmgMMuKJzElG7yVVDzynB3Z2ivQ
-         PVhQ==
-X-Gm-Message-State: AAQBX9cZDC9hfH2iZjPY5fwKS5qSd/Q5/k2rfdfNBocJxlq9WWW1G4ze
-        Jy1ofLSV+JL4W9M4FzrUsVtVCVVR52Q6hy9oX40=
-X-Google-Smtp-Source: AKy350aQ90ciic978SSzqPVIlkBGrpmoWtF1iQGD8kNvA+qgmdNuq6DhXCVGMSoBsWaaUSC8SnFE0A==
-X-Received: by 2002:a17:906:b7c6:b0:94f:1:8469 with SMTP id fy6-20020a170906b7c600b0094f00018469mr4392986ejb.35.1681654633353;
-        Sun, 16 Apr 2023 07:17:13 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:ba4d:301c:484d:5c9? ([2a02:810d:15c0:828:ba4d:301c:484d:5c9])
-        by smtp.gmail.com with ESMTPSA id tg4-20020a1709078dc400b0094ea3a32694sm5013900ejc.190.2023.04.16.07.17.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Apr 2023 07:17:13 -0700 (PDT)
-Message-ID: <8eb3e8e5-95a8-ffcd-aa09-8d6d63b7f526@linaro.org>
-Date:   Sun, 16 Apr 2023 16:17:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: add 16 ratio of
- pre-scaling
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
+        with ESMTP id S230365AbjDPOYY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 10:24:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A18B2D4C;
+        Sun, 16 Apr 2023 07:24:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA650611AA;
+        Sun, 16 Apr 2023 14:24:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5246C433EF;
+        Sun, 16 Apr 2023 14:24:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681655062;
+        bh=DRmjqzj0vppDmwa+O86tDrM1feeK6o2CP6HsH/iSM5g=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Wt/oOFIOb7ClzTlXeE51KP9dzjzQfnpaiY0WTAv4NobCq54yPwX5qV/qjjK/b0RrA
+         cpavE5HEA9pj+xEdppDeLnD/JC67azwEuGpvp6wlEFOrandFtCm1FLhthsjnoARCsp
+         XbNcXBC/3+tzrgybHGZg2B/Z5GdRPXfgWYT6g5oal0L863CtHpHi3Z6ZUIdoWsrG6H
+         fvHFyV6Zl1d/K/RanvVcGEJV8WMozjP5AR1oxJ/JIAkgq8r2+bL3UVAVQGJocbYUZU
+         2RxLvisVOdPSoWac6/WZtNAFJhHG2iDLOUYXsZ6B59lSpqZLjEIBxDfmVr42E/nhhT
+         3e1p5nnM2kGlA==
+Date:   Sun, 16 Apr 2023 15:24:22 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230416123142.299533-1-krzysztof.kozlowski@linaro.org>
- <20230416141024.2c09d7c8@jic23-huawei>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230416141024.2c09d7c8@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+        Vinod Koul <vkoul@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH v3 03/11] iio: buffer-dma: Get rid of outgoing queue
+Message-ID: <20230416152422.477ecf67@jic23-huawei>
+In-Reply-To: <20230403154800.215924-4-paul@crapouillou.net>
+References: <20230403154800.215924-1-paul@crapouillou.net>
+        <20230403154800.215924-4-paul@crapouillou.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 16/04/2023 15:10, Jonathan Cameron wrote:
-> On Sun, 16 Apr 2023 14:31:42 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> Document value of 16 for pre-scaling, already used in DTS and supported
->> by the Linux driver since long time:
->>
->>   sm7225-fairphone-fp4.dtb: adc@3100: channel@8:qcom,pre-scaling: 'oneOf' conditional failed, one must be fixed:
->>     10 was expected
->>     16 is not one of [1, 3, 4, 6, 20, 8, 10]
->>     81 was expected
->>
->> Fixes: e13d757279bb ("iio: adc: Add QCOM SPMI PMIC5 ADC driver")
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> I'm carrying an identical patch (though without the reordering) from Luca Weiss.
-> I thought as the whole series was very late in the cycle that it was unlikely
-> to be necessary to rush this in.
-> 
-> https://lore.kernel.org/all/20230414-pmi632-v1-5-fe94dc414832@z3ntu.xyz/
-> 
-> I see that patch is for the fairphone-fp3 adn this report is the fairphone-fp4.
-> Is that the reason this is a fix?
+On Mon,  3 Apr 2023 17:47:52 +0200
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-Oh, I missed it. It's just something new and not yet in next maybe, so
-thus I missed the fix.
+> The buffer-dma code was using two queues, incoming and outgoing, to
+> manage the state of the blocks in use.
+> 
+> While this totally works, it adds some complexity to the code,
+> especially since the code only manages 2 blocks. It is much easier to
+> just check each block's state manually, and keep a counter for the next
+> block to dequeue.
+> 
+> Since the new DMABUF based API wouldn't use the outgoing queue anyway,
+> getting rid of it now makes the upcoming changes simpler.
+> 
+> With this change, the IIO_BLOCK_STATE_DEQUEUED is now useless, and can
+> be removed.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> 
+> ---
+> v2: - Only remove the outgoing queue, and keep the incoming queue, as we
+>       want the buffer to start streaming data as soon as it is enabled.
+>     - Remove IIO_BLOCK_STATE_DEQUEUED, since it is now functionally the
+>       same as IIO_BLOCK_STATE_DONE.
 
-Ignore this patch then, please.
+I'm not that familiar with this code, but with my understanding this makes
+sense.   I think it is independent of the earlier patches and is a useful
+change in it's own right.  As such, does it make sense to pick this up
+ahead of the rest of the series? I'm assuming that discussion on the
+rest will take a while.  No great rush as too late for the coming merge
+window anyway.
 
-Best regards,
-Krzysztof
+Thanks,
+
+Jonathan
 

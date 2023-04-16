@@ -2,236 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8BE6E3AAE
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 19:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3E26E3BE1
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 22:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbjDPRh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Apr 2023 13:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48968 "EHLO
+        id S229695AbjDPUUo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Apr 2023 16:20:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjDPRhS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 13:37:18 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A463730C5
-        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 10:37:16 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id 63-20020a9d0345000000b006a5e01360fdso595724otv.10
-        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 10:37:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681666635; x=1684258635;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FYx0k5ihhJlPtRpOo4XGHOU5FikMHitAj1rgNIt8olI=;
-        b=iJhar42nZCrIRo6hBBOzAXGE/XF9O0Jp6LT+eXOaVDiIO5i/yATOcjPIAHJtvdJ2Rc
-         0flialZCD7rELafUN208dVRAsB48TeALBtAcqVlpfZD0mcM7AUWtzDqm5vchixm355ry
-         SZN7c0zOA9AqLgOk+Ag6hoQXvv9UhJgnl5MAhUgaezn3tNDTOK+KBRrTdYb+Riu5c4uF
-         09T3u/xfKj1C4WfTmIrkICPhIKXRHe+UQHz58sVBsX1Oo9kySjWkZ/32KewjyROxZT1I
-         oEvtgOlBtdCoKQrJt8ruiAPAKg1agDb8JXaTiTLZ4/rpdGZtYBeaeqkD8G5QSlpxdPG9
-         4MIA==
+        with ESMTP id S229565AbjDPUUn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 16:20:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FCE526B5
+        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 13:19:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1681676395;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=E4VfgdWy79fScFpHd8ztN3EfNO1Bs6qzR+h66uHi/sM=;
+        b=i5AxEbG0cSngHWhXf5C2ZjZqVTKNboqSncT57H8g5NdtgMKUVT3/6bhd/YaABYS5rVM4F3
+        CTAm+Lew6LLkA/7keh6bqNnATBV9ENVw+aEdwesRfQKdBMq23qGg08fVVi1MKEmmLbfP4K
+        JFNDWX9xrAdn1gjm7J0p34RioamNom0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-378-g-RBdeKwPxGA7TdQ49DU8g-1; Sun, 16 Apr 2023 16:19:53 -0400
+X-MC-Unique: g-RBdeKwPxGA7TdQ49DU8g-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-94f0dd11762so58658266b.1
+        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 13:19:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681666635; x=1684258635;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FYx0k5ihhJlPtRpOo4XGHOU5FikMHitAj1rgNIt8olI=;
-        b=HVi7biSiHBHTzuTRHSfZP9rrcYbPiK9NQ/XsNNnNoXf7wMaSrkk8m8T78AFPizBHYf
-         7YPF5hjfSq7mdErPrXnTeWE1m5nlSTvKYl06dWfQ8Vb5jKmN/hWc/qBv0znBcbu2h0lh
-         6C7bpZnWo+a8seFM7w+DfqFLLMy9SP/1HXLjujvnod3II2E8+l0SCmlc1o8ffFCQ1o2y
-         iJymRZ6+l0mz0f3mpsq9Wwgczg+2YMQmsuxwGlWBf3TfV6MapmDIkKLK1vt/tO1Iluhx
-         uZ6TY4iAGu/386szhvAKbSa+CPC2TqPXaNs4acoCdiJwnwt9y91wQ0ZLedFvbT5xCZUl
-         klUA==
-X-Gm-Message-State: AAQBX9eBTzvzb+P1+xAl2kjzViP7PVUNzUnuKmEBJFX/nYKdfGq2MHrp
-        oUvhUO2q/PBZXW4n4urV848tBg==
-X-Google-Smtp-Source: AKy350a7UU1lbYnc9sEjdYX046H6Scr3HtpydUxLMudV1BMQbviJTEylyNcUf9a9pGCGVi4RdY1beQ==
-X-Received: by 2002:a05:6830:1614:b0:6a4:25d5:83f8 with SMTP id g20-20020a056830161400b006a425d583f8mr5467237otr.20.1681666635775;
-        Sun, 16 Apr 2023 10:37:15 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id v16-20020a05683011d000b0069457b86060sm3771038otq.47.2023.04.16.10.37.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Apr 2023 10:37:15 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH 3/3] iio: addac: stx104: Add 8254 Counter/Timer support
-Date:   Sun, 16 Apr 2023 13:36:55 -0400
-Message-Id: <45d35b6f6e8d51df788b2bc85c456bfd45476b1a.1681665189.git.william.gray@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1681665189.git.william.gray@linaro.org>
-References: <cover.1681665189.git.william.gray@linaro.org>
+        d=1e100.net; s=20221208; t=1681676392; x=1684268392;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4VfgdWy79fScFpHd8ztN3EfNO1Bs6qzR+h66uHi/sM=;
+        b=j8qKpg/br4w6ewbCnaRSY02fiA0rT9NiGpYe3L/shYFF63OnqQqlqJSj4J9J/XC7MX
+         33QRlqtgTje9566PBx9T5l8kbHwSLvX+vsGDZLK+i3S2QQA55nVprxR99cyZ5a4fTzwC
+         B1qwm8TfgiIE95mojTuFQBFecKlHykUYOuT5vIbvyrpbLSesXAhQVPlw7t3k78yFChyf
+         APVD5Yv0qJlnAjBf/oJduMrAyTg7i/2GlFywKs7RcyfYELiCQCqgb0vPiR4FEmkXYgJS
+         CfWUCs3FSgoFXMvaOMH3rZXpbaahJkf/PQmYY5+0b4eVcNOruS/l5qN0O0CTRqKjKr9t
+         Zn/w==
+X-Gm-Message-State: AAQBX9e6t2/uN43iLO9SvVwmEU51QEcBB1rHc0SypNJR/nsjFY1K7bV2
+        KRA2i53gH1x4AYynTGAp8nUSnqRDk8/KH5lfrkPibKXskOPGEm5zVImKFwfS+FnmADrMp7JaACQ
+        5eMyzLa2hh22NhMlK7bCj
+X-Received: by 2002:aa7:d814:0:b0:506:9701:8436 with SMTP id v20-20020aa7d814000000b0050697018436mr3928486edq.16.1681676392497;
+        Sun, 16 Apr 2023 13:19:52 -0700 (PDT)
+X-Google-Smtp-Source: AKy350b+Rx8aYCm1+2MZmFymKF7qHzMlh5iqmEBr7hABMtGp1cN0/0bG3sAD9IZSP+SnHgtLZmAN+Q==
+X-Received: by 2002:aa7:d814:0:b0:506:9701:8436 with SMTP id v20-20020aa7d814000000b0050697018436mr3928477edq.16.1681676392105;
+        Sun, 16 Apr 2023 13:19:52 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id y2-20020aa7ccc2000000b004c2158e87e6sm4878686edt.97.2023.04.16.13.19.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Apr 2023 13:19:51 -0700 (PDT)
+Message-ID: <3eb3de24-41b4-9566-9b11-a12d21904793@redhat.com>
+Date:   Sun, 16 Apr 2023 22:19:50 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 0/6] iio: st_sensors: Add lsm303d support
+To:     Marius Hoch <mail@mariushoch.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230415231130.115094-1-mail@mariushoch.de>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230415231130.115094-1-mail@mariushoch.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The STX104 features an 8254 Counter/Timer chip providing three
-counter/timers which can be used for frequency measurement, frequency
-output, pulse width modulation, pulse width measurement, event count,
-etc. The STX104 provides a register bank selection to bank select
-between the 8254 Bank and the Indexed Register Array Bank; the Indexed
-Register Array is not utilized by this driver, so the 8254 Bank is
-selected unconditionally.
+Hi Marius,
 
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- drivers/iio/addac/Kconfig  |  1 +
- drivers/iio/addac/stx104.c | 61 ++++++++++++++++++++++++++++++++++++--
- 2 files changed, 60 insertions(+), 2 deletions(-)
+On 4/16/23 01:11, Marius Hoch wrote:
+> Hi!
+> 
+> This patch series adds support for the LSM303D accelerometer and
+> magnetometer. As the LSM303D is basically, as far as I can tell,
+> the LSM9DS0 without gyroscope, we can easily re-use its definitions.
+> 
+> This was tested on a Lenovo Yoga Tablet 2 1051-F.
 
-diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
-index 877f9124803c..b2623881f0ec 100644
---- a/drivers/iio/addac/Kconfig
-+++ b/drivers/iio/addac/Kconfig
-@@ -38,6 +38,7 @@ config STX104
- 	select REGMAP_MMIO
- 	select GPIOLIB
- 	select GPIO_REGMAP
-+	select I8254
- 	help
- 	  Say yes here to build support for the Apex Embedded Systems STX104
- 	  integrated analog PC/104 card.
-diff --git a/drivers/iio/addac/stx104.c b/drivers/iio/addac/stx104.c
-index d1f7ce033b46..6946a65512ca 100644
---- a/drivers/iio/addac/stx104.c
-+++ b/drivers/iio/addac/stx104.c
-@@ -8,6 +8,7 @@
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/gpio/regmap.h>
-+#include <linux/i8254.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/types.h>
- #include <linux/isa.h>
-@@ -55,6 +56,7 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
- #define STX104_ADC_STATUS (STX104_AIO_BASE + 0x8)
- #define STX104_ADC_CONTROL (STX104_AIO_BASE + 0x9)
- #define STX104_ADC_CONFIGURATION (STX104_AIO_BASE + 0x11)
-+#define STX104_I8254_BASE (STX104_AIO_BASE + 0x12)
- 
- #define STX104_AIO_DATA_STRIDE 2
- #define STX104_DAC_OFFSET(_channel) (STX104_DAC_BASE + STX104_AIO_DATA_STRIDE * (_channel))
-@@ -77,6 +79,7 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
- /* ADC Configuration */
- #define STX104_GAIN GENMASK(1, 0)
- #define STX104_ADBU BIT(2)
-+#define STX104_RBK GENMASK(7, 4)
- #define STX104_BIPOLAR 0
- #define STX104_GAIN_X1 0
- #define STX104_GAIN_X2 1
-@@ -168,6 +171,32 @@ static const struct regmap_config dio_regmap_config = {
- 	.io_port = true,
- };
- 
-+static const struct regmap_range pit_wr_ranges[] = {
-+	regmap_reg_range(0x0, 0x3),
-+};
-+static const struct regmap_range pit_rd_ranges[] = {
-+	regmap_reg_range(0x0, 0x2),
-+};
-+static const struct regmap_access_table pit_wr_table = {
-+	.yes_ranges = pit_wr_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(pit_wr_ranges),
-+};
-+static const struct regmap_access_table pit_rd_table = {
-+	.yes_ranges = pit_rd_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(pit_rd_ranges),
-+};
-+
-+static const struct regmap_config pit_regmap_config = {
-+	.name = "i8254",
-+	.reg_bits = 8,
-+	.reg_stride = 1,
-+	.reg_base = STX104_I8254_BASE,
-+	.val_bits = 8,
-+	.io_port = true,
-+	.wr_table = &pit_wr_table,
-+	.rd_table = &pit_rd_table,
-+};
-+
- static int stx104_read_raw(struct iio_dev *indio_dev,
- 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
- {
-@@ -339,6 +368,21 @@ static const char *stx104_names[STX104_NGPIO] = {
- 	"DIN0", "DIN1", "DIN2", "DIN3", "DOUT0", "DOUT1", "DOUT2", "DOUT3"
- };
- 
-+static int bank_select_i8254(struct regmap *map)
-+{
-+	const u8 select_i8254[] = { 0x3, 0xB, 0xA };
-+	size_t i;
-+	int err;
-+
-+	for (i = 0; i < ARRAY_SIZE(select_i8254); i++) {
-+		err = regmap_write_bits(map, STX104_ADC_CONFIGURATION, STX104_RBK, select_i8254[i]);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
- static int stx104_init_hw(struct stx104_iio *const priv)
- {
- 	int err;
-@@ -361,7 +405,7 @@ static int stx104_init_hw(struct stx104_iio *const priv)
- 	if (err)
- 		return err;
- 
--	return 0;
-+	return bank_select_i8254(priv->aio_ctl_map);
- }
- 
- static int stx104_probe(struct device *dev, unsigned int id)
-@@ -369,6 +413,7 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	struct iio_dev *indio_dev;
- 	struct stx104_iio *priv;
- 	struct gpio_regmap_config gpio_config;
-+	struct i8254_regmap_config pit_config;
- 	void __iomem *stx104_base;
- 	struct regmap *aio_ctl_map;
- 	struct regmap *aio_data_map;
-@@ -406,6 +451,11 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 		return dev_err_probe(dev, PTR_ERR(dio_map),
- 				     "Unable to initialize dio register map\n");
- 
-+	pit_config.map = devm_regmap_init_mmio(dev, stx104_base, &pit_regmap_config);
-+	if (IS_ERR(pit_config.map))
-+		return dev_err_probe(dev, PTR_ERR(pit_config.map),
-+				     "Unable to initialize i8254 register map\n");
-+
- 	priv = iio_priv(indio_dev);
- 	priv->aio_ctl_map = aio_ctl_map;
- 	priv->aio_data_map = aio_data_map;
-@@ -449,7 +499,13 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 		.drvdata = dio_map,
- 	};
- 
--	return PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
-+	err = PTR_ERR_OR_ZERO(devm_gpio_regmap_register(dev, &gpio_config));
-+	if (err)
-+		return err;
-+
-+	pit_config.parent = dev;
-+
-+	return devm_i8254_regmap_register(dev, &pit_config);
- }
- 
- static struct isa_driver stx104_driver = {
-@@ -464,3 +520,4 @@ module_isa_driver(stx104_driver, num_stx104);
- MODULE_AUTHOR("William Breathitt Gray <vilhelm.gray@gmail.com>");
- MODULE_DESCRIPTION("Apex Embedded Systems STX104 IIO driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(I8254);
--- 
-2.39.2
+Thank you for your work on this. I have had this on my own todo list
+since 2020 at least and I did not realize that Andy already added ST IMU
+support in 2021 so this just needed some extra device-ids :)
+
+I have tested this successfully on the following models:
+
+Lenovo Yoga Tablet 2 851F (Windows version 8")
+
+This version needs an accel-mount-matrix quick in hwdb since it has
+a portrait screen rather then a landscape screen (so 90° rotated):
+https://github.com/systemd/systemd/pull/27295
+Note I've made sure that this quirk only applies to the 851 and not to the 1051.
+
+Lenovo Yoga Tablet 2  830F (Android version 8")
+
+Since the ACPI tables are broken in the Android BIOS these need
+a patch to x86-android-tablets to instantiate the i2c_client
+for the sensor, I'm still finalizing this patch and I'll submit
+it upstream when its finished.
+
+Tested-by: Hans de Goede <hansg@kernel.org>
+
+Regards,
+
+Hans
+
+
+p.s.
+
+1: I noticed that auto-screen rotation using iio-sensor-proxy is quite slow
+so I wrote a patch to fix this :)   :
+https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/merge_requests/366
+
+2: There are some other unsupported sensors on these models too,
+perhaps you are interested in adding support for these too?
+
+Here are my personal notes on this:
+ -Light sensor should work with drivers/iio/light/al3320a.c
+  https://github.com/JideTechnology/remixos-kernel/commit/c52d55b4bd907e87b7b115b3943219f3e089a77a
+
+ -MXM1120 HALL sensor, have datasheet, measures angle of kickstand thingie, use
+  for SW_TABLET_MODE. Do a pdx86 driver just for the Tab 2 which checks that the
+  kick stand is out *and* the BT keyboard is paired, in that case report
+  SW_TABLET_MODE=0, in all other cases report SW_TABLET_MODE=1 ??
+  For the commit msg:
+  Datasheet available here: http://haechitech.com/tech-support/
+  Requires creating an account, once you have an account you can immediately download
+  the provided datasheets (or let me know if you want me to email you a copy)
+
+Especially the light sensor should be an easy win and light sensors
+are already supported in e.g. iio-sensor-proxy
+
+
+
+
+
+
+
+
+
+
+> Changes in v3:
+> Simplified the ACPI tables in the LSM9DS0 IMU driver, per Jonathan Cameron.
+> 
+> Marius Hoch (6):
+>   iio: accel: st_accel: Add LSM303D
+>   iio: magnetometer: st_accel: Add LSM303D
+>   iio: st_sensors: Add lsm303d support to the LSM9DS0 IMU driver
+>   iio: st_sensors: Add ACPI support for lsm303d to the LSM9DS0 IMU
+>     driver
+>   iio: Comment that the LSM303D also has the Magnetometer DRDY
+>   dt-bindings: iio: st-sensors: Add LSM303D accelerometer+magnetometer
+> 
+>  .../devicetree/bindings/iio/st,st-sensors.yaml       |  1 +
+>  drivers/iio/accel/st_accel_core.c                    |  1 +
+>  drivers/iio/imu/st_lsm9ds0/Kconfig                   |  3 ++-
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c          | 12 ++++++++++++
+>  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c          | 12 ++++++++++++
+>  drivers/iio/magnetometer/st_magn_core.c              |  1 +
+>  include/linux/iio/common/st_sensors.h                |  1 +
+>  include/linux/platform_data/st_sensors_pdata.h       |  2 +-
+>  8 files changed, 31 insertions(+), 2 deletions(-)
+> 
+> 
+> base-commit: e62252bc55b6d4eddc6c2bdbf95a448180d6a08d
 

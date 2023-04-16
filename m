@@ -2,87 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24EF46E358F
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 09:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBDB6E35B6
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 09:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjDPHOV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Apr 2023 03:14:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
+        id S230126AbjDPHZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Apr 2023 03:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjDPHOU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 03:14:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A181FE0;
-        Sun, 16 Apr 2023 00:14:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52FD960B79;
-        Sun, 16 Apr 2023 07:14:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47461C433EF;
-        Sun, 16 Apr 2023 07:14:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681629258;
-        bh=L46nArzumSSLHcWnJ3YWQnpXuT7YPKPy+4ZtFEJpikM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=NLmvu/ZEv4C5JvNXk+YTibqBxpRVTDdheI/KPJH2BQT+aRlJ59ZXrkdFxORgjS761
-         yO6bMQRhvQBx4iXGiUMkoA1nwloZgEtLR/s0pzlF4f7ahxuvzxhBwBajPJomguWO87
-         WLPn1vDcq1iRuyx3u/HQu8+9zOqXgRD5Xhr1Z5ju10G4w4q1XY07GdP9bbWJmHQxQB
-         svSCEKqEx3JG/jClJc021EJEO2KYoeJt5ZAsjevjGQjPe4qyhrrhGGrV0Mcl0MzVYH
-         LWLqjNPxViHltclQoQ9W5cKMZlr/GK7WPiSVmqLIWC5GN92o/nXCN32zTJcqPY3KD7
-         Wc3p7j2CrgKRA==
-Message-ID: <eabc9cf8-ade1-ca26-8386-52fb97bd04f7@kernel.org>
-Date:   Sun, 16 Apr 2023 09:14:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 6/6] dt-bindings: iio: st-sensors: Add LSM303D
- accelerometer+magnetometer
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Marius Hoch <mail@mariushoch.de>,
+        with ESMTP id S229662AbjDPHZq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 03:25:46 -0400
+Received: from hust.edu.cn (unknown [202.114.0.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EE390;
+        Sun, 16 Apr 2023 00:25:45 -0700 (PDT)
+Received: from ubuntu.localdomain ([10.12.172.250])
+        (user=jkluo@hust.edu.cn mech=LOGIN bits=0)
+        by mx1.hust.edu.cn  with ESMTP id 33G7NMQ3019680-33G7NMQ4019680
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Sun, 16 Apr 2023 15:23:28 +0800
+From:   Jiakai Luo <jkluo@hust.edu.cn>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>
-References: <20230413024013.450165-1-mail@mariushoch.de>
- <20230413024013.450165-7-mail@mariushoch.de>
- <501892f8-cad3-d1c7-7d24-6226eefe7edd@kernel.org>
- <20230415175104.3f8f4e09@jic23-huawei>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20230415175104.3f8f4e09@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, Marek Vasut <marex@denx.de>
+Cc:     Jiakai Luo <jkluo@hust.edu.cn>, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: adc: mxs-lradc: fix the order of two cleanup operations
+Date:   Sun, 16 Apr 2023 00:21:57 -0700
+Message-Id: <20230416072157.57388-1-jkluo@hust.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-FEAS-AUTH-USER: jkluo@hust.edu.cn
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15/04/2023 18:51, Jonathan Cameron wrote:
-> On Thu, 13 Apr 2023 10:07:04 +0200
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
->> On 13/04/2023 04:40, Marius Hoch wrote:
->>> Same as the lsm9ds0, except that the lsm303d doesn't
->>> feature a gyroscope.
->>>
->>> Signed-off-by: Marius Hoch <mail@mariushoch.de>  
->>
->> Please use scripts/get_maintainers.pl to get a list of necessary people
->> and lists to CC.  It might happen, that command when run on an older
->> kernel, gives you outdated entries.  Therefore please be sure you base
->> your patches on recent Linux kernel.
-> 
-> Just to avoid any confusion.  Point here is that the dt-binding
-> maintainers and list should be cc'd on series that touch bindings.
-> 
+Smatch reports:
+drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+missing unwind goto?
 
-Maybe not only there, maybe more people were missed.
+the order of three init operation:
+1.mxs_lradc_adc_trigger_init
+2.iio_triggered_buffer_setup
+3.mxs_lradc_adc_hw_init
 
-Best regards,
-Krzysztof
+thus, the order of three cleanup operation should be:
+1.mxs_lradc_adc_hw_stop
+2.iio_triggered_buffer_cleanup
+3.mxs_lradc_adc_trigger_remove
+
+we exchange the order of two cleanup operations,
+introducing the following differences:
+1.if mxs_lradc_adc_trigger_init fails, returns directly;
+2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+goto err_trig and remove the trigger.
+
+v1->v2: exchange the order of mxs_lradc_adc_trigger_remove()
+and iio_triggered_buffer_cleanup() in error handling labels
+
+Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+---
+ drivers/iio/adc/mxs-lradc-adc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+index bca79a93cbe4..d32e9b1d03ce 100644
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+ 
+ 	ret = mxs_lradc_adc_trigger_init(iio);
+ 	if (ret)
+-		goto err_trig;
++		return ret;
+ 
+ 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+ 					 &mxs_lradc_adc_trigger_handler,
+ 					 &mxs_lradc_adc_buffer_ops);
+ 	if (ret)
+-		return ret;
++		goto err_trig;
+ 
+ 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+ 
+@@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+ 
+ err_dev:
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+-err_trig:
+ 	iio_triggered_buffer_cleanup(iio);
++err_trig:
++	mxs_lradc_adc_trigger_remove(iio);
+ 	return ret;
+ }
+ 
+-- 
+2.17.1
 

@@ -2,209 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9FB6E39B3
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 17:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927E66E3AA8
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Apr 2023 19:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbjDPPP3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Apr 2023 11:15:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35752 "EHLO
+        id S229619AbjDPRhP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Apr 2023 13:37:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjDPPP2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 11:15:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABA57B4;
-        Sun, 16 Apr 2023 08:15:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43ED761A8D;
-        Sun, 16 Apr 2023 15:15:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29733C433EF;
-        Sun, 16 Apr 2023 15:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681658126;
-        bh=vg7a+9DCnudCadywsW+LfZkYC34HIPkJONEpTnE3IgA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YdbRFGq8XX9t0ik/azOkzc9EKI0CmzqXbczuMupYZnuOWGoKjaTyzlIhAw/DyfaiQ
-         P//0oUjd/Me3pFl5u/6zxLgHHr+SFlpVunFRA9K86f7bHCLf5NLdu/QyxFp7SpHlhn
-         PgVXQm/s2Uuc39C8V9GcaWQxWjw2Gpl3RmlasxbB9RQ3KQRAGPKUSLFOt6HMyxVi3L
-         ltiIKU3FP0Hz3geJtpvvKV3Lh+b0ljO8P/dURRzfzP+Zq7z3aVaIOAqoO6ZG1B/+7B
-         prJppVDKgixqKXJGBV33f7rZsWOYcM1N7LJpGtEbzygqC3WfXs7zXixTo/GFKdu4U7
-         bm485htkgzjiQ==
-Date:   Sun, 16 Apr 2023 16:15:27 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Vinod Koul <vkoul@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
-Subject: Re: [PATCH v3 10/11] iio: buffer-dmaengine: Support new DMABUF
- based userspace API
-Message-ID: <20230416161527.6e7021f1@jic23-huawei>
-In-Reply-To: <20230403154955.216148-1-paul@crapouillou.net>
-References: <20230403154800.215924-1-paul@crapouillou.net>
-        <20230403154955.216148-1-paul@crapouillou.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229648AbjDPRhP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Apr 2023 13:37:15 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149FC1995
+        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 10:37:13 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id ds7-20020a0568306c0700b006a5cea70c02so1511118otb.8
+        for <linux-iio@vger.kernel.org>; Sun, 16 Apr 2023 10:37:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681666632; x=1684258632;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p3MXe62Qv7CtzPpmu8rvoy3GoIPPlkCTC8+8F1j3AqY=;
+        b=R3Du7y6BhPUpvvixwE3OW/ohBtepqNDlfE90M9shQrOx76Z/fhM7fXKhouOtlYIE+p
+         id5Tfj4F61nLw8I3nS+kX3+YJJhXbqmYdBf9V391Rcb4Rtz4UFx8IHcJ9J6aJHMi1v9e
+         w58oe5JFw0hM2C9pzJ1Q40RXdP4sNyB4tHYjlAC9lORFWOSQnV8B3SRjp1+v9JYqiSbI
+         KbzanzvSmArETFunvri6vSJtEzACxV8Qsok5T8PYxPh8bHzbw1KPQG4o8nCaAE4vTe43
+         btGEJYfGhQeAIzjgyhuPa0phpUCdHgrf4k/jZUIGWNc02s/vf/i7fio1kejjjRG7StE0
+         mpew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681666632; x=1684258632;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p3MXe62Qv7CtzPpmu8rvoy3GoIPPlkCTC8+8F1j3AqY=;
+        b=fkIPTIKtF00WypmUXZqZMDBnyetNRjMfu9KOlNUVpytAzgVmYXq+tk6tth/Di0rdDc
+         UOiww0iaWCoJq3YQy1yYVfrNFoEs1yUbDeTafMAuLlFkCSLo6TrzcdMdNcTaXSY+g8XH
+         MsOyR9mAWhAEIXgcww3k2/0caBKDvQE27Us7NVobSnK3cQlQUlo8tiL+2EZ7FS84tiI8
+         zVBwWvo11MG6UzKah5lu+rURomICFom58shlmtzHlxH4k+8oaI8Mosmsaszq5WgqyhUG
+         duzyw51qQUA+BjorJl/vK1FPL4G31t+KUI75DvjfnvratSUCjSa5iwBGqRlxVssiO4IX
+         iu5A==
+X-Gm-Message-State: AAQBX9dHEzPuXCKcBhle5aLGrzU/4pjOo0GcxSAygqnQ5xm3kUV56Z1m
+        tT1mrfj1hryu2cG73ju5tLw7+g==
+X-Google-Smtp-Source: AKy350bXVC/EzCQENYaq2Vy3eSjms9K00QDVO1VZxCNm3FLEvQ9qdIhKHUxU7ogt5zyfoN193fznHw==
+X-Received: by 2002:a05:6830:10c9:b0:6a5:e8da:a216 with SMTP id z9-20020a05683010c900b006a5e8daa216mr513558oto.27.1681666632369;
+        Sun, 16 Apr 2023 10:37:12 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id v16-20020a05683011d000b0069457b86060sm3771038otq.47.2023.04.16.10.37.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Apr 2023 10:37:11 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH 0/3] Add Intel 8254 Counter support
+Date:   Sun, 16 Apr 2023 13:36:52 -0400
+Message-Id: <cover.1681665189.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  3 Apr 2023 17:49:54 +0200
-Paul Cercueil <paul@crapouillou.net> wrote:
+The Intel 8254 PIT first appeared in the early 1980s and was used
+initially in IBM PC compatibles. The popularity of the original Intel
+825x family of chips led to many subsequent variants and clones of the
+interface in various chips and integrated circuits. Although still
+popular, interfaces compatible with the Intel 8254 PIT are nowdays
+typically found embedded in larger VLSI processing chips and FPGA
+components rather than as discrete ICs.
 
-> Use the functions provided by the buffer-dma core to implement the
-> DMABUF userspace API in the buffer-dmaengine IIO buffer implementation.
-> 
-> Since we want to be able to transfer an arbitrary number of bytes and
-> not necesarily the full DMABUF, the associated scatterlist is converted
-> to an array of DMA addresses + lengths, which is then passed to
-> dmaengine_prep_slave_dma_array().
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-A few things inline.
+This patch series introduces a library to provide support for interfaces
+compatible with the venerable Intel 8254 Programmable Interval Timer
+(PIT). Modules wanting access to the i8254 library should select the
+newly introduced CONFIG_I8254 Kconfig option, and import the I8254
+symbol namespace.
 
-Thanks,
+Support for the i8254 is added in respective follow-up patches for the
+104-dio-48e driver and stx104 driver whose devices feature i8254
+compatible interfaces. Several additional dependencies are necessary for
+the 104-dio-48e [0][1][2] and stx104 [3][4].
 
-Jonathan
+Due to the dependency requirements, I can take the i8254 introduction
+patch through the Counter tree and provide an immutable branch that can
+be merged to the GPIO and IIO trees; the 104-dio-48e patch and stx104
+patch could then be picked up separately by the respective subsystem
+maintainers.
 
-> 
-> ---
-> v3: Use the new dmaengine_prep_slave_dma_array(), and adapt the code to
->     work with the new functions introduced in industrialio-buffer-dma.c.
-> ---
->  .../buffer/industrialio-buffer-dmaengine.c    | 69 ++++++++++++++++---
->  include/linux/iio/buffer-dma.h                |  2 +
->  2 files changed, 60 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> index 866c8b84bb24..faed9c2b089c 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> @@ -65,25 +65,68 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
->  		iio_buffer_to_dmaengine_buffer(&queue->buffer);
->  	struct dma_async_tx_descriptor *desc;
->  	enum dma_transfer_direction dma_dir;
-> +	unsigned int i, nents, *lenghts;
-> +	struct scatterlist *sgl;
-> +	unsigned long flags;
-> +	dma_addr_t *addrs;
->  	size_t max_size;
->  	dma_cookie_t cookie;
-> +	size_t len_total;
->  
-> -	max_size = min(block->size, dmaengine_buffer->max_size);
-> -	max_size = round_down(max_size, dmaengine_buffer->align);
-> +	if (!block->bytes_used)
-> +		return -EINVAL;
->  
-> -	if (queue->buffer.direction == IIO_BUFFER_DIRECTION_IN) {
-> -		block->bytes_used = max_size;
-> +	if (queue->buffer.direction == IIO_BUFFER_DIRECTION_IN)
->  		dma_dir = DMA_DEV_TO_MEM;
-> -	} else {
-> +	else
->  		dma_dir = DMA_MEM_TO_DEV;
-> -	}
->  
-> -	if (!block->bytes_used || block->bytes_used > max_size)
-> -		return -EINVAL;
+[0] https://lore.kernel.org/all/05a878d340251b781387db4b6490f288e41a651c.1680543810.git.william.gray@linaro.org/
+[1] https://lore.kernel.org/all/20230208105542.9459-1-william.gray@linaro.org/
+[2] https://lore.kernel.org/all/cover.1679323449.git.william.gray@linaro.org/
+[3] https://lore.kernel.org/all/20230318185503.341914-1-william.gray@linaro.org/
+[4] https://lore.kernel.org/all/cover.1680790580.git.william.gray@linaro.org/
 
-Ah this is dropping the code I moaned about earlier.  I'll probably
-forget though so maybe add a note to that patch saying it goes
-away later anyway so I don't keep moaning about it in future versions.
+William Breathitt Gray (3):
+  counter: i8254: Introduce the Intel 8254 interface library module
+  gpio: 104-dio-48e: Add Counter/Timer support
+  iio: addac: stx104: Add 8254 Counter/Timer support
 
-> +	if (block->sg_table) {
-> +		sgl = block->sg_table->sgl;
-> +		nents = sg_nents_for_len(sgl, block->bytes_used);
-> +
-> +		addrs = kmalloc_array(nents, sizeof(*addrs), GFP_KERNEL);
-> +		if (!addrs)
-> +			return -ENOMEM;
-> +
-> +		lenghts = kmalloc_array(nents, sizeof(*lenghts), GFP_KERNEL);
-
-lengths?
-
-> +		if (!lenghts) {
-> +			kfree(addrs);
-> +			return -ENOMEM;
-> +		}
-> +
-> +		len_total = block->bytes_used;
->  
-> -	desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> -		block->phys_addr, block->bytes_used, dma_dir,
-> -		DMA_PREP_INTERRUPT);
-> +		for (i = 0; i < nents; i++) {
-> +			addrs[i] = sg_dma_address(sgl);
-> +			lenghts[i] = min(sg_dma_len(sgl), len_total);
-> +			len_total -= lenghts[i];
-> +
-> +			sgl = sg_next(sgl);
-> +		}
-> +
-> +		flags = block->cyclic ? DMA_PREP_REPEAT : DMA_PREP_INTERRUPT;
-> +
-> +		desc = dmaengine_prep_slave_dma_array(dmaengine_buffer->chan,
-> +						      addrs, lenghts, nents,
-> +						      dma_dir, flags);
-> +		kfree(addrs);
-> +		kfree(lenghts);
-> +	} else {
-> +		max_size = min(block->size, dmaengine_buffer->max_size);
-> +		max_size = round_down(max_size, dmaengine_buffer->align);
-> +
-> +		if (queue->buffer.direction == IIO_BUFFER_DIRECTION_IN)
-> +			block->bytes_used = max_size;
-> +
-> +		if (block->bytes_used > max_size)
-> +			return -EINVAL;
-> +
-> +		desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> +						   block->phys_addr,
-> +						   block->bytes_used, dma_dir,
-> +						   DMA_PREP_INTERRUPT);
-> +	}
+ Documentation/ABI/testing/sysfs-bus-counter |  54 +++
+ MAINTAINERS                                 |   7 +
+ drivers/counter/Kconfig                     |  15 +
+ drivers/counter/Makefile                    |   1 +
+ drivers/counter/counter-sysfs.c             |   8 +-
+ drivers/counter/i8254.c                     | 447 ++++++++++++++++++++
+ drivers/gpio/Kconfig                        |   1 +
+ drivers/gpio/gpio-104-dio-48e.c             | 127 +++++-
+ drivers/iio/addac/Kconfig                   |   1 +
+ drivers/iio/addac/stx104.c                  |  61 ++-
+ include/linux/i8254.h                       |  21 +
+ include/uapi/linux/counter.h                |   6 +
+ 12 files changed, 730 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/counter/i8254.c
+ create mode 100644 include/linux/i8254.h
 
 
-> diff --git a/include/linux/iio/buffer-dma.h b/include/linux/iio/buffer-dma.h
-> index e5e5817e99db..48f7ffaf0867 100644
-> --- a/include/linux/iio/buffer-dma.h
-> +++ b/include/linux/iio/buffer-dma.h
-> @@ -43,6 +43,7 @@ enum iio_block_state {
->   * @queue: Parent DMA buffer queue
->   * @kref: kref used to manage the lifetime of block
->   * @state: Current state of the block
-> + * @cyclic: True if this is a cyclic buffer
->   * @fileio: True if this buffer is used for fileio mode
-
-I might have commented on it earlier (I've lost track) but
-attach should be documented as well.   Worth sanity checking
-by either building with W=1 or running kernel-doc over
-the files and fixing the warnings.
-
->   */
->  struct iio_dma_buffer_block {
-> @@ -67,6 +68,7 @@ struct iio_dma_buffer_block {
->  	 */
->  	enum iio_block_state state;
->  
-> +	bool cyclic;
->  	bool fileio;
->  
->  	struct dma_buf_attachment *attach;
+base-commit: 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
+prerequisite-patch-id: 934c63dd47cb47e19739af076b95d3d55f5604f1
+prerequisite-patch-id: 02aafdd535091da6a4ed6abbb20fb661f74af9fb
+prerequisite-patch-id: cd19046150b7cff1be4ac7152198777aa960a3df
+prerequisite-patch-id: bd3e3830d9ce4f3876a77483364d7190b7fdffa7
+prerequisite-patch-id: 1e091c1f8f945a56cac59070221c4284306ba087
+prerequisite-patch-id: c6f681fcbf7495c5ed6a596872dc4f762f22d977
+prerequisite-patch-id: 239b016817624d56a4a2bddea1fda95282cb3d81
+prerequisite-patch-id: 5fbfe7df44dcf5a629cd82ba8383480cb05b52d1
+prerequisite-patch-id: 25a89f7312f225aaca11ef192e8d1f903a8b20e8
+prerequisite-patch-id: 899b556161f417e20db8e957c5099b92c3dcb673
+prerequisite-patch-id: eb09641cfb9e7caf7641ae6cb8e84e33cbb665a6
+-- 
+2.39.2
 

@@ -2,115 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7E56E4183
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Apr 2023 09:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B88976E4381
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Apr 2023 11:19:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbjDQHms (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Apr 2023 03:42:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59612 "EHLO
+        id S230253AbjDQJTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Apr 2023 05:19:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbjDQHmZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Apr 2023 03:42:25 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA4C46B2
-        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 00:42:04 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id dx24so17633645ejb.11
-        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 00:42:04 -0700 (PDT)
+        with ESMTP id S230387AbjDQJTv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Apr 2023 05:19:51 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 185C52693;
+        Mon, 17 Apr 2023 02:19:47 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id r9so11962634ljp.9;
+        Mon, 17 Apr 2023 02:19:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681717323; x=1684309323;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1681723185; x=1684315185;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZBiaQbvW+f05yQSrBNW13pqQ6G/hNkW2GoKFWQO/n/g=;
-        b=BWVFVStz2TZHg3ZxnAeX58llS391Y5YW45v1H/Wj/za7UAMQ/U2EIg9xUXno1N2532
-         yfeq2VllMs15/bAoNVsv1S/PHVYTwcrJYV+UH+1aYoeB+U/xLPs05Sw1XMEeFervVJXA
-         iRPfEyPlI7rwiIa55iWwT01FY6LgCIWAwLosspyK0Th1wtIAA7bF0Axdi0DJbiMlfHAO
-         jneq/k5nscQ+6V93Ylp/AMIndHitlfemaTUQATEpP1AipjzLYbTPY7TJyv56O9KJcQ3a
-         CvXLsyD9coNZ1MQMger/50SwAOqZJFY4IQenSBhjDdgQwSpadymR9TFSq6j/cEUFGdhZ
-         IlqA==
+        bh=Sc/RME3YneSvfHCVKi+3IAxNdaylfKyI3uCcyw7Varo=;
+        b=bvNQfsh6ZKGOIG4c9PfuIRVN80qkxw12yGa/TyLCpsO49qCwKPHuRDtvksA/Z7u9BA
+         IniN+d9ST6/IrWg4d3ePnG24bUihwXhxqeXrci0y6k3HeQ4mnjI2Fr4e8/t2XuDmyrGM
+         tAENR/oWEONfTm8I0zIvlLofZUQrI7HosphYk+Ig7KC2yCXyBduj6QIoPSt25TYmVubT
+         ZBS1MzdIeiuMQwqck7ufY/GQn/7lUpQdppS/FjZ906D3zCPZyui4oTwDJYEBvA3IyP7w
+         YxAZ6+ooh3lG5Ns6m3BhfISVVejSL7r2ujfIF2bZ4PpSLHhPmzyfXLkTumeaC7nuEFWq
+         5MWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681717323; x=1684309323;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1681723185; x=1684315185;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZBiaQbvW+f05yQSrBNW13pqQ6G/hNkW2GoKFWQO/n/g=;
-        b=UOysTFCXCynDMAZlgWPjzKS6iqcgvLCMw8I64E3WQVnNRiEkjg4cy1a0itgBlYmR4s
-         EgfulDt78PglOwjF6oMX9oRf0ibzgDqQZZeiwc9NHyuTN0XvP/9J/HAGAMoVhMseTQiX
-         xgu7qFf3asjZoj9UenPnBXi+9qxkzDYrFJIzYQjEOCndiZO0B+ju5CWMp1vVeZKteLtA
-         zIRYh6rHAxet2Fk0ht9V4kloHr0Xs0XOz16tCj1DybyFQMh8n43jU3wZbFUbyWuY2ulc
-         dA8q0vRVGMUINGS4xn1Uf7KtwN7IZAyqV8gk5PYf/4qhmpPLmLwRgsgRu2lhi77dhsiC
-         +swA==
-X-Gm-Message-State: AAQBX9dj9p7CQ+2pRWWTJZ6mNPjChD8IKfIfMsjdTjqbElqu5rmiPq5H
-        DKjm0tpV0s9L6PzqH6uQYW9nTg==
-X-Google-Smtp-Source: AKy350ZmsfvJTFbRNzbkxIlUN6HAa/DkrjY5d4PnMB+7i9O3ynFoVvsgVAHuco6uK74EiX+VYZRYSg==
-X-Received: by 2002:a17:906:fc04:b0:94a:96c4:2361 with SMTP id ov4-20020a170906fc0400b0094a96c42361mr7411772ejb.73.1681717322537;
-        Mon, 17 Apr 2023 00:42:02 -0700 (PDT)
-Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id hw10-20020a170907a0ca00b0094ebc041e20sm5548397ejc.46.2023.04.17.00.41.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Apr 2023 00:42:02 -0700 (PDT)
-Message-ID: <faa533bc-e34c-a2f3-2d46-ed900e8d6be2@linaro.org>
-Date:   Mon, 17 Apr 2023 09:41:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v4 3/5] dt-bindings: thermal: Use generic ADC node name in
- examples
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        bh=Sc/RME3YneSvfHCVKi+3IAxNdaylfKyI3uCcyw7Varo=;
+        b=O1dN8lv0Flrn7axpIdgEFStVFPoQ2STlBS30UIEcLQLmOkpNNtV1YoD7KwBWd4WgAN
+         IWlhmfnBLHldqCuKYuwxjWcl/PZ2s7RvaMj0ti/5LStAK5tLipjmycfrpOSMJIfGNaK2
+         6WO/tJETCweqO+h9mFh4VdGpk05wE+ghrODCVxRrnMGe0VaMvleKZrZIhvZpR9zsWtiz
+         Wvi8pnyD3OZOIuoSjpz7ynqCfpXRjukQHTlAiSInEwd0QX42gjUdA0M34Yuwd0r7pPOQ
+         qHNMMa972pDpSIO/JpQJ3kb+XICMPklwzFAbT66OdGKKd2jahYYTUpARvzXR1Ybwamdz
+         oSyQ==
+X-Gm-Message-State: AAQBX9eIevgy2Ebky3aehZCGLofc0Rj9xdzi9yPZkoiY5TCUAvrTf6u6
+        gZWTSTj2IEHOhDbgoazHfA0=
+X-Google-Smtp-Source: AKy350aCU/tBhUvMn/DR9Lk96MJkV6YXRAQF6pXoDVRBi76Vg73/CVVrwjlJwvM300/SMQpT/KVvrw==
+X-Received: by 2002:a2e:9896:0:b0:2a8:c0f6:31d2 with SMTP id b22-20020a2e9896000000b002a8c0f631d2mr1016654ljj.19.1681723185148;
+        Mon, 17 Apr 2023 02:19:45 -0700 (PDT)
+Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id s3-20020a2e83c3000000b002958a51df76sm2150473ljh.92.2023.04.17.02.19.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Apr 2023 02:19:44 -0700 (PDT)
+Date:   Mon, 17 Apr 2023 12:19:35 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
- <20230410202917.247666-4-marijn.suijten@somainline.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230410202917.247666-4-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] iio: Fix integration time unit
+Message-ID: <cover.1681722914.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="pkl1Y/IfEdUerY7J"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/04/2023 22:29, Marijn Suijten wrote:
-> Update the examples to reflect a future requirement for the generic
-> `channel` node name on ADC channel nodes, while conveying the board name
-> of the channel in a label instead.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
+
+--pkl1Y/IfEdUerY7J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The recently introduced BU27034 used micro-seconds as units for
+integration time. So did the GTS-helpers.
+
+The IIO ABI mandates using seconds. This series fixes integration times
+for the BU27034 ALS driver and the GTS-helpers.
+
+---
+
+Matti Vaittinen (2):
+  iio: bu27034: Fix integration time
+  iio: gts-helpers: fix integration time units
+
+ drivers/iio/industrialio-gts-helper.c | 43 ++++++++++++++++++++-------
+ drivers/iio/light/rohm-bu27034.c      | 14 +++++----
+ 2 files changed, 42 insertions(+), 15 deletions(-)
 
 
-Applied, thanks
+base-commit: c86b0e73f0bebbb0245ef2bac4cf269d61ff828c
+--=20
+2.39.2
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
 
+--pkl1Y/IfEdUerY7J
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmQ9DyIACgkQeFA3/03a
+ocUG9Qf9FJMsn7AeRJQCsown9Xd3S3oLsJUxqc/v42AdavCMNuCZxitGLnrdYSae
+sNL94Ma56sqFWrikPKznaRt9C9BMCJai0+jNbUtA77CTqjOOkaEgnIXDAtpR98ED
+MZNnRgt0xhfX1tQC1CfVERNXw3XiX3fxNFP0HklONZINMolQdw3jB39htumeJ1IK
+4mAxrgKwRGWuG+5b6NiRs9slkXVs4SS+axmrQC8J4rTBqKYDmJDPsoculo5MaBo4
+S4EsnZQIxOjU2JVP7OOa0DwDiC91X1+NS9dTAWKQZt/wvr+9X3l691te1DQZrUpx
+Fl1bhUZ+u3Uy7SdXgWNhkFpz4dPRbw==
+=nslN
+-----END PGP SIGNATURE-----
+
+--pkl1Y/IfEdUerY7J--

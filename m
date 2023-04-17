@@ -2,67 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E246E4A20
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Apr 2023 15:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4B06E512A
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Apr 2023 21:51:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230251AbjDQNk7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Apr 2023 09:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
+        id S229842AbjDQTvK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Apr 2023 15:51:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230202AbjDQNk6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Apr 2023 09:40:58 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE1F91717
-        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 06:40:56 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id r184so9874786ybc.1
-        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 06:40:56 -0700 (PDT)
+        with ESMTP id S230290AbjDQTvJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Apr 2023 15:51:09 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAB346A4
+        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 12:51:05 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-552fb3c2bb7so21867457b3.10
+        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 12:51:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681738856; x=1684330856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AgAeLT4BnWajcrqgoxcZh6tBPEYk/HGw1hDR98TYQNY=;
-        b=y1iADw5/4l0GfEHMttoKUqmjvN/6WGWR6y1yacGKFhv6dEwtxK5UlSKuOBmiB9ntQA
-         VZImwCo78aJ+bU25ULXPfUFN9rlhqZMmXXSXX1Abg+AM7PUa+l8ytWnfHq4Tl+sNohtV
-         5XhY+g6W2SIGTgv/A0S4Gj1BhaSUhLji4ckmH62BrpglTOWSYyi+KWblM07W8W2BpOqp
-         UC77q1KPzRU9XtxtpwZnxmUGwP4nAUDOX3N+n/5sT+Bero7AjN5lXPLWfiHER72tS3qs
-         BwE9Ugdc01qZM2Z5ucaN8rcAEvjeqlXwsFSsnq1a9/9MLM/ehEd6Ib+fSawRa2NA8M6B
-         CCQw==
+        d=linaro.org; s=google; t=1681761064; x=1684353064;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=16bK4B8B1HSdwGL8nDI39J+E+/3IAw3fz4AXkqHxJaw=;
+        b=XwfJ6DoKaUhwsFVYOuNq1/DJ8HRZJHYVvdh3JVsQfynQZM0l1OIwhn+AWoQDX1qMUn
+         PP57fozW1Ikxf49qI+M9VZqg3Y7usRis2ZmR6fBJKkAq5Ny0j5S11sKdYtMIgP0uRURt
+         Vw2GO33MeNhFt+SSWvR1vW1VUNvnZGP6P4kThHTAmdQROfucmCBOoncuf5dj7i9tJKcO
+         siEZ5mnVKxiO545NTM//EfTbl7vA407Y/z3x6xuXPZTQA01ODvCnLtVg0nzAeDDMzwn+
+         VvruZ+oTcizfV8LRhJk2C44zIevhOaQ/noA+Bj/xZFlzmrczOTkmKDa6/tT25qzQqDvF
+         9Kkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681738856; x=1684330856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AgAeLT4BnWajcrqgoxcZh6tBPEYk/HGw1hDR98TYQNY=;
-        b=G/omjy9sxHFd82gvNsw1oMZKs95xe8JSZ9h/VZIRId9viQSkGtJJUcjIQX/8/tVxG2
-         c898+qIJlkS3ny8P/aamwc/vM2XFAGjfAdA7fxeq6oL0iwaXDfImVciLP00U5NNkIIX0
-         98fdF3Pusxrkuu+H/Ffs+uZMEHFho0ZM8yLYOhqAg2R6fIbSsGoti6+sspC5B8PYY7I9
-         7Ou57EPYgwxyaQkvuHgIyboLvRstZyQs9K/DpgCC1UVNyfEaCD6xA+xz2uOMfJdjB/Ot
-         mX4NJP67EALHtTvTuEYtvQljTJs1JsVxZL4gJGREzwY7T1dn9ysa0Xg6b8txTiwASz2x
-         EMow==
-X-Gm-Message-State: AAQBX9de9sfS8LXOePOJHx9D/WolYqb55WR8jRl1jcIaRpiYjhS0YbTX
-        I7MRhBDn5ulK40Kc3SNHu/tl+w==
-X-Google-Smtp-Source: AKy350Yn/WGkz+8XCLIJPJ4xLrb26M3kCR3KHvopTRvYYcyYXmn8nKhwNcfwxE39cjWp65B6BhD7pQ==
-X-Received: by 2002:a25:1d09:0:b0:b8f:54c1:37f5 with SMTP id d9-20020a251d09000000b00b8f54c137f5mr14290018ybd.35.1681738855803;
-        Mon, 17 Apr 2023 06:40:55 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id a6-20020a259386000000b00b923b9e0a82sm1284432ybm.45.2023.04.17.06.40.53
+        d=1e100.net; s=20221208; t=1681761064; x=1684353064;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=16bK4B8B1HSdwGL8nDI39J+E+/3IAw3fz4AXkqHxJaw=;
+        b=TmMGnVYhf0FLht/mObVZBxmdHxfTUG3fch89ZBwdyc3zKOrOeiXb0x2+yzTxIeVi+v
+         me9BG/470nKomDHMMWZsZ20pit0vHkhK7J8wgncDW0mgnQXyM83H5nFLWoT5IXLMRPUz
+         +xdo7EHhORUdAyTsNrh5nV8vtpnLXovVHaDI/8LFSBqo9pmG6/fo+JqMnay/8BXG56fn
+         BlZzNshmpyKzB96/AQv9hs/+FL3HdH3lUCCwJ6uBfPwGeeCRSQhXxjBXnrGUENlyZue5
+         LaIuDbCTiFGi02Qc6WRknHBxeUjAl/cuMcD3z6ncBX2X3PkjGhJ6q70kh5ibrt1e+bC4
+         J1cg==
+X-Gm-Message-State: AAQBX9ewgFEUBynGn4Li700fU3XNrlDYYUgAYGAzxvDBg2c13a2LS+fO
+        FwjdG62unVzobQCveIsgFb6/iQ6v9pCeB9regJI2tQ==
+X-Google-Smtp-Source: AKy350YUOcPtOysYC5RppRKEd6liQcgq+GLl5DvRzWfIvkhxXxoTYZjEpzgg5lHWrcqP1NXJiWHIXQ==
+X-Received: by 2002:a0d:db45:0:b0:538:49a4:b166 with SMTP id d66-20020a0ddb45000000b0053849a4b166mr15720640ywe.11.1681761064185;
+        Mon, 17 Apr 2023 12:51:04 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id u125-20020a817983000000b005463f6ae720sm3293158ywc.68.2023.04.17.12.51.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Apr 2023 06:40:55 -0700 (PDT)
-Date:   Mon, 17 Apr 2023 09:40:52 -0400
+        Mon, 17 Apr 2023 12:51:03 -0700 (PDT)
 From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
- condition between FLAG and CNTR reads
-Message-ID: <ZD1MZO3KpRmuzy42@fedora>
-References: <20230411155220.9754-1-william.gray@linaro.org>
- <20230411155220.9754-5-william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH v4 0/4] Refactor 104-quad-8 to match device operations
+Date:   Mon, 17 Apr 2023 15:50:46 -0400
+Message-Id: <cover.1681753140.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="vYFH3cBku7yaeL9d"
-Content-Disposition: inline
-In-Reply-To: <20230411155220.9754-5-william.gray@linaro.org>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -73,112 +75,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Changes in v4:
+ - Fix endianness errors by utilizing get_unaligned_le24() and
+   put_unaligned_le24()
+ - Mention benefits of using regmap in the commit description
+ - Use "int ret" for regmap_* return values throughout for consistency
+ - Reorganize declaration lists to prioritize longer lines first
+Changes in v3:
+ - Add __always_inline attribute for quad8_control_register_update()
+Changes in v2:
+ - Drop FIELD_MODIFY() macro introduction; u8p_replace_bits() is
+   utilized instead for the same purpose
+ - Replace FIELD_PREP() and FIELD_GET() with u8_encode_bits() and
+   u8_get_bits()
+ - Replace FIELD_MODIFY() with u8p_replace_bits()
+ - Wrap up control register update in quad8_control_register_update()
+ - Utilize ioread8_rep() and iowrite8_rep() to read and write counter
+   data
 
---vYFH3cBku7yaeL9d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The 104-quad-8 driver was initially introduced to the IIO subsystem
+where it didn't quite fit with the existing paradigm [0]; these
+differences eventually led to the creation of the Counter subsystem[1].
+As a result of its awkward beginnings, the design of the 104-quad-8
+driver was structured around maintaining abstract state buffers that
+would eventually be converted to match the actual device registers
+states on-the-fly as needed.
 
-On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
-> commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
->=20
-> The Counter (CNTR) register is 24 bits wide, but we can have an
-> effective 25-bit count value by setting bit 24 to the XOR of the Borrow
-> flag and Carry flag. The flags can be read from the FLAG register, but a
-> race condition exists: the Borrow flag and Carry flag are instantaneous
-> and could change by the time the count value is read from the CNTR
-> register.
->=20
-> Since the race condition could result in an incorrect 25-bit count
-> value, remove support for 25-bit count values from this driver.
->=20
-> Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 104-=
-QUAD-8")
-> Cc: <stable@vger.kernel.org> # 5.15.x
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-> ---
->  drivers/counter/104-quad-8.c | 18 +++---------------
->  1 file changed, 3 insertions(+), 15 deletions(-)
->=20
-> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-> index 0caa60537b..643aae0c9f 100644
-> --- a/drivers/counter/104-quad-8.c
-> +++ b/drivers/counter/104-quad-8.c
-> @@ -61,10 +61,6 @@ struct quad8 {
->  #define QUAD8_REG_CHAN_OP 0x11
->  #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
->  #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
-> -/* Borrow Toggle flip-flop */
-> -#define QUAD8_FLAG_BT BIT(0)
-> -/* Carry Toggle flip-flop */
-> -#define QUAD8_FLAG_CT BIT(1)
->  /* Error flag */
->  #define QUAD8_FLAG_E BIT(4)
->  /* Up/Down flag */
-> @@ -121,17 +117,9 @@ static int quad8_count_read(struct counter_device *c=
-ounter,
->  {
->  	struct quad8 *const priv =3D counter->priv;
->  	const int base_offset =3D priv->base + 2 * count->id;
-> -	unsigned int flags;
-> -	unsigned int borrow;
-> -	unsigned int carry;
->  	int i;
-> =20
-> -	flags =3D inb(base_offset + 1);
-> -	borrow =3D flags & QUAD8_FLAG_BT;
-> -	carry =3D !!(flags & QUAD8_FLAG_CT);
-> -
-> -	/* Borrow XOR Carry effectively doubles count range */
-> -	*val =3D (unsigned long)(borrow ^ carry) << 24;
-> +	*val =3D 0;
-> =20
->  	mutex_lock(&priv->lock);
-> =20
-> @@ -699,8 +687,8 @@ static ssize_t quad8_count_ceiling_read(struct counte=
-r_device *counter,
-> =20
->  	mutex_unlock(&priv->lock);
-> =20
-> -	/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
-> -	return sprintf(buf, "33554431\n");
-> +	/* By default 0xFFFFFF (24 bits unsigned) is maximum count */
-> +	return sprintf(buf, "16777215\n");
->  }
-> =20
->  static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
->=20
-> base-commit: d86dfc4d95cd218246b10ca7adf22c8626547599
-> --=20
-> 2.39.2
+The original design approach for the 104-quad-8 driver was neither
+efficient nor easy to troubleshoot, but it did allow us to focus on
+implementing and supporting necessary APIs for the nascent Counter
+subsystem. Now that development for the 104-quad-8 driver has shifted
+to maintenance, it is a good time to refactor and clean up the code to
+match closer to what is actually happening on the device. This patchset
+is an attempt to rectify the situation as such.
 
-Greg,
+The primary change is a transition from maintaining individual
+configuration states independently, to storing buffers of the device
+register configurations. To that end, the bitfield API is leveraged to
+access and retrieve field states. Some helper functions are introduced
+as well to abstract the handling of the PR, FLAG, PSC, and control
+registers. A migration to the regmap API is added as a follow-up patch
+due to its dependence on this patch series.
 
-This patch will no longer apply to 5.15.x when the "counter: Internalize
-sysfs interface code" patch in the stable-queue tree is merged [0].
-However, I believe the 6.1 backport [1] will apply instead at that
-point. What is the best way to handle this situation? Should I resend
-the 6.1 backport with the stable list Cc tag adjusted for 5.15.x, or are
-you able to apply the 6.1 backport patch directly to the 5.15.x tree?
+[0] https://lore.kernel.org/r/b43e2942b763b87afc85bfa9fe36e5695cba4c44.1475079578.git.vilhelm.gray@gmail.com/
+[1] https://lore.kernel.org/r/cover.1554184734.git.vilhelm.gray@gmail.com/
 
-Thanks,
+William Breathitt Gray (4):
+  counter: 104-quad-8: Utilize bitfield access macros
+  counter: 104-quad-8: Refactor to buffer states for CMR, IOR, and IDR
+  counter: 104-quad-8: Utilize helper functions to handle PR, FLAG and
+    PSC
+  counter: 104-quad-8: Migrate to the regmap API
 
-William Breathitt Gray
+ drivers/counter/104-quad-8.c | 802 +++++++++++++++++++----------------
+ drivers/counter/Kconfig      |   1 +
+ 2 files changed, 440 insertions(+), 363 deletions(-)
 
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git=
-/tree/queue-5.15/counter-internalize-sysfs-interface-code.patch
-[1] https://lore.kernel.org/all/20230412082840.822017654@linuxfoundation.or=
-g/
 
---vYFH3cBku7yaeL9d
-Content-Type: application/pgp-signature; name="signature.asc"
+base-commit: 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
+-- 
+2.39.2
 
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZD1MZAAKCRC1SFbKvhIj
-Kw3aAP9gXLzMdyqUoa0eraz/ltqJ+WGxU7DoCqlMykA7tZvRJgD+JPK60SzhmFHh
-aU0QBgt38/+j3aXUlMCE87k7TYQW4gI=
-=T28Y
------END PGP SIGNATURE-----
-
---vYFH3cBku7yaeL9d--

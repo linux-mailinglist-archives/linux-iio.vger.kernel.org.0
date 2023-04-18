@@ -2,112 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37DF36E5BAC
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 10:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B58C6E5DAE
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 11:42:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbjDRIKP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Apr 2023 04:10:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52456 "EHLO
+        id S231406AbjDRJmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Apr 2023 05:42:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231502AbjDRIJz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 04:09:55 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318907A99;
-        Tue, 18 Apr 2023 01:09:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1681805303;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8DTc/oRJhMEBa33wB3TaMgkNKc15dOmlHK8alGfdcJk=;
-        b=i2y5XYqQS4KdTNNlpdITBztyfUED78n/aM0a3L19IR0dztlNgHD4h8kG3hHLJb6PE4BHyh
-        BHoN5d/SlAU8cwhrU+rUiz49RLxT/CSXxujr6Onaz2R1d5d35D14IgL/OTfA4/HlL3/KGZ
-        wp5ZiCeGY69eCgNlIg3o3Qf0vNWzzVk=
-Message-ID: <1f63ffced9ed18309401af9a885310e1715b6538.camel@crapouillou.net>
-Subject: Re: [PATCH v3 03/11] iio: buffer-dma: Get rid of outgoing queue
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Vinod Koul <vkoul@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
-Date:   Tue, 18 Apr 2023 10:08:21 +0200
-In-Reply-To: <20230416152422.477ecf67@jic23-huawei>
-References: <20230403154800.215924-1-paul@crapouillou.net>
-         <20230403154800.215924-4-paul@crapouillou.net>
-         <20230416152422.477ecf67@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S231407AbjDRJlf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 05:41:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D9A76A2;
+        Tue, 18 Apr 2023 02:41:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7582662CFB;
+        Tue, 18 Apr 2023 09:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5D4C433EF;
+        Tue, 18 Apr 2023 09:41:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1681810891;
+        bh=T7+yT2pUreBDqbXZDE2c2Eq03kSJu9kHFQ2uyasQtNo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=InrJp0SHl8sfq+QUs8insdG7q7IbfNCEmtZJKl7pc3+S+sZjQ1BBgoA9AyS498MHe
+         l2xzrQwYkI/kxslAewBsLUY42ICSvTvD5+hRwlbNxlp+wGRTuLb3dt8PeDd/Pzo1Zs
+         ich6Z15IXvvY3G5TBtFL4uSeRC5m4yhKqydY/GQM=
+Date:   Tue, 18 Apr 2023 11:41:29 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
+Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
+ condition between FLAG and CNTR reads
+Message-ID: <2023041849-nursing-cling-8729@gregkh>
+References: <20230411155220.9754-1-william.gray@linaro.org>
+ <20230411155220.9754-5-william.gray@linaro.org>
+ <ZD1MZO3KpRmuzy42@fedora>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZD1MZO3KpRmuzy42@fedora>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-
-Le dimanche 16 avril 2023 =C3=A0 15:24 +0100, Jonathan Cameron a =C3=A9crit=
-=C2=A0:
-> On Mon,=C2=A0 3 Apr 2023 17:47:52 +0200
-> Paul Cercueil <paul@crapouillou.net> wrote:
->=20
-> > The buffer-dma code was using two queues, incoming and outgoing, to
-> > manage the state of the blocks in use.
-> >=20
-> > While this totally works, it adds some complexity to the code,
-> > especially since the code only manages 2 blocks. It is much easier
-> > to
-> > just check each block's state manually, and keep a counter for the
-> > next
-> > block to dequeue.
-> >=20
-> > Since the new DMABUF based API wouldn't use the outgoing queue
-> > anyway,
-> > getting rid of it now makes the upcoming changes simpler.
-> >=20
-> > With this change, the IIO_BLOCK_STATE_DEQUEUED is now useless, and
-> > can
-> > be removed.
-> >=20
-> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> >=20
+On Mon, Apr 17, 2023 at 09:40:52AM -0400, William Breathitt Gray wrote:
+> On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
+> > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
+> > 
+> > The Counter (CNTR) register is 24 bits wide, but we can have an
+> > effective 25-bit count value by setting bit 24 to the XOR of the Borrow
+> > flag and Carry flag. The flags can be read from the FLAG register, but a
+> > race condition exists: the Borrow flag and Carry flag are instantaneous
+> > and could change by the time the count value is read from the CNTR
+> > register.
+> > 
+> > Since the race condition could result in an incorrect 25-bit count
+> > value, remove support for 25-bit count values from this driver.
+> > 
+> > Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 104-QUAD-8")
+> > Cc: <stable@vger.kernel.org> # 5.15.x
+> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 > > ---
-> > v2: - Only remove the outgoing queue, and keep the incoming queue,
-> > as we
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 want the buffer to start streaming data =
-as soon as it is
-> > enabled.
-> > =C2=A0=C2=A0=C2=A0 - Remove IIO_BLOCK_STATE_DEQUEUED, since it is now f=
-unctionally
-> > the
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 same as IIO_BLOCK_STATE_DONE.
->=20
-> I'm not that familiar with this code, but with my understanding this
-> makes
-> sense.=C2=A0=C2=A0 I think it is independent of the earlier patches and i=
-s a
-> useful
-> change in it's own right.=C2=A0 As such, does it make sense to pick this
-> up
-> ahead of the rest of the series? I'm assuming that discussion on the
-> rest will take a while.=C2=A0 No great rush as too late for the coming
-> merge
-> window anyway.
+> >  drivers/counter/104-quad-8.c | 18 +++---------------
+> >  1 file changed, 3 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+> > index 0caa60537b..643aae0c9f 100644
+> > --- a/drivers/counter/104-quad-8.c
+> > +++ b/drivers/counter/104-quad-8.c
+> > @@ -61,10 +61,6 @@ struct quad8 {
+> >  #define QUAD8_REG_CHAN_OP 0x11
+> >  #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
+> >  #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
+> > -/* Borrow Toggle flip-flop */
+> > -#define QUAD8_FLAG_BT BIT(0)
+> > -/* Carry Toggle flip-flop */
+> > -#define QUAD8_FLAG_CT BIT(1)
+> >  /* Error flag */
+> >  #define QUAD8_FLAG_E BIT(4)
+> >  /* Up/Down flag */
+> > @@ -121,17 +117,9 @@ static int quad8_count_read(struct counter_device *counter,
+> >  {
+> >  	struct quad8 *const priv = counter->priv;
+> >  	const int base_offset = priv->base + 2 * count->id;
+> > -	unsigned int flags;
+> > -	unsigned int borrow;
+> > -	unsigned int carry;
+> >  	int i;
+> >  
+> > -	flags = inb(base_offset + 1);
+> > -	borrow = flags & QUAD8_FLAG_BT;
+> > -	carry = !!(flags & QUAD8_FLAG_CT);
+> > -
+> > -	/* Borrow XOR Carry effectively doubles count range */
+> > -	*val = (unsigned long)(borrow ^ carry) << 24;
+> > +	*val = 0;
+> >  
+> >  	mutex_lock(&priv->lock);
+> >  
+> > @@ -699,8 +687,8 @@ static ssize_t quad8_count_ceiling_read(struct counter_device *counter,
+> >  
+> >  	mutex_unlock(&priv->lock);
+> >  
+> > -	/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
+> > -	return sprintf(buf, "33554431\n");
+> > +	/* By default 0xFFFFFF (24 bits unsigned) is maximum count */
+> > +	return sprintf(buf, "16777215\n");
+> >  }
+> >  
+> >  static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
+> > 
+> > base-commit: d86dfc4d95cd218246b10ca7adf22c8626547599
+> > -- 
+> > 2.39.2
+> 
+> Greg,
+> 
+> This patch will no longer apply to 5.15.x when the "counter: Internalize
+> sysfs interface code" patch in the stable-queue tree is merged [0].
+> However, I believe the 6.1 backport [1] will apply instead at that
+> point. What is the best way to handle this situation? Should I resend
+> the 6.1 backport with the stable list Cc tag adjusted for 5.15.x, or are
+> you able to apply the 6.1 backport patch directly to the 5.15.x tree?
 
-Actually, you can pick patches 3 to 6 (when all have been acked). They
-add write support for buffer-dma implementations; which is a dependency
-for the rest of the patchset, but they can live on their own.
+The 6.1.y backport didn't apply either :(
 
-Cheers,
--Paul
+Can you resend all of these rebased against the next round of stable
+releases when they are released later this week?
+
+thanks,
+
+greg k-h

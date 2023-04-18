@@ -2,605 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FBB86E5EF3
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 12:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D06466E5F4E
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 13:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230026AbjDRKgv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Apr 2023 06:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32944 "EHLO
+        id S230029AbjDRLGu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Apr 2023 07:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjDRKgt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 06:36:49 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DFB188;
-        Tue, 18 Apr 2023 03:36:44 -0700 (PDT)
+        with ESMTP id S229479AbjDRLGt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 07:06:49 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203C02D40;
+        Tue, 18 Apr 2023 04:06:48 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id ud9so71905943ejc.7;
+        Tue, 18 Apr 2023 04:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1681814205;
-  x=1713350205;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=R7k23fUEAv9j9z7WgCJA8BSlDVYBNaSko201VlVXfRc=;
-  b=SnqppqPJPlcCuBvVykJyWFFy5jBowiQO2bQdOYq9yMNxfTGoYClfoG9c
-   E44mD1UHZkJmKvs5BeIZm5LYJ8NTKoxoelN3X3Ugm/ZhQKxc4CK1kvJX1
-   dkpZfiPxB4Vv3aAuo7bAA42eZv7OIhxwxq7pzQTfUd5b8XclHOCYr6cBG
-   FXqyEYlP9obvjPDsaj1GP45yXY0s5Pk4qLBgonBC+i+6VswdSuhdZwy30
-   jJTX6ANpka/QD69+GmKgiSL5NYmysDS47BdjMQ65GeHvDkIs2B3FFsfZJ
-   KLSbIVZ+ZbSBApmkRlZx/og2I7asHgTsakJ7zlAKnUgczr72RBFsx9lQO
-   g==;
-From:   Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Date:   Tue, 18 Apr 2023 12:36:27 +0200
-Subject: [PATCH v2 2/2] iio: light: Add support for TI OPT4001 light sensor
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20230323-add-opt4001-driver-v2-2-0bae0398669d@axis.com>
-References: <20230323-add-opt4001-driver-v2-0-0bae0398669d@axis.com>
-In-Reply-To: <20230323-add-opt4001-driver-v2-0-0bae0398669d@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        d=gmail.com; s=20221208; t=1681816006; x=1684408006;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vu1SBYfLswBC9fPoY3IBP/c1hfDbt9cFF0LwKY1fVBg=;
+        b=WkABlEPp4JNcJ72lxS88u9a6+qKHploQjP8EdCjd19yoOt/tuCyQGJPsIiGFCjoxWZ
+         DLVtfbWOdsUwfqwgi7WCN7tJJFyXQAGGyPsKfI0P+Yl2Wx8PYD/0vS0JNkWIvjXznIkd
+         1ZRa5/H8ajfy+IIjt6A9Mfw4sT7N4R1NeH7GF/+eFI5bG9dQwMiHmkwyroGuXy7uWRNH
+         83ms5zKRG7ccxTyD008AfMXZyvcifMpae1lrvb/W0Cv7KgXoypy+HzDkIpV3Y3N8iUO6
+         dnb5yVRH1P5zmG2AB5jzbhnEZBuBIC1WEh2pE/Os8dfUZHXaF6gKyTg6RBXk6U35JH+F
+         Vyzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681816006; x=1684408006;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vu1SBYfLswBC9fPoY3IBP/c1hfDbt9cFF0LwKY1fVBg=;
+        b=HnG+FGhxzF7kGWUFoNI6ArAoLD5P1fF29ZxFmhR5LNM9NP2hI+zhpgHVmglhfxVsCL
+         k4aXWckMSblgvN8EMkLpY1J6FjLEIGthumcZDs+oeq31hzl8uIcN2wr1xbEiP/QqU8r6
+         MxzpP23YK9381UgBlxXXVjo64O+Kiuj5gH7FMqKLTNNTM9EXbfqGOSRBEJK9axYyzqob
+         rYq903yjAwtxy4t7BEgrsdT5/8b7iQY23ubCdT/euS7Z49OShZCu6pU/vvaLTZwZ8Hyb
+         TA40GM77vyxjlfBeZdqGXsu2pU9MwoJHy1eAkH+K2gTNMtahDNszrrn4xdSg68UAT8i1
+         nXsQ==
+X-Gm-Message-State: AAQBX9du/e6Z1BiVMQhSgO0DLrkjgx2e9pTBcSHPXP25V4dhpayTGUKe
+        Dp8sYstc3S0ALpydarBfapqALsd206y1AdQL
+X-Google-Smtp-Source: AKy350ZX2B40fUVQ9Gt2Uok+rMY44mJj9tFFvJ31wK15bLytE/YOfu6rzdl0c5jFHhL0ehN/ZICjdA==
+X-Received: by 2002:a17:906:a945:b0:932:4255:5902 with SMTP id hh5-20020a170906a94500b0093242555902mr9931532ejb.76.1681816006152;
+        Tue, 18 Apr 2023 04:06:46 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id v16-20020a1709064e9000b0094f663bced2sm3290738eju.33.2023.04.18.04.06.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Apr 2023 04:06:45 -0700 (PDT)
+Message-ID: <5c8f68f0157d9ae66e6d88d648fcfd26e68be307.camel@gmail.com>
+Subject: Re: [PATCH v2] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Masahiro Honda <honda@mechatrax.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-        <kernel@axis.com>
-X-Mailer: b4 0.12.2
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 18 Apr 2023 13:08:54 +0200
+In-Reply-To: <20230414102744.150-1-honda@mechatrax.com>
+References: <20230414102744.150-1-honda@mechatrax.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.4 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This driver uses the continuous mode of the chip and integration
-time can be configured through sysfs.
-The constants for calculating lux value differs between packaging
-so it uses different compatible string for the two versions
-"ti,opt4001-picostar" and "ti,opt4001-sot-5x3" since the device id
-is the same.
-
-Datasheet: https://www.ti.com/lit/gpn/opt4001
-Signed-off-by: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
----
- drivers/iio/light/Kconfig   |  11 +
- drivers/iio/light/Makefile  |   1 +
- drivers/iio/light/opt4001.c | 490 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 502 insertions(+)
-
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 0d4447df7200..c4064fb35f1f 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -399,6 +399,17 @@ config OPT3001
- 	  If built as a dynamically linked module, it will be called
- 	  opt3001.
- 
-+config OPT4001
-+	tristate "Texas Instruments OPT4001 Light Sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  If you say Y or M here, you get support for Texas Instruments
-+	  OPT4001 Ambient Light Sensor.
-+
-+	  If built as a dynamically linked module, it will be called
-+	  opt4001.
-+
- config PA12203001
- 	tristate "TXC PA12203001 light and proximity sensor"
- 	depends on I2C
-diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-index 6f23817fae6f..4e0a908948db 100644
---- a/drivers/iio/light/Makefile
-+++ b/drivers/iio/light/Makefile
-@@ -37,6 +37,7 @@ obj-$(CONFIG_MAX44000)		+= max44000.o
- obj-$(CONFIG_MAX44009)		+= max44009.o
- obj-$(CONFIG_NOA1305)		+= noa1305.o
- obj-$(CONFIG_OPT3001)		+= opt3001.o
-+obj-$(CONFIG_OPT4001)		+= opt4001.o
- obj-$(CONFIG_PA12203001)	+= pa12203001.o
- obj-$(CONFIG_RPR0521)		+= rpr0521.o
- obj-$(CONFIG_SENSORS_TSL2563)	+= tsl2563.o
-diff --git a/drivers/iio/light/opt4001.c b/drivers/iio/light/opt4001.c
-new file mode 100644
-index 000000000000..e9f7b844b1f9
---- /dev/null
-+++ b/drivers/iio/light/opt4001.c
-@@ -0,0 +1,490 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2023 Axis Communications AB
-+ *
-+ * Datasheet: https://www.ti.com/lit/gpn/opt4001
-+ *
-+ * Device driver for the Texas Instruments OPT4001.
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/math64.h>
-+#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+
-+/* OPT4001 register set */
-+#define OPT4001_LIGHT1_MSB    0x00
-+#define OPT4001_LIGHT1_LSB    0x01
-+#define OPT4001_CTRL          0x0A
-+#define OPT4001_DEVICE_ID     0x11
-+
-+/* OPT4001 register mask */
-+#define OPT4001_EXPONENT_MASK    GENMASK(15, 12)
-+#define OPT4001_MSB_MASK         GENMASK(11, 0)
-+#define OPT4001_LSB_MASK         GENMASK(15, 8)
-+#define OPT4001_COUNTER_MASK     GENMASK(7, 4)
-+#define OPT4001_CRC_MASK         GENMASK(3, 0)
-+
-+/* OPT4001 device id mask */
-+#define OPT4001_DEVICE_ID_MASK   GENMASK(11, 0)
-+
-+/* OPT4001 control registers mask */
-+#define OPT4001_CTRL_QWAKE_MASK          GENMASK(15, 15)
-+#define OPT4001_CTRL_RANGE_MASK          GENMASK(13, 10)
-+#define OPT4001_CTRL_CONV_TIME_MASK      GENMASK(9, 6)
-+#define OPT4001_CTRL_OPER_MODE_MASK      GENMASK(5, 4)
-+#define OPT4001_CTRL_LATCH_MASK          GENMASK(3, 3)
-+#define OPT4001_CTRL_INT_POL_MASK        GENMASK(2, 2)
-+#define OPT4001_CTRL_FAULT_COUNT         GENMASK(0, 1)
-+
-+/* OPT4001 constants */
-+#define OPT4001_DEVICE_ID_VAL            0x121
-+
-+/* OPT4001 operating modes */
-+#define OPT4001_CTRL_OPER_MODE_OFF        0x0
-+#define OPT4001_CTRL_OPER_MODE_FORCED     0x1
-+#define OPT4001_CTRL_OPER_MODE_ONE_SHOT   0x2
-+#define OPT4001_CTRL_OPER_MODE_CONTINUOUS 0x3
-+
-+/* OPT4001 conversion control register definitions */
-+#define OPT4001_CTRL_CONVERSION_0_6MS   0x0
-+#define OPT4001_CTRL_CONVERSION_1MS     0x1
-+#define OPT4001_CTRL_CONVERSION_1_8MS   0x2
-+#define OPT4001_CTRL_CONVERSION_3_4MS   0x3
-+#define OPT4001_CTRL_CONVERSION_6_5MS   0x4
-+#define OPT4001_CTRL_CONVERSION_12_7MS  0x5
-+#define OPT4001_CTRL_CONVERSION_25MS    0x6
-+#define OPT4001_CTRL_CONVERSION_50MS    0x7
-+#define OPT4001_CTRL_CONVERSION_100MS   0x8
-+#define OPT4001_CTRL_CONVERSION_200MS   0x9
-+#define OPT4001_CTRL_CONVERSION_400MS   0xa
-+#define OPT4001_CTRL_CONVERSION_800MS   0xb
-+
-+/* OPT4001 scale light level range definitions */
-+#define OPT4001_CTRL_LIGHT_SCALE_AUTO   12
-+
-+/* OPT4001 default values */
-+#define OPT4001_DEFAULT_CONVERSION_TIME OPT4001_CTRL_CONVERSION_800MS
-+
-+/* The different packaging of OPT4001 has different constants used when calculating
-+ * lux values.
-+ */
-+struct opt4001_chip_info {
-+	int mul;
-+	int div;
-+	const char *name;
-+};
-+
-+struct opt4001_settings {
-+	/* Index of the chosen integration time */
-+	u8 int_time;
-+	u8 chip_type;
-+};
-+
-+struct opt4001_chip {
-+	struct opt4001_settings light_settings;
-+	struct regmap *regmap;
-+	struct i2c_client *client;
-+	const struct opt4001_chip_info *chip_info;
-+};
-+
-+static const struct opt4001_chip_info opt4001_sot_5x3_info = {
-+	.mul = 4375,
-+	.div = 10000000,
-+	.name = "opt4001-sot-5x3"
-+};
-+
-+static const struct opt4001_chip_info opt4001_picostar_info = {
-+	.mul = 3125,
-+	.div = 10000000,
-+	.name = "opt4001-picostar"
-+};
-+
-+static const int opt4001_int_time_available[][2] = {
-+	{ 0,    600 },
-+	{ 0,   1000 },
-+	{ 0,   1800 },
-+	{ 0,   3400 },
-+	{ 0,   6500 },
-+	{ 0,  12700 },
-+	{ 0,  25000 },
-+	{ 0,  50000 },
-+	{ 0, 100000 },
-+	{ 0, 200000 },
-+	{ 0, 400000 },
-+	{ 0, 800000 },
-+};
-+
-+/*
-+ * Conversion time is integration time + time to set register
-+ * this is used as integration time.
-+ */
-+static const int opt4001_int_time_reg[][2] = {
-+	{    600,  OPT4001_CTRL_CONVERSION_0_6MS  },
-+	{   1000,  OPT4001_CTRL_CONVERSION_1MS    },
-+	{   1800,  OPT4001_CTRL_CONVERSION_1_8MS  },
-+	{   3400,  OPT4001_CTRL_CONVERSION_3_4MS  },
-+	{   6500,  OPT4001_CTRL_CONVERSION_6_5MS  },
-+	{  12700,  OPT4001_CTRL_CONVERSION_12_7MS },
-+	{  25000,  OPT4001_CTRL_CONVERSION_25MS   },
-+	{  50000,  OPT4001_CTRL_CONVERSION_50MS   },
-+	{ 100000,  OPT4001_CTRL_CONVERSION_100MS  },
-+	{ 200000,  OPT4001_CTRL_CONVERSION_200MS  },
-+	{ 400000,  OPT4001_CTRL_CONVERSION_400MS  },
-+	{ 800000,  OPT4001_CTRL_CONVERSION_800MS  },
-+};
-+
-+static int opt4001_als_time_to_index(const u32 als_integration_time)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(opt4001_int_time_available); i++) {
-+		if (als_integration_time == opt4001_int_time_available[i][1])
-+			return i;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static u8 opt4001_calculate_crc(u8 exp, u32 mantissa, u8 count)
-+{
-+	u8 crc;
-+
-+	crc = (hweight32(mantissa) + hweight32(exp) + hweight32(count)) % 2;
-+	crc |= ((hweight32(mantissa & 0xAAAAA) + hweight32(exp & 0xA)
-+		 + hweight32(count & 0xA)) % 2) << 1;
-+	crc |= ((hweight32(mantissa & 0x88888) + hweight32(exp & 0x8)
-+		 + hweight32(count & 0x8)) % 2) << 2;
-+	crc |= (hweight32(mantissa & 0x80808) % 2) << 3;
-+
-+	return crc;
-+}
-+
-+static int opt4001_read_lux_value(struct iio_dev *indio_dev,
-+				  int *val, int *val2)
-+{
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+	struct device *dev = &chip->client->dev;
-+	unsigned int light1;
-+	unsigned int light2;
-+	u16 msb;
-+	u16 lsb;
-+	u8 exp;
-+	u8 count;
-+	u8 crc;
-+	u8 calc_crc;
-+	u64 lux_raw;
-+	int ret;
-+
-+	ret = regmap_read(chip->regmap, OPT4001_LIGHT1_MSB, &light1);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to read data bytes");
-+		return ret;
-+	}
-+
-+	ret = regmap_read(chip->regmap, OPT4001_LIGHT1_LSB, &light2);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to read data bytes");
-+		return ret;
-+	}
-+
-+	count = FIELD_GET(OPT4001_COUNTER_MASK, light2);
-+	exp = FIELD_GET(OPT4001_EXPONENT_MASK, light1);
-+	crc = FIELD_GET(OPT4001_CRC_MASK, light2);
-+	msb = FIELD_GET(OPT4001_MSB_MASK, light1);
-+	lsb = FIELD_GET(OPT4001_LSB_MASK, light2);
-+	lux_raw = (msb << 8) + lsb;
-+	calc_crc = opt4001_calculate_crc(exp, lux_raw, count);
-+	if (calc_crc != crc)
-+		return -EIO;
-+
-+	lux_raw = lux_raw << exp;
-+	lux_raw = lux_raw * chip->chip_info->mul;
-+	*val = div_u64_rem(lux_raw, chip->chip_info->div, val2);
-+	*val2 = *val2 * 100;
-+
-+	return IIO_VAL_INT_PLUS_NANO;
-+}
-+
-+static int opt4001_set_conf(struct opt4001_chip *chip)
-+{
-+	struct opt4001_settings light_settings = chip->light_settings;
-+	struct device *dev = &chip->client->dev;
-+	u16 reg;
-+	int ret;
-+
-+	reg = FIELD_PREP(OPT4001_CTRL_RANGE_MASK, OPT4001_CTRL_LIGHT_SCALE_AUTO);
-+	reg |= FIELD_PREP(OPT4001_CTRL_CONV_TIME_MASK, light_settings.int_time);
-+	reg |= FIELD_PREP(OPT4001_CTRL_OPER_MODE_MASK, OPT4001_CTRL_OPER_MODE_CONTINUOUS);
-+
-+	ret = regmap_write(chip->regmap, OPT4001_CTRL, reg);
-+	if (ret)
-+		dev_err(dev, "Failed to set configuration\n");
-+
-+	return ret;
-+}
-+
-+static int opt4001_power_down(struct opt4001_chip *chip)
-+{
-+	int ret;
-+	unsigned int reg;
-+	struct device *dev = &chip->client->dev;
-+
-+	ret = regmap_read(chip->regmap, OPT4001_DEVICE_ID, &reg);
-+	if (ret) {
-+		dev_err(dev, "Failed to read configuration\n");
-+		return ret;
-+	}
-+
-+	/* MODE_OFF is 0x0 so just set bits to 0 */
-+	reg &= ~OPT4001_CTRL_OPER_MODE_MASK;
-+
-+	ret = regmap_write(chip->regmap, OPT4001_CTRL, reg);
-+	if (ret)
-+		dev_err(dev, "Failed to set configuration to power down\n");
-+
-+	return ret;
-+}
-+
-+static void opt4001_chip_off_action(void *data)
-+{
-+	struct opt4001_chip *chip = data;
-+
-+	opt4001_power_down(chip);
-+}
-+
-+static const struct iio_chan_spec opt4001_channels[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME)
-+	},
-+};
-+
-+static int opt4001_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+		ret = opt4001_read_lux_value(indio_dev, val, val2);
-+		break;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*val = 0;
-+		*val2 = opt4001_int_time_reg[chip->light_settings.int_time][0];
-+		ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int opt4001_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct opt4001_chip *chip = iio_priv(indio_dev);
-+	int int_time;
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		int_time = opt4001_als_time_to_index(val2);
-+		if (int_time < 0) {
-+			ret = int_time;
-+		} else {
-+			chip->light_settings.int_time = int_time;
-+			ret = opt4001_set_conf(chip);
-+		}
-+
-+		break;
-+	default:
-+		ret = -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static int opt4001_read_available(struct iio_dev *indio_dev,
-+				  struct iio_chan_spec const *chan,
-+				  const int **vals, int *type, int *length,
-+				  long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*length = ARRAY_SIZE(opt4001_int_time_available) * 2;
-+		*vals = (const int *)opt4001_int_time_available;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_AVAIL_LIST;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info opt4001_info_no_irq = {
-+	.read_raw = opt4001_read_raw,
-+	.write_raw = opt4001_write_raw,
-+	.read_avail = opt4001_read_available,
-+};
-+
-+static int opt4001_load_defaults(struct opt4001_chip *chip)
-+{
-+	chip->light_settings.int_time = OPT4001_DEFAULT_CONVERSION_TIME;
-+
-+	return opt4001_set_conf(chip);
-+}
-+
-+static bool opt4001_readable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case OPT4001_LIGHT1_MSB:
-+	case OPT4001_LIGHT1_LSB:
-+	case OPT4001_CTRL:
-+	case OPT4001_DEVICE_ID:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool opt4001_writable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case OPT4001_CTRL:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool opt4001_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case OPT4001_LIGHT1_MSB:
-+	case OPT4001_LIGHT1_LSB:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static const struct regmap_config opt4001_regmap_config = {
-+	.name = "opt4001",
-+	.reg_bits = 8,
-+	.val_bits = 16,
-+	.cache_type = REGCACHE_RBTREE,
-+	.max_register = OPT4001_DEVICE_ID,
-+	.readable_reg = opt4001_readable_reg,
-+	.writeable_reg = opt4001_writable_reg,
-+	.volatile_reg = opt4001_volatile_reg,
-+	.val_format_endian = REGMAP_ENDIAN_BIG,
-+};
-+
-+static int opt4001_probe(struct i2c_client *client)
-+{
-+	struct opt4001_chip *chip;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+	uint dev_id;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	chip = iio_priv(indio_dev);
-+
-+	ret = devm_regulator_get_enable(&client->dev, "vdd");
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret, "Failed to enable vdd supply\n");
-+
-+	chip->regmap = devm_regmap_init_i2c(client, &opt4001_regmap_config);
-+	if (IS_ERR(chip->regmap))
-+		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
-+				     "regmap initialization failed\n");
-+	chip->client = client;
-+
-+	indio_dev->info = &opt4001_info_no_irq;
-+
-+	ret = regmap_reinit_cache(chip->regmap, &opt4001_regmap_config);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+				     "failed to reinit regmap cache\n");
-+
-+	ret = regmap_read(chip->regmap, OPT4001_DEVICE_ID, &dev_id);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+			"Failed to read the device ID register\n");
-+
-+	dev_id = FIELD_GET(OPT4001_DEVICE_ID_MASK, dev_id);
-+	if (dev_id != OPT4001_DEVICE_ID_VAL) {
-+		dev_err(&client->dev, "Device ID: %#04x unknown\n", dev_id);
-+		return -EINVAL;
-+	}
-+
-+	chip->chip_info = device_get_match_data(&client->dev);
-+
-+	indio_dev->channels = opt4001_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(opt4001_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->name = chip->chip_info->name;
-+
-+	ret = opt4001_load_defaults(chip);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Failed to set sensor defaults\n");
-+
-+	ret = devm_add_action_or_reset(&client->dev,
-+					opt4001_chip_off_action,
-+					chip);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Failed to setup power off action %d\n",
-+			ret);
-+		return ret;
-+	}
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+/*
-+ * The compatible string determines which constants to use depending on
-+ * opt4001 packaging
-+ */
-+static const struct i2c_device_id opt4001_id[] = {
-+	{ "opt4001-sot-5x3", (kernel_ulong_t)&opt4001_sot_5x3_info },
-+	{ "opt4001-picostar", (kernel_ulong_t)&opt4001_picostar_info },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, opt4001_id);
-+
-+static const struct of_device_id opt4001_of_match[] = {
-+	{ .compatible = "ti,opt4001-sot-5x3", .data = &opt4001_sot_5x3_info},
-+	{ .compatible = "ti,opt4001-picostar", .data = &opt4001_picostar_info},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, opt4001_of_match);
-+
-+static struct i2c_driver opt4001_driver = {
-+	.driver = {
-+		.name = "opt4001",
-+		.of_match_table = opt4001_of_match,
-+	},
-+	.probe_new = opt4001_probe,
-+	.id_table = opt4001_id,
-+};
-+module_i2c_driver(opt4001_driver);
-+
-+MODULE_AUTHOR("Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>");
-+MODULE_DESCRIPTION("Texas Instruments opt4001 ambient light sensor driver");
-+MODULE_LICENSE("GPL");
-
--- 
-2.30.2
+T24gRnJpLCAyMDIzLTA0LTE0IGF0IDE5OjI3ICswOTAwLCBNYXNhaGlybyBIb25kYSB3cm90ZToK
+PiBUaGUgU2lnbWEtRGVsdGEgQURDcyBzdXBwb3J0ZWQgYnkgdGhpcyBkcml2ZXIgY2FuIHVzZSBT
+RE8gYXMgYW4gaW50ZXJydXB0Cj4gbGluZSB0byBpbmRpY2F0ZSB0aGUgY29tcGxldGlvbiBvZiBh
+IGNvbnZlcnNpb24uIEhvd2V2ZXIsIHNvbWUgZGV2aWNlcwo+IGNhbm5vdCBwcm9wZXJseSBkZXRl
+Y3QgdGhlIGNvbXBsZXRpb24gb2YgYSBjb252ZXJzaW9uIGJ5IGFuIGludGVycnVwdC4KPiBUaGlz
+IGlzIGZvciB0aGUgcmVhc29uIG1lbnRpb25lZCBpbiB0aGUgZm9sbG93aW5nIGNvbW1pdC4KPiAK
+PiBjb21taXQgZTk4NDk3NzdkMGUyICgiZ2VuaXJxOiBBZGQgZmxhZyB0byBmb3JjZSBtYXNrIGlu
+Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRpc2FibGVfaXJx
+W19ub3N5bmNdKCkiKQo+IAo+IEEgcmVhZCBvcGVyYXRpb24gaXMgcGVyZm9ybWVkIGJ5IGFuIGV4
+dHJhIGludGVycnVwdCBiZWZvcmUgdGhlIGNvbXBsZXRlCj4gY29udmVyc2lvbi4gVGhpcyBwYXRj
+aCBwcm92aWRlcyBhbiBvcHRpb24gdG8gZml4IHRoZSBpc3N1ZSBieSBzZXR0aW5nCj4gSVJRX0RJ
+U0FCTEVfVU5MQVpZIGZsYWcuCj4gCj4gU2lnbmVkLW9mZi1ieTogTWFzYWhpcm8gSG9uZGEgPGhv
+bmRhQG1lY2hhdHJheC5jb20+Cj4gLS0tCj4gdjI6Cj4gwqAtIFJld29yayBjb21taXQgbWVzc2Fn
+ZS4KPiDCoC0gQWRkIGEgbmV3IGVudHJ5IGluIHRoZSBLY29uZmlnLgo+IMKgLSBDYWxsIGlycV9j
+bGVhcl9zdGF0dXNfZmxhZ3MoaXJxLCBJUlFfRElTQUJMRV9VTkxBWlkpIHdoZW4gZnJlZWluZyB0
+aGUgSVJRLgo+IHYxOgo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWlpby8yMDIzMDMw
+NjA0NDczNy44NjItMS1ob25kYUBtZWNoYXRyYXguY29tLwo+IAo+IMKgZHJpdmVycy9paW8vYWRj
+L0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqAgfCAxNCArKysrKysrKysrKysrKwo+IMKgZHJpdmVy
+cy9paW8vYWRjL2FkX3NpZ21hX2RlbHRhLmMgfCAzMSArKysrKysrKysrKysrKysrKysrKysrKysr
+Ky0tLS0tCj4gwqAyIGZpbGVzIGNoYW5nZWQsIDQwIGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25z
+KC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9LY29uZmlnIGIvZHJpdmVycy9p
+aW8vYWRjL0tjb25maWcKPiBpbmRleCA0NWFmMjMwMmIuLjc4YWI2ZTJkOCAxMDA2NDQKPiAtLS0g
+YS9kcml2ZXJzL2lpby9hZGMvS2NvbmZpZwo+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9LY29uZmln
+Cj4gQEAgLTIxLDYgKzIxLDIwIEBAIGNvbmZpZyBBRF9TSUdNQV9ERUxUQQo+IMKgwqDCoMKgwqDC
+oMKgwqBzZWxlY3QgSUlPX0JVRkZFUgo+IMKgwqDCoMKgwqDCoMKgwqBzZWxlY3QgSUlPX1RSSUdH
+RVJFRF9CVUZGRVIKPiDCoAo+ICtpZiBBRF9TSUdNQV9ERUxUQQo+ICsKPiArY29uZmlnIEFEX1NJ
+R01BX0RFTFRBX1VTRV9MQVpZX0lSUQo+ICvCoMKgwqDCoMKgwqDCoGJvb2wgIlVzZSBsYXp5IElS
+USBmb3Igc2lnbWEtZGVsdGEgQURDcyIKPiArwqDCoMKgwqDCoMKgwqBkZXBlbmRzIG9uIEFEX1NJ
+R01BX0RFTFRBCj4gK8KgwqDCoMKgwqDCoMKgZGVmYXVsdCBuCj4gK8KgwqDCoMKgwqDCoMKgaGVs
+cAo+ICvCoMKgwqDCoMKgwqDCoMKgIFNvbWUgaW50ZXJydXB0IGNvbnRyb2xsZXJzIGhhdmUgZGF0
+YSByZWFkIHByb2JsZW0gd2l0aCBBRENzIGRlcGVuZHMKPiBvbgo+ICvCoMKgwqDCoMKgwqDCoMKg
+IEFEX1NJR01BX0RFTFRBLgo+ICvCoMKgwqDCoMKgwqDCoMKgIFNheSB5ZXMgaGVyZSB0byBhdm9p
+ZCB0aGUgcHJvYmxlbSBhdCB0aGUgY29zdCBvZiBwZXJmb3JtYW5jZQo+IG92ZXJoZWFkLgo+ICvC
+oMKgwqDCoMKgwqDCoMKgIElmIHVuc3VyZSwgc2F5IE4gKGJ1dCBpdCdzIHNhZmUgdG8gc2F5ICJZ
+IikuCj4gKwo+ICtlbmRpZiAjIGlmIEFEX1NJR01BX0RFTFRBCj4gKwo+IMKgY29uZmlnIEFENDEz
+MAo+IMKgwqDCoMKgwqDCoMKgwqB0cmlzdGF0ZSAiQW5hbG9nIERldmljZSBBRDQxMzAgQURDIERy
+aXZlciIKPiDCoMKgwqDCoMKgwqDCoMKgZGVwZW5kcyBvbiBTUEkKPiBkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9paW8vYWRjL2FkX3NpZ21hX2RlbHRhLmMKPiBiL2RyaXZlcnMvaWlvL2FkYy9hZF9zaWdt
+YV9kZWx0YS5jCj4gaW5kZXggZDg1NzBmNjIwLi5iOWVhZTFlODAgMTAwNjQ0Cj4gLS0tIGEvZHJp
+dmVycy9paW8vYWRjL2FkX3NpZ21hX2RlbHRhLmMKPiArKysgYi9kcml2ZXJzL2lpby9hZGMvYWRf
+c2lnbWFfZGVsdGEuYwo+IEBAIC01NjUsNiArNTY1LDE2IEBAIGludCBhZF9zZF92YWxpZGF0ZV90
+cmlnZ2VyKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsCj4gc3RydWN0IGlpb190cmlnZ2VyICp0
+cmlnKQo+IMKgfQo+IMKgRVhQT1JUX1NZTUJPTF9OU19HUEwoYWRfc2RfdmFsaWRhdGVfdHJpZ2dl
+ciwgSUlPX0FEX1NJR01BX0RFTFRBKTsKPiDCoAo+ICtzdGF0aWMgdm9pZCBhZF9zZF9mcmVlX2ly
+cSh2b2lkICpzZCkKPiArewo+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBhZF9zaWdtYV9kZWx0YSAq
+c2lnbWFfZGVsdGEgPSBzZDsKPiArCj4gKyNpZmRlZiBDT05GSUdfQURfU0lHTUFfREVMVEFfVVNF
+X0xBWllfSVJRCj4gK8KgwqDCoMKgwqDCoMKgaXJxX2NsZWFyX3N0YXR1c19mbGFncyhzaWdtYV9k
+ZWx0YS0+c3BpLT5pcnEsIElSUV9ESVNBQkxFX1VOTEFaWSk7Cj4gKyNlbmRpZgo+ICvCoMKgwqDC
+oMKgwqDCoGZyZWVfaXJxKHNpZ21hX2RlbHRhLT5zcGktPmlycSwgc2lnbWFfZGVsdGEpOwo+ICt9
+Cj4gKwo+IMKgc3RhdGljIGludCBkZXZtX2FkX3NkX3Byb2JlX3RyaWdnZXIoc3RydWN0IGRldmlj
+ZSAqZGV2LCBzdHJ1Y3QgaWlvX2Rldgo+ICppbmRpb19kZXYpCj4gwqB7Cj4gwqDCoMKgwqDCoMKg
+wqDCoHN0cnVjdCBhZF9zaWdtYV9kZWx0YSAqc2lnbWFfZGVsdGEgPQo+IGlpb19kZXZpY2VfZ2V0
+X2RydmRhdGEoaW5kaW9fZGV2KTsKPiBAQCAtNTg0LDExICs1OTQsMjIgQEAgc3RhdGljIGludCBk
+ZXZtX2FkX3NkX3Byb2JlX3RyaWdnZXIoc3RydWN0IGRldmljZSAqZGV2LAo+IHN0cnVjdCBpaW9f
+ZGV2ICppbmRpb19kZQo+IMKgwqDCoMKgwqDCoMKgwqBpbml0X2NvbXBsZXRpb24oJnNpZ21hX2Rl
+bHRhLT5jb21wbGV0aW9uKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBzaWdtYV9kZWx0YS0+aXJx
+X2RpcyA9IHRydWU7Cj4gLcKgwqDCoMKgwqDCoMKgcmV0ID0gZGV2bV9yZXF1ZXN0X2lycShkZXYs
+IHNpZ21hX2RlbHRhLT5zcGktPmlycSwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZF9zZF9kYXRhX3JkeV90cmlnX3BvbGwsCj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgc2lnbWFfZGVsdGEtPmluZm8tPmlycV9mbGFncyB8IElSUUZfTk9fQVVUT0VOLAo+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlu
+ZGlvX2Rldi0+bmFtZSwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBzaWdtYV9kZWx0YSk7Cj4gKyNpZmRlZiBDT05GSUdfQURfU0lH
+TUFfREVMVEFfVVNFX0xBWllfSVJRCj4gK8KgwqDCoMKgwqDCoMKgaXJxX3NldF9zdGF0dXNfZmxh
+Z3Moc2lnbWFfZGVsdGEtPnNwaS0+aXJxLCBJUlFfRElTQUJMRV9VTkxBWlkpOwo+ICsjZW5kaWYK
+PiArwqDCoMKgwqDCoMKgwqByZXQgPSByZXF1ZXN0X2lycShzaWdtYV9kZWx0YS0+c3BpLT5pcnEs
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZF9z
+ZF9kYXRhX3JkeV90cmlnX3BvbGwsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCBzaWdtYV9kZWx0YS0+aW5mby0+aXJxX2ZsYWdzIHwgSVJRRl9OT19B
+VVRPRU4sCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBpbmRpb19kZXYtPm5hbWUsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBzaWdtYV9kZWx0YSk7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKHJldCkgewo+
+ICsjaWZkZWYgQ09ORklHX0FEX1NJR01BX0RFTFRBX1VTRV9MQVpZX0lSUQo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpcnFfY2xlYXJfc3RhdHVzX2ZsYWdzKHNpZ21hX2RlbHRhLT5z
+cGktPmlycSwKPiBJUlFfRElTQUJMRV9VTkxBWlkpOwoKSSdtIG5vdCByZWFsbHkga2VlbiB3aXRo
+IGhhdmluZyB0aGUgS2NvbmZpZyBvcHRpb24uIEknbSBmYWlybHkgY29udmluY2VkIHRoYXQKdGhp
+cyBtaWdodCBiZSBhIHByb2JsZW0gYWZmZWN0aW5nIGFsbCBzaWdtYSBkZWx0YSBBRENzIGFuZCBl
+dmVuIGlmIHRoZXkgYXJlbid0CmFmZmVjdGVkLCBJIGRvIG5vdCB0aGluayB0aGF0IHNldHRpbmcg
+dGhpcyBJUlEgZmxhZyB3aWxsIGRvIGFueSBhcm0gKG90aGVyIHRoYW4KbGVzcyBlZmZpY2llbmN5
+IG1heWJlKS4KCgpJZiB5b3UgcmVhbGx5IHdhbnQgdG8gYmUgb24gdGhlIHNhZmUgc2lkZSwgd2Ug
+Y291bGQgYWRkIGEgbmV3IGJvb2xlYW4gdG8gJ3N0cnVjdAphZF9zaWdtYV9kZWx0YV9pbmZvJyB0
+aGF0IHdvdWxkIGJlIGVuYWJsZWQgZm9yIHlvdXIgZGV2aWNlIGFuZCB3aGVuIHRydWUsIHRoZQpM
+QVpZIGJpdCBpcyBzZXQuIE9uY2Ugd2UgcHJvdmUgdGhhdCBhbGwgZGV2aWNlcyBtaWdodCBiZSBh
+ZmZlY3RlZCBieSB0aGlzIGlzc3VlLAp3ZSBjb3VsZCByZW1vdmUgdGhlIGJvb2xlYW4gYW5kIG1h
+a2UgaXQgYSBkZWZhdWx0IHNldHRpbmcuCgotIE51bm8gU8OhCg==
 

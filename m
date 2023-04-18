@@ -2,93 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8576E5AAF
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 09:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DF36E5BAC
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 10:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbjDRHpH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Apr 2023 03:45:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
+        id S230163AbjDRIKP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Apr 2023 04:10:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230352AbjDRHpF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 03:45:05 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043CE44A5;
-        Tue, 18 Apr 2023 00:45:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681803903; x=1713339903;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2GkX+7Y2EPR5wAFJuF3tLDRqsCCn3i3+/rD88hSVrus=;
-  b=lLfN0vtEGf2TZgYUIqg4nPxwO08SJB4LcHDqs9svlgMkwd4YmPpziXld
-   oZXYF3QdGv4Fcru0dkQ5BC0YAQRfP8jT8TtX/z6vYJo5Ka608ByOEBSaY
-   H7Gy6L76NkcPXeR+3sIs1i5hEYiRSLOn2157QARRrzK+ELVV+dPf3EG8O
-   A9Gx3asZVcWGYcyFpE70BIt5mKQXygG3i0XPUwUk9DRJJo87F1Ydo5S9i
-   6DZ0zjbM6t1m+zJjmB4w8/i4iW2Vhm4v8yUEK6v2XZkRQ0p0Z6sZMNXqW
-   FQdyQPaRiw9H5QR232We/f3uTgkWPunj9VUjdSU4/cBbsby882lJ32G0j
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="342595346"
-X-IronPort-AV: E=Sophos;i="5.99,206,1677571200"; 
-   d="scan'208";a="342595346"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2023 00:45:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="684477294"
-X-IronPort-AV: E=Sophos;i="5.99,206,1677571200"; 
-   d="scan'208";a="684477294"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 18 Apr 2023 00:44:59 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pog1J-001VmC-36;
-        Tue, 18 Apr 2023 10:44:57 +0300
-Date:   Tue, 18 Apr 2023 10:44:57 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH v4 4/4] counter: 104-quad-8: Migrate to the regmap API
-Message-ID: <ZD5KeYJoIZ1PFKud@smile.fi.intel.com>
-References: <cover.1681753140.git.william.gray@linaro.org>
- <1f1f7920d2be94aedb6fdf49f429fe6137c8cb24.1681753140.git.william.gray@linaro.org>
+        with ESMTP id S231502AbjDRIJz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 04:09:55 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318907A99;
+        Tue, 18 Apr 2023 01:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1681805303;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8DTc/oRJhMEBa33wB3TaMgkNKc15dOmlHK8alGfdcJk=;
+        b=i2y5XYqQS4KdTNNlpdITBztyfUED78n/aM0a3L19IR0dztlNgHD4h8kG3hHLJb6PE4BHyh
+        BHoN5d/SlAU8cwhrU+rUiz49RLxT/CSXxujr6Onaz2R1d5d35D14IgL/OTfA4/HlL3/KGZ
+        wp5ZiCeGY69eCgNlIg3o3Qf0vNWzzVk=
+Message-ID: <1f63ffced9ed18309401af9a885310e1715b6538.camel@crapouillou.net>
+Subject: Re: [PATCH v3 03/11] iio: buffer-dma: Get rid of outgoing queue
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Vinod Koul <vkoul@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
+Date:   Tue, 18 Apr 2023 10:08:21 +0200
+In-Reply-To: <20230416152422.477ecf67@jic23-huawei>
+References: <20230403154800.215924-1-paul@crapouillou.net>
+         <20230403154800.215924-4-paul@crapouillou.net>
+         <20230416152422.477ecf67@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1f1f7920d2be94aedb6fdf49f429fe6137c8cb24.1681753140.git.william.gray@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 17, 2023 at 03:50:50PM -0400, William Breathitt Gray wrote:
-> The regmap API supports IO port accessors so we can take advantage of
-> regmap abstractions rather than handling access to the device registers
-> directly in the driver. With regmap we get boundary checks, read-write
-> permissions, operation synchronization locks, and more for free. Most
-> important of all, rather than rolling our own we utilize implementations
-> that are known to work and gain from any future improvements and fixes
-> that come.
+Hi Jonathan,
 
-...
+Le dimanche 16 avril 2023 =C3=A0 15:24 +0100, Jonathan Cameron a =C3=A9crit=
+=C2=A0:
+> On Mon,=C2=A0 3 Apr 2023 17:47:52 +0200
+> Paul Cercueil <paul@crapouillou.net> wrote:
+>=20
+> > The buffer-dma code was using two queues, incoming and outgoing, to
+> > manage the state of the blocks in use.
+> >=20
+> > While this totally works, it adds some complexity to the code,
+> > especially since the code only manages 2 blocks. It is much easier
+> > to
+> > just check each block's state manually, and keep a counter for the
+> > next
+> > block to dequeue.
+> >=20
+> > Since the new DMABUF based API wouldn't use the outgoing queue
+> > anyway,
+> > getting rid of it now makes the upcoming changes simpler.
+> >=20
+> > With this change, the IIO_BLOCK_STATE_DEQUEUED is now useless, and
+> > can
+> > be removed.
+> >=20
+> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> >=20
+> > ---
+> > v2: - Only remove the outgoing queue, and keep the incoming queue,
+> > as we
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 want the buffer to start streaming data =
+as soon as it is
+> > enabled.
+> > =C2=A0=C2=A0=C2=A0 - Remove IIO_BLOCK_STATE_DEQUEUED, since it is now f=
+unctionally
+> > the
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 same as IIO_BLOCK_STATE_DONE.
+>=20
+> I'm not that familiar with this code, but with my understanding this
+> makes
+> sense.=C2=A0=C2=A0 I think it is independent of the earlier patches and i=
+s a
+> useful
+> change in it's own right.=C2=A0 As such, does it make sense to pick this
+> up
+> ahead of the rest of the series? I'm assuming that discussion on the
+> rest will take a while.=C2=A0 No great rush as too late for the coming
+> merge
+> window anyway.
 
->  - Use "int ret" for regmap_* return values throughout for consistency
+Actually, you can pick patches 3 to 6 (when all have been acked). They
+add write support for buffer-dma implementations; which is a dependency
+for the rest of the patchset, but they can live on their own.
 
-Looking into it I would think it might be better to have a precursor patch.
-But it's up to you. It looks good now.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers,
+-Paul

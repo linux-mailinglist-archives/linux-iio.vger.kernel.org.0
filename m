@@ -2,74 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6984C6E58F6
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 07:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8576E5AAF
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Apr 2023 09:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjDRF7r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Apr 2023 01:59:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43706 "EHLO
+        id S230179AbjDRHpH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Apr 2023 03:45:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230305AbjDRF7h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 01:59:37 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDBB5B90
-        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 22:59:33 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id ud9so70034497ejc.7
-        for <linux-iio@vger.kernel.org>; Mon, 17 Apr 2023 22:59:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681797571; x=1684389571;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
-        b=h2u+IvYIbnFxxtQG/ZtOJXOGODtmHZE6DE2kphmV5deUhBtI5SSl5ZpPS81I4DoyvM
-         cL/QsMoq/nZ79QoTUVBpjigDCpbkhNV4ihdOYSWAZCOke9dA/QR1VB/koOlQ9LVEDYMX
-         XtbtlwSc8k7WA+c3R6xpugIUkMv4IcvxiBX5jugHOkE6bIQRd6XIP4bPoYTYUOtLJ8cY
-         jqOSy7VahCSY+50nHqKMLAvtMY0jgSKZG9RLZ0VM4rlX3dlYAIwPmpAZEs5sdE1jKPzt
-         sUSa+Yt3rvdogEL685HX9OzzgKvbxUuLxSFiR0ubii95w3DTWRmDDneYGKBqJn2l6obd
-         7Bag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681797571; x=1684389571;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
-        b=PHIwYU+m0yNUY5GvxcHs6LnrezG03XWDCBGCR/gd0GA7Drlh+MFDimX08ADaXNxZfB
-         im6M0UFaFBYGKAibN4ubBXPDNPS2XWdqef8EAMYYojuykZRUDKDtxbi5ZvYAsaARmGCT
-         5KCfiX8IDiZnDMF0XyA5VhAe7d3MnExs0uNJnzCoHO/q/GvIIwGbpUKhckHzVFd9vwip
-         mkBRg2yb5ACIynmtUbI/8SdjmeGBshNo0PwB1t8DY3w4PFNpw6rE49ROUxhXwoY+a2OR
-         fzNIklllp/eHIqEAT+XpvIRUeTpubvzOxy0beuicSkF8JUj9m0s3Pc4Ubvpgy47eLH8z
-         vR/A==
-X-Gm-Message-State: AAQBX9flPR1FitqsEWgiYCImStxJ5YXBZI2SgfE6pgRu+5rrQipktFcS
-        K9OgHU1VYniUMluqSBuAtZNJzJcjlSAT4LAWZA1pQX8bw1Z2kcUP
-X-Google-Smtp-Source: AKy350YRsUSKQ0+i58Lzun7WtY7IrRwSkm+DWIi2JdfS71rVYYWUT2OQ/a/Q5PRWIBazn3AQLm2dWBYGVxBajLvvRoE=
-X-Received: by 2002:a05:6512:96b:b0:4e8:4b7a:6b73 with SMTP id
- v11-20020a056512096b00b004e84b7a6b73mr2935594lft.4.1681797550844; Mon, 17 Apr
- 2023 22:59:10 -0700 (PDT)
+        with ESMTP id S230352AbjDRHpF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Apr 2023 03:45:05 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043CE44A5;
+        Tue, 18 Apr 2023 00:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681803903; x=1713339903;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2GkX+7Y2EPR5wAFJuF3tLDRqsCCn3i3+/rD88hSVrus=;
+  b=lLfN0vtEGf2TZgYUIqg4nPxwO08SJB4LcHDqs9svlgMkwd4YmPpziXld
+   oZXYF3QdGv4Fcru0dkQ5BC0YAQRfP8jT8TtX/z6vYJo5Ka608ByOEBSaY
+   H7Gy6L76NkcPXeR+3sIs1i5hEYiRSLOn2157QARRrzK+ELVV+dPf3EG8O
+   A9Gx3asZVcWGYcyFpE70BIt5mKQXygG3i0XPUwUk9DRJJo87F1Ydo5S9i
+   6DZ0zjbM6t1m+zJjmB4w8/i4iW2Vhm4v8yUEK6v2XZkRQ0p0Z6sZMNXqW
+   FQdyQPaRiw9H5QR232We/f3uTgkWPunj9VUjdSU4/cBbsby882lJ32G0j
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="342595346"
+X-IronPort-AV: E=Sophos;i="5.99,206,1677571200"; 
+   d="scan'208";a="342595346"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2023 00:45:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10683"; a="684477294"
+X-IronPort-AV: E=Sophos;i="5.99,206,1677571200"; 
+   d="scan'208";a="684477294"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 18 Apr 2023 00:44:59 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pog1J-001VmC-36;
+        Tue, 18 Apr 2023 10:44:57 +0300
+Date:   Tue, 18 Apr 2023 10:44:57 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v4 4/4] counter: 104-quad-8: Migrate to the regmap API
+Message-ID: <ZD5KeYJoIZ1PFKud@smile.fi.intel.com>
+References: <cover.1681753140.git.william.gray@linaro.org>
+ <1f1f7920d2be94aedb6fdf49f429fe6137c8cb24.1681753140.git.william.gray@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:ab2:2681:0:b0:1b6:840f:9075 with HTTP; Mon, 17 Apr 2023
- 22:59:10 -0700 (PDT)
-Reply-To: mariamkouame.info@myself.com
-From:   Mariam Kouame <mariamkouame1992@gmail.com>
-Date:   Mon, 17 Apr 2023 22:59:10 -0700
-Message-ID: <CADUz=agNY633M0qMXMnAP3Ms7-3rKuWtAZGCOQZKeYpCdBxT_w@mail.gmail.com>
-Subject: from mariam kouame
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f1f7920d2be94aedb6fdf49f429fe6137c8cb24.1681753140.git.william.gray@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear,
+On Mon, Apr 17, 2023 at 03:50:50PM -0400, William Breathitt Gray wrote:
+> The regmap API supports IO port accessors so we can take advantage of
+> regmap abstractions rather than handling access to the device registers
+> directly in the driver. With regmap we get boundary checks, read-write
+> permissions, operation synchronization locks, and more for free. Most
+> important of all, rather than rolling our own we utilize implementations
+> that are known to work and gain from any future improvements and fixes
+> that come.
 
-Please grant me permission to share a very crucial discussion with
-you. I am looking forward to hearing from you at your earliest
-convenience.
+...
 
-Mrs. Mariam Kouame
+>  - Use "int ret" for regmap_* return values throughout for consistency
+
+Looking into it I would think it might be better to have a precursor patch.
+But it's up to you. It looks good now.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

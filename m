@@ -2,86 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49ECA6E7765
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Apr 2023 12:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2C76E7898
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Apr 2023 13:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232199AbjDSK2s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Apr 2023 06:28:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40814 "EHLO
+        id S232557AbjDSL1W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Apr 2023 07:27:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232406AbjDSK2p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Apr 2023 06:28:45 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B715FD2
-        for <linux-iio@vger.kernel.org>; Wed, 19 Apr 2023 03:28:42 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4ec816d64afso12952107e87.1
-        for <linux-iio@vger.kernel.org>; Wed, 19 Apr 2023 03:28:42 -0700 (PDT)
+        with ESMTP id S232511AbjDSL1W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Apr 2023 07:27:22 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34CED118CD
+        for <linux-iio@vger.kernel.org>; Wed, 19 Apr 2023 04:27:21 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-54f6a796bd0so381050877b3.12
+        for <linux-iio@vger.kernel.org>; Wed, 19 Apr 2023 04:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681900120; x=1684492120;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/VybvqKxQBBjDVUhiroFfMYUdC6zzghkLtNDu/WEbXQ=;
-        b=F1g1LfaupkHvYGX4hXRemCRjRdU9QpJizHsTb6EnZ7xTEl05oERKa1+MylQD+Ud17I
-         3s609V08kX1xd6CeIueDdxQwHlujSJIKLLCmtbycbPoMyhi7imo87c07ekSD7YDpihwv
-         gNbPYVGLXRGd008MdDx7rkJFBD7ojIgbzqt7NCAMmqtlqnyUFQrsbWXNnlk7/B6e9IN/
-         PyQQ2WBqMAB1fC07FGM+vvnjRhmhuEINNqbZILQJZvCYgiWS/skaT+N7v2O4WJR4/yXU
-         1Or1Om0Gg4u4fh88HKcZAUdeMTusLaV6fKMnpXghFi2yA378BoyAedaxKo3/HsqcAvid
-         obKg==
+        d=linaro.org; s=google; t=1681903640; x=1684495640;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bhVigfqWGFmXRTZ2TxchBXXZPO5znPNHgJBAx9rqfOM=;
+        b=e8GuTfmtxGy3rVdST65/SUmuDcz2TBIMvlQdBsEi2Qy0V1Vlohqj95UzjVo/8EKbWe
+         kzu9ReFQNStSS3sLwPqDlycEO7hQZnKceeHXUKX2rCMwykdtra2pC/rhYkXJPKzeV8CU
+         +HsIS7FTa7TBvreyUZ7rJpLhuSl09kpa1XyW8xeO63LswXyUK0rjIj2vOQQW/5fiNgjQ
+         w9RCxNPrMMdRqkUVHDs7ViNUFO+iWjMY0KDN6MR94iykeI9UmZyff2LxKVQCFWMLHxND
+         bjIGhagifMWZXWhooKc5Y1J3+c1sQWUMzUq7R8xeLReNeEdmEtFopsrqs0d3EL7sttcG
+         vkEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681900120; x=1684492120;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/VybvqKxQBBjDVUhiroFfMYUdC6zzghkLtNDu/WEbXQ=;
-        b=fLVf4lItgMrPxoAS/7ri9XJP+X67V3z0EibFaSfTaLChFhC95/+nxLga7H0h4ge04l
-         zF1YXgb4nXwob3HSl1dtIq2Py2ydrxSwSJc+sujxX/NinOF8MznAsy+h0exbDgeTv0vz
-         gb5FhzZBOxpI0LX+4CgIPqkzHs90HtetRrgVt+gCabzl9T5CFAphwc2Y8qmiKAsT0hA/
-         J8iVQpTVGgdDXaMWds34LiqbSE2wPsZpxlZFvdbiQfzWZULm2Fkzbbg9zVPQZmR6ymow
-         EACVP+KGpQj7kbR7DflwXcOG7wiVkJpsRIlwwqoD299QWT67BSe/ueUa5z8GCYpw2txA
-         JX6A==
-X-Gm-Message-State: AAQBX9fZlSnAtmmw79UZK7B6+ztKl03aFRahzrs+fk2c4+dDI7qK1LP8
-        afjFG0fFvJJFZUZjwTC9bY9XKQ==
-X-Google-Smtp-Source: AKy350bR2i4Ob8duVzV3tJMTy/E3Eui8ihwuBJFLOmUXsND88vLrHCUaWPcS+3HzXFhjrd13jx5MGg==
-X-Received: by 2002:ac2:55b2:0:b0:4ec:7973:1ac with SMTP id y18-20020ac255b2000000b004ec797301acmr777061lfg.22.1681900120711;
-        Wed, 19 Apr 2023 03:28:40 -0700 (PDT)
-Received: from [192.168.1.101] (abyj144.neoplus.adsl.tpnet.pl. [83.9.29.144])
-        by smtp.gmail.com with ESMTPSA id p11-20020ac246cb000000b004edd84f4646sm194670lfo.91.2023.04.19.03.28.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Apr 2023 03:28:40 -0700 (PDT)
-Message-ID: <4b9e8dba-aeb7-092b-ebec-6c1fd7bbaa12@linaro.org>
-Date:   Wed, 19 Apr 2023 12:28:38 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v2 7/8] arm64: dts: qcom: sdm632-fairphone-fp3: Add
- notification LED
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        d=1e100.net; s=20221208; t=1681903640; x=1684495640;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bhVigfqWGFmXRTZ2TxchBXXZPO5znPNHgJBAx9rqfOM=;
+        b=MwY93418L6MyfRAn/gnHd3/E9jkCHTnfFbOsmEdY/edN5eqQvU/qy7CjLNf1GsNq0Z
+         mpGguhjF2AiNXHKVRzssgHGiPJU7B85j8KoYFoL+h8ZBUJhoEJ142rCYL8OhruWg33yu
+         l09z6MKCib84ew3ybqbxyyQSwPTK80wJb2SoEOlNZV+ToFm3955Qro5iE2x/D8FaTtFd
+         D1hZSmmFRkIuvlzjIln6FnuVqbkcrx3TFXItnVjlY+ZBQuq3TYJW/610Cczk0Sefflo2
+         Xyq3kba/r1JZjACeDEayjxne+4XD3jPiHncpGlRLs+v8Fi6SVYkoiy+saCvbMmDRvlVU
+         6/RQ==
+X-Gm-Message-State: AAQBX9c4fcMXCErffGXuZ7sxAibNvcXNWYIZIjk2UhXORIS50KpuUhxF
+        lSPSOMKCJwDPCyb6QyxjNI6Ocg==
+X-Google-Smtp-Source: AKy350aCHo9tGX/AhB2YJtQy37liXLhjsJ5xVCbmC+mZcCRK1RVGP8OoKjxjx34Eqq8cp/BS7cWD5g==
+X-Received: by 2002:a81:5445:0:b0:54f:e2ae:21d8 with SMTP id i66-20020a815445000000b0054fe2ae21d8mr2747868ywb.28.1681903640359;
+        Wed, 19 Apr 2023 04:27:20 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id y125-20020a81a183000000b0054fa1fbda6fsm4409159ywg.25.2023.04.19.04.27.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Apr 2023 04:27:19 -0700 (PDT)
+Date:   Wed, 19 Apr 2023 07:27:17 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org
-References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
- <20230414-pmi632-v2-7-98bafa909c36@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230414-pmi632-v2-7-98bafa909c36@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v4 4/4] counter: 104-quad-8: Migrate to the regmap API
+Message-ID: <ZD/QFa+2cU/tFivr@fedora>
+References: <cover.1681753140.git.william.gray@linaro.org>
+ <1f1f7920d2be94aedb6fdf49f429fe6137c8cb24.1681753140.git.william.gray@linaro.org>
+ <ZD5KeYJoIZ1PFKud@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="eaU7fGgbrcA6c2RU"
+Content-Disposition: inline
+In-Reply-To: <ZD5KeYJoIZ1PFKud@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -89,66 +79,50 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--eaU7fGgbrcA6c2RU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 18.04.2023 18:43, Luca Weiss wrote:
-> The phone features a notification LED connected to the pmi632. Configure
-> the RGB led found on it.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+On Tue, Apr 18, 2023 at 10:44:57AM +0300, Andy Shevchenko wrote:
+> On Mon, Apr 17, 2023 at 03:50:50PM -0400, William Breathitt Gray wrote:
+> > The regmap API supports IO port accessors so we can take advantage of
+> > regmap abstractions rather than handling access to the device registers
+> > directly in the driver. With regmap we get boundary checks, read-write
+> > permissions, operation synchronization locks, and more for free. Most
+> > important of all, rather than rolling our own we utilize implementations
+> > that are known to work and gain from any future improvements and fixes
+> > that come.
+>=20
+> ...
+>=20
+> >  - Use "int ret" for regmap_* return values throughout for consistency
+>=20
+> Looking into it I would think it might be better to have a precursor patc=
+h.
+> But it's up to you. It looks good now.
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
 
-Konrad
->  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 29 +++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> index 70e683b7e4fc..301eca9a4f31 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> @@ -4,8 +4,10 @@
->   */
->  /dts-v1/;
->  
-> +#include <dt-bindings/leds/common.h>
->  #include "sdm632.dtsi"
->  #include "pm8953.dtsi"
-> +#include "pmi632.dtsi"
->  
->  / {
->  	model = "Fairphone 3";
-> @@ -83,6 +85,33 @@ &pm8953_resin {
->  	linux,code = <KEY_VOLUMEDOWN>;
->  };
->  
-> +&pmi632_lpg {
-> +	status = "okay";
-> +
-> +	multi-led {
-> +		color = <LED_COLOR_ID_RGB>;
-> +		function = LED_FUNCTION_STATUS;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		led@1 {
-> +			reg = <1>;
-> +			color = <LED_COLOR_ID_RED>;
-> +		};
-> +
-> +		led@2 {
-> +			reg = <2>;
-> +			color = <LED_COLOR_ID_GREEN>;
-> +		};
-> +
-> +		led@3 {
-> +			reg = <3>;
-> +			color = <LED_COLOR_ID_BLUE>;
-> +		};
-> +	};
-> +};
-> +
->  &sdhc_1 {
->  	status = "okay";
->  	vmmc-supply = <&pm8953_l8>;
-> 
+Yes, there are a few unrelated changes in this patch just to adjust from
+the "err" to "ret" symbol. It's relatively minor, so if I send a v5 of
+this series, I'll separate those changes to their own precursor patch to
+reduce the noise here. Regardless, would you like me to add a
+Reviewed-by tag for you for the changes in this patch?
+
+William Breathitt Gray
+
+--eaU7fGgbrcA6c2RU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZD/QFQAKCRC1SFbKvhIj
+K4SOAP9f5EGJvGYHYKsTOfB7EmLLtOOhzZHRVzg5qgY55LWSugEArh/RYJZlvfHZ
+P7D6kDPIpDSGZ5ZnyCpOKgsnVXXEvAQ=
+=zdkT
+-----END PGP SIGNATURE-----
+
+--eaU7fGgbrcA6c2RU--

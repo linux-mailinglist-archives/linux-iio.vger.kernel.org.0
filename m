@@ -2,70 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 710E86E7E6E
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Apr 2023 17:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49D046E7F1B
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Apr 2023 18:04:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbjDSPhM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Apr 2023 11:37:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58348 "EHLO
+        id S233183AbjDSQEw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Apr 2023 12:04:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbjDSPhL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Apr 2023 11:37:11 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F9BB3
-        for <linux-iio@vger.kernel.org>; Wed, 19 Apr 2023 08:37:10 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f1763eea08so22313035e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 19 Apr 2023 08:37:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681918629; x=1684510629;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c2zs8Cl3Q/8Nc5DGBq8l177y3eli1Qxa+CVE/yQLN4g=;
-        b=V2rjPf29kJuCXvUzej3me+YsbiV6pIc6tMPE7/1/1/wN/ZQj3+wtSovXRvOtKKo7DP
-         RLV2TVANVxEu+vCxAAyoFPawQHCC1kKrOTEme2mSj8xs5Ud7AL21PrH8ntRmY132gj9d
-         kHUPlUnnZtZN4O/mdIIlk16BcayGAkLsEPVIUMu2QH9G+VP9z6WV8S9h9oOkvo3JhD1z
-         i6ikzr8RHWYALMHnEaA5+YAwO+m3x9n/D+W/c587bARmEPsenndCfgKS/9L1Oo0OXaEW
-         oyyUMkyQwn6cfu51W7+83fiXsRNDfYfrGGO4hAZ1GNgOa0v4PlL2gl7XfEW+vywl+NU2
-         hxUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681918629; x=1684510629;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c2zs8Cl3Q/8Nc5DGBq8l177y3eli1Qxa+CVE/yQLN4g=;
-        b=RY1qirKcfUj7BBCvWdF7zZy8h9NFFl/zdAOSpeN8gvAIlB7tQkb24acFzylecNSq1/
-         yMU+YOQwlOzNxa/oBgXtQj/CQ98yXiJsaotu5MtCOw2xzlTjXi7ys5gCI64y+x+F2ugN
-         793FTy3uZouT34kuCi50FBWCEZ3mAytxoa0wfqq/jowvLcykcnrjSfLHA6+7YpBOFlNF
-         EOOo0W+ut4ovxXmOxn1m0TZ/LsM5io16GnAHc4di6zYLSjCP5DuNLXOrCzXqedoiacAc
-         Vj++DjsrvtEH/QQuebf4y66cbSCiadoAJr1Ln1bYFb1EyvN+FrnPp9lFcsTKPo6lpQt4
-         FpCg==
-X-Gm-Message-State: AAQBX9ecKR5IA8T28jtWHDUBpsxyzB1WxW2GRX+nwLgyMZ0vozL8DDgB
-        dOsPTgcMJhyLhDGZv57Q0SEvow==
-X-Google-Smtp-Source: AKy350a6CZAKMunYQtEIL1vU3cHVUwEzOCejQZ/xdOoo/eBPphluKjYZ7DhVzmK48Qedkc/oVSBG8A==
-X-Received: by 2002:adf:dfc3:0:b0:2d1:9ce9:2b8f with SMTP id q3-20020adfdfc3000000b002d19ce92b8fmr5190037wrn.66.1681918629112;
-        Wed, 19 Apr 2023 08:37:09 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id c18-20020a056000105200b002fe96f0b3acsm2689880wrx.63.2023.04.19.08.37.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 08:37:08 -0700 (PDT)
-Date:   Wed, 19 Apr 2023 18:37:05 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, Lee Jones <lee@kernel.org>,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] counter: rz-mtu3-cnt: Unlock on error in
- rz_mtu3_count_write()
-Message-ID: <0859b9d5-c504-4f46-83ad-dcd7ada6b81b@kili.mountain>
-References: <93ec19d1-3b74-4644-9f67-b88c08e79752@kili.mountain>
- <ZD/8gbcin4RQYd+A@fedora>
+        with ESMTP id S233386AbjDSQEv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Apr 2023 12:04:51 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DCAA11A;
+        Wed, 19 Apr 2023 09:04:50 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33JDOOMJ004716;
+        Wed, 19 Apr 2023 12:04:29 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3q0vx6t3cv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 19 Apr 2023 12:04:25 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 33JG4KSR010577
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 19 Apr 2023 12:04:20 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 19 Apr
+ 2023 12:04:19 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 19 Apr 2023 12:04:19 -0400
+Received: from kimedia-VirtualBox.ad.analog.com (KPALLER2-L02.ad.analog.com [10.116.242.24])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 33JG44Hv018409;
+        Wed, 19 Apr 2023 12:04:07 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>,
+        <krzysztof.kozlowski@linaro.org>
+CC:     <broonie@kernel.org>, <kimseer.paller@analog.com>,
+        <lgirdwood@gmail.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iio:adc: add max14001 support
+Date:   Thu, 20 Apr 2023 00:03:59 +0800
+Message-ID: <20230419160359.7739-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230415171648.1a371ee7@jic23-huawei>
+References: <20230415171648.1a371ee7@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZD/8gbcin4RQYd+A@fedora>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: wOy4Isijt_20daP4FnQsnQ1mIjuBVI40
+X-Proofpoint-ORIG-GUID: wOy4Isijt_20daP4FnQsnQ1mIjuBVI40
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-19_10,2023-04-18_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 mlxscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=626 clxscore=1011 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304190145
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,22 +70,13 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 19, 2023 at 10:36:49AM -0400, William Breathitt Gray wrote:
-> The lock is acquired by rz_mtu3_lock_if_counter_is_valid(), so that
-> function needs a sparse __acquires(&priv->lock) annotation too.
+Hi all,
 
-I found this bug using Smatch.  It's a competing static checker which
-uses Sparse as a parser.  I am the author of Smatch so I am naturally
-biased.
+Thank you for your feedback and review. I apologize for the delayed response. 
+I have been working on creating a new patch version, which includes changes to 
+the device tree property to userspace ABI, support for daisy chain operation, 
+conversion to custom regmap, and addressing some minor comments. I will be 
+sending the new patch version soon.
 
-I don't think it's as simple as that.  I don't think Sparse has
-annotations for mutexes, only for spinlocks?  Also it's really
-complicated to annotate something as taking the lock on the success path
-but not on the failure path.  You have to set up a wrapper and use
-__cond_lock().
-
-Every other feature in Sparse is awesome, but for locking, it's better
-to just use Smatch.
-
-regards,
-dan carpenter
+Thanks and Best Regards,
+Kim Seer Paller

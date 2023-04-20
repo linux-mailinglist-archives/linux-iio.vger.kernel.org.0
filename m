@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B5D6E91EA
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 13:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C815F6E9205
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 13:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235343AbjDTLHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Apr 2023 07:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54374 "EHLO
+        id S234452AbjDTLH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Apr 2023 07:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234710AbjDTLFS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 07:05:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E9C8A43;
-        Thu, 20 Apr 2023 04:04:01 -0700 (PDT)
+        with ESMTP id S234611AbjDTLFi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 07:05:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E4283F5;
+        Thu, 20 Apr 2023 04:04:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FC78647AD;
-        Thu, 20 Apr 2023 11:03:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A891C433D2;
-        Thu, 20 Apr 2023 11:03:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E5D9647CD;
+        Thu, 20 Apr 2023 11:03:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B58C433EF;
+        Thu, 20 Apr 2023 11:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681988597;
-        bh=qhfSTW77Ij2nesFY/gKw6hsMkvyp2+Wd2BeZDFndKUY=;
+        s=k20201202; t=1681988612;
+        bh=NZrnd8QS9D7YxLacsJYmOPmK2ytxRfYPCgRmL+pnBik=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HYYL698L1i3bhg6FNtYBdWkuNF0Rkd2YaV7Is8CSYTjKqpc2I7eJP2Lt7ynMwdE/2
-         epAS147IiznNK99ib6ZBD2aTuQ6D17DWv/rxfh/SCX2ZNCXnmSa6686+nLqMedXiuL
-         o/E+68p+PpJ0iiuYcyBUiM9VJjDPLn11N+5dKhJZhJbIzZniFjjvQ4E0vjE5F+N7QE
-         PRDqrGpES+YokA/8Tt5ut1x7EPuSpIMHQAtq+BCHA4Hu/VMkWtleZlrQi+mug5Ftbx
-         QCHIPsuumRDsmcj+RgJttjc3iTYqpJdG9Q4XYYOtFVkhVslWM8yMppQn4cDE8li4hL
-         9LUH8B016cUjQ==
+        b=BPkd7qxcY/+BMgd3Myt8m284Agj0tSZJ33KrcZ6CCL4xCKNlDvfHPZMGqSrkN/jpO
+         o0nD9I8f/FB6ANIltnIJUDynKRbQZXsviRlU/PRY1/UfGO6JLl/oBq/k/xrzua+PKK
+         uxsjK7Lb77JPyPwzFDIYOaGA9TaxdJtwGKuM+TMBC+ja9fWMCWdA7cM6aps5OXH6aX
+         tWL6fXL4hHro+x249UAjJTE+Aq3+ozxZYmQlPpc6c2sRXZaH1VaInDvKWm2IiCRmAP
+         jraN8bEIakaeLDltFIxuGv5T3nhZVUYDvcXOzik57g5FbEm3OvT7iTdmOxAyBdF8xZ
+         KgXCD6b9jBD8Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 4/7] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
-Date:   Thu, 20 Apr 2023 07:03:04 -0400
-Message-Id: <20230420110308.506181-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 2/3] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+Date:   Thu, 20 Apr 2023 07:03:23 -0400
+Message-Id: <20230420110326.506279-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230420110308.506181-1-sashal@kernel.org>
-References: <20230420110308.506181-1-sashal@kernel.org>
+In-Reply-To: <20230420110326.506279-1-sashal@kernel.org>
+References: <20230420110326.506279-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index f9c8385c72d3d..496aab94570a1 100644
+index f4756671cddb6..6ed0d151ad21a 100644
 --- a/drivers/iio/adc/palmas_gpadc.c
 +++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -638,7 +638,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
+@@ -628,7 +628,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
  
  static int palmas_gpadc_remove(struct platform_device *pdev)
  {

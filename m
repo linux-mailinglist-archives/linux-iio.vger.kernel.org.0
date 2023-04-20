@@ -2,85 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B11AD6E9CCD
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 22:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7397A6E9D08
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 22:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjDTUBq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Apr 2023 16:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35776 "EHLO
+        id S231946AbjDTUWb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Apr 2023 16:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232222AbjDTUBn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 16:01:43 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D925FCD;
-        Thu, 20 Apr 2023 13:01:35 -0700 (PDT)
-Received: from localhost ([185.104.138.31]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MJn8J-1pZyUK3Zij-00KBW7; Thu, 20 Apr 2023 22:01:14 +0200
-Date:   Thu, 20 Apr 2023 22:01:11 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] MAINTAINERS: Add Honeywell mprls0025pa sensor
-Message-ID: <ZEGaB7giQt5eoIpV@arbad>
+        with ESMTP id S231376AbjDTUWa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 16:22:30 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283092710;
+        Thu, 20 Apr 2023 13:22:28 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-5067736607fso1438901a12.0;
+        Thu, 20 Apr 2023 13:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682022146; x=1684614146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sTqcl8tf1Ibk/nidmtYiKCPg/Dv/QDDdm5Do4ksXgmE=;
+        b=e5JdzK+uVlykkjsw0sYtxL0aC1cV6RY1Vn2duFaQaaWI2FKvtS7GmYb+e2VZzFwLyZ
+         w2owUIACpZ0/UmGn7N7Czn8W3DqhOB9lFHE/uqPrtTVuvxoy/EuEmPY3qS1gvGZ/MqNO
+         K8aeQcXkrLVeb9IWwr0PS3rlGjBrT2D4ZUnRHUK6fWg8UcAAArl8SfEOn1Xqoju5BeUX
+         LAmowv/k/ZLk1Ub9M9FAUggouYV5FXLpKCz96bmEb5l0DP3ddlkt1+tDMpFbnhZbj49q
+         SwCrVEF1O1rYeO8O7vuzm/fE15pep1zWScwwf4ayHhvncl7NnoVcCjva9AqVsaUj/PtU
+         narA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682022146; x=1684614146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sTqcl8tf1Ibk/nidmtYiKCPg/Dv/QDDdm5Do4ksXgmE=;
+        b=EsK7svh2W/9KKgHinT99EwLkBW1IzDTdhXkfTtxszKAeIP4pEqU3269bKBa8a4xzNa
+         80LISFFMC5l7m8pPIdrrJRb7ROyxkb8YupM91QPs83O9ytt+1vmsle0m/o3tvTSC9YAv
+         AB99q8MGstm3z3w/zlrcqgtv9SnTc9nexgwe4U4dyko5mArmfq7IMnjFje1V8VQcx6Ce
+         bAJf3i8KPUIXYVOLK7iQdxmpf9s95ACDp3qVxLHmHUxVF9W/oxeQDVwl0NYrfFLN9dsw
+         rwVf2zgpscV0FLj/zYhqNXdOFYo05kQhvg23TiQ++Ee+aFHCjPhRudxXEpIizvE2c+AE
+         l/7Q==
+X-Gm-Message-State: AAQBX9durcSX2Mh0E5gseeMP4AC2lqiHJFQ0GRbs61p92r1H0XVcrDk2
+        3ZwPvPyMySyrNK5dZLTTFmnGi91UTiQ=
+X-Google-Smtp-Source: AKy350ZtokotMDwsNUXxLbr/Zp4Ij+ARXhgNqXt/M3SnLX4kgIEkcbTl8S7TxxT3Q34DNX9NGwMGFA==
+X-Received: by 2002:a17:907:c30b:b0:93d:ae74:fa9e with SMTP id tl11-20020a170907c30b00b0093dae74fa9emr226363ejc.7.1682022146502;
+        Thu, 20 Apr 2023 13:22:26 -0700 (PDT)
+Received: from carbian.fritz.box ([2a02:8109:aa3f:ead8::d7e8])
+        by smtp.gmail.com with ESMTPSA id q14-20020a17090676ce00b00932ba722482sm1136881ejn.149.2023.04.20.13.22.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Apr 2023 13:22:25 -0700 (PDT)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, mazziesaccount@gmail.com
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH v2 0/5] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer 
+Date:   Thu, 20 Apr 2023 22:22:00 +0200
+Message-Id: <cover.1682019544.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZEGZYiS0znC2/fZC@arbad>
-X-Provags-ID: V03:K1:4POYiiMygpm3hHLWPppWuZwx2MtHDx0BLAP76vXTnZBCUN2ayUv
- xLJ9xM+bxDOjghy9JZ15RpcmDoXmXuG0Yclle+s5Az+59EZNgN4/45MPSRpXdEa4vEQXN+J
- vx7k1vuZDK+xXPnPaT6raFNAu2nLX9eIeu35NejOiKGel9jJu5kJow0T3LhLiXrkT7GvULj
- 0ZlLOk3x//ZAe8tDbHg6A==
-UI-OutboundReport: notjunk:1;M01:P0:XAmakBmbzsA=;d9g+1FVnKmNn+jk8GveAKlYEuv2
- PGswmCESj29qpgoNNcGGGhJOw7YudhlfHqW8cDg/olGzuPm4FdeZRueamjQ5rsSpXMpo6ki/Z
- vgMDkuWR6Qfp0MdXDMX47MSJoTm89k5uyFmRkub60KMTZnQlD2wcdzpHysvBdYef4fq4cZ2qu
- 7xZ9wzqMqXN3+8gdUy0a/6mKxhr7fY0WSJYVkW+J0sIGnnF/8r7sN68c/sdVC6f/m6HbV4wQC
- 1rWVrDIjzh1cZmSrIghIwJzuAxUvaNRhb49OBp8A/5ftZ6VLxJrxcq/LidY4AgwzUCROdoufB
- 9CFe3WcPeq2XctQzhnUaqiyTkUaVpqCH8PdwoLdxfo+WiErQ23Or49Vxec4vBUxxe3Sx2kRoE
- WrCTO4oSRKXZyTqBd9hfmZtzEvH4M8sDBcOqqmZmEa29lsDlNaA2j0ovJnyDw6v0l5N/VcYKT
- gTJkPDv70NaiUwDr08Gg9+N6aFK92eSqARv5UFic5pz6nqCuG5cKrstp4Q8P6uh/mD3vZyhlS
- JCI+4NvOPIlKZwUjIKI4C6t+OxaZ0NpbHZ15IlAdhnrGSTCRKbFB1nOwgXwW+4NnyxWPyGtDv
- 6m/3a9Pf+FGRueIo8zYEmia00Tfl/1GGDNpLSEufyAVQxSjPxE2S/7njlggjInBi8FrHOJhcI
- ISv/rLH32wogLGnVPwnfrhdgFErN/xyjNi5D6teMLA==
-X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add myself as a maintainer for Honeywell mprls0025pa sensor.
+Hello everyone,
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+Second version for adding support for the kx132-1211 accelerometer
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f77188f30210..0f42f88f8959 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9475,6 +9475,13 @@ F:	lib/test_hmm*
- F:	mm/hmm*
- F:	tools/testing/selftests/vm/*hmm*
- 
-+HONEYWELL MPRLS0025PA PRESSURE SENSOR SERIES IIO DRIVER
-+M:	Andreas Klinger <ak@it-klinger.de>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
-+F:	drivers/iio/pressure/mprls0025pa.c
-+
- HOST AP DRIVER
- M:	Jouni Malinen <j@w1.fi>
- L:	linux-wireless@vger.kernel.org
+KX132 accelerometer is a sensor which:
+	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+	- can be connected to I2C or SPI
+	- has internal HW FIFO buffer
+	- supports various ODRs (output data rates)
+
+The KX132 accelerometer is very similair to the KX022A. 
+One key difference is number of bits to report the number of data bytes that 
+have been stored in the buffer: 8 bits for KX022A vs 10 bits for
+KX132-1211.
+
+Changes in v2:
+- added a new patch for warning when the device_id match fails in the
+  probe function
+- added a new patch for the function that retrieves the number of bytes
+  in the buffer
+- added a change to the Kconfig file in the patch adding the support
+  for the kx132-1211
+- various fixes and modifications listed under each patch
+
+Mehdi Djait (5):
+  dt-bindings: iio: Add KX132-1211 accelerometer
+  iio: accel: kionix-kx022a: Warn on failed matches and assume
+    compatibility
+  iio: accel: kionix-kx022a: Refactor driver and add chip_info structure
+  iio: accel: kionix-kx022a: Add a function to retrieve number of bytes
+    in buffer
+  iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
+
+ .../bindings/iio/accel/kionix,kx022a.yaml     |  12 +-
+ drivers/iio/accel/Kconfig                     |   8 +-
+ drivers/iio/accel/kionix-kx022a-i2c.c         |  22 +-
+ drivers/iio/accel/kionix-kx022a-spi.c         |  23 +-
+ drivers/iio/accel/kionix-kx022a.c             | 325 +++++++++++++-----
+ drivers/iio/accel/kionix-kx022a.h             | 143 +++++++-
+ 6 files changed, 426 insertions(+), 107 deletions(-)
+
 -- 
 2.30.2
+

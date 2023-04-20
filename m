@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C99396E91BC
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 13:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7B5D6E91EA
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 13:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234786AbjDTLGZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Apr 2023 07:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55270 "EHLO
+        id S235343AbjDTLHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Apr 2023 07:07:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235485AbjDTLFK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 07:05:10 -0400
+        with ESMTP id S234710AbjDTLFS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 07:05:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E613A977F;
-        Thu, 20 Apr 2023 04:03:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E9C8A43;
+        Thu, 20 Apr 2023 04:04:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B901F647CA;
-        Thu, 20 Apr 2023 11:02:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E0DC4339B;
-        Thu, 20 Apr 2023 11:02:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FC78647AD;
+        Thu, 20 Apr 2023 11:03:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A891C433D2;
+        Thu, 20 Apr 2023 11:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681988568;
-        bh=0tlCgn/g2uLNgXFgxB/PsjI7UdfHzqyRNbDgd1eDnxc=;
+        s=k20201202; t=1681988597;
+        bh=qhfSTW77Ij2nesFY/gKw6hsMkvyp2+Wd2BeZDFndKUY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FESA7QXjSwp4teuKMBmyX6yaEalMVH+WfQJUiKEYggMrgCU4UVUDEdxVZ6O21vb34
-         JpKCR4Az7WJcHJiYVXo8vqOUhSSixWtyzmq/3ok43PzqXmu2zd91x6E+0RnlY/O15G
-         f4mBwpOxugLOWls84Z+ZMDIfSir+7+kzUdtS5Wa25ka2Ppob8r9w7TfsphwOCufy8j
-         mIC4Bf7kJ6pD2tp+YyiUbdRtXaAyCrmwvd+5uLs271ZZuxJsqIRu2ZdeumD9qhwle8
-         B+V82s/n5/nH7N+VMZFnnZkc/yKZcSTixWlY524XvJQNQGrGumV8ASeSj2t/Bpspnw
-         q+JwLfDSsJvDg==
+        b=HYYL698L1i3bhg6FNtYBdWkuNF0Rkd2YaV7Is8CSYTjKqpc2I7eJP2Lt7ynMwdE/2
+         epAS147IiznNK99ib6ZBD2aTuQ6D17DWv/rxfh/SCX2ZNCXnmSa6686+nLqMedXiuL
+         o/E+68p+PpJ0iiuYcyBUiM9VJjDPLn11N+5dKhJZhJbIzZniFjjvQ4E0vjE5F+N7QE
+         PRDqrGpES+YokA/8Tt5ut1x7EPuSpIMHQAtq+BCHA4Hu/VMkWtleZlrQi+mug5Ftbx
+         QCHIPsuumRDsmcj+RgJttjc3iTYqpJdG9Q4XYYOtFVkhVslWM8yMppQn4cDE8li4hL
+         9LUH8B016cUjQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Patrik=20Dahlstr=C3=B6m?= <risca@dalakolonin.se>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 06/15] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
-Date:   Thu, 20 Apr 2023 07:02:20 -0400
-Message-Id: <20230420110231.505992-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 4/7] iio: adc: palmas_gpadc: fix NULL dereference on rmmod
+Date:   Thu, 20 Apr 2023 07:03:04 -0400
+Message-Id: <20230420110308.506181-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230420110231.505992-1-sashal@kernel.org>
-References: <20230420110231.505992-1-sashal@kernel.org>
+In-Reply-To: <20230420110308.506181-1-sashal@kernel.org>
+References: <20230420110308.506181-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index fd000345ec5cf..849a697a467e5 100644
+index f9c8385c72d3d..496aab94570a1 100644
 --- a/drivers/iio/adc/palmas_gpadc.c
 +++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -639,7 +639,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
+@@ -638,7 +638,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
  
  static int palmas_gpadc_remove(struct platform_device *pdev)
  {

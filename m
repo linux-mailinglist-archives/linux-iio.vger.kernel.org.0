@@ -2,125 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C54A6E99F0
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 18:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5286E9A96
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Apr 2023 19:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjDTQwc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Apr 2023 12:52:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33172 "EHLO
+        id S230440AbjDTRVT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Apr 2023 13:21:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjDTQwb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 12:52:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83B3DD2;
-        Thu, 20 Apr 2023 09:52:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S231483AbjDTRVO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Apr 2023 13:21:14 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F6CE5A;
+        Thu, 20 Apr 2023 10:21:10 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 077A1641AF;
-        Thu, 20 Apr 2023 16:52:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AFDC433EF;
-        Thu, 20 Apr 2023 16:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682009549;
-        bh=U/Ed3Bf5iQDyeXK4sTAagfDBTCyOzfvKX4J+dgDoT2M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MpUFunmkElXXI23HUs5s8c9qlu4z0uxsz8ZICJUQLo44UcO0tFwwejDMMwAJAqahg
-         f7pm5eVCz8UnNTuTFC0WlSnj6Doxxc1yYzHDf5YZLlnm0lGbZRkx1Jz9yGTqRJtWIW
-         pwdy1IfEQ1exI/Su4rCgVt8Kqm99RBDprvbHkmU9l25M1WMRXCRzyrA2PQcJbtOQye
-         7YQIOkw2znTEK6iKnrgj871XC/dI645BXONXY6VO3daDLJR9gf3Mvtsd4AvWoIaLM3
-         P/inYFJI5lRDwa5of98v5gBG3ovdbMQTrFr2hT36HygI8XHhDRZyb0xjqVBZyF/xQr
-         jo0mWM/he4XSg==
-Date:   Thu, 20 Apr 2023 17:52:21 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Lee Jones <lee@kernel.org>
-Cc:     Okan Sahin <okan.sahin@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4Q2PZS65dvz9sTS;
+        Thu, 20 Apr 2023 19:21:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mariushoch.de;
+        s=MBO0001; t=1682011264;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hDcMmxBtkKkSUHZeVxIXXpyPKTciaaqs1ASjEx9+mnM=;
+        b=TUNuIIKbsWhVz3dtfNXcA78yEahkQBwGrGEz+N2KmrKrdfXTmatGWkQ6HLNY8BQ0cA8irt
+        G0a7q/dTYGUrCrASz98nWGDouNPyrh4dYNHBDZ+RaKkSfWiy9Kb+ooxZig6pCh0+HZbnhj
+        YeEGGdt9iXS6K27SeU+tvx3vAfKpmcne1e7uQm261mI97W6PHfX9Q4U1EL+vVPMYhN///7
+        R7wRKx/1ef5C3r3nVl1rFOeEX1MfwO6RgjRXFQmP1m6dyulCTM4dWUfOzRQiUigHNuxZWQ
+        Bv6vYTyXF3t1JbY+TmX1l9dtcS1fEkvAEc24YQZXvCUNaFDfI8lcljYQKZMSDQ==
+Message-ID: <5fb32c56-ac2d-0e1d-370d-d199f5b92775@mariushoch.de>
+Date:   Thu, 20 Apr 2023 19:21:02 +0200
+MIME-Version: 1.0
+Subject: Re: [PATCH v3 0/6] iio: st_sensors: Add lsm303d support
+To:     Hans de Goede <hdegoede@redhat.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v7 5/5] mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Message-ID: <09eb8e4c-3e73-41f0-bf42-8ddf3c4254ec@sirena.org.uk>
-References: <20230412111256.40013-1-okan.sahin@analog.com>
- <20230412111256.40013-6-okan.sahin@analog.com>
- <20230420103438.GI9904@google.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="enmX+yyvaFeCf0/m"
-Content-Disposition: inline
-In-Reply-To: <20230420103438.GI9904@google.com>
-X-Cookie: Above all else -- sky.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230415231130.115094-1-mail@mariushoch.de>
+ <3eb3de24-41b4-9566-9b11-a12d21904793@redhat.com>
+Content-Language: en-US
+From:   Marius Hoch <mail@mariushoch.de>
+Cc:     Marius Hoch <marius@mariushoch.de>
+In-Reply-To: <3eb3de24-41b4-9566-9b11-a12d21904793@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4Q2PZS65dvz9sTS
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Hans,
 
---enmX+yyvaFeCf0/m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 16/04/2023 22:19, Hans de Goede wrote:
+> Hi Marius,
+>
+> On 4/16/23 01:11, Marius Hoch wrote:
+>> Hi!
+>>
+>> This patch series adds support for the LSM303D accelerometer and
+>> magnetometer. As the LSM303D is basically, as far as I can tell,
+>> the LSM9DS0 without gyroscope, we can easily re-use its definitions.
+>>
+>> This was tested on a Lenovo Yoga Tablet 2 1051-F.
+> Thank you for your work on this. I have had this on my own todo list
+> since 2020 at least and I did not realize that Andy already added ST IMU
+> support in 2021 so this just needed some extra device-ids :)
+>
+> I have tested this successfully on the following models:
+>
+> Lenovo Yoga Tablet 2 851F (Windows version 8")
+>
+> This version needs an accel-mount-matrix quick in hwdb since it has
+> a portrait screen rather then a landscape screen (so 90° rotated):
+> https://github.com/systemd/systemd/pull/27295
+> Note I've made sure that this quirk only applies to the 851 and not to the 1051.
+>
+> Lenovo Yoga Tablet 2  830F (Android version 8")
+>
+> Since the ACPI tables are broken in the Android BIOS these need
+> a patch to x86-android-tablets to instantiate the i2c_client
+> for the sensor, I'm still finalizing this patch and I'll submit
+> it upstream when its finished.
+>
+> Tested-by: Hans de Goede <hansg@kernel.org>
+>
+> Regards,
+>
+> Hans
+>
+>
+> p.s.
+>
+> 1: I noticed that auto-screen rotation using iio-sensor-proxy is quite slow
+> so I wrote a patch to fix this :)   :
+> https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/merge_requests/366
+Nice, that should make rotating fast (well, as fast these devices can 
+handle).
+>
+> 2: There are some other unsupported sensors on these models too,
+> perhaps you are interested in adding support for these too?
+>
+> Here are my personal notes on this:
+>   -Light sensor should work with drivers/iio/light/al3320a.c
+>    https://github.com/JideTechnology/remixos-kernel/commit/c52d55b4bd907e87b7b115b3943219f3e089a77a
+That indeed worked like a charm, I'll post the patch later today.
+>
+>   -MXM1120 HALL sensor, have datasheet, measures angle of kickstand thingie, use
+>    for SW_TABLET_MODE. Do a pdx86 driver just for the Tab 2 which checks that the
+>    kick stand is out *and* the BT keyboard is paired, in that case report
+>    SW_TABLET_MODE=0, in all other cases report SW_TABLET_MODE=1 ??
+>    For the commit msg:
+>    Datasheet available here: http://haechitech.com/tech-support/
+>    Requires creating an account, once you have an account you can immediately download
+>    the provided datasheets (or let me know if you want me to email you a copy)
+Thanks for the pointers, that sounds like a nice little project. I'll 
+give it a shot :)
+>
+> Especially the light sensor should be an easy win and light sensors
+> are already supported in e.g. iio-sensor-proxy
 
-On Thu, Apr 20, 2023 at 11:34:38AM +0100, Lee Jones wrote:
+Cheers,
+Marius
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>> Changes in v3:
+>> Simplified the ACPI tables in the LSM9DS0 IMU driver, per Jonathan Cameron.
+>>
+>> Marius Hoch (6):
+>>    iio: accel: st_accel: Add LSM303D
+>>    iio: magnetometer: st_accel: Add LSM303D
+>>    iio: st_sensors: Add lsm303d support to the LSM9DS0 IMU driver
+>>    iio: st_sensors: Add ACPI support for lsm303d to the LSM9DS0 IMU
+>>      driver
+>>    iio: Comment that the LSM303D also has the Magnetometer DRDY
+>>    dt-bindings: iio: st-sensors: Add LSM303D accelerometer+magnetometer
+>>
+>>   .../devicetree/bindings/iio/st,st-sensors.yaml       |  1 +
+>>   drivers/iio/accel/st_accel_core.c                    |  1 +
+>>   drivers/iio/imu/st_lsm9ds0/Kconfig                   |  3 ++-
+>>   drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c          | 12 ++++++++++++
+>>   drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c          | 12 ++++++++++++
+>>   drivers/iio/magnetometer/st_magn_core.c              |  1 +
+>>   include/linux/iio/common/st_sensors.h                |  1 +
+>>   include/linux/platform_data/st_sensors_pdata.h       |  2 +-
+>>   8 files changed, 31 insertions(+), 2 deletions(-)
+>>
+>>
+>> base-commit: e62252bc55b6d4eddc6c2bdbf95a448180d6a08d
 
-> Once the regulator driver has been reviewed, I can take the set.
-
-> Please apply this if you have to resubmit:
-
-> For my own reference (apply this as-is to your sign-off block):
-
-> Acked-for-MFD-by: Lee Jones <lee@kernel.org>
-
-For situations like this where there's a depends on to the MFD it'd be
-great if you could just apply the MFD rather than waiting, the
-individual drivers can either get applied on top or just go via the
-subsystem and have everything sort itself out in the merge window.  It'd
-help things move along faster and be less confusing.
-
-These serieses tend to get so many resends that I'm often just not
-looking at them, previously I'd have just applied the function driver
-when it's ready but with the complaints when the core ends up missing
-the merge window but function drivers are going in I stopped.  In the=20
-past I've ended up missing things because either there's multiple
-serieses for similarly named devices out at once or (less often) some
-change results in a repeat review being needed so it's easier to just
-wait for things to settle down.
-
---enmX+yyvaFeCf0/m
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRBbcQACgkQJNaLcl1U
-h9AEGwf/cZ5jz601ThWLKn8DrgHpVkT4V1DcOQlZnAAuvef8R6TLj17mP5voXh4d
-6H1KXgNljwwO755+9o8YBPLWo0MKybFlD/L+vElU5SU9Z4nhBirPvFhMOP+7VY2n
-IEn0TnMW7+ELbwuhlp2uYw38CX8AztWvR6tWCKko6uyMm/nCBfFpON+rlEkZ63+4
-abvINbrTEggEly0giW4MnlmNMuF9d5yqZMq2A9+3K2RFRVwa3KOCOcIkyPStqxqD
-JimllAVHjijGGkgk1Xe4zwma4omY389whj17TAANkgFdEIAL4hL1+PQG/XwjBeth
-E+4lngNuk7ooRmgKkS7hHzTwfNFaPA==
-=RCMr
------END PGP SIGNATURE-----
-
---enmX+yyvaFeCf0/m--

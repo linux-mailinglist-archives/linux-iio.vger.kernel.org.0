@@ -2,59 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B82E6EA9AB
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 13:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D416EAA92
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 14:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbjDULxF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 07:53:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43556 "EHLO
+        id S230492AbjDUMmR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 08:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjDULxD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 07:53:03 -0400
-X-Greylist: delayed 327 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Apr 2023 04:53:01 PDT
-Received: from out203-205-251-73.mail.qq.com (out203-205-251-73.mail.qq.com [203.205.251.73])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A315549D1;
-        Fri, 21 Apr 2023 04:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1682077979;
-        bh=EoskHoyf4Sd5jh5mcjpFlnupNvISBm4b7l+C80+CKwY=;
-        h=From:To:Cc:Subject:Date;
-        b=rX4Aacp93zxmOgWHJ0sQMzy479hq9qpn5aTGBRS/t5bX7r+fY81ObH3rrPJqHm+UU
-         lKjepRtPZYBGQjCleGONqNP8ubA2a/V68S6EJh0sVBeEPLaguBXPdmIHgxY8EsfHT3
-         171f2cnV8n67EWB9ew1RKCOw2KWWtoB6BKkEdyW0=
-Received: from localhost.localdomain ([39.156.73.13])
-        by newxmesmtplogicsvrszc2-0.qq.com (NewEsmtp) with SMTP
-        id D37A2462; Fri, 21 Apr 2023 19:52:55 +0800
-X-QQ-mid: xmsmtpt1682077975tn2266q4u
-Message-ID: <tencent_1625E21562D40C91CEE047E82E2BFC524305@qq.com>
-X-QQ-XMAILINFO: N9/m7ncAytaJ0fq/x2und95zmGSZ3XpXYogw34Rbhd91F/Z0cMqXQ7EMatIKdz
-         NrQ1+2A2VX4Qo0n/HxjZyBmlTFTatKw7SWpo/xDTL8Y2YV7RaVbfcqI4Mue/LO/DlPdVyS1DgEHn
-         HF0CzSVB77R2lTTPLeAOHO+BgLLQTQ704acdQuQZi85dxxiQK9/AHVSE4kutcb1YTy+XrK5p3XYn
-         LoPHkWgFySa5HDvv/QRB6w/QSH2v26pvQHhLIu/kfRW3GRTwi6GmVZrsTjGIxc1lczkNhFgH/gY3
-         jW2oxFefYeVuTE0LGS7jyuACG1u6kduXryxefYRn88vWb6dvkGpiTunWr6FKOv33wuW6cs4JrMe/
-         R3wDEhjUT68U9BpEauyuFi0TyAAfHSOYRWoXbrxFGhA0Aeh9VObi8f1Qq3oDRpRgaD1wMuhu0VWI
-         lOlwbY3AdIgjq8OvPX5YgqLiJ0SpAWtLmyHrddsSdMt3Eg0l0tZbF6OHPLXIkv4sxqQp502CotIj
-         XUDRWRnx5ZK1H7xaSY0k0E1K7+FFsep2Mc/Tb6CNySM/WJ+HYerRy2GFKR6CVLF81Ss4uzqBvMVS
-         /b5L+MQ/lpYcBCGfxJkaFPpAODKM07aA3n94HhuvP75sPgt8uoZXWh+i00+xvJFeYZfL5uwieTsy
-         dl91u7pITAncoMy2J5HK6i0t/OwY9vQoSsV3FSOiGCWhLfeRh7C91xB8rCPfrywAhpnVweprRKSh
-         taggPRy153kHEDt8JRFT6EwZz0415WQuC8i3hREDGo4FxZwmbipk0hJirxvT5F7s1+dbvvlRNEij
-         0+xf7bjLZN7QsprM09RH7YzL1yj7NWw2alKLc/QaWNl4nodUAaHMsNR7q2eBrPfWHtGvjF7HqqER
-         nKCqK8wKmKgwhF/uC4DhCj8xLQf/xNA3x/LDVtb7lw1TsT1TFHUx3hzP0bxbqj04R+mKoA5QfMOj
-         TzHbl3NY8Ufk+DOPRZkpl5og89r2Km4dMroRuVL2k=
-From:   Rong Tao <rtoax@foxmail.com>
-To:     william.gray@linaro.org
-Cc:     rongtao@cestc.cn, linux-kernel@vger.kernel.org (open list),
-        linux-iio@vger.kernel.org (open list:COUNTER SUBSYSTEM)
-Subject: [PATCH] tools/counter: Add .gitignore
-Date:   Fri, 21 Apr 2023 19:52:52 +0800
-X-OQ-MSGID: <20230421115253.236600-1-rtoax@foxmail.com>
-X-Mailer: git-send-email 2.39.1
+        with ESMTP id S230468AbjDUMmQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 08:42:16 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70915B80;
+        Fri, 21 Apr 2023 05:41:36 -0700 (PDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPA id 9F26140006;
+        Fri, 21 Apr 2023 12:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1682080894;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=wPUr6k3hoHACmnMjvKMllT2pYnYBLSNWQbpWAPrti6c=;
+        b=ZY1kyb2J62UJI4c0SfVLqsVPO1m7nV0B93j0DP4ZGCaAOzE1CbG/rfJQcX37ZRFoVehfhh
+        upR/4/e72nslwE2fTICG1qEMN8ng6UgnW/um2dvgBFTXvUlNqWoB3igr2a4t1uuY/7Lkro
+        Q/JhPYuDi5GxZpU0fQy2OP38mAcOcXNchUoMIQqo7M40VyXV+qkS7V+ez7cPrUcQq/dwQJ
+        7RiV6UZ0It/tQHwGbleMlub0joaN3sIPkqhES+YpLHAMaqCugaNyCLSPE7nBv6bFDncT8L
+        wVATcJ86n+Yo+oKKILY2rhK1ZNkc/tVbJZfasc01RiuXZTPB9ryuz3nqDHFcZQ==
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Herve Codina <herve.codina@bootlin.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: [PATCH 0/4] Add support for IIO devices in ASoC
+Date:   Fri, 21 Apr 2023 14:41:18 +0200
+Message-Id: <20230421124122.324820-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RDNS_DYNAMIC,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,24 +58,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Rong Tao <rongtao@cestc.cn>
+Several weeks ago, I sent a series [1] for adding a potentiometer as an
+auxiliary device in ASoC. The feedback was that the potentiometer should
+be directly handled in IIO (as other potentiometers) and something more
+generic should be present in ASoC in order to have a binding to import
+some IIO devices into sound cards.
 
-Ignore counter_example and include directory.
+The series related to the IIO potentiometer device is already under
+review [2].
 
-Signed-off-by: Rong Tao <rongtao@cestc.cn>
----
- tools/counter/.gitignore | 2 ++
- 1 file changed, 2 insertions(+)
- create mode 100644 tools/counter/.gitignore
+This series introduces simple-iio-aux. Its goal is to offer the binding
+between IIO and ASoC.
+It exposes attached IIO devices as ASoC auxiliary devices and allows to
+control them through mixer controls.
 
-diff --git a/tools/counter/.gitignore b/tools/counter/.gitignore
-new file mode 100644
-index 000000000000..e1f34db02a91
---- /dev/null
-+++ b/tools/counter/.gitignore
-@@ -0,0 +1,2 @@
-+/counter_example
-+/include/
+On my system, the IIO device is a potentiometer and it is present in an
+amplifier design present in the audio path.
+
+Best regards,
+Hervé
+
+[1] https://lore.kernel.org/linux-kernel/20230203111422.142479-1-herve.codina@bootlin.com/
+[2] https://lore.kernel.org/linux-kernel/20230421085245.302169-1-herve.codina@bootlin.com/
+
+Herve Codina (4):
+  dt-bindings: sound: Add simple-iio-aux
+  iio: inkern: Add a helper to query an available minimum raw value
+  ASoC: soc-dapm.h: Add a helper to build a DAPM widget dynamically
+  ASoC: codecs: Add support for the generic IIO auxiliary devices
+
+ .../bindings/sound/simple-iio-aux.yaml        |  65 ++++
+ drivers/iio/inkern.c                          |  67 ++++
+ include/linux/iio/consumer.h                  |  11 +
+ include/sound/soc-dapm.h                      |  12 +-
+ sound/soc/codecs/Kconfig                      |  12 +
+ sound/soc/codecs/Makefile                     |   2 +
+ sound/soc/codecs/simple-iio-aux.c             | 307 ++++++++++++++++++
+ 7 files changed, 475 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/simple-iio-aux.yaml
+ create mode 100644 sound/soc/codecs/simple-iio-aux.c
+
 -- 
-2.39.1
+2.39.2
 

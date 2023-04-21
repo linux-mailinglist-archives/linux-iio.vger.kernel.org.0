@@ -2,106 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C35CE6EAA99
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 14:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 239F76EAB8F
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 15:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232085AbjDUMmg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 08:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45154 "EHLO
+        id S230148AbjDUN1c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 09:27:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232110AbjDUMmf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 08:42:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BEB118C5;
-        Fri, 21 Apr 2023 05:42:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0444F63E9A;
-        Fri, 21 Apr 2023 12:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649D0C433EF;
-        Fri, 21 Apr 2023 12:42:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682080926;
-        bh=1viMKIx6sqkhuLg2xAjcicJimbx0TA+4g/Mnc+kkj3c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BW24TVib54lA9ORge5qtx6oE5Hj4K0FUcHqURggViP0rNx3DKw07WK5sfUU2pLfTo
-         daTK1gAQpA6Nr/MsoJgx+iQ9ufT7JNri4s0aQMOfHntfaefeArkjKsMvjyxMvX5ZkV
-         9YZs4YRKTJdGeVCLIlhrnqK9mODAo2K5zvncMP3jxeqgfSynQXaU5bXmv8UTpIiCp6
-         304dM4VX4jjleJLiVsyrh8vRsVQz2QqXUEbAGg7e+En8MmlOH4vGIBe8jh2UeX9SIq
-         3N4SXgj6JGpOGc3WLzuoTponSdoU6Gk4LVeR6nleFE9/ZeQd7whAuSJO+T6JdVvBhv
-         LPuvlUp3Ox5OQ==
-Date:   Fri, 21 Apr 2023 13:41:57 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+        with ESMTP id S231452AbjDUN1b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 09:27:31 -0400
+Received: from mxout3.routing.net (mxout3.routing.net [IPv6:2a03:2900:1:a::8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B944D324;
+        Fri, 21 Apr 2023 06:27:22 -0700 (PDT)
+Received: from mxbox2.masterlogin.de (unknown [192.168.10.89])
+        by mxout3.routing.net (Postfix) with ESMTP id B836F60506;
+        Fri, 21 Apr 2023 13:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+        s=20200217; t=1682083253;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2RYbc1C9+H/WQ9WMzIcpwV9sAdZeEPo9IAoHwZnSuyo=;
+        b=Lfvi7Eem9Nhmj57IAOhyO1lmXsp8sH5Aec6EXGS1PJapNBZqDUQP3YvPNXrNJgNcOH07jM
+        cnivTjWsKHhywBWQv24qmlZn327p1ZbRNacG1z8sDDAy1BNidID1KiqduqP8/DYeOn6BvR
+        tN4PRrFIUVrpZSuW6Np7i40wHbme6a0=
+Received: from frank-G5.. (fttx-pool-217.61.159.143.bambit.de [217.61.159.143])
+        by mxbox2.masterlogin.de (Postfix) with ESMTPSA id 7541110072A;
+        Fri, 21 Apr 2023 13:20:52 +0000 (UTC)
+From:   Frank Wunderlich <linux@fw-web.de>
+To:     linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v7 2/5] regulator: max77541: Add ADI MAX77541/MAX77540
- Regulator Support
-Message-ID: <0f8ffae5-1267-4373-8979-1989318497ec@sirena.org.uk>
-References: <20230412111256.40013-1-okan.sahin@analog.com>
- <20230412111256.40013-3-okan.sahin@analog.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        "Hui.Liu" <hui.liu@mediatek.com>,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
+        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Daniel Golle <daniel@makrotopia.org>
+Subject: Subject: [PATCH v1 0/7] Add mt7986 thermal and pwm
+Date:   Fri, 21 Apr 2023 15:20:40 +0200
+Message-Id: <20230421132047.42166-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1FRzun8VXwn6ZIl1"
-Content-Disposition: inline
-In-Reply-To: <20230412111256.40013-3-okan.sahin@analog.com>
-X-Cookie: Hailing frequencies open, Captain.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Mail-ID: e11c7872-5256-4a48-ae62-b36e397cf910
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Frank Wunderlich <frank-w@public-files.de>
 
---1FRzun8VXwn6ZIl1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This series add thermal and pwm related devicetree-nodes and necessary
+dt-bindings.
 
-On Wed, Apr 12, 2023 at 02:12:43PM +0300, Okan Sahin wrote:
+I left pwm-fan for r3 for now as i cannot test this completely due to
+missing 2 pin-jack and 3v3 pwm-level which my fan cannot handle (starts
+spinning at ~3V).
 
-> Regulator driver for both MAX77541 and MAX77540.
-> The MAX77541 is a high-efficiency step-down converter
-> with two 3A switching phases for single-cell Li+ battery
-> and 5VDC systems.
+Daniel Golle (4):
+  arm64: dts: mt7986: add thermal and efuse
+  arm64: dts: mt7986: add PWM
+  arm64: dts: mt7986: add thermal-zones
+  arm64: dts: mt7986: add pwm-fan and cooling-maps to BPI-R3 dts
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+Frank Wunderlich (3):
+  dt-bindings: nvmem: mediatek: efuse: add support for mt7986
+  dt-bindings: iio: adc: Add support for MT7986
+  arm64: dts: mt7986: add PWM to BPI-R3
 
---1FRzun8VXwn6ZIl1
-Content-Type: application/pgp-signature; name="signature.asc"
+ .../iio/adc/mediatek,mt2701-auxadc.yaml       |  1 +
+ .../bindings/nvmem/mediatek,efuse.yaml        |  1 +
+ .../dts/mediatek/mt7986a-bananapi-bpi-r3.dts  | 44 +++++++++
+ arch/arm64/boot/dts/mediatek/mt7986a.dtsi     | 89 +++++++++++++++++++
+ 4 files changed, 135 insertions(+)
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.34.1
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRChJUACgkQJNaLcl1U
-h9BgwAf9FFeuk/6y+CZ9pA0Rp+BYHqdrTxCmBMSO+UPH2NliQymSV+sHGkDOq02r
-iqh0AK+SAs6dEZmN+Xx6k98CsM6N0m4Rh+fF8cR9O27WOsNH06QSPuDWCLeno1ZA
-H1jKKF6ByRumicUzziIma9kOjA1ufx0AAVfUbdBt1ZCgJeuZv0yWb3d+jAvHOWcH
-lSDTkN7jwo1UjFFowTkH6MzmElS43JdiZ5eXdLYFRJAs4aTv0r4MKQoksckGMt/u
-wOZ8arow4RwJz0f+akvSvyFaOm3F4IoLCf4Hz+gPdVOQIuKX2PKunGluODN63GRI
-wZPgsp5OEw0pWsLo6Ko4eI3K/WgEjw==
-=Ut0n
------END PGP SIGNATURE-----
-
---1FRzun8VXwn6ZIl1--

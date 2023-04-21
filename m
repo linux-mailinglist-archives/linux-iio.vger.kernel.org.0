@@ -2,87 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 456576EA650
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42CA86EA65F
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231827AbjDUIxX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 04:53:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43428 "EHLO
+        id S231680AbjDUI5a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 04:57:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230260AbjDUIxC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:53:02 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B8DA5E6;
-        Fri, 21 Apr 2023 01:53:00 -0700 (PDT)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPA id 9E8AE1BF20F;
-        Fri, 21 Apr 2023 08:52:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1682067179;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PqkC2hlSfWIiijztGsfpugS5O+kwYH1qXwTL4AZW7ec=;
-        b=FsdTgkjE/vd7mIOJsDk3o+ZqQ7RzI+CzfrmFq7j2mcIokRGlPJc5ZK3XYRNgw8MSLOLD06
-        mOVKc/sQYuygcpFczQyYwEqpbRREFiKPuy3/ogpAIKw/JOEcRlGuBU2J5QgTAKRbkK8JkZ
-        HDP6IQ1GCSor14Xyoncob53He/adzOqNtGqO3R58cHpgzyUbF27JSfOUMxXBiIVCpExFzY
-        x41qq8bUkilAq0MZ8j8ohjn1g8tTCb1dRx4qtehrytEO9w8HHSYyzZfro/VslD9Vl1LBMb
-        TzxmR/3jzePbL6l6yCDyvHliTy8RtMJSy2RfJe0BqolgSSwyHun/T4581tuikA==
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Herve Codina <herve.codina@bootlin.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S231705AbjDUI4z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:56:55 -0400
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF18A5FF;
+        Fri, 21 Apr 2023 01:56:51 -0700 (PDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-5ef54bcded4so8334576d6.1;
+        Fri, 21 Apr 2023 01:56:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682067410; x=1684659410;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qXhEILP7MIbeRegT9QhmF9Jbqb5hykNTAv4rFurPXOo=;
+        b=Fp8vNPjFC8gwk56JdwhvgixReiu7sHBr42H+rxicYairhgzRr3XxufHNn7LTllmLrt
+         RKK06lWxyEnQ+t4dyN/w7hmLHXOlTu9Gjtv756fVWta6JCA/ZlyXTHUmgAAYqHyGgKmv
+         3zHMcbPt3oMdV3MBEPQF/QV5bKiFdeFpTDDWMby3I/5s2QifWhDAO6daaHS8I6t1RAOm
+         FuVWAMsnNpGCk56hFN2RSJLAKZqqzA1Qv89wKOWIamIs3xeW5IUjSObzD4jGAoQKLOGT
+         0nvnJHCNvQUlYxrSRc8GGC5EnKJClwi6np86K7bapdH+2eeVOupkNA5vkORorIqojpxb
+         5v0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682067410; x=1684659410;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qXhEILP7MIbeRegT9QhmF9Jbqb5hykNTAv4rFurPXOo=;
+        b=DXIlYhzY3/42ToofeCf1Qons0P9cLsO8njvlbiJN6ZkgEkFSgavvDbJ0Arb9QIJbqo
+         C/EVgXzlVZi1XuluaBDm68jIBq2MHFfcuTijTF/4wIpGRRg5nBKA7VlFkEWWwqCN8wIT
+         vYz3dz36CIJ76ii5A+peOopFR0R7OUP87ceLvM4P+VTROTFESM7MgbeDHNqLHj4TrqEt
+         wAubQnHd7TNJbDSGHA7JT7V3Csuguun1UW/u3E7avnusPq6lME+5ptf4ANmGy5XDZV1F
+         MEa7lHMfW/n+aMmNJXWoiHFL0eXu9vhCk3unqP1lKljINcryqYxqj/Ymb2LJMQ5IP8ny
+         WiMQ==
+X-Gm-Message-State: AAQBX9doalvnHDxWs2+qiJxwUk9PBWRU4u+I4yivLY5e74b2ObiG+gYH
+        qzH3aEujibTZR1Bdd8pZvp0rcKeVy+sHk6qU
+X-Google-Smtp-Source: AKy350Zruw6CuMXgd+e3OySpeenWD9EnXJSTyoiWBbyds2AXwDQko5XgQ00OnjewRfm41mpvH+Pfqw==
+X-Received: by 2002:a05:6214:124c:b0:5cd:1adc:30e2 with SMTP id r12-20020a056214124c00b005cd1adc30e2mr7170251qvv.11.1682067410196;
+        Fri, 21 Apr 2023 01:56:50 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id q15-20020a0cf5cf000000b00603551afd50sm481424qvm.39.2023.04.21.01.56.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Apr 2023 01:56:49 -0700 (PDT)
+Message-ID: <b60c56780c76272d55ea58a4a7aab7450b97c6af.camel@gmail.com>
+Subject: Re: [PATCH v3] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Masahiro Honda <honda@mechatrax.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v3 3/3] MAINTAINERS: add the Renesas X9250 driver entry
-Date:   Fri, 21 Apr 2023 10:52:45 +0200
-Message-Id: <20230421085245.302169-4-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230421085245.302169-1-herve.codina@bootlin.com>
-References: <20230421085245.302169-1-herve.codina@bootlin.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Fri, 21 Apr 2023 10:58:57 +0200
+In-Reply-To: <20230420102316.757-1-honda@mechatrax.com>
+References: <20230420102316.757-1-honda@mechatrax.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-After contributing the driver, add myself as the maintainer for the
-Renesas X9250 IIO driver.
+On Thu, 2023-04-20 at 19:23 +0900, Masahiro Honda wrote:
+> The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
+> line to indicate the completion of a conversion. However, some devices
+> cannot properly detect the completion of a conversion by an interrupt.
+> This is for the reason mentioned in the following commit.
+>=20
+> commit e9849777d0e2 ("genirq: Add flag to force mask in
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 disable_irq[_nosync]=
+()")
+>=20
+> A read operation is performed by an extra interrupt before the completion
+> of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UNLAZY
+> flag.
+>=20
+> Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+> ---
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+LGTM:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8ec7ccba9848..0027af3e14cb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17926,6 +17926,13 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/clock/renesas,versaclock7.yaml
- F:	drivers/clk/clk-versaclock7.c
- 
-+RENESAS X9250 DIGITAL POTENTIOMETERS DRIVER
-+M:	Herve Codina <herve.codina@bootlin.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/potentiometer/renesas,x9250.yaml
-+F:	drivers/iio/potentiometer/x9250.c
-+
- RESET CONTROLLER FRAMEWORK
- M:	Philipp Zabel <p.zabel@pengutronix.de>
- S:	Maintained
--- 
-2.39.2
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com
 

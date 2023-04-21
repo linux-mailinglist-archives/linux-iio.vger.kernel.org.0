@@ -2,86 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87FA66EA601
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A276EA60B
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjDUIj2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 04:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
+        id S230455AbjDUIlR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 04:41:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230088AbjDUIj1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:39:27 -0400
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD1A78A6F
-        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-        s=default2211; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=Guq9tjQRAPQ7aI3TlsQDkj7tfxjVkiUdlit3uczhIeU=; b=I7RZuy9uzKlRjoRHKP3cC47UV+
-        7EytV4deMhrFG5fUOkPGo7aHqhxF4pDVb7PpKW65nnFWou5EO2M0VE5x3LCeNFnOuygDhKc/6qdOT
-        7W7eayhyMVuwL3CeOVLS/eB7tdJgtmk17M1sw27W9kskRb7DxveCvnJrE3zBCF0cy4xKqt8W3y5KC
-        btkWYRhZMwiNAyy3uSLIpWaFSSAlsRGUFV70Rf4pmkter6HgS+0mfbLnqEBSb/1Oy9FDPEB1BwMbl
-        5qz8+nJLFi6MgRhBN0k/xwk46oppE3HRz4h6PruStSqGPwSYk8/9d0kmQ8zu4nu/Zuox/2qowHZcf
-        +QD20ODQ==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <sean@geanix.com>)
-        id 1ppmIa-0000rU-4J; Fri, 21 Apr 2023 10:39:20 +0200
-Received: from [185.17.218.86] (helo=zen..)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sean@geanix.com>)
-        id 1ppmIZ-000NoW-Oh; Fri, 21 Apr 2023 10:39:19 +0200
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     jic23@kernel.org, lars@metafoo.de, alexandre.torgue@foss.st.com,
-        nuno.sa@analog.com
-Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2] iio: adc: stm32-adc: add debug info if dt uses legacy channel config
-Date:   Fri, 21 Apr 2023 10:38:58 +0200
-Message-Id: <20230421083858.2613289-1-sean@geanix.com>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S229913AbjDUIlO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:41:14 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 916609031
+        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:41:12 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-552d64d1d2eso16680177b3.1
+        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1682066472; x=1684658472;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iqPKWSvbX4VNO0qn/jU+y/bKk/xVC6QNeAEqYppXymg=;
+        b=yWVLZI/+cDslc4+RgLuEeGboDbU2kE1QKtLaMx4vCT9ftlVfidtaLtYUZy1o44M2DA
+         PIKJKf+hldVToUeGMor464O/I30mqqSbRS0IV8bgGW+9JeyjISL8SsBvcQRgi68g/m80
+         DRu7PieARBWVMG8Et3V2xYBSG9x7z5TsebBmcHUuBKqtWgNbXBa+l00hIWsirEY3G0Db
+         hWAhfd+jalAg9LjEzblCzpfg9IUA5zZ1qgHe0fien37hQaYfdA3GyrWZ1Cc48YbqVmX6
+         FOhB0XkISqY+jHljzxXSta+vLgyy9vGSXOUzbZnZ5vzuamccqCywRe47v6mKKGwxAkSF
+         BlpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682066472; x=1684658472;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iqPKWSvbX4VNO0qn/jU+y/bKk/xVC6QNeAEqYppXymg=;
+        b=cHJ1Mcui+lBw73apKbmtOm39Sw+bxGHSU/1KqMBDG+7pCurO/yCVfZpU8WSwjtitm4
+         EwOOgXfun36I2zR8OD9wiYySVbKTeNeY+jrEdw10FOAyYus3DqGDEwbftln0QejSj9ZU
+         AMRPy3gzOa8kyHI0VFU78aQSOYwBeHItwDyays9g1rO9WpyDcH5ek4Vxd4Ov920qYbi4
+         l7s96vN8DRC4D/xSYC64fbYpeluFnEqFDnJIxdntCjwrxKWMsdqMgm5z7kb4sNOTdFlF
+         IPjMlVsX4Q99Pnd+yJZZmAFcXHUUnfeReMAqhEgmGN3wTvwNDQfMuuC6vsTOa6nLVza8
+         IDtA==
+X-Gm-Message-State: AAQBX9dk3t4+upFdDlc/dCjLME7nnqlqqp6xoYId5hAcpoIQWRHp1qAt
+        UUQxWfhYC/bKLwLLrDK8MWcFnXA8n3jRpbTjDVhfbA==
+X-Google-Smtp-Source: AKy350YQfPFjSrCEHnJpmEbkfsp5dzuUEon9/XSrk3k8KQQtjMNb8M2/fv0IHb9dV6OXSvsRXSzVnaA1wTfKME0QdDQ=
+X-Received: by 2002:a0d:e2d2:0:b0:536:cb21:7223 with SMTP id
+ l201-20020a0de2d2000000b00536cb217223mr1291346ywe.6.1682066471854; Fri, 21
+ Apr 2023 01:41:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26883/Fri Apr 21 09:25:39 2023)
+References: <20230415231130.115094-1-mail@mariushoch.de> <20230415231130.115094-2-mail@mariushoch.de>
+In-Reply-To: <20230415231130.115094-2-mail@mariushoch.de>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 21 Apr 2023 10:41:00 +0200
+Message-ID: <CACRpkdZ_f4gad-AS+HhePE-Z_vUromuDJgXB_WNw47Yr8Po+Uw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] iio: accel: st_accel: Add LSM303D
+To:     Marius Hoch <mail@mariushoch.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Denis Ciocca <denis.ciocca@st.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Since nearly all stm32 dt's are using the legacy adc channel config,
-we should warn users about using it.
+On Sun, Apr 16, 2023 at 1:12=E2=80=AFAM Marius Hoch <mail@mariushoch.de> wr=
+ote:
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-Changes since v1:
- - Changed dev_warn -> dev_dbg
+> The lsm303d has the same register mapping as the lsm9ds0,
+> thus we can just re-use that.
+>
+> Tested on a Lenovo Yoga Tablet 2 1051-F.
+>
+> Signed-off-by: Marius Hoch <mail@mariushoch.de>
 
- drivers/iio/adc/stm32-adc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 1aadb2ad2cab..e179b6611e4d 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -1993,6 +1993,8 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
- 	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
- 	int num_channels = 0, ret;
- 
-+	dev_dbg(&indio_dev->dev, "using legacy channel config\n");
-+
- 	ret = device_property_count_u32(dev, "st,adc-channels");
- 	if (ret > adc_info->max_channels) {
- 		dev_err(&indio_dev->dev, "Bad st,adc-channels?\n");
--- 
-2.40.0
-
+Yours,
+Linus Walleij

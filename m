@@ -2,149 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D546EA930
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 13:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7E036EA9B2
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 13:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231643AbjDULfZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 07:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58002 "EHLO
+        id S230483AbjDULyy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 07:54:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbjDULfX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 07:35:23 -0400
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2336AD34
-        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 04:35:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-        s=default2211; h=Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=ox+YMMP5BtU7nkNA6WBhHsW92G5sHmgRrz8uI0MSILA=; b=1JVorq+75IC7YDEivOdPAo3gWJ
-        VIDfVveqSFJtcsAHuP9xNBlvv9z6fvvgOV9iEGsKjtIdvBIbVGDtej4WeefIEB98hUHQ5zL7LVFd2
-        nElRl/CMBr/Fp1cZPP6T5vdCf+FAf8pCVm2XrPpqFkoVNUYVyxP2Dm8Jo+V4cBFzzHBaJdWD8JjGy
-        x1z7yyfy1+MNSMR0U/2rbXbJhTAC/rvNdXp1MUSjfdl7AoG75SSepUG5PHRAqdpN9/JQjn/53X2y7
-        o8e1nYerEWp1rb2Kg3EgSZzd1iYbM1oyInNDIdFhUtuyVCMKRitTLQkL/T8Nxw/iXxnOfxwVcirxY
-        bQzcWPnQ==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <sean@geanix.com>)
-        id 1ppp2t-0002Vw-5G; Fri, 21 Apr 2023 13:35:19 +0200
-Received: from [185.17.218.86] (helo=zen..)
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sean@geanix.com>)
-        id 1ppp2s-000MPW-R2; Fri, 21 Apr 2023 13:35:18 +0200
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     jic23@kernel.org, olivier.moysan@foss.st.com,
-        alexandre.torgue@foss.st.com, nuno.sa@analog.com
-Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v2 2/2] iio: adc: stm32-adc: skip adc-channels setup if none is present
-Date:   Fri, 21 Apr 2023 13:35:16 +0200
-Message-Id: <20230421113516.2710454-2-sean@geanix.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230421113516.2710454-1-sean@geanix.com>
-References: <20230421113516.2710454-1-sean@geanix.com>
+        with ESMTP id S231434AbjDULyw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 07:54:52 -0400
+X-Greylist: delayed 366 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Apr 2023 04:54:50 PDT
+Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B96F5240;
+        Fri, 21 Apr 2023 04:54:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1682078088;
+        bh=SPAxblZvKKJ5DPvEvp/Zc+WVGLSRgLatTuULry+hGtE=;
+        h=From:To:Cc:Subject:Date;
+        b=xKS9uWXKkcC/guX9ewhyeCTEc5AWv6Mt75C5GqWEoK4D3DD4NWTrEGwvlr56ydgqo
+         o97wozug90LBFraOSuVZreqIQMfJwXAwjzc/1OIL1LjypweqBpFrpX0FYEpnypelSM
+         9MBGw0ArHPwjbIVZfk6AdLSxv2zCllQEaOJ+1yeE=
+Received: from localhost.localdomain ([39.156.73.13])
+        by newxmesmtplogicsvrszb6-0.qq.com (NewEsmtp) with SMTP
+        id BDB80A15; Fri, 21 Apr 2023 19:47:27 +0800
+X-QQ-mid: xmsmtpt1682077647t18dlrzv3
+Message-ID: <tencent_FA682F628E818DD04B96C3E5A94ACFABE206@qq.com>
+X-QQ-XMAILINFO: OW4JKxETGMY2qiFAJlCBZ+SJ7xf/loy8yMMJhYceZoAF5W8XZY5rivVQysrZ6p
+         SmKhlfX4QXZnf5x4pu0UC4zBy8k6oBn99/yVv/dwbQVXX0CYPVCkCJ4OwmucloFPHkl1inrjQds2
+         yju1tPK4/NTjD5eoJQBjDeriJpEVKOezaPbq/2vrQlXTN5uopN75FA0NsgTdjowM1An+GcZ5xfla
+         g5a60jP5YJUS0vJoaDbDW1Y624XJQAFKzFktICLmUH1Dmn8F7dc8J4RKn0FIRtMPXDWPs500GWZM
+         2clQJbBkkVXuTHZBjenJ56CJq07jKLLIuK9ndupD1opfi31kaTwf97Hlc8H7F0+Oz5opnr0/oKT4
+         wLAEkul4X5durZ0fNTztUDN2/VniZU+6URMhrJeDoQ9SjZ0UfJ+KZAojkQ3Ij1nao9ggOUNnHo/H
+         wsdiBimf3mEuudP/q/2Z9XHmxfLDNbtK0e85U3VkwBO5cwFtLepvOZ7Jw+UoeC+oW2iwn99VnZmt
+         Rx+u1aI7eAFKhqfjHwv4H1m+AWzC7OrCmoDPHTmevpnZK0FurDEoNwIkMqLRLyrAtb1P/0BKM/4I
+         nh+F8Ilq5YHLcnZ2uYLpKAYRd//obQpUoBQ6RmG29hTICmNvekhjs4K9ndlmeyWA3tNupyNcUfEq
+         MiyTvOXoy3iiHXX3z13tj6KNcsKgvlx0Vfdu0BSU20+3oj2yMxrd4XNw0Z1WD6dfCdhRdu2ycsaq
+         DBcw4P7mFe+EIV/Nh4Xr3MleUtbPDsFoxR7KMLzo1prOqXuj1bj3n1WiC0oBn1hFmzU47h70R6Av
+         YF/BrLzQNnFOibnWhC2TdTSA3HfKXaXEavZ/WyyB0go5y7bcISrO7o6dvYa7HezkbwNJeZivijs1
+         fORfzZcFb14w9Y2LK3WYm5JFTiCI1rNu99SOvGaHmg8tKLgpsGKKWuTbcbf+5J7YB2aQykLCi75w
+         rRKn2JB/dVbIn2c+tM/p+vD4JumWOrpRmxHq9PVUY=
+From:   Rong Tao <rtoax@foxmail.com>
+To:     william.gray@linaro.org
+Cc:     rongtao@cestc.cn,
+        linux-iio@vger.kernel.org (open list:COUNTER SUBSYSTEM),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] tools/counter: Makefile: Remove useless 'include' when make clean
+Date:   Fri, 21 Apr 2023 19:47:25 +0800
+X-OQ-MSGID: <20230421114725.235671-1-rtoax@foxmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26883/Fri Apr 21 09:25:39 2023)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,RDNS_DYNAMIC,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-If only adc differential channels are defined driver will fail with
-stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
+From: Rong Tao <rongtao@cestc.cn>
 
-Fix this by skipping the initialization if no channels are defined.
+'make' create 'include' directory, we should remove it when 'make clean'.
 
-This applies only to the legacy way of initializing adc channels.
-
-Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Signed-off-by: Rong Tao <rongtao@cestc.cn>
 ---
-Changes since v1:
- - Ignore extra channel for timestamps in PIO mode
- - Use single ended count in channel creation (Thanks Olivier Moysan)
+ tools/counter/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/iio/adc/stm32-adc.c | 40 ++++++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 14524c1b5583..99bfe995b6f1 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -2038,6 +2038,7 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
- 	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
- 	struct device *dev = &indio_dev->dev;
- 	u32 num_diff = adc->num_diff;
-+	int num_se = nchans - num_diff;
- 	int size = num_diff * sizeof(*diff) / sizeof(u32);
- 	int scan_index = 0, ret, i, c;
- 	u32 smp = 0, smps[STM32_ADC_CH_MAX], chans[STM32_ADC_CH_MAX];
-@@ -2065,28 +2066,27 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
- 		}
- 	}
+diff --git a/tools/counter/Makefile b/tools/counter/Makefile
+index 8843f0fa6119..e2475a1f10d8 100644
+--- a/tools/counter/Makefile
++++ b/tools/counter/Makefile
+@@ -39,7 +39,7 @@ $(OUTPUT)counter_example: $(COUNTER_EXAMPLE)
  
--	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
--					     nchans);
--	if (ret)
--		return ret;
--
--	for (c = 0; c < nchans; c++) {
--		if (chans[c] >= adc_info->max_channels) {
--			dev_err(&indio_dev->dev, "Invalid channel %d\n",
--				chans[c]);
--			return -EINVAL;
--		}
--
--		/* Channel can't be configured both as single-ended & diff */
--		for (i = 0; i < num_diff; i++) {
--			if (chans[c] == diff[i].vinp) {
--				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
-+	ret = device_property_read_u32_array(dev, "st,adc-channels", chans, num_se);
-+	if (ret == 0 && num_se > 0) {
-+		for (c = 0; c < num_se; c++) {
-+			if (chans[c] >= adc_info->max_channels) {
-+				dev_err(&indio_dev->dev, "Invalid channel %d\n",
-+					chans[c]);
- 				return -EINVAL;
- 			}
-+
-+			/* Channel can't be configured both as single-ended & diff */
-+			for (i = 0; i < num_diff; i++) {
-+				if (chans[c] == diff[i].vinp) {
-+					dev_err(&indio_dev->dev, "channel %d misconfigured\n",
-+						chans[c]);
-+					return -EINVAL;
-+				}
-+			}
-+			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
-+						chans[c], 0, scan_index, false);
-+			scan_index++;
- 		}
--		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
--					chans[c], 0, scan_index, false);
--		scan_index++;
- 	}
+ clean:
+ 	rm -f $(ALL_PROGRAMS)
+-	rm -rf $(OUTPUT)include/linux/counter.h
++	rm -rf $(OUTPUT)include
+ 	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
  
- 	if (adc->nsmps > 0) {
-@@ -2307,7 +2307,7 @@ static int stm32_adc_chan_fw_init(struct iio_dev *indio_dev, bool timestamping)
- 
- 	if (legacy)
- 		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels,
--						 num_channels);
-+						 timestamping ? num_channels - 1 : num_channels);
- 	else
- 		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
- 	if (ret < 0)
+ install: $(ALL_PROGRAMS)
 -- 
 2.40.0
 

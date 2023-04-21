@@ -2,132 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E23136EA6D9
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 11:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE2D6EA72B
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 11:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjDUJZB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 05:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36854 "EHLO
+        id S231706AbjDUJhv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 05:37:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231858AbjDUJY7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 05:24:59 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E24A18E
-        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 02:24:58 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ppn0h-0002lD-EN; Fri, 21 Apr 2023 11:24:55 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ppn0d-00ClWe-U6; Fri, 21 Apr 2023 11:24:51 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ppn0d-00F2bw-70; Fri, 21 Apr 2023 11:24:51 +0200
-Date:   Fri, 21 Apr 2023 11:24:51 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Lee Jones <lee@kernel.org>
-Cc:     kernel@pengutronix.de, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        linux-iio@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-kernel@vger.kernel.org,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] counter: stm32-timer-cnt: Reset TIM_TISEL and TIM_SMCR
- to their default value
-Message-ID: <20230421092451.gzhvwrlyu5v6zdzc@pengutronix.de>
-References: <20230412153709.3557323-1-u.kleine-koenig@pengutronix.de>
- <20230420110111.GM9904@google.com>
+        with ESMTP id S231766AbjDUJhs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 05:37:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C1C89EE4
+        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 02:36:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1682069817;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uzH8QW/csXN0CxzGkETec+n4HWfPUmGi/veY0RKNigI=;
+        b=A9G8t/mvmiJGYi5E5OHApMz+kU4o/wB5OYGwOTFoAPGEHzK5GF8nOkHq1p60emv+t0Azww
+        /GvgJRz8oZzfQAeFjsMF3Z02DBRZytroes+c+FRLYIw2wKg2eLgLdmamT2AT2/Smmiuncu
+        K+JtOoQrf7zK2klS00Q4CDdi2fsPeWE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-aAncbsAJMSOsXUKPZ9lw1A-1; Fri, 21 Apr 2023 05:36:53 -0400
+X-MC-Unique: aAncbsAJMSOsXUKPZ9lw1A-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-50692ecb3c5so1616759a12.0
+        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 02:36:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682069812; x=1684661812;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uzH8QW/csXN0CxzGkETec+n4HWfPUmGi/veY0RKNigI=;
+        b=RYVUVCP8ALSpvLZkK+yOXggILqYg/WF+JX5arQINoPoyWB0bFkJZVY94zTjB+dQAfR
+         FyPxp7fSsr3UjGYeHldPSmAUh63PNL/aHi4r8/kaTnPcI9C2oMqixbg9jQW3zFomB8Oc
+         o2lKPlb63ZjzeApCVAzXHw5QsRM3BNg8bGlLMK4EbdbBV7WtQU1/Ttp7N8t5FP3WDyTt
+         +ktV/N9UBoMe19iIpSpYGbU/38jWZJ8vCbdb/DXQA1dNRIIMD88EDsXqCfEl6vS9KhnP
+         gPu4biMSUQIQKugyqRmsWxy+WQNJr18CiDGwyd00fRqsG2vz3sAH0NJWx8uVQb4SMiQ8
+         pl7w==
+X-Gm-Message-State: AAQBX9el1YutbAl/JghkCB/SIsbj1dl3JHbW9j/bQebU8GzlPmhEg9ja
+        /fYqgs4NlxsVJwOW4bhM2rX+m0KpnrSH5IuviZAn5tfry/+MycxC6OY1V044AyqkfJ3yssqpTs1
+        oYInXm7kjGRkF02BVrUai
+X-Received: by 2002:a17:906:b354:b0:953:3e29:f35c with SMTP id cd20-20020a170906b35400b009533e29f35cmr1733510ejb.45.1682069812659;
+        Fri, 21 Apr 2023 02:36:52 -0700 (PDT)
+X-Google-Smtp-Source: AKy350baQKAMD9B4o30q5gQRB/0ZHP7CQjqkTnOQkVeItXf6HwlW8pFLFiptNIBKmQfsiYwSmMf3yA==
+X-Received: by 2002:a17:906:b354:b0:953:3e29:f35c with SMTP id cd20-20020a170906b35400b009533e29f35cmr1733498ejb.45.1682069812419;
+        Fri, 21 Apr 2023 02:36:52 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id mb20-20020a170906eb1400b0094f432f2429sm1827793ejb.109.2023.04.21.02.36.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Apr 2023 02:36:51 -0700 (PDT)
+Message-ID: <6feb48c8-6d74-6605-b7d1-48103ca9187e@redhat.com>
+Date:   Fri, 21 Apr 2023 11:36:51 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bjnsfkotsoxo2uty"
-Content-Disposition: inline
-In-Reply-To: <20230420110111.GM9904@google.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] iio: light: al3320a: Handle ACPI device CALS0001
+Content-Language: en-US, nl
+To:     Marius Hoch <mail@mariushoch.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230420232631.68864-1-mail@mariushoch.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20230420232631.68864-1-mail@mariushoch.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
---bjnsfkotsoxo2uty
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 4/21/23 01:26, Marius Hoch wrote:
+> This sensor can be found as CALS0001 on the Lenovo Yoga
+> Tablet 2 series.
+> 
+> Tested on a Lenovo Yoga Tablet 2 1051-F.
+> 
+> Signed-off-by: Marius Hoch <mail@mariushoch.de>
+> ---
+> v2: Explicitly include <linux/mod_devicetable.h> (don't rely on
+> linux/i2c.h including it)
 
-Hello Lee,
+Thanks, the patch looks good to me and I have
+tested this successfully on a Lenovo Yoga Tablet 2 851F :
 
-On Thu, Apr 20, 2023 at 12:01:11PM +0100, Lee Jones wrote:
-> On Wed, 12 Apr 2023, Uwe Kleine-K=F6nig wrote:
->=20
-> > The driver assumes that the input selection register (TIM_TISEL) is at
-> > its reset default value. Usually this is the case, but the bootloader
-> > might have modified it. Also reset the SMCR register while at it.
-> >=20
-> > This bases on the effectively same patch submitted by Olivier Moysan for
-> > pwm-stm32.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> > Hello,
-> >=20
-> > note that the patch by Olivier Moysan[1] for pwm-stm32 is expected to
-> > appear in Thierry's tree soon. It added the definition of TIM_TISEL in
-> > the same way, so the two patches should merge just fine. Alternatively
-> > you can commit it to a tree that already has the pwm change (and then
-> > drop the change to include/linux/mfd/stm32-timers.h from this one).
-> >=20
-> > Best regards
-> > Uwe
-> >=20
-> > [1] https://lore.kernel.org/linux-pwm/20221213102707.1096345-1-olivier.=
-moysan@foss.st.com
-> >=20
-> >  drivers/counter/stm32-timer-cnt.c | 4 ++++
->=20
-> >  include/linux/mfd/stm32-timers.h  | 1 +
->=20
-> Acked-by: Lee Jones <lee@kernel.org>
+Tested-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Note there is a v2 at
-https://lore.kernel.org/r/20230413212339.3611722-1-u.kleine-koenig@pengutro=
-nix.de,
-William wrote that he already applied it, so replying with tag in that
-thread might be already to late, too.
+Regards,
 
-(nevertheless) Thanks
-Uwe
+Hans
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---bjnsfkotsoxo2uty
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRCVmIACgkQj4D7WH0S
-/k50mQgAk2DRzoWOq3MEG9fmK8vd1LitFammB41nT+Dh8r2Q9oPfxPY2/I4p3GFJ
-uO48jePuSswpv3FPeMeVh2eQ+TatlVv0JcTJBq0wBm8SYeX1Nn7muR01ok+HJoa6
-v5XJWY49Ok0VBMH53ZIQwawhWmGEQLAWpCUXyysF6+ELz5BvFz3KcRX48KoymejU
-Rrvowztodb9mPaK13tvh8q6kPaeOGco+19iQlwDkxrcEL++S1zMv027SK4EQXv8A
-0CcvuGE8WixEBiMlLO+F9oq+Nj1UxjUh/90l+R9VK9X/u5ntdLYL2XuG/5af/ZQy
-dfXjWeU0mp27O9kpeAb5qY0Y3ST2ZQ==
-=w174
------END PGP SIGNATURE-----
+> ---
+>  drivers/iio/light/al3320a.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+> index 9ff28bbf34bb..36214d790f71 100644
+> --- a/drivers/iio/light/al3320a.c
+> +++ b/drivers/iio/light/al3320a.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/i2c.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> +#include <linux/mod_devicetable.h>
+>  
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -247,11 +248,18 @@ static const struct of_device_id al3320a_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, al3320a_of_match);
+>  
+> +static const struct acpi_device_id al3320a_acpi_match[] = {
+> +	{"CALS0001"},
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(acpi, al3320a_acpi_match);
+> +
+>  static struct i2c_driver al3320a_driver = {
+>  	.driver = {
+>  		.name = AL3320A_DRV_NAME,
+>  		.of_match_table = al3320a_of_match,
+>  		.pm = pm_sleep_ptr(&al3320a_pm_ops),
+> +		.acpi_match_table = al3320a_acpi_match,
+>  	},
+>  	.probe_new	= al3320a_probe,
+>  	.id_table	= al3320a_id,
+> 
+> base-commit: cb0856346a60fe3eb837ba5e73588a41f81ac05f
 
---bjnsfkotsoxo2uty--

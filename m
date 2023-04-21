@@ -2,66 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 917456EA34F
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 07:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5BCA6EA391
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 08:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbjDUFq2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 01:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
+        id S229471AbjDUGOS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 02:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjDUFq1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 01:46:27 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283145FE6;
-        Thu, 20 Apr 2023 22:46:26 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4ec8148f73eso1230854e87.1;
-        Thu, 20 Apr 2023 22:46:26 -0700 (PDT)
+        with ESMTP id S229456AbjDUGOP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 02:14:15 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA9461FCE;
+        Thu, 20 Apr 2023 23:14:13 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4ec81779f49so1295787e87.3;
+        Thu, 20 Apr 2023 23:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682055984; x=1684647984;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qrlfV5n8Lg9nBjvRn99BY3DeQ7uAmbc+OFU0aM7skag=;
-        b=X9WSQYeo/2Y55JJv0fzWwxkRoVJm9Eay/Z7x+JK0akY2eootZI7q4Fkw/P6lDmHam7
-         hZPsZTFtNMKdYKfMoPRV5hfQjwHvAxv9AknTrxiCgbfiqjwnzP6N/x0bUzTrYtN3uJWb
-         LhxYLY7s8azY5pXP4gnt0UO5Xm+J4iduULrVEDlScibBFJj0ccqGAsWxng9lHnyofI3K
-         oCDLJhat1lFyaDlBCuo0BXXCdazNrEq8wxrJehPc0NLus9MeqICg+N80ojvWb3c4NKA7
-         4dQSDS6cXtGM8SzhmsL9k1X3Ghk84xgKCN4b1xQG2n+eBZ8cRRSkIhX991y843szLTKt
-         8SwA==
+        d=gmail.com; s=20221208; t=1682057652; x=1684649652;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rHMa8b74FIpH3c6IGFWhRxM78q1kiY00I+AYK/n1nYs=;
+        b=UD9pJMZW1cgb7Y7JSRGvJcXyZoI2yjBp3f3gJmRGSTD9rp4tGqJzOLiWWhJpx3cySi
+         ENxFmz0P5f8d7Mvk9JG849iqJknw20hrWTmjORXoFmNUYfd7bpPUihFYt/S/HLXi3fIu
+         d4vIZzDhTYZnZ29JvSCi6QqZOAksI3YuMXtB1BHYlm2ut81Z1teXA7zh5/6wRmXn1Ebr
+         iM8MnLklZJoaSQZ1/CPFSowUOR/DVsy93cYJ1TD6Rd/YpqP/PyNMeo3JXLOZvR1JzJpF
+         7/64e27MocwrZf2Ar6p1FviMN0UOh5so0998Pcz1f+FIuEotLUVHbOSURG5v5MfTtpFf
+         /8kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682055984; x=1684647984;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20221208; t=1682057652; x=1684649652;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qrlfV5n8Lg9nBjvRn99BY3DeQ7uAmbc+OFU0aM7skag=;
-        b=PSIIpHw9EElXm9wqgi/F+Qa/gMDTg83XvXaeDLsABzTk7LNJ8DMgdh4n9jbysqUAYA
-         GKHcDkd9IzuWsp2oBye9ZnBcmft2gfOC2WPAPGiV+CCsFLre3z/iRl6CL6SpQZmCsnLc
-         lyaNYR9gnKFQRyV3tleVbeBLh7w+cJm26bsLwXMldes6ejNFmwymhYmvIYdXyBMT+9li
-         Z+VQIrK6xScAuKbKY4OW14WaZd4L0edd/M7Y790uO9qUy+GVtuMxvKt5JMo0o3ANFHoW
-         GCMf10ikLsjW8tw4M7FnO0qxjwthygo3VYThD7b8LFIxeMEWvm78GVBQQaOHuooJYZxc
-         OLDg==
-X-Gm-Message-State: AAQBX9c5nkrdfzfytaijrx1HIkz0tAxO58H0tLSNQANzoX9Ziv4/m8U2
-        4NJZ/cKHNZbgXmqH00Piejw=
-X-Google-Smtp-Source: AKy350bHTiYbhBuNCMi7vFNCNUKCJSXMr70qE4k+H+8Zfn7V7PleDL2lWHX9mWPwQTjwSnldA1F2UA==
-X-Received: by 2002:ac2:5ddc:0:b0:4e0:b407:fdf4 with SMTP id x28-20020ac25ddc000000b004e0b407fdf4mr844334lfq.37.1682055984067;
-        Thu, 20 Apr 2023 22:46:24 -0700 (PDT)
-Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id p3-20020a05651238c300b004ec5229092dsm447576lft.34.2023.04.20.22.46.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Apr 2023 22:46:23 -0700 (PDT)
-Date:   Fri, 21 Apr 2023 08:46:11 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: fix doc for iio_gts_find_sel_by_int_time
-Message-ID: <ZEIjI4YUzqPZk/9X@fedora>
+        bh=rHMa8b74FIpH3c6IGFWhRxM78q1kiY00I+AYK/n1nYs=;
+        b=H6SLctrY5m1WekCK7bfArSXzrxC8t0b9z0g0htZo7zpNyHXFkWh3L8qihK2GDxJoPX
+         WfuDgCgmFw4h4v6Ioadjtl81hmIv4wQU9jNhONmUQXBqChsSDD9d6D43RtBWnEWf54L/
+         Obcj99f3PJJgK+oL/zy60PPQ7MO97Dk9C6x0khNWNxvYWvgGbZs3M6aCxYn7qCNkj50J
+         75qDmwekEGxUfQpiINjTlyJ/mFcFnzUiKtdAExEOweajlkhBpXWx1uEsH+/kDAhN6nwN
+         fYzSFPEl5WD/v1/4Ts+Q/c6ply/bnkI58Bbg9N22VzY7qlqMqVfquxaW9WW0IJ1Ycogc
+         87Fw==
+X-Gm-Message-State: AAQBX9dCsaE2qjOAEtd23DkIlBpqFFcFpITk6mWks5YmVlVtMIS2qJdX
+        0is8A9laNPaJVYM1qbhfIilpu0o0+Lc=
+X-Google-Smtp-Source: AKy350aZFH/NjAEaI453LZpPKvCB8ysgv9Hmv1Nrc4TRAv9tD+HpMw/v7fVJn7nlPZe0LIJJ5LHodg==
+X-Received: by 2002:ac2:5ecf:0:b0:4ec:a786:1f23 with SMTP id d15-20020ac25ecf000000b004eca7861f23mr1003294lfq.59.1682057651808;
+        Thu, 20 Apr 2023 23:14:11 -0700 (PDT)
+Received: from [192.168.1.111] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id c15-20020ac244af000000b004d5a6dcb94fsm451453lfm.33.2023.04.20.23.14.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Apr 2023 23:14:11 -0700 (PDT)
+Message-ID: <93b19237-3afd-461f-bdb3-f2cd09cadd9a@gmail.com>
+Date:   Fri, 21 Apr 2023 09:14:10 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Qatxs7Q+MHiWtUHL"
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US, en-GB
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <cover.1682019544.git.mehdi.djait.k@gmail.com>
+ <2c5d71e37fc7e000091189b3c5d66ede1a6015d2.1682019544.git.mehdi.djait.k@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 4/5] iio: accel: kionix-kx022a: Add a function to
+ retrieve number of bytes in buffer
+In-Reply-To: <2c5d71e37fc7e000091189b3c5d66ede1a6015d2.1682019544.git.mehdi.djait.k@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,70 +77,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Mehdi,
 
---Qatxs7Q+MHiWtUHL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the v2!
 
-The kerneldoc for iio_gts_find_sel_by_int_time() has an error.
-Documentation states that function is searching a selector for a HW-gain
-while it is searching a selector for an integration time.
+On 4/20/23 23:22, Mehdi Djait wrote:
+> Since Kionix accelerometers use various numbers of bits to report data, a
+> device-specific function is required.
 
-Fix the documentation by saying the function is looking for a selector
-for an integration time.
+I think this is the right approach. Thanks for adding this 
+device-specific function.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- include/linux/iio/iio-gts-helper.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Move the driver's private data to the header file to support the new function.
 
-diff --git a/include/linux/iio/iio-gts-helper.h b/include/linux/iio/iio-gts=
--helper.h
-index dd64e544a3da..9cb6c80dea71 100644
---- a/include/linux/iio/iio-gts-helper.h
-+++ b/include/linux/iio/iio-gts-helper.h
-@@ -135,7 +135,7 @@ static inline int iio_gts_find_int_time_by_sel(struct i=
-io_gts *gts, int sel)
- /**
-  * iio_gts_find_sel_by_int_time - find selector matching integration time
-  * @gts:	Gain time scale descriptor
-- * @gain:	HW-gain for which matching selector is searched for
-+ * @time:	Integration time for which matching selector is searched for
-  *
-  * Return:	a selector matching given integration time or -EINVAL if
-  *		selector was not found.
+Hmm. Why this move is necessary? I didn't immediately spot this struct 
+being used outside this C-file. I'd rather saw the struct in C-file if 
+possible.
 
-base-commit: 52cc189b4fc6af6accc45fe7b7053d76d8724059
---=20
-2.40.0
+> Make the allocation of the "buffer" array in the fifo_flush function dynamic
+> and more generic.
+> 
+> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+> ---
+> v2:
+> - separated this change from the chip_info introduction and made it a patch in v2
 
+I am unsure if this separation was needed. I'd only separate the "naming 
+changes" which bring no changes to code flow, and then patches which are 
+fixes and need to be backported (to minimize backporting effort and 
+impact to stable branches). Well, I am fine with this separation though, 
+seems like I am just making a noise here :).
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+> - changed the function from generic implementation for to device-specific one
+> - removed blank lines pointed out by checkpatch
+> - changed the allocation of the "buffer" array in __kx022a_fifo_flush
+> 
+>   drivers/iio/accel/kionix-kx022a.c | 72 +++++++++++++------------------
+>   drivers/iio/accel/kionix-kx022a.h | 37 ++++++++++++++++
+>   2 files changed, 66 insertions(+), 43 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+> index 7f9a2c29790b..1c81ea1657b9 100644
+> --- a/drivers/iio/accel/kionix-kx022a.c
+> +++ b/drivers/iio/accel/kionix-kx022a.c
+> @@ -150,36 +150,6 @@ static const struct regmap_config kx022a_regmap_config = {
+>   	.cache_type = REGCACHE_RBTREE,
+>   };
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
+Yours,
+	-- Matti
 
---Qatxs7Q+MHiWtUHL
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
------BEGIN PGP SIGNATURE-----
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRCIwkACgkQeFA3/03a
-ocVL/AgAnY0Cvk9xClN2LfnIjZccke39vN5sO+jY62eOOkjbQSePRXOzLJ1UZykj
-4FSbXiHy/93F5raSNHcCxaJTtNwUwylbpad6HP4dHRIusD6ZOG7OTjUiX9hnZ3uq
-yS7ZkXcPw+XNzNDfq5cvH24n4O4X8LUFjwMmISkhzzEm6W9WfPY4trj9GBseuOUD
-Y+htKULsB7uiiP+Z1CAmqOLHZ+agDGWaBXmj+8WuQNsRlPwDTsOINa3Hj1q4gwHg
-YPphEJdfI2kpIrnICd+cqlK8AxL6d9uzLTfBHcQ4W54WycqNexfW/EH5+YEAoZPB
-LGNT15neE2Xr88b4pA7DmJ7hNsirHw==
-=bgbs
------END PGP SIGNATURE-----
-
---Qatxs7Q+MHiWtUHL--

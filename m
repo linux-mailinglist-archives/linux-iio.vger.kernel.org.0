@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA0E6EA578
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187696EA57E
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:03:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230410AbjDUIBu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 04:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37506 "EHLO
+        id S231503AbjDUIDP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 04:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjDUIBs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:01:48 -0400
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5D87DA8;
-        Fri, 21 Apr 2023 01:01:45 -0700 (PDT)
+        with ESMTP id S230153AbjDUIDO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:03:14 -0400
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B270E7A89;
+        Fri, 21 Apr 2023 01:02:55 -0700 (PDT)
 Received: (Authenticated sender: herve.codina@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 3854820016;
-        Fri, 21 Apr 2023 08:01:41 +0000 (UTC)
+        by mail.gandi.net (Postfix) with ESMTPSA id 8A5BC1C0003;
+        Fri, 21 Apr 2023 08:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1682064104;
+        t=1682064173;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lM3Fj3ldpENpDTMFM4FKFvcZdMUplwub02ZZyDtBwog=;
-        b=m0LWHe8vih8+9CLvQ0PSRBwL/UFRo+rf2S9bDH9N1jeWb+oubiGWY9AM15rkH9nDTE2TRe
-        0Y+PkYvBj3QOgd398D108Uidyphnbh5EicuIWalX091IyqJvjgdpTIfLylQ29New8Evk1G
-        34p8QCQ+2qIh0pViLAhD2l3G3RaLDBQaDx0YmbzEi47yuSdLkaLo7N7odvcqbyadhgTisH
-        8Py3jjhTFY7DsVAq0Bru6ChgdbjgDn8J7ypG2TsU3/F0ZkEwKyF8yBjJ6RJXvBPuC8OB0I
-        xphiLQb8rXlG8A1wYHCz/ElwA9gCtWVaxn8tLDlMOCSLaH5/zmKJzAxOulid+Q==
-Date:   Fri, 21 Apr 2023 10:01:41 +0200
+        bh=1pFJRyZLKhI+ddHgFFM7+c7rf18DVGxElQZA6evq+ls=;
+        b=Ei5/mjYjRKklT3mLuCyguK3kJtMqrSdJRjUPCG2YrvBjzRalZvU2mG8Ew4sSEILvefmvUj
+        KWnIddgfjhfS9Ad40pxTF4tb580bNpi/9uLhF3ze1zUlsRma7EM/90Dc8ELVpYh0LQjia1
+        /T6dIELiar2HvRp0YFHo0Cl+XhVe9DTxCtOXFF0UJGh5Ugg3NDweRLdJrLhFLyJyLnvaJ2
+        +Y/0k7HfPB9Bjlq0wRbkW2gR+Umay25FovfovW7ceguAxUlL7xzvTTT3ofqsMUACm7/az8
+        2JSenjyf4QbmCgzDom3UJnTuI7fAzBHL0dwKAIu0KTOXGRQEOuuWAbb+BFLfbA==
+Date:   Fri, 21 Apr 2023 10:02:51 +0200
 From:   Herve Codina <herve.codina@bootlin.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -40,108 +40,46 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         linux-kernel@vger.kernel.org,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: potentiometer: Add the Renesas
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: potentiometer: Add the Renesas
  X9250 potentiometers
-Message-ID: <20230421100141.2ad95eb7@bootlin.com>
-In-Reply-To: <7d3d614f-b0e8-5d65-da9d-4ed7a7ba5e35@linaro.org>
-References: <20230420121320.252884-1-herve.codina@bootlin.com>
-        <20230420121320.252884-2-herve.codina@bootlin.com>
-        <7d3d614f-b0e8-5d65-da9d-4ed7a7ba5e35@linaro.org>
+Message-ID: <20230421100251.1ae232ee@bootlin.com>
+In-Reply-To: <0d9740e7-bb03-dc16-5a1e-a551343b213f@linaro.org>
+References: <20230420161052.270366-1-herve.codina@bootlin.com>
+        <20230420161052.270366-2-herve.codina@bootlin.com>
+        <0d9740e7-bb03-dc16-5a1e-a551343b213f@linaro.org>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Krzysztof,
-
-On Fri, 21 Apr 2023 09:32:57 +0200
+On Fri, 21 Apr 2023 09:54:25 +0200
 Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On 20/04/2023 14:13, Herve Codina wrote:
+> On 20/04/2023 18:10, Herve Codina wrote:
 > > The Renesas X9250 is a quad digitally controlled potentiometers.
-> >   
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > ---
+> >  .../iio/potentiometer/renesas,x9250.yaml      | 56 +++++++++++++++++++
+> >  1 file changed, 56 insertions(+)  
 > 
-> Thank you for your patch. There is something to discuss/improve.
-> 
-> > +maintainers:
-> > +  - Herve Codina <herve.codina@bootlin.com>
-> > +
-> > +description:
-> > +  The Renesas X9250 integrates four digitally controlled potentiometers.
-> > +  On each potentiometer, the X9250T has a 100 kOhms total resistance and the
-> > +  X9250U has a 50 kOhms total resistance.
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml
-> > +  - $ref: /schemas/iio/iio.yaml
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - renesas,x9250t
-> > +      - renesas,x9250u
-> > +
-> > +  reg:
-> > +    description:
-> > +      SPI device address.  
-> 
-> SPI bus does not have device addresses, AFAIR. Drop description.
-
-Indeed, SPI has chip-select.
-I will drop the description
-
-> 
-> > +    maxItems: 1
-> > +
-> > +  '#io-channel-cells':
-> > +    const: 1
-> > +
-> > +  spi-max-frequency:
-> > +    maximum: 2000000
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - '#io-channel-cells'
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +        x9250@0 {  
-> 
-> Node names should be generic.
-> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-Will be change to potentiometer@0
-
-> 
-> > +            compatible = "renesas,x9250t";
-> > +            reg = <0>;
-> > +            spi-max-frequency = <2000000>;
-> > +            #io-channel-cells = <1>;
-> > +        };
-> > +    };  
+> My comments for v1 apply, I guess.
 > 
 > Best regards,
 > Krzysztof
 > 
 
-The modifications will be present on v3 as v2 was already sent.
+Yes and I will take care on v3.
 
-Thanks for the review,
+Best regards,
 Hervé
-

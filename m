@@ -2,69 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4B746EA59F
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FAC06EA5C3
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Apr 2023 10:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbjDUIM6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Apr 2023 04:12:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43916 "EHLO
+        id S231578AbjDUIXj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Apr 2023 04:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231451AbjDUIMv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:12:51 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD509EEE
-        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:12:42 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-504eac2f0b2so2284436a12.3
-        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:12:42 -0700 (PDT)
+        with ESMTP id S230346AbjDUIXi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Apr 2023 04:23:38 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C782C55B2
+        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:23:36 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-94ef8b88a5bso179467666b.2
+        for <linux-iio@vger.kernel.org>; Fri, 21 Apr 2023 01:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682064761; x=1684656761;
+        d=linaro.org; s=google; t=1682065415; x=1684657415;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=LhAi/47bzb0+GcN3Ihgi11hk+T47ybnfllhUZZil3DE=;
-        b=XcFnwctyvPrt7z1gsc1Yr8KjxYRC+k4/8LDW+wnpSet6BiiYdgHODrbYzJ1gMCh6LI
-         3qWc0njbSExbb226yVodjEyirsBJ64/W70Wp3aa5bWU4M7nMgTIwXYGevGdUAay9CUMW
-         2nVCpc0+tJyGKW8g1MQj0n31+cWNVsnUqV7zTHiQk2KBjvkCECWrO3NYju08cozCZeR1
-         hrFvcNv4EsAAEscHYAh7mIRkgkqT83IJvSQVyBaVyGypoyD0wjACLnIuVgMRZT3e1pb/
-         xUTp3Kr3YBqa+r82F5MFmR9b8CCsnHeAGpkx0wbCxPrn7lVS1gWftH2+bCdZ7I6xNq4P
-         aneA==
+        bh=EmPBpQGOUS8JJiDMBMaclv6rO3Q/6XPU7C23CWrw9Rw=;
+        b=mG0wLaPN4fSBV8/3aWZPz628ip8mxdPk1vppSyIJVHde9nPTtOkAKZCbix6EHNBKnV
+         PKP9L487EYvmJ8xwf6Yo6fPGC4YxrwwbKGUE43EVIOzEWVge0o9LEZ4txc7F42UY57hK
+         DjzcMHDlF8N/qyyWbK1mz17jrxHmGYl+o7W8Sgu3dmydVg4vpLqJ1SLuBpxl9Lp4r5hP
+         WMEgR1aMSSh3Tc2RF2GsbZOnpoHzr9Tug14wGjEQg735+ALOnw4eWK/c/HKyg1rxjMb1
+         LyoMOxc9Gfmf+/94JoQ1B9A4uAbpI9QJte/s8by5iUDLyeDyMO4gXKwizQ2X/xDMdty4
+         Onjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682064761; x=1684656761;
+        d=1e100.net; s=20221208; t=1682065415; x=1684657415;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LhAi/47bzb0+GcN3Ihgi11hk+T47ybnfllhUZZil3DE=;
-        b=k5H9LGSCSQTnj3sunDaYmjSHNzJzGbSVBvN1rMaBYHDtdtWEAB89y5jzenrcu/6al0
-         OkwOKj/h01Vpb4F0TIiBKXAfJ+cHLjykKbQKvVfX3y4b+E+XjkS5X7Q7Ot4UPZLsFc/U
-         9wuhKzQ1rd/1btyXnMcpeAn75bmLGx6dcfflsY2ixmGZqtn4g7bohiWsbSCpfe56m+L7
-         00wAIU6djxDR2izOv7zCnco/ftZFbKx93ZpWnG6iHeN3ov4U3bK4ux8rdCRMO6+hx8W6
-         sq/YHgUWlaBgjXGzPJPZe+UeZ1vGPQ3pHAEWRBc5q1ytDhZ2lYTT93h0FT+sFre4eP8k
-         Hzrw==
-X-Gm-Message-State: AAQBX9fP7yr9NUnsZCU2ok9ow4LfxbdKi2XdmW6GX8xidVd5nF9FgQ6k
-        wGGoW/Kv17t7umMAI7scOK8muA==
-X-Google-Smtp-Source: AKy350ZDr7Zj23PxXXhTtWiqUYtFwMD3BgjxFbrktnrH98srejm9XriG7QsxJHbmnhdTC82RWZLISA==
-X-Received: by 2002:a50:e70f:0:b0:505:513f:3d2d with SMTP id a15-20020a50e70f000000b00505513f3d2dmr4428507edn.40.1682064761028;
-        Fri, 21 Apr 2023 01:12:41 -0700 (PDT)
+        bh=EmPBpQGOUS8JJiDMBMaclv6rO3Q/6XPU7C23CWrw9Rw=;
+        b=IPv1q3DUFNMWiW6W7CzopPfUf6LkkM6sVvdu32xMW3lg3nMg9GrGZCg+9MmqRA/KSU
+         5C4Bs0RI8c8zGJg/zho281zk6VuFftDBvsO/rAslb5Fq9Wgj+UpEslsm+gvOu9io52v4
+         rl883LXFHXB8RS1gUz9fZjycK82300bHi/feUArJUSGGzIb2xvI6EnUkSzbbarSliqN+
+         X9S7JS5NQXESml/M04kuXtVVAE4VnGgX06UmQNL0HUoFMJ5F7CB7m6+mmGVabnyj57zC
+         lt9JYE6IhIwHfEewWmA0DWII3Og4O8EnsI9c1HD+/1iiOx1adggC+ImaX7Q3VOtw3D+y
+         n7FQ==
+X-Gm-Message-State: AAQBX9fPTQm/ZNmKHBj1Aisv06s2skgyHxJujw4rXissVVMdpRpro2xz
+        KB7mUMpC5VZILgElGMERJQOoM7GFaSrA0Fj/tms=
+X-Google-Smtp-Source: AKy350YvfZWr5OqJW1qfClL4SIH2kms66aJYo321dM7KyczZNmMStEzdxqlMpa/xHgBaw2s6lEL5BQ==
+X-Received: by 2002:a17:906:6bc2:b0:932:cec7:6801 with SMTP id t2-20020a1709066bc200b00932cec76801mr1362738ejs.54.1682065415213;
+        Fri, 21 Apr 2023 01:23:35 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:668b:1e57:3caa:4d06? ([2a02:810d:15c0:828:668b:1e57:3caa:4d06])
-        by smtp.gmail.com with ESMTPSA id be9-20020a0564021a2900b00506a2e645f6sm1592565edb.71.2023.04.21.01.12.40
+        by smtp.gmail.com with ESMTPSA id n6-20020a170906700600b0094f5a74ba83sm1759590ejj.39.2023.04.21.01.23.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Apr 2023 01:12:40 -0700 (PDT)
-Message-ID: <40163a89-0a78-f4b9-8379-6bae9b0f0b63@linaro.org>
-Date:   Fri, 21 Apr 2023 10:12:39 +0200
+        Fri, 21 Apr 2023 01:23:34 -0700 (PDT)
+Message-ID: <b406dd13-fedb-0e6e-2f1b-ad3ebb617dc4@linaro.org>
+Date:   Fri, 21 Apr 2023 10:23:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/5] dt-bindings: iio: Add KX132-1211 accelerometer
+Subject: Re: [PATCH 2/2] dt-bindings: iio: imu: mpu6050: Add icm20600 bindings
+ to mpu6050
 Content-Language: en-US
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org,
-        mazziesaccount@gmail.com
-Cc:     krzysztof.kozlowski+dt@linaro.org,
-        andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <cover.1682019544.git.mehdi.djait.k@gmail.com>
- <68466b01b967efbdd1bf2de0747d35f28f94fddb.1682019544.git.mehdi.djait.k@gmail.com>
+To:     Hermes Zhang <chenhuiz@axis.com>, jic23@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@axis.com, Lars-Peter Clausen <lars@metafoo.de>,
+        devicetree@vger.kernel.org
+References: <20230421071630.524822-1-chenhuiz@axis.com>
+ <20230421071630.524822-3-chenhuiz@axis.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <68466b01b967efbdd1bf2de0747d35f28f94fddb.1682019544.git.mehdi.djait.k@gmail.com>
+In-Reply-To: <20230421071630.524822-3-chenhuiz@axis.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,23 +79,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 20/04/2023 22:22, Mehdi Djait wrote:
-> Extend the kionix,kx022a.yaml file to support the kx132-1211 device
+On 21/04/2023 09:16, Hermes Zhang wrote:
+> Adding the invensense ICM-20600 to the compatible list of the mpu6050
+> driver
 > 
-> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+> Signed-off-by: Hermes Zhang <chenhuiz@axis.com>
 > ---
-> v2:
-> - made the device name more specific from "kx132" to "kx132-1211"
-> - removed the output data-rates mentioned and replaced them with "variable 
-> output data-rates"
+>  .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml          | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> index ec64d7877fe5..67711bc0ee6c 100644
+> --- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> @@ -20,6 +20,7 @@ properties:
+>            - invensense,icm20608
+>            - invensense,icm20609
+>            - invensense,icm20689
+> +          - invensense,icm20600
+>            - invensense,icm20602
 
-You missed Rob (and maybe other maintainers). I think he does not care,
-but anyway - why not using just get_maintainers.pl? It does entire job
-for you, no need to figure out any addresses.
-
-
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Didn't we start switching to compatible groups of devices? This looks
+compatible with 20602.
 
 Best regards,
 Krzysztof

@@ -2,60 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 834906EB9AC
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Apr 2023 16:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828B06EBA24
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Apr 2023 18:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229894AbjDVOgC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Apr 2023 10:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56254 "EHLO
+        id S229595AbjDVQD6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Apr 2023 12:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjDVOgB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Apr 2023 10:36:01 -0400
-Received: from out203-205-251-59.mail.qq.com (out203-205-251-59.mail.qq.com [203.205.251.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8EC10E4;
-        Sat, 22 Apr 2023 07:35:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1682174157;
-        bh=rV+obqBV2YKvr1MLCeqn9cEsCuGUCv/eN8ByCFyFd0o=;
-        h=From:To:Cc:Subject:Date;
-        b=cfipC+FMoS4I0CbQVjfyqkeELQI0ILoPQFJgH6Tui2WJ487VR7r4XZf7VJ25dAIgD
-         5aprOXElaQfofA19ELIoWq3jjPmVtrjicr/BNUNTlogjyq4bmJ89uPBXinuMz+lNSC
-         nSSEe5Btahqb/1SPcU/VWoD6TytPONgdmJWF3oXo=
-Received: from rtoax.. ([111.199.190.121])
-        by newxmesmtplogicsvrszb1-0.qq.com (NewEsmtp) with SMTP
-        id 8F7278F5; Sat, 22 Apr 2023 22:35:55 +0800
-X-QQ-mid: xmsmtpt1682174155tp1m27fmo
-Message-ID: <tencent_3E0341A1C9AC8FCB7915E7D791D117445707@qq.com>
-X-QQ-XMAILINFO: NhUkPfKlCtQw2r08/0nNmetDOkmWKFwsM6519DB8bTZ3b478RMp2L/YWkTkcA7
-         SdN9+kuyCMmR+hdxq99LYQIBh8G3SBJPVAkbG+Xo/BMV/mTpf5fKZ1RLkqjH3gBI4CHT4pI25j7N
-         pBpZnn+4TDkM2O+hPpukG2ZcunHYVRuit4bvMVkm3vplfNUX1TS6HJP5VBKghowY5JrlKpWoZnnO
-         cytYJrkn90M1Jh2ZAc6p33JhMS96Qc/p7PLgnD6fNY13RdX9rCRZzFDVKUwvRmJ+wjftrFrqbDbQ
-         Cdpj2ySLYb2xesJUtC2EySF2NTgobscnTwOdWr0jukv1xAXUXHcAQ38bZdeG7KlLDcJ2cCazUoT8
-         /poCy/7FCZcN7Ul2JHUPPA7G0w9IanT3jT5MX4+18pfyn06IY3ViuSHXE/0PnSTC1wHsV2dwjj5Z
-         XiUsRGedjVTqkJVCytKAIbkEjRr5XB2sw7gvG8m0Krn1lm5jfvTN6FP7CEg2/qdXn7ZX2HDDZ/wC
-         cHrdFxydsRo966SF7DS+ycWTyouJqCaxRGCnDBlFUUeQCHzWozlHp/+PMxBDsm8pcF+5PdxblHDG
-         oV6z3C/AywEeBIoXT9TFoLvUPDx6u4fAuej5an7YD1kDScF7WGzm4Dw29IUnBf/IFeqR5DaGT/BN
-         dOKHrDvlhntBi9KZkxFdSFxCYsHX0F/1gNohrksKR1YOQMCGYNKEBwIIaBJRl8URP6SCkcxllcwp
-         KPch8DM4UBpfhjYw2cKJkDO6HIXDdq+RHF12s4z+7XLNgzkWcLwwsWSvmlK05juOxSHHO2QoQ/g/
-         /cHYoBXkT9mKNRXNCm+xVSpd4LqwKki/dHgFmRF5ZXQf1u09jgt//YLA7HpWRabOoV+cr7rWWF5D
-         tM3Aahq5hLTWDZNWGPBBEfwFS1JhiUQjNaVimC4zNbqjsH0bznTZsR6hrTXiZwfA4JaLxxWxcY6P
-         csCSlYtWqtubXCkcjS0G3XKyfjzCrOUtntci0+ayChesTmlubRvgacsw2NUWOv191R3DP1TBMtu5
-         X6M9OKJA==
-From:   Rong Tao <rtoax@foxmail.com>
-To:     william.gray@linaro.org
-Cc:     Rong Tao <rongtao@cestc.cn>,
-        linux-kernel@vger.kernel.org (open list),
-        linux-iio@vger.kernel.org (open list:COUNTER SUBSYSTEM)
-Subject: [PATCH v2] tools/counter: Add .gitignore
-Date:   Sat, 22 Apr 2023 22:35:53 +0800
-X-OQ-MSGID: <20230422143554.61364-1-rtoax@foxmail.com>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S229533AbjDVQD4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Apr 2023 12:03:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11E691736;
+        Sat, 22 Apr 2023 09:03:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A11A760B78;
+        Sat, 22 Apr 2023 16:03:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B9BC433D2;
+        Sat, 22 Apr 2023 16:03:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682179435;
+        bh=it93gmXDoW9uP9aF9DuUPAIAfLHjHw/yXOyTOuMN9g0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ILh6lBwIOlgoyv0rAUqkX14NsDn7UND8cRSCJ9BZTJetgoH5EmpmVBL98GeD0ipUk
+         US3a39JYic2TPl/w6pDmewq2G2cGYwxg86mAL370x1WJmj8pMFDrropp34PK/p630Z
+         hai4uteU2DzoIZdtrrsvKtgMpQsXAzag57v12CK8wvrl/4CCqWtmJ2P/abBDJBbIXg
+         HW1oEKP6lb3e3pjj8leVHRIixegN3jOeOAbYuQBp9UNaH8M+XhViR7uCGJpBISj9uC
+         BQGPI9jAEakMmI1KHnNPA/8OsuLicKhDCt9fjU4NFfkNlbuiasCV2K9MV7QBDurXuz
+         69gnwEJHi7tjQ==
+Date:   Sat, 22 Apr 2023 12:03:52 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     Rong Tao <rtoax@foxmail.com>
+Cc:     william.gray@linaro.org, Rong Tao <rongtao@cestc.cn>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:COUNTER SUBSYSTEM" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2] tools/counter: Add .gitignore
+Message-ID: <ZEQFaDHYHb7tzjQd@ishi>
+References: <tencent_3E0341A1C9AC8FCB7915E7D791D117445707@qq.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,RDNS_DYNAMIC,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2PJ4kaa6F6kJH0hA"
+Content-Disposition: inline
+In-Reply-To: <tencent_3E0341A1C9AC8FCB7915E7D791D117445707@qq.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,27 +55,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Rong Tao <rongtao@cestc.cn>
 
-Ignore counter_example and include/linux/counter.h.
+--2PJ4kaa6F6kJH0hA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Rong Tao <rongtao@cestc.cn>
----
-v2: Ignore /include/linux/counter.h, instead of /include directory
-v1: https://lore.kernel.org/lkml/tencent_1625E21562D40C91CEE047E82E2BFC524305@qq.com/
----
- tools/counter/.gitignore | 2 ++
- 1 file changed, 2 insertions(+)
- create mode 100644 tools/counter/.gitignore
+On Sat, Apr 22, 2023 at 10:35:53PM +0800, Rong Tao wrote:
+> From: Rong Tao <rongtao@cestc.cn>
+>=20
+> Ignore counter_example and include/linux/counter.h.
+>=20
+> Signed-off-by: Rong Tao <rongtao@cestc.cn>
 
-diff --git a/tools/counter/.gitignore b/tools/counter/.gitignore
-new file mode 100644
-index 000000000000..9fd290d4bf43
---- /dev/null
-+++ b/tools/counter/.gitignore
-@@ -0,0 +1,2 @@
-+/counter_example
-+/include/linux/counter.h
--- 
-2.40.0
+Queued for the counter-next branch of the counter tree.
 
+Thanks,
+
+William Breathitt Gray
+
+> ---
+> v2: Ignore /include/linux/counter.h, instead of /include directory
+> v1: https://lore.kernel.org/lkml/tencent_1625E21562D40C91CEE047E82E2BFC52=
+4305@qq.com/
+> ---
+>  tools/counter/.gitignore | 2 ++
+>  1 file changed, 2 insertions(+)
+>  create mode 100644 tools/counter/.gitignore
+>=20
+> diff --git a/tools/counter/.gitignore b/tools/counter/.gitignore
+> new file mode 100644
+> index 000000000000..9fd290d4bf43
+> --- /dev/null
+> +++ b/tools/counter/.gitignore
+> @@ -0,0 +1,2 @@
+> +/counter_example
+> +/include/linux/counter.h
+> --=20
+> 2.40.0
+>=20
+
+--2PJ4kaa6F6kJH0hA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZEQFaAAKCRC1SFbKvhIj
+K0lQAPsHMtC3DGML6lyLCPGOaZyshLXrlZLyBApHHjZuSiQSBwD+ODo+/D3QUSNX
+ejRyfYkbSPhaeMSPqZRN8i2WUj6EHwk=
+=EqRg
+-----END PGP SIGNATURE-----
+
+--2PJ4kaa6F6kJH0hA--

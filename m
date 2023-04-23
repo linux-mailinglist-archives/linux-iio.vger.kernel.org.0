@@ -2,45 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 454356EBE8B
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 12:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F99E6EBE93
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 12:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjDWKVq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Apr 2023 06:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43332 "EHLO
+        id S229693AbjDWKZM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Apr 2023 06:25:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjDWKVo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 06:21:44 -0400
+        with ESMTP id S229453AbjDWKZL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 06:25:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A4D10D8
-        for <linux-iio@vger.kernel.org>; Sun, 23 Apr 2023 03:21:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183EA10D9;
+        Sun, 23 Apr 2023 03:25:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C95B60C41
-        for <linux-iio@vger.kernel.org>; Sun, 23 Apr 2023 10:21:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AABC433D2;
-        Sun, 23 Apr 2023 10:21:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D6C260BFB;
+        Sun, 23 Apr 2023 10:25:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749C2C433D2;
+        Sun, 23 Apr 2023 10:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682245302;
-        bh=zOLZHnGpKILoH1HPaewA+HlW0oetF8a5lwpJYBQAZQ4=;
+        s=k20201202; t=1682245508;
+        bh=gG3wOI4KVNr5mKVsWvDDGnE0DJ0ZKHEcpo3Oos6yAIs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HpywQk0SYOXmBNHviyUnMgzLLNXVJ6ZoKIkE4EFtiB8P4iNcAHBvYcwzYl4IROUNW
-         kUcZVQ1wri2bO2nZiEFLEiFa8hUh2RQtz9LEXttpJhoHae614oJsX1a1pMbcHmrLaR
-         Fkkulz6RKWKAUnl3IShXYaOFqyreJNnVb3RdCpw+39F0vMYoaEiOEFgq0OSeKSlnFe
-         0NYvxxnuhu9adPyu19E8ZzKGmju+My/rhLzzDXW3qKrHRv0ovAhZe3BCigkuLjvoE1
-         DnRIuizg03S6hvsnwWC4M9AtmgpfDrXEFOT2tgMjg3UjuJFHvZYaY8W5gG3VboUKLa
-         CVHeEsOazu/MA==
-Date:   Sun, 23 Apr 2023 11:37:18 +0100
+        b=GbVfjDWzDbeehwM7nmxuQgsi7su8hdftFhBXHiznT8AuBcvqAddZliHhd22rK2Vt3
+         iZ5Fe+p06byZ5ccyAA269Jdl7QYlW/W3c6PO5LoK0GEu6tGHYUyQCjDVbzIR6IYTCD
+         FrG1Tu6Iuq+ym5p5LFK7Lzgowu6pVP3G7tL4S912WJ1gyGQ6bgxaGX/V7ZRCbqg4jF
+         3U2aU1s7hskxJlyiWlj6lU0i6HJz5s5G8Hlp4Yg+TMQFnx+Tih4ACmXOAXey2Qpmjy
+         xrHgSU2ppwxz/U+Zytaof8PxkE061EQq2A60Y+bUrVC2c3mOiA21Kj+qemkSuWclnX
+         ZMJ/H8f8Ui5rw==
+Date:   Sun, 23 Apr 2023 11:40:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: ad4130: Make sure clock provider gets removed
-Message-ID: <20230423113718.34880560@jic23-huawei>
-In-Reply-To: <20230414150702.518441-1-lars@metafoo.de>
-References: <20230414150702.518441-1-lars@metafoo.de>
+To:     Jiakai Luo <jkluo@hust.edu.cn>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Lee Jones <lee.jones@linaro.org>, Marek Vasut <marex@denx.de>,
+        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
+        hust-os-kernel-patches@googlegroups.com, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: mxs-lradc: fix the order of two cleanup
+ operations
+Message-ID: <20230423114043.72fe2891@jic23-huawei>
+In-Reply-To: <20230422133407.72908-1-jkluo@hust.edu.cn>
+References: <20230416132906.4ec56e47@jic23-huawei>
+        <20230422133407.72908-1-jkluo@hust.edu.cn>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,63 +64,90 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Apr 2023 08:07:02 -0700
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sat, 22 Apr 2023 06:34:06 -0700
+Jiakai Luo <jkluo@hust.edu.cn> wrote:
 
-> The ad4130 driver registers a clock provider, but never removes it. This
-> leaves a stale clock provider behind that references freed clocks when the
-> device is unbound.
+> Smatch reports:
+> drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+> missing unwind goto?
 > 
-> Register a managed action to remove the clock provider when the device is
-> removed.
+> the order of three init operation:
+> 1.mxs_lradc_adc_trigger_init
+> 2.iio_triggered_buffer_setup
+> 3.mxs_lradc_adc_hw_init
 > 
-> Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Applied to the fixes-togreg branch of iio.git.
+> thus, the order of three cleanup operation should be:
+> 1.mxs_lradc_adc_hw_stop
+> 2.iio_triggered_buffer_cleanup
+> 3.mxs_lradc_adc_trigger_remove
+> 
+> we exchange the order of two cleanup operations,
+> introducing the following differences:
+> 1.if mxs_lradc_adc_trigger_init fails, returns directly;
+> 2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+> goto err_trig and remove the trigger.
+> 
+> In addition, we also reorder the unwind that goes on in the
+> remove() callback to match the new ordering.
+> 
+> Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+> Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+
+Applied to the fixes-togreg branch of iio.git and marked for backporting to
+stable. At this stage I'll probably wait until around rc1 to send out a pull
+request with this in.  
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ad4130.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
+> The issue is found by static analysis and remains untested.
+> ---
+>  drivers/iio/adc/mxs-lradc-adc.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-> index 38394341fd6e..5a5dd5e87ffc 100644
-> --- a/drivers/iio/adc/ad4130.c
-> +++ b/drivers/iio/adc/ad4130.c
-> @@ -1817,6 +1817,11 @@ static const struct clk_ops ad4130_int_clk_ops = {
->  	.unprepare = ad4130_int_clk_unprepare,
->  };
+> diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+> index bca79a93cbe4..85882509b7d9 100644
+> --- a/drivers/iio/adc/mxs-lradc-adc.c
+> +++ b/drivers/iio/adc/mxs-lradc-adc.c
+> @@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
 >  
-> +static void ad4130_clk_del_provider(void *of_node)
-> +{
-> +	of_clk_del_provider(of_node);
-> +}
-> +
->  static int ad4130_setup_int_clk(struct ad4130_state *st)
->  {
->  	struct device *dev = &st->spi->dev;
-> @@ -1824,6 +1829,7 @@ static int ad4130_setup_int_clk(struct ad4130_state *st)
->  	struct clk_init_data init;
->  	const char *clk_name;
->  	struct clk *clk;
-> +	int ret;
->  
->  	if (st->int_pin_sel == AD4130_INT_PIN_CLK ||
->  	    st->mclk_sel != AD4130_MCLK_76_8KHZ)
-> @@ -1843,7 +1849,11 @@ static int ad4130_setup_int_clk(struct ad4130_state *st)
->  	if (IS_ERR(clk))
->  		return PTR_ERR(clk);
->  
-> -	return of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
-> +	ret = of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
-> +	if (ret)
+>  	ret = mxs_lradc_adc_trigger_init(iio);
+>  	if (ret)
+> -		goto err_trig;
 > +		return ret;
-> +
-> +	return devm_add_action_or_reset(dev, ad4130_clk_del_provider, of_node);
+>  
+>  	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+>  					 &mxs_lradc_adc_trigger_handler,
+>  					 &mxs_lradc_adc_buffer_ops);
+>  	if (ret)
+> -		return ret;
+> +		goto err_trig;
+>  
+>  	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+>  
+> @@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+>  
+>  err_dev:
+>  	mxs_lradc_adc_hw_stop(adc);
+> -	mxs_lradc_adc_trigger_remove(iio);
+> -err_trig:
+>  	iio_triggered_buffer_cleanup(iio);
+> +err_trig:
+> +	mxs_lradc_adc_trigger_remove(iio);
+>  	return ret;
 >  }
 >  
->  static int ad4130_setup(struct iio_dev *indio_dev)
+> @@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct platform_device *pdev)
+>  
+>  	iio_device_unregister(iio);
+>  	mxs_lradc_adc_hw_stop(adc);
+> -	mxs_lradc_adc_trigger_remove(iio);
+>  	iio_triggered_buffer_cleanup(iio);
+> +	mxs_lradc_adc_trigger_remove(iio);
+> 
+>  	return 0;
+>  }
 

@@ -2,89 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C78586EBFD0
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 15:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2096EC256
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 22:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjDWNpO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Apr 2023 09:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52916 "EHLO
+        id S229516AbjDWU5E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Apr 2023 16:57:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjDWNpN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 09:45:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD74510EA;
-        Sun, 23 Apr 2023 06:45:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CB2260F55;
-        Sun, 23 Apr 2023 13:45:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289B1C433EF;
-        Sun, 23 Apr 2023 13:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682257511;
-        bh=gDJ5bumOU4KUPeLMyT7aBH/db/dxG+6sONKvH+a/LFU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=chsdJR4nhxZbWWm5qSudwyib20L/x5E/0qXh7iuMpiMwB/RMINWYH2FdRNNE4N0xx
-         BTLhXdtYMewaMIbLXEWdB90KWt69tGqi5u/w5Pw5FXrvjmoz9e3pMyiEI9rOpTcra4
-         rmsJjNJC5g2W0Paqv7CBxHDCfur8wdCN3jcGlqiBQrElpP8vdRKhld3OftTBkwQrCE
-         Q3rxaCg6qF4uFnTVHumYgIStFIMJAyaF9HkWY4NJaX/W4K4tl7OrthQGReKyPuAOU8
-         mChONz4ZPTgjUJIT1VVu3N9CEctYpnau6FStK7ULBeF38pAyqE27GFDIoGChvNvw+I
-         i9FajKVOQSl8A==
-Date:   Sun, 23 Apr 2023 09:45:08 -0400
-From:   William Breathitt Gray <wbg@kernel.org>
-To:     Rong Tao <rtoax@foxmail.com>
-Cc:     william.gray@linaro.org, Rong Tao <rongtao@cestc.cn>,
-        "open list:COUNTER SUBSYSTEM" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] tools/counter: Makefile: Remove lingering 'include'
- when make clean
-Message-ID: <ZEU2ZBexi1UxPULj@ishi>
-References: <tencent_F85E314661100B0CE2845EB27E2E2F558C09@qq.com>
+        with ESMTP id S229476AbjDWU5D (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 16:57:03 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3063B1AB;
+        Sun, 23 Apr 2023 13:57:02 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9505214c47fso674038766b.1;
+        Sun, 23 Apr 2023 13:57:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682283420; x=1684875420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eU1Tk/gnXrnHdm84vw9TLyvNW9CFqnp1t/CWjp9JRhA=;
+        b=S0am4xMmSjK8nfNHQPjGBaesjmnvMyXntZB/bvW3dK82NNjT9tYgsNWiDVA1sdYdzv
+         js5tmbQz3O6QZyxcgwyuDb1QzZ8fjBcFHxDMhkGtKJv0CYeMmZvqzHFfa83qWDrQmgX7
+         ZdYyoTSRk/FE04DJ3yuZzXIQYYAhwmpMpD2WAkyc2hv9/pJaxVk+Wk7FnmnImwiYTEp5
+         rllaOUCBk2nsT0lcfagBN//TxWfudqKDpOoOJCSuhxoM+xH+JQA1710fwYttY/+vwU61
+         1QVXdPkI3ofYzrJHD93JkT8V0A6GIdwghe4ghT79rtNExmo8NIbI3y6atw/WQyNnKT6S
+         iiTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682283420; x=1684875420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eU1Tk/gnXrnHdm84vw9TLyvNW9CFqnp1t/CWjp9JRhA=;
+        b=heeZXL9KD8t5sjHUQ9wiLigN1Hz/Yi0ZeJZt5NqtHrUK24D9asnzJp56J0l8ci3RZH
+         7wPXLjT4Wrfg37L1aei1U6xn6LzxLPFzFIyXejCFqKLC12lr1OX3U0wDO/1O8eE+rWQo
+         XZfKVGYORs+Jrklrd7Q1bik8bBn9I31vFI4PT8XMWUD/bd+GiGda8TmcC+/3pIL0Uvgj
+         gCqpKLSFJY3CJS9M4eQ+sj/c0bjIk0Ai3gkAWHZSAj0G5Oic+XNN3r8lGMlw+meHnTqx
+         HHkAp4R/GFuPjkRJlB7ChApKuS7qJJBAYvZTBrGoMKxO4xVHtNMn4tUMkM0iXIBaN2ZM
+         xB0A==
+X-Gm-Message-State: AAQBX9ccIGW+/bV1T5GgaYfLhMv31+3sEfrY0ZheeTlr4fBkwIxv4zwv
+        OwV9lMd2xmsr5O0+LenVfkw=
+X-Google-Smtp-Source: AKy350bItPTLFl3p6XwDCCEpUteu9ipM6f51Y+fgIxwoiIQ4L4WHxEbZEUOd4IH/lzG7VvEgfV/5Qw==
+X-Received: by 2002:a17:906:4a8b:b0:94f:7d45:4312 with SMTP id x11-20020a1709064a8b00b0094f7d454312mr7253697eju.29.1682283420445;
+        Sun, 23 Apr 2023 13:57:00 -0700 (PDT)
+Received: from carbian ([2a02:8109:aa3f:ead8::d7e8])
+        by smtp.gmail.com with ESMTPSA id li14-20020a170907198e00b009572db67bf2sm3208007ejc.89.2023.04.23.13.56.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Apr 2023 13:56:59 -0700 (PDT)
+Date:   Sun, 23 Apr 2023 22:56:57 +0200
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     kernel test robot <lkp@intel.com>, jic23@kernel.org,
+        mazziesaccount@gmail.com, oe-kbuild-all@lists.linux.dev,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] iio: accel: Add support for Kionix/ROHM
+ KX132-1211 accelerometer
+Message-ID: <ZEWbmSuJqWJWf0aD@carbian>
+References: <cef09595632a40eff8a0864fea2e0eb6653930a5.1682019544.git.mehdi.djait.k@gmail.com>
+ <202304220729.FCofPRvH-lkp@intel.com>
+ <ZEQGqFLIyxm5XENQ@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3aSY/5R33N/gCQvK"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_F85E314661100B0CE2845EB27E2E2F558C09@qq.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ZEQGqFLIyxm5XENQ@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hello Andy,
 
---3aSY/5R33N/gCQvK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+thank you for the review.
 
-On Sat, Apr 22, 2023 at 10:27:38PM +0800, Rong Tao wrote:
-> From: Rong Tao <rongtao@cestc.cn>
->=20
-> 'make' create 'include' directory, we should remove it when 'make clean'.
->=20
-> Signed-off-by: Rong Tao <rongtao@cestc.cn>
+On Sat, Apr 22, 2023 at 07:09:12PM +0300, Andy Shevchenko wrote:
+> On Sat, Apr 22, 2023 at 07:19:44AM +0800, kernel test robot wrote:
+> > Hi Mehdi,
+> > 
+> > kernel test robot noticed the following build warnings:
+> 
+> I believe it's not just a warning, it's a full functional error in the code.
+> 
+> >    686	{
+> >    687		struct device *dev = regmap_get_device(data->regmap);
+> >    688		__le16 buf_status;
+> >    689		int ret, fifo_bytes;
+> >    690	
+> >    691		ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
+> >    692				       &buf_status, sizeof(buf_status));
+> >    693		if (ret) {
+> >    694			dev_err(dev, "Error reading buffer status\n");
+> >    695			return ret;
+> >    696		}
+> >    697	
+> >  > 698		buf_status &= data->chip_info->buf_smp_lvl_mask;
+> >    699		fifo_bytes = le16_to_cpu(buf_status);
+> 
+> You need to mask in the same endianess space, i.o.w. either on CPU or device side.
+> 
+> I believe you wanted to have fifo_bytes to be masked, but I'm not sure.
 
-Queued (with minor commit description cleanup) for the counter-next
-branch of the Counter tree.
+I wanted to read the registers buf_status_1 and buf_status_2 --> 16 bits
+and mask the result of the read to get the bits 0..9 which is the
+buf_status: the number of bytes in the buffer
 
-Thank you,
+This is due to my lack of experience, but I have a question:
+If I don't get any warnings when testing, how should I go about this ? I
+will obviously fix this, but this is for the future.
 
-William Breathitt Gray
-
---3aSY/5R33N/gCQvK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZEU2ZAAKCRC1SFbKvhIj
-K/pUAQCpnV/1BMOuhBHf7up1UP6xVMF7Z7W5HvCPB2bL+Vaf4gD/Uh84jkA+ImFw
-BwNvX3aPejP3XjV8noeZx7uAVqXlMA8=
-=aHCT
------END PGP SIGNATURE-----
-
---3aSY/5R33N/gCQvK--
+--
+Kind Regards
+Mehdi Djait

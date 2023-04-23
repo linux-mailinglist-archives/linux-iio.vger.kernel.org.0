@@ -2,64 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F83A6EBF1D
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 13:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED94E6EBF30
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 14:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjDWLVW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Apr 2023 07:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35100 "EHLO
+        id S229917AbjDWMDr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Apr 2023 08:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjDWLVV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 07:21:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F216510EC;
-        Sun, 23 Apr 2023 04:21:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9168060EA2;
-        Sun, 23 Apr 2023 11:21:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94649C433D2;
-        Sun, 23 Apr 2023 11:21:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682248877;
-        bh=H60wn/w8cSR+c1cvPwYBTXPWBkB4knkYJRoOAcwfJp0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=T0JPLOZTLa3743v5XJfY1TXTYOT0p6eh4GHtksNOiO67JlMUh+udlXlv7TRB2LImD
-         YCTuiSvE+a4Kf3z7gbHUgAJ87jVfo07LvofJa9d+Rzu3nPkbZyGf/4NJwfcPXr+Vdl
-         OJFXxf0dGHYnuxpskPNSBG0bIVbvql8wTlaH7DOoeYjxHemTeHtkGyT3r0EsoGmxM9
-         IjwPJxF+oWaxLbwEWbeKCkToPDwYKaduxrXgjX1e29Ye0JZbkeUAo2Hcd61gWYoI3l
-         UUnrz6KYAzmjebatCelLYG2NjFFIHHRN3ylB81zuAfMM7BSDPRMZZP65K44LuzkE2n
-         CpQ+6Tl5cWV7Q==
-Date:   Sun, 23 Apr 2023 12:36:52 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [RFC PATCH 2/2] iio: light: Add support for APDS9306 Light
- Sensor
-Message-ID: <20230423123652.15bbab1b@jic23-huawei>
-In-Reply-To: <3c9bd414-29dd-6e9e-5e6b-8dba27d730bc@tweaklogic.com>
-References: <20230411011203.5013-1-subhajit.ghosh@tweaklogic.com>
-        <20230411011203.5013-3-subhajit.ghosh@tweaklogic.com>
-        <20230415183543.6d5e3392@jic23-huawei>
-        <3c9bd414-29dd-6e9e-5e6b-8dba27d730bc@tweaklogic.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229477AbjDWMDq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 08:03:46 -0400
+Received: from hust.edu.cn (mail.hust.edu.cn [202.114.0.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DF63E66;
+        Sun, 23 Apr 2023 05:03:43 -0700 (PDT)
+Received: from [192.168.1.10] ([183.94.69.5])
+        (user=dzm91@hust.edu.cn mech=PLAIN bits=0)
+        by mx1.hust.edu.cn  with ESMTP id 33NC1Y2W012811-33NC1Y2X012811
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+        Sun, 23 Apr 2023 20:01:34 +0800
+Message-ID: <54c3b7f7-20da-f42e-6bef-f462246fd3ee@hust.edu.cn>
+Date:   Sun, 23 Apr 2023 20:01:29 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH v2] iio: adc: mxs-lradc: fix the order of two cleanup
+ operations
+To:     Jonathan Cameron <jic23@kernel.org>, Jiakai Luo <jkluo@hust.edu.cn>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, Marek Vasut <marex@denx.de>,
+        hust-os-kernel-patches@googlegroups.com, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20230417024745.59614-1-jkluo@hust.edu.cn>
+ <20230423115049.1c73600f@jic23-huawei>
+From:   Dongliang Mu <dzm91@hust.edu.cn>
+In-Reply-To: <20230423115049.1c73600f@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-FEAS-AUTH-USER: dzm91@hust.edu.cn
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,248 +53,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 Apr 2023 17:25:50 +0800
-Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> Thank you Jonathan for the review.
-> Answering only to the Big questions.
-> >>
-> >> Software reset feature is not implemented as it causes I2C bus error,
-> >> the I2C bus driver throws an ugly error message.  
-> > 
-> > That's unfortunate and perhaps something we should consider fixing
-> > at the i2c layer.  Could you point to where it happens?
-> > 
-> > We have a lot of drivers where reset causes an error (Ack missing normally
-> > due to simple state machines in the devices).  
-> 
-> Below function which cause the error:
-> regmap_field_write(data->reg_sw_reset, 1);
-> regmap_write(data->regmap, APDS9306_MAIN_CTRL, 0x10);
-> i2c_smbus_write_byte_data(data->client, APDS9306_MAIN_CTRL, 0x10);
-> 
-> Error messages:
-> [ 3340.426180] stm32f7-i2c 40012000.i2c: <stm32f7_i2c_isr_error>: Bus error accessing addr 0x52
-> [ 3340.433880] stm32f7-i2c 40012000.i2c: Trying to recover bus
-> 
-> The function which gets called:
-> https://elixir.bootlin.com/linux/latest/source/drivers/i2c/busses/i2c-stm32f7.c#L1622
-> 
-> There is an errata associated with I2C for STM32MP157C (Section 2.19.2, Pg 35):
-> https://www.st.com/resource/en/errata_sheet/es0438-stm32mp151x3x7x-device-errata-stmicroelectronics.pdf
-> It speaks about - "Spurious bus error detection in master mode". But I
-> don't think it has got anything to do with our case.
-> 
-> I use STM32MP157C-DK2 board as my reference device.
-> The Reference manual to the STM32MP157C:
-> https://www.st.com/resource/en/reference_manual/DM00327659.pdf
-> 
-> stm32f7_i2c_isr_error() handler gets called because a control bit is set
-> ERRIE which enables interrupts from the I2C controller for Buss errors,
-> Arbitration losses, Overrun/Underrun PEC error, Timeout, etc.
-> 
-> I am not sure about other chips.
-> A possible way to mitigate these kind of issues would be to pass a flag
-> from upper layers to the i2c bus driver (I2C_SMBUS_REPORT_ERR_OFF or
-> something on those lines). The drivers can then implement in
-> struct i2c_algorithm in smbus_xfer() function where they can check for
-> the flag and disable error checking.
-> 
-> I don't have in depth knowledge on this subject so excuse my lack
-> of understanding.
+On 2023/4/23 18:50, Jonathan Cameron wrote:
+> On Sun, 16 Apr 2023 19:47:45 -0700
+> Jiakai Luo <jkluo@hust.edu.cn> wrote:
+>
+>> Smatch reports:
+>> drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+>> missing unwind goto?
+>>
+>> the order of three init operation:
+>> 1.mxs_lradc_adc_trigger_init
+>> 2.iio_triggered_buffer_setup
+>> 3.mxs_lradc_adc_hw_init
+>>
+>> thus, the order of three cleanup operation should be:
+>> 1.mxs_lradc_adc_hw_stop
+>> 2.iio_triggered_buffer_cleanup
+>> 3.mxs_lradc_adc_trigger_remove
+>>
+>> we exchange the order of two cleanup operations,
+>> introducing the following differences:
+>> 1.if mxs_lradc_adc_trigger_init fails, returns directly;
+>> 2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+>> goto err_trig and remove the trigger.
+>>
+>> In addition, we also reorder the unwind that goes on in the
+>> remove() callback to match the new ordering.
+>>
+>> Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+>> Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+>> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+> If resending please state why.  I'm guessing on this occasion it was because
+> you realised a fresh thread is expected for a new patch.
+>
+> Also, even if you are just amending the patch description, please increase
+> the version number so that we can be sure we are looking at latest version.
+>
+> I already picked it from the earlier posting and this appears unchanged
+> so all's well that ends well!
+>
+> Jonathan
 
-No problem and thanks for the details.
+Hi JC,
 
-So there is an existing flag: I2C_M_IGNORE_NAK but I'm not sure that's
-suitable and isn't supported by this particular bus driver.
-https://elixir.bootlin.com/linux/latest/source/drivers/media/i2c/msp3400-driver.c#L100
-is an example of it being used in a reset routine.
+Jiakai originally would like to send a reminder about his patch, but 
+mistakenly sent a v2 version.
 
-It might be sufficient to just check that flag in the stm32f7 i2c driver and not
-print an error message if it is set.
+Please ignore this v2 version since this version is the same with v1 
+version.
 
-+CC Wolfram for input on this.
+Sorry for the mistake.
 
-
-
-
-> 
-> >   
-> >>
-> >> Could not locate the Lux calculations from datasheet, only exporting
-> >> raw values.  
-> > 
-> > Ah. That's annoying as userspace is generally not able to do much with
-> > the raw values.  Any other known code supporting this device that you
-> > can raid for info?
-> > 
-> > If not, then this ist he best we can do.
-> >   
-> This device is similar to LTRF216A.
-> If I use the calculation in ltrf216a then I would have to verify them
-> with Lux meter and controlled light source or ltrf216a.
-> This will be bit difficult for me at this moment.
-
-no problem. We can add that later if needed.
-> 
-> >>
-> >> Reading of the Status register clears the Data Ready and the Interrupt
-> >> Status flags. It makes it tricky to read oneshot values together with
-> >> interrupts enabled as the IRQ handler clears the status on receipt
-> >> of an interrupt signal.
-> >>   
-> >> Not checking the status in IRQ handler will make the interrupt line
-> >> unsharable and it does not reset the interrupt line if the Interrupt
-> >> status flag is not cleared.  
-> > 
-> > Definitely need to check it but I'm not sure I follow why you can't
-> > use it for both purposes with a slightly complex interrupt handler design.
-> > Maybe the code makes it clear what the issue is here.  
-> Answers are in below comment.
-> 
-> >> +
-> >> +static int apds9306_read_data(struct apds9306_data *data, int *val, int reg)
-> >> +{
-> >> +	struct device *dev = &data->client->dev;
-> >> +	int ret, delay, status, int_en;
-> >> +	int retries = 4;
-> >> +	u8 buff[3];
-> >> +
-> >> +	ret = apds9306_runtime_power(data, 1);
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	/*
-> >> +	 * Whichever is greater - integration time period or
-> >> +	 * sampling period.
-> >> +	 */
-> >> +	delay = max(apds9306_intg_time[data->intg_time_idx][1],
-> >> +			apds9306_repeat_rate_period[data->repeat_rate_idx]);
-> >> +
-> >> +	/*
-> >> +	 * If interrupts are enabled then Status resistor cannot be
-> >> +	 * relied upon as all the status bits are cleared by the
-> >> +	 * interrupt handler in case of an event.  
-> > 
-> > Ah.  I was assuming sane hardware (always an error :) that would issue
-> > an interrupt on the data being ready.  I think we can make this work
-> > but it is ugly.  Add some flags to the state structure. Then whenever
-> > you read this register, set whether the two status flags are set of not.
-> > Thus in the interrupt handler you can tell if this got there first and
-> > here you can tell if the interrupt handler got their first.  
-> If I have a flag in the state structure for this, then a timestamp would
-> also be required or may be just a timestamp.
-
-True - though given we are dealing with a race here, I'd imagine any wrong
-timestamp issues will only make a small difference.
-
-> 
-> > 
-> > One messy corner.  A status read resets the interrupt line, potentially before
-> > we saw the interrupt. Oh goody - normally this silliness only happens as
-> > a result of complex interrupt migration or errata. However it is understood
-> > what to do about it.
-> > 
-> > If you see the interrupt status flag here, you have no way of knowing
-> > if the interrupt line was high for long enough that the interrupt controller
-> > saw it.  As such your only option is to assume it didn't and inject an extra
-> > one.  Given a passing of the threshold could in theory have been noisy enough
-> > to trigger two actual interrupts very close together userspace should be fine
-> > with the extra event - we probably just wasted some cycles doing something twice.
-> > 
-> > The annoying bit will be testing as these races will be somewhat rare.  
-> 
-> As per my understanding the Status register has - "Observer effect"
-> 
-> The Status register has got 3 bits - Power On Status, ALS Interrupt
-> and ALS Data.
-> A single read of the register clears all three bits.
-> 
-> In case of an interrupt event, the interrupt line is held low (Active) by the
-> device till the Status register is read. As this is an edge triggered interrupt,
-> we stop receiving interrupts till we read the status register.
-> This is why it is good to acknowledge the interrupt by reading the Status register
-> in the ISR.
-> 
-> Reading the Status register in the ISR inadvertently clears the "ALS Data" bit
-> as well.
-> 
-> What you are asking is to have a read flag in the static struct and a timestamp
-> flag may be. In the isr, we check the flag and if the timestamp is within one
-> integration period, if yes, we don't read the Status register any more from the
-> isr.
-
-Not quite. Reading the ISR should be safe even if we already read it from the read_raw()
-path.  The worst that happens is we report one event rather than two, but they will
-close enough together that won't matter.  Potentially races may mean we signal 2
-events, but that's fine too. Just looks like a bit of noise on the analog signal
-so shouldn't confuse software anyway.  To ensure the read raw path doesn't wait
-for ever you'll also need to store a flag to say the data is good which is then
-used to detect we have wiped that bit before read_raw saw it.  The read_raw path
-can clear that flag so we know it's fresh if the interrupt sets it later.
-
-> And in this function we read the Status register and update the read flag and
-> the timestamp with current time.
-
-If you see the bit that corresponds to the interrupt here, then you might never
-see the interrupt (it might be too short to rise properly).   As such I think you'll
-need to push the event from the read_raw path.  If the interrupt is seen then
-we may find no bits set and that will be fine.
-
-Need a bit of scribbling of timing diagrams to get all paths covered, but
-I'm fairly sure it is possible.  Main challenge will be to keep it minimal and
-not over engineer the solution!
-
-> 
-> Not sure if my understanding is correct but I will try the above.
-> 
-> >   
-> >> +	 */
-> >> +	ret = regmap_field_read(data->regfield_int_en, &int_en);
-> >> +	if (ret) {
-> >> +		dev_err(dev, "read interrupt status failed: %d\n", ret);
-> >> +		return ret;
-> >> +	}
-> >> +
-> >> +	if (!int_en) {
-> >> +		while (retries--) {
-> >> +			ret = regmap_read(data->regmap, APDS9306_MAIN_STATUS,
-> >> +					&status);
-> >> +			if (ret) {
-> >> +				dev_err(dev, "read status failed: %d\n", ret);
-> >> +				return ret;
-> >> +			}
-> >> +			if (status & APDS9306_ALS_DATA_STAT_MASK)
-> >> +				break;
-> >> +			/*
-> >> +			 * In case of continuous one-shot read from userspace,
-> >> +			 * new data is available after sampling period.
-> >> +			 * Delays are in the range of 25ms to 2secs.
-> >> +			 */
-> >> +			fsleep(delay);
-> >> +		}
-> >> +	} else
-> >> +		fsleep(delay);
-> >> +
-> >> +	if (!retries)
-> >> +		return -EBUSY;
-> >> +
-> >> +	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
-> >> +	if (ret) {
-> >> +		dev_err(&data->client->dev, "read data failed\n");
-> >> +		return ret;
-> >> +	}
-> >> +
-> >> +	*val = get_unaligned_le24(&buff[0]);
-> >> +
-> >> +	ret = apds9306_runtime_power(data, 0);
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	return ret;
-> >> +}
-> >> +  
-> 
-> Regards,
-> Subhajit Ghosh
-
+>
+>> ---
+>> The issue is found by static analysis and remains untested.
+>> ---
+>>   drivers/iio/adc/mxs-lradc-adc.c | 10 +++++-----
+>>   1 file changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+>> index bca79a93cbe4..85882509b7d9 100644
+>> --- a/drivers/iio/adc/mxs-lradc-adc.c
+>> +++ b/drivers/iio/adc/mxs-lradc-adc.c
+>> @@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+>>   
+>>   	ret = mxs_lradc_adc_trigger_init(iio);
+>>   	if (ret)
+>> -		goto err_trig;
+>> +		return ret;
+>>   
+>>   	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+>>   					 &mxs_lradc_adc_trigger_handler,
+>>   					 &mxs_lradc_adc_buffer_ops);
+>>   	if (ret)
+>> -		return ret;
+>> +		goto err_trig;
+>>   
+>>   	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+>>   
+>> @@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+>>   
+>>   err_dev:
+>>   	mxs_lradc_adc_hw_stop(adc);
+>> -	mxs_lradc_adc_trigger_remove(iio);
+>> -err_trig:
+>>   	iio_triggered_buffer_cleanup(iio);
+>> +err_trig:
+>> +	mxs_lradc_adc_trigger_remove(iio);
+>>   	return ret;
+>>   }
+>>   
+>> @@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct platform_device *pdev)
+>>   
+>>   	iio_device_unregister(iio);
+>>   	mxs_lradc_adc_hw_stop(adc);
+>> -	mxs_lradc_adc_trigger_remove(iio);
+>>   	iio_triggered_buffer_cleanup(iio);
+>> +	mxs_lradc_adc_trigger_remove(iio);
+>>
+>>   	return 0;
+>>   }

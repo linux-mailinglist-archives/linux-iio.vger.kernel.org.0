@@ -2,59 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E34BE6EBF88
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 14:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D97296EBF9F
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 14:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230001AbjDWMrV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Apr 2023 08:47:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32856 "EHLO
+        id S229709AbjDWMz7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Apr 2023 08:55:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbjDWMrU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 08:47:20 -0400
+        with ESMTP id S229996AbjDWMz7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 08:55:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 439AAE57;
-        Sun, 23 Apr 2023 05:47:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E67B61BE3;
+        Sun, 23 Apr 2023 05:55:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAED360E33;
-        Sun, 23 Apr 2023 12:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B9FC433EF;
-        Sun, 23 Apr 2023 12:47:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8228B60C4B;
+        Sun, 23 Apr 2023 12:55:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16C5C433EF;
+        Sun, 23 Apr 2023 12:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682254038;
-        bh=eGIoQHOJZfoILARB2pz6hMBq1nDSmvzLHJKWEe0ma+w=;
+        s=k20201202; t=1682254547;
+        bh=vECERGKuAmn9newtSGmUIvAUzdcRAPn4AFwRwOiit7k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=T7mQuPTQFPWuWy1mJDy7UEmWdGrDE2z68wNTYlADK1cY+MHtDCBpyPlSLQa4/no5p
-         q8b/8MVcD1U927TGdXuiNm8cIT4wPGJPms35oCY35Xik4tzPFlwETQdDQJjaXxS6J4
-         jzmDMqOgTXKg1wgq4c+Hp2xN7cVeumCgFJ2v8U0ZNVRI7SsBO8rF1swtCaynXAMHEO
-         jY9kYSBOM7JXLD64g0tBOUI+IPsLyGXzUJWKMkiiVSixWSbRTqoP/+Iv/sp878U2J9
-         wldxbB2P6SEIuPqoxh+FHoC04X1o4iJ1Uu2rs/rqdTzU7wQRVgVxWuH/zob+INIpfu
-         b/1MQtu4ds3Bw==
-Date:   Sun, 23 Apr 2023 14:02:52 +0100
+        b=XZDuwovBqgmy94ScdpwoYaQiHX9AaFDEzngq8CSzSS1HLmAJRErMaTH2ChPpfLOLu
+         BG7/ZnRAjC3RxNW42HUMb33Gwo7tFBeQSuYznBhu62MeUUKtBYfao+ljFqkfeh8xZl
+         25WcV1crYFWxFOFavjktday+yFWDXHFhJvuSda/OYqhx8AX6LXe92/sCvvZ6n8AGQj
+         nkFf2qINcZ1RM3AmudrhVA24tHk0QHOLKPGqIcwWG9EykLKNWHsa8RG6XLTTa6Ys42
+         M54reAwQCKgxKEXdkmGI3sA5cheM06C/MsQwPOUErH0Hd5lxlm7y3onnTi6x3xGiub
+         6XZlM57ODtsRQ==
+Date:   Sun, 23 Apr 2023 14:11:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Frank Wunderlich <linux@fw-web.de>
-Cc:     linux-mediatek@lists.infradead.org,
-        Frank Wunderlich <frank-w@public-files.de>,
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "Hui.Liu" <hui.liu@mediatek.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Daniel Golle <daniel@makrotopia.org>
-Subject: Re: [PATCH v1 2/7] dt-bindings: iio: adc: Add support for MT7986
-Message-ID: <20230423140252.7b018c46@jic23-huawei>
-In-Reply-To: <20230421132047.42166-3-linux@fw-web.de>
-References: <20230421132047.42166-1-linux@fw-web.de>
-        <20230421132047.42166-3-linux@fw-web.de>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: palmas: fix off by one bugs
+Message-ID: <20230423141124.3d4dc91d@jic23-huawei>
+In-Reply-To: <14fee94a-7db7-4371-b7d6-e94d86b9561e@kili.mountain>
+References: <14fee94a-7db7-4371-b7d6-e94d86b9561e@kili.mountain>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -69,39 +56,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 21 Apr 2023 15:20:42 +0200
-Frank Wunderlich <linux@fw-web.de> wrote:
+On Fri, 21 Apr 2023 13:41:56 +0300
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> From: Frank Wunderlich <frank-w@public-files.de>
+> Valid values for "adc_chan" are zero to (PALMAS_ADC_CH_MAX - 1).
+> Smatch detects some buffer overflows caused by this:
+> drivers/iio/adc/palmas_gpadc.c:721 palmas_gpadc_read_event_value() error: buffer overflow 'adc->thresholds' 16 <= 16
+> drivers/iio/adc/palmas_gpadc.c:758 palmas_gpadc_write_event_value() error: buffer overflow 'adc->thresholds' 16 <= 16
 > 
-> Add compatible string and specific clock property for mt7986.
+> The effect of this bug in other functions is more complicated but
+> obviously we should fix all of them.
 > 
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+> Fixes: a99544c6c883 ("iio: adc: palmas: add support for iio threshold events")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-Given how trivial this is, I'll apply it without waiting for the DT maintainers
-to get to it.
+Looks good to me.  Slight shuffle at the moment will delay me applying this.
 
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-to take a look at it.
+I'll wait for Linus to pick up Greg's pull request then rebase my fixes branch
+on top of that.  Otherwise I make a mess of linux-next ordering and things might
+blow up.
 
-Thanks,
+In meantime, Patrik, please take a look.
 
 Jonathan
 
 > ---
->  .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
->  1 file changed, 1 insertion(+)
+> ---
+>  drivers/iio/adc/palmas_gpadc.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> index 7f79a06e76f5..6168b44ea72c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> @@ -26,6 +26,7 @@ properties:
->            - mediatek,mt2712-auxadc
->            - mediatek,mt6765-auxadc
->            - mediatek,mt7622-auxadc
-> +          - mediatek,mt7986-auxadc
->            - mediatek,mt8173-auxadc
->        - items:
->            - enum:
+> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+> index c1c439215aeb..7dfc9c927a23 100644
+> --- a/drivers/iio/adc/palmas_gpadc.c
+> +++ b/drivers/iio/adc/palmas_gpadc.c
+> @@ -547,7 +547,7 @@ static int palmas_gpadc_read_raw(struct iio_dev *indio_dev,
+>  	int adc_chan = chan->channel;
+>  	int ret = 0;
+>  
+> -	if (adc_chan > PALMAS_ADC_CH_MAX)
+> +	if (adc_chan >= PALMAS_ADC_CH_MAX)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&adc->lock);
+> @@ -595,7 +595,7 @@ static int palmas_gpadc_read_event_config(struct iio_dev *indio_dev,
+>  	int adc_chan = chan->channel;
+>  	int ret = 0;
+>  
+> -	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+> +	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&adc->lock);
+> @@ -684,7 +684,7 @@ static int palmas_gpadc_write_event_config(struct iio_dev *indio_dev,
+>  	int adc_chan = chan->channel;
+>  	int ret;
+>  
+> -	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+> +	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&adc->lock);
+> @@ -710,7 +710,7 @@ static int palmas_gpadc_read_event_value(struct iio_dev *indio_dev,
+>  	int adc_chan = chan->channel;
+>  	int ret;
+>  
+> -	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+> +	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&adc->lock);
+> @@ -744,7 +744,7 @@ static int palmas_gpadc_write_event_value(struct iio_dev *indio_dev,
+>  	int old;
+>  	int ret;
+>  
+> -	if (adc_chan > PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+> +	if (adc_chan >= PALMAS_ADC_CH_MAX || type != IIO_EV_TYPE_THRESH)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&adc->lock);
 

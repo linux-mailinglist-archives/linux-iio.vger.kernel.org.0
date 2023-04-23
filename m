@@ -2,59 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5AE36EBEA0
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 12:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 279806EBEBB
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Apr 2023 12:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbjDWKfR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Apr 2023 06:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
+        id S229655AbjDWKwK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Apr 2023 06:52:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjDWKfQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 06:35:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B237C2;
-        Sun, 23 Apr 2023 03:35:15 -0700 (PDT)
+        with ESMTP id S229544AbjDWKwJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Apr 2023 06:52:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4BDE1A4;
+        Sun, 23 Apr 2023 03:52:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 257E860ECF;
-        Sun, 23 Apr 2023 10:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004EFC433D2;
-        Sun, 23 Apr 2023 10:35:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B6C860EB6;
+        Sun, 23 Apr 2023 10:52:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF39C433D2;
+        Sun, 23 Apr 2023 10:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682246114;
-        bh=/t2IHSC/v+053Pgf7JS+Fm0t1B1+XJZH42S5TetJxk4=;
+        s=k20201202; t=1682247127;
+        bh=PNBBXsNrnkRVgwOgOoEWcaOi6+BMrRyuUIjbtkDc4Bc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aEv+vF3LLleJJP9IwbJK6UCwbGMm/EbstqE67Xs9MNhegUpT9ftAZ6APYLFskY8X3
-         1wDhfB8+9001+TSiRNMlcKTE3hBNBshgnoATkqEIUJmeEoqRBAzPsAygQafyN+1gM6
-         Pur/d214Upa9AEMebPhgvuRrPhNxHCXYbpnB7ODNmrEtdOtGcA5XQpVqYO0cz3hUeX
-         6+mKRIejfAlKmfVXA3IM+xfnqXYNP0cH639tpY8R+bmFZ4vYPwHfFmE2RmOLZa69N0
-         29+H2g5iYblJ5GBCuLiNrHtEXUjwLod6CTIAaBCaAy0CqW5menJ/Og8wFT63cW4PDT
-         HBUm7yhmyMCAQ==
-Date:   Sun, 23 Apr 2023 11:50:49 +0100
+        b=I8JccwcxE/4aFg0SCoB2AulOisOyp6PHOVmQrSsfZ4BHJZq2pGjHsvjZaqMtAiXLM
+         mBfc/b8M+iN5o1SK8ebEkwfF9XQVr3Oaj2Jg9arxXZNmAnVvT+KeO6jNFTWVMXZOD7
+         X5mgFU6eD0/Ec8d+nvTeJrL8R/M7rdi5gJ4cH8GGitpBewxs04WryGBJWRzbLSgKhg
+         jL3+lJY3Y6VaduJoDbxYl1Yd02qrwb2T4JZjxYJ3Y+ViJd+PyCBHbIarG4xe/AqPrl
+         +4KGh5zwfQeKHImKlMLe1IMPsXjl3AUu1x4d4C2VDwx7LCJtWS0ENbBbb6rXOs2Cdv
+         ZqUCYl2+ecKpQ==
+Date:   Sun, 23 Apr 2023 12:07:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jiakai Luo <jkluo@hust.edu.cn>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, Marek Vasut <marex@denx.de>,
-        hust-os-kernel-patches@googlegroups.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: mxs-lradc: fix the order of two cleanup
- operations
-Message-ID: <20230423115049.1c73600f@jic23-huawei>
-In-Reply-To: <20230417024745.59614-1-jkluo@hust.edu.cn>
-References: <20230417024745.59614-1-jkluo@hust.edu.cn>
+To:     Marius Hoch <mail@mariushoch.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH] iio: light: al3320a: Handle ACPI device CALS0001
+Message-ID: <20230423120744.568f107d@jic23-huawei>
+In-Reply-To: <20230420182314.53796-1-mail@mariushoch.de>
+References: <20230420182314.53796-1-mail@mariushoch.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,92 +54,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 16 Apr 2023 19:47:45 -0700
-Jiakai Luo <jkluo@hust.edu.cn> wrote:
+On Thu, 20 Apr 2023 20:23:14 +0200
+Marius Hoch <mail@mariushoch.de> wrote:
 
-> Smatch reports:
-> drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
-> missing unwind goto?
+> This sensor can be found as CALS0001 on the Lenovo Yoga
+> Tablet 2 series.
 > 
-> the order of three init operation:
-> 1.mxs_lradc_adc_trigger_init
-> 2.iio_triggered_buffer_setup
-> 3.mxs_lradc_adc_hw_init
+> Tested on a Lenovo Yoga Tablet 2 1051-F.
 > 
-> thus, the order of three cleanup operation should be:
-> 1.mxs_lradc_adc_hw_stop
-> 2.iio_triggered_buffer_cleanup
-> 3.mxs_lradc_adc_trigger_remove
-> 
-> we exchange the order of two cleanup operations,
-> introducing the following differences:
-> 1.if mxs_lradc_adc_trigger_init fails, returns directly;
-> 2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
-> goto err_trig and remove the trigger.
-> 
-> In addition, we also reorder the unwind that goes on in the
-> remove() callback to match the new ordering.
-> 
-> Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
-> Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
-> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-If resending please state why.  I'm guessing on this occasion it was because
-you realised a fresh thread is expected for a new patch.
+> Signed-off-by: Marius Hoch <mail@mariushoch.de>
 
-Also, even if you are just amending the patch description, please increase
-the version number so that we can be sure we are looking at latest version.
+I made a small tweak.  This driver includes of.h to get
+the ID table, which is less than ideal anyway.  Now you've added
+a second table, I've switched that for mod_devicetable.h which is
+the include that should have been used in the first place.
 
-I already picked it from the earlier posting and this appears unchanged
-so all's well that ends well!
+Applied with that and a not in the patch description to the togreg
+branch of iio.git which is initially pushed out as testing for 0-day to
+see if it can find anything we missed.
+
+Thanks,
 
 Jonathan
 
 > ---
-> The issue is found by static analysis and remains untested.
-> ---
->  drivers/iio/adc/mxs-lradc-adc.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  drivers/iio/light/al3320a.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
-> index bca79a93cbe4..85882509b7d9 100644
-> --- a/drivers/iio/adc/mxs-lradc-adc.c
-> +++ b/drivers/iio/adc/mxs-lradc-adc.c
-> @@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+> index 9ff28bbf34bb..ffcb65cbc125 100644
+> --- a/drivers/iio/light/al3320a.c
+> +++ b/drivers/iio/light/al3320a.c
+> @@ -247,11 +247,18 @@ static const struct of_device_id al3320a_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, al3320a_of_match);
 >  
->  	ret = mxs_lradc_adc_trigger_init(iio);
->  	if (ret)
-> -		goto err_trig;
-> +		return ret;
->  
->  	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
->  					 &mxs_lradc_adc_trigger_handler,
->  					 &mxs_lradc_adc_buffer_ops);
->  	if (ret)
-> -		return ret;
-> +		goto err_trig;
->  
->  	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
->  
-> @@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
->  
->  err_dev:
->  	mxs_lradc_adc_hw_stop(adc);
-> -	mxs_lradc_adc_trigger_remove(iio);
-> -err_trig:
->  	iio_triggered_buffer_cleanup(iio);
-> +err_trig:
-> +	mxs_lradc_adc_trigger_remove(iio);
->  	return ret;
->  }
->  
-> @@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct platform_device *pdev)
->  
->  	iio_device_unregister(iio);
->  	mxs_lradc_adc_hw_stop(adc);
-> -	mxs_lradc_adc_trigger_remove(iio);
->  	iio_triggered_buffer_cleanup(iio);
-> +	mxs_lradc_adc_trigger_remove(iio);
+> +static const struct acpi_device_id al3320a_acpi_match[] = {
+> +	{"CALS0001"},
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(acpi, al3320a_acpi_match);
+> +
+>  static struct i2c_driver al3320a_driver = {
+>  	.driver = {
+>  		.name = AL3320A_DRV_NAME,
+>  		.of_match_table = al3320a_of_match,
+>  		.pm = pm_sleep_ptr(&al3320a_pm_ops),
+> +		.acpi_match_table = al3320a_acpi_match,
+>  	},
+>  	.probe_new	= al3320a_probe,
+>  	.id_table	= al3320a_id,
 > 
->  	return 0;
->  }
+> base-commit: cb0856346a60fe3eb837ba5e73588a41f81ac05f
 

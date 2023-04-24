@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925D26ECC9C
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 15:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB946ECCA4
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 15:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbjDXNII (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 09:08:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58910 "EHLO
+        id S229625AbjDXNIo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 09:08:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231785AbjDXNIH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 09:08:07 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 367E13A94;
-        Mon, 24 Apr 2023 06:08:04 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4efd6e26585so2571593e87.1;
-        Mon, 24 Apr 2023 06:08:04 -0700 (PDT)
+        with ESMTP id S231855AbjDXNIk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 09:08:40 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C716468A;
+        Mon, 24 Apr 2023 06:08:25 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2a8b766322bso41796691fa.1;
+        Mon, 24 Apr 2023 06:08:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682341682; x=1684933682;
+        d=gmail.com; s=20221208; t=1682341704; x=1684933704;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I6femOnySKNTiqjlHMDrxwe74ekz6pLAJiaQJ5/km8I=;
-        b=DsBIs1MU4P+VNHqd6N6xMaAtkrzAcuPgpkeeVNuI3+jEmi8Gc0ZIAxqIQM4e3wgT8B
-         vD/tam9+dfkf3s0lGCcfKedqKaY7AdmDxG1zG+aGAEmzpomvaFRzWCYsiDkpuhuSVX5H
-         dk7ma2AjL7Zg47DtL4zuXkgyFDDSEscH2xNnerSZwRyTOTSwQcV0vgkNLrg1cgTqg+f7
-         K39R0WPxQjbgjTXpA5Jbp3LcwVfRTkJSz7/nQT9emJ48KL6VBTzbkz2Dk4yhV5oUIC8J
-         q71KwpOFArC4ku8QApFEO2xEmFECZqFNasSdCagqTR08iWTy8sPVYVscNg16uWxtDrip
-         a3Og==
+        bh=WL7uFoeDkdqYpddaEcXID1doFO9TkVEZpq0BEErd21g=;
+        b=PdGRKMWxs2qOVRcCun4w0093CaT+iYNmy+cQXgFBU33KYpeXLRcuJ07z+trXW9ZnlJ
+         fHk0M6vxp/Morfe53VdYTDEzpC9/yjbGKfPaWqTGjChHi8PRbrB2uMJBlOR24AC3htON
+         SI4ABy6AWt44Z4BTeZYPkswXWLsJerT2oEZbAm/X5Yc/cORT++AWRANjuPpyFpJWbljZ
+         Uoyk0MS7g7lztQrSNZgZA77JrvqeXhkiiurTQH27O9y4Npa20Zh6dD+q5J0gT6AA2OKM
+         6AQAU5GtVmwG46Q8d6VgRxxW+QmvZ8clsPtkJ+lmk9LSioL0jSqZn9Zm7q2yf9vSwttE
+         PyVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682341682; x=1684933682;
+        d=1e100.net; s=20221208; t=1682341704; x=1684933704;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I6femOnySKNTiqjlHMDrxwe74ekz6pLAJiaQJ5/km8I=;
-        b=hTakThds0GI+f/7xPavWF4JkUDm5lmOJAQGWeS/EWktFCEv+1+TE7Uc61a8WWu4RPY
-         /e0vHJp86/2DdcsovtOU73/2gTIkMjh2Kd5mq1gsPDEbhF2Y+CCbD+p/0MB/n07m2xWa
-         ovulHAIbDbX26ECwAHmTN7Y4bOe0trFqambqutIWif44rft2W3kvba42Zi/Z+XBLJBdz
-         PrbZVIYI/eTsjllIVjdp0SXNXC9w992L0aaaDkfZZ+jXmDJf/JHminYe/22jwwRFekUq
-         TQhyffZcC/EuAO98vtyQ8KbHz6MpVVk4jEXUFPl6tB7+hIcg2gSTovjaUH05jEAjTA6+
-         AIkg==
-X-Gm-Message-State: AAQBX9czuoUWQKAt3IdrBZjvdb9Ef8v0KY7Oi1es5nLyhmQt0FqI7H+y
-        pvrUpodPOxq+3wQKziGrtzE=
-X-Google-Smtp-Source: AKy350YCIhYP0e1sJomsjp+MuMCtrER9Ozxgi5VyH7aJXE1FyQuYCDkvE+Wrv2mF5oi7q4Nth5Bs6g==
-X-Received: by 2002:a19:f611:0:b0:4ef:d3f3:c421 with SMTP id x17-20020a19f611000000b004efd3f3c421mr2617436lfe.4.1682341682550;
-        Mon, 24 Apr 2023 06:08:02 -0700 (PDT)
+        bh=WL7uFoeDkdqYpddaEcXID1doFO9TkVEZpq0BEErd21g=;
+        b=lUmp+juA0rweR6Ygulfz6irBwaU0yS2JUBxI5f1n3mEo1IAWNImlpwqFvkGUneu9J/
+         4GNo6zSrqH+NA3GcIe4JBaeiR/pZmxFKAFk9IoF3w+4GQIXy+5aiZq0Ih6U6DGezvWpH
+         VP93ENmT/H7FwE3dbeQrrLvUVjOOBxNVmrWKwk6Ziq7KAhba9NZ1Xd4sFF/lZOuk7IzF
+         3L3LH1gu6hTgOp9qW1Ed/XW/unZvn4Gw+zrrPjnZAvJYMxFRjR/gauP+qX+Pa7i8OPjx
+         BdZDE+2ortFMaPXDA1+bKwQZ+RTOId4J977rex46kOBEyy0G+9WxtQKKyaCVYIGZLCGX
+         XQFw==
+X-Gm-Message-State: AAQBX9e0A7QlBhv3Ha48176/yQPYw77lJyfBb9tgZGxMyCq8JCxFYQQV
+        p/r0Pc6NC5JS5v8QZP3cCKc=
+X-Google-Smtp-Source: AKy350YorN9PeKLJZCCwW0zAr2KcGf1kxH97x+LvbsJG0ZvucMnE1fwrHYzjYVyk31jdjpguKRobIA==
+X-Received: by 2002:a2e:7e03:0:b0:2a7:a3b4:7747 with SMTP id z3-20020a2e7e03000000b002a7a3b47747mr2428968ljc.29.1682341703516;
+        Mon, 24 Apr 2023 06:08:23 -0700 (PDT)
 Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id p15-20020ac246cf000000b004d8546456c6sm1651913lfo.195.2023.04.24.06.08.01
+        by smtp.gmail.com with ESMTPSA id h22-20020a2e9ed6000000b002a8ab13b813sm1746248ljk.41.2023.04.24.06.08.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Apr 2023 06:08:01 -0700 (PDT)
-Date:   Mon, 24 Apr 2023 16:07:58 +0300
+        Mon, 24 Apr 2023 06:08:22 -0700 (PDT)
+Date:   Mon, 24 Apr 2023 16:08:19 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Matti Vaittinen <mazziesaccount@gmail.com>
@@ -64,12 +64,12 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Dmitry Osipenko <dmitry.osipenko@collabora.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/5] dt-bindings: iio: light: ROHM BU27008
-Message-ID: <c05272fdd607c45d352008f9d01fc44b9b8f50cc.1682340947.git.mazziesaccount@gmail.com>
+Subject: [PATCH v2 2/5] iio:trigger: Add simple trigger_validation helper
+Message-ID: <91fffd0001e8efef90f43fa03026dc0e5e30b4e4.1682340947.git.mazziesaccount@gmail.com>
 References: <cover.1682340947.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="eQ1QSQkWWvAGy3fT"
+        protocol="application/pgp-signature"; boundary="WHhLnMZp04aVLHjv"
 Content-Disposition: inline
 In-Reply-To: <cover.1682340947.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -83,89 +83,84 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---eQ1QSQkWWvAGy3fT
+--WHhLnMZp04aVLHjv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
-and IR) with four configurable channels. Red and green being always
-available and two out of the rest three (blue, clear, IR) can be
-selected to be simultaneously measured. Typical application is adjusting
-LCD backlight of TVs, mobile phones and tablet PCs.
+Some triggers can only be attached to the IIO device that corresponds to
+the same physical device. Implement generic helper which can be used as
+a validate_trigger callback for such devices.
 
-Add BU27008 dt-bindings.
-
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
-Revision history:
-v1 =3D> v2:
-- fix binding file name
-- fix binding id
-- drop unnecessary '|' from description
+Revision history
+v2: New patch
 ---
- .../bindings/iio/light/rohm,bu27008.yaml      | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu2700=
-8.yaml
+ drivers/iio/industrialio-trigger.c | 22 +++++++++++++++++++++-
+ include/linux/iio/trigger.h        |  1 +
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27008.yaml =
-b/Documentation/devicetree/bindings/iio/light/rohm,bu27008.yaml
-new file mode 100644
-index 000000000000..4f66fd47b016
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27008.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/rohm,bu27008.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-=
+trigger.c
+index 784dc1e00310..c616297aa754 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -322,7 +322,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *tr=
+ig,
+ 	 * this is the case if the IIO device and the trigger device share the
+ 	 * same parent device.
+ 	 */
+-	if (pf->indio_dev->dev.parent =3D=3D trig->dev.parent)
++	if (iio_validate_own_trigger(pf->indio_dev, trig))
+ 		trig->attached_own_device =3D true;
+=20
+ 	return ret;
+@@ -728,6 +728,26 @@ bool iio_trigger_using_own(struct iio_dev *indio_dev)
+ }
+ EXPORT_SYMBOL(iio_trigger_using_own);
+=20
++/**
++ * iio_validate_own_trigger - Check if a trigger and IIO device belong to
++ *  the same device
++ * @idev: the IIO device to check
++ * @trig: The IIO trigger to check
++ *
++ * This function can be used as the validate_trigger callback for triggers=
+ that
++ * can only be attached to their own device.
++ *
++ * Return: 0 if both the trigger and the IIO device belong to the same
++ * device, -EINVAL otherwise.
++ */
++int iio_validate_own_trigger(struct iio_dev *idev, struct iio_trigger *tri=
+g)
++{
++	if (idev->dev.parent !=3D trig->dev.parent)
++		return -EINVAL;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(iio_validate_own_trigger);
 +
-+title: ROHM BU27008 color sensor
-+
-+maintainers:
-+  - Matti Vaittinen <mazziesaccount@gmail.com>
-+
-+description:
-+  The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
-+  and IR) with four configurable channels. Red and green being always
-+  available and two out of the rest three (blue, clear, IR) can be
-+  selected to be simultaneously measured. Typical application is adjusting
-+  LCD backlight of TVs, mobile phones and tablet PCs.
-+
-+properties:
-+  compatible:
-+    const: rohm,bu27008
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vdd-supply: true
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells =3D <1>;
-+      #size-cells =3D <0>;
-+
-+      light-sensor@38 {
-+        compatible =3D "rohm,bu27008";
-+        reg =3D <0x38>;
-+      };
-+    };
-+
-+...
+ /**
+  * iio_trigger_validate_own_device - Check if a trigger and IIO device bel=
+ong to
+  *  the same device
+diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
+index 51f52c5c6092..bce3b1788199 100644
+--- a/include/linux/iio/trigger.h
++++ b/include/linux/iio/trigger.h
+@@ -171,6 +171,7 @@ void iio_trigger_free(struct iio_trigger *trig);
+  */
+ bool iio_trigger_using_own(struct iio_dev *indio_dev);
+=20
++int iio_validate_own_trigger(struct iio_dev *idev, struct iio_trigger *tri=
+g);
+ int iio_trigger_validate_own_device(struct iio_trigger *trig,
+ 				     struct iio_dev *indio_dev);
+=20
 --=20
 2.40.0
 
@@ -182,19 +177,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---eQ1QSQkWWvAGy3fT
+--WHhLnMZp04aVLHjv
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRGfy4ACgkQeFA3/03a
-ocWtbAgAtdJKk1L7K5vQ+BbqtRExoYxcQMW9b/4txxP7elXDEcJNVrh9S+9MZxM9
-7SgDamCH+DBpErDIQavyDtSd+QCmvVrpBMiPGItc7ipIaqtVbRBgLl9kEcUY5Bri
-7wFBoMofWoaqOzHN48fnFZ3uwPQlsp3b6jBb5IeciCodLASKH4zwsxB3QQ9l1O1u
-eRXTBLwK6aje8ZNJ3aphMgOD3u9vAm3n8feM9Ta/BxDvRlI3WZOf17+jb1ECEo5S
-a8mJ7+lKg8xC9NUTlMCJU6KLmYXwBLIExZOba2TJXbxg+zUaiBsrA58uEsSSB+xj
-Z8xndlbcBrVlQQq4MF/ATpW0deHavg==
-=cBYC
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRGf0MACgkQeFA3/03a
+ocWeygf/YonbKkRhkJwY0zx7jfJAAydujuf9/TM5E7CVem+lVGsDvZHkBA96qadP
+0Ecw9RPfiOTL7enDMseqnqeimI7MotT0QN3fSeW2lLEFmkVe52Gh0pp4tmzUSg/Z
+uJXInor+fwlyaizF3ZUDb1sQenGijdldVRv1pDIwsgsk6roSJ8D1rSVcfHu9d0zR
+TP95x7lyXGGXD6kiRUG4RB55nyLq+5EE76jh3zOBgymGIzQEpAPKH7qbeHwhi/Q5
+/f/Tn9f0lkh0QtVXHskc6Yqle9Tbb/R3Vn6oJUKU0QK+eN90/v+t4ECId30cLkHT
+Qz7mo2A2ea/aDzr2Gc0ZckQPZkQ4TQ==
+=kuuo
 -----END PGP SIGNATURE-----
 
---eQ1QSQkWWvAGy3fT--
+--WHhLnMZp04aVLHjv--

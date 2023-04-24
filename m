@@ -2,113 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B2B36ED137
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 17:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883AF6ED19C
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 17:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjDXPW0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 11:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33036 "EHLO
+        id S231799AbjDXPnS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 11:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjDXPWU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 11:22:20 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF5B86BF;
-        Mon, 24 Apr 2023 08:22:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682349738; x=1713885738;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qcfml2mDJ01bBf69Gj3gLLlNibuMy0QAooiEzfCDtEA=;
-  b=fUwHShACM3/yxnHfxT/5HifGQuosKHcAwCo6YwlAPABjdw05WaxDi5w+
-   XHn3eUlhnKWRkwQoudDt23qB2q9kqFZm5x0Ea/WsLBG7MS+xQA8h1yvsb
-   zsEDN+4WIU2JdhfO5xlKp0psHgSyyfk6+lBOnsxxKD9FTUNeZhWZXb/ZY
-   Rlo+vnBImmzhb3KNNJnJ3Oq8Bd6OtKTD1K54BkCEhnLhpdFLQQ/F/xgeQ
-   ffFVy7i2OhzzQMJs8hmvm4cNG4fEBAK5/Q+OS3kIsAPEr6JpXCyOQX+WO
-   ByNDChwhxw8F3xY4F6xvHwxLSqoXgX406gYdJEOhsbaPih1302eSIhhDO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="348389273"
-X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
-   d="scan'208";a="348389273"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 08:22:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="939365080"
-X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
-   d="scan'208";a="939365080"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 24 Apr 2023 08:22:13 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pqy15-004ZO9-1L;
-        Mon, 24 Apr 2023 18:22:11 +0300
-Date:   Mon, 24 Apr 2023 18:22:11 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
-Message-ID: <ZEaeoxdWTknLz7lQ@smile.fi.intel.com>
-References: <cover.1682340947.git.mazziesaccount@gmail.com>
- <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
+        with ESMTP id S229929AbjDXPnR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 11:43:17 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCF22702
+        for <linux-iio@vger.kernel.org>; Mon, 24 Apr 2023 08:43:15 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-506bdf29712so34517681a12.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Apr 2023 08:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1682350994; x=1684942994;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Et3nJmRSNCb1Vw6f+DrCEwNWp2TX5DpfAd48y1Pjtg4=;
+        b=LxDlDuuhL5zVWaXMSDMxd7041DmlAjfIdH+cFhGlhbvKXvu8i9kxB1XTs8c2+okjFd
+         EH00k+VHb8SzK+SDTaemsrvr0MBhAE373Oka94x2fxGNVbFVwVnWYHkfq4vvq4FyDh8G
+         21l4eRSw25lK2dpdU90Wijv4yStff3RJGUDWqig6JM7m/9dlUskY1iPQ8MzNaWTN6gZ7
+         iMP7kmPPgPBIJ5/3ibJqc2dnwQ77l0bdB8lAoyd0Kfn6gaC2U/rHitQZ7Qn37XXlg6dz
+         g6TfKaFgDe4cS+oL6oLshmNukjUsgO77pi6obBog1w2WmjF9ac+mE9F/VU3D5TMHrMDn
+         HU0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682350994; x=1684942994;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Et3nJmRSNCb1Vw6f+DrCEwNWp2TX5DpfAd48y1Pjtg4=;
+        b=hh3jUikXc7JH0w0iga/ikJfESlIrejRQdJEDkTXBFT1MsxfTvq/9axvRH+9KmONjpi
+         V5xlfR/846sz+zdM3yLC0p8FX7r0jbLyZNAnKVh4IBSLIc3kKSE0LZJfq+ZcQq+6uHKR
+         qcv24lFL8wWLHs6h3cJumZrURc5mgp/sTD4ZEcwNTPkqeW0lLADzbFBLocEL3pCyVZo6
+         2sI/mQYqnrl508Ydk8EFzai68mF51VnLr4jRR+YYSff92d8v04LpIdT9h/t9CPxq8YWY
+         H34QOdM0stQK27xhLPzD6Gy1+HyCLBPeB0xYqCT1w8WNmPN0CiOxtQtiqAFxIFwkR8De
+         eIhQ==
+X-Gm-Message-State: AAQBX9eQc5ZbBq3LuyAA26nM+bq6mUr9FRiqiUFGFCsQqXkFKSxAL2EL
+        gb4pg5er7t1qqyzkxA9bp0v9VdWt3BvcDqTQg2UlUQ==
+X-Google-Smtp-Source: AKy350ZAEHEglJIcuQqyFHzfUehIb1i8l3hxDMVyaNYKoWNEOyTPbCx/pXdkvBF7CP6o+HD40UwjmA==
+X-Received: by 2002:a17:906:7e42:b0:94a:8771:fb60 with SMTP id z2-20020a1709067e4200b0094a8771fb60mr9386371ejr.37.1682350994253;
+        Mon, 24 Apr 2023 08:43:14 -0700 (PDT)
+Received: from fedora ([195.167.132.10])
+        by smtp.gmail.com with ESMTPSA id w11-20020a1709064a0b00b0094f614e43d0sm5678803eju.8.2023.04.24.08.43.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Apr 2023 08:43:13 -0700 (PDT)
+Date:   Mon, 24 Apr 2023 11:43:11 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 5.10 v4 4/5] counter: 104-quad-8: Fix race condition
+ between FLAG and CNTR reads
+Message-ID: <ZEajjyUDN9z8FXYP@fedora>
+References: <20230423232047.12589-1-william.gray@linaro.org>
+ <20230423232047.12589-4-william.gray@linaro.org>
+ <2023042454-cahoots-rotten-f3f7@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="BcBXM3mkZPra247M"
 Content-Disposition: inline
-In-Reply-To: <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <2023042454-cahoots-rotten-f3f7@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 24, 2023 at 04:10:09PM +0300, Matti Vaittinen wrote:
-> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
-> and IR) with four configurable channels. Red and green being always
-> available and two out of the rest three (blue, clear, IR) can be
-> selected to be simultaneously measured. Typical application is adjusting
-> LCD backlight of TVs, mobile phones and tablet PCs.
-> 
-> Add initial support for the ROHM BU27008 color sensor.
->  - raw_read() of RGB and clear channels
->  - triggered buffer w/ DRDY interrtupt
 
-...
+--BcBXM3mkZPra247M
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This...
+On Mon, Apr 24, 2023 at 08:33:18AM +0200, Greg Kroah-Hartman wrote:
+> On Sun, Apr 23, 2023 at 07:20:46PM -0400, William Breathitt Gray wrote:
+> > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
+> >=20
+> > The Counter (CNTR) register is 24 bits wide, but we can have an
+> > effective 25-bit count value by setting bit 24 to the XOR of the Borrow
+> > flag and Carry flag. The flags can be read from the FLAG register, but a
+> > race condition exists: the Borrow flag and Carry flag are instantaneous
+> > and could change by the time the count value is read from the CNTR
+> > register.
+> >=20
+> > Since the race condition could result in an incorrect 25-bit count
+> > value, remove support for 25-bit count values from this driver.
+> >=20
+> > Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 10=
+4-QUAD-8")
+> > Cc: <stable@vger.kernel.org> # 5.10.x
+> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+> > ---
+> >  drivers/counter/104-quad-8.c | 18 +++---------------
+> >  1 file changed, 3 insertions(+), 15 deletions(-)
+>=20
+> This patch breaks the build:
+>=20
+>   CC [M]  drivers/counter/104-quad-8.o
+> drivers/counter/104-quad-8.c: In function =E2=80=98quad8_read_raw=E2=80=
+=99:
+> drivers/counter/104-quad-8.c:117:34: error: =E2=80=98QUAD8_FLAG_BT=E2=80=
+=99 undeclared (first use in this function); did you mean =E2=80=98QUAD8_FL=
+AG_E=E2=80=99?
+>   117 |                 borrow =3D flags & QUAD8_FLAG_BT;
+>       |                                  ^~~~~~~~~~~~~
+>       |                                  QUAD8_FLAG_E
+> drivers/counter/104-quad-8.c:117:34: note: each undeclared identifier is =
+reported only once for each function it appears in
+> drivers/counter/104-quad-8.c:118:36: error: =E2=80=98QUAD8_FLAG_CT=E2=80=
+=99 undeclared (first use in this function); did you mean =E2=80=98QUAD8_FL=
+AG_E=E2=80=99?
+>   118 |                 carry =3D !!(flags & QUAD8_FLAG_CT);
+>       |                                    ^~~~~~~~~~~~~
+>       |                                    QUAD8_FLAG_E
+>=20
+>=20
 
-> +#include <linux/bits.h>
+Ah, the 5.4 and 5.10 patches are missing the IIO changes from the 4.19
+patch. I'll adjust and resubmit these two patches.
 
-...is guaranteed to be included by this.
+William Breathitt Gray
 
-> +#include <linux/bitops.h>
+--BcBXM3mkZPra247M
+Content-Type: application/pgp-signature; name="signature.asc"
 
-...
+-----BEGIN PGP SIGNATURE-----
 
-> +static const struct of_device_id bu27008_of_match[] = {
-> +	{ .compatible = "rohm,bu27008", },
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZEajjwAKCRC1SFbKvhIj
+K4QzAQDAlZG4LRjGl4P3p6a+rXLGeBAsv7SfStWTU+de+505hgD8CkvoHgUUJYA5
+QGrxZFt6xOarz/9S70ib0HzfgJFVjQ0=
+=DY7f
+-----END PGP SIGNATURE-----
 
-Inner comma is not necessary to have.
-
-> +	{ }
-> +};
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--BcBXM3mkZPra247M--

@@ -2,88 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C47ED6EC789
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 10:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 216BC6EC85C
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 11:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230499AbjDXIAA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 04:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
+        id S229841AbjDXJH1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 05:07:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjDXIAA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 04:00:00 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22BA611B
-        for <linux-iio@vger.kernel.org>; Mon, 24 Apr 2023 00:59:59 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b8f5121503eso5938053276.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Apr 2023 00:59:59 -0700 (PDT)
+        with ESMTP id S229458AbjDXJH0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 05:07:26 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43154E55;
+        Mon, 24 Apr 2023 02:07:25 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-94f109b1808so752173166b.1;
+        Mon, 24 Apr 2023 02:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682323198; x=1684915198;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cDlWcthh07+WxrchcJHrYbsio5jYd6Q2J97FllOMDWg=;
-        b=hm9HAdwE8dTqPdH06jUZx6FYb+IE9t7ixZdgzoh/QSqJ+ziWtzX6VqU64jtWLkeL7o
-         7P5+h17htscjGLM2azM/ldm2TBxXVh9PEkItIBFw1GdfmM6kQO9bOHF1uNAnRKmJWm8T
-         wy4Pl7SnzNcxnwc2EOC5d9r1+be6a4lim7GMMtsQvtrZK9Z2B+Iz6zAqxkMkAfrCzB+O
-         5xGGrmjIl16gvMwe0l6NWL+7dV/iljuw7rPbtmT+/YXMO9w/tGF2yGVfd7uPBIwT7sIP
-         2hx3DjxCF0ehNnu9lbXeW57+e3mQLa0cn95Wr3xwOWcpaTHQ9do0CWREdxrWCdWjoj/N
-         RNlg==
+        d=gmail.com; s=20221208; t=1682327244; x=1684919244;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KP7Rgg0t8v5D0RB4lGbAJgbjIXpGiW0WVmg2B3XGczo=;
+        b=ImG3w9bliXi+hb3oh+2FGwHRk8QFdQMBGZw1p6LE3XdUZKfdMQoaCyA/CjsA2svzwy
+         8pqjsi9TUfcRj69phcJz9h8GueszJwHLngOYiPDF9pqOE4+0HT9hsyvfHPVfZt7WZkRr
+         3juSSt6cpSAmv4jj/6HYSwRgp7MOXza5ajiLLwtN5W1YdfFvLhBbFf7Iu81VZweGRHJo
+         wcw1B+tu86+AMgLfL7jtH4LmAouIHX9fZOuA8lwwHNR1s+eVdhmdZN2T4k9xobGamqm6
+         bo+QKPAO+qjYFF4iR5/7PrjLyv/pdbdAxXR1I4Sq4IkIlTueUg0/nlT4ZPSZ322IoguV
+         EikA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682323198; x=1684915198;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cDlWcthh07+WxrchcJHrYbsio5jYd6Q2J97FllOMDWg=;
-        b=eHNWKp2P5Ny1+4EgAaiEJPLclcUGRpzZvWYcp5/0IJpTPRt+Q5Phxz9OsRQDdVUMIR
-         m4GMsXo6llJbZaLZuvWnZGvUge6cXu4+ZKganJfH97e/gXEJCnVzAUwPIG2sYlw52DmN
-         kFABtu8lS9p2Fxsvz22qSgp+oppZkZ2t6CjXR/xoGWleuQyQNXgQFRb1nyziLk+PWpTV
-         ytPmuI/Qx1ar9PluGwLJng2tFCTvmdlBu591HFmETh+2eCsmSvVfdrcgv7kBawYdRcED
-         XVv2ry0wOS2VKFdLvge90+ceAK8t6cZ5c70WHMxwmJfTJV+lE1yxHIs/8wdbQAgkU7+4
-         1N9g==
-X-Gm-Message-State: AAQBX9drkMADg45hG3CibKJzGZFtq3gTJZkfDYZrUxeWsgkjMrlvqjTP
-        dSelMZ/GW5LLQUQ3TU2dZLYTtlEPUM/fmN5CW6jhuA==
-X-Google-Smtp-Source: AKy350aecuGUuFx2uKB0spyPIYhwqvlFksbW8FKXs3/zzz9MeUOdbKHXIhGtX52tLQE6llcSqJHVAfvZriDV/g8+JGw=
-X-Received: by 2002:a05:6902:702:b0:b95:7d4e:c8de with SMTP id
- k2-20020a056902070200b00b957d4ec8demr11032357ybt.12.1682323198281; Mon, 24
- Apr 2023 00:59:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230416212409.310936-1-hdegoede@redhat.com> <822cff64-f7f8-b998-1b8e-5ada542b86b7@mariushoch.de>
- <20230423114855.1596fe0c@jic23-huawei>
-In-Reply-To: <20230423114855.1596fe0c@jic23-huawei>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 24 Apr 2023 09:59:47 +0200
-Message-ID: <CACRpkdbdt4eNt17gSzObihHwQPaXR+PzrkPKf78aSVZO12Lp=A@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: st_accel: Fix invalid mount_matrix on devices
- without ACPI _ONT method
+        d=1e100.net; s=20221208; t=1682327244; x=1684919244;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KP7Rgg0t8v5D0RB4lGbAJgbjIXpGiW0WVmg2B3XGczo=;
+        b=aiC2Yo5o0Qe8IB1idqYiT/NiVUFo/EL1RTNkY2u8ULrgmArpLJ7Z/H3ZgHn7kPkhHx
+         3eNlI7ejlPinHvVi/4S2beEjr72wiJKx/eOjHUCFi1E2EQ0UrP2YrxTu3UoO394O8KMQ
+         LZ72c0l6pR7VJTm9iXD5+3PM+BJPiZX0TLzJBlWu8XbYw1tbRzk559rDh2pF9BQ4p7MW
+         EG9tTFyRws8j8DYorrTy0ILgGyIYylKrB9Di6hRjb+S5YKJGahS0dh8QSj/xgCYSlYgY
+         9SSBQgPyQgY0ztQ7pCMa8V973Vqa11VulZxvDYEujgjhLsbBOF2pd5SoVvkibdmlCcqZ
+         xinQ==
+X-Gm-Message-State: AAQBX9dbcSU6MjqEchlNyBG/77Ffqs5OBMKW+t6HHLvJKgyp3xfPWe1E
+        fmXu8723yUQsKuJ+DytrYEk=
+X-Google-Smtp-Source: AKy350Ye0LooH8hkdFRnQA9NNr3/w9xIL+7ggtAbMPtnRcicCiLvT+k4C5IMO96T2jlZqoEJXmnJnw==
+X-Received: by 2002:a17:906:2095:b0:953:9024:1b50 with SMTP id 21-20020a170906209500b0095390241b50mr7917793ejq.74.1682327243492;
+        Mon, 24 Apr 2023 02:07:23 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:853c:3ba5:d710:3c1d? (p200300f6ef058700853c3ba5d7103c1d.dip0.t-ipconnect.de. [2003:f6:ef05:8700:853c:3ba5:d710:3c1d])
+        by smtp.gmail.com with ESMTPSA id ke15-20020a17090798ef00b0095328ce9c8bsm5326254ejc.67.2023.04.24.02.07.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Apr 2023 02:07:23 -0700 (PDT)
+Message-ID: <b6a96cca17832219042c90baec2442b1a5bad7b7.camel@gmail.com>
+Subject: Re: [PATCH v3] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
-        Denis Ciocca <denis.ciocca@st.com>
-Cc:     Marius Hoch <mail@mariushoch.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Mario Tesi <mario.tesi@st.com>
+        Masahiro Honda <honda@mechatrax.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 24 Apr 2023 11:09:34 +0200
+In-Reply-To: <20230423121528.259d3cd4@jic23-huawei>
+References: <20230420102316.757-1-honda@mechatrax.com>
+         <20230423121528.259d3cd4@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
+MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 23, 2023 at 12:33=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
+Hi Jonathan,
 
-> Linus, that's one of yours.  Could you also take a glance at this.
+On Sun, 2023-04-23 at 12:15 +0100, Jonathan Cameron wrote:
+> On Thu, 20 Apr 2023 19:23:16 +0900
+> Masahiro Honda <honda@mechatrax.com> wrote:
+>=20
+> > The Sigma-Delta ADCs supported by this driver can use SDO as an interru=
+pt
+> > line to indicate the completion of a conversion. However, some devices
+> > cannot properly detect the completion of a conversion by an interrupt.
+> > This is for the reason mentioned in the following commit.
+> >=20
+> > commit e9849777d0e2 ("genirq: Add flag to force mask in
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 disable_irq[_nosy=
+nc]()")
+> >=20
+> > A read operation is performed by an extra interrupt before the completi=
+on
+> > of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UNLA=
+ZY
+> > flag.
+> >=20
+> > Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+> > ---
+> > v3:
+> > =C2=A0- Remove the Kconfig option.
+> > v2:
+> > https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatrax.=
+com/
+> > =C2=A0- Rework commit message.
+> > =C2=A0- Add a new entry in the Kconfig.
+> > =C2=A0- Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freei=
+ng the
+> > IRQ.
+> > v1:
+> > https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatrax.=
+com/
+> >=20
+> > =C2=A0drivers/iio/adc/ad_sigma_delta.c | 25 ++++++++++++++++++++-----
+> > =C2=A01 file changed, 20 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad_sigma_delta.c
+> > b/drivers/iio/adc/ad_sigma_delta.c
+> > index d8570f620..215ecbedb 100644
+> > --- a/drivers/iio/adc/ad_sigma_delta.c
+> > +++ b/drivers/iio/adc/ad_sigma_delta.c
+> > @@ -565,6 +565,14 @@ int ad_sd_validate_trigger(struct iio_dev *indio_d=
+ev,
+> > struct iio_trigger *trig)
+> > =C2=A0}
+> > =C2=A0EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trigger, IIO_AD_SIGMA_DELTA);
+> > =C2=A0
+> > +static void ad_sd_free_irq(void *sd)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ad_sigma_delta *sigma=
+_delta =3D sd;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0irq_clear_status_flags(sigma=
+_delta->spi->irq, IRQ_DISABLE_UNLAZY);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0free_irq(sigma_delta->spi->i=
+rq, sigma_delta);
+> > +}
+>=20
+> Don't fuse the two operations unwinding like this.=C2=A0 Just register a =
+callback
+> that only
+> does the irq_clear_status_flags immediately after setting them.=C2=A0 The=
+n leave
 
-Heh it should really be looked after by Denis Ciocca or Mario Tesi I think.
-I don't know if ST MEMS has an official Linux contact point, but I would
-like to nudge them to get one :)
+I was the one to propose fusing them together because I thought that we cou=
+ld
+have issues by clearing the flag after calling free_irq(). After looking ag=
+ain
+at the IRQ code, I can see that it is not up to free_irq() to free the allo=
+cated
+irq_descs (that might only happen when unmapping the virq) which means we s=
+hould
+be fine doing the normal way.
 
-However it looks good to me.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+That said, looking at the only users that care to clear this flag, it looks=
+ like
+they do it before calling free_irq(). Hence, I'm not sure if there's anythi=
+ng
+subtle going on. In fact, looking at this line:
 
-Yours,
-Linus Walleij
+https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L1909
+
+I'm not so sure we actually need to clear the flag as for these devices, we
+should only have one consumer/action per IRQ. Anyways, probably for correct=
+ness
+we should still explicitly clear it?
+
+- Nuno S=C3=A1
+

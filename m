@@ -2,125 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60A896ED0C4
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 16:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E57206ED0F5
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 17:09:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231751AbjDXO5D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 10:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46526 "EHLO
+        id S231986AbjDXPJX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 11:09:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231293AbjDXO5A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 10:57:00 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A55ED30E5;
-        Mon, 24 Apr 2023 07:56:59 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-504eac2f0b2so7833984a12.3;
-        Mon, 24 Apr 2023 07:56:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682348218; x=1684940218;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TyC3Am9x5MDVCnozv7oRC741HUNVYU534Al0Yoe0eTc=;
-        b=IIPTUf5IBUBU+Edya4d4mMv5fiLcs2rvu6zqLp9FGrq7ekNjKOLsialN5g5YCi7iaW
-         GnBXBGOXMXv9ltzpNUfXrp1uII7kbw/K79oIQHHvv8swu5gQRo7ZtbIt658QY1doi6iH
-         AzWU2/3ltjC/lZgMN+KplAU2Kg+IMos8XGzfNx2oNyacC+orYuJ24VXEa+U+T3KAiVp0
-         inkAZyS1niNOmGKFY1ccfqDu8ALNIrGx9Ba6lK0QrlBF6WUm5pQP1vu791nGg7WONFgI
-         bK0lpYgaE9Va73Pn7JfQcjGjjuCtAn9LgCBXpQAy0pk+/GnK6/JDSKtDAll17IX1lgQG
-         eO6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682348218; x=1684940218;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TyC3Am9x5MDVCnozv7oRC741HUNVYU534Al0Yoe0eTc=;
-        b=ioLbKia7b4sL1QI5qbu0pTQvb0vgBjpn7vgRhGXjJp5feCYK0DXLNaGd45y/GURMzj
-         ZcDCvPED6qSplmr21wAIRN+/MlyHJjeCtuS7A9LBTpQd9giW7BB7j5/a1MsomFrFXpQk
-         Ws6vHq2nPoYIFLxfbeOXR/0xT40wnPYPu12YLCNuG+Zm+BvX7eNae6JzS6LcQchp1EdL
-         OcNhw2e8FWHvEjvTzv84eBzytw5iqbHhxKmNRIMW/V5dzQG55RUyUuO9WR88XNEQnqK0
-         na/J8knkXYjmcd/z7O3mABcUgMdphH49aVk3L9sVjZKtVdke+tSiTVd+IKrjFs/xVx+f
-         aRxQ==
-X-Gm-Message-State: AAQBX9eqU0tZ/jr8Kzs1kjLwChCGgujXlvodBVnNZcz2CYLSwAK1aCp7
-        55YtBO2l8q6fLn5N5ZOahh4=
-X-Google-Smtp-Source: AKy350a/LImqzZ6R1/1wrYIpJ7JiPYKyuWkBcDJnveIXXJw7GmdTiya9frX0wCcxKxk1BCOyxIdfmw==
-X-Received: by 2002:aa7:c902:0:b0:506:c20c:6de8 with SMTP id b2-20020aa7c902000000b00506c20c6de8mr11983389edt.17.1682348218038;
-        Mon, 24 Apr 2023 07:56:58 -0700 (PDT)
-Received: from carbian ([2a02:8109:aa3f:ead8::5908])
-        by smtp.gmail.com with ESMTPSA id p19-20020a05640210d300b005067d089aafsm4698705edu.11.2023.04.24.07.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Apr 2023 07:56:57 -0700 (PDT)
-Date:   Mon, 24 Apr 2023 16:56:55 +0200
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     kernel test robot <lkp@intel.com>, jic23@kernel.org,
-        mazziesaccount@gmail.com, oe-kbuild-all@lists.linux.dev,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] iio: accel: Add support for Kionix/ROHM
- KX132-1211 accelerometer
-Message-ID: <ZEaYt3XTzuXrmFxd@carbian>
-References: <cef09595632a40eff8a0864fea2e0eb6653930a5.1682019544.git.mehdi.djait.k@gmail.com>
- <202304220729.FCofPRvH-lkp@intel.com>
- <ZEQGqFLIyxm5XENQ@smile.fi.intel.com>
- <ZEWbmSuJqWJWf0aD@carbian>
+        with ESMTP id S231960AbjDXPJW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 11:09:22 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 673B0B5;
+        Mon, 24 Apr 2023 08:09:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682348961; x=1713884961;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DFwbhVwB3qAZzM1M6A2mywZtxGqtlDkuA98FUDSiHUI=;
+  b=H18WC9QSVbZDeNdSpDJaGW3snciIOwZeKCZNgYMLwzjnknsoHTzSyRwv
+   mIjFi8sVYlozr1yvMc755G85p9DuxYqKOU5ZUeAhYjuBzMThwONNJXYiK
+   BMNW1a9rpVsHYTYaq91kqiqUVJQ0jOMKrmdGvRkPxugtzMGh3fgYUoG3M
+   GZqPwqgHJpXtZwpB0rGqy77VrlCM67GK4AUYfckNJysSlYUXPfY4coL+Y
+   XtLJC6JqgLg9QHBwRAG9oGCyQsg2vDTcZmjSfbSc8bzpeM5BcgwP9fUni
+   nFjsgK2NNpendDQdtA375PU/k2xbatdn5rogznpWkHPSYYA8hti8wEAJp
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="326087209"
+X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
+   d="scan'208";a="326087209"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2023 08:08:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="695807913"
+X-IronPort-AV: E=Sophos;i="5.99,223,1677571200"; 
+   d="scan'208";a="695807913"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 24 Apr 2023 08:08:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pqxnr-004Z7o-2i;
+        Mon, 24 Apr 2023 18:08:31 +0300
+Date:   Mon, 24 Apr 2023 18:08:31 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] iio:trigger: Add simple trigger_validation helper
+Message-ID: <ZEabb3lJzGNb/BMO@smile.fi.intel.com>
+References: <cover.1682340947.git.mazziesaccount@gmail.com>
+ <91fffd0001e8efef90f43fa03026dc0e5e30b4e4.1682340947.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZEWbmSuJqWJWf0aD@carbian>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <91fffd0001e8efef90f43fa03026dc0e5e30b4e4.1682340947.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello again,
+On Mon, Apr 24, 2023 at 04:08:19PM +0300, Matti Vaittinen wrote:
+> Some triggers can only be attached to the IIO device that corresponds to
+> the same physical device. Implement generic helper which can be used as
+> a validate_trigger callback for such devices.
 
-On Sun, Apr 23, 2023 at 10:57:00PM +0200, Mehdi Djait wrote:
-> Hello Andy,
-> 
-> thank you for the review.
-> 
-> On Sat, Apr 22, 2023 at 07:09:12PM +0300, Andy Shevchenko wrote:
-> > On Sat, Apr 22, 2023 at 07:19:44AM +0800, kernel test robot wrote:
-> > > Hi Mehdi,
-> > > 
-> > > kernel test robot noticed the following build warnings:
-> > 
-> > I believe it's not just a warning, it's a full functional error in the code.
-> > 
-> > >    686	{
-> > >    687		struct device *dev = regmap_get_device(data->regmap);
-> > >    688		__le16 buf_status;
-> > >    689		int ret, fifo_bytes;
-> > >    690	
-> > >    691		ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-> > >    692				       &buf_status, sizeof(buf_status));
-> > >    693		if (ret) {
-> > >    694			dev_err(dev, "Error reading buffer status\n");
-> > >    695			return ret;
-> > >    696		}
-> > >    697	
-> > >  > 698		buf_status &= data->chip_info->buf_smp_lvl_mask;
-> > >    699		fifo_bytes = le16_to_cpu(buf_status);
-> > 
-> > You need to mask in the same endianess space, i.o.w. either on CPU or device side.
-> > 
-> > I believe you wanted to have fifo_bytes to be masked, but I'm not sure.
-> 
-> I wanted to read the registers buf_status_1 and buf_status_2 --> 16 bits
-> and mask the result of the read to get the bits 0..9 which is the
-> buf_status: the number of bytes in the buffer
-> 
-> This is due to my lack of experience, but I have a question:
-> If I don't get any warnings when testing, how should I go about this ? I
-> will obviously fix this, but this is for the future.
+Missing space in the Subject?
 
-just ignore this question. I installed sparse and I am using it now when
-building. 
- 
---
-Kind Regards
-Mehdi Djait
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

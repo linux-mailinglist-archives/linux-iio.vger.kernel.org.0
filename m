@@ -2,167 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3406ED1DF
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 18:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B14E6ED7B5
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 00:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231861AbjDXQBR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 12:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59548 "EHLO
+        id S233249AbjDXWWj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 18:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbjDXQBP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 12:01:15 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6825D6A6B
-        for <linux-iio@vger.kernel.org>; Mon, 24 Apr 2023 09:01:14 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-959a3e2dc72so256006766b.2
-        for <linux-iio@vger.kernel.org>; Mon, 24 Apr 2023 09:01:14 -0700 (PDT)
+        with ESMTP id S233259AbjDXWWh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 18:22:37 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F06F6A5D;
+        Mon, 24 Apr 2023 15:22:35 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-95369921f8eso780580366b.0;
+        Mon, 24 Apr 2023 15:22:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682352073; x=1684944073;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sll20Qvo96Pu0tmrXLoBnzqOrXx0GuRY8gBuzLvCX8I=;
-        b=aH3+3yqkYqqOWyeUC/DjCwm29/sOAO/ezgePl+sTlC72v33GrjEBFutmsCWXd3UYDZ
-         TbQvXw8g+awlKJjzX5/JvTMAC81dJsYt+uRu9oWDPMdW73G1PJhMLSUTq9v+If4uTeha
-         BQTew3WXVL4rwfHajrx0P/vfyxVgyW5cth3hyEZj57SRATufB+2+7i9MMa7zKKW3JJT2
-         bCzHYd5OQTHTN2n6bisjKkfqB3P98fERujPc2Z9d2PkvQReQ5555FtsmysIIvDX9VFGg
-         6JtmiS3xKUSfVMra/AVyLYXgZ/gEOsTGlkdrR0xrmjJ6ORkBEDEhWFbR9aCiIT7drysZ
-         O00Q==
+        d=gmail.com; s=20221208; t=1682374954; x=1684966954;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WdIxTGlNkELsd0a+ecLFTr6r/fmHxxFhLmJKv81MFtc=;
+        b=nOuTjlE6vdWeIha3ahnLnmhMgU7P4PX9EuYIXH0BiJs1uMV6BvtzLbO+KyPjlGRqng
+         OqGSrQem9cYWentZ4991bLBKUM1I9ucl4w/0rYfU+66tZlU88GBJNRJmg4Gf43G5w3QE
+         O7+p9vegqZXFd2NxLz0mPxZoDpeUrCKZrQkUFBJG+vS5K+8VmhACYe/3f2gPIRstwTfP
+         Xac3kDypVtly+fmUrwRVvVByl23xyCwY9f0dkTq13cylLumcHTZ6dSN4Wa2X0qpZWu1f
+         l9XpNNinxdV8lpWh+aG81eYmlRnZhSayuOXIwbEY+ghrm7hLZe/suzNPLfzKijqVSZ79
+         zjTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682352073; x=1684944073;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sll20Qvo96Pu0tmrXLoBnzqOrXx0GuRY8gBuzLvCX8I=;
-        b=hSIrzA/dLAi8ono9cqF2PKfvOVLN+wjrMnIU90ou44KNdILL0fNggTZiCROkIwLp7f
-         qASkExxTOcvyg60ry1kwvyzXdZW6yvz2C+JfaUauTgv4NDovGsqNlWRhORVQQrQxdYG3
-         e7GsamqM9UdApS0mhAClCZ6dclmbZ7HxPhmKOtvWxM4DsQAkZq69Jvy6IlM1W4NIoZDo
-         1ajpRG12wcOHk4qCUBOq1+a4Ht/w3vLce0DhMVJMBGJB/6vc+WWd6paKJWVtxkCphJwD
-         UVqQf60BMrWlavsSD2CZa52T8SzS0rtmmYzWKx6QQZtJo+0jxS0xzV9Q+WfwbEWwfdF7
-         drsA==
-X-Gm-Message-State: AAQBX9euTK9Wd059mRIpKVwwx/s0CREVQohja4EAb0pHM+2c8SY1+VZS
-        BHUClRBTL6hfx/yIqD8VYrmj/7ASMdUVcIorhbJy/Q==
-X-Google-Smtp-Source: AKy350ZslENU0n/+EW9o/PtF7iqsmAR6mRvFkYStLGKHWxRBGPkEUrNXTT1bUsZSHShxzVdcEjJIaQ==
-X-Received: by 2002:a17:907:7f04:b0:94e:3d6f:9c0f with SMTP id qf4-20020a1709077f0400b0094e3d6f9c0fmr12384686ejc.55.1682352072898;
-        Mon, 24 Apr 2023 09:01:12 -0700 (PDT)
-Received: from fedora.. ([195.167.132.10])
-        by smtp.gmail.com with ESMTPSA id g10-20020a170906594a00b008cecb8f374asm5665879ejr.0.2023.04.24.09.01.12
+        d=1e100.net; s=20221208; t=1682374954; x=1684966954;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WdIxTGlNkELsd0a+ecLFTr6r/fmHxxFhLmJKv81MFtc=;
+        b=Nm6ejWG7ni8puGfoXSlhEXYVAFr4mS+5z4w0Kd6WRepp7GdXfBtLETVR4jKlAgd2Hy
+         TdDj5PeE7QVCbG8dHb2B1zLvOkSb6PNDxryBrwZWwrPkDgj91+XVOzjm3jiJBD6YIgDD
+         sKYSLWiAcyEAOKpdmHdrtianyeBtIdw+6zLMPIZgZkGcHIlcBRvwCurnjqMeQamzBJK9
+         Ey06DxJyZGunl82W+qEb9SWiUKUxv5Sc31aVPbJ+kBDwgnq0XgZJ7F8TXZlXbjs1vh9t
+         ZH/auE//BYBbi6UKPQ1wooOlqaNYeQn1GSMs1ZkchVOX8pw/enSgXcPehKgFNRxCrYiA
+         emTw==
+X-Gm-Message-State: AAQBX9dpYCWMLSZTcD0+vpPzODh1S7ZCULCqIm8Z4b2qpCFES3GbhsJR
+        uXIbgnnQ0C6rUrC4sEcXwMmKmT4KxCE=
+X-Google-Smtp-Source: AKy350YsnxESjLcykbMnFsU9QdNPIsc39gixC+0mVxzHDRveEViN4a+PBZCoEIgpzC86vf2mCO80bA==
+X-Received: by 2002:a17:906:6009:b0:94d:69e0:6098 with SMTP id o9-20020a170906600900b0094d69e06098mr12580900ejj.45.1682374953831;
+        Mon, 24 Apr 2023 15:22:33 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8109:aa3f:ead8::2fd0])
+        by smtp.gmail.com with ESMTPSA id g21-20020a170906539500b0094efdfe60dcsm5870886ejo.206.2023.04.24.15.22.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Apr 2023 09:01:12 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 5.10 v5 2/2] counter: 104-quad-8: Fix race condition between FLAG and CNTR reads
-Date:   Mon, 24 Apr 2023 12:01:05 -0400
-Message-Id: <20230424160106.4415-2-william.gray@linaro.org>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230424160106.4415-1-william.gray@linaro.org>
-References: <20230424160106.4415-1-william.gray@linaro.org>
+        Mon, 24 Apr 2023 15:22:33 -0700 (PDT)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, mazziesaccount@gmail.com
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH v3 0/7] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
+Date:   Tue, 25 Apr 2023 00:22:20 +0200
+Message-Id: <cover.1682373451.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
+Hello everyone,
 
-The Counter (CNTR) register is 24 bits wide, but we can have an
-effective 25-bit count value by setting bit 24 to the XOR of the Borrow
-flag and Carry flag. The flags can be read from the FLAG register, but a
-race condition exists: the Borrow flag and Carry flag are instantaneous
-and could change by the time the count value is read from the CNTR
-register.
+Version 3 for adding support for the kx132-1211 accelerometer
 
-Since the race condition could result in an incorrect 25-bit count
-value, remove support for 25-bit count values from this driver.
+KX132 accelerometer is a sensor which:
+	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+	- can be connected to I2C or SPI
+	- has internal HW FIFO buffer
+	- supports various ODRs (output data rates)
 
-Fixes: 28e5d3bb0325 ("iio: 104-quad-8: Add IIO support for the ACCES 104-QUAD-8")
-Cc: <stable@vger.kernel.org> # 5.10.x
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- drivers/counter/104-quad-8.c | 28 ++++------------------------
- 1 file changed, 4 insertions(+), 24 deletions(-)
+The KX132 accelerometer is very similair to the KX022A. 
+One key difference is number of bits to report the number of data bytes that 
+have been stored in the buffer: 8 bits for KX022A vs 10 bits for
+KX132-1211.
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 21bb2bb767a..89c9cb850a3 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -62,10 +62,6 @@ struct quad8_iio {
- #define QUAD8_REG_CHAN_OP 0x11
- #define QUAD8_REG_INDEX_INPUT_LEVELS 0x16
- #define QUAD8_DIFF_ENCODER_CABLE_STATUS 0x17
--/* Borrow Toggle flip-flop */
--#define QUAD8_FLAG_BT BIT(0)
--/* Carry Toggle flip-flop */
--#define QUAD8_FLAG_CT BIT(1)
- /* Error flag */
- #define QUAD8_FLAG_E BIT(4)
- /* Up/Down flag */
-@@ -104,9 +100,6 @@ static int quad8_read_raw(struct iio_dev *indio_dev,
- {
- 	struct quad8_iio *const priv = iio_priv(indio_dev);
- 	const int base_offset = priv->base + 2 * chan->channel;
--	unsigned int flags;
--	unsigned int borrow;
--	unsigned int carry;
- 	int i;
- 
- 	switch (mask) {
-@@ -117,12 +110,7 @@ static int quad8_read_raw(struct iio_dev *indio_dev,
- 			return IIO_VAL_INT;
- 		}
- 
--		flags = inb(base_offset + 1);
--		borrow = flags & QUAD8_FLAG_BT;
--		carry = !!(flags & QUAD8_FLAG_CT);
--
--		/* Borrow XOR Carry effectively doubles count range */
--		*val = (borrow ^ carry) << 24;
-+		*val = 0;
- 
- 		mutex_lock(&priv->lock);
- 
-@@ -643,17 +631,9 @@ static int quad8_count_read(struct counter_device *counter,
- {
- 	struct quad8_iio *const priv = counter->priv;
- 	const int base_offset = priv->base + 2 * count->id;
--	unsigned int flags;
--	unsigned int borrow;
--	unsigned int carry;
- 	int i;
- 
--	flags = inb(base_offset + 1);
--	borrow = flags & QUAD8_FLAG_BT;
--	carry = !!(flags & QUAD8_FLAG_CT);
--
--	/* Borrow XOR Carry effectively doubles count range */
--	*val = (unsigned long)(borrow ^ carry) << 24;
-+	*val = 0;
- 
- 	mutex_lock(&priv->lock);
- 
-@@ -1198,8 +1178,8 @@ static ssize_t quad8_count_ceiling_read(struct counter_device *counter,
- 
- 	mutex_unlock(&priv->lock);
- 
--	/* By default 0x1FFFFFF (25 bits unsigned) is maximum count */
--	return sprintf(buf, "33554431\n");
-+	/* By default 0xFFFFFF (24 bits unsigned) is maximum count */
-+	return sprintf(buf, "16777215\n");
- }
- 
- static ssize_t quad8_count_ceiling_write(struct counter_device *counter,
+Changes in v3:
+- added two new patches by separating the addition of the 
+  i2c_device_id table and the removal of blank lines from other
+  unrelated changes
+- fixes a warning detected by the kernel test robot
+- made all the changes related the chip_info in one patch
 
-base-commit: 791a854ae5a5f5988f1291ae91168a149bd5ba57
+Changes in v2:
+- added a new patch for warning when the device_id match fails in the
+  probe function
+- added a new patch for the function that retrieves the number of bytes
+  in the buffer
+- added a change to the Kconfig file in the patch adding the support
+  for the kx132-1211
+- various fixes and modifications listed under each patch
+
+
+Mehdi Djait (7):
+  dt-bindings: iio: Add KX132-1211 accelerometer
+  iio: accel: kionix-kx022a: Remove blank lines
+  iio: accel: kionix-kx022a: Warn on failed matches and assume
+    compatibility
+  iio: accel: kionix-kx022a: Add an i2c_device_id table
+  iio: accel: kionix-kx022a: Refactor driver and add chip_info structure
+  iio: accel: kionix-kx022a: Add a function to retrieve number of bytes
+    in buffer
+  iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
+
+ .../bindings/iio/accel/kionix,kx022a.yaml     |  12 +-
+ drivers/iio/accel/Kconfig                     |   8 +-
+ drivers/iio/accel/kionix-kx022a-i2c.c         |  22 +-
+ drivers/iio/accel/kionix-kx022a-spi.c         |  17 +-
+ drivers/iio/accel/kionix-kx022a.c             | 295 ++++++++++++++----
+ drivers/iio/accel/kionix-kx022a.h             | 110 ++++++-
+ 6 files changed, 391 insertions(+), 73 deletions(-)
+
 -- 
-2.40.0
+2.30.2
 

@@ -2,74 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B2B76EC9FC
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 12:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 826396ECA4C
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 12:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbjDXKPQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 06:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41112 "EHLO
+        id S231754AbjDXK3S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 06:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbjDXKPP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 06:15:15 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 446D51FEE;
-        Mon, 24 Apr 2023 03:15:00 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4ecb137af7eso4239542e87.2;
-        Mon, 24 Apr 2023 03:15:00 -0700 (PDT)
+        with ESMTP id S231794AbjDXK2q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 06:28:46 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E1B4226;
+        Mon, 24 Apr 2023 03:26:55 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4edbd6cc46bso4524144e87.2;
+        Mon, 24 Apr 2023 03:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682331298; x=1684923298;
+        d=gmail.com; s=20221208; t=1682332013; x=1684924013;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=a0i4djhW7uRWyOaO75H1RwqPYON3KNQa40MH2EXIkVw=;
-        b=kZNzgw8M9nXmoJyegWGOA3a3yYSLwM6My1cis4+rXT45lfzI3Q1GmdXPjd9v/omS3+
-         /p3pNRGnDG/2wruy5xIN6K02mWVAYMqC9q1GdDT9+w+QB4XTCC+inf0Ln4tXklBZsOKa
-         Ociis6NQGKyb/aN+oi5pVLh3Sq7qT9rZVd59fVxOBBgeePrVvl7PrZHkpS9eN4PG/oGC
-         bZlVdgXkpdgGdwz8FKXneWVHTuQ5oZtc73OJSnDRdqaB0hLD67Bz6xeUPaXn1s1vWM/P
-         uM5KWgZ4e91I41buTJZX44fz4oWgA1HErFnhAOFUtlN1rC282Q/L+e2InnxMy98dK6Mb
-         AOrQ==
+        bh=SemMbIf9FAx8zOAJPJSoYfcqskJMokFHulRfLk4rUCM=;
+        b=NQSNi12/apyGbynQPTr8J/nHJi9Ksgg4+NLv2TUsBJFYriuuoRHxKmJibVwv2UJG2X
+         OHLm5OEXaIjmCggQGkYxBOqXwCQt5WWWiBSyxAVowxiwUFAezgOcMwQPvagcYMhQU6fM
+         EHzQzlFfnaUjLZDjGa13TE560+uA72BysJcahWiTGTDsXNPpUDiGHtYBhq9eI60FVlvw
+         1dROvhA4ofvvFudRCBn3eYoGd6ONbGewxto322/ARqTCPt4R1BzoVfIi3+GZBwK2WQXl
+         5jufZgKfjoByPlp5PtDEcrm4JsYo+u1Q+3a3Xq0N9tTe18kqVNWev+sMrt1RUiPptMrM
+         5t1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682331298; x=1684923298;
+        d=1e100.net; s=20221208; t=1682332013; x=1684924013;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a0i4djhW7uRWyOaO75H1RwqPYON3KNQa40MH2EXIkVw=;
-        b=kepslHzMJBMaUYEvMTC6E0qzaloN47B5Nt5/Ze26I0LxLPM5B+cUs66exE8u5Ed+hZ
-         MBejQBJrSrrS+FD/DXujl4Sq1vLrFqz/lherB7ZiQP0m14FbExUwABCZoFsQVk7Ivtp/
-         whdaosyn4RwLiGMF9bEtzrKf9GH1uoj2A+e8zhqR8uo8bbSuWJkV5Cq6ukRw4HjV/O6a
-         0R7Oele26Z63qDBRO3TTWfuN38wQI2NgzNfgVxT0eUZIQNaKzugpkYL5DSo7jZl9AU/d
-         eRLzeJfvoVgjb2KWlSyfgCmdAJ1nghmGAeqWAujkoRxZQOMp+mg6Q9r0m44kes2o0iOl
-         wwHQ==
-X-Gm-Message-State: AAQBX9cg7wW9CDMP39tGfohbwD9kBx/1Gi+tl7XV2HfR3lykVBLjm0Ti
-        NrnrLj3JUFaNA8pA/kk5EAJUo7v7fnU=
-X-Google-Smtp-Source: AKy350bCEiOPihkghrWjkMWCJL2EZtzpe8DNWysClfcx0bqfQsq0dbilgnOyLx6R5TuSaI1JM4pQog==
-X-Received: by 2002:ac2:4d16:0:b0:4ed:5c73:79cb with SMTP id r22-20020ac24d16000000b004ed5c7379cbmr3200060lfi.21.1682331298121;
-        Mon, 24 Apr 2023 03:14:58 -0700 (PDT)
+        bh=SemMbIf9FAx8zOAJPJSoYfcqskJMokFHulRfLk4rUCM=;
+        b=RwQWBhVIZQ0Fu6/XpMGTu7QDRWvz7Km2ttTnNq0pLorp1yZgiSRs4Ze2iNABDVsMao
+         6HQnByDp1vns8TqhRf6UI2Iw6j7/W17gs5UsGWcEaAcXhriZOhi8NLJVEeV4bGQjvhK2
+         bfosjEB9uO+DBrZ9zCOf3u576gYlg0RCQEK+dQUoVsikvjUGq6Qmy+qnPzaoTOWqCt5J
+         Vrtwpx7xHrwPGWdpZXyjGfDXMiZ6G3tTuLc0MHADWXoGaQ8Gd1aYShcLOpY/nRBhP+pE
+         WdcN7jmrc9zNtSgjZL5LgXD+eQhl3QvQoQ+19Nw528382f+KogndrcxMM3gAtUZQPtP3
+         zI9w==
+X-Gm-Message-State: AAQBX9fceuGgG3tZ7vq+vbhHB/IOwA0XYYcoZTwgp3krq3dJ7fhlQoor
+        VYPgOuNH085zU2NcwojKggk=
+X-Google-Smtp-Source: AKy350YX6plUcUHiQ7QMC85zfFEuKR+sc82CJmUAcBpcwPzqvEBUOyqNRrTOIkRQYOOTZ7bwnVTW4A==
+X-Received: by 2002:a05:6512:7a:b0:4ec:9c2e:7ee3 with SMTP id i26-20020a056512007a00b004ec9c2e7ee3mr3059443lfo.42.1682332013449;
+        Mon, 24 Apr 2023 03:26:53 -0700 (PDT)
 Received: from [192.168.1.111] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id r1-20020a19ac41000000b004d3d43c7569sm1625636lfc.3.2023.04.24.03.14.57
+        by smtp.gmail.com with ESMTPSA id r16-20020ac252b0000000b004edc9e9eec5sm1616992lfm.138.2023.04.24.03.26.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 03:14:57 -0700 (PDT)
-Message-ID: <e47b367f-717b-387e-2d6a-40c998795440@gmail.com>
-Date:   Mon, 24 Apr 2023 13:14:56 +0300
+        Mon, 24 Apr 2023 03:26:53 -0700 (PDT)
+Message-ID: <eb089eaa-8c13-67f7-8b67-e2a3b74bd809@gmail.com>
+Date:   Mon, 24 Apr 2023 13:26:52 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <cover.1682067567.git.mazziesaccount@gmail.com>
- <28ace0e26267df5618fbd23625425292391ad7f0.1682067567.git.mazziesaccount@gmail.com>
- <20230423135706.008206da@jic23-huawei>
+ <30daff0d94cd4d05de0194808ab9a6984caf78dc.1682067567.git.mazziesaccount@gmail.com>
+ <06d60a20-a620-b9f6-adc3-337973dfb8a8@linaro.org>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v1 2/3] iio: light: ROHM BU27008 color sensor
-In-Reply-To: <20230423135706.008206da@jic23-huawei>
+Subject: Re: [PATCH v1 1/3] dt-bindings: iio: light: ROHM BU27008
+In-Reply-To: <06d60a20-a620-b9f6-adc3-337973dfb8a8@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -82,138 +81,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/23/23 15:57, Jonathan Cameron wrote:
-> On Fri, 21 Apr 2023 12:39:36 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
+On 4/24/23 13:12, Krzysztof Kozlowski wrote:
+> On 21/04/2023 11:38, Matti Vaittinen wrote:
 >> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
 >> and IR) with four configurable channels. Red and green being always
 >> available and two out of the rest three (blue, clear, IR) can be
 >> selected to be simultaneously measured. Typical application is adjusting
 >> LCD backlight of TVs, mobile phones and tablet PCs.
 >>
->> Add initial support for the ROHM BU27008 color sensor.
->>   - raw_read() of RGB and clear channels
->>   - triggered buffer w/ DRDY interrtupt
+>> Add BU27008 dt-bindings.
 >>
 >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> +
->> +static int bu27008_meas_set(struct bu27008_data *data, bool enable)
->> +{
->> +	if (enable)
->> +		return regmap_set_bits(data->regmap, BU27008_REG_MODE_CONTROL3,
->> +				       BU27008_MASK_MEAS_EN);
->> +
->> +	return regmap_clear_bits(data->regmap, BU27008_REG_MODE_CONTROL3,
->> +				 BU27008_MASK_MEAS_EN);
+>> ---
+>>   .../bindings/iio/light/rohm-bu27008.yaml      | 49 +++++++++++++++++++
+>>   1 file changed, 49 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml
 > 
-> Might be cleaner with regmap_update_bits()
+> Filename like compatible, so rohm,bu27008.yaml
+
+Thanks Krzysztof. I should've remembered this as you told me the same 
+thing during the bu27034 review. Feel free to kick me atthe ELC-E if I 
+do the same mistake with bu27010 as well ^^;
 > 
->> +}
-
-Hm. I need to disagree on this although I think it depends on what one 
-is used to :)
-
-For me adding a variable for value to be used is slightly more complex 
-than just using clear or set function depending on the enable/disable. I 
-remember thinking the same as you and preferring the update_bits also on 
-enable/disable cases - until I wrote my first power-supply driver and 
-Sebasian Reichel told me to not do:
-
-int val;
-
-if (foo)
-	val = mask;
-else
-	val = 0;
-
-return regmap_update_bits(regmap, reg, mask, val);
-
-but use set/clear bits. This allows killing the 'int val;'. I remember I 
-had to sleep over night on it but I later started seeing the set/clear 
-bits as a simpler thing.
-
-Sure we could also do
-
-if (foo)
-	return regmap_update_bits(map, reg, mask, mask);
-else
-	return regmap_update_bits(map, reg, mask, 0);
-
-- but here we just replace:
-
-regmap_set_bits(map, reg, mask) with
-regmap_update_bits(map, reg, mask, mask)
-
-and
-
-regmap_clear_bits(map, reg, mask)
-regmap_update_bits(map, reg, mask, 0)
-
-with longer but functionally same variants - which kind of says "I think 
-the "regmap_set_bits() and regmap_clear_bits()" are useless ;)
-
-After saying this - I can use the regmap_update_bits() if you insist, 
-but in my (not always so) humble opinion this does not improve the function.
-
-
->> +
->> +static int bu27008_set_drdy_irq(struct bu27008_data *data, bool state)
->> +{
->> +	if (state)
->> +		return regmap_set_bits(data->regmap, BU27008_REG_MODE_CONTROL3,
->> +					BU27008_MASK_INT_EN);
->> +	return regmap_clear_bits(data->regmap, BU27008_REG_MODE_CONTROL3,
->> +				 BU27008_MASK_INT_EN);
-> regmap_update_bits() maybe with the mask and value supplied.
-
-Same weak objection here as was with the bu27008_meas_set(). Eg, can 
-change if required but please reconsider :)
-
->> +}
->> +
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml b/Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml
+>> new file mode 100644
+>> index 000000000000..d942c2817680
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml
+>> @@ -0,0 +1,49 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/light/bu27008.yaml#
 > 
->> +static irqreturn_t bu27008_irq_handler(int irq, void *private)
->> +{
->> +	struct iio_dev *idev = private;
->> +	struct bu27008_data *data = iio_priv(idev);
->> +
->> +	data->old_timestamp = data->timestamp;
+> Does not look like you tested the bindings. Please run `make
+> dt_binding_check` (see
+> Documentation/devicetree/bindings/writing-schema.rst for instructions).
 > 
-> What is old_timestamp for?  Without out setting that, this
-> is the same as iio_pollfunc_store_time() with the timestamp
-> stored in a slightly difference place and always waking the thread
-> (which probably doesn't matter)
 
-Thanks. I just re-used the logic from a driver which had some other 
-options but the data-ready IRQ as well. As we don't have any such in 
-bu27008, I think we can drop the custom stuff as you suggest and clean 
-up this for quite a bit :) Thanks!
+I actually did. But I did first run the dt_binding_check without 
+filename - causing it to check all the in-tree bindings - which took a 
+while. So, I went to have a lunch. When I came back I re-ran the check 
+with the filename (DT_SCHEMA_FILES=...) - which gave me no errors.
 
+I _assume_ this is because running the check for all bindings had 
+already done <add step here> generating the warning, while re-running 
+the check with the filename omitted the <add step here> and no longer 
+displayed the warning.
 
->> +
->> +static irqreturn_t bu27008_irq_thread_handler(int irq, void *private)
->> +{
->> +	struct iio_dev *idev = private;
->> +	struct bu27008_data *data = iio_priv(idev);
->> +	irqreturn_t ret = IRQ_NONE;
->> +
->> +	mutex_lock(&data->mutex);
->> +	if (data->trigger_enabled) {
->> +		iio_trigger_poll_nested(data->trig);
+In any case, I missed warning from full-check, and checker missed the 
+warning when re-ran.
+
 > 
-> Add a comment here on why it makes sense to hold the mutex whilst
-> calling this.
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: ROHM BU27008 color sensor
+>> +
+>> +maintainers:
+>> +  - Matti Vaittinen <mazziesaccount@gmail.com>
+>> +
+>> +description: |
+> 
+> Do not need '|' unless you need to preserve formatting.
 
-After revising this - I don't think it makes. Nor do I think we need the 
-trigger_enable flag so we don't propably need the mutex in buffer enable 
-either as all raw-write configs are claiming the direct mode.
+Ok, thanks.
 
-I'll cook the v2 soon(ish). Thanks!
+I'll fix these for v2 :)
 
 Yours,
-	--Matti
-
+	-- Matti
 
 -- 
 Matti Vaittinen

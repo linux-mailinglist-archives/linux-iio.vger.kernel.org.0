@@ -2,78 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 826396ECA4C
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 12:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA796ECAB4
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Apr 2023 12:52:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231754AbjDXK3S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 06:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
+        id S230152AbjDXKwi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 06:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231794AbjDXK2q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 06:28:46 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E1B4226;
-        Mon, 24 Apr 2023 03:26:55 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4edbd6cc46bso4524144e87.2;
-        Mon, 24 Apr 2023 03:26:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682332013; x=1684924013;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SemMbIf9FAx8zOAJPJSoYfcqskJMokFHulRfLk4rUCM=;
-        b=NQSNi12/apyGbynQPTr8J/nHJi9Ksgg4+NLv2TUsBJFYriuuoRHxKmJibVwv2UJG2X
-         OHLm5OEXaIjmCggQGkYxBOqXwCQt5WWWiBSyxAVowxiwUFAezgOcMwQPvagcYMhQU6fM
-         EHzQzlFfnaUjLZDjGa13TE560+uA72BysJcahWiTGTDsXNPpUDiGHtYBhq9eI60FVlvw
-         1dROvhA4ofvvFudRCBn3eYoGd6ONbGewxto322/ARqTCPt4R1BzoVfIi3+GZBwK2WQXl
-         5jufZgKfjoByPlp5PtDEcrm4JsYo+u1Q+3a3Xq0N9tTe18kqVNWev+sMrt1RUiPptMrM
-         5t1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682332013; x=1684924013;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SemMbIf9FAx8zOAJPJSoYfcqskJMokFHulRfLk4rUCM=;
-        b=RwQWBhVIZQ0Fu6/XpMGTu7QDRWvz7Km2ttTnNq0pLorp1yZgiSRs4Ze2iNABDVsMao
-         6HQnByDp1vns8TqhRf6UI2Iw6j7/W17gs5UsGWcEaAcXhriZOhi8NLJVEeV4bGQjvhK2
-         bfosjEB9uO+DBrZ9zCOf3u576gYlg0RCQEK+dQUoVsikvjUGq6Qmy+qnPzaoTOWqCt5J
-         Vrtwpx7xHrwPGWdpZXyjGfDXMiZ6G3tTuLc0MHADWXoGaQ8Gd1aYShcLOpY/nRBhP+pE
-         WdcN7jmrc9zNtSgjZL5LgXD+eQhl3QvQoQ+19Nw528382f+KogndrcxMM3gAtUZQPtP3
-         zI9w==
-X-Gm-Message-State: AAQBX9fceuGgG3tZ7vq+vbhHB/IOwA0XYYcoZTwgp3krq3dJ7fhlQoor
-        VYPgOuNH085zU2NcwojKggk=
-X-Google-Smtp-Source: AKy350YX6plUcUHiQ7QMC85zfFEuKR+sc82CJmUAcBpcwPzqvEBUOyqNRrTOIkRQYOOTZ7bwnVTW4A==
-X-Received: by 2002:a05:6512:7a:b0:4ec:9c2e:7ee3 with SMTP id i26-20020a056512007a00b004ec9c2e7ee3mr3059443lfo.42.1682332013449;
-        Mon, 24 Apr 2023 03:26:53 -0700 (PDT)
-Received: from [192.168.1.111] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id r16-20020ac252b0000000b004edc9e9eec5sm1616992lfm.138.2023.04.24.03.26.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 03:26:53 -0700 (PDT)
-Message-ID: <eb089eaa-8c13-67f7-8b67-e2a3b74bd809@gmail.com>
-Date:   Mon, 24 Apr 2023 13:26:52 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US, en-GB
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        with ESMTP id S230245AbjDXKwh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 06:52:37 -0400
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51B633593;
+        Mon, 24 Apr 2023 03:52:20 -0700 (PDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 12950100009;
+        Mon, 24 Apr 2023 10:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1682333539;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yKUWG8XwsHs5cBDxDN0t+v8V3Kca4ChPZTtEEbQ6jZo=;
+        b=fPVjkvF+gFpJ7tMj1skmY/E5xkFUo7OQt7yK5LbLJTw6l4i82qIEJkbSwLUhWPptpI/1ye
+        LiIk7b8Zot3/gtSCwh7psQskWKgCErmDDX63JoPgqJn0d7rn4MQfZ5fXbyzMZkoKCYhPXS
+        xP5QkgnF0/A88IuKccDVlFq855i9FGb7Q4dAt18qiVd7DEfn6eA+fixBF21yofsnkSwIKi
+        k2zD1afAaIAZA7MVQxBYwzbphsFfdkHc7MNauwj9jPzY8ToNG7R7vTalnGyASudyaWhqgZ
+        xXggGc/tZ4wtPRhmUnPB3sDrpTv1yVkL8Q6fHVR4y7tfCNT2HG3tKhQwQzJehQ==
+Date:   Mon, 24 Apr 2023 12:52:16 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1682067567.git.mazziesaccount@gmail.com>
- <30daff0d94cd4d05de0194808ab9a6984caf78dc.1682067567.git.mazziesaccount@gmail.com>
- <06d60a20-a620-b9f6-adc3-337973dfb8a8@linaro.org>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v1 1/3] dt-bindings: iio: light: ROHM BU27008
-In-Reply-To: <06d60a20-a620-b9f6-adc3-337973dfb8a8@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 4/4] ASoC: codecs: Add support for the generic IIO
+ auxiliary devices
+Message-ID: <20230424125216.0f279f82@bootlin.com>
+In-Reply-To: <20230422180814.61d24aa3@jic23-huawei>
+References: <20230421124122.324820-1-herve.codina@bootlin.com>
+        <20230421124122.324820-5-herve.codina@bootlin.com>
+        <20230422180814.61d24aa3@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,81 +65,251 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/24/23 13:12, Krzysztof Kozlowski wrote:
-> On 21/04/2023 11:38, Matti Vaittinen wrote:
->> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
->> and IR) with four configurable channels. Red and green being always
->> available and two out of the rest three (blue, clear, IR) can be
->> selected to be simultaneously measured. Typical application is adjusting
->> LCD backlight of TVs, mobile phones and tablet PCs.
->>
->> Add BU27008 dt-bindings.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->>   .../bindings/iio/light/rohm-bu27008.yaml      | 49 +++++++++++++++++++
->>   1 file changed, 49 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml
+Hi Jonathan, Mark,
+
+On Sat, 22 Apr 2023 18:08:14 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Fri, 21 Apr 2023 14:41:22 +0200
+> Herve Codina <herve.codina@bootlin.com> wrote:
 > 
-> Filename like compatible, so rohm,bu27008.yaml
-
-Thanks Krzysztof. I should've remembered this as you told me the same 
-thing during the bu27034 review. Feel free to kick me atthe ELC-E if I 
-do the same mistake with bu27010 as well ^^;
+> > Industrial I/O devices can be present in the audio path.
+> > These devices needs to be used as audio components in order to be fully
+> > integrated in the audio path.
+> > 
+> > This support allows to consider these Industrial I/O devices as auxliary
+> > audio devices and allows to control them using mixer controls.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
 > 
->>
->> diff --git a/Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml b/Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml
->> new file mode 100644
->> index 000000000000..d942c2817680
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/light/rohm-bu27008.yaml
->> @@ -0,0 +1,49 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/light/bu27008.yaml#
+> Hi Herve,
 > 
-> Does not look like you tested the bindings. Please run `make
-> dt_binding_check` (see
-> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+> There are some other IIO devices that might turn up in audio paths. In theory
+> someone might put an IIO supported amplifier in there (though current ones are
+> far to high frequency and expensive for that to make sense).  For now it
+> probably makes sense to support potentiometers as you are doing here,
+> though I'm guessing that in many cases they would be used with some other
+> analog components. Does the transfer function matter at all?
+> 
+> Been many years since I last touched anything in ASoC so questions may
+> be silly ;)
+> 
+> A few comments inline.
+> 
+> Jonathan
+> 
+> > +static int simple_iio_aux_get_volsw(struct snd_kcontrol *kcontrol,
+> > +				    struct snd_ctl_elem_value *ucontrol)
+> > +{
+> > +	struct simple_iio_aux_chan *chan = (struct simple_iio_aux_chan *)kcontrol->private_value;
+> > +	int max = chan->max;
+> > +	int min = chan->min;
+> > +	unsigned int mask = (1 << fls(max)) - 1;  
+> 
+> As below. I'm not following reason for use of mask
+> 
+> > +	unsigned int invert = chan->is_inverted;
+> > +	int ret;
+> > +	int val;
+> > +
+> > +	ret = iio_read_channel_raw(chan->iio_chan, &val);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	ucontrol->value.integer.value[0] = (val & mask) - min;
+> > +	if (invert)
+> > +		ucontrol->value.integer.value[0] = max - ucontrol->value.integer.value[0];
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int simple_iio_aux_put_volsw(struct snd_kcontrol *kcontrol,
+> > +				    struct snd_ctl_elem_value *ucontrol)
+> > +{
+> > +	struct simple_iio_aux_chan *chan = (struct simple_iio_aux_chan *)kcontrol->private_value;
+> > +	int max = chan->max;
+> > +	int min = chan->min;
+> > +	unsigned int mask = (1 << fls(max)) - 1;  
+> 
+> Why is mask needed?  Also seems like handling is making
+> some strong assumptions on form of max and min.
+> So at minimum some comments on reasoning needed.
+
+This mask was present in the internal ASoC helpers used when
+devices can be accessed using regmap.
+The IIO accesses done by simple_iio_aux_get_volsw() and 
+simple_iio_aux_put_volsw() were based on these internal helpers.
+Not sure about the exact reason to this mask. Maybe Mark can answer.
+
+For these particular use-cases using an IIO channel, the mask present in
+simple_iio_aux_get_volsw() and simple_iio_aux_put_volsw() can be removed.
+
+I will remove in the next iteration except if Mark tell me to keep them.
+
+> 
+> > +	unsigned int invert = chan->is_inverted;
+> > +	int val;
+> > +	int ret;
+> > +	int tmp;
+> > +
+> > +	val = ucontrol->value.integer.value[0];
+> > +	if (val < 0)
+> > +		return -EINVAL;
+> > +	if (val > max - min)
+> > +		return -EINVAL;
+> > +
+> > +	val = (val + min) & mask;
+> > +	if (invert)
+> > +		val = max - val;
+> > +
+> > +	ret = iio_read_channel_raw(chan->iio_chan, &tmp);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	if (tmp == val)
+> > +		return 0;
+> > +
+> > +	ret = iio_write_channel_raw(chan->iio_chan, val);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return 1; /* The value changed */
+> > +}
+> > +  
+> 
+> ...
+> 
+> 
+> 
+> > +static int simple_iio_aux_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device_node *np = pdev->dev.of_node;
+> > +	struct simple_iio_aux_chan *iio_aux_chan;
+> > +	struct simple_iio_aux *iio_aux;
+> > +	int count;
+> > +	u32 tmp;
+> > +	int ret;
+> > +	int i;
+> > +
+> > +	iio_aux = devm_kzalloc(&pdev->dev, sizeof(*iio_aux), GFP_KERNEL);
+> > +	if (!iio_aux)
+> > +		return -ENOMEM;
+> > +
+> > +	iio_aux->dev = &pdev->dev;
+> > +
+> > +	count = of_property_count_strings(np, "io-channel-names");
+> > +	if (count < 0) {
+> > +		dev_err(iio_aux->dev, "%pOF: failed to read io-channel-names\n", np);
+> > +		return count;
+> > +	}
+> > +
+> > +	iio_aux->chans = devm_kmalloc_array(&pdev->dev, count,
+> > +					    sizeof(*iio_aux->chans), GFP_KERNEL);
+> > +	if (!iio_aux->chans)
+> > +		return -ENOMEM;
+> > +	iio_aux->num_chans = count;
+> > +
+> > +	for (i = 0; i < iio_aux->num_chans; i++) {
+> > +		iio_aux_chan = iio_aux->chans + i;
+> > +
+> > +		ret = of_property_read_string_index(np, "io-channel-names", i,
+> > +						    &iio_aux_chan->name);  
+> 
+> Whilst today this will be tightly couple with of, if you can use generic firmware
+> handling where possible (from linux/property.h) it will reduce what needs
+> to be tidied up if anyone fills in the gaps for IIO consumer bindings in ACPI
+> and then someone uses PRP0001 based ACPI bindings.
+
+No device_property_read_*() function family are available to get a value
+from an array using an index.
+
+I would prefer to keep the of_property_read_*() function family I use for this
+first IIO auxiliary device support.
+
+> 
+> > +		if (ret < 0) {
+> > +			dev_err(iio_aux->dev, "%pOF: failed to read io-channel-names[%d]\n", np, i);  
+> 
+> dev_err_probe() would simplify these cases a little.  Not sure on ASOC view on using
+> that for cases that won't defer.  I tend to take the view it's nicer everywhere
+> for calls in probe() functions.
+
+I have the feeling that ASoC uses dev_err_probe() for cases that can defer.
+Mark, can you confirm ?
+
+> 
+> 
+> > +			return ret;
+> > +		}
+> > +
+> > +		iio_aux_chan->iio_chan = devm_iio_channel_get(iio_aux->dev, iio_aux_chan->name);
+> > +		if (IS_ERR(iio_aux_chan->iio_chan)) {
+> > +			ret = PTR_ERR(iio_aux_chan->iio_chan);  
+> 
+> Put that inline instead of setting ret here.
+
+Will be done in the next iteration.
+
+> 
+> > +			return dev_err_probe(iio_aux->dev, ret,
+> > +					     "get IIO channel '%s' failed (%d)\n",
+> > +					     iio_aux_chan->name, ret);
+> > +		}
+> > +
+> > +		tmp = 0;
+> > +		of_property_read_u32_index(np, "invert", i, &tmp);
+> > +		iio_aux_chan->is_inverted = !!tmp;  
+> 
+> As it's a bool this is the same as 
+> 		iio_aux_chan->is_inverted = tmp;
+
+I will remove the '!!' construction.
+
+
+> 
+> > +	}
+> > +
+> > +	platform_set_drvdata(pdev, iio_aux);
+> > +
+> > +	return devm_snd_soc_register_component(iio_aux->dev,
+> > +					       &simple_iio_aux_component_driver,
+> > +					       NULL, 0);
+> > +}
+> > +
+> > +#ifdef CONFIG_OF
+> > +static const struct of_device_id simple_iio_aux_ids[] = {
+> > +	{ .compatible = "simple-iio-aux", },
+> > +	{ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, simple_iio_aux_ids);
+> > +#endif
+> > +
+> > +static struct platform_driver simple_iio_aux_driver = {
+> > +	.driver = {
+> > +		.name = "simple-iio-aux",
+> > +		.of_match_table = of_match_ptr(simple_iio_aux_ids),  
+> 
+> I'd just drop the of_match_ptr()  Whilst this won't work today with other
+> firmwares, we might enable the missing parts at some stage. Also the
+> driver is somewhat pointless without DT so I'd just assume it's always
+> built with it.  Cost is a tiny array on systems with a weird
+> .config
+
+of_match_ptr will be removed (and the #ifdef CONFIG_OF also).
+
+> 
+> > +	},
+> > +	.probe = simple_iio_aux_probe,
+> > +};
+> > +
+> > +module_platform_driver(simple_iio_aux_driver);
+> > +
+> > +MODULE_AUTHOR("Herve Codina <herve.codina@bootlin.com>");
+> > +MODULE_DESCRIPTION("IIO ALSA SoC aux driver");
+> > +MODULE_LICENSE("GPL");  
 > 
 
-I actually did. But I did first run the dt_binding_check without 
-filename - causing it to check all the in-tree bindings - which took a 
-while. So, I went to have a lunch. When I came back I re-ran the check 
-with the filename (DT_SCHEMA_FILES=...) - which gave me no errors.
+Thanks for the review.
 
-I _assume_ this is because running the check for all bindings had 
-already done <add step here> generating the warning, while re-running 
-the check with the filename omitted the <add step here> and no longer 
-displayed the warning.
-
-In any case, I missed warning from full-check, and checker missed the 
-warning when re-ran.
-
-> 
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: ROHM BU27008 color sensor
->> +
->> +maintainers:
->> +  - Matti Vaittinen <mazziesaccount@gmail.com>
->> +
->> +description: |
-> 
-> Do not need '|' unless you need to preserve formatting.
-
-Ok, thanks.
-
-I'll fix these for v2 :)
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Best regards,
+Hervé

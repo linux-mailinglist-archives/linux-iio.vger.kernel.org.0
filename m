@@ -2,118 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68CDE6EE251
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 15:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 292726EE342
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 15:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234118AbjDYNA3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Apr 2023 09:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
+        id S234220AbjDYNkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Apr 2023 09:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233952AbjDYNA1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 09:00:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E7313C30;
-        Tue, 25 Apr 2023 06:00:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6850260D56;
-        Tue, 25 Apr 2023 13:00:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8F6C43442;
-        Tue, 25 Apr 2023 13:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1682427625;
-        bh=XO4S6eeVuuK3+SDKORRmedfITWuDoW1zGPNl7NOvUEI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KtEhLdOBnurJeUJQrhRpFGl4Tgyhno3iPi3QkHG0mf7kYqcYUz0XDHj8NVORHsFjx
-         cuawNStCPmhSv7qK6pr/mI1oQYw3t77Gy8g73tMUvgf+I7J3Ae+s/tqokcG2PBgBgy
-         RODcFuC1A27hV1/r7wFxS6rcI72EY/QIEr7eXUNQ=
-Date:   Tue, 25 Apr 2023 15:00:22 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     James Clark <james.clark@arm.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>, Jean Delvare <jdelvare@suse.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@roeck-us.net,
-        michal.simek@amd.com, Jonathan.Cameron@huawei.com,
-        andriy.shevchenko@linux.intel.com
-Subject: Re: [PATCH v3 0/4] devres: Provide krealloc_array
-Message-ID: <ZEfO5kXIBVifamC4@kroah.com>
-References: <20230320145710.1120469-1-james.clark@arm.com>
- <108babe4-20cb-e637-e7da-7d04127d2a9e@arm.com>
+        with ESMTP id S233893AbjDYNkO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 09:40:14 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959B71A5;
+        Tue, 25 Apr 2023 06:40:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682430013; x=1713966013;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8ZnMxW7FQXteRzNnv5JBtPM4OmwntBA5Vnutp7lOVns=;
+  b=JAoJ9PTLlojTAt3TPpMsFd935Dx3tYkQwbiRdTIMka0q3CAgVwbahGp5
+   MMbeOTpT3hzl0X0Qq18FW9Tvnszl+ELzNE7Lf7n99IQOVAWOTzAVCR3r5
+   ykOry0Rzm1KA5eJZ4Wfl8IWwBdCM/IC0u8NtvcAML0TPoAxg1Hp3L24MJ
+   d1ZlEgrfBX5T1diQWdLHH7SYKGU4FRqxjRfncCEUg36uTAErcSdlLcfnn
+   HXxVv09hwveXRCMYNDM9RCE2Y1lx0mXuylnLdcikqy8xZKE3YbJMsgNyO
+   QbFn+CKNVZa/4M4HDLMXnVV8Hfs0wu3CxRQDBLqbZyAOQWQw+HmonNXqe
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="433027300"
+X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
+   d="scan'208";a="433027300"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 06:40:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="805074658"
+X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
+   d="scan'208";a="805074658"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 25 Apr 2023 06:40:10 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1prIts-004zyA-1h;
+        Tue, 25 Apr 2023 16:40:08 +0300
+Date:   Tue, 25 Apr 2023 16:40:08 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 4/7] iio: accel: kionix-kx022a: Add an i2c_device_id
+ table
+Message-ID: <ZEfYOO9TQSbEyCu2@smile.fi.intel.com>
+References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
+ <a232fe7a8104f8d1cddfc5950aa48748ea90bffa.1682373451.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <108babe4-20cb-e637-e7da-7d04127d2a9e@arm.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <a232fe7a8104f8d1cddfc5950aa48748ea90bffa.1682373451.git.mehdi.djait.k@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 25, 2023 at 01:51:31PM +0100, James Clark wrote:
-> 
-> 
-> On 20/03/2023 14:57, James Clark wrote:
-> > Changes since v2:
-> >  
-> >  * Remove change in qcom_geni_serial.c in the last commmit and replace
-> >    it with a comment instead
-> >  * Whitespace fix
-> > 
-> > Changes since v1:
-> > 
-> >  * Style fix
-> > 
-> > -----------------------
-> > 
-> > Hi,
-> > 
-> > I had a use for a devm realloc_array in a separate change, so I've
-> > added one and updated all the obvious existing uses of it that I could
-> > find. This is basically a copy paste of the one in slab.h
-> > 
-> > Applies to v6.3-rc3
-> > 
-> > Thanks
-> > James
-> > 
-> > James Clark (4):
-> >   devres: Provide krealloc_array
-> >   hwmon: pmbus: Use devm_krealloc_array
-> >   iio: adc: Use devm_krealloc_array
-> >   serial: qcom_geni: Comment use of devm_krealloc rather than
-> >     devm_krealloc_array
-> > 
-> >  .../driver-api/driver-model/devres.rst          |  1 +
-> >  drivers/hwmon/pmbus/pmbus_core.c                |  6 +++---
-> >  drivers/iio/adc/xilinx-ams.c                    |  9 +++------
-> >  drivers/iio/adc/xilinx-xadc-core.c              | 17 +++++++----------
-> >  drivers/tty/serial/qcom_geni_serial.c           |  5 +++++
-> >  include/linux/device.h                          | 11 +++++++++++
-> >  6 files changed, 30 insertions(+), 19 deletions(-)
-> > 
-> 
-> Hi Greg,
-> 
-> Is it possible to take this one? Or at least the first commit?
+On Tue, Apr 25, 2023 at 12:22:24AM +0200, Mehdi Djait wrote:
+> Add the missing i2c device id 
 
-It's the middle of the merge window, no one can take anything new,
-sorry.  Please wait for -rc1 to come out and then resend.
+Seems like unfinished commit message (also note missing period, that's why
+I paid attention to this).
 
-thanks,
+...
 
-greg k-h
+> +static const struct i2c_device_id kx022a_i2c_id[] = {
+> +	{ .name = "kx022a", 0 },
+
+', 0' is redundant.
+
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

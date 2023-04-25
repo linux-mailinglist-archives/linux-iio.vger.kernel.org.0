@@ -2,462 +2,260 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F796EDD9E
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 10:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8DA6EDDB3
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 10:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233440AbjDYIGb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Apr 2023 04:06:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37354 "EHLO
+        id S233544AbjDYIMR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Apr 2023 04:12:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233453AbjDYIGb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 04:06:31 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA5E26A8;
-        Tue, 25 Apr 2023 01:06:28 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2a8bb726210so51463601fa.1;
-        Tue, 25 Apr 2023 01:06:28 -0700 (PDT)
+        with ESMTP id S233520AbjDYIMQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 04:12:16 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BBEE46BD;
+        Tue, 25 Apr 2023 01:12:14 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4edc114c716so5886730e87.1;
+        Tue, 25 Apr 2023 01:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682409987; x=1685001987;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uQRTEPrVdoWewtLFi2u6sMtlTXEBNrLBU9L2vWx25bM=;
-        b=pwJo1Vuxxp52gRLjAE2yEkyUs1MZrfxa8MDcP+lMaWSptlCdVWYeJ7FcpwGnS1ap0W
-         vXCElq8DVwZ+mxOUPpseW3ZFBfT8uWWuaqU/nRo5kYvDPlPDqqSpSgHDkUTX2IfYBIWr
-         i7Shtfuxuf9fZtMF1HA8tGV/sVaCWqYUUcsm05k17RPjY3dewmE4QLyGNwxkfaCPY8pM
-         YyD31Z2wefTdvZv6RL5V1h2u95RBbgrJkV7ZgP+BjuZUnncRtI7OH/NSlV/6vTMBpQLW
-         sqat/oP78Km3mHL9K3aeAGB7Edhowfx3hHDFoxlaAMQdNV58E2i5+6drWuJRUbVSXznI
-         pedA==
+        d=gmail.com; s=20221208; t=1682410333; x=1685002333;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YfisbPoLjz5PhUaD+ahIoRzTjg2nrG8aK3yeqZRTwxo=;
+        b=gflmUaVA1Ytpl8RIq547O40wIPaQbX7mpj5zmxqbDnFCzjvjWYIbri4F4Q7aER4ry/
+         sHuAugcGjD2KZifQyHmmBVCAbAlWLnaOnMeT+B//YwHCTmSf4CzcY22hRcj5JtAa2BxZ
+         sEvtqBhSL1lpTHWOh4ugahjKn/vFeHP5FDNenkobDowWDkiUdN8xwuShQmFZ5fylTQGg
+         ZGvE5d2uUDTxG5lcpA3MA04ryPaqo5VlwA85e7XyWScnk+Fx0QD0SzaAFBIrpZnBNZxW
+         u8ZJMvZijCWVOdZ/36MjgUOQocFLhQOki/EEDdpm2u4KLdzkHHc3FfrEOAgP9Vx+sNrz
+         zzaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682409987; x=1685001987;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1682410333; x=1685002333;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uQRTEPrVdoWewtLFi2u6sMtlTXEBNrLBU9L2vWx25bM=;
-        b=ZzCvDyduXELtFD3Pu9421oHd5ssZL1rX7xA2OS1XH+jLiceOGJ0bh9lLm6CGz+MyAq
-         FxEap47Zmb1DZCvr9KUqf2ATSFpakO+O3eyCyvZZWElE4d2v5JGfs9gXU90zANeJw2Pe
-         LedjNxJeSVja/8kgu7860yA0Znpin1MDJNxeN+HTPiQiXac90xCWOBPQXblL0SfWFeWn
-         6hBfRg1I9CDvQVuEOrua2NjddSwG38gGnWScoKrGc55xSDyggJYLcXDsvL1g50VcZRel
-         yXAsJkOefbNAr1zdm8ZZv6fN9ssV3uc1OJB0djB1fbVZGq5ZTAVpBl2N51bhcSL23F69
-         hOzw==
-X-Gm-Message-State: AAQBX9d4g0r/2jUzlbOxW78WIRJjUtw6AZNMUVIGmhtGO8ln1DJr53+6
-        3Z9yExVEa/s6Irw3/tEiECk=
-X-Google-Smtp-Source: AKy350Ywe8Bvk2Ckcw+UKzlhIWQ43Vw68K4nXnoz4U5qMhmfhc18XgH3Ha094e7ScziSw2vs2ZM+GQ==
-X-Received: by 2002:a2e:8755:0:b0:2a7:76ab:c42 with SMTP id q21-20020a2e8755000000b002a776ab0c42mr3623736ljj.46.1682409986973;
-        Tue, 25 Apr 2023 01:06:26 -0700 (PDT)
+        bh=YfisbPoLjz5PhUaD+ahIoRzTjg2nrG8aK3yeqZRTwxo=;
+        b=RS/dsKpcduZC8bcCmlpM30DgUxuIgUp2TSJrjUf0d7c0IzJTFNCDQAQDYptrhUSSmQ
+         sdbR86LluUud1cHI4vlT/Mc88wlLWPUafYMq9L0pOE5pobvmux3JZFdYk+gpp7PVbVrA
+         yr2UNXcKmF7mTytW5lWFillqXntwuOfkWXvZg9eMYbWA85mLgxs6K7SX0HxZSGnqQLg9
+         596jNHIw5G7rRk9WZMWbYBBod8PXUi3kQvFA4Y9oG1EOrEXgFqA47tIcGlYbEjR/bIGO
+         W/yobRPzkRAV/XWbKZBCE3J4BbDqkEhQGTvRCwtGfGa0tk/oOxJk4Qw3rOSQjqcPtyeG
+         YDTA==
+X-Gm-Message-State: AAQBX9cVRgrwLd6yboLPhl/iyeHo6evPlSFByDK3bcBWAQduie0xSebh
+        xmzw8POa9qSGjyDDOjzr5nU=
+X-Google-Smtp-Source: AKy350a5lIINEppltKCVp/jaxAERL6A0Q3WkARvZd72fnUjaLu+x4Uu55nnAB2SPa/h0a74EN5a61Q==
+X-Received: by 2002:a19:ee17:0:b0:4e9:c327:dd81 with SMTP id g23-20020a19ee17000000b004e9c327dd81mr3957936lfb.63.1682410332581;
+        Tue, 25 Apr 2023 01:12:12 -0700 (PDT)
 Received: from [192.168.1.111] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id f9-20020a2e9e89000000b00298c7f21105sm1944851ljk.66.2023.04.25.01.06.25
+        by smtp.gmail.com with ESMTPSA id r4-20020ac25a44000000b004edb0882ce7sm1969340lfn.133.2023.04.25.01.12.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Apr 2023 01:06:26 -0700 (PDT)
-Message-ID: <00905352-f9a4-a8bf-63b7-92e3b1d2a4f4@gmail.com>
-Date:   Tue, 25 Apr 2023 11:06:25 +0300
+        Tue, 25 Apr 2023 01:12:12 -0700 (PDT)
+Message-ID: <c0958e31-b477-34e0-d824-b017efadd0df@gmail.com>
+Date:   Tue, 25 Apr 2023 11:12:11 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
+Subject: Re: [PATCH v3 5/7] iio: accel: kionix-kx022a: Refactor driver and add
+ chip_info structure
 Content-Language: en-US, en-GB
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org,
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+Cc:     jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
         lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
- <593798a44c8ba45f969b86aa29e172d59065958c.1682373451.git.mehdi.djait.k@gmail.com>
+ <bf0269aff66483f2323914170707203749b33f0f.1682373451.git.mehdi.djait.k@gmail.com>
+ <867ac7b4-b666-854f-69f7-2d7d7d92c94e@gmail.com> <ZEeAGN3TBcao3CNA@carbian>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 7/7] iio: accel: Add support for Kionix/ROHM KX132-1211
- accelerometer
-In-Reply-To: <593798a44c8ba45f969b86aa29e172d59065958c.1682373451.git.mehdi.djait.k@gmail.com>
+In-Reply-To: <ZEeAGN3TBcao3CNA@carbian>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/25/23 01:22, Mehdi Djait wrote:
-> Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
-> ranges from ±2G to ±16G, digital output through I²C/SPI.
-> Add support for basic accelerometer features such as reading acceleration
-> via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
+On 4/25/23 10:24, Mehdi Djait wrote:
+> Hi Matti,
 > 
-> Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
-> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
-> ---
->   drivers/iio/accel/Kconfig             |   8 +-
->   drivers/iio/accel/kionix-kx022a-i2c.c |   2 +
->   drivers/iio/accel/kionix-kx022a-spi.c |   2 +
->   drivers/iio/accel/kionix-kx022a.c     | 147 ++++++++++++++++++++++++++
->   drivers/iio/accel/kionix-kx022a.h     |  52 +++++++++
->   5 files changed, 207 insertions(+), 4 deletions(-)
+> On Tue, Apr 25, 2023 at 09:50:11AM +0300, Matti Vaittinen wrote:
+>> On 4/25/23 01:22, Mehdi Djait wrote:
+>>> Add the chip_info structure to the driver's private data to hold all
+>>> the device specific infos.
+>>> Refactor the kx022a driver implementation to make it more generic and
+>>> extensible.
+>>>
+>>> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+>>> ---
+>>> v3:
+>>> - added the change of the buffer's allocation in the __kx022a_fifo_flush
+>>>     to this patch
+>>> - added the chip_info to the struct kx022a_data
+>>>
+>>> v2:
+>>> - mentioned the introduction of the i2c_device_id table in the commit
+>>> - get i2c_/spi_get_device_id only when device get match fails
+>>> - removed the generic KX_define
+>>> - removed the kx022a_device_type enum
+>>> - added comments for the chip_info struct elements
+>>> - fixed errors pointed out by the kernel test robot
+>>>
+>>>    drivers/iio/accel/kionix-kx022a-i2c.c |  15 +++-
+>>>    drivers/iio/accel/kionix-kx022a-spi.c |  15 +++-
+>>>    drivers/iio/accel/kionix-kx022a.c     | 114 +++++++++++++++++---------
+>>>    drivers/iio/accel/kionix-kx022a.h     |  54 +++++++++++-
+>>>    4 files changed, 147 insertions(+), 51 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kionix-kx022a-i2c.c
+>>> index 8f23631a1fd3..ce299d0446f7 100644
+>>> --- a/drivers/iio/accel/kionix-kx022a-i2c.c
+>>> +++ b/drivers/iio/accel/kionix-kx022a-i2c.c
+>>> @@ -15,6 +15,7 @@
+>>
+>> ...
+>>
+>>
+>>>    static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+>>> @@ -600,13 +600,17 @@ static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+>>>    {
+>>>    	struct kx022a_data *data = iio_priv(idev);
+>>>    	struct device *dev = regmap_get_device(data->regmap);
+>>> -	__le16 buffer[KX022A_FIFO_LENGTH * 3];
+>>> +	__le16 *buffer;
+>>>    	uint64_t sample_period;
+>>>    	int count, fifo_bytes;
+>>>    	bool renable = false;
+>>>    	int64_t tstamp;
+>>>    	int ret, i;
+>>> +	buffer = kmalloc(data->chip_info->fifo_length * KX022A_FIFO_SAMPLES_SIZE_BYTES, GFP_KERNEL);
+>>> +	if (!buffer)
+>>> +		return -ENOMEM;
+>>
+>> Do you think we could get rid of allocating and freeing the buffer for each
+>> flush? I feel it is a bit wasteful, and with high sampling frequencies this
+>> function can be called quite often. Do you think there would be a way to
+>> either use stack (always reserve big enough buffer no matter which chip we
+>> have - or is the buffer too big to be safely taken from the stack?), or a
+>> buffer stored in private data and allocated at probe or buffer enable?
 > 
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index b6b45d359f28..d8cc6e6f2bb9 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -418,8 +418,8 @@ config IIO_KX022A_SPI
->   	select IIO_KX022A
->   	select REGMAP_SPI
->   	help
-> -	  Enable support for the Kionix KX022A digital tri-axis
-> -	  accelerometer connected to I2C interface.
-> +	  Enable support for the Kionix KX022A, KX132-1211 digital tri-axis
-> +	  accelerometers connected to SPI interface.
->   
->   config IIO_KX022A_I2C
->   	tristate "Kionix KX022A tri-axis digital accelerometer I2C interface"
-> @@ -427,8 +427,8 @@ config IIO_KX022A_I2C
->   	select IIO_KX022A
->   	select REGMAP_I2C
->   	help
-> -	  Enable support for the Kionix KX022A digital tri-axis
-> -	  accelerometer connected to I2C interface.
-> +	  Enable support for the Kionix KX022A, KX132-1211 digital tri-axis
-> +	  accelerometers connected to I2C interface.
->   
->   config KXSD9
->   	tristate "Kionix KXSD9 Accelerometer Driver"
-> diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kionix-kx022a-i2c.c
-> index ce299d0446f7..4ea28d2482ec 100644
-> --- a/drivers/iio/accel/kionix-kx022a-i2c.c
-> +++ b/drivers/iio/accel/kionix-kx022a-i2c.c
-> @@ -39,12 +39,14 @@ static int kx022a_i2c_probe(struct i2c_client *i2c)
->   
->   static const struct i2c_device_id kx022a_i2c_id[] = {
->   	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx022a_chip_info },
-> +	{ .name = "kx132-1211", .driver_data = (kernel_ulong_t)&kx132_chip_info },
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
->   
->   static const struct of_device_id kx022a_of_match[] = {
->   	{ .compatible = "kionix,kx022a", .data = &kx022a_chip_info },
-> +	{ .compatible = "kionix,kx132-1211", .data = &kx132_chip_info },
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(of, kx022a_of_match);
-> diff --git a/drivers/iio/accel/kionix-kx022a-spi.c b/drivers/iio/accel/kionix-kx022a-spi.c
-> index b84503e24510..b755b2b395ed 100644
-> --- a/drivers/iio/accel/kionix-kx022a-spi.c
-> +++ b/drivers/iio/accel/kionix-kx022a-spi.c
-> @@ -39,12 +39,14 @@ static int kx022a_spi_probe(struct spi_device *spi)
->   
->   static const struct spi_device_id kx022a_id[] = {
->   	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx022a_chip_info },
-> +	{ .name = "kx132-1211", .driver_data = (kernel_ulong_t)&kx132_chip_info },
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(spi, kx022a_id);
->   
->   static const struct of_device_id kx022a_of_match[] = {
->   	{ .compatible = "kionix,kx022a", .data = &kx022a_chip_info },
-> +	{ .compatible = "kionix,kx132-1211", .data = &kx132_chip_info },
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(of, kx022a_of_match);
-> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-> index 4a31d17c1f22..a6808ab12162 100644
-> --- a/drivers/iio/accel/kionix-kx022a.c
-> +++ b/drivers/iio/accel/kionix-kx022a.c
-> @@ -150,6 +150,101 @@ static const struct regmap_config kx022a_regmap_config = {
->   	.cache_type = REGCACHE_RBTREE,
->   };
->   
-> +/* Regmap configs kx132 */
-> +static const struct regmap_range kx132_volatile_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_XADP_L,
-> +		.range_max = KX132_REG_COTR,
-> +	}, {
-> +		.range_min = KX132_REG_TSCP,
-> +		.range_max = KX132_REG_INT_REL,
-> +	}, {
-> +		/* The reset bit will be cleared by sensor */
-> +		.range_min = KX132_REG_CNTL2,
-> +		.range_max = KX132_REG_CNTL2,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_STATUS_1,
-> +		.range_max = KX132_REG_BUF_READ,
-> +	},
-> +};
+> I tried using the same allocation as before but a device like the KX127
+> has a fifo_length of 342 (compared to 86 for kx132, and 43 for kx022a).
+> Allocating this much using the stack will result in a Warning.
+> 
 
-Maybe the CNTL5 should also be added to volatile table as it has "self 
-clearing" bits? I didn't go through all the registers to see if there 
-are more.
+Right. Maybe you could then have the buffer in private-data and allocate 
+it in buffer pre-enable? Do you think that would work?
 
-> +
-> +static const struct regmap_access_table kx132_volatile_regs = {
-> +	.yes_ranges = &kx132_volatile_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(kx132_volatile_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_precious_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_INT_REL,
-> +		.range_max = KX132_REG_INT_REL,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_precious_regs = {
-> +	.yes_ranges = &kx132_precious_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(kx132_precious_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_read_only_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_XADP_L,
-> +		.range_max = KX132_REG_INT_REL,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_STATUS_1,
-> +		.range_max = KX132_REG_BUF_STATUS_2,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_READ,
-> +		.range_max = KX132_REG_BUF_READ,
-> +	},
-> +};
+>>
+>> Also, please avoid such long lines. I know many people don't care about the
+>> line length - but for example I tend to have 3 terminal windows open
+>> side-by-side on my laptop screen. Hence long lines tend to be harder to read
+>> for me.
+> 
+> That is the case for me also, but Jonathan asked me to change
+> "fifo_length * 6" and the KX022A_FIFO_SAMPLES_SIZE_BYTES is already
+> defined.
 
-Do you think adding the "Kionix reserved" registers to read-only ranges 
-would make things safer or is there a reason to keep them writable? I 
-think the data-sheet states these should not be written to.
+then please maybe split the line from appropriate point like:
+buffer = kmalloc(data->chip_info->fifo_length *
+		 KX022A_FIFO_SAMPLES_SIZE_BYTES, GFP_KERNEL);
 
-> +
-> +static const struct regmap_access_table kx132_ro_regs = {
-> +	.no_ranges = &kx132_read_only_ranges[0],
-> +	.n_no_ranges = ARRAY_SIZE(kx132_read_only_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_write_only_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_MAN_WAKE,
-> +		.range_max = KX132_REG_MAN_WAKE,
+> 
+>>
+>>> +
+>>>    	ret = regmap_read(data->regmap, KX022A_REG_BUF_STATUS_1, &fifo_bytes);
+>>>    	if (ret) {
+>>>    		dev_err(dev, "Error reading buffer status\n");
+>>> @@ -621,8 +625,10 @@ static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+>>>    		dev_warn(data->dev, "Bad FIFO alignment. Data may be corrupt\n");
+>>>    	count = fifo_bytes / KX022A_FIFO_SAMPLES_SIZE_BYTES;
+>>> -	if (!count)
+>>> +	if (!count) {
+>>> +		kfree(buffer);
+>>>    		return 0;
+>>> +	}
+>>>    	/*
+>>>    	 * If we are being called from IRQ handler we know the stored timestamp
+>>> @@ -679,7 +685,7 @@ static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+>>>    	}
+>>>    	fifo_bytes = count * KX022A_FIFO_SAMPLES_SIZE_BYTES;
+>>> -	ret = regmap_noinc_read(data->regmap, KX022A_REG_BUF_READ,
+>>> +	ret = regmap_noinc_read(data->regmap, data->chip_info->buf_read,
+>>>    				&buffer[0], fifo_bytes);
+>>>    	if (ret)
+>>>    		goto renable_out;
+>>> @@ -704,6 +710,7 @@ static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+>>>    	if (renable)
+>>>    		enable_irq(data->irq);
+>>> +	kfree(buffer);
+>>>    	return ret;
+>>>    }
+>>>
+>> ...
+>>
+>>> -int kx022a_probe_internal(struct device *dev)
+>>> +const struct kx022a_chip_info kx022a_chip_info = {
+>>> +	.name		  = "kx022-accel",
+>>> +	.regmap_config	  = &kx022a_regmap_config,
+>>> +	.channels	  = kx022a_channels,
+>>> +	.num_channels	  = ARRAY_SIZE(kx022a_channels),
+>>> +	.fifo_length	  = KX022A_FIFO_LENGTH,
+>>> +	.who		  = KX022A_REG_WHO,
+>>> +	.id		  = KX022A_ID,
+>>> +	.cntl		  = KX022A_REG_CNTL,
+>>> +	.cntl2		  = KX022A_REG_CNTL2,
+>>> +	.odcntl		  = KX022A_REG_ODCNTL,
+>>> +	.buf_cntl1	  = KX022A_REG_BUF_CNTL1,
+>>> +	.buf_cntl2	  = KX022A_REG_BUF_CNTL2,
+>>> +	.buf_clear	  = KX022A_REG_BUF_CLEAR,
+>>> +	.buf_status1	  = KX022A_REG_BUF_STATUS_1,
+>>> +	.buf_read	  = KX022A_REG_BUF_READ,
+>>> +	.inc1		  = KX022A_REG_INC1,
+>>> +	.inc4		  = KX022A_REG_INC4,
+>>> +	.inc5		  = KX022A_REG_INC5,
+>>> +	.inc6		  = KX022A_REG_INC6,
+>>> +	.xout_l		  = KX022A_REG_XOUT_L,
+>>> +};
+>>> +EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
+>>
+>> Do you think the fields (or at least some of them) in this struct could be
+>> named based on the (main) functionality being used, not based on the
+>> register name? Something like "watermark_reg", "buf_en_reg", "reset_reg",
+>> "output_rate_reg", "int1_pinconf_reg", "int1_src_reg", "int2_pinconf_reg",
+>> "int1_src_reg" ...
+>>
+>> I would not be at all surprized to see for example some IRQ control to be
+>> shifted from INC<X> to INC<Y> or cntl<X> / buf_cntl<X> stuff to be moved to
+>> cntl<Y> or to buf_cntl<Y> for next sensor we want to support. Especially
+>> when new cool feature is added to next sensor, resulting also adding a new
+>> cntl<Z> or buf_cntl<Z> or INC<Z>.
+>>
+>> I, however, believe the _functionality_ will be there (in some register) -
+>> at least for the ICs for which we can re-use this driver. Hence, it might be
+>> nice - and if you can think of better names for these fields - to rename
+>> them based on the _functionality_ we use.
+>>
+>> Another benefit would be added clarity to the code. Writing a value to
+>> "buf_en_reg", "watermark_reg" or to "int1_src_reg" is much clearer (to me)
+>> than writing a value to "buf_cntl1", "buf_cntl2" or "INC4". Especially if
+>> you don't have a datasheet at your hands.
+>>
+>> I am not "demanding" this (at least not for now :]) because it seems these
+>> two Kionix sensors have been pretty consistent what comes to maintaining the
+>> same functionality in the registers with same naming - but I believe this is
+>> something that may in any case be lurking around the corner.
+> 
+> I agree, this seems to be the better solution. I will look into this.
+> 
 
-Why the WUFC is write-only? Also, I don't think the KX022A_REG_MAN_WAKE 
-and KX132_REG_MAN_WAKE reflect same functionality. The naming of the 
-define may be slightly misleading.
-
-> +	}, {
-> +		.range_min = KX132_REG_SELF_TEST,
-> +		.range_max = KX132_REG_SELF_TEST,
-> +	}, {
-> +		.range_min = KX132_REG_BUF_CLEAR,
-> +		.range_max = KX132_REG_BUF_CLEAR,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_wo_regs = {
-> +	.no_ranges = &kx132_write_only_ranges[0],
-> +	.n_no_ranges = ARRAY_SIZE(kx132_write_only_ranges),
-> +};
-> +
-> +static const struct regmap_range kx132_noinc_read_ranges[] = {
-> +	{
-> +		.range_min = KX132_REG_BUF_READ,
-> +		.range_max = KX132_REG_BUF_READ,
-> +	},
-> +};
-> +
-> +static const struct regmap_access_table kx132_nir_regs = {
-> +	.yes_ranges = &kx132_noinc_read_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(kx132_noinc_read_ranges),
-> +};
-> +
-> +static const struct regmap_config kx132_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.volatile_table = &kx132_volatile_regs,
-> +	.rd_table = &kx132_wo_regs,
-> +	.wr_table = &kx132_ro_regs,
-> +	.rd_noinc_table = &kx132_nir_regs,
-> +	.precious_table = &kx132_precious_regs,
-> +	.max_register = KX132_MAX_REGISTER,
-> +	.cache_type = REGCACHE_RBTREE,
-> +};
-> +
->   struct kx022a_data {
->   	const struct kx022a_chip_info *chip_info;
->   	struct regmap *regmap;
-> @@ -237,6 +332,13 @@ static const struct iio_chan_spec kx022a_channels[] = {
->   	IIO_CHAN_SOFT_TIMESTAMP(3),
->   };
->   
-> +static const struct iio_chan_spec kx132_channels[] = {
-> +	KX022A_ACCEL_CHAN(X, KX132_REG_XOUT_L, 0),
-> +	KX022A_ACCEL_CHAN(Y, KX132_REG_YOUT_L, 1),
-> +	KX022A_ACCEL_CHAN(Z, KX132_REG_ZOUT_L, 2),
-> +	IIO_CHAN_SOFT_TIMESTAMP(3),
-> +};
-> +
->   /*
->    * The sensor HW can support ODR up to 1600 Hz, which is beyond what most of the
->    * Linux CPUs can handle without dropping samples. Also, the low power mode is
-> @@ -613,6 +715,25 @@ static int kx022a_get_fifo_bytes(struct kx022a_data *data)
->   	return fifo_bytes;
->   }
->   
-> +static int kx132_get_fifo_bytes(struct kx022a_data *data)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	__le16 buf_status;
-> +	int ret, fifo_bytes;
-> +
-> +	ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-> +			       &buf_status, sizeof(buf_status));
-> +	if (ret) {
-> +		dev_err(dev, "Error reading buffer status\n");
-> +		return ret;
-> +	}
-> +
-> +	fifo_bytes = le16_to_cpu(buf_status);
-> +	fifo_bytes &= data->chip_info->buf_smp_lvl_mask;
-
-This is probably just my limitation but I've hard time thinking how this 
-works out on BE machines. It'd be much easier for me to understand this 
-if the data was handled as two u8 values and mask was applied before 
-endianes conversion. (Eg - untested pseudo code follows;
-
-__le16 buf_status;
-u8 *reg_data;
-
-...
-
-ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-			&buf_status, sizeof(buf_status));
-...
-
-reg_data = (u8 *)&buf_status;
-
-/* Clear the unused bits form 2.nd reg */
-reg_data[1] = reg_data[i] & MASK_SMP_LVL_REG_HIGH_BITS;
-
-/* Convert to CPU endianess */
-fifo_bytes = le16_to_cpu(buf_status);
-
-Well, others may have different view on this :)
-
-
-> +
-> +	return fifo_bytes;
-> +}
-> +
->   static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
->   			       bool irq)
->   {
-> @@ -1036,6 +1157,32 @@ const struct kx022a_chip_info kx022a_chip_info = {
->   };
->   EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
->   
-> +const struct kx022a_chip_info kx132_chip_info = {
-> +	.name		  = "kx132-1211",
-> +	.regmap_config	  = &kx132_regmap_config,
-> +	.channels	  = kx132_channels,
-> +	.num_channels	  = ARRAY_SIZE(kx132_channels),
-> +	.fifo_length	  = KX132_FIFO_LENGTH,
-> +	.who		  = KX132_REG_WHO,
-> +	.id		  = KX132_ID,
-> +	.cntl		  = KX132_REG_CNTL,
-> +	.cntl2		  = KX132_REG_CNTL2,
-> +	.odcntl		  = KX132_REG_ODCNTL,
-> +	.buf_cntl1	  = KX132_REG_BUF_CNTL1,
-> +	.buf_cntl2	  = KX132_REG_BUF_CNTL2,
-> +	.buf_clear	  = KX132_REG_BUF_CLEAR,
-> +	.buf_status1	  = KX132_REG_BUF_STATUS_1,
-> +	.buf_smp_lvl_mask = KX132_MASK_BUF_SMP_LVL,
-> +	.buf_read	  = KX132_REG_BUF_READ,
-> +	.inc1		  = KX132_REG_INC1,
-> +	.inc4		  = KX132_REG_INC4,
-> +	.inc5		  = KX132_REG_INC5,
-> +	.inc6		  = KX132_REG_INC6,
-> +	.xout_l		  = KX132_REG_XOUT_L,
-> +	.get_fifo_bytes	  = kx132_get_fifo_bytes,
-> +};
-> +EXPORT_SYMBOL_NS_GPL(kx132_chip_info, IIO_KX022A);
-> +
->   int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_info *chip_info)
->   {
->   	static const char * const regulator_names[] = {"io-vdd", "vdd"};
-> diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-> index f043767067b7..1f4135cf20eb 100644
-> --- a/drivers/iio/accel/kionix-kx022a.h
-> +++ b/drivers/iio/accel/kionix-kx022a.h
-> @@ -74,6 +74,57 @@
->   #define KX022A_REG_SELF_TEST	0x60
->   #define KX022A_MAX_REGISTER	0x60
->   
-> +#define KX132_REG_WHO		0x13
-> +#define KX132_ID		0x3d
-> +
-> +#define KX132_FIFO_LENGTH	86
-> +
-> +#define KX132_REG_CNTL		0x1b
-> +#define KX132_REG_CNTL2		0x1c
-> +#define KX132_MASK_RES		BIT(6)
-> +#define KX132_GSEL_2		0x0
-> +#define KX132_GSEL_4		BIT(3)
-> +#define KX132_GSEL_8		BIT(4)
-> +#define KX132_GSEL_16		GENMASK(4, 3)
-> +
-> +#define KX132_REG_INS2		0x17
-> +#define KX132_MASK_INS2_WMI	BIT(5)
-> +
-> +#define KX132_REG_XADP_L	0x02
-> +#define KX132_REG_XOUT_L	0x08
-> +#define KX132_REG_YOUT_L	0x0a
-> +#define KX132_REG_ZOUT_L	0x0c
-> +#define KX132_REG_COTR		0x12
-> +#define KX132_REG_TSCP		0x14
-> +#define KX132_REG_INT_REL	0x1a
-> +
-> +#define KX132_REG_ODCNTL	0x21
-> +
-> +#define KX132_REG_BTS_WUF_TH	0x4a
-> +#define KX132_REG_MAN_WAKE	0x4d
-
-As mentioned elsewhere, I don't think this is functionally same as 
-KX022A_REG_MAN_WAKE.
-
-> +
-> +#define KX132_REG_BUF_CNTL1	0x5e
-> +#define KX132_REG_BUF_CNTL2	0x5f
-> +#define KX132_REG_BUF_STATUS_1	0x60
-> +#define KX132_REG_BUF_STATUS_2	0x61
-> +#define KX132_MASK_BUF_SMP_LVL	GENMASK(9, 0)
-> +#define KX132_REG_BUF_CLEAR	0x62
-> +#define KX132_REG_BUF_READ	0x63
-> +#define KX132_ODR_SHIFT		3
-> +#define KX132_FIFO_MAX_WMI_TH	86
-> +
-> +#define KX132_REG_INC1		0x22
-> +#define KX132_REG_INC5		0x26
-> +#define KX132_REG_INC6		0x27
-> +#define KX132_IPOL_LOW		0
-> +#define KX132_IPOL_HIGH		KX022A_MASK_IPOL
-> +#define KX132_ITYP_PULSE	KX022A_MASK_ITYP
-> +
-> +#define KX132_REG_INC4		0x25
-> +
-> +#define KX132_REG_SELF_TEST	0x5d
-> +#define KX132_MAX_REGISTER	0x76
-> +
->   struct device;
->   
->   struct kx022a_data;
-> @@ -132,5 +183,6 @@ struct kx022a_chip_info {
->   int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_info *chip_info);
->   
->   extern const struct kx022a_chip_info kx022a_chip_info;
-> +extern const struct kx022a_chip_info kx132_chip_info;
->   
->   #endif
-
-
-Thanks for adding this support!
+Thanks for going the extra mile :)
 
 Yours,
 	-- Matti
-
 
 -- 
 Matti Vaittinen

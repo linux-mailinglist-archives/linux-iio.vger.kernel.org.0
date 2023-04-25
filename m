@@ -2,74 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 031626EE35E
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 15:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC4586EE511
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 17:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234127AbjDYNp1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Apr 2023 09:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41890 "EHLO
+        id S234518AbjDYP5k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Apr 2023 11:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbjDYNp0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 09:45:26 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7FD19BC;
-        Tue, 25 Apr 2023 06:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682430325; x=1713966325;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=k/ABWJ2xxNYCYrGZUiTvjqFyFuCe4XdVVI+pcOUNIv8=;
-  b=A4CO2wCD+vygGngqhNi+C+Juzoch3wTbsnSvCRehfyXVtkDiuxwfE3WX
-   /aB2Ei0evzE/1jAnqfhG7gY77tlwg3Wn71bz5v7aat7PAqiEp2Ybl/M2v
-   l3I94t4MXKYonXy3vjfF63iISI6TE8TPiIGiij4p1qY0jCRmxQZk31PaX
-   GPwKH12kCprch3WT0xQ5I0R/+mMKBtAILxNi7DdFeZMyRt76FwsAUhUF7
-   YpVdPmQfxr1ejB7fGKkZo8Twq/os0cO4Fmp8GB6PYxDYwGdJcDYA87tJJ
-   uNb036Bl2REMitKaBq9dnBmCFGaDukrQFTqYtnNFg8fqPSMiuGWqjMtfh
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="345521094"
-X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
-   d="scan'208";a="345521094"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 06:45:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="724036501"
-X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
-   d="scan'208";a="724036501"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 25 Apr 2023 06:45:21 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1prIyt-00505G-0n;
-        Tue, 25 Apr 2023 16:45:19 +0300
-Date:   Tue, 25 Apr 2023 16:45:18 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
-Message-ID: <ZEfZbmczXmJjiNPP@smile.fi.intel.com>
-References: <cover.1682340947.git.mazziesaccount@gmail.com>
- <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
- <ZEaeoxdWTknLz7lQ@smile.fi.intel.com>
- <47998ed8-5160-69dd-1767-e1746971a9b9@gmail.com>
+        with ESMTP id S234320AbjDYP5j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 11:57:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF26C17A;
+        Tue, 25 Apr 2023 08:57:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD3DC62F86;
+        Tue, 25 Apr 2023 15:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC6DC433EF;
+        Tue, 25 Apr 2023 15:57:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682438258;
+        bh=KcEPijgDMdf9nIE4sARugIAJD7IOSpJYhKwFnLJ3HO4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Hzj48BJD7HDVIcCpfUAUlKgOQpEObIOdSRuNksz8vCQ1nOnYUAGrvLUym8/OUEMzj
+         Ih+eGIDjtCiX8nISHz2EVQ/+iE2otHFIBlXsNdYXOW6v6RJolKIoKdf8BEUgvfOZa9
+         67uhMXFemFrfr6MSBdF/hJmkDFA8dXeNxj620oLBGIRXFuWpcbwejz+ilygabxrwXy
+         k8pXvk3Up/uYnD05ZvKTdjV6mWT624P/u6dBx4OTG3s5VEFnIV/8AYpeUPn7Tdtupw
+         c0sWU3EHpdiOclNtXkVpwdT6pl+swQk4CrWwoLQslxB6qu84KEy/5QdIHpV+Mh6qZh
+         M4+PR51atzXTA==
+Date:   Tue, 25 Apr 2023 17:57:34 +0200
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 5/7] iio: accel: kionix-kx022a: Refactor driver and
+ add chip_info structure
+Message-ID: <20230425155734.ywdle4pv6y2wjk2s@intel.intel>
+References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
+ <bf0269aff66483f2323914170707203749b33f0f.1682373451.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <47998ed8-5160-69dd-1767-e1746971a9b9@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+In-Reply-To: <bf0269aff66483f2323914170707203749b33f0f.1682373451.git.mehdi.djait.k@gmail.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,36 +58,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 25, 2023 at 08:24:01AM +0300, Matti Vaittinen wrote:
-> On 4/24/23 18:22, Andy Shevchenko wrote:
-> > On Mon, Apr 24, 2023 at 04:10:09PM +0300, Matti Vaittinen wrote:
+Hi Mehdi,
 
-...
+On Tue, Apr 25, 2023 at 12:22:25AM +0200, Mehdi Djait wrote:
+> Add the chip_info structure to the driver's private data to hold all
+> the device specific infos.
+> Refactor the kx022a driver implementation to make it more generic and
+> extensible.
 
-> > This...
-> > 
-> > > +#include <linux/bits.h>
-> > 
-> > ...is guaranteed to be included by this.
-> > 
-> > > +#include <linux/bitops.h>
-> 
-> Out of the curiosity - do we have a rule and rationale for explicitly
-> including headers with 'stuff' we use Vs. trusting some header being
-> included by another one? I've not thought much of this so I don't know if
-> there are any pros/cons?
+Could you please split this in different patches? Add id in one
+patch and refactor in a different patch. Please, also the
+refactorings need to be split.
 
-That's what we are starving for actually. Currently this is a tribe knowledge
-which one gets while being involved into Linux kernel development for a long
-time and being capable of keeping an eye on tree wide, library or similar
-changes.
+I see here that this is a general code cleanup, plus some other
+stuff.
 
-I would love to see some (preferably generated) list of the header
-dependencies. Yet, the header dependency hell should be solved meanwhile
-(see Ingo's 2k+ patch series).
+[...]
 
--- 
-With Best Regards,
-Andy Shevchenko
+> @@ -22,22 +23,28 @@ static int kx022a_spi_probe(struct spi_device *spi)
+>  		return -EINVAL;
+>  	}
+>  
+> -	regmap = devm_regmap_init_spi(spi, &kx022a_regmap);
+> +	chip_info = device_get_match_data(&spi->dev);
+> +	if (!chip_info) {
+> +		const struct spi_device_id *id = spi_get_device_id(spi);
+> +		chip_info = (const struct kx022a_chip_info *)id->driver_data;
 
+you don't need the cast here... if you don't find it messy, I
+wouldn't mind this form... some hate it, I find it easier to
+read:
 
+	chip_info = spi_get_device_id(spi)->driver_data;
+
+your choice.
+
+Andi

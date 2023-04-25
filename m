@@ -2,59 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC926EDB1C
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 07:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121D36EDB25
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 07:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjDYFRb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Apr 2023 01:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46024 "EHLO
+        id S233201AbjDYFYK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Apr 2023 01:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230195AbjDYFRa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 01:17:30 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFB35247;
-        Mon, 24 Apr 2023 22:17:28 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4eff055d4d3so2367333e87.3;
-        Mon, 24 Apr 2023 22:17:28 -0700 (PDT)
+        with ESMTP id S229637AbjDYFYF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 01:24:05 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3C504C0F;
+        Mon, 24 Apr 2023 22:24:03 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2a7ac89b82dso50485071fa.1;
+        Mon, 24 Apr 2023 22:24:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682399847; x=1684991847;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JnxMYL7t9r8k0/dlYqYKpi162XSbo0kvlvfpcduFJf8=;
-        b=ZRcPtqc6A7+Y+R9nvZWVWNH5ENJ8XmMUXJU8z1XmgMbKtVtI3YA95jl8dINwG+UXPc
-         8zYfv6wX+ZG5/YfeUiTDmauroG6QXvvY+k/L5aepun0qOTg6k2hSvTdmHrF8Pd9YPs0P
-         /jZql0swRJYkq0AFTAY3GDwOXouJjjlsuO8LTYpHCVulD51pqWC2oygnsmFl5somCONs
-         aam2jC66iA4CdB+sVQkmNfB251+4XJRKmeF3l0x2vMb7J+NX6izHoqnzskk5FUrjFFRT
-         FrWJDanxIvDG0ASt4lXRRKQXyw5czkuupjl6+hK1Qt4cQcXF7uzORKI2pVU13mntxY2v
-         ggJg==
+        d=gmail.com; s=20221208; t=1682400242; x=1684992242;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bQhkG9xAytA2mlNSKXfOWr2pzT8B0inX1jNWQEbw998=;
+        b=Haf5AuIYrwmCP+N3uXDNv1ED7H4RSsfgQjcQr4Ih5UkTjbPJzTRvMfs/6KAX2cuvWo
+         dv7tPyZMG7CYdoBlOKBOPupH6BYdvMGU8wPcmYCuwn+wDqy3g9Afe7UPU0iqVw7ZnJZ0
+         V2R6qEd6RUzdp/ge/F4MqD1a5m3BU+QYEcvKZZVYXxjxbCr+OY8a3jAvhhjLButJPUcQ
+         I2yOqa4ey2rjQyaeuCIuG8CxH04+YsF79WS7lISymbEQJfJSRybmwYf/YUNtfkv9qLx3
+         vaWhlWo++0kc548alTjykBr2rRs9U5eg/KTrHMwXnDhDkdsbXdIqQd1r6C3D6INmIxNw
+         JKKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682399847; x=1684991847;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1682400242; x=1684992242;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JnxMYL7t9r8k0/dlYqYKpi162XSbo0kvlvfpcduFJf8=;
-        b=PjirbNw5mxvkscoiHv17kPCZfaHkiF6l05XJ4OCxyomoQB4dX+pcUn1F06qtg0mVrP
-         8UA/72vbyHYCZ7DpDJ6wJAF5v6xJL8luVcug0mGNd/a0W0LDtDu9z5rt33ZE5dvQ9n1q
-         QpqpiucDymZx6Po+obPYQKbZA2Siyz5ckFZnT8YyCvdAgtVZQP9CZSs/1OZIj5nyesiT
-         Naic3YKFgaTeuzJKf3tpsGLqhaFG8cPGloUavQZbQ9EtpTukPsWiPUb/qtRosHrQwmsQ
-         YwTpV3g0TJDF8+Xy8I0wv3OmY1craIk4B/nxMv7CgeI9FxIrZwEsbAWkokrLDBdf0RCC
-         KaZg==
-X-Gm-Message-State: AC+VfDwkkJMrps3OZoHOabrDz+AuaXVYKqyRs5y63jq329u7TqMxff+E
-        q8vJqRiW6dgiXZIagOVfRAsaGO0HJu4=
-X-Google-Smtp-Source: ACHHUZ51wPdu4BKlXfKiIk398KdCzpCgkBeCfXi/Ho7jUkSE1zK3B1sJMeMLc4KUpyl4YbL0P6eUcQ==
-X-Received: by 2002:ac2:43db:0:b0:4ef:fed9:8ef1 with SMTP id u27-20020ac243db000000b004effed98ef1mr114658lfl.48.1682399846653;
-        Mon, 24 Apr 2023 22:17:26 -0700 (PDT)
+        bh=bQhkG9xAytA2mlNSKXfOWr2pzT8B0inX1jNWQEbw998=;
+        b=hEFtYoflW6yZV4VsX1UbVNfyMWLd2oxA5r/jEjFD6/euxvgCQdgW0ln2iamFmor5n8
+         VmOvYBRAICxtgGjuyroieh4R9VVVwnUbYz6vQO/OmxBW1c6ZrQPOjKlxkcxmkUaaSO9+
+         nUObH+3ENwWaSJaJGMYBoIP4jNyUwZHQWps4ZXmQEuT1JaXRUfEnrOxIyx99O+VYQiCd
+         8Fmroy3SUoGX5ibhE0nkaZzEyRbDFx+fbwuRNEecLqlfb23jmN4y2KaovCfP0jdO9vLE
+         iNgINarq1ff1qcTeOWbwVwASi1psIpxxeDfSU8Q5PhVlIrALmGRNEry2V/xqgPmqMDmq
+         kIEw==
+X-Gm-Message-State: AAQBX9f2NLeIuStz5f4WRyTWfYYkd57YxYUFapoosC7MI/WpYE5oFu1Y
+        9nHT5NsxQZaFkWEzwhGOBfJpPWcoDDc=
+X-Google-Smtp-Source: AKy350ZPHGuu6CvqVbeJ6Ijd4q3fcf9njPSPXBeEpI91IahRjlZMHpj4NxQg4pBvPEr4J3r1sBGkkA==
+X-Received: by 2002:a2e:3313:0:b0:2aa:3bd0:59fa with SMTP id d19-20020a2e3313000000b002aa3bd059famr3418455ljc.12.1682400242183;
+        Mon, 24 Apr 2023 22:24:02 -0700 (PDT)
 Received: from [192.168.1.111] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id b7-20020a056512218700b004eb12329053sm1909605lft.256.2023.04.24.22.17.25
+        by smtp.gmail.com with ESMTPSA id l26-20020a2e3e1a000000b002a8c7bd0798sm1965518lja.86.2023.04.24.22.24.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 22:17:26 -0700 (PDT)
-Message-ID: <614c626e-208d-2be8-6a83-f99f2720e091@gmail.com>
-Date:   Tue, 25 Apr 2023 08:17:25 +0300
+        Mon, 24 Apr 2023 22:24:01 -0700 (PDT)
+Message-ID: <47998ed8-5160-69dd-1767-e1746971a9b9@gmail.com>
+Date:   Tue, 25 Apr 2023 08:24:01 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v2 2/5] iio:trigger: Add simple trigger_validation helper
 Content-Language: en-US, en-GB
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
@@ -69,10 +68,11 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <cover.1682340947.git.mazziesaccount@gmail.com>
- <91fffd0001e8efef90f43fa03026dc0e5e30b4e4.1682340947.git.mazziesaccount@gmail.com>
- <ZEabb3lJzGNb/BMO@smile.fi.intel.com>
+ <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
+ <ZEaeoxdWTknLz7lQ@smile.fi.intel.com>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <ZEabb3lJzGNb/BMO@smile.fi.intel.com>
+Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
+In-Reply-To: <ZEaeoxdWTknLz7lQ@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -85,16 +85,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/24/23 18:08, Andy Shevchenko wrote:
-> On Mon, Apr 24, 2023 at 04:08:19PM +0300, Matti Vaittinen wrote:
->> Some triggers can only be attached to the IIO device that corresponds to
->> the same physical device. Implement generic helper which can be used as
->> a validate_trigger callback for such devices.
+On 4/24/23 18:22, Andy Shevchenko wrote:
+> On Mon, Apr 24, 2023 at 04:10:09PM +0300, Matti Vaittinen wrote:
+>> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
+>> and IR) with four configurable channels. Red and green being always
+>> available and two out of the rest three (blue, clear, IR) can be
+>> selected to be simultaneously measured. Typical application is adjusting
+>> LCD backlight of TVs, mobile phones and tablet PCs.
+>>
+>> Add initial support for the ROHM BU27008 color sensor.
+>>   - raw_read() of RGB and clear channels
+>>   - triggered buffer w/ DRDY interrtupt
 > 
-> Missing space in the Subject?
+> ...
 > 
+> This...
+> 
+>> +#include <linux/bits.h>
+> 
+> ...is guaranteed to be included by this.
+> 
+>> +#include <linux/bitops.h>
 
-After iio:? Yep, thanks!
+Out of the curiosity - do we have a rule and rationale for explicitly 
+including headers with 'stuff' we use Vs. trusting some header being 
+included by another one? I've not thought much of this so I don't know 
+if there are any pros/cons?
+
+> ...
+> 
+>> +static const struct of_device_id bu27008_of_match[] = {
+>> +	{ .compatible = "rohm,bu27008", },
+> 
+> Inner comma is not necessary to have.
+
+Thanks.
 
 Yours,
 	-- Matti

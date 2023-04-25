@@ -2,63 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1921A6EE6C0
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 19:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1580C6EE751
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 20:06:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234562AbjDYRdP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Apr 2023 13:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37860 "EHLO
+        id S234965AbjDYSGG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Apr 2023 14:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234607AbjDYRdO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 13:33:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD0837AAD;
-        Tue, 25 Apr 2023 10:33:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 699F361009;
-        Tue, 25 Apr 2023 17:33:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D622AC433EF;
-        Tue, 25 Apr 2023 17:33:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682443989;
-        bh=mcnUcuZCsp42gOl0koyvCmjFpEs0zWYiqO16h08PCjA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aMVYvKWDZ4NCuDhOb1y5atMlF1Y0M9iCVAWPsMGKAJrdFeuPJ0gC1F2uxB8nbcSiz
-         dqR13DU+eu0L58BuFuDvnHdjpiAMtLSxQIEGYN3h+2WiiU61WQgz07AD7Q2qVt0eJt
-         jP94kH2s2qdtjDbjOWXmYaGpSR/ZKSc8Ye4mmFBbuM8QO6Q+8zhcY+FtLBXC019Msb
-         j7t4LVSoq62WmLyVDQiFcw4t4Cl0YSbwQopnBQ4f0WFe41aHswhlDQBh5goRQR91Rd
-         rlYvFzwXMr/AxCKV2fIgOAtWmIFeNMxsLjSXq2D1cBTjvfZ2mrD4MRvEESRk9mcVvR
-         uys9mkE0bMcMA==
-Date:   Tue, 25 Apr 2023 18:33:03 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Herve Codina <herve.codina@bootlin.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S234525AbjDYSGE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Apr 2023 14:06:04 -0400
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB83F1720;
+        Tue, 25 Apr 2023 11:06:03 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-38e5c33305cso4332998b6e.3;
+        Tue, 25 Apr 2023 11:06:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682445963; x=1685037963;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X376wL3T8sy/ZF3e8JDdjXowqGN/pb6h2TwQ05Gxs1U=;
+        b=juin3QSPussTE6xyvu5i7yOz0cbqvSQzoOi17NYKyM1F9+DIqP9+bufT1v02snbnPW
+         0z0QQcP2UUXVu1iCJl3uMbZHRsjcFod1nP+PQJDoTpXTatgoNBfOg+LJV3nTcLuZg7G8
+         t1bhQRneIg6bEWua+4s1hTzncC3G+WuN4aHxzSlC21Oj0NHk3OrlDdMu6UPRlJj0HCOT
+         5bJQOS+F207aL5tqM4GEcmbUL7xp6kuQbfXETR8+FOE/HoPm5BxZ3XeVM+WtqCwnmaQ8
+         aIG/zennnI/F0DDLR9ftrnH8ke3ss9CAKWW3V/DLpRp5huoY2GpTwPXtxRk01mKNbuLZ
+         SSnw==
+X-Gm-Message-State: AAQBX9cbpsJaYkfhAkee8epIBax0se4aD8teGn37H9hF/XSQfdJ/Ac9k
+        KO6/46sNX6FsS0OUYhg4QQ==
+X-Google-Smtp-Source: AKy350ZnwmyDkZuMRppHglz4M32pu2rq/AGDWRh6cTIJ06tg15gqMgSWbRzzsxN4kZf8EtIbVksCgQ==
+X-Received: by 2002:a05:6808:2389:b0:38e:2993:be7f with SMTP id bp9-20020a056808238900b0038e2993be7fmr11625977oib.38.1682445962905;
+        Tue, 25 Apr 2023 11:06:02 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id b24-20020a056808011800b0038c0cf168afsm5852298oie.7.2023.04.25.11.06.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Apr 2023 11:06:02 -0700 (PDT)
+Received: (nullmailer pid 2025900 invoked by uid 1000);
+        Tue, 25 Apr 2023 18:06:01 -0000
+Date:   Tue, 25 Apr 2023 13:06:01 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Frank Wunderlich <linux@fw-web.de>
+Cc:     Lala Lin <lala.lin@mediatek.com>,
+        Frank Wunderlich <frank-w@public-files.de>,
+        linux-arm-kernel@lists.infradead.org,
         Jonathan Cameron <jic23@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, "Hui.Liu" <hui.liu@mediatek.com>,
+        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-kernel@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 1/4] dt-bindings: sound: Add simple-iio-aux
-Message-ID: <7682a443-7ae2-4bc2-9581-304c7e72942d@sirena.org.uk>
-References: <20230421124122.324820-1-herve.codina@bootlin.com>
- <20230421124122.324820-2-herve.codina@bootlin.com>
- <20230425173029.GA1967523-robh@kernel.org>
+        linux-mediatek@lists.infradead.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: Re: [PATCH v1 1/7] dt-bindings: nvmem: mediatek: efuse: add support
+ for mt7986
+Message-ID: <168244596061.2025844.2232344223319000455.robh@kernel.org>
+References: <20230421132047.42166-1-linux@fw-web.de>
+ <20230421132047.42166-2-linux@fw-web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QVyLAfDfdBkSU7kb"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230425173029.GA1967523-robh@kernel.org>
-X-Cookie: The meek don't want it.
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230421132047.42166-2-linux@fw-web.de>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,35 +79,16 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---QVyLAfDfdBkSU7kb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, 21 Apr 2023 15:20:41 +0200, Frank Wunderlich wrote:
+> From: Frank Wunderlich <frank-w@public-files.de>
+> 
+> Add compatible string for mt7986 SoC.
+> 
+> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+> ---
+>  Documentation/devicetree/bindings/nvmem/mediatek,efuse.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-On Tue, Apr 25, 2023 at 12:30:29PM -0500, Rob Herring wrote:
-> On Fri, Apr 21, 2023 at 02:41:19PM +0200, Herve Codina wrote:
+Acked-by: Rob Herring <robh@kernel.org>
 
-> > +    aux {
-> > +        compatible = "simple-iio-aux";
-> > +        io-channels = <&iio 0>, <&iio 1>, <&iio 2>, <&iio 3>;
-> > +        io-channel-names = "CH0", "CH1", "CH2", "CH3";
-
-> Not really useful names. Do you have a real example?
-
-I fear those might be real names for channels on an IIO device...
-
---QVyLAfDfdBkSU7kb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRIDs4ACgkQJNaLcl1U
-h9B3TAf/cTeNpl+HMeW2P0Vb5nstfBc6zxXBQOKy5lEeUHK8Gl78nKrJyAGI1j2A
-XfAyeEhz4pNgn/xIQ/8bV41cnTMawrGJeZiNiq/+3ns2u2V+2XkUPBv6R1B5i629
-xI2lyb4p5VlnX6sRCzcvnXFyl1aT71+Rw9xOAjuJB+l8Y6k86eHVlV9bDIM2w6/3
-TrJtACmWndoZhtS9PK86WA9WYrMnjBflNG6KmeeKxDHl0k/PsCvbpijSZBb6e3QO
-zg8BcfitzHMyCcmTt643bGufvXRarx+y2OdU2glNckGHXPSeCmXHCU/jUNgnLwqW
-d2OEVBQZOmA3Btwz9T+eAUuggPGb6A==
-=ax2u
------END PGP SIGNATURE-----
-
---QVyLAfDfdBkSU7kb--

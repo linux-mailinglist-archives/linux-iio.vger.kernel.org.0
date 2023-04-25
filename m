@@ -2,406 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA1E26ED7CD
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 00:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 227C36EDAA7
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Apr 2023 05:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232667AbjDXWXh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Apr 2023 18:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
+        id S233255AbjDYD3X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Apr 2023 23:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbjDXWX2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 18:23:28 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8804E93E8;
-        Mon, 24 Apr 2023 15:22:57 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-959a3e2dd27so309427866b.3;
-        Mon, 24 Apr 2023 15:22:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682374975; x=1684966975;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k8x37hSZAA/UyYHJr6MBXyC+9iGDHF5LYlDzRBMVftQ=;
-        b=PjkysorumdCiXiUuH0mkobFqohkxt3GyKWsPcMwqVh0kv64MkfcT6Vs4sLk0LbHbNu
-         FX1f979oJguiKSk1HWZrrHADerZim0qicZ/mjXFf4DmlBX+BrEfAQQ7Js7uNWVwlFH4g
-         nREHqT6dpYshp02CNZjUHM83qosrIrrBEy3g/VDhtVn6lvJdVR+Id/JMttqswKvjJgc+
-         MNHR4aVc5WritVDtswK1M1pr9gdbsd1uAqqeIPqPIjgJNTRj26Nh2N4ipVx9VriXk6z8
-         GPqQUdHPf4BQcQ50wOh0cmhCAXcOMNS9zS33YFyRBTk41f2Haff+MHoO9BfwM++4chQ8
-         64RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682374975; x=1684966975;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k8x37hSZAA/UyYHJr6MBXyC+9iGDHF5LYlDzRBMVftQ=;
-        b=iaXcjrEOBi3YBimeLrXKBw71mR12nhT++j+H39+j7gB+vEQ7/x4egi5yDyUpoWo1PM
-         IVwiBuWbg8taF3mxs9uyiwCB6nqmZQ9RXiR4uYli1YUzfK5rZvxhHPwRVU7wfjD/OWHL
-         waRUnVaVZL6rTQyz4oniuBWziX6b/BnS8F3QAeGy0juFflQdu2VIDZNcIWVOK0ts8Lor
-         jvThLksE1LKdHEXCJDMstlXq5jQsmBtw4obxq6X3hhMnGubL0ItzGL7I9fLundVd9+AX
-         cPr9iGPSTnhWfR242+VE66R8uRMIOjw7Zwwc887BaQiuT0BcKuRsgKYT6by7uW8Yl1ac
-         jNrQ==
-X-Gm-Message-State: AAQBX9c4yjKB55ZqCGxOjQKzlUR1L0gRyrfTLwNOmRM2hdlYeTP+lv78
-        k5C8H00bvAFbg6r612C9f94=
-X-Google-Smtp-Source: AKy350ZDcvdn46uywgAgMo+fr3R9HkcdCtaXDXFD0SA1r83KhBqEDR+sae5d+HhoLhIWNVXBGWPrmQ==
-X-Received: by 2002:a17:907:c30b:b0:93d:ae74:fa9e with SMTP id tl11-20020a170907c30b00b0093dae74fa9emr10796054ejc.7.1682374975420;
-        Mon, 24 Apr 2023 15:22:55 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:8109:aa3f:ead8::2fd0])
-        by smtp.gmail.com with ESMTPSA id g21-20020a170906539500b0094efdfe60dcsm5870886ejo.206.2023.04.24.15.22.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Apr 2023 15:22:55 -0700 (PDT)
-From:   Mehdi Djait <mehdi.djait.k@gmail.com>
-To:     jic23@kernel.org, mazziesaccount@gmail.com
-Cc:     krzysztof.kozlowski+dt@linaro.org,
-        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Mehdi Djait <mehdi.djait.k@gmail.com>
-Subject: [PATCH v3 7/7] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
-Date:   Tue, 25 Apr 2023 00:22:27 +0200
-Message-Id: <593798a44c8ba45f969b86aa29e172d59065958c.1682373451.git.mehdi.djait.k@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1682373451.git.mehdi.djait.k@gmail.com>
-References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
+        with ESMTP id S230195AbjDYD3V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Apr 2023 23:29:21 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2072.outbound.protection.outlook.com [40.107.21.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B6DBD;
+        Mon, 24 Apr 2023 20:29:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XXEHi+tnmPFxkCWe2FTds8V+IE8BIG84AoEY0lBSuuc3U7wRpZ8FhQhplV+TIEZuCh4VctP7hHEFuPPnSWiShR8r5U+wphXqUHkJNtq3XHGlHjqxhZTXbwgZTScblIo3rLeec8fg1IHNHkOoQZjgcF05vNtHwtnBfbDChRtqBvo+uEx39+ek23oeo+T0j+O9M69x/2C6EVHcyVnUcWoJ+BrHj1vWRIrHX2swL009MJTgHDI7XvYXrsl4r5F56Yn8cFjl9tt11oxtjOFa0BJrk7r2VSlbl+QU/akkVU4jiXnqY2z0RmdI9mD5GhPvdb4MsAhz9G4zXa6T5AceWj9xVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fPmjNdksrSGu2gH4H2nHtIjuazylqoRMWfUbsI1XdAw=;
+ b=cgbLlx4HcS0kTNyxHAVk/XBNyZaFpqp9OU35ruZsUZPiT35zD2Gk6qhxD8OpB42k16zxp8SpnJsxeeZiUGH/88HbS0gBLSxsV2AJPq+o+DZe6BdPIeTRS0NtARS5FeASWlmoK/JXAUGoo9nQqKVG8VLhn1DKVquCgFJREcS5DLZ13Iim6UfPM1xkQYdFH2FZhtu0vwPvvPUkZrV2vrCgW7ByBLKI+dS4awWEWKXm9nqVaa5jzXRD+PtEF4+vAER8+vxzIq2I3EmVtF996d7ChtyzIyKTGR70+stpeKseHCCcj3i094wtvexRcmWmXVrYRmst7CnpbXPxLeC4KVZTDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fPmjNdksrSGu2gH4H2nHtIjuazylqoRMWfUbsI1XdAw=;
+ b=BU5iVl992UHPbJEAxfdxBcOooL3V+gca54XW6LFmiNNzlntABEtDm1V/6qnJiQIzyhGHB4gDa3Y9UGXZ/akrfbfajzAaD1e/boL8Oyb0FRPXQouHrNFFCcAg0OjBLRUqZa0HMnCz2ZMDWxJ/T27ZPEfF9CDUDjw5BOw7wvW+mNM=
+Received: from DB7PR04MB4010.eurprd04.prod.outlook.com (2603:10a6:5:21::30) by
+ DU0PR04MB9467.eurprd04.prod.outlook.com (2603:10a6:10:35b::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6319.33; Tue, 25 Apr 2023 03:29:17 +0000
+Received: from DB7PR04MB4010.eurprd04.prod.outlook.com
+ ([fe80::9d1e:facb:ae5a:25b6]) by DB7PR04MB4010.eurprd04.prod.outlook.com
+ ([fe80::9d1e:facb:ae5a:25b6%3]) with mapi id 15.20.6319.033; Tue, 25 Apr 2023
+ 03:29:17 +0000
+From:   Bough Chen <haibo.chen@nxp.com>
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+CC:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Marco Felsch <m.felsch@pengutronix.de>
+Subject: RE: [PATCH v2 1/1] dt-bindings: iio: imx8qxp-adc: add missing
+ vref-supply
+Thread-Topic: [PATCH v2 1/1] dt-bindings: iio: imx8qxp-adc: add missing
+ vref-supply
+Thread-Index: AQHZdo5qmQydsCpGvU2DpntjpXe89q87Xu/w
+Date:   Tue, 25 Apr 2023 03:29:17 +0000
+Message-ID: <DB7PR04MB40101993E84C82B8FAC7DFEB90649@DB7PR04MB4010.eurprd04.prod.outlook.com>
+References: <20230424092312.61746-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20230424092312.61746-1-alexander.stein@ew.tq-group.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB7PR04MB4010:EE_|DU0PR04MB9467:EE_
+x-ms-office365-filtering-correlation-id: 286ab9ce-0c88-486a-c435-08db453d3fee
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: fg+9u7nfXT22TOB0+gZyplkZxeMZ8S++IwcaoYf1CIoKc31AvFK5urCzUtJ7UL5GL4/Y6Y1WIap+7e6NGeHVDvhoAOrYeh6WCeEGEf0eb8SDNSrDAceUkTsQkeM5A8zfdtfvhBprNCBi0sKEYjz/d2iJF/w7kFjnXs3/Erj0cN0gV/QLkZGAwpBb8jCres3sDmr87KaUm1GHiiS4bPmlXTWWa3clBHuQELHAWEP9J5oYj5o+LRIvR9SUB/w6RNEiJRH7b1XDLbts/+RHpUVgbz4Ai2CGzQMTIYYJyAZ12pZ5vAxH3ZWKF/kB00PJb1DcPeMFrQuJdjBAXC6H1elnYAg1WTC2iCY1mSgTL4LdZVYBeHGnyWzjyi9lTpFaDzQ9nGEp8P2ieOX3Dg4HCsKQOcGYF6S7JKymEIN3htB0h7K+Lbs282/BSEL4vsoLKeLIrM9Qwe4MCxfzUOWifK3o/c/V0WuadlieLvSHPrycj69NQsIH/YDTU5dS+iny+KBXDYAkR6y3Z8DJee8qFG5TXJ9RkjNWfdFjisUh/rMNkSNmpTE+6KvtlFqiBy+FQgXTW1359BAvLFqdWkwZj+Q2MceVbJFryz5BrOeo0MgwQMXRNQFkqpDYoxBtUxevOxSP6339cU333szCrG5kTc7+sA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4010.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(376002)(366004)(396003)(39860400002)(451199021)(54906003)(110136005)(38070700005)(478600001)(76116006)(316002)(4326008)(66446008)(66476007)(66556008)(55016003)(66946007)(64756008)(122000001)(7416002)(41300700001)(2906002)(8936002)(8676002)(52536014)(5660300002)(38100700002)(86362001)(186003)(6506007)(26005)(53546011)(9686003)(33656002)(7696005)(71200400001)(83380400001)(32563001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?gb2312?B?akNaWjVnemgzUTBKc2M3TGZUbmsvVCtCdVRYdU50QVdMSXlIdytlWVY3d0da?=
+ =?gb2312?B?YVA0TUk0c28zMEU3Mkp2NmNPL0V2a2FUdUxWODdBRFFNRU1BR2VtWXdDMEp4?=
+ =?gb2312?B?VmRpeityMjVmaWhMWDFGUW1rM2dVenhVSkJ2ZjZVNk5NeXZVTXdMU3lMYlhV?=
+ =?gb2312?B?dURxNTNYSzB2ejg5bkI4K3lJQ2FramhlT0VVbkJIcUc2QlFXUWR0ZlhUOWVk?=
+ =?gb2312?B?TnFNT2kzdEkwZk41ZW13bHNxK2ZpZThrZjZIVVFVNGM5R0pVV0Nkc3k1amxh?=
+ =?gb2312?B?WU9TckkvM29QRTJnaEcySERWK3ZoSlV4ek96d3ZQbHRySTF4bm1hK0Vqbnpm?=
+ =?gb2312?B?d05GdFg4MW5GWEw3VmJRRmt1YnVieTdKUDBWSUk0ZWF1THk4cmZqQ2V5L0FD?=
+ =?gb2312?B?YWsvQU9mV2d3SzV2QW1FWG9zdnFQaHNFRHBORExmNmJzOW1adzBvQThoNmxa?=
+ =?gb2312?B?QkFydHFsOWRacUZrZk9wSHFhaEw4V0phMm1KdGxIUVRXRTBpNzF4cm84Q2NH?=
+ =?gb2312?B?OGEzQktnMmdBMytWOFJLZUhSWFIyUDhUWFRPOUpnbnU5Z24xazY3cUJKUTJk?=
+ =?gb2312?B?eTJoMEhZcTB5TU1sVDMya3VzTlJjWUtkYVgyNTdWZlpYRHZEcHY4VVdZSnRs?=
+ =?gb2312?B?NHE1OHFZNmJoVUtYMERuWjFtc1ZzQkFzdXRnQkJRK3ZFbTVKTTQ5WDBBZDA0?=
+ =?gb2312?B?WHova21Kc1l3Uks3N1pPWDduMytTcFJBV3BiVUFCNUVKV1BKVWJHei9GMUJL?=
+ =?gb2312?B?V2Zyb2dTVUZRNVFnVkZ3QUxSYjNDZ0NGLy93VW1BTEE1MzNwNGU5QnltSU9O?=
+ =?gb2312?B?dytBQ3ZlR0JPazJlZjRmbjRYb3RCdWxrdG1CZm9iYk1qc0NIcTRmSmlJYXFK?=
+ =?gb2312?B?NTZVZ3RHK2ZNRTlIWGhmeTlOVmpCbmJyMWNTOGhpeTZ1SGpyaldwY2pKZElF?=
+ =?gb2312?B?VlNkejNKYURQeWhTTFJNYlJrbG9UcWlsOWp6cjNidy9UUjFjUW83T1JxMzRl?=
+ =?gb2312?B?a1NrZHh6eE9kd1pwVFh2aTVkNXcyYkdCQ2pMalFFS0xnWjVqa25KZWtucGNP?=
+ =?gb2312?B?Q0Z2OHBvZXdyeEJRblAwWjRoazUxTmdiRFNIQ2ppRDVSZHlzVkJDblBUa0h1?=
+ =?gb2312?B?cDR2VEF4MTJwdXVDOEEwcThvZ0xXeFRQcVBTZXBQZndGeUJaYXhQSDBQNDlw?=
+ =?gb2312?B?QVVxVmRSTlRBQjFoUkgzZ3BoZlhsMElxQzNiK3ltVk0rZmg0dFVGSmh0NWp1?=
+ =?gb2312?B?bldreWx0a3FaVENyRnpLL3B5aEtOWWNPQnhPc0l1Yzd5dG5iSkxJa1Z4NVJ0?=
+ =?gb2312?B?aDdRbzhJSWpya0VqRTVEU3lXVFBhNW5qRzhvc0RmSUJBbUdaTS9RNGFFVS8x?=
+ =?gb2312?B?SHdyaVRSbmlsRDh3Njc0R2tDWUFjVEpaSWpkZTA3RzZKczNDWlVZOUE0cWFY?=
+ =?gb2312?B?blFHcStPOUhMWXJRU3ZYNU5kRnYxTHoyS1JlaEZsZFVleWFKNmFTUzJRNUgv?=
+ =?gb2312?B?cEFiZEdSdy9DWWpqZnUwNTVXdG1ZY3FGRldZR24rdDl0SER0Y2xNNWliL0dY?=
+ =?gb2312?B?bk02TVNSRm9xaUkwaXFvWWJCZXdTTDk0TWNkSmZmQUlZSHR5ZjBJY2piNGdZ?=
+ =?gb2312?B?dWx5TzNYb2J3VmpIbVlsc1liMzNEd0NkQzlaK3Q3YlpVTDNTLzZDRkpaSVpu?=
+ =?gb2312?B?YmV1ekNFb1p1OHlQZ2UwbTRaN2RnVGZtY202Z1ZPTzl4eGVyZ1NWSDdvYTQ2?=
+ =?gb2312?B?eVJ6UzFEa1JVb1BUR0EydXpHVG1CTHFqOTI3MzhTTy9OUHRreVRsNVBVcFUz?=
+ =?gb2312?B?YmdaLytXSkNCRFE5Sm1CUHpvYkROL2RwTTludTl2ZzJtT3hta1dsc2xrT3FT?=
+ =?gb2312?B?VldXTUo1eHZWWTE5aDJ4QWVSQ2cybmtnam54Mit1enk1M0tsQ3FWeVB6c2dZ?=
+ =?gb2312?B?aStaL0R5ak9nWjQ0bUZyREV4akFRaWNUY2RSSFArV3VHNDFsbG5YRHdRdUxs?=
+ =?gb2312?B?ZWRBVnNMa3JtNzRjNEc2dW1CbVlseXFDRzl1bllWVzVvbWlTNUR4UVp4UkdN?=
+ =?gb2312?B?NHdFZGFzNHpjNnhnbitESkZHTElFOUdlb2dLWFU5VSt4MnJISHQxS3RKNjAx?=
+ =?gb2312?Q?PvDY=3D?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4010.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 286ab9ce-0c88-486a-c435-08db453d3fee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Apr 2023 03:29:17.0861
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KMKqmpCXkxnkv4svIDZzM4OsBSZD/XNDbhqOTXfTefwlW7YWgwvyEVjGGf31AucMY7uCBN+b1arIjkHYJv4kzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9467
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
-ranges from ±2G to ±16G, digital output through I²C/SPI.
-Add support for basic accelerometer features such as reading acceleration
-via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
-
-Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
-Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
----
- drivers/iio/accel/Kconfig             |   8 +-
- drivers/iio/accel/kionix-kx022a-i2c.c |   2 +
- drivers/iio/accel/kionix-kx022a-spi.c |   2 +
- drivers/iio/accel/kionix-kx022a.c     | 147 ++++++++++++++++++++++++++
- drivers/iio/accel/kionix-kx022a.h     |  52 +++++++++
- 5 files changed, 207 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-index b6b45d359f28..d8cc6e6f2bb9 100644
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -418,8 +418,8 @@ config IIO_KX022A_SPI
- 	select IIO_KX022A
- 	select REGMAP_SPI
- 	help
--	  Enable support for the Kionix KX022A digital tri-axis
--	  accelerometer connected to I2C interface.
-+	  Enable support for the Kionix KX022A, KX132-1211 digital tri-axis
-+	  accelerometers connected to SPI interface.
- 
- config IIO_KX022A_I2C
- 	tristate "Kionix KX022A tri-axis digital accelerometer I2C interface"
-@@ -427,8 +427,8 @@ config IIO_KX022A_I2C
- 	select IIO_KX022A
- 	select REGMAP_I2C
- 	help
--	  Enable support for the Kionix KX022A digital tri-axis
--	  accelerometer connected to I2C interface.
-+	  Enable support for the Kionix KX022A, KX132-1211 digital tri-axis
-+	  accelerometers connected to I2C interface.
- 
- config KXSD9
- 	tristate "Kionix KXSD9 Accelerometer Driver"
-diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kionix-kx022a-i2c.c
-index ce299d0446f7..4ea28d2482ec 100644
---- a/drivers/iio/accel/kionix-kx022a-i2c.c
-+++ b/drivers/iio/accel/kionix-kx022a-i2c.c
-@@ -39,12 +39,14 @@ static int kx022a_i2c_probe(struct i2c_client *i2c)
- 
- static const struct i2c_device_id kx022a_i2c_id[] = {
- 	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx022a_chip_info },
-+	{ .name = "kx132-1211", .driver_data = (kernel_ulong_t)&kx132_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
- 
- static const struct of_device_id kx022a_of_match[] = {
- 	{ .compatible = "kionix,kx022a", .data = &kx022a_chip_info },
-+	{ .compatible = "kionix,kx132-1211", .data = &kx132_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a-spi.c b/drivers/iio/accel/kionix-kx022a-spi.c
-index b84503e24510..b755b2b395ed 100644
---- a/drivers/iio/accel/kionix-kx022a-spi.c
-+++ b/drivers/iio/accel/kionix-kx022a-spi.c
-@@ -39,12 +39,14 @@ static int kx022a_spi_probe(struct spi_device *spi)
- 
- static const struct spi_device_id kx022a_id[] = {
- 	{ .name = "kx022a", .driver_data = (kernel_ulong_t)&kx022a_chip_info },
-+	{ .name = "kx132-1211", .driver_data = (kernel_ulong_t)&kx132_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, kx022a_id);
- 
- static const struct of_device_id kx022a_of_match[] = {
- 	{ .compatible = "kionix,kx022a", .data = &kx022a_chip_info },
-+	{ .compatible = "kionix,kx132-1211", .data = &kx132_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-index 4a31d17c1f22..a6808ab12162 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -150,6 +150,101 @@ static const struct regmap_config kx022a_regmap_config = {
- 	.cache_type = REGCACHE_RBTREE,
- };
- 
-+/* Regmap configs kx132 */
-+static const struct regmap_range kx132_volatile_ranges[] = {
-+	{
-+		.range_min = KX132_REG_XADP_L,
-+		.range_max = KX132_REG_COTR,
-+	}, {
-+		.range_min = KX132_REG_TSCP,
-+		.range_max = KX132_REG_INT_REL,
-+	}, {
-+		/* The reset bit will be cleared by sensor */
-+		.range_min = KX132_REG_CNTL2,
-+		.range_max = KX132_REG_CNTL2,
-+	}, {
-+		.range_min = KX132_REG_BUF_STATUS_1,
-+		.range_max = KX132_REG_BUF_READ,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_volatile_regs = {
-+	.yes_ranges = &kx132_volatile_ranges[0],
-+	.n_yes_ranges = ARRAY_SIZE(kx132_volatile_ranges),
-+};
-+
-+static const struct regmap_range kx132_precious_ranges[] = {
-+	{
-+		.range_min = KX132_REG_INT_REL,
-+		.range_max = KX132_REG_INT_REL,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_precious_regs = {
-+	.yes_ranges = &kx132_precious_ranges[0],
-+	.n_yes_ranges = ARRAY_SIZE(kx132_precious_ranges),
-+};
-+
-+static const struct regmap_range kx132_read_only_ranges[] = {
-+	{
-+		.range_min = KX132_REG_XADP_L,
-+		.range_max = KX132_REG_INT_REL,
-+	}, {
-+		.range_min = KX132_REG_BUF_STATUS_1,
-+		.range_max = KX132_REG_BUF_STATUS_2,
-+	}, {
-+		.range_min = KX132_REG_BUF_READ,
-+		.range_max = KX132_REG_BUF_READ,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_ro_regs = {
-+	.no_ranges = &kx132_read_only_ranges[0],
-+	.n_no_ranges = ARRAY_SIZE(kx132_read_only_ranges),
-+};
-+
-+static const struct regmap_range kx132_write_only_ranges[] = {
-+	{
-+		.range_min = KX132_REG_MAN_WAKE,
-+		.range_max = KX132_REG_MAN_WAKE,
-+	}, {
-+		.range_min = KX132_REG_SELF_TEST,
-+		.range_max = KX132_REG_SELF_TEST,
-+	}, {
-+		.range_min = KX132_REG_BUF_CLEAR,
-+		.range_max = KX132_REG_BUF_CLEAR,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_wo_regs = {
-+	.no_ranges = &kx132_write_only_ranges[0],
-+	.n_no_ranges = ARRAY_SIZE(kx132_write_only_ranges),
-+};
-+
-+static const struct regmap_range kx132_noinc_read_ranges[] = {
-+	{
-+		.range_min = KX132_REG_BUF_READ,
-+		.range_max = KX132_REG_BUF_READ,
-+	},
-+};
-+
-+static const struct regmap_access_table kx132_nir_regs = {
-+	.yes_ranges = &kx132_noinc_read_ranges[0],
-+	.n_yes_ranges = ARRAY_SIZE(kx132_noinc_read_ranges),
-+};
-+
-+static const struct regmap_config kx132_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.volatile_table = &kx132_volatile_regs,
-+	.rd_table = &kx132_wo_regs,
-+	.wr_table = &kx132_ro_regs,
-+	.rd_noinc_table = &kx132_nir_regs,
-+	.precious_table = &kx132_precious_regs,
-+	.max_register = KX132_MAX_REGISTER,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+
- struct kx022a_data {
- 	const struct kx022a_chip_info *chip_info;
- 	struct regmap *regmap;
-@@ -237,6 +332,13 @@ static const struct iio_chan_spec kx022a_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
-+static const struct iio_chan_spec kx132_channels[] = {
-+	KX022A_ACCEL_CHAN(X, KX132_REG_XOUT_L, 0),
-+	KX022A_ACCEL_CHAN(Y, KX132_REG_YOUT_L, 1),
-+	KX022A_ACCEL_CHAN(Z, KX132_REG_ZOUT_L, 2),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
- /*
-  * The sensor HW can support ODR up to 1600 Hz, which is beyond what most of the
-  * Linux CPUs can handle without dropping samples. Also, the low power mode is
-@@ -613,6 +715,25 @@ static int kx022a_get_fifo_bytes(struct kx022a_data *data)
- 	return fifo_bytes;
- }
- 
-+static int kx132_get_fifo_bytes(struct kx022a_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	__le16 buf_status;
-+	int ret, fifo_bytes;
-+
-+	ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-+			       &buf_status, sizeof(buf_status));
-+	if (ret) {
-+		dev_err(dev, "Error reading buffer status\n");
-+		return ret;
-+	}
-+
-+	fifo_bytes = le16_to_cpu(buf_status);
-+	fifo_bytes &= data->chip_info->buf_smp_lvl_mask;
-+
-+	return fifo_bytes;
-+}
-+
- static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
- 			       bool irq)
- {
-@@ -1036,6 +1157,32 @@ const struct kx022a_chip_info kx022a_chip_info = {
- };
- EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
- 
-+const struct kx022a_chip_info kx132_chip_info = {
-+	.name		  = "kx132-1211",
-+	.regmap_config	  = &kx132_regmap_config,
-+	.channels	  = kx132_channels,
-+	.num_channels	  = ARRAY_SIZE(kx132_channels),
-+	.fifo_length	  = KX132_FIFO_LENGTH,
-+	.who		  = KX132_REG_WHO,
-+	.id		  = KX132_ID,
-+	.cntl		  = KX132_REG_CNTL,
-+	.cntl2		  = KX132_REG_CNTL2,
-+	.odcntl		  = KX132_REG_ODCNTL,
-+	.buf_cntl1	  = KX132_REG_BUF_CNTL1,
-+	.buf_cntl2	  = KX132_REG_BUF_CNTL2,
-+	.buf_clear	  = KX132_REG_BUF_CLEAR,
-+	.buf_status1	  = KX132_REG_BUF_STATUS_1,
-+	.buf_smp_lvl_mask = KX132_MASK_BUF_SMP_LVL,
-+	.buf_read	  = KX132_REG_BUF_READ,
-+	.inc1		  = KX132_REG_INC1,
-+	.inc4		  = KX132_REG_INC4,
-+	.inc5		  = KX132_REG_INC5,
-+	.inc6		  = KX132_REG_INC6,
-+	.xout_l		  = KX132_REG_XOUT_L,
-+	.get_fifo_bytes	  = kx132_get_fifo_bytes,
-+};
-+EXPORT_SYMBOL_NS_GPL(kx132_chip_info, IIO_KX022A);
-+
- int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_info *chip_info)
- {
- 	static const char * const regulator_names[] = {"io-vdd", "vdd"};
-diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-index f043767067b7..1f4135cf20eb 100644
---- a/drivers/iio/accel/kionix-kx022a.h
-+++ b/drivers/iio/accel/kionix-kx022a.h
-@@ -74,6 +74,57 @@
- #define KX022A_REG_SELF_TEST	0x60
- #define KX022A_MAX_REGISTER	0x60
- 
-+#define KX132_REG_WHO		0x13
-+#define KX132_ID		0x3d
-+
-+#define KX132_FIFO_LENGTH	86
-+
-+#define KX132_REG_CNTL		0x1b
-+#define KX132_REG_CNTL2		0x1c
-+#define KX132_MASK_RES		BIT(6)
-+#define KX132_GSEL_2		0x0
-+#define KX132_GSEL_4		BIT(3)
-+#define KX132_GSEL_8		BIT(4)
-+#define KX132_GSEL_16		GENMASK(4, 3)
-+
-+#define KX132_REG_INS2		0x17
-+#define KX132_MASK_INS2_WMI	BIT(5)
-+
-+#define KX132_REG_XADP_L	0x02
-+#define KX132_REG_XOUT_L	0x08
-+#define KX132_REG_YOUT_L	0x0a
-+#define KX132_REG_ZOUT_L	0x0c
-+#define KX132_REG_COTR		0x12
-+#define KX132_REG_TSCP		0x14
-+#define KX132_REG_INT_REL	0x1a
-+
-+#define KX132_REG_ODCNTL	0x21
-+
-+#define KX132_REG_BTS_WUF_TH	0x4a
-+#define KX132_REG_MAN_WAKE	0x4d
-+
-+#define KX132_REG_BUF_CNTL1	0x5e
-+#define KX132_REG_BUF_CNTL2	0x5f
-+#define KX132_REG_BUF_STATUS_1	0x60
-+#define KX132_REG_BUF_STATUS_2	0x61
-+#define KX132_MASK_BUF_SMP_LVL	GENMASK(9, 0)
-+#define KX132_REG_BUF_CLEAR	0x62
-+#define KX132_REG_BUF_READ	0x63
-+#define KX132_ODR_SHIFT		3
-+#define KX132_FIFO_MAX_WMI_TH	86
-+
-+#define KX132_REG_INC1		0x22
-+#define KX132_REG_INC5		0x26
-+#define KX132_REG_INC6		0x27
-+#define KX132_IPOL_LOW		0
-+#define KX132_IPOL_HIGH		KX022A_MASK_IPOL
-+#define KX132_ITYP_PULSE	KX022A_MASK_ITYP
-+
-+#define KX132_REG_INC4		0x25
-+
-+#define KX132_REG_SELF_TEST	0x5d
-+#define KX132_MAX_REGISTER	0x76
-+
- struct device;
- 
- struct kx022a_data;
-@@ -132,5 +183,6 @@ struct kx022a_chip_info {
- int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_info *chip_info);
- 
- extern const struct kx022a_chip_info kx022a_chip_info;
-+extern const struct kx022a_chip_info kx132_chip_info;
- 
- #endif
--- 
-2.30.2
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBbGV4YW5kZXIgU3RlaW4gPGFs
+ZXhhbmRlci5zdGVpbkBldy50cS1ncm91cC5jb20+DQo+IFNlbnQ6IDIwMjPE6jTUwjI0yNUgMTc6
+MjMNCj4gVG86IENhaSBIdW9xaW5nIDxjYWkuaHVvcWluZ0BsaW51eC5kZXY+OyBCb3VnaCBDaGVu
+IDxoYWliby5jaGVuQG54cC5jb20+Ow0KPiBKb25hdGhhbiBDYW1lcm9uIDxqaWMyM0BrZXJuZWwu
+b3JnPjsgTGFycy1QZXRlciBDbGF1c2VuIDxsYXJzQG1ldGFmb28uZGU+Ow0KPiBSb2IgSGVycmlu
+ZyA8cm9iaCtkdEBrZXJuZWwub3JnPjsgS3J6eXN6dG9mIEtvemxvd3NraQ0KPiA8a3J6eXN6dG9m
+Lmtvemxvd3NraStkdEBsaW5hcm8ub3JnPjsgU2hhd24gR3VvIDxzaGF3bmd1b0BrZXJuZWwub3Jn
+PjsNCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjsgRmFiaW8gRXN0ZXZh
+bQ0KPiA8ZmVzdGV2YW1AZ21haWwuY29tPg0KPiBDYzogQWxleGFuZGVyIFN0ZWluIDxhbGV4YW5k
+ZXIuc3RlaW5AZXcudHEtZ3JvdXAuY29tPjsgUGVuZ3V0cm9uaXggS2VybmVsDQo+IFRlYW0gPGtl
+cm5lbEBwZW5ndXRyb25peC5kZT47IGRsLWxpbnV4LWlteCA8bGludXgtaW14QG54cC5jb20+Ow0K
+PiBsaW51eC1paW9Admdlci5rZXJuZWwub3JnOyBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsN
+Cj4gbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBNYXJjbyBGZWxzY2ggPG0u
+ZmVsc2NoQHBlbmd1dHJvbml4LmRlPg0KPiBTdWJqZWN0OiBbUEFUQ0ggdjIgMS8xXSBkdC1iaW5k
+aW5nczogaWlvOiBpbXg4cXhwLWFkYzogYWRkIG1pc3NpbmcgdnJlZi1zdXBwbHkNCj4gDQo+IEFs
+dGhvdWdoIHRoaXMgcHJvcGVydHkgaXMgdXNlZCByaWdodCBub3cgZm9yIElJT19DSEFOX0lORk9f
+U0NBTEUsIHRoaXMgQURDDQo+IGhhcyB0d28gaW50ZXJuYWwgcmVmZXJlbmNlIHZvbHRhZ2VzLCB3
+aGljaCB0aGUgZHJpdmVyIGN1cnJlbnRseSBkb2Vzbid0IG1ha2UgdXNlDQo+IG9mLg0KPiANCj4g
+Rml4ZXM6IGRiNzM0MTlkOGMwNiAoImR0LWJpbmRpbmdzOiBpaW86IGFkYzogQWRkIGJpbmRpbmcg
+ZG9jdW1lbnRhdGlvbiBmb3IgTlhQDQo+IElNWDhRWFAgQURDIikNCj4gU2lnbmVkLW9mZi1ieTog
+QWxleGFuZGVyIFN0ZWluIDxhbGV4YW5kZXIuc3RlaW5AZXcudHEtZ3JvdXAuY29tPg0KDQpUaGFu
+a3MhIA0KUmV2aWV3ZWQtYnk6IEhhaWJvIENoZW4gPGhhaWJvLmNoZW5AbnhwLmNvbT4NCg0KPiAt
+LS0NCj4gVGhhbmtzIGZvciB5b3VyIGlucHV0cy4gVGhpcyBpbXByb3ZlZCBkZXNjcml0cGlvbiBz
+aG91bGQgbWFrZSBpdCBjbGVhciB0aGF0IHRoaXMNCj4gcHJvcGVydHkgaXMgb25seSBhYm91dCB0
+aGUgZXh0ZXJuYWwgcmVmZXJlbmNlIHZvbHRhZ2UsIG5vdCBhYm91dCB0aGUgb3B0aW9uYWwsDQo+
+IGludGVybmFsIHZvbHRhZ2VzLg0KPiANCj4gQ2hhbmdlcyBpbiB2MjoNCj4gKiBJbXByb3ZlZCBj
+b21taXQgbWVzc2FnZSBzdWJqZWN0IGFzIHN1Z2dlc3RlZA0KPiAqIEFkZCBoaW50IGFib3V0IGZl
+YXR1cmUgZmxhZyByZWdhcmRpbmcgbXVsdGlwbGUsIGludGVybmFsLCByZWZlcmVuY2UNCj4gICB2
+b2x0YWdlcw0KPiANCj4gIC4uLi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMvbnhwLGlteDhx
+eHAtYWRjLnlhbWwgICAgICAgfCA3ICsrKysrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2Vy
+dGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
+ZGluZ3MvaWlvL2FkYy9ueHAsaW14OHF4cC1hZGMueWFtbA0KPiBiL0RvY3VtZW50YXRpb24vZGV2
+aWNldHJlZS9iaW5kaW5ncy9paW8vYWRjL254cCxpbXg4cXhwLWFkYy55YW1sDQo+IGluZGV4IDYz
+MzY5YmEzODhlNC4uODc4ZTY3MDU0ZDdjIDEwMDY0NA0KPiAtLS0gYS9Eb2N1bWVudGF0aW9uL2Rl
+dmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9ueHAsaW14OHF4cC1hZGMueWFtbA0KPiArKysgYi9E
+b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2FkYy9ueHAsaW14OHF4cC1hZGMu
+eWFtbA0KPiBAQCAtMzksNiArMzksMTIgQEAgcHJvcGVydGllczoNCj4gICAgcG93ZXItZG9tYWlu
+czoNCj4gICAgICBtYXhJdGVtczogMQ0KPiANCj4gKyAgdnJlZi1zdXBwbHk6DQo+ICsgICAgZGVz
+Y3JpcHRpb246IHwNCj4gKyAgICAgIEV4dGVybmFsIEFEQyByZWZlcmVuY2Ugdm9sdGFnZSBzdXBw
+bHkgb24gVlJFRkggcGFkLiBJZiBWRVJJRFtNVkldIGlzDQo+ICsgICAgICBzZXQsIHRoZXJlIGFy
+ZSBhZGRpdGlvbmFsLCBpbnRlcm5hbCByZWZlcmVuY2Ugdm9sdGFnZXMgc2VsZWN0YWJsZS4NCj4g
+KyAgICAgIFZSRUZIMSBpcyBhbHdheXMgZnJvbSBWUkVGSCBwYWQuDQo+ICsNCj4gICAgIiNpby1j
+aGFubmVsLWNlbGxzIjoNCj4gICAgICBjb25zdDogMQ0KPiANCj4gQEAgLTcyLDYgKzc4LDcgQEAg
+ZXhhbXBsZXM6DQo+ICAgICAgICAgICAgICBhc3NpZ25lZC1jbG9ja3MgPSA8JmNsayBJTVhfU0Nf
+Ul9BRENfMD47DQo+ICAgICAgICAgICAgICBhc3NpZ25lZC1jbG9jay1yYXRlcyA9IDwyNDAwMDAw
+MD47DQo+ICAgICAgICAgICAgICBwb3dlci1kb21haW5zID0gPCZwZCBJTVhfU0NfUl9BRENfMD47
+DQo+ICsgICAgICAgICAgICB2cmVmLXN1cHBseSA9IDwmcmVnXzF2OD47DQo+ICAgICAgICAgICAg
+ICAjaW8tY2hhbm5lbC1jZWxscyA9IDwxPjsNCj4gICAgICAgICAgfTsNCj4gICAgICB9Ow0KPiAt
+LQ0KPiAyLjM0LjENCg0K

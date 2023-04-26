@@ -2,84 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4376EF1CA
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 12:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D12F56EF28D
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 12:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240241AbjDZKTl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Apr 2023 06:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52970 "EHLO
+        id S240143AbjDZKrF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Apr 2023 06:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjDZKTk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 06:19:40 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008543A8C;
-        Wed, 26 Apr 2023 03:19:38 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4eed6ddcae1so29888180e87.0;
-        Wed, 26 Apr 2023 03:19:38 -0700 (PDT)
+        with ESMTP id S240640AbjDZKqb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 06:46:31 -0400
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 367F0BF
+        for <linux-iio@vger.kernel.org>; Wed, 26 Apr 2023 03:45:43 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-38e3a1a07c8so4065213b6e.0
+        for <linux-iio@vger.kernel.org>; Wed, 26 Apr 2023 03:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682504377; x=1685096377;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EviVw73GpY2VmW3Zoo5MqDlBDDJF6Mj2T5fwnC0rzAI=;
-        b=r+/hVH2b8Bg/aQDOaryrP9T02kg8IPAo6QakGQ0nl3RIrAShUtjnTBPRkHGOljC8jQ
-         YovoeIJHVWJRKr2eQDQYKz6QaE+aogpg3ctII2iCg0VANKMKiVSdJ5blEJ5wOAkNoHvf
-         fRzwr809sN4dGpj3so82KcV8qjicqwjWfDtCYCTsTdrucK338hcoehVpEDqVQQUWSz3S
-         ft8gPYmpgIYgGlf1QspE7/CWI/zO2JgR2Ss6y6sELVWepzwjYRPYdQbPzoKEP5x5IRKx
-         B7a2VuZPk8kTJ+jM90mVZ1WjNCicUYDcq2wSDo0X0Knj6PYRnhHRx8CMk3fiJLd6L+PI
-         bX0w==
+        d=gmail.com; s=20221208; t=1682505942; x=1685097942;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JI1rjMjugLRLgQsqMH6ohWMULQadjvWpk2HM1o3/hpI=;
+        b=Jf9i7wXqp5F0hIH4Bt48ubf1YGRyZ6tAPoI3w0XZ0iCmYnq85d1Xovk26jvH88KSE6
+         HC+yusfxHq3/mXLqPvyNRBvZ+HB+R+biNT7WkjLtEC/fDoOl2JmxdcE2hLiV4IpWoimH
+         vpuZTsjkA846L4tfy248TuJksOhH90B201JfnzfHv5R90F1rlU+yKUMv1pOffcADXyZU
+         U0H+VzMTE9YxA6lGAvd6L+i8iUz/nB5iOYo+YJGomZgEm6TUylWS73EsE5XnUYEyFOlm
+         rn73ubNI1HBQi+ReuMEukE9+qb4OIzX5A7nQMawHtZz5GR0WhU7hq4xo/P/vKXYEdpuZ
+         pU0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682504377; x=1685096377;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EviVw73GpY2VmW3Zoo5MqDlBDDJF6Mj2T5fwnC0rzAI=;
-        b=DeyFvyHdKrBkyXy6xXx+a2DJo6WjWTHgyg3ugcMqNL1kn4w1c/3e5zht77btFe6p8o
-         p5KU5Pop+tnRO32iX4tfnnAYGf15sRVieZGBech16hN5oDtz+iy7KglnFgF7p2g4bpyg
-         q2kpUImp1VPvk4i4P3BBqwXT8brn3Y2tuXgTDegYXuJnAe4nv6xsBflkfy78VuGLf7Ep
-         cMxSqrPW4tnJmpVYTjzAoNPYfBeunc1MNVZyNU6HUloIrHN3hZCJOwVk96DCljBJqWwn
-         4Y+Qkck55cBH8D/mHce0tFs5yLl3GHm9V0xFv20nP/dpv/IAxoKG8x6cFoU8+lqQ/Gk8
-         dcxw==
-X-Gm-Message-State: AC+VfDyE0Dkli+NTNIltFJUGVthi5kzvM3Tb3uCJueXN9ta1AIJSGTMv
-        0D9flROKlhiqg2RV5zbClRA=
-X-Google-Smtp-Source: ACHHUZ7Q2i8CvzSVbu/f/dnRBGgazkT5Bj0ePzvj6146EtYtbnYxbUtqI8U5Uycl+uFY2Cq1YkyYpw==
-X-Received: by 2002:a05:6512:3ba9:b0:4eb:412e:b06a with SMTP id g41-20020a0565123ba900b004eb412eb06amr589111lfv.22.1682504376933;
-        Wed, 26 Apr 2023 03:19:36 -0700 (PDT)
-Received: from [192.168.1.111] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id a3-20020a056512020300b004e83fbba141sm2448301lfo.164.2023.04.26.03.19.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Apr 2023 03:19:36 -0700 (PDT)
-Message-ID: <d1121acc-6300-011f-caa2-0ddc01c46e91@gmail.com>
-Date:   Wed, 26 Apr 2023 13:19:35 +0300
+        d=1e100.net; s=20221208; t=1682505942; x=1685097942;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JI1rjMjugLRLgQsqMH6ohWMULQadjvWpk2HM1o3/hpI=;
+        b=DL2CHJSvjOOVwN64M7Vv5VhyfszPiOAF0CxnR1LzsGBSN6w1YgQp2jrwUPAII4NAZB
+         zPeFmjD2HmVKlZrOOEec0gBiOXF84uj/lFeE6fqJqzi86rvkZimYO3xrK74yY1RnWuUB
+         vcdKxw+hL7USmK0R++oJlylDd9NihnIMSPRktgt1pHG4EhhFnahD9EP0GB1CEP8QMyL5
+         IlDR0xhhj6XEOgypB4xE94C/PjAKmGoFJ2cqszQuKMN/t8RFj3OVd7fqiIA+8cv8f1e8
+         CXlYQTnBYUnVDAyIGOVA0Y5KM4xBSD0PdY65D34GIrPbMAs3pccUDuV60WBCQTFNS+AA
+         TkZQ==
+X-Gm-Message-State: AAQBX9f6RQE8gvJ8Z+sJ0OgddU3okMYPQKgHCcchUskXZLGzgl5sEADS
+        79DAF30Ge+4ojtQUOLoZ0iggP8FRd7ujA+RQyQM=
+X-Google-Smtp-Source: AKy350ZxO8tZNR/Mo1xe29XqryYuBhR65aKxZ0GIwrMuIea2EdZiFkGDpGG9xKZuOvpqRJTROsLvbYgGCXQD6mXvlBQ=
+X-Received: by 2002:a05:6808:651:b0:384:67e1:c9f7 with SMTP id
+ z17-20020a056808065100b0038467e1c9f7mr10197527oih.45.1682505942194; Wed, 26
+ Apr 2023 03:45:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US, en-GB
-To:     Andi Shyti <andi.shyti@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1682340947.git.mazziesaccount@gmail.com>
- <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
- <20230425164522.sljcniui5ox5yx3l@intel.intel>
- <102a1605-d6dc-80c7-2075-212569c97042@gmail.com>
- <20230426101200.7czyp6nlg44tweyb@intel.intel>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
-In-Reply-To: <20230426101200.7czyp6nlg44tweyb@intel.intel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+References: <CAPJMGm4PU0YgU0DhMvNZK58JzEhg_eszFaXfmyuY1ymjR617Xw@mail.gmail.com>
+ <CAPJMGm4bv3PHiGa7B8uH+izmVOWVJnibmuZ-9GwnAGeGHmpN5w@mail.gmail.com>
+ <CAPJMGm4YhDNOLku_vWUJA8cYbUinoVoP+NmP4Te+fpa-bjfHfQ@mail.gmail.com>
+ <CAPJMGm7mgSi4-Td+8XMqBWLj_tiSVrbxVP7WYbhZnL+_8jJhng@mail.gmail.com>
+ <0e86cb99-dfea-5a89-3301-894a90f0964a@kernel.org> <CAPJMGm58m8-Uo2AdABgJNuigtrLE2=_qh1eZnj=1mg+hVPV3EA@mail.gmail.com>
+ <d3c93e92-605a-c486-201d-6c31f55e64b1@kernel.org> <CAPJMGm6JNu8wP2pa1Gr02AoECMesonKzK_OY8TyFvXG1SLxdvQ@mail.gmail.com>
+ <8f14a0b8-8f02-b2a4-725d-0f70c39af9b6@kernel.org> <CAPJMGm6FY-iivtNSavLkwyHY=pgUir-ctT4+hyrAoV+g41e8yg@mail.gmail.com>
+ <20230415173808.208690ff@jic23-huawei>
+In-Reply-To: <20230415173808.208690ff@jic23-huawei>
+From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Date:   Wed, 26 Apr 2023 12:45:31 +0200
+Message-ID: <CAPJMGm7+oYDJHt6SPAhJ8cHuE3VXWxx6XYF1T_8oKwQGo+iarA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: adc: ad7192: Clarify binding documentation
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>, linux-iio@vger.kernel.org,
+        =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -88,134 +75,350 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/26/23 13:12, Andi Shyti wrote:
-> Hi Matti,
-> 
->> Thanks for the review! It's nice to see you're still keeping an eye on ROHM
->> / Kionix senor drivers ;)
-> 
-> yeah... this is fun... if I just had a bit more time :)
-> 
->>>> +static int bu27008_read_one(struct bu27008_data *data, struct iio_dev *idev,
->>>> +			    struct iio_chan_spec const *chan, int *val, int *val2)
->>>> +{
->>>> +	int ret, int_time;
->>>> +
->>>> +	ret = bu27008_chan_cfg(data, chan);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	ret = bu27008_meas_set(data, BU27008_MEAS_EN);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	int_time = bu27008_get_int_time(data);
->>>> +	if (int_time < 0)
->>>> +		int_time = 400000;
->>>> +
->>>> +	msleep((int_time + 500) / 1000);
->>>
->>> What is this 500 doing? Is it making a real difference? it's
->>> 0.5ms.
->>
->> Thanks for the question, having extra pairs of eyes helps spotting
->> brainfarts :)
->>
->> The 500 here is half of the value of the divider - idea was to do rounding
->> correctly upwards to prevent premature wake-up. Well, this is incorrect
->> because we should always round up the sleep time, not just 'mathematically
->> correctly' (Eg, not only upwards when value >= 0.5 but upwards always when
->> the division is not even).
->>
->> After this being said, integration times for this device are full milli
->> seconds so they can all be divided by 1000 uS.
->>
->> Nevertheless, it's good to note that the sensor is definitely not being
->> clocked by the same clock as CPU and I assume the timing for it will be
->> drifting quite a bit from the CPU clock. This means some sensors will for
->> sure complete the measurement later than this wake-up. In order to tackle
->> this we have the valid-bit polling in bu27008_chan_read_data(). So, at the
->> end of the day, this rounding correction is lkely to be just some
->> unnecessary noise.
-> 
-> I understand the logic of the waiting, but msleep is not the
-> right function as waiting with msleep is always very approximate,
-> that's why it's recommended to use it for a large waiting period,
-> where the error is smaller.
-> 
-> If int_time is 1ms, waiting 1.5 or 2 or 1, is the same thing,
-> most probably you will end up waiting more.
+On Sat, Apr 15, 2023 at 6:38=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Fri, 14 Apr 2023 12:42:08 +0200
+> Fabrizio Lamarque <fl.scratchpad@gmail.com> wrote:
+>
+> > On Fri, Apr 14, 2023 at 11:18=E2=80=AFAM Krzysztof Kozlowski <krzk@kern=
+el.org> wrote:
+> > >
+> > > On 13/04/2023 20:19, Fabrizio Lamarque wrote:
+> > > > On Thu, Apr 13, 2023 at 6:35=E2=80=AFPM Krzysztof Kozlowski <krzk@k=
+ernel.org> wrote:
+> > > >>
+> > > >> On 13/04/2023 18:07, Fabrizio Lamarque wrote:
+> > > >>> On Thu, Apr 13, 2023 at 4:21=E2=80=AFPM Krzysztof Kozlowski <krzk=
+@kernel.org> wrote:
+> > > >>>>
+> > > >>>> On 13/04/2023 10:36, Fabrizio Lamarque wrote:
+> > > >>>
+> > > >>> Current documentation does not follow existing source code implem=
+entation.
+> > > >>
+> > > >> Bindings describe hardware, not current implementation.
+> > > >
+> > > >>> The driver has been originally designed to operate with the inter=
+nal
+> > > >>> clock when clocks property is omitted.
+> > > >>
+> > > >> Not really a reason to do it. Reason could be - hardware does not =
+always
+> > > >> need clock input.
+> > > >
+> > > > I hope the change in perspective will be enough. The external clock=
+ is
+> > > > mandatory for some applications.
+> > > > The internal clock might be required for others.
+> > >
+> > > I told you that reason you wrote is not enough and you answer "in
+> > > perspective will be enough". Wait, what? I don't understand it at all=
+. I
+> > > gave you example reason. If you do not like it, find other reasons wh=
+ich
+> > > refer to the actual device, not to the specific implementation.
+>
+> Just leave it vague - we don't need to talk about specific apps. If someo=
+ne
+> wired a clock, they probably want that clock an will describe it in their
+> DTS.
+>
+> An internal clock is available and may be used if no external clock is pr=
+ovided.
+>
+> > >
+> > > >>>
+> > > >>> I thought the reason is clear from patch 2, but, as Nuno S=C3=A1 =
+already
+> > > >>> suggested, I will describe the reasons in full again, each time I=
+ post
+> > > >>> a revised patch set, even if it is quite verbose.
+> > > >>
+> > > >> Your commit must answer to why you are doing it. What you are doin=
+g is
+> > > >> easily visible from the diff. Rephrase commit msg to explain it an=
+d add
+> > > >> proper rationale (hardware related, not driver).
+> > > >
+> > > > I am really just suggesting to align the documentation with the
+> > > > driver, since the driver operates the hardware as expected (after t=
+he
+> > > > two regressions fixes).
+> > >
+> > > Does it mean you are not going to answer to "why?"? I cannot accept s=
+uch
+> > > commits. That's the basics of software development and versioning. It=
+'s
+> > > not even Linux kernel related...
+> > >
+> >
+> > I already wrote that the hardware clock might be generated internally
+> > and hence not required, but also that an external crystal/oscillator
+> > is suggested in the datasheet for better performance.
+> > There shall be a method to choose between the crystal, the external
+> > oscillator and the internal oscillator.
+> > This is what I was expecting to write on revised commit information,
+> > and this was the hopefully accepted "perspective change".
+> >
+> > I am really sorry but I do not understand what more I should say here.
+> > I appreciate your explanations and the fact you are taking your time
+> > to give directions to an obviously inexperienced developer, but my
+> > lack of understanding is perhaps related to what I called
+> > "perspective" on which comes first.
+> > If the above sentence is not enough, I will drop this last patch.
+> > I did not change the driver at all. The documentation is wrong (where
+> > it states the clocks property is mandatory) and it was missing
+> > information on how to choose between the clocks from the beginning.
+>
+> A simple statement that there is an internal clock that may be used if
+> no external clock is wired up should be sufficient.  I don't think we
+> need to talk about precision of clocks etc vs cost of board built and
+> now that drives a design choice.
+>
+> >
+> > >
+> > > > Without this change, one should read the source code to understand
+> > > > which clock is used and when, which bindings have to be applied, an=
+d
+> > > > find that documentation mandates an (already) optional property.
+> > >
+> > > How is it related? I did not refer whether change is reasonable itsel=
+f
+> > > or not. I said you commit msg is very poor and you must answer to "wh=
+y".
+> > > Not to "what".
+> > >
+> > > (...)
+> > >
+> > > >
+> > > >>>
+> > > >>> I kindly ask you whether the entire (corrected) change on the
+> > > >>> documentation file only (without any change on the driver source =
+code)
+> > > >>> could be accepted as a single patch.
+> > > >>
+> > > >> I don't understand the question. Each change should be one logical
+> > > >> change, but bindings are not related to the driver.
+> > > >
+> > > > The question came after this:
+> > > >
+> > > > On Thu, Apr 13, 2023 at 1:21=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@g=
+mail.com> wrote:
+> > > >>> I kindly ask you to confirm if, as per your suggestion, I should =
+send
+> > > >>> a v3 patch series with the proper "fixes" tag and this last one
+> > > >>> changed as follows:
+> > > >>>
+> > > >>>  - No changes on driver side (keep avdd-supply instead of vref-su=
+pply)
+> > > >>>  - Indicate in bindings documentation that avdd-supply is vref in=
+stead
+> > > >>> (with the "Phandle to reference voltage regulator")
+> > > >>>  - Add dependencies to yaml bindings
+> > > >>>
+> > > >> Yeps, but note that for the bindings patch you are making distinct=
+ changes (
+> > > >> adding missing properties and changing one) so someone might compl=
+ain. But for
+> > > >> me, personally, they are simple enough that can go in one patch. J=
+ust properly
+> > > >> document it in the commit description.
+> > > >
+> > > > I really need to send a proper, complete and acceptable v3 patch se=
+t,
+> > > > or drop patch 3/3 from the set.
+> > > >
+> > > > Would you accept the change to adi,ad7192.yaml file alone with both
+> > > > the change in description of avdd-supply and the additional missing
+> > > > properties?
+> > >
+> > > Do you mean by this changing bindings without changing driver? Then
+> > > depends on the context. The driver must implement bindings, so you
+> > > should not send patches which break the implementation of interface.
+> > >
+> >
+> > Perhaps I failed to explain it from the beginning.
+> > I said "the documentation does not follow the driver" but I understand
+> > I should have seen it the other way round.
+>
+> No need to mention the driver at all for the DT binding patch.
+> You are documenting what could be wired.  We shouldn't care for DT about
+> what he driver happens to implement today.
 
-Well, the light sensors are slow. The shortest time with BU27008 is 55 
-mS, longest being 400 mS. I think msleep fits Ok for this purpose.
+Thank you once again for your corrections, suggestions and patience.
+I hope to be able to provide a formally corrected patch set. Before
+sending v3, would you please have a look at this and check if it
+correctly responds to your expectations or if there is still something
+to adjust?
+(in case it would be cleaner to send a v3 patch and wait for feedback
+instead, feel free to ask)
 
->>> What's the minimum int_time? Can we set a minimum, as well, just
->>> for the sake of the msleep?
->>
->> Can you please elaborate what you mean by this? The minimum integration time
->> for bu27008 is 55 mS and this is set in the time tables for the gts-helpers.
->> The bu27008_get_int_time() should never return valid time smaller than that.
-> 
-> Witha minimum i mean a minimum value for the msleep to start
-> working decently. E.g. what if int_time is lower than 1ms? Can we
-> have msleep(0)?
+The patch set will be then split in 5 total commits.
+ - iio: adc: ad7192: Fix null ad7192_state pointer access
+ - iio: adc: ad7192: Fix internal/external clock selection
+ - iio: adc: ad7192: Use VRef instead of AVdd as reference voltage source
+ - dt-bindings: iio: ad7192: Add mandatory reference voltage source
+ - dt-bindings: iio: ad7192: Allow selection of clock modes
 
-As mentioned, int_time for bu27008 will be in a range of 55 ... 400 mS.
+Patches "iio: adc: ad7192: Use VRef instead of AVdd as reference
+voltage source" and "iio: adc: ad7192: Use VRef instead of AVdd as
+reference voltage source" and will be a fix against b581f748cce0
+("staging: iio: adc: ad7192: move out of staging").
 
-> 
-> [...]
-> 
->>>> +static int bu27008_chip_init(struct bu27008_data *data)
->>>> +{
->>>> +	int ret;
->>>> +
->>>> +	ret = regmap_update_bits(data->regmap, BU27008_REG_SYSTEM_CONTROL,
->>>> +			   BU27008_MASK_SW_RESET, BU27008_MASK_SW_RESET);
->>>> +	if (ret)
->>>> +		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
->>>> +
->>>> +	/*
->>>> +	 * The data-sheet does not tell how long performing the IC reset takes.
->>>> +	 * However, the data-sheet says the minimum time it takes the IC to be
->>>> +	 * able to take inputs after power is applied, is 100 uS. I'd assume
->>>> +	 * > 1 mS is enough.
->>>> +	 */
->>>> +	msleep(1);
->>>
->>> please use usleep_range().
->>
->> I prefer to not require setting up hrtimers as we have no real requirements
->> for the duration of this sleep. I know the msleep() is likely to exceed the
->> 1 mS, potentially a lot if there is things to do - but we don't really care
->> at this point. The main thing is to give the HW time to reset while allowing
->> other things to be scheduled.
-> 
-> For the reason above, msleep(1) is quite a meaningless
-> instruction. If you need to wait around 1ms, then usleep_range is
-> the function to be used.
-> 
-> Refer, also, to the Documentation/timers/timers-howto.rst
+First commit message on bindings will be:
 
-I know the msleep() may sleep much longer. It still is not meaningless. 
-Here we use the msleep() in a purpose:
+Add required reference voltage (VRef) supply regulator.
+AD7192 requires three independent voltage sources: DVdd, AVdd and VRef
+(on REFINx pin pairs).
 
-"Sleep at least 1 mS, but actually I don't care if that is 20 mS or more 
-- as long as you allow scheduling other things with as little overhead 
-as possible".
+Some questions:
+ - Is the FIxes tag referenced commit acceptable, or should it be
+explained? If so, what should I write?
+ - Is the commit message acceptable?
 
-For that purpose msleep() works just perfectly :)
+>
+> >
+> > Actual documentation does not allow the use of the internal oscillator
+> > or the external crystal.
+> > By strictly following the documentation I could only use the external
+> > oscillator option (neither internal nor external crystal oscillator).
+> > The implementation already had in place more binding options than the
+> > documented ones, so I am not suggesting to break anything.
+> >
+> > >
+> > > > Is "Phandle to reference voltage regulator" as a description for
+> > > > avdd-supply acceptable on your side?
+> > >
+> > > Sorry, how is this related to our topic? Anyway, drop "phandle to",
+> > > because you should describe hardware, not syntax of DTS.
+> >
+> > Ok.
+> >  - Is it acceptable to change the description of property
+> > "avdd-supply" from "AVdd voltage supply" to "VRef voltage supply"?
+> No.
+>
+> We have a slightly complex case of not wanting to break old drivers, but
+> the binding should be correct none the less.
+>
+> Binding wise:
+> * Leave avdd-supply alone.
+> * Add a new vref-supply entry and list it as required. This is the Bindin=
+g
+>   'bug fix' and there should be an appropriate fixes tag.
+>
+> No need at all for the binding to describe some old buggy driver behaviou=
+r.
+>
+> Driver wise. - with comments on why we are doing this as we are papering
+> over a bug that will be seen if someone has a DT that worked with the old
+> code.  That's fine as long as we document that we are doing it.
+>
+> * Always get vadd-supply (not optional) - we may get a dummy regulator.
+>   That is fine here.
+> * Try to use vref-supply first as an optional supply.
+> * If that fails, then 'use' avdd as if it it were vref. with nice obvious
+>   comment that this is happening an perhaps even a warning print
+>   "Warning: Using avdd in place of vref. Likely an old DTS".
 
-I actually had a comment clarifying this in previous IIO driver I wrote 
-(just to avoid confusing reviewers) but Jonathan asked me to remove the 
-comment ;)
+Here is the change I am backporting and testing on my platform:
 
-Yours,
-	-- Matti
+Subject: [PATCH v3 3/5] iio: adc: ad7192: Use VRef instead of AVdd as
+ reference voltage source
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Add missing vref-supply and fix avdd-supply used as if it were vref.
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+AD7192 requires three independent voltage sources, digital supply (on
+pin DVdd), analog supply (on AVdd) and reference voltage (VRef on
+alternate pin pair REFIN1 or REFIN2).
 
+Emit a warning message when AVdd is used in place of VRef for backwards
+compatibility.
+
+Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+---
+ drivers/iio/adc/ad7192.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 5a9c8898f8af..4ac6843b7c23 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -177,6 +177,7 @@ struct ad7192_chip_info {
+ struct ad7192_state {
+     const struct ad7192_chip_info    *chip_info;
+     struct regulator        *avdd;
++    struct regulator        *vref;
+     struct clk            *mclk;
+     u16                int_vref_mv;
+     u32                fclk;
+@@ -1014,11 +1015,30 @@ static int ad7192_probe(struct spi_device *spi)
+     if (ret)
+         return ret;
+
++    st->vref =3D devm_regulator_get_optional(&spi->dev, "vref");
++    if (!IS_ERR(st->vref)) {
++        ret =3D regulator_enable(st->vref);
++        if (ret) {
++            dev_err(&spi->dev, "Failed to enable specified VRef supply\n")=
+;
++            return ret;
++        }
++
++        ret =3D devm_add_action_or_reset(&spi->dev, ad7192_reg_disable,
+st->vref);
++        if (ret)
++            return ret;
++    }
++
+     ret =3D devm_regulator_get_enable(&spi->dev, "dvdd");
+     if (ret)
+         return dev_err_probe(&spi->dev, ret, "Failed to enable
+specified DVdd supply\n");
+
+-    ret =3D regulator_get_voltage(st->avdd);
++
++    if (!IS_ERR(st->vref)) {
++        ret =3D regulator_get_voltage(st->vref);
++    } else {
++        dev_warn(&spi->dev, "Using AVdd in place of VRef. Likely an
+old DTS\n");
++        ret =3D regulator_get_voltage(st->avdd);
++    }
+     if (ret < 0) {
+         dev_err(&spi->dev, "Device tree error, reference voltage undefined=
+\n");
+         return ret;
+--=20
+2.34.1
+
+I kindly ask you this advice:
+ - when reference voltage is read from AVdd, should I set the vref
+pointer to NULL, or is IS_ERR check acceptable as proposed in the
+patch?
+
+Best regards,
+Fabrizio Lamarque
+
+>
+> Jonathan
+>
+>
+> >  - It is clear that AVDD pin (almost always tied with DVDD pin with a
+> > passive filter in the middle) on hardware is not VREF pin, but
+> > property avdd-supply is treated by the implementation as if it were
+> > VREF (it's just a matter of misleading name)? I am asking this because
+> > any (perhaps) formally correct change would break compatibility with
+> > existing implementations and, according to previous discussions with
+> > driver maintainers, I am not going to suggest binding name changes any
+> > more. In case of doubt, I will skip this change in description until a
+> > better solution is found.
+> >  - In the hope to submit a patch that does not require additional
+> > corrections, is a single patch acceptable with both a change in
+> > description and with the added missing properties (already existing in
+> > implementation), or should it be split in two?
+> >
+> > Best regards,
+> > Fabrizio Lamarque
+>

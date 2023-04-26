@@ -2,150 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 721E86EF3EF
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 14:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72CBC6EF42E
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 14:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240763AbjDZMDU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Apr 2023 08:03:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55932 "EHLO
+        id S240073AbjDZMUX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Apr 2023 08:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240755AbjDZMDS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 08:03:18 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A6F55BA
-        for <linux-iio@vger.kernel.org>; Wed, 26 Apr 2023 05:02:51 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1a66b9bd893so59058645ad.1
-        for <linux-iio@vger.kernel.org>; Wed, 26 Apr 2023 05:02:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mechatrax-com.20221208.gappssmtp.com; s=20221208; t=1682510570; x=1685102570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R/ZJvITr8KkQOHptvc/4Q9ya9xSDX/U43gmvan7hhKU=;
-        b=LHGu3pjDBJLpaFUJbFE46f0Nt3CTbOiwgFAmrHLLD4f5otkROHDMFrXZe3Nu6+J1A1
-         It6sCGAMNkfTS0Nw/+8/rAsLatPzQzyKq7wWKwFyKq6nXwFpM/cpxxGSEqVWjt9pZYWT
-         5hl8rkHajZIaLtlGecDCaCk323FjJ4k85T502pkYCMjq8PYQwaARmQVdTqZwWu1PS+aJ
-         waIgDO1Sjfe/GZx2GQ23WOnFrcN0yuXq7YHfY9DCmw5nlGhzRYsr64OdsWBEzlt6F/tc
-         eWTCOEYhBTlKDz34zb2d7TXo9J8EcBexkXkjT/lubMJz/5cfvQK9jZ4UpAoBDP3C7ypW
-         YKGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682510570; x=1685102570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R/ZJvITr8KkQOHptvc/4Q9ya9xSDX/U43gmvan7hhKU=;
-        b=QEvbqKRFGiEPR1dwYkjMg+Amlg183UK1+VbTNarUxY2N/hyWXwAtVk++kh/j2sHd12
-         foqU8TD/IxlDH0xbQn4gVGC7MoNG8HHb0xnVKZ2xucnymcjfzPwWPOuWERKaD2evL0x5
-         hUWF5hdtnDRTiVjeHtbyO5knzUvvx+CKmQHhEgbv0fsedcSBgG7WcMtaHNhEf5AaYlrY
-         xFPBEMxh1eviR85qhAkYwPaycQjsHHpcSbGFlChKk2feJ2qoo6K5BwPd1RXPPIixhkby
-         pRHvOQ/U5UNhdFXObLs6zHs+t9Pq+qewxcxJ2fGh0w/DvxMTHbmnWgM9FxFhH3bIv1K/
-         De1A==
-X-Gm-Message-State: AAQBX9fUmIQvSki3NxH7EASjFCUBsd9bqyAl3Uy3H0Z2jI/1u4WNKA6d
-        IgymMtAi+QUIVmJkb2sCSPKiwmHPe9MCnzO06+llgA==
-X-Google-Smtp-Source: AKy350bHLjfCqNJNNZNVfoIuedLydbz+xrRy8UIckV8r+z3xeD7GYSUoBubCEVMm+SMbra972i0vf4I61xxbcQ6onBU=
-X-Received: by 2002:a17:903:2441:b0:1a0:50bd:31a8 with SMTP id
- l1-20020a170903244100b001a050bd31a8mr27072916pls.26.1682510570638; Wed, 26
- Apr 2023 05:02:50 -0700 (PDT)
+        with ESMTP id S240825AbjDZMUV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 08:20:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91F532D4D;
+        Wed, 26 Apr 2023 05:20:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DCC46360B;
+        Wed, 26 Apr 2023 12:20:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE4BC433D2;
+        Wed, 26 Apr 2023 12:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682511619;
+        bh=h0nRMWPoGQqkJ4NDfxVJAfIigEC6h2l9uWX/mE+tGq4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bO2BF27iPTlxgZd0xaXcmeqM7enzth+WOM1pHdJzKtXRcprW/zJQQmzuUZ1jqHJxe
+         jB3MWD/ikdcmj++LPDAI5ePRxC9NIHGxJg6M5O07fZnsWdb3sOOm5PLdlr4KCH/dQa
+         aaqWPZT3RsFiLhGcuqx1mMm/rU2oflv3+iAqH99zNLF0ms+9GPPvtxVWRx/C4tkT6l
+         oOU9aPJJRUqzFC24HGZhJZ7uIiP/G3kRhCvk3IjamwkVB21EnqPwXOMfE4+kwDanWU
+         92akijLK8Xe2LlDAZqUHWJ3etuBy9gi0MAOuXpEp9+bWnGnQc1JKzTGWczw8lJCG7f
+         wNad+9ffDlgiQ==
+Date:   Wed, 26 Apr 2023 14:20:15 +0200
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Andi Shyti <andi.shyti@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
+Message-ID: <20230426122015.cilet7diaxapgbim@intel.intel>
+References: <cover.1682340947.git.mazziesaccount@gmail.com>
+ <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
+ <20230425164522.sljcniui5ox5yx3l@intel.intel>
+ <102a1605-d6dc-80c7-2075-212569c97042@gmail.com>
+ <20230426101200.7czyp6nlg44tweyb@intel.intel>
+ <d1121acc-6300-011f-caa2-0ddc01c46e91@gmail.com>
 MIME-Version: 1.0
-References: <20230420102316.757-1-honda@mechatrax.com> <20230423121528.259d3cd4@jic23-huawei>
-In-Reply-To: <20230423121528.259d3cd4@jic23-huawei>
-From:   Masahiro Honda <honda@mechatrax.com>
-Date:   Wed, 26 Apr 2023 21:02:13 +0900
-Message-ID: <CA+Tz-SEAyXcJ++YDzDC=ySd1gOC-j-DDp8sMHBUCSy9Q3wQ4HA@mail.gmail.com>
-Subject: Re: [PATCH v3] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1121acc-6300-011f-caa2-0ddc01c46e91@gmail.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi Matti,
 
-On Sun, Apr 23, 2023 at 7:59=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Thu, 20 Apr 2023 19:23:16 +0900
-> Masahiro Honda <honda@mechatrax.com> wrote:
->
-> > The Sigma-Delta ADCs supported by this driver can use SDO as an interru=
-pt
-> > line to indicate the completion of a conversion. However, some devices
-> > cannot properly detect the completion of a conversion by an interrupt.
-> > This is for the reason mentioned in the following commit.
-> >
-> > commit e9849777d0e2 ("genirq: Add flag to force mask in
-> >                       disable_irq[_nosync]()")
-> >
-> > A read operation is performed by an extra interrupt before the completi=
-on
-> > of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UNLA=
-ZY
-> > flag.
-> >
-> > Signed-off-by: Masahiro Honda <honda@mechatrax.com>
-> > ---
-> > v3:
-> >  - Remove the Kconfig option.
-> > v2: https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechat=
-rax.com/
-> >  - Rework commit message.
-> >  - Add a new entry in the Kconfig.
-> >  - Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing th=
-e IRQ.
-> > v1: https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechat=
-rax.com/
-> >
-> >  drivers/iio/adc/ad_sigma_delta.c | 25 ++++++++++++++++++++-----
-> >  1 file changed, 20 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigm=
-a_delta.c
-> > index d8570f620..215ecbedb 100644
-> > --- a/drivers/iio/adc/ad_sigma_delta.c
-> > +++ b/drivers/iio/adc/ad_sigma_delta.c
-> > @@ -565,6 +565,14 @@ int ad_sd_validate_trigger(struct iio_dev *indio_d=
-ev, struct iio_trigger *trig)
-> >  }
-> >  EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trigger, IIO_AD_SIGMA_DELTA);
-> >
-> > +static void ad_sd_free_irq(void *sd)
-> > +{
-> > +     struct ad_sigma_delta *sigma_delta =3D sd;
-> > +
-> > +     irq_clear_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY)=
-;
-> > +     free_irq(sigma_delta->spi->irq, sigma_delta);
-> > +}
->
-> Don't fuse the two operations unwinding like this.  Just register a callb=
-ack that only
-> does the irq_clear_status_flags immediately after setting them.  Then lea=
-ve
-> the orginally devm_request_irq call alone.  If it fails, the devm cleanup=
- will
-> deal with the irq_clear_status_flag for you.
->
-> It almost never makes sense for a single devm call to unwind more than on=
-e function call in
-> a driver.
->
-> Otherwise this looks fine to me,
->
-> Thanks,
->
-> Jonathan
->
+> > > > > +static int bu27008_chip_init(struct bu27008_data *data)
+> > > > > +{
+> > > > > +	int ret;
+> > > > > +
+> > > > > +	ret = regmap_update_bits(data->regmap, BU27008_REG_SYSTEM_CONTROL,
+> > > > > +			   BU27008_MASK_SW_RESET, BU27008_MASK_SW_RESET);
+> > > > > +	if (ret)
+> > > > > +		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
+> > > > > +
+> > > > > +	/*
+> > > > > +	 * The data-sheet does not tell how long performing the IC reset takes.
+> > > > > +	 * However, the data-sheet says the minimum time it takes the IC to be
+> > > > > +	 * able to take inputs after power is applied, is 100 uS. I'd assume
+> > > > > +	 * > 1 mS is enough.
+> > > > > +	 */
+> > > > > +	msleep(1);
+> > > > 
+> > > > please use usleep_range().
+> > > 
+> > > I prefer to not require setting up hrtimers as we have no real requirements
+> > > for the duration of this sleep. I know the msleep() is likely to exceed the
+> > > 1 mS, potentially a lot if there is things to do - but we don't really care
+> > > at this point. The main thing is to give the HW time to reset while allowing
+> > > other things to be scheduled.
+> > 
+> > For the reason above, msleep(1) is quite a meaningless
+> > instruction. If you need to wait around 1ms, then usleep_range is
+> > the function to be used.
+> > 
+> > Refer, also, to the Documentation/timers/timers-howto.rst
+> 
+> I know the msleep() may sleep much longer. It still is not meaningless. Here
+> we use the msleep() in a purpose:
+> 
+> "Sleep at least 1 mS, but actually I don't care if that is 20 mS or more -
+> as long as you allow scheduling other things with as little overhead as
+> possible".
+> 
+> For that purpose msleep() works just perfectly :)
+> 
+> I actually had a comment clarifying this in previous IIO driver I wrote
+> (just to avoid confusing reviewers) but Jonathan asked me to remove the
+> comment ;)
 
-I understand. I'll fix it.
+OK... ok... you convinced me :)
 
-Thanks,
+Thanks, will check soon your v3.
+Andi

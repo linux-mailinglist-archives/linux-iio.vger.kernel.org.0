@@ -2,120 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72CBC6EF42E
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 14:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 018836EF62D
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 16:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240073AbjDZMUX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Apr 2023 08:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35352 "EHLO
+        id S241294AbjDZOSZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Apr 2023 10:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240825AbjDZMUV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 08:20:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91F532D4D;
-        Wed, 26 Apr 2023 05:20:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DCC46360B;
-        Wed, 26 Apr 2023 12:20:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE4BC433D2;
-        Wed, 26 Apr 2023 12:20:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682511619;
-        bh=h0nRMWPoGQqkJ4NDfxVJAfIigEC6h2l9uWX/mE+tGq4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bO2BF27iPTlxgZd0xaXcmeqM7enzth+WOM1pHdJzKtXRcprW/zJQQmzuUZ1jqHJxe
-         jB3MWD/ikdcmj++LPDAI5ePRxC9NIHGxJg6M5O07fZnsWdb3sOOm5PLdlr4KCH/dQa
-         aaqWPZT3RsFiLhGcuqx1mMm/rU2oflv3+iAqH99zNLF0ms+9GPPvtxVWRx/C4tkT6l
-         oOU9aPJJRUqzFC24HGZhJZ7uIiP/G3kRhCvk3IjamwkVB21EnqPwXOMfE4+kwDanWU
-         92akijLK8Xe2LlDAZqUHWJ3etuBy9gi0MAOuXpEp9+bWnGnQc1JKzTGWczw8lJCG7f
-         wNad+9ffDlgiQ==
-Date:   Wed, 26 Apr 2023 14:20:15 +0200
-From:   Andi Shyti <andi.shyti@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Andi Shyti <andi.shyti@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
-Message-ID: <20230426122015.cilet7diaxapgbim@intel.intel>
-References: <cover.1682340947.git.mazziesaccount@gmail.com>
- <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
- <20230425164522.sljcniui5ox5yx3l@intel.intel>
- <102a1605-d6dc-80c7-2075-212569c97042@gmail.com>
- <20230426101200.7czyp6nlg44tweyb@intel.intel>
- <d1121acc-6300-011f-caa2-0ddc01c46e91@gmail.com>
+        with ESMTP id S241279AbjDZOSY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 10:18:24 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC4B6EBB
+        for <linux-iio@vger.kernel.org>; Wed, 26 Apr 2023 07:18:11 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-247526f0eceso5216936a91.2
+        for <linux-iio@vger.kernel.org>; Wed, 26 Apr 2023 07:18:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mechatrax-com.20221208.gappssmtp.com; s=20221208; t=1682518691; x=1685110691;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5MwzWOCWIuspDBg7KAFQQxg5GAo3xlUEzmvG1oTBePk=;
+        b=C4z89VF+rBbWLGv/jhTMwmKtVZdtJtTYr9ZmKte8XcQa7c4ZcToPjW91qqV7oqPRv8
+         89pPpJ6M89gWwRRH8emA0cVGEf+5K0poWHsKzgvIQRnTohLAbvGsL5nw9E09ihiHsp6+
+         1mFH1pYwRvR7wGuTU+0atLoubi3DpvUgovf+Sw9ZNcrHKxR30ZhicPMUkGjjBZr1hn9J
+         raSZyRqFbduuOFtKJYfbPvbgzMXxpUT99HgXWrpAPOGCQLcMpKGPp9nd0dGqxPYexokM
+         0U9SqmzY8v3cwRkmc1dtZGTTGMz1dvj+hLVxuIH3oKKSucF3KNGGBcPfg8Q2+BO5e+Sp
+         sZfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682518691; x=1685110691;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5MwzWOCWIuspDBg7KAFQQxg5GAo3xlUEzmvG1oTBePk=;
+        b=FYyN9XqI9EugLaCeILqU/6OI7MJ8YlddsJtQMkUCKVSdaovo0H0lvNjhLFyAUxv2s4
+         tXhTAqKprGnqA3AFs7Vi4zqMYAzjFt1bGR9sR2WH5VOUThr0EOnPqITo0Cj5Fdg40Ls6
+         Uwyq3WUoZHsVRhYhhhxzwzsI0Ub0qf9pPpqU0Rf90wdzBmlwM4nzn+Ya6Kwv4SykSx0J
+         RvP3zFTtt4zupxTUfm2t8Y5aH1Z1CwVUP/ZKa/ffQdabTkKhGqhc6j7OIS5uqEbh/r2P
+         FoSMybJgHweeWJyc2SFxVxqms+YLQ+UiI6FHx8sxmI+CoW0sEQSsTK9GetSkHqSrci3v
+         MQ/A==
+X-Gm-Message-State: AAQBX9eoj/i7it7fG+kv4hAQ9PfuqTWcW15M2z/phDs49d6uVjjDPeSk
+        GgrSpiXyohhcWHgXte6dPxyJwZ+x6LW7O18Tb0wI4Q==
+X-Google-Smtp-Source: AKy350ah7qQRQdHFbI9G1+Rzv8005bT1Dz13JOX87BIdn+B4KCjaAHPEOM6muh7yjOnK0OtbtBhQUVouDjWUW/WydOI=
+X-Received: by 2002:a17:90b:390f:b0:246:9170:a9be with SMTP id
+ ob15-20020a17090b390f00b002469170a9bemr20240108pjb.13.1682518691193; Wed, 26
+ Apr 2023 07:18:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d1121acc-6300-011f-caa2-0ddc01c46e91@gmail.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230420102316.757-1-honda@mechatrax.com> <20230423121528.259d3cd4@jic23-huawei>
+ <CA+Tz-SEAyXcJ++YDzDC=ySd1gOC-j-DDp8sMHBUCSy9Q3wQ4HA@mail.gmail.com>
+In-Reply-To: <CA+Tz-SEAyXcJ++YDzDC=ySd1gOC-j-DDp8sMHBUCSy9Q3wQ4HA@mail.gmail.com>
+From:   Masahiro Honda <honda@mechatrax.com>
+Date:   Wed, 26 Apr 2023 23:17:34 +0900
+Message-ID: <CA+Tz-SFamk0Fmy7Zhk+7pcMxCkt1wacO=UCtCjTjpeocJ5AnXg@mail.gmail.com>
+Subject: Re: [PATCH v3] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Matti,
+Hi Jonathan,
 
-> > > > > +static int bu27008_chip_init(struct bu27008_data *data)
-> > > > > +{
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	ret = regmap_update_bits(data->regmap, BU27008_REG_SYSTEM_CONTROL,
-> > > > > +			   BU27008_MASK_SW_RESET, BU27008_MASK_SW_RESET);
-> > > > > +	if (ret)
-> > > > > +		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * The data-sheet does not tell how long performing the IC reset takes.
-> > > > > +	 * However, the data-sheet says the minimum time it takes the IC to be
-> > > > > +	 * able to take inputs after power is applied, is 100 uS. I'd assume
-> > > > > +	 * > 1 mS is enough.
-> > > > > +	 */
-> > > > > +	msleep(1);
-> > > > 
-> > > > please use usleep_range().
-> > > 
-> > > I prefer to not require setting up hrtimers as we have no real requirements
-> > > for the duration of this sleep. I know the msleep() is likely to exceed the
-> > > 1 mS, potentially a lot if there is things to do - but we don't really care
-> > > at this point. The main thing is to give the HW time to reset while allowing
-> > > other things to be scheduled.
-> > 
-> > For the reason above, msleep(1) is quite a meaningless
-> > instruction. If you need to wait around 1ms, then usleep_range is
-> > the function to be used.
-> > 
-> > Refer, also, to the Documentation/timers/timers-howto.rst
-> 
-> I know the msleep() may sleep much longer. It still is not meaningless. Here
-> we use the msleep() in a purpose:
-> 
-> "Sleep at least 1 mS, but actually I don't care if that is 20 mS or more -
-> as long as you allow scheduling other things with as little overhead as
-> possible".
-> 
-> For that purpose msleep() works just perfectly :)
-> 
-> I actually had a comment clarifying this in previous IIO driver I wrote
-> (just to avoid confusing reviewers) but Jonathan asked me to remove the
-> comment ;)
+On Wed, Apr 26, 2023 at 9:02=E2=80=AFPM Masahiro Honda <honda@mechatrax.com=
+> wrote:
+>
+> I understand. I'll fix it.
+>
 
-OK... ok... you convinced me :)
+Sorry, I made a mistake.
+I would like to wait for a conclusion.
 
-Thanks, will check soon your v3.
-Andi
+Regards,

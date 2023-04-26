@@ -2,148 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E01106EEFE7
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 10:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C046EF1BB
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Apr 2023 12:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239966AbjDZIIr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Apr 2023 04:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35404 "EHLO
+        id S240244AbjDZKMJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Apr 2023 06:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240046AbjDZIIp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 04:08:45 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F3B1BCF;
-        Wed, 26 Apr 2023 01:08:43 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4edc63c82d1so6919044e87.0;
-        Wed, 26 Apr 2023 01:08:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682496521; x=1685088521;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bwraoI4g6RfgKEcR1F5pGP3sB4nBBYRP3MYxGERA6l0=;
-        b=jgQh4PiYX4shyHzn66p/SCgTaBxIge55AfT29SbEMbFESye6ukQaFwFIb2EiFCYcK+
-         8U3p3Gq0cPIN+hFSuWf49UBnH+wNFLhVSs8DfH316Q/M+1LYU962XgeLZ9WKuuiS0ANJ
-         OS3jWU3g9UXuFkVKngqUci0guKU19FJfBGwB2AqOPZ868fCx7il1KA+PXWf8KIpGmwSg
-         iINs0EV1q0O2Dq2BYwxz+vmhW0O5mpDZUu3pJqVsL2z2TkgvlxEGSBQoeaajrNL6zrSY
-         MtCXsSIbU/KzNJ6v++zKVcXnMSuODeS6rCVFNFPfEatUsEEh6huGGUbuIz2clUh40ac/
-         1mpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682496521; x=1685088521;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bwraoI4g6RfgKEcR1F5pGP3sB4nBBYRP3MYxGERA6l0=;
-        b=bLkq3c7TyrbBPi4CeWCG1CgAabk1MzzDqAZGX1pR8DzE7OIFBVDGOoI62trQ6j/uUB
-         SKxMZxajAT36tfaH2HVVoF2wSUwmH8CqqnijeaAdRmp1Sb69Zzi6/OpWXV6ay5jz1feT
-         BqbsCkM1b1IcpZnpA8AKrWXiiAX4ltSdyu9TFtrnVnDVSdn6/UFH2fQqRuJ2pnbklpOi
-         XYN8ht45L4MQoZTty3LDYob4/ggI1NTHm0r5PmML31LxC/v++L8K1dmH/PlerUn9H9SK
-         zMj4INSa0OmiFcqUtmorp+sbz5I76L8rVsvtPFa8gIunAM1L0ypgTxzRHArZ3zOiiCLq
-         a/5w==
-X-Gm-Message-State: AAQBX9cBGr/kfZ7AxDDkklS8TAUJ5v26Vu2kzvMLnWIHmGo8Z+3gREy+
-        BHba7k5YkXIdbnzu+Npgf64=
-X-Google-Smtp-Source: AKy350Ycxl7efm7n0wR3Jl9lBQGjzKOoF6zw9kgIaAM6rWH2axubm/GiTe/jpQJ2S/BfyYZmCc2Ydw==
-X-Received: by 2002:ac2:4247:0:b0:4eb:341c:ecc5 with SMTP id m7-20020ac24247000000b004eb341cecc5mr5283661lfl.12.1682496521384;
-        Wed, 26 Apr 2023 01:08:41 -0700 (PDT)
-Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id h25-20020ac250d9000000b004eb09820adbsm2378262lfm.105.2023.04.26.01.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Apr 2023 01:08:40 -0700 (PDT)
-Date:   Wed, 26 Apr 2023 11:08:37 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S239464AbjDZKMG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Apr 2023 06:12:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93EA3C1F;
+        Wed, 26 Apr 2023 03:12:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71E2C63514;
+        Wed, 26 Apr 2023 10:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3434BC433EF;
+        Wed, 26 Apr 2023 10:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682503923;
+        bh=Q1pkdHI82YRaZX6Y8FThpKLfzCI1n/+xSg+uFsLfR2c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=myHs7Hz7urg5HciZ9IL26A6UAMyuKh0PSMweZ8W0ZZPJqKTCvtscSLXFoQsV//Tul
+         wECjTeWZ5+u2rKvsOYARfvRTFlWr2IvDgxdNraxC7qUlrk0mC0zB1GTCyV3RMp2qzy
+         QgSnzyvk3z4oxAGqQ70b+4y1VuyUFmwMK9lUrpHIsyjWUy5SQyonvkQs/oU1TEIp9O
+         mYV1TrWVSB8Aoi54YchDzHEUe3e+gPSNP+f1ESA3fImsf2uamwx0szjIxkUfoVXyYV
+         RFnSTJGDfNedA4OGMMyEwZ6EobREal72cmCu6MriXj4VutFxHRPV7fNT4i6fUE214V
+         Vv573ZLPaGwLw==
+Date:   Wed, 26 Apr 2023 12:12:00 +0200
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Andi Shyti <andi.shyti@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
         Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Paul Gazzillo <paul@pgazz.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH v3 5/5] MAINTAINERS: Add ROHM BU27008
-Message-ID: <052761fb6e40a76bf0f2690fa00e221f374e980d.1682495921.git.mazziesaccount@gmail.com>
-References: <cover.1682495921.git.mazziesaccount@gmail.com>
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] iio: light: ROHM BU27008 color sensor
+Message-ID: <20230426101200.7czyp6nlg44tweyb@intel.intel>
+References: <cover.1682340947.git.mazziesaccount@gmail.com>
+ <d51d5e2b3eff65fd86aeb47840db9cd413d96668.1682340947.git.mazziesaccount@gmail.com>
+ <20230425164522.sljcniui5ox5yx3l@intel.intel>
+ <102a1605-d6dc-80c7-2075-212569c97042@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WDNpwWIJ09r4e51u"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1682495921.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <102a1605-d6dc-80c7-2075-212569c97042@gmail.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Matti,
 
---WDNpwWIJ09r4e51u
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Thanks for the review! It's nice to see you're still keeping an eye on ROHM
+> / Kionix senor drivers ;)
 
-Add myself as a maintainer for ROHM BU27008 color sensor driver.
+yeah... this is fun... if I just had a bit more time :)
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > > +static int bu27008_read_one(struct bu27008_data *data, struct iio_dev *idev,
+> > > +			    struct iio_chan_spec const *chan, int *val, int *val2)
+> > > +{
+> > > +	int ret, int_time;
+> > > +
+> > > +	ret = bu27008_chan_cfg(data, chan);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = bu27008_meas_set(data, BU27008_MEAS_EN);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	int_time = bu27008_get_int_time(data);
+> > > +	if (int_time < 0)
+> > > +		int_time = 400000;
+> > > +
+> > > +	msleep((int_time + 500) / 1000);
+> > 
+> > What is this 500 doing? Is it making a real difference? it's
+> > 0.5ms.
+> 
+> Thanks for the question, having extra pairs of eyes helps spotting
+> brainfarts :)
+> 
+> The 500 here is half of the value of the divider - idea was to do rounding
+> correctly upwards to prevent premature wake-up. Well, this is incorrect
+> because we should always round up the sleep time, not just 'mathematically
+> correctly' (Eg, not only upwards when value >= 0.5 but upwards always when
+> the division is not even).
+> 
+> After this being said, integration times for this device are full milli
+> seconds so they can all be divided by 1000 uS.
+> 
+> Nevertheless, it's good to note that the sensor is definitely not being
+> clocked by the same clock as CPU and I assume the timing for it will be
+> drifting quite a bit from the CPU clock. This means some sensors will for
+> sure complete the measurement later than this wake-up. In order to tackle
+> this we have the valid-bit polling in bu27008_chan_read_data(). So, at the
+> end of the day, this rounding correction is lkely to be just some
+> unnecessary noise.
 
----
-Revision history:
-No changes since v1
----
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I understand the logic of the waiting, but msleep is not the
+right function as waiting with msleep is always very approximate,
+that's why it's recommended to use it for a large waiting period,
+where the error is smaller.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ac81383129a6..6c0775aabade 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18099,10 +18099,11 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/light/bh1750.yaml
- F:	drivers/iio/light/bh1750.c
-=20
--ROHM BU27034 AMBIENT LIGHT SENSOR DRIVER
-+ROHM BU270xx LIGHT SENSOR DRIVERs
- M:	Matti Vaittinen <mazziesaccount@gmail.com>
- L:	linux-iio@vger.kernel.org
- S:	Supported
-+F:	drivers/iio/light/rohm-bu27008.c
- F:	drivers/iio/light/rohm-bu27034.c
-=20
- ROHM MULTIFUNCTION BD9571MWV-M PMIC DEVICE DRIVERS
---=20
-2.40.0
+If int_time is 1ms, waiting 1.5 or 2 or 1, is the same thing,
+most probably you will end up waiting more.
 
+> > What's the minimum int_time? Can we set a minimum, as well, just
+> > for the sake of the msleep?
+> 
+> Can you please elaborate what you mean by this? The minimum integration time
+> for bu27008 is 55 mS and this is set in the time tables for the gts-helpers.
+> The bu27008_get_int_time() should never return valid time smaller than that.
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
+Witha minimum i mean a minimum value for the msleep to start
+working decently. E.g. what if int_time is lower than 1ms? Can we
+have msleep(0)?
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
+[...]
 
---WDNpwWIJ09r4e51u
-Content-Type: application/pgp-signature; name="signature.asc"
+> > > +static int bu27008_chip_init(struct bu27008_data *data)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	ret = regmap_update_bits(data->regmap, BU27008_REG_SYSTEM_CONTROL,
+> > > +			   BU27008_MASK_SW_RESET, BU27008_MASK_SW_RESET);
+> > > +	if (ret)
+> > > +		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
+> > > +
+> > > +	/*
+> > > +	 * The data-sheet does not tell how long performing the IC reset takes.
+> > > +	 * However, the data-sheet says the minimum time it takes the IC to be
+> > > +	 * able to take inputs after power is applied, is 100 uS. I'd assume
+> > > +	 * > 1 mS is enough.
+> > > +	 */
+> > > +	msleep(1);
+> > 
+> > please use usleep_range().
+> 
+> I prefer to not require setting up hrtimers as we have no real requirements
+> for the duration of this sleep. I know the msleep() is likely to exceed the
+> 1 mS, potentially a lot if there is things to do - but we don't really care
+> at this point. The main thing is to give the HW time to reset while allowing
+> other things to be scheduled.
 
------BEGIN PGP SIGNATURE-----
+For the reason above, msleep(1) is quite a meaningless
+instruction. If you need to wait around 1ms, then usleep_range is
+the function to be used.
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRI3AUACgkQeFA3/03a
-ocWftwgAonx3LpP5oDNJ7HP2eMBQ7mUa4Zwni4WLuJVobprinEbXBzam3siPMeX0
-XRJQpJC3q1q8oaTOOnQ2DMByG6D8AbV5FdYQNh1wEq1mN630K/j79HLoj03tXIOZ
-hW94W98SmaDLbnwNLM9TUvRMuBGy0ImOP04yJfUYe8swA9LUNsYkRp4c0DMR7nZI
-s0+qCClsPru9RodzvO1hs4XOGkjGyRRIiRI1fpT50xv+2mujZ4aToNmE4I7q2/3e
-Nw7hp3M037RJ8TxeIb3HywHWHOQf166NPZATT/lL2F+IWZ8PV3ljcbkNyZ+zw2Lz
-8WlXRlDQPPu4hF4O93bvMOcok8e0nw==
-=rkK7
------END PGP SIGNATURE-----
+Refer, also, to the Documentation/timers/timers-howto.rst
 
---WDNpwWIJ09r4e51u--
+> > > +
+> > > +	return ret;
+> > > +}
+
+[...]
+
+> > > +static irqreturn_t bu27008_trigger_handler(int irq, void *p)
+> > 
+> > Do we really need to be in atomic context here? Can this be
+> > handled from a thread?
+> 
+> As far as I understand, this is handled from a process context.
+
+Sorry... I misread it... I thought you used request_irq() for
+this and request_threaded_irq() for bu27008_irq_thread_handler().
+
+Ignore :)
+
+Andi

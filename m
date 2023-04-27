@@ -2,81 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9745D6F0A17
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Apr 2023 18:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19426F0B6A
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Apr 2023 19:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244042AbjD0Qmb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Apr 2023 12:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
+        id S244405AbjD0RvX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Apr 2023 13:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243972AbjD0Qma (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Apr 2023 12:42:30 -0400
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C1610CA;
-        Thu, 27 Apr 2023 09:42:29 -0700 (PDT)
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-18f16bb1a9bso5462911fac.1;
-        Thu, 27 Apr 2023 09:42:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682613748; x=1685205748;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/qeBYaCNg6vo7r6D0tyPOnjAI0l2bKMXlNaKIsxUD8Q=;
-        b=knqjUB4EWivaN5jZEET2tvIpss4BZlxcHvQNnUsUnefHIeb0qOdm8mw6Dss99MYd/L
-         QBFPTXNcDEWKc3lptu16z65DK2kLfeKOKhVyY19RzoYkIzhMSckWDDNTMnaLI2p2X1b/
-         THVHpnCMWxS6uSOO8Z39iA7orJ7g42rfMaJiK0SWDqZwDFbYgKHygCVsrspE5Y2HXxTg
-         9/KA/0rExf3JEjAEvbTcstNSk5SHPTcuLpsMie9p2fuW80+Qgi6X+kxOyzKoxye5GYMp
-         8CkVXX7B4oCPC7MmGsZYx0+r3vsxpu86xH6GMUj5+pmoaHTieENmpLRpCMy6poUKPPBj
-         y+Rw==
-X-Gm-Message-State: AC+VfDwSbBV7/ZlUtlgshfCcRiYhgY90XCKRsUodPjYw7YXlTQK8axwz
-        5NZxAr1aNbVT7tQHEzjo53Z5IE3W1g==
-X-Google-Smtp-Source: ACHHUZ4SeuCwkCmh9WCQyYFk06qXMizq4bawaVPnJEuzjd3Tyz8kqq3GIBmoGpqeV8Ux/KWyv8rPkA==
-X-Received: by 2002:a9d:75ca:0:b0:6a7:cdb1:88ff with SMTP id c10-20020a9d75ca000000b006a7cdb188ffmr1143258otl.14.1682613748637;
-        Thu, 27 Apr 2023 09:42:28 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id o2-20020a9d5c02000000b006a1508d348dsm8063612otk.22.2023.04.27.09.42.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 09:42:28 -0700 (PDT)
-Received: (nullmailer pid 3146107 invoked by uid 1000);
-        Thu, 27 Apr 2023 16:42:27 -0000
-Date:   Thu, 27 Apr 2023 11:42:27 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Cc:     kernel@axis.com, devicetree@vger.kernel.org,
+        with ESMTP id S243982AbjD0RvW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Apr 2023 13:51:22 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CFC210D;
+        Thu, 27 Apr 2023 10:51:21 -0700 (PDT)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id DD897CCBE1;
+        Thu, 27 Apr 2023 17:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1682617849; bh=NIY1N6khezq9+ZTcdf4CI2PZJx2zYchLwM1fp6lZo0A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=aXEMnvun3ENv8iPHd1MiLBtsE5FXHEqngQMklwv+OslGFTyAdx9vqOnq8xShhCEg8
+         +0cqiUeamn2INSEdAz7NDlFZU70J9NNbqnAuwo/H2kbdGg2ph3hEco01xg0Qs4Wtnr
+         2WXv4VZNp1i33nchNq6wUl9EyUd3WxUh4R8YyEEk=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Lee Jones <lee@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>,
         Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: light: Document TI OPT4001
- light sensor
-Message-ID: <168261374711.3146053.15570341588238197618.robh@kernel.org>
-References: <20230323-add-opt4001-driver-v3-0-62e121dab294@axis.com>
- <20230323-add-opt4001-driver-v3-1-62e121dab294@axis.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 8/8] Documentation: leds: Add "rgb:status" path
+Date:   Thu, 27 Apr 2023 19:50:47 +0200
+Message-ID: <5823752.MhkbZ0Pkbq@z3ntu.xyz>
+In-Reply-To: <20230427160559.GC50521@google.com>
+References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+ <20230414-pmi632-v2-8-98bafa909c36@z3ntu.xyz>
+ <20230427160559.GC50521@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230323-add-opt4001-driver-v3-1-62e121dab294@axis.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On Wed, 26 Apr 2023 13:57:29 +0200, Stefan Windfeldt-Prytz wrote:
-> Add devicetree bindings for opt4001 ambient light sensor.
+On Donnerstag, 27. April 2023 18:05:59 CEST Lee Jones wrote:
+> On Tue, 18 Apr 2023, Luca Weiss wrote:
+> > The path /sys/class/leds/rgb:status is already widely used with the
+> > qcom-lpg driver and others. Document it.
 > 
-> Signed-off-by: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-> ---
->  .../devicetree/bindings/iio/light/ti,opt4001.yaml  | 68 ++++++++++++++++++++++
->  1 file changed, 68 insertions(+)
+> Where is this used?
 > 
+> $ grep status drivers/leds/rgb/leds-qcom-lpg.c
+> <no results>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+This is set in devicetree, e.g. from qcom-msm8974pro-fairphone-fp2.dts[0]:
+
+    color = <LED_COLOR_ID_RGB>;
+    function = LED_FUNCTION_STATUS;
+
+And then something in the LED core sets the name based on that, I'd have
+to dig to find where exactly.
+
+Regards
+Luca
+
+[0] https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts#L105-L106
+
+> 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > 
+> >  Documentation/leds/well-known-leds.txt | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/leds/well-known-leds.txt
+> > b/Documentation/leds/well-known-leds.txt index 2160382c86be..439d4dac4472
+> > 100644
+> > --- a/Documentation/leds/well-known-leds.txt
+> > +++ b/Documentation/leds/well-known-leds.txt
+> > @@ -58,6 +58,7 @@ LEDs on notebook body, indicating that sound input /
+> > output is muted.> 
+> >  * System notification
+> > 
+> > +Good: "rgb:status"
+> > 
+> >  Legacy: "status-led:{red,green,blue}" (Motorola Droid 4)
+> >  Legacy: "lp5523:{r,g,b}" (Nokia N900)
+
+
+
 

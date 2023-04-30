@@ -2,56 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2846F29AD
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Apr 2023 19:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13F116F29C5
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Apr 2023 19:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbjD3RAl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Apr 2023 13:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37600 "EHLO
+        id S230404AbjD3RHR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Apr 2023 13:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231153AbjD3RAh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Apr 2023 13:00:37 -0400
+        with ESMTP id S230235AbjD3RHP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Apr 2023 13:07:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6653F3AA0;
-        Sun, 30 Apr 2023 10:00:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC03172C;
+        Sun, 30 Apr 2023 10:07:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B6D360DF5;
-        Sun, 30 Apr 2023 17:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4940C433EF;
-        Sun, 30 Apr 2023 17:00:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B34160BA9;
+        Sun, 30 Apr 2023 17:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B54FC433EF;
+        Sun, 30 Apr 2023 17:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682874014;
-        bh=vMagLB0T24aEnGIYaVLE/dTFO6A15JIDpqUIewEjwd8=;
+        s=k20201202; t=1682874433;
+        bh=LVTTku4thsZ0OAQMywyia2sdi32S1ddGjboXKjQtnU4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BXbo5RN40/Wzdi59ooW090ZAmDKYM1vN4r0hPV4FpE4Bs/eOT+VJPa63xtHZQm2PF
-         LT5ItpNJV/9kRyyWFHPq39Xr3Ss0H85s/twuPjRb2yf28jTtnif0C5VN0Wik2uGXp7
-         nJa/dNsDsz0PXm0aHv4lN4+eIXyKWWpvvuWlBy3Wiq3OaGderss5xj3kv5/8WTAqcJ
-         tOK6jUl4LHJFHnnZ/t6G5L4jOz4VbRvdpndwnCKXzZfJ4RiHCs94krXVDgU5tFcwvY
-         wf9Ob628bSd4dnrYVD7naMKMK+CSzz4uQWHawJQPJQCoYRgwN3/07kG9qDi1PjbnT8
-         sVNcaqtw8H+Ww==
-Date:   Sun, 30 Apr 2023 18:15:58 +0100
+        b=vLRvuln9GQSrDhh7RrqMipYwXP/IFEr8K9epbL1QPVvgJ0jj+DG/q6W68Yu5Ewi/z
+         yIaTG1qkQPqE9kSur8WCEXJFaO+eLAMBGPRbN4174u4ZKWB7kYx6M9su/948OUf/uh
+         MtWkKhs5cSqbMHel6cML7mbvgNmGmTF7IEHZGXiGKMCFqdeIpO0Akr6R/6kfA9yvNP
+         sqwmlXYs8sb+rjKIlWx/r0swDyWbpoDkAQ3w5OREsRTgcDrRhsK+ynZ3G2MeVEbj6h
+         96ZazLVSwOdrHxBPBWTdaHDOaJ9vPLoPEAx3TwSglvhpPMM7kT3wdpBVkU538irZR9
+         +HKOYswoq6Z6A==
+Date:   Sun, 30 Apr 2023 18:22:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Cai Huoqing <cai.huoqing@linux.dev>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH v2 1/1] dt-bindings: iio: imx8qxp-adc: add missing
- vref-supply
-Message-ID: <20230430181558.7614cbfc@jic23-huawei>
-In-Reply-To: <20230424092312.61746-1-alexander.stein@ew.tq-group.com>
-References: <20230424092312.61746-1-alexander.stein@ew.tq-group.com>
+To:     Frank Li <Frank.Li@nxp.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?= =?UTF-8?B?Zw==?= 
+        <u.kleine-koenig@pengutronix.de>, Petr Machata <petrm@nvidia.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Parthiban Nallathambi <pn@denx.de>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        linux-kernel@vger.kernel.org (open list), imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] iio: light: vcnl4035: fixed chip ID check
+Message-ID: <20230430182258.7dbdd39d@jic23-huawei>
+In-Reply-To: <20230427213038.1375404-1-Frank.Li@nxp.com>
+References: <20230427213038.1375404-1-Frank.Li@nxp.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -66,61 +61,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 Apr 2023 11:23:12 +0200
-Alexander Stein <alexander.stein@ew.tq-group.com> wrote:
+On Thu, 27 Apr 2023 17:30:37 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
 
-> Although this property is used right now for IIO_CHAN_INFO_SCALE,
-> this ADC has two internal reference voltages, which the driver currently
-> doesn't make use of.
+> VCNL4035 register(0xE) ID_L and ID_M define as:
 > 
-> Fixes: db73419d8c06 ("dt-bindings: iio: adc: Add binding documentation for NXP IMX8QXP ADC")
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+>  ID_L: 0x80
+>  ID_H: 7:6 (0:0)
+>        5:4 (0:0) slave address = 0x60 (7-bit)
+>            (0:1) slave address = 0x51 (7-bit)
+>            (1:0) slave address = 0x40 (7-bit)
+>            (1:0) slave address = 0x41 (7-bit)
+>        3:0 Version code default	(0:0:0:0)
+> 
+> So just check ID_L.
 
-Interesting that we are talking her only about vrefh, what about vrefp?
-I guess the assumption is that will be wired to 0V?
+Hi Frank,
 
-The first reference I found didn't seem to imply that was necessarily the
-case. https://www.mouser.com/pdfDocs/IMX8QXPAEC.pdf
+Thanks for the fix. A few minor things inline.
 
+> 
+> Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+> 
+
+No blank line here as the Fixes tag is part of the main tag block.
+
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Just to check, the result of this bug is that the driver probe fails
+if the slave address isn't 0x60?
+
+> ---
+>  drivers/iio/light/vcnl4035.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+> index 3ed37f6057fb..8b7769930f3b 100644
+> --- a/drivers/iio/light/vcnl4035.c
+> +++ b/drivers/iio/light/vcnl4035.c
+> @@ -413,7 +413,7 @@ static int vcnl4035_init(struct vcnl4035_data *data)
+>  		return ret;
+>  	}
+>  
+> -	if (id != VCNL4035_DEV_ID_VAL) {
+> +	if ((id & 0xff) != VCNL4035_DEV_ID_VAL) {
+
+Please add a define for that 0xff mask and perhaps also use
+FIELD_GET() to extract the field for comparison with VCNL4035_DEV_ID_VAL.
+Whilst that isn't being done elsewhere in this driver, the heavy use
+of set bits means it isn't appropriate anywhere else that I can quickly
+identify. You'll also need to include linux/bitfield.h if making that change.
+
+Thanks,
 
 Jonathan
 
-> ---
-> Thanks for your inputs. This improved descritpion should make it clear
-> that this property is only about the external reference voltage, not
-> about the optional, internal voltages.
-> 
-> Changes in v2:
-> * Improved commit message subject as suggested
-> * Add hint about feature flag regarding multiple, internal, reference
->   voltages
-> 
->  .../devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml       | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> index 63369ba388e4..878e67054d7c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> @@ -39,6 +39,12 @@ properties:
->    power-domains:
->      maxItems: 1
->  
-> +  vref-supply:
-> +    description: |
-> +      External ADC reference voltage supply on VREFH pad. If VERID[MVI] is
-> +      set, there are additional, internal reference voltages selectable.
-> +      VREFH1 is always from VREFH pad.
-> +
->    "#io-channel-cells":
->      const: 1
->  
-> @@ -72,6 +78,7 @@ examples:
->              assigned-clocks = <&clk IMX_SC_R_ADC_0>;
->              assigned-clock-rates = <24000000>;
->              power-domains = <&pd IMX_SC_R_ADC_0>;
-> +            vref-supply = <&reg_1v8>;
->              #io-channel-cells = <1>;
->          };
->      };
+>  		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
+>  			id, VCNL4035_DEV_ID_VAL);
+>  		return -ENODEV;
 

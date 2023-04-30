@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE366F29D7
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Apr 2023 19:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0776F29FF
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Apr 2023 19:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbjD3RNN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Apr 2023 13:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43486 "EHLO
+        id S229883AbjD3R13 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Apr 2023 13:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjD3RNM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Apr 2023 13:13:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA27F125;
-        Sun, 30 Apr 2023 10:13:11 -0700 (PDT)
+        with ESMTP id S229531AbjD3R12 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Apr 2023 13:27:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C642709;
+        Sun, 30 Apr 2023 10:27:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B7060B8A;
-        Sun, 30 Apr 2023 17:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441B8C433D2;
-        Sun, 30 Apr 2023 17:13:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EDAC60D3E;
+        Sun, 30 Apr 2023 17:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B225EC433EF;
+        Sun, 30 Apr 2023 17:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682874790;
-        bh=OIvDQm0vhvXudrMvZb9IGJnC32d5e2xrPDotj5b2xMg=;
+        s=k20201202; t=1682875645;
+        bh=kvkv3Q8LokOkPPhq/+uPMJwHGQ4nK0o0pS8Uc1X116A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TGM/fXh4bnTksGkLmlUXIUyIkpIy0nH/ZEMvJ+ICH8IL2dCX8zJUMK8yyW7E7u8V9
-         Td7VI0qBYFfylcao6j1S74gIx1FBidAxKEB2BfIXdxrNHXTIM90tvV/HOSRFYHvnon
-         VC0iqz6F/ae5NOcuxjefXFmedWxRhWrTjEnTc93BTC87NOMiyKcKbxu+6Z5S+x5buC
-         rPYg/DAPsZTdcyzgJnEtbO41u7tGkcKfgGE4Jb3xH/jVabOV7XnPBw5ARRMp8ueUGB
-         IvUUs2WRxnziQRhvK69oAK8dcobVPT/Plkz5WnRu+wYgvSlMqXIrc9V1YqcpNDT8WQ
-         mPDdnLyHn05Lw==
-Date:   Sun, 30 Apr 2023 18:28:55 +0100
+        b=czqo36l1nuHq6+yudCtCBSV0bxYO3nn8e7XVrvZpbdn491CGek2nIbw9uLev8wLGb
+         dFtfnJEsF48B/pFmjmNcRQG6Yu3sfbcTdSjnK3SDwFv69y9EWwfG4HlP33ENtaQmsI
+         LyB7cLe46jBvgSMq6NfbaVC8JHlX9/HztGRetYVKJSNB5kFJugHvjiH0KDCuSIXI7v
+         C2y2QaPwgNrZzVJ3+L5OMjVqpmjGZ5xSgQZD4AA4sIqRLfi8I5Mqwqok4IY9IgqWIo
+         Lsz7qiiI0P4LXAfr1QFvRRKxDcjuVjC6QEC//cu3aPsHOLrgAS3SXAjsGvC3PnzE/f
+         8DBS5VA47zQ6Q==
+Date:   Sun, 30 Apr 2023 18:43:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
-Subject: Re: [PATCH v3 0/2] Support for Texas Instruments OPT4001 Ambient
- Light Sensor
-Message-ID: <20230430182855.1ce2ad65@jic23-huawei>
-In-Reply-To: <20230323-add-opt4001-driver-v3-0-62e121dab294@axis.com>
-References: <20230323-add-opt4001-driver-v3-0-62e121dab294@axis.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Masahiro Honda <honda@mechatrax.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+Message-ID: <20230430184311.7443e1d7@jic23-huawei>
+In-Reply-To: <b6a96cca17832219042c90baec2442b1a5bad7b7.camel@gmail.com>
+References: <20230420102316.757-1-honda@mechatrax.com>
+        <20230423121528.259d3cd4@jic23-huawei>
+        <b6a96cca17832219042c90baec2442b1a5bad7b7.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,75 +58,122 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Apr 2023 13:57:28 +0200
-Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com> wrote:
+On Mon, 24 Apr 2023 11:09:34 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> This series adds support for Texas Instruments OPT4001 Ambient light sensor.
-> 
-> The light sensor has a i2c interface and supports continuous, oneshot and
-> interruptdriven measurements and has configurable conversion time and range.
-> 
-> This driver uses the sensors continuous mode so it always has a updated light
-> value available. The conversion time which is
->  (integration time + time to set registers) which is used to configure
-> integration time through sysfs. The chip also has a configurable light
-> range which this driver sets to Auto where the chip chooses range itself
-> depending on previously read values.
-> 
-> Since the OPT4001 has different constants used to calculate lux values
-> depeding on packaging of the chip but uses the same device id, two compatible
-> string are used depending on the packaging, these are "ti,opt4001-picostar"
-> and "ti,opt4001-sot-5x3".
-> 
-> Signed-off-by: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Hi Stefan,
+> Hi Jonathan,
+>=20
+> On Sun, 2023-04-23 at 12:15 +0100, Jonathan Cameron wrote:
+> > On Thu, 20 Apr 2023 19:23:16 +0900
+> > Masahiro Honda <honda@mechatrax.com> wrote:
+> >  =20
+> > > The Sigma-Delta ADCs supported by this driver can use SDO as an inter=
+rupt
+> > > line to indicate the completion of a conversion. However, some devices
+> > > cannot properly detect the completion of a conversion by an interrupt.
+> > > This is for the reason mentioned in the following commit.
+> > >=20
+> > > commit e9849777d0e2 ("genirq: Add flag to force mask in
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 disable_irq[_nosy=
+nc]()")
+> > >=20
+> > > A read operation is performed by an extra interrupt before the comple=
+tion
+> > > of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UN=
+LAZY
+> > > flag.
+> > >=20
+> > > Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+> > > ---
+> > > v3:
+> > > =C2=A0- Remove the Kconfig option.
+> > > v2:
+> > > https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatra=
+x.com/
+> > > =C2=A0- Rework commit message.
+> > > =C2=A0- Add a new entry in the Kconfig.
+> > > =C2=A0- Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when fre=
+eing the
+> > > IRQ.
+> > > v1:
+> > > https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatra=
+x.com/
+> > >=20
+> > > =C2=A0drivers/iio/adc/ad_sigma_delta.c | 25 ++++++++++++++++++++-----
+> > > =C2=A01 file changed, 20 insertions(+), 5 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/ad_sigma_delta.c
+> > > b/drivers/iio/adc/ad_sigma_delta.c
+> > > index d8570f620..215ecbedb 100644
+> > > --- a/drivers/iio/adc/ad_sigma_delta.c
+> > > +++ b/drivers/iio/adc/ad_sigma_delta.c
+> > > @@ -565,6 +565,14 @@ int ad_sd_validate_trigger(struct iio_dev *indio=
+_dev,
+> > > struct iio_trigger *trig)
+> > > =C2=A0}
+> > > =C2=A0EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trigger, IIO_AD_SIGMA_DELTA=
+);
+> > > =C2=A0
+> > > +static void ad_sd_free_irq(void *sd)
+> > > +{
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ad_sigma_delta *sig=
+ma_delta =3D sd;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0irq_clear_status_flags(sig=
+ma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0free_irq(sigma_delta->spi-=
+>irq, sigma_delta);
+> > > +} =20
+> >=20
+> > Don't fuse the two operations unwinding like this.=C2=A0 Just register =
+a callback
+> > that only
+> > does the irq_clear_status_flags immediately after setting them.=C2=A0 T=
+hen leave =20
+>=20
+> I was the one to propose fusing them together because I thought that we c=
+ould
+> have issues by clearing the flag after calling free_irq(). After looking =
+again
+> at the IRQ code, I can see that it is not up to free_irq() to free the al=
+located
+> irq_descs (that might only happen when unmapping the virq) which means we=
+ should
+> be fine doing the normal way.
 
-No need to sign off on cover letters.  They don't go in the git logs so
-if doesn't matter either way.
+Ah. I'd missed the ordering.  If that had been valid (and I think you are c=
+orrect
+that it is not required) then a comment to make that clear would be necessa=
+ry.
 
-Otherwise, looks good to me.
+Usual case of: When doing something non obvious with ordering, say why.
 
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day to
-take a look at it.
+>=20
+> That said, looking at the only users that care to clear this flag, it loo=
+ks like
+> they do it before calling free_irq(). Hence, I'm not sure if there's anyt=
+hing
+> subtle going on. In fact, looking at this line:
+>=20
+> https://elixir.bootlin.com/linux/latest/source/kernel/irq/manage.c#L1909
+>=20
+> I'm not so sure we actually need to clear the flag as for these devices, =
+we
+> should only have one consumer/action per IRQ. Anyways, probably for corre=
+ctness
+> we should still explicitly clear it?
 
-Note I'll be rebasing that branch on rc1 once available.
+Good question...  Looks to me like a driver shouldn't be clearing this flag
+itself, but it's probably harmless in most cases.
 
-Thanks,
+I'd drop the clear of the status flag, perhaps adding a comment that
+the irq core does it for us.
 
 Jonathan
 
-> ---
-> Changes in v3:
-> - Removed unneccesary description from devicetree
-> - Use correct subject prefix for devicetree bindings
-> - No error on device id miss match
-> - Removed opt4001_settings as there was only one needed property int_time
-> - Link to v2: https://lore.kernel.org/r/20230323-add-opt4001-driver-v2-0-0bae0398669d@axis.com
-> 
-> Changes in v2:
-> - Added text about differences of sot-5x3 and picostar
-> - Added irq and regulator to devicetree bindings
-> - Added regulator support to driver
-> - Switched from using .remove to devm_action_or_reset
-> - Removed own mutex and reenabled regmaps
-> - Updated name in sysfs
-> - Added i2c_device_id
-> - Rename package_const to chip_info
-> - Link to v1: https://lore.kernel.org/r/20230323-add-opt4001-driver-v1-0-1451dcc1bc8a@axis.com
-> 
-> ---
-> Stefan Windfeldt-Prytz (2):
->       dt-bindings: iio: light: Document TI OPT4001 light sensor
->       iio: light: Add support for TI OPT4001 light sensor
-> 
->  .../devicetree/bindings/iio/light/ti,opt4001.yaml  |  68 +++
->  drivers/iio/light/Kconfig                          |  11 +
->  drivers/iio/light/Makefile                         |   1 +
->  drivers/iio/light/opt4001.c                        | 467 +++++++++++++++++++++
->  4 files changed, 547 insertions(+)
-> ---
-> base-commit: 60c5238813fdfbe167eb579d58172106916b8db0
-> change-id: 20230323-add-opt4001-driver-99b9aad69319
-> 
-> Best regards,
+
+>=20
+> - Nuno S=C3=A1
+>=20
 

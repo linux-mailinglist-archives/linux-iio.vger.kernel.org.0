@@ -2,101 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4936F39F3
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 23:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D04286F3AEB
+	for <lists+linux-iio@lfdr.de>; Tue,  2 May 2023 01:17:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbjEAV4N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 17:56:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
+        id S231459AbjEAXR5 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 1 May 2023 19:17:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232200AbjEAV4N (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 17:56:13 -0400
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD2C2114;
-        Mon,  1 May 2023 14:56:09 -0700 (PDT)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        with ESMTP id S230391AbjEAXR5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 19:17:57 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5081030F2
+        for <linux-iio@vger.kernel.org>; Mon,  1 May 2023 16:17:56 -0700 (PDT)
+Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B492140DE9;
-        Mon,  1 May 2023 23:56:06 +0200 (CEST)
-Date:   Mon, 1 May 2023 23:56:04 +0200
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5211040E42;
+        Tue,  2 May 2023 01:17:54 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel`
- name for channel nodes
-Message-ID: <qqfqnj5cta5j6dpv2mli2dt6wdjghxt23u5ivvadhltxh6vd2d@lka4jue7blne>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
-        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org, 
-        ~postmarketos/upstreaming@lists.sr.ht, 
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-        Martin Botka <martin.botka@somainline.org>, Jami Kettunen <jami.kettunen@somainline.org>, 
-        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Andy Gross <agross@kernel.org>, 
-        Bjorn Andersson <andersson@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
- <20230410202917.247666-6-marijn.suijten@somainline.org>
- <20230412212756.0b4b69f3@jic23-huawei>
- <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
- <20230415174943.2b731203@jic23-huawei>
- <20230501171838.461501b1@jic23-huawei>
+Subject: [PATCH RESEND v3 0/5] iio: adc: qcom-spmi-vadc: Propagate fw node label to userspace
+Date:   Tue,  2 May 2023 01:17:32 +0200
+Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230501171838.461501b1@jic23-huawei>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.2
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2023-05-01 17:18:38, Jonathan Cameron wrote:
-<snip>
-> > > > Otherwise we can do (a) early in next cycle.  Feel free to poke me if we are doing (b)
-> > > > and I seem to have forgotten to pick up this patch!    
-> > > 
-> > > Thanks!  I hope we don't get many conflicts (+ new bindings adhering to
-> > > the old(er) formats) otherwise I'll resend if we do (a).  Around what
-> > > time would be good, rc2?  
-> > 
-> > Sure. If rebase is needed send a v5 with that done.  If not, a simple
-> > reminder reply to this thread will probably work.
-> 
-> I've started queuing stuff for the next cycle as the relevant pull requests
-> are for the IIO tree for this cycle were picked up a few days ago.
-> 
-> Hence, applied to the togreg branch of iio.git and pushed out as testing for 0-day
-> to take a quick look at it.
 
-Thanks, running with:
+Implement read_label in qcom-spmi-vadc to see DT-specified label names
+in userspace.  At the same time clear up some documentation around
+extend_name to promote read_label, and normalize similar code in
+qcom-spmi-adc5.
 
-    make VALIDATE_DT=1 ARCH=arm64 dt_binding_checka dtbs_check \
-        DT_SCHEMA_FILES="Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml"
+v3 resend: added missing to/cc addresses via b4 prep --auto-to-cc.
 
-And similar for ARCH=arm on -next-20230428 shows that there is no new
-use of the old (arbitrary) node name format, so no v5 should be
-necessary (unless those patches also land at the same time...).
+Changes since v2:
+- Dropped RFC tag;
+- Reworded @extend_name deprecation comment.
 
-Such a resend would only affect patch 1/5 and 3/5 though, which rewrite
-the actual DTS node names.
+v2: https://lore.kernel.org/r/20230116220909.196926-1-marijn.suijten@somainline.org
 
-- Marijn
+Changes since v1:
+- qcom-spmi-vadc: Use read_label instead of extend_name.
+
+New since v1:
+- core: Point users of extend_name field to read_label callback
+- qcom-spmi-adc5: Use datasheet_name string literal for
+  iio_chan_spec::datasheet_name;
+- qcom-spmi-adc5: Fall back to datasheet_name instead of
+  fwnode_get_name() for iio_chan_spec::extend_name (gets rid of @xx in
+  sysfs filenames and labels);
+- qcom-spmi-adc5: Remove unnecessary datasheet_name NULL check.
+
+v1: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/
+---
+Marijn Suijten (5):
+      iio: core: Point users of extend_name field to read_label callback
+      iio: adc: qcom-spmi-adc5: Use driver datasheet_name instead of DT label
+      iio: adc: qcom-spmi-adc5: Fall back to datasheet_name instead of fwnode name
+      iio: adc: qcom-spmi-adc5: Remove unnecessary datasheet_name NULL check
+      iio: adc: qcom-spmi-vadc: Propagate fw node label to userspace
+
+ drivers/iio/adc/qcom-spmi-adc5.c | 15 +++++++--------
+ drivers/iio/adc/qcom-spmi-vadc.c | 19 ++++++++++++++++++-
+ include/linux/iio/iio.h          |  3 +++
+ 3 files changed, 28 insertions(+), 9 deletions(-)
+---
+base-commit: 92e815cf07ed24ee1c51b122f24ffcf2964b4b13
+change-id: 20230502-iio-adc-propagate-fw-node-label-b1fff2e63ae8

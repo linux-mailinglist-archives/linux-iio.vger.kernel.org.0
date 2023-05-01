@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 777216F3261
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607376F3287
+	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232480AbjEAPAC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 11:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34676 "EHLO
+        id S231816AbjEAPJ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 11:09:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232249AbjEAPAB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:00:01 -0400
+        with ESMTP id S232704AbjEAPJZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:09:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75619109;
-        Mon,  1 May 2023 08:00:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D6F19A4;
+        Mon,  1 May 2023 08:09:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 045CB6155E;
-        Mon,  1 May 2023 15:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D549AC433EF;
-        Mon,  1 May 2023 14:59:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CBC361DA3;
+        Mon,  1 May 2023 15:09:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2769C433D2;
+        Mon,  1 May 2023 15:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682953199;
-        bh=oIbyg+1zc4Iqoh6xK0LuuT7HCKaLEf4UWG79FvxayeU=;
+        s=k20201202; t=1682953752;
+        bh=cUsOqfxkIZKyqqJ02ZRf0fbQ0VVSONKVBQcffytJjtk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pkGDLrAcRV9sDcO5GOXP2vrd+LtOwI/heSpxXQG2IPdgtRphRxGWnnDETxMZ6xDzX
-         A+MKACYd7KEMZ0sV6dWeZQc5xtTrxa9MPr0hTyWQP3aZ7xM+p+NS9VQyADYNdWE38Q
-         lEVffXGX+b5QFpNUjJFY6LGF0G5FKVW7mb1fDtX/Y7ET8XtXqMODb4q8tCh3mNccA6
-         5u0xw4S2Xx7J+ZWZeMqpxgeMvd0eqHUamxzHIrnQ4K5KHO6ocKxRwN6gyrIXTPcU80
-         olHs1znUrkFHCjADFjkQ9ppDhznYSh7PLuJ2O5+fAbDN3w/TZj7qIFLvLUdbpvBqcW
-         uKHgunwQTpX7A==
-Date:   Mon, 1 May 2023 16:15:43 +0100
+        b=LXsZT+m4RC1Wkzi4gGg7dhvNreN88Pqydx70S7nVYE3En1YazI1UXgrbDB/acgko4
+         WdN0xFED3fL+1lqYjoNtpiWvpUkQHn0dNcr5Tiw7hziaTknpfeok8+ybqMSuDk83Sd
+         D28ffSMdMstVcNMKRxmI5eeyRFOrp3EZhxj7ZMV+8YcjLMz6ursQFkWzgde7DSGk0+
+         hURXmbJ6WJQSwV6dNCtmIFgI+DG/+9sVVEDGOxvPoDA4KmzUD/aQhENlLfkIB+k9z9
+         aKemwGil86e9cGRezdqtMUWqZVbY0VyyvpxZHHfK1vCGk883WzoXbnogrMeBOyXKV/
+         jwuPst3iBBYhg==
+Date:   Mon, 1 May 2023 16:24:56 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Herve Codina <herve.codina@bootlin.com>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
@@ -45,18 +45,18 @@ Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         linux-iio@vger.kernel.org,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 2/4] iio: inkern: Add a helper to query an available
- minimum raw value
-Message-ID: <20230501161543.25156692@jic23-huawei>
-In-Reply-To: <20230424095041.540be943@bootlin.com>
+Subject: Re: [PATCH 4/4] ASoC: codecs: Add support for the generic IIO
+ auxiliary devices
+Message-ID: <20230501162456.3448c494@jic23-huawei>
+In-Reply-To: <20230424125216.0f279f82@bootlin.com>
 References: <20230421124122.324820-1-herve.codina@bootlin.com>
-        <20230421124122.324820-3-herve.codina@bootlin.com>
-        <20230422174916.74ccfe00@jic23-huawei>
-        <20230424095041.540be943@bootlin.com>
+        <20230421124122.324820-5-herve.codina@bootlin.com>
+        <20230422180814.61d24aa3@jic23-huawei>
+        <20230424125216.0f279f82@bootlin.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -67,81 +67,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> > > diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consume=
-r.h
-> > > index 6802596b017c..956120d8b5a3 100644
-> > > --- a/include/linux/iio/consumer.h
-> > > +++ b/include/linux/iio/consumer.h
-> > > @@ -297,6 +297,17 @@ int iio_write_channel_raw(struct iio_channel *ch=
-an, int val);
-> > >   */
-> > >  int iio_read_max_channel_raw(struct iio_channel *chan, int *val);
-> > > =20
-> > > +/**
-> > > + * iio_read_min_channel_raw() - read minimum available raw value fro=
-m a given
-> > > + *				channel, i.e. the minimum possible value.
-> > > + * @chan:		The channel being queried.
-> > > + * @val:		Value read back.
-> > > + *
-> > > + * Note raw reads from iio channels are in adc counts and hence
-> > > + * scale will need to be applied if standard units are required.   =
-=20
-> >=20
-> > Hmm. That comment is almost always true, but not quite.  Not related to
-> > your patch but some cleanup of this documentation and pushing it down n=
-ext
-> > to implementations should be done at some point.  If anyone is really
-> > bored and wants to take this on that's fine. If not, another one for the
-> > todo list ;) =20
->=20
-> If you are ok, I can change every where in consumer.h the following:
->   * Note raw reads from iio channels are in adc counts and hence
->   * scale will need to be applied if standard units required.
-> by
->   * Note raw reads from iio channels are not in standards units and
->   * hence scale will need to be applied if standard units required.
 
-If going to the effort, we should include offset and make it clear how
-they are applied.
+> >   
+> > > +static int simple_iio_aux_probe(struct platform_device *pdev)
+> > > +{
+> > > +	struct device_node *np = pdev->dev.of_node;
+> > > +	struct simple_iio_aux_chan *iio_aux_chan;
+> > > +	struct simple_iio_aux *iio_aux;
+> > > +	int count;
+> > > +	u32 tmp;
+> > > +	int ret;
+> > > +	int i;
+> > > +
+> > > +	iio_aux = devm_kzalloc(&pdev->dev, sizeof(*iio_aux), GFP_KERNEL);
+> > > +	if (!iio_aux)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	iio_aux->dev = &pdev->dev;
+> > > +
+> > > +	count = of_property_count_strings(np, "io-channel-names");
+> > > +	if (count < 0) {
+> > > +		dev_err(iio_aux->dev, "%pOF: failed to read io-channel-names\n", np);
+> > > +		return count;
+> > > +	}
+> > > +
+> > > +	iio_aux->chans = devm_kmalloc_array(&pdev->dev, count,
+> > > +					    sizeof(*iio_aux->chans), GFP_KERNEL);
+> > > +	if (!iio_aux->chans)
+> > > +		return -ENOMEM;
+> > > +	iio_aux->num_chans = count;
+> > > +
+> > > +	for (i = 0; i < iio_aux->num_chans; i++) {
+> > > +		iio_aux_chan = iio_aux->chans + i;
+> > > +
+> > > +		ret = of_property_read_string_index(np, "io-channel-names", i,
+> > > +						    &iio_aux_chan->name);    
+> > 
+> > Whilst today this will be tightly couple with of, if you can use generic firmware
+> > handling where possible (from linux/property.h) it will reduce what needs
+> > to be tidied up if anyone fills in the gaps for IIO consumer bindings in ACPI
+> > and then someone uses PRP0001 based ACPI bindings.  
+> 
+> No device_property_read_*() function family are available to get a value
+> from an array using an index.
 
-    * Note, if standard units are required, raw reads from iio channels
-    * need the offset (default 0) and scale (default 1) to be applied
-    * as (raw + offset) * scale.
-=20
+That feels like it might be a feature gap in the generic property handling that
+should be solved.  Emtirely reasonable not to do it in this series however!
 
->=20
-> Also the same for raw writes:
->   * Note raw writes to iio channels are in dac counts and hence
->   * scale will need to be applied if standard units required.
-> by
->   * Note raw writes to iio channels are not in standards units and
->   * hence scale will need to be applied if standard units required.
-This one is more interesting because you kind of need to apply the opposite
-logic. Perhaps text such as.
 
-    * Note that for raw writes to iio channels, if the value provided is
-    * in standard units, the affect of the scale and offset must be removed
-    * as (value / scale) - offset.
 
-My slight concern is that we'll spend longer arguing about these comments
-than we spend on the rest of the patch set.  Might be worth delaying
-fixing the others for a separate series after this one.
+> 
+> I would prefer to keep the of_property_read_*() function family I use for this
+> first IIO auxiliary device support.
+> 
+> >   
+> > > +		if (ret < 0) {
+> > > +			dev_err(iio_aux->dev, "%pOF: failed to read io-channel-names[%d]\n", np, i);    
+> > 
+> > dev_err_probe() would simplify these cases a little.  Not sure on ASOC view on using
+> > that for cases that won't defer.  I tend to take the view it's nicer everywhere
+> > for calls in probe() functions.  
+> 
+> I have the feeling that ASoC uses dev_err_probe() for cases that can defer.
+> Mark, can you confirm ?
+> 
+
+Left as needs an answer from Mark.
 
 Jonathan
 
->=20
-> >  =20
-> > > + */
-> > > +int iio_read_min_channel_raw(struct iio_channel *chan, int *val);
-> > > +
-> > >  /**
-> > >   * iio_read_avail_channel_raw() - read available raw values from a g=
-iven channel
-> > >   * @chan:		The channel being queried.   =20
-> >  =20
->=20
-> Thanks for the review,
-> Herv=C3=A9
->=20
+
 

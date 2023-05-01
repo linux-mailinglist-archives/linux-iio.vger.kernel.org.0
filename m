@@ -2,23 +2,23 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 958416F3AEF
-	for <lists+linux-iio@lfdr.de>; Tue,  2 May 2023 01:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 910D36F3AF1
+	for <lists+linux-iio@lfdr.de>; Tue,  2 May 2023 01:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232598AbjEAXSU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 19:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49842 "EHLO
+        id S231610AbjEAXSV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 19:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbjEAXST (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 19:18:19 -0400
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E913581
+        with ESMTP id S232182AbjEAXSU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 19:18:20 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [5.144.164.167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C508C358C
         for <linux-iio@vger.kernel.org>; Mon,  1 May 2023 16:18:16 -0700 (PDT)
 Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2D91740E42;
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id AA4D440E51;
         Tue,  2 May 2023 01:18:14 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
@@ -34,9 +34,9 @@ To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
-Subject: [PATCH RESEND v3 1/5] iio: core: Point users of extend_name field to read_label callback
-Date:   Tue,  2 May 2023 01:17:33 +0200
-Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-1-6be5db6e6b5a@somainline.org>
+Subject: [PATCH RESEND v3 2/5] iio: adc: qcom-spmi-adc5: Use driver datasheet_name instead of DT label
+Date:   Tue,  2 May 2023 01:17:34 +0200
+Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-2-6be5db6e6b5a@somainline.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
 References: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
@@ -53,41 +53,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As mentioned and discussed in [1] extend_name should not be used for
-full channel labels (and most drivers seem to only use it to express a
-short type of a channel) as this affects sysfs filenames, while the
-label name is supposed to be extracted from the *_label sysfs file
-instead.  This appears to have been unclear to some drivers as
-extend_name is also used when read_label is unset, achieving an initial
-goal of providing sensible names in *_label sysfs files without noticing
-that sysfs filenames are (negatively and likely unintentionally)
-affected as well.
+iio_chan_spec::datasheet_name expects a channel/pin name on the hardware
+part, i.e. from its datasheet, instead of a friendly name from DT which
+typically describes the use of said channel.  GPIO channels are commonly
+specialized in QCOM board DTS based on what a - typically thermistor -
+is connected to.
 
-Point readers of iio_chan_spec::extend_name to iio_info::read_label by
-mentioning deprecation and side-effects of this field.
+Also rename adc5_channel_prop::datasheet_name to channel_name to that
+effect.
 
-[1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
-
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- include/linux/iio/iio.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/qcom-spmi-adc5.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 81413cd3a3e7a..6fc06063505a7 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -221,6 +221,9 @@ struct iio_event_spec {
-  * @extend_name:	Allows labeling of channel attributes with an
-  *			informative name. Note this has no effect codes etc,
-  *			unlike modifiers.
-+ *			This field is deprecated in favour of providing
-+ *			iio_info->read_label() to override the label, which
-+ *			unlike @extend_name does not affect sysfs filenames.
-  * @datasheet_name:	A name used in in-kernel mapping of channels. It should
-  *			correspond to the first name that the channel is referred
-  *			to by in the datasheet (e.g. IND), or the nearest
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index c2d5e06f137a7..6e4e5cb5cbbb7 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -114,7 +114,7 @@ enum adc5_cal_val {
+  *	that is an average of multiple measurements.
+  * @scale_fn_type: Represents the scaling function to convert voltage
+  *	physical units desired by the client for the channel.
+- * @datasheet_name: Channel name used in device tree.
++ * @channel_name: Channel name used in device tree.
+  */
+ struct adc5_channel_prop {
+ 	unsigned int		channel;
+@@ -126,7 +126,7 @@ struct adc5_channel_prop {
+ 	unsigned int		hw_settle_time;
+ 	unsigned int		avg_samples;
+ 	enum vadc_scale_fn_type	scale_fn_type;
+-	const char		*datasheet_name;
++	const char		*channel_name;
+ };
+ 
+ /**
+@@ -671,7 +671,7 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+ 	if (ret)
+ 		channel_name = name;
+ 
+-	prop->datasheet_name = channel_name;
++	prop->channel_name = channel_name;
+ 
+ 	ret = fwnode_property_read_u32(fwnode, "qcom,decimation", &value);
+ 	if (!ret) {
+@@ -861,8 +861,8 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
+ 		adc_chan = &adc->data->adc_chans[prop.channel];
+ 
+ 		iio_chan->channel = prop.channel;
+-		iio_chan->datasheet_name = prop.datasheet_name;
+-		iio_chan->extend_name = prop.datasheet_name;
++		iio_chan->datasheet_name = adc_chan->datasheet_name;
++		iio_chan->extend_name = prop.channel_name;
+ 		iio_chan->info_mask_separate = adc_chan->info_mask;
+ 		iio_chan->type = adc_chan->type;
+ 		iio_chan->address = index;
 
 -- 
 2.40.1

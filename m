@@ -2,56 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A69E56F323D
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 16:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EBC86F324B
+	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 16:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232269AbjEAOs5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 10:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55788 "EHLO
+        id S232291AbjEAOuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 10:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbjEAOs4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 10:48:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7EC10F5;
-        Mon,  1 May 2023 07:48:47 -0700 (PDT)
+        with ESMTP id S232249AbjEAOud (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 10:50:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065E01701;
+        Mon,  1 May 2023 07:50:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26B8561138;
-        Mon,  1 May 2023 14:48:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AEFC433EF;
-        Mon,  1 May 2023 14:48:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D96961191;
+        Mon,  1 May 2023 14:50:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCE5C433EF;
+        Mon,  1 May 2023 14:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682952526;
-        bh=6PwE3zJHPaioyiDWSqmFaqUW7EgsDCdN5KmKdLh3alU=;
+        s=k20201202; t=1682952624;
+        bh=uFo5D/hKo2Cb0E3C50X08BuXfEGAwYmK9E6G2PVtDG0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QNECjiZzrcpwOdwAYM5SHEKSwEN3esJiPB8y7pVMD6K00FUsajuBvlJ3oGYh+K4DA
-         M3lSPlWLRc8sEIkPsZMX5a+oTSDx8rNk7Rw/rxZAO0uOiS86dbSz8Ucw1EO7DLDZrd
-         +dPT2DWLw+a5zCXlHbx9m38Fv0NWfAQlpjW5QgBzOlmRr3B6ltMNukNkAaBLT6+mCZ
-         EniVzZr7mguwSNlEEGbYaPQ8zZ+qSgv6z4NAYddlX08vzZxGnbhnSNo9zY7+KSIQO1
-         EglTcAP19dqJXbomvglgup5eHqynH/LFo5BfFpBBdE+Z5Lsp4bh621wYG4SjmtPREw
-         FaTRYIFJYtWBg==
-Date:   Mon, 1 May 2023 16:04:31 +0100
+        b=VoRY9R+ygwBCVH6oj9e7Z9osb0H10X0uZfI5HOm3xHzbAh0kD0KpmOMFYoru3cqZ5
+         E9xk+jaMv7lYy5M0m+vZhWQ6aUIScbQFXJSMamNcTZtGivQTDbrDQAXVseEgfbAn9z
+         5OSeZm0wQ6AGwp/0kNzWCJBeuAHQTScd3bIY011ZZT+N4zGh9P3+e+R+ITyKxe2WI+
+         X+C4ybjDozKWXENtZR8eE0jDIMvcO7G+RGZaJIhyWR5R+P6h9kwBFgo5kdrlNg/jph
+         5DW/4zjRG0CBPvjjigH32u/fqDM11j3mUIVOphg9BbzOyvC246xbo6s7qrpBcCNaLd
+         Q4c4zRXhMvsUQ==
+Date:   Mon, 1 May 2023 16:06:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Mehdi Djait <mehdi.djait.k@gmail.com>,
-        krzysztof.kozlowski+dt@linaro.org,
-        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 7/7] iio: accel: Add support for Kionix/ROHM
- KX132-1211 accelerometer
-Message-ID: <20230501160431.602e3086@jic23-huawei>
-In-Reply-To: <00905352-f9a4-a8bf-63b7-92e3b1d2a4f4@gmail.com>
-References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
-        <593798a44c8ba45f969b86aa29e172d59065958c.1682373451.git.mehdi.djait.k@gmail.com>
-        <00905352-f9a4-a8bf-63b7-92e3b1d2a4f4@gmail.com>
+To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: palmas: fix off by one bugs
+Message-ID: <20230501160609.4f2d8aab@jic23-huawei>
+In-Reply-To: <20230429202538.GC1404696@dalakolonin.se>
+References: <14fee94a-7db7-4371-b7d6-e94d86b9561e@kili.mountain>
+        <20230423141124.3d4dc91d@jic23-huawei>
+        <20230429202538.GC1404696@dalakolonin.se>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,58 +58,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sat, 29 Apr 2023 22:25:38 +0200
+Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
 
-> > +static int kx132_get_fifo_bytes(struct kx022a_data *data)
-> > +{
-> > +	struct device *dev = regmap_get_device(data->regmap);
-> > +	__le16 buf_status;
-> > +	int ret, fifo_bytes;
-> > +
-> > +	ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-> > +			       &buf_status, sizeof(buf_status));
-> > +	if (ret) {
-> > +		dev_err(dev, "Error reading buffer status\n");
-> > +		return ret;
-> > +	}
-> > +
-> > +	fifo_bytes = le16_to_cpu(buf_status);
-> > +	fifo_bytes &= data->chip_info->buf_smp_lvl_mask;  
-> 
-> This is probably just my limitation but I've hard time thinking how this 
-> works out on BE machines. It'd be much easier for me to understand this 
-> if the data was handled as two u8 values and mask was applied before 
-> endianes conversion. (Eg - untested pseudo code follows;
-> 
-> __le16 buf_status;
-> u8 *reg_data;
-> 
-> ...
-> 
-> ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-> 			&buf_status, sizeof(buf_status));
-> ...
-> 
-> reg_data = (u8 *)&buf_status;
-> 
-> /* Clear the unused bits form 2.nd reg */
-> reg_data[1] = reg_data[i] & MASK_SMP_LVL_REG_HIGH_BITS;
-> 
-> /* Convert to CPU endianess */
-> fifo_bytes = le16_to_cpu(buf_status);
-> 
-> Well, others may have different view on this :)
+> On Sun, Apr 23, 2023 at 02:11:24PM +0100, Jonathan Cameron wrote:
+> > On Fri, 21 Apr 2023 13:41:56 +0300
+> > Dan Carpenter <dan.carpenter@linaro.org> wrote:
+> >  =20
+> > > Valid values for "adc_chan" are zero to (PALMAS_ADC_CH_MAX - 1).
+> > > Smatch detects some buffer overflows caused by this:
+> > > drivers/iio/adc/palmas_gpadc.c:721 palmas_gpadc_read_event_value() er=
+ror: buffer overflow 'adc->thresholds' 16 <=3D 16
+> > > drivers/iio/adc/palmas_gpadc.c:758 palmas_gpadc_write_event_value() e=
+rror: buffer overflow 'adc->thresholds' 16 <=3D 16
+> > >=20
+> > > The effect of this bug in other functions is more complicated but
+> > > obviously we should fix all of them.
+> > >=20
+> > > Fixes: a99544c6c883 ("iio: adc: palmas: add support for iio threshold=
+ events")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org> =20
+> >=20
+> > Looks good to me.  Slight shuffle at the moment will delay me applying =
+this.
+> >=20
+> > I'll wait for Linus to pick up Greg's pull request then rebase my fixes=
+ branch
+> > on top of that.  Otherwise I make a mess of linux-next ordering and thi=
+ngs might
+> > blow up.
+> >=20
+> > In meantime, Patrik, please take a look. =20
+>=20
+> Sorry for the long delay.
+>=20
+> The changes look good to me. I've checked all other uses of adc_chan in t=
+he
+> code and they all seem to be guarded by the checks below.
+>=20
+> Best regards
+> Patrik
+>=20
+My tree has now advanced appropriately.
 
-:) 
+Applied to the fixes-togreg branch of iio.git.
 
-I go the other way. It's less obvious to me that it is appropriate
-to apply le16_to_cpu(buf_status) after applying a mask to some
-bits. The moment that is appropriate, then we certainly hope a single
-mask application is as well.
-
-I think treating it as a 16 bit register is appropriate, in particular
-as the field is described as SMP_LEV[9:0] on the datasheet
-(of course there are datasheets that do that for unconnected sets of
-bits so this doesn't always work ;)
+Thanks,
 
 Jonathan
+
+> >=20
+> > Jonathan
+> >  =20
+> > > ---
+> > > ---
+> > >  drivers/iio/adc/palmas_gpadc.c | 10 +++++-----
+> > >  1 file changed, 5 insertions(+), 5 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
+gpadc.c
+> > > index c1c439215aeb..7dfc9c927a23 100644
+> > > --- a/drivers/iio/adc/palmas_gpadc.c
+> > > +++ b/drivers/iio/adc/palmas_gpadc.c
+> > > @@ -547,7 +547,7 @@ static int palmas_gpadc_read_raw(struct iio_dev *=
+indio_dev,
+> > >  	int adc_chan =3D chan->channel;
+> > >  	int ret =3D 0;
+> > > =20
+> > > -	if (adc_chan > PALMAS_ADC_CH_MAX)
+> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX)
+> > >  		return -EINVAL;
+> > > =20
+> > >  	mutex_lock(&adc->lock);
+> > > @@ -595,7 +595,7 @@ static int palmas_gpadc_read_event_config(struct =
+iio_dev *indio_dev,
+> > >  	int adc_chan =3D chan->channel;
+> > >  	int ret =3D 0;
+> > > =20
+> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > >  		return -EINVAL;
+> > > =20
+> > >  	mutex_lock(&adc->lock);
+> > > @@ -684,7 +684,7 @@ static int palmas_gpadc_write_event_config(struct=
+ iio_dev *indio_dev,
+> > >  	int adc_chan =3D chan->channel;
+> > >  	int ret;
+> > > =20
+> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > >  		return -EINVAL;
+> > > =20
+> > >  	mutex_lock(&adc->lock);
+> > > @@ -710,7 +710,7 @@ static int palmas_gpadc_read_event_value(struct i=
+io_dev *indio_dev,
+> > >  	int adc_chan =3D chan->channel;
+> > >  	int ret;
+> > > =20
+> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > >  		return -EINVAL;
+> > > =20
+> > >  	mutex_lock(&adc->lock);
+> > > @@ -744,7 +744,7 @@ static int palmas_gpadc_write_event_value(struct =
+iio_dev *indio_dev,
+> > >  	int old;
+> > >  	int ret;
+> > > =20
+> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
+> > >  		return -EINVAL;
+> > > =20
+> > >  	mutex_lock(&adc->lock); =20
+> >  =20
 

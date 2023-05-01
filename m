@@ -2,132 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 138336F3370
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 18:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4936F39F3
+	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 23:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjEAQJV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 12:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
+        id S232457AbjEAV4N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 17:56:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231229AbjEAQJU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 12:09:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4C6C3;
-        Mon,  1 May 2023 09:09:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S232200AbjEAV4N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 17:56:13 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD2C2114;
+        Mon,  1 May 2023 14:56:09 -0700 (PDT)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB2C860FDA;
-        Mon,  1 May 2023 16:09:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49CAC433D2;
-        Mon,  1 May 2023 16:09:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682957358;
-        bh=FpX1zNwZQzmzSkTPVq4PcLD3xWjdT3sXy6nTbjcK06Q=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nFPnn1MdR23QP0io14jeQsK8WBK8E0y7G8G37buFvBxFvbHWDdKo76elxOU+pZInP
-         VL0YOYaYclgnWfZhctvmv9H4En4qjRie3Zbr96Ca55KFhtGPM84yPV9a0WZ6DDO3j7
-         rrB4o/1uO19CtnzLgJnxkQmjdwER4TWZImzkK8LKEtpqvcLwGIic1PwDIJ06j8r/ck
-         lP3a1u9WwXwm2m1Eg8cXo+IkrcypCIsiusgB/dDJ50wnhhQK4OHqPzucqRbWKUBxA2
-         /t2uqEi80OMTxnUe9y42Bf40xd8zkq8NIWjOIvTtqCFBRrGyeeGm4mHydH6+9OH97O
-         cDQFyymLTnZWQ==
-Date:   Mon, 1 May 2023 17:25:02 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Vinod Koul <vkoul@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
-Subject: Re: [PATCH v3 03/11] iio: buffer-dma: Get rid of outgoing queue
-Message-ID: <20230501172502.125e4859@jic23-huawei>
-In-Reply-To: <1f63ffced9ed18309401af9a885310e1715b6538.camel@crapouillou.net>
-References: <20230403154800.215924-1-paul@crapouillou.net>
-        <20230403154800.215924-4-paul@crapouillou.net>
-        <20230416152422.477ecf67@jic23-huawei>
-        <1f63ffced9ed18309401af9a885310e1715b6538.camel@crapouillou.net>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B492140DE9;
+        Mon,  1 May 2023 23:56:06 +0200 (CEST)
+Date:   Mon, 1 May 2023 23:56:04 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel`
+ name for channel nodes
+Message-ID: <qqfqnj5cta5j6dpv2mli2dt6wdjghxt23u5ivvadhltxh6vd2d@lka4jue7blne>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
+        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org, 
+        ~postmarketos/upstreaming@lists.sr.ht, 
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+        Martin Botka <martin.botka@somainline.org>, Jami Kettunen <jami.kettunen@somainline.org>, 
+        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Andy Gross <agross@kernel.org>, 
+        Bjorn Andersson <andersson@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+        linux-arm-msm@vger.kernel.org
+References: <20230410202917.247666-1-marijn.suijten@somainline.org>
+ <20230410202917.247666-6-marijn.suijten@somainline.org>
+ <20230412212756.0b4b69f3@jic23-huawei>
+ <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
+ <20230415174943.2b731203@jic23-huawei>
+ <20230501171838.461501b1@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230501171838.461501b1@jic23-huawei>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 18 Apr 2023 10:08:21 +0200
-Paul Cercueil <paul@crapouillou.net> wrote:
+On 2023-05-01 17:18:38, Jonathan Cameron wrote:
+<snip>
+> > > > Otherwise we can do (a) early in next cycle.  Feel free to poke me if we are doing (b)
+> > > > and I seem to have forgotten to pick up this patch!    
+> > > 
+> > > Thanks!  I hope we don't get many conflicts (+ new bindings adhering to
+> > > the old(er) formats) otherwise I'll resend if we do (a).  Around what
+> > > time would be good, rc2?  
+> > 
+> > Sure. If rebase is needed send a v5 with that done.  If not, a simple
+> > reminder reply to this thread will probably work.
+> 
+> I've started queuing stuff for the next cycle as the relevant pull requests
+> are for the IIO tree for this cycle were picked up a few days ago.
+> 
+> Hence, applied to the togreg branch of iio.git and pushed out as testing for 0-day
+> to take a quick look at it.
 
-> Hi Jonathan,
->=20
-> Le dimanche 16 avril 2023 =C3=A0 15:24 +0100, Jonathan Cameron a =C3=A9cr=
-it=C2=A0:
-> > On Mon,=C2=A0 3 Apr 2023 17:47:52 +0200
-> > Paul Cercueil <paul@crapouillou.net> wrote:
-> >  =20
-> > > The buffer-dma code was using two queues, incoming and outgoing, to
-> > > manage the state of the blocks in use.
-> > >=20
-> > > While this totally works, it adds some complexity to the code,
-> > > especially since the code only manages 2 blocks. It is much easier
-> > > to
-> > > just check each block's state manually, and keep a counter for the
-> > > next
-> > > block to dequeue.
-> > >=20
-> > > Since the new DMABUF based API wouldn't use the outgoing queue
-> > > anyway,
-> > > getting rid of it now makes the upcoming changes simpler.
-> > >=20
-> > > With this change, the IIO_BLOCK_STATE_DEQUEUED is now useless, and
-> > > can
-> > > be removed.
-> > >=20
-> > > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > >=20
-> > > ---
-> > > v2: - Only remove the outgoing queue, and keep the incoming queue,
-> > > as we
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 want the buffer to start streaming dat=
-a as soon as it is
-> > > enabled.
-> > > =C2=A0=C2=A0=C2=A0 - Remove IIO_BLOCK_STATE_DEQUEUED, since it is now=
- functionally
-> > > the
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 same as IIO_BLOCK_STATE_DONE. =20
-> >=20
-> > I'm not that familiar with this code, but with my understanding this
-> > makes
-> > sense.=C2=A0=C2=A0 I think it is independent of the earlier patches and=
- is a
-> > useful
-> > change in it's own right.=C2=A0 As such, does it make sense to pick this
-> > up
-> > ahead of the rest of the series? I'm assuming that discussion on the
-> > rest will take a while.=C2=A0 No great rush as too late for the coming
-> > merge
-> > window anyway. =20
->=20
-> Actually, you can pick patches 3 to 6 (when all have been acked). They
-> add write support for buffer-dma implementations; which is a dependency
-> for the rest of the patchset, but they can live on their own.
+Thanks, running with:
 
-Remind me of that in the cover letter for v4.
+    make VALIDATE_DT=1 ARCH=arm64 dt_binding_checka dtbs_check \
+        DT_SCHEMA_FILES="Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml"
 
-Thanks,
+And similar for ARCH=arm on -next-20230428 shows that there is no new
+use of the old (arbitrary) node name format, so no v5 should be
+necessary (unless those patches also land at the same time...).
 
-Jonathan
+Such a resend would only affect patch 1/5 and 3/5 though, which rewrite
+the actual DTS node names.
 
->=20
-> Cheers,
-> -Paul
-
+- Marijn

@@ -2,54 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EBC86F324B
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 16:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 777216F3261
+	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232291AbjEAOuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 10:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57210 "EHLO
+        id S232480AbjEAPAC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 11:00:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232249AbjEAOud (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 10:50:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065E01701;
-        Mon,  1 May 2023 07:50:25 -0700 (PDT)
+        with ESMTP id S232249AbjEAPAB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:00:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75619109;
+        Mon,  1 May 2023 08:00:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D96961191;
-        Mon,  1 May 2023 14:50:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCE5C433EF;
-        Mon,  1 May 2023 14:50:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 045CB6155E;
+        Mon,  1 May 2023 15:00:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D549AC433EF;
+        Mon,  1 May 2023 14:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682952624;
-        bh=uFo5D/hKo2Cb0E3C50X08BuXfEGAwYmK9E6G2PVtDG0=;
+        s=k20201202; t=1682953199;
+        bh=oIbyg+1zc4Iqoh6xK0LuuT7HCKaLEf4UWG79FvxayeU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VoRY9R+ygwBCVH6oj9e7Z9osb0H10X0uZfI5HOm3xHzbAh0kD0KpmOMFYoru3cqZ5
-         E9xk+jaMv7lYy5M0m+vZhWQ6aUIScbQFXJSMamNcTZtGivQTDbrDQAXVseEgfbAn9z
-         5OSeZm0wQ6AGwp/0kNzWCJBeuAHQTScd3bIY011ZZT+N4zGh9P3+e+R+ITyKxe2WI+
-         X+C4ybjDozKWXENtZR8eE0jDIMvcO7G+RGZaJIhyWR5R+P6h9kwBFgo5kdrlNg/jph
-         5DW/4zjRG0CBPvjjigH32u/fqDM11j3mUIVOphg9BbzOyvC246xbo6s7qrpBcCNaLd
-         Q4c4zRXhMvsUQ==
-Date:   Mon, 1 May 2023 16:06:09 +0100
+        b=pkGDLrAcRV9sDcO5GOXP2vrd+LtOwI/heSpxXQG2IPdgtRphRxGWnnDETxMZ6xDzX
+         A+MKACYd7KEMZ0sV6dWeZQc5xtTrxa9MPr0hTyWQP3aZ7xM+p+NS9VQyADYNdWE38Q
+         lEVffXGX+b5QFpNUjJFY6LGF0G5FKVW7mb1fDtX/Y7ET8XtXqMODb4q8tCh3mNccA6
+         5u0xw4S2Xx7J+ZWZeMqpxgeMvd0eqHUamxzHIrnQ4K5KHO6ocKxRwN6gyrIXTPcU80
+         olHs1znUrkFHCjADFjkQ9ppDhznYSh7PLuJ2O5+fAbDN3w/TZj7qIFLvLUdbpvBqcW
+         uKHgunwQTpX7A==
+Date:   Mon, 1 May 2023 16:15:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Patrik =?UTF-8?B?RGFobHN0csO2bQ==?= <risca@dalakolonin.se>
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: palmas: fix off by one bugs
-Message-ID: <20230501160609.4f2d8aab@jic23-huawei>
-In-Reply-To: <20230429202538.GC1404696@dalakolonin.se>
-References: <14fee94a-7db7-4371-b7d6-e94d86b9561e@kili.mountain>
-        <20230423141124.3d4dc91d@jic23-huawei>
-        <20230429202538.GC1404696@dalakolonin.se>
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 2/4] iio: inkern: Add a helper to query an available
+ minimum raw value
+Message-ID: <20230501161543.25156692@jic23-huawei>
+In-Reply-To: <20230424095041.540be943@bootlin.com>
+References: <20230421124122.324820-1-herve.codina@bootlin.com>
+        <20230421124122.324820-3-herve.codina@bootlin.com>
+        <20230422174916.74ccfe00@jic23-huawei>
+        <20230424095041.540be943@bootlin.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,117 +67,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 29 Apr 2023 22:25:38 +0200
-Patrik Dahlstr=C3=B6m <risca@dalakolonin.se> wrote:
-
-> On Sun, Apr 23, 2023 at 02:11:24PM +0100, Jonathan Cameron wrote:
-> > On Fri, 21 Apr 2023 13:41:56 +0300
-> > Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> >  =20
-> > > Valid values for "adc_chan" are zero to (PALMAS_ADC_CH_MAX - 1).
-> > > Smatch detects some buffer overflows caused by this:
-> > > drivers/iio/adc/palmas_gpadc.c:721 palmas_gpadc_read_event_value() er=
-ror: buffer overflow 'adc->thresholds' 16 <=3D 16
-> > > drivers/iio/adc/palmas_gpadc.c:758 palmas_gpadc_write_event_value() e=
-rror: buffer overflow 'adc->thresholds' 16 <=3D 16
-> > >=20
-> > > The effect of this bug in other functions is more complicated but
-> > > obviously we should fix all of them.
-> > >=20
-> > > Fixes: a99544c6c883 ("iio: adc: palmas: add support for iio threshold=
- events")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org> =20
+> > > diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consume=
+r.h
+> > > index 6802596b017c..956120d8b5a3 100644
+> > > --- a/include/linux/iio/consumer.h
+> > > +++ b/include/linux/iio/consumer.h
+> > > @@ -297,6 +297,17 @@ int iio_write_channel_raw(struct iio_channel *ch=
+an, int val);
+> > >   */
+> > >  int iio_read_max_channel_raw(struct iio_channel *chan, int *val);
+> > > =20
+> > > +/**
+> > > + * iio_read_min_channel_raw() - read minimum available raw value fro=
+m a given
+> > > + *				channel, i.e. the minimum possible value.
+> > > + * @chan:		The channel being queried.
+> > > + * @val:		Value read back.
+> > > + *
+> > > + * Note raw reads from iio channels are in adc counts and hence
+> > > + * scale will need to be applied if standard units are required.   =
+=20
 > >=20
-> > Looks good to me.  Slight shuffle at the moment will delay me applying =
-this.
-> >=20
-> > I'll wait for Linus to pick up Greg's pull request then rebase my fixes=
- branch
-> > on top of that.  Otherwise I make a mess of linux-next ordering and thi=
-ngs might
-> > blow up.
-> >=20
-> > In meantime, Patrik, please take a look. =20
+> > Hmm. That comment is almost always true, but not quite.  Not related to
+> > your patch but some cleanup of this documentation and pushing it down n=
+ext
+> > to implementations should be done at some point.  If anyone is really
+> > bored and wants to take this on that's fine. If not, another one for the
+> > todo list ;) =20
 >=20
-> Sorry for the long delay.
->=20
-> The changes look good to me. I've checked all other uses of adc_chan in t=
-he
-> code and they all seem to be guarded by the checks below.
->=20
-> Best regards
-> Patrik
->=20
-My tree has now advanced appropriately.
+> If you are ok, I can change every where in consumer.h the following:
+>   * Note raw reads from iio channels are in adc counts and hence
+>   * scale will need to be applied if standard units required.
+> by
+>   * Note raw reads from iio channels are not in standards units and
+>   * hence scale will need to be applied if standard units required.
 
-Applied to the fixes-togreg branch of iio.git.
+If going to the effort, we should include offset and make it clear how
+they are applied.
 
-Thanks,
+    * Note, if standard units are required, raw reads from iio channels
+    * need the offset (default 0) and scale (default 1) to be applied
+    * as (raw + offset) * scale.
+=20
+
+>=20
+> Also the same for raw writes:
+>   * Note raw writes to iio channels are in dac counts and hence
+>   * scale will need to be applied if standard units required.
+> by
+>   * Note raw writes to iio channels are not in standards units and
+>   * hence scale will need to be applied if standard units required.
+This one is more interesting because you kind of need to apply the opposite
+logic. Perhaps text such as.
+
+    * Note that for raw writes to iio channels, if the value provided is
+    * in standard units, the affect of the scale and offset must be removed
+    * as (value / scale) - offset.
+
+My slight concern is that we'll spend longer arguing about these comments
+than we spend on the rest of the patch set.  Might be worth delaying
+fixing the others for a separate series after this one.
 
 Jonathan
 
-> >=20
-> > Jonathan
+>=20
 > >  =20
-> > > ---
-> > > ---
-> > >  drivers/iio/adc/palmas_gpadc.c | 10 +++++-----
-> > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_=
-gpadc.c
-> > > index c1c439215aeb..7dfc9c927a23 100644
-> > > --- a/drivers/iio/adc/palmas_gpadc.c
-> > > +++ b/drivers/iio/adc/palmas_gpadc.c
-> > > @@ -547,7 +547,7 @@ static int palmas_gpadc_read_raw(struct iio_dev *=
-indio_dev,
-> > >  	int adc_chan =3D chan->channel;
-> > >  	int ret =3D 0;
-> > > =20
-> > > -	if (adc_chan > PALMAS_ADC_CH_MAX)
-> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX)
-> > >  		return -EINVAL;
-> > > =20
-> > >  	mutex_lock(&adc->lock);
-> > > @@ -595,7 +595,7 @@ static int palmas_gpadc_read_event_config(struct =
-iio_dev *indio_dev,
-> > >  	int adc_chan =3D chan->channel;
-> > >  	int ret =3D 0;
-> > > =20
-> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > >  		return -EINVAL;
-> > > =20
-> > >  	mutex_lock(&adc->lock);
-> > > @@ -684,7 +684,7 @@ static int palmas_gpadc_write_event_config(struct=
- iio_dev *indio_dev,
-> > >  	int adc_chan =3D chan->channel;
-> > >  	int ret;
-> > > =20
-> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > >  		return -EINVAL;
-> > > =20
-> > >  	mutex_lock(&adc->lock);
-> > > @@ -710,7 +710,7 @@ static int palmas_gpadc_read_event_value(struct i=
-io_dev *indio_dev,
-> > >  	int adc_chan =3D chan->channel;
-> > >  	int ret;
-> > > =20
-> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > >  		return -EINVAL;
-> > > =20
-> > >  	mutex_lock(&adc->lock);
-> > > @@ -744,7 +744,7 @@ static int palmas_gpadc_write_event_value(struct =
-iio_dev *indio_dev,
-> > >  	int old;
-> > >  	int ret;
-> > > =20
-> > > -	if (adc_chan > PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > > +	if (adc_chan >=3D PALMAS_ADC_CH_MAX || type !=3D IIO_EV_TYPE_THRESH)
-> > >  		return -EINVAL;
-> > > =20
-> > >  	mutex_lock(&adc->lock); =20
+> > > + */
+> > > +int iio_read_min_channel_raw(struct iio_channel *chan, int *val);
+> > > +
+> > >  /**
+> > >   * iio_read_avail_channel_raw() - read available raw values from a g=
+iven channel
+> > >   * @chan:		The channel being queried.   =20
 > >  =20
+>=20
+> Thanks for the review,
+> Herv=C3=A9
+>=20
 

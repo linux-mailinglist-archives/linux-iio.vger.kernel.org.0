@@ -2,53 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 778B96F32C7
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4B46F32D5
+	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232764AbjEAPXi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 11:23:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49664 "EHLO
+        id S232480AbjEAP0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 11:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232665AbjEAPXh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:23:37 -0400
+        with ESMTP id S232584AbjEAP0R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:26:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699AAE61;
-        Mon,  1 May 2023 08:23:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40CB7173F;
+        Mon,  1 May 2023 08:26:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0580160FE2;
-        Mon,  1 May 2023 15:23:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B91C433EF;
-        Mon,  1 May 2023 15:23:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA42560FD3;
+        Mon,  1 May 2023 15:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C41C433EF;
+        Mon,  1 May 2023 15:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682954615;
-        bh=K9XsLWqKQn/jP/mzZLutSFMX6fSlEieZ9hD0h7aMKuQ=;
+        s=k20201202; t=1682954772;
+        bh=5qeRpZp3lKr2TwyZog4Y5gLVDvkqlF9uZ3wIvrhrHeQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rBN3xIw3wm0gT2YzECj/+dlrmUTTGFlmIcNCrp2kQLoPURG2ISD8lWl3zbX2qhqEr
-         LTYtKzkMteBMUD3uM3kcOKWG2hLrk51uqTaQ5MoatCGLR1cNyrc3zwOydcJuZSdEnJ
-         pjGJ3CFAMKpW5BEuDg7WF+yA61bao13Wa2/GHS2XHrMBi1CQRn+FEbYRBwn09lPYVE
-         q5Kk8tB49iUVW0TDNd1Tn/W3nGGXfRbm4GfK07tjDFDd23hspyVujAGOfbE40Seqs5
-         bHQBMI4hRzLO9+6jjPULW3JH5aw3WYAEu+zBfdjFfn9Uuo70i0wQedLSY+VRbcjIXB
-         0P8jqU+bfGuUw==
-Date:   Mon, 1 May 2023 16:39:20 +0100
+        b=B0jMvsb/PoHj2wz9OVdMS7NQresP5elPUAFuyZSRAuNgXi38VXBZgMdNz1YFqlM8l
+         gy9GrD1c1BXaEr0s32SoblOkIdOCbKrOkJRayIozIvRB7mTrhU0PbmgMGss62pqxPr
+         ftA1+sjofF0SWg2jrHXIv0MVx2AzcLkKUdBEXrazqPeKopnaiGLaXK+u0r+AqR3KJN
+         uDy3VyvLTADg8+imcBIoOGgytFFYA8TNdXuNfkkJEXOwtMrWCMfr0Km5QJi7MHgN/J
+         4De9erxc/Jt4VkWNzmyFn469aGT74EhWR3RBWrh4s0KGyQzAASsmt8PInI/43cKR92
+         pKzIVWsi81Kpg==
+Date:   Mon, 1 May 2023 16:41:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: potentiometer: Add the Renesas
- X9250 potentiometers
-Message-ID: <20230501163920.65cc9454@jic23-huawei>
-In-Reply-To: <20230424090318.4750a5e7@bootlin.com>
-References: <20230421085245.302169-1-herve.codina@bootlin.com>
-        <20230421085245.302169-2-herve.codina@bootlin.com>
-        <20230422171807.510d7fa3@jic23-huawei>
-        <20230424090318.4750a5e7@bootlin.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: fix doc for iio_gts_find_sel_by_int_time
+Message-ID: <20230501164157.43ed033e@jic23-huawei>
+In-Reply-To: <ZEIjI4YUzqPZk/9X@fedora>
+References: <ZEIjI4YUzqPZk/9X@fedora>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,48 +55,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 Apr 2023 09:03:18 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Fri, 21 Apr 2023 08:46:11 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Jonathan, Krzysztof,
+> The kerneldoc for iio_gts_find_sel_by_int_time() has an error.
+> Documentation states that function is searching a selector for a HW-gain
+> while it is searching a selector for an integration time.
 > 
-> On Sat, 22 Apr 2023 17:18:07 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
+> Fix the documentation by saying the function is looking for a selector
+> for an integration time.
 > 
-> > On Fri, 21 Apr 2023 10:52:43 +0200
-> > Herve Codina <herve.codina@bootlin.com> wrote:
-> >   
-> > > The Renesas X9250 is a quad digitally controlled potentiometers.
-> > > 
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>    
-> > 
-> > Hi Herve,
-> > 
-> > Historically we've been a bit lax in IIO bindings in always making
-> > sure the per supplies are included.  As a result we frequently get
-> > them added later and it just makes things messier than they should
-> > be.
-> > 
-> > So please add vcc-supply from the start.  V+ and V- are a little trickier.
-> > I was expecting datasheet to say they should be symmetric about 0 but it
-> > doesn't. So they could be two independent supplies.
-> > 
-> > Also make it required as my current understanding is that we should
-> > do that for supplies that are definitely present even if we could
-> > rely on the fallback to regulator stubs if they aren't supplied.
-> > So add the 3 supplies to required as well.  
-> 
-> Yes, I will add the following supplies in the next iteration:
->  - 'vcc-supply' for VCC
->  - 'avp-supply' for the analog V+
->  - 'avn-supply' for the analog V-
-> 
-> and add them in the required list of properties.
-> 
-> Are the names correct for these power supplies (avp and avn) ?
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Given this is a very recent introduction and I don't like incorrect docs
+sneaking in, I've applied this to the fixes-togreg branch of iio.git
+(which just got rebased on char-misc-linus which now includes this code).
 
-I think so.  I'm not totally sure on how DT maintainers think we should deal
-with a two voltage level reference though.  Perhaps add some description to
-make it very clear what is going on and we'll see what review comments we get!
+Thanks,
 
 Jonathan
+
+> ---
+>  include/linux/iio/iio-gts-helper.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/iio/iio-gts-helper.h b/include/linux/iio/iio-gts-helper.h
+> index dd64e544a3da..9cb6c80dea71 100644
+> --- a/include/linux/iio/iio-gts-helper.h
+> +++ b/include/linux/iio/iio-gts-helper.h
+> @@ -135,7 +135,7 @@ static inline int iio_gts_find_int_time_by_sel(struct iio_gts *gts, int sel)
+>  /**
+>   * iio_gts_find_sel_by_int_time - find selector matching integration time
+>   * @gts:	Gain time scale descriptor
+> - * @gain:	HW-gain for which matching selector is searched for
+> + * @time:	Integration time for which matching selector is searched for
+>   *
+>   * Return:	a selector matching given integration time or -EINVAL if
+>   *		selector was not found.
+> 
+> base-commit: 52cc189b4fc6af6accc45fe7b7053d76d8724059
+

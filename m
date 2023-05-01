@@ -2,63 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 607376F3287
-	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8A7E6F32B1
+	for <lists+linux-iio@lfdr.de>; Mon,  1 May 2023 17:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231816AbjEAPJ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 May 2023 11:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39468 "EHLO
+        id S232680AbjEAPRA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 May 2023 11:17:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232704AbjEAPJZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:09:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D6F19A4;
-        Mon,  1 May 2023 08:09:13 -0700 (PDT)
+        with ESMTP id S231249AbjEAPQ7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 May 2023 11:16:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586501BF;
+        Mon,  1 May 2023 08:16:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CBC361DA3;
-        Mon,  1 May 2023 15:09:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2769C433D2;
-        Mon,  1 May 2023 15:09:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC82760FD3;
+        Mon,  1 May 2023 15:16:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9BFC433D2;
+        Mon,  1 May 2023 15:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682953752;
-        bh=cUsOqfxkIZKyqqJ02ZRf0fbQ0VVSONKVBQcffytJjtk=;
+        s=k20201202; t=1682954217;
+        bh=LpECftVE9KrT4n55028aVO+n106qL95yHFBeSc9ipKw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LXsZT+m4RC1Wkzi4gGg7dhvNreN88Pqydx70S7nVYE3En1YazI1UXgrbDB/acgko4
-         WdN0xFED3fL+1lqYjoNtpiWvpUkQHn0dNcr5Tiw7hziaTknpfeok8+ybqMSuDk83Sd
-         D28ffSMdMstVcNMKRxmI5eeyRFOrp3EZhxj7ZMV+8YcjLMz6ursQFkWzgde7DSGk0+
-         hURXmbJ6WJQSwV6dNCtmIFgI+DG/+9sVVEDGOxvPoDA4KmzUD/aQhENlLfkIB+k9z9
-         aKemwGil86e9cGRezdqtMUWqZVbY0VyyvpxZHHfK1vCGk883WzoXbnogrMeBOyXKV/
-         jwuPst3iBBYhg==
-Date:   Mon, 1 May 2023 16:24:56 +0100
+        b=CcTq7vns4wZeaAlzjrEY3dJq/98UkrxA49S7Mdg00g2ED6V/3VxENuIsCiZzKBwnQ
+         +mOgIqQpYMBn5kFeqA2haveJsqWByuOqTgC2Sie/THhlXIQPmWbJESpf8VL08GQVsh
+         BNwcGRaznz0cYJuHD322iP6H+e5SI59NN9NS00Gha5rgBetkfkLl25BoZMBW0KG9Li
+         16Hfiii4jCSLaLnDNTvfm3qt0ZWgy2DtENjR1Z/VmL1QwnB/W14Z55aE8msqLPN3GT
+         QsjV0GfYSGExx4pjsLntnpVL2QkRQ4vuXwJHP8WOI/t0On5wTfj9tjYhZbWSc3BXf1
+         cJml4KrRKkI/A==
+Date:   Mon, 1 May 2023 16:32:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 4/4] ASoC: codecs: Add support for the generic IIO
- auxiliary devices
-Message-ID: <20230501162456.3448c494@jic23-huawei>
-In-Reply-To: <20230424125216.0f279f82@bootlin.com>
-References: <20230421124122.324820-1-herve.codina@bootlin.com>
-        <20230421124122.324820-5-herve.codina@bootlin.com>
-        <20230422180814.61d24aa3@jic23-huawei>
-        <20230424125216.0f279f82@bootlin.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v1 2/3] iio: light: ROHM BU27008 color sensor
+Message-ID: <20230501163242.62b5bc97@jic23-huawei>
+In-Reply-To: <91494388-9d2e-6cd6-9731-aea18271260b@fi.rohmeurope.com>
+References: <cover.1682067567.git.mazziesaccount@gmail.com>
+        <28ace0e26267df5618fbd23625425292391ad7f0.1682067567.git.mazziesaccount@gmail.com>
+        <20230423135706.008206da@jic23-huawei>
+        <91494388-9d2e-6cd6-9731-aea18271260b@fi.rohmeurope.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,72 +64,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 24 Apr 2023 06:21:23 +0000
+"Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
 
+> On 4/23/23 15:57, Jonathan Cameron wrote:
+> > On Fri, 21 Apr 2023 12:39:36 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > >   
-> > > +static int simple_iio_aux_probe(struct platform_device *pdev)
-> > > +{
-> > > +	struct device_node *np = pdev->dev.of_node;
-> > > +	struct simple_iio_aux_chan *iio_aux_chan;
-> > > +	struct simple_iio_aux *iio_aux;
-> > > +	int count;
-> > > +	u32 tmp;
-> > > +	int ret;
-> > > +	int i;
-> > > +
-> > > +	iio_aux = devm_kzalloc(&pdev->dev, sizeof(*iio_aux), GFP_KERNEL);
-> > > +	if (!iio_aux)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	iio_aux->dev = &pdev->dev;
-> > > +
-> > > +	count = of_property_count_strings(np, "io-channel-names");
-> > > +	if (count < 0) {
-> > > +		dev_err(iio_aux->dev, "%pOF: failed to read io-channel-names\n", np);
-> > > +		return count;
-> > > +	}
-> > > +
-> > > +	iio_aux->chans = devm_kmalloc_array(&pdev->dev, count,
-> > > +					    sizeof(*iio_aux->chans), GFP_KERNEL);
-> > > +	if (!iio_aux->chans)
-> > > +		return -ENOMEM;
-> > > +	iio_aux->num_chans = count;
-> > > +
-> > > +	for (i = 0; i < iio_aux->num_chans; i++) {
-> > > +		iio_aux_chan = iio_aux->chans + i;
-> > > +
-> > > +		ret = of_property_read_string_index(np, "io-channel-names", i,
-> > > +						    &iio_aux_chan->name);    
+> >> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
+> >> and IR) with four configurable channels. Red and green being always
+> >> available and two out of the rest three (blue, clear, IR) can be
+> >> selected to be simultaneously measured. Typical application is adjusting
+> >> LCD backlight of TVs, mobile phones and tablet PCs.
+> >>
+> >> Add initial support for the ROHM BU27008 color sensor.
+> >>   - raw_read() of RGB and clear channels
+> >>   - triggered buffer w/ DRDY interrtupt
+> >>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
 > > 
-> > Whilst today this will be tightly couple with of, if you can use generic firmware
-> > handling where possible (from linux/property.h) it will reduce what needs
-> > to be tidied up if anyone fills in the gaps for IIO consumer bindings in ACPI
-> > and then someone uses PRP0001 based ACPI bindings.  
-> 
-> No device_property_read_*() function family are available to get a value
-> from an array using an index.
-
-That feels like it might be a feature gap in the generic property handling that
-should be solved.  Emtirely reasonable not to do it in this series however!
-
-
-
-> 
-> I would prefer to keep the of_property_read_*() function family I use for this
-> first IIO auxiliary device support.
-> 
-> >   
-> > > +		if (ret < 0) {
-> > > +			dev_err(iio_aux->dev, "%pOF: failed to read io-channel-names[%d]\n", np, i);    
+> > Hi Matti,
 > > 
-> > dev_err_probe() would simplify these cases a little.  Not sure on ASOC view on using
-> > that for cases that won't defer.  I tend to take the view it's nicer everywhere
-> > for calls in probe() functions.  
+> > Biggest issue in here is some confusion over data packing when some channels
+> > are enabled.  The driver must pack the channels that are enabled (seen
+> > from active_scan_mask) according to general IIO rules.  So naturally aligned
+> > buffers.  Thus for this device it should always be packed into
+> > 
+> > struct scan {
+> > 	__le16 chans[4];
+> > 	s64 ts __aligned(8); /*it's aligned anyway but better not to make reviewers think ;) */
+> > };
+> > 
+> > Even though there are 5 possible channels.  If one in the middle isnt' enabled (e.g. blue)
+> > then clear and IR shift to lower words. of the buffer.  
 > 
-> I have the feeling that ASoC uses dev_err_probe() for cases that can defer.
-> Mark, can you confirm ?
-> 
+> Ah, right. So I had misunderstood how the buffer works. I thought the 
+> scan_mask was only used to disallow unsupported channel-enabling 
+> configurations. If I understand your statement correctly, the scan_mask 
+> is used to determine the 'place of data' in the buffer when certain 
+> configuration is used. (I'll check this from the code but if the IIO 
+> handles data as I now think - that's cool! It should indeed simplify the 
+> buffer in driver side!).
 
-Left as needs an answer from Mark.
+'Place' is a little confusing (English is imprecise sometimes).  Order
+is perhaps more precise.
+
+Place can mean same as order - as in 1st place in a race, but it can
+also mean a specific location such as a place at a table where only
+some seats are full.
+
+The handling for this came about as part of the multiple consumer
+support for SoC ADCs but it was also useful for ripping out a whole
+load of driver specific handling that did similar repacking and letting
+the generic code handle repacking data.  It is fairly optimal and
+does things like larger memcpys if there are a set of channels
+that need moving, and cleanly makes it a noop if there is nothing
+to do at all.  All those tricks came IIRC from individual drivers
+that had previously been doing this magic.
 
 Jonathan
 

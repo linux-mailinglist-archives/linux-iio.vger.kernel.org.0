@@ -2,48 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 224396F3F08
-	for <lists+linux-iio@lfdr.de>; Tue,  2 May 2023 10:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F816F41A8
+	for <lists+linux-iio@lfdr.de>; Tue,  2 May 2023 12:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233379AbjEBIUG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 May 2023 04:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35912 "EHLO
+        id S234014AbjEBKcC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 May 2023 06:32:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233786AbjEBIUE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 May 2023 04:20:04 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2FCF526F;
-        Tue,  2 May 2023 01:19:44 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 9AB0A1C0AAC; Tue,  2 May 2023 10:19:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1683015548;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=amEFe/AE8jRh6/Xwc3QzQAWClDEiUJE0RbFRN3x/zrA=;
-        b=ohp4qkGeHKc9LrlWEsJdYNeZsW7Ilzal+Wd6cQH8k0HFQEOpeltRuLwimI4wIq2QV5oR72
-        lxSFJhGeJQRsLZVme5A6pkHN5DqlPIx5nFcg5ls1osn76DcKzoGRTafKt5RuE04gWD4Uo9
-        uVlpVcBDKxHxA2H6/Y89MJmMy+zdrSc=
-Date:   Tue, 2 May 2023 10:19:07 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
- condition between FLAG and CNTR reads
-Message-ID: <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
-References: <20230411155220.9754-1-william.gray@linaro.org>
- <20230411155220.9754-5-william.gray@linaro.org>
- <ZD1MZO3KpRmuzy42@fedora>
+        with ESMTP id S233779AbjEBKbX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 May 2023 06:31:23 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7600F65B0
+        for <linux-iio@vger.kernel.org>; Tue,  2 May 2023 03:29:40 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1aad55244b7so25205805ad.2
+        for <linux-iio@vger.kernel.org>; Tue, 02 May 2023 03:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mechatrax-com.20221208.gappssmtp.com; s=20221208; t=1683023379; x=1685615379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WQB5oRkYadZqw07UZT9E1a/W/xo9BhfqDq7cXz9cu1k=;
+        b=UFcRr1LR0o8PCSu5cONGfVTuZ7GywAIGReWn+Tx+L6qggndbPZE6r3aUvxRpBhTaVB
+         z5Imc+Fl53zCOFo26+7/0w524KF+hE4pcLcprQIQ/flNPBus1JXs/ogYVy6NzyShO9pn
+         LJhryF86ZMM9kC3pI051SBWIP4GpS/0iqbkI63XaSr4jbZAYkNWtbuCH0KL/oWeM8WkX
+         gwjQK5IYb4Zzpbu2z5RfKU/jFJdzbVJpAcLu0cN1SrJiL3u1O9AaVX/rdDiqbnX0UVKK
+         WK4K7yNUMnKYGZxKkQAiWFun/Z0pGsxHEYQklCiWDtkYHmx6oGScklRUY+Y7FculW5HN
+         z41g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683023379; x=1685615379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WQB5oRkYadZqw07UZT9E1a/W/xo9BhfqDq7cXz9cu1k=;
+        b=NSxkH2NqIlSF8oQcj22ATrkeGNctaExBvoPC+hRyLwymu+TD24SDxefQRAEdyNVisB
+         napY4EEAUhpNtgNb+RhG+wfVRfK+8YqYFyuYhoTpMP9XCHqghKZiT8oGkwm8ZQF38ZzP
+         vjIzFQWG7wZ/ixU67sSPuSmsr3YfAU2rY7SFIUIvUhOIkZsfD6P8vIxssoR5lCxaOXDZ
+         glhRPtluy437M97iLEgX1YFQ8YmZ7JBLxItfWhe1yJHParrpQXcyvaW+8jpTCIAVR2FM
+         azHVinTW6/ESddG4z1Zmq+TzsB4hcEQuZ/KUt+dj3CiZm267Qg62bCnTDiQnVWDDJlEl
+         5SSQ==
+X-Gm-Message-State: AC+VfDytMFCsKl0fptXDCYm2sZavLRSnqb1CVBJgC1aGCqsbDH78Q+M4
+        QTtmG5rB38vuJDuIZtMa9Ybket3uiM8SDpU3LTat/g==
+X-Google-Smtp-Source: ACHHUZ7Za8FQOKGSjjMCJidPJ+F9rBSuBXdvykDVtKYwNOEJ6UQJQ7lmj1Q44SQNxNyYOu1eMyqeVg==
+X-Received: by 2002:a17:902:c613:b0:1ab:893:ba28 with SMTP id r19-20020a170902c61300b001ab0893ba28mr1935714plr.45.1683023379330;
+        Tue, 02 May 2023 03:29:39 -0700 (PDT)
+Received: from localhost ([2400:4152:be0:9900:18fd:cb44:8f7b:de51])
+        by smtp.gmail.com with UTF8SMTPSA id y23-20020a1709029b9700b001a69c1c78e7sm19456477plp.71.2023.05.02.03.29.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 May 2023 03:29:38 -0700 (PDT)
+From:   Masahiro Honda <honda@mechatrax.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Masahiro Honda <honda@mechatrax.com>
+Subject: [PATCH v4] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+Date:   Tue,  2 May 2023 19:29:30 +0900
+Message-Id: <20230502102930.773-1-honda@mechatrax.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="YuWiOo1iHaN3h6UL"
-Content-Disposition: inline
-In-Reply-To: <ZD1MZO3KpRmuzy42@fedora>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,44 +69,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
+line to indicate the completion of a conversion. However, some devices
+cannot properly detect the completion of a conversion by an interrupt.
+This is for the reason mentioned in the following commit.
 
---YuWiOo1iHaN3h6UL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+commit e9849777d0e2 ("genirq: Add flag to force mask in
+                      disable_irq[_nosync]()")
 
-Hi!
+A read operation is performed by an extra interrupt before the completion
+of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UNLAZY
+flag.
 
-> On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
-> > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
-> >=20
-> > The Counter (CNTR) register is 24 bits wide, but we can have an
-> > effective 25-bit count value by setting bit 24 to the XOR of the Borrow
-> > flag and Carry flag. The flags can be read from the FLAG register, but a
-> > race condition exists: the Borrow flag and Carry flag are instantaneous
-> > and could change by the time the count value is read from the CNTR
-> > register.
+Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+---
+v4:
+ - Remove the callback.
+v3: https://lore.kernel.org/linux-iio/20230420102316.757-1-honda@mechatrax.com/
+ - Remove the Kconfig option.
+v2: https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatrax.com/
+ - Rework commit message.
+ - Add a new entry in the Kconfig.
+ - Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing the IRQ.
+v1: https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatrax.com/
 
-> > Since the race condition could result in an incorrect 25-bit count
-> > value, remove support for 25-bit count values from this driver.
+ drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-I believe usual solution is to read the carry, read the counter, and
-read the carry again. If old_carry =3D new_carry, we are pretty sure we
-did not hit the race, and can use 25 bit value.
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index d8570f6207..7e21928707 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_de
+ 	init_completion(&sigma_delta->completion);
+ 
+ 	sigma_delta->irq_dis = true;
++
++	/* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing an IRQ */
++	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = devm_request_irq(dev, sigma_delta->spi->irq,
+ 			       ad_sd_data_rdy_trig_poll,
+ 			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
+-- 
+2.34.1
 
-Best regards,
-									Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---YuWiOo1iHaN3h6UL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZFDHewAKCRAw5/Bqldv6
-8vlpAKCFBg45QB+KFONqyP6+X7EHhS4IYgCeJ8GNZyQWfm63Nnq+NBigLvYUKPY=
-=GwcR
------END PGP SIGNATURE-----
-
---YuWiOo1iHaN3h6UL--

@@ -2,102 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 132BC6F557B
-	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 11:58:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27FA66F5587
+	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 12:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjECJ60 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 May 2023 05:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54028 "EHLO
+        id S229813AbjECKBp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 May 2023 06:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbjECJ6Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 May 2023 05:58:25 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB554234
-        for <linux-iio@vger.kernel.org>; Wed,  3 May 2023 02:58:22 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2a8bbea12d7so50592751fa.3
-        for <linux-iio@vger.kernel.org>; Wed, 03 May 2023 02:58:22 -0700 (PDT)
+        with ESMTP id S229555AbjECKBk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 May 2023 06:01:40 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD08F1A7;
+        Wed,  3 May 2023 03:01:38 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2ac70c975fcso7007581fa.3;
+        Wed, 03 May 2023 03:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1683107901; x=1685699901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tBpbf4XISWJtBVaZwAOtHjLjUmCzvCogGOFBVPRRTeM=;
-        b=eC+qsf6xglZKV7CIhF7hjQId46jGm5iibiBcAS5+hNCOFLrwCctuk9zhKSQhP11MG4
-         FzzE7GtFUQPe3xg3H3NsE7+/BtBNwb9JiONgBSJXQxJM/ii3584RhveoKLDUc/ta991P
-         FUPi3lYbvlSeajspGQTA+hsRtnQ4fGnu0QzRY=
+        d=gmail.com; s=20221208; t=1683108097; x=1685700097;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cbLddoF+dAfHfXpgdlmLObjxEgG+kEshDJTymk4l9ms=;
+        b=gI5XkbYsbtK/jwU0afMsdo76wKVXF4M7QiDt3zprFZQ28XDkIjmMXMD2kenFHE65yV
+         ohgIcOOnH11dknn3BhPL7HkLAE7ZcO65CyNqAINsi5rBHTRyTaj8SC/B+HOSlRT15CBF
+         l2juIQliZwBDGP32kNlp9QmTm7coAlGYJIlZlfYg7mFb6mLf0jUNhj3Lnz/6eXu7Qhry
+         wfWvoJZsr2eWay/PnYJyGZ93nFKA5xPxB/I43OjbaT9t0x/XGWIoq/pOavFebqYBL/Ue
+         baCm2WRe++NvNI3LW8GsvRP71O9YFt0UWpPmCEMEyxak1vRVWl6nLb8o+Ngp2Iw1iSzk
+         tzoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683107901; x=1685699901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tBpbf4XISWJtBVaZwAOtHjLjUmCzvCogGOFBVPRRTeM=;
-        b=IeFTUGSMn8YoMIaWAZy/bkRVZPggD/pxPGNrq3sTiQVCfra/rzpA7Xp7pBkT9b8IRm
-         5ExQGWf3ixlxzabSG74ET1SAc6qqk9X1Tg7kBStQhHHsePGRQLeTTmLOiOdg8+31KjwW
-         knUeJ2uJr4k3nRll/63BlPv3AWnP7DM/Hqhx7EUCh7/qdyS56fp/MWLDXWfYLeNvuGl+
-         bgWi4VJDjGpw4pd6CWyulo4OLGCsF764PqLlGxHwkdbzMXR9Y08D3ckqmQqQNYEcaprc
-         2BfeHm3I0G+TiYejCt3voIahmR1EzBnk78wutmCNPUMttvJMwr7N7P6pdmzbFF/BJsLD
-         Q6pQ==
-X-Gm-Message-State: AC+VfDylx21mFzuwO1qenNNQghXYHNDebU53tHwu2X13NxFw3HUe/BDb
-        nsqv+cJsvGhM/T5puypFQTEMow==
-X-Google-Smtp-Source: ACHHUZ55GS6xfViVrIMSKR3rL04uqNDXxkXbVQ848BwHSw2kedpGC8skunVtYg7im52sUoxJ3dvnaA==
-X-Received: by 2002:a2e:b0eb:0:b0:2ac:767c:ae14 with SMTP id h11-20020a2eb0eb000000b002ac767cae14mr231428ljl.19.1683107900758;
-        Wed, 03 May 2023 02:58:20 -0700 (PDT)
-Received: from prevas-ravi.k200.local ([87.54.42.112])
-        by smtp.gmail.com with ESMTPSA id b10-20020a2e988a000000b002ac77768608sm74050ljj.100.2023.05.03.02.58.19
+        d=1e100.net; s=20221208; t=1683108097; x=1685700097;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cbLddoF+dAfHfXpgdlmLObjxEgG+kEshDJTymk4l9ms=;
+        b=Hc4L9YO3y2IBNL3mVL2L/9/xH2zc8mmKm8OpkkKmh/VvykPbT+10gPKb0oI0LypyW8
+         trozfL1pOmxkzjbjPjfs5vh+YeU6zD2O63kQGyhA/u2xhgYYdNJJLsji84EOGmmOv23J
+         xQrGfRYMDzXgX+1J+AxKEtgFeAgT0YRyEdYXhpaQ5qTWF/LNFQWbjMyeDEWo3ksk8vzD
+         wuZ8DTfoTfoLd/Hc9zc19UI4elJARsanXgTb66Tli0HcUUHrxMHVFb/Ei8Fg2qxt8wyE
+         j8zMFAcRY+/NUutPS/Fpov6+v3rjo117bC2cX1an+WPInZsqgOPQ8/wu0PsiY7G8Pypz
+         maGg==
+X-Gm-Message-State: AC+VfDx0xsVWtPDWRYjVr5Sa/Jxx0rDwKwbpfJnWSL2aoJyzTHNniM57
+        mjXs3GL21FkG+5m9eGYB3OWb9n5QDGE=
+X-Google-Smtp-Source: ACHHUZ5/8w8sJORF5OVUQCO9GUOzJsjUQD5v0q7aRSE4TjHmG1bFAR+zVnBsXA3gDK7W2HI1v0mARQ==
+X-Received: by 2002:a2e:8295:0:b0:2a6:1682:3a1e with SMTP id y21-20020a2e8295000000b002a616823a1emr5224079ljg.31.1683108096971;
+        Wed, 03 May 2023 03:01:36 -0700 (PDT)
+Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id y11-20020a05651c020b00b002a8a8f2dc89sm5907418ljn.72.2023.05.03.03.01.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 02:58:20 -0700 (PDT)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Wed, 03 May 2023 03:01:36 -0700 (PDT)
+Date:   Wed, 3 May 2023 13:01:32 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: addac: ad74413: fix resistance input processing
-Date:   Wed,  3 May 2023 11:58:17 +0200
-Message-Id: <20230503095817.452551-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.37.2
+Subject: [PATCH v2] iio: bu27034: Ensure reset is written
+Message-ID: <ZFIw/KdApZe1euN8@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Ru/DL4Tb+YxI3Pq5"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On success, ad74413r_get_single_adc_result() returns IIO_VAL_INT aka
-1. So currently, the IIO_CHAN_INFO_PROCESSED case is effectively
-equivalent to the IIO_CHAN_INFO_RAW case, and we never call
-ad74413r_adc_to_resistance_result() to convert the adc measurement to
-ohms.
 
-Check ret for being negative rather than non-zero.
+--Ru/DL4Tb+YxI3Pq5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: fea251b6a5dbd (iio: addac: add AD74413R driver)
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+The reset bit must be always written to the hardware no matter what value
+is in a cache or register. Ensure this by using regmap_write_bits()
+instead of the regmap_update_bits(). Furthermore, the RESET bit may be
+self-clearing, so mark the SYSTEM_CONTROL register volatile to guarantee
+we do also read the right state - should we ever need to read it.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor")
+
 ---
- drivers/iio/addac/ad74413r.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changelog:
+v1 =3D> v2:
+  - Fix SoB tag
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index 07e9f6ae16a8..e3366cf5eb31 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -1007,7 +1007,7 @@ static int ad74413r_read_raw(struct iio_dev *indio_dev,
- 
- 		ret = ad74413r_get_single_adc_result(indio_dev, chan->channel,
- 						     val);
--		if (ret)
-+		if (ret < 0)
- 			return ret;
- 
- 		ad74413r_adc_to_resistance_result(*val, val);
--- 
-2.37.2
 
+I haven't verified if the reset bit is self-clearin as I did temporarily
+give away the HW.
+
+In worst case the bit is not self clearing - but we don't really
+get performance penalty even if we set the register volatile because the
+SYSTEM_CONTROL register only has the part-ID and the reset fields. The
+part-id is only read once at probe.
+
+---
+ drivers/iio/light/rohm-bu27034.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27=
+034.c
+index 25c9b79574a5..740ebd86b6e5 100644
+--- a/drivers/iio/light/rohm-bu27034.c
++++ b/drivers/iio/light/rohm-bu27034.c
+@@ -231,6 +231,9 @@ struct bu27034_result {
+=20
+ static const struct regmap_range bu27034_volatile_ranges[] =3D {
+ 	{
++		.range_min =3D BU27034_REG_SYSTEM_CONTROL,
++		.range_max =3D BU27034_REG_SYSTEM_CONTROL,
++	}, {
+ 		.range_min =3D BU27034_REG_MODE_CONTROL4,
+ 		.range_max =3D BU27034_REG_MODE_CONTROL4,
+ 	}, {
+@@ -1272,7 +1275,7 @@ static int bu27034_chip_init(struct bu27034_data *dat=
+a)
+ 	int ret, sel;
+=20
+ 	/* Reset */
+-	ret =3D regmap_update_bits(data->regmap, BU27034_REG_SYSTEM_CONTROL,
++	ret =3D regmap_write_bits(data->regmap, BU27034_REG_SYSTEM_CONTROL,
+ 			   BU27034_MASK_SW_RESET, BU27034_MASK_SW_RESET);
+ 	if (ret)
+ 		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
+
+base-commit: 7fcbd72176076c44b47e8f68f0223c02c411f420
+--=20
+2.40.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--Ru/DL4Tb+YxI3Pq5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRSMOkACgkQeFA3/03a
+ocUcfAf/Z0/YZjlVoNVlpuQQ0nWdANGKI+QVVvyOJXPMWBMVHDlpQjoy3F0xaLjb
+CYEoY5n8d8pSCC5M37MVAX7p2inmk7FbW5jPU1vh5/BDmEN9GSaN2QJ0xrXYl0NY
+SWep2kHeFwLoPk5wHFP0Fs2V/ZaLPqSEm12rM4asfFfJec9EwBv89peV21N/0Uj2
+Y9QYKgqGfHZ6GtYUmMMRXRzmcALSf+YuIPy42XSAmfV929GX0I/aIX351J6hPJZ0
+ktBTdzOlneh9zrB97bc/ycuEMUL0dKzcWYaBIdBuq3Gglii2+ZJZkdn4VdchhCbL
+OWekHVo/i0gdRJq7jAnAiO6I4Hj3FA==
+=1Gqg
+-----END PGP SIGNATURE-----
+
+--Ru/DL4Tb+YxI3Pq5--

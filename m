@@ -2,118 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFBAE6F5698
-	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 12:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D1BF6F5BD9
+	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 18:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjECKux (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 May 2023 06:50:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55264 "EHLO
+        id S229441AbjECQUy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 May 2023 12:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbjECKuw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 May 2023 06:50:52 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F26612F
-        for <linux-iio@vger.kernel.org>; Wed,  3 May 2023 03:50:49 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f139de8cefso2046089e87.0
-        for <linux-iio@vger.kernel.org>; Wed, 03 May 2023 03:50:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1683111047; x=1685703047;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zgj+aUgoJdUUawwjQ6SgSQXM3EvgvrnXKII1glX28tA=;
-        b=XnS7NVz8zttO1mmcapsD4f8wA0e8bEV1z3wez08PCINAL3k7C7YTNcSfTyrILcy74r
-         Di5jMQfCzg01pGf5tURveH4iEtrBZYukqXzl6fky++6GLhQyYDIPJKX+FXaGzZqQKvCD
-         BHFrHpukkujhe/jjDm+9SjwFj0B4ralYu78Ys=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683111047; x=1685703047;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zgj+aUgoJdUUawwjQ6SgSQXM3EvgvrnXKII1glX28tA=;
-        b=jLFDYT9tcxCWoPQpd7x0WkJ0aRNI1j/tV3dP8S9NeZEoeYBANwyVwrOHgP1Bx7pk8J
-         +dijr27xvyykUQzxnngfrEL8LbYP/b4WqpUGKj3JJPd/rwU+JKsWCG1W63Hl3W1HdDji
-         GtDgb8w8c1AI7Iz9xjI6FWAGWV7ZPlxPLnGHx1/F9NVuGQYZqGMur5x5OzY+V7h1TuLA
-         KoZLqSGbOB78aS7hDhsjtdizYehDqiELrHOCsZ0kVxHyXMHP2jrhW38gaR+EW5f5LJ4W
-         LQ5wKKs5HV9a7xp/qt+XL5DBYuLm8rTWhv/W/i64fLvfKpY5/TFahR2mt6sPUcKXcsCk
-         P0KA==
-X-Gm-Message-State: AC+VfDyxbTyOigL7slsbkGQ9vseMrNlJJQh11VjCQwvqPgVfoHPRiUPi
-        Ja03Uh74nAyr6dQ3uXt4lu67cg==
-X-Google-Smtp-Source: ACHHUZ7KGBBKidxkonefCJDBhObv1u5vOSFiRrhYpWG4uzfVOm+Br56TJUXrQbSRcCCtDVdvY7iG+w==
-X-Received: by 2002:ac2:529a:0:b0:4ef:ebbb:2cf5 with SMTP id q26-20020ac2529a000000b004efebbb2cf5mr467562lfm.17.1683111047318;
-        Wed, 03 May 2023 03:50:47 -0700 (PDT)
-Received: from prevas-ravi.k200.local ([87.54.42.112])
-        by smtp.gmail.com with ESMTPSA id j1-20020a19f501000000b004eff0bcb276sm4702776lfb.7.2023.05.03.03.50.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 03:50:46 -0700 (PDT)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions other than digital input
-Date:   Wed,  3 May 2023 12:50:41 +0200
-Message-Id: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S229498AbjECQUw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 May 2023 12:20:52 -0400
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893076A76
+        for <linux-iio@vger.kernel.org>; Wed,  3 May 2023 09:20:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+        s=default2211; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
+        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=OpZHjSdSGQpoQPed8Rj960aLDTbFhfFzVPv3Avi9JCU=; b=HvPgdKfsuBj+Z2jyjAkbJwH66/
+        7z6CCF+suypgGbnh4bbOQA5YnGzZO8eqFETJKVr+KmwMVlA/G0Khn0WtfOVDmQNiHwNIVBf0VB1JI
+        PyQUcuEldZH016Jm9ma9ZOajjXMqpjQLNX0qfmFtRwnSkeQdjfi1OgVSeF3L9X3GPdgiIploMGgYY
+        FhAWkKYxyaXG//U/1P5kaZ6o3TF0JN0W8gbXkS2jxMk49o0C/NqUgkqQ2aa+awuVbPB3SGYQfHe3m
+        HXZ7qsSxH/cEoiJgnP79YCK0jI2/CvFpoKHIih74lg4jF4lca/imbgSi7WM0cGtkDRlZUFRz14HnZ
+        reQt8T3w==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <sean@geanix.com>)
+        id 1puFDf-000MMM-0k; Wed, 03 May 2023 18:20:43 +0200
+Received: from [185.17.218.86] (helo=zen..)
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sean@geanix.com>)
+        id 1puFDe-000QMl-Mv; Wed, 03 May 2023 18:20:42 +0200
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     jic23@kernel.org, olivier.moysan@foss.st.com,
+        alexandre.torgue@foss.st.com, nuno.sa@analog.com
+Cc:     Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH v3 1/2] iio: adc: stm32-adc: skip adc-diff-channels setup if none is present
+Date:   Wed,  3 May 2023 18:20:28 +0200
+Message-Id: <20230503162029.3654093-1-sean@geanix.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: sean@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26895/Wed May  3 09:23:02 2023)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Apparently, despite the name Digital Input Configuration Register, the
-settings in the DIN_CONFIGx registers also affect other channel
-functions. In particular, setting a non-zero value in the DIN_SINK
-field breaks the resistance measurement function.
+If no adc differential channels are defined driver will fail with EINVAL:
+stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
 
-Now, one can of course argue that specifying a drive-strength-microamp
-property along with a adi,ch-func which is not one of the digital
-input functions is a bug in the device tree. However, we have a rather
-complicated setup with instances of ad74412r on external hardware
-modules, and have set a default drive-strength-microamp in our DT
-fragments describing those, merely modifying the adi,ch-func settings
-to reflect however the modules have been wired up. And restricting
-this setting to just being done for digital input doesn't make the
-driver any more complex.
+Fix this by skipping the initialization if no channels are defined.
 
-Fixes: 504eb485589d1 (iio: ad74413r: wire up support for drive-strength-microamp property)
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+This applies only to the legacy way of initializing adc channels.
+
+Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
- drivers/iio/addac/ad74413r.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+Changes since v1:
+- None
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index e3366cf5eb31..6b0e8218f150 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -1317,13 +1317,14 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
- 		}
- 
- 		if (config->func == CH_FUNC_DIGITAL_INPUT_LOGIC ||
--		    config->func == CH_FUNC_DIGITAL_INPUT_LOOP_POWER)
-+		    config->func == CH_FUNC_DIGITAL_INPUT_LOOP_POWER) {
- 			st->comp_gpio_offsets[comp_gpio_i++] = i;
- 
--		strength = config->drive_strength;
--		ret = ad74413r_set_comp_drive_strength(st, i, strength);
--		if (ret)
--			return ret;
-+			strength = config->drive_strength;
-+			ret = ad74413r_set_comp_drive_strength(st, i, strength);
-+			if (ret)
-+				return ret;
+Changes since v2:
+- None
+
+ drivers/iio/adc/stm32-adc.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index e179b6611e4d..14524c1b5583 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2008,16 +2008,15 @@ static int stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct stm
+ 	 * to get the *real* number of channels.
+ 	 */
+ 	ret = device_property_count_u32(dev, "st,adc-diff-channels");
+-	if (ret < 0)
+-		return ret;
+-
+-	ret /= (int)(sizeof(struct stm32_adc_diff_channel) / sizeof(u32));
+-	if (ret > adc_info->max_channels) {
+-		dev_err(&indio_dev->dev, "Bad st,adc-diff-channels?\n");
+-		return -EINVAL;
+-	} else if (ret > 0) {
+-		adc->num_diff = ret;
+-		num_channels += ret;
++	if (ret > 0) {
++		ret /= (int)(sizeof(struct stm32_adc_diff_channel) / sizeof(u32));
++		if (ret > adc_info->max_channels) {
++			dev_err(&indio_dev->dev, "Bad st,adc-diff-channels?\n");
++			return -EINVAL;
++		} else if (ret > 0) {
++			adc->num_diff = ret;
++			num_channels += ret;
 +		}
+ 	}
  
- 		ret = ad74413r_set_gpo_config(st, i, gpo_config);
- 		if (ret)
+ 	/* Optional sample time is provided either for each, or all channels */
 -- 
-2.37.2
+2.40.0
 

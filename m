@@ -2,145 +2,254 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BD526F547D
-	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 11:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9079F6F551C
+	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 11:46:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjECJTa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 May 2023 05:19:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57070 "EHLO
+        id S229573AbjECJqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 May 2023 05:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjECJT3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 May 2023 05:19:29 -0400
-Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2094.outbound.protection.outlook.com [40.107.135.94])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCAF41BFA;
-        Wed,  3 May 2023 02:19:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aBGZFQ7sgo19kyAlHhwIwL331kUj88Ys04Tj5MZqDU/kpaSBAm/Dt0g+wk6A8/Cjk9yHO2MewbKJB0kyfdS9woCQIyzEfJf5iVzL50YyDojxhOt3tthHTaVr5j7R69+FvCDZ19XyVo5ZW9f+5dPQzGZX5CSkvu2cMCg5E3+UCFerIcdq40zTDQRoqcQqHKjBzt7Q00YXfW+e+aVH4Q3Qx5ccfFv4H9JsiFDFgzRnAhJqm4ylHEKdcidK4Grz52WJoWrEqTYnW2ZoiD0B7BvTcdzddr3MJJ7jD7oKSCeohb3SsSDzj76tqld3PtMGNlFPcGU71HiCkPFkumJI7/QAug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4gFL4a0azTetJiKGmlER+zBPFHDQdaIIsg8QP8QaTuk=;
- b=Jo6PEhrnXn3MrscMHM6ti1kzZ8t272zXk2WuRe9Z8T3ouJJKgLdj0L05Bx9DneKV12iHSvdoNf4ysbB8xqgiUesGNsHIlabc0fEabs5oiOJhO3yhNhVyMK9ln7yc6/fjpdbaWM+oS90lE8iYEXsd2bOOFvMlBr6i1fHP4VZY0jLUzxM+U18yox7Lh8ff+KuInUx9bu0ENVTHuAIx+5Rzah6sRijyyl4C/IXyNbCka/tByj1VevlCEgnaGdCBfAUc01IfJm09md/4ffB0ROS+njOy5Nhj8W/OZAzx7pDxbDZ/pbgMMwJS/jDuzci8gNeSOVaTLIsjZIW6WPGnqRvTGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
- header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
+        with ESMTP id S229983AbjECJpf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 May 2023 05:45:35 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30EC52D69;
+        Wed,  3 May 2023 02:44:54 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2aa39ce5d26so50335311fa.1;
+        Wed, 03 May 2023 02:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rohmsemiconductor.onmicrosoft.com;
- s=selector2-rohmsemiconductor-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4gFL4a0azTetJiKGmlER+zBPFHDQdaIIsg8QP8QaTuk=;
- b=dFrnNXlhvNKq15RrcXaJZCds1WIh7vWiqxn200TCRRjTSfvqT8OkpRBj67RJH/vYFuK6xun7/2HRESsVTWCCffSo3SapyGVRZn1s9rVc9AkeEvmPdv22Q7xEvTBry2roeH/1pc8lCtd9xud9bLqIcMvSQIF2vm0sBhPlAw9qgUc=
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
- by FR2P281MB2857.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:67::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.31; Wed, 3 May
- 2023 09:19:01 +0000
-Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::4218:fb63:61ae:c42a]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
- ([fe80::4218:fb63:61ae:c42a%5]) with mapi id 15.20.6363.021; Wed, 3 May 2023
- 09:19:01 +0000
-From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
+        d=gmail.com; s=20221208; t=1683107086; x=1685699086;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ojEP9jyPYV0kD4k17U7z2zy6rqymh0kERFtXzzcztIU=;
+        b=Zv0OMcx+3tE1eL/oKZ1vLmKsrOS70sB8Y3JKt5oTugKAIGzBCrXdxXrfRw2nETQDRj
+         yn0u9pEABmPNFKhaIU9Vi/YG66R5ef71eDrHqFYTV2ojm+5qBD010v0zi+tAoHCi/hc6
+         +Lumqk1EW1BrS45MK4kLp3aH71ffjST5qHZ4KbxSKIV0UoZUSlAfsBeEFaq+NCN9wx9W
+         YsIfcyupolcFlkQHyyHO7Iwm8MuJUHranqQrhWldjODlf9DBi1FY9Ip2KHU63zro9Xbb
+         WSvIXUGqibhT+TzH38zCfWekFe0ve4GINNJYO24dH7YS86neAINd2cQbP0ffExyQudQO
+         UBFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683107086; x=1685699086;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ojEP9jyPYV0kD4k17U7z2zy6rqymh0kERFtXzzcztIU=;
+        b=ZO+xDYc+bmJLTTudcI7eCv9/oI1a1zjxPaeG/WiTfbYgE+Z0jh5dO+dRScJXTCnora
+         WX0WmCwkjFR1QhKYzk6+/mk5SNnnp2EeN5+Ec+mjTVOaXk1ehkuTVlJLevGW0PQK7/ZK
+         4kLTNEDELwcQQ+yTAWHkV6tXuq29p84aiTlMZZKs1+eYU92OZu77AejaGBxBgQ+NdaGS
+         LqurSROq9/FtTGRG5PxqaoqO8FnOZ51lI46SIU3TUmnp7mhnK0jQX9PNSrXW4305vzw+
+         Piz/PIKr9Cq9mTXLz0y5wClKJ/DB9bGW2XYDIjQMNa7B58FT/IoZkX0eCSUgGiw/NVWO
+         VQXQ==
+X-Gm-Message-State: AC+VfDwAJ/jXi663xn+2LxWg5POkeudAomgx1kpoH4EogXmfvTZ3Annx
+        5UEj12OqtTdIHeLn7mG7AGQ=
+X-Google-Smtp-Source: ACHHUZ7pgzWt3EBF0ftVh/qjbv7O9HsTVOsdlQkINcPMbcunzFiEfvfGCfeZQmH98HcoLckbOlS1MA==
+X-Received: by 2002:a2e:870a:0:b0:2a8:b579:225b with SMTP id m10-20020a2e870a000000b002a8b579225bmr5715324lji.40.1683107085468;
+        Wed, 03 May 2023 02:44:45 -0700 (PDT)
+Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id z23-20020a2e8857000000b002a8c271de33sm5778594ljj.67.2023.05.03.02.44.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 May 2023 02:44:44 -0700 (PDT)
+Date:   Wed, 3 May 2023 12:44:29 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: bu27034: Ensure reset is written
-Thread-Topic: [PATCH] iio: bu27034: Ensure reset is written
-Thread-Index: AQHZfQ9DsqGNSmvkokOfr1cei/vxeq9IRngA
-Date:   Wed, 3 May 2023 09:19:00 +0000
-Message-ID: <1bba2342-a591-cbe0-bfa7-975abd91041a@fi.rohmeurope.com>
-References: <ZFEzmA/0whRO6IFv@fedora>
-In-Reply-To: <ZFEzmA/0whRO6IFv@fedora>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BEZP281MB2454:EE_|FR2P281MB2857:EE_
-x-ms-office365-filtering-correlation-id: c395ce73-ca2c-4ee4-957b-08db4bb76e96
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zcOBfiwttnEgg33bt0HWsfD9Fs4YaC4LG8Uwfzof4BehLTSF9oI4l7FVTUyWpBn97x0hv6VbRm2Ct6Q2WKsFtzHX/iTm0FaQc6wjku+PaOHHbFNKdRuEcEgsGcix6qYx+8qBP3cO9Gv5dYMo8mOAZ5ZgbWXlYAPxGnpo2hDORyeXnoYlahotyqQDeUF4JuR+SAMImUWnFcmYpGgJPdIPPNcvutoFo5QZdYCcApaTLoRYX4HjtgJaZPwl6NNgixLthLnDSOBQhO6aCzwFG7ZojF9oBGAToXPvPshuzvp9lo3zly7prTYGh2yk4H73dts56bB/xaMiYh3WS/tez0ZWpz4x/FTSrgRM6SZYJXrc4nOh19FZf+lyIOGc1S8eflDDVppOmS/Mjl/wMXGrwNAffC7/+FMJr4re7hzJ0MMXSWIKa5Cwpz2AC4+8XQdxjnVfRqp8nyLOsipwgesx1SvTHSvXmoQBMxpzdQUkQ1jwAxVhUbmHIAPAWZBMZ7CfAEmBISLbrkhhb9CmuDnxvTCRW7sOeJJAsgjaab9DUDq4B/REgl8QLf5cBRaHh4uV+hAnN2uPd3rWAc3+32GrtEzDkruo+KDRiKlRMKoUH0OpNZqDBDaCVsosUQC3N5mm8Q/DV4GhBGiNdJ6QR1kZfe+MncF/B1ORUE61yDxjBJZd72CT4294QTX9V9clkx1uUYQk
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(39840400004)(346002)(136003)(396003)(451199021)(41300700001)(31686004)(5660300002)(83380400001)(122000001)(2906002)(4744005)(2616005)(8676002)(8936002)(316002)(6486002)(6916009)(38100700002)(64756008)(66556008)(66946007)(66446008)(66476007)(4326008)(91956017)(76116006)(86362001)(31696002)(71200400001)(478600001)(54906003)(38070700005)(26005)(186003)(6506007)(6512007)(53546011)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VlEzUjFkYzViajFScEdkTW9WNDJ1WTNMQ2I3NXoycVFSYm85N1N3eFRncW90?=
- =?utf-8?B?MW5oWGxPL05zMVZRWjBqT1FlWTVMWXV0MzJ2aGxLV0k2UmNKdXhVYU93Ymxq?=
- =?utf-8?B?RFl4cUMzVFZmbDlSbnhjSjh3aURZTWpnOXhRb2l3NFlsSzFxUHJqd2FWUUtj?=
- =?utf-8?B?eWgyRTFXV3BCSXI4bm5Tem1aL2Z3MkdMSnRzSkg1Z0M0ZGszZlFwUDdGS1d5?=
- =?utf-8?B?djlDK1dtRm9iNVczYTBtZGpTN0xHKzkyVDVkVTQ3a2RXQUlwNHRJUWgwR1Iv?=
- =?utf-8?B?WmV2M0g5Z3pZZjR3UlZuMkwyUjRRQTloTDdBNHVncVpGRDVMUXNFVHYrNm5D?=
- =?utf-8?B?dWsySE5oY1FmOTFsZjc4U0lLd0g3MVplSTl0cTQxSkJkN3B4bjlKZkErTTkr?=
- =?utf-8?B?bW8wUlVwd0J5TVlTLzJpR1V4d21tR3hReXpRZnpHWGN0M1lzYk5NZ0JGNnBD?=
- =?utf-8?B?Nm5MbFptcGdJQjJCMjZhK3dtTUtCTmlhNDdpaWdjVGFoNVZoL2F2Y1gzSjZk?=
- =?utf-8?B?RDRLYW5wdkRSQy9lMHRRbGdpZmFOM0lZQThuNzlSZFlURkRVL09OQ0dRMDBw?=
- =?utf-8?B?cTZpT1hYV1pmQW1HZ1lSdE9SQTdDNE1vOStLeU1yU0szTmtFQUZQNjRzVlI4?=
- =?utf-8?B?Yyt3azNyeHJnSm1WSFdLNk9uTUJzeXpUMUtnMnJzNWh1UFhKSnRGYWJmV3Qy?=
- =?utf-8?B?TVNVNzJ0ekVaMjE5SnhLUzNMRXN1cXhSWVNKL2lyN1Y1aHQ2UXpFN0lGVTVJ?=
- =?utf-8?B?QnNHOTJ4M05LQW1RK2lEbk9tVHcvQnUvWi9JZ1JEQlQ4WEZydUUzQnBUNjFk?=
- =?utf-8?B?ZXUrc1BCYk9wUTAySzNiYWtLclIzMThmUHozbDlOOGM5RVVwVFp4U012Nkt5?=
- =?utf-8?B?cEVEQ1g3aFNYTVRRd05VdU13dG4xWXdQMHBUOW85NVRvVXVvdXJsRUh2WnMv?=
- =?utf-8?B?dE1ndHZxV0hBOVpOZ05rRFZONUc1S0tFWlJnUHM1emdoZnBIZG5tQTZQMUZJ?=
- =?utf-8?B?bmJLUXVzLzBxY3licFN0MGI2eVlhZnRmMWgrRmZIU0ZPNlB4K0VYWkhXMFVF?=
- =?utf-8?B?T2dCR2ZFOFU0bUpoclhtMEM0WXlJbm5FMEtmYjVPeENiUmlkeUlzcVJTTS9O?=
- =?utf-8?B?K3VBY1pVMWo1NTlMdEVsWWoreExzbGx1YktSSkVBWCtDZHArZnNYUDg0cksv?=
- =?utf-8?B?VEdKRTZrU2xscVRGNEM2MGphTHU0K1J2a1lhS05JamtTUEV5eGhxT1FUeUFz?=
- =?utf-8?B?RzRFM0xUWTltdnZtWU9PZUdTMjNZM3VNYTEzUERqNEQzdUZvcUdvUlRuS2ZC?=
- =?utf-8?B?dk9qOW5LdDBYQVpnd0s2MlUvL3NSQ0FIWEtSZExENDN1d0RTcmM4Wk1RRDhP?=
- =?utf-8?B?VzVmWWNMVU1ENEpydWFYaXIrL0FKdS92NHB2S0J5TzZIeGg3TW0vdE9pNWdo?=
- =?utf-8?B?UW13dm1SdGE2dytIaHd2S0Fhdk9NUXFtUTBkWDF3M2FaM2JOSnU1ODRWVGtC?=
- =?utf-8?B?bm02TDhaMUtweHQ5TU5IZ2c4RE53N2l0bHJXQ2w1YTVyeE5MMUgzTFlHbkxX?=
- =?utf-8?B?R1p1THRzakIxRjVDdFY3a0htSVNMV0dtUVd6dC9FK2FVbEt3em1PYTd3RUVS?=
- =?utf-8?B?ZzEwNjlaUDFRSE9zU3JVbUd6OGhyMlpxbTlFQmlvbjdMUFZNdW5uQ212Y2xB?=
- =?utf-8?B?T2o3cDRaQVZuN1NRV1MwTENJOEFvb0E0ZTZkTHBMY3pXSEhLNWNZSHpuZUls?=
- =?utf-8?B?WlpJK3piWGVGelBva1J1VWZXUmRsOVFXdEt2US9qZU80Wm54emczRThFTTBC?=
- =?utf-8?B?RWd2QXA0dVV1QUtyaVArQzh3OXd1ZTdkemVLNWNjOCtYckhZY1NYdkFTTmg2?=
- =?utf-8?B?UmpvWFhGM2xLOWRydFBXbFJKM3V5c0VZMjQyclY4clVqVlltaHVLRDIweVc3?=
- =?utf-8?B?SldEN3FwTUR6amVFb1NBWnM2TC9pYlpBNVd4TG5pNVJ3ekJldzR4SldGV2t0?=
- =?utf-8?B?bmR0S2N4aThCcWVSNERaKytUMWJrVEJMeFRML0IzYmQzYVNWTW95TEM5Nyt5?=
- =?utf-8?B?RE9hRWlvTGNNaXNKSGl2Syt1bjVMUE1NRjBrMVdDc0xjL2FaNjdGdHgrQjlZ?=
- =?utf-8?B?UEpkU2hLYkFEVG13UTJUdlBteDg1Ti9nK0RQK2lqUjVwUGtiUGRwR2VSd0Ju?=
- =?utf-8?B?VVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <85E7640D844F9A4B9F13DF4D5CC0937B@DEUP281.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/5] Support ROHM BU27008 RGB sensor
+Message-ID: <cover.1683105758.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: fi.rohmeurope.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c395ce73-ca2c-4ee4-957b-08db4bb76e96
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 May 2023 09:19:00.8970
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EjB1VVvyM6iQ0Litj0i0E3zd8bE2Ei/vI0FRWBfyrMg9ogp6/VCFyTHcj0ze2micwLuhuLKYhA/rGEucXnpw3lzztDbmbPiNL15hS1a0GgheHuL9LX0sJ+zmeI618zDH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR2P281MB2857
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="P6C63pZ7fe5zi9Lk"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gNS8yLzIzIDE5OjAwLCBNYXR0aSBWYWl0dGluZW4gd3JvdGU6DQo+IFRoZSByZXNldCBiaXQg
-bXVzdCBiZSBhbHdheXMgd3JpdHRlbiB0byB0aGUgaGFyZHdhcmUgbm8gbWF0dGVyIHdoYXQgdmFs
-dWUNCj4gaXMgaW4gYSBjYWNoZSBvciByZWdpc3Rlci4gRW5zdXJlIHRoaXMgYnkgdXNpbmcgcmVn
-bWFwX3dyaXRlX2JpdHMoKQ0KPiBpbnN0ZWFkIG9mIHRoZSByZWdtYXBfdXBkYXRlX2JpdHMoKS4g
-RnVydGhlcm1vcmUsIHRoZSBSRVNFVCBiaXQgbWF5IGJlDQo+IHNlbGYtY2xlYXJpbmcsIHNvIG1h
-cmsgdGhlIFNZU1RFTV9DT05UUk9MIHJlZ2lzdGVyIHZvbGF0aWxlIHRvIGd1YXJhbnRlZQ0KPiB3
-ZSBkbyBhbHNvIHJlYWQgdGhlIHJpZ2h0IHN0YXRlIC0gc2hvdWxkIHdlIGV2ZXIgbmVlZCB0byBy
-ZWFkIGl0Lg0KPiANCj4gU2lnbmVkLW9mZiBieTogTWF0dGkgVmFpdHRpbmVuIDxtYXp6aWVzYWNj
-b3VudEBnbWFpbC5jb20+DQoNCkkgbWlzc3BlbGxlZCB0aGUgU2lnbmVkLW9mZi1ieS4gU29ycnkg
-Zm9sa3MuIEknbGwgcmUtc3Bpbi4NCg0KWW91cnMsDQoJLS0gTWF0dGkNCg0KLS0gDQpNYXR0aSBW
-YWl0dGluZW4NCkxpbnV4IGtlcm5lbCBkZXZlbG9wZXIgYXQgUk9ITSBTZW1pY29uZHVjdG9ycw0K
-T3VsdSBGaW5sYW5kDQoNCn5+IFdoZW4gdGhpbmdzIGdvIHV0dGVybHkgd3JvbmcgdmltIHVzZXJz
-IGNhbiBhbHdheXMgdHlwZSA6aGVscCEgfn4NCg0K
+
+--P6C63pZ7fe5zi9Lk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Add support for ROHM BU27008 RGB sensor.
+
+The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
+and IR) with four configurable channels. Red and green being always
+available and two out of the rest three (blue, clear, IR) can be
+selected to be simultaneously measured. Typical application is adjusting
+LCD backlight of TVs, mobile phones and tablet PCs.
+
+This series supports reading the RGBC and IR channels using IIO
+framework. However, only two of the BC+IR can be enabled at the same
+time. Series adds also support for scale and integration time
+configuration, where scale consists of impact of both the integration
+time and hardware gain. The gain and time support is backed by the newly
+introduced IIO GTS helper. This series depends on GTS helper patches
+added in BU27034 support series which is already merged in iio/togreg
+which this series is based on.
+
+The hardware allows configuring gain setting by writing a 5-bit gain
+selector value to a register. Part of the gain setting is common for all
+channels (RGBC + IR) but part of the selector value can be set
+separately for RGBC and IR:
+
+MODE_CONTROL2 REG:
+bit 7	    6	    5	    4	    3	    2	    1	    0
+-----------------------------------------------------------------
+|	RGB	selector		|
++---------------------------------------+
+-----------------------------------------------------------------
+| high bits IR	|			| low bits IR selector	|
++---------------+			+-----------------------+
+
+In theory it would be possible to set certain separate gain values for
+RGBC and IR channels, but this gets pretty confusing because there are a
+few 'unsupported' selector values. If only RGBC or IR was set, some
+extra handling should be done to prevent the other channel from getting
+unsupported value due to change in high-bits. Furthermore, allowing the
+channels to be set different gain values (in some cases when gains are
+such the HW supports it) would make the cases where also integration
+time is changed to achieve correct scale ... interesting. It might also
+be confusing for user to try predicting when setting different scales
+succeeds and when it does not. Furthermore, if for example the scale
+setting for RGBC caused IR selector to be invalid - it could also cause
+the IR scale to "jump" very far from previous value.
+
+To make the code simpler and more predictable for users, the current
+logic is as follows:
+
+1. Prevent setting IR scale. (My assumption is IR is less used than
+RGBC)
+2. When RGBC scale is set, set also the IR-selector to the same value.
+This prevents unsupported selector values and makes the IR scale changes
+predictable.
+
+The 2) could mean we effectively have the same scale for all channels.
+Unfortunately, the HW design is slightly peculiar and selector 0 means
+gain 1X on RGBC but gain 2X on IR. Rest of the selectors equal same gain
+values on RGBC and IR. The result is that while changin selector from 0
+=3D> 1 causes RGBC gain to go from 1X =3D> 4X, it causes IR gain to go from
+2X =3D> 4X.
+
+So, the driver provides separate scale entries for all channels (also
+RGB and C will have separate gain entries because these channels are of
+same type as IR channel). This makes it possible for user applications
+to go read the scales for all channels after setting scale for one (in
+order to detect the IR scale difference).
+
+Having the separate IR scale entry which applications can read to detect
+"arbitrary scale changes" makes it possible for applications to be
+written so they can cope if we need to implement the 'allow setting some
+different gains for IR and RGBC' - later.
+
+Finally, the scales_available is also provided for all other channels
+except the IR channel, which does not allow the scale to be changed.
+
+The sensor provides a data-ready IRQ and the driver implements a
+triggered buffer mode using this IRQ as a trigger.
+
+Finally, the series introduces generic iio_validate_own_trigger() helper
+which can be used as a validate_trigger callback for drivers which
+require the trigger and iio-device to be parented by same device. The
+KX022A driver is converted to use this new callback instead of rolling
+it's own function. The new helper and KX022A can be merged in as
+independent changes if need be.
+
+
+Revision history
+v3 =3D> v4:
+  bu27008 driver fixes
+    - Drop thread from device IRQ handler
+    - Styling and some minor improvements
+    - Use kernel-doc for enums
+    - Correctly order entries in Makefile
+v2 =3D> v3:
+  dt-bindings:
+    - No changes
+  iio_validate_own_trigger:
+    - subject fix
+  bu27008:
+    - Mostly styling based on comments from Andy and Andi
+
+  More accurate changelog in individual patches
+
+v1 =3D> v2:
+  dt-bindings:
+    - Fix issues pointed by Krzysztof.
+  bu27008 driver:
+    - Fix issues pointed by Jonathan
+  Add new helper for validating own trigger
+
+  More accurate changelog in individual patches
+
+---
+
+
+Matti Vaittinen (5):
+  dt-bindings: iio: light: ROHM BU27008
+  iio: trigger: Add simple trigger_validation helper
+  iio: kx022a: Use new iio_validate_own_trigger()
+  iio: light: ROHM BU27008 color sensor
+  MAINTAINERS: Add ROHM BU27008
+
+ .../bindings/iio/light/rohm,bu27008.yaml      |  49 +
+ MAINTAINERS                                   |   3 +-
+ drivers/iio/accel/kionix-kx022a.c             |  13 +-
+ drivers/iio/industrialio-trigger.c            |  22 +-
+ drivers/iio/light/Kconfig                     |  14 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/rohm-bu27008.c              | 993 ++++++++++++++++++
+ include/linux/iio/trigger.h                   |   1 +
+ 8 files changed, 1082 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu2700=
+8.yaml
+ create mode 100644 drivers/iio/light/rohm-bu27008.c
+
+
+base-commit: 7fcbd72176076c44b47e8f68f0223c02c411f420
+--=20
+2.40.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--P6C63pZ7fe5zi9Lk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRSLP0ACgkQeFA3/03a
+ocUDrQf+OxNKGB/FUi7i21Z8bsvmAsD8L+98eC7ffGG18ejsVA6OJ9vQksoOd3R3
+No+G8FNR/dM15gpbIH1VnCvEA8YGIzs66+YhzD73iMRyFS03BkcfLnZqmNVNL9uS
+XaFJPF+UmoamLn4rfIlBOjVDezGlzmdbIURLOg3w1vHMarXF7Xjr5MxaeHibc/bU
+wHOl9Q2b+9K7p3/5nNIOxbcFoiFulSffYvad3y6DMMckgP/PP0Ur4dQ0WbK1sN78
+7lGp8O46noD6LWRFxFa93u4TV/4Or6A7xlWQMnRBhsi2mBmz2QTmxyEwkTaNxYn/
+CvsRIpUuKSi+XTgLZO7mDgFY4m1VdQ==
+=7Cpw
+-----END PGP SIGNATURE-----
+
+--P6C63pZ7fe5zi9Lk--

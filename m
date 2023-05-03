@@ -2,138 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F0606F4B7A
-	for <lists+linux-iio@lfdr.de>; Tue,  2 May 2023 22:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0EF6F4E04
+	for <lists+linux-iio@lfdr.de>; Wed,  3 May 2023 02:13:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbjEBUkc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 May 2023 16:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32892 "EHLO
+        id S230086AbjECANC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 May 2023 20:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjEBUkb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 May 2023 16:40:31 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A69910D9;
-        Tue,  2 May 2023 13:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683060030; x=1714596030;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=orxph8gXqsDtdJQ2KysJOOsFvhyl4wTbC5xnv9jsMTA=;
-  b=c8kh/x6LpTyLbATfx/2c8Cj0UPpSqLs92j2+Dj3S+jPOUYOpmW/5irus
-   bFaE9cz3w4F+LFPBmM4AnVWUpAOvOuEzE/rO4RQ18iePbXacPERq+ztCI
-   NIZ3WDZ4aBG1huFE6R6htLuNPiZODRWUA02r9XG0tOv83Gi1L0luKwzCo
-   4yHaGXB7qT6FoLUmPRegAzb6wyL/6OlTUavazl089kxltkSWArvB4wMwu
-   3ksmnjyWIa5D9LuUjXfyrkhfk4vkmYKh4UuU4McOhqLQrXr/CnMQkrh9P
-   2VqQQQ6LSptbHBu7UQyTAgFtCyqRTCFxdVY2rgxO78FyVRRnOAWCnR/Gl
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="337635136"
-X-IronPort-AV: E=Sophos;i="5.99,245,1677571200"; 
-   d="scan'208";a="337635136"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2023 13:40:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10698"; a="726895262"
-X-IronPort-AV: E=Sophos;i="5.99,245,1677571200"; 
-   d="scan'208";a="726895262"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 02 May 2023 13:40:23 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ptwnN-008E0F-0F;
-        Tue, 02 May 2023 23:40:21 +0300
-Date:   Tue, 2 May 2023 23:40:20 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Paul Gazzillo <paul@pgazz.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH v3 4/5] iio: light: ROHM BU27008 color sensor
-Message-ID: <ZFF1NMaR1RYThcSB@smile.fi.intel.com>
-References: <cover.1682495921.git.mazziesaccount@gmail.com>
- <fb35de40a3908988f5f83e25d17119e6944d289b.1682495921.git.mazziesaccount@gmail.com>
+        with ESMTP id S229588AbjECANB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 May 2023 20:13:01 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2A32D59
+        for <linux-iio@vger.kernel.org>; Tue,  2 May 2023 17:13:00 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-b9dea9d0360so4451981276.1
+        for <linux-iio@vger.kernel.org>; Tue, 02 May 2023 17:13:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683072779; x=1685664779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mszgk8kcqy9NacUC4irOM12AZRObXiNESQ4V20e6ClI=;
+        b=qkgJTaRvQKsXbiUwxdR3cT+heU6eWtN2ZDfoZliUoVM3UUesOjfboFzSIbw96Vvx2w
+         MxIkoM1/YWtStBrFDCUhLYNrimJUQjgXNyu8++TCdUp5zbSvGP7ir48Fa6G5YkEcnHG8
+         76j9FSe0Aed0Qj+mmm03ukANqEXDzhNh0pemxCieZSLeU5vL+MRRmn8mxVYiHkxNGxTK
+         naQD23AexjHkDnbBPT9szvXCrdZyM3Quk8A0Yw+V2NFhQr9FzqkGuAwu1Az48PGG9aGE
+         dfLWBQvEw8ifReBVNDhaxCg7amUoPQeGnUfZ02ghdhQ9zXmlfO3WtouD1+l+UZ21+rNx
+         iuyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683072779; x=1685664779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mszgk8kcqy9NacUC4irOM12AZRObXiNESQ4V20e6ClI=;
+        b=JCyzaWa0YkEC8fZF3jk94lHoRCfZH7IzFup0W0hZSYsq52RP9Bikn29xJ5LENGb/UE
+         TWmY2xPVqy64erq7iDUxdGUJ0NB5gRbFzHT1LxJs9PToUF4qTPaSQsSFMoNPF2zawNCX
+         yRtE3+Mh1YRv5HaQiiHgCub6rxNd2GjEO6ShU2qHHIIN2JeRhTMLkXq4xvEPhyXH6WhS
+         4uw4R9qFQ28ZvzDer1BFYmDmNIKLOwJbCNQ52IqtliZ9IQU9dxf1W/0OGp111EefGXIm
+         nbPY1+S77Nce2mWceU/2lezb9MPPZv331Ckb5IkugSJT9baRhie4cQkV60fcrZJsJToi
+         E2zw==
+X-Gm-Message-State: AC+VfDy4RmF69SAzhT3j279q8GaMxvOuZ/t9jHef66FTNHHuWVHJveUN
+        SGfISvKazCLY4I9sm/cv3gudfw==
+X-Google-Smtp-Source: ACHHUZ6+77di1oBaEHkzxiJH5sZPfohzbAFdZ/RMHcUZtaO3531dWEiuxivGrRiaQP+a6IrJMVm3jg==
+X-Received: by 2002:a25:760a:0:b0:b9d:8a4e:e79f with SMTP id r10-20020a25760a000000b00b9d8a4ee79fmr15053557ybc.40.1683072779462;
+        Tue, 02 May 2023 17:12:59 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id c82-20020a251c55000000b00b9a7f23c2b8sm2658208ybc.24.2023.05.02.17.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 May 2023 17:12:58 -0700 (PDT)
+Date:   Tue, 2 May 2023 20:12:56 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>, stable@vger.kernel.org
+Subject: Re: [RESEND PATCH 5.15 v3 5/5] counter: 104-quad-8: Fix race
+ condition between FLAG and CNTR reads
+Message-ID: <ZFGnCJipt1Dwlxvo@fedora>
+References: <20230411155220.9754-1-william.gray@linaro.org>
+ <20230411155220.9754-5-william.gray@linaro.org>
+ <ZD1MZO3KpRmuzy42@fedora>
+ <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4aIilrXIIJYE6/fg"
 Content-Disposition: inline
-In-Reply-To: <fb35de40a3908988f5f83e25d17119e6944d289b.1682495921.git.mazziesaccount@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZFDHe0a7kcJXQoNM@duo.ucw.cz>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 26, 2023 at 11:08:17AM +0300, Matti Vaittinen wrote:
-> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
-> and IR) with four configurable channels. Red and green being always
-> available and two out of the rest three (blue, clear, IR) can be
-> selected to be simultaneously measured. Typical application is adjusting
-> LCD backlight of TVs, mobile phones and tablet PCs.
-> 
-> Add initial support for the ROHM BU27008 color sensor.
->  - raw_read() of RGB and clear channels
->  - triggered buffer w/ DRDY interrtupt
 
-...
+--4aIilrXIIJYE6/fg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +enum {
-> +	BU27008_RED,	/* Always data0 */
-> +	BU27008_GREEN,	/* Always data1 */
-> +	BU27008_BLUE,	/* data2, configurable (blue / clear) */
-> +	BU27008_CLEAR,	/* data2 or data3 */
-> +	BU27008_IR,	/* data3 */
-> +	BU27008_NUM_CHANS
+On Tue, May 02, 2023 at 10:19:07AM +0200, Pavel Machek wrote:
+> Hi!
+>=20
+> > On Tue, Apr 11, 2023 at 11:52:20AM -0400, William Breathitt Gray wrote:
+> > > commit 4aa3b75c74603c3374877d5fd18ad9cc3a9a62ed upstream.
+> > >=20
+> > > The Counter (CNTR) register is 24 bits wide, but we can have an
+> > > effective 25-bit count value by setting bit 24 to the XOR of the Borr=
+ow
+> > > flag and Carry flag. The flags can be read from the FLAG register, bu=
+t a
+> > > race condition exists: the Borrow flag and Carry flag are instantaneo=
+us
+> > > and could change by the time the count value is read from the CNTR
+> > > register.
+>=20
+> > > Since the race condition could result in an incorrect 25-bit count
+> > > value, remove support for 25-bit count values from this driver.
+>=20
+> I believe usual solution is to read the carry, read the counter, and
+> read the carry again. If old_carry =3D new_carry, we are pretty sure we
+> did not hit the race, and can use 25 bit value.
+>=20
+> Best regards,
+> 									Pavel
+> --=20
+> People of Russia, stop Putin before his war on Ukraine escalates.
 
-Why not converting comments to a kernel-doc?
+That solution might work if the counter only increases, but if the
+counter is straddling the zero threshold then the Carry bit will toggle
+as the count overflows, underflows, and overflows again. For example:
 
-> +};
-> +
-> +enum {
-> +	BU27008_DATA0, /* Always RED */
-> +	BU27008_DATA1, /* Always GREEN */
-> +	BU27008_DATA2, /* Blue or Clear */
-> +	BU27008_DATA3, /* IR or Clear */
-> +	BU27008_NUM_HW_CHANS
-> +};
+    * START
+        * Carry=3D0,Count=3DMAX
+    * > Counting up...
+        * Carry=3D1,Count=3D0
+    * DRIVER READS Carry=3D1
+    * > Counting down...
+        * Carry=3D1,Count=3DMAX
+    * > Counting up...
+        * Carry=3D0,Count=3D0
+    * > Counting up...
+        * Carry=3D0,Count=3D42
+    * DRIVER READS Count=3D42
+    * > Counting down...
+        * Carry=3D1,Count=3DMAX
+    * DRIVER READS Carry=3D1
+        * old_carry =3D new_carry
+    * FINAL COUNT: Carry=3D1,Count=3D42
+        * This was never a state the counter actually reported
 
-Ditto.
+Ultimately, the issue is that we have no way to get both Carry and Count
+atomically from the device. As long as there's a race condition there,
+we can't prevent possibly misinterpreting the Carry and Count values, so
+we unfortunately cannot ensure that our 25-bit Count value is an actual
+state the counter reported.
 
-...
+William Breathitt Gray
 
-> +	if (int_time < 0)
-> +		int_time = 400000;
+--4aIilrXIIJYE6/fg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Adding 3 0:s to drop them below with a heavy division operation? Well done!
-Or did I miss anything?
+-----BEGIN PGP SIGNATURE-----
 
-> +	msleep(int_time / 1000);
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZFGnCAAKCRC1SFbKvhIj
+KwBgAQDGGMzTRsI9z7a069Eb50Vdm0UUKd5QReSBVCHZCJ0l3gEAq4lqY0R935IJ
+rMzdfqgEfGs/j+7TB1AMIqXxcWcLQgA=
+=m5Zn
+-----END PGP SIGNATURE-----
 
-USEC_PER_MSEC ?
-
-...
-
-> +	ret = devm_iio_device_register(dev, idev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Unable to register iio device\n");
-> +
-> +	return ret;
-
-return 0 will suffice.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--4aIilrXIIJYE6/fg--

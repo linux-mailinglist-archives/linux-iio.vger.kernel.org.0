@@ -2,72 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE26C6F6A47
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 13:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6F36F6DC7
+	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 16:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230072AbjEDLlt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 07:41:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58086 "EHLO
+        id S230464AbjEDOeA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 May 2023 10:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229873AbjEDLlt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 07:41:49 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B410510B
-        for <linux-iio@vger.kernel.org>; Thu,  4 May 2023 04:41:47 -0700 (PDT)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 344AjTRA008853;
-        Thu, 4 May 2023 13:41:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=mgBoB7y0Q8zoPq556QTbRXqfnTsbr9KKVw24VOBMPss=;
- b=faVk5/gyvYdUZfYLgFTA0Mvxz3OAtcEYPbpOHVrcbPA6Ur2868y3TE0aiqVpRNMiPJpw
- +asAYHyLNtu4IC8ff6YwDLKhMYKpmNTBbhcWRfMyVgn7yDBt6Cvt2A3xPdafFNW99mC0
- BkZDqhwyA2REHvm1SA9/1AT+y31e/VHNE6kh/fGCzhO0J/6N3MHRLY1GsyV4xXDQrk1E
- QnrsQMfxe8kRLOjl7leqNWhl8DQin1kXHfiC4SEW7zgPynRKbNyH2jEoVBtjDEdtShey
- LdxRJ8brreakDeZqhc5TyJ7lIeW1AgRw/y5mbvqW2ccfMxzdnS5rQdlm17D2UAaDyU23 cg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3qbu1udpy4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 May 2023 13:41:27 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6EA7C10002A;
-        Thu,  4 May 2023 13:41:25 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 5F6612171F8;
-        Thu,  4 May 2023 13:41:25 +0200 (CEST)
-Received: from [10.201.20.178] (10.201.20.178) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 4 May
- 2023 13:41:24 +0200
-Message-ID: <29974337-d4a0-e295-ed0f-59f6f27576fe@foss.st.com>
-Date:   Thu, 4 May 2023 13:41:24 +0200
+        with ESMTP id S229915AbjEDOd7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 10:33:59 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A35CED;
+        Thu,  4 May 2023 07:33:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683210838; x=1714746838;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xlLDMQQnaoiJZU5cc5xhDZa7M+4PCVjcjgdzn9vspmI=;
+  b=PpIkwUDi2EOUbNVwXxnpOGKCOUOxcVT47VYAaQEVhL1My8miYN3b2AV+
+   7au4Dx1c1oZDgT5CoFEDjIjvYOH+YgSwyqHCkJ+1c314NyVbPildcYrsB
+   i0Ib5KWUVxuOz4GiS7oPd4PSrJJ+v/WAafJsXNTmA1ocjE55h9S9yRaCs
+   8EW5yXQkPPwDqjgZdsknLHI62OyZXr2KTnD8gGdvDFldeBxUAcW39TuUK
+   F/y50GJR1KkO84uoQM4N5o2NbMZXLnWKwdAbtia8Bj5Qj6+fD1Vk7Y8g5
+   Ry5koy4r9qT0d6U49AiG4Pgu7sXvd34tOySRqZF46De++gxACl5rV75gX
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="329305927"
+X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
+   d="scan'208";a="329305927"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 07:33:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="821195742"
+X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
+   d="scan'208";a="821195742"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP; 04 May 2023 07:33:54 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pua1p-0095jL-07;
+        Thu, 04 May 2023 17:33:53 +0300
+Date:   Thu, 4 May 2023 17:33:52 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/5] iio: light: ROHM BU27008 color sensor
+Message-ID: <ZFPCUJ81aw/GkJgT@smile.fi.intel.com>
+References: <cover.1683105758.git.mazziesaccount@gmail.com>
+ <6d1e37f95dd039d9c96a992b1855fd193bdded40.1683105758.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 2/2] iio: adc: stm32-adc: skip adc-channels setup if
- none is present
-Content-Language: en-US
-To:     Sean Nyekjaer <sean@geanix.com>, <jic23@kernel.org>,
-        <alexandre.torgue@foss.st.com>, <nuno.sa@analog.com>,
-        Fabrice GASNIER <fabrice.gasnier@st.com>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-References: <20230503162029.3654093-1-sean@geanix.com>
- <20230503162029.3654093-2-sean@geanix.com>
-From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
-In-Reply-To: <20230503162029.3654093-2-sean@geanix.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.20.178]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-04_08,2023-05-04_01,2023-02-09_01
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d1e37f95dd039d9c96a992b1855fd193bdded40.1683105758.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,104 +75,174 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Sean,
+On Wed, May 03, 2023 at 12:50:14PM +0300, Matti Vaittinen wrote:
+> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
+> and IR) with four configurable channels. Red and green being always
+> available and two out of the rest three (blue, clear, IR) can be
+> selected to be simultaneously measured. Typical application is adjusting
+> LCD backlight of TVs, mobile phones and tablet PCs.
+> 
+> Add initial support for the ROHM BU27008 color sensor.
+>  - raw_read() of RGB and clear channels
+>  - triggered buffer w/ DRDY interrtupt
 
-Thanks for your update
-You can add my: Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
+...
 
-BRs
-Olivier
+> +config ROHM_BU27008
+> +	tristate "ROHM BU27008 color (RGB+C/IR) sensor"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	select IIO_GTS_HELPER
+> +	help
+> +	  Enable support for the ROHM BU27008 color sensor.
+> +	  The ROHM BU27008 is a sensor with 5 photodiodes (red, green,
+> +	  blue, clear and IR) with four configurable channels. Red and
+> +	  green being always available and two out of the rest three
+> +	  (blue, clear, IR) can be selected to be simultaneously measured.
+> +	  Typical application is adjusting LCD backlight of TVs,
+> +	  mobile phones and tablet PCs.
 
-On 5/3/23 18:20, Sean Nyekjaer wrote:
-> If only adc differential channels are defined driver will fail with
-> stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
-> 
-> Fix this by skipping the initialization if no channels are defined.
-> 
-> This applies only to the legacy way of initializing adc channels.
-> 
-> Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
-> Changes since v1:
-> - Ignore extra channel for timestamps in PIO mode
-> - Use single ended count in channel creation (Thanks Olivier Moysan)
-> 
-> Changes since v2:
-> - Avoid calling device_property_read_u32_array with num_se 0 (Thanks Olivier Moysan)
-> 
->   drivers/iio/adc/stm32-adc.c | 42 ++++++++++++++++++++-----------------
->   1 file changed, 23 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index 14524c1b5583..f7613efb870d 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -2038,6 +2038,7 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
->   	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
->   	struct device *dev = &indio_dev->dev;
->   	u32 num_diff = adc->num_diff;
-> +	int num_se = nchans - num_diff;
->   	int size = num_diff * sizeof(*diff) / sizeof(u32);
->   	int scan_index = 0, ret, i, c;
->   	u32 smp = 0, smps[STM32_ADC_CH_MAX], chans[STM32_ADC_CH_MAX];
-> @@ -2064,29 +2065,32 @@ static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
->   			scan_index++;
->   		}
->   	}
-> -
-> -	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
-> -					     nchans);
-> -	if (ret)
-> -		return ret;
-> -
-> -	for (c = 0; c < nchans; c++) {
-> -		if (chans[c] >= adc_info->max_channels) {
-> -			dev_err(&indio_dev->dev, "Invalid channel %d\n",
-> -				chans[c]);
-> -			return -EINVAL;
-> +	if (num_se > 0) {
-> +		ret = device_property_read_u32_array(dev, "st,adc-channels", chans, num_se);
-> +		if (ret) {
-> +			dev_err(&indio_dev->dev, "Failed to get st,adc-channels %d\n", ret);
-> +			return ret;
->   		}
->   
-> -		/* Channel can't be configured both as single-ended & diff */
-> -		for (i = 0; i < num_diff; i++) {
-> -			if (chans[c] == diff[i].vinp) {
-> -				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
-> +		for (c = 0; c < num_se; c++) {
-> +			if (chans[c] >= adc_info->max_channels) {
-> +				dev_err(&indio_dev->dev, "Invalid channel %d\n",
-> +					chans[c]);
->   				return -EINVAL;
->   			}
+Module name?
+
+...
+
+> +static const struct regmap_range bu27008_read_only_ranges[] = {
+> +	{
+> +		.range_min = BU27008_REG_DATA0_LO,
+> +		.range_max = BU27008_REG_DATA3_HI,
+> +	}, {
+> +		.range_min = BU27008_REG_MANUFACTURER_ID,
+> +		.range_max = BU27008_REG_MANUFACTURER_ID,
+
+> +	}
+
++ trailing comma for consistency?
+
+> +};
+
+...
+
+> +static const struct regmap_config bu27008_regmap = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = BU27008_REG_MAX,
+> +	.cache_type = REGCACHE_RBTREE,
+> +	.volatile_table = &bu27008_volatile_regs,
+> +	.wr_table = &bu27008_ro_regs,
+
+Do you need regmap lock? If so, why (since you have mutex)?
+
+> +};
+
+...
+
+> +static int bu27008_read_one(struct bu27008_data *data, struct iio_dev *idev,
+> +			    struct iio_chan_spec const *chan, int *val, int *val2)
+> +{
+> +	int ret, int_time;
 > +
-> +			/* Channel can't be configured both as single-ended & diff */
-> +			for (i = 0; i < num_diff; i++) {
-> +				if (chans[c] == diff[i].vinp) {
-> +					dev_err(&indio_dev->dev, "channel %d misconfigured\n",
-> +						chans[c]);
-> +					return -EINVAL;
-> +				}
-> +			}
-> +			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
-> +						chans[c], 0, scan_index, false);
-> +			scan_index++;
->   		}
-> -		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
-> -					chans[c], 0, scan_index, false);
-> -		scan_index++;
->   	}
->   
->   	if (adc->nsmps > 0) {
-> @@ -2307,7 +2311,7 @@ static int stm32_adc_chan_fw_init(struct iio_dev *indio_dev, bool timestamping)
->   
->   	if (legacy)
->   		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels,
-> -						 num_channels);
-> +						 timestamping ? num_channels - 1 : num_channels);
->   	else
->   		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
->   	if (ret < 0)
+> +	ret = bu27008_chan_cfg(data, chan);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bu27008_meas_set(data, BU27008_MEAS_EN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	int_time = bu27008_get_int_time_us(data);
+> +	if (int_time < 0)
+> +		int_time = BU27008_MEAS_TIME_MAX_MS;
+> +	else
+> +		int_time /= USEC_PER_MSEC;
+
+The above function returns an error code when negative, so I would rather see
+
+	ret = bu27008_get_int_time_us(data);
+	if (ret < 0)
+		int_time = BU27008_MEAS_TIME_MAX_MS;
+	else
+		int_time = ret / USEC_PER_MSEC;
+
+at least this explicitly shows the semantics of the "negative" time.
+
+> +	msleep(int_time);
+> +
+> +	ret = bu27008_chan_read_data(data, chan->address, val);
+> +	if (!ret)
+> +		ret = IIO_VAL_INT;
+> +
+> +	if (bu27008_meas_set(data, BU27008_MEAS_DIS))
+> +		dev_warn(data->dev, "measurement disabling failed\n");
+> +
+> +	return ret;
+> +}
+
+...
+
+> +	ret = regmap_reinit_cache(data->regmap, &bu27008_regmap);
+> +	if (ret) {
+> +		dev_err(data->dev, "Failed to reinit reg cache\n");
+
+> +		return ret;
+
+Dup is not needed.
+
+> +	}
+> +
+> +	return ret;
+
+...
+
+> +	if (i2c->irq) {
+
+Instead of a long body, I would rather see a call to
+
+		ret = ..._setup_irq();
+		if (ret)
+			return ret;
+
+> +		ret = devm_iio_triggered_buffer_setup(dev, idev,
+> +						      &iio_pollfunc_store_time,
+> +						      bu27008_trigger_handler,
+> +						      &bu27008_buffer_ops);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +				     "iio_triggered_buffer_setup_ext FAIL\n");
+> +
+> +		itrig = devm_iio_trigger_alloc(dev, "%sdata-rdy-dev%d",
+> +					       idev->name, iio_device_id(idev));
+> +		if (!itrig)
+> +			return -ENOMEM;
+> +
+> +		data->trig = itrig;
+> +
+> +		itrig->ops = &bu27008_trigger_ops;
+> +		iio_trigger_set_drvdata(itrig, data);
+> +
+> +		name = devm_kasprintf(dev, GFP_KERNEL, "%s-bu27008",
+> +				      dev_name(dev));
+> +
+> +		ret = devm_request_irq(dev, i2c->irq,
+> +				       &bu27008_data_rdy_poll,
+> +				       0, name, itrig);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Could not request IRQ\n");
+> +
+> +		ret = devm_iio_trigger_register(dev, itrig);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Trigger registration failed\n");
+> +
+> +		/* set default trigger */
+> +		idev->trig = iio_trigger_get(itrig);
+> +	} else {
+> +		dev_info(dev, "No IRQ, buffered mode disabled\n");
+> +	}
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

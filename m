@@ -2,71 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF766F65AD
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 09:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6646F665D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 09:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230049AbjEDH0S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 03:26:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46386 "EHLO
+        id S229751AbjEDH4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 May 2023 03:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbjEDH0R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 03:26:17 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59BFC2D40;
-        Thu,  4 May 2023 00:26:13 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id af79cd13be357-7516d97a63aso9965685a.1;
-        Thu, 04 May 2023 00:26:13 -0700 (PDT)
+        with ESMTP id S229522AbjEDH4j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 03:56:39 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550872728;
+        Thu,  4 May 2023 00:56:38 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ac7de2b72fso2053921fa.1;
+        Thu, 04 May 2023 00:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683185172; x=1685777172;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1wlxzUfbfZ06DVEocDvamXCK0fAlaBMqjKg87R5vU0U=;
-        b=G5pUj4Rc0Tu5uUWmt+Q/F/ah7RAuuUZx7wYrhELbudqg4gh0xYhiT6nzKjuEXPO87s
-         rJDBzaseP2eLClBBJ8bRISnC2Hy7j48S+vpKN1R75BcS5TU1xi72PzFt0pjYfT/VvUDb
-         Ili3Jiu6S767QkTrJaYHPVdD5uigo9B35Jn+Jp7Hg4UKsylH0HD4Ak7N7I664Uuglvgy
-         gIKtQIo4BS2zUoXWptSbQhMX9rlgSVXO3pky+FImlh+fFde9vwl/oCWjKJ2eXfCXeF0/
-         NeVGN+ua+mXj4xwXmUPeuqZg0OCW1QwsKCmFVJe0N6oouuQu2oc/YNR4H1IgI79skDaG
-         xDyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683185172; x=1685777172;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20221208; t=1683186996; x=1685778996;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1wlxzUfbfZ06DVEocDvamXCK0fAlaBMqjKg87R5vU0U=;
-        b=iU3zFO7lP0eYSeZVtt+HyqTawZx6dPpkDMJlBI6A3u2Qsxp8qrHLon9ikmjfNANM/p
-         Iw8aP7ctQiVZLZFKEIHQyZN07MwxeLLbLktU4pMsQH2CXACfJQ2hb3NrgbiI5v1Ftrp/
-         ovSWSGXw0oSan4Xj7Q5R5bS7DAtjbY9VYNChTuHCJjPBesoJkeEVw/NnnNBjG701eYK0
-         2bOWHIPzqJi3kKBw9H1l2u6AlUhrAl74026bfoZD9ccXb0l8XzVsw7oaUnQyhFm6tnnr
-         ifm3bNboAK3IcWgCDu0U+36rwqmU5SWoPttj3JZOx6De+TMfmE6iBival8X3/C7F80d8
-         dQhA==
-X-Gm-Message-State: AC+VfDzcHL3EP3K7jwki+Dpwnuqa9wphhYyDSzT7wxRbCadzCfr/G09F
-        hPXNYthBfkNixBMaheaak2s=
-X-Google-Smtp-Source: ACHHUZ5+F3aKC9nBcl3PysRQC8Yv4gqWUi2Vzui2vwKHC0e3VrQcLC1ZVwbFH1KFRRTBHJq1gSLCqA==
-X-Received: by 2002:ad4:5b84:0:b0:5b4:1d9a:75e7 with SMTP id 4-20020ad45b84000000b005b41d9a75e7mr12182199qvp.13.1683185172298;
-        Thu, 04 May 2023 00:26:12 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef05:8700:c599:e44a:8287:c91c? (p200300f6ef058700c599e44a8287c91c.dip0.t-ipconnect.de. [2003:f6:ef05:8700:c599:e44a:8287:c91c])
-        by smtp.gmail.com with ESMTPSA id d125-20020a376883000000b0074fafbea974sm8670986qkc.2.2023.05.04.00.26.10
+        bh=k7bTcKGL069SV5chj2exx/6OgP9rXCsK1lkREqDUd94=;
+        b=W9Dmtdln7kVxUeZK0oWOLX0IRwjjID+s6UUVYH4DcuJ7V3FprETbIzGmy3KYv7a3zc
+         cq7CxHPgrQLY/q/4wogcoU1kCkmGGiodnMMMUq9QRr6qcX1CI8Z+t3O8sa8ikMvxps7U
+         MYUBiWZReuoLZwbEOkQ7hu5QSl2wCzHLrhSBOZvusjKm9ucLTv0mf0D4Hpp4QfS4xf3q
+         M90Sl1pzxl4Pb7GGQM2YLjpjBXrPkO2WcY0vFC8Sc5klyWHRRr1j7z/iJEdaAK+50+Zf
+         RenOGaglvXTQQggRUSfl2K6lyxhBaV9HLinZ/9KaR8jyJIFyFJndy7yJfXZWq80qgh6G
+         yfqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683186996; x=1685778996;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k7bTcKGL069SV5chj2exx/6OgP9rXCsK1lkREqDUd94=;
+        b=HOf3mp0adhOy+yTlv2+SV8nPfzWi8XvbqUaL2YMwvPqJx4IxMKcSSw4/BkbmKZVVjF
+         MYMB7s6bC3IQUifv3TiB8gIVosvL3HzmkwzxdzA7Q6NRpx5D5MNK2M8U76Aq+fNGs37Q
+         6YMoeeAE5ZTp1Gpudi8EU3qUQHf8/Lxfg0VBzCHt96nEtex1UyFs+652KMNqyahDDH6C
+         BuYzPXV1WGmoYnRngvkACiXgHpJItIYvqvMycFhshzq4FvBO2qZu7edphUbAOjEnR859
+         X/a/gE0C0sUXg82rNXD2uInww3OLxMOOzHwrAACzDqKOlayYtGpw+4VZ6is//kQrkvc4
+         c0mQ==
+X-Gm-Message-State: AC+VfDw+HkYVgn+3kSekWb5cs5GiXFSBu9D9jWjEdi3PKt0fpmbZm1lK
+        E2RuyoMGjpY6lS250KZKPXqjpXFKBM8=
+X-Google-Smtp-Source: ACHHUZ53g4ZDfA8bz/0ja2DcDq9diAHAvexxjuGej3G9kQ/E08mCx1H4pCkicfywpYSmD9S2UaqCEg==
+X-Received: by 2002:ac2:43b3:0:b0:4ee:d799:eca with SMTP id t19-20020ac243b3000000b004eed7990ecamr1479225lfl.40.1683186996275;
+        Thu, 04 May 2023 00:56:36 -0700 (PDT)
+Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id a9-20020a056512020900b004f06aa3d856sm2552895lfo.3.2023.05.04.00.56.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 May 2023 00:26:11 -0700 (PDT)
-Message-ID: <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
-Subject: Re: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions
- other than digital input
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Thu, 04 May 2023 00:56:35 -0700 (PDT)
+Date:   Thu, 4 May 2023 10:56:13 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 04 May 2023 09:28:23 +0200
-In-Reply-To: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
-References: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 
+Subject: [RFC PATCH 0/3] ROHM Sensor async probing
+Message-ID: <cover.1683185765.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HMqvFF/irSGb9lXc"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -77,104 +71,90 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rasmus,
 
-Thanks for your patch... Just one comment below
+--HMqvFF/irSGb9lXc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2023-05-03 at 12:50 +0200, Rasmus Villemoes wrote:
-> Apparently, despite the name Digital Input Configuration Register, the
-> settings in the DIN_CONFIGx registers also affect other channel
-> functions. In particular, setting a non-zero value in the DIN_SINK
-> field breaks the resistance measurement function.
->=20
-> Now, one can of course argue that specifying a drive-strength-microamp
-> property along with a adi,ch-func which is not one of the digital
-> input functions is a bug in the device tree. However, we have a rather
-> complicated setup with instances of ad74412r on external hardware
-> modules, and have set a default drive-strength-microamp in our DT
-> fragments describing those, merely modifying the adi,ch-func settings
-> to reflect however the modules have been wired up. And restricting
-> this setting to just being done for digital input doesn't make the
-> driver any more complex.
->=20
-> Fixes: 504eb485589d1 (iio: ad74413r: wire up support for drive-strength-
-> microamp property)
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
-> =C2=A0drivers/iio/addac/ad74413r.c | 11 ++++++-----
-> =C2=A01 file changed, 6 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> index e3366cf5eb31..6b0e8218f150 100644
-> --- a/drivers/iio/addac/ad74413r.c
-> +++ b/drivers/iio/addac/ad74413r.c
-> @@ -1317,13 +1317,14 @@ static int ad74413r_setup_gpios(struct ad74413r_s=
-tate
-> *st)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0}
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0if (config->func =3D=3D CH_FUNC_DIGITAL_INPUT_LOGIC=
- ||
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 config->func =3D=3D CH_FUNC_DIGITAL_IN=
-PUT_LOOP_POWER)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 config->func =3D=3D CH_FUNC_DIGITAL_IN=
-PUT_LOOP_POWER) {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st-=
->comp_gpio_offsets[comp_gpio_i++] =3D i;
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0strength =3D config->drive_strength;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0ret =3D ad74413r_set_comp_drive_strength(st, i, strength)=
-;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0if (ret)
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return re=
-t;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0strength =
-=3D config->drive_strength;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D a=
-d74413r_set_comp_drive_strength(st, i,
-> strength);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0}
+Devices which may take a while to initialize during probe and which have
+no strong reason to probe synchronously can request asynchronous probing
+as default probe strategy. This can speed-up start times on some
+platforms.
+
+There is however some caveats listed for asynchronous probing for
+example here:
+https://lore.kernel.org/all/06db017f-e985-4434-8d1d-02ca2100cca0@sirena.org=
+=2Euk/
+
+I don't know how tolerant IIO users are what comes to asynchronous
+probing but I _guess_ this is (and should be) handled pretty well.
+Still, guessing could be said to be somewhat sub-optimal when doing
+kernel development :) Hence this RFC - if someone has better
+understanding on async probing when using IIO, please let me know!
+
+As far as I know these drivers do not currently have in-tree users.
+Furthemore, they are so new they don't probably have many user-space
+users either. In fact, the BU27034 is not yet in any official releases
+and BU27008 is not merged in any official trees yet. Thus, testing out
+async probing with them should not break existing users. KX022A is also
+relatively new and I don't think it has yet been widely used either.
+
+Finally, if asynchronous probing does break things, then:
+a) We should try fix the thing preventing async probe.
+b) We can pretty easily revert back to synchronous probing.
+
+Please note that the patch 2 depends on
+https://lore.kernel.org/lkml/cover.1683105758.git.mazziesaccount@gmail.com/
+which is not yet in-tree. If the feed-back from this RFC is positive,
+then I will squash this change to that series when re-spinning it next
+time.
+
+Please note that the patch 3 depends on bu27034 series which is expected
+to land on 6.4-rc1.
+
+---
+
+Matti Vaittinen (3):
+  iio: bu27034: Probe asynchronously
+  iio: bu27008: Probe asynchronously
+  iio: kx022a: Probe asynchronously
+
+ drivers/iio/accel/kionix-kx022a-i2c.c | 1 +
+ drivers/iio/accel/kionix-kx022a-spi.c | 1 +
+ drivers/iio/light/rohm-bu27008.c      | 1 +
+ drivers/iio/light/rohm-bu27034.c      | 1 +
+ 4 files changed, 4 insertions(+)
+
+--=20
+2.40.0
 
 
-So, I'm not really that familiar with this part and, at this stage, I'm bei=
-ng
-lazy to check the datasheet. My concern is about breaking some other users.=
-..
-So, does it make any sense for having drive-strength-microamp in a non digi=
-tal
-input at all? Can anyone have a working device by specifying that dt parame=
-ter
-on a non digital channel (or expect something from having that parameter se=
-t)?
-Or the only effect is to actually have some functions misbehaving?
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
-It feels to me (from your description) that this property is something that
-makes sense to be restricted and should also have that dependency stated in=
- the
-bindings but it might be to late for that (as some users might have validat=
-ed
-their devicetrees already). On the driver side, if it's never right to have
-these settings together, then the patch is valid since if someone has this,=
- his
-configuration is broken anyways (maybe that's also a valid point for the
-bindings)...
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
 
-- Nuno S=C3=A1
+--HMqvFF/irSGb9lXc
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRTZREACgkQeFA3/03a
+ocUkkAgAg5V0CvjGZoviTnbB3F1zsUJA7iwlMwXeWxNCA3gNCUrmRLNbSJkvwpRU
+YnCRW3SCcHObwr94Q8MCgr7DpZ/iVgMO38fQEX4GlS6d7bwB0M+LI/05OtaqEJ+t
+d0xfhV+o8h5BtT8O2nt+IFYbvLwn3E5KPpq/O7tMG58X8pY0tkd0VaEHvdo+x0gM
+eTbKebFBihJTryVDFr6hg+CXPEOxoqAk8nGVxOOGo1eqCyvX6oo7QnZx9m0b8grI
+yUH9iJWFwvTVhGT5XUb4VP+rte1LVwTjvvmtH9M/0JRShOn1NqgKvPMkt505JIfP
+AbG/TwU7sHg7wJ1skSS9KqWTjB2uBA==
+=yMyu
+-----END PGP SIGNATURE-----
+
+--HMqvFF/irSGb9lXc--

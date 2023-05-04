@@ -2,72 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B6F36F6DC7
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 16:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95E776F771E
+	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 22:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230464AbjEDOeA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 10:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35166 "EHLO
+        id S229813AbjEDUgZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 May 2023 16:36:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbjEDOd7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 10:33:59 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A35CED;
-        Thu,  4 May 2023 07:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683210838; x=1714746838;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xlLDMQQnaoiJZU5cc5xhDZa7M+4PCVjcjgdzn9vspmI=;
-  b=PpIkwUDi2EOUbNVwXxnpOGKCOUOxcVT47VYAaQEVhL1My8miYN3b2AV+
-   7au4Dx1c1oZDgT5CoFEDjIjvYOH+YgSwyqHCkJ+1c314NyVbPildcYrsB
-   i0Ib5KWUVxuOz4GiS7oPd4PSrJJ+v/WAafJsXNTmA1ocjE55h9S9yRaCs
-   8EW5yXQkPPwDqjgZdsknLHI62OyZXr2KTnD8gGdvDFldeBxUAcW39TuUK
-   F/y50GJR1KkO84uoQM4N5o2NbMZXLnWKwdAbtia8Bj5Qj6+fD1Vk7Y8g5
-   Ry5koy4r9qT0d6U49AiG4Pgu7sXvd34tOySRqZF46De++gxACl5rV75gX
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="329305927"
-X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
-   d="scan'208";a="329305927"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 07:33:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="821195742"
-X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
-   d="scan'208";a="821195742"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 04 May 2023 07:33:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pua1p-0095jL-07;
-        Thu, 04 May 2023 17:33:53 +0300
-Date:   Thu, 4 May 2023 17:33:52 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        with ESMTP id S232197AbjEDUfx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 16:35:53 -0400
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3448F1D95D;
+        Thu,  4 May 2023 13:28:08 -0700 (PDT)
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 501C480F53;
+        Thu,  4 May 2023 21:48:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1683229697;
+        bh=eRTXbMEAwKe/MiEvnmGHBR2KDtEcT1SNa1Itkb037dU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=A9SVcQIsEy/fApkE/awqFrWs+d/BfqmRkEFY2Yc/7RbUkAXKaoROLvp4BRARM8OQc
+         9gNfcXfwqO167sHMr71LmWyQ+XuNQfU/n/wfXBx9dQeRi7UUgmUvEQFmTK3CrCwMG9
+         qS1KD1rVMkvq60YhEwwSOiA017C3SKLxM/VFmIjxIk2xFVqw2slkoDem+9BcEXmjZU
+         w3JUoM/+BIfRco6vUQbP79zW3HyZkEdHdUjvUygFfRFiRHMPHKnjl5nTQVA+Sfzf2q
+         n6WEp0HXkpQW90lQ9uRYhxpdGmGP0snjQvMsP1jouK0/BkZ+TPZ0KjIt8/TSF/4Y0M
+         e6yKMp3f1POyQ==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-iio@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>, Crt Mori <cmo@melexis.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] iio: light: ROHM BU27008 color sensor
-Message-ID: <ZFPCUJ81aw/GkJgT@smile.fi.intel.com>
-References: <cover.1683105758.git.mazziesaccount@gmail.com>
- <6d1e37f95dd039d9c96a992b1855fd193bdded40.1683105758.git.mazziesaccount@gmail.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings:iio:temperature:melexis,mlx90614: Document MLX90615 support
+Date:   Thu,  4 May 2023 21:47:49 +0200
+Message-Id: <20230504194750.4489-1-marex@denx.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d1e37f95dd039d9c96a992b1855fd193bdded40.1683105758.git.mazziesaccount@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,174 +56,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 03, 2023 at 12:50:14PM +0300, Matti Vaittinen wrote:
-> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
-> and IR) with four configurable channels. Red and green being always
-> available and two out of the rest three (blue, clear, IR) can be
-> selected to be simultaneously measured. Typical application is adjusting
-> LCD backlight of TVs, mobile phones and tablet PCs.
-> 
-> Add initial support for the ROHM BU27008 color sensor.
->  - raw_read() of RGB and clear channels
->  - triggered buffer w/ DRDY interrtupt
+Document support for MLX90615 Infra Red Thermometer, which seems to
+be the predecesor of MLX90614 . There are significant differences in
+the register layout compared to MLX90614, but the functionality of
+the device is virtually identical.
 
-...
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Crt Mori <cmo@melexis.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Peter Meerwald <pmeerw@pmeerw.net>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+---
+ .../bindings/iio/temperature/melexis,mlx90614.yaml          | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> +config ROHM_BU27008
-> +	tristate "ROHM BU27008 color (RGB+C/IR) sensor"
-> +	depends on I2C
-> +	select REGMAP_I2C
-> +	select IIO_GTS_HELPER
-> +	help
-> +	  Enable support for the ROHM BU27008 color sensor.
-> +	  The ROHM BU27008 is a sensor with 5 photodiodes (red, green,
-> +	  blue, clear and IR) with four configurable channels. Red and
-> +	  green being always available and two out of the rest three
-> +	  (blue, clear, IR) can be selected to be simultaneously measured.
-> +	  Typical application is adjusting LCD backlight of TVs,
-> +	  mobile phones and tablet PCs.
-
-Module name?
-
-...
-
-> +static const struct regmap_range bu27008_read_only_ranges[] = {
-> +	{
-> +		.range_min = BU27008_REG_DATA0_LO,
-> +		.range_max = BU27008_REG_DATA3_HI,
-> +	}, {
-> +		.range_min = BU27008_REG_MANUFACTURER_ID,
-> +		.range_max = BU27008_REG_MANUFACTURER_ID,
-
-> +	}
-
-+ trailing comma for consistency?
-
-> +};
-
-...
-
-> +static const struct regmap_config bu27008_regmap = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = BU27008_REG_MAX,
-> +	.cache_type = REGCACHE_RBTREE,
-> +	.volatile_table = &bu27008_volatile_regs,
-> +	.wr_table = &bu27008_ro_regs,
-
-Do you need regmap lock? If so, why (since you have mutex)?
-
-> +};
-
-...
-
-> +static int bu27008_read_one(struct bu27008_data *data, struct iio_dev *idev,
-> +			    struct iio_chan_spec const *chan, int *val, int *val2)
-> +{
-> +	int ret, int_time;
-> +
-> +	ret = bu27008_chan_cfg(data, chan);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = bu27008_meas_set(data, BU27008_MEAS_EN);
-> +	if (ret)
-> +		return ret;
-> +
-> +	int_time = bu27008_get_int_time_us(data);
-> +	if (int_time < 0)
-> +		int_time = BU27008_MEAS_TIME_MAX_MS;
-> +	else
-> +		int_time /= USEC_PER_MSEC;
-
-The above function returns an error code when negative, so I would rather see
-
-	ret = bu27008_get_int_time_us(data);
-	if (ret < 0)
-		int_time = BU27008_MEAS_TIME_MAX_MS;
-	else
-		int_time = ret / USEC_PER_MSEC;
-
-at least this explicitly shows the semantics of the "negative" time.
-
-> +	msleep(int_time);
-> +
-> +	ret = bu27008_chan_read_data(data, chan->address, val);
-> +	if (!ret)
-> +		ret = IIO_VAL_INT;
-> +
-> +	if (bu27008_meas_set(data, BU27008_MEAS_DIS))
-> +		dev_warn(data->dev, "measurement disabling failed\n");
-> +
-> +	return ret;
-> +}
-
-...
-
-> +	ret = regmap_reinit_cache(data->regmap, &bu27008_regmap);
-> +	if (ret) {
-> +		dev_err(data->dev, "Failed to reinit reg cache\n");
-
-> +		return ret;
-
-Dup is not needed.
-
-> +	}
-> +
-> +	return ret;
-
-...
-
-> +	if (i2c->irq) {
-
-Instead of a long body, I would rather see a call to
-
-		ret = ..._setup_irq();
-		if (ret)
-			return ret;
-
-> +		ret = devm_iio_triggered_buffer_setup(dev, idev,
-> +						      &iio_pollfunc_store_time,
-> +						      bu27008_trigger_handler,
-> +						      &bu27008_buffer_ops);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +				     "iio_triggered_buffer_setup_ext FAIL\n");
-> +
-> +		itrig = devm_iio_trigger_alloc(dev, "%sdata-rdy-dev%d",
-> +					       idev->name, iio_device_id(idev));
-> +		if (!itrig)
-> +			return -ENOMEM;
-> +
-> +		data->trig = itrig;
-> +
-> +		itrig->ops = &bu27008_trigger_ops;
-> +		iio_trigger_set_drvdata(itrig, data);
-> +
-> +		name = devm_kasprintf(dev, GFP_KERNEL, "%s-bu27008",
-> +				      dev_name(dev));
-> +
-> +		ret = devm_request_irq(dev, i2c->irq,
-> +				       &bu27008_data_rdy_poll,
-> +				       0, name, itrig);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Could not request IRQ\n");
-> +
-> +		ret = devm_iio_trigger_register(dev, itrig);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Trigger registration failed\n");
-> +
-> +		/* set default trigger */
-> +		idev->trig = iio_trigger_get(itrig);
-> +	} else {
-> +		dev_info(dev, "No IRQ, buffered mode disabled\n");
-> +	}
-
-
+diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+index d6965a0c1cf30..654d31f65d360 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+@@ -4,7 +4,7 @@
+ $id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: Melexis MLX90614 contactless IR temperature sensor
++title: Melexis MLX90614/MLX90615 contactless IR temperature sensor
+ 
+ maintainers:
+   - Peter Meerwald <pmeerw@pmeerw.net>
+@@ -15,7 +15,9 @@ description: |
+ 
+ properties:
+   compatible:
+-    const: melexis,mlx90614
++    enum:
++      - melexis,mlx90614
++      - melexis,mlx90615
+ 
+   reg:
+     maxItems: 1
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 

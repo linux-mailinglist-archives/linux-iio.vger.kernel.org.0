@@ -2,67 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 414446F63FC
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 06:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B676F6430
+	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 06:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjEDEWl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 00:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
+        id S229689AbjEDE7O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 May 2023 00:59:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjEDEWk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 00:22:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEDAB19BE;
-        Wed,  3 May 2023 21:22:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4068363182;
-        Thu,  4 May 2023 04:22:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099C0C4339B;
-        Thu,  4 May 2023 04:22:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683174158;
-        bh=exMwIMNf2HDjkzVg/vgc5dShzanK1eETk2nuIq0YR4U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jgh8mT0T+ZMEbVlQoIlMMBE1QVmWnOJAFahVVZciUWMhNUg3ZRHkjjaSYRgY/XH9N
-         ef5K4JrGKaf35pfRsGUJK8cETAbMXc6PwcEff+r2lBqrMXELs8UyS4Sn4jJMWdQLsu
-         zX3tji7xrPc3zc975Ypo5p98mZ3cbFmffE0hZwvaWqnRgsoIkr3PUJPoMS1aqMEnRa
-         2Hc2qS8eCJcic27uXj+zeBLGnMCQbubrC+EVF/oyJcRL+z+vqYOq7t2s0eQJgJdPsI
-         WXMtcYuGz7Rz1SNiQXm+ft8wTKolVoelR0muPCY9093DcTsCwCakJyUxM11L9KQjBM
-         op6Y33zA3Dp+Q==
-Date:   Thu, 4 May 2023 13:22:35 +0900
-From:   Mark Brown <broonie@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Herve Codina <herve.codina@bootlin.com>,
-        Rob Herring <robh@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S229553AbjEDE7N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 00:59:13 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97EA31BCC;
+        Wed,  3 May 2023 21:59:12 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4f11d267d8bso26487e87.2;
+        Wed, 03 May 2023 21:59:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683176351; x=1685768351;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3ErlKNWxBynVKO1TxiPrcdtE3Y8hGtnJhFEqGtEQkc8=;
+        b=soIwOFlSuDbixg2p6QtdSv5cD/tBfMNtUK26BEhWsrzI1LyhraH1IP/7pkVKQNhxHs
+         HUIJgYKti/U32k8lDHufVq5ADib5F02en5QQvxvNpYP8aJzrvoggy1I+YUu1tViv2LnK
+         NL0KfxYalHS7fqsfbvsS8UK65BCMmtRkb8ufoAHy2r36w7gq82xc+mwsq8X6cS5Vi4MA
+         VufyakMl7lhWek/zQLsSdAAE4a0H4/bPZ0rWmiVDp1KwCSWqLXvyb6EHoaRbZftbnYU6
+         PlYmFCq57kaeltIRilTngjqhGubBKB9ehrBtcUBxwuGep2/pRTyDH0kZEIlpJLclS8kv
+         BIUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683176351; x=1685768351;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3ErlKNWxBynVKO1TxiPrcdtE3Y8hGtnJhFEqGtEQkc8=;
+        b=OYRuxPuY5zaVy/7G/MO90gmWw0PNt5nHxOt0kzFlr2KuwqSzqZfzD9b8Zru79GZcVY
+         bB+30zIYUfXQfAwE8GrY0+2dHnEiJ1TeDuw+Hyz9v9nkHcCrUAefnffgxT2+WTYO/TdE
+         JxC43wP624nEa6yYxxag2P3SyRFb1c7N/PHQ9I0nrRLw+byyB69Seutm2K2Ejo3hhbAa
+         npeIXa2ADY7EEYacqTdiJGGER/U3ZSLNqVTdCiz7WQ/uUGxueFTS0gJTGbGcGEg0Mc7L
+         Wwrnb0r+ih3aZEBrqC4TzA21CE6l6pNFtpDBgdobpMY64lAB1f6QzIvhJh8tjI9R7qru
+         T1Qg==
+X-Gm-Message-State: AC+VfDysYPJpRbbldxhpPg6GY2iHHmh0MG0CPOS8oTK8MlxhoeJftLh+
+        MfuBXV1K36HRQKzbQTXzZppCArkADP0=
+X-Google-Smtp-Source: ACHHUZ52RfsUVAy4cdynTNVaZuAil4yNWLQoT4m/gUgpZPeOgkBoOHExFoQ6LIau3jXi/f7BzefBNg==
+X-Received: by 2002:a2e:97c5:0:b0:2aa:43cd:57c9 with SMTP id m5-20020a2e97c5000000b002aa43cd57c9mr497393ljj.36.1683176350423;
+        Wed, 03 May 2023 21:59:10 -0700 (PDT)
+Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id v1-20020a2e9901000000b002ab4ceea005sm3242194lji.136.2023.05.03.21.59.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 May 2023 21:59:09 -0700 (PDT)
+Date:   Thu, 4 May 2023 07:59:00 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 1/4] dt-bindings: sound: Add simple-iio-aux
-Message-ID: <ZFMzC7OBrcL9l5AH@finisterre.sirena.org.uk>
-References: <20230421124122.324820-1-herve.codina@bootlin.com>
- <20230421124122.324820-2-herve.codina@bootlin.com>
- <20230425173029.GA1967523-robh@kernel.org>
- <20230426093621.3834e703@bootlin.com>
- <5bcb2741-9212-f1aa-335b-6bc4b6fad448@linaro.org>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: bu27034: Reinit regmap cache after reset
+Message-ID: <ZFM7lE4ZuDrUTspH@fedora>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gAqgDYGpNO6m8hZu"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="WjVFt0L+e0GrUcbG"
 Content-Disposition: inline
-In-Reply-To: <5bcb2741-9212-f1aa-335b-6bc4b6fad448@linaro.org>
-X-Cookie: Avoid contact with eyes.
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -70,95 +72,83 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---gAqgDYGpNO6m8hZu
+--WjVFt0L+e0GrUcbG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 02, 2023 at 09:26:32AM +0200, Krzysztof Kozlowski wrote:
-> On 26/04/2023 09:36, Herve Codina wrote:
-> > Rob Herring <robh@kernel.org> wrote:
-> >> On Fri, Apr 21, 2023 at 02:41:19PM +0200, Herve Codina wrote:
+When BU27034 restores the default register values when SWRESET is
+issued. This can cause register cache to be outdated.
 
-> >>> simple-iio-aux allows to consider these Industrial I/O devices as
-> >>> auxliary audio devices. =20
+Rebuild register cache after SWRESET.
 
-> >> What makes it simple? Any binding called simple or generic is a trigge=
-r=20
-> >> for me. Best to avoid those terms. :)
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor")
 
-> > I choose simple-iio-aux because some simple-* already exists.
-> > For instance simple-audio-amplifier or simple-audio-mux.
+---
+I noticed this was missing while writing driver for another light
+sensor. The change is not tested in hardware as I don't have the BU27034
+at my hands right now. Careful review would be highly appreciated.
 
-> > Do you prefer audio-iio-aux ?
-> > Let me know if I should change.
+This change is built on top of the
+https://lore.kernel.org/all/ZFIw%2FKdApZe1euN8@fedora/
+and could probably be squashed with it. Unfortunately I spotted the
+missing cache re-init only after sending the fix linked above.
 
-> It means that often what people call "simple" and "generic" works only
-> for their specific case, because it is not really simple and generic.
-> After some time the "simple" and "generic" becomes "complicated" and
-> "huge". Conclusion: sometimes simple and generic bindings are bad idea
-> and you should have something specific.
+Please, let me know if you want me to squash and respin.
+---
+ drivers/iio/light/rohm-bu27034.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> Your description in the binding also does not help to match it to
-> specific, real device. Provide the examples, as Rob asked.
-
-I don't understand what you are looking for here.  IIO is a subsystem
-which represents generic DACs and ADCs (along with other I/O things).
-Audio devices also have DACs and ADCs, somewhat specialised for use in
-audio but more limited by specs and interfaces than by anything
-fundamental.  The goal here is to map DACs and ADCs described as IIO for
-use in an audio context.
-
-ADCs are devices that convert analog signals into digital values, DACs
-are devices that convert digital values into analog signals.
-
-> >> How do support multiple instances? Say you have 2 sound cards (or 1=20
-> >> sound card with multiple audio paths) each with different sets of IIO=
+diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27=
+034.c
+index 740ebd86b6e5..f85194fda6b0 100644
+--- a/drivers/iio/light/rohm-bu27034.c
++++ b/drivers/iio/light/rohm-bu27034.c
+@@ -1281,6 +1281,13 @@ static int bu27034_chip_init(struct bu27034_data *da=
+ta)
+ 		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
 =20
-> >> channels associated with it. You'd need a link to each 'aux' node. Why=
-=20
-> >> not just add io-channels to the sound card nodes directly? That's=20
-> >> already just a virtual, top-level container node grouping all the=20
-> >> components. I don't see why we need another virtual node grouping a=20
-> >> subset of them.
+ 	msleep(1);
++
++	ret =3D regmap_reinit_cache(data->regmap, &bu27034_regmap);
++	if (ret) {
++		dev_err(data->dev, "Failed to reinit reg cache\n");
++		return ret;
++	}
++
+ 	/*
+ 	 * Read integration time here to ensure it is in regmap cache. We do
+ 	 * this to speed-up the int-time acquisition in the start of the buffer
+--=20
+2.40.0
 
-> > I don't see what you mean.
-> > I use a simple-audio-card and here is a full example using several
-> > instances:
 
-> Just like Rob said: "You'd need a link to each 'aux' node"
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
-> and you did it...
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
 
-> So now the rest of Rob's answer:
-
-> "Why not just add io-channels to the sound card nodes directly? That's
-> already just a virtual, top-level container node grouping all the
-> components. I don't see why we need another virtual node grouping a
-> subset of them."
-
-> Why do you need another node if it is not really representing a real,
-> separate device?
-
-If nothing else I would expect it to be useful from a comprehensibility
-point of view to bundle multiple IIO devices into a single multi-channel
-audio stream, an individual IIO device is likely to only present a
-single channel of data but it is common to group multiple channels of
-audio data.
-
---gAqgDYGpNO6m8hZu
+--WjVFt0L+e0GrUcbG
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmRTMwkACgkQJNaLcl1U
-h9CpIgf8DGHa33KFaEBu9orPEvy62t4yb0j+p3Xoar2zISlY832/jm9hk/8oYSdy
-etd75hsgD7l1/K6l08YwHxuJX07geLoyEnyUakiEi+w4rZVBJ8z/Vj+XN2lV6eq8
-VJwUq+kvpY63mjLQodrOLSH9ixNk24ab28aU5CWrw9qUPKfTSLIJLoh9ZkH081eL
-nBl+himFtVaWSmQ4+6l9lDNy4VJianGJ6cQI/66k9H0/LMIvj/HGo4DFbCSGzIRu
-ZXukxdcZCuH8mI9jHPglgmvaYkjyaAmEW3/89b8F/0lOtOpsoDWjAqWhMJhcphhH
-XjquUq/o3sVr1uXMMKdl3fmfUnNhDQ==
-=PI/4
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRTO40ACgkQeFA3/03a
+ocUA9gf/UMa46MuFkteiHUqt7W2SqZGZFWFl4nao++CmtZ4ZyKgJdOq241lKI2cD
++O7+INvepfEnUgOpsGmXS4bnb2TZWb7GKQhqcV2fOJfwzBDB+EF4v3Vztz4s9uZz
+cTr+9vBeIh+IJSY9HXIAtN6yZH8Uw4XWMylToy7f4UAlkJqAqCIYlznH9baUy5Pp
+3zOkH0/uoCzuKlIut/dWjOEWkoa6vRdeKBv1tveFNlQMnbxlVbJmk6LX6fNR/6K/
+EFI0cwiV+La0nikGV0fvJYlHPbbIrggEM84mHwNTQhXK5rWtDwiJKdHaVEQoDMxq
+6R7emeYzjNSrS+iEGzzhy60cIyB0GQ==
+=QaGQ
 -----END PGP SIGNATURE-----
 
---gAqgDYGpNO6m8hZu--
+--WjVFt0L+e0GrUcbG--

@@ -2,232 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB3276F68AF
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 11:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A46596F68D7
+	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 12:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjEDJw7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 05:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36620 "EHLO
+        id S229550AbjEDKI7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 May 2023 06:08:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjEDJw6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 05:52:58 -0400
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28471CD;
-        Thu,  4 May 2023 02:52:56 -0700 (PDT)
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-        by mx0b-00549402.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 343Mj0kZ030699;
-        Thu, 4 May 2023 09:52:36 GMT
-Received: from jpn01-tyc-obe.outbound.protection.outlook.com (mail-tycjpn01lp2169.outbound.protection.outlook.com [104.47.23.169])
-        by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3q8skyjsyh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 04 May 2023 09:52:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZgbSn73C0DIJpSnmrEl4y5F8IsWT0ai/DP3Hfjf2Lat/K5QctEliZdMkGKJpOGEb11eUw6H1g3gXk7zfv0emIzLyKUCgJs3fhTcSdtTHTIgkPy3huOOzMgnu/mtoNSW0yE7mlWNThvu0sLgcwr3io4S9G8ne9x7l25D3ZFJ8JTASo6BGxfPb2vv+JnpP3zJahce3yJXvniuhwEjC7sDGMfNC2FcXlz8PsG7raggNmXbszF98BSSbAYcJ4f8AZraXkYC67TGI0XWCdtk+qBZbl8FAJ9FzOT27rb/txJJ69DsvYSOcAXDmzJpj6IeNPu9w/o7xOHhR7EMYvgr78Gk7PQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v04E9BA8qR7UlGhWOH38HfGUUH/lS8ltGR9UPtTm9jw=;
- b=QdQKcee1FGh1DJhIZ8slYPcGNkttYgcP/C1zztULP+A/mE0nIaHEg+ZRgrc0HWgZXO1jCVYYEXRlRvaVm47S0LLuRKaSn9HX8+OuNImPAlY16nKuyZLb1V79ux3pow6fRen+zlHJcOkygs3zeRvscZq7UVgEactjd1IZTYZuDao4klwBBdi3G+BzlDhXjAWZgn79KO4Oj9/U1jEKFPv15kJb0jpQQygjuzvRM+m03DsjCec3NrzaM0dzn9cPSO1UdPiJMlSCvANW7Dg6SPz5JlR0mUs4GeQjqqjxGivqkfsLlKLFqkLas8ZsaoCjQH/EmtitNMvoW18RAsI44qhB7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v04E9BA8qR7UlGhWOH38HfGUUH/lS8ltGR9UPtTm9jw=;
- b=cazgjkuDssQwobF0E/eSSJ9HCd2ZDOn5+M9axP+fDgCQmCGZmeaQNcRmxSeXsuE//67NDdvcv4oyJSnbObfU8twHqUpWjdZD/53PHsenPKYDOrGffmy3whpyRhg6tz0w23J/tR+rDk4GnHvF0LUH2QX1LTHc9Fisj8LK5cL3ID86L5/aw/gYQcV10wS2R83T78OsfzDlq2X5YEym833pp8+lQfWrKJs11icA+oisZ/yAm8HEELgEl4Lii0ay4xnk26U4q39WGQzMhFe27P0O+SVUrA2C46MtqjU7C4vhjkEpmtBFxKirQd4A2vuxJ73k/GQ1g/AX8mXVEKx4pl2G9g==
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
- by OS3P286MB2117.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:194::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.25; Thu, 4 May
- 2023 09:52:31 +0000
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::72e9:c955:a34c:9647]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::72e9:c955:a34c:9647%4]) with mapi id 15.20.6363.022; Thu, 4 May 2023
- 09:52:31 +0000
-From:   inv.git-commit@tdk.com
-To:     jic23@kernel.org, linux-iio@vger.kernel.org
-Cc:     lars@metafoo.de,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        inv.git-commit@tdk.com, stable@vger.kernel.org
-Subject: [PATCH] iio: imu: inv_icm42600: fix too big timestamp jitter
-Date:   Thu,  4 May 2023 09:52:04 +0000
-Message-Id: <20230504095204.172715-1-inv.git-commit@tdk.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0475.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a8::12) To OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:1a7::13)
+        with ESMTP id S230017AbjEDKI6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 06:08:58 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38F449D9
+        for <linux-iio@vger.kernel.org>; Thu,  4 May 2023 03:08:56 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4effb818c37so315070e87.3
+        for <linux-iio@vger.kernel.org>; Thu, 04 May 2023 03:08:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1683194935; x=1685786935;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kZAmyScVrPkNsLXEK4fdZlXng8x+vclTeru2m98xpxE=;
+        b=CBQ5pnH42Ohd94dxCUEAgcTs58Bjj2cHsGwgZqaQRB1t868kD083pQ/dkTMp0CVbCI
+         wU+okdwCaH+BD1/AFcfRb+tunxG5rFb55SPdH4m8Ztc4m2Im2woixI7M8KuXHnyGNWZ3
+         8Oun4DSjxuKQShBi6RfHenX1YpAUJNYU+D880=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683194935; x=1685786935;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kZAmyScVrPkNsLXEK4fdZlXng8x+vclTeru2m98xpxE=;
+        b=e/pNNrEZf9kPp/6Ge5SS/VrTbo3uFhnARV3bpIZS3d7eYqkJj+1JXaj5pEgsKjIDKa
+         ZrcSJJV1STPluAQjvQgDDxkAWqzYaFWG5HtaPOTryi8y5Q+cml5qJdZdET7rphREFct4
+         fm0kLQM1yHqcnsCg2+LKimGfegmJEocF+5bAzSsXJ40DQHP8CNsGOVD39UoPSkGdOq0S
+         HFRTL3m97C6HV9LPJWjZIdFvhZ6V1ZVcZ+s8/91/49TDHyYd7hQdsG0lzO0yOwXa1RSJ
+         LRs/r1a+WwCEb+DrqPdM4sYhDVauE80JMyberp8683oz1FRHkTWNbUXTO8eBqUgRXoop
+         f7nQ==
+X-Gm-Message-State: AC+VfDwBAQ3XHhJ0owLcTRGzURaEGy7bocE4sv4NrFsW2a7g3t+oRrvl
+        SNx50AZlT9XZoACIb41UWOvBwg==
+X-Google-Smtp-Source: ACHHUZ7byu3BdUZ7FA1VaYFXOxUWDxGwJtItgLZoZKfOXIuj9pmiKJoUFaQp6x0ise2crvswKfHAEw==
+X-Received: by 2002:a19:f012:0:b0:4ee:d766:5bf7 with SMTP id p18-20020a19f012000000b004eed7665bf7mr1522854lfc.13.1683194934919;
+        Thu, 04 May 2023 03:08:54 -0700 (PDT)
+Received: from [172.16.11.116] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id k26-20020ac2457a000000b004f11eb32f20sm2214028lfm.13.2023.05.04.03.08.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 May 2023 03:08:54 -0700 (PDT)
+Message-ID: <6fcf4997-9d88-7e86-70f7-52f9d296bc6e@rasmusvillemoes.dk>
+Date:   Thu, 4 May 2023 12:08:53 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|OS3P286MB2117:EE_
-X-MS-Office365-Filtering-Correlation-Id: 387383b9-316f-4367-20e5-08db4c8546fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ew/51JwOg4oPLf0NZmVva9mv0XPJEDvm2ZcoD+dKAlgoNt69HIQj3J36/5cO/vsBjeyvXQe0utNwQ+4Q4zFJ3XU0z0NU4YZTwIWl5ICRDObCbTjlPdjvT9MApnXGVF8yU97rcHN6IbVtnW63ppvkFQJNqU9wy2Clfp3yId0dGBhcOTuMuOOtbEyhfWN4uG+f4BXNsQV2RL/fGFuyxZbPeOGAfswfjGF6B0f4J147gCQk7HCR00jXsdfZasP5KIqFIXoPHmCSkcOMrSuLql+tDQxFAXV6bufn7yt5/lwWCYtNNP03/qu8t3nH96oHLBmxY+1PB+3kBSvJoAWODrGzDWsOvxZf8JzfTUMKwQ0dMxhwi73DOyx+hUO5OFosSEVhXVi7R1poafzTCDBravz6k9OxBJLFiKjfCXyiQ5fxRq7Abr7xyM15z9QWI2kEs80zzLv+GnWH24QQbxG45DXS223VpH431N3eDuhfD/rxL3O4VMl2FMw2vPryDZYBfQbOl2OWcvQjB9MX3e2f++9KtVlswTFdz9dUg2b6TWsKabnvBhAh0QDpp/Hzz4PcvdWo+ouJ5THOSnkYuqDwA0YrjZocmRRYcuM289R6hayBpuzIRZYFu9DC7vH5tTdh79Bk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(136003)(376002)(396003)(366004)(346002)(451199021)(83380400001)(2616005)(41300700001)(8936002)(8676002)(316002)(186003)(5660300002)(6512007)(6506007)(1076003)(9686003)(4326008)(26005)(38100700002)(38350700002)(66946007)(66476007)(66556008)(52116002)(6666004)(6486002)(86362001)(478600001)(36756003)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4cIjDEw1UEaFNPyYucjcN8wPI+XKiGucKYVtEmLr4bwlArXehevDUFHQUh4G?=
- =?us-ascii?Q?aWtFcr+IAoJvmftSFyE7vhif+O8it3US48Y+J4RSOO6P/scvddg1kZTCjIG8?=
- =?us-ascii?Q?9nVZ606hYFAWiOfU9Z71h4G5AiXvIrATlJ+h7eYZPtY+cFwlElYYMmSwYG/K?=
- =?us-ascii?Q?uaCKZkHy8ZNDPqucaCIJyMKgJV7YtrfjuG1pQJIdUMDP7zHdhsRCc10knMXy?=
- =?us-ascii?Q?WJcC21b8smPVEbAhyUijssD1uKBUAFmDhvtYu7UeQ9iupdl6AGRxa6gz6EJB?=
- =?us-ascii?Q?5RXaNAdP+Ax503M5Ei2h7s6R33FVQtdVjrmWUa8QDL5TpFvEqe9V+HgCmhGQ?=
- =?us-ascii?Q?Xyxycr/kEwAKJduSu+5berl7mmNhwTllskAlHIEGna7pNaAHZGEuOtFFIvaK?=
- =?us-ascii?Q?zap3nVOlcuTXWJs2hVMF8M+vXVgbivn/S98FLtNL6qcrq+CkbdPbLRsVmT5D?=
- =?us-ascii?Q?orsifT5/FJfaxh1WHNLWaDG5CR01kYYAvqTiNJqmUnkYjSp2htRZNl/bmY6b?=
- =?us-ascii?Q?s2qT2RBRHjWNr9fqdQCHy/56hpJQYnitUIWhk0VtMxgYC8Pe7c9zUzEz8w3U?=
- =?us-ascii?Q?h3EHnpF79EoJha9dvcIdeyXrJoNIwjBfmXvUfr694dvGTg0ibbWxQl+CiURC?=
- =?us-ascii?Q?ON/hcQTJ5oJp6A5TzE48rECMFuJyyw8/XEKlqC8yvqZU6QsOQVIF5ABqkYOo?=
- =?us-ascii?Q?eIhP3etd+XPIwT+iZt0mzhr/f5qnXulQbNXo8ZV8d/6yV5IbpeeVtHM4NDkR?=
- =?us-ascii?Q?RgQjtFDp8V+LeA34oVMuK86e9+VXOiSd8u1j3u9uXcnGxtlAkRHt8JBgQBZl?=
- =?us-ascii?Q?q1t7kfzQl13Xy/T9ongv0YGuan1nqityGJjjotNlxokfjmY4wxUisvC1sUSb?=
- =?us-ascii?Q?iBHiuS8Lf+TcBIqkA7JkHm/O6o8yWK0Z/kyxv1Kjcy95QC7gAADyoie/OgoE?=
- =?us-ascii?Q?+aebftHrfPRY8fVswKnAUhfXsC6ysgsD14ePzj2/b7MqaeffFcygpND9xYGw?=
- =?us-ascii?Q?02A9A5cmVtLKxG4G74RjZpiU5gY6j5n4VWbJlUFES/pebYrArw+nbEqOLIIS?=
- =?us-ascii?Q?BZSSLY7io2bvXqLRS19ItVY4cl0OFJSo2wLZGdpMj+GLM3D4Ub247n+4RKXM?=
- =?us-ascii?Q?c22JStZSVGvH7hPniIENbKRzJepojx7F1/L5B6UZvM6G2IzipdZP8RaX5wmM?=
- =?us-ascii?Q?Fg7MuPqMaf89VnpU9CmAYcSNiAM3uhx673120ynWRwU7LqsXliTJQLSiJSM9?=
- =?us-ascii?Q?HO+9pOPgFiGTEd2guU5w54z+oXGgiuqkA5/sekWOfzc6s8AZXWavSP23m8ch?=
- =?us-ascii?Q?8cAq0IxUy6bjqXQKaLgsq0cBaARdSKI5ETc90WM1CjLef9Ls4Bpp20eovc08?=
- =?us-ascii?Q?iwTrY/smPajzfK3zfbnjHwiFn7RhmSV9U8krm78JTsKkLhJZPD27iCWUOLV7?=
- =?us-ascii?Q?ieDQjzwPzXbgM38KJbGXId6yuTqbdX0KLBkgOUp2aZNIxiFA2FsfgIXRtkpr?=
- =?us-ascii?Q?eyMPQjZ6JRH23pln258Dhif3s6JPyfJpe89WYf3aaNbfG4BzeC45xxqSXTQH?=
- =?us-ascii?Q?yld7BZQthJNwI1BH3q72IUmIHD/UkQVXF7+FvM5f?=
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 387383b9-316f-4367-20e5-08db4c8546fc
-X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2023 09:52:31.0531
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xKoHbJv7Bl0ElSsb2pMOza6Vianqr3KektGGoNZgpKEEU8IMdU8+4Oe5tJeK0TL0oZU2SQK9EZuKpS+HN1ZgxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB2117
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-04_06,2023-05-03_01,2023-02-09_01
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions
+ other than digital input
+Content-Language: en-US, da
+To:     =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
+ <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+In-Reply-To: <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On 04/05/2023 09.28, Nuno Sá wrote:
+> Hi Rasmus,
+> 
 
-We are adjusting timestamp with interrupt every time, leading to
-a lot of jitter in timestamp values. Now the adjustment is done
-only when the delta is bigger than the jitter.
+> So, I'm not really that familiar with this part and, at this stage, I'm being
+> lazy to check the datasheet. 
 
-Refactorize code and delete the unnecessary handling of multiple
-FIFO data.
+Well, the data sheet is not particularly helpful here, which is why I
+ended up with this mess.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Signed-off-by: <inv.git-commit@tdk.com>
-Cc: <stable@vger.kernel.org>
----
- .../imu/inv_icm42600/inv_icm42600_timestamp.c | 49 ++++++++++---------
- 1 file changed, 26 insertions(+), 23 deletions(-)
+> My concern is about breaking some other users...
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-index 7f2dc41f807b..af2e59fb7258 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-@@ -93,8 +93,8 @@ static bool inv_validate_period(uint32_t period, uint32_t mult)
- 		return false;
- }
- 
--static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
--				    uint32_t mult, uint32_t period)
-+static bool inv_update_chip_period(struct inv_icm42600_timestamp *ts,
-+				   uint32_t mult, uint32_t period)
- {
- 	uint32_t new_chip_period;
- 
-@@ -104,10 +104,31 @@ static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
- 	/* update chip internal period estimation */
- 	new_chip_period = period / mult;
- 	inv_update_acc(&ts->chip_period, new_chip_period);
-+	ts->period = ts->mult * ts->chip_period.val;
- 
- 	return true;
- }
- 
-+static void inv_align_timestamp_it(struct inv_icm42600_timestamp *ts)
-+{
-+	int64_t delta, jitter;
-+	int64_t adjust;
-+
-+	/* delta time between last sample and last interrupt */
-+	delta = ts->it.lo - ts->timestamp;
-+
-+	/* adjust timestamp while respecting jitter */
-+	jitter = ((int64_t)ts->period * INV_ICM42600_TIMESTAMP_JITTER) / 100;
-+	if (delta > jitter)
-+		adjust = jitter;
-+	else if (delta < -jitter)
-+		adjust = -jitter;
-+	else
-+		adjust = 0;
-+
-+	ts->timestamp += adjust;
-+}
-+
- void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
- 				      uint32_t fifo_period, size_t fifo_nb,
- 				      size_t sensor_nb, int64_t timestamp)
-@@ -116,7 +137,6 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
- 	int64_t delta, interval;
- 	const uint32_t fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
- 	uint32_t period = ts->period;
--	int32_t m;
- 	bool valid = false;
- 
- 	if (fifo_nb == 0)
-@@ -130,10 +150,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
- 	if (it->lo != 0) {
- 		/* compute period: delta time divided by number of samples */
- 		period = div_s64(delta, fifo_nb);
--		valid = inv_compute_chip_period(ts, fifo_mult, period);
--		/* update sensor period if chip internal period is updated */
--		if (valid)
--			ts->period = ts->mult * ts->chip_period.val;
-+		valid = inv_update_chip_period(ts, fifo_mult, period);
- 	}
- 
- 	/* no previous data, compute theoritical value from interrupt */
-@@ -145,22 +162,8 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
- 	}
- 
- 	/* if interrupt interval is valid, sync with interrupt timestamp */
--	if (valid) {
--		/* compute measured fifo_period */
--		fifo_period = fifo_mult * ts->chip_period.val;
--		/* delta time between last sample and last interrupt */
--		delta = it->lo - ts->timestamp;
--		/* if there are multiple samples, go back to first one */
--		while (delta >= (fifo_period * 3 / 2))
--			delta -= fifo_period;
--		/* compute maximal adjustment value */
--		m = INV_ICM42600_TIMESTAMP_MAX_PERIOD(ts->period) - ts->period;
--		if (delta > m)
--			delta = m;
--		else if (delta < -m)
--			delta = -m;
--		ts->timestamp += delta;
--	}
-+	if (valid)
-+		inv_align_timestamp_it(ts);
- }
- 
- void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
--- 
-2.34.1
+I highly doubt there are users yet (other than my customer); this
+binding+driver implementation only just landed.
+
+> So, does it make any sense for having drive-strength-microamp in a non digital
+> input at all?
+
+That's the problem with the data sheet, it doesn't really say that the
+DIN_SINK register has any effect whatsoever when the channel function is
+set to something other than digital input (either flavor). Perhaps it
+does hint that setting it to something non-zero is probably not a good
+idea, because DIN_SINK is automatically set to 0 whenever the channel
+function is set/changed, so one needs a good reason to change DIN_SINK
+afterwards.
+
+We just experimentally found out that when we added the DIN_SINK to fix
+the digital input functions, when we got around to testing the
+resistance measurement function that ended up broken due to the non-zero
+DIN_SINK.
+
+> Can anyone have a working device by specifying that dt parameter
+> on a non digital channel (or expect something from having that parameter set)?
+> Or the only effect is to actually have some functions misbehaving?
+
+The data sheet doesn't say that the DIN_SINK should have any effect for
+other functions, so I'm pretty sure it's only the latter: some functions
+misbehave.
+
+> On the driver side, if it's never right to have
+> these settings together, then the patch is valid since if someone has this, his
+> configuration is broken anyways (maybe that's also a valid point for the
+> bindings)...
+
+Yes, I do believe that it's a broken description (whether or not the
+bindings specify that), and drivers don't need to go out of their way to
+validate or fixup such brokenness. But in this particular case, there's
+really no extra burden on the driver to not put garbage in DIN_SINK when
+a not-digital-input function has been chosen (the patch is a two-liner
+with 'git show -w').
+
+Rasmus
 

@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6646F665D
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 09:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 286BE6F6662
+	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 09:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229751AbjEDH4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 03:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39512 "EHLO
+        id S229723AbjEDH5a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 May 2023 03:57:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjEDH4j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 03:56:39 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550872728;
-        Thu,  4 May 2023 00:56:38 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ac7de2b72fso2053921fa.1;
-        Thu, 04 May 2023 00:56:38 -0700 (PDT)
+        with ESMTP id S229836AbjEDH52 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 03:57:28 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D4B3C28;
+        Thu,  4 May 2023 00:57:26 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2ac80ed7f26so1129701fa.1;
+        Thu, 04 May 2023 00:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683186996; x=1685778996;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k7bTcKGL069SV5chj2exx/6OgP9rXCsK1lkREqDUd94=;
-        b=W9Dmtdln7kVxUeZK0oWOLX0IRwjjID+s6UUVYH4DcuJ7V3FprETbIzGmy3KYv7a3zc
-         cq7CxHPgrQLY/q/4wogcoU1kCkmGGiodnMMMUq9QRr6qcX1CI8Z+t3O8sa8ikMvxps7U
-         MYUBiWZReuoLZwbEOkQ7hu5QSl2wCzHLrhSBOZvusjKm9ucLTv0mf0D4Hpp4QfS4xf3q
-         M90Sl1pzxl4Pb7GGQM2YLjpjBXrPkO2WcY0vFC8Sc5klyWHRRr1j7z/iJEdaAK+50+Zf
-         RenOGaglvXTQQggRUSfl2K6lyxhBaV9HLinZ/9KaR8jyJIFyFJndy7yJfXZWq80qgh6G
-         yfqA==
+        d=gmail.com; s=20221208; t=1683187045; x=1685779045;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o9ZN5Kt7PzcLmeQSM4/6ILQKH7duKu8J3KsFC8gjMWY=;
+        b=JPYlVAlb7y9k2cIrdQjpuO+2COC4kNkXF6Hx1ptRVANh/ZvtZFxr23P/He+hDFSkiH
+         SOGXfClMVcDWrriuiucKMoEzuLEnggFDg6bpr9kjXCQe/NCIQzT+H0I926Y/hmju98/I
+         49jqxUOZjL5qMKXPFLZcbNQ5Czo8JOCXTOnNKG7IMKcpQezGeFzhzCeu3FsetjNDGJl6
+         MWM6LU+8+Q52j+FjAqpwkCdipVCPayn0shXvUeD8qLS2RV0JIvgAYkF2gFd2cIHrKF0e
+         /IyQ/QQnHn0d3cVtJwyGxT/KU+KVW3Gd3YzjBSMeeod+zLyIs2q81AlqZG86OqrigTGW
+         mMgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683186996; x=1685778996;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k7bTcKGL069SV5chj2exx/6OgP9rXCsK1lkREqDUd94=;
-        b=HOf3mp0adhOy+yTlv2+SV8nPfzWi8XvbqUaL2YMwvPqJx4IxMKcSSw4/BkbmKZVVjF
-         MYMB7s6bC3IQUifv3TiB8gIVosvL3HzmkwzxdzA7Q6NRpx5D5MNK2M8U76Aq+fNGs37Q
-         6YMoeeAE5ZTp1Gpudi8EU3qUQHf8/Lxfg0VBzCHt96nEtex1UyFs+652KMNqyahDDH6C
-         BuYzPXV1WGmoYnRngvkACiXgHpJItIYvqvMycFhshzq4FvBO2qZu7edphUbAOjEnR859
-         X/a/gE0C0sUXg82rNXD2uInww3OLxMOOzHwrAACzDqKOlayYtGpw+4VZ6is//kQrkvc4
-         c0mQ==
-X-Gm-Message-State: AC+VfDw+HkYVgn+3kSekWb5cs5GiXFSBu9D9jWjEdi3PKt0fpmbZm1lK
-        E2RuyoMGjpY6lS250KZKPXqjpXFKBM8=
-X-Google-Smtp-Source: ACHHUZ53g4ZDfA8bz/0ja2DcDq9diAHAvexxjuGej3G9kQ/E08mCx1H4pCkicfywpYSmD9S2UaqCEg==
-X-Received: by 2002:ac2:43b3:0:b0:4ee:d799:eca with SMTP id t19-20020ac243b3000000b004eed7990ecamr1479225lfl.40.1683186996275;
-        Thu, 04 May 2023 00:56:36 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683187045; x=1685779045;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o9ZN5Kt7PzcLmeQSM4/6ILQKH7duKu8J3KsFC8gjMWY=;
+        b=gZWqsAPnHRN5OntHaxoEcirI2NLRiRgSeeYnmIMmEgeoulzURXk84HS6Igc97tA6n+
+         8wf69H+UhY9fhB0yWtu3t9h4cVek0iIF7BrB5yz5Ye4v6bMe/94EsOIEpREKKMruWwLP
+         +U69/i1hHeXl50I/FpzJNdwv12QUIy14xWTAfaXWSeXvf/uQb0o7U7w2J0qniiXJqFpW
+         xnucdLetHpmhfYSoao1jADnnmGs6xFe5nbXqVnqxfsKf0UwFpWf0e0LNx7MYiJIgKD10
+         e/VmvOnMoiY93Wpx42rkAQWT6ni68CKOEGwuSbG9P94NJAQCJVAZIHVRvLRnuTIoCm8O
+         5yYw==
+X-Gm-Message-State: AC+VfDygrPtSAf0GIbp6BT31sK+IqLgXQ++sKhhLZ5DmXYABys68PBd+
+        P7hXVqLt+KOwlpGTbtYlX3E=
+X-Google-Smtp-Source: ACHHUZ4Y+BZSjHFN5VwYPlnpB4sPH1TooqUzdhob7wA1xihalx4cRFlUUnZ/QCJykXjARr6+fJFnjg==
+X-Received: by 2002:a2e:7011:0:b0:2a8:c32d:1238 with SMTP id l17-20020a2e7011000000b002a8c32d1238mr699739ljc.15.1683187044986;
+        Thu, 04 May 2023 00:57:24 -0700 (PDT)
 Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id a9-20020a056512020900b004f06aa3d856sm2552895lfo.3.2023.05.04.00.56.35
+        by smtp.gmail.com with ESMTPSA id u22-20020a2ea176000000b002ab1216de44sm5062166ljl.71.2023.05.04.00.57.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 May 2023 00:56:35 -0700 (PDT)
-Date:   Thu, 4 May 2023 10:56:13 +0300
+        Thu, 04 May 2023 00:57:24 -0700 (PDT)
+Date:   Thu, 4 May 2023 10:57:13 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -55,12 +56,14 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 0/3] ROHM Sensor async probing
-Message-ID: <cover.1683185765.git.mazziesaccount@gmail.com>
+Subject: [RFC PATCH 1/3] iio: bu27034: Probe asynchronously
+Message-ID: <e7088793e1868c77b1894b30cd026e8ed043ea7c.1683185765.git.mazziesaccount@gmail.com>
+References: <cover.1683185765.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HMqvFF/irSGb9lXc"
+        protocol="application/pgp-signature"; boundary="aciMmrdY9RqkdmjW"
 Content-Disposition: inline
+In-Reply-To: <cover.1683185765.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -72,7 +75,7 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---HMqvFF/irSGb9lXc
+--aciMmrdY9RqkdmjW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -82,50 +85,47 @@ no strong reason to probe synchronously can request asynchronous probing
 as default probe strategy. This can speed-up start times on some
 platforms.
 
-There is however some caveats listed for asynchronous probing for
-example here:
+The BU27034 gets probe delayed for at least two reasons. It enables the
+supply regulator, (which is likely to have ramp-up delay if it was
+disabled) and additionally it delays while the sensor itself is
+initializing.
+
+Changing to asynchronous probing may cause problems. Some of which are
+discussed in:
 https://lore.kernel.org/all/06db017f-e985-4434-8d1d-02ca2100cca0@sirena.org=
 =2Euk/
 
-I don't know how tolerant IIO users are what comes to asynchronous
-probing but I _guess_ this is (and should be) handled pretty well.
-Still, guessing could be said to be somewhat sub-optimal when doing
-kernel development :) Hence this RFC - if someone has better
-understanding on async probing when using IIO, please let me know!
+Enabling async probing for the ROHM BU27034 should be fairly safe to try
+though as there is no in-tree users for it yet. If the async probing
+appears to be an issue we can switch easily back to synchronous (or
+better yet, fix the actual problem).
 
-As far as I know these drivers do not currently have in-tree users.
-Furthemore, they are so new they don't probably have many user-space
-users either. In fact, the BU27034 is not yet in any official releases
-and BU27008 is not merged in any official trees yet. Thus, testing out
-async probing with them should not break existing users. KX022A is also
-relatively new and I don't think it has yet been widely used either.
+Enable asynchronous probing for BU27034.
 
-Finally, if asynchronous probing does break things, then:
-a) We should try fix the thing preventing async probe.
-b) We can pretty easily revert back to synchronous probing.
-
-Please note that the patch 2 depends on
-https://lore.kernel.org/lkml/cover.1683105758.git.mazziesaccount@gmail.com/
-which is not yet in-tree. If the feed-back from this RFC is positive,
-then I will squash this change to that series when re-spinning it next
-time.
-
-Please note that the patch 3 depends on bu27034 series which is expected
-to land on 6.4-rc1.
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
 
-Matti Vaittinen (3):
-  iio: bu27034: Probe asynchronously
-  iio: bu27008: Probe asynchronously
-  iio: kx022a: Probe asynchronously
+I am unsure if this change is 100% safe - but I don't immediately see
+the harm. Please let me know if some of you have more experience on
+problems when using asynchronous probing with IIO devices.
+---
+ drivers/iio/light/rohm-bu27034.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/iio/accel/kionix-kx022a-i2c.c | 1 +
- drivers/iio/accel/kionix-kx022a-spi.c | 1 +
- drivers/iio/light/rohm-bu27008.c      | 1 +
- drivers/iio/light/rohm-bu27034.c      | 1 +
- 4 files changed, 4 insertions(+)
-
+diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27=
+034.c
+index f85194fda6b0..183cf550af13 100644
+--- a/drivers/iio/light/rohm-bu27034.c
++++ b/drivers/iio/light/rohm-bu27034.c
+@@ -1500,6 +1500,7 @@ static struct i2c_driver bu27034_i2c_driver =3D {
+ 	.driver =3D {
+ 		.name =3D "bu27034-als",
+ 		.of_match_table =3D bu27034_of_match,
++		.probe_type =3D PROBE_PREFER_ASYNCHRONOUS,
+ 	},
+ 	.probe_new =3D bu27034_probe,
+ };
 --=20
 2.40.0
 
@@ -142,19 +142,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---HMqvFF/irSGb9lXc
+--aciMmrdY9RqkdmjW
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRTZREACgkQeFA3/03a
-ocUkkAgAg5V0CvjGZoviTnbB3F1zsUJA7iwlMwXeWxNCA3gNCUrmRLNbSJkvwpRU
-YnCRW3SCcHObwr94Q8MCgr7DpZ/iVgMO38fQEX4GlS6d7bwB0M+LI/05OtaqEJ+t
-d0xfhV+o8h5BtT8O2nt+IFYbvLwn3E5KPpq/O7tMG58X8pY0tkd0VaEHvdo+x0gM
-eTbKebFBihJTryVDFr6hg+CXPEOxoqAk8nGVxOOGo1eqCyvX6oo7QnZx9m0b8grI
-yUH9iJWFwvTVhGT5XUb4VP+rte1LVwTjvvmtH9M/0JRShOn1NqgKvPMkt505JIfP
-AbG/TwU7sHg7wJ1skSS9KqWTjB2uBA==
-=yMyu
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRTZVkACgkQeFA3/03a
+ocVt6QgAzTIOeNiwwPslvohllnSHS2DfMTZMJDXjJXn+lzji1prk8rKBfuCyYRHa
+3nza52sa246JdTScrbx3bFY3nAN2UWbHKp93dacnrTecvk+YxaKfVtyRnHlDsBoh
+6XTBQjW0XHz4pkGfjZYAg2VoaRSM6N4KR7/r88ls+5wSzz2wS03CaUovyQTNGCnO
+ggrrA9F4w6nBp+4TDBX7Bn7SwNcUa2C0tHGFj3nFwBdqr0a9y1PGtTKXp3i+mELj
+I9zr21IlI99VZSuM8ao4rIrXD8Lac/szHoXPIpBA8CUSVQ6bFXyJ2SQmjiG6oZTU
+kJzyLAoh7ATDhqXnQ+7UUmH9W7MVQA==
+=PJv1
 -----END PGP SIGNATURE-----
 
---HMqvFF/irSGb9lXc--
+--aciMmrdY9RqkdmjW--

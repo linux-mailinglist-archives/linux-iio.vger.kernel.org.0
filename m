@@ -2,246 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 792AC6F8715
-	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 18:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A225C6F887D
+	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 20:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231715AbjEEQz3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 May 2023 12:55:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
+        id S231676AbjEESLj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 May 2023 14:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbjEEQz2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 12:55:28 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B6D191FE;
-        Fri,  5 May 2023 09:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683305726; x=1714841726;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/M3gQoGII5mFFWeYtKEFpt2tNhHvNDZduPkof6u7PJI=;
-  b=UpHJVENn437M+n9lmiP+GLzIJOrpBDmvNpqajdiBISoz3YOFFVz69K/5
-   YDVCIytbNqnKONgQPTWKhss/W5g/QV80K3TdhmjChBNLe8Ut3rY4oruYy
-   JAzcF2TiQn+xhm7yV5c+4RDh+e36g8uAoGmhlnSo+Y1Sx+kAVo5/pWqXJ
-   3MmncCUbX5tBVazT04UjurUSiMOIv6uQA7n5gVnUMb55ez7qPECP+If/N
-   7x7/NBSBpFtOKhI1EbEwyaNbz1ABDswJkUXO3Y8TJ3PPYNPfEq9WfM22e
-   jj2y4sCQZOxo7mz9xjjySbd45LPp+PXoHbQzvJRFmOR0PIVG0iLq32NBt
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="349289701"
-X-IronPort-AV: E=Sophos;i="5.99,252,1677571200"; 
-   d="scan'208";a="349289701"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2023 09:55:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10701"; a="728156604"
-X-IronPort-AV: E=Sophos;i="5.99,252,1677571200"; 
-   d="scan'208";a="728156604"
-Received: from lkp-server01.sh.intel.com (HELO fe5d646e317d) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 05 May 2023 09:55:23 -0700
-Received: from kbuild by fe5d646e317d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1puyiI-0000lV-2P;
-        Fri, 05 May 2023 16:55:22 +0000
-Date:   Sat, 6 May 2023 00:55:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: pressure: Honeywell mprls0025pa pressure
- sensor
-Message-ID: <202305060054.AFXCprUA-lkp@intel.com>
-References: <ZFUC/3zBFQRBsYUk@arbad>
+        with ESMTP id S231644AbjEESLi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 14:11:38 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14C31C0D7;
+        Fri,  5 May 2023 11:11:37 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-50bd2d7ba74so29555219a12.1;
+        Fri, 05 May 2023 11:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683310296; x=1685902296;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nd1nRrArnnbxZ/6yDMypPmNKlocui+NeEXIajpk0CTA=;
+        b=pQICc57928GvYredg4Lkr+crak0z5+/zHwdNaRu3UkkuFnRR3+Zu4UhVXYLGrUqA8U
+         Uh1JQkAm0YtmQPSCvbQmez29M2biXHSHS5TFDux7H6UERizWOJSMc4k7/t5dzq+nw94a
+         D6kbp88TOtlu6QhjS0EYWETXmR95BNvjJ7EFHWwfdSgUmy+tOo+tOV1qqqyV9NW+8wLP
+         9gQI/dznqrSeLkhGsn5h1CnkSw2uIESPuwBkA6EHfI+88hFFRXGC+6MyOojeHM0fPHUB
+         FStnwhuy1C87kAW7zIfKSsyvk9XHbUY4KAqRM0I+823U0kF8yie3CDzs5+WAu7gKEyuJ
+         AIlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683310296; x=1685902296;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nd1nRrArnnbxZ/6yDMypPmNKlocui+NeEXIajpk0CTA=;
+        b=gV1fztsrQZDZHhkW3gvn/2jp4L8/HpxeQ6RhaA1wLsR4vULhHLUSPsoLKQ7LVfee5l
+         M9gjyddtNGnqBU78BBQfKKvRhMokYALwSrSP7r+4bW+pulO9uc44RDDxDtK2XMYV8gKs
+         /e2dtLz6lyCMHK7EWRkmC+2n5nIYYIX0tt9ZBWgO+8y8pV8wSOPnbNKDYmR4Acyb4qhw
+         xTwVFP5vKCkiLKaBejV0x2X6uMA3NvUnsHWPGjfhTrZFIagtYsg0Wn41JuaUWdaN+cjW
+         tavy4rdzUYMgCQt2rJO1kEd027dheH1x2hpDDOXSb1bPyTRxTXSCsap07n4oZSAf54Ed
+         +VsQ==
+X-Gm-Message-State: AC+VfDw76DyUb4NUrqtvFoahvGjDe2IRuWVV5e8x9xPg/gNKDIL4dkFX
+        wkAZnzJz7ZPo628BCGX/Mcg=
+X-Google-Smtp-Source: ACHHUZ65mn3IQ/hKgx+NHNuZrzFlw+JJ817PYazVbx/Uf//Bi+cD2stNAkZ5D4GK5m0wvJR58z4ALQ==
+X-Received: by 2002:a05:6402:42c6:b0:506:b94f:3d8f with SMTP id i6-20020a05640242c600b00506b94f3d8fmr3154413edc.5.1683310295832;
+        Fri, 05 May 2023 11:11:35 -0700 (PDT)
+Received: from carbian ([2a02:8109:aa3f:ead8::5908])
+        by smtp.gmail.com with ESMTPSA id be25-20020a0564021a3900b004fd1ee3f723sm3133138edb.67.2023.05.05.11.11.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 May 2023 11:11:35 -0700 (PDT)
+Date:   Fri, 5 May 2023 20:11:33 +0200
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     mazziesaccount@gmail.com, krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 7/7] iio: accel: Add support for Kionix/ROHM
+ KX132-1211 accelerometer
+Message-ID: <ZFVG1cyY/Ge/nXOh@carbian>
+References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
+ <593798a44c8ba45f969b86aa29e172d59065958c.1682373451.git.mehdi.djait.k@gmail.com>
+ <20230501155645.435242f0@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZFUC/3zBFQRBsYUk@arbad>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230501155645.435242f0@jic23-huawei>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andreas,
+Hello Jonathan,
 
-kernel test robot noticed the following build warnings:
+On Mon, May 01, 2023 at 03:56:45PM +0100, Jonathan Cameron wrote:
+> On Tue, 25 Apr 2023 00:22:27 +0200
+> Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
+> 
+> > Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
+> > ranges from ±2G to ±16G, digital output through I²C/SPI.
+> > Add support for basic accelerometer features such as reading acceleration
+> > via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
+> > 
+> > Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
+> > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+> 
+> Two tiny things inline.  
+> 
+> > +static int kx132_get_fifo_bytes(struct kx022a_data *data)
+> > +{
+> > +	struct device *dev = regmap_get_device(data->regmap);
+> > +	__le16 buf_status;
+> > +	int ret, fifo_bytes;
+> > +
+> > +	ret = regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
+> > +			       &buf_status, sizeof(buf_status));
+> > +	if (ret) {
+> > +		dev_err(dev, "Error reading buffer status\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	fifo_bytes = le16_to_cpu(buf_status);
+> > +	fifo_bytes &= data->chip_info->buf_smp_lvl_mask;
+> 
+> Slight preference for FIELD_GET() as it saves me checking the mask includes
+> lowest bits.
 
-[auto build test WARNING on 457391b0380335d5e9a5babdec90ac53928b23b4]
+This will mean I have the remove the chip_info member buf_smp_lvl_mask
+and use KX132_MASK_BUF_SMP_LVL directly because otherwise the
+__builtin_constant_p function will cause an error when building. 
+Check: https://elixir.bootlin.com/linux/latest/source/include/linux/bitfield.h#L65
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mprls0025pa-sensor/20230505-212836
-base:   457391b0380335d5e9a5babdec90ac53928b23b4
-patch link:    https://lore.kernel.org/r/ZFUC%2F3zBFQRBsYUk%40arbad
-patch subject: [PATCH v4 2/3] iio: pressure: Honeywell mprls0025pa pressure sensor
-config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20230506/202305060054.AFXCprUA-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/2e6fb6a53d15af5fb86052a7d5d64c4d343157d0
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andreas-Klinger/dt-bindings-iio-pressure-Support-Honeywell-mprls0025pa-sensor/20230505-212836
-        git checkout 2e6fb6a53d15af5fb86052a7d5d64c4d343157d0
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sparc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sparc SHELL=/bin/bash drivers/iio/pressure/
+I can change it to FIELD_GET() if you want to.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202305060054.AFXCprUA-lkp@intel.com/
+> 
+> 
+> > +
+> > +	return fifo_bytes;
+> > +}
+> > +
+> >  static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples,
+> >  			       bool irq)
+> >  {
+> > @@ -1036,6 +1157,32 @@ const struct kx022a_chip_info kx022a_chip_info = {
+> >  };
+> >  EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
+> >  
+> > +const struct kx022a_chip_info kx132_chip_info = {
+> > +	.name		  = "kx132-1211",
+> > +	.regmap_config	  = &kx132_regmap_config,
+> > +	.channels	  = kx132_channels,
+> > +	.num_channels	  = ARRAY_SIZE(kx132_channels),
+> > +	.fifo_length	  = KX132_FIFO_LENGTH,
+> > +	.who		  = KX132_REG_WHO,
+> > +	.id		  = KX132_ID,
+> > +	.cntl		  = KX132_REG_CNTL,
+> > +	.cntl2		  = KX132_REG_CNTL2,
+> > +	.odcntl		  = KX132_REG_ODCNTL,
+> > +	.buf_cntl1	  = KX132_REG_BUF_CNTL1,
+> > +	.buf_cntl2	  = KX132_REG_BUF_CNTL2,
+> > +	.buf_clear	  = KX132_REG_BUF_CLEAR,
+> > +	.buf_status1	  = KX132_REG_BUF_STATUS_1,
+> > +	.buf_smp_lvl_mask = KX132_MASK_BUF_SMP_LVL,
+> 
+> There are some things in here (typically where the define isn't used
+> anywhere else) where I think it would be easier to follow if the
+> value was listed here.  Masks and IDs for example. 
+> 
 
-All warnings (new ones prefixed by >>):
+After removing buf_smp_lvl_mask, which members will be easier to understand (besides id) ? 
 
-   In file included from include/linux/device.h:15,
-                    from drivers/iio/pressure/mprls0025pa.c:18:
-   drivers/iio/pressure/mprls0025pa.c: In function 'mpr_read_pressure':
->> drivers/iio/pressure/mprls0025pa.c:178:30: warning: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int' [-Wformat=]
-     178 |                 dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-         |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                              ^~~
-   include/linux/dev_printk.h:144:56: note: in expansion of macro 'dev_fmt'
-     144 |         dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                                        ^~~~~~~
-   drivers/iio/pressure/mprls0025pa.c:178:17: note: in expansion of macro 'dev_err'
-     178 |                 dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-         |                 ^~~~~~~
-   drivers/iio/pressure/mprls0025pa.c:178:70: note: format string is defined here
-     178 |                 dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-         |                                                                     ~^
-         |                                                                      |
-         |                                                                      unsigned int
-         |                                                                     %lu
-   drivers/iio/pressure/mprls0025pa.c:221:30: warning: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int' [-Wformat=]
-     221 |                 dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-         |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                              ^~~
-   include/linux/dev_printk.h:144:56: note: in expansion of macro 'dev_fmt'
-     144 |         dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                                        ^~~~~~~
-   drivers/iio/pressure/mprls0025pa.c:221:17: note: in expansion of macro 'dev_err'
-     221 |                 dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-         |                 ^~~~~~~
-   drivers/iio/pressure/mprls0025pa.c:221:70: note: format string is defined here
-     221 |                 dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-         |                                                                     ~^
-         |                                                                      |
-         |                                                                      unsigned int
-         |                                                                     %lu
-
-
-vim +178 drivers/iio/pressure/mprls0025pa.c
-
-   144	
-   145	/**
-   146	 * mpr_read_pressure() - Read pressure value from sensor via I2C
-   147	 * @data: Pointer to private data struct.
-   148	 * @press: Output value read from sensor.
-   149	 *
-   150	 * Reading from the sensor by sending and receiving I2C telegrams.
-   151	 *
-   152	 * If there is an end of conversion (EOC) interrupt registered the function
-   153	 * waits for a maximum of one second for the interrupt.
-   154	 *
-   155	 * Context: The function can sleep and data->lock should be held when calling it
-   156	 * Return:
-   157	 * * 0		- OK, the pressure value could be read
-   158	 * * -ETIMEDOUT	- Timeout while waiting for the EOC interrupt or busy flag is
-   159	 *		  still set after nloops attempts of reading
-   160	 */
-   161	static int mpr_read_pressure(struct mpr_data *data, s32 *press)
-   162	{
-   163		struct device *dev = &data->client->dev;
-   164		int ret, i;
-   165		u8 wdata[] = {0xAA, 0x00, 0x00};
-   166		s32 status;
-   167		int nloops = 10;
-   168		u8 buf[5];
-   169	
-   170		reinit_completion(&data->completion);
-   171	
-   172		ret = i2c_master_send(data->client, wdata, sizeof(wdata));
-   173		if (ret < 0) {
-   174			dev_err(dev, "error while writing ret: %d\n", ret);
-   175			return ret;
-   176		}
-   177		if (ret != sizeof(wdata)) {
- > 178			dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-   179									sizeof(wdata));
-   180			return -EIO;
-   181		}
-   182	
-   183		if (data->irq > 0) {
-   184			ret = wait_for_completion_timeout(&data->completion, HZ);
-   185			if (!ret) {
-   186				dev_err(dev, "timeout while waiting for eoc irq\n");
-   187				return -ETIMEDOUT;
-   188			}
-   189		} else {
-   190			/* wait until status indicates data is ready */
-   191			for (i = 0; i < nloops; i++) {
-   192				/*
-   193				 * datasheet only says to wait at least 5 ms for the
-   194				 * data but leave the maximum response time open
-   195				 * --> let's try it nloops (10) times which seems to be
-   196				 *     quite long
-   197				 */
-   198				usleep_range(5000, 10000);
-   199				status = i2c_smbus_read_byte(data->client);
-   200				if (status < 0) {
-   201					dev_err(dev,
-   202						"error while reading, status: %d\n",
-   203						status);
-   204					return status;
-   205				}
-   206				if (!(status & MPR_I2C_BUSY))
-   207					break;
-   208			}
-   209			if (i == nloops) {
-   210				dev_err(dev, "timeout while reading\n");
-   211				return -ETIMEDOUT;
-   212			}
-   213		}
-   214	
-   215		ret = i2c_master_recv(data->client, buf, sizeof(buf));
-   216		if (ret < 0) {
-   217			dev_err(dev, "error in i2c_master_recv ret: %d\n", ret);
-   218			return ret;
-   219		}
-   220		if (ret != sizeof(buf)) {
-   221			dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-   222									sizeof(buf));
-   223			return -EIO;
-   224		}
-   225	
-   226		if (buf[0] & MPR_I2C_BUSY) {
-   227			/*
-   228			 * it should never be the case that status still indicates
-   229			 * business
-   230			 */
-   231			dev_err(dev, "data still not ready: %08x\n", buf[0]);
-   232			return -ETIMEDOUT;
-   233		}
-   234	
-   235		*press = get_unaligned_be24(&buf[1]);
-   236	
-   237		dev_dbg(dev, "received: %*ph cnt: %d\n", ret, buf, *press);
-   238	
-   239		return 0;
-   240	}
-   241	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+--
+Kind Regards
+Mehdi Djait

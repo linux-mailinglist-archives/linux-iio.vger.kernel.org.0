@@ -2,93 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3276F7D38
-	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 08:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6F66F83CB
+	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 15:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230426AbjEEGrX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 May 2023 02:47:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
+        id S232432AbjEENUY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 May 2023 09:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230421AbjEEGrW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 02:47:22 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A9B10C
-        for <linux-iio@vger.kernel.org>; Thu,  4 May 2023 23:47:20 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-50bd875398dso2080892a12.1
-        for <linux-iio@vger.kernel.org>; Thu, 04 May 2023 23:47:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683269239; x=1685861239;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KvgN318sT0yfBIN/aP/qcfyseQBG87rA5CSxzTBMcCg=;
-        b=LlmHlROVf+CF/F+YYmB7vT5vPFDolgM2wqHp5gsFmU3cvKBtaLw28AXBOWOb7thKXj
-         aaPBM9chfc7Oxma9ovvDYfZHTQfCEg/nqgZBVGV6xfrHwOH0ZfiEpS3v6NoiU9R5atrx
-         ryO2Bj4A6p2Ytz5ZSlD8o7yjFSJgRiEy5SgKGa7wQP8DmXZ6jypiLsK705FJ/95iXNLN
-         UNiuwlHfo7Y9GTG2KH8lEF8ri7P29HmEHHQeBXXxcGnIdSobjCp40vubYp7E2x49FnHy
-         4o4k32DyLHQWV5FtURMQX13LrZ291YkhrZGRH/6mpMECANuc/RJBTPqELhiGum5LLxGy
-         +AmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683269239; x=1685861239;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KvgN318sT0yfBIN/aP/qcfyseQBG87rA5CSxzTBMcCg=;
-        b=eIBWy50Pl/tRwOYtPffbvvgzPVC5SHUJ0Vajiz7Jow/XDSyL9sTdY3QfLiL3HAygmm
-         DDo9wgYvSTQvxek7YCGid9YY+bfwDkuHFfzmedg8OLlCI9HLOB7WgpcoeFQcmmTtvx6K
-         Z3ztwl/BZUwHPNU+qWGmBvoFkgQX1FLerKyS9IhNVulPeZgIwDzySrHXlVV8ds9qQLoc
-         bltb05cAG1Ez5hW6SOO/kS8D2y+0b/ZMeR7isG9XMjU8GbVP8soJnhAV8m9DZOyTt0UZ
-         xK4XcKSrrjIBPaJ5/fFkVPs9WeNVMsPfNYLNTGHZcGfT84+yzGdcKnr5B3pN7ikTLVhO
-         fj7Q==
-X-Gm-Message-State: AC+VfDxaWBZax5wUSAaRHdwLc7NHhbpM1l5TIJMtG/WgRPC2euSw1RGV
-        hL4zEcIYBLGE2CwrWu9CoG0mOecsH5IhTYWU8Ksdow==
-X-Google-Smtp-Source: ACHHUZ617oSGRYLQ033DYm8gUv1Nc/kxyw6P01hhEkt+ijKxYBRPZhkX/hcblYpLaINYzuWfHJy1mA==
-X-Received: by 2002:a05:6402:1a48:b0:50b:c3bf:c9ef with SMTP id bf8-20020a0564021a4800b0050bc3bfc9efmr597880edb.40.1683269239274;
-        Thu, 04 May 2023 23:47:19 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:52e:24ce:bbc1:127d? ([2a02:810d:15c0:828:52e:24ce:bbc1:127d])
-        by smtp.gmail.com with ESMTPSA id d12-20020a056402516c00b0050bd2f16ef5sm2657796ede.84.2023.05.04.23.47.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 May 2023 23:47:18 -0700 (PDT)
-Message-ID: <0f271a02-dffe-876c-3e41-5697c5917503@linaro.org>
-Date:   Fri, 5 May 2023 08:47:17 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 1/2] dt-bindings:iio:temperature:melexis,mlx90614:
- Document MLX90615 support
-Content-Language: en-US
-To:     Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org
-Cc:     Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S232387AbjEENUX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 09:20:23 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65A72688;
+        Fri,  5 May 2023 06:20:19 -0700 (PDT)
+Received: from localhost ([31.220.113.235]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1N6KMR-1qJ7Bu324H-016cR9; Fri, 05 May 2023 15:19:59 +0200
+Date:   Fri, 5 May 2023 15:19:59 +0200
+From:   Andreas Klinger <ak@it-klinger.de>
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-References: <20230504194750.4489-1-marex@denx.de>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230504194750.4489-1-marex@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/3] Support Honeywell mprls0025pa pressure sensor
+Message-ID: <ZFUCf059+PSR+3Wb@arbad>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:LvWwahpDxbW5ietDton1MeJ49tRciW1sgnT3RH04aGs3/1qpbKX
+ eZBZd34zYne/ZVfSfg6QPVXmfqdBEqkhuZ2rvDSFdzgnp8XpxMB2BcAIquVJPhDs5eQqIyS
+ U7zoINps68Fhft5D3djciOI2CIX37ihSe+r3lkUcHaIHtWQSF3HBiDjHgAPabDPzEmeNLct
+ ocQCQ0T/fqVXejTPiHeVQ==
+UI-OutboundReport: notjunk:1;M01:P0:TMie43ZwBSE=;ueCGyBUvD621qQ8q/ae9m/jhKK7
+ r0QAp574iP8Pbpc3pnVlWtP3Eq8QHL8X5OE4eVUzAWdTLV2hEXnfFN2W85v57Vk10E0kv/gct
+ eEKVft6teWgu/0NU6sokfXvw55h4rSYfepJB8yyQh0OoIx4rEfJvvzAY7lSGnQTbHcN5s4sys
+ hQzdG0UP/ej/hlAr1ySeNKzVBGHVZcddIdMYyJ0kMNpQAO7PUfenFg5AUIe+apan3mIIXiNmT
+ K2GZg/ZdtWHfW/+rmylUjTWVhmCNKEFofwjSTFb6fl5GoX1rnHN+iLgrQIZSvz5UjVvcrIpVG
+ j7w/vehxVvh3LTqwmegVtxsgtAxJJp2PyiN391Li3rjPuf7N927dOH3Z/AgiFyn+eeHlR4mNU
+ JpDD2tWypSZcLv5QHxdZLkd77TqmNEWivhpYzWsVDM4WuSO6z2qfjF4nqqPrZi7kTXISBAG8j
+ ZeuCpWjF0OdM9uCP7+bc0cIeFwaWnpo7idiodJeo6uP2I/fYMHVc83hfXH2aFYE3GOCbLXzMZ
+ B7GTvOYUWICj3TgKtQMdtqP20DjLTg+9NvNkMX9aWLtEVWVbQz5jXHQN6LlFN/gBiGNua1tW/
+ HYZ2LSjLtTRJSXiKwbaAXE2L4tK6zbZFr9Tjs44TRy78t6VgQvArtlnjJrKhFKYX5dhnZAfkt
+ Y3Hzmhal6/cNYN9f59eOkATAiuAAoSGsr5rP6VDJCw==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/05/2023 21:47, Marek Vasut wrote:
-> Document support for MLX90615 Infra Red Thermometer, which seems to
-> be the predecesor of MLX90614 . There are significant differences in
-> the register layout compared to MLX90614, but the functionality of
-> the device is virtually identical.
+Support Honeywell mprls0025pa pressure sensor.
 
-Subject: add spaces after each prefix:.
+This patch series adds support for Honeywell mprls0025pa pressure sensor series.
+There are a variety of sensors with different pressure ranges supported.
+
+Changes in v4:
+- Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
+  - change line length to 80 characters
+  - make vdd-supply mandatory
+- Patch 2: "iio: pressure: Honeywell mprls0025pa pressure sensor"
+  - change line length to 80 characters
+  - change regulator vcc to devm_regulator_get_enable()
+  - switch to probe_new
+  - many changes from the review
+- Patch 3: "MAINTAINERS: Add Honeywell mprls0025pa sensor"
+  - no changes
+
+Changes in v3:
+- Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
+  - fix errors while doing dt_binding_check
+  - add vdd-supply
+- Patch 2: "iio: pressure: Honeywell mpr pressure sensor"
+  - change to _RAW interface
+  - add transfer function
+  - add regulator
+  - move to device_property_xxx functions
+  - many more changes from the feedbacks
+- Patch 3: "MAINTAINERS: Add Honeywell mpr sensor"
+  - change file names
+
+Changes in v2:
+- Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
+  - change the global sensor decription of mpr to the specific sensor
+    mprls0025pa
+  - change compatible string
+  - rename the file to honeywell,mprls0025pa.yaml
+  - honeywell,pmin-pascal and honeywell,pmax-pascal: add unit pascal to property
+    names 
+  - add new property honeywell,transfer-function
+- Patch 2: "iio: pressure: Honeywell mpr pressure sensor"
+  - no change so far
+  - will be changed and send out as new version when the dt definition is
+    settled down
+- Patch 3: "MAINTAINERS: Add Honeywell mpr sensor"
+  - no change so far
+
+Andreas Klinger (3):
+  dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor
+  iio: pressure: Honeywell mprls0025pa pressure sensor
+  MAINTAINERS: Add Honeywell mprls0025pa sensor
+
+ .../iio/pressure/honeywell,mprls0025pa.yaml   | 104 +++++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/pressure/Kconfig                  |  13 +
+ drivers/iio/pressure/Makefile                 |   1 +
+ drivers/iio/pressure/mprls0025pa.c            | 441 ++++++++++++++++++
+ 5 files changed, 566 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+ create mode 100644 drivers/iio/pressure/mprls0025pa.c
 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+base-commit: 457391b0380335d5e9a5babdec90ac53928b23b4
+-- 
+2.30.2

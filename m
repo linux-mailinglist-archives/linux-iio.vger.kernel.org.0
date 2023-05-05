@@ -2,60 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53196F8472
-	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 16:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CBFD6F86FF
+	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 18:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232766AbjEEOCs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 May 2023 10:02:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
+        id S231359AbjEEQsY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 May 2023 12:48:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232052AbjEEOCr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 10:02:47 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F96B61B4;
-        Fri,  5 May 2023 07:02:42 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id A70848469B;
-        Fri,  5 May 2023 16:02:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1683295355;
-        bh=FvOK/5NmHWC6hBlswNcw10wjxr8Il3rr5UUFBtSyWH8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=wbBUFp5XnRSN+AnXkKQnO+AXax5su/MmD2nZeMTQqXgxbkdzVX78J/LwR/zQw1Oba
-         gF+ZA5EWh5+C4lGU80UE6mBM/8wrOsChaUVQaKw1ZAYwVH9vK16EdESBlxO0Lp7lAM
-         1XXw/r0JQu5XHiH8GuwI/pdaGrg/VlEeFnizLQK/05ADC6jVaUjh0rGY1GkZjNKKaB
-         Er0FzxrLkPAGLZ+3gEVUdGtoDOV4rdugzQyQGkn9KeiFPKxb6PhRT/EDKhAJreOQcT
-         YleiA7pqaqrAyVOseJHjKFLKnf+/LjBuYXPaTu0VlZO/1oxgIocvuB9MyT3M1U9vr9
-         GfoXLgOjPeDUQ==
-Message-ID: <022b927f-7567-b1e9-56c7-8038cc5a42fd@denx.de>
-Date:   Fri, 5 May 2023 16:02:34 +0200
+        with ESMTP id S229591AbjEEQsX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 12:48:23 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D37150C5
+        for <linux-iio@vger.kernel.org>; Fri,  5 May 2023 09:48:22 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-95369921f8eso330247366b.0
+        for <linux-iio@vger.kernel.org>; Fri, 05 May 2023 09:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683305300; x=1685897300;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DzAMX4Kz9IJKO+zvZ0xc8kUOpcxC2lFYPzqNj8WVdAs=;
+        b=MAbdQFhdJO0A+Ih6Eoq3XWdlI0+r8kLA925xdP3fJdPqzm3HPm7ERSKbLG+M0FB7ha
+         c9FVpnAhpMKU44vxnx7PEd6OheCBrCsYgk370n5Uy/uM1LHOzZ8F4SEt+0QaGgLsH4rc
+         aMd4C5aUpWkoea62w9Nbv6dDz57I5ikSYd9zJjDqYdzgAZxNgn75oCFpO++zLSDz1bDt
+         CNsBCXO5Z6zvO+qJfu9lAx/cqkGNhHuFVK+O5eQ3PRaHhEiAxALVEU8aGQeObYVC+f80
+         /Qrs7I8/1xsUgk5rrSC1uR4QvE1LwtC7tO+vZx4eL5WBgkthlQMrmDvQUGsKW1tahY4P
+         KNKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683305300; x=1685897300;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DzAMX4Kz9IJKO+zvZ0xc8kUOpcxC2lFYPzqNj8WVdAs=;
+        b=dfiHUXN9V6D/EobYKW1Cc/69KCzmA8QeEQk7Wge6xtPyU0heQTSrNThDy5Ca0D6Idd
+         BL6KrZvT1eVakmBasaktcFZXpZiib4+YTY7LksOG821MHzlfSIGnC4rfY6hQJ+jw+3ev
+         z4armFkOeIqyFq7WCrKC7WRkAFgjvzjldbsDGs+lFk4G3yTHm2/hC+e289pw9ZTsADBo
+         OBPn2XskRvgi2nyniREcF0oBX22fm636M3ksrX1QglhhYj2oDydz7iDJjlIrfG/h6ypY
+         mNth2RANhtSbo8tMMcS4gCdLsW9StQK320BfA3r6DSznzNZH7kYXxUtprrzhKkFzr/hl
+         onZA==
+X-Gm-Message-State: AC+VfDyyB4ldubio6E0xSInE0ul/D1GfVdEVKsEr0AfoGchTtv5/gRv7
+        JG0ZzweTTB2rF6GGr86MGUcdkQ==
+X-Google-Smtp-Source: ACHHUZ6qLQDbAdXWLOl8HQxIAXGdgKXK+tKEcWtC8K+v9wpTVrXIZhvS6P2QN4oC0XkkQogQbitwYA==
+X-Received: by 2002:a17:907:6e1c:b0:94f:2249:61d4 with SMTP id sd28-20020a1709076e1c00b0094f224961d4mr1778686ejc.34.1683305300480;
+        Fri, 05 May 2023 09:48:20 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:52e:24ce:bbc1:127d? ([2a02:810d:15c0:828:52e:24ce:bbc1:127d])
+        by smtp.gmail.com with ESMTPSA id kg20-20020a17090776f400b0094f3e169ca5sm1142063ejc.158.2023.05.05.09.48.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 May 2023 09:48:19 -0700 (PDT)
+Message-ID: <3af0c3a9-70b8-4c2b-8ab9-dd43c531b3b6@linaro.org>
+Date:   Fri, 5 May 2023 18:48:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/2] dt-bindings:iio:temperature:melexis,mlx90614:
- Document MLX90615 support
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v4 1/3] dt-bindings: iio: pressure: Support Honeywell
+ mprls0025pa sensor
 Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+To:     Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-References: <20230504194750.4489-1-marex@denx.de>
- <0f271a02-dffe-876c-3e41-5697c5917503@linaro.org>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <0f271a02-dffe-876c-3e41-5697c5917503@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        linux-kernel@vger.kernel.org
+References: <ZFUC6Tsku+aWod/+@arbad>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <ZFUC6Tsku+aWod/+@arbad>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-8.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,17 +80,136 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/5/23 08:47, Krzysztof Kozlowski wrote:
-> On 04/05/2023 21:47, Marek Vasut wrote:
->> Document support for MLX90615 Infra Red Thermometer, which seems to
->> be the predecesor of MLX90614 . There are significant differences in
->> the register layout compared to MLX90614, but the functionality of
->> the device is virtually identical.
+On 05/05/2023 15:21, Andreas Klinger wrote:
+> Honeywell mprls0025pa is a pressure sensor series. There are many
+> different models with different pressure ranges, units and transfer
+> functions.
 > 
-> Subject: add spaces after each prefix:.
+> The range and transfer function need to be set up in the dt. Therefore
+> new properties honeywell,pmin-pascal, honeywell,pmax-pascal,
+> honeywell,transfer-function are introduced.
+> 
+> Add dt-bindings.
+> 
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> ---
+>  .../iio/pressure/honeywell,mprls0025pa.yaml   | 104 ++++++++++++++++++
+>  1 file changed, 104 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> new file mode 100644
+> index 000000000000..84a61721b597
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+> @@ -0,0 +1,104 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/honeywell,mprls0025pa.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Honeywell mprls0025pa pressure sensor
+> +
+> +maintainers:
+> +  - Andreas Klinger <ak@it-klinger.de>
+> +
+> +description: |
+> +  Honeywell pressure sensor of model mprls0025pa.
+> +
+> +  This sensor has an I2C and SPI interface. Only the I2C interface is
+> +  implemented.
+> +
+> +  There are many models with different pressure ranges available. The vendor
+> +  calls them "mpr series". All of them have the identical programming model and
+> +  differ in the pressure range, unit and transfer function.
+> +
+> +  To support different models one need to specify the pressure range as well as
+> +  the transfer function. Pressure range needs to be converted from its unit to
+> +  pascal.
+> +
+> +  The transfer function defines the ranges of numerical values delivered by the
+> +  sensor. The minimal range value stands for the minimum pressure and the
+> +  maximum value also for the maximum pressure with linear relation inside the
+> +  range.
+> +
+> +  Specifications about the devices can be found at:
+> +    https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/
+> +      products/sensors/pressure-sensors/board-mount-pressure-sensors/
+> +      micropressure-mpr-series/documents/
+> +      sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: honeywell,mprls0025pa
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description:
+> +      Optional GPIO for resetting the device.
+> +      If not present the device is not resetted during the probe.
+> +    maxItems: 1
+> +
+> +  honeywell,pmin-pascal:
+> +    description:
+> +      Minimum pressure value the sensor can measure in pascal.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  honeywell,pmax-pascal:
+> +    description:
+> +      Maximum pressure value the sensor can measure in pascal.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  honeywell,transfer-function:
+> +    description:
 
-I just followed the prior tags from the only other commit:
+Here you need | to preserve formatting.
 
-39616b4e4a02f dt-bindings:iio:temperature:melexis,mlx90614 yaml conversion
+> +      Transfer function which defines the range of valid values delivered by the
+> +      sensor.
+> +      1 - A, 10% to 90% of 2^24 (1677722 .. 15099494)
+> +      2 - B, 2.5% to 22.5% of 2^24 (419430 .. 3774874)
+> +      3 - C, 20% to 80% of 2^24 (3355443 .. 13421773)
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  vdd-supply:
+> +    description: provide VDD power to the sensor.
+> +
+> +required:
+> +  - compatible
+> +  - honeywell,pmax-pascal
+> +  - honeywell,pmin-pascal
+> +  - honeywell,transfer-function
+> +  - reg
+> +  - vdd-supply
 
-But I also prefer the spaces, so added.
+Keep the same order as they appear in properties:.
+
+Rest looks good, so with these fixes:
+
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+---
+
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you do not know the process, here is a short
+explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tools like b4 can help
+here. However, there's no need to repost patches *only* to add the tags.
+The upstream maintainer will do that for acks received on the version
+they apply.
+
+https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
+
+Best regards,
+Krzysztof
+

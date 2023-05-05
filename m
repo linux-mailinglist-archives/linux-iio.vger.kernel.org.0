@@ -2,55 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 160566F76E6
-	for <lists+linux-iio@lfdr.de>; Thu,  4 May 2023 22:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE0A76F7C1E
+	for <lists+linux-iio@lfdr.de>; Fri,  5 May 2023 06:56:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231204AbjEDUWY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 May 2023 16:22:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33734 "EHLO
+        id S229997AbjEEE4z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 May 2023 00:56:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230471AbjEDUWJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 May 2023 16:22:09 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C61A409BD;
-        Thu,  4 May 2023 13:07:53 -0700 (PDT)
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id D52BC857CD;
-        Thu,  4 May 2023 21:48:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1683229698;
-        bh=j75cPTZQhymfZ0psuaf5YObzw4x04Tk0BUHL8o3cv9E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nWF06WANnGb04gN+CWr+kP594ciK41WeuR9LzGYsLUVm/fpm+XyVM+8rZO3Y5aC9P
-         CuXiiNl9vqtoQMZBTZdCic6do09ZFcndViGUV9vO9SPooid78vj1gQM1JTksb9qrD0
-         z+oCpuoVBg3lOoRqgCVD9G2oXgytYPzydVmScAxXg0+5ez/fhmKBnf4R3uY1VYxWhN
-         FH4PYRADZnev3o9tMxX89lXfjzIhzLyfZUHkBNo+9uRycWge+2pm6/HsSMd7aMcAgn
-         8fbwZ1N7+ofKqEL/RvflnfddaA6in6uOjb5eLhAfgeBatXz6RdLEHwBbjqfBvz41Eq
-         sOwjgV4fyeKkw==
-From:   Marek Vasut <marex@denx.de>
-To:     linux-iio@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>, Crt Mori <cmo@melexis.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S229577AbjEEE4y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 May 2023 00:56:54 -0400
+Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2115.outbound.protection.outlook.com [40.107.135.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D8FA243;
+        Thu,  4 May 2023 21:56:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LeoE/zbPv9cub8/Gam8LUSfxHfi9iN23uk9NGL2LQENXPxPhaXA4gzHTWa4scYUzRMHuLBypueV1Qgi688V8WYxPOzaiG2Dnv550PhGnYxtEGiIOt71spKSTwLl9UEJV6VsWAMLe3BWkeLV3EnfmQXEP4nYm9hIF3U4LaQMF2JirpiGdEUamUhvrby/+GiP4Yc5wT7pJFvJ8n4ZGjEVmckY9tsUxVQmu3QR3B8vgQcxrniPkUxRU1uwgh4tfMho7AHasZ7ld4yPYATs2rvWbE0j1Er8mBDPZx3xg48/ODDNvntX6GIi6GoB6B8CGCGL01VULWr4QEyDkw8em2PwP2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6raseYUKx5Bj7FmmTAZx7ukzx5sD0QX7GqhFxL5by3g=;
+ b=eMkKzHnXvJgoCRClRuwCGB8P9qZWVWQ9T1UWGXON/Kh+OmoiacKoIiJXWftWnsdFczt7xWs03UWSYpscFX9egOebBC8uHxFg8Zh1HeTN02zUqU95zuAEknY4LXbwn18FY5IDv3kHWbNIUE3XxqIJTDVUWnqh6ln/0ISJJN70Cd08hc1ziCeZqeoe7soatnUuuxdailtogK9CU84jwD+Ny2Hv647pqPuG/PvdIyT1alG5FBAPhSAZ5JqEPJjO8ABySL1g81XQjSEsSOgFPwbkNZwV/t7BXQ12rjxPMcDbBgwTmQbI1VHQSPRRWIruh5wWODng68QTER+1kRMG9Y6/ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
+ header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rohmsemiconductor.onmicrosoft.com;
+ s=selector2-rohmsemiconductor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6raseYUKx5Bj7FmmTAZx7ukzx5sD0QX7GqhFxL5by3g=;
+ b=vRu9QcxZRzlmqL2sSyYJ5oZU9CveOQC1MBEAsANFgipfNxbWHXIuvRHqJQ2quIINNJLz0jD7YNbPvm1wvG3KwiI1P4ld9ydGe6714EPM6tYt9wjCimzTKeYZCANR3a0poit8ZZHvqLe0wXLacsW+zV/2fKkohO34HzvuhTc8wKg=
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
+ by FR0P281MB1706.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:6e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.27; Fri, 5 May
+ 2023 04:56:47 +0000
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::4218:fb63:61ae:c42a]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::4218:fb63:61ae:c42a%5]) with mapi id 15.20.6363.021; Fri, 5 May 2023
+ 04:56:47 +0000
+From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH 2/2] iio: mlx90614: Add MLX90615 support
-Date:   Thu,  4 May 2023 21:47:50 +0200
-Message-Id: <20230504194750.4489-2-marex@denx.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230504194750.4489-1-marex@denx.de>
-References: <20230504194750.4489-1-marex@denx.de>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 4/5] iio: light: ROHM BU27008 color sensor
+Thread-Topic: [PATCH v4 4/5] iio: light: ROHM BU27008 color sensor
+Thread-Index: AQHZfaS0iJPNAf+vLkmCHM5dPvyXnK9KL5sAgADxFwA=
+Date:   Fri, 5 May 2023 04:56:47 +0000
+Message-ID: <c63c5271-3973-3bd4-c683-ab9ab64b67e4@fi.rohmeurope.com>
+References: <cover.1683105758.git.mazziesaccount@gmail.com>
+ <6d1e37f95dd039d9c96a992b1855fd193bdded40.1683105758.git.mazziesaccount@gmail.com>
+ <ZFPCUJ81aw/GkJgT@smile.fi.intel.com>
+In-Reply-To: <ZFPCUJ81aw/GkJgT@smile.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BEZP281MB2454:EE_|FR0P281MB1706:EE_
+x-ms-office365-filtering-correlation-id: 6c3f7590-7965-468a-4b45-08db4d252166
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 9rIBOG+HsiySfN81NOQ72S41f0yN4RF/9v46cQ8Km83gnf7eHAaELqtg7ydpF/MjSNT+ZAUS2Dmuq1rnaLRCIAfT5kZtiDcURv3f0ORLqn8R0zidmPWrBU49WABI+g2hmuzcAdJs0Ij8cb0/wgGgMXpDYfUJEAu3qhJFGEQ9OuWa8gHXR87BeqeGOxwsHKn+AHv4PhWwouV/GvA9kPNOmD88Ip0sCJrqeSU3ovQgKkFtmfC51AHLPHczOXcdbgUh05M2sBfD/WfqO3APMdeQYmUtA/rkazZAg7ch1azBIHn6sjpAEmaR1OgEvsPXsOHuF1WJ8WtiBV8mr9FsnBJ88AtetWRRpsI51u0HSLK4ZoU00jp0P6KAe7kK1zYmE9MD5u/+QZQwDv2revXljvEKWSZ1rC1+kUq750YSH8R9otYArGcHvaAsM6xUmCF9k5VcvNSv4QjNPZNtzFKl+bvI0TVITBNkHJxpz4izBmhP4MKnIiFM+jZyd5+2VhJaDKiXZ63iduUdu7tXb89cR64syRHqJPuM9TY9+4m0rSxY544PCvXcQJoaQuCEZG19Opji8H8G0ofSyXpsFEj14bAuk+Gph0SJZ8emkR9EZ/3DTW3ZLQVmWr2OW1BL1bHON3MFoX/4HskfAd2sSmHMGXrkaJvvf7dPuWVLaIsrrxyZqiA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(39850400004)(366004)(396003)(346002)(451199021)(31696002)(86362001)(6486002)(71200400001)(110136005)(54906003)(316002)(91956017)(66946007)(66556008)(66476007)(66446008)(64756008)(4326008)(76116006)(478600001)(966005)(41300700001)(8676002)(8936002)(5660300002)(2906002)(7416002)(38070700005)(122000001)(38100700002)(186003)(2616005)(6512007)(6506007)(26005)(53546011)(83380400001)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eERLZ254Q2JzcVR6R2pHQjRhRlc5cmhrTG1SalVtZGhIbXVxbmZsQ24yM2dO?=
+ =?utf-8?B?UTk0c3BzRTNtRnE0VXY5UUZPWDYzTElOUW9rZ1YycmZGekdLWjJkbUl3RVNW?=
+ =?utf-8?B?bmdkZDBiWjY1OURtVzNienFBT3BpQjZLekFFdGpSbi9VMTlPY0pRc1Rpc2l0?=
+ =?utf-8?B?VTJYTEszTU9SeGtkaHFhdDVoTEtLbGJKem5uWDYyQ25QMStHV09JREJoU1JR?=
+ =?utf-8?B?U2tYREovS1pkZDcyRys5c3VzWVd6Q0Q5OVlOcHJISHdUeklISi9Ma2Q4RDlE?=
+ =?utf-8?B?d1VobE9jYnNGM2gyYzFBL1IybkRSWkkreSsxWTNXTllqd3ZEY1VjN3B5L2NX?=
+ =?utf-8?B?cnZBVFVlRGg0bzJCc3JzeE5UcmVUS0dxT2k3Y2w4U1VBU0NjTC9EcUhDQjhB?=
+ =?utf-8?B?ZzhPd1ZiNGpBdElXdEREejJNUGpDMFcxUjB4Vjl1dnBYYjQ5WHI1VU5KSWVm?=
+ =?utf-8?B?a3pDM25iSEdGRS9JWm9KYnZ4dmVTMmVBN2xYZHNrbVR2U0w1c0ZGZDJKQ2Zl?=
+ =?utf-8?B?Ui84Nks3UFBtQnM0bDF1VU1XZS9waEtWOWNRbEJZQ296dUk1Uk92Y3l3OE11?=
+ =?utf-8?B?dnR5WEdpa1l1L1FiQldWNUFaSXBQUzUzNHpiQjNJWEpLR1VqR2FnSjFmQzNN?=
+ =?utf-8?B?dmFTSFJXNzVzL2NiQnhFcjE5L1psSVZIQnUvQlozNDZoYm5Ea2V2OXgyNjg4?=
+ =?utf-8?B?OVMzNjlQc1hDNXpjWTNleWY2K01xWnhBdmVmNUhMSUJnem9BRVczV1BCZUZR?=
+ =?utf-8?B?TmRiTldmZHY4KzY5UGhvVnVHRmZRdkJDcjBTMlIvUlNHOUI4bTdSMTYxcmp4?=
+ =?utf-8?B?NGNRQXdHQ1VkWERCM2VmL2EzNzdSdTlkMlhJUkFwZG9ET01kQVZ5ZXMrUUJp?=
+ =?utf-8?B?WkVKWDVMdmN0WFRNUjFJMEFqRXdlSWlhNGJLVUdMbkJvSXNZckpjbzBRMlJi?=
+ =?utf-8?B?WnN0SUxzUnYwNkpQY1JZckhNZmcvVmlUZmJYaVhrck03THdidnlEVmd3UDEx?=
+ =?utf-8?B?WGtEbGM4VHRXUE1hS2YrdFV3TDNobC9QMzlOZTkrRWIxRTd1T1VsWlcrRDRs?=
+ =?utf-8?B?bjZyUlRrUzBZRnNZYVFsYVY1cERHODRiTmN6SS9UeHJwdXRzRFU2SC9QUVFq?=
+ =?utf-8?B?cVJiSjg2b1VVeUxIbjNQMm5IaEliL3hORTRxTFpwUDhRRmRhNERxQ3krVXBs?=
+ =?utf-8?B?VXdqVDVMOHlodDJwNjdJbHFJNldMdGtZRlRudDhZMjdaQWZCQStvVlNDUUU4?=
+ =?utf-8?B?MVRCME9TNVZkbmd3Tk4vT1g5bTl3d2FFS01LUFA2cVphd0lVem1aaGpZS1k0?=
+ =?utf-8?B?ek52OWJMM1lPdGFhV1pzRS9QbUxvM05ueWNGOHVlN3g0ejBpRXc3QnRXNk1U?=
+ =?utf-8?B?VzJWYzEyaUhNem50b0VxRE1jQm5pNXQ5OWY5TkJ4aS9MdHN5aGVNRXlya3lo?=
+ =?utf-8?B?U3l2bHpRRFVRMW5SM1FxTks4THRVRzdPdGFOYlBzWnJvdTRLUVB4a3M2aU9m?=
+ =?utf-8?B?aUJWNWFiYXpCUmpyUUhUa2dhdnFmOVpJRmpROW1tZlcrbXFrTEFKd2NsVUtu?=
+ =?utf-8?B?MHg5V01qRlVnSXFibVpWTUcyc1JvN2ZXdmg2TURBWmhxRnRQRHo5MEphN2JK?=
+ =?utf-8?B?bHdQcFJiVU9qdGxUZ3IweFc4NHQzOVZHZE9DbVhSc1AweVk2amN5dXdCQWhi?=
+ =?utf-8?B?TVFTZG9YbWVJS0lPVGZ3NWdyb0FIaTdVRTJadGxLVEZzVnRhak1xbFJTYlBD?=
+ =?utf-8?B?TUg1OUxJaFVYdjFNcGhGQ2psQUNJVGN3TlpWQ05YUyszZWpEVm5pTmZheE9s?=
+ =?utf-8?B?ZE9xV05CNXp0S2tZS0t6MHJvMnR1VzlwQ2lOdzVBYXdVa0piTGcycEtkTU1K?=
+ =?utf-8?B?K3hYaFpUSWkyamJhcjNNWVJOOEw2d0FYbnFna1hSZkhMa2x5WHVGdWRIV0Fz?=
+ =?utf-8?B?VHhDZE9XVDFMS3BXODdKRFhLR0FEKzFKbEVzdC9SWlYzVXgxS0gwaDlqOG12?=
+ =?utf-8?B?Rlp5TTZTVlp2TEI3L25uK3Zhc2paTlp6aE1NZjJMYTNudVVlcnBBZGZBT2J1?=
+ =?utf-8?B?NVcwWExOSHVXOHU0alFrMmM3cjg2amt5VTNoaFovT1lzeGtHcms2Q2trOXB3?=
+ =?utf-8?B?WEJtYWF2RWMwNmxRWEh0c1dkd2hIRUlLOUtBRU11MDQvZnhSS0svTjBXTTRG?=
+ =?utf-8?B?UFE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <50C12375F18BC94DBED14E9F901A077C@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+X-OriginatorOrg: fi.rohmeurope.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c3f7590-7965-468a-4b45-08db4d252166
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 May 2023 04:56:47.2017
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xwBSizSc5mcX93xeraO8O7qZyS3iEAvW7TeUC3QNPMC4p0SXX00iv2n03RxALpOLKsJGlxUX9N84khLMONQTeIbJSe1+r4ICQzOTy0SNeKVWl9EZxbL9iTrLWs7CDdUH
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB1706
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,512 +141,115 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for MLX90615 Infra Red Thermometer, which seems to be
-the predecesor of MLX90614 . There are significant differences in
-the register layout compared to MLX90614, but the functionality
-of the device is virtually identical.
-
-The following differences have been identified:
-- RAM/EEPROM/SLEEP access opcodes are different
-- RAM/EEPROM registers are at different offsets
-- EEPROM emissivity and configuration registers are at different offsets
-- EEPROM configuration register bits are shuffled around
-- EEPROM emissivity settings are 14 bit on MLX90615 , 16 bit on MLX90614
-- MLX90615 can only ever support one sensor, MLX90614 could support two
-- FIR filter is set to fixed settings on MLX90615
-- IIR filter coefficients are different
-
-The approach taken here is to extract the differences between the two
-devices into chip info structure and then patch the code all over to
-cater for the differences.
-
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-NOTE: The IIR coefficients need to be checked
----
-Cc: Crt Mori <cmo@melexis.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Marek Vasut <marex@denx.de>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-iio@vger.kernel.org
----
- drivers/iio/temperature/mlx90614.c | 245 +++++++++++++++++++++--------
- 1 file changed, 176 insertions(+), 69 deletions(-)
-
-diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-index 909fadb623491..9826680608e5e 100644
---- a/drivers/iio/temperature/mlx90614.c
-+++ b/drivers/iio/temperature/mlx90614.c
-@@ -1,12 +1,15 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * mlx90614.c - Support for Melexis MLX90614 contactless IR temperature sensor
-+ * mlx90614.c - Support for Melexis MLX90614/MLX90615 contactless IR temperature sensor
-  *
-  * Copyright (c) 2014 Peter Meerwald <pmeerw@pmeerw.net>
-  * Copyright (c) 2015 Essensium NV
-  * Copyright (c) 2015 Melexis
-  *
-- * Driver for the Melexis MLX90614 I2C 16-bit IR thermopile sensor
-+ * Driver for the Melexis MLX90614/MLX90615 I2C 16-bit IR thermopile sensor
-+ *
-+ * MLX90614 - 17-bit ADC + MLX90302 DSP
-+ * MLX90615 - 16-bit ADC + MLX90325 DSP
-  *
-  * (7-bit I2C slave address 0x5a, 100KHz bus speed only!)
-  *
-@@ -22,9 +25,11 @@
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/jiffies.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/of_device.h>
- #include <linux/pm_runtime.h>
- 
- #include <linux/iio/iio.h>
-@@ -34,16 +39,27 @@
- #define MLX90614_OP_EEPROM	0x20
- #define MLX90614_OP_SLEEP	0xff
- 
-+#define MLX90615_OP_EEPROM	0x10
-+#define MLX90615_OP_RAM		0x20
-+#define MLX90615_OP_SLEEP	0xc6
-+
- /* RAM offsets with 16-bit data, MSB first */
--#define MLX90614_RAW1	(MLX90614_OP_RAM | 0x04) /* raw data IR channel 1 */
--#define MLX90614_RAW2	(MLX90614_OP_RAM | 0x05) /* raw data IR channel 2 */
--#define MLX90614_TA	(MLX90614_OP_RAM | 0x06) /* ambient temperature */
--#define MLX90614_TOBJ1	(MLX90614_OP_RAM | 0x07) /* object 1 temperature */
--#define MLX90614_TOBJ2	(MLX90614_OP_RAM | 0x08) /* object 2 temperature */
-+/* ambient temperature */
-+#define MLX9061X_TA(info)	\
-+	((info)->op_ram_access | 0x06)
-+/* object 1 temperature */
-+#define MLX9061X_TOBJ1(info)	\
-+	((info)->op_ram_access | 0x07)
-+/* object 2 temperature (MLX90614 only) */
-+#define MLX90614_TOBJ2(info)	\
-+	((info)->op_ram_access | 0x08)
- 
- /* EEPROM offsets with 16-bit data, MSB first */
--#define MLX90614_EMISSIVITY	(MLX90614_OP_EEPROM | 0x04) /* emissivity correction coefficient */
--#define MLX90614_CONFIG		(MLX90614_OP_EEPROM | 0x05) /* configuration register */
-+/* emissivity correction coefficient */
-+#define MLX9061X_EMISSIVITY(info) \
-+	((info)->op_eeprom_access | (info)->eeprom_offset_emissivity)
-+#define MLX9061X_CONFIG(info) \
-+	((info)->op_eeprom_access | (info)->eeprom_offset_config1)
- 
- /* Control bits in configuration register */
- #define MLX90614_CONFIG_IIR_SHIFT 0 /* IIR coefficient */
-@@ -52,44 +68,51 @@
- #define MLX90614_CONFIG_DUAL_MASK (1 << MLX90614_CONFIG_DUAL_SHIFT)
- #define MLX90614_CONFIG_FIR_SHIFT 8 /* FIR coefficient */
- #define MLX90614_CONFIG_FIR_MASK (0x7 << MLX90614_CONFIG_FIR_SHIFT)
--#define MLX90614_CONFIG_GAIN_SHIFT 11 /* gain */
--#define MLX90614_CONFIG_GAIN_MASK (0x7 << MLX90614_CONFIG_GAIN_SHIFT)
-+
-+#define MLX90615_CONFIG_IIR_SHIFT 12 /* IIR coefficient */
-+#define MLX90615_CONFIG_IIR_MASK (0x7 << MLX90615_CONFIG_IIR_SHIFT)
- 
- /* Timings (in ms) */
- #define MLX90614_TIMING_EEPROM 20 /* time for EEPROM write/erase to complete */
- #define MLX90614_TIMING_WAKEUP 34 /* time to hold SDA low for wake-up */
- #define MLX90614_TIMING_STARTUP 250 /* time before first data after wake-up */
- 
-+#define MLX90615_TIMING_WAKEUP 22 /* time to hold SCL low for wake-up */
-+
- #define MLX90614_AUTOSLEEP_DELAY 5000 /* default autosleep delay */
- 
- /* Magic constants */
--#define MLX90614_CONST_OFFSET_DEC -13657 /* decimal part of the Kelvin offset */
--#define MLX90614_CONST_OFFSET_REM 500000 /* remainder of offset (273.15*50) */
--#define MLX90614_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
--#define MLX90614_CONST_RAW_EMISSIVITY_MAX 65535 /* max value for emissivity */
--#define MLX90614_CONST_EMISSIVITY_RESOLUTION 15259 /* 1/65535 ~ 0.000015259 */
-+#define MLX9061X_CONST_OFFSET_DEC -13657 /* decimal part of the Kelvin offset */
-+#define MLX9061X_CONST_OFFSET_REM 500000 /* remainder of offset (273.15*50) */
-+#define MLX9061X_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
- #define MLX90614_CONST_FIR 0x7 /* Fixed value for FIR part of low pass filter */
- 
-+enum mlx_chip_model {
-+	MLX90614,
-+	MLX90615,
-+};
-+
-+struct mlx_chip_info {
-+	enum mlx_chip_model	model;
-+	u8			op_eeprom_access;
-+	u8			op_ram_access;
-+	u8			op_sleep;
-+	u8			eeprom_offset_emissivity;
-+	u8			eeprom_offset_config1;
-+	u16			emissivity_max;
-+	u16			emissivity_res;
-+	u16			iir_values[8];
-+	int			iir_freqs[8][2];
-+};
-+
- struct mlx90614_data {
- 	struct i2c_client *client;
- 	struct mutex lock; /* for EEPROM access only */
- 	struct gpio_desc *wakeup_gpio; /* NULL to disable sleep/wake-up */
-+	const struct mlx_chip_info *chip_info; /* Chip hardware details */
- 	unsigned long ready_timestamp; /* in jiffies */
- };
- 
--/* Bandwidth values for IIR filtering */
--static const int mlx90614_iir_values[] = {77, 31, 20, 15, 723, 153, 110, 86};
--static const int mlx90614_freqs[][2] = {
--	{0, 150000},
--	{0, 200000},
--	{0, 310000},
--	{0, 770000},
--	{0, 860000},
--	{1, 100000},
--	{1, 530000},
--	{7, 230000}
--};
--
- /*
-  * Erase an address and write word.
-  * The mutex must be locked before calling.
-@@ -129,21 +152,25 @@ static s32 mlx90614_write_word(const struct i2c_client *client, u8 command,
- }
- 
- /*
-- * Find the IIR value inside mlx90614_iir_values array and return its position
-+ * Find the IIR value inside iir_values array and return its position
-  * which is equivalent to the bit value in sensor register
-  */
- static inline s32 mlx90614_iir_search(const struct i2c_client *client,
- 				      int value)
- {
--	int i;
-+	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-+	struct mlx90614_data *data = iio_priv(indio_dev);
-+	const struct mlx_chip_info *chip_info = data->chip_info;
-+	/* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
-+	int i = chip_info->model == MLX90615 ? 1 : 0;
- 	s32 ret;
- 
--	for (i = 0; i < ARRAY_SIZE(mlx90614_iir_values); ++i) {
--		if (value == mlx90614_iir_values[i])
-+	for (; i < ARRAY_SIZE(chip_info->iir_values); ++i) {
-+		if (value == chip_info->iir_values[i])
- 			break;
- 	}
- 
--	if (i == ARRAY_SIZE(mlx90614_iir_values))
-+	if (i == ARRAY_SIZE(chip_info->iir_values))
- 		return -EINVAL;
- 
- 	/*
-@@ -151,17 +178,23 @@ static inline s32 mlx90614_iir_search(const struct i2c_client *client,
- 	 * we must read them before we actually write
- 	 * changes
- 	 */
--	ret = i2c_smbus_read_word_data(client, MLX90614_CONFIG);
-+	ret = i2c_smbus_read_word_data(client, MLX9061X_CONFIG(chip_info));
- 	if (ret < 0)
- 		return ret;
- 
--	ret &= ~MLX90614_CONFIG_FIR_MASK;
--	ret |= MLX90614_CONST_FIR << MLX90614_CONFIG_FIR_SHIFT;
--	ret &= ~MLX90614_CONFIG_IIR_MASK;
--	ret |= i << MLX90614_CONFIG_IIR_SHIFT;
-+	if (chip_info->model == MLX90614) {
-+		ret &= ~MLX90614_CONFIG_FIR_MASK;
-+		ret |= MLX90614_CONST_FIR << MLX90614_CONFIG_FIR_SHIFT;
-+		ret &= ~MLX90614_CONFIG_IIR_MASK;
-+		ret |= i << MLX90614_CONFIG_IIR_SHIFT;
-+	} else {
-+		/* MLX90615 has fixed FIR = 65536 */
-+		ret &= ~MLX90615_CONFIG_IIR_MASK;
-+		ret |= i << MLX90615_CONFIG_IIR_SHIFT;
-+	}
- 
- 	/* Write changed values */
--	ret = mlx90614_write_word(client, MLX90614_CONFIG, ret);
-+	ret = mlx90614_write_word(client, MLX9061X_CONFIG(chip_info), ret);
- 	return ret;
- }
- 
-@@ -221,22 +254,27 @@ static int mlx90614_read_raw(struct iio_dev *indio_dev,
- 			    int *val2, long mask)
- {
- 	struct mlx90614_data *data = iio_priv(indio_dev);
--	u8 cmd;
-+	const struct mlx_chip_info *chip_info = data->chip_info;
-+	u8 cmd, idx;
- 	s32 ret;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW: /* 0.02K / LSB */
- 		switch (channel->channel2) {
- 		case IIO_MOD_TEMP_AMBIENT:
--			cmd = MLX90614_TA;
-+			cmd = MLX9061X_TA(chip_info);
- 			break;
- 		case IIO_MOD_TEMP_OBJECT:
-+			/* MLX90615 is always single channel */
-+			if (chip_info->model == MLX90615 && channel->channel)
-+				return -EINVAL;
-+
- 			switch (channel->channel) {
- 			case 0:
--				cmd = MLX90614_TOBJ1;
-+				cmd = MLX9061X_TOBJ1(chip_info);
- 				break;
- 			case 1:
--				cmd = MLX90614_TOBJ2;
-+				cmd = MLX90614_TOBJ2(chip_info);
- 				break;
- 			default:
- 				return -EINVAL;
-@@ -262,51 +300,56 @@ static int mlx90614_read_raw(struct iio_dev *indio_dev,
- 		*val = ret;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = MLX90614_CONST_OFFSET_DEC;
--		*val2 = MLX90614_CONST_OFFSET_REM;
-+		*val = MLX9061X_CONST_OFFSET_DEC;
-+		*val2 = MLX9061X_CONST_OFFSET_REM;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_SCALE:
--		*val = MLX90614_CONST_SCALE;
-+		*val = MLX9061X_CONST_SCALE;
- 		return IIO_VAL_INT;
--	case IIO_CHAN_INFO_CALIBEMISSIVITY: /* 1/65535 / LSB */
-+	case IIO_CHAN_INFO_CALIBEMISSIVITY: /* 1/emissivity_max / LSB */
- 		ret = mlx90614_power_get(data, false);
- 		if (ret < 0)
- 			return ret;
- 
- 		mutex_lock(&data->lock);
- 		ret = i2c_smbus_read_word_data(data->client,
--					       MLX90614_EMISSIVITY);
-+					       MLX9061X_EMISSIVITY(chip_info));
- 		mutex_unlock(&data->lock);
- 		mlx90614_power_put(data);
- 
- 		if (ret < 0)
- 			return ret;
- 
--		if (ret == MLX90614_CONST_RAW_EMISSIVITY_MAX) {
-+		if (ret == chip_info->emissivity_max) {
- 			*val = 1;
- 			*val2 = 0;
- 		} else {
- 			*val = 0;
--			*val2 = ret * MLX90614_CONST_EMISSIVITY_RESOLUTION;
-+			*val2 = ret * chip_info->emissivity_res;
- 		}
- 		return IIO_VAL_INT_PLUS_NANO;
--	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY: /* IIR setting with
--							     FIR = 1024 */
-+	/* IIR setting with FIR=1024 (MLX90614) or FIR=65536 (MLX90615) */
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		ret = mlx90614_power_get(data, false);
- 		if (ret < 0)
- 			return ret;
- 
- 		mutex_lock(&data->lock);
--		ret = i2c_smbus_read_word_data(data->client, MLX90614_CONFIG);
-+		ret = i2c_smbus_read_word_data(data->client,
-+					       MLX9061X_CONFIG(chip_info));
- 		mutex_unlock(&data->lock);
- 		mlx90614_power_put(data);
- 
- 		if (ret < 0)
- 			return ret;
- 
--		*val = mlx90614_iir_values[ret & MLX90614_CONFIG_IIR_MASK] / 100;
--		*val2 = (mlx90614_iir_values[ret & MLX90614_CONFIG_IIR_MASK] % 100) *
--			10000;
-+		if (chip_info->model == MLX90614)
-+			idx = FIELD_GET(MLX90614_CONFIG_IIR_MASK, ret);
-+		else
-+			idx = FIELD_GET(MLX90615_CONFIG_IIR_MASK, ret);
-+
-+		*val = chip_info->iir_values[idx] / 100;
-+		*val2 = (chip_info->iir_values[idx] % 100) * 10000;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	default:
- 		return -EINVAL;
-@@ -318,22 +361,23 @@ static int mlx90614_write_raw(struct iio_dev *indio_dev,
- 			     int val2, long mask)
- {
- 	struct mlx90614_data *data = iio_priv(indio_dev);
-+	const struct mlx_chip_info *chip_info = data->chip_info;
- 	s32 ret;
- 
- 	switch (mask) {
--	case IIO_CHAN_INFO_CALIBEMISSIVITY: /* 1/65535 / LSB */
-+	case IIO_CHAN_INFO_CALIBEMISSIVITY: /* 1/emissivity_max / LSB */
- 		if (val < 0 || val2 < 0 || val > 1 || (val == 1 && val2 != 0))
- 			return -EINVAL;
--		val = val * MLX90614_CONST_RAW_EMISSIVITY_MAX +
--			val2 / MLX90614_CONST_EMISSIVITY_RESOLUTION;
-+		val = val * chip_info->emissivity_max +
-+		      val2 / chip_info->emissivity_res;
- 
- 		ret = mlx90614_power_get(data, false);
- 		if (ret < 0)
- 			return ret;
- 
- 		mutex_lock(&data->lock);
--		ret = mlx90614_write_word(data->client, MLX90614_EMISSIVITY,
--					  val);
-+		ret = mlx90614_write_word(data->client,
-+					  MLX9061X_EMISSIVITY(chip_info), val);
- 		mutex_unlock(&data->lock);
- 		mlx90614_power_put(data);
- 
-@@ -377,11 +421,18 @@ static int mlx90614_read_avail(struct iio_dev *indio_dev,
- 			       const int **vals, int *type, int *length,
- 			       long mask)
- {
-+	struct mlx90614_data *data = iio_priv(indio_dev);
-+	const struct mlx_chip_info *chip_info = data->chip_info;
-+
- 	switch (mask) {
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
--		*vals = (int *)mlx90614_freqs;
-+		*vals = (int *)chip_info->iir_freqs;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
--		*length = 2 * ARRAY_SIZE(mlx90614_freqs);
-+		/* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
-+		if (chip_info->model == MLX90615)
-+			*length = 2 * 7;
-+		else
-+			*length = 2 * 8;
- 		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
-@@ -456,6 +507,8 @@ static int mlx90614_sleep(struct mlx90614_data *data)
- 
- static int mlx90614_wakeup(struct mlx90614_data *data)
- {
-+	const struct mlx_chip_info *chip_info = data->chip_info;
-+
- 	if (!data->wakeup_gpio) {
- 		dev_dbg(&data->client->dev, "Wake-up disabled");
- 		return -ENOSYS;
-@@ -465,7 +518,8 @@ static int mlx90614_wakeup(struct mlx90614_data *data)
- 
- 	i2c_lock_bus(data->client->adapter, I2C_LOCK_ROOT_ADAPTER);
- 	gpiod_direction_output(data->wakeup_gpio, 0);
--	msleep(MLX90614_TIMING_WAKEUP);
-+	msleep(data->chip_info == MLX90614 ?
-+	       MLX90614_TIMING_WAKEUP : MLX90615_TIMING_WAKEUP);
- 	gpiod_direction_input(data->wakeup_gpio);
- 	i2c_unlock_bus(data->client->adapter, I2C_LOCK_ROOT_ADAPTER);
- 
-@@ -478,7 +532,7 @@ static int mlx90614_wakeup(struct mlx90614_data *data)
- 	 * If the read fails, the controller will probably be reset so that
- 	 * further reads will work.
- 	 */
--	i2c_smbus_read_word_data(data->client, MLX90614_CONFIG);
-+	i2c_smbus_read_word_data(data->client, MLX9061X_CONFIG(chip_info));
- 
- 	return 0;
- }
-@@ -527,9 +581,16 @@ static inline struct gpio_desc *mlx90614_probe_wakeup(struct i2c_client *client)
- /* Return 0 for single sensor, 1 for dual sensor, <0 on error. */
- static int mlx90614_probe_num_ir_sensors(struct i2c_client *client)
- {
-+	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-+	struct mlx90614_data *data = iio_priv(indio_dev);
-+	const struct mlx_chip_info *chip_info = data->chip_info;
- 	s32 ret;
- 
--	ret = i2c_smbus_read_word_data(client, MLX90614_CONFIG);
-+	/* MLX90615 is single-sensor only */
-+	if (chip_info->model == MLX90615)
-+		return 0;
-+
-+	ret = i2c_smbus_read_word_data(client, MLX9061X_CONFIG(chip_info));
- 
- 	if (ret < 0)
- 		return ret;
-@@ -556,6 +617,7 @@ static int mlx90614_probe(struct i2c_client *client)
- 	data->client = client;
- 	mutex_init(&data->lock);
- 	data->wakeup_gpio = mlx90614_probe_wakeup(client);
-+	data->chip_info = of_device_get_match_data(&client->dev);
- 
- 	mlx90614_wakeup(data);
- 
-@@ -605,14 +667,59 @@ static void mlx90614_remove(struct i2c_client *client)
- 	}
- }
- 
-+static const struct mlx_chip_info mlx90614_chip_info = {
-+	.model				= MLX90614,
-+	.op_eeprom_access		= MLX90614_OP_EEPROM,
-+	.op_ram_access			= MLX90614_OP_RAM,
-+	.op_sleep			= MLX90614_OP_SLEEP,
-+	.eeprom_offset_emissivity	= 0x04,
-+	.eeprom_offset_config1		= 0x05,
-+	.emissivity_max			= 65535,
-+	.emissivity_res			= 1000000000 / 65535,
-+	.iir_values			= { 77, 31, 20, 15, 723, 153, 110, 86 },
-+	.iir_freqs			= {
-+		{ 0, 150000 },	/* 13% ~= 0.15 Hz */
-+		{ 0, 200000 },	/* 17% ~= 0.20 Hz */
-+		{ 0, 310000 },	/* 25% ~= 0.31 Hz */
-+		{ 0, 770000 },	/* 50% ~= 0.77 Hz */
-+		{ 0, 860000 },	/* 57% ~= 0.86 Hz */
-+		{ 1, 100000 },	/* 67% ~= 1.10 Hz */
-+		{ 1, 530000 },	/* 80% ~= 1.53 Hz */
-+		{ 7, 230000 }	/* 100% ~= 7.23 Hz */
-+	},
-+};
-+
-+static const struct mlx_chip_info mlx90615_chip_info = {
-+	.model				= MLX90615,
-+	.op_eeprom_access		= MLX90615_OP_EEPROM,
-+	.op_ram_access			= MLX90615_OP_RAM,
-+	.op_sleep			= MLX90615_OP_SLEEP,
-+	.eeprom_offset_emissivity	= 0x03,
-+	.eeprom_offset_config1		= 0x02,
-+	.emissivity_max			= 16383,
-+	.emissivity_res			= 1000000000 / 16383,
-+	.iir_values			= { 0, 723, 77, 42, 31, 28, 20, 18 },
-+	.iir_freqs			= {
-+		{ 0, 180000 },	/* 14% ~= 0.18 Hz */
-+		{ 0, 200000 },	/* 17% ~= 0.20 Hz */
-+		{ 0, 280000 },	/* 20% ~= 0.28 Hz */
-+		{ 0, 310000 },	/* 25% ~= 0.31 Hz */
-+		{ 0, 420000 },	/* 33% ~= 0.42 Hz */
-+		{ 0, 770000 },	/* 50% ~= 0.77 Hz */
-+		{ 7, 230000 },	/* 100% ~= 7.23 Hz */
-+	},
-+};
-+
- static const struct i2c_device_id mlx90614_id[] = {
--	{ "mlx90614", 0 },
-+	{ "mlx90614", .driver_data = (kernel_ulong_t)&mlx90614_chip_info },
-+	{ "mlx90615", .driver_data = (kernel_ulong_t)&mlx90615_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, mlx90614_id);
- 
- static const struct of_device_id mlx90614_of_match[] = {
--	{ .compatible = "melexis,mlx90614" },
-+	{ .compatible = "melexis,mlx90614", .data = &mlx90614_chip_info },
-+	{ .compatible = "melexis,mlx90615", .data = &mlx90615_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, mlx90614_of_match);
--- 
-2.39.2
-
+T24gNS80LzIzIDE3OjMzLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6DQo+IE9uIFdlZCwgTWF5IDAz
+LCAyMDIzIGF0IDEyOjUwOjE0UE0gKzAzMDAsIE1hdHRpIFZhaXR0aW5lbiB3cm90ZToNCj4+IFRo
+ZSBST0hNIEJVMjcwMDggaXMgYSBzZW5zb3Igd2l0aCA1IHBob3RvZGlvZGVzIChyZWQsIGdyZWVu
+LCBibHVlLCBjbGVhcg0KPj4gYW5kIElSKSB3aXRoIGZvdXIgY29uZmlndXJhYmxlIGNoYW5uZWxz
+LiBSZWQgYW5kIGdyZWVuIGJlaW5nIGFsd2F5cw0KPj4gYXZhaWxhYmxlIGFuZCB0d28gb3V0IG9m
+IHRoZSByZXN0IHRocmVlIChibHVlLCBjbGVhciwgSVIpIGNhbiBiZQ0KPj4gc2VsZWN0ZWQgdG8g
+YmUgc2ltdWx0YW5lb3VzbHkgbWVhc3VyZWQuIFR5cGljYWwgYXBwbGljYXRpb24gaXMgYWRqdXN0
+aW5nDQo+PiBMQ0QgYmFja2xpZ2h0IG9mIFRWcywgbW9iaWxlIHBob25lcyBhbmQgdGFibGV0IFBD
+cy4NCj4+DQo+PiBBZGQgaW5pdGlhbCBzdXBwb3J0IGZvciB0aGUgUk9ITSBCVTI3MDA4IGNvbG9y
+IHNlbnNvci4NCj4+ICAgLSByYXdfcmVhZCgpIG9mIFJHQiBhbmQgY2xlYXIgY2hhbm5lbHMNCj4+
+ICAgLSB0cmlnZ2VyZWQgYnVmZmVyIHcvIERSRFkgaW50ZXJydHVwdA0KPiANCj4gLi4uDQo+IA0K
+Pj4gK2NvbmZpZyBST0hNX0JVMjcwMDgNCj4+ICsJdHJpc3RhdGUgIlJPSE0gQlUyNzAwOCBjb2xv
+ciAoUkdCK0MvSVIpIHNlbnNvciINCj4+ICsJZGVwZW5kcyBvbiBJMkMNCj4+ICsJc2VsZWN0IFJF
+R01BUF9JMkMNCj4+ICsJc2VsZWN0IElJT19HVFNfSEVMUEVSDQo+PiArCWhlbHANCj4+ICsJICBF
+bmFibGUgc3VwcG9ydCBmb3IgdGhlIFJPSE0gQlUyNzAwOCBjb2xvciBzZW5zb3IuDQo+PiArCSAg
+VGhlIFJPSE0gQlUyNzAwOCBpcyBhIHNlbnNvciB3aXRoIDUgcGhvdG9kaW9kZXMgKHJlZCwgZ3Jl
+ZW4sDQo+PiArCSAgYmx1ZSwgY2xlYXIgYW5kIElSKSB3aXRoIGZvdXIgY29uZmlndXJhYmxlIGNo
+YW5uZWxzLiBSZWQgYW5kDQo+PiArCSAgZ3JlZW4gYmVpbmcgYWx3YXlzIGF2YWlsYWJsZSBhbmQg
+dHdvIG91dCBvZiB0aGUgcmVzdCB0aHJlZQ0KPj4gKwkgIChibHVlLCBjbGVhciwgSVIpIGNhbiBi
+ZSBzZWxlY3RlZCB0byBiZSBzaW11bHRhbmVvdXNseSBtZWFzdXJlZC4NCj4+ICsJICBUeXBpY2Fs
+IGFwcGxpY2F0aW9uIGlzIGFkanVzdGluZyBMQ0QgYmFja2xpZ2h0IG9mIFRWcywNCj4+ICsJICBt
+b2JpbGUgcGhvbmVzIGFuZCB0YWJsZXQgUENzLg0KPiANCj4gTW9kdWxlIG5hbWU/DQoNCldlIGhh
+dmUgZGlzY3Vzc2VkIHRoaXMgc2V2ZXJhbCB0aW1lcyBhbHJlYWR5Lg0KDQpodHRwczovL2xvcmUu
+a2VybmVsLm9yZy9hbGwvMTBjNDY2M2ItZGQ2NS1hNTQ1LTc4NmQtMTBhZWQ2ZTZlNWU5QGZpLnJv
+aG1ldXJvcGUuY29tLw0KDQpNb2R1bGUgbmFtZSBpcyBjb21wbGV0ZWx5IGlycmVsZXZhbnQgd2hl
+biBzZWxlY3RpbmcgYSBrZXJuZWwgY29uZmlndXJhdGlvbi4NCg0KPiANCj4gLi4uDQo+IA0KPj4g
+K3N0YXRpYyBjb25zdCBzdHJ1Y3QgcmVnbWFwX3JhbmdlIGJ1MjcwMDhfcmVhZF9vbmx5X3Jhbmdl
+c1tdID0gew0KPj4gKwl7DQo+PiArCQkucmFuZ2VfbWluID0gQlUyNzAwOF9SRUdfREFUQTBfTE8s
+DQo+PiArCQkucmFuZ2VfbWF4ID0gQlUyNzAwOF9SRUdfREFUQTNfSEksDQo+PiArCX0sIHsNCj4+
+ICsJCS5yYW5nZV9taW4gPSBCVTI3MDA4X1JFR19NQU5VRkFDVFVSRVJfSUQsDQo+PiArCQkucmFu
+Z2VfbWF4ID0gQlUyNzAwOF9SRUdfTUFOVUZBQ1RVUkVSX0lELA0KPiANCj4+ICsJfQ0KPiANCj4g
+KyB0cmFpbGluZyBjb21tYSBmb3IgY29uc2lzdGVuY3k/IA0KDQpUaGFua3MuDQoNCj4+ICt9Ow0K
+PiANCj4gLi4uDQo+IA0KPj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgcmVnbWFwX2NvbmZpZyBidTI3
+MDA4X3JlZ21hcCA9IHsNCj4+ICsJLnJlZ19iaXRzID0gOCwNCj4+ICsJLnZhbF9iaXRzID0gOCwN
+Cj4+ICsJLm1heF9yZWdpc3RlciA9IEJVMjcwMDhfUkVHX01BWCwNCj4+ICsJLmNhY2hlX3R5cGUg
+PSBSRUdDQUNIRV9SQlRSRUUsDQo+PiArCS52b2xhdGlsZV90YWJsZSA9ICZidTI3MDA4X3ZvbGF0
+aWxlX3JlZ3MsDQo+PiArCS53cl90YWJsZSA9ICZidTI3MDA4X3JvX3JlZ3MsDQo+IA0KPiBEbyB5
+b3UgbmVlZCByZWdtYXAgbG9jaz8gSWYgc28sIHdoeSAoc2luY2UgeW91IGhhdmUgbXV0ZXgpPw0K
+DQpJIGJlbGlldmUgeW91IGtub3cgdGhhdCByZWdtYXAgdXNlcyBhIGRlZmF1bHQgbG9jayB3aGVu
+IG5vIGV4dGVybmFsIGxvY2sgDQppcyBnaXZlbi4gU28sIEkgYXNzdW1lIHlvdSBtZWFuIHRoYXQg
+bWF5YmUgd2UgY291bGQgc2V0IA0KJ2Rpc2FibGVfbG9ja2luZycgZm9yIHRoZSByZWdtYXAgaGVy
+ZS4NCg0KSXQncyBuaWNlIHRvIGJlIG9jY2FzaW9uYWxseSBwdXNoZWQgdG8gdGhpbmsgIm91dCBv
+ZiB0aGUgYm94Ii4gQW5kIHllcywgDQpkaXNhYmxpbmcgcmVnbWFwIGxvY2sgaXMgcmVhbGx5IG91
+dCBvZiBteSAibm9ybWFsIGJveCIgOikNCg0KSSBkaWRuJ3QgZ28gdGhyb3VnaCBhbGwgb2YgdGhl
+IGNvZGUgeWV0LCBidXQgSSB0aGluayBwcmV0dHkgbXVjaCBhbGwgb2YgDQp0aGUgc2VxdWVuY2Vz
+IHdoaWNoIGVuZCB1cCB0byByZWdpc3RlciB3cml0ZXMgYXJlIGluZGVlZCBwcm90ZWN0ZWQgYnkg
+DQp0aGUgbXV0ZXguIChXZWxsLCBwcm9iZSBpcyBub3QgYnV0IGl0IGlzIGV4cGVjdGVkIHRvIG9u
+bHkgdXBkYXRlIG9uZSBiaXQgDQp3aGlsZSByZXN0IG9mIHRoZSByZWdpc3RlciBzaG91bGQgc3Rh
+eSBmaXhlZCkuDQoNCkl0IG1heSBiZSB3ZSBjb3VsZCBsaXZlIHdpdGhvdXQgcmVnbWFwX2xvY2sg
+d2hlbiBkcml2ZXIgaXMgaW4gaXQncyANCmN1cnJlbnQgc3RhdGUsIGJ1dCBJIGFtIG5vdCBjb252
+aW5jZWQgdGhlIHBlcmZvcm1hbmNlIGltcHJvdmVtZW50IGlzIA0Kd29ydGggdGhlIHJpc2suIEhh
+dmluZyByZWdtYXAgdW5wcm90ZWN0ZWQgaXMgbm90IGNvbW1vbiwgYW5kIGl0IGlzIGFsc28gDQpu
+b3QgZWFzeSB0byBzcG90IHdoZW4gbWFraW5nIGNoYW5nZXMgdG8gdGhlIGRyaXZlci4gSW4gbXkg
+b3BpbmlvbiBpdCBpcyANCmEgYml0IGxpa2UgYXNraW5nIGZvciBhIG5vc2UtYmxlZWQgdW5sZXNz
+IHRoZXJlIGlzIHJlYWxseSBoZWF2eSByZWFzb25zIA0KdG8gZHJvcCB0aGUgbG9jay4uLiBJbiB0
+aGlzIGNhc2UsIGhhdmluZyB0aGUgcmVnbWFwX2xvY2sgKHdoaWNoIGlzIA0KcHJldHR5IG11Y2gg
+bmV2ZXIgbG9ja2VkIGJlY2F1c2Ugd2UgaGF2ZSB0aGUgbXV0ZXggYXMgeW91IHNhaWQpIGlzIA0K
+cHJvYmFibHkgbm90IGEgcGVuYWx0eSB0aGF0IG1hdHRlcnMuDQoNCj4gDQo+PiArfTsNCj4gDQo+
+IC4uLg0KPiANCj4+ICtzdGF0aWMgaW50IGJ1MjcwMDhfcmVhZF9vbmUoc3RydWN0IGJ1MjcwMDhf
+ZGF0YSAqZGF0YSwgc3RydWN0IGlpb19kZXYgKmlkZXYsDQo+PiArCQkJICAgIHN0cnVjdCBpaW9f
+Y2hhbl9zcGVjIGNvbnN0ICpjaGFuLCBpbnQgKnZhbCwgaW50ICp2YWwyKQ0KPj4gK3sNCj4+ICsJ
+aW50IHJldCwgaW50X3RpbWU7DQo+PiArDQo+PiArCXJldCA9IGJ1MjcwMDhfY2hhbl9jZmcoZGF0
+YSwgY2hhbik7DQo+PiArCWlmIChyZXQpDQo+PiArCQlyZXR1cm4gcmV0Ow0KPj4gKw0KPj4gKwly
+ZXQgPSBidTI3MDA4X21lYXNfc2V0KGRhdGEsIEJVMjcwMDhfTUVBU19FTik7DQo+PiArCWlmIChy
+ZXQpDQo+PiArCQlyZXR1cm4gcmV0Ow0KPj4gKw0KPj4gKwlpbnRfdGltZSA9IGJ1MjcwMDhfZ2V0
+X2ludF90aW1lX3VzKGRhdGEpOw0KPj4gKwlpZiAoaW50X3RpbWUgPCAwKQ0KPj4gKwkJaW50X3Rp
+bWUgPSBCVTI3MDA4X01FQVNfVElNRV9NQVhfTVM7DQo+PiArCWVsc2UNCj4+ICsJCWludF90aW1l
+IC89IFVTRUNfUEVSX01TRUM7DQo+IA0KPiBUaGUgYWJvdmUgZnVuY3Rpb24gcmV0dXJucyBhbiBl
+cnJvciBjb2RlIHdoZW4gbmVnYXRpdmUsIHNvIEkgd291bGQgcmF0aGVyIHNlZQ0KPiANCj4gCXJl
+dCA9IGJ1MjcwMDhfZ2V0X2ludF90aW1lX3VzKGRhdGEpOw0KPiAJaWYgKHJldCA8IDApDQo+IAkJ
+aW50X3RpbWUgPSBCVTI3MDA4X01FQVNfVElNRV9NQVhfTVM7DQo+IAllbHNlDQo+IAkJaW50X3Rp
+bWUgPSByZXQgLyBVU0VDX1BFUl9NU0VDOw0KPiANCj4gYXQgbGVhc3QgdGhpcyBleHBsaWNpdGx5
+IHNob3dzIHRoZSBzZW1hbnRpY3Mgb2YgdGhlICJuZWdhdGl2ZSIgdGltZS4NCg0KT2suDQoNCj4g
+DQo+PiArCW1zbGVlcChpbnRfdGltZSk7DQo+PiArDQo+PiArCXJldCA9IGJ1MjcwMDhfY2hhbl9y
+ZWFkX2RhdGEoZGF0YSwgY2hhbi0+YWRkcmVzcywgdmFsKTsNCj4+ICsJaWYgKCFyZXQpDQo+PiAr
+CQlyZXQgPSBJSU9fVkFMX0lOVDsNCj4+ICsNCj4+ICsJaWYgKGJ1MjcwMDhfbWVhc19zZXQoZGF0
+YSwgQlUyNzAwOF9NRUFTX0RJUykpDQo+PiArCQlkZXZfd2FybihkYXRhLT5kZXYsICJtZWFzdXJl
+bWVudCBkaXNhYmxpbmcgZmFpbGVkXG4iKTsNCj4+ICsNCj4+ICsJcmV0dXJuIHJldDsNCj4+ICt9
+DQo+IA0KPiAuLi4NCj4gDQo+PiArCXJldCA9IHJlZ21hcF9yZWluaXRfY2FjaGUoZGF0YS0+cmVn
+bWFwLCAmYnUyNzAwOF9yZWdtYXApOw0KPj4gKwlpZiAocmV0KSB7DQo+PiArCQlkZXZfZXJyKGRh
+dGEtPmRldiwgIkZhaWxlZCB0byByZWluaXQgcmVnIGNhY2hlXG4iKTsNCj4gDQo+PiArCQlyZXR1
+cm4gcmV0Ow0KPiANCj4gRHVwIGlzIG5vdCBuZWVkZWQuDQoNClRoYW5rcy4NCg0KPiANCj4+ICsJ
+fQ0KPj4gKw0KPj4gKwlyZXR1cm4gcmV0Ow0KPiANCj4gLi4uDQo+IA0KPj4gKwlpZiAoaTJjLT5p
+cnEpIHsNCj4gDQo+IEluc3RlYWQgb2YgYSBsb25nIGJvZHksIEkgd291bGQgcmF0aGVyIHNlZSBh
+IGNhbGwgdG8NCg0KQ291bGQgbWFrZSBzZW5zZSBpbmRlZWQuIEknbGwgc2VlIGhvdyBpdCB3b3Vs
+ZCBsb29rIGxpa2UsIHRoYW5rcy4NCg0KPiANCj4gCQlyZXQgPSAuLi5fc2V0dXBfaXJxKCk7DQo+
+IAkJaWYgKHJldCkNCj4gCQkJcmV0dXJuIHJldDsNCj4gDQo+PiArCQlyZXQgPSBkZXZtX2lpb190
+cmlnZ2VyZWRfYnVmZmVyX3NldHVwKGRldiwgaWRldiwNCj4+ICsJCQkJCQkgICAgICAmaWlvX3Bv
+bGxmdW5jX3N0b3JlX3RpbWUsDQo+PiArCQkJCQkJICAgICAgYnUyNzAwOF90cmlnZ2VyX2hhbmRs
+ZXIsDQo+PiArCQkJCQkJICAgICAgJmJ1MjcwMDhfYnVmZmVyX29wcyk7DQo+PiArCQlpZiAocmV0
+KQ0KPj4gKwkJCXJldHVybiBkZXZfZXJyX3Byb2JlKGRldiwgcmV0LA0KPj4gKwkJCQkgICAgICJp
+aW9fdHJpZ2dlcmVkX2J1ZmZlcl9zZXR1cF9leHQgRkFJTFxuIik7DQo+PiArDQo+PiArCQlpdHJp
+ZyA9IGRldm1faWlvX3RyaWdnZXJfYWxsb2MoZGV2LCAiJXNkYXRhLXJkeS1kZXYlZCIsDQo+PiAr
+CQkJCQkgICAgICAgaWRldi0+bmFtZSwgaWlvX2RldmljZV9pZChpZGV2KSk7DQo+PiArCQlpZiAo
+IWl0cmlnKQ0KPj4gKwkJCXJldHVybiAtRU5PTUVNOw0KPj4gKw0KPj4gKwkJZGF0YS0+dHJpZyA9
+IGl0cmlnOw0KPj4gKw0KPj4gKwkJaXRyaWctPm9wcyA9ICZidTI3MDA4X3RyaWdnZXJfb3BzOw0K
+Pj4gKwkJaWlvX3RyaWdnZXJfc2V0X2RydmRhdGEoaXRyaWcsIGRhdGEpOw0KPj4gKw0KPj4gKwkJ
+bmFtZSA9IGRldm1fa2FzcHJpbnRmKGRldiwgR0ZQX0tFUk5FTCwgIiVzLWJ1MjcwMDgiLA0KPj4g
+KwkJCQkgICAgICBkZXZfbmFtZShkZXYpKTsNCj4+ICsNCj4+ICsJCXJldCA9IGRldm1fcmVxdWVz
+dF9pcnEoZGV2LCBpMmMtPmlycSwNCj4+ICsJCQkJICAgICAgICZidTI3MDA4X2RhdGFfcmR5X3Bv
+bGwsDQo+PiArCQkJCSAgICAgICAwLCBuYW1lLCBpdHJpZyk7DQo+PiArCQlpZiAocmV0KQ0KPj4g
+KwkJCXJldHVybiBkZXZfZXJyX3Byb2JlKGRldiwgcmV0LA0KPj4gKwkJCQkJICAgICAiQ291bGQg
+bm90IHJlcXVlc3QgSVJRXG4iKTsNCj4+ICsNCj4+ICsJCXJldCA9IGRldm1faWlvX3RyaWdnZXJf
+cmVnaXN0ZXIoZGV2LCBpdHJpZyk7DQo+PiArCQlpZiAocmV0KQ0KPj4gKwkJCXJldHVybiBkZXZf
+ZXJyX3Byb2JlKGRldiwgcmV0LA0KPj4gKwkJCQkJICAgICAiVHJpZ2dlciByZWdpc3RyYXRpb24g
+ZmFpbGVkXG4iKTsNCj4+ICsNCj4+ICsJCS8qIHNldCBkZWZhdWx0IHRyaWdnZXIgKi8NCj4+ICsJ
+CWlkZXYtPnRyaWcgPSBpaW9fdHJpZ2dlcl9nZXQoaXRyaWcpOw0KPj4gKwl9IGVsc2Ugew0KPj4g
+KwkJZGV2X2luZm8oZGV2LCAiTm8gSVJRLCBidWZmZXJlZCBtb2RlIGRpc2FibGVkXG4iKTsNCj4+
+ICsJfQ0KPiANCj4gDQoNCllvdXJzLA0KCS0tIE1hdHRpDQoNCi0tIA0KTWF0dGkgVmFpdHRpbmVu
+DQpMaW51eCBrZXJuZWwgZGV2ZWxvcGVyIGF0IFJPSE0gU2VtaWNvbmR1Y3RvcnMNCk91bHUgRmlu
+bGFuZA0KDQp+fiBXaGVuIHRoaW5ncyBnbyB1dHRlcmx5IHdyb25nIHZpbSB1c2VycyBjYW4gYWx3
+YXlzIHR5cGUgOmhlbHAhIH5+DQoNCg==

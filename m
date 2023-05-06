@@ -2,491 +2,490 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9742F6F92DC
-	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 17:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DFFD6F9309
+	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 18:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjEFPsb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 May 2023 11:48:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57936 "EHLO
+        id S229553AbjEFQRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 May 2023 12:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231986AbjEFPsa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 11:48:30 -0400
+        with ESMTP id S229446AbjEFQRl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 12:17:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6308A9E;
-        Sat,  6 May 2023 08:48:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BAA6E94;
+        Sat,  6 May 2023 09:17:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E53B160E8E;
-        Sat,  6 May 2023 15:48:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8CFC433D2;
-        Sat,  6 May 2023 15:48:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F155360CFB;
+        Sat,  6 May 2023 16:17:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1D7C433D2;
+        Sat,  6 May 2023 16:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683388107;
-        bh=d0Et/CWk1WaMjcu0xg8g1bDxiLSxcPrM5uAHf6MjFRo=;
+        s=k20201202; t=1683389858;
+        bh=63XSCodsrURSCvC0kVPRkm12GyXKRYpAy5ATjGGo6/U=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JxMxGxQRsI1YnywfacZqAiq5cThzDVQg32E3KvjSQy0Jkt7CJqWqck+t5QBtDgIMT
-         4fttRf25JKd7/ST/2xLkIsEZjJEQ0toRa/Xvvbepwkv8iM2IZVxp67UhlHiuO/f9FY
-         GCGv+XzyXFMe+ximjI7BX6wPLQ7ahVbxkOw8rWXaERR4IdztUfniXb3N9haqU2k3Hj
-         3V66bxn69a1PQcazdOWXwOvrijWl70RAGH7WsDcBx1TpfnzhVPZeGotUjrmj3YGh1F
-         CbK0OwGMP+JyW9d6eZ6m9WYVKdgp2/mly7JQckC26E7XnHt+HZGWn/TVagxQ/Dz2Wj
-         3MaBYm2mACcjA==
-Date:   Sat, 6 May 2023 17:04:20 +0100
+        b=O1sBNmCVSpMOchdL8sPQciM96fYEnRBgbi+dgGO8nyjgYEs/IuA2zoKCiHMC3lG4D
+         B9ztmCZye1FJI72E/tWmIfmMEe+IVG6tF3oMHlMHy7XxilaZf3fUkV72mipyiBvdEK
+         asUdAHz4hML8Tn/Qws0L8dKExi34gRF1v4GGgRada5biLvHlKRNOBXMvBOuddJfKxA
+         8op5AtDRoxj9gsc9yh065eIS85iQ47QLL1uwJm73nbYCn1wpzL/FhCXarQw1szfdG7
+         evlZnfBEzXHqEpT6UTWVM9otlGQ7SqR2qQUFO36FR3+DSIZX6DguwBb05/kKMKjjd1
+         npPoFUbZm2MJA==
+Date:   Sat, 6 May 2023 17:33:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-iio@vger.kernel.org, Crt Mori <cmo@melexis.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: pressure: Honeywell mprls0025pa pressure
- sensor
-Message-ID: <20230506170420.71bead77@jic23-huawei>
-In-Reply-To: <ZFUC/3zBFQRBsYUk@arbad>
-References: <ZFUCf059+PSR+3Wb@arbad>
-        <ZFUC/3zBFQRBsYUk@arbad>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: mlx90614: Add MLX90615 support
+Message-ID: <20230506173330.000d3826@jic23-huawei>
+In-Reply-To: <20230504194750.4489-2-marex@denx.de>
+References: <20230504194750.4489-1-marex@denx.de>
+        <20230504194750.4489-2-marex@denx.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 5 May 2023 15:22:07 +0200
-Andreas Klinger <ak@it-klinger.de> wrote:
+On Thu,  4 May 2023 21:47:50 +0200
+Marek Vasut <marex@denx.de> wrote:
 
-> Honeywell mprls0025pa is a series of pressure sensors.
+> Add support for MLX90615 Infra Red Thermometer, which seems to be
+> the predecesor of MLX90614 . There are significant differences in
+> the register layout compared to MLX90614, but the functionality
+> of the device is virtually identical.
 > 
-> Add initial I2C support.
+> The following differences have been identified:
+> - RAM/EEPROM/SLEEP access opcodes are different
+> - RAM/EEPROM registers are at different offsets
+> - EEPROM emissivity and configuration registers are at different offsets
+> - EEPROM configuration register bits are shuffled around
+> - EEPROM emissivity settings are 14 bit on MLX90615 , 16 bit on MLX90614
+> - MLX90615 can only ever support one sensor, MLX90614 could support two
+> - FIR filter is set to fixed settings on MLX90615
+> - IIR filter coefficients are different
 > 
-> Note:
-> - IIO buffered mode is supported
-> - SPI mode is not supported
-> 
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> The approach taken here is to extract the differences between the two
+> devices into chip info structure and then patch the code all over to
+> cater for the differences.
 
-Hi Andreas,
+Approach is a good one, but generally I'd prefer to see a noop refactor
+done first then the bits for the new device added in a separate patch.
+That keeps each patch focused on one thing.
+1st one is just checking the changes are reasonable and make no
+functional difference.
+2nd one is a datasheet dive or similar to check values for new part are correct.
 
-A few maths related questions inline + a few other bits noticed
-on a fresh read through.
+Clearly in this case the 2nd patch is pretty short, so I'm not that bothered
+but wanted to state my general preferred approach for similar series.
+
+A few comments inline, mostly on pushing the remaining part specific stuff
+into data in chip_info rather than mixing and matching like this does.
 
 Thanks,
 
 Jonathan
 
-
-> ---
->  drivers/iio/pressure/Kconfig       |  13 +
->  drivers/iio/pressure/Makefile      |   1 +
->  drivers/iio/pressure/mprls0025pa.c | 441 +++++++++++++++++++++++++++++
->  3 files changed, 455 insertions(+)
->  create mode 100644 drivers/iio/pressure/mprls0025pa.c
 > 
-> diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-> index c9453389e4f7..43aef35ce778 100644
-> --- a/drivers/iio/pressure/Kconfig
-> +++ b/drivers/iio/pressure/Kconfig
-> @@ -148,6 +148,19 @@ config MPL3115
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called mpl3115.
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> NOTE: The IIR coefficients need to be checked
+> ---
+> Cc: Crt Mori <cmo@melexis.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Marek Vasut <marex@denx.de>
+> Cc: Peter Meerwald <pmeerw@pmeerw.net>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> ---
+>  drivers/iio/temperature/mlx90614.c | 245 +++++++++++++++++++++--------
+>  1 file changed, 176 insertions(+), 69 deletions(-)
+> 
+> diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
+> index 909fadb623491..9826680608e5e 100644
+> --- a/drivers/iio/temperature/mlx90614.c
+> +++ b/drivers/iio/temperature/mlx90614.c
+> @@ -1,12 +1,15 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+> - * mlx90614.c - Support for Melexis MLX90614 contactless IR temperature sensor
+> + * mlx90614.c - Support for Melexis MLX90614/MLX90615 contactless IR temperature sensor
+>   *
+>   * Copyright (c) 2014 Peter Meerwald <pmeerw@pmeerw.net>
+>   * Copyright (c) 2015 Essensium NV
+>   * Copyright (c) 2015 Melexis
+>   *
+> - * Driver for the Melexis MLX90614 I2C 16-bit IR thermopile sensor
+> + * Driver for the Melexis MLX90614/MLX90615 I2C 16-bit IR thermopile sensor
+> + *
+> + * MLX90614 - 17-bit ADC + MLX90302 DSP
+> + * MLX90615 - 16-bit ADC + MLX90325 DSP
+>   *
+>   * (7-bit I2C slave address 0x5a, 100KHz bus speed only!)
+>   *
+> @@ -22,9 +25,11 @@
+>  #include <linux/err.h>
+>  #include <linux/i2c.h>
+>  #include <linux/module.h>
+> +#include <linux/bitfield.h>
+>  #include <linux/delay.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/gpio/consumer.h>
+> +#include <linux/of_device.h>
+
+property.h 
+See below for why
+
+>  #include <linux/pm_runtime.h>
 >  
-> +config MPRLS0025PA
-> +	tristate "Honeywell MPRLS0025PA (MicroPressure sensors series)"
-> +	depends on I2C
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
-> +	help
-> +	  Say Y here to build support for the Honeywell MicroPressure pressure
-> +	  sensor series. There are many different types with different pressure
-> +	  range. These ranges can be set up in the device tree.
+>  #include <linux/iio/iio.h>
+> @@ -34,16 +39,27 @@
+>  #define MLX90614_OP_EEPROM	0x20
+>  #define MLX90614_OP_SLEEP	0xff
+>  
+> +#define MLX90615_OP_EEPROM	0x10
+> +#define MLX90615_OP_RAM		0x20
+> +#define MLX90615_OP_SLEEP	0xc6
 > +
-> +	  To compile this driver as a module, choose M here: the module will be
-> +	  called mprls0025pa.
+>  /* RAM offsets with 16-bit data, MSB first */
+> -#define MLX90614_RAW1	(MLX90614_OP_RAM | 0x04) /* raw data IR channel 1 */
+> -#define MLX90614_RAW2	(MLX90614_OP_RAM | 0x05) /* raw data IR channel 2 */
+> -#define MLX90614_TA	(MLX90614_OP_RAM | 0x06) /* ambient temperature */
+> -#define MLX90614_TOBJ1	(MLX90614_OP_RAM | 0x07) /* object 1 temperature */
+> -#define MLX90614_TOBJ2	(MLX90614_OP_RAM | 0x08) /* object 2 temperature */
+> +/* ambient temperature */
+> +#define MLX9061X_TA(info)	\
+> +	((info)->op_ram_access | 0x06)
+> +/* object 1 temperature */
+> +#define MLX9061X_TOBJ1(info)	\
+> +	((info)->op_ram_access | 0x07)
+> +/* object 2 temperature (MLX90614 only) */
+> +#define MLX90614_TOBJ2(info)	\
+> +	((info)->op_ram_access | 0x08)
+
+I wonder if this would be cleaner with defines just for the 0x06 etc and
+then push the op_ram_access down to the accesses.  Building the commands at the call sight
+seems simpler than hiding them under a macro like this, particularly now there is a lookup
+in a structure burried in there rather than just the | of some constants.
+
+>  
+>  /* EEPROM offsets with 16-bit data, MSB first */
+> -#define MLX90614_EMISSIVITY	(MLX90614_OP_EEPROM | 0x04) /* emissivity correction coefficient */
+> -#define MLX90614_CONFIG		(MLX90614_OP_EEPROM | 0x05) /* configuration register */
+> +/* emissivity correction coefficient */
+> +#define MLX9061X_EMISSIVITY(info) \
+> +	((info)->op_eeprom_access | (info)->eeprom_offset_emissivity)
+> +#define MLX9061X_CONFIG(info) \
+> +	((info)->op_eeprom_access | (info)->eeprom_offset_config1)
+>  
+>  /* Control bits in configuration register */
+>  #define MLX90614_CONFIG_IIR_SHIFT 0 /* IIR coefficient */
+> @@ -52,44 +68,51 @@
+>  #define MLX90614_CONFIG_DUAL_MASK (1 << MLX90614_CONFIG_DUAL_SHIFT)
+>  #define MLX90614_CONFIG_FIR_SHIFT 8 /* FIR coefficient */
+>  #define MLX90614_CONFIG_FIR_MASK (0x7 << MLX90614_CONFIG_FIR_SHIFT)
+> -#define MLX90614_CONFIG_GAIN_SHIFT 11 /* gain */
+> -#define MLX90614_CONFIG_GAIN_MASK (0x7 << MLX90614_CONFIG_GAIN_SHIFT)
 > +
->  config MS5611
->  	tristate "Measurement Specialties MS5611 pressure sensor driver"
->  	select IIO_BUFFER
-> diff --git a/drivers/iio/pressure/Makefile b/drivers/iio/pressure/Makefile
-> index 083ae87ff48f..c90f77210e94 100644
-> --- a/drivers/iio/pressure/Makefile
-> +++ b/drivers/iio/pressure/Makefile
-> @@ -19,6 +19,7 @@ obj-$(CONFIG_MPL115) += mpl115.o
->  obj-$(CONFIG_MPL115_I2C) += mpl115_i2c.o
->  obj-$(CONFIG_MPL115_SPI) += mpl115_spi.o
->  obj-$(CONFIG_MPL3115) += mpl3115.o
-> +obj-$(CONFIG_MPRLS0025PA) += mprls0025pa.o
->  obj-$(CONFIG_MS5611) += ms5611_core.o
->  obj-$(CONFIG_MS5611_I2C) += ms5611_i2c.o
->  obj-$(CONFIG_MS5611_SPI) += ms5611_spi.o
-> diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-> new file mode 100644
-> index 000000000000..7a8736de6e87
-> --- /dev/null
-> +++ b/drivers/iio/pressure/mprls0025pa.c
-> @@ -0,0 +1,441 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * MPRLS0025PA - Honeywell MicroPressure pressure sensor series driver
-> + *
-> + * Copyright (c) Andreas Klinger <ak@it-klinger.de>
-> + *
-> + * Data sheet:
-> + *  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/
-> + *    products/sensors/pressure-sensors/board-mount-pressure-sensors/
-> + *    micropressure-mpr-series/documents/
-> + *    sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
-> + *
-> + * 7-bit I2C default slave address: 0x18
-> + */
+> +#define MLX90615_CONFIG_IIR_SHIFT 12 /* IIR coefficient */
+> +#define MLX90615_CONFIG_IIR_MASK (0x7 << MLX90615_CONFIG_IIR_SHIFT)
+>  
+>  /* Timings (in ms) */
+>  #define MLX90614_TIMING_EEPROM 20 /* time for EEPROM write/erase to complete */
+>  #define MLX90614_TIMING_WAKEUP 34 /* time to hold SDA low for wake-up */
+>  #define MLX90614_TIMING_STARTUP 250 /* time before first data after wake-up */
+>  
+> +#define MLX90615_TIMING_WAKEUP 22 /* time to hold SCL low for wake-up */
 > +
-> +#include <asm/unaligned.h>
-Common convention is put the asm stuff after the linux includes as it's
-more specific. 
+>  #define MLX90614_AUTOSLEEP_DELAY 5000 /* default autosleep delay */
+>  
+>  /* Magic constants */
+> -#define MLX90614_CONST_OFFSET_DEC -13657 /* decimal part of the Kelvin offset */
+> -#define MLX90614_CONST_OFFSET_REM 500000 /* remainder of offset (273.15*50) */
+> -#define MLX90614_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
+> -#define MLX90614_CONST_RAW_EMISSIVITY_MAX 65535 /* max value for emissivity */
+> -#define MLX90614_CONST_EMISSIVITY_RESOLUTION 15259 /* 1/65535 ~ 0.000015259 */
+> +#define MLX9061X_CONST_OFFSET_DEC -13657 /* decimal part of the Kelvin offset */
+> +#define MLX9061X_CONST_OFFSET_REM 500000 /* remainder of offset (273.15*50) */
+> +#define MLX9061X_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
 
-Often you get:
+Avoid wild cards. It's fine if some values apply to multiple sensors and others don't.
+Wildcards have bitten us far too often.  What happens when the mlx90617 uses
+a different value from these that are shared by the existing parts?  A mess of naming.
+Better to just allow for some differing and others not.  
 
-General includes
+Partly that will be helped by moving all the part specific stuff away from defines
+and having values directly in the chip_info instances.  Anything left up here is
+generic.
 
-Subsystem specific includes
-
-asm includes
-
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/i2c.h>
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/math64.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/property.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +/* bits in i2c status byte */
-> +#define MPR_I2C_POWER	BIT(6)	/* device is powered */
-> +#define MPR_I2C_BUSY	BIT(5)	/* device is busy */
-> +#define MPR_I2C_MEMORY	BIT(2)	/* integrity test passed */
-> +#define MPR_I2C_MATH	BIT(0)	/* internal math saturation */
-> +
-> +#define MPR_NANO_PART	1000000000LL
-
-NANO from units.h instead of this?
-
-> +
-> +/*
-> + * _INPUT interface:
-
-Why _INPUT?  I kind of get what you mean, but I'd just call it sysfs
-interface and talk about the units the value ends up in rather than
-referring to a different sysfs interface the driver correctly isn't
-supplying to userspace.
-
-> + * Calculation formular from the datasheet:
-> + * pressure = (press_cnt - outputmin) * scale + pmin
-> + * with:
-> + * * pressure	- measured pressure in Pascal
-> + * * press_cnt	- raw value read from sensor
-> + * * pmin	- minimum pressure range value of sensor (data->pmin)
-> + * * pmax	- maximum pressure range value of sensor (data->pmax)
-> + * * outputmin	- minimum numerical range raw value delivered by sensor
-> + *							(MPR_OUT_MIN)
-> + * * outputmax	- maximum numerical range raw value delivered by sensor
-> + *							(MPR_OUT_MAX)
-> + * * scale	- (pmax - pmin) / (outputmax - outputmin)
-> + *
-> + * _RAW interface:
-> + * pressure = (raw + offset) * scale
-> + * --> need to adjust offset for fitting into _RAW interface
-> + * Values for _RAW interface:
-> + * * raw	- press_cnt
-> + * * scale	- (pmax - pmin) / (outputmax - outputmin)
-> + * * offset	- (-1 * outputmin) - pmin / scale
-> + *                note: With all sensors from the datasheet pmin = 0
-> + *                which reduces the offset to (-1 * outputmin)
-> + */
-> +
-> +/*
-> + * transfer function A: 10%   to 90%   of 2^24
-> + * transfer function B:  2.5% to 22.5% of 2^24
-> + * transfer function C: 20%   to 80%   of 2^24
-> + */
-> +enum mpr_func_id {
-> +	MPR_FUNCTION_A,
-> +	MPR_FUNCTION_B,
-> +	MPR_FUNCTION_C,
+>  #define MLX90614_CONST_FIR 0x7 /* Fixed value for FIR part of low pass filter */
+>  
+> +enum mlx_chip_model {
+> +	MLX90614,
+> +	MLX90615,
 > +};
 > +
-> +struct mpr_func_spec {
-> +	u32			output_min;
-> +	u32			output_max;
-> +};
-> +
-> +static const struct mpr_func_spec mpr_func_spec[] = {
-> +	[MPR_FUNCTION_A] = {.output_min = 1677722, .output_max = 15099494},
-> +	[MPR_FUNCTION_B] = {.output_min =  419430, .output_max =  3774874},
-> +	[MPR_FUNCTION_C] = {.output_min = 3355443, .output_max = 13421773},
-> +};
-> +
-> +struct mpr_chan {
-> +	s32			pres;		/* pressure value */
-> +	s64			ts;		/* timestamp */
-> +};
-> +
-> +struct mpr_data {
-> +	struct i2c_client	*client;
-> +	struct mutex		lock;		/* i2c transactions */
+> +struct mlx_chip_info {
+> +	enum mlx_chip_model	model;
 
-That's a little vague.  Key bit here I think is to lock the access to the device when
-waiting for an interrupt or timeout on a reading, not the transactions themselves.
+Generally the presence of such an enum value in here is a sign you aren't
+abstracting things as much as you should.  Bring everything that differs
+between the chips in here as data, or if necessary function pointers
+and get rid of this model.
 
-> +	u32			pmin;		/* minimal pressure in pascal */
-> +	u32			pmax;		/* maximal pressure in pascal */
-> +	u32			function;	/* transfer function */
+> +	u8			op_eeprom_access;
+> +	u8			op_ram_access;
+> +	u8			op_sleep;
+> +	u8			eeprom_offset_emissivity;
+> +	u8			eeprom_offset_config1;
+> +	u16			emissivity_max;
+> +	u16			emissivity_res;
+> +	u16			iir_values[8];
+> +	int			iir_freqs[8][2];
+As below. This varies in length, so you also want a
+	num_irq_freq variable to keep that information in same place as the entries.
 
-Why not enum mpr_func_id ?
-
-
-> +	u32			outmin;		/*
-> +						 * minimal numerical range raw
-> +						 * value from sensor
-> +						 */
-> +	u32			outmax;		/*
-> +						 * maximal numerical range raw
-> +						 * value from sensor
-> +						 */
-> +	int                     scale;          /* int part of scale */
-> +	int                     scale2;         /* nano part of scale */
-> +	int                     offset;         /* int part of offset */
-> +	int                     offset2;        /* nano part of offset */
-> +	struct gpio_desc	*gpiod_reset;	/* reset */
-> +	int			irq;		/* end of conversion irq */
-
-Only needed in probe, no need for a copy in here.
-
-
-> +	struct completion	completion;	/* handshake from irq to read */
-> +	struct mpr_chan		chan;		/*
-> +						 * channel values for buffered
-> +						 * mode
-> +						 */
 > +};
 
+>  /*
+>   * Erase an address and write word.
+>   * The mutex must be locked before calling.
+> @@ -129,21 +152,25 @@ static s32 mlx90614_write_word(const struct i2c_client *client, u8 command,
+>  }
+>  
+>  /*
+> - * Find the IIR value inside mlx90614_iir_values array and return its position
+> + * Find the IIR value inside iir_values array and return its position
+>   * which is equivalent to the bit value in sensor register
+>   */
+>  static inline s32 mlx90614_iir_search(const struct i2c_client *client,
+>  				      int value)
+>  {
+> -	int i;
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> +	struct mlx90614_data *data = iio_priv(indio_dev);
+> +	const struct mlx_chip_info *chip_info = data->chip_info;
+> +	/* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
+> +	int i = chip_info->model == MLX90615 ? 1 : 0;
 
-> +/**
-> + * mpr_read_pressure() - Read pressure value from sensor via I2C
-> + * @data: Pointer to private data struct.
-> + * @press: Output value read from sensor.
-> + *
-> + * Reading from the sensor by sending and receiving I2C telegrams.
-> + *
-> + * If there is an end of conversion (EOC) interrupt registered the function
-> + * waits for a maximum of one second for the interrupt.
-> + *
-> + * Context: The function can sleep and data->lock should be held when calling it
-> + * Return:
-> + * * 0		- OK, the pressure value could be read
-> + * * -ETIMEDOUT	- Timeout while waiting for the EOC interrupt or busy flag is
-> + *		  still set after nloops attempts of reading
-> + */
-> +static int mpr_read_pressure(struct mpr_data *data, s32 *press)
-> +{
-> +	struct device *dev = &data->client->dev;
-> +	int ret, i;
-> +	u8 wdata[] = {0xAA, 0x00, 0x00};
-> +	s32 status;
-> +	int nloops = 10;
-> +	u8 buf[5];
-> +
-> +	reinit_completion(&data->completion);
-> +
-> +	ret = i2c_master_send(data->client, wdata, sizeof(wdata));
-> +	if (ret < 0) {
-> +		dev_err(dev, "error while writing ret: %d\n", ret);
-> +		return ret;
-> +	}
-> +	if (ret != sizeof(wdata)) {
-> +		dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-> +								sizeof(wdata));
-> +		return -EIO;
-> +	}
-> +
-> +	if (data->irq > 0) {
-> +		ret = wait_for_completion_timeout(&data->completion, HZ);
-> +		if (!ret) {
-> +			dev_err(dev, "timeout while waiting for eoc irq\n");
-> +			return -ETIMEDOUT;
-> +		}
+Ah. I wondered about that zero.  You'll want to also figure out how to map
+this over.  That might be by making that array contain both the value
+to match and the register value it corresponds to rather than relying on
+the index.
+
+>  	s32 ret;
+>  
+> -	for (i = 0; i < ARRAY_SIZE(mlx90614_iir_values); ++i) {
+> -		if (value == mlx90614_iir_values[i])
+> +	for (; i < ARRAY_SIZE(chip_info->iir_values); ++i) {
+> +		if (value == chip_info->iir_values[i])
+>  			break;
+>  	}
+>  
+> -	if (i == ARRAY_SIZE(mlx90614_iir_values))
+> +	if (i == ARRAY_SIZE(chip_info->iir_values))
+>  		return -EINVAL;
+>  
+>  	/*
+> @@ -151,17 +178,23 @@ static inline s32 mlx90614_iir_search(const struct i2c_client *client,
+>  	 * we must read them before we actually write
+>  	 * changes
+>  	 */
+> -	ret = i2c_smbus_read_word_data(client, MLX90614_CONFIG);
+> +	ret = i2c_smbus_read_word_data(client, MLX9061X_CONFIG(chip_info));
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret &= ~MLX90614_CONFIG_FIR_MASK;
+> -	ret |= MLX90614_CONST_FIR << MLX90614_CONFIG_FIR_SHIFT;
+> -	ret &= ~MLX90614_CONFIG_IIR_MASK;
+> -	ret |= i << MLX90614_CONFIG_IIR_SHIFT;
+> +	if (chip_info->model == MLX90614) {
+
+As below. Make this data or if appropriate use a function pointer in chip_info.
+
+We don't want to scatter the chip specific stuff through the driver like this.
+
+> +		ret &= ~MLX90614_CONFIG_FIR_MASK;
+> +		ret |= MLX90614_CONST_FIR << MLX90614_CONFIG_FIR_SHIFT;
+> +		ret &= ~MLX90614_CONFIG_IIR_MASK;
+> +		ret |= i << MLX90614_CONFIG_IIR_SHIFT;
 > +	} else {
-> +		/* wait until status indicates data is ready */
-> +		for (i = 0; i < nloops; i++) {
-> +			/*
-> +			 * datasheet only says to wait at least 5 ms for the
-> +			 * data but leave the maximum response time open
-> +			 * --> let's try it nloops (10) times which seems to be
-> +			 *     quite long
-> +			 */
-> +			usleep_range(5000, 10000);
-> +			status = i2c_smbus_read_byte(data->client);
-> +			if (status < 0) {
-> +				dev_err(dev,
-> +					"error while reading, status: %d\n",
-> +					status);
-> +				return status;
-> +			}
-> +			if (!(status & MPR_I2C_BUSY))
-> +				break;
-> +		}
-> +		if (i == nloops) {
-> +			dev_err(dev, "timeout while reading\n");
-> +			return -ETIMEDOUT;
-> +		}
+> +		/* MLX90615 has fixed FIR = 65536 */
+> +		ret &= ~MLX90615_CONFIG_IIR_MASK;
+> +		ret |= i << MLX90615_CONFIG_IIR_SHIFT;
 > +	}
-> +
-> +	ret = i2c_master_recv(data->client, buf, sizeof(buf));
-> +	if (ret < 0) {
-> +		dev_err(dev, "error in i2c_master_recv ret: %d\n", ret);
-> +		return ret;
-> +	}
-> +	if (ret != sizeof(buf)) {
-> +		dev_err(dev, "received size doesn't fit - ret: %d / %u\n", ret,
-> +								sizeof(buf));
-> +		return -EIO;
-> +	}
-> +
-> +	if (buf[0] & MPR_I2C_BUSY) {
-> +		/*
-> +		 * it should never be the case that status still indicates
-> +		 * business
-> +		 */
-> +		dev_err(dev, "data still not ready: %08x\n", buf[0]);
-> +		return -ETIMEDOUT;
-> +	}
-> +
-> +	*press = get_unaligned_be24(&buf[1]);
+>  
+>  	/* Write changed values */
+> -	ret = mlx90614_write_word(client, MLX90614_CONFIG, ret);
+> +	ret = mlx90614_write_word(client, MLX9061X_CONFIG(chip_info), ret);
+>  	return ret;
+>  }
 
-Is it necessary to read the 5th byte even though it's never touched?
-A quick galnce at datasheet shows no mention of that byte so I'm a little confused.
+...
 
+> @@ -377,11 +421,18 @@ static int mlx90614_read_avail(struct iio_dev *indio_dev,
+>  			       const int **vals, int *type, int *length,
+>  			       long mask)
+>  {
+> +	struct mlx90614_data *data = iio_priv(indio_dev);
+> +	const struct mlx_chip_info *chip_info = data->chip_info;
 > +
-> +	dev_dbg(dev, "received: %*ph cnt: %d\n", ret, buf, *press);
-> +
-> +	return 0;
-> +}
-> +
-> +static irqreturn_t mpr_eoc_handler(int irq, void *p)
-> +{
-> +	struct mpr_data *data = (struct mpr_data *)p;
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> -		*vals = (int *)mlx90614_freqs;
+> +		*vals = (int *)chip_info->iir_freqs;
+>  		*type = IIO_VAL_INT_PLUS_MICRO;
+> -		*length = 2 * ARRAY_SIZE(mlx90614_freqs);
+> +		/* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
+> +		if (chip_info->model == MLX90615)
 
-You should never need to cast explicitly from a void * (C spec thing)
-Hence I don't think that cast is necessary.
+Add a parameter in chip_info for this as well.  I don't want to see
+any conditionals on model in the code.
 
-> +
-> +	complete(&data->completion);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static irqreturn_t mpr_trigger_handler(int irq, void *p)
-> +{
-> +	int ret;
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct mpr_data *data = iio_priv(indio_dev);
-> +
-> +	mutex_lock(&data->lock);
-> +	ret = mpr_read_pressure(data, &data->chan.pres);
-> +	if (ret < 0) {
-> +		mutex_unlock(&data->lock);
-
-Move the err label above the mutex unlock then go to that instead, allowing
-you to unlock in just one place.
-
-> +		goto err;
-> +	}
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->chan,
-> +						iio_get_time_ns(indio_dev));
-> +	mutex_unlock(&data->lock);
-> +
-> +err:
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
+Particularly here where the array this length applies to is already in there.
+Just add a num_* element to say how big it is.  Then it's easy to see if the
+number is correct as it's right next to the data.
 
 
-> +static int mpr_probe(struct i2c_client *client)
-> +{
-
-> +	data->outmin = mpr_func_spec[data->function].output_min;
-> +	data->outmax = mpr_func_spec[data->function].output_max;
+> +			*length = 2 * 7;
+> +		else
+> +			*length = 2 * 8;
+>  		return IIO_AVAIL_LIST;
+>  	default:
+>  		return -EINVAL;
+> @@ -456,6 +507,8 @@ static int mlx90614_sleep(struct mlx90614_data *data)
+>  
+>  static int mlx90614_wakeup(struct mlx90614_data *data)
+>  {
+> +	const struct mlx_chip_info *chip_info = data->chip_info;
 > +
-> +	scale = div_s64(((s64)(data->pmax - data->pmin)) * MPR_NANO_PART,
+>  	if (!data->wakeup_gpio) {
+>  		dev_dbg(&data->client->dev, "Wake-up disabled");
+>  		return -ENOSYS;
+> @@ -465,7 +518,8 @@ static int mlx90614_wakeup(struct mlx90614_data *data)
+>  
+>  	i2c_lock_bus(data->client->adapter, I2C_LOCK_ROOT_ADAPTER);
+>  	gpiod_direction_output(data->wakeup_gpio, 0);
+> -	msleep(MLX90614_TIMING_WAKEUP);
+> +	msleep(data->chip_info == MLX90614 ?
+> +	       MLX90614_TIMING_WAKEUP : MLX90615_TIMING_WAKEUP);
 
-NANO.
+chip_info is a pointer
+Also, just put the timing in the chip_info structure itself rather than
+having any matching on part numbers in the code.
 
-> +						data->outmax - data->outmin);
-> +	data->scale = div_s64(scale, MPR_NANO_PART);
-> +	data->scale2 = scale - data->scale * MPR_NANO_PART;
+>  	gpiod_direction_input(data->wakeup_gpio);
+>  	i2c_unlock_bus(data->client->adapter, I2C_LOCK_ROOT_ADAPTER);
+>  
+> @@ -478,7 +532,7 @@ static int mlx90614_wakeup(struct mlx90614_data *data)
+>  	 * If the read fails, the controller will probably be reset so that
+>  	 * further reads will work.
+>  	 */
+> -	i2c_smbus_read_word_data(data->client, MLX90614_CONFIG);
+> +	i2c_smbus_read_word_data(data->client, MLX9061X_CONFIG(chip_info));
 
-As below, I'm not seeing why div_s64_rem() isn't appropriate for this
-as well as making it immediately obvious what is going on.
+I'm not really a fan of wild cards. They break far too often when a yet another
+part comes along and the macro isn't appropriate. It is fine to stick to
+naming after first supported part.
 
+>  
+>  	return 0;
+>  }
+> @@ -527,9 +581,16 @@ static inline struct gpio_desc *mlx90614_probe_wakeup(struct i2c_client *client)
+>  /* Return 0 for single sensor, 1 for dual sensor, <0 on error. */
+>  static int mlx90614_probe_num_ir_sensors(struct i2c_client *client)
+>  {
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> +	struct mlx90614_data *data = iio_priv(indio_dev);
+> +	const struct mlx_chip_info *chip_info = data->chip_info;
+>  	s32 ret;
+>  
+> -	ret = i2c_smbus_read_word_data(client, MLX90614_CONFIG);
+> +	/* MLX90615 is single-sensor only */
+> +	if (chip_info->model == MLX90615)
+> +		return 0;
 > +
-> +	offset = ((-1LL) * (s64)data->outmin) * MPR_NANO_PART -
+> +	ret = i2c_smbus_read_word_data(client, MLX9061X_CONFIG(chip_info));
+>  
+>  	if (ret < 0)
+>  		return ret;
+> @@ -556,6 +617,7 @@ static int mlx90614_probe(struct i2c_client *client)
+>  	data->client = client;
+>  	mutex_init(&data->lock);
+>  	data->wakeup_gpio = mlx90614_probe_wakeup(client);
+> +	data->chip_info = of_device_get_match_data(&client->dev);
 
-> +		div_s64(div_s64((s64)data->pmin * MPR_NANO_PART, scale),
-> +		MPR_NANO_PART);
+device_get_match_data() That way this works for other firmware types such
+as ACPI via PRP0001 entries.  
 
-I'm guessing the multiply by MPR_NANO_PART then divide by it is to maintain precision?
-If so I'd like a comment here explaining the logic behind it.
+>  
+>  	mlx90614_wakeup(data);
+>  
+> @@ -605,14 +667,59 @@ static void mlx90614_remove(struct i2c_client *client)
+>  	}
+>  }
+>  
+> +static const struct mlx_chip_info mlx90614_chip_info = {
+> +	.model				= MLX90614,
+> +	.op_eeprom_access		= MLX90614_OP_EEPROM,
+> +	.op_ram_access			= MLX90614_OP_RAM,
+> +	.op_sleep			= MLX90614_OP_SLEEP,
+> +	.eeprom_offset_emissivity	= 0x04,
+> +	.eeprom_offset_config1		= 0x05,
+> +	.emissivity_max			= 65535,
+> +	.emissivity_res			= 1000000000 / 65535,
+> +	.iir_values			= { 77, 31, 20, 15, 723, 153, 110, 86 },
+> +	.iir_freqs			= {
+> +		{ 0, 150000 },	/* 13% ~= 0.15 Hz */
+> +		{ 0, 200000 },	/* 17% ~= 0.20 Hz */
+> +		{ 0, 310000 },	/* 25% ~= 0.31 Hz */
+> +		{ 0, 770000 },	/* 50% ~= 0.77 Hz */
+> +		{ 0, 860000 },	/* 57% ~= 0.86 Hz */
+> +		{ 1, 100000 },	/* 67% ~= 1.10 Hz */
+> +		{ 1, 530000 },	/* 80% ~= 1.53 Hz */
+> +		{ 7, 230000 }	/* 100% ~= 7.23 Hz */
+> +	},
+> +};
+> +
+> +static const struct mlx_chip_info mlx90615_chip_info = {
+> +	.model				= MLX90615,
+> +	.op_eeprom_access		= MLX90615_OP_EEPROM,
 
-> +	data->offset = div_s64(offset, MPR_NANO_PART);
-> +	data->offset2 = offset - data->offset * MPR_NANO_PART;
+Is it useful to keep the defines for this constants as they are only
+used here?  The fact they are assigned to a field that basically says what they
+are suggests to me that you should just put the values in here and get rid
+of the defines.  Same of the MLX90614 values.
 
-Is this a round about way of doing offset % NANO?
-div_s64_rem() appropriate here?
-
-> +
-> +	if (data->irq > 0) {
-> +		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler,
-> +				IRQF_TRIGGER_RISING, client->name, data);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +				"request irq %d failed\n", data->irq);
-> +	}
-> +
-> +	data->gpiod_reset = devm_gpiod_get_optional(dev, "reset",
-> +							GPIOD_OUT_HIGH);
-> +	if (IS_ERR(data->gpiod_reset))
-> +		return dev_err_probe(dev, PTR_ERR(data->gpiod_reset),
-> +						"request reset-gpio failed\n");
-> +
-> +	mpr_reset(data);
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> +						mpr_trigger_handler, NULL);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +					"iio triggered buffer setup failed\n");
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +					"unable to register iio device\n");
-> +
-> +	return 0;
-> +}
+> +	.op_ram_access			= MLX90615_OP_RAM,
+> +	.op_sleep			= MLX90615_OP_SLEEP,
+> +	.eeprom_offset_emissivity	= 0x03,
+> +	.eeprom_offset_config1		= 0x02,
+> +	.emissivity_max			= 16383,
+> +	.emissivity_res			= 1000000000 / 16383,
+> +	.iir_values			= { 0, 723, 77, 42, 31, 28, 20, 18 },
+> +	.iir_freqs			= {
+> +		{ 0, 180000 },	/* 14% ~= 0.18 Hz */
+> +		{ 0, 200000 },	/* 17% ~= 0.20 Hz */
+> +		{ 0, 280000 },	/* 20% ~= 0.28 Hz */
+> +		{ 0, 310000 },	/* 25% ~= 0.31 Hz */
+> +		{ 0, 420000 },	/* 33% ~= 0.42 Hz */
+> +		{ 0, 770000 },	/* 50% ~= 0.77 Hz */
+> +		{ 7, 230000 },	/* 100% ~= 7.23 Hz */
+> +	},
+> +};
 

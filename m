@@ -2,170 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BEDA6F931A
-	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 18:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF0C6F934E
+	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 19:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbjEFQbA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 May 2023 12:31:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42494 "EHLO
+        id S229780AbjEFRUR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 May 2023 13:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjEFQbA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 12:31:00 -0400
+        with ESMTP id S229545AbjEFRUP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 13:20:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E7616091;
-        Sat,  6 May 2023 09:30:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480C2156B9;
+        Sat,  6 May 2023 10:20:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C27A60CFB;
-        Sat,  6 May 2023 16:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DA3C433D2;
-        Sat,  6 May 2023 16:30:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFE9960C50;
+        Sat,  6 May 2023 17:20:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C399C433D2;
+        Sat,  6 May 2023 17:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683390658;
-        bh=0boAHKV9f8V2cRpIz+JEHdVMwVef54ODhw8WXZCFHik=;
+        s=k20201202; t=1683393613;
+        bh=TocNMBoVPd5mzixqLQ2QSNI5gRdva0u3FRF11G5kA6I=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TWWNrwEZtLK/mzdgUrH8UCwL9j5MxvVNsyasUDDvKSEi3FoWY658tmkZ8BCEvvH13
-         nlsKssETppd8BwEuuNW7UCUPAyyZcTqHeq2sGxHvhInoONxdgYCC0Y6SV7M9ndpGUS
-         IDdwRUGzgjFypSYuux9FZZHunLGQMeoTDEcXTPi/t9/tyEo0k6YA5Iw7VLsod3BArN
-         WLHYDvlwcoTPukTqKNWIlhBux2CecheUiq44MB4LNRJzJkURAdxMcRkahcokwZ6W/1
-         /RgTW9G3bNyS3Ldg8RaO6iFY6N/cSvvR6QSL6xA9sxZYT9AEbAF4YPK16OdA9M+8Fh
-         9y8+nnfrlX7Xg==
-Date:   Sat, 6 May 2023 17:46:51 +0100
+        b=LBnpUsHB+5nqY5BX4+/6tIZe6HpK8eM7DfD8RIsy9fboJP8VEf71Z47Zc7UlI+2QE
+         aWPkb3O3bcrVm0jC6CZDhYG/k7FIy/lVV+FNMadCkRsQNpeocOjyJa0SdCktB/CYGI
+         NlG5Ac9PDNkhO3nhoMqMvyeRm7VttuO0QWlFEzvbL6tkeqCH+RiEQnm6p8MF3LepkJ
+         ByGjLslw+qBtFS86jweoA217gaQNft5tC+7ANmMmTXLn2di+6BnkZxnt6+057qjDeY
+         gwyex+8ioH4tQ77c75qJ/TSBlMYtAvjdKVvYnjSMrSp1FLDZeZA0dune6NL1prBqAO
+         1CIBUjEt4kwXg==
+Date:   Sat, 6 May 2023 18:36:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     mazziesaccount@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 7/7] iio: accel: Add support for Kionix/ROHM
- KX132-1211 accelerometer
-Message-ID: <20230506174651.5c5740d9@jic23-huawei>
-In-Reply-To: <ZFVG1cyY/Ge/nXOh@carbian>
-References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
-        <593798a44c8ba45f969b86aa29e172d59065958c.1682373451.git.mehdi.djait.k@gmail.com>
-        <20230501155645.435242f0@jic23-huawei>
-        <ZFVG1cyY/Ge/nXOh@carbian>
+To:     inv.git-commit@tdk.com
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: inv_icm42600: fix too big timestamp jitter
+Message-ID: <20230506183606.2674c7d5@jic23-huawei>
+In-Reply-To: <20230504095204.172715-1-inv.git-commit@tdk.com>
+References: <20230504095204.172715-1-inv.git-commit@tdk.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 5 May 2023 20:11:33 +0200
-Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
+On Thu,  4 May 2023 09:52:04 +0000
+inv.git-commit@tdk.com wrote:
 
-> Hello Jonathan,
->=20
-> On Mon, May 01, 2023 at 03:56:45PM +0100, Jonathan Cameron wrote:
-> > On Tue, 25 Apr 2023 00:22:27 +0200
-> > Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
-> >  =20
-> > > Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
-> > > ranges from =C2=B12G to =C2=B116G, digital output through I=C2=B2C/SP=
-I.
-> > > Add support for basic accelerometer features such as reading accelera=
-tion
-> > > via IIO using raw reads, triggered buffer (data-ready), or the WMI IR=
-Q.
-> > >=20
-> > > Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Tech=
-nical-Reference-Manual-Rev-5.0.pdf
-> > > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com> =20
-> >=20
-> > Two tiny things inline. =20
-> >  =20
-> > > +static int kx132_get_fifo_bytes(struct kx022a_data *data)
-> > > +{
-> > > +	struct device *dev =3D regmap_get_device(data->regmap);
-> > > +	__le16 buf_status;
-> > > +	int ret, fifo_bytes;
-> > > +
-> > > +	ret =3D regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
-> > > +			       &buf_status, sizeof(buf_status));
-> > > +	if (ret) {
-> > > +		dev_err(dev, "Error reading buffer status\n");
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	fifo_bytes =3D le16_to_cpu(buf_status);
-> > > +	fifo_bytes &=3D data->chip_info->buf_smp_lvl_mask; =20
-> >=20
-> > Slight preference for FIELD_GET() as it saves me checking the mask incl=
-udes
-> > lowest bits. =20
->=20
-> This will mean I have the remove the chip_info member buf_smp_lvl_mask
-> and use KX132_MASK_BUF_SMP_LVL directly because otherwise the
-> __builtin_constant_p function will cause an error when building.=20
-> Check: https://elixir.bootlin.com/linux/latest/source/include/linux/bitfi=
-eld.h#L65
->=20
-> I can change it to FIELD_GET() if you want to.
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> We are adjusting timestamp with interrupt every time, leading to
+> a lot of jitter in timestamp values. Now the adjustment is done
+> only when the delta is bigger than the jitter.
+> 
+> Refactorize code and delete the unnecessary handling of multiple
+> FIFO data.
+> 
+> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Signed-off-by: <inv.git-commit@tdk.com>
+> Cc: <stable@vger.kernel.org>
 
-Good point.  You could use le16_get_bits() though which I'm fairly sure wil=
-l take
-a variable just fine.
+Hmm. Whilst this may be an improvement, I'm not totally convinced it's
+something we should backport.
 
->=20
-> >=20
-> >  =20
-> > > +
-> > > +	return fifo_bytes;
-> > > +}
-> > > +
-> > >  static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int sa=
-mples,
-> > >  			       bool irq)
-> > >  {
-> > > @@ -1036,6 +1157,32 @@ const struct kx022a_chip_info kx022a_chip_info=
- =3D {
-> > >  };
-> > >  EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
-> > > =20
-> > > +const struct kx022a_chip_info kx132_chip_info =3D {
-> > > +	.name		  =3D "kx132-1211",
-> > > +	.regmap_config	  =3D &kx132_regmap_config,
-> > > +	.channels	  =3D kx132_channels,
-> > > +	.num_channels	  =3D ARRAY_SIZE(kx132_channels),
-> > > +	.fifo_length	  =3D KX132_FIFO_LENGTH,
-> > > +	.who		  =3D KX132_REG_WHO,
-> > > +	.id		  =3D KX132_ID,
-> > > +	.cntl		  =3D KX132_REG_CNTL,
-> > > +	.cntl2		  =3D KX132_REG_CNTL2,
-> > > +	.odcntl		  =3D KX132_REG_ODCNTL,
-> > > +	.buf_cntl1	  =3D KX132_REG_BUF_CNTL1,
-> > > +	.buf_cntl2	  =3D KX132_REG_BUF_CNTL2,
-> > > +	.buf_clear	  =3D KX132_REG_BUF_CLEAR,
-> > > +	.buf_status1	  =3D KX132_REG_BUF_STATUS_1,
-> > > +	.buf_smp_lvl_mask =3D KX132_MASK_BUF_SMP_LVL, =20
-> >=20
-> > There are some things in here (typically where the define isn't used
-> > anywhere else) where I think it would be easier to follow if the
-> > value was listed here.  Masks and IDs for example.=20
-> >  =20
->=20
-> After removing buf_smp_lvl_mask, which members will be easier to understa=
-nd (besides id) ?=20
+Also, there are a lot of possible solutions to this and I'm not sure why
+or if this is the best option.
 
-I haven't gone through them.  Length seems an obvious one.  It's a number n=
-ot a magic value.
-Register addresses might also be simpler if they aren't used elsewhere.
+Perhaps a simple filter on the jitter adjustment to smooth it out?
+Something as simple as adjusting by only 10% of the measured difference
+if it is small might work for example.  Or carry a moving window of
+recently measured jitter and apply some sort of filtering to that.
+Perhaps that would incorporate a 'reset' approach if the measurement is
+way off to allow faster correction if something has gone wrong.
 
-Not really about understanding just about a define that adds nothing if all=
- we do is
-assign it to a variable of the same name.
+Hence, I'd like more discussion of why this solution in the patch description.
 
->=20
-> --
-> Kind Regards
-> Mehdi Djait
+> ---
+>  .../imu/inv_icm42600/inv_icm42600_timestamp.c | 49 ++++++++++---------
+>  1 file changed, 26 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+> index 7f2dc41f807b..af2e59fb7258 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+> @@ -93,8 +93,8 @@ static bool inv_validate_period(uint32_t period, uint32_t mult)
+>  		return false;
+>  }
+>  
+> -static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
+> -				    uint32_t mult, uint32_t period)
+> +static bool inv_update_chip_period(struct inv_icm42600_timestamp *ts,
+> +				   uint32_t mult, uint32_t period)
+>  {
+>  	uint32_t new_chip_period;
+>  
+> @@ -104,10 +104,31 @@ static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
+>  	/* update chip internal period estimation */
+>  	new_chip_period = period / mult;
+>  	inv_update_acc(&ts->chip_period, new_chip_period);
+> +	ts->period = ts->mult * ts->chip_period.val;
+>  
+>  	return true;
+>  }
+>  
+> +static void inv_align_timestamp_it(struct inv_icm42600_timestamp *ts)
+> +{
+> +	int64_t delta, jitter;
+> +	int64_t adjust;
+> +
+> +	/* delta time between last sample and last interrupt */
+> +	delta = ts->it.lo - ts->timestamp;
+> +
+> +	/* adjust timestamp while respecting jitter */
+> +	jitter = ((int64_t)ts->period * INV_ICM42600_TIMESTAMP_JITTER) / 100;
+> +	if (delta > jitter)
+> +		adjust = jitter;
+> +	else if (delta < -jitter)
+> +		adjust = -jitter;
+> +	else
+> +		adjust = 0;
+> +
+> +	ts->timestamp += adjust;
+> +}
+> +
+>  void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  				      uint32_t fifo_period, size_t fifo_nb,
+>  				      size_t sensor_nb, int64_t timestamp)
+> @@ -116,7 +137,6 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  	int64_t delta, interval;
+>  	const uint32_t fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
+>  	uint32_t period = ts->period;
+> -	int32_t m;
+>  	bool valid = false;
+>  
+>  	if (fifo_nb == 0)
+> @@ -130,10 +150,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  	if (it->lo != 0) {
+>  		/* compute period: delta time divided by number of samples */
+>  		period = div_s64(delta, fifo_nb);
+> -		valid = inv_compute_chip_period(ts, fifo_mult, period);
+> -		/* update sensor period if chip internal period is updated */
+> -		if (valid)
+> -			ts->period = ts->mult * ts->chip_period.val;
+> +		valid = inv_update_chip_period(ts, fifo_mult, period);
+>  	}
+>  
+>  	/* no previous data, compute theoritical value from interrupt */
+> @@ -145,22 +162,8 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  	}
+>  
+>  	/* if interrupt interval is valid, sync with interrupt timestamp */
+> -	if (valid) {
+> -		/* compute measured fifo_period */
+> -		fifo_period = fifo_mult * ts->chip_period.val;
+> -		/* delta time between last sample and last interrupt */
+> -		delta = it->lo - ts->timestamp;
+> -		/* if there are multiple samples, go back to first one */
+> -		while (delta >= (fifo_period * 3 / 2))
+> -			delta -= fifo_period;
+> -		/* compute maximal adjustment value */
+> -		m = INV_ICM42600_TIMESTAMP_MAX_PERIOD(ts->period) - ts->period;
+> -		if (delta > m)
+> -			delta = m;
+> -		else if (delta < -m)
+> -			delta = -m;
+> -		ts->timestamp += delta;
+> -	}
+> +	if (valid)
+> +		inv_align_timestamp_it(ts);
+>  }
+>  
+>  void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
 

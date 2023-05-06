@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CF0C6F934E
-	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 19:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C736F935D
+	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 19:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjEFRUR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 May 2023 13:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49590 "EHLO
+        id S229462AbjEFRbg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 May 2023 13:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbjEFRUP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 13:20:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480C2156B9;
-        Sat,  6 May 2023 10:20:14 -0700 (PDT)
+        with ESMTP id S229441AbjEFRbf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 13:31:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02911608D;
+        Sat,  6 May 2023 10:31:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CFE9960C50;
-        Sat,  6 May 2023 17:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C399C433D2;
-        Sat,  6 May 2023 17:20:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CE6560677;
+        Sat,  6 May 2023 17:31:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDADFC4339B;
+        Sat,  6 May 2023 17:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683393613;
-        bh=TocNMBoVPd5mzixqLQ2QSNI5gRdva0u3FRF11G5kA6I=;
+        s=k20201202; t=1683394293;
+        bh=amJno4QQ+jgFZXOzLKev1VatVyFZZh6AJVwPxwidzCQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LBnpUsHB+5nqY5BX4+/6tIZe6HpK8eM7DfD8RIsy9fboJP8VEf71Z47Zc7UlI+2QE
-         aWPkb3O3bcrVm0jC6CZDhYG/k7FIy/lVV+FNMadCkRsQNpeocOjyJa0SdCktB/CYGI
-         NlG5Ac9PDNkhO3nhoMqMvyeRm7VttuO0QWlFEzvbL6tkeqCH+RiEQnm6p8MF3LepkJ
-         ByGjLslw+qBtFS86jweoA217gaQNft5tC+7ANmMmTXLn2di+6BnkZxnt6+057qjDeY
-         gwyex+8ioH4tQ77c75qJ/TSBlMYtAvjdKVvYnjSMrSp1FLDZeZA0dune6NL1prBqAO
-         1CIBUjEt4kwXg==
-Date:   Sat, 6 May 2023 18:36:06 +0100
+        b=e4GRKIBv7AReNH3O3yt+BylmGeICX1l0+Vm/AIQ0FwIeH20fBKOq9BlBcARXl7TtX
+         K0/yajora7/QBt14gcsWvJO80xgvhORu/jY9zWAZzUhQT+B9vZNTXlt2pssGuijG6k
+         G+LmIRSkQEfhzysmUCdcC9bFMxrDd9cXXa0VWSxdJPYJvioNfb7Aw+6IBUdrEK9BBH
+         F2lxjVFd3TQg7aRBdF4bNoxWOff3sW+ZoWviZjINTfpx3zvwR9iGcMqiuHkhrjc/C8
+         ZejZKtRapaNBjoRlkjsNcDA5NUzruJ+mpW2IK1F3MKBCnenw++MuaphUYa1t4alELl
+         oDkJskRI77u8g==
+Date:   Sat, 6 May 2023 18:47:27 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     inv.git-commit@tdk.com
-Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: fix too big timestamp jitter
-Message-ID: <20230506183606.2674c7d5@jic23-huawei>
-In-Reply-To: <20230504095204.172715-1-inv.git-commit@tdk.com>
-References: <20230504095204.172715-1-inv.git-commit@tdk.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] ROHM Sensor async probing
+Message-ID: <20230506184727.344086c5@jic23-huawei>
+In-Reply-To: <cover.1683185765.git.mazziesaccount@gmail.com>
+References: <cover.1683185765.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,132 +55,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  4 May 2023 09:52:04 +0000
-inv.git-commit@tdk.com wrote:
+On Thu, 4 May 2023 10:56:13 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Devices which may take a while to initialize during probe and which have
+> no strong reason to probe synchronously can request asynchronous probing
+> as default probe strategy. This can speed-up start times on some
+> platforms.
 > 
-> We are adjusting timestamp with interrupt every time, leading to
-> a lot of jitter in timestamp values. Now the adjustment is done
-> only when the delta is bigger than the jitter.
+> There is however some caveats listed for asynchronous probing for
+> example here:
+> https://lore.kernel.org/all/06db017f-e985-4434-8d1d-02ca2100cca0@sirena.org.uk/
 > 
-> Refactorize code and delete the unnecessary handling of multiple
-> FIFO data.
+> I don't know how tolerant IIO users are what comes to asynchronous
+> probing but I _guess_ this is (and should be) handled pretty well.
+> Still, guessing could be said to be somewhat sub-optimal when doing
+> kernel development :) Hence this RFC - if someone has better
+> understanding on async probing when using IIO, please let me know!
 > 
-> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> Signed-off-by: <inv.git-commit@tdk.com>
-> Cc: <stable@vger.kernel.org>
+> As far as I know these drivers do not currently have in-tree users.
+> Furthemore, they are so new they don't probably have many user-space
+> users either. In fact, the BU27034 is not yet in any official releases
+> and BU27008 is not merged in any official trees yet. Thus, testing out
+> async probing with them should not break existing users. KX022A is also
+> relatively new and I don't think it has yet been widely used either.
+> 
+> Finally, if asynchronous probing does break things, then:
+> a) We should try fix the thing preventing async probe.
+> b) We can pretty easily revert back to synchronous probing.
+> 
+> Please note that the patch 2 depends on
+> https://lore.kernel.org/lkml/cover.1683105758.git.mazziesaccount@gmail.com/
+> which is not yet in-tree. If the feed-back from this RFC is positive,
+> then I will squash this change to that series when re-spinning it next
+> time.
+> 
+> Please note that the patch 3 depends on bu27034 series which is expected
+> to land on 6.4-rc1.
 
-Hmm. Whilst this may be an improvement, I'm not totally convinced it's
-something we should backport.
+Generally it should be fine, but given that weird things sometimes happen
+we don't apply a blanket policy and it's up to individual driver maintainers
+to give it a go.  Also it's only worth doing if a driver is significantly
+slow for some reason..
 
-Also, there are a lot of possible solutions to this and I'm not sure why
-or if this is the best option.
+I've hit problems with async probe before (usually showing up bugs that
+weren't visible before), but not in IIO drivers.
 
-Perhaps a simple filter on the jitter adjustment to smooth it out?
-Something as simple as adjusting by only 10% of the measured difference
-if it is small might work for example.  Or carry a moving window of
-recently measured jitter and apply some sort of filtering to that.
-Perhaps that would incorporate a 'reset' approach if the measurement is
-way off to allow faster correction if something has gone wrong.
+So I've applied patches 1 and 3.  Plenty of time for people to shout if they
+can see a problem though.
 
-Hence, I'd like more discussion of why this solution in the patch description.
+Jonathan
 
+> 
 > ---
->  .../imu/inv_icm42600/inv_icm42600_timestamp.c | 49 ++++++++++---------
->  1 file changed, 26 insertions(+), 23 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-> index 7f2dc41f807b..af2e59fb7258 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-> @@ -93,8 +93,8 @@ static bool inv_validate_period(uint32_t period, uint32_t mult)
->  		return false;
->  }
->  
-> -static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
-> -				    uint32_t mult, uint32_t period)
-> +static bool inv_update_chip_period(struct inv_icm42600_timestamp *ts,
-> +				   uint32_t mult, uint32_t period)
->  {
->  	uint32_t new_chip_period;
->  
-> @@ -104,10 +104,31 @@ static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
->  	/* update chip internal period estimation */
->  	new_chip_period = period / mult;
->  	inv_update_acc(&ts->chip_period, new_chip_period);
-> +	ts->period = ts->mult * ts->chip_period.val;
->  
->  	return true;
->  }
->  
-> +static void inv_align_timestamp_it(struct inv_icm42600_timestamp *ts)
-> +{
-> +	int64_t delta, jitter;
-> +	int64_t adjust;
-> +
-> +	/* delta time between last sample and last interrupt */
-> +	delta = ts->it.lo - ts->timestamp;
-> +
-> +	/* adjust timestamp while respecting jitter */
-> +	jitter = ((int64_t)ts->period * INV_ICM42600_TIMESTAMP_JITTER) / 100;
-> +	if (delta > jitter)
-> +		adjust = jitter;
-> +	else if (delta < -jitter)
-> +		adjust = -jitter;
-> +	else
-> +		adjust = 0;
-> +
-> +	ts->timestamp += adjust;
-> +}
-> +
->  void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  				      uint32_t fifo_period, size_t fifo_nb,
->  				      size_t sensor_nb, int64_t timestamp)
-> @@ -116,7 +137,6 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  	int64_t delta, interval;
->  	const uint32_t fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
->  	uint32_t period = ts->period;
-> -	int32_t m;
->  	bool valid = false;
->  
->  	if (fifo_nb == 0)
-> @@ -130,10 +150,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  	if (it->lo != 0) {
->  		/* compute period: delta time divided by number of samples */
->  		period = div_s64(delta, fifo_nb);
-> -		valid = inv_compute_chip_period(ts, fifo_mult, period);
-> -		/* update sensor period if chip internal period is updated */
-> -		if (valid)
-> -			ts->period = ts->mult * ts->chip_period.val;
-> +		valid = inv_update_chip_period(ts, fifo_mult, period);
->  	}
->  
->  	/* no previous data, compute theoritical value from interrupt */
-> @@ -145,22 +162,8 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  	}
->  
->  	/* if interrupt interval is valid, sync with interrupt timestamp */
-> -	if (valid) {
-> -		/* compute measured fifo_period */
-> -		fifo_period = fifo_mult * ts->chip_period.val;
-> -		/* delta time between last sample and last interrupt */
-> -		delta = it->lo - ts->timestamp;
-> -		/* if there are multiple samples, go back to first one */
-> -		while (delta >= (fifo_period * 3 / 2))
-> -			delta -= fifo_period;
-> -		/* compute maximal adjustment value */
-> -		m = INV_ICM42600_TIMESTAMP_MAX_PERIOD(ts->period) - ts->period;
-> -		if (delta > m)
-> -			delta = m;
-> -		else if (delta < -m)
-> -			delta = -m;
-> -		ts->timestamp += delta;
-> -	}
-> +	if (valid)
-> +		inv_align_timestamp_it(ts);
->  }
->  
->  void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+> Matti Vaittinen (3):
+>   iio: bu27034: Probe asynchronously
+>   iio: bu27008: Probe asynchronously
+>   iio: kx022a: Probe asynchronously
+> 
+>  drivers/iio/accel/kionix-kx022a-i2c.c | 1 +
+>  drivers/iio/accel/kionix-kx022a-spi.c | 1 +
+>  drivers/iio/light/rohm-bu27008.c      | 1 +
+>  drivers/iio/light/rohm-bu27034.c      | 1 +
+>  4 files changed, 4 insertions(+)
+> 
 

@@ -2,49 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 096116F9374
-	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 19:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59B56F937B
+	for <lists+linux-iio@lfdr.de>; Sat,  6 May 2023 20:00:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbjEFRy1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 May 2023 13:54:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57980 "EHLO
+        id S229527AbjEFSAr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 May 2023 14:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjEFRy0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 13:54:26 -0400
+        with ESMTP id S229478AbjEFSAq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 14:00:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA12CE9;
-        Sat,  6 May 2023 10:54:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D101890C;
+        Sat,  6 May 2023 11:00:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62EB460DCF;
-        Sat,  6 May 2023 17:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8890C433EF;
-        Sat,  6 May 2023 17:54:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DAE560B75;
+        Sat,  6 May 2023 18:00:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E337C433D2;
+        Sat,  6 May 2023 18:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683395664;
-        bh=H2M5vLijRuOMf/BtnVGqNUxp0Wd3Bew6sL93mZqxsoA=;
+        s=k20201202; t=1683396043;
+        bh=x7C6StQwkhrvjqLJn5ntISyGPSl4P0DVufrOryv/hDE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EAHRY+hqGxH/1OpBtSHLAJ1bMu9rt2GCJBhmvTmnbO+xBLtBx5w3yivfoaHqWz0VS
-         BDybEvalPS9UtFyXajfMuljZWOJ/uPKajUWauqkSrHfRXBe7fe/gGT6zgBLrYOTyMm
-         exoTb4j6ER8WLlfkqpuHvl3QOP/YHGMgPFcpAT0gUZ4GT6I/Fel2GaUpgJ6ZKGhEgT
-         4OttALD/iDNyZt7HhzHJjxh4jTtRRc6uP/3rWofyWt91DFluuAAdrQXFND3Eis0F5N
-         zZb534753vLC4+5PzBqnagYI9WEtwIuBAf87Y0/m14ED9gHscumPfsHJzWunahiHyB
-         GCZniSvpN4hfg==
-Date:   Sat, 6 May 2023 19:10:17 +0100
+        b=J4KJQXUQfj9GTtSQshhVWmwIFBMWdLi0QEbfNHfHvDki1UY71iSz8sQ7Mcaq/VI/c
+         uQ1xET7RzP8+PB+rGFFyGcTk/xJUiV7nj+kZc6NMVn8oKKWXHrzNRvDKf4KKE6Yt6N
+         1gbWcvmfx8TtVwfsUuZvgNAO9ytZPSTKXm6gy2F9Ulv50VoOahEKbxfi3dtEner+Bc
+         h4CvuE92JPUq3FqY7zQpCc+NvPChe2aX1w9qPMbmD82uhNpg8LNFWtcNhXt+O35Lg+
+         7k6P4M/PkhJQDKH2UyDQDyjPNEdXZr0rZmgAoIwbbip6vLwZXh9xZlDxsn75gLT+De
+         g8aG+alyPayqQ==
+Date:   Sat, 6 May 2023 19:16:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     inv.git-commit@tdk.com
-Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: fix timestamp reset
-Message-ID: <20230506191017.659b5196@jic23-huawei>
-In-Reply-To: <20230503204410.165035-1-inv.git-commit@tdk.com>
-References: <20230503204410.165035-1-inv.git-commit@tdk.com>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions
+ other than digital input
+Message-ID: <20230506191636.3cff4b24@jic23-huawei>
+In-Reply-To: <6fcf4997-9d88-7e86-70f7-52f9d296bc6e@rasmusvillemoes.dk>
+References: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
+        <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
+        <6fcf4997-9d88-7e86-70f7-52f9d296bc6e@rasmusvillemoes.dk>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,79 +61,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  3 May 2023 20:44:10 +0000
-inv.git-commit@tdk.com wrote:
+On Thu, 4 May 2023 12:08:53 +0200
+Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Timestamp reset is not done in the correct place. It must be done
-> before enabling buffer. The reason is that interrupt timestamping
-> is always happening when the chip is on, even if the
-> corresponding sensor is off. When the sensor restarts, timestamp
-> is wrong if you don't do a reset first.
-> 
-> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> Signed-off-by: <inv.git-commit@tdk.com>
+> On 04/05/2023 09.28, Nuno S=C3=A1 wrote:
+> > Hi Rasmus,
+> >  =20
+>=20
+> > So, I'm not really that familiar with this part and, at this stage, I'm=
+ being
+> > lazy to check the datasheet.  =20
+>=20
+> Well, the data sheet is not particularly helpful here, which is why I
+> ended up with this mess.
+>=20
+> > My concern is about breaking some other users... =20
+>=20
+> I highly doubt there are users yet (other than my customer); this
+> binding+driver implementation only just landed.
+>=20
+> > So, does it make any sense for having drive-strength-microamp in a non =
+digital
+> > input at all? =20
+>=20
+> That's the problem with the data sheet, it doesn't really say that the
+> DIN_SINK register has any effect whatsoever when the channel function is
+> set to something other than digital input (either flavor). Perhaps it
+> does hint that setting it to something non-zero is probably not a good
+> idea, because DIN_SINK is automatically set to 0 whenever the channel
+> function is set/changed, so one needs a good reason to change DIN_SINK
+> afterwards.
+>=20
+> We just experimentally found out that when we added the DIN_SINK to fix
+> the digital input functions, when we got around to testing the
+> resistance measurement function that ended up broken due to the non-zero
+> DIN_SINK.
+>=20
+> > Can anyone have a working device by specifying that dt parameter
+> > on a non digital channel (or expect something from having that paramete=
+r set)?
+> > Or the only effect is to actually have some functions misbehaving? =20
+>=20
+> The data sheet doesn't say that the DIN_SINK should have any effect for
+> other functions, so I'm pretty sure it's only the latter: some functions
+> misbehave.
+>=20
+> > On the driver side, if it's never right to have
+> > these settings together, then the patch is valid since if someone has t=
+his, his
+> > configuration is broken anyways (maybe that's also a valid point for the
+> > bindings)... =20
+>=20
+> Yes, I do believe that it's a broken description (whether or not the
+> bindings specify that), and drivers don't need to go out of their way to
+> validate or fixup such brokenness. But in this particular case, there's
+> really no extra burden on the driver to not put garbage in DIN_SINK when
+> a not-digital-input function has been chosen (the patch is a two-liner
+> with 'git show -w').
 
-What's this sign off?  
-
-> Cc: <stable@vger.kernel.org>
-
-Otherwise patch looks fine.
+If we can tighten the DT binding to rule out something that should not be
+set than that would be good.  Tightening bindings is fine - we don't mind
+validation of bindings failing on peoples DTs as long as we didn't 'break'
+them actually working.
 
 Jonathan
 
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> index 99576b2c171f..32d7f8364230 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> @@ -275,9 +275,14 @@ static int inv_icm42600_buffer_preenable(struct iio_dev *indio_dev)
->  {
->  	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
->  	struct device *dev = regmap_get_device(st->map);
-> +	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
->  
->  	pm_runtime_get_sync(dev);
->  
-> +	mutex_lock(&st->lock);
-> +	inv_icm42600_timestamp_reset(ts);
-> +	mutex_unlock(&st->lock);
-> +
->  	return 0;
->  }
->  
-> @@ -375,7 +380,6 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
->  	struct device *dev = regmap_get_device(st->map);
->  	unsigned int sensor;
->  	unsigned int *watermark;
-> -	struct inv_icm42600_timestamp *ts;
->  	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
->  	unsigned int sleep_temp = 0;
->  	unsigned int sleep_sensor = 0;
-> @@ -385,11 +389,9 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
->  	if (indio_dev == st->indio_gyro) {
->  		sensor = INV_ICM42600_SENSOR_GYRO;
->  		watermark = &st->fifo.watermark.gyro;
-> -		ts = iio_priv(st->indio_gyro);
->  	} else if (indio_dev == st->indio_accel) {
->  		sensor = INV_ICM42600_SENSOR_ACCEL;
->  		watermark = &st->fifo.watermark.accel;
-> -		ts = iio_priv(st->indio_accel);
->  	} else {
->  		return -EINVAL;
->  	}
-> @@ -417,8 +419,6 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
->  	if (!st->fifo.on)
->  		ret = inv_icm42600_set_temp_conf(st, false, &sleep_temp);
->  
-> -	inv_icm42600_timestamp_reset(ts);
-> -
->  out_unlock:
->  	mutex_unlock(&st->lock);
->  
+>=20
+> Rasmus
+>=20
 

@@ -2,155 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C826F98F8
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 16:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB1566F9972
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 17:43:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230231AbjEGOpN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 May 2023 10:45:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44724 "EHLO
+        id S229797AbjEGPnW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 May 2023 11:43:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEGOpM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 10:45:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB0A611D89;
-        Sun,  7 May 2023 07:45:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5151760FF9;
-        Sun,  7 May 2023 14:45:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C5BC433EF;
-        Sun,  7 May 2023 14:45:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683470710;
-        bh=f3AxfwqEtAr5VZd9yHfGJdkHrsRn7CJ/CJ1thpUvEUQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Od2gsyxzXbSQBBRpPLRVAiujAEjY/fkZGyHrC+o2g1bK2ZrxBCI7+By+b7y4r3PU6
-         fdWMl6QYhI8CUytNTl+AQGblExCMj1v0+5D7ZlzyEitLGUFCak6TlrrUi5qQ/1U1WJ
-         P9+Z6rx00FpS8ojUjvzv6CTitQUzqPndbZ3sOxivw+iYkKQeWyEO6nW1HRDW78D2oW
-         lUJDA6EvG1gC3q53C9kkyK5ejsV5Hhvku97cym7N4/5eupfkfllYrtitijlwAj5nbJ
-         ZbNeXYAYNJn1vkjhtBNvUQF+QOJWtFJ66oqBc1WExFGWkwz1c03WSU1/da2VPLrcV9
-         PB1GXJ85b1aPA==
-Date:   Sun, 7 May 2023 16:01:04 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Masahiro Honda <honda@mechatrax.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
-Message-ID: <20230507160104.1d6e8bb8@jic23-huawei>
-In-Reply-To: <f83adfd4df5cd23176721087a4fcd9a0225c3483.camel@gmail.com>
-References: <20230502102930.773-1-honda@mechatrax.com>
-        <f83adfd4df5cd23176721087a4fcd9a0225c3483.camel@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229781AbjEGPnV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 11:43:21 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6A7132A6
+        for <linux-iio@vger.kernel.org>; Sun,  7 May 2023 08:43:19 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4eed764a10cso3998055e87.0
+        for <linux-iio@vger.kernel.org>; Sun, 07 May 2023 08:43:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683474198; x=1686066198;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6fr2hGT93hwoVDFpT4bMl3C3u2Y9uTIfICyFQ19Ymcs=;
+        b=S4WbRtV/yws6OmSwy5J3YrByyqF/zD6ZZDGyBEas1XKrBvApLMbaPxjJlMoJ1oaHBx
+         Sapx8GwmWrL+PhI+Lix2ULUzGA6fdoU4mvtDAf5IXapt6OzxOr27f3U5n6KgpBh3ZYU7
+         YK2QNN54DLFYzfnMukK8DVZawKvfXXo7n1eTr1ptdPelLgD4NkSIwzM5rgd7HTkd7rdn
+         E+KS9QSWimQRcmlqzPlTnI+iCv+gMRytUVB9u4gyP7calKjL/N93rM2G5bZX9Sg6WX4G
+         YZdHBPYBNJesiYI5NYr6DTcF/qPda9P3amyiM2scY81cJKuzvVwjbaBTyd0EWJ5tDSxf
+         gtrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683474198; x=1686066198;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6fr2hGT93hwoVDFpT4bMl3C3u2Y9uTIfICyFQ19Ymcs=;
+        b=IG90sQJyCCsaWVVrdj9uiOFkV9fyqL1g9+1y7LbRaT1ipjjeAScocPZC9oB+p+4wy2
+         s50tOdA2jdGu2fQA7RNy+PhkQX3lL6L7cDn65fT2MlsAdq8k39SYz2L5BKd3/QVLCFVG
+         mGL4U+4wZEXkT1qXnJI55Ja1B6MxeYAxrLmM4Z5Phv2LyCaIoQSOsYqyK2r2QJ1Sshkm
+         JCsYxQev6YuStfWs1QnrhalHaORYzXjvBJjxQ5NQE/OlmmHjWKJT0MGAyjNahuHtlifk
+         pGsmyYPd4Tkeu+wvjPGFeA8iYGwautfSAUmIaRM9+fUBUQCMFkcepP21wJf/W4vVRUc+
+         /qvA==
+X-Gm-Message-State: AC+VfDz+z1xe3HATtvaqqiTPenV4Fr6aA/ApN5PNG6SCBR4sdTABNdn0
+        Q/1Nld9Lrt1UAx+AWaIDDU5RZA==
+X-Google-Smtp-Source: ACHHUZ7JwMKlF16an5fKAAhKtWGc3XJ/p+7XO2tbUyGsNJ3hOPNiI2RbyXln+FYT7cYlhi/hsXylDg==
+X-Received: by 2002:ac2:568d:0:b0:4ef:f4ef:a1cc with SMTP id 13-20020ac2568d000000b004eff4efa1ccmr2026719lfr.14.1683474197789;
+        Sun, 07 May 2023 08:43:17 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
+        by smtp.gmail.com with ESMTPSA id q2-20020ac25fc2000000b004b55ddeb7e3sm1012158lfg.309.2023.05.07.08.43.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 May 2023 08:43:17 -0700 (PDT)
+Message-ID: <55538c42-b348-71ab-4aff-7cccfb14f8ab@linaro.org>
+Date:   Sun, 7 May 2023 18:43:16 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH RESEND v3 5/5] iio: adc: qcom-spmi-vadc: Propagate fw node
+ label to userspace
+Content-Language: en-GB
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+References: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
+ <20230502-iio-adc-propagate-fw-node-label-v3-5-6be5db6e6b5a@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230502-iio-adc-propagate-fw-node-label-v3-5-6be5db6e6b5a@somainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 03 May 2023 10:09:28 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On 02/05/2023 02:17, Marijn Suijten wrote:
+> Set the read_label() callback to return a friendly name provided in DT
+> (firmware), in order to make in_{therm,voltage}X_label attributes show
+> up in sysfs for userspace to consume a channel name.  This is
+> particularly useful for custom thermistors being attached to otherwise
+> generically named GPIOs, where the name is known by the board DT.
+> 
+> If the channel name isn't set in DT, use the datasheet_name hardcoded in
+> the driver instead.
+> 
+> Note that this doesn't fall back to fwnode_get_name() as that provides
+> suboptimally readable names, with an @xx address suffix from board DT.
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>   drivers/iio/adc/qcom-spmi-vadc.c | 19 ++++++++++++++++++-
+>   1 file changed, 18 insertions(+), 1 deletion(-)
 
-Patch title should be something like the following so it's easy to see what
-is affected when looking at a long list of patches.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag.
-
-
-> On Tue, 2023-05-02 at 19:29 +0900, Masahiro Honda wrote:
-> > The Sigma-Delta ADCs supported by this driver can use SDO as an interru=
-pt
-> > line to indicate the completion of a conversion. However, some devices
-> > cannot properly detect the completion of a conversion by an interrupt.
-> > This is for the reason mentioned in the following commit.
-> >=20
-> > commit e9849777d0e2 ("genirq: Add flag to force mask in
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 disable_irq[_nosy=
-nc]()")
-> >=20
-> > A read operation is performed by an extra interrupt before the completi=
-on
-> > of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UNLA=
-ZY
-> > flag.
-> >=20
-> > Signed-off-by: Masahiro Honda <honda@mechatrax.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-
-Fixes tag?  We'll want to know how far to backport this.  I assume it's
-limited by the above commit as these drivers are older than that.=20
-
-I'm also not totally sure what this 'looks like' for a user.  What happens?
-Fail to read, wrong value, lock up or something else?  It would be helpful
-to include that information in case anyone else runs into this.
-
-Actual change looks right to me.
-
-Thanks,
-
-Jonathan
-
-
->=20
-> > v4:
-> > =C2=A0- Remove the callback.
-> > v3:
-> > https://lore.kernel.org/linux-iio/20230420102316.757-1-honda@mechatrax.=
-com/
-> > =C2=A0- Remove the Kconfig option.
-> > v2:
-> > https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatrax.=
-com/
-> > =C2=A0- Rework commit message.
-> > =C2=A0- Add a new entry in the Kconfig.
-> > =C2=A0- Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freei=
-ng the IRQ.
-> > v1:
-> > https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatrax.=
-com/
-> >=20
-> > =C2=A0drivers/iio/adc/ad_sigma_delta.c | 4 ++++
-> > =C2=A01 file changed, 4 insertions(+)
-> >=20
-> > diff --git a/drivers/iio/adc/ad_sigma_delta.c
-> > b/drivers/iio/adc/ad_sigma_delta.c
-> > index d8570f6207..7e21928707 100644
-> > --- a/drivers/iio/adc/ad_sigma_delta.c
-> > +++ b/drivers/iio/adc/ad_sigma_delta.c
-> > @@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(struct device =
-*dev,
-> > struct iio_dev *indio_de
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0init_completion(&sigma_=
-delta->completion);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sigma_delta->irq_dis =
-=3D true;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* the IRQ core clears IRQ_D=
-ISABLE_UNLAZY flag when freeing an IRQ */
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0irq_set_status_flags(sigma_d=
-elta->spi->irq, IRQ_DISABLE_UNLAZY);
-> > +
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D devm_request_ir=
-q(dev, sigma_delta->spi->irq,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad_sd_data_rdy_trig_poll,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sigma_delta->info->irq_flags | IRQF_NO=
-_AUTOEN, =20
->=20
+-- 
+With best wishes
+Dmitry
 

@@ -2,64 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E425C6F98BC
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 15:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D0F6F98CB
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 16:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231290AbjEGNo6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 May 2023 09:44:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33058 "EHLO
+        id S229460AbjEGOGs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 May 2023 10:06:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230133AbjEGNoz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 09:44:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C580615684;
-        Sun,  7 May 2023 06:44:52 -0700 (PDT)
+        with ESMTP id S229454AbjEGOGr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 10:06:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75B2BF0;
+        Sun,  7 May 2023 07:06:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B6ED611D6;
-        Sun,  7 May 2023 13:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07259C433EF;
-        Sun,  7 May 2023 13:44:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AB0E60C37;
+        Sun,  7 May 2023 14:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB48C433D2;
+        Sun,  7 May 2023 14:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683467091;
-        bh=/omlLysihdl8+PiJHmfwCUqmEW4kfNh2cWe39Dzmne8=;
+        s=k20201202; t=1683468404;
+        bh=uKRagPtWPQ0otbYUeeaNhIlFQq3x79fkP54v0RwfeSE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bRR+8dwRT+xUojVrlhoa9X4C3WhIJ3NRsTHd7D4RTL/qD8QpAG/F0OpkCctrlIQNH
-         htw0XLu5bHK7+75tIJOiuxGb7Yl34N+lxs57z8jTIf5dyyZBHMOusvJeS11Y+m/j2s
-         FUMio8Rf+ogOYfeTvnOUzagMXKKbWDWGMUUAEzaGiWxugXqj4B7eal6dtRJXl8Vqns
-         pI7COvi86i+snDuirvxuJouvkvM3hFTL3biWoeC1WqkS276QhA8PldplvZT/MQXDSN
-         4PSsa38Tm6G0plZY7fGFIETN8uw04tNJMG3cJ+9UCUcs6awbqYV28KQLz2/tVrCkWx
-         lZ+P2zZZ2OAgA==
-Date:   Sun, 7 May 2023 15:00:43 +0100
+        b=aqIvBdJFSifhBSTGjV+4U1jcoHF3YkabGzCxyItuaS3a2unzlekx17EdYbwh1Zoq+
+         VyeI1QkVivhNk22h9t2UgzBZi5z8ehsobCehwxNH+H95LmdMBeFiVIAPsObH67V4UB
+         vCg3JJLdx/gJm/zT0cFk6pbUULUJdiv6qcydon5x54o+82JXnqUMGhzSNSGModCroH
+         Xho3IEz84uyiefBi/VK4yLCvEtKS+IBjHrlJls92+7E5gQgJFzyxtRUCDli8tRtSrL
+         zcbXnfi0kIRIbblO/UWQQD1+8ztKgtXwzNTVTpUq8l2PlXU9q3cCR6lJvsHMF0Wflh
+         t5FKioIELNv1Q==
+Date:   Sun, 7 May 2023 15:22:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Cai Huoqing <cai.huoqing@linux.dev>,
-        Haibo Chen <haibo.chen@nxp.com>,
+To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH v2 1/1] dt-bindings: iio: imx8qxp-adc: add missing
- vref-supply
-Message-ID: <20230507150043.4b4adfac@jic23-huawei>
-In-Reply-To: <5671528.DvuYhMxLoT@steina-w>
-References: <20230424092312.61746-1-alexander.stein@ew.tq-group.com>
-        <20230430181558.7614cbfc@jic23-huawei>
-        <5671528.DvuYhMxLoT@steina-w>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH v3 4/5] iio: light: ROHM BU27008 color sensor
+Message-ID: <20230507152236.46aba096@jic23-huawei>
+In-Reply-To: <91463df1-5aba-484a-92ea-f8979ec30535@fi.rohmeurope.com>
+References: <cover.1682495921.git.mazziesaccount@gmail.com>
+        <fb35de40a3908988f5f83e25d17119e6944d289b.1682495921.git.mazziesaccount@gmail.com>
+        <20230501152014.7789aa42@jic23-huawei>
+        <91463df1-5aba-484a-92ea-f8979ec30535@fi.rohmeurope.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,118 +67,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 02 May 2023 08:34:12 +0200
-Alexander Stein <alexander.stein@ew.tq-group.com> wrote:
 
-> Am Sonntag, 30. April 2023, 19:15:58 CEST schrieb Jonathan Cameron:
-> > On Mon, 24 Apr 2023 11:23:12 +0200
-> > 
-> > Alexander Stein <alexander.stein@ew.tq-group.com> wrote:  
-> > > Although this property is used right now for IIO_CHAN_INFO_SCALE,
-> > > this ADC has two internal reference voltages, which the driver currently
-> > > doesn't make use of.
-> > > 
-> > > Fixes: db73419d8c06 ("dt-bindings: iio: adc: Add binding documentation for
-> > > NXP IMX8QXP ADC") Signed-off-by: Alexander Stein
-> > > <alexander.stein@ew.tq-group.com>  
-> > 
-> > Interesting that we are talking her only about vrefh, what about vrefp?
-> > I guess the assumption is that will be wired to 0V?  
-> 
-> What's vrefp? The only other signal related to ADC is vrefl.
-
-oops. Indeed vrefl.
-
-> 
-> > The first reference I found didn't seem to imply that was necessarily the
-> > case. https://www.mouser.com/pdfDocs/IMX8QXPAEC.pdf  
-> 
-> Assuming you are talking about vrefh and vrefl, how is this a problem? Even if 
-> vrefl is not 0V, the voltage difference is what the ADC uses as reference 
-> voltage, so this should be supplied in the DT then.
-
-Those two voltages can be supplied by entirely unrelated regulators (well
-probably high precision references, but represented as regulators).  Those
-may well need turning on.
-
-I don't think there is any way to define that in DT without the consumer (here
-the ADC) taking two different supplies.
-
-Maybe that's a usecase no one cares about though and they will either supply
-this with fixed regulators, or with a single precision reference supplying
-both voltages.
-
-Also, assuming these are used in a moderately normal reference way, if
-vrefl is not 0V the driver should be supplying offset information to
-consumers of this channel (userspace etc) to account for that.
-
-meh. I don't care that much if this isn't a case we actually need to care about.
-I just found it interesting the datasheet didn't talk about these as either
-a differential pair (so balanced) or a reference 0V and vref.
-
-I'll apply this as it stands.
-
-Applied to the fixes-togreg branch of iio.git
-
-Thanks,
-
-Jonathan
-
-
-> 
-> Best regards
-> Alexander
-> 
-> > Jonathan
 > >   
-> > > ---
-> > > Thanks for your inputs. This improved descritpion should make it clear
-> > > that this property is only about the external reference voltage, not
-> > > about the optional, internal voltages.
-> > > 
-> > > Changes in v2:
-> > > * Improved commit message subject as suggested
-> > > * Add hint about feature flag regarding multiple, internal, reference
-> > > 
-> > >   voltages
-> > >  
-> > >  .../devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml       | 7 +++++++
-> > >  1 file changed, 7 insertions(+)
-> > > 
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> > > b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml index
-> > > 63369ba388e4..878e67054d7c 100644
-> > > --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
-> > > 
-> > > @@ -39,6 +39,12 @@ properties:
-> > >    power-domains:
-> > >      maxItems: 1
-> > > 
-> > > +  vref-supply:
-> > > +    description: |
-> > > +      External ADC reference voltage supply on VREFH pad. If VERID[MVI]
-> > > is
-> > > +      set, there are additional, internal reference voltages selectable.
-> > > +      VREFH1 is always from VREFH pad.
-> > > +
-> > > 
-> > >    "#io-channel-cells":
-> > >      const: 1
-> > > 
-> > > @@ -72,6 +78,7 @@ examples:
-> > >              assigned-clocks = <&clk IMX_SC_R_ADC_0>;
-> > >              assigned-clock-rates = <24000000>;
-> > >              power-domains = <&pd IMX_SC_R_ADC_0>;
-> > > 
-> > > +            vref-supply = <&reg_1v8>;
-> > > 
-> > >              #io-channel-cells = <1>;
-> > >          
-> > >          };
-> > >      
-> > >      };  
+> >> +
+> >> +	if (i2c->irq) {
+> >> +		ret = devm_iio_triggered_buffer_setup(dev, idev,
+> >> +						      &iio_pollfunc_store_time,
+> >> +						      bu27008_trigger_handler,
+> >> +						      &bu27008_buffer_ops);
+> >> +		if (ret)
+> >> +			return dev_err_probe(dev, ret,
+> >> +				     "iio_triggered_buffer_setup_ext FAIL\n");
+> >> +
+> >> +		itrig = devm_iio_trigger_alloc(dev, "%sdata-rdy-dev%d",
+> >> +					       idev->name, iio_device_id(idev));
+> >> +		if (!itrig)
+> >> +			return -ENOMEM;
+> >> +
+> >> +		data->trig = itrig;
+> >> +
+> >> +		itrig->ops = &bu27008_trigger_ops;
+> >> +		iio_trigger_set_drvdata(itrig, data);
+> >> +
+> >> +		name = devm_kasprintf(dev, GFP_KERNEL, "%s-bu27008",
+> >> +				      dev_name(dev));
+> >> +
+> >> +		ret = devm_request_threaded_irq(dev, i2c->irq,
+> >> +						iio_pollfunc_store_time,  
+> > 
+> > This is on the wrong irq.   
 > 
+> Seems like I have some homework to do :)
+> 
+> Right. I now see I pass the iio_pollfunc_store_time() as top half for 
+> both the "real IRQ" generated by the device (here), as well as a 
+> top-half for the devm_iio_triggered_buffer_setup(). Ideally I like the 
+> idea of taking the timestamp in the top half for the device-generated 
+> IRQ as it is closer the moment HW did acquire the sample - but it really 
+> would make no difference here (even if I did it correctly).
+
+It's the matter of few function calls later.  So trivial timing wise.
+
+> 
+>   iio_pollfunc_store_time is used with the trigger not
+> > here.  Basically what happens is the caller of iio_poll_trigger() fires the input
+> > to a software irq chip that then signals all the of the downstream irqs (which
+> > are the individual consumers of the triggers).  If that's triggered from the
+> > top half / non threaded bit of the interrupt the iio_pollfunc_store_time()
+> > will be called in that non threaded context before the individual threads
+> > for the trigger consumer are started.  
+> 
+> Oh. So, you mean the iio_pollfunc_store_time() is automatically called 
+> already before kicking the SW-IRQ? So we don't need it in 
+> devm_iio_triggered_buffer_setup() anymore?
+
+No.  Whatever you register as the top half of the poll_func in the call
+to devm_iio_triggered_buffer_setup() will be called as part of the SW irq
+chip handling - not this isn't a SW-IRQ at all, it's just some demultiplexing
+code.  The top half of an IIO poll func runs in the the trigger interrupt handler
+(under iio_trigger_poll) before those in turn start their own interrupt threads
+to handle whatever you registered as the threads in devm_iio_trigger_buffer_setup()
+
+> 
+> > If there is nothing to do in the actual interrupt as it's a data ready
+> > only signal, then you should just call iio_trigger_poll() in the top half and
+> > use devm_request_irq() only as there is no thread in this interrupt (though
+> > there is one for the interrupt below the software interrupt chip).  
+> 
+> I haven't tested this yet so please ignore me if I am writing nonsense - 
+> but... The BU27008 will keep the IRQ line asserted until a register is 
+> read. We can't read the register form HW-IRQ so we need to keep the IRQ 
+> disabled until the threaded trigger handler is ran. With the setup we 
+> have here, the IRQF_ONESHOT, took care of this. I assume that changing 
+> to call the iio_poll_trigger() from top-half means I need to explicitly 
+> disable the IRQ and re-enable it at the end of the trigger thread after 
+> reading the register which debounces the IRQ line?
+
+Hmm. I'm trying to remember how this works (wrote this a very long time ago).
+I'm fairly sure it's not an issue because we use IRQF_ONESHOT down one level
+so exercise the same prevention of the threads triggering multiple times etc.
+https://elixir.bootlin.com/linux/latest/source/drivers/iio/buffer/industrialio-triggered-buffer.c#L57
+
+It doesn't matter if the device interrupt fires again as it will still be masked
+at our software irqchip level and will then get queued up and the thread will
+run again.
+
+> 
+> > 
+> >   
+> >> +						&bu27008_irq_thread_handler,
+> >> +						IRQF_ONESHOT, name, idev->pollfunc);
+> >> +		if (ret)
+> >> +			return dev_err_probe(dev, ret,
+> >> +					     "Could not request IRQ\n");
+> >> +
+> >> +
+> >> +		ret = devm_iio_trigger_register(dev, itrig);
+> >> +		if (ret)
+> >> +			return dev_err_probe(dev, ret,
+> >> +					     "Trigger registration failed\n");
+> >> +	} else {
+> >> +		dev_warn(dev, "No IRQ configured\n");  
+> > 
+> > Why is it a warning?  Either driver works without an IRQ, or it doesn't.
+> > dev_dbg() or dev_info() at most.  
+> 
+> Some of it works. Well, maybe I'll change it to tell that device works 
+> in raw_read only mode.
+> 
+> Thanks again for the help!
+> 
+> Yours,
+> 	-- Matti
 > 
 

@@ -2,117 +2,184 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1926F98AA
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 15:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E425C6F98BC
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 15:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbjEGNec (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 May 2023 09:34:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59094 "EHLO
+        id S231290AbjEGNo6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 May 2023 09:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEGNec (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 09:34:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC75150CD;
-        Sun,  7 May 2023 06:34:31 -0700 (PDT)
+        with ESMTP id S230133AbjEGNoz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 09:44:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C580615684;
+        Sun,  7 May 2023 06:44:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95E5560ED3;
-        Sun,  7 May 2023 13:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B702C433EF;
-        Sun,  7 May 2023 13:34:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B6ED611D6;
+        Sun,  7 May 2023 13:44:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07259C433EF;
+        Sun,  7 May 2023 13:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683466470;
-        bh=qeewV7R2Z6nha4ADLSckFtdAh5rT3VHQDSGqNbrAmF8=;
+        s=k20201202; t=1683467091;
+        bh=/omlLysihdl8+PiJHmfwCUqmEW4kfNh2cWe39Dzmne8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Oe66ZkrC46pqwo1MLneM2Lgjvke8ZaBe57WVLloxiMR/ZYTbmu2U+c1GWxeWNL+Tc
-         heWZUvoYZwl5oy6cBnfFcmmK3kQBe5ZdTty5CoTh7b0WAiDR+u2rlvyP2sshvIlWQx
-         hQpKP4FZFqbZU2BqudKUkTG+lGz4HNgRA+08gWSeFadinMqtKUsLQzgftVTtds39HB
-         0H9Es7Rg84zVxivOIwBjok3WbrslfBMCKwZI4lYLG/yiqTp32AD2VBUsguiC4+CDcL
-         ufS+sZ1Im8ypAT6CXHUYe6EkwEy6ViYAu4675Xi3Hl+HVBeOn0zIs1rktXOGldvL2R
-         qWx1I0DzCfAiA==
-Date:   Sun, 7 May 2023 14:50:22 +0100
+        b=bRR+8dwRT+xUojVrlhoa9X4C3WhIJ3NRsTHd7D4RTL/qD8QpAG/F0OpkCctrlIQNH
+         htw0XLu5bHK7+75tIJOiuxGb7Yl34N+lxs57z8jTIf5dyyZBHMOusvJeS11Y+m/j2s
+         FUMio8Rf+ogOYfeTvnOUzagMXKKbWDWGMUUAEzaGiWxugXqj4B7eal6dtRJXl8Vqns
+         pI7COvi86i+snDuirvxuJouvkvM3hFTL3biWoeC1WqkS276QhA8PldplvZT/MQXDSN
+         4PSsa38Tm6G0plZY7fGFIETN8uw04tNJMG3cJ+9UCUcs6awbqYV28KQLz2/tVrCkWx
+         lZ+P2zZZ2OAgA==
+Date:   Sun, 7 May 2023 15:00:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marius Hoch <mail@mariushoch.de>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     Cai Huoqing <cai.huoqing@linux.dev>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Marius Hoch <marius@mariushoch.de>
-Subject: Re: [PATCH v3 4/6] iio: st_sensors: Add ACPI support for lsm303d to
- the LSM9DS0 IMU driver
-Message-ID: <20230507145022.1465b89d@jic23-huawei>
-In-Reply-To: <e669d656-1474-ad95-4667-3a6ae79605e3@mariushoch.de>
-References: <20230415231130.115094-1-mail@mariushoch.de>
-        <20230415231130.115094-5-mail@mariushoch.de>
-        <e669d656-1474-ad95-4667-3a6ae79605e3@mariushoch.de>
+        linux-arm-kernel@lists.infradead.org,
+        Marco Felsch <m.felsch@pengutronix.de>
+Subject: Re: [PATCH v2 1/1] dt-bindings: iio: imx8qxp-adc: add missing
+ vref-supply
+Message-ID: <20230507150043.4b4adfac@jic23-huawei>
+In-Reply-To: <5671528.DvuYhMxLoT@steina-w>
+References: <20230424092312.61746-1-alexander.stein@ew.tq-group.com>
+        <20230430181558.7614cbfc@jic23-huawei>
+        <5671528.DvuYhMxLoT@steina-w>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2 May 2023 16:51:42 +0200
-Marius Hoch <mail@mariushoch.de> wrote:
+On Tue, 02 May 2023 08:34:12 +0200
+Alexander Stein <alexander.stein@ew.tq-group.com> wrote:
 
-> Hi,
+> Am Sonntag, 30. April 2023, 19:15:58 CEST schrieb Jonathan Cameron:
+> > On Mon, 24 Apr 2023 11:23:12 +0200
+> > 
+> > Alexander Stein <alexander.stein@ew.tq-group.com> wrote:  
+> > > Although this property is used right now for IIO_CHAN_INFO_SCALE,
+> > > this ADC has two internal reference voltages, which the driver currently
+> > > doesn't make use of.
+> > > 
+> > > Fixes: db73419d8c06 ("dt-bindings: iio: adc: Add binding documentation for
+> > > NXP IMX8QXP ADC") Signed-off-by: Alexander Stein
+> > > <alexander.stein@ew.tq-group.com>  
+> > 
+> > Interesting that we are talking her only about vrefh, what about vrefp?
+> > I guess the assumption is that will be wired to 0V?  
 > 
-> On 16/04/2023 01:11, Marius Hoch wrote:
-> <snip>
-> > diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-> > index 997b5ff792be..55f3738193af 100644
-> > --- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-> > +++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-> > @@ -37,6 +37,12 @@ static const struct spi_device_id st_lsm9ds0_id_table[] = {
-> >   };
-> >   MODULE_DEVICE_TABLE(spi, st_lsm9ds0_id_table);
-> >   
-> > +static const struct acpi_device_id st_lsm9ds0_acpi_match[] = {
-> > +	{"ACCL0001", (kernel_ulong_t)LSM303D_IMU_DEV_NAME},
-> > +	{ },
-> > +};
-> > +MODULE_DEVICE_TABLE(acpi, st_lsm9ds0_acpi_match);
-> > +
-> >   static const struct regmap_config st_lsm9ds0_regmap_config = {
-> >   	.reg_bits	= 8,
-> >   	.val_bits	= 8,
-> > @@ -72,6 +78,7 @@ static struct spi_driver st_lsm9ds0_driver = {
-> >   	.driver = {
-> >   		.name = "st-lsm9ds0-spi",
-> >   		.of_match_table = st_lsm9ds0_of_match,
-> > +		.acpi_match_table = st_lsm9ds0_acpi_match,
-> >   	},
-> >   	.probe = st_lsm9ds0_spi_probe,
-> >   	.id_table = st_lsm9ds0_id_table,  
-> I just realized that these changes (the SPI ones, not the I2C ones) are 
-> entirely superfluous, and I'm not sure why I added this in the first 
-> place. In the Lenovo Yoga Tablet 2 series (which seem to be the only 
-> devices exposing this as "ACCL0001"), the device is accessible via I2C. 
-> Just to make sure, I re-tested the patch chain without this change.
+> What's vrefp? The only other signal related to ADC is vrefl.
+
+oops. Indeed vrefl.
+
 > 
-> @Jonathan: Shall I upload an entirely new patch set (v4), do this in a 
-> separate new clean up commit, or do you want to just drop these changes 
-> to drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c? I'm fine with any of 
-> these options.
+> > The first reference I found didn't seem to imply that was necessarily the
+> > case. https://www.mouser.com/pdfDocs/IMX8QXPAEC.pdf  
+> 
+> Assuming you are talking about vrefh and vrefl, how is this a problem? Even if 
+> vrefl is not 0V, the voltage difference is what the ADC uses as reference 
+> voltage, so this should be supplied in the DT then.
 
-I'll drop it and push out a new version of the togreg tree.
+Those two voltages can be supplied by entirely unrelated regulators (well
+probably high precision references, but represented as regulators).  Those
+may well need turning on.
 
-Thanks for pointing this out.
+I don't think there is any way to define that in DT without the consumer (here
+the ADC) taking two different supplies.
+
+Maybe that's a usecase no one cares about though and they will either supply
+this with fixed regulators, or with a single precision reference supplying
+both voltages.
+
+Also, assuming these are used in a moderately normal reference way, if
+vrefl is not 0V the driver should be supplying offset information to
+consumers of this channel (userspace etc) to account for that.
+
+meh. I don't care that much if this isn't a case we actually need to care about.
+I just found it interesting the datasheet didn't talk about these as either
+a differential pair (so balanced) or a reference 0V and vref.
+
+I'll apply this as it stands.
+
+Applied to the fixes-togreg branch of iio.git
+
+Thanks,
 
 Jonathan
 
+
 > 
-> Cheers,
-> Marius
+> Best regards
+> Alexander
+> 
+> > Jonathan
+> >   
+> > > ---
+> > > Thanks for your inputs. This improved descritpion should make it clear
+> > > that this property is only about the external reference voltage, not
+> > > about the optional, internal voltages.
+> > > 
+> > > Changes in v2:
+> > > * Improved commit message subject as suggested
+> > > * Add hint about feature flag regarding multiple, internal, reference
+> > > 
+> > >   voltages
+> > >  
+> > >  .../devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml       | 7 +++++++
+> > >  1 file changed, 7 insertions(+)
+> > > 
+> > > diff --git
+> > > a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> > > b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml index
+> > > 63369ba388e4..878e67054d7c 100644
+> > > --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+> > > 
+> > > @@ -39,6 +39,12 @@ properties:
+> > >    power-domains:
+> > >      maxItems: 1
+> > > 
+> > > +  vref-supply:
+> > > +    description: |
+> > > +      External ADC reference voltage supply on VREFH pad. If VERID[MVI]
+> > > is
+> > > +      set, there are additional, internal reference voltages selectable.
+> > > +      VREFH1 is always from VREFH pad.
+> > > +
+> > > 
+> > >    "#io-channel-cells":
+> > >      const: 1
+> > > 
+> > > @@ -72,6 +78,7 @@ examples:
+> > >              assigned-clocks = <&clk IMX_SC_R_ADC_0>;
+> > >              assigned-clock-rates = <24000000>;
+> > >              power-domains = <&pd IMX_SC_R_ADC_0>;
+> > > 
+> > > +            vref-supply = <&reg_1v8>;
+> > > 
+> > >              #io-channel-cells = <1>;
+> > >          
+> > >          };
+> > >      
+> > >      };  
+> 
+> 
 

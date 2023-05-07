@@ -2,120 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B8236F9AA5
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 19:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C646F9AFE
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 20:47:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbjEGRje (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 May 2023 13:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60016 "EHLO
+        id S229948AbjEGSrL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 May 2023 14:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231415AbjEGRjb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 13:39:31 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F92411571
-        for <linux-iio@vger.kernel.org>; Sun,  7 May 2023 10:39:30 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-965e4be7541so489039366b.1
-        for <linux-iio@vger.kernel.org>; Sun, 07 May 2023 10:39:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683481168; x=1686073168;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fmm5K3twSnfjvRXl95GP6fEhhk0gKbIZpn9atiJ/Snw=;
-        b=CwPBinCLIofyk3epCVgKgKfO53ghgPMzBdbJwR5ZB+86/yKvQlEZmGPlX3CzqzWmLL
-         b0mlvCvIt/uOHrL+evHUh8IsPPj07dkjwcspXHnBhLYKeU4bualuyXfUXYqD7UA5xDQy
-         T2VIdujQOOYfWfR7HlCnDd/qauTJhz9Tkh9rITIrPYQlwk24qpltWjCENKr8Jjl1p/ZI
-         k6Uv9WlRi0V9r8Lo3kuE9rpfhjg2aef2MsCLKbOR7c5FKvOnZKbg6MYVI3WObJ/2stGA
-         SxacU8OYAM+TXyg5XV/0qKzjXwN0sG7lZQldJD+x6i+YE7ktd0XXxzEGnL5TnAVP4+4G
-         2GXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683481168; x=1686073168;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fmm5K3twSnfjvRXl95GP6fEhhk0gKbIZpn9atiJ/Snw=;
-        b=XaBvRO0Gzm8yFprnRFnkQVCfSiUZkQj1TNxUzhNBmeMNoNkUbl3H9HhR7pOrYaL+Qa
-         SeN+GubFRyxzN+wqk/DQN2ZLKoAoUOmNUw2x41vPRRfBEmynu17/WQ/oapvHAUrktYxk
-         RlSdhzfy1w5DRN6fhkJayS8fJT13Wb9dzBb2A0Sg7gL9jvGbsF2+ZAUlpJAYsCOeXGz+
-         Urpf0SEUmXxwAOR9zMwwEP3iaGwPiHJpnbcjr3nuna5M0QOTdbFT57s5rBFdZxa1beHL
-         kv0G4ioGp/qDxyCswniJpLe4X8e/1Pb0F/3FmbhftUwy4zmLKHdMFYkH7nJtkQ0eIsXs
-         9BTA==
-X-Gm-Message-State: AC+VfDxZqzMJEgos617ZM7mfLAyL2P/BXuzWOgp6lMtJfrFsQe7K8aTG
-        5u/Y3KETnREyIvqed4u8c9jf4Q==
-X-Google-Smtp-Source: ACHHUZ7PR0FDVgBhOkmOCM+AZxWT8KIlI8Y/m9OAoqRSqctbKxwBEQrJfGg2XDvdwoBGMa6ANXB4hA==
-X-Received: by 2002:a17:907:9454:b0:953:291a:6705 with SMTP id dl20-20020a170907945400b00953291a6705mr6561472ejc.17.1683481168684;
-        Sun, 07 May 2023 10:39:28 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:1757:b51a:9965:e81])
-        by smtp.gmail.com with ESMTPSA id gz6-20020a170907a04600b0094a90d3e385sm3912065ejc.30.2023.05.07.10.39.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 May 2023 10:39:28 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        with ESMTP id S229460AbjEGSrK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 14:47:10 -0400
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D5E11550;
+        Sun,  7 May 2023 11:47:08 -0700 (PDT)
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id EDDD5803A9;
+        Sun,  7 May 2023 20:47:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1683485226;
+        bh=7a7SLLXqqUe2EfG/VAE91sfR70GW3gHGw4ejl7t5NMA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tot/3Nu2bYEVciwSaPO8VG4JygfvhONeJ3S5gmScpUgrvje5FBLyq7BPD1zRoGsu5
+         HK5ckHquXqlux82+7CZC36JLbn/HAGqM0Kmu9Rd+4jGhE1Co8Ll1tHzIzwTGjee1ke
+         ncSYI6qm8ffrpnkIfpmmnc1qXiv9nWrrehu+47iYQeqO5qYwJPjRzKW1t0T1xmSZOV
+         HSk0NO0r8RxzRHanUGXpo7g7SBbyx5zSXMKTyVPIRpXFBUq4ePtkkgcNEOUucPbce/
+         324PpTtQlUhgsF40iERI6VHFmKyN7lhO5z6c/EDFLZGSqTx1VR7gAmtxHROn267Xh5
+         rswb6OTu1kYHg==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-iio@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Crt Mori <cmo@melexis.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Daniel Campello <campello@chromium.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 3/3] dt-bindings: iio: semtech,sx9324: reference common schema for label
-Date:   Sun,  7 May 2023 19:39:23 +0200
-Message-Id: <20230507173923.263741-3-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230507173923.263741-1-krzysztof.kozlowski@linaro.org>
-References: <20230507173923.263741-1-krzysztof.kozlowski@linaro.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: [PATCH v2 1/5] dt-bindings: iio: temperature: melexis,mlx90614: Document MLX90615 support
+Date:   Sun,  7 May 2023 20:46:45 +0200
+Message-Id: <20230507184649.39290-1-marex@denx.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Reference iio.yaml schema from dtschema to allow already used
-label property:
+Document support for MLX90615 Infra Red Thermometer, which seems to
+be the predecesor of MLX90614 . There are significant differences in
+the register layout compared to MLX90614, but the functionality of
+the device is virtually identical.
 
-  sc7180-trogdor-pazquel360-lte.dtb: proximity@28: 'label' does not match any of the regexes: 'pinctrl-[0-9]+'
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
 ---
-
-Patch for dtschema:
-https://lore.kernel.org/linux-devicetree/20230507171219.232216-1-krzk@kernel.org/T/#u
+Cc: Crt Mori <cmo@melexis.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Peter Meerwald <pmeerw@pmeerw.net>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
 ---
- .../devicetree/bindings/iio/proximity/semtech,sx9324.yaml    | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+V2: - Add spaces to subject tags
+    - Add AB from Krzysztof
+---
+ .../bindings/iio/temperature/melexis,mlx90614.yaml          | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-index b3aa2ebf9661..48f221463166 100644
---- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-+++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-@@ -13,6 +13,9 @@ maintainers:
- description: |
-   Semtech's SX9324 proximity sensor.
+diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+index d6965a0c1cf30..654d31f65d360 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+@@ -4,7 +4,7 @@
+ $id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
-+allOf:
-+  - $ref: /schemas/iio/iio.yaml#
-+
+-title: Melexis MLX90614 contactless IR temperature sensor
++title: Melexis MLX90614/MLX90615 contactless IR temperature sensor
+ 
+ maintainers:
+   - Peter Meerwald <pmeerw@pmeerw.net>
+@@ -15,7 +15,9 @@ description: |
+ 
  properties:
    compatible:
-     const: semtech,sx9324
-@@ -167,7 +170,7 @@ required:
-   - reg
-   - "#io-channel-cells"
+-    const: melexis,mlx90614
++    enum:
++      - melexis,mlx90614
++      - melexis,mlx90615
  
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
+   reg:
+     maxItems: 1
 -- 
-2.34.1
+2.39.2
 

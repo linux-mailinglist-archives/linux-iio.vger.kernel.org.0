@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 193F86F9897
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 15:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44FE06F989F
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 15:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229948AbjEGNO7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 May 2023 09:14:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54418 "EHLO
+        id S229472AbjEGNUM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 May 2023 09:20:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230387AbjEGNO5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 09:14:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9391059C1;
-        Sun,  7 May 2023 06:14:56 -0700 (PDT)
+        with ESMTP id S230348AbjEGNUL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 09:20:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4AF17DDB;
+        Sun,  7 May 2023 06:20:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A38161BA3;
-        Sun,  7 May 2023 13:14:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EBEC433EF;
-        Sun,  7 May 2023 13:14:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D64D860F00;
+        Sun,  7 May 2023 13:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54893C433D2;
+        Sun,  7 May 2023 13:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683465295;
-        bh=fYvEHxQMIB0EcK3zgyNt2wrMgeUzXp92rklzMGqAThs=;
+        s=k20201202; t=1683465608;
+        bh=pdWUXTFxaGBXL5nmETXB05yzRkrOrxbyIjOlWPBW3lE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JfBCIRChqqyEAusGtFrq9rrCebvXREKJsHjlPGRJYIdDWeAYwE4IdTxHn7KatpJpC
-         ri/mAZnnT86Jjkztls4gwt4V+CgL6q4YE+VVKByuyiT5ucfVRrbZ6Yhtjz5F1P05+9
-         F/7jDRLqN0U63FWtV6HnSpaYKq/boUJwZ6+sWY4wxIzZQ4rzz1zhcVZY/8mHfI52Qf
-         UvXrQJTsFdvzjx4HYcJHjRFUzPopK0aorrCHmvGCldUWp5oB6Ne8yHm2+7EIXCEq7r
-         5RdnE2VxzvyENbofaQrHArLnDIy/Ia35Au1e84/rXoSNLuuMnq/MZW/KB4dreaL9A8
-         sKjjoeM6Fadkg==
-Date:   Sun, 7 May 2023 14:30:49 +0100
+        b=YNUz8OvY9BFlW3UyeIBmIuZCSCBi+iFahEaKdT7HyJpK2PahNJfEkm51m5X0cMvWq
+         giBZCanj6VKVsnW8Jp8qcxSnQAvnS6Ggey5TxpXphPAW4EEL2yvV3l12P2M77KGjtW
+         24fYBcLv4woY9mPAeiKpXavxnWKDcflcIgcPVB0h13ufuG2QU6RkOb7aLx2MusKO3r
+         oBtI4XNtmq6V0lnjATE+JB4fgCmif2K1JANSp1D+x9eORiz//kofjwSXunLRfLhrCh
+         2Qn+ugjcv1Nn6fBjVTLaUx4V6zRH+SocLT14CCm1aKrGFKtQCtH2LS+xcacujlH921
+         0mAftC/IGMoqg==
+Date:   Sun, 7 May 2023 14:36:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: bu27034: Ensure reset is written
-Message-ID: <20230507143049.4407c06e@jic23-huawei>
-In-Reply-To: <b8c19793-8650-b997-e868-3efd1e119b9a@gmail.com>
-References: <ZFIw/KdApZe1euN8@fedora>
-        <20230506192702.57ebf533@jic23-huawei>
-        <b8c19793-8650-b997-e868-3efd1e119b9a@gmail.com>
+Subject: Re: [PATCH] iio: bu27034: Reinit regmap cache after reset
+Message-ID: <20230507143602.08a11f12@jic23-huawei>
+In-Reply-To: <453da7af-8a83-f302-eea6-159e6222f430@gmail.com>
+References: <ZFM7lE4ZuDrUTspH@fedora>
+        <20230506190738.0b6e4b45@jic23-huawei>
+        <453da7af-8a83-f302-eea6-159e6222f430@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,107 +57,107 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 7 May 2023 12:58:52 +0300
+On Sun, 7 May 2023 13:16:57 +0300
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 5/6/23 21:27, Jonathan Cameron wrote:
-> > On Wed, 3 May 2023 13:01:32 +0300
+> On 5/6/23 21:07, Jonathan Cameron wrote:
+> > On Thu, 4 May 2023 07:59:00 +0300
 > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >  =20
-> >> The reset bit must be always written to the hardware no matter what va=
-lue
-> >> is in a cache or register. Ensure this by using regmap_write_bits()
-> >> instead of the regmap_update_bits(). Furthermore, the RESET bit may be
-> >> self-clearing, so mark the SYSTEM_CONTROL register volatile to guarant=
-ee
-> >> we do also read the right state - should we ever need to read it.
+> >   
+> >> When BU27034 restores the default register values when SWRESET is
+> >> issued. This can cause register cache to be outdated.
+> >>
+> >> Rebuild register cache after SWRESET.
 > >>
 > >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >> Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor") =
-=20
-> >=20
-> > This obviously interacts with the regcache update.
-> >=20
-> > Fun question is whether a register is volatile if it results in all
-> > registers (including itself) resetting.  In my view, no it isn't volati=
-le.
-> > So fixing the regcache stuff as in your other patch is more appropriate=
-. =20
->=20
-> Hi Jonathan,
->=20
-> I think the key thing here is to ensure writing the reset-bit will=20
-> always be performed no matter what value is found from cache/hardware. I=
-=20
-> guess marking the register as volatile is indeed unnecessary, although I=
-=20
-> don't think it is wrong though, as it underlines we have something=20
-> special in this register. However, using the write_bits() instead of=20
-> update_bits() is in my opinion very much "the right thing" to do :)
+> >> Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor")
+> >>
+> >> ---
+> >> I noticed this was missing while writing driver for another light
+> >> sensor. The change is not tested in hardware as I don't have the BU27034
+> >> at my hands right now. Careful review would be highly appreciated.
+> >>
+> >> This change is built on top of the
+> >> https://lore.kernel.org/all/ZFIw%2FKdApZe1euN8@fedora/
+> >> and could probably be squashed with it. Unfortunately I spotted the
+> >> missing cache re-init only after sending the fix linked above.
+> >>  
+> > 
+> > I'm not sure I follow what would be happening here or if this makes sense.
+> > 
+> > Partly the following is based on my mental image of how regmap caching works
+> > and could be completely wrong :)
+> > 
+> > I don't think it goes off an reads registers until they are actually accessed
+> > the first time.  
+> 
+> I think this is not the absolute truth. AFAIR the regmap_init may lead 
+> to regcache_hw_init() - which can read the non volatile registers to the 
+> cache. I can't say if this is the case with current bu27034 
+> regmap-config without taking a good look at this with some thought :)
 
-It's a reasonable change, but whether it's fixing a bug is more complex.
-If we handle the cache correctly so it always says the bits need writing
-then there will be no difference between update_bits() and write_bits().
+I think that's only true if you provide various things you haven't in the
+regmap config.
 
-Meh, better safe than sorry.
+> 
+> Nevertheless, we know that _if_ there is anything in cache when we do 
+> reset, the cache will most likely be invalid as HW will reset the 
+> registers. My thinking was that it is just safest to reinit the cache 
+> when this happens, then we do not need to care if regcache was populated 
+> when this is called.
+
+True, but that's rather heavy weight when we know we only touched one register.
+
+> 
+> >  In this case nothing has been accessed before this point
+> > other than the SYSTEM_CONTROL register and that happens to the one that
+> > is set to trigger the reset.
+> > 
+> > So at worst I think the only cache element that will potentially be wrong
+> > is the SYSTEM_CONTROL register as the cache will contain the reset bits as set.
+> > 
+> > That would be a problem if you read it again anywhere in the driver after that
+> > point, but you don't so not a 'bug' but perhaps prevention of potential future
+> > bugs as this behaviour is odd.  If you were to try setting some other bits
+> > then you'd probably accidentally reset the device :)
+> > 
+> > So, what's the ideal solution.  You could just bypass the regcache initially
+> > and turn it on later.  
+> 
+> I think I've never temporarily bypassed the cache when I've used one :) 
+> I need to check how this is done :)
+> 
+
+regcache_cache_bypass(map, true / false);
+
+> >  Thus it would never become wrong due to the reset (as nothing
+> > would be cached until after that).
+> > 
+> > Or just leave it as you have it here, but explain why it matters - as prevention
+> > of potential issues due to wrong value in that single register.  
+> 
+> Hm. I'd not limit the potential problems to single register as probe may 
+> get changed - or error handling could be added and reset performed after 
+> probe. (I was actually thinking of this as the spec states that if VCC 
+> drops the sensor may go to undefined state and won't recover unless VCC 
+> is turned off for > 1mS. Didn't add this for now as it is not at all 
+> obvious the regulator would support detecting under-voltage - or that 
+> the sensor could really turn-off the regulator as it might be also 
+> supplying something else - so I didn't want to implement some overkill 
+> error handling when we might not have hardware which actually benefits 
+> from this).
+
+OK. I'm fine with just reinitializing it and paying the penalty of that being
+overkill given current code.
+
+Combine this with the other patch into one clean fix / tidy up though.
 
 Jonathan
 
->=20
-> Yours=C2=B8
+
+
+> 
+> Yours,
 > 	-- Matti
->=20
-> >=20
-> > Jonathan
-> >  =20
-> >>
-> >> ---
-> >> Changelog:
-> >> v1 =3D> v2:
-> >>    - Fix SoB tag
-> >>
-> >>
-> >> I haven't verified if the reset bit is self-clearin as I did temporari=
-ly
-> >> give away the HW.
-> >>
-> >> In worst case the bit is not self clearing - but we don't really
-> >> get performance penalty even if we set the register volatile because t=
-he
-> >> SYSTEM_CONTROL register only has the part-ID and the reset fields. The
-> >> part-id is only read once at probe.
-> >>
-> >> ---
-> >>   drivers/iio/light/rohm-bu27034.c | 5 ++++-
-> >>   1 file changed, 4 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm=
--bu27034.c
-> >> index 25c9b79574a5..740ebd86b6e5 100644
-> >> --- a/drivers/iio/light/rohm-bu27034.c
-> >> +++ b/drivers/iio/light/rohm-bu27034.c
-> >> @@ -231,6 +231,9 @@ struct bu27034_result {
-> >>  =20
-> >>   static const struct regmap_range bu27034_volatile_ranges[] =3D {
-> >>   	{
-> >> +		.range_min =3D BU27034_REG_SYSTEM_CONTROL,
-> >> +		.range_max =3D BU27034_REG_SYSTEM_CONTROL,
-> >> +	}, {
-> >>   		.range_min =3D BU27034_REG_MODE_CONTROL4,
-> >>   		.range_max =3D BU27034_REG_MODE_CONTROL4,
-> >>   	}, {
-> >> @@ -1272,7 +1275,7 @@ static int bu27034_chip_init(struct bu27034_data=
- *data)
-> >>   	int ret, sel;
-> >>  =20
-> >>   	/* Reset */
-> >> -	ret =3D regmap_update_bits(data->regmap, BU27034_REG_SYSTEM_CONTROL,
-> >> +	ret =3D regmap_write_bits(data->regmap, BU27034_REG_SYSTEM_CONTROL,
-> >>   			   BU27034_MASK_SW_RESET, BU27034_MASK_SW_RESET);
-> >>   	if (ret)
-> >>   		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
-> >>
-> >> base-commit: 7fcbd72176076c44b47e8f68f0223c02c411f420 =20
-> >  =20
->=20
+> 
 

@@ -2,203 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 541F96F9B02
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 20:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 683876F9B98
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 22:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbjEGSrN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 May 2023 14:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
+        id S231161AbjEGUp1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 May 2023 16:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbjEGSrL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 14:47:11 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CAF12491;
-        Sun,  7 May 2023 11:47:09 -0700 (PDT)
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 063558267E;
-        Sun,  7 May 2023 20:47:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1683485228;
-        bh=u1gATl9B69gtbKY0ZuXg7NBBYCJScRsLDewITVDA7TU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bn5J5eO4hGSwY74FJQwufaszigAjwr6ZQkexoJk6lEMwoovno9SoZwI1A2YG6lWaM
-         gkRu09HnEJ049zH4laJc7NavyauEA38hvAqKnOF94OQqfm29o2OS6G3K9LUllkWAXR
-         ReErWc4qFY1Utdc4XHasq/i4XRNY+ZL/fJhRVI0/5XQObSjWoz7G06B8suTqlk2AMZ
-         5WboB5+4Mv/GqgZ7AUnuPSkKPf1bKzMvoIQe6BTwNz+5eVdQcqByFdNwEDtdipr8PA
-         whZM6CnChjyjgSaMk7VDMI+4c91Mo45vlVFT6O7P9M4LTaK+kOPcBMWf0hCFnXhKi9
-         uyOT59aAMSWfw==
-From:   Marek Vasut <marex@denx.de>
-To:     linux-iio@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>, Crt Mori <cmo@melexis.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH v2 5/5] iio: mlx90614: Add MLX90615 support
-Date:   Sun,  7 May 2023 20:46:49 +0200
-Message-Id: <20230507184649.39290-5-marex@denx.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230507184649.39290-1-marex@denx.de>
-References: <20230507184649.39290-1-marex@denx.de>
+        with ESMTP id S229920AbjEGUp0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 May 2023 16:45:26 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13BCE2717;
+        Sun,  7 May 2023 13:45:25 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-50bcc565280so5809949a12.2;
+        Sun, 07 May 2023 13:45:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683492323; x=1686084323;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fuy2z4Dft0GSgy8+sD4LMQQuOcR+sqxTgE7CAkMSATk=;
+        b=Wp4ZIH1lgNQTbaCd9KuNSzvMA6DHDLCrcvTIlWCIHSi9s91FtIh1e57JM0o/dREjiI
+         JTKVzjQMfBj/mrDfcaWWGfnvY0E56HcJFkPNTO7uzDcGXwUDxNpq8mp2RUopfJ2OEM5i
+         /PGp/CUaWxN64eR42hRsl3SGX3g0JwP2fSHpGrN+SdgFQMsaYn2Yv35Qn3SJeLhlpWT5
+         kdYImUMxiUyL4r1+Ou6q7zMymrUYwQVRiAVRJv+kKA19yznwSQTi7SdnGiUb5cH/ep5F
+         phdodg7McH5v7PK4FU9BgUfee1oevLZWKHE+RLJkDC6c8Wgoj31Htwo/8UkzPtHaUSn9
+         6s+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683492323; x=1686084323;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fuy2z4Dft0GSgy8+sD4LMQQuOcR+sqxTgE7CAkMSATk=;
+        b=NEaujN2HqcGdKPzuPzzuQMW/wG+Mdm6wdC/DVU+Li4rIFyt3YfMwk8AwQr96nde4B0
+         SK3+zErW8oxZQP2GD6WcLGKB4g/+ObzEtTjE2GCvZ9P+ZYO4RuhY8goFZdOK6ZoC8wuP
+         J6ND0A7nPVcUHcAtHNF4RFEY4TCoZJA9t5Hhrtk6E6tUfeapKctPBN5ySVqstIa+jrAD
+         2nbnnnnnAle62gTWXkYZqxze9FIdWZeEHfayO+e/2aHHnnJlWM+41SR6LtPPBEUxE4IJ
+         0uLH/ZiC7Wnq54rXdmap+/0oiYAoiBeHowPsMzuc1TPbBxmUaVdxYRiey/IpIWkh2djP
+         RYvg==
+X-Gm-Message-State: AC+VfDyVztWjDkaXhx6z3rmPcCgjvvWeeLPUkPQGbpqhS85IOP8qY6qn
+        M2sjwyayNNj/zS5PLKZDBcI=
+X-Google-Smtp-Source: ACHHUZ6ZbnXAWhJWciL0Fg+ARcApk1N/a7t7/xNIsGHgEZEJETOpZYjZovejAe56QeyusHWXVGzdgw==
+X-Received: by 2002:a17:907:26c2:b0:94f:788:6bc with SMTP id bp2-20020a17090726c200b0094f078806bcmr7513662ejc.37.1683492323380;
+        Sun, 07 May 2023 13:45:23 -0700 (PDT)
+Received: from carbian ([2a02:8109:aa3f:ead8::5908])
+        by smtp.gmail.com with ESMTPSA id de38-20020a1709069be600b0094e1344ddfdsm4026297ejc.34.2023.05.07.13.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 13:45:23 -0700 (PDT)
+Date:   Sun, 7 May 2023 22:45:20 +0200
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 5/7] iio: accel: kionix-kx022a: Refactor driver and
+ add chip_info structure
+Message-ID: <ZFgN4MGXpfbcaXTG@carbian>
+References: <cover.1682373451.git.mehdi.djait.k@gmail.com>
+ <bf0269aff66483f2323914170707203749b33f0f.1682373451.git.mehdi.djait.k@gmail.com>
+ <867ac7b4-b666-854f-69f7-2d7d7d92c94e@gmail.com>
+ <ZEeAGN3TBcao3CNA@carbian>
+ <c0958e31-b477-34e0-d824-b017efadd0df@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c0958e31-b477-34e0-d824-b017efadd0df@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for MLX90615 Infra Red Thermometer, which seems to be
-the predecesor of MLX90614 . There are significant differences in
-the register layout compared to MLX90614, but the functionality
-of the device is virtually identical.
+Hello Matti,
 
-The following differences have been identified:
-- RAM/EEPROM/SLEEP access opcodes are different
-- RAM/EEPROM registers are at different offsets
-- EEPROM emissivity and configuration registers are at different offsets
-- EEPROM configuration register bits are shuffled around
-- EEPROM emissivity settings are 14 bit on MLX90615 , 16 bit on MLX90614
-- MLX90615 can only ever support one sensor, MLX90614 could support two
-- FIR filter is set to fixed settings on MLX90615
-- IIR filter coefficients are different
+On Tue, Apr 25, 2023 at 11:12:11AM +0300, Matti Vaittinen wrote:
+> > > > +const struct kx022a_chip_info kx022a_chip_info = {
+> > > > +	.name		  = "kx022-accel",
+> > > > +	.regmap_config	  = &kx022a_regmap_config,
+> > > > +	.channels	  = kx022a_channels,
+> > > > +	.num_channels	  = ARRAY_SIZE(kx022a_channels),
+> > > > +	.fifo_length	  = KX022A_FIFO_LENGTH,
+> > > > +	.who		  = KX022A_REG_WHO,
+> > > > +	.id		  = KX022A_ID,
+> > > > +	.cntl		  = KX022A_REG_CNTL,
+> > > > +	.cntl2		  = KX022A_REG_CNTL2,
+> > > > +	.odcntl		  = KX022A_REG_ODCNTL,
+> > > > +	.buf_cntl1	  = KX022A_REG_BUF_CNTL1,
+> > > > +	.buf_cntl2	  = KX022A_REG_BUF_CNTL2,
+> > > > +	.buf_clear	  = KX022A_REG_BUF_CLEAR,
+> > > > +	.buf_status1	  = KX022A_REG_BUF_STATUS_1,
+> > > > +	.buf_read	  = KX022A_REG_BUF_READ,
+> > > > +	.inc1		  = KX022A_REG_INC1,
+> > > > +	.inc4		  = KX022A_REG_INC4,
+> > > > +	.inc5		  = KX022A_REG_INC5,
+> > > > +	.inc6		  = KX022A_REG_INC6,
+> > > > +	.xout_l		  = KX022A_REG_XOUT_L,
+> > > > +};
+> > > > +EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
+> > > 
+> > > Do you think the fields (or at least some of them) in this struct could be
+> > > named based on the (main) functionality being used, not based on the
+> > > register name? Something like "watermark_reg", "buf_en_reg", "reset_reg",
+> > > "output_rate_reg", "int1_pinconf_reg", "int1_src_reg", "int2_pinconf_reg",
+> > > "int1_src_reg" ...
+> > > 
+> > > I would not be at all surprized to see for example some IRQ control to be
+> > > shifted from INC<X> to INC<Y> or cntl<X> / buf_cntl<X> stuff to be moved to
+> > > cntl<Y> or to buf_cntl<Y> for next sensor we want to support. Especially
+> > > when new cool feature is added to next sensor, resulting also adding a new
+> > > cntl<Z> or buf_cntl<Z> or INC<Z>.
+> > > 
+> > > I, however, believe the _functionality_ will be there (in some register) -
+> > > at least for the ICs for which we can re-use this driver. Hence, it might be
+> > > nice - and if you can think of better names for these fields - to rename
+> > > them based on the _functionality_ we use.
+> > > 
+> > > Another benefit would be added clarity to the code. Writing a value to
+> > > "buf_en_reg", "watermark_reg" or to "int1_src_reg" is much clearer (to me)
+> > > than writing a value to "buf_cntl1", "buf_cntl2" or "INC4". Especially if
+> > > you don't have a datasheet at your hands.
+> > > 
+> > > I am not "demanding" this (at least not for now :]) because it seems these
+> > > two Kionix sensors have been pretty consistent what comes to maintaining the
+> > > same functionality in the registers with same naming - but I believe this is
+> > > something that may in any case be lurking around the corner.
+> > 
+> > I agree, this seems to be the better solution. I will look into this.
+> > 
+> 
+> Thanks for going the extra mile :)
 
-This patch fills in the MLX90615 specific description and quirk handling.
+I am reconsidering the renaming of the fields 
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-NOTE: The IIR coefficients need to be checked
----
-Cc: Crt Mori <cmo@melexis.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Marek Vasut <marex@denx.de>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-iio@vger.kernel.org
----
-V2: Split the patch up into cleanups, abstraction and MLX90615 addition
----
- drivers/iio/temperature/mlx90614.c | 49 +++++++++++++++++++++++++++---
- 1 file changed, 45 insertions(+), 4 deletions(-)
+1. inc{1,4,5,6} get assigned once to data->{ien_reg,inc_reg} in the probe 
+function and then never used again
 
-diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-index d6d2a5afaf8c0..5bcd323921db5 100644
---- a/drivers/iio/temperature/mlx90614.c
-+++ b/drivers/iio/temperature/mlx90614.c
-@@ -1,12 +1,15 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * mlx90614.c - Support for Melexis MLX90614 contactless IR temperature sensor
-+ * mlx90614.c - Support for Melexis MLX90614/MLX90615 contactless IR temperature sensor
-  *
-  * Copyright (c) 2014 Peter Meerwald <pmeerw@pmeerw.net>
-  * Copyright (c) 2015 Essensium NV
-  * Copyright (c) 2015 Melexis
-  *
-- * Driver for the Melexis MLX90614 I2C 16-bit IR thermopile sensor
-+ * Driver for the Melexis MLX90614/MLX90615 I2C 16-bit IR thermopile sensor
-+ *
-+ * MLX90614 - 17-bit ADC + MLX90302 DSP
-+ * MLX90615 - 16-bit ADC + MLX90325 DSP
-  *
-  * (7-bit I2C slave address 0x5a, 100KHz bus speed only!)
-  *
-@@ -35,6 +38,10 @@
- #define MLX90614_OP_EEPROM	0x20
- #define MLX90614_OP_SLEEP	0xff
- 
-+#define MLX90615_OP_EEPROM	0x10
-+#define MLX90615_OP_RAM		0x20
-+#define MLX90615_OP_SLEEP	0xc6
-+
- /* Control bits in configuration register */
- #define MLX90614_CONFIG_IIR_SHIFT 0 /* IIR coefficient */
- #define MLX90614_CONFIG_IIR_MASK (0x7 << MLX90614_CONFIG_IIR_SHIFT)
-@@ -43,11 +50,16 @@
- #define MLX90614_CONFIG_FIR_SHIFT 8 /* FIR coefficient */
- #define MLX90614_CONFIG_FIR_MASK (0x7 << MLX90614_CONFIG_FIR_SHIFT)
- 
-+#define MLX90615_CONFIG_IIR_SHIFT 12 /* IIR coefficient */
-+#define MLX90615_CONFIG_IIR_MASK (0x7 << MLX90615_CONFIG_IIR_SHIFT)
-+
- /* Timings (in ms) */
- #define MLX90614_TIMING_EEPROM 20 /* time for EEPROM write/erase to complete */
- #define MLX90614_TIMING_WAKEUP 34 /* time to hold SDA low for wake-up */
- #define MLX90614_TIMING_STARTUP 250 /* time before first data after wake-up */
- 
-+#define MLX90615_TIMING_WAKEUP 22 /* time to hold SCL low for wake-up */
-+
- #define MLX90614_AUTOSLEEP_DELAY 5000 /* default autosleep delay */
- 
- /* Magic constants */
-@@ -306,8 +318,8 @@ static int mlx90614_read_raw(struct iio_dev *indio_dev,
- 			*val2 = ret * chip_info->emissivity_res;
- 		}
- 		return IIO_VAL_INT_PLUS_NANO;
--	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY: /* IIR setting with
--							     FIR = 1024 */
-+	/* IIR setting with FIR=1024 (MLX90614) or FIR=65536 (MLX90615) */
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		ret = mlx90614_power_get(data, false);
- 		if (ret < 0)
- 			return ret;
-@@ -666,14 +678,43 @@ static const struct mlx_chip_info mlx90614_chip_info = {
- 	},
- };
- 
-+static const struct mlx_chip_info mlx90615_chip_info = {
-+	.op_eeprom_emissivity		= MLX90615_OP_EEPROM | 0x03,
-+	.op_eeprom_config1		= MLX90615_OP_EEPROM | 0x02,
-+	.op_ram_ta			= MLX90615_OP_RAM | 0x06,
-+	.op_ram_tobj1			= MLX90615_OP_RAM | 0x07,
-+	.op_ram_tobj2			= MLX90615_OP_RAM | 0x08,
-+	.op_sleep			= MLX90615_OP_SLEEP,
-+	.dual_channel			= false,
-+	.wakeup_delay_ms		= MLX90615_TIMING_WAKEUP,
-+	.emissivity_max			= 16383,
-+	.emissivity_res			= 1000000000 / 16383,
-+	.fir_config_mask		= 0,	/* MLX90615 FIR is fixed */
-+	.iir_config_mask		= MLX90615_CONFIG_IIR_MASK,
-+	/* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
-+	.iir_valid_offset		= 1,
-+	.iir_values			= { 723, 77, 42, 31, 28, 20, 18 },
-+	.iir_freqs			= {
-+		{ 0, 180000 },	/* 14% ~= 0.18 Hz */
-+		{ 0, 200000 },	/* 17% ~= 0.20 Hz */
-+		{ 0, 280000 },	/* 20% ~= 0.28 Hz */
-+		{ 0, 310000 },	/* 25% ~= 0.31 Hz */
-+		{ 0, 420000 },	/* 33% ~= 0.42 Hz */
-+		{ 0, 770000 },	/* 50% ~= 0.77 Hz */
-+		{ 7, 230000 },	/* 100% ~= 7.23 Hz */
-+	},
-+};
-+
- static const struct i2c_device_id mlx90614_id[] = {
- 	{ "mlx90614", .driver_data = (kernel_ulong_t)&mlx90614_chip_info },
-+	{ "mlx90615", .driver_data = (kernel_ulong_t)&mlx90615_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, mlx90614_id);
- 
- static const struct of_device_id mlx90614_of_match[] = {
- 	{ .compatible = "melexis,mlx90614", .data = &mlx90614_chip_info },
-+	{ .compatible = "melexis,mlx90615", .data = &mlx90615_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, mlx90614_of_match);
--- 
-2.39.2
+2. buf_cntl2 is used for enabling the buffer and changing the resolution
+to 16bits, so which name is better than buf_cntl ? 
 
+3. cntl seems the most appropriate name, again different functions and the same 
+reg
+
+4. who, id, xout_l, odcntl, buf_{clear, status, read} are quite straightforward
+
+Anyway this is my opinion, what do you think ? 
+
+--
+Kind Regards,
+Mehdi Djait

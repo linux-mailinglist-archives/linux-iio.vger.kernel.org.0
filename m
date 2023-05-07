@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A8FD6F9533
-	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 02:30:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8568A6F95AE
+	for <lists+linux-iio@lfdr.de>; Sun,  7 May 2023 02:36:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbjEGAao (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 May 2023 20:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53300 "EHLO
+        id S231653AbjEGAg0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 May 2023 20:36:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230237AbjEGAan (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 20:30:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A64717FD0;
-        Sat,  6 May 2023 17:30:39 -0700 (PDT)
+        with ESMTP id S231144AbjEGAf7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 May 2023 20:35:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817247EC7;
+        Sat,  6 May 2023 17:34:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7CB861464;
-        Sun,  7 May 2023 00:30:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F46EC433D2;
-        Sun,  7 May 2023 00:30:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A181C614CA;
+        Sun,  7 May 2023 00:32:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F3AC433EF;
+        Sun,  7 May 2023 00:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683419438;
-        bh=J5itGODzfW1Gyy5b5wiNRWqsVmEmGvyrglRI6jdG1tY=;
+        s=k20201202; t=1683419576;
+        bh=V1l31RZMb0VNqSbTP+5hYW+j/2h1R/N2cDCGJ0hw49g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OeUO2CSmi3ZFqxzDbfC9KRTz6eJLaGQMV3UfS1/WMPASbZFlBgmHwaY3DdR7ljLvg
-         IyIJhl4QU++VkvqzOUn9umwxnPHIPN0NUsSkTfZney2xNff8BcAAgoNVCJb0DkCkf2
-         O2hCpmrmMY38R0vdMWzVDAzXR3cbta10sqmcwbX33lgVB2+6szeNYNlbumpbLYl1ZS
-         Z8V6a9uNCTZzChVraCm/sleAoprb07s3foHyhQ8Sx89pqqwUzGStESb7/DBkMyB8cr
-         YLGBv0xlfEhajkKRb05izKFxUR7BYVNxb8jt9Qhzfy9/X7VifmIYKSkYIpWCVnelyK
-         yIjpS6MlJzu7w==
+        b=OriGkQdjPn0JIpHwC7PQswIxuALrT4W+x4Md+++dsXuQlUUZyrGw6aOafCwYInF1Y
+         QDWVZBB5woBSjVEbkHliHxF2Wyj05mlHXsHIiTnroGLv6kXLiSK6Jgxek6WMJRsOkA
+         aKyn2C6ido2ZDJXNEAZhyNhUugevWimnYKRoZtGFu+PiJMqz0Wb6lrKCaPP6DGaobB
+         P0jQ5O4Sz/TVtbaCHkt1KLmP5XwN23aiZZr+7Z/lz9tEh4aqOBnryYxXZAZO/3DlmQ
+         0hJpcIzV+gGR7KSth5w3l83Fk1C9c5h91+uDC8yY/bzGNG7tN9ycOYhwmJuaP2SHib
+         IISnJbIoyEcng==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
@@ -38,18 +38,18 @@ Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.3 04/24] iio: imu: st_lsm6dsx: discard samples during filters settling time
-Date:   Sat,  6 May 2023 20:30:00 -0400
-Message-Id: <20230507003022.4070535-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.2 04/20] iio: imu: st_lsm6dsx: discard samples during filters settling time
+Date:   Sat,  6 May 2023 20:32:19 -0400
+Message-Id: <20230507003237.4074305-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230507003022.4070535-1-sashal@kernel.org>
-References: <20230507003022.4070535-1-sashal@kernel.org>
+In-Reply-To: <20230507003237.4074305-1-sashal@kernel.org>
+References: <20230507003237.4074305-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 78 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 499fcf8875b40..8e119d78730ba 100644
+index 5b6f195748fc6..c9723a3606103 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -137,6 +137,13 @@ struct st_lsm6dsx_odr_table_entry {
+@@ -136,6 +136,13 @@ struct st_lsm6dsx_odr_table_entry {
  	int odr_len;
  };
  
@@ -102,7 +102,7 @@ index 499fcf8875b40..8e119d78730ba 100644
  struct st_lsm6dsx_fs {
  	u32 gain;
  	u8 val;
-@@ -291,6 +298,7 @@ struct st_lsm6dsx_ext_dev_settings {
+@@ -290,6 +297,7 @@ struct st_lsm6dsx_ext_dev_settings {
   * @irq_config: interrupts related registers.
   * @drdy_mask: register info for data-ready mask (addr + mask).
   * @odr_table: Hw sensors odr table (Hz + val).
@@ -110,7 +110,7 @@ index 499fcf8875b40..8e119d78730ba 100644
   * @fs_table: Hw sensors gain table (gain + val).
   * @decimator: List of decimator register info (addr + mask).
   * @batch: List of FIFO batching register info (addr + mask).
-@@ -323,6 +331,7 @@ struct st_lsm6dsx_settings {
+@@ -322,6 +330,7 @@ struct st_lsm6dsx_settings {
  	} irq_config;
  	struct st_lsm6dsx_reg drdy_mask;
  	struct st_lsm6dsx_odr_table_entry odr_table[2];
@@ -118,7 +118,7 @@ index 499fcf8875b40..8e119d78730ba 100644
  	struct st_lsm6dsx_fs_table_entry fs_table[2];
  	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
  	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-@@ -353,6 +362,7 @@ enum st_lsm6dsx_fifo_mode {
+@@ -352,6 +361,7 @@ enum st_lsm6dsx_fifo_mode {
   * @hw: Pointer to instance of struct st_lsm6dsx_hw.
   * @gain: Configured sensor sensitivity.
   * @odr: Output data rate of the sensor [Hz].
@@ -126,7 +126,7 @@ index 499fcf8875b40..8e119d78730ba 100644
   * @watermark: Sensor watermark level.
   * @decimator: Sensor decimation factor.
   * @sip: Number of samples in a given pattern.
-@@ -367,6 +377,7 @@ struct st_lsm6dsx_sensor {
+@@ -366,6 +376,7 @@ struct st_lsm6dsx_sensor {
  	u32 gain;
  	u32 odr;
  

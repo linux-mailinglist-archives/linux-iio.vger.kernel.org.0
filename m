@@ -2,219 +2,259 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF48F6FA59C
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 12:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E5E6FA778
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 12:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234189AbjEHKLT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 06:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39182 "EHLO
+        id S234648AbjEHKar (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 06:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234184AbjEHKLR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 06:11:17 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 579B0398B1
-        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 03:11:15 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2ad1ba5dff7so20172161fa.3
-        for <linux-iio@vger.kernel.org>; Mon, 08 May 2023 03:11:15 -0700 (PDT)
+        with ESMTP id S234647AbjEHKap (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 06:30:45 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62C924A8D;
+        Mon,  8 May 2023 03:30:43 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2ac831bb762so41740931fa.3;
+        Mon, 08 May 2023 03:30:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google; t=1683540673; x=1686132673;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8u6WB6jtixs7X6y9FDxOX9g5fZTvKGDvv+p9yLL1Vks=;
-        b=e8klmY4Cy/DY4lgolcoyCswAy4Ix6hUPD0Fef1ihMp5cCAP51N8XF1ExEWTOkCYWE/
-         r7xPlc2mp2hEd4Cys1XudNMWP12lHHZ+V8e9gTaLV17jYwoCM3AQRYLqzKkumpbhYccB
-         vUBqp6YmCMCRdZcLxDqGobLoHYOxXhlU7GiBGZgPlX4rvVhTaelIz26nVzIpESJjbPP2
-         bQJTjwdufr/MezN4/QwOk92WHViLJkQGmQbosk0My3Q6voE4NaI/rl4yKD2EvPU23A6N
-         SBDwpkWM2iD+ao9jw4knhRrsE/rhrUlYywzBsZiMf4Hf3iAKEk85mshgntENGoUcQ6Di
-         +Cew==
+        d=gmail.com; s=20221208; t=1683541842; x=1686133842;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u4n+sPW796mS9dhJ6fHd9qvr1mW3PkrYQCtXjQ0ZTZo=;
+        b=QJ2rbssUzSgbKCZkXM9w7Jy0q9Ix8lJSjNabHHhe83scfou2njTVA3OeVd6BRwpSAS
+         Y2kXOkoQHhszriKKexHeyuv5TkLFALBm0HfQ8P8OcZZDMbXMKdBDppYtwoAh1uv+jt9c
+         S1fIL9/nb7bkjAY4tGXwjoRoolDp+C6Oum9P5o1ksQqlrYU8YSrY1Lm6BIbElpSNWhmR
+         CiTm/JmGS5ZaLUBN6uVGcpo3AdXaDcSzVzPmCytsq14l3uPhMCdWWN0UxSKLFmvfYIHW
+         K4YYUiGoWmu7o3Uklb0nH1xljrlZKEWBLdJnaMrmuzL12a5oh5J6YSuup+RrDFVGgrfP
+         nZvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683540673; x=1686132673;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8u6WB6jtixs7X6y9FDxOX9g5fZTvKGDvv+p9yLL1Vks=;
-        b=FGzCa1JZA7Xqx7O+PbZ1Y6CmS/ShFIOSkanhuz5hpCNSnJ5bRSYJ9UyErBUsEjW4Wd
-         INngrz7XEghFFk+091lQittfnDVLoxB+z/2kA7zQqZdzH5PhZccFjZmge83q7rZAxMv3
-         5cBSWR7XZJ0EJwGGNg+z0w/AGI0b9i2TcFcsLDtbQggdoarl6R6M3+t70mts9suf71NR
-         nqC7vo4Zkp/gqUbn/VP+KIXmMQAytILLylPlC5RcOZU+9Lsp79CeofOr5W0vFuMr8sHd
-         Z4J+07E91PYe8N1CZ4ygwb64d9/HHc+zM+WHYMM2RhtzBe5hISLrdKChUn/EqIkbawLM
-         dU4w==
-X-Gm-Message-State: AC+VfDxehzW02nZoUA5137SI9JC9qR2zbRYIj5uHkW20KM+SkFOr5yom
-        0VKSIlEslhv1KvvF4QGSsWRQeHl/nOdKaNnaemj4jA==
-X-Google-Smtp-Source: ACHHUZ5/lJIRYmcTNM+S8EysGihAI1KmX0Wfsre2tZZrF51czrkMka3TX8UV/CkG9EjnlpvYXEfd0HXMern19vUb8uE=
-X-Received: by 2002:a2e:9545:0:b0:2a8:c87f:d220 with SMTP id
- t5-20020a2e9545000000b002a8c87fd220mr3091732ljh.5.1683540673468; Mon, 08 May
- 2023 03:11:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230507184649.39290-1-marex@denx.de> <20230507184649.39290-5-marex@denx.de>
-In-Reply-To: <20230507184649.39290-5-marex@denx.de>
-From:   Crt Mori <cmo@melexis.com>
-Date:   Mon, 8 May 2023 12:10:36 +0200
-Message-ID: <CAKv63utbVqRjmyP_cN=d2Jewpp6hgVHzSJdm4gjKBkaHKb2LuQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] iio: mlx90614: Add MLX90615 support
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        d=1e100.net; s=20221208; t=1683541842; x=1686133842;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u4n+sPW796mS9dhJ6fHd9qvr1mW3PkrYQCtXjQ0ZTZo=;
+        b=idry36PbWBvxLmL6t2TRuwP2KC1Rxmfi3IAj2Mm4a2HoeGPXh7cEMxNH4M7LduKo/B
+         HZJfEjaAnQ322dW1v2I/wkfqFej0+N5Jc/VSQnHznVfTp8nM415GDlVbpZz2mBINlhMT
+         4c4xWNz+CUOG9O+/dfZm5FlooX0S1wRPyrOWLfAppDqpeFTQGe1eR9cVpCYuCipd1MZ9
+         WCQfLp1f/VvxvrRwRGu4jfJQx/+R50q3A2LpL5unxuAuQ2AUghONw9wcudDCuniI1gQX
+         82QKSfUTMVy3dZVfMLLTvwOVYyL8Bv3+jwhwnwLYZE1oTYdYmAtbmOoRcF6tLGB/lODH
+         ascg==
+X-Gm-Message-State: AC+VfDw+hybmBte7tWtAnHdQNtSXLtJj60lO+UR6+o+iEfEIaFb3h0Q3
+        9n3DJLi3lsu8wmMTj/gwMWA=
+X-Google-Smtp-Source: ACHHUZ4YOM1piwm7Fu+MPvieFGLO26hzkwFNae5/vCt1pwGMpJ94UX0EIzV3mxdVa3/6NfG6InqJEQ==
+X-Received: by 2002:a2e:9e45:0:b0:2ac:7764:aa4 with SMTP id g5-20020a2e9e45000000b002ac77640aa4mr2886398ljk.10.1683541841688;
+        Mon, 08 May 2023 03:30:41 -0700 (PDT)
+Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id w8-20020a2e9bc8000000b002a8b205bb50sm1104959ljj.61.2023.05.08.03.30.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 May 2023 03:30:40 -0700 (PDT)
+Date:   Mon, 8 May 2023 13:30:28 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/5] Support ROHM BU27008 RGB sensor
+Message-ID: <cover.1683541225.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="tywmqNVigfIf5Z/k"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 7 May 2023 at 20:47, Marek Vasut <marex@denx.de> wrote:
->
-> Add support for MLX90615 Infra Red Thermometer, which seems to be
-> the predecesor of MLX90614 . There are significant differences in
-> the register layout compared to MLX90614, but the functionality
-> of the device is virtually identical.
->
-> The following differences have been identified:
-> - RAM/EEPROM/SLEEP access opcodes are different
-> - RAM/EEPROM registers are at different offsets
-> - EEPROM emissivity and configuration registers are at different offsets
-> - EEPROM configuration register bits are shuffled around
-> - EEPROM emissivity settings are 14 bit on MLX90615 , 16 bit on MLX90614
-> - MLX90615 can only ever support one sensor, MLX90614 could support two
-> - FIR filter is set to fixed settings on MLX90615
-> - IIR filter coefficients are different
->
-> This patch fills in the MLX90615 specific description and quirk handling.
->
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> NOTE: The IIR coefficients need to be checked
-> ---
-> Cc: Crt Mori <cmo@melexis.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Marek Vasut <marex@denx.de>
-> Cc: Peter Meerwald <pmeerw@pmeerw.net>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
-> ---
-> V2: Split the patch up into cleanups, abstraction and MLX90615 addition
-> ---
->  drivers/iio/temperature/mlx90614.c | 49 +++++++++++++++++++++++++++---
->  1 file changed, 45 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-> index d6d2a5afaf8c0..5bcd323921db5 100644
-> --- a/drivers/iio/temperature/mlx90614.c
-> +++ b/drivers/iio/temperature/mlx90614.c
-> @@ -1,12 +1,15 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * mlx90614.c - Support for Melexis MLX90614 contactless IR temperature sensor
-> + * mlx90614.c - Support for Melexis MLX90614/MLX90615 contactless IR temperature sensor
->   *
->   * Copyright (c) 2014 Peter Meerwald <pmeerw@pmeerw.net>
->   * Copyright (c) 2015 Essensium NV
->   * Copyright (c) 2015 Melexis
->   *
-> - * Driver for the Melexis MLX90614 I2C 16-bit IR thermopile sensor
-> + * Driver for the Melexis MLX90614/MLX90615 I2C 16-bit IR thermopile sensor
-> + *
-> + * MLX90614 - 17-bit ADC + MLX90302 DSP
-> + * MLX90615 - 16-bit ADC + MLX90325 DSP
->   *
->   * (7-bit I2C slave address 0x5a, 100KHz bus speed only!)
->   *
-> @@ -35,6 +38,10 @@
->  #define MLX90614_OP_EEPROM     0x20
->  #define MLX90614_OP_SLEEP      0xff
->
-> +#define MLX90615_OP_EEPROM     0x10
-> +#define MLX90615_OP_RAM                0x20
-> +#define MLX90615_OP_SLEEP      0xc6
-> +
->  /* Control bits in configuration register */
->  #define MLX90614_CONFIG_IIR_SHIFT 0 /* IIR coefficient */
->  #define MLX90614_CONFIG_IIR_MASK (0x7 << MLX90614_CONFIG_IIR_SHIFT)
-> @@ -43,11 +50,16 @@
->  #define MLX90614_CONFIG_FIR_SHIFT 8 /* FIR coefficient */
->  #define MLX90614_CONFIG_FIR_MASK (0x7 << MLX90614_CONFIG_FIR_SHIFT)
->
-> +#define MLX90615_CONFIG_IIR_SHIFT 12 /* IIR coefficient */
-> +#define MLX90615_CONFIG_IIR_MASK (0x7 << MLX90615_CONFIG_IIR_SHIFT)
-> +
->  /* Timings (in ms) */
->  #define MLX90614_TIMING_EEPROM 20 /* time for EEPROM write/erase to complete */
->  #define MLX90614_TIMING_WAKEUP 34 /* time to hold SDA low for wake-up */
->  #define MLX90614_TIMING_STARTUP 250 /* time before first data after wake-up */
->
-> +#define MLX90615_TIMING_WAKEUP 22 /* time to hold SCL low for wake-up */
-> +
->  #define MLX90614_AUTOSLEEP_DELAY 5000 /* default autosleep delay */
->
->  /* Magic constants */
-> @@ -306,8 +318,8 @@ static int mlx90614_read_raw(struct iio_dev *indio_dev,
->                         *val2 = ret * chip_info->emissivity_res;
->                 }
->                 return IIO_VAL_INT_PLUS_NANO;
-> -       case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY: /* IIR setting with
-> -                                                            FIR = 1024 */
-> +       /* IIR setting with FIR=1024 (MLX90614) or FIR=65536 (MLX90615) */
-> +       case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
->                 ret = mlx90614_power_get(data, false);
->                 if (ret < 0)
->                         return ret;
-> @@ -666,14 +678,43 @@ static const struct mlx_chip_info mlx90614_chip_info = {
->         },
->  };
->
-> +static const struct mlx_chip_info mlx90615_chip_info = {
-> +       .op_eeprom_emissivity           = MLX90615_OP_EEPROM | 0x03,
-> +       .op_eeprom_config1              = MLX90615_OP_EEPROM | 0x02,
-> +       .op_ram_ta                      = MLX90615_OP_RAM | 0x06,
-> +       .op_ram_tobj1                   = MLX90615_OP_RAM | 0x07,
-> +       .op_ram_tobj2                   = MLX90615_OP_RAM | 0x08,
-> +       .op_sleep                       = MLX90615_OP_SLEEP,
-> +       .dual_channel                   = false,
-> +       .wakeup_delay_ms                = MLX90615_TIMING_WAKEUP,
-> +       .emissivity_max                 = 16383,
-> +       .emissivity_res                 = 1000000000 / 16383,
-This makes me wonder if we could just drop the emissivity_res and have
-it calculate it using emissivity_max, since both chips will do it.
 
-> +       .fir_config_mask                = 0,    /* MLX90615 FIR is fixed */
-> +       .iir_config_mask                = MLX90615_CONFIG_IIR_MASK,
-> +       /* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
-> +       .iir_valid_offset               = 1,
-> +       .iir_values                     = { 723, 77, 42, 31, 28, 20, 18 },
-> +       .iir_freqs                      = {
-> +               { 0, 180000 },  /* 14% ~= 0.18 Hz */
-> +               { 0, 200000 },  /* 17% ~= 0.20 Hz */
-> +               { 0, 280000 },  /* 20% ~= 0.28 Hz */
-> +               { 0, 310000 },  /* 25% ~= 0.31 Hz */
-> +               { 0, 420000 },  /* 33% ~= 0.42 Hz */
-> +               { 0, 770000 },  /* 50% ~= 0.77 Hz */
-> +               { 7, 230000 },  /* 100% ~= 7.23 Hz */
-> +       },
-> +};
-> +
->  static const struct i2c_device_id mlx90614_id[] = {
->         { "mlx90614", .driver_data = (kernel_ulong_t)&mlx90614_chip_info },
-> +       { "mlx90615", .driver_data = (kernel_ulong_t)&mlx90615_chip_info },
->         { }
->  };
->  MODULE_DEVICE_TABLE(i2c, mlx90614_id);
->
->  static const struct of_device_id mlx90614_of_match[] = {
->         { .compatible = "melexis,mlx90614", .data = &mlx90614_chip_info },
-> +       { .compatible = "melexis,mlx90615", .data = &mlx90615_chip_info },
->         { }
->  };
->  MODULE_DEVICE_TABLE(of, mlx90614_of_match);
-> --
-> 2.39.2
->
+--tywmqNVigfIf5Z/k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Add support for ROHM BU27008 RGB sensor.
+
+The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
+and IR) with four configurable channels. Red and green being always
+available and two out of the rest three (blue, clear, IR) can be
+selected to be simultaneously measured. Typical application is adjusting
+LCD backlight of TVs, mobile phones and tablet PCs.
+
+This series supports reading the RGBC and IR channels using IIO
+framework. However, only two of the BC+IR can be enabled at the same
+time. Series adds also support for scale and integration time
+configuration, where scale consists of impact of both the integration
+time and hardware gain. The gain and time support is backed by the newly
+introduced IIO GTS helper. This series depends on GTS helper patches
+added in BU27034 support series which is already merged in iio/togreg
+which this series is based on.
+
+The hardware allows configuring gain setting by writing a 5-bit gain
+selector value to a register. Part of the gain setting is common for all
+channels (RGBC + IR) but part of the selector value can be set
+separately for RGBC and IR:
+
+MODE_CONTROL2 REG:
+bit 7	    6	    5	    4	    3	    2	    1	    0
+-----------------------------------------------------------------
+|	RGB	selector		|
++---------------------------------------+
+-----------------------------------------------------------------
+| high bits IR	|			| low bits IR selector	|
++---------------+			+-----------------------+
+
+In theory it would be possible to set certain separate gain values for
+RGBC and IR channels, but this gets pretty confusing because there are a
+few 'unsupported' selector values. If only RGBC or IR was set, some
+extra handling should be done to prevent the other channel from getting
+unsupported value due to change in high-bits. Furthermore, allowing the
+channels to be set different gain values (in some cases when gains are
+such the HW supports it) would make the cases where also integration
+time is changed to achieve correct scale ... interesting. It might also
+be confusing for user to try predicting when setting different scales
+succeeds and when it does not. Furthermore, if for example the scale
+setting for RGBC caused IR selector to be invalid - it could also cause
+the IR scale to "jump" very far from previous value.
+
+To make the code simpler and more predictable for users, the current
+logic is as follows:
+
+1. Prevent setting IR scale. (My assumption is IR is less used than
+RGBC)
+2. When RGBC scale is set, set also the IR-selector to the same value.
+This prevents unsupported selector values and makes the IR scale changes
+predictable.
+
+The 2) could mean we effectively have the same scale for all channels.
+Unfortunately, the HW design is slightly peculiar and selector 0 means
+gain 1X on RGBC but gain 2X on IR. Rest of the selectors equal same gain
+values on RGBC and IR. The result is that while changin selector from 0
+=3D> 1 causes RGBC gain to go from 1X =3D> 4X, it causes IR gain to go from
+2X =3D> 4X.
+
+So, the driver provides separate scale entries for all channels (also
+RGB and C will have separate gain entries because these channels are of
+same type as IR channel). This makes it possible for user applications
+to go read the scales for all channels after setting scale for one (in
+order to detect the IR scale difference).
+
+Having the separate IR scale entry which applications can read to detect
+"arbitrary scale changes" makes it possible for applications to be
+written so they can cope if we need to implement the 'allow setting some
+different gains for IR and RGBC' - later.
+
+Finally, the scales_available is also provided for all other channels
+except the IR channel, which does not allow the scale to be changed.
+
+The sensor provides a data-ready IRQ and the driver implements a
+triggered buffer mode using this IRQ as a trigger.
+
+Finally, the series introduces generic iio_validate_own_trigger() helper
+which can be used as a validate_trigger callback for drivers which
+require the trigger and iio-device to be parented by same device. The
+KX022A driver is converted to use this new callback instead of rolling
+it's own function. The new helper and KX022A can be merged in as
+independent changes if need be.
+
+
+Revision history
+v3 =3D> v4:
+  iio_validate_own_trigger:
+    - kernel-doc fix
+  bu27008 driver fixes:
+    - re-enable IRQ in trigger renable-callback
+    - do trigger setup on own function
+    - drop regmap lock
+    - configure channels in appropriate callback
+v3 =3D> v4:
+  bu27008 driver fixes:
+    - Drop thread from device IRQ handler
+    - Styling and some minor improvements
+    - Use kernel-doc for enums
+    - Correctly order entries in Makefile
+v2 =3D> v3:
+  dt-bindings:
+    - No changes
+  iio_validate_own_trigger:
+    - subject fix
+  bu27008:
+    - Mostly styling based on comments from Andy and Andi
+
+  More accurate changelog in individual patches
+
+v1 =3D> v2:
+  dt-bindings:
+    - Fix issues pointed by Krzysztof.
+  bu27008 driver:
+    - Fix issues pointed by Jonathan
+  Add new helper for validating own trigger
+
+  More accurate changelog in individual patches
+
+---
+
+Matti Vaittinen (5):
+  dt-bindings: iio: light: ROHM BU27008
+  iio: trigger: Add simple trigger_validation helper
+  iio: kx022a: Use new iio_validate_own_trigger()
+  iio: light: ROHM BU27008 color sensor
+  MAINTAINERS: Add ROHM BU27008
+
+ .../bindings/iio/light/rohm,bu27008.yaml      |   49 +
+ MAINTAINERS                                   |    3 +-
+ drivers/iio/accel/kionix-kx022a.c             |   13 +-
+ drivers/iio/industrialio-trigger.c            |   22 +-
+ drivers/iio/light/Kconfig                     |   14 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/rohm-bu27008.c              | 1026 +++++++++++++++++
+ include/linux/iio/trigger.h                   |    1 +
+ 8 files changed, 1115 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu2700=
+8.yaml
+ create mode 100644 drivers/iio/light/rohm-bu27008.c
+
+--=20
+2.40.1
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--tywmqNVigfIf5Z/k
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRYzzcACgkQeFA3/03a
+ocVJyAf/VKRrGdriwVFe902yrspxGTs9cHVLsvCSBdREg2ByVVDXwdczq8M7UJy0
+/VWxHBR66SGXskuovDp2pnBh/8JJHU9p4UmnnGfdTndOCL14y+gFp5BElKyb8u0o
+p3/tuz2kwAILqpSfcJpSQp7az5Qeu6Hzl6Fo8fyLQThsDZgAgHEKZKFGrZrk+V7O
+FnCXpSg6CL648VB70oZNSXbBF+MeGe6REzvImxFztCC2pLkCqviQ+eBcwD+NPzVx
+zAdKsOwBfz1UXOHO95pHjzD1qZhQAm6JVAJvV49aJZTohhnN4ffZzN5yx1rVkjtc
+t8+VdFiwVE/Hr4K6w2fge/sefB0drw==
+=GBvF
+-----END PGP SIGNATURE-----
+
+--tywmqNVigfIf5Z/k--

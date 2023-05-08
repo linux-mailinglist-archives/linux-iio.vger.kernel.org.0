@@ -2,128 +2,187 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4400D6FA266
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 10:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F05C36FA392
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 11:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232161AbjEHIhb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 04:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56654 "EHLO
+        id S233587AbjEHJqS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 05:46:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230415AbjEHIhb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 04:37:31 -0400
-Received: from frolo.macqel.be (smtp2.macqel.be [109.135.2.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7E7AB100EB
-        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 01:37:23 -0700 (PDT)
-Received: by frolo.macqel.be (Postfix, from userid 1000)
-        id 04B0DDF00B2; Mon,  8 May 2023 10:37:19 +0200 (CEST)
-Date:   Mon, 8 May 2023 10:37:19 +0200
-From:   Philippe De Muyter <Philippe.DeMuyter@macq.eu>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH] iio: dac: ad5446: Add ID of compatible Texas
-        Instruments i2c dac121c*
-Message-ID: <20230508083719.GA920@frolo.macqel>
-References: <1683450625-28789-1-git-send-email-Philippe.DeMuyter@macq.eu> <20230507144608.15e7aa8e@jic23-huawei>
+        with ESMTP id S232674AbjEHJqQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 05:46:16 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBBA91A4AB
+        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 02:46:12 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-643990c5319so2819152b3a.2
+        for <linux-iio@vger.kernel.org>; Mon, 08 May 2023 02:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mechatrax-com.20221208.gappssmtp.com; s=20221208; t=1683539172; x=1686131172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QxUucxl06d3SDkrNlmvPg0Cu2BkqPJXbpojhAwPIsG0=;
+        b=oVUt+/viPbDdqiQjujyP5ym/hC7eic0mHWabtIY4phbJ5Bx7AoAamracJ8z56TnU1m
+         lRh4qs8LyDXn1HqhwVYH35EjIr9HjG/bJ+YGA4awaFOkxWuzaR9CpY4gVCd7adVGwIcD
+         7OWqIA2/nM6RX3mHyEGcQxnCO5Vvc6HGIeIP/a0qleYv9n1ZBT/1iOzRU2GSE6FbCWd8
+         cSoqgED4qj0L7z5elVo2iYUWJJsagEv6lWZ19xr8ciigdfUu2/aYjfoAFJLS8wzyfm5y
+         4mNK27Q/WujzSe1tq7OBToRxMUt1csUQAftIkdSYgOwzJje+Q5IITnFbyiJi9FIId6JC
+         wymw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683539172; x=1686131172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QxUucxl06d3SDkrNlmvPg0Cu2BkqPJXbpojhAwPIsG0=;
+        b=gwggNsc5zHfvLrlm3/nz5oI/XJ60oRc8GXcQKASGyqBOMM0YFHdNZKdXi+aUNLZ2X6
+         kZjOQm6pQj7UB7EDvpmYBKRxkKVh3CL2h/85Cz3TrvPAkgX7NH02YngZ0sQ+tEvnGDLa
+         xWkvvJtSqQnHbFnrxXvmmXmCjviX4TnrfoCFRLKo7fsRon8KcrWttEhV8n1oa3G5msL+
+         gmHZhIQOZLs3b0mAzqo/ALbX+uZaA4bmrs9yRY3fAEya1MO40Bt6G/jyCgM9Oj+mSlV2
+         l+GNYqHvN3tZRlP0zc/rZpd8e1MsclrBPETbB+j1SM+JNjXY2227RxPQPdYeZ4VjtJpQ
+         6Lpg==
+X-Gm-Message-State: AC+VfDz9xI2zwTJzZniPxdhMJX2Ry/pXo6eyKq+tMXmUrFvwTKhDxCeM
+        HZKNAbjh7HP9Wlk5bscxZFSKKEs0R7VANzQdPQIT+w==
+X-Google-Smtp-Source: ACHHUZ7J5K6Yc2jTfIoxopiJql91/X6loV9lnS6am2IrpKzeVaEsucSSmKu+4eL/4qbcrmk3eFtQ/0Sk+CQk4sMYHZc=
+X-Received: by 2002:a05:6a00:acc:b0:63b:435f:134a with SMTP id
+ c12-20020a056a000acc00b0063b435f134amr12786940pfl.28.1683539172356; Mon, 08
+ May 2023 02:46:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230507144608.15e7aa8e@jic23-huawei>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20230502102930.773-1-honda@mechatrax.com> <f83adfd4df5cd23176721087a4fcd9a0225c3483.camel@gmail.com>
+ <20230507160104.1d6e8bb8@jic23-huawei>
+In-Reply-To: <20230507160104.1d6e8bb8@jic23-huawei>
+From:   Masahiro Honda <honda@mechatrax.com>
+Date:   Mon, 8 May 2023 18:45:36 +0900
+Message-ID: <CA+Tz-SHF9+GxVD+U88tTxG4LYCC9BXSQKpVHL3E0eni+fRrgkQ@mail.gmail.com>
+Subject: Re: [PATCH v4] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
+Hi Jonathan,
 
-On Sun, May 07, 2023 at 02:46:08PM +0100, Jonathan Cameron wrote:
-> On Sun,  7 May 2023 11:10:25 +0200
-> Philippe De Muyter <Philippe.DeMuyter@macq.eu> wrote:
-> 
-> > From: Philippe De Muyter <phdm@macqel.be>
-> > 
-> > The Texas Instruments DAC121C* chips are the I2C counterparts of
-> > the DAC121S* SPI chips which are already supported by this ad5446 driver.
-> > 
-> > Add them to the compatible list.
-> 
-> Hi Philippe,
-> 
-> DT binding should be updated and include the fallback to adi,ad5622.
-> Does this driver actually have a bindings doc?  If not please add one
-> as a precursor patch then add binding for this new part on top.
+Thank you for your advice.
 
-No, there's no ad5446 to find in Documentation/ :(
+On Sun, May 7, 2023 at 11:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Wed, 03 May 2023 10:09:28 +0200
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>
+> Patch title should be something like the following so it's easy to see wh=
+at
+> is affected when looking at a long list of patches.
+>
+> iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY fla=
+g.
+>
 
-I will try to make one.
+I'll fix the title.
 
-> 
-> > 
-> > Signed-off-by: Philippe De Muyter <phdm@macqel.be>
-> > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> > Cc: Jonathan Cameron <jic23@kernel.org>
-> > ---
-> >  drivers/iio/dac/ad5446.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-> > index aa3130b33456..b95c0ccbb796 100644
-> > --- a/drivers/iio/dac/ad5446.c
-> > +++ b/drivers/iio/dac/ad5446.c
-> > @@ -587,6 +587,7 @@ static const struct i2c_device_id ad5446_i2c_ids[] = {
-> >  	{"ad5602", ID_AD5602},
-> >  	{"ad5612", ID_AD5612},
-> >  	{"ad5622", ID_AD5622},
-> > +	{"dac121", ID_AD5622}, /* 'ti,' is dropped by 'of_modalias_node' */
-> 
-> True, but why is the comment needed?
+>
+> > On Tue, 2023-05-02 at 19:29 +0900, Masahiro Honda wrote:
+> > > The Sigma-Delta ADCs supported by this driver can use SDO as an inter=
+rupt
+> > > line to indicate the completion of a conversion. However, some device=
+s
+> > > cannot properly detect the completion of a conversion by an interrupt=
+.
+> > > This is for the reason mentioned in the following commit.
+> > >
+> > > commit e9849777d0e2 ("genirq: Add flag to force mask in
+> > >                       disable_irq[_nosync]()")
+> > >
+> > > A read operation is performed by an extra interrupt before the comple=
+tion
+> > > of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UN=
+LAZY
+> > > flag.
+> > >
+> > > Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+> > > ---
+> >
+> > Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>
+> Fixes tag?  We'll want to know how far to backport this.  I assume it's
+> limited by the above commit as these drivers are older than that.
+>
 
-I will remove it
+I'll try to add a fixes tag.
 
-> Also, for consistency with the spi equivalent it should be dac121c101 or similar
-> I think.
+> I'm also not totally sure what this 'looks like' for a user.  What happen=
+s?
+> Fail to read, wrong value, lock up or something else?  It would be helpfu=
+l
+> to include that information in case anyone else runs into this.
+>
 
-Actually the chip I use is a dac121c085, and there exists also dac121c081.
-They share the same datasheet.  The difference is only in the number of
-i2c addresses the hardware designer may choose from and the pin used for the
-external Vref.
+I'll add information to the commit message.
 
-Do you prefer I add only dac121c085, both dac121c085 and dac121c081, or
-stick to the common part of the name, with or without the 'c' that stands
-for i2C, like the 's' in dac121s101 stands for Spi ?
+Regards,
 
-The documentation also mentions lower-resolution chips in the same family :
-dac101c081 and dac101c085 (10 bit resolution), and dac081c081 and dac081c085
-(8 bit resolution).
+Masahiro
 
-> 
-> I think this use of the driver with multiple vendor prefixes,
-> also indicates we should really add the of_device_id table for this
-> driver. To do that nicely will require more changes as we'd want to do
-> the same for the SPI side which has a single entry table (which is odd)
-> then deal with the data fields which should probably all be pointers
-> rather than enum values.
-> 
-> Still I'm fine with proper explicit DT support being left for a follow up patch.
-> 
-> I do want the missing binding doc fixed though (which is independent of the
-> question of how the driver binds based on the compatible values).
-> 
+
+> Actual change looks right to me.
+>
 > Thanks,
-> 
+>
 > Jonathan
-> 
-> 
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, ad5446_i2c_ids);
-
-Best regards
-
-Philippe
+>
+>
+> >
+> > > v4:
+> > >  - Remove the callback.
+> > > v3:
+> > > https://lore.kernel.org/linux-iio/20230420102316.757-1-honda@mechatra=
+x.com/
+> > >  - Remove the Kconfig option.
+> > > v2:
+> > > https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatra=
+x.com/
+> > >  - Rework commit message.
+> > >  - Add a new entry in the Kconfig.
+> > >  - Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing =
+the IRQ.
+> > > v1:
+> > > https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatra=
+x.com/
+> > >
+> > >  drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/adc/ad_sigma_delta.c
+> > > b/drivers/iio/adc/ad_sigma_delta.c
+> > > index d8570f6207..7e21928707 100644
+> > > --- a/drivers/iio/adc/ad_sigma_delta.c
+> > > +++ b/drivers/iio/adc/ad_sigma_delta.c
+> > > @@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(struct devic=
+e *dev,
+> > > struct iio_dev *indio_de
+> > >         init_completion(&sigma_delta->completion);
+> > >
+> > >         sigma_delta->irq_dis =3D true;
+> > > +
+> > > +       /* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing a=
+n IRQ */
+> > > +       irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZ=
+Y);
+> > > +
+> > >         ret =3D devm_request_irq(dev, sigma_delta->spi->irq,
+> > >                                ad_sd_data_rdy_trig_poll,
+> > >                                sigma_delta->info->irq_flags | IRQF_NO=
+_AUTOEN,
+> >
+>

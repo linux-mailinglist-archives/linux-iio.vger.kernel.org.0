@@ -2,107 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C706FB594
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 18:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9AA6FC1BC
+	for <lists+linux-iio@lfdr.de>; Tue,  9 May 2023 10:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233033AbjEHQxp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 12:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51264 "EHLO
+        id S232571AbjEII1L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 May 2023 04:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234181AbjEHQxn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 12:53:43 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE99524D;
-        Mon,  8 May 2023 09:53:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683564820; x=1715100820;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Q2FPM/ehx2oD4Wdgi1gDVni1vUmU7yPsYNS1QfCOiJ0=;
-  b=EoJgtQ5IISjon7EP99x2cIbaytYPDPsuq3cZkWPdiLGYPbzB8TbPVfOc
-   2GgDp8iMXCML0p9dz11YwGhdyr+SbSpSjmfXSYKgLLxcv8AikAbkv/25j
-   gYEQxDo5JOCgWMSk5dO0hB6VHShLSlI2+mewZBw46hjNA2dcRKwz+DbHL
-   KSRK2tuyUgc0tmaE2cJYsaYNNrAvxG/spufpdJqw3ZaMt2InrIghVkx6V
-   UYXGezlNlObel96YmPBLFEfSVg9mO9HvFaOCRA+3YL95ZguUcl1XzQN36
-   BjRgxb5jtciHrblOlFOqEwj//61ncbXaelq26lSizjhRoYr/xvh+HgC7q
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="352759426"
-X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
-   d="scan'208";a="352759426"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 09:53:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="692667111"
-X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
-   d="scan'208";a="692667111"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 08 May 2023 09:53:38 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pw47E-0001KH-2k;
-        Mon, 08 May 2023 16:53:36 +0000
-Date:   Tue, 9 May 2023 00:52:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Astrid Rost <astrid.rost@axis.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, kernel@axis.com,
-        Astrid Rost <astridr@axis.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
-Message-ID: <202305090056.mwp6jijk-lkp@intel.com>
-References: <20230508070925.2123265-4-astrid.rost@axis.com>
+        with ESMTP id S234368AbjEII1E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 May 2023 04:27:04 -0400
+X-Greylist: delayed 88200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 May 2023 01:27:04 PDT
+Received: from mail.rawlinsfis.com (mail.rawlinsfis.com [89.40.118.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B26F49EF
+        for <linux-iio@vger.kernel.org>; Tue,  9 May 2023 01:27:04 -0700 (PDT)
+Received: by mail.rawlinsfis.com (Postfix, from userid 1001)
+        id 2169781EBB; Mon,  8 May 2023 08:51:26 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rawlinsfis.com;
+        s=mail; t=1683532297;
+        bh=lDo1OjfzzJ3sOfR9tSDg5RMmT4aDyBP45hIVJCLtIrE=;
+        h=Date:From:To:Subject:From;
+        b=eTdjfWtizUlhTLlhgc6iNw8Jr3aw10ONcA02XrRWwqicz+kmmCRMPVXfZaKK6y8Km
+         r5ws6rr5hgIZm4eeCZNhmrLXJngvV5CMtJ0YSiwsa4a0v0MpcKd51EFnYU8VHD2Z9G
+         omv4WAonMozw+DxaiU/EkiNVbWsbBU2JkrUngW3tILWkAouCJUBGBNwSiLPsC3edto
+         1vp7f/k/vhOzC8PSZ69TTxy0ttED+wk29JWopcRhhDcSWeS85lECdyKSIuXu/s284A
+         /LobI9JviDKUZNTbp+/MvAWBSnNQMceTTcyW+y50Rq3OqIRGJ2oKcZz1Oi+NnkAuWs
+         dFUM86lDb1YVg==
+Received: by mail.rawlinsfis.com for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 07:51:17 GMT
+Message-ID: <20230508074500-0.1.3d.5mt6.0.dlbi37abw7@rawlinsfis.com>
+Date:   Mon,  8 May 2023 07:51:17 GMT
+From:   "Damian Hordych" <damian.hordych@rawlinsfis.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: =?UTF-8?Q?Pompy_ciep=C5=82a_-_nowe_warunki_?=
+X-Mailer: mail.rawlinsfis.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230508070925.2123265-4-astrid.rost@axis.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Astrid,
+Dzie=C5=84 dobry,
 
-kernel test robot noticed the following build errors:
+w ramach nowej edycji programu Czyste Powietrze dla klient=C3=B3w indywid=
+ualnych mog=C4=85 otrzyma=C4=87 Pa=C5=84stwo do 135 tys. z=C5=82 wsparcia=
+ na zakup pompy ciep=C5=82a.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.4-rc1 next-20230508]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Pr=C3=B3cz wy=C5=BCszego dofinansowania program zak=C5=82ada m.in. podwy=C5=
+=BCszenie prog=C3=B3w dochodowych oraz mo=C5=BCliwo=C5=9B=C4=87 z=C5=82o=C5=
+=BCenia kolejnego wniosku o dofinansowanie dla tych, kt=C3=B3rzy ju=C5=BC=
+ wcze=C5=9Bniej skorzystali z Programu.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Astrid-Rost/iio-light-vcnl4000-Add-proximity-ps_it-for-vcnl4200/20230508-161005
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230508070925.2123265-4-astrid.rost%40axis.com
-patch subject: [PATCH v1 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20230509/202305090056.mwp6jijk-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/6ff2e1cf084f5b3038f2d72110fb01f2a8353a34
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Astrid-Rost/iio-light-vcnl4000-Add-proximity-ps_it-for-vcnl4200/20230508-161005
-        git checkout 6ff2e1cf084f5b3038f2d72110fb01f2a8353a34
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash
+Jako firma specjalizuj=C4=85ca si=C4=99 w dostawie, monta=C5=BCu i serwis=
+ie pomp ciep=C5=82a pomo=C5=BCemy Pa=C5=84stwu w uzyskaniu dofinansowania=
+ wraz z kompleksow=C4=85 realizacj=C4=85 ca=C5=82ego projektu.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202305090056.mwp6jijk-lkp@intel.com/
+S=C4=85 Pa=C5=84stwo zainteresowani?
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "__divdi3" [drivers/iio/light/vcnl4000.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Pozdrawiam
+Damian Hordych

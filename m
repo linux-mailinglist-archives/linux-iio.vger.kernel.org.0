@@ -2,51 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F266FB05A
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 14:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C8936FB092
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 14:48:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233727AbjEHMlm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 08:41:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41972 "EHLO
+        id S233973AbjEHMsj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 08:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234855AbjEHMl0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 08:41:26 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191003AA3E;
-        Mon,  8 May 2023 05:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683549670; x=1715085670;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dWB1W1sKr0VoI4S3t1V+MlpJWf/wmSsuyC8DruCjijI=;
-  b=YE+elcsyqdEy9PARp1RBVwNLmDU+iqz334PrXv5oVqEVdLMKfBwKzMPI
-   bzqsThzqgjmpvuOMB++PcofLpG3l6WhXEjVVRSvrtjIh63ME3NSFYIlVc
-   3ohyGwVgMx5iXBAD9xVc/4joBPR/YwNQIhRF6dbim6b0YiejyRthx1XqD
-   ufpWRr/54kRAPuaqezIdeFzaUjzHYlnvXnylVGSD0I/6Ge1KRCgXoLbcr
-   6Ml/iaUyS82YTa6QbmF4OdmSiJ9AAiVMwG1mElfXP3sM1zkaDNljVGiNU
-   TJBcvFEoC69a82RnJyBHYaWFqq6b7e3OpU1Dv0oNUNXFhNEDPdqPaXNl8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="334071111"
-X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
-   d="scan'208";a="334071111"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 05:41:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="810253989"
-X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
-   d="scan'208";a="810253989"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 08 May 2023 05:41:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pw0Ap-00ArPN-2M;
-        Mon, 08 May 2023 15:41:03 +0300
-Date:   Mon, 8 May 2023 15:41:03 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
+        with ESMTP id S230415AbjEHMsi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 08:48:38 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7081F32359;
+        Mon,  8 May 2023 05:48:37 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4f22908a082so1985052e87.1;
+        Mon, 08 May 2023 05:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683550116; x=1686142116;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9Uf76kzQL3e3Ng3HXTMG+effyKJxcrXo57uEe4Q7lJI=;
+        b=SNiMnJnIrFE0wqbn88SmWG89iGu8lQntyHP9DL4JrtLZdLb177LdTyTTLbQsBpwdfF
+         9nwReW+pH5qrpboEMI/qC0cbOKXqGj+406UNJFog5Khcb6AJFXueqBZJSJqo2fjuDBjn
+         o/NKAXS5Na82gpxdlPkKnvghX55UQrUK3ddkdhCyt+uvVLtpM+oDnKAzsXcm8Q+BSy6M
+         07h1h2kYFqwtJchsrl6IdeGYRoN+44A3kFRNdHXdhoN18y5Mgozo16pZEdQTC6Wfw1xg
+         Q7R0disZtgq+tb/o5KB3/Nw5cinTUeHXB+JEpv1w9+z0P656n/PDoLo5M3c8T9sLYnTR
+         VxQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683550116; x=1686142116;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Uf76kzQL3e3Ng3HXTMG+effyKJxcrXo57uEe4Q7lJI=;
+        b=cTap30576S5GbusJ0d7mqmde7AegdEF5WlWwttfHpxkRYt0B5579b9ovSrS2qnwkaw
+         K33CUeSuwmsvU/5GXIrcPolwQsj0AiQLFtsryLVnWJt4MppMYyMreEWlunuKJksz8FhT
+         jgL/dRXVlbdNmJkV0nqOH4n61oVo8gOMHMCUsTcNbdr2H+hwKu9QyIPLDC/cIIyawBGY
+         DApK8H9kFYpp0lYGKRBCrvmhKL8fvyzpLlxmbaP+HLAL19McDQqGnfSrahq+s3T7fjkv
+         aQ1DHMq4Ag41sgkpDjYvL2Os4IItTp+kb0SGvI5B/ffQu4CuNQaQbxq+JSIIamyco+Mx
+         n05Q==
+X-Gm-Message-State: AC+VfDy7mzIRxmDXqvj1Gqwd6lUnbAfwGg78iiC059ny5qk7WuQuoKyn
+        EO5y4cFglxia/8f9060yHAjiW9w3inM=
+X-Google-Smtp-Source: ACHHUZ4MtOahkVAhUN2+80cHR2i76UP93IjgzkSKAQ3qmgnDxRT+uE9owVBML6KYIZEXkD+2l+VJYQ==
+X-Received: by 2002:a19:ae1a:0:b0:4f2:4d0a:7bdf with SMTP id f26-20020a19ae1a000000b004f24d0a7bdfmr970645lfc.52.1683550115547;
+        Mon, 08 May 2023 05:48:35 -0700 (PDT)
+Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id q12-20020ac24a6c000000b004efeea0dcfesm1302128lfp.44.2023.05.08.05.48.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 May 2023 05:48:35 -0700 (PDT)
+Message-ID: <5b32c9dc-f14b-f4dc-d3e2-08bd4f4e6465@gmail.com>
+Date:   Mon, 8 May 2023 15:48:34 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US, en-GB
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>
 Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -57,87 +68,103 @@ Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH v3 4/5] iio: light: ROHM BU27008 color sensor
-Message-ID: <ZFjt33rdupWOAsc8@smile.fi.intel.com>
 References: <cover.1682495921.git.mazziesaccount@gmail.com>
  <fb35de40a3908988f5f83e25d17119e6944d289b.1682495921.git.mazziesaccount@gmail.com>
  <ZFF1NMaR1RYThcSB@smile.fi.intel.com>
  <307cc8ce-6178-7a86-2c90-eaf0ac8c122d@fi.rohmeurope.com>
- <20230507152443.754f2fab@jic23-huawei>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230507152443.754f2fab@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+ <20230507152443.754f2fab@jic23-huawei> <ZFjt33rdupWOAsc8@smile.fi.intel.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v3 4/5] iio: light: ROHM BU27008 color sensor
+In-Reply-To: <ZFjt33rdupWOAsc8@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 07, 2023 at 03:24:43PM +0100, Jonathan Cameron wrote:
-> On Wed, 3 May 2023 05:11:53 +0000
-> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
-> > On 5/2/23 23:40, Andy Shevchenko wrote:
-> > > On Wed, Apr 26, 2023 at 11:08:17AM +0300, Matti Vaittinen wrote:  
-
-...
-
-> > >> +enum {
-> > >> +	BU27008_RED,	/* Always data0 */
-> > >> +	BU27008_GREEN,	/* Always data1 */
-> > >> +	BU27008_BLUE,	/* data2, configurable (blue / clear) */
-> > >> +	BU27008_CLEAR,	/* data2 or data3 */
-> > >> +	BU27008_IR,	/* data3 */
-> > >> +	BU27008_NUM_CHANS  
-> > > 
-> > > Why not converting comments to a kernel-doc?
-> > >   
-> > >> +};
-> > >> +
-> > >> +enum {
-> > >> +	BU27008_DATA0, /* Always RED */
-> > >> +	BU27008_DATA1, /* Always GREEN */
-> > >> +	BU27008_DATA2, /* Blue or Clear */
-> > >> +	BU27008_DATA3, /* IR or Clear */
-> > >> +	BU27008_NUM_HW_CHANS
-> > >> +};  
-> > > 
-> > > Ditto.  
-> > 
-> > I see no value having entities which are not intended to be used outside 
-> > this file documented in any "global" documentation. One who is ever 
-> > going to use these or wonder what these are - will most likely be 
-> > watching this file. My personal view is that the generated docs should 
-> > be kept lean. In my opinion the problem of the day is the time we spend 
-> > looking for a needle hidden in a haystack. In my opinion adding this to 
-> > kernel-doc just adds hay :)
+On 5/8/23 15:41, Andy Shevchenko wrote:
+> On Sun, May 07, 2023 at 03:24:43PM +0100, Jonathan Cameron wrote:
+>> On Wed, 3 May 2023 05:11:53 +0000
+>> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+>>> On 5/2/23 23:40, Andy Shevchenko wrote:
+>>>> On Wed, Apr 26, 2023 at 11:08:17AM +0300, Matti Vaittinen wrote:
 > 
-> > 
-> > I still can do this if no-one else objects. I almost never look at the 
-> > generated docs myself. Usually I just look the docs from code files - 
-> > and kernel-doc format is not any worse for me to read. Still, I can 
-> > imagine including this type of stuff to generic doc just bloats them and 
-> > my not serve well those who use them.
+> ...
 > 
+>>>>> +enum {
+>>>>> +	BU27008_RED,	/* Always data0 */
+>>>>> +	BU27008_GREEN,	/* Always data1 */
+>>>>> +	BU27008_BLUE,	/* data2, configurable (blue / clear) */
+>>>>> +	BU27008_CLEAR,	/* data2 or data3 */
+>>>>> +	BU27008_IR,	/* data3 */
+>>>>> +	BU27008_NUM_CHANS
+>>>>
+>>>> Why not converting comments to a kernel-doc?
+>>>>    
+>>>>> +};
+>>>>> +
+>>>>> +enum {
+>>>>> +	BU27008_DATA0, /* Always RED */
+>>>>> +	BU27008_DATA1, /* Always GREEN */
+>>>>> +	BU27008_DATA2, /* Blue or Clear */
+>>>>> +	BU27008_DATA3, /* IR or Clear */
+>>>>> +	BU27008_NUM_HW_CHANS
+>>>>> +};
+>>>>
+>>>> Ditto.
+>>>
+>>> I see no value having entities which are not intended to be used outside
+>>> this file documented in any "global" documentation. One who is ever
+>>> going to use these or wonder what these are - will most likely be
+>>> watching this file. My personal view is that the generated docs should
+>>> be kept lean. In my opinion the problem of the day is the time we spend
+>>> looking for a needle hidden in a haystack. In my opinion adding this to
+>>> kernel-doc just adds hay :)
+>>
+>>>
+>>> I still can do this if no-one else objects. I almost never look at the
+>>> generated docs myself. Usually I just look the docs from code files -
+>>> and kernel-doc format is not any worse for me to read. Still, I can
+>>> imagine including this type of stuff to generic doc just bloats them and
+>>> my not serve well those who use them.
+>>
+>>
+>> Unless someone specifically adds this doc to the main docs build, the
+>> kernel-doc won't end up in the docs anyway. It just provides a nice
+>> bit of consistent formatting. Even if they do add this for some reason,
+>> there are controls on internal vs external (exported stuff) being added
+>> to the docs.
 > 
-> Unless someone specifically adds this doc to the main docs build, the
-> kernel-doc won't end up in the docs anyway. It just provides a nice
-> bit of consistent formatting. Even if they do add this for some reason,
-> there are controls on internal vs external (exported stuff) being added
-> to the docs.
+> I can run it manually and see in a nice form instead of browsing file for that,
+> so there is still a usefulness in my opinion. Esp. taking into account that
+> comments are already there. It's just different and helpful form of
+> representation. No?
 
-I can run it manually and see in a nice form instead of browsing file for that,
-so there is still a usefulness in my opinion. Esp. taking into account that
-comments are already there. It's just different and helpful form of
-representation. No?
+My main objection was a _misunderstanding_ that the kernel-doc formatted 
+comments would automatically end up in generated docs. As I wrote, I 
+rarely (never) generate the docs. I use the docs from sources, hence it 
+is not easy for me to see this value. Nevertheless, I also wrote
 
+ >>> and kernel-doc format is not any worse for me to read.
+
+Hence, I did format these comments as kernel-doc in v5. The only slight 
+disadvantage (from my perspective) in using the kernel-doc is increased 
+amount of lines with pretty much no additional information. I can live 
+with that though.
+
+Yours,
+	-- Matti
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
+~~ When things go utterly wrong vim users can always type :help! ~~
 

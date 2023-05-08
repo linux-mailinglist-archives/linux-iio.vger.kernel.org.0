@@ -2,169 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C8936FB092
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 14:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 217B06FB0DD
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 15:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233973AbjEHMsj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 08:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49158 "EHLO
+        id S232287AbjEHNDf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 09:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230415AbjEHMsi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 08:48:38 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7081F32359;
-        Mon,  8 May 2023 05:48:37 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4f22908a082so1985052e87.1;
-        Mon, 08 May 2023 05:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683550116; x=1686142116;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9Uf76kzQL3e3Ng3HXTMG+effyKJxcrXo57uEe4Q7lJI=;
-        b=SNiMnJnIrFE0wqbn88SmWG89iGu8lQntyHP9DL4JrtLZdLb177LdTyTTLbQsBpwdfF
-         9nwReW+pH5qrpboEMI/qC0cbOKXqGj+406UNJFog5Khcb6AJFXueqBZJSJqo2fjuDBjn
-         o/NKAXS5Na82gpxdlPkKnvghX55UQrUK3ddkdhCyt+uvVLtpM+oDnKAzsXcm8Q+BSy6M
-         07h1h2kYFqwtJchsrl6IdeGYRoN+44A3kFRNdHXdhoN18y5Mgozo16pZEdQTC6Wfw1xg
-         Q7R0disZtgq+tb/o5KB3/Nw5cinTUeHXB+JEpv1w9+z0P656n/PDoLo5M3c8T9sLYnTR
-         VxQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683550116; x=1686142116;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Uf76kzQL3e3Ng3HXTMG+effyKJxcrXo57uEe4Q7lJI=;
-        b=cTap30576S5GbusJ0d7mqmde7AegdEF5WlWwttfHpxkRYt0B5579b9ovSrS2qnwkaw
-         K33CUeSuwmsvU/5GXIrcPolwQsj0AiQLFtsryLVnWJt4MppMYyMreEWlunuKJksz8FhT
-         jgL/dRXVlbdNmJkV0nqOH4n61oVo8gOMHMCUsTcNbdr2H+hwKu9QyIPLDC/cIIyawBGY
-         DApK8H9kFYpp0lYGKRBCrvmhKL8fvyzpLlxmbaP+HLAL19McDQqGnfSrahq+s3T7fjkv
-         aQ1DHMq4Ag41sgkpDjYvL2Os4IItTp+kb0SGvI5B/ffQu4CuNQaQbxq+JSIIamyco+Mx
-         n05Q==
-X-Gm-Message-State: AC+VfDy7mzIRxmDXqvj1Gqwd6lUnbAfwGg78iiC059ny5qk7WuQuoKyn
-        EO5y4cFglxia/8f9060yHAjiW9w3inM=
-X-Google-Smtp-Source: ACHHUZ4MtOahkVAhUN2+80cHR2i76UP93IjgzkSKAQ3qmgnDxRT+uE9owVBML6KYIZEXkD+2l+VJYQ==
-X-Received: by 2002:a19:ae1a:0:b0:4f2:4d0a:7bdf with SMTP id f26-20020a19ae1a000000b004f24d0a7bdfmr970645lfc.52.1683550115547;
-        Mon, 08 May 2023 05:48:35 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id q12-20020ac24a6c000000b004efeea0dcfesm1302128lfp.44.2023.05.08.05.48.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 05:48:35 -0700 (PDT)
-Message-ID: <5b32c9dc-f14b-f4dc-d3e2-08bd4f4e6465@gmail.com>
-Date:   Mon, 8 May 2023 15:48:34 +0300
+        with ESMTP id S232161AbjEHNDe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 09:03:34 -0400
+Received: from frolo.macqel.be (smtp2.macqel.be [109.135.2.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CEF57B3
+        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 06:03:30 -0700 (PDT)
+Received: by frolo.macqel.be (Postfix, from userid 1000)
+        id CA7B3DF00B8; Mon,  8 May 2023 15:03:28 +0200 (CEST)
+Date:   Mon, 8 May 2023 15:03:28 +0200
+From:   Philippe De Muyter <Philippe.DeMuyter@macq.eu>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH] iio: dac: ad5446: Add ID of compatible Texas
+        Instruments i2c dac121c*
+Message-ID: <20230508130328.GA3067@frolo.macqel>
+References: <1683450625-28789-1-git-send-email-Philippe.DeMuyter@macq.eu> <20230507144608.15e7aa8e@jic23-huawei> <20230508083719.GA920@frolo.macqel>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US, en-GB
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Paul Gazzillo <paul@pgazz.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>
-References: <cover.1682495921.git.mazziesaccount@gmail.com>
- <fb35de40a3908988f5f83e25d17119e6944d289b.1682495921.git.mazziesaccount@gmail.com>
- <ZFF1NMaR1RYThcSB@smile.fi.intel.com>
- <307cc8ce-6178-7a86-2c90-eaf0ac8c122d@fi.rohmeurope.com>
- <20230507152443.754f2fab@jic23-huawei> <ZFjt33rdupWOAsc8@smile.fi.intel.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 4/5] iio: light: ROHM BU27008 color sensor
-In-Reply-To: <ZFjt33rdupWOAsc8@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230508083719.GA920@frolo.macqel>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/8/23 15:41, Andy Shevchenko wrote:
-> On Sun, May 07, 2023 at 03:24:43PM +0100, Jonathan Cameron wrote:
->> On Wed, 3 May 2023 05:11:53 +0000
->> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
->>> On 5/2/23 23:40, Andy Shevchenko wrote:
->>>> On Wed, Apr 26, 2023 at 11:08:17AM +0300, Matti Vaittinen wrote:
+Hello Jonathan,
+
+I have discovered that linux v6.0 already supports the ti,dac121c081
+chips in the ti-dac5571.c driver.  There's thus no need for my patch,
+that I had written because I work with a much older kernel.
+
+Sorry for the noise.
+
+Maybe the different dac drivers supporting similar chips should be
+merged, but that's anoter story.
+
+Best regards
+
+Philippe
+
+On Mon, May 08, 2023 at 10:37:19AM +0200, Philippe De Muyter wrote:
+> Hello Jonathan,
 > 
-> ...
+> On Sun, May 07, 2023 at 02:46:08PM +0100, Jonathan Cameron wrote:
+> > On Sun,  7 May 2023 11:10:25 +0200
+> > Philippe De Muyter <Philippe.DeMuyter@macq.eu> wrote:
+> > 
+> > > From: Philippe De Muyter <phdm@macqel.be>
+> > > 
+> > > The Texas Instruments DAC121C* chips are the I2C counterparts of
+> > > the DAC121S* SPI chips which are already supported by this ad5446 driver.
+> > > 
+> > > Add them to the compatible list.
+> > 
+> > Hi Philippe,
+> > 
+> > DT binding should be updated and include the fallback to adi,ad5622.
+> > Does this driver actually have a bindings doc?  If not please add one
+> > as a precursor patch then add binding for this new part on top.
 > 
->>>>> +enum {
->>>>> +	BU27008_RED,	/* Always data0 */
->>>>> +	BU27008_GREEN,	/* Always data1 */
->>>>> +	BU27008_BLUE,	/* data2, configurable (blue / clear) */
->>>>> +	BU27008_CLEAR,	/* data2 or data3 */
->>>>> +	BU27008_IR,	/* data3 */
->>>>> +	BU27008_NUM_CHANS
->>>>
->>>> Why not converting comments to a kernel-doc?
->>>>    
->>>>> +};
->>>>> +
->>>>> +enum {
->>>>> +	BU27008_DATA0, /* Always RED */
->>>>> +	BU27008_DATA1, /* Always GREEN */
->>>>> +	BU27008_DATA2, /* Blue or Clear */
->>>>> +	BU27008_DATA3, /* IR or Clear */
->>>>> +	BU27008_NUM_HW_CHANS
->>>>> +};
->>>>
->>>> Ditto.
->>>
->>> I see no value having entities which are not intended to be used outside
->>> this file documented in any "global" documentation. One who is ever
->>> going to use these or wonder what these are - will most likely be
->>> watching this file. My personal view is that the generated docs should
->>> be kept lean. In my opinion the problem of the day is the time we spend
->>> looking for a needle hidden in a haystack. In my opinion adding this to
->>> kernel-doc just adds hay :)
->>
->>>
->>> I still can do this if no-one else objects. I almost never look at the
->>> generated docs myself. Usually I just look the docs from code files -
->>> and kernel-doc format is not any worse for me to read. Still, I can
->>> imagine including this type of stuff to generic doc just bloats them and
->>> my not serve well those who use them.
->>
->>
->> Unless someone specifically adds this doc to the main docs build, the
->> kernel-doc won't end up in the docs anyway. It just provides a nice
->> bit of consistent formatting. Even if they do add this for some reason,
->> there are controls on internal vs external (exported stuff) being added
->> to the docs.
+> No, there's no ad5446 to find in Documentation/ :(
 > 
-> I can run it manually and see in a nice form instead of browsing file for that,
-> so there is still a usefulness in my opinion. Esp. taking into account that
-> comments are already there. It's just different and helpful form of
-> representation. No?
-
-My main objection was a _misunderstanding_ that the kernel-doc formatted 
-comments would automatically end up in generated docs. As I wrote, I 
-rarely (never) generate the docs. I use the docs from sources, hence it 
-is not easy for me to see this value. Nevertheless, I also wrote
-
- >>> and kernel-doc format is not any worse for me to read.
-
-Hence, I did format these comments as kernel-doc in v5. The only slight 
-disadvantage (from my perspective) in using the kernel-doc is increased 
-amount of lines with pretty much no additional information. I can live 
-with that though.
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+> I will try to make one.
+> 
+> > 
+> > > 
+> > > Signed-off-by: Philippe De Muyter <phdm@macqel.be>
+> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > ---
+> > >  drivers/iio/dac/ad5446.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+> > > index aa3130b33456..b95c0ccbb796 100644
+> > > --- a/drivers/iio/dac/ad5446.c
+> > > +++ b/drivers/iio/dac/ad5446.c
+> > > @@ -587,6 +587,7 @@ static const struct i2c_device_id ad5446_i2c_ids[] = {
+> > >  	{"ad5602", ID_AD5602},
+> > >  	{"ad5612", ID_AD5612},
+> > >  	{"ad5622", ID_AD5622},
+> > > +	{"dac121", ID_AD5622}, /* 'ti,' is dropped by 'of_modalias_node' */
+> > 
+> > True, but why is the comment needed?
+> 
+> I will remove it
+> 
+> > Also, for consistency with the spi equivalent it should be dac121c101 or similar
+> > I think.
+> 
+> Actually the chip I use is a dac121c085, and there exists also dac121c081.
+> They share the same datasheet.  The difference is only in the number of
+> i2c addresses the hardware designer may choose from and the pin used for the
+> external Vref.
+> 
+> Do you prefer I add only dac121c085, both dac121c085 and dac121c081, or
+> stick to the common part of the name, with or without the 'c' that stands
+> for i2C, like the 's' in dac121s101 stands for Spi ?
+> 
+> The documentation also mentions lower-resolution chips in the same family :
+> dac101c081 and dac101c085 (10 bit resolution), and dac081c081 and dac081c085
+> (8 bit resolution).
+> 
+> > 
+> > I think this use of the driver with multiple vendor prefixes,
+> > also indicates we should really add the of_device_id table for this
+> > driver. To do that nicely will require more changes as we'd want to do
+> > the same for the SPI side which has a single entry table (which is odd)
+> > then deal with the data fields which should probably all be pointers
+> > rather than enum values.
+> > 
+> > Still I'm fine with proper explicit DT support being left for a follow up patch.
+> > 
+> > I do want the missing binding doc fixed though (which is independent of the
+> > question of how the driver binds based on the compatible values).
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> > 
+> > >  	{}
+> > >  };
+> > >  MODULE_DEVICE_TABLE(i2c, ad5446_i2c_ids);
+> 
+> Best regards
+> 
+> Philippe

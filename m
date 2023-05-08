@@ -2,187 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F05C36FA392
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 11:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24AD26FA3A4
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 11:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233587AbjEHJqS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 05:46:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44594 "EHLO
+        id S232313AbjEHJtJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 05:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232674AbjEHJqQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 05:46:16 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBBA91A4AB
-        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 02:46:12 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-643990c5319so2819152b3a.2
-        for <linux-iio@vger.kernel.org>; Mon, 08 May 2023 02:46:12 -0700 (PDT)
+        with ESMTP id S233787AbjEHJtE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 05:49:04 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DE471FABA
+        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 02:49:02 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f00c33c3d6so4908818e87.2
+        for <linux-iio@vger.kernel.org>; Mon, 08 May 2023 02:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mechatrax-com.20221208.gappssmtp.com; s=20221208; t=1683539172; x=1686131172;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QxUucxl06d3SDkrNlmvPg0Cu2BkqPJXbpojhAwPIsG0=;
-        b=oVUt+/viPbDdqiQjujyP5ym/hC7eic0mHWabtIY4phbJ5Bx7AoAamracJ8z56TnU1m
-         lRh4qs8LyDXn1HqhwVYH35EjIr9HjG/bJ+YGA4awaFOkxWuzaR9CpY4gVCd7adVGwIcD
-         7OWqIA2/nM6RX3mHyEGcQxnCO5Vvc6HGIeIP/a0qleYv9n1ZBT/1iOzRU2GSE6FbCWd8
-         cSoqgED4qj0L7z5elVo2iYUWJJsagEv6lWZ19xr8ciigdfUu2/aYjfoAFJLS8wzyfm5y
-         4mNK27Q/WujzSe1tq7OBToRxMUt1csUQAftIkdSYgOwzJje+Q5IITnFbyiJi9FIId6JC
-         wymw==
+        d=melexis.com; s=google; t=1683539340; x=1686131340;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mIodw2IOkts5z/EAeBd4VX53RqXd6u6N3X4h8AJjDxs=;
+        b=RHT3dh9m5jC2Ndy/xFTA0Fvj1yLyEvid0qI4cKfNORJmqPnuycnSrJe0xafYNdJCY7
+         FepPw5uK79NbIMa9YPazC7wYVYJnavFpYS/i8swwbfhtYlKKiz6f2eAMtUZZksQSCLMv
+         0Bv/BwwUm0yGn/9v9kBX0kGLaEMfxCqkG6kYcss7aaLZBZeI+nvQxrFXVV3YxGzl5YyE
+         1g3KPmme0ne01mI43G7V4f8BCMCH27P+olkKBSZ2Ni9ra4i8aDexzcHu8SbdrFxwRNfT
+         cL3pIAvRj+rGSKJBOwQEuIp8/id10HDR/agksTsHWBq1velwkIOAd6Ezn+kZs6i4+f/w
+         o+Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683539172; x=1686131172;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QxUucxl06d3SDkrNlmvPg0Cu2BkqPJXbpojhAwPIsG0=;
-        b=gwggNsc5zHfvLrlm3/nz5oI/XJ60oRc8GXcQKASGyqBOMM0YFHdNZKdXi+aUNLZ2X6
-         kZjOQm6pQj7UB7EDvpmYBKRxkKVh3CL2h/85Cz3TrvPAkgX7NH02YngZ0sQ+tEvnGDLa
-         xWkvvJtSqQnHbFnrxXvmmXmCjviX4TnrfoCFRLKo7fsRon8KcrWttEhV8n1oa3G5msL+
-         gmHZhIQOZLs3b0mAzqo/ALbX+uZaA4bmrs9yRY3fAEya1MO40Bt6G/jyCgM9Oj+mSlV2
-         l+GNYqHvN3tZRlP0zc/rZpd8e1MsclrBPETbB+j1SM+JNjXY2227RxPQPdYeZ4VjtJpQ
-         6Lpg==
-X-Gm-Message-State: AC+VfDz9xI2zwTJzZniPxdhMJX2Ry/pXo6eyKq+tMXmUrFvwTKhDxCeM
-        HZKNAbjh7HP9Wlk5bscxZFSKKEs0R7VANzQdPQIT+w==
-X-Google-Smtp-Source: ACHHUZ7J5K6Yc2jTfIoxopiJql91/X6loV9lnS6am2IrpKzeVaEsucSSmKu+4eL/4qbcrmk3eFtQ/0Sk+CQk4sMYHZc=
-X-Received: by 2002:a05:6a00:acc:b0:63b:435f:134a with SMTP id
- c12-20020a056a000acc00b0063b435f134amr12786940pfl.28.1683539172356; Mon, 08
- May 2023 02:46:12 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683539340; x=1686131340;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mIodw2IOkts5z/EAeBd4VX53RqXd6u6N3X4h8AJjDxs=;
+        b=ebZguzb0FGtQPsEdCn/vAnS6sT9YEXpBtk0RItDpOGO0adKGm3oo7HMK3x81K92qlE
+         cU+tAm1gdkvEef7SrsaQLvAhF2m0fuahpMwnr4JFz2sv4tXwJur/M8RUgGhBJqY5leEO
+         Aa5ORbH1upQgXOmBlG38eg7Q6X+wYypbDrUvRxRq6CSS/Q/0aab44EkdqAp7pCxv2Ky+
+         AEqvuRiuA1jorH5QyNHeAuFdve3pvI7uIvNwO6EQCwi08c6kInJmIU49yudIwM35iucn
+         B86SlWmcp2qCb9LYgYT7Xt0p3+MIKn1vh95nuJfWlwByrYQ3NQwOr4a6csK7vmDj8es0
+         sX1Q==
+X-Gm-Message-State: AC+VfDwvDXDUlCKCRNLWm0Fv/ts6bKsna+6oAhAU24nBTkuIOLJRt51Q
+        wfHsaVvxXAKP2aL3j1FstXb2B0qGboMWwpvH+H68kw==
+X-Google-Smtp-Source: ACHHUZ79ULkbGM5EVpXxj4WW8A5JowX53CGbWgPEbBR/uKVy+5H/BH7ZBO1/oyHo83zousXS8sKvbUjrrS7pZSNfO4c=
+X-Received: by 2002:a05:6512:3c8:b0:4f0:276:295b with SMTP id
+ w8-20020a05651203c800b004f00276295bmr2345063lfp.46.1683539340548; Mon, 08 May
+ 2023 02:49:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230502102930.773-1-honda@mechatrax.com> <f83adfd4df5cd23176721087a4fcd9a0225c3483.camel@gmail.com>
- <20230507160104.1d6e8bb8@jic23-huawei>
-In-Reply-To: <20230507160104.1d6e8bb8@jic23-huawei>
-From:   Masahiro Honda <honda@mechatrax.com>
-Date:   Mon, 8 May 2023 18:45:36 +0900
-Message-ID: <CA+Tz-SHF9+GxVD+U88tTxG4LYCC9BXSQKpVHL3E0eni+fRrgkQ@mail.gmail.com>
-Subject: Re: [PATCH v4] Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
+References: <20230507184649.39290-1-marex@denx.de>
+In-Reply-To: <20230507184649.39290-1-marex@denx.de>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Mon, 8 May 2023 11:48:24 +0200
+Message-ID: <CAKv63us81+fJmOp+ZunihY=0c6_-bHAd0c6ahGp+QdAf9XP=pw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] dt-bindings: iio: temperature: melexis,mlx90614:
+ Document MLX90615 support
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-iio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Acked-by: Crt Mori <cmo@melexis.com>
 
-Thank you for your advice.
+(also tested that existing dts's work without any modification).
 
-On Sun, May 7, 2023 at 11:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
+On Sun, 7 May 2023 at 20:47, Marek Vasut <marex@denx.de> wrote:
 >
-> On Wed, 03 May 2023 10:09:28 +0200
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> Document support for MLX90615 Infra Red Thermometer, which seems to
+> be the predecesor of MLX90614 . There are significant differences in
+> the register layout compared to MLX90614, but the functionality of
+> the device is virtually identical.
 >
-> Patch title should be something like the following so it's easy to see wh=
-at
-> is affected when looking at a long list of patches.
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Crt Mori <cmo@melexis.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Marek Vasut <marex@denx.de>
+> Cc: Peter Meerwald <pmeerw@pmeerw.net>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-iio@vger.kernel.org
+> ---
+> V2: - Add spaces to subject tags
+>     - Add AB from Krzysztof
+> ---
+>  .../bindings/iio/temperature/melexis,mlx90614.yaml          | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY fla=
-g.
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> index d6965a0c1cf30..654d31f65d360 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
 >
-
-I'll fix the title.
-
+> -title: Melexis MLX90614 contactless IR temperature sensor
+> +title: Melexis MLX90614/MLX90615 contactless IR temperature sensor
 >
-> > On Tue, 2023-05-02 at 19:29 +0900, Masahiro Honda wrote:
-> > > The Sigma-Delta ADCs supported by this driver can use SDO as an inter=
-rupt
-> > > line to indicate the completion of a conversion. However, some device=
-s
-> > > cannot properly detect the completion of a conversion by an interrupt=
-.
-> > > This is for the reason mentioned in the following commit.
-> > >
-> > > commit e9849777d0e2 ("genirq: Add flag to force mask in
-> > >                       disable_irq[_nosync]()")
-> > >
-> > > A read operation is performed by an extra interrupt before the comple=
-tion
-> > > of a conversion. This patch fixes the issue by setting IRQ_DISABLE_UN=
-LAZY
-> > > flag.
-> > >
-> > > Signed-off-by: Masahiro Honda <honda@mechatrax.com>
-> > > ---
-> >
-> > Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>  maintainers:
+>    - Peter Meerwald <pmeerw@pmeerw.net>
+> @@ -15,7 +15,9 @@ description: |
 >
-> Fixes tag?  We'll want to know how far to backport this.  I assume it's
-> limited by the above commit as these drivers are older than that.
+>  properties:
+>    compatible:
+> -    const: melexis,mlx90614
+> +    enum:
+> +      - melexis,mlx90614
+> +      - melexis,mlx90615
 >
-
-I'll try to add a fixes tag.
-
-> I'm also not totally sure what this 'looks like' for a user.  What happen=
-s?
-> Fail to read, wrong value, lock up or something else?  It would be helpfu=
-l
-> to include that information in case anyone else runs into this.
->
-
-I'll add information to the commit message.
-
-Regards,
-
-Masahiro
-
-
-> Actual change looks right to me.
->
-> Thanks,
->
-> Jonathan
->
->
-> >
-> > > v4:
-> > >  - Remove the callback.
-> > > v3:
-> > > https://lore.kernel.org/linux-iio/20230420102316.757-1-honda@mechatra=
-x.com/
-> > >  - Remove the Kconfig option.
-> > > v2:
-> > > https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatra=
-x.com/
-> > >  - Rework commit message.
-> > >  - Add a new entry in the Kconfig.
-> > >  - Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing =
-the IRQ.
-> > > v1:
-> > > https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatra=
-x.com/
-> > >
-> > >  drivers/iio/adc/ad_sigma_delta.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/adc/ad_sigma_delta.c
-> > > b/drivers/iio/adc/ad_sigma_delta.c
-> > > index d8570f6207..7e21928707 100644
-> > > --- a/drivers/iio/adc/ad_sigma_delta.c
-> > > +++ b/drivers/iio/adc/ad_sigma_delta.c
-> > > @@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(struct devic=
-e *dev,
-> > > struct iio_dev *indio_de
-> > >         init_completion(&sigma_delta->completion);
-> > >
-> > >         sigma_delta->irq_dis =3D true;
-> > > +
-> > > +       /* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing a=
-n IRQ */
-> > > +       irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZ=
-Y);
-> > > +
-> > >         ret =3D devm_request_irq(dev, sigma_delta->spi->irq,
-> > >                                ad_sd_data_rdy_trig_poll,
-> > >                                sigma_delta->info->irq_flags | IRQF_NO=
-_AUTOEN,
-> >
+>    reg:
+>      maxItems: 1
+> --
+> 2.39.2
 >

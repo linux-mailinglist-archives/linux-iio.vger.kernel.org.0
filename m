@@ -2,106 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE5BB6FAD68
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 13:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 402376FAFDA
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 14:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234007AbjEHLes (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 07:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
+        id S233854AbjEHMXZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 08:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235795AbjEHLef (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 07:34:35 -0400
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EDA3DCA4;
-        Mon,  8 May 2023 04:33:50 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id B8D2884707;
-        Mon,  8 May 2023 13:32:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1683545573;
-        bh=ne5aiGChzQ572VGXAC1N5djVVeV58GKSHool4slScs4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=YTHMBrwMfiG8VAmVsaDrNkw8JnGK4VXJuUb13vK09B14nc83aB3voKLpxmTjeVoTG
-         Qi02RaTOO8eE1E42uenu+blN6AI0cLFJjijDS6BUMXnM7FaAkpeGNJXj9m8lFIUzr9
-         UDod05s1yzIGmItarZN2MpRHfuQLGUk951H0e8Ev8xuKh3sMZMEqGTL+B6XvlH6Acg
-         rMWL5MYbILFiDT3VMSVyDHVW3ffvonggUpi64eKfO+fAjNq8y0TbyxcohSjfLDBLGR
-         cLLyFBRUDEigj6QC5mV+NOsRDa5klnSfA5P44bRkC7I7P8uPrwO3g82StdMIRb7ShE
-         0X5cPdAc8gAtA==
-Message-ID: <189306ca-dbd9-508c-a6ca-32199dbaeb79@denx.de>
-Date:   Mon, 8 May 2023 13:32:52 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 5/5] iio: mlx90614: Add MLX90615 support
-To:     Crt Mori <cmo@melexis.com>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S233692AbjEHMXY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 08:23:24 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECE0A36118;
+        Mon,  8 May 2023 05:23:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683548594; x=1715084594;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zz7Se8uLfJ5do6eJ9dnQKSDFhvQo/6NrKd6fODnc9/Q=;
+  b=WmUa5swwOISjt0LbJjkSZqXjZSLEDgDOxvB5AzCYSZTTrIL8gvLlco0Q
+   HExdPz97pQZuZwUvTzXjGv4g58EcUeGgo6oBbagC6rb5+tc/dp2d4B34n
+   xDGsh+MeUh0GDNNoQbQBRA3PMkx1ZCebvvaUT4O/TJM70wtFRGRcyhYhr
+   Tb2jxgeKGBvuO+frM2/4cWhAfiyCLnA/kFS+UWktDk0Lg3CwwznnsULlA
+   i7TlQXqrYb3kuMW5eT7uGAplNaG+rmyBwGAQ3+Lsi2FfAVf8hz6j+j6YL
+   g16WCJUahVAmvPaT++bRiPnoEq6TnxGuef/M8woYgNAWneM8kolG/2lSK
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="352685955"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="352685955"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 05:23:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="692589247"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="692589247"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 08 May 2023 05:23:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pvztT-00Ar4Y-1a;
+        Mon, 08 May 2023 15:23:07 +0300
+Date:   Mon, 8 May 2023 15:23:07 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-References: <20230507184649.39290-1-marex@denx.de>
- <20230507184649.39290-5-marex@denx.de>
- <CAKv63utbVqRjmyP_cN=d2Jewpp6hgVHzSJdm4gjKBkaHKb2LuQ@mail.gmail.com>
-Content-Language: en-US
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <CAKv63utbVqRjmyP_cN=d2Jewpp6hgVHzSJdm4gjKBkaHKb2LuQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 4/5] iio: light: ROHM BU27008 color sensor
+Message-ID: <ZFjpqwOo3DxnWahM@smile.fi.intel.com>
+References: <cover.1683105758.git.mazziesaccount@gmail.com>
+ <6d1e37f95dd039d9c96a992b1855fd193bdded40.1683105758.git.mazziesaccount@gmail.com>
+ <ZFPCUJ81aw/GkJgT@smile.fi.intel.com>
+ <c63c5271-3973-3bd4-c683-ab9ab64b67e4@fi.rohmeurope.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c63c5271-3973-3bd4-c683-ab9ab64b67e4@fi.rohmeurope.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/8/23 12:10, Crt Mori wrote:
+On Fri, May 05, 2023 at 04:56:47AM +0000, Vaittinen, Matti wrote:
+> On 5/4/23 17:33, Andy Shevchenko wrote:
+> > On Wed, May 03, 2023 at 12:50:14PM +0300, Matti Vaittinen wrote:
 
-[...]
+...
 
->> @@ -666,14 +678,43 @@ static const struct mlx_chip_info mlx90614_chip_info = {
->>          },
->>   };
->>
->> +static const struct mlx_chip_info mlx90615_chip_info = {
->> +       .op_eeprom_emissivity           = MLX90615_OP_EEPROM | 0x03,
->> +       .op_eeprom_config1              = MLX90615_OP_EEPROM | 0x02,
->> +       .op_ram_ta                      = MLX90615_OP_RAM | 0x06,
->> +       .op_ram_tobj1                   = MLX90615_OP_RAM | 0x07,
->> +       .op_ram_tobj2                   = MLX90615_OP_RAM | 0x08,
->> +       .op_sleep                       = MLX90615_OP_SLEEP,
->> +       .dual_channel                   = false,
->> +       .wakeup_delay_ms                = MLX90615_TIMING_WAKEUP,
->> +       .emissivity_max                 = 16383,
->> +       .emissivity_res                 = 1000 000 000 / 16383,
-> This makes me wonder if we could just drop the emissivity_res and have
-> it calculate it using emissivity_max, since both chips will do it.
+> >> +config ROHM_BU27008
+> >> +	tristate "ROHM BU27008 color (RGB+C/IR) sensor"
+> >> +	depends on I2C
+> >> +	select REGMAP_I2C
+> >> +	select IIO_GTS_HELPER
+> >> +	help
+> >> +	  Enable support for the ROHM BU27008 color sensor.
+> >> +	  The ROHM BU27008 is a sensor with 5 photodiodes (red, green,
+> >> +	  blue, clear and IR) with four configurable channels. Red and
+> >> +	  green being always available and two out of the rest three
+> >> +	  (blue, clear, IR) can be selected to be simultaneously measured.
+> >> +	  Typical application is adjusting LCD backlight of TVs,
+> >> +	  mobile phones and tablet PCs.
+> > 
+> > Module name?
+> 
+> We have discussed this several times already.
+> 
+> https://lore.kernel.org/all/10c4663b-dd65-a545-786d-10aed6e6e5e9@fi.rohmeurope.com/
+> 
+> Module name is completely irrelevant when selecting a kernel configuration.
 
-We can do that (i.e. change done locally now).
+This option is also selectable by user.
 
->> +       .fir_config_mask                = 0,    /* MLX90615 FIR is fixed */
->> +       .iir_config_mask                = MLX90615_CONFIG_IIR_MASK,
->> +       /* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
->> +       .iir_valid_offset               = 1,
->> +       .iir_values                     = { 723, 77, 42, 31, 28, 20, 18 },
->> +       .iir_freqs                      = {
->> +               { 0, 180000 },  /* 14% ~= 0.18 Hz */
->> +               { 0, 200000 },  /* 17% ~= 0.20 Hz */
->> +               { 0, 280000 },  /* 20% ~= 0.28 Hz */
->> +               { 0, 310000 },  /* 25% ~= 0.31 Hz */
->> +               { 0, 420000 },  /* 33% ~= 0.42 Hz */
->> +               { 0, 770000 },  /* 50% ~= 0.77 Hz */
->> +               { 7, 230000 },  /* 100% ~= 7.23 Hz */
+...
 
-Before I send a V3, can you please double-check these ^ IIR coefficients 
-? I approximated those, but I suspect my approximation might not be 
-accurate.
+> > Do you need regmap lock? If so, why (since you have mutex)?
+> 
+> I believe you know that regmap uses a default lock when no external lock 
+> is given. So, I assume you mean that maybe we could set 
+> 'disable_locking' for the regmap here.
 
-[...]
+Correct.
+
+> It's nice to be occasionally pushed to think "out of the box". And yes, 
+> disabling regmap lock is really out of my "normal box" :)
+> 
+> I didn't go through all of the code yet, but I think pretty much all of 
+> the sequences which end up to register writes are indeed protected by 
+> the mutex. (Well, probe is not but it is expected to only update one bit 
+> while rest of the register should stay fixed).
+> 
+> It may be we could live without regmap_lock when driver is in it's 
+> current state, but I am not convinced the performance improvement is 
+> worth the risk. Having regmap unprotected is not common, and it is also 
+> not easy to spot when making changes to the driver. In my opinion it is 
+> a bit like asking for a nose-bleed unless there is really heavy reasons 
+> to drop the lock... In this case, having the regmap_lock (which is 
+> pretty much never locked because we have the mutex as you said) is 
+> probably not a penalty that matters.
+
+Basically you try to justify a hidden mine field in case somebody will think
+"oh, we are protected by regmap lock, so why to bother call mutex_lock()" and
+at the end it become a subtle bugs in the code. With disable_locking = true
+I can see that code author _carefully thought through_ the locking schema and
+understands the hardware and the code.
+
+P.S. I'm wondering why your lines of text have a single trailing whitespace
+but the last line.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

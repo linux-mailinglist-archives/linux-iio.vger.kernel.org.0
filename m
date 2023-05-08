@@ -2,166 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C0A6FB470
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 17:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C706FB594
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 18:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234647AbjEHPxi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 11:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36648 "EHLO
+        id S233033AbjEHQxp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 12:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233575AbjEHPxf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 11:53:35 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C4AE3;
-        Mon,  8 May 2023 08:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=public-files.de;
-        s=s31663417; t=1683561181; i=frank-w@public-files.de;
-        bh=CiPg0zLB8L+Fhy9p4yBq3k46Y/eQla9+LhxYyup3Mwg=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=dQLwQptEuq97eHWwN/oBtXDkVAI+bQ66Ki0RfVPQW99ohn9/RcrtATS83Vaz00zGq
-         NVAPCrNYDqk435LJxgQcRKj4wBrDSveAvDQypZ1MGaZZ/iVuRPX1DPSKdvQL5fykNm
-         D+3NbR85WbwNOPy78YGHAinY9Cs5vuLRpdCd6rzzQEaS45TaJDOOPWSgxYMCE2bkJo
-         pgEWRuYyW0UR7UU4zIib/9drdPUYD4OOplit4dXWf9fzjvzkR2QGkB5SNJHf2YF/rX
-         ZSC+Wa5iIK0CQCdORFUQunGMgK3sksUqNUTC982AfLsDVfCed2zHvA7bH3LhegycEF
-         wdGp8M0p7lDbw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [217.61.152.116] ([217.61.152.116]) by web-mail.gmx.net
- (3c-app-gmx-bs01.server.lan [172.19.170.50]) (via HTTP); Mon, 8 May 2023
- 17:53:01 +0200
-MIME-Version: 1.0
-Message-ID: <trinity-e35759d3-7de4-450c-b4a8-053c9617ac27-1683561181475@3c-app-gmx-bs01>
-From:   Frank Wunderlich <frank-w@public-files.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Frank Wunderlich <linux@fw-web.de>,
-        linux-mediatek@lists.infradead.org,
+        with ESMTP id S234181AbjEHQxn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 12:53:43 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE99524D;
+        Mon,  8 May 2023 09:53:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683564820; x=1715100820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q2FPM/ehx2oD4Wdgi1gDVni1vUmU7yPsYNS1QfCOiJ0=;
+  b=EoJgtQ5IISjon7EP99x2cIbaytYPDPsuq3cZkWPdiLGYPbzB8TbPVfOc
+   2GgDp8iMXCML0p9dz11YwGhdyr+SbSpSjmfXSYKgLLxcv8AikAbkv/25j
+   gYEQxDo5JOCgWMSk5dO0hB6VHShLSlI2+mewZBw46hjNA2dcRKwz+DbHL
+   KSRK2tuyUgc0tmaE2cJYsaYNNrAvxG/spufpdJqw3ZaMt2InrIghVkx6V
+   UYXGezlNlObel96YmPBLFEfSVg9mO9HvFaOCRA+3YL95ZguUcl1XzQN36
+   BjRgxb5jtciHrblOlFOqEwj//61ncbXaelq26lSizjhRoYr/xvh+HgC7q
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="352759426"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="352759426"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 09:53:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10704"; a="692667111"
+X-IronPort-AV: E=Sophos;i="5.99,259,1677571200"; 
+   d="scan'208";a="692667111"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 08 May 2023 09:53:38 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pw47E-0001KH-2k;
+        Mon, 08 May 2023 16:53:36 +0000
+Date:   Tue, 9 May 2023 00:52:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Astrid Rost <astrid.rost@axis.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev, kernel@axis.com,
+        Astrid Rost <astridr@axis.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "Hui.Liu" <hui.liu@mediatek.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Daniel Golle <daniel@makrotopia.org>
-Subject: Aw: Re: [PATCH v1 2/7] dt-bindings: iio: adc: Add support for
- MT7986
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 8 May 2023 17:53:01 +0200
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <20230423140252.7b018c46@jic23-huawei>
-References: <20230421132047.42166-1-linux@fw-web.de>
- <20230421132047.42166-3-linux@fw-web.de>
- <20230423140252.7b018c46@jic23-huawei>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K1:pdqX18kf14TXCeRRcIeZ0HL8CFTV1pCMhlfqHMq0UjxaXL88w8IY5Xau00mREZLySLpCX
- oXYfD1PHfjW7qxZRxZ/4z4TN4hYGRrH8duheEOGvCrvoB88QpXAY5+FBfk/gQsHcD6nNdIQuOyUz
- SUCALgWOrXm/Yudb4pYLg3QwVHJZCVVoemN4QhtwCovaXHFhVoUSnc1qCqBKr6bwrFItXpjAmwV3
- EQ3Yu1SzzDFDWfeiwbJKH0v4beuIQVaQhFx2VhBYOx0qQQ1VjqcRurtLQS4347etbaonmmMXVfRO
- 8E=
-UI-OutboundReport: notjunk:1;M01:P0:cksV9XsuSDk=;+YbD/ZkGsCaOhtlDn+Fv6zFt4a8
- 57ipgbeNe6ZqZivTNZdpPWdpJNZgXRHtT9ayhxyHGCuxqAd6l4eOmcQ6WrjBFjpaOtCUpMa/x
- qvZ88Cdsu2if/m06Vb7JArRW72aGG3wtJlLt2kD1p4chRDIliHg//3pkqbdKl2lGI6/Q/ey+3
- X8XncX+CBpJOJ4+bI50qem1I8ajFP/U3eKy7btxXnul/MsRV7lki8xjsq/qxXDlGxR0PI+RQ8
- sgborse2e/lbBsDhHbCFbxT4wXlQCOHYB1Yj776YUVQlzUP8gYVXOsDxKLyw1rx1Xonlta1em
- UyTmYX3C5AOi08otOpIIQqg8uIttbPDHYsmxiPbkDIvohu6tcWyzTUl8ZAKIfld07CNjU1oPY
- D7UDM3QCdupYOIW5maXirITC5oThN0uwXlIuDQ5+6yDu57aFrA4dm5TZ/ZOeKWnQ/psGWpmid
- pYj3vupwpHQPxnXBXxdCKaZvj527Ytv5Z5SnJNk9PL3aB4RZWiQlDHSE7P4sS3ifRBM5nU3LO
- fcMLumgv/QVNJ1tSxB+pTwDaDcSzuPFEJe6LG95Qv+b8QiEzighDmFS8b4eNa2NkfbhWw92ve
- /CyjaxZ7Kfjya6iqAymLD/Du5azEtWX5qFGdiLGM+fIMbWRVydRZ/jtuqmqHz03pBIU6JddjG
- skqV0f1AhWvLPYrc170BBBHCrKq9+QGBpidcEv8jtVDVS915CDA1SOURvroqyYHWWyszVnpCu
- wLBpApKvvgNmGiASnnhk+pePSjqxwcpU5T6mXUz33Vz8sTbf9SJRWfPpDYjX88LfoM0fT3vv9
- UHsRYEFlRRM8OZDCydSJPMmQ==
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+Message-ID: <202305090056.mwp6jijk-lkp@intel.com>
+References: <20230508070925.2123265-4-astrid.rost@axis.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230508070925.2123265-4-astrid.rost@axis.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Astrid,
 
+kernel test robot noticed the following build errors:
 
-regards Frank
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.4-rc1 next-20230508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Astrid-Rost/iio-light-vcnl4000-Add-proximity-ps_it-for-vcnl4200/20230508-161005
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20230508070925.2123265-4-astrid.rost%40axis.com
+patch subject: [PATCH v1 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20230509/202305090056.mwp6jijk-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/6ff2e1cf084f5b3038f2d72110fb01f2a8353a34
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Astrid-Rost/iio-light-vcnl4000-Add-proximity-ps_it-for-vcnl4200/20230508-161005
+        git checkout 6ff2e1cf084f5b3038f2d72110fb01f2a8353a34
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash
 
-> Gesendet: Sonntag, 23. April 2023 um 15:02 Uhr
-> Von: "Jonathan Cameron" <jic23@kernel.org>
-> An: "Frank Wunderlich" <linux@fw-web.de>
-> Cc: linux-mediatek@lists.infradead.org, "Frank Wunderlich" <frank-w@publ=
-ic-files.de>, "Lars-Peter Clausen" <lars@metafoo.de>, "Rob Herring" <robh+=
-dt@kernel.org>, "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,=
- "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"=
- <angelogioacchino.delregno@collabora.com>, "Srinivas Kandagatla" <sriniva=
-s.kandagatla@linaro.org>, "Hui.Liu" <hui.liu@mediatek.com>, "Zhiyong Tao" =
-<zhiyong.tao@mediatek.com>, "Andrew-CT Chen" <andrew-ct.chen@mediatek.com>=
-, "Lala Lin" <lala.lin@mediatek.com>, linux-iio@vger.kernel.org, devicetre=
-e@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.in=
-fradead.org, "Daniel Golle" <daniel@makrotopia.org>
-> Betreff: Re: [PATCH v1 2/7] dt-bindings: iio: adc: Add support for MT798=
-6
->
-> On Fri, 21 Apr 2023 15:20:42 +0200
-> Frank Wunderlich <linux@fw-web.de> wrote:
->
-> > From: Frank Wunderlich <frank-w@public-files.de>
-> >
-> > Add compatible string and specific clock property for mt7986.
-> >
-> > Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
->
-> Given how trivial this is, I'll apply it without waiting for the DT main=
-tainers
-> to get to it.
->
-> Applied to the togreg branch of iio.git and pushed out as testing for 0-=
-day
-> to take a look at it.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202305090056.mwp6jijk-lkp@intel.com/
 
-Hi,
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-i cannot find it in next and here:
+>> ERROR: modpost: "__divdi3" [drivers/iio/light/vcnl4000.ko] undefined!
 
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/Documen=
-tation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml?h=3Dtogreg
-
-was it dropped?
-
-regards Frank
-
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 =
-+
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701=
--auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-a=
-uxadc.yaml
-> > index 7f79a06e76f5..6168b44ea72c 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc=
-.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc=
-.yaml
-> > @@ -26,6 +26,7 @@ properties:
-> >            - mediatek,mt2712-auxadc
-> >            - mediatek,mt6765-auxadc
-> >            - mediatek,mt7622-auxadc
-> > +          - mediatek,mt7986-auxadc
-> >            - mediatek,mt8173-auxadc
-> >        - items:
-> >            - enum:
->
->
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests

@@ -2,61 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AD26FA3A4
-	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 11:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5B46FA3A6
+	for <lists+linux-iio@lfdr.de>; Mon,  8 May 2023 11:49:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232313AbjEHJtJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 May 2023 05:49:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
+        id S232416AbjEHJta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 May 2023 05:49:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233787AbjEHJtE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 05:49:04 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DE471FABA
-        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 02:49:02 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f00c33c3d6so4908818e87.2
-        for <linux-iio@vger.kernel.org>; Mon, 08 May 2023 02:49:02 -0700 (PDT)
+        with ESMTP id S233041AbjEHJt2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 May 2023 05:49:28 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD91A18DE6
+        for <linux-iio@vger.kernel.org>; Mon,  8 May 2023 02:49:25 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2ac826a1572so43460181fa.0
+        for <linux-iio@vger.kernel.org>; Mon, 08 May 2023 02:49:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google; t=1683539340; x=1686131340;
+        d=melexis.com; s=google; t=1683539364; x=1686131364;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mIodw2IOkts5z/EAeBd4VX53RqXd6u6N3X4h8AJjDxs=;
-        b=RHT3dh9m5jC2Ndy/xFTA0Fvj1yLyEvid0qI4cKfNORJmqPnuycnSrJe0xafYNdJCY7
-         FepPw5uK79NbIMa9YPazC7wYVYJnavFpYS/i8swwbfhtYlKKiz6f2eAMtUZZksQSCLMv
-         0Bv/BwwUm0yGn/9v9kBX0kGLaEMfxCqkG6kYcss7aaLZBZeI+nvQxrFXVV3YxGzl5YyE
-         1g3KPmme0ne01mI43G7V4f8BCMCH27P+olkKBSZ2Ni9ra4i8aDexzcHu8SbdrFxwRNfT
-         cL3pIAvRj+rGSKJBOwQEuIp8/id10HDR/agksTsHWBq1velwkIOAd6Ezn+kZs6i4+f/w
-         o+Rw==
+        bh=0+P76mOquWNViliSYH9vueD2DBb8X+upf+fKSyca/cA=;
+        b=fJY343lvsksYzvTK5TFQjxMQd5QhggQNiHANXNF+dHiG6Jy1xgsJGB+WWmrXkqg10Y
+         J5zkTAWZbDNAHVx1Zvj+/UqHzYWKi4bC91jWessdWOmWg+7OBKyDsCMFsz5X9JTiBEJy
+         0OWWesNooKs3p/N8e1Gd4vekaewHRi/WtKy0wZGyRseFpAverkfHeuTEe1Mqb1oguMaA
+         IlWbQpcMO+v+8K+HqIt/zhb6FTk1FVSX1rD9jvZOQTpVSspqxzYdeBDGxF8rKrWge38p
+         H0nhaB2m6ohg2+Ln9TRn6AQZ5jr7zm5ntR0xIMle96dfsK94eUP90XULGyMa0LsyOqiC
+         7Rwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683539340; x=1686131340;
+        d=1e100.net; s=20221208; t=1683539364; x=1686131364;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mIodw2IOkts5z/EAeBd4VX53RqXd6u6N3X4h8AJjDxs=;
-        b=ebZguzb0FGtQPsEdCn/vAnS6sT9YEXpBtk0RItDpOGO0adKGm3oo7HMK3x81K92qlE
-         cU+tAm1gdkvEef7SrsaQLvAhF2m0fuahpMwnr4JFz2sv4tXwJur/M8RUgGhBJqY5leEO
-         Aa5ORbH1upQgXOmBlG38eg7Q6X+wYypbDrUvRxRq6CSS/Q/0aab44EkdqAp7pCxv2Ky+
-         AEqvuRiuA1jorH5QyNHeAuFdve3pvI7uIvNwO6EQCwi08c6kInJmIU49yudIwM35iucn
-         B86SlWmcp2qCb9LYgYT7Xt0p3+MIKn1vh95nuJfWlwByrYQ3NQwOr4a6csK7vmDj8es0
-         sX1Q==
-X-Gm-Message-State: AC+VfDwvDXDUlCKCRNLWm0Fv/ts6bKsna+6oAhAU24nBTkuIOLJRt51Q
-        wfHsaVvxXAKP2aL3j1FstXb2B0qGboMWwpvH+H68kw==
-X-Google-Smtp-Source: ACHHUZ79ULkbGM5EVpXxj4WW8A5JowX53CGbWgPEbBR/uKVy+5H/BH7ZBO1/oyHo83zousXS8sKvbUjrrS7pZSNfO4c=
-X-Received: by 2002:a05:6512:3c8:b0:4f0:276:295b with SMTP id
- w8-20020a05651203c800b004f00276295bmr2345063lfp.46.1683539340548; Mon, 08 May
- 2023 02:49:00 -0700 (PDT)
+        bh=0+P76mOquWNViliSYH9vueD2DBb8X+upf+fKSyca/cA=;
+        b=IGX+2sHxFgf9+ktdlvdeoKFqn5v+YBCPco6lv297ra8T6XKeb4X34P/VzQodLoksRZ
+         yp6QjjWiAHNe1FOCwv5eom+ZVXsoMktaznNCklYzRpJZeCr0bStMPb4aWWNI3mTxZhAJ
+         E4KLx2WY05F9QbGIi/ad4Yg+jRHl3bD7xev7ydxYS32sKE0V74TmpVownZOFzE7XUVPM
+         tb21KH6emFuTvLgqV2700n0IMLybIKOrbZxmROzkw7kYZQjEk69u3FFZ7tBNUjOz1Nvr
+         rptbQLyfkwvab5uoNtOvuOzsnZrhE3nOajquHskasQzAUGk1w7fnrIWssvDeQ0kBbQyh
+         BnRA==
+X-Gm-Message-State: AC+VfDyIeLFje5pgfzJ7ZvqRvCoHifylNL6YsHsHYr41oht1wB8PJ5Rn
+        frYhusthv5qPfF1DKYO9CaEQ6/TkY392pyKGqqKMxA==
+X-Google-Smtp-Source: ACHHUZ7X/a7i2eUnEBfwW1D0N7Wp6XSXdQNGXQNYPzb8DwmOIR5nmdVPOqEA5KIKkbt2vuSq9ywDD8O4WQmvqKw/8dw=
+X-Received: by 2002:a2e:930d:0:b0:2ac:667b:bb36 with SMTP id
+ e13-20020a2e930d000000b002ac667bbb36mr2627811ljh.33.1683539363951; Mon, 08
+ May 2023 02:49:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230507184649.39290-1-marex@denx.de>
-In-Reply-To: <20230507184649.39290-1-marex@denx.de>
+References: <20230507184649.39290-1-marex@denx.de> <20230507184649.39290-2-marex@denx.de>
+In-Reply-To: <20230507184649.39290-2-marex@denx.de>
 From:   Crt Mori <cmo@melexis.com>
-Date:   Mon, 8 May 2023 11:48:24 +0200
-Message-ID: <CAKv63us81+fJmOp+ZunihY=0c6_-bHAd0c6ahGp+QdAf9XP=pw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] dt-bindings: iio: temperature: melexis,mlx90614:
- Document MLX90615 support
+Date:   Mon, 8 May 2023 11:48:47 +0200
+Message-ID: <CAKv63usF-mcJbz=7hTuK3cUSoawLHEUBGH3d2tYKFEKKsikYVA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] iio: mlx90614: Sort headers
 To:     Marek Vasut <marex@denx.de>
-Cc:     linux-iio@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
@@ -64,7 +61,7 @@ Cc:     linux-iio@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,16 +71,10 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Acked-by: Crt Mori <cmo@melexis.com>
 
-(also tested that existing dts's work without any modification).
-
 On Sun, 7 May 2023 at 20:47, Marek Vasut <marex@denx.de> wrote:
 >
-> Document support for MLX90615 Infra Red Thermometer, which seems to
-> be the predecesor of MLX90614 . There are significant differences in
-> the register layout compared to MLX90614, but the functionality of
-> the device is virtually identical.
+> Sort the headers alphabetically. No functional change.
 >
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > Signed-off-by: Marek Vasut <marex@denx.de>
 > ---
 > Cc: Crt Mori <cmo@melexis.com>
@@ -96,36 +87,31 @@ On Sun, 7 May 2023 at 20:47, Marek Vasut <marex@denx.de> wrote:
 > Cc: devicetree@vger.kernel.org
 > Cc: linux-iio@vger.kernel.org
 > ---
-> V2: - Add spaces to subject tags
->     - Add AB from Krzysztof
+> V2: New patch
 > ---
->  .../bindings/iio/temperature/melexis,mlx90614.yaml          | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/iio/temperature/mlx90614.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
-> index d6965a0c1cf30..654d31f65d360 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
+> index 909fadb623491..bd92b24918253 100644
+> --- a/drivers/iio/temperature/mlx90614.c
+> +++ b/drivers/iio/temperature/mlx90614.c
+> @@ -19,12 +19,12 @@
+>   * the "wakeup" GPIO is not given, power management will be disabled.
+>   */
 >
-> -title: Melexis MLX90614 contactless IR temperature sensor
-> +title: Melexis MLX90614/MLX90615 contactless IR temperature sensor
+> +#include <linux/delay.h>
+>  #include <linux/err.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/i2c.h>
+> -#include <linux/module.h>
+> -#include <linux/delay.h>
+>  #include <linux/jiffies.h>
+> -#include <linux/gpio/consumer.h>
+> +#include <linux/module.h>
+>  #include <linux/pm_runtime.h>
 >
->  maintainers:
->    - Peter Meerwald <pmeerw@pmeerw.net>
-> @@ -15,7 +15,9 @@ description: |
->
->  properties:
->    compatible:
-> -    const: melexis,mlx90614
-> +    enum:
-> +      - melexis,mlx90614
-> +      - melexis,mlx90615
->
->    reg:
->      maxItems: 1
+>  #include <linux/iio/iio.h>
 > --
 > 2.39.2
 >

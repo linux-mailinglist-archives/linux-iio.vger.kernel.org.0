@@ -2,47 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAEF6FC876
-	for <lists+linux-iio@lfdr.de>; Tue,  9 May 2023 16:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F766FC980
+	for <lists+linux-iio@lfdr.de>; Tue,  9 May 2023 16:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235792AbjEIOCh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 May 2023 10:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46884 "EHLO
+        id S235954AbjEIOvi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 May 2023 10:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235487AbjEIOCY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 May 2023 10:02:24 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFD646B5;
-        Tue,  9 May 2023 07:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1683640937;
-  x=1715176937;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TNBstTvc7zW+uXV7uJZkj3wU2qQMKktkuN+dcSUdkGg=;
-  b=IvUppIPSxbyUmGhtEnNaAj3ecvJLm0C8Gyjtgdk1yRJ9USEViI03m/QW
-   0KJQ0mNFUKdXqhrsAZuG98L30mPZdFXXaR/1WzdB6DKguKtxO+hUV7Hjc
-   5kfDr9JKUPiIAJBjLTM7O8sipsBjQlIgTuxyMgWR0LiQzSOhDdlnEV6Ia
-   Z2h4YdDyo4wna4KL0QonwmRZ9qMGZOIku4csvAn99ix7tqTWf8WlSfyLf
-   TGiHj0JlCjyUt9uC8zDMR9KqJjLR9PdtYq991n6e3J8ISaLKGhbOYh8Hz
-   3ohkDmm5r9d2/ezbX/gzC5wNdAj0KLt/Cfs2Y5B8M3E9mxFpgqB15Ub53
-   g==;
-From:   Astrid Rost <astrid.rost@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel@axis.com>, Astrid Rost <astrid.rost@axis.com>
-Subject: [PATCH v2 7/7] iio: light: vcnl4000: Add calibration bias for 4040/4200
-Date:   Tue, 9 May 2023 16:01:53 +0200
-Message-ID: <20230509140153.3279288-8-astrid.rost@axis.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230509140153.3279288-1-astrid.rost@axis.com>
-References: <20230509140153.3279288-1-astrid.rost@axis.com>
+        with ESMTP id S235862AbjEIOvh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 May 2023 10:51:37 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FB530F9;
+        Tue,  9 May 2023 07:51:35 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4QG1M81Dsxz9sll;
+        Tue,  9 May 2023 16:51:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1683643892;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BsSUpeP81yvnkeAOfTzrLBrfoQ7pc+mTMVWJnKJ8blY=;
+        b=OUUrDGh1W9o7SHPRrAAKBGbjVlL+MlbT+z0aDvx7P/eNxFYv3FvK0gdmIubdAMZbVXtajg
+        B189a5UQo05FTsWWnNitrx5o8OwhWACWnsH4zzAAa4Pm74p9+yaoNf71oaKma9o3lf4u8A
+        c0WQKPKgoTLJY4nFxWebZhk7AdCtLvvuh0I42dONSjQN+Xy/CUcHcR4wj0xzK7QOlgcwzh
+        H0NG51CSSTdfhcxqIThqiaNyxHrGfe+GBOpwee7anu5yB3RpmBqVUtY/lReNFTPjO9UZgE
+        DrygAr0oKlywCHDVZiuzKJL4S1Cqn//MgsFLYGRcLYyBbBB5juF1w2orCr+d/g==
+Message-ID: <d144ddeb-1b54-c08b-7fba-5003a2962d64@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1683643890;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BsSUpeP81yvnkeAOfTzrLBrfoQ7pc+mTMVWJnKJ8blY=;
+        b=hhPgt0ycbPhQQrUSEOyneIrX/9qXRBhoiVp9ouTJYUw0eoeroPwhrefcBtfku+ojoChhMh
+        VtuIS7ztA410S/ar16tLnEVBS42tJmFqqNMvFLjNPm9uvieQV0BDaOzexZCi9DjhM/ILi1
+        GROW/RbPXMMm35PL8PwRReOYcLd+ofuikh4CFf3T/aE9NlGM809Y1etyUEr4d+BxsFNBVz
+        eWgB219gOJ4n1b7QMcplQkkEyFu8eTe/b/cLkDXgtRU3cwvZa4tKkAuQ0sqZCh18keOFSP
+        XxU+VX6fzJDdTdW+82uN3T3wCXfRDY2Ub1MNBcEd/MevypmbrQGXWftG63i60Q==
+Date:   Tue, 9 May 2023 16:51:27 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix
+ adi,ad7476 compatible value
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Marek Vasut <marek.vasut+renesas@mailbox.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+References: <6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be>
+From:   Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 3102644597f65231860
+X-MBO-RS-META: q8cm41mk75y15z6thtf5erc3khxexkzm
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,169 +76,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The calibration bias is setting the LED current to change
-the detection distance.
-Add read/write attribute for proximity calibration bias and read
-attribute for available values.
-This is supported for vcnl4040 and vcnl4200.
+On 5/9/23 14:34, Geert Uytterhoeven wrote:
+> The conversion to json-schema accidentally dropped the "ad" part prefix
+> from the compatible value.
+> 
+> Fixes: 8c41245872e206ec ("dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+>   .../devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml       | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
+> index 1c7aee5ed3e0bfb2..36dff3250ea76fe5 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
+> @@ -90,7 +90,7 @@ patternProperties:
+>               of the MAX chips to the GyroADC, while MISO line of each Maxim
+>               ADC connects to a shared input pin of the GyroADC.
+>           enum:
+> -          - adi,7476
+> +          - adi,ad7476
+>             - fujitsu,mb88101a
+>             - maxim,max1162
+>             - maxim,max11100
 
-Signed-off-by: Astrid Rost <astrid.rost@axis.com>
----
- drivers/iio/light/vcnl4000.c | 97 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 94 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 1fd1eaaa4620..f0bf078dcdbe 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -91,6 +91,7 @@
- #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
- #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
- #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
-+#define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
- #define VCNL4040_PS_IF_AWAY		BIT(8) /* Proximity event cross low threshold */
- #define VCNL4040_PS_IF_CLOSE		BIT(9) /* Proximity event cross high threshold */
- #define VCNL4040_ALS_RISING		BIT(12) /* Ambient Light cross high threshold */
-@@ -157,6 +158,17 @@ static const int vcnl4200_als_it_times[][2] = {
- 	{0, 400000},
- };
- 
-+static const int vcnl4040_ps_calibbias_ua[][2] = {
-+	{0, 50000},
-+	{0, 75000},
-+	{0, 100000},
-+	{0, 120000},
-+	{0, 140000},
-+	{0, 160000},
-+	{0, 180000},
-+	{0, 200000},
-+};
-+
- static const int vcnl4040_als_debounce_count[] = {1, 2, 4, 8};
- static const int vcnl4040_ps_debounce_count[] = {1, 2, 3, 4};
- static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
-@@ -838,6 +850,57 @@ static ssize_t vcnl4040_write_ps_oversampling_ratio(struct vcnl4000_data *data,
- 	return ret;
- }
- 
-+static ssize_t vcnl4040_read_ps_calibbias(struct vcnl4000_data *data, int *val, int *val2)
-+{
-+	int ret;
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = FIELD_GET(VCNL4040_PS_MS_LED_I, ret);
-+
-+	if (ret >= ARRAY_SIZE(vcnl4040_ps_calibbias_ua))
-+		return -EINVAL;
-+
-+	*val = vcnl4040_ps_calibbias_ua[ret][0];
-+	*val2 = vcnl4040_ps_calibbias_ua[ret][1];
-+
-+	return ret;
-+}
-+
-+static ssize_t vcnl4040_write_ps_calibbias(struct vcnl4000_data *data, int val)
-+{
-+	unsigned int i;
-+	int ret, index = -1;
-+	u16 regval;
-+
-+	for (i = 0; i < ARRAY_SIZE(vcnl4040_ps_calibbias_ua); i++) {
-+		if (val == vcnl4040_ps_calibbias_ua[i][1]) {
-+			index = i;
-+			break;
-+		}
-+	}
-+
-+	if (index < 0)
-+		return -EINVAL;
-+
-+	mutex_lock(&data->vcnl4000_lock);
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
-+	if (ret < 0)
-+		goto out;
-+
-+	regval = (ret & ~VCNL4040_PS_MS_LED_I) |
-+	    FIELD_PREP(VCNL4040_PS_MS_LED_I, index);
-+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
-+					regval);
-+
-+out:
-+	mutex_unlock(&data->vcnl4000_lock);
-+	return ret;
-+}
-+
- static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 				struct iio_chan_spec const *chan,
- 				int *val, int *val2, long mask)
-@@ -912,7 +975,16 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
--
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			ret = vcnl4040_read_ps_calibbias(data, val, val2);
-+			if (ret < 0)
-+				return ret;
-+			return IIO_VAL_INT_PLUS_MICRO;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -952,6 +1024,13 @@ static int vcnl4040_write_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			return vcnl4040_write_ps_calibbias(data, val2);
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -1015,6 +1094,16 @@ static int vcnl4040_read_avail(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			*vals = (int *)vcnl4040_ps_calibbias_ua;
-+			*length = 2 * ARRAY_SIZE(vcnl4040_ps_calibbias_ua);
-+			*type = IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_AVAIL_LIST;
-+		default:
-+			return -EINVAL;
-+	}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -1739,10 +1828,12 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_INT_TIME) |
- 			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT) |
--			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS),
- 		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME) |
- 			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT) |
--			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS),
- 		.ext_info = vcnl4000_ext_info,
- 		.event_spec = vcnl4040_event_spec,
- 		.num_event_specs = ARRAY_SIZE(vcnl4040_event_spec),
--- 
-2.30.2
-
+Reviewed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>

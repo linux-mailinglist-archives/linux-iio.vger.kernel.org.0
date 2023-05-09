@@ -2,43 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D89C6FC869
+	by mail.lfdr.de (Postfix) with ESMTP id 10C6E6FC868
 	for <lists+linux-iio@lfdr.de>; Tue,  9 May 2023 16:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235684AbjEIOCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S235665AbjEIOCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 9 May 2023 10:02:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46556 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235679AbjEIOCI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 May 2023 10:02:08 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51582718;
-        Tue,  9 May 2023 07:01:57 -0700 (PDT)
+        with ESMTP id S229550AbjEIOCJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 May 2023 10:02:09 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CDA30E8;
+        Tue,  9 May 2023 07:01:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1683640918;
-  x=1715176918;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qDagt0IbQhY0WYpliZ1+/6WFtA2GBq8FrdsKcMA5ZKg=;
-  b=d511bJYtF6NjTb1lCq13TuNi3Yg9enh05gWUmII4YeLEl3zX6DopPV2U
-   syf/lPa5pWYC76jUcbeHSJjSwfJOCIDTOS2fzssjOqClgQM3uEbJwBMKs
-   FW3eXsk2FpfrpvMdE/lmDva1XAf+XTHd1KjfaB4n0nzma7tg72viWZiY2
-   RxUPjyUXzv4c1BYv6Z/kip1hnKEhWuU26w4Q2ArueJGoo3QHeZjK1cFSl
-   Qn+Jek7ykDUFet6QKqctHxAlDD11uwFv2/ZBgolajHO6xVKYAjvFzBrNA
-   ZR14Wlaq4qXDBFf2fDN70fU9c3NNuc8DOUBxvZbGYSTEQ1l8+Q3axTFs8
-   g==;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1683640919;
+  x=1715176919;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=2V+NUhnYRzHcs/qPV372ooVdqlg/MRqyc6ldidCg9bY=;
+  b=cnx4hZNk3RLw+BNyLhSOE8tqUSVh/j/WkCDZdqZjsxr3rmbCGd+cXg4W
+   iDvgZFZJX5K8bIAFniiwUX9Tf+bQhLpMgHVZxB+DAzCGi41tntoFgWtrc
+   KH23HCEF3pIJRNoEHNk7uTrwpCKxYuwx3zE0QfeL3yq5n9/VMp62nYL5q
+   hABKss+YF2eXu3NXfy4i37MlHx/NU7ul3j3ZNrM6K6H6FDZ7JxCoHBfvW
+   YzfUOT6R87I67L2glh5DWMh/hfYFuZUdbRU8qHUuIeXL97+hcYbMLq8xu
+   y0NJ7lUJytIi3Sx9l0vQrn+3VGuPz4CO91QqARa+4CT8w05PlHkEhVCef
+   Q==;
 From:   Astrid Rost <astrid.rost@axis.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
 CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <kernel@axis.com>, Astrid Rost <astrid.rost@axis.com>
-Subject: [PATCH v2 0/7] iio: light: vcnl4000: Add features for vncl4040/4200
-Date:   Tue, 9 May 2023 16:01:46 +0200
-Message-ID: <20230509140153.3279288-1-astrid.rost@axis.com>
+Subject: [PATCH v2 1/7] iio: light: vcnl4000: Add proximity irq for vcnl4200
+Date:   Tue, 9 May 2023 16:01:47 +0200
+Message-ID: <20230509140153.3279288-2-astrid.rost@axis.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230509140153.3279288-1-astrid.rost@axis.com>
+References: <20230509140153.3279288-1-astrid.rost@axis.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="No"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -49,42 +51,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a more complete support for vncl4040 and vcnl4200, which allows to
-change the distance of proximity detection and interrupt support for the
-illumination sensor.
+Add proximity interrupt support for vcnl4200 (similar to vcnl4040).
+Add support to configure proximity sensor interrupts and threshold
+limits. If an interrupt is detected an event will be pushed to the
+event interface.
 
-Proximity:
-  - Interrupt support (new on vcnl4200).
-  - Adaptable integration time (new on vcnl4200) - the sampling rate
-    changes according to this value.
-  - Debounce times - interrupt is asserted if the value is above or
-    below a certain threshold.
-  - Oversampling ratio - Amount of LED pulses per measurement.
-  - Calibration bias - LED current calibration of the sensor.
-Illumination:
-  - Interrupt support.
-  - Adaptable integration time - the sampling rate and scale changes
-    according to this value.
-  - Debounce times – interrupt is asserted if the value is above or
-    below a certain threshold.
+Signed-off-by: Astrid Rost <astrid.rost@axis.com>
+---
+ drivers/iio/light/vcnl4000.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-changes v2:
-- [PATCH v2 3/7] Fixed calculation of al_scale.
-  Fix the value of vcnl4040 according to the data-sheet.
-  Use div_u64 for the division.
-
-Astrid Rost (7):
-  [PATCH v2 1/7] iio: light: vcnl4000: Add proximity irq for vcnl4200
-  [PATCH v2 2/7] iio: light: vcnl4000: Add proximity ps_it for vcnl4200
-  [PATCH v2 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
-  [PATCH v2 4/7] iio: light: vcnl4000: add illumination irq vcnl4040/4200
-  [PATCH v2 5/7] iio: light: vcnl4000: Add debounce count for vcnl4040/4200
-  [PATCH v2 6/7] iio: light: vcnl4000: Add oversampling_ratio for 4040/4200
-  [PATCH v2 7/7] iio: light: vcnl4000: Add calibration bias for 4040/4200
-
- drivers/iio/light/vcnl4000.c | 723 +++++++++++++++++++++++++++++++----
- 1 file changed, 654 insertions(+), 69 deletions(-)
-
---
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 56d3963d3d66..13568454baff 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -65,6 +65,7 @@
+ #define VCNL4200_PS_DATA	0x08 /* Proximity data */
+ #define VCNL4200_AL_DATA	0x09 /* Ambient light data */
+ #define VCNL4040_INT_FLAGS	0x0b /* Interrupt register */
++#define VCNL4200_INT_FLAGS	0x0d /* Interrupt register */
+ #define VCNL4200_DEV_ID		0x0e /* Device ID, slave address and version */
+ 
+ #define VCNL4040_DEV_ID		0x0c /* Device ID and version */
+@@ -1004,8 +1005,14 @@ static irqreturn_t vcnl4040_irq_thread(int irq, void *p)
+ 	struct iio_dev *indio_dev = p;
+ 	struct vcnl4000_data *data = iio_priv(indio_dev);
+ 	int ret;
++	int reg;
+ 
+-	ret = i2c_smbus_read_word_data(data->client, VCNL4040_INT_FLAGS);
++	if (data->id == VCNL4200)
++		reg = VCNL4200_INT_FLAGS;
++	else
++		reg = VCNL4040_INT_FLAGS;
++
++	ret = i2c_smbus_read_word_data(data->client, reg);
+ 	if (ret < 0)
+ 		return IRQ_HANDLED;
+ 
+@@ -1321,9 +1328,10 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+ 		.measure_light = vcnl4200_measure_light,
+ 		.measure_proximity = vcnl4200_measure_proximity,
+ 		.set_power_state = vcnl4200_set_power_state,
+-		.channels = vcnl4000_channels,
++		.channels = vcnl4040_channels,
+ 		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+-		.info = &vcnl4000_info,
++		.info = &vcnl4040_info,
++		.irq_thread = vcnl4040_irq_thread,
+ 	},
+ };
+ 
+-- 
 2.30.2
 

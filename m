@@ -2,34 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D7B6FDB90
-	for <lists+linux-iio@lfdr.de>; Wed, 10 May 2023 12:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D39B6FDB92
+	for <lists+linux-iio@lfdr.de>; Wed, 10 May 2023 12:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236578AbjEJKXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S235731AbjEJKXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 10 May 2023 06:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43070 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbjEJKX3 (ORCPT
+        with ESMTP id S235317AbjEJKX3 (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 10 May 2023 06:23:29 -0400
 Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A5194203;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D584F44BA;
         Wed, 10 May 2023 03:23:26 -0700 (PDT)
 Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id A40428479E;
-        Wed, 10 May 2023 12:23:24 +0200 (CEST)
+        by phobos.denx.de (Postfix) with ESMTPSA id 236B986008;
+        Wed, 10 May 2023 12:23:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
         s=phobos-20191101; t=1683714205;
-        bh=JDdGs3t5XylpTLWoLiYpR5h7wss+vk7lYzPeTgq+E6k=;
+        bh=/WvgxSTBQJIYwkct9ItX5iqLZqd8FdduZoy1sgKWOlI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kHUovePtdLA/cpRVpqes4ac1Er0obTUYPLVtL5EWnunldJzItEcwXbg0c9vvJMfID
-         AlVf4qTfPQ0BapDqffBtXhyILC9zOkjWcFPy6GBBfAX0lxTUdia7IPvNNr3OJD6Vo5
-         BWOSyyVJ7Hrn7SIRh40CofNb7xGcEUnNyntW3IknE9VcnsaT1HhoW54/vY/q2lSXCO
-         KPcWmsBhDfDRToPXDmyK1Twnm1ZeAzZV8YnyEJB+y+q8NVjFxMZarOTx+q7ouZRy9p
-         kGRf3cvWFARhkWbb3d2xLtQzQTCzQQ3yFDGCAsACY8QbmgXTV2PkA7xDLNN2tp/gJZ
-         k4TnK2XqnJ2Dw==
+        b=sBmoUEQxacmg42e5UCufNA0Jcvur1NqUnfjmlawKTp+o9RZz4iaultGrvURPJue0K
+         GTrQDD80m8cJZdpx02n0j7Lrj+n+DZGcQ/xR2OdlZMQgQeq9NtQypTZbqjgLt96U3I
+         qDLsPHsayZ/mpmAo02yVt4OUJHxNu8jrXdJnWPS38Vy2HFX7EOR4t4mx1h1sCTjqHs
+         tK0On+TcqernudAOvszzYa5/5ApFRFGmtjWmzUqgOwKiabxNfay61dglmq9SY1kKmy
+         y2b9o2RfPvOZZumc8knfkPWqXSQ9qhXHmFMz7XtkOzTdED7ovNS5zDasXpDItCb+mc
+         Jx3KlVwttz2LQ==
 From:   Marek Vasut <marex@denx.de>
 To:     linux-iio@vger.kernel.org
 Cc:     Marek Vasut <marex@denx.de>, Crt Mori <cmo@melexis.com>,
@@ -38,9 +38,9 @@ Cc:     Marek Vasut <marex@denx.de>, Crt Mori <cmo@melexis.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH v3 3/6] iio: mlx90614: Drop unused register macros
-Date:   Wed, 10 May 2023 12:22:48 +0200
-Message-Id: <20230510102251.10118-3-marex@denx.de>
+Subject: [PATCH v3 4/6] iio: mlx90614: Drop MLX90614_CONST_EMISSIVITY_RESOLUTION
+Date:   Wed, 10 May 2023 12:22:49 +0200
+Message-Id: <20230510102251.10118-4-marex@denx.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230510102251.10118-1-marex@denx.de>
 References: <20230510102251.10118-1-marex@denx.de>
@@ -58,10 +58,10 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To simplify addition of support for new parts, drop unused register macros.
-No functional change.
+The MLX90614_CONST_EMISSIVITY_RESOLUTION can be calculated from
+MLX90614_CONST_RAW_EMISSIVITY_MAX, perform the calculation inline
+and drio the MLX90614_CONST_EMISSIVITY_RESOLUTION.
 
-Acked-by: Crt Mori <cmo@melexis.com>
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
 Cc: Crt Mori <cmo@melexis.com>
@@ -74,34 +74,42 @@ Cc: Rob Herring <robh+dt@kernel.org>
 Cc: devicetree@vger.kernel.org
 Cc: linux-iio@vger.kernel.org
 ---
-V2: New patch
-V3: Add AB from Crt
+V3: New patch
 ---
- drivers/iio/temperature/mlx90614.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/iio/temperature/mlx90614.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-index bd92b24918253..b0f69a7b05abc 100644
+index b0f69a7b05abc..ecd27fe0c8666 100644
 --- a/drivers/iio/temperature/mlx90614.c
 +++ b/drivers/iio/temperature/mlx90614.c
-@@ -35,8 +35,6 @@
- #define MLX90614_OP_SLEEP	0xff
+@@ -63,7 +63,6 @@
+ #define MLX90614_CONST_OFFSET_REM 500000 /* remainder of offset (273.15*50) */
+ #define MLX90614_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
+ #define MLX90614_CONST_RAW_EMISSIVITY_MAX 65535 /* max value for emissivity */
+-#define MLX90614_CONST_EMISSIVITY_RESOLUTION 15259 /* 1/65535 ~ 0.000015259 */
+ #define MLX90614_CONST_FIR 0x7 /* Fixed value for FIR part of low pass filter */
  
- /* RAM offsets with 16-bit data, MSB first */
--#define MLX90614_RAW1	(MLX90614_OP_RAM | 0x04) /* raw data IR channel 1 */
--#define MLX90614_RAW2	(MLX90614_OP_RAM | 0x05) /* raw data IR channel 2 */
- #define MLX90614_TA	(MLX90614_OP_RAM | 0x06) /* ambient temperature */
- #define MLX90614_TOBJ1	(MLX90614_OP_RAM | 0x07) /* object 1 temperature */
- #define MLX90614_TOBJ2	(MLX90614_OP_RAM | 0x08) /* object 2 temperature */
-@@ -52,8 +50,6 @@
- #define MLX90614_CONFIG_DUAL_MASK (1 << MLX90614_CONFIG_DUAL_SHIFT)
- #define MLX90614_CONFIG_FIR_SHIFT 8 /* FIR coefficient */
- #define MLX90614_CONFIG_FIR_MASK (0x7 << MLX90614_CONFIG_FIR_SHIFT)
--#define MLX90614_CONFIG_GAIN_SHIFT 11 /* gain */
--#define MLX90614_CONFIG_GAIN_MASK (0x7 << MLX90614_CONFIG_GAIN_SHIFT)
+ struct mlx90614_data {
+@@ -283,7 +282,8 @@ static int mlx90614_read_raw(struct iio_dev *indio_dev,
+ 			*val2 = 0;
+ 		} else {
+ 			*val = 0;
+-			*val2 = ret * MLX90614_CONST_EMISSIVITY_RESOLUTION;
++			*val2 = ret * NSEC_PER_SEC /
++				MLX90614_CONST_RAW_EMISSIVITY_MAX;
+ 		}
+ 		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY: /* IIR setting with
+@@ -321,7 +321,7 @@ static int mlx90614_write_raw(struct iio_dev *indio_dev,
+ 		if (val < 0 || val2 < 0 || val > 1 || (val == 1 && val2 != 0))
+ 			return -EINVAL;
+ 		val = val * MLX90614_CONST_RAW_EMISSIVITY_MAX +
+-			val2 / MLX90614_CONST_EMISSIVITY_RESOLUTION;
++		      val2 * MLX90614_CONST_RAW_EMISSIVITY_MAX / NSEC_PER_SEC;
  
- /* Timings (in ms) */
- #define MLX90614_TIMING_EEPROM 20 /* time for EEPROM write/erase to complete */
+ 		ret = mlx90614_power_get(data, false);
+ 		if (ret < 0)
 -- 
 2.39.2
 

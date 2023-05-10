@@ -2,126 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A419E6FE26F
-	for <lists+linux-iio@lfdr.de>; Wed, 10 May 2023 18:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94BB46FE441
+	for <lists+linux-iio@lfdr.de>; Wed, 10 May 2023 20:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbjEJQ0L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 10 May 2023 12:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50282 "EHLO
+        id S230016AbjEJS4i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 10 May 2023 14:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236117AbjEJQZh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 May 2023 12:25:37 -0400
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF22173D;
-        Wed, 10 May 2023 09:25:07 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 48EB8847D4;
-        Wed, 10 May 2023 18:25:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1683735904;
-        bh=NCLDsi2NcXwzSeZFFUNrHRyYtpcKm8r8dA5C5aNmZdM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=gLQW3l0UDnEfFq0uDtQQmasGj3mI/NjFQqx1Otic5J2ckHYcHOAenkzYmPpvsqM7H
-         lCg2ZnimMjWho/0mSuGelVu2EolFEN92kEbNS4E/7yrZiFDO7NHSpCuuQ9kN5YeocU
-         AxPUcL1l7+tTnNMtaNAR+vWg5SC52FFkqfaNNOlvpyc6QgpW15CIGwvV48/mfXfReB
-         ySaac2wTLhDPCjydesUNwKyNxWYOtdxz36m0ucDfl0bfKyoh2VwJsxIKqPBcIOpFq4
-         Ug6VyvwhLI75IEOqjQFtWiorQuZnO3/GEUwJCktqE9kEdtw7Aq1gq0FNjaBkWCVkCX
-         XxIpTVi0ylbUg==
-Message-ID: <8e1ef090-3d75-6ccb-4708-c006923afc73@denx.de>
-Date:   Wed, 10 May 2023 18:25:03 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 5/5] iio: mlx90614: Add MLX90615 support
-Content-Language: en-US
-To:     Crt Mori <cmo@melexis.com>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S229482AbjEJS4h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 May 2023 14:56:37 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B2B128;
+        Wed, 10 May 2023 11:56:34 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-24de9c66559so5408328a91.0;
+        Wed, 10 May 2023 11:56:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683744994; x=1686336994;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K+VF2cenGaqPThFTtrzmmuO5OlyCDcnj1nuwccLlAO4=;
+        b=OjrR/ayeoIMIBguaKTn9DcEVjZ49C9hak/6fsfckw3hPUuFZWDXtPZ9dnHgYxscdi3
+         HujEox9sq2doYRtDfuvPXRHPMIXqX2OmaDi08jyvnWvdfdL3DLaSid6P1R85QG9KgFdD
+         iFuWpESmIPwdBWme90X0kMUJzjoWjeFT1hd13fvyjYhEFNeHHJLvKf7qECTCxG/TkFpI
+         Py3Jho/jv87NLQB91tVZ8g5/cf2thvu+vyHvB9Av2P0jRIk7EHOBTKF+8f2s8Ek/Zc2h
+         uIc7b9TyqEB1S2T1H0GqDbTVio3hC1yXJ86BdgWRUpYbdNEaxW02woF0pgW2iR5L8EBV
+         t7DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683744994; x=1686336994;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K+VF2cenGaqPThFTtrzmmuO5OlyCDcnj1nuwccLlAO4=;
+        b=GNjLL37HFA0fZxWc3cndv51hGckr6egLn6kOsulFnELzf/7TIbQnmciGPJYh7oX78K
+         zIgSs/e99ZAXMPkH/fdi6KnqzQpTQikDFp2O8F4ilvA8lMCi9qB8eBmnU+Ut2TiUKQKs
+         yT2Gj78VLaWspxkMyfg1+MPEnrys3G0gnLq5gfzxcsq473XDL8M/3louo9jLs2Jchp4G
+         TJjYdjNje6TZLXvjjUZ9PRhBMuNdo0OeVsbfV0XlqpbDjtLrv6rqbitElcZwy+3L2mbO
+         c6tZ/blmfT9h8h/Z8SqLXRYVDOlmTkuQ70aPmTd4n1r3Xch/RRnsfsmWgECSFGFxz/cE
+         8h4Q==
+X-Gm-Message-State: AC+VfDx7+E/N5lQ2g/MWjCUmLkUrQ8VLKPqfX3/btYNTyR7mfkFPOpeu
+        7y5Wex898Bcuzdi7K55AxQswEFtHClWlgg==
+X-Google-Smtp-Source: ACHHUZ4fEqdWtbErDiyNfBvmE8x8eFLMQaahpMGODJGNB9tPZQ/SFPalSsTeXoockjBtSnWUBtYQdQ==
+X-Received: by 2002:a17:90a:e398:b0:24e:5bc0:355e with SMTP id b24-20020a17090ae39800b0024e5bc0355emr18649333pjz.2.1683744993600;
+        Wed, 10 May 2023 11:56:33 -0700 (PDT)
+Received: from yoga ([2400:1f00:13:cea:b660:cefb:7eb9:2b8f])
+        by smtp.gmail.com with ESMTPSA id q4-20020a17090a304400b0024e2230fdafsm15797974pjl.54.2023.05.10.11.56.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 May 2023 11:56:33 -0700 (PDT)
+Date:   Thu, 11 May 2023 00:26:25 +0530
+From:   Anup Sharma <anupnewsmail@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-References: <20230507184649.39290-1-marex@denx.de>
- <20230507184649.39290-5-marex@denx.de>
- <CAKv63utbVqRjmyP_cN=d2Jewpp6hgVHzSJdm4gjKBkaHKb2LuQ@mail.gmail.com>
- <189306ca-dbd9-508c-a6ca-32199dbaeb79@denx.de>
- <CAKv63uscjBSfkBMLR1gBRsu3=R7Quu1aReuGjnfQvh=aRsc6gw@mail.gmail.com>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <CAKv63uscjBSfkBMLR1gBRsu3=R7Quu1aReuGjnfQvh=aRsc6gw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Anup Sharma <anupnewsmail@gmail.com>,
+        Peter Meerwald <pmeerw@pmeerw.net>, broonie@kernel.org
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio: temperature: Add DT bindings for TMP006
+Message-ID: <ZFvo2TIiPiMFlbXC@yoga>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/10/23 09:33, Crt Mori wrote:
-> On Mon, 8 May 2023 at 13:32, Marek Vasut <marex@denx.de> wrote:
->>
->> On 5/8/23 12:10, Crt Mori wrote:
->>
->> [...]
->>
->>>> @@ -666,14 +678,43 @@ static const struct mlx_chip_info mlx90614_chip_info = {
->>>>           },
->>>>    };
->>>>
->>>> +static const struct mlx_chip_info mlx90615_chip_info = {
->>>> +       .op_eeprom_emissivity           = MLX90615_OP_EEPROM | 0x03,
->>>> +       .op_eeprom_config1              = MLX90615_OP_EEPROM | 0x02,
->>>> +       .op_ram_ta                      = MLX90615_OP_RAM | 0x06,
->>>> +       .op_ram_tobj1                   = MLX90615_OP_RAM | 0x07,
->>>> +       .op_ram_tobj2                   = MLX90615_OP_RAM | 0x08,
->>>> +       .op_sleep                       = MLX90615_OP_SLEEP,
->>>> +       .dual_channel                   = false,
->>>> +       .wakeup_delay_ms                = MLX90615_TIMING_WAKEUP,
->>>> +       .emissivity_max                 = 16383,
->>>> +       .emissivity_res                 = 1000 000 000 / 16383,
->>> This makes me wonder if we could just drop the emissivity_res and have
->>> it calculate it using emissivity_max, since both chips will do it.
->>
->> We can do that (i.e. change done locally now).
->>
->>>> +       .fir_config_mask                = 0,    /* MLX90615 FIR is fixed */
->>>> +       .iir_config_mask                = MLX90615_CONFIG_IIR_MASK,
->>>> +       /* IIR value 0 is FORBIDDEN COMBINATION on MLX90615 */
->>>> +       .iir_valid_offset               = 1,
->>>> +       .iir_values                     = { 723, 77, 42, 31, 28, 20, 18 },
->>>> +       .iir_freqs                      = {
->>>> +               { 0, 180000 },  /* 14% ~= 0.18 Hz */
->>>> +               { 0, 200000 },  /* 17% ~= 0.20 Hz */
->>>> +               { 0, 280000 },  /* 20% ~= 0.28 Hz */
->>>> +               { 0, 310000 },  /* 25% ~= 0.31 Hz */
->>>> +               { 0, 420000 },  /* 33% ~= 0.42 Hz */
->>>> +               { 0, 770000 },  /* 50% ~= 0.77 Hz */
->>>> +               { 7, 230000 },  /* 100% ~= 7.23 Hz */
->>
->> Before I send a V3, can you please double-check these ^ IIR coefficients
->> ? I approximated those, but I suspect my approximation might not be
->> accurate.
->>
-> I have reached out to the developer for the 90615 and here is his message:
-> 
-> 0b0000 - Forbidden value
-> 0b0001 - 100% - settling time = refresh rate = 205ms (around 5Hz)
-> 0b0010 - 50% - settling time = 2050ms (around 0.5Hz)
-> 0b0011 - 33% - settling time = 36900ms (around 0.3Hz)
-> 0b0100 - 25% - settling time = 5125ms (around 0.2Hz)
-> 0b0101 - 20% - settling time = 6355ms (around 0.15Hz)
-> 0b0110 - 17% - settling time = 7790ms (around 0.13Hz)
-> 0b0111 - 14% - settling time = 9225ms (around 0.1Hz)
-> 
-> It does differ to yours, so what was your source?
+Add devicetree binding document for TMP006, IR thermopile sensor.
 
-Approximation, really ... clearly they were wrong, so thanks for checking !
+Signed-off-by: Anup Sharma <anupnewsmail@gmail.com>
+---
+ .../bindings/iio/temperature/ti,tmp006.yaml   | 38 +++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp006.yaml
 
-Fixed in V3.
+diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp006.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp006.yaml
+new file mode 100644
+index 000000000000..c6c5a4d10898
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp006.yaml
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/temperature/ti,tmp006.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI TMP006 IR thermopile sensor
++
++maintainers:
++  - Peter Meerwald <pmeerw@pmeerw.net>
++
++description: |
++  TI TMP006 - Infrared Thermopile Sensor in Chip-Scale Package.
++  https://cdn.sparkfun.com/datasheets/Sensors/Temp/tmp006.pdf
++
++properties:
++  compatible:
++    const: ti,tmp006
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        tmp006@40 {
++            compatible = "ti,tmp006";
++            reg = <0x40>;
++        };
++    };
+-- 
+2.34.1
+

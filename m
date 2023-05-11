@@ -2,102 +2,218 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84CF96FEB98
-	for <lists+linux-iio@lfdr.de>; Thu, 11 May 2023 08:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48466FECA2
+	for <lists+linux-iio@lfdr.de>; Thu, 11 May 2023 09:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbjEKGP3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 May 2023 02:15:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39850 "EHLO
+        id S237493AbjEKHVQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 May 2023 03:21:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231610AbjEKGP2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 May 2023 02:15:28 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 458F24EC7
-        for <linux-iio@vger.kernel.org>; Wed, 10 May 2023 23:15:26 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pwzaG-0006Hq-Mz; Thu, 11 May 2023 08:15:24 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pwzaE-002fAN-OF; Thu, 11 May 2023 08:15:22 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pwzaD-003KNe-Tx; Thu, 11 May 2023 08:15:21 +0200
-Date:   Thu, 11 May 2023 08:15:21 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-iio@vger.kernel.org,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        with ESMTP id S237492AbjEKHU4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 May 2023 03:20:56 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5764B93E3;
+        Thu, 11 May 2023 00:20:02 -0700 (PDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 12BE34000C;
+        Thu, 11 May 2023 07:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1683789550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yyHerlYHFamkJnQqL//Z3uWo0RLDtOmR22dPgo2ut2A=;
+        b=EV2PDAfzCs+eKt3zCjs+7X23c3yyFyjOHpCoyvuZs4X2JMo5r8O/5mQlblbTHepa+lbF7+
+        vJrcJzFR3lP2e/ZGRYMgqGZ121jtkG5YFFOprbRqkLMeUEms8DV1s6rxchCVYhYHkYk9M7
+        U0E2X/uofrc+FdIkpYHV9AMn9uFP3WmIPgw37MArWxuS45ZdpTlXiO2T+hQ47qXSZlahO9
+        ISKvoT/CyZbC5qvA8bO4pd08yK46bysM4peeRD0/Ceo81tzIBlZPHqVDsBHDSeneX4RdPY
+        nI6GfYOLp1C/ZGv9aV8Arf5mJO+m6AaOkTWVJLsZRYxuWxhxC7tXhiD68RqAaQ==
+Date:   Thu, 11 May 2023 09:19:07 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Maximilian Luz <luzmaximilian@gmail.com>
-Subject: Re: [PATCH] iio: dac: mcp4725: Fix i2c_master_send() return value
- handling
-Message-ID: <20230511061521.ri6gnymsasnrpde2@pengutronix.de>
-References: <20230511004330.206942-1-marex@denx.de>
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 1/4] dt-bindings: sound: Add simple-iio-aux
+Message-ID: <20230511091907.6794457b@bootlin.com>
+In-Reply-To: <ZFMzC7OBrcL9l5AH@finisterre.sirena.org.uk>
+References: <20230421124122.324820-1-herve.codina@bootlin.com>
+        <20230421124122.324820-2-herve.codina@bootlin.com>
+        <20230425173029.GA1967523-robh@kernel.org>
+        <20230426093621.3834e703@bootlin.com>
+        <5bcb2741-9212-f1aa-335b-6bc4b6fad448@linaro.org>
+        <ZFMzC7OBrcL9l5AH@finisterre.sirena.org.uk>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xq6znmo5hzzbpjqv"
-Content-Disposition: inline
-In-Reply-To: <20230511004330.206942-1-marex@denx.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Rob, Krzysztof, Mark,
 
---xq6znmo5hzzbpjqv
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, 4 May 2023 13:22:35 +0900
+Mark Brown <broonie@kernel.org> wrote:
 
-On Thu, May 11, 2023 at 02:43:30AM +0200, Marek Vasut wrote:
-> The i2c_master_send() returns number of sent bytes on success,
-> or negative on error. The suspend/resume callbacks expect zero
-> on success and non-zero on error. Adapt the return value of the
-> i2c_master_send() to the expectation of the suspend and resume
-> callbacks, including proper validation of the return value.
->=20
-> Fixes: cf35ad61aca2 ("iio: add mcp4725 I2C DAC driver")
-> Signed-off-by: Marek Vasut <marex@denx.de>
+> On Tue, May 02, 2023 at 09:26:32AM +0200, Krzysztof Kozlowski wrote:
+> > On 26/04/2023 09:36, Herve Codina wrote:  
+> > > Rob Herring <robh@kernel.org> wrote:  
+> > >> On Fri, Apr 21, 2023 at 02:41:19PM +0200, Herve Codina wrote:  
+> 
+> > >>> simple-iio-aux allows to consider these Industrial I/O devices as
+> > >>> auxliary audio devices.    
+> 
+> > >> What makes it simple? Any binding called simple or generic is a trigger 
+> > >> for me. Best to avoid those terms. :)  
+> 
+> > > I choose simple-iio-aux because some simple-* already exists.
+> > > For instance simple-audio-amplifier or simple-audio-mux.  
+> 
+> > > Do you prefer audio-iio-aux ?
+> > > Let me know if I should change.  
+> 
+> > It means that often what people call "simple" and "generic" works only
+> > for their specific case, because it is not really simple and generic.
+> > After some time the "simple" and "generic" becomes "complicated" and
+> > "huge". Conclusion: sometimes simple and generic bindings are bad idea
+> > and you should have something specific.  
+> 
+> > Your description in the binding also does not help to match it to
+> > specific, real device. Provide the examples, as Rob asked.  
+> 
+> I don't understand what you are looking for here.  IIO is a subsystem
+> which represents generic DACs and ADCs (along with other I/O things).
+> Audio devices also have DACs and ADCs, somewhat specialised for use in
+> audio but more limited by specs and interfaces than by anything
+> fundamental.  The goal here is to map DACs and ADCs described as IIO for
+> use in an audio context.
+> 
+> ADCs are devices that convert analog signals into digital values, DACs
+> are devices that convert digital values into analog signals.
+> 
+> > >> How do support multiple instances? Say you have 2 sound cards (or 1 
+> > >> sound card with multiple audio paths) each with different sets of IIO 
+> > >> channels associated with it. You'd need a link to each 'aux' node. Why 
+> > >> not just add io-channels to the sound card nodes directly? That's 
+> > >> already just a virtual, top-level container node grouping all the 
+> > >> components. I don't see why we need another virtual node grouping a 
+> > >> subset of them.  
+> 
+> > > I don't see what you mean.
+> > > I use a simple-audio-card and here is a full example using several
+> > > instances:  
+> 
+> > Just like Rob said: "You'd need a link to each 'aux' node"  
+> 
+> > and you did it...  
+> 
+> > So now the rest of Rob's answer:  
+> 
+> > "Why not just add io-channels to the sound card nodes directly? That's
+> > already just a virtual, top-level container node grouping all the
+> > components. I don't see why we need another virtual node grouping a
+> > subset of them."  
+> 
+> > Why do you need another node if it is not really representing a real,
+> > separate device?  
+> 
+> If nothing else I would expect it to be useful from a comprehensibility
+> point of view to bundle multiple IIO devices into a single multi-channel
+> audio stream, an individual IIO device is likely to only present a
+> single channel of data but it is common to group multiple channels of
+> audio data.
 
-Makes sense,
+I cannot simply add io-channels to the sound card directly. I need a node
+to set at least the sound-name-prefix property. Further more having a node
+and a related compatible string can be easier to maintain and add future
+evolution related to these "virtual" devices.
 
-Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+As some subnodes are already defined for a sound card node, I propose to
+group these "virtual" audio devices node in a specific bundle node.
+This lead to the following example:
+---- 8< ----
+    spi {
+        #address-cells = <1>;
+        #size-cells = <0>;
+	/* potentiometers present in an input amplifier design */
+        pot_in: potentiometer@0 {
+            compatible = "foo,xxx";
+            reg = <0>;
+            #io-channel-cells = <1>;
+        };
+	/* potentiometers present in an output amplifier design */
+	pot_out: potentiometer@1 {
+            compatible = "foo,xxx";
+            reg = <1>;
+            #io-channel-cells = <1>;
+        };
+	/* A codec */
+        codec: codec@2 {
+            compatible = "bar,yyy";
+            reg = <2>;
+            sound-name-prefix = "CODEC";
+        };
 
-Best regards
-Uwe
+    };
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+    sound {
+        compatible = "simple-audio-card";
+        #address-cells = <1>;
+        #size-cells = <0>;
+        simple-audio-card,name = "My Sound Card";
 
---xq6znmo5hzzbpjqv
-Content-Type: application/pgp-signature; name="signature.asc"
+        simple-audio-card,aux-devs = <&amp_in>, <&amp_out>;
+        simple-audio-card,routing =
+            "CODEC IN0", "AMP_IN CH0 OUT",
+            "CODEC IN1", "AMP_IN CH1 OUT",
+            "AMP_OUT CH0 IN", "CODEC OUT0",
+            "AMP_OUT CH1 IN", "CODEC OUT1";
 
------BEGIN PGP SIGNATURE-----
+        simple-audio-card,dai-link@0 {
+            ...
+        };
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRch/gACgkQj4D7WH0S
-/k7LOAf+LlyabNFyDoOD3c6qwSwU59L0hIk/sW/1WxvbqYvzp/r+zh96HLIb3hWi
-Xpg2twV6p1h2DRz+L/j7ETAKc74jS75DonuY3r8BP2f8pmVOPUzW/rrlFPmPV11Y
-Mt34Q10oSMel85lTXdjLRTmT2bjdRXv1owB23bpnJPpDLobuo7+eSSIfxhk4/PnW
-5z/7pMYfZPWtiUUEywvBZxktz5KY7yVMD8QGwbTH90CK9dBBFHbEVAmaqHKZC3yL
-0Avx/bPLjsmEDdHnFIScN6uYydx8jtV+WNmnruf+nF72cAqHnu1PycgurimK2VpW
-1bb9S3mLKCO4pmvs/IfIGJmzKWeppg==
-=cmIM
------END PGP SIGNATURE-----
+        ...
 
---xq6znmo5hzzbpjqv--
+        /* A bundle for the additional devices */
+        simple-audio-card,additional-devs { 
+            amp_out: aux-out {
+                compatible = "audio-iio-aux";    /* Instead of "simple-iio-aux */
+                io-channels = <&pot_out 0>, <&pot_out 1>,
+                io-channel-names = "CH0", "CH1";
+                snd-control-invert-range = <1 1>;  /* Old 'invert' renamed */
+                sound-name-prefix = "AMP_OUT";
+            };
+
+            amp_in: aux-in {
+	       compatible = "audio-iio-aux";
+               io-channels = <&pot_in 0>, <&pot_in 1>;
+	       io-channel-names = "CH0", "CH1";
+	       sound-name-prefix = "AMP_IN";
+            };
+	};
+    };
+---- 8< ----
+
+What do you think about this new binding ?
+
+Best regards,
+Hervé

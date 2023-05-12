@@ -2,99 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6887170006B
-	for <lists+linux-iio@lfdr.de>; Fri, 12 May 2023 08:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F12D7001D2
+	for <lists+linux-iio@lfdr.de>; Fri, 12 May 2023 09:53:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239980AbjELG3T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 May 2023 02:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49906 "EHLO
+        id S239876AbjELHxO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 May 2023 03:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239976AbjELG3P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 May 2023 02:29:15 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D92859D0
-        for <linux-iio@vger.kernel.org>; Thu, 11 May 2023 23:28:51 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-50bc570b4a3so17195876a12.1
-        for <linux-iio@vger.kernel.org>; Thu, 11 May 2023 23:28:51 -0700 (PDT)
+        with ESMTP id S240310AbjELHxG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 May 2023 03:53:06 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246A8E738;
+        Fri, 12 May 2023 00:52:49 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4f14468ef54so10960535e87.0;
+        Fri, 12 May 2023 00:52:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683872911; x=1686464911;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1683877967; x=1686469967;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qCw15SfYMK2B6owlUD8kxxoz9ExQiSv5RRYqltzPr4g=;
-        b=dI539FzGixTzW5ymZ3qLWPWh6IrFwVqFA46o4Sr5mT4Ee/rexUM9QVQogWTzgdPvzV
-         EOiNj0Ard/Bx0c1fJrZ2zCdXwYDn3L/T9WO16QRB9H0AjMRdJJ/gPLWeEmYRa7UUlqft
-         V/AYkl+XWx69xo+8hzmAaSNDvEfG4A4WxCBK6mVF2GHK5RGInzudH0Lbs9xL8XSmr52F
-         sERqE3g24+vBDhNh2Qa4ClqjmRcMJhkVhNtlq/r7OOi22F9Dr2mcQjt9nyhWyXQy/oBU
-         xKAk/VlfKgwRfqoxFxBHcGs4OKLnIaOzab2rIsh2DyrptGX53ZjA/SsxAq1iW93s62d9
-         RFdw==
+        bh=SfrfdrSrNKE90eE0l8Rc2KZKqXQ3Sz7SANrwHCEDoDk=;
+        b=LLWpebN/XjBOI9ynbOxwWnrY5MbIAfDg8r4idfu1bpYIou99BvDMPBsqv0048lv0m3
+         dSzG/f9J4FEIZUkNvWjGNilQO0iNdjaBvb9MASr99Wi90drA4oHzrYTM6IV2e8hdChhY
+         qlj0XHTKrl/meTCzfRpNF0/8ADjDPgVZ92wyECkvkVvIabbshHmjucUB+k8uVFU96AZl
+         us2f31b29ug/Bkcc3Xpml2SG8aNUNOpbUOeP96EoOiG9UND30VW+CFz7Uaqi5GmUpbSQ
+         uhfuVRJt+oSbDMlD+z1LIamYDeIyTdu7z83eWEojxDo6nLP4CxgJ27GaFxElNOHRuBfQ
+         Mczw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683872911; x=1686464911;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1683877967; x=1686469967;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qCw15SfYMK2B6owlUD8kxxoz9ExQiSv5RRYqltzPr4g=;
-        b=QG1KYJ/KNR8R+dmh3pU3rGksIJgqMSlOZdqiPJ7CnkR5K5F9KDEzhpdY404TADMzQ6
-         wRAqPIlrynVubZBJcfrV6rn3glsd4W+179by0Pf2JohueACzTUli0Kmj+COH5FhUqYzY
-         BH+iS/agtHq7ycRuf2gkepJEQA+BZ48D9t8MTakO9wa1OwSsuQWlQJBJ69Tc+K43q8J6
-         RMdS+NJ5mgfJ7hR7ZyZaBm9Is4ptxdzGLipT7S5y8aKx5S9zK4kYL+LiQvETxLXzrIB+
-         1P1blfpvtD1sgaybPOxe/Q64+3Tj0MBEpsNarwgZtEjkxv2OB3ADRy0WFzX+3DECu5+d
-         geAA==
-X-Gm-Message-State: AC+VfDyaXY3MfXVOy/LlMg2ZG/cRqQIjXSnZDYzocygZXE2W2zRRl3L0
-        sf22cVIUm/U3irlGMg/wFb+zY/PFmMkJvaiN0nw=
-X-Google-Smtp-Source: ACHHUZ6rMumRQiudxsHtEc4TaOEwlKOYxPgYOeRKFTkuhqtDE0NvrtkgljDUlatBGvXrPI1NjJ6HLQ==
-X-Received: by 2002:a17:906:eec5:b0:965:bdd1:1d22 with SMTP id wu5-20020a170906eec500b00965bdd11d22mr20510547ejb.68.1683872911361;
-        Thu, 11 May 2023 23:28:31 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:7ede:fc7b:2328:3883? ([2a02:810d:15c0:828:7ede:fc7b:2328:3883])
-        by smtp.gmail.com with ESMTPSA id f7-20020a170906494700b00965bf86c00asm5066016ejt.143.2023.05.11.23.28.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 May 2023 23:28:30 -0700 (PDT)
-Message-ID: <4d18eb55-a44c-4033-93cd-35c02cb179b3@linaro.org>
-Date:   Fri, 12 May 2023 08:28:29 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] dt-bindings: iio: temperature: Add DT bindings for TMP006
-Content-Language: en-US
-To:     Anup Sharma <anupnewsmail@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        bh=SfrfdrSrNKE90eE0l8Rc2KZKqXQ3Sz7SANrwHCEDoDk=;
+        b=S0JKQKPCRHW+gwgJpxFbN1YGsBwc5lIK2XT54Ej+g1oFhyk+REyiRn3FHKlbGHYT6k
+         84G7GWTFMSnUD6c/ghSRGBRAEGZqoqAFxZ0Gk2brOoHnR9zQLM9asvdkucWWipFd/Plt
+         Red4WE3krtHb/3y0CF/G3Uvj3B7mFtrMAvsHDf4yg+gonGfJaDP8hkyG74IwUoPN9FXr
+         4s01DIBO2p2JtO1YAU9sygHWjG1SSd6k5EO9zB8Ij8ChlkEDITrWfwV6cCli+dpT1LM+
+         5/a0VNuE0v9VQxXWu01p3WQaWcmO6Ay47G72UUl2M8TVzoSOKbIk2zOe3xRaxxHXdBAK
+         g0+Q==
+X-Gm-Message-State: AC+VfDy7W0ROoMs3lDqdClof1vqhARYO02eM1Ups4+y2CnlTDTXY3bt9
+        ujVOG062BA+7DoqMgJN4aQo=
+X-Google-Smtp-Source: ACHHUZ4SQ1I2y3NrGxAklPxOegaQJ1TbG1EqTdvzK9IxvpJVYxGfm+D0mXFnSpAEvl1zqKXZ4Ub/TA==
+X-Received: by 2002:ac2:50d3:0:b0:4f1:4a1a:ded7 with SMTP id h19-20020ac250d3000000b004f14a1aded7mr3778979lfm.37.1683877966823;
+        Fri, 12 May 2023 00:52:46 -0700 (PDT)
+Received: from fedora (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id e24-20020ac25478000000b004f25df23cddsm1104988lfn.170.2023.05.12.00.52.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 May 2023 00:52:46 -0700 (PDT)
+Date:   Fri, 12 May 2023 10:52:38 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>, broonie@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <ZFvo2TIiPiMFlbXC@yoga>
- <fc104fdd-3894-aa94-12dc-4c73b26d4159@linaro.org> <ZF08pzGPyReL1uAf@yoga>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <ZF08pzGPyReL1uAf@yoga>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v3 0/3] fix fwnode_irq_get_byname() returnvalue
+Message-ID: <cover.1683875389.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kJRFahmE85T8dRW8"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/05/2023 21:06, Anup Sharma wrote:
-> On Thu, May 11, 2023 at 11:28:50AM +0200, Krzysztof Kozlowski wrote:
->> On 10/05/2023 20:56, Anup Sharma wrote:
->>> Add devicetree binding document for TMP006, IR thermopile sensor.
->>
->> Why? Where is any user of this? DTS? Driver?
->>
-> 
-> The support for TMP006 is available at driver/iio/temperature
 
-There is no such compatible in the kernel. If you add OF support, you
-should change the driver.
+--kJRFahmE85T8dRW8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The fix fwnode_irq_get_byname() may have returned zero if mapping the
+IRQ fails. This contradicts the documentation. Furthermore, returning
+zero or errno on error is unepected and can easily lead to problems
+like:
+
+int probe(foo)
+{
+=2E..
+	ret =3D fwnode_irq_get_byname(...);
+	if (ret < 0)
+		return ret;
+=2E..
+}
+
+or
+
+int probe(foo)
+{
+=2E..
+	ret =3D fwnode_irq_get_byname(...);
+	if (ret <=3D 0)
+		return ret;
+=2E..
+}
+
+which are both likely to be wrong. First treats zero as successful call and
+misses the IRQ mapping failure. Second returns zero from probe even though
+it detects the IRQ mapping failure correvtly.
+
+Here we change the fwnode_irq_get_byname() to always return a negative
+errno upon failure. I have also audited following callers (v6.4-rc1):
+
+drivers/i2c/i2c-smbus.c
+drivers/iio/accel/adxl355_core.c
+drivers/iio/accel/kionix-kx022a.c
+drivers/iio/adc/ad4130.c
+drivers/iio/adc/max11410.c
+drivers/iio/addac/ad74115.c
+drivers/iio/gyro/fxas21002c_core.c
+drivers/iio/imu/adis16480.c
+drivers/iio/imu/bmi160/bmi160_core.c
+drivers/iio/imu/bmi160/bmi160_core.c
+
+and it seems to me these calls will be Ok after the change. The
+i2c-smbus.c and kionix-kx022a.c will gain a functional change (bugfix?) as
+after this patch the probe will return -EINVAL should the IRQ mapping fail.
+The series will also adjust the return value check for zero to be omitted.
+
+---
+
+Matti Vaittinen (3):
+  drivers: fwnode: fix fwnode_irq_get_byname()
+  i2c: i2c-smbus: fwnode_irq_get_byname() return value fix
+  iio: kx022a fix irq getting
+
+ drivers/base/property.c           | 9 +++++++--
+ drivers/i2c/i2c-smbus.c           | 2 +-
+ drivers/iio/accel/kionix-kx022a.c | 2 +-
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
 
-Best regards,
-Krzysztof
+base-commit: ac9a78681b921877518763ba0e89202254349d1b
+--=20
+2.40.1
 
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--kJRFahmE85T8dRW8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmRd8EMACgkQeFA3/03a
+ocXs+wgAgttVfEWuvTkynQaplS0Q1bgzeu4JzFj/jFU7MOlS9LcMUU4K4Wv5cKaC
+Pv1Smr3TaijDvVDhXUPDQvfvoBZPy5L7BwnpGWRlKHLC4utLBDPTDvszvBOibGTO
+GMHiwNBvl66ZZbyF3DM1c1jX6vP5aoWUk88Xm9KdCUYUEoyNcj4oV04RW9duxP+c
+6Z0PViOuKKcdiTdXb3iskW2Y+gsraDyYvHXw8N9rr1jsQHgYvX8yfpcf3Nbs6rHF
+ak7nt0xwcnzg9Z1bXLN4AL54FjZdZIFyr0tE6hokikTisychnFCZX9JJOvBDNBbA
+Wy+WRp4rWm879aBtjbP3uOlt2C+OJA==
+=1tud
+-----END PGP SIGNATURE-----
+
+--kJRFahmE85T8dRW8--

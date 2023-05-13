@@ -2,132 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D12907018F4
-	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A3570193D
+	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233538AbjEMSHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 May 2023 14:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46932 "EHLO
+        id S230443AbjEMSfJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 May 2023 14:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235216AbjEMSHj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:07:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38181171E;
-        Sat, 13 May 2023 11:07:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C855661B84;
-        Sat, 13 May 2023 18:07:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4ACC433EF;
-        Sat, 13 May 2023 18:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684001232;
-        bh=/F+5Gn4t4lhKm49bYUfuuizxiZujuf++3EirSVYEsXU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=b9qYkrJWk2lZsb5SYLDaoYSVpNUJ1fMmsf7fR7kroIK6WBv4gz/NPwznAfAWRGDRK
-         1FmKeYWWWbUud95CWbYs8emvEA4LRTaMdCOgA0IpAm+jsN1ZHoLqX1SADMrFFbxbqZ
-         92wY4QH5jtY1fgXR41mYHx0Gznqg3a7nljGZk+7zwyrbGckYIWXt+WoQENcPxVPXui
-         Ds30n0qO/5CPvLhJgX1OF20gtRrOm5iXVl7GuRa+W9iNBhJb0ywXgF7C2Uuay6Uoyq
-         F4JBFO3IHdf0m+EKM3Eycrtb6vVkaIfeYZp96tWbblEkmPF4oj9nX/pleOp0vFV1wG
-         7xuWY+XA1+Pmw==
-Date:   Sat, 13 May 2023 19:23:13 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: bu27034: Ensure reset is written
-Message-ID: <20230513192313.57e1dd21@jic23-huawei>
-In-Reply-To: <ZFjWhbfuN5XcKty+@fedora>
-References: <ZFjWhbfuN5XcKty+@fedora>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229493AbjEMSfH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:35:07 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0FE01FCB
+        for <linux-iio@vger.kernel.org>; Sat, 13 May 2023 11:35:05 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-96622bca286so1702814966b.1
+        for <linux-iio@vger.kernel.org>; Sat, 13 May 2023 11:35:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684002904; x=1686594904;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gdtpFQqstRJ3vQRASjBOgJ5qnuinsCRYsDOrfHec77Y=;
+        b=qA/3CS9xhwjPEF75DF/vWV+L5BA6D15IADzPvrMDxWZBO2zZBXgwHiwlvrybq5C+au
+         9GhKNd6wvSbEQim/ecxv07dIb+yxxo/BX2WwYvWYZPEOIFdEPE07y8EB+0k5QPi/e1nG
+         XIe20Y/gk62SGhLaFXvlIOWdar4csSSxuDuozWRe6hbZuyvxOlzz6Amga3dBOXFtu6vv
+         UUP8ufqLOHsF9jguVFR1sDJTFSvfuCrOHx6kCXo6j/tMgZg2+DqML7w+ZQ6Tk6kS03Mv
+         9dhtN2680J1LQxXQ7IKU86yhyccYxHrFrJvtzeVcRc6MVUYVJn4p8r0hpF+Mwu8gkkPz
+         hgIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684002904; x=1686594904;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gdtpFQqstRJ3vQRASjBOgJ5qnuinsCRYsDOrfHec77Y=;
+        b=cUKIHZltWuu03z3lx3uoOm0NJ0AgSuSPb54li2cfQSjy9pzOqNcrBmI0fTNhBpvaj0
+         hvWeLarGPWUYdRaoD9foWieqA6gflpSOrp/VVqtCYBsAnS/YnDYWTjNLA+XwFny9IheV
+         rkYX+3dd6n1BxLd/0aiW1yVd363ZODWIL2IEQX9utA95l/TW+s+H1/IXqS8GcpwqW/u5
+         JUu0hr9d4ctBIkpz9wfdu7vu8qg+CaMEcbae9l/m7ca/L+PIAFeTX0C2bMmuvLFL46lk
+         RryS9y37xCmBOEAC6joo+cArwtZVVVAWX+67i0LLS9E1rCVyIBOw54LZ5l5qHMwqvTa2
+         1ntQ==
+X-Gm-Message-State: AC+VfDyR/W/lMFvSoRtpb9KH62LuQzmHHMH9fX3hBxYj05G0o9+aJVVT
+        EAQvtA4KCeI9NUr0gF7WdzBQ5Q==
+X-Google-Smtp-Source: ACHHUZ7lS3yHb3bOhLpg+8//bcoESb9TvvyfZpFniFz/1SOnr+tYtsNn3cQnvoT7TpDTZTrqzgSo0w==
+X-Received: by 2002:a17:907:1c03:b0:94e:4489:f24d with SMTP id nc3-20020a1709071c0300b0094e4489f24dmr27661968ejc.61.1684002904485;
+        Sat, 13 May 2023 11:35:04 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:ba68:e5c9:694e:c6e4? ([2a02:810d:15c0:828:ba68:e5c9:694e:c6e4])
+        by smtp.gmail.com with ESMTPSA id v9-20020a170906380900b0094e1344ddfdsm6998534ejc.34.2023.05.13.11.35.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 May 2023 11:35:03 -0700 (PDT)
+Message-ID: <ccbf7ae3-5d52-070a-ba19-3ff54e6161e8@linaro.org>
+Date:   Sat, 13 May 2023 20:35:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] dt-bindings: iio: temperature: Add DT bindings for TMP006
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Anup Sharma <anupnewsmail@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Peter Meerwald <pmeerw@pmeerw.net>, broonie@kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <ZFvo2TIiPiMFlbXC@yoga>
+ <fc104fdd-3894-aa94-12dc-4c73b26d4159@linaro.org> <ZF08pzGPyReL1uAf@yoga>
+ <4d18eb55-a44c-4033-93cd-35c02cb179b3@linaro.org>
+ <20230513195030.57b7939e@jic23-huawei>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230513195030.57b7939e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 8 May 2023 14:01:25 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-
-> The reset bit must be always written to the hardware no matter what value
-> is in a cache or register. Ensure this by using regmap_write_bits()
-> instead of the regmap_update_bits(). Furthermore, the SWRESET bit may be
-> self-clearing, so mark the SYSTEM_CONTROL register volatile to guarantee
-> we do also read the right state - should we ever need to read it.
+On 13/05/2023 20:50, Jonathan Cameron wrote:
+> On Fri, 12 May 2023 08:28:29 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 > 
-> Finally, writing the SWRESET bit will restore the default register
-> values. This can cause register cache to be outdated if there are any
-> register values cached.
+>> On 11/05/2023 21:06, Anup Sharma wrote:
+>>> On Thu, May 11, 2023 at 11:28:50AM +0200, Krzysztof Kozlowski wrote:  
+>>>> On 10/05/2023 20:56, Anup Sharma wrote:  
+>>>>> Add devicetree binding document for TMP006, IR thermopile sensor.  
+>>>>
+>>>> Why? Where is any user of this? DTS? Driver?
+>>>>  
+>>>
+>>> The support for TMP006 is available at driver/iio/temperature  
+>>
+>> There is no such compatible in the kernel. If you add OF support, you
+>> should change the driver.
 > 
-> Rebuild register cache after SWRESET and use regmap_update_bits() when
-> performing the reset.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor")
+> (Very) old driver, so it uses the fallback method that i2c provides to bind to
+> the compatible with the vendor id dropped via i2c_device_id entry.
 
-Still unclear to me if we should treat the register as volatile as hitting
-relevant bits causes a reset of the whole device anyway, but meh, it doesn't
-cause any problems and it's your driver.
-
-Applied to the fixes-togreg branch of iio.git
-
-Thanks,
-
-Jonathan
+Yeah, I know it works... but is very confusing :)
 
 > 
-> ---
-> v3: Combined patches:
-> ("iio: bu27034: Ensure reset is written")
-> https://lore.kernel.org/lkml/ZFIw%2FKdApZe1euN8@fedora/
-> ("iio: bu27034: Reinit regmap cache after reset")
-> https://lore.kernel.org/lkml/ZFM7lE4ZuDrUTspH@fedora/
-> ---
->  drivers/iio/light/rohm-bu27034.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27034.c
-> index 25c9b79574a5..f85194fda6b0 100644
-> --- a/drivers/iio/light/rohm-bu27034.c
-> +++ b/drivers/iio/light/rohm-bu27034.c
-> @@ -231,6 +231,9 @@ struct bu27034_result {
->  
->  static const struct regmap_range bu27034_volatile_ranges[] = {
->  	{
-> +		.range_min = BU27034_REG_SYSTEM_CONTROL,
-> +		.range_max = BU27034_REG_SYSTEM_CONTROL,
-> +	}, {
->  		.range_min = BU27034_REG_MODE_CONTROL4,
->  		.range_max = BU27034_REG_MODE_CONTROL4,
->  	}, {
-> @@ -1272,12 +1275,19 @@ static int bu27034_chip_init(struct bu27034_data *data)
->  	int ret, sel;
->  
->  	/* Reset */
-> -	ret = regmap_update_bits(data->regmap, BU27034_REG_SYSTEM_CONTROL,
-> +	ret = regmap_write_bits(data->regmap, BU27034_REG_SYSTEM_CONTROL,
->  			   BU27034_MASK_SW_RESET, BU27034_MASK_SW_RESET);
->  	if (ret)
->  		return dev_err_probe(data->dev, ret, "Sensor reset failed\n");
->  
->  	msleep(1);
-> +
-> +	ret = regmap_reinit_cache(data->regmap, &bu27034_regmap);
-> +	if (ret) {
-> +		dev_err(data->dev, "Failed to reinit reg cache\n");
-> +		return ret;
-> +	}
-> +
->  	/*
->  	 * Read integration time here to ensure it is in regmap cache. We do
->  	 * this to speed-up the int-time acquisition in the start of the buffer
+> Having said that, I'd also prefer the addition of an explicit of_device_id table.
+> As there is only one supported device in this driver should be trivial.
+Best regards,
+Krzysztof
 

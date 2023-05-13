@@ -2,49 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7992701941
-	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FF4770194F
+	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:42:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbjEMSf4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 May 2023 14:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33400 "EHLO
+        id S229449AbjEMSmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 May 2023 14:42:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjEMSfz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:35:55 -0400
+        with ESMTP id S229508AbjEMSl7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:41:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6BF1FDA;
-        Sat, 13 May 2023 11:35:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43020213B;
+        Sat, 13 May 2023 11:41:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A04261D73;
-        Sat, 13 May 2023 18:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F321DC433EF;
-        Sat, 13 May 2023 18:35:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E2D60916;
+        Sat, 13 May 2023 18:41:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B95C433D2;
+        Sat, 13 May 2023 18:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684002953;
-        bh=aE6/G/mkb//NAFug7MlXvXjKE/9qdYbo/KUKaSfLiX0=;
+        s=k20201202; t=1684003317;
+        bh=960B3HljHMc0xLQjiljh6ZBWtqoJCu2x7TZSrYLcxOo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BWwxNNujZXEhmeJ+jNAqooMyDnIW3G851vzW4BT9kb6NiI7cmoYG0aguVFTeUJmH7
-         drCDnpNMZ227iHZ/+rR+CgTWivXBv6eqFmn7kXHMJWFfGETVBF3/viNYaNF38Cjfkw
-         kgjUT/qgyMUw6CgTCDSNYqPenzNjqi/E+vIUKcNU9i1nR5kzX1KEQ9dIe1kMb9+GC3
-         1lU2zuKmEZlauYwbrO8JqkbHgOMSjSkJpBzqovQpf95jJY49zmodKyY/BZORUyLNMY
-         8vRQCczdkJdRXWO31CEB3DB25qCjQ6WADfEm6cB2QESBxC6uo+oIO4wTdomke7U0cn
-         2NKoakOYogdwA==
-Date:   Sat, 13 May 2023 19:51:54 +0100
+        b=P8gOM8RceHjtAdVimH1LpSFkvtDhuCareHditzq/ugTD9OooEG8hGPF5vctRsXcRb
+         R1tbSqsYjBrVa53DI1zS5OU825adh6E6SOF6zqvQWGGmceqXsB+6sD7sWssoLHA1fG
+         B0V/x+oL8+hWSj5MX772du2wfljH9vK/o9AY6aC2DgC/ghjTfjDVfQxGnOpldAw+O9
+         u47OuzGiJdT4Q35oG2Qb6oPlr9JglydAn0yLzpWIk9RWE/pdJ3nsdBo5BIoDvM31pO
+         U2XHEdM6R5l/zdHid76Lc6F2YKIxl2SjOAnjH/1kwRVY3zTXPmOQMSWbRnE0askxme
+         F47hp4gVnSHxQ==
+Date:   Sat, 13 May 2023 19:57:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Marek Vasut <marek.vasut+renesas@mailbox.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix
- adi,ad7476 compatible value
-Message-ID: <20230513195154.27ef5757@jic23-huawei>
-In-Reply-To: <6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be>
-References: <6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be>
+To:     Astrid Rost <astrid.rost@axis.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
+Subject: Re: [PATCH v2 1/7] iio: light: vcnl4000: Add proximity irq for
+ vcnl4200
+Message-ID: <20230513195758.0d18825f@jic23-huawei>
+In-Reply-To: <20230509140153.3279288-2-astrid.rost@axis.com>
+References: <20230509140153.3279288-1-astrid.rost@axis.com>
+        <20230509140153.3279288-2-astrid.rost@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,37 +56,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  9 May 2023 14:34:22 +0200
-Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+On Tue, 9 May 2023 16:01:47 +0200
+Astrid Rost <astrid.rost@axis.com> wrote:
 
-> The conversion to json-schema accidentally dropped the "ad" part prefix
-> from the compatible value.
+> Add proximity interrupt support for vcnl4200 (similar to vcnl4040).
+> Add support to configure proximity sensor interrupts and threshold
+> limits. If an interrupt is detected an event will be pushed to the
+> event interface.
 > 
-> Fixes: 8c41245872e206ec ("dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-oops.
-
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> Signed-off-by: Astrid Rost <astrid.rost@axis.com>
+Where possible (and I think it is here) please avoid putting data as code.
+That is, move the necessary register address into the
+*_chip_spec structure.  That way, if another version of the chip is supported
+in future we can simply add the value to the right instance of that structure.
+That tends to end up more flexible than if / else / switch statements.
 
 Thanks,
 
 Jonathan
 
 > ---
->  .../devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml       | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/light/vcnl4000.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-> index 1c7aee5ed3e0bfb2..36dff3250ea76fe5 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-> @@ -90,7 +90,7 @@ patternProperties:
->              of the MAX chips to the GyroADC, while MISO line of each Maxim
->              ADC connects to a shared input pin of the GyroADC.
->          enum:
-> -          - adi,7476
-> +          - adi,ad7476
->            - fujitsu,mb88101a
->            - maxim,max1162
->            - maxim,max11100
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index 56d3963d3d66..13568454baff 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -65,6 +65,7 @@
+>  #define VCNL4200_PS_DATA	0x08 /* Proximity data */
+>  #define VCNL4200_AL_DATA	0x09 /* Ambient light data */
+>  #define VCNL4040_INT_FLAGS	0x0b /* Interrupt register */
+> +#define VCNL4200_INT_FLAGS	0x0d /* Interrupt register */
+>  #define VCNL4200_DEV_ID		0x0e /* Device ID, slave address and version */
+>  
+>  #define VCNL4040_DEV_ID		0x0c /* Device ID and version */
+> @@ -1004,8 +1005,14 @@ static irqreturn_t vcnl4040_irq_thread(int irq, void *p)
+>  	struct iio_dev *indio_dev = p;
+>  	struct vcnl4000_data *data = iio_priv(indio_dev);
+>  	int ret;
+> +	int reg;
+>  
+> -	ret = i2c_smbus_read_word_data(data->client, VCNL4040_INT_FLAGS);
+> +	if (data->id == VCNL4200)
+> +		reg = VCNL4200_INT_FLAGS;
+> +	else
+> +		reg = VCNL4040_INT_FLAGS;
+
+Prefer this as
+	data->chip_spec->int_reg
+
+> +
+> +	ret = i2c_smbus_read_word_data(data->client, reg);
+>  	if (ret < 0)
+>  		return IRQ_HANDLED;
+>  
+> @@ -1321,9 +1328,10 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
+>  		.measure_light = vcnl4200_measure_light,
+>  		.measure_proximity = vcnl4200_measure_proximity,
+>  		.set_power_state = vcnl4200_set_power_state,
+> -		.channels = vcnl4000_channels,
+> +		.channels = vcnl4040_channels,
+>  		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+> -		.info = &vcnl4000_info,
+> +		.info = &vcnl4040_info,
+> +		.irq_thread = vcnl4040_irq_thread,
+>  	},
+>  };
+>  
 

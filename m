@@ -2,55 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0525C701919
-	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BBBF70191E
+	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231196AbjEMSTt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 May 2023 14:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55708 "EHLO
+        id S229826AbjEMSYG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 May 2023 14:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231185AbjEMSTs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:19:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6349326BB;
-        Sat, 13 May 2023 11:19:47 -0700 (PDT)
+        with ESMTP id S229530AbjEMSYF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:24:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5FD10EA;
+        Sat, 13 May 2023 11:24:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA9BC61D29;
-        Sat, 13 May 2023 18:19:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15A0C433D2;
-        Sat, 13 May 2023 18:19:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0853261A60;
+        Sat, 13 May 2023 18:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DCC433EF;
+        Sat, 13 May 2023 18:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684001986;
-        bh=Zyg4IDNo3r2y5cL3+p0lXSjwCwi0GcF9BeSYpYcsBUU=;
+        s=k20201202; t=1684002243;
+        bh=zySctRgeuHKJoCePxU2eLj54iQfYnmD2BGtwZP4qsl4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Xv/1ooKBcZaDlRjFBocEH+nBeLEomulOIbLyZcix7o60nR9Q+5MVWPb0iSZ3aB59Q
-         98jbB96f41MAAp+dg/FoIjMKmi4r16/Srvfgw9vH7KtvnWbkQnAf+qI+O/6KsNA0Hb
-         b+F96dhKFz2S2vd9MGKZf/XxWZ9mUANCk1dldajAwUm1SkiSec+PyNFYRNT2jnxxSy
-         kj+n4+LO10JiMwZJoAPWeubBRG8hKR/vZf3x+VcpdjEXrTAYqszyenCc7dEWHbll5C
-         9r9HRwR+kUViwoEl4aJv73CkgfP6v64amMKMOo6sK0mvr9AnG/09DMSKL84TtFu/2Q
-         kVjXBOw2ZJFVQ==
-Date:   Sat, 13 May 2023 19:35:47 +0100
+        b=u/GvFFOvu6Pi8PJoyzHTddoTsG2aEZ/VDSup+00pHDPevAlX3TRPrrNv2bP5T9w4r
+         Er/KlqiUq68y6VUIzfcuHjJ6VWAgEvO1VUN0z9WbgiEwzMQyWwykZjqcPxEXjLAs5T
+         nqwZUQjPMM5NejZ/IWWZxFs+1gcKv89qSE2rY0KS7gsJYUPjCEFyuPuj20X+P0yWd2
+         w0JQKCCGitR56UdtjIpCqMwxCSnwUHeWQ1mgpFvt9V4L3Ea7fvxh49KNekapCgV6j6
+         f8z/23R0Pgm/Sa4sacA4rwrDGRYJfw/qFTYRGQL72pXxldTCUrSsgJA6fa26rmA956
+         vQtaw8s+mmSng==
+Date:   Sat, 13 May 2023 19:40:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 0/3] Add the Renesas X9250 potentiometers IIO support
-Message-ID: <20230513193547.5e2bcff3@jic23-huawei>
-In-Reply-To: <20230509160852.158101-1-herve.codina@bootlin.com>
-References: <20230509160852.158101-1-herve.codina@bootlin.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] drivers: fwnode: fix fwnode_irq_get_byname()
+Message-ID: <20230513194003.5a27a841@jic23-huawei>
+In-Reply-To: <9dd75817886fbb2a0cc58e2248dbba52d8a6d908.1683875389.git.mazziesaccount@gmail.com>
+References: <cover.1683875389.git.mazziesaccount@gmail.com>
+        <9dd75817886fbb2a0cc58e2248dbba52d8a6d908.1683875389.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,78 +65,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  9 May 2023 18:08:49 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Fri, 12 May 2023 10:53:00 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi,
+> The fwnode_irq_get_byname() does return 0 upon device-tree IRQ mapping
+> failure. This is contradicting the function documentation and can
+> potentially be a source of errors like:
 > 
-> The Renesas X9250 integrated four digitally controlled potentiometers.
-> On each potentiometer, the X9250T has a 100 kOhms total resistance and
-> the X9250U has a 50 kOhms total resistance.
+> int probe(...) {
+> 	...
 > 
-> Compare to the previous iteration
->   https://lore.kernel.org/linux-kernel/20230421085245.302169-1-herve.codina@bootlin.com/
-> This v4 series updates the binding, introduced the power-supply
-> regulators and the write-protect gpio, uses spi_write_then_read(),
-> removes spi_get_device_id(spi)->name, removes spi_set_drvdata() call.
+> 	irq = fwnode_irq_get_byname();
+> 	if (irq <= 0)
+> 		return irq;
 > 
-> Best regards,
-> Herve Codina
+> 	...
+> }
+> 
+> Here we do correctly check the return value from fwnode_irq_get_byname()
+> but the driver probe will now return success. (There was already one
+> such user in-tree).
+> 
+> Change the fwnode_irq_get_byname() to work as documented and according to
+> the common convention and abd always return a negative errno upon failure.
+> 
+> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-Series applied to the togreg branch of iio.git with one tweak as per reply to patch 2.
+Whilst the docs don't contradict behaviour for fwnode_irq_get()
+unlike the byname() variant, it does seem odd to fix it only in this
+version rather than modifying them both not to return 0.
 
-Thanks,
+Is there clear logic why they should be different?
 
-Jonathan
-
+> ---
+>  drivers/base/property.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
-> Changes v3 -> v4
->   - Patch 1
->     Remove iio.yaml.
->     Add 'vcc-supply', 'avp-supply' and 'avn-supply'.
->     Add 'wp-gpios'
-> 
->   - Patch 2
->     Get and enable the regulators.
->     Manage the write-protect gpio.
->     Use spi_write_then_read().
->     Remove the unneeded spi_setup() call.
->     Get name from field added in struct x9250_cfg instead of
->     spi_get_device_id(spi)->name.
-> 
->   - Patch 3
->     No changes
-> 
-> Changes v2 -> v3
->   - Patch 1
->     Remove the reg property description
->     Use 'potentiometer' for the node name in the example.
-> 
->   - Patch 2 and 3
->     No changes
-> 
-> Changes v1 -> v2
->   - Patch 1
->     No changes
-> 
->   - Patch 2
->     Use a define for the 0x50 value used multiple times.
-> 
->   - Patch 3
->     No changes
-> 
-> Herve Codina (3):
->   dt-bindings: iio: potentiometer: Add the Renesas X9250 potentiometers
->   iio: potentiometer: Add support for the Renesas X9250 potentiometers
->   MAINTAINERS: add the Renesas X9250 driver entry
-> 
->  .../iio/potentiometer/renesas,x9250.yaml      |  78 ++++++
->  MAINTAINERS                                   |   7 +
->  drivers/iio/potentiometer/Kconfig             |  10 +
->  drivers/iio/potentiometer/Makefile            |   1 +
->  drivers/iio/potentiometer/x9250.c             | 223 ++++++++++++++++++
->  5 files changed, 319 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/potentiometer/renesas,x9250.yaml
->  create mode 100644 drivers/iio/potentiometer/x9250.c
-> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index f6117ec9805c..a3b95d2d781f 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -1011,7 +1011,7 @@ EXPORT_SYMBOL(fwnode_irq_get);
+>   */
+>  int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
+>  {
+> -	int index;
+> +	int index, ret;
+>  
+>  	if (!name)
+>  		return -EINVAL;
+> @@ -1020,7 +1020,12 @@ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
+>  	if (index < 0)
+>  		return index;
+>  
+> -	return fwnode_irq_get(fwnode, index);
+> +	ret = fwnode_irq_get(fwnode, index);
+> +	/* We treat mapping errors as invalid case */
+> +	if (ret == 0)
+> +		return -EINVAL;
+> +
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL(fwnode_irq_get_byname);
+>  
 

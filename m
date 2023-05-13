@@ -2,46 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6149701894
-	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 19:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F4A70189C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 19:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232271AbjEMRmX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 May 2023 13:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59156 "EHLO
+        id S229535AbjEMRom (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 May 2023 13:44:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230501AbjEMRmX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 13:42:23 -0400
+        with ESMTP id S232417AbjEMRok (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 13:44:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 420873AA6;
-        Sat, 13 May 2023 10:42:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E112707
+        for <linux-iio@vger.kernel.org>; Sat, 13 May 2023 10:44:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B54A61AEF;
-        Sat, 13 May 2023 17:42:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730D2C4339B;
-        Sat, 13 May 2023 17:42:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5EA560DE9
+        for <linux-iio@vger.kernel.org>; Sat, 13 May 2023 17:44:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C99CC433D2;
+        Sat, 13 May 2023 17:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683999740;
-        bh=vPMj4FfP13zlbkAXu5vpdoPMQmngxxSeOtKc5LvkeJk=;
+        s=k20201202; t=1683999872;
+        bh=qFM0xNsZ6UgdoBMJ8CccWzZswlkOLFb58OVVbF1P7Hw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iYUseF0hp0THzJcesAPKMkWTtkOXSJ4lALPUXUOA//9x64iibya/y3IcesOvSIEsy
-         AHEASoGPxMuSXXAer2Dx3u5gjLPXvIrM4xIFGLhvseGaqnkmqQjqWrdNAEhCSxVkwj
-         aQ08yEs/Zu+pfZSEKJh9xyO+nUgt2XFw1Dqj9wwWbMIVSeQoUPlFa75KP0CUQ8NrPz
-         jkZtup7nuZ85lTS1DONdBJB3NcII8Ixb+JQxO7b9rlBrXXO442fNtmLvZ7nwYMEOs5
-         k7ajGXloNl8VjpYYF3+QVciFsuLX7O5cEr0YdmYUPzGwkq8XqA7vz/71GGT7kpTvTi
-         pGXSvjJ3gqqKA==
-Date:   Sat, 13 May 2023 18:58:21 +0100
+        b=pmtLlU9dDt9UgBfxG86d2aC2GLUv734P3JiLjNsweUK/3XLIYX9JVFKLaYkc/52YF
+         adMGeJ1ZQU8lymuGfb5GkgoffntnG7rqyKnInlEKs4upYAeS3zR8t2jSiY+Z0POVSO
+         I+aPg8c6ceAtY41KfNLeB54k4lGjJxcMszh3Wt0EEYDmzzrkSUK3MYwXqlrTw6xhMq
+         w8sMA8jU0mIWK0SuoUbGAwq/O5X21O8ZFgJJ8x32n8yHR6kYBOsbkwxEfdIJ2RUMlP
+         qpx8D+fZWQOQsYqfLho1JcKVRXmfBF4J68hgjS8Oq9K27xW4u8Ddb772g4l+qGFqEG
+         4gJumY0QljINA==
+Date:   Sat, 13 May 2023 19:00:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hermes Zhang <chenhuiz@axis.com>
-Cc:     <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>,
-        <jmaneyrol@invensense.com>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
-Subject: Re: [PATCH v3 0/2] Add support for the ICM 20600 IMU
-Message-ID: <20230513185821.122ac3a4@jic23-huawei>
-In-Reply-To: <20230506173717.11d0d311@jic23-huawei>
-References: <20230505054853.2155326-1-chenhuiz@axis.com>
-        <20230506173717.11d0d311@jic23-huawei>
+To:     Philippe De Muyter <Philippe.DeMuyter@macq.eu>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH] iio: dac: ad5446: Add ID of compatible Texas       
+ Instruments i2c dac121c*
+Message-ID: <20230513190033.21ff5b55@jic23-huawei>
+In-Reply-To: <20230508130328.GA3067@frolo.macqel>
+References: <1683450625-28789-1-git-send-email-Philippe.DeMuyter@macq.eu>
+        <20230507144608.15e7aa8e@jic23-huawei>
+        <20230508083719.GA920@frolo.macqel>
+        <20230508130328.GA3067@frolo.macqel>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,52 +58,120 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 6 May 2023 17:37:17 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 8 May 2023 15:03:28 +0200
+Philippe De Muyter <Philippe.DeMuyter@macq.eu> wrote:
 
-> On Fri, 5 May 2023 13:48:51 +0800
-> Hermes Zhang <chenhuiz@axis.com> wrote:
+> Hello Jonathan,
 > 
-> > The Invensense ICM-20600 is a 6-axis MotionTracking device that combines a
-> > 3-axis gyroscope and an 3-axis accelerometer. It is very similar to the
-> > ICM20602 imu which is already supported by the mpu6050 driver. The main
-> > difference is that the ICM-20600 has a different WHOAMI value.
-> > 
-> > Notes:
-> >     v2: require specifying "invensense,icm20602" as a fallback compatible
-> >         in the binding, as suggested
-> >     v3: reorder "invensense,icm20602" entry before icm20608 and add
-> >         Reviewed-by tag from Krzysztof  
+> I have discovered that linux v6.0 already supports the ti,dac121c081
+> chips in the ti-dac5571.c driver.  There's thus no need for my patch,
+> that I had written because I work with a much older kernel.
 > 
-> Looks good to me.  I want to leave a little more time for Jean-Baptiste to take
-> a look.  If it looks like I've forgotten this in 2 weeks, feel free to give me
-> a poke.
+> Sorry for the noise.
 
-Series applied to the togreg branch of iio.git and initially pushed out as
-testing for 0-day to take a look and see if we missed anything.
+No problem. Great that you found this out!
 
-Thanks,
+> 
+> Maybe the different dac drivers supporting similar chips should be
+> merged, but that's anoter story.
+
+Definitely sounds like it's worth looking at.
 
 Jonathan
 
+
 > 
-> Thanks,
+> Best regards
 > 
-> Jonathan
+> Philippe
 > 
-> 
+> On Mon, May 08, 2023 at 10:37:19AM +0200, Philippe De Muyter wrote:
+> > Hello Jonathan,
 > > 
-> > Hermes Zhang (2):
-> >   dt-bindings: iio: imu: mpu6050: Add icm20600 bindings to mpu6050
-> >   iio: imu: mpu6050: Add support for the ICM 20600 IMU
+> > On Sun, May 07, 2023 at 02:46:08PM +0100, Jonathan Cameron wrote:  
+> > > On Sun,  7 May 2023 11:10:25 +0200
+> > > Philippe De Muyter <Philippe.DeMuyter@macq.eu> wrote:
+> > >   
+> > > > From: Philippe De Muyter <phdm@macqel.be>
+> > > > 
+> > > > The Texas Instruments DAC121C* chips are the I2C counterparts of
+> > > > the DAC121S* SPI chips which are already supported by this ad5446 driver.
+> > > > 
+> > > > Add them to the compatible list.  
+> > > 
+> > > Hi Philippe,
+> > > 
+> > > DT binding should be updated and include the fallback to adi,ad5622.
+> > > Does this driver actually have a bindings doc?  If not please add one
+> > > as a precursor patch then add binding for this new part on top.  
 > > 
-> >  .../bindings/iio/imu/invensense,mpu6050.yaml           |  3 +++
-> >  drivers/iio/imu/inv_mpu6050/Kconfig                    |  4 ++--
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c             | 10 ++++++++++
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c              |  6 ++++++
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h              |  2 ++
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c              |  5 +++++
-> >  6 files changed, 28 insertions(+), 2 deletions(-)
+> > No, there's no ad5446 to find in Documentation/ :(
+> > 
+> > I will try to make one.
 > >   
-> 
+> > >   
+> > > > 
+> > > > Signed-off-by: Philippe De Muyter <phdm@macqel.be>
+> > > > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > > > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> > > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > > ---
+> > > >  drivers/iio/dac/ad5446.c | 1 +
+> > > >  1 file changed, 1 insertion(+)
+> > > > 
+> > > > diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+> > > > index aa3130b33456..b95c0ccbb796 100644
+> > > > --- a/drivers/iio/dac/ad5446.c
+> > > > +++ b/drivers/iio/dac/ad5446.c
+> > > > @@ -587,6 +587,7 @@ static const struct i2c_device_id ad5446_i2c_ids[] = {
+> > > >  	{"ad5602", ID_AD5602},
+> > > >  	{"ad5612", ID_AD5612},
+> > > >  	{"ad5622", ID_AD5622},
+> > > > +	{"dac121", ID_AD5622}, /* 'ti,' is dropped by 'of_modalias_node' */  
+> > > 
+> > > True, but why is the comment needed?  
+> > 
+> > I will remove it
+> >   
+> > > Also, for consistency with the spi equivalent it should be dac121c101 or similar
+> > > I think.  
+> > 
+> > Actually the chip I use is a dac121c085, and there exists also dac121c081.
+> > They share the same datasheet.  The difference is only in the number of
+> > i2c addresses the hardware designer may choose from and the pin used for the
+> > external Vref.
+> > 
+> > Do you prefer I add only dac121c085, both dac121c085 and dac121c081, or
+> > stick to the common part of the name, with or without the 'c' that stands
+> > for i2C, like the 's' in dac121s101 stands for Spi ?
+> > 
+> > The documentation also mentions lower-resolution chips in the same family :
+> > dac101c081 and dac101c085 (10 bit resolution), and dac081c081 and dac081c085
+> > (8 bit resolution).
+> >   
+> > > 
+> > > I think this use of the driver with multiple vendor prefixes,
+> > > also indicates we should really add the of_device_id table for this
+> > > driver. To do that nicely will require more changes as we'd want to do
+> > > the same for the SPI side which has a single entry table (which is odd)
+> > > then deal with the data fields which should probably all be pointers
+> > > rather than enum values.
+> > > 
+> > > Still I'm fine with proper explicit DT support being left for a follow up patch.
+> > > 
+> > > I do want the missing binding doc fixed though (which is independent of the
+> > > question of how the driver binds based on the compatible values).
+> > > 
+> > > Thanks,
+> > > 
+> > > Jonathan
+> > > 
+> > >   
+> > > >  	{}
+> > > >  };
+> > > >  MODULE_DEVICE_TABLE(i2c, ad5446_i2c_ids);  
+> > 
+> > Best regards
+> > 
+> > Philippe  
 

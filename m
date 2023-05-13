@@ -2,59 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B2EF70192B
-	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8331E701934
+	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231636AbjEMS2G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 May 2023 14:28:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
+        id S229799AbjEMSb2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 May 2023 14:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231578AbjEMS2F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:28:05 -0400
+        with ESMTP id S229506AbjEMSb1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:31:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB981BC2;
-        Sat, 13 May 2023 11:28:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8038D1BC2
+        for <linux-iio@vger.kernel.org>; Sat, 13 May 2023 11:31:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 29FDC61D52;
-        Sat, 13 May 2023 18:28:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E298EC433EF;
-        Sat, 13 May 2023 18:28:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14D7260FD4
+        for <linux-iio@vger.kernel.org>; Sat, 13 May 2023 18:31:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C828FC433EF;
+        Sat, 13 May 2023 18:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684002483;
-        bh=IcFg/niQ7za//Jek+VAgnrsOkVlFXJ4WpYiKlJMxZlk=;
+        s=k20201202; t=1684002685;
+        bh=2xVoTsiMdwT+i8D1dcE0onp7Ad+7AxYx40NgMhwzOq8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dXy5AZHf3Wea0MdZGAF84hMMzImo/ZY28/weOHGKOioztGp7nO8FQJMfbv5Z94h/r
-         dxHg7unMxIQYv2x4v6JGB2nPE9Z/7p1cQIOWeqMP7WMYGlHN7btfx0CdzS3SCqPX6I
-         mw4d4x/q20j8uBoVgws2/ReQxURDfDPrm8Y+Ct2DbJObnBu7U6SKRLZOFfY6Qqw9No
-         8FZYWfjxLYcxbhfwAd/pjAQh3+zpovBf8OsPTnaTJ3fYf0hV/xrABSTAop4oddx7hj
-         L4Ks+j7sjxfMOTD0nyFLCdhbwnpUOMr2herWBPOFSeU/uLI30YJiHstTWPiTp8V5Oo
-         FtwUNwak+jtNA==
-Date:   Sat, 13 May 2023 19:44:03 +0100
+        b=F4D4efWtasa3hYEHa0Q2XS6G4Az1yo1nEntMNMiY6wckAKQXZXnPHM4L8YH6oPjOu
+         r2vn805Sn2rVZtbAPlYSZ1XOJl9DN4960FiVptin5N7O9CChPX0BVRMsTbShXv6Jzi
+         Hw4oshw0llBrNaZOtwl1T4IVklqLJxeJQvY/SO2uucpKFhXZjRkigXLaUBwFphR5Yo
+         /Lr9l45+J/WQRHTTIIuNL1PQa4XUebYWaJ5RkKT0swzTR4ut/Ke6TXWKtWvR6ByJRS
+         41ay5yo3FAaQzMx3x9Z1paM+GKR/xgnpMKPwr+6zk+ZjqzVjdAWAzV5NHtc5P5AZdx
+         NlMrnNyktGD/g==
+Date:   Sat, 13 May 2023 19:47:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org,
+        Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
+        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] iio: kx022a fix irq getting
-Message-ID: <20230513194403.234b4e3f@jic23-huawei>
-In-Reply-To: <b45b4b638db109c6078d243252df3a7b0485f7d5.1683875389.git.mazziesaccount@gmail.com>
-References: <cover.1683875389.git.mazziesaccount@gmail.com>
-        <b45b4b638db109c6078d243252df3a7b0485f7d5.1683875389.git.mazziesaccount@gmail.com>
+        Maximilian Luz <luzmaximilian@gmail.com>
+Subject: Re: [PATCH] iio: dac: mcp4725: Fix i2c_master_send() return value
+ handling
+Message-ID: <20230513194726.56083288@jic23-huawei>
+In-Reply-To: <20230511061521.ri6gnymsasnrpde2@pengutronix.de>
+References: <20230511004330.206942-1-marex@denx.de>
+        <20230511061521.ri6gnymsasnrpde2@pengutronix.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,53 +61,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 12 May 2023 10:53:41 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Thu, 11 May 2023 08:15:21 +0200
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
-> The fwnode_irq_get_byname() was returning 0 at device-tree mapping
-> error. If this occurred, the KX022A driver did abort the probe but
-> errorneously directly returned the return value from
-> fwnode_irq_get_byname() from probe. In case of a device-tree mapping
-> error this indicated success.
-> 
-> The fwnode_irq_get_byname() has since been fixed to not return zero on
-> error so the check for fwnode_irq_get_byname() can be relaxed to only
-> treat negative values as errors. This will also do decent fix even when
-> backported to branches where fwnode_irq_get_byname() can still return
-> zero on error because KX022A probe should later fail at IRQ requesting
-> and a prober error handling should follow.
-On that basis I've picked this one up directly for the fixes-togreg branch of
-iio.git and marked it for stable.
+> On Thu, May 11, 2023 at 02:43:30AM +0200, Marek Vasut wrote:
+> > The i2c_master_send() returns number of sent bytes on success,
+> > or negative on error. The suspend/resume callbacks expect zero
+> > on success and non-zero on error. Adapt the return value of the
+> > i2c_master_send() to the expectation of the suspend and resume
+> > callbacks, including proper validation of the return value.
+> >=20
+> > Fixes: cf35ad61aca2 ("iio: add mcp4725 I2C DAC driver")
+> > Signed-off-by: Marek Vasut <marex@denx.de> =20
+>=20
+> Makes sense,
+>=20
+> Reviewed-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+
+Applied to the fixes-togreg branch of iio.git and marked for
+stable inclusion
 
 Thanks,
 
 Jonathan
 
-> 
-> Relax the return value check for fwnode_irq_get_byname() to only treat
-> negative values as errors.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Closes: https://lore.kernel.org/r/202305110245.MFxC9bUj-lkp@intel.com/
-> Link: https://lore.kernel.org/r/202305110245.MFxC9bUj-lkp@intel.com/
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
-> ---
->  drivers/iio/accel/kionix-kx022a.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-> index f98393d74666..b8636fa8eaeb 100644
-> --- a/drivers/iio/accel/kionix-kx022a.c
-> +++ b/drivers/iio/accel/kionix-kx022a.c
-> @@ -1048,7 +1048,7 @@ int kx022a_probe_internal(struct device *dev)
->  		data->ien_reg = KX022A_REG_INC4;
->  	} else {
->  		irq = fwnode_irq_get_byname(fwnode, "INT2");
-> -		if (irq <= 0)
-> +		if (irq < 0)
->  			return dev_err_probe(dev, irq, "No suitable IRQ\n");
->  
->  		data->inc_reg = KX022A_REG_INC5;
+>=20
+> Best regards
+> Uwe
+>=20
 

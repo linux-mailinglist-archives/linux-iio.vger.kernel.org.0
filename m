@@ -2,126 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF4770194F
-	for <lists+linux-iio@lfdr.de>; Sat, 13 May 2023 20:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5CCC701DDE
+	for <lists+linux-iio@lfdr.de>; Sun, 14 May 2023 16:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjEMSmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 May 2023 14:42:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34974 "EHLO
+        id S233722AbjENOck (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 May 2023 10:32:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjEMSl7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 May 2023 14:41:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43020213B;
-        Sat, 13 May 2023 11:41:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E2D60916;
-        Sat, 13 May 2023 18:41:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B95C433D2;
-        Sat, 13 May 2023 18:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684003317;
-        bh=960B3HljHMc0xLQjiljh6ZBWtqoJCu2x7TZSrYLcxOo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=P8gOM8RceHjtAdVimH1LpSFkvtDhuCareHditzq/ugTD9OooEG8hGPF5vctRsXcRb
-         R1tbSqsYjBrVa53DI1zS5OU825adh6E6SOF6zqvQWGGmceqXsB+6sD7sWssoLHA1fG
-         B0V/x+oL8+hWSj5MX772du2wfljH9vK/o9AY6aC2DgC/ghjTfjDVfQxGnOpldAw+O9
-         u47OuzGiJdT4Q35oG2Qb6oPlr9JglydAn0yLzpWIk9RWE/pdJ3nsdBo5BIoDvM31pO
-         U2XHEdM6R5l/zdHid76Lc6F2YKIxl2SjOAnjH/1kwRVY3zTXPmOQMSWbRnE0askxme
-         F47hp4gVnSHxQ==
-Date:   Sat, 13 May 2023 19:57:58 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Astrid Rost <astrid.rost@axis.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
-Subject: Re: [PATCH v2 1/7] iio: light: vcnl4000: Add proximity irq for
- vcnl4200
-Message-ID: <20230513195758.0d18825f@jic23-huawei>
-In-Reply-To: <20230509140153.3279288-2-astrid.rost@axis.com>
-References: <20230509140153.3279288-1-astrid.rost@axis.com>
-        <20230509140153.3279288-2-astrid.rost@axis.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        with ESMTP id S229808AbjENOcj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 May 2023 10:32:39 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85D6F30CF;
+        Sun, 14 May 2023 07:32:36 -0700 (PDT)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id E6AC7240004;
+        Sun, 14 May 2023 14:32:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1684074755;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=06LiB1m/4S1iJljwF5Stm/gW1yfN4Sr7PAjYl+bydro=;
+        b=oRX4C2sfa8AW337aNspq7cKxaA35IxPUkIlUxc5b+IPYxoAdgMXsLx6TVB0uiJSGG31X9m
+        1AOErvwKA+JWuz/wGLKlhB3qAZpHWpN/nD1TeUXx2fWZnbPUH5Y83eGh7RGcnmtWFFljqI
+        NioNCWcqchJkeqEdfhmre7AIW23+PCzaTO2LEJrZeTdphz0jpjv0YEFEL6qiE9nynNzvBs
+        OXbs+G2eS7dXLYr5pt4XGn18/EbDqFgMd4KuR+6J/+vDqcM7uUuhVK+uTHbWhKAIWoL0+y
+        XpKjBl5I3CUFqEdqjw7jm7bxWc1Cie7qBG5R2yY3GWuNdJckTcQLqGHTrsoajw==
+Date:   Sun, 14 May 2023 16:32:33 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 2/3] iio: potentiometer: Add support for the Renesas
+ X9250 potentiometers
+Message-ID: <20230514163233.0c048256@bootlin.com>
+In-Reply-To: <20230513193525.43a4475f@jic23-huawei>
+References: <20230509160852.158101-1-herve.codina@bootlin.com>
+        <20230509160852.158101-3-herve.codina@bootlin.com>
+        <20230513193525.43a4475f@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 9 May 2023 16:01:47 +0200
-Astrid Rost <astrid.rost@axis.com> wrote:
+Hi Jonathan,
 
-> Add proximity interrupt support for vcnl4200 (similar to vcnl4040).
-> Add support to configure proximity sensor interrupts and threshold
-> limits. If an interrupt is detected an event will be pushed to the
-> event interface.
+On Sat, 13 May 2023 19:35:25 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Tue,  9 May 2023 18:08:51 +0200
+> Herve Codina <herve.codina@bootlin.com> wrote:
 > 
-> Signed-off-by: Astrid Rost <astrid.rost@axis.com>
-Where possible (and I think it is here) please avoid putting data as code.
-That is, move the necessary register address into the
-*_chip_spec structure.  That way, if another version of the chip is supported
-in future we can simply add the value to the right instance of that structure.
-That tends to end up more flexible than if / else / switch statements.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/light/vcnl4000.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
+> > The Renesas X9250 integrates four digitally controlled potentiometers.
+> > On each potentiometer, the X9250T has a 100 kOhms total resistance and
+> > the X9250U has a 50 kOhms total resistance.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
 > 
-> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index 56d3963d3d66..13568454baff 100644
-> --- a/drivers/iio/light/vcnl4000.c
-> +++ b/drivers/iio/light/vcnl4000.c
-> @@ -65,6 +65,7 @@
->  #define VCNL4200_PS_DATA	0x08 /* Proximity data */
->  #define VCNL4200_AL_DATA	0x09 /* Ambient light data */
->  #define VCNL4040_INT_FLAGS	0x0b /* Interrupt register */
-> +#define VCNL4200_INT_FLAGS	0x0d /* Interrupt register */
->  #define VCNL4200_DEV_ID		0x0e /* Device ID, slave address and version */
+> As I only noticed one trivial thing I made the change whilst applying.
+> diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiometer/x9250.c
+> index 3d4ca18d1f14..7e145d7d14f1 100644
+> --- a/drivers/iio/potentiometer/x9250.c
+> +++ b/drivers/iio/potentiometer/x9250.c
+> @@ -176,10 +176,7 @@ static int x9250_probe(struct spi_device *spi)
 >  
->  #define VCNL4040_DEV_ID		0x0c /* Device ID and version */
-> @@ -1004,8 +1005,14 @@ static irqreturn_t vcnl4040_irq_thread(int irq, void *p)
->  	struct iio_dev *indio_dev = p;
->  	struct vcnl4000_data *data = iio_priv(indio_dev);
->  	int ret;
-> +	int reg;
->  
-> -	ret = i2c_smbus_read_word_data(data->client, VCNL4040_INT_FLAGS);
-> +	if (data->id == VCNL4200)
-> +		reg = VCNL4200_INT_FLAGS;
-> +	else
-> +		reg = VCNL4040_INT_FLAGS;
+>         x9250 = iio_priv(indio_dev);
+>         x9250->spi = spi;
+> -       x9250->cfg = device_get_match_data(&spi->dev);
+> -       if (!x9250->cfg)
+> -               x9250->cfg = &x9250_cfg[spi_get_device_id(spi)->driver_data];
+> -
+> +       x9250->cfg = spi_get_device_match_data(spi);
+>         x9250->wp_gpio = devm_gpiod_get_optional(&spi->dev, "wp", GPIOD_OUT_LOW);
+>         if (IS_ERR(x9250->wp_gpio))
+>                 return dev_err_probe(&spi->dev, PTR_ERR(x9250->wp_gpio),
+> 
 
-Prefer this as
-	data->chip_spec->int_reg
+Are you sure about your modification ?
 
-> +
-> +	ret = i2c_smbus_read_word_data(data->client, reg);
->  	if (ret < 0)
->  		return IRQ_HANDLED;
->  
-> @@ -1321,9 +1328,10 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
->  		.measure_light = vcnl4200_measure_light,
->  		.measure_proximity = vcnl4200_measure_proximity,
->  		.set_power_state = vcnl4200_set_power_state,
-> -		.channels = vcnl4000_channels,
-> +		.channels = vcnl4040_channels,
->  		.num_channels = ARRAY_SIZE(vcnl4000_channels),
-> -		.info = &vcnl4000_info,
-> +		.info = &vcnl4040_info,
-> +		.irq_thread = vcnl4040_irq_thread,
->  	},
->  };
->  
+I am not sure (maybe I am wrong) that
+  x9250->cfg = spi_get_device_match_data(spi);
+is equivalent to
+  x9250->cfg = &x9250_cfg[spi_get_device_id(spi)->driver_data];
 
+The spi_get_device_id(spi)->driver_data value I used is a simple integer
+(X9250T or X9250U) and not the x9250_cfg item.
+Maybe the x9250_id_table should be modified to replace X9250T by
+&x9250_cfg[X9250T] to have your modification working.
+
+The data defined in the driver are the following:
+--- 8< ---
+static const struct x9250_cfg x9250_cfg[] = {
+	[X9250T] = { .name = "x9250t", .kohms =  100, },
+	[X9250U] = { .name = "x9250u", .kohms =  50, },
+};
+
+...
+
+static const struct of_device_id x9250_of_match[] = {
+	{ .compatible = "renesas,x9250t", &x9250_cfg[X9250T]},
+	{ .compatible = "renesas,x9250u", &x9250_cfg[X9250U]},
+	{ }
+};
+MODULE_DEVICE_TABLE(of, x9250_of_match);
+
+static const struct spi_device_id x9250_id_table[] = {
+	{ "x9250t", X9250T },
+	{ "x9250u", X9250U },
+	{ }
+};
+MODULE_DEVICE_TABLE(spi, x9250_id_table);
+
+static struct spi_driver x9250_spi_driver = {
+	.driver  = {
+		.name = "x9250",
+		.of_match_table = x9250_of_match,
+	},
+	.id_table = x9250_id_table,
+	.probe  = x9250_probe,
+};
+--- 8< ---
+
+
+Best regards,
+Hervé
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

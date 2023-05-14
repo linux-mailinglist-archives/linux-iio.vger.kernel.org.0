@@ -2,59 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D0F701E62
-	for <lists+linux-iio@lfdr.de>; Sun, 14 May 2023 19:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FB5701E97
+	for <lists+linux-iio@lfdr.de>; Sun, 14 May 2023 19:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230496AbjENRDQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 May 2023 13:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
+        id S237784AbjENRJs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 May 2023 13:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232122AbjENRDO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 May 2023 13:03:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3355F3C07;
-        Sun, 14 May 2023 10:03:13 -0700 (PDT)
+        with ESMTP id S237820AbjENRJP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 May 2023 13:09:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 620315270;
+        Sun, 14 May 2023 10:08:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F89361880;
-        Sun, 14 May 2023 17:03:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4C6C4339C;
-        Sun, 14 May 2023 17:03:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3366D60EFB;
+        Sun, 14 May 2023 17:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E838C433EF;
+        Sun, 14 May 2023 17:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684083792;
-        bh=dLiXJ8klvtan12DVAdAPECTlmGSDJesL1J33oOFSHoE=;
+        s=k20201202; t=1684084126;
+        bh=8O1EOYZmCwHjuRGBGe8zpASVzWkit7T6R6L6cffS204=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IloqxDI4jEVQJoTfBhtoqO27fRnpm0lstlfAx+kklSNKb3mqAquLfeTeANJVlI58v
-         hlY6y3FHxvhKPk666U/n+se6+hpb4jLYC7UU7Hxo0fKWRVf6syO5plRPDEEFyqWIZu
-         +4vP1K9MCbQ+dsDf14DnGvUqqG76gEx/TY2+Ppq9dlXBWAsxLMn4UgMEud4iAkSMlP
-         +J84SGOVK5ouHq9lVr7UqAgXULGKcgTG/AtqacHbXRhlN6wd/zbL03c8gitBpMwOoe
-         kUPGIEr4k2DZBpeJ/pefKd/Uzo4tpkh91ftBG9lYFbYii6UOqw1A3UQ1PTIIQlMQJN
-         /970wI/w1eX0g==
-Date:   Sun, 14 May 2023 18:19:12 +0100
+        b=VIKLBpTOdFFYuPmTuCAd9jJ4EAycL9EieWsodM6vhuDm8odVGH34zxweXTeZSZV+h
+         IpyuA1uWK9+RrksQqmkbK7BHJOJANKVyjYKRXdxaBaYrUAjPwcp+QbVrI3jTmASaJb
+         fPNq7bHdo2P1Pcw3+53noLTXQREiltq9uFsRpOrV/4jvdNYmLqrRujBpF8IZFUFwoJ
+         cL/NKM4pi0v+ac2RXbEmYPHStlCDal9T7nPJhrlDNm0cUElBOXWgwSFyjR5CDpYAnJ
+         Dk88blP8ashrp7zNmN5qs4lF7NHDC2e22OvjstabjoBDnT1JadSX0T/6sM/1jAj/+q
+         NYlo4MXTunFaw==
+Date:   Sun, 14 May 2023 18:24:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 2/3] iio: potentiometer: Add support for the Renesas
- X9250 potentiometers
-Message-ID: <20230514181912.314ef781@jic23-huawei>
-In-Reply-To: <20230514163233.0c048256@bootlin.com>
-References: <20230509160852.158101-1-herve.codina@bootlin.com>
-        <20230509160852.158101-3-herve.codina@bootlin.com>
-        <20230513193525.43a4475f@jic23-huawei>
-        <20230514163233.0c048256@bootlin.com>
+To:     Astrid Rost <astrid.rost@axis.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
+Subject: Re: [PATCH v2 2/7] iio: light: vcnl4000: Add proximity ps_it for
+ vcnl4200
+Message-ID: <20230514182446.0e42777d@jic23-huawei>
+In-Reply-To: <20230509140153.3279288-3-astrid.rost@axis.com>
+References: <20230509140153.3279288-1-astrid.rost@axis.com>
+        <20230509140153.3279288-3-astrid.rost@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,121 +56,146 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 May 2023 16:32:33 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Tue, 9 May 2023 16:01:48 +0200
+Astrid Rost <astrid.rost@axis.com> wrote:
 
-> Hi Jonathan,
->=20
-> On Sat, 13 May 2023 19:35:25 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
->=20
-> > On Tue,  9 May 2023 18:08:51 +0200
-> > Herve Codina <herve.codina@bootlin.com> wrote:
-> >  =20
-> > > The Renesas X9250 integrates four digitally controlled potentiometers.
-> > > On each potentiometer, the X9250T has a 100 kOhms total resistance and
-> > > the X9250U has a 50 kOhms total resistance.
-> > >=20
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>   =20
-> >=20
-> > As I only noticed one trivial thing I made the change whilst applying.
-> > diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiome=
-ter/x9250.c
-> > index 3d4ca18d1f14..7e145d7d14f1 100644
-> > --- a/drivers/iio/potentiometer/x9250.c
-> > +++ b/drivers/iio/potentiometer/x9250.c
-> > @@ -176,10 +176,7 @@ static int x9250_probe(struct spi_device *spi)
-> > =20
-> >         x9250 =3D iio_priv(indio_dev);
-> >         x9250->spi =3D spi;
-> > -       x9250->cfg =3D device_get_match_data(&spi->dev);
-> > -       if (!x9250->cfg)
-> > -               x9250->cfg =3D &x9250_cfg[spi_get_device_id(spi)->drive=
-r_data];
-> > -
-> > +       x9250->cfg =3D spi_get_device_match_data(spi);
-> >         x9250->wp_gpio =3D devm_gpiod_get_optional(&spi->dev, "wp", GPI=
-OD_OUT_LOW);
-> >         if (IS_ERR(x9250->wp_gpio))
-> >                 return dev_err_probe(&spi->dev, PTR_ERR(x9250->wp_gpio),
-> >  =20
->=20
-> Are you sure about your modification ?
->=20
-> I am not sure (maybe I am wrong) that
->   x9250->cfg =3D spi_get_device_match_data(spi);
-> is equivalent to
->   x9250->cfg =3D &x9250_cfg[spi_get_device_id(spi)->driver_data];
->=20
-> The spi_get_device_id(spi)->driver_data value I used is a simple integer
-> (X9250T or X9250U) and not the x9250_cfg item.
-> Maybe the x9250_id_table should be modified to replace X9250T by
-> &x9250_cfg[X9250T] to have your modification working.
+> Add ps_it attributes for vcnl4200 (similar to vcnl4040).
+> Add read/write attribute for proximity integration time.
+> Read attribute for available proximity integration times.
+> Change sampling rate depending on integration time.
+> 
+> Signed-off-by: Astrid Rost <astrid.rost@axis.com>
 
-Excellent point.  I'm was  clearly half asleep. The mod should have included
-switching them over to be pointers.
+Similar to previous patch, I'd prefer to move away from
+code based selection of values for each type of device to data
+based - with data stored in the existing chip_spec structures.
 
->=20
-> The data defined in the driver are the following:
-> --- 8< ---
-> static const struct x9250_cfg x9250_cfg[] =3D {
-> 	[X9250T] =3D { .name =3D "x9250t", .kohms =3D  100, },
-> 	[X9250U] =3D { .name =3D "x9250u", .kohms =3D  50, },
-> };
->=20
-> ...
->=20
-> static const struct of_device_id x9250_of_match[] =3D {
-> 	{ .compatible =3D "renesas,x9250t", &x9250_cfg[X9250T]},
-> 	{ .compatible =3D "renesas,x9250u", &x9250_cfg[X9250U]},
-> 	{ }
-> };
-> MODULE_DEVICE_TABLE(of, x9250_of_match);
->=20
-> static const struct spi_device_id x9250_id_table[] =3D {
-> 	{ "x9250t", X9250T },
-> 	{ "x9250u", X9250U },
-So these should be (kernel_ulong_t)&x9250_cfg[X9250T] etc for the data.
-I've tweaked it so that is now the case. Oops and thanks for sanity checkin=
-g.
-Sometimes we see what we expect to see rather than what is there.
-
-Tweak on top of original tweak is:
-diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiometer/=
-x9250.c
-index 7e145d7d14f1..0cc7f72529be 100644
---- a/drivers/iio/potentiometer/x9250.c
-+++ b/drivers/iio/potentiometer/x9250.c
-@@ -198,8 +198,8 @@ static const struct of_device_id x9250_of_match[] =3D {
- MODULE_DEVICE_TABLE(of, x9250_of_match);
-=20
- static const struct spi_device_id x9250_id_table[] =3D {
--       { "x9250t", X9250T },
--       { "x9250u", X9250U },
-+       { "x9250t", (kernel_ulong_t)&x9250_cfg[X9250T] },
-+       { "x9250u", (kernel_ulong_t)&x9250_cfg[X9250U] },
-        { }
- };
-
+Thanks,
 
 Jonathan
 
-> 	{ }
-> };
-> MODULE_DEVICE_TABLE(spi, x9250_id_table);
->=20
-> static struct spi_driver x9250_spi_driver =3D {
-> 	.driver  =3D {
-> 		.name =3D "x9250",
-> 		.of_match_table =3D x9250_of_match,
-> 	},
-> 	.id_table =3D x9250_id_table,
-> 	.probe  =3D x9250_probe,
-> };
-> --- 8< ---
->=20
->=20
-> Best regards,
-> Herv=C3=A9
->=20
+> ---
+>  drivers/iio/light/vcnl4000.c | 52 +++++++++++++++++++++++++++++++-----
+>  1 file changed, 45 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index 13568454baff..e14475070ac3 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -124,6 +124,15 @@ static const int vcnl4040_ps_it_times[][2] = {
+>  	{0, 800},
+>  };
+>  
+> +static const int vcnl4200_ps_it_times[][2] = {
+> +	{0, 96},
+> +	{0, 144},
+> +	{0, 192},
+> +	{0, 384},
+> +	{0, 768},
+> +	{0, 864},
+> +};
+> +
+>  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
+>  
+>  enum vcnl4000_device_ids {
+> @@ -500,6 +509,16 @@ static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
+>  static int vcnl4040_read_ps_it(struct vcnl4000_data *data, int *val, int *val2)
+>  {
+>  	int ret;
+> +	const int(*ps_it_times)[][2];
+> +	int size;
+> +
+> +	if (data->id == VCNL4200) {
+> +		ps_it_times = &vcnl4200_ps_it_times;
+> +		size = ARRAY_SIZE(vcnl4200_ps_it_times);
+> +	} else {
+> +		ps_it_times = &vcnl4040_ps_it_times;
+> +		size = ARRAY_SIZE(vcnl4040_ps_it_times);
+
+See below.  Same points hold (I tend to review upwards as I find it
+easier to follow).
+
+> +	}
+>  
+>  	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+>  	if (ret < 0)
+> @@ -507,11 +526,11 @@ static int vcnl4040_read_ps_it(struct vcnl4000_data *data, int *val, int *val2)
+>  
+>  	ret = FIELD_GET(VCNL4040_PS_CONF2_PS_IT, ret);
+>  
+> -	if (ret >= ARRAY_SIZE(vcnl4040_ps_it_times))
+> +	if (ret >= size)
+>  		return -EINVAL;
+>  
+> -	*val = vcnl4040_ps_it_times[ret][0];
+> -	*val2 = vcnl4040_ps_it_times[ret][1];
+> +	*val = (*ps_it_times)[ret][0];
+> +	*val2 = (*ps_it_times)[ret][1];
+>  
+>  	return 0;
+>  }
+> @@ -521,9 +540,19 @@ static ssize_t vcnl4040_write_ps_it(struct vcnl4000_data *data, int val)
+>  	unsigned int i;
+>  	int ret, index = -1;
+>  	u16 regval;
+> +	const int(*ps_it_times)[][2];
+> +	int size;
+>  
+> -	for (i = 0; i < ARRAY_SIZE(vcnl4040_ps_it_times); i++) {
+> -		if (val == vcnl4040_ps_it_times[i][1]) {
+> +	if (data->id == VCNL4200) {
+> +		ps_it_times = &vcnl4200_ps_it_times;
+
+As below. I'd like this to be data in chip_spec rather than code here.
+That almost always ends up more flexible and compact in the long run as
+support for more parts is added to a driver.
+
+> +		size = ARRAY_SIZE(vcnl4200_ps_it_times);
+> +	} else {
+> +		ps_it_times = &vcnl4040_ps_it_times;
+> +		size = ARRAY_SIZE(vcnl4040_ps_it_times);
+> +	}
+> +
+> +	for (i = 0; i < size; i++) {
+> +		if (val == (*ps_it_times)[i][1]) {
+>  			index = i;
+>  			break;
+>  		}
+> @@ -532,6 +561,8 @@ static ssize_t vcnl4040_write_ps_it(struct vcnl4000_data *data, int val)
+>  	if (index < 0)
+>  		return -EINVAL;
+>  
+> +	data->vcnl4200_ps.sampling_rate = ktime_set(0, val * 60000);
+> +
+>  	mutex_lock(&data->vcnl4000_lock);
+>  
+>  	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> @@ -619,11 +650,18 @@ static int vcnl4040_read_avail(struct iio_dev *indio_dev,
+>  			       const int **vals, int *type, int *length,
+>  			       long mask)
+>  {
+> +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> +
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_INT_TIME:
+> -		*vals = (int *)vcnl4040_ps_it_times;
+> +		if (data->id == VCNL4200) {
+> +			*vals = (int *)vcnl4200_ps_it_times;
+> +			*length = 2 * ARRAY_SIZE(vcnl4200_ps_it_times);
+
+As for previous, I'd much rather this was 'data' in the chip_spec structure
+than code selecting it here.  That is I'd expect it to be arrange so this
+part looks like.
+		*vals = (int *)data->chip_spec->int_times;
+		*length = 2 * data->chip_spec->num_int_times;
+
+> +		} else {
+> +			*vals = (int *)vcnl4040_ps_it_times;
+> +			*length = 2 * ARRAY_SIZE(vcnl4040_ps_it_times);
+> +		}
+>  		*type = IIO_VAL_INT_PLUS_MICRO;
+> -		*length = 2 * ARRAY_SIZE(vcnl4040_ps_it_times);
+>  		return IIO_AVAIL_LIST;
+>  	default:
+>  		return -EINVAL;
 

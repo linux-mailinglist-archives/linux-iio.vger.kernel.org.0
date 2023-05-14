@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92A6E701EB5
-	for <lists+linux-iio@lfdr.de>; Sun, 14 May 2023 19:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFB9D701EBA
+	for <lists+linux-iio@lfdr.de>; Sun, 14 May 2023 19:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235767AbjENRZo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 May 2023 13:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
+        id S237651AbjENR2u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 May 2023 13:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234395AbjENRZn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 May 2023 13:25:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DB061985;
-        Sun, 14 May 2023 10:25:42 -0700 (PDT)
+        with ESMTP id S237624AbjENR2t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 May 2023 13:28:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 999342102;
+        Sun, 14 May 2023 10:28:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A8B761503;
-        Sun, 14 May 2023 17:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897B5C433D2;
-        Sun, 14 May 2023 17:25:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27BC660ADE;
+        Sun, 14 May 2023 17:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D086C433EF;
+        Sun, 14 May 2023 17:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684085141;
-        bh=vDjoEmmoLbZ0gMvwE+1U4cTtiVJubZVr7kEO6Md5Wf0=;
+        s=k20201202; t=1684085327;
+        bh=o3SzUgk5jsdY0Si6hbeTlwqShrDXw+aPYZYtbFPQwvw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N5QzigqV/aHCr+IB/Aavo3eSb3ViKKHek4PS/aEJJ3+ZQ/E8BfBQSNBoy456ooSqS
-         klJaABE1APNj+zA3SiD1ttWFUBe6pDuYUUmWwXm/UOkM3cgXs8ft41A254JrukKHq3
-         6pmitGR5+/j2DiqSEYTaIRwxE8HaNm8btMIF4okly9NhQp2qMkECCgM+NewBegu9jj
-         Tf9TBu4CLB5ZQ5jyJEiZ41zdMFSUvOszJVQs9KicxHBuW8WkGrAzlsrjhDrfgbQSi4
-         ikIyZ1ahqKzCAx+APP3vQGPqSny28b3E2X/wp6UtisMrPamNoV0l6+hTRplun7mlX/
-         aDzGUqGxJfksA==
-Date:   Sun, 14 May 2023 18:41:42 +0100
+        b=kNigjTeYq4ee8RdaGzF3T7a0CAqxL7gw+Unhssc7ONTVwmchF8JjPGun8CtL0pkhN
+         KcfVQv+4x99qhx/QKXkEyoFK7OfTsfufs3ZLDajThwcdlCxMrJek1n3oRQTXJG5sV1
+         9R5l7/NOt6LepvTbjsLZm3K6nr7+rEjqnG1UHkW4xIBdWEJ07m04cRvfCF1UlTocGF
+         AFrP7bG5DBwl0elW1XgVZHpG+PJ7e3MYC+ydJHPxRWNrIY7gKR8fUmhKqvXjeyLFcZ
+         thWX1bKTUgO+kz6d90C9ZR5UN6KRMyc1rl36PmqH6ugFqcOawzVy0GbErIX2bTyZeD
+         ufbHbsx/1BfUg==
+Date:   Sun, 14 May 2023 18:44:49 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Astrid Rost <astrid.rost@axis.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <kernel@axis.com>
-Subject: Re: [PATCH v2 6/7] iio: light: vcnl4000: Add oversampling_ratio for
+Subject: Re: [PATCH v2 7/7] iio: light: vcnl4000: Add calibration bias for
  4040/4200
-Message-ID: <20230514184142.59796c2f@jic23-huawei>
-In-Reply-To: <20230509140153.3279288-7-astrid.rost@axis.com>
+Message-ID: <20230514184449.72aa1ab8@jic23-huawei>
+In-Reply-To: <20230509140153.3279288-8-astrid.rost@axis.com>
 References: <20230509140153.3279288-1-astrid.rost@axis.com>
-        <20230509140153.3279288-7-astrid.rost@axis.com>
+        <20230509140153.3279288-8-astrid.rost@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,93 +56,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 9 May 2023 16:01:52 +0200
+On Tue, 9 May 2023 16:01:53 +0200
 Astrid Rost <astrid.rost@axis.com> wrote:
 
-> Add the proximity multi pulse (PS_MPS) as oversampling_ratio.
-> One raw value is calculated out of the set amount of pulses.
-> Add read/write attribute for proximity oversampling-ratio and read
-> attribute for available oversampling-ratio.
+> The calibration bias is setting the LED current to change
+> the detection distance.
+> Add read/write attribute for proximity calibration bias and read
+> attribute for available values.
 > This is supported for vcnl4040 and vcnl4200.
-> 
-> Signed-off-by: Astrid Rost <astrid.rost@axis.com>
-Hi Astrid,
+Another interesting mapping onto standard ABI.
+I guess it sort of ends up mapping to calibbias so I think I'm fine with th=
+is
+one if other reviewers agree.
 
-I'm finding very little definition in for this Multi pulse setting.
-Do we know if it does averaging, or some other form of outlier detection?
-
-For oversampling we'd expect it to be averaging in ordering to improve the SNR.
-I have no idea if that is what this feature is doing!
-
-Otherwise code looks fine to me.
+=46rom a quick look (run out of time again today!) this looks fine to me.
+Will take another look at v3.
 
 Thanks,
 
 Jonathan
 
+>=20
+> Signed-off-by: Astrid Rost <astrid.rost@axis.com>
 > ---
->  drivers/iio/light/vcnl4000.c | 86 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 84 insertions(+), 2 deletions(-)
-> 
+>  drivers/iio/light/vcnl4000.c | 97 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 94 insertions(+), 3 deletions(-)
+>=20
 > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index b8ce4ed6b0bb..1fd1eaaa4620 100644
+> index 1fd1eaaa4620..f0bf078dcdbe 100644
 > --- a/drivers/iio/light/vcnl4000.c
 > +++ b/drivers/iio/light/vcnl4000.c
-> @@ -60,6 +60,7 @@
->  
->  #define VCNL4200_AL_CONF	0x00 /* Ambient light configuration */
->  #define VCNL4200_PS_CONF1	0x03 /* Proximity configuration */
-> +#define VCNL4200_PS_CONF3	0x04 /* Proximity configuration */
->  #define VCNL4040_PS_THDL_LM	0x06 /* Proximity threshold low */
->  #define VCNL4040_PS_THDH_LM	0x07 /* Proximity threshold high */
->  #define VCNL4040_ALS_THDL_LM	0x02 /* Ambient light threshold low */
-> @@ -89,6 +90,7 @@
->  #define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration time */
->  #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
->  #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
-> +#define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
->  #define VCNL4040_PS_IF_AWAY		BIT(8) /* Proximity event cross low threshold */
->  #define VCNL4040_PS_IF_CLOSE		BIT(9) /* Proximity event cross high threshold */
->  #define VCNL4040_ALS_RISING		BIT(12) /* Ambient Light cross high threshold */
-> @@ -157,6 +159,7 @@ static const int vcnl4200_als_it_times[][2] = {
->  
->  static const int vcnl4040_als_debounce_count[] = {1, 2, 4, 8};
->  static const int vcnl4040_ps_debounce_count[] = {1, 2, 3, 4};
-> +static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
->  
->  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
->  
-> @@ -785,6 +788,56 @@ static ssize_t vcnl4040_write_ps_debounce_count(struct vcnl4000_data *data, int
+> @@ -91,6 +91,7 @@
+>  #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt pers=
+istence setting */
+>  #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mo=
+de */
+>  #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse nu=
+mber */
+> +#define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
+>  #define VCNL4040_PS_IF_AWAY		BIT(8) /* Proximity event cross low thresho=
+ld */
+>  #define VCNL4040_PS_IF_CLOSE		BIT(9) /* Proximity event cross high thres=
+hold */
+>  #define VCNL4040_ALS_RISING		BIT(12) /* Ambient Light cross high thresho=
+ld */
+> @@ -157,6 +158,17 @@ static const int vcnl4200_als_it_times[][2] =3D {
+>  	{0, 400000},
+>  };
+> =20
+> +static const int vcnl4040_ps_calibbias_ua[][2] =3D {
+> +	{0, 50000},
+> +	{0, 75000},
+> +	{0, 100000},
+> +	{0, 120000},
+> +	{0, 140000},
+> +	{0, 160000},
+> +	{0, 180000},
+> +	{0, 200000},
+> +};
+> +
+>  static const int vcnl4040_als_debounce_count[] =3D {1, 2, 4, 8};
+>  static const int vcnl4040_ps_debounce_count[] =3D {1, 2, 3, 4};
+>  static const int vcnl4040_ps_oversampling_ratio[] =3D {1, 2, 4, 8};
+> @@ -838,6 +850,57 @@ static ssize_t vcnl4040_write_ps_oversampling_ratio(=
+struct vcnl4000_data *data,
 >  	return ret;
 >  }
->  
-> +static ssize_t vcnl4040_read_ps_oversampling_ratio(struct vcnl4000_data *data, int *val)
+> =20
+> +static ssize_t vcnl4040_read_ps_calibbias(struct vcnl4000_data *data, in=
+t *val, int *val2)
 > +{
 > +	int ret;
 > +
-> +	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
 > +	if (ret < 0)
 > +		return ret;
 > +
-> +	ret = FIELD_GET(VCNL4040_PS_CONF3_MPS, ret);
+> +	ret =3D FIELD_GET(VCNL4040_PS_MS_LED_I, ret);
 > +
-> +	if (ret >= ARRAY_SIZE(vcnl4040_ps_oversampling_ratio))
+> +	if (ret >=3D ARRAY_SIZE(vcnl4040_ps_calibbias_ua))
 > +		return -EINVAL;
 > +
-> +	*val = vcnl4040_ps_oversampling_ratio[ret];
+> +	*val =3D vcnl4040_ps_calibbias_ua[ret][0];
+> +	*val2 =3D vcnl4040_ps_calibbias_ua[ret][1];
 > +
 > +	return ret;
 > +}
 > +
-> +static ssize_t vcnl4040_write_ps_oversampling_ratio(struct vcnl4000_data *data, int val)
+> +static ssize_t vcnl4040_write_ps_calibbias(struct vcnl4000_data *data, i=
+nt val)
 > +{
 > +	unsigned int i;
-> +	int ret, index = -1;
+> +	int ret, index =3D -1;
 > +	u16 regval;
 > +
-> +	for (i = 0; i < ARRAY_SIZE(vcnl4040_ps_oversampling_ratio); i++) {
-> +		if (val == vcnl4040_ps_oversampling_ratio[i]) {
-> +			index = i;
+> +	for (i =3D 0; i < ARRAY_SIZE(vcnl4040_ps_calibbias_ua); i++) {
+> +		if (val =3D=3D vcnl4040_ps_calibbias_ua[i][1]) {
+> +			index =3D i;
 > +			break;
 > +		}
 > +	}
@@ -152,13 +162,13 @@ Jonathan
 > +
 > +	mutex_lock(&data->vcnl4000_lock);
 > +
-> +	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
 > +	if (ret < 0)
 > +		goto out;
 > +
-> +	regval = (ret & ~VCNL4040_PS_CONF3_MPS) |
-> +	    FIELD_PREP(VCNL4040_PS_CONF3_MPS, index);
-> +	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
+> +	regval =3D (ret & ~VCNL4040_PS_MS_LED_I) |
+> +	    FIELD_PREP(VCNL4040_PS_MS_LED_I, index);
+> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
 > +					regval);
 > +
 > +out:
@@ -169,66 +179,72 @@ Jonathan
 >  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
 >  				struct iio_chan_spec const *chan,
 >  				int *val, int *val2, long mask)
-> @@ -849,6 +902,16 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
->  		if (ret < 0)
->  			return ret;
->  		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +		switch (chan->type) {
-> +		case IIO_PROXIMITY:
-> +			ret = vcnl4040_read_ps_oversampling_ratio(data, val);
-> +			if (ret < 0)
-> +				return ret;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  
->  	default:
->  		return -EINVAL;
-> @@ -882,6 +945,13 @@ static int vcnl4040_write_raw(struct iio_dev *indio_dev,
+> @@ -912,7 +975,16 @@ static int vcnl4000_read_raw(struct iio_dev *indio_d=
+ev,
 >  		default:
 >  			return -EINVAL;
 >  		}
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> -
+> +	case IIO_CHAN_INFO_CALIBBIAS:
 > +		switch (chan->type) {
 > +		case IIO_PROXIMITY:
-> +			return vcnl4040_write_ps_oversampling_ratio(data, val);
+> +			ret =3D vcnl4040_read_ps_calibbias(data, val, val2);
+> +			if (ret < 0)
+> +				return ret;
+> +			return IIO_VAL_INT_PLUS_MICRO;
 > +		default:
 > +			return -EINVAL;
 > +		}
 >  	default:
 >  		return -EINVAL;
 >  	}
-> @@ -935,6 +1005,16 @@ static int vcnl4040_read_avail(struct iio_dev *indio_dev,
+> @@ -952,6 +1024,13 @@ static int vcnl4040_write_raw(struct iio_dev *indio=
+_dev,
+>  		default:
+>  			return -EINVAL;
 >  		}
->  		*type = IIO_VAL_INT;
->  		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +	case IIO_CHAN_INFO_CALIBBIAS:
 > +		switch (chan->type) {
 > +		case IIO_PROXIMITY:
-> +			*vals = (int *)vcnl4040_ps_oversampling_ratio;
-> +			*length = ARRAY_SIZE(vcnl4040_ps_oversampling_ratio);
-> +			*type = IIO_VAL_INT;
+> +			return vcnl4040_write_ps_calibbias(data, val2);
+> +		default:
+> +			return -EINVAL;
+> +		}
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -1015,6 +1094,16 @@ static int vcnl4040_read_avail(struct iio_dev *ind=
+io_dev,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		switch (chan->type) {
+> +		case IIO_PROXIMITY:
+> +			*vals =3D (int *)vcnl4040_ps_calibbias_ua;
+> +			*length =3D 2 * ARRAY_SIZE(vcnl4040_ps_calibbias_ua);
+> +			*type =3D IIO_VAL_INT_PLUS_MICRO;
 > +			return IIO_AVAIL_LIST;
 > +		default:
 > +			return -EINVAL;
-> +		}
+> +	}
 >  	default:
 >  		return -EINVAL;
 >  	}
-> @@ -1658,9 +1738,11 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
->  		.type = IIO_PROXIMITY,
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> @@ -1739,10 +1828,12 @@ static const struct iio_chan_spec vcnl4040_channe=
+ls[] =3D {
+>  		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
 >  			BIT(IIO_CHAN_INFO_INT_TIME) |
-> -			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT),
-> +			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT) |
-> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> -			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT),
-> +			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT) |
-> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  		.ext_info = vcnl4000_ext_info,
->  		.event_spec = vcnl4040_event_spec,
->  		.num_event_specs = ARRAY_SIZE(vcnl4040_event_spec),
+>  			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT) |
+> -			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+> +			BIT(IIO_CHAN_INFO_CALIBBIAS),
+>  		.info_mask_separate_available =3D BIT(IIO_CHAN_INFO_INT_TIME) |
+>  			BIT(IIO_CHAN_INFO_DEBOUNCE_COUNT) |
+> -			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+> +			BIT(IIO_CHAN_INFO_CALIBBIAS),
+>  		.ext_info =3D vcnl4000_ext_info,
+>  		.event_spec =3D vcnl4040_event_spec,
+>  		.num_event_specs =3D ARRAY_SIZE(vcnl4040_event_spec),
 

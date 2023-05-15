@@ -2,145 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8BE3702C4A
-	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 14:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B7B702C7F
+	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 14:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241448AbjEOMHX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 May 2023 08:07:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38368 "EHLO
+        id S241664AbjEOMR1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 May 2023 08:17:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241292AbjEOMHO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 08:07:14 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E36B3E75;
-        Mon, 15 May 2023 05:07:05 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2ad89c7a84fso104814881fa.2;
-        Mon, 15 May 2023 05:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684152424; x=1686744424;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T8S8sAP8Fagl8K2YKg4fpZu8ftXd+FY79lvepC4kyJc=;
-        b=gl10t5IbWZvPcfimSxWMYLFLFqoygfcXT3axtUv5YJ0sZCmKOVDWCcA2VWB/F/jfl1
-         tOX0mXfr8Is8+xw0FyIJDHCHM+7EjBNF+iwr2/sabkjo+RzWjFa4HXk1rYF4Ug54Zd3i
-         psJomYgEd//rjA5m9jk7cDquT0MUT/nj9GFEB7JpiwatlWBoDWCBmKKDo45ybD7xwH2U
-         3i8Fy5t/yKYMUu1McU8RhaFc3Pmk+/yWron5oQ23I8SCJ9dDvi5JoTb02Jl2Oqd7wRY1
-         KmDbBrwzVQiwb0+iRND6zIv6PYQIlKsyD1Q4Q4Y2k6wDC5gR6SR68LG+ssXW2pMADWP3
-         zVjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684152424; x=1686744424;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T8S8sAP8Fagl8K2YKg4fpZu8ftXd+FY79lvepC4kyJc=;
-        b=IqfL1cdi2epzAwjnbwrMmtAC0xsHNesVf8C+vCP28xCqBlDlx63kYesgDOpyzn0m1y
-         Mxch++AOW7k+ExA108thYghlESpgGPHnfS+28NRUu/fQmB09IWtg6xRTi+q8BBAmoY8x
-         vNKqQapSsOn7pZQzcS0yyOPfoM7vf8eiUC+qgBGNLfT/4mUoU4sSXXIL4+UF4ZPZfAp7
-         rREZsSjOd6wSZ3kfR1/ZmkdEiZmDV+mCigT+8+iqQzOZG9v4VmHwNLor7ezcQdJTYRGz
-         Vr3wNbtndACmhuMH23eDvSJnL5h9tq16TVVShKaJNprXxRlWFmnYBOnFdfpfW0KPOsQj
-         UWfQ==
-X-Gm-Message-State: AC+VfDxeAKJpdmOcWHhhuItnqXjsflYYgQGN/hBC9tjxiFqFy9t6mrIf
-        fKk6S26PmuOMmktP1/47qiU=
-X-Google-Smtp-Source: ACHHUZ4ImT+NseNLVCHJyYNbiz8/qaEbKm2bXboMyU3yUX3Tpo+dB8WlLspZbxMxQ3NzRnCu321l5g==
-X-Received: by 2002:a2e:9496:0:b0:2a7:9884:ad53 with SMTP id c22-20020a2e9496000000b002a79884ad53mr6689938ljh.48.1684152423793;
-        Mon, 15 May 2023 05:07:03 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id q18-20020a2e9692000000b002ac7a25c001sm3756668lji.24.2023.05.15.05.07.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 May 2023 05:07:03 -0700 (PDT)
-Message-ID: <0fb0ef4f-b310-0922-2823-e8737159bf26@gmail.com>
-Date:   Mon, 15 May 2023 15:07:02 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 1/3] drivers: fwnode: fix fwnode_irq_get_byname()
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
+        with ESMTP id S241567AbjEOMR0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 08:17:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F801BC;
+        Mon, 15 May 2023 05:17:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C9F7612E1;
+        Mon, 15 May 2023 12:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3B8C433EF;
+        Mon, 15 May 2023 12:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684153044;
+        bh=psCF5o/T20b4f4p5xyBgm+VFMGIPmacOnDTeHqQWNlg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=DV7A8KDiRX7WwTnraCg0WMuXXeMSe9TUv22YdSsAVSKkDRnrRfudnufc/OM9/+ozl
+         obmG+zcn/tFyzRWHecyoilsVCK2W8I6d3Bx40D9R2DvfgBdN+hraamiIZVpmt/DXJ6
+         v8FwPHPGzyqQJldVVKNUsf/5tpH4T01rz3N19EjUHjsQTUHWZXfhgM95gWhJptXt54
+         JRLZJ9DXthn4YHRVmvw/4QgKYjuH+RWYoO/ZLmP3+bIDgVN5EhrgUt5g6CWC86ZBaH
+         X2Eq1nJWrqIpJ/bJ0B0xMUIT5fCmeLDS7qzKiwZC2PnUg6BlBOwGEXCruVVez9Jn2M
+         A99ehA/OFv+Bg==
+Date:   Mon, 15 May 2023 13:17:17 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <cover.1683875389.git.mazziesaccount@gmail.com>
- <9dd75817886fbb2a0cc58e2248dbba52d8a6d908.1683875389.git.mazziesaccount@gmail.com>
- <20230513194003.5a27a841@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20230513194003.5a27a841@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2 0/8] Add PMI632 PMIC and RGB LED on
+ sdm632-fairphone-fp3
+Message-ID: <20230515121717.GC10825@google.com>
+References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Tue, 18 Apr 2023, Luca Weiss wrote:
 
-It was somewhat busy "Mother's day" weekend for me but now I'm back in 
-the business :)
-
-On 5/13/23 21:40, Jonathan Cameron wrote:
-> On Fri, 12 May 2023 10:53:00 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> Add support for the PMI632 PMIC in the spmi-gpio & qcom-lpg driver, add
+> the dtsi for the PMIC and enable the notification LED on fairphone-fp3.
 > 
->> The fwnode_irq_get_byname() does return 0 upon device-tree IRQ mapping
->> failure. This is contradicting the function documentation and can
->> potentially be a source of errors like:
->>
->> int probe(...) {
->> 	...
->>
->> 	irq = fwnode_irq_get_byname();
->> 	if (irq <= 0)
->> 		return irq;
->>
->> 	...
->> }
->>
->> Here we do correctly check the return value from fwnode_irq_get_byname()
->> but the driver probe will now return success. (There was already one
->> such user in-tree).
->>
->> Change the fwnode_irq_get_byname() to work as documented and according to
->> the common convention and abd always return a negative errno upon failure.
->>
->> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
->> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes in v2:
+> - Add qcom,pmi632-gpio to all the needed places in yaml
+> - Add patch documenting led path
+> - Pick up tags
+> - Drop vadc pre-scaling patch since it was applied
+> - Link to v1: https://lore.kernel.org/r/20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz
 > 
-> Whilst the docs don't contradict behaviour for fwnode_irq_get()
-> unlike the byname() variant, it does seem odd to fix it only in this
-> version rather than modifying them both not to return 0.
+> ---
+> Luca Weiss (8):
+>       dt-bindings: pinctrl: qcom,pmic-gpio: add PMI632
+>       pinctrl: qcom: spmi-gpio: Add PMI632 support
+>       dt-bindings: leds: qcom-lpg: Add compatible for PMI632 LPG block
+>       leds: qcom-lpg: Add support for PMI632 LPG
+>       dt-bindings: mfd: qcom-spmi-pmic: Add PMI632 compatible
+>       arm64: dts: qcom: Add PMI632 PMIC
+>       arm64: dts: qcom: sdm632-fairphone-fp3: Add notification LED
+>       Documentation: leds: Add "rgb:status" path
+> 
+>  .../devicetree/bindings/leds/leds-qcom-lpg.yaml    |   1 +
+>  .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |   1 +
+>  .../bindings/pinctrl/qcom,pmic-gpio.yaml           |   3 +
+>  Documentation/leds/well-known-leds.txt             |   1 +
+>  arch/arm64/boot/dts/qcom/pmi632.dtsi               | 165 +++++++++++++++++++++
+>  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts  |  29 ++++
+>  drivers/leds/rgb/leds-qcom-lpg.c                   |  15 ++
+>  drivers/pinctrl/qcom/pinctrl-spmi-gpio.c           |   1 +
+>  8 files changed, 216 insertions(+)
 
-I think you're right. I think I overlooked this because the whole thing 
-started as a documentation fix :)
+Please rebase anything that is yet to be applied and submit a [RESEND].
 
-> Is there clear logic why they should be different?
+Thank you.
 
-Not that I know of. I'll re-spin this with fwnode_irq_get() modified if 
-no-one objects. Thanks for pointing this out!
-
-Yours,
-	-- Matti
+> ---
+> base-commit: 3f49aa65798675341eb9d4f947c40558564b2e6d
+> change-id: 20230414-pmi632-4ae03225ae75
+> 
+> Best regards,
+> -- 
+> Luca Weiss <luca@z3ntu.xyz>
+ 
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Lee Jones [李琼斯]

@@ -2,79 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A80E702456
-	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 08:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2770C702481
+	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 08:24:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239238AbjEOGSc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 May 2023 02:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50678 "EHLO
+        id S238850AbjEOGX7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 May 2023 02:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238957AbjEOGS0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 02:18:26 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95B5D1FE0
-        for <linux-iio@vger.kernel.org>; Sun, 14 May 2023 23:18:23 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-50bc37e1525so22868230a12.1
-        for <linux-iio@vger.kernel.org>; Sun, 14 May 2023 23:18:23 -0700 (PDT)
+        with ESMTP id S238604AbjEOGX7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 02:23:59 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4051F2133
+        for <linux-iio@vger.kernel.org>; Sun, 14 May 2023 23:23:51 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9659f452148so2246618966b.1
+        for <linux-iio@vger.kernel.org>; Sun, 14 May 2023 23:23:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684131502; x=1686723502;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dsn+9t9oVdV6VsJksU9eG/4JyWhhvtoT+WJssMz6Kqk=;
-        b=IaxJvjTC9o2itPehQq+Fh3w60a6Z3j7hL5QJ+hrh3bl84WOTypS4In51mPjFyGiYm4
-         6mKPKxMqNLTmVFXDhDWpkCS6rt3kkAb8w2MAWvlrvefURGJyUdEsP2hSshZY9iH1G0kX
-         m402++3rcCuBf6fKZ8tjYe2JHo7EzyPrSTvHhK8hgPDe8oAeaAjzcNm54tMcwrktF8o5
-         FUfBduSosyBSqdMwYJGd5mCeJ8I3k0HpHG91DE1h/wh4pqBQn81vRU9zlRFVjZVu/VUa
-         sZg80j2zaiV+UNCx3prJ6VdIJ/hzwqjuKerymez+V1cl1M9q/IUw5azAvnqrfF7IkNbQ
-         0Vsg==
+        d=linaro.org; s=google; t=1684131830; x=1686723830;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aG3cuPsJbywJ2jZPWFDdB3wERfrKUjf/xc3vSM+XjiA=;
+        b=oAyA2+7weBfyce49Vcc0dHoW4JNj4/j1vZp9dYpY/Cz0nYTVubXvYyMUyZ63/T7E7c
+         UnuZTkeGxmBzU7tQkDtZFUzBJZWPWnvJXlQSPOjHDDHbroZOJ01TC8v06pbBMZR/9OtX
+         j9kN3aRB6zkq55ppjGAF/2YjdUuqLv3FKfzcAtvlFFuEnwES9vgWl753bQTHfqw5t463
+         FraBuoPqYo5ulrcxEtslTmYJEV4h89Ywgbc2FSovR8q6Q+83QkKe+7nNJKonCxvQOavg
+         ZRUA7hsnc8dQVn7WJQhZZX6S6q1TE0JYLEETmZSX1BnMCjLJ6DH62k8B0vpQPl42P8rp
+         ylxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684131502; x=1686723502;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dsn+9t9oVdV6VsJksU9eG/4JyWhhvtoT+WJssMz6Kqk=;
-        b=TG/Ttqwe90e42Us8g+y31vQfyXO128xY3Oh9UPE/QAs0YHEgUT8nBoXazhOQmJ4OfZ
-         ixOWhZCH9uk70l0Spq9Agw17wjLjV+Zx+c3VvQ7ttuSXxwcxEUDwWjHwgNUW+3rzJ7By
-         qCwUID4sqlQnHr4ee+soqZhmbyKQqC53YqpsKig/UuTOto5vJeu0a4ZUDFxLxLwo+AsF
-         JCTSXpzYiQaM6NZeD6H4OpUkxXfHUXC4pxOYm9/Ji5RJ6FycTCUvN9Xd3LSsx3DAJ+1Q
-         uXgVh2T0XTQrDuoFRsByOigG9OJnxuZ5vTyYRg2IT6eyenApMgrSC6KNR89PzlEn5GHC
-         ZVNw==
-X-Gm-Message-State: AC+VfDwVDMNVWpCZ4cXLhFEMguS/3clttjJRidlsUEw5/tzBJ5TpSnyq
-        MqDBOosLrCYeRKMJEr2HzGd/mg==
-X-Google-Smtp-Source: ACHHUZ4oVzGPtamm9pgZntqiXiY0OraZvsaEW1dnClbV9M3ieJqpsTcbFb10UO9ZQOKGAwkSNtvfgQ==
-X-Received: by 2002:a17:907:97c9:b0:96a:1348:7a27 with SMTP id js9-20020a17090797c900b0096a13487a27mr20117942ejc.12.1684131501689;
-        Sun, 14 May 2023 23:18:21 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:6470:25b8:7c2d:1992? ([2a02:810d:15c0:828:6470:25b8:7c2d:1992])
-        by smtp.gmail.com with ESMTPSA id d1-20020a170907272100b0094bb4c75695sm9056804ejl.194.2023.05.14.23.18.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 May 2023 23:18:21 -0700 (PDT)
-Message-ID: <1a72facf-422e-7a1a-032e-8760424b012d@linaro.org>
-Date:   Mon, 15 May 2023 08:18:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 2/2] iio: temperature: tmp006: Add OF device matching
- support
-Content-Language: en-US
-To:     Anup Sharma <anupnewsmail@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        u.kleine-koenig@pengutronix.de, andriy.shevchenko@linux.intel.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1684089997.git.anupnewsmail@gmail.com>
- <d0114a66fa3e9fb07a98dde3cc0bd87c526a3753.1684089997.git.anupnewsmail@gmail.com>
+        d=1e100.net; s=20221208; t=1684131830; x=1686723830;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aG3cuPsJbywJ2jZPWFDdB3wERfrKUjf/xc3vSM+XjiA=;
+        b=er2AAGumgEyeUPOLPFVo8iZe1snzcTX0eBZpyPjp3PZ9prL7x4HLX68ONE6hd733oJ
+         hN0LzbaF9IyZli51HLb1b4K0Zy/5m15kEdQkOmrRoXvpHzDw2+Ay54UFReoyczdMMmc9
+         FJr4gfi1PaQX5ahj+org8vWgsWYI8668b7YneOm5TkrF9jEphs7JkUncThOckHfPqaf8
+         hoEeSI7E4aYKAVvXye0WmcEaVH3o6/PkMTgnNm8lp3at6o9q09COQ3KJVUCUwE3sGkBM
+         dirHqQmRlkcwO9TKONA1WBg7YNToMYcuGcdYZl0iqcLTo4NRkz/5LZfAjAsScS/HZwUn
+         lcSg==
+X-Gm-Message-State: AC+VfDyVvKZcJh08W8pPw/02Rb+0Y90dGpn3lsw68igDkHBIqVDBHtNq
+        7kwDAdKWTP2IsBPtCSS8YaeFwQ==
+X-Google-Smtp-Source: ACHHUZ5gCGS8/MNRHuJSz5Pca9SEJ6gjisklu2kr+9uwRmmyoigsefr6FNuCM7gRhYo9W4I3nGrfmA==
+X-Received: by 2002:a17:907:72cc:b0:969:9118:a98f with SMTP id du12-20020a17090772cc00b009699118a98fmr23725549ejc.10.1684131829753;
+        Sun, 14 May 2023 23:23:49 -0700 (PDT)
+Received: from krzk-bin ([2a02:810d:15c0:828:6470:25b8:7c2d:1992])
+        by smtp.gmail.com with ESMTPSA id hx16-20020a170906847000b0094e4eabb402sm8997368ejc.128.2023.05.14.23.23.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 May 2023 23:23:49 -0700 (PDT)
+Date:   Mon, 15 May 2023 08:23:47 +0200
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <d0114a66fa3e9fb07a98dde3cc0bd87c526a3753.1684089997.git.anupnewsmail@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+To:     Anup Sharma <anupnewsmail@gmail.com>
+Cc:     Peter Meerwald <pmeerw@pmeerw.net>, u.kleine-koenig@pengutronix.de,
+        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        andriy.shevchenko@linux.intel.com,
+        Conor Dooley <conor+dt@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: temperature: Add support for tmp006
+Message-ID: <20230515062347.gwiarus7rlfywew4@krzk-bin>
+References: <cover.1684089997.git.anupnewsmail@gmail.com>
+ <e6e56cd513625c76435f444f13c640f9556fb2bc.1684089997.git.anupnewsmail@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e6e56cd513625c76435f444f13c640f9556fb2bc.1684089997.git.anupnewsmail@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -83,52 +77,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 14/05/2023 21:03, Anup Sharma wrote:
-> Adds an of_device_id table entry to the driver, enabling
-> device matching through device tree. With this update, the driver
-> can now match devices using both the i2c_device_id entry and the
-> newly added of_device_id table.
+On Mon, 15 May 2023 00:31:59 +0530, Anup Sharma wrote:
+> Add devicetree binding document for TMP006, IR thermopile sensor.
 > 
 > Signed-off-by: Anup Sharma <anupnewsmail@gmail.com>
-> ---
->  drivers/iio/temperature/tmp006.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
-> index cdf08477e63f..2b1782263cc9 100644
-> --- a/drivers/iio/temperature/tmp006.c
-> +++ b/drivers/iio/temperature/tmp006.c
-> @@ -17,6 +17,7 @@
->  #include <linux/module.h>
->  #include <linux/pm.h>
->  #include <linux/bitops.h>
-> +#include <linux/mod_devicetable.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -272,15 +273,22 @@ static int tmp006_resume(struct device *dev)
->  
->  static DEFINE_SIMPLE_DEV_PM_OPS(tmp006_pm_ops, tmp006_suspend, tmp006_resume);
->  
-> +static const struct of_device_id tmp006_of_match[] = {
-> +	{ .compatible = "ti,tmp006", },
-> +	{ }
-> +};
-> +
+> Changes:
+> V1 -> V2: Removed redundant dt-binding from subject.
+>           Added supply information.
+>           Adhere to the generic node name.
+> ---
+>  .../bindings/iio/temperature/ti,tmp006.yaml   | 42 +++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp006.yaml
+> 
 
-Drop blank line.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-> +MODULE_DEVICE_TABLE(of, tmp006_of_match);
-> +
->  static const struct i2c_device_id tmp006_id[] = {
->  	{ "tmp006", 0 },
->  	{ }
->  };
-> -MODULE_DEVICE_TABLE(i2c, tmp006_id);
+yamllint warnings/errors:
 
-This should stay.
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/iio/temperature/ti,tmp006.example.dts:25.13-14 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:419: Documentation/devicetree/bindings/iio/temperature/ti,tmp006.example.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1512: dt_binding_check] Error 2
 
+See https://patchwork.ozlabs.org/patch/1781058
 
-Best regards,
-Krzysztof
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.

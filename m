@@ -2,200 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1AFF70251E
-	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 08:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224B4702682
+	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 09:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240034AbjEOGo3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 May 2023 02:44:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
+        id S235694AbjEOH6e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 May 2023 03:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240063AbjEOGo0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 02:44:26 -0400
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A25B8124;
-        Sun, 14 May 2023 23:44:19 -0700 (PDT)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 5C2E8240009;
-        Mon, 15 May 2023 06:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1684133058;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BPwTE4rB3CorEdCyedZeKumEN4c9XLY/wx43h2Qazkg=;
-        b=AyM5KFjBAESikv1MOL4fL4d91/u57UW/m1u+gjWTpXc3Sxp2B7GfwWdBaaL+306RT4PMqH
-        xMOrSUy2xhQ9XfFKcXWQCKfDNJp8/F1eKw84dU9VQWDEPrinegIRi7jogSRwjb5SKYxPXd
-        zAP5qz1TziuRv+tNXCCRasrCQmm+P3vC+RT7Zug50u5L2CyJkJ00tw6cG9A+dYvHtJY5ZO
-        trqgCvvA0pd4ylDnjG5kzoYGwP7oR66nG7iWIEjO4Zpc9gYncbdycCqThfhAqL093i8KIj
-        2KNOFuYjaICAqQKVrFWUOWv+jTR1lvr9TTOvvo0Vtn/dahQajAycaL703hXVYw==
-Date:   Mon, 15 May 2023 08:44:16 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 2/3] iio: potentiometer: Add support for the Renesas
- X9250 potentiometers
-Message-ID: <20230515084416.399f47c8@bootlin.com>
-In-Reply-To: <20230514181912.314ef781@jic23-huawei>
-References: <20230509160852.158101-1-herve.codina@bootlin.com>
-        <20230509160852.158101-3-herve.codina@bootlin.com>
-        <20230513193525.43a4475f@jic23-huawei>
-        <20230514163233.0c048256@bootlin.com>
-        <20230514181912.314ef781@jic23-huawei>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+        with ESMTP id S239693AbjEOH63 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 03:58:29 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B8B20171F;
+        Mon, 15 May 2023 00:55:38 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCC472F4;
+        Mon, 15 May 2023 00:56:22 -0700 (PDT)
+Received: from [10.57.83.208] (unknown [10.57.83.208])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 830B33F67D;
+        Mon, 15 May 2023 00:55:35 -0700 (PDT)
+Message-ID: <89ad5070-db72-7bf1-5d86-a89fea54e789@arm.com>
+Date:   Mon, 15 May 2023 08:55:33 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 1/4] devres: Provide krealloc_array
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux@roeck-us.net,
+        michal.simek@amd.com, Jonathan.Cameron@huawei.com,
+        Jonathan Corbet <corbet@lwn.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jiri Slaby <jirislaby@kernel.org>, linux-doc@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20230509094942.396150-1-james.clark@arm.com>
+ <20230509094942.396150-2-james.clark@arm.com>
+ <2023051340-sinuous-darkroom-2497@gregkh>
+Content-Language: en-US
+From:   James Clark <james.clark@arm.com>
+In-Reply-To: <2023051340-sinuous-darkroom-2497@gregkh>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 May 2023 18:19:12 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
-
-> On Sun, 14 May 2023 16:32:33 +0200
-> Herve Codina <herve.codina@bootlin.com> wrote:
-> 
-> > Hi Jonathan,
-> > 
-> > On Sat, 13 May 2023 19:35:25 +0100
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> >   
-> > > On Tue,  9 May 2023 18:08:51 +0200
-> > > Herve Codina <herve.codina@bootlin.com> wrote:
-> > >     
-> > > > The Renesas X9250 integrates four digitally controlled potentiometers.
-> > > > On each potentiometer, the X9250T has a 100 kOhms total resistance and
-> > > > the X9250U has a 50 kOhms total resistance.
-> > > > 
-> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>      
-> > > 
-> > > As I only noticed one trivial thing I made the change whilst applying.
-> > > diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiometer/x9250.c
-> > > index 3d4ca18d1f14..7e145d7d14f1 100644
-> > > --- a/drivers/iio/potentiometer/x9250.c
-> > > +++ b/drivers/iio/potentiometer/x9250.c
-> > > @@ -176,10 +176,7 @@ static int x9250_probe(struct spi_device *spi)
-> > >  
-> > >         x9250 = iio_priv(indio_dev);
-> > >         x9250->spi = spi;
-> > > -       x9250->cfg = device_get_match_data(&spi->dev);
-> > > -       if (!x9250->cfg)
-> > > -               x9250->cfg = &x9250_cfg[spi_get_device_id(spi)->driver_data];
-> > > -
-> > > +       x9250->cfg = spi_get_device_match_data(spi);
-> > >         x9250->wp_gpio = devm_gpiod_get_optional(&spi->dev, "wp", GPIOD_OUT_LOW);
-> > >         if (IS_ERR(x9250->wp_gpio))
-> > >                 return dev_err_probe(&spi->dev, PTR_ERR(x9250->wp_gpio),
-> > >     
-> > 
-> > Are you sure about your modification ?
-> > 
-> > I am not sure (maybe I am wrong) that
-> >   x9250->cfg = spi_get_device_match_data(spi);
-> > is equivalent to
-> >   x9250->cfg = &x9250_cfg[spi_get_device_id(spi)->driver_data];
-> > 
-> > The spi_get_device_id(spi)->driver_data value I used is a simple integer
-> > (X9250T or X9250U) and not the x9250_cfg item.
-> > Maybe the x9250_id_table should be modified to replace X9250T by
-> > &x9250_cfg[X9250T] to have your modification working.  
-> 
-> Excellent point.  I'm was  clearly half asleep. The mod should have included
-> switching them over to be pointers.
-> 
-> > 
-> > The data defined in the driver are the following:
-> > --- 8< ---
-> > static const struct x9250_cfg x9250_cfg[] = {
-> > 	[X9250T] = { .name = "x9250t", .kohms =  100, },
-> > 	[X9250U] = { .name = "x9250u", .kohms =  50, },
-> > };
-> > 
-> > ...
-> > 
-> > static const struct of_device_id x9250_of_match[] = {
-> > 	{ .compatible = "renesas,x9250t", &x9250_cfg[X9250T]},
-> > 	{ .compatible = "renesas,x9250u", &x9250_cfg[X9250U]},
-> > 	{ }
-> > };
-> > MODULE_DEVICE_TABLE(of, x9250_of_match);
-> > 
-> > static const struct spi_device_id x9250_id_table[] = {
-> > 	{ "x9250t", X9250T },
-> > 	{ "x9250u", X9250U },  
-> So these should be (kernel_ulong_t)&x9250_cfg[X9250T] etc for the data.
-> I've tweaked it so that is now the case. Oops and thanks for sanity checking.
-> Sometimes we see what we expect to see rather than what is there.
-> 
-> Tweak on top of original tweak is:
-> diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiometer/x9250.c
-> index 7e145d7d14f1..0cc7f72529be 100644
-> --- a/drivers/iio/potentiometer/x9250.c
-> +++ b/drivers/iio/potentiometer/x9250.c
-> @@ -198,8 +198,8 @@ static const struct of_device_id x9250_of_match[] = {
->  MODULE_DEVICE_TABLE(of, x9250_of_match);
->  
->  static const struct spi_device_id x9250_id_table[] = {
-> -       { "x9250t", X9250T },
-> -       { "x9250u", X9250U },
-> +       { "x9250t", (kernel_ulong_t)&x9250_cfg[X9250T] },
-> +       { "x9250u", (kernel_ulong_t)&x9250_cfg[X9250U] },
->         { }
->  };
-> 
-> 
-
-Pefect, thanks.
-
-Also can you add a last modification (my bad, I should see that before):
-
- static const struct of_device_id x9250_of_match[] = {
--       { .compatible = "renesas,x9250t", &x9250_cfg[X9250T]},
--       { .compatible = "renesas,x9250u", &x9250_cfg[X9250U]},
-+       { .compatible = "renesas,x9250t", .data = &x9250_cfg[X9250T]},
-+       { .compatible = "renesas,x9250u", .data = &x9250_cfg[X9250U]},
-        { }
- };
-
-I think adding '.data = ' would be better and avoid to have some quite tricky
-bug in case of struct of_device_id modification.
-
-Regards,
-Hervé
 
 
-> Jonathan
+On 13/05/2023 12:04, Greg KH wrote:
+> On Tue, May 09, 2023 at 10:49:38AM +0100, James Clark wrote:
+>> There is no krealloc_array equivalent in devres. Users would have to
+>> do their own multiplication overflow check so provide one.
+>>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Signed-off-by: James Clark <james.clark@arm.com>
+>> ---
+>>  Documentation/driver-api/driver-model/devres.rst |  1 +
+>>  include/linux/device.h                           | 11 +++++++++++
+>>  2 files changed, 12 insertions(+)
+>>
+>> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+>> index 4249eb4239e0..8be086b3f829 100644
+>> --- a/Documentation/driver-api/driver-model/devres.rst
+>> +++ b/Documentation/driver-api/driver-model/devres.rst
+>> @@ -364,6 +364,7 @@ MEM
+>>    devm_kmalloc_array()
+>>    devm_kmemdup()
+>>    devm_krealloc()
+>> +  devm_krealloc_array()
+>>    devm_kstrdup()
+>>    devm_kstrdup_const()
+>>    devm_kvasprintf()
+>> diff --git a/include/linux/device.h b/include/linux/device.h
+>> index 472dd24d4823..58f4f5948edb 100644
+>> --- a/include/linux/device.h
+>> +++ b/include/linux/device.h
+>> @@ -223,6 +223,17 @@ static inline void *devm_kcalloc(struct device *dev,
+>>  {
+>>  	return devm_kmalloc_array(dev, n, size, flags | __GFP_ZERO);
+>>  }
+>> +static inline __realloc_size(3, 4) void * __must_check
 > 
-> > 	{ }
-> > };
-> > MODULE_DEVICE_TABLE(spi, x9250_id_table);
-> > 
-> > static struct spi_driver x9250_spi_driver = {
-> > 	.driver  = {
-> > 		.name = "x9250",
-> > 		.of_match_table = x9250_of_match,
-> > 	},
-> > 	.id_table = x9250_id_table,
-> > 	.probe  = x9250_probe,
-> > };
-> > --- 8< ---
-> > 
-> > 
-> > Best regards,
-> > Hervé
-> >   
+> Shouldn't you have a blank line before this one?
+
+I was going for consistency with the rest of this section which doesn't
+have newlines between the functions for some reason. I can add one and
+resubmit but it might look a bit out of place?
+
 > 
+>> +devm_krealloc_array(struct device *dev, void *p, size_t new_n, size_t new_size, gfp_t flags)
+>> +{
+>> +	size_t bytes;
+>> +
+>> +	if (unlikely(check_mul_overflow(new_n, new_size, &bytes)))
+>> +		return NULL;
+>> +
+>> +	return devm_krealloc(dev, p, bytes, flags);
+>> +}
+> 
+> I dislike how we have to keep copying the "real" functions (i.e.
+> krealloc_array) into something like this, but I can't think of a better
+> way to do it.
+> 
+
+Maybe something could be done with some macro magic, but it would
+probably end up being worse than just copying them and would affect the
+real ones as well. So yeah I can't think of any easy gains either.
+
+Thanks
+James
+
+> thanks,
+> 
+> greg k-h

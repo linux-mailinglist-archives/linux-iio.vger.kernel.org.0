@@ -2,96 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5813E7056C7
-	for <lists+linux-iio@lfdr.de>; Tue, 16 May 2023 21:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E242E705AE3
+	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 01:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjEPTIl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 May 2023 15:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41510 "EHLO
+        id S230403AbjEPXCq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 May 2023 19:02:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjEPTIk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 May 2023 15:08:40 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A518E7A;
-        Tue, 16 May 2023 12:08:39 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-96aadfb19d7so988358566b.2;
-        Tue, 16 May 2023 12:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1684264118; x=1686856118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/WtzMLu63pIrTGFp+PcKVzZjdLbw2sc1wB016+LNuaU=;
-        b=UTDLK4JBXJdCSsteU249UG5b0kr62BoJEtt/hUKzhj09Rr78qyUa3slTquGZhGkZfM
-         RV3BAbyoQTatQUS66ycgD0Vgk/MwBEo/LrszGnPA9OWAD9FNg6v/JQa8WB1fssf6MB18
-         q1xJj4lraxXhLckehH06aljsrrPcycuHHoJTYu4gWc3t/pmegbfL2HpkvcnQClUNfO3m
-         ixnRtgW8ffIddpC9fdnetEZyCUk9yhhv7tPI5TCVK7/rEFglF9IfoQ3K0n5ekMpl29qC
-         r+KM2Dd4DuhPXWoHd4Ee3jO9SEfR6JF5FxTgLQx/pXso3EqL6ZYuRzWdvZelCYeL4oDa
-         Ge0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684264118; x=1686856118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/WtzMLu63pIrTGFp+PcKVzZjdLbw2sc1wB016+LNuaU=;
-        b=eDeeQj9BQsYmb4e5v5Xbq6UE8a2aNJOsx3nC47aG1S0P29DuMu9yViZYRKdjqbFft2
-         Nck1DRx4S05hcfmY7zLM1G3n5gIyb9IoSgmVKDMwFRbgWCeWbnZJYMeQ+86NFRzevSjI
-         adL8ie3VjFtxV+qzHPaIizUrAnQCubxq9Jvz7uOcEJ7ztZ28j6poFeMcCPIVZj3B1hPT
-         m+Si0k8jgzLPxqhw2jz4alTsc5FKkzNNNStJ9KEzIaIYRgp2bsbfOmpUQLnB8d9/cZRK
-         NLzH5AZW1Z55HJVe8qGKJ0C9cr55p0fjuZGvu8hLtjJ+rwwt1xocg4MYgJNrCDveqgg0
-         3bEw==
-X-Gm-Message-State: AC+VfDy+pok/jkDU3FSsjBISsYTGB4EoKBma6rdW0asF+dHQI3OC3OEM
-        snk3aSNejg+/dUcHSjoO3pvDz+nu6QiC2URThi+2ecGE
-X-Google-Smtp-Source: ACHHUZ4eC8eESbfjQaOZgv2ujRD9L5D7PpQo/8swdsxdY5pdDtBYJDm7UhynpXSDjE2x5IatL1oZ+1rsKe2dYgWqwRg=
-X-Received: by 2002:a17:907:c1e:b0:94f:250b:2536 with SMTP id
- ga30-20020a1709070c1e00b0094f250b2536mr36485052ejc.28.1684264117702; Tue, 16
- May 2023 12:08:37 -0700 (PDT)
+        with ESMTP id S229814AbjEPXCp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 May 2023 19:02:45 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E442972B6;
+        Tue, 16 May 2023 16:02:43 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:0:21ea:73f6:2283:f432:3936])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3AB98660322D;
+        Wed, 17 May 2023 00:02:32 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1684278162;
+        bh=zxx/0uLHIiU/dV4bb646/T74e4BDMJ4Bb1ejBv5KV0w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kduFv+PCqztIKtviaxymKsO7g3OzFC6kl3N+qEgVpTWLRW7wRfH7HlRuJhfPhzYOY
+         gGUPzcy6uK1oC6LzCB6PDtyeQkPj2A8fGIdHeyElTpUvWZ9GzXHvxC+j82HQw6h5cO
+         vR4R2Pb7NhKORf16ioZaS6VFPVuE76pNzbp/+XqKAo+SVah6G24U9SbuUh50r/uUT8
+         FNf9Dkh+7Xg4fvBnG+f9B0tiWAQC+ppFPPCjOoNQvKl4SslOGs4w5rIFAADAP5Tq2i
+         T+TIlGtUWNQc1+QWEghzYxjamLLwnlHQHHUWeIUCehI/vsOejaLf0PXmtM3kR2hF3o
+         Sqtc/4rU0Xz6g==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de, heiko@sntech.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        sebastian.reichel@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, gustavo.padovan@collabora.com,
+        serge.broslavsky@collabora.com,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH 0/7] RK3588 ADC support
+Date:   Wed, 17 May 2023 04:30:44 +0530
+Message-Id: <20230516230051.14846-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230515210545.2100161-1-gnstark@sberdevices.ru>
-In-Reply-To: <20230515210545.2100161-1-gnstark@sberdevices.ru>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 16 May 2023 21:08:26 +0200
-Message-ID: <CAFBinCCc+t7Ks6fqz38cVrufPRFdxFgC9Qp+JhcM1KfD6pupTg@mail.gmail.com>
-Subject: Re: [PATCH v1] meson saradc: fix clock divider mask length
-To:     George Stark <gnstark@sberdevices.ru>
-Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        andy.shevchenko@gmail.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@sberdevices.ru
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi George,
+This patch series adds ADC support for RK3588 and updates
+the DT bindings for the same.
 
-thank you for this patch!
+To test ADC support on Rock 5B board, a voltage divider circuit
+was created using the gpio pin 22 ( SARADC_IN4 ) and few more
+tests were ran for testing the buffer and trigger using the
+iio_generic_buffer tool.
 
-On Mon, May 15, 2023 at 11:06=E2=80=AFPM George Stark <gnstark@sberdevices.=
-ru> wrote:
->
-> From: George Stark <GNStark@sberdevices.ru>
->
-> According to datasheets of supported meson SOCs
-> length of ADC_CLK_DIV field is 6 bits long
-I have a question about this sentence which doesn't affect this patch
-- it's only about managing expectations:
-Which SoC are you referring to?
-This divider is only relevant on older SoCs that predate GXBB (S905).
-To my knowledge all SoCs from GXBB onwards place the divider in the
-main or AO clock controller, so this bitmask is irrelevant there.
+Shreeya Patel (7):
+  iio: adc: rockchip_saradc: Add support for RK3588
+  iio: adc: rockchip_saradc: Make use of devm_clk_get_enabled
+  iio: adc: rockchip_saradc: Use of_device_get_match_data
+  iio: adc: rockchip_saradc: Match alignment with open parenthesis
+  iio: adc: rockchip_saradc: Use dev_err_probe
+  arm64: dts: rockchip: Add DT node for ADC support in RK3588
+  dt-bindings: iio: adc: Add rockchip,rk3588-saradc string
 
-> Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Aml=
-ogic Meson SoCs")
-> Signed-off-by: George Stark <GNStark@sberdevices.ru>
-Since my question above doesn't affect this patch:
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+ .../bindings/iio/adc/rockchip-saradc.yaml     |   1 +
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi     |  12 +
+ drivers/iio/adc/rockchip_saradc.c             | 260 ++++++++++--------
+ 3 files changed, 164 insertions(+), 109 deletions(-)
+
+-- 
+2.30.2
+

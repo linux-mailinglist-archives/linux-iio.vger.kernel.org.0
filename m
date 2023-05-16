@@ -2,81 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5DE704A85
-	for <lists+linux-iio@lfdr.de>; Tue, 16 May 2023 12:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A4E704B55
+	for <lists+linux-iio@lfdr.de>; Tue, 16 May 2023 13:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbjEPK2h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 May 2023 06:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56090 "EHLO
+        id S232531AbjEPLBI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 May 2023 07:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230292AbjEPK2g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 May 2023 06:28:36 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED8079D;
-        Tue, 16 May 2023 03:28:34 -0700 (PDT)
-Received: from localhost ([31.220.116.19]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N3Xvv-1q6wcL3nDH-010eR4; Tue, 16 May 2023 12:28:19 +0200
-Date:   Tue, 16 May 2023 12:28:18 +0200
-From:   Andreas Klinger <ak@it-klinger.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: pressure: Honeywell mprls0025pa pressure
- sensor
-Message-ID: <ZGNawohZTDhPazil@arbad>
-References: <ZFUCf059+PSR+3Wb@arbad>
- <ZFUC/3zBFQRBsYUk@arbad>
- <20230506170420.71bead77@jic23-huawei>
+        with ESMTP id S232147AbjEPLBF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 May 2023 07:01:05 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C401F271E;
+        Tue, 16 May 2023 04:01:03 -0700 (PDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34GAjD5X030933;
+        Tue, 16 May 2023 11:00:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=g0ju0G5ljSQcFY9TtrqbUkpQaLS3HXWrWpg5v298c98=;
+ b=NB9OOEL8EoUaFMgbvnmpC0VdJ5PGFbIzGoawOvm/M0DZhB03CO0SP0UVFqncjvo/+VTT
+ 7TIymBZYdN6vk9KucMs7FMTcgs64CcHcNQX0FZ+L6yuGxbp14BqJBBYYplDryWy0k3XN
+ jsukUZm3b6328GYAIRkly0Hu9SmqPTNPih3smhiVAn2BdCEGQlg99rIWYwvh2KoqcGNo
+ O9aPR8L6uHXIAAmv6/J2tDqlOlyw/iA4tNFlYlvAEKKl8uDIKdAJpquudC6BLTYix1Np
+ bVbAOxyrQtpxi/MdEXjTsKGAHf/xxfl2XrplZKG9f/irlAHF2fPbyStWDgHovfga7X1b RA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm8bn0dua-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 11:00:48 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34GAkJGq001407;
+        Tue, 16 May 2023 11:00:48 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm8bn0dt7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 11:00:48 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G5XBP3004842;
+        Tue, 16 May 2023 11:00:46 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+        by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qj264sjvc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 May 2023 11:00:46 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+        by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34GB0h5335258648
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 16 May 2023 11:00:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C9FA62004F;
+        Tue, 16 May 2023 11:00:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6B12220040;
+        Tue, 16 May 2023 11:00:43 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Tue, 16 May 2023 11:00:43 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        William Breathitt Gray <william.gray@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v4 05/41] counter: add HAS_IOPORT dependencies
+Date:   Tue, 16 May 2023 13:00:01 +0200
+Message-Id: <20230516110038.2413224-6-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230516110038.2413224-1-schnelle@linux.ibm.com>
+References: <20230516110038.2413224-1-schnelle@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230506170420.71bead77@jic23-huawei>
-X-Provags-ID: V03:K1:Bd0SdWuyGMZ0Xl9NCXajCiIF4veXtIMrhG4X94KnSmKcBVJV++x
- vXSEiId2lKnB+89CFB6ZRoJyVJnFcASUCGmnpxeWfLwdy0GksCYE1A4yNS4+GDDcz5+/wax
- okXAZMIv2RRTY6wxNouDUlMBM26u7vo3fyH5WjqsPte82BbISslolYleUr5zZqjHl3Hp1p0
- 9St9RP5IMRhOlY/y+gvPg==
-UI-OutboundReport: notjunk:1;M01:P0:xQDyem14oOc=;XddJOI4rFIaxukEi9U5MCloXRWW
- UoRH3UWxE6uqmX/zSOdGE/1hUL+AL5yqRiQGrfq6M+Rwo/yRWeD8vofIN8xF6y5A69in8PAFg
- LYjIO4nXGsztQFhElNDUGvtSrBNVNVhCGUXd8S/MWrAZrVUqY33xbmJTVaTvfd9NJ4t9PcfUe
- WCrVjzL2ERdkj0Sn0gumKjwFa2V0sxwQMg4n5LtCi5ppg4Sd0AvS9SPR0hRiELuBUYn2gytHz
- GFBXJuZdSCbthbxmnF7bpAZbCzzTYMeIDpiu+/KqH2LQEdxqShzJhDq6N1YrPStPGOL7DURDv
- epTwlgocm2HCixwx5jtBg+LxZjbD7JYnAkfLYGgFn3gRowa0j3ifQgGVXps4ZnMywTuQUlpP4
- v2yoYURCCf2ERYZss2rGs2eTzq3tIpqg1lBYklO47m72MiT3Td76nZ3Ebbi+3+DYe034bMhFN
- H52/al1mnZBEg9JHRmi+qY45VM4JV5RNaKgNd+L80Tk1d9IrnDJtSO3XjLj759ZZNpHM1qIr+
- 3QDFhOa+MY6wQXEgsfgNggbmiaB6qb4mnU5KywaAwnVw2CjjvT0JhF/7oWe8s9rBTc2L8l94N
- wHev/g0TD7rE8ny1+BMFirmp4+ctNcWbJZYruwEVN+LryDNd+vdEr++VKFw6Mhavk38qAJPWt
- /nG+s4IPFWI+w1EuCQh+sqzdxp1yYpOG88GrLhG33g==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QJRLOc8_rHg0SmXXxM_2xlN7o5l25m5T
+X-Proofpoint-ORIG-GUID: UruyIM3AnuCGMs1Ap5IVTz2b0GNYDxFo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-16_04,2023-05-16_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 impostorscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 spamscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305160089
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+not being declared. We thus need to add HAS_IOPORT as dependency for
+those drivers using them.
 
-thanks for your review. I have one comment.
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+---
+Note: The HAS_IOPORT Kconfig option was added in v6.4-rc1 so
+      per-subsystem patches may be applied independently
 
-Jonathan Cameron <jic23@kernel.org> schrieb am Sa, 06. Mai 17:04:
-> > +	int                     scale;          /* int part of scale */
-> > +	int                     scale2;         /* nano part of scale */
-> > +	int                     offset;         /* int part of offset */
-> > +	int                     offset2;        /* nano part of offset */
-> > +	struct gpio_desc	*gpiod_reset;	/* reset */
-> > +	int			irq;		/* end of conversion irq */
-> 
-> Only needed in probe, no need for a copy in here.
+ drivers/counter/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-It's also used in mpr_read_pressure() to distinguish the two possible operation
-modes:
-- waiting for an interrupt
-- reading in a loop until status indicates data ready
+diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+index 4228be917038..e65a2bf178b8 100644
+--- a/drivers/counter/Kconfig
++++ b/drivers/counter/Kconfig
+@@ -15,6 +15,7 @@ if COUNTER
+ config 104_QUAD_8
+ 	tristate "ACCES 104-QUAD-8 driver"
+ 	depends on (PC104 && X86) || COMPILE_TEST
++	depends on HAS_IOPORT_MAP
+ 	select ISA_BUS_API
+ 	help
+ 	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
+-- 
+2.39.2
 
-Andreas

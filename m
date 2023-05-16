@@ -2,106 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1BCD704009
-	for <lists+linux-iio@lfdr.de>; Mon, 15 May 2023 23:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD5A7044B3
+	for <lists+linux-iio@lfdr.de>; Tue, 16 May 2023 07:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245414AbjEOVp7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 May 2023 17:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39352 "EHLO
+        id S229940AbjEPFaJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 May 2023 01:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243404AbjEOVp6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 May 2023 17:45:58 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE855127;
-        Mon, 15 May 2023 14:45:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684187158; x=1715723158;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Prwu9Uk+PDd3I1x2mRYVxlayRK7xUMoPvr/NmZgu5XA=;
-  b=herFdI0zKldh2C+7W4dWxSAOIIy8ePUFZzayByxlfdDa6UidJU7vXYIN
-   yp2WC1Uet8mEeknOOlpjPbri3hGC3/nIYGl1IfKwhBE7rsRWYfoZ55yaY
-   2JaCv9/jnIJyFtbc8qzCYHdZQBfA0hCwxceKiRPRO1+D7s1mpA79pOUNC
-   wpskb8SXuVqqIl9mzhiuXq3ITSGJFIdptR9gOcAXbqZl+lPZ0wgQgP0f+
-   GQq4+by4zN9hQ3KVBnZXXMEP3ujRBp8H1ki83z+/t8lNfzrYxFKDZ3J7+
-   BYyF/qS63Pt9BRjKcSKOfECHKbWxnwCvdKO1Qor6g4xyoylv5bxOqfl/g
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="351352123"
-X-IronPort-AV: E=Sophos;i="5.99,277,1677571200"; 
-   d="scan'208";a="351352123"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2023 14:45:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="678581705"
-X-IronPort-AV: E=Sophos;i="5.99,277,1677571200"; 
-   d="scan'208";a="678581705"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 15 May 2023 14:45:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pyg0u-00075J-2m;
-        Tue, 16 May 2023 00:45:52 +0300
-Date:   Tue, 16 May 2023 00:45:52 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Anup Sharma <anupnewsmail@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: temperature: tmp006: Add OF device matching
- support
-Message-ID: <ZGKoEAgJguAINlaW@smile.fi.intel.com>
-References: <cover.1684089997.git.anupnewsmail@gmail.com>
- <d0114a66fa3e9fb07a98dde3cc0bd87c526a3753.1684089997.git.anupnewsmail@gmail.com>
+        with ESMTP id S229543AbjEPFaI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 May 2023 01:30:08 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883CF3588;
+        Mon, 15 May 2023 22:30:07 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ac7462d9f1so146877061fa.2;
+        Mon, 15 May 2023 22:30:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684215006; x=1686807006;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tScch3vM9yjN7IkXBZXndtJvKhAlbmhByTtRNRsl82o=;
+        b=aVdPof7CuKQ1PM8AtiShK/xXyFJgqUy+JaaXJSI2GMl0Ns4LQzDT0F8vZooGSinwrN
+         1TkUrn+ngU8Rzv+093p2UHPJQ4m8+oBQz01ioy9lVoJMyImR8S/TsJQR4XlP5tRIngAV
+         X/gOy0h+cHlR2QmsY0Pvw9GZ8MWv40aWG0iPEgOFui0cV4yMcKJio4ccwNFXeeHy5JQJ
+         +h7nXEVI2LX3CDw1Xg0c85SpMPcI8AH2h+oJygT5SmTdocV9NKNJa5fOwss4Kkyz1DbI
+         b0wRYrLMABAGppb+Er/4LoNYJXUk5/fo15hMY0RecSs8bWkayJhvN6XyHsu0h2mTceQ/
+         C4fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684215006; x=1686807006;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tScch3vM9yjN7IkXBZXndtJvKhAlbmhByTtRNRsl82o=;
+        b=O3s2s5ZG7aXEhm+Tp7AIa5Nh5jPNrQWq7gs0YV08lVJBKRWhKYtiTG+md3iq/gLb8N
+         2AIkJiF4Xn4T22vTA3FWMCddkGziH38Q3ur/tLD77Q3i4HNsCIHMOg1MFpZ5EXGBr+f/
+         sfDZdZAoFlzYrUBoTIOYpE7eRFZXvUMY7netDrQRoSKOzn14YyRFEwOGs8ZvrfVmhuMM
+         bLOJscgOAIBskp0CncpuNOiCf+Jhig5WCnkyjlTZuuG1R4Ky9SqCvuBswZ8RBcnC2LLQ
+         Fm/dqhrWfjRoTs2khhYXfmU1uVW9wA3cPy1F6ugP2WxMMABlvw5GvGRtZsOfW/BQ8Se5
+         NgDQ==
+X-Gm-Message-State: AC+VfDwtnUWg9fGzfQ6qJb9Jji+b5ksQcoja+lfgBTnTDBV+sbeLnQJF
+        9at9D514DXbb106Vosuy3Gs=
+X-Google-Smtp-Source: ACHHUZ71m/9pOxyYBvVh8mxfhyPiM/bP/wdJ3ylgdP3znusrgrfBibR18YvgwaG3zCkRE41Ip51D7Q==
+X-Received: by 2002:a2e:8051:0:b0:2ac:91c5:76c with SMTP id p17-20020a2e8051000000b002ac91c5076cmr8186052ljg.18.1684215005486;
+        Mon, 15 May 2023 22:30:05 -0700 (PDT)
+Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id w5-20020a2e9985000000b002ad8fc8dda6sm3412572lji.17.2023.05.15.22.30.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 May 2023 22:30:05 -0700 (PDT)
+Message-ID: <7d6712e4-ae37-4e31-6087-5df89980a5c1@gmail.com>
+Date:   Tue, 16 May 2023 08:30:04 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0114a66fa3e9fb07a98dde3cc0bd87c526a3753.1684089997.git.anupnewsmail@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 3/3] iio: kx022a fix irq getting
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org
+References: <cover.1683875389.git.mazziesaccount@gmail.com>
+ <b45b4b638db109c6078d243252df3a7b0485f7d5.1683875389.git.mazziesaccount@gmail.com>
+ <20230513194403.234b4e3f@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230513194403.234b4e3f@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 15, 2023 at 12:33:06AM +0530, Anup Sharma wrote:
-> Adds an of_device_id table entry to the driver, enabling
-> device matching through device tree. With this update, the driver
-> can now match devices using both the i2c_device_id entry and the
-> newly added of_device_id table.
+On 5/13/23 21:44, Jonathan Cameron wrote:
+> On Fri, 12 May 2023 10:53:41 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The fwnode_irq_get_byname() was returning 0 at device-tree mapping
+>> error. If this occurred, the KX022A driver did abort the probe but
+>> errorneously directly returned the return value from
+>> fwnode_irq_get_byname() from probe. In case of a device-tree mapping
+>> error this indicated success.
+>>
+>> The fwnode_irq_get_byname() has since been fixed to not return zero on
+>> error so the check for fwnode_irq_get_byname() can be relaxed to only
+>> treat negative values as errors. This will also do decent fix even when
+>> backported to branches where fwnode_irq_get_byname() can still return
+>> zero on error because KX022A probe should later fail at IRQ requesting
+>> and a prober error handling should follow.
+> On that basis I've picked this one up directly for the fixes-togreg branch of
+> iio.git and marked it for stable.
 
-...
+Thanks for picking this up Jonathan. Although, the commit message is 
+slightly misleading w/o the previous patches in this series because the 
+fwnode_irq_get_byname() is fixed in the first patch.
 
->  #include <linux/module.h>
->  #include <linux/pm.h>
->  #include <linux/bitops.h>
-
-> +#include <linux/mod_devicetable.h>
-
-Can you try to keep this ordered as much as possible? (For example, by locating
-a new inclusion near to module.h)
-
-...
-
-> +static const struct of_device_id tmp006_of_match[] = {
-> +	{ .compatible = "ti,tmp006", },
-
-Inner comma is not needed.
-
-> +	{ }
-> +};
+Yours,
+	-- Matti
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
+~~ When things go utterly wrong vim users can always type :help! ~~
 

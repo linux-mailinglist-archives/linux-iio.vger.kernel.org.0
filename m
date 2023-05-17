@@ -2,58 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B43706877
-	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 14:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1D97068EA
+	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 15:09:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231410AbjEQMoJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 May 2023 08:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55608 "EHLO
+        id S231235AbjEQNJn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 May 2023 09:09:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbjEQMoI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 08:44:08 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BDA26A3
-        for <linux-iio@vger.kernel.org>; Wed, 17 May 2023 05:44:06 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-ba82d82bd39so923576276.2
-        for <linux-iio@vger.kernel.org>; Wed, 17 May 2023 05:44:06 -0700 (PDT)
+        with ESMTP id S229943AbjEQNJm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 09:09:42 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7091D10E;
+        Wed, 17 May 2023 06:09:41 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4f22908a082so958212e87.1;
+        Wed, 17 May 2023 06:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684327446; x=1686919446;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gNevE736BEsxBU0FmwLJIhGqBiG7yoAC/t6/uUIBMdY=;
-        b=FMlLS0aECYmfOvG19PTRQ4JzQVOPvgp3keEl4q4lBIcarONNex1FSS2aSSOrdLjxfE
-         OYiPfSd3p8dfD1QItx7D8wl2cvYk/x1+YjFMYiLcupDwHagK7bMFjrihVjrw89h1isK/
-         BL8m4dOesp9dOvFJIsPhRXwRJJZw0WXMjrRaZLCGs1aGyZghu3sRXCSFqAbHEbi4bEe9
-         sb34beQApq2PcsJ82bacmFQQUt6j72BaQNjANrnbsGmWxQJeZKXoqvssjMl8KTkBxSm2
-         hNmUL8hfNmz56/sTiGz6zGIXfLgQdcu9zLtf9Q3wfq58AlUNYHc4mTp5/+V36z6r3Z0n
-         03CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684327446; x=1686919446;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20221208; t=1684328980; x=1686920980;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gNevE736BEsxBU0FmwLJIhGqBiG7yoAC/t6/uUIBMdY=;
-        b=Qf42gYJN4ykaScBIGGtAV5S4kLMm5mXAyR3Zw6Dl8+r92wW0SGVtUuHt0GyZfi2bah
-         Ub0RM7t1GR9PCMjo+mmGm9dYKrAY1RvhABbY1bvZPx0MnEOIvfCBUQUiPWpcXM2hINMt
-         ecAYi7jSbMjG1vgwyannMpLcVXubLyTbzhr9Swc0JDR1KLAwJGgZ1u+Xlb4tzVD3YWwg
-         HnTgj/tANEHvJJ6USuR+Qsgt8Nk2+p2untkfJ9fCPYDZyRoSR04DS0J8GoQV9uzfIzRa
-         W5F33rZn7c5O6OWsbyjQRJJW7moNskshJPx0Hz0pOrg6JUkqlIC9msC3zquKLO8z9f58
-         LObA==
-X-Gm-Message-State: AC+VfDyAs27o7Z/yZJnB+rUPUB2FRGcl98to03+/tULTJZhRcNsqQ54F
-        WvDy9oj/Rxenznem97N7sJWkUZ8kW1jlZRqKKNvXqg==
-X-Google-Smtp-Source: ACHHUZ4prpZ1ZwoDxxoHkrbtIQ9L4j9bzrbZd//ns/O1W/Gj5TZTAbzyimVq3qT7URmcD+Feztnv9pZGkl2jlaxwl+I=
-X-Received: by 2002:a25:1504:0:b0:ba7:382f:6380 with SMTP id
- 4-20020a251504000000b00ba7382f6380mr12543280ybv.24.1684327445737; Wed, 17 May
- 2023 05:44:05 -0700 (PDT)
+        bh=HiOIFsakx0aMej54eXXoxdRm1SObTd8+GXwcqmC+gDI=;
+        b=nQqbckCj40fswXyyoyZANlw32GoODASyRy+I0BEcH8jVTq+9CS8dZsi7KJnYXhUTMu
+         T8gm0LELievGmm4DCn0L08Kr+seIoYQuhmH8JJFTb5+4j6v4xFyLpxB3yTdEjB0Uy3Z2
+         Pz+zfFv6OWCLZRHo9un5cb4wBQOORGnQ33+GIOY5AyrE1ifnChl7DYc9slDOBybRZmZg
+         gCbAeQs15epFThbzR9IlcsDHkEefxmLFxEiAiXvGYvT/RUtOtgRTr8WUlkLx3IalVvtz
+         z9gRDvbnTAyhsrgTWhFfApJBf27hSb1sAmfTC4SgGMe2CSQXRh48XoQzExndoLzjP4ca
+         NMjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684328980; x=1686920980;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HiOIFsakx0aMej54eXXoxdRm1SObTd8+GXwcqmC+gDI=;
+        b=QnY+/zJEti03r0OVFFIInlLbaGUJpcvz4cOhzE5iEKmP6Zi1vYDedadge2bSDVCbyt
+         QNroOSL4L1d26pbt9xbtFK+LAMyeU/CBrnv72FqylAt87xktVtAdw7Z7WtH5fjd5R8Py
+         H8ffTBtp1A/1Q9bvxZPZBYX3VO7xDqSb8omu7UktBNR8vPLibguLpcFCYFrBcUCUmhtr
+         QQNZFA7nmPeyrNhvB179+WBiwXVaH1KrlYs2wZyqMeN8ZvuAxEveKEcKjycgYEg9VHFf
+         L3OXekf/cxb+jcgijaRO9msC9ud7Ejn4PGFckAX2nkAthdzk4n+9HO3dViN3Nf62ZKAP
+         1v0A==
+X-Gm-Message-State: AC+VfDxy3zukX5dlyh1ENfK8hmXzYax7B4ziK+r/2ty3LWly6fp6M6jT
+        qlDXwSASp8QOifg3syB4jb4=
+X-Google-Smtp-Source: ACHHUZ7xq1vU49+oDj7CrWdxacjqGLeqMxxCfV6ZUVNhzOEYif121viDARlILRPrr/j6HhxvRR0olw==
+X-Received: by 2002:a05:6512:21d:b0:4f1:22a2:989b with SMTP id a29-20020a056512021d00b004f122a2989bmr200043lfo.50.1684328979302;
+        Wed, 17 May 2023 06:09:39 -0700 (PDT)
+Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id n1-20020a195501000000b004f25129628fsm3372942lfe.151.2023.05.17.06.09.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 May 2023 06:09:38 -0700 (PDT)
+Message-ID: <f47550f9-73de-f212-fbd3-430ef6bd48a1@gmail.com>
+Date:   Wed, 17 May 2023 16:09:37 +0300
 MIME-Version: 1.0
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
-In-Reply-To: <cover.1684220962.git.mazziesaccount@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 17 May 2023 14:43:54 +0200
-Message-ID: <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/7] fix fwnode_irq_get[_byname()] returnvalue
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US, en-GB
+To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Scally <djrscally@gmail.com>,
@@ -71,38 +73,56 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
         Paul Cercueil <paul@crapouillou.net>,
         Wolfram Sang <wsa@kernel.org>,
         Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <cover.1684220962.git.mazziesaccount@gmail.com>
+ <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v4 0/7] fix fwnode_irq_get[_byname()] returnvalue
+In-Reply-To: <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 16, 2023 at 9:12=E2=80=AFAM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
+On 5/17/23 15:43, Linus Walleij wrote:
+> On Tue, May 16, 2023 at 9:12 AM Matti Vaittinen
+> <mazziesaccount@gmail.com> wrote:
+> 
+>> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
+>> zero if mapping the IRQ fails. This contradicts the
+>> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
+>> errno on error is unepected and can easily lead to problems
+>> like:
+> 
+> Also, zero is not really a valid IRQ, it means NO_IRQ:
+> https://lwn.net/Articles/470820/
+> 
+> I'll apply the pinctrl patches.
 
-> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
-> zero if mapping the IRQ fails. This contradicts the
-> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
-> errno on error is unepected and can easily lead to problems
-> like:
-
-Also, zero is not really a valid IRQ, it means NO_IRQ:
-https://lwn.net/Articles/470820/
-
-I'll apply the pinctrl patches.
+Thanks Linus. I guess you noticed but please wait until the patch 1/7 
+gets in as the pinctrl patches won't do "the right thing" without it. 
+(Just ensuring we are on a same page ;) )
 
 Yours,
-Linus Walleij
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

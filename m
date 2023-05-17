@@ -2,94 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1D97068EA
-	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 15:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C15EB7069FF
+	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 15:35:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231235AbjEQNJn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 May 2023 09:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
+        id S232008AbjEQNfk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 May 2023 09:35:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbjEQNJm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 09:09:42 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7091D10E;
-        Wed, 17 May 2023 06:09:41 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4f22908a082so958212e87.1;
-        Wed, 17 May 2023 06:09:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684328980; x=1686920980;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HiOIFsakx0aMej54eXXoxdRm1SObTd8+GXwcqmC+gDI=;
-        b=nQqbckCj40fswXyyoyZANlw32GoODASyRy+I0BEcH8jVTq+9CS8dZsi7KJnYXhUTMu
-         T8gm0LELievGmm4DCn0L08Kr+seIoYQuhmH8JJFTb5+4j6v4xFyLpxB3yTdEjB0Uy3Z2
-         Pz+zfFv6OWCLZRHo9un5cb4wBQOORGnQ33+GIOY5AyrE1ifnChl7DYc9slDOBybRZmZg
-         gCbAeQs15epFThbzR9IlcsDHkEefxmLFxEiAiXvGYvT/RUtOtgRTr8WUlkLx3IalVvtz
-         z9gRDvbnTAyhsrgTWhFfApJBf27hSb1sAmfTC4SgGMe2CSQXRh48XoQzExndoLzjP4ca
-         NMjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684328980; x=1686920980;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HiOIFsakx0aMej54eXXoxdRm1SObTd8+GXwcqmC+gDI=;
-        b=QnY+/zJEti03r0OVFFIInlLbaGUJpcvz4cOhzE5iEKmP6Zi1vYDedadge2bSDVCbyt
-         QNroOSL4L1d26pbt9xbtFK+LAMyeU/CBrnv72FqylAt87xktVtAdw7Z7WtH5fjd5R8Py
-         H8ffTBtp1A/1Q9bvxZPZBYX3VO7xDqSb8omu7UktBNR8vPLibguLpcFCYFrBcUCUmhtr
-         QQNZFA7nmPeyrNhvB179+WBiwXVaH1KrlYs2wZyqMeN8ZvuAxEveKEcKjycgYEg9VHFf
-         L3OXekf/cxb+jcgijaRO9msC9ud7Ejn4PGFckAX2nkAthdzk4n+9HO3dViN3Nf62ZKAP
-         1v0A==
-X-Gm-Message-State: AC+VfDxy3zukX5dlyh1ENfK8hmXzYax7B4ziK+r/2ty3LWly6fp6M6jT
-        qlDXwSASp8QOifg3syB4jb4=
-X-Google-Smtp-Source: ACHHUZ7xq1vU49+oDj7CrWdxacjqGLeqMxxCfV6ZUVNhzOEYif121viDARlILRPrr/j6HhxvRR0olw==
-X-Received: by 2002:a05:6512:21d:b0:4f1:22a2:989b with SMTP id a29-20020a056512021d00b004f122a2989bmr200043lfo.50.1684328979302;
-        Wed, 17 May 2023 06:09:39 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id n1-20020a195501000000b004f25129628fsm3372942lfe.151.2023.05.17.06.09.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 06:09:38 -0700 (PDT)
-Message-ID: <f47550f9-73de-f212-fbd3-430ef6bd48a1@gmail.com>
-Date:   Wed, 17 May 2023 16:09:37 +0300
+        with ESMTP id S232058AbjEQNfj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 09:35:39 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA88E7D89;
+        Wed, 17 May 2023 06:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=public-files.de;
+        s=s31663417; t=1684330472; i=frank-w@public-files.de;
+        bh=H2eszAyur7OFqZ2pzsk7HhbR0lXfV8LZ3reUmipy0B4=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=VH0KENZht12vdsiyi3H/WBCPDDbvdNwgaQnr9jclo18R+LrKqoHEwDhfYi8OtywgJ
+         s4GAM9d5D/gx7bV7t0WEKgk9J1wMgGV7kcYb+NMf6HYl208qBWVb4LtemEa/JNwimd
+         5lZhqAFg3OPniht7zmyjq8ljuIs1ikegfrxIltLOJ2vk80l6alRSsTULeZlN2Pq8iH
+         x0jtJG3/vnn89625G1EE4Ba5TXdFF5ISf24Xt7rflJu2qZl6CvOeO+JCGKgRPp9k/b
+         nUSur1tB5dXQFhWHJ+78GhfFCjG28GvxGavXpLD7OE3b3bBvKV6Mp1xCyaAx/rRvkN
+         XH0TlqbCw1D3Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [80.245.72.243] ([80.245.72.243]) by web-mail.gmx.net
+ (3c-app-gmx-bs48.server.lan [172.19.170.101]) (via HTTP); Wed, 17 May 2023
+ 15:34:32 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US, en-GB
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+Message-ID: <trinity-cf0185d3-81d6-4dfe-a1a3-2b091350d724-1684330472806@3c-app-gmx-bs48>
+From:   Frank Wunderlich <frank-w@public-files.de>
+To:     Frank Wunderlich <linux@fw-web.de>
+Cc:     linux-mediatek@lists.infradead.org,
         Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
-References: <cover.1684220962.git.mazziesaccount@gmail.com>
- <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v4 0/7] fix fwnode_irq_get[_byname()] returnvalue
-In-Reply-To: <CACRpkdYPZWNTOW6c0q1+q64JRvxUXswQqm6j5N5KaAWO=sSUaQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        "Hui.Liu" <hui.liu@mediatek.com>,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
+        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Daniel Golle <daniel@makrotopia.org>
+Subject: Aw: [PATCH v1 1/7] dt-bindings: nvmem: mediatek: efuse: add support
+ for mt7986
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 17 May 2023 15:34:32 +0200
+Importance: normal
+Sensitivity: Normal
+In-Reply-To: <20230421132047.42166-2-linux@fw-web.de>
+References: <20230421132047.42166-1-linux@fw-web.de>
+ <20230421132047.42166-2-linux@fw-web.de>
+X-UI-Message-Type: mail
+X-Priority: 3
+X-Provags-ID: V03:K1:+PriwoFuQ9abIMZuLjXiUflCoFiizPjfCrYouiPIvkfEKwb8FeC3a3oGc0qOF0DGHXWXO
+ PUsxuPO4DpTtMuUBWYXoPqjzUPNfjWcm3auHPZGfODybilSjmBZULSX3YfnEKD/hsG/HElg5m4g9
+ ukCFtztoUlVk7uSplewtpy4CzSVq0kAgPxzJNNkmHRb+J0X35KLEascX7qFpp6u8K4mhYN1vwqUr
+ 78AbCQf7ib1a3sAa+7zeXH0QMDQ+uDA3ecfFeMirKlqWQ8ku1UhjBmm/weaOxAUJ08UNcAgJc47N
+ so=
+UI-OutboundReport: notjunk:1;M01:P0:dEZsTW6b7+Y=;5hLcd+GMclPrdW8q7trNgwhEwVY
+ tpf7IGTVHcy6+k98XiI+ZUS7ST4eds6sI6ZgppahC4le+74rtOAGZCNL0g1HO4ZG+4NIr7OnR
+ 5CLWXgCx6NCitDGKOkH+2tHqtcJh3BtC6c7EWrlCNRJXAMQmqtCNFOGNixtDGlvlotPTVpNX/
+ v6gB8ZIjOH8MCmtfaozGR5pGevmC9CBvarDNVpy7+gN4QlJIJa+MngQyoop14rtBm8woOPHlb
+ Ud6/LPbFerg6fwOmfuzhYb01w+fuRy008SV1BhLPmeW7KpW5lj4uRw4Ke/VIY11rQcRy2iZLk
+ Hc+DFrQFDvWPXsMve+zZzzu+z7XtOKzDoWDCZKLTfH9hR1bONqkR9jwbSXTSAU1tLxHyRDqca
+ h9+F3Y+yx/Sgty+NwooK/VnB9SF+PQkvx3tmey8bsVootCePGajTJub0KRuQTxGNkNlrVPdQ9
+ xG2UlBoxOZTn3QKSQumb0LLUePU7EcHbNWJXRgXFJNdPWgySx2wGdfXv5mvXQ7imI0I21eb6F
+ wlcKeYcSceNGYWeiRvuvuRwmrYwg8/BXEOB+y+DTwND7cKHQ3Dtkqiid4tNCpDOKNvnMwYsKK
+ J6Zr1wIbSgbccYvCzw4/2zgdtKeV2zecNZo7766T4A6RBP9l20sauep3Zo7sCU6ldNW846yrD
+ CtegCevAAaXIOPzmi4br6XjxvdvJ0qjdD6U2HZdk+5/8EkNl0/se0PyYBlqnfvZMshS9wBGsn
+ 4yQIyNyHEXMDPvm7bOaix+N0lQVvtuN9e+oPWBg098soC4GcNJ6g2E/rznBmuJkYilDMqvErr
+ s7hidyOM4d+J7NmfpnG7Nrjw==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,32 +87,8 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/17/23 15:43, Linus Walleij wrote:
-> On Tue, May 16, 2023 at 9:12 AM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
-> 
->> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
->> zero if mapping the IRQ fails. This contradicts the
->> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
->> errno on error is unepected and can easily lead to problems
->> like:
-> 
-> Also, zero is not really a valid IRQ, it means NO_IRQ:
-> https://lwn.net/Articles/470820/
-> 
-> I'll apply the pinctrl patches.
+Hi,
 
-Thanks Linus. I guess you noticed but please wait until the patch 1/7 
-gets in as the pinctrl patches won't do "the right thing" without it. 
-(Just ensuring we are on a same page ;) )
+just a ping, can this be picked up?
 
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+regards Frank

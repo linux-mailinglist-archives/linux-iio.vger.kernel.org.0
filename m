@@ -2,86 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6750706B3F
-	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 16:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5644706C5C
+	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 17:14:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232060AbjEQOgN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 May 2023 10:36:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58738 "EHLO
+        id S231207AbjEQPOT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 May 2023 11:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbjEQOgH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 10:36:07 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC797A91
-        for <linux-iio@vger.kernel.org>; Wed, 17 May 2023 07:36:01 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-43627012261so226172137.2
-        for <linux-iio@vger.kernel.org>; Wed, 17 May 2023 07:36:00 -0700 (PDT)
+        with ESMTP id S229822AbjEQPOR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 11:14:17 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A739E75;
+        Wed, 17 May 2023 08:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1684334160; x=1686926160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lz5kmzNsavtOXsUzx7dQc9M1tds+op6IxOA3B91Azz0=;
-        b=kEBnaf/eeVqzJkmoxSwK6peHNyQN+nMavdMcPVNxoA/YtqRfVXI/YUM+PZ/Lvc3wNS
-         hVXtRBeuIU5EbJ1IMZzDkXNA5Oj4TgcaVDqrKTk4D5ExVb5yRgqQ/jSYVuORgpdNcL6L
-         MriRQTXYJ8djpALImFTsuGEERsEO4WzcksyUR6fxdgxGap7urYQGvCNJxX7QRwxbsw+9
-         CNxiIV+lxfAGTWT5IwcQzOQ/8Hhblhdo+QASH2ZeFU+nrCllHccOnGK1VQ2yeXaau2sS
-         +BjDsLgVzY373Lyi1WQ836Uz40dDJMKhdT4MnLExI/q5+fS+Yabqba2a2LP/n9KgdFVz
-         u7hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684334160; x=1686926160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lz5kmzNsavtOXsUzx7dQc9M1tds+op6IxOA3B91Azz0=;
-        b=TsJ0S/iCUDBbytW11gn4khLNuzJ7UmSueHCF/mCy/PhqsBb3aQBiqMY9aO1Lw0gE+5
-         rjWFEApobFoSD2FuGw3LoXCwodjIPl0dji6hJrlO522Y+KcG2V0tqCDigzVIYPH8T5Uh
-         8l8vPjGyDejjCkScCWwkhY9Jx5ZZB0PY8YfvI7iyQ6cqpltwKS2QnS3M7p/7yQhq+pGO
-         v/t/y4Y4JbEmiYUZypf3ipL2veaPJ7gc0JFOmHn92704G5g4id2f9fNCogVFbFKxea7m
-         R9BaIhIZ+cRzJOR73K1zq9izVV41IubdApH3cfFbOzToUFR+/9qMRHNq/i1l0lUKCGNO
-         biFw==
-X-Gm-Message-State: AC+VfDyADwdXrsN8b65fde3MoPb1nM1apSzQ9iwBIcsKvuWmIjEDJGz4
-        pKk3ugKrQqsL1n7wva/+QTdHnvoYx4nGMKV6elrpew==
-X-Google-Smtp-Source: ACHHUZ7gScw3B7Blt8hgcjoSXltzPzfmqUmn74kB2d3RJD7T7Duv8dW/jaqi0ljwaYfG+jzVNghYLuUgSJkSi7F/H3g=
-X-Received: by 2002:a05:6102:2ed:b0:434:6f77:4f62 with SMTP id
- j13-20020a05610202ed00b004346f774f62mr15827147vsj.1.1684334160192; Wed, 17
- May 2023 07:36:00 -0700 (PDT)
+  d=axis.com; q=dns/txt; s=axis-central1; t=1684336456;
+  x=1715872456;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N/eMCsIiyll+x4kcz0Wo3RiOWp9di7LTaMCImN+QjZU=;
+  b=OeFLvCEvMBM93q9O8RFRrX9t04wVgUytkSnp+usFwu9+b0TAoq8w3gwh
+   RrVDj0FjvqbczQMwGMdBRwczwxWviL2Qpq07t+GGLp8cAB206chWWKNC8
+   wkNCd5kuXxt2SxUJK0thefKBksVsaYlmri8cxnv3dRhEmBPcRShVGRvJ5
+   IJ2NjKIiE1MZ5i/a4hJtHxyNxBnvb2iM8JGzp16qfoXR5Ifsw8mGoXd7n
+   a43bW7HlwdL6HXqJClXMclTxfFby+MwxfOVJZmhk0hTPPuIJvcfCaoeJF
+   2Ux5PGRGQHOdqneHuEfC/ojklxRp7uXC8M/Y3bGIb5GnGwDBWbfHHokKe
+   w==;
+From:   Astrid Rost <astrid.rost@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@axis.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mathieu Othacehe <m.othacehe@gmail.com>,
+        Astrid Rost <astrid.rost@axis.com>
+Subject: [PATCH v3 0/7] iio: light: vcnl4000: Add features for vncl4040/4200
+Date:   Wed, 17 May 2023 17:13:59 +0200
+Message-ID: <20230517151406.368219-1-astrid.rost@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <cover.1681665189.git.william.gray@linaro.org> <dc4d0d5ca6ea28eda18815df114ecb21226cb345.1681665189.git.william.gray@linaro.org>
-In-Reply-To: <dc4d0d5ca6ea28eda18815df114ecb21226cb345.1681665189.git.william.gray@linaro.org>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Wed, 17 May 2023 16:35:49 +0200
-Message-ID: <CAMRc=Mc7JTvakp4fD4kfoFOAv_yd81MsDiEOGB1tUjPZ9e7zxg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] gpio: 104-dio-48e: Add Counter/Timer support
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 16, 2023 at 7:37=E2=80=AFPM William Breathitt Gray
-<william.gray@linaro.org> wrote:
->
-> The 104-DIO-48E features an 8254 Counter/Timer chip providing three
-> counter/timers which can be used for frequency measurement, frequency
-> output, pulse width modulation, pulse width measurement, event count,
-> etc. The counter/timers use the same addresses as PPI 0 (addresses 0x0
-> to 0x3), so a raw_spinlock_t is used to synchronize operations between
-> the two regmap mappings to prevent clobbering.
->
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Add a more complete support for vncl4040 and vcnl4200, which allows to
+change the distance of proximity detection and interrupt support for the
+illuminance sensor.
 
-Looks good to me. Let me know when you have an immutable tag to pull.
+Proximity functionality:
+  - Interrupt support (new on vcnl4200).
 
-Bart
+Proximity reduce the amount of interrupts:
+  - Adaptable integration time (new on vcnl4200) - the sampling rate
+    changes according to this value.
+  - Period - interrupt is asserted if the value is above or
+    below a certain threshold.
+
+Proximity change the activity distance:
+  - Oversampling ratio - Amount of LED pulses per measured raw value.
+  - Calibration bias - LED current calibration of the sensor.
+
+Illuminance functionality:
+  - Interrupt support.
+
+Illuminance reduce the amount of interrupts:
+  - Adaptable integration time - the sampling rate and scale changes
+    according to this value.
+  - Period – interrupt is asserted if the value is above or
+    below a certain threshold.
+
+changes v2:
+- [PATCH v2 3/7] Fixed calculation of al_scale.
+  Fix the value of vcnl4040 according to the data-sheet.
+  Use div_u64 for the division.
+scription for the branch
+
+changes v3:
+- [PATCH v3 1-3/7] Add differences between the chips as variables in
+    chip-spec.
+- [PATCH v3 4/7] Changed commit message.
+- [PATCH v3 5/7] Use period instead of debounce time. This causes some
+  calculations as the period is a time and the chip allows to set a certain
+  amount of measurements above/below the threshold, before throwing an
+  interrupt.
+- [PATCH v3 6/7] Changed commit message.
+
+
+Astrid Rost (7):
+  [PATCH v3 1/7] iio: light: vcnl4000: Add proximity irq for vcnl4200
+  [PATCH v3 2/7] iio: light: vcnl4000: Add proximity ps_it for vcnl4200
+  [PATCH v3 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+  [PATCH v3 4/7] iio: light: vcnl4000: add illuminance irq vcnl4040/4200
+  [PATCH v3 5/7] iio: light: vcnl4000: Add period for vcnl4040/4200
+  [PATCH v3 6/7] iio: light: vcnl4000: Add oversampling_ratio for 4040/4200
+  [PATCH v3 7/7] iio: light: vcnl4000: Add calibration bias for 4040/4200
+
+ drivers/iio/light/vcnl4000.c | 721 +++++++++++++++++++++++++++++++----
+ 1 file changed, 653 insertions(+), 68 deletions(-)
+
+--
+2.30.2
+

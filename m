@@ -2,58 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3815470657F
-	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 12:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C713706741
+	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 13:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjEQKlW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 May 2023 06:41:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56770 "EHLO
+        id S230489AbjEQL4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 May 2023 07:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230415AbjEQKlV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 06:41:21 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BAD555A6;
-        Wed, 17 May 2023 03:41:06 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab] (unknown [IPv6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 5BFF3660563D;
-        Wed, 17 May 2023 11:41:04 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1684320065;
-        bh=ZzB0E/+ymqhlIO/ZwNZVfCdw/0GTEwTXU8AzJOdbnnI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=lYxPhLPUIMFJPs3u0BovfuwyBkklAOKNNVEJcQ5ShxzeLKg381nDmykHUvG+r7/PI
-         xpZOkIKOm4qTbNdIu0OoFOLypewGp4E6NNmRa256xAeFFKgATOVDJzw9y3MisBoJGM
-         ibUvqW/9hEzCjfZ9hKh+/4LNexdHwsamcc6tdxEqS/3nm5taCEJK/NPWh8mU4Kie2q
-         F88suhRl99flcdI4zq/md1FMC+6jsXvmNckruEiDisUxmGbmEo0Nv7fU7dMbSk8JM2
-         rRHV9tq+T65QAaVxwtQHtx5PeyqmAkioXAyuQTB4GYfaDgss38aX98BYlm9nlsTsGV
-         aA9fKNNxlsZMg==
-Message-ID: <d2d92812-1088-289a-5dc1-2f4484cc94f3@collabora.com>
-Date:   Wed, 17 May 2023 12:41:01 +0200
+        with ESMTP id S231389AbjEQL4H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 07:56:07 -0400
+X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 May 2023 04:56:05 PDT
+Received: from mx.msync.work (mx.msync.work [185.250.0.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32103A81;
+        Wed, 17 May 2023 04:56:05 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 378EF55706;
+        Wed, 17 May 2023 11:37:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lexina.in; s=dkim;
+        t=1684323464; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+         content-transfer-encoding:content-language:in-reply-to:references;
+        bh=nZdcMDZM53ILRxlH9g59ieKwhVNPywvAfYb6Qja4wac=;
+        b=DwlMOFGPGqaVRFP97Pvxw+TihOVYHCxLgopEWyALgUQ2pe0bSLNW1KVGBYza6rEo5I4aI9
+        nvGmxNzn8NsnuozBDiTeN4qhNZa87VkxcuhzegzKNzJG2gDsgOSNQ4uDDIyuv+SMs+VsPT
+        E+OcXyZ79qlqYcHqWNVk+RqC6p5jE+uFx73qFtyuJoP916Zg74GSSmOOKaprBoCqP+fOUu
+        H5ns5segL9BFppgvQ25yV6ojCEP/SFQB0qD/hatLQMf23LyAKwhnLtXytlrtgAp3SZZP57
+        FXmjjAM+hYjcKOqcD9wP/k8VM86aY4ugixmYsT25mLcx48x19h/e0Q056sLoDg==
+Message-ID: <a52335ea-6545-8ca6-d318-38b7ffc64368@lexina.in>
+Date:   Wed, 17 May 2023 14:37:37 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 6/7] arm64: dts: rockchip: Add DT node for ADC support in
- RK3588
-Content-Language: en-US
-To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
-        lars@metafoo.de, heiko@sntech.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, sebastian.reichel@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, gustavo.padovan@collabora.com,
-        serge.broslavsky@collabora.com
-References: <20230516230051.14846-1-shreeya.patel@collabora.com>
- <20230516230051.14846-7-shreeya.patel@collabora.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230516230051.14846-7-shreeya.patel@collabora.com>
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v1] meson saradc: fix clock divider mask length
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        George Stark <gnstark@sberdevices.ru>
+Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
+        khilman@baylibre.com, jbrunet@baylibre.com,
+        andy.shevchenko@gmail.com, nuno.sa@analog.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@sberdevices.ru
+References: <20230515210545.2100161-1-gnstark@sberdevices.ru>
+ <CAFBinCCc+t7Ks6fqz38cVrufPRFdxFgC9Qp+JhcM1KfD6pupTg@mail.gmail.com>
+Content-Language: en-US, ru, ru-RU
+From:   Vyacheslav <adeep@lexina.in>
+In-Reply-To: <CAFBinCCc+t7Ks6fqz38cVrufPRFdxFgC9Qp+JhcM1KfD6pupTg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -64,11 +58,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 17/05/23 01:00, Shreeya Patel ha scritto:
-> Add DT node for ADC support in RK3588.
+Hi, Martin,
+
+On 16.05.2023 22:08, Martin Blumenstingl wrote:
+> Hi George,
 > 
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> thank you for this patch!
+> 
+> On Mon, May 15, 2023 at 11:06 PM George Stark <gnstark@sberdevices.ru> wrote:
+>>
+>> From: George Stark <GNStark@sberdevices.ru>
+>>
+>> According to datasheets of supported meson SOCs
+>> length of ADC_CLK_DIV field is 6 bits long
+> I have a question about this sentence which doesn't affect this patch
+> - it's only about managing expectations:
+> Which SoC are you referring to?
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+I checked the 905x, 905x3, a113x datasheets - there is the same register 
+with 6 bits for  ADC_CLK_DIV
 
+> This divider is only relevant on older SoCs that predate GXBB (S905).
+> To my knowledge all SoCs from GXBB onwards place the divider in the
+> main or AO clock controller, so this bitmask is irrelevant there.
+> 
+>> Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
+>> Signed-off-by: George Stark <GNStark@sberdevices.ru>
+> Since my question above doesn't affect this patch:
+> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> 
+> _______________________________________________
+> linux-amlogic mailing list
+> linux-amlogic@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-amlogic
 
+-- 
+Vyacheslav Bocharov

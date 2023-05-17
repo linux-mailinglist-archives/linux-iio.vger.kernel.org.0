@@ -2,52 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB0A706C63
-	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 17:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D17F6706E7F
+	for <lists+linux-iio@lfdr.de>; Wed, 17 May 2023 18:48:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231617AbjEQPOV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 May 2023 11:14:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43896 "EHLO
+        id S229599AbjEQQr7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 May 2023 12:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230313AbjEQPOU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 11:14:20 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7838412F;
-        Wed, 17 May 2023 08:14:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1684336459;
-  x=1715872459;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2vg0DObVjExJWxcpHjWrhXk1eH5SbEn+msAa6n+tjpo=;
-  b=W1r8w/NoT2J/8vghQiNJSFJmxTpFT+BllO6c8UhL2g60OzwfJNrMrsBX
-   FDmeXJbym84z/EHsFrXfCrUgE/A5VX7Q9W3sta1djnsTy6nasiXN3QAi+
-   BIHg6XAKhji+Wxn5XaMcFRZ7Q4VVNHd4fMBdl8/LTMgGRx10BTYlqvUhV
-   KoqIGb1TCiRIN7OrCZ4b/OBhotkSH6fTQ4+PAM6nWaMM5oyqicp03OrE2
-   AP4QIYPQC32FfXYT3UIVV+mwSrevvwxk2SsAIK0FC0seYWIYXXDvL/fgR
-   Sz2RDTABxn7g46IichlHh6wV1/dp1W+1UWOopoUJjnV7/llNSa30nDERL
+        with ESMTP id S229457AbjEQQr5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 May 2023 12:47:57 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CDE59DC;
+        Wed, 17 May 2023 09:47:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684342076; x=1715878076;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3aGbiMN0V+5yc6Amt+Y7GgCQxqWtHVXzMieUoBpl1Y0=;
+  b=NwujApARbS7z1+LSFfGoME6jThv38EVEpbFbdRsSmpRq/iKKAQs2HeIZ
+   jJlEWubv7r4iGiwuTLAoRvQDvWLxJqRj7o/J9WXzngQy4EoBJsBFjI9fP
+   rjdNxavDWXW5CtSU2AU4CXvE46E1VGSbPUVKcaIhu2AllfO55IQEvDp/c
+   klRU9gK1V50fBPsHNXAkzXK9LcKuGS9MjHnNCNR+7Wku7Z6T6iqyuvMCF
+   kWe+DgG5JMjPI14pnwIsQ3G4My6eP10PKejM0RsYy3mD463l6zeQWwYre
+   5r1AdcPFAxjCiiWSiu3Qu9/g1ujYOThj1fqnHQWKXQuQni50baQfZV707
    Q==;
-From:   Astrid Rost <astrid.rost@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel@axis.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mathieu Othacehe <m.othacehe@gmail.com>,
-        Astrid Rost <astrid.rost@axis.com>
-Subject: [PATCH v3 7/7] iio: light: vcnl4000: Add calibration bias for 4040/4200
-Date:   Wed, 17 May 2023 17:14:06 +0200
-Message-ID: <20230517151406.368219-8-astrid.rost@axis.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230517151406.368219-1-astrid.rost@axis.com>
-References: <20230517151406.368219-1-astrid.rost@axis.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="351834340"
+X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
+   d="scan'208";a="351834340"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 09:47:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="948338934"
+X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
+   d="scan'208";a="948338934"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga006.fm.intel.com with ESMTP; 17 May 2023 09:47:38 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pzKJL-0008UB-36;
+        Wed, 17 May 2023 19:47:35 +0300
+Date:   Wed, 17 May 2023 19:47:35 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCH v4 2/7] iio: mb1232: relax return value check for IRQ get
+Message-ID: <ZGUFJ5LRCzW2V0a1@smile.fi.intel.com>
+References: <cover.1684220962.git.mazziesaccount@gmail.com>
+ <429804dac3b1ea55dd233d1e2fdf94240e2f2b93.1684220962.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <429804dac3b1ea55dd233d1e2fdf94240e2f2b93.1684220962.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,169 +88,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The calibration bias is setting the LED current to change
-the detection distance.
-Add read/write attribute for proximity calibration bias and read
-attribute for available values.
-This is supported for vcnl4040 and vcnl4200.
+On Tue, May 16, 2023 at 10:12:41AM +0300, Matti Vaittinen wrote:
+> fwnode_irq_get() was changed to not return 0 anymore.
+> 
+> Drop check for return value 0.
 
-Signed-off-by: Astrid Rost <astrid.rost@axis.com>
----
- drivers/iio/light/vcnl4000.c | 98 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 95 insertions(+), 3 deletions(-)
+...
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 631ed6aa26b2..0a6e38e56a7c 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -91,6 +91,7 @@
- #define VCNL4040_CONF1_PS_PERS	GENMASK(5, 4) /* Proximity interrupt persistence setting */
- #define VCNL4040_PS_CONF2_PS_INT	GENMASK(9, 8) /* Proximity interrupt mode */
- #define VCNL4040_PS_CONF3_MPS		GENMASK(6, 5) /* Proximity multi pulse number */
-+#define VCNL4040_PS_MS_LED_I		GENMASK(10, 8) /* Proximity current */
- #define VCNL4040_PS_IF_AWAY		BIT(8) /* Proximity event cross low threshold */
- #define VCNL4040_PS_IF_CLOSE		BIT(9) /* Proximity event cross high threshold */
- #define VCNL4040_ALS_RISING		BIT(12) /* Ambient Light cross high threshold */
-@@ -156,6 +157,18 @@ static const int vcnl4200_als_it_times[][2] = {
- 	{0, 200000},
- 	{0, 400000},
- };
-+
-+static const int vcnl4040_ps_calibbias_ua[][2] = {
-+	{0, 50000},
-+	{0, 75000},
-+	{0, 100000},
-+	{0, 120000},
-+	{0, 140000},
-+	{0, 160000},
-+	{0, 180000},
-+	{0, 200000},
-+};
-+
- static const int vcnl4040_als_persistence[] = {1, 2, 4, 8};
- static const int vcnl4040_ps_persistence[] = {1, 2, 3, 4};
- static const int vcnl4040_ps_oversampling_ratio[] = {1, 2, 4, 8};
-@@ -831,6 +844,57 @@ static ssize_t vcnl4040_write_ps_oversampling_ratio(struct vcnl4000_data *data,
- 	return ret;
- }
- 
-+static ssize_t vcnl4040_read_ps_calibbias(struct vcnl4000_data *data, int *val, int *val2)
-+{
-+	int ret;
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = FIELD_GET(VCNL4040_PS_MS_LED_I, ret);
-+
-+	if (ret >= ARRAY_SIZE(vcnl4040_ps_calibbias_ua))
-+		return -EINVAL;
-+
-+	*val = vcnl4040_ps_calibbias_ua[ret][0];
-+	*val2 = vcnl4040_ps_calibbias_ua[ret][1];
-+
-+	return ret;
-+}
-+
-+static ssize_t vcnl4040_write_ps_calibbias(struct vcnl4000_data *data, int val)
-+{
-+	unsigned int i;
-+	int ret, index = -1;
-+	u16 regval;
-+
-+	for (i = 0; i < ARRAY_SIZE(vcnl4040_ps_calibbias_ua); i++) {
-+		if (val == vcnl4040_ps_calibbias_ua[i][1]) {
-+			index = i;
-+			break;
-+		}
-+	}
-+
-+	if (index < 0)
-+		return -EINVAL;
-+
-+	mutex_lock(&data->vcnl4000_lock);
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF3);
-+	if (ret < 0)
-+		goto out;
-+
-+	regval = (ret & ~VCNL4040_PS_MS_LED_I) |
-+	    FIELD_PREP(VCNL4040_PS_MS_LED_I, index);
-+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF3,
-+					regval);
-+
-+out:
-+	mutex_unlock(&data->vcnl4000_lock);
-+	return ret;
-+}
-+
- static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 				struct iio_chan_spec const *chan,
- 				int *val, int *val2, long mask)
-@@ -891,7 +955,16 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
--
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			ret = vcnl4040_read_ps_calibbias(data, val, val2);
-+			if (ret < 0)
-+				return ret;
-+			return IIO_VAL_INT_PLUS_MICRO;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -922,6 +995,13 @@ static int vcnl4040_write_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			return vcnl4040_write_ps_calibbias(data, val2);
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -961,6 +1041,16 @@ static int vcnl4040_read_avail(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_PROXIMITY:
-+			*vals = (int *)vcnl4040_ps_calibbias_ua;
-+			*length = 2 * ARRAY_SIZE(vcnl4040_ps_calibbias_ua);
-+			*type = IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_AVAIL_LIST;
-+		default:
-+			return -EINVAL;
-+	}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -1729,9 +1819,11 @@ static const struct iio_chan_spec vcnl4040_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_INT_TIME),
- 		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME),
--			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS),
- 		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME) |
--			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+			BIT(IIO_CHAN_INFO_CALIBBIAS),
- 		.ext_info = vcnl4000_ext_info,
- 		.event_spec = vcnl4040_event_spec,
- 		.num_event_specs = ARRAY_SIZE(vcnl4040_event_spec),
+> -	if (data->irqnr <= 0) {
+> +	if (data->irqnr < 0) {
+>  		/* usage of interrupt is optional */
+>  		data->irqnr = -1;
+>  	} else {
+
+
+After this change I'm not sure we need this branch at all, I mean that -errn is
+equal to -1 in the code (but needs to be checked for silly checks like == -1).
+
+Hence
+
+Entire excerpt can be replaced with
+
+	if (data->irqnr > 0) {
+
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 

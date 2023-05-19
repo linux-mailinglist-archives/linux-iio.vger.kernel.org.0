@@ -2,146 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B38708D50
-	for <lists+linux-iio@lfdr.de>; Fri, 19 May 2023 03:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0E4A708F1A
+	for <lists+linux-iio@lfdr.de>; Fri, 19 May 2023 07:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbjESB1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 May 2023 21:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
+        id S230312AbjESFBA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 May 2023 01:01:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjESB1F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 May 2023 21:27:05 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87BD128
-        for <linux-iio@vger.kernel.org>; Thu, 18 May 2023 18:27:03 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-ba6d024a196so2403874276.2
-        for <linux-iio@vger.kernel.org>; Thu, 18 May 2023 18:27:03 -0700 (PDT)
+        with ESMTP id S230233AbjESFAx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 May 2023 01:00:53 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08B5198A;
+        Thu, 18 May 2023 22:00:32 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4eff4ea8e39so3149341e87.1;
+        Thu, 18 May 2023 22:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684459623; x=1687051623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lvP7Q1DPXjSG9iBptgkojp087iyFGiylW3zAHv1G0s=;
-        b=vOVrSlpzLvgAwRxr0Q+rmluXHst7drYbuTE/FlnkA0sI0Vq+REfrWisZRfc1SzSbgw
-         tVsm1pXic0P6GJDF2/7zkD8ER83IoVL7aMp/bHPVrAHQkbbixm3Kg0HMLS35H/xAyVl+
-         UTmOzWe+uQHcb5OYgXl4x58ilZsw3U0w8CB/8DRxqCAwNxEdqhyYWM9g8qj7xVjIwSzv
-         RagYDOY7DuNgn/2/x2NdIprh8X8N+/x5WsqWtdLmu0RBcEsmDgIcvf39Vl0lvfYzI66p
-         MeMDa4CFtzCaOZN4K8cznxO5u8tCBERtUczXNEkQCmNWKWb8p/nq25Dyc4YI11GlL9x7
-         1/nw==
+        d=gmail.com; s=20221208; t=1684472430; x=1687064430;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JfbxFVUmc/KzvVhEC8vdQgF5kFe1WFt3rzR4UINE0fo=;
+        b=BFi0u5sIoEnnX4okI+aOE7hqReySKr/IeZj7zzxVZhgribIxFlafyHNvVilTaGLzmN
+         knIms4YLm7U1y/I5CNlsVXcBP9x8QeZROW5X41r24p2hhc7Ht3Y4EDGjq93s+4l3lDsJ
+         Pk/DbGLMigKfroPs0SUi9ijtAABZtaIECKrtHjRAj4DFK6yRhSltBg58NMpe4kky+Z5O
+         VR84UsYsFePdUZ8Ndp3YYDRJmnp1CZ6RWZ5xZ1xMg3MBPh2F2h1/Q+8YX8HR0dCfZZNo
+         ZwiEpoF6NMGYC9Ro0HSPdvsk7wNlp2nw4vOoWzS/zWeG4WYgrDi7X3Gbvss9CZVlDv8q
+         oVAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684459623; x=1687051623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1lvP7Q1DPXjSG9iBptgkojp087iyFGiylW3zAHv1G0s=;
-        b=XG4X1FGGuxwRP7nWJsNiNZTRd0HPYm1Iw4OFoQdNR12z4lsU7aEPArGl7QJFvynVGY
-         Q5ekZfdnTL1HADIz/HGzORU/eD97ESmqg8nbiJAvrxvQ9ask5wfdL0yJBjw7f1c8hxzC
-         FR//MeRt4SxZBlNjah61ZXwJjBi8EEAG9jUmPZR432HX5otAHxva0B41IZTMCP8yDYdG
-         uZrSBORbQ/JEhyBwIEUBdlAIo1PBSiQWK6u7XAnNyeDsacuDtKzy3OsZvSkmDlSXohR4
-         dEQ+p2QblKRabxnlB0TwC0LWS2lZvlC8QrGuWssx1ttAvgm2lAkk8laRjELF89OsY3tt
-         89RA==
-X-Gm-Message-State: AC+VfDzdkF6RM8k6d7ZyPvFH6HIp60WUjouwus3z1zwUksGnCmi3HYXk
-        CT/rpmxNw4Eie6EepE/WvNx75A==
-X-Google-Smtp-Source: ACHHUZ60fWA8dMxrxSEEE9Cq6HNL+5hZBH8mz2lPQkgrGsomWHcS7zVmJG4fADlLH1bX8uxE4zKyvA==
-X-Received: by 2002:a25:c7cb:0:b0:b8f:6cd0:4ef1 with SMTP id w194-20020a25c7cb000000b00b8f6cd04ef1mr192327ybe.17.1684459622935;
-        Thu, 18 May 2023 18:27:02 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id x6-20020a259c46000000b00b9ba6a3b675sm699871ybo.50.2023.05.18.18.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 May 2023 18:27:02 -0700 (PDT)
-Date:   Thu, 18 May 2023 21:26:59 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 05/41] counter: add HAS_IOPORT dependencies
-Message-ID: <ZGbQYzXK8InMqkxu@fedora>
-References: <20230516110038.2413224-1-schnelle@linux.ibm.com>
- <20230516110038.2413224-6-schnelle@linux.ibm.com>
+        d=1e100.net; s=20221208; t=1684472430; x=1687064430;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JfbxFVUmc/KzvVhEC8vdQgF5kFe1WFt3rzR4UINE0fo=;
+        b=jBCIvaJXkIPkyRLULvJYXewhUmpnIy6ICOms4Bv3nLFzAr+oZAa0dpwrninDcM0sn/
+         AJl4fvps5X6mM92KD/xA1DSJJON+5yNlkc2lO3xA2tI+4DtuhhbR3uaur5WPOUWQHHMz
+         EutDu0ikgvlDV3id+xsf84RjpkUF/ECVdHLM4UasLYeIwo2pisytu061WAa1KBCU4DLm
+         /Mb5qWvmsC0saOaOKY9qf5g2QWBtb/nnldUD+8LABnIox2F7s5WBo4cLeHZpflmuJhIi
+         FxyYYJNbInQF0smtKG7RCFMY52S++rCJJuAmSW5npCYyTEZOsp2MzbEG4GMYDG/2Vx9/
+         EPZg==
+X-Gm-Message-State: AC+VfDzREo2Jr5BHxuamUlnoSxeoqwMEEKoLSEJg937rhPXos4LGR16O
+        voFUb78BLtxLLAdrnpdwOAk=
+X-Google-Smtp-Source: ACHHUZ4VR47UvOx+IPM4HXNSDpSzTFPO0t3QVDvnSvGmOpkMfDVf6cQwy6rSnQkrabXwi7lrCaHYdg==
+X-Received: by 2002:ac2:5e81:0:b0:4f3:872d:10ff with SMTP id b1-20020ac25e81000000b004f3872d10ffmr313027lfq.64.1684472429409;
+        Thu, 18 May 2023 22:00:29 -0700 (PDT)
+Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id w4-20020a05651204c400b004db3900da02sm467200lfq.73.2023.05.18.22.00.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 May 2023 22:00:28 -0700 (PDT)
+Message-ID: <1a3a84d4-1955-f0ee-5c6d-ab36fddc5e15@gmail.com>
+Date:   Fri, 19 May 2023 08:00:27 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="5bxTSeSIiawlWPZU"
-Content-Disposition: inline
-In-Reply-To: <20230516110038.2413224-6-schnelle@linux.ibm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4 2/7] iio: mb1232: relax return value check for IRQ get
+Content-Language: en-US, en-GB
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Wolfram Sang <wsa@kernel.org>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        netdev@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org
+References: <cover.1684220962.git.mazziesaccount@gmail.com>
+ <429804dac3b1ea55dd233d1e2fdf94240e2f2b93.1684220962.git.mazziesaccount@gmail.com>
+ <ZGUFJ5LRCzW2V0a1@smile.fi.intel.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <ZGUFJ5LRCzW2V0a1@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 5/17/23 19:47, Andy Shevchenko wrote:
+> On Tue, May 16, 2023 at 10:12:41AM +0300, Matti Vaittinen wrote:
+>> fwnode_irq_get() was changed to not return 0 anymore.
+>>
+>> Drop check for return value 0.
+> 
+> ...
+> 
+>> -	if (data->irqnr <= 0) {
+>> +	if (data->irqnr < 0) {
+>>   		/* usage of interrupt is optional */
+>>   		data->irqnr = -1;
+>>   	} else {
+> 
+> 
+> After this change I'm not sure we need this branch at all, I mean that -errn is
+> equal to -1 in the code (but needs to be checked for silly checks like == -1).
+> 
+> Hence
+> 
+> Entire excerpt can be replaced with
+> 
+> 	if (data->irqnr > 0) {
+> 
 
---5bxTSeSIiawlWPZU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I agree. Furthermore, at a quick glance it seems the whole irqnr could 
+be dropped from the private data, and the private data struct could 
+probably be static. I'd send them as separate clean-ups though as those 
+changes are not really related to this return-value series.
 
-On Tue, May 16, 2023 at 01:00:01PM +0200, Niklas Schnelle wrote:
-> In a future patch HAS_IOPORT=3Dn will result in inb()/outb() and friends
-> not being declared. We thus need to add HAS_IOPORT as dependency for
-> those drivers using them.
->=20
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Yours,
+	-- Matti
 
-Hi Niklas,
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-The change itself is fine, but please update the description to reflect
-that this is adding a depends on HAS_IOPORT_MAP rather than HAS_IOPORT,
-along with the reason why it's needed (i.e. devm_ioport_map() is used).
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-Thanks,
-
-William Breathitt Gray
-
-> ---
-> Note: The HAS_IOPORT Kconfig option was added in v6.4-rc1 so
->       per-subsystem patches may be applied independently
->=20
->  drivers/counter/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index 4228be917038..e65a2bf178b8 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -15,6 +15,7 @@ if COUNTER
->  config 104_QUAD_8
->  	tristate "ACCES 104-QUAD-8 driver"
->  	depends on (PC104 && X86) || COMPILE_TEST
-> +	depends on HAS_IOPORT_MAP
->  	select ISA_BUS_API
->  	help
->  	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
-> --=20
-> 2.39.2
->=20
-
---5bxTSeSIiawlWPZU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZGbQYwAKCRC1SFbKvhIj
-Kwr/AP9BDmkAnBXC+MjVSJOmxTQF8Sx5RdpwwV0Oaq8V32L4cAEAjgIcBwlTHN/4
-SwcgWo1pJaiaLAG8+7C20VWkinQ4dwc=
-=WkDE
------END PGP SIGNATURE-----
-
---5bxTSeSIiawlWPZU--

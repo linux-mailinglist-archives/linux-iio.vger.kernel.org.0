@@ -2,75 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A480D708D35
-	for <lists+linux-iio@lfdr.de>; Fri, 19 May 2023 03:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B38708D50
+	for <lists+linux-iio@lfdr.de>; Fri, 19 May 2023 03:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbjESBTY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 May 2023 21:19:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53500 "EHLO
+        id S229995AbjESB1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 May 2023 21:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbjESBTX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 May 2023 21:19:23 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6873EE72
-        for <linux-iio@vger.kernel.org>; Thu, 18 May 2023 18:19:21 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-55a8e9e2c53so25276807b3.1
-        for <linux-iio@vger.kernel.org>; Thu, 18 May 2023 18:19:21 -0700 (PDT)
+        with ESMTP id S230186AbjESB1F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 May 2023 21:27:05 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87BD128
+        for <linux-iio@vger.kernel.org>; Thu, 18 May 2023 18:27:03 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-ba6d024a196so2403874276.2
+        for <linux-iio@vger.kernel.org>; Thu, 18 May 2023 18:27:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684459160; x=1687051160;
+        d=linaro.org; s=google; t=1684459623; x=1687051623;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JuRje6n2APNrdks/wvQAvSj2Ouakzm7jUJXo4jx8GOE=;
-        b=NVoGzSMWid+9OAnpDnsANoD26ob7S+d5A8LcD1WIcRVCPX16PwseymDAaA02OipGeu
-         UXjxWa9pNYM9pUsJZFxA4B8DRn4rKbIP8RaJ3dZQMlSMvGPA9IRNE7BNNwEn89e+TeP+
-         XfqDQNOPIeEuNazm2IVajMjr7LddBch3cSvIjaSInSKrfhkwbaLFwIqwiM2vHZzBc6Ln
-         YeLAUlvsGnWF65KCQnOahAebBpbkibPc+ObI2dFZfdKEgds6zkv5yifiIOtTl92DbybQ
-         i6LFrIwkuajHox25LgPgV5CuXB5WMjfHwDjP1hAxpGcQQUhGcNYTppq6AxHXu8GsYqR5
-         phlg==
+        bh=1lvP7Q1DPXjSG9iBptgkojp087iyFGiylW3zAHv1G0s=;
+        b=vOVrSlpzLvgAwRxr0Q+rmluXHst7drYbuTE/FlnkA0sI0Vq+REfrWisZRfc1SzSbgw
+         tVsm1pXic0P6GJDF2/7zkD8ER83IoVL7aMp/bHPVrAHQkbbixm3Kg0HMLS35H/xAyVl+
+         UTmOzWe+uQHcb5OYgXl4x58ilZsw3U0w8CB/8DRxqCAwNxEdqhyYWM9g8qj7xVjIwSzv
+         RagYDOY7DuNgn/2/x2NdIprh8X8N+/x5WsqWtdLmu0RBcEsmDgIcvf39Vl0lvfYzI66p
+         MeMDa4CFtzCaOZN4K8cznxO5u8tCBERtUczXNEkQCmNWKWb8p/nq25Dyc4YI11GlL9x7
+         1/nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684459160; x=1687051160;
+        d=1e100.net; s=20221208; t=1684459623; x=1687051623;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JuRje6n2APNrdks/wvQAvSj2Ouakzm7jUJXo4jx8GOE=;
-        b=hONFTp1Pj3RT1biu+SWsyUgDLGroPnKnStioTdSUMMvgCT9ElyBvGGfC6QOHGGKIlB
-         lZ58viQZYR4cjBr5+8RrZvOZiaVZVWwXfPbcz9St65+1eY60K717hMlH2QFlMJZyRbIF
-         Y262qTz4ozqaCdx9bBFzjLO543cY7/y/OxuM3+nwBGdWo6oPX+kj1vOtato3tLn5fte5
-         WKs7B9/9ffEDHlebBXXlLY+nYoEeF/yKrBme+3l7S6IgBebVzb1Bmdki+zV9elOnMJzT
-         lT/pyttmL5ksqewp4fdVoly0310NJegAfGIkB1de7xz3tqq/dxs/dSrUWVdaf5k4Fk+X
-         OXqw==
-X-Gm-Message-State: AC+VfDzjGoGODxpo4uZ8wpq9iV/lCWQuqCisYdDjkVJhFEvfZ1hwuvp7
-        +2CdSnLmCLnIRNNZkHXj1CDFkxs1hebp70Pd1+k=
-X-Google-Smtp-Source: ACHHUZ7XNt5edWfx8KRqaVX0nDXAEZZ/Wm95LixfUIGE9b4OpBIYZhGvWr+0qTf4c6PapNOEYt9QZQ==
-X-Received: by 2002:a0d:e288:0:b0:545:637c:3ed7 with SMTP id l130-20020a0de288000000b00545637c3ed7mr441156ywe.1.1684459160346;
-        Thu, 18 May 2023 18:19:20 -0700 (PDT)
+        bh=1lvP7Q1DPXjSG9iBptgkojp087iyFGiylW3zAHv1G0s=;
+        b=XG4X1FGGuxwRP7nWJsNiNZTRd0HPYm1Iw4OFoQdNR12z4lsU7aEPArGl7QJFvynVGY
+         Q5ekZfdnTL1HADIz/HGzORU/eD97ESmqg8nbiJAvrxvQ9ask5wfdL0yJBjw7f1c8hxzC
+         FR//MeRt4SxZBlNjah61ZXwJjBi8EEAG9jUmPZR432HX5otAHxva0B41IZTMCP8yDYdG
+         uZrSBORbQ/JEhyBwIEUBdlAIo1PBSiQWK6u7XAnNyeDsacuDtKzy3OsZvSkmDlSXohR4
+         dEQ+p2QblKRabxnlB0TwC0LWS2lZvlC8QrGuWssx1ttAvgm2lAkk8laRjELF89OsY3tt
+         89RA==
+X-Gm-Message-State: AC+VfDzdkF6RM8k6d7ZyPvFH6HIp60WUjouwus3z1zwUksGnCmi3HYXk
+        CT/rpmxNw4Eie6EepE/WvNx75A==
+X-Google-Smtp-Source: ACHHUZ60fWA8dMxrxSEEE9Cq6HNL+5hZBH8mz2lPQkgrGsomWHcS7zVmJG4fADlLH1bX8uxE4zKyvA==
+X-Received: by 2002:a25:c7cb:0:b0:b8f:6cd0:4ef1 with SMTP id w194-20020a25c7cb000000b00b8f6cd04ef1mr192327ybe.17.1684459622935;
+        Thu, 18 May 2023 18:27:02 -0700 (PDT)
 Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id s129-20020a0de987000000b00555c30ec361sm795828ywe.143.2023.05.18.18.19.19
+        by smtp.gmail.com with ESMTPSA id x6-20020a259c46000000b00b9ba6a3b675sm699871ybo.50.2023.05.18.18.27.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 May 2023 18:19:19 -0700 (PDT)
-Date:   Thu, 18 May 2023 21:19:17 -0400
+        Thu, 18 May 2023 18:27:02 -0700 (PDT)
+Date:   Thu, 18 May 2023 21:26:59 -0400
 From:   William Breathitt Gray <william.gray@linaro.org>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH v4 0/4] Refactor 104-quad-8 to match device operations
-Message-ID: <ZGbOlXhXgcmZMCXv@fedora>
-References: <cover.1681753140.git.william.gray@linaro.org>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 05/41] counter: add HAS_IOPORT dependencies
+Message-ID: <ZGbQYzXK8InMqkxu@fedora>
+References: <20230516110038.2413224-1-schnelle@linux.ibm.com>
+ <20230516110038.2413224-6-schnelle@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0s7Z2gknOEJZ6EHn"
+        protocol="application/pgp-signature"; boundary="5bxTSeSIiawlWPZU"
 Content-Disposition: inline
-In-Reply-To: <cover.1681753140.git.william.gray@linaro.org>
+In-Reply-To: <20230516110038.2413224-6-schnelle@linux.ibm.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,88 +86,62 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---0s7Z2gknOEJZ6EHn
+--5bxTSeSIiawlWPZU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 17, 2023 at 03:50:46PM -0400, William Breathitt Gray wrote:
-> Changes in v4:
->  - Fix endianness errors by utilizing get_unaligned_le24() and
->    put_unaligned_le24()
->  - Mention benefits of using regmap in the commit description
->  - Use "int ret" for regmap_* return values throughout for consistency
->  - Reorganize declaration lists to prioritize longer lines first
-> Changes in v3:
->  - Add __always_inline attribute for quad8_control_register_update()
-> Changes in v2:
->  - Drop FIELD_MODIFY() macro introduction; u8p_replace_bits() is
->    utilized instead for the same purpose
->  - Replace FIELD_PREP() and FIELD_GET() with u8_encode_bits() and
->    u8_get_bits()
->  - Replace FIELD_MODIFY() with u8p_replace_bits()
->  - Wrap up control register update in quad8_control_register_update()
->  - Utilize ioread8_rep() and iowrite8_rep() to read and write counter
->    data
+On Tue, May 16, 2023 at 01:00:01PM +0200, Niklas Schnelle wrote:
+> In a future patch HAS_IOPORT=3Dn will result in inb()/outb() and friends
+> not being declared. We thus need to add HAS_IOPORT as dependency for
+> those drivers using them.
 >=20
-> The 104-quad-8 driver was initially introduced to the IIO subsystem
-> where it didn't quite fit with the existing paradigm [0]; these
-> differences eventually led to the creation of the Counter subsystem[1].
-> As a result of its awkward beginnings, the design of the 104-quad-8
-> driver was structured around maintaining abstract state buffers that
-> would eventually be converted to match the actual device registers
-> states on-the-fly as needed.
+> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+
+Hi Niklas,
+
+The change itself is fine, but please update the description to reflect
+that this is adding a depends on HAS_IOPORT_MAP rather than HAS_IOPORT,
+along with the reason why it's needed (i.e. devm_ioport_map() is used).
+
+Thanks,
+
+William Breathitt Gray
+
+> ---
+> Note: The HAS_IOPORT Kconfig option was added in v6.4-rc1 so
+>       per-subsystem patches may be applied independently
 >=20
-> The original design approach for the 104-quad-8 driver was neither
-> efficient nor easy to troubleshoot, but it did allow us to focus on
-> implementing and supporting necessary APIs for the nascent Counter
-> subsystem. Now that development for the 104-quad-8 driver has shifted
-> to maintenance, it is a good time to refactor and clean up the code to
-> match closer to what is actually happening on the device. This patchset
-> is an attempt to rectify the situation as such.
+>  drivers/counter/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 >=20
-> The primary change is a transition from maintaining individual
-> configuration states independently, to storing buffers of the device
-> register configurations. To that end, the bitfield API is leveraged to
-> access and retrieve field states. Some helper functions are introduced
-> as well to abstract the handling of the PR, FLAG, PSC, and control
-> registers. A migration to the regmap API is added as a follow-up patch
-> due to its dependence on this patch series.
->=20
-> [0] https://lore.kernel.org/r/b43e2942b763b87afc85bfa9fe36e5695cba4c44.14=
-75079578.git.vilhelm.gray@gmail.com/
-> [1] https://lore.kernel.org/r/cover.1554184734.git.vilhelm.gray@gmail.com/
->=20
-> William Breathitt Gray (4):
->   counter: 104-quad-8: Utilize bitfield access macros
->   counter: 104-quad-8: Refactor to buffer states for CMR, IOR, and IDR
->   counter: 104-quad-8: Utilize helper functions to handle PR, FLAG and
->     PSC
->   counter: 104-quad-8: Migrate to the regmap API
->=20
->  drivers/counter/104-quad-8.c | 802 +++++++++++++++++++----------------
->  drivers/counter/Kconfig      |   1 +
->  2 files changed, 440 insertions(+), 363 deletions(-)
->=20
->=20
-> base-commit: 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index 4228be917038..e65a2bf178b8 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -15,6 +15,7 @@ if COUNTER
+>  config 104_QUAD_8
+>  	tristate "ACCES 104-QUAD-8 driver"
+>  	depends on (PC104 && X86) || COMPILE_TEST
+> +	depends on HAS_IOPORT_MAP
+>  	select ISA_BUS_API
+>  	help
+>  	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
 > --=20
 > 2.39.2
 >=20
 
-Queued for counter-next.
-
-William Breathitt Gray
-
---0s7Z2gknOEJZ6EHn
+--5bxTSeSIiawlWPZU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZGbOlQAKCRC1SFbKvhIj
-K0/QAQCqpS1jJwObJIFxVsMSbY4ebFu+739k15UsTEz16x07ZgD/dJwpK5YUZfpO
-mJWRs3ezWUtdpuDF6hwUWPnznksxCgU=
-=vDZl
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZGbQYwAKCRC1SFbKvhIj
+Kwr/AP9BDmkAnBXC+MjVSJOmxTQF8Sx5RdpwwV0Oaq8V32L4cAEAjgIcBwlTHN/4
+SwcgWo1pJaiaLAG8+7C20VWkinQ4dwc=
+=WkDE
 -----END PGP SIGNATURE-----
 
---0s7Z2gknOEJZ6EHn--
+--5bxTSeSIiawlWPZU--

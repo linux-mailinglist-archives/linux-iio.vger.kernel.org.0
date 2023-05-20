@@ -2,58 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8558670A90D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA47570A915
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjETQTb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 May 2023 12:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45134 "EHLO
+        id S229464AbjETQ2R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 12:28:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbjETQT3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:19:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3517EA;
-        Sat, 20 May 2023 09:19:28 -0700 (PDT)
+        with ESMTP id S229523AbjETQ2Q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:28:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E115918C;
+        Sat, 20 May 2023 09:28:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FBFF60A57;
-        Sat, 20 May 2023 16:19:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1546EC433D2;
-        Sat, 20 May 2023 16:19:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B69D0619E0;
+        Sat, 20 May 2023 16:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D388DC433D2;
+        Sat, 20 May 2023 16:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684599567;
-        bh=ugiadNWSoNuydJxHZiQ17RzFYdehOsMHj7S3NCIs7F4=;
+        s=k20201202; t=1684600094;
+        bh=cJZpEEFzsfD8lCjNgKENQ3mel7UzhmXW1jVWuTGoWEI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VGnrTE/i3PipThBBr4VVMcvJcbq6tHzduYH+WD//jOc8FMAnmThTIzL28prMBvKaX
-         j2o2DnhyES5jqxm8tzxuFnqPdQteMQWsYlonmtPiiUEy/xz44cMBOzF6EZR10RNJbw
-         pohhv1+A5fVv9tkND+ThHnOuPVxpfe/6IPkK0YXVKsoaO9RioI9/J503H4i80du0Cy
-         9let/d2cwclWqNA78PPrOYdxso/LcB5KEjralPsEFusmcK9Y1VEpPYnKVWT5Z3TC+A
-         QS3kZEjoBzNm9PU58OF+3VyLYYn1zZe/Oy1gWiif5iQhOzmBPFNG3oHZJNmHsATTz0
-         Ho+E175KjNfwQ==
-Date:   Sat, 20 May 2023 17:35:36 +0100
+        b=JInoDV3y8FmEf+3ELZHCa+0XsraKuYQ0ikcJpyWAYs+eWaCzTKE2KoUiszBef8pqs
+         nG7kxJ/Y/KdAgd24j9PJRimfEqpjbTCFfCtkwf4GI9E4Pq1ePWqaJu7Olrrnq8j6Di
+         qzVVokxQv6HSRNXgxbDailOgyI8y8jasz+BjI+C+biM0QBRxHw9kgRhVUxuxm10+sZ
+         OpC3nYs8s+HhUzgxyT768j6pdKaAEWQ3MGWRNJFV5CdVuKFo71RJ8Bn92pZFdbSFku
+         FjRm8ZcaSMMSB/IcDo+3ylHUNeLIZaD2eFrlkf/aemsyo4FYusceMo3I/8SHCcF/3N
+         en1tt1Z4RHakg==
+Date:   Sat, 20 May 2023 17:44:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Paul Gazzillo <paul@pgazz.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: pressure: Honeywell mprls0025pa pressure
- sensor
-Message-ID: <20230520173536.6597aa21@jic23-huawei>
-In-Reply-To: <ZGNawohZTDhPazil@arbad>
-References: <ZFUCf059+PSR+3Wb@arbad>
-        <ZFUC/3zBFQRBsYUk@arbad>
-        <20230506170420.71bead77@jic23-huawei>
-        <ZGNawohZTDhPazil@arbad>
+Subject: Re: [PATCH v5 4/5] iio: light: ROHM BU27008 color sensor
+Message-ID: <20230520174422.4313cd83@jic23-huawei>
+In-Reply-To: <2594162f0e44148cffb1fb05f1d6edfde6bd11bc.1683541225.git.mazziesaccount@gmail.com>
+References: <cover.1683541225.git.mazziesaccount@gmail.com>
+        <2594162f0e44148cffb1fb05f1d6edfde6bd11bc.1683541225.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,29 +64,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 16 May 2023 12:28:18 +0200
-Andreas Klinger <ak@it-klinger.de> wrote:
+On Mon, 8 May 2023 13:39:29 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Jonathan,
+> The ROHM BU27008 is a sensor with 5 photodiodes (red, green, blue, clear
+> and IR) with four configurable channels. Red and green being always
+> available and two out of the rest three (blue, clear, IR) can be
+> selected to be simultaneously measured. Typical application is adjusting
+> LCD backlight of TVs, mobile phones and tablet PCs.
 > 
-> thanks for your review. I have one comment.
+> Add initial support for the ROHM BU27008 color sensor.
+>  - raw_read() of RGB and clear channels
+>  - triggered buffer w/ DRDY interrtupt
 > 
-> Jonathan Cameron <jic23@kernel.org> schrieb am Sa, 06. Mai 17:04:
-> > > +	int                     scale;          /* int part of scale */
-> > > +	int                     scale2;         /* nano part of scale */
-> > > +	int                     offset;         /* int part of offset */
-> > > +	int                     offset2;        /* nano part of offset */
-> > > +	struct gpio_desc	*gpiod_reset;	/* reset */
-> > > +	int			irq;		/* end of conversion irq */  
-> > 
-> > Only needed in probe, no need for a copy in here.  
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
-> It's also used in mpr_read_pressure() to distinguish the two possible operation
-> modes:
-> - waiting for an interrupt
-> - reading in a loop until status indicates data ready
+> ---
 > 
-Oops.  Thanks for pointing that out!
+> Please, check the way trigger handling is now implemented. I've verified
+> it works for one user-space user, but I am no longer confident on how
+> the triggers are intended to be used.
+> 
+> When testing the trigger passing iio_trigger_generic_data_rdy_poll() as
+> a handler in devm_request_irq() I saw an IRQ storm. The threaded handler
+> given in devm_iio_triggered_buffer_setup() [bu27008_trigger_handler()] got
+> never called and system hung just looping in
+> iio_trigger_generic_data_rdy_poll(). Hence, this version disables the
+> IRQ in the handler registered at devm_request_irq(), before cascading
+> into iio_trigger_poll(). IRQ is now re-enabled in trigger's .reenable
+> callback. Feedback is appreciated!
 
-> Andreas
+What you have makes sense to me.
+
+A few trivial things inline I'll tidy up whilst applying.
+
+
+> +static int bu27008_trigger_set_state(struct iio_trigger *trig,
+> +				     bool state)
+> +{
+> +	struct bu27008_data *data = iio_trigger_get_drvdata(trig);
+> +	int ret = 0;
+
+No need to initialize ret.
+
+> +
+> +	if (state)
+> +		ret = bu27008_set_drdy_irq(data, BU27008_INT_EN);
+> +	else
+> +		ret = bu27008_set_drdy_irq(data, BU27008_INT_DIS);
+> +	if (ret)
+> +		dev_err(data->dev, "Failed to set trigger state\n");
+> +
+> +	return ret;
+> +}
+> +
+> +static void bu27008_trigger_reenable(struct iio_trigger *trig)
+> +{
+> +	struct bu27008_data *data = iio_trigger_get_drvdata(trig);
+> +
+> +	enable_irq(data->irq);
+> +}
+
+
+> +static irqreturn_t bu27008_data_rdy_poll(int irq, void *private)
+> +{
+> +	/*
+> +	 * The BU27008 keeps IRQ asserted until we read the VALID bit from
+> +	 * a register. We need to keep the IRQ disabled until this
+
+Half sentence.   If this is all that comes up I'll change it to.
+
+We need to keep the IRQ disable until then.
+
+> +	 */
+> +	disable_irq_nosync(irq);
+> +	iio_trigger_poll(private);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int bu27008_setup_trigger(struct bu27008_data *data, struct iio_dev *idev)
+> +{
+> +	struct iio_trigger *itrig;
+> +	char *name;
+> +	int ret;
+> +
+> +	ret = devm_iio_triggered_buffer_setup(data->dev, idev,
+> +					      &iio_pollfunc_store_time,
+> +					      bu27008_trigger_handler,
+> +					      &bu27008_buffer_ops);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +			     "iio_triggered_buffer_setup_ext FAIL\n");
+> +
+> +	itrig = devm_iio_trigger_alloc(data->dev, "%sdata-rdy-dev%d",
+> +				       idev->name, iio_device_id(idev));
+> +	if (!itrig)
+> +		return -ENOMEM;
+> +
+> +	data->trig = itrig;
+> +
+> +	itrig->ops = &bu27008_trigger_ops;
+> +	iio_trigger_set_drvdata(itrig, data);
+> +
+> +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-bu27008",
+> +			      dev_name(data->dev));
+> +
+> +	ret = devm_request_irq(data->dev, data->irq,
+> +			       &bu27008_data_rdy_poll,
+> +			       0, name, itrig);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret, "Could not request IRQ\n");
+> +
+> +	ret = devm_iio_trigger_register(data->dev, itrig);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Trigger registration failed\n");
+> +
+> +	/* set default trigger */
+> +	idev->trig = iio_trigger_get(itrig);
+> +
+> +	return 0;
+> +}
 

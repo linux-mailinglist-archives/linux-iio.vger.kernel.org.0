@@ -2,61 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8800B70A906
-	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC9FE70A90B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231865AbjETQOx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 May 2023 12:14:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44174 "EHLO
+        id S230001AbjETQRn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 12:17:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232025AbjETQOv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:14:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E402121;
-        Sat, 20 May 2023 09:14:49 -0700 (PDT)
+        with ESMTP id S229654AbjETQRm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:17:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864BEDB;
+        Sat, 20 May 2023 09:17:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BE1E61B59;
-        Sat, 20 May 2023 16:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F7CC433D2;
-        Sat, 20 May 2023 16:14:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 201ED61B74;
+        Sat, 20 May 2023 16:17:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849D9C433EF;
+        Sat, 20 May 2023 16:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684599288;
-        bh=6mwKiCUfa2rgYBc0Ypw84q7V/wE3MHOpufBrbmnvfVQ=;
+        s=k20201202; t=1684599460;
+        bh=qcdNhPUgEmbMWcpz4l8bXGsWTX62mn3ZgGinyGEIlBM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BDepCgo1WriJFKCe5dEs1+d5YVSeOiKF1aBmAIMPJtkl/714NG4s1PCJ/goCrDk9k
-         WZHZR0wj5M6DjFxGNXEcPGMOh+GGjGALHvtYH8nfpnTTMN5J3yrN9gRIA5aSlB5sy/
-         +bn4u+O8x1XfvHnfUdk6ZIGIkGaWBgux2XOnCARqpwL7PMEvRhyJZtkvBASN0WxiDL
-         z1Zrn8u0akH7rqz50tAMsAq6UnVrWjYvi37A3YMPhVwbkqKJ5V49KdLP2w1oijQTrw
-         vklFQ662aZ7V7ZMKyYrGzNdmeMO3AdPmt8cQ2U8DQUPNXaMnVNwnSYD3aouCSIfxk5
-         D50p2hBJqIKpw==
-Date:   Sat, 20 May 2023 17:30:57 +0100
+        b=KPN3SOurVwMIpAMdGO23lZ3eiviraBmQe57jt+Allh+6YDIoor4IJe95fdic8RVHt
+         tGuWJ44hHcGXhkIrf+gUrXWqleADb4B5B7hJnyHON35rlD8YCUD2199SoWvG9YKm1o
+         p7Q1A4WchhNCAjHX6qn6GJyNsxIItxZp51U27Y5n81d8GzVpWZuFr2Jr6/4iibX7UI
+         VNIMmr4W7vYYev333YF3zVQkH6bmq6mFX8Vohkaiy40Ww1ktWp28nTmx/QVX37sFAI
+         AV8UiHEPzLBdwOcQAon7t9cxftrVr0GRZWnzOSBLowWO89g/zEE3t+Yjh/jQ6ZRsEj
+         i/dHqL9dAZpow==
+Date:   Sat, 20 May 2023 17:33:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 2/3] iio: potentiometer: Add support for the Renesas
- X9250 potentiometers
-Message-ID: <20230520173057.372355e8@jic23-huawei>
-In-Reply-To: <20230515084416.399f47c8@bootlin.com>
-References: <20230509160852.158101-1-herve.codina@bootlin.com>
-        <20230509160852.158101-3-herve.codina@bootlin.com>
-        <20230513193525.43a4475f@jic23-huawei>
-        <20230514163233.0c048256@bootlin.com>
-        <20230514181912.314ef781@jic23-huawei>
-        <20230515084416.399f47c8@bootlin.com>
+To:     inv.git-commit@tdk.com
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: inv_icm42600: fix timestamp reset
+Message-ID: <20230520173350.5c344da5@jic23-huawei>
+In-Reply-To: <20230509152202.245444-1-inv.git-commit@tdk.com>
+References: <20230509152202.245444-1-inv.git-commit@tdk.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,158 +55,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 May 2023 08:44:16 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Tue,  9 May 2023 15:22:02 +0000
+inv.git-commit@tdk.com wrote:
 
-> On Sun, 14 May 2023 18:19:12 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
->=20
-> > On Sun, 14 May 2023 16:32:33 +0200
-> > Herve Codina <herve.codina@bootlin.com> wrote:
-> >  =20
-> > > Hi Jonathan,
-> > >=20
-> > > On Sat, 13 May 2023 19:35:25 +0100
-> > > Jonathan Cameron <jic23@kernel.org> wrote:
-> > >    =20
-> > > > On Tue,  9 May 2023 18:08:51 +0200
-> > > > Herve Codina <herve.codina@bootlin.com> wrote:
-> > > >      =20
-> > > > > The Renesas X9250 integrates four digitally controlled potentiome=
-ters.
-> > > > > On each potentiometer, the X9250T has a 100 kOhms total resistanc=
-e and
-> > > > > the X9250U has a 50 kOhms total resistance.
-> > > > >=20
-> > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>       =20
-> > > >=20
-> > > > As I only noticed one trivial thing I made the change whilst applyi=
-ng.
-> > > > diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potent=
-iometer/x9250.c
-> > > > index 3d4ca18d1f14..7e145d7d14f1 100644
-> > > > --- a/drivers/iio/potentiometer/x9250.c
-> > > > +++ b/drivers/iio/potentiometer/x9250.c
-> > > > @@ -176,10 +176,7 @@ static int x9250_probe(struct spi_device *spi)
-> > > > =20
-> > > >         x9250 =3D iio_priv(indio_dev);
-> > > >         x9250->spi =3D spi;
-> > > > -       x9250->cfg =3D device_get_match_data(&spi->dev);
-> > > > -       if (!x9250->cfg)
-> > > > -               x9250->cfg =3D &x9250_cfg[spi_get_device_id(spi)->d=
-river_data];
-> > > > -
-> > > > +       x9250->cfg =3D spi_get_device_match_data(spi);
-> > > >         x9250->wp_gpio =3D devm_gpiod_get_optional(&spi->dev, "wp",=
- GPIOD_OUT_LOW);
-> > > >         if (IS_ERR(x9250->wp_gpio))
-> > > >                 return dev_err_probe(&spi->dev, PTR_ERR(x9250->wp_g=
-pio),
-> > > >      =20
-> > >=20
-> > > Are you sure about your modification ?
-> > >=20
-> > > I am not sure (maybe I am wrong) that
-> > >   x9250->cfg =3D spi_get_device_match_data(spi);
-> > > is equivalent to
-> > >   x9250->cfg =3D &x9250_cfg[spi_get_device_id(spi)->driver_data];
-> > >=20
-> > > The spi_get_device_id(spi)->driver_data value I used is a simple inte=
-ger
-> > > (X9250T or X9250U) and not the x9250_cfg item.
-> > > Maybe the x9250_id_table should be modified to replace X9250T by
-> > > &x9250_cfg[X9250T] to have your modification working.   =20
-> >=20
-> > Excellent point.  I'm was  clearly half asleep. The mod should have inc=
-luded
-> > switching them over to be pointers.
-> >  =20
-> > >=20
-> > > The data defined in the driver are the following:
-> > > --- 8< ---
-> > > static const struct x9250_cfg x9250_cfg[] =3D {
-> > > 	[X9250T] =3D { .name =3D "x9250t", .kohms =3D  100, },
-> > > 	[X9250U] =3D { .name =3D "x9250u", .kohms =3D  50, },
-> > > };
-> > >=20
-> > > ...
-> > >=20
-> > > static const struct of_device_id x9250_of_match[] =3D {
-> > > 	{ .compatible =3D "renesas,x9250t", &x9250_cfg[X9250T]},
-> > > 	{ .compatible =3D "renesas,x9250u", &x9250_cfg[X9250U]},
-> > > 	{ }
-> > > };
-> > > MODULE_DEVICE_TABLE(of, x9250_of_match);
-> > >=20
-> > > static const struct spi_device_id x9250_id_table[] =3D {
-> > > 	{ "x9250t", X9250T },
-> > > 	{ "x9250u", X9250U },   =20
-> > So these should be (kernel_ulong_t)&x9250_cfg[X9250T] etc for the data.
-> > I've tweaked it so that is now the case. Oops and thanks for sanity che=
-cking.
-> > Sometimes we see what we expect to see rather than what is there.
-> >=20
-> > Tweak on top of original tweak is:
-> > diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiome=
-ter/x9250.c
-> > index 7e145d7d14f1..0cc7f72529be 100644
-> > --- a/drivers/iio/potentiometer/x9250.c
-> > +++ b/drivers/iio/potentiometer/x9250.c
-> > @@ -198,8 +198,8 @@ static const struct of_device_id x9250_of_match[] =
-=3D {
-> >  MODULE_DEVICE_TABLE(of, x9250_of_match);
-> > =20
-> >  static const struct spi_device_id x9250_id_table[] =3D {
-> > -       { "x9250t", X9250T },
-> > -       { "x9250u", X9250U },
-> > +       { "x9250t", (kernel_ulong_t)&x9250_cfg[X9250T] },
-> > +       { "x9250u", (kernel_ulong_t)&x9250_cfg[X9250U] },
-> >         { }
-> >  };
-> >=20
-> >  =20
->=20
-> Pefect, thanks.
->=20
-> Also can you add a last modification (my bad, I should see that before):
->=20
->  static const struct of_device_id x9250_of_match[] =3D {
-> -       { .compatible =3D "renesas,x9250t", &x9250_cfg[X9250T]},
-> -       { .compatible =3D "renesas,x9250u", &x9250_cfg[X9250U]},
-> +       { .compatible =3D "renesas,x9250t", .data =3D &x9250_cfg[X9250T]},
-> +       { .compatible =3D "renesas,x9250u", .data =3D &x9250_cfg[X9250U]},
->         { }
->  };
->=20
-> I think adding '.data =3D ' would be better and avoid to have some quite =
-tricky
-> bug in case of struct of_device_id modification.
->=20
-> Regards,
-> Herv=C3=A9
-Done
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> Timestamp reset is not done in the correct place. It must be done
+> before enabling buffer. The reason is that interrupt timestamping
+> is always happening when the chip is on, even if the
+> corresponding sensor is off. When the sensor restarts, timestamp
+> is wrong if you don't do a reset first.
+> 
+> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Cc: <stable@vger.kernel.org>
 
->=20
->=20
-> > Jonathan
-> >  =20
-> > > 	{ }
-> > > };
-> > > MODULE_DEVICE_TABLE(spi, x9250_id_table);
-> > >=20
-> > > static struct spi_driver x9250_spi_driver =3D {
-> > > 	.driver  =3D {
-> > > 		.name =3D "x9250",
-> > > 		.of_match_table =3D x9250_of_match,
-> > > 	},
-> > > 	.id_table =3D x9250_id_table,
-> > > 	.probe  =3D x9250_probe,
-> > > };
-> > > --- 8< ---
-> > >=20
-> > >=20
-> > > Best regards,
-> > > Herv=C3=A9
-> > >    =20
-> >  =20
+Applied to the fixes-togreg branch of iio.git
+
+Thanks,
+
+Jonathan
+
+
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+> index 99576b2c171f..32d7f8364230 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+> @@ -275,9 +275,14 @@ static int inv_icm42600_buffer_preenable(struct iio_dev *indio_dev)
+>  {
+>  	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+>  	struct device *dev = regmap_get_device(st->map);
+> +	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
+>  
+>  	pm_runtime_get_sync(dev);
+>  
+> +	mutex_lock(&st->lock);
+> +	inv_icm42600_timestamp_reset(ts);
+> +	mutex_unlock(&st->lock);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -375,7 +380,6 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+>  	struct device *dev = regmap_get_device(st->map);
+>  	unsigned int sensor;
+>  	unsigned int *watermark;
+> -	struct inv_icm42600_timestamp *ts;
+>  	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+>  	unsigned int sleep_temp = 0;
+>  	unsigned int sleep_sensor = 0;
+> @@ -385,11 +389,9 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+>  	if (indio_dev == st->indio_gyro) {
+>  		sensor = INV_ICM42600_SENSOR_GYRO;
+>  		watermark = &st->fifo.watermark.gyro;
+> -		ts = iio_priv(st->indio_gyro);
+>  	} else if (indio_dev == st->indio_accel) {
+>  		sensor = INV_ICM42600_SENSOR_ACCEL;
+>  		watermark = &st->fifo.watermark.accel;
+> -		ts = iio_priv(st->indio_accel);
+>  	} else {
+>  		return -EINVAL;
+>  	}
+> @@ -417,8 +419,6 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+>  	if (!st->fifo.on)
+>  		ret = inv_icm42600_set_temp_conf(st, false, &sleep_temp);
+>  
+> -	inv_icm42600_timestamp_reset(ts);
+> -
+>  out_unlock:
+>  	mutex_unlock(&st->lock);
+>  
 

@@ -2,88 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFEDB70A6EB
-	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 11:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7EB70A74F
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 12:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230302AbjETJy6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 May 2023 05:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50280 "EHLO
+        id S229589AbjETKwV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 06:52:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230171AbjETJy5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 05:54:57 -0400
-X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 20 May 2023 02:54:56 PDT
-Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945C9E45
-        for <linux-iio@vger.kernel.org>; Sat, 20 May 2023 02:54:56 -0700 (PDT)
-Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
-        by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-        id 397b899a-f6f4-11ed-a9de-005056bdf889;
-        Sat, 20 May 2023 12:53:51 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Sat, 20 May 2023 12:53:51 +0300
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229763AbjETKwU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 06:52:20 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C544E49;
+        Sat, 20 May 2023 03:52:00 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae40dcdc18so30529405ad.2;
+        Sat, 20 May 2023 03:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684579919; x=1687171919;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5gaWMjg/j3jT1ogB4fxogwoRNw1EsJdomhb6ARkAoWY=;
+        b=EqLz8JXSxaupUNwVl2OJFbMf1kqYhBJjNq4hXit/CtTQ94WvH4CWnzuF6dNK1CZODg
+         ZLwm2myaaWkLGcuEMfcC5OwBr5RnM5UFmeQTNQtt9jUCeJwYLos6oDBsA/WTnY1+cvm3
+         fEyWAegnO3XTnYWcrjBiHGZVIdUPCeo7WjsXzj5bLQM1eRScKAR6kXO2sN2ZkDdZhrTH
+         VEEkIuM6AAcg1nZWBHcmTDgvDC7WsUa4fFFLEmSVZkhAbNNYFJbvLIuPohz/maE7IrHM
+         JDP2LR0RnJlFWVI/BMrSu/hedkmD9Nae2wcr1MpjKUaapVxxUfzzpDSF+HHvm1TjCVWR
+         h7IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684579919; x=1687171919;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5gaWMjg/j3jT1ogB4fxogwoRNw1EsJdomhb6ARkAoWY=;
+        b=dapSj9NKhATSRmBvu3bZ0vTfoW5Hbqjj/oGb69IhUFvTLFes9Mp6pKT/aMD95lUTHa
+         2KkKaEudxkWeXCm/RjbOSLpRdhFf5TI86BA0dUT7TmvMiCvuJ9+GoRZwswfWnhA4p8U7
+         hpRehklwfwqs2XB2A8mKCaQ+m2hV420BgarnAmIbWOFVdDW3OGb82mKb67tjMw0j00Ut
+         We5jog5IrP997jag6pC8mIOgmenJmUkiUYNoWfP9A0q+vCCPbYz3himTZiamOqyIfc/u
+         q4HFWFojG0b7pEnaWe9EwyDIXl2wEs+8RtM0y0OB3HWafVI1BXi4fgyg5WO985Ir1PLw
+         djtg==
+X-Gm-Message-State: AC+VfDxlHIR9/YUzK+kIk1xS+Wfu9EDG8B6YkdaujBlU2mIbnIL7Py8l
+        XriZfvdqZCy8DajvBV1gsio=
+X-Google-Smtp-Source: ACHHUZ5t+ejrSUhP49O/2UwEVJpqATJqrMYdl5+y2ftHzQrNJ42YLOPdbOvBG2LV10QO0FyH/vqGQQ==
+X-Received: by 2002:a17:902:d4c2:b0:1ac:6c46:8c80 with SMTP id o2-20020a170902d4c200b001ac6c468c80mr6981466plg.53.1684579919475;
+        Sat, 20 May 2023 03:51:59 -0700 (PDT)
+Received: from yoga ([2400:1f00:13:245c:9b1a:1a9d:79c2:5b3b])
+        by smtp.gmail.com with ESMTPSA id q7-20020a170902dac700b001a2104d706fsm1205996plx.225.2023.05.20.03.51.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 May 2023 03:51:58 -0700 (PDT)
+Date:   Sat, 20 May 2023 16:21:50 +0530
+From:   Anup Sharma <anupnewsmail@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 0/3] Add Intel 8254 Counter support
-Message-ID: <ZGiYr6XLguZ8R3_8@surfacebook>
-References: <cover.1681665189.git.william.gray@linaro.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Anup Sharma <anupnewsmail@gmail.com>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        u.kleine-koenig@pengutronix.de, andriy.shevchenko@linux.intel.com,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] Add dt-binding support for ti tmp006
+Message-ID: <cover.1684579603.git.anupnewsmail@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1681665189.git.william.gray@linaro.org>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sun, Apr 16, 2023 at 01:36:52PM -0400, William Breathitt Gray kirjoitti:
-> The Intel 8254 PIT first appeared in the early 1980s and was used
-> initially in IBM PC compatibles. The popularity of the original Intel
-> 825x family of chips led to many subsequent variants and clones of the
-> interface in various chips and integrated circuits. Although still
-> popular, interfaces compatible with the Intel 8254 PIT are nowdays
-> typically found embedded in larger VLSI processing chips and FPGA
-> components rather than as discrete ICs.
-> 
-> This patch series introduces a library to provide support for interfaces
-> compatible with the venerable Intel 8254 Programmable Interval Timer
-> (PIT). Modules wanting access to the i8254 library should select the
-> newly introduced CONFIG_I8254 Kconfig option, and import the I8254
-> symbol namespace.
-> 
-> Support for the i8254 is added in respective follow-up patches for the
-> 104-dio-48e driver and stx104 driver whose devices feature i8254
-> compatible interfaces. Several additional dependencies are necessary for
-> the 104-dio-48e [0][1][2] and stx104 [3][4].
-> 
-> Due to the dependency requirements, I can take the i8254 introduction
-> patch through the Counter tree and provide an immutable branch that can
-> be merged to the GPIO and IIO trees; the 104-dio-48e patch and stx104
-> patch could then be picked up separately by the respective subsystem
-> maintainers.
+These patches introduce device tree binding support and
+add an of_device_id table entry to the driver.
 
-Good job!
+Changes in v2:
+	- Keep the exsisting MODULE_DEVICE_TABLE entry.
+	- Removed the inner comma in of_device_id.
+	- Order the included header to improve code organization.
+	- Adding missing semicolon to fix syntax error detected
+	  using dt_binding_check.
+	
+Anup Sharma (2):
+  dt-bindings: iio: temperature: Add support for tmp006
+  iio: temperature: tmp006: Add OF device matching support
 
-What I'm wondering is that. Can x86 core and others which are using that chip
-utilize (some of) the functions from the library?
-
-> [0] https://lore.kernel.org/all/05a878d340251b781387db4b6490f288e41a651c.1680543810.git.william.gray@linaro.org/
-> [1] https://lore.kernel.org/all/20230208105542.9459-1-william.gray@linaro.org/
-> [2] https://lore.kernel.org/all/cover.1679323449.git.william.gray@linaro.org/
-> [3] https://lore.kernel.org/all/20230318185503.341914-1-william.gray@linaro.org/
-> [4] https://lore.kernel.org/all/cover.1680790580.git.william.gray@linaro.org/
+ .../bindings/iio/temperature/ti,tmp006.yaml   | 42 +++++++++++++++++++
+ drivers/iio/temperature/tmp006.c              |  8 ++++
+ 2 files changed, 50 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/ti,tmp006.yaml
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 

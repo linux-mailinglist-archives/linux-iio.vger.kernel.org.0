@@ -2,53 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C1B709F0E
-	for <lists+linux-iio@lfdr.de>; Fri, 19 May 2023 20:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFEDB70A6EB
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 11:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229871AbjESS3W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 May 2023 14:29:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36016 "EHLO
+        id S230302AbjETJy6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 05:54:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjESS3W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 May 2023 14:29:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3336A139;
-        Fri, 19 May 2023 11:29:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B0E9665A57;
-        Fri, 19 May 2023 18:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236E5C433D2;
-        Fri, 19 May 2023 18:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684520960;
-        bh=VbswIOQ3rtIAguwfMIDLkhK3SAdNBiRLTGE9PLqBpxs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SBl7lTyiVZ/MrUMp2wnKof1LP0ZBJFnIPTfmQinAMwWFL+Qba3q7Xlm5483Paz6W/
-         qPba9Aj8SndGmDK5pwnBZ8nmTjsHMvJAALu4GKlr1QJHoo3/Fp3y89OLwAn5fws+q3
-         5Vv25dDt+P0195GkSOvdyWajhueQSNrjSQ2TjepIrLg6wc5JAZdnRTMvqUMEjQCU33
-         PdeTtPWjOE6XeF8FrjxH8w7UpdU6PO2t4OWMjyBwzORAvZMO+r+7buu6fP/t45hS0M
-         ZPqNGebT+w3geR4+8jk9EoyA+I1PHRuqP0K06u1emlyJKRQcrAQJHNTW9RZiUl3uXQ
-         VizuQeQW1rJrA==
-Date:   Fri, 19 May 2023 19:29:15 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     marius.cristea@microchip.com
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: adding MCP3564 ADC
-Message-ID: <20230519-variably-direction-cfa9a034e844@spud>
-References: <20230519160145.44208-1-marius.cristea@microchip.com>
- <20230519160145.44208-2-marius.cristea@microchip.com>
+        with ESMTP id S230171AbjETJy5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 05:54:57 -0400
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 20 May 2023 02:54:56 PDT
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945C9E45
+        for <linux-iio@vger.kernel.org>; Sat, 20 May 2023 02:54:56 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw22.mail.saunalahti.fi (Halon) with ESMTP
+        id 397b899a-f6f4-11ed-a9de-005056bdf889;
+        Sat, 20 May 2023 12:53:51 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Sat, 20 May 2023 12:53:51 +0300
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Subject: Re: [PATCH 0/3] Add Intel 8254 Counter support
+Message-ID: <ZGiYr6XLguZ8R3_8@surfacebook>
+References: <cover.1681665189.git.william.gray@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DejDAUkNXgqO8feK"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230519160145.44208-2-marius.cristea@microchip.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <cover.1681665189.git.william.gray@linaro.org>
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,77 +45,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Sun, Apr 16, 2023 at 01:36:52PM -0400, William Breathitt Gray kirjoitti:
+> The Intel 8254 PIT first appeared in the early 1980s and was used
+> initially in IBM PC compatibles. The popularity of the original Intel
+> 825x family of chips led to many subsequent variants and clones of the
+> interface in various chips and integrated circuits. Although still
+> popular, interfaces compatible with the Intel 8254 PIT are nowdays
+> typically found embedded in larger VLSI processing chips and FPGA
+> components rather than as discrete ICs.
+> 
+> This patch series introduces a library to provide support for interfaces
+> compatible with the venerable Intel 8254 Programmable Interval Timer
+> (PIT). Modules wanting access to the i8254 library should select the
+> newly introduced CONFIG_I8254 Kconfig option, and import the I8254
+> symbol namespace.
+> 
+> Support for the i8254 is added in respective follow-up patches for the
+> 104-dio-48e driver and stx104 driver whose devices feature i8254
+> compatible interfaces. Several additional dependencies are necessary for
+> the 104-dio-48e [0][1][2] and stx104 [3][4].
+> 
+> Due to the dependency requirements, I can take the i8254 introduction
+> patch through the Counter tree and provide an immutable branch that can
+> be merged to the GPIO and IIO trees; the 104-dio-48e patch and stx104
+> patch could then be picked up separately by the respective subsystem
+> maintainers.
 
---DejDAUkNXgqO8feK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Good job!
 
-Hey Marius,
+What I'm wondering is that. Can x86 core and others which are using that chip
+utilize (some of) the functions from the library?
 
-On Fri, May 19, 2023 at 07:01:44PM +0300, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> This is the device tree schema for iio driver for
-> Microchip family of 153.6 ksps, Low-Noise 16/24-Bit
-> Delta-Sigma ADCs with an SPI interface.
+> [0] https://lore.kernel.org/all/05a878d340251b781387db4b6490f288e41a651c.1680543810.git.william.gray@linaro.org/
+> [1] https://lore.kernel.org/all/20230208105542.9459-1-william.gray@linaro.org/
+> [2] https://lore.kernel.org/all/cover.1679323449.git.william.gray@linaro.org/
+> [3] https://lore.kernel.org/all/20230318185503.341914-1-william.gray@linaro.org/
+> [4] https://lore.kernel.org/all/cover.1680790580.git.william.gray@linaro.org/
 
-Just one quick process bit, please try to CC all of the maintainers
-listed by get_maintainer.pl - you unfortunately managed to miss 2 of the
-3 dt-binding maintainers :/ Perhaps you ran get_maintainer.pl using our
-vendor tree?
-
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
-
-> +  vref-supply:
-> +    description:
-> +      Some devices have a specific reference voltage supplied on a diffe=
-rent
-> +      pin to the other supplies. Needed to be able to establish channel =
-scaling
-> +      unless there is also an internal reference available (e.g. mcp3564=
-r)
-
-Should this be marked as a required property for the non-r devices that
-do not have an internal reference?
-
-> +  microchip,hw-device-address:
-
-Hopefully Rob or Jonathan etc can chime in as to whether a common
-property exists for this type of thing...
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 3
-> +    description:
-> +      The address is set on a per-device basis by fuses in the factory,
-> +      configured on request. If not requested, the fuses are set for 0x1.
-> +      The device address is part of the device markings to avoid
-> +      potential confusion. This address is coded on two bits, so four po=
-ssible
-> +      addresses are available when multiple devices are present on the s=
-ame
-> +      SPI bus with only one Chip Select line for all devices.
-
-=2E.although if it doesn't, it'd be good, I think, to add here where the
-property crops up in spi transfers. And if not in the description, in
-the commit message instead?
-
-Thanks,
-Conor.
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---DejDAUkNXgqO8feK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZGe/+wAKCRB4tDGHoIJi
-0iBxAQD8eWexJAxdcKmL9CavbD0A6xzVonbGarfwkIDy7JlDjAD+MWkzon01DZkl
-zn0K0jxeA7gcoP8ruCzeoIBgvADWUwQ=
-=h34s
------END PGP SIGNATURE-----
-
---DejDAUkNXgqO8feK--

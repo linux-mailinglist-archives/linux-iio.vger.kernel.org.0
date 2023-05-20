@@ -2,121 +2,221 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5420070A900
-	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8800B70A906
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231318AbjETQMJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 May 2023 12:12:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
+        id S231865AbjETQOx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 12:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbjETQMI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:12:08 -0400
+        with ESMTP id S232025AbjETQOv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:14:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6065AC4;
-        Sat, 20 May 2023 09:12:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E402121;
+        Sat, 20 May 2023 09:14:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4697614CF;
-        Sat, 20 May 2023 16:12:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE10C433D2;
-        Sat, 20 May 2023 16:12:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BE1E61B59;
+        Sat, 20 May 2023 16:14:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F7CC433D2;
+        Sat, 20 May 2023 16:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684599126;
-        bh=kdacPFn14rPvw7YtMOZjZ5VztGWuqedD+DJfzX98O90=;
+        s=k20201202; t=1684599288;
+        bh=6mwKiCUfa2rgYBc0Ypw84q7V/wE3MHOpufBrbmnvfVQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dSDZvsMBY7KWvOR1Frf2wX5VfTIQXOigJN2U9v4LWQHV5J7NIYnuJ4WKJBcOnnqK9
-         2VDStILUhYUCGXlrMlB7SwFE10yfzor1qM+3tHLMC/3I2e2BMkl5UcBGRNCJEopctX
-         myL1N15hCMLkPh8I4PRLjZKRLJ9BIgQWniD6yXiYahrLxJFSzY0diPnRIF+vur+g5S
-         /V7k6/sSdu1fYViqXfcNY1lihTNwKvIMC2ZWxr4PT93ibGfrAZBVixZjQ/YWua90Ip
-         TT21lYXtEtit+y1qADlIv1uxtJtveb35C9nbGKatbupEbBXzgvhGO+tAW2IKATbtcO
-         HmB5ASn48+7Jw==
-Date:   Sat, 20 May 2023 17:28:15 +0100
+        b=BDepCgo1WriJFKCe5dEs1+d5YVSeOiKF1aBmAIMPJtkl/714NG4s1PCJ/goCrDk9k
+         WZHZR0wj5M6DjFxGNXEcPGMOh+GGjGALHvtYH8nfpnTTMN5J3yrN9gRIA5aSlB5sy/
+         +bn4u+O8x1XfvHnfUdk6ZIGIkGaWBgux2XOnCARqpwL7PMEvRhyJZtkvBASN0WxiDL
+         z1Zrn8u0akH7rqz50tAMsAq6UnVrWjYvi37A3YMPhVwbkqKJ5V49KdLP2w1oijQTrw
+         vklFQ662aZ7V7ZMKyYrGzNdmeMO3AdPmt8cQ2U8DQUPNXaMnVNwnSYD3aouCSIfxk5
+         D50p2hBJqIKpw==
+Date:   Sat, 20 May 2023 17:30:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-iio@vger.kernel.org, Crt Mori <cmo@melexis.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] dt-bindings: iio: temperature: melexis,mlx90614:
- Document MLX90615 support
-Message-ID: <20230520172815.7475418b@jic23-huawei>
-In-Reply-To: <20230510102251.10118-1-marex@denx.de>
-References: <20230510102251.10118-1-marex@denx.de>
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 2/3] iio: potentiometer: Add support for the Renesas
+ X9250 potentiometers
+Message-ID: <20230520173057.372355e8@jic23-huawei>
+In-Reply-To: <20230515084416.399f47c8@bootlin.com>
+References: <20230509160852.158101-1-herve.codina@bootlin.com>
+        <20230509160852.158101-3-herve.codina@bootlin.com>
+        <20230513193525.43a4475f@jic23-huawei>
+        <20230514163233.0c048256@bootlin.com>
+        <20230514181912.314ef781@jic23-huawei>
+        <20230515084416.399f47c8@bootlin.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 10 May 2023 12:22:46 +0200
-Marek Vasut <marex@denx.de> wrote:
+On Mon, 15 May 2023 08:44:16 +0200
+Herve Codina <herve.codina@bootlin.com> wrote:
 
-> Document support for MLX90615 Infra Red Thermometer, which seems to
-> be the predecesor of MLX90614 . There are significant differences in
-> the register layout compared to MLX90614, but the functionality of
-> the device is virtually identical.
-> 
-> Acked-by: Crt Mori <cmo@melexis.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Marek Vasut <marex@denx.de>
-Series applied to the togreg branch of iio.git and pushed out initially
-as testing for 0-day to give it a whirl.
+> On Sun, 14 May 2023 18:19:12 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>=20
+> > On Sun, 14 May 2023 16:32:33 +0200
+> > Herve Codina <herve.codina@bootlin.com> wrote:
+> >  =20
+> > > Hi Jonathan,
+> > >=20
+> > > On Sat, 13 May 2023 19:35:25 +0100
+> > > Jonathan Cameron <jic23@kernel.org> wrote:
+> > >    =20
+> > > > On Tue,  9 May 2023 18:08:51 +0200
+> > > > Herve Codina <herve.codina@bootlin.com> wrote:
+> > > >      =20
+> > > > > The Renesas X9250 integrates four digitally controlled potentiome=
+ters.
+> > > > > On each potentiometer, the X9250T has a 100 kOhms total resistanc=
+e and
+> > > > > the X9250U has a 50 kOhms total resistance.
+> > > > >=20
+> > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>       =20
+> > > >=20
+> > > > As I only noticed one trivial thing I made the change whilst applyi=
+ng.
+> > > > diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potent=
+iometer/x9250.c
+> > > > index 3d4ca18d1f14..7e145d7d14f1 100644
+> > > > --- a/drivers/iio/potentiometer/x9250.c
+> > > > +++ b/drivers/iio/potentiometer/x9250.c
+> > > > @@ -176,10 +176,7 @@ static int x9250_probe(struct spi_device *spi)
+> > > > =20
+> > > >         x9250 =3D iio_priv(indio_dev);
+> > > >         x9250->spi =3D spi;
+> > > > -       x9250->cfg =3D device_get_match_data(&spi->dev);
+> > > > -       if (!x9250->cfg)
+> > > > -               x9250->cfg =3D &x9250_cfg[spi_get_device_id(spi)->d=
+river_data];
+> > > > -
+> > > > +       x9250->cfg =3D spi_get_device_match_data(spi);
+> > > >         x9250->wp_gpio =3D devm_gpiod_get_optional(&spi->dev, "wp",=
+ GPIOD_OUT_LOW);
+> > > >         if (IS_ERR(x9250->wp_gpio))
+> > > >                 return dev_err_probe(&spi->dev, PTR_ERR(x9250->wp_g=
+pio),
+> > > >      =20
+> > >=20
+> > > Are you sure about your modification ?
+> > >=20
+> > > I am not sure (maybe I am wrong) that
+> > >   x9250->cfg =3D spi_get_device_match_data(spi);
+> > > is equivalent to
+> > >   x9250->cfg =3D &x9250_cfg[spi_get_device_id(spi)->driver_data];
+> > >=20
+> > > The spi_get_device_id(spi)->driver_data value I used is a simple inte=
+ger
+> > > (X9250T or X9250U) and not the x9250_cfg item.
+> > > Maybe the x9250_id_table should be modified to replace X9250T by
+> > > &x9250_cfg[X9250T] to have your modification working.   =20
+> >=20
+> > Excellent point.  I'm was  clearly half asleep. The mod should have inc=
+luded
+> > switching them over to be pointers.
+> >  =20
+> > >=20
+> > > The data defined in the driver are the following:
+> > > --- 8< ---
+> > > static const struct x9250_cfg x9250_cfg[] =3D {
+> > > 	[X9250T] =3D { .name =3D "x9250t", .kohms =3D  100, },
+> > > 	[X9250U] =3D { .name =3D "x9250u", .kohms =3D  50, },
+> > > };
+> > >=20
+> > > ...
+> > >=20
+> > > static const struct of_device_id x9250_of_match[] =3D {
+> > > 	{ .compatible =3D "renesas,x9250t", &x9250_cfg[X9250T]},
+> > > 	{ .compatible =3D "renesas,x9250u", &x9250_cfg[X9250U]},
+> > > 	{ }
+> > > };
+> > > MODULE_DEVICE_TABLE(of, x9250_of_match);
+> > >=20
+> > > static const struct spi_device_id x9250_id_table[] =3D {
+> > > 	{ "x9250t", X9250T },
+> > > 	{ "x9250u", X9250U },   =20
+> > So these should be (kernel_ulong_t)&x9250_cfg[X9250T] etc for the data.
+> > I've tweaked it so that is now the case. Oops and thanks for sanity che=
+cking.
+> > Sometimes we see what we expect to see rather than what is there.
+> >=20
+> > Tweak on top of original tweak is:
+> > diff --git a/drivers/iio/potentiometer/x9250.c b/drivers/iio/potentiome=
+ter/x9250.c
+> > index 7e145d7d14f1..0cc7f72529be 100644
+> > --- a/drivers/iio/potentiometer/x9250.c
+> > +++ b/drivers/iio/potentiometer/x9250.c
+> > @@ -198,8 +198,8 @@ static const struct of_device_id x9250_of_match[] =
+=3D {
+> >  MODULE_DEVICE_TABLE(of, x9250_of_match);
+> > =20
+> >  static const struct spi_device_id x9250_id_table[] =3D {
+> > -       { "x9250t", X9250T },
+> > -       { "x9250u", X9250U },
+> > +       { "x9250t", (kernel_ulong_t)&x9250_cfg[X9250T] },
+> > +       { "x9250u", (kernel_ulong_t)&x9250_cfg[X9250U] },
+> >         { }
+> >  };
+> >=20
+> >  =20
+>=20
+> Pefect, thanks.
+>=20
+> Also can you add a last modification (my bad, I should see that before):
+>=20
+>  static const struct of_device_id x9250_of_match[] =3D {
+> -       { .compatible =3D "renesas,x9250t", &x9250_cfg[X9250T]},
+> -       { .compatible =3D "renesas,x9250u", &x9250_cfg[X9250U]},
+> +       { .compatible =3D "renesas,x9250t", .data =3D &x9250_cfg[X9250T]},
+> +       { .compatible =3D "renesas,x9250u", .data =3D &x9250_cfg[X9250U]},
+>         { }
+>  };
+>=20
+> I think adding '.data =3D ' would be better and avoid to have some quite =
+tricky
+> bug in case of struct of_device_id modification.
+>=20
+> Regards,
+> Herv=C3=A9
+Done
 
-Thanks
-
-Jonathan
-
-> ---
-> Cc: Crt Mori <cmo@melexis.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Marek Vasut <marex@denx.de>
-> Cc: Peter Meerwald <pmeerw@pmeerw.net>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
-> ---
-> V2: - Add spaces to subject tags
->     - Add AB from Krzysztof
-> V3: Add AB from Crt
-> ---
->  .../bindings/iio/temperature/melexis,mlx90614.yaml          | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
-> index d6965a0c1cf30..654d31f65d360 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90614.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/iio/temperature/melexis,mlx90614.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Melexis MLX90614 contactless IR temperature sensor
-> +title: Melexis MLX90614/MLX90615 contactless IR temperature sensor
->  
->  maintainers:
->    - Peter Meerwald <pmeerw@pmeerw.net>
-> @@ -15,7 +15,9 @@ description: |
->  
->  properties:
->    compatible:
-> -    const: melexis,mlx90614
-> +    enum:
-> +      - melexis,mlx90614
-> +      - melexis,mlx90615
->  
->    reg:
->      maxItems: 1
+>=20
+>=20
+> > Jonathan
+> >  =20
+> > > 	{ }
+> > > };
+> > > MODULE_DEVICE_TABLE(spi, x9250_id_table);
+> > >=20
+> > > static struct spi_driver x9250_spi_driver =3D {
+> > > 	.driver  =3D {
+> > > 		.name =3D "x9250",
+> > > 		.of_match_table =3D x9250_of_match,
+> > > 	},
+> > > 	.id_table =3D x9250_id_table,
+> > > 	.probe  =3D x9250_probe,
+> > > };
+> > > --- 8< ---
+> > >=20
+> > >=20
+> > > Best regards,
+> > > Herv=C3=A9
+> > >    =20
+> >  =20
 

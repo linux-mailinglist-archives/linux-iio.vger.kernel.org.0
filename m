@@ -2,75 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A278A70A8C0
-	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 17:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AEA370A8CE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 17:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231180AbjETPQq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 May 2023 11:16:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59872 "EHLO
+        id S230527AbjETPVy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 11:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjETPQp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 11:16:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712A4EE;
-        Sat, 20 May 2023 08:16:44 -0700 (PDT)
+        with ESMTP id S229662AbjETPVx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 11:21:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4809FB;
+        Sat, 20 May 2023 08:21:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C71160A4A;
-        Sat, 20 May 2023 15:16:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A72C433EF;
-        Sat, 20 May 2023 15:16:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4908B60B2A;
+        Sat, 20 May 2023 15:21:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12B8C433D2;
+        Sat, 20 May 2023 15:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684595803;
-        bh=UGvLhlhaGVuZ1xNTf9EdfX6bmO7ekWIS/JxQ4csPyO4=;
+        s=k20201202; t=1684596111;
+        bh=yktxZKd+NoLw+b5VUo7zKOPzwW61FpSOvbrJbWSrpzk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Fk8RBRN4CpUt2XfHmROjEBC6rq1EM5kZM+neDoJm+QOW/TFLuzJb+OVPs9Ka546V6
-         zxjXdoIvK2neuvr77CwHUI8Qs8GDjdCoqO9VUkbXv8qld00GuRL70NfeyyrA8jPvmp
-         9VPuAgV7/biO6/3p/NI9LQuhgSNercRdPA7WnAClUu31zIB3H9w6hWMl0tLHA+jhsB
-         GQMHQF9D+Ewv1+JSjD6gG7bgpl/rDOrip1hn7nuQhM0sZsPRqs8bLFTGoBBLi1BS1Z
-         KTtNUn9fKOJTKYwS1Bdf4FUtRHY647HYY3rLAMopGe4tbdLCwXhNM/hQqDOqwrCwWO
-         qDFvoT+MzECuQ==
-Date:   Sat, 20 May 2023 16:32:49 +0100
+        b=J4HoY98o1zePzNEEqOcV/C9E8h1Cdwu5QBxL9BsnZoZa+oR/pCxMhX4LyEG+1qqMk
+         G2EQe7JhRb99HIkfYA2bSPoq9Uis+GkzFuoKAgcvAmM9VZaz4n1i3bVBkA+bX+4Uoi
+         CqYtFALFyEBKgAvqaQU0QbpjeKmFBCse0MA2cpMwR298Ahj7h6fg2lq57hYASP+SkR
+         /K4jYroxSQVHjctAzY0Ew60irNBMaPGJfPOEQhjl9I7zRAQFXeqfzQMKtrTkvcpj/7
+         pVIZrdkLH5RzVEYik4B9nzL+2VRF/wjRQkafOlYHI9UWeSxDD5SYWX+DiueEMc9VIc
+         1DS07NKWYGMZg==
+Date:   Sat, 20 May 2023 16:38:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Masahiro Honda <honda@mechatrax.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: Re: [PATCH v5 2/8] iio: mb1232: relax return value check for IRQ
- get
-Message-ID: <20230520163249.56f1e56d@jic23-huawei>
-In-Reply-To: <05636b651b9a3b13aa3a3b7d3faa00f2a8de6bca.1684493615.git.mazziesaccount@gmail.com>
-References: <cover.1684493615.git.mazziesaccount@gmail.com>
-        <05636b651b9a3b13aa3a3b7d3faa00f2a8de6bca.1684493615.git.mazziesaccount@gmail.com>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] iio: adc: ad_sigma_delta: Fix IRQ issue by setting
+ IRQ_DISABLE_UNLAZY flag
+Message-ID: <20230520163801.04552580@jic23-huawei>
+In-Reply-To: <20230518110816.248-1-honda@mechatrax.com>
+References: <20230518110816.248-1-honda@mechatrax.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -79,51 +56,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 May 2023 14:01:23 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Thu, 18 May 2023 20:08:16 +0900
+Masahiro Honda <honda@mechatrax.com> wrote:
 
-> fwnode_irq_get() was changed to not return 0 anymore.
+> The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
+> line to indicate the completion of a conversion. However, some devices
+> cannot properly detect the completion of a conversion by an interrupt.
+> This is for the reason mentioned in the following commit.
 > 
-> Drop check for return value 0.
+> commit e9849777d0e2 ("genirq: Add flag to force mask in
+>                       disable_irq[_nosync]()")
 > 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> A read operation is performed by an extra interrupt before the completion
+> of a conversion. At this time, the value read from the ADC data register
+> is the same as the previous conversion result. This patch fixes the issue
+> by setting IRQ_DISABLE_UNLAZY flag.
 > 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Fixes: 0c6ef985a1f ("iio: adc: ad7791: fix IRQ flags")
+> Fixes: 1a913270e57 ("iio: adc: ad7793: Fix IRQ flag")
+> Fixes: e081102f307 ("iio: adc: ad7780: Fix IRQ flag")
+> Fixes: 89a86da5cb8 ("iio: adc: ad7192: Add IRQ flag")
+> Fixes: 79ef91493f5 ("iio: adc: ad7124: Set IRQ type to falling")
+All the fixes tags have 11 chars of the hash, needs to be 12. I fixed that up whilst applying
 
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
+
+> Signed-off-by: Masahiro Honda <honda@mechatrax.com>
 > ---
-> Revsion history:
-> v4 => v5:
->  - drop unnecessary data->irqnr = -1 assignment
+> v5:
+>  - Fix the patch title.
+>  - Add fixes tags.
+>  - Add information about behavior to the commit message.
+> v4: https://lore.kernel.org/linux-iio/20230502102930.773-1-honda@mechatrax.com/
+>  - Remove the callback.
+> v3: https://lore.kernel.org/linux-iio/20230420102316.757-1-honda@mechatrax.com/
+>  - Remove the Kconfig option.
+> v2: https://lore.kernel.org/linux-iio/20230414102744.150-1-honda@mechatrax.com/
+>  - Rework commit message.
+>  - Add a new entry in the Kconfig.
+>  - Call irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY) when freeing the IRQ.
+> v1: https://lore.kernel.org/linux-iio/20230306044737.862-1-honda@mechatrax.com/
 > 
-> The first patch of the series changes the fwnode_irq_get() so this depends
-> on the first patch of the series and should not be applied alone.
-> ---
->  drivers/iio/proximity/mb1232.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/drivers/iio/proximity/mb1232.c b/drivers/iio/proximity/mb1232.c
-> index e70cac8240af..3ae226297a00 100644
-> --- a/drivers/iio/proximity/mb1232.c
-> +++ b/drivers/iio/proximity/mb1232.c
-> @@ -76,7 +76,7 @@ static s16 mb1232_read_distance(struct mb1232_data *data)
->  		goto error_unlock;
->  	}
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+> index d8570f62078..7e219287074 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_de
+>  	init_completion(&sigma_delta->completion);
 >  
-> -	if (data->irqnr >= 0) {
-> +	if (data->irqnr > 0) {
->  		/* it cannot take more than 100 ms */
->  		ret = wait_for_completion_killable_timeout(&data->ranging,
->  									HZ/10);
-> @@ -212,10 +212,7 @@ static int mb1232_probe(struct i2c_client *client)
->  	init_completion(&data->ranging);
->  
->  	data->irqnr = fwnode_irq_get(dev_fwnode(&client->dev), 0);
-> -	if (data->irqnr <= 0) {
-> -		/* usage of interrupt is optional */
-> -		data->irqnr = -1;
-> -	} else {
-> +	if (data->irqnr > 0) {
->  		ret = devm_request_irq(dev, data->irqnr, mb1232_handle_irq,
->  				IRQF_TRIGGER_FALLING, id->name, indio_dev);
->  		if (ret < 0) {
+>  	sigma_delta->irq_dis = true;
+> +
+> +	/* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing an IRQ */
+> +	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
+> +
+>  	ret = devm_request_irq(dev, sigma_delta->spi->irq,
+>  			       ad_sd_data_rdy_trig_poll,
+>  			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
 

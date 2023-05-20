@@ -2,54 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F409670A8FB
-	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A29770A8FE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 May 2023 18:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbjETQI1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 May 2023 12:08:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42246 "EHLO
+        id S229960AbjETQKA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 May 2023 12:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231626AbjETQI0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:08:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C26BF189;
-        Sat, 20 May 2023 09:08:01 -0700 (PDT)
+        with ESMTP id S229662AbjETQJ7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 May 2023 12:09:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8813910A
+        for <linux-iio@vger.kernel.org>; Sat, 20 May 2023 09:09:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFCDD6132C;
-        Sat, 20 May 2023 16:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D1EC433EF;
-        Sat, 20 May 2023 16:07:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2498F61407
+        for <linux-iio@vger.kernel.org>; Sat, 20 May 2023 16:09:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B395EC433D2;
+        Sat, 20 May 2023 16:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684598876;
-        bh=V4usJZqRAFqQRrB2t/cEprnBUvtDDffV3Y2qt9ee9NM=;
+        s=k20201202; t=1684598996;
+        bh=6SduxYq3leWLgk/lwpxj0MdJXYctx0a/bLG7iTW+1oQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D2e1vkPiu+Au/fOv8dpSaECuWvpg5sz/3KlYc6+XVZEMKqmifqR1LZoIBQcBcNwnS
-         N19K5hWcRI3O9L+48G7hglwvVKVUeY5oKNk50B40tIATkeLNebsVaW4FuRl5/KtNAM
-         XiY169Oq8wFU7ofjcxfGQS9ORDdX4I3Gir+/Zf98nbcWhY4IPEjenmgSNP79tdp8b3
-         gma7bdaPPEaBp5Xu0Ka6RB77KkgArzBAwlrRC2kfyNpo2IN2uQSRMBTuLqsZUB41yC
-         QXzdikdZyvoN4yMaJ6YRvJeuf3rjB0ta8xuSoQrbzN3m48sDkv3GP6+tO7P3C2/Pfd
-         nVufObl4xmFSw==
-Date:   Sat, 20 May 2023 17:24:05 +0100
+        b=czd/f7hZNy/sE7s3eWG+Ce2ifld4Q5uaXZlEexFyx4xndXcaoCp79hRdpH2R2dhiA
+         CUFd6/0QP3UMDRq6scm+bZ0UmDYCdEFw5UwL3E2rWjMmhoHhrlLJ4OqV+e2H9woaMv
+         powO9bng8qroUMfZr3HqYSD0IQqWL/YYRwqKTEIWgkSVkcPTbacSqkiG1/mZaRGq6B
+         V/y7C/YlUR4eZODalUu8kpnsbWkL8HRI2R3zCw9aZKWIWF7PteXENcgkO1YQFuBCq3
+         WvR1FikH5Jx6zrvu3G+tzwgZQDujf2XHcEk+4bf28n6V0s6vpoF11dGNc9p12ZpELl
+         bswCD65ph9jjA==
+Date:   Sat, 20 May 2023 17:26:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Klinger <ak@it-klinger.de>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] Support Honeywell mprls0025pa pressure sensor
-Message-ID: <20230520172405.0e1a3ff8@jic23-huawei>
-In-Reply-To: <ZGNpZM137jF5yzie@arbad>
-References: <ZGNpZM137jF5yzie@arbad>
+To:     inv.git-commit@tdk.com
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH v2] iio: imu: inv_icm42600: avoid frequent timestamp
+ jitter
+Message-ID: <20230520172606.3ecffe45@jic23-huawei>
+In-Reply-To: <20230515100645.61172-1-inv.git-commit@tdk.com>
+References: <20230515100645.61172-1-inv.git-commit@tdk.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,88 +55,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 16 May 2023 13:30:44 +0200
-Andreas Klinger <ak@it-klinger.de> wrote:
+On Mon, 15 May 2023 10:06:45 +0000
+inv.git-commit@tdk.com wrote:
 
-> Support Honeywell mprls0025pa pressure sensor.
-Series applied to the togreg branch of iio.git and initially pushed out
-as testing for 0-day to see if it can find anything we missed.
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> We are currently synchronizing every time the data timestamp with
+> the IT timestamp, leading to system jitter jamming timestamps.
+> To fix that and keep it simple, let's just synchronize when the
+> delta is bigger than the acceptable jitter, and keep
+> synchronization at the jitter value.
+> 
+> The result is much stable timestamps reflecting better the real
+> physical value. Example @50Hz delta timestamp,
+> * before: 20.123ms, 19.721ms, 20.023ms, 20.353ms, 19.821ms, ...
+> * after: 20.173ms, 20.173ms, 20.173ms, 20.40ms, 20.173ms, ...
+> 
+> Refactorize code and delete the unnecessary handling of multiple
+> FIFO data.
+> 
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Thanks,
+Applied to the togreg branch of iio.git and pushed out as testing for 0day
+to poke at it.
 
 Jonathan
 
+> ---
+>  .../imu/inv_icm42600/inv_icm42600_timestamp.c | 49 ++++++++++---------
+>  1 file changed, 26 insertions(+), 23 deletions(-)
 > 
-> This patch series adds support for Honeywell mprls0025pa pressure sensor series.
-> There are a variety of sensors with different pressure ranges supported.
-> 
-> Changes in v5:
-> - Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
->   - add Reviewd-by tag
->   - preserve formating in description
-> - Patch 2: "iio: pressure: Honeywell mprls0025pa pressure sensor"
->   - make use of div_s64_rem()
->   - document calculation
->   - reorder includes
->   - use NANO from units.h
-> - Patch 3: "MAINTAINERS: Add Honeywell mprls0025pa sensor"
->   - no changes
-> 
-> Changes in v4:
-> - Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
->   - change line length to 80 characters
->   - make vdd-supply mandatory
-> - Patch 2: "iio: pressure: Honeywell mprls0025pa pressure sensor"
->   - change line length to 80 characters
->   - change regulator vcc to devm_regulator_get_enable()
->   - switch to probe_new
->   - many changes from the review
-> - Patch 3: "MAINTAINERS: Add Honeywell mprls0025pa sensor"
->   - no changes
-> 
-> Changes in v3:
-> - Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
->   - fix errors while doing dt_binding_check
->   - add vdd-supply
-> - Patch 2: "iio: pressure: Honeywell mpr pressure sensor"
->   - change to _RAW interface
->   - add transfer function
->   - add regulator
->   - move to device_property_xxx functions
->   - many more changes from the feedbacks
-> - Patch 3: "MAINTAINERS: Add Honeywell mpr sensor"
->   - change file names
-> 
-> Changes in v2:
-> - Patch 1: "dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor"
->   - change the global sensor decription of mpr to the specific sensor
->     mprls0025pa
->   - change compatible string
->   - rename the file to honeywell,mprls0025pa.yaml
->   - honeywell,pmin-pascal and honeywell,pmax-pascal: add unit pascal to property
->     names 
->   - add new property honeywell,transfer-function
-> - Patch 2: "iio: pressure: Honeywell mpr pressure sensor"
->   - no change so far
->   - will be changed and send out as new version when the dt definition is
->     settled down
-> - Patch 3: "MAINTAINERS: Add Honeywell mpr sensor"
->   - no change so far
-> 
-> Andreas Klinger (3):
->   dt-bindings: iio: pressure: Support Honeywell mprls0025pa sensor
->   iio: pressure: Honeywell mprls0025pa pressure sensor
->   MAINTAINERS: Add Honeywell mprls0025pa sensor
-> 
->  .../iio/pressure/honeywell,mprls0025pa.yaml   | 104 ++++
->  MAINTAINERS                                   |   7 +
->  drivers/iio/pressure/Kconfig                  |  13 +
->  drivers/iio/pressure/Makefile                 |   1 +
->  drivers/iio/pressure/mprls0025pa.c            | 450 ++++++++++++++++++
->  5 files changed, 575 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
->  create mode 100644 drivers/iio/pressure/mprls0025pa.c
-> 
-> 
-> base-commit: 457391b0380335d5e9a5babdec90ac53928b23b4
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+> index 7f2dc41f807b..af2e59fb7258 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+> @@ -93,8 +93,8 @@ static bool inv_validate_period(uint32_t period, uint32_t mult)
+>  		return false;
+>  }
+>  
+> -static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
+> -				    uint32_t mult, uint32_t period)
+> +static bool inv_update_chip_period(struct inv_icm42600_timestamp *ts,
+> +				   uint32_t mult, uint32_t period)
+>  {
+>  	uint32_t new_chip_period;
+>  
+> @@ -104,10 +104,31 @@ static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
+>  	/* update chip internal period estimation */
+>  	new_chip_period = period / mult;
+>  	inv_update_acc(&ts->chip_period, new_chip_period);
+> +	ts->period = ts->mult * ts->chip_period.val;
+>  
+>  	return true;
+>  }
+>  
+> +static void inv_align_timestamp_it(struct inv_icm42600_timestamp *ts)
+> +{
+> +	int64_t delta, jitter;
+> +	int64_t adjust;
+> +
+> +	/* delta time between last sample and last interrupt */
+> +	delta = ts->it.lo - ts->timestamp;
+> +
+> +	/* adjust timestamp while respecting jitter */
+> +	jitter = ((int64_t)ts->period * INV_ICM42600_TIMESTAMP_JITTER) / 100;
+> +	if (delta > jitter)
+> +		adjust = jitter;
+> +	else if (delta < -jitter)
+> +		adjust = -jitter;
+> +	else
+> +		adjust = 0;
+> +
+> +	ts->timestamp += adjust;
+> +}
+> +
+>  void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  				      uint32_t fifo_period, size_t fifo_nb,
+>  				      size_t sensor_nb, int64_t timestamp)
+> @@ -116,7 +137,6 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  	int64_t delta, interval;
+>  	const uint32_t fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
+>  	uint32_t period = ts->period;
+> -	int32_t m;
+>  	bool valid = false;
+>  
+>  	if (fifo_nb == 0)
+> @@ -130,10 +150,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  	if (it->lo != 0) {
+>  		/* compute period: delta time divided by number of samples */
+>  		period = div_s64(delta, fifo_nb);
+> -		valid = inv_compute_chip_period(ts, fifo_mult, period);
+> -		/* update sensor period if chip internal period is updated */
+> -		if (valid)
+> -			ts->period = ts->mult * ts->chip_period.val;
+> +		valid = inv_update_chip_period(ts, fifo_mult, period);
+>  	}
+>  
+>  	/* no previous data, compute theoritical value from interrupt */
+> @@ -145,22 +162,8 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+>  	}
+>  
+>  	/* if interrupt interval is valid, sync with interrupt timestamp */
+> -	if (valid) {
+> -		/* compute measured fifo_period */
+> -		fifo_period = fifo_mult * ts->chip_period.val;
+> -		/* delta time between last sample and last interrupt */
+> -		delta = it->lo - ts->timestamp;
+> -		/* if there are multiple samples, go back to first one */
+> -		while (delta >= (fifo_period * 3 / 2))
+> -			delta -= fifo_period;
+> -		/* compute maximal adjustment value */
+> -		m = INV_ICM42600_TIMESTAMP_MAX_PERIOD(ts->period) - ts->period;
+> -		if (delta > m)
+> -			delta = m;
+> -		else if (delta < -m)
+> -			delta = -m;
+> -		ts->timestamp += delta;
+> -	}
+> +	if (valid)
+> +		inv_align_timestamp_it(ts);
+>  }
+>  
+>  void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
 

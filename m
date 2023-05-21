@@ -2,110 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F1170AD0C
-	for <lists+linux-iio@lfdr.de>; Sun, 21 May 2023 10:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A6D70AF37
+	for <lists+linux-iio@lfdr.de>; Sun, 21 May 2023 19:13:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjEUI5P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 May 2023 04:57:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52454 "EHLO
+        id S231216AbjEURNx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 May 2023 13:13:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbjEUI4d (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 May 2023 04:56:33 -0400
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29901CA;
-        Sun, 21 May 2023 01:53:56 -0700 (PDT)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-3f690149f13so29224271cf.1;
-        Sun, 21 May 2023 01:53:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684659235; x=1687251235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vEIrP2ynpjpmZmVLItYY+rNU7ObAmm9vuXWERHD5GRU=;
-        b=ST1pQhAY8zUonWh1liTdSJ9j7v/hDgthAFgILkfcxi45vkQc3G8QRUcfP+y9nu2KwA
-         l4wE1CQt9UdkqXi79C/5vUnjAtVaGYe0rPXsUrFv1/cz0CgPXogrHjSd3PBuwzq1caQX
-         fV7ni8gC8vZWgDMxFpRtvSe5vMSPDdsx/OL/81/uIrS4UgtoxCnvSKsAaZ3d3z26B5Ea
-         DW3Ilxw5K3VQc4K4zhg9l8sx+ckiAEFZPgrPiqjGBz3BaJ9hGElT/LkZeZKYc5SRJ8JF
-         3YoxtdkrhdnisGE02CKYjm9+Y9KlucNVulLe9/If4BeAZjjYf/qOq+/ympibu5iGR750
-         lFRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684659235; x=1687251235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vEIrP2ynpjpmZmVLItYY+rNU7ObAmm9vuXWERHD5GRU=;
-        b=c5yor4UmvO/Pzks4GF6UGzXcmHvJSGDI17zVy8eWxt8AUgnWSQTmFb9A7r3Cru7xQs
-         0rhp+BCg934UU/xhZF7RqHVXa/l7WZTjq2DVkNRJuII3DD6R7rdYuptew81fuIzSK/Ko
-         dwe4OXvbouNZI9pS1nlWGg9Ihpl5z91sVQkn04/P1hqnlUYX1Lu32qpZg36CZw3XOYjZ
-         rwKhaIHST6pDly0a5/ea5+0Wy+MHxQLkLe2LEsenh2yn0hJOBVvbINIjsBvt336bufAZ
-         xdbcr5zpgG7F1ePqX+AopSSWW+B9nZPH0LVz0JOJ4DxDHDCCoFIryafpq7KmFXeWC2mD
-         TdZg==
-X-Gm-Message-State: AC+VfDzinW5bTkWMIejvcL62BeA32Gc/sPA6sTZlodYmg0VVRkn6ZZJE
-        rBCsKWpRaK8SbxGp4aDfF75qMFZHyaSr3LDoy8c4GA+/JsI=
-X-Google-Smtp-Source: ACHHUZ6Z2pP9QjNcRZjEfdfq0bpt+soUrXi6Q3GIPCsRITb5cwsQAg6J8GvUL5nww5ZFgbGQm+YwX9aaD1UulpmaEHU=
-X-Received: by 2002:ac8:5d8d:0:b0:3f5:543:4c3f with SMTP id
- d13-20020ac85d8d000000b003f505434c3fmr12959562qtx.66.1684659235216; Sun, 21
- May 2023 01:53:55 -0700 (PDT)
+        with ESMTP id S231222AbjEURNc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 May 2023 13:13:32 -0400
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA57115
+        for <linux-iio@vger.kernel.org>; Sun, 21 May 2023 10:13:23 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+        id c6755f98-f7fa-11ed-b3cf-005056bd6ce9;
+        Sun, 21 May 2023 20:13:18 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Sun, 21 May 2023 20:13:16 +0300
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH v5 1/8] drivers: fwnode: fix fwnode_irq_get[_byname]()
+Message-ID: <ZGpRLLy1Snez94NQ@surfacebook>
+References: <cover.1684493615.git.mazziesaccount@gmail.com>
+ <339cc23ccae4580d5551cc2b6b9b4afdde48f25e.1684493615.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-References: <20230515210545.2100161-1-gnstark@sberdevices.ru>
- <CAFBinCCc+t7Ks6fqz38cVrufPRFdxFgC9Qp+JhcM1KfD6pupTg@mail.gmail.com>
- <f0966e95-43c7-e6f6-8aeb-05f27691cec3@sberdevices.ru> <20230520164618.08f26fd9@jic23-huawei>
-In-Reply-To: <20230520164618.08f26fd9@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 21 May 2023 11:53:19 +0300
-Message-ID: <CAHp75VenNPOK7X=vOoZE2rGyC46q4qdNOgSDbDMqV+Gdigm81Q@mail.gmail.com>
-Subject: Re: [PATCH v1] meson saradc: fix clock divider mask length
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?B?0KHRgtCw0YDQuiDQk9C10L7RgNCz0LjQuSDQndC40LrQvtC70LDQtdCy0LjRhw==?= 
-        <GNStark@sberdevices.ru>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
-        "nuno.sa@analog.com" <nuno.sa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <339cc23ccae4580d5551cc2b6b9b4afdde48f25e.1684493615.git.mazziesaccount@gmail.com>
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, May 20, 2023 at 6:30=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> On Wed, 17 May 2023 16:47:59 +0000
-> =D0=A1=D1=82=D0=B0=D1=80=D0=BA =D0=93=D0=B5=D0=BE=D1=80=D0=B3=D0=B8=D0=B9=
- =D0=9D=D0=B8=D0=BA=D0=BE=D0=BB=D0=B0=D0=B5=D0=B2=D0=B8=D1=87 <GNStark@sber=
-devices.ru> wrote:
-> > On 5/16/23 22:08, Martin Blumenstingl wrote:
+Fri, May 19, 2023 at 02:00:54PM +0300, Matti Vaittinen kirjoitti:
+> The fwnode_irq_get() and the fwnode_irq_get_byname() return 0 upon
+> device-tree IRQ mapping failure. This is contradicting the
+> fwnode_irq_get_byname() function documentation and can potentially be a
+> source of errors like:
+> 
+> int probe(...) {
+> 	...
+> 
+> 	irq = fwnode_irq_get_byname();
+> 	if (irq <= 0)
+> 		return irq;
+> 
+> 	...
+> }
+> 
+> Here we do correctly check the return value from fwnode_irq_get_byname()
+> but the driver probe will now return success. (There was already one
+> such user in-tree).
+> 
+> Change the fwnode_irq_get_byname() to work as documented and make also the
+> fwnode_irq_get() follow same common convention returning a negative errno
+> upon failure.
 
-...
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> > I've checked datasheets of all chips listed in meson_sar_adc_of_match a=
-rray in meson_saradc.c and everywhere this field is 6 bits long. According =
-to driver code and existing dts files this patch affects all supported chip=
-s except meson8.
->
-> On that note, do we want to add any clarifying text on the scope to the
-> commit message?
+> Fixes: ca0acb511c21 ("device property: Add fwnode_irq_get_byname")
+> Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+> ---
+> I dropped the existing reviewed-by tags because change to
+> fwnode_irq_get() was added.
+> 
+> Revision history:
+> v3 => v4:
+>  - Change also the fwnode_irq_get()
+> ---
+>  drivers/base/property.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index f6117ec9805c..8c40abed7852 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -987,12 +987,18 @@ EXPORT_SYMBOL(fwnode_iomap);
+>   * @fwnode:	Pointer to the firmware node
+>   * @index:	Zero-based index of the IRQ
+>   *
+> - * Return: Linux IRQ number on success. Other values are determined
+> - * according to acpi_irq_get() or of_irq_get() operation.
+> + * Return: Linux IRQ number on success. Negative errno on failure.
+>   */
+>  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+>  {
+> -	return fwnode_call_int_op(fwnode, irq_get, index);
+> +	int ret;
+> +
+> +	ret = fwnode_call_int_op(fwnode, irq_get, index);
+> +	/* We treat mapping errors as invalid case */
+> +	if (ret == 0)
+> +		return -EINVAL;
 
-We should, I think, but according to Martin's message, as I may
-interpret it, the datasheet may also be wrong and some experiments on
-a real hardware should prepend any change in the code.
+Not sure if this is the best choice, perhaps -EEXIST or -ENOENT might be
+better, but it's just a spoken up thought.
 
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL(fwnode_irq_get);
 
---=20
+-- 
 With Best Regards,
 Andy Shevchenko
+
+

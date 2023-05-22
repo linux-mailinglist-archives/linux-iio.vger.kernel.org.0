@@ -2,153 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C73E670B474
-	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 07:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D36C70B7E1
+	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 10:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231879AbjEVFQi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 May 2023 01:16:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
+        id S231678AbjEVIoR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 May 2023 04:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231795AbjEVFQh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 01:16:37 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4935A1;
-        Sun, 21 May 2023 22:16:35 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2ab3e8f4efeso37738321fa.0;
-        Sun, 21 May 2023 22:16:35 -0700 (PDT)
+        with ESMTP id S230186AbjEVIoR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 04:44:17 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E0397
+        for <linux-iio@vger.kernel.org>; Mon, 22 May 2023 01:44:16 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-50c8d87c775so8595940a12.3
+        for <linux-iio@vger.kernel.org>; Mon, 22 May 2023 01:44:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684732594; x=1687324594;
+        d=rasmusvillemoes.dk; s=google; t=1684745054; x=1687337054;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=CYrQOZoyONEufq+LqeQBmXVtdJJKIjdnOxohkmrAY6o=;
-        b=edyY9Uwr97Vumn46XigszV1y/m9Gv7cv/j55TMmwIGEBhAFVFRjWdybCzaYU5NixCS
-         Oy7lbHC2nES3xXibpgL20jNZZ577FxfG418ggGueA9EsKAShwZ80/RwFfsmDiyfuoofG
-         XU5tXwCrBra5Kb2IvMC1SC5YRCcGgqEd8E5TJILGa6uctQYZ4d81y/YWJBbzULtudJv2
-         klWuGT31X8OqVVju7bO1OnRz0QH+E15bv0xwtpRZSYjuP4vcqj9KUqB6De6Au5r1ta5M
-         t5g3mkhXjYHbCEbcK5SWO7imUJDRp2fJpvWX9EBEPoxFWUNHkX1CKznVwUWPDat7ybXT
-         7RXA==
+        bh=RRCMQPba22gphE+yEe+ARCBFhwsSZYsTb9sKXq+NJRM=;
+        b=bb/7ytzXxYkGjIUZxdrfHhlMdXTLgbYzgV1N3oWkJnByQMEOccwyCba6RmLgeMNgqo
+         OEus+WqbwlfKjNQuLI09Are2Q1km1qtJq+VnVjc8ftLjfW9zCcjahAj//+RPTmKNRIRm
+         u4kV8u+Iyj00/ezfPVZp2UIlDYGOjgf/9AFH8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684732594; x=1687324594;
+        d=1e100.net; s=20221208; t=1684745054; x=1687337054;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYrQOZoyONEufq+LqeQBmXVtdJJKIjdnOxohkmrAY6o=;
-        b=Unde6ivhDmImx+1VDzBYxnncnXyEWeSky6TC+qomHv08Czep048XWuHfFodUufv9j8
-         LicV1Bb4Xc499ffySw1rwLVuKqpoN03aH4Ffi+WQr/GAkXr2aH/DsC2x8L75QkIhuTlE
-         S/+NhnwpJdb3s0H/Dxya1NdLg2y30hMMUaLuHJyF3g0wiLCb5iJUIEPmZaezDTZvECTB
-         nDU9fEnDwoKaP2RgHHzb/3YY9t04kgF22+tFtbwPRynPaxcAn1sWRIi92cy1dcjbx2mI
-         YxMUSfIEmRtPq1FLRJv5tQSa9Xovk5wRC7HMWbPIbLXU74eHLioUpWYIlE0+a/TBweO8
-         qCww==
-X-Gm-Message-State: AC+VfDzYnfPrNmiF8q2F7D5tBzTV3R/uTymWGPdP9IBbtFWychMwNtnx
-        AJ2Qlt1iAPFqfSRHS8R3qxA=
-X-Google-Smtp-Source: ACHHUZ7TbanQlhwifMepu7ORWVh/VP5bZ18ETSV+MsG47HW0VXAqmzXXDf/VvqNJ6H52yVSkjCYq8A==
-X-Received: by 2002:a05:6512:3f1e:b0:4f3:a763:ccb7 with SMTP id y30-20020a0565123f1e00b004f3a763ccb7mr3425929lfa.2.1684732593811;
-        Sun, 21 May 2023 22:16:33 -0700 (PDT)
-Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
-        by smtp.gmail.com with ESMTPSA id k19-20020ac24573000000b004f00189e1dasm847966lfm.143.2023.05.21.22.16.32
+        bh=RRCMQPba22gphE+yEe+ARCBFhwsSZYsTb9sKXq+NJRM=;
+        b=boiTEgHXfFAWRjTZSOs0AvCqkRRB7BI+fc+o1SgIk+8luPA7PuBxkkZzDecAziy9Po
+         BWX67egynaKR9yCRwEvf+HiUZsmMvBRdqmnWz6dC+gc60jbO2fFXoK14e+ryAaPzm/TP
+         C8fnVGx+tcC0uoEYB1C08bQ7KFMkExuX3qJdq4G8CvZXIL0J8MMwCZ9owA9jv3LbZ8P8
+         8IzDPYGlinEqe1bxdSoLV8Iw+24Z5w6qVuogDameVYYKepz5t+RXXhYSLRoWhnARKc+U
+         ZQpY+voyZ/fB7gVODXseSpCjC5dZOdy1EZHHbOoNC2pbC4pO7cLibIiHOIPuR5DRg7Db
+         HavQ==
+X-Gm-Message-State: AC+VfDyPiTYSV7U1mOt4hFF2aPSrv3dhklMkBNCu5JL+P7hwuCU6HqZR
+        gjvn1sE/FK8IBxp411s66pq3SQ==
+X-Google-Smtp-Source: ACHHUZ799M1ZwNFLAegsyLqUbPymCUgBAvL8CX59OgNWOkquTg+WH1VPOhl1PzKcpHqpj2Hy80yOmA==
+X-Received: by 2002:a05:6402:2ce:b0:50b:c4fb:770f with SMTP id b14-20020a05640202ce00b0050bc4fb770fmr7919446edx.34.1684745054601;
+        Mon, 22 May 2023 01:44:14 -0700 (PDT)
+Received: from [172.16.11.116] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id v22-20020a50d096000000b0050e04125a46sm2840443edd.10.2023.05.22.01.44.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 May 2023 22:16:33 -0700 (PDT)
-Message-ID: <44c87ed5-f14d-e690-1e5f-74212370611b@gmail.com>
-Date:   Mon, 22 May 2023 08:16:32 +0300
+        Mon, 22 May 2023 01:44:13 -0700 (PDT)
+Message-ID: <822d2741-32ff-fc73-28a5-25575ab3cc52@rasmusvillemoes.dk>
+Date:   Mon, 22 May 2023 10:44:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v5 4/8] pinctrl: wpcm450: relax return value check for IRQ
- get
-Content-Language: en-US, en-GB
-To:     andy.shevchenko@gmail.com
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
+Subject: Re: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions
+ other than digital input
+Content-Language: en-US, da
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <cover.1684493615.git.mazziesaccount@gmail.com>
- <42264f1b12a91e415ffa47ff9adb53f02a6aa3ea.1684493615.git.mazziesaccount@gmail.com>
- <ZGpS-13CozLp-p4f@surfacebook>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <ZGpS-13CozLp-p4f@surfacebook>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
+ <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
+ <6fcf4997-9d88-7e86-70f7-52f9d296bc6e@rasmusvillemoes.dk>
+ <20230506191636.3cff4b24@jic23-huawei>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+In-Reply-To: <20230506191636.3cff4b24@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/21/23 20:20, andy.shevchenko@gmail.com wrote:
-> Fri, May 19, 2023 at 02:02:16PM +0300, Matti Vaittinen kirjoitti:
->> fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
->> special error case where device-tree based IRQ mapping fails can't no
->> longer be reliably detected from this return value. This yields a
->> functional change in the driver where the mapping failure is treated as
->> an error.
->>
->> The mapping failure can occur for example when the device-tree IRQ
->> information translation call-back(s) (xlate) fail, IRQ domain is not
->> found, IRQ type conflicts, etc. In most cases this indicates an error in
->> the device-tree and special handling is not really required.
->>
->> One more thing to note is that ACPI APIs do not return zero for any
->> failures so this special handling did only apply on device-tree based
->> systems.
->>
->> Drop the special (no error, just skip the IRQ) handling for DT mapping
->> failures as these can no longer be separated from other errors at driver
->> side.
+On 06/05/2023 20.16, Jonathan Cameron wrote:
+> On Thu, 4 May 2023 12:08:53 +0200
+> Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 > 
-> ...
-> 
->> The commit message does not mention if choosing not to abort the probe
->> on device-tree mapping failure (as is done on other errors) was chosen
->> because: a) Abort would have broken some existing setup. b) Because skipping
->> an IRQ on failure is "the right thing to do", or c) because it sounded like
->> a way to minimize risk of breaking something.
+>> On 04/05/2023 09.28, Nuno Sá wrote:
+
+>>> Can anyone have a working device by specifying that dt parameter
+>>> on a non digital channel (or expect something from having that parameter set)?
+>>> Or the only effect is to actually have some functions misbehaving?  
 >>
->> If the reason is a) - then I'd appreciate receiving some more
->> information and a suggestion how to proceed (if possible). If the reason
->> is b), then it might be best to just skip the IRQ instead of aborting
->> the probe for all errors on IRQ getting. Finally, in case of c), well,
->> by acking this change you will now accept the risk :)
+>> The data sheet doesn't say that the DIN_SINK should have any effect for
+>> other functions, so I'm pretty sure it's only the latter: some functions
+>> misbehave.
+>>
+>>> On the driver side, if it's never right to have
+>>> these settings together, then the patch is valid since if someone has this, his
+>>> configuration is broken anyways (maybe that's also a valid point for the
+>>> bindings)...  
+>>
+>> Yes, I do believe that it's a broken description (whether or not the
+>> bindings specify that), and drivers don't need to go out of their way to
+>> validate or fixup such brokenness. But in this particular case, there's
+>> really no extra burden on the driver to not put garbage in DIN_SINK when
+>> a not-digital-input function has been chosen (the patch is a two-liner
+>> with 'git show -w').
 > 
-> No need to repeat this. As I answered the case c) was in my mind when I made
-> that change.
+> If we can tighten the DT binding to rule out something that should not be
+> set than that would be good.  Tightening bindings is fine - we don't mind
+> validation of bindings failing on peoples DTs as long as we didn't 'break'
+> them actually working.
 
-True. I'll drop that if I re-spin. Thanks for pointing it out.
+Well, I'm afraid I don't have any idea how to spell that constraint in
+the yaml-language (help appreciated).
 
+And I assume a dt binding update would be a separate patch anyway, so
+could you please consider applying this patch?
 
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+Thanks,
+Rasmus
 

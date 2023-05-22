@@ -2,167 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDC3170BBFA
-	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 13:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FF8B70C0FD
+	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 16:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233155AbjEVLgW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 May 2023 07:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49284 "EHLO
+        id S233615AbjEVO0b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 May 2023 10:26:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233157AbjEVLgU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 07:36:20 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C946F1;
-        Mon, 22 May 2023 04:36:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1684755358;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0n8l4247LeEWaLKQ0FnSfNM9KwjF8gdrQk1OZZ4VON0=;
-        b=vgcIeJ3SYVpE+jcU3BpOIfJQV6mo8nqBt41pXsNvzViL3qMlZQ0sZPJ1saiDlTQfuT4dN9
-        RK6OVIflDrt5aZua0j4XeZJTSAF7Eqb1Beyly8LBtIrwXdbaNCT/N3dcJZPxFAV50yQ8n/
-        gVjLZTufknvT5paH8YMPKdkWWVXlbQc=
-Message-ID: <6b88623e44b2a98a2e5d8d6d2453f92eb1b673ae.camel@crapouillou.net>
-Subject: Re: [PATCH v2 1/2] iio/adc: ingenic: Fix channel offsets in buffer
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        linux-mips@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
-Date:   Mon, 22 May 2023 13:35:56 +0200
-In-Reply-To: <CAHp75VdjAxAvmYVW4qgV2i91L31=Ctx4nx_eAe9+pqPFEArD3w@mail.gmail.com>
-References: <20230521225901.388455-1-contact@artur-rojek.eu>
-         <20230521225901.388455-2-contact@artur-rojek.eu>
-         <CAHp75VeLRHwcKQALwnBb-gqVeyxxH=_F40TserRXqo_kbaZzoQ@mail.gmail.com>
-         <CAHp75VedgVOA4qTJFeVuabKXBaB=y4Ss0fLu7a7J9GGgWFPqQg@mail.gmail.com>
-         <2fc0874ce8a802aeb98e553b15e27fb4d4b75a1c.camel@crapouillou.net>
-         <CAHp75VdjAxAvmYVW4qgV2i91L31=Ctx4nx_eAe9+pqPFEArD3w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229689AbjEVO0a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 10:26:30 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3B8A9;
+        Mon, 22 May 2023 07:26:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1684765588;
+  x=1716301588;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TIezkU+fVhbGLiEyRq/icCgR1qWidT7f5ic8tmGSzO4=;
+  b=YEgGNyfY6YN20rC27LJfbLp9cF0udjHEKZSDmhjg4mQewFMwUBfZdIb0
+   ff9eEsazuyF64+O6VjCkThpGppupdsMdaBHzE8oo9c066kM2jE/GqCsIJ
+   s6eihOztGlYfhkoTnNBZ32vFG6L/QPS7458FT7F+qTetOUibGumSupk2V
+   iSDNc8Hb8NdQJwCXLktQyR0yAkrjsGOuwzgy2ty1YacDp7k2Fnajx6wyS
+   Kbjnr0I3TW1SUkMCxbJ3ymvXBL0egM6Tm6o2XGwk9TcxWwh1nsUz2pFG+
+   WQTdN1ZTd3UEYGPomPZ7pJklmgjMjuVvkQjdjilgzdjfSwXumXREMsDxD
+   w==;
+From:   Astrid Rost <astrid.rost@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@axis.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mathieu Othacehe <m.othacehe@gmail.com>,
+        Astrid Rost <astrid.rost@axis.com>
+Subject: [PATCH v4 0/7] iio: light: vcnl4000: Add features for vncl4040/4200
+Date:   Mon, 22 May 2023 16:26:14 +0200
+Message-ID: <20230522142621.1680563-1-astrid.rost@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+Add a more complete support for vncl4040 and vcnl4200, which allows to
+change the distance of proximity detection and interrupt support for the
+illuminance sensor.
 
-Le lundi 22 mai 2023 =C3=A0 14:05 +0300, Andy Shevchenko a =C3=A9crit=C2=A0=
-:
-> On Mon, May 22, 2023 at 1:23=E2=80=AFPM Paul Cercueil <paul@crapouillou.n=
-et>
-> wrote:
-> > Le lundi 22 mai 2023 =C3=A0 13:18 +0300, Andy Shevchenko a =C3=A9crit :
-> > > On Mon, May 22, 2023 at 1:15=E2=80=AFPM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote:
-> > > > On Mon, May 22, 2023 at 1:59=E2=80=AFAM Artur Rojek
-> > > > <contact@artur-rojek.eu> wrote:
->=20
-> ...
->=20
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u16 tdat[6];
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u32 val;
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memset(tdat, 0, ARRAY_SIZE(=
-tdat));
-> > > >=20
-> > > > Yeah, as LKP tells us this should be sizeof() instead of
-> > > > ARRAY_SIZE().
-> > > >=20
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; mask && i < A=
-RRAY_SIZE(tdat); mask >>=3D 2)
-> > > > > {
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 if (mask & 0x3) {
-> > > >=20
-> > > > (for the consistency it has to be GENMASK(), but see below)
-> > > >=20
-> > > > First of all, strictly speaking we should use the full mask
-> > > > without
-> > > > limiting it to the 0 element in the array (I'm talking about
-> > > > active_scan_mask).
-> > > >=20
-> > > > That said, we may actually use bit operations here in a better
-> > > > way,
-> > > > i.e.
-> > > >=20
-> > > > =C2=A0 unsigned long mask =3D active_scan_mask[0] &
-> > > > (active_scan_mask[0] -
-> > > > 1);
-> > > >=20
-> > > > =C2=A0 j =3D 0;
-> > > > =C2=A0 for_each_set_bit(i, active_scan_mask, ...) {
-> > > > =C2=A0=C2=A0=C2=A0 val =3D readl(...);
-> > > > =C2=A0=C2=A0=C2=A0 /* Two channels per sample. Demux active. */
-> > > > =C2=A0=C2=A0=C2=A0 tdat[j++] =3D val >> (16 * (i % 2));
-> > >=20
-> > > Alternatively
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 /* Two channels per sample. Demux active. */
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 if (i % 2)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tdat[j++] =3D upper_16_bits(val)=
-;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 else
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tdat[j++] =3D lower_16_bits(val)=
-;
-> > >=20
-> > > which may be better to read.
-> >=20
-> > It's not if/else though. You would check (i % 2) for the upper 16
-> > bits,
-> > and (i % 1) for the lower 16 bits. Both can be valid at the same
-> > time.
->=20
-> Are you sure? Have you looked into the proposed code carefully?
+Proximity functionality:
+  - Interrupt support (new on vcnl4200).
 
-Yes. I co-wrote the original code, I know what it's supposed to do.
+Proximity reduce the amount of interrupts:
+  - Adaptable integration time (new on vcnl4200) - the sampling rate
+    changes according to this value.
+  - Period - interrupt is asserted if the value is above or
+    below a certain threshold.
 
->=20
-> What probably can be done differently is the read part, that can be
-> called once. But looking at it I'm not sure how it's supposed to work
-> at all, since the address is always the same. How does the code and
-> hardware are in sync with the channels?
+Proximity change the activity distance:
+  - Oversampling ratio - Amount of LED pulses per measured raw value.
+  - Calibration bias - LED current calibration of the sensor.
 
-It's a FIFO.
+Illuminance functionality:
+  - Interrupt support.
 
-Cheers,
--Paul
+Illuminance reduce the amount of interrupts:
+  - Adaptable integration time - the sampling rate and scale changes
+    according to this value.
+  - Period – interrupt is asserted if the value is above or
+    below a certain threshold.
 
->=20
-> > > > =C2=A0 }
-> > > >=20
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 val =
-=3D readl(adc->base +
-> > > > > JZ_ADC_REG_ADTCH);
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Tw=
-o channels per sample. Demux
-> > > > > active.
-> > > > > */
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (m=
-ask & BIT(0))
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tdat[i++] =3D val & 0xffff;
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (m=
-ask & BIT(1))
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tdat[i++] =3D val >> 16;
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 }
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->=20
+changes v2:
+- [PATCH v2 3/7] Fixed calculation of al_scale.
+  Fix the value of vcnl4040 according to the data-sheet.
+  Use div_u64 for the division.
+scription for the branch
+
+changes v3:
+- [PATCH v3 1-3/7] Add differences between the chips as variables in
+  chip-spec.
+- [PATCH v3 4/7] Changed commit message.
+- [PATCH v3 5/7] Use period instead of debounce time. This causes some
+  calculations as the period is a time and the chip allows to set a certain
+  amount of measurements above/below the threshold, before throwing an
+  interrupt.
+- [PATCH v3 6/7] Changed commit message.
+
+changes v4:
+- [PATCH v3 1-3/7] Fix setting correct als_it for vcnl4040.
+- [PATCH v3 5/7] Use MICRO macro.
+  Fix values greater than 1 s for the proximity period.
+
+Astrid Rost (7):
+  [PATCH v4 1/7] iio: light: vcnl4000: Add proximity irq for vcnl4200
+  [PATCH v4 2/7] iio: light: vcnl4000: Add proximity ps_it for vcnl4200
+  [PATCH v4 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+  [PATCH v4 4/7] iio: light: vcnl4000: add illuminance irq vcnl4040/4200
+  [PATCH v4 5/7] iio: light: vcnl4000: Add period for vcnl4040/4200
+  [PATCH v4 6/7] iio: light: vcnl4000: Add oversampling_ratio for 4040/4200
+  [PATCH v4 7/7] iio: light: vcnl4000: Add calibration bias for 4040/4200
+
+ drivers/iio/light/vcnl4000.c | 721 +++++++++++++++++++++++++++++++----
+ 1 file changed, 653 insertions(+), 68 deletions(-)
+
+-- 
+2.30.2
 

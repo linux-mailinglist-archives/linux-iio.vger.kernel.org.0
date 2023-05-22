@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D8370BB38
-	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 13:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D33170BB3E
+	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 13:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232180AbjEVLK7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 May 2023 07:10:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53756 "EHLO
+        id S230378AbjEVLLz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 May 2023 07:11:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232163AbjEVLKd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 07:10:33 -0400
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F1F2D71;
-        Mon, 22 May 2023 04:05:43 -0700 (PDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-6239ab2b8e0so33822166d6.0;
-        Mon, 22 May 2023 04:05:43 -0700 (PDT)
+        with ESMTP id S231138AbjEVLLU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 07:11:20 -0400
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9CC30ED;
+        Mon, 22 May 2023 04:06:19 -0700 (PDT)
+Received: by mail-qv1-xf33.google.com with SMTP id 6a1803df08f44-62381fe42b3so25770386d6.0;
+        Mon, 22 May 2023 04:06:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684753541; x=1687345541;
+        d=gmail.com; s=20221208; t=1684753578; x=1687345578;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2jF2mM5Pjq08Kjskd7AiSB2LqCAcdNBrNhg6QE9S2wI=;
-        b=GW1XPgdgxSTkPK+AhEvJQuaekNtQ+vA4S3OPmaaYP5XAxrlQklgyRupmabedm8vrzf
-         qPH2cNYuS26TPsENCE+AS5zssxYPTdEx719cn2UsID2dXYi6OhNr19iARY9XMX7nCPYi
-         D8blUvVp2dBJRVu4aAsJoqkn1s823UYYm7Alm0pv5TXdPiE5wyeclqTn0iHKsBfzzwAL
-         M+vXauka8F1VqUbybQrE70GsDR//p9mVlOW4A1WjSqb7W+ZcjeI8UMGhsO3bfa7twIsa
-         6AgN78l1VSfst58zqTZrN/ZE+EUHC27RNdmwvshookTVA9kAyv79Nrd3037+gpp4xDHF
-         68/w==
+        bh=HCxmceFxaOu1idnfY2VfZs/REw/SEk7/UmlEMx9raLg=;
+        b=mDOIzfl3POnlvpW7fR0L1vhdAyGYek1iyC/V62ZOA7U7Y2eIo0EkuZW9G43PyX+HtT
+         WvsDp8bsb4XqrMv+ifaueMktR4ZousftZiBd4RR4NqhLPdBHK7KSWevXTvdn0TxT+/9S
+         iscw/J607rXEoKUs+VVflRAUSrGxqllQVXChQzzrsckZE0Ng6UkpZ40zjXEFTxb5YGVb
+         CsA2FH8fUfCD/5T53yIt2lI9/GeQ7hBadutg3uPMeuf0Psr4s9FJGv7tWZozktBAL1th
+         tArfVZDwdsy5dqY8f2GKzMrmpqNi+zRFPGsdWvuLNeIpevGzmWXOJUy5eL2eCyyPvtAf
+         gqQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684753541; x=1687345541;
+        d=1e100.net; s=20221208; t=1684753578; x=1687345578;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2jF2mM5Pjq08Kjskd7AiSB2LqCAcdNBrNhg6QE9S2wI=;
-        b=ULGEkhBiTGEZUk4rIfSbjlNumCQUcd1Jnt9ENpfEPDsQT44QPQnLvD7TmxTiv89bPr
-         2S5IINOhnzr6rO+jSIj2oFrkCyEQiKkfAzjs5uEikoCM+ChwNbPcyIVU6kSRzbSiyaEG
-         WtvXfjqCr1inAk2fJBKEKi1nsMqbmwoFjkZuwrdWI2txqE1TkU3X8HR+HvpnXc20aLEY
-         N6163Bbt6wM07SRu+m0+TjR0nDdStT7+3oWF6SRr94W8ZhEtmg1qUQvpUsw9xgfIT8ui
-         P1wUJB1/jqqtKs5q8WMiP1VqSONFWv7+bp+6NYI576P0oLs0Cf3u26CIjPq67wIeCbGL
-         kp/w==
-X-Gm-Message-State: AC+VfDz0BgT8AjC4qf8P4vrEfO7yLi1TlpoHSMklu1h7ZUb3iqTWzzJg
-        euVKHmkvrmGQsWMDB3LmaVbjNGNURzYx+w31bV8=
-X-Google-Smtp-Source: ACHHUZ7lcmbqe5eSIFzYjgCkogXL3YdKidRnHdMM5oHqoRnMoHSxeGH3LcjQppoHfmMrwNw6ojsOFILaNQwQK0EaoCM=
-X-Received: by 2002:a05:6214:62d:b0:621:3b88:7af2 with SMTP id
- a13-20020a056214062d00b006213b887af2mr14852116qvx.52.1684753541472; Mon, 22
- May 2023 04:05:41 -0700 (PDT)
+        bh=HCxmceFxaOu1idnfY2VfZs/REw/SEk7/UmlEMx9raLg=;
+        b=Sgx566vCmrvHZkeqxXtsZ9EJNYAj6exnFg6YDy3/pkhdyGHWpejHx8vZDMIsy/TBVE
+         epVEnfCxvX0gdvRmKb27vQFlxkb1sb3JsQ8HE0HRmOviUIZnIoQra0GPZLwJalx5tdTP
+         DjrWDv32Qz8OX6bHvB1t28ZrhfzLrWp7TSwBBbZEuTMXpD06G3WE+FdqS7VJ3rcCzI9W
+         Ze/utrytonJmGgszsISDArXw4iq3JNfItISCvS3oxskTTnIA1Ihz9I0Uxm7cVcDVC1gl
+         oYcvinKHBBYuMqyZPVtkOdj/9I1B8XPyAdRIk6t7/N0bRA3jgucXzwrzvKO1O/GMyonF
+         Wp8w==
+X-Gm-Message-State: AC+VfDwC9JE/i29UrnTLRIokhgPsxEoiVSiBKx/IShCq/EveMA35jtU0
+        DFSHgOxrfzi0t6mcJjaRwBbhDHKdKFmfnavTxbE=
+X-Google-Smtp-Source: ACHHUZ4za1Fk1pRjVTXSpuT50YNQaqoVS3396KaiL6WErAffhxbAYHVgGx3UFjBlpa3K6PD8w4Yf81yJl+5AK0/5DrA=
+X-Received: by 2002:ad4:5c49:0:b0:621:6886:d4db with SMTP id
+ a9-20020ad45c49000000b006216886d4dbmr18327778qva.38.1684753578280; Mon, 22
+ May 2023 04:06:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230521225901.388455-1-contact@artur-rojek.eu>
  <20230521225901.388455-2-contact@artur-rojek.eu> <CAHp75VeLRHwcKQALwnBb-gqVeyxxH=_F40TserRXqo_kbaZzoQ@mail.gmail.com>
- <CAHp75VedgVOA4qTJFeVuabKXBaB=y4Ss0fLu7a7J9GGgWFPqQg@mail.gmail.com> <2fc0874ce8a802aeb98e553b15e27fb4d4b75a1c.camel@crapouillou.net>
-In-Reply-To: <2fc0874ce8a802aeb98e553b15e27fb4d4b75a1c.camel@crapouillou.net>
+ <9812499a8e017b8e01327069c8063e5f213bb1c8.camel@crapouillou.net>
+In-Reply-To: <9812499a8e017b8e01327069c8063e5f213bb1c8.camel@crapouillou.net>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 22 May 2023 14:05:05 +0300
-Message-ID: <CAHp75VdjAxAvmYVW4qgV2i91L31=Ctx4nx_eAe9+pqPFEArD3w@mail.gmail.com>
+Date:   Mon, 22 May 2023 14:05:42 +0300
+Message-ID: <CAHp75Vfhj0Unrv+fsy+j-xErqt-UVR6G-7if18LoKgBRZGfG7g@mail.gmail.com>
 Subject: Re: [PATCH v2 1/2] iio/adc: ingenic: Fix channel offsets in buffer
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Artur Rojek <contact@artur-rojek.eu>,
@@ -74,77 +74,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 22, 2023 at 1:23=E2=80=AFPM Paul Cercueil <paul@crapouillou.net=
+On Mon, May 22, 2023 at 1:20=E2=80=AFPM Paul Cercueil <paul@crapouillou.net=
 > wrote:
-> Le lundi 22 mai 2023 =C3=A0 13:18 +0300, Andy Shevchenko a =C3=A9crit :
-> > On Mon, May 22, 2023 at 1:15=E2=80=AFPM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:
-> > > On Mon, May 22, 2023 at 1:59=E2=80=AFAM Artur Rojek
-> > > <contact@artur-rojek.eu> wrote:
+> Le lundi 22 mai 2023 =C3=A0 13:15 +0300, Andy Shevchenko a =C3=A9crit :
+> > On Mon, May 22, 2023 at 1:59=E2=80=AFAM Artur Rojek <contact@artur-roje=
+k.eu>
+> > wrote:
 
 ...
 
-> > > > +       u16 tdat[6];
-> > > > +       u32 val;
-> > > > +
-> > > > +       memset(tdat, 0, ARRAY_SIZE(tdat));
-> > >
-> > > Yeah, as LKP tells us this should be sizeof() instead of
-> > > ARRAY_SIZE().
-> > >
-> > > > +       for (i =3D 0; mask && i < ARRAY_SIZE(tdat); mask >>=3D 2) {
-> > > > +               if (mask & 0x3) {
-> > >
-> > > (for the consistency it has to be GENMASK(), but see below)
-> > >
-> > > First of all, strictly speaking we should use the full mask without
-> > > limiting it to the 0 element in the array (I'm talking about
-> > > active_scan_mask).
-> > >
-> > > That said, we may actually use bit operations here in a better way,
-> > > i.e.
-> > >
-> > >   unsigned long mask =3D active_scan_mask[0] & (active_scan_mask[0] -
-> > > 1);
-> > >
-> > >   j =3D 0;
-> > >   for_each_set_bit(i, active_scan_mask, ...) {
-> > >     val =3D readl(...);
-> > >     /* Two channels per sample. Demux active. */
-> > >     tdat[j++] =3D val >> (16 * (i % 2));
+> > > +       memset(tdat, 0, ARRAY_SIZE(tdat));
 > >
-> > Alternatively
-> >
-> >      /* Two channels per sample. Demux active. */
-> >      if (i % 2)
-> >        tdat[j++] =3D upper_16_bits(val);
-> >      else
-> >        tdat[j++] =3D lower_16_bits(val);
-> >
-> > which may be better to read.
+> > Yeah, as LKP tells us this should be sizeof() instead of
+> > ARRAY_SIZE().
 >
-> It's not if/else though. You would check (i % 2) for the upper 16 bits,
-> and (i % 1) for the lower 16 bits. Both can be valid at the same time.
+> Probably "u16 tdat[6] =3D { 0 };" would work too?
 
-Are you sure? Have you looked into the proposed code carefully?
-
-What probably can be done differently is the read part, that can be
-called once. But looking at it I'm not sure how it's supposed to work
-at all, since the address is always the same. How does the code and
-hardware are in sync with the channels?
-
-> > >   }
-> > >
-> > > > +                       val =3D readl(adc->base +
-> > > > JZ_ADC_REG_ADTCH);
-> > > > +                       /* Two channels per sample. Demux active.
-> > > > */
-> > > > +                       if (mask & BIT(0))
-> > > > +                               tdat[i++] =3D val & 0xffff;
-> > > > +                       if (mask & BIT(1))
-> > > > +                               tdat[i++] =3D val >> 16;
-> > > > +               }
-> > > >         }
+Without 0 also would work :-)
 
 --=20
 With Best Regards,

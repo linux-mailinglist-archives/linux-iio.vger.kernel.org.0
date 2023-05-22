@@ -2,125 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFFC70C3B2
-	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 18:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A69AB70C5AF
+	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 21:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231712AbjEVQoo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 May 2023 12:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49056 "EHLO
+        id S229794AbjEVTFt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 May 2023 15:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233191AbjEVQon (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 12:44:43 -0400
-Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E927F109
-        for <linux-iio@vger.kernel.org>; Mon, 22 May 2023 09:44:36 -0700 (PDT)
-Received: by mail-vk1-xa31.google.com with SMTP id 71dfb90a1353d-45702d3d92cso2492462e0c.1
-        for <linux-iio@vger.kernel.org>; Mon, 22 May 2023 09:44:36 -0700 (PDT)
+        with ESMTP id S233602AbjEVTFp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 15:05:45 -0400
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3B8FE;
+        Mon, 22 May 2023 12:05:43 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-75b14216386so69986885a.0;
+        Mon, 22 May 2023 12:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684773876; x=1687365876;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qf40rv8DBLq+v06OlsPRtE2dsuAUv6hxQKxmbaIviKQ=;
-        b=e7Lw+thSe5d1e6sITwdpnIdOdUGvIxVmEe0BxIhp63kB5BnA31eHqpKgglctBgKKVN
-         7fvb2Zyxc/lxgxT2vG5V9rnnoCvNUPUuB2PRU2TQ5X68oY9HwLq6Vra6FqguuC14+kXn
-         QNoD6rMywiw/EdacPC7yJeW+xXRwV5TjWocAOtbeCafNZpAvikJIok28T2aaqle0WWcV
-         OLTftqPlJz/HtreogAAWIsoD+yI9ysS5WOHcMjuQURz59EQEFlZjz9nM26+BvMAqevDV
-         t3o/tVYOE6Gk5h0GQBE5RBl9oj5Vh8T+iEbJbOB4GeuIZdVRbveX39aElDnNfM1OiSyQ
-         Iy0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684773876; x=1687365876;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1684782342; x=1687374342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qf40rv8DBLq+v06OlsPRtE2dsuAUv6hxQKxmbaIviKQ=;
-        b=dU20JggZIeAguJbYnZ/DESWqyMxljoYFDpRIHCqXDOmWqT5avvDWkaP4iHVz+Oi98b
-         cxZXOeRlXHF216veb8bON/Lnl/68sfcBBtt1bj6uz/TBHcqGW8XHoMKZW5J6wCFEi7Mw
-         rlwm35OPzxRpXNq1p/0PqMLeSVjXkk4XXHp+61OuAsauawlFl0h+Mk47rFLuyjQfAtU4
-         3IbrQlvO6jGOBV+NE2qqsd5pDjrCS2VRcVf1cO30qi8j8LHj57cNIN89lbxiHQLMO3HX
-         0ZwaQFihPyF2wvuMrcjPnhbTDcv0wJYpKf12cfryxME83VQek69kRrkexrkJwDxvFQbx
-         tPPQ==
-X-Gm-Message-State: AC+VfDyDdJMDVDnT1XAFusVBl23thTQMEbE6yxMKtJLsZQUZdWMs3wll
-        WPgJearWZyezB/3gWKvy9lCHpw==
-X-Google-Smtp-Source: ACHHUZ6DYaJdwqgap33MUTKTqBjgi25tq8wBKTHfrsMuN4GY7bGQLQIEt24m6QyflO3bjIxsEJRf/w==
-X-Received: by 2002:a1f:5c10:0:b0:44f:eae4:da84 with SMTP id q16-20020a1f5c10000000b0044feae4da84mr4325461vkb.5.1684773875933;
-        Mon, 22 May 2023 09:44:35 -0700 (PDT)
-Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id 205-20020a1f14d6000000b0044ad1d3834bsm1143752vku.29.2023.05.22.09.44.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 May 2023 09:44:35 -0700 (PDT)
-Date:   Mon, 22 May 2023 12:44:32 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 2/3] gpio: 104-dio-48e: Add Counter/Timer support
-Message-ID: <ZGub8Gyu773b+V92@fedora>
-References: <cover.1681665189.git.william.gray@linaro.org>
- <dc4d0d5ca6ea28eda18815df114ecb21226cb345.1681665189.git.william.gray@linaro.org>
- <CACRpkdYdcU1JNmk7Jyyw+MA+GBKG950P1Nbn7QB4Nx7YJ1jwig@mail.gmail.com>
+        bh=POTBWZOQZAjcWtBfJZ4ftbwcZk2UXapAiYcmlMadLrY=;
+        b=gS92fGEP+w1mqEn+7HL/jVqprvgpKOR76fH0C/Ipqm/j3oP02DXZLc1x8dKv1CxovF
+         McJnFc8OOv4waOmyBZYks/yPSCWYXn868bzuFnpUV/ZQDLxJCmtKR7DBvgmMt6M1GrFy
+         2zIOT6XoiLozZfk81tAOE7eSYb0BOb6HBnjkjHFj0yFgQX0ZZSCJmuf+4LLCXG22cS0I
+         pxmX/ZhY1jXEGrZVu926u7G2vAgkhXCEAVc9iWEK8W+6aRYL6IiqMDp9PDkW6hNJU2qK
+         fEDFiF47P6j/3kc3SbrUozao2CJ5d6Wx2y2LryIYj/BI4yGTLEkd//QYcQibnEKbBAwT
+         U4AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684782342; x=1687374342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=POTBWZOQZAjcWtBfJZ4ftbwcZk2UXapAiYcmlMadLrY=;
+        b=KSgY/DnxyOzx8vx4/SiGYSNOrt6FY8H9ryNFBXS9uRLCmTWX9FtnFjsI9gk0Bhikb6
+         AczAdyLZmGWPeL5OwjriPjAz/TpqL8ZWcdHGjhUCxktKrOSxxzk1M5SRarM8MjeYqYiQ
+         8nZNQyfQH6At7Nd7ZN39zO5wtGHfr09+yPHd67BVE+D9IErMF30KPD3d+jGDKN/1EnPK
+         K6qMckYhGs/ylvJFwxAXb4+XbJLVfKjxPZX5F3PesZZypVrD9XgXe2ug8CL/1N/FElpA
+         kyz3a3qb5VbMBaky/N9iYdyPn2KGF4OxdPC6mosMXRGPIrwXWtc9a0NVfxeNLDluvIp1
+         jGPw==
+X-Gm-Message-State: AC+VfDzjhI/b7js25/96ZQ/zppxzpSyeEl1XWkK/eTrBUUeZeYQDPA06
+        itMdYHPheRwIoIJ3Uaeku88GGbzts0ohoI/ciMo=
+X-Google-Smtp-Source: ACHHUZ5F+N1CSSPVROq5jIjLbu+QGRgvBwFlr0qw96ZPGBELOlkhk3bFYg1MKqBFj60LOGusopN6rLkNhkp9TTTuRhI=
+X-Received: by 2002:a05:6214:20a9:b0:5f7:8b31:4522 with SMTP id
+ 9-20020a05621420a900b005f78b314522mr22788491qvd.5.1684782342108; Mon, 22 May
+ 2023 12:05:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="nY+9GuX2jNswXxCO"
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYdcU1JNmk7Jyyw+MA+GBKG950P1Nbn7QB4Nx7YJ1jwig@mail.gmail.com>
+References: <20230521225901.388455-1-contact@artur-rojek.eu>
+ <20230521225901.388455-2-contact@artur-rojek.eu> <CAHp75VeLRHwcKQALwnBb-gqVeyxxH=_F40TserRXqo_kbaZzoQ@mail.gmail.com>
+ <CAHp75VedgVOA4qTJFeVuabKXBaB=y4Ss0fLu7a7J9GGgWFPqQg@mail.gmail.com>
+ <2fc0874ce8a802aeb98e553b15e27fb4d4b75a1c.camel@crapouillou.net>
+ <CAHp75VdjAxAvmYVW4qgV2i91L31=Ctx4nx_eAe9+pqPFEArD3w@mail.gmail.com> <6b88623e44b2a98a2e5d8d6d2453f92eb1b673ae.camel@crapouillou.net>
+In-Reply-To: <6b88623e44b2a98a2e5d8d6d2453f92eb1b673ae.camel@crapouillou.net>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 22 May 2023 22:05:06 +0300
+Message-ID: <CAHp75Vfbqk73K1qnTBHGKOJ6jBkk1vQb_vgesJzNgZKiV+1fMw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio/adc: ingenic: Fix channel offsets in buffer
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Artur Rojek <contact@artur-rojek.eu>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        linux-mips@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, May 22, 2023 at 2:35=E2=80=AFPM Paul Cercueil <paul@crapouillou.net=
+> wrote:
+> Le lundi 22 mai 2023 =C3=A0 14:05 +0300, Andy Shevchenko a =C3=A9crit :
+> > On Mon, May 22, 2023 at 1:23=E2=80=AFPM Paul Cercueil <paul@crapouillou=
+.net>
+> > wrote:
+> > > Le lundi 22 mai 2023 =C3=A0 13:18 +0300, Andy Shevchenko a =C3=A9crit=
+ :
+> > > > On Mon, May 22, 2023 at 1:15=E2=80=AFPM Andy Shevchenko
+> > > > <andy.shevchenko@gmail.com> wrote:
+> > > > > On Mon, May 22, 2023 at 1:59=E2=80=AFAM Artur Rojek
+> > > > > <contact@artur-rojek.eu> wrote:
 
---nY+9GuX2jNswXxCO
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Sat, May 20, 2023 at 09:28:15PM +0200, Linus Walleij wrote:
-> On Sun, Apr 16, 2023 at 7:37=E2=80=AFPM William Breathitt Gray
-> <william.gray@linaro.org> wrote:
->=20
-> > The 104-DIO-48E features an 8254 Counter/Timer chip providing three
-> > counter/timers which can be used for frequency measurement, frequency
-> > output, pulse width modulation, pulse width measurement, event count,
-> > etc. The counter/timers use the same addresses as PPI 0 (addresses 0x0
-> > to 0x3), so a raw_spinlock_t is used to synchronize operations between
-> > the two regmap mappings to prevent clobbering.
-> >
-> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
->=20
-> Very interesting development here.
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->=20
-> Yours,
-> Linus Walleij
+> > > > > > +       u16 tdat[6];
+> > > > > > +       u32 val;
+> > > > > > +
+> > > > > > +       memset(tdat, 0, ARRAY_SIZE(tdat));
+> > > > >
+> > > > > Yeah, as LKP tells us this should be sizeof() instead of
+> > > > > ARRAY_SIZE().
+> > > > >
+> > > > > > +       for (i =3D 0; mask && i < ARRAY_SIZE(tdat); mask >>=3D =
+2)
+> > > > > > {
+> > > > > > +               if (mask & 0x3) {
+> > > > >
+> > > > > (for the consistency it has to be GENMASK(), but see below)
+> > > > >
+> > > > > First of all, strictly speaking we should use the full mask
+> > > > > without
+> > > > > limiting it to the 0 element in the array (I'm talking about
+> > > > > active_scan_mask).
+> > > > >
+> > > > > That said, we may actually use bit operations here in a better
+> > > > > way,
+> > > > > i.e.
+> > > > >
+> > > > >   unsigned long mask =3D active_scan_mask[0] &
+> > > > > (active_scan_mask[0] -
+> > > > > 1);
+> > > > >
+> > > > >   j =3D 0;
+> > > > >   for_each_set_bit(i, active_scan_mask, ...) {
+> > > > >     val =3D readl(...);
+> > > > >     /* Two channels per sample. Demux active. */
+> > > > >     tdat[j++] =3D val >> (16 * (i % 2));
+> > > >
+> > > > Alternatively
+> > > >
+> > > >      /* Two channels per sample. Demux active. */
+> > > >      if (i % 2)
+> > > >        tdat[j++] =3D upper_16_bits(val);
+> > > >      else
+> > > >        tdat[j++] =3D lower_16_bits(val);
+> > > >
+> > > > which may be better to read.
+> > >
+> > > It's not if/else though. You would check (i % 2) for the upper 16
+> > > bits,
+> > > and (i % 1) for the lower 16 bits. Both can be valid at the same
+> > > time.
 
-With this patch, we should now have complete support for every feature
-available on this device. A nice milestone as well after first
-introducing basic GPIO support for the ACCES 104-DIO-48E in 2016.
+(i can't be two bits at the same time in my proposal)
 
-Given that there is also Intel 8255 support, it would be fun to route
-back one of the device's GPIO outputs into the Intel 8254 timer gate and
-hook up a simple speaker; we could get some nice beep generation going
-and party like it's 1989! B-)
+> > Are you sure? Have you looked into the proposed code carefully?
+>
+> Yes. I co-wrote the original code, I know what it's supposed to do.
 
-William Breathitt Gray
+Yes, but I'm talking about my version to which you commented and I
+think it is the correct approach with 'else'. The problematic part in
+my proposal is FIFO reading.
+So, I have tried to come up with the working solution, but it seems
+it's too premature optimization here that's not needed and code,
+taking into account readability, will become a bit longer.
 
---nY+9GuX2jNswXxCO
-Content-Type: application/pgp-signature; name="signature.asc"
+That said, let's go with your version for now (implying the GENMASK()
+and upper/lower_16_bits() macros in use).
 
------BEGIN PGP SIGNATURE-----
+> > What probably can be done differently is the read part, that can be
+> > called once. But looking at it I'm not sure how it's supposed to work
+> > at all, since the address is always the same. How does the code and
+> > hardware are in sync with the channels?
+>
+> It's a FIFO.
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZGub8AAKCRC1SFbKvhIj
-K2kGAQDQ4etWXlSzJn2uKfMuRCmiO+y67grNnTuy7sjzMZTZNwD/S8BOaRUrfrWL
-iRvXchrNN0b5qCcKvm9eJHnirLZ9lwI=
-=enuv
------END PGP SIGNATURE-----
+A-ha.
 
---nY+9GuX2jNswXxCO--
+> > > > >   }
+> > > > >
+> > > > > > +                       val =3D readl(adc->base +
+> > > > > > JZ_ADC_REG_ADTCH);
+> > > > > > +                       /* Two channels per sample. Demux
+> > > > > > active.
+> > > > > > */
+> > > > > > +                       if (mask & BIT(0))
+> > > > > > +                               tdat[i++] =3D val & 0xffff;
+> > > > > > +                       if (mask & BIT(1))
+> > > > > > +                               tdat[i++] =3D val >> 16;
+> > > > > > +               }
+> > > > > >         }
+
+--
+With Best Regards,
+Andy Shevchenko

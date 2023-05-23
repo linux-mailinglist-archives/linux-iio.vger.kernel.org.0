@@ -2,35 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7730170E6A9
-	for <lists+linux-iio@lfdr.de>; Tue, 23 May 2023 22:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B53C70E6B1
+	for <lists+linux-iio@lfdr.de>; Tue, 23 May 2023 22:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238399AbjEWUlo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 May 2023 16:41:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
+        id S238555AbjEWUls (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 May 2023 16:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230031AbjEWUlo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 May 2023 16:41:44 -0400
+        with ESMTP id S238523AbjEWUlp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 May 2023 16:41:45 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BFFCA;
-        Tue, 23 May 2023 13:41:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF22BB;
+        Tue, 23 May 2023 13:41:44 -0700 (PDT)
 Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id CC7EFCFBBC;
-        Tue, 23 May 2023 20:41:40 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D1B0ACFBBD;
+        Tue, 23 May 2023 20:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1684874501; bh=TJ542YLeCftA/8fhg2JNrraJTBnWbaZkPbFnUwRol6g=;
+        t=1684874502; bh=giXrBVzuUN5UXjtoXlCOzbSist2F7n3Yj2uo5JvGp+4=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=R2/gMkK/PfFPy6GWRI1+HF3H+f1tCi0OIO/sVowniDPPouJuJwQ9Qg02BT4pFZNTQ
-         62RRBGYRz2pLtyJFGo+PBzLQRcF/MLppm9OenHSBXUgru6Tp7BE7Oj1xjko+vPGopx
-         /dpPFtqNduCw67zrz2vMp1t7+yuRcQ4/hPHDjisE=
+        b=UN9gyzpp2uIHzA5h6eRrMwn7Nko9BO3Y+tD2JujsIvH/1rPzIRAp+gV1zpgWdmQTi
+         tQeEyjD6m7QIRDQ8l+YRozY+5lprp0YSoG2PPepqnh2nG8F9dNcivStZ2CIroARg8H
+         Av1bIY7Q9x4SREkm3qs5QPs8eQGRWqbs6q4ZSjuM=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 23 May 2023 22:41:29 +0200
-Subject: [PATCH v3 2/3] arm64: dts: qcom: sdm632-fairphone-fp3: Add
- notification LED
+Date:   Tue, 23 May 2023 22:41:30 +0200
+Subject: [PATCH v3 3/3] Documentation: leds: Add "rgb:status" path
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230414-pmi632-v3-2-079d2cada699@z3ntu.xyz>
+Message-Id: <20230414-pmi632-v3-3-079d2cada699@z3ntu.xyz>
 References: <20230414-pmi632-v3-0-079d2cada699@z3ntu.xyz>
 In-Reply-To: <20230414-pmi632-v3-0-079d2cada699@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -51,20 +50,20 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-doc@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1343; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=TJ542YLeCftA/8fhg2JNrraJTBnWbaZkPbFnUwRol6g=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbSUAAyJdMMoOpSMaz9C3Sn99T7YCw8ToXq945
- 4IsslXJObKJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0lAAAKCRBy2EO4nU3X
- VkJVD/9YaYeyX9jGqe7/y/4fgdOOuMfD8EwIgbX9nwu5DF5ZjmGZB+zBdyGMWhQhLbw7PBh7QYb
- qIUjbeCRp6yhQUDaQmx7dLIW8EkhYtFnWnpPuZoeJuathLOggZ1LelZn9yoIGSEKNurIL6ZmK9D
- hg5lRqs5DAmrz7j9MJNLkXad/UoBWdZcyAxUrUOWd3UX2haujPhVkgg7K23qt+hpLKD0TyoBWvU
- WnYHJ7QME34UHsR0CXpkmVTfIZAugH4gwBgY3joI3S4ejXy/LVU8ibpmMUGdAyG7kgymVqHYmzr
- gRuW0FH44DHpcNL2ZYZUwbkfnZfHgQyC3gAhPkMvrnJI0Nw8H/DO9ZpqU77uKPsQ40sbKDBgCZ1
- Y5D7pO1e4kNu9e5cgfK1NoL7GP7YotlpUtWghsrBwfTA9oUedPcKieCFpC2Tktu9jWNTCCA/3z5
- 4bdNf6/SjiEpypd3+XcJsBuumnPgsjJRNS2qUvT6ebEO7QFiF8YoXad28bEdo1D7HbkA9MyceAr
- DG3hujx4NyOiqcsG29b58fvG9HIscwL2U08/E3CRUPkMwg8sDsYsc3Mit31pRYxFo+4NIo2r7QK
- qrdedQ6cMy9rL3rLtagFVgBf2UKuVNpAeDxhXINoG17ON54iHyAFXygKvT+bBNq5+g33ZzaoUmK
- wjTL3OqBuLjqB1w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=728; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=giXrBVzuUN5UXjtoXlCOzbSist2F7n3Yj2uo5JvGp+4=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbSUBVFFH0z26jiRmoUzAK7tvmUyNshtKdDPIi
+ M5BNeQdU9+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0lAQAKCRBy2EO4nU3X
+ VnrVD/9XFPcG2lQPkn6K14Fu1Wa6cjR5XeJSk33Njgomt8vMe4xTwRE2/HN2CHXn4zrGeMZDk54
+ F8y8GWcY2sV/oE8m6dpJNReJbS+QjW4MP+mPgr1FdaPrmzMa3GmEmfwylJAfKTlOjdG2Qd2uhUi
+ oqG/FD57rT3U7DeAizDCJt4qiunIh4+zA+x3zdrjZ2gngRGLe1YMcOyW9vjojULNlwCGJJntoqK
+ iwbzsn6IfVXqQ+9sDcqMNH6XJDLRsToFx+tfRWT5TYOvqnFk1dUOGUXE/HKhP1t1D6ojYkb3+kx
+ viz0rlHPK8YThGeKaVE5EwNTvVY+vcE0bxSLeDcBmjzTxOy1PFxFoIW0EkOR/zvEIE96tN2xj96
+ voUuj5vkQvdEc6lIqQi5N9sRfMnCNyjdkwORBvIOj+vbIIg4l/z29wIIE6bAwBBW0WN4AYj/ZZO
+ YlbIiqvQv5iHBrWmtDHzOKXP2KQcuW12PrS/4j2aATVmroV8Ri5YVu87ih9Rvh3fJ4Xk9JqYAi4
+ j0ggJVW8H9lFn2VdaKPlYIuQ5R/nzFidgkO0IvvIC5bMstQbBvvQcDQX2udJ7RQL9OW0gbX5hO7
+ YpuZfc22vXkoiZ/ZUdxQvxv9Sgc3+kuk/VvncDQ3tEMSn0QtozQ1obmDObIm6gTOcZgxkiBL3lv
+ 09xCJhywpLHGr5Q==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,64 +76,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The phone features a notification LED connected to the pmi632. Configure
-the RGB led found on it.
+The path /sys/class/leds/rgb:status is already widely used with the
+qcom-lpg driver and others. Document it.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 29 +++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ Documentation/leds/well-known-leds.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-index 70e683b7e4fc..301eca9a4f31 100644
---- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-@@ -4,8 +4,10 @@
-  */
- /dts-v1/;
+diff --git a/Documentation/leds/well-known-leds.txt b/Documentation/leds/well-known-leds.txt
+index e9c30dc75884..bfbb5892154d 100644
+--- a/Documentation/leds/well-known-leds.txt
++++ b/Documentation/leds/well-known-leds.txt
+@@ -58,6 +58,7 @@ LEDs on notebook body, indicating that sound input / output is muted.
  
-+#include <dt-bindings/leds/common.h>
- #include "sdm632.dtsi"
- #include "pm8953.dtsi"
-+#include "pmi632.dtsi"
+ * System notification
  
- / {
- 	model = "Fairphone 3";
-@@ -83,6 +85,33 @@ &pm8953_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- };
++Good: "rgb:status"
+ Legacy: "status-led:{red,green,blue}" (Motorola Droid 4)
+ Legacy: "lp5523:{r,g,b}" (Nokia N900)
  
-+&pmi632_lpg {
-+	status = "okay";
-+
-+	multi-led {
-+		color = <LED_COLOR_ID_RGB>;
-+		function = LED_FUNCTION_STATUS;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_RED>;
-+		};
-+
-+		led@2 {
-+			reg = <2>;
-+			color = <LED_COLOR_ID_GREEN>;
-+		};
-+
-+		led@3 {
-+			reg = <3>;
-+			color = <LED_COLOR_ID_BLUE>;
-+		};
-+	};
-+};
-+
- &sdhc_1 {
- 	status = "okay";
- 	vmmc-supply = <&pm8953_l8>;
 
 -- 
 2.40.1

@@ -2,49 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AAAA70E639
-	for <lists+linux-iio@lfdr.de>; Tue, 23 May 2023 22:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0060270E644
+	for <lists+linux-iio@lfdr.de>; Tue, 23 May 2023 22:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238420AbjEWUHC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 May 2023 16:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57092 "EHLO
+        id S234100AbjEWUK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 May 2023 16:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238378AbjEWUHC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 May 2023 16:07:02 -0400
+        with ESMTP id S230160AbjEWUK1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 May 2023 16:10:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A1311D
-        for <linux-iio@vger.kernel.org>; Tue, 23 May 2023 13:07:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 791B9119;
+        Tue, 23 May 2023 13:10:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F0EE63631
-        for <linux-iio@vger.kernel.org>; Tue, 23 May 2023 20:07:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223EEC433EF;
-        Tue, 23 May 2023 20:06:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 012CF61EC5;
+        Tue, 23 May 2023 20:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39261C433EF;
+        Tue, 23 May 2023 20:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684872419;
-        bh=kiKwpb9dGM4h2TC1zZaPGuFOVEOG0imI6D+w0ecZ2WU=;
+        s=k20201202; t=1684872624;
+        bh=0fR2WGauhjD+tb92y4IXhmg9v6Cd3p0cmDXXNAi5rmA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ugwXdrlWDqcmYKrmkhuc1WcHMUBaWplMZkf5eOQNhyP8seXXzs0ntBso3ayep4/Oe
-         3zDEKut3GRdWdttG9ThCevb7guXJJxZSQLnDLDZsoNZ62HaoysE4wteIGvSOKYJ5zq
-         UJc0BZtQi/tLD8bjXWYmilBecEEUIitwBW2bN8CkWVbOBwcQNYJcxQAFY94lR2QyRY
-         W0WVB+JZhOmx7iYp+2ojdrG1ju0j1Nru3/mmkOQ8y+gyxRSOqI32yUJPX2jwAuQqDw
-         A65+QVewU4q3OzzIVjdcUyOWEcqm8jPqltFCuNFiWbI5VAbrsu5UoHjdgvSwjswm34
-         xaSYeQlB5+i9A==
-Date:   Tue, 23 May 2023 21:23:13 +0100
+        b=eMd086U1fV4rjmEv7fRwfxulH8UmaFyGeZhx3JGBILAUZ/cKdwAf4c3MoDFg6OxTl
+         svUjrgcE5Ief9mee/AMtdKhH9b2XRZ+XW7siJp+QVJE8Uzaahr/Gzs02wuBbmQ8wvc
+         EPl3eJXkz5mN9MN0pb0z9NTERI88w/xJa6kHF0zhCXBeiydGyTrdewLrvXX8eBGYmm
+         z9RumNHSxcQA2DQmwfN3hSTDvjlWrLOrXySthD6EyRDY/OAyeGiG0+W3s0BqbfyQra
+         T0wsYRaQfDpaHwUnD5j0lZ3KWmNfK3l8vzJY6ScrqUqQ8NXD49rMVUtbO4EVrv3ACg
+         FcbLo1fSCCfAw==
+Date:   Tue, 23 May 2023 21:26:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     inv.git-commit@tdk.com
-Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH v3] iio: imu: inv_icm42600: avoid frequent timestamp
- jitter
-Message-ID: <20230523212313.640bbe9c@jic23-huawei>
-In-Reply-To: <20230522093210.817212-1-inv.git-commit@tdk.com>
-References: <20230522093210.817212-1-inv.git-commit@tdk.com>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Niklas =?UTF-8?B?U8O2ZGVy?= =?UTF-8?B?bHVuZA==?= 
+        <niklas.soderlund@ragnatech.se>,
+        Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+        Christian Gromm <christian.gromm@microchip.com>,
+        Jens Frederich <jfrederich@gmail.com>,
+        Jon Nettleton <jon.nettleton@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>, Jean Delvare <jdelvare@suse.de>,
+        Jeremy Kerr <jk@codeconstruct.com.au>,
+        Kalle Valo <kvalo@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Peter Senna Tschudin <peter.senna@gmail.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Crt Mori <cmo@melexis.com>, Haowen Bai <baihaowen@meizu.com>,
+        Tom Rix <trix@redhat.com>,
+        Adrien Grassein <adrien.grassein@gmail.com>,
+        Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
+        Peter Rosin <peda@axentia.se>,
+        Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>,
+        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+        kernel@pengutronix.de, linux-media@vger.kernel.org
+Subject: Re: [PATCH] staging: Switch i2c drivers back to use .probe()
+Message-ID: <20230523212633.7e86f2ea@jic23-huawei>
+In-Reply-To: <20230523200036.465180-1-u.kleine-koenig@pengutronix.de>
+References: <20230523200036.465180-1-u.kleine-koenig@pengutronix.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,133 +80,229 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 May 2023 09:32:10 +0000
-inv.git-commit@tdk.com wrote:
+On Tue, 23 May 2023 22:00:36 +0200
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> We are currently synchronizing every time the data timestamp with
-> the IT timestamp, leading to system jitter jamming timestamps.
-> To fix that and keep it simple, let's just synchronize when the
-> delta is bigger than the acceptable jitter, and keep
-> synchronization at the jitter value.
-> 
-> The result is much stable timestamps reflecting better the real
-> physical value. Example @50Hz delta timestamp,
-> * before: 20.123ms, 19.721ms, 20.023ms, 20.353ms, 19.821ms, ...
-> * after: 20.173ms, 20.173ms, 20.173ms, 20.40ms, 20.173ms, ...
-> 
-> Refactorize code and delete the unnecessary handling of multiple
-> FIFO data.
-> 
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Dropped v2 and picked this one up.
+> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type"), all drivers being converted to .probe_new() and then
+> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
+> back to (the new) .probe() to be able to eventually drop .probe_new() from
+> struct i2c_driver.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-Pushed out again to let 0-day work it's magic :)
+If you end up doing a v2 for some reason then please split off the
+IIO ones.  I tend to pick those up directly then send them in the main
+IIO pull requests to Greg.
 
-Jonathan
+However, I don't think we have anything else touching those drivers so
+fine for Greg to pick up directly
+
+As such,
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+for the IIO ones.
 
 > ---
-> v3:
->  - Fix compilation issue by using div_s64 for 64 / 32 bits division
->    reported by kernel test robot.
-> v2:
->  - Rework commit message for more clarity.
->  - Delete Fixes tag.
-> 
->  .../imu/inv_icm42600/inv_icm42600_timestamp.c | 49 ++++++++++---------
->  1 file changed, 26 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-> index 7f2dc41f807b..37cbf08acb3a 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-> @@ -93,8 +93,8 @@ static bool inv_validate_period(uint32_t period, uint32_t mult)
->  		return false;
->  }
->  
-> -static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
-> -				    uint32_t mult, uint32_t period)
-> +static bool inv_update_chip_period(struct inv_icm42600_timestamp *ts,
-> +				   uint32_t mult, uint32_t period)
->  {
->  	uint32_t new_chip_period;
->  
-> @@ -104,10 +104,31 @@ static bool inv_compute_chip_period(struct inv_icm42600_timestamp *ts,
->  	/* update chip internal period estimation */
->  	new_chip_period = period / mult;
->  	inv_update_acc(&ts->chip_period, new_chip_period);
-> +	ts->period = ts->mult * ts->chip_period.val;
->  
->  	return true;
->  }
->  
-> +static void inv_align_timestamp_it(struct inv_icm42600_timestamp *ts)
-> +{
-> +	int64_t delta, jitter;
-> +	int64_t adjust;
-> +
-> +	/* delta time between last sample and last interrupt */
-> +	delta = ts->it.lo - ts->timestamp;
-> +
-> +	/* adjust timestamp while respecting jitter */
-> +	jitter = div_s64((int64_t)ts->period * INV_ICM42600_TIMESTAMP_JITTER, 100);
-> +	if (delta > jitter)
-> +		adjust = jitter;
-> +	else if (delta < -jitter)
-> +		adjust = -jitter;
-> +	else
-> +		adjust = 0;
-> +
-> +	ts->timestamp += adjust;
-> +}
-> +
->  void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  				      uint32_t fifo_period, size_t fifo_nb,
->  				      size_t sensor_nb, int64_t timestamp)
-> @@ -116,7 +137,6 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  	int64_t delta, interval;
->  	const uint32_t fifo_mult = fifo_period / INV_ICM42600_TIMESTAMP_PERIOD;
->  	uint32_t period = ts->period;
-> -	int32_t m;
->  	bool valid = false;
->  
->  	if (fifo_nb == 0)
-> @@ -130,10 +150,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  	if (it->lo != 0) {
->  		/* compute period: delta time divided by number of samples */
->  		period = div_s64(delta, fifo_nb);
-> -		valid = inv_compute_chip_period(ts, fifo_mult, period);
-> -		/* update sensor period if chip internal period is updated */
-> -		if (valid)
-> -			ts->period = ts->mult * ts->chip_period.val;
-> +		valid = inv_update_chip_period(ts, fifo_mult, period);
->  	}
->  
->  	/* no previous data, compute theoritical value from interrupt */
-> @@ -145,22 +162,8 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
->  	}
->  
->  	/* if interrupt interval is valid, sync with interrupt timestamp */
-> -	if (valid) {
-> -		/* compute measured fifo_period */
-> -		fifo_period = fifo_mult * ts->chip_period.val;
-> -		/* delta time between last sample and last interrupt */
-> -		delta = it->lo - ts->timestamp;
-> -		/* if there are multiple samples, go back to first one */
-> -		while (delta >= (fifo_period * 3 / 2))
-> -			delta -= fifo_period;
-> -		/* compute maximal adjustment value */
-> -		m = INV_ICM42600_TIMESTAMP_MAX_PERIOD(ts->period) - ts->period;
-> -		if (delta > m)
-> -			delta = m;
-> -		else if (delta < -m)
-> -			delta = -m;
-> -		ts->timestamp += delta;
-> -	}
-> +	if (valid)
-> +		inv_align_timestamp_it(ts);
->  }
->  
->  void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+> Hello,
+>=20
+> this patch was generated using coccinelle.
+>=20
+> I chose to convert all drivers below drivers/staging in a single
+> patch, but if you prefer I can split by driver.
+>=20
+> If conflicts arise until this is applied, feel free to just drop the
+> files with conflicts from this patch. I'll care about the fallout later
+> then.
+>=20
+> Also note there is no coordination necessary with the i2c tree. Dropping
+> .probe_new() will happen only when all (or most) drivers are converted,
+> which will happen after v6.5-rc1 for sure.
+>=20
+> Best regards
+> Uwe
+>  drivers/staging/iio/addac/adt7316-i2c.c                   | 2 +-
+>  drivers/staging/iio/impedance-analyzer/ad5933.c           | 2 +-
+>  drivers/staging/media/atomisp/i2c/atomisp-gc0310.c        | 2 +-
+>  drivers/staging/media/atomisp/i2c/atomisp-gc2235.c        | 2 +-
+>  drivers/staging/media/atomisp/i2c/atomisp-lm3554.c        | 2 +-
+>  drivers/staging/media/atomisp/i2c/atomisp-mt9m114.c       | 2 +-
+>  drivers/staging/media/atomisp/i2c/atomisp-ov2680.c        | 2 +-
+>  drivers/staging/media/atomisp/i2c/atomisp-ov2722.c        | 2 +-
+>  drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c | 2 +-
+>  drivers/staging/media/max96712/max96712.c                 | 2 +-
+>  drivers/staging/most/i2c/i2c.c                            | 2 +-
+>  drivers/staging/olpc_dcon/olpc_dcon.c                     | 2 +-
+>  12 files changed, 12 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/staging/iio/addac/adt7316-i2c.c b/drivers/staging/ii=
+o/addac/adt7316-i2c.c
+> index 7e3d1a6f30ba..6c1f91c859ca 100644
+> --- a/drivers/staging/iio/addac/adt7316-i2c.c
+> +++ b/drivers/staging/iio/addac/adt7316-i2c.c
+> @@ -138,7 +138,7 @@ static struct i2c_driver adt7316_driver =3D {
+>  		.of_match_table =3D adt7316_of_match,
+>  		.pm =3D ADT7316_PM_OPS,
+>  	},
+> -	.probe_new =3D adt7316_i2c_probe,
+> +	.probe =3D adt7316_i2c_probe,
+>  	.id_table =3D adt7316_i2c_id,
+>  };
+>  module_i2c_driver(adt7316_driver);
+> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/st=
+aging/iio/impedance-analyzer/ad5933.c
+> index b3152f7153fb..46db6d91542a 100644
+> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> @@ -781,7 +781,7 @@ static struct i2c_driver ad5933_driver =3D {
+>  		.name =3D "ad5933",
+>  		.of_match_table =3D ad5933_of_match,
+>  	},
+> -	.probe_new =3D ad5933_probe,
+> +	.probe =3D ad5933_probe,
+>  	.id_table =3D ad5933_id,
+>  };
+>  module_i2c_driver(ad5933_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/atomisp-gc0310.c b/drivers=
+/staging/media/atomisp/i2c/atomisp-gc0310.c
+> index 273155308fe3..21eb4234a081 100644
+> --- a/drivers/staging/media/atomisp/i2c/atomisp-gc0310.c
+> +++ b/drivers/staging/media/atomisp/i2c/atomisp-gc0310.c
+> @@ -483,7 +483,7 @@ static struct i2c_driver gc0310_driver =3D {
+>  		.pm =3D pm_sleep_ptr(&gc0310_pm_ops),
+>  		.acpi_match_table =3D gc0310_acpi_match,
+>  	},
+> -	.probe_new =3D gc0310_probe,
+> +	.probe =3D gc0310_probe,
+>  	.remove =3D gc0310_remove,
+>  };
+>  module_i2c_driver(gc0310_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/atomisp-gc2235.c b/drivers=
+/staging/media/atomisp/i2c/atomisp-gc2235.c
+> index cb4c79b483ca..9fa390fbc5f3 100644
+> --- a/drivers/staging/media/atomisp/i2c/atomisp-gc2235.c
+> +++ b/drivers/staging/media/atomisp/i2c/atomisp-gc2235.c
+> @@ -864,7 +864,7 @@ static struct i2c_driver gc2235_driver =3D {
+>  		.name =3D "gc2235",
+>  		.acpi_match_table =3D gc2235_acpi_match,
+>  	},
+> -	.probe_new =3D gc2235_probe,
+> +	.probe =3D gc2235_probe,
+>  	.remove =3D gc2235_remove,
+>  };
+>  module_i2c_driver(gc2235_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/atomisp-lm3554.c b/drivers=
+/staging/media/atomisp/i2c/atomisp-lm3554.c
+> index c4ce4cd445d7..cf5d9317b11a 100644
+> --- a/drivers/staging/media/atomisp/i2c/atomisp-lm3554.c
+> +++ b/drivers/staging/media/atomisp/i2c/atomisp-lm3554.c
+> @@ -945,7 +945,7 @@ static struct i2c_driver lm3554_driver =3D {
+>  		.pm   =3D &lm3554_pm_ops,
+>  		.acpi_match_table =3D lm3554_acpi_match,
+>  	},
+> -	.probe_new =3D lm3554_probe,
+> +	.probe =3D lm3554_probe,
+>  	.remove =3D lm3554_remove,
+>  };
+>  module_i2c_driver(lm3554_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/atomisp-mt9m114.c b/driver=
+s/staging/media/atomisp/i2c/atomisp-mt9m114.c
+> index 0e5a981dd331..1c6643c442ef 100644
+> --- a/drivers/staging/media/atomisp/i2c/atomisp-mt9m114.c
+> +++ b/drivers/staging/media/atomisp/i2c/atomisp-mt9m114.c
+> @@ -1600,7 +1600,7 @@ static struct i2c_driver mt9m114_driver =3D {
+>  		.name =3D "mt9m114",
+>  		.acpi_match_table =3D mt9m114_acpi_match,
+>  	},
+> -	.probe_new =3D mt9m114_probe,
+> +	.probe =3D mt9m114_probe,
+>  	.remove =3D mt9m114_remove,
+>  };
+>  module_i2c_driver(mt9m114_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c b/drivers=
+/staging/media/atomisp/i2c/atomisp-ov2680.c
+> index 63de214916f5..b5d93a96d588 100644
+> --- a/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c
+> +++ b/drivers/staging/media/atomisp/i2c/atomisp-ov2680.c
+> @@ -719,7 +719,7 @@ static struct i2c_driver ov2680_driver =3D {
+>  		.pm =3D pm_sleep_ptr(&ov2680_pm_ops),
+>  		.acpi_match_table =3D ov2680_acpi_match,
+>  	},
+> -	.probe_new =3D ov2680_probe,
+> +	.probe =3D ov2680_probe,
+>  	.remove =3D ov2680_remove,
+>  };
+>  module_i2c_driver(ov2680_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/atomisp-ov2722.c b/drivers=
+/staging/media/atomisp/i2c/atomisp-ov2722.c
+> index 5d2e6e2e72f0..6a72691ed5b7 100644
+> --- a/drivers/staging/media/atomisp/i2c/atomisp-ov2722.c
+> +++ b/drivers/staging/media/atomisp/i2c/atomisp-ov2722.c
+> @@ -1019,7 +1019,7 @@ static struct i2c_driver ov2722_driver =3D {
+>  		.name =3D "ov2722",
+>  		.acpi_match_table =3D ov2722_acpi_match,
+>  	},
+> -	.probe_new =3D ov2722_probe,
+> +	.probe =3D ov2722_probe,
+>  	.remove =3D ov2722_remove,
+>  };
+>  module_i2c_driver(ov2722_driver);
+> diff --git a/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c b/=
+drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c
+> index da8c3b1d3bcd..c94fe8e861a5 100644
+> --- a/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c
+> +++ b/drivers/staging/media/atomisp/i2c/ov5693/atomisp-ov5693.c
+> @@ -1794,7 +1794,7 @@ static struct i2c_driver ov5693_driver =3D {
+>  		.name =3D "ov5693",
+>  		.acpi_match_table =3D ov5693_acpi_match,
+>  	},
+> -	.probe_new =3D ov5693_probe,
+> +	.probe =3D ov5693_probe,
+>  	.remove =3D ov5693_remove,
+>  };
+>  module_i2c_driver(ov5693_driver);
+> diff --git a/drivers/staging/media/max96712/max96712.c b/drivers/staging/=
+media/max96712/max96712.c
+> index 99b333b68198..77943bdf3fb9 100644
+> --- a/drivers/staging/media/max96712/max96712.c
+> +++ b/drivers/staging/media/max96712/max96712.c
+> @@ -427,7 +427,7 @@ static struct i2c_driver max96712_i2c_driver =3D {
+>  		.name =3D "max96712",
+>  		.of_match_table	=3D of_match_ptr(max96712_of_table),
+>  	},
+> -	.probe_new =3D max96712_probe,
+> +	.probe =3D max96712_probe,
+>  	.remove =3D max96712_remove,
+>  };
+> =20
+> diff --git a/drivers/staging/most/i2c/i2c.c b/drivers/staging/most/i2c/i2=
+c.c
+> index 4e85e681922f..ce869280a056 100644
+> --- a/drivers/staging/most/i2c/i2c.c
+> +++ b/drivers/staging/most/i2c/i2c.c
+> @@ -362,7 +362,7 @@ static struct i2c_driver i2c_driver =3D {
+>  	.driver =3D {
+>  		.name =3D "hdm_i2c",
+>  	},
+> -	.probe_new =3D i2c_probe,
+> +	.probe =3D i2c_probe,
+>  	.remove =3D i2c_remove,
+>  	.id_table =3D i2c_id,
+>  };
+> diff --git a/drivers/staging/olpc_dcon/olpc_dcon.c b/drivers/staging/olpc=
+_dcon/olpc_dcon.c
+> index 2fba52e0bd7b..d5271eac14f6 100644
+> --- a/drivers/staging/olpc_dcon/olpc_dcon.c
+> +++ b/drivers/staging/olpc_dcon/olpc_dcon.c
+> @@ -779,7 +779,7 @@ static struct i2c_driver dcon_driver =3D {
+>  	},
+>  	.class =3D I2C_CLASS_DDC | I2C_CLASS_HWMON,
+>  	.id_table =3D dcon_idtable,
+> -	.probe_new =3D dcon_probe,
+> +	.probe =3D dcon_probe,
+>  	.remove =3D dcon_remove,
+>  	.detect =3D dcon_detect,
+>  	.address_list =3D normal_i2c,
+>=20
+> base-commit: 1f3413dc8eb0de023c5ec5994aef8225262d0f19
 

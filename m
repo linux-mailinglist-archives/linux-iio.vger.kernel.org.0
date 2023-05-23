@@ -2,183 +2,248 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A69AB70C5AF
-	for <lists+linux-iio@lfdr.de>; Mon, 22 May 2023 21:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1321D70DCCF
+	for <lists+linux-iio@lfdr.de>; Tue, 23 May 2023 14:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjEVTFt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 May 2023 15:05:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33412 "EHLO
+        id S236713AbjEWMoX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 May 2023 08:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233602AbjEVTFp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 May 2023 15:05:45 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3B8FE;
-        Mon, 22 May 2023 12:05:43 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-75b14216386so69986885a.0;
-        Mon, 22 May 2023 12:05:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684782342; x=1687374342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=POTBWZOQZAjcWtBfJZ4ftbwcZk2UXapAiYcmlMadLrY=;
-        b=gS92fGEP+w1mqEn+7HL/jVqprvgpKOR76fH0C/Ipqm/j3oP02DXZLc1x8dKv1CxovF
-         McJnFc8OOv4waOmyBZYks/yPSCWYXn868bzuFnpUV/ZQDLxJCmtKR7DBvgmMt6M1GrFy
-         2zIOT6XoiLozZfk81tAOE7eSYb0BOb6HBnjkjHFj0yFgQX0ZZSCJmuf+4LLCXG22cS0I
-         pxmX/ZhY1jXEGrZVu926u7G2vAgkhXCEAVc9iWEK8W+6aRYL6IiqMDp9PDkW6hNJU2qK
-         fEDFiF47P6j/3kc3SbrUozao2CJ5d6Wx2y2LryIYj/BI4yGTLEkd//QYcQibnEKbBAwT
-         U4AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684782342; x=1687374342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=POTBWZOQZAjcWtBfJZ4ftbwcZk2UXapAiYcmlMadLrY=;
-        b=KSgY/DnxyOzx8vx4/SiGYSNOrt6FY8H9ryNFBXS9uRLCmTWX9FtnFjsI9gk0Bhikb6
-         AczAdyLZmGWPeL5OwjriPjAz/TpqL8ZWcdHGjhUCxktKrOSxxzk1M5SRarM8MjeYqYiQ
-         8nZNQyfQH6At7Nd7ZN39zO5wtGHfr09+yPHd67BVE+D9IErMF30KPD3d+jGDKN/1EnPK
-         K6qMckYhGs/ylvJFwxAXb4+XbJLVfKjxPZX5F3PesZZypVrD9XgXe2ug8CL/1N/FElpA
-         kyz3a3qb5VbMBaky/N9iYdyPn2KGF4OxdPC6mosMXRGPIrwXWtc9a0NVfxeNLDluvIp1
-         jGPw==
-X-Gm-Message-State: AC+VfDzjhI/b7js25/96ZQ/zppxzpSyeEl1XWkK/eTrBUUeZeYQDPA06
-        itMdYHPheRwIoIJ3Uaeku88GGbzts0ohoI/ciMo=
-X-Google-Smtp-Source: ACHHUZ5F+N1CSSPVROq5jIjLbu+QGRgvBwFlr0qw96ZPGBELOlkhk3bFYg1MKqBFj60LOGusopN6rLkNhkp9TTTuRhI=
-X-Received: by 2002:a05:6214:20a9:b0:5f7:8b31:4522 with SMTP id
- 9-20020a05621420a900b005f78b314522mr22788491qvd.5.1684782342108; Mon, 22 May
- 2023 12:05:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230521225901.388455-1-contact@artur-rojek.eu>
- <20230521225901.388455-2-contact@artur-rojek.eu> <CAHp75VeLRHwcKQALwnBb-gqVeyxxH=_F40TserRXqo_kbaZzoQ@mail.gmail.com>
- <CAHp75VedgVOA4qTJFeVuabKXBaB=y4Ss0fLu7a7J9GGgWFPqQg@mail.gmail.com>
- <2fc0874ce8a802aeb98e553b15e27fb4d4b75a1c.camel@crapouillou.net>
- <CAHp75VdjAxAvmYVW4qgV2i91L31=Ctx4nx_eAe9+pqPFEArD3w@mail.gmail.com> <6b88623e44b2a98a2e5d8d6d2453f92eb1b673ae.camel@crapouillou.net>
-In-Reply-To: <6b88623e44b2a98a2e5d8d6d2453f92eb1b673ae.camel@crapouillou.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 22 May 2023 22:05:06 +0300
-Message-ID: <CAHp75Vfbqk73K1qnTBHGKOJ6jBkk1vQb_vgesJzNgZKiV+1fMw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio/adc: ingenic: Fix channel offsets in buffer
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
+        with ESMTP id S236689AbjEWMoW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 May 2023 08:44:22 -0400
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01on2040.outbound.protection.outlook.com [40.107.15.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE867109;
+        Tue, 23 May 2023 05:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JWBXE5eXsn4c22lXOUjfAhAKgi3sYvoXID+aypHVB2I=;
+ b=hiogkd1Lrm13wFBbVDMSASiS81KDUZJbsz+TqA+1gDcmKqJkmyR5GSYOJqe1oCvOGPqW08qnVhegX9Tp3kDWUhP/Cu4k2fnS4hdba+7HI4xQGcV3K3mV+aBnFQ4RvziH9TnUv7ZTW1yrHVJeeyi0Bb/qrKa0SFgzl0mw8Jc5Qd9x2qyoAp/QLVRSY8O4Il1QNBQ6mxvp4E1m9hVu2lJLbOLUuePgNlWb3fxi2GS6vuq4ZooD+3wbzF2akvbyDZaqVzcYqv3Rcr0FqRduTU7UOKOX3DTmq2r1SmqwPyur/yXUiiJD3tiSmH0i0D0V51Jk7Wq/HDCWxdPIsJ5AbneKEg==
+Received: from FR0P281CA0210.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:ad::14)
+ by GVXPR04MB9830.eurprd04.prod.outlook.com (2603:10a6:150:113::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Tue, 23 May
+ 2023 12:44:08 +0000
+Received: from VE1EUR01FT025.eop-EUR01.prod.protection.outlook.com
+ (2603:10a6:d10:ad:cafe::a4) by FR0P281CA0210.outlook.office365.com
+ (2603:10a6:d10:ad::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.13 via Frontend
+ Transport; Tue, 23 May 2023 12:44:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 13.93.42.39)
+ smtp.mailfrom=topicproducts.com; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=topic.nl;
+Received-SPF: Pass (protection.outlook.com: domain of topicproducts.com
+ designates 13.93.42.39 as permitted sender) receiver=protection.outlook.com;
+ client-ip=13.93.42.39; helo=westeu12-emailsignatures-cloud.codetwo.com; pr=C
+Received: from westeu12-emailsignatures-cloud.codetwo.com (13.93.42.39) by
+ VE1EUR01FT025.mail.protection.outlook.com (10.152.2.232) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6433.14 via Frontend Transport; Tue, 23 May 2023 12:44:07 +0000
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (104.47.51.173) by westeu12-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Tue, 23 May 2023 12:44:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Mqjc1W93Qq8f8J/G42HTrH0dQmPnZWkWUm8LsZs7Di7zq60PVuLb2OT/OScXKs7RssUduvFy0sIZtCzGm4UY/8vL9POywx1GEttHPQR1uuZrrWH5RN2XLvPXeB3YP4/xLOM7dcyx546qoFa23CQwm5Us32zSXv+3ZJf0pO/w8zE2D4j+5TkFxz0S1kreRjVAcz3WySPD5xqPWUQaUj/JeK9MDPbYmB24XFwtzfSIDjQjM6lWmeWvoVo1eKKy3JGp5a0Gx0E8TQ3/XKDtG52cOa8caz9Dob+3Win7WUdLTp10CZQvnfibdKHfuA8Bkbj3+0LSubLFfcKXt6wrLPyl/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KLN9hm+TWL+hJ3jn9NhOtyBlAFlIf5R5oAH1YODsA4A=;
+ b=AxZ5ftyk997Pa5iO2LwxLrOOzAPEUkGMH8/A0oejhFwxcN5anyMnBuuQu8WX60ulzwuJaxzXE0FMw+69U6qvlvlzIVpQpuqoRHarGXXbal1nSrJLCNHiAV/k7euxJCNRpT/blxnBS3pnROyxfFifI5AzEWC7C6ukZxWKpBDEV1Z5YGMblD3gurYmgHsMPncKSBzd1txFjDxYeBsh2dLMR4gZeKpHhr+gMCIlcgbhjsUzbL8HoI4z6ozW3yhmdBnmRvSrTkdULXdAmoUOuUVCK3p6Q9+Xybz1O76fOzO/Qwg+BMKA3fHQ3nXxqnqsdHMzc6d1E6O3m52idn6T78eVGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=topicproducts.com; dmarc=pass action=none header.from=topic.nl;
+ dkim=pass header.d=topic.nl; arc=none
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=topic.nl;
+Received: from DB8PR04MB6523.eurprd04.prod.outlook.com (2603:10a6:10:10f::26)
+ by AM0PR04MB7172.eurprd04.prod.outlook.com (2603:10a6:208:192::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.29; Tue, 23 May
+ 2023 12:44:01 +0000
+Received: from DB8PR04MB6523.eurprd04.prod.outlook.com
+ ([fe80::4cd1:3e90:54e5:9696]) by DB8PR04MB6523.eurprd04.prod.outlook.com
+ ([fe80::4cd1:3e90:54e5:9696%5]) with mapi id 15.20.6411.028; Tue, 23 May 2023
+ 12:44:01 +0000
+From:   Mike Looijmans <mike.looijmans@topic.nl>
+To:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+CC:     Mike Looijmans <mike.looijmans@topic.nl>,
+        Conor Dooley <conor+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        linux-mips@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: adc: Add microchip MCP3561/2/4R devices
+Date:   Tue, 23 May 2023 14:43:53 +0200
+Message-ID: <20230523124354.24294-1-mike.looijmans@topic.nl>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: AM0PR01CA0119.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:168::24) To DB8PR04MB6523.eurprd04.prod.outlook.com
+ (2603:10a6:10:10f::26)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic: DB8PR04MB6523:EE_|AM0PR04MB7172:EE_|VE1EUR01FT025:EE_|GVXPR04MB9830:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95675ff1-6b72-4602-54c5-08db5b8b6686
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: em7b2e/WuM2Zr1Sh+I5WRyAb5ID21IRgwilS5TimOfllrrdMLSJ5s5U4b9ZXpwEHX1yCRfeRBkf02bqD/E6CiVSkqy28sldePa4IhfuFGtaMCHT9W/o5T1FjWN/98t7Kg6CwYUTD18nPXomfXkwcGM0Z7D3gayUz+gBO/uz9wue8dOkq8WqbF2oE4qFk54BZTvM0tocBxV/+qNjpZUtTi2qu0fs0eQnRQUH6u7QZdnTtJ1KiK0GMksHsne1a7onG9Ha/7HCVsJblhd2o1AvJeN3kDx1fVPX5WVoGLnLiSearPh7FLDURW5XvJgKh1qk4Jdmf1rIySFFSX1nrBCU6L0/rqRkSXHhpQzHndSLA/qW58MWNXavFRPqFMnbCq7Gbkz2PAodxlg7VZyxSh4ekRkFlk2FMJNqJyaW8oGeXdjagTUohH+rq8A13KkEHES66hOCT1AntGXuxEjEgkdf3kXmuXN3KRI4Qq/8hil99puQvb+YAn7b/Bzbwo3Ca5WuaTHHXGAeHi7+OKJ8VF0fHkWTqw6UdKrwd+nqrFLqhFNyJaH9TRvc+jUrKUbZDN2IT666bRxayz/E6TsT+QpvMuZLOC0Yf1EIrhuUzQn0A3/s=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB6523.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39840400004)(376002)(396003)(366004)(346002)(136003)(451199021)(52116002)(41300700001)(66946007)(66556008)(66476007)(2906002)(186003)(1076003)(44832011)(478600001)(26005)(6486002)(316002)(6666004)(4326008)(966005)(5660300002)(54906003)(6512007)(7416002)(8936002)(8676002)(36756003)(42882007)(2616005)(6506007)(83380400001)(83170400001)(38100700002)(38350700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7172
+X-CodeTwo-MessageID: 71ec28f6-9d44-4220-bfdf-3c1ccc38b7cf.20230523124406@westeu12-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+References: <1b153bce-a66a-45ee-a5c6-963ea6fb1c82.949ef384-8293-46b8-903f-40a477c056ae.5ebab164-53fc-4492-bb76-5cc2d7b3f4f0@emailsignatures365.codetwo.com>
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: VE1EUR01FT025.eop-EUR01.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs: acaf5fcf-7bba-4a1a-b80f-08db5b8b628d
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ngAlLyIKBCAwiGdvve/rEm36PKlyt9dpcOMqeMYoqIjtcUxpjfYT58XMvrG/qWA95gEHlkN1gjEU4Phc3zfQWgqIpF3ViTi7p062yPrtvwozioWTwgewUaFR22fmBKevGp2QA9uiVmFlgZIZCvKQssH5b25j/SVuQGSBXmdl6A/HWArpkVbCI/p0NNfuoHRGEP/yn8VRvJrljuEBNwNEXXl7Gqui+9CnVrNwhzMz3ryz/pfmu8xGT9jAubcDJyzvjwwVdHvWzHM2bTCMD4m8ExbfbGQbVN1iu3m/33JC9VulqZfXxpV+36dA3CJhlIpxRAIeZciDT0waN5vneQAqdAGw/wjwPQxfV9fj0Hgvi1SSAnlrKvbpeuGKnQXDrtIpFg70oq5SyoPE/kx08PRga1ReKKdljt4MpCPgSxcBFeLT0R82GChxC3um/cG5RnaJXUuDQZc7iSJDkYs9F8/D6KZySCv30balaJ4tEL9CPDxa8eKhQl7jem6FZeqWDHEdsz7PXVjMKNAR00l+x/PJoTCRNLSD0cqsU0oNACoWEUZgtQ1pwsUQWLHjL1vLrbF6948nL2EsYEh1UrVSTa0hVEQiR4ECTkF1RMgAGRtKnByReIy41Gvj19WA1ZmXt94F/da/hz3yTLgM0b6r/DXQRSOBhyoOHkIiODWShfkg7fhwXfTdXa5fBsRI3G4b4qgp
+X-Forefront-Antispam-Report: CIP:13.93.42.39;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu12-emailsignatures-cloud.codetwo.com;PTR:westeu12-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(396003)(376002)(39840400004)(451199021)(46966006)(36840700001)(2616005)(336012)(47076005)(6486002)(186003)(83380400001)(42882007)(2906002)(36860700001)(4326008)(70586007)(41300700001)(70206006)(316002)(6666004)(54906003)(478600001)(44832011)(5660300002)(26005)(1076003)(6512007)(6506007)(966005)(7416002)(8676002)(8936002)(40480700001)(82310400005)(7596003)(356005)(83170400001)(7636003)(36756003)(15974865002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: topic.nl
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2023 12:44:07.8593
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95675ff1-6b72-4602-54c5-08db5b8b6686
+X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[13.93.42.39];Helo=[westeu12-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR01FT025.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9830
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 22, 2023 at 2:35=E2=80=AFPM Paul Cercueil <paul@crapouillou.net=
-> wrote:
-> Le lundi 22 mai 2023 =C3=A0 14:05 +0300, Andy Shevchenko a =C3=A9crit :
-> > On Mon, May 22, 2023 at 1:23=E2=80=AFPM Paul Cercueil <paul@crapouillou=
-.net>
-> > wrote:
-> > > Le lundi 22 mai 2023 =C3=A0 13:18 +0300, Andy Shevchenko a =C3=A9crit=
- :
-> > > > On Mon, May 22, 2023 at 1:15=E2=80=AFPM Andy Shevchenko
-> > > > <andy.shevchenko@gmail.com> wrote:
-> > > > > On Mon, May 22, 2023 at 1:59=E2=80=AFAM Artur Rojek
-> > > > > <contact@artur-rojek.eu> wrote:
+The MCP3564R is a 24-bit ADC with 8 multiplexed inputs. The MCP3561R is
+the same device with 2 inputs, the MCP3562R has 4 inputs. The device
+contains one ADC and a multiplexer to select the inputs to the ADC.
 
-...
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
 
-> > > > > > +       u16 tdat[6];
-> > > > > > +       u32 val;
-> > > > > > +
-> > > > > > +       memset(tdat, 0, ARRAY_SIZE(tdat));
-> > > > >
-> > > > > Yeah, as LKP tells us this should be sizeof() instead of
-> > > > > ARRAY_SIZE().
-> > > > >
-> > > > > > +       for (i =3D 0; mask && i < ARRAY_SIZE(tdat); mask >>=3D =
-2)
-> > > > > > {
-> > > > > > +               if (mask & 0x3) {
-> > > > >
-> > > > > (for the consistency it has to be GENMASK(), but see below)
-> > > > >
-> > > > > First of all, strictly speaking we should use the full mask
-> > > > > without
-> > > > > limiting it to the 0 element in the array (I'm talking about
-> > > > > active_scan_mask).
-> > > > >
-> > > > > That said, we may actually use bit operations here in a better
-> > > > > way,
-> > > > > i.e.
-> > > > >
-> > > > >   unsigned long mask =3D active_scan_mask[0] &
-> > > > > (active_scan_mask[0] -
-> > > > > 1);
-> > > > >
-> > > > >   j =3D 0;
-> > > > >   for_each_set_bit(i, active_scan_mask, ...) {
-> > > > >     val =3D readl(...);
-> > > > >     /* Two channels per sample. Demux active. */
-> > > > >     tdat[j++] =3D val >> (16 * (i % 2));
-> > > >
-> > > > Alternatively
-> > > >
-> > > >      /* Two channels per sample. Demux active. */
-> > > >      if (i % 2)
-> > > >        tdat[j++] =3D upper_16_bits(val);
-> > > >      else
-> > > >        tdat[j++] =3D lower_16_bits(val);
-> > > >
-> > > > which may be better to read.
-> > >
-> > > It's not if/else though. You would check (i % 2) for the upper 16
-> > > bits,
-> > > and (i % 1) for the lower 16 bits. Both can be valid at the same
-> > > time.
+---
 
-(i can't be two bits at the same time in my proposal)
+ .../bindings/iio/adc/microchip,mcp356xr.yaml  | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,mcp=
+356xr.yaml
 
-> > Are you sure? Have you looked into the proposed code carefully?
->
-> Yes. I co-wrote the original code, I know what it's supposed to do.
+diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp356xr.y=
+aml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp356xr.yaml
+new file mode 100644
+index 000000000000..4aef166894c8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp356xr.yaml
+@@ -0,0 +1,84 @@
++# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++# Copyright 2023 Topic Embedded Systems
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/microchip,mcp356xr.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Microchip MCP3561R/MCP3562R/MCP3564R ADC
++
++maintainers:
++  - Mike Looijmans <mike.looijmans@topic.nl>
++
++description: |
++  Bindings for the Microchip MCP356xR 8-channel ADC devices. Datasheet and=
+ info
++  can be found at: https://www.microchip.com/en-us/product/MCP3564R
++
++properties:
++  compatible:
++    enum:
++      - microchip,mcp3561r
++      - microchip,mcp3562r
++      - microchip,mcp3564r
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 20000000
++
++  clocks:
++    description:
++      Phandle and clock identifier for external sampling clock.
++      If not specified, the internal crystal oscillator will be used.
++    maxItems: 1
++
++  interrupts:
++    description: IRQ line of the ADC
++    maxItems: 1
++
++  drive-open-drain:
++    description:
++      Whether to drive the IRQ signal as push-pull (default) or open-drain=
+. Note
++      that the device requires this pin to become "high", otherwise it wil=
+l stop
++      converting.
++    type: boolean
++
++  microchip,device-addr:
++    description: Device address when multiple chips are present on the sam=
+e bus.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [0, 1, 2, 3]
++    default: 1
++
++  vref-supply:
++    description:
++      Phandle to the external reference voltage supply.
++      If not specified, the internal voltage reference (2.4V) will be used=
+.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++      #address-cells =3D <1>;
++      #size-cells =3D <0>;
++
++      adc@0 {
++        compatible =3D "microchip,mcp3564r";
++        reg =3D <0>;
++        interrupt-parent =3D <&gpio5>;
++        interrupts =3D <15 2>;
++        spi-max-frequency =3D <20000000>;
++        microchip,device-addr =3D <1>;
++        vref-supply =3D <&vref_reg>;
++        clocks =3D <&xtal>;
++      };
++    };
+--=20
+2.17.1
 
-Yes, but I'm talking about my version to which you commented and I
-think it is the correct approach with 'else'. The problematic part in
-my proposal is FIFO reading.
-So, I have tried to come up with the working solution, but it seems
-it's too premature optimization here that's not needed and code,
-taking into account readability, will become a bit longer.
 
-That said, let's go with your version for now (implying the GENMASK()
-and upper/lower_16_bits() macros in use).
-
-> > What probably can be done differently is the read part, that can be
-> > called once. But looking at it I'm not sure how it's supposed to work
-> > at all, since the address is always the same. How does the code and
-> > hardware are in sync with the channels?
->
-> It's a FIFO.
-
-A-ha.
-
-> > > > >   }
-> > > > >
-> > > > > > +                       val =3D readl(adc->base +
-> > > > > > JZ_ADC_REG_ADTCH);
-> > > > > > +                       /* Two channels per sample. Demux
-> > > > > > active.
-> > > > > > */
-> > > > > > +                       if (mask & BIT(0))
-> > > > > > +                               tdat[i++] =3D val & 0xffff;
-> > > > > > +                       if (mask & BIT(1))
-> > > > > > +                               tdat[i++] =3D val >> 16;
-> > > > > > +               }
-> > > > > >         }
-
---
-With Best Regards,
-Andy Shevchenko
+Met vriendelijke groet / kind regards,=0A=
+=0A=
+Mike Looijmans=0A=
+System Expert=0A=
+=0A=
+=0A=
+TOPIC Embedded Products B.V.=0A=
+Materiaalweg 4, 5681 RJ Best=0A=
+The Netherlands=0A=
+=0A=
+T: +31 (0) 499 33 69 69=0A=
+E: mike.looijmans@topicproducts.com=0A=
+W: www.topic.nl=0A=
+=0A=
+Please consider the environment before printing this e-mail=0A=

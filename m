@@ -2,140 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD49970F293
-	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 11:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DB670F2EB
+	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 11:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240654AbjEXJWs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 May 2023 05:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44982 "EHLO
+        id S229742AbjEXJfJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 May 2023 05:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240291AbjEXJVH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 05:21:07 -0400
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9952E9D;
-        Wed, 24 May 2023 02:21:03 -0700 (PDT)
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6af6df7f93aso35501a34.0;
-        Wed, 24 May 2023 02:21:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684920063; x=1687512063;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ooM2WEkot7KuXyG8TFkP/cOGbwCsIoaqyATdhVKfqHo=;
-        b=hYCMKy168dcj7eOuVFj3OkyTUan/mOGuOF/Lh0cuEer68J3eeHMGI0fVcFOL+rNmxJ
-         s+KbgeNu+Vrb6GYpeWzNipse9WrPFTdnrwaHYT006j5LCnGk9xBhYiUxpdJ+2jhumW3v
-         rDv29e6uAUwjg3uXCf91YYLTqqm71xqOr+QgnCf+2l5o3I22bxkhQ6oNKq1N/u5adHpR
-         heTZLTtrtF+H4wogdqMfz+LbjJE+x2bD4ikyJLmDxmi8AUsM95FQp3hnRE5YX789WpVD
-         KU/RwD79WsP8plhBEsRB1fChysv50yG4z4L8heh+00MPoqT96TnTMH0jBlmsXp/W3ZW5
-         mveg==
-X-Gm-Message-State: AC+VfDyVybXLGMWDHUI7Lz9H525B9sYAjz85J6ikBKFil6dDZx+7aT2p
-        /M7nHTY+5N0FplWMswYsbw==
-X-Google-Smtp-Source: ACHHUZ4tFm4ZuNjyciy5rDRzPIQPer8A2tuJgUMFQzjxCy7xPQFdCReLHYiLcV5WSajQCgi+WrZNxA==
-X-Received: by 2002:a05:6830:1b67:b0:6af:8b3f:cda4 with SMTP id d7-20020a0568301b6700b006af8b3fcda4mr3059936ote.13.1684920062785;
-        Wed, 24 May 2023 02:21:02 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id a23-20020a9d6e97000000b006af8ac6ed5dsm1992509otr.38.2023.05.24.02.21.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 02:21:02 -0700 (PDT)
-Received: (nullmailer pid 3187102 invoked by uid 1000);
-        Wed, 24 May 2023 09:21:00 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
+        with ESMTP id S230174AbjEXJez (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 05:34:55 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3492611D;
+        Wed, 24 May 2023 02:34:38 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA44A1042;
+        Wed, 24 May 2023 02:35:22 -0700 (PDT)
+Received: from donnerap.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AC91B3F67D;
+        Wed, 24 May 2023 02:34:33 -0700 (PDT)
+Date:   Wed, 24 May 2023 10:34:31 +0100
+From:   Andre Przywara <andre.przywara@arm.com>
 To:     Maxim Kiselev <bigunclemax@gmail.com>
-Cc:     Andre Przywara <andre.przywara@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Heiko Stuebner <heiko.stuebner@vrull.eu>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        devicetree@vger.kernel.org,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        linux-iio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Haibo Chen <haibo.chen@nxp.com>, Chen-Yu Tsai <wens@csie.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Conor Dooley <conor@kernel.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        linux-sunxi@lists.linux.dev, Palmer Dabbelt <palmer@dabbelt.com>,
-        linux-kernel@vger.kernel.org,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        linux-riscv@lists.infradead.org,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        ChiYuan Huang <cy_huang@richtek.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
         Samuel Holland <samuel@sholland.org>,
+        Conor Dooley <conor@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Heiko Stuebner <heiko.stuebner@vrull.eu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-In-Reply-To: <20230524082744.3215427-3-bigunclemax@gmail.com>
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [RFC PATCH v1 0/4] Add support for Allwinner GPADC on
+ D1/T113s/R329 SoCs
+Message-ID: <20230524103431.50c6a2fd@donnerap.cambridge.arm.com>
+In-Reply-To: <20230524082744.3215427-1-bigunclemax@gmail.com>
 References: <20230524082744.3215427-1-bigunclemax@gmail.com>
- <20230524082744.3215427-3-bigunclemax@gmail.com>
-Message-Id: <168492006052.3187086.8767275310596142124.robh@kernel.org>
-Subject: Re: [RFC PATCH v1 2/4] dt-bindings: iio: adc: Add Allwinner
- D1/T113s/R329 SoCs GPADC
-Date:   Wed, 24 May 2023 04:21:00 -0500
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Organization: ARM
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 24 May 2023 11:27:29 +0300
+Maxim Kiselev <bigunclemax@gmail.com> wrote:
 
-On Wed, 24 May 2023 11:27:31 +0300, Maxim Kiselev wrote:
-> Allwinner's D1, T113s and R329 SoCs have a new general purpose ADC.
-> This ADC is the same for all of this SoCs. The only difference is
-> the number of available channels.
+Hi Maxim,
+
+many thanks for your work on this and for posting it!
+
+> This series adds support for general purpose ADC (GPADC) on new
+> Allwinner's SoCs, such as D1, T113s and R329. The implemented driver
+> provides basic functionality for getting ADC channels data.
 > 
-> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
-> ---
->  .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    | 52 +++++++++++++++++++
->  1 file changed, 52 insertions(+)
+> All of the listed SoCs have the same IP. The only difference is the number
+> of available channels:
+>      T113 - 1 channel
+>      D1   - 2 channels
+>      R329 - 4 channels
+
+This may sound kind of obvious, but wouldn't it be easier to model this
+with one compatible string, and have the number of channels as a DT
+property?
+Or, alternatively, using iio/multiplexer/io-channel-mux.yaml, since it's
+only one ADC anyway?
+
+And btw: it seems that the T507 (the H616 die with a different pinout) has
+the same IP, with four channels:
+http://dl.linux-sunxi.org/T507/
+
+Cheers,
+Andre
+
+> This series is just an RFC and I would be glad to see any comments
+> about it.
+> 
+> 
+> Maxim Kiselev (4):
+>   iio: adc: Add Allwinner D1/T113s/R329 SoCs GPADC
+>   dt-bindings: iio: adc: Add Allwinner D1/T113s/R329 SoCs GPADC
+>   ARM: dts: sun8i: t113s: Add GPADC node
+>   riscv: dts: allwinner: d1: Add GPADC node
+> 
+>  .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    |  52 ++++
+>  arch/arm/boot/dts/sun8i-t113s.dtsi            |  12 +
+>  arch/riscv/boot/dts/allwinner/sun20i-d1.dtsi  |  10 +
+>  drivers/iio/adc/Kconfig                       |  10 +
+>  drivers/iio/adc/Makefile                      |   1 +
+>  drivers/iio/adc/sun20i-gpadc-iio.c            | 275 ++++++++++++++++++
+>  6 files changed, 360 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+>  create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
 > 
-
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml: 'maintainers' is a required property
-	hint: Metaschema for devicetree binding documentation
-	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
-Error: Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.example.dts:27.28-29 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:419: Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.example.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1512: dt_binding_check] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230524082744.3215427-3-bigunclemax@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 

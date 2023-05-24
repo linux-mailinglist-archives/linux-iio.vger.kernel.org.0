@@ -2,150 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 125C070ED7D
-	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 08:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBEA70F0A0
+	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 10:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232611AbjEXGBm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 May 2023 02:01:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43990 "EHLO
+        id S239952AbjEXI2A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 May 2023 04:28:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232365AbjEXGBk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 02:01:40 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40AB132
-        for <linux-iio@vger.kernel.org>; Tue, 23 May 2023 23:01:35 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q1hYi-00073O-TF; Wed, 24 May 2023 08:01:16 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q1hYX-002PqH-1c; Wed, 24 May 2023 08:01:05 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q1hYW-007SK3-Am; Wed, 24 May 2023 08:01:04 +0200
-Date:   Wed, 24 May 2023 08:01:04 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Crt Mori <cmo@melexis.com>, linux-iio@vger.kernel.org,
-        Tom Rix <trix@redhat.com>,
-        Jon Nettleton <jon.nettleton@gmail.com>,
-        Peter Senna Tschudin <peter.senna@gmail.com>,
-        Christian Gromm <christian.gromm@microchip.com>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        Jean Delvare <jdelvare@suse.de>,
-        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
+        with ESMTP id S234973AbjEXI17 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 04:27:59 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FDA12B;
+        Wed, 24 May 2023 01:27:58 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f3a873476bso538719e87.1;
+        Wed, 24 May 2023 01:27:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684916876; x=1687508876;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yqn5qRBwLcinfNxv6VW9L+IL+2b4SfMx1zWHSgO399s=;
+        b=k37Hh7n14UGVGV4NE3zQCYH3l1evQJSVPVb/+G9Fq3cASkwC273FAbYkuSHoClOScS
+         yA70k8n8prh1aJmXgtbPAM6tF5BCuA2Y08lsRsHprvLhRH/1coP0RHOdcNoJFQ6XHFCB
+         hrgsGRMXtTVQ2JLzKF1XZr7d4E9DL80Lz+afMRbfEv0wvO7NxfPAMu5iSn/3irBjhGbj
+         eydEcIzBH1K33G9q2oya4vzq2Q597lx/luBgn80hMPlge5F5MvFydT7TjoCorzMzqiaf
+         hWIAysdO/FZy4YQCtGIknBlv8ZvAS8nU+UsUdHXMK81dBH6vhDq3xM0Zr14l367gLMu6
+         Z0DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684916876; x=1687508876;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yqn5qRBwLcinfNxv6VW9L+IL+2b4SfMx1zWHSgO399s=;
+        b=V18+d39STzr4yvIe6XxsQeidJSf57h4wku4YqnLTJZs3gIP7NwkD+m7w1p54xAQQ7b
+         1Mxb2jGIl2dO/fz45fWgxuhhhG9PpRpnRtbqNPOhwfgc7HF/NOfwKoXvqN5Npdl7JRKJ
+         zWnXYuNKf+UQWPJBhVAWMdTzCxihggvVUByTD8T7Gzj6EeAT+ezHyo5OQwVivwbb3Bxx
+         yoUDQN36Ura1Bq4roIthI6EcHxj48r69gSrTU77YVjhhFWcXsWv1yEKoJkgKnfpi6A4w
+         55tZcNI3sCL3D8XPjmbLwhzbowMPi69fpqhxayhmYPy+OuSlZVjkd8cdOJy96UwywX7d
+         pF/A==
+X-Gm-Message-State: AC+VfDxVD9mBPhez91m9xk3QiW4giQNgW22bk9NmRUQl8DFeBrNtM8p9
+        ESvf7p9jeZ7fhPdEAnwn8qCkTgda21s7BSdy
+X-Google-Smtp-Source: ACHHUZ51AH1JWC4YEIhLkDzsm1fECjK/PgS5MlDO56x6XPdzEJ3P3CzbjtqR9uT3ruJll6fRYG0ydg==
+X-Received: by 2002:ac2:434a:0:b0:4f3:a483:557 with SMTP id o10-20020ac2434a000000b004f3a4830557mr4741266lfl.5.1684916875768;
+        Wed, 24 May 2023 01:27:55 -0700 (PDT)
+Received: from pc.. (mail.pulsar-telecom.ru. [94.181.180.60])
+        by smtp.googlemail.com with ESMTPSA id c18-20020a197612000000b004f378fbb358sm1614049lff.112.2023.05.24.01.27.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 May 2023 01:27:55 -0700 (PDT)
+From:   Maxim Kiselev <bigunclemax@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Maxim Kiselev <bigunclemax@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Haowen Bai <baihaowen@meizu.com>,
-        Jens Frederich <jfrederich@gmail.com>,
-        linux-staging@lists.linux.dev,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Adrien Grassein <adrien.grassein@gmail.com>,
-        linux-media@vger.kernel.org,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        kernel@pengutronix.de, Wolfram Sang <wsa@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Peter Rosin <peda@axentia.se>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH] staging: Switch i2c drivers back to use .probe()
-Message-ID: <20230524060104.wljjqi2ep2ag2245@pengutronix.de>
-References: <20230523200036.465180-1-u.kleine-koenig@pengutronix.de>
- <b9954a28-1ab2-468d-beb5-2fa2e0f2c069@redhat.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Conor Dooley <conor@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Heiko Stuebner <heiko.stuebner@vrull.eu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: [RFC PATCH v1 0/4] Add support for Allwinner GPADC on D1/T113s/R329 SoCs
+Date:   Wed, 24 May 2023 11:27:29 +0300
+Message-Id: <20230524082744.3215427-1-bigunclemax@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zqy6b2uvxwwx5uuf"
-Content-Disposition: inline
-In-Reply-To: <b9954a28-1ab2-468d-beb5-2fa2e0f2c069@redhat.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
---zqy6b2uvxwwx5uuf
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series adds support for general purpose ADC (GPADC) on new
+Allwinner's SoCs, such as D1, T113s and R329. The implemented driver
+provides basic functionality for getting ADC channels data.
 
-Hello Hans,
+All of the listed SoCs have the same IP. The only difference is the number
+of available channels:
+     T113 - 1 channel
+     D1   - 2 channels
+     R329 - 4 channels
 
-On Tue, May 23, 2023 at 10:40:43PM +0200, Hans de Goede wrote:
-> On 5/23/23 22:00, Uwe Kleine-K=F6nig wrote:
-> > After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> > call-back type"), all drivers being converted to .probe_new() and then
-> > 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") conve=
-rt
-> > back to (the new) .probe() to be able to eventually drop .probe_new() f=
-rom
-> > struct i2c_driver.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> > Hello,
-> >=20
-> > this patch was generated using coccinelle.
-> >=20
-> > I chose to convert all drivers below drivers/staging in a single
-> > patch, but if you prefer I can split by driver.
->=20
-> I'm currently doing a lot of cleanup work on the atomisp code
-> including the sensor drivers. Specifically I'm working on
-> removing drivers which are duplicate with the standard v4l2
-> sensor drivers under drivers/media/i2c . So this patch is
-> likely to cause conflicts.
->=20
-> I have my own branch for my atomisp work from which I send
-> pull-reqs directly to Mauro Chehab:
->=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/hansg/linux.git/log/?h=3D=
-media-atomisp
->=20
-> As such I think for the atomisp drivers it would be best if I directly
-> apply the atomisp bits of this patch (no need for a resend) to my
-> media-atomisp branch, is that ok with you ?
+This series is just an RFC and I would be glad to see any comments
+about it.
 
-For me that would be fine, it's mostly Greg who has to cope. As Jonathan
-also suggested to split, I suggest I do this. Then everyone can pickup
-the usual bits without too much conflicts.
 
-Best regards
-Uwe
+Maxim Kiselev (4):
+  iio: adc: Add Allwinner D1/T113s/R329 SoCs GPADC
+  dt-bindings: iio: adc: Add Allwinner D1/T113s/R329 SoCs GPADC
+  ARM: dts: sun8i: t113s: Add GPADC node
+  riscv: dts: allwinner: d1: Add GPADC node
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+ .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    |  52 ++++
+ arch/arm/boot/dts/sun8i-t113s.dtsi            |  12 +
+ arch/riscv/boot/dts/allwinner/sun20i-d1.dtsi  |  10 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/sun20i-gpadc-iio.c            | 275 ++++++++++++++++++
+ 6 files changed, 360 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+ create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
 
---zqy6b2uvxwwx5uuf
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.39.2
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRtqB8ACgkQj4D7WH0S
-/k5jcAf/WFlyFOsuQCHCP7XhhLma9YjYqV09mCEayg0z2IjJ+7vSN3WRkhwspkEO
-ti62GhVpzLcGAMaZiPoB/4hZtJJfkjJrzfnOC0nhM7GnpBOorLWm0uV/Rih1O0pw
-dgXIp56Nk946bR2kjK4jFsezU5R8Be7iLRqF67E2ASL5HcI0ifC/kzyC3bIz3RXv
-HS6sE9oH2VO/Tumqt/D7DZCa3+JHwvkSY4tasd9/D1c1b0dvA+DPOh/DtfpGua5I
-WyTiA5R2KrzryD7aJUEuD4C8D66HiTahycCkemMtHwViEGTuTUvpkrStwAbC7rYB
-HwHePXvE1xRpNG0x3yAUWrd4Gs/gKg==
-=gQyv
------END PGP SIGNATURE-----
-
---zqy6b2uvxwwx5uuf--

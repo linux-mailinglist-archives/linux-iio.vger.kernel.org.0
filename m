@@ -2,124 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 142A270EA51
-	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 02:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 125C070ED7D
+	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 08:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233325AbjEXAgb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 May 2023 20:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45724 "EHLO
+        id S232611AbjEXGBm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 May 2023 02:01:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232594AbjEXAgb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 May 2023 20:36:31 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2139.outbound.protection.outlook.com [40.107.113.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97B00C2;
-        Tue, 23 May 2023 17:36:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nhT7+oougquFur9mQFn67TQNkg5paCUgn/inz03eteUvRo6r8u6cboSMXJ+JYN3re/0jJLX7rs+hg9V9iBN2KJw2L/5WAlGutA0DW9mH+fdtAIa2skGbmNGCaCEBC+DOyWvI5cp3QH3Fz3TzqJXob4SUa+CJU400Ahs/OGOA5F45gs5NO7S540BB9kBTIQN68mUvGwhKfRid3uzXIrWy1KTohbuvlqCA1RazxL6EJ2DB/ARcW0gJmhK/7r4qcg2Y6AKUeWtYrpwGObciYnKDLy1cp8+xwURWACtzsb9drM2DS97sIOcFk1GYISpvgodxQCL/Hcvp1Ok99HSs4V8pVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TOkPGl2ohvFRpsIlSNWQ/MFhkMNLDNRT2uyL43XAJ74=;
- b=nlcXT+VgdE5DFVvNwIG8tUqMznnLvYA1LnbiXOU9Z5XGa0q/cPXSKYwgMTyNZXVTwsAFEIIanGQ5d+maVsu15iQ7977toB48NqYGbvmRRmZXIyMzGcVV03xatHKSLpyNj5zy7NnSeMXX/UbG+GLsove722jKjZduGvFHxMeoQ+Q7xVW9hak55BlU7hBhEtBM3k6JyZb5H3qv4JLBigSdK2R8B1BjtLd7jYzVFdfMU40JzDWXinu6x5JjdoC4hnZoEgzVsOH2yadNp4y1n/Ut/Xrsd2Aqk96wIMrVG/Qu80toImdWtRj7fINmagijxBkQvI58+miRKk9ywDfNsz7wuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TOkPGl2ohvFRpsIlSNWQ/MFhkMNLDNRT2uyL43XAJ74=;
- b=gScoRR5FCQdtcM0LWp1WX5qC9cM++WGLshCubsvHdTxFFgNECf+7XFc+6HZrXKUHPjgFX7FFZ0vg2NZs/M/qgR79s4GTwOIp+wpOwu/rdD2tRPyRiysnxMpOWQ1vVgDLs20/naRGIk75jRUHnXv5Qn2ZghzS/2/trawEHz5FNew=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-Received: from OS3PR01MB8426.jpnprd01.prod.outlook.com (2603:1096:604:194::10)
- by OS3PR01MB8665.jpnprd01.prod.outlook.com (2603:1096:604:19d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.23; Wed, 24 May
- 2023 00:36:26 +0000
-Received: from OS3PR01MB8426.jpnprd01.prod.outlook.com
- ([fe80::91e7:a94f:9f75:d840]) by OS3PR01MB8426.jpnprd01.prod.outlook.com
- ([fe80::91e7:a94f:9f75:d840%6]) with mapi id 15.20.6433.015; Wed, 24 May 2023
- 00:36:26 +0000
-Message-ID: <87lehe7egm.wl-kuninori.morimoto.gx@renesas.com>
-From:   Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S232365AbjEXGBk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 02:01:40 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40AB132
+        for <linux-iio@vger.kernel.org>; Tue, 23 May 2023 23:01:35 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q1hYi-00073O-TF; Wed, 24 May 2023 08:01:16 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q1hYX-002PqH-1c; Wed, 24 May 2023 08:01:05 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1q1hYW-007SK3-Am; Wed, 24 May 2023 08:01:04 +0200
+Date:   Wed, 24 May 2023 08:01:04 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Crt Mori <cmo@melexis.com>, linux-iio@vger.kernel.org,
+        Tom Rix <trix@redhat.com>,
+        Jon Nettleton <jon.nettleton@gmail.com>,
+        Peter Senna Tschudin <peter.senna@gmail.com>,
+        Christian Gromm <christian.gromm@microchip.com>,
+        Jeremy Kerr <jk@codeconstruct.com.au>,
+        Jean Delvare <jdelvare@suse.de>,
+        Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 9/9] ASoC: simple-card: Handle additional devices
-In-Reply-To: <87mt1u7fql.wl-kuninori.morimoto.gx@renesas.com>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
-        <20230523151223.109551-10-herve.codina@bootlin.com>
-        <87mt1u7fql.wl-kuninori.morimoto.gx@renesas.com>
-User-Agent: Wanderlust/2.15.9 Emacs/27.1 Mule/6.0
-Content-Type: text/plain; charset=US-ASCII
-Date:   Wed, 24 May 2023 00:36:25 +0000
-X-ClientProxiedBy: TYCPR01CA0185.jpnprd01.prod.outlook.com
- (2603:1096:400:2b0::11) To OS3PR01MB8426.jpnprd01.prod.outlook.com
- (2603:1096:604:194::10)
+        Haowen Bai <baihaowen@meizu.com>,
+        Jens Frederich <jfrederich@gmail.com>,
+        linux-staging@lists.linux.dev,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Adrien Grassein <adrien.grassein@gmail.com>,
+        linux-media@vger.kernel.org,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Menna Mahmoud <eng.mennamahmoud.mm@gmail.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        kernel@pengutronix.de, Wolfram Sang <wsa@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Peter Rosin <peda@axentia.se>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH] staging: Switch i2c drivers back to use .probe()
+Message-ID: <20230524060104.wljjqi2ep2ag2245@pengutronix.de>
+References: <20230523200036.465180-1-u.kleine-koenig@pengutronix.de>
+ <b9954a28-1ab2-468d-beb5-2fa2e0f2c069@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS3PR01MB8426:EE_|OS3PR01MB8665:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dd57c34-f333-4d26-10f3-08db5beee81f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 577FhO4GQ/OuEuu2Ks9MKSJ7ypD1GGGEoVD7bFpMvO11JYPdIpZMM2O6AFTPNIv6mjUDHoNQzrNCx9oR8oFDgmGQra8RpxsnBxNOIYBA6i0A68lp+J9J6GqsozkHWeTDem+vBxSB8jh+NjD/zjhg9ce4QWBGEk60CgHm9W1HC6elXvoUWLoVIUz9LUoUTOpP6+xe26jQm8ObWlzPWVw1hlA7DpH8bFv4FnirJKWY/pSUF51co2hnmxmkb3xCd2DMIU10iTZJHZbRhCoA3gl+8boajJK+urjcZ6j/O9VPZ087Kig0F7t6N0NXpMQmU1llP3qgbM3deOwlTv6fw9ZNmTHtsmwnK/rE/ew0LtSYKouKfOtDoj112EvlI8Zq3se6bFUoRLY7z6hMm7bpklLIiKAgBwg52OqQQWGWW3vp6JRhLBs2knKiW5/375gBv/E8i/XS45bFGcg5wzlIyleI2gR1g4QQFeQB6W1gwwHsgvLd6oYgoO17VZ/PimGcmpC8WUvu2mTVi9cj55KBafPvHdiIns+8n9XSj3HUjeYr5qUeXgJcxXcyMcRCAtltJBr5qv7/8R033u9+giDceXeJGKXRNQzX1SBEZpg43AyJrCSY122a102WzWtkRr+SMj5a
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB8426.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(136003)(366004)(346002)(396003)(451199021)(66946007)(66476007)(66556008)(4326008)(6916009)(54906003)(316002)(478600001)(52116002)(6486002)(41300700001)(186003)(2906002)(6512007)(26005)(6506007)(8676002)(8936002)(36756003)(7416002)(5660300002)(558084003)(38350700002)(38100700002)(2616005)(86362001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yGL07yLPrFzzsfIu2NX/i/08uBKqE2RhGA5qK5XGg44jgMy31As+4mgdR2Ue?=
- =?us-ascii?Q?UIePPmYTYuX2Jfe3abA22BGMjRK3L9gaNcV2PA7bjOm70zfs5UqTZnCZlH4c?=
- =?us-ascii?Q?TnubJbpAYSFVV/lMa8cZYRhSqJuWqgz3fZvxY9Xze5ixp+q6s7SThHFw3/dj?=
- =?us-ascii?Q?fZ64Am1tzh9EUqDOh9nv670kN74Tc1cUbmC2I00G6xayoV2/bqkb6nPyuAHK?=
- =?us-ascii?Q?iQ+sZeD5oEca4jYPw4isE0bD02Tc5FU8gwj60vsvt0+OE9Up86hiaxjD+98T?=
- =?us-ascii?Q?VCns1ZeMKUcT0Q4/rvN0OzJdo/91oMLpkpnvaE00+MXTpRCWk0ZDdlfu9rQs?=
- =?us-ascii?Q?PUHDBg4tOtatUGOj9MyG5n/2YsvXVztez5qGdwSbLkmvFKgOdsungt885hlc?=
- =?us-ascii?Q?kIVocmZ1DH2SjMr63nK/m1id//bB1cPgTEYAFgyfds71UTyis6sQByxmbGED?=
- =?us-ascii?Q?uDVDjvH21pboBtgAxA7DuOZbS97NsIVF+7HXypi+Ezu3nE0Bn1T6b6qGS1ah?=
- =?us-ascii?Q?69ekoynr02gEouint6L5YtV9jFj9HCrDEqbLhpFRyIkIQJcXxF3qzo4nQv0Y?=
- =?us-ascii?Q?ANLPch59IXb6RjZGlF9GLPxjADjKYSOy3mVDVYeq7BcIxHDhdJ/Pyb/92yh1?=
- =?us-ascii?Q?ZNDYo5HY3+EudKQduxy2COcTYwaVw/YD9J9Uanr34zliT4BeYcBv0H0gAkTE?=
- =?us-ascii?Q?St8h//jpDInt8GZLT2jn+FzxTXY6v1eZ2B1HYIAvhkJ5w17jPIxwSShLk3Bb?=
- =?us-ascii?Q?JxEapGhaU17kxMLdpyRUsiy4k5lyv8DeYjNTe2ycKgIzi18ysgH5dffIf+lV?=
- =?us-ascii?Q?+KT5Oh87utvtFuRCh0RLc/obt5fiz3gn4LUxV9Adsxt7atubd5WXdt+MK3p2?=
- =?us-ascii?Q?iw3/UZ97i+aOqUKplAoqBKOPxOVE33pPaOMM2qZ/bHrfNm65VS3iTuKF9rRR?=
- =?us-ascii?Q?AFhyH4iqAIRcQQ98i9nb+P09+zJNLKwibec1iBrQWJLdDgGMeFXg279A0Ys5?=
- =?us-ascii?Q?KZy9n76Ppq0w8PAlUQYeYBRxNvD9joohYjiPRpmTozBXoZimz2I3g8dVG0i8?=
- =?us-ascii?Q?+lVvFB1GnPtVc4GSPKtfockgDbeGNYf0U9pTsvZpQsaI5yNsN2Zm27w9GMBx?=
- =?us-ascii?Q?VnjbExIv4pmGdDfZDsvFi+e1fOGWTBQZkPWe+k4NndX2bySxQaLxCFI5raMg?=
- =?us-ascii?Q?6Jas+jP+oflhjmChZId+dVTa5GcI8P1S5/d3ekuBpBqjj7B8E5/UWdfSvHGc?=
- =?us-ascii?Q?oOvrMxSCHdvF/laAPOpEmhTfSWvEKvme8oUIw+DsS5VXOzX6pIUopkFO/oDs?=
- =?us-ascii?Q?8PDTWSGFsRUtLdzvALwxxVN4aX/28oR0+aGnnmSQf52lS5t4V5mleSbC8/e4?=
- =?us-ascii?Q?x7zR24fUMH7qD0bCMFmHQgH6eufLXI8ZnvYnkbpvIXXMyohGVQUAgTb2aih4?=
- =?us-ascii?Q?mLJRW1aFf3d4AAIM6/99DSB//HGx1E2cAMKoy0NgB8Q+WHcth5BNOyAf2D7f?=
- =?us-ascii?Q?86lVvV0ygNJpBBT528ECC8JtZN1HFpwKEhOVniqQCgrlMR6qoRyHieU7Gc+1?=
- =?us-ascii?Q?vpWy6dMu48RWcWq8IM1X0LuS7VIky0Ez+3Yc7GrMjJPbR83FA0GYnlGAsZaM?=
- =?us-ascii?Q?jk6L73ukMhJ7fD+2hDgafwo=3D?=
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dd57c34-f333-4d26-10f3-08db5beee81f
-X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB8426.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2023 00:36:25.9886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h2yiewbF8d+VPg5ZYqIIcLoFGTH3dur3FDxpDbdcHAvIFBW1DSjmO1NL6zvPMOzr3ESctKXX+uJuFdpRI6i8aZVFObtVymro6OksjTMpUitKCn4zLkk4tyFAYym1odWb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB8665
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zqy6b2uvxwwx5uuf"
+Content-Disposition: inline
+In-Reply-To: <b9954a28-1ab2-468d-beb5-2fa2e0f2c069@redhat.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -127,15 +80,72 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-Hi again
+--zqy6b2uvxwwx5uuf
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Is this "additional-devs" available only one per 1 Card ?
+Hello Hans,
 
-I could understand the point.
-1 "additional-devs" per 1 Card is enough.
+On Tue, May 23, 2023 at 10:40:43PM +0200, Hans de Goede wrote:
+> On 5/23/23 22:00, Uwe Kleine-K=F6nig wrote:
+> > After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> > call-back type"), all drivers being converted to .probe_new() and then
+> > 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") conve=
+rt
+> > back to (the new) .probe() to be able to eventually drop .probe_new() f=
+rom
+> > struct i2c_driver.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> > Hello,
+> >=20
+> > this patch was generated using coccinelle.
+> >=20
+> > I chose to convert all drivers below drivers/staging in a single
+> > patch, but if you prefer I can split by driver.
+>=20
+> I'm currently doing a lot of cleanup work on the atomisp code
+> including the sensor drivers. Specifically I'm working on
+> removing drivers which are duplicate with the standard v4l2
+> sensor drivers under drivers/media/i2c . So this patch is
+> likely to cause conflicts.
+>=20
+> I have my own branch for my atomisp work from which I send
+> pull-reqs directly to Mauro Chehab:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/hansg/linux.git/log/?h=3D=
+media-atomisp
+>=20
+> As such I think for the atomisp drivers it would be best if I directly
+> apply the atomisp bits of this patch (no need for a resend) to my
+> media-atomisp branch, is that ok with you ?
 
-Thank you for your help !!
+For me that would be fine, it's mostly Greg who has to cope. As Jonathan
+also suggested to split, I suggest I do this. Then everyone can pickup
+the usual bits without too much conflicts.
 
 Best regards
----
-Kuninori Morimoto
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--zqy6b2uvxwwx5uuf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmRtqB8ACgkQj4D7WH0S
+/k5jcAf/WFlyFOsuQCHCP7XhhLma9YjYqV09mCEayg0z2IjJ+7vSN3WRkhwspkEO
+ti62GhVpzLcGAMaZiPoB/4hZtJJfkjJrzfnOC0nhM7GnpBOorLWm0uV/Rih1O0pw
+dgXIp56Nk946bR2kjK4jFsezU5R8Be7iLRqF67E2ASL5HcI0ifC/kzyC3bIz3RXv
+HS6sE9oH2VO/Tumqt/D7DZCa3+JHwvkSY4tasd9/D1c1b0dvA+DPOh/DtfpGua5I
+WyTiA5R2KrzryD7aJUEuD4C8D66HiTahycCkemMtHwViEGTuTUvpkrStwAbC7rYB
+HwHePXvE1xRpNG0x3yAUWrd4Gs/gKg==
+=gQyv
+-----END PGP SIGNATURE-----
+
+--zqy6b2uvxwwx5uuf--

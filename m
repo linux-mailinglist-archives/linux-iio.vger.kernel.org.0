@@ -2,51 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41DB670F4CD
-	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 13:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD8B70F567
+	for <lists+linux-iio@lfdr.de>; Wed, 24 May 2023 13:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234619AbjEXLH3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 May 2023 07:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41050 "EHLO
+        id S229484AbjEXLgv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 May 2023 07:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234708AbjEXLHX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 07:07:23 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40217195;
-        Wed, 24 May 2023 04:07:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684926434; x=1716462434;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dwI8xxMEjunWpxl7fD4Qdm430ndHRu9GRBnfhcyQF7o=;
-  b=fOsP82439wQlE8vLPIMzXe1hf4+A3OCXQUX409Nf5OkZnlQkdtbNqpsr
-   Sxn890TOchKEBaA5u9kgDk7G6ZGz81MoSaCkc4eNjpF9nA98OeGHFl0kw
-   CadqXN3qOusHdLeeQQZtcNd9QrxfCtoe8uhhkstFzNf17L+iT/8txnnW+
-   FCHUDDYlvhfWnaJ9iyl7Zugbjwmdwe+hWT8v2tmZeD4g4gdRoFY8pgrWr
-   b9HEJ9GcSKyjPTq+8o4Hq9292/Dox5UTNSfsEH1wN5l2MjRN8ntk43AjV
-   GfYu/y/LZeiZSCDK/pv0TBpT1vgDJgQmGcoPtU2JYJrgjduxryEWoxt7+
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="353555542"
-X-IronPort-AV: E=Sophos;i="6.00,189,1681196400"; 
-   d="scan'208";a="353555542"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 04:07:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="774201652"
-X-IronPort-AV: E=Sophos;i="6.00,189,1681196400"; 
-   d="scan'208";a="774201652"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 24 May 2023 04:06:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q1mKW-000GEH-01;
-        Wed, 24 May 2023 14:06:56 +0300
-Date:   Wed, 24 May 2023 14:06:55 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229547AbjEXLgu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 May 2023 07:36:50 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30F5194;
+        Wed, 24 May 2023 04:36:45 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-970028cfb6cso143723466b.1;
+        Wed, 24 May 2023 04:36:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684928204; x=1687520204;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oCm6OKqBd9FZs5dbQajMLTNl/mBBTw3OR4x7693gBrE=;
+        b=I4cLiQTIHzZm8sBtmVFsdKbYNOnsZaNirYxqf6IUwmR/TVcrTxYzng5ZcIlrMGi3nJ
+         NkK6nRvGj9klSbim8whLvYb4lg+Re/RXvex9vQKI0PHxP3CHoH1IvY4656ENSpmkKITU
+         e7MhLmPx7pR3FJ12s2edRbrhtWs3KgNZX0XHKDIYTOaYfI06HSw8kqVCv9+WY7CDShQk
+         j/BtXX7LtGKvj+BbfGj4HaOh1vvDZoxhL2KhyW1JVdeZZ6mgB8Adx3wn7rNJjOh2Wqtw
+         V4hIa5AUzBdiOnM+BPnzj0UvpdnIs5pGhgDmgFobJO/+VP+p73wJMIGQ9ROnIgid7JXi
+         GTUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684928204; x=1687520204;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oCm6OKqBd9FZs5dbQajMLTNl/mBBTw3OR4x7693gBrE=;
+        b=k8NBXteQDXvTGlYqsrTkDUpAH21GRYN4fMzXOqVRCTO+b//13fAOupcWdByNMqDXTv
+         ysQTG6jn5Qy65XnyAhLDNTaCyLrgPCmyz4IL4y00pqJxH4BqxKeWxXXCX+B+g57zBPO6
+         wSAMjP2EEykWcog9kaOkal8c9ClaDbHGTcLJML2p2kPEOUVbo0Y555ePk4IeY1RTkAkr
+         MdfaOmn1wO3C8d1IFYvJ6dq5NxgOi1lKcLzTBkAGtvYIeF/gFb7sflz0ySKHGdOzfwiS
+         1LzZvEexQ8BjPSdN7Cjm4xHARngNd1MnIeDd4+l64V/cfM4nfKblMzBj5hSkFfSpvaxW
+         D3JQ==
+X-Gm-Message-State: AC+VfDy/2/33cWpXMte6+bSu/7jdiWL6uePvesQI2yvNi7/yQtY51DI+
+        Kp6yZHfdrseghwP5UkAvi7NDLPF1JaH3UQG1mW4=
+X-Google-Smtp-Source: ACHHUZ5GJeAlXBJeAiYbUR3dLRmpJzG6jJfr1vlY311+6DHVApmd/vBenb0CNYBAN8rhGpxSZ6ePzW/DFt2WAMcrqFA=
+X-Received: by 2002:a17:907:6ea2:b0:96f:98f1:6512 with SMTP id
+ sh34-20020a1709076ea200b0096f98f16512mr15842859ejc.41.1684928203919; Wed, 24
+ May 2023 04:36:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230524082744.3215427-1-bigunclemax@gmail.com> <20230524103431.50c6a2fd@donnerap.cambridge.arm.com>
+In-Reply-To: <20230524103431.50c6a2fd@donnerap.cambridge.arm.com>
+From:   Maxim Kiselev <bigunclemax@gmail.com>
+Date:   Wed, 24 May 2023 14:36:28 +0300
+Message-ID: <CALHCpMh2sZSCrFMMT13kYbsu+C2bC2xY3coB_fv0mZom_g=oPQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/4] Add support for Allwinner GPADC on
+ D1/T113s/R329 SoCs
 To:     Andre Przywara <andre.przywara@arm.com>
-Cc:     Maxim Kiselev <bigunclemax@gmail.com>, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -58,112 +66,54 @@ Cc:     Maxim Kiselev <bigunclemax@gmail.com>, linux-iio@vger.kernel.org,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Philipp Zabel <p.zabel@pengutronix.de>,
+        Heiko Stuebner <heiko.stuebner@vrull.eu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
         Haibo Chen <haibo.chen@nxp.com>,
         ChiYuan Huang <cy_huang@richtek.com>,
         Ramona Bolboaca <ramona.bolboaca@analog.com>,
         Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
         William Breathitt Gray <william.gray@linaro.org>,
         Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-riscv@lists.infradead.org
-Subject: Re: [RFC PATCH v1 1/4] iio: adc: Add Allwinner D1/T113s/R329 SoCs
- GPADC
-Message-ID: <ZG3vzxWicUgndMqv@smile.fi.intel.com>
-References: <20230524082744.3215427-1-bigunclemax@gmail.com>
- <20230524082744.3215427-2-bigunclemax@gmail.com>
- <20230524110105.4928906c@donnerap.cambridge.arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230524110105.4928906c@donnerap.cambridge.arm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 24, 2023 at 11:01:05AM +0100, Andre Przywara wrote:
-> On Wed, 24 May 2023 11:27:30 +0300
-> Maxim Kiselev <bigunclemax@gmail.com> wrote:
+Hi Andre,
 
-...
+thanks for you comments
 
-> > +static const struct regmap_config sun20i_gpadc_regmap_config = {
-> > +	.reg_bits = 32,
-> > +	.val_bits = 32,
-> > +	.reg_stride = 4,
-> > +	.fast_io = true,
-> > +};
-> 
-> Is there any particular reason you chose a regmap to model this here?
-> Isn't that just straight-forward MMIO, which we could just drive using
-> readl()/writel()?
+> This may sound kind of obvious, but wouldn't it be easier to model this
+> with one compatible string, and have the number of channels as a DT
+> property?
 
-Even though regmap adds a few nice features that might be used.
-For example, locking. But I dunno if this driver actually uses it
-OR uses it correctly.
+Yes, I completely agree that using separate config for each SoCs is looks
+overcomplicated because the only difference is the number of channels.
+I thought about a DT property with channels number but I didn't find
+another ADC driver with the same approach (except i2c ADC's with child nodes).
 
-...
+> Or, alternatively, using iio/multiplexer/io-channel-mux.yaml, since it's
+> only one ADC anyway?
+I'm sorry, I didn't quite understand what you're suggesting.
 
-> > +	config = of_device_get_match_data(&pdev->dev);
+> And btw: it seems that the T507 (the H616 die with a different pinout) has
+> the same IP, with four channels:
+> http://dl.linux-sunxi.org/T507/
 
-Please, avoid using OF-centric APIs in the new IIO drivers.
-
-	config = device_get_match_data(&pdev->dev);
-
-should suffice.
-
-> > +	if (!config)
-> > +		return -ENODEV;
-
-...
-
-> > +	irq = platform_get_irq(pdev, 0);
-> > +	if (irq < 0)
-> > +		return dev_err_probe(&pdev->dev, irq, "failed to get irq\n");
-
-We should not repeat the message that printed by platform core.
-
-...
-
-> > +	ret = devm_request_irq(&pdev->dev, irq, sun20i_gpadc_irq_handler,
-> > +			       0, dev_name(&pdev->dev), info);
-
-You can simplify your life with
-
-	struct device *dev = &pdev->dev;
-
-at the definition block of the function.
-
-> > +	if (ret < 0)
-> > +		return dev_err_probe(&pdev->dev, ret,
-> > +				     "failed requesting irq %d\n", irq);
-
-...
-
-> > +		.data = &sun20i_d1_gpadc_channels[1]
-
-Also, leave comma here.
-
-...
-
-> > +		.data = &sun50i_r329_gpadc_channels[2]
-
-Same as above.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Oh, thanks for pointing that. I'll add it to the list in the next version.

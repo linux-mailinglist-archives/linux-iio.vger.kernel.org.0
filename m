@@ -2,74 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B39F710D16
-	for <lists+linux-iio@lfdr.de>; Thu, 25 May 2023 15:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0479871190B
+	for <lists+linux-iio@lfdr.de>; Thu, 25 May 2023 23:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241085AbjEYNSB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 25 May 2023 09:18:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50166 "EHLO
+        id S229832AbjEYV1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 May 2023 17:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231397AbjEYNSA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 May 2023 09:18:00 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E47135
-        for <linux-iio@vger.kernel.org>; Thu, 25 May 2023 06:17:56 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QRpTP6Lj5z67hv7;
-        Thu, 25 May 2023 21:15:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 25 May
- 2023 14:17:53 +0100
-Date:   Thu, 25 May 2023 14:17:52 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: Upcoming patches for invensense sensors
-Message-ID: <20230525141752.000038bb@Huawei.com>
-In-Reply-To: <FR3P281MB1757168932252EB79484912ACE419@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <FR3P281MB1757168932252EB79484912ACE419@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S229589AbjEYV1w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 May 2023 17:27:52 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2ACD3;
+        Thu, 25 May 2023 14:27:51 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:0:21ea:e49:10dd:40c0:e842])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 59D656601F54;
+        Thu, 25 May 2023 22:27:46 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1685050069;
+        bh=dP+0YR0RnQxfWF3b6qBWLSWc9N7BIfuDH1T6X6tTKTI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cEFU5gjHsRkaTMKoERUZBnhYoVu+4ax17TQxCAKp9CIg3LbiC0eVwgVuaz/9JNjxs
+         FC9aA9/Oo9pabfPQ9UsLyibIscCtcJnOy9c7YSKpvVmS4HG2Gq5D2ixzpSb8B3bK+V
+         E9L7eZ6B5geX1ThOQC4Xp/2qFcL4VP65YVtnmMFJ8Hh/aOnxHxoDKRPLla0DD/MeEo
+         vcPRdMeGPHLKG73T7NHv3sHEZSX0g6Txa5ZQzUFxUU4r/Pv9XOUIZzJN97UfkfFJFz
+         qgRy8WpExsMydsMOOT17LNKDmLmQNJkj+1YJ1/3Sf5I3OdMFa1aw0cUXScDvNXx52U
+         gt3hQGiwtCtvg==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de, heiko@sntech.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        sebastian.reichel@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, gustavo.padovan@collabora.com,
+        serge.broslavsky@collabora.com,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH v2 0/8] RK3588 ADC support
+Date:   Fri, 26 May 2023 02:57:04 +0530
+Message-Id: <20230525212712.255406-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 24 May 2023 13:48:04 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+This patch series adds ADC support for RK3588 and updates
+the DT bindings for the same.
 
-> Hi Jonathan,
-> 
-> I'm planning to send patches for a refactorization of timestamp computation for our 2 drivers (inv_mpu6050, inv_icm42600).
-> 
-> The idea is to take out timestamping of inv_icm42600 into a separate common module, and use it for both inv_icm42600 and inv_mpu6050 drivers.
-> 
-> For that, I would need the last 2 patches of inv_icm42600 driver (fix timestamp reset & avoid frequent timestamp jitter) in a branch. And 1st one is in fixes-togreg branch while the other sit in testing branch.
-> 
-> Is it possible to get the fix timestamp reset patch inside the testing branch, so I can send my series?
+To test ADC support on Rock 5B board, a voltage divider circuit
+was created using the gpio pin 22 ( SARADC_IN4 ) and few more
+tests were ran for testing the buffer and trigger support using
+the iio_generic_buffer tool.
 
-That would make a bit of a mess of the various pull requests, so I'd rather not.
-I should however get on with sending that fixes one given I wrote the signed tag message
-last weekend but haven't sent it to greg yet.
 
-It's fine to apply that patch locally for your dev branch then send the other patches
-with a note in the cover letter to say that it's a prerequisite.
+Changes in v2
+  - Add from address in patches 1 and 2.
+  - Create separate patches for adding new device support and changes to
+    the old device code.
+  - Make use of FIELD_PREP in patch 2.
+  - Move the enablement of clocks at it's original position in patch 3
+  - Add Reviewed-by tag in patches 4 and 5.
+  - Add an Acked-by tag in patch 8.
 
-Jonathan
+Shreeya Patel (8):
+  iio: adc: rockchip_saradc: Add callback functions
+  iio: adc: rockchip_saradc: Add support for RK3588
+  iio: adc: rockchip_saradc: Make use of devm_clk_get_enabled
+  iio: adc: rockchip_saradc: Use of_device_get_match_data
+  iio: adc: rockchip_saradc: Match alignment with open parenthesis
+  iio: adc: rockchip_saradc: Use dev_err_probe
+  arm64: dts: rockchip: Add DT node for ADC support in RK3588
+  dt-bindings: iio: adc: Add rockchip,rk3588-saradc string
 
-> 
-> Thanks for your help,
-> JB
+ .../bindings/iio/adc/rockchip-saradc.yaml     |   1 +
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi     |  12 +
+ drivers/iio/adc/rockchip_saradc.c             | 262 +++++++++++-------
+ 3 files changed, 168 insertions(+), 107 deletions(-)
+
+-- 
+2.30.2
+

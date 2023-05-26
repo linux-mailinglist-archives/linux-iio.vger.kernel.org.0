@@ -2,106 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BFFE712AA5
-	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 18:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60D5C712AB7
+	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 18:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230121AbjEZQbf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 May 2023 12:31:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37944 "EHLO
+        id S233317AbjEZQfu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 May 2023 12:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjEZQbd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 12:31:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D86D8;
-        Fri, 26 May 2023 09:31:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B071764D11;
-        Fri, 26 May 2023 16:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DDDC433EF;
-        Fri, 26 May 2023 16:31:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685118692;
-        bh=Wq0/459LQgCKzVhcExDaJx/IJL140NV8zMyWDCNAyys=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=f1r9Ylp/MR+OP2Sk4wuk7qHMZzP4Ue+joIbVxlbgeoOUK3uSWgTxSDZQwfjMH5BqG
-         NPFkPym1ileruoiqQGom0c06wRigc9BiVHTwfmIuGPtpcV/J4fg3MER8vjiHYcERqb
-         egGzxHV39ivyE5TkZUTvthj53xkFedsMZxMykl1lr8Wwbjr7yQCIQx11jc5UeVDw+Y
-         5H+9fMWwWJid6t5Ysv++9DGxBf14aZhprJceyKZUeIW32T7QO0W4F79dS/ExXF7B2q
-         1uqAHAlYqJZlsE/MvYl9Xp5dJvDbsB3tvlW+kHOF3JmJxp5bdqYJLno/7gqE1yEFAV
-         jdEePgv98pBzQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Herve Codina <herve.codina@bootlin.com>
-Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-In-Reply-To: <20230523151223.109551-1-herve.codina@bootlin.com>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
-Subject: Re: (subset) [PATCH v2 0/9] Add support for IIO devices in ASoC
-Message-Id: <168511868876.36455.2854477201745113664.b4-ty@kernel.org>
-Date:   Fri, 26 May 2023 17:31:28 +0100
+        with ESMTP id S232792AbjEZQfs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 12:35:48 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA83CBC;
+        Fri, 26 May 2023 09:35:46 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4f3a873476bso995184e87.1;
+        Fri, 26 May 2023 09:35:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685118945; x=1687710945;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HZdVc8cg3rTwRQ3rUGrbIe2G7Mi0MzIoMDjJTPUXsKU=;
+        b=EmEi2d9UpDaO/uDti+2NYtSCgpRhj7sgXUxRN9Sx/VbofLPSxKJKwBca93UIYX5e3K
+         qkA5Pf35BlxUXq+gNVWg/SPLT4WsrDzIFYsj9/WGFM8Wbk78HQACFY1vFoeINfYqXn7M
+         /71C3vO2yLvOCb8VkZxdQ0JB6gUG3UfXZA/b93cAuH4jp6sKm2MgMksWoFvjK4wq4UWs
+         0ByhHBeCp0TcnRZTAA5m0wGoxDMK4zrx9EODcnC4CZOunVNA+PpFdzNDDFM+H8hRWKKr
+         rzfnOOt849X1iWQs+nquUgH2MmsOHZVGqzEjn6ACJ14OPXT+9CZdY2rdYNqBnm8BSsOc
+         Qc6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685118945; x=1687710945;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HZdVc8cg3rTwRQ3rUGrbIe2G7Mi0MzIoMDjJTPUXsKU=;
+        b=OZw/gswfJuh6P7tQ8G1gxxdrbw3PFGFhJSqwNDJbROqB1WHNbaSvknRKihyPeg8zA3
+         EnygA2XhO3WfNeaManNo48iGXTZmqVHrmtEnwv47Q3HbcCjdlB1bJwzD+WqTIJRDMkJt
+         3NcCRedwujB4Ast/AGJGueTwNXZMNl13c0KGStLkAObJy4ljX2f/nroFkbU+ITAHa7qe
+         bVB3MUhe6/e1UlucTYw2xEam5/aQeQRZgnMdweocmB2WOfuAbPvnq6SsR00cN0zm0eFs
+         Sq5GIFjprg0VBc7OsHx95nyuecsTOlCXPKl63nj8CLBIPsRLVpKXkYQKbsj3AFvtMNsY
+         UGcg==
+X-Gm-Message-State: AC+VfDwXYOpP+H5/vodgoR33LPBMBnzuE/nPHSnywcYKkDXamjdAKRZZ
+        e2huwFwBS4Ln9LNdaU/3wpc=
+X-Google-Smtp-Source: ACHHUZ5k55KO5kA8DfPcVtzmJBHus1jmL85c0KC+03dEOqFdaSdMVkyjM7UiGFCrWnesoACtTtH+qg==
+X-Received: by 2002:ac2:5ec4:0:b0:4f3:7a8c:d46c with SMTP id d4-20020ac25ec4000000b004f37a8cd46cmr778242lfq.66.1685118944902;
+        Fri, 26 May 2023 09:35:44 -0700 (PDT)
+Received: from [192.168.1.126] (62-78-225-252.bb.dnainternet.fi. [62.78.225.252])
+        by smtp.gmail.com with ESMTPSA id b15-20020ac2562f000000b004f13c3cb9ffsm681853lff.200.2023.05.26.09.35.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 May 2023 09:35:44 -0700 (PDT)
+Message-ID: <0a816b1c-eef3-95c8-fb71-1c81251224e0@gmail.com>
+Date:   Fri, 26 May 2023 19:35:43 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4 4/7] iio: accel: kionix-kx022a: Add an i2c_device_id
+ table
+Content-Language: en-US, en-GB
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <cover.1685109507.git.mehdi.djait.k@gmail.com>
+ <ea14686bc9a9262ef9c370d9cd1a4a7b2902b4ea.1685109507.git.mehdi.djait.k@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <ea14686bc9a9262ef9c370d9cd1a4a7b2902b4ea.1685109507.git.mehdi.djait.k@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-bfdf5
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 23 May 2023 17:12:14 +0200, Herve Codina wrote:
-> Several weeks ago, I sent a series [1] for adding a potentiometer as an
-> auxiliary device in ASoC. The feedback was that the potentiometer should
-> be directly handled in IIO (as other potentiometers) and something more
-> generic should be present in ASoC in order to have a binding to import
-> some IIO devices into sound cards.
+On 5/26/23 17:30, Mehdi Djait wrote:
+> Add the missing i2c device id.
 > 
-> The series related to the IIO potentiometer device is already under
-> review [2].
+> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+> ---
+> v4:
+> - no changes
 > 
-> [...]
+> v3:
+> - no changes, this patch is introduced in the v2
+> 
+>   drivers/iio/accel/kionix-kx022a-i2c.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kionix-kx022a-i2c.c
+> index e6fd02d931b6..b5a85ce3a891 100644
+> --- a/drivers/iio/accel/kionix-kx022a-i2c.c
+> +++ b/drivers/iio/accel/kionix-kx022a-i2c.c
+> @@ -30,6 +30,12 @@ static int kx022a_i2c_probe(struct i2c_client *i2c)
+>   	return kx022a_probe_internal(dev);
+>   }
+>   
+> +static const struct i2c_device_id kx022a_i2c_id[] = {
+> +	{ .name = "kx022a" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
+> +
+>   static const struct of_device_id kx022a_of_match[] = {
+>   	{ .compatible = "kionix,kx022a", },
+>   	{ }
+> @@ -42,6 +48,7 @@ static struct i2c_driver kx022a_i2c_driver = {
+>   		.of_match_table = kx022a_of_match,
+>   	  },
+>   	.probe_new    = kx022a_i2c_probe,
+> +	.id_table     = kx022a_i2c_id,
+>   };
+>   module_i2c_driver(kx022a_i2c_driver);
+>   
 
-Applied to
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[8/9] ASoC: simple-card: Add missing of_node_put() in case of error
-      commit: 8938f75a5e35c597a647c28984a0304da7a33d63
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+~~ When things go utterly wrong vim users can always type :help! ~~
 

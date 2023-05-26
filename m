@@ -2,171 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B211771272C
-	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 15:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43A9871283A
+	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 16:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231603AbjEZNHM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 May 2023 09:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
+        id S243845AbjEZObB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 May 2023 10:31:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbjEZNHL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 09:07:11 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F26119;
-        Fri, 26 May 2023 06:07:09 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1685106427;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=o2J4eEM5RXIP4b+rP/8OD/qqkXSOa3635HqS8iL6gx8=;
-        b=WzpM75Segot68BM+UMKk6uK+WErmwQKY5qyywJZSqXmF+qnTvlpGH35vAa9h6Epog44iG/
-        8m1dH5Q9VTLZDgmDqYDwqMSyVaz2/u207HwBoHuT73nEXYAJ4D8u8GYiggK/yL2S0zGp4/
-        eYTZfGcvi/nIiAZw0Z10Jl7DaDCgVn9OSz8rJo0x2Cy8sxYsd5P1qCBfE71+EpcLqw1yDX
-        8Aq8tv2ynvm6CqTfdEso1ZVd8z4Om265ppGvsYMflNGj3LPY+2GfQVp84xmsqqB9sMFJDK
-        m30UQ6DP6OGGxrRwcWiy/xP7+Qj3CVvuyNkOm0aisl+ob4Kzmj4ibxfoF0R76w==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E9B2C0006;
-        Fri, 26 May 2023 13:07:03 +0000 (UTC)
-Date:   Fri, 26 May 2023 15:07:02 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 9/9] ASoC: simple-card: Handle additional devices
-Message-ID: <20230526150702.2555143c@bootlin.com>
-In-Reply-To: <87v8ghgtyu.wl-kuninori.morimoto.gx@renesas.com>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
-        <20230523151223.109551-10-herve.codina@bootlin.com>
-        <87mt1u7fql.wl-kuninori.morimoto.gx@renesas.com>
-        <20230524141411.28765782@bootlin.com>
-        <87v8ghgtyu.wl-kuninori.morimoto.gx@renesas.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+        with ESMTP id S237425AbjEZObA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 10:31:00 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF05A187;
+        Fri, 26 May 2023 07:30:59 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-96fbe7fbdd4so141524766b.3;
+        Fri, 26 May 2023 07:30:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685111458; x=1687703458;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fFHHdaXDW2P2XXbm6YKoOMdrCYP6Pv8lFV6aN1Yl2G8=;
+        b=AgQOYwvReGu3+EI+OQ2VgzXzt8b75OzUQlYDAnUSeNYoNDRQWec8l/q9m0almb+XhX
+         1NKrKcqlUTOe1E8Z7BHo/DJY253HwLKC14BbituqRGUYYRATjeOI/vVsIz9+fLUyl+bI
+         JZ65K22rNiLHO9q4KkWggCVwH09wSeQNTIWVe2WxXiN6vDM3H2dDLK8n3UB6IookN5Uj
+         Wu3hZ2GbznRk6+tk+0PG7l7roXOHMYkIIFhFqUcKgoMrCWihWHAnvmQ7m3Epmaz5QqjP
+         JnYqzOt7z+0ayw1+CTRkwPdDp85FvG4TuazwzpMOn8PXOZK12Z9xat5CgVLLPMKIon5a
+         UYwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685111458; x=1687703458;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fFHHdaXDW2P2XXbm6YKoOMdrCYP6Pv8lFV6aN1Yl2G8=;
+        b=HXCxHWq2pdvXONc9DyFtDsq7wSxu8r7TKUt2QoLyqWXJav3s8SdNCm1abI9OsMF4wW
+         d3A+NFo4KC9JzJDr3+Gzq/slM4y707QqpaT8b78w8r+DpoPUEg7w2SznWLWOgBhMs0yF
+         fSfGV9ZZ18JLtn4+2A/ojSD0GWf9piovzjVRO/sC0P7EB5dqu7AEPpH50foi60XMhick
+         tn4cyINaGqzVI74SZzGZMHHwhJJ8Vq0hh9W7c/Q9cR8BeN4oNdluFlCzSuJguKzoNzvR
+         vgerpaZIq6ZO8xBqsr0jwpTA1g4ACd+KYqzN60zlMEiFnF2G3rVqnKsJ1GlsEQILa2Nf
+         hxyQ==
+X-Gm-Message-State: AC+VfDw4C9k8h8wGF0rHJMj9dk8Z7EvooeVz0v+Lfc3k2H1qSIm44p17
+        cwdzrD7zKGlGffDY0sHp0LQ=
+X-Google-Smtp-Source: ACHHUZ6+ai32bLVuCr8UK+8rM2zGClUneW9eATSaPqRwFqg5CSCV1N5wCi+5APrc6O4x8T10BbZJDg==
+X-Received: by 2002:a17:906:6a0f:b0:96f:d67b:8095 with SMTP id qw15-20020a1709066a0f00b0096fd67b8095mr2419998ejc.1.1685111457800;
+        Fri, 26 May 2023 07:30:57 -0700 (PDT)
+Received: from carbian.corp.quobyte.com ([2a02:8109:aa3f:ead8::d8a0])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170906365400b0094e7d196aa4sm2157023ejb.160.2023.05.26.07.30.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 May 2023 07:30:57 -0700 (PDT)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, mazziesaccount@gmail.com
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH v4 0/7] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
+Date:   Fri, 26 May 2023 16:30:41 +0200
+Message-Id: <cover.1685109507.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 25 May 2023 00:01:14 +0000
-Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+Hello everyone,
 
-> Hi Herve
-> 
-> Thank you for your reply.
-> 
-> > So, IMHO, calling simple_populate_aux() from __simple_for_each_link() is
-> > not correct as it has nothing to do with DAI links and must be call once
-> > per Card.  
-> 
-> My biggest concern is that this code is calling same code multiple times.
-> It is easy to forget such thing when updating in this kind of code.
-> We don't forget / take mistake if these are merged.
-> But we have such code everywhere ;) this is just my concern, not a big deal.
-> 
-> 	static int __simple_for_each_link (...)
-> 	{
-> 		...
-> =>		add_devs = of_get_child_by_name(top, PREFIX "additional-devs");  
-> 		...
-> 	}
-> 
-> 	static int simple_populate_aux(...)
-> 	{
-> 		...
-> =>		node = of_get_child_by_name(dev->of_node, PREFIX "additional-devs");  
-> 		...
-> 	}
-> 
+Version 4 for adding support for the kx132-1211 accelerometer
 
-Well, of_get_child_by_name() is called twice to retrieve the additional-devs
-node but for very different reason.
+KX132-1211 accelerometer is a sensor which:
+	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+	- can be connected to I2C or SPI
+	- has internal HW FIFO buffer
+	- supports various ODRs (output data rates)
 
-In __simple_for_each_link() to filter out the node as it has nothing to do with a DAI.
-In simple_populate_aux() to take care of the devices declared in the node.
+The KX132-1211 accelerometer is very similair to the KX022A. 
+One key difference is number of bits to report the number of data bytes that 
+have been stored in the buffer: 8 bits for KX022A vs 10 bits for
+KX132-1211.
 
-I am not sure that we should avoid that.
-It will lead to a more complex code and flags just to avoid this call.
+Changes in v4:
+- moved the allocation of the fifo_buffer to kx022a_fifo_enable and
+  kx022a_fifo_disable
+- some fixes to the regmap ranges of kx132-1211 
 
-Not sure that it will be better.
-__simple_for_each_link() is called multiple times and is supposed to look at links.
-To avoid the of_get_child_by_name() filter-out call, __simple_for_each_link()
-will look at link *and* populate devices calling simple_populate_aux().
-And to do that correctly it will use a flag to be sure that simple_populate_aux()
-was called only once.
+Changes in v3:
+- added two new patches by separating the addition of the 
+  i2c_device_id table and the removal of blank lines from other
+  unrelated changes
+- fixes a warning detected by the kernel test robot
+- made all the changes related the chip_info in one patch
 
+Changes in v2:
+- added a new patch for warning when the device_id match fails in the
+  probe function
+- added a new patch for the function that retrieves the number of bytes
+  in the buffer
+- added a change to the Kconfig file in the patch adding the support
+  for the kx132-1211
+- various fixes and modifications listed under each patch
 
-In order to avoid some kind of duplication (at least the node name):
+Mehdi Djait (7):
+  dt-bindings: iio: Add KX132-1211 accelerometer
+  iio: accel: kionix-kx022a: Remove blank lines
+  iio: accel: kionix-kx022a: Warn on failed matches and assume
+    compatibility
+  iio: accel: kionix-kx022a: Add an i2c_device_id table
+  iio: accel: kionix-kx022a: Refactor driver and add chip_info structure
+  iio: accel: kionix-kx022a: Add a function to retrieve number of bytes
+    in buffer
+  iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
 
-	static struct device_node *simple_of_get_add_devs(struct device_node *node)
-	{
-		return of_get_child_by_name(node, PREFIX "additional-devs");
-	}
-
-	static int __simple_for_each_link (...)
-	{
-		...
-=>		add_devs = simple_of_get_add_devs(top);  
-		...
-	}
-
-	static int simple_populate_aux(...)
-	{
-		...
-=>		node = simple_of_get_add_devs(dev->of_node);  
-		...
-	}
-
-
-Does it look better ?
-
-Best regards,
-Hervé
-
-> Thank you for your help !!
-> 
-> Best regards
-> ---
-> Kuninori Morimoto
-
-
+ .../bindings/iio/accel/kionix,kx022a.yaml     |  12 +-
+ drivers/iio/accel/Kconfig                     |   8 +-
+ drivers/iio/accel/kionix-kx022a-i2c.c         |  22 +-
+ drivers/iio/accel/kionix-kx022a-spi.c         |  13 +-
+ drivers/iio/accel/kionix-kx022a.c             | 315 ++++++++++++++----
+ drivers/iio/accel/kionix-kx022a.h             | 109 +++++-
+ 6 files changed, 404 insertions(+), 75 deletions(-)
 
 -- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.30.2
+

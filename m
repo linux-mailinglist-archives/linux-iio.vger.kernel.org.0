@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E58712855
-	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 16:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32DE07128D1
+	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 16:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243898AbjEZObY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 May 2023 10:31:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54944 "EHLO
+        id S244023AbjEZOoO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 May 2023 10:44:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243869AbjEZObT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 10:31:19 -0400
+        with ESMTP id S244017AbjEZOoN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 10:44:13 -0400
 Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C921B0;
-        Fri, 26 May 2023 07:31:13 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-96f818c48fbso145228866b.0;
-        Fri, 26 May 2023 07:31:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB9E1BC;
+        Fri, 26 May 2023 07:43:34 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-96fbe7fbdd4so143744166b.3;
+        Fri, 26 May 2023 07:43:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685111471; x=1687703471;
+        d=gmail.com; s=20221208; t=1685112163; x=1687704163;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=EGV0mdVcz1xVYs2otFvs3Di4K9A5VIf5zYdZmBKvdos=;
-        b=mMn/i2NnZXkk1Kt4GLropus7vapmfW9CVwpNxwPjaMCmoyY171QHYbl92+Lb6RbkwT
-         vUWgtOofmZsexyjmnv+kdr+4WsaXCzdQ1SKQzOxgCJMsT8f4NYQHxkgn3C8NDjAurspr
-         aJx6NEizkAXhb9RolZT99K2lFX3iwOE1NFzF5DoF2hsP2SPPU+HU2FrLurWLYHSLtqDo
-         HEbQsIZAhQ68j8mlMNsdX1Mzx891YwA1UprEBp9C7qeaw8QM4vhk8PbEgc7L6ZLCC9ug
-         He3scilDxbNcavnYCGrpRKjj2clPmzcetURZ0ri0T1H+41NeC5gCfmJEa/HGZRL3LjaC
-         Uh6g==
+        b=bYSfE1PLfEPBcfuqPQEB8qvST3elGNcOqi7awxjDscxaX6NLNSd+GrP5qXPYcvJZqR
+         xSpJ16uYRxZpNBt5zogQtIfny0SMmIZNLaAzOH2N2Pjn2bNxx/YZHWGeG+jF5W2chIeQ
+         QUlj9nJ8LiBzC1prf6sC7yaFJbHCpoO23r1JTmTIG0qtdMM5KvbZB3bknMQjSNdgKLbO
+         /fsMppRh3rZdGESB04crchIoQg4F8zBhHLrgHZE0wGJYPMm7cQ3eKL55B1WUKZn7ADGL
+         4Gy+Z8yyBomXGh0oReYgcf1yul+Y9CC81Mln1m/xsH6VNdjZGbFzSRTyUuM5J53mOc+x
+         nchQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685111471; x=1687703471;
+        d=1e100.net; s=20221208; t=1685112163; x=1687704163;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=EGV0mdVcz1xVYs2otFvs3Di4K9A5VIf5zYdZmBKvdos=;
-        b=k07XqdKlV1GswKLGC/VCyuXR+ITSihcidbsmH+oD9zNm8W5FK54nNztzA26PlxPtv3
-         w1BrNq/JheHqmL4aWqmreC6ZpMFgkbnJVhySj18zm5bEmD63HYLowsRIF+W56coSoG6E
-         GuII0OLOa7r/QXVEMAMnehFRmWAeKp8In/MKTXTgn+ETg8MX8YF6+sY/GOygxSt47aTf
-         u/OhkDs5ov7R7RjoyW32TCCK8Ul1uUR6TSlozIGNjiMnP42uQo+01WUFF4av4cSQMu/J
-         /ceBOpj1Ra+VFeASl94d2exWlitHGpdoGb0Xq/EE70QuSuM1SKXH+hFmn+/s/ZQUm/T3
-         OHsg==
-X-Gm-Message-State: AC+VfDx9w3cX06tK50RvnXCNGcAX28v0WLjRPFfRrGcQesheSzM3ecZf
-        31nOY4CFIQlrEw5QYilTJ/0=
-X-Google-Smtp-Source: ACHHUZ5wTJP22ZjAbs1Yychlmo6yyXDqAVCf2+AD37lrvFmD21xauQpdfMuvqwjaC1lYKIcxEGYV9Q==
-X-Received: by 2002:a17:907:3e0c:b0:961:b0:3dfd with SMTP id hp12-20020a1709073e0c00b0096100b03dfdmr2616636ejc.7.1685111471455;
-        Fri, 26 May 2023 07:31:11 -0700 (PDT)
+        b=fkIGIX7W7dPi1zrmkPPh7Xkxcl++cLJAYIEV22LPoTbMKKGWZ5k5b3GR/z+2yqTijd
+         lUXT4btU/a/jeSMY1k932BHV/HtvR63ydvq2YbL+ahxh96WH+UsGsT/BGMtz9nJbCVT0
+         my2we02wyhMuoPge8LX2kHETJAgx3GJUQuVgZu5FbMiXfLVm4pKEpTfUlB7Q/vRW5b6k
+         xhv7gndXNxy1HbJAtRL+5Y7pAzSIH38t5fSoiBZaN2SB4sAIJewX3XAUsMZaPGTiJFmX
+         Cr6/y/mutvtUyjo8JmccPZqzCA31s595j0sDOXIvqUnVWPp8Ly/ZeS4zhlfoJl10kjHA
+         JoRA==
+X-Gm-Message-State: AC+VfDx8uedtfAe6kLXxinngE0sgtlSNYp29Yw/l3XL22sClVe/CzLWj
+        9byoJs5+VkaqQQN1N32IM28=
+X-Google-Smtp-Source: ACHHUZ6U7SA9sdcTTp061gUoB0523aPH4JlH+7niGJanBHSJ3oQ3iWbHy6sPz+ZcY3tu1ZWGrLPSog==
+X-Received: by 2002:a17:907:7da7:b0:94e:e6b9:fef2 with SMTP id oz39-20020a1709077da700b0094ee6b9fef2mr2283358ejc.67.1685112162424;
+        Fri, 26 May 2023 07:42:42 -0700 (PDT)
 Received: from carbian.corp.quobyte.com ([2a02:8109:aa3f:ead8::d8a0])
-        by smtp.gmail.com with ESMTPSA id r20-20020a170906365400b0094e7d196aa4sm2157023ejb.160.2023.05.26.07.31.10
+        by smtp.gmail.com with ESMTPSA id s7-20020a170906c30700b0094f410225c7sm2184870ejz.169.2023.05.26.07.42.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 07:31:11 -0700 (PDT)
+        Fri, 26 May 2023 07:42:41 -0700 (PDT)
 From:   Mehdi Djait <mehdi.djait.k@gmail.com>
 To:     jic23@kernel.org, mazziesaccount@gmail.com
 Cc:     krzysztof.kozlowski+dt@linaro.org,
@@ -57,11 +57,11 @@ Cc:     krzysztof.kozlowski+dt@linaro.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Mehdi Djait <mehdi.djait.k@gmail.com>
 Subject: [PATCH v4 7/7] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
-Date:   Fri, 26 May 2023 16:30:48 +0200
+Date:   Fri, 26 May 2023 16:42:33 +0200
 Message-Id: <d776c1dd5beef6ef812a4f7e4958eb6cb0f5e58e.1685111274.git.mehdi.djait.k@gmail.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1685111274.git.mehdi.djait.k@gmail.com>
-References: <cover.1685111274.git.mehdi.djait.k@gmail.com>
+In-Reply-To: <cover.1685109507.git.mehdi.djait.k@gmail.com>
+References: <cover.1685109507.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit

@@ -2,75 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDCB712530
-	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 13:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B211771272C
+	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 15:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237092AbjEZLDa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 May 2023 07:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51722 "EHLO
+        id S231603AbjEZNHM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 May 2023 09:07:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjEZLD3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 07:03:29 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC2713A
-        for <linux-iio@vger.kernel.org>; Fri, 26 May 2023 04:03:28 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5147f5efeb5so137683a12.0
-        for <linux-iio@vger.kernel.org>; Fri, 26 May 2023 04:03:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685099006; x=1687691006;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=h+f0WP/+N5MvUYe92/BSqybSsARXcqQ8M6AlwJr5eQc=;
-        b=Jkvx8UA3wu91f5IQ0TPL51rHJCCvvgdZVLxKxkeQMs1MVlhk4gNMiSwVMImZku6YSy
-         ya8jUf8pmJluaUm1G/U6gQ3e8r9td35vSWgir4Q4lplZAu8lmqiTzs3Z0NubspxVIKw2
-         56H30WEZWIRtBYlm8L+Xn6nnniNiENTm7H0Nh574n7EHhH68nfCqDhutmPOsS7C1y0aX
-         uy1zKiT4yMvkKONkV/cp/qTmgCHy9Qapn0ncxyBI1f5an+q0BD5gRItYP83Mj1ubmgfP
-         L6+4RObhxX6LFrcxhSbab+nkI1l1W7BD2mHZ4+KqBtW2dywC37Inp7Aomev3dJnoYLWb
-         +VIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685099006; x=1687691006;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h+f0WP/+N5MvUYe92/BSqybSsARXcqQ8M6AlwJr5eQc=;
-        b=WrcPQvxMEow0tS5wfueOueOAPHMydPEJvSBsOqoM29StBiYxEBnBn6GyyKdFZsrY/2
-         e4sxDl3DkCEEBF+OpZAR/3CfbC74KB6GvXyrvMl4XYqpRaF53g2FUWlYG5lGUh54StEc
-         nBACZnx6RThEWS4R3VEvq8M6C0YHDUtTaeuwTDPQuFW9Bb3/DmquqszgJS/S5Wm7JB7O
-         c/li9kgqtIeSHoglR1P7ZRVofd2hdexEhms/EYmy/VkkY12/kYeAoREjgZeqEX9Nuaur
-         l7NDEIDf0qr9QrRCFu3Z9GVmhbPDhGFgPOEPZNlW+UToX6tCwKDfCk7e7tg6spUpfrAb
-         xaTQ==
-X-Gm-Message-State: AC+VfDzWWOuIL8ABWR2LMG9l3MLlrypntvh7e1HG8zBXKFQae4jaoDRd
-        MLRWNZAAsQ3Ntc+J23Qef6mpr0YuLB4whE4y4iY=
-X-Google-Smtp-Source: ACHHUZ6kGeFx1kF+KMC3dEfnzyDwEPnBc2ocouMTZvYU8raANKFEKqRrfHk/8GELVqXsKdUVmoKdAQSgHT4LP1vcvZg=
-X-Received: by 2002:aa7:dccd:0:b0:50d:f9b1:6918 with SMTP id
- w13-20020aa7dccd000000b0050df9b16918mr1008425edu.9.1685099006487; Fri, 26 May
- 2023 04:03:26 -0700 (PDT)
+        with ESMTP id S231158AbjEZNHL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 09:07:11 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F26119;
+        Fri, 26 May 2023 06:07:09 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1685106427;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=o2J4eEM5RXIP4b+rP/8OD/qqkXSOa3635HqS8iL6gx8=;
+        b=WzpM75Segot68BM+UMKk6uK+WErmwQKY5qyywJZSqXmF+qnTvlpGH35vAa9h6Epog44iG/
+        8m1dH5Q9VTLZDgmDqYDwqMSyVaz2/u207HwBoHuT73nEXYAJ4D8u8GYiggK/yL2S0zGp4/
+        eYTZfGcvi/nIiAZw0Z10Jl7DaDCgVn9OSz8rJo0x2Cy8sxYsd5P1qCBfE71+EpcLqw1yDX
+        8Aq8tv2ynvm6CqTfdEso1ZVd8z4Om265ppGvsYMflNGj3LPY+2GfQVp84xmsqqB9sMFJDK
+        m30UQ6DP6OGGxrRwcWiy/xP7+Qj3CVvuyNkOm0aisl+ob4Kzmj4ibxfoF0R76w==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E9B2C0006;
+        Fri, 26 May 2023 13:07:03 +0000 (UTC)
+Date:   Fri, 26 May 2023 15:07:02 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 9/9] ASoC: simple-card: Handle additional devices
+Message-ID: <20230526150702.2555143c@bootlin.com>
+In-Reply-To: <87v8ghgtyu.wl-kuninori.morimoto.gx@renesas.com>
+References: <20230523151223.109551-1-herve.codina@bootlin.com>
+        <20230523151223.109551-10-herve.codina@bootlin.com>
+        <87mt1u7fql.wl-kuninori.morimoto.gx@renesas.com>
+        <20230524141411.28765782@bootlin.com>
+        <87v8ghgtyu.wl-kuninori.morimoto.gx@renesas.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:ab4:a872:0:b0:215:8936:d3be with HTTP; Fri, 26 May 2023
- 04:03:26 -0700 (PDT)
-Reply-To: laurabr8@outlook.com
-From:   Laura Brown <jeswa7m@gmail.com>
-Date:   Fri, 26 May 2023 11:03:26 +0000
-Message-ID: <CACGCBD6MOyZ+cKJHcqX3N9gQTwwdRpZe4N78kRLSCxF8ogF1dg@mail.gmail.com>
-Subject: =?UTF-8?B?15nXldedINeY15XXkQ==?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-15nXldedINeY15XXkQ0KDQrXkNeg15kg15zXldeo15Qg15HXqNeQ15XXnywg15nXpteo16rXmSDX
-kNeZ16rXmiDXp9ep16gg15HXoNeV15LXoiDXnNei15nXlteR15XXnyDXlNen16jXnyDXlNee16DX
-ldeXINep15wg15Mi16gg15HXqNeQ15XXnw0K16nXnCA4LjUg157Xmdec15nXldefINeT15XXnNeo
-INep15nXldeX15bXqCDXnNeX16nXkdeV16DXmi4g15nXqteo15Qg157XlteQ16osINeR16LXoden
-15Qg15bXlSDXkNeg15kg16jXldem15Qg16nXqtep15nXkdeVDQrXkdeh15XXk9eZ15XXqi4NCg0K
-15zXldeo15Qg15HXqNeQ15XXnw0K
+On Thu, 25 May 2023 00:01:14 +0000
+Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> wrote:
+
+> Hi Herve
+> 
+> Thank you for your reply.
+> 
+> > So, IMHO, calling simple_populate_aux() from __simple_for_each_link() is
+> > not correct as it has nothing to do with DAI links and must be call once
+> > per Card.  
+> 
+> My biggest concern is that this code is calling same code multiple times.
+> It is easy to forget such thing when updating in this kind of code.
+> We don't forget / take mistake if these are merged.
+> But we have such code everywhere ;) this is just my concern, not a big deal.
+> 
+> 	static int __simple_for_each_link (...)
+> 	{
+> 		...
+> =>		add_devs = of_get_child_by_name(top, PREFIX "additional-devs");  
+> 		...
+> 	}
+> 
+> 	static int simple_populate_aux(...)
+> 	{
+> 		...
+> =>		node = of_get_child_by_name(dev->of_node, PREFIX "additional-devs");  
+> 		...
+> 	}
+> 
+
+Well, of_get_child_by_name() is called twice to retrieve the additional-devs
+node but for very different reason.
+
+In __simple_for_each_link() to filter out the node as it has nothing to do with a DAI.
+In simple_populate_aux() to take care of the devices declared in the node.
+
+I am not sure that we should avoid that.
+It will lead to a more complex code and flags just to avoid this call.
+
+Not sure that it will be better.
+__simple_for_each_link() is called multiple times and is supposed to look at links.
+To avoid the of_get_child_by_name() filter-out call, __simple_for_each_link()
+will look at link *and* populate devices calling simple_populate_aux().
+And to do that correctly it will use a flag to be sure that simple_populate_aux()
+was called only once.
+
+
+In order to avoid some kind of duplication (at least the node name):
+
+	static struct device_node *simple_of_get_add_devs(struct device_node *node)
+	{
+		return of_get_child_by_name(node, PREFIX "additional-devs");
+	}
+
+	static int __simple_for_each_link (...)
+	{
+		...
+=>		add_devs = simple_of_get_add_devs(top);  
+		...
+	}
+
+	static int simple_populate_aux(...)
+	{
+		...
+=>		node = simple_of_get_add_devs(dev->of_node);  
+		...
+	}
+
+
+Does it look better ?
+
+Best regards,
+Hervé
+
+> Thank you for your help !!
+> 
+> Best regards
+> ---
+> Kuninori Morimoto
+
+
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

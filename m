@@ -2,99 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FDD8712255
-	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 10:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFDCB712530
+	for <lists+linux-iio@lfdr.de>; Fri, 26 May 2023 13:03:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242405AbjEZIgd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 May 2023 04:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
+        id S237092AbjEZLDa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 May 2023 07:03:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242184AbjEZIgc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 04:36:32 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E51F12F;
-        Fri, 26 May 2023 01:36:28 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab] (unknown [IPv6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 2F34B6606E83;
-        Fri, 26 May 2023 09:36:26 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1685090187;
-        bh=Y+IJxiWc633XOBZbB2+BJidraljDp8EXXiUQb5yaXZU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kpszq4hXIKce8PXvPTFmhLX/QqAmnkIe2GlYur04oNEP2DB+Ty24ObhrS9VHyNi3f
-         jvPhgysl5tFu9/L/tA5WQQq+iYFKmPnirKuzSetjd7j1x1VE2eUStQkfnCHxkputL7
-         B13Ve7LfYoMADZslX7CQrB8U08I+vDZ15MrHQQtfmgeGjC6fRO5jYkC4vreXnY6q2u
-         UISI0P0JCQOYYCf8os8otZ9K81NSeX6/N5K2aLr0bthLzegi0fmqtqrB9467rdOUQ3
-         OrIZZucUTGg3otczqteuOumrR6oNUmi21vmfZDCX9sC3j48qhE02QlmP6nUx7c1hxq
-         Mb1TGrXiu7mjg==
-Message-ID: <17ac612b-4464-4a97-4e4d-5e053b760130@collabora.com>
-Date:   Fri, 26 May 2023 10:36:23 +0200
+        with ESMTP id S229669AbjEZLD3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 May 2023 07:03:29 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC2713A
+        for <linux-iio@vger.kernel.org>; Fri, 26 May 2023 04:03:28 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5147f5efeb5so137683a12.0
+        for <linux-iio@vger.kernel.org>; Fri, 26 May 2023 04:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685099006; x=1687691006;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=h+f0WP/+N5MvUYe92/BSqybSsARXcqQ8M6AlwJr5eQc=;
+        b=Jkvx8UA3wu91f5IQ0TPL51rHJCCvvgdZVLxKxkeQMs1MVlhk4gNMiSwVMImZku6YSy
+         ya8jUf8pmJluaUm1G/U6gQ3e8r9td35vSWgir4Q4lplZAu8lmqiTzs3Z0NubspxVIKw2
+         56H30WEZWIRtBYlm8L+Xn6nnniNiENTm7H0Nh574n7EHhH68nfCqDhutmPOsS7C1y0aX
+         uy1zKiT4yMvkKONkV/cp/qTmgCHy9Qapn0ncxyBI1f5an+q0BD5gRItYP83Mj1ubmgfP
+         L6+4RObhxX6LFrcxhSbab+nkI1l1W7BD2mHZ4+KqBtW2dywC37Inp7Aomev3dJnoYLWb
+         +VIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685099006; x=1687691006;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h+f0WP/+N5MvUYe92/BSqybSsARXcqQ8M6AlwJr5eQc=;
+        b=WrcPQvxMEow0tS5wfueOueOAPHMydPEJvSBsOqoM29StBiYxEBnBn6GyyKdFZsrY/2
+         e4sxDl3DkCEEBF+OpZAR/3CfbC74KB6GvXyrvMl4XYqpRaF53g2FUWlYG5lGUh54StEc
+         nBACZnx6RThEWS4R3VEvq8M6C0YHDUtTaeuwTDPQuFW9Bb3/DmquqszgJS/S5Wm7JB7O
+         c/li9kgqtIeSHoglR1P7ZRVofd2hdexEhms/EYmy/VkkY12/kYeAoREjgZeqEX9Nuaur
+         l7NDEIDf0qr9QrRCFu3Z9GVmhbPDhGFgPOEPZNlW+UToX6tCwKDfCk7e7tg6spUpfrAb
+         xaTQ==
+X-Gm-Message-State: AC+VfDzWWOuIL8ABWR2LMG9l3MLlrypntvh7e1HG8zBXKFQae4jaoDRd
+        MLRWNZAAsQ3Ntc+J23Qef6mpr0YuLB4whE4y4iY=
+X-Google-Smtp-Source: ACHHUZ6kGeFx1kF+KMC3dEfnzyDwEPnBc2ocouMTZvYU8raANKFEKqRrfHk/8GELVqXsKdUVmoKdAQSgHT4LP1vcvZg=
+X-Received: by 2002:aa7:dccd:0:b0:50d:f9b1:6918 with SMTP id
+ w13-20020aa7dccd000000b0050df9b16918mr1008425edu.9.1685099006487; Fri, 26 May
+ 2023 04:03:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH v2 2/8] iio: adc: rockchip_saradc: Add support for RK3588
-Content-Language: en-US
-To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
-        lars@metafoo.de, heiko@sntech.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, sebastian.reichel@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, gustavo.padovan@collabora.com,
-        serge.broslavsky@collabora.com, Simon Xue <xxm@rock-chips.com>
-References: <20230525212712.255406-1-shreeya.patel@collabora.com>
- <20230525212712.255406-3-shreeya.patel@collabora.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230525212712.255406-3-shreeya.patel@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:ab4:a872:0:b0:215:8936:d3be with HTTP; Fri, 26 May 2023
+ 04:03:26 -0700 (PDT)
+Reply-To: laurabr8@outlook.com
+From:   Laura Brown <jeswa7m@gmail.com>
+Date:   Fri, 26 May 2023 11:03:26 +0000
+Message-ID: <CACGCBD6MOyZ+cKJHcqX3N9gQTwwdRpZe4N78kRLSCxF8ogF1dg@mail.gmail.com>
+Subject: =?UTF-8?B?15nXldedINeY15XXkQ==?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 25/05/23 23:27, Shreeya Patel ha scritto:
-> From: Simon Xue <xxm@rock-chips.com>
-> 
-> Add new start and read functions to support rk3588 device.
-> Also, add a device compatible string for the same.
-> 
-> Signed-off-by: Simon Xue <xxm@rock-chips.com>
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
-> ---
-> 
-> Changes in v2
->    - Add a from address.
->    - Create separate patches for adding new device support and changes to
->      the old device code.
->    - Make use of FIELD_PREP.
-> 
->   drivers/iio/adc/rockchip_saradc.c | 69 +++++++++++++++++++++++++++++++
->   1 file changed, 69 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> index 21f9d92a6af4..31637440be83 100644
-> --- a/drivers/iio/adc/rockchip_saradc.c
-> +++ b/drivers/iio/adc/rockchip_saradc.c
-
-You're missing a header...
-
-#include <linux/bitfield.h>
-
-after adding that, you can get my
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
-
-Cheers,
-Angelo
+15nXldedINeY15XXkQ0KDQrXkNeg15kg15zXldeo15Qg15HXqNeQ15XXnywg15nXpteo16rXmSDX
+kNeZ16rXmiDXp9ep16gg15HXoNeV15LXoiDXnNei15nXlteR15XXnyDXlNen16jXnyDXlNee16DX
+ldeXINep15wg15Mi16gg15HXqNeQ15XXnw0K16nXnCA4LjUg157Xmdec15nXldefINeT15XXnNeo
+INep15nXldeX15bXqCDXnNeX16nXkdeV16DXmi4g15nXqteo15Qg157XlteQ16osINeR16LXoden
+15Qg15bXlSDXkNeg15kg16jXldem15Qg16nXqtep15nXkdeVDQrXkdeh15XXk9eZ15XXqi4NCg0K
+15zXldeo15Qg15HXqNeQ15XXnw0K

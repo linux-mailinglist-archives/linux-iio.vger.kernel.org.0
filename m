@@ -2,158 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD6771350C
-	for <lists+linux-iio@lfdr.de>; Sat, 27 May 2023 15:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1EC713689
+	for <lists+linux-iio@lfdr.de>; Sat, 27 May 2023 23:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232541AbjE0NkI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 May 2023 09:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32912 "EHLO
+        id S229447AbjE0VmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 May 2023 17:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231872AbjE0Njw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 May 2023 09:39:52 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D24DC3;
-        Sat, 27 May 2023 06:39:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685194791; x=1716730791;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qfjzqpAYgR3XMV316cfjMosBmC4HWLJh7OuqlZd9VwU=;
-  b=mCXFZ9nYE+15llGvC5G39coFF7EeAZKzyvb4JDuivif5tvLD7m0UW92x
-   1O/0nxKXaIhhGsqOS26BYrPmKbKnsGke1VUIbEvGxJK6jv+xnzZeu4SZ7
-   qHv/dCV15iG095zhABJxUlK86YUfesm8W0O/erbCSN0x2ouH6J35C46x3
-   zszu/RMaFSi+54lWXGRnOP9u+n+2+BCzUHQgLvFAGal/xo79Ew/yaxsEh
-   SY/Ddvg3j+4Q5oksLVEWdEh2nE4sr7Ebv7eL870GHg4vnOz0m2FpnvRRu
-   xmYDTW3ZDVMayTeJlrXiZhnqROq/dCybskIU+3UD2cgcqj/0KQ3K+wSBL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10723"; a="343896226"
-X-IronPort-AV: E=Sophos;i="6.00,197,1681196400"; 
-   d="scan'208";a="343896226"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2023 06:39:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10723"; a="829811418"
-X-IronPort-AV: E=Sophos;i="6.00,197,1681196400"; 
-   d="scan'208";a="829811418"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 27 May 2023 06:39:48 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q2u94-000J3h-2y;
-        Sat, 27 May 2023 16:39:46 +0300
-Date:   Sat, 27 May 2023 16:39:46 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 5/7] iio: accel: kionix-kx022a: Refactor driver and
- add chip_info structure
-Message-ID: <ZHIIIhtOAQRw4F40@smile.fi.intel.com>
-References: <cover.1685109507.git.mehdi.djait.k@gmail.com>
- <de588a5a3ca311f6dc3a543bfa5cea7b590ae44c.1685109507.git.mehdi.djait.k@gmail.com>
+        with ESMTP id S229437AbjE0VmK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 May 2023 17:42:10 -0400
+Received: from mx.sberdevices.ru (mx.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BA8A4;
+        Sat, 27 May 2023 14:42:07 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mx.sberdevices.ru (Postfix) with ESMTP id 2924C5FD05;
+        Sun, 28 May 2023 00:42:05 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1685223725;
+        bh=zmU0QPWcuI+QjTo74SKplYsoabitGqIxBH6oJBP+2UI=;
+        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+        b=ii5NBgjz5NCk3QYnd2XdVMDVL6kZ53KILjsmPugDyLRoprEttMOv6gmr2LseMaeAY
+         eCuu8egj1AcY0RveOi6Rs9rJilsZSJ5i0btJLya7qM4h2yfdgywrfY3K5xG4dIHyVE
+         8x2OOxuNv6DO/0yStBGO3LznGm5HwuTX1Qa5pdU9l8XGCQnE79ykhmxj+4FqR4ZO2W
+         7uTFgRuWSPR7DFboyr0vse+vpj6/XMZnlIeyUXncQmt3L6ipQ9hfFrN8Nn0uGpwRdR
+         sa6Mmmh92412MAUgNWclaYxpDroq4gPobK9W8axF+W6wecsJkN3w8uAKvPBpUNlTjC
+         cDRpkZvFbeduA==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mx.sberdevices.ru (Postfix) with ESMTP;
+        Sun, 28 May 2023 00:42:00 +0300 (MSK)
+Message-ID: <7485514e-4c10-361a-6468-050a5897f0d5@sberdevices.ru>
+Date:   Sun, 28 May 2023 00:37:49 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de588a5a3ca311f6dc3a543bfa5cea7b590ae44c.1685109507.git.mehdi.djait.k@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v1] meson saradc: add iio device attrib to switch channel
+ 7 mux
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
+        "khilman@baylibre.com" <khilman@baylibre.com>,
+        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
+        "martin.blumenstingl@googlemail.com" 
+        <martin.blumenstingl@googlemail.com>,
+        "nuno.sa@analog.com" <nuno.sa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-amlogic@lists.infradead.org" 
+        <linux-amlogic@lists.infradead.org>, kernel <kernel@sberdevices.ru>
+References: <20230524000111.14370-1-gnstark@sberdevices.ru>
+ <ZHG9bYO1PNuPJhWn@smile.fi.intel.com>
+From:   George Stark <gnstark@sberdevices.ru>
+In-Reply-To: <ZHG9bYO1PNuPJhWn@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [172.16.1.6]
+X-ClientProxiedBy: S-MS-EXCH02.sberdevices.ru (172.16.1.5) To
+ S-MS-EXCH01.sberdevices.ru (172.16.1.4)
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2023/05/27 20:13:00 #21359908
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, May 26, 2023 at 04:30:46PM +0200, Mehdi Djait wrote:
-> Add the chip_info structure to the driver's private data to hold all
-> the device specific infos.
-> Refactor the kx022a driver implementation to make it more generic and
-> extensible.
+Hi Andy
 
-...
+Thanks for review. I fixed it in patch v2
 
-> -	regmap = devm_regmap_init_i2c(i2c, &kx022a_regmap);
-> +	chip_info = device_get_match_data(&i2c->dev);
-> +	if (!chip_info) {
-> +		const struct i2c_device_id *id = i2c_client_get_device_id(i2c);
-> +		chip_info = (const struct kx022a_chip_info *)id->driver_data;
-> +	}
-
-And if still no chip_info available?..
-
-> +	regmap = devm_regmap_init_i2c(i2c, chip_info->regmap_config);
->  	if (IS_ERR(regmap))
->  		return dev_err_probe(dev, PTR_ERR(regmap),
->  				     "Failed to initialize Regmap\n");
-
-...
-
-> -	if (val > KX022A_FIFO_LENGTH)
-> -		val = KX022A_FIFO_LENGTH;
-> +	if (val > data->chip_info->fifo_length)
-> +		val = data->chip_info->fifo_length;
-
-min()/min_t() ?
-
-...
-
-> +	ret = regmap_noinc_read(data->regmap, data->chip_info->buf_read,
-> +				&data->fifo_buffer[0], fifo_bytes);
-
-data->fifo_buffer will suffice.
+Best regards
+George
 
 
->  	if (ret)
->  		goto renable_out;
-
-...
-
-> +	data->fifo_buffer = kmalloc(data->chip_info->fifo_length *
-> +				    KX022A_FIFO_SAMPLES_SIZE_BYTES, GFP_KERNEL);
-
-> +
-
-Redundant blank line.
-
-> +	if (!data->fifo_buffer)
-> +		return -ENOMEM;
-
-...
-
-> +struct kx022a_chip_info {
-> +	const char *name;
-> +	const struct regmap_config *regmap_config;
-> +	const struct iio_chan_spec *channels;
-> +	unsigned int num_channels;
-> +	unsigned int fifo_length;
-> +	u8 who;
-> +	u8 id;
-> +	u8 cntl;
-> +	u8 cntl2;
-> +	u8 odcntl;
-> +	u8 buf_cntl1;
-> +	u8 buf_cntl2;
-> +	u8 buf_clear;
-> +	u8 buf_status1;
-
-Here is the gap since it's not a packed structure. Can we avoid it?
-
-> +	u16 buf_smp_lvl_mask;
-> +	u8 buf_read;
-> +	u8 inc1;
-> +	u8 inc4;
-> +	u8 inc5;
-> +	u8 inc6;
-> +	u8 xout_l;
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko
+On 5/27/23 11:21, Andy Shevchenko wrote:
+> On Wed, May 24, 2023 at 03:01:11AM +0300, George Stark wrote:
+>> Patch adds two sysfs nodes: chan7_mux to set mux state
+>> and chan7_mux_available to show available mux states.
+>> Mux can be used to debug and calibrate adc by
+>> switching and measuring well-known inputs like gnd, vdd etc.
+> GND
+> Vdd
+>
+> ...
+>
+>> +static ssize_t chan7_mux_store(struct device *dev,
+>> +			       struct device_attribute *attr,
+>> +			       const char *buf, size_t count)
+>> +{
+>> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>> +	int i;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(chan7_vol); i++)
+>> +		if (!strcmp(chan7_vol[i], buf)) {
+>> +			meson_sar_adc_set_chan7_mux(indio_dev, i);
+>> +			return count;
+>> +		}
+>> +
+>> +	return -EINVAL;
+> NIH sysfs_match_string().
+>
+>> +}
+> ...
+>
+>> +static IIO_DEVICE_ATTR_RW(chan7_mux, -1);
+>> +static IIO_DEVICE_ATTR_RO(chan7_mux_available, -1);
+> Place each of them near to the respective callback(s),
+>
+> ...
+>
+>> +static struct attribute *meson_sar_adc_attrs[] = {
+>> +	&iio_dev_attr_chan7_mux_available.dev_attr.attr,
+>> +	&iio_dev_attr_chan7_mux.dev_attr.attr,
+>> +	NULL,
+> No comma for the terminator entry.
+>
+>> +};
 
 

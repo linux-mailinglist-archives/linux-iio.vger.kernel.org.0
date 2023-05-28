@@ -2,57 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71B86713BF0
-	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 20:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0019713BF8
+	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 20:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjE1S4o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 May 2023 14:56:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57770 "EHLO
+        id S229624AbjE1S5z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 May 2023 14:57:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjE1S4o (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 14:56:44 -0400
+        with ESMTP id S229498AbjE1S5y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 14:57:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24409BE;
-        Sun, 28 May 2023 11:56:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEF0C4;
+        Sun, 28 May 2023 11:57:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B547C61328;
-        Sun, 28 May 2023 18:56:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E89C433D2;
-        Sun, 28 May 2023 18:56:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8193B612D2;
+        Sun, 28 May 2023 18:57:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DE1C433EF;
+        Sun, 28 May 2023 18:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685300202;
-        bh=JDYChD/vhzIWiUOnUxUBVKV4YxXceKDOuf90kByVAbU=;
+        s=k20201202; t=1685300271;
+        bh=KlKvkfbT2430hhOEgYoBgaDnMkWkALFfhUEwavNOtLg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CwxRSZPI7c3dF4UAgivHhpR9UekVEr825YEoDm+Bs0009aLIX+M4+Qcg84u8NfE3g
-         xZIRiCmHSrWigmW2XGjuaSeGUchxtZqWtIG0/4t2ddIvhrVJFT/MmEC8DaNFInr20X
-         sgatrvSK7LZGeDaWFoe/o9re4lqSoMJqrXg+7ikKbja8bQ3NxT0f6MLCUIEIm6s6Yd
-         1iGPlN/LOz1snMFMZ7kAOP8+AKnBS43oatYXQHli2hqBj1gx+ZD6t00qdFitxwCLp3
-         Hd9YQjFYOSajlZa6vDDDEfSmYly3BFFuXYIfNqHianfW6jiSu588bC79RAW+X5EcQR
-         VRFaiy0MOR8RA==
-Date:   Sun, 28 May 2023 20:13:01 +0100
+        b=M2UobjnClAfdfRy0Po1wB9j4LPI1N+oqswdAWDqt6VvPCaO7OlScQ30yw/RhSHaEu
+         lsgW+G+F0PJKP8QE11DiFsqDihh3DhP41ymAXDJNHdGDmFDXplhKp4bKw3wtgfGWcO
+         FgP1RbgQnCoHx6Oq/RW5Uy7bMTLnxl7XUpgbaUv/Ge7t8prNuHv0hBE0Lp9YTCudoB
+         s3gsXWGzVcW+JtuAoFKNTYZiOOOYFzLt0banqQ+4C+bNMPf8s11KiKv3JiiF59CTJE
+         IAsLu/M9AfvMc3TIGJFwQ2UoNnox4CUMbr8W2ili6BGzFeqACokV97xYERRJLSBtE5
+         Hjq6j7Ri6XWJQ==
+Date:   Sun, 28 May 2023 20:14:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     andy.shevchenko@gmail.com,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions
- other than digital input
-Message-ID: <20230528201301.68b31bca@jic23-huawei>
-In-Reply-To: <822d2741-32ff-fc73-28a5-25575ab3cc52@rasmusvillemoes.dk>
-References: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
-        <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
-        <6fcf4997-9d88-7e86-70f7-52f9d296bc6e@rasmusvillemoes.dk>
-        <20230506191636.3cff4b24@jic23-huawei>
-        <822d2741-32ff-fc73-28a5-25575ab3cc52@rasmusvillemoes.dk>
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: Re: [PATCH v5 3/8] net-next: mvpp2: relax return value check for
+ IRQ get
+Message-ID: <20230528201407.394235f5@jic23-huawei>
+In-Reply-To: <6e94c838-886d-3c58-3fa0-175501f57f56@gmail.com>
+References: <cover.1684493615.git.mazziesaccount@gmail.com>
+        <7c7b1a123d6d5c15c8b37754f1f0c4bd1cad5a01.1684493615.git.mazziesaccount@gmail.com>
+        <ZGpSpZFEo5cw94U_@surfacebook>
+        <6e94c838-886d-3c58-3fa0-175501f57f56@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -63,75 +82,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 May 2023 10:44:11 +0200
-Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+On Mon, 22 May 2023 08:15:01 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 06/05/2023 20.16, Jonathan Cameron wrote:
-> > On Thu, 4 May 2023 12:08:53 +0200
-> > Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> >  =20
-> >> On 04/05/2023 09.28, Nuno S=C3=A1 wrote: =20
->=20
-> >>> Can anyone have a working device by specifying that dt parameter
-> >>> on a non digital channel (or expect something from having that parame=
-ter set)?
-> >>> Or the only effect is to actually have some functions misbehaving?   =
-=20
+> Hi Andy,
+> 
+> On 5/21/23 20:19, andy.shevchenko@gmail.com wrote:
+> > Fri, May 19, 2023 at 02:01:47PM +0300, Matti Vaittinen kirjoitti:  
+> >> fwnode_irq_get[_byname]() were changed to not return 0 anymore.
 > >>
-> >> The data sheet doesn't say that the DIN_SINK should have any effect for
-> >> other functions, so I'm pretty sure it's only the latter: some functio=
-ns
-> >> misbehave.
-> >> =20
-> >>> On the driver side, if it's never right to have
-> >>> these settings together, then the patch is valid since if someone has=
- this, his
-> >>> configuration is broken anyways (maybe that's also a valid point for =
-the
-> >>> bindings)...   =20
-> >>
-> >> Yes, I do believe that it's a broken description (whether or not the
-> >> bindings specify that), and drivers don't need to go out of their way =
-to
-> >> validate or fixup such brokenness. But in this particular case, there's
-> >> really no extra burden on the driver to not put garbage in DIN_SINK wh=
-en
-> >> a not-digital-input function has been chosen (the patch is a two-liner
-> >> with 'git show -w'). =20
-> >=20
-> > If we can tighten the DT binding to rule out something that should not =
-be
-> > set than that would be good.  Tightening bindings is fine - we don't mi=
-nd
-> > validation of bindings failing on peoples DTs as long as we didn't 'bre=
-ak'
-> > them actually working. =20
->=20
-> Well, I'm afraid I don't have any idea how to spell that constraint in
-> the yaml-language (help appreciated).
-
-Lots of examples in tree of this sort of thing.   Look for a=20
-: false with something other than additionalProperties or unevaluatedProper=
-ties
-Documentation/devicetree/bindings/iio/adc/adi,ad7476.yaml
-for example.
-
-In short you have an allOf block containing a list of rules, one of which
-is a match on particular conditions to set particular properties to 'false'
-which means that any attempt to have them set when that condition is met
-results in an error from the dts checking scripts.
-
->=20
-> And I assume a dt binding update would be a separate patch anyway, so
-> could you please consider applying this patch?
-Fair enough. Applied to the fixes-togreg branch of iio.git.
-
-Thanks,
+> >> Drop check for return value 0.  
+> > 
+> > ...
+> >   
+> >> -		if (v->irq <= 0) {
+> >> +		if (v->irq < 0) {
+> >>   			ret = -EINVAL;  
+> > 
+> > 			ret = v->irq;
+> > 
+> > ?  
+> 
+> For me that seems to be correct, yes. This, however, would be a 
+> functional change and in my opinion it should be done separately from 
+> this API change.
+Ah. I commented on this as well in v6.  Roll us that separate patch
+and I expect we'll both be happy ;)
 
 Jonathan
 
->=20
-> Thanks,
-> Rasmus
->=20
+> 
+> >   
+> >>   			goto err;
+> >>   		}  
+> >   
+> 
 

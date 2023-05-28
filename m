@@ -2,102 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B85C713C2B
-	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 21:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 124BD714091
+	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 23:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbjE1TGY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 May 2023 15:06:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60490 "EHLO
+        id S229596AbjE1VWh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 May 2023 17:22:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjE1TGX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 15:06:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00B9A0;
-        Sun, 28 May 2023 12:06:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229571AbjE1VWh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 17:22:37 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BFFB8;
+        Sun, 28 May 2023 14:22:36 -0700 (PDT)
+Received: from [IPV6:2405:201:0:21ea:e49:10dd:40c0:e842] (unknown [IPv6:2405:201:0:21ea:e49:10dd:40c0:e842])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36E2D618CE;
-        Sun, 28 May 2023 19:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612FDC433EF;
-        Sun, 28 May 2023 19:06:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685300781;
-        bh=OIuqp59lUf40kaYvD5eE2Yil+YmjWeHlLRKmLGFOo0E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fRe9TjHnppIgO9QmpzpjnIcadDMEMRiXdLsyWUsFe+g+1jafeQ9n0OOZYbUXyGiGV
-         6L/FJqOUiRCpdyYk7HPUZXAIiky+LOQUF4T+gcA8vHs+vyj7K8lnabgN75OhXHH/k5
-         tvECNpOdoSyKOFAQqYLMzGu+pNTxlX7D4ghfWlqgUSCE2W5gbFFYkGTQjK29yw0LZ3
-         4JjnCUBJ3PcTSZHRdaW+XpYoxnHwFjImPgRA/Ji/UPVx/RRvb0/rSVDVwGsXgBniCj
-         6uiwjS+azB15JTSiW6qQkx3jt4keDRpTCxvfJoPS7kSuWDCXR3NfMh44kHQNOHGYez
-         hE7ZVWXu62h4A==
-Date:   Sun, 28 May 2023 20:22:39 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Anup Sharma <anupnewsmail@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        u.kleine-koenig@pengutronix.de, andriy.shevchenko@linux.intel.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Add dt-binding support for ti tmp006
-Message-ID: <20230528202239.6aebd407@jic23-huawei>
-In-Reply-To: <20230520-context-emblaze-2456dbeb2414@spud>
-References: <cover.1684579603.git.anupnewsmail@gmail.com>
-        <20230520162002.7aba7c04@jic23-huawei>
-        <20230520-context-emblaze-2456dbeb2414@spud>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B151E66028F5;
+        Sun, 28 May 2023 22:22:30 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1685308953;
+        bh=1lLaRddepgjlJW8m/FCwzogjASyCbCW3Pl3FgHcbwsk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=kWKimZgJE/wgD8bXw+oYGRrist/CQD8pLhPTL34wR5pIowb42+UgENaXifYNLnz5x
+         XNOO/B/8TsxzEgVK9pKN4WawB0HKt+P+bGhGJzWCEj+if6nFTzf1YnQJ0dzrY5n7Ak
+         JbOVvy+MZFQZii4dKeorqq26GKww80mQijQAlVqsXwsRQHgqVsHP3CbQ13FE1oedH9
+         o817Lpoaes2eO+AZNYP3zIbQ4Hpbzjg6uIiD8brnzxOm8wL3EqReBkuPIjlYy+rcGn
+         +djyMiHUswW8nN2fxIj5P7zy1xy7xC5FPJdI2gp9dw/frgPDn9bpl9t5Ev1qwvc0uA
+         BdPzrn7uoPPig==
+Message-ID: <196486e3-a6e4-d330-6193-6eff248bdefb@collabora.com>
+Date:   Mon, 29 May 2023 02:52:26 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 3/8] iio: adc: rockchip_saradc: Make use of
+ devm_clk_get_enabled
+Content-Language: en-US
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>, jic23@kernel.org,
+        heiko@sntech.de, sebastian.reichel@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        lars@metafoo.de, linux-arm-kernel@lists.infradead.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, gustavo.padovan@collabora.com,
+        serge.broslavsky@collabora.com
+References: <20230525212712.255406-1-shreeya.patel@collabora.com>
+ <20230525212712.255406-4-shreeya.patel@collabora.com>
+ <a7e0d4f0-a497-8697-e108-5247e11abc41@collabora.com>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <a7e0d4f0-a497-8697-e108-5247e11abc41@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 20 May 2023 23:32:03 +0100
-Conor Dooley <conor@kernel.org> wrote:
+Hi Dmitry,
 
-> On Sat, May 20, 2023 at 04:20:02PM +0100, Jonathan Cameron wrote:
-> > On Sat, 20 May 2023 16:21:50 +0530
-> > Anup Sharma <anupnewsmail@gmail.com> wrote:
-> >   
-> > > These patches introduce device tree binding support and
-> > > add an of_device_id table entry to the driver.
-> > > 
-> > > Changes in v2:
-> > > 	- Keep the exsisting MODULE_DEVICE_TABLE entry.
-> > > 	- Removed the inner comma in of_device_id.
-> > > 	- Order the included header to improve code organization.
-> > > 	- Adding missing semicolon to fix syntax error detected
-> > > 	  using dt_binding_check.
-> > > 	  
-> > LGTM - I'll leave them a little while though for others to comment before
-> > picking them up.  
-> 
-> It may be a wee bit before you here from Krzysztof, but the binding
-> check issues have been fixed, as have the things he pointed out in the
-> original submission AFAICT.
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> 
 
-Thanks!
+On 26/05/23 06:12, Dmitry Osipenko wrote:
+> On 5/26/23 00:27, Shreeya Patel wrote:
+>> @@ -600,8 +560,6 @@ static int rockchip_saradc_suspend(struct device *dev)
+>>   	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>>   	struct rockchip_saradc *info = iio_priv(indio_dev);
+>>   
+>> -	clk_disable_unprepare(info->clk);
+>> -	clk_disable_unprepare(info->pclk);
+>>   	regulator_disable(info->vref);
+> Why clocks need to be enabled during suspend?
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to have their fun.
+They don't need to be enabled during suspend. Thanks for pointing it 
+out, I'll add them again in v3.
+
 
 Thanks,
-
-Jonathan
-
-> Thanks,
-> Conor.
+Shreeya Patel
 

@@ -2,46 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3991713BE3
-	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 20:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71B86713BF0
+	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 20:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjE1Svz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 May 2023 14:51:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57414 "EHLO
+        id S229567AbjE1S4o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 May 2023 14:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjE1Svy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 14:51:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066FFBE
-        for <linux-iio@vger.kernel.org>; Sun, 28 May 2023 11:51:53 -0700 (PDT)
+        with ESMTP id S229498AbjE1S4o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 14:56:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24409BE;
+        Sun, 28 May 2023 11:56:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9148160EF9
-        for <linux-iio@vger.kernel.org>; Sun, 28 May 2023 18:51:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A13CC433D2;
-        Sun, 28 May 2023 18:51:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B547C61328;
+        Sun, 28 May 2023 18:56:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E89C433D2;
+        Sun, 28 May 2023 18:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685299912;
-        bh=0/Oi9JHb0gCVBONSDKy3vCr+sXCXtB7QcKSOuNPabaw=;
-        h=Date:From:To:Subject:From;
-        b=K30xQccKtddWMbi3bc695Ge7qZgfBb1avxr69yx3yLo/EOW95R5kkmb46bvhEa5su
-         AfonorgMbrm5vsmLyoljxbxvRA+bwyHDoHZxGWy3h4TCwq2u+uX17gvubn4RO4VCkf
-         RvW0/D5YSxbzyR/H/gnjCia0GIbwi/dXM4YXe4HCyZafhbxahfTrMov6mug4h97MBp
-         b3Gib2xkO8fsgHisxzE9HqcD3YPbwYnNEiMPfANyW1PSx0JTxgxWpoZu/MQ1Xd9v4/
-         5B4lHacN8DL8wWS2R2sltIafp7H1kjqbAT0C15rm/MeXvWlr+TV3FK9asM/L9umtsO
-         8CaMpJx0kVVyQ==
-Date:   Sun, 28 May 2023 20:08:11 +0100
+        s=k20201202; t=1685300202;
+        bh=JDYChD/vhzIWiUOnUxUBVKV4YxXceKDOuf90kByVAbU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=CwxRSZPI7c3dF4UAgivHhpR9UekVEr825YEoDm+Bs0009aLIX+M4+Qcg84u8NfE3g
+         xZIRiCmHSrWigmW2XGjuaSeGUchxtZqWtIG0/4t2ddIvhrVJFT/MmEC8DaNFInr20X
+         sgatrvSK7LZGeDaWFoe/o9re4lqSoMJqrXg+7ikKbja8bQ3NxT0f6MLCUIEIm6s6Yd
+         1iGPlN/LOz1snMFMZ7kAOP8+AKnBS43oatYXQHli2hqBj1gx+ZD6t00qdFitxwCLp3
+         Hd9YQjFYOSajlZa6vDDDEfSmYly3BFFuXYIfNqHianfW6jiSu588bC79RAW+X5EcQR
+         VRFaiy0MOR8RA==
+Date:   Sun, 28 May 2023 20:13:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] 1st set of IIO fixes for the 6.4 cycle.
-Message-ID: <20230528200811.11b15e04@jic23-huawei>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: addac: ad74413: don't set DIN_SINK for functions
+ other than digital input
+Message-ID: <20230528201301.68b31bca@jic23-huawei>
+In-Reply-To: <822d2741-32ff-fc73-28a5-25575ab3cc52@rasmusvillemoes.dk>
+References: <20230503105042.453755-1-linux@rasmusvillemoes.dk>
+        <27fe41e402ea0d6ef42aa0ac80aa3d1488862cd8.camel@gmail.com>
+        <6fcf4997-9d88-7e86-70f7-52f9d296bc6e@rasmusvillemoes.dk>
+        <20230506191636.3cff4b24@jic23-huawei>
+        <822d2741-32ff-fc73-28a5-25575ab3cc52@rasmusvillemoes.dk>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,152 +63,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+On Mon, 22 May 2023 10:44:11 +0200
+Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 
-  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+> On 06/05/2023 20.16, Jonathan Cameron wrote:
+> > On Thu, 4 May 2023 12:08:53 +0200
+> > Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+> >  =20
+> >> On 04/05/2023 09.28, Nuno S=C3=A1 wrote: =20
+>=20
+> >>> Can anyone have a working device by specifying that dt parameter
+> >>> on a non digital channel (or expect something from having that parame=
+ter set)?
+> >>> Or the only effect is to actually have some functions misbehaving?   =
+=20
+> >>
+> >> The data sheet doesn't say that the DIN_SINK should have any effect for
+> >> other functions, so I'm pretty sure it's only the latter: some functio=
+ns
+> >> misbehave.
+> >> =20
+> >>> On the driver side, if it's never right to have
+> >>> these settings together, then the patch is valid since if someone has=
+ this, his
+> >>> configuration is broken anyways (maybe that's also a valid point for =
+the
+> >>> bindings)...   =20
+> >>
+> >> Yes, I do believe that it's a broken description (whether or not the
+> >> bindings specify that), and drivers don't need to go out of their way =
+to
+> >> validate or fixup such brokenness. But in this particular case, there's
+> >> really no extra burden on the driver to not put garbage in DIN_SINK wh=
+en
+> >> a not-digital-input function has been chosen (the patch is a two-liner
+> >> with 'git show -w'). =20
+> >=20
+> > If we can tighten the DT binding to rule out something that should not =
+be
+> > set than that would be good.  Tightening bindings is fine - we don't mi=
+nd
+> > validation of bindings failing on peoples DTs as long as we didn't 'bre=
+ak'
+> > them actually working. =20
+>=20
+> Well, I'm afraid I don't have any idea how to spell that constraint in
+> the yaml-language (help appreciated).
 
-are available in the Git repository at:
+Lots of examples in tree of this sort of thing.   Look for a=20
+: false with something other than additionalProperties or unevaluatedProper=
+ties
+Documentation/devicetree/bindings/iio/adc/adi,ad7476.yaml
+for example.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.4a
+In short you have an allOf block containing a list of rules, one of which
+is a match on particular conditions to set particular properties to 'false'
+which means that any attempt to have them set when that condition is met
+results in an error from the dts checking scripts.
 
-for you to fetch changes up to bbaae0c79ebd49f61ad942a8bf9e12bfc7f821bb:
+>=20
+> And I assume a dt binding update would be a separate patch anyway, so
+> could you please consider applying this patch?
+Fair enough. Applied to the fixes-togreg branch of iio.git.
 
-  iio: imu: inv_icm42600: fix timestamp reset (2023-05-20 17:33:14 +0100)
+Thanks,
 
-----------------------------------------------------------------
-1st set of IIO fixes for the 6.4 cycle.
+Jonathan
 
-Usual mixed bag of issues in new code for this cycle and old issues
-that have surfaced in the last few weeks.
+>=20
+> Thanks,
+> Rasmus
+>=20
 
-- adi,ad_sigma_delta
-  * Ensure irq lazy disable handing is not used as it breaks completion
-    detection.
-- adi,ad4130
-  * Fix failure to remove clock provider.
-- adi,ad5758
-  * Wrong CONFIG variable used to control driver build.
-- adi,ad7192
-  * Fix repeated channel index by just expressing shorted channels
-    as differential channel between a channel and itself.
-- adi,ad74413
-  * Fix error handling for resistance input processing to not fail
-    in case of success.
-- rohm,bu27034
-  * Fix integration time in wrong units (should be seconds not usecs)
-  * Ensure reset is actually written not detected as already set from
-    regcache.
-- gts helper
-  * Fix wrong parameter docs.
-  * Fix integration time in wrong units (should be seconds not usecs)
-- fsl,imx8qxp-adc
-  * Add missing vref-supply to binding doc (already used by driver)
-- fsl,imx93
-  * Fix sign bug in read_raw() so that error check didn't work.
-- inv,icm42600
-  * Fix reset of timestamp to work even if a particular sensor is off when
-    the chip is first enabled.
-- kionix,kx022a
-  * Fix irq get form fw node to not include the 0 value.
-- microchip,mcp4725
-  * Fix return value from i2c_master_send() handling to nto assume 0 on
-    success.
-- mediatek,mt6370
-  * Fix incorrect scaling of a few currents on devices with particular
-    vendor IDs.
-- fsl,mxs-lradc
-  * Cleanup ordering issue fix.
-- renesas,rcar-adc bindings
-  * Fix missing vendor prefix for adi,ad7476
-- st,st_accel
-  * Fix handling when no ACPI _ONT method present.
-- st,stm32-adc
-  * Handle no adc-diff-channel present case (all single ended)
-  * Handle no adc-channels present case (all differential)
-- ti,palmas
-  * Fix off by one bug that could allow out of bounds read if callers
-    provided wrong value.
-- ti,tmag5273
-  * Fix a runtime PM leak on measurement error
-- vishay,vcnl4035
-  * Correctly mask chip ID so devices with different addresses
-    don't fail the test.
-
-----------------------------------------------------------------
-Alexander Stein (1):
-      dt-bindings: iio: imx8qxp-adc: add missing vref-supply
-
-ChiaEn Wu (1):
-      iio: adc: mt6370: Fix ibus and ibat scaling value of some specific vendor ID chips
-
-Dan Carpenter (2):
-      iio: adc: imx93: fix a signedness bug in imx93_adc_read_raw()
-      iio: adc: palmas: fix off by one bugs
-
-Frank Li (1):
-      iio: light: vcnl4035: fixed chip ID check
-
-Geert Uytterhoeven (1):
-      dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476 compatible value
-
-Hans de Goede (1):
-      iio: accel: st_accel: Fix invalid mount_matrix on devices without ACPI _ONT method
-
-Jean-Baptiste Maneyrol (1):
-      iio: imu: inv_icm42600: fix timestamp reset
-
-Jiakai Luo (1):
-      iio: adc: mxs-lradc: fix the order of two cleanup operations
-
-Lars-Peter Clausen (2):
-      iio: tmag5273: Fix runtime PM leak on measurement error
-      iio: ad4130: Make sure clock provider gets removed
-
-Lukas Bulwahn (1):
-      iio: dac: build ad5758 driver when AD5758 is selected
-
-Marek Vasut (1):
-      iio: dac: mcp4725: Fix i2c_master_send() return value handling
-
-Masahiro Honda (1):
-      iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
-
-Matti Vaittinen (5):
-      iio: fix doc for iio_gts_find_sel_by_int_time
-      iio: bu27034: Fix integration time
-      iio: gts-helpers: fix integration time units
-      iio: bu27034: Ensure reset is written
-      iio: accel: kx022a fix irq getting
-
-Paul Cercueil (1):
-      iio: adc: ad7192: Change "shorted" channels to differential
-
-Rasmus Villemoes (1):
-      iio: addac: ad74413: fix resistance input processing
-
-Sean Nyekjaer (2):
-      iio: adc: stm32-adc: skip adc-diff-channels setup if none is present
-      iio: adc: stm32-adc: skip adc-channels setup if none is present
-
- .../bindings/iio/adc/nxp,imx8qxp-adc.yaml          |  7 +++
- .../bindings/iio/adc/renesas,rcar-gyroadc.yaml     |  2 +-
- drivers/iio/accel/kionix-kx022a.c                  |  2 +-
- drivers/iio/accel/st_accel_core.c                  |  4 +-
- drivers/iio/adc/ad4130.c                           | 12 ++++-
- drivers/iio/adc/ad7192.c                           |  8 +--
- drivers/iio/adc/ad_sigma_delta.c                   |  4 ++
- drivers/iio/adc/imx93_adc.c                        |  7 ++-
- drivers/iio/adc/mt6370-adc.c                       | 53 ++++++++++++++++++-
- drivers/iio/adc/mxs-lradc-adc.c                    | 10 ++--
- drivers/iio/adc/palmas_gpadc.c                     | 10 ++--
- drivers/iio/adc/stm32-adc.c                        | 61 ++++++++++++----------
- drivers/iio/addac/ad74413r.c                       |  2 +-
- drivers/iio/dac/Makefile                           |  2 +-
- drivers/iio/dac/mcp4725.c                          | 16 +++++-
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 10 ++--
- drivers/iio/industrialio-gts-helper.c              | 42 +++++++++++----
- drivers/iio/light/rohm-bu27034.c                   | 26 ++++++---
- drivers/iio/light/vcnl4035.c                       |  3 ++
- drivers/iio/magnetometer/tmag5273.c                |  5 +-
- include/linux/iio/iio-gts-helper.h                 |  2 +-
- 21 files changed, 204 insertions(+), 84 deletions(-)

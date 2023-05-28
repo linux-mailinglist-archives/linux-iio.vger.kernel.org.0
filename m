@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3689B713A9C
-	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 18:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FC48713AA2
+	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 18:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjE1Qje (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 May 2023 12:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55834 "EHLO
+        id S229525AbjE1Qmx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 May 2023 12:42:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjE1Qjd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 12:39:33 -0400
+        with ESMTP id S229451AbjE1Qmw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 12:42:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8AAEA7;
-        Sun, 28 May 2023 09:39:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 773A4AD;
+        Sun, 28 May 2023 09:42:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E2A860E33;
-        Sun, 28 May 2023 16:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC594C433EF;
-        Sun, 28 May 2023 16:39:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 012DB61787;
+        Sun, 28 May 2023 16:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD628C433D2;
+        Sun, 28 May 2023 16:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685291971;
-        bh=hBlRxGA8aRr5jwPDvWB/SpUUZb6GUXDNcRFRO2a7688=;
+        s=k20201202; t=1685292170;
+        bh=jCQNHbdQ4Cz8cuC1CEhZkxmhx+KQ0b9AeZ7vLEFBkR8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KKUH64CCUpz8rEA2ZI8nqmf2EzeTrj5oHHd/eKj3IC54D8S2kUPF3OiN8wKWabyFf
-         6QpE4pwLWAAPzyYtjDurxgWtXXbNr9IIT7NVCEV4p5fZDFhTiWA4lqPHtOJOuWpyZd
-         hs/1b5kytmAdh8ktJRnamu9jy0Z7k7NhgR6R/FXST+nRDDL92ngkrKkr3lz2orFu+Y
-         wqJD/AVXJgtY8gg1YyDGXBIvqBVjfZ/ni78iCJcA6m4LmxDXVlz0J8Zk6yhtXt2k5O
-         AHKggUckXe9RUSFOWhy3hZV8oLYVjSRANBntrlRIPsakasCvzpH4klGoibVQOSRZ+9
-         Nm4Ruiqnx9N4g==
-Date:   Sun, 28 May 2023 17:55:50 +0100
+        b=GDFHxeXvfJpRQTnaeWoOL5n7VPjVcz9HXrV26+n7awuZoUoJhC28TcA+r4gaAtr4Y
+         Nmw4e88/3mc2FGny5mP8Gh9hUUp/kaBpdRtWkBxZ6kkXUEDZpzBgRL7X7NkMLfzFNh
+         pU2nwCt5xm4iMydEFCn0HQy9IYbehDquwooqvskqSJ3L5PzvWRnTq30TAtIcUyV1Cy
+         g5rqfVa5k3vx3mbECGX+7YqD83YDz8JIfpo/YxpNYpvKueG+lCGrrguBqu7Gebhvkv
+         F7BugQosLXai5YZPS9pCJ7i9EqMUc0GYq9rNsT9vb+uS5gzPY/gnwVgf+8t+6cas+H
+         Go0/XlBdcSOew==
+Date:   Sun, 28 May 2023 17:59:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Mehdi Djait <mehdi.djait.k@gmail.com>
 Cc:     mazziesaccount@gmail.com, krzysztof.kozlowski+dt@linaro.org,
         andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
         lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 5/7] iio: accel: kionix-kx022a: Refactor driver and
- add chip_info structure
-Message-ID: <20230528175550.4e58f90f@jic23-huawei>
-In-Reply-To: <de588a5a3ca311f6dc3a543bfa5cea7b590ae44c.1685109507.git.mehdi.djait.k@gmail.com>
-References: <cover.1685109507.git.mehdi.djait.k@gmail.com>
-        <de588a5a3ca311f6dc3a543bfa5cea7b590ae44c.1685109507.git.mehdi.djait.k@gmail.com>
+Subject: Re: [PATCH v4 7/7] iio: accel: Add support for Kionix/ROHM
+ KX132-1211 accelerometer
+Message-ID: <20230528175909.245d5bfc@jic23-huawei>
+In-Reply-To: <d776c1dd5beef6ef812a4f7e4958eb6cb0f5e58e.1685111274.git.mehdi.djait.k@gmail.com>
+References: <cover.1685111274.git.mehdi.djait.k@gmail.com>
+        <d776c1dd5beef6ef812a4f7e4958eb6cb0f5e58e.1685111274.git.mehdi.djait.k@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,94 +58,91 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 26 May 2023 16:30:46 +0200
+On Fri, 26 May 2023 16:30:48 +0200
 Mehdi Djait <mehdi.djait.k@gmail.com> wrote:
 
-> Add the chip_info structure to the driver's private data to hold all
-> the device specific infos.
-> Refactor the kx022a driver implementation to make it more generic and
-> extensible.
-> 
+> Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
+> ranges from =C2=B12G to =C2=B116G, digital output through I=C2=B2C/SPI.
+> Add support for basic accelerometer features such as reading acceleration
+> via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
+>=20
+> Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technica=
+l-Reference-Manual-Rev-5.0.pdf
 > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
 
 Hi Mehdi,
 
-Just one trivial comment from me about missing docs / unused element.
-
-Thanks,
+Comment is a follow on from the earlier one about buf_smp_lvl_mask.
 
 Jonathan
 
-...
+>  /*
+>   * The sensor HW can support ODR up to 1600 Hz, which is beyond what mos=
+t of the
+>   * Linux CPUs can handle without dropping samples. Also, the low power m=
+ode is
+> @@ -613,6 +731,24 @@ static int kx022a_get_fifo_bytes(struct kx022a_data =
+*data)
+>  	return fifo_bytes;
+>  }
+> =20
+> +static int kx132_get_fifo_bytes(struct kx022a_data *data)
+> +{
+> +	__le16 buf_status;
+> +	int ret, fifo_bytes;
+> +
+> +	ret =3D regmap_bulk_read(data->regmap, data->chip_info->buf_status1,
+> +			       &buf_status, sizeof(buf_status));
+> +	if (ret) {
+> +		dev_err(data->dev, "Error reading buffer status\n");
+> +		return ret;
+> +	}
+> +
+> +	fifo_bytes =3D le16_to_cpu(buf_status);
+> +	fifo_bytes &=3D data->chip_info->buf_smp_lvl_mask;
 
-> diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-> index 12424649d438..c23b6f03409e 100644
-> --- a/drivers/iio/accel/kionix-kx022a.h
-> +++ b/drivers/iio/accel/kionix-kx022a.h
-> @@ -76,7 +76,56 @@
->  
->  struct device;
->  
-> -int kx022a_probe_internal(struct device *dev);
-> -extern const struct regmap_config kx022a_regmap;
-> +/**
-> + * struct kx022a_chip_info - Kionix accelerometer chip specific information
-> + *
-> + * @name:		name of the device
-> + * @regmap_config:	pointer to register map configuration
-> + * @channels:		pointer to iio_chan_spec array
-> + * @num_channels:	number of iio_chan_spec channels
-> + * @fifo_length:	number of 16-bit samples in a full buffer
-> + * @who:		WHO_AM_I register
-> + * @id:			WHO_AM_I register value
-> + * @cntl:		control register 1
-> + * @cntl2:		control register 2
-> + * @odcntl:		output data control register
-> + * @buf_cntl1:		buffer control register 1
-> + * @buf_cntl2:		buffer control register 2
-> + * @buf_clear:		buffer clear register
-> + * @buf_status1:	buffer status register 1
+See below.
 
-Missing entry for buf_smp_lvl_mask.
-
-Mind you it's also not used in this patch and only seems to be used in the
-get_fifo_bytes() function in patch 7, so might not be needed at all?
-If it is, then introduce it in patch 7 where we can see how it is used.
-
-> + * @buf_read:		buffer read register
-> + * @inc1:		interrupt control register 1
-> + * @inc4:		interrupt control register 4
-> + * @inc5:		interrupt control register 5
-> + * @inc6:		interrupt control register 6
-> + * @xout_l:		x-axis output least significant byte
-> + */
-> +struct kx022a_chip_info {
-> +	const char *name;
-> +	const struct regmap_config *regmap_config;
-> +	const struct iio_chan_spec *channels;
-> +	unsigned int num_channels;
-> +	unsigned int fifo_length;
-> +	u8 who;
-> +	u8 id;
-> +	u8 cntl;
-> +	u8 cntl2;
-> +	u8 odcntl;
-> +	u8 buf_cntl1;
-> +	u8 buf_cntl2;
-> +	u8 buf_clear;
-> +	u8 buf_status1;
-> +	u16 buf_smp_lvl_mask;
-> +	u8 buf_read;
-> +	u8 inc1;
-> +	u8 inc4;
-> +	u8 inc5;
-> +	u8 inc6;
-> +	u8 xout_l;
+> +
+> +	return fifo_bytes;
+> +}
+> +
+>  static int __kx022a_fifo_flush(struct iio_dev *idev, unsigned int sample=
+s,
+>  			       bool irq)
+>  {
+> @@ -1036,6 +1172,32 @@ const struct kx022a_chip_info kx022a_chip_info =3D=
+ {
+>  };
+>  EXPORT_SYMBOL_NS_GPL(kx022a_chip_info, IIO_KX022A);
+> =20
+> +const struct kx022a_chip_info kx132_chip_info =3D {
+> +	.name		  =3D "kx132-1211",
+> +	.regmap_config	  =3D &kx132_regmap_config,
+> +	.channels	  =3D kx132_channels,
+> +	.num_channels	  =3D ARRAY_SIZE(kx132_channels),
+> +	.fifo_length	  =3D KX132_FIFO_LENGTH,
+> +	.who		  =3D KX132_REG_WHO,
+> +	.id		  =3D KX132_ID,
+> +	.cntl		  =3D KX132_REG_CNTL,
+> +	.cntl2		  =3D KX132_REG_CNTL2,
+> +	.odcntl		  =3D KX132_REG_ODCNTL,
+> +	.buf_cntl1	  =3D KX132_REG_BUF_CNTL1,
+> +	.buf_cntl2	  =3D KX132_REG_BUF_CNTL2,
+> +	.buf_clear	  =3D KX132_REG_BUF_CLEAR,
+> +	.buf_status1	  =3D KX132_REG_BUF_STATUS_1,
+> +	.buf_smp_lvl_mask =3D KX132_MASK_BUF_SMP_LVL,
+As per earlier comment I think this is only set for this device...
+> +	.buf_read	  =3D KX132_REG_BUF_READ,
+> +	.inc1		  =3D KX132_REG_INC1,
+> +	.inc4		  =3D KX132_REG_INC4,
+> +	.inc5		  =3D KX132_REG_INC5,
+> +	.inc6		  =3D KX132_REG_INC6,
+> +	.xout_l		  =3D KX132_REG_XOUT_L,
+> +	.get_fifo_bytes	  =3D kx132_get_fifo_bytes,
+and only used in this device specific callback.
+Probably can just use it directly in the callback.
 > +};
+> +EXPORT_SYMBOL_NS_GPL(kx132_chip_info, IIO_KX022A);
 > +
-> +int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_info *chip_info);
-> +
-> +extern const struct kx022a_chip_info kx022a_chip_info;
->  
->  #endif
 

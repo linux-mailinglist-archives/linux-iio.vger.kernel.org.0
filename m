@@ -2,99 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE6971391B
-	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 13:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE90713A2B
+	for <lists+linux-iio@lfdr.de>; Sun, 28 May 2023 16:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbjE1LAX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 May 2023 07:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33472 "EHLO
+        id S229448AbjE1Oq4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 May 2023 10:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjE1LAW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 07:00:22 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD21A4;
-        Sun, 28 May 2023 04:00:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685271621; x=1716807621;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=g6CoUCTMZtyvKD2xXLW4r5j8Ly+rx8jj6t/ryWbIQPc=;
-  b=Txn7sH3AA1NdqCXwd9xCanrHxLla6MXswlKQ1mgCjtr3Pkj/LzrE7u9/
-   FDh1qCkZq8qZDIpjanNr3mGSrYm1zkAYL27k3ZAdA4rvUOA8EicmxUOZQ
-   ltonAKzZO9cM0fbH5XuiZpcgUs2je3YvDoZ5UIHZ8r8MhiCwL/Vk2m2zu
-   0YO8BYn41KyvsB7dThaLnCKNA87yejpsx8xYD5DdZJ6NP72q8rrdRZVCw
-   oasvyl8Q5pqJv4H+IVy1pGrDrf/KfjsIYR0cmeAsuEBa9qeX1VUS/CQY7
-   nx2WmeKkR76671f78ut77oxH5vDHeW4832Amb5EmCiCFp4Gp84n/Mws2I
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10723"; a="334128585"
-X-IronPort-AV: E=Sophos;i="6.00,198,1681196400"; 
-   d="scan'208";a="334128585"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2023 04:00:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10723"; a="952402178"
-X-IronPort-AV: E=Sophos;i="6.00,198,1681196400"; 
-   d="scan'208";a="952402178"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 28 May 2023 04:00:16 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q3E8E-000JkD-2R;
-        Sun, 28 May 2023 14:00:14 +0300
-Date:   Sun, 28 May 2023 14:00:14 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     George Stark <gnstark@sberdevices.ru>
-Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        martin.blumenstingl@googlemail.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru
-Subject: Re: [PATCH v2] meson saradc: add iio device attrib to switch channel
- 7 mux
-Message-ID: <ZHM0Pheg047fYJXw@smile.fi.intel.com>
-References: <20230527214854.126517-1-gnstark@sberdevices.ru>
- <ZHMxDHPBWQOJSuaZ@smile.fi.intel.com>
- <ZHMzGHsGEylDdgg7@smile.fi.intel.com>
+        with ESMTP id S229445AbjE1Oqz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 May 2023 10:46:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D45FA8;
+        Sun, 28 May 2023 07:46:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B88560D2E;
+        Sun, 28 May 2023 14:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBB6C433EF;
+        Sun, 28 May 2023 14:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685285214;
+        bh=ikS4I6r1Rk9pUtv9Xmje9J7Gdp09e+VlZ3qP+uWyefM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FEeBR4C9b9RRwu5KOyE9CHR8ujekZDfBP2duLXZzlc/Ncuz1ePOfjCMWSwf8yXxUt
+         qByBeLp8qAeAxMKFX5g4RgSf8IBWWeeszOFmprI8QwEB76IcYEajLUKtT9qK3bCnXY
+         5T8jmR5t76U6Pbl0ve1uUi9nBJldA2Wok4b1vDDebVO/vlqJTnQE2xC8Kb0kXxbaMk
+         d6wHolYA6sX6PEBHvuXheaVCHScU+up71LeEaz8AgrBKNmynyyTftbR/CTXErkUK/I
+         IoAwjrsf5k9mmECBwxmsAKqLHoZkxC2gdYibcs2loUndc7MubJz9KH4EsxTB/ecrna
+         5tDlEOeubUaBg==
+Date:   Sun, 28 May 2023 16:03:13 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Franziska Naepelt <franziska.naepelt@googlemail.com>
+Cc:     linux-iio@vger.kernel.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>
+Subject: Re: [PATCH] iio: amplifiers: ad8366 Fix whitespace issue
+Message-ID: <20230528160313.551794f0@jic23-huawei>
+In-Reply-To: <20230528104802.22011-1-franziska.naepelt@gmail.com>
+References: <20230528104802.22011-1-franziska.naepelt@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZHMzGHsGEylDdgg7@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, May 28, 2023 at 01:55:20PM +0300, Andy Shevchenko wrote:
-> On Sun, May 28, 2023 at 01:46:37PM +0300, Andy Shevchenko wrote:
-> > On Sun, May 28, 2023 at 12:48:54AM +0300, George Stark wrote:
+On Sun, 28 May 2023 12:48:02 +0200
+Franziska Naepelt <franziska.naepelt@googlemail.com> wrote:
 
-...
+> This removes the following checkpatch issue:
+> - ERROR: space prohibited before that ',' (ctx:WxW)
+> 
+> Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
+Applied,
 
-And last but not least (I just noticed how Cc and To is formed in your email),
-you may utilize my "smart" script [1] or ideas from it for sending patches to
-the Linux kernel related mailing lists. It will automatically provide Cc and
-To with a good approximation.
+Thanks,
 
-For v3 the command line can be (assuming your patch is on the top of the
-current branch and the script is in the one of the $PATH folders):
+Jonathan
 
-	ge2maintainer.sh -c 1 -v3 HEAD~0 --annotate
-
-this will call for editor, so you would be able to add Changelog after cutter
-'---' line.
-
-[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> ---
+>  drivers/iio/amplifiers/ad8366.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
+> index f2c2ea79a07f..8d8c8ea94258 100644
+> --- a/drivers/iio/amplifiers/ad8366.c
+> +++ b/drivers/iio/amplifiers/ad8366.c
+> @@ -281,7 +281,7 @@ static int ad8366_probe(struct spi_device *spi)
+>  	indio_dev->info = &ad8366_info;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+> -	ret = ad8366_write(indio_dev, 0 , 0);
+> +	ret = ad8366_write(indio_dev, 0, 0);
+>  	if (ret < 0)
+>  		goto error_disable_reg;
+>  
+> 
+> base-commit: 44c026a73be8038f03dbdeef028b642880cf1511
 

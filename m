@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38917714DA5
-	for <lists+linux-iio@lfdr.de>; Mon, 29 May 2023 17:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75CB4714DBF
+	for <lists+linux-iio@lfdr.de>; Mon, 29 May 2023 18:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229936AbjE2P6u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 May 2023 11:58:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47788 "EHLO
+        id S229476AbjE2QDF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 May 2023 12:03:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbjE2P6s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 May 2023 11:58:48 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB50CD;
-        Mon, 29 May 2023 08:58:46 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30abe551605so2444541f8f.0;
-        Mon, 29 May 2023 08:58:46 -0700 (PDT)
+        with ESMTP id S229451AbjE2QDE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 May 2023 12:03:04 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F97B2;
+        Mon, 29 May 2023 09:03:03 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f6dfc4e01fso35703765e9.0;
+        Mon, 29 May 2023 09:03:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685375924; x=1687967924;
+        d=gmail.com; s=20221208; t=1685376181; x=1687968181;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DmbKTWrR5Ist8xbfhfIsTWnGuuP3Tj0QFkiF3QCNa5I=;
-        b=eFu0CeBY8gp/40z60b34rH6O04y5Yh8sEMC3WKnYs6lLYSlq5jFOdzdK9a2txRIdlN
-         BHa3YeZFukW1UHyj7/6s2dUUos9lezr8zWrHCyeSnvW3MJh4sgfKk2sx2VxOCPI3JSHf
-         5H1E1ZNs0g5ZII9ycUlvLr7gkTxe4I4ljkWR1qUJByOI/hntrHAqq/opy8a+Of84Gmgy
-         frpEWi04wu7fz8LDKG7aJ7dLxDVaud3g1PogjNHe4VFsPBfxq/kpIOvicfzRP2vv/SRX
-         5ZFyIZN7HVJX/A9oaP1lNlIFZ35D0ALu8EaRTPTk2kSxDh2r9xgJj7M/sk3+fd39yGOA
-         +//g==
+        bh=WRFtSx1Qrg+CDLZ/Fo2vJebkgNJBOCrU0gJGaDnKCY8=;
+        b=G08+hgi89y5+b84/X9EeIzk1I8MAfrsCvOe/SnJcgKvlNXijFcPaolDoL1ZFAsW2kR
+         Gowl8hgzctVR63JTwgF6O8KCyFdcBK2I4xjpHXDeOjU0duYbjDzJ9feID3uvrBCdxfUF
+         dJZ1FSvcPDAxFUsg4Ka0q1w5UlFxoUsIJAhTESUbOPRmpYv2tZtsd6tptDbKV88FzEY2
+         7vEfm4JPR6VlvCwGweEW/xqXTxwawXAr0VPyRtkSrUniHeoDOukO6BhvfrfuaAI3uADG
+         2zu7RiJCMmYt2RIIrlftoVkXHeG22QYSsj86VivItAatNlbqs0kAje2PDYgzfCXMr95U
+         HORw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685375924; x=1687967924;
+        d=1e100.net; s=20221208; t=1685376181; x=1687968181;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DmbKTWrR5Ist8xbfhfIsTWnGuuP3Tj0QFkiF3QCNa5I=;
-        b=bYOw5DxCHbUBR22ECHAAgSEr0zdZy7LxxNWvjOiqOANKMdQGoWOEoAPOgubzuOY1xW
-         G9m+B5S0C8idCsGMynJVYaeOv1qrYC8s95ZMMjkjgWlrotUiSYYKsUnJ4hK5NKh93xDY
-         YtyzxzuLxxu8b0EHYAaZg1bvKj/y9gx5e9gAlz9Yg7DPVOD2aD/IYVAM34UFW7atr5SE
-         pvp3VtK2OmWlvqVi4kAG9N7dKn9tebbokXdb+XBt1k709TNLgmKXHaAN+GY9+6JLn5YH
-         4DmHpxCUGqmQCJ4WWNtVilNCips57lM3yyE7FyiM7SRoG0xvctgKbe2u9ldHsArZW9b7
-         TEvw==
-X-Gm-Message-State: AC+VfDypINmSGE92eVMTniex7FYy0bzN99dkerWsEbP4UDe2ZhnjgVO1
-        HCIFz7AaxZ9tp//PS7fuzTY=
-X-Google-Smtp-Source: ACHHUZ6k7FdIrg5GktNfDGImRYatKh5VSOf6eWINqdYV4QBqmmd72yfSLLQ9HTcoaAYIzzukk93u9Q==
-X-Received: by 2002:a5d:6584:0:b0:307:f75:f581 with SMTP id q4-20020a5d6584000000b003070f75f581mr7270131wru.18.1685375924532;
-        Mon, 29 May 2023 08:58:44 -0700 (PDT)
+        bh=WRFtSx1Qrg+CDLZ/Fo2vJebkgNJBOCrU0gJGaDnKCY8=;
+        b=TtEGlOdEcWjSE8PFO7P1ZAeClpDACijK8LbDCREEDU768Jej3JphGUcFP4AzSUfVE0
+         L1PGf0BEPmezO65MV1M3nggofkVTTpWWMcN1JJKdkVDEz9ykVvDiMvSiPVIgZcmiVDWi
+         6G6yJXy2wBq7yLU71uLjWnOiVhuKyKfcaMJ4T8tnJNcWS4cmEQOfv/Rl7LtPx1KTeV+b
+         SFNMiOd4LCIelBIBsbkujnsN/dI3UBvEVUNIbpMFzxxlG/WkHXV5J6D+xA7D6bazGaku
+         CaI45WNxMEUff8yb1Zmc6Uvi1lgrX9zzK89YaGLsdOfeckj0+AtdGkBurpPt1Jze8qWK
+         E3LQ==
+X-Gm-Message-State: AC+VfDzikVcz7mf70cQ4FC7Yc4oK2z/uuXZyAJQNiagD/EMvXeSicy4J
+        Y5cf+R8QC7Qx4qLhPRBNC4g=
+X-Google-Smtp-Source: ACHHUZ4uigxNzobgmnVYSy0x1Dll+6NuV5TAwot2deCigkpDBFRtQVP3fIwNi9DkuUHYGKJCqYBMrg==
+X-Received: by 2002:a05:600c:283:b0:3f6:3ad:16a with SMTP id 3-20020a05600c028300b003f603ad016amr10116737wmk.31.1685376181436;
+        Mon, 29 May 2023 09:03:01 -0700 (PDT)
 Received: from [192.168.2.177] ([207.188.167.132])
-        by smtp.gmail.com with ESMTPSA id o1-20020a5d4741000000b002f9e04459desm324601wrs.109.2023.05.29.08.58.42
+        by smtp.gmail.com with ESMTPSA id n11-20020a7bcbcb000000b003f427cba193sm18304970wmi.41.2023.05.29.09.02.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 May 2023 08:58:43 -0700 (PDT)
-Message-ID: <3c635ce1-71b0-9079-836c-1a628a19414d@gmail.com>
-Date:   Mon, 29 May 2023 17:58:41 +0200
+        Mon, 29 May 2023 09:03:00 -0700 (PDT)
+Message-ID: <929d92f5-f656-95a9-a819-e450c48fc800@gmail.com>
+Date:   Mon, 29 May 2023 18:02:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v1 5/7] arm64: dts: mt7986: add PWM to BPI-R3
+Subject: Re: [PATCH v1 6/7] arm64: dts: mt7986: add thermal-zones
 Content-Language: en-US, ca-ES, es-ES
 To:     Frank Wunderlich <linux@fw-web.de>,
         linux-mediatek@lists.infradead.org
@@ -74,9 +74,9 @@ Cc:     Frank Wunderlich <frank-w@public-files.de>,
         linux-arm-kernel@lists.infradead.org,
         Daniel Golle <daniel@makrotopia.org>
 References: <20230421132047.42166-1-linux@fw-web.de>
- <20230421132047.42166-6-linux@fw-web.de>
+ <20230421132047.42166-7-linux@fw-web.de>
 From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20230421132047.42166-6-linux@fw-web.de>
+In-Reply-To: <20230421132047.42166-7-linux@fw-web.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -92,46 +92,68 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 On 21/04/2023 15:20, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
+> From: Daniel Golle <daniel@makrotopia.org>
 > 
-> Add pwm node and pinctrl to BananaPi R3 devicetree.
+> Add thermal-zones to mt7986 devicetree.
 > 
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 > Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-
-Applied, thanks
-
 > ---
->   .../boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts   | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
+>   arch/arm64/boot/dts/mediatek/mt7986a.dtsi | 40 +++++++++++++++++++++++
+>   1 file changed, 40 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-> index 2b028141f1f7..782519429497 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-> +++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-> @@ -274,6 +274,13 @@ mux {
+> diff --git a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+> index a409d5e845c2..845b29a9664a 100644
+> --- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+> +++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+> @@ -603,4 +603,44 @@ wifi: wifi@18000000 {
+>   			memory-region = <&wmcpu_emi>;
 >   		};
 >   	};
->   
-> +	pwm_pins: pwm-pins {
-> +		mux {
-> +			function = "pwm";
-> +			groups = "pwm0", "pwm1_0";
+> +
+> +	thermal-zones {
+> +		cpu_thermal: cpu-thermal {
+> +			polling-delay-passive = <1000>;
+> +			polling-delay = <1000>;
+> +			thermal-sensors = <&thermal 0>;
+> +
+> +			trips {
+> +				cpu_trip_crit: crit {
+> +					temperature = <125000>;
+> +					hysteresis = <2000>;
+> +					type = "critical";
+> +				};
+> +
+> +				cpu_trip_hot: hot {
+> +					temperature = <120000>;
+> +					hysteresis = <2000>;
+> +					type = "hot";
+> +				};
+
+We don't use above two trips. Please drop them for now.
+
+Regards,
+Matthias
+
+> +
+> +				cpu_trip_active_high: active-high {
+> +					temperature = <115000>;
+> +					hysteresis = <2000>;
+> +					type = "active";
+> +				};
+> +
+> +				cpu_trip_active_low: active-low {
+> +					temperature = <85000>;
+> +					hysteresis = <2000>;
+> +					type = "active";
+> +				};
+> +
+> +				cpu_trip_passive: passive {
+> +					temperature = <40000>;
+> +					hysteresis = <2000>;
+> +					type = "passive";
+> +				};
+> +			};
 > +		};
 > +	};
-> +
->   	spi_flash_pins: spi-flash-pins {
->   		mux {
->   			function = "spi";
-> @@ -344,6 +351,12 @@ mux {
->   	};
 >   };
->   
-> +&pwm {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pwm_pins>;
-> +	status = "okay";
-> +};
-> +
->   &spi0 {
->   	pinctrl-names = "default";
->   	pinctrl-0 = <&spi_flash_pins>;

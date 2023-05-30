@@ -2,106 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925447159FD
-	for <lists+linux-iio@lfdr.de>; Tue, 30 May 2023 11:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52D277163F6
+	for <lists+linux-iio@lfdr.de>; Tue, 30 May 2023 16:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231184AbjE3JYh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 May 2023 05:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38920 "EHLO
+        id S231869AbjE3O0F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 May 2023 10:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230316AbjE3JYG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 May 2023 05:24:06 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2218D19C;
-        Tue, 30 May 2023 02:23:03 -0700 (PDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34U889RE007028;
-        Tue, 30 May 2023 09:21:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=3+SrpC5lFpvawrlepV8oQTbVM0CH6Hg4sbjzDYaAw18=;
- b=cq9tA98om+I5mv5zaxmDTIudlC0YH5EKdjwmSgYU3jf5MAyd/ovscVasl2OWLLDv4ri0
- kYK7L8jh9PMDtDZ8WV1ubYMYmZkUGpzQ0CfFssaaWhY9C00EDlr/Y4ZZFabAbg7XSj/k
- mXxbdZPbHQAXbv3ABRn9QUy0hbtRYoMpupoGtgZSiJKofTDJKPzuhslj4ITfHAbYCnhL
- JR8wl9ApVat5d6wG4NXuwfDc75ukml8E1oxlJRzncVoRY9syjBadHUiUouPgrFTiQkJF
- JxJvhRQf5CKaUTqgaIvldODaWa+XW2vy1vSsqbYakKz4gk1U0czQZgQvBRnpDCuKvKcB ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwc8rud6y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 09:21:14 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34U9BrFG031693;
-        Tue, 30 May 2023 09:21:13 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwc8rud5d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 09:21:12 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-        by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34U4nTbh029752;
-        Tue, 30 May 2023 09:21:09 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-        by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qu94e1cuf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 30 May 2023 09:21:09 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34U9L7Pc33685888
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 30 May 2023 09:21:07 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 26BCD20043;
-        Tue, 30 May 2023 09:21:07 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A7B8A20040;
-        Tue, 30 May 2023 09:21:06 +0000 (GMT)
-Received: from [9.152.212.237] (unknown [9.152.212.237])
-        by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 30 May 2023 09:21:06 +0000 (GMT)
-Message-ID: <3c08f8877ec4ff8689415cf720efc0e355f3c3cb.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 14/44] iio: ad7606: Kconfig: add HAS_IOPORT
- dependencies
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        with ESMTP id S231795AbjE3OZf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 May 2023 10:25:35 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43A1F10CF;
+        Tue, 30 May 2023 07:24:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1685456686;
+  x=1716992686;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=g91IAMhhsKPeXiRV5cNfwPe73Ij+96VwRbGmVOoe6XA=;
+  b=AvCZb2lGLvO2hGua/dtCKwImSV/J3yxI/VVNo6h3fOJr9ol4gK36Y79P
+   RX4LYo0OI7JVkBV5O5R4UZ58yznC4+uIMy1NQiW0hg/pwvYgnbt4C69NT
+   I25LyxxAnSA818+zaAkJDDzsA8GFdAys1CWgpaKDplvmA8cdka8e/uXCk
+   PJ1gFfLRhhqv35y7X60rERZIIiiBV9qqThB0jBSy9yjrOq9FnuwpGKzzQ
+   VHEJka1C3PR63dTaNDHYSkfSNWZRLtkzCLJ6m4oXVAJEMdzTh4HPHT591
+   Na6G4tDZfgla8aIWOattX5/QFNYSvS+WvV80flHP0adr1N0TBxYpaX0gC
+   Q==;
+From:   Astrid Rost <astrid.rost@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@axis.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Arnd Bergmann <arnd@kernel.org>, linux-iio@vger.kernel.org
-Date:   Tue, 30 May 2023 11:21:06 +0200
-In-Reply-To: <20230528195503.4dbeb358@jic23-huawei>
-References: <20230522105049.1467313-1-schnelle@linux.ibm.com>
-         <20230522105049.1467313-15-schnelle@linux.ibm.com>
-         <20230528195503.4dbeb358@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
+        Mathieu Othacehe <m.othacehe@gmail.com>,
+        Astrid Rost <astrid.rost@axis.com>
+Subject: [PATCH v5 0/7] iio: light: vcnl4000: Add features for vncl4040/4200
+Date:   Tue, 30 May 2023 16:23:58 +0200
+Message-ID: <20230530142405.1679146-1-astrid.rost@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: sGKL0EtCJUOjTcZob_MvNWUVpKS7aZ8M
-X-Proofpoint-GUID: L09UMELiLHybn3jpoFkCvYCmDqn0LIof
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-30_06,2023-05-29_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 suspectscore=0 clxscore=1011 impostorscore=0
- lowpriorityscore=0 mlxlogscore=756 spamscore=0 adultscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305300075
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -109,33 +53,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2023-05-28 at 19:55 +0100, Jonathan Cameron wrote:
-> On Mon, 22 May 2023 12:50:19 +0200
-> Niklas Schnelle <schnelle@linux.ibm.com> wrote:
->=20
-> > In a future patch HAS_IOPORT=3Dn will result in inb()/outb() and friend=
-s
-> > not being declared. We thus need to add HAS_IOPORT as dependency for
-> > those drivers using them.
-> >=20
-> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> > Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
->=20
-> I already picked this up for the IIO tree already as I don't think there =
-are
-> any dependencies.
->=20
-> Jonathan
->=20
->=20
+Add a more complete support for vncl4040 and vcnl4200, which allows to
+change the distance of proximity detection and interrupt support for the
+illuminance sensor.
 
-Yes thanks, I only resent it as part of this series such that applying
-the series on a current -rc directly does not break the last commit. In
-the future I'll sent remaining patches per-subsystem and based on
-linux-next so I won't have to resent those patches that have already
-been applied.
+Proximity functionality:
+  - Interrupt support (new on vcnl4200).
 
-Thanks,
-Niklas
+Proximity reduce the amount of interrupts:
+  - Adaptable integration time (new on vcnl4200) - the sampling rate
+    changes according to this value.
+  - Period - interrupt is asserted if the value is above or
+    below a certain threshold.
+
+Proximity change the activity distance:
+  - Oversampling ratio - Amount of LED pulses per measured raw value.
+  - Calibration bias - LED current calibration of the sensor.
+
+Illuminance functionality:
+  - Interrupt support.
+
+Illuminance reduce the amount of interrupts:
+  - Adaptable integration time - the sampling rate and scale changes
+    according to this value.
+  - Period – interrupt is asserted if the value is above or
+    below a certain threshold.
+
+changes v2:
+- [PATCH v2 3/7] Fixed calculation of al_scale.
+  Fix the value of vcnl4040 according to the data-sheet.
+  Use div_u64 for the division.
+scription for the branch
+
+changes v3:
+- [PATCH v3 1-3/7] Add differences between the chips as variables in
+  chip-spec.
+- [PATCH v3 4/7] Changed commit message.
+- [PATCH v3 5/7] Use period instead of debounce time. This causes some
+  calculations as the period is a time and the chip allows to set a certain
+  amount of measurements above/below the threshold, before throwing an
+  interrupt.
+- [PATCH v3 6/7] Changed commit message.
+
+changes v4:
+- [PATCH v3 1-3/7] Fix setting correct als_it for vcnl4040.
+- [PATCH v3 5/7] Use MICRO macro.
+  Fix values greater than 1 s for the proximity period.
+
+changes v5:
+[PATCH v5 2/7]:
+- Calculate ps_it from ps_it_times by usinh NSEC_PER_USEC.
+[PATCH v5 3/7]:
+- Calculate als_it from ps_it_times by using NSEC_PER_USEC.
+- Store scale step factor in chip_spec.
+- Fixes sampling_rate to ns + 20 %.
+[PATCH v5 3/7 - 7/7]
+- Changed formatting.
+- Changed some variable names.
+
+Astrid Rost (7):
+  [PATCH v4 1/7] iio: light: vcnl4000: Add proximity irq for vcnl4200
+  [PATCH v4 2/7] iio: light: vcnl4000: Add proximity ps_it for vcnl4200
+  [PATCH v4 3/7] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+  [PATCH v4 4/7] iio: light: vcnl4000: add illuminance irq vcnl4040/4200
+  [PATCH v4 5/7] iio: light: vcnl4000: Add period for vcnl4040/4200
+  [PATCH v4 6/7] iio: light: vcnl4000: Add oversampling_ratio for 4040/4200
+  [PATCH v4 7/7] iio: light: vcnl4000: Add calibration bias for 4040/4200
+
+ drivers/iio/light/vcnl4000.c | 727 +++++++++++++++++++++++++++++++----
+ 1 file changed, 657 insertions(+), 70 deletions(-)
+
+-- 
+2.30.2
+

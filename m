@@ -2,98 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BD86716ACF
-	for <lists+linux-iio@lfdr.de>; Tue, 30 May 2023 19:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0F5716E6B
+	for <lists+linux-iio@lfdr.de>; Tue, 30 May 2023 22:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232123AbjE3RYk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 May 2023 13:24:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50662 "EHLO
+        id S232413AbjE3UNg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 May 2023 16:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233420AbjE3RYT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 May 2023 13:24:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2765D135;
-        Tue, 30 May 2023 10:23:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3350663104;
-        Tue, 30 May 2023 17:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3199EC4339C;
-        Tue, 30 May 2023 17:22:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685467370;
-        bh=qMMPUtaJSONqNXtjuUIaCX7ex1x9cEgWQzEJe3CG/fM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qisgGL/Li02iPPF7G4zG9w3Ax5Zw/EcjPGQJVIFMuzAsXxVxnG4W76pxR8AaOtlhK
-         +6Wy6q5mDwKFv9I8sPSZMNTmXTpiNN8YPFWSBjixB7IU+pnbXi9hwwdcacYulSCdbe
-         /9At1FZbjAeaREF+d57ytivPnX2yndKC5cVb3GWQeD/TbOq0dU1UvWV1GCHncmezFv
-         kXjcxLVnnXIVhMQtolBM+lNGLPD7h1PTMER1CRDXKQci/Nih8n1V0iu0ux5fLTs1t7
-         zhg8YzqXrZrSmyO+tettNTfZOjtf5U4hDa7phPQyABVtsr/jdo2INEaYmWpd4ypcZ5
-         PbF2ljRKGkNMQ==
-Date:   Tue, 30 May 2023 18:22:45 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     fl.scratchpad@gmail.com
-Cc:     jic23@kernel.org, Alexandru Tachici <alexandru.tachici@analog.com>,
+        with ESMTP id S231299AbjE3UNf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 May 2023 16:13:35 -0400
+Received: from mxout3.routing.net (mxout3.routing.net [IPv6:2a03:2900:1:a::8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB1E9D;
+        Tue, 30 May 2023 13:13:33 -0700 (PDT)
+Received: from mxbox1.masterlogin.de (unknown [192.168.10.88])
+        by mxout3.routing.net (Postfix) with ESMTP id 50EFB62622;
+        Tue, 30 May 2023 20:13:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+        s=20200217; t=1685477611;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=sWxb1uLSvOMQ+A7ucc82ozJghsSsGNrOYRShIiqyHuE=;
+        b=QZTiWltmIj1vb+SR0MGMJsQgkkG2BnlKci1RPZHFhCMPM62XvYjyHAtzxcduI7NKXHFsdx
+        +9s8NoUNnrF62WAIQQ0ciKElH+jeXpsJOZL4UZM8MppYOiPZiGRDJfXLS9PhZZh7sglSUZ
+        LLpDi2VZio3iOldbNvOugWlfWESopmM=
+Received: from frank-G5.. (fttx-pool-217.61.157.145.bambit.de [217.61.157.145])
+        by mxbox1.masterlogin.de (Postfix) with ESMTPSA id 263A040ACA;
+        Tue, 30 May 2023 20:13:20 +0000 (UTC)
+From:   Frank Wunderlich <linux@fw-web.de>
+To:     linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 4/5] dt-bindings: iio: ad7192: Add mandatory reference
- voltage source
-Message-ID: <20230530-spoils-cod-c606ff33e75a@spud>
-References: <20230530075311.400686-1-fl.scratchpad@gmail.com>
- <20230530075311.400686-5-fl.scratchpad@gmail.com>
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        "Hui.Liu" <hui.liu@mediatek.com>,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
+        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Daniel Golle <daniel@makrotopia.org>
+Subject: [PATCH v3 0/4] Add mt7986 thermal
+Date:   Tue, 30 May 2023 22:12:31 +0200
+Message-Id: <20230530201235.22330-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hIUF/pXFAuUX8uSY"
-Content-Disposition: inline
-In-Reply-To: <20230530075311.400686-5-fl.scratchpad@gmail.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Mail-ID: 9f03fd52-88cf-4dc1-98dd-2f3ea44d9010
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Frank Wunderlich <frank-w@public-files.de>
 
---hIUF/pXFAuUX8uSY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series add thermal related devicetree-nodes and necessary
+dt-bindings.
 
-On Tue, May 30, 2023 at 09:53:10AM +0200, fl.scratchpad@gmail.com wrote:
-> From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
->=20
-> Add required reference voltage (VRef) supply regulator.
->=20
-> AD7192 requires three independent voltage sources: DVdd, AVdd and VRef
-> (on REFINx pin pairs).
->=20
-> Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-> Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+I left pwm-fan for r3 for now as i cannot test this completely due to
+missing 2 pin-jack and 3v3 pwm-level which my fan cannot handle (starts
+spinning at ~3V). Only checked voltage of pwm there.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+changes in v3:
+- efuse compatibles into one line
 
-Thanks,
-Conor.
+changes in v2:
+- drop highest 2 trip points as they are not yet used
+- leave already applied patches
 
---hIUF/pXFAuUX8uSY
-Content-Type: application/pgp-signature; name="signature.asc"
+Daniel Golle (3):
+  arm64: dts: mt7986: add thermal and efuse
+  arm64: dts: mt7986: add thermal-zones
+  arm64: dts: mt7986: add pwm-fan and cooling-maps to BPI-R3 dts
 
------BEGIN PGP SIGNATURE-----
+Frank Wunderlich (1):
+  dt-bindings: nvmem: mediatek: efuse: add support for mt7986
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHYw5QAKCRB4tDGHoIJi
-0p1mAQD5TaFfWdF6Y+ChN/bcpS9KNPvj48Qj8SBqCW5Fztk4TAD/cVfgXHGMFsG2
-MHk+7lYF48Xbq/2TCltKYLN6TVnU5wg=
-=iYb+
------END PGP SIGNATURE-----
+ .../bindings/nvmem/mediatek,efuse.yaml        |  1 +
+ .../dts/mediatek/mt7986a-bananapi-bpi-r3.dts  | 31 ++++++++++
+ arch/arm64/boot/dts/mediatek/mt7986a.dtsi     | 62 +++++++++++++++++++
+ 3 files changed, 94 insertions(+)
 
---hIUF/pXFAuUX8uSY--
+-- 
+2.34.1
+

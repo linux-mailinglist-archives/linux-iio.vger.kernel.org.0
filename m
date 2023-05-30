@@ -2,138 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB8371559A
-	for <lists+linux-iio@lfdr.de>; Tue, 30 May 2023 08:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1558071579E
+	for <lists+linux-iio@lfdr.de>; Tue, 30 May 2023 09:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229513AbjE3GjB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 May 2023 02:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
+        id S229556AbjE3Hxd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 May 2023 03:53:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbjE3GjA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 May 2023 02:39:00 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C06CE5;
-        Mon, 29 May 2023 23:38:49 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab] (unknown [IPv6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 7856C66058F8;
-        Tue, 30 May 2023 07:38:47 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1685428728;
-        bh=KtqmldD7s3ro7nqM1YsEAzRtJDAnNiaXuCYtFORMGg8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kNACF24Vz7zJ2EWyJ0AiOpyRsD3xYzcvJOcSVrqe/Kgikz/7Nv1BhKuuxGp2ICKvy
-         jX2feCqQCer7AOJWZI+oEPp4J5HCFFyXBaJRqUY88UfHsuwb9Lj3ylRlfK3ErfnTPX
-         Uw4G8DWG0Tz+W8dRJnmZNDu7rO52w/yZaAPOl4cXwu05onowIrf4y+8gkaRXdETaA/
-         ks1FeOZTNBA/kOFKUsk/uUPJX9MUPyRkOy6KX0TURY4opfjpOXgpZAsEjc1QCCjXvW
-         bVAVsTV14GmeedX/+nsvKhc73rFDuQRe6b0kgkoPQFhwAqAmR8+jRHUOVHIP3PP5U6
-         WayJj+K+CZTog==
-Message-ID: <8d4d21d9-4f2c-8895-36e6-19de498d6e4a@collabora.com>
-Date:   Tue, 30 May 2023 08:38:45 +0200
+        with ESMTP id S229588AbjE3Hxc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 May 2023 03:53:32 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF28118;
+        Tue, 30 May 2023 00:53:26 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f606912ebaso42741195e9.3;
+        Tue, 30 May 2023 00:53:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685433205; x=1688025205;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iN1gw0mwm7WmvYXFIrcXk8pdCkRKPm8Ajl3S6Jy5MwI=;
+        b=ZrDagKrme3a6Hd3dwAsyc58nI93cJrUXLIBdL+tbD06gbNArOM7cJHn0IKhRdjXgX6
+         t9LUKxyWy/ySTqil0Ytjp7OyWIrGx/Mde1aNMbaBiY6uIKDg7nxH3xbEoG3sjNjIqfgH
+         BO/nNFRzjk9B1bkO84yjbOJg01t0xRpjJeqt+ymrsmIfVVpjtVOHkIgjmQrl3MnrPymj
+         DsEMdvtRXCEwoFSkSWpnT/TiyziFuhWUZ4Df77msnZ3mx1sXKrXMUYHJUM3Iim42H+nQ
+         +JYnmt2S7n8h48ILWkHU++/bmUjaRiHKqtmr5B4b6fNIpIzo8WgyBuYucxT5V3gNUCSU
+         nNAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685433205; x=1688025205;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iN1gw0mwm7WmvYXFIrcXk8pdCkRKPm8Ajl3S6Jy5MwI=;
+        b=MkP8FcmClvbURcDmbY03Mu/deHtD6Z724zJyjT6GR8fVBml4N9lbCOrjm11YtRBcqo
+         6hkuNsI3IXDkR0Z2anQCZoQUvdCcUxOcgiHPXAw+SlEYQYSqznAHbonC5oxLe6V80Rew
+         MMGqIpJFPFZdmYzI8qdG9vAXdD5yic4hFIGIBQXPpC49qWTHiWgTw8hWMjJFO1Kmxh9J
+         EmYl/plz/50luBu8yN3LI83vmTlw3d3CON/XUcV+zZ2ghGX//shmlVK6vLz8VgG0CjXl
+         +3LEbCmzYK18CSWiTfBQwD1dsbJy26zjsgLLLdYNeMg24r8qFBAPE6XmiLGgw/N8cKtN
+         Ldyg==
+X-Gm-Message-State: AC+VfDzb3pF+IRnWPMmm0qTpZbCTQ+BX4iUDh6aqR+i92LxBCQkWWeSf
+        8QofiyKHekttLNgJsQZaGoZG8waMGKM=
+X-Google-Smtp-Source: ACHHUZ4IjHvxlNexzSJNUo0Ylft54bbV9bWzAgAp7tWi+uZLe5jkO6oJs/6XXcAjggoqHX48XH74LQ==
+X-Received: by 2002:a05:600c:b44:b0:3f2:48dc:5e02 with SMTP id k4-20020a05600c0b4400b003f248dc5e02mr811929wmr.27.1685433204598;
+        Tue, 30 May 2023 00:53:24 -0700 (PDT)
+Received: from PC-UT2.ad.ennebielettronica.com ([78.152.97.130])
+        by smtp.gmail.com with ESMTPSA id x21-20020a05600c21d500b003f6041f5a6csm16561275wmj.12.2023.05.30.00.53.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 00:53:24 -0700 (PDT)
+From:   fl.scratchpad@gmail.com
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Subject: [PATCH v3 0/5] Fix ad7192 driver issues
+Date:   Tue, 30 May 2023 09:53:06 +0200
+Message-Id: <20230530075311.400686-1-fl.scratchpad@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH v2 2/4] arm64: dts: mt7986: add thermal and efuse
-Content-Language: en-US
-To:     Frank Wunderlich <linux@fw-web.de>,
-        linux-mediatek@lists.infradead.org
-Cc:     Frank Wunderlich <frank-w@public-files.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "Hui.Liu" <hui.liu@mediatek.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Daniel Golle <daniel@makrotopia.org>
-References: <20230529204258.65238-1-linux@fw-web.de>
- <20230529204258.65238-3-linux@fw-web.de>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230529204258.65238-3-linux@fw-web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 29/05/23 22:42, Frank Wunderlich ha scritto:
-> From: Daniel Golle <daniel@makrotopia.org>
-> 
-> Add thermal related nodes to mt7986 devicetree.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> ---
->   arch/arm64/boot/dts/mediatek/mt7986a.dtsi | 37 ++++++++++++++++++++++-
->   1 file changed, 36 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-> index aa9e679b78e2..a409d5e845c2 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-> @@ -337,6 +337,15 @@ spi1: spi@1100b000 {
->   			status = "disabled";
->   		};
->   
-> +		auxadc: adc@1100d000 {
-> +			compatible = "mediatek,mt7986-auxadc";
-> +			reg = <0 0x1100d000 0 0x1000>;
-> +			clocks = <&infracfg CLK_INFRA_ADC_26M_CK>;
-> +			clock-names = "main";
-> +			#io-channel-cells = <1>;
-> +			status = "disabled";
-> +		};
-> +
->   		ssusb: usb@11200000 {
->   			compatible = "mediatek,mt7986-xhci",
->   				     "mediatek,mtk-xhci";
-> @@ -375,6 +384,21 @@ mmc0: mmc@11230000 {
->   			status = "disabled";
->   		};
->   
-> +		thermal: thermal@1100c800 {
-> +			#thermal-sensor-cells = <1>;
-> +			compatible = "mediatek,mt7986-thermal";
-> +			reg = <0 0x1100c800 0 0x800>;
-> +			interrupts = <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&infracfg CLK_INFRA_THERM_CK>,
-> +				 <&infracfg CLK_INFRA_ADC_26M_CK>,
-> +				 <&infracfg CLK_INFRA_ADC_FRC_CK>;
-> +			clock-names = "therm", "auxadc", "adc_32k";
-> +			mediatek,auxadc = <&auxadc>;
-> +			mediatek,apmixedsys = <&apmixedsys>;
-> +			nvmem-cells = <&thermal_calibration>;
-> +			nvmem-cell-names = "calibration-data";
-> +		};
-> +
->   		pcie: pcie@11280000 {
->   			compatible = "mediatek,mt7986-pcie",
->   				     "mediatek,mt8192-pcie";
-> @@ -426,6 +450,18 @@ pcie_port: pcie-phy@11c00000 {
->   			};
->   		};
->   
-> +		efuse: efuse@11d00000 {
-> +			compatible = "mediatek,mt7986-efuse",
-> +				     "mediatek,efuse";
+From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
 
-Fits in one single line. After which:
+Here is a patch set to overcome a number of issues in current ad7192
+adc driver implementation prevending the driver to be loaded and
+behave correctly:
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+ - null pointer dereference causing kernel panic on driver probe;
+ - wrong internal clock selection;
+ - use of "avdd" regulator name in place of vref (reference voltage);
+ - missing clock options in bindings docs only (already implemented).
 
+The first two issues are regressions.
+
+Backported patches have been tested on a platform with an ARM Cortex-A7
+CPU from NXP with kernel 5.15.
+
+As a side note, on the tested platform there is still an issue with a
+pending interrupt that I worked around by setting the DRDY IRQ
+to LEVEL in place of EDGE sensing. Also, setting IRQ_DISABLE_UNLAZY
+flag does not help in my case.
+
+You may find further information here:
+https://lore.kernel.org/all/CAPJMGm4GaSjD6bdqMwCr2EVZGenWzT-nCCf3BMRaD1TSfAabpA@mail.gmail.com/
+
+Version log:
+
+
+v2->v3
+ - Reworded commit messages
+ - Split binding fixes
+
+v1->v2
+ - Obtained ad7192_state from iio_dev pointer
+ - Added patch on bindings documentation
+
+
+Fabrizio Lamarque (5):
+  iio: adc: ad7192: Fix null ad7192_state pointer access
+  iio: adc: ad7192: Fix internal/external clock selection
+  iio: adc: ad7192: Use VRef instead of AVdd as reference voltage source
+  dt-bindings: iio: ad7192: Add mandatory reference voltage source
+  dt-bindings: iio: ad7192: Allow selection of clock modes
+
+ .../bindings/iio/adc/adi,ad7192.yaml          | 32 +++++++++++++++++--
+ drivers/iio/adc/ad7192.c                      | 31 +++++++++++++++---
+ 2 files changed, 55 insertions(+), 8 deletions(-)
+
+-- 
+2.34.1
 

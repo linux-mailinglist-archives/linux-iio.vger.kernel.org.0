@@ -2,87 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 964567176E5
-	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 08:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE13C717762
+	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 09:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjEaGeo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 May 2023 02:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
+        id S234089AbjEaHAQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 May 2023 03:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230001AbjEaGem (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 02:34:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F7E99;
-        Tue, 30 May 2023 23:34:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14A2363709;
-        Wed, 31 May 2023 06:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F03C4339B;
-        Wed, 31 May 2023 06:34:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685514880;
-        bh=VbJXJ5zz+WVpnyRQMyry3uFyArPowS0EQwKqrDggAFo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QijCDzcRmZbR2iHcYZtpEYpw6bAFdDHejD9UBEfPcsfUQaOT2Tt/9k/VxjOQbGdxA
-         QDJOoV3DxLF8Vt54AzGdX21lutd/xZParafTh73vV+oSfsHSBfYegP2u43MtzMdh7T
-         oecQFkldm7MpwUtQXBxIVMqWCTm8H6aKcfEFofaRrDbR/1Uw4TtdcONaphzmDXRyWo
-         RppPS1Z2PYrZsAbT/p225lgG8fwFiDplK5sUt3//lMWdXQ8SE4/4sM7D9Jp+t8x4OO
-         15wDxV6BJaKVjOV9VqVi/DHRoXdI0/deofPd9pw5Icn/svT+DQpujic4PwX6f/MJ3z
-         olvSJGHdp3NRw==
-Date:   Tue, 30 May 2023 23:34:38 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Subject: Re: [PATCH v7 0/9] fix fwnode_irq_get[_byname()] returnvalue
-Message-ID: <20230530233438.572db3fb@kernel.org>
-In-Reply-To: <cover.1685340157.git.mazziesaccount@gmail.com>
-References: <cover.1685340157.git.mazziesaccount@gmail.com>
+        with ESMTP id S232373AbjEaHAO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 03:00:14 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E3018B;
+        Wed, 31 May 2023 00:00:05 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6af6ec6d73bso2006483a34.3;
+        Wed, 31 May 2023 00:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685516405; x=1688108405;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uSW2PnFIqnxjHbhpdzsjGcpZqsHNCS8CfUjd/XLbYNc=;
+        b=cZTV4a1cXkeM22BGXe2aogFTeSVqHuc2NVjxiitTuvpT3uSyYFdg6baqDZ/iIt0o+l
+         LIfONdVzVhGToxON/QYad3gbFrRAev08rq4kBIqhLNSN8PGhPLd5g4zbXIGqlFFYbsCo
+         FU6Fp0Cl/kqsQYpVTGAMWFvRU2sO3/xEZOOFFAS+w2gFuwU91lGn86OyrqVBYTGf3Tzn
+         upZ53y3Jr74eDNT1H0OKpYeQUSSsHhJQ1m2L1XSVUn6WpEYnryTw86XozbDNz0Z4Y4Er
+         t8IodxGm/dzburm21S06tar0zvchV4UpmY8GCveeBFR/Rv/RBKrtQjvlXjCWsd0MlgXT
+         bYPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685516405; x=1688108405;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uSW2PnFIqnxjHbhpdzsjGcpZqsHNCS8CfUjd/XLbYNc=;
+        b=aLm6HumBih88E97KkP1sIXR+7eZfhKxBS17a6z2bv3EIT7gZj/+IVn6xQLProFLpyQ
+         qz0n3s7M2QqFHpV9R/Vpq6t1BpXeOQVlQ8lsOkWqEjNJMCmP/JQ48knf2zGdDQbEaxZa
+         99JHFu7Ct/71ZZ/xK7K+WvE4La1XcaU5AYCfWaDQvKwSH0pTiFJYeR7GvHNlnq7zO6L3
+         Q7v08yGDEh02y17clwSSo8Uf/uYUTzRZWs1gFcJDo6nOmwLkWLFa8VNXO5oC5VDpJ40P
+         Spt1GurZXLaq/3iV/uw7Wfu+n9l5Tp802Xy6Y2FiCxewS/yABafJ30fGBPPmEGRtvBJv
+         0FEw==
+X-Gm-Message-State: AC+VfDzAUEG0teZnsiWwRl0DVyhv0hLLd8eFf9AkfBXnzatMalkH1DQ5
+        zRL1gW6c7cTrbFg96UXK7zNA1fVKAJT33bEBTt0=
+X-Google-Smtp-Source: ACHHUZ5tjoXhJMRD/4/q+m8dRPDB/gHSc7bwO99rM6CTBVP8FOJ/w2egvpKLc82l9etG9iWTVjOLkjjtX/k7AuLL+Ec=
+X-Received: by 2002:a05:6808:3d9:b0:398:29bb:dd49 with SMTP id
+ o25-20020a05680803d900b0039829bbdd49mr2380629oie.34.1685516404602; Wed, 31
+ May 2023 00:00:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230530075311.400686-1-fl.scratchpad@gmail.com>
+ <20230530075311.400686-6-fl.scratchpad@gmail.com> <20230530-cannabis-headstone-883c5b891dd3@spud>
+In-Reply-To: <20230530-cannabis-headstone-883c5b891dd3@spud>
+From:   Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Date:   Wed, 31 May 2023 08:59:53 +0200
+Message-ID: <CAPJMGm4=sRQGPmVi8NjAVvOVrr8s2By6PO8kKRKZt3W0FR9j-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] dt-bindings: iio: ad7192: Allow selection of clock modes
+To:     Conor Dooley <conor@kernel.org>
+Cc:     jic23@kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 May 2023 09:22:15 +0300 Matti Vaittinen wrote:
-> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
-> zero if mapping the IRQ fails. This contradicts the
-> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
-> errno on error is unepected and can easily lead to problems
-> like.
+On Tue, May 30, 2023 at 7:22=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> On Tue, May 30, 2023 at 09:53:11AM +0200, fl.scratchpad@gmail.com wrote:
+> > From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+> >
+> > AD7192 supports external clock sources, generated by a digital clock
+> > source or a crystal oscillator, or internally generated clock option
+> > without external components.
+> >
+> > Describe choice between internal and external clock, crystal or externa=
+l
+> > oscillator, and internal clock output enable.
+> >
+> > Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+> > ---
+> >  .../bindings/iio/adc/adi,ad7192.yaml          | 27 ++++++++++++++++---
+> >  1 file changed, 24 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml =
+b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > index 16def2985ab4..f7ecfd65ad80 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > @@ -32,7 +32,8 @@ properties:
+> >
+> >    clocks:
+> >      maxItems: 1
+> > -    description: phandle to the master clock (mclk)
+> > +    description: |
+> > +      Master clock (mclk). If not set, internal clock is used.
+> >
+> >    clock-names:
+> >      items:
+> > @@ -50,6 +51,17 @@ properties:
+> >    vref-supply:
+> >      description: VRef voltage supply
+> >
+> > +  adi,clock-xtal:
+> > +    description: |
+> > +      Select whether an external crystal oscillator or an external
+> > +      clock is applied as master (mclk) clock.
+> > +    type: boolean
+>
+> Am I being daft, or are these the same thing? If they are not, and use
+> different input pins, I think it should be explained as it not clear.
+> Could you explain why we actually care that the source is a xtal versus
+> it being mclk, and why just having master clock is not sufficient?
 
-What's the merging plan? Could patch 1 go to a stable branch 
-and then driver trees can pull it in and apply their respective 
-patches locally?
+I may revise the description as follows. Feel free to add your suggestions
+in case it is still not clear enough.
+
+"Select whether an external crystal oscillator between MCLK1 and MCLK2 or
+an external CMOS-compatible clock on MCLK2 is used as master clock".
+
+This is used to properly set CLK0 and CLK1 bits in the MODE register.
+I guess most applications would use an external crystal or internal clock.
+The external digital clock would allow synchronization of multiple ADCs,
+
+>
+> > +  adi,int-clock-output-enable:
+> > +    description: |
+> > +      When internal clock is selected, this bit enables clock out pin.
+> > +    type: boolean
+>
+> And this one makes you a clock provider, so the devices advocate
+> position would be that you know that this bit should be set if
+> "clocks" is not present and a consumer requests a clock.
+> I don't seem to have got the driver patches (at least not in this
+> mailbox), so I have got no information on how you've actually implemented
+> this.
+
+I see... When this bit is set, the AD7192 node should also be a clock provi=
+der.
+The clock is output on MCLK2 pin, hence it can be used with internally
+generated clock only.
+I tend to dislike the idea of a "conditional clock provider". Also, I'd gue=
+ss
+there is a very limited usage of a low precision clock output for
+synchronization purposes between multiple ADCs. In the remote case,
+I would rather use a precise, dedicated external digital clock.
+Would you agree if I remove the related lines from the change set?
+If not, I kindly ask for your suggestions.
+
+The existing implementation from AD already includes all these
+configurations (there are no driver patches, the proposed changes are
+just related to documentation).
+
+Thank you!
+Fabrizio
+
+>
+> Cheers,
+> Conor.
+>
+> > +
+> >    adi,rejection-60-Hz-enable:
+> >      description: |
+> >        This bit enables a notch at 60 Hz when the first notch of the si=
+nc
+> > @@ -84,11 +96,12 @@ properties:
+> >      description: see Documentation/devicetree/bindings/iio/adc/adc.yam=
+l
+> >      type: boolean
+> >
+> > +dependencies:
+> > +  adi,clock-xtal: ['clocks', 'clock-names']
+> > +
+> >  required:
+> >    - compatible
+> >    - reg
+> > -  - clocks
+> > -  - clock-names
+> >    - interrupts
+> >    - dvdd-supply
+> >    - avdd-supply
+> > @@ -98,6 +111,13 @@ required:
+> >
+> >  allOf:
+> >    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +  - if:
+> > +      required:
+> > +        - clocks
+> > +        - clock-names
+> > +    then:
+> > +      properties:
+> > +        adi,int-clock-output-enable: false
+> >
+> >  unevaluatedProperties: false
+> >
+> > @@ -115,6 +135,7 @@ examples:
+> >              spi-cpha;
+> >              clocks =3D <&ad7192_mclk>;
+> >              clock-names =3D "mclk";
+> > +            adi,clock-xtal;
+> >              interrupts =3D <25 0x2>;
+> >              interrupt-parent =3D <&gpio>;
+> >              dvdd-supply =3D <&dvdd>;
+> > --
+> > 2.34.1
+> >

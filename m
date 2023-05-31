@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3FBB7184E1
-	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 16:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 821537184E4
+	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 16:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236053AbjEaO03 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 May 2023 10:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
+        id S236277AbjEaO0d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 May 2023 10:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236414AbjEaO0Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 10:26:25 -0400
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 519EB1A5
-        for <linux-iio@vger.kernel.org>; Wed, 31 May 2023 07:26:09 -0700 (PDT)
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-        by mx0b-00549402.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34VD5Ck1030918;
-        Wed, 31 May 2023 14:25:44 GMT
-Received: from jpn01-os0-obe.outbound.protection.outlook.com (mail-os0jpn01lp2107.outbound.protection.outlook.com [104.47.23.107])
-        by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3quanmk3c3-2
+        with ESMTP id S236350AbjEaO0a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 10:26:30 -0400
+Received: from mx0b-00549402.pphosted.com (mx0b-00549402.pphosted.com [205.220.178.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142BE139
+        for <linux-iio@vger.kernel.org>; Wed, 31 May 2023 07:26:12 -0700 (PDT)
+Received: from pps.filterd (m0233779.ppops.net [127.0.0.1])
+        by mx0b-00549402.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34V8wvYk008615;
+        Wed, 31 May 2023 14:25:48 GMT
+Received: from jpn01-tyc-obe.outbound.protection.outlook.com (mail-tycjpn01lp2173.outbound.protection.outlook.com [104.47.23.173])
+        by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3qub7gu0yx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 31 May 2023 14:25:44 +0000
+        Wed, 31 May 2023 14:25:47 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QCotOcG1T4eGaAQs4wIRlhNOX2cqdE2U+zOXSSglXQqLHYlp2/HmezmT0IGN04uzgNmkcKYUfX9dPinl+lL3OdbhQAsMz+jjjwlWvVPXcAruGETUXwkXumq2rjCZf6fxZxsC4coaaSwS+ucrgq4AzNou5uwfwdnxL1zauIX9r/lk73kv+6AmYqU9nj/XEqKT8K98cTZBOlAqHu2cDkbDtxCWG0VFJO4THsfUjEVsRJU8Vspanp+YGBUmJra8b92b9zpw8jCPrRXcIWeZeXfrHZC9KIioLrWKR6WFo8fYV/HBs72FZsJ9TTCZt/ru4aPup5xpc2cbuQBZML6tXx9o1Q==
+ b=J/NX9m0VVwFuG7AjTAITGs7nrFHWnOFAPiz6A9YH0KU/X7VB4A/VfBM1o8aXJ11DK9axUFbysOK+8nRKaVIeXs33X8vehp9U5+nyGPK3qYl2C3o4lhWUmARKkMiy9ZqszYiPd633PX0Vnls+bCL/Pe7ubCKC/g41hQ433GA74aNGlVc/rv80A5vjWXO4rSX1A3VBJgV3RZer63hT9Bh01+Yfh3m6oqD3A5WAeV/PaDwMIIiHL1FQGWhSi2yYoQ8yyOpJnjr94/qWD8+5PzxDGz8b1sRmPy7vFD5QB+rcYdzapyijH9aeyKDqM2Mtqsk1k/NlGTgXUk8K5MlE94jKNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8sJYkZy138zblZgRLIUvmUQ0R8GXgRe85wfpyKVNOjA=;
- b=P9I23SGTLxI79z96F5h6OYEnzX+N/5tXNWmdde8QetoXehBxlUBBHES2lshoKILNtYHOHJYMBi2fQ3zYP+OWYwHVtoCn7B16RTxeAWpQqox2Izl8bYKhifO+ICBmyU3kb+kY0GVOq8J2RBjoMwJel3xlAehsw+WuejH23EiOgCKWuRGLOPNirUWrnguzwV/Cvg0OKt2cr6+1TubwpNaMXNIjZCpx6sUbm5K0nW7Ly7W4K5vyDouZQXoO46V8HuEro3XBnahbqaMVJBxykooGd16fDfzzaFUyNZ1DYN39dM3OMmnQiFfC8/g1IpP+T1ILSZSXfbmxfba8abxU1xP2EQ==
+ bh=9ZJgRUBqPDhn9GbKgnyCMz6lpyTZyWctRscwKkZM4Bg=;
+ b=Sqohvfp1Pg9YDqRN5N+iZvwGTiatE3JaiIKTYHsPrg2LdmFQDV6gOqEQOrndhCG1JlrGtZC+XkujtcrGDh2HmIVBwMqqkmYeV0mpCvZqOnCX30nHbOg1VvaRAlRhRc/hPlOg265R3+TvsuK78XRwkFEHQujq6TyI77B2dL8vXRCFybfkUFuh0nEKvj65Pi1Zw+FelhtzDA9hdgjBmVZzaBElzZpSSFbvQ0MxfJPPIA3lb0Gi5v2KkdDTWNsgf4zpfaD7INzLoofQtVY+TPSFEcQrx+JSl+rbHzMhvkAo3xn0+c6CcX+sW3JKIQZb3eTXiggavWgexkuDzyLMLKSmnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
  header.d=tdk.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8sJYkZy138zblZgRLIUvmUQ0R8GXgRe85wfpyKVNOjA=;
- b=kdr5F5pTCPOt3rNzEzND1EAmJawy90auqjCTmDOtqgR6ZzfcDGFn9wWW1kBZmHoN6/kV5aDjYirXTpDpwBiEOvBLToCK34Hr55wkKsUJTf8/bUdogaEmV/grrCezBdGr368XhENlAVjpptEmwenaY9Mqak7OfkYPnpfrb3hZi+N7lppIVG4a3dkLnUIsnDh9tLm8PE6AZU3k6iWN1COxQ5dJCE4SKol/EQixoz0i6posNCjyiNCtNSGfsuEretl5JXkHjp451zyECJFdzBtkJr7DvK0pp3XPKEIObIGMBIH/55RX5dR/SZvje3XqAzRigjK3AYQHa6iWVXLPwme4GA==
+ bh=9ZJgRUBqPDhn9GbKgnyCMz6lpyTZyWctRscwKkZM4Bg=;
+ b=VY4qlLzPdeZPYJMz1AjJKm4iVcd8sEyGfTi/cr9VVrbznUHZtHPo54KvjNE5n3Hhm050N0UhGv5iwfprNa4AfCmB90yEyFaoKcAeY0OswS7okIxyV07nRnYt/zaAP3v+TBYNJOHDioiNn3uhALPsnupDWAV4pojrp15BO1Lrp42NPP5LSKSadHLvVllBrUY4ZwJvxvIq32eQgwJWATpyHZgmpvsUiKO5SW6svf260KvTc8HUitG+HyGM+bXAI47/w09nn/lTyT8FnuIKPOg41QHnAXMJ6bZhUB+sn2RJBcf8EVyf8cVTWcYCsgLBasYs0u5KxisFu3sPaX2ZQXME7Q==
 Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
- by TY3P286MB2785.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:250::5) with
+ by OS3P286MB3226.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:20e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.22; Wed, 31 May
- 2023 14:25:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Wed, 31 May
+ 2023 14:25:43 +0000
 Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
  ([fe80::60df:b013:2731:f9c1]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
  ([fe80::60df:b013:2731:f9c1%7]) with mapi id 15.20.6455.020; Wed, 31 May 2023
- 14:25:41 +0000
+ 14:25:43 +0000
 From:   inv.git-commit@tdk.com
 To:     jic23@kernel.org, linux-iio@vger.kernel.org
 Cc:     lars@metafoo.de,
         Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH 1/4] iio: imu: inv_icm42600: make timestamp module chip independant
-Date:   Wed, 31 May 2023 14:25:10 +0000
-Message-Id: <20230531142513.48507-2-inv.git-commit@tdk.com>
+Subject: [PATCH 2/4] iio: move inv_icm42600 timestamp module in common
+Date:   Wed, 31 May 2023 14:25:11 +0000
+Message-Id: <20230531142513.48507-3-inv.git-commit@tdk.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230531142513.48507-1-inv.git-commit@tdk.com>
 References: <20230531142513.48507-1-inv.git-commit@tdk.com>
@@ -61,57 +61,57 @@ X-ClientProxiedBy: LO0P265CA0007.GBRP265.PROD.OUTLOOK.COM
  (2603:1096:604:1a7::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|TY3P286MB2785:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95bd48f4-a3d7-41f8-cf2b-08db61e2e97c
+X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|OS3P286MB3226:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64f8e0c0-ec84-4c16-ee0a-08db61e2eaad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Qgj9RTCx/Uab3nFFt0P3yZoyutTAI59l/VlKznhXisqL0plskQEQi+JfKdWed9aR+7+eNHtfgXxHG0CX+ezXUrSl71dmiHteGJSG4WN6EbCBOF7G1uqBG75M59K6knxHgMlzBDmG8EcrBWzceqvFIfW6Qc7RXZXbY47aYCEd2VJVWNgpGuDR1C4rp5EYMult673vNYVLGkJt3AeZdNUYt2kOvhRfBuygLIvQox6wi/idtpuCffdUhDK3IBjdhFQC++NNzoJOLyd0K55vJpo0nwf75+JlOaNpLCyO1pcmRb6mc//Psse56E9r4q3QgBxKSstTNg7dF/GM1d9wnf0pq1OiQ0l5Fj7iYL9NHsW/W5vk8Wc7SsO9EXca1UaevNBTUSHpBDShtMeEtucjvJvZ7LDQXHLmrLPC/CNJm+iFwMRHatyK8EixMfOacFUwzqcOi1wQyZEMq+W2RwZVQTaix5rNwmLdEzzjHWDgM8zo6AwFOwKEZxQO9zFkCWlLUgXwnkUEX/anj7J3tsB76sqFSl4i0v3qxZIgrC00voiqM93wz9Il2RCKxTrymBCZnpWbG86VRuBH6CzoHxc6ae8tiQ9/OzW1maev7sYskfQUugSOcGwUqSRTnMEMA2p9/h9c
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(396003)(39860400002)(366004)(376002)(346002)(451199021)(86362001)(36756003)(2906002)(186003)(5660300002)(6506007)(1076003)(26005)(9686003)(6512007)(6666004)(52116002)(6486002)(2616005)(478600001)(83380400001)(38350700002)(4326008)(66946007)(66476007)(66556008)(38100700002)(41300700001)(316002)(8936002)(8676002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: EwWTgizyuT6A/jfF6U0VahbggFvE+LPNVCxnYy6ohG24ZvW4O1wKrk4MDJuPa1224bO6tplq0vJynXvChhdieOJHxdOXjfStMhXumSxdmk6s4I1/vATxZolz/vW0KjJLzTbaFm5SvphqubC6zwhFc+qwIxpvM/o3YirYj7U7hUV+H/UM3zUctD0Msl5NbYEX0ne8Mx2oPSiha8b8XRNFhn18m1+ZFChlrIY2EUxb1dWOnbgf9hUNIEmSNolpa3kZBYhByRLHzKIkf0FumnTBIlocQGAIj6grAeq7HRTMyJHdALi6hpCT9JoudUucLkhuEaqyok1tF9kndrBMatSrQ/iMbOGRXGR0PoplgMnr5V7g5BPm8RlLrrrmPNm/rkGEUoK5QQz/OPhvJEt+Ne94ur5eo5waR+7TBab6mazIvyjlQnDr+4iymg4f04sqpsdc64IVhfZyZkJYs7W+5Hl8y/3KMPSdRWNWTESUWXgF4XoNmNafDLRB1kzPUIzZjHZVL6o3kEUIKTW2/AxwCdibLPx0EAX3KmhYY4C8t+qbhKmCMClXJjoOTSPPTqRyIyQ0Pia7QaS3z0Bb7Fa7X4+5OwLa0Reil6F07JJDML4/f203nasQ20DzwfPVphkfZKXJ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(39860400002)(136003)(346002)(376002)(451199021)(2616005)(2906002)(186003)(83380400001)(36756003)(38100700002)(38350700002)(8936002)(8676002)(41300700001)(86362001)(478600001)(4326008)(66556008)(66476007)(66946007)(5660300002)(6486002)(52116002)(6666004)(316002)(6512007)(9686003)(6506007)(26005)(1076003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pDIcLp/6TDu2xtHiuz3BKFX6+qOZFNw96eqb0F5Ux4vhb34/Oan8Cn2Wiod7?=
- =?us-ascii?Q?AWpcN+45PpzpoUQK/SPlAQjv5ptssD1fL34ZOAdjWN/W18RkjtcF6cbmDJw3?=
- =?us-ascii?Q?/xhEslI6JFAs0B1LWCnHRZbnTLJQ+j8ALqJpXW+y8O3A29fqm4jEFoq9/bHV?=
- =?us-ascii?Q?vPB290ZXTO3tzdBj6+tYJVyCR2lOpmKyR/fw8/UJz42Dy4F6j3lCFZ1SuCkJ?=
- =?us-ascii?Q?c3TBGi8Tu6pTE95C2DLeMil0pZanWSoriJZcECcye7wrVw1xxskclK5uoAj+?=
- =?us-ascii?Q?JVHZ6FzD2rTJJgIOLwCY3/VcmEaehy7lZWekfScztii/ahtQPrBAeohaV2ic?=
- =?us-ascii?Q?ym+6TCRKY4D/TWi6lHNEmv5RhBmtsHecIMGNitbHeuOGZfkmbSfU2kLURlLK?=
- =?us-ascii?Q?ywbOBIhmgUgRLTTiIzvNSUAkD1gHvywlSnp0Mr0XXumaB3VY+BwyvBzQ95Rv?=
- =?us-ascii?Q?l4fUk575wPNMvWi/OZ8vp8V70frTCODXhcGiRs6J6QMvOTf5nfDGaTZFw8II?=
- =?us-ascii?Q?JFbYCEn/m/l7gG7ejjgT1Deivm1vr+TM7poCvkTYwRs5zayE69Vh/xzOw/ll?=
- =?us-ascii?Q?FdP3R81Jgh3/x0rH9xFvV+y0znTCzhkdclvpiHhkqh21tCyGB77Jt5VU3ZSR?=
- =?us-ascii?Q?yZfUyH52Qk9GT5B99gYOojuvp1iEvZcQouBMyWRXcUrOLo0R7NxtI46/7Gi2?=
- =?us-ascii?Q?E+MbkjKYfqIjX8F/6G0/n//qJOKbnKF69G5uvJr6EMcI3L4MeY4iM32aX/eH?=
- =?us-ascii?Q?HZDZrA+9yUiXAjdeNiFFKn/ucMq7MK8jJe2aXxxLp97nEmPmWAoZWGQ9ElUy?=
- =?us-ascii?Q?FyGAdYYbmMBy50RQPW9Cm+LAfqVM52Q7VvBGhPejzJ7PkyOLVpQxPduRyIpc?=
- =?us-ascii?Q?sCwnZjVWBiYiEO/ekT7S05t1VOPLM+7EyQKtSpVdmhw79HPM2FnTy9yUgQJN?=
- =?us-ascii?Q?Yo0YomRh3jHglM47o7W0VS4fpGcL0PjF1KA8X7dPM6fbhiOqsnQwZd6HDE0F?=
- =?us-ascii?Q?TfqTvdSHzSnilwE3YXcEPkQnAAveAo/uzh0LZFy6xiJUZs5e3eydX/rOF/2d?=
- =?us-ascii?Q?xIMaadgRfou/EsxlwSEo/cYn7wzGIb31EVEyy7/bQAoZvIIABngf+kH2yeUu?=
- =?us-ascii?Q?ha2EL1SWA9pEJXDar0weMgRbL1sn6AHsDz6i2hqsf9RDrldzPdfGUfjHtezl?=
- =?us-ascii?Q?mpsQH9tHMl0WIKvS82TLbbpi1Ru2zk09/n1Kt6dmRCRM9c33Gz5EildDYZLL?=
- =?us-ascii?Q?bCaBNNQqA2e0sz9dHaW1N3IdfST6N5SeUcL0lc1bfAjvyp7o9FaKIwirHi7I?=
- =?us-ascii?Q?M50Yb+KoqjnvrrjxkjZbfpSBDrdReLqGMsLMZXI7j/qqkXIj1upLlB5KUSHP?=
- =?us-ascii?Q?Bh6VuTevihOpzxTgpTUPT2JWX0ISsXaTSGYUyRpc0AxsUwQ4xVr4bIZ5J+Sy?=
- =?us-ascii?Q?yWUawcO3d5vPjOiKrRll8GZ6SlUsYiisME4/XQXzw/XdDag0oF+u5DoruO9d?=
- =?us-ascii?Q?2y1sFoJ8iUzDzcBse0TCrnPczU5rkYeZkEx2A+5lfLIlFxY0lu5Ru8yERNkK?=
- =?us-ascii?Q?cEn5BSDqReXqoFEN6eEkvl1Bu1wBahTF/1QKAsiD?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?K73csZUFi5Xe9HRIh9uPZN9dpo2cBzD6YacfHky0OKHwRLV0JfkEVgMflTQf?=
+ =?us-ascii?Q?3ydueh3ZyQGnJ4eoW9Hc2EVOBOdCLtXHG8uefpBOuV5JFzAllN0WmC+2xGgv?=
+ =?us-ascii?Q?X+VegkxIGIEBYYBI73u5z8zHSnuDm8GdzJ0dt25BTYJfjD9Z0tRv3YVpT2IX?=
+ =?us-ascii?Q?FelAzrY0PWAcWKqzii7Jw/oO55vengH+w26P/Zos/Oej2RpCzWLpS6LF/a6e?=
+ =?us-ascii?Q?20KOnttYzxq0eKR6rQWwbdRPnwrCfonWQuREYwu+f7BydoZbfc+cv/ybXuOo?=
+ =?us-ascii?Q?RLXzDEKdNYhptw/w6uLW2YjjyOZvNiFeiEB3uZvFpjQ9c5vxbEhK8NBn+Mi5?=
+ =?us-ascii?Q?jaN1HJXTnUT4sk+bcpGvKDZzQTjksVdVZB2az5QofEeGffmpHSOO+zmjfa3F?=
+ =?us-ascii?Q?WN/4FrM9ExaMFIbWGCFcO/OLIgEkgqI6xe5WhZRleiT31lDaZtmNcYn76Bt3?=
+ =?us-ascii?Q?ebkOq1eoXNm4uy0ZK3lioNdTOejNZYT1DRLA1JLXJf1eLVpjh2Rq1o8g/8td?=
+ =?us-ascii?Q?riM6xKWfwywNyBAamxnyOsx2LvacA0vxJOLQCBjW6JD8AYt0T4SRhbmdXMM4?=
+ =?us-ascii?Q?VU8E1AxNlsG8JQSiSoqt04hAYSk2exR/4RggR5xNS9RDblStgSWXEpdeOYoX?=
+ =?us-ascii?Q?xhDnapUFFZgNqRSUQHmOtj8QS+UBk8GoWtjbMEb6nOAV/4Lk7NN5yXFvtm+1?=
+ =?us-ascii?Q?JYzRHasCqSyyySym66PATwCPx8EBDTgnIHyBjq1qTGcYx8DDrVXk7UrDPQaX?=
+ =?us-ascii?Q?GQTbYkewQqBpj8M9AssCqyEwKe5vnhhLYAPE+q+7ylBUhoDNc0Vga5JLcbN1?=
+ =?us-ascii?Q?lx7kTFG0ByZxHG2ltxFoYWrWk99mKeQCDIF+n/3FFzHfmyeDxOlV162dll+D?=
+ =?us-ascii?Q?yXQCEMklQjOwzU9WiiyOvZjk85xjMVW4xNZrQAMqyIq80dPgwxXyW8ZFuL8k?=
+ =?us-ascii?Q?RfD27+8lt7dI48hnefB5KiG+y6NLDVmnDJQmm9aGWLYxwUTepUmlgOSxKR67?=
+ =?us-ascii?Q?YNtSAs4C7m6F8sZ0gJ4LLJVClId+tyVGC3vjMNagsb3rCQDYV22QVCwMvTEU?=
+ =?us-ascii?Q?DGbKWSeTYQVWTrzlyVZnXr44FBQzSAIcUNdd34UxDuMuedZixnp8LXYlBChZ?=
+ =?us-ascii?Q?T+XfZ7OgJeqbhuDw7rXpt1kQ+QaIyjIHrHsONFol73I2BBnftMPZYkOgJYwl?=
+ =?us-ascii?Q?dDv5Nui/XfjDIvba6i68uxZZsjZSvyWUrhVHhrg9bWro1UkNGhKlpREY9pCa?=
+ =?us-ascii?Q?xiuMTl1swTLmhYcaFro9WRlUUVICag99lyUM+ET5rWgXvmgzTNrZwBSGMusF?=
+ =?us-ascii?Q?riaOvpM57Yj+ZlEDCVT2LG09jEnZGvWTUJXOlCe6jCIvDVADbEQ5lqlwkvZM?=
+ =?us-ascii?Q?zqwZ/Ls8ER1/6hNF6mxZoDqhgc9VolkNTNktdu8TaDhF8kCKJ5ahDl/t6iir?=
+ =?us-ascii?Q?dTh2vMzPXR+prJSRepxCxuADQbJtDCyV78sgIwBxbiYYg+9mLCYNpbh3E8ZJ?=
+ =?us-ascii?Q?criAPKl7w6zAid/73L6TlGffw0LepGidpTTkFMFtbvSIFefqdQrG2EvOlWxO?=
+ =?us-ascii?Q?RXCirW2P4BR5Z/jWck5bOIHWwMDSMXTBVyMcx3Kf?=
 X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95bd48f4-a3d7-41f8-cf2b-08db61e2e97c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64f8e0c0-ec84-4c16-ee0a-08db61e2eaad
 X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2023 14:25:41.2646
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2023 14:25:43.2379
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: llTq71Drpq+7FsptqxPRlNs78ZRv6HA0QNsR31XXEpuLyBmQoUJeZm6kfmofoNCq1hS5qY0RgHS6767j0QaNxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3P286MB2785
+X-MS-Exchange-CrossTenant-UserPrincipalName: sZPDvc4kdbZmeHGdvEbYfNCT89NwF8Q3r8cm6NvDbyIcxUG5BPvTY0du8v5l2+18D00pUboPflJkxaaHuthDzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB3226
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_08,2023-05-31_03,2023-05-22_02
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+ definitions=2023-05-31_09,2023-05-31_03,2023-05-22_02
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
         T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -122,93 +122,231 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Move icm42600 dependent function inside the core module.
+Create new inv_sensors common modules and move inv_icm42600
+timestamp module inside.
+Modify inv_icm42600 driver to use timestamp module.
 
 Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   | 11 +++++++++++
- .../iio/imu/inv_icm42600/inv_icm42600_timestamp.c  | 14 +-------------
- .../iio/imu/inv_icm42600/inv_icm42600_timestamp.h  |  4 ----
- 3 files changed, 12 insertions(+), 17 deletions(-)
+ drivers/iio/common/Kconfig                           |  1 +
+ drivers/iio/common/Makefile                          |  1 +
+ drivers/iio/common/inv_sensors/Kconfig               |  7 +++++++
+ drivers/iio/common/inv_sensors/Makefile              |  6 ++++++
+ .../inv_sensors}/inv_icm42600_timestamp.c            | 12 ++++++++++--
+ drivers/iio/imu/inv_icm42600/Kconfig                 |  1 +
+ drivers/iio/imu/inv_icm42600/Makefile                |  1 -
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c    |  2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c   |  2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c     |  3 ++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c     |  2 +-
+ .../linux/iio/common}/inv_icm42600_timestamp.h       |  0
+ 12 files changed, 31 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/iio/common/inv_sensors/Kconfig
+ create mode 100644 drivers/iio/common/inv_sensors/Makefile
+ rename drivers/iio/{imu/inv_icm42600 => common/inv_sensors}/inv_icm42600_timestamp.c (91%)
+ rename {drivers/iio/imu/inv_icm42600 => include/linux/iio/common}/inv_icm42600_timestamp.h (100%)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 7b3a2a0dc2cb..c34735b05830 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -516,6 +516,17 @@ static int inv_icm42600_irq_init(struct inv_icm42600_state *st, int irq,
- 					 "inv_icm42600", st);
- }
+diff --git a/drivers/iio/common/Kconfig b/drivers/iio/common/Kconfig
+index 0334b4954773..1ccb5ccf3706 100644
+--- a/drivers/iio/common/Kconfig
++++ b/drivers/iio/common/Kconfig
+@@ -5,6 +5,7 @@
  
-+static int inv_icm42600_timestamp_setup(struct inv_icm42600_state *st)
-+{
-+	unsigned int val;
+ source "drivers/iio/common/cros_ec_sensors/Kconfig"
+ source "drivers/iio/common/hid-sensors/Kconfig"
++source "drivers/iio/common/inv_sensors/Kconfig"
+ source "drivers/iio/common/ms_sensors/Kconfig"
+ source "drivers/iio/common/scmi_sensors/Kconfig"
+ source "drivers/iio/common/ssp_sensors/Kconfig"
+diff --git a/drivers/iio/common/Makefile b/drivers/iio/common/Makefile
+index fad40e1e1718..d3e952239a62 100644
+--- a/drivers/iio/common/Makefile
++++ b/drivers/iio/common/Makefile
+@@ -10,6 +10,7 @@
+ # When adding new entries keep the list in alphabetical order
+ obj-y += cros_ec_sensors/
+ obj-y += hid-sensors/
++obj-y += inv_sensors/
+ obj-y += ms_sensors/
+ obj-y += scmi_sensors/
+ obj-y += ssp_sensors/
+diff --git a/drivers/iio/common/inv_sensors/Kconfig b/drivers/iio/common/inv_sensors/Kconfig
+new file mode 100644
+index 000000000000..28815fb43157
+--- /dev/null
++++ b/drivers/iio/common/inv_sensors/Kconfig
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# TDK-InvenSense sensors common library
++#
 +
-+	/* enable timestamp register */
-+	val = INV_ICM42600_TMST_CONFIG_TMST_TO_REGS_EN |
-+	      INV_ICM42600_TMST_CONFIG_TMST_EN;
-+	return regmap_update_bits(st->map, INV_ICM42600_REG_TMST_CONFIG,
-+				  INV_ICM42600_TMST_CONFIG_MASK, val);
-+}
++config IIO_INV_SENSORS_TIMESTAMP
++	tristate
+diff --git a/drivers/iio/common/inv_sensors/Makefile b/drivers/iio/common/inv_sensors/Makefile
+new file mode 100644
+index 000000000000..93bddb9356b8
+--- /dev/null
++++ b/drivers/iio/common/inv_sensors/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for TDK-InvenSense sensors module.
++#
 +
- static int inv_icm42600_enable_regulator_vddio(struct inv_icm42600_state *st)
- {
- 	int ret;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-index 37cbf08acb3a..ceae8ccb1747 100644
++obj-$(CONFIG_IIO_INV_SENSORS_TIMESTAMP) += inv_icm42600_timestamp.o
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c b/drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
+similarity index 91%
+rename from drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
+rename to drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
+index ceae8ccb1747..411f561e1a24 100644
 --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.c
-@@ -4,10 +4,9 @@
-  */
++++ b/drivers/iio/common/inv_sensors/inv_icm42600_timestamp.c
+@@ -5,9 +5,9 @@
  
  #include <linux/kernel.h>
--#include <linux/regmap.h>
  #include <linux/math64.h>
-+#include <linux/errno.h>
- 
--#include "inv_icm42600.h"
- #include "inv_icm42600_timestamp.h"
++#include <linux/module.h>
+ #include <linux/errno.h>
+-
+-#include "inv_icm42600_timestamp.h"
++#include <linux/iio/common/inv_icm42600_timestamp.h>
  
  /* internal chip period is 32kHz, 31250ns */
-@@ -56,17 +55,6 @@ void inv_icm42600_timestamp_init(struct inv_icm42600_timestamp *ts,
+ #define INV_ICM42600_TIMESTAMP_PERIOD		31250
+@@ -54,6 +54,7 @@ void inv_icm42600_timestamp_init(struct inv_icm42600_timestamp *ts,
+ 	/* use theoretical value for chip period */
  	inv_update_acc(&ts->chip_period, INV_ICM42600_TIMESTAMP_PERIOD);
  }
++EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_init, IIO_INV_SENSORS_TIMESTAMP);
  
--int inv_icm42600_timestamp_setup(struct inv_icm42600_state *st)
--{
--	unsigned int val;
--
--	/* enable timestamp register */
--	val = INV_ICM42600_TMST_CONFIG_TMST_TO_REGS_EN |
--	      INV_ICM42600_TMST_CONFIG_TMST_EN;
--	return regmap_update_bits(st->map, INV_ICM42600_REG_TMST_CONFIG,
--				  INV_ICM42600_TMST_CONFIG_MASK, val);
--}
--
  int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
  				      uint32_t period, bool fifo)
+@@ -66,6 +67,7 @@ int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
+ 
+ static bool inv_validate_period(uint32_t period, uint32_t mult)
  {
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h
-index 4e4f331d4fe4..00fd452632a3 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h
-@@ -8,8 +8,6 @@
+@@ -153,6 +155,7 @@ void inv_icm42600_timestamp_interrupt(struct inv_icm42600_timestamp *ts,
+ 	if (valid)
+ 		inv_align_timestamp_it(ts);
+ }
++EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_interrupt, IIO_INV_SENSORS_TIMESTAMP);
  
- #include <linux/kernel.h>
+ void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+ 				      uint32_t fifo_period, size_t fifo_nb,
+@@ -184,3 +187,8 @@ void inv_icm42600_timestamp_apply_odr(struct inv_icm42600_timestamp *ts,
+ 		ts->timestamp = ts->it.up - interval;
+ 	}
+ }
++EXPORT_SYMBOL_NS_GPL(inv_icm42600_timestamp_apply_odr, IIO_INV_SENSORS_TIMESTAMP);
++
++MODULE_AUTHOR("InvenSense, Inc.");
++MODULE_DESCRIPTION("InvenSense sensors timestamp module");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/iio/imu/inv_icm42600/Kconfig b/drivers/iio/imu/inv_icm42600/Kconfig
+index 50cbcfcb6cf1..f56b0816cc4d 100644
+--- a/drivers/iio/imu/inv_icm42600/Kconfig
++++ b/drivers/iio/imu/inv_icm42600/Kconfig
+@@ -3,6 +3,7 @@
+ config INV_ICM42600
+ 	tristate
+ 	select IIO_BUFFER
++	select IIO_INV_SENSORS_TIMESTAMP
  
--struct inv_icm42600_state;
--
- /**
-  * struct inv_icm42600_timestamp_interval - timestamps interval
-  * @lo:	interval lower bound
-@@ -53,8 +51,6 @@ struct inv_icm42600_timestamp {
- void inv_icm42600_timestamp_init(struct inv_icm42600_timestamp *ts,
- 				 uint32_t period);
+ config INV_ICM42600_I2C
+ 	tristate "InvenSense ICM-426xx I2C driver"
+diff --git a/drivers/iio/imu/inv_icm42600/Makefile b/drivers/iio/imu/inv_icm42600/Makefile
+index 291714d9aa54..0f49f6df3647 100644
+--- a/drivers/iio/imu/inv_icm42600/Makefile
++++ b/drivers/iio/imu/inv_icm42600/Makefile
+@@ -6,7 +6,6 @@ inv-icm42600-y += inv_icm42600_gyro.o
+ inv-icm42600-y += inv_icm42600_accel.o
+ inv-icm42600-y += inv_icm42600_temp.o
+ inv-icm42600-y += inv_icm42600_buffer.o
+-inv-icm42600-y += inv_icm42600_timestamp.o
  
--int inv_icm42600_timestamp_setup(struct inv_icm42600_state *st);
--
- int inv_icm42600_timestamp_update_odr(struct inv_icm42600_timestamp *ts,
- 				      uint32_t period, bool fifo);
+ obj-$(CONFIG_INV_ICM42600_I2C) += inv-icm42600-i2c.o
+ inv-icm42600-i2c-y += inv_icm42600_i2c.o
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+index c3f433ad3af6..1015de636a94 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -12,12 +12,12 @@
+ #include <linux/math64.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
++#include <linux/iio/common/inv_icm42600_timestamp.h>
+ #include <linux/iio/kfifo_buf.h>
  
+ #include "inv_icm42600.h"
+ #include "inv_icm42600_temp.h"
+ #include "inv_icm42600_buffer.h"
+-#include "inv_icm42600_timestamp.h"
+ 
+ #define INV_ICM42600_ACCEL_CHAN(_modifier, _index, _ext_info)		\
+ 	{								\
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+index 32d7f8364230..4a39d31e911f 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -11,9 +11,9 @@
+ #include <linux/delay.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
++#include <linux/iio/common/inv_icm42600_timestamp.h>
+ 
+ #include "inv_icm42600.h"
+-#include "inv_icm42600_timestamp.h"
+ #include "inv_icm42600_buffer.h"
+ 
+ /* FIFO header: 1 byte */
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index c34735b05830..f3e379f9733d 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -16,10 +16,10 @@
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/iio/iio.h>
++#include <linux/iio/common/inv_icm42600_timestamp.h>
+ 
+ #include "inv_icm42600.h"
+ #include "inv_icm42600_buffer.h"
+-#include "inv_icm42600_timestamp.h"
+ 
+ static const struct regmap_range_cfg inv_icm42600_regmap_ranges[] = {
+ 	{
+@@ -799,3 +799,4 @@ EXPORT_NS_GPL_DEV_PM_OPS(inv_icm42600_pm_ops, IIO_ICM42600) = {
+ MODULE_AUTHOR("InvenSense, Inc.");
+ MODULE_DESCRIPTION("InvenSense ICM-426xx device driver");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_INV_SENSORS_TIMESTAMP);
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+index 9d94a8518e3c..6caea7b8a344 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -12,12 +12,12 @@
+ #include <linux/math64.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
++#include <linux/iio/common/inv_icm42600_timestamp.h>
+ #include <linux/iio/kfifo_buf.h>
+ 
+ #include "inv_icm42600.h"
+ #include "inv_icm42600_temp.h"
+ #include "inv_icm42600_buffer.h"
+-#include "inv_icm42600_timestamp.h"
+ 
+ #define INV_ICM42600_GYRO_CHAN(_modifier, _index, _ext_info)		\
+ 	{								\
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h b/include/linux/iio/common/inv_icm42600_timestamp.h
+similarity index 100%
+rename from drivers/iio/imu/inv_icm42600/inv_icm42600_timestamp.h
+rename to include/linux/iio/common/inv_icm42600_timestamp.h
 -- 
 2.34.1
 

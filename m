@@ -2,63 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CCEF7180A1
-	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 14:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18DB27180F3
+	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 15:06:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236151AbjEaM5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 May 2023 08:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53042 "EHLO
+        id S236183AbjEaNGE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 May 2023 09:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236191AbjEaM44 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 08:56:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F351B7;
-        Wed, 31 May 2023 05:56:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S236703AbjEaNGB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 09:06:01 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2755113D;
+        Wed, 31 May 2023 06:05:39 -0700 (PDT)
+Received: from [IPV6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab] (unknown [IPv6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B774D63A78;
-        Wed, 31 May 2023 12:56:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA13FC433EF;
-        Wed, 31 May 2023 12:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685537783;
-        bh=WXX43CMo95lfddmy+CLKvQFqCbHXhy3Lbo5aNPHsISg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=biRRxafrqyx+rWwtFEsB7QNWTuxAqD+wRDF/OSfGLNP1Xg1WdTZh7FiYTwfHovOGL
-         aMc8VhChl0Ooc1ufcXF+i9f+w32UOmLKKtiLpgpWT7QheMEstvuqR4r/Ym6DcCqMRW
-         2EMtc4r/v3JEuctmwhBnvcqja5M1Xe4CzxumqqNavJYnLfAbZkUv0YtULrY8eorVDY
-         BGkP9jzQOavXtozqum5abIh0uM8ADOcyKbuh8TgLK3o5lzY1IaIJv8Q5/6ZOff8wmT
-         Tuh8hTPks39afTqC2NmJ4CdCaSTPJX2nhEPQfSfgO7/QKzMS7mFX6e07yybLm2/iw9
-         FDQSCupq3nAsg==
-Date:   Wed, 31 May 2023 13:56:18 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        jic23@kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id C0C4E6606E88;
+        Wed, 31 May 2023 14:05:36 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1685538337;
+        bh=A1yOZ5qwSssnB/Bhki1if+GKibGEWLG0BYkt3eOhlj0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=YVGMKfdk3cEYRuGBDGFOd5mnG95lAtXTdFrZ/EWYe2+1RYhKKWD3isrFlFcmlUXWc
+         o32znUMgkO/4uEra7WhxymF47kKMI30K6aCSUweXCLUWXxUQ4mXGeL8nWOU5TseXM6
+         /3wnnrTV1Bc5DfDXPhQVfMmgn756a/epWj6U3AR2NzUVLQ4P65w22BMEiuoB8iaPac
+         enoz1HLD6x7Tl3AShsF/eibYRChkgdLxRJu/eOQGDFO4uUsFv5dVR7vTtR/59QMn7N
+         j9FRyuL1Aem8zNK4RTc7GHVyfoTY3tOB/ZjjYpUitGKEvlm4zCSq643Gl9Ohtz8DQe
+         NlneGmfD49NYA==
+Message-ID: <4dc45163-2aeb-4635-2c02-256b35ccccb7@collabora.com>
+Date:   Wed, 31 May 2023 15:05:34 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v3 1/4] dt-bindings: nvmem: mediatek: efuse: add support
+ for mt7986
+To:     Frank Wunderlich <linux@fw-web.de>,
+        linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 5/5] dt-bindings: iio: ad7192: Allow selection of
- clock modes
-Message-ID: <20230531-engraving-gave-9b0b8f818923@spud>
-References: <20230530075311.400686-1-fl.scratchpad@gmail.com>
- <20230530075311.400686-6-fl.scratchpad@gmail.com>
- <20230530-cannabis-headstone-883c5b891dd3@spud>
- <CAPJMGm4=sRQGPmVi8NjAVvOVrr8s2By6PO8kKRKZt3W0FR9j-Q@mail.gmail.com>
- <5d65b644-9b79-d232-d0d0-d2772325eef5@linaro.org>
- <CAPJMGm6T_x9Oocdmbrhi879QqZSd812LxJP=J554UbH9k9_LBw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hUzqiqle6qW6Urme"
-Content-Disposition: inline
-In-Reply-To: <CAPJMGm6T_x9Oocdmbrhi879QqZSd812LxJP=J554UbH9k9_LBw@mail.gmail.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        "Hui.Liu" <hui.liu@mediatek.com>,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
+        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Daniel Golle <daniel@makrotopia.org>,
+        Rob Herring <robh@kernel.org>
+References: <20230530201235.22330-1-linux@fw-web.de>
+ <20230530201235.22330-2-linux@fw-web.de>
+Content-Language: en-US
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230530201235.22330-2-linux@fw-web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,181 +73,13 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Il 30/05/23 22:12, Frank Wunderlich ha scritto:
+> From: Frank Wunderlich <frank-w@public-files.de>
+> 
+> Add compatible string for mt7986 SoC.
+> 
+> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+> Acked-by: Rob Herring <robh@kernel.org>
 
---hUzqiqle6qW6Urme
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-On Wed, May 31, 2023 at 11:40:08AM +0200, Fabrizio Lamarque wrote:
-> On Wed, May 31, 2023 at 9:14=E2=80=AFAM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> >
-> > On 31/05/2023 08:59, Fabrizio Lamarque wrote:
-> > > On Tue, May 30, 2023 at 7:22=E2=80=AFPM Conor Dooley <conor@kernel.or=
-g> wrote:
-> > >>
-> > >> On Tue, May 30, 2023 at 09:53:11AM +0200, fl.scratchpad@gmail.com wr=
-ote:
-> > >>> From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
-> > >>>
-> > >>> AD7192 supports external clock sources, generated by a digital clock
-> > >>> source or a crystal oscillator, or internally generated clock option
-> > >>> without external components.
-> > >>>
-> > >>> Describe choice between internal and external clock, crystal or ext=
-ernal
-> > >>> oscillator, and internal clock output enable.
-> > >>>
-> > >>> Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
-> > >>> ---
-> > >>>  .../bindings/iio/adc/adi,ad7192.yaml          | 27 +++++++++++++++=
-+---
-> > >>>  1 file changed, 24 insertions(+), 3 deletions(-)
-> > >>>
-> > >>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.y=
-aml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> > >>> index 16def2985ab4..f7ecfd65ad80 100644
-> > >>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> > >>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> > >>> @@ -32,7 +32,8 @@ properties:
-> > >>>
-> > >>>    clocks:
-> > >>>      maxItems: 1
-> > >>> -    description: phandle to the master clock (mclk)
-> > >>> +    description: |
-> > >>> +      Master clock (mclk). If not set, internal clock is used.
-> > >>>
-> > >>>    clock-names:
-> > >>>      items:
-> > >>> @@ -50,6 +51,17 @@ properties:
-> > >>>    vref-supply:
-> > >>>      description: VRef voltage supply
-> > >>>
-> > >>> +  adi,clock-xtal:
-> > >>> +    description: |
-> > >>> +      Select whether an external crystal oscillator or an external
-> > >>> +      clock is applied as master (mclk) clock.
-> > >>> +    type: boolean
-> > >>
-> > >> Am I being daft, or are these the same thing? If they are not, and u=
-se
-> > >> different input pins, I think it should be explained as it not clear.
-> > >> Could you explain why we actually care that the source is a xtal ver=
-sus
-> > >> it being mclk, and why just having master clock is not sufficient?
-> > >
-> > > I may revise the description as follows. Feel free to add your sugges=
-tions
-> > > in case it is still not clear enough.
-> > >
-> > > "Select whether an external crystal oscillator between MCLK1 and MCLK=
-2 or
-> > > an external CMOS-compatible clock on MCLK2 is used as master clock".
-> > >
-> > > This is used to properly set CLK0 and CLK1 bits in the MODE register.
-> > > I guess most applications would use an external crystal or internal c=
-lock.
-> > > The external digital clock would allow synchronization of multiple AD=
-Cs,
-> >
-> > Description confuses me. Why would it matter what type of clock you have
-> > as input - external crystal oscillator or external CMOS-compatible
-> > clock? Later you refer to "internal", so maybe you meant here also
-> > internal for one of the options?
->=20
-> The AD7192 needs to be configured according to the type of external
-> clock that is
-> applied on MCLK1/MCLK2 pins in order to activate the correct circuitry.
->=20
-> Here are some citations from the datasheet:
->=20
-> MCLK2 pin description:
-> "The AD7192 has an internal 4.92 MHz clock. This internal clock can be
-> made available
-> on the MCLK2 pin. The clock for the AD7192 can be provided externally
-> also in the form
-> of a crystal or external clock. A crystal can be tied across the MCLK1
-> and MCLK2 pins.
-> Alternatively, the MCLK2 pin can be driven with a CMOS-compatible clock a=
-nd the
-> MCLK1 pin left unconnected."
->=20
-> Each of these clock modes have to be configured via AD7192 mode register.
-> (Clock source configuration bits, mode register, CLK0 and CLK1).
-> Here is their description from datasheet:
->=20
-> "Either the on-chip 4.92 MHz clock or an external clock can be used.
-> The ability to
-> use an external clock allows several AD7192 devices to be synchronized. A=
-lso,
-> 50 Hz/60 Hz rejection is improved when an accurate external clock
-> drives the AD7192."
->=20
-> The choice between internal clock, external crystal oscillator or
-> external CMOS digital
-> clock is a decision of the HW designer driven by noise rejection,
-> synchronization, and
-> cost requirements.
->=20
-> If possible, I kindly ask you suggestions on how to adjust the description
-> so that it would be cleaner.
-
-For me at least, I partially wanted it explained so that intimate
-knowledge of the part was not required to review the binding! To me, the
-original description is perfectly clear about how the hardware is
-configured, but nothing says why software needs to actually know about
-it.
-I'd be happy if you worked
-> Each of these clock modes have to be configured via AD7192 mode register.
-into the description, but perhaps Krzysztof disagrees.
-
-Cheers,
-Conor.
-
-> > >>> +  adi,int-clock-output-enable:
-> > >>> +    description: |
-> > >>> +      When internal clock is selected, this bit enables clock out =
-pin.
-> > >>> +    type: boolean
-> > >>
-> > >> And this one makes you a clock provider, so the devices advocate
-> > >> position would be that you know that this bit should be set if
-> > >> "clocks" is not present and a consumer requests a clock.
-> > >> I don't seem to have got the driver patches (at least not in this
-> > >> mailbox), so I have got no information on how you've actually implem=
-ented
-> > >> this.
-> > >
-> > > I see... When this bit is set, the AD7192 node should also be a clock=
- provider.
-> > > The clock is output on MCLK2 pin, hence it can be used with internally
-> > > generated clock only.
-> > > I tend to dislike the idea of a "conditional clock provider". Also, I=
-'d guess
-> >
-> > Either this is a clock provider via common clock framework or is not.
-> > Don't re-implement clock provider via other properties but just skip
-> > such feature.
->=20
-> Ok, I understand. I will remove the bit from the patch in V4. Thank you.
->=20
-> The bit was already existing upstream in the driver, but I would just drop
-> the change in documentation without any additional patch that removes it
-> from the driver.
->=20
-> Best regards,
-> Fabrizio Lamarque
-
---hUzqiqle6qW6Urme
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHdD8gAKCRB4tDGHoIJi
-0iX8AP4jM2LspkoDQqGr2uNev1zyUHQLv8qDCO+A6Tx+0avo3AEApiqAifZ/vWC1
-g0rKlc/qFvOBHV1esZl+tT7+cO3+LA4=
-=n88b
------END PGP SIGNATURE-----
-
---hUzqiqle6qW6Urme--

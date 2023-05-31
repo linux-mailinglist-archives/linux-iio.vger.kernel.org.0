@@ -2,80 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E171717E29
-	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 13:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CCEF7180A1
+	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 14:57:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbjEaLh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 May 2023 07:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43932 "EHLO
+        id S236151AbjEaM5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 May 2023 08:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbjEaLhZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 07:37:25 -0400
-Received: from mx.sberdevices.ru (mx.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601C4E8;
-        Wed, 31 May 2023 04:37:21 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mx.sberdevices.ru (Postfix) with ESMTP id 0A5605FD56;
-        Wed, 31 May 2023 14:37:19 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1685533039;
-        bh=sbZRDG56hPIOzkNrYqptHD1M16aZFlNz8dicpHblK9c=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-        b=lGO/LXW0zAg/oFZRQl6qF6g1JvO/wxAO9tqaA4tCpeWiXRuRmFlZsZpErm100gOzC
-         HB4DQD64WsksKD2W0V8IDBM053e1Nrkc3NADDTgboXzh77lw7wMz0ja6lP4T69F5Sd
-         EYF6c7U83SW2rX60lS6mifkjOBl5IHkNxsApjySWKY4EtOJJjnvmghzQHzJ/748B5o
-         4XcKfCeYYxRfnyLV8nXbavS50N0RX/sh0XP0lkT2CEr43mKnkS/xLHn806hD5Eh7My
-         dEAG7MSVM8ww9VY3FauUKhJFSQSZ2ng9CxTMoWuhlZ2C0av2BNFmKxnJ6pUI3df/Da
-         jwLtn/leQmmgA==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mx.sberdevices.ru (Postfix) with ESMTP;
-        Wed, 31 May 2023 14:37:16 +0300 (MSK)
-Message-ID: <b5a6eaec-c0eb-cd52-0657-756d5136707c@sberdevices.ru>
-Date:   Wed, 31 May 2023 14:33:03 +0300
+        with ESMTP id S236191AbjEaM44 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 08:56:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F351B7;
+        Wed, 31 May 2023 05:56:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B774D63A78;
+        Wed, 31 May 2023 12:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA13FC433EF;
+        Wed, 31 May 2023 12:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685537783;
+        bh=WXX43CMo95lfddmy+CLKvQFqCbHXhy3Lbo5aNPHsISg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=biRRxafrqyx+rWwtFEsB7QNWTuxAqD+wRDF/OSfGLNP1Xg1WdTZh7FiYTwfHovOGL
+         aMc8VhChl0Ooc1ufcXF+i9f+w32UOmLKKtiLpgpWT7QheMEstvuqR4r/Ym6DcCqMRW
+         2EMtc4r/v3JEuctmwhBnvcqja5M1Xe4CzxumqqNavJYnLfAbZkUv0YtULrY8eorVDY
+         BGkP9jzQOavXtozqum5abIh0uM8ADOcyKbuh8TgLK3o5lzY1IaIJv8Q5/6ZOff8wmT
+         Tuh8hTPks39afTqC2NmJ4CdCaSTPJX2nhEPQfSfgO7/QKzMS7mFX6e07yybLm2/iw9
+         FDQSCupq3nAsg==
+Date:   Wed, 31 May 2023 13:56:18 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Fabrizio Lamarque <fl.scratchpad@gmail.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        jic23@kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] dt-bindings: iio: ad7192: Allow selection of
+ clock modes
+Message-ID: <20230531-engraving-gave-9b0b8f818923@spud>
+References: <20230530075311.400686-1-fl.scratchpad@gmail.com>
+ <20230530075311.400686-6-fl.scratchpad@gmail.com>
+ <20230530-cannabis-headstone-883c5b891dd3@spud>
+ <CAPJMGm4=sRQGPmVi8NjAVvOVrr8s2By6PO8kKRKZt3W0FR9j-Q@mail.gmail.com>
+ <5d65b644-9b79-d232-d0d0-d2772325eef5@linaro.org>
+ <CAPJMGm6T_x9Oocdmbrhi879QqZSd812LxJP=J554UbH9k9_LBw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v1] meson saradc: fix clock divider mask length
-Content-Language: en-US
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-CC:     "jic23@kernel.org" <jic23@kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "nuno.sa@analog.com" <nuno.sa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>, Vyacheslav <adeep@lexina.in>
-References: <20230515210545.2100161-1-gnstark@sberdevices.ru>
- <CAFBinCCc+t7Ks6fqz38cVrufPRFdxFgC9Qp+JhcM1KfD6pupTg@mail.gmail.com>
- <a52335ea-6545-8ca6-d318-38b7ffc64368@lexina.in>
- <CAFBinCDmkGnD5o_rV6K73De2XmHDxRYveDwNAy3iA+Kwr5sdqg@mail.gmail.com>
- <6910550a-b025-0d97-0b39-bc89b235541e@sberdevices.ru>
- <CAFBinCCk6OziOxt2AY1A25C=9_pibhHsDK0wJNZ_AyHMd=z6SQ@mail.gmail.com>
-From:   George Stark <gnstark@sberdevices.ru>
-In-Reply-To: <CAFBinCCk6OziOxt2AY1A25C=9_pibhHsDK0wJNZ_AyHMd=z6SQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [172.16.1.6]
-X-ClientProxiedBy: S-MS-EXCH01.sberdevices.ru (172.16.1.4) To
- S-MS-EXCH01.sberdevices.ru (172.16.1.4)
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2023/05/31 06:02:00 #21385342
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="hUzqiqle6qW6Urme"
+Content-Disposition: inline
+In-Reply-To: <CAPJMGm6T_x9Oocdmbrhi879QqZSd812LxJP=J554UbH9k9_LBw@mail.gmail.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,40 +66,181 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/29/23 23:41, Martin Blumenstingl wrote:
-> Hi George,
->
-> On Mon, May 22, 2023 at 5:47 PM Старк Георгий Николаевич
-> <GNStark@sberdevices.ru> wrote:
->> Hello Martin
->>
->> Actually you were right that my patch affects only meson8 family not the all new ones, my bad.
->> It's clear from the driver code meson_saradc.c and dts files.
->> I've made an experiment on a113l soc - changingclock_rate inmeson_sar_adc_param and measuring adc channel many times
->> and with low clockfrequency (priv->adc_clk) time of measurementis high
->> and vice versa. ADC_CLK_DIV field in SAR_ADC_REG3 is always zero.
-> Thanks for sharing your findings!
->
->> I need to get s805 (meson8) board for example and made experiment on it.
-> If you don't find any Meson8 (S802)/Meson8b (S805) or Meson8m2 (S812)
-> board then please provide the code that you used for your experiment
-> as a patch so I can give it a try on my Odroid-C1 (Meson8b).
 
-Hello Martin
+--hUzqiqle6qW6Urme
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the help! I managed to get Odroid-C1 myself. I think it'll be 
-useful to test further patches.
-By the way seems like the board and the sock are not popular anymore...
+On Wed, May 31, 2023 at 11:40:08AM +0200, Fabrizio Lamarque wrote:
+> On Wed, May 31, 2023 at 9:14=E2=80=AFAM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+> >
+> > On 31/05/2023 08:59, Fabrizio Lamarque wrote:
+> > > On Tue, May 30, 2023 at 7:22=E2=80=AFPM Conor Dooley <conor@kernel.or=
+g> wrote:
+> > >>
+> > >> On Tue, May 30, 2023 at 09:53:11AM +0200, fl.scratchpad@gmail.com wr=
+ote:
+> > >>> From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+> > >>>
+> > >>> AD7192 supports external clock sources, generated by a digital clock
+> > >>> source or a crystal oscillator, or internally generated clock option
+> > >>> without external components.
+> > >>>
+> > >>> Describe choice between internal and external clock, crystal or ext=
+ernal
+> > >>> oscillator, and internal clock output enable.
+> > >>>
+> > >>> Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
+> > >>> ---
+> > >>>  .../bindings/iio/adc/adi,ad7192.yaml          | 27 +++++++++++++++=
++---
+> > >>>  1 file changed, 24 insertions(+), 3 deletions(-)
+> > >>>
+> > >>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.y=
+aml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > >>> index 16def2985ab4..f7ecfd65ad80 100644
+> > >>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > >>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> > >>> @@ -32,7 +32,8 @@ properties:
+> > >>>
+> > >>>    clocks:
+> > >>>      maxItems: 1
+> > >>> -    description: phandle to the master clock (mclk)
+> > >>> +    description: |
+> > >>> +      Master clock (mclk). If not set, internal clock is used.
+> > >>>
+> > >>>    clock-names:
+> > >>>      items:
+> > >>> @@ -50,6 +51,17 @@ properties:
+> > >>>    vref-supply:
+> > >>>      description: VRef voltage supply
+> > >>>
+> > >>> +  adi,clock-xtal:
+> > >>> +    description: |
+> > >>> +      Select whether an external crystal oscillator or an external
+> > >>> +      clock is applied as master (mclk) clock.
+> > >>> +    type: boolean
+> > >>
+> > >> Am I being daft, or are these the same thing? If they are not, and u=
+se
+> > >> different input pins, I think it should be explained as it not clear.
+> > >> Could you explain why we actually care that the source is a xtal ver=
+sus
+> > >> it being mclk, and why just having master clock is not sufficient?
+> > >
+> > > I may revise the description as follows. Feel free to add your sugges=
+tions
+> > > in case it is still not clear enough.
+> > >
+> > > "Select whether an external crystal oscillator between MCLK1 and MCLK=
+2 or
+> > > an external CMOS-compatible clock on MCLK2 is used as master clock".
+> > >
+> > > This is used to properly set CLK0 and CLK1 bits in the MODE register.
+> > > I guess most applications would use an external crystal or internal c=
+lock.
+> > > The external digital clock would allow synchronization of multiple AD=
+Cs,
+> >
+> > Description confuses me. Why would it matter what type of clock you have
+> > as input - external crystal oscillator or external CMOS-compatible
+> > clock? Later you refer to "internal", so maybe you meant here also
+> > internal for one of the options?
+>=20
+> The AD7192 needs to be configured according to the type of external
+> clock that is
+> applied on MCLK1/MCLK2 pins in order to activate the correct circuitry.
+>=20
+> Here are some citations from the datasheet:
+>=20
+> MCLK2 pin description:
+> "The AD7192 has an internal 4.92 MHz clock. This internal clock can be
+> made available
+> on the MCLK2 pin. The clock for the AD7192 can be provided externally
+> also in the form
+> of a crystal or external clock. A crystal can be tied across the MCLK1
+> and MCLK2 pins.
+> Alternatively, the MCLK2 pin can be driven with a CMOS-compatible clock a=
+nd the
+> MCLK1 pin left unconnected."
+>=20
+> Each of these clock modes have to be configured via AD7192 mode register.
+> (Clock source configuration bits, mode register, CLK0 and CLK1).
+> Here is their description from datasheet:
+>=20
+> "Either the on-chip 4.92 MHz clock or an external clock can be used.
+> The ability to
+> use an external clock allows several AD7192 devices to be synchronized. A=
+lso,
+> 50 Hz/60 Hz rejection is improved when an accurate external clock
+> drives the AD7192."
+>=20
+> The choice between internal clock, external crystal oscillator or
+> external CMOS digital
+> clock is a decision of the HW designer driven by noise rejection,
+> synchronization, and
+> cost requirements.
+>=20
+> If possible, I kindly ask you suggestions on how to adjust the description
+> so that it would be cleaner.
 
-It remains only to build mainline kernel for meson8 to perform tests. 
-Hope to be back soon.
+For me at least, I partially wanted it explained so that intimate
+knowledge of the part was not required to review the binding! To me, the
+original description is perfectly clear about how the hardware is
+configured, but nothing says why software needs to actually know about
+it.
+I'd be happy if you worked
+> Each of these clock modes have to be configured via AD7192 mode register.
+into the description, but perhaps Krzysztof disagrees.
 
-Best regards
-George
+Cheers,
+Conor.
 
->
->
+> > >>> +  adi,int-clock-output-enable:
+> > >>> +    description: |
+> > >>> +      When internal clock is selected, this bit enables clock out =
+pin.
+> > >>> +    type: boolean
+> > >>
+> > >> And this one makes you a clock provider, so the devices advocate
+> > >> position would be that you know that this bit should be set if
+> > >> "clocks" is not present and a consumer requests a clock.
+> > >> I don't seem to have got the driver patches (at least not in this
+> > >> mailbox), so I have got no information on how you've actually implem=
+ented
+> > >> this.
+> > >
+> > > I see... When this bit is set, the AD7192 node should also be a clock=
+ provider.
+> > > The clock is output on MCLK2 pin, hence it can be used with internally
+> > > generated clock only.
+> > > I tend to dislike the idea of a "conditional clock provider". Also, I=
+'d guess
+> >
+> > Either this is a clock provider via common clock framework or is not.
+> > Don't re-implement clock provider via other properties but just skip
+> > such feature.
+>=20
+> Ok, I understand. I will remove the bit from the patch in V4. Thank you.
+>=20
+> The bit was already existing upstream in the driver, but I would just drop
+> the change in documentation without any additional patch that removes it
+> from the driver.
+>=20
 > Best regards,
-> Martin
->
+> Fabrizio Lamarque
 
+--hUzqiqle6qW6Urme
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHdD8gAKCRB4tDGHoIJi
+0iX8AP4jM2LspkoDQqGr2uNev1zyUHQLv8qDCO+A6Tx+0avo3AEApiqAifZ/vWC1
+g0rKlc/qFvOBHV1esZl+tT7+cO3+LA4=
+=n88b
+-----END PGP SIGNATURE-----
+
+--hUzqiqle6qW6Urme--

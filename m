@@ -2,194 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D28EF718A19
-	for <lists+linux-iio@lfdr.de>; Wed, 31 May 2023 21:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0D1719D26
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Jun 2023 15:17:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjEaTYJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 May 2023 15:24:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53852 "EHLO
+        id S232850AbjFANRQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Jun 2023 09:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjEaTYI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 May 2023 15:24:08 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA431135
-        for <linux-iio@vger.kernel.org>; Wed, 31 May 2023 12:24:04 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-5149c76f4dbso190808a12.1
-        for <linux-iio@vger.kernel.org>; Wed, 31 May 2023 12:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685561043; x=1688153043;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bAjA45gDit75AtUQfi+mfN3JC53ugWR4SgeCXc0mV34=;
-        b=G9jJFHIJZPBF/WQIQki+BUxqPf13tT4Y6RcVo45iddQJqt6cW0pZrHBdMfx2g/JY++
-         LWPz4/UL9ri3bP2G/XZ8ZSl6d+JtPXMg6tRQruioTT7hSRCHrUICgp9D3eXFub12QHj1
-         Cc3nOfrQxZZklwGv3ip4QsrsgRmEWHOiWKujcvKvEl7UkV1YhQ3uZYgFW6tZsc/4BFdg
-         AOK+KkEenV60SWjRDkIwFwNg3ESsbkNuU3iGDuJYcyh87AgUi9JqwM8TLdJLz58n69U8
-         nqqsaySUj9Q4eQPpu4OlZsXDKFtcC6ZqB9D2iGJ+UXvdV9KZaItbfPcGabXFj408G/87
-         IebQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685561043; x=1688153043;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bAjA45gDit75AtUQfi+mfN3JC53ugWR4SgeCXc0mV34=;
-        b=f6hvRzwAtJkIPWl6DnSUbcH4d5XzqbhZL5r8SnnKz8pF+sXtxEnmoGSMmqngFAsGtn
-         HZ7GmulkTwY0zLf8ovLjB68hH1gw680/bd/8mxnrKItZb/nOXQ4vo/FTgtQi2VRGzDKI
-         4P8ygQeAzpWlUvUsi9sQkwGTvNL7isPaMF+kHA8bw8WEDUKhVZ5B0TomwIVMRSl8FUSy
-         AC339JSO/p5Nk9/kyPV+nM380mmpWeZVTMQIrPyc1qquapdOHiZyo2r684xB30+ciLU8
-         roaPANOROoLqt7QxrYa+eZdn6/eHLX3Yb6RWkmcF3Edy1Iylsh2i4MhWFcDGnuMvCH2P
-         vRag==
-X-Gm-Message-State: AC+VfDz+aSNJMcSW6kBvm2vzjx2v5gxYjITDLJBRo7jI7rJMEHhwYrK/
-        WHPSB++oRkQuV4bWtr3MOhN4rxg5w7OC96QU4FE=
-X-Google-Smtp-Source: ACHHUZ4dDGbEqjzik0Di9UF0rnW5OQCTmu2jTxPectyfPNrUhzsop6dCQ7HF5kgWwci6Vy9xvYPhFQ==
-X-Received: by 2002:a17:907:1626:b0:973:a9c3:e055 with SMTP id hb38-20020a170907162600b00973a9c3e055mr5646754ejc.71.1685561043227;
-        Wed, 31 May 2023 12:24:03 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.199.204])
-        by smtp.gmail.com with ESMTPSA id e15-20020a170906248f00b0094f3d700868sm9401648ejb.80.2023.05.31.12.24.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 May 2023 12:24:02 -0700 (PDT)
-Message-ID: <01dae949-4018-37f4-2dd9-cbecbd65b9a1@linaro.org>
-Date:   Wed, 31 May 2023 21:24:00 +0200
+        with ESMTP id S231797AbjFANRP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Jun 2023 09:17:15 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D5BE7;
+        Thu,  1 Jun 2023 06:17:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685625434; x=1717161434;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7rTn8BHWOp7NtmIZTi6wbClky6r1q098Fh3m1tEa+1U=;
+  b=H/2E92BdNHGZSGYJ4U8gfxiewWm+ktDYKHv4B/1d3kZm9kOn96uCIPw7
+   CH1n+cWRV8DF6Deo7iBoFjfMlbUdN/UuSKs1Wdm/vnfDg4x6m/AROA1P0
+   CDLcRJTX4uuJkm5ZWHLBbwQDdwx+9bxON08Ey8ZHuK7cHakuYw6Xu5rz7
+   Jp8Nof0qSTx2iZhoVP/WO9fqrY/JVunHjtjlHudNklG62vswE5wTpXiIa
+   /+YklNOBbpRAL7vbEPrJ/ROap3XFL/YQrf0kpvD7naTPEp7BFPAEia1yY
+   oWZHESGhioYnQrbcQ+z2Fy1WOVrAYL1YryXFgSpsgJMTfvbt9jTmPbdpl
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="353050858"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="353050858"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:17:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="737104338"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="737104338"
+Received: from hextor.igk.intel.com ([10.123.220.6])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 06:17:04 -0700
+From:   Michal Wilczynski <michal.wilczynski@intel.com>
+To:     rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+        vishal.l.verma@intel.com, dave.jiang@intel.com,
+        ira.weiny@intel.com, rui.zhang@intel.com, jdelvare@suse.com,
+        linux@roeck-us.net, jic23@kernel.org, lars@metafoo.de,
+        bleung@chromium.org, yu.c.chen@intel.com, hdegoede@redhat.com,
+        markgross@kernel.org, luzmaximilian@gmail.com,
+        corentin.chary@gmail.com, jprvita@gmail.com,
+        cascardo@holoscopio.com, don@syst.com.br, pali@kernel.org,
+        jwoithe@just42.net, matan@svgalib.org, kenneth.t.chan@gmail.com,
+        malattia@linux.it, jeremy@system76.com, productdev@system76.com,
+        herton@canonical.com, coproscefalo@gmail.com, tytso@mit.edu,
+        Jason@zx2c4.com, robert.moore@intel.com
+Cc:     linux-acpi@vger.kernel.org, nvdimm@lists.linux.dev,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net,
+        Michal Wilczynski <michal.wilczynski@intel.com>
+Subject: [PATCH v4 00/35] Remove .notify callback in acpi_device_ops
+Date:   Thu,  1 Jun 2023 15:16:55 +0200
+Message-Id: <20230601131655.300675-1-michal.wilczynski@intel.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 5/5] dt-bindings: iio: ad7192: Allow selection of clock
- modes
-Content-Language: en-US
-To:     Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Cc:     Conor Dooley <conor@kernel.org>, jic23@kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20230530075311.400686-1-fl.scratchpad@gmail.com>
- <20230530075311.400686-6-fl.scratchpad@gmail.com>
- <20230530-cannabis-headstone-883c5b891dd3@spud>
- <CAPJMGm4=sRQGPmVi8NjAVvOVrr8s2By6PO8kKRKZt3W0FR9j-Q@mail.gmail.com>
- <5d65b644-9b79-d232-d0d0-d2772325eef5@linaro.org>
- <CAPJMGm6T_x9Oocdmbrhi879QqZSd812LxJP=J554UbH9k9_LBw@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CAPJMGm6T_x9Oocdmbrhi879QqZSd812LxJP=J554UbH9k9_LBw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 31/05/2023 11:40, Fabrizio Lamarque wrote:
-> On Wed, May 31, 2023 at 9:14 AM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
->>
->> On 31/05/2023 08:59, Fabrizio Lamarque wrote:
->>> On Tue, May 30, 2023 at 7:22 PM Conor Dooley <conor@kernel.org> wrote:
->>>>
->>>> On Tue, May 30, 2023 at 09:53:11AM +0200, fl.scratchpad@gmail.com wrote:
->>>>> From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
->>>>>
->>>>> AD7192 supports external clock sources, generated by a digital clock
->>>>> source or a crystal oscillator, or internally generated clock option
->>>>> without external components.
->>>>>
->>>>> Describe choice between internal and external clock, crystal or external
->>>>> oscillator, and internal clock output enable.
->>>>>
->>>>> Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
->>>>> ---
->>>>>  .../bindings/iio/adc/adi,ad7192.yaml          | 27 ++++++++++++++++---
->>>>>  1 file changed, 24 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>>>> index 16def2985ab4..f7ecfd65ad80 100644
->>>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>>>> @@ -32,7 +32,8 @@ properties:
->>>>>
->>>>>    clocks:
->>>>>      maxItems: 1
->>>>> -    description: phandle to the master clock (mclk)
->>>>> +    description: |
->>>>> +      Master clock (mclk). If not set, internal clock is used.
->>>>>
->>>>>    clock-names:
->>>>>      items:
->>>>> @@ -50,6 +51,17 @@ properties:
->>>>>    vref-supply:
->>>>>      description: VRef voltage supply
->>>>>
->>>>> +  adi,clock-xtal:
->>>>> +    description: |
->>>>> +      Select whether an external crystal oscillator or an external
->>>>> +      clock is applied as master (mclk) clock.
->>>>> +    type: boolean
->>>>
->>>> Am I being daft, or are these the same thing? If they are not, and use
->>>> different input pins, I think it should be explained as it not clear.
->>>> Could you explain why we actually care that the source is a xtal versus
->>>> it being mclk, and why just having master clock is not sufficient?
->>>
->>> I may revise the description as follows. Feel free to add your suggestions
->>> in case it is still not clear enough.
->>>
->>> "Select whether an external crystal oscillator between MCLK1 and MCLK2 or
->>> an external CMOS-compatible clock on MCLK2 is used as master clock".
->>>
->>> This is used to properly set CLK0 and CLK1 bits in the MODE register.
->>> I guess most applications would use an external crystal or internal clock.
->>> The external digital clock would allow synchronization of multiple ADCs,
->>
->> Description confuses me. Why would it matter what type of clock you have
->> as input - external crystal oscillator or external CMOS-compatible
->> clock? Later you refer to "internal", so maybe you meant here also
->> internal for one of the options?
-> 
-> The AD7192 needs to be configured according to the type of external
-> clock that is
-> applied on MCLK1/MCLK2 pins in order to activate the correct circuitry.
-> 
-> Here are some citations from the datasheet:
-> 
-> MCLK2 pin description:
-> "The AD7192 has an internal 4.92 MHz clock. This internal clock can be
-> made available
-> on the MCLK2 pin. The clock for the AD7192 can be provided externally
-> also in the form
-> of a crystal or external clock. A crystal can be tied across the MCLK1
-> and MCLK2 pins.
-> Alternatively, the MCLK2 pin can be driven with a CMOS-compatible clock and the
-> MCLK1 pin left unconnected."
-> 
-> Each of these clock modes have to be configured via AD7192 mode register.
-> (Clock source configuration bits, mode register, CLK0 and CLK1).
-> Here is their description from datasheet:
-> 
-> "Either the on-chip 4.92 MHz clock or an external clock can be used.
-> The ability to
-> use an external clock allows several AD7192 devices to be synchronized. Also,
-> 50 Hz/60 Hz rejection is improved when an accurate external clock
-> drives the AD7192."
-> 
-> The choice between internal clock, external crystal oscillator or
-> external CMOS digital
-> clock is a decision of the HW designer driven by noise rejection,
-> synchronization, and
-> cost requirements.
-> 
-> If possible, I kindly ask you suggestions on how to adjust the description
-> so that it would be cleaner.
+Currently drivers support ACPI event handlers by defining .notify
+callback in acpi_device_ops. This solution is suboptimal as event
+handler installer installs intermediary function acpi_notify_device as a
+handler in every driver. Also this approach requires extra variable
+'flags' for specifying event types that the driver want to subscribe to.
+Additionally this is a pre-work required to align acpi_driver with
+platform_driver and eventually replace acpi_driver with platform_driver.
 
-It's fine. I missed that part that first option requires feeding the
-clock through two pins ("and").
+Remove .notify callback from the acpi_device_ops. Replace it with each
+driver installing and removing it's event handlers.
 
-Best regards,
-Krzysztof
+v4:
+ - added one commit for previously missed driver sony-laptop,
+   refactored return statements, added NULL check for event installer
+v3:
+ - lkp still reported some failures for eeepc, fujitsu and
+   toshiba_bluetooth, fix those
+v2:
+ - fix compilation errors for drivers
+
+Michal Wilczynski (35):
+  acpi: Adjust functions installing bus event handlers
+  acpi/ac: Move handler installing logic to driver
+  acpi/video: Move handler installing logic to driver
+  acpi/battery: Move handler installing logic to driver
+  acpi/button: Move handler installing logic to driver
+  acpi/hed: Move handler installing logic to driver
+  acpi/nfit: Move handler installing logic to driver
+  acpi/thermal: Move handler installing logic to driver
+  acpi/tiny-power-button: Move handler installing logic to driver
+  hwmon/acpi_power_meter: Move handler installing logic to driver
+  iio/acpi-als: Move handler installing logic to driver
+  platform/chromeos_tbmc: Move handler installing logic to driver
+  platform/wilco_ec: Move handler installing logic to driver
+  platform/surface/button: Move handler installing logic to driver
+  platform/x86/acer-wireless: Move handler installing logic to driver
+  platform/x86/asus-laptop: Move handler installing logic to driver
+  platform/x86/asus-wireless: Move handler installing logic to driver
+  platform/x86/classmate-laptop: Move handler installing logic to driver
+  platform/x86/dell/dell-rbtn: Move handler installing logic to driver
+  platform/x86/eeepc-laptop: Move handler installing logic to driver
+  platform/x86/fujitsu-laptop: Move handler installing logic to driver
+  platform/x86/lg-laptop: Move handler installing logic to driver
+  platform/x86/panasonic-laptop: Move handler installing logic to driver
+  platform/x86/system76_acpi: Move handler installing logic to driver
+  platform/x86/topstar-laptop: Move handler installing logic to driver
+  platform/x86/toshiba_acpi: Move handler installing logic to driver
+  platform/x86/toshiba_bluetooth: Move handler installing logic to
+    driver
+  platform/x86/toshiba_haps: Move handler installing logic to driver
+  platform/x86/wireless-hotkey: Move handler installing logic to driver
+  platform/x86/xo15-ebook: Move handler installing logic to driver
+  platform/x86/sony-laptop: Move handler installing logic to driver
+  virt/vmgenid: Move handler installing logic to driver
+  acpi/bus: Remove installing/removing notify handlers from probe/remove
+  acpi/bus: Remove redundant functions
+  acpi/bus: Remove notify callback and flags
+
+ drivers/acpi/ac.c                             |  14 +-
+ drivers/acpi/acpi_video.c                     |  16 ++-
+ drivers/acpi/battery.c                        |  16 ++-
+ drivers/acpi/bus.c                            |  56 +++-----
+ drivers/acpi/button.c                         |  16 ++-
+ drivers/acpi/hed.c                            |   7 +-
+ drivers/acpi/nfit/core.c                      |  25 ++--
+ drivers/acpi/thermal.c                        |  20 ++-
+ drivers/acpi/tiny-power-button.c              |  18 +--
+ drivers/hwmon/acpi_power_meter.c              |  15 +-
+ drivers/iio/light/acpi-als.c                  |  23 +++-
+ drivers/platform/chrome/chromeos_tbmc.c       |  14 +-
+ drivers/platform/chrome/wilco_ec/event.c      |  17 ++-
+ drivers/platform/surface/surfacepro3_button.c |  17 ++-
+ drivers/platform/x86/acer-wireless.c          |  22 ++-
+ drivers/platform/x86/asus-laptop.c            |  14 +-
+ drivers/platform/x86/asus-wireless.c          |  24 ++--
+ drivers/platform/x86/classmate-laptop.c       |  53 +++++--
+ drivers/platform/x86/dell/dell-rbtn.c         |  17 ++-
+ drivers/platform/x86/eeepc-laptop.c           |  16 ++-
+ drivers/platform/x86/fujitsu-laptop.c         |  86 +++++++-----
+ drivers/platform/x86/lg-laptop.c              |  10 +-
+ drivers/platform/x86/panasonic-laptop.c       |  18 ++-
+ drivers/platform/x86/sony-laptop.c            |   9 +-
+ drivers/platform/x86/system76_acpi.c          |  26 ++--
+ drivers/platform/x86/topstar-laptop.c         |  14 +-
+ drivers/platform/x86/toshiba_acpi.c           | 129 +++++++++---------
+ drivers/platform/x86/toshiba_bluetooth.c      |  30 ++--
+ drivers/platform/x86/toshiba_haps.c           |   9 +-
+ drivers/platform/x86/wireless-hotkey.c        |  24 +++-
+ drivers/platform/x86/xo15-ebook.c             |   9 +-
+ drivers/virt/vmgenid.c                        |  30 ++--
+ include/acpi/acpi_bus.h                       |  10 +-
+ 33 files changed, 530 insertions(+), 294 deletions(-)
+
+-- 
+2.40.1
 

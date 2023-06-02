@@ -2,130 +2,243 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F365171F784
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Jun 2023 03:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C30571FC33
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Jun 2023 10:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231726AbjFBBJE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Jun 2023 21:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39856 "EHLO
+        id S234494AbjFBIi3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Jun 2023 04:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231407AbjFBBJC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Jun 2023 21:09:02 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB69E2;
-        Thu,  1 Jun 2023 18:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685668141; x=1717204141;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=chfMVfnhp5j03xinVitce1S1i2pv18p9kLtJKoM0g+I=;
-  b=FJfxuU0rSHVWF3g0zgzEv1POgrCZfBow08kSo2MhTh1G1HuPBxrr5RId
-   94JT5DCXCWIVRJlXQVWHgITzwdOCZBwPSTFQ9BQrhQ0nHvqUxCuoFD7RB
-   c3pgpZgGEnk1r2wBv4F4NUvzWNTkCAA3h27IlLCfwdyQrdFhvVE3++MU0
-   TXHZVE/DUWEpSth7ZenwGAz70JgWQTkBq5lJuFwC5GcWLofQizOANG2zW
-   /R0xzshOf7wYCmwnVbPtre0o0mHE2ViEema5axsohcY+VGCZ68Oeai/P0
-   yQKZPvToQrUv77a16AcHoGWetMrqjNEFPzo/hPsvBnZ2F+N2hox3Qg4j8
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="358159962"
-X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
-   d="scan'208";a="358159962"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 18:09:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="954251520"
-X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
-   d="scan'208";a="954251520"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga006.fm.intel.com with ESMTP; 01 Jun 2023 18:08:58 -0700
-Received: from dkhamitk-mobl1.amr.corp.intel.com (dkhamitk-mobl1.amr.corp.intel.com [10.251.3.100])
-        by linux.intel.com (Postfix) with ESMTP id 98D64580CD0;
-        Thu,  1 Jun 2023 18:08:57 -0700 (PDT)
-Message-ID: <b067f6990c7e6e58c487770126a804500ce8a54a.camel@linux.intel.com>
-Subject: Re: [PATCH v4 35/35] acpi/bus: Remove notify callback and flags
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     Michal Wilczynski <michal.wilczynski@intel.com>, rafael@kernel.org,
-        lenb@kernel.org, dan.j.williams@intel.com,
-        vishal.l.verma@intel.com, dave.jiang@intel.com,
-        ira.weiny@intel.com, rui.zhang@intel.com, jdelvare@suse.com,
-        linux@roeck-us.net, jic23@kernel.org, lars@metafoo.de,
-        bleung@chromium.org, yu.c.chen@intel.com, hdegoede@redhat.com,
-        markgross@kernel.org, luzmaximilian@gmail.com,
-        corentin.chary@gmail.com, jprvita@gmail.com,
-        cascardo@holoscopio.com, don@syst.com.br, pali@kernel.org,
-        jwoithe@just42.net, matan@svgalib.org, kenneth.t.chan@gmail.com,
-        malattia@linux.it, jeremy@system76.com, productdev@system76.com,
-        herton@canonical.com, coproscefalo@gmail.com, tytso@mit.edu,
-        Jason@zx2c4.com, robert.moore@intel.com
-Cc:     linux-acpi@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        chrome-platform@lists.linux.dev,
-        platform-driver-x86@vger.kernel.org,
-        acpi4asus-user@lists.sourceforge.net,
-        acpica-devel@lists.linuxfoundation.org
-Date:   Thu, 01 Jun 2023 18:08:57 -0700
-In-Reply-To: <20230601132137.301802-1-michal.wilczynski@intel.com>
-References: <20230601132137.301802-1-michal.wilczynski@intel.com>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
+        with ESMTP id S234331AbjFBIi2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Jun 2023 04:38:28 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC6513D
+        for <linux-iio@vger.kernel.org>; Fri,  2 Jun 2023 01:38:27 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51480d3e161so2674068a12.3
+        for <linux-iio@vger.kernel.org>; Fri, 02 Jun 2023 01:38:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685695106; x=1688287106;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pPYsqCw+S4frzdamGly3+8lmKwz0DvRF1BFqk4pDJOk=;
+        b=OAdnQ1kBlBpFTnXu6dS3B59LrW5AVp8ZcAJsAfNCUqiphvo3vuLfQ2jQojKHK8uIu+
+         mkYHn25y1tDmdVsZEYIACwOPC1mChfuvNucUnrQPPJYoWH90zfogqm1WlPjHFhLiHvDn
+         zUejvooWWmDBxSVkq1+jelu+5yBDbIxrA7qptcGtSrCXHkPoMcGKltkB6InEmFYlqKip
+         qVkl3R/iTD3QMkpIskH6E5HD5IpLSLYkBnXw33jvZnnPkTX21eTThiXpXwAOcZA4tuSD
+         yHV3IG9eobPhR60HzBNIBtqxsECxUBM6oLTe+nAgdWiMxlGTuKuud6NJA5A2fJHNyieV
+         MBhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685695106; x=1688287106;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pPYsqCw+S4frzdamGly3+8lmKwz0DvRF1BFqk4pDJOk=;
+        b=ftMCjeFCQ2iDsuO/ndmHMF1hySBq3dFWhMaJN2xfO89kXI/CnC6yA+1tbJUT6j/XfN
+         2sltB6AHiJQKFub7++QH/JoKR3GN3ezk5yX/GxOQgB4BoivYS55dGEaAAUmJ13H1D7c8
+         RP3znAytE6dOlyhaifG60DZ6Jq4HHj9XXVPFsTj6FcoZbVwl3rkPPvvz8CwIScog7JJV
+         fDMxehC9qbVBGs63VJMceB/7CAYgrKw/fzHnRMTTn2StLBTwkzP9OngVN+9qmQ0QnDCp
+         1xVrysZOqvBFzjcMXBrQ6Nrqz+BzJYXxg+EdkCsdnpYEQFzbUTV8gWR3mnaqX9jx5Qb7
+         MfhQ==
+X-Gm-Message-State: AC+VfDxChbPsJeaup0i56/FUnvDVHgo1LVsCxmbghjDVAp6I4zL/eqMe
+        trgG/5/GcqRPz8t0jD6FbzsUOA==
+X-Google-Smtp-Source: ACHHUZ7U7Nk9Xfw9ScoLkNnQ7voAB8/uUOjSN+gFT7/29x62vxLDRSi2u8Ebdcr4cCP2ctPddFy3iw==
+X-Received: by 2002:a17:907:3f14:b0:96a:5e38:ba49 with SMTP id hq20-20020a1709073f1400b0096a5e38ba49mr12594130ejc.2.1685695105825;
+        Fri, 02 Jun 2023 01:38:25 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.199.204])
+        by smtp.gmail.com with ESMTPSA id h19-20020a17090619d300b0096f641a4c01sm472053ejd.179.2023.06.02.01.38.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Jun 2023 01:38:25 -0700 (PDT)
+Message-ID: <fbcc5688-387c-32fb-edac-17848c92b936@linaro.org>
+Date:   Fri, 2 Jun 2023 10:38:21 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2 2/3] dt-bindings: iio: adc: Add Allwinner
+ D1/T113s/R329/T507 SoCs GPADC
+Content-Language: en-US
+To:     Maksim Kiselev <bigunclemax@gmail.com>, linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Heiko Stuebner <heiko.stuebner@vrull.eu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20230601223104.1243871-1-bigunclemax@gmail.com>
+ <20230601223104.1243871-3-bigunclemax@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230601223104.1243871-3-bigunclemax@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Michal,
+On 02/06/2023 00:30, Maksim Kiselev wrote:
+> From: Maxim Kiselev <bigunclemax@gmail.com>
+> 
+> Allwinner's D1/T113s/R329/T507 SoCs have a new general purpose ADC.
+> This ADC is the same for all of this SoCs. The only difference is
+> the number of available channels.
 
-On Thu, 2023-06-01 at 15:21 +0200, Michal Wilczynski wrote:
-> As callback has been replaced by drivers installing their handlers in
-> .add it's presence is not useful anymore.
->=20
-> Remove .notify callback and flags variable from struct acpi_driver,
-> as they're not needed anymore.
->=20
-> Signed-off-by: Michal Wilczynski <michal.wilczynski@intel.com>
+Except that it wasn't tested...
+
+> 
+> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
 > ---
-> =C2=A0include/acpi/acpi_bus.h | 3 ---
-> =C2=A01 file changed, 3 deletions(-)
->=20
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 7fb411438b6f..3326794d5b70 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -151,12 +151,10 @@ struct acpi_hotplug_context {
-> =C2=A0
-> =C2=A0typedef int (*acpi_op_add) (struct acpi_device * device);
-> =C2=A0typedef void (*acpi_op_remove) (struct acpi_device *device);
-> -typedef void (*acpi_op_notify) (struct acpi_device * device, u32 event);
-> =C2=A0
-> =C2=A0struct acpi_device_ops {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0acpi_op_add add;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0acpi_op_remove remove;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0acpi_op_notify notify;
-> =C2=A0};
-> =C2=A0
-> =C2=A0#define ACPI_DRIVER_ALL_NOTIFY_EVENTS=C2=A0=C2=A00x1=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0/* system AND device events */
-> @@ -165,7 +163,6 @@ struct acpi_driver {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char name[80];
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char class[80];
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct acpi_device_=
-id *ids; /* Supported Hardware IDs */
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int flags;
+>  .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    | 79 +++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+> new file mode 100644
+> index 000000000000..94f15bb48231
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: GPL-2.0
 
-Can ACPI_DRIVER_ALL_NOTIFY_EVENTS be removed as well?
+dual license
 
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct acpi_device_ops op=
-s;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device_driver drv;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct module *owner;
+Please run scripts/checkpatch.pl and fix reported warnings. Some
+warnings can be ignored, but the code here looks like it needs a fix.
+Feel free to get in touch if the warning is not clear.
+
+
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/allwinner,sun20i-d1-gpadc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Allwinner D1 General Purpose ADC
+> +
+> +properties:
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  compatible:
+> +    enum:
+> +      - allwinner,sun20i-d1-gpadc
+
+compatible is first property
+
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  resets:
+> +    maxItems: 1
+> +
+> +required:
+> +  - "#io-channel-cells"
+> +  - clocks
+> +  - compatible
+> +  - interrupts
+> +  - reg
+> +  - resets
+
+required: block goes after all properties.
+
+> +
+> +patternProperties:
+> +  "^channel@([0-15])$":
+> +    $ref: adc.yaml
+> +    type: object
+> +    description: |
+
+Do not need '|' unless you need to preserve formatting.
+
+> +      Represents the internal channels of the ADC.
+> +
+> +    properties:
+> +      reg:
+
+> +        description: |
+Do not need '|' unless you need to preserve formatting.
+
+> +          The channel number.
+> +          Up to 16 channels, numbered from 0 to 15.
+
+Don't repeat constraints in free form text.
+
+> +        items:
+> +          minimum: 0
+> +          maximum: 15
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+
+Hm? So you do not allow anything from adc.yaml related? Are you sure
+this is your intention?
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    gpadc: adc@2009000 {
+> +        compatible = "allwinner,sun20i-d1-gpadc";
+> +        reg = <0x2009000 0x1000>;
+> +        clocks = <&ccu 80>;
+> +        resets = <&ccu 32>;
+> +        interrupts = <0 57 4>;
+
+Use proper defines
+
+> +        #io-channel-cells = <1>;
+> +
+> +        channel@0 {
+> +          reg = <0>;
+
+Broken indentation.
+Use 4 spaces for example indentation.
+
+> +        };
+> +
+> +        channel@1 {
+> +          reg = <1>;
+> +        };
+> +    };
+> +
+> +...
+
+Best regards,
+Krzysztof
 

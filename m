@@ -2,243 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C30571FC33
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Jun 2023 10:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA488720F45
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jun 2023 12:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234494AbjFBIi3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Jun 2023 04:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
+        id S229475AbjFCKfC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jun 2023 06:35:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234331AbjFBIi2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Jun 2023 04:38:28 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC6513D
-        for <linux-iio@vger.kernel.org>; Fri,  2 Jun 2023 01:38:27 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51480d3e161so2674068a12.3
-        for <linux-iio@vger.kernel.org>; Fri, 02 Jun 2023 01:38:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685695106; x=1688287106;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pPYsqCw+S4frzdamGly3+8lmKwz0DvRF1BFqk4pDJOk=;
-        b=OAdnQ1kBlBpFTnXu6dS3B59LrW5AVp8ZcAJsAfNCUqiphvo3vuLfQ2jQojKHK8uIu+
-         mkYHn25y1tDmdVsZEYIACwOPC1mChfuvNucUnrQPPJYoWH90zfogqm1WlPjHFhLiHvDn
-         zUejvooWWmDBxSVkq1+jelu+5yBDbIxrA7qptcGtSrCXHkPoMcGKltkB6InEmFYlqKip
-         qVkl3R/iTD3QMkpIskH6E5HD5IpLSLYkBnXw33jvZnnPkTX21eTThiXpXwAOcZA4tuSD
-         yHV3IG9eobPhR60HzBNIBtqxsECxUBM6oLTe+nAgdWiMxlGTuKuud6NJA5A2fJHNyieV
-         MBhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685695106; x=1688287106;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pPYsqCw+S4frzdamGly3+8lmKwz0DvRF1BFqk4pDJOk=;
-        b=ftMCjeFCQ2iDsuO/ndmHMF1hySBq3dFWhMaJN2xfO89kXI/CnC6yA+1tbJUT6j/XfN
-         2sltB6AHiJQKFub7++QH/JoKR3GN3ezk5yX/GxOQgB4BoivYS55dGEaAAUmJ13H1D7c8
-         RP3znAytE6dOlyhaifG60DZ6Jq4HHj9XXVPFsTj6FcoZbVwl3rkPPvvz8CwIScog7JJV
-         fDMxehC9qbVBGs63VJMceB/7CAYgrKw/fzHnRMTTn2StLBTwkzP9OngVN+9qmQ0QnDCp
-         1xVrysZOqvBFzjcMXBrQ6Nrqz+BzJYXxg+EdkCsdnpYEQFzbUTV8gWR3mnaqX9jx5Qb7
-         MfhQ==
-X-Gm-Message-State: AC+VfDxChbPsJeaup0i56/FUnvDVHgo1LVsCxmbghjDVAp6I4zL/eqMe
-        trgG/5/GcqRPz8t0jD6FbzsUOA==
-X-Google-Smtp-Source: ACHHUZ7U7Nk9Xfw9ScoLkNnQ7voAB8/uUOjSN+gFT7/29x62vxLDRSi2u8Ebdcr4cCP2ctPddFy3iw==
-X-Received: by 2002:a17:907:3f14:b0:96a:5e38:ba49 with SMTP id hq20-20020a1709073f1400b0096a5e38ba49mr12594130ejc.2.1685695105825;
-        Fri, 02 Jun 2023 01:38:25 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.199.204])
-        by smtp.gmail.com with ESMTPSA id h19-20020a17090619d300b0096f641a4c01sm472053ejd.179.2023.06.02.01.38.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jun 2023 01:38:25 -0700 (PDT)
-Message-ID: <fbcc5688-387c-32fb-edac-17848c92b936@linaro.org>
-Date:   Fri, 2 Jun 2023 10:38:21 +0200
+        with ESMTP id S229726AbjFCKez (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jun 2023 06:34:55 -0400
+X-Greylist: delayed 4200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Jun 2023 03:34:52 PDT
+Received: from mail.webtopbits.pl (mail.webtopbits.pl [195.231.64.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CEF51A5
+        for <linux-iio@vger.kernel.org>; Sat,  3 Jun 2023 03:34:51 -0700 (PDT)
+Received: by mail.webtopbits.pl (Postfix, from userid 1001)
+        id 6C55EA393E; Fri,  2 Jun 2023 09:45:44 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=webtopbits.pl;
+        s=mail; t=1685695551;
+        bh=Eh8ECMiYd4baGAwPAzhz8mhJACXX7NSRkYjh+plaY18=;
+        h=Date:From:To:Subject:From;
+        b=irmThf8Yp/z43H3ZerG0CO6M4Na/FxHPkVNd6nHdD1wsKwd+ykY+q/jnLilvD4KJl
+         XzPX/9HS8tJ54Iq3F6SB7im3TJMa5lDe+Y6XbksWKZt+l8/oKhe/b1prfLFDZnZn9Y
+         f6poY/19RikzLctDV53Egwo/JgaPfKd9tu8o/dhcyRjxIsxhP/oHpmsfOczlSu0/HR
+         8IwW1aEDs2fnLJmKGnj7Ir58oUYgdL0L1jkrhzIfKe09LzddTO65k5gnccL8HNlgJH
+         3VRVxwoHdI54EqBMClInwtQfKa097qpXMXKrIM+3EGAmcxaA9mG8c1Spcl2IXDN0g5
+         YiSvQk1OSYNKg==
+Received: by mail.webtopbits.pl for <linux-iio@vger.kernel.org>; Fri,  2 Jun 2023 08:45:39 GMT
+Message-ID: <20230602085530-0.1.8w.5ko7.0.lkke6jchvt@webtopbits.pl>
+Date:   Fri,  2 Jun 2023 08:45:39 GMT
+From:   "Kamil Durjasz" <kamil.durjasz@webtopbits.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: =?UTF-8?Q?Wy=C5=BCsza_konwersja_w_e-sklepie_?=
+X-Mailer: mail.webtopbits.pl
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: adc: Add Allwinner
- D1/T113s/R329/T507 SoCs GPADC
-Content-Language: en-US
-To:     Maksim Kiselev <bigunclemax@gmail.com>, linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Heiko Stuebner <heiko.stuebner@vrull.eu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20230601223104.1243871-1-bigunclemax@gmail.com>
- <20230601223104.1243871-3-bigunclemax@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230601223104.1243871-3-bigunclemax@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 02/06/2023 00:30, Maksim Kiselev wrote:
-> From: Maxim Kiselev <bigunclemax@gmail.com>
-> 
-> Allwinner's D1/T113s/R329/T507 SoCs have a new general purpose ADC.
-> This ADC is the same for all of this SoCs. The only difference is
-> the number of available channels.
+Dzie=C5=84 dobry,
 
-Except that it wasn't tested...
+w jaki spos=C3=B3b docieraj=C4=85 Pa=C5=84stwo do odbiorc=C3=B3w?
 
-> 
-> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
-> ---
->  .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    | 79 +++++++++++++++++++
->  1 file changed, 79 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
-> new file mode 100644
-> index 000000000000..94f15bb48231
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
-> @@ -0,0 +1,79 @@
-> +# SPDX-License-Identifier: GPL-2.0
+Tworzymy pot=C4=99=C5=BCne narz=C4=99dzia sprzeda=C5=BCy, kt=C3=B3re pozw=
+alaj=C4=85 kompleksowo rozwi=C4=85za=C4=87 problemy potencjalnych klient=C3=
+=B3w i skutecznie wp=C5=82yn=C4=85=C4=87 na ich decyzje zakupowe.=20
 
-dual license
+Skupiamy si=C4=99 na Pa=C5=84stwa potrzebach zwi=C4=85zanych z obs=C5=82u=
+g=C4=85 sklepu, oczekiwaniach i planach sprzeda=C5=BCowych. Szczeg=C3=B3=C5=
+=82owo dopasowujemy grafik=C4=99, funkcjonalno=C5=9Bci, struktur=C4=99 i =
+mikrointerakcje do Pa=C5=84stwa grupy docelowej, co przek=C5=82ada si=C4=99=
+ na oczekiwane rezultaty.
 
-Please run scripts/checkpatch.pl and fix reported warnings. Some
-warnings can be ignored, but the code here looks like it needs a fix.
-Feel free to get in touch if the warning is not clear.
+Ch=C4=99tnie przedstawi=C4=99 dotychczasowe realizacje, aby mogli Pa=C5=84=
+stwo przekona=C4=87 si=C4=99 o naszych mo=C5=BCliwo=C5=9Bciach. Mog=C4=99=
+ si=C4=99 skontaktowa=C4=87?
 
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/allwinner,sun20i-d1-gpadc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Allwinner D1 General Purpose ADC
-> +
-> +properties:
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  compatible:
-> +    enum:
-> +      - allwinner,sun20i-d1-gpadc
-
-compatible is first property
-
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +required:
-> +  - "#io-channel-cells"
-> +  - clocks
-> +  - compatible
-> +  - interrupts
-> +  - reg
-> +  - resets
-
-required: block goes after all properties.
-
-> +
-> +patternProperties:
-> +  "^channel@([0-15])$":
-> +    $ref: adc.yaml
-> +    type: object
-> +    description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +      Represents the internal channels of the ADC.
-> +
-> +    properties:
-> +      reg:
-
-> +        description: |
-Do not need '|' unless you need to preserve formatting.
-
-> +          The channel number.
-> +          Up to 16 channels, numbered from 0 to 15.
-
-Don't repeat constraints in free form text.
-
-> +        items:
-> +          minimum: 0
-> +          maximum: 15
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-
-Hm? So you do not allow anything from adc.yaml related? Are you sure
-this is your intention?
-
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    gpadc: adc@2009000 {
-> +        compatible = "allwinner,sun20i-d1-gpadc";
-> +        reg = <0x2009000 0x1000>;
-> +        clocks = <&ccu 80>;
-> +        resets = <&ccu 32>;
-> +        interrupts = <0 57 4>;
-
-Use proper defines
-
-> +        #io-channel-cells = <1>;
-> +
-> +        channel@0 {
-> +          reg = <0>;
-
-Broken indentation.
-Use 4 spaces for example indentation.
-
-> +        };
-> +
-> +        channel@1 {
-> +          reg = <1>;
-> +        };
-> +    };
-> +
-> +...
-
-Best regards,
-Krzysztof
-
+Pozdrawiam
+Kamil Durjasz

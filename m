@@ -2,127 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F39720A8F
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Jun 2023 22:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF271720FD5
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jun 2023 13:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236034AbjFBUwt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Jun 2023 16:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60238 "EHLO
+        id S237022AbjFCLD3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jun 2023 07:03:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235596AbjFBUwt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Jun 2023 16:52:49 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE653E43;
-        Fri,  2 Jun 2023 13:52:47 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b1a46ad09fso29998611fa.2;
-        Fri, 02 Jun 2023 13:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685739166; x=1688331166;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y7HA5PHTw9F2n8V3VLqOSLter+XfMCtTqmZlHwN6Bdg=;
-        b=gj6sXhQvonQVSdIiSB1BGk/IiVLQXeTWM9CwNIhNChBvOUPISH6oe2FYdUdH1rtu4p
-         eisBvFgaXNDsikXAef+m2M79c/JDeUd3X1BjhXjvaOcX+Cw5G1mShS8a/JVnTK+/iuNr
-         s4mInvlhGV4fa1scX3oBJ6JbjkADzxdw8g3Bxcrd2AlH/YGRFWHNXEmf86a6toDfRAQD
-         zn9/6yLyuoTA3ZrmovLT3dANQftYZxwBibb0/CiFMEYGATaLZTgS3ZHsexjHyEZB0W9j
-         f77xDJ0QokPXIiysXTfGGxuIeo8X01ggBSTvcqmztL5DkgGcvNskXDiq7m8kSMRQCNln
-         /+5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685739166; x=1688331166;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7HA5PHTw9F2n8V3VLqOSLter+XfMCtTqmZlHwN6Bdg=;
-        b=KCPblEw2u/Mn9FYWtxupTlDjEQDcKm+68NudOe0I36+1a7jpeqUl7ileCFAeywq1I6
-         gzgw+KrSd5cZccc85rYbeB1nvTI0xiP6Qylfh82ycOhfmAylMffJjOCQpiooX+p+hwkR
-         JInRuXg5b2t8bDHD0TcDJgKSFQl0R7Y0IqriVC+jor0yvu7VHfcbXL/0LbRJdINgVAEF
-         7pb/bKAhSdvK7l89W++0cIyg0n6pPAWUX7w/evICPoKCEKB6mp1oiH6PG4GeOsE9YheW
-         RSExhK5LUn4TTn9+HTXZuvHftZXRXzfw5/Z+0JC3GsQ30/Q9sXrEUx0RrhZDHuyaFfAu
-         9dHQ==
-X-Gm-Message-State: AC+VfDwbOXAQZBkBLHMx46vV5rNnTHNSJiPaZ9Iq9c7dSS2svbszEAVp
-        qDPqgCa7LOC06NDcXNG+Hg9x1Il2HTs=
-X-Google-Smtp-Source: ACHHUZ6jE2Tl+nrC/l+BVPHNQQ+KXhOBAzQWqPmUuv4iEGF6bf9bbtEa/5m9+UDFagoHm4icoJnWCw==
-X-Received: by 2002:a2e:934f:0:b0:2a9:9e99:a508 with SMTP id m15-20020a2e934f000000b002a99e99a508mr651818ljh.53.1685739165706;
-        Fri, 02 Jun 2023 13:52:45 -0700 (PDT)
-Received: from ?IPV6:2a01:c23:c15b:cc00:2863:962e:5942:4889? (dynamic-2a01-0c23-c15b-cc00-2863-962e-5942-4889.c23.pool.telefonica.de. [2a01:c23:c15b:cc00:2863:962e:5942:4889])
-        by smtp.googlemail.com with ESMTPSA id u21-20020aa7d995000000b00514a3c04646sm1042851eds.73.2023.06.02.13.52.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jun 2023 13:52:45 -0700 (PDT)
-Message-ID: <bf2d2814-5881-0f42-8b62-89c043b66e22@gmail.com>
-Date:   Fri, 2 Jun 2023 22:52:41 +0200
+        with ESMTP id S230023AbjFCLD1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jun 2023 07:03:27 -0400
+Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9800A6
+        for <linux-iio@vger.kernel.org>; Sat,  3 Jun 2023 04:03:26 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+        id 4150446e-01fe-11ee-b972-005056bdfda7;
+        Sat, 03 Jun 2023 14:03:24 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Sat, 3 Jun 2023 14:03:22 +0300
+To:     Michal Wilczynski <michal.wilczynski@intel.com>
+Cc:     rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
+        vishal.l.verma@intel.com, dave.jiang@intel.com,
+        ira.weiny@intel.com, rui.zhang@intel.com, jdelvare@suse.com,
+        linux@roeck-us.net, jic23@kernel.org, lars@metafoo.de,
+        bleung@chromium.org, yu.c.chen@intel.com, hdegoede@redhat.com,
+        markgross@kernel.org, luzmaximilian@gmail.com,
+        corentin.chary@gmail.com, jprvita@gmail.com,
+        cascardo@holoscopio.com, don@syst.com.br, pali@kernel.org,
+        jwoithe@just42.net, matan@svgalib.org, kenneth.t.chan@gmail.com,
+        malattia@linux.it, jeremy@system76.com, productdev@system76.com,
+        herton@canonical.com, coproscefalo@gmail.com, tytso@mit.edu,
+        Jason@zx2c4.com, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, nvdimm@lists.linux.dev,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        chrome-platform@lists.linux.dev,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net
+Subject: Re: [PATCH v4 00/35] Remove .notify callback in acpi_device_ops
+Message-ID: <ZHsd-je7kDDpii2q@surfacebook>
+References: <20230601131655.300675-1-michal.wilczynski@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-To:     George Stark <gnstark@sberdevices.ru>, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        martin.blumenstingl@googlemail.com
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru, Dmitry Rokosov <ddrokosov@sberdevices.ru>
-References: <20230602103211.2199283-1-gnstark@sberdevices.ru>
-Content-Language: en-US
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH] pwm: meson: compute cnt register value in proper way
-In-Reply-To: <20230602103211.2199283-1-gnstark@sberdevices.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601131655.300675-1-michal.wilczynski@intel.com>
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 02.06.2023 12:32, George Stark wrote:
-> According to the datasheet, the PWM high and low clock count values
-> should be set to at least one. Therefore, setting the clock count
-> register to 0 actually means 1 clock count.
+Thu, Jun 01, 2023 at 03:16:55PM +0200, Michal Wilczynski kirjoitti:
+> Currently drivers support ACPI event handlers by defining .notify
+> callback in acpi_device_ops. This solution is suboptimal as event
+> handler installer installs intermediary function acpi_notify_device as a
+> handler in every driver. Also this approach requires extra variable
+> 'flags' for specifying event types that the driver want to subscribe to.
+> Additionally this is a pre-work required to align acpi_driver with
+> platform_driver and eventually replace acpi_driver with platform_driver.
 > 
-> Signed-off-by: George Stark <GNStark@sberdevices.ru>
-> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-> ---
-> This patch is based on currently unmerged patch by Heiner Kallweit
-> https://lore.kernel.org/linux-amlogic/23fe625e-dc23-4db8-3dce-83167cd3b206@gmail.com
-> ---
-> diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
-> index 834acd7..57e7d9c 100644
-> --- a/drivers/pwm/pwm-meson.c
-> +++ b/drivers/pwm/pwm-meson.c
-> @@ -206,6 +206,11 @@
->  		channel->pre_div = pre_div;
->  		channel->hi = duty_cnt;
->  		channel->lo = cnt - duty_cnt;
-> +
-> +		if (channel->hi)
-> +			channel->hi--;
-> +		if (channel->lo)
-> +			channel->lo--;
+> Remove .notify callback from the acpi_device_ops. Replace it with each
+> driver installing and removing it's event handlers.
 
-I'm not sure whether we should do this. duty_cnt and cnt are results
-of an integer division and therefore potentially rounded down.
-The chip-internal increment may help to compensate such rounding
-errors, so to say. With the proposed change we may end up with the
-effective period being shorter than the requested one.
-And IIRC this should not happen.
+Somehow this thread is screwed up in a sense of linking messages.
+Even on the archives there are rather individual patches.
 
->  	}
->  
->  	return 0;
-> @@ -340,7 +345,8 @@
->  	channel->lo = FIELD_GET(PWM_LOW_MASK, value);
->  	channel->hi = FIELD_GET(PWM_HIGH_MASK, value);
->  
-> -	state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->lo + channel->hi);
-> +	state->period = meson_pwm_cnt_to_ns(chip, pwm,
-> +					    channel->lo + 1 + channel->hi + 1);
->  	state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
->  
-Doesn't channel->hi have to be incremented here too?
+Please, be sure you are always use --thread when formatting it.
+Yet you have a possibility to Cc different patches to the different
+mailing lists and people.
 
->  	return 0;
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

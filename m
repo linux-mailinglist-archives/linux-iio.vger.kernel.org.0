@@ -2,50 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F32272118D
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Jun 2023 20:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78CE772119A
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jun 2023 20:54:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjFCS1t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Jun 2023 14:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32782 "EHLO
+        id S229550AbjFCSyR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Jun 2023 14:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjFCS1s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jun 2023 14:27:48 -0400
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39769A6
-        for <linux-iio@vger.kernel.org>; Sat,  3 Jun 2023 11:27:47 -0700 (PDT)
-Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
-        by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-        id 555a7ff2-023c-11ee-abf4-005056bdd08f;
-        Sat, 03 Jun 2023 21:27:45 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Sat, 3 Jun 2023 21:27:44 +0300
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 9/9] ASoC: simple-card: Handle additional devices
-Message-ID: <ZHuGIGDsyGWPTvKi@surfacebook>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
- <20230523151223.109551-10-herve.codina@bootlin.com>
+        with ESMTP id S229451AbjFCSyR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Jun 2023 14:54:17 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E4D132;
+        Sat,  3 Jun 2023 11:54:16 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:0:21ea:e49:10dd:40c0:e842])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 84F176603050;
+        Sat,  3 Jun 2023 19:54:11 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1685818454;
+        bh=qJHl6ZztoyxnGSSFfe0ylaeipSQVNPH3nlpHB6A9Yak=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gKkl5DS+Es+ob9eQWoxzh64xfN2ES2Srv/U8hUXZ4sG78XzQS/xziNqguoQg2ZeIJ
+         HKxVrhk4TdrsdLAXBIZ2NqHGma4ZtAjSbqqwmOZ3J+EBSDTRl4QuXSaR6gaxFRzYa2
+         JywssVzi3eEalKk/YRCxSlgBqrE5xtMy6fO70C7WLOZvOE+Rn+ghg+wE4aCF4tIgoz
+         Ywco5j9h2MFHhEJBWWlOuvuawwyjQHyfBE7ol1QMEb/iBOBnr7ZqXoLRIFhC+tntZL
+         LMyeGKz2gHv7CFUU+1XIf6d4iv6yLUZogTMJMqWf3cd5QsHxXnmv1kLycnJw1JoLBT
+         9d18xhz3DhoOw==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de, heiko@sntech.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        sebastian.reichel@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        gustavo.padovan@collabora.com, kernel@collabora.com,
+        serge.broslavsky@collabora.com,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH v3 0/8] RK3588 ADC support
+Date:   Sun,  4 Jun 2023 00:23:32 +0530
+Message-Id: <20230603185340.13838-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230523151223.109551-10-herve.codina@bootlin.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,45 +57,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Tue, May 23, 2023 at 05:12:23PM +0200, Herve Codina kirjoitti:
-> An additional-devs subnode can be present in the simple-card top node.
-> This subnode is used to declared some "virtual" additional devices.
-> 
-> Create related devices from this subnode and avoid this subnode presence
-> to interfere with the already supported subnodes analysis.
+This patch series adds ADC support for RK3588 and updates
+the DT bindings for the same.
 
-...
+To test ADC support on Rock 5B board, a voltage divider circuit
+was created using the gpio pin 22 ( SARADC_IN4 ) and few more
+tests were ran for testing the buffer and trigger support using
+the iio_generic_buffer tool.
 
-> +static int simple_populate_aux(struct asoc_simple_priv *priv)
-> +{
-> +	struct device *dev = simple_priv_to_dev(priv);
-> +	struct device_node *node;
-> +	struct device **ptr;
-> +	int ret;
-> +
-> +	node = of_get_child_by_name(dev->of_node, PREFIX "additional-devs");
-> +	if (!node)
-> +		return 0;
-> +
-> +	ptr = devres_alloc(simple_populate_aux_release, sizeof(*ptr), GFP_KERNEL);
-> +	if (!ptr)
-> +		return -ENOMEM;
-> +
-> +	ret = of_platform_populate(node, NULL, NULL, dev);
-> +	if (ret) {
-> +		devres_free(ptr);
-> +	} else {
-> +		*ptr = dev;
-> +		devres_add(dev, ptr);
-> +	}
-> +	return ret;
+Changes in v3
+  - Add bitfield.h header file in patch 2.
+  - Add a Reviewed-by tag in patch 2.
+  - Do not remove clock enabling and disabling from the suspend and
+    resume functions respectively in patch 3
 
-This can be well simplified by using devm_add_action_or_reset().
+Changes in v2
+  - Add from address in patches 1 and 2.
+  - Create separate patches for adding new device support and changes to
+    the old device code.
+  - Make use of FIELD_PREP in patch 2.
+  - Move the enablement of clocks at it's original position in patch 3
+  - Add Reviewed-by tag in patches 4 and 5.
+  - Add an Acked-by tag in patch 8.
 
-> +}
+Shreeya Patel (8):
+  iio: adc: rockchip_saradc: Add callback functions
+  iio: adc: rockchip_saradc: Add support for RK3588
+  iio: adc: rockchip_saradc: Make use of devm_clk_get_enabled
+  iio: adc: rockchip_saradc: Use of_device_get_match_data
+  iio: adc: rockchip_saradc: Match alignment with open parenthesis
+  iio: adc: rockchip_saradc: Use dev_err_probe
+  arm64: dts: rockchip: Add DT node for ADC support in RK3588
+  dt-bindings: iio: adc: Add rockchip,rk3588-saradc string
+
+ .../bindings/iio/adc/rockchip-saradc.yaml     |   1 +
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi     |  12 +
+ drivers/iio/adc/rockchip_saradc.c             | 246 +++++++++++-------
+ 3 files changed, 168 insertions(+), 91 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 

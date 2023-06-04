@@ -2,60 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BACF27219AD
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 22:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C11F721A01
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 22:53:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230437AbjFDUVA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jun 2023 16:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54004 "EHLO
+        id S232053AbjFDUxq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jun 2023 16:53:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjFDUVA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 16:21:00 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6300CA;
-        Sun,  4 Jun 2023 13:20:57 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5148e4a2f17so6330423a12.1;
-        Sun, 04 Jun 2023 13:20:57 -0700 (PDT)
+        with ESMTP id S231754AbjFDUxp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 16:53:45 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E609CE;
+        Sun,  4 Jun 2023 13:53:44 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-973bf581759so661196766b.0;
+        Sun, 04 Jun 2023 13:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685910056; x=1688502056;
+        d=gmail.com; s=20221208; t=1685912023; x=1688504023;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pc901lSB1t/5njyHaOGc8Szlz99xchoB9LNubqrB9pc=;
-        b=DoNX4mNR4KsN0iXSQQhd4DQCDKAy/YiYQuMQD6ru8VRddZ5HU9qYoL1jaIugifNuZq
-         7hZI3Fc7GCBMSXoxGBPUIekHPqx6cxXD+ifUYBWCSSi1VxGnmjlKDVzY3Yvqt0gsz7by
-         B2jj1+gU6W63y37bzdsUk55TL10jVRoYRWDmsiD4IE/iyREUrHeUWdo8ZdmSmYW9byyP
-         o2kUCLPpNeIMZDxH6g03V2Zx2o13q5xifpMdawywWXXZV1tF8ye3f/8BbGvMrNCYwByX
-         WBLHgmVUNzFsAOQHrT9LEk6onwWScg0UncK9BSgbit/tQBh0JmLCWszHpOpeYgs7u2fl
-         BSpQ==
+        bh=ZMdRlD3RmAquqJCxpsCbMeN6ju6zKj6JUFR8/2WFs3c=;
+        b=SiYLabF9JME+54M7MIop3FXo02GsPPG737XXA75vfgXysx6JEEVveTtcYnD4M351P1
+         /s/rKCh7h1fZ+wwaITQAKu5C94jPce1i5zUiPFL4LGx5VgSldI62tkTy6V1D3AOmASrR
+         B0QssVgniWHFxAKQBO2a+zn1Cm1fvjfSDjYNnpuRK3B4alME2Cd0LkjNY+gFdcsSBa2v
+         4CTiIqGSsDWOK9Nih35PvQ0p0HvA6cOr8fZYSVRZOkeHsXGTyXUZs2KVHaOHFayUuL2z
+         3e/iAwBBcI6aS3YdhO6SnLp8YcfiBCpMu2Zd0SM+3/6f/V4Ne8nI98FNeahGUEatZj+W
+         W+OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685910056; x=1688502056;
+        d=1e100.net; s=20221208; t=1685912023; x=1688504023;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pc901lSB1t/5njyHaOGc8Szlz99xchoB9LNubqrB9pc=;
-        b=DprAyRMGGl92/HehGDVoK686WLj28+7ZhXYy4/5ruDQFUfYfjffb5EDAqeB4C8ShfI
-         YRwp/6D1SprIzbiAhHkM4DA2FxcDWVDuZaBKkLiMRMaT45imA8dU6aP4S+7qjbfCB00U
-         OR6MVdF0YMUQ+IzduLvP8QDfGFmAcyglRvXUkhxc5lCvefnajZwUJ/J34vc9NwmqUuar
-         AsmhNH8q/XPchpw4A61ruzg7bMf0dks3TBImgx9gmhodc4UB781t+VjHEerqPMg1R71V
-         0L7D/bSqiFyNfofCYLPSPtMT+krMzI2TS6AAGTZTyHckEU7Dmrzf8OjuxENDNCryFjjn
-         ucqw==
-X-Gm-Message-State: AC+VfDwskFtNqjk0jsDdXZ/QKcFHBfcAEJoUqKfSFlebaYAGduOMSbjG
-        vajI6Kzc04UcgX/qAd7bUpzWr5WEEn4FPymeb40=
-X-Google-Smtp-Source: ACHHUZ7HJh+h9S1Y+0QLnh+mPkHQqhlWKeX5TeLGIsBww9yr2NxJpXCvJ2n+CmB71U+vMZhwSkpXWhlo0NM6x+JnCj0=
-X-Received: by 2002:a17:906:730b:b0:970:132f:698f with SMTP id
- di11-20020a170906730b00b00970132f698fmr5945181ejc.2.1685910055898; Sun, 04
- Jun 2023 13:20:55 -0700 (PDT)
+        bh=ZMdRlD3RmAquqJCxpsCbMeN6ju6zKj6JUFR8/2WFs3c=;
+        b=LXTLheQPtOmCpF+LFBIE5ff8HFQpoagzXPriyOVV0J7IT+Bv7+7WRBL7lYZvxA/BZT
+         N0uTXMFDt0HZp8Pd4g+vVkDGu6fYioaRU6ekO0rk0m6dtLmpPhgW/o3zaBxyy8pQRQa7
+         JEpTIjSEB4vkfYvHjpVRenxMtSKxS6tnnwTKn2M913nMKa6vlEuaKPE483OT2D9NuVHi
+         1qngbqgY0ll0ZxS5aMWTAc6DmNyLM2jnbsSb14dkKEmDswKBXyp2ReswrzKkC8vdJJHW
+         /gU4xPG3W++96v8mRsvSTN07ArIGdbhWS7l4Tx8mBFLdBkZswodp9Pq7Cn9iqF0SpT45
+         VmqQ==
+X-Gm-Message-State: AC+VfDw6qLZx3mCAWnSK7beTGa1WQr6qYuPL3gtzjnh6MnWOdjbYb8a2
+        S/i1vfNv+JDJb1iZNaKa4H8Xft0s5Labug1yDJc=
+X-Google-Smtp-Source: ACHHUZ7GR+ovbrMerE3jxZsLZ74is1r45C4hfWtsepG9CDX8PQO48qsjVKDBY5/BCpbiDVBGRDX1z+EO138N2+BqZ7g=
+X-Received: by 2002:a17:907:d29:b0:969:e7da:fcb1 with SMTP id
+ gn41-20020a1709070d2900b00969e7dafcb1mr6049931ejc.13.1685912022545; Sun, 04
+ Jun 2023 13:53:42 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230601223104.1243871-1-bigunclemax@gmail.com>
- <20230601223104.1243871-3-bigunclemax@gmail.com> <fbcc5688-387c-32fb-edac-17848c92b936@linaro.org>
-In-Reply-To: <fbcc5688-387c-32fb-edac-17848c92b936@linaro.org>
+ <20230601223104.1243871-2-bigunclemax@gmail.com> <ZHoBXxM80aqvLZNt@smile.fi.intel.com>
+In-Reply-To: <ZHoBXxM80aqvLZNt@smile.fi.intel.com>
 From:   Maxim Kiselev <bigunclemax@gmail.com>
-Date:   Sun, 4 Jun 2023 23:20:43 +0300
-Message-ID: <CALHCpMizv52yj0rw0pR8pYjSys2UivS4L4GkWLgc-d91bdmDCA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: adc: Add Allwinner
- D1/T113s/R329/T507 SoCs GPADC
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date:   Sun, 4 Jun 2023 23:53:30 +0300
+Message-ID: <CALHCpMjc5+rsNvTHyy3V-+0bJ3yez+ewnGwyk+k-hvmNaF6TsQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
@@ -69,22 +68,22 @@ Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Heiko Stuebner <heiko.stuebner@vrull.eu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
         William Breathitt Gray <william.gray@linaro.org>,
+        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Haibo Chen <haibo.chen@nxp.com>,
         Hugo Villeneuve <hvilleneuve@dimonoff.com>,
         Mike Looijmans <mike.looijmans@topic.nl>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -97,38 +96,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-=D0=BF=D1=82, 2 =D0=B8=D1=8E=D0=BD. 2023=E2=80=AF=D0=B3. =D0=B2 11:38, Krzy=
-sztof Kozlowski
-<krzysztof.kozlowski@linaro.org>:
-Hi Krzysztof,
->
-> On 02/06/2023 00:30, Maksim Kiselev wrote:
-> > From: Maxim Kiselev <bigunclemax@gmail.com>
-> >
-> > Allwinner's D1/T113s/R329/T507 SoCs have a new general purpose ADC.
-> > This ADC is the same for all of this SoCs. The only difference is
-> > the number of available channels.
->
-> Except that it wasn't tested...
-
-Yes, you are right. I tested it only on the T113s board. And I will be glad=
- if
-someone tests it on another SoC.
+=D0=BF=D1=82, 2 =D0=B8=D1=8E=D0=BD. 2023=E2=80=AF=D0=B3. =D0=B2 17:49, Andy=
+ Shevchenko <andriy.shevchenko@linux.intel.com>:
 
 ...
 
-> Please run scripts/checkpatch.pl and fix reported warnings. Some
-> warnings can be ignored, but the code here looks like it needs a fix.
-> Feel free to get in touch if the warning is not clear.
-
-I got a warning about required maintainer property. Should I do
-anything with this?
-If yes, then who should be a maintainer?
+> The locks should be explained (what are they for? what do they protect?).
+I added the explanation comment in the next version.
 
 ...
 
-> Hm? So you do not allow anything from adc.yaml related? Are you sure
-> this is your intention?
+> > +static const struct regmap_config sun20i_gpadc_regmap_config =3D {
+> > +     .reg_bits =3D 32,
+> > +     .val_bits =3D 32,
+> > +     .reg_stride =3D 4,
+> > +     .fast_io =3D true,
+>
+> I forgot if I asked about regmap lock do you need it?
 
-I'm not sure about it. I looked at other ADC bindings and didn't find
-another driver with 'additionalProperties: true'
+I think we could drop the regmap altogether. As Andy suggested in
+previous series.
+
+...
+
+> > +     if (num_channels > SUN20I_GPADC_MAX_CHANNELS) {
+> > +             dev_err(dev, "num of channel children out of range");
+> > +             return -EINVAL;
+> > +     }
+>
+> Is it really critical error?
+
+Yes, as Jonathan already noted, this may lead to out of range error.
+
+=D0=B2=D1=81, 4 =D0=B8=D1=8E=D0=BD. 2023=E2=80=AF=D0=B3. =D0=B2 13:46, Jona=
+than Cameron <jic23@kernel.org>:
+
+...
+
+> We try to make this name identify the chip in question.
+> If the driver name is sufficient for these platforms then fair enough.
+> It should certainly be enough to distinguish this from other ADCs on the
+> platform.
+
+I believe the driver name should be enough. All listed SoCs have the
+same GPADC register
+layout and differ only in the number of channels.

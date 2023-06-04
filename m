@@ -2,58 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1432B72173A
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 15:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2325B72176C
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 15:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231768AbjFDNKJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jun 2023 09:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        id S229904AbjFDN2Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jun 2023 09:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbjFDNKI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 09:10:08 -0400
+        with ESMTP id S229932AbjFDN2Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 09:28:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570C8B1;
-        Sun,  4 Jun 2023 06:10:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EA4DE
+        for <linux-iio@vger.kernel.org>; Sun,  4 Jun 2023 06:28:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E061660ED1;
-        Sun,  4 Jun 2023 13:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6C0C433EF;
-        Sun,  4 Jun 2023 13:10:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E83A60EB8
+        for <linux-iio@vger.kernel.org>; Sun,  4 Jun 2023 13:28:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB49C433D2;
+        Sun,  4 Jun 2023 13:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685884206;
-        bh=FJ8N66mXobzCN/iyqAQMQ1QLeAmhvde00YQo6poIE9M=;
+        s=k20201202; t=1685885301;
+        bh=3mqyHyyj27CZjn60ub6y2eH6W808VcA1A/iBkCZjmLQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZmVHQBvkr16+tfiA4KCdueEm9uc15luGf6lO1V3GBy63BvXqz/5q09ux+Aerkzb2L
-         lnuBGSbz5574wXuDDVjx4Uq9O86aFghTwp8E9rNIL1gcQ4ixKaMQTl9ckokInmHwrx
-         19f7C8NyAFC4gAlrQev23fvTYtSuW19Y4N3axg3p479fOlBiQ1b+FnSSEOiWuwxBhm
-         CInqOsgM08EIow3UsyWKUXurmcL1XwMe0Q4HD3hc5z5euSzWlymf5OfkbahiKvtYYm
-         mQVGnWVHgq6uU52NkbksYzcIAkvhMJ8QnT7096LRAIUGLEaMH+S1FgwT7IM8SxykiS
-         IBy7pS+AP79hw==
-Date:   Sun, 4 Jun 2023 14:10:02 +0100
+        b=SRfQb4s3cYBXSGg23bb/gXHJuPS999rnmlU69YBEFTffcSoii5AETsk3Yo5PqjeGG
+         /J1Q+XcmAYm+5wFtmn2fpfQP58DvXOwZHl6Evci8VYL6IcTHRANIT672McbbSTNgBa
+         0ho7zByscEvp0qKOXy32kbfBYYRB30dXxKsnN0gyyDK1guxyWnvR+Ut1/doqospu5c
+         TT9Va1pE74xtzamIUpCEmP7wsNjoNcH9/w0APo+TXaSHWs1YKjNzmY9tLuriaZDzYs
+         oHfuOO1qN3GTOIW2Yl4zCBEaWF+TzyjvabXcWdqU7gCHQ8yextL2qDcI1OwCxzDmDi
+         k4buHv7+U+wiw==
+Date:   Sun, 4 Jun 2023 14:28:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Astrid Rost <astridr@axis.com>, Astrid Rost <astrid.rost@axis.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@axis.com,
-        Uwe =?UTF-8?B?S2xlaW5lLUs=?= =?UTF-8?B?w7ZuaWc=?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mathieu Othacehe <m.othacehe@gmail.com>
-Subject: Re: [PATCH v4 4/7] iio: light: vcnl4000: add illuminance irq
- vcnl4040/4200
-Message-ID: <20230604141002.0b055c10@jic23-huawei>
-In-Reply-To: <CAHp75VdZAGhrXgYf5EOE6MQ4DiseaxOqkjUs+X9jROB1aonD_g@mail.gmail.com>
-References: <20230522142621.1680563-1-astrid.rost@axis.com>
-        <20230522142621.1680563-5-astrid.rost@axis.com>
-        <ZHPZlA5LM5h4xmp3@surfacebook>
-        <ca146ce1-d3d3-e5eb-ac44-3afaec8ca6cc@axis.com>
-        <CAHp75VdZAGhrXgYf5EOE6MQ4DiseaxOqkjUs+X9jROB1aonD_g@mail.gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
+Subject: Re: ROHM BM1390 support
+Message-ID: <20230604142818.5cb35858@jic23-huawei>
+In-Reply-To: <2e722c05-9548-f8da-2d72-1ba76a1e2508@gmail.com>
+References: <2e722c05-9548-f8da-2d72-1ba76a1e2508@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -64,72 +54,113 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 May 2023 12:02:16 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 30 May 2023 11:20:59 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On Mon, May 29, 2023 at 10:41=E2=80=AFAM Astrid Rost <astridr@axis.com> w=
-rote:
-> > Thanks for reviewing.
-> > I can change this. But this is how it gets formatted by .clang-format. =
-=20
->=20
-> I would suggest to report the bug (in case it's not configurable) or
-> configure to avoid such a misindentation.
+> Hi dee Ho peeps,
+> 
+> Once again I am trying to learn from more experienced sensor folks :)
 
-I assume it's trading off line length against aligning with opening bracket=
-s.
-Maybe made the wrong decision, but it is not totally unreasonable to my eye=
-s.
-I don't care either way though, so go with whatever you have for next versi=
-on!
+(Someone get Matti some nice simple devices to add support for - he needs
+a rest!) :)
+
+> 
+> I am currently working (also) on ROHM BM1390 pressure sensor. The sensor 
+> can measure pressure ranging 300 - 1300 hPa. Measurement times can be 
+> around 20 - 160 mS depending on the amount of samples being averaged. 
+> There is also an IIR filter included in sensor with 3 different settings 
+> titled as "weak", "middle" and "strong". Unfortunately the exact maths 
+> is not explained. 
+
+Gah.  We all love this sort of dumbing down in datasheets.
+There is a picture though... Hmm. Anyone remember enough about filter
+design to tell me if you can go from a 63% point on a step response (in time domain)
+to a 3DB in frequency?  I'd go with probably not but it's been far too many years
+since I did any of this so I could be wrong.
+I'd kick this into the long grass - pressure sensors that aren't the type that you
+connect to a pipe tend to be for measuring slow changes, so I'd just set it to
+the middle value and not worry about making it configurable.
+
+Can revisit later.
+ 
+> Furthermore, the sensor can be configured to store 
+> maximum of 4 measured pressure samples in a HW FIFO.
+> 
+> The sensor can also measure temperature and error for temperature 
+> measurement is told to be +/- 2C when temperature is in a range of 25 C 
+> - 85 C. On the other hand, operating temperature for the device is said 
+> to be -40 C - 85 C.
+
+Helpful to have a sensor with no defined precision in the range
+in which the device is meant to operate. *sniggers*
+I wonder if it's a typo as the operating range matches the storage range
+which is unusual.
+
+> 
+> Now, the temperature measurements are not stored in a FIFO.
+> 
+> Here comes my question - what do you see as the typical use-cases for 
+> such a sensor? Or, to be more exact, do you think "quick" changes in 
+> temperature are expected to be measured with this type of sensor? 
+
+My understanding of pressure sensors is a bit weak so the following might
+not be accurate...
+
+No. Temp stuff on pressure sensors is normally there for temperature compensation
+algorithms.
+
+> I am 
+> asking this because I would like to support using the hardware FIFO and 
+> I am wondering if reading the temperature at FIFO flush and populating 
+> also the temperature channel values corresponding to all (up to 4) 
+> pressure measurements would be the best approach?
+> 
+> Other options is to not support using FIFO when temperature is scanned.
+
+A third is only let the temperature be read from sysfs.  That's fairly common
+in devices like this where the temp sensor isn't expected to be read as often
+as the others and maps to what we can actually control.  (scan_index == -1)
+IIRC some of the IMUs do this as again temp not expected to change much, but
+it if has radically different stable values it will affect precision calibration.
+
+> 
+> I have a gut feeling that the users who measure pressure are often also 
+> interested in getting the temperatures. Hence I would like to allow 
+> getting both. "Cheating" by using the same temperature value (measured 
+> when FIFO is flushed) should be Ok if temperature is not changing 
+> rapidly as even with the slowest measurement speed collecting 4 samples 
+> should finish in well under a second - and mentioned accuracy for the 
+> temperature sensor is such that small temperature changes are probably 
+> going unnoticed anyways.
+
+Fifo normally only of interest at high rates anyway, not that it makes much
+practical difference when implementing the driver.
+
+> 
+> Here I would love to have an opinion from more experienced IIO 
+> developers/users - and potentially a hint how similar sensors have been 
+> handled previously. (I would assume not storing some slowly changing 
+> values in a HW FIFO is quite common because HW FIFOs won't come without 
+> a cost).
+
+I don't really mind if you either go with
+1 - fill it copies of same temperature.
+2 - only have temp via sysfs (this I know we've done a bunch of times)
+
+The mess of switch between fifo and non fifo depending on whether the
+temp sensor is in the scan strikes me as too fiddly to make sense.
 
 Jonathan
 
->=20
-> > On 5/29/23 00:45, andy.shevchenko@gmail.com wrote: =20
-> > > Mon, May 22, 2023 at 04:26:18PM +0200, Astrid Rost kirjoitti: =20
-> > >> Add support to configure ambient light sensor interrupts and thresho=
-ld
-> > >> limits for vcnl4040 and vcnl4200. If an interrupt is detected an eve=
-nt
-> > >> will be pushed to the event interface. =20
-> > >
-> > > ...
-> > > =20
-> > >> +            case IIO_EV_DIR_RISING:
-> > >> +                    ret =3D i2c_smbus_write_word_data(
-> > >> +                            data->client, VCNL4040_ALS_THDH_LM, val=
-); =20
-> > >
-> > > Strange indentation.
-> > > =20
-> > >> +                    break;
-> > >> +            case IIO_EV_DIR_FALLING:
-> > >> +                    ret =3D i2c_smbus_write_word_data(
-> > >> +                            data->client, VCNL4040_ALS_THDL_LM, val=
-); =20
-> > >
-> > > Same.
-> > > =20
-> > >> +                    break; =20
-> > >
-> > > ...
-> > > =20
-> > >> +    case IIO_PROXIMITY:
-> > >> +            switch (dir) {
-> > >> +            case IIO_EV_DIR_RISING:
-> > >> +                    ret =3D i2c_smbus_write_word_data(
-> > >> +                            data->client, VCNL4040_PS_THDH_LM, val)=
-; =20
-> > >
-> > > Same.
-> > > =20
-> > >> +                    break;
-> > >> +            case IIO_EV_DIR_FALLING:
-> > >> +                    ret =3D i2c_smbus_write_word_data(
-> > >> +                            data->client, VCNL4040_PS_THDL_LM, val)=
-; =20
-> > >
-> > > Same. =20
->=20
+
+
+
+> 
+> Yours,
+>   -- Matti
+> 
+> Oh, in case someone wants to see the data sheet:
+> https://fscdn.rohm.com/en/products/databook/datasheet/ic/sensor/pressure/bm1390glv-z-e.pdf
+> 
+> 
 

@@ -2,105 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8976721603
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 12:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001DE721610
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 12:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbjFDKYf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jun 2023 06:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
+        id S231157AbjFDK1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jun 2023 06:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjFDKYe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 06:24:34 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99B9A3;
-        Sun,  4 Jun 2023 03:24:33 -0700 (PDT)
-Received: from [IPV6:2405:201:0:21ea:e49:10dd:40c0:e842] (unknown [IPv6:2405:201:0:21ea:e49:10dd:40c0:e842])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        with ESMTP id S231148AbjFDK1w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 06:27:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 640DFA3;
+        Sun,  4 Jun 2023 03:27:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: shreeya)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 513C56603050;
-        Sun,  4 Jun 2023 11:24:28 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1685874272;
-        bh=G8Vk4YtafBa+Pb7sMLpiLgNRNeR4Wa7C+A6DNmqd86o=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=HrYJlw7MM2qYuiRvq+qE41QzDb7R6Nd4mJqho1ydq3uRjdUluf6wEkCz7LX8JAy1b
-         5a3638jRUzq37UenKgYnEHcGBe7DNv2iVZMLuRsEyfgCu8MdNbi0NZnpkBUgVnt2BA
-         /CtSkQ3Op89NP6eXIY9txFw+PHoZ+ED/4HVINlHXP+q5RIt1qfN4mJju9F2FUBulxY
-         0xrf4MGr4AcgDrTNrS6KHWG4b+UVvjgfwWyTVwSku4POZcRmTqEdNVuV+jZbGUvV71
-         MzLYebvmx+yo1rJY0BdywLnOAAYwfnCH0i9Md/I1l/0TGnE7huA9nk3sgdWQiLS9qA
-         idZRsjfelVuJA==
-Message-ID: <d9b1e05a-6b32-3033-cbc4-c87bda711e4d@collabora.com>
-Date:   Sun, 4 Jun 2023 15:54:24 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 2/8] iio: adc: rockchip_saradc: Add support for RK3588
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, heiko@sntech.de, robh+dt@kernel.org,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0026A6119D;
+        Sun,  4 Jun 2023 10:27:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4881C433D2;
+        Sun,  4 Jun 2023 10:27:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685874470;
+        bh=GDFD2QaDPXXZG69Pe6qfg/v2YwVstAycrro3d0aXXw8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=F9gEOFAag92qMFuczSBuQUu/wejjL/Bk2+RZXcZKa0sCYHy9XSjw98lwVQVotNUNu
+         BcHK3HHdEY8FCk1oBS970nOvqLt8z9kJTT/Kr/vbWu0LpMMat8q9pu4zXoDt6hMub5
+         nOp1c4/QpKKAO04HqI8Csf3oZScLR50Yqj9YlYCXmApdxkfEhQXGLdgP7SU+7xp0i2
+         Z0oOt4T4e+GyyV888gGFpEB0ZYMkce8QgybjvUcIDIRHu6eN0uaS6w6tRTu7Pq6Qbd
+         EfTf/Z5n5QpCBxESakyOYxqa8nz7B0HSK1XT8N/KE2Yv1yiF/7zc/M7VKSwvQ8TYZs
+         rVpp+FlV0ClQw==
+Date:   Sun, 4 Jun 2023 11:27:45 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     andy.shevchenko@gmail.com
+Cc:     Shreeya Patel <shreeya.patel@collabora.com>, lars@metafoo.de,
+        heiko@sntech.de, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, sebastian.reichel@collabora.com,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
         gustavo.padovan@collabora.com, kernel@collabora.com,
-        serge.broslavsky@collabora.com, Simon Xue <xxm@rock-chips.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        andy.shevchenko@gmail.com
+        serge.broslavsky@collabora.com
+Subject: Re: [PATCH v3 0/8] RK3588 ADC support
+Message-ID: <20230604112745.402beb1c@jic23-huawei>
+In-Reply-To: <ZHungQT5an39pjEg@surfacebook>
 References: <20230603185340.13838-1-shreeya.patel@collabora.com>
- <20230603185340.13838-3-shreeya.patel@collabora.com>
- <ZHunAIbK7-tIvsm1@surfacebook> <20230604112043.43b1ada0@jic23-huawei>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <20230604112043.43b1ada0@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        <ZHungQT5an39pjEg@surfacebook>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sat, 3 Jun 2023 23:50:09 +0300
+andy.shevchenko@gmail.com wrote:
 
-On 04/06/23 15:50, Jonathan Cameron wrote:
-> On Sat, 3 Jun 2023 23:48:00 +0300
-> andy.shevchenko@gmail.com wrote:
->
->> Sun, Jun 04, 2023 at 12:23:34AM +0530, Shreeya Patel kirjoitti:
->>> From: Simon Xue <xxm@rock-chips.com>
->>>
->>> Add new start and read functions to support rk3588 device.
->>> Also, add a device compatible string for the same.
->> ...
->>
->>> +/* v2 registers */
->>> +#define SARADC2_CONV_CON		0x0
->>> +#define SARADC_T_PD_SOC			0x4
->>> +#define SARADC_T_DAS_SOC		0xc
->> Can you use fixed-width values for all registers?
->>
->> 	0x000
->> 	0x004
->> 	0x00c
->>
->>> +#define SARADC2_END_INT_EN		0x104
->>> +#define SARADC2_ST_CON			0x108
->>> +#define SARADC2_STATUS			0x10c
->>> +#define SARADC2_END_INT_ST		0x110
->>> +#define SARADC2_DATA_BASE		0x120
-> I tidied this up whilst applying.
+> Sun, Jun 04, 2023 at 12:23:32AM +0530, Shreeya Patel kirjoitti:
+> > This patch series adds ADC support for RK3588 and updates
+> > the DT bindings for the same.
+> > 
+> > To test ADC support on Rock 5B board, a voltage divider circuit
+> > was created using the gpio pin 22 ( SARADC_IN4 ) and few more
+> > tests were ran for testing the buffer and trigger support using
+> > the iio_generic_buffer tool.  
+> 
+> Well done!
+> 
+> For patches 1-6
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> (with one nit-pick to be addressed)
 
-  Ah, I was just about to send a v4 with the change. Thank you for 
-making the changes.
+Addressed the nit whilst applying and picked up 1-6,8.
+Applied them to the togreg branch of iio.git, but initially I'll just
+push that out as testing for 0-day to take a look and see what we missed.
+
+As normal 7 should go via appropriate SoC tree
 
 
-Regards,
-Shreeya Patel
+> 
+> > Changes in v3
+> >   - Add bitfield.h header file in patch 2.
+> >   - Add a Reviewed-by tag in patch 2.
+> >   - Do not remove clock enabling and disabling from the suspend and
+> >     resume functions respectively in patch 3
+> > 
+> > Changes in v2
+> >   - Add from address in patches 1 and 2.
+> >   - Create separate patches for adding new device support and changes to
+> >     the old device code.
+> >   - Make use of FIELD_PREP in patch 2.
+> >   - Move the enablement of clocks at it's original position in patch 3
+> >   - Add Reviewed-by tag in patches 4 and 5.
+> >   - Add an Acked-by tag in patch 8.
+> > 
+> > Shreeya Patel (8):
+> >   iio: adc: rockchip_saradc: Add callback functions
+> >   iio: adc: rockchip_saradc: Add support for RK3588
+> >   iio: adc: rockchip_saradc: Make use of devm_clk_get_enabled
+> >   iio: adc: rockchip_saradc: Use of_device_get_match_data
+> >   iio: adc: rockchip_saradc: Match alignment with open parenthesis
+> >   iio: adc: rockchip_saradc: Use dev_err_probe
+> >   arm64: dts: rockchip: Add DT node for ADC support in RK3588
+> >   dt-bindings: iio: adc: Add rockchip,rk3588-saradc string
+> > 
+> >  .../bindings/iio/adc/rockchip-saradc.yaml     |   1 +
+> >  arch/arm64/boot/dts/rockchip/rk3588s.dtsi     |  12 +
+> >  drivers/iio/adc/rockchip_saradc.c             | 246 +++++++++++-------
+> >  3 files changed, 168 insertions(+), 91 deletions(-)
+> > 
+> > -- 
+> > 2.30.2
+> >   
+> 
 
-
-> Jonathan

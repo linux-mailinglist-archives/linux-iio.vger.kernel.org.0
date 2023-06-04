@@ -2,165 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2325B72176C
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 15:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BBF721951
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 20:54:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbjFDN2Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jun 2023 09:28:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
+        id S230244AbjFDSyU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jun 2023 14:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjFDN2Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 09:28:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EA4DE
-        for <linux-iio@vger.kernel.org>; Sun,  4 Jun 2023 06:28:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E83A60EB8
-        for <linux-iio@vger.kernel.org>; Sun,  4 Jun 2023 13:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB49C433D2;
-        Sun,  4 Jun 2023 13:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685885301;
-        bh=3mqyHyyj27CZjn60ub6y2eH6W808VcA1A/iBkCZjmLQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SRfQb4s3cYBXSGg23bb/gXHJuPS999rnmlU69YBEFTffcSoii5AETsk3Yo5PqjeGG
-         /J1Q+XcmAYm+5wFtmn2fpfQP58DvXOwZHl6Evci8VYL6IcTHRANIT672McbbSTNgBa
-         0ho7zByscEvp0qKOXy32kbfBYYRB30dXxKsnN0gyyDK1guxyWnvR+Ut1/doqospu5c
-         TT9Va1pE74xtzamIUpCEmP7wsNjoNcH9/w0APo+TXaSHWs1YKjNzmY9tLuriaZDzYs
-         oHfuOO1qN3GTOIW2Yl4zCBEaWF+TzyjvabXcWdqU7gCHQ8yextL2qDcI1OwCxzDmDi
-         k4buHv7+U+wiw==
-Date:   Sun, 4 Jun 2023 14:28:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
-Subject: Re: ROHM BM1390 support
-Message-ID: <20230604142818.5cb35858@jic23-huawei>
-In-Reply-To: <2e722c05-9548-f8da-2d72-1ba76a1e2508@gmail.com>
-References: <2e722c05-9548-f8da-2d72-1ba76a1e2508@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229879AbjFDSyT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 14:54:19 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C27CCD;
+        Sun,  4 Jun 2023 11:54:18 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-30af159b433so4052912f8f.3;
+        Sun, 04 Jun 2023 11:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685904856; x=1688496856;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VJAnB3wQ7FughqK6LyFwMtJAGYslbkQgDXV0PukOLCU=;
+        b=EgzyQTrWj7L7nc4HbbBrWc0/LVWQucNLLiAwomp7bWUNMM+oS/yk4bE6+Avc9WS49x
+         aGbNZrxVxFL7aKpwZetTHFXq/R7q/UQa7rkfgDG09UNazrXKBxx7BMZ6tm0FrIS0fSWh
+         mDQfKtmojwJmsXEK1EZRrWtDlgadDkEIrxcZMNdlb/U3WAKEKf5U9ugU1bvppA+Okso+
+         lHKbigH4XJTo2CoRkaloxmCMqVUx5CEIYysWejnUaNc7kM73PEDqGDyey61jQHHknFN2
+         Co2YxtihUNmTVuAkjCuAMQwNFDW1oH2aXjZue9P2n6aNmpe1nbIbZwspYdss3RhPJYLN
+         hZjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685904856; x=1688496856;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VJAnB3wQ7FughqK6LyFwMtJAGYslbkQgDXV0PukOLCU=;
+        b=UOrQsAovhqmDLXv7LnllfXqmfOp442C1Gf0bZGC/1pQzjov+3GmmuNR60fQcV+qsei
+         3PMJmNNnq38ej2+6r33XG3aMD7u77BDcmhbHpHSvafNO8akx27VlUCQGLsi3mGsexQFc
+         Z6NLbHQfROfVpmq9gR84b/HmAxvl4+AjzuH7seqDCx9hM8nl+TywV3u6dD8pw3TDcPZQ
+         tjkYYPvQuJ/0/X/LL2ZA7AZ07PXDL8qg0yciTiQxTiFlaF1hOAxmqKcId/3dPMdCdThS
+         9QdgHjrmch8Bv4Py3LooC+js0zjyyHr9Ppbg1sC1jd8ddbr2udXyMsJj7jjh0WTNjEh+
+         Fhng==
+X-Gm-Message-State: AC+VfDxRUWkvG2YQzCSlqUTQtOHnbac7RVAG3Y6psUBhL1BtR2EjRbeS
+        yL2WeBt308uAvPw3BMCInh08VLcJUg//JcKi
+X-Google-Smtp-Source: ACHHUZ4sY3o9cbVrBFJd6vd/C/mZ9S9DqzSPS+JpMykxOlZJwiAp6wAppUkUK6bHzzhccyQC4qDjwA==
+X-Received: by 2002:a5d:468d:0:b0:307:9194:9a94 with SMTP id u13-20020a5d468d000000b0030791949a94mr4923534wrq.17.1685904855997;
+        Sun, 04 Jun 2023 11:54:15 -0700 (PDT)
+Received: from user-PC.. ([178.134.198.138])
+        by smtp.gmail.com with ESMTPSA id l8-20020a5d4108000000b00304adbeeabbsm7636433wrp.99.2023.06.04.11.54.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Jun 2023 11:54:15 -0700 (PDT)
+From:   Maksim Kiselev <bigunclemax@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Maksim Kiselev <bigunclemax@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+Subject: [PATCH v3 0/3] Add support for Allwinner GPADC on D1/T113s/R329/T507 SoCs
+Date:   Sun,  4 Jun 2023 21:53:13 +0300
+Message-Id: <20230604185336.1943889-1-bigunclemax@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 30 May 2023 11:20:59 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+This series adds support for general purpose ADC (GPADC) on new
+Allwinner's SoCs, such as D1, T113s, T507 and R329. The implemented driver
+provides basic functionality for getting ADC channels data.
 
-> Hi dee Ho peeps,
-> 
-> Once again I am trying to learn from more experienced sensor folks :)
+Change History:
+v3:
+- Added DT bindings dual license, fixed property order and example formatting
+- Added explanations comments for timeout and mutex
+- Dropped unnecessary regmap and used readl/writel instead
+- Added error message about getting channel number
+- Renamed labels and variables to make them self-explanatory
 
-(Someone get Matti some nice simple devices to add support for - he needs
-a rest!) :)
+v2:
+- Added lastch flag to avoid addition work for already selected channel
+- Added reset assertion on module remove
+- Added dynamic channel allocation and dropped iio_chan_spec arrays
+- Changed IIO_CHAN_INFO_SCALE type to FRACTIONAL_LOG2
+- Dropped separate compatible strings and configs for T113s and R329
+- Fixed includes
+- Fixed Kconfig description
+- Removed duplicate probe error messages
+- Used FIELD_PREP for bit setup
 
-> 
-> I am currently working (also) on ROHM BM1390 pressure sensor. The sensor 
-> can measure pressure ranging 300 - 1300 hPa. Measurement times can be 
-> around 20 - 160 mS depending on the amount of samples being averaged. 
-> There is also an IIR filter included in sensor with 3 different settings 
-> titled as "weak", "middle" and "strong". Unfortunately the exact maths 
-> is not explained. 
-
-Gah.  We all love this sort of dumbing down in datasheets.
-There is a picture though... Hmm. Anyone remember enough about filter
-design to tell me if you can go from a 63% point on a step response (in time domain)
-to a 3DB in frequency?  I'd go with probably not but it's been far too many years
-since I did any of this so I could be wrong.
-I'd kick this into the long grass - pressure sensors that aren't the type that you
-connect to a pipe tend to be for measuring slow changes, so I'd just set it to
-the middle value and not worry about making it configurable.
-
-Can revisit later.
- 
-> Furthermore, the sensor can be configured to store 
-> maximum of 4 measured pressure samples in a HW FIFO.
-> 
-> The sensor can also measure temperature and error for temperature 
-> measurement is told to be +/- 2C when temperature is in a range of 25 C 
-> - 85 C. On the other hand, operating temperature for the device is said 
-> to be -40 C - 85 C.
-
-Helpful to have a sensor with no defined precision in the range
-in which the device is meant to operate. *sniggers*
-I wonder if it's a typo as the operating range matches the storage range
-which is unusual.
-
-> 
-> Now, the temperature measurements are not stored in a FIFO.
-> 
-> Here comes my question - what do you see as the typical use-cases for 
-> such a sensor? Or, to be more exact, do you think "quick" changes in 
-> temperature are expected to be measured with this type of sensor? 
-
-My understanding of pressure sensors is a bit weak so the following might
-not be accurate...
-
-No. Temp stuff on pressure sensors is normally there for temperature compensation
-algorithms.
-
-> I am 
-> asking this because I would like to support using the hardware FIFO and 
-> I am wondering if reading the temperature at FIFO flush and populating 
-> also the temperature channel values corresponding to all (up to 4) 
-> pressure measurements would be the best approach?
-> 
-> Other options is to not support using FIFO when temperature is scanned.
-
-A third is only let the temperature be read from sysfs.  That's fairly common
-in devices like this where the temp sensor isn't expected to be read as often
-as the others and maps to what we can actually control.  (scan_index == -1)
-IIRC some of the IMUs do this as again temp not expected to change much, but
-it if has radically different stable values it will affect precision calibration.
-
-> 
-> I have a gut feeling that the users who measure pressure are often also 
-> interested in getting the temperatures. Hence I would like to allow 
-> getting both. "Cheating" by using the same temperature value (measured 
-> when FIFO is flushed) should be Ok if temperature is not changing 
-> rapidly as even with the slowest measurement speed collecting 4 samples 
-> should finish in well under a second - and mentioned accuracy for the 
-> temperature sensor is such that small temperature changes are probably 
-> going unnoticed anyways.
-
-Fifo normally only of interest at high rates anyway, not that it makes much
-practical difference when implementing the driver.
-
-> 
-> Here I would love to have an opinion from more experienced IIO 
-> developers/users - and potentially a hint how similar sensors have been 
-> handled previously. (I would assume not storing some slowly changing 
-> values in a HW FIFO is quite common because HW FIFOs won't come without 
-> a cost).
-
-I don't really mind if you either go with
-1 - fill it copies of same temperature.
-2 - only have temp via sysfs (this I know we've done a bunch of times)
-
-The mess of switch between fifo and non fifo depending on whether the
-temp sensor is in the scan strikes me as too fiddly to make sense.
-
-Jonathan
+v1:
+- Initial version
 
 
+Maxim Kiselev (3):
+  iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+  dt-bindings: iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+  riscv: dts: allwinner: d1: Add GPADC node
 
+ .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    |  90 ++++++
+ .../boot/dts/allwinner/sunxi-d1s-t113.dtsi    |  10 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/sun20i-gpadc-iio.c            | 296 ++++++++++++++++++
+ 5 files changed, 407 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+ create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
 
-> 
-> Yours,
->   -- Matti
-> 
-> Oh, in case someone wants to see the data sheet:
-> https://fscdn.rohm.com/en/products/databook/datasheet/ic/sensor/pressure/bm1390glv-z-e.pdf
-> 
-> 
+-- 
+2.39.2
 

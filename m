@@ -2,59 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BD4F721662
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 13:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D425E72170D
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Jun 2023 14:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbjFDLgG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Jun 2023 07:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35812 "EHLO
+        id S229788AbjFDMwf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Jun 2023 08:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjFDLgF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 07:36:05 -0400
+        with ESMTP id S229462AbjFDMwf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Jun 2023 08:52:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3AF4AB;
-        Sun,  4 Jun 2023 04:36:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D8D91;
+        Sun,  4 Jun 2023 05:52:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 736E56118F;
-        Sun,  4 Jun 2023 11:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FFBC433EF;
-        Sun,  4 Jun 2023 11:36:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9293B60CEC;
+        Sun,  4 Jun 2023 12:52:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C487DC433D2;
+        Sun,  4 Jun 2023 12:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685878563;
-        bh=0myt3UxTk1I9zCzwV7nwnIdFYp/I1R9+TK/H8JDJTck=;
+        s=k20201202; t=1685883153;
+        bh=jioYa8JgZJ877Due+C+TvMM5McsdOwLd9jYmABtS2fc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aa3e/cR706d/Eg7+N3OFye6Y+X1X26nutxKi9oQKeFVUk+ksPrEytw2+iAEdguPn1
-         VQezRvBc6MNfCqoHHOOVBtGdnnRisfOPAPG/YJe8K6hAyZQ5Ol5HZ0JcW24ltIdjH/
-         PQc91cF4UAzr+yq1KkFG/x3M5DWKpcZkgdrsOfgMLXuHNSWSbeYhR6N/saeCIkci1j
-         DAs2RoJ2Nh2D5ZDPA0Qlis8gYrGhzPXRupXXggAQKp1lvd8/b306dCk1K2RNUxEjNq
-         3r+xTySLz5LDMtk8rc9zuvm/8Z/mE4gToOKG9QUFP82jomo0B54Qt0F0Qc5VjOMqDq
-         zpSB8FAyfh8qw==
-Date:   Sun, 4 Jun 2023 12:35:59 +0100
+        b=B+o59eYM0qTv7hoIgWYvZq6XQLgvc1bFaSXYqj/HES+XF9f7cBuYSczYcyl1PywFl
+         YSwy/tQWjKkn98S/UEWm4U/PegeVrxt9qOjXZhbPnruyXsOpN1vju0TTGMBLf8IwbF
+         zys5ifqsY19OQDt9bp2avP6EnZ7M7ljRrKvhi03jcyzENtyLF/800pki6uSsqEgfIH
+         Juo+XRyckUODxofmDd26+CLMd9Dr4+nUUIl/k8VYjqu/QVoe9Acl5gIpllUE+9DDns
+         u3SY30tAs9mLRpGmljNQSWAWJE969KCBbkoV+2SXOHSKPQcrbjD/M91EefXQ755+NB
+         MBEIFjfRn2B1w==
+Date:   Sun, 4 Jun 2023 13:52:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     fl.scratchpad@gmail.com,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 4/5] dt-bindings: iio: ad7192: Add mandatory
- reference voltage source
-Message-ID: <20230604123559.4aab8de7@jic23-huawei>
-In-Reply-To: <20230530-spoils-cod-c606ff33e75a@spud>
-References: <20230530075311.400686-1-fl.scratchpad@gmail.com>
-        <20230530075311.400686-5-fl.scratchpad@gmail.com>
-        <20230530-spoils-cod-c606ff33e75a@spud>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     George Stark <GNStark@sberdevices.ru>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
+        "khilman@baylibre.com" <khilman@baylibre.com>,
+        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "nuno.sa@analog.com" <nuno.sa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-amlogic@lists.infradead.org" 
+        <linux-amlogic@lists.infradead.org>, kernel <kernel@sberdevices.ru>
+Subject: Re: [PATCH v2] meson saradc: add iio device attrib to switch
+ channel 7 mux
+Message-ID: <20230604135228.5a5d743d@jic23-huawei>
+In-Reply-To: <CAFBinCA=earf119bN7ohmTQGDzSMeV9qcL8RU9DUYe0195H5=Q@mail.gmail.com>
+References: <20230527214854.126517-1-gnstark@sberdevices.ru>
+        <20230528161117.197f7e61@jic23-huawei>
+        <4d5a7691-68ac-6626-5502-383fad3a9436@sberdevices.ru>
+        <CAFBinCA=earf119bN7ohmTQGDzSMeV9qcL8RU9DUYe0195H5=Q@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,25 +70,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 30 May 2023 18:22:45 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Mon, 29 May 2023 22:04:18 +0200
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
 
-> On Tue, May 30, 2023 at 09:53:10AM +0200, fl.scratchpad@gmail.com wrote:
-> > From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
-> > 
-> > Add required reference voltage (VRef) supply regulator.
-> > 
-> > AD7192 requires three independent voltage sources: DVdd, AVdd and VRef
-> > (on REFINx pin pairs).
-> > 
-> > Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-> > Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>  
-> 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Applied.
+> Hi George,
+>=20
+> On Sun, May 28, 2023 at 11:52=E2=80=AFPM George Stark <GNStark@sberdevice=
+s.ru> wrote:
+> [...]
+> > > Based on the limited description we have here, I'm not understanding =
+why
+> > > you don't just express this as a set of channels. One channel per mux
+> > > setting, with the in_voltageX_label providing the information on what=
+ the
+> > > channel is connected to.
+> > >
+> > > This is an interesting facility, so good to enable for high precision=
+ calibration
+> > > but we still want to map it to standards signals.  Userspace doesn't
+> > > care that these are all being measured via the same input 7 - which
+> > > is itself probably an input to a MUX.
+> > >
+> > > Jonathan =20
+> >
+> > Hello Jonathan
+> >
+> > Thanks for the review.
+> >
+> > Your idea of exposing the mux setting as iio channels is very
+> > interesting and at least worth trying.
+> > The sysfs approach was chosen because of the code changes are simple and
+> > neat (compare to channels approach).
+> > Also calibration by using those mux inputs are already supported in the
+> > driver (performed at probe stage) so I expect very special usecases for
+> > those mux settings like debug or device production stage tests. In those
+> > usescases hardware specific knowledge is required anyway. =20
 
-I'll leave 3 and 5 for a v4 posting.
-> 
-> Thanks,
-> Conor.
+Agreed that using channels for this is more complex code wise, but the
+avoidance of custom ABI is usually worthwhile.  However I get your point
+that this is weird debug / corner case paths anyway.
+However...
+
+
+> Another downside to the debugfs approach is user support:
+> If someone reports odd values on ADC channel 7 then we need to make
+> sure to double check if the mux has been altered from userspace (the
+> calibration during initialization ensures to leave channel 7 in a
+> consistent state, while a user may change the mux, forget about it and
+> then complain that values are wrong).
+
+This problem raises red flags for me.  If the channel wasn't otherwise
+useful then treating it as a weird debug thing is fine, but if a normal
+read can end up returning weird answers because of leftover configuration
+that is custom ABI, so standard code isn't even aware of it, that's bad.
+
+Hence I would not want to see any path under which that can happen.
+A read of in_voltage7_raw should continue to return the normal value
+whatever this patch adds.
+
+Jonathan
+
+>=20
+>=20
+> Best regards,
+> Martin
 

@@ -2,76 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B9C721F50
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 09:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FEB721FF8
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 09:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230226AbjFEHQN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jun 2023 03:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48544 "EHLO
+        id S229972AbjFEHrO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jun 2023 03:47:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231187AbjFEHQL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 03:16:11 -0400
-Received: from mx.sberdevices.ru (mx.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBE4E51;
-        Mon,  5 Jun 2023 00:15:46 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mx.sberdevices.ru (Postfix) with ESMTP id 6AB235FD15;
-        Mon,  5 Jun 2023 10:15:25 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1685949325;
-        bh=90SqCFueETbn6QtgfnNvoKqDRDdO5vsmVtd1isEyw1s=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-        b=otdrzu2Cj3M3qp/s9Um/15X1vMoT3/iSXKdEvCYUqRvTqI3PFPts5reMsTYQ9N+Q4
-         T/SyS/gyp5K2MnVz32iWqsW+Z6gla/2oLoZKbk942iXH7HrFybB8P55iwuWSVt3LD4
-         luvKpki5t5Ufikqr16gRj3XbyamywuLOK1KGVVe14UpqhdWR0K/kDte9mA1LWUByJP
-         hRItvErnfdm6dsRG+jlfIrbIQOSBSIC0Gdqa4SSUXLatqCxcXRc6IzyyDpuwTnZVux
-         3cgDdH+4NP7EZg2Ir7xEG1IiHHpU77YLf0LI21TBaFW8G/zeyzf//X5/WHJKhhlN3t
-         hggtgsSf5hotw==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mx.sberdevices.ru (Postfix) with ESMTP;
-        Mon,  5 Jun 2023 10:15:24 +0300 (MSK)
-Message-ID: <ed8f95d2-ef62-d91a-618c-402ba1c9d09f@sberdevices.ru>
-Date:   Mon, 5 Jun 2023 10:11:09 +0300
+        with ESMTP id S229993AbjFEHqr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 03:46:47 -0400
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 291DABD;
+        Mon,  5 Jun 2023 00:46:43 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1685951201;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SlBav5nmnLSs3742Oa+RNb+C2ZOGfMv2RNAb/qlmli0=;
+        b=oKYSHjATjHe/mpW5BUc7jaaWak/2Cl2sDlR/4Ife5K5BaNWsG9z9+auIvUR1zSXAwn0Rlb
+        RSfKmu9pNwmD5wO9asXH57ydw3X6eihak9sl3swCRPRJEAvx9jARuGhEZAIwIAYP+6M4JP
+        HRs5zrys2q1PS+q4WZsJN02PIB3NvPC8UMQsIC6vWg5DBlkBkEGDnv8iTcaUctTKKPb52y
+        egmdoFHIco10kAUYMkDMRWv9WGZRdMzw3DmPBTZ2ACB1C47iy0c7JP+ZCMFUk+rMk81ZLO
+        zfcdFiV0S46qH/TM/he8icXthfqHhVEqBot6X6KuVNG/Km5DXXLmR1JB189f9A==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6B4982000D;
+        Mon,  5 Jun 2023 07:46:38 +0000 (UTC)
+Date:   Mon, 5 Jun 2023 09:46:37 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     andy.shevchenko@gmail.com
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 5/9] iio: inkern: Add a helper to query an available
+ minimum raw value
+Message-ID: <20230605094637.7615b689@bootlin.com>
+In-Reply-To: <ZHtIdTZbULl6t4RT@surfacebook>
+References: <20230523151223.109551-1-herve.codina@bootlin.com>
+        <20230523151223.109551-6-herve.codina@bootlin.com>
+        <ZHtIdTZbULl6t4RT@surfacebook>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH] pwm: meson: compute cnt register value in proper way
-Content-Language: en-US
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-CC:     "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
-        "martin.blumenstingl@googlemail.com" 
-        <martin.blumenstingl@googlemail.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        kernel <kernel@sberdevices.ru>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
-        "khilman@baylibre.com" <khilman@baylibre.com>
-References: <20230602103211.2199283-1-gnstark@sberdevices.ru>
- <bf2d2814-5881-0f42-8b62-89c043b66e22@gmail.com>
-From:   George Stark <gnstark@sberdevices.ru>
-In-Reply-To: <bf2d2814-5881-0f42-8b62-89c043b66e22@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [172.16.1.6]
-X-ClientProxiedBy: S-MS-EXCH01.sberdevices.ru (172.16.1.4) To
- S-MS-EXCH01.sberdevices.ru (172.16.1.4)
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2023/06/05 04:52:00 #21434197
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,78 +84,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/2/23 23:52, Heiner Kallweit wrote:
-> On 02.06.2023 12:32, George Stark wrote:
->> According to the datasheet, the PWM high and low clock count values
->> should be set to at least one. Therefore, setting the clock count
->> register to 0 actually means 1 clock count.
->>
->> Signed-off-by: George Stark <GNStark@sberdevices.ru>
->> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
->> ---
->> This patch is based on currently unmerged patch by Heiner Kallweit
->> https://lore.kernel.org/linux-amlogic/23fe625e-dc23-4db8-3dce-83167cd3b206@gmail.com
->> ---
->> diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
->> index 834acd7..57e7d9c 100644
->> --- a/drivers/pwm/pwm-meson.c
->> +++ b/drivers/pwm/pwm-meson.c
->> @@ -206,6 +206,11 @@
->>   		channel->pre_div = pre_div;
->>   		channel->hi = duty_cnt;
->>   		channel->lo = cnt - duty_cnt;
->> +
->> +		if (channel->hi)
->> +			channel->hi--;
->> +		if (channel->lo)
->> +			channel->lo--;
-Hello Heiner
+On Sat, 3 Jun 2023 17:04:37 +0300
+andy.shevchenko@gmail.com wrote:
 
-Thanks for review
-> I'm not sure whether we should do this. duty_cnt and cnt are results
-> of an integer division and therefore potentially rounded down.
-> The chip-internal increment may help to compensate such rounding
-> errors, so to say. With the proposed change we may end up with the
-> effective period being shorter than the requested one.
-Although chip-internal increment sometimes may help accidentally
-there are cases when the increment ruins precise calculation in 
-unexpected way.
+> Tue, May 23, 2023 at 05:12:19PM +0200, Herve Codina kirjoitti:
+> > A helper, iio_read_max_channel_raw() exists to read the available
+> > maximum raw value of a channel but nothing similar exists to read the
+> > available minimum raw value.
+> > 
+> > This new helper, iio_read_min_channel_raw(), fills the hole and can be
+> > used for reading the available minimum raw value of a channel.
+> > It is fully based on the existing iio_read_max_channel_raw().  
+> 
+> ...
+> 
+> > +static int iio_channel_read_min(struct iio_channel *chan,
+> > +				int *val, int *val2, int *type,
+> > +				enum iio_chan_info_enum info)
+> > +{
+> > +	int unused;
+> > +	const int *vals;
+> > +	int length;
+> > +	int ret;  
+> 
+> > +	if (!val2)
+> > +		val2 = &unused;  
+> 
+> It's a single place, where this is used, can you move it there?
 
-Here's our experience on meson a113l (meson-a1) with pwm driver based on 
-ccf:
-we need to get pwm period as close as possible to 32768hz.
-config pwm to period 1/32768 = 30517ns, duty 15258n
-How driver calculates hi\lo regs:
-rate = NSEC_PER_SEC * 0xffff / 30517 = ~2147Mhz
-rate = clk_round_rate(rate) clk_round_rate selects fastest parent clock 
-which is 64Mhz in our case then calculating hi\lo at last: period= 
-mul_u64_u64_div_u64(rate, state->period, NSEC_PER_SEC); // 1953
-duty= mul_u64_u64_div_u64(rate, state->duty_cycle, NSEC_PER_SEC); // 976
-channel->hi= duty;
-channel->lo= period- duty;
-with the internal increment we'll have real output (1953-976 + 1 + 976 + 
-1) * 1 / 64Mhz = 32736.57Hz but we should have (1953-976 + 976) * 1 / 
-64Mhz = 32770.09Hz
-| And IIRC this should not happen.
-Could you please explain why or point out doc/description where it's stated?
-If so we can add explicit check to prevent such a case
->>   	}
->>   
->>   	return 0;
->> @@ -340,7 +345,8 @@
->>   	channel->lo = FIELD_GET(PWM_LOW_MASK, value);
->>   	channel->hi = FIELD_GET(PWM_HIGH_MASK, value);
->>   
->> -	state->period = meson_pwm_cnt_to_ns(chip, pwm, channel->lo + channel->hi);
->> +	state->period = meson_pwm_cnt_to_ns(chip, pwm,
->> +					    channel->lo + 1 + channel->hi + 1);
->>   	state->duty_cycle = meson_pwm_cnt_to_ns(chip, pwm, channel->hi);
->>   
-> Doesn't channel->hi have to be incremented here too?
-Yes, lost the line. I'll fix it
+I will do that in the next iteration.
+Also, I will do the same modification in iio_channel_read_max() as it has
+exactly the same code.
 
-Best regards
-George
->>   	return 0;
->
+> 
+> > +	ret = iio_channel_read_avail(chan, &vals, type, &length, info);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	switch (ret) {
+> > +	case IIO_AVAIL_RANGE:
+> > +		switch (*type) {
+> > +		case IIO_VAL_INT:
+> > +			*val = vals[0];
+> > +			break;
+> > +		default:
+> > +			*val = vals[0];
+> > +			*val2 = vals[1];
+> > +		}
+> > +		return 0;
+> > +
+> > +	case IIO_AVAIL_LIST:
+> > +		if (length <= 0)
+> > +			return -EINVAL;
+> > +		switch (*type) {
+> > +		case IIO_VAL_INT:
+> > +			*val = vals[--length];  
+> 
+> > +			while (length) {  
+> 
+> 			while (length--) {
+> 
+> will do the job and at the same time...
+> 
+> 
+> > +				if (vals[--length] < *val)
+> > +					*val = vals[length];  
+> 
+> ...this construction becomes less confusing (easier to parse).
 
+Indeed, I will change in the next iteration.
+
+> 
+> > +			}
+> > +			break;
+> > +		default:
+> > +			/* FIXME: learn about min for other iio values */  
+> 
+> I believe in a final version this comment won't be here.
+
+We have the same FIXME comment in the iio_channel_read_max() function I
+copied to create this iio_channel_read_min() and, to be honest, I
+don't really know how to handle these other cases.
+
+In this series, I would prefer to keep this FIXME.
+
+> 
+> > +			return -EINVAL;
+> > +		}
+> > +		return 0;
+> > +
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}  
+> 
+
+Thanks for the review,
+Hervé

@@ -2,173 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC3C722769
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 15:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401AC722877
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 16:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232820AbjFENa3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jun 2023 09:30:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42584 "EHLO
+        id S234338AbjFEONI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jun 2023 10:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjFENa3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 09:30:29 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D02CCDB
-        for <linux-iio@vger.kernel.org>; Mon,  5 Jun 2023 06:30:26 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-970056276acso719450466b.2
-        for <linux-iio@vger.kernel.org>; Mon, 05 Jun 2023 06:30:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685971825; x=1688563825;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9N5Xum37PH3vElfoq/xGvR9YZMDWuqhfk9rvQ3s9Xng=;
-        b=WdhpqM0AVCM3qyL0GHgdrSJHtQhv1PYh0NuDYa4ZCEiDtaijwlFzvkEHWi/3VlhjdU
-         btXvk1eLR5ACz3wBP6FtATWyGtH0hWrzBmTXNf1i/H+hjq54ZKVI40ZG4GKA+ylp1UU0
-         5sBp1GISdALWrJCvvJC3ddKC28RmCFWfB+WSAhCYZbGX3zjZ2e4LOArzttsSQ4n7yev7
-         u2U9PgOS/tVKnjsOqO+CEEvT/+npO5U6sxSJw5ghxcKJ93DbEFF7ESWzSp85O7oIma8s
-         FED4y/yGiQrkzOcKtI4+b6H9LPIwhN0z9nf1HcZpZPCpG+fy7MWN01lcONr1qdyNLcrQ
-         dLeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685971825; x=1688563825;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9N5Xum37PH3vElfoq/xGvR9YZMDWuqhfk9rvQ3s9Xng=;
-        b=krPTeH6fxegunGI75O+l5vqccV4lcFAFu/bBMsn0pWI8XHZt3xWwAxkmwc9ylu9ELS
-         H+PQZYj8bzTHResqORl0bwY3XGb4RbrYX/Zk3ukrMnhEyP81mRthBONauCLtQD1G8nWM
-         hemnmH50DpN13bgwq/pj+Qd6fRZBYMirfRKUF79FwoZCmwP1NaZI5nn73vCRP5VH7X5L
-         zf3DQ3tlEqH4Tf7F+rcouPdsGrD+/XsmWSIEiSY/GNUtULr8rkpS12FNNFJ51ltNakIp
-         fLyPNqm4NJQhKCcZIuVW5MY5nkvfYWvFKJYha1/mxbmgvC43FxZ4V+ulMWJGGZEgTApz
-         UQLg==
-X-Gm-Message-State: AC+VfDzBJSdUqGOknc19IsPeHgFVd9R2pSoBHnNwO6qznY8x/QAECsp/
-        Q6ArzZasqZxqjoAD/JD2kEoceg==
-X-Google-Smtp-Source: ACHHUZ4Gpp6OQI4Q9MUi+CX2e4d01C6u1eJpgaFumPADq7T+YbaLI4ng+LDVm1/HcaHHXRQ8fKRuUQ==
-X-Received: by 2002:a17:907:169f:b0:975:bbc:1e33 with SMTP id hc31-20020a170907169f00b009750bbc1e33mr5771040ejc.31.1685971825276;
-        Mon, 05 Jun 2023 06:30:25 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id i15-20020a170906a28f00b00968242f8c37sm4235348ejz.50.2023.06.05.06.30.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jun 2023 06:30:24 -0700 (PDT)
-Message-ID: <56137e35-3eac-41db-5f4f-b1a140df08f5@linaro.org>
-Date:   Mon, 5 Jun 2023 15:30:22 +0200
+        with ESMTP id S234335AbjFEOMw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 10:12:52 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106DAE79;
+        Mon,  5 Jun 2023 07:11:57 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1685974292;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uHfp+IyYPxqhLvbm8OYS3Lo9uaz8M1hK/LpKpngruro=;
+        b=I2dvsEv0zE3yipuHlMDg7UA6Ckx9wEa+H7t4VCmIJcET1px6TWlt7rNFPhb/SO9IEr87xN
+        wBDLyJFUk2WuVLIjnpLpNczEg7ezgRrWzNXcHfM72l4s1aK3/1FBXifJpSNNg7ovgpqdnU
+        sEbgtIJ38z5zNlZtLiHlgEiq1hUq9FBgXbrBSv7ldAgs719ePTGOKJszV3E6vSlhEkmwO6
+        3Y8BW+LvafTVtnj1GhZ43dI/oLHQTUVjlzbkrqkGemXrN7lKXZWEQbi28a5jY0iiatAb96
+        D7cll8e4nHqA9hc6bkHvRmCcrDjnK9xkByDt3YyE/qSkEUNvWMff9ZOfwZSYKw==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 32278C0003;
+        Mon,  5 Jun 2023 14:11:30 +0000 (UTC)
+Date:   Mon, 5 Jun 2023 16:11:29 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 5/9] iio: inkern: Add a helper to query an available
+ minimum raw value
+Message-ID: <20230605161129.4ac3231b@bootlin.com>
+In-Reply-To: <CAHp75Vec3fXT6phqvLGSn0c09USCXXF6ZoE+X1VNJGM6jyf=aQ@mail.gmail.com>
+References: <20230523151223.109551-1-herve.codina@bootlin.com>
+        <20230523151223.109551-6-herve.codina@bootlin.com>
+        <ZHtIdTZbULl6t4RT@surfacebook>
+        <20230605094637.7615b689@bootlin.com>
+        <CAHp75Vec3fXT6phqvLGSn0c09USCXXF6ZoE+X1VNJGM6jyf=aQ@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2 1/2] dt-bindings:iio:adc: add max14001
-To:     Kim Seer Paller <kimseer.paller@analog.com>, jic23@kernel.org,
-        lars@metafoo.de
-Cc:     broonie@kernel.org, lgirdwood@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230605130755.92642-1-kimseer.paller@analog.com>
- <20230605130755.92642-2-kimseer.paller@analog.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230605130755.92642-2-kimseer.paller@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 05/06/2023 15:07, Kim Seer Paller wrote:
-> The MAX14001 is configurable, isolated 10-bit ADCs for multi-range
-> binary inputs.
+Hi Andy,
+
+On Mon, 5 Jun 2023 12:45:24 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+
+> On Mon, Jun 5, 2023 at 10:46 AM Herve Codina <herve.codina@bootlin.com> wrote:
+> > On Sat, 3 Jun 2023 17:04:37 +0300
+> > andy.shevchenko@gmail.com wrote:  
+> > > Tue, May 23, 2023 at 05:12:19PM +0200, Herve Codina kirjoitti:  
 > 
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC.  It might happen, that command when run on an older
-kernel, gives you outdated entries.  Therefore please be sure you base
-your patches on recent Linux kernel.
-
-You missed at least DT list (maybe more), so this won't be tested.
-Please resend and include all necessary entries.
-
-Subject - ignored comments.
-
-This is a friendly reminder during the review process.
-
-It seems my previous comments were not fully addressed. Maybe my
-feedback got lost between the quotes, maybe you just forgot to apply it.
-Please go back to the previous discussion and either implement all
-requested changes or keep discussing them.
-
-Thank you.
-
-> ---
->  .../bindings/iio/adc/adi,max14001.yaml        | 55 +++++++++++++++++++
->  MAINTAINERS                                   |  7 +++
->  2 files changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+> ...
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
-> new file mode 100644
-> index 000000000..1b17f5dc0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
-> @@ -0,0 +1,55 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2023 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,max14001.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices MAX14001 ADC
-> +
-> +maintainers:
-> +  - Kim Seer Paller <kimseer.paller@analog.com>
-> +
-> +description: |
-> +    Single channel 10 bit ADC with SPI interface. Datasheet
-> +    can be found here:
-> +      https://www.analog.com/media/en/technical-documentation/data-sheets/MAX14001-MAX14002.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,max14001
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 5000000
-> +
-> +  vref-supply:
-> +    description: Voltage reference to establish input scaling.
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > > > +           case IIO_VAL_INT:
+> > > > +                   *val = vals[--length];  
+> > >  
+> > > > +                   while (length) {  
+> > >
+> > >                       while (length--) {
+> > >
+> > > will do the job and at the same time...
+> > >  
+> > > > +                           if (vals[--length] < *val)
+> > > > +                                   *val = vals[length];  
+> > >
+> > > ...this construction becomes less confusing (easier to parse).  
+> >
+> > Indeed, I will change in the next iteration.  
+> 
+> And looking into above line, this whole construction I would prefer to
+> have a macro in minmax.h like
+> 
+> #define min_array(array, len) \
+> {( \
+>   typeof(len) __len = (len); \
+>   typeof(*(array)) __element = (array)[--__len]; \
+>   while (__len--) \
+>     __element = min(__element, (array)[__len]); \
+>   __element; \
+> )}
+> 
+> (it might need more work, but you got the idea)
 
-Place it like other bindings, so after required or before properties.
+I will also introduce max_array() and update both iio_channel_read_max()
+and iio_channel_read_min() to use these macros.
 
-Anyway, what happened with all the properties you had here and should be
-switched to generic ones?
+Will be available in the next series iteration.
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        status = "okay";
+Thanks,
+Hervé
 
-Really... You did not respond to my feedback, so sending uncorrected
-version feels like being ignored. :(
-
-Best regards,
-Krzysztof
-
+> 
+> > > > +                   }
+> > > > +                   break;  
+> 
+> ...
+> 
+> > > > +           default:
+> > > > +                   /* FIXME: learn about min for other iio values */  
+> > >
+> > > I believe in a final version this comment won't be here.  
+> >
+> > We have the same FIXME comment in the iio_channel_read_max() function I
+> > copied to create this iio_channel_read_min() and, to be honest, I
+> > don't really know how to handle these other cases.
+> >
+> > In this series, I would prefer to keep this FIXME.  
+> 
+> I see, Jonathan needs to be involved here then.
+> 
+> > > > +                   return -EINVAL;  
+> 

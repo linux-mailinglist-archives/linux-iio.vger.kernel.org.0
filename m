@@ -2,58 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD1D7722387
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 12:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86E687225FE
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 14:36:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbjFEKc4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jun 2023 06:32:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51092 "EHLO
+        id S233074AbjFEMg0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jun 2023 08:36:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjFEKcy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 06:32:54 -0400
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60FA0EC;
-        Mon,  5 Jun 2023 03:32:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-        s=default2211; h=Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=Kmh6Q+En4QAQCaRsLzaEanf4GOSbnJbhi38Sn/xlHv0=; b=Wh/DWcCzpVQD50rALlJTjxkC7w
-        WAjloqSEfWAbDDoD++9ZZIr1tei6gpqOEvsBYqaK856XCMAG7L+UJNn6+Wm5bFEdc7A31t+Tm1So4
-        G7TwY1jomDgyMglxGAvJQ++EIzuz2hfsir8StzS/+7G0O8Nn+1+8KOLOd+KQfCZhBa2OA/9ngY1+8
-        5jQZ7lQvOKhrPFGHOInvnQVQtijkcgFzf27YZ6kh4YifExj2vVOWW29x4x79rv7+gidcQSTrQPrAk
-        dvL0JR5qNdrqq/QQ5soNBV5vZB+2HyoAumQmEGwrI+Bc8EVRXZZrNQiCqF4/ojC8wdZCN1MrvWV8K
-        je6xEUEA==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <sean@geanix.com>)
-        id 1q67W7-000FQ5-Jy; Mon, 05 Jun 2023 12:32:51 +0200
-Received: from [185.17.218.86] (helo=zen..)
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sean@geanix.com>)
-        id 1q67W7-000Ns0-A8; Mon, 05 Jun 2023 12:32:51 +0200
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S232896AbjFEMgZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 08:36:25 -0400
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EFBFA;
+        Mon,  5 Jun 2023 05:35:56 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1685968540;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=euSzWbdAJIhobvITCThSqCY0UiRHVup0lZuS9yKCiCI=;
+        b=Y3PTcyCD1Xh1PS3bwIAeEasa8DsJNB6JUDLbYfgzXu4kJnbAOccGVoygE4DmyImLDLzv/N
+        ykGK7bH96jGj1PFLEx/TTVTHTqG1kWdumuw1YrLn9FxhVruYnQWyqsDFGwU/PuoE1ZvTnl
+        Zmu1FjT9tzN0ZA4RIuooqFWksce2JYGokae0dLwVm/EwXWowEniZESfui4bjrCs0xWqgjI
+        GDj3H4NH25F+uUfMQrrznoZsuEeRGUd0DWy/EiqyZlb+qB3yHKGy/8w9YNEDiXJfIWNayP
+        engkRUb60X+hNYH7z9M1j1WNapxP6RUdP7b4p0DeeZZt7Q+Esx+pxmLaQSq08w==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9A38AE000C;
+        Mon,  5 Jun 2023 12:35:37 +0000 (UTC)
+Date:   Mon, 5 Jun 2023 14:35:36 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     andy.shevchenko@gmail.com
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Sean Nyekjaer <sean@geanix.com>
-Cc:     stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: accel: fxls8962af: errata bug only applicable for FXLS8962AF
-Date:   Mon,  5 Jun 2023 12:32:22 +0200
-Message-Id: <20230605103223.1400980-2-sean@geanix.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230605103223.1400980-1-sean@geanix.com>
-References: <20230605103223.1400980-1-sean@geanix.com>
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 6/9] ASoC: soc-dapm.h: Add a helper to build a DAPM
+ widget dynamically
+Message-ID: <20230605143536.5a3b5bbe@bootlin.com>
+In-Reply-To: <ZHtJLxNReoc4Yjqj@surfacebook>
+References: <20230523151223.109551-1-herve.codina@bootlin.com>
+        <20230523151223.109551-7-herve.codina@bootlin.com>
+        <ZHtJLxNReoc4Yjqj@surfacebook>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26929/Mon Jun  5 09:34:01 2023)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,32 +84,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Remove special errata handling if FXLS8964AF is used.
+Hi Andy,
 
-Fixes: af959b7b96b8 ("iio: accel: fxls8962af: fix errata bug E3 - I2C burst reads")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Cc: stable@vger.kernel.org
----
- drivers/iio/accel/fxls8962af-core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Sat, 3 Jun 2023 17:07:43 +0300
+andy.shevchenko@gmail.com wrote:
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index bf7949e51e6c..3f27834ef04c 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -904,9 +904,10 @@ static int fxls8962af_fifo_transfer(struct fxls8962af_data *data,
- 	int total_length = samples * sample_length;
- 	int ret;
- 
--	if (i2c_verify_client(dev))
-+	if (i2c_verify_client(dev) &&
-+	    data->chip_info->chip_id == FXLS8962AF_DEVICE_ID)
- 		/*
--		 * Due to errata bug:
-+		 * Due to errata bug (only applicable on fxls8962af):
- 		 * E3: FIFO burst read operation error using I2C interface
- 		 * We have to avoid burst reads on I2C..
- 		 */
--- 
-2.40.0
+> Tue, May 23, 2023 at 05:12:20PM +0200, Herve Codina kirjoitti:
+> > The SND_SOC_DAPM_* helpers family are used to build widgets array in a
+> > static way.
+> > 
+> > Introduce SND_SOC_DAPM_WIDGET() in order to use the SND_SOC_DAPM_*
+> > helpers family in a dynamic way. The different SND_SOC_DAPM_* parameters
+> > can be computed by the code and the widget can be built based on this
+> > parameter computation.
+> > For instance:
+> >   static int create_widget(char *input_name)
+> >   {
+> > 	struct snd_soc_dapm_widget widget;
+> > 	char name*;
+> > 	...
+> > 	name = input_name;
+> > 	if (!name)
+> > 		name = "default";
+> > 
+> > 	widget = SND_SOC_DAPM_WIDGET(SND_SOC_DAPM_INPUT(name));
+> > 	...
+> >   }  
+> 
+> Maybe instead of adding a helper, simply convert those macros to provide
+> a compaund literal? (See, for example,
+> https://elixir.bootlin.com/linux/v6.4-rc4/source/include/linux/pinctrl/pinctrl.h#L42)
+> 
 
+Yes, I will convert them in the next iteration.
+
+Thanks for the review,
+Hervé

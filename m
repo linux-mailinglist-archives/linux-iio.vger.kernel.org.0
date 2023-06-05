@@ -2,121 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86E687225FE
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 14:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D73A7226E9
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jun 2023 15:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbjFEMg0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Jun 2023 08:36:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32928 "EHLO
+        id S233238AbjFENJA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Jun 2023 09:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232896AbjFEMgZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 08:36:25 -0400
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EFBFA;
-        Mon,  5 Jun 2023 05:35:56 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1685968540;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=euSzWbdAJIhobvITCThSqCY0UiRHVup0lZuS9yKCiCI=;
-        b=Y3PTcyCD1Xh1PS3bwIAeEasa8DsJNB6JUDLbYfgzXu4kJnbAOccGVoygE4DmyImLDLzv/N
-        ykGK7bH96jGj1PFLEx/TTVTHTqG1kWdumuw1YrLn9FxhVruYnQWyqsDFGwU/PuoE1ZvTnl
-        Zmu1FjT9tzN0ZA4RIuooqFWksce2JYGokae0dLwVm/EwXWowEniZESfui4bjrCs0xWqgjI
-        GDj3H4NH25F+uUfMQrrznoZsuEeRGUd0DWy/EiqyZlb+qB3yHKGy/8w9YNEDiXJfIWNayP
-        engkRUb60X+hNYH7z9M1j1WNapxP6RUdP7b4p0DeeZZt7Q+Esx+pxmLaQSq08w==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9A38AE000C;
-        Mon,  5 Jun 2023 12:35:37 +0000 (UTC)
-Date:   Mon, 5 Jun 2023 14:35:36 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     andy.shevchenko@gmail.com
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 6/9] ASoC: soc-dapm.h: Add a helper to build a DAPM
- widget dynamically
-Message-ID: <20230605143536.5a3b5bbe@bootlin.com>
-In-Reply-To: <ZHtJLxNReoc4Yjqj@surfacebook>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
-        <20230523151223.109551-7-herve.codina@bootlin.com>
-        <ZHtJLxNReoc4Yjqj@surfacebook>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S229807AbjFENJA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Jun 2023 09:09:00 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F690F2;
+        Mon,  5 Jun 2023 06:08:58 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 355D3KS0025575;
+        Mon, 5 Jun 2023 09:08:37 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r02e4a3ue-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 05 Jun 2023 09:08:37 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 355D8ZLi022855
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 5 Jun 2023 09:08:35 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 5 Jun 2023
+ 09:08:34 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 5 Jun 2023 09:08:34 -0400
+Received: from kimedia-VirtualBox.ad.analog.com (KPALLER2-L02.ad.analog.com [10.116.242.24])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 355D8IfT010470;
+        Mon, 5 Jun 2023 09:08:22 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>,
+        <krzysztof.kozlowski@linaro.org>
+CC:     <broonie@kernel.org>, <lgirdwood@gmail.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kimseer.paller@analog.com>
+Subject: [PATCH v2 0/2] Add max14001 support
+Date:   Mon, 5 Jun 2023 21:07:53 +0800
+Message-ID: <20230605130755.92642-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: qZS9KUlB8OxIS9RiXnRq9vEYXAeKiAat
+X-Proofpoint-GUID: qZS9KUlB8OxIS9RiXnRq9vEYXAeKiAat
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=917
+ adultscore=0 impostorscore=0 spamscore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 clxscore=1011 phishscore=0 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306050114
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+It took more time than I expected, but I have followed up on this and now
+I'm presenting the patch for your review.
 
-On Sat, 3 Jun 2023 17:07:43 +0300
-andy.shevchenko@gmail.com wrote:
+Modified the code based on the implementation of this application note
+as a reference:
+https://www.analog.com/media/en/technical-documentation/user-guides/guide-to-programming-the-max14001max14002-isolated-adcs--maxim-integrated.pdf
+For now, I'm figuring out how to implement daisy chain for future support.
 
-> Tue, May 23, 2023 at 05:12:20PM +0200, Herve Codina kirjoitti:
-> > The SND_SOC_DAPM_* helpers family are used to build widgets array in a
-> > static way.
-> > 
-> > Introduce SND_SOC_DAPM_WIDGET() in order to use the SND_SOC_DAPM_*
-> > helpers family in a dynamic way. The different SND_SOC_DAPM_* parameters
-> > can be computed by the code and the widget can be built based on this
-> > parameter computation.
-> > For instance:
-> >   static int create_widget(char *input_name)
-> >   {
-> > 	struct snd_soc_dapm_widget widget;
-> > 	char name*;
-> > 	...
-> > 	name = input_name;
-> > 	if (!name)
-> > 		name = "default";
-> > 
-> > 	widget = SND_SOC_DAPM_WIDGET(SND_SOC_DAPM_INPUT(name));
-> > 	...
-> >   }  
-> 
-> Maybe instead of adding a helper, simply convert those macros to provide
-> a compaund literal? (See, for example,
-> https://elixir.bootlin.com/linux/v6.4-rc4/source/include/linux/pinctrl/pinctrl.h#L42)
-> 
+Changes in v2:
 
-Yes, I will convert them in the next iteration.
+ max14001:
+  - Replaced verification register definitions with macro.
+  - Removed local definition of IIO_DMA_MINALIGN.
+  - Changed driver to big endian format and reverse data prior to outputting
+  it to the device as per the app note.
+  - Utilized default register values instead of zero to clear memory validation
+  fault.
+  - Converted driver to use custom regmap for register access.
+  - Modified scaled value calculation and changed to IIO_VAL_FRACTIONAL_LOG2.
+  - Removed offset attribute.
+  - Added comments for clarity in write transactions.
+  - Misc changes(blank lines...).
 
-Thanks for the review,
-Hervé
+ Bindings:
+  - Removed unneccessary device tree propertied and updated bindings.
+
+The code was tested using max14001pmb and max14001evsys boards with
+raspberry pi 4.
+
+Kim Seer Paller (2):
+  dt-bindings:iio:adc: add max14001
+  iio: adc: max14001: New driver
+
+ .../bindings/iio/adc/adi,max14001.yaml        |  55 +++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max14001.c                    | 333 ++++++++++++++++++
+ 5 files changed, 407 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+ create mode 100644 drivers/iio/adc/max14001.c
+
+
+base-commit: 44149752e9987a9eac5ad78e6d3a20934b5e018d
+-- 
+2.34.1
+

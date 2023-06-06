@@ -2,69 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3086872436D
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Jun 2023 14:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C58837244E1
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Jun 2023 15:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237936AbjFFM6q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Jun 2023 08:58:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57202 "EHLO
+        id S237735AbjFFNvI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Jun 2023 09:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237937AbjFFM6a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Jun 2023 08:58:30 -0400
+        with ESMTP id S237664AbjFFNvH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Jun 2023 09:51:07 -0400
 Received: from mx.sberdevices.ru (mx.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53A5D19A7;
-        Tue,  6 Jun 2023 05:58:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DAAD83;
+        Tue,  6 Jun 2023 06:51:02 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mx.sberdevices.ru (Postfix) with ESMTP id 878A65FD3B;
-        Tue,  6 Jun 2023 15:58:09 +0300 (MSK)
+        by mx.sberdevices.ru (Postfix) with ESMTP id 2408D5FD41;
+        Tue,  6 Jun 2023 16:50:59 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1686056289;
-        bh=MsK3KfXvwDDXjdR1K4Z8iNkLw2j81KfAr/Pv963g5nQ=;
-        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-        b=XNGmWbqE+gcreM/m4zW6J26BakoZSNJ1Y7UnfbIw9z7G7YKoi3DATkZhYe9+KvPhu
-         2P49UFRlrhrMN3fYX07Kg/T5p0K3mKhKsP0lqRGUqyojcU5dZ09UD1PAjgVc0NXULC
-         6v3OhljNuIVARIzWLw3iEWTOV/heqky8m96JjJ7qhcIHDGNqfpOU7z+iX5dONzI1Qj
-         zmI7xXpn0q65u1eqAYev0GayO4N3HSDbh1B/yW1vuDMF0aF/RM5JKmNQ6ArbAU/Cu8
-         zejU5845t2Wd6JOK7opluSy32o+vwyy+cVeKN/XUwki515icEi47bCOAjdLHrRmGGz
-         Jy2kLeaMttHuQ==
+        s=mail; t=1686059459;
+        bh=9kFJi/z4Psvva6f9jMpTP3rE2fmtgwDXrYMID542PFA=;
+        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+        b=XxNJshJLzEfaXwSgrsmMX4VErysyDd8xVvonhfy0pQ3JD3GU3R5CGil3yXhiOwIiW
+         TT+eNHkzPiFdHESY+ysL1qPgFtjoK+8H7XgVTm0NqPLUcus1+JwO9vu5WIjdtZuxex
+         n6UBSfRqECNtxsOm4XGP3M5OTgPcfMowX4N/qXfq8Y1oM4MgEz9xdyth7pMui8yd85
+         JmL5LTk3Ycrc5UkOboyvzPst7gfqJEwBs6XflONf7kUdaWhkP6DTvg5CNpH8CCpBjN
+         tHffklVSr1fBCDfGlDgewLXXx9A4WYf879EVIap+P1iEvNRbQ8d+PxtHM0jOPvwO8W
+         dHQKBpXp5dC3w==
 Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
         by mx.sberdevices.ru (Postfix) with ESMTP;
-        Tue,  6 Jun 2023 15:58:07 +0300 (MSK)
-Message-ID: <02c7e2b4-9087-fc73-bd57-0d4c12bbe203@sberdevices.ru>
-Date:   Tue, 6 Jun 2023 15:53:51 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v1] meson saradc: fix clock divider mask length
-Content-Language: en-US
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-CC:     "jic23@kernel.org" <jic23@kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>,
-        "khilman@baylibre.com" <khilman@baylibre.com>,
-        "jbrunet@baylibre.com" <jbrunet@baylibre.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "nuno.sa@analog.com" <nuno.sa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>, Vyacheslav <adeep@lexina.in>
-References: <20230515210545.2100161-1-gnstark@sberdevices.ru>
- <CAFBinCCc+t7Ks6fqz38cVrufPRFdxFgC9Qp+JhcM1KfD6pupTg@mail.gmail.com>
- <a52335ea-6545-8ca6-d318-38b7ffc64368@lexina.in>
- <CAFBinCDmkGnD5o_rV6K73De2XmHDxRYveDwNAy3iA+Kwr5sdqg@mail.gmail.com>
- <6910550a-b025-0d97-0b39-bc89b235541e@sberdevices.ru>
- <CAFBinCCk6OziOxt2AY1A25C=9_pibhHsDK0wJNZ_AyHMd=z6SQ@mail.gmail.com>
- <dcb05f27-4c6d-0544-ff0d-288a6848ccaf@sberdevices.ru>
- <CAFBinCCnAVveiYEOSq=KkBq0kRJti7eWgfRxqiTkQWe9i8mTzA@mail.gmail.com>
+        Tue,  6 Jun 2023 16:50:57 +0300 (MSK)
 From:   George Stark <gnstark@sberdevices.ru>
-In-Reply-To: <CAFBinCCnAVveiYEOSq=KkBq0kRJti7eWgfRxqiTkQWe9i8mTzA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
+        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
+        <martin.blumenstingl@googlemail.com>,
+        <andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
+        <gnstark@sberdevices.ru>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>,
+        George Stark <GNStark@sberdevices.ru>
+Subject: [PATCH v2] meson saradc: fix clock divider mask length
+Date:   Tue, 6 Jun 2023 16:50:17 +0300
+Message-ID: <20230606135017.4141617-1-gnstark@sberdevices.ru>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [172.16.1.6]
 X-ClientProxiedBy: S-MS-EXCH02.sberdevices.ru (172.16.1.5) To
  S-MS-EXCH01.sberdevices.ru (172.16.1.4)
@@ -75,92 +58,47 @@ X-KSMG-AntiSpam-Interceptor-Info: not scanned
 X-KSMG-AntiPhishing: not scanned, disabled by settings
 X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2023/06/06 11:10:00 #21443593
 X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+According to datasheets of supported meson SOCs
+length of ADC_CLK_DIV field is 6 bits long.
+Although all supported SOCs have the register with the
+field ADC_CLK_DIV documented later SOCs use external clock
+rather than ADC internal clock so
+this patch affects only meson8 family (S8* SOCs)
 
-On 6/5/23 23:18, Martin Blumenstingl wrote:
-> Hi George,
->
-> On Thu, Jun 1, 2023 at 10:56 PM George Stark <gnstark@sberdevices.ru> wrote:
-> [...]
->> Here the test I promised:
->> Question: what's the real size of clock divder field in SAR_ADC_REG3 register in saradc in meson8 socs?
->> The current kernel code says 5 bits
->> The datasheet says 6 bit
->>
->> The parent clock of adc clock is 24Mhz
->> I can check it here by:
->>
->> # cat /sys/kernel/debug/clk/clk_summary
->>    xtal                                 4        4        1    24000000          0     0  50000         Y
->>       c1108680.adc#adc_div              1        1        0      1142858         0     0  50000         Y
->>          c1108680.adc#adc_en            1        1        0      1142858         0     0  50000         Y
->>
->> for divider width 5bit min adc clock is 24Mhz / 32 =  750KHZ
->> for divider width 6bit min adc clock is 24Mhz / 64 =  375KHz
->>
->> I suppose that the lower adc clock rate the higher measurement time
->> so I need to get measurement time at both clk freqs and the times differ so
->> 6bit divider is really applied
->>
->> I performed test at Odroid-C1, kernel 6.2-rc8
->> Two kernel patches must be applied:
->>
->> the topic starter patch and the helper patch at the end of the letter
->> In the helper patch I turn on CLOCK_ALLOW_WRITE_DEBUGFS to change clock rate from she shell
->> and use ktime_get_raw_ts64 to measure measurement time
->>
->> So the the test itself:
->> cat /sys/devices/platform/soc/c1100000.cbus/c1108680.adc/iio:device0/in_voltage3_raw
->> [ 1781.226309] ==== freq: 1142858 time 42408000
->>
->> # echo 750000 > /sys/kernel/debug/clk/c1108680.adc#adc_en/clk_rate
->> # cat /sys/devices/platform/soc/c1100000.cbus/c1108680.adc/iio:device0/in_voltage3_raw
->> [ 1790.728656] ==== freq: 750000 time 49173000
->>
->> # echo 375000 > /sys/kernel/debug/clk/c1108680.adc#adc_en/clk_rate
->> # cat /sys/devices/platform/soc/c1100000.cbus/c1108680.adc/iio:device0/in_voltage3_raw
->> [ 1816.955477] ==== freq: 375000 time 68245000
->>
->> # cat /sys/kernel/debug/clk/clk_summary
->>    xtal                                 4        4        1    24000000          0     0  50000         Y
->>       c1108680.adc#adc_div              1        1        0      375000          0     0  50000         Y
->>          c1108680.adc#adc_en            1        1        0      375000          0     0  50000         Y
-> These results looks excellent - thanks for sharing the test results!
-> Could you please check one last thing:
-> $ grep -i adc /sys/kernel/debug/meson-clk-msr/measure_summary
-> It should confirm that the clock rate is 375kHz (or close to it, SoC
-> internal clock measurement is not 100% precise)
-Hello Martin
+Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
+Signed-off-by: George Stark <GNStark@sberdevices.ru>
+---
+Changelog:
 
-Looks like it works as expected:
-# grep -i adc /sys/kernel/debug/meson-clk-msr/measure_summary
-   sar_adc                 1140625    +/-3125Hz
-# echo 375000 > /sys/kernel/debug/clk/c1108680.adc#adc_en/clk_rate
-# grep -i adc /sys/kernel/debug/meson-clk-msr/measure_summary
-  sar_adc                  371875    +/-3125Hz
+v1 -> v2:
+    * Update commit message
+---
+ drivers/iio/adc/meson_saradc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So I'm re-sending the patch with fixed commit message
-
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 85b6826cc10c..b93ff42b8c19 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -72,7 +72,7 @@
+ 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_COUNT_MASK	GENMASK(20, 18)
+ 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_FILTER_TB_MASK	GENMASK(17, 16)
+ 	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_SHIFT		10
+-	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		5
++	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		6
+ 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_SEL_MASK		GENMASK(9, 8)
+ 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_MASK		GENMASK(7, 0)
+ 
 -- 
-Best regards
-George
-
->
-> Once we have that confirmation: can you please re-send the patch with
-> the description updated so it's clear which SoC generations are
-> affected and by stating that the fix was tested on a Meson8b Odroid-C1
-> board.
->
->
-> Thank you and best regards,
-> Martin
+2.38.4
 

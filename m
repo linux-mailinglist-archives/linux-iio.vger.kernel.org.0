@@ -2,123 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8AD7726375
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jun 2023 16:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 353BD72638A
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jun 2023 16:59:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241214AbjFGO41 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Jun 2023 10:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44758 "EHLO
+        id S234878AbjFGO7D convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 7 Jun 2023 10:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241225AbjFGO4Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 10:56:25 -0400
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237681BF3;
-        Wed,  7 Jun 2023 07:56:07 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1686149766;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=j7gbXd0RpYvnzNDsTkINk8jfZlfPM/h26L3sVpQBEA0=;
-        b=Nus40yw6Ykq619bNhbiuMgDNNxhkNfmD14Z5vbLwgY6hhW6sGzQVXPz6yezJQAuibm3fVO
-        USQ6p9kQVGiMdTwif/CdYD2GjvVboIox6YRehy8tDI61HntMDikWkce1PcJVgdIMcHsoj1
-        SUfk2tN6yjS8jCngvcOnWfEygLeQk1nahPZvS7J0mI9gTi+53l/wpCZK7XxIQiIDL85pfH
-        +Txfnc17HzzcMLgvfWxK/1bTwiA3qJ/q7eAYbsmvXXk/PizhuPbi/BAbIqXSLBGPG9uv/k
-        afYTjjGKV7DIoUeGnHd7fHO+vkAjz7HKlDvvbQB6UYBOvwYmXKScsQntRRXYdA==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CC4CEE000C;
-        Wed,  7 Jun 2023 14:56:01 +0000 (UTC)
-Date:   Wed, 7 Jun 2023 16:56:00 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 7/9] ASoC: codecs: Add support for the generic IIO
- auxiliary devices
-Message-ID: <20230607165600.535c8530@bootlin.com>
-In-Reply-To: <CAHp75Vd00N8z7kgTb=WTZHJW3XhsKbLfhTTKPjnCvKUSfL+xDQ@mail.gmail.com>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
-        <20230523151223.109551-8-herve.codina@bootlin.com>
-        <ZHuFywIrTnEFpX6e@surfacebook>
-        <20230606155404.28ada064@bootlin.com>
-        <CAHp75Vd00N8z7kgTb=WTZHJW3XhsKbLfhTTKPjnCvKUSfL+xDQ@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S237503AbjFGO7B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 10:59:01 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A71601702
+        for <linux-iio@vger.kernel.org>; Wed,  7 Jun 2023 07:58:59 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qbr7x2wSHz6J84V;
+        Wed,  7 Jun 2023 22:58:37 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 7 Jun
+ 2023 15:58:57 +0100
+Date:   Wed, 7 Jun 2023 15:58:56 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+CC:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        INV Git Commit <INV.git-commit@tdk.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Subject: Re: [PATCH v2 0/4] Factorize timestamp module
+Message-ID: <20230607155856.00006db3@Huawei.com>
+In-Reply-To: <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20230606162147.79667-1-inv.git-commit@tdk.com>
+        <ZIAjFMhJbnndgL-G@surfacebook>
+        <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+On Wed, 7 Jun 2023 09:28:12 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-On Tue, 6 Jun 2023 17:34:22 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-
-...
-
-> > >
-> > > Btw, can you avoid using OF APIs? It's better to have device property/fwnode
-> > > API to be used from day 1.  
-> >
-> > Hum, this comment was raised in the previous iteration
-> >   https://lore.kernel.org/linux-kernel/20230501162456.3448c494@jic23-huawei/
-> >
-> > I didn't find any equivalent to of_property_read_u32_index() in the
-> > device_property_read_*() function family.
-> > I mean I did find anything available to get a value from an array using an index.  
+> Hello Andy,
 > 
-> This is done by reading the entire array at once and then parsing as
-> you wish in the code, device_property_read_u32_array() is for that.
+> really sorry, I forgot to do that. I'm still not very familiar with all the details of the process, sorry.
 > 
-> > In the previous iteration it was concluded that keeping OF APIs in this series
-> > seemed "reasonable".  
+> I will send a new v3 with the Reviewed-by tag. Is it OK like this?
+
+Go for it.   Other option is to reply with a whoops: forgot this tag and
+include the tag.  That way b4 will pick it up for me when I apply.
+
+Jonathan
+
 > 
-> Maybe, but consider the above.
+> Thanks a lot, and sorry again.
+> JB
+> 
+> 
+> From: andy.shevchenko@gmail.com <andy.shevchenko@gmail.com>
+> Sent: Wednesday, June 7, 2023 08:26
+> To: INV Git Commit <INV.git-commit@tdk.com>
+> Cc: jic23@kernel.org <jic23@kernel.org>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; lars@metafoo.de <lars@metafoo.de>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Subject: Re: [PATCH v2 0/4] Factorize timestamp module 
+> †
+> [CAUTION] This is an EXTERNAL email. Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> 
+> ======================================================================
+> Tue, Jun 06, 2023 at 04:21:43PM +0000, inv.git-commit@tdk.com kirjoitti:
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> > 
+> > The purpose if this series is to make timestamping from
+> > inv_icm42600 driver an independent module and use it for both
+> > inv_icm42600 and inv_mpu6050 drivers.
+> > 
+> > Create a new inv_sensors_timestamp common module based on
+> > inv_icm42600 driver and use it in the 2 drivers.
+> > 
+> > WARNING: this patch requires following commit in fixes-togreg
+> > bbaae0c79ebd ("iio: imu: inv_icm42600: fix timestamp reset")  
+> 
+> > Changelog
+> > - v2: do some headers cleanup and add some justifications in
+> >†††††† the patches descriptions.  
+> 
+> What I haven't noticed is my tag. It's your responsibility to add given tag and
+> it's polite to Cc to the reviewers (but this will imply by the tag anyway in
+> this case).
+> 
+> Any explanation why did you do so?
+> 
 
-I see.
-Will switch to device_property_*() family in the next iteration.
-
-Thanks,
-Herv√©
-
--- 
-Herv√© Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com

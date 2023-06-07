@@ -2,122 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6B5726353
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jun 2023 16:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8AD7726375
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jun 2023 16:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240719AbjFGOwa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 7 Jun 2023 10:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41794 "EHLO
+        id S241214AbjFGO41 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Jun 2023 10:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235369AbjFGOw3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 10:52:29 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB1C1BF3
-        for <linux-iio@vger.kernel.org>; Wed,  7 Jun 2023 07:52:27 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qbr0P40sBz6J6tD;
-        Wed,  7 Jun 2023 22:52:05 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 7 Jun
- 2023 15:52:25 +0100
-Date:   Wed, 7 Jun 2023 15:52:24 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     David Schiller <david.schiller@jku.at>
-CC:     <linux-iio@vger.kernel.org>
-Subject: Re: Questions about ad5933 driver
-Message-ID: <20230607155224.000001d0@Huawei.com>
-In-Reply-To: <1204b19a92343a9e3a6ec5df3cef94f6777e08c4.camel@jku.at>
-References: <3e5653d1aec953e8aba8c00d073cd033a9f7a873.camel@jku.at>
-        <20230606113013.00000530@Huawei.com>
-        <1204b19a92343a9e3a6ec5df3cef94f6777e08c4.camel@jku.at>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S241225AbjFGO4Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 10:56:25 -0400
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237681BF3;
+        Wed,  7 Jun 2023 07:56:07 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1686149766;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=j7gbXd0RpYvnzNDsTkINk8jfZlfPM/h26L3sVpQBEA0=;
+        b=Nus40yw6Ykq619bNhbiuMgDNNxhkNfmD14Z5vbLwgY6hhW6sGzQVXPz6yezJQAuibm3fVO
+        USQ6p9kQVGiMdTwif/CdYD2GjvVboIox6YRehy8tDI61HntMDikWkce1PcJVgdIMcHsoj1
+        SUfk2tN6yjS8jCngvcOnWfEygLeQk1nahPZvS7J0mI9gTi+53l/wpCZK7XxIQiIDL85pfH
+        +Txfnc17HzzcMLgvfWxK/1bTwiA3qJ/q7eAYbsmvXXk/PizhuPbi/BAbIqXSLBGPG9uv/k
+        afYTjjGKV7DIoUeGnHd7fHO+vkAjz7HKlDvvbQB6UYBOvwYmXKScsQntRRXYdA==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CC4CEE000C;
+        Wed,  7 Jun 2023 14:56:01 +0000 (UTC)
+Date:   Wed, 7 Jun 2023 16:56:00 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 7/9] ASoC: codecs: Add support for the generic IIO
+ auxiliary devices
+Message-ID: <20230607165600.535c8530@bootlin.com>
+In-Reply-To: <CAHp75Vd00N8z7kgTb=WTZHJW3XhsKbLfhTTKPjnCvKUSfL+xDQ@mail.gmail.com>
+References: <20230523151223.109551-1-herve.codina@bootlin.com>
+        <20230523151223.109551-8-herve.codina@bootlin.com>
+        <ZHuFywIrTnEFpX6e@surfacebook>
+        <20230606155404.28ada064@bootlin.com>
+        <CAHp75Vd00N8z7kgTb=WTZHJW3XhsKbLfhTTKPjnCvKUSfL+xDQ@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 6 Jun 2023 12:51:50 +0200
-David Schiller <david.schiller@jku.at> wrote:
+Hi Andy,
 
-> On Tue, 2023-06-06 at 11:30 +0100, Jonathan Cameron wrote:
-> > Ideally clean up the driver.† If you are willing that would be great,
-> > if not would you be able to test changes made by someone else?† You
-> > are first person in years that I know has one! :)† I can't remember
-> > how far this driver is from being ready to move out of staging, but I
-> > can probably find some time to do a thorough review of that in next
-> > few weeks.  
-> 
-> Yes, I'm willing to test any patches that are provided to me. :)
-> I can also try to come up with my own changes, but I'm not that familiar
-> with the IIO subsystem beyond what I've learned in the past couple days,
-> so I'd need some assistance.
-> 
-> > That may require extra ABI definitions possibly including the real and
-> > imag modifiers at which point your patch to libiio would be correct.  
-> 
-> Yes, that's what I though too. I wasn't sure how "official" libiio is,
-> as it's not in the kernel tree.
+On Tue, 6 Jun 2023 17:34:22 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Not 'official' though it is fairly commonly used, but the documented ABI in
-Documentation/ABI/testing/sysfs-bus-iio*
-is and these aren't there either.
+...
 
-I'm not 100% sure this is the right way to solve this ABI gap though
-so need to have a bit of a think about it.  Using a modifier means we can't
-use them for anything else, so need to consider if there are other modifiers
-(or it has meaning for differential channels) when deciding if this is
-an ABI we want to add.
+> > >
+> > > Btw, can you avoid using OF APIs? It's better to have device property/fwnode
+> > > API to be used from day 1.  
+> >
+> > Hum, this comment was raised in the previous iteration
+> >   https://lore.kernel.org/linux-kernel/20230501162456.3448c494@jic23-huawei/
+> >
+> > I didn't find any equivalent to of_property_read_u32_index() in the
+> > device_property_read_*() function family.
+> > I mean I did find anything available to get a value from an array using an index.  
+> 
+> This is done by reading the entire array at once and then parsing as
+> you wish in the code, device_property_read_u32_array() is for that.
+> 
+> > In the previous iteration it was concluded that keeping OF APIs in this series
+> > seemed "reasonable".  
+> 
+> Maybe, but consider the above.
+
+I see.
+Will switch to device_property_*() family in the next iteration.
 
 Thanks,
+Herv√©
 
-Jonathan
-
-
-> My quick and dirty patch currently looks
-> like this:
-> 
-> 
-> diff --git a/channel.c b/channel.c
-> index 469d037e..6a57a271 100644
-> --- a/channel.c
-> +++ b/channel.c
-> @@ -114,6 +114,8 @@ static const char * const modifier_names[] = {
->         [IIO_MOD_PITCH] = "pitch",
->         [IIO_MOD_YAW] = "yaw",
->         [IIO_MOD_ROLL] = "roll",
-> +       [IIO_MOD_REAL] = "real",
-> +       [IIO_MOD_IMAG] = "imag",
->  };
->  
->  /*
-> diff --git a/iio.h b/iio.h
-> index 135e335c..3c803479 100644
-> --- a/iio.h
-> +++ b/iio.h
-> @@ -196,6 +196,8 @@ enum iio_modifier {
->         IIO_MOD_PITCH,
->         IIO_MOD_YAW,
->         IIO_MOD_ROLL,
-> +       IIO_MOD_REAL,
-> +       IIO_MOD_IMAG,
->  };
->  
->  /**
-> 
-> 
-> 
-> 
-
+-- 
+Herv√© Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

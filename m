@@ -2,144 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDCBB72612B
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jun 2023 15:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E511072632B
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jun 2023 16:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237287AbjFGNXP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Jun 2023 09:23:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49498 "EHLO
+        id S235700AbjFGOpS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Jun 2023 10:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235770AbjFGNXP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 09:23:15 -0400
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6503995;
-        Wed,  7 Jun 2023 06:23:13 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1686144191;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=upXsJBaOapv3HfJgv1RgsURS5W6Qd+6TPxSPKkAE5j8=;
-        b=jyfk1DMy8T+5r8MYSOQUudfcbk5sSXz5MeduU4Kee3pdk9FYRkqe9M7/Z7PZvEH0IpOZVG
-        dZFuCOQskx1e/WzL0LIjkwDW2kG2L13bG0KMLcYUb3y5VOjjs0k18C17jfGkGJap7wuDHm
-        F0qwd/wZyVlfhOHnZDqB51cFWB1Nz0y46LfhPiUacRrQxPYi19zNIfnC2a2lXo/dLsQK/k
-        C7UiW/tl3AWH55f6nX1gHlGy792zZA6c1obgpiR9NYYuhiVpkxJEo3q6Cj2SDtQk07SXMV
-        QcCtdd7gDT9P6zErA+YK7QicVFwQraPa6P9bli7/8OPC39m7MZWw0j2Wq1AcCQ==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8F55940017;
-        Wed,  7 Jun 2023 13:23:09 +0000 (UTC)
-Date:   Wed, 7 Jun 2023 15:23:08 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     andy.shevchenko@gmail.com
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 7/9] ASoC: codecs: Add support for the generic IIO
- auxiliary devices
-Message-ID: <20230607152308.02b404e1@bootlin.com>
-In-Reply-To: <20230606155404.28ada064@bootlin.com>
-References: <20230523151223.109551-1-herve.codina@bootlin.com>
-        <20230523151223.109551-8-herve.codina@bootlin.com>
-        <ZHuFywIrTnEFpX6e@surfacebook>
-        <20230606155404.28ada064@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S241185AbjFGOpR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 10:45:17 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4383A19BA
+        for <linux-iio@vger.kernel.org>; Wed,  7 Jun 2023 07:45:16 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-6259c242c96so56851226d6.3
+        for <linux-iio@vger.kernel.org>; Wed, 07 Jun 2023 07:45:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686149115; x=1688741115;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PijH6sZIMeWGyL7xNuljFEtMZ30sNp4YZfQYGCRx7sc=;
+        b=H/bjAsf5Xoh77H7CzUZ1tEznTbOKGUHaz+FrFg7te16HzynErrJmeR+dFasA/xpQYb
+         gUEAunlhJkn5CsZeYeyYi9yJmiAUT6Rq81I7uTWe7cOLOsupjZsDVxxkyHKkaNSVNXXt
+         D6hk47p9XZ/bBNJ25tQrQ2mBWwz/b5cchOdU0KLZO9P5Gb/fjIP1OyyNt507BlN9hR+D
+         3iQmHAlOAbxwEDruiZAL4Vzl50nvwlP+Mao9rHp1+ybgmAMuZcsVcdHUtHzBMEcwjdc8
+         axE57eCB2VFqe1Pm1CzM/4i6o6jSD29x3tNhdxZtK/9F3roI0GUyb0NBd/MwCEjgLMGl
+         Kkfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686149115; x=1688741115;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PijH6sZIMeWGyL7xNuljFEtMZ30sNp4YZfQYGCRx7sc=;
+        b=TPWYxw4EZV5wdCVieaWkreJ18ZrhPRHxA52S42rSWZmvOvTvJ47LA2wtjtLPCeUAim
+         uRuMPjcDTGEEfJtUSp4TyMwE1qBLQJtVYt1+GQY43Mvdt6uMhYxAB0yxCBZ58V/mpJ05
+         eqTmTCp8ji2GwCILcHLEnNZn/5fo8osEZnlPZYUa8i9snLEglfiVO17LGLy0LmTCebzu
+         frAFC6O5StmCasJ1b0mPWShEp6ARkSrtTZkg7KwkYbrKKUZfFUiqaaH9vM0qbByic4Rq
+         nJwTA7ALHL3knfEIl0sWfGrdV0O9IrMDT9XtyO+T0XF90YzfOaeqJ3z8fuKxQ+NUnZug
+         OVcQ==
+X-Gm-Message-State: AC+VfDwFGLixMnmHx8Qt1/aD4HQdV/xfGwAlokrk87jlPh/jB7G72I4u
+        gTZ/eUbpQuDS9HSAMzcG0UFxTAIGGhNnWWWku4k=
+X-Google-Smtp-Source: ACHHUZ4bnXOu2z61NApr3gL55yVXzefETNYdmbpAuY60VQS5SrxobU/7hNAlzoSUNaRBWxYEoZemmadTRR74Hyq8N2o=
+X-Received: by 2002:ad4:5cce:0:b0:626:101a:f8 with SMTP id iu14-20020ad45cce000000b00626101a00f8mr3841279qvb.25.1686149115335;
+ Wed, 07 Jun 2023 07:45:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230606162147.79667-1-inv.git-commit@tdk.com>
+ <ZIAjFMhJbnndgL-G@surfacebook> <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+In-Reply-To: <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 7 Jun 2023 17:44:39 +0300
+Message-ID: <CAHp75Vd+VK2B=rjYitXSDhHxbbyUNxNpvD1KgrsB=3sBxk6Pkg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] Factorize timestamp module
+To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc:     INV Git Commit <INV.git-commit@tdk.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+On Wed, Jun 7, 2023 at 12:28=E2=80=AFPM Jean-Baptiste Maneyrol
+<Jean-Baptiste.Maneyrol@tdk.com> wrote:
+>
+> Hello Andy,
+>
+> really sorry, I forgot to do that. I'm still not very familiar with all t=
+he details of the process, sorry.
 
-On Tue, 6 Jun 2023 15:54:04 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+Understand.
 
-...
-> >   
-> > > +	platform_set_drvdata(pdev, iio_aux);    
-> > 
-> > Which callback is using this driver data?  
-> 
-> None -> I will remove platform_set_drvdata().
-> 
+> I will send a new v3 with the Reviewed-by tag. Is it OK like this?
 
-My previous answer was not correct.
-The platform_set_drvdata() call is needed.
+I believe no need to resend right now as I can simply repeat it here
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+But next time be more careful.
 
-In fact, the driver uses snd_soc_component_get_drvdata() 
-  https://elixir.bootlin.com/linux/v6.4-rc5/source/include/sound/soc-component.h#L425
-and this snd_soc_component_get_drvdata() get the driver data set by the
-platform_set_drvdata() call.
+And thank you for what you are doing!
 
-I cannot use snd_soc_component_set_drvdata() to set the driver data because
-I haven't got the struct snd_soc_component instance when I need to set the
-driver data.
+> Thanks a lot, and sorry again.
 
-So, I will not remove the platform_set_drvdata() call.
+> From: andy.shevchenko@gmail.com <andy.shevchenko@gmail.com>
+> Sent: Wednesday, June 7, 2023 08:26
+> To: INV Git Commit <INV.git-commit@tdk.com>
+> Cc: jic23@kernel.org <jic23@kernel.org>; linux-iio@vger.kernel.org <linux=
+-iio@vger.kernel.org>; lars@metafoo.de <lars@metafoo.de>; Jean-Baptiste Man=
+eyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Subject: Re: [PATCH v2 0/4] Factorize timestamp module
+>
+> [CAUTION] This is an EXTERNAL email. Do not click links or open attachmen=
+ts unless you recognize the sender and know the content is safe.
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Tue, Jun 06, 2023 at 04:21:43PM +0000, inv.git-commit@tdk.com kirjoitti:
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >
+> > The purpose if this series is to make timestamping from
+> > inv_icm42600 driver an independent module and use it for both
+> > inv_icm42600 and inv_mpu6050 drivers.
+> >
+> > Create a new inv_sensors_timestamp common module based on
+> > inv_icm42600 driver and use it in the 2 drivers.
+> >
+> > WARNING: this patch requires following commit in fixes-togreg
+> > bbaae0c79ebd ("iio: imu: inv_icm42600: fix timestamp reset")
+>
+> > Changelog
+> > - v2: do some headers cleanup and add some justifications in
+> >       the patches descriptions.
+>
+> What I haven't noticed is my tag. It's your responsibility to add given t=
+ag and
+> it's polite to Cc to the reviewers (but this will imply by the tag anyway=
+ in
+> this case).
+>
+> Any explanation why did you do so?
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
 
-The sequence is:
-  --- 8< ---
-  static int audio_iio_aux_probe(struct platform_device *pdev)
-  {
-	struct audio_iio_aux *iio_aux;
 
-	iio_aux = devm_kzalloc(&pdev->dev, sizeof(*iio_aux), GFP_KERNEL);
-	if (!iio_aux)
-		return -ENOMEM;
-
-	...
-
-	platform_set_drvdata(pdev, iio_aux);
-
-	return devm_snd_soc_register_component(iio_aux->dev,
-					       &audio_iio_aux_component_driver,
-					       NULL, 0);
-  }
-  --- 8< ---
-
-The struct snd_soc_component instance will be create during the 
-devm_snd_soc_register_component() call.
-
-Regards,
-Hervé
-
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--=20
+With Best Regards,
+Andy Shevchenko

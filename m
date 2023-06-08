@@ -2,173 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15DC372722F
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Jun 2023 00:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3506727D5C
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Jun 2023 12:57:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233119AbjFGWzC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Jun 2023 18:55:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54094 "EHLO
+        id S234678AbjFHK5q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 8 Jun 2023 06:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233182AbjFGWzB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Jun 2023 18:55:01 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BBE42139
-        for <linux-iio@vger.kernel.org>; Wed,  7 Jun 2023 15:54:54 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-977c88c9021so459566b.3
-        for <linux-iio@vger.kernel.org>; Wed, 07 Jun 2023 15:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686178493; x=1688770493;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=ZyieX1JAoOA7e6VkLdF85cS2BY4cQvDbL6o+xYaiiDE75fbNNMeoWverOzT52D4k2S
-         UYxoSJ2sm5xGBh8kGc5D0kAtYSbrkHKN7yaUsJGKRZoZXYrBXYeNkJg7vpsqI0ZjAmch
-         3x4lCBRFtDEICvCdIQ19CxXIxIMp7RqH7HgNNtZzrb+GNtp7UmkWpCYK0Mqw+TGqa2DT
-         Wvk1MhQkef7IdoZAN3IJWtskq7+eTMruF3Uq3kN0Wjfw07kba3wtEsWoMqE1Zay+Onj3
-         n2iJopnA3FIssXaBEX6Uelz+337ycjqTLZUyQ07MpeQf4qzAhsJurfOMFWTBWT4Ke8x2
-         t7lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686178493; x=1688770493;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=JnNgTcpsq96FXW5tVp+1trx/h5hVXz8Sb/D0cc+J7nzSbPyiTiTN5NEH7mTBCr802M
-         BuEPoWccWeV0kc44ZfKVvE5viKzmJttVfQF59IingcYO5taWhSSWNy1kbuSRvIX1JpS+
-         7uCzp/8VFrgdy8/xnnFacRv4wxQtLE1SoGxCrEPwyZ/q9tJ47pkuI1TADIvMQmpDj6mg
-         5DcKdlyJBsG+BLPIoscAy2MCmHJfGcIgD8Ezxlkb+gcJb2qwoIPlgeF6cKIcPHzTQ2Il
-         TtFykEPY4/qz5v1iZn2Yo/oh/6+Vnk47RRq38eJtwivZENN0YAZsyPa2makqnIyxX9rv
-         ocIQ==
-X-Gm-Message-State: AC+VfDysX0YtZSOJ+n/e3EtGhgEyxD8mUo15UJOCD+ocgacKaq+rRYUh
-        zO3l+KhL52FSDuBlDYloKOdheXUesLBT6UU1D3A=
-X-Google-Smtp-Source: ACHHUZ5q9v5E8VuN7LGrTh1boUYVANIIUnJnBwlK4YNL8XVT+z7GalrAexguq0b795Op+2qoCUEoHnMN8sFXq0M0ebg=
-X-Received: by 2002:a17:907:8a15:b0:96f:d154:54f7 with SMTP id
- sc21-20020a1709078a1500b0096fd15454f7mr7113590ejc.42.1686178492570; Wed, 07
- Jun 2023 15:54:52 -0700 (PDT)
+        with ESMTP id S235050AbjFHK5p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Jun 2023 06:57:45 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37CF311A
+        for <linux-iio@vger.kernel.org>; Thu,  8 Jun 2023 03:57:44 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QcLhn6lWxz67CxC;
+        Thu,  8 Jun 2023 18:55:21 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 8 Jun
+ 2023 11:57:41 +0100
+Date:   Thu, 8 Jun 2023 11:57:40 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
+        INV Git Commit <INV.git-commit@tdk.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>
+Subject: Re: [PATCH v2 0/4] Factorize timestamp module
+Message-ID: <20230608115740.00007695@Huawei.com>
+In-Reply-To: <CAHp75Vd+VK2B=rjYitXSDhHxbbyUNxNpvD1KgrsB=3sBxk6Pkg@mail.gmail.com>
+References: <20230606162147.79667-1-inv.git-commit@tdk.com>
+        <ZIAjFMhJbnndgL-G@surfacebook>
+        <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+        <CAHp75Vd+VK2B=rjYitXSDhHxbbyUNxNpvD1KgrsB=3sBxk6Pkg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
- 15:54:52 -0700 (PDT)
-Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
-From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
-        <successikolo@gmail.com>
-Date:   Wed, 7 Jun 2023 15:54:52 -0700
-Message-ID: <CADFNGJ8vkgORi1jPvvhP+FQnPCNqs4cr588+_a-ywDXpqf+qKA@mail.gmail.com>
-Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62f listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [successikolo[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-        *  0.0 MONEY_FORM Lots of money if you fill out a form
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
-        *      money
-        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
-        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-UNITED NATION DEPUTY SECRETARY-GENERAL.
+On Wed, 7 Jun 2023 17:44:39 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-This is to official inform you that we have been having meetings for
-the past three (3) weeks which ended two days ago with MR. JIM YONG
-KIM the world bank president and other seven continent presidents on
-the congress we treated on solution to scam victim problems.
+> On Wed, Jun 7, 2023 at 12:28 PM Jean-Baptiste Maneyrol
+> <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+> >
+> > Hello Andy,
+> >
+> > really sorry, I forgot to do that. I'm still not very familiar with all the details of the process, sorry.  
+> 
+> Understand.
+> 
+> > I will send a new v3 with the Reviewed-by tag. Is it OK like this?  
+> 
+> I believe no need to resend right now as I can simply repeat it here
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
- Note: we have decided to contact you following the reports we
-received from anti-fraud international monitoring group your
-name/email has been submitted to us therefore the united nations have
-agreed to compensate you with the sum of (USD$ 1.5 Million) this
-compensation is also including international business that failed you
-in the past due to government problems etc.
+That works for me ;)
 
- We have arranged your payment through our ATM Master Card and
-deposited it in DHL Office to deliver it to you which is the latest
-instruction from the World Bank president MR. JIM YONG KIM, For your
-information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
-he
-only money you will send to DHL office south Korea is
-($500). for security keeping fee, U.N coordinator already paid for
-others charges fees for delivery except the security keeping fee, the
-director of DHL refused to collect the security keeping fee from U.N
-coordinator, the Director of DHL office said that they don=E2=80=99t know
-exactly time you will contact them to reconfirm your details to avoid
-counting demur-rage that is why they refused collecting the ($500) .
-for security keeping fee.
+Thanks Andy.
 
- Therefore be advice to contact DHL Office agent south Korea. Rev:John
-Lee Tae-seok
-who is in position to deliver your ATM
-Master Card to your location address, contact DHL Office immediately
-with the bellow email & phone number as listed below.
+> But next time be more careful.
+> 
+> And thank you for what you are doing!
+> 
+> > Thanks a lot, and sorry again.  
+> 
+> > From: andy.shevchenko@gmail.com <andy.shevchenko@gmail.com>
+> > Sent: Wednesday, June 7, 2023 08:26
+> > To: INV Git Commit <INV.git-commit@tdk.com>
+> > Cc: jic23@kernel.org <jic23@kernel.org>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; lars@metafoo.de <lars@metafoo.de>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> > Subject: Re: [PATCH v2 0/4] Factorize timestamp module
+> >
+> > [CAUTION] This is an EXTERNAL email. Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> >
+> > ======================================================================
+> > Tue, Jun 06, 2023 at 04:21:43PM +0000, inv.git-commit@tdk.com kirjoitti:  
+> > > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> > >
+> > > The purpose if this series is to make timestamping from
+> > > inv_icm42600 driver an independent module and use it for both
+> > > inv_icm42600 and inv_mpu6050 drivers.
+> > >
+> > > Create a new inv_sensors_timestamp common module based on
+> > > inv_icm42600 driver and use it in the 2 drivers.
+> > >
+> > > WARNING: this patch requires following commit in fixes-togreg
+> > > bbaae0c79ebd ("iio: imu: inv_icm42600: fix timestamp reset")  
+> >  
+> > > Changelog
+> > > - v2: do some headers cleanup and add some justifications in
+> > >       the patches descriptions.  
+> >
+> > What I haven't noticed is my tag. It's your responsibility to add given tag and
+> > it's polite to Cc to the reviewers (but this will imply by the tag anyway in
+> > this case).
+> >
+> > Any explanation why did you do so?
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko
+> >  
+> 
+> 
 
- Contact name: John Lee Tae-seok
-
- Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
-
- read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Make sure you reconfirmed DHL Office your details ASAP as stated
-below to avoid wrong delivery.
-
- Your full name..........
-
- Home address:.........
-
- Your country...........
-
- Your city..............
-
- Telephone......
-
- Occupation:.......
-
- Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
-
- Let us know as soon as possible you receive your ATM MasterCard
-for proper verification.
-
- Regards,
-
- Mrs Vivian kakadu.
-
- DEPUTY SECRETARY-GENERAL (U.N)

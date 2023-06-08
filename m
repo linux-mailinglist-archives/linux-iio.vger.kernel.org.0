@@ -2,121 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3506727D5C
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Jun 2023 12:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB94B7282EE
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Jun 2023 16:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234678AbjFHK5q convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 8 Jun 2023 06:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60212 "EHLO
+        id S236234AbjFHOno (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Jun 2023 10:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235050AbjFHK5p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Jun 2023 06:57:45 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37CF311A
-        for <linux-iio@vger.kernel.org>; Thu,  8 Jun 2023 03:57:44 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QcLhn6lWxz67CxC;
-        Thu,  8 Jun 2023 18:55:21 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 8 Jun
- 2023 11:57:41 +0100
-Date:   Thu, 8 Jun 2023 11:57:40 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
-        INV Git Commit <INV.git-commit@tdk.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [PATCH v2 0/4] Factorize timestamp module
-Message-ID: <20230608115740.00007695@Huawei.com>
-In-Reply-To: <CAHp75Vd+VK2B=rjYitXSDhHxbbyUNxNpvD1KgrsB=3sBxk6Pkg@mail.gmail.com>
-References: <20230606162147.79667-1-inv.git-commit@tdk.com>
-        <ZIAjFMhJbnndgL-G@surfacebook>
-        <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-        <CAHp75Vd+VK2B=rjYitXSDhHxbbyUNxNpvD1KgrsB=3sBxk6Pkg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S236164AbjFHOnn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Jun 2023 10:43:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3A32136;
+        Thu,  8 Jun 2023 07:43:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B89BD64E27;
+        Thu,  8 Jun 2023 14:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B9BC433D2;
+        Thu,  8 Jun 2023 14:43:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686235421;
+        bh=rP0q3qjncgDpDKDDVXbYz3KOWj76WnWqmpcM80SQI28=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Y3h4tUNxovyNgZ9WHKMe4NXuo32sj9oev4mwukKJEs+Qhgr8OZKzuOr2L0Q54qc6c
+         6topEvPSjwcHuvEThPbum5M/hX1kxLyMkZ3elAmCJTGCxfUA0W2MrTK0CGqPiqI1tI
+         L0uzADwhATyNAlk491+9N4Fr3v79lb0utWZjt1zqDCmU0OsHvf2iDkdeSREBTo7nK8
+         6F0C+IkLB3Y5HyCodjcnhalXORzSMJ3YNDhpFNfeROYSysVIR/2b9xnNgV6t3YLs14
+         AbcqT9e8CSZ6ONJnMgZF18NiAcAKkF9Tr8Q59KScjThCdvAa3388qNyf978suD4qdQ
+         1sOmQY5zCg2Ig==
+Date:   Thu, 8 Jun 2023 10:43:37 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, andy.shevchenko@gmail.com,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: Re: [PATCH 1/3] counter: i8254: Introduce the Intel 8254 interface
+ library module
+Message-ID: <ZIHpGUWZ8wE7tkJP@ishi>
+References: <cover.1681665189.git.william.gray@linaro.org>
+ <f6fe32c2db9525d816ab1a01f45abad56c081652.1681665189.git.william.gray@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="MrMSNaKdeZ7w23Mn"
+Content-Disposition: inline
+In-Reply-To: <f6fe32c2db9525d816ab1a01f45abad56c081652.1681665189.git.william.gray@linaro.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 7 Jun 2023 17:44:39 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Wed, Jun 7, 2023 at 12:28 PM Jean-Baptiste Maneyrol
-> <Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> >
-> > Hello Andy,
-> >
-> > really sorry, I forgot to do that. I'm still not very familiar with all the details of the process, sorry.  
-> 
-> Understand.
-> 
-> > I will send a new v3 with the Reviewed-by tag. Is it OK like this?  
-> 
-> I believe no need to resend right now as I can simply repeat it here
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+--MrMSNaKdeZ7w23Mn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That works for me ;)
+On Sun, Apr 16, 2023 at 01:36:53PM -0400, William Breathitt Gray wrote:
+> Exposes consumer library functions providing support for interfaces
+> compatible with the venerable Intel 8254 Programmable Interval Timer
+> (PIT).
+>=20
+> The Intel 8254 PIT first appeared in the early 1980s and was used
+> initially in IBM PC compatibles. The popularity of the original Intel
+> 825x family of chips led to many subsequent variants and clones of the
+> interface in various chips and integrated circuits. Although still
+> popular, interfaces compatible with the Intel 8254 PIT are nowdays
+> typically found embedded in larger VLSI processing chips and FPGA
+> components rather than as discrete ICs.
+>=20
+> A CONFIG_I8254 Kconfig option is introduced by this patch. Modules
+> wanting access to these i8254 library functions should select this
+> Kconfig option, and import the I8254 symbol namespace.
+>=20
+> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 
-Thanks Andy.
+I've queued this patch to the counter-next branch of my Counter tree.
 
-> But next time be more careful.
-> 
-> And thank you for what you are doing!
-> 
-> > Thanks a lot, and sorry again.  
-> 
-> > From: andy.shevchenko@gmail.com <andy.shevchenko@gmail.com>
-> > Sent: Wednesday, June 7, 2023 08:26
-> > To: INV Git Commit <INV.git-commit@tdk.com>
-> > Cc: jic23@kernel.org <jic23@kernel.org>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; lars@metafoo.de <lars@metafoo.de>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> > Subject: Re: [PATCH v2 0/4] Factorize timestamp module
-> >
-> > [CAUTION] This is an EXTERNAL email. Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> >
-> > ======================================================================
-> > Tue, Jun 06, 2023 at 04:21:43PM +0000, inv.git-commit@tdk.com kirjoitti:  
-> > > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> > >
-> > > The purpose if this series is to make timestamping from
-> > > inv_icm42600 driver an independent module and use it for both
-> > > inv_icm42600 and inv_mpu6050 drivers.
-> > >
-> > > Create a new inv_sensors_timestamp common module based on
-> > > inv_icm42600 driver and use it in the 2 drivers.
-> > >
-> > > WARNING: this patch requires following commit in fixes-togreg
-> > > bbaae0c79ebd ("iio: imu: inv_icm42600: fix timestamp reset")  
-> >  
-> > > Changelog
-> > > - v2: do some headers cleanup and add some justifications in
-> > >       the patches descriptions.  
-> >
-> > What I haven't noticed is my tag. It's your responsibility to add given tag and
-> > it's polite to Cc to the reviewers (but this will imply by the tag anyway in
-> > this case).
-> >
-> > Any explanation why did you do so?
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >  
-> 
-> 
+Jonathan, Bart, I've created an immutable branch with just this patch
+for you to pull which should allow you each to merge the other patch in
+this patchset for your respective tree.
 
+The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+
+  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/i8254
+
+for you to fetch changes up to b923ba2c0829a1a22151139309b4ae5d47a99d34:
+
+  counter: i8254: Introduce the Intel 8254 interface library module (2023-0=
+6-08 10:14:10 -0400)
+
+----------------------------------------------------------------
+counter: i8254: Introduce the Intel 8254 interface library module
+
+This exposes consumer library functions providing support for interfaces
+compatible with the venerable Intel 8254 Programmable Interval Timer.
+
+----------------------------------------------------------------
+William Breathitt Gray (1):
+      counter: i8254: Introduce the Intel 8254 interface library module
+
+ Documentation/ABI/testing/sysfs-bus-counter |  54 ++++
+ MAINTAINERS                                 |   7 +
+ drivers/counter/Kconfig                     |  15 +
+ drivers/counter/Makefile                    |   1 +
+ drivers/counter/counter-sysfs.c             |   8 +-
+ drivers/counter/i8254.c                     | 447 ++++++++++++++++++++++++=
+++++
+ include/linux/i8254.h                       |  21 ++
+ include/uapi/linux/counter.h                |   6 +
+ 8 files changed, 558 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/counter/i8254.c
+ create mode 100644 include/linux/i8254.h
+
+Sincerely,
+
+William Breathitt Gray
+
+--MrMSNaKdeZ7w23Mn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZIHpGQAKCRC1SFbKvhIj
+K7PzAQDN/DQ+bvzSdN4IW/6wiGR3cu+2SkNH6EXMQ4LGQlQ23gEA/ova0tmMl7q8
+gLoE7FR8EQr+anvEkWTdZtX1FOHM1Qk=
+=laO/
+-----END PGP SIGNATURE-----
+
+--MrMSNaKdeZ7w23Mn--

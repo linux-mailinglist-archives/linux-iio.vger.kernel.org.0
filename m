@@ -2,123 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B2CF729D19
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jun 2023 16:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6B3729D91
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jun 2023 16:58:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241455AbjFIOjn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Jun 2023 10:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58060 "EHLO
+        id S232204AbjFIO6U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Jun 2023 10:58:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240056AbjFIOjm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jun 2023 10:39:42 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50B8359D;
-        Fri,  9 Jun 2023 07:39:34 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3f6d38a140bso14485905e9.1;
-        Fri, 09 Jun 2023 07:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686321573; x=1688913573;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CkTk/I2vJ7u5Kgxyjnr/M7EFdjdjE5R1J++r5jqjZYk=;
-        b=dkNyG7XkCxcLXXvDrfl0Nk2GcQt1r6wldGM8N+9rl6hd7psFwlVLlMVe9sT2ypfetd
-         hjTn3HBDLw9T5+WcgPAbAo7FV0W6DOxa8RDNuqCzcjdnBdwGejh7tgUdHDvcNV/4oQhS
-         gK1WOQlWDEZgTKLhSRzVjn7gUubIJ2RmzYrQ8egF+8qPjt0hRXTgvYP/JST15ANuRMVB
-         Ntz0K8eiaSAJA7GmL1nI5M1ANmLRa39qkIb+05oWHywriz5uG/2oWhPA00QCYSTk+Jox
-         E7+yzCRKMRb0htjbG+jPtu8u5r3SXTyJhnMkc+bXevXsDw0V8Xniq88Ivmwt3wOzIdS1
-         zsVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686321573; x=1688913573;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CkTk/I2vJ7u5Kgxyjnr/M7EFdjdjE5R1J++r5jqjZYk=;
-        b=eWNcMCkEYP2CDq7xkmeVgF10UrMO9FsA0tAUOpW+4h09AVUAWMapvzMJyY/AerLbwf
-         LE522/lDIDvcV5xRJFH5Qg2wDUGaoSPHxlMWuSEQJvpdewH1H5Rhp5KzGWgjSWRH0dCI
-         3pY8iuie7yCOf542c6l7YeIqVPg1ZjRV82d2mjIuA3vdjVJOfBd0GjCPzK4vHj+hEPaZ
-         +tM2dn6GDox81nIFrocWiUHMd1jYL8EtiwFqRAXQmYHtLbMQJpKmQbYO0WDIgMDWuvr2
-         27E7pxtJjC4+/UcsIFhTavpBSp9IH+bM7+ZvZUx0uZdylYoj0I330MQWAszgK6KNpRmP
-         bhpQ==
-X-Gm-Message-State: AC+VfDwKEuhg8+KVH94iGKfbaHVzpNJTAdAsX0DOLEA4kA5ksgkdpZZa
-        beSGUDwllPC86gJfzawYOKc=
-X-Google-Smtp-Source: ACHHUZ4XeIuOaMJ3DqlHaX6FKCIBcclWXNEcRhBX/xprbU/C314K41du+V9pZsffr/MVyBXzjOYZ/w==
-X-Received: by 2002:a05:600c:3793:b0:3f7:2b61:4c98 with SMTP id o19-20020a05600c379300b003f72b614c98mr1625635wmr.13.1686321572880;
-        Fri, 09 Jun 2023 07:39:32 -0700 (PDT)
-Received: from [192.168.2.177] ([207.188.167.132])
-        by smtp.gmail.com with ESMTPSA id u3-20020a05600c210300b003f6028a4c85sm2901015wml.16.2023.06.09.07.39.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jun 2023 07:39:31 -0700 (PDT)
-Message-ID: <ad9bc224-7e3a-49cb-40c7-c1fc0876599d@gmail.com>
-Date:   Fri, 9 Jun 2023 16:39:30 +0200
+        with ESMTP id S231944AbjFIO6T (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jun 2023 10:58:19 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87AA3A82;
+        Fri,  9 Jun 2023 07:57:55 -0700 (PDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 359EqpFj032000;
+        Fri, 9 Jun 2023 14:57:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=mQ32Hj2rOLiDXWb7kXaNohNFO/t643oP8mOO5J5x8IE=;
+ b=qILm1AxEoZ/W+uLtIkUyETlZgGLsCl1tID6wa63/lfI4+67XBpli63h/xulpOXZ+emSt
+ +EFzDAGSwCqs8rvLR4go6ZEKBY9NxZyul3wmcFicxwsI1D5aCg0v1Gv4KGrWPjipjSva
+ XFCTBWKOMoHiz8k3vfGrSWbAWylesmzFOhtfMXn7tXM/BWjaVta99nhkEmXkb7HnXypL
+ 4B57Kae4jyT25SrSEKD025zsgfr8Iv5E1tP7zL9JJwvRfUdEqfTcgW/NRVDUa8zgbuzS
+ 3wqoTI3evnlpP8ZJ7kshaPstAzRDOHjSoRQ+ad5YE6hlswK0rDZXxh28fWdG4IDPv2Fq kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r467yr398-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Jun 2023 14:57:35 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 359ErMmh002656;
+        Fri, 9 Jun 2023 14:57:35 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r467yr37v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Jun 2023 14:57:34 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3593e50V009566;
+        Fri, 9 Jun 2023 14:57:30 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+        by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3r2a7a9eds-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Jun 2023 14:57:30 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+        by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 359EvSFp44433852
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 9 Jun 2023 14:57:28 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6474920040;
+        Fri,  9 Jun 2023 14:57:28 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 578A020043;
+        Fri,  9 Jun 2023 14:57:27 +0000 (GMT)
+Received: from [9.171.40.189] (unknown [9.171.40.189])
+        by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Fri,  9 Jun 2023 14:57:27 +0000 (GMT)
+Message-ID: <f858c964f2fbe2fa5a92652c7d5022af7e3b76f1.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 07/44] counter: add HAS_IOPORT_MAP dependency
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     William Breathitt Gray <wbg@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-iio@vger.kernel.org
+Date:   Fri, 09 Jun 2023 16:57:27 +0200
+In-Reply-To: <ZIHs55tweGZTIiYk@ishi>
+References: <20230522105049.1467313-1-schnelle@linux.ibm.com>
+         <20230522105049.1467313-8-schnelle@linux.ibm.com> <ZIHs55tweGZTIiYk@ishi>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.48.2 (3.48.2-1.fc38) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KHm5w9z_zuFS2xI7NoUPzgiEzAz0qS0i
+X-Proofpoint-ORIG-GUID: UtlFUumJPzZISw0sVTmb6j2eGl6-g7UC
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v3 0/4] Add mt7986 thermal
-Content-Language: en-US, ca-ES, es-ES
-To:     Frank Wunderlich <linux@fw-web.de>,
-        linux-mediatek@lists.infradead.org
-Cc:     Frank Wunderlich <frank-w@public-files.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "Hui.Liu" <hui.liu@mediatek.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-        Lala Lin <lala.lin@mediatek.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Daniel Golle <daniel@makrotopia.org>
-References: <20230530201235.22330-1-linux@fw-web.de>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20230530201235.22330-1-linux@fw-web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-09_10,2023-06-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=833 bulkscore=0
+ spamscore=0 suspectscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 malwarescore=0 adultscore=0 clxscore=1011 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306090122
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, 2023-06-08 at 10:59 -0400, William Breathitt Gray wrote:
+> On Mon, May 22, 2023 at 12:50:12PM +0200, Niklas Schnelle wrote:
+> > The 104_QUAD_8 counter driver uses devm_ioport_map() without depending
+> > on HAS_IOPORT_MAP. This means the driver is not usable on platforms such
+> > as s390 which do not support I/O port mapping. Add the missing
+> > HAS_IOPORT_MAP dependency to make this explicit.
+> >=20
+> > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > ---
+> >  drivers/counter/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> > index 4228be917038..e65a2bf178b8 100644
+> > --- a/drivers/counter/Kconfig
+> > +++ b/drivers/counter/Kconfig
+> > @@ -15,6 +15,7 @@ if COUNTER
+> >  config 104_QUAD_8
+> >  	tristate "ACCES 104-QUAD-8 driver"
+> >  	depends on (PC104 && X86) || COMPILE_TEST
+> > +	depends on HAS_IOPORT_MAP
+> >  	select ISA_BUS_API
+> >  	help
+> >  	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
+> > --=20
+> > 2.39.2
+> >=20
+>=20
+> This has a minor merge conflict with the current Kconfig in the Counter
+> tree. Would you rebase on the counter-next branch and resubmit?
+>=20
+> Thanks,
+>=20
+> William Breathitt Gray
 
+Sure can do. That said, using a three way merge as below doe handle the
+conflict correctly:
 
-On 30/05/2023 22:12, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> This series add thermal related devicetree-nodes and necessary
-> dt-bindings.
-> 
-> I left pwm-fan for r3 for now as i cannot test this completely due to
-> missing 2 pin-jack and 3v3 pwm-level which my fan cannot handle (starts
-> spinning at ~3V). Only checked voltage of pwm there.
-> 
-> changes in v3:
-> - efuse compatibles into one line
-> 
-> changes in v2:
-> - drop highest 2 trip points as they are not yet used
-> - leave already applied patches
-> 
-> Daniel Golle (3):
->    arm64: dts: mt7986: add thermal and efuse
->    arm64: dts: mt7986: add thermal-zones
->    arm64: dts: mt7986: add pwm-fan and cooling-maps to BPI-R3 dts
-> 
-> Frank Wunderlich (1):
->    dt-bindings: nvmem: mediatek: efuse: add support for mt7986
-> 
->   .../bindings/nvmem/mediatek,efuse.yaml        |  1 +
->   .../dts/mediatek/mt7986a-bananapi-bpi-r3.dts  | 31 ++++++++++
->   arch/arm64/boot/dts/mediatek/mt7986a.dtsi     | 62 +++++++++++++++++++
->   3 files changed, 94 insertions(+)
-> 
-
-Applied 2-4, thanks!
+% git checkout counter/counter-next
+% b4 am -P _ 'https://lore.kernel.org/all/20230522105049.1467313-8-schnelle=
+@linux.ibm.com/'
+% git am -3 v5_20230522_schnelle_counter_add_has_ioport_map_dependency.mbx

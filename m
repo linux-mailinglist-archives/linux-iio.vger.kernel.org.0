@@ -2,81 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD6A0729EF5
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jun 2023 17:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9BD72A0DC
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jun 2023 19:08:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241299AbjFIPoO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Jun 2023 11:44:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39580 "EHLO
+        id S229900AbjFIRIK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Jun 2023 13:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241984AbjFIPni (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jun 2023 11:43:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301B13C2A;
-        Fri,  9 Jun 2023 08:43:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACC2B6589D;
-        Fri,  9 Jun 2023 15:43:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E7DC433D2;
-        Fri,  9 Jun 2023 15:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686325406;
-        bh=k5H0w5Da6WZZ3aTGInSoVeleNc+ktLVZTOXjpBlYsqI=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=ZI3OoO392J6Fyh3Q6JpxeL35MUDlmqeUudg/Mw++d7JKiz5TKNywgXAzcih6P7jv+
-         B5+UuuWrp/uSH3inZ1VFgKYGnBuBtDl7Jl3K1DSS9MT5Gl/vSlN0tvTtFpMbt3Neve
-         y+gs71F0Lyc1zWlb/jgFSWkTMMCl+GFoDgeFMfdSiAVzopHBF++raQVJo7EYflRiiv
-         lLD0nk5gQCduGnOCQbInAzIH8m3v1YLmkQqxiike+o4TeVuXNEnX8o/ICnRifETRPg
-         qDHIoCcL4LYDAG4Dnd+ahn5wP/1M0HZB56ulqoh08oXxRrBz9gNhbsa+9p3+30/NJ4
-         lMSMdySjUDNtQ==
-Date:   Fri, 9 Jun 2023 17:43:21 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-cc:     Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] HID: sensor-hub: Allow multi-function sensor devices
-In-Reply-To: <20230528092427.42332-1-daniel.thompson@linaro.org>
-Message-ID: <nycvar.YFH.7.76.2306091742090.5716@cbobk.fhfr.pm>
-References: <20230528092427.42332-1-daniel.thompson@linaro.org>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        with ESMTP id S229454AbjFIRIJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Jun 2023 13:08:09 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F8471FFE
+        for <linux-iio@vger.kernel.org>; Fri,  9 Jun 2023 10:08:08 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qd6sh0Sd7z67LMV
+        for <linux-iio@vger.kernel.org>; Sat, 10 Jun 2023 01:05:44 +0800 (CST)
+Received: from localhost (10.126.170.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 9 Jun
+ 2023 18:08:05 +0100
+Date:   Fri, 9 Jun 2023 18:08:02 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: IIO related heads up - on ARM64 you are likely to see DMA buffers
+ being bounced soon...
+Message-ID: <20230609180802.0000254b@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.170.42]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 28 May 2023, Daniel Thompson wrote:
+Catalin's work to reduce the size of minimum allocation sizes
+from kmalloc on ARM64 relies on a heuristic where small
+buffers are always bounced to ensure DMA safety.
 
-> The Lenovo Yoga C630 has a combined keyboard and accelerometer that
-> interfaces via i2c-hid. Currently this laptop either has a working
-> keyboard (if CONFIG_HID_SENSOR_HUB is disabled) or a working accelerometer.
-> only works on kernels. Put another way, most distro kernels enable
-> CONFIG_HID_SENSOR_HUB and therefore cannot work on this device since the
-> keyboard doesn't work!
-> 
-> Fix this by providing a richer connect mask during the probe. With this
-> change both keyboard and screen orientation sensors work correctly.
-> 
-> Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+https://lore.kernel.org/all/20230531154836.1366225-1-catalin.marinas@arm.com/
 
-Srinivas, are you aware of any multi-function device that this patch might 
-break?
+Now this shouldn't break any IIO drivers but it might (at least in theory)
+have a performance impact.
 
-Thanks,
+I'm curious on whether anyone cares enough about this?
 
--- 
-Jiri Kosina
-SUSE Labs
+Long term, if this approach ends up adopted on all architectures that
+currently have ARCH_KMALLOC_MINALIGN set above 8 bytes we can get rid
+of the explicit handling of DMA buffers in IIO as they will mostly be
+bounced anyway - with the exception of a few that are bigger than the
+relevant cacheline size.
 
+Jonathan

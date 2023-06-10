@@ -2,56 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A79C72ADD6
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jun 2023 19:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 254AD72ADE0
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jun 2023 19:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbjFJRmr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jun 2023 13:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38686 "EHLO
+        id S230098AbjFJRuX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jun 2023 13:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjFJRmq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jun 2023 13:42:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7553594;
-        Sat, 10 Jun 2023 10:42:45 -0700 (PDT)
+        with ESMTP id S229445AbjFJRuX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jun 2023 13:50:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F66359C;
+        Sat, 10 Jun 2023 10:50:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D678A60B07;
-        Sat, 10 Jun 2023 17:42:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA234C433EF;
-        Sat, 10 Jun 2023 17:42:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F01461354;
+        Sat, 10 Jun 2023 17:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12C0C433EF;
+        Sat, 10 Jun 2023 17:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686418964;
-        bh=PahXCgyPj76KySfEBE99L6HcX3V7pO0Pti25w6elUbg=;
+        s=k20201202; t=1686419421;
+        bh=FSPOFeVT3IRw3Feg5vYApY6ilOghMdiZedPc7qlgIEU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GAijoixuha5UwXmNzveDG/CArdpP5R3fMR4KZqIHapHWVoalTSdR7ynG7SjFszTGU
-         Tuhw6LFmFSuH+byUFgLEMIh5D1QLlsdp4AOrjqj/Mr33xdoRzhH5XK/V0+fo7Od0xz
-         xdjn0Lg5zBqamZKNwiTpOpB5zUPgL132+Se9iGJpkGOlce+ZNBB6RslUxE1lFvFRfS
-         FQCjcsG0NSndD9SFcph0M+NvyVxCTsxRo03e0Dk14fm+fAfrX8u9OEf3uudDq0/zps
-         K0zeNDpovJBDLn9+eedXInW2+Fas2J9EVIB+uQJqb44LIfYXA5IiHLxjv4rMZaWX6K
-         HQEEx5nHkfcnw==
-Date:   Sat, 10 Jun 2023 18:59:18 +0100
+        b=ilWdjSB7+9+/wZ27/SrjWL09QWUyFjeAnaPCyp3c9593bPlv7cMA97wzvOnduTzbJ
+         UCQMgWjkAosmYPrUOEEhkZftuNadgPIaZxuYWErYaZ1up8SnKKgj1Wqz6AZcLASMzZ
+         gtDpzb+D5jRuZCUJ7P7PBFOmg46naJ0jwhC/i6rqE5dKHC/5NZRUmnYFTd41gY+RqZ
+         /qxLkvMYTYXwF4iE4J4YdwW8Nm/EbBPMy3kxLr0F6PUlsPa6F4lnYKtoQY/+5m02kA
+         9IGP52umpLYx7QC19ZApYst7uVhHKDXb/vlpEeEEY2MbLtcUPJBLLQD3gamqwUj67m
+         6wgBkxE9WYUFQ==
+Date:   Sat, 10 Jun 2023 19:06:55 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     andy.shevchenko@gmail.com
-Cc:     George Stark <gnstark@sberdevices.ru>, lars@metafoo.de,
-        neil.armstrong@linaro.org, khilman@baylibre.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru
-Subject: Re: [PATCH v3] meson saradc: fix clock divider mask length
-Message-ID: <20230610185918.7c85b66e@jic23-huawei>
-In-Reply-To: <ZH-4qsNcLGiQFiSE@surfacebook>
-References: <20230606165357.42417-1-gnstark@sberdevices.ru>
-        <ZH-4qsNcLGiQFiSE@surfacebook>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Shreeya Patel <shreeya.patel@collabora.com>, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, heiko@sntech.de,
+        sebastian.reichel@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, gustavo.padovan@collabora.com,
+        serge.broslavsky@collabora.com
+Subject: Re: [PATCH v2] dt-bindings: iio: rockchip: Fix 'oneOf' condition
+ failed warning
+Message-ID: <20230610190655.5f3427a3@jic23-huawei>
+In-Reply-To: <c5243179-9baf-59ce-b979-c596dcf6692b@linaro.org>
+References: <20230610143601.173307-1-shreeya.patel@collabora.com>
+        <c5243179-9baf-59ce-b979-c596dcf6692b@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,64 +62,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 7 Jun 2023 01:52:26 +0300
-andy.shevchenko@gmail.com wrote:
+On Sat, 10 Jun 2023 18:30:57 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> Tue, Jun 06, 2023 at 07:53:57PM +0300, George Stark kirjoitti:
-> > According to datasheets of supported meson SOCs length of ADC_CLK_DIV  
-> 
-> the datasheets
-> 
-> > field is 6 bits long. Although all supported SOCs have the register  
-> 
-> 6-bit
-> 
-> > with that field documented later SOCs use external clock rather than
-> > ADC internal clock so this patch affects only meson8 family (S8* SOCs)  
-> 
-> s/SOC/SoC/g, and mind the grammar period at the end.
-> 
-> I believe Jonathan can fix when applying this, no need to resend unless
-> he asks for it.
-> 
-Indeed - done and applied to the fixes-togreg branch of iio.git + marked it
-for stable inclusion.
-
-Thanks,
-
-Jonathan
-
-> FWIW,
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> 
-> > Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
-> > Signed-off-by: George Stark <GNStark@sberdevices.ru>
-> > ---
-> > Changelog:
-> > 
-> > v1 -> v2:
-> >     * Update commit message
-> > v2 -> v3:
-> >     * Update commit message
-> > ---
-> >  drivers/iio/adc/meson_saradc.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-> > index 85b6826cc10c..b93ff42b8c19 100644
-> > --- a/drivers/iio/adc/meson_saradc.c
-> > +++ b/drivers/iio/adc/meson_saradc.c
-> > @@ -72,7 +72,7 @@
-> >  	#define MESON_SAR_ADC_REG3_PANEL_DETECT_COUNT_MASK	GENMASK(20, 18)
-> >  	#define MESON_SAR_ADC_REG3_PANEL_DETECT_FILTER_TB_MASK	GENMASK(17, 16)
-> >  	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_SHIFT		10
-> > -	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		5
-> > +	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		6
-> >  	#define MESON_SAR_ADC_REG3_BLOCK_DLY_SEL_MASK		GENMASK(9, 8)
-> >  	#define MESON_SAR_ADC_REG3_BLOCK_DLY_MASK		GENMASK(7, 0)
-> >  
-> > -- 
-> > 2.38.4
+> On 10/06/2023 16:36, Shreeya Patel wrote:
+> > rk3588-saradc isn't compatible with the rk3399-saradc variant,
+> > hence, fix the following dtbs_check warning for 'oneOf' condition
+> > failure.
 > >   
+> 
+> Are you sure it isn't compatible? According to your driver it is and
+> this change is not enough.
+
+I'm not following.  the rk3588 has separate handling from the rk3399
+Separate devices specific structure for instance
+rk3588_saradc_data vs rk3399_saradc_data as provided as the match data for
+the different compatibles..
+
+Looks to be incompatible to me.
+
+> 
+> Best regards,
+> Krzysztof
 > 
 

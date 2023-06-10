@@ -2,68 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A7B72AAC8
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jun 2023 12:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD48872AB6B
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jun 2023 14:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjFJKD7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jun 2023 06:03:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
+        id S231290AbjFJMWX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jun 2023 08:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjFJKD6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jun 2023 06:03:58 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E7230D2
-        for <linux-iio@vger.kernel.org>; Sat, 10 Jun 2023 03:03:57 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id 5b1f17b1804b1-3f735bfcbbbso18763985e9.2
-        for <linux-iio@vger.kernel.org>; Sat, 10 Jun 2023 03:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686391436; x=1688983436;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SvKsWt9LONNBbmyn76CUaIRFpx6XrGejj9uupqUqu0c=;
-        b=bYClprQpRDicTUk4vocRDMqbCH9gj8RbB4N2DvUTKqoOuVc2UZj+pu9MwcwEmJ2LWw
-         u3j6QBX2uJCOq3eCmnFEWHVTNuiQaF5gayNs5aHdDU61+hnIJvn+k+YVlC1163hudwwg
-         TcW2pYKYFrK0+F/qqrHuSyp5Ohhw8tbRtNbRYocDIXyaytmBVgNrbNeZl2XhBeDibwMB
-         gS+8LK2R+i8PCiIJj3P3NBkQl12Pg2szk3R5nugUR6kPjCLQcGXwgaV83ku6EpSeHWNZ
-         E0U/u3cuMd0lMgT50MddHuZhdAM6pLJKu1cotZ1myfdjWUEAtpCMosaXXK518JGJa1+M
-         UJxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686391436; x=1688983436;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SvKsWt9LONNBbmyn76CUaIRFpx6XrGejj9uupqUqu0c=;
-        b=FYD2dTQKE1OYVRJuCseHWv3Wr+nUa4o3rtAbj856TyknrqTeMvOt9JQe7YnUH/VpDJ
-         dG5fSxPwg1BFRE+RL/08ELBjE7SkzlqVunBPJSAWqg93nc7GhvgCwuCBqbfQ5ZfcnYOC
-         KwTGxuwEKg1HvpfokrJkwwNfxHYqNYCLCNMFlbrdo23tPAODgZYimx+r/4L6H5mbTUax
-         lAbBVq4e5J1RbcVALFrzTZL/VQx4OS62fS89FdvtTjEcau6Oc7HROf1gaVOkLqrpBJuc
-         biY8jnhditQpEqynBQP1dvUPouzDzeumOQjqMye0COk8MDW2TtF8rLWVTw2MWHMTcvDl
-         l3eg==
-X-Gm-Message-State: AC+VfDxCqTX6a4Z3sF5RRvidSOyVsjsJjTItdksbZFP1P00xCFpRpRJB
-        fb8TzJ5JACZwnB40wgVeHyqKnFhQvzeg/UcFnP0=
-X-Google-Smtp-Source: ACHHUZ4esFF9JNppY/Ko1tyQmxlGu6rMgTtnkFA24M0/Z4bEgaj9mfoWyLz6MGNLE2ZCEA6JGO9BrL7UsY17uthrp6E=
-X-Received: by 2002:a05:600c:cd:b0:3f7:e7a0:967c with SMTP id
- u13-20020a05600c00cd00b003f7e7a0967cmr2352757wmm.19.1686391435922; Sat, 10
- Jun 2023 03:03:55 -0700 (PDT)
+        with ESMTP id S229483AbjFJMWW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jun 2023 08:22:22 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2598A30D0;
+        Sat, 10 Jun 2023 05:22:21 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:0:21ea:e49:10dd:40c0:e842])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 04D486606EB4;
+        Sat, 10 Jun 2023 13:22:15 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1686399738;
+        bh=aOlIGXvrIXsEwyA7cJuJAjyJJNiBEdnDaaOrXAikU34=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EVRx8kEF7+KXet3WFC4qQ1wwywt0YV3J9P3Hqjfoi/7qaxHduSOnwB9mySWPtfPDO
+         5vsBnd9ot/wjiwT1Tsb2H0XkRWYvC/10VyN8G6zGBJl0XWSWwae8kyn9jIeatxnSkq
+         3LahgJ4wTCmESUeBlGueACQU8rqWEHegSZk+yvARNHvUFSnKdoLUKihgxm63IqmO4A
+         nq0iX4dHr1yKkcjsMLLhAoQqftnWT1uIaEJLyiPm3Cy7+Rc5o7/RAkmpdkLGobgxuv
+         e/4oGPRLZveEYbRCE4Xhw+EFmMe7KATOQprMfZ2ADyie5W99+LCnV4y3izQcvCzhy7
+         py11SKh/dDGpQ==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        heiko@sntech.de, sebastian.reichel@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, gustavo.padovan@collabora.com,
+        serge.broslavsky@collabora.com,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH] dt-bindings: iio: rockchip: Fix 'oneOf' condition failed warning
+Date:   Sat, 10 Jun 2023 17:52:00 +0530
+Message-Id: <20230610122200.161741-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Sender: zaniidia2@gmail.com
-Received: by 2002:a05:6020:7011:b0:279:8c3b:9389 with HTTP; Sat, 10 Jun 2023
- 03:03:55 -0700 (PDT)
-From:   Vasylina Matviyko <vasylinamatviyko@gmail.com>
-Date:   Sat, 10 Jun 2023 12:03:55 +0200
-X-Google-Sender-Auth: -rcUq25FGwEypQjK6enJYRH-4Mk
-Message-ID: <CAJR8GoXK_NYPqkqEeR8PjhG_kPgE5=5uNe_q5gjkhSDs0yPdZg@mail.gmail.com>
-Subject: Is this email still active
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Fix the dtbs_check warning for 'oneOf' condition failure.
+
+DTC_CHK arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dtb
+/home/shreeya/linux/arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dtb:
+	saradc@fec10000: compatible: 'oneOf' conditional failed,
+	one must be fixed:
+	['rockchip,rk3588-saradc'] is too short
+	'rockchip,saradc' was expected
+	'rockchip,rk3066-tsadc' was expected
+	'rockchip,rk3399-saradc' was expected
+
+Fixes: 2daf2ae9793d ("dt-bindings: iio: adc: Add rockchip,rk3588-saradc string")
+Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+---
+ Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+index 11c27ea451c8..aa24b841393c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
+@@ -15,13 +15,13 @@ properties:
+       - const: rockchip,saradc
+       - const: rockchip,rk3066-tsadc
+       - const: rockchip,rk3399-saradc
++      - const: rockchip,rk3588-saradc
+       - items:
+           - enum:
+               - rockchip,px30-saradc
+               - rockchip,rk3308-saradc
+               - rockchip,rk3328-saradc
+               - rockchip,rk3568-saradc
+-              - rockchip,rk3588-saradc
+               - rockchip,rv1108-saradc
+               - rockchip,rv1126-saradc
+           - const: rockchip,rk3399-saradc
 -- 
-I haven't gotten a reply from u after my last email
+2.30.2
+

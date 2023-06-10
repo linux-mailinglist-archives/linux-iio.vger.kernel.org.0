@@ -2,52 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 254AD72ADE0
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Jun 2023 19:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9332072ADF1
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Jun 2023 19:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbjFJRuX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 10 Jun 2023 13:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40338 "EHLO
+        id S230473AbjFJRzg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 10 Jun 2023 13:55:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjFJRuX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jun 2023 13:50:23 -0400
+        with ESMTP id S229675AbjFJRze (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 10 Jun 2023 13:55:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F66359C;
-        Sat, 10 Jun 2023 10:50:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F565193;
+        Sat, 10 Jun 2023 10:55:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F01461354;
-        Sat, 10 Jun 2023 17:50:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12C0C433EF;
-        Sat, 10 Jun 2023 17:50:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A19DF61033;
+        Sat, 10 Jun 2023 17:55:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE88C433D2;
+        Sat, 10 Jun 2023 17:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686419421;
-        bh=FSPOFeVT3IRw3Feg5vYApY6ilOghMdiZedPc7qlgIEU=;
+        s=k20201202; t=1686419733;
+        bh=Z7CDYiZUhDciWFfHCWXIbPWCYecbEDUP0+fYC7qnEIE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ilWdjSB7+9+/wZ27/SrjWL09QWUyFjeAnaPCyp3c9593bPlv7cMA97wzvOnduTzbJ
-         UCQMgWjkAosmYPrUOEEhkZftuNadgPIaZxuYWErYaZ1up8SnKKgj1Wqz6AZcLASMzZ
-         gtDpzb+D5jRuZCUJ7P7PBFOmg46naJ0jwhC/i6rqE5dKHC/5NZRUmnYFTd41gY+RqZ
-         /qxLkvMYTYXwF4iE4J4YdwW8Nm/EbBPMy3kxLr0F6PUlsPa6F4lnYKtoQY/+5m02kA
-         9IGP52umpLYx7QC19ZApYst7uVhHKDXb/vlpEeEEY2MbLtcUPJBLLQD3gamqwUj67m
-         6wgBkxE9WYUFQ==
-Date:   Sat, 10 Jun 2023 19:06:55 +0100
+        b=TAJ3nnNaH/YW5/D3Hcc7UM2mzrLOh4yB5AwCexral7DO+cJBaaer4N50jLHJxh0Ij
+         do27NCukKDieM4s9l33g5VChkQ5iAMItocYdHzhMMg/wgqN6NVeYhXhvgjMd4boT2y
+         y8VjTNay3js48W8Ame3xXUkYAZ0z2HhNpTyKxUayiF6QeGxYKb17dLPPGN+JpsP22r
+         fNQgrE180WTO4vCpUN6mFsj0imY6XkXs1sIUgYla/w/glfjpbW87yAF0ggFgQddkhV
+         PbFBVuCrGPRj4VrTLsDf6HJP3YPJmbq0Y63EvyOUvdlk+UXDFVUvQTZZPfhXfXHn5r
+         YdaNIyi3kKLVw==
+Date:   Sat, 10 Jun 2023 19:12:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Shreeya Patel <shreeya.patel@collabora.com>, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, heiko@sntech.de,
-        sebastian.reichel@collabora.com, linux-iio@vger.kernel.org,
+To:     Maksim Kiselev <bigunclemax@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, gustavo.padovan@collabora.com,
-        serge.broslavsky@collabora.com
-Subject: Re: [PATCH v2] dt-bindings: iio: rockchip: Fix 'oneOf' condition
- failed warning
-Message-ID: <20230610190655.5f3427a3@jic23-huawei>
-In-Reply-To: <c5243179-9baf-59ce-b979-c596dcf6692b@linaro.org>
-References: <20230610143601.173307-1-shreeya.patel@collabora.com>
-        <c5243179-9baf-59ce-b979-c596dcf6692b@linaro.org>
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs
+ GPADC
+Message-ID: <20230610191204.007c0159@jic23-huawei>
+In-Reply-To: <20230610122934.953106-2-bigunclemax@gmail.com>
+References: <20230610122934.953106-1-bigunclemax@gmail.com>
+        <20230610122934.953106-2-bigunclemax@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,27 +82,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 10 Jun 2023 18:30:57 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Sat, 10 Jun 2023 15:29:07 +0300
+Maksim Kiselev <bigunclemax@gmail.com> wrote:
 
-> On 10/06/2023 16:36, Shreeya Patel wrote:
-> > rk3588-saradc isn't compatible with the rk3399-saradc variant,
-> > hence, fix the following dtbs_check warning for 'oneOf' condition
-> > failure.
-> >   
+> From: Maxim Kiselev <bigunclemax@gmail.com>
 > 
-> Are you sure it isn't compatible? According to your driver it is and
-> this change is not enough.
-
-I'm not following.  the rk3588 has separate handling from the rk3399
-Separate devices specific structure for instance
-rk3588_saradc_data vs rk3399_saradc_data as provided as the match data for
-the different compatibles..
-
-Looks to be incompatible to me.
-
+> The General Purpose ADC (GPADC) can convert the external signal into
+> a certain proportion of digital value, to realize the measurement of
+> analog signal, which can be applied to power detection and key detection.
 > 
-> Best regards,
-> Krzysztof
+> Theoretically, this ADC can support up to 16 channels. All SoCs below
+> contain this GPADC IP. The only difference between them is the number
+> of available channels:
 > 
+>  T113 - 1 channel
+>  D1   - 2 channels
+>  R329 - 4 channels
+>  T507 - 4 channels
+> 
+> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
+Looks good to me. Just the issue Connor pointed out in the DT binding to resolve.
+Note that this will be cutting it fine for this cycle, but 'might'
+make it in if the stars align.  If not it will need to wait for next cycle.
+
+Jonathan

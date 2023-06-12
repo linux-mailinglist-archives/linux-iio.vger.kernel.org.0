@@ -2,60 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED64E72B3F0
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jun 2023 22:35:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF8972B71D
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 07:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231877AbjFKUfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Jun 2023 16:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49620 "EHLO
+        id S233888AbjFLEyb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 00:54:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjFKUfU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Jun 2023 16:35:20 -0400
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C382E4E;
-        Sun, 11 Jun 2023 13:35:16 -0700 (PDT)
-Received: from i53875b22.versanet.de ([83.135.91.34] helo=phil.lan)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1q8RmL-0005fi-Em; Sun, 11 Jun 2023 22:35:13 +0200
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     sebastian.reichel@collabora.com, conor+dt@kernel.org,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org
-Cc:     Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org,
-        serge.broslavsky@collabora.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@collabora.com,
-        linux-arm-kernel@lists.infradead.org,
-        gustavo.padovan@collabora.com, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH] arm64: dts: rockchip: rock5b: Add saradc node
-Date:   Sun, 11 Jun 2023 22:35:11 +0200
-Message-Id: <168651570335.1681170.7335757398130366912.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230610134841.172313-1-shreeya.patel@collabora.com>
-References: <20230610134841.172313-1-shreeya.patel@collabora.com>
+        with ESMTP id S235612AbjFLEx5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 00:53:57 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2110710FE;
+        Sun, 11 Jun 2023 21:53:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686545633; x=1718081633;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=W7NVGgppUsr4ihy99XycTwP945ERD2p7hEVN1hnMYho=;
+  b=e/XD9W8J+SZeK1vgtv7AldZG2BMlykF/J8t0RJvRqMV1xrFqKqOXpIa1
+   dlarxpwdaBoGPCQmvcNV+UITmeRlnZBd8Fqu3Uo21iy90T8IGBfhO3/xF
+   zt0SOE9m9sf14q5MjOpks4NM7UAUyN6OJDUgFDpKu+MceCiwNrT+lB59E
+   Te9Q+4/84XhQbgb/UcKSFWtszZi0Ir7vdZg8Gu8uBaptqWtMTRiAAHISR
+   WFLPYnPFYS8Zz4kJBRg2f1MlR41KYqHq6RmCvosIgQ/+OiL4OD5x1a3OA
+   eTnvE/GCb8rlt5/SvZevD3tzUmXK+kfLp2fu+/w8sUPx2dCYbnDBnOqDq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10738"; a="337579166"
+X-IronPort-AV: E=Sophos;i="6.00,235,1681196400"; 
+   d="scan'208";a="337579166"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2023 21:53:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10738"; a="885272721"
+X-IronPort-AV: E=Sophos;i="6.00,235,1681196400"; 
+   d="scan'208";a="885272721"
+Received: from btakahas-mobl1.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.212.231.182])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2023 21:53:52 -0700
+Message-ID: <51dfdee66713e470d9a925ac5a8f8ae1da644462.camel@linux.intel.com>
+Subject: Re: [PATCH] HID: sensor-hub: Allow multi-function sensor devices
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Jiri Kosina <jikos@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Sun, 11 Jun 2023 21:53:51 -0700
+In-Reply-To: <nycvar.YFH.7.76.2306091742090.5716@cbobk.fhfr.pm>
+References: <20230528092427.42332-1-daniel.thompson@linaro.org>
+         <nycvar.YFH.7.76.2306091742090.5716@cbobk.fhfr.pm>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 10 Jun 2023 19:18:41 +0530, Shreeya Patel wrote:
-> Add ADC support for ROCK 5B.
+On Fri, 2023-06-09 at 17:43 +0200, Jiri Kosina wrote:
+> On Sun, 28 May 2023, Daniel Thompson wrote:
 > 
+> > The Lenovo Yoga C630 has a combined keyboard and accelerometer that
+> > interfaces via i2c-hid. Currently this laptop either has a working
+> > keyboard (if CONFIG_HID_SENSOR_HUB is disabled) or a working
+> > accelerometer.
+> > only works on kernels. Put another way, most distro kernels enable
+> > CONFIG_HID_SENSOR_HUB and therefore cannot work on this device
+> > since the
+> > keyboard doesn't work!
+> > 
+> > Fix this by providing a richer connect mask during the probe. With
+> > this
+> > change both keyboard and screen orientation sensors work correctly.
+> > 
+> > Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+> 
+> Srinivas, are you aware of any multi-function device that this patch
+> might 
+> break?
+I tried two systems, one with ISH and another with external hub.
+Didn't break anything.
+I don't have 5+ years old systems, to confirm if it will break
+something on older systems with external hub.
+
+Thanks,
+Srinivas
+
+> 
+> Thanks,
 > 
 
-Applied, thanks!
-
-[1/1] arm64: dts: rockchip: rock5b: Add saradc node
-      commit: 2fe1f20144fb68dd31798cc22a67d148f517deef
-
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>

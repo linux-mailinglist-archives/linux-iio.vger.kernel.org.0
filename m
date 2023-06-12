@@ -2,75 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B64C272C856
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16B7972C839
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237743AbjFLO0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 10:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37574 "EHLO
+        id S238252AbjFLOY0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 10:24:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240165AbjFLOZt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:25:49 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 099444681;
-        Mon, 12 Jun 2023 07:24:15 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-75d4b85b3ccso468272885a.2;
-        Mon, 12 Jun 2023 07:24:14 -0700 (PDT)
+        with ESMTP id S238385AbjFLOYD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:24:03 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F332950;
+        Mon, 12 Jun 2023 07:22:23 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-977e0fbd742so645855166b.2;
+        Mon, 12 Jun 2023 07:22:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686579853; x=1689171853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0VEkBjys1JNVdNZfskXkYECCvShc9qH26Dgn/H0N3vs=;
-        b=BMR7SfhOazLnf9RuLEkEdI2+xKFFzdvL8Z6jJZ1l0EekxpsO7EPMyOC4UAL4+DyJyZ
-         eKmpoU9alhxmuBishJSdURhgGNy1M06tIyWeazdDuxheebOuVEvVZ5IfllVGGVgYkRG7
-         +nhpIZo7ZccIKsFXKsVA0Z4EjsEoxkbNoROOp69SGGDPGUJV3mWBXzZS8D9CFAy3XC5b
-         O4qQ8uyOXfBy/bjT43ZD43EMbDWwMBZdSOPMaUPpeLT/3rCQh9gIVsGP7InSOIdtmaiK
-         8CeRMsacdg5XIu+b3MRBGavbScs6YUeO4BJ2kjQvQtAYW+z+Ou8ZE5ANamjY1w/p+6bp
-         Pvbg==
+        d=gmail.com; s=20221208; t=1686579738; x=1689171738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sx560Di9qmHMvf8XH62YvKC4b96faxuZR68X3dA6VOY=;
+        b=lTKBMptM2GI6gMgLSYWZmTk77BFlkMlYC/Sznsl3xba2zWifkTuGy2PUaMoEe+KKqY
+         wtHiikuqKurOzdhU/Pzk07x302bx1UPBKWNvVQnrZv9+g4yG6HB+ojZi8zu/VFKAy7Nv
+         17pyXS/c7oB93clINn5bgrqhr0u8DrufCoiBZoMVD6fKiEn6H4yxtmZga8Rp6RKQ4ZEU
+         88Da5/pefTEXbuu4j9V4uya7y7Y+W3Hu2poUUGjCttkFhfV+m8vDwXUaeom1+TiDQVGn
+         HJujgR294E+IJOoXqs4z2W0/Dsr0GWaeeWerL8GKoLlRHwPRoztGes6U6HALh61NDIFA
+         Jjaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686579853; x=1689171853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0VEkBjys1JNVdNZfskXkYECCvShc9qH26Dgn/H0N3vs=;
-        b=kuxvrjozIxBOICP2ivl+OOK7OXWfNNN8151ftW+31XM4y49LGvmjd7qXv31sWlzJct
-         xMQHfRPV4cEWlS+5eqZ7Y2vzb6YMwmMSvN2BkaK//xzi8cDR/5RMUO+OoYCCopjcBaJL
-         QEBzVAmEpfzTZMDXuTMRLFUCHh3OPIiLJYjfeBqj8xdit2MGZbkWbZbWUfHU2AeB5Ipg
-         c8Nk0ELRu2uXHvRePrqErTlZ1+SKa2uRHhmFBFdnMKHOYxIx/3hRL9SLuzG5nlPaTwAM
-         7Tr1YVAemkWlAzM4mnjp4XLEgnv4nR0IUFaWaOYWFPd71K0m8vsZxzbSGLB9+cKKOD+l
-         8S9g==
-X-Gm-Message-State: AC+VfDzCKoPZQI1lxaSkCLOegpN7saRu0ZRx7OttazuJG3JhvQrLmRdp
-        QrdgGfVqYbCHO153IgIIWGXl6KpGQNyz++s9yLerniaLqi1DZMvG
-X-Google-Smtp-Source: ACHHUZ7tnRv1PT2hgZe9Ed4LlXXelujAAz16F3OmF4PLIVGBz2ZDarjhCzlaeEmxKrQhkfRrnE2Fyj2E03bmcW8JeNE=
-X-Received: by 2002:a05:6808:b32:b0:396:3b9d:7ee0 with SMTP id
- t18-20020a0568080b3200b003963b9d7ee0mr4445651oij.41.1686579398638; Mon, 12
- Jun 2023 07:16:38 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686579738; x=1689171738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sx560Di9qmHMvf8XH62YvKC4b96faxuZR68X3dA6VOY=;
+        b=QquSdZgqDPyVuQCJQIZTdVlVpVuhdJObVeNiKWRx6RWDY6tkaKV0bpMROE8UgLoItu
+         k3RdH5bNksPBblPb1rQq+k0zZVdtDjOXH+qavXfwIsO8JrF22Aaddgu0FZ0KknoX04TU
+         pMcsb5d6FqeNb1nWcBr79VgLhQHxvTNRfc1fNOg4vSyAeBeuSd9w/IDNHJNEBGFMGtG6
+         ljB7LzTpSXNPMceVqcCPb01G9HWfOYMstvg8lbFCIkkON0TfJ60o/9LZ8osF4fGt4zFe
+         gLWVSPl/Xr/I/f5AxBXPzaeZFCyXZGRY4rdUR8zMu2bcnuXEjaDIj0O7us48HFzLxiJr
+         5mGQ==
+X-Gm-Message-State: AC+VfDwRbLfa6iPAPuLg7DQLjlf3NCr9NiBtfkGLRTRqrbFaimoy0Bmz
+        HNfil+Osoc2lPP7+tafG3mM=
+X-Google-Smtp-Source: ACHHUZ65aF++UurkDgYkPRUcDi8fvtSFKsr2H/VoBqT6EYQpgt+u1QrsYJw8m0ujcJKjH73iBvRRFA==
+X-Received: by 2002:a17:907:2688:b0:967:a127:7e79 with SMTP id bn8-20020a170907268800b00967a1277e79mr9415715ejc.28.1686579738218;
+        Mon, 12 Jun 2023 07:22:18 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8109:aa3f:ead8::d8a0])
+        by smtp.gmail.com with ESMTPSA id i8-20020a17090671c800b009659fa6eeddsm5262528ejk.196.2023.06.12.07.22.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 07:22:17 -0700 (PDT)
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     jic23@kernel.org, mazziesaccount@gmail.com
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Mehdi Djait <mehdi.djait.k@gmail.com>
+Subject: [PATCH v5 0/7] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
+Date:   Mon, 12 Jun 2023 16:22:03 +0200
+Message-Id: <cover.1686578553.git.mehdi.djait.k@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-5-herve.codina@bootlin.com>
-In-Reply-To: <20230612122926.107333-5-herve.codina@bootlin.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 12 Jun 2023 17:16:02 +0300
-Message-ID: <CAHp75Vcwaouw0VZp1-5YTso6wPBqn0AQk7UcK1XcHMR7PYCVng@mail.gmail.com>
-Subject: Re: [PATCH v3 04/12] iio: consumer.h: Fix raw values documentation notes
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -81,95 +72,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
-com> wrote:
->
-> The raw values notes mention 'ADC counts' and are not fully accurate.
->
-> Reword the notes in order to remove the 'ADC counts' and describe the
-> conversion needed between a raw value and a value in the standard units.
+Hello everyone,
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Version 5 for adding support for the kx132-1211 accelerometer
 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  include/linux/iio/consumer.h | 25 +++++++++++++++----------
->  1 file changed, 15 insertions(+), 10 deletions(-)
->
-> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-> index 6802596b017c..f536820b9cf2 100644
-> --- a/include/linux/iio/consumer.h
-> +++ b/include/linux/iio/consumer.h
-> @@ -201,8 +201,9 @@ struct iio_dev
->   * @chan:              The channel being queried.
->   * @val:               Value read back.
->   *
-> - * Note raw reads from iio channels are in adc counts and hence
-> - * scale will need to be applied if standard units required.
-> + * Note, if standard units are required, raw reads from iio channels
-> + * need the offset (default 0) and scale (default 1) to be applied
-> + * as (raw + offset) * scale.
->   */
->  int iio_read_channel_raw(struct iio_channel *chan,
->                          int *val);
-> @@ -212,8 +213,9 @@ int iio_read_channel_raw(struct iio_channel *chan,
->   * @chan:              The channel being queried.
->   * @val:               Value read back.
->   *
-> - * Note raw reads from iio channels are in adc counts and hence
-> - * scale will need to be applied if standard units required.
-> + * Note, if standard units are required, raw reads from iio channels
-> + * need the offset (default 0) and scale (default 1) to be applied
-> + * as (raw + offset) * scale.
->   *
->   * In opposit to the normal iio_read_channel_raw this function
->   * returns the average of multiple reads.
-> @@ -281,8 +283,9 @@ int iio_read_channel_attribute(struct iio_channel *ch=
-an, int *val,
->   * @chan:              The channel being queried.
->   * @val:               Value being written.
->   *
-> - * Note raw writes to iio channels are in dac counts and hence
-> - * scale will need to be applied if standard units required.
-> + * Note that for raw writes to iio channels, if the value provided is
-> + * in standard units, the affect of the scale and offset must be removed
-> + * as (value / scale) - offset.
->   */
->  int iio_write_channel_raw(struct iio_channel *chan, int val);
->
-> @@ -292,8 +295,9 @@ int iio_write_channel_raw(struct iio_channel *chan, i=
-nt val);
->   * @chan:              The channel being queried.
->   * @val:               Value read back.
->   *
-> - * Note raw reads from iio channels are in adc counts and hence
-> - * scale will need to be applied if standard units are required.
-> + * Note, if standard units are required, raw reads from iio channels
-> + * need the offset (default 0) and scale (default 1) to be applied
-> + * as (raw + offset) * scale.
->   */
->  int iio_read_max_channel_raw(struct iio_channel *chan, int *val);
->
-> @@ -308,8 +312,9 @@ int iio_read_max_channel_raw(struct iio_channel *chan=
-, int *val);
->   * For ranges, three vals are always returned; min, step and max.
->   * For lists, all the possible values are enumerated.
->   *
-> - * Note raw available values from iio channels are in adc counts and
-> - * hence scale will need to be applied if standard units are required.
-> + * Note, if standard units are required, raw available values from iio
-> + * channels need the offset (default 0) and scale (default 1) to be appl=
-ied
-> + * as (raw + offset) * scale.
->   */
->  int iio_read_avail_channel_raw(struct iio_channel *chan,
->                                const int **vals, int *length);
-> --
-> 2.40.1
->
+KX132-1211 accelerometer is a sensor which:
+	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+	- can be connected to I2C or SPI
+	- has internal HW FIFO buffer
+	- supports various ODRs (output data rates)
 
+The KX132-1211 accelerometer is very similar to the KX022A. 
+One key difference is number of bits to report the number of data bytes that 
+have been stored in the buffer: 8 bits for KX022A vs 10 bits for
+KX132-1211.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Changes in v5:
+- moved the "kfree" call to match the reverse of what happens in 
+  kx022a_fifo_enable() as suggested by Matti and Jonathan
+- used min_t, checked for availability of chip_info and moved the
+  position of u16 buf_smp_lvl_mask as suggested by Andy
+- introduced buf_smp_lvl_mask in Patch 7 as suggested by Jonathan
+
+Changes in v4:
+- moved the allocation of the fifo_buffer to kx022a_fifo_enable and
+  kx022a_fifo_disable
+- some fixes to the regmap ranges of kx132-1211 
+
+Changes in v3:
+- added two new patches by separating the addition of the 
+  i2c_device_id table and the removal of blank lines from other
+  unrelated changes
+- fixes a warning detected by the kernel test robot
+- made all the changes related the chip_info in one patch
+
+Changes in v2:
+- added a new patch for warning when the device_id match fails in the
+  probe function
+- added a new patch for the function that retrieves the number of bytes
+  in the buffer
+- added a change to the Kconfig file in the patch adding the support
+  for the kx132-1211
+- various fixes and modifications listed under each patch
+
+Mehdi Djait (7):
+  dt-bindings: iio: Add KX132-1211 accelerometer
+  iio: accel: kionix-kx022a: Remove blank lines
+  iio: accel: kionix-kx022a: Warn on failed matches and assume
+    compatibility
+  iio: accel: kionix-kx022a: Add an i2c_device_id table
+  iio: accel: kionix-kx022a: Refactor driver and add chip_info structure
+  iio: accel: kionix-kx022a: Add a function to retrieve number of bytes
+    in buffer
+  iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
+
+ .../bindings/iio/accel/kionix,kx022a.yaml     |  12 +-
+ drivers/iio/accel/Kconfig                     |   8 +-
+ drivers/iio/accel/kionix-kx022a-i2c.c         |  24 +-
+ drivers/iio/accel/kionix-kx022a-spi.c         |  13 +-
+ drivers/iio/accel/kionix-kx022a.c             | 312 ++++++++++++++----
+ drivers/iio/accel/kionix-kx022a.h             | 110 +++++-
+ 6 files changed, 404 insertions(+), 75 deletions(-)
+
+-- 
+2.30.2
+

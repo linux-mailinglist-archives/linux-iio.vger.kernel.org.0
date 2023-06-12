@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 026A272C717
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF4572C786
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:14:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236974AbjFLOM4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 10:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54250 "EHLO
+        id S237415AbjFLOOe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 10:14:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236889AbjFLOM4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:12:56 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D9810C4;
-        Mon, 12 Jun 2023 07:12:55 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-75da00a1eddso433835485a.3;
-        Mon, 12 Jun 2023 07:12:54 -0700 (PDT)
+        with ESMTP id S237411AbjFLOOL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:14:11 -0400
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECDE1709;
+        Mon, 12 Jun 2023 07:14:03 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6b2e1023f30so1363691a34.1;
+        Mon, 12 Jun 2023 07:14:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686579174; x=1689171174;
+        d=gmail.com; s=20221208; t=1686579243; x=1689171243;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TwQG10OvI6bp5Np0f72lU7cLcijGe7ymruPqF2GZDRs=;
-        b=JpCmZrgGbnD0/gw+qdwVRXyOpwtR59MoNMneUFCy3FczoF66ffM5Psp2Bc7Rb63I0a
-         UbCL1I+I5HoEGCFcLC/EJxn0FJDEGvkKDbMEs0yGqBP97pRzIfCfJBrRGEEKPfGGY7zR
-         O0KtRFFDqWQnOEiAEZcrPlJwPzH43j1KW6h62gSt0cp3ryIphp7xo8RD/c5/Rzw2IXuS
-         aQB00DGEzDaz451ciZpPqK/Ygj0CTxdrKd8vGG43oWeIKPlgRQlnInEGUuh+FEdwvnqd
-         jI76t5oXepYl/ZvJgQGWCZ/Pbyo4o3ai9XRqSxEDHCiYarYWQjg7vW3nPicZu6NGW88P
-         eSXQ==
+        bh=CuzmliRM3Z6qQlxotmDo0oeWU8xNbS6I5a97pZAhtyE=;
+        b=M7WfC4yCwJ2YDGJJkD823r9fRUt+8aurr+lqzVcujSa3THtOwVpEsauT2ReCI3vaxB
+         UzjRvgiCpxx//v8/4/1K3hioZ6pIZJgzdbc4RgMxLyxFxlbrlxxuBsE5nw98I5v8IAOw
+         dFSUMAMR2bZA8DxUDhkrgn0RoHpyX/qzMPJaY2pJZSr3iy6nC/F5pnOW+O2Op9tmqw5N
+         lgyjDD78zDLCkiJe3AfEiWea934oy4EP7n9HvcfcGQin3Iq6w33c1kcGR2ZUUVwxxBlO
+         WFxGwcBmXX1I5hNli8luDPTegSvRPAa7nCsb4QA9k+nl0ZG0ZuzIu6cOMYOZvyipMcpQ
+         4R4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686579174; x=1689171174;
+        d=1e100.net; s=20221208; t=1686579243; x=1689171243;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TwQG10OvI6bp5Np0f72lU7cLcijGe7ymruPqF2GZDRs=;
-        b=LnVzBMwOwELHeH1BfUrc+klBm6zpaMno1epzKWsEjzFnGrUUH6/52O/LwD9jGoD1Hs
-         eXgEMW2zoHehqftQXhfP80Tqo6IUCBVU1UTQtSm3jJpUxpvq8i9vD5/S29KyGifLKzT7
-         Q/CN+mKGMjq42LHknoZykgAhKjhAJM3VwxDTdckrjX7JnbZZ8/DDSEjSyhjrt3MPm+7W
-         LGWOGH3F2yjs7BMM6OcR6TJ9U60EqaTOcciHN9ocA/MqV4OTNCaynOtc7HyKBjseRRia
-         /w8mQeEGeFdzN0xHiwzp9L/rmT9xsMilAP+D+18fAYuEaEkSb0Bbe27XNvtk4/9iAiCV
-         zKyg==
-X-Gm-Message-State: AC+VfDzyIcV+lTmkfdsGs10OGZ3FGHFBGbKTl0goyXAxjl/Px+J3pacU
-        EKEAeglJ0/s9sqfw2frMCqCvtW0gNbHYWx0IkzC0JYpZQr4OjN8h
-X-Google-Smtp-Source: ACHHUZ7IfxVmmdzaBuW9CEDKaY7PegOwFcPmL2PZJELzk6uKmhCxAC6L6jKrxcH4wML32Rr1mb49PunadVLIKjgJfGc=
-X-Received: by 2002:ad4:5b8a:0:b0:62d:edf6:6dc3 with SMTP id
- 10-20020ad45b8a000000b0062dedf66dc3mr2330187qvp.37.1686579174003; Mon, 12 Jun
- 2023 07:12:54 -0700 (PDT)
+        bh=CuzmliRM3Z6qQlxotmDo0oeWU8xNbS6I5a97pZAhtyE=;
+        b=U39Dtib0TXn8BYPlkEDhpPMINzH73bXYgVa/597B+jAq+WvBpVH3tl7Ek3FaGzKzK1
+         dABhicvl2YhiufWjxOVSaElVSTSRyHElpL4NTkw+v25E7ENXBGjEZJDQhxsNK6aTpagE
+         Bl+5Sv7K/mikdztC72ZZC1ZLCgyFIwGVBORAmjEaJNDXNX+PUYQcbimaEzpEE0w0gITP
+         yuXzywZdjGa0Jqbph4hjTM1sNE1yGZCY+cqZpYE+Cq1PQRESjZN0AfXF+3T741t8AJJe
+         BMi6CwDrK6bhhlmm9UnpCR4rqzm8hCwhcN3gnVUqFUPHUj7o+9CvD4ZnV6k9EnreNauI
+         iR6A==
+X-Gm-Message-State: AC+VfDzoSZGNNghYm1L//RCno0NHy30/5dM2jcx1w+FX2gi658H+y+5o
+        iQH/ODbVTy99M8vQZcmLn9qzcPR0uF1jBTVv/2Q=
+X-Google-Smtp-Source: ACHHUZ6GDjRB6a7GeZmGws/Bjkr9EkSN//3dhbcM8V2dDNq7CI1HSltpWh9yz2Kq73NpxUogHj4+EvOYTQJkwZpySUQ=
+X-Received: by 2002:a05:6808:1a10:b0:39c:6a30:cc7f with SMTP id
+ bk16-20020a0568081a1000b0039c6a30cc7fmr5331405oib.21.1686579241636; Mon, 12
+ Jun 2023 07:14:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-8-herve.codina@bootlin.com>
-In-Reply-To: <20230612122926.107333-8-herve.codina@bootlin.com>
+References: <20230612122926.107333-1-herve.codina@bootlin.com>
+ <20230612122926.107333-8-herve.codina@bootlin.com> <CAHp75Ve8BVO50TqhUV9YWkRBvYARNOAapZ21X=FehaBBfcC2jw@mail.gmail.com>
+In-Reply-To: <CAHp75Ve8BVO50TqhUV9YWkRBvYARNOAapZ21X=FehaBBfcC2jw@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 12 Jun 2023 17:12:18 +0300
-Message-ID: <CAHp75Ve8BVO50TqhUV9YWkRBvYARNOAapZ21X=FehaBBfcC2jw@mail.gmail.com>
+Date:   Mon, 12 Jun 2023 17:13:25 +0300
+Message-ID: <CAHp75VcrXhwa19yg328L9vAhCB3vzk4Dy--fEpWd9qZR7oZ-AA@mail.gmail.com>
 Subject: Re: [PATCH v3 07/12] iio: inkern: Use max_array() to get the maximum
  value from an array
 To:     Herve Codina <herve.codina@bootlin.com>
@@ -81,50 +82,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
-com> wrote:
->
-> Use max_array() to get the maximum value from an array instead of a
-> custom local loop.
+On Mon, Jun 12, 2023 at 5:12=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootli=
+n.com> wrote:
 
-Looks really good, thank you!
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+...
 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
->  drivers/iio/inkern.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index ce537b4ca6ca..ae1a41d3a559 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -8,6 +8,7 @@
->  #include <linux/property.h>
->  #include <linux/slab.h>
->  #include <linux/mutex.h>
-> +#include <linux/minmax.h>
->
->  #include <linux/iio/iio.h>
->  #include <linux/iio/iio-opaque.h>
-> @@ -875,11 +876,7 @@ static int iio_channel_read_max(struct iio_channel *=
-chan,
->                         return -EINVAL;
->                 switch (*type) {
->                 case IIO_VAL_INT:
-> -                       *val =3D vals[--length];
-> -                       while (length) {
-> -                               if (vals[--length] > *val)
-> -                                       *val =3D vals[length];
-> -                       }
-> +                       *val =3D max_array(vals, length);
->                         break;
->                 default:
->                         /* FIXME: learn about max for other iio values */
-> --
-> 2.40.1
->
+> >  #include <linux/property.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/minmax.h>
 
+But can you try to preserve order (to some extent, perhaps invisible
+here context is even better, I would assume mutex was added
+unordered)?
+
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/iio-opaque.h>
 
 --=20
 With Best Regards,

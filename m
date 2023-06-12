@@ -2,54 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8877272CFBC
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 21:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 437FB72D03F
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 22:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbjFLTkW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 15:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59638 "EHLO
+        id S237471AbjFLUN4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 16:13:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232558AbjFLTkW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 15:40:22 -0400
-Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CD9E3
-        for <linux-iio@vger.kernel.org>; Mon, 12 Jun 2023 12:40:21 -0700 (PDT)
-Received: from localhost (88-113-24-87.elisa-laajakaista.fi [88.113.24.87])
-        by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-        id f5e14b25-0958-11ee-a9de-005056bdf889;
-        Mon, 12 Jun 2023 22:40:18 +0300 (EEST)
-From:   andy.shevchenko@gmail.com
-Date:   Mon, 12 Jun 2023 22:40:18 +0300
-To:     Markus Burri <markus.burri@mt.com>
-Cc:     linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v1] iio: ado: ad7192: Add error check and more debug log
-Message-ID: <ZId0osDU07Whga9C@surfacebook>
-References: <20230612121554.367285-1-markus.burri@mt.com>
+        with ESMTP id S230197AbjFLUNt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 16:13:49 -0400
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A0610FF
+        for <linux-iio@vger.kernel.org>; Mon, 12 Jun 2023 13:13:43 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id 8nv2q2OP12KZV8nv2qCD99; Mon, 12 Jun 2023 22:13:40 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1686600820;
+        bh=C0M6mK52caELyzvGykIbR2TnUvJ7TdmnReFTsMllVYY=;
+        h=From:To:Cc:Subject:Date;
+        b=soYZ4Z1zClx9uA/59Yc5hZhdVWI68kOqEadC2OWkjc+bhbMltnjgANW3zXEY+jIkN
+         nIwo051uMcEFR8+NptvigkAN6a0yRVYm2TMzBDN6AO1MyDLpan9IsBbethzp26WX7R
+         XKmABLqhj13LtfHbs7uZNpu/d1ZHVUisotyIhYH3UoHu92b6daRouKk+6eI6WZ4Gzx
+         m+edUtp14+QNKOxtl/y6I/gKrdWRRbFN5Yya6cxtVJwAu9caP27y1+DYpfatYCtUS/
+         oeJFM7N8/P1tsXni6cPMBgcMho7wghJEUQlXiPgUs2d0o0/I5rz3vx50E0MZhYXlUv
+         zgjrpuS3E2wJA==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 12 Jun 2023 22:13:40 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH 1/2] iio: st_sensors: Remove some redundant includes
+Date:   Mon, 12 Jun 2023 22:13:36 +0200
+Message-Id: <045ca726a9108325a3eaace807a264170895686c.1686600780.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612121554.367285-1-markus.burri@mt.com>
-X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Mon, Jun 12, 2023 at 02:15:54PM +0200, Markus Burri kirjoitti:
-> Print read and expected device ID as debug warning.
-> Add error check for sd_sd_init() result.
+st_sensors_(i2c|spi).h already include st_sensors.h, so there is no need
+to include it explicitly.
 
-sd_sd_...?
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/iio/accel/st_accel_spi.c       | 1 -
+ drivers/iio/gyro/st_gyro_i2c.c         | 1 -
+ drivers/iio/gyro/st_gyro_spi.c         | 1 -
+ drivers/iio/magnetometer/st_magn_i2c.c | 1 -
+ drivers/iio/magnetometer/st_magn_spi.c | 1 -
+ drivers/iio/pressure/st_pressure_i2c.c | 1 -
+ drivers/iio/pressure/st_pressure_spi.c | 1 -
+ 7 files changed, 7 deletions(-)
 
+diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
+index f72a24f45322..ae5bf3b47209 100644
+--- a/drivers/iio/accel/st_accel_spi.c
++++ b/drivers/iio/accel/st_accel_spi.c
+@@ -13,7 +13,6 @@
+ #include <linux/spi/spi.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_spi.h>
+ #include "st_accel.h"
+ 
+diff --git a/drivers/iio/gyro/st_gyro_i2c.c b/drivers/iio/gyro/st_gyro_i2c.c
+index 5a10a3556ab0..ceebd246100c 100644
+--- a/drivers/iio/gyro/st_gyro_i2c.c
++++ b/drivers/iio/gyro/st_gyro_i2c.c
+@@ -13,7 +13,6 @@
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_i2c.h>
+ #include "st_gyro.h"
+ 
+diff --git a/drivers/iio/gyro/st_gyro_spi.c b/drivers/iio/gyro/st_gyro_spi.c
+index 22aaabe48e4a..afdb8dffd72d 100644
+--- a/drivers/iio/gyro/st_gyro_spi.c
++++ b/drivers/iio/gyro/st_gyro_spi.c
+@@ -13,7 +13,6 @@
+ #include <linux/spi/spi.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_spi.h>
+ #include "st_gyro.h"
+ 
+diff --git a/drivers/iio/magnetometer/st_magn_i2c.c b/drivers/iio/magnetometer/st_magn_i2c.c
+index 950826dd20bf..b9221794cf00 100644
+--- a/drivers/iio/magnetometer/st_magn_i2c.c
++++ b/drivers/iio/magnetometer/st_magn_i2c.c
+@@ -13,7 +13,6 @@
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_i2c.h>
+ #include "st_magn.h"
+ 
+diff --git a/drivers/iio/magnetometer/st_magn_spi.c b/drivers/iio/magnetometer/st_magn_spi.c
+index f203e1f87eec..5540500ba9fa 100644
+--- a/drivers/iio/magnetometer/st_magn_spi.c
++++ b/drivers/iio/magnetometer/st_magn_spi.c
+@@ -13,7 +13,6 @@
+ #include <linux/spi/spi.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_spi.h>
+ #include "st_magn.h"
+ 
+diff --git a/drivers/iio/pressure/st_pressure_i2c.c b/drivers/iio/pressure/st_pressure_i2c.c
+index 5101552e3f38..8ba0d1212401 100644
+--- a/drivers/iio/pressure/st_pressure_i2c.c
++++ b/drivers/iio/pressure/st_pressure_i2c.c
+@@ -14,7 +14,6 @@
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_i2c.h>
+ #include "st_pressure.h"
+ 
+diff --git a/drivers/iio/pressure/st_pressure_spi.c b/drivers/iio/pressure/st_pressure_spi.c
+index 25cca5ad7c55..ffa1970a5aeb 100644
+--- a/drivers/iio/pressure/st_pressure_spi.c
++++ b/drivers/iio/pressure/st_pressure_spi.c
+@@ -13,7 +13,6 @@
+ #include <linux/spi/spi.h>
+ #include <linux/iio/iio.h>
+ 
+-#include <linux/iio/common/st_sensors.h>
+ #include <linux/iio/common/st_sensors_spi.h>
+ #include "st_pressure.h"
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 

@@ -2,59 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF4572C786
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3057E72C7F6
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237415AbjFLOOe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 10:14:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55386 "EHLO
+        id S238100AbjFLORf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 10:17:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237411AbjFLOOL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:14:11 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECDE1709;
-        Mon, 12 Jun 2023 07:14:03 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6b2e1023f30so1363691a34.1;
-        Mon, 12 Jun 2023 07:14:03 -0700 (PDT)
+        with ESMTP id S237401AbjFLORS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:17:18 -0400
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 057C33589;
+        Mon, 12 Jun 2023 07:15:10 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-38c35975545so2627015b6e.1;
+        Mon, 12 Jun 2023 07:15:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686579243; x=1689171243;
+        d=gmail.com; s=20221208; t=1686579298; x=1689171298;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CuzmliRM3Z6qQlxotmDo0oeWU8xNbS6I5a97pZAhtyE=;
-        b=M7WfC4yCwJ2YDGJJkD823r9fRUt+8aurr+lqzVcujSa3THtOwVpEsauT2ReCI3vaxB
-         UzjRvgiCpxx//v8/4/1K3hioZ6pIZJgzdbc4RgMxLyxFxlbrlxxuBsE5nw98I5v8IAOw
-         dFSUMAMR2bZA8DxUDhkrgn0RoHpyX/qzMPJaY2pJZSr3iy6nC/F5pnOW+O2Op9tmqw5N
-         lgyjDD78zDLCkiJe3AfEiWea934oy4EP7n9HvcfcGQin3Iq6w33c1kcGR2ZUUVwxxBlO
-         WFxGwcBmXX1I5hNli8luDPTegSvRPAa7nCsb4QA9k+nl0ZG0ZuzIu6cOMYOZvyipMcpQ
-         4R4w==
+        bh=tOx6mer2Y0xFwAlHeK7VBbHx/09765NLkewrCj3zx+Y=;
+        b=Xm4+EAzsXGukgRlA9uQ7SswMSO6ou4ZbhpL0ZIA/gSytMrnxLjaA+b+tOB21QRGS0Q
+         0onrjdR/+2Ce5Q7cwkUDbwf/nnkzIZeuJuY5kF+a0vcFRw3xp4PPbo3ao0SrL53rfJOp
+         avC0oy/PoRms5aLTAiolXBPBlPLqfgt3gdlMDf4WERKme13KnaraXObCgqyAFYOJvsgw
+         MsSWJc4G0ZlNFr1PF0pHuLplPiesuyoLh9bYkY7u7HFYKUVafmgT4XQseqHNkzYIKf0O
+         3uHnrglgzdUQeKq6qFdTo7fRN6zE7kSdPRClbfZi7gJuLb8iEhkZaZ09P2LYBBLjZd8N
+         S9Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686579243; x=1689171243;
+        d=1e100.net; s=20221208; t=1686579298; x=1689171298;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CuzmliRM3Z6qQlxotmDo0oeWU8xNbS6I5a97pZAhtyE=;
-        b=U39Dtib0TXn8BYPlkEDhpPMINzH73bXYgVa/597B+jAq+WvBpVH3tl7Ek3FaGzKzK1
-         dABhicvl2YhiufWjxOVSaElVSTSRyHElpL4NTkw+v25E7ENXBGjEZJDQhxsNK6aTpagE
-         Bl+5Sv7K/mikdztC72ZZC1ZLCgyFIwGVBORAmjEaJNDXNX+PUYQcbimaEzpEE0w0gITP
-         yuXzywZdjGa0Jqbph4hjTM1sNE1yGZCY+cqZpYE+Cq1PQRESjZN0AfXF+3T741t8AJJe
-         BMi6CwDrK6bhhlmm9UnpCR4rqzm8hCwhcN3gnVUqFUPHUj7o+9CvD4ZnV6k9EnreNauI
-         iR6A==
-X-Gm-Message-State: AC+VfDzoSZGNNghYm1L//RCno0NHy30/5dM2jcx1w+FX2gi658H+y+5o
-        iQH/ODbVTy99M8vQZcmLn9qzcPR0uF1jBTVv/2Q=
-X-Google-Smtp-Source: ACHHUZ6GDjRB6a7GeZmGws/Bjkr9EkSN//3dhbcM8V2dDNq7CI1HSltpWh9yz2Kq73NpxUogHj4+EvOYTQJkwZpySUQ=
-X-Received: by 2002:a05:6808:1a10:b0:39c:6a30:cc7f with SMTP id
- bk16-20020a0568081a1000b0039c6a30cc7fmr5331405oib.21.1686579241636; Mon, 12
- Jun 2023 07:14:01 -0700 (PDT)
+        bh=tOx6mer2Y0xFwAlHeK7VBbHx/09765NLkewrCj3zx+Y=;
+        b=WA2cKTl3ufP2+Su0xN6tD/iDKMpuIfyUATGi2WqvREKN8GNLWART379wtT/iLMY+bk
+         90AE0yNXIKx+cccmfn5g4ohJkowpgCg5QSi2J5K/FGkWJ/mv1663BgwDulxk0CtMbUxJ
+         IptTQP9uaG9jikwj43GQvLFgnGaUUsYiDcye3wEq65o2xnSzlEolw9Ach18rfVCkyQ88
+         LahEygiDQ332LE+FL0y/DsK3nVoFVoZ2UGIoa94BpWORjKK8Eih+Vjq2yTSbpst/rnhY
+         CRYj1j+pbs14OjWVVcAU93UNISKqRCgYBHuVJb8FH1S+znjHTT0Ayiac4yLV1L2YIdpq
+         IIqg==
+X-Gm-Message-State: AC+VfDzNf6G/RxzY1uBDOI8vrclaxZoP6m9RSoWanBBAOU3qCrgKkGg9
+        V2r/vLBwiZkrf00291DM19GV0nxhQS9ZdaLYAog=
+X-Google-Smtp-Source: ACHHUZ6Oh7TNKalmakidfKCbkahmgvWW5tzHcVOkdNDnRMGrUcsnGhx4I0KYX7WHaFzH9cmlzGiLEvmvQfcHdSyQeQw=
+X-Received: by 2002:a05:6808:1506:b0:39a:acfe:4659 with SMTP id
+ u6-20020a056808150600b0039aacfe4659mr5139127oiw.17.1686579297921; Mon, 12 Jun
+ 2023 07:14:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612122926.107333-1-herve.codina@bootlin.com>
- <20230612122926.107333-8-herve.codina@bootlin.com> <CAHp75Ve8BVO50TqhUV9YWkRBvYARNOAapZ21X=FehaBBfcC2jw@mail.gmail.com>
-In-Reply-To: <CAHp75Ve8BVO50TqhUV9YWkRBvYARNOAapZ21X=FehaBBfcC2jw@mail.gmail.com>
+References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-9-herve.codina@bootlin.com>
+In-Reply-To: <20230612122926.107333-9-herve.codina@bootlin.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 12 Jun 2023 17:13:25 +0300
-Message-ID: <CAHp75VcrXhwa19yg328L9vAhCB3vzk4Dy--fEpWd9qZR7oZ-AA@mail.gmail.com>
-Subject: Re: [PATCH v3 07/12] iio: inkern: Use max_array() to get the maximum
- value from an array
+Date:   Mon, 12 Jun 2023 17:14:22 +0300
+Message-ID: <CAHp75VcQzo2mUmqbBtZzCX3EarSHYx6ZfPm6BR_n7Uv_tGBK1A@mail.gmail.com>
+Subject: Re: [PATCH v3 08/12] iio: inkern: Replace a FIXME comment by a TODO one
 To:     Herve Codina <herve.codina@bootlin.com>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -82,24 +80,17 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 5:12=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootli=
-n.com> wrote:
+On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
+com> wrote:
+>
+> This FIXME comment is more a TODO one.
+> It is a note when someone will need for this currently unsupported case.
 
-...
+> Change from FIXME to TODO.
 
-> >  #include <linux/property.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/mutex.h>
-> > +#include <linux/minmax.h>
+Suggested-by: Jonathan ... ?
 
-But can you try to preserve order (to some extent, perhaps invisible
-here context is even better, I would assume mutex was added
-unordered)?
-
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/iio-opaque.h>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 --=20
 With Best Regards,

@@ -2,58 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C4D72C6E3
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DF1F72C70C
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236535AbjFLOGG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 10:06:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49714 "EHLO
+        id S236976AbjFLOL3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 10:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235659AbjFLOGE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:06:04 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBAD41AC;
-        Mon, 12 Jun 2023 07:06:03 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-3f9baa69682so35928441cf.3;
-        Mon, 12 Jun 2023 07:06:03 -0700 (PDT)
+        with ESMTP id S236463AbjFLOL2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:11:28 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CDBF10F2;
+        Mon, 12 Jun 2023 07:11:17 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id af79cd13be357-75f07dee22cso162172485a.2;
+        Mon, 12 Jun 2023 07:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686578763; x=1689170763;
+        d=gmail.com; s=20221208; t=1686579076; x=1689171076;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JzGHAlJH/0YXEKipZ+Ms41o/6AaOdNH3x2SChySThcc=;
-        b=DQABeuTLfLAmeKt8tVvq/jaKPBv/urqBjnHEkh0ByKqGpXluH6Z+1GGormG4y5x5MI
-         KX28oZl7VIRbr4QsdcCoXwZK3jITjhKI20HgS1aYLLxTW94IMrnaN7K86FP/ZMcV5tT1
-         6yv77z1MQ5qlj65i7yMqt7u4CWMmhf4ZPXpJbjo4bmUq+2APmCbgzX2659P6JNVD0inK
-         Tm83araMfqQkMvX9nmBOgOGLzJwR8GFXwFHgXXsD4/nxFc8mPKXhPhpUmyHzKhsl8Yhq
-         guJQhgKvFTo6CGRpwRm0P+VJXxRusBFE2MfjQlF9DvAn3MGBA/YWfU/oi1iGsnFpvs38
-         87cA==
+        bh=EJQ+L6XrHRjNmHJu0KSlBODFfH7Ghg6JGFmz6a5x+ks=;
+        b=ZUc6sxNRBAQ8xbX6AppejPyNMJJ9vsAbCmSZXAXJ+9uk+Ut11Ci70gGfKeCF6IdCYT
+         0Npc6f438t0uTZnI96FsJGIPUr95LlFSa7BTMGsXKqAPr/uS1Gd0FExFSCuCQESBowVo
+         UHu6ECTAF+m1SBtTZXBI/1yAUv9v6izlKf+yjVPKh/IzhBhQzv27yLbTGfoSSUcGyXPy
+         BwfM8c3AbVWzckrG/d9VGxLDN5Tqj8OgcS8NktKVgeIJq9GaLzTzZNSeUPep/JBkJmo9
+         cxUfmKHtDmA4HfbwfbZdAkmDSCfoZPeuXwkRNY9YARnk/VloxLigmPyPw0y9qBjNCk7G
+         Xhdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686578763; x=1689170763;
+        d=1e100.net; s=20221208; t=1686579076; x=1689171076;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JzGHAlJH/0YXEKipZ+Ms41o/6AaOdNH3x2SChySThcc=;
-        b=Ybkdbs/SCb/Sr0BikqTD5/Awcnb4C4PbNNOf+7MUdjtFDnDoU8224QD89g4yanU9rs
-         GI3zKQ1LtW9L0aHaBlq/SvzNt6HEs25diawQc351xDL/u6rWSFt+pvMGTeGlrYEw+Jld
-         EQ5BgS87ex2QXZw2MTFFtwnZeuj0+u9l21UH/nVmbeJcp0aMsZ+IuozTFsGDGDmyviTj
-         ToGJSYjXmhH4JdQOpMSGmyjz+FkXpl2NCdQinQeUQjpCPt5pe2ffCC4gIOWRzHhTwM54
-         YaCAt9lXzbLGswp+Luc2vgq+I9FA3kz6UhFKuiebUw566TorrvpBL3lVMMTYDh7z9wek
-         eubg==
-X-Gm-Message-State: AC+VfDwyMJWgn5bhYah5IM6rfN+UKp5UoS22dr5egAXk6bb/UWzaQg80
-        dBFlspe8BcJ9KiiizQVdncC3SPt7dH241euQzF8=
-X-Google-Smtp-Source: ACHHUZ5uI20fWf+pWNjdO28+l44cjNEfQFnUdIimfKXlh/dtHGKpDu8ztgzTIX1zOzglSjftG5zT/WzO0W8ilN/xRm0=
-X-Received: by 2002:a05:6214:5298:b0:61b:5e9b:a15d with SMTP id
- kj24-20020a056214529800b0061b5e9ba15dmr10948726qvb.36.1686578762963; Mon, 12
- Jun 2023 07:06:02 -0700 (PDT)
+        bh=EJQ+L6XrHRjNmHJu0KSlBODFfH7Ghg6JGFmz6a5x+ks=;
+        b=en7g3xAJ10IxtAUC9G/A1JhQgp56hO7pb2iAgittW5eHX6eeOxtHR5gXZaUwtow1yG
+         u6AI1g5ZaifnvhkFFvbJfA/Iy4SiOHqP6CSVr1wAij6okbfTprc91z0JH1N2mazU2jwf
+         tkwQAD6Go+Cm3SUiU6S2XZw5W+1GpolxO2BaKy9QNXql27o91pE8orITi9N75Ef+2LbS
+         JEf4UnGK2L48iblPMTJ0K7F+Y5hMASbHyzqSl93P2vzNgW3x8v2P7GmHgqYDMDwV6z/X
+         W9wdmTMVUMSvFbqlpWJVDi2drFNrvKmswL5G2GojzlGEhPTDF7+bcKj2OLx8fATGdMxo
+         rlyA==
+X-Gm-Message-State: AC+VfDwKJwkI56UTsKQLeM/WeokesCaSl8AiUvif1UkzVuHpKU1XnmXl
+        lPfhz8Efo7Adp86vqPt8K+ayu4TJwByzoYEXZNs=
+X-Google-Smtp-Source: ACHHUZ6XGswSinQMLW4VOPw+M6UjTIW5TYmForv0/8aMKQbhebyUxQ8+nfu1DnD/XddolUzFXKXLi6r/lySzLnim53A=
+X-Received: by 2002:a05:6214:2268:b0:623:9218:58e5 with SMTP id
+ gs8-20020a056214226800b00623921858e5mr11664934qvb.39.1686579076245; Mon, 12
+ Jun 2023 07:11:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-6-herve.codina@bootlin.com>
-In-Reply-To: <20230612122926.107333-6-herve.codina@bootlin.com>
+References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-7-herve.codina@bootlin.com>
+In-Reply-To: <20230612122926.107333-7-herve.codina@bootlin.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 12 Jun 2023 17:05:27 +0300
-Message-ID: <CAHp75Vc+Y7yOu1faosisPeL5N5x13DSTi142HuAwFgGmBiKsrA@mail.gmail.com>
-Subject: Re: [PATCH v3 05/12] iio: inkern: Remove the 'unused' variable usage
- in iio_channel_read_max()
+Date:   Mon, 12 Jun 2023 17:10:40 +0300
+Message-ID: <CAHp75Vf2dmAS9VD-pgyZwVopVCFy8yFjhPWEj8sym=pfE7uxSA@mail.gmail.com>
+Subject: Re: [PATCH v3 06/12] minmax: Introduce {min,max}_array()
 To:     Herve Codina <herve.codina@bootlin.com>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -84,54 +83,68 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
 com> wrote:
 >
-> The code uses a local variable to initialize a null pointer in order to
-> avoid accessing this null pointer later on.
->
-> Simply removed the 'unused' variable and check for the null pointer just
-> before accessing it.
+> Introduce min_array() (resp max_array()) in order to get the
+> minimal (resp maximum) of values present in an array.
 
+Some comments below, after addressing them,
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  drivers/iio/inkern.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  include/linux/minmax.h | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 >
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index f738db9a0c04..ce537b4ca6ca 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -849,14 +849,10 @@ static int iio_channel_read_max(struct iio_channel =
-*chan,
->                                 int *val, int *val2, int *type,
->                                 enum iio_chan_info_enum info)
->  {
-> -       int unused;
->         const int *vals;
->         int length;
->         int ret;
+> diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+> index 396df1121bff..37a211f22404 100644
+> --- a/include/linux/minmax.h
+> +++ b/include/linux/minmax.h
+> @@ -133,6 +133,32 @@
+>   */
+>  #define max_t(type, x, y)      __careful_cmp((type)(x), (type)(y), >)
 >
-> -       if (!val2)
-> -               val2 =3D &unused;
-> -
->         ret =3D iio_channel_read_avail(chan, &vals, type, &length, info);
->         if (ret < 0)
->                 return ret;
-> @@ -869,7 +865,8 @@ static int iio_channel_read_max(struct iio_channel *c=
-han,
->                         break;
->                 default:
->                         *val =3D vals[4];
-> -                       *val2 =3D vals[5];
-> +                       if (val2)
-> +                               *val2 =3D vals[5];
->                 }
->                 return 0;
->
-> --
-> 2.40.1
->
+> +#define __minmax_array(op, array, len) ({                      \
 
+Maybe it's my MUA, maybe the code contains spaces, can you switch to
+TABs if it's the case?
+
+> +       typeof(array) __array =3D (array);                        \
+
+We have __must_be_array()
+
+You will need to fix the inclusions in minmax.h at the same time, it needs
+linux/build_bug.h (which includes compiler.h needed for __UNIQUE_ID()
+and for the above mentioned one).
+
+> +       typeof(len) __len =3D (len);                              \
+> +       typeof(*__array + 0) __element =3D __array[--__len];      \
+
+After above, this can be written as __array[0].
+
+> +       while (__len--)                                         \
+> +               __element =3D op(__element, __array[__len]);      \
+> +       __element; })
+> +
+> +/**
+> + * min_array - return minimum of values present in an array
+> + * @array: array
+> + * @len: array length
+> + *
+> + * Note that @len must not be zero (empty array).
+> + */
+> +#define min_array(array, len) __minmax_array(min, array, len)
+> +
+> +/**
+> + * max_array - return maximum of values present in an array
+> + * @array: array
+> + * @len: array length
+> + *
+> + * Note that @len must not be zero (empty array).
+> + */
+> +#define max_array(array, len) __minmax_array(max, array, len)
+> +
+>  /**
+>   * clamp_t - return a value clamped to a given range using a given type
+>   * @type: the type of variable to use
 
 --=20
 With Best Regards,

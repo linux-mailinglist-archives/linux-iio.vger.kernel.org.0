@@ -2,115 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A432372C612
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 15:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FEFA72C6DC
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236627AbjFLNfU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 09:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59648 "EHLO
+        id S235257AbjFLOEj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 10:04:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236606AbjFLNfR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 09:35:17 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90082135;
-        Mon, 12 Jun 2023 06:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686576913; x=1718112913;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gvEVUUkCwjwDifIKSTm1C10zpa7qKE3wn/SiwKbdQ+M=;
-  b=P0RUWHPU0hr05SoDnCIGluTXViysK6iepT5f7uDwg7jbr0cTRZWjDOxH
-   gCWUYIoSNycOqpLh0I6L0QanW84PCXdyelBwluVsLIuXXdfTEuoPqh5IP
-   c/oqkvK/2dIIet3svY8+zeKLaYIEZQjbsUrscLyzKDseMCplySOa+Q0p5
-   xWRnqV5YSYwFmZPxhbu/Bxchd+ZV0LSBzRK10yQKS2cI2Os9Xxjx9OVVH
-   wFqDUG/haAPEERqHX7/7ewhNELRzXTbWx3yox80pVfcaeFTBCu9Z/lbbD
-   VLp851dr6aht74wJN8JYs/ylSghm9PsOEZzCemDl9dFPdflke0pH+yBRM
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="421629476"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="421629476"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 06:34:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="741031113"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="741031113"
-Received: from dkhokhri-mobl.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.212.166.252])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 06:34:00 -0700
-Message-ID: <0642f96559182c76548990cac383fbb110f8d56b.camel@linux.intel.com>
-Subject: Re: [PATCH] HID: sensor-hub: Allow multi-function sensor devices
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Jiri Kosina <jikos@kernel.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 12 Jun 2023 06:34:00 -0700
-In-Reply-To: <nycvar.YFH.7.76.2306120938360.5716@cbobk.fhfr.pm>
-References: <20230528092427.42332-1-daniel.thompson@linaro.org>
-         <nycvar.YFH.7.76.2306091742090.5716@cbobk.fhfr.pm>
-         <51dfdee66713e470d9a925ac5a8f8ae1da644462.camel@linux.intel.com>
-         <nycvar.YFH.7.76.2306120938360.5716@cbobk.fhfr.pm>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        with ESMTP id S232397AbjFLOEi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:04:38 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA761AC;
+        Mon, 12 Jun 2023 07:04:38 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-3f9b8f1c2fdso29193681cf.2;
+        Mon, 12 Jun 2023 07:04:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686578677; x=1689170677;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Nqk7opXz56V7mIpqm5KsGyT1vRoRc3GpMXEUFtGyL8=;
+        b=qM2YAKXVzfa2JaU+hOd5qfotCsKnAverw6L4epM9AS9ysVYswvh9HvnppUhzzBxjoU
+         OcsZl4cEW9fgB/kc6IyqHN0mWij4ps37xol30hDagJE/VyrUKgEvvWNQFQhKLSTty9RS
+         ChfTT3yp1DP1yrg34c05tKRfPcp5GtJxuPWpOs9wu+0z8XQ/Kqw0bFVRMIK/gYibPAtY
+         XyItUrHqIqoYawupgLcCVCm+oUoh14WZtIdQQsEgOIpFHoS408rZH5XT/oakJDy0iDwS
+         BH6dSVVyRONYDL4N+roBkjdLprotQVSFu+886KbZIBkrUDpSL9pl5WW9y5y4nrxTBzVA
+         nWkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686578677; x=1689170677;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Nqk7opXz56V7mIpqm5KsGyT1vRoRc3GpMXEUFtGyL8=;
+        b=jDZ7lSXfH7GHbUhlY6AGAOVXVq1rjtT6Sr1IaFoIj8nMYsMPc5p54rPHG1QkBfpgN/
+         kSZQq7uqwFxG4rb+jfIuRN6OAXC48UpTbBUqfs4zvctfzEoMSMEDwDvK5xjZBhw71lC3
+         a2NqKHWKOJcRgWOjmroePG3004POMeL+A9V/LoQcG4dFSpaOk/ohagtQ0ASkCb26z8mi
+         L19JTIeIw72NUTOIwRaKpaWJTTNEcYiII/o5A8c8ZLvhfUsS98mJoVEJQpat8FSwcr6W
+         ONFo41ph9Amf3XE/J0L2Sh/WdHHszAC4GIXvTtPGj/taskN8eExjaOt8aanAFjZJRJvC
+         iCdw==
+X-Gm-Message-State: AC+VfDwlPCdVZI4WPsRK1AbdJEJCqGoZhCeqCtiVW55jhY9W976OBO9I
+        XbC9mUSLtFRlXwPA9XUyKf8uC39LSTRzPrgzPW8=
+X-Google-Smtp-Source: ACHHUZ6CYvg10zoi9HIkb5vFNGGCLbHuRoSN1oR+9KoFwQC8JaYcEXHz6j+v+/QBdVrhCGleFWwCy3z8rKKcBsoqLb4=
+X-Received: by 2002:a05:6214:e4d:b0:625:b849:f86 with SMTP id
+ o13-20020a0562140e4d00b00625b8490f86mr8613739qvc.14.1686578677154; Mon, 12
+ Jun 2023 07:04:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-4-herve.codina@bootlin.com>
+In-Reply-To: <20230612122926.107333-4-herve.codina@bootlin.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 12 Jun 2023 17:04:01 +0300
+Message-ID: <CAHp75VcwaHEzZxpGiVNtrDT=2kYqEiLOALUm_KFb+036XYO1wQ@mail.gmail.com>
+Subject: Re: [PATCH v3 03/12] iio: inkern: Check error explicitly in iio_channel_read_max()
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2023-06-12 at 09:39 +0200, Jiri Kosina wrote:
-> On Sun, 11 Jun 2023, srinivas pandruvada wrote:
-> 
-> > > > The Lenovo Yoga C630 has a combined keyboard and accelerometer
-> > > > that 
-> > > > interfaces via i2c-hid. Currently this laptop either has a
-> > > > working 
-> > > > keyboard (if CONFIG_HID_SENSOR_HUB is disabled) or a working 
-> > > > accelerometer. only works on kernels. Put another way, most
-> > > > distro 
-> > > > kernels enable CONFIG_HID_SENSOR_HUB and therefore cannot work
-> > > > on 
-> > > > this device since the keyboard doesn't work!
-> > > > 
-> > > > Fix this by providing a richer connect mask during the probe.
-> > > > With 
-> > > > this change both keyboard and screen orientation sensors work 
-> > > > correctly.
-> > > > 
-> > > > Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > > 
-> > > Srinivas, are you aware of any multi-function device that this
-> > > patch 
-> > > might break?
-> > I tried two systems, one with ISH and another with external hub.
-> > Didn't 
-> > break anything. I don't have 5+ years old systems, to confirm if it
-> > will 
-> > break something on older systems with external hub.
-> 
-> Thanks a lot. Can I take the above as an equivalent of
-> 
->         Acked-by: Srinivas Pandruvada
-> <srinivas.pandruvada@linux.intel.com>
-Sure. 
-Acked-by: Srinivas Pandruvada<srinivas.pandruvada@linux.intel.com>
-> 
-Thanks,
-Srinivas
+On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
+com> wrote:
+>
+> The current implementation returns the error code as part of the
+> default switch case.
+> This can lead to returning an incorrect positive value in case of
+> iio_avail_type enum entries evolution.
+>
+> In order to avoid this case, be more strict in error checking.
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/inkern.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index 872fd5c24147..f738db9a0c04 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -858,6 +858,9 @@ static int iio_channel_read_max(struct iio_channel *c=
+han,
+>                 val2 =3D &unused;
+>
+>         ret =3D iio_channel_read_avail(chan, &vals, type, &length, info);
+> +       if (ret < 0)
+> +               return ret;
+> +
+>         switch (ret) {
+>         case IIO_AVAIL_RANGE:
+>                 switch (*type) {
+> @@ -888,7 +891,7 @@ static int iio_channel_read_max(struct iio_channel *c=
+han,
+>                 return 0;
+>
+>         default:
+> -               return ret;
+> +               return -EINVAL;
+>         }
+>  }
+>
+> --
+> 2.40.1
+>
 
 
-
-
-> ? :)
-> 
-
+--=20
+With Best Regards,
+Andy Shevchenko

@@ -2,57 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3057E72C7F6
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2C4472C86D
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 16:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238100AbjFLORf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 10:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55284 "EHLO
+        id S237342AbjFLO1x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 10:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237401AbjFLORS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:17:18 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 057C33589;
-        Mon, 12 Jun 2023 07:15:10 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-38c35975545so2627015b6e.1;
-        Mon, 12 Jun 2023 07:15:09 -0700 (PDT)
+        with ESMTP id S236284AbjFLO1e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 10:27:34 -0400
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDEFE3A9E;
+        Mon, 12 Jun 2023 07:25:40 -0700 (PDT)
+Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-461b408594fso3052613e0c.1;
+        Mon, 12 Jun 2023 07:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686579298; x=1689171298;
+        d=gmail.com; s=20221208; t=1686579937; x=1689171937;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tOx6mer2Y0xFwAlHeK7VBbHx/09765NLkewrCj3zx+Y=;
-        b=Xm4+EAzsXGukgRlA9uQ7SswMSO6ou4ZbhpL0ZIA/gSytMrnxLjaA+b+tOB21QRGS0Q
-         0onrjdR/+2Ce5Q7cwkUDbwf/nnkzIZeuJuY5kF+a0vcFRw3xp4PPbo3ao0SrL53rfJOp
-         avC0oy/PoRms5aLTAiolXBPBlPLqfgt3gdlMDf4WERKme13KnaraXObCgqyAFYOJvsgw
-         MsSWJc4G0ZlNFr1PF0pHuLplPiesuyoLh9bYkY7u7HFYKUVafmgT4XQseqHNkzYIKf0O
-         3uHnrglgzdUQeKq6qFdTo7fRN6zE7kSdPRClbfZi7gJuLb8iEhkZaZ09P2LYBBLjZd8N
-         S9Dg==
+        bh=J56F2gro6FOKUtNX+Ibu7D0wvtB+UfEnw2ffuy1QzrY=;
+        b=arkO2SE+dA04/OqEpwC+/t34sNUjnTjowWGnkywgbZMY/0Q0Dh00G9lsJo2GWrsgl8
+         neRIDZUsVSTPNZZ8xeOEIop8nRZBZFP1bft4o0oJmdsU4cqKpad32UYaMK9unhwmHH6T
+         D/p1fHh70PFVfdLEM/BylHheaQlswtZhcRETVKLlUHUlCMF/g+xKEBaamGwZocOmHZHh
+         6CnPvVVaNnQt+eYDSn2Fk34nDdYP9x/VKsvawFty0LL3y5SkvprO0spVJTDfKvTg5vrE
+         Wy9YKgA2ZRH9vSg/bPPr5LuGRh3WISnN/CrTNwWkSzRQg7sHDG8SwTJgGY06Q67mNaJa
+         eFUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686579298; x=1689171298;
+        d=1e100.net; s=20221208; t=1686579937; x=1689171937;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tOx6mer2Y0xFwAlHeK7VBbHx/09765NLkewrCj3zx+Y=;
-        b=WA2cKTl3ufP2+Su0xN6tD/iDKMpuIfyUATGi2WqvREKN8GNLWART379wtT/iLMY+bk
-         90AE0yNXIKx+cccmfn5g4ohJkowpgCg5QSi2J5K/FGkWJ/mv1663BgwDulxk0CtMbUxJ
-         IptTQP9uaG9jikwj43GQvLFgnGaUUsYiDcye3wEq65o2xnSzlEolw9Ach18rfVCkyQ88
-         LahEygiDQ332LE+FL0y/DsK3nVoFVoZ2UGIoa94BpWORjKK8Eih+Vjq2yTSbpst/rnhY
-         CRYj1j+pbs14OjWVVcAU93UNISKqRCgYBHuVJb8FH1S+znjHTT0Ayiac4yLV1L2YIdpq
-         IIqg==
-X-Gm-Message-State: AC+VfDzNf6G/RxzY1uBDOI8vrclaxZoP6m9RSoWanBBAOU3qCrgKkGg9
-        V2r/vLBwiZkrf00291DM19GV0nxhQS9ZdaLYAog=
-X-Google-Smtp-Source: ACHHUZ6Oh7TNKalmakidfKCbkahmgvWW5tzHcVOkdNDnRMGrUcsnGhx4I0KYX7WHaFzH9cmlzGiLEvmvQfcHdSyQeQw=
-X-Received: by 2002:a05:6808:1506:b0:39a:acfe:4659 with SMTP id
- u6-20020a056808150600b0039aacfe4659mr5139127oiw.17.1686579297921; Mon, 12 Jun
- 2023 07:14:57 -0700 (PDT)
+        bh=J56F2gro6FOKUtNX+Ibu7D0wvtB+UfEnw2ffuy1QzrY=;
+        b=hatf9q5S+RDZ2XNJYhckb8QNQFxgZPtJoYvK2jC2DXHPWdcafEqJT8kbTEMbsyAEdQ
+         5GjX+wQsm4xqu3HeupEDuhQqywjnJFv51FdqW6FLOWRTmvzwSHIGuspwSb/YwWY9c1k4
+         0/642M5ny9vxZAg+APSnLIy63aIhEeXml4cxLC6WI8fGEPHogThFHDGgyj82Hvoufgqu
+         7g3PxpBxaX339vcDy6DGIA9Vfg6kse8s3kYjEQ6ycnuHg+EF21tCY8ma9UTEerO9Q4P6
+         5qnZ/PR//NEqom32Xx6p/EkNpSVg+QpRVUZa7CfKPRDNe6P7jNN17g3oIOgOo3GCUD+h
+         E0cw==
+X-Gm-Message-State: AC+VfDwjxTR+/yfEnZ/CqI+wzHHM4okYqvYzvER+sadU48D2D7Y72o0Z
+        KeBMMqQrF6sK0lScpMeaOMcOEgYLMrg6YOJu6sX44fLt7lgyqIes
+X-Google-Smtp-Source: ACHHUZ4XPsRNUdUHh24YV26MKxBIyaOxt62KXPAlGGGGnwhH3uGcj+WHpwdzo7780i4kXoH2ZbqxqN7AJm7KJRpRqAo=
+X-Received: by 2002:a05:6214:21eb:b0:629:37e6:d43c with SMTP id
+ p11-20020a05621421eb00b0062937e6d43cmr12939727qvj.18.1686579381157; Mon, 12
+ Jun 2023 07:16:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-9-herve.codina@bootlin.com>
-In-Reply-To: <20230612122926.107333-9-herve.codina@bootlin.com>
+References: <20230612122926.107333-1-herve.codina@bootlin.com> <20230612122926.107333-10-herve.codina@bootlin.com>
+In-Reply-To: <20230612122926.107333-10-herve.codina@bootlin.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 12 Jun 2023 17:14:22 +0300
-Message-ID: <CAHp75VcQzo2mUmqbBtZzCX3EarSHYx6ZfPm6BR_n7Uv_tGBK1A@mail.gmail.com>
-Subject: Re: [PATCH v3 08/12] iio: inkern: Replace a FIXME comment by a TODO one
+Date:   Mon, 12 Jun 2023 17:15:45 +0300
+Message-ID: <CAHp75VdL+e-BArbJheJVpgw+YRdj82iBL=6imeqjBXXwQrWDKQ@mail.gmail.com>
+Subject: Re: [PATCH v3 09/12] iio: inkern: Add a helper to query an available
+ minimum raw value
 To:     Herve Codina <herve.codina@bootlin.com>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -83,14 +84,131 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
 com> wrote:
 >
-> This FIXME comment is more a TODO one.
-> It is a note when someone will need for this currently unsupported case.
-
-> Change from FIXME to TODO.
-
-Suggested-by: Jonathan ... ?
+> A helper, iio_read_max_channel_raw() exists to read the available
+> maximum raw value of a channel but nothing similar exists to read the
+> available minimum raw value.
+>
+> This new helper, iio_read_min_channel_raw(), fills the hole and can be
+> used for reading the available minimum raw value of a channel.
+> It is fully based on the existing iio_read_max_channel_raw().
 
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  drivers/iio/inkern.c         | 63 ++++++++++++++++++++++++++++++++++++
+>  include/linux/iio/consumer.h | 12 +++++++
+>  2 files changed, 75 insertions(+)
+>
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index 4331e74191cf..4f383a5ef59f 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -909,6 +909,69 @@ int iio_read_max_channel_raw(struct iio_channel *cha=
+n, int *val)
+>  }
+>  EXPORT_SYMBOL_GPL(iio_read_max_channel_raw);
+>
+> +static int iio_channel_read_min(struct iio_channel *chan,
+> +                               int *val, int *val2, int *type,
+> +                               enum iio_chan_info_enum info)
+> +{
+> +       const int *vals;
+> +       int length;
+> +       int ret;
+> +
+> +       ret =3D iio_channel_read_avail(chan, &vals, type, &length, info);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       switch (ret) {
+> +       case IIO_AVAIL_RANGE:
+> +               switch (*type) {
+> +               case IIO_VAL_INT:
+> +                       *val =3D vals[0];
+> +                       break;
+> +               default:
+> +                       *val =3D vals[0];
+> +                       if (val2)
+> +                               *val2 =3D vals[1];
+> +               }
+> +               return 0;
+> +
+> +       case IIO_AVAIL_LIST:
+> +               if (length <=3D 0)
+> +                       return -EINVAL;
+> +               switch (*type) {
+> +               case IIO_VAL_INT:
+> +                       *val =3D min_array(vals, length);
+> +                       break;
+> +               default:
+> +                       /* TODO: learn about min for other iio values */
+> +                       return -EINVAL;
+> +               }
+> +               return 0;
+> +
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +}
+> +
+> +int iio_read_min_channel_raw(struct iio_channel *chan, int *val)
+> +{
+> +       struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(chan-=
+>indio_dev);
+> +       int ret;
+> +       int type;
+> +
+> +       mutex_lock(&iio_dev_opaque->info_exist_lock);
+> +       if (!chan->indio_dev->info) {
+> +               ret =3D -ENODEV;
+> +               goto err_unlock;
+> +       }
+> +
+> +       ret =3D iio_channel_read_min(chan, val, NULL, &type, IIO_CHAN_INF=
+O_RAW);
+> +err_unlock:
+> +       mutex_unlock(&iio_dev_opaque->info_exist_lock);
+> +
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(iio_read_min_channel_raw);
+> +
+>  int iio_get_channel_type(struct iio_channel *chan, enum iio_chan_type *t=
+ype)
+>  {
+>         struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(chan-=
+>indio_dev);
+> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+> index f536820b9cf2..e9910b41d48e 100644
+> --- a/include/linux/iio/consumer.h
+> +++ b/include/linux/iio/consumer.h
+> @@ -301,6 +301,18 @@ int iio_write_channel_raw(struct iio_channel *chan, =
+int val);
+>   */
+>  int iio_read_max_channel_raw(struct iio_channel *chan, int *val);
+>
+> +/**
+> + * iio_read_min_channel_raw() - read minimum available raw value from a =
+given
+> + *                             channel, i.e. the minimum possible value.
+> + * @chan:              The channel being queried.
+> + * @val:               Value read back.
+> + *
+> + * Note, if standard units are required, raw reads from iio channels
+> + * need the offset (default 0) and scale (default 1) to be applied
+> + * as (raw + offset) * scale.
+> + */
+> +int iio_read_min_channel_raw(struct iio_channel *chan, int *val);
+> +
+>  /**
+>   * iio_read_avail_channel_raw() - read available raw values from a given=
+ channel
+>   * @chan:              The channel being queried.
+> --
+> 2.40.1
+>
+
 
 --=20
 With Best Regards,

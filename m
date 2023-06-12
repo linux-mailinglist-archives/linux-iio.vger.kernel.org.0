@@ -2,105 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94AA672CC1F
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 19:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 776C772CD02
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jun 2023 19:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230408AbjFLRNk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Jun 2023 13:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56012 "EHLO
+        id S235555AbjFLRh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Jun 2023 13:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230077AbjFLRNh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 13:13:37 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F54188;
-        Mon, 12 Jun 2023 10:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686590016; x=1718126016;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0IhzFlc0JSqsC8g90Ed8ErIHbGi6v7rirVUCLlYWgTI=;
-  b=kd0p6GilJH70mqsdst+DgKhzTlwTO/vveuLVPVy+dYef0DGZAZtYU4wA
-   LEFkDn/2D4xgcJAUGFt+53yqep1+DwBelEkVQaYmQjox4jFAuTVzeS1cp
-   omG4WYaEbZX9c/N6/IMH+8INGeHAwyG1cOiFNtQ3QHP5clKGh3VlKVH2x
-   9XIYPjTNVkfZyld6F3wpi1ViqohHC3EOF/ORja5bkfKsqi/TiKu7lUnpC
-   wJtsixCf0WsouvlIgqEqrqdF4wXrEFlpWgbZFVfOsD0cEqTsS80aC9gnV
-   NLH9UASy+H196T6C9RGGlw9+jsiPZ+BYKAjG8O8yffla4AtvRkcMMjI+f
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="360590940"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="360590940"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 10:13:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="688714744"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="688714744"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 12 Jun 2023 10:13:32 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1q8l6h-003Ai5-0z;
-        Mon, 12 Jun 2023 20:13:31 +0300
-Date:   Mon, 12 Jun 2023 20:13:31 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+        with ESMTP id S236327AbjFLRgz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Jun 2023 13:36:55 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83B6210E;
+        Mon, 12 Jun 2023 10:36:00 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-977e7d6945aso819257566b.2;
+        Mon, 12 Jun 2023 10:36:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686591359; x=1689183359;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4XDj0zSgyyWltCqtBRmREw0UunfagEPZkjaup8ya13g=;
+        b=OEE9t8mkolbA2bxjRz0u79syIYRXmQRjrKXXm4nvmkx2/LQOlzy0G2WORRDLu0P1Yg
+         UG3COTziDEQjkN//x1Do3difKdNzbSZ3ATlTLK4c6fklP2FWWkaXhF68SjdQxsS4ELBb
+         u4koSKGLAZV6WpCmb80iqlcrz3hxGtuUubNEGRophrtSqIEC7A3zsWGivKcaZqO1f5xV
+         6dMr0d8YcblEQe0L7HVNXtluynM2Qkd3IM1QLaQv1Ked+5H5KppJNb7LZBgGe70NheM8
+         YjGBFX4kI+SJQDj5zAZzxZbxyjNKyqYvwL9juq5klVubEQHZHXwJGNj4ac1SkHAjLiJj
+         d2xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686591359; x=1689183359;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4XDj0zSgyyWltCqtBRmREw0UunfagEPZkjaup8ya13g=;
+        b=L3b7eFM9Sk8NJOd4UWJB2EcMelOHKStByAKJDjiSGmcQ48Q/xVrOv1OlbCy/wfNbip
+         xh0rSU/Uj7Rh6KZHaEK7DpPuz2EYf/h4U5vkLFC3Z2Gk7J3XPhYHnRE4fxf/3a3OoGp5
+         GKdH294Og0uWFYcBSwSCwyamFlo6IE55Q+xt3586DGYTb4I0r5pPbQFB5fZZeQnLHEex
+         oXQ4jZl3JR7pzqBR+8XqFSMZ8jXz7K3eWI1nK5XvmIDOqL+sMnPqLjjkaSVPBkVa4Acc
+         jY3eJM1M0+4c7qhaD1FVBRhOTsGFYLCxGuwfEpcf4/5OwrmQEXOeeT0v4um73WPgVEkW
+         H+tw==
+X-Gm-Message-State: AC+VfDwdfcMSRhWuf/M167k/yG4rSVOhmjLKJ5o4InqFAvYY4wpbp+wT
+        Bcy4zLJsbxqxpkHtIUkxCEo=
+X-Google-Smtp-Source: ACHHUZ6vyqc25p9VU9PLZgYtZKTHZniKLYJtpRY1meHbFdhDlnXCdjSYu09LpXCSJhbmGUr7b859fQ==
+X-Received: by 2002:a17:906:9b84:b0:982:227e:1a16 with SMTP id dd4-20020a1709069b8400b00982227e1a16mr2643834ejc.13.1686591358861;
+        Mon, 12 Jun 2023 10:35:58 -0700 (PDT)
+Received: from carbian ([2a02:8109:aa3f:ead8::d8a0])
+        by smtp.gmail.com with ESMTPSA id i25-20020a170906265900b00977ca5de275sm5600669ejc.13.2023.06.12.10.35.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jun 2023 10:35:58 -0700 (PDT)
+Date:   Mon, 12 Jun 2023 19:35:55 +0200
+From:   Mehdi Djait <mehdi.djait.k@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
         krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
         lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 Subject: Re: [PATCH v5 5/7] iio: accel: kionix-kx022a: Refactor driver and
  add chip_info structure
-Message-ID: <ZIdSO7MGk3K/R2u1@smile.fi.intel.com>
+Message-ID: <ZIdXe3Vp4uHEGeRr@carbian>
 References: <cover.1686578553.git.mehdi.djait.k@gmail.com>
  <3a41a5ae9857cacdb062c398715a5938ccd47014.1686578554.git.mehdi.djait.k@gmail.com>
  <ZIc/uvB1zxNRnuRS@smile.fi.intel.com>
  <ZIdIev+evQUvX5Rg@carbian>
+ <ZIdSO7MGk3K/R2u1@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZIdIev+evQUvX5Rg@carbian>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZIdSO7MGk3K/R2u1@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 06:31:54PM +0200, Mehdi Djait wrote:
-> On Mon, Jun 12, 2023 at 06:54:34PM +0300, Andy Shevchenko wrote:
-> > On Mon, Jun 12, 2023 at 04:22:08PM +0200, Mehdi Djait wrote:
+Hello Andy,
 
-...
-
-> > >  struct kx022a_data {
-> > > +	const struct kx022a_chip_info *chip_info;
-> > >  	struct regmap *regmap;
-> > 
-> > I would suggest to run bloat-o-meter with this version and if you place
-> > chip_info after regmap. Does it gain us some memory?
+On Mon, Jun 12, 2023 at 08:13:31PM +0300, Andy Shevchenko wrote:
+> On Mon, Jun 12, 2023 at 06:31:54PM +0200, Mehdi Djait wrote:
+> > On Mon, Jun 12, 2023 at 06:54:34PM +0300, Andy Shevchenko wrote:
+> > > On Mon, Jun 12, 2023 at 04:22:08PM +0200, Mehdi Djait wrote:
 > 
-> I used the bloat-o-meter on the two .ko files (this version and the the
-> one where chip_info after regamp) Is this what you asked for ?
+> ...
+> 
+> > > >  struct kx022a_data {
+> > > > +	const struct kx022a_chip_info *chip_info;
+> > > >  	struct regmap *regmap;
+> > > 
+> > > I would suggest to run bloat-o-meter with this version and if you place
+> > > chip_info after regmap. Does it gain us some memory?
+> > 
+> > I used the bloat-o-meter on the two .ko files (this version and the the
+> > one where chip_info after regamp) Is this what you asked for ?
+> 
+> Yes. I assume the old one is the current as in this patch?
 
-Yes. I assume the old one is the current as in this patch?
-If so, you know what to do in the next version :-)
+Yes
 
-> add/remove: 0/0 grow/shrink: 0/5 up/down: 0/-20 (-20)
-> Function                                     old     new   delta
-> kx132_get_fifo_bytes                         148     144      -4
-> kx022a_trigger_set_state                     352     348      -4
-> kx022a_read_raw                              380     376      -4
-> kx022a_buffer_predisable                     248     244      -4
-> kx022a_buffer_postenable                     296     292      -4
-> Total: Before=11244, After=11224, chg -0.18%
+> If so, you know what to do in the next version :-)
 
--- 
-With Best Regards,
-Andy Shevchenko
+Yes, I will change it in the next version :)
 
-
+--
+Kind Regards
+Mehdi Djait

@@ -2,83 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B71DE72E40F
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 277E072E451
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240427AbjFMN0t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 09:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38856 "EHLO
+        id S239901AbjFMNhp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 09:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240413AbjFMN0s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:26:48 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2E21AA;
-        Tue, 13 Jun 2023 06:26:47 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-56ce61769b7so40482087b3.3;
-        Tue, 13 Jun 2023 06:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686662806; x=1689254806;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8wvnsa4LaCwBU/cmhPsEn3q8zOJvBJxBe8cx4rTNnKI=;
-        b=HgSwBp2I6aBOU/IiJgGo0pfsm6MEerBWlNLC8KF2yaQDAuFy4JRezhIzidE+wR1vJy
-         B1pyszqIJzNlmATFwZQiHg4462iC5zmGaNA7z13ALLzH7h2O+thCPlWvSXPwEDf+1ErN
-         PdX4zkQ4xJEvFjV2tQVGz/3wTbwbQ1sNRKxc3ntHbPxtNx8iwKQFpvp/+wDKTk3QIxYn
-         QWJvAvoic1pDMb1gYlPhyrrZfZf5b1HibdPpHsrzL/EYZabGHRI50WNy826MfD+DtVi8
-         PNLiJwkwlrnN+a6FT/iwFWJvWNgt9cRvigl9o1hy4hCUbi5aZLJ4falbr88C56slQ54G
-         vnYg==
+        with ESMTP id S242595AbjFMNhi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:37:38 -0400
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BDD123;
+        Tue, 13 Jun 2023 06:37:35 -0700 (PDT)
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-77b6e428f84so20954839f.1;
+        Tue, 13 Jun 2023 06:37:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686662806; x=1689254806;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8wvnsa4LaCwBU/cmhPsEn3q8zOJvBJxBe8cx4rTNnKI=;
-        b=bHbA4h2M0233/QgOG58fdStSK3167FADJkxJF9RwO81lrUOgrorxs/FXOSgtR7iMxR
-         OnsGZiS5CEcSpMrmQzokNCbLgoM/aGczLFCwO5+fGAsg+Z2v3hlQebWDh+Uvx3IjmpFC
-         zIZHfUaH64CnKWWsFEqcvQSX1drAxKvlqNWtksGsKTVfsa2T1hXcVJPJaftiflekJyXf
-         I28qxilrmOCuTxvn35ktN6wIfq5V8Dg92o93V/xbDMKi2+8nhHEBV4UJDjsJk6Udknpa
-         1wXIyUXP98OultOTq6jK9XN7XeC5gD7woWpIdy6GhodPKbG1c2SvIrwJN/mFbsrv6mJr
-         d9Ag==
-X-Gm-Message-State: AC+VfDwa6J6xiRlHO3VsrU6XiWhRvvxabIOVNPMhB0OcbiW6n2yoyP0i
-        RcZ46ad/7duxetNrNr42KImlHyKnpMy7USFLfz1KRZoTweTzpw==
-X-Google-Smtp-Source: ACHHUZ66PXNi0hvZZ1awpW13gJnL3DjlKuBBTt86e1ZCg2zaM6ceBLbbebFbgS1Ycwg7ZE74xPevIBEVPyQ2qp44vgY=
-X-Received: by 2002:a81:6c58:0:b0:56d:65b:11e6 with SMTP id
- h85-20020a816c58000000b0056d065b11e6mr2107347ywc.8.1686662806503; Tue, 13 Jun
- 2023 06:26:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230613093346.60781-1-kimseer.paller@analog.com> <20230613093346.60781-2-kimseer.paller@analog.com>
-In-Reply-To: <20230613093346.60781-2-kimseer.paller@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 13 Jun 2023 16:26:10 +0300
-Message-ID: <CAHp75VfcAevUrc5XgjYb4qB+ASzOSGif2tP=e5CRzpnBCUumPg@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] iio: adc: max14001: New driver
+        d=1e100.net; s=20221208; t=1686663454; x=1689255454;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r0vCNuqKUm55AaMm8pr0xyLnAFa80CEdl30TBTTMS60=;
+        b=dtLXY6Z8CEWE/dulBgY/rErdpGbF1RTFjCzwQUtapclkkEnMuQKeGD+t+nZyk//IiO
+         6CJZ1CHirh/I4uNj3yw5EWJIZ9CoOrv0HerIvI4DgttBnjLwYhTxzXpa7vjpD6JFxxVN
+         6KxFhkUGGltcN7UFu1PLm9oGgX9XvxgonBbcDr/6wBXOjZpT+s1NrT6L3KdJbP71dLQ5
+         cb2erf4/QwIbUikXJJKagDIE2iIUi322sNY2Rntrffe06ASbSmEf+CKxEFuecmqrbZW6
+         BIrW6w3vCdQF+TVGHtnefPHdcaKwuy813VTY6q56nWeA8oVae7lK+fqSysMwoIzunss9
+         pK3w==
+X-Gm-Message-State: AC+VfDynnUZI1EyBrsM3GDqbri1rzTlM70EnlJZHqng07fGGdCMEPRm+
+        ALXBUq6wjv4XIKncM8SAQg==
+X-Google-Smtp-Source: ACHHUZ62snGsnwuzPVeMJrIoCjYOrS2BeG82fFxxbz6v9Ogo9rZm3dRMxRWqs0YOuqVaQpzlRcTc3Q==
+X-Received: by 2002:a5e:8812:0:b0:76c:6f28:7e18 with SMTP id l18-20020a5e8812000000b0076c6f287e18mr9611143ioj.20.1686663454221;
+        Tue, 13 Jun 2023 06:37:34 -0700 (PDT)
+Received: from robh_at_kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id h3-20020a02c723000000b004161fafff97sm3438751jao.136.2023.06.13.06.37.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 06:37:33 -0700 (PDT)
+Received: (nullmailer pid 1772161 invoked by uid 1000);
+        Tue, 13 Jun 2023 13:37:31 -0000
+Date:   Tue, 13 Jun 2023 07:37:31 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Kim Seer Paller <kimseer.paller@analog.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, lgirdwood@gmail.com,
-        broonie@kernel.org, Michael.Hennerich@analog.com,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, robh@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     Michael.Hennerich@analog.com, jic23@kernel.org, broonie@kernel.org,
+        andy.shevchenko@gmail.com, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        devicetree@vger.kernel.org, lars@metafoo.de,
+        linux-kernel@vger.kernel.org, lgirdwood@gmail.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] dt-bindings:iio:adc: add max14001
+Message-ID: <20230613133731.GA1767199-robh@kernel.org>
+References: <20230613054601.31566-1-kimseer.paller@analog.com>
+ <168663709022.652608.11756645774505315189.robh@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <168663709022.652608.11756645774505315189.robh@kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 12:34=E2=80=AFPM Kim Seer Paller
-<kimseer.paller@analog.com> wrote:
->
-> The MAX14001 is configurable, isolated 10-bit ADCs for multi-range
-> binary inputs.
+On Tue, Jun 13, 2023 at 12:18:10AM -0600, Rob Herring wrote:
+> 
+> On Tue, 13 Jun 2023 13:46:00 +0800, Kim Seer Paller wrote:
+> > The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+> > binary inputs.
+> > 
+> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > ---
+> > V3 -> V4: Added space between prefixes in commit description.
+> > 
+> >  .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
+> >  MAINTAINERS                                   |  7 +++
+> >  2 files changed, 61 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+> > 
+> 
+> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml: $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates that the pin should be operating in paired mode.'}] is not of type 'object', 'boolean'
+> 	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
 
-Same comments as I gave in previous email (for v4).
+Unrelated, this can be ignored.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Rob

@@ -2,73 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F6672DEB5
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 12:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8F872DF0B
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 12:19:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234253AbjFMKGA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 06:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44146 "EHLO
+        id S233700AbjFMKTI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 06:19:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240669AbjFMKFE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 06:05:04 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F13568E;
-        Tue, 13 Jun 2023 03:05:01 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f611ac39c5so6706663e87.2;
-        Tue, 13 Jun 2023 03:05:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686650700; x=1689242700;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3aoW4c/0c2Y3ZUPrlBsCZCwmswvbzyn7amN1Oeqw4TU=;
-        b=UkKnxSys2MimNCCnHQVavNcXQH0kM0oF73GRxm7/61ytdQCvi/xCeQs213R5kuTWWx
-         NDwOviN0NXlEA4ESfJwtPkAsgwuzwMweyZsOVb1A7kS1PhQVC0H3Me7qVwjClO/xLviT
-         w/xzuZbfYQDaIApczjqpJlSpj5p3hsaKcAtX2NgZh7Y+cGH2veSM4ZYi2WUGm48IjBUR
-         53jSpRY3bn/rRfUGpT7n0jjwI8t8TvMW0cge4bkavTm78FWtpTcbsogfDGD8Viw9LcC0
-         vfsK7Q4gtvVBM/lBRmmZoQEIAlb+jc/vEy6f5YRTJJPOBXuTHcCTU0u/fZLqxxxz+5Xl
-         QP2w==
+        with ESMTP id S233000AbjFMKTH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 06:19:07 -0400
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 750ED13A;
+        Tue, 13 Jun 2023 03:19:06 -0700 (PDT)
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-33e4e59da95so31928845ab.2;
+        Tue, 13 Jun 2023 03:19:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686650700; x=1689242700;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3aoW4c/0c2Y3ZUPrlBsCZCwmswvbzyn7amN1Oeqw4TU=;
-        b=OBjGkUwe8VzSFf7z/f2RG5BdyQ8cnuoTWMhLC+KOb6XwxOS0ZtVXCZplk+2FKm/69/
-         riVSh1ef3SXJnKjBJAMiY7azfvPTe2DjAsoErzSaf/39FmfWQhbWbYgVLAmy3EGgrYGi
-         UX8rcAukWbIMmcZb6qjFLOEo4ZoxBJFXJVsaEBQ7UROmjtd+94Cr8QaLzd5KI1VCyN5X
-         u4JTPNcyp86Oq28yuZWkHiV52BV+5c+mzIc3t0p05gJet0kcaYTHFpav/M9SBCfZUWS7
-         PTN9/a8lJvt2GzabAzfHT0Qp+DQvP2McPaKuYcZnkTarVnaQ4/SxHAWQf4IHIk6MM2xT
-         MHgg==
-X-Gm-Message-State: AC+VfDypeoBuTe3XRPLWC0b7ISWx9Qe74wk0l/74DD6YRT5wTfpNvBgS
-        4LUy/na+NXg5Nzgs9Gt1ywQ=
-X-Google-Smtp-Source: ACHHUZ4Ed4mGePopLNFCVASIfNhyrTc7NTMpG8L80ixdQsklr2xfY7MM3veonRoqYJQLIuxl4nNbKQ==
-X-Received: by 2002:a19:6446:0:b0:4e8:5e39:6234 with SMTP id b6-20020a196446000000b004e85e396234mr4987654lfj.16.1686650700027;
-        Tue, 13 Jun 2023 03:05:00 -0700 (PDT)
-Received: from dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id w7-20020ac24427000000b004f3945751b2sm1713043lfl.43.2023.06.13.03.04.58
+        d=1e100.net; s=20221208; t=1686651545; x=1689243545;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UbG9U/FLtRULHFXZAPeAJM9N/HEaNECQdhVlO5M7IT8=;
+        b=KmCUHt4lbpGGDKuGdCuZL8mhVaTz0GnTRTxJ06BZ737i8uScRBoZ9Ufd9KuohbM/7s
+         4rtm2Fm/mNNkkbKrj+HSpGIY+aRUNfNfybhDHYR5kCA23Qnsoskf5SbtAoL2bM0QPMPc
+         MLD4A0erIhxelZI5Z9V7jtbYpX+Gfiiro/mlWpz8Pa1xoK+VM8GaPSiF+atxtV1QXkqC
+         fjz8HM81Tjuj1iuy1EAg3PWY6PcRALGG+IW6E5Fiud6SI8q5sss0uIKrkgNV9UYNYe6K
+         uasBVUfUGQ6VOSHu2FO3jMQPEx8jPVntnJJgpAJO8XuNDcvI9Nl+udgb3VwYRZtn5VkC
+         pzHA==
+X-Gm-Message-State: AC+VfDwIE8MrtRnk+ch//FPF84ICu+Qw9G4ThGsUxkMImZrU0PJzbshY
+        RAucux/wZBJ8h9nTfLKL+w==
+X-Google-Smtp-Source: ACHHUZ6b+3w2KTmQoleqNjbplF5QhcDGa+dzx6zlJ5JOkxzzvHjcoJsdGnoBowc14g3Y7OvjyRYLrA==
+X-Received: by 2002:a92:d084:0:b0:340:7986:93b7 with SMTP id h4-20020a92d084000000b00340798693b7mr811372ilh.26.1686651545573;
+        Tue, 13 Jun 2023 03:19:05 -0700 (PDT)
+Received: from robh_at_kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id h14-20020a0566380f0e00b0041cea93e589sm3298899jas.152.2023.06.13.03.19.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 03:04:59 -0700 (PDT)
-Date:   Tue, 13 Jun 2023 13:04:41 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] Support ROHM BU27010 RGBC sensor
-Message-ID: <cover.1686650184.git.mazziesaccount@gmail.com>
+        Tue, 13 Jun 2023 03:19:04 -0700 (PDT)
+Received: (nullmailer pid 1311612 invoked by uid 1000);
+        Tue, 13 Jun 2023 10:19:01 -0000
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="B/nlmydDbzf8YhvD"
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Rob Herring <robh@kernel.org>
+To:     Kim Seer Paller <kimseer.paller@analog.com>
+Cc:     devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        lgirdwood@gmail.com, broonie@kernel.org, andy.shevchenko@gmail.com,
+        linux-kernel@vger.kernel.org, conor+dt@kernel.org,
+        Michael.Hennerich@analog.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        jic23@kernel.org, linux-iio@vger.kernel.org
+In-Reply-To: <20230613093346.60781-1-kimseer.paller@analog.com>
+References: <20230613093346.60781-1-kimseer.paller@analog.com>
+Message-Id: <168665154072.1311520.12958978545814613109.robh@kernel.org>
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
+Date:   Tue, 13 Jun 2023 04:19:01 -0600
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -76,83 +68,46 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---B/nlmydDbzf8YhvD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 13 Jun 2023 17:33:45 +0800, Kim Seer Paller wrote:
+> The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+> binary inputs.
+> 
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reported-by: Rob Herring <robh@kernel.org>
+> Closes: https://lore.kernel.org/all/168663709022.652608.11756645774505315189.robh@kernel.org/
+> ---
+> V3 -> V5: Added spaces between prefixes in subject. Fixed MAINTAINERS reference.
+> 
+>  .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
+>  MAINTAINERS                                   |  7 +++
+>  2 files changed, 61 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+> 
 
-Support ROHM BU27010 RGBC + flickering sensor.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Following description copied from commit log:
+yamllint warnings/errors:
 
-> The ROHM BU27010 is an RGBC sensor with a flickering detection FIFO. The
-> RGBC+IR sensor functionality is largely similar to what the BU27008 has.
-> There are some notable things though:
->  - gain setting is once again new and exotic. Now, there is 6bit gain
->    setting where 4 of the bits are common to all channels and 2 bits
->    can be configured separately for each channel. The BU27010 has
->    similar "1X on other channels vs 2X on IR when selector is 0x0"
->    gain design as BU27008 had. So, we use same gain setting policy for
->    BU27010 as we did for BU27008 - driver sets same gain selector for
->    all channels but shows the gains separately for all channels so users
->    can (at least in theory) detect this 1X vs 2X madness...
->  - BU27010 has suffled all the control register bitfields to new
->    addresses and bit positions while still keeping the register naming
->    same.
->  - Some more power/reset control is added.
->  - FIFO for "flickering detection" is added.
->
-> The control register suffling made this slightly nasty. Still, it is
-> easier for maintenance perspective to add the BU27010 support in BU27008
-> driver because - even though the bit positions/addresses were changed -
-> most of the driver structure can be re-used. Writing own driver for
-> BU27010 would mean plenty of duplicate code albeit a tad more clarity.
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml: $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates that the pin should be operating in paired mode.'}] is not of type 'object', 'boolean'
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
 
-This series is done on top of the iio-for-6.5a + this fix-up series:
-https://lore.kernel.org/all/cover.1686648422.git.mazziesaccount@gmail.com/
+doc reference errors (make refcheckdocs):
 
----
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230613093346.60781-1-kimseer.paller@analog.com
 
-Matti Vaittinen (3):
-  dt-bindings: ROHM BU27010 RGBC + flickering sensor
-  iio: light: bu27008: add chip info
-  iio: light: bd27008: Support BD27010 RGB
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
- .../bindings/iio/light/rohm,bu27010.yaml      |  50 ++
- drivers/iio/light/rohm-bu27008.c              | 504 ++++++++++++++++--
- 2 files changed, 500 insertions(+), 54 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu2701=
-0.yaml
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
---=20
-2.40.1
+pip3 install dtschema --upgrade
 
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---B/nlmydDbzf8YhvD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmSIPygACgkQeFA3/03a
-ocUR6AgAqZBGR8ekHAaOcOnz1vVJ/y2iz8lTMsha0sH0YQht+QvkQd8FAUMUR//5
-C9wgca7NCmT13eh57YSavCHoOBmZqlxc/AGlQRVHpKRCjzsIaSNrcgu2W9FySmmG
-Y8x0k4iVRbWktipM5s1xZZICjsprLKsDEirVk4CBWEisF7inL8rvzRBGRuF5ZmA9
-jRuppoR6AwLXfWqD2FFWbhM2mULgRG6RG4UrRmx8bdzVSkh10ZbWEeXjjmawtDc6
-NbVdEzKrCK7HT0kDJaK0YWfBgaZsWUY+IfGzlSMRK+2ijaWJJv37XUlYixkjPAqJ
-53FkGgSa5uIYWnSORbchvs0vzbfw2w==
-=skCG
------END PGP SIGNATURE-----
-
---B/nlmydDbzf8YhvD--

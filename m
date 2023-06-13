@@ -2,87 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7915872DB7D
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 09:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A64F72DBE4
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 10:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238578AbjFMHuG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 03:50:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
+        id S240841AbjFMIBM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 04:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240476AbjFMHtt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 03:49:49 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF3A10C6
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 00:49:45 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f8cc042ea9so2347185e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 00:49:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686642584; x=1689234584;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=58s5A9sowol2exi73O8Wi+HEkQX9ngwelWfgjzw3I84=;
-        b=GfoE6TGQW4CcDcKp5F7OcbLo/ettiTVMWhOLlTEzaVn4cCxdu4kooWKvmQgXJENHh5
-         UN8R3AEsu06wuN+Tq14lFWAA6bngfiLrre8aDuk9wH3m7BKyOfJK9aXuyXrxPam0SnHv
-         PT+z534B6EQPyh+Y9zwo+r3GWxHDMYpkXrztdz8mcac1qCYHwIWkUMTVS2qu7bML+ysl
-         EFCMCchxkufqbnmZimtRgdGyKqB+HIDq/mcmjDER19f0l9g1W47+GLaTuMWM1Quhe3A+
-         TurXlI7ocD1Ywg8i/Ij0eKAbLRj/IENoIzLP3lm1BPN8st2bxrH5aSU7dxRgNwypdwwO
-         giog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686642584; x=1689234584;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=58s5A9sowol2exi73O8Wi+HEkQX9ngwelWfgjzw3I84=;
-        b=Chp5kHK9P4Ca42xw/v04yu5b28Lsmxf2MPGrvBMjwoUwEYO7ZcVsjz7jvcFP05SXzA
-         aM2EWTyJuobD+n9VJzumAOZkrrCGDdBf1nOQ9t53NgvZjlkPfihEm6UNgtYiPijEqqFB
-         22E7oDlEfPf9efpy0NIVkA5uWXDxcUftIOeNFktTmvsjBtIHaiSJz+/s8DvS4Kd3UrbX
-         x6gOskTvNhLBFSgCaA+l0pZlw59+GZHddljfw0Q03ML02rN0hT39uxI56liTl1JAB53T
-         bUxANBH+/2LjVWVxXJ9YL9jF+IaTHNO46G7dL31KuZURuPw/Lq011USATyv8Hlc+WakJ
-         HaOA==
-X-Gm-Message-State: AC+VfDxsAzV3otoSVeWodN4bT2mA7BqHnHeyZyAv/Udr5gwiZTCh85Jb
-        J0alZ5LrJBVAA1/iQYCm+d4=
-X-Google-Smtp-Source: ACHHUZ4Rf/GVg0G5MX8J7tROvdzZevRDmPrFmOSGGWPG41A89vJH5LsEX/XKsTDNY3oPsL/RcJKXpQ==
-X-Received: by 2002:a7b:cd19:0:b0:3f7:536e:fff3 with SMTP id f25-20020a7bcd19000000b003f7536efff3mr7492909wmj.25.1686642583954;
-        Tue, 13 Jun 2023 00:49:43 -0700 (PDT)
-Received: from user-PC.. ([92.51.95.194])
-        by smtp.gmail.com with ESMTPSA id t25-20020a1c7719000000b003f7eeec829asm13535500wmi.10.2023.06.13.00.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 00:49:43 -0700 (PDT)
-From:   Maksim Kiselev <bigunclemax@gmail.com>
-To:     andy.shevchenko@gmail.com
-Cc:     bigunclemax@gmail.com, linux-iio@vger.kernel.org, jic23@kernel.org
-Subject: Re: [PATCH v3 1/3] iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
-Date:   Tue, 13 Jun 2023 10:49:19 +0300
-Message-Id: <20230613074919.3936702-1-bigunclemax@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <ZHzjpydKLQ7U_Qwf@surfacebook>
-References: <ZHzjpydKLQ7U_Qwf@surfacebook>
+        with ESMTP id S240843AbjFMIAv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 04:00:51 -0400
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7DEA1BD0;
+        Tue, 13 Jun 2023 01:00:09 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1686643208;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=rd/XsfPHYPjYWaY07hPncGtbRCyEuLUp22IAn5v29r4=;
+        b=oGdpKjgpNu08N2uUAgpCGHd8N5hAGIMRJCwlpnSNDv0ljGSyOFGfEqivtG8W6LNnRYFmgB
+        O2lz/a+CDqHon+Vx+iu2vZyhBOqJRp22Vo7sjM3NVqfFDCjriQW2M0D8tV1wP5ibo6fqmT
+        8MxpRpBFvoJg+Nld2DCPm/mHEdYQjwymrgoKqgMUuVLLL5/7ZDyCbjJvy/mPrJWl4Voecg
+        8lLV+50gZAslzG68s4CpPEnj8My0R1zOmb9IpazpXumoJbUK1pB12MDb/WZ/5tolCKiWcm
+        FDZQ+TKiVBfDhhX6z6H6+vHZKuAx2+814/BZ63VuvsJHcUwAscSMeEfdhKfZFg==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A7C961C0006;
+        Tue, 13 Jun 2023 08:00:01 +0000 (UTC)
+Date:   Tue, 13 Jun 2023 10:00:00 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 06/12] minmax: Introduce {min,max}_array()
+Message-ID: <20230613100000.6bd9e690@bootlin.com>
+In-Reply-To: <CAHp75Vf2dmAS9VD-pgyZwVopVCFy8yFjhPWEj8sym=pfE7uxSA@mail.gmail.com>
+References: <20230612122926.107333-1-herve.codina@bootlin.com>
+        <20230612122926.107333-7-herve.codina@bootlin.com>
+        <CAHp75Vf2dmAS9VD-pgyZwVopVCFy8yFjhPWEj8sym=pfE7uxSA@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi, Andre
+Hi Andy,
 
->> +	}
->> +
->> +	if (num_channels > SUN20I_GPADC_MAX_CHANNELS) {
->> +		dev_err(dev, "num of channel children out of range");
->> +		return -EINVAL;
->
->Jonathan, but num_channels comes from the device tree. Why do we need to
->validate the upper limit and not simply use as much as we can?
->
->That's why I think this is not a critical error.
+On Mon, 12 Jun 2023 17:10:40 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Looks like I missed this. So, if we rely on dtbs_check then I agree that
-this check is not needed.
+> On Mon, Jun 12, 2023 at 3:30 PM Herve Codina <herve.codina@bootlin.com> wrote:
+> >
+> > Introduce min_array() (resp max_array()) in order to get the
+> > minimal (resp maximum) of values present in an array.  
+> 
+> Some comments below, after addressing them,
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > ---
+> >  include/linux/minmax.h | 26 ++++++++++++++++++++++++++
+> >  1 file changed, 26 insertions(+)
+> >
+> > diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+> > index 396df1121bff..37a211f22404 100644
+> > --- a/include/linux/minmax.h
+> > +++ b/include/linux/minmax.h
+> > @@ -133,6 +133,32 @@
+> >   */
+> >  #define max_t(type, x, y)      __careful_cmp((type)(x), (type)(y), >)
+> >
+> > +#define __minmax_array(op, array, len) ({                      \  
+> 
+> Maybe it's my MUA, maybe the code contains spaces, can you switch to
+> TABs if it's the case?
+> 
+> > +       typeof(array) __array = (array);                        \  
+> 
+> We have __must_be_array()
+
+Using __must_be_array() will lead to some failure.
+Indeed, we can have:
+  --- 8< ---
+  int *buff
+  ...
+  min = min_array(buff, nb_item);
+  --- 8< ---
+
+In this case, __must_be_array() will report that buff is not an array.
+
+To avoid any confusion, what do you think if I renamed {min,max}_array()
+to {min,max}_buffer() and replace __array by __buff and use *(__buff + xxx)
+instead of array[xxx] in the macro.
+
+This will lead to:
+--- 8< ---
+#define __minmax_buffer(op, buff, len) ({			\
+	typeof(buff) __buff = (buff);			\
+	typeof(len) __len = (len);				\
+	typeof(*buff + 0) __element = *(__buff + --__len);	\
+	while (__len--)						\
+		__element = op(__element, *(__buff + __len]));	\
+	__element; })
+
+#define min_buffer(buffer, len) __minmax_array(min, buffer, len)
+#define max_buffer(buffer, len) __minmax_array(max, buffer, len)
+--- 8< ---
+
+Regards,
+Hervé
+
+> 
+> You will need to fix the inclusions in minmax.h at the same time, it needs
+> linux/build_bug.h (which includes compiler.h needed for __UNIQUE_ID()
+> and for the above mentioned one).
+> 
+> > +       typeof(len) __len = (len);                              \
+> > +       typeof(*__array + 0) __element = __array[--__len];      \  
+> 
+> After above, this can be written as __array[0].
+> 
+> > +       while (__len--)                                         \
+> > +               __element = op(__element, __array[__len]);      \
+> > +       __element; })
+> > +
+> > +/**
+> > + * min_array - return minimum of values present in an array
+> > + * @array: array
+> > + * @len: array length
+> > + *
+> > + * Note that @len must not be zero (empty array).
+> > + */
+> > +#define min_array(array, len) __minmax_array(min, array, len)
+> > +
+> > +/**
+> > + * max_array - return maximum of values present in an array
+> > + * @array: array
+> > + * @len: array length
+> > + *
+> > + * Note that @len must not be zero (empty array).
+> > + */
+> > +#define max_array(array, len) __minmax_array(max, array, len)
+> > +
+> >  /**
+> >   * clamp_t - return a value clamped to a given range using a given type
+> >   * @type: the type of variable to use  
+> 
 

@@ -2,122 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE54872DE04
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 11:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D54B772DE88
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 11:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233071AbjFMJok (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 05:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57906 "EHLO
+        id S241202AbjFMJ6f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 05:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239967AbjFMJoi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 05:44:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 597E9AC
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 02:43:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686649430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=jemcAPPpKAt79EhDWT0yiBEs6heR+il/xktLqRxgoN8=;
-        b=BkBUZDcAhQRNZyu2SG2F+LWShQzo8OsRZ4VbiU8DvDPPQLjSG6epczvuiFBg7eoV8tFUeO
-        tMnR4XK677iu7yD8pJ/P2EvuiSSPDJbw6XWwfaLfNm7bFT4IFHL7zOgH4/R2JzKeXD36op
-        X8lpWnwgdyGUpub1Zm0WqOguPkeJwe0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-418-NYYr-xzXPUqhLlkK96D73g-1; Tue, 13 Jun 2023 05:43:49 -0400
-X-MC-Unique: NYYr-xzXPUqhLlkK96D73g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B109485A5B5;
-        Tue, 13 Jun 2023 09:43:48 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.195.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 903691121314;
-        Tue, 13 Jun 2023 09:43:47 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Juno Computers USA <usa@junocomputers.com>
-Subject: [PATCH] iio: accel: da280: Add support for the DA217 accelerometer
-Date:   Tue, 13 Jun 2023 11:43:46 +0200
-Message-Id: <20230613094346.162551-1-hdegoede@redhat.com>
+        with ESMTP id S241474AbjFMJ6R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 05:58:17 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 791621BC3;
+        Tue, 13 Jun 2023 02:57:45 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-62de508705dso6523726d6.1;
+        Tue, 13 Jun 2023 02:57:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686650264; x=1689242264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bmlGOY40bYj4Q6JN0GSpXxBgXovTb45ciPVmvgoVcYM=;
+        b=TA1AVT7t9v+KXDeaQNzHi+xrxZyCvYLLjaGa9o1vF6BwHcT8+ls6mFpEQlp7byg86/
+         JANTcTK8E4lDm6n+bnp27jLfO7XpSyIfZPUyeFH0phr4FDwSsfL3q7R2fIApMr9nPlE6
+         foBoDIczxdMOx413LXTOh8PJFf9KfcxgFd5vsgLoEhPIrgIIRLM9wUy0M73iNhsuB6VP
+         d1g+d+X1aekm2K+BVLqMSuAG2p43S4qfBhBX8viTlM4PC+Ehv8lCdPUOKRFcg9wmxhjV
+         VzTejXAB0Oc85iTYfqNbEDabwKiJ9r4dFBUWNldDurSO75xlrwjKGIkbfTNlkL0JWy31
+         tbQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686650264; x=1689242264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bmlGOY40bYj4Q6JN0GSpXxBgXovTb45ciPVmvgoVcYM=;
+        b=VZ0D7+ziego1sV1lPgmwJ+QPDEfNnruDxnAIKRQgNcwmmOMccPzpX4Knh2tMS2nq//
+         i3zvu3qshVtHm9FNe3AWr+fwTq22IeHacB9+Z0Pz2MLVRWK9oi96FT4HlEx/MYCjS7kk
+         F0b7zFnsBQf7CBEo6F0zCcCR5p3ASi7v2ViJcxfFKHv+ARRowz+ClZkPCKsMoy3JxjVU
+         uTwJRAw0t1StRz5mBuGAUTCmLxT7Ls4mhJKLZzF2HMPuefpVGhRVpkHbAomzuu/vZhF9
+         1kDYSMa9Dqyd6BFM2vKdsNxYYAm5lwx8vViWx/fvbnsIzkrz9glhzq1Pu7B+QxwiXcPB
+         shxg==
+X-Gm-Message-State: AC+VfDwkUKVUazw6fb8uWLeg1sKuwNSWBF/Tofq1zI4V9eO6USvtwePi
+        MVRfS82CX1/MHsubwKZACTL5D7z7cL1xJjgkASE=
+X-Google-Smtp-Source: ACHHUZ7pd1OTAq23LMZyzAc00XDkyvX0IoAjpT0KC/KeIKIEh9N6n2P8J92jcW6HA/8WKDqP9uBBk0G9XvZKmHX4/JU=
+X-Received: by 2002:a05:6214:1c89:b0:62d:f598:dc23 with SMTP id
+ ib9-20020a0562141c8900b0062df598dc23mr1347986qvb.43.1686650264396; Tue, 13
+ Jun 2023 02:57:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230613054601.31566-1-kimseer.paller@analog.com> <20230613054601.31566-2-kimseer.paller@analog.com>
+In-Reply-To: <20230613054601.31566-2-kimseer.paller@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 13 Jun 2023 12:57:07 +0300
+Message-ID: <CAHp75Vfk2=rYh7GO5XUV8cr3C+3nwu4-PfxxVDuG3Vj0a6b=XQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: adc: max14001: New driver
+To:     Kim Seer Paller <kimseer.paller@analog.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, lgirdwood@gmail.com,
+        broonie@kernel.org, Michael.Hennerich@analog.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The DA217 accelerometer is another DA280 compatible accelerometer,
-add its device-ids to the da280 driver.
+On Tue, Jun 13, 2023 at 8:46=E2=80=AFAM Kim Seer Paller
+<kimseer.paller@analog.com> wrote:
+>
+> The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+> binary inputs.
 
-Reported-by: Juno Computers USA <usa@junocomputers.com>
-Tested-by: Juno Computers USA <usa@junocomputers.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Note no Closes: for the Reported-by since this was reported by private email
----
- drivers/iio/accel/da280.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+...
 
-diff --git a/drivers/iio/accel/da280.c b/drivers/iio/accel/da280.c
-index 38a7d811610e..a49c4f95fe7d 100644
---- a/drivers/iio/accel/da280.c
-+++ b/drivers/iio/accel/da280.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * IIO driver for the MiraMEMS DA280 3-axis accelerometer and
-+ * IIO driver for the MiraMEMS DA217 and DA280 3-axis accelerometer and
-  * IIO driver for the MiraMEMS DA226 2-axis accelerometer
-  *
-  * Copyright (c) 2016 Hans de Goede <hdegoede@redhat.com>
-@@ -23,7 +23,7 @@
- #define DA280_MODE_ENABLE		0x1e
- #define DA280_MODE_DISABLE		0x9e
- 
--enum da280_chipset { da226, da280 };
-+enum da280_chipset { da217, da226, da280 };
- 
- /*
-  * a value of + or -4096 corresponds to + or - 1G
-@@ -134,7 +134,10 @@ static int da280_probe(struct i2c_client *client)
- 		chip = id->driver_data;
- 	}
- 
--	if (chip == da226) {
-+	if (chip == da217) {
-+		indio_dev->name = "da217";
-+		indio_dev->num_channels = 3;
-+	} else if (chip == da226) {
- 		indio_dev->name = "da226";
- 		indio_dev->num_channels = 2;
- 	} else {
-@@ -166,12 +169,14 @@ static int da280_resume(struct device *dev)
- static DEFINE_SIMPLE_DEV_PM_OPS(da280_pm_ops, da280_suspend, da280_resume);
- 
- static const struct acpi_device_id da280_acpi_match[] = {
-+	{"NSA2513", da217},
- 	{"MIRAACC", da280},
- 	{},
- };
- MODULE_DEVICE_TABLE(acpi, da280_acpi_match);
- 
- static const struct i2c_device_id da280_i2c_id[] = {
-+	{ "da217", da217 },
- 	{ "da226", da226 },
- 	{ "da280", da280 },
- 	{}
--- 
-2.40.1
+> +struct max14001_state {
+> +       struct spi_device       *spi;
+> +       /*
+> +        * lock protect agains multiple concurrent accesses, RMW sequence=
+, and
 
+against
+
+> +        * SPI transfer
+> +        */
+> +       struct mutex            lock;
+> +       int                     vref_mv;
+> +       /*
+> +        * DMA (thus cache coherency maintenance) requires the
+> +        * transfer buffers to live in their own cache lines.
+> +        */
+> +       __be16                  spi_tx_buffer __aligned(IIO_DMA_MINALIGN)=
+;
+> +       __be16                  spi_rx_buffer;
+> +};
+> +
+> +static int max14001_read(void *context, unsigned int reg_addr, unsigned =
+int *data)
+> +{
+> +       struct max14001_state *st =3D context;
+> +       int ret;
+> +
+> +       struct spi_transfer xfers[] =3D {
+> +               {
+> +                       .tx_buf =3D &st->spi_tx_buffer,
+> +                       .len =3D 2,
+
+sizeof()
+
+> +                       .cs_change =3D 1,
+> +               }, {
+> +                       .rx_buf =3D &st->spi_rx_buffer,
+> +                       .len =3D 2,
+
+sizeof()
+
+> +               },
+> +       };
+> +
+> +       st->spi_tx_buffer =3D bitrev16(cpu_to_be16(FIELD_PREP(MAX14001_AD=
+DR_MASK,
+> +                                                               reg_addr)=
+));
+> +
+> +       ret =3D spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+> +       if (ret)
+> +               return ret;
+> +
+> +       *data =3D bitrev16(be16_to_cpu(st->spi_rx_buffer)) & MAX14001_DAT=
+A_MASK;
+> +
+> +       return 0;
+> +}
+
+...
+
+> +static const struct iio_chan_spec max14001_channels[] =3D {
+> +       {
+> +               .type =3D IIO_VOLTAGE,
+> +               .channel =3D 0,
+
+Is it required?
+
+> +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> +                                     BIT(IIO_CHAN_INFO_SCALE),
+> +       }
+> +};
+
+--=20
+With Best Regards,
+Andy Shevchenko

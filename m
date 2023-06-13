@@ -2,116 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65B8972E120
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 13:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5DC72E40B
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:26:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234392AbjFMLUr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 07:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55014 "EHLO
+        id S242520AbjFMNZh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 09:25:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242412AbjFMLTs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 07:19:48 -0400
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C7F19B4;
-        Tue, 13 Jun 2023 04:19:17 -0700 (PDT)
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-33d31ab00bdso24016555ab.3;
-        Tue, 13 Jun 2023 04:19:17 -0700 (PDT)
+        with ESMTP id S242455AbjFMNZg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:25:36 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD7471B0;
+        Tue, 13 Jun 2023 06:25:35 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-62df2192d13so7676466d6.1;
+        Tue, 13 Jun 2023 06:25:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686662735; x=1689254735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PGWVSRLSWiSQmgCzVp1crJX1PaYgdtyOOFzd4KI8WPY=;
+        b=HWfrF9TfgiK84XltXfvEgJRiai43zOeGut8vINME/9REh2L3cElV8+jnFD9w1O4hCa
+         DOSLZRxfWQrvdXAonKLk4FnRb2jIBi7XLmGQgeF3fpheKhw1QiiaXteIPU65Z3BHmabx
+         PVBvMLCKFvLvZsn1uFcP9OKv5ZYU/OmETC3D8hALocTj1s02fudpY9GutoTjtLQSfq8N
+         BUM19YwPqIKRWmM0hed8lbHmYSNn4IXrLcq6JgCKGChoNCZKD5uyNWifQfBXN5dmMNiy
+         tgkqxWiCu53VpV40XJc5vCbXO37JudVTGjb4hjVI4J48uy6frPRTHL4AhmzHS8eD/2WY
+         EzyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686655157; x=1689247157;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=l6vFff+2O0ZgrvplVlGvI7/ixX1GTP1MycGW4svvrIs=;
-        b=fDXUdfwo+PeRK6TKWGKFCrrgi2lztU15o+sA+gH637I1IC4Nlx1uD/3bdzU/VOsti+
-         8af2++p7KhFc+OaxQrhj1RJ6SWtZQZPMCJnOWb3jfxuhFI9QM2F3lir4lMvQ11QmmCX+
-         kLuRSw30KbBAOsQIv+MV30CTAyq5VijLGrztjpxLLWGeBwh/UVHtfKe+80qYFKbJZ7jg
-         IAk2+4XYR/fSNLy6IrDwIhpjiAdxsIdQzB16OQIEflxavciF/bodH+HJnaUsboobcwYh
-         REgCTvPjvprDmAb1wcouTS0/PAN2bBaYY6L6lOVoqPgPI8i6SeNTpRWp8rh5bh5wSVL1
-         q2Gw==
-X-Gm-Message-State: AC+VfDwzStEn+gfxWQie8DAtp8waDiFt4x8wNEN8rvI0q78DDN8hCt8N
-        cSH37DOSHBay9kFEg2mruBOc+YIMSQ==
-X-Google-Smtp-Source: ACHHUZ59xiR9R2NKhafW3rpWqGOsp6pmynnDq12g2a9Fg1ntHa3HyOOllfKGHp6XtqXTZsDN+QGUNA==
-X-Received: by 2002:a05:6e02:4c3:b0:335:8dd:cf16 with SMTP id f3-20020a056e0204c300b0033508ddcf16mr8842321ils.9.1686655156973;
-        Tue, 13 Jun 2023 04:19:16 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id i8-20020a056e02054800b003248469e5easm3771627ils.43.2023.06.13.04.19.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 04:19:16 -0700 (PDT)
-Received: (nullmailer pid 1407254 invoked by uid 1000);
-        Tue, 13 Jun 2023 11:19:14 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20221208; t=1686662735; x=1689254735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PGWVSRLSWiSQmgCzVp1crJX1PaYgdtyOOFzd4KI8WPY=;
+        b=hcbvx+JEWJUekvXLRT65OrNi3GKOxLebMbgEWpYSb7x2VaeycyzYL31cx8f7zJrXdN
+         azZrSlYARefUlBPeHtu/faNybWCjEQ/RxM/0aDl/ZSa4/uLiEZX6j3NjL9WcvB8C6qDd
+         9VH8FBmZlPsExhjjqmF6M7NnkXVf+lyQnUatfvCcHXHvPaxZ1WLaFF78fYJfVdZVfJqJ
+         EDQ4HpttNeaRJoWYw9ry9posD4Wt1RRDuPDOTrUkkD6pdB2UhvhtuYL7wILVDdjYdzSl
+         +eFykw3GzRxUlY495MqVU4itBsWT+6g9mOBHrWnX4dw0Duzk/U0OE1DUg6vOyoAkIIIx
+         9odw==
+X-Gm-Message-State: AC+VfDzQj6SJkc0qyLp/4tX/16e2/ubzNyCASUXNwzCp7JSmWQT+GWFi
+        vmpeXsw4nIPqmA/+4FmUrV1/W8XejDN17AYfno0=
+X-Google-Smtp-Source: ACHHUZ5kz189tnuVuyMuffOhKxE4YMOwXJzuYUWwxct+eUXsThGzOBu6ItCuKQ3mJGC+D7Re2VsLvEk8QpOGwIlN9E8=
+X-Received: by 2002:a05:6214:1cce:b0:62d:fddb:1856 with SMTP id
+ g14-20020a0562141cce00b0062dfddb1856mr392857qvd.43.1686662734879; Tue, 13 Jun
+ 2023 06:25:34 -0700 (PDT)
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org, jic23@kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-kernel@vger.kernel.org,
-        mazziesaccount@gmail.com, devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <0d6051ad217f91c7de0883c4ca1516bdacc343ce.1686651032.git.mehdi.djait.k@gmail.com>
-References: <cover.1686651032.git.mehdi.djait.k@gmail.com>
- <0d6051ad217f91c7de0883c4ca1516bdacc343ce.1686651032.git.mehdi.djait.k@gmail.com>
-Message-Id: <168665515466.1407218.12335518729776515932.robh@kernel.org>
-Subject: Re: [PATCH v6 1/7] dt-bindings: iio: Add KX132-1211 accelerometer
-Date:   Tue, 13 Jun 2023 05:19:14 -0600
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20230612122926.107333-1-herve.codina@bootlin.com>
+ <20230612122926.107333-12-herve.codina@bootlin.com> <CAHp75Vfz+vSJ7rQ4sxb0R+zRbrjipXUX3VpaHyvOWWePdPxejQ@mail.gmail.com>
+ <20230613113707.0b5d9648@bootlin.com>
+In-Reply-To: <20230613113707.0b5d9648@bootlin.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 13 Jun 2023 16:24:58 +0300
+Message-ID: <CAHp75Vd0SNY6XgKwS5j74VftY46MDQ9=Zc3wXwGLOiMc_ZX8Ow@mail.gmail.com>
+Subject: Re: [PATCH v3 11/12] ASoC: codecs: Add support for the generic IIO
+ auxiliary devices
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, Jun 13, 2023 at 12:37=E2=80=AFPM Herve Codina <herve.codina@bootlin=
+.com> wrote:
+> On Mon, 12 Jun 2023 17:37:00 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-On Tue, 13 Jun 2023 12:22:34 +0200, Mehdi Djait wrote:
-> Extend the kionix,kx022a.yaml file to support the kx132-1211 device
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
-> ---
-> v6:
-> v5:
-> v4:
-> v3:
-> - no changes
-> 
-> v2:
-> - made the device name more specific from "kx132" to "kx132-1211"
-> - removed the output data-rates mentioned and replaced them with "variable
-> output data-rates"
-> 
->  .../devicetree/bindings/iio/accel/kionix,kx022a.yaml | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
+...
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> > > +       struct snd_kcontrol_new control =3D {0};
+> >
+> > 0 is not needed.
+>
+> Not for this one.
+>
+> The variable is in stack.
+> Some of the structure members will be set in the code but we need to ensu=
+re
+> that all others are set to 0.
 
-yamllint warnings/errors:
+Yes, and as I said, 0 is not needed. Compiler assumes that if you just
+use plain {}.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml: $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates that the pin should be operating in paired mode.'}] is not of type 'object', 'boolean'
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/0d6051ad217f91c7de0883c4ca1516bdacc343ce.1686651032.git.mehdi.djait.k@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+--=20
+With Best Regards,
+Andy Shevchenko

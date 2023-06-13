@@ -2,107 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F07472E54B
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 16:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7848972E90A
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 19:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235221AbjFMOJj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 13 Jun 2023 10:09:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34876 "EHLO
+        id S235583AbjFMRIq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 13:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242760AbjFMOJg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 10:09:36 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F58171D;
-        Tue, 13 Jun 2023 07:09:10 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35DDKQVF013107;
-        Tue, 13 Jun 2023 10:08:23 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r4p351dqr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Jun 2023 10:08:17 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 35DE7eIM009159
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Jun 2023 10:07:40 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 13 Jun
- 2023 10:07:39 -0400
-Received: from ASHBMBX8.ad.analog.com ([fe80::30b9:230c:9621:902f]) by
- ASHBMBX8.ad.analog.com ([fe80::30b9:230c:9621:902f%9]) with mapi id
- 15.02.0986.014; Tue, 13 Jun 2023 10:07:39 -0400
-From:   "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-To:     Rob Herring <robh@kernel.org>
-CC:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
-Thread-Topic: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
-Thread-Index: AQHZndo3coUyYXBv2Eq2tUVubImF6a+IyEuA///7LzA=
-Date:   Tue, 13 Jun 2023 14:07:39 +0000
-Message-ID: <8998c3d3f3ca4f44a5c99594dcb24cbe@analog.com>
-References: <20230613093346.60781-1-kimseer.paller@analog.com>
- <168665154072.1311520.12958978545814613109.robh@kernel.org>
-In-Reply-To: <168665154072.1311520.12958978545814613109.robh@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNca3BhbGxlcjJc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy1hNTkzZTI2Yi0wOWYzLTExZWUtYWU3ZC1mOGNi?=
- =?us-ascii?Q?Njc0OWVhN2JcYW1lLXRlc3RcYTU5M2UyNmQtMDlmMy0xMWVlLWFlN2QtZjhj?=
- =?us-ascii?Q?YjY3NDllYTdiYm9keS50eHQiIHN6PSI1MTQ0IiB0PSIxMzMzMTEzODg1NjQ5?=
- =?us-ascii?Q?MzQ3OTgiIGg9ImJMb29YTXVtSlJZb0VSeklqUUM1TXY0ZitIaz0iIGlkPSIi?=
- =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
- =?us-ascii?Q?Q09VTzFuQUo3WkFUMVlWYldwUER1dFBWaFZ0YWs4TzYwREFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFRQUJBQUFBUjZsVExBQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
- =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
- =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
- =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
- =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
- =?us-ascii?Q?dGE+?=
-x-dg-rorf: true
-x-originating-ip: [10.116.242.24]
-x-adiruleop-newscl: Rule Triggered
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S235279AbjFMRIq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 13:08:46 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE7D187;
+        Tue, 13 Jun 2023 10:08:45 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-62de508705dso9507116d6.1;
+        Tue, 13 Jun 2023 10:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686676124; x=1689268124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IEOxPjyq7cbAhN04VkJQjCBC+cXkSTNShgxgFc1N+zA=;
+        b=A7iJAOhzjDARsMdLXql0k2OXLHNTpaLZtqbaTeS51zwUgfBoKoHEAdgUwftZtXPkrr
+         yoch6gF7JjAlWDOjG9dCbPyLz8wl0KVf9c+xRea0NqOAttdciVtvu9j6oDNptpSoLsj9
+         Zy2SsuRT8B3s9C49maijvvGSEb+p2wwuiM3MOY4xvubIKWPb7NMQiueXnt/hLkbjK0Qb
+         3LtbtFYpKySGZMPmCO9Y9boRNazVRe3Uc/G0fFHOUGSADUajXULr45dvsJlbVNfhFBg9
+         p8NL/UmHMg3bEGWslK4cFSxYbVrEFwIk7cpDgWfblmckcgIaWKaQUoTTNxaMLSZLEVhL
+         2Abw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686676124; x=1689268124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IEOxPjyq7cbAhN04VkJQjCBC+cXkSTNShgxgFc1N+zA=;
+        b=lyqlni2rvUohdkJB9n4KzzyagmodFprDp1YSRawrsyYfbllXLDfwKpqG6N5itiN0oq
+         2B92kMLfzahdIHkygFE5jAjdp/klqOXES00/6sYDHHZ+BSvyPXfWMXcLjvTUZue6ZEOc
+         CndOoFdgu02lbd93G75USlPwS665ZNPR8QU8mHN8ZUQ8RTwQHJj0IBSZdGyagkqnmUqr
+         y3ZD7EMQm3wPmGJdCQB4RnEhYa0Hcf3rfy1pCY84dC+l9qT9UdSiDYXJMyJRCeUt7DGr
+         A8tmCPEr+01vZkc1bjbfN65nzvcLmuDvRWvadhfe3RuNrmZNZnsTwsjfbuuMQTixZ9v5
+         f4Hg==
+X-Gm-Message-State: AC+VfDy9+CibQtYeLv1QfTKKHe7qiPL20pXyPIeHMLdYQUfX3NDDwVzK
+        iOLkGaww3Wd+MpWAfMpvMYARvQeyy1QGV9aCwZA=
+X-Google-Smtp-Source: ACHHUZ6IVHYtr6EhQ8zxzJ7cZgPX29yPpTxMs+tJlNote6SRNod+g3s8Q+j1rgTEV1/Gp9V+uz2mkZmDpuA7/u9qgnM=
+X-Received: by 2002:a05:6214:2468:b0:626:1e6b:4785 with SMTP id
+ im8-20020a056214246800b006261e6b4785mr15074240qvb.6.1686676124471; Tue, 13
+ Jun 2023 10:08:44 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-GUID: Xwf0LSjlfOPZiiSN3aacIDFlteynL5h1
-X-Proofpoint-ORIG-GUID: Xwf0LSjlfOPZiiSN3aacIDFlteynL5h1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-13_04,2023-06-12_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306130124
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+References: <20230612122926.107333-1-herve.codina@bootlin.com>
+ <20230612122926.107333-7-herve.codina@bootlin.com> <CAHp75Vf2dmAS9VD-pgyZwVopVCFy8yFjhPWEj8sym=pfE7uxSA@mail.gmail.com>
+ <20230613100000.6bd9e690@bootlin.com>
+In-Reply-To: <20230613100000.6bd9e690@bootlin.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 13 Jun 2023 20:08:08 +0300
+Message-ID: <CAHp75Vcr5Owjn0HK-+D0mpPJAkAxG7F8bEO=sqvhT8w=_xnF7w@mail.gmail.com>
+Subject: Re: [PATCH v3 06/12] minmax: Introduce {min,max}_array()
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -110,69 +82,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, Jun 13, 2023 at 11:00=E2=80=AFAM Herve Codina <herve.codina@bootlin=
+.com> wrote:
+> On Mon, 12 Jun 2023 17:10:40 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Mon, Jun 12, 2023 at 3:30=E2=80=AFPM Herve Codina <herve.codina@boot=
+lin.com> wrote:
+> > >
+> > > Introduce min_array() (resp max_array()) in order to get the
+> > > minimal (resp maximum) of values present in an array.
+> >
+> > Some comments below, after addressing them,
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> -----Original Message-----
-> From: Rob Herring <robh@kernel.org>
-> Sent: Tuesday, June 13, 2023 6:19 PM
-> To: Paller, Kim Seer <KimSeer.Paller@analog.com>
-> Cc: devicetree@vger.kernel.org; Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org>; lgirdwood@gmail.com; broonie@kernel.org;
-> andy.shevchenko@gmail.com; linux-kernel@vger.kernel.org;
-> conor+dt@kernel.org; Hennerich, Michael <Michael.Hennerich@analog.com>;
-> robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org; lars@metafoo.de;
-> jic23@kernel.org; linux-iio@vger.kernel.org
-> Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
-> 
-> [External]
-> 
-> 
-> On Tue, 13 Jun 2023 17:33:45 +0800, Kim Seer Paller wrote:
-> > The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
-> > binary inputs.
-> >
-> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Reported-by: Rob Herring <robh@kernel.org>
-> > Closes:
-> > https://urldefense.com/v3/__https://lore.kernel.org/all/168663709022.6
-> >
-> 52608.11756645774505315189.robh@kernel.org/__;!!A3Ni8CS0y2Y!5MOlRh
-> mYJL
-> >
-> qPmhR7QmgutQNBKIuJTk_FlMbFGnFd4R9dVxnXWk8rY0woqzhv5YcF58DvBLTrc
-> xVK5KdS
-> > $
-> > ---
-> > V3 -> V5: Added spaces between prefixes in subject. Fixed MAINTAINERS
-> reference.
-> >
-> >  .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
-> >  MAINTAINERS                                   |  7 +++
-> >  2 files changed, 61 insertions(+)
-> >  create mode 100644
-> > Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
-> >
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-
-> ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml:
-> $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates
-> that the pin should be operating in paired mode.'}] is not of type 'object',
-> 'boolean'
-> 	from schema $id:
-> https://urldefense.com/v3/__http://devicetree.org/meta-
-> schemas/core.yaml*__;Iw!!A3Ni8CS0y2Y!5MOlRhmYJLqPmhR7QmgutQNBKIuJ
-> Tk_FlMbFGnFd4R9dVxnXWk8rY0woqzhv5YcF58DvBLTrc0FLIB-v$
-> 
-> doc reference errors (make refcheckdocs):
+...
 
-Could the doc reference error also be ignored? I cannot reproduce the same error on my side.
+> > > +       typeof(array) __array =3D (array);                        \
+> >
+> > We have __must_be_array()
+>
+> Using __must_be_array() will lead to some failure.
+> Indeed, we can have:
+>   --- 8< ---
+>   int *buff
+>   ...
+>   min =3D min_array(buff, nb_item);
+>   --- 8< ---
+>
+> In this case, __must_be_array() will report that buff is not an array.
 
-Best regards,
-Kim
+Oh, I missed that.
 
+> To avoid any confusion, what do you think if I renamed {min,max}_array()
+> to {min,max}_buffer() and replace __array by __buff and use *(__buff + xx=
+x)
+> instead of array[xxx] in the macro.
+
+But functionally it's still against an array.
+
+I would stick with "array" in the name, but add a comment why
+__must_be_array() is not used. If we need a stricter variant, we may
+add a new wrapper with that check. That said, I think we can use
+__array[0] and similar indexed accesses.
+
+
+--
+With Best Regards,
+Andy Shevchenko

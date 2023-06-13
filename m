@@ -2,61 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 277E072E451
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AFF972E469
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239901AbjFMNhp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 09:37:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43744 "EHLO
+        id S242282AbjFMNm0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 09:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242595AbjFMNhi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:37:38 -0400
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BDD123;
-        Tue, 13 Jun 2023 06:37:35 -0700 (PDT)
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-77b6e428f84so20954839f.1;
-        Tue, 13 Jun 2023 06:37:35 -0700 (PDT)
+        with ESMTP id S241006AbjFMNmO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:42:14 -0400
+Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC88D1730;
+        Tue, 13 Jun 2023 06:42:07 -0700 (PDT)
+Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-33d22754450so32142465ab.0;
+        Tue, 13 Jun 2023 06:42:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686663454; x=1689255454;
+        d=1e100.net; s=20221208; t=1686663727; x=1689255727;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r0vCNuqKUm55AaMm8pr0xyLnAFa80CEdl30TBTTMS60=;
-        b=dtLXY6Z8CEWE/dulBgY/rErdpGbF1RTFjCzwQUtapclkkEnMuQKeGD+t+nZyk//IiO
-         6CJZ1CHirh/I4uNj3yw5EWJIZ9CoOrv0HerIvI4DgttBnjLwYhTxzXpa7vjpD6JFxxVN
-         6KxFhkUGGltcN7UFu1PLm9oGgX9XvxgonBbcDr/6wBXOjZpT+s1NrT6L3KdJbP71dLQ5
-         cb2erf4/QwIbUikXJJKagDIE2iIUi322sNY2Rntrffe06ASbSmEf+CKxEFuecmqrbZW6
-         BIrW6w3vCdQF+TVGHtnefPHdcaKwuy813VTY6q56nWeA8oVae7lK+fqSysMwoIzunss9
-         pK3w==
-X-Gm-Message-State: AC+VfDynnUZI1EyBrsM3GDqbri1rzTlM70EnlJZHqng07fGGdCMEPRm+
-        ALXBUq6wjv4XIKncM8SAQg==
-X-Google-Smtp-Source: ACHHUZ62snGsnwuzPVeMJrIoCjYOrS2BeG82fFxxbz6v9Ogo9rZm3dRMxRWqs0YOuqVaQpzlRcTc3Q==
-X-Received: by 2002:a5e:8812:0:b0:76c:6f28:7e18 with SMTP id l18-20020a5e8812000000b0076c6f287e18mr9611143ioj.20.1686663454221;
-        Tue, 13 Jun 2023 06:37:34 -0700 (PDT)
+        bh=+5O33o6zgRpefLbSeRA3FQiNNmY/AxWBQOJYDguqJuI=;
+        b=hTFKqUObeKeRHTXPpNtMLUMKc9fAwnGsr0tOHG+G9dzI+L2hFA94od4JZXyRWp8OMV
+         Sup62xRRn/nhETIsnb8Txhi+HDjJlywQpTYYlNuA0cgNKPrMEMnaMR+MF50gzp4eF+B8
+         fWtMCX79qliNCsBwGUpqM+qfZXgocuOsfSZLK7c+Ls1r6RdsyXZrZB2V/BVzzROYzVPm
+         q0xxA562mwCL3SpNk4CW5z+qfPtL0xJ5AA+8WXpQsfAmn3rtTJjBg0qgvLbGC/lKF31X
+         RjhANxUn4JK0OYghWou7Oxard9iOF7LgpP6cu2cdB5sYdd8X0JCPBVmlCx1Spwburvio
+         CYqA==
+X-Gm-Message-State: AC+VfDzFkChAW09Y3bvqYm4d6eYGsMPOEFzF+CWQu229asLRK1Au6+KR
+        VIGdiUOAfKtzZNtU/b4j/BZ51Se+7w==
+X-Google-Smtp-Source: ACHHUZ7Whh7A509JfFoMM8/UIhY7zBqK1hQNaTzTuVOwEoXe+k5fwW24aLsVJ6N62jJE1gmpvzCT5w==
+X-Received: by 2002:a92:d943:0:b0:33e:7b40:18b3 with SMTP id l3-20020a92d943000000b0033e7b4018b3mr11105552ilq.18.1686663727132;
+        Tue, 13 Jun 2023 06:42:07 -0700 (PDT)
 Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id h3-20020a02c723000000b004161fafff97sm3438751jao.136.2023.06.13.06.37.32
+        by smtp.gmail.com with ESMTPSA id k1-20020a92c9c1000000b0033c01c407fbsm3837117ilq.31.2023.06.13.06.42.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 06:37:33 -0700 (PDT)
-Received: (nullmailer pid 1772161 invoked by uid 1000);
-        Tue, 13 Jun 2023 13:37:31 -0000
-Date:   Tue, 13 Jun 2023 07:37:31 -0600
+        Tue, 13 Jun 2023 06:42:06 -0700 (PDT)
+Received: (nullmailer pid 1778481 invoked by uid 1000);
+        Tue, 13 Jun 2023 13:42:05 -0000
+Date:   Tue, 13 Jun 2023 07:42:05 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Kim Seer Paller <kimseer.paller@analog.com>
-Cc:     Michael.Hennerich@analog.com, jic23@kernel.org, broonie@kernel.org,
-        andy.shevchenko@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        devicetree@vger.kernel.org, lars@metafoo.de,
-        linux-kernel@vger.kernel.org, lgirdwood@gmail.com,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings:iio:adc: add max14001
-Message-ID: <20230613133731.GA1767199-robh@kernel.org>
-References: <20230613054601.31566-1-kimseer.paller@analog.com>
- <168663709022.652608.11756645774505315189.robh@kernel.org>
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>
+Cc:     krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, jic23@kernel.org,
+        andriy.shevchenko@linux.intel.com, linux-kernel@vger.kernel.org,
+        mazziesaccount@gmail.com, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v6 1/7] dt-bindings: iio: Add KX132-1211 accelerometer
+Message-ID: <20230613134205.GA1777720-robh@kernel.org>
+References: <cover.1686651032.git.mehdi.djait.k@gmail.com>
+ <0d6051ad217f91c7de0883c4ca1516bdacc343ce.1686651032.git.mehdi.djait.k@gmail.com>
+ <168665515466.1407218.12335518729776515932.robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <168663709022.652608.11756645774505315189.robh@kernel.org>
+In-Reply-To: <168665515466.1407218.12335518729776515932.robh@kernel.org>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
@@ -68,21 +67,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 12:18:10AM -0600, Rob Herring wrote:
+On Tue, Jun 13, 2023 at 05:19:14AM -0600, Rob Herring wrote:
 > 
-> On Tue, 13 Jun 2023 13:46:00 +0800, Kim Seer Paller wrote:
-> > The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
-> > binary inputs.
+> On Tue, 13 Jun 2023 12:22:34 +0200, Mehdi Djait wrote:
+> > Extend the kionix,kx022a.yaml file to support the kx132-1211 device
 > > 
-> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
 > > ---
-> > V3 -> V4: Added space between prefixes in commit description.
+> > v6:
+> > v5:
+> > v4:
+> > v3:
+> > - no changes
 > > 
-> >  .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
-> >  MAINTAINERS                                   |  7 +++
-> >  2 files changed, 61 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+> > v2:
+> > - made the device name more specific from "kx132" to "kx132-1211"
+> > - removed the output data-rates mentioned and replaced them with "variable
+> > output data-rates"
+> > 
+> >  .../devicetree/bindings/iio/accel/kionix,kx022a.yaml | 12 +++++++-----
+> >  1 file changed, 7 insertions(+), 5 deletions(-)
 > > 
 > 
 > My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
@@ -94,6 +100,6 @@ On Tue, Jun 13, 2023 at 12:18:10AM -0600, Rob Herring wrote:
 > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml: $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates that the pin should be operating in paired mode.'}] is not of type 'object', 'boolean'
 > 	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
 
-Unrelated, this can be ignored.
+Unrelated. This can be ignored.
 
 Rob

@@ -2,75 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A5DC72E40B
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71DE72E40F
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242520AbjFMNZh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 09:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
+        id S240427AbjFMN0t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 09:26:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242455AbjFMNZg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:25:36 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD7471B0;
-        Tue, 13 Jun 2023 06:25:35 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-62df2192d13so7676466d6.1;
-        Tue, 13 Jun 2023 06:25:35 -0700 (PDT)
+        with ESMTP id S240413AbjFMN0s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:26:48 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2E21AA;
+        Tue, 13 Jun 2023 06:26:47 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-56ce61769b7so40482087b3.3;
+        Tue, 13 Jun 2023 06:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686662735; x=1689254735;
+        d=gmail.com; s=20221208; t=1686662806; x=1689254806;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PGWVSRLSWiSQmgCzVp1crJX1PaYgdtyOOFzd4KI8WPY=;
-        b=HWfrF9TfgiK84XltXfvEgJRiai43zOeGut8vINME/9REh2L3cElV8+jnFD9w1O4hCa
-         DOSLZRxfWQrvdXAonKLk4FnRb2jIBi7XLmGQgeF3fpheKhw1QiiaXteIPU65Z3BHmabx
-         PVBvMLCKFvLvZsn1uFcP9OKv5ZYU/OmETC3D8hALocTj1s02fudpY9GutoTjtLQSfq8N
-         BUM19YwPqIKRWmM0hed8lbHmYSNn4IXrLcq6JgCKGChoNCZKD5uyNWifQfBXN5dmMNiy
-         tgkqxWiCu53VpV40XJc5vCbXO37JudVTGjb4hjVI4J48uy6frPRTHL4AhmzHS8eD/2WY
-         EzyA==
+        bh=8wvnsa4LaCwBU/cmhPsEn3q8zOJvBJxBe8cx4rTNnKI=;
+        b=HgSwBp2I6aBOU/IiJgGo0pfsm6MEerBWlNLC8KF2yaQDAuFy4JRezhIzidE+wR1vJy
+         B1pyszqIJzNlmATFwZQiHg4462iC5zmGaNA7z13ALLzH7h2O+thCPlWvSXPwEDf+1ErN
+         PdX4zkQ4xJEvFjV2tQVGz/3wTbwbQ1sNRKxc3ntHbPxtNx8iwKQFpvp/+wDKTk3QIxYn
+         QWJvAvoic1pDMb1gYlPhyrrZfZf5b1HibdPpHsrzL/EYZabGHRI50WNy826MfD+DtVi8
+         PNLiJwkwlrnN+a6FT/iwFWJvWNgt9cRvigl9o1hy4hCUbi5aZLJ4falbr88C56slQ54G
+         vnYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686662735; x=1689254735;
+        d=1e100.net; s=20221208; t=1686662806; x=1689254806;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PGWVSRLSWiSQmgCzVp1crJX1PaYgdtyOOFzd4KI8WPY=;
-        b=hcbvx+JEWJUekvXLRT65OrNi3GKOxLebMbgEWpYSb7x2VaeycyzYL31cx8f7zJrXdN
-         azZrSlYARefUlBPeHtu/faNybWCjEQ/RxM/0aDl/ZSa4/uLiEZX6j3NjL9WcvB8C6qDd
-         9VH8FBmZlPsExhjjqmF6M7NnkXVf+lyQnUatfvCcHXHvPaxZ1WLaFF78fYJfVdZVfJqJ
-         EDQ4HpttNeaRJoWYw9ry9posD4Wt1RRDuPDOTrUkkD6pdB2UhvhtuYL7wILVDdjYdzSl
-         +eFykw3GzRxUlY495MqVU4itBsWT+6g9mOBHrWnX4dw0Duzk/U0OE1DUg6vOyoAkIIIx
-         9odw==
-X-Gm-Message-State: AC+VfDzQj6SJkc0qyLp/4tX/16e2/ubzNyCASUXNwzCp7JSmWQT+GWFi
-        vmpeXsw4nIPqmA/+4FmUrV1/W8XejDN17AYfno0=
-X-Google-Smtp-Source: ACHHUZ5kz189tnuVuyMuffOhKxE4YMOwXJzuYUWwxct+eUXsThGzOBu6ItCuKQ3mJGC+D7Re2VsLvEk8QpOGwIlN9E8=
-X-Received: by 2002:a05:6214:1cce:b0:62d:fddb:1856 with SMTP id
- g14-20020a0562141cce00b0062dfddb1856mr392857qvd.43.1686662734879; Tue, 13 Jun
- 2023 06:25:34 -0700 (PDT)
+        bh=8wvnsa4LaCwBU/cmhPsEn3q8zOJvBJxBe8cx4rTNnKI=;
+        b=bHbA4h2M0233/QgOG58fdStSK3167FADJkxJF9RwO81lrUOgrorxs/FXOSgtR7iMxR
+         OnsGZiS5CEcSpMrmQzokNCbLgoM/aGczLFCwO5+fGAsg+Z2v3hlQebWDh+Uvx3IjmpFC
+         zIZHfUaH64CnKWWsFEqcvQSX1drAxKvlqNWtksGsKTVfsa2T1hXcVJPJaftiflekJyXf
+         I28qxilrmOCuTxvn35ktN6wIfq5V8Dg92o93V/xbDMKi2+8nhHEBV4UJDjsJk6Udknpa
+         1wXIyUXP98OultOTq6jK9XN7XeC5gD7woWpIdy6GhodPKbG1c2SvIrwJN/mFbsrv6mJr
+         d9Ag==
+X-Gm-Message-State: AC+VfDwa6J6xiRlHO3VsrU6XiWhRvvxabIOVNPMhB0OcbiW6n2yoyP0i
+        RcZ46ad/7duxetNrNr42KImlHyKnpMy7USFLfz1KRZoTweTzpw==
+X-Google-Smtp-Source: ACHHUZ66PXNi0hvZZ1awpW13gJnL3DjlKuBBTt86e1ZCg2zaM6ceBLbbebFbgS1Ycwg7ZE74xPevIBEVPyQ2qp44vgY=
+X-Received: by 2002:a81:6c58:0:b0:56d:65b:11e6 with SMTP id
+ h85-20020a816c58000000b0056d065b11e6mr2107347ywc.8.1686662806503; Tue, 13 Jun
+ 2023 06:26:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612122926.107333-1-herve.codina@bootlin.com>
- <20230612122926.107333-12-herve.codina@bootlin.com> <CAHp75Vfz+vSJ7rQ4sxb0R+zRbrjipXUX3VpaHyvOWWePdPxejQ@mail.gmail.com>
- <20230613113707.0b5d9648@bootlin.com>
-In-Reply-To: <20230613113707.0b5d9648@bootlin.com>
+References: <20230613093346.60781-1-kimseer.paller@analog.com> <20230613093346.60781-2-kimseer.paller@analog.com>
+In-Reply-To: <20230613093346.60781-2-kimseer.paller@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 13 Jun 2023 16:24:58 +0300
-Message-ID: <CAHp75Vd0SNY6XgKwS5j74VftY46MDQ9=Zc3wXwGLOiMc_ZX8Ow@mail.gmail.com>
-Subject: Re: [PATCH v3 11/12] ASoC: codecs: Add support for the generic IIO
- auxiliary devices
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date:   Tue, 13 Jun 2023 16:26:10 +0300
+Message-ID: <CAHp75VfcAevUrc5XgjYb4qB+ASzOSGif2tP=e5CRzpnBCUumPg@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] iio: adc: max14001: New driver
+To:     Kim Seer Paller <kimseer.paller@analog.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, lgirdwood@gmail.com,
+        broonie@kernel.org, Michael.Hennerich@analog.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, robh@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -83,26 +71,13 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 12:37=E2=80=AFPM Herve Codina <herve.codina@bootlin=
-.com> wrote:
-> On Mon, 12 Jun 2023 17:37:00 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-
-...
-
-> > > +       struct snd_kcontrol_new control =3D {0};
-> >
-> > 0 is not needed.
+On Tue, Jun 13, 2023 at 12:34=E2=80=AFPM Kim Seer Paller
+<kimseer.paller@analog.com> wrote:
 >
-> Not for this one.
->
-> The variable is in stack.
-> Some of the structure members will be set in the code but we need to ensu=
-re
-> that all others are set to 0.
+> The MAX14001 is configurable, isolated 10-bit ADCs for multi-range
+> binary inputs.
 
-Yes, and as I said, 0 is not needed. Compiler assumes that if you just
-use plain {}.
+Same comments as I gave in previous email (for v4).
 
 --=20
 With Best Regards,

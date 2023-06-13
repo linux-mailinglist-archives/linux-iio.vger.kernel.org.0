@@ -2,64 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AFF972E469
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A83372E499
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242282AbjFMNm0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 09:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46078 "EHLO
+        id S241683AbjFMNue (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Jun 2023 09:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241006AbjFMNmO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:42:14 -0400
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC88D1730;
-        Tue, 13 Jun 2023 06:42:07 -0700 (PDT)
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-33d22754450so32142465ab.0;
-        Tue, 13 Jun 2023 06:42:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686663727; x=1689255727;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+5O33o6zgRpefLbSeRA3FQiNNmY/AxWBQOJYDguqJuI=;
-        b=hTFKqUObeKeRHTXPpNtMLUMKc9fAwnGsr0tOHG+G9dzI+L2hFA94od4JZXyRWp8OMV
-         Sup62xRRn/nhETIsnb8Txhi+HDjJlywQpTYYlNuA0cgNKPrMEMnaMR+MF50gzp4eF+B8
-         fWtMCX79qliNCsBwGUpqM+qfZXgocuOsfSZLK7c+Ls1r6RdsyXZrZB2V/BVzzROYzVPm
-         q0xxA562mwCL3SpNk4CW5z+qfPtL0xJ5AA+8WXpQsfAmn3rtTJjBg0qgvLbGC/lKF31X
-         RjhANxUn4JK0OYghWou7Oxard9iOF7LgpP6cu2cdB5sYdd8X0JCPBVmlCx1Spwburvio
-         CYqA==
-X-Gm-Message-State: AC+VfDzFkChAW09Y3bvqYm4d6eYGsMPOEFzF+CWQu229asLRK1Au6+KR
-        VIGdiUOAfKtzZNtU/b4j/BZ51Se+7w==
-X-Google-Smtp-Source: ACHHUZ7Whh7A509JfFoMM8/UIhY7zBqK1hQNaTzTuVOwEoXe+k5fwW24aLsVJ6N62jJE1gmpvzCT5w==
-X-Received: by 2002:a92:d943:0:b0:33e:7b40:18b3 with SMTP id l3-20020a92d943000000b0033e7b4018b3mr11105552ilq.18.1686663727132;
-        Tue, 13 Jun 2023 06:42:07 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id k1-20020a92c9c1000000b0033c01c407fbsm3837117ilq.31.2023.06.13.06.42.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 06:42:06 -0700 (PDT)
-Received: (nullmailer pid 1778481 invoked by uid 1000);
-        Tue, 13 Jun 2023 13:42:05 -0000
-Date:   Tue, 13 Jun 2023 07:42:05 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, jic23@kernel.org,
-        andriy.shevchenko@linux.intel.com, linux-kernel@vger.kernel.org,
-        mazziesaccount@gmail.com, devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v6 1/7] dt-bindings: iio: Add KX132-1211 accelerometer
-Message-ID: <20230613134205.GA1777720-robh@kernel.org>
-References: <cover.1686651032.git.mehdi.djait.k@gmail.com>
- <0d6051ad217f91c7de0883c4ca1516bdacc343ce.1686651032.git.mehdi.djait.k@gmail.com>
- <168665515466.1407218.12335518729776515932.robh@kernel.org>
+        with ESMTP id S240572AbjFMNuc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:50:32 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E551B2;
+        Tue, 13 Jun 2023 06:50:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1686664231;
+  x=1718200231;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LUX9cP79go9f+wGu1o/Mzl0dQ6jN4HTs40FnoqtdA9w=;
+  b=hAU/e87ooJkYheYo/CIZqFfneFuzSgJgBjzF7jo1DMsD+ActRm2MW5XW
+   uY9gDvD5e+z/AjbYwPofxziAFPtvyUhgM8quq7mO9YwsHyXuCeFVCM+we
+   z1vF/kTKHlWXZ2BCUceruJy5P5FVtIRcMAsOmIxGqd3vadCcfdUBWgODz
+   jgC3jUWFzFJFxNzv1srZA86a0AYYrpb/s3Erl1UTlAOazFX31XyaWYx7F
+   /eBUIgtBtES0DLRbgiT3iJ5tKG2rPUMj7uxXw9q6EK8nJxtLCzmgMfdwJ
+   K5WZOSb7Z5cjS5UKoNrPijj/WhHRlx5gfD+GXdLkV9fOTrdKr3GQ3RM4m
+   A==;
+From:   Astrid Rost <astrid.rost@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@axis.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mathieu Othacehe <m.othacehe@gmail.com>,
+        Astrid Rost <astrid.rost@axis.com>
+Subject: [PATCH v6 0/8]  iio: light: vcnl4000: Add features for vncl4040/4200
+Date:   Tue, 13 Jun 2023 15:50:16 +0200
+Message-ID: <20230613135025.2596641-1-astrid.rost@axis.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <168665515466.1407218.12335518729776515932.robh@kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,39 +53,109 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 05:19:14AM -0600, Rob Herring wrote:
-> 
-> On Tue, 13 Jun 2023 12:22:34 +0200, Mehdi Djait wrote:
-> > Extend the kionix,kx022a.yaml file to support the kx132-1211 device
-> > 
-> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> > Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
-> > ---
-> > v6:
-> > v5:
-> > v4:
-> > v3:
-> > - no changes
-> > 
-> > v2:
-> > - made the device name more specific from "kx132" to "kx132-1211"
-> > - removed the output data-rates mentioned and replaced them with "variable
-> > output data-rates"
-> > 
-> >  .../devicetree/bindings/iio/accel/kionix,kx022a.yaml | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> > 
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml: $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates that the pin should be operating in paired mode.'}] is not of type 'object', 'boolean'
-> 	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+Add a more complete support for vncl4040 and vcnl4200, which allows to
+change the distance of proximity detection and interrupt support for the
+illuminance sensor.
 
-Unrelated. This can be ignored.
+Proximity functionality:
+  - Interrupt support (new on vcnl4200).
 
-Rob
+Proximity reduce the amount of interrupts:
+  - Adaptable integration time (new on vcnl4200) - the sampling rate
+    changes according to this value.
+  - Period - interrupt is asserted if the value is above or
+    below a certain threshold.
+
+Proximity change the activity distance:
+  - Oversampling ratio - Amount of LED pulses per measured raw value.
+  - Calibration bias - LED current calibration of the sensor.
+
+Illuminance functionality:
+  - Interrupt support.
+
+Illuminance reduce the amount of interrupts:
+  - Adaptable integration time - the sampling rate and scale changes
+    according to this value.
+  - Period – interrupt is asserted if the value is above or
+    below a certain threshold.
+
+changes v2:
+- [PATCH v2 3/7] Fixed calculation of al_scale.
+  Fix the value of vcnl4040 according to the data-sheet.
+  Use div_u64 for the division.
+scription for the branch
+
+changes v3:
+- [PATCH v3 1-3/7] Add differences between the chips as variables in
+  chip-spec.
+- [PATCH v3 4/7] Changed commit message.
+- [PATCH v3 5/7] Use period instead of debounce time. This causes some
+  calculations as the period is a time and the chip allows to set a certain
+  amount of measurements above/below the threshold, before throwing an
+  interrupt.
+- [PATCH v3 6/7] Changed commit message.
+
+changes v4:
+- [PATCH v3 1-3/7] Fix setting correct als_it for vcnl4040.
+- [PATCH v3 5/7] Use MICRO macro.
+  Fix values greater than 1 s for the proximity period.
+
+changes v5:
+[PATCH v5 2/7]:
+- Calculate ps_it from ps_it_times by usinh NSEC_PER_USEC.
+[PATCH v5 3/7]:
+- Calculate als_it from ps_it_times by using NSEC_PER_USEC.
+- Store scale step factor in chip_spec.
+- Fixes sampling_rate to ns + 20 %.
+[PATCH v5 3/7 - 7/7]
+- Changed formatting.
+- Changed some variable names.
+
+- [PATCH v3 4/7] Changed commit message.
+- [PATCH v3 5/7] Use period instead of debounce time. This causes some
+  calculations as the period is a time and the chip allows to set a certain
+  amount of measurements above/below the threshold, before throwing an
+  interrupt.
+- [PATCH v3 6/7] Changed commit message.
+
+changes v4:
+- [PATCH v3 1-3/7] Fix setting correct als_it for vcnl4040.
+- [PATCH v3 5/7] Use MICRO macro.
+  Fix values greater than 1 s for the proximity period.
+
+changes v5:
+[PATCH v5 2/7]:
+- Calculate ps_it from ps_it_times by usinh NSEC_PER_USEC.
+[PATCH v5 3/7]:
+- Calculate als_it from ps_it_times by using NSEC_PER_USEC.
+- Store scale step factor in chip_spec.
+- Fixes sampling_rate to ns + 20 %.
+[PATCH v5 3/7 - 7/7]
+- Changed formatting.
+- Changed some variable names.
+
+changes v6:
+Added [PATCH v6 3/8]:
+- Add switch case for IIO_PROXIMITY check.
+ [PATCH v5 1/7 - 7/7]
+- Changed formatting.
+[PATCH v5 3/7, 5/7, 6/7, 7/7]
+- Changed loop.
+- Changed some variable names.
+
+Astrid Rost (8):
+  [PATCH v6 1/8] iio: light: vcnl4000: Add proximity irq for vcnl4200
+  [PATCH v6 2/8] iio: light: vcnl4000: Add proximity ps_it for vcnl4200
+  [PATCH v6 3/8] iio: light: vcnl4000: Check type with switch case
+  [PATCH v6 4/8] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+  [PATCH v6 5/8] iio: light: vcnl4000: add illuminance irq vcnl4040/4200
+  [PATCH v6 6/8] iio: light: vcnl4000: Add period for vcnl4040/4200
+  [PATCH v6 7/8] iio: light: vcnl4000: Add oversampling_ratio for 4040/4200
+  [PATCH v6 8/8] iio: light: vcnl4000: Add calibration bias for 4040/4200
+
+ drivers/iio/light/vcnl4000.c | 710 +++++++++++++++++++++++++++++++----
+ 1 file changed, 643 insertions(+), 67 deletions(-)
+
+-- 
+2.30.2
+

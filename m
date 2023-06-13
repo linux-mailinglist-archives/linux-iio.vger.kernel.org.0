@@ -2,121 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCDAB72E4B0
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 15:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F07472E54B
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jun 2023 16:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239346AbjFMNzw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Jun 2023 09:55:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54264 "EHLO
+        id S235221AbjFMOJj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 13 Jun 2023 10:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233859AbjFMNzv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 09:55:51 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F68B5;
-        Tue, 13 Jun 2023 06:55:49 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1686664546;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RInDDoo3F9fiMPBADCTZLN5rnGkLVd2Za/vXzH5dQ/c=;
-        b=QftuhZpBqsP2B3CLtbE+wTeYh7Ogb7O3ewjH04cfBt5faJ/2C8x9gR0fuovseLhV3B/PDv
-        DKpPbwBXTC+TbwcGQAHA26J2W0Vw8N9x8r1MHClpBAdzHAbVHEQuMnHznYF9/7ZOLSSVjX
-        lhbelEMGkjLCZyKrjKlCGVyaV9HEL0G1HGOM+QCIubSlqCF9t0w9K105iVk6FKH28bXUOu
-        7tDDfVQMuPE9ZtJLoE0CHP2zvQgrE5tEYFnG3EYNbqsDnp4XIjjpnbVqD1RMTK7/BOCv2t
-        ckKTpXK24XRaJX2Wvf58rEtLKsMEDUo+A9lNzZpsNp49wfS5V6B+NyWSSy/1lA==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D0A751BF219;
-        Tue, 13 Jun 2023 13:55:41 +0000 (UTC)
-Date:   Tue, 13 Jun 2023 15:55:36 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 11/12] ASoC: codecs: Add support for the generic IIO
- auxiliary devices
-Message-ID: <20230613155536.7ce2d1db@bootlin.com>
-In-Reply-To: <CAHp75Vd0SNY6XgKwS5j74VftY46MDQ9=Zc3wXwGLOiMc_ZX8Ow@mail.gmail.com>
-References: <20230612122926.107333-1-herve.codina@bootlin.com>
-        <20230612122926.107333-12-herve.codina@bootlin.com>
-        <CAHp75Vfz+vSJ7rQ4sxb0R+zRbrjipXUX3VpaHyvOWWePdPxejQ@mail.gmail.com>
-        <20230613113707.0b5d9648@bootlin.com>
-        <CAHp75Vd0SNY6XgKwS5j74VftY46MDQ9=Zc3wXwGLOiMc_ZX8Ow@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S242760AbjFMOJg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Jun 2023 10:09:36 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F58171D;
+        Tue, 13 Jun 2023 07:09:10 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35DDKQVF013107;
+        Tue, 13 Jun 2023 10:08:23 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r4p351dqr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 13 Jun 2023 10:08:17 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 35DE7eIM009159
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 13 Jun 2023 10:07:40 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 13 Jun
+ 2023 10:07:39 -0400
+Received: from ASHBMBX8.ad.analog.com ([fe80::30b9:230c:9621:902f]) by
+ ASHBMBX8.ad.analog.com ([fe80::30b9:230c:9621:902f%9]) with mapi id
+ 15.02.0986.014; Tue, 13 Jun 2023 10:07:39 -0400
+From:   "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "conor+dt@kernel.org" <conor+dt@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: RE: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
+Thread-Topic: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
+Thread-Index: AQHZndo3coUyYXBv2Eq2tUVubImF6a+IyEuA///7LzA=
+Date:   Tue, 13 Jun 2023 14:07:39 +0000
+Message-ID: <8998c3d3f3ca4f44a5c99594dcb24cbe@analog.com>
+References: <20230613093346.60781-1-kimseer.paller@analog.com>
+ <168665154072.1311520.12958978545814613109.robh@kernel.org>
+In-Reply-To: <168665154072.1311520.12958978545814613109.robh@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNca3BhbGxlcjJc?=
+ =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
+ =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy1hNTkzZTI2Yi0wOWYzLTExZWUtYWU3ZC1mOGNi?=
+ =?us-ascii?Q?Njc0OWVhN2JcYW1lLXRlc3RcYTU5M2UyNmQtMDlmMy0xMWVlLWFlN2QtZjhj?=
+ =?us-ascii?Q?YjY3NDllYTdiYm9keS50eHQiIHN6PSI1MTQ0IiB0PSIxMzMzMTEzODg1NjQ5?=
+ =?us-ascii?Q?MzQ3OTgiIGg9ImJMb29YTXVtSlJZb0VSeklqUUM1TXY0ZitIaz0iIGlkPSIi?=
+ =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
+ =?us-ascii?Q?Q09VTzFuQUo3WkFUMVlWYldwUER1dFBWaFZ0YWs4TzYwREFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFFQUFRQUJBQUFBUjZsVExBQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
+ =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
+ =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
+ =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
+ =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
+ =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
+ =?us-ascii?Q?dGE+?=
+x-dg-rorf: true
+x-originating-ip: [10.116.242.24]
+x-adiruleop-newscl: Rule Triggered
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Proofpoint-GUID: Xwf0LSjlfOPZiiSN3aacIDFlteynL5h1
+X-Proofpoint-ORIG-GUID: Xwf0LSjlfOPZiiSN3aacIDFlteynL5h1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-13_04,2023-06-12_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1015
+ impostorscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306130124
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 13 Jun 2023 16:24:58 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Tue, Jun 13, 2023 at 12:37 PM Herve Codina <herve.codina@bootlin.com> wrote:
-> > On Mon, 12 Jun 2023 17:37:00 +0300
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:  
+> -----Original Message-----
+> From: Rob Herring <robh@kernel.org>
+> Sent: Tuesday, June 13, 2023 6:19 PM
+> To: Paller, Kim Seer <KimSeer.Paller@analog.com>
+> Cc: devicetree@vger.kernel.org; Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org>; lgirdwood@gmail.com; broonie@kernel.org;
+> andy.shevchenko@gmail.com; linux-kernel@vger.kernel.org;
+> conor+dt@kernel.org; Hennerich, Michael <Michael.Hennerich@analog.com>;
+> robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org; lars@metafoo.de;
+> jic23@kernel.org; linux-iio@vger.kernel.org
+> Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: add max14001
 > 
-> ...
+> [External]
 > 
-> > > > +       struct snd_kcontrol_new control = {0};  
-> > >
-> > > 0 is not needed.  
+> 
+> On Tue, 13 Jun 2023 17:33:45 +0800, Kim Seer Paller wrote:
+> > The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+> > binary inputs.
 > >
-> > Not for this one.
+> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Reported-by: Rob Herring <robh@kernel.org>
+> > Closes:
+> > https://urldefense.com/v3/__https://lore.kernel.org/all/168663709022.6
 > >
-> > The variable is in stack.
-> > Some of the structure members will be set in the code but we need to ensure
-> > that all others are set to 0.  
+> 52608.11756645774505315189.robh@kernel.org/__;!!A3Ni8CS0y2Y!5MOlRh
+> mYJL
+> >
+> qPmhR7QmgutQNBKIuJTk_FlMbFGnFd4R9dVxnXWk8rY0woqzhv5YcF58DvBLTrc
+> xVK5KdS
+> > $
+> > ---
+> > V3 -> V5: Added spaces between prefixes in subject. Fixed MAINTAINERS
+> reference.
+> >
+> >  .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
+> >  MAINTAINERS                                   |  7 +++
+> >  2 files changed, 61 insertions(+)
+> >  create mode 100644
+> > Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+> >
 > 
-> Yes, and as I said, 0 is not needed. Compiler assumes that if you just
-> use plain {}.
+> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
 > 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-
+> ci/linux/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml:
+> $defs:qcom-pmic-mpp-state:properties:qcom,paired: [{'description': 'Indicates
+> that the pin should be operating in paired mode.'}] is not of type 'object',
+> 'boolean'
+> 	from schema $id:
+> https://urldefense.com/v3/__http://devicetree.org/meta-
+> schemas/core.yaml*__;Iw!!A3Ni8CS0y2Y!5MOlRhmYJLqPmhR7QmgutQNBKIuJ
+> Tk_FlMbFGnFd4R9dVxnXWk8rY0woqzhv5YcF58DvBLTrc0FLIB-v$
+> 
+> doc reference errors (make refcheckdocs):
 
-My bad, sorry, I misunderstood.
-Will be update to an empty {} in the next iteration.
+Could the doc reference error also be ignored? I cannot reproduce the same error on my side.
 
-Thanks,
-Hervé
+Best regards,
+Kim
 
-
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com

@@ -2,192 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FA2672F428
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 07:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F17D472F4DE
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 08:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242890AbjFNFce (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jun 2023 01:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53414 "EHLO
+        id S243201AbjFNGbv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jun 2023 02:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234327AbjFNFcd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 01:32:33 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8AE3198D;
-        Tue, 13 Jun 2023 22:32:31 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b1b72dc2feso2916541fa.3;
-        Tue, 13 Jun 2023 22:32:31 -0700 (PDT)
+        with ESMTP id S243215AbjFNGbP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 02:31:15 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9632B1BF5
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 23:30:40 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5186c90e3bbso3228145a12.3
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 23:30:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686720750; x=1689312750;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1686724239; x=1689316239;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=g+qH04ox/9SD7VXix3RPkQb/VsDtH0DaySagYZUq/B4=;
-        b=VYxsw7luRgE4KyyGUu3p8JPYSAvnNE82w32YWzIKxFYDlkM+ed26p6NCOfm77az836
-         gYkv0bAAxwOsfoa5dOL99T2sV7tndqha9bepcF4DBz+W/wDOXspEEo0glz2TOMtgSsk1
-         p8ekb16fdUJR6Y7Zh0zn6A0oAjDqdgrtRHg/58MYdwoCQ9rFZP4N5chLFKOq+xMcgEc4
-         2K/4sDmaim89aORrmQnajWutAHsCZiseFH2J+zNO2IYGgMLM5j2TXnZxnUnnSjdhFdIO
-         9Y8MlFwN9qJbvwO1lOdY9zBcungpEXvnq3i+dMEezTwcwaXLUR9/FxlOA3t2IIDZtMTo
-         pOLw==
+        bh=cc+dxPpu8lXsZsADd1XaSw2JFjXzN4blFEsEKZHFTD8=;
+        b=qfeOtFUYHy+0ttTJcytVR9sVTi76yBJKYGUruFsPsclOXYncFnmR2a+KZ5QFJ7u0MG
+         O+uPjlQFFZud5PzW7DMkZD8zUwzmgzz1afhTunc8ERcoyzy82KvTJnaPoKv/t39Cn2Rs
+         glUcWe5jY/Obo8sSaRX0dFxf09OWOpAnfK/9IJUDHA2huuaScEpevMSQ5WMoNpPMu9kw
+         fHd1LXYv434YjhEjoVwvB+j1PKds323PDP+4w1Wj/uFSEFGBpPgXie/pYfKEhPNr3DtK
+         AUgbArtKo7c9bt9bHk7ac+OsRv2KV1qPKY/UuJ2UCg1MiqEVxRAPeLkypVQvJzTc8eZF
+         tdMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686720750; x=1689312750;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1686724239; x=1689316239;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+qH04ox/9SD7VXix3RPkQb/VsDtH0DaySagYZUq/B4=;
-        b=bBBL+mVjdIkH2Dg7dY8WG1HA/inRoX0XRRUM/a/chYdL1LZNT53KPFT60fIUZ2vph4
-         lwSQV2pC35cc5DEQYOSfTyDIsnsL1IXlTofhzf7/ngcWzOIHB9PR7JfjajzSc0+gSKU9
-         BEF5j0tDhCBf0jGo1OqnHx8zwmXG1dkhv1r0gW5b8COGug79kUFcLn0LoDji+Db4klSr
-         NEj4YHc/UWZbj0V0UrTI1P+rv9CWJ4ZCaRTfPRY2BdVqCmSnUUSLYi+dJA/jIjFWTAkC
-         jRkVwdixzpjGnaIkPM64ceIwIhwhukJx9u8r5jrOQEMb9YfTL749Y9D77TywR10F3bbs
-         sKkA==
-X-Gm-Message-State: AC+VfDyP0vY1XaREr5QO6VgVAdUoipNVIOr9dLcOi/EMvknm0dApK394
-        v1qkqPxKj6G0N8tU2vMvzKlrhRNXs5Y=
-X-Google-Smtp-Source: ACHHUZ6f0/qoB5+qg+dWtoPRZABLaQPDJ64eb8rT3Qr5lcNQOi0DwHSzDRDR1JWPGCaDHIQe63QIqg==
-X-Received: by 2002:a05:651c:83:b0:2b3:429f:2b96 with SMTP id 3-20020a05651c008300b002b3429f2b96mr1300888ljq.37.1686720749511;
-        Tue, 13 Jun 2023 22:32:29 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id j9-20020a2e8249000000b002a7746800d0sm2433403ljh.130.2023.06.13.22.32.28
+        bh=cc+dxPpu8lXsZsADd1XaSw2JFjXzN4blFEsEKZHFTD8=;
+        b=CSs8pT/wG8FFKRB7PTns0G/nCXqNjQBDJCORm5daziQVyH2xp+3G3n3QN/3/0IS6pF
+         T9HQtb6cgs/6bXa1/mnU2phssYNW01gLSG1Wu/YmOvT7etODJ/go+ZvmJb2UTarI9RGj
+         VA81cBSO2S1g/UJDaaRJmxqKZF3ZATetks4ch47uMt2gZU2QxK38CMlt/Ks0EmfvmNDf
+         vfnhevvlOumCnNq1zln6Y7gV6IJlXQCr5tHikdVDqwIZxJUqVuNC55WlbPlA/LUm/+Y+
+         IfG5Jv4IzhMrff/0bOEVmk82MhU6caJX7PD/WwQQUoxiZ7zq2eGbFJ8zMigk0yjQqt+7
+         DKVw==
+X-Gm-Message-State: AC+VfDwxy7E748UQEhjNfVQ6V+7TFbbkqNbU5PCUKlcZ6P/8Md5pX445
+        Yph1vKUKj43jYqTMg4sNs5P7EQ==
+X-Google-Smtp-Source: ACHHUZ5abd/2cZWoy7USVlJWZb32cnqcjXZa76XE9hHfo1LyM0+k06asglp308N0ZQs34+NNItEODA==
+X-Received: by 2002:a50:fb94:0:b0:509:c6e6:c002 with SMTP id e20-20020a50fb94000000b00509c6e6c002mr7851333edq.39.1686724239059;
+        Tue, 13 Jun 2023 23:30:39 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id n12-20020a05640204cc00b0051631518aabsm7211825edw.93.2023.06.13.23.30.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jun 2023 22:32:29 -0700 (PDT)
-Message-ID: <fac025f6-6187-2258-9d49-61799754294f@gmail.com>
-Date:   Wed, 14 Jun 2023 08:32:27 +0300
+        Tue, 13 Jun 2023 23:30:38 -0700 (PDT)
+Message-ID: <46458a14-28f3-5279-f5ad-302e6edebaa5@linaro.org>
+Date:   Wed, 14 Jun 2023 08:30:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/3] dt-bindings: ROHM BU27010 RGBC + flickering sensor
-Content-Language: en-US, en-GB
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1686650184.git.mazziesaccount@gmail.com>
- <98e0b6fba7ff7515b541a517296d5b89dc73ce5b.1686651445.git.mazziesaccount@gmail.com>
- <22dadcf6-9879-efb2-9987-7f286b38b93b@linaro.org>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <22dadcf6-9879-efb2-9987-7f286b38b93b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 1/2] dt-bindings: iio: adc: add max14001
+To:     Kim Seer Paller <kimseer.paller@analog.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, lgirdwood@gmail.com,
+        broonie@kernel.org, Michael.Hennerich@analog.com,
+        andy.shevchenko@gmail.com, robh@kernel.org, conor+dt@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20230614004857.134980-1-kimseer.paller@analog.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230614004857.134980-1-kimseer.paller@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/13/23 21:42, Krzysztof Kozlowski wrote:
-> On 13/06/2023 12:19, Matti Vaittinen wrote:
->> The ROHM BU27010 is a sensor with 6 photodiodes (red, green, blue, clear,
->> IR and flickering detection) with five configurable channels. Red, green
->> and flickering detection being always available and two out of the rest
->> three (blue, clear, IR) can be selected to be simultaneously measured.
->> Typical application is adjusting LCD/OLED backlight of TVs, mobile phones
->> and tablet PCs.
+On 14/06/2023 02:48, Kim Seer Paller wrote:
+> The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+> binary inputs.
 > 
-> Please use subject prefixes matching the subsystem. You can get them for
-> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-> your patch is touching.
-> e.g.: "dt-bindings: iio:"
-> 
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> ---
+> V5 -> V6: Removed tags.
 
-Right, thanks!
+Not the review one tag! Drop the fake reports because there was not
+report and nothing to close.
 
-> 
->>
->> Add binding document for ROHM BU27010.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->>   .../bindings/iio/light/rohm,bu27010.yaml      | 49 +++++++++++++++++++
->>   1 file changed, 49 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu27010.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27010.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bu27010.yaml
->> new file mode 100644
->> index 000000000000..2bde9d2f1def
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27010.yaml
->> @@ -0,0 +1,49 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/light/rohm,bu27010.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: ROHM BU27010 color sensor
->> +
->> +maintainers:
->> +  - Matti Vaittinen <mazziesaccount@gmail.com>
->> +
->> +description: |
->> +  The ROHM BU27010 is a sensor with 6 photodiodes (red, green, blue, clear,
->> +  IR and flickering detection) with five configurable channels. Red, green
->> +  and flickering detection being always available and two out of the rest
->> +  three (blue, clear, IR) can be selected to be simultaneously measured.
->> +  Typical application is adjusting LCD/OLED backlight of TVs, mobile phones
->> +  and tablet PCs.
->> +
->> +properties:
->> +  compatible:
->> +    const: rohm,bu27010
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 1
->> +
->> +  vdd-supply: true
-> 
-> Isn't vdd-supply required for the hardware to work? How does it get the
-> power otherwise?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-The BU27010 works by magic smoke. When smoke leaks out the sensor no 
-longer works.
-
-Ehh, I think you are right. My thinking was that it is not uncommon for 
-people to not have all fixed regulators present in device-tree. But I 
-agree, this does not mean we should encourage that. I'll add supply to 
-the list of the required properties.
-
-> 
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    i2c {
->> +      #address-cells = <1>;
->> +      #size-cells = <0>;
->> +
->> +      light-sensor@38 {
->> +        compatible = "rohm,bu27010";
->> +        reg = <0x38>;
->> +      };
->> +    };
->> +
-> 
-> Trailing blank line.
-
-Indeed. Thanks.
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+Best regards,
+Krzysztof
 

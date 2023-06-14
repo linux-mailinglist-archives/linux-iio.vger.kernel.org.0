@@ -2,69 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F17D472F4DE
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 08:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3A172F4FD
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 08:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243201AbjFNGbv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jun 2023 02:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
+        id S243194AbjFNGh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jun 2023 02:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243215AbjFNGbP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 02:31:15 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9632B1BF5
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 23:30:40 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5186c90e3bbso3228145a12.3
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 23:30:40 -0700 (PDT)
+        with ESMTP id S243193AbjFNGg4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 02:36:56 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE8B1FD8
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 23:36:51 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-98220bb31c6so61921966b.3
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jun 2023 23:36:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686724239; x=1689316239;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1686724610; x=1689316610;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=cc+dxPpu8lXsZsADd1XaSw2JFjXzN4blFEsEKZHFTD8=;
-        b=qfeOtFUYHy+0ttTJcytVR9sVTi76yBJKYGUruFsPsclOXYncFnmR2a+KZ5QFJ7u0MG
-         O+uPjlQFFZud5PzW7DMkZD8zUwzmgzz1afhTunc8ERcoyzy82KvTJnaPoKv/t39Cn2Rs
-         glUcWe5jY/Obo8sSaRX0dFxf09OWOpAnfK/9IJUDHA2huuaScEpevMSQ5WMoNpPMu9kw
-         fHd1LXYv434YjhEjoVwvB+j1PKds323PDP+4w1Wj/uFSEFGBpPgXie/pYfKEhPNr3DtK
-         AUgbArtKo7c9bt9bHk7ac+OsRv2KV1qPKY/UuJ2UCg1MiqEVxRAPeLkypVQvJzTc8eZF
-         tdMg==
+        bh=XElC6rJY+nGGxGJnZgLE09h9gOSS2v7GKSOK1qVdyVI=;
+        b=fuAfEz2EgreON8JdOjjBrnjF7OA2dMgDAfL5ynlmQeA/mwKnHTuxrooKd6fGZhUAqp
+         B6mMgA9b3lFbHLucy7PJiRP5QWK//A5kX1FTr/SSHuHEPDGMAWcHQMFZT6K5MSVyairJ
+         TvjkPlEvPsMYYMygo//Bl8ZHXeGwVQfkkyWZBleJ/7GH2CIUJgEhb5wQK8IHyU7d1lLg
+         Pi/ubGy0dOacMObD0O1eKxBCXzwObmzooCr9o/L032KqR5zdQrxvE75a4WfwwnqYvyR9
+         4mnaoWJXVOY00p7l6KZZ6rNQDw08opKOS5HMnKx3R7Kkzpx6zrSJXzThwsWNskSIul80
+         Lo2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686724239; x=1689316239;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1686724610; x=1689316610;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cc+dxPpu8lXsZsADd1XaSw2JFjXzN4blFEsEKZHFTD8=;
-        b=CSs8pT/wG8FFKRB7PTns0G/nCXqNjQBDJCORm5daziQVyH2xp+3G3n3QN/3/0IS6pF
-         T9HQtb6cgs/6bXa1/mnU2phssYNW01gLSG1Wu/YmOvT7etODJ/go+ZvmJb2UTarI9RGj
-         VA81cBSO2S1g/UJDaaRJmxqKZF3ZATetks4ch47uMt2gZU2QxK38CMlt/Ks0EmfvmNDf
-         vfnhevvlOumCnNq1zln6Y7gV6IJlXQCr5tHikdVDqwIZxJUqVuNC55WlbPlA/LUm/+Y+
-         IfG5Jv4IzhMrff/0bOEVmk82MhU6caJX7PD/WwQQUoxiZ7zq2eGbFJ8zMigk0yjQqt+7
-         DKVw==
-X-Gm-Message-State: AC+VfDwxy7E748UQEhjNfVQ6V+7TFbbkqNbU5PCUKlcZ6P/8Md5pX445
-        Yph1vKUKj43jYqTMg4sNs5P7EQ==
-X-Google-Smtp-Source: ACHHUZ5abd/2cZWoy7USVlJWZb32cnqcjXZa76XE9hHfo1LyM0+k06asglp308N0ZQs34+NNItEODA==
-X-Received: by 2002:a50:fb94:0:b0:509:c6e6:c002 with SMTP id e20-20020a50fb94000000b00509c6e6c002mr7851333edq.39.1686724239059;
-        Tue, 13 Jun 2023 23:30:39 -0700 (PDT)
+        bh=XElC6rJY+nGGxGJnZgLE09h9gOSS2v7GKSOK1qVdyVI=;
+        b=HW/cASDn2dYxs02AbNAJMmwpoVJNqnZfcqOapXbPE8vYIB3bz0xpyoKI+Mla0Yer1a
+         QI1T65RMAKQmcGLK1w3bP8EGDTxqf0QG75qSebaYdfli0ytOMvvJnEu1w/8GBWLEMCnf
+         4EUv8w5u3IUUOaoj9yvRq9nylfM65edmdfqlSjHegsojQ6n7xhMHcMX6rehOt6bH83j6
+         X3vQNgbKT2Zz4Lhy5UkI7lSutpGq0E4yRGW9+7sPBbNOBGHoB9KOmbIfcwzGc2AcSdF7
+         GEKACuo61GSE1k2uygznAGsrfy270GmpUFPSVyLbktBrco7Muy4RMkPUbN901oziuucx
+         sGeA==
+X-Gm-Message-State: AC+VfDypiNqLUXDrEPU+wm1cwql+3lX9F38DzlElQFyEvas8v6Yr/IvQ
+        r76msch+niJZD63kpM/Qp2emRA==
+X-Google-Smtp-Source: ACHHUZ6MVTaz0VOwHMtzsEIlG4WyydULbVPqO89wCd+1+ZrO53ZwmsoyGzTwRRX1Zvb/wR/3lvCaZg==
+X-Received: by 2002:a17:907:2d07:b0:982:6bba:79c5 with SMTP id gs7-20020a1709072d0700b009826bba79c5mr802844ejc.72.1686724610122;
+        Tue, 13 Jun 2023 23:36:50 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id n12-20020a05640204cc00b0051631518aabsm7211825edw.93.2023.06.13.23.30.37
+        by smtp.gmail.com with ESMTPSA id j15-20020a1709064b4f00b0096f738bc2f7sm7647403ejv.60.2023.06.13.23.36.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jun 2023 23:30:38 -0700 (PDT)
-Message-ID: <46458a14-28f3-5279-f5ad-302e6edebaa5@linaro.org>
-Date:   Wed, 14 Jun 2023 08:30:36 +0200
+        Tue, 13 Jun 2023 23:36:49 -0700 (PDT)
+Message-ID: <28cba091-48d0-846d-4996-64e71be275f2@linaro.org>
+Date:   Wed, 14 Jun 2023 08:36:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: adc: add max14001
-To:     Kim Seer Paller <kimseer.paller@analog.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, lgirdwood@gmail.com,
-        broonie@kernel.org, Michael.Hennerich@analog.com,
-        andy.shevchenko@gmail.com, robh@kernel.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20230614004857.134980-1-kimseer.paller@analog.com>
+Subject: Re: [PATCH 1/3] dt-bindings: ROHM BU27010 RGBC + flickering sensor
 Content-Language: en-US
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1686650184.git.mazziesaccount@gmail.com>
+ <98e0b6fba7ff7515b541a517296d5b89dc73ce5b.1686651445.git.mazziesaccount@gmail.com>
+ <22dadcf6-9879-efb2-9987-7f286b38b93b@linaro.org>
+ <fac025f6-6187-2258-9d49-61799754294f@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230614004857.134980-1-kimseer.paller@analog.com>
+In-Reply-To: <fac025f6-6187-2258-9d49-61799754294f@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,18 +82,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 14/06/2023 02:48, Kim Seer Paller wrote:
-> The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
-> binary inputs.
+On 14/06/2023 07:32, Matti Vaittinen wrote:
+>>> +properties:
+>>> +  compatible:
+>>> +    const: rohm,bu27010
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  interrupts:
+>>> +    maxItems: 1
+>>> +
+>>> +  vdd-supply: true
+>>
+>> Isn't vdd-supply required for the hardware to work? How does it get the
+>> power otherwise?
 > 
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> ---
-> V5 -> V6: Removed tags.
-
-Not the review one tag! Drop the fake reports because there was not
-report and nothing to close.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> The BU27010 works by magic smoke. When smoke leaks out the sensor no 
+> longer works.
+> 
+> Ehh, I think you are right. My thinking was that it is not uncommon for 
+> people to not have all fixed regulators present in device-tree. But I 
+> agree, this does not mean we should encourage that. I'll add supply to 
+> the list of the required properties.
+> 
+If the device actually requires a regulator, it should be required by
+the bindings, even if it leads to dummies or fixed regulators on the
+board DTS.
 
 Best regards,
 Krzysztof

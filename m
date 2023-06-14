@@ -2,162 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80A5E7301B0
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 16:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEBC8730289
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 16:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244034AbjFNOYG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jun 2023 10:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49230 "EHLO
+        id S245529AbjFNO6g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jun 2023 10:58:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236151AbjFNOYE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 10:24:04 -0400
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576A01BC6;
-        Wed, 14 Jun 2023 07:24:03 -0700 (PDT)
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-33b1e83e1daso29019675ab.0;
-        Wed, 14 Jun 2023 07:24:03 -0700 (PDT)
+        with ESMTP id S245256AbjFNO6f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 10:58:35 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC6C91BF3;
+        Wed, 14 Jun 2023 07:58:33 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3f736e0c9b1so8189605e9.3;
+        Wed, 14 Jun 2023 07:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686754712; x=1689346712;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z5rIbWUvXPqdJJgOnGLL8m8IBmG8tIePJ5zzh46kuSM=;
+        b=gty57368/fa7vKW7lrPBjqsR/LePRAKGyODtM5uxdwHaI7Gm4mq6DViWi8rtWT6cK9
+         siC+ErDiBt+2R43VZMb77ffV7v7cJ6/K9IEDCOlKW0yhUQIelbYn1D3FMP26qvmFjZ8l
+         IFZzk0MHhw6df/N9XAxmjf7l5jH8i+jjiFYB7k5CU35bB2/9oIYiKFrrr8hGVAmciJJW
+         UBnlXs9k46PbK3umeOzK4xhHqWAWL5MktLpcS57BuooVfuVzX3KZ2bhuXPeTicMOO6AP
+         BKmWKAEleEpujvKcY4e4vpLVqbdcATcP6NZCaPfnl+HJwOoYFtRjOZihyIAPZ736YONF
+         Y1WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686752642; x=1689344642;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=//LQdmeIx8VDOjysyrkzNeX5nkq2mzKxfmFr/6gfOOo=;
-        b=AFd2OrXBZq/X2W43HDwvFM4WCSp+qHM8IKvsA9wYQMb3wtPkmO3LwE4ro/YrdDeOrU
-         dZiCkdvOE6FFH5/7nmcVr4cBfe0E41Btck7YEwptOB6pxqNdkPHPNMKYTUu0dXn8G4QS
-         LrK4gS/GlF5GWDJ4ED5oA0R0iWGkHctMJTHRs6vfXdlYNHauMn9qIgBKczXUk7jiCsoW
-         l9g0ypS7aa07GUzcaFnD5ZbH6cghi/+pTIUe71EHR0BjoYyMUWbK6C6QQ60fJ1nq7UfI
-         mLRhld5KmDJZdP3Ta3dYGluolFbGfzs235jJ2rnyQ/cmE8/2bRkpJEuRJacs6PxEAyxf
-         a2ag==
-X-Gm-Message-State: AC+VfDxPkm+uQpsmmA0Dde3hDB6A0uu8g6bdgcpz8iQk5Hf4TFrMnh5+
-        CUA88MGRnnyXyMllR28kCA==
-X-Google-Smtp-Source: ACHHUZ7wXmcmWVBGnccJZukbwYP+C9yoCz/N62Wnj/yTIO7plH80L5GUh4kr2WXJ6/m3J00pZBVtGQ==
-X-Received: by 2002:a92:db47:0:b0:33d:a34a:2d42 with SMTP id w7-20020a92db47000000b0033da34a2d42mr12955717ilq.20.1686752642282;
-        Wed, 14 Jun 2023 07:24:02 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id c5-20020a02a405000000b0041848ea6594sm4885425jal.34.2023.06.14.07.23.59
+        d=1e100.net; s=20221208; t=1686754712; x=1689346712;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z5rIbWUvXPqdJJgOnGLL8m8IBmG8tIePJ5zzh46kuSM=;
+        b=fp4J4S1Mv78DtCY1MmR3iOPjJ6AMThNZ2MlqO9tdrXJLXMXyxy2+fJvosIH3Rp44jw
+         7cuC1D4vcsSWGe9Ozyy3VS4qLmirAsLHd8d0YToDa2TsVF8ZpPH3kfdaTmUauSCPeM4U
+         t0WXPlXIHUN2j3bmIz0uvJrK5UVEwOHQi9WWHhyFjZn5Upk3kUnSMP6enpkzNqfmEAN0
+         5BOi0HVA8jbAEh9T40QfSoVSN/3PESZiXSLREcNfr6A3QSUawOs4EVIkqYhO5cnf35r6
+         i6fjArTG6WzyVzcY3/iFsHq6rhihnqgGbBfsVW3Z99sannno1988GV8xDVLXtouXXV09
+         hRKw==
+X-Gm-Message-State: AC+VfDzV5VApy72bGjK6D9GseAbmG7iNvpFUt/cVRObUUIWe7Y/ZqNTO
+        JsFjVlsTx5wNG+OBRH166FutNnbBpJSYm00D
+X-Google-Smtp-Source: ACHHUZ7sGHwo0QaqenkPlnGntCuKuuIntMmPKJT5OwE2wTn3nCw5SPx9Qh8dOVyu7xm5gT9oLppxzQ==
+X-Received: by 2002:a1c:4c0b:0:b0:3f7:fcca:5e32 with SMTP id z11-20020a1c4c0b000000b003f7fcca5e32mr11806264wmf.17.1686754711716;
+        Wed, 14 Jun 2023 07:58:31 -0700 (PDT)
+Received: from user-PC.. ([178.134.198.138])
+        by smtp.gmail.com with ESMTPSA id y22-20020a7bcd96000000b003f7f2a1484csm17778706wmj.5.2023.06.14.07.58.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 07:24:01 -0700 (PDT)
-Received: (nullmailer pid 1344045 invoked by uid 1000);
-        Wed, 14 Jun 2023 14:23:58 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Maksim Kiselev <bigunclemax@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        devicetree@vger.kernel.org,
-        Andre Przywara <andre.przywara@arm.com>,
+        Wed, 14 Jun 2023 07:58:31 -0700 (PDT)
+From:   Maksim Kiselev <bigunclemax@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Maksim Kiselev <bigunclemax@gmail.com>,
         Conor Dooley <conor.dooley@microchip.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-riscv@lists.infradead.org,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        William Breathitt Gray <william.gray@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Chen-Yu Tsai <wens@csie.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
         Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>
+        Samuel Holland <samuel@sholland.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 2/3] dt-bindings: iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+Date:   Wed, 14 Jun 2023 17:58:16 +0300
+Message-Id: <20230614145826.777870-1-bigunclemax@gmail.com>
+X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230614132644.699425-3-bigunclemax@gmail.com>
-References: <20230614132644.699425-1-bigunclemax@gmail.com>
- <20230614132644.699425-3-bigunclemax@gmail.com>
-Message-Id: <168675263824.1343935.18392695577959894991.robh@kernel.org>
-Subject: Re: [PATCH v6 2/3] dt-bindings: iio: adc: Add Allwinner
- D1/T113s/R329/T507 SoCs GPADC
-Date:   Wed, 14 Jun 2023 08:23:58 -0600
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20230614132644.699425-3-bigunclemax@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Allwinner's D1/T113s/R329/T507 SoCs have a new general purpose ADC.
+This ADC is the same for all of this SoCs. The only difference is
+the number of available channels.
 
-On Wed, 14 Jun 2023 16:26:26 +0300, Maksim Kiselev wrote:
-> Allwinner's D1/T113s/R329/T507 SoCs have a new general purpose ADC.
-> This ADC is the same for all of this SoCs. The only difference is
-> the number of available channels.
-> 
-> Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
->  .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    | 91 +++++++++++++++++++
->  1 file changed, 91 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
-> 
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
+---
+ .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    | 91 +++++++++++++++++++
+ 1 file changed, 91 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml: patternProperties:^channel@[0-9a-f]+$:properties:reg:items: 'oneOf' conditional failed, one must be fixed:
-	/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml: patternProperties:^channel@[0-9a-f]+$:properties:reg:items: 'anyOf' conditional failed, one must be fixed:
-		'Maksimum' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-		'type' was expected
-		from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-	{'minimum': 0, 'Maksimum': 15} is not of type 'array'
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml: patternProperties:^channel@[0-9a-f]+$:properties:reg: 'anyOf' conditional failed, one must be fixed:
-	'maxItems' is a required property
-		hint: Only "maxItems" is required for a single entry if there are no constraints defined for the values.
-	'items' is not one of ['maxItems', 'description', 'deprecated']
-	'items' is not one of ['description', 'deprecated', 'const', 'enum', 'minimum', 'maximum', 'multipleOf', 'default', '$ref', 'oneOf']
-	/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml: patternProperties:^channel@[0-9a-f]+$:properties:reg:items: 'oneOf' conditional failed, one must be fixed:
-		/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml: patternProperties:^channel@[0-9a-f]+$:properties:reg:items: 'anyOf' conditional failed, one must be fixed:
-			'maxItems' is a required property
-				hint: Only "maxItems" is required for a single entry if there are no constraints defined for the values.
-			'minimum' is not one of ['maxItems', 'description', 'deprecated']
-			'Maksimum' is not one of ['maxItems', 'description', 'deprecated']
-			Additional properties are not allowed ('Maksimum', 'minimum' were unexpected)
-				hint: Arrays must be described with a combination of minItems/maxItems/items
-			'Maksimum' is not one of ['description', 'deprecated', 'const', 'enum', 'minimum', 'maximum', 'multipleOf', 'default', '$ref', 'oneOf']
-			hint: cell array properties must define how many entries and what the entries are when there is more than one entry.
-			from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-		{'minimum': 0, 'Maksimum': 15} is not of type 'array'
-		hint: "items" can be a list defining each entry or a schema applying to all items. A list has an implicit size. A schema requires minItems/maxItems to define the size.
-		from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-	hint: cell array properties must define how many entries and what the entries are when there is more than one entry.
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230614132644.699425-3-bigunclemax@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+new file mode 100644
+index 000000000000..23c584f5a6e6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/allwinner,sun20i-d1-gpadc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Allwinner D1 General Purpose ADC
++
++maintainers:
++  - Maksim Kiselev <bigunclemax@gmail.com>
++
++properties:
++  compatible:
++    enum:
++      - allwinner,sun20i-d1-gpadc
++
++  "#io-channel-cells":
++    const: 1
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 0
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  reg:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++patternProperties:
++  "^channel@[0-9a-f]+$":
++    $ref: adc.yaml
++    type: object
++    description:
++      Represents the internal channels of the ADC.
++
++    properties:
++      reg:
++        items:
++          minimum: 0
++          maximum: 15
++
++    required:
++      - reg
++
++    unevaluatedProperties: false
++
++required:
++  - "#io-channel-cells"
++  - clocks
++  - compatible
++  - interrupts
++  - reg
++  - resets
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/sun20i-d1-ccu.h>
++    #include <dt-bindings/reset/sun20i-d1-ccu.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    gpadc: adc@2009000 {
++        compatible = "allwinner,sun20i-d1-gpadc";
++        reg = <0x2009000 0x1000>;
++        clocks = <&ccu CLK_BUS_GPADC>;
++        resets = <&ccu RST_BUS_GPADC>;
++        interrupts = <73 IRQ_TYPE_LEVEL_HIGH>;
++        #io-channel-cells = <1>;
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        channel@0 {
++            reg = <0>;
++        };
++
++        channel@1 {
++            reg = <1>;
++        };
++    };
++...
+-- 
+2.39.2
 

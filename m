@@ -2,175 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BFBF72F70F
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 09:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C8772F786
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 10:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233619AbjFNH40 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jun 2023 03:56:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
+        id S243114AbjFNIPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jun 2023 04:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233106AbjFNH40 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 03:56:26 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D20C10DA
-        for <linux-iio@vger.kernel.org>; Wed, 14 Jun 2023 00:56:24 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1q9LMY-000071-TT; Wed, 14 Jun 2023 09:56:18 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1q9LMY-007ItU-1R; Wed, 14 Jun 2023 09:56:18 +0200
-Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1q9LMX-00EnXI-C0; Wed, 14 Jun 2023 09:56:17 +0200
-From:   =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-To:     =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        kernel@pengutronix.de, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1] iio: adc: add buffering support to the TI LMP92064 ADC driver
-Date:   Wed, 14 Jun 2023 09:55:36 +0200
-Message-Id: <20230614075537.3525194-1-l.goehrs@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S237844AbjFNIPa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 04:15:30 -0400
+Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC03EDF
+        for <linux-iio@vger.kernel.org>; Wed, 14 Jun 2023 01:15:29 -0700 (PDT)
+Received: by mail.ettrick.pl (Postfix, from userid 1002)
+        id 69927A70A0; Wed, 14 Jun 2023 08:11:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
+        t=1686730271; bh=ZOVeXw1jXE9TbyZP9aLdRwM96AORcRfum8b+rry5JMw=;
+        h=Date:From:To:Subject:From;
+        b=aEKFMTWPleoo1RPLMzHqwuiLekkC6u1CGWOOUPwLbKePViBO4YkAxWmL3/MGwNKRf
+         nCvHH9C+0UKHE0usW6QPlDrioBs0zvEHhPv8ULZMzTsr/PucwOnYnVH+V/oCNtwqsd
+         9Yt1r18Ab48wjg+QYfadnChHufJRuBV1D5ahwMfnTpqA9T2dNuiES5PGRnuu0YBLG2
+         zPFS6mKqjdnMVSa9N9A3k2MJLGZImznvRNNlZNXYG6lqngVdUPLh24f7OAps48BZnx
+         7jC1GqKx7zZgaofLvE5ekkFozXxrCXJIfuK6aRzo4z2V6XMrolD7mS1GDyhAbZ7T0F
+         GCe+rHcXt8waQ==
+Received: by mail.ettrick.pl for <linux-iio@vger.kernel.org>; Wed, 14 Jun 2023 08:10:39 GMT
+Message-ID: <20230614064500-0.1.b7.4hini.0.4cq1o3cd73@ettrick.pl>
+Date:   Wed, 14 Jun 2023 08:10:39 GMT
+From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: Fotowoltaika- propozycja instalacji
+X-Mailer: mail.ettrick.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: lgo@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL,URIBL_BLOCKED,
+        URIBL_CSS_A autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Enable buffered reading of samples from the LMP92064 ADC.
-The main benefit of this change is being able to read out current and
-voltage measurements in a single transfer, allowing instantaneous power
-measurements.
+Dzie=C5=84 dobry,
+=20
+Czy rozwa=C5=BCali Pa=C5=84stwo monta=C5=BC systemu fotowoltaicznego?
+=20
+Instalacja fotowoltaiczna jest najlepszym sposobem na obni=C5=BCenie wyso=
+ko=C5=9Bci rachunk=C3=B3w za pr=C4=85d (pozostaj=C4=85 tylko op=C5=82aty =
+sta=C5=82e) i zabezpieczenie si=C4=99 przed rosn=C4=85cymi cenami energii=
+ elektrycznej. Jest to w pe=C5=82ni odnawialne i bezemisyjne =C5=BAr=C3=B3=
+d=C5=82o energii, dzi=C4=99ki czemu przyczyniamy si=C4=99 do ochrony =C5=9B=
+rodowiska naturalnego.
+=20
+Dzia=C5=82amy od wielu lat na rynku energetycznym. Przygotujemy projekt, =
+wycen=C4=99 oraz kompleksowo wykonamy i zg=C5=82osimy realizacj=C4=99 do =
+zak=C5=82adu energetycznego.=20
+=20
+Czy chc=C4=85 Pa=C5=84stwo pozna=C4=87 nasz=C4=85 propozycj=C4=99? =20
 
-Reads into the buffer can be triggered by any software triggers, e.g.
-the iio-trig-hrtimer:
 
-    $ mkdir /sys/kernel/config/iio/triggers/hrtimer/my-trigger
-    $ cat /sys/bus/iio/devices/iio\:device3/name
-    lmp92064
-    $ iio_readdev -t my-trigger -b 16 iio:device3 | hexdump
-    WARNING: High-speed mode not enabled
-    0000000 0000 0176 0101 0001 5507 abd5 7645 1768
-    0000010 0000 016d 0101 0001 ee1e ac6b 7645 1768
-    ...
-
-Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
----
- drivers/iio/adc/ti-lmp92064.c | 54 +++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
-
-diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
-index c30ed824924f3..03765c4057dda 100644
---- a/drivers/iio/adc/ti-lmp92064.c
-+++ b/drivers/iio/adc/ti-lmp92064.c
-@@ -16,7 +16,10 @@
- #include <linux/spi/spi.h>
- 
- #include <linux/iio/iio.h>
-+#include <linux/iio/buffer.h>
- #include <linux/iio/driver.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger_consumer.h>
- 
- #define TI_LMP92064_REG_CONFIG_A 0x0000
- #define TI_LMP92064_REG_CONFIG_B 0x0001
-@@ -91,6 +94,13 @@ static const struct iio_chan_spec lmp92064_adc_channels[] = {
- 		.address = TI_LMP92064_CHAN_INC,
- 		.info_mask_separate =
- 			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 12,
-+			.storagebits = 16,
-+			.shift = 0,
-+		},
- 		.datasheet_name = "INC",
- 	},
- 	{
-@@ -98,8 +108,16 @@ static const struct iio_chan_spec lmp92064_adc_channels[] = {
- 		.address = TI_LMP92064_CHAN_INV,
- 		.info_mask_separate =
- 			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 12,
-+			.storagebits = 16,
-+			.shift = 0,
-+		},
- 		.datasheet_name = "INV",
- 	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
- };
- 
- static int lmp92064_read_meas(struct lmp92064_adc_priv *priv, u16 *res)
-@@ -171,6 +189,37 @@ static int lmp92064_read_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static irqreturn_t lmp92064_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
-+	int i = 0, j, ret;
-+	u16 raw[2];
-+	u16 *data;
-+
-+	ret = lmp92064_read_meas(priv, raw);
-+	if (ret < 0)
-+		goto done;
-+
-+	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
-+	if (!data)
-+		goto done;
-+
-+	for_each_set_bit(j, indio_dev->active_scan_mask, indio_dev->masklength)
-+		data[i++] = raw[j];
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, data,
-+					   iio_get_time_ns(indio_dev));
-+
-+	kfree(data);
-+
-+done:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int lmp92064_reset(struct lmp92064_adc_priv *priv,
- 			  struct gpio_desc *gpio_reset)
- {
-@@ -302,6 +351,11 @@ static int lmp92064_adc_probe(struct spi_device *spi)
- 	indio_dev->num_channels = ARRAY_SIZE(lmp92064_adc_channels);
- 	indio_dev->info = &lmp92064_adc_info;
- 
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-+					      lmp92064_trigger_handler, NULL);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to setup buffered read\n");
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
-
-base-commit: 9561de3a55bed6bdd44a12820ba81ec416e705a7
--- 
-2.39.2
-
+Pozdrawiam,
+Norbert Karecki

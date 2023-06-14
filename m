@@ -2,78 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B643C72F6CF
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 09:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BFBF72F70F
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 09:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243494AbjFNHuX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jun 2023 03:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57576 "EHLO
+        id S233619AbjFNH40 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jun 2023 03:56:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243529AbjFNHt4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 03:49:56 -0400
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32691FF5;
-        Wed, 14 Jun 2023 00:49:48 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1686728987;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WiCubefUJT8lqguruRQEQMdku90oEPaE9zL5TkFrvME=;
-        b=iFxV+tYN3v2+t2eWuNKrLNLcS4hLiZq1hZLuJfUb3iK26KWVn+Nt9caJC65E6kaAB+2Lz1
-        3rZvZtWxizsXeo6pJFK/pe2F2lQMmK6poyWtKVC/fvT1t44U6427ld+F3xSENDh+u/88J2
-        8Ja1yaPjJgkaxg2PxiBchb2yNWLyzjDYCni6HJcKxeoGK8kQthUzSyYWH3bahas36/N3Gj
-        onokN7ojrCLVPqlWeM50bc/Gc2jXiu2LplLah0FfpcI37RZryYm7GakwTK4r8RUSo/AyMs
-        PB7vo8etCUnlP3YbJVuB9+hgpaKoJiROh1cBUVrxtPHFPHY4UIIeU7UDIEQkDg==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id DEECF1C0011;
-        Wed, 14 Jun 2023 07:49:45 +0000 (UTC)
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Herve Codina <herve.codina@bootlin.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v4 13/13] ASoC: simple-card: Handle additional devices
-Date:   Wed, 14 Jun 2023 09:49:04 +0200
-Message-Id: <20230614074904.29085-14-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230614074904.29085-1-herve.codina@bootlin.com>
-References: <20230614074904.29085-1-herve.codina@bootlin.com>
+        with ESMTP id S233106AbjFNH40 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 03:56:26 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D20C10DA
+        for <linux-iio@vger.kernel.org>; Wed, 14 Jun 2023 00:56:24 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lgo@pengutronix.de>)
+        id 1q9LMY-000071-TT; Wed, 14 Jun 2023 09:56:18 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <lgo@pengutronix.de>)
+        id 1q9LMY-007ItU-1R; Wed, 14 Jun 2023 09:56:18 +0200
+Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <lgo@pengutronix.de>)
+        id 1q9LMX-00EnXI-C0; Wed, 14 Jun 2023 09:56:17 +0200
+From:   =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
+To:     =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        kernel@pengutronix.de, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v1] iio: adc: add buffering support to the TI LMP92064 ADC driver
+Date:   Wed, 14 Jun 2023 09:55:36 +0200
+Message-Id: <20230614075537.3525194-1-l.goehrs@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: lgo@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,120 +51,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-An additional-devs subnode can be present in the simple-card top node.
-This subnode is used to declared some "virtual" additional devices.
+Enable buffered reading of samples from the LMP92064 ADC.
+The main benefit of this change is being able to read out current and
+voltage measurements in a single transfer, allowing instantaneous power
+measurements.
 
-Create related devices from this subnode and avoid this subnode presence
-to interfere with the already supported subnodes analysis.
+Reads into the buffer can be triggered by any software triggers, e.g.
+the iio-trig-hrtimer:
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+    $ mkdir /sys/kernel/config/iio/triggers/hrtimer/my-trigger
+    $ cat /sys/bus/iio/devices/iio\:device3/name
+    lmp92064
+    $ iio_readdev -t my-trigger -b 16 iio:device3 | hexdump
+    WARNING: High-speed mode not enabled
+    0000000 0000 0176 0101 0001 5507 abd5 7645 1768
+    0000010 0000 016d 0101 0001 ee1e ac6b 7645 1768
+    ...
+
+Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
 ---
- sound/soc/generic/simple-card.c | 46 +++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ti-lmp92064.c | 54 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/sound/soc/generic/simple-card.c b/sound/soc/generic/simple-card.c
-index 6f044cc8357e..ae4a47018278 100644
---- a/sound/soc/generic/simple-card.c
-+++ b/sound/soc/generic/simple-card.c
-@@ -348,6 +348,7 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 	struct device *dev = simple_priv_to_dev(priv);
- 	struct device_node *top = dev->of_node;
- 	struct device_node *node;
-+	struct device_node *add_devs;
- 	uintptr_t dpcm_selectable = (uintptr_t)of_device_get_match_data(dev);
- 	bool is_top = 0;
- 	int ret = 0;
-@@ -359,6 +360,8 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 		is_top = 1;
+diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
+index c30ed824924f3..03765c4057dda 100644
+--- a/drivers/iio/adc/ti-lmp92064.c
++++ b/drivers/iio/adc/ti-lmp92064.c
+@@ -16,7 +16,10 @@
+ #include <linux/spi/spi.h>
+ 
+ #include <linux/iio/iio.h>
++#include <linux/iio/buffer.h>
+ #include <linux/iio/driver.h>
++#include <linux/iio/triggered_buffer.h>
++#include <linux/iio/trigger_consumer.h>
+ 
+ #define TI_LMP92064_REG_CONFIG_A 0x0000
+ #define TI_LMP92064_REG_CONFIG_B 0x0001
+@@ -91,6 +94,13 @@ static const struct iio_chan_spec lmp92064_adc_channels[] = {
+ 		.address = TI_LMP92064_CHAN_INC,
+ 		.info_mask_separate =
+ 			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = 0,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 12,
++			.storagebits = 16,
++			.shift = 0,
++		},
+ 		.datasheet_name = "INC",
+ 	},
+ 	{
+@@ -98,8 +108,16 @@ static const struct iio_chan_spec lmp92064_adc_channels[] = {
+ 		.address = TI_LMP92064_CHAN_INV,
+ 		.info_mask_separate =
+ 			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = 1,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 12,
++			.storagebits = 16,
++			.shift = 0,
++		},
+ 		.datasheet_name = "INV",
+ 	},
++	IIO_CHAN_SOFT_TIMESTAMP(2),
+ };
+ 
+ static int lmp92064_read_meas(struct lmp92064_adc_priv *priv, u16 *res)
+@@ -171,6 +189,37 @@ static int lmp92064_read_raw(struct iio_dev *indio_dev,
  	}
- 
-+	add_devs = of_get_child_by_name(top, PREFIX "additional-devs");
-+
- 	/* loop for all dai-link */
- 	do {
- 		struct asoc_simple_data adata;
-@@ -367,6 +370,12 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 		struct device_node *np;
- 		int num = of_get_child_count(node);
- 
-+		/* Skip additional-devs node */
-+		if (node == add_devs) {
-+			node = of_get_next_child(top, node);
-+			continue;
-+		}
-+
- 		/* get codec */
- 		codec = of_get_child_by_name(node, is_top ?
- 					     PREFIX "codec" : "codec");
-@@ -380,12 +389,15 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 
- 		/* get convert-xxx property */
- 		memset(&adata, 0, sizeof(adata));
--		for_each_child_of_node(node, np)
-+		for_each_child_of_node(node, np) {
-+			if (np == add_devs)
-+				continue;
- 			simple_parse_convert(dev, np, &adata);
-+		}
- 
- 		/* loop for all CPU/Codec node */
- 		for_each_child_of_node(node, np) {
--			if (plat == np)
-+			if (plat == np || add_devs == np)
- 				continue;
- 			/*
- 			 * It is DPCM
-@@ -427,6 +439,7 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 	} while (!is_top && node);
- 
-  error:
-+	of_node_put(add_devs);
- 	of_node_put(node);
- 	return ret;
- }
-@@ -464,6 +477,31 @@ static int simple_for_each_link(struct asoc_simple_priv *priv,
- 	return ret;
  }
  
-+static void simple_depopulate_aux(void *data)
++static irqreturn_t lmp92064_trigger_handler(int irq, void *p)
 +{
-+	struct asoc_simple_priv *priv = data;
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
++	int i = 0, j, ret;
++	u16 raw[2];
++	u16 *data;
 +
-+	of_platform_depopulate(simple_priv_to_dev(priv));
-+}
-+
-+static int simple_populate_aux(struct asoc_simple_priv *priv)
-+{
-+	struct device *dev = simple_priv_to_dev(priv);
-+	struct device_node *node;
-+	int ret;
-+
-+	node = of_get_child_by_name(dev->of_node, PREFIX "additional-devs");
-+	if (!node)
-+		return 0;
-+
-+	ret = of_platform_populate(node, NULL, NULL, dev);
-+	of_node_put(node);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(dev, simple_depopulate_aux, priv);
-+}
-+
- static int simple_parse_of(struct asoc_simple_priv *priv, struct link_info *li)
- {
- 	struct snd_soc_card *card = simple_priv_to_card(priv);
-@@ -493,6 +531,10 @@ static int simple_parse_of(struct asoc_simple_priv *priv, struct link_info *li)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = simple_populate_aux(priv);
++	ret = lmp92064_read_meas(priv, raw);
 +	if (ret < 0)
-+		return ret;
++		goto done;
 +
- 	ret = snd_soc_of_parse_aux_devs(card, PREFIX "aux-devs");
++	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
++	if (!data)
++		goto done;
++
++	for_each_set_bit(j, indio_dev->active_scan_mask, indio_dev->masklength)
++		data[i++] = raw[j];
++
++	iio_push_to_buffers_with_timestamp(indio_dev, data,
++					   iio_get_time_ns(indio_dev));
++
++	kfree(data);
++
++done:
++	iio_trigger_notify_done(indio_dev->trig);
++
++	return IRQ_HANDLED;
++}
++
+ static int lmp92064_reset(struct lmp92064_adc_priv *priv,
+ 			  struct gpio_desc *gpio_reset)
+ {
+@@ -302,6 +351,11 @@ static int lmp92064_adc_probe(struct spi_device *spi)
+ 	indio_dev->num_channels = ARRAY_SIZE(lmp92064_adc_channels);
+ 	indio_dev->info = &lmp92064_adc_info;
  
- 	return ret;
++	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
++					      lmp92064_trigger_handler, NULL);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to setup buffered read\n");
++
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ 
+
+base-commit: 9561de3a55bed6bdd44a12820ba81ec416e705a7
 -- 
-2.40.1
+2.39.2
 

@@ -2,161 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F83D73043E
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 17:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A28B730627
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jun 2023 19:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244919AbjFNPy0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Jun 2023 11:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
+        id S237642AbjFNRi4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Jun 2023 13:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244996AbjFNPyZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 11:54:25 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D517F106;
-        Wed, 14 Jun 2023 08:54:22 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35EDtObl014662;
-        Wed, 14 Jun 2023 11:54:09 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r4p359c1s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 14 Jun 2023 11:54:08 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 35EFs7Ho029744
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 14 Jun 2023 11:54:07 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 14 Jun
- 2023 11:54:06 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 14 Jun 2023 11:54:06 -0400
-Received: from dariana.ad.analog.com ([10.48.65.197])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 35EFrqeM020884;
-        Wed, 14 Jun 2023 11:53:55 -0400
-From:   Alisa Roman <alisa.roman@analog.com>
-CC:     Alisa Roman <alisa.roman@analog.com>, <stable@vger.kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] iio: adc: ad7192: Fix ac excitation feature
-Date:   Wed, 14 Jun 2023 18:52:43 +0300
-Message-ID: <20230614155242.160296-1-alisa.roman@analog.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S237494AbjFNRiz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Jun 2023 13:38:55 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344C01BCE
+        for <linux-iio@vger.kernel.org>; Wed, 14 Jun 2023 10:38:52 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-5169f614977so11746810a12.3
+        for <linux-iio@vger.kernel.org>; Wed, 14 Jun 2023 10:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686764330; x=1689356330;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1RYu2iCbQcXep64qKrAtV4kz0X66L7+L4NssZgaqsN8=;
+        b=rA0UWiUR/msjCVz6PB3wcJPHClCmuEi7z67ygf5j/FdKbMIEasIoj3zuMQMUeJOcNT
+         XeBsp55cxo2mGRucHvDFaV648MbIJBwduKd98KFFBBxYpMatu9NpMAXD2K0QGknmGXvU
+         rBAra9u5CzGUsPSpfrL59dz0LrvcY0NL1DI6c80ylI2Nv1ZipG6s1IRYLQl7YrF0psjZ
+         BMMOSr4Eyc7E+jdEz7AHxAP8r9bvQxsdWdL2ECgloaeBeRK8QEtBoRQhDPIVDVqCllnn
+         gjIFE+6KtuuB3ODtxMw/NWjDZ0v3gKAoU0tWJ/+9d0poayvmKzoFGLxNjGCqwg/Ue52O
+         EyZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686764330; x=1689356330;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1RYu2iCbQcXep64qKrAtV4kz0X66L7+L4NssZgaqsN8=;
+        b=AXJ062OOFjyvcimbXzRKPlC8ckkbgoSouDBYs051VIPlGJCfd3xovHeYdWqOeL00ty
+         zm3e+4zYKQ8d+/nnrQZbQknbD8+VrkvBjmZgLz5ArkCliZMiuYm5vunFkkBpJjUjux/E
+         hUqHSu0E6RYoqq5IUpdX1B6/5BO1Jj+6bFG6QQsJUu0DeJhjFCg4YVSeNkS1OBc+bsQw
+         3y8cTikAu0wePUQkEQnTIbU8K808gNMYF+gIuolBNnqvmQOOMMPzCXXeuOrdVm23qZmn
+         B4ImZld+prPZTGVOjaiygMC1xe4ZeeNTdSE/lL52Js66cuvzw6gZ10Q5LppNW+qFmjHa
+         JpbQ==
+X-Gm-Message-State: AC+VfDwiVmOsARMuMcd5GJoTR4O1tSKP57S2O8gIs5nGOgLf3zwTtPoB
+        H55Rr6YVlnICDxOZ29p9c5lNlCDc3OrFJyjpyok=
+X-Google-Smtp-Source: ACHHUZ6P00V2TK9K/5IeFykjHz275i2jIyxJNsA7hSD7TGWTC7AGSpaWyQa+rkL2Ep9UzXTrz87o+Q==
+X-Received: by 2002:aa7:d756:0:b0:51a:1ff9:750 with SMTP id a22-20020aa7d756000000b0051a1ff90750mr392972eds.1.1686764330729;
+        Wed, 14 Jun 2023 10:38:50 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id c7-20020a056402120700b00514b99afa57sm7938813edw.44.2023.06.14.10.38.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jun 2023 10:38:50 -0700 (PDT)
+Message-ID: <695204de-601b-8e3f-d7f3-ac3bcd09e6e3@linaro.org>
+Date:   Wed, 14 Jun 2023 19:38:48 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: cr6Efloz85FlQNTvcRMST9D6wbR_8Q67
-X-Proofpoint-ORIG-GUID: cr6Efloz85FlQNTvcRMST9D6wbR_8Q67
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-14_11,2023-06-14_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1011
- impostorscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306140138
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 2/3] dt-bindings: iio: adc: Add Allwinner
+ D1/T113s/R329/T507 SoCs GPADC
+Content-Language: en-US
+To:     Maksim Kiselev <bigunclemax@gmail.com>, linux-iio@vger.kernel.org
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20230614132644.699425-3-bigunclemax@gmail.com>
+ <20230614145826.777870-1-bigunclemax@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230614145826.777870-1-bigunclemax@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-AC excitation enable feature exposed to user on AD7192, allowing a bit
-which should be 0 to be set. This feature is specific only to AD7195. AC
-excitation attribute moved accordingly.
+On 14/06/2023 16:58, Maksim Kiselev wrote:
+> Allwinner's D1/T113s/R329/T507 SoCs have a new general purpose ADC.
+> This ADC is the same for all of this SoCs. The only difference is
+> the number of available channels.
+> 
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
 
-In the AD7195 documentation, the AC excitation enable bit is on position
-22 in the Configuration register. ACX macro changed to match correct
-register and bit.
+Do not attach (thread) your patchsets to some other threads (unrelated
+or older versions). This buries them deep in the mailbox and might
+interfere with applying entire sets.
 
-Note that the fix tag is for the commit that moved the driver out of
-staging.
+Don't send the same patches twice. This is v6 or was v6 or is what?
 
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-Cc: stable@vger.kernel.org
----
- drivers/iio/adc/ad7192.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Wait for feedback and send corrected patchset next day. If you tested
+your patches before sending, which actually *is a requirement*, all mess
+could be avoided. Sending same version twice is not a solution for
+missing testing.
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 8685e0b58a83..7bc3ebfe8081 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -62,7 +62,6 @@
- #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
- #define AD7192_MODE_CLKSRC(x)	(((x) & 0x3) << 18) /* Clock Source Select */
- #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
--#define AD7192_MODE_ACX		BIT(14) /* AC excitation enable(AD7195 only)*/
- #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
- #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
- #define AD7192_MODE_SCYCLE	BIT(11) /* Single cycle conversion */
-@@ -91,6 +90,7 @@
- /* Configuration Register Bit Designations (AD7192_REG_CONF) */
- 
- #define AD7192_CONF_CHOP	BIT(23) /* CHOP enable */
-+#define AD7192_CONF_ACX		BIT(22) /* AC excitation enable(AD7195 only) */
- #define AD7192_CONF_REFSEL	BIT(20) /* REFIN1/REFIN2 Reference Select */
- #define AD7192_CONF_CHAN(x)	((x) << 8) /* Channel select */
- #define AD7192_CONF_CHAN_MASK	(0x7FF << 8) /* Channel select mask */
-@@ -472,7 +472,7 @@ static ssize_t ad7192_show_ac_excitation(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7192_state *st = iio_priv(indio_dev);
- 
--	return sysfs_emit(buf, "%d\n", !!(st->mode & AD7192_MODE_ACX));
-+	return sysfs_emit(buf, "%d\n", !!(st->conf & AD7192_CONF_ACX));
- }
- 
- static ssize_t ad7192_show_bridge_switch(struct device *dev,
-@@ -513,13 +513,13 @@ static ssize_t ad7192_set(struct device *dev,
- 
- 		ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, st->gpocon);
- 		break;
--	case AD7192_REG_MODE:
-+	case AD7192_REG_CONF:
- 		if (val)
--			st->mode |= AD7192_MODE_ACX;
-+			st->conf |= AD7192_CONF_ACX;
- 		else
--			st->mode &= ~AD7192_MODE_ACX;
-+			st->conf &= ~AD7192_CONF_ACX;
- 
--		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-+		ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -579,12 +579,11 @@ static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
- 
- static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
- 		       ad7192_show_ac_excitation, ad7192_set,
--		       AD7192_REG_MODE);
-+		       AD7192_REG_CONF);
- 
- static struct attribute *ad7192_attributes[] = {
- 	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
- 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
--	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
- 	NULL
- };
- 
-@@ -595,6 +594,7 @@ static const struct attribute_group ad7192_attribute_group = {
- static struct attribute *ad7195_attributes[] = {
- 	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
- 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
-+	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
- 	NULL
- };
- 
--- 
-2.34.1
+Best regards,
+Krzysztof
 

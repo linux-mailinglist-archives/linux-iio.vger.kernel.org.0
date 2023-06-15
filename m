@@ -2,63 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B4A731A7E
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jun 2023 15:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20140731C71
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jun 2023 17:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239612AbjFONwR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Jun 2023 09:52:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57822 "EHLO
+        id S1344315AbjFOP0p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Jun 2023 11:26:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240810AbjFONwQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Jun 2023 09:52:16 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B270E1BDB;
-        Thu, 15 Jun 2023 06:52:09 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-5ed99ebe076so28045276d6.2;
-        Thu, 15 Jun 2023 06:52:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686837129; x=1689429129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RTISzDzB0vgzRtUm+XOEwGTMkJ6kple5Xm92txPcOLI=;
-        b=RZs0H0colKUY6LS5gf+N4I7AdqC+9xX4y/bW1RwfN8MKvImH+r1v1PQZOrCjrU5nDt
-         FsUk19iGS4qcdIpaKZBzfFzR90IEsZjP/cmgrWjolhyNxJIjCNveCNZt5MBpOU6tmDR+
-         +lKN+lRE7dBIjY+mEzP6T6/JzM1D6LKxM0hknfDMhsLHyLi59tSfMVeO2QADLNAmbJBA
-         prgMVlzi1fUMkU5k9DAMfS7U60GbueV0mN084FuSbM5Fs11usiozcJdhfNJ/QaSQF9od
-         tStbo7OYeHdy+A81I+BiQVRSrQaWoEASjqWMpT/A2DIg2Nowe1MxBxKkdvOhs07UtdaH
-         SxRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686837129; x=1689429129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RTISzDzB0vgzRtUm+XOEwGTMkJ6kple5Xm92txPcOLI=;
-        b=OrilFSMvkc52fG0Umcp6evpEpvvv8LA7Q7i65Mz+5xBKi+QUn2LmKCR4oglDjW4NCp
-         FLw3XFzg9hhM6ULoLwGIe+xNRc54TYTJ6S63JAcb2dpGWkzLsWAIA7idx0Re3JwUiO1c
-         775dpY+IIQvTr4Gr3qqFVchvuYeRUJ8MGIdmHcgbCBdkWQambCW8xxfEWhZ9VuawWgGD
-         F9NxHAzzGDwRO3RvryVxfUl6pKr+jBWj1OhCZoCeaLrY/pojYwWI8vCZDM/BANE8PKFr
-         +qzSBzcNZbl2fRAwzQ69AwUKFZAqXtBRkXyOsM8pBtDucgmicE4EudXRID35KqwalyfE
-         oxIg==
-X-Gm-Message-State: AC+VfDzohLOvSwjid3+JM1wCvrHKbLu2dtUnF33Km5EwxMQkBsk+coYy
-        FuJhe07UksAIGQwRu2Vdh0+Ztdu5EoM5FIpN3Yow4DzllKCGpQ==
-X-Google-Smtp-Source: ACHHUZ7wjjBG8VxmyvEb3k5iTRCIsao8mEEup0Ly3jqvyGSn+EjEgNrTRbdDIWOSsKwflUDuWQFak/maSvKiVTp6mqQ=
-X-Received: by 2002:ad4:5de3:0:b0:62f:ea09:7088 with SMTP id
- jn3-20020ad45de3000000b0062fea097088mr3600822qvb.27.1686837128707; Thu, 15
- Jun 2023 06:52:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230614074904.29085-1-herve.codina@bootlin.com>
- <20230614074904.29085-8-herve.codina@bootlin.com> <CAHp75Vcur=H_2mBm5Ztuvd7Jnvmr6+tvCbEkFtmaVLsEjXr8NQ@mail.gmail.com>
- <20230614114214.1371485e@bootlin.com> <CAHp75VcmW2StPqb_LtKFyNyJ2+jz3c19zNRDiSuGs06Bseq04w@mail.gmail.com>
- <20230614223418.0d7e355d@bootlin.com> <CAHp75VfFyDzr4qHNssXZ8RLy0gxMWdjBgac4JLd7grRLEG-vyw@mail.gmail.com>
- <20230615113512.07967677@bootlin.com>
-In-Reply-To: <20230615113512.07967677@bootlin.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 15 Jun 2023 16:51:32 +0300
-Message-ID: <CAHp75Vf2aR1x-Nf2+uUySyGH-p12YbP2Z=Ezbspqg==pCpRbOg@mail.gmail.com>
-Subject: Re: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        with ESMTP id S1345179AbjFOP0k (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Jun 2023 11:26:40 -0400
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7282688;
+        Thu, 15 Jun 2023 08:26:37 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1686842796;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Qj/wtCssnzRsXRkB9p4GkLgzf97028hBJBtbNDRezNs=;
+        b=X0FBgTIYugL0Vc1TehcH2BhyrN8O8GvBBwdypkOPD5UxR5EPe/j8fbbvxxn3P8EkUklLVS
+        li50qhLXaQKfB1z6taeLxTR3d5BluZ4Fa4Hc8tRq9XoGdEsTRyVVGiRhPPBCNbg4WQ1HOY
+        wtGi7cfK9eOXP7BKokKGs2OYUvGJr0yrPwO2z+aW0zMBXLhyvikLUTXHFMrMJ6DukKG6IM
+        ReYwB3YJjZjaoenT66j3/SO88AbBSjinrIoEvBKkaHp+1HnKvgIrILBCvgbb7IsJNCY8b7
+        bE74esZdPOJ1ErIsLo+kaAm+iTix4O8szIbN7qUaUfSU6VU2MEXV+4Y1lssxGA==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPA id 9E598FF806;
+        Thu, 15 Jun 2023 15:26:33 +0000 (UTC)
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Herve Codina <herve.codina@bootlin.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -68,132 +57,230 @@ Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>,
         Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH v5 00/13] Add support for IIO devices in ASoC
+Date:   Thu, 15 Jun 2023 17:26:18 +0200
+Message-Id: <20230615152631.224529-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 12:35=E2=80=AFPM Herve Codina <herve.codina@bootlin=
-.com> wrote:
-> On Thu, 15 Jun 2023 01:05:40 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+Several weeks ago, I sent a series [1] for adding a potentiometer as an
+auxiliary device in ASoC. The feedback was that the potentiometer should
+be directly handled in IIO (as other potentiometers) and something more
+generic should be present in ASoC in order to have a binding to import
+some IIO devices into sound cards.
 
-...
+The series related to the IIO potentiometer device is already applied.
 
-> Did the job using _Generic().
+This series introduces audio-iio-aux. Its goal is to offer the binding
+between IIO and ASoC.
+It exposes attached IIO devices as ASoC auxiliary devices and allows to
+control them through mixer controls.
 
-Cool! Keep my tag for that version and thank you for pursuing the
-implementation that works for everybody.
+On my system, the IIO device is a potentiometer and it is present in an
+amplifier design present in the audio path.
 
-> This lead to:
-> --- 8< ---
-> /*
->  * Remove a const qualifier
+Compare to the previous iteration
+  https://lore.kernel.org/linux-kernel/20230614074904.29085-1-herve.codina@bootlin.com/
+This v5 series mainly:
+ - Fixes {min,max}_array macros
 
-...from integer types
+Best regards,
+Hervé
 
->  * _Generic(foo, type-name: association, ..., default: association) perfo=
-rms a
->  * comparison against the foo type (not the qualified type).
->  * Do not use the const keyword in the type-name as it will not match the
->  * unqualified type of foo.
->  */
-> #define __unconst_type_cases(type)              \
+[1] https://lore.kernel.org/linux-kernel/20230203111422.142479-1-herve.codina@bootlin.com/
+[2] https://lore.kernel.org/linux-kernel/20230421085245.302169-1-herve.codina@bootlin.com/
 
-__unconst_integer_type_cases() ?
+Changes v4 -> v5
+  - Patches 1, 2, 3, 4, 5, 9, 10, 11, 12, 13
+    No changes.
 
->         unsigned type:  (unsigned type)0,       \
->         signed type:    (signed type)0
->
->
+  - Patch 6
+    Fix commit log.
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'
 
-Single blank line is enough.
+  - Patch 7
+    Fix the macros to be able to use them with:
+     - an array defined as int *buff;
+     - an array defined as int buff[N];
+     - Rework the way to "unconstify" the temporary variable to avoid
+       issues due to integer promotion.
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'
 
-> #define __unconst_typeof(x) typeof(                     \
+  - Patch 8
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'
 
-__unconst_integer_typeof() ?
+Changes v3 -> v4
+  - Patches 1, 2
+    No changes.
 
->         _Generic((x),                                   \
->                 char: (char)0,                          \
->                 __unconst_type_cases(char),             \
->                 __unconst_type_cases(short),            \
->                 __unconst_type_cases(int),              \
->                 __unconst_type_cases(long),             \
->                 __unconst_type_cases(long long),        \
->                 default: (x)))
->
-> /*
->  * Do not check the array parameter using __must_be_array().
->  * In the following legit use-case where the "array" passed is a simple p=
-ointer,
->  * __must_be_array() will return a failure.
->  * --- 8< ---
->  * int *buff
->  * ...
->  * min =3D min_array(buff, nb_items);
->  * --- 8< ---
->  *
->  * The first typeof(&(array)[0]) is needed in order to support arrays of =
-both
->  * 'int *buff' and 'int buf[N]' types.
->  *
->  * The array can be an array of const items.
->  * typeof() keeps the const qualifier. Use __unconst_typeof() in order to
->  * discard the const qualifier for the __element variable.
->  */
-> #define __minmax_array(op, array, len) ({                               \
->         typeof(&(array)[0]) __array =3D (array);                         =
- \
->         typeof(len) __len =3D (len);                                     =
- \
->         __unconst_typeof(__array[0]) __element =3D __array[--__len];     =
- \
->         while (__len--)                                                 \
->                 __element =3D op(__element, __array[__len]);             =
- \
->         __element; })
->
-> /**
->  * min_array - return minimum of values present in an array
->  * @array: array
->  * @len: array length
->  *
->  * Note that @len must not be zero (empty array).
->  */
-> #define min_array(array, len) __minmax_array(min, array, len)
->
-> /**
->  * max_array - return maximum of values present in an array
->  * @array: array
->  * @len: array length
->  *
->  * Note that @len must not be zero (empty array).
->  */
-> #define max_array(array, len) __minmax_array(max, array, len)
-> --- 8< ---
->
-> Do you think it looks good ?
+  - Patches 3, 4, 5
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'.
 
-Yes!
+  - Patch 6 (new in v4)
+    Fix headers inclusion order.
 
-> For, the KUnit tests, I agree, it would be nice to have something.
-> I need some more substantial work to implement and run the test in KUnit
-> and the first task will be learning the KUnit test system.
-> I will do that but out of this series.
+  - Patch 7 (patch 6 in v3)
+    Add a comment related to __must_be_array()
+    Use __array[0] of *__array
 
-Thank you, it's fine with me.
+  - Patch 8 (patch 7 in v3)
+    Fix minmax.h inclusion order.
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'.
 
---=20
-With Best Regards,
-Andy Shevchenko
+  - Patch 9 (patch 8 in v3)
+    Add 'Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>'.
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'.
+
+  - Patch 10 (patch 9 in v3)
+    Add 'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'.
+
+  - Patch 11 (patch 10 in v3)
+    Fix a typo.
+    Add	'Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>'.
+    Add	'Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>'.
+
+  - Patch 12 (patch 11 in v3)
+    Fix typos in the commit log.
+    Fix headers inclusion order.
+    Removed unneeded variable initialization.
+    Replace {0} by {}.
+    Use struct device *dev in probe().
+    Check an error on the snd-control-invert-range property read.
+
+  - Patch 13 (patch12 in v3)
+    No changes.
+
+Changes v2 -> v3
+  - Patches 1, 2
+    No changes.
+
+  - Patch 3, 4
+    Add 'Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>'.
+
+  - Patch 5 (new in v3)
+    Removed the 'unused' variable and check the null pointer when used.
+
+  - Patch 6 (new in v3)
+    Introduce {min,max}_array().
+
+  - Patch 7 (new in v3)
+    Use max_array() in iio_channel_read_max().
+
+  - Patch 8 (new in v3)
+    Replace a FIXME comment by a TODO one.
+
+  - Patch 9 (patch 5 in v2)
+    Removed the 'unused' variable and check the null pointer when used.
+    Use min_array().
+    Remplace a FIXME comment by a TODO one.
+
+  - Patch 10 (patch 6 in v2)
+    Convert existing macros to return a compound litteral instead of
+    adding a new helper.
+
+  - Patch 11 (patch 7 in v2)
+    Remove the file name from the C file header.
+    Use directly converted DAPM macros.
+    Replace <linux/module.h> by <linux/mod_devicetable.h>.
+    Add <linux/platform_device.h>.
+    Be sure that min <= max. Swap values if it is not the case.
+    Move the bool structure member after the int ones.
+    Remove unneeded assignements.
+    Use dev_err_probe() when relevant.
+    Use str_on_off().
+    Use static_assert() instead of BUILD_BUG_ON().
+    Remove unneeded comma and blank line.
+    Use device_property_*() instead of the OF API.
+
+  - patch 8 available in v2 removed as already applied
+
+  - Patch 12 (patch 9 in v2)
+    Use devm_add_action_or_reset().
+    Call simple_populate_aux() from simple_parse_of().
+
+Changes v1 -> v2
+  - Patch 1
+    Rename simple-iio-aux to audio-iio-aux
+    Rename invert to snd-control-invert-range
+    Remove the /schemas/iio/iio-consumer.yaml reference
+    Remove the unneeded '|' after description
+
+  - Patch 2 (new in v2)
+    Introduce the simple-audio-card additional-devs subnode
+
+  - Patch 3 (new in v2)
+    Check err before switch() in iio_channel_read_max()
+
+  - Patch 4 (new in v2)
+    Fix raw reads and raw writes documentation
+
+  - Patch 5 (patch 2 in v1)
+    Check err before switch() in iio_channel_read_min()
+    Fix documentation
+
+  - Patch 6 (path 3 in v1)
+    No changes
+
+  - Patch 7 (patch 4 in v1)
+    Rename simple-iio-aux to audio-iio-aux
+    Rename invert to snd-control-invert-range
+    Remove the mask usage from audio_iio_aux_{get,put}_volsw helpers
+    Use directly PTR_ERR() in dev_err_probe() parameter
+    Remove the '!!' construction
+    Remove of_match_ptr()
+
+  - Patch 8 (new in v2)
+    Add a missing of_node_put() in the simple-card driver
+
+  - Patch 9 (new in v2)
+    Handle additional-devs in the simple-card driver
+
+Herve Codina (13):
+  ASoC: dt-bindings: Add audio-iio-aux
+  ASoC: dt-bindings: simple-card: Add additional-devs subnode
+  iio: inkern: Check error explicitly in iio_channel_read_max()
+  iio: consumer.h: Fix raw values documentation notes
+  iio: inkern: Remove the 'unused' variable usage in
+    iio_channel_read_max()
+  iio: inkern: Fix headers inclusion order
+  minmax: Introduce {min,max}_array()
+  iio: inkern: Use max_array() to get the maximum value from an array
+  iio: inkern: Replace a FIXME comment by a TODO one
+  iio: inkern: Add a helper to query an available minimum raw value
+  ASoC: soc-dapm.h: Convert macros to return a compound literal
+  ASoC: codecs: Add support for the generic IIO auxiliary devices
+  ASoC: simple-card: Handle additional devices
+
+ .../bindings/sound/audio-iio-aux.yaml         |  64 ++++
+ .../bindings/sound/simple-card.yaml           |  53 +++
+ drivers/iio/inkern.c                          |  86 ++++-
+ include/linux/iio/consumer.h                  |  37 +-
+ include/linux/minmax.h                        |  64 ++++
+ include/sound/soc-dapm.h                      | 138 ++++---
+ sound/soc/codecs/Kconfig                      |  12 +
+ sound/soc/codecs/Makefile                     |   2 +
+ sound/soc/codecs/audio-iio-aux.c              | 338 ++++++++++++++++++
+ sound/soc/generic/simple-card.c               |  46 ++-
+ 10 files changed, 769 insertions(+), 71 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/audio-iio-aux.yaml
+ create mode 100644 sound/soc/codecs/audio-iio-aux.c
+
+-- 
+2.40.1
+

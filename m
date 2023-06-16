@@ -2,133 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91597733047
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jun 2023 13:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC7073305D
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jun 2023 13:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344732AbjFPLpc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jun 2023 07:45:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32858 "EHLO
+        id S1344478AbjFPLs5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Jun 2023 07:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344859AbjFPLpX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 07:45:23 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54AD359D;
-        Fri, 16 Jun 2023 04:45:10 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2b41e700103so7441931fa.2;
-        Fri, 16 Jun 2023 04:45:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686915909; x=1689507909;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rPm5ARXV5BWgDp1lXKxZSY+Q/UaoNS0kZY5vjJcwDOE=;
-        b=csvzXr9sxrsEhmtl/f/VnHzabemiaF1sQuQcYkZUW1KFtpaBGsZvTu2wEj5z3fmQV7
-         XI2pZ/LySZqysZ7+KB17tTjAz4CsvyutOwJ9BjKOiAfxtf4Ex/FC2m/McWDhvSydOYeK
-         xZMW/AeU671DDhe4cpcTU2hGtMA617Y3ZhzMV97reasPuWmYTrzavjANcP/T31g9tlqO
-         Pgfdvn3J6jFePmMN+GnO44+e6nUvaC//BJfpP3aAVsfxgaQhvGk4MWJ1BQjJvAQVS+Ho
-         t7rEepKY0iZdmj3jy190snVpsdNQOJHP1T6vtktW23QWfv/r1Slt5hM63fv2151wUjjf
-         srlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686915909; x=1689507909;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rPm5ARXV5BWgDp1lXKxZSY+Q/UaoNS0kZY5vjJcwDOE=;
-        b=GgQ+CULVQXxEHQ+7vbLm3MCF+qrBIa8Kt2oZoVSVoy030+l1PShogwz+wH1ALAj7gp
-         nrfQUcnndPq/2p3D4ETgjl4/b0jIdBLw+5lIIoAB6r7f8VGS8aZt/C5cBZbTlgwtel8Z
-         Nz3BbKk7BP9oPSwgF+rSPxiZOSXcaH5sZB76dkj1OOJ1NUZbApICcG7361YFQcY7g+oI
-         PKnK4UlwmOtZl9EFpcXY5znjZ1YvfWyE9v15vH26ZxZrVWxAGLfzcRQs57w3QQGvwxtj
-         19dcYa5rNYRF0VRO83nhW+lgprlIbexJvA8SUY9AiOqYtTaRgtyDHInZfHmz32asdTxR
-         180Q==
-X-Gm-Message-State: AC+VfDzFF1E8RTmZNEW0inGNLjrAhDJ2ihY3UW3lEjejxvnkDZl0Q+Xm
-        fKFCWGQStLT1LdOmhmO4lhA=
-X-Google-Smtp-Source: ACHHUZ6EqaR+4qrPwwPEnY7bruplRUt/KImSo1+8sT1eJTNzk2+7vjhqwAvCam0CTFxoWfPkaXH0/w==
-X-Received: by 2002:a2e:9bd8:0:b0:2b4:5c1a:dd7c with SMTP id w24-20020a2e9bd8000000b002b45c1add7cmr690747ljj.41.1686915908820;
-        Fri, 16 Jun 2023 04:45:08 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id y22-20020a2e3216000000b002a8e8c776e9sm3599447ljy.56.2023.06.16.04.45.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 04:45:08 -0700 (PDT)
-Message-ID: <fb7241d3-d1d1-1c37-919b-488d6d007484@gmail.com>
-Date:   Fri, 16 Jun 2023 14:45:06 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v7 0/9] fix fwnode_irq_get[_byname()] returnvalue
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        with ESMTP id S1343703AbjFPLsu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 07:48:50 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B79191;
+        Fri, 16 Jun 2023 04:48:49 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1686916128;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oLKhvPrptWFoCmJpHArFvlKc/yEEcCk45NeiCg0/3Yg=;
+        b=LL2WMmiQsuIm4g/hjHsD81IzOy08yCDudlals5vYRPZBYhTAwXCnSUWZD8hxJ1ixAlMj+V
+        JYx7e7oVG7MoU4swUjUs2j3hAl6PBV8k7c7E5Z7FNSQjf1MGesJQQ9L4BsP3a4lkHTruFS
+        BK1MVffkb7DWP+kNcYd4mIHG8qYIeHpOKVlSFUfAFgzubUkRbgV9EtXs2U2uTjAypYYwH9
+        X0BbwTXxmZ4PXGtrmlSI8s15MuoaOxM/rZ9NXiLu2AhOzPTH1rrRD1xPYHWoxQr4VO4lCA
+        Z+JVCActDH1jkX1Xa+2xdSqlAOUVJwvSZ1BHYnfBUFMZlRIxDPGj4GXVSs0pQg==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A2CD0C0002;
+        Fri, 16 Jun 2023 11:48:45 +0000 (UTC)
+Date:   Fri, 16 Jun 2023 13:48:44 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Marcin Wojtas <mw@semihalf.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Akhil R <akhilrajeev@nvidia.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <cover.1685340157.git.mazziesaccount@gmail.com>
- <20230530233438.572db3fb@kernel.org>
- <2023061553-urging-collision-32f8@gregkh>
-Content-Language: en-US, en-GB
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <2023061553-urging-collision-32f8@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "Kuninori Morimoto" <kuninori.morimoto.gx@renesas.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
+Message-ID: <20230616134844.09e7fda3@bootlin.com>
+In-Reply-To: <6c7fe34f7b65421ab618d33ba907ae09@AcuMS.aculab.com>
+References: <20230614074904.29085-1-herve.codina@bootlin.com>
+        <20230614074904.29085-8-herve.codina@bootlin.com>
+        <CAHp75Vcur=H_2mBm5Ztuvd7Jnvmr6+tvCbEkFtmaVLsEjXr8NQ@mail.gmail.com>
+        <20230614114214.1371485e@bootlin.com>
+        <CAHp75VcmW2StPqb_LtKFyNyJ2+jz3c19zNRDiSuGs06Bseq04w@mail.gmail.com>
+        <20230614223418.0d7e355d@bootlin.com>
+        <CAHp75VfFyDzr4qHNssXZ8RLy0gxMWdjBgac4JLd7grRLEG-vyw@mail.gmail.com>
+        <20230615113512.07967677@bootlin.com>
+        <6c7fe34f7b65421ab618d33ba907ae09@AcuMS.aculab.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/15/23 14:37, Greg Kroah-Hartman wrote:
-> On Tue, May 30, 2023 at 11:34:38PM -0700, Jakub Kicinski wrote:
->> On Mon, 29 May 2023 09:22:15 +0300 Matti Vaittinen wrote:
->>> The fwnode_irq_get() and the fwnode_irq_get_byname() may have returned
->>> zero if mapping the IRQ fails. This contradicts the
->>> fwnode_irq_get_byname() documentation. Furthermore, returning zero or
->>> errno on error is unepected and can easily lead to problems
->>> like.
->>
->> What's the merging plan? Could patch 1 go to a stable branch
->> and then driver trees can pull it in and apply their respective
->> patches locally?
-> 
-> I'll take patch 1 now, and then after 6.5-rc1, Matti, can you send the
-> cleanup patches to the respective subsystems?
+Hi David,
 
-Yes. I can re-spin the rest of the patches.
+On Fri, 16 Jun 2023 09:08:22 +0000
+David Laight <David.Laight@ACULAB.COM> wrote:
 
-Yours,
-	-- Matti
+...
 
 > 
-> thanks,
+> Just define two variables typeof(__array[0] + 0) one for an element
+> and one for the limit.
+> The just test (eg):
+> 	if (limit > item) limit = item;
+> finally cast the limit back to the original type.
+> The promotions of char/short to signed int won't matter.
+> There is no need for all the type-checking in min/max.
 > 
-> greg k-h
+> Indeed, if min_t(type, a, b) is in anyway sane it should
+> expand to:
+> 	type _a = a, _b = b;
+> 	_a < _b ? _a : _b
+> without any of the checks that min() does.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+I finally move to use _Generic() in order to "unconstify" and avoid the
+integer promotion. With this done, no extra cast is needed and min()/max()
+are usable.
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+The patch is available in the v5 series.
+  https://lore.kernel.org/linux-kernel/20230615152631.224529-8-herve.codina@bootlin.com/
 
+Do you think the code present in the v5 series should be changed ?
+If so, can you give me your feedback on the v5 series ?
+
+Thanks for your review,
+Hervé

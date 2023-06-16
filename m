@@ -2,57 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CC7073305D
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jun 2023 13:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D341273316C
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jun 2023 14:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344478AbjFPLs5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jun 2023 07:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35866 "EHLO
+        id S244204AbjFPMmm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Jun 2023 08:42:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343703AbjFPLsu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 07:48:50 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B79191;
-        Fri, 16 Jun 2023 04:48:49 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1686916128;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oLKhvPrptWFoCmJpHArFvlKc/yEEcCk45NeiCg0/3Yg=;
-        b=LL2WMmiQsuIm4g/hjHsD81IzOy08yCDudlals5vYRPZBYhTAwXCnSUWZD8hxJ1ixAlMj+V
-        JYx7e7oVG7MoU4swUjUs2j3hAl6PBV8k7c7E5Z7FNSQjf1MGesJQQ9L4BsP3a4lkHTruFS
-        BK1MVffkb7DWP+kNcYd4mIHG8qYIeHpOKVlSFUfAFgzubUkRbgV9EtXs2U2uTjAypYYwH9
-        X0BbwTXxmZ4PXGtrmlSI8s15MuoaOxM/rZ9NXiLu2AhOzPTH1rrRD1xPYHWoxQr4VO4lCA
-        Z+JVCActDH1jkX1Xa+2xdSqlAOUVJwvSZ1BHYnfBUFMZlRIxDPGj4GXVSs0pQg==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A2CD0C0002;
-        Fri, 16 Jun 2023 11:48:45 +0000 (UTC)
-Date:   Fri, 16 Jun 2023 13:48:44 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     David Laight <David.Laight@ACULAB.COM>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        with ESMTP id S232355AbjFPMml (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 08:42:41 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56D8130EA
+        for <linux-iio@vger.kernel.org>; Fri, 16 Jun 2023 05:42:40 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-269-JJvQb2sfOriquygsMnYC7w-1; Fri, 16 Jun 2023 13:42:37 +0100
+X-MC-Unique: JJvQb2sfOriquygsMnYC7w-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 16 Jun
+ 2023 13:42:33 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Fri, 16 Jun 2023 13:42:33 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Herve Codina' <herve.codina@bootlin.com>
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -66,9 +43,11 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
-Message-ID: <20230616134844.09e7fda3@bootlin.com>
-In-Reply-To: <6c7fe34f7b65421ab618d33ba907ae09@AcuMS.aculab.com>
+Subject: RE: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
+Thread-Topic: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
+Thread-Index: AQHZn2z+IMzVucn/mECJ0o8xQC0QeK+NI4PggAAd4ACAABw3kA==
+Date:   Fri, 16 Jun 2023 12:42:33 +0000
+Message-ID: <73144a81d75c477b9639872ed9f4cbf3@AcuMS.aculab.com>
 References: <20230614074904.29085-1-herve.codina@bootlin.com>
         <20230614074904.29085-8-herve.codina@bootlin.com>
         <CAHp75Vcur=H_2mBm5Ztuvd7Jnvmr6+tvCbEkFtmaVLsEjXr8NQ@mail.gmail.com>
@@ -78,52 +57,59 @@ References: <20230614074904.29085-1-herve.codina@bootlin.com>
         <CAHp75VfFyDzr4qHNssXZ8RLy0gxMWdjBgac4JLd7grRLEG-vyw@mail.gmail.com>
         <20230615113512.07967677@bootlin.com>
         <6c7fe34f7b65421ab618d33ba907ae09@AcuMS.aculab.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ <20230616134844.09e7fda3@bootlin.com>
+In-Reply-To: <20230616134844.09e7fda3@bootlin.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi David,
+RnJvbTogSGVydmUgQ29kaW5hIDxoZXJ2ZS5jb2RpbmFAYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDE2
+IEp1bmUgMjAyMyAxMjo0OQ0KPiANCj4gSGkgRGF2aWQsDQo+IA0KPiBPbiBGcmksIDE2IEp1biAy
+MDIzIDA5OjA4OjIyICswMDAwDQo+IERhdmlkIExhaWdodCA8RGF2aWQuTGFpZ2h0QEFDVUxBQi5D
+T00+IHdyb3RlOg0KPiANCj4gLi4uDQo+IA0KPiA+DQo+ID4gSnVzdCBkZWZpbmUgdHdvIHZhcmlh
+YmxlcyB0eXBlb2YoX19hcnJheVswXSArIDApIG9uZSBmb3IgYW4gZWxlbWVudA0KPiA+IGFuZCBv
+bmUgZm9yIHRoZSBsaW1pdC4NCj4gPiBUaGUganVzdCB0ZXN0IChlZyk6DQo+ID4gCWlmIChsaW1p
+dCA+IGl0ZW0pIGxpbWl0ID0gaXRlbTsNCj4gPiBmaW5hbGx5IGNhc3QgdGhlIGxpbWl0IGJhY2sg
+dG8gdGhlIG9yaWdpbmFsIHR5cGUuDQo+ID4gVGhlIHByb21vdGlvbnMgb2YgY2hhci9zaG9ydCB0
+byBzaWduZWQgaW50IHdvbid0IG1hdHRlci4NCj4gPiBUaGVyZSBpcyBubyBuZWVkIGZvciBhbGwg
+dGhlIHR5cGUtY2hlY2tpbmcgaW4gbWluL21heC4NCj4gPg0KPiA+IEluZGVlZCwgaWYgbWluX3Qo
+dHlwZSwgYSwgYikgaXMgaW4gYW55d2F5IHNhbmUgaXQgc2hvdWxkDQo+ID4gZXhwYW5kIHRvOg0K
+PiA+IAl0eXBlIF9hID0gYSwgX2IgPSBiOw0KPiA+IAlfYSA8IF9iID8gX2EgOiBfYg0KPiA+IHdp
+dGhvdXQgYW55IG9mIHRoZSBjaGVja3MgdGhhdCBtaW4oKSBkb2VzLg0KPiANCj4gSSBmaW5hbGx5
+IG1vdmUgdG8gdXNlIF9HZW5lcmljKCkgaW4gb3JkZXIgdG8gInVuY29uc3RpZnkiIGFuZCBhdm9p
+ZCB0aGUNCj4gaW50ZWdlciBwcm9tb3Rpb24uIFdpdGggdGhpcyBkb25lLCBubyBleHRyYSBjYXN0
+IGlzIG5lZWRlZCBhbmQgbWluKCkvbWF4KCkNCj4gYXJlIHVzYWJsZS4NCj4gDQo+IFRoZSBwYXRj
+aCBpcyBhdmFpbGFibGUgaW4gdGhlIHY1IHNlcmllcy4NCj4gICBodHRwczovL2xvcmUua2VybmVs
+Lm9yZy9saW51eC1rZXJuZWwvMjAyMzA2MTUxNTI2MzEuMjI0NTI5LTgtaGVydmUuY29kaW5hQGJv
+b3RsaW4uY29tLw0KPiANCj4gRG8geW91IHRoaW5rIHRoZSBjb2RlIHByZXNlbnQgaW4gdGhlIHY1
+IHNlcmllcyBzaG91bGQgYmUgY2hhbmdlZCA/DQo+IElmIHNvLCBjYW4geW91IGdpdmUgbWUgeW91
+ciBmZWVkYmFjayBvbiB0aGUgdjUgc2VyaWVzID8NCg0KSXQgc2VlbXMgaG9ycmlibHkgb3Zlci1j
+b21wbGljYXRlZCBqdXN0IHRvIGdldCBhcm91bmQgdGhlIHBlcnZlcnNlDQpvdmVyLXN0cm9uZyB0
+eXBlIGNoZWNraW5nIHRoYXQgbWluL21heCBkbyBqdXN0IHRvIGF2b2lkIHNpZ24NCmV4dGVuc2lv
+biBpc3N1ZXMuDQoNCk1heWJlIEkgb3VnaHQgdG8gdHJ5IGdldHRpbmcgYSBwYXRjaCBhY2NlcHRl
+ZCB0aGF0IGp1c3QgY2hlY2tzDQogIGlzX3NpZ25lZF90eXBlKHR5cGVvZih4KSkgPT0gaXNfc2ln
+bmVkX3R5cGUodHlwZW9mKHkpKQ0KaW5zdGVhZCBvZg0KICB0eXBlb2YoeCkgPT0gdHlwZW9mKHkp
+DQpUaGVuIHdvcnJ5IGFib3V0IHRoZSB2YWxpZCBzaWduZWQgdiB1bnNpZ25lZCBjYXNlcy4NCg0K
+SW5kZWVkLCBzaW5jZSB0aGUgYXJyYXkgaW5kZXggY2FuIGJlIGFzc3VtZWQgbm90IHRvIGhhdmUg
+c2lkZQ0KZWZmZWN0cyB5b3UgY291bGQgdXNlIF9fY21wKHgsIHksIG9wKSBkaXJlY3RseS4NCg0K
+Tm8gb25lIGhhcyBwb2ludGVkIG91dCB0aGF0IF9fZWxlbWVudCBzaG91bGQgYmUgX19ib3VuZC4N
+Cg0KCURhdmlkDQoNCgkNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
+IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
+b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-On Fri, 16 Jun 2023 09:08:22 +0000
-David Laight <David.Laight@ACULAB.COM> wrote:
-
-...
-
-> 
-> Just define two variables typeof(__array[0] + 0) one for an element
-> and one for the limit.
-> The just test (eg):
-> 	if (limit > item) limit = item;
-> finally cast the limit back to the original type.
-> The promotions of char/short to signed int won't matter.
-> There is no need for all the type-checking in min/max.
-> 
-> Indeed, if min_t(type, a, b) is in anyway sane it should
-> expand to:
-> 	type _a = a, _b = b;
-> 	_a < _b ? _a : _b
-> without any of the checks that min() does.
-
-I finally move to use _Generic() in order to "unconstify" and avoid the
-integer promotion. With this done, no extra cast is needed and min()/max()
-are usable.
-
-The patch is available in the v5 series.
-  https://lore.kernel.org/linux-kernel/20230615152631.224529-8-herve.codina@bootlin.com/
-
-Do you think the code present in the v5 series should be changed ?
-If so, can you give me your feedback on the v5 series ?
-
-Thanks for your review,
-Hervé

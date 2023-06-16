@@ -2,114 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D341273316C
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jun 2023 14:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB0D733474
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jun 2023 17:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244204AbjFPMmm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jun 2023 08:42:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40330 "EHLO
+        id S1345853AbjFPPNb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Jun 2023 11:13:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232355AbjFPMml (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 08:42:41 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56D8130EA
-        for <linux-iio@vger.kernel.org>; Fri, 16 Jun 2023 05:42:40 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-269-JJvQb2sfOriquygsMnYC7w-1; Fri, 16 Jun 2023 13:42:37 +0100
-X-MC-Unique: JJvQb2sfOriquygsMnYC7w-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 16 Jun
- 2023 13:42:33 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Fri, 16 Jun 2023 13:42:33 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Herve Codina' <herve.codina@bootlin.com>
-CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        with ESMTP id S1345881AbjFPPNa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 11:13:30 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BD33581;
+        Fri, 16 Jun 2023 08:13:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1686928409;
+  x=1718464409;
+  h=references:from:to:cc:subject:in-reply-to:date:
+   message-id:mime-version;
+  bh=BuJWD6MDEmgPeXDb5794LN9Pv82aJsMiwAk15GVPLck=;
+  b=fEeHnF6roftz+0JFxpjLDFMyAFMGISh+UdGR+xlsPVsOgT/Zuq9ZKSGu
+   4aKP+FGQCXcN03q1ohT7hx0LbitjAxhvBpqgGd3UpjFc/T/hhRYcjjFpa
+   +GCcK25eyrVAvBk7H4O1VKZC0vNRifARtCPqj4lFgHXeIgBBESZrJtv4h
+   7Rq/A96xkW71HUFR9c66Cr445384BH+q8LcZ8uqkfVWw+2OIItL11qEHI
+   TT7/mCWXmVJg3tLvgAwPHULVLFjkLLsyAKJUZkKa2heJZtEb3z9zOgQ46
+   0P1BYLMDFb5H3apdSVoA4ZBIHE2xbNumrkkRWUkyc0c3EDRbbUqpJHtGb
+   g==;
+References: <cover.1686926857.git.waqarh@axis.com>
+User-agent: a.out
+From:   Waqar Hameed <waqar.hameed@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "Kuninori Morimoto" <kuninori.morimoto.gx@renesas.com>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: RE: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
-Thread-Topic: [PATCH v4 07/13] minmax: Introduce {min,max}_array()
-Thread-Index: AQHZn2z+IMzVucn/mECJ0o8xQC0QeK+NI4PggAAd4ACAABw3kA==
-Date:   Fri, 16 Jun 2023 12:42:33 +0000
-Message-ID: <73144a81d75c477b9639872ed9f4cbf3@AcuMS.aculab.com>
-References: <20230614074904.29085-1-herve.codina@bootlin.com>
-        <20230614074904.29085-8-herve.codina@bootlin.com>
-        <CAHp75Vcur=H_2mBm5Ztuvd7Jnvmr6+tvCbEkFtmaVLsEjXr8NQ@mail.gmail.com>
-        <20230614114214.1371485e@bootlin.com>
-        <CAHp75VcmW2StPqb_LtKFyNyJ2+jz3c19zNRDiSuGs06Bseq04w@mail.gmail.com>
-        <20230614223418.0d7e355d@bootlin.com>
-        <CAHp75VfFyDzr4qHNssXZ8RLy0gxMWdjBgac4JLd7grRLEG-vyw@mail.gmail.com>
-        <20230615113512.07967677@bootlin.com>
-        <6c7fe34f7b65421ab618d33ba907ae09@AcuMS.aculab.com>
- <20230616134844.09e7fda3@bootlin.com>
-In-Reply-To: <20230616134844.09e7fda3@bootlin.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Conor Dooley <conor+dt@kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
+Subject: [PATCH 1/2] dt-bindings: iio: proximity: Add bindings for Murata
+ IRS-D200
+In-Reply-To: <cover.1686926857.git.waqarh@axis.com>
+Date:   Fri, 16 Jun 2023 17:10:42 +0200
+Message-ID: <9487391b0565434761055b39ba04900bd839580a.1686926857.git.waqarh@axis.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
+ (10.20.40.7)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-RnJvbTogSGVydmUgQ29kaW5hIDxoZXJ2ZS5jb2RpbmFAYm9vdGxpbi5jb20+DQo+IFNlbnQ6IDE2
-IEp1bmUgMjAyMyAxMjo0OQ0KPiANCj4gSGkgRGF2aWQsDQo+IA0KPiBPbiBGcmksIDE2IEp1biAy
-MDIzIDA5OjA4OjIyICswMDAwDQo+IERhdmlkIExhaWdodCA8RGF2aWQuTGFpZ2h0QEFDVUxBQi5D
-T00+IHdyb3RlOg0KPiANCj4gLi4uDQo+IA0KPiA+DQo+ID4gSnVzdCBkZWZpbmUgdHdvIHZhcmlh
-YmxlcyB0eXBlb2YoX19hcnJheVswXSArIDApIG9uZSBmb3IgYW4gZWxlbWVudA0KPiA+IGFuZCBv
-bmUgZm9yIHRoZSBsaW1pdC4NCj4gPiBUaGUganVzdCB0ZXN0IChlZyk6DQo+ID4gCWlmIChsaW1p
-dCA+IGl0ZW0pIGxpbWl0ID0gaXRlbTsNCj4gPiBmaW5hbGx5IGNhc3QgdGhlIGxpbWl0IGJhY2sg
-dG8gdGhlIG9yaWdpbmFsIHR5cGUuDQo+ID4gVGhlIHByb21vdGlvbnMgb2YgY2hhci9zaG9ydCB0
-byBzaWduZWQgaW50IHdvbid0IG1hdHRlci4NCj4gPiBUaGVyZSBpcyBubyBuZWVkIGZvciBhbGwg
-dGhlIHR5cGUtY2hlY2tpbmcgaW4gbWluL21heC4NCj4gPg0KPiA+IEluZGVlZCwgaWYgbWluX3Qo
-dHlwZSwgYSwgYikgaXMgaW4gYW55d2F5IHNhbmUgaXQgc2hvdWxkDQo+ID4gZXhwYW5kIHRvOg0K
-PiA+IAl0eXBlIF9hID0gYSwgX2IgPSBiOw0KPiA+IAlfYSA8IF9iID8gX2EgOiBfYg0KPiA+IHdp
-dGhvdXQgYW55IG9mIHRoZSBjaGVja3MgdGhhdCBtaW4oKSBkb2VzLg0KPiANCj4gSSBmaW5hbGx5
-IG1vdmUgdG8gdXNlIF9HZW5lcmljKCkgaW4gb3JkZXIgdG8gInVuY29uc3RpZnkiIGFuZCBhdm9p
-ZCB0aGUNCj4gaW50ZWdlciBwcm9tb3Rpb24uIFdpdGggdGhpcyBkb25lLCBubyBleHRyYSBjYXN0
-IGlzIG5lZWRlZCBhbmQgbWluKCkvbWF4KCkNCj4gYXJlIHVzYWJsZS4NCj4gDQo+IFRoZSBwYXRj
-aCBpcyBhdmFpbGFibGUgaW4gdGhlIHY1IHNlcmllcy4NCj4gICBodHRwczovL2xvcmUua2VybmVs
-Lm9yZy9saW51eC1rZXJuZWwvMjAyMzA2MTUxNTI2MzEuMjI0NTI5LTgtaGVydmUuY29kaW5hQGJv
-b3RsaW4uY29tLw0KPiANCj4gRG8geW91IHRoaW5rIHRoZSBjb2RlIHByZXNlbnQgaW4gdGhlIHY1
-IHNlcmllcyBzaG91bGQgYmUgY2hhbmdlZCA/DQo+IElmIHNvLCBjYW4geW91IGdpdmUgbWUgeW91
-ciBmZWVkYmFjayBvbiB0aGUgdjUgc2VyaWVzID8NCg0KSXQgc2VlbXMgaG9ycmlibHkgb3Zlci1j
-b21wbGljYXRlZCBqdXN0IHRvIGdldCBhcm91bmQgdGhlIHBlcnZlcnNlDQpvdmVyLXN0cm9uZyB0
-eXBlIGNoZWNraW5nIHRoYXQgbWluL21heCBkbyBqdXN0IHRvIGF2b2lkIHNpZ24NCmV4dGVuc2lv
-biBpc3N1ZXMuDQoNCk1heWJlIEkgb3VnaHQgdG8gdHJ5IGdldHRpbmcgYSBwYXRjaCBhY2NlcHRl
-ZCB0aGF0IGp1c3QgY2hlY2tzDQogIGlzX3NpZ25lZF90eXBlKHR5cGVvZih4KSkgPT0gaXNfc2ln
-bmVkX3R5cGUodHlwZW9mKHkpKQ0KaW5zdGVhZCBvZg0KICB0eXBlb2YoeCkgPT0gdHlwZW9mKHkp
-DQpUaGVuIHdvcnJ5IGFib3V0IHRoZSB2YWxpZCBzaWduZWQgdiB1bnNpZ25lZCBjYXNlcy4NCg0K
-SW5kZWVkLCBzaW5jZSB0aGUgYXJyYXkgaW5kZXggY2FuIGJlIGFzc3VtZWQgbm90IHRvIGhhdmUg
-c2lkZQ0KZWZmZWN0cyB5b3UgY291bGQgdXNlIF9fY21wKHgsIHksIG9wKSBkaXJlY3RseS4NCg0K
-Tm8gb25lIGhhcyBwb2ludGVkIG91dCB0aGF0IF9fZWxlbWVudCBzaG91bGQgYmUgX19ib3VuZC4N
-Cg0KCURhdmlkDQoNCgkNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
-IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
-b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+Murata IRS-D200 is a PIR sensor for human detection. It uses the I2C bus
+for communication with interrupt support. Add devicetree bindings
+requiring the compatible string, I2C slave address (reg) and interrupts.
+
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+---
+ .../iio/proximity/murata,irsd200.yaml         | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+new file mode 100644
+index 000000000000..d317fbe7bd50
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/proximity/murata,irsd200.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Murata IRS-D200 PIR sensor
++
++maintainers:
++  - Waqar Hameed <waqar.hameed@axis.com>
++
++description: |
++  PIR sensor for human detection.
++
++properties:
++  compatible:
++    const: murata,irsd200
++
++  reg:
++    items:
++      - enum:
++          - 0x48
++          - 0x49
++        description: |
++          When the AD pin is connected to GND, the slave address is 0x48.
++          When the AD pin is connected to VDD, the slave address is 0x49.
++
++  interrupts:
++    maxItems: 1
++    description:
++      Type should be IRQ_TYPE_EDGE_RISING.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pir@48 {
++            compatible = "murata,irsd200";
++            reg = <0x48>;
++            interrupts = <24 IRQ_TYPE_EDGE_RISING>;
++        };
++    };
++...
+-- 
+2.30.2
 

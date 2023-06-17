@@ -2,244 +2,233 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3767342D7
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DD1F7342E4
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:11:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233127AbjFQSBh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 14:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39316 "EHLO
+        id S231146AbjFQSK4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 14:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjFQSBg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:01:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C7A1729;
-        Sat, 17 Jun 2023 11:01:35 -0700 (PDT)
+        with ESMTP id S229487AbjFQSKz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:10:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB88C1736;
+        Sat, 17 Jun 2023 11:10:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3B4B61041;
-        Sat, 17 Jun 2023 18:01:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7239DC433C0;
-        Sat, 17 Jun 2023 18:01:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5951760B6A;
+        Sat, 17 Jun 2023 18:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087AFC433C0;
+        Sat, 17 Jun 2023 18:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687024894;
-        bh=RERf5RbZg+WAAGOHyyxJF20kJeK52BhhW35kQfeQM6A=;
+        s=k20201202; t=1687025453;
+        bh=+MUxODR25JxS83z5KzVEnmk64ZPPdYw5BmwBRnEkZug=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=naqtaYMtiG5Uj7Vcbfv5sFoudBw/ld7Tbza9e3k0Dm/mu0TFQTeFwwLOi5X4neHZK
-         /oUtLmYcSs9tVImqb2mepYCsGWcrp4ecdegIft6Lot0hW1FBGd80W7W4OigegE+hnH
-         2BzNqbzmpDWcjEQlTfLzayMrraXefq8eYb+5kLSFBFMKYjWdpfboJrwyfKUXndVWTN
-         TpY62tY3WHS0bOfK8PXcP4KrHdNg+np5G2hRKdhgshbRk3CqPbZQ66R2nnA0Qw+gt+
-         Ff5WO+rqV2wykkDcWOCBr5uEK4+3Ho4/o5tEvIQ4HM/d6ARMGZFcQv//KHcvGVYfCN
-         yQiWsQiRcX7ZA==
-Date:   Sat, 17 Jun 2023 19:01:25 +0100
+        b=KQ+qvDhZbrqMpK69x38tBJXqGniOYa1aHTkKJ74lnZTxGd8gInXVya1OhDINdqigr
+         9VlN4r4kNz1OmbWJ81sCXXanBRteKjaxyqF0QNENKpwdvxpIKdA0EfgbrzoZyVdzxf
+         mp+KS5bKbsyQtYpei2gvo38eOMdBDQeRs71L8RkOdcSnBHWLl9q3mUv6K1IV3WLc/O
+         zGychfnbi+rhLh+6kvjrRk+Zjhu+eSqo6TqJZgHbSE4KPxDJ93+QMijebn6HlOD7Nb
+         xSq6e/WGMI8yRThC4/IhpqRxahs8kBUKqM8KdOZgfX1z35UiMl0L8ynky+uhTr6RsZ
+         jN2Lzb3IZwKvA==
+Date:   Sat, 17 Jun 2023 19:10:47 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Alisa Roman <alisa.roman@analog.com>, stable@vger.kernel.org,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 12/13] ASoC: codecs: Add support for the generic IIO
- auxiliary devices
-Message-ID: <20230617190125.147434b9@jic23-huawei>
-In-Reply-To: <20230615152631.224529-13-herve.codina@bootlin.com>
-References: <20230615152631.224529-1-herve.codina@bootlin.com>
-        <20230615152631.224529-13-herve.codina@bootlin.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7192: Fix ac excitation feature
+Message-ID: <20230617191047.51e4852f@jic23-huawei>
+In-Reply-To: <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
+References: <20230614155242.160296-1-alisa.roman@analog.com>
+        <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 15 Jun 2023 17:26:30 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Thu, 15 Jun 2023 13:46:44 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Industrial I/O devices can be present in the audio path.
-> These devices needs to be used as audio components in order to be
-> fully integrated in the audio path.
-> 
-> This support allows to consider these Industrial I/O devices as
-> auxiliary audio devices and allows one to control them using mixer
-> controls.
-> 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> On Wed, 2023-06-14 at 18:52 +0300, Alisa Roman wrote:
+> > AC excitation enable feature exposed to user on AD7192, allowing a bit
+> > which should be 0 to be set. This feature is specific only to AD7195. AC
+> > excitation attribute moved accordingly.
+> >=20
+> > In the AD7195 documentation, the AC excitation enable bit is on position
+> > 22 in the Configuration register. ACX macro changed to match correct
+> > register and bit.
+> >=20
+> > Note that the fix tag is for the commit that moved the driver out of
+> > staging.
+> >=20
+> > Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+> > Signed-off-by: Alisa Roman <alisa.roman@analog.com>
+> > Cc: stable@vger.kernel.org
+> > --- =20
+>=20
+> Hi Alisa,
+>=20
+> I see you improved the commit message to explain what's going on but you =
+should
+> have versioned your patches accordingly. Anyways, don't forget to do it n=
+ext
+> time :). You could also mention the name change AD7192_MODE_ACX ->
+> AD7192_CONFIG_ACX even though it's a bit obvious. Anyways:
+>=20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-A few trivial things inline.
-With those tidied up, (for the IIO bits and general code - but I don't know
-the snd part well enough to review that).
+Hi Alisa,
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I've queued this up locally but as we are close to the merge window, my
+fixes branch is in the odd state of being ahead of what it's usually based =
+on.
+As such I won't push it out until post merge window and won't push it out
+in the meantime as it would make a mess of linux-next.
 
-> index 000000000000..b9d72cbb85f2
-> --- /dev/null
-> +++ b/sound/soc/codecs/audio-iio-aux.c
-> @@ -0,0 +1,338 @@
+For now it's pushed out as fixes-testing so we can get some autobuilder cov=
+erage
+on it.
 
-...
+Jonathan
 
-> +static int audio_iio_aux_add_controls(struct snd_soc_component *component,
-> +				      struct audio_iio_aux_chan *chan)
-> +{
-> +	struct snd_kcontrol_new control = {};
 
-Why not:
-
-	struct snd_kcontrol_new control = {
-		.iface = SNDRV_CTL_ELEM_IFACE_MIXER;
-		.name = chan->name;
-		.info = audio_iio_aux_info_volsw;
-		.get = audio_iio_aux_get_volsw;
-		.put = audio_iio_aux_put_volsw;
-		.private_value = (unsigned long)chan;
-	};
-
-> +
-> +	control.iface = SNDRV_CTL_ELEM_IFACE_MIXER;
-> +	control.name = chan->name;
-> +	control.info = audio_iio_aux_info_volsw;
-> +	control.get = audio_iio_aux_get_volsw;
-> +	control.put = audio_iio_aux_put_volsw;
-> +	control.private_value = (unsigned long)chan;
-> +
-> +	return snd_soc_add_component_controls(component, &control, 1);
-> +}
-> +
-> +/*
-> + * These data could be on stack but they are pretty big.
-> + * As ASoC internally copy them and protect them against concurrent accesses
-> + * (snd_soc_bind_card() protects using client_mutex), keep them in the global
-> + * data area.
-> + */
-> +static struct snd_soc_dapm_widget widgets[3];
-> +static struct snd_soc_dapm_route routes[2];
-> +
-> +/* Be sure sizes are correct (need 3 widgets and 2 routes) */
-> +static_assert(ARRAY_SIZE(widgets) >= 3, "3 widgets are needed");
-> +static_assert(ARRAY_SIZE(routes) >= 2, "2 routes are needed");
-> +
-> +static int audio_iio_aux_add_dapms(struct snd_soc_component *component,
-> +				   struct audio_iio_aux_chan *chan)
-> +{
-> +	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(component);
-> +	char *output_name;
-> +	char *input_name;
-> +	char *pga_name;
-> +	int ret;
-> +
-> +	input_name = kasprintf(GFP_KERNEL, "%s IN", chan->name);
-> +	if (!input_name)
-> +		return -ENOMEM;
-> +
-> +	output_name = kasprintf(GFP_KERNEL, "%s OUT", chan->name);
-> +	if (!output_name) {
-> +		ret = -ENOMEM;
-> +		goto out_free_input_name;
-> +	}
-
-Trivial but a blank line here would be nice.
-
-> +	pga_name = kasprintf(GFP_KERNEL, "%s PGA", chan->name);
-> +	if (!pga_name) {
-> +		ret = -ENOMEM;
-> +		goto out_free_output_name;
-> +	}
-> +
-> +	widgets[0] = SND_SOC_DAPM_INPUT(input_name);
-> +	widgets[1] = SND_SOC_DAPM_OUTPUT(output_name);
-> +	widgets[2] = SND_SOC_DAPM_PGA(pga_name, SND_SOC_NOPM, 0, 0, NULL, 0);
-> +	ret = snd_soc_dapm_new_controls(dapm, widgets, 3);
-> +	if (ret)
-> +		goto out_free_pga_name;
-> +
-> +	routes[0].sink = pga_name;
-> +	routes[0].control = NULL;
-> +	routes[0].source = input_name;
-> +	routes[1].sink = output_name;
-> +	routes[1].control = NULL;
-> +	routes[1].source = pga_name;
-> +	ret = snd_soc_dapm_add_routes(dapm, routes, 2);
-> +
-> +	/* Allocated names are no more needed (duplicated in ASoC internals) */
-> +
-> +out_free_pga_name:
-> +	kfree(pga_name);
-> +out_free_output_name:
-> +	kfree(output_name);
-> +out_free_input_name:
-> +	kfree(input_name);
-> +	return ret;
-> +}
-> +
-> +static int audio_iio_aux_component_probe(struct snd_soc_component *component)
-> +{
-> +	struct audio_iio_aux *iio_aux = snd_soc_component_get_drvdata(component);
-> +	struct audio_iio_aux_chan *chan;
-> +	int ret;
-> +	int i;
-> +
-> +	for (i = 0; i < iio_aux->num_chans; i++) {
-> +		chan = iio_aux->chans + i;
-> +
-> +		ret = iio_read_max_channel_raw(chan->iio_chan, &chan->max);
-> +		if (ret)
-> +			return dev_err_probe(component->dev, ret,
-> +					     "chan[%d] %s: Cannot get max raw value\n",
-> +					     i, chan->name);
-> +
-> +		ret = iio_read_min_channel_raw(chan->iio_chan, &chan->min);
-> +		if (ret)
-> +			return dev_err_probe(component->dev, ret,
-> +					     "chan[%d] %s: Cannot get min raw value\n",
-> +					     i, chan->name);
-> +
-> +		if (chan->min > chan->max) {
-> +			dev_dbg(component->dev, "chan[%d] %s: Swap min and max\n",
-> +				i, chan->name);
-
-Why?  I'd like a comment here on what circumstances could cause this to happen.
-
-> +			swap(chan->min, chan->max);
-> +		}
-> +
-> +		/* Set initial value */
-> +		ret = iio_write_channel_raw(chan->iio_chan,
-> +					    chan->is_invert_range ? chan->max : chan->min);
-> +		if (ret)
-> +			return dev_err_probe(component->dev, ret,
-> +					     "chan[%d] %s: Cannot set initial value\n",
-> +					     i, chan->name);
-> +
-> +		ret = audio_iio_aux_add_controls(component, chan);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = audio_iio_aux_add_dapms(component, chan);
-> +		if (ret)
-> +			return ret;
-> +
-> +		dev_dbg(component->dev, "chan[%d]: Added %s (min=%d, max=%d, invert=%s)\n",
-> +			i, chan->name, chan->min, chan->max,
-> +			str_on_off(chan->is_invert_range));
-> +	}
-> +
-> +	return 0;
-> +}
+>=20
+> > =C2=A0drivers/iio/adc/ad7192.c | 16 ++++++++--------
+> > =C2=A01 file changed, 8 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> > index 8685e0b58a83..7bc3ebfe8081 100644
+> > --- a/drivers/iio/adc/ad7192.c
+> > +++ b/drivers/iio/adc/ad7192.c
+> > @@ -62,7 +62,6 @@
+> > =C2=A0#define AD7192_MODE_STA_MASK=C2=A0=C2=A0=C2=A0BIT(20) /* Status R=
+egister transmission Mask
+> > */
+> > =C2=A0#define AD7192_MODE_CLKSRC(x)=C2=A0=C2=A0(((x) & 0x3) << 18) /* C=
+lock Source Select */
+> > =C2=A0#define AD7192_MODE_SINC3=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(=
+15) /* SINC3 Filter Select */
+> > -#define AD7192_MODE_ACX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(14) /* AC excitation=
+ enable(AD7195
+> > only)*/
+> > =C2=A0#define AD7192_MODE_ENPAR=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(=
+13) /* Parity Enable */
+> > =C2=A0#define AD7192_MODE_CLKDIV=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(12) /=
+* Clock divide by 2 (AD7190/2 only)*/
+> > =C2=A0#define AD7192_MODE_SCYCLE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(11) /=
+* Single cycle conversion */
+> > @@ -91,6 +90,7 @@
+> > =C2=A0/* Configuration Register Bit Designations (AD7192_REG_CONF) */
+> > =C2=A0
+> > =C2=A0#define AD7192_CONF_CHOP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0BIT(23) /* CHOP enable */
+> > +#define AD7192_CONF_ACX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(22) /* AC excitation=
+ enable(AD7195
+> > only) */
+> > =C2=A0#define AD7192_CONF_REFSEL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(20) /=
+* REFIN1/REFIN2 Reference Select */
+> > =C2=A0#define AD7192_CONF_CHAN(x)=C2=A0=C2=A0=C2=A0=C2=A0((x) << 8) /* =
+Channel select */
+> > =C2=A0#define AD7192_CONF_CHAN_MASK=C2=A0=C2=A0(0x7FF << 8) /* Channel =
+select mask */
+> > @@ -472,7 +472,7 @@ static ssize_t ad7192_show_ac_excitation(struct dev=
+ice
+> > *dev,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_dev *indio_d=
+ev =3D dev_to_iio_dev(dev);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ad7192_state *st=
+ =3D iio_priv(indio_dev);
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return sysfs_emit(buf, "%d\n=
+", !!(st->mode & AD7192_MODE_ACX));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return sysfs_emit(buf, "%d\n=
+", !!(st->conf & AD7192_CONF_ACX));
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0static ssize_t ad7192_show_bridge_switch(struct device *dev,
+> > @@ -513,13 +513,13 @@ static ssize_t ad7192_set(struct device *dev,
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, s=
+t->gpocon);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case AD7192_REG_MODE:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case AD7192_REG_CONF:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0if (val)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->mo=
+de |=3D AD7192_MODE_ACX;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->co=
+nf |=3D AD7192_CONF_ACX;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0else
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->mo=
+de &=3D ~AD7192_MODE_ACX;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->co=
+nf &=3D ~AD7192_CONF_ACX;
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0default:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D -EINVAL;
+> > @@ -579,12 +579,11 @@ static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
+> > =C2=A0
+> > =C2=A0static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad7192_show=
+_ac_excitation, ad7192_set,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7192_REG_MODE);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7192_REG_CONF);
+> > =C2=A0
+> > =C2=A0static struct attribute *ad7192_attributes[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_filter_lo=
+w_pass_3db_frequency_available.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_bridge_sw=
+itch_en.dev_attr.attr,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_ac_excitation_=
+en.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL
+> > =C2=A0};
+> > =C2=A0
+> > @@ -595,6 +594,7 @@ static const struct attribute_group ad7192_attribut=
+e_group
+> > =3D {
+> > =C2=A0static struct attribute *ad7195_attributes[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_filter_lo=
+w_pass_3db_frequency_available.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_bridge_sw=
+itch_en.dev_attr.attr,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_ac_excitation_=
+en.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL
+> > =C2=A0};
+> > =C2=A0 =20
+>=20
 

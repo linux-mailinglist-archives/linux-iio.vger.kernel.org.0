@@ -2,77 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1130F733FC5
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 10:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F3E73404B
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 12:40:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbjFQIzp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 04:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40064 "EHLO
+        id S232533AbjFQKkL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 06:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjFQIzo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 04:55:44 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6169310D1
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 01:55:42 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51a20138617so2239313a12.2
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 01:55:42 -0700 (PDT)
+        with ESMTP id S233241AbjFQKkJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 06:40:09 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E4EA136
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 03:40:08 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-5189f49c315so1994285a12.2
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 03:40:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686992141; x=1689584141;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K6Tb4xMKEqxuJiYeqUW+S0/SqCS3tOAVF1bVLma2/Ik=;
-        b=b1YwTFCsSodLvxgb0yw0je9hhTb90gvoxFBhmxTOohzodJcuChPDajtbgbJbLaCJSs
-         4nWVR3oXd7TDnZF73a1oXz09nl0lsaa+THv4L7heYYsvp6G2RVaoVqiP7ftp+AMaEbCY
-         lA4//Oc91uWQMMBWcAmp714YaoMrNFaIh0ukNeSevjTFZcRaztMqgKwFxyF0snYzjVJ+
-         +AOu2hSes3Zr9oKiu/KQX6QXcSpSzWqlIkUUFi0Sj/x8qVF1OtfFME3IIp9bsv266+Sx
-         UVxVpWdlFny2jLyNhO3bCxlggDTPE9WjGXr7pHbHXXPUy7O0z5Sa7xvz8NxBW16wc7a7
-         601A==
+        d=linaro.org; s=google; t=1686998407; x=1689590407;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hOsJHagLYft+z1wRaat9rFw5ByTXGaxmjJRcBW6GsbM=;
+        b=clyyqwGL+hvkDyAltf6JvZq0facG3pvstzj93VqpwkoMHOYtVVRb0On1aEjmf4aPpd
+         t+DcGQ34tbi4rrFvuPOybtpy5Gh14Yp+y3RxtXl+Q+JGjkH9MHJ6c6y0PSOsX910nfr1
+         QeJ56KljbWsfBPZd/L75QF1to9rF1k/b1xFaoKKQTLXHEmu5H5c/sqkl8FmSlFM3khwJ
+         F3XtBY8Ad/WbKtH/dLgoSMIS/ScVpBvgBZWO9biEUjmhqcsvvqc/hZzAKJAcjWfQVw7S
+         5Brab6fvL6sgEszZcmMvoZLyj9EzTge55ufqNzDwyqX7F9yfep+fyxMwxHBROvRsNYD+
+         Z8Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686992141; x=1689584141;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6Tb4xMKEqxuJiYeqUW+S0/SqCS3tOAVF1bVLma2/Ik=;
-        b=FC2BPMYnAyUT05FdKTwiFlAo4ngG+t/07fQGEkytYxRzdHr2qfVMSgXb6boYCdAD+X
-         XPW/gC5guNGW2LFMotJ46FnZXLOTzggOLW2GOdVZ/nvfunXEOcFcAGbZ/9Lkw1YLVtWc
-         zFICAwo1Oxy4SET3+bkcwrZxi2qKbPGmMPKQIcFF+r6IYpGiPOT+ylojZEaZ/3DPjdXx
-         s5zBVmK+t2vPVx5iYEIRerE+AuYvJDS+BeWFgkRvpqwWpb9YCBX6X9ZI0rs+sYSfCEGZ
-         q4qTePUO9Kw3JhSsJRoGypRMwAofGb8UaBnEHLDijLJC5DLcRe5cltg5mLPgsUa90jbU
-         SA8w==
-X-Gm-Message-State: AC+VfDyvDqq7Pb/S2fTenpTXhuUUgblIemc/j70SHPN5ZNlvtXrJZCBH
-        L0wcDfPvEsS/3fOIp2rmpj2RAw==
-X-Google-Smtp-Source: ACHHUZ4NHXk3vUGzfFX18LpDcHc9GnaVeQYe7p0SBFJjMbh/lXB/Dql47mUam0Fbl2vaQ8K1WG/B7g==
-X-Received: by 2002:a05:6402:1501:b0:51a:42aa:e07e with SMTP id f1-20020a056402150100b0051a42aae07emr1532556edw.42.1686992140872;
-        Sat, 17 Jun 2023 01:55:40 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id b24-20020a056402139800b0051827a12b47sm8661829edv.15.2023.06.17.01.55.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Jun 2023 01:55:40 -0700 (PDT)
-Message-ID: <07a6766e-7e2b-22fa-6f20-3a8ab7019635@linaro.org>
-Date:   Sat, 17 Jun 2023 10:55:38 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: proximity: Add bindings for Murata
- IRS-D200
-Content-Language: en-US
-To:     Waqar Hameed <waqar.hameed@axis.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        d=1e100.net; s=20221208; t=1686998407; x=1689590407;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hOsJHagLYft+z1wRaat9rFw5ByTXGaxmjJRcBW6GsbM=;
+        b=DggEJueXjU+wyhMXw0egMeAsay+rP88uE3somGDVsXhDIBBvYCl6PRJH4vYwtuvqxK
+         Pv4A+cv8rUIXPx+gPVRx/EzIgVBRLPkR6d4PAT+WasF0nElmOfDFes4Z5CiVq9MHl2CN
+         sa+r4XId+ngC4JfxcSh4nI/JvG3aaVcoXm9bhk9KOVMMf8OJfFRXL7LEokRPoyJEs+VO
+         7WLzZhflV+FG40QeG8QJZ+l8KkxFTYhZ2Uve1HkEb6/WGToHGpcoX6Mj95LFIZ9yYF0e
+         CQWrIZFuktCXWH+T6uItBCc0is0A1Bk7U/YGCCn1HroZY50bGf8UP734hQpboSGNhkWx
+         sD7w==
+X-Gm-Message-State: AC+VfDxv40PoqbnVeS2KdBPbKL+xDJfErwUNk3bsRacJgyp8a0b7SnXL
+        5SGyFRUWBtA8sLEZmcUAjf76GA==
+X-Google-Smtp-Source: ACHHUZ6gbEivtkVxVh1QVcQV93VueGb7L0+ilZxZ51YqtVMg61RQO8cCu0hUxWO4LtdLnc3Es2DdgA==
+X-Received: by 2002:aa7:c7d7:0:b0:518:7437:bd9f with SMTP id o23-20020aa7c7d7000000b005187437bd9fmr3195769eds.24.1686998406995;
+        Sat, 17 Jun 2023 03:40:06 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id g25-20020a50ee19000000b0050bfeb15049sm10677124eds.60.2023.06.17.03.40.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Jun 2023 03:40:06 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@axis.com
-References: <cover.1686926857.git.waqarh@axis.com>
- <9487391b0565434761055b39ba04900bd839580a.1686926857.git.waqarh@axis.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <9487391b0565434761055b39ba04900bd839580a.1686926857.git.waqarh@axis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        Conor Dooley <conor+dt@kernel.org>,
+        Daniel Campello <campello@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh@kernel.org>
+Subject: [RESEND PATCH 1/2] dt-bindings: iio: semtech,sx9310: reference common schema for label
+Date:   Sat, 17 Jun 2023 12:36:57 +0200
+Message-Id: <20230617103658.114453-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,91 +76,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 16/06/2023 17:10, Waqar Hameed wrote:
-> Murata IRS-D200 is a PIR sensor for human detection. It uses the I2C bus
-> for communication with interrupt support. Add devicetree bindings
-> requiring the compatible string, I2C slave address (reg) and interrupts.
+Reference iio.yaml schema from dtschema to allow already used
+label property:
 
-Thank you for your patch. There is something to discuss/improve. I have
-actually only remark about DTS example, but since I expect resend two
-more nits as well.
+  sc7180-trogdor-homestar-r4.dtb: proximity@28: 'label' does not match any of the regexes: 'pinctrl-[0-9]+'
 
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
 
-A nit, subject: drop second/last, redundant "bindings for". The
-"dt-bindings" prefix is already stating that these are bindings.
+---
 
-> 
-> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-> ---
->  .../iio/proximity/murata,irsd200.yaml         | 54 +++++++++++++++++++
->  1 file changed, 54 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
-> new file mode 100644
-> index 000000000000..d317fbe7bd50
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
-> @@ -0,0 +1,54 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/murata,irsd200.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Murata IRS-D200 PIR sensor
-> +
-> +maintainers:
-> +  - Waqar Hameed <waqar.hameed@axis.com>
-> +
-> +description: |
+Resending with ack as dependency (dtschema patch) was applied.
+---
+ .../devicetree/bindings/iio/proximity/semtech,sx9310.yaml    | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Nit, do not need '|' unless you need to preserve formatting.
-
-> +  PIR sensor for human detection.
-> +
-> +properties:
-> +  compatible:
-> +    const: murata,irsd200
-> +
-> +  reg:
-> +    items:
-> +      - enum:
-> +          - 0x48
-> +          - 0x49
-> +        description: |
-> +          When the AD pin is connected to GND, the slave address is 0x48.
-> +          When the AD pin is connected to VDD, the slave address is 0x49.
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description:
-> +      Type should be IRQ_TYPE_EDGE_RISING.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        pir@48 {
-
-Node names should be generic. See also explanation and list of examples
-in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-so I guess: proximity@?
-
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+index 5de0bb2180e6..775555d147bf 100644
+--- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
++++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9310.yaml
+@@ -15,6 +15,9 @@ description: |
+   Specifications about the devices can be found at:
+   https://www.semtech.com/products/smart-sensing/sar-sensors/sx9310
+ 
++allOf:
++  - $ref: /schemas/iio/iio.yaml#
++
+ properties:
+   compatible:
+     enum:
+@@ -102,7 +105,7 @@ required:
+   - reg
+   - "#io-channel-cells"
+ 
+-additionalProperties: false
++unevaluatedProperties: false
+ 
+ examples:
+   - |
+-- 
+2.34.1
 

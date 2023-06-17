@@ -2,52 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11078734366
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 21:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7157373436A
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 22:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233745AbjFQT7O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 15:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
+        id S229675AbjFQUFK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 16:05:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjFQT7O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 15:59:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6428C83
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 12:59:13 -0700 (PDT)
+        with ESMTP id S230213AbjFQUFI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 16:05:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99451705;
+        Sat, 17 Jun 2023 13:05:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDE5961259
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 19:59:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EC7C433C8;
-        Sat, 17 Jun 2023 19:59:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5346160B2C;
+        Sat, 17 Jun 2023 20:05:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45632C433C8;
+        Sat, 17 Jun 2023 20:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687031952;
-        bh=h0n+2psDcFpBRHaWvervTztT3sUVj34mHOPbwkHlmBQ=;
+        s=k20201202; t=1687032306;
+        bh=bs1M1kIjvcmJN2blNp9wB7eBOWior7iGs149ew2cJu0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iVoT6LlTgnkSU2JrfT6eSRS6EfkhHWH/5BVYi1vTTSzngbeshgtwUpxY4UzoRu4pT
-         Pf7qy18fQjSIFTpYYnbnAycrww2Lh0DAR5pHmWIJ2gHvEbsKaJ7S9vMtoxjsZeas03
-         QqA3rLjtZmd0C+h9lDv46LjIqM2Veu5JBixeiOW3gWW9iaFF2kss671eAL/tWUuvCD
-         GxoBjmlB5yf5fuE4iiJhRktE1ZMhN/jTcjYxVHQqvxRprtFYH6Bm1cBJ+gci1huirM
-         Hx3b3ZmLgaLjRLRerT4JTRLgEtgxBxxY4HqyUJhYUqbgGct6wNszkgb+sdIY6kT9XP
-         Qgy7aNX1NHP2w==
-Date:   Sat, 17 Jun 2023 20:59:06 +0100
+        b=AIdENEPQB8QHJzcoY2CyQYKb+U/m5G0tCVObLEB29rEwm3jG3B43UUft9JFyf1+7q
+         GgN3/3SqvSG3chZ9C3u2KjFcXND4Hch6vd3s9cvJXdEJavFVqlYfTHEOoWVYLmSRsQ
+         j0CQUiTy0y86Yf2M1Ms8VbesTuoC9xha4lX2YrnwTtrrTFqVi/W8oWTj1E+l5qECxT
+         KCPJtvdoSD6Bc/sINxBHQ5njnDAxJ8gTccntCSUyBSs4KkJFU2ecm7Z9xJxtvm5A5f
+         6uaVSBAUatmC+MsED6WwFNygPLq0pyM0o9KyJ2VZo7mJEI1hd6jRGmEIXFLB1bbcIM
+         wkBIK1amhK2ig==
+Date:   Sat, 17 Jun 2023 21:05:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        Juno Computers USA <usa@junocomputers.com>
-Subject: Re: [PATCH] iio: accel: da280: Add support for the DA217
- accelerometer
-Message-ID: <20230617205906.14ef1190@jic23-huawei>
-In-Reply-To: <20230613094346.162551-1-hdegoede@redhat.com>
-References: <20230613094346.162551-1-hdegoede@redhat.com>
+To:     Astrid Rost <astrid.rost@axis.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@axis.com>,
+        Uwe =?UTF-8?B?S2xlaW5l?= =?UTF-8?B?LUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mathieu Othacehe <m.othacehe@gmail.com>
+Subject: Re: [PATCH v6 0/8]  iio: light: vcnl4000: Add features for
+ vncl4040/4200
+Message-ID: <20230617210502.763ad646@jic23-huawei>
+In-Reply-To: <20230613135025.2596641-1-astrid.rost@axis.com>
+References: <20230613135025.2596641-1-astrid.rost@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,73 +59,123 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 13 Jun 2023 11:43:46 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Tue, 13 Jun 2023 15:50:16 +0200
+Astrid Rost <astrid.rost@axis.com> wrote:
 
-> The DA217 accelerometer is another DA280 compatible accelerometer,
-> add its device-ids to the da280 driver.
-> 
-> Reported-by: Juno Computers USA <usa@junocomputers.com>
-> Tested-by: Juno Computers USA <usa@junocomputers.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Applied to the togreg branch of iio.git and pushed out as testing.
-Note this has missed the coming merge window so will be for the next
-cycle.
+> Add a more complete support for vncl4040 and vcnl4200, which allows to
+> change the distance of proximity detection and interrupt support for the
+> illuminance sensor.
+Series applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to see if it can find anything we missed.
+
+Note that I don't plan another pull request this cycle, so this is now
+material for 6.6 and I'll be rebasing the tree after 6.5-rc1 is out.
+
+Thanks,
 
 Jonathan
 
-> ---
-> Note no Closes: for the Reported-by since this was reported by private email
-> ---
->  drivers/iio/accel/da280.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/da280.c b/drivers/iio/accel/da280.c
-> index 38a7d811610e..a49c4f95fe7d 100644
-> --- a/drivers/iio/accel/da280.c
-> +++ b/drivers/iio/accel/da280.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * IIO driver for the MiraMEMS DA280 3-axis accelerometer and
-> + * IIO driver for the MiraMEMS DA217 and DA280 3-axis accelerometer and
->   * IIO driver for the MiraMEMS DA226 2-axis accelerometer
->   *
->   * Copyright (c) 2016 Hans de Goede <hdegoede@redhat.com>
-> @@ -23,7 +23,7 @@
->  #define DA280_MODE_ENABLE		0x1e
->  #define DA280_MODE_DISABLE		0x9e
->  
-> -enum da280_chipset { da226, da280 };
-> +enum da280_chipset { da217, da226, da280 };
->  
->  /*
->   * a value of + or -4096 corresponds to + or - 1G
-> @@ -134,7 +134,10 @@ static int da280_probe(struct i2c_client *client)
->  		chip = id->driver_data;
->  	}
->  
-> -	if (chip == da226) {
-> +	if (chip == da217) {
-> +		indio_dev->name = "da217";
-> +		indio_dev->num_channels = 3;
-> +	} else if (chip == da226) {
->  		indio_dev->name = "da226";
->  		indio_dev->num_channels = 2;
->  	} else {
-> @@ -166,12 +169,14 @@ static int da280_resume(struct device *dev)
->  static DEFINE_SIMPLE_DEV_PM_OPS(da280_pm_ops, da280_suspend, da280_resume);
->  
->  static const struct acpi_device_id da280_acpi_match[] = {
-> +	{"NSA2513", da217},
->  	{"MIRAACC", da280},
->  	{},
->  };
->  MODULE_DEVICE_TABLE(acpi, da280_acpi_match);
->  
->  static const struct i2c_device_id da280_i2c_id[] = {
-> +	{ "da217", da217 },
->  	{ "da226", da226 },
->  	{ "da280", da280 },
->  	{}
+>=20
+> Proximity functionality:
+>   - Interrupt support (new on vcnl4200).
+>=20
+> Proximity reduce the amount of interrupts:
+>   - Adaptable integration time (new on vcnl4200) - the sampling rate
+>     changes according to this value.
+>   - Period - interrupt is asserted if the value is above or
+>     below a certain threshold.
+>=20
+> Proximity change the activity distance:
+>   - Oversampling ratio - Amount of LED pulses per measured raw value.
+>   - Calibration bias - LED current calibration of the sensor.
+>=20
+> Illuminance functionality:
+>   - Interrupt support.
+>=20
+> Illuminance reduce the amount of interrupts:
+>   - Adaptable integration time - the sampling rate and scale changes
+>     according to this value.
+>   - Period =E2=80=93 interrupt is asserted if the value is above or
+>     below a certain threshold.
+>=20
+> changes v2:
+> - [PATCH v2 3/7] Fixed calculation of al_scale.
+>   Fix the value of vcnl4040 according to the data-sheet.
+>   Use div_u64 for the division.
+> scription for the branch
+>=20
+> changes v3:
+> - [PATCH v3 1-3/7] Add differences between the chips as variables in
+>   chip-spec.
+> - [PATCH v3 4/7] Changed commit message.
+> - [PATCH v3 5/7] Use period instead of debounce time. This causes some
+>   calculations as the period is a time and the chip allows to set a certa=
+in
+>   amount of measurements above/below the threshold, before throwing an
+>   interrupt.
+> - [PATCH v3 6/7] Changed commit message.
+>=20
+> changes v4:
+> - [PATCH v3 1-3/7] Fix setting correct als_it for vcnl4040.
+> - [PATCH v3 5/7] Use MICRO macro.
+>   Fix values greater than 1 s for the proximity period.
+>=20
+> changes v5:
+> [PATCH v5 2/7]:
+> - Calculate ps_it from ps_it_times by usinh NSEC_PER_USEC.
+> [PATCH v5 3/7]:
+> - Calculate als_it from ps_it_times by using NSEC_PER_USEC.
+> - Store scale step factor in chip_spec.
+> - Fixes sampling_rate to ns + 20 %.
+> [PATCH v5 3/7 - 7/7]
+> - Changed formatting.
+> - Changed some variable names.
+>=20
+> - [PATCH v3 4/7] Changed commit message.
+> - [PATCH v3 5/7] Use period instead of debounce time. This causes some
+>   calculations as the period is a time and the chip allows to set a certa=
+in
+>   amount of measurements above/below the threshold, before throwing an
+>   interrupt.
+> - [PATCH v3 6/7] Changed commit message.
+>=20
+> changes v4:
+> - [PATCH v3 1-3/7] Fix setting correct als_it for vcnl4040.
+> - [PATCH v3 5/7] Use MICRO macro.
+>   Fix values greater than 1 s for the proximity period.
+>=20
+> changes v5:
+> [PATCH v5 2/7]:
+> - Calculate ps_it from ps_it_times by usinh NSEC_PER_USEC.
+> [PATCH v5 3/7]:
+> - Calculate als_it from ps_it_times by using NSEC_PER_USEC.
+> - Store scale step factor in chip_spec.
+> - Fixes sampling_rate to ns + 20 %.
+> [PATCH v5 3/7 - 7/7]
+> - Changed formatting.
+> - Changed some variable names.
+>=20
+> changes v6:
+> Added [PATCH v6 3/8]:
+> - Add switch case for IIO_PROXIMITY check.
+>  [PATCH v5 1/7 - 7/7]
+> - Changed formatting.
+> [PATCH v5 3/7, 5/7, 6/7, 7/7]
+> - Changed loop.
+> - Changed some variable names.
+>=20
+> Astrid Rost (8):
+>   [PATCH v6 1/8] iio: light: vcnl4000: Add proximity irq for vcnl4200
+>   [PATCH v6 2/8] iio: light: vcnl4000: Add proximity ps_it for vcnl4200
+>   [PATCH v6 3/8] iio: light: vcnl4000: Check type with switch case
+>   [PATCH v6 4/8] iio: light: vcnl4000: Add als_it for vcnl4040/4200
+>   [PATCH v6 5/8] iio: light: vcnl4000: add illuminance irq vcnl4040/4200
+>   [PATCH v6 6/8] iio: light: vcnl4000: Add period for vcnl4040/4200
+>   [PATCH v6 7/8] iio: light: vcnl4000: Add oversampling_ratio for 4040/42=
+00
+>   [PATCH v6 8/8] iio: light: vcnl4000: Add calibration bias for 4040/4200
+>=20
+>  drivers/iio/light/vcnl4000.c | 710 +++++++++++++++++++++++++++++++----
+>  1 file changed, 643 insertions(+), 67 deletions(-)
+>=20
 

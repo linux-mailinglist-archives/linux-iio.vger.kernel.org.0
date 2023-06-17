@@ -2,63 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC427734315
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF9773431B
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbjFQSh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 14:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49342 "EHLO
+        id S1346455AbjFQSni (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 14:43:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjFQShZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:37:25 -0400
+        with ESMTP id S234309AbjFQSnh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:43:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A856C19A3;
-        Sat, 17 Jun 2023 11:37:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B749519A3;
+        Sat, 17 Jun 2023 11:43:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BEF660B5A;
-        Sat, 17 Jun 2023 18:37:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACFC433C8;
-        Sat, 17 Jun 2023 18:37:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53D176068B;
+        Sat, 17 Jun 2023 18:43:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF395C433C8;
+        Sat, 17 Jun 2023 18:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687027043;
-        bh=0gXitJCRhwNZ9Hvgsis90nxHbGGP+Fap5swbmod0VXI=;
+        s=k20201202; t=1687027415;
+        bh=LRULk4mes9NANweteBZ1y+o5E8Q624eGUCGdZJ3yDhY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QHsuxD7r4OSzwnmlVvStlH4wUNHu11qxRTL4ZHrU3yjWlrTqkKVHpgwu15D642Uym
-         7LcSVxOiQtr3SqEEkAixLNTXURcqF+gwQAnMcmVJeyHS/nQ/DSbzaKcd/j3qsO+Kys
-         W6axLT+rbFAulYWP4fm582NZ4yd3JSmKI/GnRIj47B73ZhgDY4e4f6sfao9/MliHE0
-         iOR76vV5tzXIHgv7PzIFk1gVxecoQdYaAo6tyY2+mbt5dPQqpDdTD7qw8BTGkauOu+
-         ulfUe8Qd3qShNmAvOzVsH+vQ5qsHkQ+LVzs1qx+M85HPIhH38dC72OsrmWEjU6GHtj
-         pTsvgu31hd3pg==
-Date:   Sat, 17 Jun 2023 19:37:15 +0100
+        b=a7gZZLfwAnjG/hRsQeBlH62Js7tfOXFQmrzzQ/7FpkYyqY8dT//Wi7GqlFZ1PcunT
+         RX7GCJGBbXvjpZR//XEnz25wH24d3rn5hoASU0hvFaT4dBVTk+FpDkJ8Q/8jaEsAVw
+         eI9/I6rk9Zg4AZZAsMD9NcdUapzhNYBGgGA5k0Of8vDuOEkNRN/NsXPVfw47FhccyY
+         AIyS8C8dUcxkyffEXPkhWb9tbmKkkSOHHLnxUmF4DQKSDeZjw2lYgKhC12TknO8X/3
+         1Et5ltpFO8sw5wRS2mwEiZM02c5bGrvV64zvvKqHuQ2+XSrh46lrhVofZxOzUNwW/2
+         YGBzx/O3QMNXw==
+Date:   Sat, 17 Jun 2023 19:43:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To:     Kim Seer Paller <kimseer.paller@analog.com>
+Cc:     <lars@metafoo.de>, <lgirdwood@gmail.com>, <broonie@kernel.org>,
+        <Michael.Hennerich@analog.com>, <andy.shevchenko@gmail.com>,
+        <robh@kernel.org>, <krzysztof.kozlowski@linaro.org>,
+        <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
 Subject: Re: [PATCH v6 2/2] iio: adc: max14001: New driver
-Message-ID: <20230617193715.20d0c048@jic23-huawei>
-In-Reply-To: <20230617193423.42a4d66c@jic23-huawei>
+Message-ID: <20230617194318.1a9b0e9c@jic23-huawei>
+In-Reply-To: <20230614004857.134980-2-kimseer.paller@analog.com>
 References: <20230614004857.134980-1-kimseer.paller@analog.com>
         <20230614004857.134980-2-kimseer.paller@analog.com>
-        <CAHp75VcTXsZZ4JsKWS0RuccPKRLO9ci+87b538BT9V9ZZ_WACg@mail.gmail.com>
-        <a6488485909d40b3810ad15787cd2100@analog.com>
-        <CAHp75VdQJ39Uw8bPD+y7GS7W2iJhjs2D4L-=-Fo0Jeb+8Ffn8g@mail.gmail.com>
-        <20230617193423.42a4d66c@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -69,89 +59,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 17 Jun 2023 19:34:23 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 14 Jun 2023 08:48:57 +0800
+Kim Seer Paller <kimseer.paller@analog.com> wrote:
 
-> On Wed, 14 Jun 2023 14:53:12 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->=20
-> > On Wed, Jun 14, 2023 at 1:43=E2=80=AFPM Paller, Kim Seer
-> > <KimSeer.Paller@analog.com> wrote: =20
-> > > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > > Sent: Wednesday, June 14, 2023 5:12 PM   =20
-> >=20
-> > ...
-> >  =20
-> > > > > +               /* select external voltage reference source for t=
-he ADC */
-> > > > > +               ret =3D max14001_reg_update(st, MAX14001_CFG,
-> > > > > +                                         MAX14001_CFG_EXRF, 1);
-> > > > > +
-> > > > > +               ret =3D regulator_get_voltage(vref);
-> > > > > +               if (ret < 0)
-> > > > > +                       return dev_err_probe(dev, ret,
-> > > > > +                                            "Failed to get vref\=
-n");   =20
-> > > >
-> > > > Is it important to choose the external reference source _before_ ge=
-tting the
-> > > > voltage of the regulator? If not, I would swap these calls, otherwi=
-se the
-> > > > comment is needed to explain why the sequence is important in the w=
-ay it's
-> > > > written.   =20
-> > >
-> > > It is not important. These calls can be swap without any issues.   =20
-> >=20
-> > If you send a new version, please swap, otherwise I hope Jonathan can
-> > do it when applying.
-> >  =20
->=20
-> I made these changes whilst applying...
->=20
-> --- a/drivers/iio/adc/max14001.c
-> +++ b/drivers/iio/adc/max14001.c
-> @@ -290,16 +290,19 @@ static int max14001_probe(struct spi_device *spi)
->                 if (ret)
->                         return ret;
-> =20
-> -               /* select external voltage reference source for the ADC */
-> -               ret =3D max14001_reg_update(st, MAX14001_CFG,
-> -                                         MAX14001_CFG_EXRF, 1);
-> -
->                 ret =3D regulator_get_voltage(vref);
->                 if (ret < 0)
->                         return dev_err_probe(dev, ret,
->                                              "Failed to get vref\n");
-> =20
->                 st->vref_mv =3D ret / 1000;
-> +
-> +               /* select external voltage reference source for the ADC */
-> +               ret =3D max14001_reg_update(st, MAX14001_CFG,
-> +                                         MAX14001_CFG_EXRF, 1);
-> +
-> +               if (ret < 0)
-> +                       return ret;
->         }
-> =20
->         mutex_init(&st->lock);
->=20
->=20
-> Note that whilst I've applied this to the togreg branch of iio.git - it i=
-s just
-> a tiny bit too late to make the merge window that starts in about a week.
-> As such I'll only push this out as testing until I can rebase the tree
-> on rc1 once available.
+> The MAX14001 is configurable, isolated 10-bit ADCs for multi-range
+> binary inputs.
+> 
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 
-Actually nope. Dropped it again because a question came up in my build test=
-s.
-
-I'll address that in a separate reply.
+Build tests showed up a set of warnings we need to deal with.
 
 Jonathan
 
->=20
-> Thanks,
->=20
-> Jonathan
 
+> +
+> +static int max14001_read(void *context, unsigned int reg_addr, unsigned int *data)
+> +{
+> +	struct max14001_state *st = context;
+> +	int ret;
+> +
+> +	struct spi_transfer xfers[] = {
+> +		{
+> +			.tx_buf = &st->spi_tx_buffer,
+> +			.len = sizeof(st->spi_tx_buffer),
+> +			.cs_change = 1,
+> +		}, {
+> +			.rx_buf = &st->spi_rx_buffer,
+> +			.len = sizeof(st->spi_rx_buffer),
+> +		},
+> +	};
+> +
+> +	st->spi_tx_buffer = bitrev16(cpu_to_be16(FIELD_PREP(MAX14001_ADDR_MASK,
+> +								reg_addr)));
+
+This gives an endian warning with sparse.
+
+drivers/iio/adc/max14001.c:81:29: warning: incorrect type in initializer (different base types)
+drivers/iio/adc/max14001.c:81:29:    expected unsigned short [usertype] __x
+drivers/iio/adc/max14001.c:81:29:    got restricted __be16 [usertype]
+drivers/iio/adc/max14001.c:81:27: warning: incorrect type in assignment (different base types)
+drivers/iio/adc/max14001.c:81:27:    expected restricted __be16 [usertype] spi_tx_buffer
+drivers/iio/adc/max14001.c:81:27:    got int
+drivers/iio/adc/max14001.c:97:29: warning: incorrect type in initializer (different base types)
+drivers/iio/adc/max14001.c:97:29:    expected unsigned short [usertype] __x
+drivers/iio/adc/max14001.c:97:29:    got restricted __be16 [usertype]
+drivers/iio/adc/max14001.c:97:27: warning: incorrect type in assignment (different base types)
+drivers/iio/adc/max14001.c:97:27:    expected restricted __be16 [usertype] spi_tx_buffer
+drivers/iio/adc/max14001.c:97:27:    got int
+
+Using a forced cast and adding a comment is probably fine to fix this...  Bit reversing
+a big endian value is not going to be common enough to warrant anything clever.
+
+> +
+> +	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+> +	if (ret)
+> +		return ret;
+> +
+> +	*data = bitrev16(be16_to_cpu(st->spi_rx_buffer)) & MAX14001_DATA_MASK;
+But it got me looking.  Seems a bit odd that this isn't a direct reverse of what
+is done on the tx bfufer.
+e.g.
+	be16_to_cpu(bitrev16(st->spi_rx_buffer))
+
+I'm struggling to figure out enough of the datasheet to understand this.
+Perhaps you could add some comments on the logic?
+
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int max14001_write(void *context, unsigned int reg_addr, unsigned int data)
+> +{
+> +	struct max14001_state *st = context;
+> +
+> +	st->spi_tx_buffer = bitrev16(cpu_to_be16(
+> +			FIELD_PREP(MAX14001_ADDR_MASK, reg_addr) |
+> +			FIELD_PREP(MAX14001_SET_WRITE_BIT, 1) |
+> +			FIELD_PREP(MAX14001_DATA_MASK, data)));
+> +
+> +	return spi_write(st->spi, &st->spi_tx_buffer, sizeof(st->spi_tx_buffer));
+> +}

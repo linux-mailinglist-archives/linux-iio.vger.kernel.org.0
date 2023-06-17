@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2977E7342BD
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 19:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9B87342C4
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 19:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236761AbjFQRnU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 13:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36386 "EHLO
+        id S232009AbjFQRpz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 13:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231571AbjFQRnT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 13:43:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6FE8B2;
-        Sat, 17 Jun 2023 10:43:18 -0700 (PDT)
+        with ESMTP id S230465AbjFQRpy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 13:45:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB5CCF;
+        Sat, 17 Jun 2023 10:45:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B8BE60D57;
-        Sat, 17 Jun 2023 17:43:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF2DC433C8;
-        Sat, 17 Jun 2023 17:43:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 378126116C;
+        Sat, 17 Jun 2023 17:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D29C433C0;
+        Sat, 17 Jun 2023 17:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687023797;
-        bh=VdxeWrS9KUt+iCyOClhABBxKy/yryWkURfy+fP0gp7s=;
+        s=k20201202; t=1687023952;
+        bh=NvqkckyTq/+5qM6veCJTPQdMzU7jUyjKPhKFnUIEIuc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qFOCh0uVR/ZdkbKIJNd1b7IBWc1M3gz6miI09igZbyPOr/x0P4ybNt53/sa/89Wyc
-         IzNHzzhn8my0fodbYycoP5ZdxCTidEHRiPE8+XWONQ0J/G6uKzi7MBA5jQPT3ceQUZ
-         9ogjKK+03wGtNrhndWa0K4aYOCa8jNQ/UV5eyOkn/1peQ0X7zOxGBnNplnCfd+7wGK
-         FccTqmzWsD9DbRjS6t8Y5FbNtEztlnuLhyHID1Jb1X5M1RezOIpgHtnchctB2hvaSh
-         KhxBBOQzqwcJ+8MGRL4IBQ5neDXqyE6wo2o/HXH29inKgbkgkhIY0+aBOJ8Fx9Paqp
-         1xCX69rIKVzEQ==
-Date:   Sat, 17 Jun 2023 18:43:07 +0100
+        b=i2qDGBUKf8A/EYY6YGYC5Qnu61Siu35yExeXgyX07skOaJPbYoSXL+bjLLduQ4rJC
+         fVsrnqlJSJvLmqNJiTt7Tp0pRxXGBGnFzvXV0VSyBTKPxu80jEyyxBoOgGBKAd7ytB
+         i/D1ofMUxDgrW4G8dkECUWXAeXR0qQmqHj8k6bzkn3XUswtfgvZaE2C1MLFuVNT6QD
+         PS/Glh/AYfn9z9q6qzXP5bQap049WvAOfZsdOvgDUJz03SjLEiD9I5tLrHzxHFAp/y
+         O1754VfsU5GyIk8NyGpb4hYASZBOIVYj/HhFfe+u9dtwEIepVh9jqmvV0dxxBjbccn
+         XaOj+3nmBFh1Q==
+Date:   Sat, 17 Jun 2023 18:45:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Herve Codina <herve.codina@bootlin.com>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
@@ -49,17 +49,18 @@ Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 06/13] iio: inkern: Fix headers inclusion order
-Message-ID: <20230617184307.3afe7631@jic23-huawei>
-In-Reply-To: <20230615152631.224529-7-herve.codina@bootlin.com>
+Subject: Re: [PATCH v5 08/13] iio: inkern: Use max_array() to get the
+ maximum value from an array
+Message-ID: <20230617184542.36865dc2@jic23-huawei>
+In-Reply-To: <20230615152631.224529-9-herve.codina@bootlin.com>
 References: <20230615152631.224529-1-herve.codina@bootlin.com>
-        <20230615152631.224529-7-herve.codina@bootlin.com>
+        <20230615152631.224529-9-herve.codina@bootlin.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,34 +69,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 15 Jun 2023 17:26:24 +0200
+On Thu, 15 Jun 2023 17:26:26 +0200
 Herve Codina <herve.codina@bootlin.com> wrote:
 
-> Fix the mutex.h inclusion order as it seems to be the only one
-> misplaces.
+> Use max_array() to get the maximum value from an array instead of a
+> custom local loop.
 > 
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
->  drivers/iio/inkern.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/inkern.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 > 
 > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index ce537b4ca6ca..71d0424383b6 100644
+> index 71d0424383b6..8bfd91f74101 100644
 > --- a/drivers/iio/inkern.c
 > +++ b/drivers/iio/inkern.c
-> @@ -5,9 +5,9 @@
+> @@ -5,6 +5,7 @@
 >   */
 >  #include <linux/err.h>
 >  #include <linux/export.h>
-> +#include <linux/mutex.h>
+> +#include <linux/minmax.h>
+>  #include <linux/mutex.h>
 >  #include <linux/property.h>
 >  #include <linux/slab.h>
-> -#include <linux/mutex.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/iio-opaque.h>
+> @@ -875,11 +876,7 @@ static int iio_channel_read_max(struct iio_channel *chan,
+>  			return -EINVAL;
+>  		switch (*type) {
+>  		case IIO_VAL_INT:
+> -			*val = vals[--length];
+> -			while (length) {
+> -				if (vals[--length] > *val)
+> -					*val = vals[length];
+> -			}
+> +			*val = max_array(vals, length);
+>  			break;
+>  		default:
+>  			/* FIXME: learn about max for other iio values */
 

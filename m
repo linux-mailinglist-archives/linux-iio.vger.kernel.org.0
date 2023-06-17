@@ -2,152 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98409734332
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447BB734334
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230296AbjFQSva (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 14:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54314 "EHLO
+        id S231984AbjFQSw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 14:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbjFQSva (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:51:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A9819A3
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 11:51:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A591460F38
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 18:51:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D54AC433C8;
-        Sat, 17 Jun 2023 18:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687027888;
-        bh=06UD9g0l0YXvCz5XEdG9zzLF5eFs6oj1uYlz1+MyNfQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qQbVwl4xC07vDsJdPaO1df5ZlgYtgfUEJ+9hkdXUI/SPoLulSHcQqCxMUUcskNWqc
-         9aYl23A6zrdE3xgiMBTF87wJWKOiqhQuoYWYNRey2+EsLNo/5zu2OAf6ZLGZR9t2YX
-         m2tRnV/eapG7C36QnmfGKB9RMpVXIuIsBc5aL9fxZ8ElmbxVe+royLQZwhxviuq6NR
-         l2BcRwJtphh7J+HWUH6qUpI5kjQp0Ga66lZGRq95To+C6PS6yZ8OJGDTE5v+UVCH46
-         OGIsKuQFxvD6vXeoGtwo/k6Z1nUlMctlcfzKqRi6BtBjBzWTkyDu62NHKupiFAYShc
-         L+SrML7h2HICw==
-Date:   Sat, 17 Jun 2023 19:51:22 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
-        INV Git Commit <INV.git-commit@tdk.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>
-Subject: Re: [PATCH v2 0/4] Factorize timestamp module
-Message-ID: <20230617195122.484ad61d@jic23-huawei>
-In-Reply-To: <20230608115740.00007695@Huawei.com>
-References: <20230606162147.79667-1-inv.git-commit@tdk.com>
-        <ZIAjFMhJbnndgL-G@surfacebook>
-        <FR3P281MB17572FE25C24840A4030315ACE53A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-        <CAHp75Vd+VK2B=rjYitXSDhHxbbyUNxNpvD1KgrsB=3sBxk6Pkg@mail.gmail.com>
-        <20230608115740.00007695@Huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S230339AbjFQSw1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:52:27 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0F419BE;
+        Sat, 17 Jun 2023 11:52:26 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-982acf0a4d2so268250166b.3;
+        Sat, 17 Jun 2023 11:52:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687027945; x=1689619945;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IzK3QhwOQbNBL0QFe3mmmruOL89rBfwrLckQ4Lu4tw0=;
+        b=U6pm4jaJS8m2UDl5VXEpxwxyEDkQHF9QkXqtVNIGqvYUOfLq7S32g4YLmC3Sqb+bpq
+         A5aHeO5vtvvjURkrsSjRIErKQNawz2pmzcdyE0ETSHmd+rgVKxSzve3tBc6oaoKI+zXv
+         W7S+slQW2VP9zijRGLMbvldmtrWYybAs4W+VatwcU1jy9/+JIyLI26+dHnTRKB4TgZmF
+         O5Thtl2g9ai5+N5F1Fr8ztrekEbGqWHJhErXjKufts4RfAqdMKYk59yoUWcn3ztZ6lJX
+         8MvELPPOFeC3fnLgW4NCPPg1DStOTN/jCqDb8npw3/tPveBPPE0cXRVc/Wzje4x1HxJw
+         HSIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687027945; x=1689619945;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IzK3QhwOQbNBL0QFe3mmmruOL89rBfwrLckQ4Lu4tw0=;
+        b=eJEFYe/5kTNiAcBf7qULgb6o+s/cozlP0t8cu/kXGsJzzMLZeSid6VQosLWbpUJtfH
+         2R6i//odQ7vs5qaQ5kNFbJF6Twob5x2sGS9NQwX9LE7AS9j2cJC1NgfbpYip2D71zONL
+         613Pbf/8Bb+XnpRGqw2oA7EIJgY9ZNpbzs3bK6Li0Z2GaKFWjHzX13nVYMtLFOR+jJ1V
+         2GYWazHrUK/pzWFFnu7y4pDJMy6qiPQS+O6LNEtJEw4XsbY0Ie5rMsphKxevyDy6waSU
+         Y/TauS7zF5DxGCleBI0Aw6bTE30bvKilw1YbEyNr6azU7ET8c+me2qSMg4pa7ibcRoDK
+         rrpA==
+X-Gm-Message-State: AC+VfDwDeN3K/agzb9RI0f1mekMkb6wbgfqX4my2bQcthuYKNSfzX6WS
+        EyeKMnJ7SmAzFk6xde8tZtvwOORak5FTxP8Q0LA=
+X-Google-Smtp-Source: ACHHUZ5QbT7Jg6uOgdeAKNzv3ZBblzxwZ5KIiDFzExm5SfOEog04farQMGB0tuGmdV8OQf2IrM3SebaH7vJEO5LQFdE=
+X-Received: by 2002:a17:907:7faa:b0:987:f7ae:4af6 with SMTP id
+ qk42-20020a1709077faa00b00987f7ae4af6mr1496201ejc.35.1687027944402; Sat, 17
+ Jun 2023 11:52:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20230615205540.1803975-1-bigunclemax@gmail.com>
+ <20230615205540.1803975-2-bigunclemax@gmail.com> <20230617144855.0388c4ff@jic23-huawei>
+In-Reply-To: <20230617144855.0388c4ff@jic23-huawei>
+From:   Maxim Kiselev <bigunclemax@gmail.com>
+Date:   Sat, 17 Jun 2023 21:52:12 +0300
+Message-ID: <CALHCpMgxNwz197qgiEueV9Y26LN7BBfYSGBHy6J4gOTFpiVUtw@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3] iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Heiko Stuebner <heiko.stuebner@vrull.eu>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 8 Jun 2023 11:57:40 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+=D1=81=D0=B1, 17 =D0=B8=D1=8E=D0=BD. 2023=E2=80=AF=D0=B3. =D0=B2 16:49, Jon=
+athan Cameron <jic23@kernel.org>:
+>
+> On Thu, 15 Jun 2023 23:55:20 +0300
+> Maksim Kiselev <bigunclemax@gmail.com> wrote:
+>
+> > The General Purpose ADC (GPADC) can convert the external signal into
+> > a certain proportion of digital value, to realize the measurement of
+> > analog signal, which can be applied to power detection and key detectio=
+n.
+> >
+> > Theoretically, this ADC can support up to 16 channels. All SoCs below
+> > contain this GPADC IP. The only difference between them is the number
+> > of available channels:
+> >
+> >  T113 - 1 channel
+> >  D1   - 2 channels
+> >  R329 - 4 channels
+> >  T507 - 4 channels
+> >
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
+> > ---
+> >  drivers/iio/adc/Kconfig            |  10 ++
+> >  drivers/iio/adc/Makefile           |   1 +
+> >  drivers/iio/adc/sun20i-gpadc-iio.c | 276 +++++++++++++++++++++++++++++
+> >  3 files changed, 287 insertions(+)
+> >  create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
+> >
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index eb2b09ef5d5b..deff7ae704ce 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -1123,6 +1123,16 @@ config SUN4I_GPADC
+> >         To compile this driver as a module, choose M here: the module w=
+ill be
+> >         called sun4i-gpadc-iio.
+> >
+> > +config SUN20I_GPADC
+> > +     tristate "Support for the Allwinner SoCs GPADC"
+> I applied this and started a build test before noticing that this Kconfig=
+ description
+> is very vague and matches the one for the existing 4i driver...
 
-> On Wed, 7 Jun 2023 17:44:39 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->=20
-> > On Wed, Jun 7, 2023 at 12:28=E2=80=AFPM Jean-Baptiste Maneyrol
-> > <Jean-Baptiste.Maneyrol@tdk.com> wrote: =20
-> > >
-> > > Hello Andy,
-> > >
-> > > really sorry, I forgot to do that. I'm still not very familiar with a=
-ll the details of the process, sorry.   =20
-> >=20
-> > Understand.
-> >  =20
-> > > I will send a new v3 with the Reviewed-by tag. Is it OK like this?   =
-=20
-> >=20
-> > I believe no need to resend right now as I can simply repeat it here
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com> =20
->=20
-> That works for me ;)
->=20
-> Thanks Andy.
-Applied to the togreg branch of iio.git.  However note that these aren't
-going to make the coming merge window so will only be pushed out as testing=
- until
-I can rebase on rc1.
+Indeed. I must have forgotten to change this line when copying from sun4i..=
+.
 
-Thanks,
+> The 'Support for the' bit also isn't appropriate for what you see in make=
+ menuconfig
+> menu etc.   Please come up with something descriptive. Maybe
+> "sun20i and similar SoC GPADC"?
+>
+> Bonus points if you change the text for the 4i at the same time to be
+> more meaningful. I clearly missed that in review a long time ago!
 
-Jonathan
-
->=20
-> > But next time be more careful.
-> >=20
-> > And thank you for what you are doing!
-> >  =20
-> > > Thanks a lot, and sorry again.   =20
-> >  =20
-> > > From: andy.shevchenko@gmail.com <andy.shevchenko@gmail.com>
-> > > Sent: Wednesday, June 7, 2023 08:26
-> > > To: INV Git Commit <INV.git-commit@tdk.com>
-> > > Cc: jic23@kernel.org <jic23@kernel.org>; linux-iio@vger.kernel.org <l=
-inux-iio@vger.kernel.org>; lars@metafoo.de <lars@metafoo.de>; Jean-Baptiste=
- Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> > > Subject: Re: [PATCH v2 0/4] Factorize timestamp module
-> > >
-> > > [CAUTION] This is an EXTERNAL email. Do not click links or open attac=
-hments unless you recognize the sender and know the content is safe.
-> > >
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > Tue, Jun 06, 2023 at 04:21:43PM +0000, inv.git-commit@tdk.com kirjoit=
-ti:   =20
-> > > > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> > > >
-> > > > The purpose if this series is to make timestamping from
-> > > > inv_icm42600 driver an independent module and use it for both
-> > > > inv_icm42600 and inv_mpu6050 drivers.
-> > > >
-> > > > Create a new inv_sensors_timestamp common module based on
-> > > > inv_icm42600 driver and use it in the 2 drivers.
-> > > >
-> > > > WARNING: this patch requires following commit in fixes-togreg
-> > > > bbaae0c79ebd ("iio: imu: inv_icm42600: fix timestamp reset")   =20
-> > >   =20
-> > > > Changelog
-> > > > - v2: do some headers cleanup and add some justifications in
-> > > >       the patches descriptions.   =20
-> > >
-> > > What I haven't noticed is my tag. It's your responsibility to add giv=
-en tag and
-> > > it's polite to Cc to the reviewers (but this will imply by the tag an=
-yway in
-> > > this case).
-> > >
-> > > Any explanation why did you do so?
-> > >
-> > > --
-> > > With Best Regards,
-> > > Andy Shevchenko
-> > >   =20
-> >=20
-> >  =20
->=20
-
+Should I do this in a separate patch?

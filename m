@@ -2,153 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 447BB734334
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 20:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCFEA734352
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 21:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjFQSw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 14:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54426 "EHLO
+        id S230404AbjFQT2M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 15:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230339AbjFQSw1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 14:52:27 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0F419BE;
-        Sat, 17 Jun 2023 11:52:26 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-982acf0a4d2so268250166b.3;
-        Sat, 17 Jun 2023 11:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687027945; x=1689619945;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IzK3QhwOQbNBL0QFe3mmmruOL89rBfwrLckQ4Lu4tw0=;
-        b=U6pm4jaJS8m2UDl5VXEpxwxyEDkQHF9QkXqtVNIGqvYUOfLq7S32g4YLmC3Sqb+bpq
-         A5aHeO5vtvvjURkrsSjRIErKQNawz2pmzcdyE0ETSHmd+rgVKxSzve3tBc6oaoKI+zXv
-         W7S+slQW2VP9zijRGLMbvldmtrWYybAs4W+VatwcU1jy9/+JIyLI26+dHnTRKB4TgZmF
-         O5Thtl2g9ai5+N5F1Fr8ztrekEbGqWHJhErXjKufts4RfAqdMKYk59yoUWcn3ztZ6lJX
-         8MvELPPOFeC3fnLgW4NCPPg1DStOTN/jCqDb8npw3/tPveBPPE0cXRVc/Wzje4x1HxJw
-         HSIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687027945; x=1689619945;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IzK3QhwOQbNBL0QFe3mmmruOL89rBfwrLckQ4Lu4tw0=;
-        b=eJEFYe/5kTNiAcBf7qULgb6o+s/cozlP0t8cu/kXGsJzzMLZeSid6VQosLWbpUJtfH
-         2R6i//odQ7vs5qaQ5kNFbJF6Twob5x2sGS9NQwX9LE7AS9j2cJC1NgfbpYip2D71zONL
-         613Pbf/8Bb+XnpRGqw2oA7EIJgY9ZNpbzs3bK6Li0Z2GaKFWjHzX13nVYMtLFOR+jJ1V
-         2GYWazHrUK/pzWFFnu7y4pDJMy6qiPQS+O6LNEtJEw4XsbY0Ie5rMsphKxevyDy6waSU
-         Y/TauS7zF5DxGCleBI0Aw6bTE30bvKilw1YbEyNr6azU7ET8c+me2qSMg4pa7ibcRoDK
-         rrpA==
-X-Gm-Message-State: AC+VfDwDeN3K/agzb9RI0f1mekMkb6wbgfqX4my2bQcthuYKNSfzX6WS
-        EyeKMnJ7SmAzFk6xde8tZtvwOORak5FTxP8Q0LA=
-X-Google-Smtp-Source: ACHHUZ5QbT7Jg6uOgdeAKNzv3ZBblzxwZ5KIiDFzExm5SfOEog04farQMGB0tuGmdV8OQf2IrM3SebaH7vJEO5LQFdE=
-X-Received: by 2002:a17:907:7faa:b0:987:f7ae:4af6 with SMTP id
- qk42-20020a1709077faa00b00987f7ae4af6mr1496201ejc.35.1687027944402; Sat, 17
- Jun 2023 11:52:24 -0700 (PDT)
+        with ESMTP id S234194AbjFQT2L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 15:28:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44E51BC9
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 12:28:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50B886112D
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 19:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533A2C433C0;
+        Sat, 17 Jun 2023 19:28:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687030087;
+        bh=Z+5UjgKN2FtCnSxaO75yWx9qljc3M5Zm+O/59gACgJw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=LP+1ygjyj3VH5HvporScvZHeTd04JsR+k+OQd/Zi39d9hz1Y47zHloFMP8OMaVH9v
+         qxgvxbeRdbZijgyOvRFJFmFTjcGamFL3jMRMmRDpgXtZQWAgcluSYmU9UmjwW1rvsV
+         EOXUrEa+xOCU5hr6pz3qyZAJzcvSiSdtpDpddYVFB+3Y4W60TzYaM8cJ+FYtse4vRl
+         XrgXOxnggpSERIgH1JvK5zINilXiVvIfKqIyjlZxUKXE6kHO2GXgkBTD34v659fyqq
+         AdCZT2HFlqSqumcVfhunKiLP4z865RbVcTxXwpNhH8vHeqaJ6hkTAkDe+iQdfSHT26
+         0lIChxJaxEsKw==
+Date:   Sat, 17 Jun 2023 20:28:02 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     David Schiller <david.schiller@jku.at>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-iio@vger.kernel.org,
+        Michael Hennerich <michael.hennerich@analog.com>
+Subject: Re: Questions about ad5933 driver
+Message-ID: <20230617202802.4f7402aa@jic23-huawei>
+In-Reply-To: <1068e94915d6512b2acd73a8a930c91538c9de8b.camel@jku.at>
+References: <3e5653d1aec953e8aba8c00d073cd033a9f7a873.camel@jku.at>
+        <20230606113013.00000530@Huawei.com>
+        <1204b19a92343a9e3a6ec5df3cef94f6777e08c4.camel@jku.at>
+        <20230607155224.000001d0@Huawei.com>
+        <1068e94915d6512b2acd73a8a930c91538c9de8b.camel@jku.at>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230615205540.1803975-1-bigunclemax@gmail.com>
- <20230615205540.1803975-2-bigunclemax@gmail.com> <20230617144855.0388c4ff@jic23-huawei>
-In-Reply-To: <20230617144855.0388c4ff@jic23-huawei>
-From:   Maxim Kiselev <bigunclemax@gmail.com>
-Date:   Sat, 17 Jun 2023 21:52:12 +0300
-Message-ID: <CALHCpMgxNwz197qgiEueV9Y26LN7BBfYSGBHy6J4gOTFpiVUtw@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3] iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Heiko Stuebner <heiko.stuebner@vrull.eu>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-=D1=81=D0=B1, 17 =D0=B8=D1=8E=D0=BD. 2023=E2=80=AF=D0=B3. =D0=B2 16:49, Jon=
-athan Cameron <jic23@kernel.org>:
->
-> On Thu, 15 Jun 2023 23:55:20 +0300
-> Maksim Kiselev <bigunclemax@gmail.com> wrote:
->
-> > The General Purpose ADC (GPADC) can convert the external signal into
-> > a certain proportion of digital value, to realize the measurement of
-> > analog signal, which can be applied to power detection and key detectio=
-n.
-> >
-> > Theoretically, this ADC can support up to 16 channels. All SoCs below
-> > contain this GPADC IP. The only difference between them is the number
-> > of available channels:
-> >
-> >  T113 - 1 channel
-> >  D1   - 2 channels
-> >  R329 - 4 channels
-> >  T507 - 4 channels
-> >
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
-> > ---
-> >  drivers/iio/adc/Kconfig            |  10 ++
-> >  drivers/iio/adc/Makefile           |   1 +
-> >  drivers/iio/adc/sun20i-gpadc-iio.c | 276 +++++++++++++++++++++++++++++
-> >  3 files changed, 287 insertions(+)
-> >  create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
-> >
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index eb2b09ef5d5b..deff7ae704ce 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -1123,6 +1123,16 @@ config SUN4I_GPADC
-> >         To compile this driver as a module, choose M here: the module w=
-ill be
-> >         called sun4i-gpadc-iio.
-> >
-> > +config SUN20I_GPADC
-> > +     tristate "Support for the Allwinner SoCs GPADC"
-> I applied this and started a build test before noticing that this Kconfig=
- description
-> is very vague and matches the one for the existing 4i driver...
+On Tue, 13 Jun 2023 12:37:39 +0200
+David Schiller <david.schiller@jku.at> wrote:
 
-Indeed. I must have forgotten to change this line when copying from sun4i..=
-.
+> On Wed, 2023-06-07 at 15:52 +0100, Jonathan Cameron wrote:
+> > Not 'official' though it is fairly commonly used, but the documented
+> > ABI in
+> > Documentation/ABI/testing/sysfs-bus-iio*
+> > is and these aren't there either.
+> >=20
+> > I'm not 100% sure this is the right way to solve this ABI gap though
+> > so need to have a bit of a think about it.=C2=A0 Using a modifier means=
+ we
+> > can't
+> > use them for anything else, so need to consider if there are other
+> > modifiers
+> > (or it has meaning for differential channels) when deciding if this is
+> > an ABI we want to add. =20
+>=20
+> The naming of the modifiers is also somewhat confusing. The HW registers
+> represent the DFT of the input signal, which together with a gain factor
+> is used to calculate the impedance. Dimensionally the quantities are
+> admittances. "voltage_real" and "voltage_imag" are therefore not quite
+> fitting.
 
-> The 'Support for the' bit also isn't appropriate for what you see in make=
- menuconfig
-> menu etc.   Please come up with something descriptive. Maybe
-> "sun20i and similar SoC GPADC"?
->
-> Bonus points if you change the text for the 4i at the same time to be
-> more meaningful. I clearly missed that in review a long time ago!
+In that case, sounds like we need a new channel type to correctly reflect
+that they are admittance rather than pretending they are voltages.
 
-Should I do this in a separate patch?
+>=20
+> Also the sweep setup commands are only run once per buffer (in
+> ad5933_ring_preenable). This means a buffer can only be used for one
+> sweep and then has to be disabled and enabled again. As the driver does
+> not implement any triggers this is right now the only way to start a
+> measurement.
+
+This sounds a bit like the impact sensors - where an event triggers a series
+of measurements of 'something'.
+
+>=20
+> Do you think it would make sense to implement a user-space trigger to
+> start a measurement sweep? This would mean that a buffer can be reused.
+> Right now the "iio_readdev" test program from libiio does not work due
+> to this behavior. I don't know how this is handled on other IIO drivers.
+
+A single trigger normally results in the capture of a single set
+of channels measurements.  Here that's sort of the case, but the set of
+channels is huge - because each one corresponds to a particular frequency.
+There can I think be up to 512 such points.  It would be messy to represent
+so many channels (if nothing else some of the ways we store data in IIO -
+particularly events, are limited to 256 channels).
+
+My guess is that the calculations around a sweep are sufficiently complex
+that, if libiio handled the re setup of a sweep neatly, it would be fine
+to go through the disable / reenable of the buffer?
+I think bodging in trigger support where a trigger causes 'N' samples would
+be tricky.
+
+There is another option though I'm not sure how closely it fits.
+A channel can have a scan_type element of repeats which could be set
+to a fixed value of 512 (likely all scan_type things it's not runtime
+configurable) as this might be considered to be lots of repeated reads
+of a single channel.
+
+
+>=20
+> Lastly, should I CC the original author (Michael Hennerich) going
+> forward?
+
+Sure - +CC Michael.
+
+>=20
+> Thanks!
+>=20
+>=20
+

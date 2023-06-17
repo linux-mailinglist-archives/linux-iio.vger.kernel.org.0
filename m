@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9337342B4
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 19:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2977E7342BD
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 19:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbjFQRme (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Jun 2023 13:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35702 "EHLO
+        id S236761AbjFQRnU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 13:43:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230437AbjFQRmd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 13:42:33 -0400
+        with ESMTP id S231571AbjFQRnT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 13:43:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD304B2;
-        Sat, 17 Jun 2023 10:42:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6FE8B2;
+        Sat, 17 Jun 2023 10:43:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7223661191;
-        Sat, 17 Jun 2023 17:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8133C433C8;
-        Sat, 17 Jun 2023 17:42:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B8BE60D57;
+        Sat, 17 Jun 2023 17:43:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF2DC433C8;
+        Sat, 17 Jun 2023 17:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687023751;
-        bh=v1w7IgjTyIRIpWfJqtbFcmG8AX0rS71G6iGgqf6oZgc=;
+        s=k20201202; t=1687023797;
+        bh=VdxeWrS9KUt+iCyOClhABBxKy/yryWkURfy+fP0gp7s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tpj7glSMKVEgkv5Zp0h9t+gFIyMECcjE8yd4g03TIKnD9ezc7ZlsWmaAcq3nJhuwa
-         h/spBKln7Bi020Uo1p2UZCnn5RIdSaPQhhv+L+83hxAijVxpaBSmB5KYkaw9kNJbpK
-         431U5SaJ6yTtn2JwItbltWxWG0VNn4p9KfGb3IXAXS3ZUq7ePOivZFYRXuCC5EXJiH
-         CzvGK0sbvwCuYOlM0TOI8eQpOa2k2mt2BhXSOBNL9AbHs/n7UPFIOeMSEtM/Zagrt1
-         PPcZ3W/3yLKwMkHRt+IcfQH2D80eEgGcQxlvz2yAyTomSd/s1Jv4kDyiHofV/vRd2t
-         0PdySRWvL376Q==
-Date:   Sat, 17 Jun 2023 18:42:22 +0100
+        b=qFOCh0uVR/ZdkbKIJNd1b7IBWc1M3gz6miI09igZbyPOr/x0P4ybNt53/sa/89Wyc
+         IzNHzzhn8my0fodbYycoP5ZdxCTidEHRiPE8+XWONQ0J/G6uKzi7MBA5jQPT3ceQUZ
+         9ogjKK+03wGtNrhndWa0K4aYOCa8jNQ/UV5eyOkn/1peQ0X7zOxGBnNplnCfd+7wGK
+         FccTqmzWsD9DbRjS6t8Y5FbNtEztlnuLhyHID1Jb1X5M1RezOIpgHtnchctB2hvaSh
+         KhxBBOQzqwcJ+8MGRL4IBQ5neDXqyE6wo2o/HXH29inKgbkgkhIY0+aBOJ8Fx9Paqp
+         1xCX69rIKVzEQ==
+Date:   Sat, 17 Jun 2023 18:43:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Herve Codina <herve.codina@bootlin.com>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
@@ -49,12 +49,11 @@ Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 05/13] iio: inkern: Remove the 'unused' variable
- usage in iio_channel_read_max()
-Message-ID: <20230617184222.7cb6870d@jic23-huawei>
-In-Reply-To: <20230615152631.224529-6-herve.codina@bootlin.com>
+Subject: Re: [PATCH v5 06/13] iio: inkern: Fix headers inclusion order
+Message-ID: <20230617184307.3afe7631@jic23-huawei>
+In-Reply-To: <20230615152631.224529-7-herve.codina@bootlin.com>
 References: <20230615152631.224529-1-herve.codina@bootlin.com>
-        <20230615152631.224529-6-herve.codina@bootlin.com>
+        <20230615152631.224529-7-herve.codina@bootlin.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -69,58 +68,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 15 Jun 2023 17:26:23 +0200
+On Thu, 15 Jun 2023 17:26:24 +0200
 Herve Codina <herve.codina@bootlin.com> wrote:
 
-> The code uses a local variable to initialize a null pointer in order to
-> avoid accessing this null pointer later on.
-> 
-> Simply removed the 'unused' variable and check for the null pointer just
-> before accessing it.
+> Fix the mutex.h inclusion order as it seems to be the only one
+> misplaces.
 > 
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A this series has grown more changes in IIO over time....
-Hopefully who ever takes it can provide an immutable branch to make
-it easy to avoid any dependency issues for other work in IIO.
-
-Thanks,
-
-Jonathan
-
 > ---
->  drivers/iio/inkern.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  drivers/iio/inkern.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index f738db9a0c04..ce537b4ca6ca 100644
+> index ce537b4ca6ca..71d0424383b6 100644
 > --- a/drivers/iio/inkern.c
 > +++ b/drivers/iio/inkern.c
-> @@ -849,14 +849,10 @@ static int iio_channel_read_max(struct iio_channel *chan,
->  				int *val, int *val2, int *type,
->  				enum iio_chan_info_enum info)
->  {
-> -	int unused;
->  	const int *vals;
->  	int length;
->  	int ret;
+> @@ -5,9 +5,9 @@
+>   */
+>  #include <linux/err.h>
+>  #include <linux/export.h>
+> +#include <linux/mutex.h>
+>  #include <linux/property.h>
+>  #include <linux/slab.h>
+> -#include <linux/mutex.h>
 >  
-> -	if (!val2)
-> -		val2 = &unused;
-> -
->  	ret = iio_channel_read_avail(chan, &vals, type, &length, info);
->  	if (ret < 0)
->  		return ret;
-> @@ -869,7 +865,8 @@ static int iio_channel_read_max(struct iio_channel *chan,
->  			break;
->  		default:
->  			*val = vals[4];
-> -			*val2 = vals[5];
-> +			if (val2)
-> +				*val2 = vals[5];
->  		}
->  		return 0;
->  
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/iio-opaque.h>
 

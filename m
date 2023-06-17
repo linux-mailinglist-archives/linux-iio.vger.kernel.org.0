@@ -2,195 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45A29733D6F
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 03:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1130F733FC5
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jun 2023 10:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbjFQBiE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Jun 2023 21:38:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42808 "EHLO
+        id S233241AbjFQIzp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 17 Jun 2023 04:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjFQBiD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Jun 2023 21:38:03 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC053AAE;
-        Fri, 16 Jun 2023 18:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=Wbk9IDYSWF4Vw2QT3mvTtwNf2sHy8/XMCmJhIhRyBLg=; b=apqxTv6EFhOVJRCbMooTIwgoQF
-        wBN2/+nR+fFsDt3gGcAgYt1fdaBfVrIomwBhbK9fVxdr97eWv43/KU5/r/BA+0LXUY1Z/12Kl7QQV
-        0Q7xLvhhy1OSRwSP9j4kx8vs/VKqlnVOyEIdgy2ueFGU53SbhycnRYoh+LTY4/UtLRk1vCdmpe4wZ
-        +ctyH3RtfR2Om0BgHK/0iqdAxnULk2NXGQUglsAMhVULvtm0uDT5v6xT/+XIGAVQ9f+GZbAQtqOdc
-        M63yiwJJsvpkUO8gFfSHNTDakB568P3xpFVXMoh/QZIk9lcRBPLqTsD1G/ndRgzPphf9dk/TvKLk2
-        ra+hr+rQ==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1qAKt1-000HG2-Vy; Sat, 17 Jun 2023 03:37:56 +0200
-Received: from [136.25.87.181] (helo=[192.168.86.26])
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1qAKt1-000HiB-Jr; Sat, 17 Jun 2023 03:37:55 +0200
-Message-ID: <682cf4f8-ba1b-d74a-c744-6aa484c1acd5@metafoo.de>
-Date:   Fri, 16 Jun 2023 18:37:53 -0700
+        with ESMTP id S229597AbjFQIzo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Jun 2023 04:55:44 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6169310D1
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 01:55:42 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51a20138617so2239313a12.2
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jun 2023 01:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686992141; x=1689584141;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K6Tb4xMKEqxuJiYeqUW+S0/SqCS3tOAVF1bVLma2/Ik=;
+        b=b1YwTFCsSodLvxgb0yw0je9hhTb90gvoxFBhmxTOohzodJcuChPDajtbgbJbLaCJSs
+         4nWVR3oXd7TDnZF73a1oXz09nl0lsaa+THv4L7heYYsvp6G2RVaoVqiP7ftp+AMaEbCY
+         lA4//Oc91uWQMMBWcAmp714YaoMrNFaIh0ukNeSevjTFZcRaztMqgKwFxyF0snYzjVJ+
+         +AOu2hSes3Zr9oKiu/KQX6QXcSpSzWqlIkUUFi0Sj/x8qVF1OtfFME3IIp9bsv266+Sx
+         UVxVpWdlFny2jLyNhO3bCxlggDTPE9WjGXr7pHbHXXPUy7O0z5Sa7xvz8NxBW16wc7a7
+         601A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686992141; x=1689584141;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K6Tb4xMKEqxuJiYeqUW+S0/SqCS3tOAVF1bVLma2/Ik=;
+        b=FC2BPMYnAyUT05FdKTwiFlAo4ngG+t/07fQGEkytYxRzdHr2qfVMSgXb6boYCdAD+X
+         XPW/gC5guNGW2LFMotJ46FnZXLOTzggOLW2GOdVZ/nvfunXEOcFcAGbZ/9Lkw1YLVtWc
+         zFICAwo1Oxy4SET3+bkcwrZxi2qKbPGmMPKQIcFF+r6IYpGiPOT+ylojZEaZ/3DPjdXx
+         s5zBVmK+t2vPVx5iYEIRerE+AuYvJDS+BeWFgkRvpqwWpb9YCBX6X9ZI0rs+sYSfCEGZ
+         q4qTePUO9Kw3JhSsJRoGypRMwAofGb8UaBnEHLDijLJC5DLcRe5cltg5mLPgsUa90jbU
+         SA8w==
+X-Gm-Message-State: AC+VfDyvDqq7Pb/S2fTenpTXhuUUgblIemc/j70SHPN5ZNlvtXrJZCBH
+        L0wcDfPvEsS/3fOIp2rmpj2RAw==
+X-Google-Smtp-Source: ACHHUZ4NHXk3vUGzfFX18LpDcHc9GnaVeQYe7p0SBFJjMbh/lXB/Dql47mUam0Fbl2vaQ8K1WG/B7g==
+X-Received: by 2002:a05:6402:1501:b0:51a:42aa:e07e with SMTP id f1-20020a056402150100b0051a42aae07emr1532556edw.42.1686992140872;
+        Sat, 17 Jun 2023 01:55:40 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id b24-20020a056402139800b0051827a12b47sm8661829edv.15.2023.06.17.01.55.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Jun 2023 01:55:40 -0700 (PDT)
+Message-ID: <07a6766e-7e2b-22fa-6f20-3a8ab7019635@linaro.org>
+Date:   Sat, 17 Jun 2023 10:55:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
+Subject: Re: [PATCH 1/2] dt-bindings: iio: proximity: Add bindings for Murata
+ IRS-D200
 Content-Language: en-US
 To:     Waqar Hameed <waqar.hameed@axis.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        kernel@axis.com
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@axis.com
 References: <cover.1686926857.git.waqarh@axis.com>
- <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <9487391b0565434761055b39ba04900bd839580a.1686926857.git.waqarh@axis.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <9487391b0565434761055b39ba04900bd839580a.1686926857.git.waqarh@axis.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/26941/Fri Jun 16 09:30:16 2023)
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/16/23 08:10, Waqar Hameed wrote:
-> Murata IRS-D200 is a PIR sensor for human detection. It has support for
-> raw data measurements and detection event notification.
->
-> Add a driver with support for triggered buffer and events. Map the
-> various settings to the `iio` framework, e.g. threshold values, sampling
-> frequency, filter frequencies etc.
->
+On 16/06/2023 17:10, Waqar Hameed wrote:
+> Murata IRS-D200 is a PIR sensor for human detection. It uses the I2C bus
+> for communication with interrupt support. Add devicetree bindings
+> requiring the compatible string, I2C slave address (reg) and interrupts.
+
+Thank you for your patch. There is something to discuss/improve. I have
+actually only remark about DTS example, but since I expect resend two
+more nits as well.
+
+
+A nit, subject: drop second/last, redundant "bindings for". The
+"dt-bindings" prefix is already stating that these are bindings.
+
+> 
 > Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-
-Looks very good, small minor comments.
-
-> [...]
-> diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-> index cc838bb5408a..f36598380446 100644
-> --- a/drivers/iio/proximity/Makefile
-> +++ b/drivers/iio/proximity/Makefile
-> @@ -6,6 +6,7 @@
->   # When adding new entries keep the list in alphabetical order
->   obj-$(CONFIG_AS3935)		+= as3935.o
->   obj-$(CONFIG_CROS_EC_MKBP_PROXIMITY) += cros_ec_mkbp_proximity.o
-> +obj-$(CONFIG_IRSD200)		+= irsd200.o
->   obj-$(CONFIG_ISL29501)		+= isl29501.o
->   obj-$(CONFIG_LIDAR_LITE_V2)	+= pulsedlight-lidar-lite-v2.o
->   obj-$(CONFIG_MB1232)		+= mb1232.o
-> diff --git a/drivers/iio/proximity/irsd200.c b/drivers/iio/proximity/irsd200.c
+> ---
+>  .../iio/proximity/murata,irsd200.yaml         | 54 +++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
 > new file mode 100644
-> index 000000000000..699801d60295
+> index 000000000000..d317fbe7bd50
 > --- /dev/null
-> +++ b/drivers/iio/proximity/irsd200.c
-> @@ -0,0 +1,1051 @@
-> [...]
-> +/*
-> + * The upper 4 bits in register IRS_REG_COUNT value is the upper count value
-> + * (exceeding upper threshold value). The lower 4 is the lower count value
-> + * (exceeding lower threshold value).
-> + */
-> +#define IRS_UPPER_COUNT(count)	(count >> 4)
-> +#define IRS_LOWER_COUNT(count)	(count & GENMASK(3, 0))
+> +++ b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+> @@ -0,0 +1,54 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/murata,irsd200.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Murata IRS-D200 PIR sensor
+> +
+> +maintainers:
+> +  - Waqar Hameed <waqar.hameed@axis.com>
+> +
+> +description: |
 
-Usually we add parenthesis around macro arguments to avoid issues in 
-case the argument is a non-singular expression.
+Nit, do not need '|' unless you need to preserve formatting.
 
-> [...]
->
-> +static int irsd200_read_data(struct irsd200_data *data, s16 *val)
-> +{
-> +	unsigned int tmpval;
-> +	int ret;
+> +  PIR sensor for human detection.
 > +
-> +	ret = regmap_read(data->regmap, IRS_REG_DATA_HI, &tmpval);
-> +	if (ret < 0) {
-> +		dev_err(data->dev, "Could not read hi data (%d)\n", ret);
-> +		return ret;
-> +	}
+> +properties:
+> +  compatible:
+> +    const: murata,irsd200
 > +
-> +	*val = (s16)(tmpval << 8);
+> +  reg:
+> +    items:
+> +      - enum:
+> +          - 0x48
+> +          - 0x49
+> +        description: |
+> +          When the AD pin is connected to GND, the slave address is 0x48.
+> +          When the AD pin is connected to VDD, the slave address is 0x49.
 > +
-> +	ret = regmap_read(data->regmap, IRS_REG_DATA_LO, &tmpval);
-> +	if (ret < 0) {
-> +		dev_err(data->dev, "Could not read lo data (%d)\n", ret);
-> +		return ret;
-> +	}
-Is there a way to bulk read those registers in one go to avoid 
-inconsistent data if they change while being read?
-> +	*val |= tmpval;
+> +  interrupts:
+> +    maxItems: 1
+> +    description:
+> +      Type should be IRQ_TYPE_EDGE_RISING.
 > +
-> +	return 0;
-> +}
-> [...]
-> +static int irsd200_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan, int val,
-> +			     int val2, long mask)
-> +{
-> +	struct irsd200_data *data = iio_priv(indio_dev);
-> +	int ret;
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
 > +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		ret = irsd200_write_data_rate(data, val);
-> +		return ret;
-Maybe just `return irsd200_write_data_rate(...)`
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
+> +additionalProperties: false
 > +
->
-> [...]
-> +static int irsd200_probe(struct i2c_client *client)
-> +{
-> +	struct iio_trigger *trigger;
-> +	struct irsd200_data *data;
-> +	struct iio_dev *indio_dev;
-> +	struct regmap *regmap;
-> +	size_t i;
-> +	int ret;
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
 > +
-> +	regmap = devm_regmap_init_i2c(client, &irsd200_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&client->dev, "Could not initialize regmap\n");
-dev_err_probe() is the more modern variant for error reporting in the 
-probe function. Same for all the other dev_err() in this function.
-> +		return PTR_ERR(regmap);
-> +	}
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
 > +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev) {
-> +		dev_err(&client->dev, "Could not allocate iio device\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	data = iio_priv(indio_dev);
-> +	data->regmap = regmap;
-> +	data->dev = &client->dev;
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	for (i = 0; i < IRS_REGF_MAX; ++i) {
-> +		data->regfields[i] = devm_regmap_field_alloc(
-> +			data->dev, data->regmap, irsd200_regfields[i]);
-> +		if (IS_ERR(data->regfields[i])) {
-> +			dev_err(data->dev,
-> +				"Could not allocate register field %zu\n", i);
-> +			return PTR_ERR(data->regfields[i]);
-> +		}
-> +	}
-> +
-> [...]
+> +        pir@48 {
 
+Node names should be generic. See also explanation and list of examples
+in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+so I guess: proximity@?
+
+
+Best regards,
+Krzysztof
 

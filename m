@@ -2,98 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B543D735A07
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jun 2023 16:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 563A6735B47
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jun 2023 17:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231743AbjFSOrh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jun 2023 10:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
+        id S231330AbjFSPnH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jun 2023 11:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232208AbjFSOrg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jun 2023 10:47:36 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7297123
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jun 2023 07:47:33 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id 6a1803df08f44-62fe1e6dc65so31844966d6.0
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jun 2023 07:47:33 -0700 (PDT)
+        with ESMTP id S231130AbjFSPnG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jun 2023 11:43:06 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F21A83;
+        Mon, 19 Jun 2023 08:43:05 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4f004cc54f4so4781381e87.3;
+        Mon, 19 Jun 2023 08:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687186053; x=1689778053;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qvvzgSyIaiwvrxaKUb/eTlY+YgmAK8NNHPJ/p6FalJA=;
-        b=qVOCYdYl3wsBSmsKg1K7B3Ee43k5l+RrXaCjGpWzMbU6WxCyFKP1KBsWkc2UZynifB
-         xMOdVrBvgfuTjHby+yn86Saq2DlLs+T+8jKhjVeMFkZCLqraLDFqm4r9QLUKlag5WMTe
-         ecPy5yJw/4H5xBRPJZ1ArN1NFEF1sk4VuwrKzA8ydR97qZrNOjm4BP7jqDTtg3giwfdf
-         CXXXLvPQEqx77uW15kcq6DN7FJbaUbcujhUtaKB6AmAlZOvsiBmpHnIWNylUARnW6FzX
-         C6z/DVECsPasr9LRgazFQMGa6p9a7RYTF6Ky9D+dTrq5sVgGNft55/zE/shn6rgqselP
-         FaEg==
+        d=gmail.com; s=20221208; t=1687189383; x=1689781383;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ONxNNZw/qmdwlne5gEPTK3bLBdHTya93hQkUoKWnPqE=;
+        b=QzFQD0kW5M7hiQP0BvScCgizwq82HavcztJnTml/MMDEMrA9ytHqYflCzsjgHLoBA7
+         ro+hTf+n4XIV7mQz9+v8jVS3NAzHV+/pkvfpG+AuiWc39fiOwvxSVd1dJwVVqE83OggC
+         sBlYxFgc2S0pgTfFhe01MLcf9FkfMdcKpCXxtf03TkWsiS3v6IR1ERBMjXJjd+zb0j/7
+         0otLD1Eyh6wu90VrPmoGsAVCZ2P+7LCFexg3EYF6RqqoX4qWcE5sPv35JoxYmy47rvdk
+         /6MsgPCeVmKMt2KI3Beju3sisLU9oEwamwt6pp1WoUQHb0w9mDEFhBlxaSogONGIJRWt
+         YEiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687186053; x=1689778053;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qvvzgSyIaiwvrxaKUb/eTlY+YgmAK8NNHPJ/p6FalJA=;
-        b=dOF2Jpe9MXxOm/2Tco/BJFqPYrurPZnhtvPpmfpUQvWbdhcmDFe98hC4IjthiNmhkU
-         6px53XjLPAMULkUHEtbfLiw+5Sr+2TxHSkHLDDuigJrfMeqnCb18SNazYLXB9+D83lHO
-         4rFecD4a0zyIi329I8F21fa20a73jP2D4WmlEeydV/b/1XP7bxHJYkXrEFyEPvFkDZQG
-         5ecUYfzdQeSJjY1yBDcdan0LxC+6vEn/H2N48jsU8nCpWVVj9kvhjQmJ3BdY15hVzUmu
-         jwz7ucbmFu/jvKJDXwXDwZl9i4XSjsNM1Mkdy67sA4rV5NvG8jiOapVvbHfIGhH805Tp
-         P3WQ==
-X-Gm-Message-State: AC+VfDxiq8TOkeBGTmTzAFPXEjn76PwyxMdC8zcBfabwf2Q0v8IU9cL6
-        t32tviSjr2TOHVrPGBiBs6NOe5Z7WcLK8nQs//w=
-X-Google-Smtp-Source: ACHHUZ6HG45XGgrlTGDhKSV1cOlX04ILtXlm4hNmVgR0iNxC7NsmfOn27kDNLhFR8uN0cHYNi+9dIRS2G0pZWHERv7U=
-X-Received: by 2002:a05:6214:d8d:b0:625:b67c:919c with SMTP id
- e13-20020a0562140d8d00b00625b67c919cmr11356871qve.21.1687186052692; Mon, 19
- Jun 2023 07:47:32 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687189383; x=1689781383;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ONxNNZw/qmdwlne5gEPTK3bLBdHTya93hQkUoKWnPqE=;
+        b=ELNlZMIC1mPP2bpJ57elj+J0zbNgqAz1cN0+YUnPXrrlk4mU4gMW3odgS5NeEDFo0+
+         QJ0PDB3sn+Rvf93BFeuygkhJ3WWj8T0V+S2Ad5T7tNp/pKuwaD4LaBOyAnaBoi6Xwj3c
+         Z0j+0U1K5Epxb93rwJV7sb7xkYsJubIQwKX51y2x/NIpTR+ooGXCixULu9E1ZcDsVePY
+         yJ8gDA3LPnceKWNGsKWnPn1gv8woirXFlszsOIX5zkkGGAgx2GwRCWSeixYwxPr8UhjB
+         apEViEbmFQqtYVgObnKT+sKKWFF7E+i8OD6fsOv7BG5ZxOK1nacqvhBylIMtKAOaMNGV
+         UVyA==
+X-Gm-Message-State: AC+VfDzXv1A2q1HDbh+DDWsDnDajBmiC5hlc8R8UoL7Bx0TIPyEKjLCP
+        i76EZIGa+rhC1j2LewNByDg7DD+2u7coaXjJ
+X-Google-Smtp-Source: ACHHUZ4yL4aD+qEJZ0h0+bGI3YNOliImTCvoONhBTFNNWCuE57QQWU4tZRBQX1lukt9ksOQnP13AQg==
+X-Received: by 2002:a19:e04d:0:b0:4e8:4abf:f19d with SMTP id g13-20020a19e04d000000b004e84abff19dmr5744863lfj.15.1687189382656;
+        Mon, 19 Jun 2023 08:43:02 -0700 (PDT)
+Received: from user-PC.. ([178.134.198.138])
+        by smtp.gmail.com with ESMTPSA id f11-20020a19ae0b000000b004f85e53250bsm1207144lfc.191.2023.06.19.08.42.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jun 2023 08:43:02 -0700 (PDT)
+From:   Maksim Kiselev <bigunclemax@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Maksim Kiselev <bigunclemax@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Quentin Schulz <quentin.schulz@free-electrons.com>,
+        Maxime Ripard <mripard@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: [PATCH v8 0/4] Add support for Allwinner GPADC on D1/T113s/R329/T507 SoCs
+Date:   Mon, 19 Jun 2023 18:42:23 +0300
+Message-Id: <20230619154252.3951913-1-bigunclemax@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Received: by 2002:ab3:ef8b:0:b0:4fa:3e22:f795 with HTTP; Mon, 19 Jun 2023
- 07:47:32 -0700 (PDT)
-Reply-To: lucasmorefranklin90@gmail.com
-From:   "Lucas M. Franklin" <brownvontavis2@gmail.com>
-Date:   Mon, 19 Jun 2023 08:47:32 -0600
-Message-ID: <CANXESi-WKzMw3BX46=3wQq2rBv9veaU=Q_LYoQ1be8NXv_Q6HQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_99,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:f44 listed in]
-        [list.dnswl.org]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 0.9903]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lucasmorefranklin90[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [brownvontavis2[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [brownvontavis2[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello
-Did you recieve the email I sent to you earlier on?
-Please, Kindly reply to me, thank you.
+This series adds support for general purpose ADC (GPADC) on new
+Allwinner's SoCs, such as D1, T113s, T507 and R329. The implemented driver
+provides basic functionality for getting ADC channels data.
+
+Change History:
+v8:
+- Added patch that changes Kconfig description for previous Allwinner GPADC
+- Changed Kconfig description for this GPADC driver
+- Fixed 'reg' range for gpadc node in 'sunxi-d1s-t113.dtsi'
+
+v7:
+- Fixed typo in DT bindings property
+
+v6:
+- Fixed DT bindings regexp for channel properties
+- Dropped checking the max number of channels from the drivers code
+  (This is redundant as we raly on DT bindings check)
+
+v5:
+- Fixed DT bindings properties for child nodes
+
+v4:
+- Fixed DT bindings warnings
+- Used GENMASK to clear the irq register
+- Minor formatting fixes
+
+v3:
+- Added DT bindings dual license, fixed property order and example formatting
+- Added explanations comments for timeout and mutex
+- Dropped unnecessary regmap and used readl/writel instead
+- Added error message about getting channel number
+- Renamed labels and variables to make them self-explanatory
+
+v2:
+- Added lastch flag to avoid addition work for already selected channel
+- Added reset assertion on module remove
+- Added dynamic channel allocation and dropped iio_chan_spec arrays
+- Changed IIO_CHAN_INFO_SCALE type to FRACTIONAL_LOG2
+- Dropped separate compatible strings and configs for T113s and R329
+- Fixed includes
+- Fixed Kconfig description
+- Removed duplicate probe error messages
+- Used FIELD_PREP for bit setup
+
+v1:
+- Initial version
+
+Maksim Kiselev (4):
+  iio: adc: Kconfig change description for Allwinner GPADC
+  iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+  dt-bindings: iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+  riscv: dts: allwinner: d1: Add GPADC node
+
+ .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    |  91 ++++++
+ .../boot/dts/allwinner/sunxi-d1s-t113.dtsi    |  10 +
+ drivers/iio/adc/Kconfig                       |  12 +-
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/sun20i-gpadc-iio.c            | 276 ++++++++++++++++++
+ 5 files changed, 389 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+ create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
+
+-- 
+2.39.2
+

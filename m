@@ -2,79 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 192B87355DC
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jun 2023 13:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37B8A735B86
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jun 2023 17:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjFSLaa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Jun 2023 07:30:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49622 "EHLO
+        id S231785AbjFSPuh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Jun 2023 11:50:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbjFSLa3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jun 2023 07:30:29 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A50310F3
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jun 2023 04:29:57 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-982a88ca610so400570666b.2
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jun 2023 04:29:57 -0700 (PDT)
+        with ESMTP id S231696AbjFSPug (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Jun 2023 11:50:36 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A5EA4;
+        Mon, 19 Jun 2023 08:50:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687174183; x=1689766183;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y0b3K6wMFTNOqwQ0pN9Qbjkbd6YMHXdpJVSfbzbME+o=;
-        b=xAZsAhT9XBb2axZvJJB/ULopxk5VfhMeBiQ7fS5IKPGLdeXXWvkV9vr3+R2jk+C0tv
-         jyKvLxLNUWqVIeAMePFye66NeAM4KzneMd2DNb7U57HZtW9VG29UqxRwUpXqG1Z78byL
-         zdW0VBhV8W9h1XQ1Hd+c5lQQsgVD1XxJyw3MJ1tV6EYF4ISmJj9fS7aIi3Q2pgX9OM5Z
-         IT3BXXmrKboUBAbJcBZpVA33Dxe70cstBDJjkHD58gQJJMVdIfGHBzKf7WcwtEjcCAkb
-         l1uaxzZhrB8r7NmnYD7MT56WegCYPZxuTY/HW3OTr38j5Hrl8jhJloxuJt1YvKSvQpMK
-         ebEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687174183; x=1689766183;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y0b3K6wMFTNOqwQ0pN9Qbjkbd6YMHXdpJVSfbzbME+o=;
-        b=jnCiGNgEdvZaZ5toMf1CUU42ksA4TDdxdu4VYgiS5Y3NwKEMP5vQKgXOmixKkpVQ+r
-         HgQKiinIoFLFgqsNT1hYopPL+XIV8C4ua7bAinPrBagPqTGR76WuWFAAKS8jGUBBlQN7
-         ZYX5cxmg3mC28n5co25i/BCgLlTARUjW7tUi03osjvyTIJ930O//omg4iHFpYo02vgSg
-         Sn6yq49ae4UswZB1CVUXG7j57UdEdIX5aRqq4RgKIsBdsoZdQzsiQ7iS2nCaukZsj4nU
-         k1TS3Xj2R2sCJjiC6yFgnvSifAOVyNjxiVZPrL9gWNacL2m0CLVIJ20I8/hnATV51gme
-         iDJA==
-X-Gm-Message-State: AC+VfDwRVgPfgjqFaFnnJomCTr8T5JB92QVGOhsN/ZOrlHb9gty5ylu2
-        JSD5nO32C/dy38eBER/3MqYU2w==
-X-Google-Smtp-Source: ACHHUZ6WFouwYfH5BNhHUgF4MGOqLFUkcN5gjighatzA0G29gC3yrUTKzrMz6I/mAFIrkGxk1K0wFA==
-X-Received: by 2002:a17:907:3da3:b0:987:2db5:ad26 with SMTP id he35-20020a1709073da300b009872db5ad26mr5390514ejc.25.1687174183283;
-        Mon, 19 Jun 2023 04:29:43 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id w18-20020a17090633d200b009875f08c213sm3351409eja.181.2023.06.19.04.29.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jun 2023 04:29:42 -0700 (PDT)
-Message-ID: <00ef5b07-3c1a-40d2-0858-5aaf3c8d073c@linaro.org>
-Date:   Mon, 19 Jun 2023 13:29:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: proximity: Add bindings for Murata
- IRS-D200
-To:     Waqar Hameed <waqar.hameed@axis.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@axis.com
+  d=axis.com; q=dns/txt; s=axis-central1; t=1687189835;
+  x=1718725835;
+  h=references:from:to:cc:subject:date:in-reply-to:
+   message-id:mime-version;
+  bh=jV18MHlcdS/4W3J35UCUnXhAnFfGk9RQbYDuqUPQ4r8=;
+  b=TSLn6bEzHoHeP1JS2TVLwYHfJxfbNYg0w8Q9Va4bVKHagwvmaML4E6o9
+   UXOJwU0NkbLTjvUjvpHq9KRVe50mcc8AM7zUF+imF5dUNtgxr0VYLYsUM
+   cIRowHYKCN+k5m+TjiNXgzpv4//kDu5Erton5xmPi3tDEU6bURCdJgwk2
+   qhJcNrcAyQHdjEzUIquc70FgpaUTR1p/f8gh0fX9qqYag261Xv9rGYZ5t
+   JKVZgIxD4CM0zHHH8BEsD4Ke105FGG1wFLGATyt73UpLj9jOwkFEh3JTt
+   plDptDQasvwrB2a+Dx1rckaSjZXeucpAKcxC51uNwaxiiqNM7PsMvviux
+   Q==;
 References: <cover.1686926857.git.waqarh@axis.com>
- <9487391b0565434761055b39ba04900bd839580a.1686926857.git.waqarh@axis.com>
- <07a6766e-7e2b-22fa-6f20-3a8ab7019635@linaro.org> <pnd1qi73dbu.fsf@axis.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <pnd1qi73dbu.fsf@axis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+ <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
+ <682cf4f8-ba1b-d74a-c744-6aa484c1acd5@metafoo.de>
+User-agent: a.out
+From:   Waqar Hameed <waqar.hameed@axis.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <kernel@axis.com>, <linux-kernel@vger.kernel.org>,
+        <kernel@lists.axis.com>
+Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
+Date:   Mon, 19 Jun 2023 13:21:51 +0200
+In-Reply-To: <682cf4f8-ba1b-d74a-c744-6aa484c1acd5@metafoo.de>
+Message-ID: <pndsfan1mev.fsf@axis.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail01w.axis.com
+ (10.20.40.7)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,18 +55,107 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 19/06/2023 12:40, Waqar Hameed wrote:
->> Node names should be generic. See also explanation and list of examples
->> in DT specification:
->> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+On Fri, Jun 16, 2023 at 18:37 -0700 Lars-Peter Clausen <lars@metafoo.de> wrote:
+
+> On 6/16/23 08:10, Waqar Hameed wrote:
+>> Murata IRS-D200 is a PIR sensor for human detection. It has support for
+>> raw data measurements and detection event notification.
 >>
->> so I guess: proximity@?
-> 
-> On that list there is "temperature-sensor". Would it make sense then to
-> call it "proximity-sensor"?
+>> Add a driver with support for triggered buffer and events. Map the
+>> various settings to the `iio` framework, e.g. threshold values, sampling
+>> frequency, filter frequencies etc.
+>>
+>> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+>
+> Looks very good, small minor comments.
 
-Choose whatever is the most popular in existing Linux sources.
+Thanks!
 
-Best regards,
-Krzysztof
+[...]
 
+>> index 000000000000..699801d60295
+>> --- /dev/null
+>> +++ b/drivers/iio/proximity/irsd200.c
+>> @@ -0,0 +1,1051 @@
+>> [...]
+>> +/*
+>> + * The upper 4 bits in register IRS_REG_COUNT value is the upper count value
+>> + * (exceeding upper threshold value). The lower 4 is the lower count value
+>> + * (exceeding lower threshold value).
+>> + */
+>> +#define IRS_UPPER_COUNT(count)	(count >> 4)
+>> +#define IRS_LOWER_COUNT(count)	(count & GENMASK(3, 0))
+>
+> Usually we add parenthesis around macro arguments to avoid issues in case the
+> argument is a non-singular expression.
+
+Of course! Will use `FIELD_GET()` as Jonathan suggests.
+
+>> [...]
+>>
+>> +static int irsd200_read_data(struct irsd200_data *data, s16 *val)
+>> +{
+>> +	unsigned int tmpval;
+>> +	int ret;
+>> +
+>> +	ret = regmap_read(data->regmap, IRS_REG_DATA_HI, &tmpval);
+>> +	if (ret < 0) {
+>> +		dev_err(data->dev, "Could not read hi data (%d)\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	*val = (s16)(tmpval << 8);
+>> +
+>> +	ret = regmap_read(data->regmap, IRS_REG_DATA_LO, &tmpval);
+>> +	if (ret < 0) {
+>> +		dev_err(data->dev, "Could not read lo data (%d)\n", ret);
+>> +		return ret;
+>> +	}
+> Is there a way to bulk read those registers in one go to avoid inconsistent data
+> if they change while being read?
+
+Yes, will use `regmap_bulk_read()`.
+
+>> +	*val |= tmpval;
+>> +
+>> +	return 0;
+>> +}
+>> [...]
+>> +static int irsd200_write_raw(struct iio_dev *indio_dev,
+>> +			     struct iio_chan_spec const *chan, int val,
+>> +			     int val2, long mask)
+>> +{
+>> +	struct irsd200_data *data = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_SAMP_FREQ:
+>> +		ret = irsd200_write_data_rate(data, val);
+>> +		return ret;
+> Maybe just `return irsd200_write_data_rate(...)`
+
+Of course! (Remnant from a refactorization... Sorry!)
+
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>>
+>> [...]
+>> +static int irsd200_probe(struct i2c_client *client)
+>> +{
+>> +	struct iio_trigger *trigger;
+>> +	struct irsd200_data *data;
+>> +	struct iio_dev *indio_dev;
+>> +	struct regmap *regmap;
+>> +	size_t i;
+>> +	int ret;
+>> +
+>> +	regmap = devm_regmap_init_i2c(client, &irsd200_regmap_config);
+>> +	if (IS_ERR(regmap)) {
+>> +		dev_err(&client->dev, "Could not initialize regmap\n");
+> dev_err_probe() is the more modern variant for error reporting in the probe
+> function. Same for all the other dev_err() in this function.
+
+Alright, I'll change to `dev_err_probe()`.

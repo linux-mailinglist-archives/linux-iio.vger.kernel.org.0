@@ -2,70 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9477371E0
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jun 2023 18:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B8667371FB
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jun 2023 18:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230500AbjFTQiN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Jun 2023 12:38:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35194 "EHLO
+        id S230474AbjFTQp1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Jun 2023 12:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbjFTQiK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jun 2023 12:38:10 -0400
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B204D1988;
-        Tue, 20 Jun 2023 09:37:54 -0700 (PDT)
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3422d37d316so13553895ab.3;
-        Tue, 20 Jun 2023 09:37:54 -0700 (PDT)
+        with ESMTP id S231197AbjFTQp0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jun 2023 12:45:26 -0400
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF141A1;
+        Tue, 20 Jun 2023 09:45:25 -0700 (PDT)
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-77e4126badcso50286339f.0;
+        Tue, 20 Jun 2023 09:45:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687279074; x=1689871074;
+        d=1e100.net; s=20221208; t=1687279524; x=1689871524;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lzHhBcGehlWwZFYVf8Mcmgg1mKcLxdLW5Zggyy+CCXM=;
-        b=ODGNDLhtIbPyhP04QC6TtKSlOk07ThJV19EBv+7/X9uWcufbAJTqUo28rreIIXFjVQ
-         0SoQfZoQ3N1iDeKBsE5atI2vWkHq/iNIDIArXGRqiGsjEGhXKb7TVB9hS6ZER331XFUc
-         FlpLN0Itrh6gw1SaQGJ7AymTIt2VI6iKOrzk3K9iOnALGQXfV4AvTeZoAjBrK9q8ko8e
-         4NsAoxkKrRUIEJRQu5aJscGQfe19CG/jJ4njdDsPC0Kumh8ioW2XARr2iJ4VtXS55MoY
-         ZBfQJEvoG+6jevxsIoAK/aymtZs8myolVVntTDJ6W5Zqef+b2uVR2ueNOQDkLsk0eiwG
-         F2Jw==
-X-Gm-Message-State: AC+VfDxptBaPzMhXbu68RzrwcEeguSHYDPJnEl/xMbFu7HPx4RqXF4SS
-        rE0dQvFIHVmTaPBKgofw7g==
-X-Google-Smtp-Source: ACHHUZ4zJSh5ti9pvnIfdniu0E1NqvpspqRuuhbVpluLjMmbPmBKj+IVLp/KcN4Qlye8SWQ/35QrFw==
-X-Received: by 2002:a92:c80a:0:b0:341:c806:a8cd with SMTP id v10-20020a92c80a000000b00341c806a8cdmr8907661iln.6.1687279073923;
-        Tue, 20 Jun 2023 09:37:53 -0700 (PDT)
+        bh=Y9XOGuLGXhqBdh/SPGk4WJ2DXvEFR2a4aPquV+OWA5g=;
+        b=OxmprRRQyd3HJzPawBTuv1y4Fkfrn3m2LyfQ2Yqvq06HHx7Lt9tb8O2k2IVrLNzz7Z
+         L4Dv/G7YrMyzGa0CWNXV7dlmQeW1dFPc3VuVj7iuP0lErxMzrZZMwXlNkhj2vqxld8+L
+         Jr1arEjExhJ+VPOAd1fW/4CpYsp5Nbtex9NhPF3OMHVocxQ/qR6716KK3Uv6ZITDYR2Y
+         VD6N3S+zZWiyO0i+oDXXQrJF/b+dIOjJA8yHPZVOkhBxbXSuhi0y3xG/jvbsVr9Jhwt9
+         PRTpfeJ/pLx2xLvfSPSXwRcUX49Z6TwjAdIeVwu2QyMkSVKCNDP4MJEFGtjfWWWFbH2U
+         uqYg==
+X-Gm-Message-State: AC+VfDzUSyj8P7RUS2AafBWeD3WEU7hhJYWGS7S5wyz0sBNfQkMivJ6v
+        sbcWi7gKpD559RymKBFkWw==
+X-Google-Smtp-Source: ACHHUZ7D8Y2CvB+TmCsAsGGa5dmCvpvC+FiLFquXEXmAYWDArnioL54LLdgIM2g4KsD0NTN9IaLdiw==
+X-Received: by 2002:a05:6e02:152d:b0:340:7bba:85b4 with SMTP id i13-20020a056e02152d00b003407bba85b4mr8982202ilu.8.1687279524383;
+        Tue, 20 Jun 2023 09:45:24 -0700 (PDT)
 Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id a12-20020a056638018c00b0041f4bd6f285sm741308jaq.37.2023.06.20.09.37.51
+        by smtp.gmail.com with ESMTPSA id v2-20020a92c6c2000000b0033bc3a3ea39sm683618ilm.70.2023.06.20.09.45.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 09:37:53 -0700 (PDT)
-Received: (nullmailer pid 3789063 invoked by uid 1000);
-        Tue, 20 Jun 2023 16:37:51 -0000
-Date:   Tue, 20 Jun 2023 10:37:51 -0600
+        Tue, 20 Jun 2023 09:45:23 -0700 (PDT)
+Received: (nullmailer pid 3798817 invoked by uid 1000);
+        Tue, 20 Jun 2023 16:45:21 -0000
+Date:   Tue, 20 Jun 2023 10:45:21 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     devicetree@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Conor Dooley <conor+dt@kernel.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        alsa-devel@alsa-project.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>
-Subject: Re: [PATCH v5 01/13] ASoC: dt-bindings: Add audio-iio-aux
-Message-ID: <168727907001.3788984.8001897155371948964.robh@kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v5 02/13] ASoC: dt-bindings: simple-card: Add
+ additional-devs subnode
+Message-ID: <20230620164521.GA3789188-robh@kernel.org>
 References: <20230615152631.224529-1-herve.codina@bootlin.com>
- <20230615152631.224529-2-herve.codina@bootlin.com>
+ <20230615152631.224529-3-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230615152631.224529-2-herve.codina@bootlin.com>
+In-Reply-To: <20230615152631.224529-3-herve.codina@bootlin.com>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
@@ -77,21 +76,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On Thu, 15 Jun 2023 17:26:19 +0200, Herve Codina wrote:
-> Industrial I/O devices can be present in the audio path.
-> These devices needs to be viewed as audio components in order to be
-> fully integrated in the audio path.
+On Thu, Jun 15, 2023 at 05:26:20PM +0200, Herve Codina wrote:
+> The additional-devs subnode allows to declared some virtual devices
+> as sound card children.
+> These virtual devices can then be used by the sound card and so be
+> present in the audio path.
 > 
-> audio-iio-aux allows to consider these Industrial I/O devices as
-> auxliary audio devices.
+> The first virtual device supported is the audio IIO auxiliary device
+> in order to support an IIO device as an audio auxiliary device.
 > 
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  .../bindings/sound/audio-iio-aux.yaml         | 64 +++++++++++++++++++
->  1 file changed, 64 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/sound/audio-iio-aux.yaml
+>  .../bindings/sound/simple-card.yaml           | 53 +++++++++++++++++++
+>  1 file changed, 53 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/sound/simple-card.yaml b/Documentation/devicetree/bindings/sound/simple-card.yaml
+> index b05e05c81cc4..59ac2d1d1ccf 100644
+> --- a/Documentation/devicetree/bindings/sound/simple-card.yaml
+> +++ b/Documentation/devicetree/bindings/sound/simple-card.yaml
+> @@ -148,6 +148,15 @@ definitions:
+>      required:
+>        - sound-dai
+>  
+> +  additional-devs:
+> +    type: object
+> +    description:
+> +      Additional devices used by the simple audio card.
+> +    patternProperties:
+> +      '^iio-aux(-.+)?$':
+> +        type: object
+> +        $ref: audio-iio-aux.yaml#
+> +
+>  properties:
+>    compatible:
+>      contains:
+> @@ -187,6 +196,8 @@ properties:
+>      $ref: "#/definitions/mclk-fs"
+>    simple-audio-card,aux-devs:
+>      $ref: "#/definitions/aux-devs"
+> +  simple-audio-card,additional-devs:
+> +    $ref: "#/definitions/additional-devs"
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Why do you need this under the card node? Can't you just use the 
+existing aux-devs?
 
+>    simple-audio-card,convert-rate:
+>      $ref: "#/definitions/convert-rate"
+>    simple-audio-card,convert-channels:
+> @@ -359,6 +370,48 @@ examples:
+>          };
+>      };
+>  
+> +# --------------------
+> +# route audio to/from a codec through an amplifier
+> +# designed with a potentiometer driven by IIO:
+> +# --------------------
+> +  - |
+> +    sound {
+> +        compatible = "simple-audio-card";
+> +
+> +        simple-audio-card,aux-devs = <&amp_in>, <&amp_out>;
+> +        simple-audio-card,routing =
+> +            "CODEC LEFTIN", "AMP_IN LEFT OUT",
+> +            "CODEC RIGHTIN", "AMP_IN RIGHT OUT",
+> +            "AMP_OUT LEFT IN", "CODEC LEFTOUT",
+> +            "AMP_OUT RIGHT IN", "CODEC RIGHTOUT";
+> +
+> +        simple-audio-card,additional-devs {
+> +            amp_out: iio-aux-out {
+> +                compatible = "audio-iio-aux";
+> +                io-channels = <&pot_out 0>, <&pot_out 1>;
+> +                io-channel-names = "LEFT", "RIGHT";
+> +                snd-control-invert-range = <1 1>;
+> +                sound-name-prefix = "AMP_OUT";
+> +            };
+> +
+> +            amp_in: iio_aux-in {
+> +                compatible = "audio-iio-aux";
+> +                io-channels = <&pot_in 0>, <&pot_in 1>;
+> +                io-channel-names = "LEFT", "RIGHT";
+> +                sound-name-prefix = "AMP_IN";
+> +            };
+> +        };
+> +
+> +        simple-audio-card,cpu {
+> +            sound-dai = <&cpu>;
+> +        };
+> +
+> +        simple-audio-card,codec {
+> +            sound-dai = <&codec>;
+> +            clocks = <&clocks>;
+> +        };
+> +    };
+> +
+>  # --------------------
+>  # Sampling Rate Conversion
+>  # --------------------
+> -- 
+> 2.40.1
+> 

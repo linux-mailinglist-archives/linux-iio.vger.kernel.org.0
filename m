@@ -2,173 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D408736B51
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jun 2023 13:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89FC736D56
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jun 2023 15:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232515AbjFTLpK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 20 Jun 2023 07:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36572 "EHLO
+        id S232787AbjFTN1u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Jun 2023 09:27:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231913AbjFTLpJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jun 2023 07:45:09 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95F00132
-        for <linux-iio@vger.kernel.org>; Tue, 20 Jun 2023 04:45:07 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-183-CwR9mL0JPti0FE6q9jlz4w-1; Tue, 20 Jun 2023 12:45:04 +0100
-X-MC-Unique: CwR9mL0JPti0FE6q9jlz4w-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 20 Jun
- 2023 12:45:02 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Tue, 20 Jun 2023 12:45:02 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Herve Codina' <herve.codina@bootlin.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "Kuninori Morimoto" <kuninori.morimoto.gx@renesas.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: RE: [PATCH v5 07/13] minmax: Introduce {min,max}_array()
-Thread-Topic: [PATCH v5 07/13] minmax: Introduce {min,max}_array()
-Thread-Index: AQHZn535xpz9i2gsDE6nNaGlDsvHDa+TlXFw
-Date:   Tue, 20 Jun 2023 11:45:01 +0000
-Message-ID: <70697b976107473b8779eea7d6c8a189@AcuMS.aculab.com>
-References: <20230615152631.224529-1-herve.codina@bootlin.com>
- <20230615152631.224529-8-herve.codina@bootlin.com>
-In-Reply-To: <20230615152631.224529-8-herve.codina@bootlin.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S232720AbjFTN1s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jun 2023 09:27:48 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC28B7;
+        Tue, 20 Jun 2023 06:27:33 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35KD6P9X014549;
+        Tue, 20 Jun 2023 09:27:11 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r96p69urv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Jun 2023 09:27:11 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 35KDRAiL005274
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 20 Jun 2023 09:27:10 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 20 Jun
+ 2023 09:27:09 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 20 Jun 2023 09:27:09 -0400
+Received: from kimedia-VirtualBox.ad.analog.com (KPALLER2-L02.ad.analog.com [10.116.242.96])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 35KDQoaE032122;
+        Tue, 20 Jun 2023 09:26:55 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <Michael.Hennerich@analog.com>,
+        <andy.shevchenko@gmail.com>, <robh@kernel.org>,
+        <krzysztof.kozlowski@linaro.org>, <conor+dt@kernel.org>,
+        <kimseer.paller@analog.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v7 1/2] dt-bindings: iio: adc: add max14001
+Date:   Tue, 20 Jun 2023 21:26:40 +0800
+Message-ID: <20230620132641.256307-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: bPcm0g5G7urbDcN8MwfStxQFOt4caxNf
+X-Proofpoint-ORIG-GUID: bPcm0g5G7urbDcN8MwfStxQFOt4caxNf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-20_09,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ bulkscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1015 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306200121
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Herve Codina
-> Sent: 15 June 2023 16:26
-> 
-> Introduce min_array() (resp max_array()) in order to get the
-> minimal (resp maximum) of values present in an array.
-> 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  include/linux/minmax.h | 64 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 64 insertions(+)
-> 
-> diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-> index 396df1121bff..1672985b02a3 100644
-> --- a/include/linux/minmax.h
-> +++ b/include/linux/minmax.h
-> @@ -133,6 +133,70 @@
->   */
->  #define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
-> 
-> +/*
-> + * Remove a const qualifier from integer types
-> + * _Generic(foo, type-name: association, ..., default: association) performs a
-> + * comparison against the foo type (not the qualified type).
-> + * Do not use the const keyword in the type-name as it will not match the
-> + * unqualified type of foo.
-> + */
-> +#define __unconst_integer_type_cases(type)	\
-> +	unsigned type:  (unsigned type)0,	\
-> +	signed type:    (signed type)0
-> +
-> +#define __unconst_integer_typeof(x) typeof(			\
-> +	_Generic((x),						\
-> +		char: (char)0,					\
-> +		__unconst_integer_type_cases(char),		\
-> +		__unconst_integer_type_cases(short),		\
-> +		__unconst_integer_type_cases(int),		\
-> +		__unconst_integer_type_cases(long),		\
-> +		__unconst_integer_type_cases(long long),	\
-> +		default: (x)))
+The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+binary inputs.
 
-Those are probably more generally useful and belong elsewhere.
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+---
+V6 -> V7: No changes.
+V5 -> V6: Removed tags.
+V3 -> V5: Added spaces between prefixes in subject. Fixed MAINTAINERS reference.
 
-> +
-> +/*
-> + * Do not check the array parameter using __must_be_array().
-> + * In the following legit use-case where the "array" passed is a simple pointer,
-> + * __must_be_array() will return a failure.
-> + * --- 8< ---
-> + * int *buff
-> + * ...
-> + * min = min_array(buff, nb_items);
-> + * --- 8< ---
+ .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
+ MAINTAINERS                                   |  7 +++
+ 2 files changed, 61 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
 
-Is that needed in the .h file?
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+new file mode 100644
+index 000000000000..9d03c611fca3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,max14001.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices MAX14001 ADC
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++
++description: |
++    Single channel 10 bit ADC with SPI interface. Datasheet
++    can be found here:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/MAX14001-MAX14002.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,max14001
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 5000000
++
++  vref-supply:
++    description: Voltage reference to establish input scaling.
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,max14001";
++            reg = <0>;
++            spi-max-frequency = <5000000>;
++            vref-supply = <&vref_reg>;
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f794002a192e..dcea2c31f920 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12670,6 +12670,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/max9860.txt
+ F:	sound/soc/codecs/max9860.*
+ 
++MAX14001 IIO ADC DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
++
+ MAXBOTIX ULTRASONIC RANGER IIO DRIVER
+ M:	Andreas Klinger <ak@it-klinger.de>
+ L:	linux-iio@vger.kernel.org
 
-> + *
-> + * The first typeof(&(array)[0]) is needed in order to support arrays of both
-> + * 'int *buff' and 'int buf[N]' types.
-> + *
-> + * The array can be an array of const items.
-> + * typeof() keeps the const qualifier. Use __unconst_typeof() in order to
-> + * discard the const qualifier for the __element variable.
-> + */
-> +#define __minmax_array(op, array, len) ({				\
-> +	typeof(&(array)[0]) __array = (array);				\
-> +	typeof(len) __len = (len);					\
-> +	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
-
-s/__element/__bound/
-
-> +	while (__len--)							\
-> +		__element = op(__element, __array[__len]);		\
-> +	__element; })
-
-I'm not all sure that all the shenanigans required to use min()
-is really needed here.
-
-It would also be generally better to process the array forwards.
-So something like:
-	typeof (&array[0]) __ptr = array, __limit = array + len;
-	typeof (array[0] + 0) __element, __bound = *__ptr++;
-	while (ptr < __limit) {
-		__element = *__ptr++;
-		if (__element > __bound)
-			__bound = __element;
-	}
-	(typeof (array[0]))__bound; })
-seems fine to me.
-The final cast is there to convert 'int' back to un/signed char|short.
-Not really needed and might generate worse code.
-
-But if you insist on using min/max ignore this bit.
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+base-commit: 6f449d52b90fdd927fcf9df0388701de6d5381c6
+-- 
+2.34.1
 

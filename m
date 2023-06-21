@@ -2,69 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3062C737BCA
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 09:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65C8A737CE2
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 10:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230059AbjFUHER (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Jun 2023 03:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49016 "EHLO
+        id S229872AbjFUIGl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Jun 2023 04:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231184AbjFUHEP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 03:04:15 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF98A10FF;
-        Wed, 21 Jun 2023 00:04:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687331054; x=1718867054;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=e+07q9qYK+pw1eO+EaWmvyqs2V9p3O3dm0tM202IcTg=;
-  b=nrEQSSUr/8AaSRe0n7VWd4BQn3RuR3R8ina280DDf8IOw0sHI7M/vEn9
-   luz62puTBbzCTo4rNywZH8Hl48pFcDVVb06rsv19HytMLHiyBAGD8MpV3
-   Z6OnhzN1Tqil5byXCO4Wr/JgrvfrrVkiAG/2Xogm3MEOyKIBE9DJ43uXE
-   SmzHaPvREilmfpx+ftWJFZfsUA6t1R9fzQ9tOpmQpVThcUn0cT9V0vxRq
-   KX8hYb8V+Zt2nUicK8U90OxaC5N7C1Oihxu4V195x91w4f5QD/AxZNKPb
-   IzL8HH3TBNlsJZyHi82IwwZ/7cFEhjmmII1QcBF0UXCIEISQkLWIPgaTM
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="344827584"
-X-IronPort-AV: E=Sophos;i="6.00,259,1681196400"; 
-   d="scan'208";a="344827584"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 00:04:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="804254532"
-X-IronPort-AV: E=Sophos;i="6.00,259,1681196400"; 
-   d="scan'208";a="804254532"
-Received: from mylly.fi.intel.com (HELO [10.237.72.161]) ([10.237.72.161])
-  by FMSMGA003.fm.intel.com with ESMTP; 21 Jun 2023 00:04:11 -0700
-Message-ID: <99948b63-1f12-e9b6-11a2-e564f47b94f0@linux.intel.com>
-Date:   Wed, 21 Jun 2023 10:04:10 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.12.0
-Subject: Re: [PATCH] counter: Fix menuconfig "Counter support" submenu entries
- disappearance
-Content-Language: en-US
-To:     William Breathitt Gray <william.gray@linaro.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
+        with ESMTP id S230098AbjFUIGk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 04:06:40 -0400
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BEC19A2;
+        Wed, 21 Jun 2023 01:06:25 -0700 (PDT)
+X-GND-Sasl: herve.codina@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1687334783;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WYtqxR//h5o3fcMngi/YGGEQl12cFL95TkWLUIHTxSw=;
+        b=SgudXOqmAUvHeu4Jo3eLRfZ1fN2zhpb2s2JmooflnVq4jwsIFIoXRIaxuN23vxaILTt3Do
+        CGki7lB5WuwItvsGgzokEFaiwHTF1MFaHNEbJ5Rj2SCmtGrW41IBSmy8EL8EOKI4fUsu64
+        JUzZxmEFw6a5mediCQXKrRThbcQExL5Qgj+Wu5YzVbkZ/9e9W9zMG5trHILycqU8NZvOc3
+        Ig14PDS7aCqu6HKYRJ7HkLg4q1vsGAFTmKKbNN1x3wwO5toJi72p8psxqHtpAb0tpReRlZ
+        bnLJA0nAyGADD0pCG5WmgyNReUWUcMCVwat4VJ99IenkWCevR6MhQTnStmjGyQ==
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+X-GND-Sasl: herve.codina@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9ED9D6000A;
+        Wed, 21 Jun 2023 08:06:21 +0000 (UTC)
+Date:   Wed, 21 Jun 2023 10:06:20 +0200
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        andy.shevchenko@gmail.com
-References: <20230620170159.556788-1-william.gray@linaro.org>
- <4341aa87-c3b1-b0a4-4f82-c903c3085df3@infradead.org>
- <ZJIWLYtl6BEHfDZQ@fedora>
-From:   Jarkko Nikula <jarkko.nikula@linux.intel.com>
-In-Reply-To: <ZJIWLYtl6BEHfDZQ@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v5 02/13] ASoC: dt-bindings: simple-card: Add
+ additional-devs subnode
+Message-ID: <20230621100620.0666ae29@bootlin.com>
+In-Reply-To: <20230620164521.GA3789188-robh@kernel.org>
+References: <20230615152631.224529-1-herve.codina@bootlin.com>
+        <20230615152631.224529-3-herve.codina@bootlin.com>
+        <20230620164521.GA3789188-robh@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,25 +84,135 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/21/23 00:12, William Breathitt Gray wrote:
-> On Tue, Jun 20, 2023 at 02:00:37PM -0700, Randy Dunlap wrote:
->> Hi,
->>
->> On 6/20/23 10:01, William Breathitt Gray wrote:
->>> The current placement of the I8254 Kconfig entry results in the
->>> disappearance of the "Counter support" submenu items in menuconfig. Move
->>> the I8254 above the menuconfig COUNTER entry to restore the intended
->>> submenu behavior.
->>>
->>> Fixes: d428487471ba ("counter: i8254: Introduce the Intel 8254 interface library module")
->>> Reported-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->>> Closes: https://lore.kernel.org/all/32ddaa7b-53a8-d61f-d526-b545bd561337@linux.intel.com/
->>> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
->>
->> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
->>
-Thanks, this fixes it.
+Hi Rob,
 
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+On Tue, 20 Jun 2023 10:45:21 -0600
+Rob Herring <robh@kernel.org> wrote:
 
+> On Thu, Jun 15, 2023 at 05:26:20PM +0200, Herve Codina wrote:
+> > The additional-devs subnode allows to declared some virtual devices
+> > as sound card children.
+> > These virtual devices can then be used by the sound card and so be
+> > present in the audio path.
+> > 
+> > The first virtual device supported is the audio IIO auxiliary device
+> > in order to support an IIO device as an audio auxiliary device.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > ---
+> >  .../bindings/sound/simple-card.yaml           | 53 +++++++++++++++++++
+> >  1 file changed, 53 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/sound/simple-card.yaml b/Documentation/devicetree/bindings/sound/simple-card.yaml
+> > index b05e05c81cc4..59ac2d1d1ccf 100644
+> > --- a/Documentation/devicetree/bindings/sound/simple-card.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/simple-card.yaml
+> > @@ -148,6 +148,15 @@ definitions:
+> >      required:
+> >        - sound-dai
+> >  
+> > +  additional-devs:
+> > +    type: object
+> > +    description:
+> > +      Additional devices used by the simple audio card.
+> > +    patternProperties:
+> > +      '^iio-aux(-.+)?$':
+> > +        type: object
+> > +        $ref: audio-iio-aux.yaml#
+> > +
+> >  properties:
+> >    compatible:
+> >      contains:
+> > @@ -187,6 +196,8 @@ properties:
+> >      $ref: "#/definitions/mclk-fs"
+> >    simple-audio-card,aux-devs:
+> >      $ref: "#/definitions/aux-devs"
+> > +  simple-audio-card,additional-devs:
+> > +    $ref: "#/definitions/additional-devs"  
+> 
+> Why do you need this under the card node? Can't you just use the 
+> existing aux-devs?
+
+aux-devs is a phandle array referencing auxiliary devices.
+I cannot define a node with just aux-devs, just reference.
+
+I need device auxiliary devices that are not defined somewhere else in
+the DT.
+
+A SPI amplifier is defined as a subnode of a SPI controler.
+But my IIO/ASoC virtual devices are not defined under some hardware bus.
+I need to define them here, as a simple-audio-card subnode.
+
+Several subnodes are already defined for a simple-audio-card subnode for
+other purpose.
+
+Instead of having virtual device nodes directly as chidren mixed with the
+other purpose nodes of the simple-audio-card, I group them under the
+additional-devs node in order to ease evolution and maintenance.
+
+Best regards,
+Hervé
+
+> 
+> >    simple-audio-card,convert-rate:
+> >      $ref: "#/definitions/convert-rate"
+> >    simple-audio-card,convert-channels:
+> > @@ -359,6 +370,48 @@ examples:
+> >          };
+> >      };
+> >  
+> > +# --------------------
+> > +# route audio to/from a codec through an amplifier
+> > +# designed with a potentiometer driven by IIO:
+> > +# --------------------
+> > +  - |
+> > +    sound {
+> > +        compatible = "simple-audio-card";
+> > +
+> > +        simple-audio-card,aux-devs = <&amp_in>, <&amp_out>;
+> > +        simple-audio-card,routing =
+> > +            "CODEC LEFTIN", "AMP_IN LEFT OUT",
+> > +            "CODEC RIGHTIN", "AMP_IN RIGHT OUT",
+> > +            "AMP_OUT LEFT IN", "CODEC LEFTOUT",
+> > +            "AMP_OUT RIGHT IN", "CODEC RIGHTOUT";
+> > +
+> > +        simple-audio-card,additional-devs {
+> > +            amp_out: iio-aux-out {
+> > +                compatible = "audio-iio-aux";
+> > +                io-channels = <&pot_out 0>, <&pot_out 1>;
+> > +                io-channel-names = "LEFT", "RIGHT";
+> > +                snd-control-invert-range = <1 1>;
+> > +                sound-name-prefix = "AMP_OUT";
+> > +            };
+> > +
+> > +            amp_in: iio_aux-in {
+> > +                compatible = "audio-iio-aux";
+> > +                io-channels = <&pot_in 0>, <&pot_in 1>;
+> > +                io-channel-names = "LEFT", "RIGHT";
+> > +                sound-name-prefix = "AMP_IN";
+> > +            };
+> > +        };
+> > +
+> > +        simple-audio-card,cpu {
+> > +            sound-dai = <&cpu>;
+> > +        };
+> > +
+> > +        simple-audio-card,codec {
+> > +            sound-dai = <&codec>;
+> > +            clocks = <&clocks>;
+> > +        };
+> > +    };
+> > +
+> >  # --------------------
+> >  # Sampling Rate Conversion
+> >  # --------------------
+> > -- 
+> > 2.40.1
+> >   
+
+
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

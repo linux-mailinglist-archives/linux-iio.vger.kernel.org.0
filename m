@@ -2,217 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65C8A737CE2
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 10:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C45D1737D97
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 10:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjFUIGl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Jun 2023 04:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
+        id S231214AbjFUIV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Jun 2023 04:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230098AbjFUIGk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 04:06:40 -0400
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BEC19A2;
-        Wed, 21 Jun 2023 01:06:25 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1687334783;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WYtqxR//h5o3fcMngi/YGGEQl12cFL95TkWLUIHTxSw=;
-        b=SgudXOqmAUvHeu4Jo3eLRfZ1fN2zhpb2s2JmooflnVq4jwsIFIoXRIaxuN23vxaILTt3Do
-        CGki7lB5WuwItvsGgzokEFaiwHTF1MFaHNEbJ5Rj2SCmtGrW41IBSmy8EL8EOKI4fUsu64
-        JUzZxmEFw6a5mediCQXKrRThbcQExL5Qgj+Wu5YzVbkZ/9e9W9zMG5trHILycqU8NZvOc3
-        Ig14PDS7aCqu6HKYRJ7HkLg4q1vsGAFTmKKbNN1x3wwO5toJi72p8psxqHtpAb0tpReRlZ
-        bnLJA0nAyGADD0pCG5WmgyNReUWUcMCVwat4VJ99IenkWCevR6MhQTnStmjGyQ==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9ED9D6000A;
-        Wed, 21 Jun 2023 08:06:21 +0000 (UTC)
-Date:   Wed, 21 Jun 2023 10:06:20 +0200
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 02/13] ASoC: dt-bindings: simple-card: Add
- additional-devs subnode
-Message-ID: <20230621100620.0666ae29@bootlin.com>
-In-Reply-To: <20230620164521.GA3789188-robh@kernel.org>
-References: <20230615152631.224529-1-herve.codina@bootlin.com>
-        <20230615152631.224529-3-herve.codina@bootlin.com>
-        <20230620164521.GA3789188-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        with ESMTP id S230093AbjFUIV4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 04:21:56 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C133EDD;
+        Wed, 21 Jun 2023 01:21:55 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-5149aafef44so6674589a12.0;
+        Wed, 21 Jun 2023 01:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687335714; x=1689927714;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4jBRz0LRg2B0m25eW+Tt+1nFooZyySe4sAZwfGusRF0=;
+        b=WkOBwnyhVMeHdjv01ZldJEa+yVR6LiekbLDbZLW1R5TvMV0n+6h68f19tE2f9nILs1
+         fKcMH0bPB91NbFjdrpNvQYwgTzVriIR6TXjPS80e3nbpeWKzhxdeoC5uIbZIATwvieW8
+         fPhTjy8tKuy7sLPj99+c1ne1Hm5tfm2nO/Oj6nQnT5cgwy6XWg3TV3Ji5lMkJYOE4p0B
+         BCIZ04JUBr3Ut+VLcUIYqBmElziueUczruSOONBFcvEcucoSkH/wWVE1hDQcKSnfP7cW
+         YDD5sp91grBQU/yVEwo5KtCMeA8d6oWgkCWak1Mgp0+tB5taBmmOFVHbHxBiNWN0BFJO
+         etPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687335714; x=1689927714;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4jBRz0LRg2B0m25eW+Tt+1nFooZyySe4sAZwfGusRF0=;
+        b=M6vkdVGKqnKxI2GgPdvnaMHKlqWrBdGehdmNt9gEp5rjY/f+U7pPiAdWXZrG6i/rFe
+         5wIk3u0EmdkB2HxTBl3O+RAwE4OcNgUyQros5HAuaohsO+OfZBQbWQ1lvytKR/+FRu8C
+         Hefl4VldLkW5Ua/f9B0cPr41+uiI7NTlbrYfyj/c9X+o72JWbDuYDE2fhwg6lba3Gko7
+         3BVfOofc2aUjCmF6XDKFSZWNeUFfv7UxshrDlR8ekKkyspH//Ddjaq1WUpxYUm9PX0Y9
+         +hy49whFUcb0TcYxlfr4BkLOvYbeOzicJKi2fIKUwVciL7/JtQHEXSNyhyFSFOsAqV4i
+         ZHBA==
+X-Gm-Message-State: AC+VfDw/XHm6r1VekkdqjWTmM9UNQ7P2GYzx72EiJwm2lbloepKlHe1Z
+        ps5ajoV+5zg3E1NvFBMiqCPM9rUKxPeeKDIoSx0=
+X-Google-Smtp-Source: ACHHUZ57t7Yr5k8V208laObFC0kVfmXzVnMgP9PjggD4m6CY94CSVh+22oA8xQEToATqRdx59+GVTM5H79dCBLVzBIE=
+X-Received: by 2002:aa7:c1d9:0:b0:51b:c714:a296 with SMTP id
+ d25-20020aa7c1d9000000b0051bc714a296mr3604912edp.13.1687335713981; Wed, 21
+ Jun 2023 01:21:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230620132641.256307-1-kimseer.paller@analog.com>
+ <20230620132641.256307-2-kimseer.paller@analog.com> <CAHp75VdR9W8U9VmP5WZntzB9qW3fM6qy1Q2-yeBSAG5PJimkaw@mail.gmail.com>
+ <e92f919e59974bb2ae32a8d961e07538@analog.com>
+In-Reply-To: <e92f919e59974bb2ae32a8d961e07538@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 21 Jun 2023 11:21:17 +0300
+Message-ID: <CAHp75Vf4kXi9TAvEW=JvA9SLRYuTtwwBvzH4vGoP2CRrk9vX8g@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] iio: adc: max14001: New driver
+To:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+Cc:     "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
+        "conor+dt@kernel.org" <conor+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Rob,
+On Wed, Jun 21, 2023 at 3:38=E2=80=AFAM Paller, Kim Seer
+<KimSeer.Paller@analog.com> wrote:
+> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Sent: Tuesday, June 20, 2023 11:15 PM
+> > On Tue, Jun 20, 2023 at 4:27=E2=80=AFPM Kim Seer Paller
+> > <kimseer.paller@analog.com> wrote:
 
-On Tue, 20 Jun 2023 10:45:21 -0600
-Rob Herring <robh@kernel.org> wrote:
+...
 
-> On Thu, Jun 15, 2023 at 05:26:20PM +0200, Herve Codina wrote:
-> > The additional-devs subnode allows to declared some virtual devices
-> > as sound card children.
-> > These virtual devices can then be used by the sound card and so be
-> > present in the audio path.
-> > 
-> > The first virtual device supported is the audio IIO auxiliary device
-> > in order to support an IIO device as an audio auxiliary device.
-> > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  .../bindings/sound/simple-card.yaml           | 53 +++++++++++++++++++
-> >  1 file changed, 53 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/sound/simple-card.yaml b/Documentation/devicetree/bindings/sound/simple-card.yaml
-> > index b05e05c81cc4..59ac2d1d1ccf 100644
-> > --- a/Documentation/devicetree/bindings/sound/simple-card.yaml
-> > +++ b/Documentation/devicetree/bindings/sound/simple-card.yaml
-> > @@ -148,6 +148,15 @@ definitions:
-> >      required:
-> >        - sound-dai
-> >  
-> > +  additional-devs:
-> > +    type: object
-> > +    description:
-> > +      Additional devices used by the simple audio card.
-> > +    patternProperties:
-> > +      '^iio-aux(-.+)?$':
-> > +        type: object
-> > +        $ref: audio-iio-aux.yaml#
-> > +
-> >  properties:
-> >    compatible:
-> >      contains:
-> > @@ -187,6 +196,8 @@ properties:
-> >      $ref: "#/definitions/mclk-fs"
-> >    simple-audio-card,aux-devs:
-> >      $ref: "#/definitions/aux-devs"
-> > +  simple-audio-card,additional-devs:
-> > +    $ref: "#/definitions/additional-devs"  
-> 
-> Why do you need this under the card node? Can't you just use the 
-> existing aux-devs?
+> > > +       /*
+> > > +        * Align received data from the receive buffer, reversing and=
+ reordering
+> > > +        * it to match the expected MSB-first format.
+> > > +        */
+> > > +       *data =3D (__force u16)(be16_to_cpu(bitrev16(st->spi_rx_buffe=
+r))) &
+> > > +                                                       MAX14001_DATA=
+_MASK;
+> >
+> > Using __force in the C files is somehow stinky.
 
-aux-devs is a phandle array referencing auxiliary devices.
-I cannot define a node with just aux-devs, just reference.
+...
 
-I need device auxiliary devices that are not defined somewhere else in
-the DT.
+> > > +       /*
+> > > +        * Convert transmit buffer to big-endian format and reverse t=
+ransmit
+> > > +        * buffer to align with the LSB-first input on SDI port.
+> > > +        */
+> > > +       st->spi_tx_buffer =3D (__force u16)(cpu_to_be16(bitrev16(
+> >
+> > You have a different type of spi_tx_buffer than u16, don't you?
+>
+> I have the same type of spi_tx_buffer as u16.
 
-A SPI amplifier is defined as a subnode of a SPI controler.
-But my IIO/ASoC virtual devices are not defined under some hardware bus.
-I need to define them here, as a simple-audio-card subnode.
+And you should have __be16.
 
-Several subnodes are already defined for a simple-audio-card subnode for
-other purpose.
+> Other than using force cast, is there any way to resolve the endian warni=
+ng? I have
+> actually swapped the order of bitrev16() and cpu_to_be16/be16_to_cpu() fu=
+nctions.
+> I have tested and they also work fine.
 
-Instead of having virtual device nodes directly as chidren mixed with the
-other purpose nodes of the simple-audio-card, I group them under the
-additional-devs node in order to ease evolution and maintenance.
+You really have to get it correct on both LE and BE architectures.
 
-Best regards,
-Hervé
-
-> 
-> >    simple-audio-card,convert-rate:
-> >      $ref: "#/definitions/convert-rate"
-> >    simple-audio-card,convert-channels:
-> > @@ -359,6 +370,48 @@ examples:
-> >          };
-> >      };
-> >  
-> > +# --------------------
-> > +# route audio to/from a codec through an amplifier
-> > +# designed with a potentiometer driven by IIO:
-> > +# --------------------
-> > +  - |
-> > +    sound {
-> > +        compatible = "simple-audio-card";
-> > +
-> > +        simple-audio-card,aux-devs = <&amp_in>, <&amp_out>;
-> > +        simple-audio-card,routing =
-> > +            "CODEC LEFTIN", "AMP_IN LEFT OUT",
-> > +            "CODEC RIGHTIN", "AMP_IN RIGHT OUT",
-> > +            "AMP_OUT LEFT IN", "CODEC LEFTOUT",
-> > +            "AMP_OUT RIGHT IN", "CODEC RIGHTOUT";
-> > +
-> > +        simple-audio-card,additional-devs {
-> > +            amp_out: iio-aux-out {
-> > +                compatible = "audio-iio-aux";
-> > +                io-channels = <&pot_out 0>, <&pot_out 1>;
-> > +                io-channel-names = "LEFT", "RIGHT";
-> > +                snd-control-invert-range = <1 1>;
-> > +                sound-name-prefix = "AMP_OUT";
-> > +            };
-> > +
-> > +            amp_in: iio_aux-in {
-> > +                compatible = "audio-iio-aux";
-> > +                io-channels = <&pot_in 0>, <&pot_in 1>;
-> > +                io-channel-names = "LEFT", "RIGHT";
-> > +                sound-name-prefix = "AMP_IN";
-> > +            };
-> > +        };
-> > +
-> > +        simple-audio-card,cpu {
-> > +            sound-dai = <&cpu>;
-> > +        };
-> > +
-> > +        simple-audio-card,codec {
-> > +            sound-dai = <&codec>;
-> > +            clocks = <&clocks>;
-> > +        };
-> > +    };
-> > +
-> >  # --------------------
-> >  # Sampling Rate Conversion
-> >  # --------------------
-> > -- 
-> > 2.40.1
-> >   
-
-
-
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--=20
+With Best Regards,
+Andy Shevchenko

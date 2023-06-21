@@ -2,132 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A63737671
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jun 2023 23:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C6473784F
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 02:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjFTVMV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Jun 2023 17:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46510 "EHLO
+        id S229592AbjFUAi2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Jun 2023 20:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230184AbjFTVMU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jun 2023 17:12:20 -0400
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080CE1989
-        for <linux-iio@vger.kernel.org>; Tue, 20 Jun 2023 14:12:16 -0700 (PDT)
-Received: by mail-ua1-x930.google.com with SMTP id a1e0cc1a2514c-78a5384a5daso1282849241.0
-        for <linux-iio@vger.kernel.org>; Tue, 20 Jun 2023 14:12:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687295536; x=1689887536;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aJopb8VA1/D5IZOn/wqbLMk8IC0K1ywAj5CnbTia8Q4=;
-        b=bGzSqG/eJD+Lmz6iezEdxQ5trUo38U5xkNiY0PbVzcuIhuTlBPOFaxRF8myyfQBVEy
-         lrci3tJHhzEa1bHRVr1tWpjaYPgVZxGg++G1qhDIGXT448Y2js4o1YGYDmzfvyEIlfyx
-         zKkidlYu+EVQCKr7JYrNoVOuL9XlHko+olgLAHrbwdZrmdyZhArKp1IY5jLE2CFuXQlA
-         DJ71DPcNpNbNQjBXC/3mhmxrUbc4t0smTOR6NyIwR3F9mOVQjjhunRjfcP73ZhYfeUD8
-         Vn2FlN7F1Xqx0j0rI6JHahiCACwZthtBuJ4qaHYOj6vFioVsM6LfaSdoblno22VruJkD
-         UfIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687295536; x=1689887536;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aJopb8VA1/D5IZOn/wqbLMk8IC0K1ywAj5CnbTia8Q4=;
-        b=YaCD/6FBPfKKHlssaYklG1GyxpZizEdzATZeCGI/ncNg1r19M5301wj7CEDxApKLcN
-         nXR56NppZTKjFB8NXyPoBmfIS3t/7hsyoWE+pZcz0IBKXCW5Kua6ymh8tKixWnjcpJuP
-         8PTZeMpW9ROe3jgY27xmg5+x0f+PjRIyG4rhjsEnu204v8FFx1JGE62e7mLSJWJzE2q0
-         pS9oIsH4daveOqtJKt9T21JLZYQ0w8iCN9sla36SpMzlDLKoihOW/nQZYdgP0QokZiBu
-         FdaRSqBjbxvJ+iQZ+pyOxaGuhItiEY0xkI3bJhKsrUj/6FfnxMA36xqGJndFctak2sAc
-         uwLw==
-X-Gm-Message-State: AC+VfDx1ljOZenTPFwRf2W/TR/4rdGIlUMnrGeUvz/72qs43MRizVDLG
-        vcK1S/f5YTLJS9c632Dyq87YYw==
-X-Google-Smtp-Source: ACHHUZ6++vAJnMilyVeqgAWY+CY3TaGCKbukUm7qekdxxXQz//Bu4esTTZYpLckXu3qzU5zIJnU5qw==
-X-Received: by 2002:a67:fbc4:0:b0:43f:4779:49ce with SMTP id o4-20020a67fbc4000000b0043f477949cemr3249133vsr.3.1687295535956;
-        Tue, 20 Jun 2023 14:12:15 -0700 (PDT)
-Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id l15-20020ab053cf000000b0078cf32c7d3dsm415147uaa.12.2023.06.20.14.12.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 14:12:15 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 17:12:13 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        andy.shevchenko@gmail.com
-Subject: Re: [PATCH] counter: Fix menuconfig "Counter support" submenu
- entries disappearance
-Message-ID: <ZJIWLYtl6BEHfDZQ@fedora>
-References: <20230620170159.556788-1-william.gray@linaro.org>
- <4341aa87-c3b1-b0a4-4f82-c903c3085df3@infradead.org>
+        with ESMTP id S229726AbjFUAi2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Jun 2023 20:38:28 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E186173B;
+        Tue, 20 Jun 2023 17:38:27 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35KMuq5a030204;
+        Tue, 20 Jun 2023 20:38:11 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r99r552fk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Jun 2023 20:38:11 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 35L0cAfF038764
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 20 Jun 2023 20:38:10 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 20 Jun
+ 2023 20:38:09 -0400
+Received: from ASHBMBX8.ad.analog.com ([fe80::30b9:230c:9621:902f]) by
+ ASHBMBX8.ad.analog.com ([fe80::30b9:230c:9621:902f%9]) with mapi id
+ 15.02.0986.014; Tue, 20 Jun 2023 20:38:09 -0400
+From:   "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
+        "conor+dt@kernel.org" <conor+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: RE: [PATCH v7 2/2] iio: adc: max14001: New driver
+Thread-Topic: [PATCH v7 2/2] iio: adc: max14001: New driver
+Thread-Index: AQHZo3rtGCivtyQnbE6X/wvGJBapo6+UECKAgABVl0A=
+Date:   Wed, 21 Jun 2023 00:38:08 +0000
+Message-ID: <e92f919e59974bb2ae32a8d961e07538@analog.com>
+References: <20230620132641.256307-1-kimseer.paller@analog.com>
+ <20230620132641.256307-2-kimseer.paller@analog.com>
+ <CAHp75VdR9W8U9VmP5WZntzB9qW3fM6qy1Q2-yeBSAG5PJimkaw@mail.gmail.com>
+In-Reply-To: <CAHp75VdR9W8U9VmP5WZntzB9qW3fM6qy1Q2-yeBSAG5PJimkaw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
+ =?utf-8?B?bk5jYTNCaGJHeGxjakpjWVhCd1pHRjBZVnh5YjJGdGFXNW5YREE1WkRnME9X?=
+ =?utf-8?B?STJMVE15WkRNdE5HRTBNQzA0TldWbExUWmlPRFJpWVRJNVpUTTFZbHh0YzJk?=
+ =?utf-8?B?elhHMXpaeTFsTWpaaE5UQXhPUzB3Wm1OaUxURXhaV1V0WVdVM1pDMW1PR05p?=
+ =?utf-8?B?TmpjME9XVmhOMkpjWVcxbExYUmxjM1JjWlRJMllUVXdNV0l0TUdaallpMHhN?=
+ =?utf-8?B?V1ZsTFdGbE4yUXRaamhqWWpZM05EbGxZVGRpWW05a2VTNTBlSFFpSUhONlBT?=
+ =?utf-8?B?SXpOelE0SWlCMFBTSXhNek16TVRjNE1UUTROVFk0TlRrMU56WWlJR2c5SWxG?=
+ =?utf-8?B?NlQwTk1iRlV3U0ZSc1ZFSnFVa1l3V1VJclNreG1aRzB4TkQwaUlHbGtQU0lp?=
+ =?utf-8?B?SUdKc1BTSXdJaUJpYnowaU1TSWdZMms5SW1OQlFVRkJSVkpJVlRGU1UxSlZS?=
+ =?utf-8?B?azVEWjFWQlFVVnZRMEZCUXpSUU9HRnJNa3RRV2tGbVVrZEJTMk00TkZnMFZE?=
+ =?utf-8?B?bEZXVUZ3ZW5wb1ptaE5SRUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRklRVUZCUVVSaFFWRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGRlFVRlJRVUpCUVVGQmRtUm9hM2huUVVGQlFVRkJRVUZCUVVGQlFVRkJT?=
+ =?utf-8?B?alJCUVVGQ2FFRkhVVUZoVVVKbVFVaE5RVnBSUW1wQlNGVkJZMmRDYkVGR09F?=
+ =?utf-8?B?RmpRVUo1UVVjNFFXRm5RbXhCUjAxQlpFRkNla0ZHT0VGYVowSm9RVWQzUVdO?=
+ =?utf-8?B?M1FteEJSamhCV21kQ2RrRklUVUZoVVVJd1FVZHJRV1JuUW14QlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVWQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlowRkJRVUZCUVc1blFVRkJSMFZCV2tGQ2NFRkdPRUZqZDBKc1FVZE5RV1JS?=
+ =?utf-8?B?UW5sQlIxVkJXSGRDZDBGSVNVRmlkMEp4UVVkVlFWbDNRakJCU0UxQldIZENN?=
+ =?utf-8?B?RUZIYTBGYVVVSjVRVVJGUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRlJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRMEZCUVVGQlFVTmxRVUZCUVZsUlFtdEJSMnRCV0hkQ2Vr?=
+ =?utf-8?B?RkhWVUZaZDBJeFFVaEpRVnBSUW1aQlNFRkJZMmRDZGtGSGIwRmFVVUpxUVVo?=
+ =?utf-8?B?UlFXTjNRbVpCU0ZGQllWRkNiRUZJU1VGTlowRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZDUVVGQlFVRkJRVUZCUVVsQlFVRkJRVUZCUFQwaUx6NDhMMjFs?=
+ =?utf-8?Q?dGE+?=
+x-dg-rorf: true
+x-originating-ip: [10.116.184.234]
+x-adiruleop-newscl: Rule Triggered
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="A4eykhRWKS+hjpBE"
-Content-Disposition: inline
-In-Reply-To: <4341aa87-c3b1-b0a4-4f82-c903c3085df3@infradead.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Proofpoint-GUID: PA4y_X--hQFcq7cBL9NzwZowbtlR6YdK
+X-Proofpoint-ORIG-GUID: PA4y_X--hQFcq7cBL9NzwZowbtlR6YdK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-20_16,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ mlxlogscore=999 lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306210003
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---A4eykhRWKS+hjpBE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jun 20, 2023 at 02:00:37PM -0700, Randy Dunlap wrote:
-> Hi,
->=20
-> On 6/20/23 10:01, William Breathitt Gray wrote:
-> > The current placement of the I8254 Kconfig entry results in the
-> > disappearance of the "Counter support" submenu items in menuconfig. Move
-> > the I8254 above the menuconfig COUNTER entry to restore the intended
-> > submenu behavior.
-> >=20
-> > Fixes: d428487471ba ("counter: i8254: Introduce the Intel 8254 interfac=
-e library module")
-> > Reported-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> > Closes: https://lore.kernel.org/all/32ddaa7b-53a8-d61f-d526-b545bd56133=
-7@linux.intel.com/
-> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
->=20
-> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
->=20
-> but why is I8254 here at all? Users cannot enable it
-> and nothing selects it.  Is it a WIP?
->=20
-> Thanks.
-
-There are pending patches for two drivers to use it: 104-dio-48e[^1] and
-stx104[^2]. Those will be picked up in their respective subsystem trees
-(by Bart and Jonathan I presume).
-
-William Breathitt Gray
-
-[^1]: https://lore.kernel.org/all/dc4d0d5ca6ea28eda18815df114ecb21226cb345.=
-1681665189.git.william.gray@linaro.org/
-[^2]: https://lore.kernel.org/all/45d35b6f6e8d51df788b2bc85c456bfd45476b1a.=
-1681665189.git.william.gray@linaro.org/
-
---A4eykhRWKS+hjpBE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZJIWLQAKCRC1SFbKvhIj
-K2MWAQDzsNnr/aAKHqCpA2oNej+hu4vXpjpf0WjWhm5mCEzCeAD/UkBzweb3tXlj
-dQODjvZU4WCWV4qi/bQHZASKZizYqwU=
-=CuWO
------END PGP SIGNATURE-----
-
---A4eykhRWKS+hjpBE--
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFuZHkgU2hldmNoZW5rbyA8
+YW5keS5zaGV2Y2hlbmtvQGdtYWlsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgSnVuZSAyMCwgMjAy
+MyAxMToxNSBQTQ0KPiBUbzogUGFsbGVyLCBLaW0gU2VlciA8S2ltU2Vlci5QYWxsZXJAYW5hbG9n
+LmNvbT4NCj4gQ2M6IGppYzIzQGtlcm5lbC5vcmc7IGxhcnNAbWV0YWZvby5kZTsgbGdpcmR3b29k
+QGdtYWlsLmNvbTsNCj4gYnJvb25pZUBrZXJuZWwub3JnOyBIZW5uZXJpY2gsIE1pY2hhZWwgPE1p
+Y2hhZWwuSGVubmVyaWNoQGFuYWxvZy5jb20+Ow0KPiByb2JoQGtlcm5lbC5vcmc7IGtyenlzenRv
+Zi5rb3psb3dza2lAbGluYXJvLm9yZzsgY29ub3IrZHRAa2VybmVsLm9yZzsgbGludXgtDQo+IGlp
+b0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGRldmljZXRy
+ZWVAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjcgMi8yXSBpaW86IGFk
+YzogbWF4MTQwMDE6IE5ldyBkcml2ZXINCj4gDQo+IFtFeHRlcm5hbF0NCj4gDQo+IE9uIFR1ZSwg
+SnVuIDIwLCAyMDIzIGF0IDQ6MjfigK9QTSBLaW0gU2VlciBQYWxsZXINCj4gPGtpbXNlZXIucGFs
+bGVyQGFuYWxvZy5jb20+IHdyb3RlOg0KPiA+DQo+ID4gVGhlIE1BWDE0MDAxIGlzIGNvbmZpZ3Vy
+YWJsZSwgaXNvbGF0ZWQgMTAtYml0IEFEQ3MgZm9yIG11bHRpLXJhbmdlDQo+ID4gYmluYXJ5IGlu
+cHV0cy4NCj4gDQo+IC4uLg0KPiANCj4gPiArICAgICAgIC8qDQo+ID4gKyAgICAgICAgKiBBbGln
+biByZWNlaXZlZCBkYXRhIGZyb20gdGhlIHJlY2VpdmUgYnVmZmVyLCByZXZlcnNpbmcgYW5kIHJl
+b3JkZXJpbmcNCj4gPiArICAgICAgICAqIGl0IHRvIG1hdGNoIHRoZSBleHBlY3RlZCBNU0ItZmly
+c3QgZm9ybWF0Lg0KPiA+ICsgICAgICAgICovDQo+ID4gKyAgICAgICAqZGF0YSA9IChfX2ZvcmNl
+IHUxNikoYmUxNl90b19jcHUoYml0cmV2MTYoc3QtPnNwaV9yeF9idWZmZXIpKSkgJg0KPiA+ICsg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTUFY
+MTQwMDFfREFUQV9NQVNLOw0KPiANCj4gVXNpbmcgX19mb3JjZSBpbiB0aGUgQyBmaWxlcyBpcyBz
+b21laG93IHN0aW5reS4NCj4gDQo+IC4uLg0KPiANCj4gPiArICAgICAgIC8qDQo+ID4gKyAgICAg
+ICAgKiBDb252ZXJ0IHRyYW5zbWl0IGJ1ZmZlciB0byBiaWctZW5kaWFuIGZvcm1hdCBhbmQgcmV2
+ZXJzZSB0cmFuc21pdA0KPiA+ICsgICAgICAgICogYnVmZmVyIHRvIGFsaWduIHdpdGggdGhlIExT
+Qi1maXJzdCBpbnB1dCBvbiBTREkgcG9ydC4NCj4gPiArICAgICAgICAqLw0KPiA+ICsgICAgICAg
+c3QtPnNwaV90eF9idWZmZXIgPSAoX19mb3JjZSB1MTYpKGNwdV90b19iZTE2KGJpdHJldjE2KA0K
+PiANCj4gWW91IGhhdmUgYSBkaWZmZXJlbnQgdHlwZSBvZiBzcGlfdHhfYnVmZmVyIHRoYW4gdTE2
+LCBkb24ndCB5b3U/DQoNCkkgaGF2ZSB0aGUgc2FtZSB0eXBlIG9mIHNwaV90eF9idWZmZXIgYXMg
+dTE2LiANCg0KT3RoZXIgdGhhbiB1c2luZyBmb3JjZSBjYXN0LCBpcyB0aGVyZSBhbnkgd2F5IHRv
+IHJlc29sdmUgdGhlIGVuZGlhbiB3YXJuaW5nPyBJIGhhdmUgDQphY3R1YWxseSBzd2FwcGVkIHRo
+ZSBvcmRlciBvZiBiaXRyZXYxNigpIGFuZCBjcHVfdG9fYmUxNi9iZTE2X3RvX2NwdSgpIGZ1bmN0
+aW9ucy4gDQpJIGhhdmUgdGVzdGVkIGFuZCB0aGV5IGFsc28gd29yayBmaW5lLg0KDQpCZXN0IHJl
+Z2FyZHMsDQpLaW0gU2VlciBQYWxsZXINCg0K

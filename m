@@ -2,127 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C45D1737D97
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 10:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30A77738638
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 16:08:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231214AbjFUIV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Jun 2023 04:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55526 "EHLO
+        id S230037AbjFUOIO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Jun 2023 10:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbjFUIV4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 04:21:56 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C133EDD;
-        Wed, 21 Jun 2023 01:21:55 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-5149aafef44so6674589a12.0;
-        Wed, 21 Jun 2023 01:21:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687335714; x=1689927714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4jBRz0LRg2B0m25eW+Tt+1nFooZyySe4sAZwfGusRF0=;
-        b=WkOBwnyhVMeHdjv01ZldJEa+yVR6LiekbLDbZLW1R5TvMV0n+6h68f19tE2f9nILs1
-         fKcMH0bPB91NbFjdrpNvQYwgTzVriIR6TXjPS80e3nbpeWKzhxdeoC5uIbZIATwvieW8
-         fPhTjy8tKuy7sLPj99+c1ne1Hm5tfm2nO/Oj6nQnT5cgwy6XWg3TV3Ji5lMkJYOE4p0B
-         BCIZ04JUBr3Ut+VLcUIYqBmElziueUczruSOONBFcvEcucoSkH/wWVE1hDQcKSnfP7cW
-         YDD5sp91grBQU/yVEwo5KtCMeA8d6oWgkCWak1Mgp0+tB5taBmmOFVHbHxBiNWN0BFJO
-         etPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687335714; x=1689927714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4jBRz0LRg2B0m25eW+Tt+1nFooZyySe4sAZwfGusRF0=;
-        b=M6vkdVGKqnKxI2GgPdvnaMHKlqWrBdGehdmNt9gEp5rjY/f+U7pPiAdWXZrG6i/rFe
-         5wIk3u0EmdkB2HxTBl3O+RAwE4OcNgUyQros5HAuaohsO+OfZBQbWQ1lvytKR/+FRu8C
-         Hefl4VldLkW5Ua/f9B0cPr41+uiI7NTlbrYfyj/c9X+o72JWbDuYDE2fhwg6lba3Gko7
-         3BVfOofc2aUjCmF6XDKFSZWNeUFfv7UxshrDlR8ekKkyspH//Ddjaq1WUpxYUm9PX0Y9
-         +hy49whFUcb0TcYxlfr4BkLOvYbeOzicJKi2fIKUwVciL7/JtQHEXSNyhyFSFOsAqV4i
-         ZHBA==
-X-Gm-Message-State: AC+VfDw/XHm6r1VekkdqjWTmM9UNQ7P2GYzx72EiJwm2lbloepKlHe1Z
-        ps5ajoV+5zg3E1NvFBMiqCPM9rUKxPeeKDIoSx0=
-X-Google-Smtp-Source: ACHHUZ57t7Yr5k8V208laObFC0kVfmXzVnMgP9PjggD4m6CY94CSVh+22oA8xQEToATqRdx59+GVTM5H79dCBLVzBIE=
-X-Received: by 2002:aa7:c1d9:0:b0:51b:c714:a296 with SMTP id
- d25-20020aa7c1d9000000b0051bc714a296mr3604912edp.13.1687335713981; Wed, 21
- Jun 2023 01:21:53 -0700 (PDT)
+        with ESMTP id S230137AbjFUOIN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 10:08:13 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F3818C;
+        Wed, 21 Jun 2023 07:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687356492; x=1718892492;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TZipVQx34qmoVG1MjtaxYWtXx0xWNWvBS+tqILr8eUs=;
+  b=GVFkoiQM0JKyM2MnvZiCAOVmrfGJtjkeKnOSiEnqfT8kl7GbluAu6pvL
+   pYaBjeSMAElIK8263/22RzvXLC2vt8RA2IqvE3r0bDFuN5ivpPu15qCr1
+   Prb9TiSkZBKtngSjIMjKQW3hkB+ZO4b5aVOFAWlLiHFhjHNplAWpRDAr6
+   YRdIhu4XCjw02/68wA/5ENVyiUROL6yUZWkT0Axz29yhBtfPsrryUHg2q
+   r/KWd7BaEnw9a6PBORIJ73BKqSLTdKKX2KKhygV9bE9RQmYNwxeleszoN
+   RvoYZC+ewQU2fMKaI2llCSByUcimj65lsQWvpZMk2pZdwBSRFRFqPbL+q
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="363603523"
+X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
+   d="scan'208";a="363603523"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 07:08:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="744185238"
+X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
+   d="scan'208";a="744185238"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga008.jf.intel.com with ESMTP; 21 Jun 2023 07:08:08 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qByVC-005Vvy-1J;
+        Wed, 21 Jun 2023 17:08:06 +0300
+Date:   Wed, 21 Jun 2023 17:08:06 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     George Stark <gnstark@sberdevices.ru>
+Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
+        khilman@baylibre.com, jbrunet@baylibre.com,
+        martin.blumenstingl@googlemail.com, nuno.sa@analog.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        kernel@sberdevices.ru
+Subject: Re: [PATCH v1 2/3] meson saradc: add channel labels
+Message-ID: <ZJMERuXDtKi4wjR/@smile.fi.intel.com>
+References: <20230621062715.455652-1-gnstark@sberdevices.ru>
+ <20230621062715.455652-3-gnstark@sberdevices.ru>
 MIME-Version: 1.0
-References: <20230620132641.256307-1-kimseer.paller@analog.com>
- <20230620132641.256307-2-kimseer.paller@analog.com> <CAHp75VdR9W8U9VmP5WZntzB9qW3fM6qy1Q2-yeBSAG5PJimkaw@mail.gmail.com>
- <e92f919e59974bb2ae32a8d961e07538@analog.com>
-In-Reply-To: <e92f919e59974bb2ae32a8d961e07538@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 21 Jun 2023 11:21:17 +0300
-Message-ID: <CAHp75Vf4kXi9TAvEW=JvA9SLRYuTtwwBvzH4vGoP2CRrk9vX8g@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] iio: adc: max14001: New driver
-To:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-Cc:     "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230621062715.455652-3-gnstark@sberdevices.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 21, 2023 at 3:38=E2=80=AFAM Paller, Kim Seer
-<KimSeer.Paller@analog.com> wrote:
-> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Sent: Tuesday, June 20, 2023 11:15 PM
-> > On Tue, Jun 20, 2023 at 4:27=E2=80=AFPM Kim Seer Paller
-> > <kimseer.paller@analog.com> wrote:
+On Wed, Jun 21, 2023 at 09:26:09AM +0300, George Stark wrote:
+> patch adds channel attribute 'label' with channel name
 
-...
+Please update commit message in accordance with English grammar and
+Submitting Patches document (e.g. imperative mode should be used).
 
-> > > +       /*
-> > > +        * Align received data from the receive buffer, reversing and=
- reordering
-> > > +        * it to match the expected MSB-first format.
-> > > +        */
-> > > +       *data =3D (__force u16)(be16_to_cpu(bitrev16(st->spi_rx_buffe=
-r))) &
-> > > +                                                       MAX14001_DATA=
-_MASK;
-> >
-> > Using __force in the C files is somehow stinky.
-
-...
-
-> > > +       /*
-> > > +        * Convert transmit buffer to big-endian format and reverse t=
-ransmit
-> > > +        * buffer to align with the LSB-first input on SDI port.
-> > > +        */
-> > > +       st->spi_tx_buffer =3D (__force u16)(cpu_to_be16(bitrev16(
-> >
-> > You have a different type of spi_tx_buffer than u16, don't you?
->
-> I have the same type of spi_tx_buffer as u16.
-
-And you should have __be16.
-
-> Other than using force cast, is there any way to resolve the endian warni=
-ng? I have
-> actually swapped the order of bitrev16() and cpu_to_be16/be16_to_cpu() fu=
-nctions.
-> I have tested and they also work fine.
-
-You really have to get it correct on both LE and BE architectures.
-
---=20
+-- 
 With Best Regards,
 Andy Shevchenko
+
+

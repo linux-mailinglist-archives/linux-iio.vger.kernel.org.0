@@ -2,94 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B8C738670
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 16:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C09738A82
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Jun 2023 18:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232810AbjFUOL2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Jun 2023 10:11:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57912 "EHLO
+        id S230433AbjFUQJ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Jun 2023 12:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232813AbjFUOLL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 10:11:11 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B932122;
-        Wed, 21 Jun 2023 07:10:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687356646; x=1718892646;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ouC2uUhcHNQmb+8A8CRknY0+a4vXftp/tDcG/6xIf3k=;
-  b=cqouId86rn07+PZad4CF7TXoV9I0PrINz+6v1D3N9dgZbLNAN6MTaqmN
-   yvIR8a08ZW/rnGhw+YMjvOqLejUyKfCFymtAQq/d4ZwqRERdwH19LDT4f
-   uv//9Qyd7T3jg538txcr5uYD2eqRDNjWPNSlb4E0H4X2pb6/Rp9acdViF
-   /lC23SRMaN5hMWk0KkX0dm4Y225U2AUviR3h3F3YI2VJTq9ajbs6yzKoX
-   bGE2fTOuL5aBjhRdk9swr2YF3JdYa5FgNDsgfoLMjANXXnlfb/yjkgagT
-   IHWkvCCnZZvLMS3ZQ0lRKwN7e0Nr14bfpDhq/qwy0oT5STfZyQtRPHpNg
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="389693891"
-X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="389693891"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 07:10:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="691868682"
-X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="691868682"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 21 Jun 2023 07:10:41 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qByXf-005Vxe-2e;
-        Wed, 21 Jun 2023 17:10:39 +0300
-Date:   Wed, 21 Jun 2023 17:10:39 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     George Stark <gnstark@sberdevices.ru>
-Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        martin.blumenstingl@googlemail.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru
-Subject: Re: [PATCH v1 0/3] meson saradc: add iio channels to read channel 7
- mux inputs
-Message-ID: <ZJME39cOHsKkJu2Y@smile.fi.intel.com>
-References: <20230621062715.455652-1-gnstark@sberdevices.ru>
+        with ESMTP id S232029AbjFUQJX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Jun 2023 12:09:23 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A75910A
+        for <linux-iio@vger.kernel.org>; Wed, 21 Jun 2023 09:09:23 -0700 (PDT)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <m.felsch@pengutronix.de>)
+        id 1qC0OJ-0007At-3g; Wed, 21 Jun 2023 18:09:07 +0200
+From:   Marco Felsch <m.felsch@pengutronix.de>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        alazar@startmail.com, daniel.baluta@nxp.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: [PATCH] dt-bindings: iio: adc: ti,ads1015: fix datarate max value and meaning
+Date:   Wed, 21 Jun 2023 18:08:57 +0200
+Message-Id: <20230621160857.3400747-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230621062715.455652-1-gnstark@sberdevices.ru>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 21, 2023 at 09:26:07AM +0300, George Stark wrote:
-> From: George Stark <GNStark@sberdevices.ru>
-> 
-> In meson saradc channel7 is connected to muxer which allows to measure
-> inner sources like Vdd, GND, several Vdd dividers. This patch series
-> adds independent iio channel (with label) for every chan7 mux input.
-> Mux switch is handled transparent for clients.
-> This functionality can help debug\test\calibrate adc.
-> This code is relevant for all supported amlogic soc families
+Datarate (dr) is a 3-bit wide register field. Values from 0 to 7 are
+allowed for all devices but only for the ADS1115 devices a value of 7
+does make a difference.
 
-Code wise looks good to me, some remarks about commit messages and comments.
+While on it fix the description of the datarate for ADS1115 devices as
+well.
 
-> This patch series was created after discussion [1], [2]
-> 
-> [1] https://lore.kernel.org/lkml/20230524000111.14370-1-gnstark@sberdevices.ru/
-> [2] https://lore.kernel.org/lkml/20230527214854.126517-1-gnstark@sberdevices.ru/
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ .../devicetree/bindings/iio/adc/ti,ads1015.yaml   | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+index 2127d639a7683..e004659099c19 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+@@ -78,9 +78,9 @@ patternProperties:
+       ti,datarate:
+         $ref: /schemas/types.yaml#/definitions/uint32
+         minimum: 0
+-        maximum: 6
++        maximum: 7
+         description: |
+-          Data acquisition rate in samples per second
++          Data acquisition rate in samples per second for ADS1015, TLA2024
+           0: 128
+           1: 250
+           2: 490
+@@ -88,6 +88,17 @@ patternProperties:
+           4: 1600 (default)
+           5: 2400
+           6: 3300
++          7: 3300
++
++          Data acquisition rate in samples per second for ADS1115
++          0: 8
++          1: 16
++          2: 32
++          3: 64
++          4: 128 (default)
++          5: 250
++          6: 475
++          7: 860
+ 
+     required:
+       - reg
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 

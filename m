@@ -2,109 +2,174 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C97173A2A8
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Jun 2023 16:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D2973A31D
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Jun 2023 16:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231298AbjFVOJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Jun 2023 10:09:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56828 "EHLO
+        id S230448AbjFVOdf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Jun 2023 10:33:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229995AbjFVOJT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Jun 2023 10:09:19 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46604E2;
-        Thu, 22 Jun 2023 07:09:18 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-988b204ce5fso584519466b.3;
-        Thu, 22 Jun 2023 07:09:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687442957; x=1690034957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bAtPTyoV3UhGL+5nkAK0G/poQIs7q3wI78CdBfj2Pgc=;
-        b=JTLG41Ac/dzcege4isOrjYrzeaRKZUIGevjdcyPM/ypROXoxCNvPhxgyEmmpxKWQh6
-         v1Kz4TMyJgI9ERmsXewOUzibglaWyWCx8MMGh1krnU+I9Z8B1VmxUzDU7cNcY3//fH79
-         kakxVxAIak+hA9+UPnQQythBaEhUB0MJ0w65mZQiRcLl8OMryN4vyjzh9WnhQVWplKsT
-         DzjUvka8R/33H12jho5SqV17Fzqxvd/A8nf76Z3PFk5T68ByhT8G2tm60JHY0UQnbCg/
-         +zbJpX/947puBDenS2opHNCnjtWdrVWjjvUHm3AH9Km0f14sLVSGBXcPU3EpCcI3BRSj
-         7CZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687442957; x=1690034957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bAtPTyoV3UhGL+5nkAK0G/poQIs7q3wI78CdBfj2Pgc=;
-        b=bg5R8TGYfa0OIDEiqaMs5EaIl2s8/UkV3wffLsn3sQVIt8y9vSTZEwtcgD5aPAcZD1
-         acPssN6FiG1X3tKshRLZLAq4LzpRA4hJNBffvqyr9FvzOi7gGzfp+ePZFYCDMPQFoExF
-         u3NppGjjdUl7/9RrYt+TsQFT52RxKjD32JmZTtHq+XRyRLNElwsdMkKyKK+w10kQYC19
-         8gPJqRWZEUV6QlbNUkryBK0Isvxi8PUYnOfVHdhJIrc1AkkuK6ui0+/3R5HJ0oSOcxgm
-         JTGmCqziRTXZv7BXYOWyMSvT46mYj4m4Xmt/BVAVzgSpB+gR9LNrACzGXtPyDymhhzn6
-         ZQ7g==
-X-Gm-Message-State: AC+VfDzfGZVQtL8y/xVbA9xu/zenC2HcQ2pkhxpz2x1a00iIzJkkJBVh
-        fg+hJ2Uc5ewn9FywHHJMoVUOztUmj+CtKWL7zII=
-X-Google-Smtp-Source: ACHHUZ5pzjeQRJqs/lr8FYXwqoFgoRFaBJky8QvaNPcbryNKOQtG5+vu148+3/ZqjIPWF2Qvr6fC4rt3h7fCW6Ov3t0=
-X-Received: by 2002:a17:907:2d88:b0:988:56d1:10ca with SMTP id
- gt8-20020a1709072d8800b0098856d110camr13336128ejc.66.1687442956463; Thu, 22
- Jun 2023 07:09:16 -0700 (PDT)
+        with ESMTP id S231178AbjFVOdd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Jun 2023 10:33:33 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64BEB1BD1;
+        Thu, 22 Jun 2023 07:33:19 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35MBs6Be022907;
+        Thu, 22 Jun 2023 10:32:58 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3rbvr2t86v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 22 Jun 2023 10:32:58 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 35MEWu4U046723
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 22 Jun 2023 10:32:56 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 22 Jun 2023 10:32:56 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 22 Jun 2023 10:32:55 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 22 Jun 2023 10:32:55 -0400
+Received: from kimedia-VirtualBox.ad.analog.com (KPALLER2-L02.ad.analog.com [10.116.242.96])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 35MEWcZM030643;
+        Thu, 22 Jun 2023 10:32:41 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <Michael.Hennerich@analog.com>,
+        <andy.shevchenko@gmail.com>, <robh@kernel.org>,
+        <krzysztof.kozlowski@linaro.org>, <conor+dt@kernel.org>,
+        <kimseer.paller@analog.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v8 1/2] dt-bindings: iio: adc: add max14001
+Date:   Thu, 22 Jun 2023 22:32:26 +0800
+Message-ID: <20230622143227.30147-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230615152631.224529-1-herve.codina@bootlin.com>
- <20230615152631.224529-8-herve.codina@bootlin.com> <70697b976107473b8779eea7d6c8a189@AcuMS.aculab.com>
- <20230622143233.7300a813@bootlin.com>
-In-Reply-To: <20230622143233.7300a813@bootlin.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 22 Jun 2023 17:08:40 +0300
-Message-ID: <CAHp75VfNdTwQ3Y5Q=uUaaJuFAm4iqj6cQZ-axOfLkfv9NoAqHw@mail.gmail.com>
-Subject: Re: [PATCH v5 07/13] minmax: Introduce {min,max}_array()
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     David Laight <David.Laight@aculab.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: hKqowHUP6re9g13lKHmKZ1uQcWgs2ecN
+X-Proofpoint-ORIG-GUID: hKqowHUP6re9g13lKHmKZ1uQcWgs2ecN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-22_09,2023-06-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ mlxscore=0 priorityscore=1501 lowpriorityscore=0 mlxlogscore=999
+ spamscore=0 phishscore=0 suspectscore=0 clxscore=1015 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306220122
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 22, 2023 at 3:32=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
-com> wrote:
-> On Tue, 20 Jun 2023 11:45:01 +0000
-> David Laight <David.Laight@ACULAB.COM> wrote:
-> > From: Herve Codina
-> > > Sent: 15 June 2023 16:26
+The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+binary inputs.
 
-> I didn't plan to change the {min,max}_array() macros in this series as yo=
-u
-> suggest.
->
-> Maybe min()/max() is too strict but it's a way to be sure about the type
-> used. Also the current version doesn't need any extra cast to get rid of
-> the integer promotion as the integer promotion doesn't occur.
->
-> Is it ok for you if we keep as it ?
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+V7 -> V8: Added "Reviewed-by" tag.
+V6 -> V7: No changes.
+V5 -> V6: Removed tags.
+V3 -> V5: Added spaces between prefixes in subject. Fixed MAINTAINERS reference.
 
-I think the current verison is good enough, and as Mark said we may
-update incrementally if ever needed.
+ .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
+ MAINTAINERS                                   |  7 +++
+ 2 files changed, 61 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
 
---=20
-With Best Regards,
-Andy Shevchenko
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+new file mode 100644
+index 000000000000..9d03c611fca3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,max14001.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices MAX14001 ADC
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++
++description: |
++    Single channel 10 bit ADC with SPI interface. Datasheet
++    can be found here:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/MAX14001-MAX14002.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,max14001
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 5000000
++
++  vref-supply:
++    description: Voltage reference to establish input scaling.
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,max14001";
++            reg = <0>;
++            spi-max-frequency = <5000000>;
++            vref-supply = <&vref_reg>;
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f794002a192e..dcea2c31f920 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12670,6 +12670,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/max9860.txt
+ F:	sound/soc/codecs/max9860.*
+ 
++MAX14001 IIO ADC DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
++
+ MAXBOTIX ULTRASONIC RANGER IIO DRIVER
+ M:	Andreas Klinger <ak@it-klinger.de>
+ L:	linux-iio@vger.kernel.org
+
+base-commit: 6f449d52b90fdd927fcf9df0388701de6d5381c6
+-- 
+2.34.1
+

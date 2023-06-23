@@ -2,60 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AB1F73BCE4
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 18:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C976E73C35F
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 23:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231520AbjFWQpO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jun 2023 12:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53276 "EHLO
+        id S229771AbjFWV5Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jun 2023 17:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232037AbjFWQo5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 12:44:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998C81A1;
-        Fri, 23 Jun 2023 09:44:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 367F561AC0;
-        Fri, 23 Jun 2023 16:44:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CD6C433C0;
-        Fri, 23 Jun 2023 16:44:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687538695;
-        bh=Amvsfe/559uEztT+E7JaJVCDluFASv8Wnk4KeVuoYOA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qBA/J4aaiuH7MRAynpfBa/oShtjtfhURH/q8bGelfGo588EUJj5VcLsyGpnR7+IxP
-         6h/8yO2Ooz+ee+lc6yOVlTHBBICc2YeSebY6PPWsHi2+re3JAFM0JcTgwkFfAwHlZJ
-         Wa25F6R3O1kRz36gGhgvNDKQzeRIfeCB1l+4xyVF3Ye+24I4nCD36EdpLcDgdUMl/C
-         UMzqxqI/X2DrnyMFGLIgwKuGvEAxjLnhJoa6KGXL0AHSqj4YaMSeBrV1BoNOwmrpmZ
-         Walos4Z8e9Yr6iv6ND4SFQeSKwYy9lB2/8mg+UTbyD5Xl8weAOcXaPoo511CoGPhBN
-         IWXKO5012+syA==
-Date:   Fri, 23 Jun 2023 17:44:50 +0100
-From:   Conor Dooley <conor@kernel.org>
+        with ESMTP id S229488AbjFWV5Q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 17:57:16 -0400
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 324CD26AD;
+        Fri, 23 Jun 2023 14:57:15 -0700 (PDT)
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3422b2554e1so4435445ab.1;
+        Fri, 23 Jun 2023 14:57:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687557434; x=1690149434;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XfdlMJkoa4SrzUsc/lvDXncIHjzQ/uTbhcwby8Z+w8c=;
+        b=SA5uzcSqliMEK/YR9I7vIwQS1GreR8Gq+B7vQGOY2QtwYRhuu19bzPCp2MlShTwIWK
+         +hwA+qtNXQox3og/eNiqiq06OEv4/KBrCBaD+HVEmGQQHTnBvOi5bnxtiYEFlqPr5hRJ
+         0Te9yu1GvrS5056wMRjUQo5w4XXQAFvKIM2O+Qp5i31smojmH0SV2V7sGUr4EyXcnF3V
+         HjP4h3kqLITFWdvo3WwHAE7fgNx2isIDJUMbAK0GClVBtj1ojkMvTce0a37d2wzB8qQ5
+         IzdgYiJ6TZDGf6aOy0/p5JtxkxiGOPll7cbVmxGsDJaTD5qDKKrceMyRiUTUpBYejXx+
+         va8Q==
+X-Gm-Message-State: AC+VfDxVTRgNCNo4SRRansZrSfxdmE3Iyj1bhDDiyLTfmyZSbDkW2aOS
+        TLJYP4Cl09vzide6/MLztQ==
+X-Google-Smtp-Source: ACHHUZ6dvF4FMpy79teGrp0bTWDiN9Iqy4rfyKrWRT8QGWAYY7dIBTwswOpioxETqKFqFe6TN+ZZ9w==
+X-Received: by 2002:a92:dc85:0:b0:33e:7c8d:3cc with SMTP id c5-20020a92dc85000000b0033e7c8d03ccmr18268708iln.22.1687557434407;
+        Fri, 23 Jun 2023 14:57:14 -0700 (PDT)
+Received: from robh_at_kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id l13-20020a92d8cd000000b0034124f13f87sm98704ilo.42.2023.06.23.14.57.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jun 2023 14:57:13 -0700 (PDT)
+Received: (nullmailer pid 1266682 invoked by uid 1000);
+        Fri, 23 Jun 2023 21:57:11 -0000
+Date:   Fri, 23 Jun 2023 15:57:11 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 1/2] dt-bindings: iio: ad74413r: add binding for digital
  input threshold
-Message-ID: <20230623-casket-outer-2c9d2a0c4795@spud>
+Message-ID: <20230623215711.GA1216324-robh@kernel.org>
 References: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
  <20230623113327.1062170-2-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="HMChvs1GfdUbVjeL"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230623113327.1062170-2-linux@rasmusvillemoes.dk>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,79 +69,19 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---HMChvs1GfdUbVjeL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
 On Fri, Jun 23, 2023 at 01:33:25PM +0200, Rasmus Villemoes wrote:
 > Allow specifying the threshold for which the channels configured as
 > digital input change state.
->=20
+> 
 > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 > ---
->=20
+> 
 > Running dt_binding_check on this with a too small or large value in
 > the example does give me an error, but the multipleOf does not seem to
 > be enforced; the value 1234567 is not flagged. I don't know if that's
 > expected (maybe I have too old versions of something).
 
-That's one for Rob. I checked a few others and behaviour was the same
-there.
+Thanks for the report. Indeed, 'multipleOf' was not handled correctly. 
+I'll push a fix to dtschema shortly.
 
->  .../devicetree/bindings/iio/addac/adi,ad74413r.yaml    | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yam=
-l b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
-> index 590ea7936ad7..1f90ce3c7932 100644
-> --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
-> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
-> @@ -51,6 +51,14 @@ properties:
->        Shunt (sense) resistor value in micro-Ohms.
->      default: 100000000
-> =20
-> +  digital-input-threshold-microvolt:
-
-Should this not have an adi vendor prefix, similar to
-"adi,digital-input-threshold-mode-fixed"?
-
-Cheers,
-Conor.
-
-> +    description:
-> +      Comparator threshold used by the channels configured to use the
-> +      digital input function.
-> +    minimum: 500000
-> +    maximum: 16000000
-> +    multipleOf: 500000
-> +
->    reset-gpios:
->      maxItems: 1
-> =20
-> @@ -143,6 +151,8 @@ examples:
->          refin-supply =3D <&ad74413r_refin>;
->          reset-gpios =3D <&gpio2 6 GPIO_ACTIVE_LOW>;
-> =20
-> +        digital-input-threshold-microvolt =3D <4000000>;
-> +
->          channel@0 {
->            reg =3D <0>;
-> =20
-> --=20
-> 2.37.2
->=20
-
---HMChvs1GfdUbVjeL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZJXMAgAKCRB4tDGHoIJi
-0qOJAP9/cR+G2TQ18Npzna+cyS0FcsBgUR81lujLjJW/rkSOVAD+Ng5ctMFycHPe
-dh+goo7uc2QV6wrMyd1/3QAPz1VTOQo=
-=hAHv
------END PGP SIGNATURE-----
-
---HMChvs1GfdUbVjeL--
+Rob

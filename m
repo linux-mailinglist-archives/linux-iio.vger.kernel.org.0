@@ -2,131 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6798473B659
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 13:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36E5A73B988
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 16:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231565AbjFWLdl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jun 2023 07:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34936 "EHLO
+        id S231840AbjFWOL7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jun 2023 10:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231271AbjFWLdj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 07:33:39 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E252189
-        for <linux-iio@vger.kernel.org>; Fri, 23 Jun 2023 04:33:38 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2b4790ff688so9196041fa.1
-        for <linux-iio@vger.kernel.org>; Fri, 23 Jun 2023 04:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google; t=1687520016; x=1690112016;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EANxw9UBUzWA7WzQeG9K7sXYK8CnMSeZWX1OlZIav4U=;
-        b=Ix2dqtFrBO5aUTzp+iN7g0CGvt+EuKluKaj3KRVutb8wks84LIrJDwiXxfqZlgNbMk
-         YguVNrMfj90prDQWzbBkDEzAdDHGDvP0DgG0seT0YrCqxWz70Fy30LrPxHAhH9rrPTfr
-         V4svsdUztNIRRO9MNIm+LeTlcGxbjRq4nX/mw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687520016; x=1690112016;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EANxw9UBUzWA7WzQeG9K7sXYK8CnMSeZWX1OlZIav4U=;
-        b=WnjSb13CUUcO/R9hGxfCUMA+/EcKBSNw/tq5npUwODTtDkIrOxxR7FebGxmq6D02ra
-         44Q8+UXhN3dcyjijVIAUwIUwaMUlul8qcYCyTlJRVyGYktz75FtvxkPvRLfCsQzQSC/A
-         2Qhkj+8E1Okm2zFn0xxWouhFp3MQmqGjTzUt8+fsMGF5sX4e/QlNipIIH48GRNxax0kR
-         oU7U+6bydD1yjEariXahYhtraohpocfEIh3KMoPHd3B9JtGzA+fSwrbGfRYxXMmF7eeP
-         L3VVR2d7vKtLDL9KTipfgCa25vAmnvfQc9s8mpCp6ExoucG+khsEjBDRsZ8nf6KQss1V
-         cb9w==
-X-Gm-Message-State: AC+VfDzsCmrjvrdEnYX8MVNHW0tYzzrnOfL6RUq1WmujlfQKkFybuK7z
-        70eNLXG4XJbcG4O844Vrdnnisg==
-X-Google-Smtp-Source: ACHHUZ5qLRdl1/GZ8d6A85W9DZGBD6/3iSjmvHvCKmLac3QS4zT/ikOtVVLSZqYIVfruHpVOybcfYQ==
-X-Received: by 2002:a2e:7d0f:0:b0:2b5:81bc:43a8 with SMTP id y15-20020a2e7d0f000000b002b581bc43a8mr5965742ljc.0.1687520016335;
-        Fri, 23 Jun 2023 04:33:36 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id n10-20020a2e720a000000b002b471efb253sm1711605ljc.46.2023.06.23.04.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jun 2023 04:33:36 -0700 (PDT)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org,
+        with ESMTP id S231874AbjFWOL5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 10:11:57 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F36442135;
+        Fri, 23 Jun 2023 07:11:52 -0700 (PDT)
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35NDEZCt004204;
+        Fri, 23 Jun 2023 16:11:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=selector1;
+ bh=zLkUeXmL+Ow+eXO/4Kk5UPFmY47fOCK359xSbjwsIEE=;
+ b=Qdu1MOMXtdPoz1WyVmRnGhYiRajVMKK2eslEUyO/ReiXGux03z/2GGzN3/JDCRRexU1y
+ 83rTc+q/qijDOsaLFHWkH2LkSraGiCGIfRJw6TFPXPDByFxiT8YgaBLhBm4+6Dh2liT9
+ Xkzn4Szdf7jnfwMlwzLyolY2DZE0+0k+XHitFhcor2bMXcix3W8G7W890BeBoHbECXc2
+ 9g9iFqf7tOBmOCGE02uT/AKsquR1hvQHjX0blJ82xmnmLCNmnQABETIFm4hdBkqoVPaF
+ +a9F+53jfxfykTE/AR2PmtJjPOK/KAADLGp8r0aPK8s7lP4EMHl1kxngDO9faO559ivu 4Q== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rdc3w0ddf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 23 Jun 2023 16:11:27 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 51C9A10002A;
+        Fri, 23 Jun 2023 16:11:25 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 472DD22AFEC;
+        Fri, 23 Jun 2023 16:11:25 +0200 (CEST)
+Received: from localhost (10.252.5.198) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Fri, 23 Jun
+ 2023 16:11:25 +0200
+From:   Olivier Moysan <olivier.moysan@foss.st.com>
+To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: addac: ad74413r: wire up digital-input-threshold-microvolt DT property
-Date:   Fri, 23 Jun 2023 13:33:26 +0200
-Message-Id: <20230623113327.1062170-3-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
-References: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+CC:     Olivier Moysan <olivier.moysan@foss.st.com>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: [RFC PATCH 0/7] iio: add iio backend device type
+Date:   Fri, 23 Jun 2023 16:09:36 +0200
+Message-ID: <20230623140944.2613002-1-olivier.moysan@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.252.5.198]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-23_08,2023-06-22_02,2023-05-22_02
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The threshold is common to all channels configured as digital
-input.
+This RFC re-opens an old discussion regarding channel scaling
+management in STM32 DFSDM driver [1]
 
-So far, we have not seen the settings in the DIN_THRESH affecting
-functions other than digital input, but with a4cba07e64e6 ("iio:
-addac: ad74413: don't set DIN_SINK for functions other than digital
-input") in mind, do not read and apply the
-digital-input-threshold-microvolt setting unless at least one channel
-has been configured as one of the digital input variants.
+The DFSDM is a peripheral provided by the STM32MP1x SoC family.
+One objective is also to prepare the introduction of its successor in
+the STM32MP12x SoC family: the MDF (Multi-function Digital Filter).
+The MDF driver will have the same requirements as the DFSDM regarding
+channel scaling management. So, the solution proposed here will apply
+also for the future MDF driver.
 
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
- drivers/iio/addac/ad74413r.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+[1]
+https://patchwork.kernel.org/project/linux-iio/patch/20200204101008.11411-5-olivier.moysan@st.com/
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index e3366cf5eb31..efdd7fdd7ab9 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -129,6 +129,12 @@ struct ad74413r_state {
- #define AD74413R_GPO_CONFIG_COMPARATOR		0b011
- #define AD74413R_GPO_CONFIG_HIGH_IMPEDANCE	0b100
- 
-+#define AD74413R_REG_DIN_THRESH		0x22
-+#define AD74413R_DIN_COMP_THRESH_MASK	GENMASK(5, 1)
-+#define AD74413R_DIN_THRESH_MODE	BIT(0)
-+#define AD74413R_DIN_THRESH_MODE_16V	BIT(0)
-+#define AD74413R_DIN_THRESH_MODE_AVDD	0
-+
- #define AD74413R_REG_ADC_CONV_CTRL	0x23
- #define AD74413R_CONV_SEQ_MASK		GENMASK(9, 8)
- #define AD74413R_CONV_SEQ_ON		0b00
-@@ -1446,6 +1452,20 @@ static int ad74413r_probe(struct spi_device *spi)
- 	}
- 
- 	if (st->num_comparator_gpios) {
-+		u32 thresh, val, mask;
-+
-+		if (!device_property_read_u32(st->dev, "digital-input-threshold-microvolt",
-+					      &thresh)) {
-+			val = thresh/500000 - 1;
-+			val = FIELD_PREP(AD74413R_DIN_COMP_THRESH_MASK, val);
-+			val |= AD74413R_DIN_THRESH_MODE_16V;
-+			mask = AD74413R_DIN_COMP_THRESH_MASK | AD74413R_DIN_THRESH_MODE;
-+			ret = regmap_update_bits(st->regmap, AD74413R_REG_DIN_THRESH,
-+						 mask, val);
-+			if (ret)
-+				return ret;
-+		}
-+
- 		st->comp_gpiochip.owner = THIS_MODULE;
- 		st->comp_gpiochip.label = st->chip_info->name;
- 		st->comp_gpiochip.base = -1;
+As a short reminder of our previous discussion, the two main options
+emerging were the following ones:
+
+- Option1: Use the DFSDM as an hardware accelerator and expose the
+scaled channels on SD modulator side.
+Drawbak: this solution is leading to an very complex datapath, especially
+for scan mode.
+
+- Option2: Introduce a new IIO device type (so-called backend)
+Retrieve scaling information from SD modulator scaling to expose a single
+IIO device on DFSDM side. This solution is derivated from rcar-gyroadc
+example, but with a more standard approach.
+This was discussed in 
+https://lore.kernel.org/lkml/20210919191414.09270f4e@jic23-huawei/
+
+The patchset proposed in this RFC implements option2 (backend) solution.
+These patches provide a minimal API implemented as a template.
+The intented use of this API is illustrated through the DFSDM channel
+scaling support basic implementation.
+
+For sake of simplicity I did not include the related DT binding
+in this serie. 
+
+Below are some use case examples.
+
+* DFSDM with SD modulator backend:
+  -------------------------------
+This use case corresponds to the example implemented in this RFC.
+The channel attributes are retrieved from backend by the dfsdm, and
+the resulting scaling is exposed through DFSDM IIO device sysfs
+
+- Single channel:
++-------------+  ch attr   +--------+  sysfs (compound scaling)
+| sd0 backend | ---------> | dfsdm0 | -------------------------->
++-------------+            +--------+
+
+- Scan mode:
++-------------+  ch attr   +-------------+  sysfs (compound scaling)
+| sd1 backend | ---------> |   dfsdm1    | -------------------------->
++-------------+            +-------------+
+                             ^
+                             |
++-------------+  ch attr     |
+| sd2 backend |--------------+
++-------------+
+
+
+* Voltage divider in front of an adc:
+  ----------------------------------
+By way of example, here is a comparison on scaling management with
+a iio-rescale device, and how it could be managed with a backend device.
+
+- iio-rescale implementation
+Scaling is exposed both on ADC and iio-rescale IIO devices.
+On iio-rescale device we get the compound scaling
+
++---------------------------+  ch attr   +------+  sysfs
+|     iio-rescale (div)     | <--------- | adc0 | ------->
++---------------------------+            +------+
+  |
+  | sysfs (compound scaling)
+  v
+
+- Backend implementation:
+Compound scaling is exposed on ADC IIO device.
+No scaling exposed on backend device
+
++---------------+  ch attr   +------+  sysfs (compound scaling)
+| backend (div) | ---------> | adc0 | -------------------------->
++---------------+            +------+
+
+
+* Cascaded backends:
+  -----------------
+Backends may be cascaded to allow computation of the whole chain scaling
+This is not part of this RFC, but it is identified as a potential
+future use case.
+
++---------------+  attr   +-------------+  attr   +--------+  sysfs
+| backend (div) | ------> | sd0 backend | ------> | dfsdm0 | ------->
++---------------+         +-------------+         +--------+
+
+Olivier Moysan (7):
+  iio: introduce iio backend device
+  of: property: add device link support for io-backends
+  iio: adc: stm32-dfsdm: manage dfsdm as a channel provider
+  iio: adc: stm32-dfsdm: adopt generic channel bindings
+  iio: adc: sd_adc_modulator: change to iio backend device
+  iio: adc: stm32-dfsdm: add scaling support to dfsdm
+  ARM: dts: stm32: add dfsdm iio suppport
+
+ arch/arm/boot/dts/stm32mp157c-ev1.dts |  62 +++++++++
+ drivers/iio/Makefile                  |   2 +
+ drivers/iio/adc/sd_adc_modulator.c    |  92 +++++++++++---
+ drivers/iio/adc/stm32-dfsdm-adc.c     | 176 ++++++++++++++++----------
+ drivers/iio/industrialio-backend.c    |  59 +++++++++
+ drivers/of/property.c                 |   2 +
+ include/linux/iio/backend.h           |  29 +++++
+ 7 files changed, 336 insertions(+), 86 deletions(-)
+ create mode 100644 drivers/iio/industrialio-backend.c
+ create mode 100644 include/linux/iio/backend.h
+
 -- 
-2.37.2
+2.25.1
 

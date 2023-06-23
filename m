@@ -2,52 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9274673B987
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 16:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C5073B995
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 16:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231757AbjFWOL5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jun 2023 10:11:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44694 "EHLO
+        id S231857AbjFWONI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jun 2023 10:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbjFWOLu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 10:11:50 -0400
+        with ESMTP id S231864AbjFWONF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 10:13:05 -0400
 Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12271BDF;
-        Fri, 23 Jun 2023 07:11:47 -0700 (PDT)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35NDMQMT032044;
-        Fri, 23 Jun 2023 16:11:27 +0200
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FC42689;
+        Fri, 23 Jun 2023 07:12:50 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35NCnMJi001404;
+        Fri, 23 Jun 2023 16:12:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=selector1;
- bh=XdY3aQR2My4+fE+TtISFedSlydf7UiR2AlI5q0T6zgU=;
- b=ivDRCh+AWg08RxLSHHB7zh2N/XtFs2zSgngzhcntKNUhQZYdQhubL1/cSRL0iMPvWazk
- avDRLNdTaWaG5tcG/Q8EYibJ/PsmsSPU4H+7MOfw+0KwfjE2lr3r55XrW/18e7iBquCa
- PjjerbGtQDtI1H6Zlr5bV34DYB+ImRf53sfBiCX7mUmIokoRjtzj479LCBmNfB5z9Vgf
- aOyuQXTwrbUCxoJlqZEjj62+ZavBwsUKGuek5wPJehb4sxmPLmpF3by+6n5VZofF8DS9
- Hd2P9HjQAwloNTzk0aEqeNAtDfJeRvzrCp4nAx2aDJnUns9THiUBB8eDPd2oLJxbTokE 9A== 
+ bh=4w+XTZcklvwz2Fhwwbd75o/e+Qy9XSNVKTR2QtoHRfQ=;
+ b=I1FOOH3qMs0c6+tO8nXhqgi0NqOFcX19AArVGvRgovBerWSnSUd95b2IbecB6aGO7Qxh
+ VlfcXiAylMXRCowmmZXqUeQYF0D55GJnK/qVDxT/DfVkzU/bqVsZ7fpIuBrFuYj+0V9P
+ sIIMNCKct8UKFeKT76VS1oK5argxk4BGb5ZHXGfioYfMpsaNAILi47lK1Iv49dDuLj+T
+ 9QmCO/yFBX8W0APzO6qccg7i0G/OHUrTdPfFsLLXVxSECAboubdYBBCG7NU9pqstEtwb
+ I4V8j+n2h7k4JIuvir6AZj+CTdCda80Asdsb8ei8/g8fg8q+e5Np0TlRSKnXCNt5QlKc HA== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rd6mab07t-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rd1t6vb2t-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 23 Jun 2023 16:11:27 +0200
+        Fri, 23 Jun 2023 16:12:29 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id CF7D4100075;
-        Fri, 23 Jun 2023 16:11:26 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 90F80100079;
+        Fri, 23 Jun 2023 16:12:28 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C861022AFF1;
-        Fri, 23 Jun 2023 16:11:26 +0200 (CEST)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 88E9E22D16A;
+        Fri, 23 Jun 2023 16:12:28 +0200 (CEST)
 Received: from localhost (10.252.5.198) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Fri, 23 Jun
- 2023 16:11:26 +0200
+ 2023 16:12:28 +0200
 From:   Olivier Moysan <olivier.moysan@foss.st.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
 CC:     Olivier Moysan <olivier.moysan@foss.st.com>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: [RFC PATCH 1/7] iio: introduce iio backend device
-Date:   Fri, 23 Jun 2023 16:09:37 +0200
-Message-ID: <20230623140944.2613002-2-olivier.moysan@foss.st.com>
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [RFC PATCH 3/7] iio: adc: stm32-dfsdm: manage dfsdm as a channel provider
+Date:   Fri, 23 Jun 2023 16:09:39 +0200
+Message-ID: <20230623140944.2613002-4-olivier.moysan@foss.st.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230623140944.2613002-1-olivier.moysan@foss.st.com>
 References: <20230623140944.2613002-1-olivier.moysan@foss.st.com>
@@ -70,137 +75,89 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a new device type in IIO framework.
-This backend device does not compute channel attributes and does not expose
-them through sysfs, as done typically in iio-rescale frontend device.
-Instead, it allows to report information applying to channel
-attributes through callbacks. These backend devices can be cascaded
-to represent chained components.
-An IIO device configured as a consumer of a backend device can compute
-the channel attributes of the whole chain.
+The STM32 is currently implemented as a channels consumer
+of the sigma delta modulator.
+Change the topology to expose a single IIO device for DFSDM
+and remove the IIO device associated to the SD modulator.
+Manage the DFSDM as a channel provider to allow this change.
 
 Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 ---
- drivers/iio/Makefile               |  2 +
- drivers/iio/industrialio-backend.c | 59 ++++++++++++++++++++++++++++++
- include/linux/iio/backend.h        | 29 +++++++++++++++
- 3 files changed, 90 insertions(+)
- create mode 100644 drivers/iio/industrialio-backend.c
- create mode 100644 include/linux/iio/backend.h
+ drivers/iio/adc/stm32-dfsdm-adc.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
-diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-index 9622347a1c1b..b747fcef611d 100644
---- a/drivers/iio/Makefile
-+++ b/drivers/iio/Makefile
-@@ -8,6 +8,8 @@ industrialio-y := industrialio-core.o industrialio-event.o inkern.o
- industrialio-$(CONFIG_IIO_BUFFER) += industrialio-buffer.o
- industrialio-$(CONFIG_IIO_TRIGGER) += industrialio-trigger.o
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index a428bdb567d5..20756d496c52 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -76,7 +76,6 @@ struct stm32_dfsdm_adc {
  
-+industrialio-$(CONFIG_IIO_BACKEND) += industrialio-backend.o
-+
- obj-$(CONFIG_IIO_CONFIGFS) += industrialio-configfs.o
- obj-$(CONFIG_IIO_GTS_HELPER) += industrialio-gts-helper.o
- obj-$(CONFIG_IIO_SW_DEVICE) += industrialio-sw-device.o
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-new file mode 100644
-index 000000000000..6a0f071f8682
---- /dev/null
-+++ b/drivers/iio/industrialio-backend.c
-@@ -0,0 +1,59 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* The industrial I/O core, backend handling functions
-+ *
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/list.h>
-+#include <linux/iio/backend.h>
-+
-+struct iio_backend *iio_backend_alloc(struct device *parent)
-+{
-+	struct iio_backend *backend;
-+
-+	/*
-+	 * Allocate backend struct
-+	 * Init backend device & struct
-+	 */
-+
-+	return backend;
-+};
-+EXPORT_SYMBOL(iio_backend_alloc);
-+
-+int iio_backend_register(struct iio_backend *backend)
-+{
-+	/*
-+	 * Add device to device hierarchy
-+	 * (Call device_add())
-+	 */
-+
-+	return 0;
-+};
-+EXPORT_SYMBOL(iio_backend_register);
-+
-+void iio_backend_unregister(struct iio_backend *backend)
-+{
-+	/*
-+	 * Free backend struct and delete device
-+	 * (Call device_del())
-+	 */
-+};
-+EXPORT_SYMBOL(iio_backend_unregister);
-+
-+struct iio_backend *iio_backend_get(struct device *dev)
-+{
-+	struct iio_backend *backend;
-+
-+	/*
-+	 * Get backend in from device node
-+	 * (call fwnode_property_get_reference_args() with io-backends prop)
-+	 * Allocate backend
-+	 * Find backend device from phandle
-+	 * (call bus_find_device_by_fwnode())
-+	 * Return backend
-+	 */
-+
-+	return backend;
-+};
-+EXPORT_SYMBOL(iio_backend_get);
-diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-new file mode 100644
-index 000000000000..e089e5e6cef0
---- /dev/null
-+++ b/include/linux/iio/backend.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * The industrial I/O core, backend handling functions
-+ *
-+ * Author: Olivier Moysan <olivier.moysan@foss.st.com>.
-+ */
-+
-+struct iio_backend_ops;
-+
-+struct iio_backend {
-+	const struct iio_backend_ops	*ops;
-+	struct module			*owner;
-+	int				id;
-+	const char			*name;
-+	struct device			dev;
-+	struct list_head		list;
-+	void				*priv;
-+};
-+
-+struct iio_backend_ops {
-+	int (*enable)(struct iio_backend *backend);
-+	int (*disable)(struct iio_backend *backend);
-+	int (*read_raw)(struct iio_backend *backend, int *val, int *val2, long mask);
-+};
-+
-+struct iio_backend *iio_backend_alloc(struct device *parent);
-+int iio_backend_register(struct iio_backend *backend);
-+void iio_backend_unregister(struct iio_backend *backend);
-+struct iio_backend *iio_backend_get(struct device *dev);
+ 	/* ADC specific */
+ 	unsigned int oversamp;
+-	struct iio_hw_consumer *hwc;
+ 	struct completion completion;
+ 	u32 *buffer;
+ 
+@@ -1006,12 +1005,6 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+ 	/* Reset adc buffer index */
+ 	adc->bufi = 0;
+ 
+-	if (adc->hwc) {
+-		ret = iio_hw_consumer_enable(adc->hwc);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+ 	ret = stm32_dfsdm_start_dfsdm(adc->dfsdm);
+ 	if (ret < 0)
+ 		goto err_stop_hwc;
+@@ -1035,8 +1028,6 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+ stop_dfsdm:
+ 	stm32_dfsdm_stop_dfsdm(adc->dfsdm);
+ err_stop_hwc:
+-	if (adc->hwc)
+-		iio_hw_consumer_disable(adc->hwc);
+ 
+ 	return ret;
+ }
+@@ -1051,9 +1042,6 @@ static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+ 
+ 	stm32_dfsdm_stop_dfsdm(adc->dfsdm);
+ 
+-	if (adc->hwc)
+-		iio_hw_consumer_disable(adc->hwc);
+-
+ 	return 0;
+ }
+ 
+@@ -1230,7 +1218,6 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+ 			return ret;
+-		ret = iio_hw_consumer_enable(adc->hwc);
+ 		if (ret < 0) {
+ 			dev_err(&indio_dev->dev,
+ 				"%s: IIO enable failed (channel %d)\n",
+@@ -1239,7 +1226,6 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
+ 		}
+ 		ret = stm32_dfsdm_single_conv(indio_dev, chan, val);
+-		iio_hw_consumer_disable(adc->hwc);
+ 		if (ret < 0) {
+ 			dev_err(&indio_dev->dev,
+ 				"%s: Conversion failed (channel %d)\n",
+@@ -1449,11 +1435,6 @@ static int stm32_dfsdm_adc_init(struct device *dev, struct iio_dev *indio_dev)
+ 		return num_ch < 0 ? num_ch : -EINVAL;
+ 	}
+ 
+-	/* Bind to SD modulator IIO device */
+-	adc->hwc = devm_iio_hw_consumer_alloc(&indio_dev->dev);
+-	if (IS_ERR(adc->hwc))
+-		return -EPROBE_DEFER;
+-
+ 	ch = devm_kcalloc(&indio_dev->dev, num_ch, sizeof(*ch),
+ 			  GFP_KERNEL);
+ 	if (!ch)
 -- 
 2.25.1
 

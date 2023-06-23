@@ -2,229 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAD0973AE8E
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 04:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F03D673B0A0
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 08:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231175AbjFWCYD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Jun 2023 22:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44710 "EHLO
+        id S229673AbjFWGRD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jun 2023 02:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231138AbjFWCYA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Jun 2023 22:24:00 -0400
-Received: from mx.sberdevices.ru (mx.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AF01BCA;
-        Thu, 22 Jun 2023 19:23:58 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mx.sberdevices.ru (Postfix) with ESMTP id CC5655FD8F;
-        Fri, 23 Jun 2023 05:23:54 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1687487034;
-        bh=kqNz9q85odOrDuiiTt1JEkfAd/EMGs7Y5SX22XNQeEE=;
-        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-        b=T39Jxks6azD91PZBhbkGc1NRepOEgTuS1Elqw6BHEExneu+lrGYZsXG2KIhgrdR1s
-         qJU2/0uKFkHnCXw6cTC4aH7MzCltyBbjhl48/FJ0+SihFJlq1rMvuBu//8pzZjpUVe
-         nvK7nQDr7ySW1ao5hJe8JkL0bW7cA3Wum7ENfunSXuL1fMJiEE5jEtS/5JEP6rvSPg
-         fkCeOQ0htuogBhUDJZ5OhevrKV2zBmAUwc34R8DuNKDKPiTvyyWO9mrF5JBe+m3BBJ
-         3q5NNsGZuOxmKlp4xX8jSHwcZPD1z8WMLE28i1oDMZbF3N9bYDZTajVxzkofbdmQZs
-         dcc9GUDkPiYTw==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-        by mx.sberdevices.ru (Postfix) with ESMTP;
-        Fri, 23 Jun 2023 05:23:54 +0300 (MSK)
-From:   George Stark <gnstark@sberdevices.ru>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-        <martin.blumenstingl@googlemail.com>,
-        <andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
-        <gnstark@sberdevices.ru>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>,
-        George Stark <GNStark@sberdevices.ru>
-Subject: [PATCH v2 6/6] meson saradc: support reading from channel7 mux inputs
-Date:   Fri, 23 Jun 2023 05:20:14 +0300
-Message-ID: <20230623022334.791026-7-gnstark@sberdevices.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230623022334.791026-1-gnstark@sberdevices.ru>
-References: <20230623022334.791026-1-gnstark@sberdevices.ru>
+        with ESMTP id S229607AbjFWGRC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 02:17:02 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A8C189;
+        Thu, 22 Jun 2023 23:17:00 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-988a2715b8cso260762866b.0;
+        Thu, 22 Jun 2023 23:17:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1687501019; x=1690093019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bTzRTBwuHpC7/hhWw9l446CStpPhNQn+H0m14KUu0h8=;
+        b=VhM2vnJgCLaRCOzs0kOlroNdVzfrTvRkeuZIBNxezHdrD5f8hVG2zJtCjk15wJDIu9
+         E3xJORLjKw5yGUvWyEnyfHARLXnT+RXT5MPD/hpvgYdNSlMXCzFv8ZPW6MiO+xY2hsF8
+         nP2ScAqRqHyyJDKZzc/ikUla4De9zOcOpGIC33KJEu9csebDnzuh2nenlz25Fqw+PDFU
+         xDLuzmYKVuZgGXKpj3lLeR3HW4Ob67rVKC2+2LRyAedaLqVXsA6DoqxxDdOw0l4Dn1sh
+         YyKOHTFzUwvur5wsCqj1P3sXGmMA9wYIUEitkcaS3RoZxhVvuxeEFCYdKJJJVL+ARIHS
+         t8fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687501019; x=1690093019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bTzRTBwuHpC7/hhWw9l446CStpPhNQn+H0m14KUu0h8=;
+        b=Iomv6ZuJPXjezL8d72iwuL+3tQ4AvPNQyyzVyuynCJSEY+I8wtVQ/u1qintDMKckNl
+         cQF0LIk6WcdtPjckTiYaha9VnXNm5SLwnrP2+0rVu47yKo7D9nRqayK+N3aeHBwiJ7a1
+         Bq5gA1SlU2PME4D9wzaRr4Pf/YrERQXluPPqLnNi6ifdPIC2VgLw2p5fcdram4CMpd1w
+         Jt9Hs8vzXP0arfh47vTQ+KTH41eBVfRL24P3EBzAj5W5U8lHcY3gSrCi3hW643znzpZj
+         GK+0eNcB5EMv0DOhg0eGtutTLnD+XI3WyPracsg0By9a+e6Te+Qvk/PO/w106YOLoZgW
+         4W9g==
+X-Gm-Message-State: AC+VfDy3zSOPBkBPBtePky3L3uL/OBFhNG+r9Gd1Z1EcXhxBHsuMsPUv
+        E76hi5jxtfsv8P5iqjWGLOWq2GNVSRu5k51pLevNHgkcc90=
+X-Google-Smtp-Source: ACHHUZ7/k41yx67lWIal2QXf8cBmr9dIrsOBDzFQcnBkJqFbQY3pmpiYMLIDfCUFTJ2f2iU93/paSGzeBcAK9TsqaNg=
+X-Received: by 2002:a17:907:3e83:b0:987:fe18:1c58 with SMTP id
+ hs3-20020a1709073e8300b00987fe181c58mr15265725ejc.35.1687501018686; Thu, 22
+ Jun 2023 23:16:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2023/06/22 21:10:00 #21557945
-X-KSMG-AntiVirus-Status: Clean, skipped
+References: <20230623022334.791026-1-gnstark@sberdevices.ru> <20230623022334.791026-7-gnstark@sberdevices.ru>
+In-Reply-To: <20230623022334.791026-7-gnstark@sberdevices.ru>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Fri, 23 Jun 2023 08:16:47 +0200
+Message-ID: <CAFBinCBv993Xv_wk9fE-U0Tw2mzTB1z22Tj6x8Uy1rRw_dztng@mail.gmail.com>
+Subject: Re: [PATCH v2 6/6] meson saradc: support reading from channel7 mux inputs
+To:     George Stark <gnstark@sberdevices.ru>
+Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
+        khilman@baylibre.com, jbrunet@baylibre.com,
+        andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        kernel@sberdevices.ru
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add iio channel for every channel 7 muxer input.
-Meson saradc channel 7 is connected to muxer that can switch channel
-input to well-known sources like Vdd, GND and several Vdd dividers.
+Hi George,
 
-Signed-off-by: George Stark <GNStark@sberdevices.ru>
----
+On Fri, Jun 23, 2023 at 4:23=E2=80=AFAM George Stark <gnstark@sberdevices.r=
+u> wrote:
+[...]
+> Meson saradc channel 7 is connected to muxer that can switch channel
+I think that this should read: ... is connected to a mux that ...
 
-Changelog:
-v1->v2: update commit message from [1]
+[...]
+>  static const struct iio_chan_spec meson_sar_adc_iio_channels[] =3D {
+> @@ -245,6 +280,11 @@ static const struct iio_chan_spec meson_sar_adc_iio_=
+channels[] =3D {
+>         MESON_SAR_ADC_CHAN(INDEX_CHAN_6),
+>         MESON_SAR_ADC_CHAN(INDEX_CHAN_7),
+>         IIO_CHAN_SOFT_TIMESTAMP(INDEX_CHAN_SOFT_TIMESTAMP),
+> +       MESON_SAR_ADC_MUX(INDEX_MUX_0_VSS, 0),
+> +       MESON_SAR_ADC_MUX(INDEX_MUX_1_VDD_DIV4, 1),
+> +       MESON_SAR_ADC_MUX(INDEX_MUX_2_VDD_DIV2, 2),
+> +       MESON_SAR_ADC_MUX(INDEX_MUX_3_VDD_MUL3_DIV4, 3),
+> +       MESON_SAR_ADC_MUX(INDEX_MUX_4_VDD, 4),
+>         MESON_SAR_ADC_TEMP_CHAN(), /* must be the last item */
+I haven't had the chance to run these patches yet but: I think they
+are breaking the temperature sensor readings on Meson8/8b/8m2 boards.
+See arch/arm/boot/dts/meson.dtsi where the temperature channel is
+being referenced:
+  io-channels =3D <&saradc 8>
 
-[1] https://lore.kernel.org/lkml/20230621062715.455652-4-gnstark@sberdevices.ru/
+With this series (this patch and I think also patch 3/6 "meson saradc:
+unite iio channel array definitions") the numbering of the temperature
+sensor channel changes.
 
----
- drivers/iio/adc/meson_saradc.c | 65 +++++++++++++++++++++++++++++++---
- 1 file changed, 61 insertions(+), 4 deletions(-)
+To make things worse: in theory we can use meson_saradc to read the
+SoC temperature sensor on GXBB, GXL and GXM boards (possibly on AXG as
+well but I can't recall from the top of my head) instead of going
+through SCPI.
+I have experimented with this in the past but never got it to work.
+Doing so in the future could lead to another channel index change,
+depending on how we decide to go forward now.
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index e7eb154b151f..ecaebb569e8e 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -163,6 +163,7 @@
- #define MESON_SAR_ADC_MAX_FIFO_SIZE				32
- #define MESON_SAR_ADC_TIMEOUT					100 /* ms */
- #define MESON_SAR_ADC_VOLTAGE_AND_TEMP_CHANNEL			6
-+#define MESON_SAR_ADC_VOLTAGE_AND_MUX_CHANNEL			7
- #define MESON_SAR_ADC_TEMP_OFFSET				27
- 
- /* temperature sensor calibration information in eFuse */
-@@ -201,6 +202,19 @@
- 	.datasheet_name = "TEMP_SENSOR",				\
- }
- 
-+#define MESON_SAR_ADC_MUX(_chan, _sel) {				\
-+	.type = IIO_VOLTAGE,						\
-+	.channel = _chan,						\
-+	.indexed = 1,							\
-+	.address = MESON_SAR_ADC_VOLTAGE_AND_MUX_CHANNEL,		\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-+				BIT(IIO_CHAN_INFO_AVERAGE_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
-+	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_CALIBBIAS) |	\
-+				BIT(IIO_CHAN_INFO_CALIBSCALE),		\
-+	.datasheet_name = "SAR_ADC_MUX_"#_sel,				\
-+}
-+
- enum meson_sar_adc_avg_mode {
- 	NO_AVERAGING = 0x0,
- 	MEAN_AVERAGING = 0x1,
-@@ -233,6 +247,27 @@ enum meson_sar_adc_channel_index {
- 	INDEX_CHAN_6,
- 	INDEX_CHAN_7,
- 	INDEX_CHAN_SOFT_TIMESTAMP,
-+	INDEX_MUX_0_VSS,
-+	INDEX_MUX_1_VDD_DIV4,
-+	INDEX_MUX_2_VDD_DIV2,
-+	INDEX_MUX_3_VDD_MUL3_DIV4,
-+	INDEX_MUX_4_VDD,
-+};
-+
-+static enum meson_sar_adc_chan7_mux_sel chan7_mux_values[] = {
-+	CHAN7_MUX_VSS,
-+	CHAN7_MUX_VDD_DIV4,
-+	CHAN7_MUX_VDD_DIV2,
-+	CHAN7_MUX_VDD_MUL3_DIV4,
-+	CHAN7_MUX_VDD,
-+};
-+
-+static const char * const chan7_mux_names[] = {
-+	"gnd",
-+	"0.25vdd",
-+	"0.5vdd",
-+	"0.75vdd",
-+	"vdd",
- };
- 
- static const struct iio_chan_spec meson_sar_adc_iio_channels[] = {
-@@ -245,6 +280,11 @@ static const struct iio_chan_spec meson_sar_adc_iio_channels[] = {
- 	MESON_SAR_ADC_CHAN(INDEX_CHAN_6),
- 	MESON_SAR_ADC_CHAN(INDEX_CHAN_7),
- 	IIO_CHAN_SOFT_TIMESTAMP(INDEX_CHAN_SOFT_TIMESTAMP),
-+	MESON_SAR_ADC_MUX(INDEX_MUX_0_VSS, 0),
-+	MESON_SAR_ADC_MUX(INDEX_MUX_1_VDD_DIV4, 1),
-+	MESON_SAR_ADC_MUX(INDEX_MUX_2_VDD_DIV2, 2),
-+	MESON_SAR_ADC_MUX(INDEX_MUX_3_VDD_MUL3_DIV4, 3),
-+	MESON_SAR_ADC_MUX(INDEX_MUX_4_VDD, 4),
- 	MESON_SAR_ADC_TEMP_CHAN(), /* must be the last item */
- };
- 
-@@ -284,6 +324,7 @@ struct meson_sar_adc_priv {
- 	bool					temperature_sensor_calibrated;
- 	u8					temperature_sensor_coefficient;
- 	u16					temperature_sensor_adc_val;
-+	enum meson_sar_adc_chan7_mux_sel	chan7_mux_sel;
- };
- 
- static const struct regmap_config meson_sar_adc_regmap_config_gxbb = {
-@@ -348,6 +389,8 @@ static void meson_sar_adc_set_chan7_mux(struct iio_dev *indio_dev,
- 			   MESON_SAR_ADC_REG3_CTRL_CHAN7_MUX_SEL_MASK, regval);
- 
- 	usleep_range(10, 20);
-+
-+	priv->chan7_mux_sel = sel;
- }
- 
- static int meson_sar_adc_read_raw_sample(struct iio_dev *indio_dev,
-@@ -443,6 +486,15 @@ static void meson_sar_adc_enable_channel(struct iio_dev *indio_dev,
- 		regmap_update_bits(priv->regmap,
- 				   MESON_SAR_ADC_DELTA_10,
- 				   MESON_SAR_ADC_DELTA_10_TEMP_SEL, regval);
-+	} else if (chan->address == MESON_SAR_ADC_VOLTAGE_AND_MUX_CHANNEL) {
-+		enum meson_sar_adc_chan7_mux_sel sel;
-+
-+		if (chan->channel == INDEX_CHAN_7)
-+			sel = CHAN7_MUX_CH7_INPUT;
-+		else
-+			sel = chan7_mux_values[chan->channel - INDEX_MUX_0_VSS];
-+		if (sel != priv->chan7_mux_sel)
-+			meson_sar_adc_set_chan7_mux(indio_dev, sel);
- 	}
- }
- 
-@@ -1015,7 +1067,7 @@ static int meson_sar_adc_calib(struct iio_dev *indio_dev)
- 	meson_sar_adc_set_chan7_mux(indio_dev, CHAN7_MUX_VDD_DIV4);
- 	usleep_range(10, 20);
- 	ret = meson_sar_adc_get_sample(indio_dev,
--				       &indio_dev->channels[INDEX_CHAN_7],
-+				       &indio_dev->channels[INDEX_MUX_1_VDD_DIV4],
- 				       MEAN_AVERAGING, EIGHT_SAMPLES, &value0);
- 	if (ret < 0)
- 		goto out;
-@@ -1023,7 +1075,7 @@ static int meson_sar_adc_calib(struct iio_dev *indio_dev)
- 	meson_sar_adc_set_chan7_mux(indio_dev, CHAN7_MUX_VDD_MUL3_DIV4);
- 	usleep_range(10, 20);
- 	ret = meson_sar_adc_get_sample(indio_dev,
--				       &indio_dev->channels[INDEX_CHAN_7],
-+				       &indio_dev->channels[INDEX_MUX_3_VDD_MUL3_DIV4],
- 				       MEAN_AVERAGING, EIGHT_SAMPLES, &value1);
- 	if (ret < 0)
- 		goto out;
-@@ -1050,8 +1102,13 @@ static int read_label(struct iio_dev *indio_dev,
- {
- 	if (chan->type == IIO_TEMP)
- 		return sprintf(label, "%s\n", "temp-sensor");
--	if (chan->type == IIO_VOLTAGE)
--		return sprintf(label, "channel-%d\n", chan->channel);
-+	if (chan->type == IIO_VOLTAGE) {
-+		if (chan->channel <= INDEX_CHAN_7)
-+			return sprintf(label, "channel-%d\n", chan->channel);
-+		if (chan->channel >= INDEX_MUX_0_VSS)
-+			return sprintf(label, "%s\n",
-+				chan7_mux_names[chan->channel - INDEX_MUX_0_VSS]);
-+	}
- 	return 0;
- }
- 
--- 
-2.38.4
+There's two that I can think of:
+- update meson.dtsi to use the new channel numbering (I don't expect
+many 32-bit SoC users out there using new kernel + old .dtbs, but it's
+impossible to say for sure)
+- or keep the driver backwards compatible (that involves re-adding the
+channel tables)
 
+What do you think?
+
+
+Best regards,
+Martin

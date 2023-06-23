@@ -2,202 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA1173B319
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 11:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB8573B655
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 13:33:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231316AbjFWJAG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jun 2023 05:00:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42866 "EHLO
+        id S229745AbjFWLdg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Jun 2023 07:33:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232082AbjFWI7l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 04:59:41 -0400
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF0A2680;
-        Fri, 23 Jun 2023 01:59:11 -0700 (PDT)
-X-GND-Sasl: herve.codina@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1687510746;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WiCubefUJT8lqguruRQEQMdku90oEPaE9zL5TkFrvME=;
-        b=Er+F9DMUoyhxCT4e3wLHeMsS1VAU8PNH1Bul8bZKuE7b9UDWdIF+nl22bVCY4NHvZ9+3Xy
-        vnwe1qxOxH/XHl1klPoHe3AQjzL2rg2JKRWm9yPuf4iKAfdVFHAjeN5ojCxCEvtaNopi5e
-        WIpPlPZxrioUfayxbqdutoHsTZz+naztAStXu/QGtC7en9ibj7HvS9gznvcv9nqGW1rPS5
-        11Anc5P4V8bc6IpMlrf3gLKvD2d8Snf5O+TyQ/TBc8U6ZKAryVv1rRNFW5S7ANa8WTu1fd
-        38yb7/Tbgo2tth/LaCfHJC9M9i2KM33OLVDwtohEKTAWWkKjVCqC3D29bF9h5g==
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-X-GND-Sasl: herve.codina@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id 52723E000B;
-        Fri, 23 Jun 2023 08:59:04 +0000 (UTC)
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Herve Codina <herve.codina@bootlin.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S230350AbjFWLdf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 07:33:35 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940B5D3
+        for <linux-iio@vger.kernel.org>; Fri, 23 Jun 2023 04:33:33 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b47742de92so9580851fa.0
+        for <linux-iio@vger.kernel.org>; Fri, 23 Jun 2023 04:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1687520012; x=1690112012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KL5Es5yoKODcRM+6rC2Tw/Cdo+3M+IOhet0H/IGNQNk=;
+        b=Q/qy0dXyCmDSnYgzmdOwO5Rps42C2f9Dvp3GrgNQJfFcyu3WWQ/1KOPZoLZLKfy87s
+         iWPasAdoPG4K/dz8/jA/OqpXCK+uAdOyykRWtxx7T8MtcALA7E9U8kL4kkk8qIw81pet
+         iKISr4gQQXEevNoLmM185WwvtmZDRMGD8TfpI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687520012; x=1690112012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KL5Es5yoKODcRM+6rC2Tw/Cdo+3M+IOhet0H/IGNQNk=;
+        b=jJNRvf3mL6fGYgD0NAjoukIo9xqKZjZfKurFmvXN6BFhQH6ko3dvXsz0P8UwzmZBBT
+         p0zgPu/gx+MTt65iu8i4SEtI1w6wmx/gnWX6imOExFlg2wLSwb9UTy2W1qEjNr3gq3on
+         CFpGnBHk0MzSpUYM9UqkDADmhAjeXGnnPddlR4HJDi/USWSBS243JAaOQ5uHPFka/qWc
+         ryKOfG0hDnkkBr73pFl4lxsepvPo4eoQic8tLdLGmK5I/unl+TNjXMD1VHywBmbRrReg
+         EcKhoWXKgdoclaVjwR/SXdQrJKtRorhlFX6qUv0ld8sSCyjkyLxF9b7K4HJqVkMuKbfO
+         xsFw==
+X-Gm-Message-State: AC+VfDwEkDtNAj0V7YUAj1m0ygMoYJRbPqUtJojmfTouUmKuoe/LRVXz
+        bdPmBdB5FBJhCdyjLY4xZNlwEw==
+X-Google-Smtp-Source: ACHHUZ7BUw7tqddVi82XfXFElJrN5r7xeUFrxWqsoaePUeB6rPEEAmG8j++sT6mIUJmh/Jah5qMZEw==
+X-Received: by 2002:a2e:9e44:0:b0:2b3:4cff:60ce with SMTP id g4-20020a2e9e44000000b002b34cff60cemr12557049ljk.0.1687520011672;
+        Fri, 23 Jun 2023 04:33:31 -0700 (PDT)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id n10-20020a2e720a000000b002b471efb253sm1711605ljc.46.2023.06.23.04.33.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jun 2023 04:33:31 -0700 (PDT)
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Wojciech Ziemba <wojciech.ziemba@intel.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v6 13/13] ASoC: simple-card: Handle additional devices
-Date:   Fri, 23 Jun 2023 10:58:30 +0200
-Message-Id: <20230623085830.749991-14-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230623085830.749991-1-herve.codina@bootlin.com>
-References: <20230623085830.749991-1-herve.codina@bootlin.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: [PATCH 0/2] iio: ad74413r: allow configuring digital input threshold
+Date:   Fri, 23 Jun 2023 13:33:24 +0200
+Message-Id: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-An additional-devs subnode can be present in the simple-card top node.
-This subnode is used to declared some "virtual" additional devices.
+The reset default value of the DIN_THRESH register is 0x0, meaning
+that the threshold for the digital input channels is 1/60 of AVDD. In
+most applications, that value is way too low and susceptible to noise.
 
-Create related devices from this subnode and avoid this subnode presence
-to interfere with the already supported subnodes analysis.
+These patches introduce a new DT property,
+digital-input-threshold-microvolt, which if present will be used as
+the threshold in "16V" mode, i.e. as an absolute threshold, not
+proportional to AVDD.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- sound/soc/generic/simple-card.c | 46 +++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
+If someone needs the threshold to be proportional to AVDD, but being
+say 15/60, another DT property (mutually exclusive with this one)
+could be introduced. But since I don't need that and can't come up
+with a good name ('digital-input-threshold-60ths-avdd' ?) I punt that
+problem to whoever needs it.
 
-diff --git a/sound/soc/generic/simple-card.c b/sound/soc/generic/simple-card.c
-index 6f044cc8357e..ae4a47018278 100644
---- a/sound/soc/generic/simple-card.c
-+++ b/sound/soc/generic/simple-card.c
-@@ -348,6 +348,7 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 	struct device *dev = simple_priv_to_dev(priv);
- 	struct device_node *top = dev->of_node;
- 	struct device_node *node;
-+	struct device_node *add_devs;
- 	uintptr_t dpcm_selectable = (uintptr_t)of_device_get_match_data(dev);
- 	bool is_top = 0;
- 	int ret = 0;
-@@ -359,6 +360,8 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 		is_top = 1;
- 	}
- 
-+	add_devs = of_get_child_by_name(top, PREFIX "additional-devs");
-+
- 	/* loop for all dai-link */
- 	do {
- 		struct asoc_simple_data adata;
-@@ -367,6 +370,12 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 		struct device_node *np;
- 		int num = of_get_child_count(node);
- 
-+		/* Skip additional-devs node */
-+		if (node == add_devs) {
-+			node = of_get_next_child(top, node);
-+			continue;
-+		}
-+
- 		/* get codec */
- 		codec = of_get_child_by_name(node, is_top ?
- 					     PREFIX "codec" : "codec");
-@@ -380,12 +389,15 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 
- 		/* get convert-xxx property */
- 		memset(&adata, 0, sizeof(adata));
--		for_each_child_of_node(node, np)
-+		for_each_child_of_node(node, np) {
-+			if (np == add_devs)
-+				continue;
- 			simple_parse_convert(dev, np, &adata);
-+		}
- 
- 		/* loop for all CPU/Codec node */
- 		for_each_child_of_node(node, np) {
--			if (plat == np)
-+			if (plat == np || add_devs == np)
- 				continue;
- 			/*
- 			 * It is DPCM
-@@ -427,6 +439,7 @@ static int __simple_for_each_link(struct asoc_simple_priv *priv,
- 	} while (!is_top && node);
- 
-  error:
-+	of_node_put(add_devs);
- 	of_node_put(node);
- 	return ret;
- }
-@@ -464,6 +477,31 @@ static int simple_for_each_link(struct asoc_simple_priv *priv,
- 	return ret;
- }
- 
-+static void simple_depopulate_aux(void *data)
-+{
-+	struct asoc_simple_priv *priv = data;
-+
-+	of_platform_depopulate(simple_priv_to_dev(priv));
-+}
-+
-+static int simple_populate_aux(struct asoc_simple_priv *priv)
-+{
-+	struct device *dev = simple_priv_to_dev(priv);
-+	struct device_node *node;
-+	int ret;
-+
-+	node = of_get_child_by_name(dev->of_node, PREFIX "additional-devs");
-+	if (!node)
-+		return 0;
-+
-+	ret = of_platform_populate(node, NULL, NULL, dev);
-+	of_node_put(node);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(dev, simple_depopulate_aux, priv);
-+}
-+
- static int simple_parse_of(struct asoc_simple_priv *priv, struct link_info *li)
- {
- 	struct snd_soc_card *card = simple_priv_to_card(priv);
-@@ -493,6 +531,10 @@ static int simple_parse_of(struct asoc_simple_priv *priv, struct link_info *li)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = simple_populate_aux(priv);
-+	if (ret < 0)
-+		return ret;
-+
- 	ret = snd_soc_of_parse_aux_devs(card, PREFIX "aux-devs");
- 
- 	return ret;
+Rasmus Villemoes (2):
+  dt-bindings: iio: ad74413r: add binding for digital input threshold
+  iio: addac: ad74413r: wire up digital-input-threshold-microvolt DT
+    property
+
+ .../bindings/iio/addac/adi,ad74413r.yaml      | 10 ++++++++++
+ drivers/iio/addac/ad74413r.c                  | 20 +++++++++++++++++++
+ 2 files changed, 30 insertions(+)
+
 -- 
-2.40.1
+2.37.2
 

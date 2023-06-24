@@ -2,107 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2437373C363
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Jun 2023 23:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED1373CBC3
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Jun 2023 17:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231520AbjFWV5i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Jun 2023 17:57:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42970 "EHLO
+        id S233071AbjFXP7g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Jun 2023 11:59:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231582AbjFWV5h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Jun 2023 17:57:37 -0400
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC364270A;
-        Fri, 23 Jun 2023 14:57:34 -0700 (PDT)
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3422b25556dso4230035ab.2;
-        Fri, 23 Jun 2023 14:57:34 -0700 (PDT)
+        with ESMTP id S230092AbjFXP7f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Jun 2023 11:59:35 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9219B1AC;
+        Sat, 24 Jun 2023 08:59:34 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f8689fbf59so3480559e87.0;
+        Sat, 24 Jun 2023 08:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687622373; x=1690214373;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nxD3mnsyxsM9A/pK/r4bmilX/vIQZZ/iBExyMlW0hWI=;
+        b=CdxPGMxddVeIEqvQbb6zVuOBbZtFYaa46/5i1pb94WXHhCEK8ugsf1ZTdByvsXJ9of
+         dBth1XXjCG2yJj5u+9HOPMcVNny4WjJUpJgz0CobZcjC57wmrTKxEEuHYVy04+piY0my
+         0p3mWYKl94I53iWEvqGMeEL8nIXLm0EE9+75vrzyC6zTHek0kGWZufe35BAdQ4eChRqU
+         qHRBezqnI7fzTqgEEboO8aNRTdgc+DTRyAyov2bQ4f2T2EeHOPixlNqOufs6J7eDbIPC
+         IG2TQn8AXJNmpRter5Aqx1JRrxJnLdBscufmaqzPjzt750Hj1vkRRiKAhho2hC76ShVe
+         R+Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687557454; x=1690149454;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QyNhFBahKbwr8TDqlpR3tcWu8WPh2FT/RYNpCkwlnps=;
-        b=U+aAxV1jr2BoisUCwJl6elUXRs+Q3hocm/5SZ753kpWooaw/zIOz/vRN7tWFe26Rg/
-         551fffL9fkZL1smGzQ4DjiKU/tLtr0DYTA4IcG411liVAx3RXA7kc/Z66gg6aEZw/C4+
-         SRLcIZbN5xix55/XEDk1zv4jH+2Kcyv3jOh6vUU/57S6d0xS+RuJQ+aROMhFMP6frZP1
-         nQKBh/4ufuVfhovPOEpCrEEkxA0Om6xQkOhiz2DTBnOM/lmPJGr6mkmquiPrzsgRorCV
-         iCQlXMviCahBlxyiue8bWBOIicqr1MXfZYe+Zzw8wQdV0NZm7uilYD1wHgHh+zhTiGiH
-         bOLg==
-X-Gm-Message-State: AC+VfDzOpIrj5EWnsqir0AULl3Pup+TU2mQLwLpnaJ50LWGKkJDgwF08
-        2pjBuKZTFC8ktPKlGazJOQ==
-X-Google-Smtp-Source: ACHHUZ6YXHwqLhAFvEqMHmc5WV/cfzUSPCoAgRtiNJbkDNg/TRnU+94fzqaFo3znX6GFrUjOIu3odg==
-X-Received: by 2002:a05:6e02:68e:b0:341:c917:cbc2 with SMTP id o14-20020a056e02068e00b00341c917cbc2mr17490550ils.20.1687557454067;
-        Fri, 23 Jun 2023 14:57:34 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id a11-20020a92ce4b000000b0034347d4dc74sm97963ilr.35.2023.06.23.14.57.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jun 2023 14:57:33 -0700 (PDT)
-Received: (nullmailer pid 1267128 invoked by uid 1000);
-        Fri, 23 Jun 2023 21:57:31 -0000
-Date:   Fri, 23 Jun 2023 15:57:31 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: ad74413r: add binding for digital
- input threshold
-Message-ID: <20230623215731.GB1216324-robh@kernel.org>
-References: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
- <20230623113327.1062170-2-linux@rasmusvillemoes.dk>
- <20230623-casket-outer-2c9d2a0c4795@spud>
+        d=1e100.net; s=20221208; t=1687622373; x=1690214373;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nxD3mnsyxsM9A/pK/r4bmilX/vIQZZ/iBExyMlW0hWI=;
+        b=JMBmNVPNSAvtfcsbcmsL6eT0FeNF11Dp57lSRzNGlCUGieE4NQT7drsM8hQ2/DyfmJ
+         6Buvdbxwx+QDrpO8QnlJQz6vCP2C1iypWhNSEjynAsH/FZZYnvbpPd/fVf/kifvq8K4Q
+         TzSTjXK5kqNyKgXTWfZ1lAAxvrPWSeTAX9ddTke0so1QwdnfmByN1MLgOgvMlazFFRq4
+         TldKctk83tfiRhksg2NUwLkA23+0OI2hzC8UTuoYKOV9xX4sMUoXC1LmHD4wWV1qbcqE
+         mIJNvsqKyTCGxoitNirZvS0Nrhm4mgZdQanGo6by7q1ToslLszqR1U/1Se/5l7PAWSc2
+         XTXA==
+X-Gm-Message-State: AC+VfDwOiA798UaV8ERujRARLOm7T/VFKBwCmUMf4Weo3syEUpVFKWNT
+        hHSJN8QzVPpmKO1D+WBdY54=
+X-Google-Smtp-Source: ACHHUZ7WNyxGMyfLzLSOkyJb4r3sDazr+QBWvq4tE/boVMXXeJq4RitMkVuWZUYRRMXR8/WZubyoMA==
+X-Received: by 2002:a05:6512:3c89:b0:4f8:78a8:bfea with SMTP id h9-20020a0565123c8900b004f878a8bfeamr5774392lfv.16.1687622372625;
+        Sat, 24 Jun 2023 08:59:32 -0700 (PDT)
+Received: from [192.168.1.100] ([185.8.126.245])
+        by smtp.gmail.com with ESMTPSA id m25-20020ac24ad9000000b004fad16596fasm31748lfp.21.2023.06.24.08.59.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 Jun 2023 08:59:32 -0700 (PDT)
+Message-ID: <a0d74f3f-4208-d7e3-7eed-481a06b13308@gmail.com>
+Date:   Sat, 24 Jun 2023 18:59:31 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230623-casket-outer-2c9d2a0c4795@spud>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 6/6] meson saradc: support reading from channel7 mux
+ inputs
+Content-Language: en-US
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        George Stark <gnstark@sberdevices.ru>
+Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
+        khilman@baylibre.com, jbrunet@baylibre.com,
+        andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        kernel@sberdevices.ru
+References: <20230623022334.791026-1-gnstark@sberdevices.ru>
+ <20230623022334.791026-7-gnstark@sberdevices.ru>
+ <CAFBinCBv993Xv_wk9fE-U0Tw2mzTB1z22Tj6x8Uy1rRw_dztng@mail.gmail.com>
+From:   George Stark <stark.georgy@gmail.com>
+In-Reply-To: <CAFBinCBv993Xv_wk9fE-U0Tw2mzTB1z22Tj6x8Uy1rRw_dztng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 23, 2023 at 05:44:50PM +0100, Conor Dooley wrote:
-> On Fri, Jun 23, 2023 at 01:33:25PM +0200, Rasmus Villemoes wrote:
-> > Allow specifying the threshold for which the channels configured as
-> > digital input change state.
-> > 
-> > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > ---
-> > 
-> > Running dt_binding_check on this with a too small or large value in
-> > the example does give me an error, but the multipleOf does not seem to
-> > be enforced; the value 1234567 is not flagged. I don't know if that's
-> > expected (maybe I have too old versions of something).
-> 
-> That's one for Rob. I checked a few others and behaviour was the same
-> there.
-> 
-> >  .../devicetree/bindings/iio/addac/adi,ad74413r.yaml    | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
-> > index 590ea7936ad7..1f90ce3c7932 100644
-> > --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
-> > @@ -51,6 +51,14 @@ properties:
-> >        Shunt (sense) resistor value in micro-Ohms.
-> >      default: 100000000
-> >  
-> > +  digital-input-threshold-microvolt:
-> 
-> Should this not have an adi vendor prefix, similar to
-> "adi,digital-input-threshold-mode-fixed"?
+Hello Martin
 
-Yes.
+Thanks for review
 
-Rob
+On 6/23/23 09:16, Martin Blumenstingl wrote:
+> Hi George,
+>
+> On Fri, Jun 23, 2023 at 4:23 AM George Stark <gnstark@sberdevices.ru> wrote:
+> [...]
+>> Meson saradc channel 7 is connected to muxer that can switch channel
+> I think that this should read: ... is connected to a mux that ...
+>
+> [...]
+>>   static const struct iio_chan_spec meson_sar_adc_iio_channels[] = {
+>> @@ -245,6 +280,11 @@ static const struct iio_chan_spec meson_sar_adc_iio_channels[] = {
+>>          MESON_SAR_ADC_CHAN(INDEX_CHAN_6),
+>>          MESON_SAR_ADC_CHAN(INDEX_CHAN_7),
+>>          IIO_CHAN_SOFT_TIMESTAMP(INDEX_CHAN_SOFT_TIMESTAMP),
+>> +       MESON_SAR_ADC_MUX(INDEX_MUX_0_VSS, 0),
+>> +       MESON_SAR_ADC_MUX(INDEX_MUX_1_VDD_DIV4, 1),
+>> +       MESON_SAR_ADC_MUX(INDEX_MUX_2_VDD_DIV2, 2),
+>> +       MESON_SAR_ADC_MUX(INDEX_MUX_3_VDD_MUL3_DIV4, 3),
+>> +       MESON_SAR_ADC_MUX(INDEX_MUX_4_VDD, 4),
+>>          MESON_SAR_ADC_TEMP_CHAN(), /* must be the last item */
+> I haven't had the chance to run these patches yet but: I think they
+> are breaking the temperature sensor readings on Meson8/8b/8m2 boards.
+> See arch/arm/boot/dts/meson.dtsi where the temperature channel is
+> being referenced:
+>    io-channels = <&saradc 8>
+>
+> With this series (this patch and I think also patch 3/6 "meson saradc:
+> unite iio channel array definitions") the numbering of the temperature
+> sensor channel changes.
+>
+> To make things worse: in theory we can use meson_saradc to read the
+> SoC temperature sensor on GXBB, GXL and GXM boards (possibly on AXG as
+> well but I can't recall from the top of my head) instead of going
+> through SCPI.
+> I have experimented with this in the past but never got it to work.
+> Doing so in the future could lead to another channel index change,
+> depending on how we decide to go forward now.
+>
+> There's two that I can think of:
+> - update meson.dtsi to use the new channel numbering (I don't expect
+> many 32-bit SoC users out there using new kernel + old .dtbs, but it's
+> impossible to say for sure)
+> - or keep the driver backwards compatible (that involves re-adding the
+> channel tables)
+>
+> What do you think?
+Actually we'd have to make 2 patches to meson.dtsi, the first change 
+8->9, than 9 ->14.
+And if that index exposed externally (ABI like) I'd not change it 
+without good reason at all.
+So I think to return to double definition of meson_sar_adc_iio_channels 
+and keep the driver backwards compatible.
+
+I've just realized another moment with channels defined after 
+MESON_SAR_ADC_TEMP_CHAN in channel array.
+In dts by default channels are referenced by channel array index not 
+even by channel number.
+So channel e.g MUX_0_VSS will have the same number (due to enum patch) 
+but different index on meson8 and gxbb.
+As alternative we can implement fwnode_xlate method in meson adc driver 
+and use channel numbers in dts
+(probably not in the current patchset).
+
+Best regards,
+George
+
+>
+> Best regards,
+> Martin
+>
+> _______________________________________________
+> linux-amlogic mailing list
+> linux-amlogic@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-amlogic
+
+

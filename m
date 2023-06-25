@@ -2,163 +2,350 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED1373CBC3
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Jun 2023 17:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD47E73D040
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Jun 2023 13:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233071AbjFXP7g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Jun 2023 11:59:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54758 "EHLO
+        id S230465AbjFYLGG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Jun 2023 07:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbjFXP7f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Jun 2023 11:59:35 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9219B1AC;
-        Sat, 24 Jun 2023 08:59:34 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f8689fbf59so3480559e87.0;
-        Sat, 24 Jun 2023 08:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687622373; x=1690214373;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nxD3mnsyxsM9A/pK/r4bmilX/vIQZZ/iBExyMlW0hWI=;
-        b=CdxPGMxddVeIEqvQbb6zVuOBbZtFYaa46/5i1pb94WXHhCEK8ugsf1ZTdByvsXJ9of
-         dBth1XXjCG2yJj5u+9HOPMcVNny4WjJUpJgz0CobZcjC57wmrTKxEEuHYVy04+piY0my
-         0p3mWYKl94I53iWEvqGMeEL8nIXLm0EE9+75vrzyC6zTHek0kGWZufe35BAdQ4eChRqU
-         qHRBezqnI7fzTqgEEboO8aNRTdgc+DTRyAyov2bQ4f2T2EeHOPixlNqOufs6J7eDbIPC
-         IG2TQn8AXJNmpRter5Aqx1JRrxJnLdBscufmaqzPjzt750Hj1vkRRiKAhho2hC76ShVe
-         R+Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687622373; x=1690214373;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nxD3mnsyxsM9A/pK/r4bmilX/vIQZZ/iBExyMlW0hWI=;
-        b=JMBmNVPNSAvtfcsbcmsL6eT0FeNF11Dp57lSRzNGlCUGieE4NQT7drsM8hQ2/DyfmJ
-         6Buvdbxwx+QDrpO8QnlJQz6vCP2C1iypWhNSEjynAsH/FZZYnvbpPd/fVf/kifvq8K4Q
-         TzSTjXK5kqNyKgXTWfZ1lAAxvrPWSeTAX9ddTke0so1QwdnfmByN1MLgOgvMlazFFRq4
-         TldKctk83tfiRhksg2NUwLkA23+0OI2hzC8UTuoYKOV9xX4sMUoXC1LmHD4wWV1qbcqE
-         mIJNvsqKyTCGxoitNirZvS0Nrhm4mgZdQanGo6by7q1ToslLszqR1U/1Se/5l7PAWSc2
-         XTXA==
-X-Gm-Message-State: AC+VfDwOiA798UaV8ERujRARLOm7T/VFKBwCmUMf4Weo3syEUpVFKWNT
-        hHSJN8QzVPpmKO1D+WBdY54=
-X-Google-Smtp-Source: ACHHUZ7WNyxGMyfLzLSOkyJb4r3sDazr+QBWvq4tE/boVMXXeJq4RitMkVuWZUYRRMXR8/WZubyoMA==
-X-Received: by 2002:a05:6512:3c89:b0:4f8:78a8:bfea with SMTP id h9-20020a0565123c8900b004f878a8bfeamr5774392lfv.16.1687622372625;
-        Sat, 24 Jun 2023 08:59:32 -0700 (PDT)
-Received: from [192.168.1.100] ([185.8.126.245])
-        by smtp.gmail.com with ESMTPSA id m25-20020ac24ad9000000b004fad16596fasm31748lfp.21.2023.06.24.08.59.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Jun 2023 08:59:32 -0700 (PDT)
-Message-ID: <a0d74f3f-4208-d7e3-7eed-481a06b13308@gmail.com>
-Date:   Sat, 24 Jun 2023 18:59:31 +0300
+        with ESMTP id S230029AbjFYLGF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 25 Jun 2023 07:06:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8006AE66;
+        Sun, 25 Jun 2023 04:06:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F57360B87;
+        Sun, 25 Jun 2023 11:06:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D884C433C8;
+        Sun, 25 Jun 2023 11:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687691162;
+        bh=nRAz58J3/qPb9cNUseBEBlsrannStwMZjuycQQ9A+0c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ib2pmM4R8xyzukTLUrAY7eW0YZzpwiRcceu9ReZLn15VFwmRuNYZjoPEr/rbALioD
+         kd6sQQApCG2NwnsNouzlmgg49Wyvk9zMJGv6CFGJLOR8fOooD7qdIna2xCW1KKf3eZ
+         +ZEEReJITM5WG+R13bduSGJ/PXKhRxMggPlBBhh7g59lD4zvqeJLma19xxi1IaBm45
+         982CE/o7cqrhafcxGqyKPm97YPR0RexdJjH6laSOyUtlzxXa5dt375Xdd3z0CgoxVg
+         CjTjwrsPylyxhQOWQ2UzI6EK8bYdWQkEUmq46Hrk2h0/Bpw2ogHa8psk4Dl/+xruCD
+         K/T+FIC7ZtJPA==
+Date:   Sun, 25 Jun 2023 12:06:04 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Waqar Hameed <waqar.hameed@axis.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <kernel@axis.com>
+Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
+Message-ID: <20230625120604.3ecc54bf@jic23-huawei>
+In-Reply-To: <pndo7lb1mes.fsf@axis.com>
+References: <cover.1686926857.git.waqarh@axis.com>
+        <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
+        <20230617143508.28309834@jic23-huawei>
+        <pndo7lb1mes.fsf@axis.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 6/6] meson saradc: support reading from channel7 mux
- inputs
-Content-Language: en-US
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        George Stark <gnstark@sberdevices.ru>
-Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru
-References: <20230623022334.791026-1-gnstark@sberdevices.ru>
- <20230623022334.791026-7-gnstark@sberdevices.ru>
- <CAFBinCBv993Xv_wk9fE-U0Tw2mzTB1z22Tj6x8Uy1rRw_dztng@mail.gmail.com>
-From:   George Stark <stark.georgy@gmail.com>
-In-Reply-To: <CAFBinCBv993Xv_wk9fE-U0Tw2mzTB1z22Tj6x8Uy1rRw_dztng@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Martin
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >> +stan 0;  
+> 
+> (What happened here?)
 
-Thanks for review
+No idea :)
 
-On 6/23/23 09:16, Martin Blumenstingl wrote:
-> Hi George,
->
-> On Fri, Jun 23, 2023 at 4:23 AM George Stark <gnstark@sberdevices.ru> wrote:
+> >> +}
+> >> +
+> >> +static int irsd200_write_data_rate(struct irsd200_data *data, int val)
+> >> +{
+> >> +	size_t idx;
+> >> +	int ret;
+> >> +
+> >> +	for (idx = 0; idx < ARRAY_SIZE(irsd200_data_rates); ++idx) {
+> >> +		if (irsd200_data_rates[idx] == val)
+> >> +			break;
+> >> +	}
+> >> +
+> >> +	if (idx == ARRAY_SIZE(irsd200_data_rates))
+> >> +		return -ERANGE;
+> >> +
+> >> +	ret = regmap_write(data->regmap, IRS_REG_DATA_RATE, idx);
+> >> +	if (ret < 0) {
+> >> +		dev_err(data->dev, "Could not write data rate (%d)\n", ret);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	/* Data sheet says the device needs 3 seconds of settling time. */
+> >> +	ssleep(3);  
+> > You aren't preventing other userspace reads / writes during that time so
+> > this is a light protection at best.  
+> 
+> Yes, we aren't preventing anything. The hardware actually operates
+> without any "errors" during this period (e.g. buffer data and events
+> keep arriving). 
+> 
+> This is more of a guarantee that "within 3 s, the new data rate should
+> be in effect". When I think about it, we should maybe just remove this
+> sleep?
+Interesting corner case.  I'd keep as you have it but add a little
+more documentation as why.  Having this sleep will make it easy for a single
+thread in userspace to get what it expects.
+
+> 
+> >> +
+> >> +	return 0;
+> >> +}
+...
+
+> >> +static int irsd200_write_hp_filter(struct irsd200_data *data, int val, int val2)
+> >> +{
+> >> +	size_t idx;
+> >> +	int ret;
+> >> +
+> >> +	/* Truncate fractional part to one digit. */
+> >> +	val2 /= 100000;
+> >> +
+> >> +	for (idx = 0; idx < ARRAY_SIZE(irsd200_hp_filter_freq); ++idx) {
+> >> +		if (irsd200_hp_filter_freq[idx] == val2)
+> >> +			break;
+> >> +	}
+> >> +
+> >> +	if (idx == ARRAY_SIZE(irsd200_hp_filter_freq) || val != 0)
+> >> +		return -ERANGE;
+> >> +
+> >> +	ret = regmap_field_write(data->regfields[IRS_REGF_HP_FILTER], idx);
+> >> +	if (ret < 0) {  
+> >
+> > For regmap calls, they are (I think) all documented as returning 0 for success
+> > and negative otherwise.  That lets you both check the simpler if (ret) and ...  
+> 
+> Maybe it _is_ too defensive here. However, I have encountered APIs where
+> positive values can/has been returned (due to debug/testing or just plain
+> slip ups), without any actual errors. 
+> 
+> However, let's trust `regmap` then. I can change to only look for `if
+> (ret)` everywhere.
+
+Indeed there are interfaces where you can get positive values.
+Regmap docs specifically say they won't though so we can rely on it.
+
+> 
+> >  
+> >> +		dev_err(data->dev, "Could not write hp filter frequency (%d)\n",
+> >> +			ret);
+> >> +		return ret;  
+> >
+> > drop this return ret out of the if block here.
+> >
+> > In general being able to ignore possibility of ret > 0 simplifies handling.  
+> 
+> I try to be consistent and it also "helps" the next person potentially
+> adding code after the `if`-statement and forgetting about adding
+> `return`. We can drop the `return here, but then we should do the same
+> in other places with a check just before the last `return` (like
+> `irsd200_write_timer()`, `irsd200_read_nr_count()`,
+> `irsd200_write_nr_count()` and many more), right?
+
+I don't feel particulartly strongly about this, but there are scripts
+that get used to scan for this pattern to simplify the code.
+
+Sure on the other cases. I don't tend to try and label all cases of things
+pointed out, just pick on one and rely on the patch author to generalise.
+
+> 
 > [...]
->> Meson saradc channel 7 is connected to muxer that can switch channel
-> I think that this should read: ... is connected to a mux that ...
->
-> [...]
->>   static const struct iio_chan_spec meson_sar_adc_iio_channels[] = {
->> @@ -245,6 +280,11 @@ static const struct iio_chan_spec meson_sar_adc_iio_channels[] = {
->>          MESON_SAR_ADC_CHAN(INDEX_CHAN_6),
->>          MESON_SAR_ADC_CHAN(INDEX_CHAN_7),
->>          IIO_CHAN_SOFT_TIMESTAMP(INDEX_CHAN_SOFT_TIMESTAMP),
->> +       MESON_SAR_ADC_MUX(INDEX_MUX_0_VSS, 0),
->> +       MESON_SAR_ADC_MUX(INDEX_MUX_1_VDD_DIV4, 1),
->> +       MESON_SAR_ADC_MUX(INDEX_MUX_2_VDD_DIV2, 2),
->> +       MESON_SAR_ADC_MUX(INDEX_MUX_3_VDD_MUL3_DIV4, 3),
->> +       MESON_SAR_ADC_MUX(INDEX_MUX_4_VDD, 4),
->>          MESON_SAR_ADC_TEMP_CHAN(), /* must be the last item */
-> I haven't had the chance to run these patches yet but: I think they
-> are breaking the temperature sensor readings on Meson8/8b/8m2 boards.
-> See arch/arm/boot/dts/meson.dtsi where the temperature channel is
-> being referenced:
->    io-channels = <&saradc 8>
->
-> With this series (this patch and I think also patch 3/6 "meson saradc:
-> unite iio channel array definitions") the numbering of the temperature
-> sensor channel changes.
->
-> To make things worse: in theory we can use meson_saradc to read the
-> SoC temperature sensor on GXBB, GXL and GXM boards (possibly on AXG as
-> well but I can't recall from the top of my head) instead of going
-> through SCPI.
-> I have experimented with this in the past but never got it to work.
-> Doing so in the future could lead to another channel index change,
-> depending on how we decide to go forward now.
->
-> There's two that I can think of:
-> - update meson.dtsi to use the new channel numbering (I don't expect
-> many 32-bit SoC users out there using new kernel + old .dtbs, but it's
-> impossible to say for sure)
-> - or keep the driver backwards compatible (that involves re-adding the
-> channel tables)
->
-> What do you think?
-Actually we'd have to make 2 patches to meson.dtsi, the first change 
-8->9, than 9 ->14.
-And if that index exposed externally (ABI like) I'd not change it 
-without good reason at all.
-So I think to return to double definition of meson_sar_adc_iio_channels 
-and keep the driver backwards compatible.
+> 
+> >> +
+> >> +static int irsd200_write_event(struct iio_dev *indio_dev,
+> >> +			       const struct iio_chan_spec *chan,
+> >> +			       enum iio_event_type type,
+> >> +			       enum iio_event_direction dir,
+> >> +			       enum iio_event_info info, int val, int val2)
+> >> +{
+> >> +	struct irsd200_data *data = iio_priv(indio_dev);
+> >> +
+> >> +	switch (info) {
+> >> +	case IIO_EV_INFO_VALUE:
+> >> +		return irsd200_write_threshold(data, dir, val);
+> >> +	case IIO_EV_INFO_TIMEOUT:
+> >> +		return irsd200_write_timer(data, val, val2);
+> >> +	case IIO_EV_INFO_PERIOD:
+> >> +		return irsd200_write_nr_count(data, val);
+> >> +	case IIO_EV_INFO_LOW_PASS_FILTER_3DB:
+> >> +		return irsd200_write_lp_filter(data, val);
+> >> +	case IIO_EV_INFO_HIGH_PASS_FILTER_3DB:
+> >> +		return irsd200_write_hp_filter(data, val, val2);  
+> >
+> > Just to check - filtering is only on the data being used for events? Not
+> > on the direct readback of the data?  Whilst that happens, it's not all that
+> > common - hence the check.  
+> 
+> Well spotted! It actually made think here! :)
+> 
+> I do think it applies to the raw data (as well). Comparing that to
+> `IIO_CHAN_INFO_SAMP_FREQ` (which also affects the events) we should
+> therefore probably move the filtering to `struct iio_chan_spec
+> irsd200_channels`, right?
 
-I've just realized another moment with channels defined after 
-MESON_SAR_ADC_TEMP_CHAN in channel array.
-In dts by default channels are referenced by channel array index not 
-even by channel number.
-So channel e.g MUX_0_VSS will have the same number (due to enum patch) 
-but different index on meson8 and gxbb.
-As alternative we can implement fwnode_xlate method in meson adc driver 
-and use channel numbers in dts
-(probably not in the current patchset).
+Yes.
 
-Best regards,
-George
+> >> +static irqreturn_t irsd200_irq_thread(int irq, void *dev_id)
+> >> +{
+> >> +	struct iio_dev *indio_dev = dev_id;
+> >> +	struct irsd200_data *data = iio_priv(indio_dev);
+> >> +	enum iio_event_direction dir;
+> >> +	unsigned int lower_count;
+> >> +	unsigned int upper_count;
+> >> +	unsigned int status = 0;
+> >> +	unsigned int source = 0;
+> >> +	unsigned int clear = 0;
+> >> +	unsigned int count = 0;
+> >> +	int ret;
+> >> +
+> >> +	ret = regmap_read(data->regmap, IRS_REG_INTR, &source);
+> >> +	if (ret) {
+> >> +		dev_err(data->dev, "Could not read interrupt source (%d)\n",
+> >> +			ret);
+> >> +		return IRQ_NONE;
+> >> +	}
+> >> +
+> >> +	ret = regmap_read(data->regmap, IRS_REG_STATUS, &status);
+> >> +	if (ret) {
+> >> +		dev_err(data->dev, "Could not acknowledge interrupt (%d)\n",
+> >> +			ret);
+> >> +		return IRQ_NONE;
+> >> +	}
+> >> +
+> >> +	if (status & BIT(IRS_INTR_DATA) && iio_buffer_enabled(indio_dev)) {
+> >> +		iio_trigger_poll_nested(indio_dev->trig);
+> >> +		clear |= BIT(IRS_INTR_DATA);
+> >> +	}
+> >> +
+> >> +	if (status & BIT(IRS_INTR_TIMER) && source & BIT(IRS_INTR_TIMER)) {
+> >> +		iio_push_event(indio_dev,
+> >> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
+> >> +						    IIO_EV_TYPE_CHANGE,
+> >> +						    IIO_EV_DIR_NONE),  
+> >
+> > As below, I'd like more explanation of what this is.
+> > I can't find a datasheet to look it up in.  
+> 
+> This is a timer for the detection event window time, i.e. the signal
+> should pass the threshold values within this time in order to get an
+> interrupt (`IIO_EV_TYPE_THRESH`).
+> 
+> You setup the window time (`IIO_EV_INFO_TIMEOUT`), and when this timer
+> has expired, you get this interrupt (and thus `IIO_EV_TYPE_CHANGE`). I
+> couldn't find any other more fitting value in `enum iio_event_type`.
 
->
-> Best regards,
-> Martin
->
-> _______________________________________________
-> linux-amlogic mailing list
-> linux-amlogic@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-amlogic
+I'm not totally following.   This is some sort of watchdog?  If threshold
+not exceeded for N seconds an interrupt occurs?  
 
+Change is definitely not indicating that, so not appropriate ABI to use.
+Timeout currently has a very specific defined meaning and it's not this
+(see the ABI docs - to do with adaptive algorithm jumps - we also have
+reset_timeout but that's different again).
 
+This probably needs some new ABI defining.  I'm not sure what will work
+best though as it's kind of a 'event did not happen' signal if I've understood
+it correctly?
+
+> 
+> >> +			       iio_get_time_ns(indio_dev));
+> >> +		clear |= BIT(IRS_INTR_TIMER);
+> >> +	}
+> >> +
+> >> +	if (status & BIT(IRS_INTR_COUNT_THR_OR) &&
+> >> +	    source & BIT(IRS_INTR_COUNT_THR_OR)) {
+> >> +		/*
+> >> +		 * The register value resets to zero after reading. We therefore
+> >> +		 * need to read once and manually extract the lower and upper
+> >> +		 * count register fields.
+> >> +		 */
+> >> +		ret = regmap_read(data->regmap, IRS_REG_COUNT, &count);
+> >> +		if (ret)
+> >> +			dev_err(data->dev, "Could not read count (%d)\n", ret);
+> >> +
+> >> +		upper_count = IRS_UPPER_COUNT(count);
+> >> +		lower_count = IRS_LOWER_COUNT(count);
+> >> +
+> >> +		/*
+> >> +		 * We only check the OR mode to be able to push events for
+> >> +		 * rising and falling thresholds. AND mode is covered when both
+> >> +		 * upper and lower count is non-zero, and is signaled with
+> >> +		 * IIO_EV_DIR_EITHER.  
+> >
+> > Whey you say AND, you mean that both thresholds have been crossed but also that
+> > in that configuration either being crossed would also have gotten us to here?
+> > (as opposed to the interrupt only occurring if value is greater than rising threshold
+> >  and less than falling threshold?)
+> >
+> > If it's the first then just report two events.  Either means we don't know, rather
+> > than we know both occurred.  We don't document that well though - so something
+> > we should improved there. whilst a bit confusing: 
+> > https://elixir.bootlin.com/linux/v6.4-rc6/source/Documentation/ABI/testing/sysfs-bus-iio#L792
+> > talks about this.
+> >
+> > The bracketed case is more annoying to deal with so I hope you don't mean that.
+> > Whilst we've had sensors that support it in hardware for years, I don't think we
+> > ever came up with a usecase that really justified describing it.  
+> 
+> According to the data sheet (which will hopefully be soon publicly
+> available):
+> 
+> OR-interrupt:  (UPPER_COUNT + LOWER_COUNT >= NR_COUNT)
+> 
+> AND-interrupt: (UPPER_COUNT + LOWER_COUNT >= NR_COUNT) &&
+>                (UPPER_COUNT != 0) && (LOWER_COUNT != 0)
+>                
+> For example, consider the following situation:
+> 
+>                                ___
+>                               /   \
+> -----------------------------3------------------- Upper threshold
+>                ___          /       \
+> ______        /   \        /         \___________ Data signal
+>       \      /     \      /
+> -------1------------2---------------------------- Lower threshold
+>         \__/         \__/
+>         
+> When `NR_COUNT` is set to 3, we will get an OR-interrupt on point "3" in
+> the graph above. In this case `UPPER_COUNT = 1` and `LOWER_COUNT = 2`.
+> 
+> When `NR_COUNT` is set to 2, we will get an OR-interrupt on point "2"
+> instead. Here `UPPER_COUNT = 0` and `LOWER_COUNT = 2`.
+> 
+
+Thanks.  That is very odd definition of AND.  At least OR is close to normal
+though the way count is applied is unusual.  Most common thing similar to that
+is what we use period for in IIO - it's same count here, but it resets once
+the condition is no longer true.  Here we have a running total...
+
+Getting this into standard ABI or anything approaching it is going to be tricky.
+
+Firstly need a concept similar to period but with out the reset. That will at least
+allow us to comprehend the counts part.
+
+Either can then be used for the OR case.
+
+The AND case is a mess so for now I'm stuck.  Will think some more on this.
+Out of curiosity does the datasheet include why that particular function makes
+any sense?  Feels like a rough attempt to approximate something they don't have
+hardware resources to actually estimate.
+
+Jonathan

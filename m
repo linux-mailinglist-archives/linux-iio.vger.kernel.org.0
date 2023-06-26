@@ -2,101 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD6A73DD2C
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Jun 2023 13:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F4F73E6FF
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Jun 2023 19:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229488AbjFZLT5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Jun 2023 07:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55576 "EHLO
+        id S230209AbjFZRzJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Jun 2023 13:55:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbjFZLTx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 07:19:53 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27D2FFD;
-        Mon, 26 Jun 2023 04:19:52 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-313e1c27476so1529306f8f.1;
-        Mon, 26 Jun 2023 04:19:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687778390; x=1690370390;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TIiFZpg7B3DpChMaXA9ungeQqsAbX36FJdgE1LxMDCo=;
-        b=TyWyPj0Yh6h0y/Z7aNgxjPYn00/aWd8E+aLfbj718Xv8HDZn6hrqE1LhqIM536MAEn
-         hg1tjD9UQfCKKMifnzT86Jjnm+P/XXm8BMFQYGJfliaK6Yli6BNfiLdrw/MWfENKKbn/
-         pUTlnn6NL/iBTVfLhqmGnO9vzbazGbVlHFwZLbDWAGgOb9Z2axfYi3cOgqtOP4m7bChc
-         kaIt293aTKCXwxV7cSSiMYSMRZYQW2EdloXCfVDjswODVno0m1mWtQvOUyMvyhK2yhh8
-         u8vBzPKEO6kEhk1KVX2hxu37CziDY0S9oiC06GvRb+/E0FIX6KB/TkWqR/ZDEqoaedgf
-         JQTg==
+        with ESMTP id S231651AbjFZRy6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 13:54:58 -0400
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 839F6173A;
+        Mon, 26 Jun 2023 10:54:47 -0700 (PDT)
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-3457cba78f3so14996895ab.3;
+        Mon, 26 Jun 2023 10:54:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687778390; x=1690370390;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TIiFZpg7B3DpChMaXA9ungeQqsAbX36FJdgE1LxMDCo=;
-        b=DsYD4D5oieKsmwe7ZpnuXs0ObtzXSz9H8eJMdpgJFUR9aAFP1VkGQ0TdD6Z9Aak+7F
-         KYFc8ks7IIUwrQO06pUWqeAIDI3FjX8e1Ssqagksu6t4VQRpwZ3qo2/dh5NqwlYicjRv
-         Fnkup0/xsAePFRyT2V1AVQ5Z/me5mSJPl2q+yORbEd+H9d43k1vcBIUno4+OyI3+Zx8h
-         zz8hCC8oVVLXjshnpmR2q/yMQH6z4iVE/d62IX0NIfHazBye4vLj5Inq60+0MW9NfBUX
-         hnTU5H97pHrWU4p6ZFUiv2MaRl6V30Xj19jR706hFcrJUUGm7Cidd3uUWKxQSZ/7DOGR
-         HG2A==
-X-Gm-Message-State: AC+VfDysV429n6KWibKnB7BFEHZiMjI2wtpGExUYXLCyQHeLKeumTss6
-        FC8o4VRtz/P0WZvFkQg0vfCXq6UkbUc=
-X-Google-Smtp-Source: ACHHUZ4vDoRpL0OZEam7+xPw+z9QVrtan5OPJ5NbSUBY0KnLQr635Q7NdnC8Ac4B1z1eojnnG1oaLA==
-X-Received: by 2002:a05:6000:12c8:b0:311:2888:9f95 with SMTP id l8-20020a05600012c800b0031128889f95mr25062999wrx.23.1687778390325;
-        Mon, 26 Jun 2023 04:19:50 -0700 (PDT)
-Received: from ?IPv6:2001:a61:35be:1401:2331:c532:1717:d48c? ([2001:a61:35be:1401:2331:c532:1717:d48c])
-        by smtp.gmail.com with ESMTPSA id g6-20020a5d6986000000b003047dc162f7sm7105043wru.67.2023.06.26.04.19.49
+        d=1e100.net; s=20221208; t=1687802087; x=1690394087;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KSyc+a73j8m7K0KIeaQ8LsysU/zcItL6sttRvkyrMs0=;
+        b=ZC6KBDFDHy1QZWie8h0zIupyg8Gp0dAVUy0kAa8GHyFBenat5vjK3B8WgzXWYuoBB8
+         3Fkq6rfE8Jz8dAy8pXukfNhmWfNFpVXQloWEeYlfsTKLotCXdl/h+m4pRUipBvVOUthi
+         kjKw3g2Zso+uMZyyGAJSfXvgxreX/Nw03nBEk4eWEGUHyd/1lPU1s9kaQW4xjy68ximI
+         urVTt53+Y4ixVOB9MAbaKk1XOD5CCWwY/tbsI4mNaQite7KFtWR9SgtNkQ3elcrTRWeo
+         zKLENzDqf9hY1OJgKySl1qTTHnUFHmAKoXkPi1e1fNMYqOYWuRJOfZkzkloGFyafY9/C
+         O1AA==
+X-Gm-Message-State: AC+VfDxULjaBRs6+VgMiLHROkZ4/4/byLtwibRq18L37/yvRcGmKMdne
+        qEEnwrb3zKHviGDkho9+0g==
+X-Google-Smtp-Source: ACHHUZ7MkE7zJamNHOTyZHvfsoPXdRWHmol8FfHFGI+5hV9U+RZMqHt3x9FryQJytL8Xc8IwSyMcVQ==
+X-Received: by 2002:a92:d30e:0:b0:340:72d1:69a with SMTP id x14-20020a92d30e000000b0034072d1069amr31489125ila.28.1687802086721;
+        Mon, 26 Jun 2023 10:54:46 -0700 (PDT)
+Received: from robh_at_kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id w4-20020a029684000000b0041ac54cbc60sm1880991jai.56.2023.06.26.10.54.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jun 2023 04:19:49 -0700 (PDT)
-Message-ID: <9167ba56f8afafa81efb2d5acd84cab0843505e4.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7192: Use sysfs_emit_at
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Alisa Roman <alisa.roman@analog.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 26 Jun 2023 13:19:49 +0200
-In-Reply-To: <20230620163135.93780-1-alisa.roman@analog.com>
-References: <20230620163135.93780-1-alisa.roman@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        Mon, 26 Jun 2023 10:54:45 -0700 (PDT)
+Received: (nullmailer pid 3455212 invoked by uid 1000);
+        Mon, 26 Jun 2023 17:54:43 -0000
+Date:   Mon, 26 Jun 2023 11:54:43 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Lee Jones <lee@kernel.org>
+Cc:     "Sahin, Okan" <Okan.Sahin@analog.com>,
+        Mark Brown <broonie@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v7 5/5] mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
+ Support
+Message-ID: <20230626175443.GA3446604-robh@kernel.org>
+References: <20230412111256.40013-1-okan.sahin@analog.com>
+ <20230412111256.40013-6-okan.sahin@analog.com>
+ <20230420103438.GI9904@google.com>
+ <09eb8e4c-3e73-41f0-bf42-8ddf3c4254ec@sirena.org.uk>
+ <20230421073938.GO996918@google.com>
+ <82612171-46d7-4d82-a8fc-c7d6a99d57e9@sirena.org.uk>
+ <MN2PR03MB516860989BD8ED6AC9A767FBE755A@MN2PR03MB5168.namprd03.prod.outlook.com>
+ <20230621171315.GL10378@google.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230621171315.GL10378@google.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gVHVlLCAyMDIzLTA2LTIwIGF0IDE5OjMxICswMzAwLCBBbGlzYSBSb21hbiB3cm90ZToKPiBS
-ZXBsYWNlIHNjbnByaW50ZiB3aXRoIHN5c2ZzX2VtaXRfYXQgd2hpY2ggaXMgdGhlIHByZWZlcnJl
-ZCBhbHRlcm5hdGl2ZS4KPiAKPiBBbHNvIG1ha2Ugc3VyZSBlYWNoIGZyYWN0aW9uYWwgZGlnaXQg
-aXMgaW4gaXRzIHBsYWNlIGJ5IHBhZGRpbmcgd2l0aAo+IHplcm9zIHVwIHRvIDMgZGlnaXRzOiAi
-Li4uJTAzZC4uLiIuCj4gCj4gU2lnbmVkLW9mZi1ieTogQWxpc2EgUm9tYW4gPGFsaXNhLnJvbWFu
-QGFuYWxvZy5jb20+Cj4gLS0tCgpSZXZpZXdlZC1ieTogTnVubyBTYSA8bnVuby5zYUBhbmFsb2cu
-Y29tPgoKPiDCoGRyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYyB8IDUgKystLS0KPiDCoDEgZmlsZSBj
-aGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYyBiL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+IGlu
-ZGV4IGUyM2Q5YTdkY2M5ZS4uYzk4MGJjODcxNDEyIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaWlv
-L2FkYy9hZDcxOTIuYwo+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+IEBAIC01NjEs
-OSArNTYxLDggQEAgc3RhdGljIHNzaXplX3QgYWQ3MTkyX3Nob3dfZmlsdGVyX2F2YWlsKHN0cnVj
-dCBkZXZpY2UgKmRldiwKPiDCoMKgwqDCoMKgwqDCoMKgYWQ3MTkyX2dldF9hdmFpbGFibGVfZmls
-dGVyX2ZyZXEoc3QsIGZyZXFfYXZhaWwpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9
-IDA7IGkgPCBBUlJBWV9TSVpFKGZyZXFfYXZhaWwpOyBpKyspCj4gLcKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoGxlbiArPSBzY25wcmludGYoYnVmICsgbGVuLCBQQUdFX1NJWkUgLSBsZW4s
-Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgICIlZC4lZCAiLCBmcmVxX2F2YWlsW2ldIC8gMTAwMCwKPiAtwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJlcV9h
-dmFpbFtpXSAlIDEwMDApOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBsZW4gKz0g
-c3lzZnNfZW1pdF9hdChidWYsIGxlbiwgIiVkLiUwM2QgIiwgZnJlcV9hdmFpbFtpXSAvIDEwMDAs
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgZnJlcV9hdmFpbFtpXSAlIDEwMDApOwo+IMKgCj4gwqDCoMKgwqDC
-oMKgwqDCoGJ1ZltsZW4gLSAxXSA9ICdcbic7Cj4gwqAKCg==
+On Wed, Jun 21, 2023 at 06:13:15PM +0100, Lee Jones wrote:
+> On Tue, 13 Jun 2023, Sahin, Okan wrote:
+> 
+> > >On Fri, Apr 21, 2023 at 08:39:38AM +0100, Lee Jones wrote:
+> > >
+> > >> I'll try anything once!
+> > >
+> > >> Fair warning, I think this is going to massively complicate things.
+> > >
+> > >> Either we're going to be left with a situation where child-driver
+> > >> maintainers are scrabbling around looking for previous versions for the
+> > >> MFD pull-request or contributors being forced to wait a full cycle for
+> > >> their dependencies to arrive in the maintainer's base.
+> > >
+> > >If people are resending after the MFD has gone in they really ought to
+> > >be including the pull request in the cover letter, with some combination
+> > >of either referencing the mail or just saying "this depends on the
+> > >signed tag at url+tag", the same way they would for any other dependency.
+> > >
+> > >I can't see how you applying stuff when you can slow things down TBH,
+> > >the MFD bits will be applied faster and either people can pull in a
+> > >shared tag or you can apply more commits on top of the existing core
+> > >driver.
+> > >
+> > >> I'm not sure why simply providing your Ack when you're happy with the
+> > >> driver and forgetting about the set until the pull-request arrives, like
+> > >> we've been doing for nearly a decade now, isn't working for you anymore
+> > >> but I'm mostly sure this method will be a regression.
+> > >
+> > >Like I said I've not been doing that, I've mostly been just applying the
+> > >driver when it's ready.  This might not have been so visible to you
+> > >since it means that the regulator driver doesn't appear in the series by
+> > >the time the MFD settles down.  The whole "Acked-for-MFD" has always
+> > >been a bit confusing TBH, it's not a normal ack ("go ahead and apply
+> > >this, I'm fine with it") so it was never clear what the intention was.
+> > >
+> > >Before I started just applying the drivers there used to be constant
+> > >problems with things like tags going missing (which some of the time is
+> > >the submitter just not carrying them but can also be the result of some
+> > >churn causing them to be deliberately dropped due to changes) or
+> > >forgetting the series as you suggest and then not looking at some other
+> > >very similarly named series that was also getting lots of versions after
+> > >thinking it was one that had been reviewed already.  It was all very
+> > >frustrating.  Not doing the tags until the dependencies have settled
+> > >down means that if it's in my inbox it at least consistently needs some
+> > >kind of attention and that the submitter didn't drop tags or anything so
+> > >I know why there's no tag on it even though the version number is high,
+> > >though it's not ideal either.
+> > 
+> > Hi Mark and Lee,
+> > 
+> > Is there anything that I need to do for this patch set. I have received reviewed
+> > by tag for all of them so far. 
+> 
+> Since we are so late in the day, I'm going to just apply this for v6.5.
+> 
+> The remainder can then be applied, friction free, for v6.6.
 
+Now we have undocmented bindings in use by the driver (as pointed out by 
+'make dt_compatible_check').
+
+The whole series has all the acks/reviews needed for you to apply the 
+whole thing, so why not take the whole thing? Plus this series has been 
+sitting for 2 months. Not a great experience for submitters...
+
+Rob

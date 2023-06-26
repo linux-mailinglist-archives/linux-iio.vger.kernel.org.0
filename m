@@ -2,100 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C90EB73D422
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Jun 2023 22:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAEE73D95F
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Jun 2023 10:15:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbjFYUhO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 25 Jun 2023 16:37:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36006 "EHLO
+        id S229900AbjFZIPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Jun 2023 04:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjFYUhO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 25 Jun 2023 16:37:14 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD4EEB;
-        Sun, 25 Jun 2023 13:37:13 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-988a076a7d3so398845866b.3;
-        Sun, 25 Jun 2023 13:37:13 -0700 (PDT)
+        with ESMTP id S229488AbjFZIPc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 04:15:32 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D442AAC
+        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 01:15:30 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4f8689fbf59so4987833e87.0
+        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 01:15:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1687725431; x=1690317431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JPEEXOayrC5kIElDx6mVXihAHFqvW3pl2AK2GXH8Dz4=;
-        b=XFkr/2ryDfP/kOgJUJjAhpDf4wBta7e01Hc9IRRavETIlHFtcyFKkMKrICgZxWSTCg
-         wAJ2PSu99A6Q9qlsMumwpHvQoztVdQD79miZAi6j8jM1e+z/70OaWA5Xz5UFiRk+iUwX
-         rfIgJ5vhUwMQdh14EjzPY9VsZuLuR3/inz1yJslvQeiu7krwFytZo6fcYgrmy3IxTgcs
-         d3kMxXQfamVYcOx3WEcDB+Ft56pud1zDysYg//p5uNmt2X7eXssmvDlnoSrl9YyA5ygH
-         9o60y8C93iJOQ0E3VX7N5dKB7h93dvR2cFWwf4rVDWka2R1tfaIZrGlwx46+fUZa549F
-         r8yQ==
+        d=rasmusvillemoes.dk; s=google; t=1687767329; x=1690359329;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gGHIp8kHu6DlaBCXCBrSvc/vTmF8AY6pN2wBGIxEnlk=;
+        b=V0EyxmfmCo2Hf6/R85d0aGj9BUo3B3nesAuH0xVCQ3J8Q3Y65/3/1kEBSmxXSa8UnC
+         rfLypoH8Dh13y5ndsaRSDZFzsy3b/auCLtPBnrn8jAZ3gVufNemi8D3XFXqz5uCs2sT3
+         zHf5iRFWVKngIk/Ww6HdJdQQXgq4dNpOD0fN0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687725431; x=1690317431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JPEEXOayrC5kIElDx6mVXihAHFqvW3pl2AK2GXH8Dz4=;
-        b=H275/g4UA9H/YVqXopzKMTDomUkvkFnl7rlXrDFkuKe2nQ1aPE8uU5WR9fQBHgY0Xg
-         NZTudh7d/eQt6NI1jsGcwtgelXlN7Cocs5ZjrUcKUkzlvV3QhD/boUrJlcqD5c97LmOA
-         03sVbrdFuHVpvYZcsnfNIqG3uvchI1WQO1sl+Gy3QJrBlV4Jbs/vlXinn7MqjCX1mCGO
-         dT+FzDpSzgmJAH9CGMdWAbM2uR71KWsK6bzeJjENyfct4zJhS35PLXmQnMfcZFXhMGej
-         whtcpEVc7STPx22x8boxlFVVd7Sbq+bra0lVKJTnb8KJ4sFlFBdMip9r5xGUOoHcbPip
-         OxUQ==
-X-Gm-Message-State: AC+VfDypH1Q9rqdBbyw0dWBOLwKQ07SF7xGi3bKQ6+GdbVpyF3NfcD5I
-        vI1ypf9c+H2ruJhLj1zx8wAMP7V5ImZmYUJXIaNKvEjp
-X-Google-Smtp-Source: ACHHUZ4JXpMZ9XyyEpdax0IaCH+S8eNV76nhvfHU4BK6OWDEYqE7Bi4HV7SBpmZkWKitYD5YU3xkHDKGs5bBac1p3H8=
-X-Received: by 2002:a17:907:a0c:b0:978:8e8c:1bcb with SMTP id
- bb12-20020a1709070a0c00b009788e8c1bcbmr25059662ejc.43.1687725431246; Sun, 25
- Jun 2023 13:37:11 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687767329; x=1690359329;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGHIp8kHu6DlaBCXCBrSvc/vTmF8AY6pN2wBGIxEnlk=;
+        b=KCFdBWmC3zvVTKIqxigyfGu5DQLhA/hWKRIuK4ZFjuNt2hdQER2+MFsu3SAsSlpwE+
+         ow6PBzZieiZiYn6RMJfKKAcKtd9lNBgZY76bDxaPFEZYqszof54Q8ixjlCMP2D1Xd09h
+         Bf4RKtjdbR5JdUc3CsDuJDi5vy8D9tYGRu5errlN6B+xJgnvMF84JSntstBbGN2CV2jy
+         3r+U7Vyg7JsLEGx1MBITkL+vF7m/0fTUZM5Yw1SV1OAv2se7CpqzMWkXZZaxLHC2s1tB
+         02ZmwJxZnl1qwgE+15IwTIlc7UpU5UIgpv//HoFP0eU43v7cLjFv1IDX4+xsDQPMXKzb
+         NpGg==
+X-Gm-Message-State: AC+VfDzTt64CFP/SzBaevCDrtMo6hKRVzPVYQ2XYYbyO+qALx1lEFq+P
+        uM+rCVkU9ztphSGQn8aeuAko6w==
+X-Google-Smtp-Source: ACHHUZ5sFqSVHquJ2u3PCj1RybPPFSGEJ80M6/wIJ+raPGuyV4/OsGHJNEcQkSk6BuLksd0VWia5UA==
+X-Received: by 2002:ac2:4c4c:0:b0:4f6:3ef3:13e8 with SMTP id o12-20020ac24c4c000000b004f63ef313e8mr10976540lfk.0.1687767328959;
+        Mon, 26 Jun 2023 01:15:28 -0700 (PDT)
+Received: from [172.16.11.116] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id z22-20020a19f716000000b004f4ce9c9338sm993754lfe.283.2023.06.26.01.15.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jun 2023 01:15:28 -0700 (PDT)
+Message-ID: <8176d552-9829-5442-3ce9-805744b8389e@rasmusvillemoes.dk>
+Date:   Mon, 26 Jun 2023 10:15:27 +0200
 MIME-Version: 1.0
-References: <20230623022334.791026-1-gnstark@sberdevices.ru>
- <20230623022334.791026-7-gnstark@sberdevices.ru> <CAFBinCBv993Xv_wk9fE-U0Tw2mzTB1z22Tj6x8Uy1rRw_dztng@mail.gmail.com>
- <67d2a9b7-ac7b-57f7-d053-cff4bf0f9d2e@sberdevices.ru>
-In-Reply-To: <67d2a9b7-ac7b-57f7-d053-cff4bf0f9d2e@sberdevices.ru>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Sun, 25 Jun 2023 22:37:00 +0200
-Message-ID: <CAFBinCCzx2e92S-cQp2CVup4hr6Ge12uCJ3Qh0+sqNVFRWkv7A@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] meson saradc: support reading from channel7 mux inputs
-To:     George Stark <gnstark@sberdevices.ru>
-Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: ad74413r: add binding for digital
+ input threshold
+Content-Language: en-US, da
+To:     Rob Herring <robh@kernel.org>, Conor Dooley <conor@kernel.org>
+Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
+ <20230623113327.1062170-2-linux@rasmusvillemoes.dk>
+ <20230623-casket-outer-2c9d2a0c4795@spud>
+ <20230623215731.GB1216324-robh@kernel.org>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+In-Reply-To: <20230623215731.GB1216324-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi George,
+On 23/06/2023 23.57, Rob Herring wrote:
+> On Fri, Jun 23, 2023 at 05:44:50PM +0100, Conor Dooley wrote:
+>> On Fri, Jun 23, 2023 at 01:33:25PM +0200, Rasmus Villemoes wrote:
+>>> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
+>>> index 590ea7936ad7..1f90ce3c7932 100644
+>>> --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
+>>> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
+>>> @@ -51,6 +51,14 @@ properties:
+>>>        Shunt (sense) resistor value in micro-Ohms.
+>>>      default: 100000000
+>>>  
+>>> +  digital-input-threshold-microvolt:
+>>
+>> Should this not have an adi vendor prefix, similar to
+>> "adi,digital-input-threshold-mode-fixed"?
+> 
+> Yes.
 
-On Fri, Jun 23, 2023 at 6:38=E2=80=AFPM George Stark <gnstark@sberdevices.r=
-u> wrote:
-[...]
-> So I think to return to double definition of meson_sar_adc_iio_channels a=
-nd keep the driver backwards compatible.
-Ack!
+OK. But I'm not really sure what the rules are for when such a prefix
+must be added, so some guidance would be appreciated. There's
 
-> I've just realized another moment with channels defined after MESON_SAR_A=
-DC_TEMP_CHAN in channel array.
-Good catch
+- DO use a vendor prefix on device specific property names. Consider if
+  properties could be common among devices of the same class.
 
-> In dts by default channels are referenced by channel array index not even=
- by channel number.
-> So channel e.g MUX_0_VSS will have the same number (due to enum patch) bu=
-t different index on meson8 and gxbb.
-> As alternative we can implement fwnode_xlate method in meson adc driver a=
-nd use channel numbers in dts (probably not in the current patchset)
-That is actually an interesting third approach. But as you said: let's
-start simple and add the tables back for now.
+And my thinking was that a threshold for when a digital input should
+count as high/low would be a rather generic thing, so not particularly
+device specific.
 
+Also, this very binding has a shunt-resistor-micro-ohms, and the
+individual channels have a drive-strength-microamp (granted, that latter
+one is a recent one of mine and may have slipped through review?). I can
+certainly understand that when a property specifies a raw value to put
+into some register (or field), that's very specific to that chip (or
+small family of chips) - the adi,ch-func properties fall into that category.
 
-Best regards,
-Martin
+Rasmus
+

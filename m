@@ -2,74 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C273B73EE96
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jun 2023 00:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02BC73EF1F
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jun 2023 01:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbjFZWUK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Jun 2023 18:20:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38000 "EHLO
+        id S229610AbjFZXVQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Jun 2023 19:21:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229777AbjFZWTr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 18:19:47 -0400
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A508AA
-        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 15:19:44 -0700 (PDT)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-4715758343aso1180111e0c.1
-        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 15:19:44 -0700 (PDT)
+        with ESMTP id S229488AbjFZXVQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 19:21:16 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3736CFB
+        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 16:21:14 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4f8735ac3e3so5453867e87.2
+        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 16:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687817983; x=1690409983;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ufNVE0dQejfSX8wYNYRTMSSfw+pixc9c6G+EySlKjXU=;
-        b=s9yPfPENqAVCBS8yJ/0syiP44/PinzWCNVUgFlXiAMw2DbEOlTVhHkttkanWHHhguD
-         EfrEh4cvSbKmb/K8sVu/djsYc2swxnvVCGTXtoGlqaLPTy9aqPAfc06/hAGHB+V00tfO
-         Ar8PE1TcDlDmltieL8l3xZPDc9VSmhDAvfFvs8+Rfn8iLACXROnE33OHojXHkystwXbL
-         9Y9dv9NPa8R+Gc7HW5Qi9CP/1HVUvxj6NBjo9ceRZ7fmQj66fpkgk4jDrLCSro/UFGrs
-         B946nFvgjLy3lNOcTWrR3E4gw4LWWpB/9bubTPj7uQbIvvN+uZAzK3fOzHH1yh/N6Wy+
-         DxwQ==
+        d=linaro.org; s=google; t=1687821672; x=1690413672;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dO36VoJ4ufjlnHaPl++WtOzPlb780JRUZU8+ra09/tE=;
+        b=nYRqyHRpGzJRswEo8vcl7HO7FYib8wgFhtYbKfdisTPyAmJvw1KFYuwunq9Rw5geGp
+         Af09E+TdKs7cpB3IYRKC0xDhdt+pJbcU8K2wCaMki/ahiqRLfahDQN4DU9oDd+sMDXDt
+         VoafBAqm3jwPqBxa/x8oH10ArJAbsz7c9iIYD03R4+CF1Qiwf938m0lpnnFKHX7uxc6r
+         01Yu5IzI6oiOWZtifwmVo4hZ7ZLY8n4l88KaTTbPLLiy8re+j+RVI42kkqsfV4eolpwW
+         gttInmU9czbrC1rM7OfxQQXnMgLwGTg72I41ubGSelais5ctjKXFWXW3R5JpnNpbigUM
+         1Tpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687817983; x=1690409983;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ufNVE0dQejfSX8wYNYRTMSSfw+pixc9c6G+EySlKjXU=;
-        b=AJAdI+Lz4frkCnfwEdaIKcy6jT4D5x1l1pRR9Ka/W2c1VKsRw1vkNnvfEeQ30SVksO
-         kjkMoxewn5lrBQiLWCSUlZlj4w40XYxTF5c44S3CNbr3tuV0uzXiAxFDzG015FIAyD4c
-         Ujep5951gAYZy+B64D3RE9Au9SHtZZsp9P3TDvdsELxXggdu4ON9IshDLUSvS3vfLX0c
-         TA/tNqhOIUFDsPuJ+O2L4TR7WeFgL28W2ZfKZIiYsSoeASZ92hW5pj9o0HOaFgigcA+G
-         Q2Rex7QWq4uIBEnehcNvT8ieAeZZDzRRoaso1da9uznZnC4owKLi5FA1I6r2BJRUFU8I
-         IqnQ==
-X-Gm-Message-State: AC+VfDxBwg1J7WxRfctBWGZTHAWpVFR3cEMuKIlGHuo/039gkhs4TBS4
-        3kidNZAduiRfoPcVYd2KEN94wY/yv7diOQ8mj88=
-X-Google-Smtp-Source: ACHHUZ4qcZPYyWh1IiaQmhAJsjra9DikU+Fft13pk918If1PwcgaUHeACsrT15neJikmLTJxc8L5kg==
-X-Received: by 2002:a1f:5744:0:b0:46e:8084:92be with SMTP id l65-20020a1f5744000000b0046e808492bemr12928526vkb.6.1687817983363;
-        Mon, 26 Jun 2023 15:19:43 -0700 (PDT)
-Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id g200-20020a1f9dd1000000b0047cdf4481f4sm753414vke.26.2023.06.26.15.19.41
+        d=1e100.net; s=20221208; t=1687821672; x=1690413672;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dO36VoJ4ufjlnHaPl++WtOzPlb780JRUZU8+ra09/tE=;
+        b=jf6ndDCEiu0tmpnWSPZRPHeJHMywsSlpnqrvZua/3SUUKD5P5qsjTT6KwIVPI7Ulpg
+         135KeQurt4jI/TgeBBb/N9ACN40g07ViA9Bu/gq9YkNV3IjIAMEV0+5lG6vweSrRQtYq
+         XeN6VcvduZ1EguGJcKuu1q+mCDztiGsTIjYRymMCfBx1xy4d8e1tPwJB8ZWlycgCoS1w
+         /xIlRJkXMR3WiCr4Tv4L0KAKwOg+VQQ1V7NuIaEZAjnifDoLNPzgbZxOEibmTWScOtTZ
+         b4E0Oc4X1Co0WVCCuhv2l1UP8KTMsJGWzb7JieIya3ux8iguvP4dmpg0qnMMxZxuTehH
+         dHyQ==
+X-Gm-Message-State: AC+VfDzjRWs9a5vXkiHCNA+XDoIhLwQ6O32DO5nJgV2F6y0AyP8mEVov
+        RbqZVbHMuzMoSxoC1h3FZ5xPcw==
+X-Google-Smtp-Source: ACHHUZ7Cv2XBucYM7n1tgRFXateYtdptFLZBe70Txyuya7SgQKvecM5YGPwgrDAjigbywqTH8Ep+FA==
+X-Received: by 2002:a05:6512:239b:b0:4f7:6685:2c5f with SMTP id c27-20020a056512239b00b004f766852c5fmr20894873lfv.61.1687821672352;
+        Mon, 26 Jun 2023 16:21:12 -0700 (PDT)
+Received: from [192.168.1.101] (abyk179.neoplus.adsl.tpnet.pl. [83.9.30.179])
+        by smtp.gmail.com with ESMTPSA id q2-20020ac25a02000000b004f122a378d4sm1299719lfn.163.2023.06.26.16.21.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jun 2023 15:19:41 -0700 (PDT)
-Date:   Mon, 26 Jun 2023 18:19:39 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        andy.shevchenko@gmail.com
-Subject: Re: [PATCH] counter: Fix menuconfig "Counter support" submenu
- entries disappearance
-Message-ID: <ZJoO++gEMiDsZioz@fedora>
-References: <20230620170159.556788-1-william.gray@linaro.org>
- <4341aa87-c3b1-b0a4-4f82-c903c3085df3@infradead.org>
- <ZJIWLYtl6BEHfDZQ@fedora>
- <20230625121108.63ad5e60@jic23-huawei>
+        Mon, 26 Jun 2023 16:21:11 -0700 (PDT)
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Date:   Tue, 27 Jun 2023 01:21:11 +0200
+Subject: [PATCH] iio: adc: qcom-spmi-adc5: Add ADC5_GPIO2_100K_PU
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="MbeZhqF2YnPwH4y0"
-Content-Disposition: inline
-In-Reply-To: <20230625121108.63ad5e60@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230627-topic-adc-v1-1-c61581abffa3@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAGYdmmQC/x2NQQqEMAxFryJZG7CVseBVxEWMmTEgVVoVoXh3w
+ yzf531egSxJJUNfFUhyadYtGri6Al4o/gR1Ngbf+LbpfMBj25WRZkYngQJ3ROI+YP5EWXBKFHm
+ xRzzX1cY9yVfvf2AYn+cFnrs4/XAAAAA=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1687821671; l=1130;
+ i=konrad.dybcio@linaro.org; s=20230215; h=from:subject:message-id;
+ bh=UDlTetGfDyeyuMzIZP4r8qi9yHbpwzwUVVjytgB8zSI=;
+ b=rvfyAS73qOUfM/FiI0ncZNcvwaf6MDTOH+GbJCQ59fq86JZs/Q+8f262deZ1YaO4lUmY3Q3fl
+ gpQtWe6iqyGBNXgeug8S+KiyeDNyAdYJrpFAQ1Krr2PxNFvvlZBnPXI
+X-Developer-Key: i=konrad.dybcio@linaro.org; a=ed25519;
+ pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -80,71 +84,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Even though it existed in bindings for the longest time,
+ADC5_GPIO2_100K_PU was never assigned in the driver. Do so.
 
---MbeZhqF2YnPwH4y0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+---
+ drivers/iio/adc/qcom-spmi-adc5.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On Sun, Jun 25, 2023 at 12:11:08PM +0100, Jonathan Cameron wrote:
-> On Tue, 20 Jun 2023 17:12:13 -0400
-> William Breathitt Gray <william.gray@linaro.org> wrote:
->=20
-> > On Tue, Jun 20, 2023 at 02:00:37PM -0700, Randy Dunlap wrote:
-> > > Hi,
-> > >=20
-> > > On 6/20/23 10:01, William Breathitt Gray wrote: =20
-> > > > The current placement of the I8254 Kconfig entry results in the
-> > > > disappearance of the "Counter support" submenu items in menuconfig.=
- Move
-> > > > the I8254 above the menuconfig COUNTER entry to restore the intended
-> > > > submenu behavior.
-> > > >=20
-> > > > Fixes: d428487471ba ("counter: i8254: Introduce the Intel 8254 inte=
-rface library module")
-> > > > Reported-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> > > > Closes: https://lore.kernel.org/all/32ddaa7b-53a8-d61f-d526-b545bd5=
-61337@linux.intel.com/
-> > > > Signed-off-by: William Breathitt Gray <william.gray@linaro.org> =20
-> > >=20
-> > > Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-> > >=20
-> > > but why is I8254 here at all? Users cannot enable it
-> > > and nothing selects it.  Is it a WIP?
-> > >=20
-> > > Thanks. =20
-> >=20
-> > There are pending patches for two drivers to use it: 104-dio-48e[^1] and
-> > stx104[^2]. Those will be picked up in their respective subsystem trees
-> > (by Bart and Jonathan I presume).
-> >=20
->=20
-> I missed the IIO patch in that series. Could you resend please.
->=20
-> Jonathan
->=20
-> > William Breathitt Gray
-> >=20
-> > [^1]: https://lore.kernel.org/all/dc4d0d5ca6ea28eda18815df114ecb21226cb=
-345.1681665189.git.william.gray@linaro.org/
-> > [^2]: https://lore.kernel.org/all/45d35b6f6e8d51df788b2bc85c456bfd45476=
-b1a.1681665189.git.william.gray@linaro.org/
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index 0a4fd3a46113..b6b612d733ff 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -555,6 +555,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+ 					SCALE_HW_CALIB_PM5_SMB_TEMP)
+ 	[ADC5_GPIO1_100K_PU]	= ADC5_CHAN_TEMP("gpio1_100k_pu", 0,
+ 					SCALE_HW_CALIB_THERM_100K_PULLUP)
++	[ADC5_GPIO2_100K_PU]	= ADC5_CHAN_TEMP("gpio2_100k_pu", 0,
++					SCALE_HW_CALIB_THERM_100K_PULLUP)
+ 	[ADC5_GPIO3_100K_PU]	= ADC5_CHAN_TEMP("gpio3_100k_pu", 0,
+ 					SCALE_HW_CALIB_THERM_100K_PULLUP)
+ 	[ADC5_GPIO4_100K_PU]	= ADC5_CHAN_TEMP("gpio4_100k_pu", 0,
 
-I8254 is expected to land in 6.5 so I'll wait and resend the IIO patch
-rebased on 6.5-rc1 once it's released in a couple weeks. That'll make
-things simple for you and avoid the need for an immutable branch.
+---
+base-commit: 60e7c4a25da68cd826719b685babbd23e73b85b0
+change-id: 20230627-topic-adc-1e7a7c6aae15
 
-William Breathitt Gray
+Best regards,
+-- 
+Konrad Dybcio <konrad.dybcio@linaro.org>
 
---MbeZhqF2YnPwH4y0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZJoO+wAKCRC1SFbKvhIj
-Kx9rAQDZbMBbVF2rUgePh1g5t4gCo7byAnzWS4jz2Snc2zdWfgD+MfuIWvJ0m5eL
-x8t2QKcSOHH7XkVcjbsy9XjA9WGVaAk=
-=fBt7
------END PGP SIGNATURE-----
-
---MbeZhqF2YnPwH4y0--

@@ -2,48 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A300673EE8B
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jun 2023 00:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C273B73EE96
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jun 2023 00:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjFZWNU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Jun 2023 18:13:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60932 "EHLO
+        id S229841AbjFZWUK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Jun 2023 18:20:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232355AbjFZWMi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 18:12:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE1641FD5
-        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 15:11:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F30B160F6F
-        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 22:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E4DC433C0;
-        Mon, 26 Jun 2023 22:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687817459;
-        bh=L5J/oUnov5Ks2cIlJ/lOTvZ5xd8+r8ZWQpnWdjpBjac=;
-        h=Date:From:To:Cc:Subject:From;
-        b=Jf2pLTPUqk72gVed1pljvF39KKSQj8gfcC5i2pCHtATjKzdvMYwTPxVGCnUlOhkvp
-         PT5+crycQgmNKwXBPB1QEvkP0M5Wi9QAol4RrpRo7sb/qvduY0S2AFtmBOw1Y9gW71
-         WVMcOXaYXgGAegQqvWL1H9YM7gLpIfO4hs2n5Y+Fz+eB9nNfLROcTaZWCyJ/jMiAJ6
-         khMUZSUmG73lMCAuTXfjgYzuOWs+IBH1dg0dpf2edN/AXIXJFmrrlTM5A5rhjiUW24
-         VrvUioa8l3fg/+fp6e5yVC/tqMH0Dx6yLNsFt9MPELGcUnhWTDDbnIfyGCHdeOLpKL
-         3+fsaIq4Fa+uw==
-Date:   Mon, 26 Jun 2023 18:10:56 -0400
-From:   William Breathitt Gray <wbg@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [GIT PULL] First set of Counter fixes for 6.5
-Message-ID: <ZJoM8IoK3o7LUylZ@ishi>
+        with ESMTP id S229777AbjFZWTr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 18:19:47 -0400
+Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A508AA
+        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 15:19:44 -0700 (PDT)
+Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-4715758343aso1180111e0c.1
+        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 15:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1687817983; x=1690409983;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ufNVE0dQejfSX8wYNYRTMSSfw+pixc9c6G+EySlKjXU=;
+        b=s9yPfPENqAVCBS8yJ/0syiP44/PinzWCNVUgFlXiAMw2DbEOlTVhHkttkanWHHhguD
+         EfrEh4cvSbKmb/K8sVu/djsYc2swxnvVCGTXtoGlqaLPTy9aqPAfc06/hAGHB+V00tfO
+         Ar8PE1TcDlDmltieL8l3xZPDc9VSmhDAvfFvs8+Rfn8iLACXROnE33OHojXHkystwXbL
+         9Y9dv9NPa8R+Gc7HW5Qi9CP/1HVUvxj6NBjo9ceRZ7fmQj66fpkgk4jDrLCSro/UFGrs
+         B946nFvgjLy3lNOcTWrR3E4gw4LWWpB/9bubTPj7uQbIvvN+uZAzK3fOzHH1yh/N6Wy+
+         DxwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687817983; x=1690409983;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ufNVE0dQejfSX8wYNYRTMSSfw+pixc9c6G+EySlKjXU=;
+        b=AJAdI+Lz4frkCnfwEdaIKcy6jT4D5x1l1pRR9Ka/W2c1VKsRw1vkNnvfEeQ30SVksO
+         kjkMoxewn5lrBQiLWCSUlZlj4w40XYxTF5c44S3CNbr3tuV0uzXiAxFDzG015FIAyD4c
+         Ujep5951gAYZy+B64D3RE9Au9SHtZZsp9P3TDvdsELxXggdu4ON9IshDLUSvS3vfLX0c
+         TA/tNqhOIUFDsPuJ+O2L4TR7WeFgL28W2ZfKZIiYsSoeASZ92hW5pj9o0HOaFgigcA+G
+         Q2Rex7QWq4uIBEnehcNvT8ieAeZZDzRRoaso1da9uznZnC4owKLi5FA1I6r2BJRUFU8I
+         IqnQ==
+X-Gm-Message-State: AC+VfDxBwg1J7WxRfctBWGZTHAWpVFR3cEMuKIlGHuo/039gkhs4TBS4
+        3kidNZAduiRfoPcVYd2KEN94wY/yv7diOQ8mj88=
+X-Google-Smtp-Source: ACHHUZ4qcZPYyWh1IiaQmhAJsjra9DikU+Fft13pk918If1PwcgaUHeACsrT15neJikmLTJxc8L5kg==
+X-Received: by 2002:a1f:5744:0:b0:46e:8084:92be with SMTP id l65-20020a1f5744000000b0046e808492bemr12928526vkb.6.1687817983363;
+        Mon, 26 Jun 2023 15:19:43 -0700 (PDT)
+Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id g200-20020a1f9dd1000000b0047cdf4481f4sm753414vke.26.2023.06.26.15.19.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jun 2023 15:19:41 -0700 (PDT)
+Date:   Mon, 26 Jun 2023 18:19:39 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        andy.shevchenko@gmail.com
+Subject: Re: [PATCH] counter: Fix menuconfig "Counter support" submenu
+ entries disappearance
+Message-ID: <ZJoO++gEMiDsZioz@fedora>
+References: <20230620170159.556788-1-william.gray@linaro.org>
+ <4341aa87-c3b1-b0a4-4f82-c903c3085df3@infradead.org>
+ <ZJIWLYtl6BEHfDZQ@fedora>
+ <20230625121108.63ad5e60@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hX76bAP+Yh5CZ5Xb"
+        protocol="application/pgp-signature"; boundary="MbeZhqF2YnPwH4y0"
 Content-Disposition: inline
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230625121108.63ad5e60@jic23-huawei>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,47 +81,70 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---hX76bAP+Yh5CZ5Xb
+--MbeZhqF2YnPwH4y0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit d428487471ba6640ee8bcdabaf830aec08b85400:
+On Sun, Jun 25, 2023 at 12:11:08PM +0100, Jonathan Cameron wrote:
+> On Tue, 20 Jun 2023 17:12:13 -0400
+> William Breathitt Gray <william.gray@linaro.org> wrote:
+>=20
+> > On Tue, Jun 20, 2023 at 02:00:37PM -0700, Randy Dunlap wrote:
+> > > Hi,
+> > >=20
+> > > On 6/20/23 10:01, William Breathitt Gray wrote: =20
+> > > > The current placement of the I8254 Kconfig entry results in the
+> > > > disappearance of the "Counter support" submenu items in menuconfig.=
+ Move
+> > > > the I8254 above the menuconfig COUNTER entry to restore the intended
+> > > > submenu behavior.
+> > > >=20
+> > > > Fixes: d428487471ba ("counter: i8254: Introduce the Intel 8254 inte=
+rface library module")
+> > > > Reported-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> > > > Closes: https://lore.kernel.org/all/32ddaa7b-53a8-d61f-d526-b545bd5=
+61337@linux.intel.com/
+> > > > Signed-off-by: William Breathitt Gray <william.gray@linaro.org> =20
+> > >=20
+> > > Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+> > >=20
+> > > but why is I8254 here at all? Users cannot enable it
+> > > and nothing selects it.  Is it a WIP?
+> > >=20
+> > > Thanks. =20
+> >=20
+> > There are pending patches for two drivers to use it: 104-dio-48e[^1] and
+> > stx104[^2]. Those will be picked up in their respective subsystem trees
+> > (by Bart and Jonathan I presume).
+> >=20
+>=20
+> I missed the IIO patch in that series. Could you resend please.
+>=20
+> Jonathan
+>=20
+> > William Breathitt Gray
+> >=20
+> > [^1]: https://lore.kernel.org/all/dc4d0d5ca6ea28eda18815df114ecb21226cb=
+345.1681665189.git.william.gray@linaro.org/
+> > [^2]: https://lore.kernel.org/all/45d35b6f6e8d51df788b2bc85c456bfd45476=
+b1a.1681665189.git.william.gray@linaro.org/
 
-  counter: i8254: Introduce the Intel 8254 interface library module (2023-06-08 10:11:17 -0400)
+I8254 is expected to land in 6.5 so I'll wait and resend the IIO patch
+rebased on 6.5-rc1 once it's released in a couple weeks. That'll make
+things simple for you and avoid the need for an immutable branch.
 
-are available in the Git repository at:
+William Breathitt Gray
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.5a
-
-for you to fetch changes up to 9b53a13422162feac7c7ee58e5bc0e0a80a41963:
-
-  counter: Fix menuconfig "Counter support" submenu entries disappearance (2023-06-21 14:20:10 -0400)
-
-----------------------------------------------------------------
-First set of Counter fixes for 6.5
-
-In commit d428487471ba ("counter: i8254: Introduce the Intel 8254
-interface library module"), the misplacement of the I8254 Kconfig entry
-results in the "Counter support" submenu items disappearing in
-menuconfig. A fix is provided to reposition the I8254 Kconfig entry to
-restore the intended submenu behavior.
-
-----------------------------------------------------------------
-William Breathitt Gray (1):
-      counter: Fix menuconfig "Counter support" submenu entries disappearance
-
- drivers/counter/Kconfig | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
---hX76bAP+Yh5CZ5Xb
+--MbeZhqF2YnPwH4y0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZJoM8AAKCRC1SFbKvhIj
-Kw9mAPsEI/CJUpneTnqbFYu2vgZF5xfyNSfaVh8XRjDu6DqcIwEA1M2FZOpKFvPn
-MCZPnmC5XNFyZ119Uf50Z+Wgc0wuZAc=
-=77ry
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZJoO+wAKCRC1SFbKvhIj
+Kx9rAQDZbMBbVF2rUgePh1g5t4gCo7byAnzWS4jz2Snc2zdWfgD+MfuIWvJ0m5eL
+x8t2QKcSOHH7XkVcjbsy9XjA9WGVaAk=
+=fBt7
 -----END PGP SIGNATURE-----
 
---hX76bAP+Yh5CZ5Xb--
+--MbeZhqF2YnPwH4y0--

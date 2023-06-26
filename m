@@ -2,128 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9A973D9B2
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Jun 2023 10:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD6A73DD2C
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Jun 2023 13:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbjFZI3a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Jun 2023 04:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33684 "EHLO
+        id S229488AbjFZLT5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Jun 2023 07:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230003AbjFZI32 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 04:29:28 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537EEE48
-        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 01:29:26 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51d93425853so1574234a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 26 Jun 2023 01:29:26 -0700 (PDT)
+        with ESMTP id S230004AbjFZLTx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Jun 2023 07:19:53 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27D2FFD;
+        Mon, 26 Jun 2023 04:19:52 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-313e1c27476so1529306f8f.1;
+        Mon, 26 Jun 2023 04:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687768165; x=1690360165;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2tsOG+nFR2GTTBc7CbDQFVvL4dzoth9iqIWwzfRS+A8=;
-        b=xEYr+NKaL1PDtn/k+qrg/HeUDCVALR8yL0jCtp0RqWdlCGUAMBxuD2yBaGSzIE/PEr
-         XL2/Ur6iJZBpZU1J8i5l2H34+5zm/CAL+Pa+KUd+iPG6x/3UlljUOtSDiKuI0Zv9P862
-         KoyT9x4JX9T9jyMS/mecUHnGSPEWLaRNK0B/bAfcADvM3iNpkwtaQYRhvjjDFmg2milq
-         K9wLlU+ZKCbuybSmvoKGl3ukZxcMvlfu1OnCH/7JZN/rrSWCm+HyprG7qYYSTqZeu90A
-         n7mJFeJr7QJzFusN8Cyd9ecvYW7yM2EBb4jvJQHW9/FERq7Ts8eJmqIKJ1biZZByapA3
-         7OTQ==
+        d=gmail.com; s=20221208; t=1687778390; x=1690370390;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TIiFZpg7B3DpChMaXA9ungeQqsAbX36FJdgE1LxMDCo=;
+        b=TyWyPj0Yh6h0y/Z7aNgxjPYn00/aWd8E+aLfbj718Xv8HDZn6hrqE1LhqIM536MAEn
+         hg1tjD9UQfCKKMifnzT86Jjnm+P/XXm8BMFQYGJfliaK6Yli6BNfiLdrw/MWfENKKbn/
+         pUTlnn6NL/iBTVfLhqmGnO9vzbazGbVlHFwZLbDWAGgOb9Z2axfYi3cOgqtOP4m7bChc
+         kaIt293aTKCXwxV7cSSiMYSMRZYQW2EdloXCfVDjswODVno0m1mWtQvOUyMvyhK2yhh8
+         u8vBzPKEO6kEhk1KVX2hxu37CziDY0S9oiC06GvRb+/E0FIX6KB/TkWqR/ZDEqoaedgf
+         JQTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687768165; x=1690360165;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2tsOG+nFR2GTTBc7CbDQFVvL4dzoth9iqIWwzfRS+A8=;
-        b=Cck852dTR+qBJ+Vib8dt+iHt4WNi8+m1d83JdIq0APxLTTEdC0QjDZNWYV4/J/X3C9
-         jDIO0J2OsUeKSsEcB865IebpWO1d/YWIwBDGE6KaQedzC7xHMA6WFq7P8xGXNjPfVlo5
-         ffwPL4BPfcHyidF/k3zZrIPYtlxJMhI8jHdV64Pj7uHo025Be99MgSLXgHfNx6oiPN0Y
-         umyA3B4gOP6gcza0vlx/dbWxgbcrDZM9rAsAsrEGb+6JNZjssITPwIs3QO8ZH+iIl31R
-         KngqYK4lY11fVVsBGpfZQDMD2LEMNIlVERlV+zRI/AcWdP0njRZNBGLND1UrJwrDGBIn
-         kpfQ==
-X-Gm-Message-State: AC+VfDyL/+I/C1bOel1/xqxt6lDIkrNCXYm19Z9sjv2f+DC6juJsiHfF
-        k3hOMdadCbZrxSJMOkqBQk3fAg==
-X-Google-Smtp-Source: ACHHUZ4f6Zrvi3qOoV7NxupQNc5bFb/EuzGTSv79Os8497nPLMdIEfuSC2wmzdkpoAR9pkd2zt+iJg==
-X-Received: by 2002:a17:907:da2:b0:988:e8e1:6360 with SMTP id go34-20020a1709070da200b00988e8e16360mr17223589ejc.8.1687768164783;
-        Mon, 26 Jun 2023 01:29:24 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id lr9-20020a170906fb8900b00969f44bbef3sm3044396ejb.11.2023.06.26.01.29.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jun 2023 01:29:24 -0700 (PDT)
-Message-ID: <075c8d01-5788-a3c4-44e0-36cb9318fc6a@linaro.org>
-Date:   Mon, 26 Jun 2023 10:29:22 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: ad74413r: add binding for digital
- input threshold
-Content-Language: en-US
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Rob Herring <robh@kernel.org>, Conor Dooley <conor@kernel.org>
-Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        d=1e100.net; s=20221208; t=1687778390; x=1690370390;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TIiFZpg7B3DpChMaXA9ungeQqsAbX36FJdgE1LxMDCo=;
+        b=DsYD4D5oieKsmwe7ZpnuXs0ObtzXSz9H8eJMdpgJFUR9aAFP1VkGQ0TdD6Z9Aak+7F
+         KYFc8ks7IIUwrQO06pUWqeAIDI3FjX8e1Ssqagksu6t4VQRpwZ3qo2/dh5NqwlYicjRv
+         Fnkup0/xsAePFRyT2V1AVQ5Z/me5mSJPl2q+yORbEd+H9d43k1vcBIUno4+OyI3+Zx8h
+         zz8hCC8oVVLXjshnpmR2q/yMQH6z4iVE/d62IX0NIfHazBye4vLj5Inq60+0MW9NfBUX
+         hnTU5H97pHrWU4p6ZFUiv2MaRl6V30Xj19jR706hFcrJUUGm7Cidd3uUWKxQSZ/7DOGR
+         HG2A==
+X-Gm-Message-State: AC+VfDysV429n6KWibKnB7BFEHZiMjI2wtpGExUYXLCyQHeLKeumTss6
+        FC8o4VRtz/P0WZvFkQg0vfCXq6UkbUc=
+X-Google-Smtp-Source: ACHHUZ4vDoRpL0OZEam7+xPw+z9QVrtan5OPJ5NbSUBY0KnLQr635Q7NdnC8Ac4B1z1eojnnG1oaLA==
+X-Received: by 2002:a05:6000:12c8:b0:311:2888:9f95 with SMTP id l8-20020a05600012c800b0031128889f95mr25062999wrx.23.1687778390325;
+        Mon, 26 Jun 2023 04:19:50 -0700 (PDT)
+Received: from ?IPv6:2001:a61:35be:1401:2331:c532:1717:d48c? ([2001:a61:35be:1401:2331:c532:1717:d48c])
+        by smtp.gmail.com with ESMTPSA id g6-20020a5d6986000000b003047dc162f7sm7105043wru.67.2023.06.26.04.19.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jun 2023 04:19:49 -0700 (PDT)
+Message-ID: <9167ba56f8afafa81efb2d5acd84cab0843505e4.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7192: Use sysfs_emit_at
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Alisa Roman <alisa.roman@analog.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230623113327.1062170-1-linux@rasmusvillemoes.dk>
- <20230623113327.1062170-2-linux@rasmusvillemoes.dk>
- <20230623-casket-outer-2c9d2a0c4795@spud>
- <20230623215731.GB1216324-robh@kernel.org>
- <8176d552-9829-5442-3ce9-805744b8389e@rasmusvillemoes.dk>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <8176d552-9829-5442-3ce9-805744b8389e@rasmusvillemoes.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Mon, 26 Jun 2023 13:19:49 +0200
+In-Reply-To: <20230620163135.93780-1-alisa.roman@analog.com>
+References: <20230620163135.93780-1-alisa.roman@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 26/06/2023 10:15, Rasmus Villemoes wrote:
-> On 23/06/2023 23.57, Rob Herring wrote:
->> On Fri, Jun 23, 2023 at 05:44:50PM +0100, Conor Dooley wrote:
->>> On Fri, Jun 23, 2023 at 01:33:25PM +0200, Rasmus Villemoes wrote:
->>>> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
->>>> index 590ea7936ad7..1f90ce3c7932 100644
->>>> --- a/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
->>>> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
->>>> @@ -51,6 +51,14 @@ properties:
->>>>        Shunt (sense) resistor value in micro-Ohms.
->>>>      default: 100000000
->>>>  
->>>> +  digital-input-threshold-microvolt:
->>>
->>> Should this not have an adi vendor prefix, similar to
->>> "adi,digital-input-threshold-mode-fixed"?
->>
->> Yes.
-> 
-> OK. But I'm not really sure what the rules are for when such a prefix
-> must be added, so some guidance would be appreciated. There's
-> 
-> - DO use a vendor prefix on device specific property names. Consider if
->   properties could be common among devices of the same class.
-> 
-> And my thinking was that a threshold for when a digital input should
-> count as high/low would be a rather generic thing, so not particularly
-> device specific.
-
-Then find some more users of it.
-
-> 
-> Also, this very binding has a shunt-resistor-micro-ohms, and the
-> individual channels have a drive-strength-microamp (granted, that latter
-> one is a recent one of mine and may have slipped through review?). I can
-> certainly understand that when a property specifies a raw value to put
-> into some register (or field), that's very specific to that chip (or
-> small family of chips) - the adi,ch-func properties fall into that category.
-
-Best regards,
-Krzysztof
+T24gVHVlLCAyMDIzLTA2LTIwIGF0IDE5OjMxICswMzAwLCBBbGlzYSBSb21hbiB3cm90ZToKPiBS
+ZXBsYWNlIHNjbnByaW50ZiB3aXRoIHN5c2ZzX2VtaXRfYXQgd2hpY2ggaXMgdGhlIHByZWZlcnJl
+ZCBhbHRlcm5hdGl2ZS4KPiAKPiBBbHNvIG1ha2Ugc3VyZSBlYWNoIGZyYWN0aW9uYWwgZGlnaXQg
+aXMgaW4gaXRzIHBsYWNlIGJ5IHBhZGRpbmcgd2l0aAo+IHplcm9zIHVwIHRvIDMgZGlnaXRzOiAi
+Li4uJTAzZC4uLiIuCj4gCj4gU2lnbmVkLW9mZi1ieTogQWxpc2EgUm9tYW4gPGFsaXNhLnJvbWFu
+QGFuYWxvZy5jb20+Cj4gLS0tCgpSZXZpZXdlZC1ieTogTnVubyBTYSA8bnVuby5zYUBhbmFsb2cu
+Y29tPgoKPiDCoGRyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYyB8IDUgKystLS0KPiDCoDEgZmlsZSBj
+aGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYyBiL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+IGlu
+ZGV4IGUyM2Q5YTdkY2M5ZS4uYzk4MGJjODcxNDEyIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaWlv
+L2FkYy9hZDcxOTIuYwo+ICsrKyBiL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+IEBAIC01NjEs
+OSArNTYxLDggQEAgc3RhdGljIHNzaXplX3QgYWQ3MTkyX3Nob3dfZmlsdGVyX2F2YWlsKHN0cnVj
+dCBkZXZpY2UgKmRldiwKPiDCoMKgwqDCoMKgwqDCoMKgYWQ3MTkyX2dldF9hdmFpbGFibGVfZmls
+dGVyX2ZyZXEoc3QsIGZyZXFfYXZhaWwpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9
+IDA7IGkgPCBBUlJBWV9TSVpFKGZyZXFfYXZhaWwpOyBpKyspCj4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGxlbiArPSBzY25wcmludGYoYnVmICsgbGVuLCBQQUdFX1NJWkUgLSBsZW4s
+Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgICIlZC4lZCAiLCBmcmVxX2F2YWlsW2ldIC8gMTAwMCwKPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJlcV9h
+dmFpbFtpXSAlIDEwMDApOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBsZW4gKz0g
+c3lzZnNfZW1pdF9hdChidWYsIGxlbiwgIiVkLiUwM2QgIiwgZnJlcV9hdmFpbFtpXSAvIDEwMDAs
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgZnJlcV9hdmFpbFtpXSAlIDEwMDApOwo+IMKgCj4gwqDCoMKgwqDC
+oMKgwqDCoGJ1ZltsZW4gLSAxXSA9ICdcbic7Cj4gwqAKCg==
 

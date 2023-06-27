@@ -2,40 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C0B73FE76
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Jun 2023 16:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7FE740152
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Jun 2023 18:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjF0Okg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Jun 2023 10:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41524 "EHLO
+        id S231186AbjF0Qe2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Jun 2023 12:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231665AbjF0OkY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jun 2023 10:40:24 -0400
+        with ESMTP id S232333AbjF0QeT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Jun 2023 12:34:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D46D35AF;
-        Tue, 27 Jun 2023 07:39:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5883A90;
+        Tue, 27 Jun 2023 09:33:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 416B2611D8;
-        Tue, 27 Jun 2023 14:39:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4228C433C9;
-        Tue, 27 Jun 2023 14:39:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 752AE611E1;
+        Tue, 27 Jun 2023 16:33:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2A4C433C8;
+        Tue, 27 Jun 2023 16:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687876779;
-        bh=LsPvMzESGQs/N3/vCu1zyLVq43PktsIlHmdAqetSq+4=;
+        s=k20201202; t=1687883631;
+        bh=/TucQmQ2OIkIOcD5/ingQ/Eu+6luVanQxgJj7XY//cc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qHxsk75/BFneiMvJT7fd0UT+h/y1N8gpKFlVXu4HfJQEY8LlkIme5Vu/F6fK3Bvvt
-         Qo2RZhNYSa5vIQUVpCttaxIdKTRjrvgiGlzpytnCcR8q5MU/PDLUVjgHGvkpDka/Qm
-         kdwNEOU6K7qE46NeMo2PK6h3h9t/9je9UmHkI7nvzK5twEJ93TwbzfQVielCK82Hsz
-         yJaKlYBK6sZcwo9PWlp6gZ5yCjP7G04s8mrKHgoewoqKje0fvkzQZFixXDpDEV/DKk
-         wwVmR3BjFziR9cLRlyzvP9CISYBYdeRCc1DF4wSD/ywcRSulWqoL2GWGwufi+xUwc6
-         s1cL6RgfGO0pg==
-Date:   Tue, 27 Jun 2023 15:39:31 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Lee Jones <lee@kernel.org>, "Sahin, Okan" <Okan.Sahin@analog.com>,
+        b=I7Q1nUG4hsQpEeE4jPxgHrhCyMVIf/CV1bs5bLYS346xBHOI4M5UTSHX2ModUKji1
+         JwsxlQHPDEXMuJO4kN9ttnkb8kcKJsQxwnmbXBY1jBsuk1BMJPQXOrcGVJygb2xx90
+         HDv3RNulk70COHgDw9npwT5jxAsGRyIPJfUlZwbKLEK/IYRBowkse3Kt+8Wj2W0q9s
+         vdFpXda+klSQMI22Nr3h6srTVj3SROIWHXktLFI06L9bVPflYrnDfQnvH5lBFeqP3k
+         FNHUo8mR/193KRwOdon/9v89kTH1tunCRny/DXVcUdABT/OP1YHyIUzXQ4CM1RVPPM
+         216YDWXkNI8sQ==
+Date:   Tue, 27 Jun 2023 17:33:44 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        "Sahin, Okan" <Okan.Sahin@analog.com>,
+        Mark Brown <broonie@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -49,7 +51,6 @@ Cc:     Lee Jones <lee@kernel.org>, "Sahin, Okan" <Okan.Sahin@analog.com>,
         "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
         ChiYuan Huang <cy_huang@richtek.com>,
         "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Hugo Villeneuve <hvilleneuve@dimonoff.com>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
@@ -59,9 +60,8 @@ Cc:     Lee Jones <lee@kernel.org>, "Sahin, Okan" <Okan.Sahin@analog.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
 Subject: Re: [PATCH v7 5/5] mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
  Support
-Message-ID: <841cb32b-36ef-4c58-9b83-6e2ed63fcd84@sirena.org.uk>
-References: <20230412111256.40013-6-okan.sahin@analog.com>
- <20230420103438.GI9904@google.com>
+Message-ID: <20230627163344.GG10378@google.com>
+References: <20230420103438.GI9904@google.com>
  <09eb8e4c-3e73-41f0-bf42-8ddf3c4254ec@sirena.org.uk>
  <20230421073938.GO996918@google.com>
  <82612171-46d7-4d82-a8fc-c7d6a99d57e9@sirena.org.uk>
@@ -70,12 +70,12 @@ References: <20230412111256.40013-6-okan.sahin@analog.com>
  <20230626175443.GA3446604-robh@kernel.org>
  <20230627135615.GF10378@google.com>
  <CAL_JsqL3T6pjnTFgFvbYMeATD6cjhc-Sm0vZW2cv5k+w9Oxjuw@mail.gmail.com>
+ <ZJry8QTka8m6ag/j@fedora>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KkVPte+kntsdEuj+"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAL_JsqL3T6pjnTFgFvbYMeATD6cjhc-Sm0vZW2cv5k+w9Oxjuw@mail.gmail.com>
-X-Cookie: Money is the root of all wealth.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZJry8QTka8m6ag/j@fedora>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -86,37 +86,134 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 27 Jun 2023, William Breathitt Gray wrote:
 
---KkVPte+kntsdEuj+
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, Jun 27, 2023 at 08:10:59AM -0600, Rob Herring wrote:
+> > On Tue, Jun 27, 2023 at 7:56 AM Lee Jones <lee@kernel.org> wrote:
+> > >
+> > > On Mon, 26 Jun 2023, Rob Herring wrote:
+> > >
+> > > > On Wed, Jun 21, 2023 at 06:13:15PM +0100, Lee Jones wrote:
+> > > > > On Tue, 13 Jun 2023, Sahin, Okan wrote:
+> > > > >
+> > > > > > >On Fri, Apr 21, 2023 at 08:39:38AM +0100, Lee Jones wrote:
+> > > > > > >
+> > > > > > >> I'll try anything once!
+> > > > > > >
+> > > > > > >> Fair warning, I think this is going to massively complicate things.
+> > > > > > >
+> > > > > > >> Either we're going to be left with a situation where child-driver
+> > > > > > >> maintainers are scrabbling around looking for previous versions for the
+> > > > > > >> MFD pull-request or contributors being forced to wait a full cycle for
+> > > > > > >> their dependencies to arrive in the maintainer's base.
+> > > > > > >
+> > > > > > >If people are resending after the MFD has gone in they really ought to
+> > > > > > >be including the pull request in the cover letter, with some combination
+> > > > > > >of either referencing the mail or just saying "this depends on the
+> > > > > > >signed tag at url+tag", the same way they would for any other dependency.
+> > > > > > >
+> > > > > > >I can't see how you applying stuff when you can slow things down TBH,
+> > > > > > >the MFD bits will be applied faster and either people can pull in a
+> > > > > > >shared tag or you can apply more commits on top of the existing core
+> > > > > > >driver.
+> > > > > > >
+> > > > > > >> I'm not sure why simply providing your Ack when you're happy with the
+> > > > > > >> driver and forgetting about the set until the pull-request arrives, like
+> > > > > > >> we've been doing for nearly a decade now, isn't working for you anymore
+> > > > > > >> but I'm mostly sure this method will be a regression.
+> > > > > > >
+> > > > > > >Like I said I've not been doing that, I've mostly been just applying the
+> > > > > > >driver when it's ready.  This might not have been so visible to you
+> > > > > > >since it means that the regulator driver doesn't appear in the series by
+> > > > > > >the time the MFD settles down.  The whole "Acked-for-MFD" has always
+> > > > > > >been a bit confusing TBH, it's not a normal ack ("go ahead and apply
+> > > > > > >this, I'm fine with it") so it was never clear what the intention was.
+> > > > > > >
+> > > > > > >Before I started just applying the drivers there used to be constant
+> > > > > > >problems with things like tags going missing (which some of the time is
+> > > > > > >the submitter just not carrying them but can also be the result of some
+> > > > > > >churn causing them to be deliberately dropped due to changes) or
+> > > > > > >forgetting the series as you suggest and then not looking at some other
+> > > > > > >very similarly named series that was also getting lots of versions after
+> > > > > > >thinking it was one that had been reviewed already.  It was all very
+> > > > > > >frustrating.  Not doing the tags until the dependencies have settled
+> > > > > > >down means that if it's in my inbox it at least consistently needs some
+> > > > > > >kind of attention and that the submitter didn't drop tags or anything so
+> > > > > > >I know why there's no tag on it even though the version number is high,
+> > > > > > >though it's not ideal either.
+> > > > > >
+> > > > > > Hi Mark and Lee,
+> > > > > >
+> > > > > > Is there anything that I need to do for this patch set. I have received reviewed
+> > > > > > by tag for all of them so far.
+> > > > >
+> > > > > Since we are so late in the day, I'm going to just apply this for v6.5.
+> > > > >
+> > > > > The remainder can then be applied, friction free, for v6.6.
+> > > >
+> > > > Now we have undocmented bindings in use by the driver (as pointed out by
+> > > > 'make dt_compatible_check').
+> > > >
+> > > > The whole series has all the acks/reviews needed for you to apply the
+> > > > whole thing, so why not take the whole thing? Plus this series has been
+> > > > sitting for 2 months. Not a great experience for submitters...
+> > >
+> > > Patches are missing Acked-by tags.
+> > >
+> > >   Reviewed-by != Acked-by
+> > 
+> > Reviewed-by > Acked-by
+> > 
+> > >
+> > > I cannot merge other subsystem's patches without and Acked-by.
+> > 
+> > I (and Krzysztof) give one or the other. If I'm taking a patch, then
+> > it's neither. I'm pretty sure Mark only gives Reviewed-by when he is
+> > not taking something.
+> > 
+> > Rob
+> 
+> It does seem a bit ambiguous whether an "Acked-by" indicates a
+> "Reviewed-by + acceptance of the changes" or just a brief look-over with
+> acceptance of the changes. FWIW the documentation does use the word
+> "reviewed" when describing Acked-by. [^1]
+> 
+> However, I would argue that a Reviewed-by has a implicit acceptance of
+> the changes: why else provide a Reviewed-by line for the commit message
+> if you fundamentally disagree with the changes being merged? So a
 
-On Tue, Jun 27, 2023 at 08:10:59AM -0600, Rob Herring wrote:
-> On Tue, Jun 27, 2023 at 7:56=E2=80=AFAM Lee Jones <lee@kernel.org> wrote:
+Where MFD is concerned the complexities are seldom 'whether' a patch
+should be merged, but rather 'how' it should be merged.
 
-> > I cannot merge other subsystem's patches without and Acked-by.
+In order to solve some of these issues in the past, I created a bespoke
+tag for scenarios where I'd like to indicate that a submission had been
+reviewed, but I also intended to take the patch via the MFD tree once
+all of the other pieces were ready.  Despite using this tag for around a
+decade, it did cause occasional confusion, even amongst maintainers I'd
+been working with for the longest time, so I recently stopped using it
+and replaced it with a standard Reviewed-by, to mean that it's reviewed
+but permission was *not* given for someone else to merge it - since my
+understanding, according to the documentation, is that an Acked-by is
+required for that.
 
-> I (and Krzysztof) give one or the other. If I'm taking a patch, then
-> it's neither. I'm pretty sure Mark only gives Reviewed-by when he is
-> not taking something.
+Recent discussions with other maintainers culminated in an agreement
+that I would start only taking the MFD pieces and follow-up with a
+pull-request for an immutable branch for them to pull from.  Since there
+is no more time to create, test and submit a maintainer-maintainer
+pull-request, I decided to merge this patch anyway, so the leaf drivers
+can be applied in a couple of weeks, after the merge-window is closed.
 
-Yes, I'm unlikely to give any kind of tag if I'm expecting to apply
-something.
+Which brings us to where we are now!
 
---KkVPte+kntsdEuj+
-Content-Type: application/pgp-signature; name="signature.asc"
+Without different tag which doesn't exist today, I'm not entirely sure
+how to solve this issue.  Ideas welcome.
 
------BEGIN PGP SIGNATURE-----
+> Reviewed-by given by a maintainer should be seen as approval for those
+> changes to be merged.
+> 
+> William Breathitt Gray
+> 
+> [^1]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSa9KMACgkQJNaLcl1U
-h9AoBQf/RYrIbJ374HR5LpjE33Cf+MV5JSn21l7dxqK2KdTPMScFap2w28LAJMrL
-/K68HSu4oqRUkPTIdue/r14AsKfm5AagceoXRU6VFfSBTpw9rbR/QIdyhxiSp4Np
-DTnaF5PHpkJ5/pW92fdSeYhU7aICnoJm3GN6G9xrDRgvP6S1IGY9qywtCxlsHmNG
-hZXR7QVrWNFt6jPKz2GoSymQa9T5Dj4+4DG/Vj28ttX2i9IxgM6CfaueDIkFpAsp
-bQpyCrdg06rMG18tPuKd9OdLDeIDLkT8EY0W2PHBcVFJS+a1fbc5gbyrRnn2dlPD
-NYBGML3n/xtBnR5tg1EwwfzeLYzTKg==
-=hakh
------END PGP SIGNATURE-----
-
---KkVPte+kntsdEuj+--
+-- 
+Lee Jones [李琼斯]

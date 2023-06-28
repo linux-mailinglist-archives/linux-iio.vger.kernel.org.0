@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED66F7413B0
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Jun 2023 16:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C4127413A6
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Jun 2023 16:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjF1OTC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Jun 2023 10:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53484 "EHLO
+        id S229804AbjF1OTQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Jun 2023 10:19:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232311AbjF1OS3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Jun 2023 10:18:29 -0400
+        with ESMTP id S231882AbjF1OTB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Jun 2023 10:19:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBF8294C;
-        Wed, 28 Jun 2023 07:18:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFC892D4B;
+        Wed, 28 Jun 2023 07:18:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6B5561346;
-        Wed, 28 Jun 2023 14:18:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C200FC433C8;
-        Wed, 28 Jun 2023 14:18:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55BA061346;
+        Wed, 28 Jun 2023 14:18:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDA9C433CB;
+        Wed, 28 Jun 2023 14:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687961907;
-        bh=0eE1KMd2Qanaqxou9OXa3f1XMcYB+4O+niZku/Fpy4A=;
+        s=k20201202; t=1687961929;
+        bh=qaUMkZZQ9EmFCIQ2y31xK0EquwIbJ/1gDt+zU6UKhJs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gFTLIbeWAGyO4kEjb0jElafIXBzi8x8s25cNzKgUrgVnL1WN8Yacu/kDkxVeDBF4/
-         hYCSBiPkbJ0mA/YkwLztkTUGonos5czEM3sX3e8Qkgk+s1TeQ9nSYuFeVeLx7Qnsnn
-         yYmJQ7+7nydIPxLxEUFxQJ0hSqdRZONmGSzSo/fqqChq46v7Sf+Z5y7Oynz/1Nb+hL
-         QkObHDDrarOpSuU4E9AuVBb/3+DbisFrMYyV7u3uY55gbOp0WdM1BjV4ZBBx0tI5m0
-         +Vm2N9UT9UEJ89gYK2isO3cgK7X6FHNgDYHVpFxI5hPNfFHiXqN4Q11DISUymjFsXA
-         SqTtItqRVeN+w==
-Date:   Wed, 28 Jun 2023 15:18:19 +0100
+        b=BNm9UB6tjo7/M5dEly4kdWLpLbPPCLgyljAD6WZ+OBQ+ZrkLPH453Mdwv7eMgPqrC
+         2sAaVQMvluZk293R+Miq0pgZrPC8s/E3SrAi7w3V+/JHFZZoDZOARiKkxrIqLIbXGC
+         j01RHEyWTayeVQITjoEtg5m54JynRkMU7fr2I3TaarFQwOOwjaUpJSui9SSzcF+ILo
+         vRFoAHp/U3x6QIfo/o1ttgys5mRuv2uQWcD3sY7ZuuLQ6WBcYgkPGdhHAtnOO8HfOb
+         x0C9CRGNWa9zAFthOyjDRmJQLYqF57XkHDrNm+Kk3Wkr4W+c8vjTwc0dmnPf11OTsx
+         kevvR51P9x7Og==
+Date:   Wed, 28 Jun 2023 15:18:42 +0100
 From:   Lee Jones <lee@kernel.org>
 To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
@@ -44,27 +44,27 @@ Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
         Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
         ChiYuan Huang <cy_huang@richtek.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
         William Breathitt Gray <william.gray@linaro.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org,
+        Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v7 3/5] iio: adc: max77541: Add ADI MAX77541 ADC Support
-Message-ID: <20230628141819.GK10378@google.com>
+Subject: Re: [PATCH v7 4/5] dt-bindings: mfd: max77541: Add ADI
+ MAX77541/MAX77540
+Message-ID: <20230628141842.GL10378@google.com>
 References: <20230412111256.40013-1-okan.sahin@analog.com>
- <20230412111256.40013-4-okan.sahin@analog.com>
+ <20230412111256.40013-5-okan.sahin@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230412111256.40013-4-okan.sahin@analog.com>
+In-Reply-To: <20230412111256.40013-5-okan.sahin@analog.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -77,17 +77,14 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, 12 Apr 2023, Okan Sahin wrote:
 
-> The MAX77541 has an 8-bit Successive Approximation Register (SAR) ADC
-> with four multiplexers for supporting the telemetry feature.
+> Add ADI MAX77541/MAX77540 devicetree document.
 > 
 > Signed-off-by: Okan Sahin <okan.sahin@analog.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
->  drivers/iio/adc/Kconfig        |  11 ++
->  drivers/iio/adc/Makefile       |   1 +
->  drivers/iio/adc/max77541-adc.c | 194 +++++++++++++++++++++++++++++++++
->  3 files changed, 206 insertions(+)
->  create mode 100644 drivers/iio/adc/max77541-adc.c
+>  .../devicetree/bindings/mfd/adi,max77541.yaml | 68 +++++++++++++++++++
+>  1 file changed, 68 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/adi,max77541.yaml
 
 Applied, thanks
 

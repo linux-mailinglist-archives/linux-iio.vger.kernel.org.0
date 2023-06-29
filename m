@@ -2,98 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CAAC742750
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Jun 2023 15:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C344F7429E9
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Jun 2023 17:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230466AbjF2NZ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Jun 2023 09:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42446 "EHLO
+        id S232444AbjF2Pvo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Jun 2023 11:51:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbjF2NZ1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Jun 2023 09:25:27 -0400
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2654530DF
-        for <linux-iio@vger.kernel.org>; Thu, 29 Jun 2023 06:25:26 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-635ed0114ecso5319646d6.3
-        for <linux-iio@vger.kernel.org>; Thu, 29 Jun 2023 06:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688045125; x=1690637125;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hMqc59JLjfsmDQrIpQpsMtV1yNjY1VclkrG5Cc3ePcs=;
-        b=YECbENiP1T1aRxkh7wMBIccAQs5xbJmnOtTGez2fjWzkY8z60Ng4fIrbin8eKfY2Qh
-         NjqmdyJxhQfsgv3LkmbTCPj5eSMP9ppEseASW2eiiXI8fd/uL1kNjEsrvrbdGSmX8B24
-         hWaDPdohAvJOW43sY0zlkwbOjCcAPlKArRyIzXCeUT4Yzu8pwpou1tywG+ypkh0a1XJx
-         A5XnW9YXQuAjqZ/PwBoWeLZrPYQi+o7ffjT8uUmV8Ey+QDXFHU2eU1aEQIqSspi5GxD5
-         iUZTb/lM9fIiwxKKitjWlRtd9v6mCDJW2cbRL3Sz8fEmT+FEjf6WaIRFjh6FR0EyB91D
-         Aqug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688045125; x=1690637125;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hMqc59JLjfsmDQrIpQpsMtV1yNjY1VclkrG5Cc3ePcs=;
-        b=OfRgqjNtINgvhKml2nWZdXXkfE1tzG5Btc/HkZDtNz7LfsEv/Tt+n+wezW2gQNicCm
-         pJy6rIZHnR9ToHZPCP8NYzmqYXyP+UdsIXHPe6Oxh1+izx9iNxKGZHAt50ocLe9bhFwB
-         EOcJ+RGs/6RRkCdub+p+ngzBogceJ8OwBdPpfN3MmgPXcqZLAGufuwXnjicRomOcdWEl
-         G0EsGN3V+qGREM8rgICSQDj99ix75eKzCEXCDiLDgfXKZZsbSXIdOQ7ghOHv2ztnY6Ih
-         5kjZE78YDpkBNZeWwymmJ6aJfVUY3M9wyPQ4ZJxldBvhAZWoE/SMO7TQbcv3y4Ms5EIH
-         ezQA==
-X-Gm-Message-State: ABy/qLZIQQb2iaje6zz8hk3SOw24TKTCJk+4Xhsf8FCqYPL21gJ2IPgD
-        lMR0/WrweuqEXXsasuiq5kY=
-X-Google-Smtp-Source: APBJJlEKDJ/EBwBtGazRkXSXvIakwn2FfvV9Cd4dnKnKnIggg+6sAwFydC8nw3NE3Swc/kOq+zajtw==
-X-Received: by 2002:a0c:ea50:0:b0:626:3a5a:f8f8 with SMTP id u16-20020a0cea50000000b006263a5af8f8mr376728qvp.58.1688045125146;
-        Thu, 29 Jun 2023 06:25:25 -0700 (PDT)
-Received: from chcpu17.cse.ust.hk (fc3kcs10.cse.ust.hk. [143.89.191.124])
-        by smtp.googlemail.com with ESMTPSA id ej8-20020ad45a48000000b0062119a7a7a3sm7061271qvb.4.2023.06.29.06.25.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jun 2023 06:25:24 -0700 (PDT)
-From:   Yiyuan Guo <yguoaz@gmail.com>
-To:     jic23@kernel.org, lars@metafoo.de, bleung@chromium.org,
-        groeck@chromium.org
-Cc:     dianders@chromium.org, mazziesaccount@gmail.com,
-        gwendal@chromium.org, linux-iio@vger.kernel.org,
-        chrome-platform@lists.linux.dev, yguoaz@gmail.com
-Subject: [PATCH] iio: Fix the allocation size for cros_ec_command
-Date:   Thu, 29 Jun 2023 21:24:05 +0800
-Message-Id: <20230629132405.1237292-1-yguoaz@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S231496AbjF2Pvn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Jun 2023 11:51:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB3A530D1;
+        Thu, 29 Jun 2023 08:51:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53F1F61512;
+        Thu, 29 Jun 2023 15:51:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0CEC433C0;
+        Thu, 29 Jun 2023 15:51:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688053901;
+        bh=0+IOMK6WhZShNaFf3O0bh+KyvYLal+y1KgYHkEx7OUo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bRnyyiZbJkO7ai5MWKdWLd0maxGj4i1sNZrEB9vFlT9XCeUTcc9EAmfWK7cmJP2m8
+         TiXhrfMT9qTKz9jyfp9xG1099d9l6Fs55XDqaLsw6g5hmg+eb+/fh1gO7l8JrZQ5pS
+         n9tw0fb9h+rFSrFvPQdyEtFW44c9CGu86dlykzG7jqyEhAJ+sKMQolRhlB4eLzsSNo
+         RYWy1LQEkacvPwDf+oKdDUOo+jP+5STPBH4U5QTY+XkodHZmtEipUf+9MWNRFh0Vw8
+         q2DCCVaSa+3JSWV2KT+v97OY7N62qMkWyO8FNTRtdzjMtwJf+kvAe/jVPpm18aiEqT
+         1vFcSZOoDBDfA==
+Date:   Thu, 29 Jun 2023 16:51:34 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        "Sahin, Okan" <Okan.Sahin@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v7 5/5] mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
+ Support
+Message-ID: <20230629155134.GB2110266@google.com>
+References: <20230626175443.GA3446604-robh@kernel.org>
+ <20230627135615.GF10378@google.com>
+ <CAL_JsqL3T6pjnTFgFvbYMeATD6cjhc-Sm0vZW2cv5k+w9Oxjuw@mail.gmail.com>
+ <ZJry8QTka8m6ag/j@fedora>
+ <20230627163344.GG10378@google.com>
+ <CAL_Jsq+Z64tuMO8a2Y=2GrXZ8q0L4Z2avCiphsn0HOOC71Dzjg@mail.gmail.com>
+ <20230628134013.GH10378@google.com>
+ <472a4d86-3bfb-4c2b-a099-f1254dd01e24@sirena.org.uk>
+ <20230629072500.GA2110266@google.com>
+ <d070eecd-cb3b-4968-803e-1817a1a4359a@sirena.org.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <d070eecd-cb3b-4968-803e-1817a1a4359a@sirena.org.uk>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The struct cros_ec_command contains several integer fields and a
-trailing array. An allocation size neglecting the integer fields can
-lead to buffer overrun.
+On Thu, 29 Jun 2023, Mark Brown wrote:
 
-Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
----
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> On Thu, Jun 29, 2023 at 08:25:00AM +0100, Lee Jones wrote:
+> > On Wed, 28 Jun 2023, Mark Brown wrote:
+> 
+> > > As I mentioned before the number of resends of what are frequently very
+> > > similar serieses (eg, two PMICs from the same vendor in flight at the
+> > > same time) was causing me real issues with tags going AWOL and things
+> > > getting lost in the noise.
+> 
+> > As much as I empathise with each of these points (I feel it too), the
+> > alternative seems to be causing more issues for more people.  With that
+> > in mind, I'm going to revert back to how we've been doing things for a
+> > long time now.  Please try to Ack and forget.  If a contributor fails to
+> > apply a previously issued tag, we'll have to bring that up at the time.
+> 
+> The thing that's causing a lot of the issues here is that you're only
+> applying the serieses en masse, blocking things on getting absolutely
+> everything lined up (including this time over a merge window).  I really
+> don't understand why you feel you're forced to batch everything together
+> like this.
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 943e9e14d1e9..e4c01f1072bd 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -253,8 +253,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	state->ec = ec->ec_dev;
--	state->msg = devm_kzalloc(&pdev->dev,
--				max((u16)sizeof(struct ec_params_motion_sense),
-+	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
-+			max((u16)sizeof(struct ec_params_motion_sense),
- 				state->ec->max_response), GFP_KERNEL);
- 	if (!state->msg)
- 		return -ENOMEM;
+https://lore.kernel.org/all/CAL_Jsq+Z64tuMO8a2Y=2GrXZ8q0L4Z2avCiphsn0HOOC71Dzjg@mail.gmail.com/
+
 -- 
-2.25.1
-
+Lee Jones [李琼斯]

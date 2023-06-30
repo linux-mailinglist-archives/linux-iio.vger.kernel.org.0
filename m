@@ -2,138 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E821743B4B
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Jun 2023 13:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A9B1743D2C
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Jun 2023 16:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231937AbjF3L6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Jun 2023 07:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46976 "EHLO
+        id S229503AbjF3OHM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Jun 2023 10:07:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231956AbjF3L6R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jun 2023 07:58:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA76171E;
-        Fri, 30 Jun 2023 04:58:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 291E56173B;
-        Fri, 30 Jun 2023 11:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CF5C433C0;
-        Fri, 30 Jun 2023 11:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688126294;
-        bh=og/alEAgFmUrna29k3gmbnQ2qlv9qDvV6lg1WZdZS3Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XG4Ryok+6n2Ff+5jP1ZgE0I38G9bhUJJIvahc3FNxUc8luaLi0OpjlRlR7XC7uHlO
-         DsBOorTzcHghPWzPJUJuBORYQlEaV4yDWKZpFAdzQlmPN7oPNsY0Ca+r+nBnS6Jxge
-         VwpwCY9LRnYc2kTrIHlJ/KcFG0S1QpkxHWgbGkOqdOChnuWrcgS67QvK50wugItFJG
-         /acH2V6uA1yKmNBxK61IZ9Dk3n042V6cgJkXULvfh08PTuVaVwhC9mUxhPoWcEHSDp
-         NO0a7qwNiIown7xwZov6l+EYthAjy++agd04DGX/9bmAVn5ccUb9cKfiRHhM4SVZdK
-         C97ZAfhc26UkA==
-Date:   Fri, 30 Jun 2023 12:58:06 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Lee Jones <lee@kernel.org>
-Cc:     Rob Herring <robh@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        "Sahin, Okan" <Okan.Sahin@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v7 5/5] mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
- Support
-Message-ID: <4283e3aa-14b5-4b2e-9a8a-aeee1e493c27@sirena.org.uk>
-References: <472a4d86-3bfb-4c2b-a099-f1254dd01e24@sirena.org.uk>
- <20230629072500.GA2110266@google.com>
- <d070eecd-cb3b-4968-803e-1817a1a4359a@sirena.org.uk>
- <20230629155134.GB2110266@google.com>
- <7987cbbe-55bc-49a9-b63a-7f1906bf5f74@sirena.org.uk>
- <CAL_Jsq+AQrv7EGMtEkB-2cBCvA4mLHuMbyQ=f39yQkYPkvfVww@mail.gmail.com>
- <998ef8d8-594e-45e3-9aa3-ec9061cf7f11@sirena.org.uk>
- <CAL_JsqK1X-oZHerE9qhcPZ=mFsm7rJa3KxWGBqV3znHHfr6vaQ@mail.gmail.com>
- <920531c8-b5c1-409a-9cda-3ec77ba944e7@sirena.org.uk>
- <20230630071751.GC2110266@google.com>
+        with ESMTP id S230525AbjF3OHL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jun 2023 10:07:11 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758732690
+        for <linux-iio@vger.kernel.org>; Fri, 30 Jun 2023 07:07:10 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40345bf4875so103991cf.0
+        for <linux-iio@vger.kernel.org>; Fri, 30 Jun 2023 07:07:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688134029; x=1690726029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tHNKzb0xtZDRFm7xSfYT1lsm0g1hDdSqIsV7ISLU2gI=;
+        b=i5USUPNBwEgaWF6g3Ro3jJBZF0WCeUDXRsn1xhd0FxR78OIlDFWaH3iDqPaCWYR4zo
+         rVJ3qxPJdk/YrREY2Ow1EbO5Su+C8P1RzMEFUaya5wLBYiiJyFEoSTxL/0GPgcSc1QVr
+         D3LW+JuJFov5xzMJRxCfjmZrBXeAX5Gu6VM0itL0VgihJEAvPD3FVD52WD25TMdElH3q
+         t7k+28lpecAagScvi7y1pWnNiectOUUsd+dotGV4WB4WDne/WjnxeRgJaaJrh6dgn04R
+         QJJfDeoooGqTKpO9mEtx9zM/nxVuibRfIt5e+/cK8sEa3vvO5btL/Gw0FGK+z5/w6ym7
+         at/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688134029; x=1690726029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tHNKzb0xtZDRFm7xSfYT1lsm0g1hDdSqIsV7ISLU2gI=;
+        b=GRrRrcgIiyprY/CKjJii+RtzQndoX+zb6Crfi8NxJ23dho2brS3j7wCBjFvAnaiTpt
+         Fle4EzH8ATj37c1ktr5V0O1jFvJifnLNCfXIKA/fvJeN4N+ifkTLU78hrfHGVW270VYJ
+         VkaXHr8RvBhsu89jocm8xekSyfxSssbb08J+9Esy4i6gYPn4Usiz/jYmzeJaoyrdOfvV
+         zFM2g3OsVYpQcwNuQRmLtXUYzSsVP0BW6O6FOfm9Dx0Nw1UwEeJlcBjOBqHfOwbXdadw
+         XX0OwbQoC3kulZL8EebLJEQfQZdZ8HTKQB6cHCp9UrI9tlnEpQOAPsg6c03Qp/ZutYo5
+         m1xA==
+X-Gm-Message-State: AC+VfDwmUnuIHg65+gWmGq62Wzq0OnA1ttyJ8Mzt/o6OrNQuaqIvBPGr
+        JQKxKH/8Ca3NbNlZefWoVXEs0U9OHcHVQKrrWOIWAg==
+X-Google-Smtp-Source: ACHHUZ47S2nLH6V2FUJYX+wiY64v1gecK1rWqbO/Z6+l5S28oyXmumxGHbDpZZEMVcwaepD8n4Eg0dLjxQoQ1/fdKbI=
+X-Received: by 2002:a05:622a:188e:b0:3fa:45ab:22a5 with SMTP id
+ v14-20020a05622a188e00b003fa45ab22a5mr702360qtc.27.1688134029436; Fri, 30 Jun
+ 2023 07:07:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="q6ikaDz92rEr7KkW"
-Content-Disposition: inline
-In-Reply-To: <20230630071751.GC2110266@google.com>
-X-Cookie: Old mail has arrived.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <ZJ6F4THLoYy6S8HP@google.com> <20230630083112.2344234-1-yguoaz@gmail.com>
+In-Reply-To: <20230630083112.2344234-1-yguoaz@gmail.com>
+From:   Guenter Roeck <groeck@google.com>
+Date:   Fri, 30 Jun 2023 07:06:58 -0700
+Message-ID: <CABXOdTdPTaJp8AwxfZzOZHDBsJSHpXH+KPsA3z_ZheekHPowpA@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: cros_ec: Fix the allocation size for cros_ec_command
+To:     Yiyuan Guo <yguoaz@gmail.com>
+Cc:     tzungbi@kernel.org, jic23@kernel.org, lars@metafoo.de,
+        bleung@chromium.org, groeck@chromium.org, dianders@chromium.org,
+        mazziesaccount@gmail.com, gwendal@chromium.org,
+        linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, Jun 30, 2023 at 1:31=E2=80=AFAM Yiyuan Guo <yguoaz@gmail.com> wrote=
+:
+>
+> The struct cros_ec_command contains several integer fields and a
+> trailing array. An allocation size neglecting the integer fields can
+> lead to buffer overrun.
+>
+> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
 
---q6ikaDz92rEr7KkW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Please _never_ send a patch as reply to a previous one, much less with
+a Re: subject.
 
-On Fri, Jun 30, 2023 at 08:17:51AM +0100, Lee Jones wrote:
-> On Thu, 29 Jun 2023, Mark Brown wrote:
+Guenter
 
-> > My suggestion is that once the core is ready to apply that and also
-> > start applying everything else to Lee's tree as it's ready.  A branch
-> > also works and might come in handy anyway in the case where there's some
-> > subsystem wide updates in some other subsystem (since it avoids having
-> > to pull the whole MFD tree in or anything like that) but it's not
-> > essential to the idea.
-
-> The issue we currently have is that the core usually comes with a header
-> file which is included by some or all of the leaf drivers.  If leaf
-> drivers are pulled in without that header, the drivers will fail to
-> build which will make people grumpy.
-
-Which is why I'm not suggesting doing that.
-
-> The suggestion of a separate branch that's added to over time as leaf
-> drivers become ready is even more work that a one-hit strategy.  It will
-> also mean littering the working branch which a bunch more merges and/or
-> more frequent rebases than I'm happy with.
-
-As I said you don't *need* to do the separate branch, it's more of a
-nice to have in case cross tree issues come up, and it'll probably work
-fine most of the time to just put the incremental commits directly on
-your main branch even if there was a separate branch for the initial
-batch.  This all becomes especially true as we get close to the merge
-window and the likelyhood of new cross tree issues decreases.
-
---q6ikaDz92rEr7KkW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSew00ACgkQJNaLcl1U
-h9AvZgf9EKqEitJbUm3ywtBy7eGuYkv7xgaky391q0cvAAhIIh36P3G47f7uIEF3
-sGvPJxuu/5oSmkxW3Ir0kJB2tBbQviAFG2uaFVxf3F0BZOnsIc+VJIY357uPuB9E
-mt8BOcMip1jI2xeX5R8C4S8axp5Ce+n/cmMseOCPRAMHP7xVf1TdFSGA2mFqwSNJ
-bOlq1bqUGvs8ZwLfej//laEnWQKEspPrQ5rYZASRVx+85HtLgkUM665FVa6Jg/QF
-hkCIezMosvl/qzfBMK72Z42Bk3HAM3xYFCpy0eiha+NJDBHsWIX1GruVclkn9n4R
-8jlIG43meWFkYsrt1KiQ+E8+9wJk6Q==
-=HBKs
------END PGP SIGNATURE-----
-
---q6ikaDz92rEr7KkW--
+> ---
+> v2->v3:
+>  * Added R-b tag from Tzung-Bi Shih
+>  * Aligned the code by adding an extra tab before "max"
+>  * Added a patch changelog
+> v1->v2: Prefixed the commit title with "iio: cros_ec:"
+>
+>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/=
+drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 943e9e14d1e9..b72d39fc2434 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -253,7 +253,7 @@ int cros_ec_sensors_core_init(struct platform_device =
+*pdev,
+>         platform_set_drvdata(pdev, indio_dev);
+>
+>         state->ec =3D ec->ec_dev;
+> -       state->msg =3D devm_kzalloc(&pdev->dev,
+> +       state->msg =3D devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
+>                                 max((u16)sizeof(struct ec_params_motion_s=
+ense),
+>                                 state->ec->max_response), GFP_KERNEL);
+>         if (!state->msg)
+> --
+> 2.25.1
+>

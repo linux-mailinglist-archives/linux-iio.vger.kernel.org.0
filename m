@@ -2,107 +2,292 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A158743739
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Jun 2023 10:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE16743A1D
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Jun 2023 12:58:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232556AbjF3Ibh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Jun 2023 04:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41860 "EHLO
+        id S229578AbjF3K6Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Jun 2023 06:58:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232560AbjF3Ibe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jun 2023 04:31:34 -0400
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B651FE3
-        for <linux-iio@vger.kernel.org>; Fri, 30 Jun 2023 01:31:33 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-635f48814b4so10078146d6.1
-        for <linux-iio@vger.kernel.org>; Fri, 30 Jun 2023 01:31:33 -0700 (PDT)
+        with ESMTP id S230235AbjF3K6L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jun 2023 06:58:11 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE5135BD;
+        Fri, 30 Jun 2023 03:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688113892; x=1690705892;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NJtRVTrBXHzy1SAWRtn4ErvKw0dJAPtFGr8YFV61VM0=;
-        b=Mwg5wcWZqfPJ9jLPYPvXyjxdyXMwEWm00Q8tZvEGl4TmpkIp85Jh1aDf0T975wVtrl
-         n14yEk1vswKw8QbaTorG58E+wcU6JvpXrexZ+hpMVHv3Bz7zmQ2DJmbjKThqI5bdizxl
-         wObcuaYRB3g9zjU2t1TTqx+dbezvZmHVUfzoc9R2YLIDnq+dToMaocVUl33sGqYV5SLB
-         Z6u8Og0ostgnY+Ho6jxgzUOLWTxOw2BTIZMYSbiIYkzE+RfGtNPf/1n2tpsBIpOqaF7O
-         2h/joWIT5rXW6/TQ5guZ8TuTEl7GsW+M+fwYPH4oSW2OkpKm5SDVzRK+K7zanwJNFn4M
-         Eo+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688113892; x=1690705892;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NJtRVTrBXHzy1SAWRtn4ErvKw0dJAPtFGr8YFV61VM0=;
-        b=dr1Ufa9L7eiCSjOeepOfqFPblcth2gpT4ql3i1f6G27XtqnZQVHVU12NhhSF2Lb9Wh
-         4nBx4ubENjDGYlT1qTklZ7yCrpDTGvZZ7zTXEG+OcXA8Y3OK6so4Lc+ghE0CHNRegQ7i
-         M/JkxQw6cjVz/bntUedBpEiPa9XOLEy9DBcPQ1bWDbAAR5wkR4bcsd8gtvyOEa2MDcCd
-         KsbpRcDj5W0/ab67wW1PsNo8niEdRzrYreAnAMmUhiCwqXeQo2SiVZswQVCMm53i0Xg4
-         G0dx3O0payKcCRAb9c7UJcwUWI3L+RBM8pa8nJkRwMrLA9ChGzTUR5c9hvjoN2pOKmVr
-         v0jQ==
-X-Gm-Message-State: ABy/qLbbY6EzeIBe1MUc/sjIC9Tq0yo5Xh60Tbfti7f1vUDzEYa+vV9C
-        h/PWc/MIbwh0cb4qKKP/j2A=
-X-Google-Smtp-Source: APBJJlE9Fi+oiwjKrHm4+GLJT1H7D5HMQLdwOGJjYgx1gXutxBbvOrgmmvUkYCM6uysI5UIG58/Lpg==
-X-Received: by 2002:ad4:5f4e:0:b0:635:da2a:4706 with SMTP id p14-20020ad45f4e000000b00635da2a4706mr2698383qvg.15.1688113892241;
-        Fri, 30 Jun 2023 01:31:32 -0700 (PDT)
-Received: from chcpu17.cse.ust.hk (fc3kcs10.cse.ust.hk. [143.89.191.124])
-        by smtp.googlemail.com with ESMTPSA id jy19-20020a0562142b5300b00635e9db359bsm4765587qvb.82.2023.06.30.01.31.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 01:31:31 -0700 (PDT)
-From:   Yiyuan Guo <yguoaz@gmail.com>
-To:     tzungbi@kernel.org
-Cc:     jic23@kernel.org, lars@metafoo.de, bleung@chromium.org,
-        groeck@chromium.org, dianders@chromium.org,
-        mazziesaccount@gmail.com, gwendal@chromium.org,
-        linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev,
-        yguoaz@gmail.com
-Subject: [PATCH v3] iio: cros_ec: Fix the allocation size for cros_ec_command
-Date:   Fri, 30 Jun 2023 16:31:12 +0800
-Message-Id: <20230630083112.2344234-1-yguoaz@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <ZJ6F4THLoYy6S8HP@google.com>
-References: <ZJ6F4THLoYy6S8HP@google.com>
+  d=axis.com; q=dns/txt; s=axis-central1; t=1688122689;
+  x=1719658689;
+  h=references:from:to:cc:subject:date:in-reply-to:
+   message-id:mime-version;
+  bh=KAaXVbPDlTxgz8UQ8Ae4cggP8Zew9LI0cO3pnmJUSgs=;
+  b=aRCirzNCMeqb79PRwYpnpINm7czWrBMpthDxe5UgQwswFTa9jfh4Cq9x
+   uXkdqx3NxEvipsoNucuf9HAEs8B58tbW6Ob20gLHmWUH+7VqoX0CrfKki
+   iwe1Fc4MxO+M35/Qu5yLNXdhjOgmN3BX2qtm3p1FRwPtg2Vyvbm1uwAb/
+   QSEBoQC+14EZwYPw/QfiuyDhzsAY2P9+LG2rqk1yGSXv+dfc0ygGqPzjM
+   P+iyUTWXoWnqPQ/gdtOJ+lGE0kAI+C1RgFHIMUC6ZNNv8y54AZt+ht63H
+   YIV9cER/Sj6qA4MIpZglIXV9iXpAN7LJ6PL+3Z5Pu06smEWEcwvGyYWNU
+   w==;
+References: <cover.1686926857.git.waqarh@axis.com>
+ <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
+ <20230617143508.28309834@jic23-huawei> <pndo7lb1mes.fsf@axis.com>
+ <20230625120604.3ecc54bf@jic23-huawei>
+User-agent: a.out
+From:   Waqar Hameed <waqar.hameed@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <kernel@axis.com>
+Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
+Date:   Fri, 30 Jun 2023 10:54:01 +0200
+In-Reply-To: <20230625120604.3ecc54bf@jic23-huawei>
+Message-ID: <pndilb5xlmt.fsf@axis.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail01w.axis.com
+ (10.20.40.7)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The struct cros_ec_command contains several integer fields and a
-trailing array. An allocation size neglecting the integer fields can
-lead to buffer overrun.
+On Sun, Jun 25, 2023 at 12:06 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
----
-v2->v3: 
- * Added R-b tag from Tzung-Bi Shih
- * Aligned the code by adding an extra tab before "max"
- * Added a patch changelog
-v1->v2: Prefixed the commit title with "iio: cros_ec:"
+[...]
 
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> >> +static int irsd200_write_data_rate(struct irsd200_data *data, int val)
+>> >> +{
+>> >> +	size_t idx;
+>> >> +	int ret;
+>> >> +
+>> >> +	for (idx = 0; idx < ARRAY_SIZE(irsd200_data_rates); ++idx) {
+>> >> +		if (irsd200_data_rates[idx] == val)
+>> >> +			break;
+>> >> +	}
+>> >> +
+>> >> +	if (idx == ARRAY_SIZE(irsd200_data_rates))
+>> >> +		return -ERANGE;
+>> >> +
+>> >> +	ret = regmap_write(data->regmap, IRS_REG_DATA_RATE, idx);
+>> >> +	if (ret < 0) {
+>> >> +		dev_err(data->dev, "Could not write data rate (%d)\n", ret);
+>> >> +		return ret;
+>> >> +	}
+>> >> +
+>> >> +	/* Data sheet says the device needs 3 seconds of settling time. */
+>> >> +	ssleep(3);  
+>> > You aren't preventing other userspace reads / writes during that time so
+>> > this is a light protection at best.  
+>> 
+>> Yes, we aren't preventing anything. The hardware actually operates
+>> without any "errors" during this period (e.g. buffer data and events
+>> keep arriving). 
+>> 
+>> This is more of a guarantee that "within 3 s, the new data rate should
+>> be in effect". When I think about it, we should maybe just remove this
+>> sleep?
+> Interesting corner case.  I'd keep as you have it but add a little
+> more documentation as why.  Having this sleep will make it easy for a single
+> thread in userspace to get what it expects.
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 943e9e14d1e9..b72d39fc2434 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -253,7 +253,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	state->ec = ec->ec_dev;
--	state->msg = devm_kzalloc(&pdev->dev,
-+	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
- 				max((u16)sizeof(struct ec_params_motion_sense),
- 				state->ec->max_response), GFP_KERNEL);
- 	if (!state->msg)
--- 
-2.25.1
+Alright, let's update the comment then.
 
+[...]
+
+>> >> +		dev_err(data->dev, "Could not write hp filter frequency (%d)\n",
+>> >> +			ret);
+>> >> +		return ret;  
+>> >
+>> > drop this return ret out of the if block here.
+>> >
+>> > In general being able to ignore possibility of ret > 0 simplifies handling.  
+>> 
+>> I try to be consistent and it also "helps" the next person potentially
+>> adding code after the `if`-statement and forgetting about adding
+>> `return`. We can drop the `return here, but then we should do the same
+>> in other places with a check just before the last `return` (like
+>> `irsd200_write_timer()`, `irsd200_read_nr_count()`,
+>> `irsd200_write_nr_count()` and many more), right?
+>
+> I don't feel particulartly strongly about this, but there are scripts
+> that get used to scan for this pattern to simplify the code.
+>
+> Sure on the other cases. I don't tend to try and label all cases of things
+> pointed out, just pick on one and rely on the patch author to generalise.
+
+I don't have strong opinions on this either. Let's remove the `return`.
+
+[...]
+
+>> >> +static irqreturn_t irsd200_irq_thread(int irq, void *dev_id)
+>> >> +{
+>> >> +	struct iio_dev *indio_dev = dev_id;
+>> >> +	struct irsd200_data *data = iio_priv(indio_dev);
+>> >> +	enum iio_event_direction dir;
+>> >> +	unsigned int lower_count;
+>> >> +	unsigned int upper_count;
+>> >> +	unsigned int status = 0;
+>> >> +	unsigned int source = 0;
+>> >> +	unsigned int clear = 0;
+>> >> +	unsigned int count = 0;
+>> >> +	int ret;
+>> >> +
+>> >> +	ret = regmap_read(data->regmap, IRS_REG_INTR, &source);
+>> >> +	if (ret) {
+>> >> +		dev_err(data->dev, "Could not read interrupt source (%d)\n",
+>> >> +			ret);
+>> >> +		return IRQ_NONE;
+>> >> +	}
+>> >> +
+>> >> +	ret = regmap_read(data->regmap, IRS_REG_STATUS, &status);
+>> >> +	if (ret) {
+>> >> +		dev_err(data->dev, "Could not acknowledge interrupt (%d)\n",
+>> >> +			ret);
+>> >> +		return IRQ_NONE;
+>> >> +	}
+>> >> +
+>> >> +	if (status & BIT(IRS_INTR_DATA) && iio_buffer_enabled(indio_dev)) {
+>> >> +		iio_trigger_poll_nested(indio_dev->trig);
+>> >> +		clear |= BIT(IRS_INTR_DATA);
+>> >> +	}
+>> >> +
+>> >> +	if (status & BIT(IRS_INTR_TIMER) && source & BIT(IRS_INTR_TIMER)) {
+>> >> +		iio_push_event(indio_dev,
+>> >> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
+>> >> +						    IIO_EV_TYPE_CHANGE,
+>> >> +						    IIO_EV_DIR_NONE),  
+>> >
+>> > As below, I'd like more explanation of what this is.
+>> > I can't find a datasheet to look it up in.  
+>> 
+>> This is a timer for the detection event window time, i.e. the signal
+>> should pass the threshold values within this time in order to get an
+>> interrupt (`IIO_EV_TYPE_THRESH`).
+>> 
+>> You setup the window time (`IIO_EV_INFO_TIMEOUT`), and when this timer
+>> has expired, you get this interrupt (and thus `IIO_EV_TYPE_CHANGE`). I
+>> couldn't find any other more fitting value in `enum iio_event_type`.
+>
+> I'm not totally following.   This is some sort of watchdog?  If threshold
+> not exceeded for N seconds an interrupt occurs?  
+
+Yes, exactly.
+
+> Change is definitely not indicating that, so not appropriate ABI to use.
+> Timeout currently has a very specific defined meaning and it's not this
+> (see the ABI docs - to do with adaptive algorithm jumps - we also have
+> reset_timeout but that's different again).
+>
+> This probably needs some new ABI defining.  I'm not sure what will work
+> best though as it's kind of a 'event did not happen' signal if I've understood
+> it correctly?
+
+Yeah, I'm not sure when this interrupt actually could be useful. Maybe
+when you are testing and calibrating the device, it could help to know
+that "these particular settings didn't cause the data to pass any
+thresholds during the window time"?
+
+The alternative would be to just ignore this interrupt and not signaling
+any events for this. I don't think it would deteriorate the
+functionality of the device (except the test/calibration situation
+described above, which obviously _can_ be resolved in user space).
+
+>> >> +			       iio_get_time_ns(indio_dev));
+>> >> +		clear |= BIT(IRS_INTR_TIMER);
+>> >> +	}
+>> >> +
+>> >> +	if (status & BIT(IRS_INTR_COUNT_THR_OR) &&
+>> >> +	    source & BIT(IRS_INTR_COUNT_THR_OR)) {
+>> >> +		/*
+>> >> +		 * The register value resets to zero after reading. We therefore
+>> >> +		 * need to read once and manually extract the lower and upper
+>> >> +		 * count register fields.
+>> >> +		 */
+>> >> +		ret = regmap_read(data->regmap, IRS_REG_COUNT, &count);
+>> >> +		if (ret)
+>> >> +			dev_err(data->dev, "Could not read count (%d)\n", ret);
+>> >> +
+>> >> +		upper_count = IRS_UPPER_COUNT(count);
+>> >> +		lower_count = IRS_LOWER_COUNT(count);
+>> >> +
+>> >> +		/*
+>> >> +		 * We only check the OR mode to be able to push events for
+>> >> +		 * rising and falling thresholds. AND mode is covered when both
+>> >> +		 * upper and lower count is non-zero, and is signaled with
+>> >> +		 * IIO_EV_DIR_EITHER.  
+>> >
+>> > Whey you say AND, you mean that both thresholds have been crossed but also that
+>> > in that configuration either being crossed would also have gotten us to here?
+>> > (as opposed to the interrupt only occurring if value is greater than rising threshold
+>> >  and less than falling threshold?)
+>> >
+>> > If it's the first then just report two events.  Either means we don't know, rather
+>> > than we know both occurred.  We don't document that well though - so something
+>> > we should improved there. whilst a bit confusing: 
+>> > https://elixir.bootlin.com/linux/v6.4-rc6/source/Documentation/ABI/testing/sysfs-bus-iio#L792
+>> > talks about this.
+>> >
+>> > The bracketed case is more annoying to deal with so I hope you don't mean that.
+>> > Whilst we've had sensors that support it in hardware for years, I don't think we
+>> > ever came up with a usecase that really justified describing it.  
+>> 
+>> According to the data sheet (which will hopefully be soon publicly
+>> available):
+>> 
+>> OR-interrupt:  (UPPER_COUNT + LOWER_COUNT >= NR_COUNT)
+>> 
+>> AND-interrupt: (UPPER_COUNT + LOWER_COUNT >= NR_COUNT) &&
+>>                (UPPER_COUNT != 0) && (LOWER_COUNT != 0)
+>>                
+>> For example, consider the following situation:
+>> 
+>>                                ___
+>>                               /   \
+>> -----------------------------3------------------- Upper threshold
+>>                ___          /       \
+>> ______        /   \        /         \___________ Data signal
+>>       \      /     \      /
+>> -------1------------2---------------------------- Lower threshold
+>>         \__/         \__/
+>>         
+>> When `NR_COUNT` is set to 3, we will get an OR-interrupt on point "3" in
+>> the graph above. In this case `UPPER_COUNT = 1` and `LOWER_COUNT = 2`.
+>> 
+>> When `NR_COUNT` is set to 2, we will get an OR-interrupt on point "2"
+>> instead. Here `UPPER_COUNT = 0` and `LOWER_COUNT = 2`.
+>> 
+>
+> Thanks.  That is very odd definition of AND.  At least OR is close to normal
+> though the way count is applied is unusual.  Most common thing similar to that
+> is what we use period for in IIO - it's same count here, but it resets once
+> the condition is no longer true.  Here we have a running total...
+>
+> Getting this into standard ABI or anything approaching it is going to be tricky.
+>
+> Firstly need a concept similar to period but with out the reset. That will at least
+> allow us to comprehend the counts part.
+>
+> Either can then be used for the OR case.
+
+Are you saying that the current implementation (with manually checking
+the upper and lower counts only with the OR mode) wouldn't "fit" the
+current ABI? It does cover the rising and falling directions correctly,
+no? Could `IIO_EV_DIR_NONE` instead of `IIO_EV_DIR_EITHER` be used to
+signal "both" then?
+
+>
+> The AND case is a mess so for now I'm stuck.  Will think some more on this.
+> Out of curiosity does the datasheet include why that particular function makes
+> any sense?  Feels like a rough attempt to approximate something they don't have
+> hardware resources to actually estimate.
+
+Unfortunately not. I guess there could be an application where you are
+only interested if _both_ lower and upper threshold are exceeded. Maybe
+in order to minimize small "false positives" movements in front of the
+sensor? But as stated in the comments, one can cover this with only the
+OR mode (and manually checking the upper and lower count as we do).

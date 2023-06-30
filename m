@@ -2,53 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE16743A1D
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Jun 2023 12:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E821743B4B
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Jun 2023 13:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbjF3K6Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Jun 2023 06:58:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46668 "EHLO
+        id S231937AbjF3L6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Jun 2023 07:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230235AbjF3K6L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jun 2023 06:58:11 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE5135BD;
-        Fri, 30 Jun 2023 03:58:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1688122689;
-  x=1719658689;
-  h=references:from:to:cc:subject:date:in-reply-to:
-   message-id:mime-version;
-  bh=KAaXVbPDlTxgz8UQ8Ae4cggP8Zew9LI0cO3pnmJUSgs=;
-  b=aRCirzNCMeqb79PRwYpnpINm7czWrBMpthDxe5UgQwswFTa9jfh4Cq9x
-   uXkdqx3NxEvipsoNucuf9HAEs8B58tbW6Ob20gLHmWUH+7VqoX0CrfKki
-   iwe1Fc4MxO+M35/Qu5yLNXdhjOgmN3BX2qtm3p1FRwPtg2Vyvbm1uwAb/
-   QSEBoQC+14EZwYPw/QfiuyDhzsAY2P9+LG2rqk1yGSXv+dfc0ygGqPzjM
-   P+iyUTWXoWnqPQ/gdtOJ+lGE0kAI+C1RgFHIMUC6ZNNv8y54AZt+ht63H
-   YIV9cER/Sj6qA4MIpZglIXV9iXpAN7LJ6PL+3Z5Pu06smEWEcwvGyYWNU
-   w==;
-References: <cover.1686926857.git.waqarh@axis.com>
- <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
- <20230617143508.28309834@jic23-huawei> <pndo7lb1mes.fsf@axis.com>
- <20230625120604.3ecc54bf@jic23-huawei>
-User-agent: a.out
-From:   Waqar Hameed <waqar.hameed@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <kernel@axis.com>
-Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
-Date:   Fri, 30 Jun 2023 10:54:01 +0200
-In-Reply-To: <20230625120604.3ecc54bf@jic23-huawei>
-Message-ID: <pndilb5xlmt.fsf@axis.com>
+        with ESMTP id S231956AbjF3L6R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Jun 2023 07:58:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA76171E;
+        Fri, 30 Jun 2023 04:58:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 291E56173B;
+        Fri, 30 Jun 2023 11:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CF5C433C0;
+        Fri, 30 Jun 2023 11:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688126294;
+        bh=og/alEAgFmUrna29k3gmbnQ2qlv9qDvV6lg1WZdZS3Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XG4Ryok+6n2Ff+5jP1ZgE0I38G9bhUJJIvahc3FNxUc8luaLi0OpjlRlR7XC7uHlO
+         DsBOorTzcHghPWzPJUJuBORYQlEaV4yDWKZpFAdzQlmPN7oPNsY0Ca+r+nBnS6Jxge
+         VwpwCY9LRnYc2kTrIHlJ/KcFG0S1QpkxHWgbGkOqdOChnuWrcgS67QvK50wugItFJG
+         /acH2V6uA1yKmNBxK61IZ9Dk3n042V6cgJkXULvfh08PTuVaVwhC9mUxhPoWcEHSDp
+         NO0a7qwNiIown7xwZov6l+EYthAjy++agd04DGX/9bmAVn5ccUb9cKfiRHhM4SVZdK
+         C97ZAfhc26UkA==
+Date:   Fri, 30 Jun 2023 12:58:06 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Lee Jones <lee@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        "Sahin, Okan" <Okan.Sahin@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v7 5/5] mfd: max77541: Add ADI MAX77541/MAX77540 PMIC
+ Support
+Message-ID: <4283e3aa-14b5-4b2e-9a8a-aeee1e493c27@sirena.org.uk>
+References: <472a4d86-3bfb-4c2b-a099-f1254dd01e24@sirena.org.uk>
+ <20230629072500.GA2110266@google.com>
+ <d070eecd-cb3b-4968-803e-1817a1a4359a@sirena.org.uk>
+ <20230629155134.GB2110266@google.com>
+ <7987cbbe-55bc-49a9-b63a-7f1906bf5f74@sirena.org.uk>
+ <CAL_Jsq+AQrv7EGMtEkB-2cBCvA4mLHuMbyQ=f39yQkYPkvfVww@mail.gmail.com>
+ <998ef8d8-594e-45e3-9aa3-ec9061cf7f11@sirena.org.uk>
+ <CAL_JsqK1X-oZHerE9qhcPZ=mFsm7rJa3KxWGBqV3znHHfr6vaQ@mail.gmail.com>
+ <920531c8-b5c1-409a-9cda-3ec77ba944e7@sirena.org.uk>
+ <20230630071751.GC2110266@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.0.5.60]
-X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail01w.axis.com
- (10.20.40.7)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="q6ikaDz92rEr7KkW"
+Content-Disposition: inline
+In-Reply-To: <20230630071751.GC2110266@google.com>
+X-Cookie: Old mail has arrived.
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,238 +87,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 25, 2023 at 12:06 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
 
-[...]
+--q6ikaDz92rEr7KkW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> >> +static int irsd200_write_data_rate(struct irsd200_data *data, int val)
->> >> +{
->> >> +	size_t idx;
->> >> +	int ret;
->> >> +
->> >> +	for (idx = 0; idx < ARRAY_SIZE(irsd200_data_rates); ++idx) {
->> >> +		if (irsd200_data_rates[idx] == val)
->> >> +			break;
->> >> +	}
->> >> +
->> >> +	if (idx == ARRAY_SIZE(irsd200_data_rates))
->> >> +		return -ERANGE;
->> >> +
->> >> +	ret = regmap_write(data->regmap, IRS_REG_DATA_RATE, idx);
->> >> +	if (ret < 0) {
->> >> +		dev_err(data->dev, "Could not write data rate (%d)\n", ret);
->> >> +		return ret;
->> >> +	}
->> >> +
->> >> +	/* Data sheet says the device needs 3 seconds of settling time. */
->> >> +	ssleep(3);  
->> > You aren't preventing other userspace reads / writes during that time so
->> > this is a light protection at best.  
->> 
->> Yes, we aren't preventing anything. The hardware actually operates
->> without any "errors" during this period (e.g. buffer data and events
->> keep arriving). 
->> 
->> This is more of a guarantee that "within 3 s, the new data rate should
->> be in effect". When I think about it, we should maybe just remove this
->> sleep?
-> Interesting corner case.  I'd keep as you have it but add a little
-> more documentation as why.  Having this sleep will make it easy for a single
-> thread in userspace to get what it expects.
+On Fri, Jun 30, 2023 at 08:17:51AM +0100, Lee Jones wrote:
+> On Thu, 29 Jun 2023, Mark Brown wrote:
 
-Alright, let's update the comment then.
+> > My suggestion is that once the core is ready to apply that and also
+> > start applying everything else to Lee's tree as it's ready.  A branch
+> > also works and might come in handy anyway in the case where there's some
+> > subsystem wide updates in some other subsystem (since it avoids having
+> > to pull the whole MFD tree in or anything like that) but it's not
+> > essential to the idea.
 
-[...]
+> The issue we currently have is that the core usually comes with a header
+> file which is included by some or all of the leaf drivers.  If leaf
+> drivers are pulled in without that header, the drivers will fail to
+> build which will make people grumpy.
 
->> >> +		dev_err(data->dev, "Could not write hp filter frequency (%d)\n",
->> >> +			ret);
->> >> +		return ret;  
->> >
->> > drop this return ret out of the if block here.
->> >
->> > In general being able to ignore possibility of ret > 0 simplifies handling.  
->> 
->> I try to be consistent and it also "helps" the next person potentially
->> adding code after the `if`-statement and forgetting about adding
->> `return`. We can drop the `return here, but then we should do the same
->> in other places with a check just before the last `return` (like
->> `irsd200_write_timer()`, `irsd200_read_nr_count()`,
->> `irsd200_write_nr_count()` and many more), right?
->
-> I don't feel particulartly strongly about this, but there are scripts
-> that get used to scan for this pattern to simplify the code.
->
-> Sure on the other cases. I don't tend to try and label all cases of things
-> pointed out, just pick on one and rely on the patch author to generalise.
+Which is why I'm not suggesting doing that.
 
-I don't have strong opinions on this either. Let's remove the `return`.
+> The suggestion of a separate branch that's added to over time as leaf
+> drivers become ready is even more work that a one-hit strategy.  It will
+> also mean littering the working branch which a bunch more merges and/or
+> more frequent rebases than I'm happy with.
 
-[...]
+As I said you don't *need* to do the separate branch, it's more of a
+nice to have in case cross tree issues come up, and it'll probably work
+fine most of the time to just put the incremental commits directly on
+your main branch even if there was a separate branch for the initial
+batch.  This all becomes especially true as we get close to the merge
+window and the likelyhood of new cross tree issues decreases.
 
->> >> +static irqreturn_t irsd200_irq_thread(int irq, void *dev_id)
->> >> +{
->> >> +	struct iio_dev *indio_dev = dev_id;
->> >> +	struct irsd200_data *data = iio_priv(indio_dev);
->> >> +	enum iio_event_direction dir;
->> >> +	unsigned int lower_count;
->> >> +	unsigned int upper_count;
->> >> +	unsigned int status = 0;
->> >> +	unsigned int source = 0;
->> >> +	unsigned int clear = 0;
->> >> +	unsigned int count = 0;
->> >> +	int ret;
->> >> +
->> >> +	ret = regmap_read(data->regmap, IRS_REG_INTR, &source);
->> >> +	if (ret) {
->> >> +		dev_err(data->dev, "Could not read interrupt source (%d)\n",
->> >> +			ret);
->> >> +		return IRQ_NONE;
->> >> +	}
->> >> +
->> >> +	ret = regmap_read(data->regmap, IRS_REG_STATUS, &status);
->> >> +	if (ret) {
->> >> +		dev_err(data->dev, "Could not acknowledge interrupt (%d)\n",
->> >> +			ret);
->> >> +		return IRQ_NONE;
->> >> +	}
->> >> +
->> >> +	if (status & BIT(IRS_INTR_DATA) && iio_buffer_enabled(indio_dev)) {
->> >> +		iio_trigger_poll_nested(indio_dev->trig);
->> >> +		clear |= BIT(IRS_INTR_DATA);
->> >> +	}
->> >> +
->> >> +	if (status & BIT(IRS_INTR_TIMER) && source & BIT(IRS_INTR_TIMER)) {
->> >> +		iio_push_event(indio_dev,
->> >> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
->> >> +						    IIO_EV_TYPE_CHANGE,
->> >> +						    IIO_EV_DIR_NONE),  
->> >
->> > As below, I'd like more explanation of what this is.
->> > I can't find a datasheet to look it up in.  
->> 
->> This is a timer for the detection event window time, i.e. the signal
->> should pass the threshold values within this time in order to get an
->> interrupt (`IIO_EV_TYPE_THRESH`).
->> 
->> You setup the window time (`IIO_EV_INFO_TIMEOUT`), and when this timer
->> has expired, you get this interrupt (and thus `IIO_EV_TYPE_CHANGE`). I
->> couldn't find any other more fitting value in `enum iio_event_type`.
->
-> I'm not totally following.   This is some sort of watchdog?  If threshold
-> not exceeded for N seconds an interrupt occurs?  
+--q6ikaDz92rEr7KkW
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Yes, exactly.
+-----BEGIN PGP SIGNATURE-----
 
-> Change is definitely not indicating that, so not appropriate ABI to use.
-> Timeout currently has a very specific defined meaning and it's not this
-> (see the ABI docs - to do with adaptive algorithm jumps - we also have
-> reset_timeout but that's different again).
->
-> This probably needs some new ABI defining.  I'm not sure what will work
-> best though as it's kind of a 'event did not happen' signal if I've understood
-> it correctly?
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmSew00ACgkQJNaLcl1U
+h9AvZgf9EKqEitJbUm3ywtBy7eGuYkv7xgaky391q0cvAAhIIh36P3G47f7uIEF3
+sGvPJxuu/5oSmkxW3Ir0kJB2tBbQviAFG2uaFVxf3F0BZOnsIc+VJIY357uPuB9E
+mt8BOcMip1jI2xeX5R8C4S8axp5Ce+n/cmMseOCPRAMHP7xVf1TdFSGA2mFqwSNJ
+bOlq1bqUGvs8ZwLfej//laEnWQKEspPrQ5rYZASRVx+85HtLgkUM665FVa6Jg/QF
+hkCIezMosvl/qzfBMK72Z42Bk3HAM3xYFCpy0eiha+NJDBHsWIX1GruVclkn9n4R
+8jlIG43meWFkYsrt1KiQ+E8+9wJk6Q==
+=HBKs
+-----END PGP SIGNATURE-----
 
-Yeah, I'm not sure when this interrupt actually could be useful. Maybe
-when you are testing and calibrating the device, it could help to know
-that "these particular settings didn't cause the data to pass any
-thresholds during the window time"?
-
-The alternative would be to just ignore this interrupt and not signaling
-any events for this. I don't think it would deteriorate the
-functionality of the device (except the test/calibration situation
-described above, which obviously _can_ be resolved in user space).
-
->> >> +			       iio_get_time_ns(indio_dev));
->> >> +		clear |= BIT(IRS_INTR_TIMER);
->> >> +	}
->> >> +
->> >> +	if (status & BIT(IRS_INTR_COUNT_THR_OR) &&
->> >> +	    source & BIT(IRS_INTR_COUNT_THR_OR)) {
->> >> +		/*
->> >> +		 * The register value resets to zero after reading. We therefore
->> >> +		 * need to read once and manually extract the lower and upper
->> >> +		 * count register fields.
->> >> +		 */
->> >> +		ret = regmap_read(data->regmap, IRS_REG_COUNT, &count);
->> >> +		if (ret)
->> >> +			dev_err(data->dev, "Could not read count (%d)\n", ret);
->> >> +
->> >> +		upper_count = IRS_UPPER_COUNT(count);
->> >> +		lower_count = IRS_LOWER_COUNT(count);
->> >> +
->> >> +		/*
->> >> +		 * We only check the OR mode to be able to push events for
->> >> +		 * rising and falling thresholds. AND mode is covered when both
->> >> +		 * upper and lower count is non-zero, and is signaled with
->> >> +		 * IIO_EV_DIR_EITHER.  
->> >
->> > Whey you say AND, you mean that both thresholds have been crossed but also that
->> > in that configuration either being crossed would also have gotten us to here?
->> > (as opposed to the interrupt only occurring if value is greater than rising threshold
->> >  and less than falling threshold?)
->> >
->> > If it's the first then just report two events.  Either means we don't know, rather
->> > than we know both occurred.  We don't document that well though - so something
->> > we should improved there. whilst a bit confusing: 
->> > https://elixir.bootlin.com/linux/v6.4-rc6/source/Documentation/ABI/testing/sysfs-bus-iio#L792
->> > talks about this.
->> >
->> > The bracketed case is more annoying to deal with so I hope you don't mean that.
->> > Whilst we've had sensors that support it in hardware for years, I don't think we
->> > ever came up with a usecase that really justified describing it.  
->> 
->> According to the data sheet (which will hopefully be soon publicly
->> available):
->> 
->> OR-interrupt:  (UPPER_COUNT + LOWER_COUNT >= NR_COUNT)
->> 
->> AND-interrupt: (UPPER_COUNT + LOWER_COUNT >= NR_COUNT) &&
->>                (UPPER_COUNT != 0) && (LOWER_COUNT != 0)
->>                
->> For example, consider the following situation:
->> 
->>                                ___
->>                               /   \
->> -----------------------------3------------------- Upper threshold
->>                ___          /       \
->> ______        /   \        /         \___________ Data signal
->>       \      /     \      /
->> -------1------------2---------------------------- Lower threshold
->>         \__/         \__/
->>         
->> When `NR_COUNT` is set to 3, we will get an OR-interrupt on point "3" in
->> the graph above. In this case `UPPER_COUNT = 1` and `LOWER_COUNT = 2`.
->> 
->> When `NR_COUNT` is set to 2, we will get an OR-interrupt on point "2"
->> instead. Here `UPPER_COUNT = 0` and `LOWER_COUNT = 2`.
->> 
->
-> Thanks.  That is very odd definition of AND.  At least OR is close to normal
-> though the way count is applied is unusual.  Most common thing similar to that
-> is what we use period for in IIO - it's same count here, but it resets once
-> the condition is no longer true.  Here we have a running total...
->
-> Getting this into standard ABI or anything approaching it is going to be tricky.
->
-> Firstly need a concept similar to period but with out the reset. That will at least
-> allow us to comprehend the counts part.
->
-> Either can then be used for the OR case.
-
-Are you saying that the current implementation (with manually checking
-the upper and lower counts only with the OR mode) wouldn't "fit" the
-current ABI? It does cover the rising and falling directions correctly,
-no? Could `IIO_EV_DIR_NONE` instead of `IIO_EV_DIR_EITHER` be used to
-signal "both" then?
-
->
-> The AND case is a mess so for now I'm stuck.  Will think some more on this.
-> Out of curiosity does the datasheet include why that particular function makes
-> any sense?  Feels like a rough attempt to approximate something they don't have
-> hardware resources to actually estimate.
-
-Unfortunately not. I guess there could be an application where you are
-only interested if _both_ lower and upper threshold are exceeded. Maybe
-in order to minimize small "false positives" movements in front of the
-sensor? But as stated in the comments, one can cover this with only the
-OR mode (and manually checking the upper and lower count as we do).
+--q6ikaDz92rEr7KkW--

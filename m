@@ -2,48 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A37B7744D54
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jul 2023 12:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D79744D5E
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jul 2023 12:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbjGBKme (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jul 2023 06:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52148 "EHLO
+        id S229932AbjGBK4e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jul 2023 06:56:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjGBKmd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jul 2023 06:42:33 -0400
+        with ESMTP id S229875AbjGBK4c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jul 2023 06:56:32 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1BC18D;
-        Sun,  2 Jul 2023 03:42:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AC0E7D;
+        Sun,  2 Jul 2023 03:56:29 -0700 (PDT)
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qv5Dy5h7rz6J6qN;
-        Sun,  2 Jul 2023 18:40:50 +0800 (CST)
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qv5Y41bTFz6J6lR;
+        Sun,  2 Jul 2023 18:54:48 +0800 (CST)
 Received: from localhost (10.48.51.211) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sun, 2 Jul
- 2023 11:42:27 +0100
-Date:   Sun, 2 Jul 2023 18:42:22 +0800
+ 2023 11:56:22 +0100
+Date:   Sun, 2 Jul 2023 18:56:18 +0800
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Waqar Hameed <waqar.hameed@axis.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
+To:     Olivier Moysan <olivier.moysan@foss.st.com>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <kernel@axis.com>
-Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
-Message-ID: <20230702184222.000022c9@Huawei.com>
-In-Reply-To: <pndilb5xlmt.fsf@axis.com>
-References: <cover.1686926857.git.waqarh@axis.com>
-        <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
-        <20230617143508.28309834@jic23-huawei>
-        <pndo7lb1mes.fsf@axis.com>
-        <20230625120604.3ecc54bf@jic23-huawei>
-        <pndilb5xlmt.fsf@axis.com>
+        Frank Rowand <frowand.list@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [RFC PATCH 0/7] iio: add iio backend device type
+Message-ID: <20230702185618.00002453@Huawei.com>
+In-Reply-To: <20230623140944.2613002-1-olivier.moysan@foss.st.com>
+References: <20230623140944.2613002-1-olivier.moysan@foss.st.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.48.51.211]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
@@ -55,156 +59,131 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-#> >> >> +	if (status & BIT(IRS_INTR_TIMER) && source & BIT(IRS_INTR_TIMER)) {
-> >> >> +		iio_push_event(indio_dev,
-> >> >> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
-> >> >> +						    IIO_EV_TYPE_CHANGE,
-> >> >> +						    IIO_EV_DIR_NONE),    
-> >> >
-> >> > As below, I'd like more explanation of what this is.
-> >> > I can't find a datasheet to look it up in.    
-> >> 
-> >> This is a timer for the detection event window time, i.e. the signal
-> >> should pass the threshold values within this time in order to get an
-> >> interrupt (`IIO_EV_TYPE_THRESH`).
-> >> 
-> >> You setup the window time (`IIO_EV_INFO_TIMEOUT`), and when this timer
-> >> has expired, you get this interrupt (and thus `IIO_EV_TYPE_CHANGE`). I
-> >> couldn't find any other more fitting value in `enum iio_event_type`.  
-> >
-> > I'm not totally following.   This is some sort of watchdog?  If threshold
-> > not exceeded for N seconds an interrupt occurs?    
-> 
-> Yes, exactly.
-> 
-> > Change is definitely not indicating that, so not appropriate ABI to use.
-> > Timeout currently has a very specific defined meaning and it's not this
-> > (see the ABI docs - to do with adaptive algorithm jumps - we also have
-> > reset_timeout but that's different again).
-> >
-> > This probably needs some new ABI defining.  I'm not sure what will work
-> > best though as it's kind of a 'event did not happen' signal if I've understood
-> > it correctly?  
-> 
-> Yeah, I'm not sure when this interrupt actually could be useful. Maybe
-> when you are testing and calibrating the device, it could help to know
-> that "these particular settings didn't cause the data to pass any
-> thresholds during the window time"?
-> 
-> The alternative would be to just ignore this interrupt and not signaling
-> any events for this. I don't think it would deteriorate the
-> functionality of the device (except the test/calibration situation
-> described above, which obviously _can_ be resolved in user space).
+On Fri, 23 Jun 2023 16:09:36 +0200
+Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-That's probably best way to move forwards with this. Can revisit later
-if it turns out there is an important usecase!
+> This RFC re-opens an old discussion regarding channel scaling
+> management in STM32 DFSDM driver [1]
+> 
+> The DFSDM is a peripheral provided by the STM32MP1x SoC family.
+> One objective is also to prepare the introduction of its successor in
+> the STM32MP12x SoC family: the MDF (Multi-function Digital Filter).
+> The MDF driver will have the same requirements as the DFSDM regarding
+> channel scaling management. So, the solution proposed here will apply
+> also for the future MDF driver.
+> 
+> [1]
+> https://patchwork.kernel.org/project/linux-iio/patch/20200204101008.11411-5-olivier.moysan@st.com/
+> 
+> As a short reminder of our previous discussion, the two main options
+> emerging were the following ones:
+> 
+> - Option1: Use the DFSDM as an hardware accelerator and expose the
+> scaled channels on SD modulator side.
+> Drawbak: this solution is leading to an very complex datapath, especially
+> for scan mode.
+> 
+> - Option2: Introduce a new IIO device type (so-called backend)
+> Retrieve scaling information from SD modulator scaling to expose a single
+> IIO device on DFSDM side. This solution is derivated from rcar-gyroadc
+> example, but with a more standard approach.
+> This was discussed in 
+> https://lore.kernel.org/lkml/20210919191414.09270f4e@jic23-huawei/
+
+Naming probably needs a rethink given the actual hardware we are talking about
+here is normally called a frontend and so people will be confused...
+
+I'm traveling at the moment, so only going to take a fairly superficial first
+look at what you have here.
+
+Jonathan
 
 > 
-> >> >> +			       iio_get_time_ns(indio_dev));
-> >> >> +		clear |= BIT(IRS_INTR_TIMER);
-> >> >> +	}
-> >> >> +
-> >> >> +	if (status & BIT(IRS_INTR_COUNT_THR_OR) &&
-> >> >> +	    source & BIT(IRS_INTR_COUNT_THR_OR)) {
-> >> >> +		/*
-> >> >> +		 * The register value resets to zero after reading. We therefore
-> >> >> +		 * need to read once and manually extract the lower and upper
-> >> >> +		 * count register fields.
-> >> >> +		 */
-> >> >> +		ret = regmap_read(data->regmap, IRS_REG_COUNT, &count);
-> >> >> +		if (ret)
-> >> >> +			dev_err(data->dev, "Could not read count (%d)\n", ret);
-> >> >> +
-> >> >> +		upper_count = IRS_UPPER_COUNT(count);
-> >> >> +		lower_count = IRS_LOWER_COUNT(count);
-> >> >> +
-> >> >> +		/*
-> >> >> +		 * We only check the OR mode to be able to push events for
-> >> >> +		 * rising and falling thresholds. AND mode is covered when both
-> >> >> +		 * upper and lower count is non-zero, and is signaled with
-> >> >> +		 * IIO_EV_DIR_EITHER.    
-> >> >
-> >> > Whey you say AND, you mean that both thresholds have been crossed but also that
-> >> > in that configuration either being crossed would also have gotten us to here?
-> >> > (as opposed to the interrupt only occurring if value is greater than rising threshold
-> >> >  and less than falling threshold?)
-> >> >
-> >> > If it's the first then just report two events.  Either means we don't know, rather
-> >> > than we know both occurred.  We don't document that well though - so something
-> >> > we should improved there. whilst a bit confusing: 
-> >> > https://elixir.bootlin.com/linux/v6.4-rc6/source/Documentation/ABI/testing/sysfs-bus-iio#L792
-> >> > talks about this.
-> >> >
-> >> > The bracketed case is more annoying to deal with so I hope you don't mean that.
-> >> > Whilst we've had sensors that support it in hardware for years, I don't think we
-> >> > ever came up with a usecase that really justified describing it.    
-> >> 
-> >> According to the data sheet (which will hopefully be soon publicly
-> >> available):
-> >> 
-> >> OR-interrupt:  (UPPER_COUNT + LOWER_COUNT >= NR_COUNT)
-> >> 
-> >> AND-interrupt: (UPPER_COUNT + LOWER_COUNT >= NR_COUNT) &&
-> >>                (UPPER_COUNT != 0) && (LOWER_COUNT != 0)
-> >>                
-> >> For example, consider the following situation:
-> >> 
-> >>                                ___
-> >>                               /   \
-> >> -----------------------------3------------------- Upper threshold
-> >>                ___          /       \
-> >> ______        /   \        /         \___________ Data signal
-> >>       \      /     \      /
-> >> -------1------------2---------------------------- Lower threshold
-> >>         \__/         \__/
-> >>         
-> >> When `NR_COUNT` is set to 3, we will get an OR-interrupt on point "3" in
-> >> the graph above. In this case `UPPER_COUNT = 1` and `LOWER_COUNT = 2`.
-> >> 
-> >> When `NR_COUNT` is set to 2, we will get an OR-interrupt on point "2"
-> >> instead. Here `UPPER_COUNT = 0` and `LOWER_COUNT = 2`.
-> >>   
-> >
-> > Thanks.  That is very odd definition of AND.  At least OR is close to normal
-> > though the way count is applied is unusual.  Most common thing similar to that
-> > is what we use period for in IIO - it's same count here, but it resets once
-> > the condition is no longer true.  Here we have a running total...
-> >
-> > Getting this into standard ABI or anything approaching it is going to be tricky.
-> >
-> > Firstly need a concept similar to period but with out the reset. That will at least
-> > allow us to comprehend the counts part.
-> >
-> > Either can then be used for the OR case.  
+> The patchset proposed in this RFC implements option2 (backend) solution.
+> These patches provide a minimal API implemented as a template.
+> The intented use of this API is illustrated through the DFSDM channel
+> scaling support basic implementation.
 > 
-> Are you saying that the current implementation (with manually checking
-> the upper and lower counts only with the OR mode) wouldn't "fit" the
-> current ABI? It does cover the rising and falling directions correctly,
-> no? Could `IIO_EV_DIR_NONE` instead of `IIO_EV_DIR_EITHER` be used to
-> signal "both" then?
-
-The fact it's a running count (so doesn't go back to 0 when threshold is
-not exceeded) is the unusual bit, not the direction.
-
-No on none. That's for channels where there is not concept of direction.
-Either is fine, but we still need to deal with the temporal element being
-different from period.  For that I think we need some new ABI, but
-not sure exactly what it should be.
-
-XXX_runningperiod maybe?  Still measured in seconds, but not resetting
-unlike _period...
-
-
+> For sake of simplicity I did not include the related DT binding
+> in this serie. 
 > 
-> >
-> > The AND case is a mess so for now I'm stuck.  Will think some more on this.
-> > Out of curiosity does the datasheet include why that particular function makes
-> > any sense?  Feels like a rough attempt to approximate something they don't have
-> > hardware resources to actually estimate.  
+> Below are some use case examples.
 > 
-> Unfortunately not. I guess there could be an application where you are
-> only interested if _both_ lower and upper threshold are exceeded. Maybe
-> in order to minimize small "false positives" movements in front of the
-> sensor? But as stated in the comments, one can cover this with only the
-> OR mode (and manually checking the upper and lower count as we do).
+> * DFSDM with SD modulator backend:
+>   -------------------------------
+> This use case corresponds to the example implemented in this RFC.
+> The channel attributes are retrieved from backend by the dfsdm, and
+> the resulting scaling is exposed through DFSDM IIO device sysfs
+> 
+> - Single channel:
+> +-------------+  ch attr   +--------+  sysfs (compound scaling)
+> | sd0 backend | ---------> | dfsdm0 | -------------------------->
+> +-------------+            +--------+
+> 
+> - Scan mode:
+> +-------------+  ch attr   +-------------+  sysfs (compound scaling)
+> | sd1 backend | ---------> |   dfsdm1    | -------------------------->
+> +-------------+            +-------------+
+>                              ^
+>                              |
+> +-------------+  ch attr     |
+> | sd2 backend |--------------+
+> +-------------+
+> 
+> 
+> * Voltage divider in front of an adc:
+>   ----------------------------------
+> By way of example, here is a comparison on scaling management with
+> a iio-rescale device, and how it could be managed with a backend device.
+> 
+> - iio-rescale implementation
+> Scaling is exposed both on ADC and iio-rescale IIO devices.
+> On iio-rescale device we get the compound scaling
+> 
+> +---------------------------+  ch attr   +------+  sysfs
+> |     iio-rescale (div)     | <--------- | adc0 | ------->
+> +---------------------------+            +------+
+>   |
+>   | sysfs (compound scaling)
+>   v
+> 
+> - Backend implementation:
+> Compound scaling is exposed on ADC IIO device.
+> No scaling exposed on backend device
+> 
+> +---------------+  ch attr   +------+  sysfs (compound scaling)
+> | backend (div) | ---------> | adc0 | -------------------------->
+> +---------------+            +------+
+> 
+> 
+> * Cascaded backends:
+>   -----------------
+> Backends may be cascaded to allow computation of the whole chain scaling
+> This is not part of this RFC, but it is identified as a potential
+> future use case.
+> 
+> +---------------+  attr   +-------------+  attr   +--------+  sysfs
+> | backend (div) | ------> | sd0 backend | ------> | dfsdm0 | ------->
+> +---------------+         +-------------+         +--------+
+> 
+> Olivier Moysan (7):
+>   iio: introduce iio backend device
+>   of: property: add device link support for io-backends
+>   iio: adc: stm32-dfsdm: manage dfsdm as a channel provider
+>   iio: adc: stm32-dfsdm: adopt generic channel bindings
+>   iio: adc: sd_adc_modulator: change to iio backend device
+>   iio: adc: stm32-dfsdm: add scaling support to dfsdm
+>   ARM: dts: stm32: add dfsdm iio suppport
+> 
+>  arch/arm/boot/dts/stm32mp157c-ev1.dts |  62 +++++++++
+>  drivers/iio/Makefile                  |   2 +
+>  drivers/iio/adc/sd_adc_modulator.c    |  92 +++++++++++---
+>  drivers/iio/adc/stm32-dfsdm-adc.c     | 176 ++++++++++++++++----------
+>  drivers/iio/industrialio-backend.c    |  59 +++++++++
+>  drivers/of/property.c                 |   2 +
+>  include/linux/iio/backend.h           |  29 +++++
+>  7 files changed, 336 insertions(+), 86 deletions(-)
+>  create mode 100644 drivers/iio/industrialio-backend.c
+>  create mode 100644 include/linux/iio/backend.h
+> 
 

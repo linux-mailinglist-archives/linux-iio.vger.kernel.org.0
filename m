@@ -2,201 +2,371 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6259E744D69
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jul 2023 13:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8DC8744FAA
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jul 2023 20:23:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbjGBLHS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jul 2023 07:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54980 "EHLO
+        id S229605AbjGBSXS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jul 2023 14:23:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbjGBLHR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jul 2023 07:07:17 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23730DC;
-        Sun,  2 Jul 2023 04:07:15 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qv5nT5Y0rz6J6ns;
-        Sun,  2 Jul 2023 19:05:33 +0800 (CST)
-Received: from localhost (10.48.51.211) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sun, 2 Jul
- 2023 12:07:08 +0100
-Date:   Sun, 2 Jul 2023 19:07:04 +0800
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Olivier Moysan <olivier.moysan@foss.st.com>
-CC:     Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S229837AbjGBSXR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jul 2023 14:23:17 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4AAFBB
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jul 2023 11:23:12 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-977e0fbd742so431570966b.2
+        for <linux-iio@vger.kernel.org>; Sun, 02 Jul 2023 11:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688322191; x=1690914191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qzr/VwRbbgwsrmE6jlZJ9FcP3Vc2cGWHqLjQfvYlffY=;
+        b=iDFLGVhtmva98VVo1s7qaAtOvSb8hoZWP8hPCdQ4DFiRLtfr9Od2UOFA5bcj3ueX+Z
+         Q/DHkOcVx73Yem8FSZwZcOGDX1YUo7SdB4uX5hy0p8PwCShj3sudB3xpoRNvN9eB/5WS
+         AlrKev4iUUm3r0ir27SCMDF9IR/UhGtZmubXdidRdSiMK9+dCSeI2Exjz7CFMmTwzmd3
+         sB1Ded1tyihdP7JQiRd1zV++gqtifXqhaw2LkQLxAeBXhjG35OJus7RtEahQ7BQsRfIe
+         upbMphX7kKXqo1BcrUpTItzijk1zXzhyU6J92tZJm1kKyCQok4y3awICBT/gpRLdQSoy
+         qW4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688322191; x=1690914191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qzr/VwRbbgwsrmE6jlZJ9FcP3Vc2cGWHqLjQfvYlffY=;
+        b=kUaAkyiJgvL7yM4rwoGgtku2mMKXGcnhcqyDJ61Ew5vp4blsXr9ECnyOg/lb3iu2vX
+         juWrtwaEn3xnmf1045Lns3u68mNzKSbMOy544mfvA/CaWpXzwX9SJ3kMeXQe+SfuqnAq
+         ndSddLqSUeL2chtyEqho4SKmRRGtw/tT/To5t27cAVjgwauzlbhm68KaH4Ap4Y3ScyMA
+         s9SQS4XoqdnFqAlP7sMkcVVM3qVgzPzobyFK4ZJmEaQ//sxqNyeYjoQll7ibg7Ds6odw
+         JuwKVbF/NOUDifFPprL5d3g6xd9nlPm8f0HZBuQcIQODAu6rPZJNoiNrWPllbs5XaU5j
+         qUyA==
+X-Gm-Message-State: ABy/qLaXnLsdLzu3yq/cNSTLh7q76w4svb8EUfYWyQqYnr52JqYOOsjv
+        0TWXHD3wo6PiOAHX7TQVh/FovA==
+X-Google-Smtp-Source: ACHHUZ53KUKEp/qx2RT5nWxkeQ2K5QRc74L6k4flhy2OCKXv5BYIsQU3P3oC04yPG5HR5Pl0ibYw7Q==
+X-Received: by 2002:a17:906:d9cf:b0:988:f2ad:73e9 with SMTP id qk15-20020a170906d9cf00b00988f2ad73e9mr5829930ejb.52.1688322191275;
+        Sun, 02 Jul 2023 11:23:11 -0700 (PDT)
+Received: from krzk-bin.. ([217.169.179.6])
+        by smtp.gmail.com with ESMTPSA id p11-20020a1709060e8b00b00993159ce075sm2584698ejf.210.2023.07.02.11.23.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Jul 2023 11:23:10 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Leo Yan <leo.yan@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [RFC PATCH 0/7] iio: add iio backend device type
-Message-ID: <20230702190704.000071ba@Huawei.com>
-In-Reply-To: <20230702185618.00002453@Huawei.com>
-References: <20230623140944.2613002-1-olivier.moysan@foss.st.com>
-        <20230702185618.00002453@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        Conor Dooley <conor+dt@kernel.org>, coresight@lists.linaro.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-rockchip@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org, linux-usb@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: cleanup DTS example whitespaces
+Date:   Sun,  2 Jul 2023 20:23:08 +0200
+Message-Id: <20230702182308.7583-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.51.211]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2 Jul 2023 18:56:18 +0800
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+The DTS code coding style expects spaces around '=' sign.
 
-> On Fri, 23 Jun 2023 16:09:36 +0200
-> Olivier Moysan <olivier.moysan@foss.st.com> wrote:
-> 
-> > This RFC re-opens an old discussion regarding channel scaling
-> > management in STM32 DFSDM driver [1]
-> > 
-> > The DFSDM is a peripheral provided by the STM32MP1x SoC family.
-> > One objective is also to prepare the introduction of its successor in
-> > the STM32MP12x SoC family: the MDF (Multi-function Digital Filter).
-> > The MDF driver will have the same requirements as the DFSDM regarding
-> > channel scaling management. So, the solution proposed here will apply
-> > also for the future MDF driver.
-> > 
-> > [1]
-> > https://patchwork.kernel.org/project/linux-iio/patch/20200204101008.11411-5-olivier.moysan@st.com/
-> > 
-> > As a short reminder of our previous discussion, the two main options
-> > emerging were the following ones:
-> > 
-> > - Option1: Use the DFSDM as an hardware accelerator and expose the
-> > scaled channels on SD modulator side.
-> > Drawbak: this solution is leading to an very complex datapath, especially
-> > for scan mode.
-> > 
-> > - Option2: Introduce a new IIO device type (so-called backend)
-> > Retrieve scaling information from SD modulator scaling to expose a single
-> > IIO device on DFSDM side. This solution is derivated from rcar-gyroadc
-> > example, but with a more standard approach.
-> > This was discussed in 
-> > https://lore.kernel.org/lkml/20210919191414.09270f4e@jic23-huawei/  
-> 
-> Naming probably needs a rethink given the actual hardware we are talking about
-> here is normally called a frontend and so people will be confused...
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Hmm. I think the basic approach looks fine but needs fleshing out and
-perhaps one or two more examples implemented to be sure that we have
-something flexible enough to stand the test of time...
+---
 
-Jonathan
+Rob,
 
-> 
-> I'm traveling at the moment, so only going to take a fairly superficial first
-> look at what you have here.
-> 
-> Jonathan
-> 
-> > 
-> > The patchset proposed in this RFC implements option2 (backend) solution.
-> > These patches provide a minimal API implemented as a template.
-> > The intented use of this API is illustrated through the DFSDM channel
-> > scaling support basic implementation.
-> > 
-> > For sake of simplicity I did not include the related DT binding
-> > in this serie. 
-> > 
-> > Below are some use case examples.
-> > 
-> > * DFSDM with SD modulator backend:
-> >   -------------------------------
-> > This use case corresponds to the example implemented in this RFC.
-> > The channel attributes are retrieved from backend by the dfsdm, and
-> > the resulting scaling is exposed through DFSDM IIO device sysfs
-> > 
-> > - Single channel:
-> > +-------------+  ch attr   +--------+  sysfs (compound scaling)
-> > | sd0 backend | ---------> | dfsdm0 | -------------------------->
-> > +-------------+            +--------+
-> > 
-> > - Scan mode:
-> > +-------------+  ch attr   +-------------+  sysfs (compound scaling)
-> > | sd1 backend | ---------> |   dfsdm1    | -------------------------->
-> > +-------------+            +-------------+
-> >                              ^
-> >                              |
-> > +-------------+  ch attr     |
-> > | sd2 backend |--------------+
-> > +-------------+
-> > 
-> > 
-> > * Voltage divider in front of an adc:
-> >   ----------------------------------
-> > By way of example, here is a comparison on scaling management with
-> > a iio-rescale device, and how it could be managed with a backend device.
-> > 
-> > - iio-rescale implementation
-> > Scaling is exposed both on ADC and iio-rescale IIO devices.
-> > On iio-rescale device we get the compound scaling
-> > 
-> > +---------------------------+  ch attr   +------+  sysfs
-> > |     iio-rescale (div)     | <--------- | adc0 | ------->
-> > +---------------------------+            +------+
-> >   |
-> >   | sysfs (compound scaling)
-> >   v
-> > 
-> > - Backend implementation:
-> > Compound scaling is exposed on ADC IIO device.
-> > No scaling exposed on backend device
-> > 
-> > +---------------+  ch attr   +------+  sysfs (compound scaling)
-> > | backend (div) | ---------> | adc0 | -------------------------->
-> > +---------------+            +------+
-> > 
-> > 
-> > * Cascaded backends:
-> >   -----------------
-> > Backends may be cascaded to allow computation of the whole chain scaling
-> > This is not part of this RFC, but it is identified as a potential
-> > future use case.
-> > 
-> > +---------------+  attr   +-------------+  attr   +--------+  sysfs
-> > | backend (div) | ------> | sd0 backend | ------> | dfsdm0 | ------->
-> > +---------------+         +-------------+         +--------+
-> > 
-> > Olivier Moysan (7):
-> >   iio: introduce iio backend device
-> >   of: property: add device link support for io-backends
-> >   iio: adc: stm32-dfsdm: manage dfsdm as a channel provider
-> >   iio: adc: stm32-dfsdm: adopt generic channel bindings
-> >   iio: adc: sd_adc_modulator: change to iio backend device
-> >   iio: adc: stm32-dfsdm: add scaling support to dfsdm
-> >   ARM: dts: stm32: add dfsdm iio suppport
-> > 
-> >  arch/arm/boot/dts/stm32mp157c-ev1.dts |  62 +++++++++
-> >  drivers/iio/Makefile                  |   2 +
-> >  drivers/iio/adc/sd_adc_modulator.c    |  92 +++++++++++---
-> >  drivers/iio/adc/stm32-dfsdm-adc.c     | 176 ++++++++++++++++----------
-> >  drivers/iio/industrialio-backend.c    |  59 +++++++++
-> >  drivers/of/property.c                 |   2 +
-> >  include/linux/iio/backend.h           |  29 +++++
-> >  7 files changed, 336 insertions(+), 86 deletions(-)
-> >  create mode 100644 drivers/iio/industrialio-backend.c
-> >  create mode 100644 include/linux/iio/backend.h
-> >   
-> 
-> 
+Maybe this could go via your tree? Rebased on your for-next:
+v6.4-rc2-45-gf0ac35049606
+---
+ .../bindings/arm/arm,coresight-cti.yaml        | 18 +++++++++---------
+ .../bindings/arm/keystone/ti,sci.yaml          |  8 ++++----
+ .../devicetree/bindings/display/msm/gmu.yaml   |  2 +-
+ .../display/panel/samsung,s6e8aa0.yaml         |  2 +-
+ .../display/rockchip/rockchip-vop.yaml         |  4 ++--
+ .../bindings/iio/adc/ti,adc108s102.yaml        |  2 +-
+ .../bindings/media/renesas,rzg2l-cru.yaml      |  4 ++--
+ .../devicetree/bindings/media/renesas,vin.yaml |  4 ++--
+ .../devicetree/bindings/mtd/mtd-physmap.yaml   |  2 +-
+ .../bindings/net/mediatek-dwmac.yaml           |  2 +-
+ .../bindings/perf/amlogic,g12-ddr-pmu.yaml     |  4 ++--
+ .../bindings/phy/mediatek,dsi-phy.yaml         |  2 +-
+ .../remoteproc/amlogic,meson-mx-ao-arc.yaml    |  2 +-
+ .../devicetree/bindings/usb/mediatek,mtu3.yaml |  2 +-
+ .../devicetree/bindings/usb/ti,am62-usb.yaml   |  2 +-
+ 15 files changed, 30 insertions(+), 30 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml b/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml
+index 0c5b875cb654..d6c84b6e7fe6 100644
+--- a/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml
++++ b/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml
+@@ -287,7 +287,7 @@ examples:
+             arm,trig-in-sigs = <0 1>;
+             arm,trig-in-types = <PE_DBGTRIGGER
+                                  PE_PMUIRQ>;
+-            arm,trig-out-sigs=<0 1 2 >;
++            arm,trig-out-sigs = <0 1 2 >;
+             arm,trig-out-types = <PE_EDBGREQ
+                                   PE_DBGRESTART
+                                   PE_CTIIRQ>;
+@@ -309,24 +309,24 @@ examples:
+ 
+       trig-conns@0 {
+         reg = <0>;
+-        arm,trig-in-sigs=<0>;
+-        arm,trig-in-types=<GEN_INTREQ>;
+-        arm,trig-out-sigs=<0>;
+-        arm,trig-out-types=<GEN_HALTREQ>;
++        arm,trig-in-sigs = <0>;
++        arm,trig-in-types = <GEN_INTREQ>;
++        arm,trig-out-sigs = <0>;
++        arm,trig-out-types = <GEN_HALTREQ>;
+         arm,trig-conn-name = "sys_profiler";
+       };
+ 
+       trig-conns@1 {
+         reg = <1>;
+-        arm,trig-out-sigs=<2 3>;
+-        arm,trig-out-types=<GEN_HALTREQ GEN_RESTARTREQ>;
++        arm,trig-out-sigs = <2 3>;
++        arm,trig-out-types = <GEN_HALTREQ GEN_RESTARTREQ>;
+         arm,trig-conn-name = "watchdog";
+       };
+ 
+       trig-conns@2 {
+         reg = <2>;
+-        arm,trig-in-sigs=<1 6>;
+-        arm,trig-in-types=<GEN_HALTREQ GEN_RESTARTREQ>;
++        arm,trig-in-sigs = <1 6>;
++        arm,trig-in-types = <GEN_HALTREQ GEN_RESTARTREQ>;
+         arm,trig-conn-name = "g_counter";
+       };
+     };
+diff --git a/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml b/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml
+index 91b96065f7df..86b59de7707e 100644
+--- a/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml
++++ b/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml
+@@ -96,8 +96,8 @@ examples:
+       compatible = "ti,k2g-sci";
+       ti,system-reboot-controller;
+       mbox-names = "rx", "tx";
+-      mboxes= <&msgmgr 5 2>,
+-              <&msgmgr 0 0>;
++      mboxes = <&msgmgr 5 2>,
++               <&msgmgr 0 0>;
+       reg-names = "debug_messages";
+       reg = <0x02921800 0x800>;
+     };
+@@ -107,8 +107,8 @@ examples:
+       compatible = "ti,k2g-sci";
+       ti,host-id = <12>;
+       mbox-names = "rx", "tx";
+-      mboxes= <&secure_proxy_main 11>,
+-              <&secure_proxy_main 13>;
++      mboxes = <&secure_proxy_main 11>,
++               <&secure_proxy_main 13>;
+       reg-names = "debug_messages";
+       reg = <0x44083000 0x1000>;
+ 
+diff --git a/Documentation/devicetree/bindings/display/msm/gmu.yaml b/Documentation/devicetree/bindings/display/msm/gmu.yaml
+index 029d72822d8b..65b02c7a1211 100644
+--- a/Documentation/devicetree/bindings/display/msm/gmu.yaml
++++ b/Documentation/devicetree/bindings/display/msm/gmu.yaml
+@@ -225,7 +225,7 @@ examples:
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+ 
+     gmu: gmu@506a000 {
+-        compatible="qcom,adreno-gmu-630.2", "qcom,adreno-gmu";
++        compatible = "qcom,adreno-gmu-630.2", "qcom,adreno-gmu";
+ 
+         reg = <0x506a000 0x30000>,
+               <0xb280000 0x10000>,
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml
+index 1cdc91b3439f..200fbf1c74a0 100644
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml
+@@ -74,7 +74,7 @@ examples:
+             vdd3-supply = <&vcclcd_reg>;
+             vci-supply = <&vlcd_reg>;
+             reset-gpios = <&gpy4 5 0>;
+-            power-on-delay= <50>;
++            power-on-delay = <50>;
+             reset-delay = <100>;
+             init-delay = <100>;
+             panel-width-mm = <58>;
+diff --git a/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml b/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml
+index 6f43d885c9b3..df61cb5f5c54 100644
+--- a/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml
++++ b/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml
+@@ -121,11 +121,11 @@ examples:
+         #size-cells = <0>;
+         vopb_out_edp: endpoint@0 {
+           reg = <0>;
+-          remote-endpoint=<&edp_in_vopb>;
++          remote-endpoint = <&edp_in_vopb>;
+         };
+         vopb_out_hdmi: endpoint@1 {
+           reg = <1>;
+-          remote-endpoint=<&hdmi_in_vopb>;
++          remote-endpoint = <&hdmi_in_vopb>;
+         };
+       };
+     };
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml b/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml
+index 9b072b057f16..a60b1e100ee4 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml
+@@ -35,7 +35,7 @@ unevaluatedProperties: false
+ examples:
+   - |
+     spi {
+-        #address-cells= <1>;
++        #address-cells = <1>;
+         #size-cells = <0>;
+ 
+         adc@0 {
+diff --git a/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml b/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml
+index 7dde7967c886..1e72b8808d24 100644
+--- a/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml
++++ b/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml
+@@ -137,7 +137,7 @@ examples:
+ 
+                 cru_parallel_in: endpoint@0 {
+                     reg = <0>;
+-                    remote-endpoint= <&ov5642>;
++                    remote-endpoint = <&ov5642>;
+                     hsync-active = <1>;
+                     vsync-active = <1>;
+                 };
+@@ -150,7 +150,7 @@ examples:
+ 
+                 cru_csi_in: endpoint@0 {
+                     reg = <0>;
+-                    remote-endpoint= <&csi_cru_in>;
++                    remote-endpoint = <&csi_cru_in>;
+                 };
+             };
+         };
+diff --git a/Documentation/devicetree/bindings/media/renesas,vin.yaml b/Documentation/devicetree/bindings/media/renesas,vin.yaml
+index 91e8f368fb52..324703bfb1bd 100644
+--- a/Documentation/devicetree/bindings/media/renesas,vin.yaml
++++ b/Documentation/devicetree/bindings/media/renesas,vin.yaml
+@@ -303,11 +303,11 @@ examples:
+ 
+                             vin0csi20: endpoint@0 {
+                                     reg = <0>;
+-                                    remote-endpoint= <&csi20vin0>;
++                                    remote-endpoint = <&csi20vin0>;
+                             };
+                             vin0csi40: endpoint@2 {
+                                     reg = <2>;
+-                                    remote-endpoint= <&csi40vin0>;
++                                    remote-endpoint = <&csi40vin0>;
+                             };
+                     };
+             };
+diff --git a/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml b/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
+index f8c976898a95..18f6733408b4 100644
+--- a/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
++++ b/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
+@@ -164,7 +164,7 @@ examples:
+             reg = <0 0xf80000>;
+         };
+         firmware@f80000 {
+-            label ="firmware";
++            label = "firmware";
+             reg = <0xf80000 0x80000>;
+             read-only;
+         };
+diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+index 0fa2132fa4f4..400aedb58205 100644
+--- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+@@ -156,7 +156,7 @@ examples:
+         reg = <0x1101c000 0x1300>;
+         interrupts = <GIC_SPI 237 IRQ_TYPE_LEVEL_LOW>;
+         interrupt-names = "macirq";
+-        phy-mode ="rgmii-rxid";
++        phy-mode = "rgmii-rxid";
+         mac-address = [00 55 7b b5 7d f7];
+         clock-names = "axi",
+                       "apb",
+diff --git a/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml b/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml
+index 50f46a6898b1..4adab0149108 100644
+--- a/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml
++++ b/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml
+@@ -42,8 +42,8 @@ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+     pmu {
+-        #address-cells=<2>;
+-        #size-cells=<2>;
++        #address-cells = <2>;
++        #size-cells = <2>;
+ 
+         pmu@ff638000 {
+             compatible = "amlogic,g12a-ddr-pmu";
+diff --git a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
+index 26f2b887cfc1..b8d77165c4a1 100644
+--- a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
+@@ -83,7 +83,7 @@ examples:
+         clocks = <&clk26m>;
+         clock-output-names = "mipi_tx0_pll";
+         drive-strength-microamp = <4000>;
+-        nvmem-cells= <&mipi_tx_calibration>;
++        nvmem-cells = <&mipi_tx_calibration>;
+         nvmem-cell-names = "calibration-data";
+         #clock-cells = <0>;
+         #phy-cells = <0>;
+diff --git a/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml b/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml
+index 3100cb870170..76e8ca44906a 100644
+--- a/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml
+@@ -75,7 +75,7 @@ additionalProperties: false
+ examples:
+   - |
+     remoteproc@1c {
+-      compatible= "amlogic,meson8-ao-arc", "amlogic,meson-mx-ao-arc";
++      compatible = "amlogic,meson8-ao-arc", "amlogic,meson-mx-ao-arc";
+       reg = <0x1c 0x8>, <0x38 0x8>;
+       reg-names = "remap", "cpu";
+       resets = <&media_cpu_reset>;
+diff --git a/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml b/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml
+index 478214ab045e..a59d91243ac8 100644
+--- a/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml
++++ b/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml
+@@ -304,7 +304,7 @@ examples:
+   # Dual role switch with type-c
+   - |
+     usb@11201000 {
+-        compatible ="mediatek,mt8183-mtu3", "mediatek,mtu3";
++        compatible = "mediatek,mt8183-mtu3", "mediatek,mtu3";
+         reg = <0x11201000 0x2e00>, <0x11203e00 0x0100>;
+         reg-names = "mac", "ippc";
+         interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_LOW>;
+diff --git a/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml b/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml
+index d25fc708e32c..fec5651f5602 100644
+--- a/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml
++++ b/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml
+@@ -92,7 +92,7 @@ examples:
+ 
+         usb@31100000 {
+           compatible = "snps,dwc3";
+-          reg =<0x00 0x31100000 0x00 0x50000>;
++          reg = <0x00 0x31100000 0x00 0x50000>;
+           interrupts = <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>, /* irq.0 */
+                        <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>; /* irq.0 */
+           interrupt-names = "host", "peripheral";
+-- 
+2.34.1
 

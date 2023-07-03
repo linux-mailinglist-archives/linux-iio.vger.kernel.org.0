@@ -2,228 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00CCA745A58
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jul 2023 12:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E795745A72
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jul 2023 12:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjGCKez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Jul 2023 06:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
+        id S230025AbjGCKjz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Jul 2023 06:39:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230323AbjGCKex (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jul 2023 06:34:53 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C169D2;
-        Mon,  3 Jul 2023 03:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1688380488;
-  x=1719916488;
-  h=references:from:to:cc:subject:date:in-reply-to:
-   message-id:mime-version;
-  bh=GfPT0/TC/mNg+gO3bpiV162OJlaIE47Q1nZ6n4J93PE=;
-  b=R7HbGbjQOHX6jj9LtCCivtleo/INXV7pBXLiD+C5DpFHEy9Mddv+47Yu
-   ugQdHX1LTa/bA2saPTx8tAwtYmXUA5Iq4FKkbkTD03Yt2q5Rgb95i76Bw
-   36PX8cnTkjWaW0JjE1uak3+00CrswCNMo5D3QHtVFK3pcguPngI4LfTWN
-   qqzKTmvuJARVtJ4gtAYGSriawDWLz66AiD2+Wr/ftNFkdzFD6Blv3arCm
-   12Fb8WPWOCsawX3jX0glLEr2uxxkDKD9SsJ5zWaa2ugH9pcAre9TJVD18
-   45vSizkcZ9qpJ59d27U7Yxt/bsMjYXIClIzYg//DJMeFdkq/wNxCgFQhA
-   A==;
-References: <cover.1686926857.git.waqarh@axis.com>
- <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
- <20230617143508.28309834@jic23-huawei> <pndo7lb1mes.fsf@axis.com>
- <20230625120604.3ecc54bf@jic23-huawei> <pndilb5xlmt.fsf@axis.com>
- <20230702184222.000022c9@Huawei.com>
-User-agent: a.out
-From:   Waqar Hameed <waqar.hameed@axis.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <kernel@axis.com>
-Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
-Date:   Mon, 3 Jul 2023 10:59:41 +0200
-In-Reply-To: <20230702184222.000022c9@Huawei.com>
-Message-ID: <pnda5wdxoze.fsf@axis.com>
+        with ESMTP id S229597AbjGCKjy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jul 2023 06:39:54 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD6492
+        for <linux-iio@vger.kernel.org>; Mon,  3 Jul 2023 03:39:52 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lgo@pengutronix.de>)
+        id 1qGGyA-0007es-JH; Mon, 03 Jul 2023 12:39:46 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <lgo@pengutronix.de>)
+        id 1qGGy9-00BmVe-MT; Mon, 03 Jul 2023 12:39:45 +0200
+Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <lgo@pengutronix.de>)
+        id 1qGGy8-000Nz6-Ea; Mon, 03 Jul 2023 12:39:44 +0200
+From:   =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
+To:     =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+        kernel@pengutronix.de, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] iio: adc: add buffering support to the TI LMP92064 ADC driver
+Date:   Mon,  3 Jul 2023 12:39:07 +0200
+Message-Id: <20230703103908.27691-1-l.goehrs@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.0.5.60]
-X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
- (10.20.40.7)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: lgo@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 02, 2023 at 18:42 +0800 Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+Enable buffered reading of samples from the LMP92064 ADC.
+The main benefit of this change is being able to read out current and
+voltage measurements in a single transfer, allowing instantaneous power
+measurements.
 
-> #> >> >> +	if (status & BIT(IRS_INTR_TIMER) && source & BIT(IRS_INTR_TIMER)) {
->> >> >> +		iio_push_event(indio_dev,
->> >> >> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
->> >> >> +						    IIO_EV_TYPE_CHANGE,
->> >> >> +						    IIO_EV_DIR_NONE),    
->> >> >
->> >> > As below, I'd like more explanation of what this is.
->> >> > I can't find a datasheet to look it up in.    
->> >> 
->> >> This is a timer for the detection event window time, i.e. the signal
->> >> should pass the threshold values within this time in order to get an
->> >> interrupt (`IIO_EV_TYPE_THRESH`).
->> >> 
->> >> You setup the window time (`IIO_EV_INFO_TIMEOUT`), and when this timer
->> >> has expired, you get this interrupt (and thus `IIO_EV_TYPE_CHANGE`). I
->> >> couldn't find any other more fitting value in `enum iio_event_type`.  
->> >
->> > I'm not totally following.   This is some sort of watchdog?  If threshold
->> > not exceeded for N seconds an interrupt occurs?    
->> 
->> Yes, exactly.
->> 
->> > Change is definitely not indicating that, so not appropriate ABI to use.
->> > Timeout currently has a very specific defined meaning and it's not this
->> > (see the ABI docs - to do with adaptive algorithm jumps - we also have
->> > reset_timeout but that's different again).
->> >
->> > This probably needs some new ABI defining.  I'm not sure what will work
->> > best though as it's kind of a 'event did not happen' signal if I've understood
->> > it correctly?  
->> 
->> Yeah, I'm not sure when this interrupt actually could be useful. Maybe
->> when you are testing and calibrating the device, it could help to know
->> that "these particular settings didn't cause the data to pass any
->> thresholds during the window time"?
->> 
->> The alternative would be to just ignore this interrupt and not signaling
->> any events for this. I don't think it would deteriorate the
->> functionality of the device (except the test/calibration situation
->> described above, which obviously _can_ be resolved in user space).
->
-> That's probably best way to move forwards with this. Can revisit later
-> if it turns out there is an important usecase!
+Reads into the buffer can be triggered by any software triggers, e.g.
+the iio-trig-hrtimer:
 
-Alright, let's skip this interrupt. However, we still need a way for
-users to specify the window time (see answer below).
+    $ mkdir /sys/kernel/config/iio/triggers/hrtimer/my-trigger
+    $ cat /sys/bus/iio/devices/iio\:device3/name
+    lmp92064
+    $ iio_readdev -t my-trigger -b 16 iio:device3 | hexdump
+    WARNING: High-speed mode not enabled
+    0000000 0000 0176 0101 0001 5507 abd5 7645 1768
+    0000010 0000 016d 0101 0001 ee1e ac6b 7645 1768
+    ...
 
->> >> >> +			       iio_get_time_ns(indio_dev));
->> >> >> +		clear |= BIT(IRS_INTR_TIMER);
->> >> >> +	}
->> >> >> +
->> >> >> +	if (status & BIT(IRS_INTR_COUNT_THR_OR) &&
->> >> >> +	    source & BIT(IRS_INTR_COUNT_THR_OR)) {
->> >> >> +		/*
->> >> >> +		 * The register value resets to zero after reading. We therefore
->> >> >> +		 * need to read once and manually extract the lower and upper
->> >> >> +		 * count register fields.
->> >> >> +		 */
->> >> >> +		ret = regmap_read(data->regmap, IRS_REG_COUNT, &count);
->> >> >> +		if (ret)
->> >> >> +			dev_err(data->dev, "Could not read count (%d)\n", ret);
->> >> >> +
->> >> >> +		upper_count = IRS_UPPER_COUNT(count);
->> >> >> +		lower_count = IRS_LOWER_COUNT(count);
->> >> >> +
->> >> >> +		/*
->> >> >> +		 * We only check the OR mode to be able to push events for
->> >> >> +		 * rising and falling thresholds. AND mode is covered when both
->> >> >> +		 * upper and lower count is non-zero, and is signaled with
->> >> >> +		 * IIO_EV_DIR_EITHER.    
->> >> >
->> >> > Whey you say AND, you mean that both thresholds have been crossed but also that
->> >> > in that configuration either being crossed would also have gotten us to here?
->> >> > (as opposed to the interrupt only occurring if value is greater than rising threshold
->> >> >  and less than falling threshold?)
->> >> >
->> >> > If it's the first then just report two events.  Either means we don't know, rather
->> >> > than we know both occurred.  We don't document that well though - so something
->> >> > we should improved there. whilst a bit confusing: 
->> >> > https://elixir.bootlin.com/linux/v6.4-rc6/source/Documentation/ABI/testing/sysfs-bus-iio#L792
->> >> > talks about this.
->> >> >
->> >> > The bracketed case is more annoying to deal with so I hope you don't mean that.
->> >> > Whilst we've had sensors that support it in hardware for years, I don't think we
->> >> > ever came up with a usecase that really justified describing it.    
->> >> 
->> >> According to the data sheet (which will hopefully be soon publicly
->> >> available):
->> >> 
->> >> OR-interrupt:  (UPPER_COUNT + LOWER_COUNT >= NR_COUNT)
->> >> 
->> >> AND-interrupt: (UPPER_COUNT + LOWER_COUNT >= NR_COUNT) &&
->> >>                (UPPER_COUNT != 0) && (LOWER_COUNT != 0)
->> >>                
->> >> For example, consider the following situation:
->> >> 
->> >>                                ___
->> >>                               /   \
->> >> -----------------------------3------------------- Upper threshold
->> >>                ___          /       \
->> >> ______        /   \        /         \___________ Data signal
->> >>       \      /     \      /
->> >> -------1------------2---------------------------- Lower threshold
->> >>         \__/         \__/
->> >>         
->> >> When `NR_COUNT` is set to 3, we will get an OR-interrupt on point "3" in
->> >> the graph above. In this case `UPPER_COUNT = 1` and `LOWER_COUNT = 2`.
->> >> 
->> >> When `NR_COUNT` is set to 2, we will get an OR-interrupt on point "2"
->> >> instead. Here `UPPER_COUNT = 0` and `LOWER_COUNT = 2`.
->> >>   
->> >
->> > Thanks.  That is very odd definition of AND.  At least OR is close to normal
->> > though the way count is applied is unusual.  Most common thing similar to that
->> > is what we use period for in IIO - it's same count here, but it resets once
->> > the condition is no longer true.  Here we have a running total...
->> >
->> > Getting this into standard ABI or anything approaching it is going to be tricky.
->> >
->> > Firstly need a concept similar to period but with out the reset. That will at least
->> > allow us to comprehend the counts part.
->> >
->> > Either can then be used for the OR case.  
->> 
->> Are you saying that the current implementation (with manually checking
->> the upper and lower counts only with the OR mode) wouldn't "fit" the
->> current ABI? It does cover the rising and falling directions correctly,
->> no? Could `IIO_EV_DIR_NONE` instead of `IIO_EV_DIR_EITHER` be used to
->> signal "both" then?
->
-> The fact it's a running count (so doesn't go back to 0 when threshold is
-> not exceeded) is the unusual bit, not the direction.
->
-> No on none. That's for channels where there is not concept of direction.
-> Either is fine, but we still need to deal with the temporal element being
-> different from period.  For that I think we need some new ABI, but
-> not sure exactly what it should be.
->
-> XXX_runningperiod maybe?  Still measured in seconds, but not resetting
-> unlike _period...
->
->> >
->> > The AND case is a mess so for now I'm stuck.  Will think some more on this.
->> > Out of curiosity does the datasheet include why that particular function makes
->> > any sense?  Feels like a rough attempt to approximate something they don't have
->> > hardware resources to actually estimate.  
->> 
->> Unfortunately not. I guess there could be an application where you are
->> only interested if _both_ lower and upper threshold are exceeded. Maybe
->> in order to minimize small "false positives" movements in front of the
->> sensor? But as stated in the comments, one can cover this with only the
->> OR mode (and manually checking the upper and lower count as we do).
+Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
+---
+Changes v1->v2:
 
-Hm, I see. The "cleanest" way is probably to add some new ABIs.
+  - Remove superfluous .shift = 0 initialization in scan_type.
+  - Replace kmalloc buffer allocation for every read with a stack
+    allocated structure.
+    A struct is used to ensure correct alignment of the timestamp field.
+    See e.g. adc/rockchip_saradc.c for other users of the same pattern.
+  - Use available_scan_masks and always push both voltage and current
+    measurements to the buffer.
 
-Let's say we add `IIO_EV_INFO_RUNNING_PERIOD` (or something) to be able
-to specify the time (in seconds) for the threshold window time
-(`irsd200_read/write_timer()`), e.g. `*_thresh_runningperiod`. We then
-also need an ABI for specifying the number of threshold counts in this
-running period (`irsd200_read/write_nr_count()`, i.e. `NR_COUNT` from
-the graph above), e.g. `*_thresh_runningcount` (or something).
+Changes v2->v3:
 
-This would cover the OR mode. As stated before, the AND mode is much
-more complicated, and should maybe considered later (when someone
-actually has a use case)? We can signal with the direction to tell if
-both thresholds has been passed (either), compared to only exceeding one
-of them (rising or falling) in the running period.
+  - Handle errors returned by lmp92064_read_meas() out-of-line via
+    a goto err;
+
+---
+ drivers/iio/adc/ti-lmp92064.c | 51 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+
+diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
+index c30ed824924f3..73504a27a8e22 100644
+--- a/drivers/iio/adc/ti-lmp92064.c
++++ b/drivers/iio/adc/ti-lmp92064.c
+@@ -16,7 +16,10 @@
+ #include <linux/spi/spi.h>
+ 
+ #include <linux/iio/iio.h>
++#include <linux/iio/buffer.h>
+ #include <linux/iio/driver.h>
++#include <linux/iio/triggered_buffer.h>
++#include <linux/iio/trigger_consumer.h>
+ 
+ #define TI_LMP92064_REG_CONFIG_A 0x0000
+ #define TI_LMP92064_REG_CONFIG_B 0x0001
+@@ -91,6 +94,12 @@ static const struct iio_chan_spec lmp92064_adc_channels[] = {
+ 		.address = TI_LMP92064_CHAN_INC,
+ 		.info_mask_separate =
+ 			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = TI_LMP92064_CHAN_INC,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 12,
++			.storagebits = 16,
++		},
+ 		.datasheet_name = "INC",
+ 	},
+ 	{
+@@ -98,8 +107,20 @@ static const struct iio_chan_spec lmp92064_adc_channels[] = {
+ 		.address = TI_LMP92064_CHAN_INV,
+ 		.info_mask_separate =
+ 			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = TI_LMP92064_CHAN_INV,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 12,
++			.storagebits = 16,
++		},
+ 		.datasheet_name = "INV",
+ 	},
++	IIO_CHAN_SOFT_TIMESTAMP(2),
++};
++
++static const unsigned long lmp92064_scan_masks[] = {
++	BIT(TI_LMP92064_CHAN_INC) | BIT(TI_LMP92064_CHAN_INV),
++	0
+ };
+ 
+ static int lmp92064_read_meas(struct lmp92064_adc_priv *priv, u16 *res)
+@@ -171,6 +192,30 @@ static int lmp92064_read_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
++static irqreturn_t lmp92064_trigger_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
++	struct {
++		u16 values[2];
++		int64_t timestamp;
++	} data;
++	int ret;
++
++	ret = lmp92064_read_meas(priv, data.values);
++	if (ret)
++		goto err;
++
++	iio_push_to_buffers_with_timestamp(indio_dev, &data,
++					   iio_get_time_ns(indio_dev));
++
++err:
++	iio_trigger_notify_done(indio_dev->trig);
++
++	return IRQ_HANDLED;
++}
++
+ static int lmp92064_reset(struct lmp92064_adc_priv *priv,
+ 			  struct gpio_desc *gpio_reset)
+ {
+@@ -301,6 +346,12 @@ static int lmp92064_adc_probe(struct spi_device *spi)
+ 	indio_dev->channels = lmp92064_adc_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(lmp92064_adc_channels);
+ 	indio_dev->info = &lmp92064_adc_info;
++	indio_dev->available_scan_masks = lmp92064_scan_masks;
++
++	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
++					      lmp92064_trigger_handler, NULL);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to setup buffered read\n");
+ 
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+
+base-commit: 6995e2de6891c724bfeb2db33d7b87775f913ad1
+-- 
+2.39.2
+

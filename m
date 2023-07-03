@@ -2,390 +2,228 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 688017458AC
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jul 2023 11:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CCA745A58
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jul 2023 12:34:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbjGCJqH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Jul 2023 05:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46762 "EHLO
+        id S229494AbjGCKez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Jul 2023 06:34:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230348AbjGCJqG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jul 2023 05:46:06 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5098D12E
-        for <linux-iio@vger.kernel.org>; Mon,  3 Jul 2023 02:46:02 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6b708b97418so3501918a34.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Jul 2023 02:46:02 -0700 (PDT)
+        with ESMTP id S230323AbjGCKex (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jul 2023 06:34:53 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C169D2;
+        Mon,  3 Jul 2023 03:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688377561; x=1690969561;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TbmK849oZWBsIIXxzmxsrG4bxrPx0q2kPEKRNXqKLLA=;
-        b=FqaaBvfUvfBo3SBcsGzEMd1dvUZtm5NWEBpoBibAj65q9of6VirCq02/CPvzUE6J8M
-         Uhy5EVVpLr6ulJBY6fH/FRFZDHqELxw5AqluLllSTfRK8Ot+Y7fgK/B7fDdHTY0tDglk
-         aNBH29aK3CDBk7a+I6h5OtQDpqa2MgUlIAOY7TV32j+2bhe0Vnzs5nJl6906QtAMyUCT
-         GdDrC9klhyzRd3p1mIM0Q6JIf+MjdXHrTDOEwXZnZsJK+RVZA5+pBy+/iMeczLIiYMZL
-         T60ZrAExpo3e7Jl1THy4p7eU2ks0Ads/ozDYxk5B/CSAw2H6+lFHSWADkRkZd8aqZ38a
-         Dq/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688377561; x=1690969561;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TbmK849oZWBsIIXxzmxsrG4bxrPx0q2kPEKRNXqKLLA=;
-        b=P5o2FdQgj58BdDwr40uIUmqB2aObxvsPD28fYrJrIHk4x770cErBRdT2llqQSoEmsY
-         nDOtX8FIgCDpkmrcI21Ti1tAZtCIvGjjRUpr43AqHX/BJeNG6h8QM9sf9j3TCy4yXVIF
-         tUglTrKK1Ay4z7I49z2i5g5xd7I8HbNeBU29h5bkQXE0jmTrQ6bmjVT89QVob/F2kja0
-         Cv6lN4CjCcqvL+hxdbQFUTf6DqaJfD2wnKSW0NKNc913El/VKSDS3Er3LO9NSNB66snE
-         1c+cvOncYcnc5+PbjYUZGPnDjBXZ+FOd4d+pF1ajm5xz4txNoNuUb4ow3wzgqJtNODjS
-         mIoQ==
-X-Gm-Message-State: AC+VfDyaKv5KX3THWbOqHtGS9J8UwruT8n2Nrxv/2Dskx070NeyTuuh6
-        AGs6UYCsrMRHgda36dXcfk2mQaouPaxp4k6etNeykQ==
-X-Google-Smtp-Source: ACHHUZ7zcZZyp7iHEMoo1jOtwoGBPvK4/0F8HZmYDuVnyhpaegVixWOILIghS+RgeHmrQTN8C2D6HtJ1A50/NzsYIh8=
-X-Received: by 2002:a9d:6b19:0:b0:6b5:ee8f:73af with SMTP id
- g25-20020a9d6b19000000b006b5ee8f73afmr10267752otp.5.1688377561413; Mon, 03
- Jul 2023 02:46:01 -0700 (PDT)
+  d=axis.com; q=dns/txt; s=axis-central1; t=1688380488;
+  x=1719916488;
+  h=references:from:to:cc:subject:date:in-reply-to:
+   message-id:mime-version;
+  bh=GfPT0/TC/mNg+gO3bpiV162OJlaIE47Q1nZ6n4J93PE=;
+  b=R7HbGbjQOHX6jj9LtCCivtleo/INXV7pBXLiD+C5DpFHEy9Mddv+47Yu
+   ugQdHX1LTa/bA2saPTx8tAwtYmXUA5Iq4FKkbkTD03Yt2q5Rgb95i76Bw
+   36PX8cnTkjWaW0JjE1uak3+00CrswCNMo5D3QHtVFK3pcguPngI4LfTWN
+   qqzKTmvuJARVtJ4gtAYGSriawDWLz66AiD2+Wr/ftNFkdzFD6Blv3arCm
+   12Fb8WPWOCsawX3jX0glLEr2uxxkDKD9SsJ5zWaa2ugH9pcAre9TJVD18
+   45vSizkcZ9qpJ59d27U7Yxt/bsMjYXIClIzYg//DJMeFdkq/wNxCgFQhA
+   A==;
+References: <cover.1686926857.git.waqarh@axis.com>
+ <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
+ <20230617143508.28309834@jic23-huawei> <pndo7lb1mes.fsf@axis.com>
+ <20230625120604.3ecc54bf@jic23-huawei> <pndilb5xlmt.fsf@axis.com>
+ <20230702184222.000022c9@Huawei.com>
+User-agent: a.out
+From:   Waqar Hameed <waqar.hameed@axis.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <kernel@axis.com>
+Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
+Date:   Mon, 3 Jul 2023 10:59:41 +0200
+In-Reply-To: <20230702184222.000022c9@Huawei.com>
+Message-ID: <pnda5wdxoze.fsf@axis.com>
 MIME-Version: 1.0
-References: <20230702182308.7583-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230702182308.7583-1-krzysztof.kozlowski@linaro.org>
-From:   Mike Leach <mike.leach@linaro.org>
-Date:   Mon, 3 Jul 2023 10:45:50 +0100
-Message-ID: <CAJ9a7ViDdBeom-pBEOEySN7e78GYjPkqSXvS9Has1aA-egQdLA@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: cleanup DTS example whitespaces
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Leo Yan <leo.yan@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, coresight@lists.linaro.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-rockchip@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org, linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
+ (10.20.40.7)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2 Jul 2023 at 19:23, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> The DTS code coding style expects spaces around '=' sign.
->
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->
-> ---
->
-> Rob,
->
-> Maybe this could go via your tree? Rebased on your for-next:
-> v6.4-rc2-45-gf0ac35049606
-> ---
->  .../bindings/arm/arm,coresight-cti.yaml        | 18 +++++++++---------
->  .../bindings/arm/keystone/ti,sci.yaml          |  8 ++++----
->  .../devicetree/bindings/display/msm/gmu.yaml   |  2 +-
->  .../display/panel/samsung,s6e8aa0.yaml         |  2 +-
->  .../display/rockchip/rockchip-vop.yaml         |  4 ++--
->  .../bindings/iio/adc/ti,adc108s102.yaml        |  2 +-
->  .../bindings/media/renesas,rzg2l-cru.yaml      |  4 ++--
->  .../devicetree/bindings/media/renesas,vin.yaml |  4 ++--
->  .../devicetree/bindings/mtd/mtd-physmap.yaml   |  2 +-
->  .../bindings/net/mediatek-dwmac.yaml           |  2 +-
->  .../bindings/perf/amlogic,g12-ddr-pmu.yaml     |  4 ++--
->  .../bindings/phy/mediatek,dsi-phy.yaml         |  2 +-
->  .../remoteproc/amlogic,meson-mx-ao-arc.yaml    |  2 +-
->  .../devicetree/bindings/usb/mediatek,mtu3.yaml |  2 +-
->  .../devicetree/bindings/usb/ti,am62-usb.yaml   |  2 +-
->  15 files changed, 30 insertions(+), 30 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml b/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml
-> index 0c5b875cb654..d6c84b6e7fe6 100644
-> --- a/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml
-> +++ b/Documentation/devicetree/bindings/arm/arm,coresight-cti.yaml
-> @@ -287,7 +287,7 @@ examples:
->              arm,trig-in-sigs = <0 1>;
->              arm,trig-in-types = <PE_DBGTRIGGER
->                                   PE_PMUIRQ>;
-> -            arm,trig-out-sigs=<0 1 2 >;
-> +            arm,trig-out-sigs = <0 1 2 >;
->              arm,trig-out-types = <PE_EDBGREQ
->                                    PE_DBGRESTART
->                                    PE_CTIIRQ>;
-> @@ -309,24 +309,24 @@ examples:
->
->        trig-conns@0 {
->          reg = <0>;
-> -        arm,trig-in-sigs=<0>;
-> -        arm,trig-in-types=<GEN_INTREQ>;
-> -        arm,trig-out-sigs=<0>;
-> -        arm,trig-out-types=<GEN_HALTREQ>;
-> +        arm,trig-in-sigs = <0>;
-> +        arm,trig-in-types = <GEN_INTREQ>;
-> +        arm,trig-out-sigs = <0>;
-> +        arm,trig-out-types = <GEN_HALTREQ>;
->          arm,trig-conn-name = "sys_profiler";
->        };
->
->        trig-conns@1 {
->          reg = <1>;
-> -        arm,trig-out-sigs=<2 3>;
-> -        arm,trig-out-types=<GEN_HALTREQ GEN_RESTARTREQ>;
-> +        arm,trig-out-sigs = <2 3>;
-> +        arm,trig-out-types = <GEN_HALTREQ GEN_RESTARTREQ>;
->          arm,trig-conn-name = "watchdog";
->        };
->
->        trig-conns@2 {
->          reg = <2>;
-> -        arm,trig-in-sigs=<1 6>;
-> -        arm,trig-in-types=<GEN_HALTREQ GEN_RESTARTREQ>;
-> +        arm,trig-in-sigs = <1 6>;
-> +        arm,trig-in-types = <GEN_HALTREQ GEN_RESTARTREQ>;
->          arm,trig-conn-name = "g_counter";
->        };
->      };
+On Sun, Jul 02, 2023 at 18:42 +0800 Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-for above CTI chagnes
+> #> >> >> +	if (status & BIT(IRS_INTR_TIMER) && source & BIT(IRS_INTR_TIMER)) {
+>> >> >> +		iio_push_event(indio_dev,
+>> >> >> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, 0,
+>> >> >> +						    IIO_EV_TYPE_CHANGE,
+>> >> >> +						    IIO_EV_DIR_NONE),    
+>> >> >
+>> >> > As below, I'd like more explanation of what this is.
+>> >> > I can't find a datasheet to look it up in.    
+>> >> 
+>> >> This is a timer for the detection event window time, i.e. the signal
+>> >> should pass the threshold values within this time in order to get an
+>> >> interrupt (`IIO_EV_TYPE_THRESH`).
+>> >> 
+>> >> You setup the window time (`IIO_EV_INFO_TIMEOUT`), and when this timer
+>> >> has expired, you get this interrupt (and thus `IIO_EV_TYPE_CHANGE`). I
+>> >> couldn't find any other more fitting value in `enum iio_event_type`.  
+>> >
+>> > I'm not totally following.   This is some sort of watchdog?  If threshold
+>> > not exceeded for N seconds an interrupt occurs?    
+>> 
+>> Yes, exactly.
+>> 
+>> > Change is definitely not indicating that, so not appropriate ABI to use.
+>> > Timeout currently has a very specific defined meaning and it's not this
+>> > (see the ABI docs - to do with adaptive algorithm jumps - we also have
+>> > reset_timeout but that's different again).
+>> >
+>> > This probably needs some new ABI defining.  I'm not sure what will work
+>> > best though as it's kind of a 'event did not happen' signal if I've understood
+>> > it correctly?  
+>> 
+>> Yeah, I'm not sure when this interrupt actually could be useful. Maybe
+>> when you are testing and calibrating the device, it could help to know
+>> that "these particular settings didn't cause the data to pass any
+>> thresholds during the window time"?
+>> 
+>> The alternative would be to just ignore this interrupt and not signaling
+>> any events for this. I don't think it would deteriorate the
+>> functionality of the device (except the test/calibration situation
+>> described above, which obviously _can_ be resolved in user space).
+>
+> That's probably best way to move forwards with this. Can revisit later
+> if it turns out there is an important usecase!
 
-Acked-by: Mike Leach <mike.leach@linaro.org>
+Alright, let's skip this interrupt. However, we still need a way for
+users to specify the window time (see answer below).
 
+>> >> >> +			       iio_get_time_ns(indio_dev));
+>> >> >> +		clear |= BIT(IRS_INTR_TIMER);
+>> >> >> +	}
+>> >> >> +
+>> >> >> +	if (status & BIT(IRS_INTR_COUNT_THR_OR) &&
+>> >> >> +	    source & BIT(IRS_INTR_COUNT_THR_OR)) {
+>> >> >> +		/*
+>> >> >> +		 * The register value resets to zero after reading. We therefore
+>> >> >> +		 * need to read once and manually extract the lower and upper
+>> >> >> +		 * count register fields.
+>> >> >> +		 */
+>> >> >> +		ret = regmap_read(data->regmap, IRS_REG_COUNT, &count);
+>> >> >> +		if (ret)
+>> >> >> +			dev_err(data->dev, "Could not read count (%d)\n", ret);
+>> >> >> +
+>> >> >> +		upper_count = IRS_UPPER_COUNT(count);
+>> >> >> +		lower_count = IRS_LOWER_COUNT(count);
+>> >> >> +
+>> >> >> +		/*
+>> >> >> +		 * We only check the OR mode to be able to push events for
+>> >> >> +		 * rising and falling thresholds. AND mode is covered when both
+>> >> >> +		 * upper and lower count is non-zero, and is signaled with
+>> >> >> +		 * IIO_EV_DIR_EITHER.    
+>> >> >
+>> >> > Whey you say AND, you mean that both thresholds have been crossed but also that
+>> >> > in that configuration either being crossed would also have gotten us to here?
+>> >> > (as opposed to the interrupt only occurring if value is greater than rising threshold
+>> >> >  and less than falling threshold?)
+>> >> >
+>> >> > If it's the first then just report two events.  Either means we don't know, rather
+>> >> > than we know both occurred.  We don't document that well though - so something
+>> >> > we should improved there. whilst a bit confusing: 
+>> >> > https://elixir.bootlin.com/linux/v6.4-rc6/source/Documentation/ABI/testing/sysfs-bus-iio#L792
+>> >> > talks about this.
+>> >> >
+>> >> > The bracketed case is more annoying to deal with so I hope you don't mean that.
+>> >> > Whilst we've had sensors that support it in hardware for years, I don't think we
+>> >> > ever came up with a usecase that really justified describing it.    
+>> >> 
+>> >> According to the data sheet (which will hopefully be soon publicly
+>> >> available):
+>> >> 
+>> >> OR-interrupt:  (UPPER_COUNT + LOWER_COUNT >= NR_COUNT)
+>> >> 
+>> >> AND-interrupt: (UPPER_COUNT + LOWER_COUNT >= NR_COUNT) &&
+>> >>                (UPPER_COUNT != 0) && (LOWER_COUNT != 0)
+>> >>                
+>> >> For example, consider the following situation:
+>> >> 
+>> >>                                ___
+>> >>                               /   \
+>> >> -----------------------------3------------------- Upper threshold
+>> >>                ___          /       \
+>> >> ______        /   \        /         \___________ Data signal
+>> >>       \      /     \      /
+>> >> -------1------------2---------------------------- Lower threshold
+>> >>         \__/         \__/
+>> >>         
+>> >> When `NR_COUNT` is set to 3, we will get an OR-interrupt on point "3" in
+>> >> the graph above. In this case `UPPER_COUNT = 1` and `LOWER_COUNT = 2`.
+>> >> 
+>> >> When `NR_COUNT` is set to 2, we will get an OR-interrupt on point "2"
+>> >> instead. Here `UPPER_COUNT = 0` and `LOWER_COUNT = 2`.
+>> >>   
+>> >
+>> > Thanks.  That is very odd definition of AND.  At least OR is close to normal
+>> > though the way count is applied is unusual.  Most common thing similar to that
+>> > is what we use period for in IIO - it's same count here, but it resets once
+>> > the condition is no longer true.  Here we have a running total...
+>> >
+>> > Getting this into standard ABI or anything approaching it is going to be tricky.
+>> >
+>> > Firstly need a concept similar to period but with out the reset. That will at least
+>> > allow us to comprehend the counts part.
+>> >
+>> > Either can then be used for the OR case.  
+>> 
+>> Are you saying that the current implementation (with manually checking
+>> the upper and lower counts only with the OR mode) wouldn't "fit" the
+>> current ABI? It does cover the rising and falling directions correctly,
+>> no? Could `IIO_EV_DIR_NONE` instead of `IIO_EV_DIR_EITHER` be used to
+>> signal "both" then?
+>
+> The fact it's a running count (so doesn't go back to 0 when threshold is
+> not exceeded) is the unusual bit, not the direction.
+>
+> No on none. That's for channels where there is not concept of direction.
+> Either is fine, but we still need to deal with the temporal element being
+> different from period.  For that I think we need some new ABI, but
+> not sure exactly what it should be.
+>
+> XXX_runningperiod maybe?  Still measured in seconds, but not resetting
+> unlike _period...
+>
+>> >
+>> > The AND case is a mess so for now I'm stuck.  Will think some more on this.
+>> > Out of curiosity does the datasheet include why that particular function makes
+>> > any sense?  Feels like a rough attempt to approximate something they don't have
+>> > hardware resources to actually estimate.  
+>> 
+>> Unfortunately not. I guess there could be an application where you are
+>> only interested if _both_ lower and upper threshold are exceeded. Maybe
+>> in order to minimize small "false positives" movements in front of the
+>> sensor? But as stated in the comments, one can cover this with only the
+>> OR mode (and manually checking the upper and lower count as we do).
 
-> diff --git a/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml b/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml
-> index 91b96065f7df..86b59de7707e 100644
-> --- a/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml
-> +++ b/Documentation/devicetree/bindings/arm/keystone/ti,sci.yaml
-> @@ -96,8 +96,8 @@ examples:
->        compatible = "ti,k2g-sci";
->        ti,system-reboot-controller;
->        mbox-names = "rx", "tx";
-> -      mboxes= <&msgmgr 5 2>,
-> -              <&msgmgr 0 0>;
-> +      mboxes = <&msgmgr 5 2>,
-> +               <&msgmgr 0 0>;
->        reg-names = "debug_messages";
->        reg = <0x02921800 0x800>;
->      };
-> @@ -107,8 +107,8 @@ examples:
->        compatible = "ti,k2g-sci";
->        ti,host-id = <12>;
->        mbox-names = "rx", "tx";
-> -      mboxes= <&secure_proxy_main 11>,
-> -              <&secure_proxy_main 13>;
-> +      mboxes = <&secure_proxy_main 11>,
-> +               <&secure_proxy_main 13>;
->        reg-names = "debug_messages";
->        reg = <0x44083000 0x1000>;
->
-> diff --git a/Documentation/devicetree/bindings/display/msm/gmu.yaml b/Documentation/devicetree/bindings/display/msm/gmu.yaml
-> index 029d72822d8b..65b02c7a1211 100644
-> --- a/Documentation/devicetree/bindings/display/msm/gmu.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/gmu.yaml
-> @@ -225,7 +225,7 @@ examples:
->      #include <dt-bindings/interrupt-controller/arm-gic.h>
->
->      gmu: gmu@506a000 {
-> -        compatible="qcom,adreno-gmu-630.2", "qcom,adreno-gmu";
-> +        compatible = "qcom,adreno-gmu-630.2", "qcom,adreno-gmu";
->
->          reg = <0x506a000 0x30000>,
->                <0xb280000 0x10000>,
-> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml
-> index 1cdc91b3439f..200fbf1c74a0 100644
-> --- a/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml
-> +++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e8aa0.yaml
-> @@ -74,7 +74,7 @@ examples:
->              vdd3-supply = <&vcclcd_reg>;
->              vci-supply = <&vlcd_reg>;
->              reset-gpios = <&gpy4 5 0>;
-> -            power-on-delay= <50>;
-> +            power-on-delay = <50>;
->              reset-delay = <100>;
->              init-delay = <100>;
->              panel-width-mm = <58>;
-> diff --git a/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml b/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml
-> index 6f43d885c9b3..df61cb5f5c54 100644
-> --- a/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml
-> +++ b/Documentation/devicetree/bindings/display/rockchip/rockchip-vop.yaml
-> @@ -121,11 +121,11 @@ examples:
->          #size-cells = <0>;
->          vopb_out_edp: endpoint@0 {
->            reg = <0>;
-> -          remote-endpoint=<&edp_in_vopb>;
-> +          remote-endpoint = <&edp_in_vopb>;
->          };
->          vopb_out_hdmi: endpoint@1 {
->            reg = <1>;
-> -          remote-endpoint=<&hdmi_in_vopb>;
-> +          remote-endpoint = <&hdmi_in_vopb>;
->          };
->        };
->      };
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml b/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml
-> index 9b072b057f16..a60b1e100ee4 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml
-> @@ -35,7 +35,7 @@ unevaluatedProperties: false
->  examples:
->    - |
->      spi {
-> -        #address-cells= <1>;
-> +        #address-cells = <1>;
->          #size-cells = <0>;
->
->          adc@0 {
-> diff --git a/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml b/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml
-> index 7dde7967c886..1e72b8808d24 100644
-> --- a/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml
-> +++ b/Documentation/devicetree/bindings/media/renesas,rzg2l-cru.yaml
-> @@ -137,7 +137,7 @@ examples:
->
->                  cru_parallel_in: endpoint@0 {
->                      reg = <0>;
-> -                    remote-endpoint= <&ov5642>;
-> +                    remote-endpoint = <&ov5642>;
->                      hsync-active = <1>;
->                      vsync-active = <1>;
->                  };
-> @@ -150,7 +150,7 @@ examples:
->
->                  cru_csi_in: endpoint@0 {
->                      reg = <0>;
-> -                    remote-endpoint= <&csi_cru_in>;
-> +                    remote-endpoint = <&csi_cru_in>;
->                  };
->              };
->          };
-> diff --git a/Documentation/devicetree/bindings/media/renesas,vin.yaml b/Documentation/devicetree/bindings/media/renesas,vin.yaml
-> index 91e8f368fb52..324703bfb1bd 100644
-> --- a/Documentation/devicetree/bindings/media/renesas,vin.yaml
-> +++ b/Documentation/devicetree/bindings/media/renesas,vin.yaml
-> @@ -303,11 +303,11 @@ examples:
->
->                              vin0csi20: endpoint@0 {
->                                      reg = <0>;
-> -                                    remote-endpoint= <&csi20vin0>;
-> +                                    remote-endpoint = <&csi20vin0>;
->                              };
->                              vin0csi40: endpoint@2 {
->                                      reg = <2>;
-> -                                    remote-endpoint= <&csi40vin0>;
-> +                                    remote-endpoint = <&csi40vin0>;
->                              };
->                      };
->              };
-> diff --git a/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml b/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
-> index f8c976898a95..18f6733408b4 100644
-> --- a/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
-> +++ b/Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
-> @@ -164,7 +164,7 @@ examples:
->              reg = <0 0xf80000>;
->          };
->          firmware@f80000 {
-> -            label ="firmware";
-> +            label = "firmware";
->              reg = <0xf80000 0x80000>;
->              read-only;
->          };
-> diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-> index 0fa2132fa4f4..400aedb58205 100644
-> --- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-> @@ -156,7 +156,7 @@ examples:
->          reg = <0x1101c000 0x1300>;
->          interrupts = <GIC_SPI 237 IRQ_TYPE_LEVEL_LOW>;
->          interrupt-names = "macirq";
-> -        phy-mode ="rgmii-rxid";
-> +        phy-mode = "rgmii-rxid";
->          mac-address = [00 55 7b b5 7d f7];
->          clock-names = "axi",
->                        "apb",
-> diff --git a/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml b/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml
-> index 50f46a6898b1..4adab0149108 100644
-> --- a/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml
-> +++ b/Documentation/devicetree/bindings/perf/amlogic,g12-ddr-pmu.yaml
-> @@ -42,8 +42,8 @@ examples:
->    - |
->      #include <dt-bindings/interrupt-controller/arm-gic.h>
->      pmu {
-> -        #address-cells=<2>;
-> -        #size-cells=<2>;
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
->
->          pmu@ff638000 {
->              compatible = "amlogic,g12a-ddr-pmu";
-> diff --git a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
-> index 26f2b887cfc1..b8d77165c4a1 100644
-> --- a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
-> @@ -83,7 +83,7 @@ examples:
->          clocks = <&clk26m>;
->          clock-output-names = "mipi_tx0_pll";
->          drive-strength-microamp = <4000>;
-> -        nvmem-cells= <&mipi_tx_calibration>;
-> +        nvmem-cells = <&mipi_tx_calibration>;
->          nvmem-cell-names = "calibration-data";
->          #clock-cells = <0>;
->          #phy-cells = <0>;
-> diff --git a/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml b/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml
-> index 3100cb870170..76e8ca44906a 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/amlogic,meson-mx-ao-arc.yaml
-> @@ -75,7 +75,7 @@ additionalProperties: false
->  examples:
->    - |
->      remoteproc@1c {
-> -      compatible= "amlogic,meson8-ao-arc", "amlogic,meson-mx-ao-arc";
-> +      compatible = "amlogic,meson8-ao-arc", "amlogic,meson-mx-ao-arc";
->        reg = <0x1c 0x8>, <0x38 0x8>;
->        reg-names = "remap", "cpu";
->        resets = <&media_cpu_reset>;
-> diff --git a/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml b/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml
-> index 478214ab045e..a59d91243ac8 100644
-> --- a/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml
-> +++ b/Documentation/devicetree/bindings/usb/mediatek,mtu3.yaml
-> @@ -304,7 +304,7 @@ examples:
->    # Dual role switch with type-c
->    - |
->      usb@11201000 {
-> -        compatible ="mediatek,mt8183-mtu3", "mediatek,mtu3";
-> +        compatible = "mediatek,mt8183-mtu3", "mediatek,mtu3";
->          reg = <0x11201000 0x2e00>, <0x11203e00 0x0100>;
->          reg-names = "mac", "ippc";
->          interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_LOW>;
-> diff --git a/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml b/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml
-> index d25fc708e32c..fec5651f5602 100644
-> --- a/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml
-> +++ b/Documentation/devicetree/bindings/usb/ti,am62-usb.yaml
-> @@ -92,7 +92,7 @@ examples:
->
->          usb@31100000 {
->            compatible = "snps,dwc3";
-> -          reg =<0x00 0x31100000 0x00 0x50000>;
-> +          reg = <0x00 0x31100000 0x00 0x50000>;
->            interrupts = <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>, /* irq.0 */
->                         <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>; /* irq.0 */
->            interrupt-names = "host", "peripheral";
-> --
-> 2.34.1
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Hm, I see. The "cleanest" way is probably to add some new ABIs.
 
+Let's say we add `IIO_EV_INFO_RUNNING_PERIOD` (or something) to be able
+to specify the time (in seconds) for the threshold window time
+(`irsd200_read/write_timer()`), e.g. `*_thresh_runningperiod`. We then
+also need an ABI for specifying the number of threshold counts in this
+running period (`irsd200_read/write_nr_count()`, i.e. `NR_COUNT` from
+the graph above), e.g. `*_thresh_runningcount` (or something).
 
-
--- 
-Mike Leach
-Principal Engineer, ARM Ltd.
-Manchester Design Centre. UK
+This would cover the OR mode. As stated before, the AND mode is much
+more complicated, and should maybe considered later (when someone
+actually has a use case)? We can signal with the direction to tell if
+both thresholds has been passed (either), compared to only exceeding one
+of them (rising or falling) in the running period.

@@ -2,332 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9D4746DD7
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jul 2023 11:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 466E6746E17
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jul 2023 11:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231656AbjGDJmq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 4 Jul 2023 05:42:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56920 "EHLO
+        id S231334AbjGDJ6b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Jul 2023 05:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231644AbjGDJmd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jul 2023 05:42:33 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B9D10EA;
-        Tue,  4 Jul 2023 02:41:22 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3649C0PC010277;
-        Tue, 4 Jul 2023 05:40:59 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3rjh250aa0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 04 Jul 2023 05:40:59 -0400
-Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3649eBSv022581;
-        Tue, 4 Jul 2023 05:40:58 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3rjh250a9v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 04 Jul 2023 05:40:58 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 3649evxu027087
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 4 Jul 2023 05:40:57 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 4 Jul 2023
- 05:40:56 -0400
-Received: from ASHBMBX8.ad.analog.com ([fe80::5480:da01:e8ae:ffda]) by
- ASHBMBX8.ad.analog.com ([fe80::5480:da01:e8ae:ffda%9]) with mapi id
- 15.02.0986.014; Tue, 4 Jul 2023 05:40:56 -0400
-From:   "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC:     "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Subject: RE: [PATCH v8 2/2] iio: adc: max14001: New driver
-Thread-Topic: [PATCH v8 2/2] iio: adc: max14001: New driver
-Thread-Index: AQHZpRZy8xeK/o2rdEy704va5qsXxK+mkfeAgALYo9A=
-Date:   Tue, 4 Jul 2023 09:40:56 +0000
-Message-ID: <fcf6daf6afec48b096df14d8b5308db0@analog.com>
-References: <20230622143227.30147-1-kimseer.paller@analog.com>
-        <20230622143227.30147-2-kimseer.paller@analog.com>
- <20230702180315.00003dbe@Huawei.com>
-In-Reply-To: <20230702180315.00003dbe@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNca3BhbGxlcjJc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy1kZDlkNWEwMy0xYTRlLTExZWUtYWU4MC05OWVl?=
- =?us-ascii?Q?OWM2MGExOWVcYW1lLXRlc3RcZGQ5ZDVhMDUtMWE0ZS0xMWVlLWFlODAtOTll?=
- =?us-ascii?Q?ZTljNjBhMTllYm9keS50eHQiIHN6PSIxMzc4OCIgdD0iMTMzMzI5MzcyNTMz?=
- =?us-ascii?Q?MDk2ODkzIiBoPSJubEdqOWZqRTl4R1BxQnFEOGVhYVRZekdQUjg9IiBpZD0i?=
- =?us-ascii?Q?IiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQUFFb0NB?=
- =?us-ascii?Q?QUM5QWZhZlc2N1pBVWtQMy9OdUpYS0hTUS9mODI0bGNvY0RBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBRUFBUUFCQUFBQXZkaGt4Z0FBQUFBQUFBQUFBQUFBQUo0QUFBQmhBR1FB?=
- =?us-ascii?Q?YVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0JsQUdNQWRBQnpB?=
- =?us-ascii?Q?RjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFHa0FkZ0JsQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQVpBQnBBRjhBY3dCbEFHTUFk?=
- =?us-ascii?Q?UUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3QjBBR2tBWlFCeUFE?=
- =?us-ascii?Q?RUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNB?=
- =?us-ascii?Q?QUFBQUFDZUFBQUFZUUJrQUdrQVh3QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNn?=
- =?us-ascii?Q?QnZBR29BWlFCakFIUUFjd0JmQUhRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9t?=
- =?us-ascii?Q?ZXRhPg=3D=3D?=
-x-dg-rorf: true
-x-originating-ip: [10.116.18.29]
-x-adiruleop-newscl: Rule Triggered
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S231358AbjGDJ6a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jul 2023 05:58:30 -0400
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on2121.outbound.protection.outlook.com [40.107.255.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0F4D8;
+        Tue,  4 Jul 2023 02:58:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TQEW+WGM9MwdR8oIWTNR7Y21O9vOz6/EDHO9Um2KQ2LdktOZtug+5L/eCKaTx/5nczAg4pjxiB6Q4ZcvulPPdx3Ev12MKkm2urbZQ14xDoZFOX8D/WYV7F03kQ2TNkjkKZl54QZWyso9QKt/DupZpRzvZKssB4LXnb/8RDDySjzUX2N5FwEup1IcTVCoTwSoiLFPzK+2H3jQBNBDST/eK0LxI8bbQN79ecYO+g+5zgeIgGPJhFOaGoV21btaWtJq6Od29RGh2zju4ko4ornKH4UaFmk+/Bpipz0r1kZdl85FHN4DtUHy4lmeeDa3SuaWTppzYnqS8rbMOH9BYIr1Mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GBZzgY4ZLSk52/A2tFG4VXwsbPZwxMCFSqQiHZgy41E=;
+ b=lWWqNXBYladuW3mxsM5wQNsW9mUwdQzUj+CCVyFy0XuoddmL4p569nNhNWXldfuVbKcUISMvZBlTrpZtMQU3GIF+zlZYYYUhvXjVvYZ9D9yg8DzyZIvpg2SAjPWAcIYex2Zmwaf03Vo6jgN7te0XQx32Wo/oi1mhUWfRXvskip/AcO2XK7ZLGkCl6Bebadjj3tN1vH8qZ5jKTWpm4G9Cobw8S8j+PbiiOsJwEPzUtbY/DQtkCO5X/71qM4SvisDeMNX23sbfx6+20GTpPch0cdn51ySmbEFh4WuvBszaXnug641D6ZJYQUEXljPwcaQn0rrPp0DyelDzAqDWX9tVRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GBZzgY4ZLSk52/A2tFG4VXwsbPZwxMCFSqQiHZgy41E=;
+ b=ZnuLyhNG7tSE+ao/p4KAAVB0u/6fZ1NoSwYu7I6K0M0jreUefTUbt+Y3p/vTBn+65oKY1oYyYhYzPoDC+VnxDhx8yTiCDiVAx41RExTjb95qbmGftxeUZpDYdjaRTj7L0whSHOq/aVxIeU+G1rPGkdvft+rVJggdqrSq6S2s56R+ZxbKD70zcm9cxYjGqCM9XJY6O3ekHDF87vcQ2DnDmk9HBWJ/VSlRt9HUAfuISmKhzPqtl1kfnto1CTCWxMYNn29ZlBFZr8bJVQfzoWM8nDX8xk3UX4+KSW0aT0WzUxUYDk1Grx3Ag2/JDyMcDmaFaylhouNv7b74keHVE+ENkg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SEZPR06MB5269.apcprd06.prod.outlook.com (2603:1096:101:78::6)
+ by SEZPR06MB5501.apcprd06.prod.outlook.com (2603:1096:101:a1::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Tue, 4 Jul
+ 2023 09:58:26 +0000
+Received: from SEZPR06MB5269.apcprd06.prod.outlook.com
+ ([fe80::fa0e:6c06:7474:285c]) by SEZPR06MB5269.apcprd06.prod.outlook.com
+ ([fe80::fa0e:6c06:7474:285c%5]) with mapi id 15.20.6544.024; Tue, 4 Jul 2023
+ 09:58:25 +0000
+From:   Yangtao Li <frank.li@vivo.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc:     Yangtao Li <frank.li@vivo.com>, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: stm32-adc: Use devm_platform_get_and_ioremap_resource()
+Date:   Tue,  4 Jul 2023 17:58:08 +0800
+Message-Id: <20230704095808.33780-1-frank.li@vivo.com>
+X-Mailer: git-send-email 2.39.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0224.apcprd06.prod.outlook.com
+ (2603:1096:4:68::32) To SEZPR06MB5269.apcprd06.prod.outlook.com
+ (2603:1096:101:78::6)
 MIME-Version: 1.0
-X-Proofpoint-ORIG-GUID: RBHZajU8QSgmFP2qIcM0INaBDJQujBXX
-X-Proofpoint-GUID: waOhee5QLwmUmKRNroRRD_vnoZRuF-OW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-04_06,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
- malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307040079
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5269:EE_|SEZPR06MB5501:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5aefb0a6-c523-446c-6e88-08db7c7535b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ac7TBf4EJuLC7I15Zq9VjFXmQJB8+Gi1P0xNwvVakhTfDfgp7xlDAv8+onwFW8RyMbZS+Lp3SRQbhO/2elz4o4jmAXcOcDmwUZ+FtAD6xR4gu36J7AczN86uEG5rog+MOPqnfDH7CpAOgSEPt7rEy1QmENkmpqP1fM2N8jZIhbC9Orjq4AKUHLqGRhLlMWAJWYkueAlrIZmtOf8kR/hFq7vE3l/p+iqWX9IISK2m0uk6GlVrrLX1Zzg3to9tV3p87nbCVK9uAmxyieYMik0Spxvzh5GiJIPnod2pgW4EN+66YsPPmnrPs1tdnNbsQMOQ6alMiLoOicFKS88x8LIfmlp4zZYcEJNs32FW2DTizha5QYGjAD0g4qzpmnxdmYuHJcadDF/L8zOWlDYz5cueom6OTOp/WMrj+GLOLGMwO+pNWQHHuUrA6buB8evQzDQpf/xpO56ru514CX8S6ldEQyuDMour2ccXheasQU4yAFEG3uLoGI+3F4RFEdv3WUc5vYj+dwnniOZIFFEYVgG+qxXD8/SUwUuZalyIrYdoxeZZjTSKp5meoGQ4nN+hd+1ex8xoES3ex2Is14QrYaS7b0P337bUOpq7piB92zjwj35wmOPBUKvJffBRTl+V0BSp
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5269.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39860400002)(366004)(346002)(376002)(451199021)(66556008)(66946007)(4326008)(36756003)(66476007)(478600001)(316002)(2906002)(8676002)(8936002)(5660300002)(41300700001)(86362001)(6486002)(6512007)(110136005)(38350700002)(52116002)(4744005)(38100700002)(6666004)(1076003)(6506007)(26005)(186003)(2616005)(83380400001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vXQesqVsfDY/J6EiK1YkyqRCougVdlcc7d9O0lKOA+STIFBJOOs6cLFPjkAD?=
+ =?us-ascii?Q?kEjI7/oqJbYlWGpqxWvviA6V0cOb6Wt7Oyhg6fGZN/BNeN6X5mSC6fxmZGov?=
+ =?us-ascii?Q?cwVNrsuHXjXujiZQEtXwWssN9Pt4dr/bLZS8XP/qMA3C8fkeSqBeG+9ZFzi1?=
+ =?us-ascii?Q?3h47SL8PmMBR+/FHowuH5QpUXhcRm8jSzsAyo7wPZUkry9aHrnP10/jMtqx7?=
+ =?us-ascii?Q?1A772iWtUH1nzSpM6Xi7+sBCOFD6r2ZWZ2c5pH+P47TZcUB5tLV7ZumzvNk4?=
+ =?us-ascii?Q?jSdLDj/dYrzO22MBk44Cpn6w4ucvk3GnT0ePZ1uop+vjuWazLN4vUxrIjYhQ?=
+ =?us-ascii?Q?MSs77muhgSPgdScNZICWPoKOqlWxA6rq9Le/rThUVhSl2r6dYJMYrpb/nyQa?=
+ =?us-ascii?Q?qrqs1N2trvRbWJgK1f/uCLdY0o4F1C8ElV/tN3mD8roxBXfSLvyk13ubhnNZ?=
+ =?us-ascii?Q?TFuhkLJlQ1BZ9/xwpqOmMghz+l7xU0Dy/2KX74X2Gc5m3vnM4Qr8jjlElmx1?=
+ =?us-ascii?Q?i96o3xxVAB9tnCszfoFYnjuc4nOKZUyL0GjcDHKHGspeTLnLuNVu3mYwJJ4j?=
+ =?us-ascii?Q?iCYXEftJcNbAlrleNerIP5z35CS9ArRAjZnzYSRxGjYVSl/BaaElTI5g/OXl?=
+ =?us-ascii?Q?GaPXs5OjedXsleGV+zZi6aBx+o1foodSgh0imAMX4R+hz7BaYEivVwu/N2tJ?=
+ =?us-ascii?Q?wRG4JXABhjecaAmBCqTX3ntmckzCs1RSi7WdFE5RbD8yRtRCClBNpSOlmVsW?=
+ =?us-ascii?Q?/Gu1p2r9Bd1AMaYKbt38q6w3EVHKmu5nGhYSlrgwvYqoWOuJb3JzOJMxyuhe?=
+ =?us-ascii?Q?5TuD4CUvPkow4SP0G32qhR5CwiFs4oUF1ibV0vFDcsFP1tNcP51s7JGJbcdO?=
+ =?us-ascii?Q?wCwx9lS470cVr3HU23YHRmFCQUEOBETJFGOwxVEsBV9NPo+DVxO2U5wkB3qd?=
+ =?us-ascii?Q?NInto6eKXAPOsPZs7dksif8maONzB6LzZaA/6qV2PJcxbID4iV/FpsHwEsLW?=
+ =?us-ascii?Q?tzpDdmTWTLYJi7oRZ4j1r72hts+LnnUh6VMTnWas0ZzhJlcdRtjvQSiETB7b?=
+ =?us-ascii?Q?pbsRsYXOc+mS7h5n+EvzpAVYMCXqS5o9q5/pBkVWrzWA8ecPn0Z+6lDyEaDA?=
+ =?us-ascii?Q?TZEkObdNqXfV2rz95lshvexoyqvCu7s6CajWlONxpaGcrYgJ55KfWtURGkMr?=
+ =?us-ascii?Q?CneENugnTBCekOewTG6UA0QR/FmdDD5QCPp+hae7ba/au0zclO99vVFLneGv?=
+ =?us-ascii?Q?V9APdgp/kJQjeGjdRtR/7NxoK16W4i0SWHzET105Kc+zgrFV7BKwVqB6UFUk?=
+ =?us-ascii?Q?Mmg+8pu80JPSIyo1DTmM3r1ffBfm9794HMxhW0LQjnGmLXe4QZ3V7ywZJQUU?=
+ =?us-ascii?Q?Xq3+HxlIy+LyOuyI+AkGdnSfMHeQY3b5XbWo9UqoZ5aspVydAwzPtfNRO1Ic?=
+ =?us-ascii?Q?GljmYIXsjjSHxOUYIbA0CX22GgPXwdnLlvcHfwMt59qwkqGo0wMmdknsCHjv?=
+ =?us-ascii?Q?wS+GXfOANMjm8k07wtuJyBluFbj0x/+UKXRQ9iQKOL5BGZLhbEwoDP+8uMxe?=
+ =?us-ascii?Q?uWjADAH97rJMFTY/SqaEVhVizdYALrvWhjOc/3ZK?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5aefb0a6-c523-446c-6e88-08db7c7535b3
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5269.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2023 09:58:25.9089
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ixFlvSPJ2mj+lwpMA0NoDNTIFRuWgsrdNvJjI2TVezzlh89emnQVnvI7zrA1HklJrmNUDUO31LYFkYfW1tKc6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB5501
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Convert platform_get_resource(), devm_ioremap_resource() to a single
+call to devm_platform_get_and_ioremap_resource(), as this is exactly
+what this function does.
 
-> -----Original Message-----
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Sent: Sunday, July 2, 2023 6:04 PM
-> To: Paller, Kim Seer <KimSeer.Paller@analog.com>
-> Cc: jic23@kernel.org; lars@metafoo.de; lgirdwood@gmail.com;
-> broonie@kernel.org; Hennerich, Michael <Michael.Hennerich@analog.com>;
-> andy.shevchenko@gmail.com; robh@kernel.org;
-> krzysztof.kozlowski@linaro.org; conor+dt@kernel.org; linux-
-> iio@vger.kernel.org; linux-kernel@vger.kernel.org; devicetree@vger.kernel.org;
-> kernel test robot <lkp@intel.com>
-> Subject: Re: [PATCH v8 2/2] iio: adc: max14001: New driver
-> 
-> [External]
-> 
-> On Thu, 22 Jun 2023 22:32:27 +0800
-> Kim Seer Paller <kimseer.paller@analog.com> wrote:
-> 
-> > The MAX14001 is configurable, isolated 10-bit ADCs for multi-range
-> > binary inputs.
-> >
-> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes:
-> > https://urldefense.com/v3/__https://lore.kernel.org/oe-kbuild-all/2023
-> > 06211545.7b6CdqsL-
-> lkp@intel.com/__;!!A3Ni8CS0y2Y!4npD8X6TpKmeLcUf8QqQW
-> >
-> yEFp_Z1ORKb2dZNpuqfj0ZK74NiCYKQLNWEfKzVmuKTHJO0RW8n01vdXURqBvc
-> ueb3V1Sb
-> > GQdI$
-> 
-> Hi,
-> 
-> Two outstanding comments that I think I raised in earlier reviews..
-> 
-> Jonathan
-> 
-> > diff --git a/drivers/iio/adc/max14001.c b/drivers/iio/adc/max14001.c
-> > new file mode 100644 index 000000000000..a21ebcde71fa
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/max14001.c
-> 
-> ...
-> 
-> > +static int max14001_read(void *context, unsigned int reg_addr, unsigned int
-> *data)
-> > +{
-> > +	struct max14001_state *st = context;
-> > +	int ret;
-> > +
-> > +	struct spi_transfer xfers[] = {
-> > +		{
-> > +			.tx_buf = &st->spi_tx_buffer,
-> > +			.len = sizeof(st->spi_tx_buffer),
-> > +			.cs_change = 1,
-> > +		}, {
-> > +			.rx_buf = &st->spi_rx_buffer,
-> > +			.len = sizeof(st->spi_rx_buffer),
-> > +		},
-> > +	};
-> > +
-> > +	/*
-> > +	 * Convert transmit buffer to big-endian format and reverse transmit
-> > +	 * buffer to align with the LSB-first input on SDI port.
-> > +	 */
-> > +	st->spi_tx_buffer =
-> cpu_to_be16(bitrev16(FIELD_PREP(MAX14001_ADDR_MASK,
-> > +								reg_addr)));
-> > +
-> > +	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/*
-> > +	 * Align received data from the receive buffer, reversing and reordering
-> > +	 * it to match the expected MSB-first format.
-> > +	 */
-> > +	*data = (__force u16)(be16_to_cpu(bitrev16(st->spi_rx_buffer))) &
-> > +
-> 	MAX14001_DATA_MASK;
-> > +
-> These sequences still confuse me a lot because I'd expect the values in tx
-> to have the opposite operations applied to those for rx and that's not the
-> case.
-> 
-> Let's take a le system.
-> tx = cpu_to_be16(bitrev16(x))
->    = cpu_to_be16((__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8));
->    = __bitrev8(x & 0xff) | (__bitrev8(x >> 8) << 8)
-> or swap all the bits in each byte, but don't swap the bytes.
-> 
-> rx = cpu_to_be16(bitrev16(x))
->    = be16_to_cpu(((__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)_
->    = __bitrev8(x & 0xff) | __bitrev(x >> 8)
-> 
-> also swap all the bits in each byte, but don't swap the bytes.
-> 
-> So it is the reverse because the bytes swaps unwind themselves somewhat.
-> For a be system cpu_to_be16 etc are noop.
-> tx = (__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)
-> rx = (__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)
-> 
-> So in this case swap all 16 bits.
-> 
-> Now, given I'd expected them to be reversed for the tx vs rx case.
-> E.g.
-> tx = cpu_to_be16(bitrev16(x))
-> As above.
-> For rx, le host
-> rx = bitrev16(be16_to_cpu(x))
->    = __bitrev8((x >> 8) & 0xff) << 8) |  __bitrev8((((x & 0xff) << 8) >> 8)
-> same as above (if you swap the two terms I think.
-> 
-> For be the be16_to_cpu is a noop again, so it's just bitrev16(x) as expected.
-> 
-> Hence if I've understood this correctly you could reverse the terms so that
-> it was 'obvious' you were doing the opposite for the tx term vs the rx one
-> without making the slightest bit of difference....
-> 
-> hmm. Might be worth doing simply to avoid questions.
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+---
+ drivers/iio/adc/stm32-adc-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thank you for your feedback. I have tested the modifications based on your 
-suggestions, taking the le system into account, and it appears that the code is 
-functioning correctly. Before sending the new patch version, I would like to 
-confirm if this aligns with your comments.
-
-static int max14001_read(void *context, unsigned int reg_addr, unsigned int *data)
-{
-	struct max14001_state *st = context;
-	int ret;
-
-	struct spi_transfer xfers[] = {
-		{
-			.tx_buf = &st->spi_tx_buffer,
-			.len = sizeof(st->spi_tx_buffer),
-			.cs_change = 1,
-		}, {
-			.rx_buf = &st->spi_rx_buffer,
-			.len = sizeof(st->spi_rx_buffer),
-		},
-	};
-
-	st->spi_tx_buffer = cpu_to_be16(bitrev16(FIELD_PREP(MAX14001_ADDR_MASK, reg_addr)));
-
-	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-	if (ret)
-		return ret;
-
-	*data = cpu_to_be16(bitrev16(st->spi_rx_buffer));
-
-	return 0;
-}
-
-static int max14001_write(void *context, unsigned int reg_addr, unsigned int data)
-{
-	struct max14001_state *st = context;
-
-	st->spi_tx_buffer = cpu_to_be16(bitrev16(
-				FIELD_PREP(MAX14001_ADDR_MASK, reg_addr) |
-				FIELD_PREP(MAX14001_SET_WRITE_BIT, 1) |
-				FIELD_PREP(MAX14001_DATA_MASK, data)));
-
-	return spi_write(st->spi, &st->spi_tx_buffer, sizeof(st->spi_tx_buffer));
-}
+diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+index 48f02dcc81c1..99062a0ba1d9 100644
+--- a/drivers/iio/adc/stm32-adc-core.c
++++ b/drivers/iio/adc/stm32-adc-core.c
+@@ -723,8 +723,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
+ 	priv->nb_adc_max = priv->cfg->num_adcs;
+ 	spin_lock_init(&priv->common.lock);
  
-> > +	return 0;
-> > +}
-> > +static int max14001_reg_update(struct max14001_state *st,
-> > +				unsigned int reg_addr,
-> > +				unsigned int mask,
-> > +				unsigned int val)
-> > +{
-> > +	int ret;
-> > +	unsigned int reg_data;
-> > +
-> > +	/* Enable SPI Registers Write */
-> > +	ret = max14001_write(st, MAX14001_WEN, MAX14001_WRITE_WEN);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = max14001_read(st, reg_addr, &reg_data);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	reg_data |= FIELD_PREP(mask, val);
-> 
-> This is still a problem if the compiler happens to fail to figure out
-> that mask is a compile time constant.  Given it only ever takes one value
-> I'd suggest either calling the FIELD_PREP at the caller, or just
-> pushing all this code inline so that you can put the definition
-> inline.
-
-I would like to confirm including the 'static inline' keyword for the 
-max14001_reg_update function.
-
-> > +
-> > +	ret = max14001_write(st, reg_addr, reg_data);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Write Verification Register */
-> > +	ret = max14001_write_verification_reg(st, reg_addr);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Disable SPI Registers Write */
-> > +	return max14001_write(st, MAX14001_WEN, 0);
-> > +}
-> 
-
-Best Regards,
-Kim Seer Paller
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	priv->common.base = devm_ioremap_resource(&pdev->dev, res);
++	priv->common.base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(priv->common.base))
+ 		return PTR_ERR(priv->common.base);
+ 	priv->common.phys_base = res->start;
+-- 
+2.39.0
 

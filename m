@@ -2,230 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B61C748111
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jul 2023 11:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C540E74848E
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jul 2023 15:04:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231669AbjGEJha (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jul 2023 05:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
+        id S232045AbjGENEF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jul 2023 09:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbjGEJhZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jul 2023 05:37:25 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF6191713;
-        Wed,  5 Jul 2023 02:37:18 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b5c231c23aso104820451fa.0;
-        Wed, 05 Jul 2023 02:37:18 -0700 (PDT)
+        with ESMTP id S231879AbjGENEE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jul 2023 09:04:04 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF21E12A
+        for <linux-iio@vger.kernel.org>; Wed,  5 Jul 2023 06:04:02 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-31441bc0092so1639436f8f.1
+        for <linux-iio@vger.kernel.org>; Wed, 05 Jul 2023 06:04:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688549837; x=1691141837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wbjoiZq6AfX5dwbo6yRk76/MzLjNZXEKe0cX4GoX7M0=;
-        b=HNGBF1f4AUCjmymimnNOxUZFpQrU9j20YdJheo6Pfq/sWvwSLruPPj/SOSnZhbLioX
-         tIiNsG2GIa47kxXauDMAWQzxOSSnwpH1a2mRIq26Fw/+fimMDRemF2AypdMoYcdHxE0S
-         wGwm2zGDkx5Dl1fA0cFiTe68DawpUrJQ0IPqGVw7m0RMGa3gyTGHhNBlFcLDQ56MpiCD
-         gTQuvh3NDJqeIQE6JoT1ZXPLNjFHGSOzw9GN9T3dyUCAElRdrq1HhbsxUUA6xfXMotRq
-         MUbCWOnue7f2Y/hw4Hdw8hYypwULZFLLdUtd/ELREQ4VVmoXQBtVHYDhUmMZnQ2lttMe
-         qCSw==
+        d=linaro.org; s=google; t=1688562241; x=1691154241;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LRtlL5U9YZfE/0Bf1WN6Cfic6tkO5XVWWjm7V1kAKkU=;
+        b=nRbS2NXJ4X3I35gJinID6AsJpOXOQFJoD1j7U5L3JjrAA/ZomGt9xPfCTAPANOPUQh
+         qANOv1sIyNk5fuW1OMQLemYC3lX3Fqkhs2xbzWU5WdqrQS1nud6gHvpPfFAuN1PgYHP+
+         2u4uQWV6g6grNexVG90Zblq7O6UJoeTQwbbHAdUhm9sXVPiuPZS/69yni5CXTzciP577
+         5YS7WZIoGrKJlGiG92ad/0jzqrzZanEpMs0RtOTR3rTHIGWw/Vq4qcsaEMbjsf0BCnGZ
+         qfjW2hH4Lj+xLC+6l4ctAoUbK3ujUkdwIfZ481rPdnkizLT9soCqWNbpDv5ifMDsg1L6
+         tisQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688549837; x=1691141837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wbjoiZq6AfX5dwbo6yRk76/MzLjNZXEKe0cX4GoX7M0=;
-        b=IdKgs17mwrBDoh7Ih8aB9DIGmXwdy5s3YWj53Nk56NtBav+BSUaQoL4KbYng+4WoKq
-         QwGniB8q/HWYhSPBZ0DaDrKgHAzl3lL0MdR4phFq8dVfF/cKC40MmaPLoX1hwnxHVwH6
-         Za/71zTnX+QH33ZX/cB1ywcdu1E+KXAzJW/ZqRo7Dut7ezCgKnKNpCboaPXteadwbOFj
-         Bk7XiQPecBTddmZbKwChOMoW4AIaEEB0mf0uldPqoBbVaiFWLZAzXAWOmGx1JSXCdyS/
-         IrXspNzABq/APtaWlbL4aEU++vdwB875pFFoH/v/mVrPj4W1ZzOJIWk105FgHOa6yAX+
-         QTdA==
-X-Gm-Message-State: ABy/qLZCt8s7AgvapUf2r0iWKZEinPbQ+4s+OaYki+SPnbytWtLrwLF8
-        jSyj2xXKpsvLZj1dX8Ct4ZU0/omz1F0Ogd7Etr0=
-X-Google-Smtp-Source: APBJJlGDw6J6azx15CuvTRtvSrLI2GdQaJ5ALHCmxzkCGNVAOfexBjwP2BvPaGDYEQKhm0vLNZt9SiWWGYzS1wBvHLg=
-X-Received: by 2002:a2e:9cda:0:b0:2b2:90e:165d with SMTP id
- g26-20020a2e9cda000000b002b2090e165dmr10630878ljj.2.1688549836647; Wed, 05
- Jul 2023 02:37:16 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688562241; x=1691154241;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LRtlL5U9YZfE/0Bf1WN6Cfic6tkO5XVWWjm7V1kAKkU=;
+        b=bJX8Isuxe8/uLnJc9M1oLX0lqzKMHL5ZzltUqoWoURKMSEVrXwe9za9UeYU73kgPrF
+         6baZ+Mcy2xUzh4L2cE+d82c4bRgc8DeTh7NGYLEpF+HrMcFRpz2TkW9X273y1hvqliSI
+         IeAobNZBjXIW29J2v5tJoJWJ579tYbjIEmpchXEDX29DuIL85IPpIxYqR/BjHAFon1Hm
+         QwNPSDwpGuqB8cNXJQ+vY9YNinq1AxwcR3+SpHj0s0Bom3Hlklmt0Z1+foq+ZPAkRDBL
+         TkCQM8BvpAlodplmQgban5IRN6j4TJkzoIh0fVUj23B9wvP6iQXTSSRu8IVThy7G8if8
+         UQdw==
+X-Gm-Message-State: ABy/qLYsctXJQfptQCoYp3mc4t64E+OUgcfPCWnAMk9h5N12jjDlTk1G
+        kN+9QTpNI5T9V2n0gUamT1KESsbpvaIGL1ljuVQ=
+X-Google-Smtp-Source: APBJJlH80m+8XxUMjAWGnMCnWL6lwxkrZFfYDEIqxKuoQsqtUJlKGi7zjhLA4lCOchb7t1j0ITkJAw==
+X-Received: by 2002:adf:f6d1:0:b0:313:f7a1:3d92 with SMTP id y17-20020adff6d1000000b00313f7a13d92mr12756274wrp.66.1688562241301;
+        Wed, 05 Jul 2023 06:04:01 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id j15-20020adff00f000000b00314315071bbsm10336087wro.38.2023.07.05.06.03.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jul 2023 06:03:59 -0700 (PDT)
+Date:   Wed, 5 Jul 2023 16:03:56 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     oe-kbuild@lists.linux.dev, Roan van Dijk <roan@protonic.nl>,
+        jic23@kernel.org
+Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        roan@protonic.nl
+Subject: Re: [PATCH] iio: chemical: scd4x: Add pressure compensation
+Message-ID: <2cada93d-239f-404b-a69c-ba23dd4c48a8@kadam.mountain>
 MIME-Version: 1.0
-References: <20230622143227.30147-1-kimseer.paller@analog.com>
- <20230622143227.30147-2-kimseer.paller@analog.com> <20230702180315.00003dbe@Huawei.com>
- <fcf6daf6afec48b096df14d8b5308db0@analog.com> <20230705155530.00002074@Huawei.com>
- <CAHp75VfGFXtX2UCV+EzSMGaRMc5=WUpUJpRFB_K6NMJO2+iszg@mail.gmail.com> <20230705172834.00001853@Huawei.com>
-In-Reply-To: <20230705172834.00001853@Huawei.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 5 Jul 2023 12:36:40 +0300
-Message-ID: <CAHp75Ve_pBvVRxHTyvFy_-cWq9dNapO0hYn=ujXCPCqgQ1obUA@mail.gmail.com>
-Subject: Re: [PATCH v8 2/2] iio: adc: max14001: New driver
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230704084706.370637-1-roan@protonic.nl>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 12:28=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> On Wed, 5 Jul 2023 11:53:17 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Wed, Jul 5, 2023 at 10:55=E2=80=AFAM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > > > > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> > > > > Sent: Sunday, July 2, 2023 6:04 PM
-> > > > > On Thu, 22 Jun 2023 22:32:27 +0800
-> > > > > Kim Seer Paller <kimseer.paller@analog.com> wrote:
+Hi Roan,
 
-...
+kernel test robot noticed the following build warnings:
 
-> > > > > > + /*
-> > > > > > +  * Convert transmit buffer to big-endian format and reverse t=
-ransmit
-> > > > > > +  * buffer to align with the LSB-first input on SDI port.
-> > > > > > +  */
-> > > > > > + st->spi_tx_buffer =3D
-> > > > > cpu_to_be16(bitrev16(FIELD_PREP(MAX14001_ADDR_MASK,
-> > > > > > +                                                         reg_a=
-ddr)));
-> > > > > > +
-> > > > > > + ret =3D spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-> > > > > > + if (ret)
-> > > > > > +         return ret;
-> > > > > > +
-> > > > > > + /*
-> > > > > > +  * Align received data from the receive buffer, reversing and=
- reordering
-> > > > > > +  * it to match the expected MSB-first format.
-> > > > > > +  */
-> > > > > > + *data =3D (__force u16)(be16_to_cpu(bitrev16(st->spi_rx_buffe=
-r))) &
-> > > > > > +
-> > > > >     MAX14001_DATA_MASK;
-> > > > > > +
-> > > > > These sequences still confuse me a lot because I'd expect the val=
-ues in tx
-> > > > > to have the opposite operations applied to those for rx and that'=
-s not the
-> > > > > case.
-> > > > >
-> > > > > Let's take a le system.
-> > > > > tx =3D cpu_to_be16(bitrev16(x))
-> > > > >    =3D cpu_to_be16((__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)=
-);
-> > > > >    =3D __bitrev8(x & 0xff) | (__bitrev8(x >> 8) << 8)
-> > > > > or swap all the bits in each byte, but don't swap the bytes.
-> > > > >
-> > > > > rx =3D cpu_to_be16(bitrev16(x))
-> > > > >    =3D be16_to_cpu(((__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8=
-)_
-> > > > >    =3D __bitrev8(x & 0xff) | __bitrev(x >> 8)
-> > > > >
-> > > > > also swap all the bits in each byte, but don't swap the bytes.
-> > > > >
-> > > > > So it is the reverse because the bytes swaps unwind themselves so=
-mewhat.
-> > > > > For a be system cpu_to_be16 etc are noop.
-> > > > > tx =3D (__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)
-> > > > > rx =3D (__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)
-> > > > >
-> > > > > So in this case swap all 16 bits.
-> > > > >
-> > > > > Now, given I'd expected them to be reversed for the tx vs rx case=
-.
-> > > > > E.g.
-> > > > > tx =3D cpu_to_be16(bitrev16(x))
-> > > > > As above.
-> > > > > For rx, le host
-> > > > > rx =3D bitrev16(be16_to_cpu(x))
-> > > > >    =3D __bitrev8((x >> 8) & 0xff) << 8) |  __bitrev8((((x & 0xff)=
- << 8) >> 8)
-> > > > > same as above (if you swap the two terms I think.
-> > > > >
-> > > > > For be the be16_to_cpu is a noop again, so it's just bitrev16(x) =
-as expected.
-> > > > >
-> > > > > Hence if I've understood this correctly you could reverse the ter=
-ms so that
-> > > > > it was 'obvious' you were doing the opposite for the tx term vs t=
-he rx one
-> > > > > without making the slightest bit of difference....
-> > > > >
-> > > > > hmm. Might be worth doing simply to avoid questions.
-> > > >
-> > > > Thank you for your feedback. I have tested the modifications based =
-on your
-> > > > suggestions, taking the le system into account, and it appears that=
- the code is
-> > > > functioning correctly. Before sending the new patch version, I woul=
-d like to
-> > > > confirm if this aligns with your comments.
-> >
-> > > Yes. This looks good to me.
-> >
-> > I think the implementation is still incorrect. See below.
-> >
-> > > > static int max14001_read(void *context, unsigned int reg_addr, unsi=
-gned int *data)
-> > > > {
-> > > >       struct max14001_state *st =3D context;
-> > > >       int ret;
-> > > >
-> > > >       struct spi_transfer xfers[] =3D {
-> > > >               {
-> > > >                       .tx_buf =3D &st->spi_tx_buffer,
-> > > >                       .len =3D sizeof(st->spi_tx_buffer),
-> > > >                       .cs_change =3D 1,
-> > > >               }, {
-> > > >                       .rx_buf =3D &st->spi_rx_buffer,
-> > > >                       .len =3D sizeof(st->spi_rx_buffer),
-> > > >               },
-> > > >       };
-> >
-> > > >       st->spi_tx_buffer =3D cpu_to_be16(bitrev16(FIELD_PREP(MAX1400=
-1_ADDR_MASK, reg_addr)));
-> >
-> > Here we got bits in CPU order, reversed them and converted to BE16.
-> >
-> > > >       ret =3D spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-> > > >       if (ret)
-> > > >               return ret;
-> >
-> > > >       *data =3D cpu_to_be16(bitrev16(st->spi_rx_buffer));
-> >
-> > Here we take __be16 response, reverse them and convert to BE16?!
-> > This is weird. You should have be16_to_cpu() somewhere, not the opposit=
-e.
-> Good point - though functionally they end up the same (and the bitrev
-> is making mess of type markings anyway). It is more logical
-> to ensure the direction is reversed as you suggest.
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Also a question why we don't do that in reversed order.
-Logically it sounds like bitrev16(be16_to_cpu()) should be.
-Will it give the wrong results?
+url:    https://github.com/intel-lab-lkp/linux/commits/Roan-van-Dijk/iio-chemical-scd4x-Add-pressure-compensation/20230704-170621
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20230704084706.370637-1-roan%40protonic.nl
+patch subject: [PATCH] iio: chemical: scd4x: Add pressure compensation
+config: x86_64-randconfig-m001-20230705 (https://download.01.org/0day-ci/archive/20230705/202307052018.7DV5CAOH-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230705/202307052018.7DV5CAOH-lkp@intel.com/reproduce)
 
-All in all this algo should be described in the comment in the code
-(if not yet).
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202307052018.7DV5CAOH-lkp@intel.com/
 
-> > > >       return 0;
-> > > > }
+smatch warnings:
+drivers/iio/chemical/scd4x.c:385 scd4x_read_raw() error: uninitialized symbol 'ret'.
+drivers/iio/chemical/scd4x.c:388 scd4x_read_raw() error: uninitialized symbol 'tmp'.
 
---=20
-With Best Regards,
-Andy Shevchenko
+vim +/ret +385 drivers/iio/chemical/scd4x.c
+
+49d22b695cbb69 Roan van Dijk 2021-10-08  335  static int scd4x_read_raw(struct iio_dev *indio_dev,
+49d22b695cbb69 Roan van Dijk 2021-10-08  336  			struct iio_chan_spec const *chan, int *val,
+49d22b695cbb69 Roan van Dijk 2021-10-08  337  			int *val2, long mask)
+49d22b695cbb69 Roan van Dijk 2021-10-08  338  {
+49d22b695cbb69 Roan van Dijk 2021-10-08  339  	struct scd4x_state *state = iio_priv(indio_dev);
+49d22b695cbb69 Roan van Dijk 2021-10-08  340  	int ret;
+49d22b695cbb69 Roan van Dijk 2021-10-08  341  	__be16 tmp;
+49d22b695cbb69 Roan van Dijk 2021-10-08  342  
+49d22b695cbb69 Roan van Dijk 2021-10-08  343  	switch (mask) {
+49d22b695cbb69 Roan van Dijk 2021-10-08  344  	case IIO_CHAN_INFO_RAW:
+49d22b695cbb69 Roan van Dijk 2021-10-08  345  		ret = iio_device_claim_direct_mode(indio_dev);
+49d22b695cbb69 Roan van Dijk 2021-10-08  346  		if (ret)
+49d22b695cbb69 Roan van Dijk 2021-10-08  347  			return ret;
+49d22b695cbb69 Roan van Dijk 2021-10-08  348  
+49d22b695cbb69 Roan van Dijk 2021-10-08  349  		mutex_lock(&state->lock);
+49d22b695cbb69 Roan van Dijk 2021-10-08  350  		ret = scd4x_read_channel(state, chan->address);
+49d22b695cbb69 Roan van Dijk 2021-10-08  351  		mutex_unlock(&state->lock);
+49d22b695cbb69 Roan van Dijk 2021-10-08  352  
+49d22b695cbb69 Roan van Dijk 2021-10-08  353  		iio_device_release_direct_mode(indio_dev);
+49d22b695cbb69 Roan van Dijk 2021-10-08  354  		if (ret < 0)
+49d22b695cbb69 Roan van Dijk 2021-10-08  355  			return ret;
+49d22b695cbb69 Roan van Dijk 2021-10-08  356  
+49d22b695cbb69 Roan van Dijk 2021-10-08  357  		*val = ret;
+49d22b695cbb69 Roan van Dijk 2021-10-08  358  		return IIO_VAL_INT;
+49d22b695cbb69 Roan van Dijk 2021-10-08  359  	case IIO_CHAN_INFO_SCALE:
+e46e2512ac84bd Roan van Dijk 2021-10-21  360  		if (chan->type == IIO_CONCENTRATION) {
+e46e2512ac84bd Roan van Dijk 2021-10-21  361  			*val = 0;
+e46e2512ac84bd Roan van Dijk 2021-10-21  362  			*val2 = 100;
+e46e2512ac84bd Roan van Dijk 2021-10-21  363  			return IIO_VAL_INT_PLUS_MICRO;
+e46e2512ac84bd Roan van Dijk 2021-10-21  364  		} else if (chan->type == IIO_TEMP) {
+49d22b695cbb69 Roan van Dijk 2021-10-08  365  			*val = 175000;
+49d22b695cbb69 Roan van Dijk 2021-10-08  366  			*val2 = 65536;
+49d22b695cbb69 Roan van Dijk 2021-10-08  367  			return IIO_VAL_FRACTIONAL;
+49d22b695cbb69 Roan van Dijk 2021-10-08  368  		} else if (chan->type == IIO_HUMIDITYRELATIVE) {
+49d22b695cbb69 Roan van Dijk 2021-10-08  369  			*val = 100000;
+49d22b695cbb69 Roan van Dijk 2021-10-08  370  			*val2 = 65536;
+49d22b695cbb69 Roan van Dijk 2021-10-08  371  			return IIO_VAL_FRACTIONAL;
+49d22b695cbb69 Roan van Dijk 2021-10-08  372  		}
+49d22b695cbb69 Roan van Dijk 2021-10-08  373  		return -EINVAL;
+49d22b695cbb69 Roan van Dijk 2021-10-08  374  	case IIO_CHAN_INFO_OFFSET:
+49d22b695cbb69 Roan van Dijk 2021-10-08  375  		*val = -16852;
+49d22b695cbb69 Roan van Dijk 2021-10-08  376  		*val2 = 114286;
+49d22b695cbb69 Roan van Dijk 2021-10-08  377  		return IIO_VAL_INT_PLUS_MICRO;
+49d22b695cbb69 Roan van Dijk 2021-10-08  378  	case IIO_CHAN_INFO_CALIBBIAS:
+49d22b695cbb69 Roan van Dijk 2021-10-08  379  		mutex_lock(&state->lock);
+8e4a309948cffe Roan van Dijk 2023-07-04  380  		if (chan->type == IIO_TEMP)
+49d22b695cbb69 Roan van Dijk 2021-10-08  381  			ret = scd4x_read(state, CMD_GET_TEMP_OFFSET, &tmp, sizeof(tmp));
+8e4a309948cffe Roan van Dijk 2023-07-04  382  		else if (chan->type == IIO_PRESSURE)
+8e4a309948cffe Roan van Dijk 2023-07-04  383  			ret = scd4x_read(state, CMD_GET_AMB_PRESSURE, &tmp, sizeof(tmp));
+
+ret is uninitialized if type != IIO_TEMP and != IIO_PRESSURE.
+
+49d22b695cbb69 Roan van Dijk 2021-10-08  384  		mutex_unlock(&state->lock);
+49d22b695cbb69 Roan van Dijk 2021-10-08 @385  		if (ret)
+49d22b695cbb69 Roan van Dijk 2021-10-08  386  			return ret;
+49d22b695cbb69 Roan van Dijk 2021-10-08  387  
+49d22b695cbb69 Roan van Dijk 2021-10-08 @388  		*val = be16_to_cpu(tmp);
+49d22b695cbb69 Roan van Dijk 2021-10-08  389  
+49d22b695cbb69 Roan van Dijk 2021-10-08  390  		return IIO_VAL_INT;
+49d22b695cbb69 Roan van Dijk 2021-10-08  391  	default:
+49d22b695cbb69 Roan van Dijk 2021-10-08  392  		return -EINVAL;
+49d22b695cbb69 Roan van Dijk 2021-10-08  393  	}
+49d22b695cbb69 Roan van Dijk 2021-10-08  394  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+

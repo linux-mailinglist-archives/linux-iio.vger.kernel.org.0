@@ -2,59 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7EF974930D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jul 2023 03:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 943AA749317
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jul 2023 03:28:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232048AbjGFBZ5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Jul 2023 21:25:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44520 "EHLO
+        id S232145AbjGFB23 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Jul 2023 21:28:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230305AbjGFBZ5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jul 2023 21:25:57 -0400
+        with ESMTP id S230305AbjGFB23 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jul 2023 21:28:29 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1268C1994;
-        Wed,  5 Jul 2023 18:25:55 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QxJhd2lkwz6J7DM;
-        Thu,  6 Jul 2023 09:24:01 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB810102;
+        Wed,  5 Jul 2023 18:28:27 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QxJkG4Pqwz67cDq;
+        Thu,  6 Jul 2023 09:25:26 +0800 (CST)
 Received: from localhost (10.34.206.101) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 6 Jul
- 2023 02:25:47 +0100
-Date:   Thu, 6 Jul 2023 09:25:43 +0800
+ 2023 02:28:23 +0100
+Date:   Thu, 6 Jul 2023 09:28:19 +0800
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v8 2/2] iio: adc: max14001: New driver
-Message-ID: <20230706092543.0000038d@Huawei.com>
-In-Reply-To: <CAHp75Ve_pBvVRxHTyvFy_-cWq9dNapO0hYn=ujXCPCqgQ1obUA@mail.gmail.com>
-References: <20230622143227.30147-1-kimseer.paller@analog.com>
-        <20230622143227.30147-2-kimseer.paller@analog.com>
-        <20230702180315.00003dbe@Huawei.com>
-        <fcf6daf6afec48b096df14d8b5308db0@analog.com>
-        <20230705155530.00002074@Huawei.com>
-        <CAHp75VfGFXtX2UCV+EzSMGaRMc5=WUpUJpRFB_K6NMJO2+iszg@mail.gmail.com>
-        <20230705172834.00001853@Huawei.com>
-        <CAHp75Ve_pBvVRxHTyvFy_-cWq9dNapO0hYn=ujXCPCqgQ1obUA@mail.gmail.com>
+To:     Roan van Dijk <roan@protonic.nl>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: chemical: scd4x: Add pressure compensation
+Message-ID: <20230706092819.000022df@Huawei.com>
+In-Reply-To: <20230704084706.370637-1-roan@protonic.nl>
+References: <20230704084706.370637-1-roan@protonic.nl>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.34.206.101]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
@@ -66,137 +48,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 5 Jul 2023 12:36:40 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue,  4 Jul 2023 10:47:06 +0200
+Roan van Dijk <roan@protonic.nl> wrote:
 
-> On Wed, Jul 5, 2023 at 12:28 PM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> > On Wed, 5 Jul 2023 11:53:17 +0300
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:  
-> > > On Wed, Jul 5, 2023 at 10:55 AM Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:  
-> > > > > > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> > > > > > Sent: Sunday, July 2, 2023 6:04 PM
-> > > > > > On Thu, 22 Jun 2023 22:32:27 +0800
-> > > > > > Kim Seer Paller <kimseer.paller@analog.com> wrote:  
+> This patch adds pressure compensation to the scd4x driver. The pressure can
+> be written to the sensor in hPa. The pressure will be compensated
+> internally by the sensor.
 > 
-> ...
-> 
-> > > > > > > + /*
-> > > > > > > +  * Convert transmit buffer to big-endian format and reverse transmit
-> > > > > > > +  * buffer to align with the LSB-first input on SDI port.
-> > > > > > > +  */
-> > > > > > > + st->spi_tx_buffer =  
-> > > > > > cpu_to_be16(bitrev16(FIELD_PREP(MAX14001_ADDR_MASK,  
-> > > > > > > +                                                         reg_addr)));
-> > > > > > > +
-> > > > > > > + ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-> > > > > > > + if (ret)
-> > > > > > > +         return ret;
-> > > > > > > +
-> > > > > > > + /*
-> > > > > > > +  * Align received data from the receive buffer, reversing and reordering
-> > > > > > > +  * it to match the expected MSB-first format.
-> > > > > > > +  */
-> > > > > > > + *data = (__force u16)(be16_to_cpu(bitrev16(st->spi_rx_buffer))) &
-> > > > > > > +  
-> > > > > >     MAX14001_DATA_MASK;  
-> > > > > > > +  
-> > > > > > These sequences still confuse me a lot because I'd expect the values in tx
-> > > > > > to have the opposite operations applied to those for rx and that's not the
-> > > > > > case.
-> > > > > >
-> > > > > > Let's take a le system.
-> > > > > > tx = cpu_to_be16(bitrev16(x))
-> > > > > >    = cpu_to_be16((__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8));
-> > > > > >    = __bitrev8(x & 0xff) | (__bitrev8(x >> 8) << 8)
-> > > > > > or swap all the bits in each byte, but don't swap the bytes.
-> > > > > >
-> > > > > > rx = cpu_to_be16(bitrev16(x))
-> > > > > >    = be16_to_cpu(((__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)_
-> > > > > >    = __bitrev8(x & 0xff) | __bitrev(x >> 8)
-> > > > > >
-> > > > > > also swap all the bits in each byte, but don't swap the bytes.
-> > > > > >
-> > > > > > So it is the reverse because the bytes swaps unwind themselves somewhat.
-> > > > > > For a be system cpu_to_be16 etc are noop.
-> > > > > > tx = (__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)
-> > > > > > rx = (__bitrev8(x & 0xff) << 8) | __bitrev8(x >> 8)
-> > > > > >
-> > > > > > So in this case swap all 16 bits.
-> > > > > >
-> > > > > > Now, given I'd expected them to be reversed for the tx vs rx case.
-> > > > > > E.g.
-> > > > > > tx = cpu_to_be16(bitrev16(x))
-> > > > > > As above.
-> > > > > > For rx, le host
-> > > > > > rx = bitrev16(be16_to_cpu(x))
-> > > > > >    = __bitrev8((x >> 8) & 0xff) << 8) |  __bitrev8((((x & 0xff) << 8) >> 8)
-> > > > > > same as above (if you swap the two terms I think.
-> > > > > >
-> > > > > > For be the be16_to_cpu is a noop again, so it's just bitrev16(x) as expected.
-> > > > > >
-> > > > > > Hence if I've understood this correctly you could reverse the terms so that
-> > > > > > it was 'obvious' you were doing the opposite for the tx term vs the rx one
-> > > > > > without making the slightest bit of difference....
-> > > > > >
-> > > > > > hmm. Might be worth doing simply to avoid questions.  
-> > > > >
-> > > > > Thank you for your feedback. I have tested the modifications based on your
-> > > > > suggestions, taking the le system into account, and it appears that the code is
-> > > > > functioning correctly. Before sending the new patch version, I would like to
-> > > > > confirm if this aligns with your comments.  
-> > >  
-> > > > Yes. This looks good to me.  
-> > >
-> > > I think the implementation is still incorrect. See below.
-> > >  
-> > > > > static int max14001_read(void *context, unsigned int reg_addr, unsigned int *data)
-> > > > > {
-> > > > >       struct max14001_state *st = context;
-> > > > >       int ret;
-> > > > >
-> > > > >       struct spi_transfer xfers[] = {
-> > > > >               {
-> > > > >                       .tx_buf = &st->spi_tx_buffer,
-> > > > >                       .len = sizeof(st->spi_tx_buffer),
-> > > > >                       .cs_change = 1,
-> > > > >               }, {
-> > > > >                       .rx_buf = &st->spi_rx_buffer,
-> > > > >                       .len = sizeof(st->spi_rx_buffer),
-> > > > >               },
-> > > > >       };  
-> > >  
-> > > > >       st->spi_tx_buffer = cpu_to_be16(bitrev16(FIELD_PREP(MAX14001_ADDR_MASK, reg_addr)));  
-> > >
-> > > Here we got bits in CPU order, reversed them and converted to BE16.
-> > >  
-> > > > >       ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-> > > > >       if (ret)
-> > > > >               return ret;  
-> > >  
-> > > > >       *data = cpu_to_be16(bitrev16(st->spi_rx_buffer));  
-> > >
-> > > Here we take __be16 response, reverse them and convert to BE16?!
-> > > This is weird. You should have be16_to_cpu() somewhere, not the opposite.  
-> > Good point - though functionally they end up the same (and the bitrev
-> > is making mess of type markings anyway). It is more logical
-> > to ensure the direction is reversed as you suggest.  
-> 
-> Also a question why we don't do that in reversed order.
-> Logically it sounds like bitrev16(be16_to_cpu()) should be.
-> Will it give the wrong results?
-Shouldn't make any difference as the two operations commute.
-I'd missed this.  You are right that the other order makes more
-sense.
+> Signed-off-by: Roan van Dijk <roan@protonic.nl>
+
+Why treat this as a channel with just calibbias?
+From what I can recall we've previous treated such cases as an
+output channel with the advantage that the units are then fully
+defined.  I may well be forgetting some argument or a case that
+does it with calibbias though.
 
 Jonathan
 
+
+> ---
+>  drivers/iio/chemical/scd4x.c | 41 +++++++++++++++++++++++++++++++++---
+>  1 file changed, 38 insertions(+), 3 deletions(-)
 > 
-> All in all this algo should be described in the comment in the code
-> (if not yet).
-> 
-> > > > >       return 0;
-> > > > > }  
-> 
+> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+> index a4f22d926400..fe6b3f3f7186 100644
+> --- a/drivers/iio/chemical/scd4x.c
+> +++ b/drivers/iio/chemical/scd4x.c
+> @@ -36,6 +36,8 @@
+>  #define SCD4X_WRITE_BUF_SIZE 5
+>  #define SCD4X_FRC_MIN_PPM 0
+>  #define SCD4X_FRC_MAX_PPM 2000
+> +#define SCD4X_AMB_PRESSURE_MIN 700
+> +#define SCD4X_AMB_PRESSURE_MAX 1200
+>  #define SCD4X_READY_MASK 0x01
+>  
+>  /*Commands SCD4X*/
+> @@ -45,6 +47,8 @@ enum scd4x_cmd {
+>  	CMD_STOP_MEAS           = 0x3f86,
+>  	CMD_SET_TEMP_OFFSET     = 0x241d,
+>  	CMD_GET_TEMP_OFFSET     = 0x2318,
+> +	CMD_SET_AMB_PRESSURE	= 0xe000,
+> +	CMD_GET_AMB_PRESSURE	= 0xe000,
+>  	CMD_FRC                 = 0x362f,
+>  	CMD_SET_ASC             = 0x2416,
+>  	CMD_GET_ASC             = 0x2313,
+> @@ -373,7 +377,10 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
+>  		return IIO_VAL_INT_PLUS_MICRO;
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+>  		mutex_lock(&state->lock);
+> -		ret = scd4x_read(state, CMD_GET_TEMP_OFFSET, &tmp, sizeof(tmp));
+> +		if (chan->type == IIO_TEMP)
+> +			ret = scd4x_read(state, CMD_GET_TEMP_OFFSET, &tmp, sizeof(tmp));
+> +		else if (chan->type == IIO_PRESSURE)
+> +			ret = scd4x_read(state, CMD_GET_AMB_PRESSURE, &tmp, sizeof(tmp));
+>  		mutex_unlock(&state->lock);
+>  		if (ret)
+>  			return ret;
+> @@ -386,6 +393,25 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
+>  	}
+>  }
+>  
+> +static const int scd4x_pressure_calibbias_available[] = {
+> +	SCD4X_AMB_PRESSURE_MIN, 1, SCD4X_AMB_PRESSURE_MAX,
+> +};
+> +
+> +static int scd4x_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+> +			    const int **vals, int *type, int *length, long mask)
+> +{
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		*vals = scd4x_pressure_calibbias_available;
+> +		*type = IIO_VAL_INT;
+> +
+> +		return IIO_AVAIL_RANGE;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +
+>  static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+>  				int val, int val2, long mask)
+>  {
+> @@ -395,9 +421,11 @@ static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+>  		mutex_lock(&state->lock);
+> -		ret = scd4x_write(state, CMD_SET_TEMP_OFFSET, val);
+> +		if (chan->type == IIO_TEMP)
+> +			ret = scd4x_write(state, CMD_SET_TEMP_OFFSET, val);
+> +		else if (chan->type == IIO_PRESSURE)
+> +			ret = scd4x_write(state, CMD_SET_AMB_PRESSURE, val);
+>  		mutex_unlock(&state->lock);
+> -
+>  		return ret;
+>  	default:
+>  		return -EINVAL;
+> @@ -503,9 +531,16 @@ static const struct iio_info scd4x_info = {
+>  	.attrs = &scd4x_attr_group,
+>  	.read_raw = scd4x_read_raw,
+>  	.write_raw = scd4x_write_raw,
+> +	.read_avail = scd4x_read_avail,
+>  };
+>  
+>  static const struct iio_chan_spec scd4x_channels[] = {
+> +	{
+> +		.type = IIO_PRESSURE,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBBIAS),
+> +		.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBBIAS),
+> +		.scan_index = -1,
+> +	},
+>  	{
+>  		.type = IIO_CONCENTRATION,
+>  		.channel2 = IIO_MOD_CO2,
 

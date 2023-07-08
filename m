@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D363C74BE1D
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jul 2023 17:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB3F274BE25
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jul 2023 17:25:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbjGHPXh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jul 2023 11:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57034 "EHLO
+        id S229953AbjGHPZz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jul 2023 11:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjGHPXb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jul 2023 11:23:31 -0400
+        with ESMTP id S229783AbjGHPZy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jul 2023 11:25:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7665C1709;
-        Sat,  8 Jul 2023 08:23:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6691709;
+        Sat,  8 Jul 2023 08:25:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A5E460DBD;
-        Sat,  8 Jul 2023 15:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4FEC433CA;
-        Sat,  8 Jul 2023 15:23:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D725260DB6;
+        Sat,  8 Jul 2023 15:25:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB4EC433C7;
+        Sat,  8 Jul 2023 15:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688829809;
-        bh=LRKuU4wR21FSTMd32UkZLDmh6O5X3KbUUhZ6esX8nWA=;
+        s=k20201202; t=1688829953;
+        bh=GG8YM0Puer7whZwbzMM2expgs92RcpYarOVPk2QuQQ4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OkWBrDLThWtCE511INbneL4ICaMtIobUriY1mQMfu2lXzvcRX2PfFMGCt98OYWLzZ
-         vowzfrJQtvcudEafsFzuh7qui5Q1slDosfaqVyvj5dwz8nD+Ptw7jOivqV5G5bF2YA
-         N+eVP6XGo1N5oItiDUgNhfNw8EC9/GhlcxjGAD3LUE+iTmxD2siSztefUyY70safiI
-         QlPalmFDoHMVa0dPmWgo4CU6eQx+fCqhkLtMF5xj/6QS9Ix0m+CLRcc6u74Eiiz4cR
-         FNGU+yHPj1MlV2JwxWZ4RDdlKmD/2DAbjhqo9sqY1YQGqxisL970O0wed3CISh83pk
-         x1DMqMXtHUmxw==
-Date:   Sat, 8 Jul 2023 16:23:18 +0100
+        b=QJAp9t44wg3H5l/6KehNF3hh94tDQDRJmMHuON21x0/pNYOVrkrSUDQy1lAGlTzbp
+         xB3+CbBsT+xvpmW311+IXpfVWvujbhCvXv7Z6gLRpdRcnMX/4pFqdUwDinmLfIPCXd
+         znWhSfej1nqPe12tTpYwRf/PZsfNHHtYruAd8l801L1wK9LirBvRNdsR17B+muPKQY
+         bBN+ul5Mvv/mZJvdFSI+O9J2z/2LxpjqkeT/gKKCjbpRzZEhpF7jDZsEiIeXqaNHd0
+         y26BI0AnXJT+qHku7q+xxcxZ2Z3gGW1SnumiDultg+J9GJC/obYoY/qFAfoQAZ2j9m
+         K/DwJQpv5QH0Q==
+Date:   Sat, 8 Jul 2023 16:25:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jishnu Prakash <quic_jprakash@quicinc.com>
 Cc:     <agross@kernel.org>, <devicetree@vger.kernel.org>,
@@ -43,17 +43,21 @@ Cc:     <agross@kernel.org>, <devicetree@vger.kernel.org>,
         <quic_jestar@quicinc.com>, <marijn.suijten@somainline.org>,
         <andriy.shevchenko@linux.intel.com>,
         <krzysztof.kozlowski@linaro.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        "Luca Weiss" <luca@z3ntu.xyz>, <linux-iio@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>,
         <linux-arm-msm-owner@vger.kernel.org>
-Subject: Re: [PATCH 09/11] iio: adc: Update QCOM ADC drivers for bindings
- path change
-Message-ID: <20230708162318.1e2b169f@jic23-huawei>
-In-Reply-To: <20230708072835.3035398-10-quic_jprakash@quicinc.com>
+Subject: Re: [PATCH 06/11] iio: adc: Add QCOM PMIC5 Gen3 ADC bindings
+Message-ID: <20230708162541.1a15ed14@jic23-huawei>
+In-Reply-To: <20230708161259.7af17fa9@jic23-huawei>
 References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
-        <20230708072835.3035398-10-quic_jprakash@quicinc.com>
+        <20230708072835.3035398-7-quic_jprakash@quicinc.com>
+        <20230708161259.7af17fa9@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -68,65 +72,22 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 8 Jul 2023 12:58:33 +0530
-Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
 
-> Update ADC dt-bindings file paths in QCOM ADC driver files to
-> match the dt-bindings change moving the files from 'iio' to
-> 'iio/adc' folder.
+> >  properties:
+> >    compatible:
+> > @@ -27,10 +27,11 @@ properties:
+> >            - qcom,spmi-adc5
+> >            - qcom,spmi-adc-rev2
+> >            - qcom,spmi-adc5-gen2
+> > +          - qcom,spmi-adc5-gen3
+> >  
+> >    reg:
+> >      description: VADC base address in the SPMI PMIC register map
+> > -    maxItems: 1
+> > +    minItems: 1  
 > 
-> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+> ?
+Found it now.  This needs documentation that it's providing multiple
+base addresses for gen3.  Also needs to only apply that to gen3...
 
-Do the move in one go.
-
-Diff rename detection will make the resulting patch more trivial
-to look at than this multistep version.
-
-Jonathan
-
-> ---
->  drivers/iio/adc/qcom-spmi-adc5-gen3.c | 2 +-
->  drivers/iio/adc/qcom-spmi-adc5.c      | 2 +-
->  drivers/iio/adc/qcom-spmi-vadc.c      | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5-gen3.c b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> index fe5515ee8451..78ece8fccbae 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> @@ -23,7 +23,7 @@
->  #include <linux/slab.h>
->  #include <linux/thermal.h>
->  
-> -#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +#include <dt-bindings/iio/adc/qcom,spmi-vadc.h>
->  
->  #define ADC5_GEN3_HS				0x45
->  #define ADC5_GEN3_HS_BUSY			BIT(7)
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-> index 6cebeaa69a75..5dfcb770d663 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
-> @@ -21,7 +21,7 @@
->  #include <linux/regmap.h>
->  #include <linux/slab.h>
->  
-> -#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +#include <dt-bindings/iio/adc/qcom,spmi-vadc.h>
->  
->  #define ADC5_USR_REVISION1			0x0
->  #define ADC5_USR_STATUS1			0x8
-> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> index f5c6f1f27b2c..c3602c53968a 100644
-> --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> @@ -20,7 +20,7 @@
->  #include <linux/slab.h>
->  #include <linux/log2.h>
->  
-> -#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +#include <dt-bindings/iio/adc/qcom,spmi-vadc.h>
->  
->  /* VADC register and bit definitions */
->  #define VADC_REVISION2				0x1
 

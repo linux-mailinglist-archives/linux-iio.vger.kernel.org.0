@@ -2,53 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A64574BDC9
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jul 2023 16:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D787674BDCB
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jul 2023 16:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjGHOXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jul 2023 10:23:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47404 "EHLO
+        id S229780AbjGHOYj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jul 2023 10:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbjGHOXV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jul 2023 10:23:21 -0400
+        with ESMTP id S229458AbjGHOYi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jul 2023 10:24:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67DA3191;
-        Sat,  8 Jul 2023 07:23:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC818191;
+        Sat,  8 Jul 2023 07:24:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0212A60CF7;
-        Sat,  8 Jul 2023 14:23:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CF9C433C7;
-        Sat,  8 Jul 2023 14:23:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 792E560C70;
+        Sat,  8 Jul 2023 14:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77ACC433C8;
+        Sat,  8 Jul 2023 14:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688826199;
-        bh=6C+lcSfpmHU4jzuKfuAovBVJKC42+vBxh4SD5v68bX0=;
+        s=k20201202; t=1688826276;
+        bh=cYp2646opo8JbxDix+tOX6h98Qvtgi6MUt4oterJbTc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=l5EW3qY9s1W77cvdq8D4mOEW23lzhuJGXiRuFWW4JK3LstckUiMgZ1RbggwsyyHIr
-         S4UvsrrhbW+HAJDSqQvVlLrEXItOKGf06y+VQW7hkrFJFuXeFrpgFWnYwn1Ni5MvHk
-         ee3VzUcrwK1O6QMxuUbhiEDtoiohFIO/i5eblIjenI3uaajxC45q7kpfkX8eRSuCck
-         6uYQsWvrlRCGKTOcH3Y6wgjXEpj3ZndQQu06lNPlSfMQXRkrCynW71spy6lZpEjPCf
-         Elpx2895pHYVle8SsY9JnAPoaI7Bm63vtljrSQ6nHHw9zAfFu6MdS7R547MqSjzlb5
-         odkG1cfEyWN1g==
-Date:   Sat, 8 Jul 2023 15:23:13 +0100
+        b=Xe+++iJUo0B9ofzQCrwHd9qSNovyhKX/qS1aV8nXCIMxpLqED57KVf10INt39Kzdj
+         iL/Z/Q28Dcjz/NhfEBB58NAnZipFZtKHnxe/sCZNIlhZ3vVtqKyivM+9V0Q+s+s3HF
+         0ZJ55mSEpnBa2qImt2pSo/pAUNbnwSrxCKHThtQpFfZi9y6uuUu3LW5HHtD+U6DVuk
+         28GoZIIA5Fld0BhYk2hNCTOzab1d5iObuqoHbJlZMpzDTTLxVOwit+CJf4ywVIeBYm
+         5uAF8xfnITtqD39l3hW09vmOSNYrfNbBabcmPPRyfk/g2kBpnK0smohgLuWo7TnhNq
+         MqFPyqfIhDC2g==
+Date:   Sat, 8 Jul 2023 15:24:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Alisa Roman <alisa.roman@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7192: Use sysfs_emit_at
-Message-ID: <20230708152313.620328bd@jic23-huawei>
-In-Reply-To: <9167ba56f8afafa81efb2d5acd84cab0843505e4.camel@gmail.com>
-References: <20230620163135.93780-1-alisa.roman@analog.com>
-        <9167ba56f8afafa81efb2d5acd84cab0843505e4.camel@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Marco Felsch <m.felsch@pengutronix.de>, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, alazar@startmail.com, daniel.baluta@nxp.com,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: Re: [PATCH] dt-bindings: iio: adc: ti,ads1015: fix datarate max
+ value and meaning
+Message-ID: <20230708152428.58b527e8@jic23-huawei>
+In-Reply-To: <5e2f841a-9afe-a057-613b-e5263eb126cb@linaro.org>
+References: <20230621160857.3400747-1-m.felsch@pengutronix.de>
+        <5e2f841a-9afe-a057-613b-e5263eb126cb@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,58 +60,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Jun 2023 13:19:49 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Mon, 3 Jul 2023 18:18:28 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On Tue, 2023-06-20 at 19:31 +0300, Alisa Roman wrote:
-> > Replace scnprintf with sysfs_emit_at which is the preferred alternative.
-> >=20
-> > Also make sure each fractional digit is in its place by padding with
-> > zeros up to 3 digits: "...%03d...".
-> >=20
-> > Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Applied to the togreg branch of iio.git. Not that as we are mid merge window
-I'll wait to rebase on rc1 before pushing out as togreg. In meantime 0-day =
-gets
-to see what it can find on this branch as testing.
+> On 21/06/2023 18:08, Marco Felsch wrote:
+> > Datarate (dr) is a 3-bit wide register field. Values from 0 to 7 are
+> > allowed for all devices but only for the ADS1115 devices a value of 7
+> > does make a difference.
+> > 
+> > While on it fix the description of the datarate for ADS1115 devices as
+> > well.
+> >   
+> 
+> 
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Applied,
+
+Thanks,
 
 Jonathan
 
->=20
-> > =C2=A0drivers/iio/adc/ad7192.c | 5 ++---
-> > =C2=A01 file changed, 2 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> > index e23d9a7dcc9e..c980bc871412 100644
-> > --- a/drivers/iio/adc/ad7192.c
-> > +++ b/drivers/iio/adc/ad7192.c
-> > @@ -561,9 +561,8 @@ static ssize_t ad7192_show_filter_avail(struct devi=
-ce *dev,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ad7192_get_available_fi=
-lter_freq(st, freq_avail);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0for (i =3D 0; i < ARRAY=
-_SIZE(freq_avail); i++)
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0len +=3D scnprintf(buf + len, PAGE_SIZE - len,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "%d.%d ", freq_avail[i] / 1000,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 freq_avail[i] % 1000);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0len +=3D sysfs_emit_at(buf, len, "%d.%03d ", freq_avai=
-l[i] / 1000,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 freq_ava=
-il[i] % 1000);
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0buf[len - 1] =3D '\n';
-> > =C2=A0 =20
->=20
+> 
+> Best regards,
+> Krzysztof
+> 
 

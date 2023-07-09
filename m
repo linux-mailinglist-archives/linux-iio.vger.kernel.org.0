@@ -2,255 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A30374C6CA
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jul 2023 19:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F75974C91C
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jul 2023 01:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbjGIRld (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Jul 2023 13:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42980 "EHLO
+        id S229805AbjGIXkY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Jul 2023 19:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230266AbjGIRlc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 13:41:32 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 565ED107
-        for <linux-iio@vger.kernel.org>; Sun,  9 Jul 2023 10:41:31 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-992dcae74e0so483169466b.3
-        for <linux-iio@vger.kernel.org>; Sun, 09 Jul 2023 10:41:31 -0700 (PDT)
+        with ESMTP id S229481AbjGIXkX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 19:40:23 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C10510C;
+        Sun,  9 Jul 2023 16:40:22 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6b9610b8a64so390823a34.3;
+        Sun, 09 Jul 2023 16:40:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688924490; x=1691516490;
+        d=gmail.com; s=20221208; t=1688946021; x=1691538021;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9oeKoSQqGnKyOhvK1kMTJPXEjPeVsm/hf9GdEualz/s=;
-        b=vMNlkobbdhJz+MoQIMwxINl916JGFbmOshhhboGc9QS0at7vhlLfF+DcLaLhtjbtEC
-         K+LG9umoc4J1NFxFsfZs0ep+c4sdpVURBXS3TVMJRuJbPnn5Gp6yicHFDVdpau0N7DJC
-         sLmxR3I/Qqh92wKk4WpNNZRBOiijx1IXCzqaOwZ8d0fGrMz9XntFIYRl5/yIcjUm6Khe
-         NdroJi5r7Kz0IiEoh0uNbu5bpLx0szc0plQjYFLF3AT2hBiaC3kmRGrBHnx6AC8gS0FA
-         OX2jrrTKou9iskNn7vRpYdO1taGbBZVXRyq7EsU3B/YQQGWEq+/7Joe+6pNzx9L3btDh
-         RSYQ==
+        bh=sjoav9DjNTMYdRsPrPB25AzH4TrQH4BWT3WECle+jRw=;
+        b=mcTOXQ0kJMF/RxY420Rp+PHc1ZeChucL/Hg8DVFkpfZ7g9j01qHNJ9GCi5R2i0t4Mh
+         uSMIwBYKj031UZTAX3PtRQ0Ra4uDjEmjNEENROqwgu4TGbV0H3x+mdwnC996LN9PmQZo
+         MSdM1vrll12Z7VoOXccXI68+chOVJfoJYaiLGiHHQKI4s3pTMbcl0F7PdSeDl37jRJ0v
+         WGu5qHDMs+umu6sAjjhp8K9ROlsxvB3OdTOliur1Wzg1r0xMQiRVebzW3VxqmOy13KSG
+         NUYMqAv6mQvrK6Ov/lmogpMOF4WHBcYAgmVHgs7c0eN+cwLuFms7t/IIwDTz6wsVCRoE
+         4mqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688924490; x=1691516490;
+        d=1e100.net; s=20221208; t=1688946021; x=1691538021;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9oeKoSQqGnKyOhvK1kMTJPXEjPeVsm/hf9GdEualz/s=;
-        b=XJNmwaPx/hYlgAx5CtrgfLu3GCzO4bjN2QvB7dNpeAhC35ka4fCLKTLwolaqSR29ih
-         5pFgX8GtD4SBbUYgq21cXBFbANa9Q9/wZ0m0JOnC2G+BA/TKzNeHx/0U5yy4qJia+vsa
-         Bzlv9Vn0MhXrO6/dl3XRnIU88K+yloNyAntUb3VIvedFVlfjnu8aa00ZghGlI+45+fNK
-         3v/6zy8oCxaIDRKkyYqXIVgewXang+xrJZFddNMjtn7l8g7YxdyJGEG7Lgwd/5oljcVN
-         U5xoaiLs+AVIbzFDBsfSLPui1GGR6VOvirzEazdJ6NSj9Ihlvy4JEXGvHZBP/71nx/r8
-         Xesw==
-X-Gm-Message-State: ABy/qLZhFBpEQsDpPmy9vFNi/4265buhZP+kWvglKzB5CjuHD7I+Nxys
-        tmYvr3DLolnlF01F9bi6eC8ddw==
-X-Google-Smtp-Source: APBJJlHvRXJCSdZxiouXi07KpghTnQuXPR5PnU1C68ap3XHWWr3uMG+uW1w42kwNzkNLCiNxe4U2pQ==
-X-Received: by 2002:a17:906:5a6e:b0:965:9602:1f07 with SMTP id my46-20020a1709065a6e00b0096596021f07mr10035969ejc.39.1688924489848;
-        Sun, 09 Jul 2023 10:41:29 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id r11-20020a17090638cb00b00992b510089asm5031895ejd.84.2023.07.09.10.41.27
+        bh=sjoav9DjNTMYdRsPrPB25AzH4TrQH4BWT3WECle+jRw=;
+        b=hY47SuUjxl2PKJWTpMSPNkroWZ3nct3B94Y3l1f0H1KrcHYWzV6RYuIQERCMSYKS8O
+         hJ3qDOu6/pe5BYqFByB+IDlYRfXwjgqkSncmlKIRNXoFTP3fjeZJvbBn3t9PGeKIkRta
+         v4ygjPPOwVFVbAlDXldZ0HKZ+zDYbGbvMOHZoDjNPF59UwP7JfQtBjU05GkbjK6OJ6g5
+         RjL6FdAjrGW1BNdenHndDPkmlgcmwNz5zZPPPIsh/gWYJwsCW8WVsxFkph++o05Ku56s
+         vIEcJ6GXCS1z1pta+PEVM3uvYg0W91v3INNZgnCgLMctd7cFtjCy2qO9n+qT22kHrpgK
+         BKew==
+X-Gm-Message-State: ABy/qLZLKY/HPCF/FJBsKhlVyjJ8fqZqf3gmCzRtCe1oCbh5LGh0YjVk
+        3HIaZj/rh5Vnh7MMQSTMu28=
+X-Google-Smtp-Source: APBJJlHuTcGDJxgHe/HTEZMUKNkUJFm15BfEgmt4V+RieeKYp8uXpcsj1ct1wATSj/VD8ZTzPv1lTA==
+X-Received: by 2002:a05:6871:88a:b0:1b0:5e21:29a7 with SMTP id r10-20020a056871088a00b001b05e2129a7mr12955811oaq.10.1688946021138;
+        Sun, 09 Jul 2023 16:40:21 -0700 (PDT)
+Received: from [192.168.86.31] (99-145-207-128.lightspeed.austtx.sbcglobal.net. [99.145.207.128])
+        by smtp.gmail.com with ESMTPSA id v19-20020a056870e49300b0019ea8771fb0sm3877233oag.13.2023.07.09.16.40.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jul 2023 10:41:29 -0700 (PDT)
-Message-ID: <0b5771b3-31b1-c17c-2be4-9b71538078bb@linaro.org>
-Date:   Sun, 9 Jul 2023 19:41:25 +0200
+        Sun, 09 Jul 2023 16:40:20 -0700 (PDT)
+Message-ID: <52f47b43-e735-0be9-ebac-e6e099a2dd09@gmail.com>
+Date:   Sun, 9 Jul 2023 18:40:20 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 07/11] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] Add struct ad9832_platform_data to the include/linux/iio
 Content-Language: en-US
-To:     Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linus.walleij@linaro.org, Jonathan.Cameron@huawei.com,
-        sboyd@kernel.org, dmitry.baryshkov@linaro.org,
-        quic_subbaram@quicinc.com, quic_collinsd@quicinc.com,
-        quic_kamalw@quicinc.com, quic_jestar@quicinc.com,
-        marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Lee Jones <lee@kernel.org>,
-        =?UTF-8?Q?Leonard_G=c3=b6hrs?= <l.goehrs@pengutronix.de>,
-        Haibo Chen <haibo.chen@nxp.com>, linux-iio@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Cc:     linux-arm-msm-owner@vger.kernel.org
-References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-8-quic_jprakash@quicinc.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230708072835.3035398-8-quic_jprakash@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        linux-staging@lists.linux.dev, skhan@linuxfoundation.org,
+        ivan.orlov0322@gmail.com
+References: <20230707211553.GA110890@madhu-kernel>
+ <2023070858-brewing-outpour-764c@gregkh>
+ <20230708154506.01785c65@jic23-huawei>
+From:   Madhumitha Prabakaran <madhumithabiw@gmail.com>
+In-Reply-To: <20230708154506.01785c65@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 08/07/2023 09:28, Jishnu Prakash wrote:
-> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
-> with all SW communication to ADC going through PMK8550 which
-> communicates with other PMICs through PBS. One major difference is
-> that the register interface used here is that of an SDAM present on
 
-...
+On 7/8/23 09:45, Jonathan Cameron wrote:
+> On Sat, 8 Jul 2023 13:10:29 +0200
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+>> On Fri, Jul 07, 2023 at 04:15:53PM -0500, Madhumitha Prabakaran wrote:
+>>> Add struct ad9832_platform_data to the include/linux/iio
+>>> for maintaining code organization and clarity.
+>>>
+>>> Signed-off-by: Madhumitha Prabakaran <madhumithabiw@gmail.com>
+>>> ---
+>>>   drivers/staging/iio/frequency/ad9832.c |  3 +--
+>>>   drivers/staging/iio/frequency/ad9832.h | 34 --------------------------
+>>>   include/linux/iio/frequency/ad9832.h   | 30 +++++++++++++++++++++++
+>> No, not yet, sorry.  Staging drivers should be self-contained, why does
+>> this .c file need a .h file at all anyway?  It should all just be in the
+>> .c file, can you do that instead?
+> This is an aged driver so still has definitions that would be included
+> from board files, hence the header.
+>
+> So Madhumitha, if you are looking at getting this driver out of staging
+> (which would be great!) then first job is convert it from platform data
+> to device tree (or better yet generic firmware bindings using linux/property.h)
 
+Sure, I will take a look and work on convert it from platform data to 
+generic
 
-> +static int adc5_gen3_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct adc5_chip *adc;
-> +	struct regmap *regmap;
-> +	int ret, i, irq;
-> +	u32 *reg;
-> +	char buf[20];
-> +
-> +	regmap = dev_get_regmap(dev->parent, NULL);
-> +	if (!regmap)
-> +		return -ENODEV;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	adc = iio_priv(indio_dev);
-> +	adc->regmap = regmap;
-> +	adc->dev = dev;
-> +
-> +	ret = device_property_count_u32(dev, "reg");
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	adc->num_sdams = ret;
-> +
-> +	reg = devm_kcalloc(dev, adc->num_sdams, sizeof(u32), GFP_KERNEL);
-> +	if (!reg)
-> +		return -ENOMEM;
-> +
-> +	ret = device_property_read_u32_array(dev, "reg", reg, adc->num_sdams);
-> +	if (ret) {
-> +		dev_err(adc->dev, "Failed to read reg property, ret=%d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	adc->base = devm_kcalloc(adc->dev, adc->num_sdams, sizeof(*adc->base), GFP_KERNEL);
-> +	if (!adc->base)
-> +		return -ENOMEM;
-> +
-> +	for (i = 0; i < adc->num_sdams; i++) {
-> +		adc->base[i].base_addr = reg[i];
-> +
-> +		irq = platform_get_irq(pdev, i);
-> +		if (irq < 0) {
-> +			dev_err(adc->dev, "Failed to get SDAM%d irq, ret=%d\n", i, irq);
-> +			return irq;
+firmware bindings.
 
-return dev_err_probe
-
-> +		}
-> +		adc->base[i].irq = irq;
-> +
-> +		scnprintf(buf, sizeof(buf), "adc-sdam%d", i);
-> +		adc->base[i].irq_name = devm_kstrdup(adc->dev, buf, GFP_KERNEL);
-> +		if (!adc->base[i].irq_name)
-> +			return -ENOMEM;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, adc);
-> +
-> +	init_completion(&adc->complete);
-> +	mutex_init(&adc->lock);
-> +
-> +	ret = adc5_get_fw_data(adc);
-> +	if (ret < 0) {
-> +		dev_err(adc->dev, "adc get dt data failed, ret=%d\n", ret);
-
-return dev_err_probe
-
-> +		return ret;
-> +	}
-> +
-> +	for (i = 0; i < adc->num_sdams; i++) {
-> +		ret = devm_request_irq(dev, adc->base[i].irq, adc5_gen3_isr,
-> +					0, adc->base[i].irq_name, adc);
-> +		if (ret < 0) {
-> +			dev_err(adc->dev, "Getting IRQ %d failed, ret=%d\n", adc->base[i].irq, ret);
-
-return dev_err_probe
-
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	ret = adc_tm_register_tzd(adc);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (adc->n_tm_channels)
-> +		INIT_WORK(&adc->tm_handler_work, tm_handler_work);
-> +
-> +	indio_dev->name = pdev->name;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &adc5_gen3_info;
-> +	indio_dev->channels = adc->iio_chans;
-> +	indio_dev->num_channels = adc->nchannels;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
-> +static int adc5_gen3_exit(struct platform_device *pdev)
-> +{
-> +	struct adc5_chip *adc = platform_get_drvdata(pdev);
-> +	u8 data = 0;
-> +	int i, sdam_index;
-> +
-> +	mutex_lock(&adc->lock);
-> +	/* Disable all available channels */
-> +	for (i = 0; i < adc->num_sdams * 8; i++) {
-> +		sdam_index = i / 8;
-> +		data = MEAS_INT_DISABLE;
-> +		adc5_gen3_write(adc, sdam_index, ADC5_GEN3_TIMER_SEL, &data, 1);
-> +
-> +		/* To indicate there is an actual conversion request */
-> +		data = ADC5_GEN3_CHAN_CONV_REQ | (i - (sdam_index * 8));
-> +		adc5_gen3_write(adc, sdam_index, ADC5_GEN3_PERPH_CH, &data, 1);
-> +
-> +		data = ADC5_GEN3_CONV_REQ_REQ;
-> +		adc5_gen3_write(adc, sdam_index, ADC5_GEN3_CONV_REQ, &data, 1);
-> +	}
-> +
-> +	mutex_unlock(&adc->lock);
-> +
-> +	if (adc->n_tm_channels)
-> +		cancel_work_sync(&adc->tm_handler_work);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver adc5_gen3_driver = {
-> +	.driver = {
-> +		.name = "qcom-spmi-adc5-gen3",
-> +		.of_match_table = adc5_match_table,
-> +	},
-> +	.probe = adc5_gen3_probe,
-> +	.remove = adc5_gen3_exit,
-> +};
-> +module_platform_driver(adc5_gen3_driver);
-> +
-> +MODULE_ALIAS("platform:qcom-spmi-adc5-gen3");
-
-Drop alias. If you need it, it means you screwed ID tables or your DTS.
-
-
-Best regards,
-Krzysztof
-
+> A side effect of that is the header would go away as equivalent job would be
+> done by the dt-bindings yaml file.
+>
+> Jonathan
+>
+>> thanks,
+>>
+>> greg k-h

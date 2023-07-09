@@ -2,60 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97DAA74C689
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jul 2023 19:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443B774C68D
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jul 2023 19:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229987AbjGIRR2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Jul 2023 13:17:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34476 "EHLO
+        id S230266AbjGIRS0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Jul 2023 13:18:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbjGIRR1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 13:17:27 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D24F130
-        for <linux-iio@vger.kernel.org>; Sun,  9 Jul 2023 10:17:23 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51d95aed33aso4351267a12.3
-        for <linux-iio@vger.kernel.org>; Sun, 09 Jul 2023 10:17:22 -0700 (PDT)
+        with ESMTP id S229769AbjGIRS0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 13:18:26 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B3612A
+        for <linux-iio@vger.kernel.org>; Sun,  9 Jul 2023 10:18:24 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4fa48b5dc2eso5576200e87.1
+        for <linux-iio@vger.kernel.org>; Sun, 09 Jul 2023 10:18:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688923041; x=1691515041;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1688923103; x=1691515103;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7imIfml5dDYKBfen+YuD1TuRXW1lkvNFnc3KUcJLps4=;
-        b=l918Kz85vywpW18YhZfRklEFcOgWqbeh8XXNjxVH6h7aJRFnTM04jwfnuvfsU6Fns9
-         pQM6rbRbUVMBuI/mYCcJGVbwvuCwBX+ot8M+iXoFHDKebWqcDtOLbD6TMmfWejjMxwz9
-         iJiSUK3KJvwoU9A6ujfHSJmg8zgUcbUBNJtBDazY7gdmr0Wc9POH9RDAf6tXnCP/fIBq
-         qh7nnWixUjtqhfs9GWIu53NwJThtDttpSGXYb7qGpCw+PTAtZYayMJInXxpZqA9m4taY
-         kDkAr5TV0+olIE3VPdlnOYUEP70ixJf0Rltsp8zP/weIp+mQ+ApFVfBeUYglMtga4WcE
-         kOwg==
+        bh=a4ESr9ycTlv2oyhDdfMdroTzsv1FcuY2XELb8Cinj9g=;
+        b=plrOflODvDRg6EplaXi1Kbv7vSI/ij+/ROSCoK/v8rJnX9j2Sxdk3U+VncxJ5kjxz0
+         1iA6K0Sqk7l3kIAoFDtkLxBdncWSAlf4TZ9Oilqc4iAZ7PgLeoBhH2cPFPmxqjsHGbHm
+         xbw95cttVEdbWkleNdSbTIUUe3gldUTb2+SgaWMB9wA+QyB+lZa7dedtdQ36w8I2qDQA
+         /N+AQDuydcTNKxAaetdmIg5JaLWvYrGLbHUpSYVEGudzs9ir62EsDQ6Pmz9btkBHKZqU
+         3Ol5cdALdzyzxICPvymN6s+/cxEmRiGBJKdb0KEvmvl3mKilRCK/yQJOGOIaRprBpXAT
+         A5XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688923041; x=1691515041;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1688923103; x=1691515103;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7imIfml5dDYKBfen+YuD1TuRXW1lkvNFnc3KUcJLps4=;
-        b=PjiTbiQ4EPzFsdXDGzYx0a95vsdT5sNhcyh5gVijGr1utMALHXP2ykI4zkwGUCMoRn
-         bEDJhXfT8DbzWEak9RGmhlv+U/+Qw6iCTD9IXL0SFhJdEALLE4xKBJvb/ALsle/DUtw1
-         UsCumvqStl38SHtYysAqbYBAoeSgP4L1crqWQ8DzGdgq6ihxqKMSP+60dcu5U+kVHQjZ
-         vhVOFEYEw3LIPa0NX6I9hgo0HWOPUylMeJTLrNTGw8SXGxYxawcS/Kz9zlR/38sGDaiW
-         +LDOs44Js1kixByo8aZl7mGqaHvZIjZ6HAfR5R2b7C6iPhWfdx9FeuLYWaXgDW4dchGV
-         RgQg==
-X-Gm-Message-State: ABy/qLa5Y1EE6MF/ffH0DUmqhPsJLxl6Fa5+fFk2PB5zNDx8Qd8Axrz0
-        dsPcM39zJWAcbv85zwqcWD+geA==
-X-Google-Smtp-Source: APBJJlFQ0RX8bsto/VZSh3JnW0Z5X8xoCpF2ycuVh7baxg1T7oyywW3hEpAQxiuHj+2Ect/JOmEyNA==
-X-Received: by 2002:aa7:d287:0:b0:51c:dd99:a211 with SMTP id w7-20020aa7d287000000b0051cdd99a211mr8705245edq.27.1688923041327;
-        Sun, 09 Jul 2023 10:17:21 -0700 (PDT)
+        bh=a4ESr9ycTlv2oyhDdfMdroTzsv1FcuY2XELb8Cinj9g=;
+        b=NOSHl8dt3YMM1owpOHZ1NHKgod9cu9yB2PSvhyGpyOFq/S4QHYpgIJnfl56FaCCx1w
+         qjMJumMUzNMcjIfKVip4QOSBcgA04AsMtNj3/d5+YBmaFerCVDn5PmtvvXMP9WxUkgdZ
+         x0o2dsDMDECzyRXacykaFJRR+QNCOK2GJvQplqlCdDx/vNivnK7YAL0VJNd7TIpPx2oe
+         GOpQt5CQmVakR8mFVidKkHDasyqNw3167qzZVTReepOkuHpitE/GKAwVJPTfu9OeM5Wg
+         w9cb9n2r4oMMBwljIOO9QcGxaejIh+jiWH4EX9Pq1M+vjGd/sdUagrekfwBij574+snk
+         +8MQ==
+X-Gm-Message-State: ABy/qLZZYbaLdza4VlkwU0pFdCqwOcz3uoQUfR8w3tL8yv2yHyfaQTcr
+        A9PPBUcZ/GFvb0fSJWQpAh/KMg==
+X-Google-Smtp-Source: APBJJlEF3q8C9/RXRj0i6X1QW9hyoU2aZchYK6HK5qdXq5LupCCj5k9C+09fwOMNhreTqE5GdS2zhQ==
+X-Received: by 2002:a05:6512:3d0f:b0:4f8:58ae:8ea8 with SMTP id d15-20020a0565123d0f00b004f858ae8ea8mr8776912lfv.58.1688923102661;
+        Sun, 09 Jul 2023 10:18:22 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id t21-20020a170906179500b009929ab17be0sm4968222eje.162.2023.07.09.10.17.18
+        by smtp.gmail.com with ESMTPSA id v7-20020a056402184700b0051de2455041sm4685273edy.24.2023.07.09.10.18.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jul 2023 10:17:20 -0700 (PDT)
-Message-ID: <935c14fd-e87f-e89b-f641-7fb529bc7e50@linaro.org>
-Date:   Sun, 9 Jul 2023 19:17:17 +0200
+        Sun, 09 Jul 2023 10:18:22 -0700 (PDT)
+Message-ID: <839cfac2-8f74-3386-5854-e3fb2ba4e07f@linaro.org>
+Date:   Sun, 9 Jul 2023 19:18:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 01/11] iio: adc: Update bindings for ADC7 name used on
- QCOM PMICs
+Subject: Re: [PATCH 03/11] ARM: dts: qcom: Update devicetree for ADC7 rename
+ for QCOM PMICs
+Content-Language: en-US
 To:     Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linus.walleij@linaro.org, Jonathan.Cameron@huawei.com,
@@ -63,31 +64,23 @@ To:     Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
         quic_subbaram@quicinc.com, quic_collinsd@quicinc.com,
         quic_kamalw@quicinc.com, quic_jestar@quicinc.com,
         marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Luca Weiss <luca@z3ntu.xyz>,
-        linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Cc:     linux-arm-msm-owner@vger.kernel.org
+        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
 References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-2-quic_jprakash@quicinc.com>
-Content-Language: en-US
+ <20230708072835.3035398-4-quic_jprakash@quicinc.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230708072835.3035398-2-quic_jprakash@quicinc.com>
+In-Reply-To: <20230708072835.3035398-4-quic_jprakash@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -95,40 +88,38 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 08/07/2023 09:28, Jishnu Prakash wrote:
-> The name used initially for this version of Qualcomm Technologies, Inc.
-> PMIC ADC was ADC7, following the convention of calling the PMIC generation
-> PMIC7. However, the names were later amended internally to ADC5 Gen2 and
-> PMIC5 Gen2. In addition, the latest PMIC generation now is known as
-> PMIC5 Gen3 with ADC5 Gen3 supported on it. With this addition, it makes more
-> sense to correct the name for this version of ADCs to ADC5 Gen2 from ADC7.
-> Since this affects ADC devices across some PMICs, update the names accordingly.
-> 
-> In order to avoid breaking the existing implementations of ADC7, add
-> support for ADC5 Gen2 first now and remove the ADC7 support in a later
-> patch.
+> The name "ADC7" needs to be replaced with the name "ADC5_GEN2"
+> everywhere to match the convention used for these ADC peripherals
+> on Qualcomm Technologies, Inc. PMICs. Update devicetree files for
 
-I don't understand and I do not see it explained, why do you remove
-ADC7. The patch is also doing way too many things at the same time...
+We do not rename compatibles to match convention. Please provide proper
+rationale.
 
+> the corresponding name change done in bindings and driver.
 > 
 > Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
 > ---
->  .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 21 +++--
->  .../bindings/thermal/qcom-spmi-adc-tm5.yaml   | 16 ++--
->  .../iio/qcom,spmi-adc5-gen2-pm8350.h          | 64 +++++++++++++
->  .../iio/qcom,spmi-adc5-gen2-pm8350b.h         | 89 +++++++++++++++++++
->  .../iio/qcom,spmi-adc5-gen2-pmk8350.h         | 47 ++++++++++
->  .../iio/qcom,spmi-adc5-gen2-pmr735a.h         | 29 ++++++
->  .../iio/qcom,spmi-adc5-gen2-pmr735b.h         | 28 ++++++
->  include/dt-bindings/iio/qcom,spmi-vadc.h      | 77 ++++++++++++++++
+>  arch/arm64/boot/dts/qcom/pmk8350.dtsi         |  4 +-
+>  arch/arm64/boot/dts/qcom/sc7280-idp.dts       |  4 +-
+>  arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |  4 +-
+>  arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |  8 ++--
+>  .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 48 +++++++++----------
+>  arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi  |  2 +-
+>  .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |  4 +-
+>  7 files changed, 37 insertions(+), 37 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/pmk8350.dtsi b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+> index bc6297e7253e..149d2bb43d2d 100644
+> --- a/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+> @@ -50,7 +50,7 @@ pon_resin: resin {
+>  		};
+>  
+>  		pmk8350_vadc: adc@3100 {
+> -			compatible = "qcom,spmi-adc7";
+> +			compatible = "qcom,spmi-adc5-gen2";
 
-Bindings are always separate patches. If this is commit for bindings, then:
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching.
-
-
+You break all users without explaining it.
 
 Best regards,
 Krzysztof

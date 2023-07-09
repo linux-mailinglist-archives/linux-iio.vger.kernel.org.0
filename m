@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B8FE74C6B4
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jul 2023 19:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA2E474C6BB
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jul 2023 19:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbjGIR0o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Jul 2023 13:26:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
+        id S230283AbjGIR25 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Jul 2023 13:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230519AbjGIR0n (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 13:26:43 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EA2E58
-        for <linux-iio@vger.kernel.org>; Sun,  9 Jul 2023 10:26:28 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51e57870becso463186a12.2
-        for <linux-iio@vger.kernel.org>; Sun, 09 Jul 2023 10:26:28 -0700 (PDT)
+        with ESMTP id S229868AbjGIR25 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 13:28:57 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB93FC
+        for <linux-iio@vger.kernel.org>; Sun,  9 Jul 2023 10:28:55 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4fbb281eec6so5429854e87.1
+        for <linux-iio@vger.kernel.org>; Sun, 09 Jul 2023 10:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688923587; x=1691515587;
+        d=linaro.org; s=google; t=1688923734; x=1691515734;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=N13e8qHoPdUNItDm39HEWkePArYa3KUVlo9kWPFhjdI=;
-        b=ksEz3NhhIOXsjzRNA8hzCKSBYkchsF5hx0eS8CUctujx7WgiowTHsUCRGfgRGDAhlH
-         AjFrN8APA4vbXnKN9ib/Vf84OpBfKemrOFb/04ns2iBO5hURwUE/cM6TDAPIn5eOPby0
-         JpubXN3x5+9pkV9RMFZmjnLcOhLqPGUg5DaqgyrTBUexZ1+8TKDcSKfLtV8I5USOYyw6
-         l5JWhP5TTBhh4Byh30UVQWS8AIdn3B390RIrnmzsvHGJXnX6O02Ovk+/Jr7InBGGGkLL
-         eI3b29rMNNzl312xOPCBOWlfMwByVYnWyPBTzOynb0NBzvR5sPbR9UP1hS488RPNlTl7
-         76Ug==
+        bh=0dKYNbBXcnp2npYERmD6OwPGyF18Ls7/g1iPD2dIqkc=;
+        b=dfvQYsS7R+9f1XZdiGS878gaVCwz8HtDNvKnKs0ASwuLeupgac1jJp7J9xH4GzjbAY
+         NQh0ZJIJbNgu9ulCqAlxsRu5ytNxmmDT+J2ghMVKnTLbPvRujFaZbfUFFvuJh5UdRlLj
+         1d5kXM3W/Jmyj6N0q3TJhydMquk1WYpfx7L4R5goXwCW24P4fAZ9fXPwATcnY7OQe5gE
+         D28Sy29i3ySLj8RGkJNV+aSpm9IszgF4mLHoHl0IJ6zCdgdUNPA0MIIr87CSquaofV69
+         OSFE6YPYLYDiBkzahm+h0QNSD1s9gKwzLgN0IH2urcw0C+zvQu46Qb/9aSwBEOqKRJ1r
+         oUqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688923587; x=1691515587;
+        d=1e100.net; s=20221208; t=1688923734; x=1691515734;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N13e8qHoPdUNItDm39HEWkePArYa3KUVlo9kWPFhjdI=;
-        b=WyAsr8VFJsCj3CdvX6KqDeQdwGfeOO03aD2HkJ/hElvP384tcg91OWBzUIyQ+g7yYq
-         bQBV84XtNzA4bzBTk37g6bI9lfdsfVLOv6njdwK4xgcLz8PZoFEqEvwmqa1oPbXkocZe
-         yCPeit7/BwBn8yj704VphnfjOozppHlc9hK0mzOEJS/csDYJoTJtbTfDHFKbdnuvxmdF
-         ieSxR1F5pAM0YFc5ihiDTlkq6gm6wTCu8ZkBWuVYmECrJ0tfxQ5FMEOSukfZERJT1bf3
-         OZjB62pUC9pDK3qCVoWEHIP8CPuOZ6oF1m8X9mVm1WWIOPHiTLR5p9TKGKm4+BICk3kP
-         UKbA==
-X-Gm-Message-State: ABy/qLaafvXqzGPMsPtt1+UD+fBA2DnGdGxuFikuWKG6a0b4APfIQTNS
-        Mjao800qeHu38dqoTIuECcv47A==
-X-Google-Smtp-Source: APBJJlEEjNntLhWspHz5vAUrXDvzwdtVSmuZ9eGCEUn0U8UWLFf6pBnyXESFk9mZcOYOlnnxlLuUWw==
-X-Received: by 2002:a05:6402:150b:b0:51e:4e77:3347 with SMTP id f11-20020a056402150b00b0051e4e773347mr3965222edw.41.1688923587050;
-        Sun, 09 Jul 2023 10:26:27 -0700 (PDT)
+        bh=0dKYNbBXcnp2npYERmD6OwPGyF18Ls7/g1iPD2dIqkc=;
+        b=GgchuG54qZHzfvJ2qvh8UqXQPRdoLEU3ouipVo6yhhXW3l3ED02K9Upt6bd6y+P1KF
+         WHgKJXHTGNEnKBEQ7ve6Sh8mToaHzi2Fy7bWZbSf836wece9M5lVU+gi/dnvbc7Sai1T
+         W3XU262Sl53AUL1TQDqo96O27uTDfeJldoTVU+RtWD2UofiOsAu4Q6kv/JHxMrdpAuIq
+         OJqj6eG5PDt3h0MGksQdOemFsvgEn5/0jHo2/4Pm5oL9xeSGUUrtXvW/VEnooqEPwY08
+         aS/goX4Zcd2PoqoN9ysgftACFUEEmBaUT5u1DcZvcofVMKhZyD009hCEh7Fw2IoVKoNo
+         IBnw==
+X-Gm-Message-State: ABy/qLbb3ozimBaz4jOCiZtjb6HcA5JAvFp9rQrKVGK2YNbVNk+1kAyV
+        zhW5gPBADgEEqWdf1M2JYFZoKg==
+X-Google-Smtp-Source: APBJJlHpqhfp6mspgLh/7s1bioqqe7qjN0nmeg08p4aZ9KLzrTcfmxw29nR5V2f5KNKf7t9FIuexLQ==
+X-Received: by 2002:a05:6512:3d14:b0:4fb:8afa:4dc9 with SMTP id d20-20020a0565123d1400b004fb8afa4dc9mr9176209lfv.49.1688923733365;
+        Sun, 09 Jul 2023 10:28:53 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id b14-20020aa7c90e000000b0051e1a4454b2sm4680110edt.67.2023.07.09.10.26.24
+        by smtp.gmail.com with ESMTPSA id n2-20020aa7c782000000b0051de3e1323dsm4641086eds.95.2023.07.09.10.28.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jul 2023 10:26:26 -0700 (PDT)
-Message-ID: <39775b1d-5967-7401-6415-da6244546a6a@linaro.org>
-Date:   Sun, 9 Jul 2023 19:26:23 +0200
+        Sun, 09 Jul 2023 10:28:52 -0700 (PDT)
+Message-ID: <8b2dd686-382a-f490-7b6e-9603d939bad7@linaro.org>
+Date:   Sun, 9 Jul 2023 19:28:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 10/11] ARM: dts: qcom: Update devicetree for QCOM ADC
- bindings path change
+Subject: Re: [PATCH 11/11] dt-bindings: iio: remove QCOM ADC files from iio
+ folder
 Content-Language: en-US
 To:     Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -66,21 +66,23 @@ To:     Jishnu Prakash <quic_jprakash@quicinc.com>, agross@kernel.org,
         marijn.suijten@somainline.org, andriy.shevchenko@linux.intel.com,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     linux-arm-msm-owner@vger.kernel.org
 References: <20230708072835.3035398-1-quic_jprakash@quicinc.com>
- <20230708072835.3035398-11-quic_jprakash@quicinc.com>
+ <20230708072835.3035398-12-quic_jprakash@quicinc.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230708072835.3035398-11-quic_jprakash@quicinc.com>
+In-Reply-To: <20230708072835.3035398-12-quic_jprakash@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -88,19 +90,40 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 08/07/2023 09:28, Jishnu Prakash wrote:
-> Update ADC dt-bindings file paths in QCOM devicetree files to
-> match the dt-bindings change moving the files from 'iio' to
-> 'iio/adc' folder.
+> Now that the ADC dt-binding paths have been updated everywhere
+> to use the files copied to the 'iio/adc' folder, remove them
+> from the 'iio' folder.
 > 
 > Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
 > ---
->  arch/arm64/boot/dts/qcom/pm6125.dtsi                       | 2 +-
 
-Also (I am repeating myself):
+Nothing this was explained in previous patches... We should not have to
+read patchset from the end to understand what is happening here. Anyway,
+your commits lack rationale why this is done. Without it, this is pure
+churn which breaks users. ABI breaks need to be explained in the commit
+msg and come with some reason.
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching.
+...
+
+> -/* 400k pull-up3 */
+> -#define ADC5_GEN3_AMUX1_THM_400K_PU		0x64
+> -#define ADC5_GEN3_AMUX2_THM_400K_PU		0x65
+> -#define ADC5_GEN3_AMUX3_THM_400K_PU		0x66
+> -#define ADC5_GEN3_AMUX4_THM_400K_PU		0x67
+> -#define ADC5_GEN3_AMUX5_THM_400K_PU		0x68
+> -#define ADC5_GEN3_AMUX6_THM_400K_PU		0x69
+> -#define ADC5_GEN3_AMUX1_GPIO_400K_PU		0x6a
+> -#define ADC5_GEN3_AMUX2_GPIO_400K_PU		0x6b
+> -#define ADC5_GEN3_AMUX3_GPIO_400K_PU		0x6c
+> -#define ADC5_GEN3_AMUX4_GPIO_400K_PU		0x6d
+> -
+> -/* 1/3 Divider */
+> -#define ADC5_GEN3_AMUX1_GPIO_DIV3		0x8a
+> -#define ADC5_GEN3_AMUX2_GPIO_DIV3		0x8b
+> -#define ADC5_GEN3_AMUX3_GPIO_DIV3		0x8c
+
+You just added these defines in previous patches. Don't add them to
+incorrect places just to fix it second later.
 
 Best regards,
 Krzysztof

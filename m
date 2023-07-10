@@ -2,145 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 685A874CEA0
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jul 2023 09:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B34B74CFCD
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jul 2023 10:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231215AbjGJHiu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jul 2023 03:38:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43482 "EHLO
+        id S232996AbjGJIXP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jul 2023 04:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230252AbjGJHis (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jul 2023 03:38:48 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0CFFA;
-        Mon, 10 Jul 2023 00:38:40 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-51e362e4c61so4395660a12.0;
-        Mon, 10 Jul 2023 00:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688974718; x=1691566718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K0RrzppqWK8amO/hYoEe/sGNQQUvYJv9b/1K1O2WuZU=;
-        b=F+ykSINOl4JRcwz99T0450qy+LEU7sfc349swulXvKki2qEkI+R5mVjp6cGVCUcaB+
-         2/bT0MY6O2SPSnidD0o9U34h4ayAE5tYsXWKYz0hL6jr1y9AEJKel5ppzFKFClYULaUF
-         PlVx1UmgaggLHEN7xpIH6Hc79U+/J3IvRJdX1ctKjGzwfGlDvGnsVPmuyBp/lvEWHiy5
-         MkUhrbGeI/dRqAGPBoBhc5hI4QVR0p2aGyoEpDKc0WF/4+Dk1GmoGx943XmNyWte/IUD
-         YaVzb2lmpoakA4dFgYnsH55BaIfbhDSQ7arKyUPZXY39F4oGdtev96ixkxBnekUJK2lB
-         b2Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688974718; x=1691566718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K0RrzppqWK8amO/hYoEe/sGNQQUvYJv9b/1K1O2WuZU=;
-        b=Vdn8yLhnO+gfpN0WeWuaSqjZicMtSlrHltvJzSiikLEB+pm8AzvZmuVHQvdt/6yp2I
-         9tkx5vq0QB2kxPHY0cuWQlpMDhxJvqCSjInepLSb8o280K3scf0a3BmjwpMztNeLMB+n
-         xo8cYpnJU02Dj/6NWg6eBZB5tXMtyY5m8OAwo2Qa83V6dmutR0URqQ33ErehfqSP3VS1
-         E/ZbGjZ8bIs/PL18ZAp3LmPUNFXcb9PS72BAslxkhXriNFmCqIsoeaRGuYb1cBeMH4bt
-         bLizTH0R66Qf49Pq/sg1zX051/UoFrApC/eSFRDkW3V4IhIl+5YMH1951ULVcPouLCX2
-         QjIw==
-X-Gm-Message-State: ABy/qLaSlYyPzA3s8yvbL1aZeHr6YKcWA0Rsj4oT/s0BE7Crkr9NVmVf
-        XmPzqGwKjJ4+2BPD8srAlHFlaLS8O0fMZyKQJrk=
-X-Google-Smtp-Source: APBJJlGqkEdiipwucOvH/n8Bin+i1fTRMPJtr6nPaHPI0UGzqG1RimEwKjIAW5V0oxDqJelykWgtvGWC6FX/ZB54C7Q=
-X-Received: by 2002:a17:906:15d:b0:993:ffcb:ad54 with SMTP id
- 29-20020a170906015d00b00993ffcbad54mr4324698ejh.10.1688974718518; Mon, 10 Jul
- 2023 00:38:38 -0700 (PDT)
+        with ESMTP id S232861AbjGJIXF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jul 2023 04:23:05 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1765291;
+        Mon, 10 Jul 2023 01:23:03 -0700 (PDT)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36A8BaDe027592;
+        Mon, 10 Jul 2023 10:22:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=GE6zkKpI6t9uY6L4iGZvQGH0DZZlhk/alBlWR2MxhUs=;
+ b=G+4K12NnVLRH60fLRSLye1p6QMQOse6GHGYvmcXkLdfiDUaeFSQxdVHB8IuIaLl3hTIj
+ cNhrU2X+aizJuhnIEVZGZ3AtqalmKwy1lusGnOvoDtQS3WL/XPW52RrEXjNw6EgYgYRX
+ 7ykkxWK3XJLDKaZW3ywfdgnSJd28+A7BuIgG2xvGBzKbVSK1AorcTFJiX/vb2qrSUU7K
+ KbGigglmesbBjV7AwerCwSCze7W6exOddeiEWGNQenh3iQE5kIdzdont68RbEOAeqajB
+ dsS/sLb1eB5zRqc8iDpTZ5mswkIA4Czb8vK9LHM+wRn2Vrpy2YeSvgiltQE7LfmEfE58 LQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3rre8vr37g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 Jul 2023 10:22:23 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C00B010005A;
+        Mon, 10 Jul 2023 10:22:19 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 58FB521BF6A;
+        Mon, 10 Jul 2023 10:22:19 +0200 (CEST)
+Received: from [10.201.21.121] (10.201.21.121) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Mon, 10 Jul
+ 2023 10:22:18 +0200
+Message-ID: <fb72b4e4-d5c6-d9be-269d-29aff996001c@foss.st.com>
+Date:   Mon, 10 Jul 2023 10:22:10 +0200
 MIME-Version: 1.0
-References: <20230710042723.46084-1-kimseer.paller@analog.com>
- <20230710042723.46084-2-kimseer.paller@analog.com> <CAHp75Vd386P9xM_+wLahp6B_XwYVq1AZxaFQeWvZ2pnk-tFGHA@mail.gmail.com>
-In-Reply-To: <CAHp75Vd386P9xM_+wLahp6B_XwYVq1AZxaFQeWvZ2pnk-tFGHA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 10 Jul 2023 10:38:02 +0300
-Message-ID: <CAHp75VcvHQ7m8y5Rm6nVtF-iYop4Gjyzgoo=2jQQkWbc0SQ5Kg@mail.gmail.com>
-Subject: Re: [PATCH v9 2/2] iio: adc: max14001: New driver
-To:     Kim Seer Paller <kimseer.paller@analog.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, lgirdwood@gmail.com,
-        broonie@kernel.org, Michael.Hennerich@analog.com, robh@kernel.org,
-        krzysztof.kozlowski@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 04/10] dt-bindings: treewide: add feature-domains
+ description in binding files
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+CC:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <alexandre.torgue@foss.st.com>, <vkoul@kernel.org>,
+        <jic23@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
+        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
+        <arnd@kernel.org>, <richardcochran@gmail.com>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
+References: <20230705172759.1610753-1-gatien.chevallier@foss.st.com>
+ <20230705172759.1610753-5-gatien.chevallier@foss.st.com>
+ <20230706145108.GA3858320-robh@kernel.org>
+ <0aaace47-1bb4-82c5-57a5-6f5d27eb4d45@foss.st.com>
+ <20230707152056.GA317056-robh@kernel.org>
+From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+In-Reply-To: <20230707152056.GA317056-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.21.121]
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-10_05,2023-07-06_02,2023-05-22_02
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 10, 2023 at 10:36=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Mon, Jul 10, 2023 at 7:27=E2=80=AFAM Kim Seer Paller
-> <kimseer.paller@analog.com> wrote:
-
-...
-
-> > V8 -> V9: Changed SPI buffer data types to __le16,
->
-> Why?
->
-> ...
->
-> > +       __le16                  spi_tx_buffer __aligned(IIO_DMA_MINALIG=
-N);
-> > +       __le16                  spi_rx_buffer;
->
-> ...
->
-> > +       /*
-> > +        * Prepare SPI transmit buffer 16 bit-value to big-endian forma=
-t and
-> > +        * reverses bit order to align with the LSB-first input on SDI =
-port.
->
-> reverse
->
-> > +        */
-> > +       st->spi_tx_buffer =3D bitrev16(cpu_to_be16(FIELD_PREP(MAX14001_=
-ADDR_MASK,
-> > +                                    reg_addr)));
->
-> ...
->
-> > +       /*
-> > +        * Convert received 16-bit value from big-endian to little-endi=
-an format
-> > +        * and reverses bit order.
->
-> reverse
->
-> > +        */
-> > +       *data =3D bitrev16(be16_to_cpu(st->spi_rx_buffer));
-
-On top of that, this left unfixed.
-
-...
-
-> > +       /*
-> > +        * Prepare SPI transmit buffer 16 bit-value to big-endian forma=
-t and
-> > +        * reverses bit order to align with the LSB-first input on SDI =
-port.
->
-> reverse
->
-> > +        */
-> > +       st->spi_tx_buffer =3D bitrev16(cpu_to_be16(
-> > +                                    FIELD_PREP(MAX14001_ADDR_MASK, reg=
-_addr) |
-> > +                                    FIELD_PREP(MAX14001_SET_WRITE_BIT,=
- 1) |
-> > +                                    FIELD_PREP(MAX14001_DATA_MASK, dat=
-a)));
->
-> Obviously it's incorrect now even more than before.
-> The types are defined as __le, while ops are against __be.
 
 
---=20
-With Best Regards,
-Andy Shevchenko
+On 7/7/23 17:20, Rob Herring wrote:
+> On Fri, Jul 07, 2023 at 02:28:28PM +0200, Gatien CHEVALLIER wrote:
+>> Hello Rob,
+>>
+>> On 7/6/23 16:51, Rob Herring wrote:
+>>> On Wed, Jul 05, 2023 at 07:27:53PM +0200, Gatien Chevallier wrote:
+>>>> feature-domains is an optional property that allows a peripheral to
+>>>> refer to one or more feature domain controller(s).
+>>>>
+>>>> Description of this property is added to all peripheral binding files of
+>>>> the peripheral under the STM32 firewall controllers. It allows an accurate
+>>>> representation of the hardware, where various peripherals are connected
+>>>> to this firewall bus. The firewall can then check the peripheral accesses
+>>>> before allowing it to probe.
+>>>>
+>>>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+>>>> ---
+>>>>
+>>>> Disclaimer: Some error with dtbs_check will be observed as I've
+>>>> considered the property to be generic, as Rob asked
+>>>>
+>>>>    Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml  | 4 ++++
+>>>>    Documentation/devicetree/bindings/dma/st,stm32-dma.yaml      | 4 ++++
+>>>>    Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml   | 4 ++++
+>>>>    Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml      | 4 ++++
+>>>>    Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml  | 4 ++++
+>>>>    .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 ++++
+>>>>    Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml  | 4 ++++
+>>>>    .../devicetree/bindings/media/cec/st,stm32-cec.yaml          | 4 ++++
+>>>>    Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml   | 4 ++++
+>>>>    .../bindings/memory-controllers/st,stm32-fmc2-ebi.yaml       | 4 ++++
+>>>>    Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml  | 4 ++++
+>>>>    Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml   | 5 +++++
+>>>>    Documentation/devicetree/bindings/mmc/arm,pl18x.yaml         | 4 ++++
+>>>>    Documentation/devicetree/bindings/net/stm32-dwmac.yaml       | 4 ++++
+>>>>    Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml | 4 ++++
+>>>>    .../devicetree/bindings/regulator/st,stm32-vrefbuf.yaml      | 4 ++++
+>>>>    Documentation/devicetree/bindings/rng/st,stm32-rng.yaml      | 4 ++++
+>>>>    Documentation/devicetree/bindings/serial/st,stm32-uart.yaml  | 4 ++++
+>>>>    Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml    | 4 ++++
+>>>>    Documentation/devicetree/bindings/sound/st,stm32-sai.yaml    | 4 ++++
+>>>>    .../devicetree/bindings/sound/st,stm32-spdifrx.yaml          | 4 ++++
+>>>>    Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml     | 4 ++++
+>>>>    Documentation/devicetree/bindings/spi/st,stm32-spi.yaml      | 4 ++++
+>>>>    Documentation/devicetree/bindings/usb/dwc2.yaml              | 4 ++++
+>>>>    24 files changed, 97 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+>>>> index b767ec72a999..daf8dcaef627 100644
+>>>> --- a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+>>>> +++ b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+>>>> @@ -50,6 +50,10 @@ properties:
+>>>>      power-domains:
+>>>>        maxItems: 1
+>>>> +  feature-domains:
+>>>> +    minItems: 1
+>>>> +    maxItems: 3
+>>>
+>>> What are the 3 entries?
+>>>
+>>> Rob
+>>
+>> I thought I was benefiting from the description of the pattern-property in
+>> the RIFSC YAML file. But yes anyway, it seems like it needs some description
+>> here as the dependency does not appear in this file.
+> 
+> Humm, that should limit the maximum entries to 2, so 3 would never work
+> (if RIFSC is the parent).
+> 
+>> I picked 3 as a maxItems for our ST needs, I'll give it some more thought
+>> when coming back with something clearer.
+> 
+> I'd expect you have 1 entry for register bus and 1 entry for DMA bus if
+> there is one. It's block specific for how many entries, so the RIFSC
+> schema should not be setting that. You could possibly say that
+> 'feature-domains' is required for all the child nodes though.
+
+Ok, I will change to not specifying the number of entries in the
+RIFSC YAML file for V2.
+
+> 
+> Rob
+Some hardware blocks may have a firewall ID for their device part and
+another ID for their master part as well. In the end, the number of
+entries could very well vary between different platforms. And the YAML
+files are common to these platforms.
+
+This property could be used for "extra" arguments as well, that are not
+firewall IDs.
+
+What do you suggest between picking a high maxItems value that would
+(hopefully) cover all cases and not specifying maxItems at all? Or maybe
+another property dedicated to such arguments?
+
+Best regards,
+Gatien

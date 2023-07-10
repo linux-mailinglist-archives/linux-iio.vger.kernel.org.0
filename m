@@ -2,118 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F75974C91C
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jul 2023 01:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B2FE74CB34
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jul 2023 06:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjGIXkY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Jul 2023 19:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42504 "EHLO
+        id S229592AbjGJE2M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jul 2023 00:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjGIXkX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jul 2023 19:40:23 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C10510C;
-        Sun,  9 Jul 2023 16:40:22 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6b9610b8a64so390823a34.3;
-        Sun, 09 Jul 2023 16:40:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688946021; x=1691538021;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sjoav9DjNTMYdRsPrPB25AzH4TrQH4BWT3WECle+jRw=;
-        b=mcTOXQ0kJMF/RxY420Rp+PHc1ZeChucL/Hg8DVFkpfZ7g9j01qHNJ9GCi5R2i0t4Mh
-         uSMIwBYKj031UZTAX3PtRQ0Ra4uDjEmjNEENROqwgu4TGbV0H3x+mdwnC996LN9PmQZo
-         MSdM1vrll12Z7VoOXccXI68+chOVJfoJYaiLGiHHQKI4s3pTMbcl0F7PdSeDl37jRJ0v
-         WGu5qHDMs+umu6sAjjhp8K9ROlsxvB3OdTOliur1Wzg1r0xMQiRVebzW3VxqmOy13KSG
-         NUYMqAv6mQvrK6Ov/lmogpMOF4WHBcYAgmVHgs7c0eN+cwLuFms7t/IIwDTz6wsVCRoE
-         4mqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688946021; x=1691538021;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sjoav9DjNTMYdRsPrPB25AzH4TrQH4BWT3WECle+jRw=;
-        b=hY47SuUjxl2PKJWTpMSPNkroWZ3nct3B94Y3l1f0H1KrcHYWzV6RYuIQERCMSYKS8O
-         hJ3qDOu6/pe5BYqFByB+IDlYRfXwjgqkSncmlKIRNXoFTP3fjeZJvbBn3t9PGeKIkRta
-         v4ygjPPOwVFVbAlDXldZ0HKZ+zDYbGbvMOHZoDjNPF59UwP7JfQtBjU05GkbjK6OJ6g5
-         RjL6FdAjrGW1BNdenHndDPkmlgcmwNz5zZPPPIsh/gWYJwsCW8WVsxFkph++o05Ku56s
-         vIEcJ6GXCS1z1pta+PEVM3uvYg0W91v3INNZgnCgLMctd7cFtjCy2qO9n+qT22kHrpgK
-         BKew==
-X-Gm-Message-State: ABy/qLZLKY/HPCF/FJBsKhlVyjJ8fqZqf3gmCzRtCe1oCbh5LGh0YjVk
-        3HIaZj/rh5Vnh7MMQSTMu28=
-X-Google-Smtp-Source: APBJJlHuTcGDJxgHe/HTEZMUKNkUJFm15BfEgmt4V+RieeKYp8uXpcsj1ct1wATSj/VD8ZTzPv1lTA==
-X-Received: by 2002:a05:6871:88a:b0:1b0:5e21:29a7 with SMTP id r10-20020a056871088a00b001b05e2129a7mr12955811oaq.10.1688946021138;
-        Sun, 09 Jul 2023 16:40:21 -0700 (PDT)
-Received: from [192.168.86.31] (99-145-207-128.lightspeed.austtx.sbcglobal.net. [99.145.207.128])
-        by smtp.gmail.com with ESMTPSA id v19-20020a056870e49300b0019ea8771fb0sm3877233oag.13.2023.07.09.16.40.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jul 2023 16:40:20 -0700 (PDT)
-Message-ID: <52f47b43-e735-0be9-ebac-e6e099a2dd09@gmail.com>
-Date:   Sun, 9 Jul 2023 18:40:20 -0500
+        with ESMTP id S229450AbjGJE2L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jul 2023 00:28:11 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BF9E7;
+        Sun,  9 Jul 2023 21:28:10 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36A2FPZG020334;
+        Mon, 10 Jul 2023 00:27:49 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3rq4q67y6b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 10 Jul 2023 00:27:48 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 36A4Rlx2042214
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 10 Jul 2023 00:27:47 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 10 Jul
+ 2023 00:27:46 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 10 Jul 2023 00:27:46 -0400
+Received: from kimedia-VirtualBox.analog.com (KPALLER2-L02.ad.analog.com [10.116.185.69])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 36A4RUY6030375;
+        Mon, 10 Jul 2023 00:27:33 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <Michael.Hennerich@analog.com>,
+        <andy.shevchenko@gmail.com>, <robh@kernel.org>,
+        <krzysztof.kozlowski@linaro.org>, <conor+dt@kernel.org>,
+        <kimseer.paller@analog.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v9 1/2] dt-bindings: iio: adc: add max14001
+Date:   Mon, 10 Jul 2023 12:27:22 +0800
+Message-ID: <20230710042723.46084-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] Add struct ad9832_platform_data to the include/linux/iio
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        linux-staging@lists.linux.dev, skhan@linuxfoundation.org,
-        ivan.orlov0322@gmail.com
-References: <20230707211553.GA110890@madhu-kernel>
- <2023070858-brewing-outpour-764c@gregkh>
- <20230708154506.01785c65@jic23-huawei>
-From:   Madhumitha Prabakaran <madhumithabiw@gmail.com>
-In-Reply-To: <20230708154506.01785c65@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: A1BS55lsD-rj6Lr4R3dzMa52jr5ZaQar
+X-Proofpoint-ORIG-GUID: A1BS55lsD-rj6Lr4R3dzMa52jr5ZaQar
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-10_03,2023-07-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ impostorscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307100039
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The MAX14001 is a configurable, isolated 10-bit ADC for multi-range
+binary inputs.
 
-On 7/8/23 09:45, Jonathan Cameron wrote:
-> On Sat, 8 Jul 2023 13:10:29 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
->> On Fri, Jul 07, 2023 at 04:15:53PM -0500, Madhumitha Prabakaran wrote:
->>> Add struct ad9832_platform_data to the include/linux/iio
->>> for maintaining code organization and clarity.
->>>
->>> Signed-off-by: Madhumitha Prabakaran <madhumithabiw@gmail.com>
->>> ---
->>>   drivers/staging/iio/frequency/ad9832.c |  3 +--
->>>   drivers/staging/iio/frequency/ad9832.h | 34 --------------------------
->>>   include/linux/iio/frequency/ad9832.h   | 30 +++++++++++++++++++++++
->> No, not yet, sorry.  Staging drivers should be self-contained, why does
->> this .c file need a .h file at all anyway?  It should all just be in the
->> .c file, can you do that instead?
-> This is an aged driver so still has definitions that would be included
-> from board files, hence the header.
->
-> So Madhumitha, if you are looking at getting this driver out of staging
-> (which would be great!) then first job is convert it from platform data
-> to device tree (or better yet generic firmware bindings using linux/property.h)
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../bindings/iio/adc/adi,max14001.yaml        | 54 +++++++++++++++++++
+ MAINTAINERS                                   |  7 +++
+ 2 files changed, 61 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
 
-Sure, I will take a look and work on convert it from platform data to 
-generic
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+new file mode 100644
+index 000000000000..9d03c611fca3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,max14001.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices MAX14001 ADC
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++
++description: |
++    Single channel 10 bit ADC with SPI interface. Datasheet
++    can be found here:
++      https://www.analog.com/media/en/technical-documentation/data-sheets/MAX14001-MAX14002.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,max14001
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 5000000
++
++  vref-supply:
++    description: Voltage reference to establish input scaling.
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,max14001";
++            reg = <0>;
++            spi-max-frequency = <5000000>;
++            vref-supply = <&vref_reg>;
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e7d4ae01cdcc..0253058c345b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12791,6 +12791,13 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/max9860.txt
+ F:	sound/soc/codecs/max9860.*
+ 
++MAX14001 IIO ADC DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
++
+ MAXBOTIX ULTRASONIC RANGER IIO DRIVER
+ M:	Andreas Klinger <ak@it-klinger.de>
+ L:	linux-iio@vger.kernel.org
 
-firmware bindings.
+base-commit: 62fd3fb591d9faf06e74454f4d3dce0711c59a49
+-- 
+2.34.1
 
-> A side effect of that is the header would go away as equivalent job would be
-> done by the dt-bindings yaml file.
->
-> Jonathan
->
->> thanks,
->>
->> greg k-h

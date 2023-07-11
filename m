@@ -2,153 +2,288 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CEFC74E792
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jul 2023 08:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FEA174E80A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jul 2023 09:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbjGKGzz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jul 2023 02:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35744 "EHLO
+        id S229668AbjGKHd3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jul 2023 03:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjGKGzy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jul 2023 02:55:54 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D376136
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jul 2023 23:55:51 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36B463rQ020334;
-        Tue, 11 Jul 2023 02:55:30 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3rq4q6fygq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jul 2023 02:55:30 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 36B6tT6m032262
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 11 Jul 2023 02:55:29 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 11 Jul
- 2023 02:55:28 -0400
-Received: from ASHBMBX8.ad.analog.com ([fe80::5480:da01:e8ae:ffda]) by
- ASHBMBX8.ad.analog.com ([fe80::5480:da01:e8ae:ffda%9]) with mapi id
- 15.02.0986.014; Tue, 11 Jul 2023 02:55:28 -0400
-From:   "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>
-CC:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: RE: [PATCH v9 2/2] iio: adc: max14001: New driver
-Thread-Topic: [PATCH v9 2/2] iio: adc: max14001: New driver
-Thread-Index: AQHZsubiZVm2aMsLPUi7mLF9xAsvxK+y39eA///AI5CAAHWzAIABAMag
-Date:   Tue, 11 Jul 2023 06:55:28 +0000
-Message-ID: <fe0cd5348f864a6392a7e0e5ca93bec5@analog.com>
-References: <20230710042723.46084-1-kimseer.paller@analog.com>
- <20230710042723.46084-2-kimseer.paller@analog.com>
- <CAHp75Vd386P9xM_+wLahp6B_XwYVq1AZxaFQeWvZ2pnk-tFGHA@mail.gmail.com>
- <11c30a02df784ca78be271fdf9190dad@analog.com>
- <CAHp75VegvKFUXoJoJnuXstJa_L66M2Ah9yf1aEQ8-ET1QczDtQ@mail.gmail.com>
-In-Reply-To: <CAHp75VegvKFUXoJoJnuXstJa_L66M2Ah9yf1aEQ8-ET1QczDtQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYTNCaGJHeGxjakpjWVhCd1pHRjBZVnh5YjJGdGFXNW5YREE1WkRnME9X?=
- =?utf-8?B?STJMVE15WkRNdE5HRTBNQzA0TldWbExUWmlPRFJpWVRJNVpUTTFZbHh0YzJk?=
- =?utf-8?B?elhHMXpaeTFsT1RFMVpXSTROaTB4Wm1JM0xURXhaV1V0WVdVNE1DMDVPV1Zs?=
- =?utf-8?B?T1dNMk1HRXhPV1ZjWVcxbExYUmxjM1JjWlRreE5XVmlPRGd0TVdaaU55MHhN?=
- =?utf-8?B?V1ZsTFdGbE9EQXRPVGxsWlRsak5qQmhNVGxsWW05a2VTNTBlSFFpSUhONlBT?=
- =?utf-8?B?STBPREEySWlCMFBTSXhNek16TXpVek1qRXlOVFV6TWpFM056Z2lJR2c5SW1S?=
- =?utf-8?B?UVdGWkxTRFJtTTBOVFFqWlBSelp3Y0VKRlJYaEVNMk5LWXowaUlHbGtQU0lp?=
- =?utf-8?B?SUdKc1BTSXdJaUJpYnowaU1TSWdZMms5SW1OQlFVRkJSVkpJVlRGU1UxSlZS?=
- =?utf-8?B?azVEWjFWQlFVVnZRMEZCUTNsdlJ5dHllRXhRV2tGa1YzRk1TbVV4V2xvdmFE?=
- =?utf-8?B?RmhiM05zTjFac2JpdEZSRUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRklRVUZCUVVSaFFWRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGRlFVRlJRVUpCUVVGQmRtUm9hM2huUVVGQlFVRkJRVUZCUVVGQlFVRkJT?=
- =?utf-8?B?alJCUVVGQ2FFRkhVVUZoVVVKbVFVaE5RVnBSUW1wQlNGVkJZMmRDYkVGR09F?=
- =?utf-8?B?RmpRVUo1UVVjNFFXRm5RbXhCUjAxQlpFRkNla0ZHT0VGYVowSm9RVWQzUVdO?=
- =?utf-8?B?M1FteEJSamhCV21kQ2RrRklUVUZoVVVJd1FVZHJRV1JuUW14QlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVWQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlowRkJRVUZCUVc1blFVRkJSMFZCV2tGQ2NFRkdPRUZqZDBKc1FVZE5RV1JS?=
- =?utf-8?B?UW5sQlIxVkJXSGRDZDBGSVNVRmlkMEp4UVVkVlFWbDNRakJCU0UxQldIZENN?=
- =?utf-8?B?RUZIYTBGYVVVSjVRVVJGUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRlJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRMEZCUVVGQlFVTmxRVUZCUVZsUlFtdEJSMnRCV0hkQ2Vr?=
- =?utf-8?B?RkhWVUZaZDBJeFFVaEpRVnBSUW1aQlNFRkJZMmRDZGtGSGIwRmFVVUpxUVVo?=
- =?utf-8?B?UlFXTjNRbVpCU0ZGQllWRkNiRUZJU1VGTlowRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZDUVVGQlFVRkJRVUZCUVVsQlFVRkJRVUZCUFQwaUx6NDhMMjFs?=
- =?utf-8?Q?dGE+?=
-x-dg-rorf: true
-x-originating-ip: [10.116.18.29]
-x-adiruleop-newscl: Rule Triggered
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S229890AbjGKHd2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jul 2023 03:33:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5D911A2;
+        Tue, 11 Jul 2023 00:33:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6926561355;
+        Tue, 11 Jul 2023 07:33:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA0CC433C7;
+        Tue, 11 Jul 2023 07:33:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689060805;
+        bh=ZzJs7jl+4dwk0J8YV8WPR3nY4dQUO+X9kJHL9hcrypY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=nW+lKo1D0JAwMvWcioG5zh2rfp0gQA63RIw5wWEccsphe5Ch9cX5SW6FwhPj0OKWK
+         FrRp16HwdbkgEEty8Lc07pSpovC8WnY0N4RyNrWp+VNBCG4+GNrS2mNRX5sJKxb6wc
+         LlGIMoppWrGsUwPAabNjjQkmO03gR/6QnE36knA84uc/0DxB6JDtt6xBW7xZjFX4Z9
+         jTa7kMxoCsVJeL5+DGugVc5QmmwGquhVWgSn0jPYCwrpXUTelzp7U0cz54K/xCn3Qs
+         AaMMLfKLhvib/ntplxdsCC4CnL4ykk7v8nctQCbgx+ypufUyf25OtTaSg7VXy5NB9A
+         TbDsaGZItBFxA==
+Message-ID: <1504c4eb-9def-dd75-ceb0-bb6c32fb78f2@kernel.org>
+Date:   Tue, 11 Jul 2023 09:33:18 +0200
 MIME-Version: 1.0
-X-Proofpoint-GUID: 8Cz4kFfBy9HAPC76wECqL_sCHy_BJ6N8
-X-Proofpoint-ORIG-GUID: 8Cz4kFfBy9HAPC76wECqL_sCHy_BJ6N8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-11_03,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- impostorscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307110060
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: add mcp4728 I2C DAC driver
+Content-Language: en-US
+To:     Andrea Collamati <andrea.collamati@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <87174c80-aa05-8db7-18e8-e22479d9c635@gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <87174c80-aa05-8db7-18e8-e22479d9c635@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW5keSBTaGV2Y2hlbmtv
-IDxhbmR5LnNoZXZjaGVua29AZ21haWwuY29tPg0KPiBTZW50OiBNb25kYXksIEp1bHkgMTAsIDIw
-MjMgNjo1MCBQTQ0KPiBUbzogUGFsbGVyLCBLaW0gU2VlciA8S2ltU2Vlci5QYWxsZXJAYW5hbG9n
-LmNvbT47IEhlbm5lcmljaCwgTWljaGFlbA0KPiA8TWljaGFlbC5IZW5uZXJpY2hAYW5hbG9nLmNv
-bT4NCj4gQ2M6IGxpbnV4LWlpbyA8bGludXgtaWlvQHZnZXIua2VybmVsLm9yZz47IEpvbmF0aGFu
-IENhbWVyb24NCj4gPGppYzIzQGtlcm5lbC5vcmc+OyBMYXJzLVBldGVyIENsYXVzZW4gPGxhcnNA
-bWV0YWZvby5kZT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2OSAyLzJdIGlpbzogYWRjOiBtYXgx
-NDAwMTogTmV3IGRyaXZlcg0KPiANCj4gW0V4dGVybmFsXQ0KPiANCj4gUmV0dXJuIHRvIHRoZSBw
-dWJsaWMgc3BhY2Ugb2YgdGhlIGRpc2N1c3Npb24uDQoNCk9oIGxhdGUgdG8gbm90aWNlLCBJIGhh
-ZCBtaXN0YWtlbmx5IHNldCBteSBlbWFpbCBjbGllbnQgdG8gInF1aWNrIHJlcGx5IiANCmluc3Rl
-YWQgb2YgJ3JlcGx5IHRvIGFsbCcuDQoNCj4gT24gTW9uLCBKdWwgMTAsIDIwMjMgYXQgMTE6MTfi
-gK9BTSBQYWxsZXIsIEtpbSBTZWVyDQo+IDxLaW1TZWVyLlBhbGxlckBhbmFsb2cuY29tPiB3cm90
-ZToNCj4gPiA+IEZyb206IEFuZHkgU2hldmNoZW5rbyA8YW5keS5zaGV2Y2hlbmtvQGdtYWlsLmNv
-bT4NCj4gPiA+IFNlbnQ6IE1vbmRheSwgSnVseSAxMCwgMjAyMyAzOjM3IFBNDQo+ID4gPiBPbiBN
-b24sIEp1bCAxMCwgMjAyMyBhdCA3OjI34oCvQU0gS2ltIFNlZXIgUGFsbGVyDQo+IDxraW1zZWVy
-LnBhbGxlckBhbmFsb2cuY29tPg0KPiA+ID4gd3JvdGU6DQo+IA0KPiAuLi4NCj4gDQo+ID4gPiA+
-IFY4IC0+IFY5OiBDaGFuZ2VkIFNQSSBidWZmZXIgZGF0YSB0eXBlcyB0byBfX2xlMTYsDQo+ID4g
-Pg0KPiA+ID4gV2h5Pw0KPiA+DQo+ID4gQmFzZWQgb24gdGhlIHByZXZpb3VzIGNvbW1lbnRzLCBJ
-IGhhdmUgdGFrZW4gdGhlIF9fbGUxNiBkYXRhIHR5cGUNCj4gPiBpbnRvIGFjY291bnQuIFRoZSBk
-ZXZpY2Ugc2VlbXMgdG8gZnVuY3Rpb24gdGhlIHNhbWUgYXMgdGhlIF9fYmUgZGF0YSB0eXBlLg0K
-PiA+IEkgaGF2ZSBub3QgeWV0IHN1cmUgYnV0IHRlY2huaWNhbGx5IHNwZWFraW5nLCBkbyBJIGhh
-dmUgdG8gcmV0YWluIHRoZSBkYXRhDQo+ID4gdHlwZXMgYXMgX19iZTE2IGJhc2VkIG9uIHRoZSBv
-dmVyYWxsIG9wZXJhdGlvbj8NCj4gDQo+IElmIHRoZSB0eXBlIGlzIF9fYmUsIHRoZSAqYmUqKCkg
-QVBJcyBzaG91bGQgYmUgdXNlZCwgb3RoZXJ3aXNlIF9fbGUgYW5kICpsZSooKS4NCg0KSSBiZWNh
-bWUgYSBsaXR0bGUgY29uZnVzZWQgd2l0aCB0aGUgcHJldmlvdXMgZGlzY3Vzc2lvbnMsIHdpbGwg
-bWFrZSB0aGUgDQpuZWNlc3NhcnkgY2hhbmdlcyBhY2NvcmRpbmdseS4NCg0KPiA+ID4gT2J2aW91
-c2x5IGl0J3MgaW5jb3JyZWN0IG5vdyBldmVuIG1vcmUgdGhhbiBiZWZvcmUuDQo+ID4gPiBUaGUg
-dHlwZXMgYXJlIGRlZmluZWQgYXMgX19sZSwgd2hpbGUgb3BzIGFyZSBhZ2FpbnN0IF9fYmUuDQo+
-ID4NCj4gPiBXb3VsZCBpdCBiZSByaWdodCB0byBpbXBsZW1lbnQgdGhpcyBieSByZXZlcnRpbmcg
-dGhlIHR5cGVzIGJhY2sgdG8gX19iZT8NCj4gPiBXaGF0IG90aGVyIGNvbnNpZGVyYXRpb25zIGNv
-dWxkIHRoZXJlIGJlPw0KPiANCj4gRmlyc3Qgb2YgYWxsLCB5b3UgbmVlZCB0byBkb2N1bWVudCB3
-aGF0IHlvdSBhcmUgZG9pbmcgd2l0aCB0aGVzZSBiaXQNCj4gdHdpZGRsZXJzLiBCYXNlZCBvbiB0
-aGUgY2xlYXIgdW5kZXJzdGFuZGluZyBieSBldmVyeW9uZSB3ZSBjYW4gc3VnZ2VzdA0KPiB3aGF0
-IGRhdGEgdHlwZShzKSBzdWl0cyB0aGUgYmVzdC4NCj4gDQo+IEhlbmNlIGluc3RlYWQgb2YgdjEw
-LCByZXBseSB3aXRoIGEgZHJhZnQgb2YgdGhlIGNvbW1lbnQgaW4gdGhlIGNvZGUgKEkNCj4gaGF2
-ZSBhc2tlZCBiZWZvcmUpIHRoYXQgZXhwbGFpbnMgdGhlc2UgYml0IHR3aWRkbGVycy4NCg0KSW4g
-cGF0Y2ggdjksIHJlZ2FyZGluZyB3aXRoIG15IGJpdCBhcnJhbmdlbWVudCBjb21tZW50cywgaXMg
-aXQgc29tZXdoYXQgY29ycmVjdCANCm9yIGRvIEkgbmVlZCB0byB0b3RhbGx5IHJlcGxhY2UgaXQ/
-IA0KDQpJIGFtIG5vdCB5ZXQgZmFtaWxpYXIgd2l0aCB0aGUgdGVybWlub2xvZ2llcywgc28gSSBo
-b3BlIHlvdSBjYW4gcHJvdmlkZSBzb21lIA0Kc3VnZ2VzdGlvbnMgYW5kIEknbGwgZGVmaW5pdGVs
-eSBzZW5kIHRoZSBkcmFmdCBmaXJzdC4NCg0KVGhhbmtzLA0KS2ltDQoNCg0K
+Thank you for your patch. There is something to discuss/improve.
+
+On 10/07/2023 22:43, Andrea Collamati wrote:
+> From 01b156ca1b27be83f4c74c288dbc0bcad178fe0b Mon Sep 17 00:00:00 2001
+> From: Andrea Collamati <andrea.collamati@gmail.com>
+> Date: Mon, 10 Jul 2023 16:20:40 +0200
+> Subject: [PATCH] iio: add mcp4728 I2C DAC driver
+
+1. That is not a proper patch header. I don't know how you got it, but
+it's wrong. Use just b4 or git format-patch and git send-email.
+
+2. Please use scripts/get_maintainers.pl to get a list of necessary
+people and lists to CC (and consider --no-git-fallback argument). It
+might happen, that command when run on an older kernel, gives you
+outdated entries. Therefore please be sure you base your patches on
+recent Linux kernel.
+
+
+> 
+> Microchip MCP4728 is a 12-bit quad channel
+> digital-to-analog converter (DAC) with I2C interface.
+> 
+> This patch adds support for per-channel gain, power state and power down mode control.
+
+3. Please do not use "This commit/patch", but imperative mood. See
+longer explanation here:
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+
+> Current state could be saved to on-chip EEPROM.
+> Internal voltage reference and external vdd ref are supported.
+> 
+> ---
+>  .../bindings/iio/dac/microchip,mcp4728.yaml   |  42 ++
+
+4. Bindings are always separate patches.
+
+5. Please run scripts/checkpatch.pl and fix reported warnings. Some
+warnings can be ignored, but the code here looks like it needs a fix.
+Feel free to get in touch if the warning is not clear.
+
+
+>  drivers/iio/dac/Kconfig                       |  12 +
+>  drivers/iio/dac/Makefile                      |   1 +
+>  drivers/iio/dac/mcp4728.c                     | 641 ++++++++++++++++++
+>  4 files changed, 696 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+>  create mode 100644 drivers/iio/dac/mcp4728.c
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> new file mode 100644
+> index 000000000000..68f4e359a921
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4728.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip mcp4728
+
+6. mcp or MCP? What is this? Proper title is missing...  also no
+description.
+
+> +
+> +maintainers:
+> +  - Andrea Collamati <andrea.collamati@gmail.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,mcp4728      
+
+7. Blank line
+8. Whitespace errors
+
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: |
+> +      Provides both power and acts as the reference supply on the mcp4728
+> +      when Internal Vref is not selected.      
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mcp4728_dac@64 {
+
+9. Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+Also, underscores are not allowed in node names.
+
+Shouldn't this binding be just merged with existing mcp4725? Are you
+sure it's not similar device, IOW, are you sure you do not have vref supply?
+
+
+> +            compatible = "microchip,mcp4728";
+> +            reg = <0x60>;
+> +            vdd-supply = <&vdac_vdd>;
+> +        };
+> +    };
+
+...
+
+> +
+> +static int mcp4728_probe(struct i2c_client *client,
+> +             const struct i2c_device_id *id)
+> +{
+> +    struct mcp4728_data *data;
+> +    struct iio_dev *indio_dev;
+> +    int err;
+> +
+> +    indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> +    if (indio_dev == NULL)
+> +        return -ENOMEM;
+
+Missing blank line
+
+> +    data = iio_priv(indio_dev);
+> +    i2c_set_clientdata(client, indio_dev);
+> +    data->client = client;
+> +    if (dev_fwnode(&client->dev))
+> +        data->id = (uintptr_t)device_get_match_data(&client->dev);
+> +    else
+> +        data->id = id->driver_data;
+
+Dead code, drop.
+
+> +
+> +    data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+> +    if (IS_ERR(data->vdd_reg))
+> +        return PTR_ERR(data->vdd_reg);
+> +
+> +    err = regulator_enable(data->vdd_reg);
+> +    if (err)
+> +        goto err_disable_vdd_reg;
+> +
+> +    err = mcp4728_init_channels_data(data);
+> +    if (err) {
+> +        dev_err(&client->dev,
+> +            "failed to read mcp4728 current configuration\n");
+
+None of your statements look properly aligned. What's more everything
+has incorrect indentation.
+
+Run checkpatch --strict and fix ALL warnings and errors.
+
+> +        goto err_disable_vdd_reg;
+> +    }
+> +
+> +    indio_dev->name = id->name;
+> +    indio_dev->info = &mcp4728_info;
+> +    indio_dev->channels = mcp4728_channels;
+> +    indio_dev->num_channels = MCP4728_N_CHANNELS;
+> +    indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +    err = iio_device_register(indio_dev);
+> +    if (err)
+> +        goto err_disable_vdd_reg;
+> +
+> +    return 0;
+> +
+> +err_disable_vdd_reg:
+> +    regulator_disable(data->vdd_reg);
+> +
+> +    return err;
+> +}
+> +
+> +static int mcp4728_remove(struct i2c_client *client)
+> +{
+> +    struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> +    struct mcp4728_data *data = iio_priv(indio_dev);
+> +
+> +    iio_device_unregister(indio_dev);
+> +    regulator_disable(data->vdd_reg);
+> +    return 0;
+> +}
+> +
+> +static const struct i2c_device_id mcp4728_id[] = { { "mcp4728", MCP4728 }, {} };
+
+That's some odd formatting. Look at existing files:
+git grep i2c_device_id
+
+> +MODULE_DEVICE_TABLE(i2c, mcp4728_id);
+> +
+> +static const struct of_device_id mcp4728_of_match[] = {
+> +    { .compatible = "microchip,mcp4728", .data = (void *)MCP4728 },
+
+Drop unused MCP4728.
+
+> +    {}
+> +};
+> +MODULE_DEVICE_TABLE(of, mcp4728_of_match);
+> +
+> +static struct i2c_driver mcp4728_driver = {
+> +        .driver = {
+> +                .name = MCP4728_DRV_NAME,
+> +                .of_match_table = mcp4728_of_match,
+> +                .pm = pm_sleep_ptr(&mcp4728_pm_ops),
+> +        },
+> +        .probe = mcp4728_probe,
+> +        .remove = mcp4728_remove,
+> +        .id_table = mcp4728_id,
+> +};
+> +module_i2c_driver(mcp4728_driver);
+> +
+> +MODULE_AUTHOR("Andrea Collamati <andrea.collamati@gmail.com>");
+> +MODULE_DESCRIPTION("MCP4728 12-bit DAC");
+> +MODULE_LICENSE("GPL");
+
+Best regards,
+Krzysztof
+

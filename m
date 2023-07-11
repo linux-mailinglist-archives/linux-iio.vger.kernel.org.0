@@ -2,111 +2,221 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6B074E9E1
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jul 2023 11:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8141774EB90
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jul 2023 12:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbjGKJIn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jul 2023 05:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40704 "EHLO
+        id S230047AbjGKKOa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jul 2023 06:14:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjGKJIm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jul 2023 05:08:42 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CF093
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jul 2023 02:08:41 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-991ef0b464cso1315724266b.0
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jul 2023 02:08:41 -0700 (PDT)
+        with ESMTP id S229939AbjGKKO3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jul 2023 06:14:29 -0400
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [IPv6:2a02:9e0:8000::40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCF7136
+        for <linux-iio@vger.kernel.org>; Tue, 11 Jul 2023 03:14:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689066520; x=1691658520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sCT/XxzRuhIOCG7TiLnjd8ZHAjjC0sPyU5Ljlso/Sg8=;
-        b=axcTDMKvWOaCpjgFCXQMwYBE2lmCs6RzORIdLuoQRO/2WHMgaHPXhQ5zcpWbNxfdlo
-         ql1rLkG8mcH+X5JhbVL2WHENCOaFuX88nUU3WWs1P0iGQ2KyxRlSuFA8c1c6h6N9LF/x
-         e/OPlbRfjKZ+vnGkeNOhcT012SV92wg15ZFdrA8h5R1zHgM/nS6fx9k4vgiZ3IpSEwoE
-         pcJkPVOdFimX166tbv2VjAQeVzNWw90Cx1YimtQOXlzwTy6+O7gaEotVTNQJW6XEQAc/
-         Y/hmWZ1ZZmT/beOS592ksZbvAKLGRZoMrIt2byWFwmd2O/MorxCsufkyX1hHRFg+KmjH
-         ywcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689066520; x=1691658520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sCT/XxzRuhIOCG7TiLnjd8ZHAjjC0sPyU5Ljlso/Sg8=;
-        b=gG/y5PMOpM80Jo8rUpPK6GEHkn5iBCJpre0/s3QyLAd0XRvbC5uFrizXICh11B7AyJ
-         fdG4F62KaUAyns/n87m16Cadt6RiDoQG5BqnsUaSvkiG54KVvCqsweRyeHsFY5f7D6Mg
-         2mG0fFMMMuHjTo6545gvHr2eYjwArEx1DZoWvme8tHJ7lmaO2I20aDrcu55a+2LxhR77
-         5Cq/ZSLU6OGY5vUhs3viWRDpdo6tedVKtkpj6qcpCsbwylZGPPmemcyNGxPRc7RbFu1u
-         00n5JgDn6COcWX8v894pd45nvD4HwAJuMZTYebEgxb/4JhYh63nC6JA+bX6YrrseigJ5
-         q0ZA==
-X-Gm-Message-State: ABy/qLYfKv168yIBuVGu6AzI0XmjWIYD6RwrWCbVoKBs0fBXIzPhHv0B
-        ziPjHk8K7L1KIr/8uN3NQy5BX27VqmH2D0Mzbuk=
-X-Google-Smtp-Source: APBJJlG9oYRzvqfzRnSDLsSqTOvOr3+1Fkikr7LESzJMGOR+MNOI/0JkogPu0ClQfrYZkp3aUQpgbZwhHKcA8t8Nc2c=
-X-Received: by 2002:a17:906:c152:b0:974:fb94:8067 with SMTP id
- dp18-20020a170906c15200b00974fb948067mr19527068ejc.23.1689066520235; Tue, 11
- Jul 2023 02:08:40 -0700 (PDT)
+        d=protonic.nl; s=202111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+         from;
+        bh=HKlgnykOnFg9SknTx7FMyWuQFrDaMQk/32MCbOChNI4=;
+        b=T15BVvnEJBkTOo9yT6EHD9ta9Wgkqo3S8+BzK6EcDV/JPnNhgycTl4lqdw2lFYTTtDrAuKF6TQHiu
+         haXXglCr3zTOUH34j/ta0aM4CQGS0AvRaNj9vgqPo7ttHQyF+M7FaiX2YgEKA1way5qcFleAFI1T3c
+         nIDRlGf4dymGL5UAJblFfthVsMmyR2MIqNmdLS82g2MbgSf5oZD37bzuz5kHOTE1lmVS2jnbAlEYmJ
+         Pj+vhUepqEBcqmvRP7ocfUMLnwGvGXXTNYFFk8xIlWxEtbyj7oXToBZNGB22NNmVB7TpiPIoOySRcg
+         GN02bBfmUFYPNFZdlDuv8VB1dcGbsWw==
+X-MSG-ID: b56f306b-1fd3-11ee-9499-0050569d11ae
+From:   Roan van Dijk <roan@protonic.nl>
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH v2] iio: chemical: scd4x: Add pressure compensation
+Date:   Tue, 11 Jul 2023 12:14:19 +0200
+Message-Id: <20230711101419.2065107-1-roan@protonic.nl>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230710042723.46084-1-kimseer.paller@analog.com>
- <20230710042723.46084-2-kimseer.paller@analog.com> <CAHp75Vd386P9xM_+wLahp6B_XwYVq1AZxaFQeWvZ2pnk-tFGHA@mail.gmail.com>
- <11c30a02df784ca78be271fdf9190dad@analog.com> <CAHp75VegvKFUXoJoJnuXstJa_L66M2Ah9yf1aEQ8-ET1QczDtQ@mail.gmail.com>
- <fe0cd5348f864a6392a7e0e5ca93bec5@analog.com>
-In-Reply-To: <fe0cd5348f864a6392a7e0e5ca93bec5@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 11 Jul 2023 12:08:04 +0300
-Message-ID: <CAHp75VcpguSN9DkuCtpaB+_=sY7+Ot1MGPWToe-2pYjFXC9=4Q@mail.gmail.com>
-Subject: Re: [PATCH v9 2/2] iio: adc: max14001: New driver
-To:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-Cc:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 11, 2023 at 9:55=E2=80=AFAM Paller, Kim Seer
-<KimSeer.Paller@analog.com> wrote:
-> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > On Mon, Jul 10, 2023 at 11:17=E2=80=AFAM Paller, Kim Seer
-> > <KimSeer.Paller@analog.com> wrote:
+This patch adds pressure compensation to the scd4x driver. The pressure can
+be written to the sensor in hPa. The pressure will be compensated
+internally by the sensor.
 
-...
+Signed-off-by: Roan van Dijk <roan@protonic.nl>
+---
 
-> > Hence instead of v10, reply with a draft of the comment in the code (I
-> > have asked before) that explains these bit twiddlers.
->
-> In patch v9, regarding with my bit arrangement comments, is it somewhat c=
-orrect
-> or do I need to totally replace it?
->
-> I am not yet familiar with the terminologies, so I hope you can provide s=
-ome
-> suggestions and I'll definitely send the draft first.
+Changes since v2:
+ - Fix for kernel test robot errors of uninitialized symbols
+ - Changed pressure compensation to output channel instead of a channel
+   with calibbias
+ - Pressure can now be compensated during measurements
 
-I'm not sure I understand what comments you are referring to.
-The v9 does not explain the algorithm clearly.
+ drivers/iio/chemical/scd4x.c | 79 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 73 insertions(+), 6 deletions(-)
 
-What you need is to cite or retell what the datasheet explains about
-bit ordering along with the proposed algo (in AN as far as I
-understood). Because I haven't got, why do you need to use be16 +
-bitrev if your data is le16 (and that's my understanding of the
-datasheet). Is it because of the answer from the device? I don't
-remember if it keep the bit order the same (i.e. D0...D9) as on the
-wire.
+diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+index a4f22d926400..4bb5d215c54c 100644
+--- a/drivers/iio/chemical/scd4x.c
++++ b/drivers/iio/chemical/scd4x.c
+@@ -36,6 +36,8 @@
+ #define SCD4X_WRITE_BUF_SIZE 5
+ #define SCD4X_FRC_MIN_PPM 0
+ #define SCD4X_FRC_MAX_PPM 2000
++#define SCD4X_PRESSURE_COMP_MIN_MBAR 700
++#define SCD4X_PRESSURE_COMP_MAX_MBAR 1200
+ #define SCD4X_READY_MASK 0x01
+ 
+ /*Commands SCD4X*/
+@@ -45,6 +47,8 @@ enum scd4x_cmd {
+ 	CMD_STOP_MEAS           = 0x3f86,
+ 	CMD_SET_TEMP_OFFSET     = 0x241d,
+ 	CMD_GET_TEMP_OFFSET     = 0x2318,
++	CMD_SET_AMB_PRESSURE	= 0xe000,
++	CMD_GET_AMB_PRESSURE	= 0xe000,
+ 	CMD_FRC                 = 0x362f,
+ 	CMD_SET_ASC             = 0x2416,
+ 	CMD_GET_ASC             = 0x2313,
+@@ -137,7 +141,8 @@ static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
+ 	 * Measurement needs to be stopped before sending commands.
+ 	 * Except for reading measurement and data ready command.
+ 	 */
+-	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
++	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS) &&
++			(cmd != CMD_GET_AMB_PRESSURE)) {
+ 		ret = scd4x_send_command(state, CMD_STOP_MEAS);
+ 		if (ret)
+ 			return ret;
+@@ -166,7 +171,8 @@ static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
+ 	}
+ 
+ 	/* start measurement */
+-	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
++	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS) &&
++			(cmd != CMD_GET_AMB_PRESSURE)) {
+ 		ret = scd4x_send_command(state, CMD_START_MEAS);
+ 		if (ret)
+ 			return ret;
+@@ -188,9 +194,11 @@ static int scd4x_write(struct scd4x_state *state, enum scd4x_cmd cmd, uint16_t a
+ 	buf[4] = crc;
+ 
+ 	/* measurement needs to be stopped before sending commands */
+-	ret = scd4x_send_command(state, CMD_STOP_MEAS);
+-	if (ret)
+-		return ret;
++	if (cmd != CMD_SET_AMB_PRESSURE) {
++		ret = scd4x_send_command(state, CMD_STOP_MEAS);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/* execution time */
+ 	msleep_interruptible(500);
+@@ -200,7 +208,7 @@ static int scd4x_write(struct scd4x_state *state, enum scd4x_cmd cmd, uint16_t a
+ 		return ret;
+ 
+ 	/* start measurement, except for forced calibration command */
+-	if (cmd != CMD_FRC) {
++	if ((cmd != CMD_FRC) && (cmd != CMD_SET_AMB_PRESSURE)) {
+ 		ret = scd4x_send_command(state, CMD_START_MEAS);
+ 		if (ret)
+ 			return ret;
+@@ -338,6 +346,18 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
++		if (chan->output) {
++			mutex_lock(&state->lock);
++			ret = scd4x_read(state, CMD_GET_AMB_PRESSURE, &tmp, sizeof(tmp));
++			mutex_unlock(&state->lock);
++
++			if (ret)
++				return ret;
++
++			*val = be16_to_cpu(tmp);
++			return IIO_VAL_INT;
++		}
++
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+ 			return ret;
+@@ -386,6 +406,25 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
++static const int scd4x_pressure_calibbias_available[] = {
++	SCD4X_PRESSURE_COMP_MIN_MBAR, 1, SCD4X_PRESSURE_COMP_MAX_MBAR,
++};
++
++static int scd4x_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
++			    const int **vals, int *type, int *length, long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		*vals = scd4x_pressure_calibbias_available;
++		*type = IIO_VAL_INT;
++
++		return IIO_AVAIL_RANGE;
++	}
++
++	return -EINVAL;
++}
++
++
+ static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 				int val, int val2, long mask)
+ {
+@@ -399,6 +438,21 @@ static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+ 		mutex_unlock(&state->lock);
+ 
+ 		return ret;
++	case IIO_CHAN_INFO_RAW:
++		switch (chan->type) {
++		case IIO_PRESSURE:
++			if (val < SCD4X_PRESSURE_COMP_MIN_MBAR ||
++			    val > SCD4X_PRESSURE_COMP_MAX_MBAR)
++				return -EINVAL;
++
++			mutex_lock(&state->lock);
++			ret = scd4x_write(state, CMD_SET_AMB_PRESSURE, val);
++			mutex_unlock(&state->lock);
++
++			return ret;
++		default:
++			return -EINVAL;
++		}
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -503,9 +557,22 @@ static const struct iio_info scd4x_info = {
+ 	.attrs = &scd4x_attr_group,
+ 	.read_raw = scd4x_read_raw,
+ 	.write_raw = scd4x_write_raw,
++	.read_avail = scd4x_read_avail,
+ };
+ 
+ static const struct iio_chan_spec scd4x_channels[] = {
++	{
++		/*
++		 * this channel is special in a sense we are pretending that
++		 * sensor is able to change measurement chamber pressure but in
++		 * fact we're just setting pressure compensation value
++		 */
++		.type = IIO_PRESSURE,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.info_mask_separate_available = BIT(IIO_CHAN_INFO_RAW),
++		.output = 1,
++		.scan_index = -1,
++	},
+ 	{
+ 		.type = IIO_CONCENTRATION,
+ 		.channel2 = IIO_MOD_CO2,
+-- 
+2.39.2
 
-For the terminology, use what the datasheet and AN provide you. Also
-good to put those URLs to the code and datasheet as Datasheet: tag in
-the commit message.
-
---=20
-With Best Regards,
-Andy Shevchenko

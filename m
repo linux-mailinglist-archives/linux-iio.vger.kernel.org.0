@@ -2,94 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB3CB750B9B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 17:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0605750C6C
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 17:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232304AbjGLPAK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jul 2023 11:00:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
+        id S232784AbjGLP2M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jul 2023 11:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232331AbjGLPAG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 11:00:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E2F81FEF;
-        Wed, 12 Jul 2023 07:59:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE27A61830;
-        Wed, 12 Jul 2023 14:59:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6F0C433CC;
-        Wed, 12 Jul 2023 14:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689173970;
-        bh=XSDSo2eH1AfgkPqH7BHPmxIrzico4gDoZXNfNGXJy6M=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=lZRkan4mTpKdCvvBsz/CUFRmG4FgNdpjYLc50I1YXxurW64vUYZYbxYA3at31IR3A
-         X+zhMIpgW1hRHw4EOQeTYjKhM0TK/IqZXfWR047WyZyhYmM8G7WQ3lcQtdVGAfg0T+
-         V//EpVYRPRpqDzlWFuqAplyziEJ6z+4DtmBpFoiuiqxccpm8Dvryqv6U4YQjboMj/U
-         1t5GsodJrwdCZIVAIDmmHhxiEtJYozKtiEXZ2RXX/IM9ZTRWP6UvCaSPGjghikwKJt
-         7C6ofjyGMwa3FYEhu2f7ppYvAru7ZAivHUNNmEmUzKvGh5WQS7My2sqzvek2s9b12U
-         52W+kiKhsRNyA==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2b703caf344so110418381fa.1;
-        Wed, 12 Jul 2023 07:59:30 -0700 (PDT)
-X-Gm-Message-State: ABy/qLb1uTHk6kSFjt2m4CSAatd/hYG0ikzU3uY/sAY046gI+fDxV+0g
-        25riEPTwuob/Oh6Ou3s1zfGtAw1fJ+S8isphow==
-X-Google-Smtp-Source: APBJJlH5uKlJrU/2bJ6EcKGheFiQh5satiiMPhfSYYXicIC8UkCHmsWM3SC5mMfAcsb2DXj7ekay3N4+o4QFoX/CBD4=
-X-Received: by 2002:a2e:a414:0:b0:2b7:18ff:ba63 with SMTP id
- p20-20020a2ea414000000b002b718ffba63mr10508148ljn.37.1689173968279; Wed, 12
- Jul 2023 07:59:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230712080512.94964-1-krzysztof.kozlowski@linaro.org> <168917384908.183505.328888758911691646.robh@kernel.org>
-In-Reply-To: <168917384908.183505.328888758911691646.robh@kernel.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Wed, 12 Jul 2023 08:59:15 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+MNsxnNBdDQJEy5qEraQMTyu_nHHEJNAvWM0bQ8p7Kig@mail.gmail.com>
-Message-ID: <CAL_Jsq+MNsxnNBdDQJEy5qEraQMTyu_nHHEJNAvWM0bQ8p7Kig@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: adi,ad74115: remove ref from -nanoamp
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S233379AbjGLP2H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 11:28:07 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C56D1BD5;
+        Wed, 12 Jul 2023 08:28:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1689175686;
+  x=1720711686;
+  h=references:from:to:cc:subject:in-reply-to:date:
+   message-id:mime-version;
+  bh=HV2jebiOT6mQ2HdkOPhLHt3aK1bDvbiJCC1sTblJH5M=;
+  b=dkNrtssclX51nFDUdqZgyelD1J0g5QUPFBm0Cl6Kxepd72WGhCOZFfVb
+   x0tC4au7lzk77Z0D1AO5YJQ3pVn4SQFpq9UM8wcCCLQmQHEkPlG192adu
+   +dItZADjgAa96CTDkxNl+UHMfmtWI9XYDtg0z5FxRFYmh78/aZ7NbUQi5
+   0JNqyO5NnN/fmyRxyEbNBb0kg8OI1x6OQVCc/DKUNq6KVA5OFy+Dl3jmq
+   cVXUhbyvLq+d52CCdgz3pppaiDhP9l60rrKBJHCAyp6X6Iy/9iJCorQtm
+   l1S6Jh0Qbm86a7cedpkBCHmxJGMAsnlewq5B2301mK5r+r/iRxIEmHVh9
+   w==;
+References: <cover.1689174736.git.waqar.hameed@axis.com>
+User-agent: a.out
+From:   Waqar Hameed <waqar.hameed@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        devicetree@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        linux-iio@vger.kernel.org, Cosmin Tanislav <demonsingur@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+CC:     <kernel@axis.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/3] dt-bindings: iio: proximity: Add Murata IRS-D200
+In-Reply-To: <cover.1689174736.git.waqar.hameed@axis.com>
+Date:   Wed, 12 Jul 2023 17:12:16 +0200
+Message-ID: <3b9b284effa7d63c5c3c022f0d51312052bbe62c.1689174736.git.waqar.hameed@axis.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
+ (10.20.40.7)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 8:57=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
-:
->
->
-> On Wed, 12 Jul 2023 10:05:12 +0200, Krzysztof Kozlowski wrote:
-> > dtschema v2023.06 comes with support for properties with -nanoamp
-> > suffix, thus bindings should not have a ref for it:
-> >
-> >   adi,ad74115.yaml: properties:adi,ext1-burnout-current-nanoamp: '$ref'=
- should not be valid under {'const': '$ref'}
-> >
-> > Cc: Cosmin Tanislav <demonsingur@gmail.com>
-> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > ---
-> >  Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml | 3 ---
-> >  1 file changed, 3 deletions(-)
-> >
->
-> Acked-by: Rob Herring <robh@kernel.org>
+Murata IRS-D200 is a PIR sensor for human detection. It uses the I2C bus
+for communication with interrupt support. Add devicetree bindings
+requiring the compatible string, I2C slave address (reg), power supply
+and interrupts.
 
-Jonathan, Please pick this up for 6.5. Or I can if you prefer.
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+---
+ .../iio/proximity/murata,irsd200.yaml         | 60 +++++++++++++++++++
+ 1 file changed, 60 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
 
-Rob
+diff --git a/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+new file mode 100644
+index 000000000000..67f5389ece67
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
+@@ -0,0 +1,60 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/proximity/murata,irsd200.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Murata IRS-D200 PIR sensor
++
++maintainers:
++  - Waqar Hameed <waqar.hameed@axis.com>
++
++description:
++  PIR sensor for human detection.
++
++properties:
++  compatible:
++    const: murata,irsd200
++
++  reg:
++    items:
++      - enum:
++          - 0x48
++          - 0x49
++        description: |
++          When the AD pin is connected to GND, the slave address is 0x48.
++          When the AD pin is connected to VDD, the slave address is 0x49.
++
++  interrupts:
++    maxItems: 1
++    description:
++      Type should be IRQ_TYPE_EDGE_RISING.
++
++  vdd-supply:
++    description:
++      3.3 V supply voltage.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        proximity@48 {
++            compatible = "murata,irsd200";
++            reg = <0x48>;
++            interrupts = <24 IRQ_TYPE_EDGE_RISING>;
++            vdd-supply = <&regulator_3v3>;
++        };
++    };
++...
+-- 
+2.30.2
+

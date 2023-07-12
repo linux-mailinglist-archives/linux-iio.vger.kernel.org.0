@@ -2,102 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4F9C751079
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 20:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54CA4751425
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jul 2023 01:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232160AbjGLS0w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jul 2023 14:26:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
+        id S232948AbjGLXI5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jul 2023 19:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231528AbjGLS0v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 14:26:51 -0400
-Received: from dnyon.com (dnyon.com [142.132.167.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6708A19A7;
-        Wed, 12 Jul 2023 11:26:50 -0700 (PDT)
-From:   Alejandro Tafalla <atafalla@dnyon.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dnyon.com; s=mail;
-        t=1689186407; bh=Cd6yq1pU1C12fymMiRQBdR5VsyxWAnsOWQLmupXPnrA=;
-        h=From:To:Cc:Subject:In-Reply-To:References;
-        b=kQ8T5yBxLIe0wWmovMdQSBJsMmu55cJWq1h7rFwWhdvCpuOPLXh7FIEys1OYXZqvA
-         HLKZAsk7Cp8jdPhbKSU14vdMALi4B1+kKo+CbW6ubNe8L2Iv0k6LLS+yUaYVmVzJtR
-         /pK0DCHunetUH7TX18xofBqO2WLzT9M0k6kDY+OG6lmu+ce3jxWKwYnL9ZefpEjA7w
-         dnOa1lvX/LiuKx1OOfvAsQsQTnX2nK1ZtXxW9dHpn0/OISuLE47DBKjD4BYy5CT3x/
-         hR6HFVNVt/OBk3+YRs6GhMzDW1NVpEqpcz12gmgbnH09tHFA+6+5sO5AEWDAcLz8ni
-         LPvlvwwN/oU2/jncAcIx/7tysFoOTT8WvEnFOZbjN8l+BBRTdcjxtdCUIYxcpBMORj
-         w4rpA8cWNSvJSnbmNXBamjdVUxB85/AOiHhfI+VWsEIjRk2EtLAjpXcAG489sihYG1
-         dfSKrSpwEXSz7TKbgtErnpMo7m8ViRSWYcarY7GHRFxKbYAE483QsGTKgV3nh7QB+D
-         altv5Jx+HcvpxOem8YFsCb1wQ8SXlTJu4FWU0pKBTh3Bka9eJDoIJEZEOc2QPw3JLT
-         dHI8io1zxbpm0+U++WW1NXGYAwGV/gVvLuzsa596A6rBArDHK6xDuCM4UtdU4m2e9p
-         Xy7hHDX+zYLf6xS15rj9xmqs=
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] iio: imu: lsm6dsx: Fix mount matrix retrieval
-Date:   Wed, 12 Jul 2023 20:24:47 +0200
-Message-ID: <13064186.O9o76ZdvQC@alexpc>
-In-Reply-To: <ZK6IpZvG47zsKZFk@lore-rh-laptop>
-References: <12960181.O9o76ZdvQC@alexpc> <ZK6IpZvG47zsKZFk@lore-rh-laptop>
+        with ESMTP id S232706AbjGLXIx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 19:08:53 -0400
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA0F1BEF;
+        Wed, 12 Jul 2023 16:08:36 -0700 (PDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+        by mx1.sberdevices.ru (Postfix) with ESMTP id 53AB7100023;
+        Thu, 13 Jul 2023 02:08:33 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 53AB7100023
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1689203313;
+        bh=8YhIqzbp82hCTdWYj2xf4FxKf/T/SgzoaxwK8OPEkMA=;
+        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+        b=MnVPiufIABcxhMOHl6F36H5xZFGYaTdCoVm2rsz1dVy+yRA5KizuSbOMb6fUN4Kub
+         PxPnnII9WEp0ECDNnI12nCsZR9YR0eBJj11dLJyuW5+nP2+QKBFvkZGDyfaqmga1IZ
+         Xv1xko+NDi2Kv4uDc9oaEk5GvS+4T5HZi3jDhO148QS5Rqo3UKXf2LBQKPOBzqW8a0
+         1zRxZlp5Y002AkvNZkpSKYO4NILsdGo3TaetsgBlTHLDCi8LnQqQi1Mwo6ooBj6Xc7
+         l9qbXKl+LpRokcdk0buzmappunt4zaLGxZSbAYd0YRxjp2O7miz34JEBFMHOmFkIHs
+         AmHw6KhT7Ac8Q==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.sberdevices.ru (Postfix) with ESMTPS;
+        Thu, 13 Jul 2023 02:08:33 +0300 (MSK)
+Received: from [192.168.1.127] (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 13 Jul 2023 02:08:13 +0300
+Message-ID: <fe1b4eb7-e137-fe43-44cb-8de597fe00e4@sberdevices.ru>
+Date:   Thu, 13 Jul 2023 02:04:05 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v5 0/6] iio: adc: meson: add iio channels to read channel
+ 7 mux inputs
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
+        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
+        <martin.blumenstingl@googlemail.com>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
+References: <20230711200141.239025-1-gnstark@sberdevices.ru>
+ <ZK7GCAgA1gljrxyl@smile.fi.intel.com>
+From:   George Stark <gnstark@sberdevices.ru>
+In-Reply-To: <ZK7GCAgA1gljrxyl@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 178587 [Jul 12 2023]
+X-KSMG-AntiSpam-Version: 5.9.59.0
+X-KSMG-AntiSpam-Envelope-From: GNStark@sberdevices.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 521 521 0c3391dd6036774f2e1052158c81e48587b96e95, {Tracking_arrow_text}, {Tracking_from_domain_doesnt_match_to}, p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1;sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;100.64.160.123:7.1.2, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/12 10:49:00 #21602221
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On mi=C3=A9rcoles, 12 de julio de 2023 13:04:05 (CEST) Lorenzo Bianconi wro=
-te:
-> > The function lsm6dsx_get_acpi_mount_matrix should return true when ACPI
-> > support is not enabled to allow executing iio_read_mount_matrix in the
-> > probe function.
-> >=20
-> > Fixes: dc3d25f22b88 ("iio: imu: lsm6dsx: Add ACPI mount matrix retrieva=
-l")
-> >=20
-> > Signed-off-by: Alejandro Tafalla <atafalla@dnyon.com>
-> > ---
-> >=20
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > b/drivers/iio/imu/ st_lsm6dsx/st_lsm6dsx_core.c
-> > index 6a18b363cf73..62bc3ee783fb 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > @@ -2687,7 +2687,7 @@ static int lsm6dsx_get_acpi_mount_matrix(struct
-> > device *dev,
-> >=20
-> >  static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
-> > =20
-> >  					  struct
-> >=20
-> > iio_mount_matrix *orientation)
-> >=20
-> >  {
-> >=20
-> > -	return false;
-> > +	return true;
->=20
-> I would say it should return something like -EOPNOTSUPP.
->=20
-> Regards,
-> Lorenzo
->=20
-> >  }
-> > =20
-> >  #endif
+Hello Andy
 
-Hi, thank you for the review. I'll send a v2 with a better solution that us=
-es=20
-error codes.
+On 7/12/23 18:26, Andy Shevchenko wrote:
+> On Tue, Jul 11, 2023 at 11:00:16PM +0300, George Stark wrote:
+>> Changelog:
+> 
+> I gave you a tag, any reason why you haven't applied it to your patches?
 
-Alejandro.
-
-
-
+if you're talking about patch 6 commit message - yes, I missed the last 
+line in your letter, I'll fix it.
+  --
+Best regards
+George

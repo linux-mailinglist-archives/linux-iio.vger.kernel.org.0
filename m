@@ -2,88 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5065750CBC
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 17:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DA12751003
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 19:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233684AbjGLPjx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jul 2023 11:39:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54410 "EHLO
+        id S232409AbjGLRwo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jul 2023 13:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233742AbjGLPjw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 11:39:52 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F291BB;
-        Wed, 12 Jul 2023 08:39:50 -0700 (PDT)
+        with ESMTP id S232401AbjGLRwn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 13:52:43 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4BC61FEB
+        for <linux-iio@vger.kernel.org>; Wed, 12 Jul 2023 10:52:41 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-991c786369cso882992966b.1
+        for <linux-iio@vger.kernel.org>; Wed, 12 Jul 2023 10:52:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1689176391;
-  x=1720712391;
-  h=references:from:to:cc:subject:date:in-reply-to:
-   message-id:mime-version;
-  bh=6YY5K6Pv6QqKIIYQnBoSV5Kj79iqnwblWu7VX/RxeuA=;
-  b=lg+bEeOl87Tju5BnH1hQxTURXL31LjrUMXE95iZD95QrBob+doYrKwK/
-   mY5rnWKU/tn4Qn3bkJo9qvZFovQHCGiQenJAFQd3V4xDN4AGFL+ix4Wni
-   Z4j1ILH+sRM9H0u4vZas1cizi+yNKMTq099MNj0frDJc8NkRSFM/9Oq0B
-   RM0TvKYbTk7sAIC7QCaH//MiiS34kgWF+WTj3qO4yxK1lCs9yfWGNQYFY
-   IRZfadoP0eO5oljD5rKKzqA2CjJpzOJW7+mp4FVNLsd++Qdk3puh10tBD
-   ZT5jBsMb97Gb1LIpauYNcl612yvRpYeQG1qVHFGeHeOEK/sFG9IjnRuSD
-   w==;
-References: <cover.1686926857.git.waqarh@axis.com>
- <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
- <20230617143508.28309834@jic23-huawei> <pndo7lb1mes.fsf@axis.com>
- <20230625120604.3ecc54bf@jic23-huawei>
-User-agent: a.out
-From:   Waqar Hameed <waqar.hameed@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <kernel@axis.com>
-Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
-Date:   Wed, 12 Jul 2023 17:33:09 +0200
-In-Reply-To: <20230625120604.3ecc54bf@jic23-huawei>
-Message-ID: <pndcz0xkuka.fsf@axis.com>
+        d=linaro.org; s=google; t=1689184360; x=1691776360;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=THpXRSD84BFEVMh1tTi6CFXtfk/3GttF/ObmaoMABLI=;
+        b=IpzE5GIVwvuhpr+Tz7D6OHQYx3hut1aaGtL8IiHboZVbn9LvPPJD0Ui/IwnGZCYyd5
+         R3XRag9x1JuwxaSj9U3rQ1C5ghQ2CsQnwn0uxLsGeuPDT4tbYk6NSCK4WyJhB9uyGjB7
+         166SpJyWXk03BFtQp76kiiiCIyHUAz3D3zhuF6CUhvBydDInIiHR4PcGMM6lZzDvLypM
+         Ob0s1m1792Pg7kMnxEyQFJfLDpbXoY6Oom3X3yoj7j61XTB2AOW/m5wbsNXA9ZWUoDza
+         mxxdwLXxyWi8o4HfbY7nnDuEjtm1lB6HcpMFdf0ovLyi/xphiCrG9XPq2U8JE32CeoSm
+         /fGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689184360; x=1691776360;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=THpXRSD84BFEVMh1tTi6CFXtfk/3GttF/ObmaoMABLI=;
+        b=TLGJjOHATwHvsFjPns4qOmr1YdRxfENp/JdJp728qGO4CRUmE7r036VYiArODVm8xq
+         pt6ITH4ZvqKlTfxgeNlIXzAR5/h72Vuu9J3CbPKyU9FubkhDbj0GqrMDDkNxy/U5rwwL
+         mfwH8fdzKuSmqfkkMcxlI8w/A0PmIPrv/TyiT2P1qVXi66g5eq1tK+UsUrTcYvULS1Yf
+         t2ZH1XcRuzn6KNyYem9s72Qe+1m+luUe4GjMGH8JpYXQqlyMGZrGTZSsx6MeoSPpiLYs
+         /ZHneYkLP7KTxJURHYZkXxKGuAlIQqplpB8kWlQhjCzx+hWXKtmsNH/ZhCR+HjChoJaS
+         EWIQ==
+X-Gm-Message-State: ABy/qLbQFKgjW9+0Itp2/Y7SywRkcbRqNtd4O/2TpL+w3b8dY64Kus0b
+        vvhK81mnlDTABGqJmEdKVU2rXA==
+X-Google-Smtp-Source: APBJJlHoK39LUke3/rD5zGAO5qmIiTsuplS6lqV24JZHne610LDYaifMCMtJiJ1PE4NRGnQ0F4gXcw==
+X-Received: by 2002:a17:906:3956:b0:988:6e75:6b3d with SMTP id g22-20020a170906395600b009886e756b3dmr16439999eje.33.1689184360343;
+        Wed, 12 Jul 2023 10:52:40 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id ov4-20020a170906fc0400b00992b50fbbe9sm2877626ejb.90.2023.07.12.10.52.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jul 2023 10:52:39 -0700 (PDT)
+Message-ID: <66ca5498-04be-cfb3-c6fb-92481e505bc2@linaro.org>
+Date:   Wed, 12 Jul 2023 19:52:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.0.5.60]
-X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
- (10.20.40.7)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: proximity: Add Murata IRS-D200
+Content-Language: en-US
+To:     Waqar Hameed <waqar.hameed@axis.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     kernel@axis.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1689174736.git.waqar.hameed@axis.com>
+ <3b9b284effa7d63c5c3c022f0d51312052bbe62c.1689174736.git.waqar.hameed@axis.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <3b9b284effa7d63c5c3c022f0d51312052bbe62c.1689174736.git.waqar.hameed@axis.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 25, 2023 at 12:06 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
+On 12/07/2023 17:12, Waqar Hameed wrote:
+> Murata IRS-D200 is a PIR sensor for human detection. It uses the I2C bus
+> for communication with interrupt support. Add devicetree bindings
+> requiring the compatible string, I2C slave address (reg), power supply
+> and interrupts.
+> 
+> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+> ---
 
-[...]
 
->> >> +		dev_err(data->dev, "Could not write hp filter frequency (%d)\n",
->> >> +			ret);
->> >> +		return ret;  
->> >
->> > drop this return ret out of the if block here.
->> >
->> > In general being able to ignore possibility of ret > 0 simplifies handling.  
->> 
->> I try to be consistent and it also "helps" the next person potentially
->> adding code after the `if`-statement and forgetting about adding
->> `return`. We can drop the `return here, but then we should do the same
->> in other places with a check just before the last `return` (like
->> `irsd200_write_timer()`, `irsd200_read_nr_count()`,
->> `irsd200_write_nr_count()` and many more), right?
->
-> I don't feel particulartly strongly about this, but there are scripts
-> that get used to scan for this pattern to simplify the code.
->
-> Sure on the other cases. I don't tend to try and label all cases of things
-> pointed out, just pick on one and rely on the patch author to generalise.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I started to remove the returns but then realized that it got a little
-messy. For example, in some cases we can't drop the return (side effects
-after the return etc.). 
+Best regards,
+Krzysztof
 
-Since you didn't have any strong opinions on this, I kept them in v2.
-Hope that's fine!

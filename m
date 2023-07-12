@@ -2,81 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 492E9750C62
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 17:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5065750CBC
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 17:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbjGLP0G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jul 2023 11:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43834 "EHLO
+        id S233684AbjGLPjx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jul 2023 11:39:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbjGLP0G (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 11:26:06 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE5DD1734;
-        Wed, 12 Jul 2023 08:26:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689175565; x=1720711565;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=opv4vWR11AnjxQzJ5kswyd24sS6ZcKGbyA2QSSHiKdI=;
-  b=BxD3RHf/2kRNTrapLmKTo0GKT7PbhfZppDrtXuTKZ8nrQ11gw8DVXnD/
-   DrgbOHiHirEIZwvi5X9w5J0wELodjRLMYZrWiAXF/qyqonNX/Atlw7GlQ
-   6nLGdHBXGWknJCpi94tSHFfoAeAa7UdNrzwtIqp3lJ6lyORH+4Vo4eOOo
-   jPQqGxR3Na1RB66GD/Xb1YTUsinK7m3QiEdzLy17SWgIun+gmnsjoZBVm
-   TZD3WiRca4VUguwf3m89Uc04KjVCd9NwqLfM7D4BOZg2PgsJgaRgifvyM
-   enEVfkmhgiWMYJoCi3eNQ7D3uOCTgNh0Dh9Mwckzppf8e5RR4EUl2X0zx
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="344519100"
-X-IronPort-AV: E=Sophos;i="6.01,200,1684825200"; 
-   d="scan'208";a="344519100"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2023 08:26:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10769"; a="791662575"
-X-IronPort-AV: E=Sophos;i="6.01,200,1684825200"; 
-   d="scan'208";a="791662575"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Jul 2023 08:26:02 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qJbj6-002ADD-0r;
-        Wed, 12 Jul 2023 18:26:00 +0300
-Date:   Wed, 12 Jul 2023 18:26:00 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     George Stark <gnstark@sberdevices.ru>
-Cc:     jic23@kernel.org, lars@metafoo.de, neil.armstrong@linaro.org,
-        khilman@baylibre.com, jbrunet@baylibre.com,
-        martin.blumenstingl@googlemail.com, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        kernel@sberdevices.ru
-Subject: Re: [PATCH v5 0/6] iio: adc: meson: add iio channels to read channel
- 7 mux inputs
-Message-ID: <ZK7GCAgA1gljrxyl@smile.fi.intel.com>
-References: <20230711200141.239025-1-gnstark@sberdevices.ru>
+        with ESMTP id S233742AbjGLPjw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 11:39:52 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F291BB;
+        Wed, 12 Jul 2023 08:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1689176391;
+  x=1720712391;
+  h=references:from:to:cc:subject:date:in-reply-to:
+   message-id:mime-version;
+  bh=6YY5K6Pv6QqKIIYQnBoSV5Kj79iqnwblWu7VX/RxeuA=;
+  b=lg+bEeOl87Tju5BnH1hQxTURXL31LjrUMXE95iZD95QrBob+doYrKwK/
+   mY5rnWKU/tn4Qn3bkJo9qvZFovQHCGiQenJAFQd3V4xDN4AGFL+ix4Wni
+   Z4j1ILH+sRM9H0u4vZas1cizi+yNKMTq099MNj0frDJc8NkRSFM/9Oq0B
+   RM0TvKYbTk7sAIC7QCaH//MiiS34kgWF+WTj3qO4yxK1lCs9yfWGNQYFY
+   IRZfadoP0eO5oljD5rKKzqA2CjJpzOJW7+mp4FVNLsd++Qdk3puh10tBD
+   ZT5jBsMb97Gb1LIpauYNcl612yvRpYeQG1qVHFGeHeOEK/sFG9IjnRuSD
+   w==;
+References: <cover.1686926857.git.waqarh@axis.com>
+ <d2d8f34c09a2ba0504eaba4f451412de41db2f37.1686926857.git.waqarh@axis.com>
+ <20230617143508.28309834@jic23-huawei> <pndo7lb1mes.fsf@axis.com>
+ <20230625120604.3ecc54bf@jic23-huawei>
+User-agent: a.out
+From:   Waqar Hameed <waqar.hameed@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <kernel@axis.com>
+Subject: Re: [PATCH 2/2] iio: Add driver for Murata IRS-D200
+Date:   Wed, 12 Jul 2023 17:33:09 +0200
+In-Reply-To: <20230625120604.3ecc54bf@jic23-huawei>
+Message-ID: <pndcz0xkuka.fsf@axis.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711200141.239025-1-gnstark@sberdevices.ru>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.0.5.60]
+X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
+ (10.20.40.7)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 11, 2023 at 11:00:16PM +0300, George Stark wrote:
-> Changelog:
+On Sun, Jun 25, 2023 at 12:06 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
 
-I gave you a tag, any reason why you haven't applied it to your patches?
+[...]
 
--- 
-With Best Regards,
-Andy Shevchenko
+>> >> +		dev_err(data->dev, "Could not write hp filter frequency (%d)\n",
+>> >> +			ret);
+>> >> +		return ret;  
+>> >
+>> > drop this return ret out of the if block here.
+>> >
+>> > In general being able to ignore possibility of ret > 0 simplifies handling.  
+>> 
+>> I try to be consistent and it also "helps" the next person potentially
+>> adding code after the `if`-statement and forgetting about adding
+>> `return`. We can drop the `return here, but then we should do the same
+>> in other places with a check just before the last `return` (like
+>> `irsd200_write_timer()`, `irsd200_read_nr_count()`,
+>> `irsd200_write_nr_count()` and many more), right?
+>
+> I don't feel particulartly strongly about this, but there are scripts
+> that get used to scan for this pattern to simplify the code.
+>
+> Sure on the other cases. I don't tend to try and label all cases of things
+> pointed out, just pick on one and rely on the patch author to generalise.
 
+I started to remove the returns but then realized that it got a little
+messy. For example, in some cases we can't drop the return (side effects
+after the return etc.). 
 
+Since you didn't have any strong opinions on this, I kept them in v2.
+Hope that's fine!

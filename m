@@ -2,96 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA12751003
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 19:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F9C751079
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jul 2023 20:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232409AbjGLRwo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jul 2023 13:52:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51222 "EHLO
+        id S232160AbjGLS0w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Jul 2023 14:26:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232401AbjGLRwn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 13:52:43 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4BC61FEB
-        for <linux-iio@vger.kernel.org>; Wed, 12 Jul 2023 10:52:41 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-991c786369cso882992966b.1
-        for <linux-iio@vger.kernel.org>; Wed, 12 Jul 2023 10:52:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689184360; x=1691776360;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=THpXRSD84BFEVMh1tTi6CFXtfk/3GttF/ObmaoMABLI=;
-        b=IpzE5GIVwvuhpr+Tz7D6OHQYx3hut1aaGtL8IiHboZVbn9LvPPJD0Ui/IwnGZCYyd5
-         R3XRag9x1JuwxaSj9U3rQ1C5ghQ2CsQnwn0uxLsGeuPDT4tbYk6NSCK4WyJhB9uyGjB7
-         166SpJyWXk03BFtQp76kiiiCIyHUAz3D3zhuF6CUhvBydDInIiHR4PcGMM6lZzDvLypM
-         Ob0s1m1792Pg7kMnxEyQFJfLDpbXoY6Oom3X3yoj7j61XTB2AOW/m5wbsNXA9ZWUoDza
-         mxxdwLXxyWi8o4HfbY7nnDuEjtm1lB6HcpMFdf0ovLyi/xphiCrG9XPq2U8JE32CeoSm
-         /fGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689184360; x=1691776360;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=THpXRSD84BFEVMh1tTi6CFXtfk/3GttF/ObmaoMABLI=;
-        b=TLGJjOHATwHvsFjPns4qOmr1YdRxfENp/JdJp728qGO4CRUmE7r036VYiArODVm8xq
-         pt6ITH4ZvqKlTfxgeNlIXzAR5/h72Vuu9J3CbPKyU9FubkhDbj0GqrMDDkNxy/U5rwwL
-         mfwH8fdzKuSmqfkkMcxlI8w/A0PmIPrv/TyiT2P1qVXi66g5eq1tK+UsUrTcYvULS1Yf
-         t2ZH1XcRuzn6KNyYem9s72Qe+1m+luUe4GjMGH8JpYXQqlyMGZrGTZSsx6MeoSPpiLYs
-         /ZHneYkLP7KTxJURHYZkXxKGuAlIQqplpB8kWlQhjCzx+hWXKtmsNH/ZhCR+HjChoJaS
-         EWIQ==
-X-Gm-Message-State: ABy/qLbQFKgjW9+0Itp2/Y7SywRkcbRqNtd4O/2TpL+w3b8dY64Kus0b
-        vvhK81mnlDTABGqJmEdKVU2rXA==
-X-Google-Smtp-Source: APBJJlHoK39LUke3/rD5zGAO5qmIiTsuplS6lqV24JZHne610LDYaifMCMtJiJ1PE4NRGnQ0F4gXcw==
-X-Received: by 2002:a17:906:3956:b0:988:6e75:6b3d with SMTP id g22-20020a170906395600b009886e756b3dmr16439999eje.33.1689184360343;
-        Wed, 12 Jul 2023 10:52:40 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id ov4-20020a170906fc0400b00992b50fbbe9sm2877626ejb.90.2023.07.12.10.52.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jul 2023 10:52:39 -0700 (PDT)
-Message-ID: <66ca5498-04be-cfb3-c6fb-92481e505bc2@linaro.org>
-Date:   Wed, 12 Jul 2023 19:52:38 +0200
+        with ESMTP id S231528AbjGLS0v (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 14:26:51 -0400
+Received: from dnyon.com (dnyon.com [142.132.167.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6708A19A7;
+        Wed, 12 Jul 2023 11:26:50 -0700 (PDT)
+From:   Alejandro Tafalla <atafalla@dnyon.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dnyon.com; s=mail;
+        t=1689186407; bh=Cd6yq1pU1C12fymMiRQBdR5VsyxWAnsOWQLmupXPnrA=;
+        h=From:To:Cc:Subject:In-Reply-To:References;
+        b=kQ8T5yBxLIe0wWmovMdQSBJsMmu55cJWq1h7rFwWhdvCpuOPLXh7FIEys1OYXZqvA
+         HLKZAsk7Cp8jdPhbKSU14vdMALi4B1+kKo+CbW6ubNe8L2Iv0k6LLS+yUaYVmVzJtR
+         /pK0DCHunetUH7TX18xofBqO2WLzT9M0k6kDY+OG6lmu+ce3jxWKwYnL9ZefpEjA7w
+         dnOa1lvX/LiuKx1OOfvAsQsQTnX2nK1ZtXxW9dHpn0/OISuLE47DBKjD4BYy5CT3x/
+         hR6HFVNVt/OBk3+YRs6GhMzDW1NVpEqpcz12gmgbnH09tHFA+6+5sO5AEWDAcLz8ni
+         LPvlvwwN/oU2/jncAcIx/7tysFoOTT8WvEnFOZbjN8l+BBRTdcjxtdCUIYxcpBMORj
+         w4rpA8cWNSvJSnbmNXBamjdVUxB85/AOiHhfI+VWsEIjRk2EtLAjpXcAG489sihYG1
+         dfSKrSpwEXSz7TKbgtErnpMo7m8ViRSWYcarY7GHRFxKbYAE483QsGTKgV3nh7QB+D
+         altv5Jx+HcvpxOem8YFsCb1wQ8SXlTJu4FWU0pKBTh3Bka9eJDoIJEZEOc2QPw3JLT
+         dHI8io1zxbpm0+U++WW1NXGYAwGV/gVvLuzsa596A6rBArDHK6xDuCM4UtdU4m2e9p
+         Xy7hHDX+zYLf6xS15rj9xmqs=
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH] iio: imu: lsm6dsx: Fix mount matrix retrieval
+Date:   Wed, 12 Jul 2023 20:24:47 +0200
+Message-ID: <13064186.O9o76ZdvQC@alexpc>
+In-Reply-To: <ZK6IpZvG47zsKZFk@lore-rh-laptop>
+References: <12960181.O9o76ZdvQC@alexpc> <ZK6IpZvG47zsKZFk@lore-rh-laptop>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: proximity: Add Murata IRS-D200
-Content-Language: en-US
-To:     Waqar Hameed <waqar.hameed@axis.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     kernel@axis.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1689174736.git.waqar.hameed@axis.com>
- <3b9b284effa7d63c5c3c022f0d51312052bbe62c.1689174736.git.waqar.hameed@axis.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <3b9b284effa7d63c5c3c022f0d51312052bbe62c.1689174736.git.waqar.hameed@axis.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/07/2023 17:12, Waqar Hameed wrote:
-> Murata IRS-D200 is a PIR sensor for human detection. It uses the I2C bus
-> for communication with interrupt support. Add devicetree bindings
-> requiring the compatible string, I2C slave address (reg), power supply
-> and interrupts.
-> 
-> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-> ---
+On mi=C3=A9rcoles, 12 de julio de 2023 13:04:05 (CEST) Lorenzo Bianconi wro=
+te:
+> > The function lsm6dsx_get_acpi_mount_matrix should return true when ACPI
+> > support is not enabled to allow executing iio_read_mount_matrix in the
+> > probe function.
+> >=20
+> > Fixes: dc3d25f22b88 ("iio: imu: lsm6dsx: Add ACPI mount matrix retrieva=
+l")
+> >=20
+> > Signed-off-by: Alejandro Tafalla <atafalla@dnyon.com>
+> > ---
+> >=20
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > b/drivers/iio/imu/ st_lsm6dsx/st_lsm6dsx_core.c
+> > index 6a18b363cf73..62bc3ee783fb 100644
+> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> > @@ -2687,7 +2687,7 @@ static int lsm6dsx_get_acpi_mount_matrix(struct
+> > device *dev,
+> >=20
+> >  static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
+> > =20
+> >  					  struct
+> >=20
+> > iio_mount_matrix *orientation)
+> >=20
+> >  {
+> >=20
+> > -	return false;
+> > +	return true;
+>=20
+> I would say it should return something like -EOPNOTSUPP.
+>=20
+> Regards,
+> Lorenzo
+>=20
+> >  }
+> > =20
+> >  #endif
+
+Hi, thank you for the review. I'll send a v2 with a better solution that us=
+es=20
+error codes.
+
+Alejandro.
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
 

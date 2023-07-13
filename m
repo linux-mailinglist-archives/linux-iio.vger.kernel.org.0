@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3571275154A
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jul 2023 02:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF278751835
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jul 2023 07:35:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232913AbjGMAao (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jul 2023 20:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40406 "EHLO
+        id S233303AbjGMFfq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Jul 2023 01:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjGMAan (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jul 2023 20:30:43 -0400
+        with ESMTP id S233991AbjGMFfl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Jul 2023 01:35:41 -0400
 Received: from dnyon.com (dnyon.com [142.132.167.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C9B1FF5;
-        Wed, 12 Jul 2023 17:30:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36028213F;
+        Wed, 12 Jul 2023 22:35:35 -0700 (PDT)
 From:   Alejandro Tafalla <atafalla@dnyon.com>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dnyon.com; s=mail;
-        t=1689208234; bh=OqvMagDHrs9sGhzHEnKv1/CpHc2sIgYQxc++nItrEtU=;
+        t=1689226533; bh=4LTcxescAGUMISMo0T83v/Ys4ejJ82HRtYMuCrAcpIg=;
         h=From:To:Cc:Subject;
-        b=gXGkKF+F71ogzf/2taKOshImmn61+Rct6eaD8Yuijekx/aj2OLxUtOkoVC2Z5d4V+
-         kiw0OsAKWaYsk+obUhQCC9bfhmn4dl0JN95FW6zzyEW0J+NXGXJVaFDof5jKhrirDh
-         ozH58IGZthpyx2F3WNSkG67GVV0/WBkvISTOLXPb6Ht7nBTZt5G2J0RezJ4TIXv5xm
-         douxSHt++6oxFHUEzz2Rx1eluNhgAcjJF8iFT30fGrTAWqORCBfLgG1N6zcPObpoSM
-         Yykwqy+6aw+5HY+uYuRUR9C+sbRVLpkC8RVBKAAiqxwfxpcKg8arJMINdSEaxMi66d
-         kU8MSWoDsqBo39kkFtnlmPPvbGPOIII8EImwce6liR7qWKZdbEk7wJ913sbNnIdYuL
-         iZs1cNHLIqg/fReYAPn4TfTHhzpYvh2XrOFSmHcZz2Lo/BkR3wG1sxXQistFXqHCRQ
-         +te1ekxYxJgq9eIXYteq3zER5n3jjadkyKeyrZxu+jaIvpRbYKSDwmqwOMn6FeMOMW
-         oXa7UgilBbRmL28Tj3FY3JVcRXKbtNBrc3EGy9kL4L0j1lHa43YMWBh6nzxqddNQqM
-         dNqDnxKBQDIg3rrlwTdwqTr38SLTTH3i3HghLrnersA+zHch8MTUjjxL2KYmm78UYB
-         0vSe4cPKRjHEIkjtbf9zCZCI=
+        b=DzxzUh4WtWT3aHqRB7tyvUyKNZvoZEdSmfYDBQfKPkdda6ApOoCzVb+cBNt4pUXk0
+         xFdrjernAUpocDlewGMbwRA+Fz2aWaUtNSEXXei30yII3uo5N33jRRLz0icirRkNM+
+         kHiS0PQRomejx118qC5ulP1S92+LVgnPJevzw101AGJp2L9UN3EicmJ1en/iHabhnK
+         9aPxop00w0LS6O+yDfA8F+XugVRoWCsdgub/1Y2Ez3iMU8ngZvYgjbSh+UqggYNm+T
+         rFr9kvrej+MTZWttvwd8dlsZ5Ff0Sgm7Q93S3liln81nosRHhe3Gv32M5Ou0gR6QRS
+         080sD3TYtFUIzkL54uIbMyLFH1SpcAriUhVgFq9gcZ0sNiiW0wUCLi5Jvix5SwTXP7
+         mmjM+Ih2L7k/Ffli64kOY/6KXoRruSsRPCV2Y2dN/6h8PBAVBRXpttzmCFVUnSS5ua
+         ZzVlBlh9VGyU7SDP8nQ5paV/vLeHntlxcHJ4QbLS2sXzH6H2PL6/Gz8IIf/q3fZHDT
+         iIfoNrPvZmsgmuannaFMi2UIdGhiAIpPXzNUwsW2cnemjYIZZmJMK42tqdHtIeefol
+         zSTD+abgNs3lDW9ev9jAxZhjsBOAUb6Gxoq+b+nfUAYYICVq4n+Uso7eltr4Jnt3Fp
+         rD8yL+j0TY/IvCEQzbxbOgvM=
 To:     lorenzo@kernel.org, jic23@kernel.org, lars@metafoo.de
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH v2] iio: imu: lsm6dsx: Fix mount matrix retrieval
-Date:   Thu, 13 Jul 2023 02:28:34 +0200
-Message-ID: <5690549.31r3eYUQgx@alexpc>
+Subject: [RESEND PATCH v2] iio: imu: lsm6dsx: Fix mount matrix retrieval
+Date:   Thu, 13 Jul 2023 07:35:29 +0200
+Message-ID: <4847336.31r3eYUQgx@alexbook>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
@@ -57,29 +57,25 @@ Fixes: dc3d25f22b88 ("iio: imu: lsm6dsx: Add ACPI mount matrix retrieval")
 Signed-off-by: Alejandro Tafalla <atafalla@dnyon.com>
 ---
 Changes in v2:
-- Use of error codes instead of true/false. 
----
+- Use of error codes instead of true/false
+
  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/
-st_lsm6dsx/st_lsm6dsx_core.c
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 index 6a18b363cf73..1a4752c95601 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -2687,7 +2687,7 @@ static int lsm6dsx_get_acpi_mount_matrix(struct device 
-*dev,
+@@ -2687,7 +2687,7 @@ static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
  static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
- 					  struct iio_mount_matrix 
-*orientation)
+ 					  struct iio_mount_matrix *orientation)
  {
 -	return false;
 +	return -EOPNOTSUPP;
  }
  
  #endif
-@@ -2767,11 +2767,11 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int 
-hw_id,
+@@ -2767,11 +2767,11 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
  	}
  
  	err = lsm6dsx_get_acpi_mount_matrix(hw->dev, &hw->orientation);
@@ -97,6 +93,9 @@ hw_id,
  		if (!hw->iio_devs[i])
 -- 
 2.41.0
+
+
+
 
 
 

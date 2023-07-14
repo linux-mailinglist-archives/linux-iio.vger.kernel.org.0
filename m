@@ -2,169 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5207542FB
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jul 2023 21:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E3C47544C8
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jul 2023 00:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235873AbjGNTDj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Jul 2023 15:03:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59540 "EHLO
+        id S229653AbjGNWCL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Jul 2023 18:02:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235666AbjGNTDi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jul 2023 15:03:38 -0400
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C0D358C;
-        Fri, 14 Jul 2023 12:03:35 -0700 (PDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-        by mx1.sberdevices.ru (Postfix) with ESMTP id DAB40100006;
-        Fri, 14 Jul 2023 22:03:32 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru DAB40100006
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1689361412;
-        bh=Fb0dBL6rswv5znabzmWo6BH+sWIBGMpwWD/C6JhcIu4=;
-        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-        b=Uldy4UkG0hFpwUJ+wHAxNeY38ov1cYZUx+gIPVLrldD+FnP/kQ4c5bcPPjI7yCRi8
-         /t6bv60dz4CN9hUl/6RqTQ6fujEhxfrIUG1JCfMQDFcooMk9XvsekvlSZi7k0bj/y0
-         24gLctBZrwL67F7uCxNLVXsAZz1lJGzg/ujCpo9lJAn3ZEC7OYr23Jw7XZG0YHjJzU
-         87nXW4Y8X7+xSP5z6R0s1Ma5ikVOdVzJ/bsqY0r5wg8mbaFwSxRXYRM5nZsny/nW11
-         HnjVK2z+xXWon3EfIRnFn73lVSNd9LW/Y4gQkSW2kQ8/dLShsA18/hYCfc/hKAuVhR
-         ryicvlcjGuBfQ==
-Received: from p-i-exch-sc-m02.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.sberdevices.ru (Postfix) with ESMTPS;
-        Fri, 14 Jul 2023 22:03:32 +0300 (MSK)
-Received: from localhost.localdomain (100.64.160.123) by
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Fri, 14 Jul 2023 22:03:32 +0300
-From:   George Stark <gnstark@sberdevices.ru>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-        <martin.blumenstingl@googlemail.com>,
-        <andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
-        <gnstark@sberdevices.ru>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
-Subject: [PATCH v1 1/1] iio: adc: meson: fix core clock enable/disable moment
-Date:   Fri, 14 Jul 2023 22:03:15 +0300
-Message-ID: <20230714190320.308320-2-gnstark@sberdevices.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230714190320.308320-1-gnstark@sberdevices.ru>
-References: <20230714190320.308320-1-gnstark@sberdevices.ru>
+        with ESMTP id S229542AbjGNWCK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jul 2023 18:02:10 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E0B1BC9
+        for <linux-iio@vger.kernel.org>; Fri, 14 Jul 2023 15:02:09 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-666e3b15370so1844362b3a.0
+        for <linux-iio@vger.kernel.org>; Fri, 14 Jul 2023 15:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689372129; x=1691964129;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=B3DZ3QodLkTjKM8tLx8t86MoU1m0TSwGIA4Lmr1eciw=;
+        b=xO0lJMv5ZVBnZmrsoKXYHg+5jX2CO6Anylt5EKGGHaPYsJyD2naV+Einq1HkpCbDEd
+         70g3nFQQ/zzIUxit73R0+RWL+bRmq2+ip05QObmumBglucmYVvdzTpLteGwAbhKjoq2b
+         YM6y7rH7FaDGcK4LloKDQHGr7mnuu+MWuAj/yt50MH2uvmPMHONXXCWiB7SkMzHWuHhc
+         pZa/D0c3BSbMEde+jqms0oOT04fw9S8YbwAdQDmsvvaAUTiC/aLViiREOs8Ud8kkmyRu
+         Ov5ek9e56Lx9wWpZVgKFDBXGRgOIHepnFTjp9MqaotCy6mue0pws3PGWTFKzQca6squv
+         iD7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689372129; x=1691964129;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B3DZ3QodLkTjKM8tLx8t86MoU1m0TSwGIA4Lmr1eciw=;
+        b=dPClrg0EOVx6sml8xkZzKE6vADu+zvlcRMqC+tW5I9ZqvsOgEAY8oBRWKNV3wflL/a
+         BXBlNTpU9t92xq6l3UVU94vzlUfwUOmIztNLkcxfPTy4gJYDeHr91Zc33a3S/45wzSPR
+         DrwW/UCYepuV2EYfOpAPujDn8Lq0mSAFXX6bM8R3mpsgIS+XRWZFq4CJaPUt9u07unOr
+         d06TG7creEvrD7v58zx57M10nuovJs4aRj2/B6r1Ic2zSIM1EO+LR3t8FAEWZ+iUYMsi
+         tJ64MpPi6qHwrfXclogPvdQ9xtFUTiJH3xci/q87bsmvEgau8R9n3YRwAssIyJc1wKBP
+         oJag==
+X-Gm-Message-State: ABy/qLYBwOB13ZyoLXqpNe9qVIuGlI2Kra4d+8VH6tUrB1TyjTwD9DgJ
+        grfc0pulIkpnR7l4Na0D6jT3BA==
+X-Google-Smtp-Source: APBJJlEPhk3QAeLODRppoEJ8Y7tCUc2xqclRZUChAEpPHOArrhf5SttTvbB0tk/lqEdMIxDEWm45Bw==
+X-Received: by 2002:a05:6a00:cc5:b0:668:846b:9b5d with SMTP id b5-20020a056a000cc500b00668846b9b5dmr7234962pfv.5.1689372129136;
+        Fri, 14 Jul 2023 15:02:09 -0700 (PDT)
+Received: from fedora (61-114-134-192.ppp.bbiq.jp. [61.114.134.192])
+        by smtp.gmail.com with ESMTPSA id a12-20020aa7864c000000b00666e649ca46sm7608915pfo.101.2023.07.14.15.02.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 15:02:08 -0700 (PDT)
+Date:   Fri, 14 Jul 2023 07:34:03 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Anh Tuan Phan <tuananhlfc@gmail.com>
+Cc:     linux-kernel-mentees@lists.linuxfoundation.org, rongtao@cestc.cn,
+        ricardo@pardini.net, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/counter: Add checking directory exists for make
+ clean
+Message-ID: <ZLEyq1Nx085jlxDr@fedora>
+References: <362e127d-6018-5fc6-247b-3c729b99d946@gmail.com>
+ <ZKtZ1WB9LdszbxU+@fedora>
+ <e62f481d-f939-a12b-7f8a-ec1db95c7b8e@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 178634 [Jul 14 2023]
-X-KSMG-AntiSpam-Version: 5.9.59.0
-X-KSMG-AntiSpam-Envelope-From: GNStark@sberdevices.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 523 523 523027ce26ed1d9067f7a52a4756a876e54db27c, {Tracking_from_domain_doesnt_match_to}, p-i-exch-sc-m02.sberdevices.ru:5.0.1,7.1.1;sberdevices.ru:5.0.1,7.1.1;127.0.0.199:7.1.2;100.64.160.123:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/14 14:48:00 #21614190
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kbfYM6KMOcOKmno2"
+Content-Disposition: inline
+In-Reply-To: <e62f481d-f939-a12b-7f8a-ec1db95c7b8e@gmail.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Enable core clock at probe stage and disable it at remove stage.
-Core clock is responsible for turning on/off the entire SoC module so
-it should be on before the first module register is touched and be off
-at very last moment.
 
-Signed-off-by: George Stark <gnstark@sberdevices.ru>
----
- drivers/iio/adc/meson_saradc.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+--kbfYM6KMOcOKmno2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index fe066c9fab83..5a5bb5cc1320 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -1055,12 +1055,6 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
- 		goto err_vref;
- 	}
- 
--	ret = clk_prepare_enable(priv->core_clk);
--	if (ret) {
--		dev_err(dev, "failed to enable core clk\n");
--		goto err_core_clk;
--	}
--
- 	regval = FIELD_PREP(MESON_SAR_ADC_REG0_FIFO_CNT_IRQ_MASK, 1);
- 	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG0,
- 			   MESON_SAR_ADC_REG0_FIFO_CNT_IRQ_MASK, regval);
-@@ -1087,8 +1081,6 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
- 	regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG3,
- 			   MESON_SAR_ADC_REG3_ADC_EN, 0);
- 	meson_sar_adc_set_bandgap(indio_dev, false);
--	clk_disable_unprepare(priv->core_clk);
--err_core_clk:
- 	regulator_disable(priv->vref);
- err_vref:
- 	meson_sar_adc_unlock(indio_dev);
-@@ -1116,8 +1108,6 @@ static void meson_sar_adc_hw_disable(struct iio_dev *indio_dev)
- 
- 	meson_sar_adc_set_bandgap(indio_dev, false);
- 
--	clk_disable_unprepare(priv->core_clk);
--
- 	regulator_disable(priv->vref);
- 
- 	if (!ret)
-@@ -1420,6 +1410,12 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
- 			ARRAY_SIZE(meson_sar_adc_iio_channels);
- 	}
- 
-+	ret = clk_prepare_enable(priv->core_clk);
-+	if (ret) {
-+		dev_err(dev, "failed to enable core clk\n");
-+		goto err;
-+	}
-+
- 	ret = meson_sar_adc_init(indio_dev);
- 	if (ret)
- 		goto err;
-@@ -1445,17 +1441,21 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
- err_hw:
- 	meson_sar_adc_hw_disable(indio_dev);
- err:
-+	clk_disable_unprepare(priv->core_clk);
- 	return ret;
- }
- 
- static int meson_sar_adc_remove(struct platform_device *pdev)
- {
- 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
- 
- 	iio_device_unregister(indio_dev);
- 
- 	meson_sar_adc_hw_disable(indio_dev);
- 
-+	clk_disable_unprepare(priv->core_clk);
-+
- 	return 0;
- }
- 
--- 
-2.38.4
+On Fri, Jul 14, 2023 at 08:57:21PM +0700, Anh Tuan Phan wrote:
+> Hi William, the race condition possibility is a good point. Thanks for
+> suggesting me. Will send a new version with using `rm -df` instead and
+> add the appropriate CC lists. Thank you!
 
+Hi Anh,
+
+Because this will fix a failure, please include a Fixes tag as well that
+references the commit that introduces the rmdir line.
+
+Thanks,
+
+William Breathitt Gray
+
+--kbfYM6KMOcOKmno2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZLEyqwAKCRC1SFbKvhIj
+K+ziAQCGY7jdv3OM3sbn+dCb3FZsFSrqndT/N7q7OXZdDBiEwwD9GrllxnmAAjJU
+2pmDiD0aeGvLOlLxjxi7SHSWcRRAZQs=
+=CrFK
+-----END PGP SIGNATURE-----
+
+--kbfYM6KMOcOKmno2--

@@ -2,107 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E3C47544C8
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jul 2023 00:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5C17547AA
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jul 2023 11:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjGNWCL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Jul 2023 18:02:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
+        id S229487AbjGOJSd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Jul 2023 05:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjGNWCK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jul 2023 18:02:10 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E0B1BC9
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jul 2023 15:02:09 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-666e3b15370so1844362b3a.0
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jul 2023 15:02:09 -0700 (PDT)
+        with ESMTP id S229482AbjGOJSc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jul 2023 05:18:32 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6902C35B7;
+        Sat, 15 Jul 2023 02:18:31 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b701e1ca63so42149921fa.1;
+        Sat, 15 Jul 2023 02:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689372129; x=1691964129;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B3DZ3QodLkTjKM8tLx8t86MoU1m0TSwGIA4Lmr1eciw=;
-        b=xO0lJMv5ZVBnZmrsoKXYHg+5jX2CO6Anylt5EKGGHaPYsJyD2naV+Einq1HkpCbDEd
-         70g3nFQQ/zzIUxit73R0+RWL+bRmq2+ip05QObmumBglucmYVvdzTpLteGwAbhKjoq2b
-         YM6y7rH7FaDGcK4LloKDQHGr7mnuu+MWuAj/yt50MH2uvmPMHONXXCWiB7SkMzHWuHhc
-         pZa/D0c3BSbMEde+jqms0oOT04fw9S8YbwAdQDmsvvaAUTiC/aLViiREOs8Ud8kkmyRu
-         Ov5ek9e56Lx9wWpZVgKFDBXGRgOIHepnFTjp9MqaotCy6mue0pws3PGWTFKzQca6squv
-         iD7w==
+        d=gmail.com; s=20221208; t=1689412709; x=1692004709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=68KK9nMb/YMaoape6Ajka+6g2rtnhepcU3LV7qa+nM8=;
+        b=bfn57QW6XodUliCuFKdi9Wt3QhFAThlbWatDzeTGyjXfTyWb6U3wEBLqkjU8ocesc+
+         Ru6FipAGz7YCj7l8Mv7hMa0gA5IZ36ieYug0HyIwuuOtlCAVdZyl6vwqkNGDMq33JqOc
+         AypdOp+/6MKch8NmyGnbHNSEQEmch7tov55O01gCCuQDNyuhZ4ufyME2gSg+Rblo+uWL
+         oMNH0P/xS+JVu2tHBkEjsUw2+d6lMcrim55vfTaUo7kQIDdVBCFIG8+KxmBYPG6hepGE
+         YLzLLyjMT4qz0zLSlDbApejjyWvIdYjO4d1pj149ohceqVJYbAXYRgUiYUT0yBtpjIld
+         ZHhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689372129; x=1691964129;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B3DZ3QodLkTjKM8tLx8t86MoU1m0TSwGIA4Lmr1eciw=;
-        b=dPClrg0EOVx6sml8xkZzKE6vADu+zvlcRMqC+tW5I9ZqvsOgEAY8oBRWKNV3wflL/a
-         BXBlNTpU9t92xq6l3UVU94vzlUfwUOmIztNLkcxfPTy4gJYDeHr91Zc33a3S/45wzSPR
-         DrwW/UCYepuV2EYfOpAPujDn8Lq0mSAFXX6bM8R3mpsgIS+XRWZFq4CJaPUt9u07unOr
-         d06TG7creEvrD7v58zx57M10nuovJs4aRj2/B6r1Ic2zSIM1EO+LR3t8FAEWZ+iUYMsi
-         tJ64MpPi6qHwrfXclogPvdQ9xtFUTiJH3xci/q87bsmvEgau8R9n3YRwAssIyJc1wKBP
-         oJag==
-X-Gm-Message-State: ABy/qLYBwOB13ZyoLXqpNe9qVIuGlI2Kra4d+8VH6tUrB1TyjTwD9DgJ
-        grfc0pulIkpnR7l4Na0D6jT3BA==
-X-Google-Smtp-Source: APBJJlEPhk3QAeLODRppoEJ8Y7tCUc2xqclRZUChAEpPHOArrhf5SttTvbB0tk/lqEdMIxDEWm45Bw==
-X-Received: by 2002:a05:6a00:cc5:b0:668:846b:9b5d with SMTP id b5-20020a056a000cc500b00668846b9b5dmr7234962pfv.5.1689372129136;
-        Fri, 14 Jul 2023 15:02:09 -0700 (PDT)
-Received: from fedora (61-114-134-192.ppp.bbiq.jp. [61.114.134.192])
-        by smtp.gmail.com with ESMTPSA id a12-20020aa7864c000000b00666e649ca46sm7608915pfo.101.2023.07.14.15.02.06
+        d=1e100.net; s=20221208; t=1689412709; x=1692004709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=68KK9nMb/YMaoape6Ajka+6g2rtnhepcU3LV7qa+nM8=;
+        b=kJIWylUl2DdKKwcTfCDQBk4XyPxW9k4DYiabnmIxf2pjJ/SN6VZkGA9RyI0Zq6pBB1
+         SC9Fsr5RqmHk6DhVSjjIyW3xX0QY4fG7lWcXS2EcyrZfdwjv+8MI++kZem+wvBUI6Y8e
+         R2iEAJzpnyhMnLaOCx9dkTF7Bb6TICP9byH9hlY3CpIwiUna/SwTtSMtTgu5YYTItueZ
+         SxOOftRoigI72zMJOUf82aSkYwN5EvHr6TX8paFINqSYN89E4NYpeHKvhS+NlHO7McYr
+         9LDOzVVMuAzQZWJyKkPgxDozyJK3XmlPBJs6FZOAFfLfrjtah33qGqZCSxxeaZouvWjI
+         bPHg==
+X-Gm-Message-State: ABy/qLa78bNg+3TPwt4kh4V253e0IXbkodcrnNdhL/p1qNUCyILBz3VZ
+        EQBc7iteUsLyEIZhThI34/JRG0uHcWVLLg==
+X-Google-Smtp-Source: APBJJlFGNRjxeR4VqbwtcC7QCL/trfcaEw9mhlBfy0pd8SJcEXD8F41MebiZaa0xN5qVjoHQABdRoA==
+X-Received: by 2002:a05:651c:157:b0:2b5:9f54:e290 with SMTP id c23-20020a05651c015700b002b59f54e290mr5276895ljd.0.1689412709072;
+        Sat, 15 Jul 2023 02:18:29 -0700 (PDT)
+Received: from user-PC.. ([92.51.95.194])
+        by smtp.gmail.com with ESMTPSA id b17-20020a2e9891000000b002b840f283a7sm561784ljj.36.2023.07.15.02.18.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 15:02:08 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 07:34:03 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Anh Tuan Phan <tuananhlfc@gmail.com>
-Cc:     linux-kernel-mentees@lists.linuxfoundation.org, rongtao@cestc.cn,
-        ricardo@pardini.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] tools/counter: Add checking directory exists for make
- clean
-Message-ID: <ZLEyq1Nx085jlxDr@fedora>
-References: <362e127d-6018-5fc6-247b-3c729b99d946@gmail.com>
- <ZKtZ1WB9LdszbxU+@fedora>
- <e62f481d-f939-a12b-7f8a-ec1db95c7b8e@gmail.com>
+        Sat, 15 Jul 2023 02:18:28 -0700 (PDT)
+From:   Maksim Kiselev <bigunclemax@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Maksim Kiselev <bigunclemax@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org
+Subject: [PATCH v9 0/4] Add support for Allwinner GPADC on D1/T113s/R329/T507 SoCs
+Date:   Sat, 15 Jul 2023 12:18:12 +0300
+Message-Id: <20230715091816.3074375-1-bigunclemax@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kbfYM6KMOcOKmno2"
-Content-Disposition: inline
-In-Reply-To: <e62f481d-f939-a12b-7f8a-ec1db95c7b8e@gmail.com>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This series adds support for general purpose ADC (GPADC) on new
+Allwinner's SoCs, such as D1, T113s, T507 and R329. The implemented driver
+provides basic functionality for getting ADC channels data.
 
---kbfYM6KMOcOKmno2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Change History:
+v9:
+- Dropped fixes tag
+- Reworded commits to remove 'This patch'
 
-On Fri, Jul 14, 2023 at 08:57:21PM +0700, Anh Tuan Phan wrote:
-> Hi William, the race condition possibility is a good point. Thanks for
-> suggesting me. Will send a new version with using `rm -df` instead and
-> add the appropriate CC lists. Thank you!
+v8:
+- Added patch that changes Kconfig description for previous Allwinner GPADC
+- Changed Kconfig description for this GPADC driver
+- Fixed 'reg' range for gpadc node in 'sunxi-d1s-t113.dtsi'
 
-Hi Anh,
+v7:
+- Fixed typo in DT bindings property
 
-Because this will fix a failure, please include a Fixes tag as well that
-references the commit that introduces the rmdir line.
+v6:
+- Fixed DT bindings regexp for channel properties
+- Dropped checking the max number of channels from the drivers code
+  (This is redundant as we raly on DT bindings check)
 
-Thanks,
+v5:
+- Fixed DT bindings properties for child nodes
 
-William Breathitt Gray
+v4:
+- Fixed DT bindings warnings
+- Used GENMASK to clear the irq register
+- Minor formatting fixes
 
---kbfYM6KMOcOKmno2
-Content-Type: application/pgp-signature; name="signature.asc"
+v3:
+- Added DT bindings dual license, fixed property order and example formatting
+- Added explanations comments for timeout and mutex
+- Dropped unnecessary regmap and used readl/writel instead
+- Added error message about getting channel number
+- Renamed labels and variables to make them self-explanatory
 
------BEGIN PGP SIGNATURE-----
+v2:
+- Added lastch flag to avoid addition work for already selected channel
+- Added reset assertion on module remove
+- Added dynamic channel allocation and dropped iio_chan_spec arrays
+- Changed IIO_CHAN_INFO_SCALE type to FRACTIONAL_LOG2
+- Dropped separate compatible strings and configs for T113s and R329
+- Fixed includes
+- Fixed Kconfig description
+- Removed duplicate probe error messages
+- Used FIELD_PREP for bit setup
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZLEyqwAKCRC1SFbKvhIj
-K+ziAQCGY7jdv3OM3sbn+dCb3FZsFSrqndT/N7q7OXZdDBiEwwD9GrllxnmAAjJU
-2pmDiD0aeGvLOlLxjxi7SHSWcRRAZQs=
-=CrFK
------END PGP SIGNATURE-----
+v1:
+- Initial version
 
---kbfYM6KMOcOKmno2--
+Maksim Kiselev (4):
+  iio: adc: Kconfig change description for Allwinner GPADC
+  iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+  dt-bindings: iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
+  riscv: dts: allwinner: d1: Add GPADC node
+
+ .../iio/adc/allwinner,sun20i-d1-gpadc.yaml    |  91 ++++++
+ .../boot/dts/allwinner/sunxi-d1s-t113.dtsi    |  10 +
+ drivers/iio/adc/Kconfig                       |  12 +-
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/sun20i-gpadc-iio.c            | 276 ++++++++++++++++++
+ 5 files changed, 389 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml
+ create mode 100644 drivers/iio/adc/sun20i-gpadc-iio.c
+
+-- 
+2.39.2
+

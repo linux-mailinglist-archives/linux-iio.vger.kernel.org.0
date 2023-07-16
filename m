@@ -2,51 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD54754EE5
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jul 2023 15:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4905F754EE8
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jul 2023 15:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbjGPNsg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jul 2023 09:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58648 "EHLO
+        id S229787AbjGPN4A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jul 2023 09:56:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjGPNsf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jul 2023 09:48:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82486E71;
-        Sun, 16 Jul 2023 06:48:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E32860C90;
-        Sun, 16 Jul 2023 13:48:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AA2C433C8;
-        Sun, 16 Jul 2023 13:48:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689515313;
-        bh=iT4f3iCd/KUaa4VNnDhB8rEKbhuOYRFO4HL9LhIvzH0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Z5AicpNfRuohhPLgNO5sx4G3wz2wjXTmcvNNEYG1v6AYMOEWNOGX/alByZAKTI6TO
-         J/9vt/E+NpkdY6+NFYuF6s/5Vw2JG3Mb28bHQAO/dx/ttpBhu0oU5GmILI/tMxPCpn
-         jwVh1mZBF9DNxFMjXVBVGuF1q3mOhDZRofTGJ7pEer68xUITDUVpioTZj1O+lNWlIt
-         4ka2uzCKaLk+chnXMBMC3jjcJYY+WOz3ZyUAy9ImmwGxn3+CuUIu7BYolbJ4182Wpj
-         zq+OY5qfFlWKBs27Gprci7oRKeotvPHefj/VHB4bzNWI+yLO7ip/SRoh7u3RDTgqgi
-         aVabvLEY+qY2w==
-Date:   Sun, 16 Jul 2023 14:48:27 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Roan van Dijk <roan@protonic.nl>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: chemical: scd4x: Add pressure compensation
-Message-ID: <20230716144827.5b084922@jic23-huawei>
-In-Reply-To: <20230711101419.2065107-1-roan@protonic.nl>
-References: <20230711101419.2065107-1-roan@protonic.nl>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229450AbjGPNz7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jul 2023 09:55:59 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60AAEE71
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jul 2023 06:55:58 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-993d1f899d7so532287366b.2
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jul 2023 06:55:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689515756; x=1692107756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qyTcxwXZFWWWTJdMWT4XbgZXuCWSZ8AXlZ0nPqWqSY4=;
+        b=KSJoqnJBl2+0lT/a7j3tDK0q2sxreRow6mWn6XmuqnFGdvSxYrW4kA3aQwJNTUdjC3
+         Oulz0Ct5XACEowOvC/c3b8NfGZ5cCGdCkDrLd1OYPGCl/E8krCdTGQnyIeejiap+JB7r
+         bT9MQbNhgFOmaRC/COkInbI1LQ1O19WSI5/EwuHkX9xvrrERqXem17dgiMqaZNG30O+p
+         PLFyYEUFXJ2jf+OlCSHxptnhXWkX6nitnQZvleqjAh1vnRTV8lHgjsGZ7NEMZg3/s4S3
+         Fi0oN9NcKhgEi7IDHkZ7dPV+R7efMqTvYbe48v9YG69pF26pUk6S6PvGMzvf77bbfKJi
+         GCAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689515756; x=1692107756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qyTcxwXZFWWWTJdMWT4XbgZXuCWSZ8AXlZ0nPqWqSY4=;
+        b=RIM/J8T6+P6Oh62E99srOgL1qfWpkPgQC8u2DmU5jb4d3Ky91TIx0LuiT2qfdkTeap
+         nGTWDoniU2Yld474/jQsEZBj3wAgCBtN1UFyqfsqEej2Ru51OnrJwU5J6qh9anUXjZdk
+         JqK9ZmvoOioYF8oNot248nmdP2uRTZq/h5GS/25oAEubAqgSPLBzAL+J1HJf/EPmHb+j
+         upGehK4XKw5n8jNM7LgoES8xqkC7srEy7FFTtqoqDTJfFr2h3stktEijwyAZdoqeAp53
+         oiZUcqPwGh4xDool6r9VXbNRi4nPWArqpuWWBGzAvkJGoAAmBM0EMPQN3wgwQx18QNxL
+         al7w==
+X-Gm-Message-State: ABy/qLYT9RUzFE6750xf54HyvC59wViHAfgvd86IDGU5HCGkqiVtYlLt
+        fTY/aV2ThAW4h29qW2wosDlod6Byrhmca3+A0tw=
+X-Google-Smtp-Source: APBJJlGepphVzYcdY5n66RwHkHtAiFaEQtCcoIUXoGiOA9JXzM3b03+GmSgOJPmGuCzJGIcJW2tqQzwLQ9wYh7V6VsY=
+X-Received: by 2002:a17:906:109b:b0:994:54e7:1287 with SMTP id
+ u27-20020a170906109b00b0099454e71287mr6409125eju.73.1689515756297; Sun, 16
+ Jul 2023 06:55:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+References: <20230630143719.1513906-1-yguoaz@gmail.com> <20230716141028.4c57c5c7@jic23-huawei>
+In-Reply-To: <20230716141028.4c57c5c7@jic23-huawei>
+From:   yguoaz <yguoaz@gmail.com>
+Date:   Sun, 16 Jul 2023 21:55:45 +0800
+Message-ID: <CAM7=BFqJQZ6A3ssLhMA3NYRbk9vg6O+41J=Njz1KGYQTi9yXbw@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: cros_ec: Fix the allocation size for cros_ec_command
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     tzungbi@kernel.org, lars@metafoo.de, bleung@chromium.org,
+        groeck@google.com, dianders@chromium.org, mazziesaccount@gmail.com,
+        gwendal@chromium.org, linux-iio@vger.kernel.org,
+        chrome-platform@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,194 +70,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 11 Jul 2023 12:14:19 +0200
-Roan van Dijk <roan@protonic.nl> wrote:
+Fixes: 974e6f02e27e1b46 ("iio: cros_ec_sensors_core: Add common
+functions for the ChromeOS EC S=E2=80=A6")
 
-> This patch adds pressure compensation to the scd4x driver. The pressure can
-> be written to the sensor in hPa. The pressure will be compensated
-> internally by the sensor.
-> 
-> Signed-off-by: Roan van Dijk <roan@protonic.nl>
-Hi Roan,
-
-I made a tiny tweak to alignment.. (see below) and applied to the togreg
-branch of iio.git which I'll initially push out as testing for 0-day to
-see if it can find anything we missed.
-
-Thanks,
-
-Jonathan
-
-> ---
-> 
-> Changes since v2:
->  - Fix for kernel test robot errors of uninitialized symbols
->  - Changed pressure compensation to output channel instead of a channel
->    with calibbias
->  - Pressure can now be compensated during measurements
-> 
->  drivers/iio/chemical/scd4x.c | 79 +++++++++++++++++++++++++++++++++---
->  1 file changed, 73 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
-> index a4f22d926400..4bb5d215c54c 100644
-> --- a/drivers/iio/chemical/scd4x.c
-> +++ b/drivers/iio/chemical/scd4x.c
-> @@ -36,6 +36,8 @@
->  #define SCD4X_WRITE_BUF_SIZE 5
->  #define SCD4X_FRC_MIN_PPM 0
->  #define SCD4X_FRC_MAX_PPM 2000
-> +#define SCD4X_PRESSURE_COMP_MIN_MBAR 700
-> +#define SCD4X_PRESSURE_COMP_MAX_MBAR 1200
->  #define SCD4X_READY_MASK 0x01
->  
->  /*Commands SCD4X*/
-> @@ -45,6 +47,8 @@ enum scd4x_cmd {
->  	CMD_STOP_MEAS           = 0x3f86,
->  	CMD_SET_TEMP_OFFSET     = 0x241d,
->  	CMD_GET_TEMP_OFFSET     = 0x2318,
-> +	CMD_SET_AMB_PRESSURE	= 0xe000,
-> +	CMD_GET_AMB_PRESSURE	= 0xe000,
->  	CMD_FRC                 = 0x362f,
->  	CMD_SET_ASC             = 0x2416,
->  	CMD_GET_ASC             = 0x2313,
-> @@ -137,7 +141,8 @@ static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
->  	 * Measurement needs to be stopped before sending commands.
->  	 * Except for reading measurement and data ready command.
->  	 */
-> -	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
-> +	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS) &&
-> +			(cmd != CMD_GET_AMB_PRESSURE)) {
-
-Alignment here odd...
-
->  		ret = scd4x_send_command(state, CMD_STOP_MEAS);
->  		if (ret)
->  			return ret;
-> @@ -166,7 +171,8 @@ static int scd4x_read(struct scd4x_state *state, enum scd4x_cmd cmd,
->  	}
->  
->  	/* start measurement */
-> -	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS)) {
-> +	if ((cmd != CMD_GET_DATA_READY) && (cmd != CMD_READ_MEAS) &&
-> +			(cmd != CMD_GET_AMB_PRESSURE)) {
-Also here
-
->  		ret = scd4x_send_command(state, CMD_START_MEAS);
->  		if (ret)
->  			return ret;
-> @@ -188,9 +194,11 @@ static int scd4x_write(struct scd4x_state *state, enum scd4x_cmd cmd, uint16_t a
->  	buf[4] = crc;
->  
->  	/* measurement needs to be stopped before sending commands */
-> -	ret = scd4x_send_command(state, CMD_STOP_MEAS);
-> -	if (ret)
-> -		return ret;
-> +	if (cmd != CMD_SET_AMB_PRESSURE) {
-> +		ret = scd4x_send_command(state, CMD_STOP_MEAS);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	/* execution time */
->  	msleep_interruptible(500);
-> @@ -200,7 +208,7 @@ static int scd4x_write(struct scd4x_state *state, enum scd4x_cmd cmd, uint16_t a
->  		return ret;
->  
->  	/* start measurement, except for forced calibration command */
-> -	if (cmd != CMD_FRC) {
-> +	if ((cmd != CMD_FRC) && (cmd != CMD_SET_AMB_PRESSURE)) {
->  		ret = scd4x_send_command(state, CMD_START_MEAS);
->  		if (ret)
->  			return ret;
-> @@ -338,6 +346,18 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> +		if (chan->output) {
-> +			mutex_lock(&state->lock);
-> +			ret = scd4x_read(state, CMD_GET_AMB_PRESSURE, &tmp, sizeof(tmp));
-> +			mutex_unlock(&state->lock);
-> +
-> +			if (ret)
-> +				return ret;
-> +
-> +			*val = be16_to_cpu(tmp);
-> +			return IIO_VAL_INT;
-> +		}
-> +
->  		ret = iio_device_claim_direct_mode(indio_dev);
->  		if (ret)
->  			return ret;
-> @@ -386,6 +406,25 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
->  	}
->  }
->  
-> +static const int scd4x_pressure_calibbias_available[] = {
-> +	SCD4X_PRESSURE_COMP_MIN_MBAR, 1, SCD4X_PRESSURE_COMP_MAX_MBAR,
-> +};
-> +
-> +static int scd4x_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-> +			    const int **vals, int *type, int *length, long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		*vals = scd4x_pressure_calibbias_available;
-> +		*type = IIO_VAL_INT;
-> +
-> +		return IIO_AVAIL_RANGE;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +
->  static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
->  				int val, int val2, long mask)
->  {
-> @@ -399,6 +438,21 @@ static int scd4x_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
->  		mutex_unlock(&state->lock);
->  
->  		return ret;
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_PRESSURE:
-> +			if (val < SCD4X_PRESSURE_COMP_MIN_MBAR ||
-> +			    val > SCD4X_PRESSURE_COMP_MAX_MBAR)
-> +				return -EINVAL;
-> +
-> +			mutex_lock(&state->lock);
-> +			ret = scd4x_write(state, CMD_SET_AMB_PRESSURE, val);
-> +			mutex_unlock(&state->lock);
-> +
-> +			return ret;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -503,9 +557,22 @@ static const struct iio_info scd4x_info = {
->  	.attrs = &scd4x_attr_group,
->  	.read_raw = scd4x_read_raw,
->  	.write_raw = scd4x_write_raw,
-> +	.read_avail = scd4x_read_avail,
->  };
->  
->  static const struct iio_chan_spec scd4x_channels[] = {
-> +	{
-> +		/*
-> +		 * this channel is special in a sense we are pretending that
-> +		 * sensor is able to change measurement chamber pressure but in
-> +		 * fact we're just setting pressure compensation value
-> +		 */
-> +		.type = IIO_PRESSURE,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.info_mask_separate_available = BIT(IIO_CHAN_INFO_RAW),
-> +		.output = 1,
-> +		.scan_index = -1,
-> +	},
->  	{
->  		.type = IIO_CONCENTRATION,
->  		.channel2 = IIO_MOD_CO2,
-
+On Sun, Jul 16, 2023 at 9:10=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Fri, 30 Jun 2023 22:37:19 +0800
+> Yiyuan Guo <yguoaz@gmail.com> wrote:
+>
+> > The struct cros_ec_command contains several integer fields and a
+> > trailing array. An allocation size neglecting the integer fields can
+> > lead to buffer overrun.
+> >
+> > Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> > Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
+>
+> Hi. I'm sitting on this one for a couple of reasons.
+> 1) No fixes tag (replying to this thread with one is fine)
+> 2) Various people commented on earlier versions, and I'm waiting for them=
+ to confirm
+> they are fine with this version.
+>
+> If I hear nothing in a few more weeks I'll try and figure out the
+> fixes tag + whether all the reviewer comments have been addressed.
+>
+> Jonathan
+>
+> > ---
+> > v2->v3:
+> >  * Added R-b tag from Tzung-Bi Shih
+> >  * Aligned the code by adding an extra tab before "max"
+> >  * Added a patch changelog
+> > v1->v2: Prefixed the commit title with "iio: cros_ec:"
+> >
+> >  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c =
+b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > index 943e9e14d1e9..b72d39fc2434 100644
+> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > @@ -253,7 +253,7 @@ int cros_ec_sensors_core_init(struct platform_devic=
+e *pdev,
+> >       platform_set_drvdata(pdev, indio_dev);
+> >
+> >       state->ec =3D ec->ec_dev;
+> > -     state->msg =3D devm_kzalloc(&pdev->dev,
+> > +     state->msg =3D devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
+> >                               max((u16)sizeof(struct ec_params_motion_s=
+ense),
+> >                               state->ec->max_response), GFP_KERNEL);
+> >       if (!state->msg)
+>

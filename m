@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D64E755BC8
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jul 2023 08:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C74D6755BD9
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jul 2023 08:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjGQGgF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jul 2023 02:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37430 "EHLO
+        id S229562AbjGQGiL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jul 2023 02:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbjGQGgD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jul 2023 02:36:03 -0400
+        with ESMTP id S229528AbjGQGiK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jul 2023 02:38:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA23E9;
-        Sun, 16 Jul 2023 23:36:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92A3F93;
+        Sun, 16 Jul 2023 23:38:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FCED60F5D;
-        Mon, 17 Jul 2023 06:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF51BC433CA;
-        Mon, 17 Jul 2023 06:35:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 275CB60F5D;
+        Mon, 17 Jul 2023 06:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6BBC433C7;
+        Mon, 17 Jul 2023 06:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689575760;
-        bh=CcL6kmNEqvVjt0DsY1Zq8glXhJJSkIlcA2Roz493NaA=;
+        s=k20201202; t=1689575888;
+        bh=C3jRACdteb4/FJI80ETxr0hg06nuLiMOWlWqtcyyR88=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=L67EcV+jfNrUWt4tNqqN0ZroKPdED1hism02sKPa831oaiwkrfHMlSIEWB7lYUEkm
-         vAUFQX+v6zZ6O6GrlhJVkVzs8eaI3G0wSMjZl9r8XBZ0gPrgEd5tBftcQ1jdF3rNQI
-         HaXC4oOC3YSzYmdt/oj2co2n314xC87yXIFO4hr/0DE6ca9reWmh5tAjCL8RwghCA7
-         5FBq+2TWmgnai2rFnMISYhkN/ZDq7kYWrrPcv/Y5V+R8Ih+hfMuK6ydFANAneCyeyg
-         Azp+WFwN46cQcRQxA/kZZFAFPy9QtmVgZxZSgaOyhJ+chB7xXsgyt4fT0dkpPvVPYh
-         cuquHQvdnKyWg==
-Message-ID: <5e5d1a1e-f106-9dd6-c19e-f933e8e70dd4@kernel.org>
-Date:   Mon, 17 Jul 2023 08:35:52 +0200
+        b=qbSlPk4UFm5zuVpO6zjcXmheQkuQ7VBPv8x/2t6tJ8kndEi0RTVBQ9fyb1O99+wz7
+         8nN0z7eObRyzLX0L8+YcmlRr4zmRj4EltFwAgcvI2ipxWoNH2FZxKIKE1q2rZ6h4BZ
+         wVhDwDoasBXGpf24aIYMKUyjRi8T0Zx4KRSiXVjHOld5DOfugrt+46f5gtBU4MEyLo
+         CIUsNLCDqAHbnZPvIYs5rKdt4foNDRJvfOZSFd4LIdsSicTDpj6elb6H1qqltTRKYm
+         TIH8ItBJj/r8+aKyhX9BSvYBa5MlMADs4sAfn6rXFkIRqaabAMtGZUZDaSCxM14rfQ
+         svcAFm0OYIpWg==
+Message-ID: <bd3890e4-3880-b292-5b9f-e9443185681c@kernel.org>
+Date:   Mon, 17 Jul 2023 08:38:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: dac: add mcp4728.yaml
+Subject: Re: [PATCH v2 2/2] iio: add mcp4728 I2C DAC driver
 Content-Language: en-US
 To:     Andrea Collamati <andrea.collamati@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -51,9 +51,9 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <cover.1689541455.git.andrea.collamati@gmail.com>
- <a7d5154b-baca-5cef-586e-a1fc211d7202@gmail.com>
+ <75145a12-a85e-e553-d32f-3212357c4a7e@gmail.com>
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <a7d5154b-baca-5cef-586e-a1fc211d7202@gmail.com>
+In-Reply-To: <75145a12-a85e-e553-d32f-3212357c4a7e@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -67,84 +67,81 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 16/07/2023 23:26, Andrea Collamati wrote:
-> Add documentation for mcp4728
+> mcp4728 is a 12-bit quad channel DAC with I2C interface.
+> 
+> support for:
+>   * per-channel gain
+>   * per-channel power state
+>   * per-channel power down mode control
+>   * per-channel vref selection internal/vdd
+>   * store current state to on-chip EEPROM
 > 
 > Signed-off-by: Andrea Collamati <andrea.collamati@gmail.com>
-
-What changed? Where is the changelog?
-
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC (and consider --no-git-fallback argument). It might
-happen, that command when run on an older kernel, gives you outdated
-entries. Therefore please be sure you base your patches on recent Linux
-kernel.
-
 > ---
->  .../bindings/iio/dac/microchip,mcp4728.yaml   | 42 +++++++++++++++++++
->  1 file changed, 42 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+
+What changed? Are you saying you ignored entire review you got?
+
+>  drivers/iio/dac/Kconfig   |  12 +
+>  drivers/iio/dac/Makefile  |   1 +
+>  drivers/iio/dac/mcp4728.c | 635 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 648 insertions(+)
+>  create mode 100644 drivers/iio/dac/mcp4728.c
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
-> new file mode 100644
-> index 000000000000..c971d34794db
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
-> @@ -0,0 +1,42 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4728.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 3acd9c3f388e..fa1516f6a285 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -389,6 +389,18 @@ config MCP4725
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called mcp4725.
+>  
+> +config MCP4728
+> +	tristate "MCP4728 DAC driver"
+> +	depends on I2C
+> +	help
+> +	  Say Y here if you want to build a driver for the Microchip
+> +	  MCP4728 quad channel, 12-bit digital-to-analog converter (DAC)
+> +	  with I2C interface.
 > +
-> +title: Microchip mcp4728 DAC
+> +	  To compile this driver as a module, choose M here: the module
+> +	  will be called mcp4728.
 > +
-> +maintainers:
-> +  - Andrea Collamati <andrea.collamati@gmail.com>
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,mcp4728
 
-No improvements.
+Why two blank lines?
 
+>  config MCP4922
+>  	tristate "MCP4902, MCP4912, MCP4922 DAC driver"
+>  	depends on SPI
+> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+> index addd97a78838..5b2bac900d5a 100644
 
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: |
-> +      Provides both power and acts as the reference supply on the mcp4728
-> +      when Internal Vref is not selected.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        mcp4728@60 {
+...
 
-This is a friendly reminder during the review process.
+> +
+> +static void mcp4728_remove(struct i2c_client *client)
+> +{
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> +	struct mcp4728_data *data = iio_priv(indio_dev);
+> +
+> +	iio_device_unregister(indio_dev);
+> +	regulator_disable(data->vdd_reg);
+> +}
+> +
+> +static const struct i2c_device_id mcp4728_id[] = { { "mcp4728", MCP4728 }, {} };
+> +MODULE_DEVICE_TABLE(i2c, mcp4728_id);
+
+Yeah, my feedback was ignored.
+
+That's not how it works. Anyway, I doubt that it should be a new driver.
+
+If Jonathan agrees to have new/duplicated drivers, then fine with me,
+but then don't ignore the comments. Instead:
 
 It seems my previous comments were not fully addressed. Maybe my
 feedback got lost between the quotes, maybe you just forgot to apply it.
 Please go back to the previous discussion and either implement all
 requested changes or keep discussing them.
-
-All of the comments seem to be ignored. I don't understand why you
-decided not to respond to me.
-
-To clarify: there is already binding for it - mcp4725.
-
-
 
 Best regards,
 Krzysztof

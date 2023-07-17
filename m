@@ -2,89 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9D3755EC9
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jul 2023 10:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12C6B755FB0
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jul 2023 11:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbjGQIxD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 17 Jul 2023 04:53:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
+        id S230178AbjGQJqF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jul 2023 05:46:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbjGQIxC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jul 2023 04:53:02 -0400
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DDAE4B;
-        Mon, 17 Jul 2023 01:53:01 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-577ddda6ab1so60517547b3.0;
-        Mon, 17 Jul 2023 01:53:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689583980; x=1692175980;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ESokity3SjM9JRRMG/QaRj+skICfRvp6MwvJNIUhFH4=;
-        b=Ovn3BB2LPl4m875AqX0uqIA7V6V/7QLRG1RWu/l7FQD79xJ0cs7aES7nlM94WlBOmo
-         0VjUe+YoLW5DoYlT0vpyh8ta4H66+wwKJ9DqAizk+iFYwJ52Y+2p+BaJpWfDh4uw4E0Q
-         jntM2hkxGh6kersBXeOPsSgE9SjjyV1OxmVoyESSrLHQmvu48kXftpvwuTTKDUMU86uk
-         rQIM7w49fueeCMzLTJBzBR2QdNiY1oEIBs5WIc8fFvIc1m0WzF4jPY0wCta+EhmPypGB
-         gmm8Y1l/TBmCNmScOEyI4oXhZrBxxx/88ApLK3+sV5oI+jM08ut2kiOUdc++SImbdFhy
-         5Ceg==
-X-Gm-Message-State: ABy/qLarGjQC0JoR6i3ZWdKWm8PEFQFPudqXlRcY30rEi7AWc2TEk6jd
-        y6bjQ1UBzhTzVgGeWD8vGAtK2FW+wzoaow==
-X-Google-Smtp-Source: APBJJlFOBLk7RmpXcUFPNPnAUKR0l0E3APRtnwBttK5/AIwQtSBqYOT3osLFDlnUmEpgoscA25ceuA==
-X-Received: by 2002:a81:4915:0:b0:577:186c:2a3c with SMTP id w21-20020a814915000000b00577186c2a3cmr9993078ywa.19.1689583980162;
-        Mon, 17 Jul 2023 01:53:00 -0700 (PDT)
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com. [209.85.219.175])
-        by smtp.gmail.com with ESMTPSA id r186-20020a0dcfc3000000b005772b76cb18sm3744731ywd.4.2023.07.17.01.52.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Jul 2023 01:52:59 -0700 (PDT)
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-bad0c4f6f50so6052856276.1;
-        Mon, 17 Jul 2023 01:52:59 -0700 (PDT)
-X-Received: by 2002:a25:df0c:0:b0:cb2:7e6:191c with SMTP id
- w12-20020a25df0c000000b00cb207e6191cmr11645536ybg.20.1689583979097; Mon, 17
- Jul 2023 01:52:59 -0700 (PDT)
+        with ESMTP id S229803AbjGQJqE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jul 2023 05:46:04 -0400
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEEB4BE;
+        Mon, 17 Jul 2023 02:46:01 -0700 (PDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+        by mx1.sberdevices.ru (Postfix) with ESMTP id 977BE100003;
+        Mon, 17 Jul 2023 12:45:59 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 977BE100003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1689587159;
+        bh=bU4ekr04U5x03pjQxh0crwXxvJQ0XcicbfzN4q2fJjQ=;
+        h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+        b=k8j3Ui0s8yZsItpF/sogZjPznCQFEmlvgu/6qwMPk4MCDALrJ2tahdhvqIYxmhbFX
+         X7tn//u3xIjRTENi1TuFuGNGbUnBYVolqkjfiM5r9aY8l36NXbmYNnYduT69HxkZz1
+         sDicmnHap/P2t6+Dd2hss76uv8/USEqyRB4TNeIfXorhi4tC3+34BmywBLDkZ+uazH
+         H+jUhdwYMKhhcDCC597UkJ+md7txDPrWpZZSEKRu7sZBnpXb+oGP2ksZuSb3hWjqe5
+         YKoIWj4dL0PJaIBT8NroSSZD21W8X/tkSH/vEcYEqd/RRRN8cgfVaPC4MHAf2ribOQ
+         1L8dP5iM26UVQ==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.sberdevices.ru (Postfix) with ESMTPS;
+        Mon, 17 Jul 2023 12:45:59 +0300 (MSK)
+Received: from [192.168.1.127] (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Mon, 17 Jul 2023 12:45:59 +0300
+Message-ID: <a172c764-1eef-835f-f237-8f78b4c6e877@sberdevices.ru>
+Date:   Mon, 17 Jul 2023 12:41:29 +0300
 MIME-Version: 1.0
-References: <20230716175218.130557-1-biju.das.jz@bp.renesas.com> <20230716175218.130557-3-biju.das.jz@bp.renesas.com>
-In-Reply-To: <20230716175218.130557-3-biju.das.jz@bp.renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 17 Jul 2023 10:52:47 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUdhm_XZU8ShNCmHUGz0fbk5gfTA2yznR_15NvfEUFuNw@mail.gmail.com>
-Message-ID: <CAMuHMdUdhm_XZU8ShNCmHUGz0fbk5gfTA2yznR_15NvfEUFuNw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] iio: accel: adxl313: Use i2c_get_match_data
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        linux-iio@vger.kernel.org,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 0/3] iio: adc: meson: tune init sequence
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <lars@metafoo.de>, <neil.armstrong@linaro.org>,
+        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
+        <martin.blumenstingl@googlemail.com>,
+        <andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
+References: <20230715110654.6035-1-gnstark@sberdevices.ru>
+ <20230716171134.43d05c45@jic23-huawei>
+From:   George Stark <gnstark@sberdevices.ru>
+In-Reply-To: <20230716171134.43d05c45@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 178645 [Jul 17 2023]
+X-KSMG-AntiSpam-Version: 5.9.59.0
+X-KSMG-AntiSpam-Envelope-From: GNStark@sberdevices.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 523 523 523027ce26ed1d9067f7a52a4756a876e54db27c, {Tracking_from_domain_doesnt_match_to}, p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2;sberdevices.ru:5.0.1,7.1.1;127.0.0.199:7.1.2, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/17 06:43:00 #21626526
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 16, 2023 at 7:52 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> Replace of_device_get_match_data() and i2c_match_id() by i2c_get_match
-> _data() as we have similar I2C and DT-based matching table.
->
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Hello Jonathan
 
-Gr{oetje,eeting}s,
+Thanks for your review
 
-                        Geert
+On 7/16/23 19:11, Jonathan Cameron wrote:
+> On Sat, 15 Jul 2023 14:05:57 +0300
+> George Stark <gnstark@sberdevices.ru> wrote:
+> 
+>> This patch is a part of effort to support meson a1 SoC and make meson saradc driver
+>> independent from vendor boot code initialization in common.
+>>
+>> Information was taken from vendor kernel 5.4, 4.19 and vendor uboot 2019.
+>> Most of the bits are undocumented at all or it's not said how they affect measuring.
+>>
+>> All those bits are already initialized in bl* code and since kernel driver dosn't
+>> rewrite or reset any registers but only changes some bits at init stage everything
+>> works fine.
+>>
+>> Test procedure is rather simple - one can change those bits in runtime
+>> (e.g. using devmem) and try to read channels (cat /sys/bus/platform/drivers/meson-saradc/.../iio:device0/*)
+>> changing some of those bits leads to measure procedure errors or abnormal results.
+>> Another test is build meson saradc as module, reset adc by reset bit, reload module
+>> and compare measure results to those got before reset.
+>>
+>> George Stark (3):
+>>    iio: adc: meson: init channels 0,1 input muxes
+>>    iio: adc: meson: init internal continuous ring counter
+>>    iio: adc: meson: init voltage control bits
+>>
+>>   drivers/iio/adc/meson_saradc.c | 73 ++++++++++++++++++++++++++++++++++
+>>   1 file changed, 73 insertions(+)
+>>
+> These look fine to me, but I'd like them to sit on list a little while
+> on off chance anyone else has feedback on them.
+
+I understand. I'd resend the patches in a week or more if there's no 
+feedback.
+
+If someone suggests tests so the community could trust the results I'll 
+be happy to run them. I have odroid-c1, vim1, vim3 and a113l board.
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best regards
+George

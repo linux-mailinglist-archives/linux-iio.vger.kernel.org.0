@@ -2,122 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37184755B9D
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jul 2023 08:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D64E755BC8
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jul 2023 08:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbjGQG0r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jul 2023 02:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59362 "EHLO
+        id S229601AbjGQGgF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jul 2023 02:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230302AbjGQG0q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jul 2023 02:26:46 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B6C10D0
-        for <linux-iio@vger.kernel.org>; Sun, 16 Jul 2023 23:26:15 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-992af8b3b1bso587625466b.1
-        for <linux-iio@vger.kernel.org>; Sun, 16 Jul 2023 23:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689575133; x=1692167133;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=chypWeQof4eZMpNxOQ7bwpe/4BlH0k2ZjlVM2ysN2ag=;
-        b=tSvUHZ/dfsh2AS1KjJ4+HyHU0yuwHol2XSCRegzesMGf2acJQu3k6klTWKnn1fe0V4
-         DqIzw5vBmKP6sKhTqnhVlfP6wPB0wPGlsvrxeGE1TQNdebWJ611sbU96yb7U/q+wIGey
-         Jh0e4TPnK1/Uswsq70/pyd0+7Gi7S/H8ftQxiCohdS3MXgMXKzc4lcJu7s2BgS5OrHVm
-         gEGCeXjHJ+uCPMNb87clkp2JIPlzOyt+BQAhPpxNc5jrNLJwrCIcijTS/o8y5tIDYHHK
-         FxDxDWaC3JC+3FDz5tjT8/cjpMVxTv5G9FFMVzi69cM46CyI4B8UEl6TX2IdYE0hx2sH
-         DvxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689575133; x=1692167133;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=chypWeQof4eZMpNxOQ7bwpe/4BlH0k2ZjlVM2ysN2ag=;
-        b=d2T9cwcfn8acUsOJlARAbxEArvzobywcevFd2W5yUEihEGvHg/7DFTsiK6oo3C5+AQ
-         5u0tAI8h545B63a4eskpd0jJqIwNJpmmxqWYmpKHXe45F8+D9HugOLkfzUKTKqCmyKHQ
-         0AFMIDwX72KjYDfwAuuhKy+4DohX6Gt/m3nTWf5CK9yRHJ9/++LuT4EugB9rhcai6Oof
-         D6UlCxQRHSAiA0nelFM+Acl4WNEi94wVFhSldCMTMHWpVh4TDAhVe4coBj6mxW0SegMG
-         rYjhW35QOKdQXAEJi2i/8tzzNmimqT41PsgIq4TQZ5ONOxYK2Qum2R4H8uyniZ+/QGB3
-         xqAw==
-X-Gm-Message-State: ABy/qLamiOF/3far7iwgRitUAECs6yq3ot0dfddFqlQM52I63LrNwMay
-        G/lM9aFmNXhZbaevb3Xbknp9Sg==
-X-Google-Smtp-Source: APBJJlHyhzL6nlTig/tpsNYVFy33IRvan6jkBmK6Lnq2glVnJN33Njy1Fz2Md6teFo7t5ql+RPjaIw==
-X-Received: by 2002:a17:906:113:b0:987:fe18:1c56 with SMTP id 19-20020a170906011300b00987fe181c56mr11403416eje.47.1689575133290;
-        Sun, 16 Jul 2023 23:25:33 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id c7-20020a17090654c700b009882e53a42csm8698829ejp.81.2023.07.16.23.25.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jul 2023 23:25:32 -0700 (PDT)
-Message-ID: <d0682516-28aa-dbfc-81d1-33300c669835@linaro.org>
-Date:   Mon, 17 Jul 2023 08:25:31 +0200
+        with ESMTP id S229587AbjGQGgD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jul 2023 02:36:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA23E9;
+        Sun, 16 Jul 2023 23:36:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FCED60F5D;
+        Mon, 17 Jul 2023 06:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF51BC433CA;
+        Mon, 17 Jul 2023 06:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689575760;
+        bh=CcL6kmNEqvVjt0DsY1Zq8glXhJJSkIlcA2Roz493NaA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=L67EcV+jfNrUWt4tNqqN0ZroKPdED1hism02sKPa831oaiwkrfHMlSIEWB7lYUEkm
+         vAUFQX+v6zZ6O6GrlhJVkVzs8eaI3G0wSMjZl9r8XBZ0gPrgEd5tBftcQ1jdF3rNQI
+         HaXC4oOC3YSzYmdt/oj2co2n314xC87yXIFO4hr/0DE6ca9reWmh5tAjCL8RwghCA7
+         5FBq+2TWmgnai2rFnMISYhkN/ZDq7kYWrrPcv/Y5V+R8Ih+hfMuK6ydFANAneCyeyg
+         Azp+WFwN46cQcRQxA/kZZFAFPy9QtmVgZxZSgaOyhJ+chB7xXsgyt4fT0dkpPvVPYh
+         cuquHQvdnKyWg==
+Message-ID: <5e5d1a1e-f106-9dd6-c19e-f933e8e70dd4@kernel.org>
+Date:   Mon, 17 Jul 2023 08:35:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding MCP3564 ADC
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: dac: add mcp4728.yaml
 Content-Language: en-US
-To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230714150051.637952-1-marius.cristea@microchip.com>
- <20230714150051.637952-2-marius.cristea@microchip.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230714150051.637952-2-marius.cristea@microchip.com>
+To:     Andrea Collamati <andrea.collamati@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Angelo Dureghello <angelo.dureghello@timesys.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <cover.1689541455.git.andrea.collamati@gmail.com>
+ <a7d5154b-baca-5cef-586e-a1fc211d7202@gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <a7d5154b-baca-5cef-586e-a1fc211d7202@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 14/07/2023 17:00, marius.cristea@microchip.com wrote:
-> From: Marius Cristea <marius.cristea@microchip.com>
+On 16/07/2023 23:26, Andrea Collamati wrote:
+> Add documentation for mcp4728
 > 
-> This is the device tree schema for iio driver for
-> Microchip family of 153.6 ksps, Low-Noise 16/24-Bit
+> Signed-off-by: Andrea Collamati <andrea.collamati@gmail.com>
 
-...
+What changed? Where is the changelog?
 
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC (and consider --no-git-fallback argument). It might
+happen, that command when run on an older kernel, gives you outdated
+entries. Therefore please be sure you base your patches on recent Linux
+kernel.
+
+> ---
+>  .../bindings/iio/dac/microchip,mcp4728.yaml   | 42 +++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> new file mode 100644
+> index 000000000000..c971d34794db
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4728.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +dependencies:
-> +  spi-cpol: [ spi-cpha ]
-> +  spi-cpha: [ spi-cpol ]
-
-Put dependencies after patternProperties:, before required:.
-
+> +title: Microchip mcp4728 DAC
 > +
-> +patternProperties:
-> +  "^channel@([0-9]|([1-7][0-9]))$":
-> +    $ref: adc.yaml
-> +    type: object
-
-Missing unevaluatedProperties: false.
-
-Open other bindings and look how it is done there.
-
-> +    description: Represents the external channels which are connected to the ADC.
+> +maintainers:
+> +  - Andrea Collamati <andrea.collamati@gmail.com>
 > +
-> +    properties:
-> +      reg:
-> +        description: The channel number in single-ended and differential mode.
-> +        minimum: 0
-> +        maximum: 79
-> +
-> +      diff-channels: true
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,mcp4728
 
-Why? Drop, unless you want to say there all other ADC properties are
-invalid for this type of device (device, not driver!).
+No improvements.
 
+
+> +  reg:
+> +    maxItems: 1
 > +
-> +    required:
-> +      - reg
+> +  vdd-supply:
+> +    description: |
+> +      Provides both power and acts as the reference supply on the mcp4728
+> +      when Internal Vref is not selected.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mcp4728@60 {
+
+This is a friendly reminder during the review process.
+
+It seems my previous comments were not fully addressed. Maybe my
+feedback got lost between the quotes, maybe you just forgot to apply it.
+Please go back to the previous discussion and either implement all
+requested changes or keep discussing them.
+
+All of the comments seem to be ignored. I don't understand why you
+decided not to respond to me.
+
+To clarify: there is already binding for it - mcp4725.
 
 
 

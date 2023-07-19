@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E0D758FA4
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jul 2023 09:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10853758FA6
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jul 2023 09:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjGSHyE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jul 2023 03:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45108 "EHLO
+        id S230265AbjGSHyF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Jul 2023 03:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbjGSHxm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jul 2023 03:53:42 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D06E1FF9;
-        Wed, 19 Jul 2023 00:53:39 -0700 (PDT)
+        with ESMTP id S230259AbjGSHxn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jul 2023 03:53:43 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509151FCB;
+        Wed, 19 Jul 2023 00:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1689753221;
-  x=1721289221;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=gFmoMhITjEyzSXypgUt6TH0U6+RzM5NN9/wc3VbH/x0=;
-  b=JEuJ4JwxNEIXjw3y39hfQH6CWal3n1MZbsO0roT0I+lDQaZzhpa056vd
-   /3D9DcyF1KXbPzGtMKUjSiiO6i2AMTZIQ5HoqlGvVhr/U2b+uI2zfqbKP
-   i9sdGPMKEQaZwMRV7kMrgdrS5KGao0+NZ1mgzTbhWyFeaZxBm5MfKUy4q
-   TP0bH6Jn1St7YoWcxcv82dtB2V0Pj3SCAYC/Ga4iNOdBWSRNb6TGaodfT
-   kmRCFvtnhpvZa1qnZ0FwlvnRpCcqbAyC+HeIEPjIV0be6rp6y8lx469qg
-   cGIUSiHxFybHt7IEJCf2tpbEHdRVEFQpebnQ6mVO9SHE47iP/YYLU5+bM
+  d=axis.com; q=dns/txt; s=axis-central1; t=1689753222;
+  x=1721289222;
+  h=references:from:to:cc:subject:in-reply-to:date:
+   message-id:mime-version;
+  bh=rwAJJHUO0JnZisxLO3+eFKnrpeHeVsnZgdBx2AOpPlA=;
+  b=C454Vq2mvtoEcaJTDLue2KJ7yXoSm8duWwR2/BiMXdIsEK7lU5TnocMp
+   abPkAjjRUK+X3fsPjd53EOpH7w+43qa1XR8hY7NShu+1YZKLq5EOKWexX
+   WLNJhITxq3YCs5/Wfw4t2WyZ7p80WkqwpOATqgZPf/UAGArxm3bfKsRYi
+   gZgbmxHsh0Po0W3MDgucjPnr/R6ZhtlyCaoDSMa8fyPwQ2LX657jz0sIw
+   owbvBpD4Y3HWv4hpJlFV4krNqLpd8aLsY4UQetHm99VlF+R4cxOUnhIXm
+   UeFCtp8s+3D0JgL6EyXyexyyuBx2A7GRBo5eryB1Y8gAqTmx1adu5Dq+b
    g==;
+References: <cover.1689753076.git.waqar.hameed@axis.com>
 User-agent: a.out
 From:   Waqar Hameed <waqar.hameed@axis.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC:     <kernel@axis.com>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v4 0/3] Add driver for Murata IRS-D200
-Date:   Wed, 19 Jul 2023 09:51:16 +0200
-Message-ID: <cover.1689753076.git.waqar.hameed@axis.com>
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <kernel@axis.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 2/3] iio: Add event enums for running period and count
+In-Reply-To: <cover.1689753076.git.waqar.hameed@axis.com>
+Date:   Wed, 19 Jul 2023 09:51:17 +0200
+Message-ID: <ee4a801ae9b9c4716c7bd23d8f79f232351df8bd.1689753076.git.waqar.hameed@axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.0.5.60]
@@ -53,88 +53,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Murata IRS-D200 is a PIR sensor for human detection. In this series we
-add devicetree bindings and an IIO driver with support for triggered
-buffer and events. Link to the datasheet should be added to the
-devicetree bindings, when that is available.
+There are devices (such as Murata IRS-D200 PIR proximity sensor) that
+check the data signal with a running period. I.e. for a specified time,
+they count the number of conditions that have occurred, and then signal
+if that is more than a specified amount.
 
-Changes in v4:
+`IIO_EV_INFO_PERIOD` resets when the condition no longer is true and is
+therefore not suitable for these devices. Add a new `iio_event_info`
+`IIO_EV_INFO_RUNNING_PERIOD` that can be used as a running period. Also
+add a new `IIO_EV_INFO_RUNNING_COUNT` that can be used to specify the
+number of conditions that must occur during this running period.
 
-[iio]
-* Use `iio_trigger_poll_nested()` instead of `iio_trigger_poll_chained()`.
-  (Remnant from old tree... Sorry!)
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+---
+ Documentation/ABI/testing/sysfs-bus-iio | 16 ++++++++++++++++
+ drivers/iio/industrialio-event.c        |  2 ++
+ include/linux/iio/types.h               |  2 ++
+ 3 files changed, 20 insertions(+)
 
-Link to v3: https://lore.kernel.org/lkml/cover.1689683411.git.waqar.hameed@axis.com/
-
-Changes in v3:
-
-[dt-bindings]
-* Add "Reviewed-by" footer in commit message.
-
-[iio]
-* Use `__le16` for buffers in `regmap_bulk_read/write()`.
-* Use `8` instead of `BIT(3)` in `irsd200_write_nr_count()`.
-* Rename `val` to `tmp` in `irsd200_write_event_config()`.
-* Return `0` on success in `irsd200_write_event_config()`.
-* Return `IRQ_HANDLED` instead of `IRQ_NONE` in error paths.
-* Return `IRQ_NONE` when not clearing anything in
-  `irsd200_irq_thread()`.
-* Use `devm_regulator_get_enable()` in probe.
-
-Link to v2: https://lore.kernel.org/lkml/cover.1689174736.git.waqar.hameed@axis.com/
-
-Changes in v2:
-
-[dt-bindings]
-* Remove "bindings for" in commit subject.
-* Remove superfluous yaml block style indicator ('|') for
-  `description:`.
-* Change node name in example from `pir` to `proximity`.
-* Add required `vdd-supply` property.
-
-[iio]
-* Add event enums for running period and count.
-* Use `set_trigger_state` callback instead of `iio_buffer_setup_ops`'s
-  `predisable` and `postenable`.
-* Use `regmap_bulk_read()` in `irsd200_read_data()` and
-  `irsd200_read_timer()`.
-* Use `regmap_bulk_write()` in `irsd200_write_timer()`.
-* Remove comment for macro `IRS_UPPER_COUNT()`.
-* Move `IIO_EV_INFO_LOW/HIGH_PASS_FILTER_3DB` from `iio_event_spec` to
-  `iio_chan_spec`.
-* Ignore timer (`IRS_INTR_TIMER`) interrupts.
-* Clarify comment on `ssleep(3)` in `irsd200_write_data_rate()`.
-* Only check for non-zero return values from `regmap` functions (as
-  opposed to `ret < 0`).
-* Add macro defines for operation states.
-* Remove fix size in static const array declarations.
-* Remove unnecessary `ret` variable in `irsd200_write_raw()`.
-* Remove comments in `irsd200_event_spec[]`.
-* Remove unnecessary call to `i2c_set_clientdata()` in probe.
-* Use `dev_err_probe()` everywhere in probe.
-* Remove unnecessary braces around if statement in probe.
-* Get and enable regulator in probe.
-
-Link to v1: https://lore.kernel.org/lkml/cover.1686926857.git.waqarh@axis.com/
-
-Waqar Hameed (3):
-  dt-bindings: iio: proximity: Add Murata IRS-D200
-  iio: Add event enums for running period and count
-  iio: Add driver for Murata IRS-D200
-
- Documentation/ABI/testing/sysfs-bus-iio       |  16 +
- .../iio/proximity/murata,irsd200.yaml         |  60 ++
- drivers/iio/industrialio-event.c              |   2 +
- drivers/iio/proximity/Kconfig                 |  12 +
- drivers/iio/proximity/Makefile                |   1 +
- drivers/iio/proximity/irsd200.c               | 962 ++++++++++++++++++
- include/linux/iio/types.h                     |   2 +
- 7 files changed, 1055 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/proximity/murata,irsd200.yaml
- create mode 100644 drivers/iio/proximity/irsd200.c
-
-
-base-commit: 3f01e9fed8454dcd89727016c3e5b2fbb8f8e50c
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index 7140e8e7313f..a2854dc9a839 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -2163,3 +2163,19 @@ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		An example format is 16-bytes, 2-digits-per-byte, HEX-string
+ 		representing the sensor unique ID number.
++
++What:		/sys/.../events/in_proximity_thresh_either_runningperiod
++KernelVersion:	6.6
++Contact:	linux-iio@vger.kernel.org
++Description:
++		A running period of time (in seconds) for which
++		in_proximity_thresh_either_runningcount amount of conditions
++		must occur before an event is generated. If direction is not
++		specified then this period applies to both directions.
++
++What:		/sys/.../events/in_proximity_thresh_either_runningcount
++KernelVersion:	6.6
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Number of conditions that must occur, during a running
++		period, before an event is generated.
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index f77ce49d4c36..19f7a91157ee 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -252,6 +252,8 @@ static const char * const iio_ev_info_text[] = {
+ 	[IIO_EV_INFO_TIMEOUT] = "timeout",
+ 	[IIO_EV_INFO_RESET_TIMEOUT] = "reset_timeout",
+ 	[IIO_EV_INFO_TAP2_MIN_DELAY] = "tap2_min_delay",
++	[IIO_EV_INFO_RUNNING_PERIOD] = "runningperiod",
++	[IIO_EV_INFO_RUNNING_COUNT] = "runningcount",
+ };
+ 
+ static enum iio_event_direction iio_ev_attr_dir(struct iio_dev_attr *attr)
+diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+index 82faa98c719a..117bde7d6ad7 100644
+--- a/include/linux/iio/types.h
++++ b/include/linux/iio/types.h
+@@ -19,6 +19,8 @@ enum iio_event_info {
+ 	IIO_EV_INFO_TIMEOUT,
+ 	IIO_EV_INFO_RESET_TIMEOUT,
+ 	IIO_EV_INFO_TAP2_MIN_DELAY,
++	IIO_EV_INFO_RUNNING_PERIOD,
++	IIO_EV_INFO_RUNNING_COUNT,
+ };
+ 
+ #define IIO_VAL_INT 1
 -- 
 2.30.2
 

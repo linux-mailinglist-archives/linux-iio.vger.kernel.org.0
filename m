@@ -2,58 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EE675B6B1
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 20:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 935CE75B6BE
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 20:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbjGTSYq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jul 2023 14:24:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59306 "EHLO
+        id S232012AbjGTS1j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jul 2023 14:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231808AbjGTSYm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 14:24:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2767A2D6D
-        for <linux-iio@vger.kernel.org>; Thu, 20 Jul 2023 11:24:35 -0700 (PDT)
+        with ESMTP id S231933AbjGTS1i (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 14:27:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 994EC270D;
+        Thu, 20 Jul 2023 11:27:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7965D61BCD
-        for <linux-iio@vger.kernel.org>; Thu, 20 Jul 2023 18:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E52EC433C8;
-        Thu, 20 Jul 2023 18:24:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D25C61BBA;
+        Thu, 20 Jul 2023 18:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEB9C433C7;
+        Thu, 20 Jul 2023 18:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689877474;
-        bh=j6roh86w0wqMDaRHLfYK6RyFNcvUKUKczN6VMLN9uA4=;
+        s=k20201202; t=1689877656;
+        bh=2GMTN6ceqPES1/d6gjRazz6Y4nOBxsMGPt0GoZG9nCM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KmcHuJ7sdwa0kFdc3KUH/f/VFrACU5123HkW99KiZYCrxof2niVHD3Gt5sUFxoI5l
-         QWcPI0lzhVGefGSd7aG7xCh1pO7y7KYZBhVbNpsWuW78HSILof6yvHEvzFAIBrIV/s
-         6yQdth8+l+QbrlXy0awDEfIJoEypc0MwRpE1CS5RPDcbxLb6kx3kvm+ZMtUipfEdHL
-         AEZwr55iJ2oph39jUAui+rSWIdveSUoAOX0SlwfK5S2dBb2OSUNQbzfFOIR/Iak9kT
-         Yk3hm7oNdna1jNXwl7hng1DRi496kQrN7l4JRPY+pNiodLZj4eAx2Y+WJI5nxXV5yh
-         kJ4PdOEXilCyw==
-Date:   Thu, 20 Jul 2023 19:24:28 +0100
+        b=VRhrfpOF955zzNBQirMa4yp9YDTrPggwE1IOLByKCD9aiw5Qg3CjFFgm4nUgSKqTT
+         NOD+OeVoyCoBHtwW4Fr/ju/0acGoYs7cDzEycSRfj7l5jLxGsZZCSoOax7beFZxgGd
+         eXfcMa0udsQt81aKNcs24bhPBHblwzBehsjQP7tmPDMMe5Iwjy6oYDKSW7STpdnRu5
+         TtfxHYpIjnby9JIZMZUoSOqrWtYItonYM2uk2xm/pnrCyxGiaXQdMd5qjGI8PGvIcw
+         n6X2JtjJTf7cth+Wg1qtL7jEvWGhdJd7pyj9R/Cz9XRa7ASTytP/Tyn7BrduUvsgTJ
+         jFBSy0Pb7HAAA==
+Date:   Thu, 20 Jul 2023 19:27:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v9 2/2] iio: adc: max14001: New driver
-Message-ID: <20230720192428.2faaaf68@jic23-huawei>
-In-Reply-To: <20230716144223.0d9260d3@jic23-huawei>
-References: <20230710042723.46084-1-kimseer.paller@analog.com>
-        <20230710042723.46084-2-kimseer.paller@analog.com>
-        <CAHp75Vd386P9xM_+wLahp6B_XwYVq1AZxaFQeWvZ2pnk-tFGHA@mail.gmail.com>
-        <11c30a02df784ca78be271fdf9190dad@analog.com>
-        <CAHp75VegvKFUXoJoJnuXstJa_L66M2Ah9yf1aEQ8-ET1QczDtQ@mail.gmail.com>
-        <fe0cd5348f864a6392a7e0e5ca93bec5@analog.com>
-        <CAHp75VcpguSN9DkuCtpaB+_=sY7+Ot1MGPWToe-2pYjFXC9=4Q@mail.gmail.com>
-        <20230716144223.0d9260d3@jic23-huawei>
+To:     JuenKit Yip <JuenKit_Yip@hotmail.com>
+Cc:     lars@metafoo.de, Michael.Hennerich@analog.com,
+        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] staging: iio: ad7816: add iio interface
+Message-ID: <20230720192730.490cf3cb@jic23-huawei>
+In-Reply-To: <DB4PR10MB626128364C9D170DFFAD0A48923BA@DB4PR10MB6261.EURPRD10.PROD.OUTLOOK.COM>
+References: <DB4PR10MB6261ADF6C8845AF66AB292989232A@DB4PR10MB6261.EURPRD10.PROD.OUTLOOK.COM>
+        <20230716144024.30ded663@jic23-huawei>
+        <DB4PR10MB626128364C9D170DFFAD0A48923BA@DB4PR10MB6261.EURPRD10.PROD.OUTLOOK.COM>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -64,58 +58,118 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 16 Jul 2023 14:42:23 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+	0);
+> >> -
+> >> -static ssize_t ad7816_show_value(struct device *dev,
+> >> -				 struct device_attribute *attr,
+> >> -				 char *buf)
+> >> -{
+> >> -	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> >>   	struct ad7816_chip_info *chip = iio_priv(indio_dev);
+> >>   	u16 data;
+> >> -	s8 value;
+> >>   	int ret;
+> >>   
+> >> +	chip->channel_id = (u8)chan->channel;  
+> > Can we keep the channel_id local?
+> > It is used for over temperature detection (OTI) but that needs separating out.  
+> 
+> ack, maybe need a another commit.
+> 
+> channel_id may be removed from ad7816_chip_info
 
-> On Tue, 11 Jul 2023 12:08:04 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->=20
-> > On Tue, Jul 11, 2023 at 9:55=E2=80=AFAM Paller, Kim Seer
-> > <KimSeer.Paller@analog.com> wrote: =20
-> > > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > > On Mon, Jul 10, 2023 at 11:17=E2=80=AFAM Paller, Kim Seer
-> > > > <KimSeer.Paller@analog.com> wrote:   =20
-> >=20
-> > ...
-> >  =20
-> > > > Hence instead of v10, reply with a draft of the comment in the code=
- (I
-> > > > have asked before) that explains these bit twiddlers.   =20
-> > >
-> > > In patch v9, regarding with my bit arrangement comments, is it somewh=
-at correct
-> > > or do I need to totally replace it?
-> > >
-> > > I am not yet familiar with the terminologies, so I hope you can provi=
-de some
-> > > suggestions and I'll definitely send the draft first.   =20
-> >=20
-> > I'm not sure I understand what comments you are referring to.
-> > The v9 does not explain the algorithm clearly.
-> >=20
-> > What you need is to cite or retell what the datasheet explains about
-> > bit ordering along with the proposed algo (in AN as far as I
-> > understood). Because I haven't got, why do you need to use be16 +
-> > bitrev if your data is le16 (and that's my understanding of the
-> > datasheet). Is it because of the answer from the device? I don't
-> > remember if it keep the bit order the same (i.e. D0...D9) as on the
-> > wire.
-> >=20
-> > For the terminology, use what the datasheet and AN provide you. Also
-> > good to put those URLs to the code and datasheet as Datasheet: tag in
-> > the commit message.
-> >  =20
->=20
-> Absolutely agree.  The data format is weird enough we need the
-> info to be available for anyone who tries to work out what is going
-> on in the future.  This is a case where I'd rather see too much detail
-> in the comments than too little!
->=20
-> Jonathan
+Agreed. A separate ID will tidy this up and may provide a transition path
+to let you do the other parts in multiples steps.
 
-Note that I had applied (and forgotten I'd done so) this driver.
-Given the outstanding questions and a build issue with clang, I'm dropping
-it for now.  Hopefully that doesn't cause anyone too many problems (those
-based on my togreg branch which rarely rebases)
+> 
+> >
+> > Given you'll be breaking that connection I think you need to deal with
+> > both the main attributes and the event ones in a single go.  Thus removing
+> > any hidden usage of the last channel touched like you have here.
+> >
+> >  
+> >>   	ret = ad7816_spi_read(chip, &data);
+> >>   	if (ret)
+> >>   		return -EIO;
+> >> @@ -227,22 +180,21 @@ static ssize_t ad7816_show_value(struct device *dev,
+> >>   	data >>= AD7816_VALUE_OFFSET;
+> >>   
+> >>   	if (chip->channel_id == 0) {
+> >> -		value = (s8)((data >> AD7816_TEMP_FLOAT_OFFSET) - 103);
+> >> -		data &= AD7816_TEMP_FLOAT_MASK;
+> >> -		if (value < 0)
+> >> -			data = BIT(AD7816_TEMP_FLOAT_OFFSET) - data;
+> >> -		return sprintf(buf, "%d.%.2d\n", value, data * 25);
+> >> +		*val = (s8)((data >> AD7816_TEMP_FLOAT_OFFSET) - 103);  
+> > Use masks and FIELD_GET() though that change perhaps belongs in a separate patch set.  
+> ack
+> >> +		*val2 = (data & AD7816_TEMP_FLOAT_MASK) * 25;
+> >> +		if (*val < 0)
+> >> +			*val2 = BIT(AD7816_TEMP_FLOAT_OFFSET) - *val2;
+> >> +		return IIO_VAL_INT_PLUS_MICRO;
+> >>   	}
+> >> -	return sprintf(buf, "%u\n", data);
+> >> -}
+> >>   
+> >> -static IIO_DEVICE_ATTR(value, 0444, ad7816_show_value, NULL, 0);
+> >> +	*val = data;
+> >> +
+> >> +	return IIO_VAL_INT;
+> >> +}
+> >>   
+> >>   static struct attribute *ad7816_attributes[] = {
+> >>   	&iio_dev_attr_available_modes.dev_attr.attr,
+> >>   	&iio_dev_attr_mode.dev_attr.attr,
+> >> -	&iio_dev_attr_channel.dev_attr.attr,
+> >> -	&iio_dev_attr_value.dev_attr.attr,
+> >>   	NULL,
+> >>   };
+> >>   
+> >> @@ -341,10 +293,47 @@ static const struct attribute_group ad7816_event_attribute_group = {
+> >>   };
+> >>   
+> >>   static const struct iio_info ad7816_info = {
+> >> +	.read_raw = ad7816_read_raw,
+> >>   	.attrs = &ad7816_attribute_group,
+> >>   	.event_attrs = &ad7816_event_attribute_group,
+> >>   };
+> >>   
+> >> +static const struct iio_chan_spec ad7816_channels[] = {
+> >> +	{
+> >> +		.type = IIO_TEMP,
+> >> +		.indexed = 1,
+> >> +		.channel = 0,
+> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+> >> +	},
+> >> +};
+> >> +
+> >> +static const struct iio_chan_spec ad7817_channels[] = {
+> >> +	{
+> >> +		.type = IIO_TEMP,
+> >> +		.indexed = 1,
+> >> +		.channel = 0,
+> >> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),  
+> > This would require the reading presented to be in the units defined by
+> > the ABI (Documentation/ABI/testing/sysfs-bus-iio)
+> > Can you confirm that these are all correct?  
+> I will upload test report
 
-Jonathan
+Perfect.
+
+> >
+> > Note it is very unusual for an IIO driver to present all processed channels.
+> > Superficially it looks like there might be some appropriate conversions done
+> > for the temperature channels for them to be in the right units, but nothing
+> > at all is done to the voltage channels...  
+> 
+> In fact, I hope to set voltage channel to RAW, and leave conversion to 
+> users.
+> 
+> Is it a good idea?
+
+Yes, though hopefully we can also provide a _SCALE to give userspace the
+information it needs.
+
+> 
+
+

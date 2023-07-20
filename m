@@ -2,122 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20533759C42
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jul 2023 19:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21E5675A7E7
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 09:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbjGSRUK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jul 2023 13:20:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53682 "EHLO
+        id S231330AbjGTHgX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jul 2023 03:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbjGSRUJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jul 2023 13:20:09 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947F11B6
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jul 2023 10:20:07 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fc0aecf107so65755735e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jul 2023 10:20:07 -0700 (PDT)
+        with ESMTP id S229950AbjGTHgW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 03:36:22 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5BF1BC0;
+        Thu, 20 Jul 2023 00:36:21 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-992e22c09edso74036966b.2;
+        Thu, 20 Jul 2023 00:36:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689787206; x=1692379206;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tryqWINbuaEc88iTrVyHMsqPdFzMjV4Usg4i5lKUzxg=;
-        b=BFhym1rSHwx5Or+Pii0FqmZpyk6fWpZjZKuo/9KNL6cngJ1bY3HlQ6rlV5EcJyFRLw
-         31K4RtM628f51v3S8c5Qi0K+lV2LP3yEBUDlYdKQn5eZ1TR5bO0zO4gWNUqeMYgLprrV
-         vsj44XHkZLFHVH7Lhy1WesZcIkZQIaceksaTSd13I8/6O1HJMGeEhvgpy6H/EzHjdzoZ
-         j8BPZjt1gCWP0rBB0a5szfWaRB71TzqswPLfbYyCb/6N/CQ6Cu6X5jO8liFDTkAIa4Ja
-         ywl1hQ9WidgV5njtS2Ml2ZnGxg8JPyfLbqHf+t+NNiz6J5eWzBNa4yr/dQEH8Ul2zmMk
-         xSOA==
+        d=gmail.com; s=20221208; t=1689838580; x=1690443380;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=04v/o0SF8GsTODqczOjwHO3xzTuSNIQOhyU0g3zvtqI=;
+        b=k0Pcr8+Sg79/d2Ab0fSFnraSNRHiwX8pk/sLEM1P1pWxgR1VSXQsFJXlBZpeZ9x1oB
+         Rvo/nHuiJ6mFa9MRK3bWGl25od/3XVvvpRYSr3p6OQrRyKHmbqx3XS1Ls455xCIFvmCb
+         75BD+iG4dMgA2hOgrfgm9IlnRWGC5+oLBf9wh3QrgHpb6t05pAJIuVpgxy6Ma8Se8+xY
+         ZQAH0AXfiMm9t0rho/c/sJXuCU7x/u1uqlyYYtQw0ZHuiMwXjeDxW0azt8KtL12Bn/H1
+         7f7hoTC2OUtwS+qgjqyZKwe8NPWtRBtlUkRc/VOzKK1SjoI+pU8Qj3TeSx2xMHKvtH2p
+         uR+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689787206; x=1692379206;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tryqWINbuaEc88iTrVyHMsqPdFzMjV4Usg4i5lKUzxg=;
-        b=S5c3WOitA05pxQF5vpPZe2O9OlgsObMJVEch2OWIfynPDN2pxsVZyRvfVsIvrlHceN
-         beylxqyc7/KQ3W0THE0ZMr2AM1RUCOy8yjJIFJHgOsca/mlh1g/TTXEI74wqXJv5spKj
-         lcQGL7K/CVWLmP0g+3koh4m+uQkLPiCXy+K3j+WoA0lbPM576Hft+s5txB69k9VBEcn3
-         SLju9Fkjxoz3M7sNAJgiP9Gxsj7esXjKMl57s4wK7FMdNF+RiufDxUskxYHE5e/vw5zs
-         1usBYuNeR6AS1XpO+laAP2rj9Q6Wl/8e8dICJyY9ddNTF03lq6Id8lLQMnmuwyqpESEV
-         uA3Q==
-X-Gm-Message-State: ABy/qLYRN6tiBL14KIlLpGOWTzVpFlL8WKFYnyRMiomgFuHfnMct9Z38
-        J3XJzfuKfXxCTxGcC7RJEEFvRw==
-X-Google-Smtp-Source: APBJJlERLjXGvjJSJjU1AMkKL+pqkSk/vqOk8N4LMFX++aVs21FOCvyEtjc8FdvLbnLuf1/njZiDZw==
-X-Received: by 2002:a05:600c:2113:b0:3fb:ba04:6d5d with SMTP id u19-20020a05600c211300b003fbba046d5dmr49523wml.12.1689787206013;
-        Wed, 19 Jul 2023 10:20:06 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id p3-20020a05600c204300b003fc3b03e41esm2485270wmg.1.2023.07.19.10.20.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jul 2023 10:20:05 -0700 (PDT)
-Message-ID: <3bff674f-791b-74bd-da1c-13b6596ea276@linaro.org>
-Date:   Wed, 19 Jul 2023 19:20:03 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding MCP3564 ADC
-Content-Language: en-US
-To:     Marius.Cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org
-Cc:     conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        d=1e100.net; s=20221208; t=1689838580; x=1690443380;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=04v/o0SF8GsTODqczOjwHO3xzTuSNIQOhyU0g3zvtqI=;
+        b=Gll+JaPsV6E+7WvlZ/MMEJVhj3tm6k1W6NH8bDKflKoAmhI2Dp86YEV+aDMTaIyaGz
+         U0VtccoqFeffXmlnp/9XpqD5uikm6BI/FvvOx3oHRv0b+uvNS5p64xBYC22b/ZnEfA5Z
+         mm970C3AoI0rsPB7zz6Ao7rx/h09mEXCQRUP6cnoAwRSrzy4Fib0+HdcLCekc9PCUoaA
+         P5yyzdyEwGGI6fn6k5Ntm0CbpcHHM6jyZq2gzWWImgzuesuKg8s61w+eqb7y38rm2gC+
+         9XPIcbh8pGMixTiFC56VzndcyhjGaoTtnghMVEhCzwbkH+95Vn1R5Mm5TfA1j/anR9jN
+         /V/w==
+X-Gm-Message-State: ABy/qLZhyLjrfrsCUsyigB9dEaztUShRVBzSc+G81X9MMYVaJqIKWApj
+        bnt1zNU7ojGWiOzZ7ZERtFu01kRn6X0a9Q==
+X-Google-Smtp-Source: APBJJlGVnYG9f6FPF2QM4NvVkmFvNq19Qj1+cgsccL9Yc1npcdcY/oNYIBsq0hRskWsFuUVFHO+r0g==
+X-Received: by 2002:a17:906:2112:b0:992:9ea0:2317 with SMTP id 18-20020a170906211200b009929ea02317mr4204575ejt.61.1689838579912;
+        Thu, 20 Jul 2023 00:36:19 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:f946:69a3:7954:9ee0? (p200300f6ef058700f94669a379549ee0.dip0.t-ipconnect.de. [2003:f6:ef05:8700:f946:69a3:7954:9ee0])
+        by smtp.gmail.com with ESMTPSA id g4-20020a170906868400b009920e9a3a73sm276774ejx.115.2023.07.20.00.36.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jul 2023 00:36:19 -0700 (PDT)
+Message-ID: <e2fa1ebc820745065e91bac875f287167a0cfef9.camel@gmail.com>
+Subject: Re: [PATCH v2 1/3] iio: imu: adis16475.c: Remove unused enum
+ elements
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Ramona Bolboaca <ramona.bolboaca@analog.com>, jic23@kernel.org,
+        nuno.sa@analog.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20230714150051.637952-1-marius.cristea@microchip.com>
- <20230714150051.637952-2-marius.cristea@microchip.com>
- <d0682516-28aa-dbfc-81d1-33300c669835@linaro.org>
- <3d5cc96388f27b1f03f5a1d3bee7113686548e43.camel@microchip.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <3d5cc96388f27b1f03f5a1d3bee7113686548e43.camel@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Date:   Thu, 20 Jul 2023 09:38:50 +0200
+In-Reply-To: <20230719123152.309624-2-ramona.bolboaca@analog.com>
+References: <20230719123152.309624-1-ramona.bolboaca@analog.com>
+         <20230719123152.309624-2-ramona.bolboaca@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 19/07/2023 17:40, Marius.Cristea@microchip.com wrote:
-> Hi Krzysztof,
-> 
->>> +
->>> +patternProperties:
->>> +  "^channel@([0-9]|([1-7][0-9]))$":
->>> +    $ref: adc.yaml
->>> +    type: object
->>
->> Missing unevaluatedProperties: false.
->>
->> Open other bindings and look how it is done there.
->>
->>> +    description: Represents the external channels which are
->>> connected to the ADC.
->>> +
->>> +    properties:
->>> +      reg:
->>> +        description: The channel number in single-ended and
->>> differential mode.
->>> +        minimum: 0
->>> +        maximum: 79
->>> +
->>> +      diff-channels: true
->>
->> Why? Drop, unless you want to say there all other ADC properties are
->> invalid for this type of device (device, not driver!).
->>
->>> +
->>> +    required:
->>> +      - reg
->>
->>
-> 
-> All other ADC properties are valid.
+On Wed, 2023-07-19 at 15:31 +0300, Ramona Bolboaca wrote:
+> Remove unused enum elements ADIS16475_SCAN_DIAG_S_FLAGS and
+> ADIS16475_SCAN_CRC_FAILURE.
+>=20
+> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
+> ---
 
-So drop what I questioned.
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-
-Best regards,
-Krzysztof
+> =C2=A0drivers/iio/imu/adis16475.c | 2 --
+> =C2=A01 file changed, 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+> index 3abffb01ba31..243f0a91fdf9 100644
+> --- a/drivers/iio/imu/adis16475.c
+> +++ b/drivers/iio/imu/adis16475.c
+> @@ -115,8 +115,6 @@ enum {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_ACCEL_Y,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_ACCEL_Z,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_TEMP,
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_DIAG_S_FLAGS,
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_CRC_FAILURE,
+> =C2=A0};
+> =C2=A0
+> =C2=A0static bool low_rate_allow;
 

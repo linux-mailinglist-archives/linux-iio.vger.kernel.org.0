@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5087375AF38
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 15:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E22175AF3B
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 15:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbjGTNKa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jul 2023 09:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35170 "EHLO
+        id S231609AbjGTNKd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jul 2023 09:10:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjGTNK3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 09:10:29 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D410135;
-        Thu, 20 Jul 2023 06:10:24 -0700 (PDT)
+        with ESMTP id S231604AbjGTNKb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 09:10:31 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 99259269E;
+        Thu, 20 Jul 2023 06:10:28 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,218,1684767600"; 
-   d="scan'208";a="170253809"
+   d="scan'208";a="173902775"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 20 Jul 2023 22:10:23 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 20 Jul 2023 22:10:28 +0900
 Received: from localhost.localdomain (unknown [10.226.92.157])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 65D8140116DC;
-        Thu, 20 Jul 2023 22:10:19 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id C8F5B40116DC;
+        Thu, 20 Jul 2023 22:10:23 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -32,44 +32,119 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
         Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 0/6] Add RZ/G2UL MTU3a support
-Date:   Thu, 20 Jul 2023 14:10:10 +0100
-Message-Id: <20230720131016.331793-1-biju.das.jz@bp.renesas.com>
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Pavel Machek <pavel@denx.de>,
+        Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 1/6] dt-bindings: timer: renesas,rz-mtu3: Improve documentation
+Date:   Thu, 20 Jul 2023 14:10:11 +0100
+Message-Id: <20230720131016.331793-2-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230720131016.331793-1-biju.das.jz@bp.renesas.com>
+References: <20230720131016.331793-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch series aims to add MTU3a support for RZ/G2UL SMARC EVK.
+Fix the documentation issues pointed by Pavel while backporting
+it to 6.1.y-cip.
+ - Replace '32- bit'->'32-bit'
+ - Consistently remove '.' at the end of line for the specifications
+ - Replace '          (excluding MTU8)'-> '(excluding MTU8)'
 
-Biju Das (6):
-  dt-bindings: timer: renesas,rz-mtu3: Improve documentation
-  dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt
-    names
-  dt-bindings: timer: renesas,rz-mtu3: Document RZ/G2UL SoC
-  arm64: dts: renesas: r9a07g044: Update overfow/underflow IRQ names for
-    MTU3 channels
-  arm64: dts: renesas: r9a07g043: Add MTU3a node
-  arm64: dts: renesas: rzg2ul-smarc: Add support for enabling MTU3
+Reported-by: Pavel Machek <pavel@denx.de>
+Closes: https://patchwork.kernel.org/project/cip-dev/patch/20230606075235.183132-3-biju.das.jz@bp.renesas.com/
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+v1->v2:
+ * Added Ack by Conor Dooley
+---
+ .../bindings/timer/renesas,rz-mtu3.yaml       | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
- .../bindings/timer/renesas,rz-mtu3.yaml       | 67 +++++++++---------
- arch/arm64/boot/dts/renesas/r9a07g043.dtsi    | 70 +++++++++++++++++++
- .../boot/dts/renesas/r9a07g043u11-smarc.dts   | 11 +++
- arch/arm64/boot/dts/renesas/r9a07g044.dtsi    | 16 ++---
- arch/arm64/boot/dts/renesas/r9a07g054.dtsi    | 16 ++---
- .../dts/renesas/rzg2ul-smarc-pinfunction.dtsi |  6 ++
- arch/arm64/boot/dts/renesas/rzg2ul-smarc.dtsi | 13 ++++
- 7 files changed, 150 insertions(+), 49 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
+index bffdab0b0185..eb2d5ebe4df0 100644
+--- a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
++++ b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
+@@ -11,8 +11,8 @@ maintainers:
+ 
+ description: |
+   This hardware block consists of eight 16-bit timer channels and one
+-  32- bit timer channel. It supports the following specifications:
+-    - Pulse input/output: 28 lines max.
++  32-bit timer channel. It supports the following specifications:
++    - Pulse input/output: 28 lines max
+     - Pulse input 3 lines
+     - Count clock 11 clocks for each channel (14 clocks for MTU0, 12 clocks
+       for MTU2, and 10 clocks for MTU5, four clocks for MTU1-MTU2 combination
+@@ -23,11 +23,11 @@ description: |
+         - Input capture function (noise filter setting available)
+         - Counter-clearing operation
+         - Simultaneous writing to multiple timer counters (TCNT)
+-          (excluding MTU8).
++          (excluding MTU8)
+         - Simultaneous clearing on compare match or input capture
+-          (excluding MTU8).
++          (excluding MTU8)
+         - Simultaneous input and output to registers in synchronization with
+-          counter operations           (excluding MTU8).
++          counter operations (excluding MTU8)
+         - Up to 12-phase PWM output in combination with synchronous operation
+           (excluding MTU8)
+     - [MTU0 MTU3, MTU4, MTU6, MTU7, and MTU8]
+@@ -40,26 +40,26 @@ description: |
+     - [MTU3, MTU4, MTU6, and MTU7]
+         - Through interlocked operation of MTU3/4 and MTU6/7, the positive and
+           negative signals in six phases (12 phases in total) can be output in
+-          complementary PWM and reset-synchronized PWM operation.
++          complementary PWM and reset-synchronized PWM operation
+         - In complementary PWM mode, values can be transferred from buffer
+           registers to temporary registers at crests and troughs of the timer-
+           counter values or when the buffer registers (TGRD registers in MTU4
+-          and MTU7) are written to.
+-        - Double-buffering selectable in complementary PWM mode.
++          and MTU7) are written to
++        - Double-buffering selectable in complementary PWM mode
+     - [MTU3 and MTU4]
+         - Through interlocking with MTU0, a mode for driving AC synchronous
+           motors (brushless DC motors) by using complementary PWM output and
+           reset-synchronized PWM output is settable and allows the selection
+-          of two types of waveform output (chopping or level).
++          of two types of waveform output (chopping or level)
+     - [MTU5]
+-        - Capable of operation as a dead-time compensation counter.
++        - Capable of operation as a dead-time compensation counter
+     - [MTU0/MTU5, MTU1, MTU2, and MTU8]
+         - 32-bit phase counting mode specifiable by combining MTU1 and MTU2 and
+-          through interlocked operation with MTU0/MTU5 and MTU8.
++          through interlocked operation with MTU0/MTU5 and MTU8
+     - Interrupt-skipping function
+         - In complementary PWM mode, interrupts on crests and troughs of counter
+           values and triggers to start conversion by the A/D converter can be
+-          skipped.
++          skipped
+     - Interrupt sources: 43 sources.
+     - Buffer operation:
+         - Automatic transfer of register data (transfer from the buffer
+@@ -68,9 +68,9 @@ description: |
+         - A/D converter start triggers can be generated
+         - A/D converter start request delaying function enables A/D converter
+           to be started with any desired timing and to be synchronized with
+-          PWM output.
++          PWM output
+     - Low power consumption function
+-        - The MTU3a can be placed in the module-stop state.
++        - The MTU3a can be placed in the module-stop state
+ 
+     There are two phase counting modes. 16-bit phase counting mode in which
+     MTU1 and MTU2 operate independently, and cascade connection 32-bit phase
 -- 
 2.25.1
 

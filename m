@@ -2,325 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA7D75B1D2
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 16:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BC8A75B1E3
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 17:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232346AbjGTO7b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jul 2023 10:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43332 "EHLO
+        id S231149AbjGTPAc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jul 2023 11:00:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjGTO7a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 10:59:30 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE7841BC6;
-        Thu, 20 Jul 2023 07:59:28 -0700 (PDT)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36KDEMW4005310;
-        Thu, 20 Jul 2023 16:58:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=SYqAZNLeldZI4p+biE8tneewU0+ZDnqH4LOdjLzjgN8=;
- b=jUavRcjf10fWnyG/wp+8u2MmRxgf7Nau1Hi8Vx5pJPGO2qt4zchHRsjOF4JN/Ye8bku8
- 3z6aslHsYvo40WzBDaJ77ggRurfKGzanxCkxsq6qXRHHTN9fD7yxaf7D76Hft81ji7Ye
- jKqVn9+yrsNxpMk1A4g44p0AulYO2GKb4Hns+c+GcNX/C6Ev0zwsz89HNZ3EnnsiTAbr
- Jtsiq2Fbk3fLE+YQbV3HfTb3AETmZ4kU8CnVfudntwk4xkNL6LQRHBJK4M+FXWQSfHJz
- qrmW3p1PsXqtjzXcU+1i/XqL4Rnw7iVkHEuJ0i1ibEAAKP794mz2ceHz//xwuY2kAW6r mA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ry5mt0nem-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 20 Jul 2023 16:58:45 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E0FE210003A;
-        Thu, 20 Jul 2023 16:58:42 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8024A23C698;
-        Thu, 20 Jul 2023 16:58:42 +0200 (CEST)
-Received: from [10.201.21.121] (10.201.21.121) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 20 Jul
- 2023 16:58:40 +0200
-Message-ID: <6edb1d1e-ae6b-486a-9548-4b2e0353f3dc@foss.st.com>
-Date:   Thu, 20 Jul 2023 16:58:35 +0200
+        with ESMTP id S230382AbjGTPAb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 11:00:31 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB4726B7;
+        Thu, 20 Jul 2023 08:00:22 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-521dd3d93bbso789912a12.1;
+        Thu, 20 Jul 2023 08:00:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689865220; x=1690470020;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rUaf4gWLINZFBA0dqPiheaqiJjRPRICeXKr+4KTVKtI=;
+        b=M82Pp31uZyTTn7PdzqKNmJk8gZ3xG/AC56Qz0Nb2apc7PfHib5LJB2ygkOTOekgPSk
+         NRTDaPTEZ7h7QzLLd+qnOXta/CofdDclBCmnuOiPJ4IwB0wb4nljhWydy7tYNg+Jo9lv
+         K+afpSdH9Ux2O84Y8I8RT+Ldoia2G3KEre46izxnHJokm1oRwpe2v2qOJy/lVTMDb8kT
+         JL6i9U998DsAsb661gF1H8D4RKAsYFCmm6LORjVL9UMTSR0nvyueKkIM2pJT3rXQZBMW
+         M8zmArRFY/nwkYI6CB0YGvZs4kFI1/covAwzZUVjecj+HNdXyU9M/OZVGOYtrMnwxHC2
+         noMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689865220; x=1690470020;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rUaf4gWLINZFBA0dqPiheaqiJjRPRICeXKr+4KTVKtI=;
+        b=MHFfDHomSLVRwCmCEvNb6XOgQ6iBFuJ25Ld8mfvNr3g/UnkA0W3Bu5ow1YfB7IlWUb
+         55Ue684SwDQsWOb86ITY6WpRx60zPbNfLngVHVb+em0sffJpkXbkCuOgAsMVfjBCWzZf
+         IDtpg8Z0+1L5zv1BxiG5FSayvuuVI6JCiclAwCtGNGTwprVVkBQcLrj/YPTI1L4FyyTH
+         8jbfmzDw8FdLrHtURXsLmJ5mz1KxQZwKSalVwYQW2UhZT/0LpaZLWe0MiYhvrEsM89pv
+         1KG96R5346SP80OndLNgiKcVBPwA3taIRBRiVmz/m44/lYYUun5GQqqccEd+NxRFDuNI
+         6Nhw==
+X-Gm-Message-State: ABy/qLZHvClcO7hLMRXjz+FV8Ol7aqFWRUrpDJBuNulfeQ37Tddf4nFE
+        Lz7nOK3NJaJLSCxhVzwy8Pc=
+X-Google-Smtp-Source: APBJJlFFRHPquURhC+Xbg2wu19XDlOqWRNysFJVh6NesJvC97yquLrH3/wnsZPcx6ujqVwG5BaIB0w==
+X-Received: by 2002:a17:906:95:b0:978:928:3b99 with SMTP id 21-20020a170906009500b0097809283b99mr5459760ejc.46.1689865220270;
+        Thu, 20 Jul 2023 08:00:20 -0700 (PDT)
+Received: from orome (p200300e41f1bd600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1b:d600:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id lo19-20020a170906fa1300b00992665694f7sm819845ejb.107.2023.07.20.08.00.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jul 2023 08:00:19 -0700 (PDT)
+Date:   Thu, 20 Jul 2023 17:00:17 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        Lee Jones <lee@kernel.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Peter Robinson <pbrobinson@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH] mfd: rz-mtu3: link time dependencies
+Message-ID: <ZLlMAZPzEmSlzlbV@orome>
+References: <20230719090430.1925182-1-arnd@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 02/10] dt-bindings: bus: add device tree bindings for
- RIFSC
-Content-Language: en-US
-From:   Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <vkoul@kernel.org>, <jic23@kernel.org>,
-        <olivier.moysan@foss.st.com>, <arnaud.pouliquen@foss.st.com>,
-        <mchehab@kernel.org>, <fabrice.gasnier@foss.st.com>,
-        <andi.shyti@kernel.org>, <ulf.hansson@linaro.org>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <hugues.fruchet@foss.st.com>, <lee@kernel.org>, <will@kernel.org>,
-        <catalin.marinas@arm.com>, <arnd@kernel.org>,
-        <richardcochran@gmail.com>
-CC:     <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
-References: <20230705172759.1610753-1-gatien.chevallier@foss.st.com>
- <20230705172759.1610753-3-gatien.chevallier@foss.st.com>
- <e871ad32-dfa4-067d-4f2c-207ffd42aafd@linaro.org>
- <1ac0f2e0-4ec1-3871-d0a3-3ccc2eb687e5@foss.st.com>
-In-Reply-To: <1ac0f2e0-4ec1-3871-d0a3-3ccc2eb687e5@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.201.21.121]
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-20_08,2023-07-20_01,2023-05-22_02
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="slp7OkdABcuJ1sYm"
+Content-Disposition: inline
+In-Reply-To: <20230719090430.1925182-1-arnd@kernel.org>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Krzysztof,
 
-On 7/6/23 11:29, Gatien CHEVALLIER wrote:
-> Hello Krzysztof,
-> 
-> Firstly, I will correct the bindings error pointed by Rob's robot.
-> Obviously, I did not pass the bindings check the proper way or maybe I'm 
-> running an old version.
-> 
-> On 7/6/23 08:28, Krzysztof Kozlowski wrote:
->> On 05/07/2023 19:27, Gatien Chevallier wrote:
->>> Document RIFSC (RIF security controller). RIFSC is a firewall controller
->>> composed of different kinds of hardware resources.
->>>
->>> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
->>
->> A nit, subject: drop second/last, redundant "device tree bindings for".
->> The "dt-bindings" prefix is already stating that these are bindings. 4
->> words of your 6 word subject is meaningless...
-> 
-> Ack, I will rephrase, it is indeed redundant
-> 
->>
->>> ---
->>>   .../bindings/bus/st,stm32-rifsc.yaml          | 101 ++++++++++++++++++
->>>   1 file changed, 101 insertions(+)
->>>   create mode 100644 
->>> Documentation/devicetree/bindings/bus/st,stm32-rifsc.yaml
->>>
->>> diff --git 
->>> a/Documentation/devicetree/bindings/bus/st,stm32-rifsc.yaml 
->>> b/Documentation/devicetree/bindings/bus/st,stm32-rifsc.yaml
->>> new file mode 100644
->>> index 000000000000..68d585ed369c
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/bus/st,stm32-rifsc.yaml
->>
->> Filename like compatible, unless you know list of compatibles will
->> grow... but then add them.
->>
->>> @@ -0,0 +1,101 @@
->>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/bus/st,stm32-rifsc.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: STM32 Resource isolation framework security controller bindings
->>
->> Drop bindings
-> 
-> Ack
-> 
->>
->>> +
->>> +maintainers:
->>> +  - Gatien Chevallier <gatien.chevallier@foss.st.com>
->>> +
->>> +description: |
->>> +  Resource isolation framework (RIF) is a comprehensive set of 
->>> hardware blocks
->>> +  designed to enforce and manage isolation of STM32 hardware 
->>> resources like
->>> +  memory and peripherals.
->>> +
->>> +  The RIFSC (RIF security controller) is composed of three sets of 
->>> registers,
->>> +  each managing a specific set of hardware resources:
->>> +    - RISC registers associated with RISUP logic (resource isolation 
->>> device unit
->>> +      for peripherals), assign all non-RIF aware peripherals to 
->>> zero, one or
->>> +      any security domains (secure, privilege, compartment).
->>> +    - RIMC registers: associated with RIMU logic (resource isolation 
->>> master
->>> +      unit), assign all non RIF-aware bus master to one security 
->>> domain by
->>> +      setting secure, privileged and compartment information on the 
->>> system bus.
->>> +      Alternatively, the RISUP logic controlling the device port 
->>> access to a
->>> +      peripheral can assign target bus attributes to this peripheral 
->>> master port
->>> +      (supported attribute: CID).
->>> +    - RISC registers associated with RISAL logic (resource isolation 
->>> device unit
->>> +      for address space - Lite version), assign address space 
->>> subregions to one
->>> +      security domains (secure, privilege, compartment).
->>> +
->>> +properties:
->>> +  compatible:
->>> +    const: st,stm32mp25-rifsc
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  "#address-cells":
->>> +    const: 1
->>> +
->>> +  "#size-cells":
->>> +    const: 1
->>> +
->>> +  "#feature-domain-cells":
->>> +    const: 1
->>> +
->>> +  ranges: true
->>> +
->>> +  feature-domain-controller: true
->>> +
->>> +patternProperties:
->>> +  "^.*@[0-9a-f]+$":
->>> +    description: Peripherals
->>> +    type: object
->>> +    properties:
->>> +      feature-domains:
->>> +        minItems: 1
->>> +        maxItems: 2
->>> +        description:
->>> +          The first argument must always be a phandle that 
->>> references to the
->>> +          firewall controller of the peripheral. The second can 
->>> contain the
->>> +          platform specific firewall ID of the peripheral.
->>
->> It does not make much sense to me to have hierarchy parent-child and via
->> phandle at the same time. You express the similar relationship twice
-> Thank you for pointing this out.
-> 
-> About the parent-child relation:
-> 
-> The bus-like device tree architecture allows a bus-probe mechanism with 
-> which we want to check accesses of peripherals before probing their 
-> driver. This has several advantages:
-> -This bus architecture provides a clearer view of the hardware.
-> -No peripheral driver modifications as it is fully handled by the 
-> firewall drivers.
-> -Drivers for devices that aren't accessible will not even be probed => 
-> no probe fail.
-> 
-> It would be possible to manage this mechanism another way by handling 
-> probe deferrals in drivers. But it would mean modifying every driver 
-> with a check on ST firewall that we probe and some of them aren't from 
-> STMicroelectronics.
-> 
-> About the phandle relation:
-> 
-> I agree on the fact that this double expression of the relationship is 
-> redundant.
-> 
-> I've done it this way because there will be other nodes outside the 
-> RIFSC node that will need to reference it as their feature-domain 
-> controller. I kept the same information in the property to be coherent 
-> between all.
-> 
-> For nodes under the RIFSC, the phandle is indeed useless and could be 
-> removed, just to leave the firewall ID. And I'm inclined to do so. I 
-> just have one worry on the YAML binding files where I will have a 
-> pattern property in the RIFSC that will state something and maybe 
-> another description in the peripheral YAML files. What is your take on 
-> that?
-> 
+--slp7OkdABcuJ1sYm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Looking back at it, feature-domains is a phandle-array. I guess I can't
-derogate to the following architecture:
+On Wed, Jul 19, 2023 at 11:02:23AM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> The new set of drivers for RZ/G2L MTU3a tries to enable compile-testing t=
+he
+> individual client drivers even when the MFD portion is disabled but gets =
+it
+> wrong, causing a link failure when the core is in a loadable module but t=
+he
+> other drivers are built-in:
+>=20
+> x86_64-linux-ld: drivers/pwm/pwm-rz-mtu3.o: in function `rz_mtu3_pwm_appl=
+y':
+> pwm-rz-mtu3.c:(.text+0x4bf): undefined reference to `rz_mtu3_8bit_ch_writ=
+e'
+> x86_64-linux-ld: pwm-rz-mtu3.c:(.text+0x509): undefined reference to `rz_=
+mtu3_disable'
+>=20
+> arm-linux-gnueabi-ld: drivers/counter/rz-mtu3-cnt.o: in function `rz_mtu3=
+_cascade_counts_enable_get':
+> rz-mtu3-cnt.c:(.text+0xbec): undefined reference to `rz_mtu3_shared_reg_r=
+ead'
+>=20
+> It seems better not to add the extra complexity here but instead just use
+> a normal hard dependency, so remove the #else portion in the header along
+> with the "|| COMPILE_TEST". This could also be fixed by having slightly m=
+ore
+> elaborate Kconfig dependencies or using the cursed 'IS_REACHABLE()' helpe=
+r,
+> but in practice it's already possible to compile-test all these drivers
+> by enabling the mtd portion.
+>=20
+> Fixes: 254d3a727421c ("pwm: Add Renesas RZ/G2L MTU3a PWM driver")
+> Fixes: 0be8907359df4 ("counter: Add Renesas RZ/G2L MTU3a counter driver")
+> Fixes: 654c293e1687b ("mfd: Add Renesas RZ/G2L MTU3a core driver")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/counter/Kconfig     |  2 +-
+>  drivers/pwm/Kconfig         |  2 +-
+>  include/linux/mfd/rz-mtu3.h | 66 -------------------------------------
+>  3 files changed, 2 insertions(+), 68 deletions(-)
 
-items:
-   - items:
-       - description: A phandle
-       - description: 1st arg cell
-       - description: 2nd arg cell
+Assuming that Lee will pick this up:
 
-can I?
+Acked-by: Thierry Reding <thierry.reding@gmail.com>
 
-Some devices' nodes that are not subnodes of the firewall controllers
-will need the phandle reference. Should I keep the redundant information
-then?
+--slp7OkdABcuJ1sYm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Best regards,
-Gatien
+-----BEGIN PGP SIGNATURE-----
 
->>
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +  - "#address-cells"
->>> +  - "#size-cells"
->>> +  - feature-domain-controller
->>> +  - "#feature-domain-cells"
->>> +  - ranges
->>> +
->>> +additionalProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    // In this example, the usart2 device refers to rifsc as its domain
->>> +    // controller.
->>> +    // Access rights are verified before creating devices.
->>> +
->>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->>> +
->>> +    rifsc: rifsc-bus@42080000 {
->>> +        compatible = "st,stm32mp25-rifsc";
->>> +        reg = <0x42080000 0x1000>;
->>> +        #address-cells = <1>;
->>> +        #size-cells = <1>;
->>> +        ranges;
->>> +        feature-domain-controller;
->>> +        #feature-domain-cells = <1>;
->>> +
->>> +        usart2: serial@400e0000 {
->>> +            compatible = "st,stm32h7-uart";
->>> +            reg = <0x400e0000 0x400>;
->>> +            interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
->>> +            clocks = <&ck_flexgen_08>;
->>> +            feature-domains = <&rifsc 32>;
->>> +            status = "disabled";
->>
->> No status in the examples.
->>
->>> +        };
->>> +    };
->>
->> Best regards,
->> Krzysztof
->>
-> 
-> Best regards,
-> Gatien
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmS5S/8ACgkQ3SOs138+
+s6EUEg/6Anop3hMP3iGcBnMEcu0SxusT0pTyZCNLPL1doGbdncByqE1q1zdEca0S
+3z9U1vwKHKl+tOfx15dDlS+EBz7wQpkYaU3UUeXVoX7rzGuzDNfe9dmYo63LvoRI
+/7ikGCZDb6lfzEhFznRBpNnXQhm4k0+9HDVIH5riXgIc/wepTsENaymyCBxg9ocs
+PAZTDaDRt+4mdeP3A7JrCihqU6P8LiSTetGwydHp04s9xVrnlhYHpy7AecnkJH3K
+CzkhykUji/qjWHUkcOUp2JGOrEWMFwleadLqvMOZwBm6i5d701K5TospTFvIS4WA
+b8u61aSXevOqxcU/IZ2HEqk91uTDFIPNwx/KaupITl3q0SBlxPky9YGnsuy3K4Gg
+uEYokiYYqVvAAb83B5IijBq7BQnEYmVR7bc6U7wmQaDtstiHsTgDu1+T44glMVxR
+FH0vNUGrw/iekN340d7w6/0DKmtm9UxQsoFzLdSbYOSRU+Go3kSHRG+zJYeryamr
+w0CRz+YIV0ZuqXEqys+VS4326WQJM78rXHsbhETcCzH/8xEEweX9BPvmCqsMpP9E
+s+jt/jzTPiRgi4a4sHy0X+JF9b7qS0LoIiJ5/NZhPCWThmxcTs7iK3Xa3aIcsfhb
+d6kRQ9XjgJ5FqfAVU93Epnl0bzaCKIpSFWSl8eKdT1CenRlI6Lc=
+=eYIX
+-----END PGP SIGNATURE-----
+
+--slp7OkdABcuJ1sYm--

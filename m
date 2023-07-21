@@ -2,109 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53FE875C46C
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 12:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7F475C49A
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 12:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbjGUKR0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jul 2023 06:17:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52382 "EHLO
+        id S231956AbjGUKYy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 06:24:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231890AbjGUKQl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 06:16:41 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358923C0F;
-        Fri, 21 Jul 2023 03:15:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689934553; x=1721470553;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Z97GlncTszgLV54yUBZc5/yl2uCx8DjeagF255hYrm4=;
-  b=NrF0j9hDCliOq2hfla9ecayw/BceiY6vR/ryiCbD+EMwQNV30XGZk3X6
-   WivK+MFqLEY5L5KgenqnpC9h7asnAX3y9tuh9DlcH5g7QMzT2VwKqaspe
-   b9xblVVa/S96R/fx50gdrdfTOp+7RABgDqIbHmEgbiqskHM3PLNAlRSUR
-   ZLbFn3aQpqFrEXKW4yiT+W+uGyGu7f5Bapq/7Nd8GX/hpdQx2xu5LDosW
-   R0KtYbkbEk2S4AzQpY8gPcMvo6FNIh3/jKpp+Q7F6zW0/VAmyMTWG21ft
-   snYOalC1VB66u8iq9vAE4n8fkmzBh0fVXbkkIupx98M2YatsK+gz3lMnq
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="356973978"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="356973978"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 03:15:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="759907990"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="759907990"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 21 Jul 2023 03:15:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qMnAL-00HAtl-04;
-        Fri, 21 Jul 2023 13:15:17 +0300
-Date:   Fri, 21 Jul 2023 13:15:16 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 0/8] iio: core: A few code cleanups and documentation
- fixes
-Message-ID: <ZLpatHP1R9bHRFJF@smile.fi.intel.com>
-References: <20230720205324.58702-1-andriy.shevchenko@linux.intel.com>
- <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
+        with ESMTP id S231617AbjGUKYs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 06:24:48 -0400
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4024730F2;
+        Fri, 21 Jul 2023 03:24:23 -0700 (PDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+        by mx1.sberdevices.ru (Postfix) with ESMTP id 2745A100006;
+        Fri, 21 Jul 2023 13:24:22 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 2745A100006
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1689935062;
+        bh=tFCW/uaLj61ag756MfONvhXmQcmfZ0nLYjbhS1U4p1g=;
+        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+        b=PaVcMPqScfXEAVZrFPlKf0lqQQndn2hUC5BTeY795uAnVKnxDjDNKAEG5Gwv6gV4L
+         Ssz2b2fhMwUeKYemdRfcGBDvZN9kB6TWbtAjW+LUscKV7WYnlSXt5t5W7VrCDr06TW
+         yHcFjfACklRNPoqkHWV3MieRedCACHtaq5XFKcpVp6fhsSd2iOt4S94BvDWb5SOG5L
+         reO5+WiPu1XJfu8H8LSt0P8k+AYBy9IaOu9wJa2NaNzTKcKyRM5/wWlpk2n1Fw7m78
+         4u62lnRiTF+eZZz3LboFi5Vus0RdCzwVSrCIKEMgMOSi+PznvGXi23jEqxphcBoTkm
+         gqq33is7CILdg==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.sberdevices.ru (Postfix) with ESMTPS;
+        Fri, 21 Jul 2023 13:24:21 +0300 (MSK)
+Received: from localhost.localdomain (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Fri, 21 Jul 2023 13:24:21 +0300
+From:   George Stark <gnstark@sberdevices.ru>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
+        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
+        <martin.blumenstingl@googlemail.com>,
+        <andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
+        <gnstark@sberdevices.ru>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
+Subject: [PATCH v2 0/2] iio: adc: meson: fix core clock enable/disable moment
+Date:   Fri, 21 Jul 2023 13:23:07 +0300
+Message-ID: <20230721102413.255726-1-gnstark@sberdevices.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 178775 [Jul 21 2023]
+X-KSMG-AntiSpam-Version: 5.9.59.0
+X-KSMG-AntiSpam-Envelope-From: GNStark@sberdevices.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 525 525 723604743bfbdb7e16728748c3fa45e9eba05f7d, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 100.64.160.123:7.1.2;www.spinics.net:7.1.1;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;127.0.0.199:7.1.2;sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2023/07/21 08:11:00
+X-KSMG-LinksScanning: Clean, bases: 2023/07/21 08:13:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/21 05:36:00 #21651174
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 10:06:05AM +0200, Nuno Sá wrote:
-> On Thu, 2023-07-20 at 23:53 +0300, Andy Shevchenko wrote:
-> > Just set of almost unrelated to each other cleanups against IIO
-> > core implementation.
-> > 
-> > The positive LoCs diffstat due to first patch that adds a lot of
-> > documentation for the new added macro.
-> > 
-> > Andy Shevchenko (8):
-> >   iio: core: Add opaque_struct_size() helper and use it
-> >   iio: core: Use sysfs_match_string() helper
-> >   iio: core: Switch to krealloc_array()
-> >   iio: core: Use min() instead of min_t() to make code more robust
-> >   iio: core: Get rid of redundant 'else'
-> >   iio: core: Fix issues and style of the comments
-> >   iio: core: Move initcalls closer to the respective calls
-> >   iio: core: Improve indentation in a few places
-> > 
-> >  drivers/iio/industrialio-core.c | 226 ++++++++++++++++----------------
-> >  1 file changed, 115 insertions(+), 111 deletions(-)
-> > 
-> 
-> Neat series... Just a few comments on my side and on patch 3 is up to you to
-> take the comments or not.
-> 
-> With my comment addressed on patch 2:
+This patch is a part of effort to support meson a1 SoC and make meson saradc driver
+independent from vendor boot code initialization in common.
 
-Agree, I won't change patch 3 for now, I replied there why.
+Core clock (passed to adc module thru dts) is supposed to be responsible for entier module
+and should be on before accessing modules' regs.
 
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+I've made experiments and here are the results:
 
-Thank you! I'll embed this into v2.
+on odroid-c1 (meson8) adc regs became readonly with core clock off:
+# disable clock (HHI_GCLK_MPEG0 bit 10)
+devmem 0xc1104140 32 0xBFFA72FF
+devmem 0xc110868C
+0xE3A851FF
+devmem 0xc110868C 32 0xE3A85100
+devmem 0xc110868C
+0xE3A851FF
+# enable clock
+devmem 0xc1104140 32 0xBFFA76FF
+ devmem 0xc110868C
+0xE3A851FF
+devmem 0xc110868C 32 0xE3A85100
+devmem 0xc110868C
+0xE3A85100
+
+on vim3 (a311d) adc regs became readonly with core clock off:
+# disable adc core clock:
+devmem 0xff80004C 32 0xFFFFFEFF
+# the adc register become readonly:
+devmem 0xff80902c
+0x002C2002
+devmem 0xff80902c 32 0x002C2000
+devmem 0xff80902c
+0x002C2002
+
+on a1 adc registers are none-readable-writeable when adc core clock is off:
+devmem 0xfe002c2c
+0x00002003
+# disable clock
+devmem 0xfe00081c 32 0xFFFF9FFF
+devmem 0xfe002c2c
+0x00000000
+# enable clock
+devmem 0xfe00081c 32 0xFFFFFFFF
+devmem 0xfe002c2c
+0x00002003
+
+Changelog:
+
+v1->v2:
+patch 'iio: adc: meson: improve error logging at probe stage'
+	- add fixes tag, previous version [1]
+	- move to devm_clk_get_enabled
+	- return enable/disable core clock calls to suspend \ resume callbacks
+	but did it at the last step and the first step respectively
+
+patch 'iio: adc: meson: improve error logging at probe stage'
+	patch was added to address Jonathan's comment
+
+[1] https://www.spinics.net/lists/linux-iio/msg80369.html
+
+George Stark (2):
+  iio: adc: meson: fix core clock enable/disable moment
+  iio: adc: meson: improve error logging at probe stage
+
+ drivers/iio/adc/meson_saradc.c | 39 +++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.38.4
 

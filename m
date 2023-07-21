@@ -2,152 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1068E75C499
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 12:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F52E75C4BA
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 12:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231890AbjGUKYy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jul 2023 06:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60166 "EHLO
+        id S231680AbjGUKep (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 06:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230384AbjGUKYs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 06:24:48 -0400
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BBB30FE;
-        Fri, 21 Jul 2023 03:24:24 -0700 (PDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-        by mx1.sberdevices.ru (Postfix) with ESMTP id 710F210000B;
-        Fri, 21 Jul 2023 13:24:22 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 710F210000B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1689935062;
-        bh=EWUIlxsTDbNkizZTsEpwplf6NYv49AJU87NGu8MEmCk=;
-        h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-        b=oajsjVUx8JDqEcZXEXYVq5mcYmbZpxg0SaO/XN0hWUt2aC3QYWZnntz75Vmoit0kK
-         cr6sop1jOhmMFt+rMOh0gI950oYWR+pDKzz+G2MdL/5lWkszX+Fc6pKm6rIlE+24t9
-         84Yew9SKyD39Vqm2AEk9jOqBXVNDDtCZiDEiNCXPvsKYIcUpkJ8VIxUCMzJOq5Tgag
-         snVql/mpBRCzmNoavl3ZwVJX4vNJ0jlNsFUE57kNYp+G3wHn6YtG8sBgo00PqxGaz/
-         JBFJzVVzTwdPedYxPHcD2y1dew65ADVpRFk/0Mx4dUBlNUJIRXZ5f5E4pRDQ27Jqtf
-         +NSrdXTWO0fXQ==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.sberdevices.ru (Postfix) with ESMTPS;
-        Fri, 21 Jul 2023 13:24:22 +0300 (MSK)
-Received: from localhost.localdomain (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Fri, 21 Jul 2023 13:24:21 +0300
-From:   George Stark <gnstark@sberdevices.ru>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <neil.armstrong@linaro.org>,
-        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
-        <martin.blumenstingl@googlemail.com>,
-        <andriy.shevchenko@linux.intel.com>, <nuno.sa@analog.com>,
-        <gnstark@sberdevices.ru>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>, <kernel@sberdevices.ru>
-Subject: [PATCH v2 2/2] iio: adc: meson: improve error logging at probe stage
-Date:   Fri, 21 Jul 2023 13:23:09 +0300
-Message-ID: <20230721102413.255726-3-gnstark@sberdevices.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721102413.255726-1-gnstark@sberdevices.ru>
-References: <20230721102413.255726-1-gnstark@sberdevices.ru>
+        with ESMTP id S231769AbjGUKel (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 06:34:41 -0400
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D739A171A
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jul 2023 03:34:21 -0700 (PDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+        by mout01.posteo.de (Postfix) with ESMTPS id AD75324002B
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jul 2023 12:34:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+        t=1689935659; bh=5JyKFsQ3m9P01NmFD5cVB++r4nIwJ3PYJrEqIYXI+oQ=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
+         Content-Transfer-Encoding:From;
+        b=eFskrmPWSAyVMaSCGxMmForiq7RD7ol3t7IKKDPtV9F9xV2kJZscoq+hRswJp5K3R
+         k6+dxp2nvdfZvw7m7+/oOxQ4dzYUJbt6ITbfMuhOuKGb8FXCBifjXvVHimTTnDv0Jw
+         GGFu5b0yYODUqPzOdP7zvxBcUcx2Ujh3xCCHX9Ap1liEE3xC0eNFZdSX27YouSlf1c
+         XGjlLvzLcPxT/XCfpXn4OIaGxRJQX5T7/XPORqxFK32XOyHttrDCwa33FGIQOrm4sK
+         dPkVcC6FggAfRwdP99r/PyK+Dh59HpB+b//gYSRiYdGSByVEn5HSTxuIbVZXk+4Q0X
+         fyh82KDDvF5ew==
+Received: from customer (localhost [127.0.0.1])
+        by submission (posteo.de) with ESMTPSA id 4R6mBd5v4tz6ty5;
+        Fri, 21 Jul 2023 12:34:17 +0200 (CEST)
+From:   Martin Kepplinger <martink@posteo.de>
+To:     lorenzo@kernel.org, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org
+Cc:     kernel@puri.sm, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Martin Kepplinger <martink@posteo.de>
+Subject: [PATCH] dt-bindings: iio: imu: st,lsm6dsx: add mount-matrix property
+Date:   Fri, 21 Jul 2023 10:34:10 +0000
+Message-Id: <20230721103410.575555-1-martink@posteo.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 178775 [Jul 21 2023]
-X-KSMG-AntiSpam-Version: 5.9.59.0
-X-KSMG-AntiSpam-Envelope-From: GNStark@sberdevices.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 525 525 723604743bfbdb7e16728748c3fa45e9eba05f7d, {Tracking_from_domain_doesnt_match_to}, 100.64.160.123:7.1.2;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;127.0.0.199:7.1.2;sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/07/21 05:36:00 #21651174
-X-KSMG-AntiVirus-Status: Clean, skipped
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add log messages for errors that may occur at probe stage
+Add the mount-matrix optional property to the binding since it's supported
+and very useful when using the chip on a board.
 
-Signed-off-by: George Stark <gnstark@sberdevices.ru>
+Signed-off-by: Martin Kepplinger <martink@posteo.de>
 ---
- drivers/iio/adc/meson_saradc.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-index 8397a5347f32..11b10459a028 100644
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -1046,8 +1046,10 @@ static int meson_sar_adc_hw_enable(struct iio_dev *indio_dev)
- 	u32 regval;
+diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+index b39f5217d8ff..443dce326c5e 100644
+--- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
++++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+@@ -93,6 +93,9 @@ properties:
+   wakeup-source:
+     $ref: /schemas/types.yaml#/definitions/flag
  
- 	ret = meson_sar_adc_lock(indio_dev);
--	if (ret)
-+	if (ret) {
-+		dev_err(dev, "failed to lock adc\n");
- 		goto err_lock;
-+	}
- 
- 	ret = regulator_enable(priv->vref);
- 	if (ret < 0) {
-@@ -1355,15 +1357,15 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
- 
- 	priv->regmap = devm_regmap_init_mmio(dev, base, priv->param->regmap_config);
- 	if (IS_ERR(priv->regmap))
--		return PTR_ERR(priv->regmap);
-+		return dev_err_probe(dev, PTR_ERR(priv->regmap), "failed to init regmap\n");
- 
- 	irq = irq_of_parse_and_map(dev->of_node, 0);
- 	if (!irq)
--		return -EINVAL;
-+		return dev_err_probe(dev, -EINVAL, "failed to get irq\n");
- 
- 	ret = devm_request_irq(dev, irq, meson_sar_adc_irq, IRQF_SHARED, dev_name(dev), indio_dev);
- 	if (ret)
--		return ret;
-+		return dev_err_probe(dev, ret, "failed to request irq\n");
- 
- 	priv->clkin = devm_clk_get(dev, "clkin");
- 	if (IS_ERR(priv->clkin))
-@@ -1385,7 +1387,7 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
- 	if (!priv->adc_clk) {
- 		ret = meson_sar_adc_clk_init(indio_dev, base);
- 		if (ret)
--			return ret;
-+			return dev_err_probe(dev, ret, "failed to init internal clk\n");
- 	}
- 
- 	priv->vref = devm_regulator_get(dev, "vref");
-@@ -1427,8 +1429,10 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, indio_dev);
- 
- 	ret = iio_device_register(indio_dev);
--	if (ret)
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to register iio device\n");
- 		goto err_hw;
-+	}
- 
- 	return 0;
- 
++  mount-matrix:
++    description: an optional 3x3 mounting rotation matrix
++
+ required:
+   - compatible
+   - reg
+@@ -114,6 +117,9 @@ examples:
+             reg = <0x6b>;
+             interrupt-parent = <&gpio0>;
+             interrupts = <0 IRQ_TYPE_EDGE_RISING>;
++            mount-matrix =  "1",  "0",  "0",
++                            "0",  "1",  "0",
++                            "0",  "0", "-1";
+         };
+     };
+ ...
 -- 
-2.38.4
+2.30.2
 

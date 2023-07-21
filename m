@@ -2,62 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D1B475C438
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 12:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53FE875C46C
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 12:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjGUKOn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jul 2023 06:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51480 "EHLO
+        id S231733AbjGUKR0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 06:17:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230183AbjGUKOX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 06:14:23 -0400
+        with ESMTP id S231890AbjGUKQl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 06:16:41 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 855AB2D51;
-        Fri, 21 Jul 2023 03:14:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358923C0F;
+        Fri, 21 Jul 2023 03:15:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689934460; x=1721470460;
+  t=1689934553; x=1721470553;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=bWTmW8Z1SY90z599UVo5aQdGHN8twxKFeXBEUIYTGM8=;
-  b=WskYfaGXHvty2kGoysqPbODaChPnhXNnWgxOm9QCw5FEErUSg0HVqRmb
-   PDutP+IKvjqb33SDVP7uSnoj3Osj5XfO0XwZgPN+00CAG1JP4GG1ehvGd
-   yOtILCWqMte9c3FcksrMZRf5MfebCYtBCIilPjXm3Z2vXTK+meIpqBa2R
-   FiADN5OdhjyPjKEkRSgo+ob/+Jd5UE/cCfTLQtWx/OUBiBEy8+b2/xyEf
-   Q23VbzFimNF8aB/aLJJHSwWSgAHKcMyL3SLwpzS7208kFowufRvIisos6
-   plRJEwU+xJeSgWv61vtL6eqy22l/LvNA8YfPOW3YOqvbBjppnEUgc/jc7
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="356973658"
+  bh=Z97GlncTszgLV54yUBZc5/yl2uCx8DjeagF255hYrm4=;
+  b=NrF0j9hDCliOq2hfla9ecayw/BceiY6vR/ryiCbD+EMwQNV30XGZk3X6
+   WivK+MFqLEY5L5KgenqnpC9h7asnAX3y9tuh9DlcH5g7QMzT2VwKqaspe
+   b9xblVVa/S96R/fx50gdrdfTOp+7RABgDqIbHmEgbiqskHM3PLNAlRSUR
+   ZLbFn3aQpqFrEXKW4yiT+W+uGyGu7f5Bapq/7Nd8GX/hpdQx2xu5LDosW
+   R0KtYbkbEk2S4AzQpY8gPcMvo6FNIh3/jKpp+Q7F6zW0/VAmyMTWG21ft
+   snYOalC1VB66u8iq9vAE4n8fkmzBh0fVXbkkIupx98M2YatsK+gz3lMnq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="356973978"
 X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="356973658"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 03:14:19 -0700
+   d="scan'208";a="356973978"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 03:15:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="1055512678"
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="759907990"
 X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="1055512678"
+   d="scan'208";a="759907990"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 21 Jul 2023 03:14:18 -0700
+  by orsmga001.jf.intel.com with ESMTP; 21 Jul 2023 03:15:18 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qMn9M-00H8nR-2Z;
-        Fri, 21 Jul 2023 13:14:16 +0300
-Date:   Fri, 21 Jul 2023 13:14:16 +0300
+        id 1qMnAL-00HAtl-04;
+        Fri, 21 Jul 2023 13:15:17 +0300
+Date:   Fri, 21 Jul 2023 13:15:16 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 3/8] iio: core: Switch to krealloc_array()
-Message-ID: <ZLpaeHlJujd8l0DS@smile.fi.intel.com>
+Subject: Re: [PATCH v1 0/8] iio: core: A few code cleanups and documentation
+ fixes
+Message-ID: <ZLpatHP1R9bHRFJF@smile.fi.intel.com>
 References: <20230720205324.58702-1-andriy.shevchenko@linux.intel.com>
- <20230720205324.58702-4-andriy.shevchenko@linux.intel.com>
- <65dbc603062018e1cd968caf983512c2cb2039e5.camel@gmail.com>
+ <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <65dbc603062018e1cd968caf983512c2cb2039e5.camel@gmail.com>
+In-Reply-To: <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -70,50 +70,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 09:59:37AM +0200, Nuno Sá wrote:
+On Fri, Jul 21, 2023 at 10:06:05AM +0200, Nuno Sá wrote:
 > On Thu, 2023-07-20 at 23:53 +0300, Andy Shevchenko wrote:
-
-...
-
-> > +       struct attribute **attrs, **attr, *clk = NULL;
-> >         struct iio_dev_attr *p;
-> > -       struct attribute **attr, *clk = NULL;
-> >  
-> >         /* First count elements in any existing group */
-> > -       if (indio_dev->info->attrs) {
-> > -               attr = indio_dev->info->attrs->attrs;
-> > -               while (*attr++ != NULL)
-> > +       attrs = indio_dev->info->attrs ? indio_dev->info->attrs->attrs : NULL;
-> > +       if (attrs) {
-> > +               for (attr = attrs; *attr; attr++)
-> >                         attrcount_orig++;
-
-> not really related with the change... maybe just mention it in the commit?
-
-Hmm... It's related to make krealloc_array() to work as expected.
-
-> >         }
-
-...
-
-> >         iio_dev_opaque->chan_attr_group.attrs =
-> > -               kcalloc(attrcount + 1,
-> > -                       sizeof(iio_dev_opaque->chan_attr_group.attrs[0]),
-> > -                       GFP_KERNEL);
-> > +               krealloc_array(attrs, attrcount + 1, sizeof(*attrs),
-> > GFP_KERNEL);
-> >         if (iio_dev_opaque->chan_attr_group.attrs == NULL) {
+> > Just set of almost unrelated to each other cleanups against IIO
+> > core implementation.
+> > 
+> > The positive LoCs diffstat due to first patch that adds a lot of
+> > documentation for the new added macro.
+> > 
+> > Andy Shevchenko (8):
+> >   iio: core: Add opaque_struct_size() helper and use it
+> >   iio: core: Use sysfs_match_string() helper
+> >   iio: core: Switch to krealloc_array()
+> >   iio: core: Use min() instead of min_t() to make code more robust
+> >   iio: core: Get rid of redundant 'else'
+> >   iio: core: Fix issues and style of the comments
+> >   iio: core: Move initcalls closer to the respective calls
+> >   iio: core: Improve indentation in a few places
+> > 
+> >  drivers/iio/industrialio-core.c | 226 ++++++++++++++++----------------
+> >  1 file changed, 115 insertions(+), 111 deletions(-)
+> > 
 > 
-> since you're here and you also already did some style cleanups above, maybe
-> change it to 'if (!iio_dev_opaque->chan_attr_group.attrs)'?
+> Neat series... Just a few comments on my side and on patch 3 is up to you to
+> take the comments or not.
+> 
+> With my comment addressed on patch 2:
 
-I don't think it's related (but you can tell that this check related to
-the allocator, and since we touch it, we may touch this), if Jonathan
-wants this, I definitely do.
+Agree, I won't change patch 3 for now, I replied there why.
 
-...
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-Thank you for the review!
+Thank you! I'll embed this into v2.
 
 -- 
 With Best Regards,

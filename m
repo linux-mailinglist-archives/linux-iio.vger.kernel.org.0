@@ -2,142 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8847975C68E
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 14:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 193CC75C6A4
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 14:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231340AbjGUMHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jul 2023 08:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
+        id S229836AbjGUMLg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 08:11:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbjGUMHx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 08:07:53 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528721BDC
-        for <linux-iio@vger.kernel.org>; Fri, 21 Jul 2023 05:07:48 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99357737980so296130666b.2
-        for <linux-iio@vger.kernel.org>; Fri, 21 Jul 2023 05:07:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1689941267; x=1690546067;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WnaJZllXk7/bDz5bL7Xem7eehrCa/S2AFbCxOH9yeVg=;
-        b=fZwtbMpYsPkZGJMyF8pFbcP/a3bZ5iBU+4NnH04AkEvJEdDGWZUqiHZi9o+5RnxdAM
-         rmhJukHBwjAWirz3SkeCIT9KcxMMWYDuBpz0+vTtJOPbNVvBL+sFViYZFKmxZxx8EYvu
-         FQ73eipxktA9gUrmyJFIdrbpbnT2vNP+B3QApRYtwRhnqQvaCYpO0bglY6brYkHq+6/K
-         ah2jAupmBqh4bH2CWNsPmLLq9krwU2zqtcgPxkTU/bqsXJ4raUMhzIbWF5U4jc0LaQej
-         O2+6KJo+vd8Axe4BiTo0vDSHNQX2FJCo+OiJO/gLF8Qug9nGoCBAZ4wi+v6dzdpxHNbJ
-         zjGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689941267; x=1690546067;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WnaJZllXk7/bDz5bL7Xem7eehrCa/S2AFbCxOH9yeVg=;
-        b=Tk9GEZXIOnN49ynXEpupMCuvDVdF6j14auQyLQJgGH6uV/86YoT68Gu0/VQZOaLuWx
-         CYDC2aPTg2gSxFHC4yAlgW/APzibF4TO/RKUXKZlnrf98fV3GangucYkN6aSeJRu6kiB
-         gcETRR8t98dN+WAjYhX/pAhQurG+UcfLA7osVfzXS53MChYL9iA3a/AN516HoC//92Vy
-         62A63jPMwDDgUMcyKhcangww/ZAWllOy2L1JMIzZzHYm8M43vn2zwWoTfzknn8y7R+bP
-         ZgRY3bTlI4LgIEvUft0ZUGXuh7YDyRqcPlRXNeZk0AtBZvl/3v6YA8Q5ffpqZNkZn5Aj
-         jpMA==
-X-Gm-Message-State: ABy/qLZi2eQBpx5j/HEsv3fAXqr8zYozL+1WzLifQDBDd9/0iFT41DPs
-        iMDPzR009Q9VA71lLvAlLsGB4A==
-X-Google-Smtp-Source: APBJJlHluQWVEzu0sJ/PrWjshX/401eG7m9xwGfKfw97KqNLFANPd8vq1eMtLADPF4i+eyWPPSmktQ==
-X-Received: by 2002:a17:906:cc0e:b0:997:e79c:99dc with SMTP id ml14-20020a170906cc0e00b00997e79c99dcmr1364395ejb.74.1689941266697;
-        Fri, 21 Jul 2023 05:07:46 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id o19-20020a17090608d300b0098d2f703408sm2089541eje.118.2023.07.21.05.07.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jul 2023 05:07:46 -0700 (PDT)
-Message-ID: <25efdb2c-21e0-9a98-03d2-0d4cdeaaaf8f@linaro.org>
-Date:   Fri, 21 Jul 2023 14:07:44 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: dac: add mcp4728.yaml
-Content-Language: en-US
-To:     Andrea Collamati <andrea.collamati@gmail.com>,
+        with ESMTP id S229820AbjGUMLf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 08:11:35 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4751701;
+        Fri, 21 Jul 2023 05:11:34 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36LBgXRs013807;
+        Fri, 21 Jul 2023 08:11:20 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ryp729b3j-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Jul 2023 08:11:20 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 36LCBJZR016182
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 21 Jul 2023 08:11:19 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 21 Jul 2023 08:11:18 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 21 Jul 2023 08:11:17 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 21 Jul 2023 08:11:17 -0400
+Received: from kimedia-VirtualBox.ad.analog.com (KPALLER2-L02.ad.analog.com [10.116.18.29])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 36LCB36m010716;
+        Fri, 21 Jul 2023 08:11:06 -0400
+From:   Kim Seer Paller <kimseer.paller@analog.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1689857295.git.andrea.collamati@gmail.com>
- <9816cd272d19802ec6eeff0c7c29e85d4a0ade88.1689857295.git.andrea.collamati@gmail.com>
- <4898bc33-5245-8fb2-e5e6-8ea1a8f32e1e@linaro.org>
- <d010f085-ea0e-5086-260e-c5a9be94ebfb@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <d010f085-ea0e-5086-260e-c5a9be94ebfb@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Kim Seer Paller <kimseer.paller@analog.com>
+Subject: [PATCH] iio: amplifiers: ad8366: add support for HMC792A Attenuator
+Date:   Fri, 21 Jul 2023 20:10:38 +0800
+Message-ID: <20230721121038.183404-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: t-GP9sCfGX-yVXUKBzpcUnsFsFBAptQy
+X-Proofpoint-GUID: t-GP9sCfGX-yVXUKBzpcUnsFsFBAptQy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-21_07,2023-07-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307210109
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/07/2023 13:58, Andrea Collamati wrote:
-> Hi Krzysztof,
-> 
-> On 7/21/23 10:21, Krzysztof Kozlowski wrote:
->>> Add documentation for MCP4728
->>>
->>> Signed-off-by: Andrea Collamati <andrea.collamati@gmail.com>
->>> ---
->>>  .../bindings/iio/dac/microchip,mcp4728.yaml   | 48 +++++++++++++++++++
->>>  1 file changed, 48 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
->>> new file mode 100644
->>> index 000000000000..6fd9be076245
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
->>> @@ -0,0 +1,48 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4728.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Microchip MCP4728 DAC
->>> +
->>> +description:
->>> +  MCP4728 is a quad channel, 12-bit voltage output
->>> +  Digital-to-Analog Converter with non-volatile
->>> +  memory and I2C compatible Serial Interface.
->>> +  https://www.microchip.com/en-us/product/mcp4728
->>> +
->>> +maintainers:
->>> +  - Andrea Collamati <andrea.collamati@gmail.com>
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - microchip,mcp4728
->> This is a friendly reminder during the review process.
-> 
-> Sorry but I didn't understand all your requests:
-> 
-> - I changed in the title mcp4728 with MCP4728
-> 
-> - I added description
-> 
-> but I don't know which blank line or whitespaces should be removed.
-> 
-> Can you tell me please?
+This change adds support for the HMC792A Digital Attenuator. The
+HMC792A is a broadband 6-bit GaAs MMIC Digital Attenuator operating
+from DC to 6.0 GHz with 15.75 dB attenuation control range in 0.25 dB steps.
 
-You forgot to add blank line. Open example-schema and compare.
+Datasheet link:
+  https://www.analog.com/media/en/technical-documentation/data-sheets/hmc792a.pdf
 
-Also, you had white-space errors. Editors should show it to you. Git
-maybe as well.
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+---
+ drivers/iio/amplifiers/Kconfig  |  1 +
+ drivers/iio/amplifiers/ad8366.c | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/iio/amplifiers/Kconfig b/drivers/iio/amplifiers/Kconfig
+index f217a2a1e..b54fe0173 100644
+--- a/drivers/iio/amplifiers/Kconfig
++++ b/drivers/iio/amplifiers/Kconfig
+@@ -18,6 +18,7 @@ config AD8366
+ 	    AD8366 Dual-Digital Variable Gain Amplifier (VGA)
+ 	    ADA4961 BiCMOS RF Digital Gain Amplifier (DGA)
+ 	    ADL5240 Digitally controlled variable gain amplifier (VGA)
++	    HMC792A 0.25 dB LSB GaAs MMIC 6-Bit Digital Attenuator
+ 	    HMC1119 0.25 dB LSB, 7-Bit, Silicon Digital Attenuator
+ 
+ 	  To compile this driver as a module, choose M here: the
+diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
+index 8d8c8ea94..31564afb1 100644
+--- a/drivers/iio/amplifiers/ad8366.c
++++ b/drivers/iio/amplifiers/ad8366.c
+@@ -5,6 +5,7 @@
+  *   AD8366 Dual-Digital Variable Gain Amplifier (VGA)
+  *   ADA4961 BiCMOS RF Digital Gain Amplifier (DGA)
+  *   ADL5240 Digitally controlled variable gain amplifier (VGA)
++ *   HMC792A 0.25 dB LSB GaAs MMIC 6-Bit Digital Attenuator
+  *   HMC1119 0.25 dB LSB, 7-Bit, Silicon Digital Attenuator
+  *
+  * Copyright 2012-2019 Analog Devices Inc.
+@@ -28,6 +29,7 @@ enum ad8366_type {
+ 	ID_AD8366,
+ 	ID_ADA4961,
+ 	ID_ADL5240,
++	ID_HMC792,
+ 	ID_HMC1119,
+ };
+ 
+@@ -64,6 +66,10 @@ static struct ad8366_info ad8366_infos[] = {
+ 		.gain_min = -11500,
+ 		.gain_max = 20000,
+ 	},
++	[ID_HMC792] = {
++		.gain_min = -15750,
++		.gain_max = 0,
++	},
+ 	[ID_HMC1119] = {
+ 		.gain_min = -31750,
+ 		.gain_max = 0,
+@@ -90,6 +96,7 @@ static int ad8366_write(struct iio_dev *indio_dev,
+ 	case ID_ADL5240:
+ 		st->data[0] = (ch_a & 0x3F);
+ 		break;
++	case ID_HMC792:
+ 	case ID_HMC1119:
+ 		st->data[0] = ch_a;
+ 		break;
+@@ -127,6 +134,9 @@ static int ad8366_read_raw(struct iio_dev *indio_dev,
+ 		case ID_ADL5240:
+ 			gain = 20000 - 31500 + code * 500;
+ 			break;
++		case ID_HMC792:
++			gain = -1 * code * 500;
++			break;
+ 		case ID_HMC1119:
+ 			gain = -1 * code * 250;
+ 			break;
+@@ -176,6 +186,9 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
+ 	case ID_ADL5240:
+ 		code = ((gain - 500 - 20000) / 500) & 0x3F;
+ 		break;
++	case ID_HMC792:
++		code = (abs(gain) / 500) & 0x3F;
++		break;
+ 	case ID_HMC1119:
+ 		code = (abs(gain) / 250) & 0x7F;
+ 		break;
+@@ -261,6 +274,7 @@ static int ad8366_probe(struct spi_device *spi)
+ 		break;
+ 	case ID_ADA4961:
+ 	case ID_ADL5240:
++	case ID_HMC792:
+ 	case ID_HMC1119:
+ 		st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_HIGH);
+ 		if (IS_ERR(st->reset_gpio)) {
+@@ -314,6 +328,7 @@ static const struct spi_device_id ad8366_id[] = {
+ 	{"ad8366",  ID_AD8366},
+ 	{"ada4961", ID_ADA4961},
+ 	{"adl5240", ID_ADL5240},
++	{"hmc792a", ID_HMC792},
+ 	{"hmc1119", ID_HMC1119},
+ 	{}
+ };
+
+base-commit: f7e3a1bafdea735050dfde00523cf505dc7fd309
+-- 
+2.34.1
 

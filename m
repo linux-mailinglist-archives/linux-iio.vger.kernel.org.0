@@ -2,105 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAA575C0B3
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 10:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A963375C163
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 10:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjGUIDj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jul 2023 04:03:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50520 "EHLO
+        id S231512AbjGUIVi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 04:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231241AbjGUIDi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 04:03:38 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E7DC2704;
-        Fri, 21 Jul 2023 01:03:37 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-9939fbb7191so357267366b.0;
-        Fri, 21 Jul 2023 01:03:37 -0700 (PDT)
+        with ESMTP id S231500AbjGUIVh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 04:21:37 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA66F0
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jul 2023 01:21:34 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-992dcae74e0so265302166b.3
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jul 2023 01:21:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689926615; x=1690531415;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pFKYG/1VesNPnYJ+2RJdvyya/8SP7ErkfRv3C2Q2jPI=;
-        b=R/L4KNBUiIY6pAG3BlMdjWhYbTWzwWix687+2+VjTMZNlM4lL//UqfFcQhZB/r1RH0
-         BeE9LOjl7GnEWA6CVUuqscuQUz0koPEQcXPCZjx2N7tLRNXJ6UXCwzVpjXIeI7/dQ8XM
-         Uu8lg2DipufmJAOmNSPJFPm85syLn46/UdjtDhJBSF8ADJb7BvW9L5TiZN5d3LUNBMyG
-         usq7yMggmlo8/denLji15I8l7HM6vxulaqEu4tEhrI0x4UaxuzyCMTUXXRFRPFSpjAls
-         dKbEF/t/VYnV7WD1AQMkzbdk9/k3Mk4S3311f0e4w/15seT5adOwioH1zWzAj9RfU+FQ
-         VFwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689926615; x=1690531415;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=linaro.org; s=google; t=1689927693; x=1690532493;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pFKYG/1VesNPnYJ+2RJdvyya/8SP7ErkfRv3C2Q2jPI=;
-        b=eJ3OKB3PRe8eHptEzWkH7DhZFBXTmG0bQv3g7YBGuSH2SVhiyjS1MtYwM2Ka7TgQ2K
-         xWhtxBqivHhoWmuv94fW9kLY8SYgprYwBLT+dP5MedeTZfebfon+vAcSl1ygJFdII+aL
-         BgNqhtjHNZy4/AU82mjXChKi0dmOVElYWlQoAfpbOlxtKVloBSqn/VbN74U31ctgBs6g
-         JbTIJ6qqR1t5NfvdKW6IA5lg1SC6JpNMye+vUY5c0fam2OhigotgLsp+gKfmM9f4xbQl
-         VwsGsNWZliwjiCoXMbjMNqrH0FsSLkDB0mhHa1e6WckB6eWyPCAvMhv3/qY3E4rMWv01
-         d7OA==
-X-Gm-Message-State: ABy/qLYe4d9wWlQrozr8tT6ZV6FJaFdL96sNil/zhRXpSE2eKs9p5opX
-        7QId1RTmNTZo3SiMsNIixF8=
-X-Google-Smtp-Source: APBJJlEdzV4/PhSsRy8t+vhzJ4dvEI20DkeDzTmDvMYG15gC+Gh5C8YPehbk/aWURtovn9Bj7z+FKw==
-X-Received: by 2002:a17:907:2bc4:b0:997:e7d0:e26d with SMTP id gv4-20020a1709072bc400b00997e7d0e26dmr1240606ejc.4.1689926615356;
-        Fri, 21 Jul 2023 01:03:35 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef05:8700:f946:69a3:7954:9ee0? (p200300f6ef058700f94669a379549ee0.dip0.t-ipconnect.de. [2003:f6:ef05:8700:f946:69a3:7954:9ee0])
-        by smtp.gmail.com with ESMTPSA id fy17-20020a170906b7d100b009931a3adf64sm1853775ejb.17.2023.07.21.01.03.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 01:03:34 -0700 (PDT)
-Message-ID: <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
-Subject: Re: [PATCH v1 0/8] iio: core: A few code cleanups and documentation
- fixes
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Date:   Fri, 21 Jul 2023 10:06:05 +0200
-In-Reply-To: <20230720205324.58702-1-andriy.shevchenko@linux.intel.com>
-References: <20230720205324.58702-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 
+        bh=2G6l6gKvH0sa4hNHPgXKsD2m/QNfPKfzJ+aXhMoacwY=;
+        b=nY+d6NkYZWqfsWbKcQP2JItNGldjB+vS+aTA9gDjwywj8jOND6gbyJQa633dXIG2ij
+         fEARasMhaLw8eyiSLJhXkA6Ca0w/lvA4AliC55HVsioCKsCH4FQQwSIZW+UC82sls7sx
+         uBmohcVCtoK/iPE5tSRTaFAmvTaBZ7WLZeYcKLpho0qzmBd4xqSBbJaoXR1arw21Afa7
+         SL/4swyWEfeTZrq4Vd/T2+gF8J+agb19CQT1vx+Pbd0xuR0d3BEjTEu/3cYNA5Cvmaxd
+         BXV+K684CTT0V7nC549MirV7SXaHaB2t5gCAekPXSFfpTZOaRcwy91nFhWqCdSmb4rZ4
+         N5sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689927693; x=1690532493;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2G6l6gKvH0sa4hNHPgXKsD2m/QNfPKfzJ+aXhMoacwY=;
+        b=K9Tnr/ff5OKBOxNEm3iOMIvb7mA04qHaaUQqD5IuZA62I1zhxLiivKtzbhivGkdb3Z
+         SrnPoycysYNy7Qzz7Z3BSQEqmLOjTngB7YJcye2Y1eubXguM7bfE6dP9MuPRU7dTk1Lh
+         FCJC+kVzKMBkUa242MzUOVA4X+0ps9DBtPvuS2i32IAipwhRK/BAyRMfsQ6WGYuR5M0Q
+         7InDQx5NfaigLKnRFcUaydrnKmxMlZRNKYY6AQcQeQCiILUqKq2O04XYs6UKNLxuG5Xb
+         BC8M9vyYBY+zE7tPcipLShrGAKNHVp4vy5rrz/ChSZP8NqZb7hUMEhn0UpKUFBa6gw0v
+         N/mQ==
+X-Gm-Message-State: ABy/qLYog2UmlJvzF630B1MVVdDCtak3aQHyZjZo/5Izy4J1F3TbyWuc
+        FN401aX5bsN1xI/Vn/0S/gMHfA==
+X-Google-Smtp-Source: APBJJlHuviIxegy2LkmpS24DUOOsZ8Etr/86fy83Sp1xWzooLRPFrqeypmf+dHWOFlFSSGMt1f+AJw==
+X-Received: by 2002:a17:906:5a4e:b0:982:30e3:ddcb with SMTP id my14-20020a1709065a4e00b0098230e3ddcbmr1193586ejc.65.1689927693044;
+        Fri, 21 Jul 2023 01:21:33 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id p24-20020a170906a01800b00992f2befcbcsm1818243ejy.180.2023.07.21.01.21.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Jul 2023 01:21:32 -0700 (PDT)
+Message-ID: <4898bc33-5245-8fb2-e5e6-8ea1a8f32e1e@linaro.org>
+Date:   Fri, 21 Jul 2023 10:21:30 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: dac: add mcp4728.yaml
+Content-Language: en-US
+To:     Andrea Collamati <andrea.collamati@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1689857295.git.andrea.collamati@gmail.com>
+ <9816cd272d19802ec6eeff0c7c29e85d4a0ade88.1689857295.git.andrea.collamati@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <9816cd272d19802ec6eeff0c7c29e85d4a0ade88.1689857295.git.andrea.collamati@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2023-07-20 at 23:53 +0300, Andy Shevchenko wrote:
-> Just set of almost unrelated to each other cleanups against IIO
-> core implementation.
->=20
-> The positive LoCs diffstat due to first patch that adds a lot of
-> documentation for the new added macro.
->=20
-> Andy Shevchenko (8):
-> =C2=A0 iio: core: Add opaque_struct_size() helper and use it
-> =C2=A0 iio: core: Use sysfs_match_string() helper
-> =C2=A0 iio: core: Switch to krealloc_array()
-> =C2=A0 iio: core: Use min() instead of min_t() to make code more robust
-> =C2=A0 iio: core: Get rid of redundant 'else'
-> =C2=A0 iio: core: Fix issues and style of the comments
-> =C2=A0 iio: core: Move initcalls closer to the respective calls
-> =C2=A0 iio: core: Improve indentation in a few places
->=20
-> =C2=A0drivers/iio/industrialio-core.c | 226 ++++++++++++++++-------------=
----
-> =C2=A01 file changed, 115 insertions(+), 111 deletions(-)
->=20
+On 20/07/2023 17:40, Andrea Collamati wrote:
+> Add documentation for MCP4728
+> 
+> Signed-off-by: Andrea Collamati <andrea.collamati@gmail.com>
+> ---
+>  .../bindings/iio/dac/microchip,mcp4728.yaml   | 48 +++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> new file mode 100644
+> index 000000000000..6fd9be076245
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+> @@ -0,0 +1,48 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/microchip,mcp4728.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip MCP4728 DAC
+> +
+> +description:
+> +  MCP4728 is a quad channel, 12-bit voltage output
+> +  Digital-to-Analog Converter with non-volatile
+> +  memory and I2C compatible Serial Interface.
+> +  https://www.microchip.com/en-us/product/mcp4728
+> +
+> +maintainers:
+> +  - Andrea Collamati <andrea.collamati@gmail.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microchip,mcp4728
 
-Neat series... Just a few comments on my side and on patch 3 is up to you t=
-o
-take the comments or not.
+This is a friendly reminder during the review process.
 
-With my comment addressed on patch 2:
+It seems my previous comments were not fully addressed. Maybe my
+feedback got lost between the quotes, maybe you just forgot to apply it.
+Please go back to the previous discussion and either implement all
+requested changes or keep discussing them.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-=20
+Thank you.
+
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: |
+> +      Provides both power and acts as the reference supply on the MCP4728
+> +      when Internal Vref is not selected.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        mcp4728@60 {
+
+The same... Probably more comments were ignored, so:
+
+This is a friendly reminder during the review process.
+
+It seems my previous comments were not fully addressed. Maybe my
+feedback got lost between the quotes, maybe you just forgot to apply it.
+Please go back to the previous discussion and either implement all
+requested changes or keep discussing them.
+
+Thank you.
+
+
+Best regards,
+Krzysztof
+

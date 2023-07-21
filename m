@@ -2,86 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 526EC75CC19
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 17:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0063575D01C
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 18:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjGUPjx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jul 2023 11:39:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42064 "EHLO
+        id S229926AbjGUQz2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 12:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjGUPjw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 11:39:52 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 55F153586;
-        Fri, 21 Jul 2023 08:39:40 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="6.01,220,1684767600"; 
-   d="scan'208";a="174037620"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 22 Jul 2023 00:39:38 +0900
-Received: from localhost.localdomain (unknown [10.226.92.55])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 4F1CF40104F7;
-        Sat, 22 Jul 2023 00:39:36 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Pavel Machek <pavel@denx.de>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH v2] counter: rz-mtu3-cnt: Reorder locking sequence for consistency
-Date:   Fri, 21 Jul 2023 16:39:33 +0100
-Message-Id: <20230721153933.332108-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229533AbjGUQz0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 12:55:26 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005411FD2;
+        Fri, 21 Jul 2023 09:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689958526; x=1721494526;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=jyU4V2ph1DZcN/0ivRvr6VQANvpSErsJVYS5sZ5+3oM=;
+  b=aGVEtKU2BDtEy8ZARxnjlPdQQnq4Dg1STPRJxO2rfcLMZCPCgXm/vAk/
+   VWT7ZoCAion9UNcG9dwRvNNiRWm2cFspKmfVyZLPrKvgioBbbku3b4u4n
+   t3qQbMNYHyJPlsfI9YVU0nfOHlYD9H1W00l7ByiUpYepyMViYnEL7IPTN
+   AKUUxwAhuGEsKhl85DvIpug3eaTF9oEavrCxvOw0Sk9G+6LUPcnxspvNs
+   NIlWZWvjfLOnBcfvwU06LofDfvNRsmkLr1/VTq9jyLoGO/HwMte45Y9vQ
+   vkV+tsqCFe7zE36YsJMjMiNg7YHQaPVdJ87uoEdv14XLP4W92HVcWTChY
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="351950527"
+X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
+   d="scan'208";a="351950527"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 09:55:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="898764327"
+X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
+   d="scan'208";a="898764327"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP; 21 Jul 2023 09:55:23 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qMtPW-00DObT-1h;
+        Fri, 21 Jul 2023 19:55:22 +0300
+Date:   Fri, 21 Jul 2023 19:55:22 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 0/8] iio: core: A few code cleanups and documentation
+ fixes
+Message-ID: <ZLq4emQI+P6azH8a@smile.fi.intel.com>
+References: <20230720205324.58702-1-andriy.shevchenko@linux.intel.com>
+ <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+In-Reply-To: <d65e25da75142b7414cbf082c7f485464b82b6d1.camel@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-All functions except rz_mtu3_count_enable_write(), calls
-pm_runtime_{get,put} inside the lock. For consistency do the same here.
+On Fri, Jul 21, 2023 at 10:06:05AM +0200, Nuno Sá wrote:
+> On Thu, 2023-07-20 at 23:53 +0300, Andy Shevchenko wrote:
 
-Reported-by: Pavel Machek <pavel@denx.de>
-Closes: https://patchwork.kernel.org/project/cip-dev/patch/20230606075235.183132-6-biju.das.jz@bp.renesas.com/
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v1->v2:
- * Updated commit header to make it clear this is not addressing a bug,
-   rather it's just cleanup.
----
- drivers/counter/rz-mtu3-cnt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+...
 
-diff --git a/drivers/counter/rz-mtu3-cnt.c b/drivers/counter/rz-mtu3-cnt.c
-index 48c83933aa2f..ee821493b166 100644
---- a/drivers/counter/rz-mtu3-cnt.c
-+++ b/drivers/counter/rz-mtu3-cnt.c
-@@ -500,8 +500,8 @@ static int rz_mtu3_count_enable_write(struct counter_device *counter,
- 	int ret = 0;
- 
- 	if (enable) {
--		pm_runtime_get_sync(ch->dev);
- 		mutex_lock(&priv->lock);
-+		pm_runtime_get_sync(ch->dev);
- 		ret = rz_mtu3_initialize_counter(counter, count->id);
- 		if (ret == 0)
- 			priv->count_is_enabled[count->id] = true;
-@@ -510,8 +510,8 @@ static int rz_mtu3_count_enable_write(struct counter_device *counter,
- 		mutex_lock(&priv->lock);
- 		rz_mtu3_terminate_counter(counter, count->id);
- 		priv->count_is_enabled[count->id] = false;
--		mutex_unlock(&priv->lock);
- 		pm_runtime_put(ch->dev);
-+		mutex_unlock(&priv->lock);
- 	}
- 
- 	return ret;
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+
+Btw, is it deliberately you don't put accent on "a"?
+
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 

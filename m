@@ -2,155 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5F8A75B982
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jul 2023 23:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47A3075BF68
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jul 2023 09:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbjGTV17 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jul 2023 17:27:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53444 "EHLO
+        id S229533AbjGUHQL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jul 2023 03:16:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjGTV17 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jul 2023 17:27:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3316319B6;
-        Thu, 20 Jul 2023 14:27:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7BD761C67;
-        Thu, 20 Jul 2023 21:27:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6510C433C7;
-        Thu, 20 Jul 2023 21:27:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689888477;
-        bh=GiZxqdFhUBzLZIYlG2ofAIkeWaJC+l5yaX+/Yxnkjr4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ce8Vhq0qUOr9RPO3dTAlf6nZ6F53qNqdE3Wiyc2mJqLhIYnreH4P1s0Zh9sZove5R
-         vWKD3isIuXsRcV6cwhLW6DSVYTjoByb5pOjk32OhoFDW4J4U5/0a+1JlIk/tRrSB1T
-         RSMwDXmXksgcplg+79DwjGadRhDyUN6ykv11ibrPmw0i7pz+ssQAqAR46CIaa4NgDm
-         Jfmr1s1pARcfm7ZjlbZ6Hq2MiSQ4PbY5AD+GCVMpITmikyqlBm3P1YA2OMe6m6a0QI
-         VAHA/N8d825p9hSvD3ocTKMUf5nbZdLr7yCkEf4fh0F6eY8CxDuZUVeB+W1LnI3Uuz
-         SopjigKOLQ0GQ==
-Date:   Thu, 20 Jul 2023 23:27:53 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alejandro Tafalla <atafalla@dnyon.com>,
+        with ESMTP id S229451AbjGUHQK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jul 2023 03:16:10 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3AB1A2715;
+        Fri, 21 Jul 2023 00:16:09 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.01,220,1684767600"; 
+   d="scan'208";a="173993438"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 21 Jul 2023 16:16:08 +0900
+Received: from localhost.localdomain (unknown [10.226.92.55])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 16AA04007F54;
+        Fri, 21 Jul 2023 16:16:05 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: imu: lsm6dsx: Fix mount matrix retrieval
-Message-ID: <ZLmm2fSt1wkttdLC@lore-desk>
-References: <20230714153132.27265-1-atafalla@dnyon.com>
- <20230715183515.56deaa1d@jic23-huawei>
- <3017278.mvXUDI8C0e@alexpc>
- <20230720194037.60d109d7@jic23-huawei>
+        linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v2] iio: potentiometer: mcp4018: Use i2c_get_match_data()
+Date:   Fri, 21 Jul 2023 08:16:03 +0100
+Message-Id: <20230721071603.158114-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="y2fYAN+68DKxwuRL"
-Content-Disposition: inline
-In-Reply-To: <20230720194037.60d109d7@jic23-huawei>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Replace of_device_get_match_data() and i2c_match_id() by i2c_get_match
+_data() by making similar I2C and DT-based matching table.
 
---y2fYAN+68DKxwuRL
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+v1->v2:
+ * Added similar similar I2C and DT-based matching table.
+ * Fixed typo i2c_get_match_data(dev)->i2c_get_match_data(client).
+ * Dropped error check as all tables have data pointers.
 
-On Jul 20, Jonathan Cameron wrote:
-> Alejandro Tafalla <atafalla@dnyon.com> wrote:
->=20
-> > On s=E1bado, 15 de julio de 2023 19:35:15 (CEST) Jonathan Cameron wrote:
-> > > On Fri, 14 Jul 2023 17:31:26 +0200
-> > >=20
-> > > Alejandro Tafalla <atafalla@dnyon.com> wrote: =20
-> > > > The function lsm6dsx_get_acpi_mount_matrix should return an error w=
-hen
-> > > > ACPI
-> > > > support is not enabled to allow executing iio_read_mount_matrix in =
-the
-> > > > probe function.
-> > > >=20
-> > > > Fixes: dc3d25f22b88 ("iio: imu: lsm6dsx: Add ACPI mount matrix retr=
-ieval") =20
-> > >=20
-> > > I can fix it up whilst applying if no other issues, but there must no=
-t be
-> > > a blank line here.  All tags need to be in a single block for some to=
-oling
-> > > that is used with the kernel tree (and some of the checking scripts w=
-arn
-> > > about this so it won't get applied with the blank line here). =20
-> >=20
-> > Okay, i'll keep it in mind for new patches. Thank you.
-> Np.
->=20
-> Just waiting for Lorenzo to have time to take a final look.
+Note:
+ This patch is only compile tested.
+---
+ drivers/iio/potentiometer/mcp4018.c | 34 +++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-I am fine with this patch.
+diff --git a/drivers/iio/potentiometer/mcp4018.c b/drivers/iio/potentiometer/mcp4018.c
+index 89daecc90305..b064e86ecce8 100644
+--- a/drivers/iio/potentiometer/mcp4018.c
++++ b/drivers/iio/potentiometer/mcp4018.c
+@@ -99,20 +99,24 @@ static const struct iio_info mcp4018_info = {
+ 	.write_raw = mcp4018_write_raw,
+ };
+ 
++#define MCP4018_ID_TABLE(name, cfg) {				\
++	name, .driver_data = (kernel_ulong_t)&mcp4018_cfg[cfg],	\
++}
++
+ static const struct i2c_device_id mcp4018_id[] = {
+-	{ "mcp4017-502", MCP4018_502 },
+-	{ "mcp4017-103", MCP4018_103 },
+-	{ "mcp4017-503", MCP4018_503 },
+-	{ "mcp4017-104", MCP4018_104 },
+-	{ "mcp4018-502", MCP4018_502 },
+-	{ "mcp4018-103", MCP4018_103 },
+-	{ "mcp4018-503", MCP4018_503 },
+-	{ "mcp4018-104", MCP4018_104 },
+-	{ "mcp4019-502", MCP4018_502 },
+-	{ "mcp4019-103", MCP4018_103 },
+-	{ "mcp4019-503", MCP4018_503 },
+-	{ "mcp4019-104", MCP4018_104 },
+-	{}
++	MCP4018_ID_TABLE("mcp4017-502", MCP4018_502),
++	MCP4018_ID_TABLE("mcp4017-103", MCP4018_103),
++	MCP4018_ID_TABLE("mcp4017-503", MCP4018_503),
++	MCP4018_ID_TABLE("mcp4017-104", MCP4018_104),
++	MCP4018_ID_TABLE("mcp4018-502", MCP4018_502),
++	MCP4018_ID_TABLE("mcp4018-103", MCP4018_103),
++	MCP4018_ID_TABLE("mcp4018-503", MCP4018_503),
++	MCP4018_ID_TABLE("mcp4018-104", MCP4018_104),
++	MCP4018_ID_TABLE("mcp4019-502", MCP4018_502),
++	MCP4018_ID_TABLE("mcp4019-103", MCP4018_103),
++	MCP4018_ID_TABLE("mcp4019-503", MCP4018_503),
++	MCP4018_ID_TABLE("mcp4019-104", MCP4018_104),
++	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(i2c, mcp4018_id);
+ 
+@@ -157,9 +161,7 @@ static int mcp4018_probe(struct i2c_client *client)
+ 	i2c_set_clientdata(client, indio_dev);
+ 	data->client = client;
+ 
+-	data->cfg = device_get_match_data(dev);
+-	if (!data->cfg)
+-		data->cfg = &mcp4018_cfg[i2c_match_id(mcp4018_id, client)->driver_data];
++	data->cfg = i2c_get_match_data(client);
+ 
+ 	indio_dev->info = &mcp4018_info;
+ 	indio_dev->channels = &mcp4018_channel;
+-- 
+2.25.1
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
->=20
-> Jonathan
->=20
-> > >  =20
-> > > > Signed-off-by: Alejandro Tafalla <atafalla@dnyon.com>
-> > > > ---
-> > > > Changes in v3:
-> > > > - Removed unneeded check for err =3D=3D -EOPNOTSUPP.
-> > > >=20
-> > > > Changes in v2:
-> > > > - Use of error codes instead of true/false
-> > > >=20
-> > > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c index
-> > > > 6a18b363cf73..b6e6b1df8a61 100644
-> > > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > > > @@ -2687,7 +2687,7 @@ static int lsm6dsx_get_acpi_mount_matrix(stru=
-ct
-> > > > device *dev,>=20
-> > > >  static int lsm6dsx_get_acpi_mount_matrix(struct device *dev,
-> > > > =20
-> > > >  					  struct  =20
-> > iio_mount_matrix *orientation)
-> > > > =20
-> > > >  {
-> > > >=20
-> > > > -	return false;
-> > > > +	return -EOPNOTSUPP;
-> > > >=20
-> > > >  }
-> > > > =20
-> > > >  #endif =20
-> >=20
-> >=20
-> >=20
-> >=20
->=20
-
---y2fYAN+68DKxwuRL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZLmm2QAKCRA6cBh0uS2t
-rJFvAQC3UVCsDZpMgmZ/apRNUCscBwoIAaqeVlN4wDQ9J06BfQEA4Z1+bilmYBBH
-vYXxrtZWH9h6pt7K0cRNDJarMftP6Q4=
-=2+j6
------END PGP SIGNATURE-----
-
---y2fYAN+68DKxwuRL--

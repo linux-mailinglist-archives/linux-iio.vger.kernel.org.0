@@ -2,48 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2644375DD74
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jul 2023 18:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8788475DD81
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jul 2023 18:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbjGVQej (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jul 2023 12:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56226 "EHLO
+        id S229557AbjGVQuT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jul 2023 12:50:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjGVQei (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jul 2023 12:34:38 -0400
+        with ESMTP id S229552AbjGVQuS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jul 2023 12:50:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57CE2704;
-        Sat, 22 Jul 2023 09:34:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60957A0;
+        Sat, 22 Jul 2023 09:50:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69AC960B9B;
-        Sat, 22 Jul 2023 16:34:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DB3C433C8;
-        Sat, 22 Jul 2023 16:34:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E97F960B06;
+        Sat, 22 Jul 2023 16:50:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC23C433C7;
+        Sat, 22 Jul 2023 16:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690043676;
-        bh=Rjv82HPBqLpoIriZnJoOzq7od/Ud/TXCnVgSSt38dvo=;
+        s=k20201202; t=1690044616;
+        bh=9XeEJvlgen8BcyqBv9I/W6Fq2iW/Yz6k/D4YZTouxus=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tlb+0GZ7GsPDBJ1ohVXB7HNmpEulVpeA6M015YXENM0boPRImRcsWW5NmANK4km0o
-         CYqdfOuV5AfT8y/0pUecG1sVNoWd6s5xFYbwS2ct3UGwW8JBw1gTthKaNgmIfF/LHO
-         6xi3mnELlHxGf8leZHuGHhXaiswXaqpA29quHckIpROsvNGvSNSNKbd6mhtl0/XyEQ
-         OQRqQb/MXeDA9ERMJ2roLmqa7Frd7eSrYfgJcSbPueSUlM35krX55QX67RIaDS/b9a
-         gQhIo9MZYETXr41ejP3/kSOF0PHl5dqixnayYISvvKsK63txy8ESkxXzY87ez4xMV6
-         2i/tPdxBmAx7w==
-Date:   Sat, 22 Jul 2023 17:34:33 +0100
+        b=jUAEq07Klk95vWO9FT5slhqsTh47S6Pom4vQcWI9MDXX9edeZlAaXCISBdfFraCkc
+         7pE8bA1zxsO3ggyKp3HVErjgMmR/g/X/4kbioVxIUwHHTJ4GB/PLcGDfVIK8EUL5Xu
+         RnsjY84EEVLpmkBoPyopa8oo1DcAsJ9xi7Ru3MfkJrW4IFmaGh5Dwmq80WM1/gDjS1
+         17RfDriN65MFFsUzSA99R8xDtf2mW2e9enTx/ROatl/cwEbBgHIXhWqmeLlxainqaa
+         Uq21RisUDgzqVCiFfGR6kmNOoUKnw0JCY8Vde2J7wvW11l8UW0nTx6nEnPqc7LLHXo
+         Vq/uW5iU4MoSQ==
+Date:   Sat, 22 Jul 2023 17:50:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: frequency: admv1013: propagate errors from
- regulator_get_voltage()
-Message-ID: <20230722173433.2174734f@jic23-huawei>
-In-Reply-To: <ce75aac3-2aba-4435-8419-02e59fdd862b@moroto.mountain>
-References: <ce75aac3-2aba-4435-8419-02e59fdd862b@moroto.mountain>
+To:     Chenyuan Mi <michenyuan@huawei.com>
+Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] tools: iio: iio_generic_buffer: Fix some integer type
+ and calculation
+Message-ID: <20230722175010.2e10bc6c@jic23-huawei>
+In-Reply-To: <20230718081542.2892453-1-michenyuan@huawei.com>
+References: <20230718081542.2892453-1-michenyuan@huawei.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,46 +56,97 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 18 Jul 2023 10:02:18 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Tue, 18 Jul 2023 08:15:42 +0000
+Chenyuan Mi <michenyuan@huawei.com> wrote:
 
-> The regulator_get_voltage() function returns negative error codes.
-> This function saves it to an unsigned int and then does some range
-> checking and, since the error code falls outside the correct range,
-> it returns -EINVAL.
-> 
-> Beyond the messiness, this is bad because the regulator_get_voltage()
-> function can return -EPROBE_DEFER and it's important to propagate that
-> back properly so it can be handled.
-> 
-> Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+Hi,
 
-Thanks,
+In principle I support hardening code, though in this case we are talking
+about example code only.  We have libiio and similar for anyone who wants
+to do more than basic tests.
+
+> In function size_from_channelarray(), the return value 'bytes' is defined
+> as int type. However, the calcution of 'bytes' in this function is designed
+> to use the unsigned int type. So it is necessary to change 'bytes' type to
+> unsigned int to avoid integer overflow.
+
+For this one, in practice it's controlled entirely by the kernel drivers
+and they won't get anywhere near integer overflow.  The change is
+small however and doesn't hurt readability so I guess no harm applying it.
+
+> 
+> The size_from_channelarray() is called in main() function, its return value
+> is directly multipled by 'buf_len' and then used as the malloc() parameter.
+> The 'buf_len' is completely controllable by user, thus a multiplication
+> overflow may occur here. This could allocate an unexpected small area.
+
+That would have to be a very large allocation...  I suppose it is possible
+someone might try it...
+
+> 
+> Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
+
+My first inclination is not to apply this on basis that it adds slight complexity
+to example code (the aim of which is too illustrate the interface), however on the other
+side of things the checks don't add significant complexity...
+
+So I tried to apply it, but it doesn't go on cleanly and patch is telling
+me it's malformed. I'm not quite sure why.
+
+patching file tools/iio/iio_generic_buffer.c
+patch: **** malformed patch at line 68:                 ret = -ENOMEM;
 
 Jonathan
 
+
+
+
+
 > ---
->  drivers/iio/frequency/admv1013.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  tools/iio/iio_generic_buffer.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
-> index 9bf8337806fc..8c8e0bbfc99f 100644
-> --- a/drivers/iio/frequency/admv1013.c
-> +++ b/drivers/iio/frequency/admv1013.c
-> @@ -344,9 +344,12 @@ static int admv1013_update_quad_filters(struct admv1013_state *st)
->  
->  static int admv1013_update_mixer_vgate(struct admv1013_state *st)
+> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+> index f8deae4e26a1..dc7d19c179ca 100644
+> --- a/tools/iio/iio_generic_buffer.c
+> +++ b/tools/iio/iio_generic_buffer.c
+> @@ -51,9 +51,9 @@ enum autochan {
+>   * Has the side effect of filling the channels[i].location values used
+>   * in processing the buffer output.
+>   **/
+> -static int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+> +static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
 >  {
-> -	unsigned int vcm, mixer_vgate;
-> +	unsigned int mixer_vgate;
-> +	int vcm;
+> -	int bytes = 0;
+> +	unsigned int bytes = 0;
+>  	int i = 0;
 >  
->  	vcm = regulator_get_voltage(st->reg);
-> +	if (vcm < 0)
-> +		return vcm;
+>  	while (i < num_channels) {
+> @@ -348,7 +348,7 @@ int main(int argc, char **argv)
+>  	ssize_t read_size;
+>  	int dev_num = -1, trig_num = -1;
+>  	char *buffer_access = NULL;
+> -	int scan_size;
+> +	unsigned int scan_size;
+>  	int noevents = 0;
+>  	int notrigger = 0;
+>  	char *dummy;
+> @@ -674,7 +674,14 @@ int main(int argc, char **argv)
+>  	}
 >  
->  	if (vcm < 1800000)
->  		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
+>  	scan_size = size_from_channelarray(channels, num_channels);
+> -	data = malloc(scan_size * buf_len);
+> +
+> +	size_t total_buf_len = scan_size * buf_len;
+> +
+> +	if (scan_size > 0 && total_buf_len / scan_size != buf_len) {
+> +		ret = -EFAULT;
+> +		perror("Integer overflow happened when calculate scan_size * buf_len");
+> +		goto error;
+> +	}
+> +
+> +	data = malloc(total_buf_len);
+>  	if (!data) {
+>  		ret = -ENOMEM;
+>  		goto error;
 

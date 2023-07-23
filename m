@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0AA475E1C5
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jul 2023 14:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A622D75E1C9
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jul 2023 14:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbjGWMX6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Jul 2023 08:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44300 "EHLO
+        id S229470AbjGWMZD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Jul 2023 08:25:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjGWMX5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jul 2023 08:23:57 -0400
+        with ESMTP id S229975AbjGWMZD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jul 2023 08:25:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A8210DE;
-        Sun, 23 Jul 2023 05:23:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD9A10E2;
+        Sun, 23 Jul 2023 05:25:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A110A60CE8;
-        Sun, 23 Jul 2023 12:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D518EC433C8;
-        Sun, 23 Jul 2023 12:23:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1AEB60C80;
+        Sun, 23 Jul 2023 12:25:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A143C433C8;
+        Sun, 23 Jul 2023 12:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690115036;
-        bh=n2B5v/EKugu7gGDDnqUY4oAhQIGlqWIjnLxLDiTyc0Q=;
+        s=k20201202; t=1690115101;
+        bh=GeSyt9bVQvkrC8f9GHvYq7BY5dpo1ier66wPZrop2Ws=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NBAxto0RysOauiMyrhhxWXE1F1xj12H1bkwWdo9dGXDQfT13w/0eu3hVwGYlAOedX
-         P73DH+R5diBaH24g6R7XKDIfba9299+qeH34xxDNEdNHf/KOlqGEpe6Qwu7CeKQnuk
-         V3ahaYyLpVYMwod80N4LSglPg1IXgnyIFkwwKt48dyWAiyPHpPKTQ/ZhdIJ8ztj0Pr
-         q8bjgzcCmfgFWqvPFGlcmJb3p3a9qKNUJlSvk43uYlhtXN4A0b3Ac8Mu7mvWfi6Cy1
-         N3NaNsbsxvfjuOg9r+850Xd+9uFafbE1dp7aWwpqfyJ9zFIhV+P6NdxK/XV47tLxzb
-         Tot0iBJSdejaw==
-Date:   Sun, 23 Jul 2023 13:23:52 +0100
+        b=binkHBAlMGcXEoDFzyYi8cX7uTgEbQr5ADc/0Y6Nu0R2a8phbX66VhAbAI8rg3+6z
+         iVEuJRBNUv7l+8JFC5LH3YnpsJfskSgQ774TbvcpZzVuLYqLBp+7pbPi/MtyPitV+W
+         FdcmDMNSMP0W2Voi/i8/UdcxxEZATQrql0kzjKdRwTeyKoWTWqzogkUWmBG2U0HzCf
+         uoOx028G3IGVyeGQ3AKw4UzouaJJCk0BJdw3xtz7WZhYSJLi+ScSu6qpsSkEQb39Cv
+         Zan1rDPMsudiMocl3Zmuk5aFTtxvvHEGLGTz6UsFTk8+lEbD+0500H5ggOLz8CY91u
+         Y3B8MCviK0kqg==
+Date:   Sun, 23 Jul 2023 13:24:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
 Cc:     Ramona Bolboaca <ramona.bolboaca@analog.com>, nuno.sa@analog.com,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: imu: adis16475.c: Remove unused enum
- elements
-Message-ID: <20230723132352.0d7eb229@jic23-huawei>
-In-Reply-To: <e2fa1ebc820745065e91bac875f287167a0cfef9.camel@gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: imu: adis16475.c: Add has_burst32 flag to
+ adis16477 devices
+Message-ID: <20230723132458.7c1f55de@jic23-huawei>
+In-Reply-To: <810d290b629e2d40550a2b375229fe2e4dd58085.camel@gmail.com>
 References: <20230719123152.309624-1-ramona.bolboaca@analog.com>
-        <20230719123152.309624-2-ramona.bolboaca@analog.com>
-        <e2fa1ebc820745065e91bac875f287167a0cfef9.camel@gmail.com>
+        <20230719123152.309624-3-ramona.bolboaca@analog.com>
+        <810d290b629e2d40550a2b375229fe2e4dd58085.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,40 +58,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 20 Jul 2023 09:38:50 +0200
+On Thu, 20 Jul 2023 09:39:27 +0200
 Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
 > On Wed, 2023-07-19 at 15:31 +0300, Ramona Bolboaca wrote:
-> > Remove unused enum elements ADIS16475_SCAN_DIAG_S_FLAGS and
-> > ADIS16475_SCAN_CRC_FAILURE.
+> > adis16477 devices support burst32 function, thus has_burst32
+> > flag should be set to true.
 > >=20
 > > Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
 > > --- =20
 >=20
+> Ups...
+>=20
 > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Applied to the togreg branch of iio.git and pushed out as testing for the
-autobuilders to poke at it.
+Applied.
 
 Thanks,
 
 Jonathan
 
 >=20
-> > =C2=A0drivers/iio/imu/adis16475.c | 2 --
-> > =C2=A01 file changed, 2 deletions(-)
+> > =C2=A0drivers/iio/imu/adis16475.c | 3 +++
+> > =C2=A01 file changed, 3 insertions(+)
 > >=20
 > > diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-> > index 3abffb01ba31..243f0a91fdf9 100644
+> > index 243f0a91fdf9..17275a53ca2c 100644
 > > --- a/drivers/iio/imu/adis16475.c
 > > +++ b/drivers/iio/imu/adis16475.c
-> > @@ -115,8 +115,6 @@ enum {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_ACCEL_Y,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_ACCEL_Z,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_TEMP,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_DIAG_S_FLAGS,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ADIS16475_SCAN_CRC_FAILURE,
-> > =C2=A0};
-> > =C2=A0
-> > =C2=A0static bool low_rate_allow; =20
+> > @@ -726,6 +726,7 @@ static const struct adis16475_chip_info
+> > adis16475_chip_info[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.max_dec =3D 1999,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.sync =3D adis16475_sync_mode,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.num_sync =3D ARRAY_SIZE(adis16475_sync_mode),
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0.has_burst32 =3D true,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.adis_data =3D ADIS16475_DATA(16477, &adis16475_=
+timeouts),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0[ADIS16477_2] =3D {
+> > @@ -741,6 +742,7 @@ static const struct adis16475_chip_info
+> > adis16475_chip_info[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.max_dec =3D 1999,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.sync =3D adis16475_sync_mode,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.num_sync =3D ARRAY_SIZE(adis16475_sync_mode),
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0.has_burst32 =3D true,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.adis_data =3D ADIS16475_DATA(16477, &adis16475_=
+timeouts),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0[ADIS16477_3] =3D {
+> > @@ -756,6 +758,7 @@ static const struct adis16475_chip_info
+> > adis16475_chip_info[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.max_dec =3D 1999,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.sync =3D adis16475_sync_mode,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.num_sync =3D ARRAY_SIZE(adis16475_sync_mode),
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0.has_burst32 =3D true,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0.adis_data =3D ADIS16475_DATA(16477, &adis16475_=
+timeouts),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0[ADIS16465_1] =3D { =20
 >=20
 

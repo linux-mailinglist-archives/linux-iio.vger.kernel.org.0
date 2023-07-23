@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73CE675E144
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jul 2023 12:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD9D75E165
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jul 2023 12:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230166AbjGWKV5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Jul 2023 06:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
+        id S229881AbjGWK2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Jul 2023 06:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230168AbjGWKVg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jul 2023 06:21:36 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C7F52421B;
-        Sun, 23 Jul 2023 03:20:41 -0700 (PDT)
+        with ESMTP id S230319AbjGWK2B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jul 2023 06:28:01 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 227A1185;
+        Sun, 23 Jul 2023 03:27:48 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,226,1684767600"; 
-   d="scan'208";a="174155150"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 23 Jul 2023 19:20:21 +0900
+   d="scan'208";a="170498440"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 23 Jul 2023 19:27:48 +0900
 Received: from localhost.localdomain (unknown [10.226.92.13])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 979A541CFC5E;
-        Sun, 23 Jul 2023 19:20:19 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 16B054000937;
+        Sun, 23 Jul 2023 19:27:45 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
@@ -28,9 +28,9 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v3] iio: potentiometer: mcp4531: Use i2c_get_match_data()
-Date:   Sun, 23 Jul 2023 11:20:16 +0100
-Message-Id: <20230723102016.93738-1-biju.das.jz@bp.renesas.com>
+Subject: [PATCH v3 RESEND] iio: potentiometer: mcp4531: Use i2c_get_match_data()
+Date:   Sun, 23 Jul 2023 11:27:43 +0100
+Message-Id: <20230723102743.102284-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -64,7 +64,7 @@ Note:
  1 file changed, 71 insertions(+), 68 deletions(-)
 
 diff --git a/drivers/iio/potentiometer/mcp4531.c b/drivers/iio/potentiometer/mcp4531.c
-index c513c00c8243..ed8c2c59d281 100644
+index c513c00c8243..f28880ebd758 100644
 --- a/drivers/iio/potentiometer/mcp4531.c
 +++ b/drivers/iio/potentiometer/mcp4531.c
 @@ -206,72 +206,77 @@ static const struct iio_info mcp4531_info = {
@@ -73,7 +73,7 @@ index c513c00c8243..ed8c2c59d281 100644
  
 +#define MCP4531_ID_TABLE(_name, cfg) {				\
 +	.name = _name,						\
-+	.driver_data = (kernel_ulong_t)&mcp4018_cfg[cfg],	\
++	.driver_data = (kernel_ulong_t)&mcp4531_cfg[cfg],	\
 +}
 +
  static const struct i2c_device_id mcp4531_id[] = {

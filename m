@@ -2,102 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A30AD75FA08
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 16:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CDF175FA26
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 16:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231604AbjGXOkO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Jul 2023 10:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57942 "EHLO
+        id S229877AbjGXOsH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 24 Jul 2023 10:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231372AbjGXOkK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 10:40:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EACB1AA
-        for <linux-iio@vger.kernel.org>; Mon, 24 Jul 2023 07:40:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1925611C0
-        for <linux-iio@vger.kernel.org>; Mon, 24 Jul 2023 14:40:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29A2C433C9;
-        Mon, 24 Jul 2023 14:40:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690209602;
-        bh=z0ohDqmF+/nk7E/o2qtIFYPq1uT6d+/o0Fl2MBwX9NA=;
-        h=Date:From:To:Cc:Subject:From;
-        b=OZ85PcdbUq6MnZD1ygei4qhqUbaYWhoSZ6IANTG9x3cjWJvUmomhAiit2+G3CR1L9
-         2UssYs8u/zGbg+ojZHpq4masVfnF5yGrgg6ecB18qFZfefX1RE+3MJ49TB9afiQ5/V
-         RjAYoE6ItBydSimgZAyLPb6yXK94j2BGc2GCpg9uy/BJWT+X7Qkw7ovhX40RthVyfK
-         tz/qFG4o9omMt/H/RlD5iMWRegbQOmItcuwym7tDbtcei25M0hP1H6uAnB+PMoYkz3
-         32BvylirQAzJUCgN5uJY1NtsD97RJGZzOPyMJTREVoNxdBGEIZFr2N5ejGuY+ATUlY
-         qAk0L7MMglJTg==
-Date:   Mon, 24 Jul 2023 10:39:59 -0400
-From:   William Breathitt Gray <wbg@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [GIT PULL] Second set of Counter fixes for 6.5
-Message-ID: <ZL6NP1yrUuFHAiso@ishi>
+        with ESMTP id S231264AbjGXOsG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 10:48:06 -0400
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA3010D1;
+        Mon, 24 Jul 2023 07:48:05 -0700 (PDT)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-583f036d50bso15354277b3.3;
+        Mon, 24 Jul 2023 07:48:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690210085; x=1690814885;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fIjA4L8NiFXUPA17fZobqu05oUAZ5QDo9YRT9rAXmPM=;
+        b=fvTIgqbT3cePK/pTI16460BB1ps8VPJkbrczqNFoWYythbVA7YtxZMSXaB9FlsKmCL
+         0fDqRVgsw0+15mBYeeeLjAfCvVWkbsp6+n9PZSIfqiyKZ9CPH/Avg0ihsIgJ/hokgBnz
+         HWy0KeS74KzZixFTDM1Pghkh3OqdlTJqO2qwb81BGtIJUSfgiYcp9gZCXO2h8/AhQiV4
+         yj3bleBv9aT1jXE6pCn5HsBrTY6LV0JlXQjU0IKVCr+OJxPoMvwqwPadWYuYybCcSX+z
+         Y/UaNXBtoGoxIwlf4FtPZZsTsKSTdz5QHjxkIaJR1AMkNJjQj9WS6ZMGE7A9y3jKUSYm
+         XVCA==
+X-Gm-Message-State: ABy/qLbfo+6EL/8hlICg0T9836bb5RAvBPut/OrKTDCUj+CQrKnGJK8P
+        u0T28CP9R7GDYwJrKXg+7k0BRAyRMCbXOw==
+X-Google-Smtp-Source: APBJJlFhcv2A5gjEUzedGQE7ZzRYClGJtWTYePfF1BCLLLZIELwvQISUXmPya7Goi8e50C00H/qIYg==
+X-Received: by 2002:a81:918b:0:b0:580:bd0d:809f with SMTP id i133-20020a81918b000000b00580bd0d809fmr9107170ywg.18.1690210084737;
+        Mon, 24 Jul 2023 07:48:04 -0700 (PDT)
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com. [209.85.219.173])
+        by smtp.gmail.com with ESMTPSA id x76-20020a0dd54f000000b00583fdbfa001sm429548ywd.98.2023.07.24.07.48.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 07:48:04 -0700 (PDT)
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-bc379e4c1cbso5083542276.2;
+        Mon, 24 Jul 2023 07:48:04 -0700 (PDT)
+X-Received: by 2002:a25:c794:0:b0:d06:2494:ef77 with SMTP id
+ w142-20020a25c794000000b00d062494ef77mr8609557ybe.16.1690210084004; Mon, 24
+ Jul 2023 07:48:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2aVOM6QoV7PP8s3Z"
-Content-Disposition: inline
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230721153933.332108-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20230721153933.332108-1-biju.das.jz@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 24 Jul 2023 16:47:52 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdU6PFqF-NLB7LdA4LLAN7VfSTwDg2iHFtc5GR+riQp4eg@mail.gmail.com>
+Message-ID: <CAMuHMdU6PFqF-NLB7LdA4LLAN7VfSTwDg2iHFtc5GR+riQp4eg@mail.gmail.com>
+Subject: Re: [PATCH v2] counter: rz-mtu3-cnt: Reorder locking sequence for consistency
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Pavel Machek <pavel@denx.de>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Biju,
 
---2aVOM6QoV7PP8s3Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for your patch!
 
-The following changes since commit fdf0eaf11452d72945af31804e2a1048ee1b574c:
+On Fri, Jul 21, 2023 at 5:39 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> All functions except rz_mtu3_count_enable_write(), calls
 
-  Linux 6.5-rc2 (2023-07-16 15:10:37 -0700)
+call
 
-are available in the Git repository at:
+> pm_runtime_{get,put} inside the lock. For consistency do the same here.
+>
+> Reported-by: Pavel Machek <pavel@denx.de>
+> Closes: https://patchwork.kernel.org/project/cip-dev/patch/20230606075235.183132-6-biju.das.jz@bp.renesas.com/
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.5b
+This is not a direct link to Pavel's report, but to the bread started
+by your patch.  Why not a link to lore?
 
-for you to fetch changes up to aead78125a987f48944bff2001f61df72b95afc4:
+Closes: https://lore.kernel.org/r/ZH8Fmom8vZ4DwxqA@duo.ucw.cz
 
-  tools/counter: Makefile: Replace rmdir by rm to avoid make,clean failure (2023-07-24 10:29:52 -0400)
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v1->v2:
+>  * Updated commit header to make it clear this is not addressing a bug,
+>    rather it's just cleanup.
 
-----------------------------------------------------------------
-Second set of Counter fixes for 6.5
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-The I8254 Kconfig entry is repositioned to resolve a misplacement
-causing the "Counter support" submenu items to disappear in menuconfig.
-The tools/counter/Makefile clean recipe is adjusted to replace rmdir
-with an equivalent set of rm to prevent failure if someone tries to
-clean the counter directory without building it first.
+Gr{oetje,eeting}s,
 
-----------------------------------------------------------------
-Anh Tuan Phan (1):
-      tools/counter: Makefile: Replace rmdir by rm to avoid make,clean failure
+                        Geert
 
-William Breathitt Gray (1):
-      counter: Fix menuconfig "Counter support" submenu entries disappearance
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
- drivers/counter/Kconfig | 14 +++++++-------
- tools/counter/Makefile  |  3 ++-
- 2 files changed, 9 insertions(+), 8 deletions(-)
-
---2aVOM6QoV7PP8s3Z
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZL6NPwAKCRC1SFbKvhIj
-K0sSAQDD0yaqZWOpMAvL+SiqVGOWuKL1Iekn7BExo4qRzME/8wEA7Icw4UTZxGtJ
-Dov+hB1MVM/Dw1PFbeF6hIJsrFBu/QY=
-=FMdF
------END PGP SIGNATURE-----
-
---2aVOM6QoV7PP8s3Z--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

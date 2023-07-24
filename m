@@ -2,60 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDF175FA26
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 16:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 596DE75FA70
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 17:09:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229877AbjGXOsH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 24 Jul 2023 10:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60770 "EHLO
+        id S230292AbjGXPJw convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 24 Jul 2023 11:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231264AbjGXOsG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 10:48:06 -0400
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA3010D1;
-        Mon, 24 Jul 2023 07:48:05 -0700 (PDT)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-583f036d50bso15354277b3.3;
-        Mon, 24 Jul 2023 07:48:05 -0700 (PDT)
+        with ESMTP id S229717AbjGXPJv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 11:09:51 -0400
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4F5E47;
+        Mon, 24 Jul 2023 08:09:50 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3a5ad4477a7so1182378b6e.1;
+        Mon, 24 Jul 2023 08:09:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690210085; x=1690814885;
+        d=1e100.net; s=20221208; t=1690211390; x=1690816190;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fIjA4L8NiFXUPA17fZobqu05oUAZ5QDo9YRT9rAXmPM=;
-        b=fvTIgqbT3cePK/pTI16460BB1ps8VPJkbrczqNFoWYythbVA7YtxZMSXaB9FlsKmCL
-         0fDqRVgsw0+15mBYeeeLjAfCvVWkbsp6+n9PZSIfqiyKZ9CPH/Avg0ihsIgJ/hokgBnz
-         HWy0KeS74KzZixFTDM1Pghkh3OqdlTJqO2qwb81BGtIJUSfgiYcp9gZCXO2h8/AhQiV4
-         yj3bleBv9aT1jXE6pCn5HsBrTY6LV0JlXQjU0IKVCr+OJxPoMvwqwPadWYuYybCcSX+z
-         Y/UaNXBtoGoxIwlf4FtPZZsTsKSTdz5QHjxkIaJR1AMkNJjQj9WS6ZMGE7A9y3jKUSYm
-         XVCA==
-X-Gm-Message-State: ABy/qLbfo+6EL/8hlICg0T9836bb5RAvBPut/OrKTDCUj+CQrKnGJK8P
-        u0T28CP9R7GDYwJrKXg+7k0BRAyRMCbXOw==
-X-Google-Smtp-Source: APBJJlFhcv2A5gjEUzedGQE7ZzRYClGJtWTYePfF1BCLLLZIELwvQISUXmPya7Goi8e50C00H/qIYg==
-X-Received: by 2002:a81:918b:0:b0:580:bd0d:809f with SMTP id i133-20020a81918b000000b00580bd0d809fmr9107170ywg.18.1690210084737;
-        Mon, 24 Jul 2023 07:48:04 -0700 (PDT)
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com. [209.85.219.173])
-        by smtp.gmail.com with ESMTPSA id x76-20020a0dd54f000000b00583fdbfa001sm429548ywd.98.2023.07.24.07.48.04
+        bh=b0acs+4a5WYJPeRT1HjzD3q2LLHzyM9+GkJFO0guogs=;
+        b=ko3De3SCCCdV/l3AabrWYjNNniYIPo/0b1pneId79VCpJ4ODInuP8zDNV81B5qJ1cp
+         sj9T2itkAzUbXMMj5hSsKkP1SbPpGUbndOa52nY9s8pNqUcNRcnMSTXbcyJDJaqcAMET
+         WKhNhdxiaonBTmlEUflLodj2s0Ud/h9k/vEU4yog35fKHf60aB6U0IhBJuazkkozg2lm
+         w/Pb3WMf+D2jfXQeq1jSMAm6KZR4dPpzUiDJEYltNXnKqHYi8alFSqBiGQeA3dhS3D3W
+         VZM/LF6REx1HhLZQQQdYX2f1krT0BxbgDmGcApzNbbFaM/fzrF89tMl18g6SwYzfhmNV
+         QnXw==
+X-Gm-Message-State: ABy/qLbzt1ZV6agE+5KDetZALOayfAakvvsm5b/IooVgi5aA31ukkneh
+        5xE1t7DHmxGIQeDmYp5E0zTrUpQrQCNzuQ==
+X-Google-Smtp-Source: APBJJlFLq4UcvSvJYy1Zm5jl32Gi4IzOLSheVZQOernfw3FDLCdFtk44hOT8QwvsuukBYB1SGtwZSw==
+X-Received: by 2002:a05:6808:1148:b0:3a4:8e9b:e5e7 with SMTP id u8-20020a056808114800b003a48e9be5e7mr10533110oiu.46.1690211389602;
+        Mon, 24 Jul 2023 08:09:49 -0700 (PDT)
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com. [209.85.167.173])
+        by smtp.gmail.com with ESMTPSA id 14-20020aca090e000000b003a414415693sm4138646oij.44.2023.07.24.08.09.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 07:48:04 -0700 (PDT)
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-bc379e4c1cbso5083542276.2;
-        Mon, 24 Jul 2023 07:48:04 -0700 (PDT)
-X-Received: by 2002:a25:c794:0:b0:d06:2494:ef77 with SMTP id
- w142-20020a25c794000000b00d062494ef77mr8609557ybe.16.1690210084004; Mon, 24
- Jul 2023 07:48:04 -0700 (PDT)
+        Mon, 24 Jul 2023 08:09:48 -0700 (PDT)
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3a44fae863fso3016895b6e.0;
+        Mon, 24 Jul 2023 08:09:48 -0700 (PDT)
+X-Received: by 2002:a54:410c:0:b0:3a2:f91a:cb08 with SMTP id
+ l12-20020a54410c000000b003a2f91acb08mr8183204oic.42.1690211388576; Mon, 24
+ Jul 2023 08:09:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230721153933.332108-1-biju.das.jz@bp.renesas.com>
-In-Reply-To: <20230721153933.332108-1-biju.das.jz@bp.renesas.com>
+References: <20230722200718.142366-1-biju.das.jz@bp.renesas.com> <20230722200718.142366-2-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20230722200718.142366-2-biju.das.jz@bp.renesas.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 24 Jul 2023 16:47:52 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU6PFqF-NLB7LdA4LLAN7VfSTwDg2iHFtc5GR+riQp4eg@mail.gmail.com>
-Message-ID: <CAMuHMdU6PFqF-NLB7LdA4LLAN7VfSTwDg2iHFtc5GR+riQp4eg@mail.gmail.com>
-Subject: Re: [PATCH v2] counter: rz-mtu3-cnt: Reorder locking sequence for consistency
+Date:   Mon, 24 Jul 2023 17:09:37 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVWJyHB8zop-JpvOo1-xAkqUyjFk02v5JkeNFDaM4LUUQ@mail.gmail.com>
+Message-ID: <CAMuHMdVWJyHB8zop-JpvOo1-xAkqUyjFk02v5JkeNFDaM4LUUQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: accel: adxl313: Fix adxl313_i2c_id[] table
 To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        George Mois <george.mois@analog.com>,
+        linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Pavel Machek <pavel@denx.de>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
+        linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -68,30 +71,20 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Biju,
-
-Thanks for your patch!
-
-On Fri, Jul 21, 2023 at 5:39 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> All functions except rz_mtu3_count_enable_write(), calls
-
-call
-
-> pm_runtime_{get,put} inside the lock. For consistency do the same here.
+On Sat, Jul 22, 2023 at 10:07 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> The .driver_data in adxl313_i2c_id[] for adxl312 and adxl314 is
+> wrong. Fix this issue by adding corresponding adxl31x_chip_info
+> data.
 >
-> Reported-by: Pavel Machek <pavel@denx.de>
-> Closes: https://patchwork.kernel.org/project/cip-dev/patch/20230606075235.183132-6-biju.das.jz@bp.renesas.com/
+> Reported-by: Jonathan Cameron <jic23@kernel.org>
+> Closes: https://patchwork.kernel.org/project/linux-renesas-soc/patch/20230716175218.130557-3-biju.das.jz@bp.renesas.com/#25436658
 
-This is not a direct link to Pavel's report, but to the bread started
-by your patch.  Why not a link to lore?
+Why not a link to lore?
 
-Closes: https://lore.kernel.org/r/ZH8Fmom8vZ4DwxqA@duo.ucw.cz
+    Closes: https://lore.kernel.org/all/20230722172832.04ad7738@jic23-huawei
 
+> Fixes: a7a1c60bc4c9 ("drivers: iio: accel: adxl312 and adxl314 support")
 > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> ---
-> v1->v2:
->  * Updated commit header to make it clear this is not addressing a bug,
->    rather it's just cleanup.
 
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 

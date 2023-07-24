@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 455A875EEF3
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 11:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7ED75EEF6
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 11:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjGXJTm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Jul 2023 05:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37964 "EHLO
+        id S232229AbjGXJTs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Jul 2023 05:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232225AbjGXJTl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 05:19:41 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F6491A5;
-        Mon, 24 Jul 2023 02:19:40 -0700 (PDT)
+        with ESMTP id S232235AbjGXJTq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 05:19:46 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 09A151A7;
+        Mon, 24 Jul 2023 02:19:44 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,228,1684767600"; 
-   d="scan'208";a="174273198"
+   d="scan'208";a="170613713"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 24 Jul 2023 18:19:39 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 24 Jul 2023 18:19:44 +0900
 Received: from localhost.localdomain (unknown [10.226.92.186])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id EAF054199711;
-        Mon, 24 Jul 2023 18:19:34 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 0836741A0D84;
+        Mon, 24 Jul 2023 18:19:39 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -29,15 +29,15 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Lee Jones <lee@kernel.org>, linux-iio@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
         Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Pavel Machek <pavel@denx.de>,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v2 1/6] dt-bindings: timer: renesas,rz-mtu3: Improve documentation
-Date:   Mon, 24 Jul 2023 10:19:22 +0100
-Message-Id: <20230724091927.123847-2-biju.das.jz@bp.renesas.com>
+        stable@kernel.org, Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v2 2/6] dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt names
+Date:   Mon, 24 Jul 2023 10:19:23 +0100
+Message-Id: <20230724091927.123847-3-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230724091927.123847-1-biju.das.jz@bp.renesas.com>
 References: <20230724091927.123847-1-biju.das.jz@bp.renesas.com>
@@ -52,99 +52,121 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix the documentation issues pointed by Pavel while backporting
-it to 6.1.y-cip.
- - Replace '32- bit'->'32-bit'
- - Consistently remove '.' at the end of line for the specifications
- - Replace '          (excluding MTU8)'-> '(excluding MTU8)'
+As per R01UH0914EJ0130 Rev.1.30 HW manual the MTU3 overflow/underflow
+interrupt names starts with 'tci' instead of 'tgi'.
 
-Reported-by: Pavel Machek <pavel@denx.de>
-Closes: https://patchwork.kernel.org/project/cip-dev/patch/20230606075235.183132-3-biju.das.jz@bp.renesas.com/
+Fix this documentation issue by replacing below overflow/underflow
+interrupt names:
+ - tgiv0->tciv0
+ - tgiv1->tciv1
+ - tgiu1->tciu1
+ - tgiv2->tciv2
+ - tgiu2->tciu2
+ - tgiv3->tciv3
+ - tgiv4->tciv4
+ - tgiv6->tciv6
+ - tgiv7->tciv7
+ - tgiv8->tciv8
+ - tgiu8->tciu8
+
+Fixes: 0a9d6b54297e ("dt-bindings: timer: Document RZ/G2L MTU3a bindings")
+Cc: stable@kernel.org
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 ---
 v1->v2:
- * Added Ack by Conor Dooley
+ * Added Ack from Conor Dooley.
 ---
- .../bindings/timer/renesas,rz-mtu3.yaml       | 28 +++++++++----------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ .../bindings/timer/renesas,rz-mtu3.yaml       | 38 +++++++++----------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-index bffdab0b0185..eb2d5ebe4df0 100644
+index eb2d5ebe4df0..670a2ebaacdb 100644
 --- a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
 +++ b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-@@ -11,8 +11,8 @@ maintainers:
+@@ -169,27 +169,27 @@ properties:
+       - const: tgib0
+       - const: tgic0
+       - const: tgid0
+-      - const: tgiv0
++      - const: tciv0
+       - const: tgie0
+       - const: tgif0
+       - const: tgia1
+       - const: tgib1
+-      - const: tgiv1
+-      - const: tgiu1
++      - const: tciv1
++      - const: tciu1
+       - const: tgia2
+       - const: tgib2
+-      - const: tgiv2
+-      - const: tgiu2
++      - const: tciv2
++      - const: tciu2
+       - const: tgia3
+       - const: tgib3
+       - const: tgic3
+       - const: tgid3
+-      - const: tgiv3
++      - const: tciv3
+       - const: tgia4
+       - const: tgib4
+       - const: tgic4
+       - const: tgid4
+-      - const: tgiv4
++      - const: tciv4
+       - const: tgiu5
+       - const: tgiv5
+       - const: tgiw5
+@@ -197,18 +197,18 @@ properties:
+       - const: tgib6
+       - const: tgic6
+       - const: tgid6
+-      - const: tgiv6
++      - const: tciv6
+       - const: tgia7
+       - const: tgib7
+       - const: tgic7
+       - const: tgid7
+-      - const: tgiv7
++      - const: tciv7
+       - const: tgia8
+       - const: tgib8
+       - const: tgic8
+       - const: tgid8
+-      - const: tgiv8
+-      - const: tgiu8
++      - const: tciv8
++      - const: tciu8
  
- description: |
-   This hardware block consists of eight 16-bit timer channels and one
--  32- bit timer channel. It supports the following specifications:
--    - Pulse input/output: 28 lines max.
-+  32-bit timer channel. It supports the following specifications:
-+    - Pulse input/output: 28 lines max
-     - Pulse input 3 lines
-     - Count clock 11 clocks for each channel (14 clocks for MTU0, 12 clocks
-       for MTU2, and 10 clocks for MTU5, four clocks for MTU1-MTU2 combination
-@@ -23,11 +23,11 @@ description: |
-         - Input capture function (noise filter setting available)
-         - Counter-clearing operation
-         - Simultaneous writing to multiple timer counters (TCNT)
--          (excluding MTU8).
-+          (excluding MTU8)
-         - Simultaneous clearing on compare match or input capture
--          (excluding MTU8).
-+          (excluding MTU8)
-         - Simultaneous input and output to registers in synchronization with
--          counter operations           (excluding MTU8).
-+          counter operations (excluding MTU8)
-         - Up to 12-phase PWM output in combination with synchronous operation
-           (excluding MTU8)
-     - [MTU0 MTU3, MTU4, MTU6, MTU7, and MTU8]
-@@ -40,26 +40,26 @@ description: |
-     - [MTU3, MTU4, MTU6, and MTU7]
-         - Through interlocked operation of MTU3/4 and MTU6/7, the positive and
-           negative signals in six phases (12 phases in total) can be output in
--          complementary PWM and reset-synchronized PWM operation.
-+          complementary PWM and reset-synchronized PWM operation
-         - In complementary PWM mode, values can be transferred from buffer
-           registers to temporary registers at crests and troughs of the timer-
-           counter values or when the buffer registers (TGRD registers in MTU4
--          and MTU7) are written to.
--        - Double-buffering selectable in complementary PWM mode.
-+          and MTU7) are written to
-+        - Double-buffering selectable in complementary PWM mode
-     - [MTU3 and MTU4]
-         - Through interlocking with MTU0, a mode for driving AC synchronous
-           motors (brushless DC motors) by using complementary PWM output and
-           reset-synchronized PWM output is settable and allows the selection
--          of two types of waveform output (chopping or level).
-+          of two types of waveform output (chopping or level)
-     - [MTU5]
--        - Capable of operation as a dead-time compensation counter.
-+        - Capable of operation as a dead-time compensation counter
-     - [MTU0/MTU5, MTU1, MTU2, and MTU8]
-         - 32-bit phase counting mode specifiable by combining MTU1 and MTU2 and
--          through interlocked operation with MTU0/MTU5 and MTU8.
-+          through interlocked operation with MTU0/MTU5 and MTU8
-     - Interrupt-skipping function
-         - In complementary PWM mode, interrupts on crests and troughs of counter
-           values and triggers to start conversion by the A/D converter can be
--          skipped.
-+          skipped
-     - Interrupt sources: 43 sources.
-     - Buffer operation:
-         - Automatic transfer of register data (transfer from the buffer
-@@ -68,9 +68,9 @@ description: |
-         - A/D converter start triggers can be generated
-         - A/D converter start request delaying function enables A/D converter
-           to be started with any desired timing and to be synchronized with
--          PWM output.
-+          PWM output
-     - Low power consumption function
--        - The MTU3a can be placed in the module-stop state.
-+        - The MTU3a can be placed in the module-stop state
- 
-     There are two phase counting modes. 16-bit phase counting mode in which
-     MTU1 and MTU2 operate independently, and cascade connection 32-bit phase
+   clocks:
+     maxItems: 1
+@@ -285,16 +285,16 @@ examples:
+                    <GIC_SPI 211 IRQ_TYPE_EDGE_RISING>,
+                    <GIC_SPI 212 IRQ_TYPE_EDGE_RISING>,
+                    <GIC_SPI 213 IRQ_TYPE_EDGE_RISING>;
+-      interrupt-names = "tgia0", "tgib0", "tgic0", "tgid0", "tgiv0", "tgie0",
++      interrupt-names = "tgia0", "tgib0", "tgic0", "tgid0", "tciv0", "tgie0",
+                         "tgif0",
+-                        "tgia1", "tgib1", "tgiv1", "tgiu1",
+-                        "tgia2", "tgib2", "tgiv2", "tgiu2",
+-                        "tgia3", "tgib3", "tgic3", "tgid3", "tgiv3",
+-                        "tgia4", "tgib4", "tgic4", "tgid4", "tgiv4",
++                        "tgia1", "tgib1", "tciv1", "tciu1",
++                        "tgia2", "tgib2", "tciv2", "tciu2",
++                        "tgia3", "tgib3", "tgic3", "tgid3", "tciv3",
++                        "tgia4", "tgib4", "tgic4", "tgid4", "tciv4",
+                         "tgiu5", "tgiv5", "tgiw5",
+-                        "tgia6", "tgib6", "tgic6", "tgid6", "tgiv6",
+-                        "tgia7", "tgib7", "tgic7", "tgid7", "tgiv7",
+-                        "tgia8", "tgib8", "tgic8", "tgid8", "tgiv8", "tgiu8";
++                        "tgia6", "tgib6", "tgic6", "tgid6", "tciv6",
++                        "tgia7", "tgib7", "tgic7", "tgid7", "tciv7",
++                        "tgia8", "tgib8", "tgic8", "tgid8", "tciv8", "tciu8";
+       clocks = <&cpg CPG_MOD R9A07G044_MTU_X_MCK_MTU3>;
+       power-domains = <&cpg>;
+       resets = <&cpg R9A07G044_MTU_X_PRESET_MTU3>;
 -- 
 2.25.1
 

@@ -2,99 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 596DE75FA70
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 17:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8687475FA72
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 17:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbjGXPJw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 24 Jul 2023 11:09:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39182 "EHLO
+        id S230429AbjGXPK4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Jul 2023 11:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjGXPJv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 11:09:51 -0400
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4F5E47;
-        Mon, 24 Jul 2023 08:09:50 -0700 (PDT)
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3a5ad4477a7so1182378b6e.1;
-        Mon, 24 Jul 2023 08:09:50 -0700 (PDT)
+        with ESMTP id S229717AbjGXPKz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 11:10:55 -0400
+Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D8710D1
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jul 2023 08:10:53 -0700 (PDT)
+Received: by mail-ua1-x932.google.com with SMTP id a1e0cc1a2514c-796d78b3f68so1311677241.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jul 2023 08:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690211453; x=1690816253;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1i/tbBQFEoJKnp1LBuoZpNEITwelzpxl1MwROs1heWM=;
+        b=ysaJQZhrqwf+AJYp/DatIqi9VO/5opPODx9X5x+WP0SF0M75Z7hNj343fILNJGNB9p
+         Kn8QN/zcrqy7tfoXTcSe0QHbQq/F8+rZiY3Uzae/amsJhxH8QTKpx6hkG5RFszYw8Z48
+         dHNh5ujWkoVIL5bLU+Knuu1FSWUbz8LR5bWOhAYLUIDV/0KHUrL7EUsnn8Wkn3q073KB
+         TTpjxl6r8dRY0RprgxRuFHpHsfw4XZoPAgFeblCSsvulIK1qJdInbgnBwmr/bEchC4nZ
+         06YtpkdRDTVq3T4DBjmlDJkAOvQU4aDi1VwMRMx18c/sz/eDuYxunoZe0Piwclvm/Vej
+         rvrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690211390; x=1690816190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b0acs+4a5WYJPeRT1HjzD3q2LLHzyM9+GkJFO0guogs=;
-        b=ko3De3SCCCdV/l3AabrWYjNNniYIPo/0b1pneId79VCpJ4ODInuP8zDNV81B5qJ1cp
-         sj9T2itkAzUbXMMj5hSsKkP1SbPpGUbndOa52nY9s8pNqUcNRcnMSTXbcyJDJaqcAMET
-         WKhNhdxiaonBTmlEUflLodj2s0Ud/h9k/vEU4yog35fKHf60aB6U0IhBJuazkkozg2lm
-         w/Pb3WMf+D2jfXQeq1jSMAm6KZR4dPpzUiDJEYltNXnKqHYi8alFSqBiGQeA3dhS3D3W
-         VZM/LF6REx1HhLZQQQdYX2f1krT0BxbgDmGcApzNbbFaM/fzrF89tMl18g6SwYzfhmNV
-         QnXw==
-X-Gm-Message-State: ABy/qLbzt1ZV6agE+5KDetZALOayfAakvvsm5b/IooVgi5aA31ukkneh
-        5xE1t7DHmxGIQeDmYp5E0zTrUpQrQCNzuQ==
-X-Google-Smtp-Source: APBJJlFLq4UcvSvJYy1Zm5jl32Gi4IzOLSheVZQOernfw3FDLCdFtk44hOT8QwvsuukBYB1SGtwZSw==
-X-Received: by 2002:a05:6808:1148:b0:3a4:8e9b:e5e7 with SMTP id u8-20020a056808114800b003a48e9be5e7mr10533110oiu.46.1690211389602;
-        Mon, 24 Jul 2023 08:09:49 -0700 (PDT)
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com. [209.85.167.173])
-        by smtp.gmail.com with ESMTPSA id 14-20020aca090e000000b003a414415693sm4138646oij.44.2023.07.24.08.09.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 08:09:48 -0700 (PDT)
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3a44fae863fso3016895b6e.0;
-        Mon, 24 Jul 2023 08:09:48 -0700 (PDT)
-X-Received: by 2002:a54:410c:0:b0:3a2:f91a:cb08 with SMTP id
- l12-20020a54410c000000b003a2f91acb08mr8183204oic.42.1690211388576; Mon, 24
- Jul 2023 08:09:48 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690211453; x=1690816253;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1i/tbBQFEoJKnp1LBuoZpNEITwelzpxl1MwROs1heWM=;
+        b=P+Zi7y9J+YUSscpAiuiX+I6HMd8TYNizbzGVlTzCNgG4pyAimrDgS1ilZKhUy4tFM4
+         E8oubk7i4PJ1MYmM2unFhRXDN5TZs9VbG3tA2yFiYSIZ8lrt6zJ76DAXOXjWJYzf7Vsu
+         me1GEVGemAPbWitpDq+PByw0f36xKsWhyMdXP38PAZLLZNrg02E/2bYjMzJGDpIVz446
+         XQ5YRc3JL9w537EfWwDUQj2AfctJsCf7xfRCEQGCem2tPSBzpBfkpM4IPwtwl2K5mG8e
+         vnYzeEDjBJZH0hH8LY47FyOjLKYYlcQVzif/d84Nazp5FLwjPHSW+iUbONvnikS9dZM1
+         AsPg==
+X-Gm-Message-State: ABy/qLYXA4rKWlxZk3XusUZKjfvsysoP84lUteCfnj1TJbc5lOYOjcVt
+        ZHXaB5kJcYCnRtKOvFCUijTVXA==
+X-Google-Smtp-Source: APBJJlFn5Q73tj7dnOqCXc/DUujEra76hh3ewQoqQ3+ogBbma1D5zKSEp3mh5Wt7Pk94+7AMMJ4UEA==
+X-Received: by 2002:a67:e3cd:0:b0:440:d2f5:e36d with SMTP id k13-20020a67e3cd000000b00440d2f5e36dmr2497092vsm.14.1690211452885;
+        Mon, 24 Jul 2023 08:10:52 -0700 (PDT)
+Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id x24-20020a67c098000000b0044360ff4275sm1330384vsi.28.2023.07.24.08.10.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 08:10:52 -0700 (PDT)
+Date:   Mon, 24 Jul 2023 11:10:49 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: Explicitly include correct DT includes
+Message-ID: <ZL6UeZGGqL3oAEL0@fedora>
+References: <20230714174357.4053541-1-robh@kernel.org>
 MIME-Version: 1.0
-References: <20230722200718.142366-1-biju.das.jz@bp.renesas.com> <20230722200718.142366-2-biju.das.jz@bp.renesas.com>
-In-Reply-To: <20230722200718.142366-2-biju.das.jz@bp.renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 24 Jul 2023 17:09:37 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVWJyHB8zop-JpvOo1-xAkqUyjFk02v5JkeNFDaM4LUUQ@mail.gmail.com>
-Message-ID: <CAMuHMdVWJyHB8zop-JpvOo1-xAkqUyjFk02v5JkeNFDaM4LUUQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: accel: adxl313: Fix adxl313_i2c_id[] table
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        George Mois <george.mois@analog.com>,
-        linux-iio@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2EoHozUDW1dKat/8"
+Content-Disposition: inline
+In-Reply-To: <20230714174357.4053541-1-robh@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jul 22, 2023 at 10:07 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> The .driver_data in adxl313_i2c_id[] for adxl312 and adxl314 is
-> wrong. Fix this issue by adding corresponding adxl31x_chip_info
-> data.
->
-> Reported-by: Jonathan Cameron <jic23@kernel.org>
-> Closes: https://patchwork.kernel.org/project/linux-renesas-soc/patch/20230716175218.130557-3-biju.das.jz@bp.renesas.com/#25436658
 
-Why not a link to lore?
+--2EoHozUDW1dKat/8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-    Closes: https://lore.kernel.org/all/20230722172832.04ad7738@jic23-huawei
+On Fri, Jul 14, 2023 at 11:43:57AM -0600, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-> Fixes: a7a1c60bc4c9 ("drivers: iio: accel: adxl312 and adxl314 support")
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Queued for counter-next.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Thanks,
 
-Gr{oetje,eeting}s,
+William Breathitt Gray
 
-                        Geert
+--2EoHozUDW1dKat/8
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+-----BEGIN PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZL6UeQAKCRC1SFbKvhIj
+K8FfAQDJjANsGx0TzqvuImQxzjoUMB+DS/fxIBoJaj05DGsrwwEAvExcZz/qzrmT
+T+WkSHY0orCAEN5P6kDtENAyLU+Rwg0=
+=THNE
+-----END PGP SIGNATURE-----
+
+--2EoHozUDW1dKat/8--

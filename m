@@ -2,93 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14C5075F48F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 13:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A30AD75FA08
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 16:40:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjGXLLa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Jul 2023 07:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37518 "EHLO
+        id S231604AbjGXOkO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Jul 2023 10:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbjGXLL3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 07:11:29 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F4031D8;
-        Mon, 24 Jul 2023 04:11:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690197089; x=1721733089;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tZ+Mn45U9cntff8ECmc6tXrlWTvi0j6loy/gyXruB4Y=;
-  b=eVNbP1csUdohmHKt+JqlYhux2pe790iY8u9rKgTeC7bnf10DX3EoNKOq
-   zKMFpAkZZ5eEbNR7l+yGznkYgq2REHeMD3UZ25OASe/5TIrM4sYP4n4Bl
-   cYMm7J6A5vEyZfcOkyPN1HVIhzSbddK6fGOIOUGcZDUGdNixL5mS6cb1O
-   xWNBlWQvmQ0nm1h3TtnOeCLf1KZGtLpm4EEhqu34IJK0MqIRDNL4K50eq
-   BdKyq+K9HGoTCVPoRf11cojzYNrXaEPuGj3MGEJN0QOMBQOd8ZzLO0u7M
-   IBaM6K8W9xo/hFcPOS/Pj7f4Q9DMp8LRMYVtmrAv8WYKFYgC2L1bNR/04
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="371011576"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="371011576"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 04:11:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="869037552"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 24 Jul 2023 04:11:27 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qNtTI-00A6JR-2l;
-        Mon, 24 Jul 2023 14:11:24 +0300
-Date:   Mon, 24 Jul 2023 14:11:24 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Kees Cook <keescook@chromium.org>, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v3 2/4] iio: core: Add opaque_struct_size() helper and
- use it
-Message-ID: <ZL5cXHAM/y1eg42D@smile.fi.intel.com>
-References: <20230724110204.46285-1-andriy.shevchenko@linux.intel.com>
- <20230724110204.46285-3-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231372AbjGXOkK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 10:40:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EACB1AA
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jul 2023 07:40:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1925611C0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jul 2023 14:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29A2C433C9;
+        Mon, 24 Jul 2023 14:40:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690209602;
+        bh=z0ohDqmF+/nk7E/o2qtIFYPq1uT6d+/o0Fl2MBwX9NA=;
+        h=Date:From:To:Cc:Subject:From;
+        b=OZ85PcdbUq6MnZD1ygei4qhqUbaYWhoSZ6IANTG9x3cjWJvUmomhAiit2+G3CR1L9
+         2UssYs8u/zGbg+ojZHpq4masVfnF5yGrgg6ecB18qFZfefX1RE+3MJ49TB9afiQ5/V
+         RjAYoE6ItBydSimgZAyLPb6yXK94j2BGc2GCpg9uy/BJWT+X7Qkw7ovhX40RthVyfK
+         tz/qFG4o9omMt/H/RlD5iMWRegbQOmItcuwym7tDbtcei25M0hP1H6uAnB+PMoYkz3
+         32BvylirQAzJUCgN5uJY1NtsD97RJGZzOPyMJTREVoNxdBGEIZFr2N5ejGuY+ATUlY
+         qAk0L7MMglJTg==
+Date:   Mon, 24 Jul 2023 10:39:59 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     gregkh@linuxfoundation.org
+Cc:     linux-iio@vger.kernel.org
+Subject: [GIT PULL] Second set of Counter fixes for 6.5
+Message-ID: <ZL6NP1yrUuFHAiso@ishi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2aVOM6QoV7PP8s3Z"
 Content-Disposition: inline
-In-Reply-To: <20230724110204.46285-3-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 02:02:02PM +0300, Andy Shevchenko wrote:
-> Introduce opaque_struct_size() helper, which may be moved
-> to overflow.h in the future, and use it in the IIO core.
-> 
-> Potential users could be (among possible others):
-> 
-> 	__spi_alloc_controller() in drivers/spi/spi.c
-> 	alloc_netdev_mqs in net/core/dev.c
 
-...
+--2aVOM6QoV7PP8s3Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> +#define opaque_struct_size(p, a, s)	size_add(ALIGN(sizeof(*(p)), (a)), (s))
+The following changes since commit fdf0eaf11452d72945af31804e2a1048ee1b574c:
 
-This actually might need something like __safe_aling() which takes care about
-possible overflow.
+  Linux 6.5-rc2 (2023-07-16 15:10:37 -0700)
 
-Whatever, I want to hear Kees on this.
+are available in the Git repository at:
 
--- 
-With Best Regards,
-Andy Shevchenko
+  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.5b
 
+for you to fetch changes up to aead78125a987f48944bff2001f61df72b95afc4:
 
+  tools/counter: Makefile: Replace rmdir by rm to avoid make,clean failure (2023-07-24 10:29:52 -0400)
+
+----------------------------------------------------------------
+Second set of Counter fixes for 6.5
+
+The I8254 Kconfig entry is repositioned to resolve a misplacement
+causing the "Counter support" submenu items to disappear in menuconfig.
+The tools/counter/Makefile clean recipe is adjusted to replace rmdir
+with an equivalent set of rm to prevent failure if someone tries to
+clean the counter directory without building it first.
+
+----------------------------------------------------------------
+Anh Tuan Phan (1):
+      tools/counter: Makefile: Replace rmdir by rm to avoid make,clean failure
+
+William Breathitt Gray (1):
+      counter: Fix menuconfig "Counter support" submenu entries disappearance
+
+ drivers/counter/Kconfig | 14 +++++++-------
+ tools/counter/Makefile  |  3 ++-
+ 2 files changed, 9 insertions(+), 8 deletions(-)
+
+--2aVOM6QoV7PP8s3Z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZL6NPwAKCRC1SFbKvhIj
+K0sSAQDD0yaqZWOpMAvL+SiqVGOWuKL1Iekn7BExo4qRzME/8wEA7Icw4UTZxGtJ
+Dov+hB1MVM/Dw1PFbeF6hIJsrFBu/QY=
+=FMdF
+-----END PGP SIGNATURE-----
+
+--2aVOM6QoV7PP8s3Z--

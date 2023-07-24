@@ -2,63 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D3B75F3E4
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 12:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3066B75F421
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jul 2023 13:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232789AbjGXKxf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Jul 2023 06:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48522 "EHLO
+        id S233311AbjGXLCQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Jul 2023 07:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232901AbjGXKxe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 06:53:34 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13B5109;
-        Mon, 24 Jul 2023 03:53:24 -0700 (PDT)
+        with ESMTP id S233326AbjGXLCN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jul 2023 07:02:13 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6ADC10D;
+        Mon, 24 Jul 2023 04:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690196004; x=1721732004;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I3RsDyPZmFH/6hLZYAuRnBtWMLHHTvXV7RIFZdVLPwU=;
-  b=k954BaFiN4FXr+SgZd7A3ZLdHpJ4rW+bbG6QbUx0voiJPsvLyKCYjXfJ
-   lc5nNjuLb1tWORwrALuusYAW6C/uGvtklCvmss3dhYs5aOS14RPObS5bv
-   GYG/bXQByCnYa3KI+dZ3VHxnIr72aGfkbHZFqZJ76TvpRSj2xjWdFeA40
-   gEm55GbRsKTtN1pptgtrPhcTI0kjABBVifhaj+bZe8bD2tTTHymAraq02
-   uvaL1Ud85X52hxs9MRWNI6rUDkvcC2lQsBjczzF6qN8oqnee5pFQJ92rU
-   O9eTmkw4p7jU3IdheKcMONetf7uDP66Cmn8OL9pPc3tzY37GL5ees/0NX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="453784008"
+  t=1690196531; x=1721732531;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kkODxllV7uZBSVmeDteRdj8Ujh49N2E27/GxuPVwAgQ=;
+  b=ddzj5AxV2aqbjPxc8SgElu+y3MtLml5iy3h3/fsSLnl72smpFm3foOeK
+   WT7kFMpPqDr5l2xR8a3R/TBGIjzo8+/g2tD9Pbl/eMxqkPcfoP7NrL+2f
+   gDHGyvYDtqg1WIxk48uB75x6FBHR6i5dLey3gHsFSmwANBkYC5fcd2DYy
+   2rn523r0lnRZjMcSHtipP8xDHft/8nr5IxKs+Hp3O5JV4Og1bhQS/Tp8u
+   7F5b55WivmKPIkIk2wp8ovZxf6cebctJIdqdWq6H0wVWEMRrseqL8CQmr
+   N4Ps3K428y+ceDWG1Vvc6X+MV0BRiL9JAY8PrmACcZdPj72FoXaIGXIlu
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="371009918"
 X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="453784008"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 03:53:24 -0700
+   d="scan'208";a="371009918"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 04:02:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="839406654"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="839406654"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 24 Jul 2023 03:53:22 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qNtBp-009TG8-1p;
-        Mon, 24 Jul 2023 13:53:21 +0300
-Date:   Mon, 24 Jul 2023 13:53:21 +0300
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="869036287"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 24 Jul 2023 04:01:59 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B183C1A6; Mon, 24 Jul 2023 14:02:06 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v2 7/8] iio: core: Move initcalls closer to the
- respective calls
-Message-ID: <ZL5YIUFeASdx+J4w@smile.fi.intel.com>
-References: <20230721170022.3461-1-andriy.shevchenko@linux.intel.com>
- <20230721170022.3461-8-andriy.shevchenko@linux.intel.com>
- <20230723102335.6df07e6d@jic23-huawei>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v3 0/4] iio: core: A few code cleanups and documentation fixes
+Date:   Mon, 24 Jul 2023 14:02:00 +0300
+Message-Id: <20230724110204.46285-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230723102335.6df07e6d@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -69,29 +61,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 23, 2023 at 10:23:35AM +0100, Jonathan Cameron wrote:
-> On Fri, 21 Jul 2023 20:00:21 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> > Move subsys_initcall() and module_exit() closer to the respective calls.
-> 
-> Why? For this particular set of macros I can see advantages to them being
-> near the code and to them being in a fairly predictable location (end of
-> file).
-> 
-> I think the patch description should make the why argument. 
+Just set of almost unrelated to each other cleanups against IIO
+core implementation.
 
-The documented case is about exported symbols.
-Now I looked for the module_*() stuff and there is no consensus
-between subsystems. Both styles are being documented and used.
+The positive LoCs diffstat due to first patch that adds a lot of
+documentation for the newly added macro and existing kernel doc.
 
-I think I may drop this. Someone also can investigate the trends,
-but I won't spend my time on this.
+v3:
+- dropped applied patches
+- use switch-case for the supported clocks (Jonathan)
+- redone opaque_struct_size() to be simpler (Uwe)
+- dropped wrong hunk for krealloc_array() conversion (Jonathan)
+- dropped initcall move (Jonathan)
 
-Thank you for the review.
+v2:
+- sprintf() --> sysfs_emit() (Nuno)
+- added tag (Nuno)
+
+Andy Shevchenko (4):
+  iio: core: Use sysfs_match_string() helper
+  iio: core: Add opaque_struct_size() helper and use it
+  iio: core: Switch to krealloc_array()
+  iio: core: Fix issues and style of the comments
+
+ drivers/iio/industrialio-core.c | 158 ++++++++++++++++++--------------
+ 1 file changed, 90 insertions(+), 68 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.0.1.gaa8946217a0b
 

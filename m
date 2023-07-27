@@ -2,79 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 606A07650D4
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jul 2023 12:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 431DA7650F8
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jul 2023 12:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233414AbjG0KUq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jul 2023 06:20:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52174 "EHLO
+        id S233681AbjG0KX6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jul 2023 06:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233263AbjG0KUp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jul 2023 06:20:45 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846E9170D
-        for <linux-iio@vger.kernel.org>; Thu, 27 Jul 2023 03:20:43 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-52256241c66so1582011a12.1
-        for <linux-iio@vger.kernel.org>; Thu, 27 Jul 2023 03:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690453242; x=1691058042;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NAhN5UZMwKqXYijGqauqa7dfSLJbu7yyHS9/554Fohs=;
-        b=fcLnQwhALWJPAevj2vqLyYT3SatnE2jQqbYGltQJqcVCJni1X/FrfV5IDxMeeEdIJO
-         pzPTIqOmfVIjAc2xKvFtDS/i7vDmVls4vEXvu2HSrKTdSgjNOsUK61iRtv1IDoKTzmG/
-         g5SYlMvqlK4tuWGXgY4AEOFH4hIHEEVTvu22ahqounC3Wprbe5wOvWTd/5tv7Nf5B6ts
-         AtYab8+4jYE+m49XScdXVgqlbAyEZGR+kJJTeGRuGzvmcgwF/KP4GzZL3EBkDwCJhOhP
-         Ja0j6ejRPFB4AfrGphAMiE2JvA5XJnoQeeU+61N+GRRUFQsuO+AuTRowm3XXVMBDroE2
-         W5rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690453242; x=1691058042;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NAhN5UZMwKqXYijGqauqa7dfSLJbu7yyHS9/554Fohs=;
-        b=L6VWycQzX4ZTyoWzsgJQDGq+Ix5/Tbquh1l2RtFTlkFwfGh/2J8HmZ7K5MuwqhrPUG
-         L50yf8HeaKCuoiLtSgrSzzwwD70IPgHFbB8+ajybFpVR6nXCqCBChOxTn9KmKOU9BeHf
-         YofGv0BgUemU2uMpKfV0hvuVbdpAI5IzsDCLDHTy7X01hk817JREfiyIYUGVIbZRZj0k
-         oZUF1QMorokFTUP8nFJ+jxhQ45PYeTSCbf1PB/uXVbqiwzdt9XWRbdU2XjHmvGw5pPYB
-         HFuY7NcSua2UViJSyNEwPFBza9sC/FzdmQ+OB7QvmUCaxRzbvQhjCpbRTj0lG+KdPTwV
-         Wgww==
-X-Gm-Message-State: ABy/qLak/+Vyr+OFjnxRu8W8QY3PhFE+PY8OD+uKchI0deq7eiAxIraj
-        PIn2AHA1sTrJK0pFDvfApvg1mMEDuKR7sGLkCCU=
-X-Google-Smtp-Source: APBJJlFHzU/liDW4INHacXfd98M62dTAxLA+evBaQfoqNtW8BtxN/Szyqoizdp1a97uMgfJ3pe7W7A==
-X-Received: by 2002:a05:6402:5188:b0:522:28b9:e84c with SMTP id q8-20020a056402518800b0052228b9e84cmr1694048edd.21.1690453242000;
-        Thu, 27 Jul 2023 03:20:42 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id m4-20020a056402050400b0051e22660835sm488191edv.46.2023.07.27.03.20.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jul 2023 03:20:41 -0700 (PDT)
-Message-ID: <064951c6-2ddb-1488-1d4a-694e927e3215@linaro.org>
-Date:   Thu, 27 Jul 2023 12:20:40 +0200
+        with ESMTP id S233571AbjG0KXk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jul 2023 06:23:40 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF78F0;
+        Thu, 27 Jul 2023 03:23:39 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36R9iX43027205;
+        Thu, 27 Jul 2023 06:23:36 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s36ahwjrx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jul 2023 06:23:35 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 36RANY8A014075
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 Jul 2023 06:23:34 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 27 Jul 2023 06:23:33 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 27 Jul 2023 06:23:33 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 27 Jul 2023 06:23:33 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.194])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 36RANMXL031645;
+        Thu, 27 Jul 2023 06:23:24 -0400
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH 1/2] dt-bindings:iio:frequency:admv1013: add vcc regs
+Date:   Thu, 27 Jul 2023 13:23:08 +0300
+Message-ID: <20230727102309.92479-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: mcp3911: add support for the
- whole MCP39xx family
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230727101318.2764379-1-marcus.folkesson@gmail.com>
- <3c69b206-a9f0-c8f3-70a1-3994e056140b@linaro.org>
-In-Reply-To: <3c69b206-a9f0-c8f3-70a1-3994e056140b@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 5gRnnmw5ulnk7Kqlep9YziQpsn6YDZj3
+X-Proofpoint-GUID: 5gRnnmw5ulnk7Kqlep9YziQpsn6YDZj3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-26_08,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 mlxscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 impostorscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307270092
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,47 +72,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27/07/2023 12:18, Krzysztof Kozlowski wrote:
-> On 27/07/2023 12:13, Marcus Folkesson wrote:
->> Microchip does have many similar chips, add those to the compatible
->> string as the driver support is extended.
->>
->> The new supported chips are:
->>   - microchip,mcp3910
->>   - microchip,mcp3912
->>   - microchip,mcp3913
->>   - microchip,mcp3914
->>   - microchip,mcp3918
->>   - microchip,mcp3919
->>
->> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
->> ---
->>  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml      | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
->> index f7b3fde4115a..06951ec5f5da 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
->> @@ -18,7 +18,13 @@ description: |
->>  properties:
->>    compatible:
->>      enum:
->> +      - microchip,mcp3910
->>        - microchip,mcp3911
->> +      - microchip,mcp3912
->> +      - microchip,mcp3913
->> +      - microchip,mcp3914
->> +      - microchip,mcp3918
->> +      - microchip,mcp3919
-> 
-> Your driver suggests that they are all compatible, so maybe just use one
-> as fallback?
+Add bindings for the VCC regulators of the ADMV1013 microware
+upconverter.
 
-Oh, wait, you did put match data, just not in OF, but SPI. It's fine then:
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ .../bindings/iio/frequency/adi,admv1013.yaml  | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+index fc813bcb6532..6660299ac1ad 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+@@ -39,6 +39,46 @@ properties:
+     description:
+       Analog voltage regulator.
+ 
++  vcc-drv-supply:
++    description:
++      RF Driver voltage regulator.
++
++  vcc2-drv-supply:
++    description:
++      RF predriver voltage regulator.
++
++  vcc-vva-supply:
++    description:
++      VVA Control Circuit voltage regulator.
++
++  vcc-amp1-supply:
++    description:
++      RF Amplifier 1 voltage regulator.
++
++  vcc-amp2-supply:
++    description:
++      RF Amplifier 2 voltage regulator.
++
++  vcc-env-supply:
++    description:
++      Envelope Detector voltage regulator.
++
++  vcc-bg-supply:
++    description:
++      Mixer Chip Band Gap Circuit voltage regulator.
++
++  vcc-bg2-supply:
++    description:
++      VGA Chip Band Gap Circuit voltage regulator.
++
++  vcc-mixer-supply:
++    description:
++      Mixer voltage regulator.
++
++  vcc-quad-supply:
++    description:
++      Quadruppler voltage regulator.
++
+   adi,detector-enable:
+     description:
+       Enable the Envelope Detector available at output pins VENV_P and
+@@ -87,6 +127,16 @@ examples:
+         clocks = <&admv1013_lo>;
+         clock-names = "lo_in";
+         vcm-supply = <&vcm>;
++        vcc-drv-supply = <&vcc_drv>;
++        vcc2-drv-supply = <&vcc2_drv>;
++        vcc-vva-supply = <&vcc_vva>;
++        vcc-amp1-supply = <&vcc_amp1>;
++        vcc-amp2-supply = <&vcc_amp2>;
++        vcc-env-supply = <&vcc_env>;
++        vcc-bg-supply = <&vcc_bg>;
++        vcc-bg2-supply = <&vcc_bg2>;
++        vcc-mixer-supply = <&vcc_mixer>;
++        vcc-quad-supply = <&vcc_quad>;
+         adi,quad-se-mode = "diff";
+         adi,detector-enable;
+       };
+-- 
+2.41.0
 

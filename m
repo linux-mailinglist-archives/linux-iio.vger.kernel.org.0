@@ -2,67 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 924777650FA
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jul 2023 12:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7C476515B
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jul 2023 12:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233774AbjG0KYB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jul 2023 06:24:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54750 "EHLO
+        id S234164AbjG0Kh4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jul 2023 06:37:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233688AbjG0KXo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jul 2023 06:23:44 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9FD1BC1;
-        Thu, 27 Jul 2023 03:23:43 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36R70hc2027387;
-        Thu, 27 Jul 2023 06:23:40 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s36ahwjs2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Jul 2023 06:23:39 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 36RANc2m030911
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 27 Jul 2023 06:23:38 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 27 Jul
- 2023 06:23:37 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 27 Jul 2023 06:23:37 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.194])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 36RANMXM031645;
-        Thu, 27 Jul 2023 06:23:28 -0400
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH 2/2] drivers:iio:admv1013: add vcc regulators
-Date:   Thu, 27 Jul 2023 13:23:09 +0300
-Message-ID: <20230727102309.92479-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230727102309.92479-1-antoniu.miclaus@analog.com>
-References: <20230727102309.92479-1-antoniu.miclaus@analog.com>
+        with ESMTP id S234056AbjG0Khz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jul 2023 06:37:55 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B07026A8
+        for <linux-iio@vger.kernel.org>; Thu, 27 Jul 2023 03:37:52 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9922d6f003cso108086366b.0
+        for <linux-iio@vger.kernel.org>; Thu, 27 Jul 2023 03:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690454270; x=1691059070;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mUepUY1ETJBpPCS0rz2zlbE3uVvxNdDGso2o/AQI4jo=;
+        b=Tb6AZRgUS/lthT4HEjc/nP8w/VjoCG8j8LUADVxrSJcPVEqZPnZ/9sIGQ/0A65h9nf
+         fFvENy5bDBFLuONVr24tJZsqt5yUbE+HpbcghUl+xy0mZCi150XvN2bM9XJn/odW2AG0
+         j3oa/2NJcV+7zbi9D9022hLLvVwTb+k+FP8Y7d1+8rHVNmG6jnePGroAYH5PFViFD4wG
+         zU8yvVA/1adhFiURMlP1JOBNkr2C1L1q1aFNyl1uGBmXF0Zkq4w2u3r7WOZoWBDzaU2L
+         M8AMJmaxEpk8eBrzmeRKrbSgqWgE2ULn6gtBNW+cZcs/w5Fq/m2HD+Q4RAMLWSPj76OO
+         jIPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690454270; x=1691059070;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mUepUY1ETJBpPCS0rz2zlbE3uVvxNdDGso2o/AQI4jo=;
+        b=DpGxHsMUtoVcYZZeiOCWuj2W6d1xmHixRjjn4C5i/zWoHZyzasg2lMI5lcLrAKDShi
+         QyjXZeMv/FwCFnKpLQasG/fi1vjX6wx7/7E5E/BtwY52+pvxkbU/xrkFNQH1czLJcDli
+         Zl+Qis2LwkrXr91dWV94gxWwYOg13rUt5yaIHmPlmzyeD979o/WhIkCtAXDnAhYX37nd
+         U/eM9QWu0iJVjMjkTcjdDCj1W1cAAJrh/7jcwC363QL8hZHlflmykPkLDvVb4ZP7wXd2
+         9+XCEFUkDAu4CoNZraXaFGDUnN7R2lOapO8rRaQO+sGFPRgm/HGBONBvaTuJisIgVy9j
+         scLQ==
+X-Gm-Message-State: ABy/qLb/h9Vp2TMm0mhDi87aVmE+U96N1G4Yez+5hOfUVPq2Lkh3921x
+        YBvFZ07K4ZeO5V2G+Y/NVVrb4g==
+X-Google-Smtp-Source: APBJJlH7XY3+rjbYP7kE0i960l4gmZpZUAnVjWzO3suqYO8UT1jOMw/KclUI2AbLbLl2euWq4KrN7w==
+X-Received: by 2002:a17:906:310d:b0:969:93f2:259a with SMTP id 13-20020a170906310d00b0096993f2259amr1581738ejx.73.1690454270359;
+        Thu, 27 Jul 2023 03:37:50 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id f5-20020a1709064dc500b0098f33157e7dsm617483ejw.82.2023.07.27.03.37.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jul 2023 03:37:49 -0700 (PDT)
+Message-ID: <96a82a51-6e26-cee2-c095-98fac749393f@linaro.org>
+Date:   Thu, 27 Jul 2023 12:37:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: a3rnsmJ7IPhCRynzCbWQ7rQqjyOpNvPr
-X-Proofpoint-GUID: a3rnsmJ7IPhCRynzCbWQ7rQqjyOpNvPr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-26_08,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 mlxscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307270092
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] dt-bindings:iio:frequency:admv1013: add vcc regs
+Content-Language: en-US
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230727102309.92479-1-antoniu.miclaus@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230727102309.92479-1-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,104 +75,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add regulators for the VCC supplies of the admv1013.
+On 27/07/2023 12:23, Antoniu Miclaus wrote:
+> Add bindings for the VCC regulators of the ADMV1013 microware
+> upconverter.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-The patch aims to align the implementation with the current admv1014
-driver where all the VCC supplies are handled as regulators.
+Subject: missing spaces between prefix parts.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- drivers/iio/frequency/admv1013.c | 35 ++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+> ---
+>  .../bindings/iio/frequency/adi,admv1013.yaml  | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+> index fc813bcb6532..6660299ac1ad 100644
+> --- a/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+> @@ -39,6 +39,46 @@ properties:
+>      description:
+>        Analog voltage regulator.
+>  
+> +  vcc-drv-supply:
+> +    description:
+> +      RF Driver voltage regulator.
+> +
+> +  vcc2-drv-supply:
+> +    description:
+> +      RF predriver voltage regulator.
+> +
+> +  vcc-vva-supply:
+> +    description:
+> +      VVA Control Circuit voltage regulator.
+> +
+> +  vcc-amp1-supply:
+> +    description:
+> +      RF Amplifier 1 voltage regulator.
+> +
+> +  vcc-amp2-supply:
+> +    description:
+> +      RF Amplifier 2 voltage regulator.
+> +
+> +  vcc-env-supply:
+> +    description:
+> +      Envelope Detector voltage regulator.
+> +
+> +  vcc-bg-supply:
+> +    description:
+> +      Mixer Chip Band Gap Circuit voltage regulator.
+> +
+> +  vcc-bg2-supply:
+> +    description:
+> +      VGA Chip Band Gap Circuit voltage regulator.
+> +
+> +  vcc-mixer-supply:
+> +    description:
+> +      Mixer voltage regulator.
+> +
+> +  vcc-quad-supply:
+> +    description:
+> +      Quadruppler voltage regulator.
+> +
 
-diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
-index 9bf8337806fc..086e2f35b52c 100644
---- a/drivers/iio/frequency/admv1013.c
-+++ b/drivers/iio/frequency/admv1013.c
-@@ -73,6 +73,7 @@
- #define ADMV1013_REG_ADDR_READ_MSK		GENMASK(6, 1)
- #define ADMV1013_REG_ADDR_WRITE_MSK		GENMASK(22, 17)
- #define ADMV1013_REG_DATA_MSK			GENMASK(16, 1)
-+#define ADMV1013_VCC_NUM_REGULATORS		10
- 
- enum {
- 	ADMV1013_IQ_MODE,
-@@ -96,6 +97,7 @@ struct admv1013_state {
- 	/* Protect against concurrent accesses to the device and to data */
- 	struct mutex		lock;
- 	struct regulator	*reg;
-+	struct regulator_bulk_data vcc_regs[ADMV1013_VCC_NUM_REGULATORS];
- 	struct notifier_block	nb;
- 	unsigned int		input_mode;
- 	unsigned int		quad_se_mode;
-@@ -379,6 +381,11 @@ static const struct iio_info admv1013_info = {
- 	.debugfs_reg_access = &admv1013_reg_access,
- };
- 
-+static const char * const admv1013_reg_name[] = {
-+	 "vcc-drv", "vcc2-drv", "vcc-vva", "vcc-amp1", "vcc-amp2",
-+	 "vcc-env", "vcc-bg", "vcc-bg2", "vcc-mixer", "vcc-quad"
-+};
-+
- static int admv1013_freq_change(struct notifier_block *nb, unsigned long action, void *data)
- {
- 	struct admv1013_state *st = container_of(nb, struct admv1013_state, nb);
-@@ -495,6 +502,11 @@ static void admv1013_reg_disable(void *data)
- 	regulator_disable(data);
- }
- 
-+static void admv1013_vcc_reg_disable(void *data)
-+{
-+	regulator_bulk_disable(ADMV1013_VCC_NUM_REGULATORS, data);
-+}
-+
- static void admv1013_powerdown(void *data)
- {
- 	unsigned int enable_reg, enable_reg_msk;
-@@ -520,6 +532,7 @@ static void admv1013_powerdown(void *data)
- static int admv1013_properties_parse(struct admv1013_state *st)
- {
- 	int ret;
-+	unsigned int i;
- 	const char *str;
- 	struct spi_device *spi = st->spi;
- 
-@@ -554,6 +567,17 @@ static int admv1013_properties_parse(struct admv1013_state *st)
- 		return dev_err_probe(&spi->dev, PTR_ERR(st->reg),
- 				     "failed to get the common-mode voltage\n");
- 
-+	for (i = 0; i < ADMV1013_VCC_NUM_REGULATORS; ++i)
-+		st->vcc_regs[i].supply = admv1013_reg_name[i];
-+
-+	ret = devm_regulator_bulk_get(&st->spi->dev,
-+				      ADMV1013_VCC_NUM_REGULATORS,
-+				      st->vcc_regs);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failed to request VCC regulators");
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
-@@ -591,6 +615,17 @@ static int admv1013_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
-+	ret = regulator_bulk_enable(ADMV1013_VCC_NUM_REGULATORS, st->vcc_regs);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failed to enable regulators");
-+		return ret;
-+	}
-+
-+	ret = devm_add_action_or_reset(&spi->dev, admv1013_vcc_reg_disable,
-+				       st->vcc_regs);
-+	if (ret)
-+		return ret;
-+
- 	st->clkin = devm_clk_get_enabled(&spi->dev, "lo_in");
- 	if (IS_ERR(st->clkin))
- 		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
--- 
-2.41.0
+You made them required in the driver, so they should be required here as
+well. They should be required anyway, because AFAIU they have to be
+provided.
+
+OTOH, this will break the ABI, so your driver might need to take them as
+optional.
+
+Best regards,
+Krzysztof
 

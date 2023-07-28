@@ -2,106 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D034765B44
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jul 2023 20:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4744576676A
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jul 2023 10:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231386AbjG0SQs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jul 2023 14:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52456 "EHLO
+        id S234174AbjG1Iku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jul 2023 04:40:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231146AbjG0SQr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jul 2023 14:16:47 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9981230F3
-        for <linux-iio@vger.kernel.org>; Thu, 27 Jul 2023 11:16:43 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b8b2886364so7957665ad.0
-        for <linux-iio@vger.kernel.org>; Thu, 27 Jul 2023 11:16:43 -0700 (PDT)
+        with ESMTP id S234380AbjG1IkN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jul 2023 04:40:13 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F5B83C35;
+        Fri, 28 Jul 2023 01:40:01 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5223fbd54c6so2497542a12.3;
+        Fri, 28 Jul 2023 01:40:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1690481803; x=1691086603;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o00id9m2n9F2JxQUYUpGzNJ9QgKEFf3N9Px7sXVdTR0=;
-        b=EffzG1vIl3ASGGvDRHFKHvGIUQrQybW6zVP63RMpRqlZB7dYIG7bbnAaTMpNHY14si
-         7Mk/a/fd+eDvflLEMmxBw2ETIzwwSEBLtfurDlo4Ve5dQU7OK6GVtYWmqiSPFOwKVSnb
-         sfv3VzKvaVtzSNtX7DhVOBe6BWapLI/94HOS4=
+        d=gmail.com; s=20221208; t=1690533600; x=1691138400;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1UwagyW03dnnLJ1SD7xabw19GGR5reLkqkRibuvm0Ik=;
+        b=UnDAsqT8CS6uNUbVkQ5NPZxpUnAJfJuwE//pjpC4Ghi2CQc9Bqni07cI1TdfskGBXy
+         CEWG2ej3tdw8JOTmlD0nrUE9c2ZugtcoAFPiKu8RzPkI2az1VWZE0t5GTrzYOAn/UP+r
+         8yZvJ6n2UAhy7RVTEB2AjmKENHr6Z3nEme8WxBPMcnIe/CR68vjRKKxGYybhykTOtvWj
+         8X3cwDR03VQGfvElA867iCQIA9STIQAhiM2tmDJER/34eFejqtYtaRUXjdM3k5y1scyN
+         xTOQWuCk37EKazcmnQ8aUk175qPEk/qQyCh/c17Tzw4ajDc/c+Y4ZayB1TZqEHGpYyfK
+         oSeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690481803; x=1691086603;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o00id9m2n9F2JxQUYUpGzNJ9QgKEFf3N9Px7sXVdTR0=;
-        b=l5uJMlgDYK59IQZiLfMzgCdgvxMbcztClw0CSeV3+DBIAJhSzaijK01NbQaIjy5cH6
-         eUkUrrpP7OhfBD1X/Czfq8eKsJcCtPkReub/jwyl2wEuCg995aVfYjHn/pPP8skwcW7u
-         PwSe5O7XQC/09ySsEaaOLs6EMt5BxxNh+N8wgDsuiHMwTj4Zn6A75cGNBHdoo1M2yMPv
-         mtDfd2gtkNQhtIX/N1ALFVkeKkp9yzrXHUIpm/wLtUeJdhKTFlJbWOMscQyLtGOrGqVz
-         GsG5gILKVbVhCgHmshfMB4vV/ASL4aw8kXJ3uqKdJf1MIz6t5S15ii6M5HIlZNsSLhSe
-         nkfg==
-X-Gm-Message-State: ABy/qLbTiWHLxmSMxaRAgBBPVidWtp7LoWqUoBI2jGv44OIgx3s8MPK7
-        ATfa+l31FD7m0+qK5pyMgVoHbhsxD3zoIanwu/E=
-X-Google-Smtp-Source: APBJJlHJ4j8cWXZ1lYYOF6yJUHcaLLzFlkEdmLP3emB4hza9OKGIZtS08iGc76V6KXoIwdelwwon0Q==
-X-Received: by 2002:a17:902:ce88:b0:1b9:ea60:cd8a with SMTP id f8-20020a170902ce8800b001b9ea60cd8amr101108plg.50.1690481803039;
-        Thu, 27 Jul 2023 11:16:43 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id v5-20020a170902b7c500b001bbb8d5166bsm1950665plz.123.2023.07.27.11.16.42
+        d=1e100.net; s=20221208; t=1690533600; x=1691138400;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1UwagyW03dnnLJ1SD7xabw19GGR5reLkqkRibuvm0Ik=;
+        b=Xr486/9cgOu9+G0aRjeNtsA7u4qwTjyBYU8c92uYvcVc2i+sPbePvlCBqHE+zhZ0Zp
+         9rnSoha/5U+XNw7l8xnuuCdbl8aSO1r9kYjnnctnnASc+Ngl3/tiWJ9iuHHXKEHp2/9B
+         sw+YIOThShea8UTIJf9zFByZffxSvyvz47qwh6SyZGSzuK1FP1Q5V8wL077zcJojB4x9
+         vrm5pDDYthFtagSbmIZ2VcnEq/VgauKA+wUBMXRErwnk1XYrn/ShlWLcn2ppi+BLJ0oT
+         +tOCy2jkBjKvpti4jwSFEyqRPhu+4odNZ3BzoFW2hJyznJ07eRpBOvPeTLTqHdiFhjTj
+         BiTQ==
+X-Gm-Message-State: ABy/qLZPa2ZflWv9EnXBe7Gh4646iT4qVQGoKPjuq0aXSJkHQmHVx6jC
+        VG5NrNbQONek+MTwCs/Df7g=
+X-Google-Smtp-Source: APBJJlFonOXXfoQIrxcDPCDeBKCjfDtsJVWgLn2ZoOhdNa66LqE5u8MaREtOBqH3OOotQZUXrbi0jA==
+X-Received: by 2002:a17:906:5a67:b0:99b:ca5d:1466 with SMTP id my39-20020a1709065a6700b0099bca5d1466mr1672998ejc.66.1690533599453;
+        Fri, 28 Jul 2023 01:39:59 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef05:8700:f946:69a3:7954:9ee0? (p200300f6ef058700f94669a379549ee0.dip0.t-ipconnect.de. [2003:f6:ef05:8700:f946:69a3:7954:9ee0])
+        by smtp.gmail.com with ESMTPSA id x20-20020a1709065ad400b00988be3c1d87sm1784420ejs.116.2023.07.28.01.39.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 11:16:42 -0700 (PDT)
-Date:   Thu, 27 Jul 2023 11:16:41 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Fri, 28 Jul 2023 01:39:59 -0700 (PDT)
+Message-ID: <7ec3fe6183409c218b97a3359e951731b47fe16d.camel@gmail.com>
+Subject: Re: [RFC v2 01/11] iio: introduce iio backend device
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Olivier Moysan <olivier.moysan@foss.st.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v3 2/4] iio: core: Add opaque_struct_size() helper and
- use it
-Message-ID: <202307271114.2B9B07C@keescook>
-References: <20230724110204.46285-1-andriy.shevchenko@linux.intel.com>
- <20230724110204.46285-3-andriy.shevchenko@linux.intel.com>
- <ZL5cXHAM/y1eg42D@smile.fi.intel.com>
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Date:   Fri, 28 Jul 2023 10:42:31 +0200
+In-Reply-To: <20230727150324.1157933-2-olivier.moysan@foss.st.com>
+References: <20230727150324.1157933-1-olivier.moysan@foss.st.com>
+         <20230727150324.1157933-2-olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZL5cXHAM/y1eg42D@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 24, 2023 at 02:11:24PM +0300, Andy Shevchenko wrote:
-> On Mon, Jul 24, 2023 at 02:02:02PM +0300, Andy Shevchenko wrote:
-> > Introduce opaque_struct_size() helper, which may be moved
-> > to overflow.h in the future, and use it in the IIO core.
-> > 
-> > Potential users could be (among possible others):
-> > 
-> > 	__spi_alloc_controller() in drivers/spi/spi.c
-> > 	alloc_netdev_mqs in net/core/dev.c
+Hi Olivier,
 
-Can you include the specific replacement you're thinking for these? It's
-almost clear to me, but I'm trying to understand the benefit over what's
-already there.
+On Thu, 2023-07-27 at 17:03 +0200, Olivier Moysan wrote:
+> Add a new device type in IIO framework.
+> This backend device does not compute channel attributes and does not expo=
+se
+> them through sysfs, as done typically in iio-rescale frontend device.
+> Instead, it allows to report information applying to channel
+> attributes through callbacks. These backend devices can be cascaded
+> to represent chained components.
+> An IIO device configured as a consumer of a backend device can compute
+> the channel attributes of the whole chain.
+>=20
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> ---
+> =C2=A0drivers/iio/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> =C2=A0drivers/iio/industrialio-backend.c | 107 ++++++++++++++++++++++++++=
++++
+> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 56 +++++++++++++++
+> =C2=A03 files changed, 164 insertions(+)
+> =C2=A0create mode 100644 drivers/iio/industrialio-backend.c
+> =C2=A0create mode 100644 include/linux/iio/backend.h
+>=20
+> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
+> index 9622347a1c1b..9b59c6ab1738 100644
+> --- a/drivers/iio/Makefile
+> +++ b/drivers/iio/Makefile
+> @@ -5,6 +5,7 @@
+> =C2=A0
+> =C2=A0obj-$(CONFIG_IIO) +=3D industrialio.o
+> =C2=A0industrialio-y :=3D industrialio-core.o industrialio-event.o inkern=
+.o
+> +industrialio-$(CONFIG_IIO_BACKEND) +=3D industrialio-backend.o
+> =C2=A0industrialio-$(CONFIG_IIO_BUFFER) +=3D industrialio-buffer.o
+> =C2=A0industrialio-$(CONFIG_IIO_TRIGGER) +=3D industrialio-trigger.o
+> =C2=A0
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
+o-
+> backend.c
+> new file mode 100644
+> index 000000000000..7d0625889873
+> --- /dev/null
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -0,0 +1,107 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* The industrial I/O core, backend handling functions
+> + *
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/device.h>
+> +#include <linux/property.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/backend.h>
+> +
+> +static DEFINE_IDA(iio_backend_ida);
+> +
+> +#define to_iio_backend(_device) container_of((_device), struct iio_backe=
+nd,
+> dev)
+> +
+> +static void iio_backend_release(struct device *device)
+> +{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_backend *backend =
+=3D to_iio_backend(device);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(backend->name);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(backend);
+> +}
+> +
+> +static const struct device_type iio_backend_type =3D {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.release =3D iio_backend_relea=
+se,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.name =3D "iio_backend_device"=
+,
+> +};
+> +
+> +struct iio_backend *iio_backend_alloc(struct device *parent)
+> +{
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_backend *backend;
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0backend =3D devm_kzalloc(paren=
+t, sizeof(*backend), GFP_KERNEL);
+>=20
 
-> 
-> ...
-> 
-> > +#define opaque_struct_size(p, a, s)	size_add(ALIGN(sizeof(*(p)), (a)), (s))
-> 
-> This actually might need something like __safe_aling() which takes care about
-> possible overflow.
-> 
-> Whatever, I want to hear Kees on this.
+No error checking.=C2=A0
 
-i.e. if "a" were huge? What would sanity-checking of "a" look like in
-this case? I'm not really sure how to handle a pathological alignment
-request, but I'd agree it'd be nice to handle it. :)
+I guess a lot of cleanings are still missing but the important thing I want=
+ed to
+notice is that the above pattern is not ok.=20
+Your 'struct iio_backend *backend'' embeds a 'stuct device' which is a
+refcounted object. Nevertheless, you're binding the lifetime of your object=
+ to
+the parent device and that is wrong. The reason is that as soon as your par=
+ent
+device get's released or just unbinded from it's driver, all the devres stu=
+ff
+(including your 'struct iio_backend' object) will be released independent o=
+f
+your 'struct device' refcount value...
 
--Kees
+So, you might argue this won't ever be an issue in here but the pattern is =
+still
+wrong. There are some talks about this, the last one was given at the lates=
+t
+EOSS:
 
--- 
-Kees Cook
+https://www.youtube.com/watch?v=3DHCiJL7djGw8&list=3DPLbzoR-pLrL6pY8a8zSKRC=
+6-AihFrruOkq&index=3D27&ab_channel=3DTheLinuxFoundation
+
+- Nuno S=C3=A1
+
+

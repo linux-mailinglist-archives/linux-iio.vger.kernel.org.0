@@ -2,57 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2D4E767E83
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jul 2023 13:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A80C767E86
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jul 2023 13:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjG2LPK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Jul 2023 07:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39410 "EHLO
+        id S230059AbjG2LQj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Jul 2023 07:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjG2LPK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Jul 2023 07:15:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8018EB
-        for <linux-iio@vger.kernel.org>; Sat, 29 Jul 2023 04:15:08 -0700 (PDT)
+        with ESMTP id S229510AbjG2LQi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Jul 2023 07:16:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A45BEB;
+        Sat, 29 Jul 2023 04:16:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E22460B97
-        for <linux-iio@vger.kernel.org>; Sat, 29 Jul 2023 11:15:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519C6C433C8;
-        Sat, 29 Jul 2023 11:15:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A57660B98;
+        Sat, 29 Jul 2023 11:16:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950F7C433C8;
+        Sat, 29 Jul 2023 11:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690629307;
-        bh=ES/p8Qw4OwWizhdoOZA007+fCDINNiSHGjc3tsXSEW8=;
+        s=k20201202; t=1690629395;
+        bh=jxNIB8O572fEJmMf7g6dPY/36mLF2jOEBJ8DivAd/vg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iKcAfQg7qQgTMNLYJGtJAJ2148PlH2TBIntuVMsCh/86VGL8BkzrcxiNAUTMXxRzS
-         BsEyhSUORluJ3CrZS0tKwYU50wbhE3emly5IIt1CLyY6uGSnNh6hhiAfoGycgf4LFw
-         MvGTRSvvdTGYr6hbQOWprObak8jSQR8O09qqsI0T7ZpMWPZPpB5gWWNuMyrXwkL9XJ
-         EmYgAXWPQQi5I+3jFQCcPTtQe957yzRw8H1xzkSbmxLycCVw6HlFX5FCAFvTm27gZO
-         Am2mIZQVGwgivsjXA1ROBJgcAbWZ7Mqf5CF1eeyCw1FKcZL2t40hsSLNx4UAHycZb1
-         Odaq6JYpSmuGQ==
-Date:   Sat, 29 Jul 2023 12:15:09 +0100
+        b=OglWkqAc3nL+qzC116wCncti+8oDXY9UrXFFeOsy8ag0eoZZIqyHpgA94xwIbafpN
+         sD7aNXJVmJSwQ6s5lcDX3kT44+S35QVTpG0TLdSPP37HA/WwP9CdtdRlMmLXrlATTD
+         axPZ7m6uMR5Di9+Vq0GJCVV65vgTZvEEe8d1ax335PrPaW1qCpTHAoh5R9hZEdeNSS
+         BkR136ogbml6j2zt19eHtjDvcKPJgyOk7P6kWF+mXYNw1TW5wwlFLEaFLMTF8VVAF1
+         1iu6P1CgWRLFgnDPluNjTI7pahk/QocaEdLW4i9CZxeqLRxQEf2ufp+Bj/p9wtMG7D
+         vE19mUAaQEO9w==
+Date:   Sat, 29 Jul 2023 12:16:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ruan Jinjie <ruanjinjie@huawei.com>
-Cc:     <linus.walleij@linaro.org>, <lars@metafoo.de>,
-        <haibo.chen@nxp.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-        <festevam@gmail.com>, <linux-imx@nxp.com>, <heiko@sntech.de>,
-        <ktsai@capellamicro.com>, <risca@dalakolonin.se>,
-        <christophe.jaillet@wanadoo.fr>, <dan.carpenter@linaro.org>,
+To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
+Cc:     <Oleksii_Moisieiev@epam.com>, <gregkh@linuxfoundation.org>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <vkoul@kernel.org>, <olivier.moysan@foss.st.com>,
+        <arnaud.pouliquen@foss.st.com>, <mchehab@kernel.org>,
+        <fabrice.gasnier@foss.st.com>, <andi.shyti@kernel.org>,
+        <ulf.hansson@linaro.org>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <hugues.fruchet@foss.st.com>,
+        <lee@kernel.org>, <will@kernel.org>, <catalin.marinas@arm.com>,
+        <arnd@kernel.org>, <richardcochran@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        <linux-crypto@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
-Subject: Re: [PATCH -next] iio: adc: Remove redundant dev_err_probe()
-Message-ID: <20230729121509.4cfe6566@jic23-huawei>
-In-Reply-To: <20230727073912.4178659-1-ruanjinjie@huawei.com>
-References: <20230727073912.4178659-1-ruanjinjie@huawei.com>
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-serial@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH v3 02/11] dt-bindings: treewide: add feature-domains
+ description
+Message-ID: <20230729121629.79ac3d9b@jic23-huawei>
+In-Reply-To: <20230726083810.232100-3-gatien.chevallier@foss.st.com>
+References: <20230726083810.232100-1-gatien.chevallier@foss.st.com>
+        <20230726083810.232100-3-gatien.chevallier@foss.st.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,112 +76,445 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 27 Jul 2023 15:39:12 +0800
-Ruan Jinjie <ruanjinjie@huawei.com> wrote:
+On Wed, 26 Jul 2023 10:38:01 +0200
+Gatien Chevallier <gatien.chevallier@foss.st.com> wrote:
 
-> There is no need to call the dev_err() function directly to print a custom
-> message when handling an error from either the platform_get_irq() or
-> platform_get_irq_byname() functions as both are going to display an
-> appropriate error message in case of a failure.
+> feature-domains is an optional property that allows a peripheral to
+> refer to one or more feature domain controller(s).
 > 
-> Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Applied to the togreg branch of iio.git.  That is initially pushed out as
-testing to let the autobuilders see if they can find any problems.
+> Description of this property is added to all peripheral binding files of
+> the peripheral under the STM32 firewall controllers. It allows an accurate
+> representation of the hardware, where various peripherals are connected
+> to this firewall bus. The firewall can then check the peripheral accesses
+> before allowing it to probe.
+> 
+> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
 
-Thanks,
-
-Jonathan
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> #for IIO
 
 > ---
->  drivers/iio/adc/ab8500-gpadc.c    | 6 ++----
->  drivers/iio/adc/imx7d_adc.c       | 2 +-
->  drivers/iio/adc/palmas_gpadc.c    | 6 ++----
->  drivers/iio/adc/rockchip_saradc.c | 2 +-
->  drivers/iio/light/cm3605.c        | 2 +-
->  5 files changed, 7 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
-> index 4fa2126a354b..3b1bdd0b531d 100644
-> --- a/drivers/iio/adc/ab8500-gpadc.c
-> +++ b/drivers/iio/adc/ab8500-gpadc.c
-> @@ -1099,14 +1099,12 @@ static int ab8500_gpadc_probe(struct platform_device *pdev)
+> Changes in V2: 
+> 	- Add missing "feature-domains" property declaration
+> 	  in bosch,m_can.yaml and st,stm32-cryp.yaml files
+> 
+>  Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml  | 4 ++++
+>  Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml  | 4 ++++
+>  Documentation/devicetree/bindings/dma/st,stm32-dma.yaml      | 4 ++++
+>  Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml   | 4 ++++
+>  Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml      | 4 ++++
+>  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml  | 4 ++++
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 ++++
+>  Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml  | 4 ++++
+>  .../devicetree/bindings/media/cec/st,stm32-cec.yaml          | 4 ++++
+>  Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml   | 4 ++++
+>  .../bindings/memory-controllers/st,stm32-fmc2-ebi.yaml       | 4 ++++
+>  Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml  | 4 ++++
+>  Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml   | 5 +++++
+>  Documentation/devicetree/bindings/mmc/arm,pl18x.yaml         | 4 ++++
+>  Documentation/devicetree/bindings/net/can/bosch,m_can.yaml   | 4 ++++
+>  Documentation/devicetree/bindings/net/stm32-dwmac.yaml       | 4 ++++
+>  Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml | 4 ++++
+>  .../devicetree/bindings/regulator/st,stm32-vrefbuf.yaml      | 4 ++++
+>  Documentation/devicetree/bindings/rng/st,stm32-rng.yaml      | 4 ++++
+>  Documentation/devicetree/bindings/serial/st,stm32-uart.yaml  | 4 ++++
+>  Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml    | 4 ++++
+>  Documentation/devicetree/bindings/sound/st,stm32-sai.yaml    | 4 ++++
+>  .../devicetree/bindings/sound/st,stm32-spdifrx.yaml          | 4 ++++
+>  Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml     | 4 ++++
+>  Documentation/devicetree/bindings/spi/st,stm32-spi.yaml      | 4 ++++
+>  Documentation/devicetree/bindings/usb/dwc2.yaml              | 4 ++++
+>  26 files changed, 105 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
+> index 0ddeb8a9a7a0..87a578327fc0 100644
+> --- a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
+> +++ b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
+> @@ -46,6 +46,10 @@ properties:
+>    power-domains:
+>      maxItems: 1
 >  
->  	gpadc->irq_sw = platform_get_irq_byname(pdev, "SW_CONV_END");
->  	if (gpadc->irq_sw < 0)
-> -		return dev_err_probe(dev, gpadc->irq_sw,
-> -				     "failed to get platform sw_conv_end irq\n");
-> +		return gpadc->irq_sw;
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+> index b767ec72a999..042a1e005ab2 100644
+> --- a/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+> +++ b/Documentation/devicetree/bindings/crypto/st,stm32-hash.yaml
+> @@ -50,6 +50,10 @@ properties:
+>    power-domains:
+>      maxItems: 1
 >  
->  	if (is_ab8500(gpadc->ab8500)) {
->  		gpadc->irq_hw = platform_get_irq_byname(pdev, "HW_CONV_END");
->  		if (gpadc->irq_hw < 0)
-> -			return dev_err_probe(dev, gpadc->irq_hw,
-> -					     "failed to get platform hw_conv_end irq\n");
-> +			return gpadc->irq_hw;
->  	} else {
->  		gpadc->irq_hw = 0;
->  	}
-> diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
-> index 22da81bac97f..828d3fea6d43 100644
-> --- a/drivers/iio/adc/imx7d_adc.c
-> +++ b/drivers/iio/adc/imx7d_adc.c
-> @@ -496,7 +496,7 @@ static int imx7d_adc_probe(struct platform_device *pdev)
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/dma/st,stm32-dma.yaml b/Documentation/devicetree/bindings/dma/st,stm32-dma.yaml
+> index 329847ef096a..9f60915e6130 100644
+> --- a/Documentation/devicetree/bindings/dma/st,stm32-dma.yaml
+> +++ b/Documentation/devicetree/bindings/dma/st,stm32-dma.yaml
+> @@ -82,6 +82,10 @@ properties:
+>      description: if defined, it indicates that the controller
+>        supports memory-to-memory transfer
 >  
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0)
-> -		return dev_err_probe(dev, irq, "Failed getting irq\n");
-> +		return irq;
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml b/Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml
+> index e722fbcd8a5f..15d33d41098f 100644
+> --- a/Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml
+> +++ b/Documentation/devicetree/bindings/dma/st,stm32-dmamux.yaml
+> @@ -28,6 +28,10 @@ properties:
+>    resets:
+>      maxItems: 1
 >  
->  	info->clk = devm_clk_get(dev, "adc");
->  	if (IS_ERR(info->clk))
-> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> index 27b2632c1037..a66da674a6ad 100644
-> --- a/drivers/iio/adc/palmas_gpadc.c
-> +++ b/drivers/iio/adc/palmas_gpadc.c
-> @@ -916,8 +916,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml b/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
+> index 94b75d9f66cd..8a1a21faab8c 100644
+> --- a/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
+> +++ b/Documentation/devicetree/bindings/i2c/st,stm32-i2c.yaml
+> @@ -99,6 +99,10 @@ properties:
 >  
->  	adc->irq_auto_0 = platform_get_irq(pdev, 1);
->  	if (adc->irq_auto_0 < 0)
-> -		return dev_err_probe(adc->dev, adc->irq_auto_0,
-> -				     "get auto0 irq failed\n");
-> +		return adc->irq_auto_0;
+>    wakeup-source: true
 >  
->  	ret = devm_request_threaded_irq(&pdev->dev, adc->irq_auto_0, NULL,
->  					palmas_gpadc_irq_auto, IRQF_ONESHOT,
-> @@ -929,8 +928,7 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+> index 995cbf8cefc6..d59ac9282a28 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+> @@ -93,6 +93,10 @@ properties:
+>    '#size-cells':
+>      const: 0
 >  
->  	adc->irq_auto_1 = platform_get_irq(pdev, 2);
->  	if (adc->irq_auto_1 < 0)
-> -		return dev_err_probe(adc->dev, adc->irq_auto_1,
-> -				     "get auto1 irq failed\n");
-> +		return adc->irq_auto_1;
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  allOf:
+>    - if:
+>        properties:
+> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> index 1970503389aa..39ee55aa4dd8 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> @@ -59,6 +59,10 @@ properties:
+>        If not, SPI CLKOUT frequency will not be accurate.
+>      maximum: 20000000
 >  
->  	ret = devm_request_threaded_irq(&pdev->dev, adc->irq_auto_1, NULL,
->  					palmas_gpadc_irq_auto, IRQF_ONESHOT,
-> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> index 4b011f7eddec..8270652244c2 100644
-> --- a/drivers/iio/adc/rockchip_saradc.c
-> +++ b/drivers/iio/adc/rockchip_saradc.c
-> @@ -467,7 +467,7 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+> index 04045b932bd2..184d0a44d1de 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+> @@ -45,6 +45,10 @@ properties:
+>    '#size-cells':
+>      const: 0
 >  
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0)
-> -		return dev_err_probe(&pdev->dev, irq, "failed to get irq\n");
-> +		return irq;
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  additionalProperties: false
 >  
->  	ret = devm_request_irq(&pdev->dev, irq, rockchip_saradc_isr,
->  			       0, dev_name(&pdev->dev), info);
-> diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
-> index 0b30db77f78b..e7f0b81b7f5a 100644
-> --- a/drivers/iio/light/cm3605.c
-> +++ b/drivers/iio/light/cm3605.c
-> @@ -227,7 +227,7 @@ static int cm3605_probe(struct platform_device *pdev)
+>  required:
+> diff --git a/Documentation/devicetree/bindings/media/cec/st,stm32-cec.yaml b/Documentation/devicetree/bindings/media/cec/st,stm32-cec.yaml
+> index 2314a9a14650..41db21373301 100644
+> --- a/Documentation/devicetree/bindings/media/cec/st,stm32-cec.yaml
+> +++ b/Documentation/devicetree/bindings/media/cec/st,stm32-cec.yaml
+> @@ -29,6 +29,10 @@ properties:
+>        - const: cec
+>        - const: hdmi-cec
 >  
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0) {
-> -		ret = dev_err_probe(dev, irq, "failed to get irq\n");
-> +		ret = irq;
->  		goto out_disable_aset;
->  	}
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml b/Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml
+> index 6b3e413cedb2..81e1cd5e30cc 100644
+> --- a/Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml
+> +++ b/Documentation/devicetree/bindings/media/st,stm32-dcmi.yaml
+> @@ -36,6 +36,10 @@ properties:
+>    resets:
+>      maxItems: 1
 >  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>    port:
+>      $ref: /schemas/graph.yaml#/$defs/port-base
+>      unevaluatedProperties: false
+> diff --git a/Documentation/devicetree/bindings/memory-controllers/st,stm32-fmc2-ebi.yaml b/Documentation/devicetree/bindings/memory-controllers/st,stm32-fmc2-ebi.yaml
+> index 14f1833d37c9..4ef01ee4a5e5 100644
+> --- a/Documentation/devicetree/bindings/memory-controllers/st,stm32-fmc2-ebi.yaml
+> +++ b/Documentation/devicetree/bindings/memory-controllers/st,stm32-fmc2-ebi.yaml
+> @@ -45,6 +45,10 @@ properties:
+>        Reflects the memory layout with four integer values per bank. Format:
+>        <bank-number> 0 <address of the bank> <size>
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  patternProperties:
+>    "^.*@[0-4],[a-f0-9]+$":
+>      additionalProperties: true
+> diff --git a/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml b/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+> index 27329c5dc38e..156aed282fb8 100644
+> --- a/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+> @@ -44,6 +44,10 @@ properties:
+>  
+>    wakeup-source: true
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>    pwm:
+>      type: object
+>      additionalProperties: false
+> diff --git a/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml b/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
+> index f84e09a5743b..d19981ef3fce 100644
+> --- a/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
+> @@ -67,6 +67,11 @@ properties:
+>    "#size-cells":
+>      const: 0
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +
+>    pwm:
+>      type: object
+>      additionalProperties: false
+> diff --git a/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml b/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
+> index 2459a55ed540..5a8b53d5c35f 100644
+> --- a/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/arm,pl18x.yaml
+> @@ -79,6 +79,10 @@ properties:
+>            - const: rx
+>            - const: tx
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>    power-domains: true
+>  
+>    resets:
+> diff --git a/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml b/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml
+> index 67879aab623b..144cbcbefa37 100644
+> --- a/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml
+> +++ b/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml
+> @@ -118,6 +118,10 @@ properties:
+>    phys:
+>      maxItems: 1
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+> index fc8c96b08d7d..133e1edbd561 100644
+> --- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+> @@ -93,6 +93,10 @@ properties:
+>        select RCC clock instead of ETH_REF_CLK.
+>      type: boolean
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - clocks
+> diff --git a/Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml b/Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml
+> index 24a3dbde223b..89fa65f31d20 100644
+> --- a/Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml
+> +++ b/Documentation/devicetree/bindings/phy/phy-stm32-usbphyc.yaml
+> @@ -55,6 +55,10 @@ properties:
+>      description: number of clock cells for ck_usbo_48m consumer
+>      const: 0
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  # Required child nodes:
+>  
+>  patternProperties:
+> diff --git a/Documentation/devicetree/bindings/regulator/st,stm32-vrefbuf.yaml b/Documentation/devicetree/bindings/regulator/st,stm32-vrefbuf.yaml
+> index 05f4ad2c7d3a..b73a97f89fe4 100644
+> --- a/Documentation/devicetree/bindings/regulator/st,stm32-vrefbuf.yaml
+> +++ b/Documentation/devicetree/bindings/regulator/st,stm32-vrefbuf.yaml
+> @@ -30,6 +30,10 @@ properties:
+>    vdda-supply:
+>      description: phandle to the vdda input analog voltage.
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/rng/st,stm32-rng.yaml b/Documentation/devicetree/bindings/rng/st,stm32-rng.yaml
+> index 187b172d0cca..c45e6285653c 100644
+> --- a/Documentation/devicetree/bindings/rng/st,stm32-rng.yaml
+> +++ b/Documentation/devicetree/bindings/rng/st,stm32-rng.yaml
+> @@ -30,6 +30,10 @@ properties:
+>      type: boolean
+>      description: If set enable the clock detection management
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/serial/st,stm32-uart.yaml b/Documentation/devicetree/bindings/serial/st,stm32-uart.yaml
+> index 1df8ffe95fc6..b80d5a8ff4e8 100644
+> --- a/Documentation/devicetree/bindings/serial/st,stm32-uart.yaml
+> +++ b/Documentation/devicetree/bindings/serial/st,stm32-uart.yaml
+> @@ -70,6 +70,10 @@ properties:
+>      enum: [1, 2, 4, 8, 12, 14, 16]
+>      default: 8
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  allOf:
+>    - $ref: rs485.yaml#
+>    - $ref: serial.yaml#
+> diff --git a/Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml b/Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml
+> index b9111d375b93..30339447cc24 100644
+> --- a/Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml
+> +++ b/Documentation/devicetree/bindings/sound/st,stm32-i2s.yaml
+> @@ -65,6 +65,10 @@ properties:
+>      $ref: audio-graph-port.yaml#
+>      unevaluatedProperties: false
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - "#sound-dai-cells"
+> diff --git a/Documentation/devicetree/bindings/sound/st,stm32-sai.yaml b/Documentation/devicetree/bindings/sound/st,stm32-sai.yaml
+> index 56d206f97a96..f59770ead3e3 100644
+> --- a/Documentation/devicetree/bindings/sound/st,stm32-sai.yaml
+> +++ b/Documentation/devicetree/bindings/sound/st,stm32-sai.yaml
+> @@ -48,6 +48,10 @@ properties:
+>    clock-names:
+>      maxItems: 3
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.yaml b/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.yaml
+> index bc48151b9adb..480ce8704fda 100644
+> --- a/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.yaml
+> +++ b/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.yaml
+> @@ -50,6 +50,10 @@ properties:
+>    resets:
+>      maxItems: 1
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - "#sound-dai-cells"
+> diff --git a/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+> index 8bba965a9ae6..3331f6cd1b75 100644
+> --- a/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+> @@ -46,6 +46,10 @@ properties:
+>        - const: tx
+>        - const: rx
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  required:
+>    - compatible
+>    - reg
+> diff --git a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+> index 9ca1a843c820..a0664a0fcabf 100644
+> --- a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+> @@ -59,6 +59,10 @@ properties:
+>        - const: rx
+>        - const: tx
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  patternProperties:
+>    "^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}@[0-9a-f]+$":
+>      type: object
+> diff --git a/Documentation/devicetree/bindings/usb/dwc2.yaml b/Documentation/devicetree/bindings/usb/dwc2.yaml
+> index 0a5c98ea711d..95b615ee3a07 100644
+> --- a/Documentation/devicetree/bindings/usb/dwc2.yaml
+> +++ b/Documentation/devicetree/bindings/usb/dwc2.yaml
+> @@ -172,6 +172,10 @@ properties:
+>  
+>    tpl-support: true
+>  
+> +  feature-domains:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+>  dependencies:
+>    port: [ usb-role-switch ]
+>    role-switch-default-mode: [ usb-role-switch ]
 

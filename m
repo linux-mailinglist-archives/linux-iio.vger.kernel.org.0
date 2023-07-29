@@ -2,115 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7059A768021
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jul 2023 16:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE1BF76802B
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jul 2023 16:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbjG2OrZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Jul 2023 10:47:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S231150AbjG2OzS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Jul 2023 10:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229741AbjG2OrY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Jul 2023 10:47:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F9DCA8;
-        Sat, 29 Jul 2023 07:47:23 -0700 (PDT)
+        with ESMTP id S231777AbjG2OzR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Jul 2023 10:55:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB753A85;
+        Sat, 29 Jul 2023 07:55:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D065660B7D;
-        Sat, 29 Jul 2023 14:47:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CADCC433C7;
-        Sat, 29 Jul 2023 14:47:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F22260C5A;
+        Sat, 29 Jul 2023 14:55:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9BAC433C7;
+        Sat, 29 Jul 2023 14:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690642042;
-        bh=4QtF6lrRgUwnTmI2MNTr84Bvaa6ZwfztTVrfiBKNbXA=;
+        s=k20201202; t=1690642509;
+        bh=aWXCh7oH3xMPQNIylQC26lGC0QXdOA7J8aKGgEDAfto=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OtjQ3nulgnQWZUhPsyFOvWRz0pyJA0BsQpYDhMpqXBwtYOm27IsES5XAyKp9qsmbz
-         HwV99wN2Ut6xpk5uhB2FhKRXiQBl8nlfyba4Yzs30R47UtreDa1HVp8iIbfEBLc3a2
-         ynMD3SoePwWNToz5iSHDXMtyuDMU+CT523ZpQcJj/AlOVAEywltvYXV7cD+J9Z7M1h
-         VIGbd5be8rQNBawXCd1/7rtA5LH9Nn887u+8Yo6e+6tUiMyGnmiZCwgKDBMt2SxpwZ
-         T2jgiypjLGIscMedE44aENEk31V05QjBSQEx/JoeLoGnsmxkB7GtgDHiEZN7RC+6KS
-         KaY14MejPwpEw==
-Date:   Sat, 29 Jul 2023 15:47:26 +0100
+        b=gBIJ4r7E8RfXs5WdYMYalGbLDzXnWTEp9OJsPJYjJP7UfAWHPJx+Rc4JkWMKV+SEn
+         wNCBAbJByB9BNeSsD6QHtb8wITfSgirFacNfXLp8LS3W5L+ID5tTeCMA7z8tHXndl6
+         /g/GaIap+XYWLneQmTYI8G/cyH8uKuYY+VMSom0VblNQNGblESnGwNwIN0Yx1UvKK1
+         3/YhVsCib18qJYerKWyBxD+ZkRIz/Ks6AG4bvu7LGPZu5E3Q+GYZvJPjww0qLXNDls
+         BGNryV50Po3wx+vwY4m0XRh/xIOquAHEfZ+SZw8YW04NB7O3mRGR5mgkWFncyo4tPi
+         qCWJlmIpVkqoA==
+Date:   Sat, 29 Jul 2023 15:55:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>
-Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] iio: imu: adis16475.c: Add delta angle and delta
- velocity channels
-Message-ID: <20230729154726.49b9a86b@jic23-huawei>
-In-Reply-To: <BL1PR03MB59925DFDE7AE86BF3B78AD8D8000A@BL1PR03MB5992.namprd03.prod.outlook.com>
-References: <20230719123152.309624-1-ramona.bolboaca@analog.com>
-        <20230719123152.309624-4-ramona.bolboaca@analog.com>
-        <20230723133636.4b8fc5f1@jic23-huawei>
-        <BL1PR03MB59925DFDE7AE86BF3B78AD8D8000A@BL1PR03MB5992.namprd03.prod.outlook.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Peter Rosin <peda@axentia.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3] iio: potentiometer: mcp4018: Use
+ i2c_get_match_data()
+Message-ID: <20230729155514.5eb8bde6@jic23-huawei>
+In-Reply-To: <20230723105209.175545-1-biju.das.jz@bp.renesas.com>
+References: <20230723105209.175545-1-biju.das.jz@bp.renesas.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Jul 2023 10:23:02 +0000
-"Bolboaca, Ramona" <Ramona.Bolboaca@analog.com> wrote:
+On Sun, 23 Jul 2023 11:52:09 +0100
+Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-> > On Wed, 19 Jul 2023 15:31:52 +0300
-> > Ramona Bolboaca <ramona.bolboaca@analog.com> wrote:
-> >   
-> > > Add support for delta angle and delta velocity raw and buffer
-> > > readings to adis16475 driver.
-> > >
-> > > Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>  
-> > As noted in my reply to Nuno's review, the question of channel type
-> > is still unresolved.
-> >   
+> Replace of_device_get_match_data() and i2c_match_id() by i2c_get_match
+> _data() by making similar I2C and DT-based matching table.
 > 
-> Hi Jonathan,
-> 
-> I think Nuno already offered the definition from the data-sheet, but let me
-> mention it here again for context:
-> 
-> Delta angle:
-> In addition to the angular rate of rotation (gyroscope) measurements around
-> each axis (x, y, and z), the ADIS16505 also provides delta angle measurements
-> that represent a calculation of angular displacement between each sample update.
-> 
-> Delta velocity:
-> In addition to the linear acceleration measurements along each axis (x, y, and
-> z), the ADIS16505 also provides delta velocity measurements that represent a
-> calculation of linear velocity change between each sample update.
-> 
-> Seeing how we cannot find something more suitable, do you think it would make
-> sense to add these new channels to IIO: something like IIO_DELTA_VELOCITY and
-> IIO_DELTA_ANGLE and specify in ABI docs that these measurements are relative
-> to the previous sample? Or do you have something else in mind?
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-Yes - I think we need these new channel types to avoid inconsistent use of the
-existing types.  In the documentation I would give a little context, particularly
-around the common use of these being to simply sum them over time.
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to poke at it and see if we missed anything.
+
+Thanks,
 
 Jonathan
 
-
+> ---
+> v2->v3:
+>  * Added .name field to MCP4018_ID_TABLE macro
+>  * Replaced MCP4018_ID_TABLE(name, cfg)->MCP4018_ID_TABLE(_name, cfg)
+> v1->v2:
+>  * Added similar I2C and DT-based matching table.
+>  * Fixed typo i2c_get_match_data(dev)->i2c_get_match_data(client).
+>  * Dropped error check as all tables have data pointers.
 > 
-> Thank you,
-> Ramona Bolboaca
+> Note:
+>  This patch is only compile tested.
+> ---
+>  drivers/iio/potentiometer/mcp4018.c | 35 ++++++++++++++++-------------
+>  1 file changed, 19 insertions(+), 16 deletions(-)
 > 
-> > https://urldefense.com/v3/__https://lore.kernel.org/all/20230720193457.27
-> > 2f02a9@jic23-
-> > huawei/__;!!A3Ni8CS0y2Y!52Dhq_Yj9srV_lE8JgPysp2b3Lbg9U2w94VIGTMa8
-> > 3hepJgv-NCnFWomV83Ud5C3TGp3tMMI0IDVRYZV5N8$
-> > 
-> > Thanks,
-> > 
-> > Jonathan  
+> diff --git a/drivers/iio/potentiometer/mcp4018.c b/drivers/iio/potentiometer/mcp4018.c
+> index 89daecc90305..44678d372126 100644
+> --- a/drivers/iio/potentiometer/mcp4018.c
+> +++ b/drivers/iio/potentiometer/mcp4018.c
+> @@ -99,20 +99,25 @@ static const struct iio_info mcp4018_info = {
+>  	.write_raw = mcp4018_write_raw,
+>  };
+>  
+> +#define MCP4018_ID_TABLE(_name, cfg) {				\
+> +	.name = _name,						\
+> +	.driver_data = (kernel_ulong_t)&mcp4018_cfg[cfg],	\
+> +}
+> +
+>  static const struct i2c_device_id mcp4018_id[] = {
+> -	{ "mcp4017-502", MCP4018_502 },
+> -	{ "mcp4017-103", MCP4018_103 },
+> -	{ "mcp4017-503", MCP4018_503 },
+> -	{ "mcp4017-104", MCP4018_104 },
+> -	{ "mcp4018-502", MCP4018_502 },
+> -	{ "mcp4018-103", MCP4018_103 },
+> -	{ "mcp4018-503", MCP4018_503 },
+> -	{ "mcp4018-104", MCP4018_104 },
+> -	{ "mcp4019-502", MCP4018_502 },
+> -	{ "mcp4019-103", MCP4018_103 },
+> -	{ "mcp4019-503", MCP4018_503 },
+> -	{ "mcp4019-104", MCP4018_104 },
+> -	{}
+> +	MCP4018_ID_TABLE("mcp4017-502", MCP4018_502),
+> +	MCP4018_ID_TABLE("mcp4017-103", MCP4018_103),
+> +	MCP4018_ID_TABLE("mcp4017-503", MCP4018_503),
+> +	MCP4018_ID_TABLE("mcp4017-104", MCP4018_104),
+> +	MCP4018_ID_TABLE("mcp4018-502", MCP4018_502),
+> +	MCP4018_ID_TABLE("mcp4018-103", MCP4018_103),
+> +	MCP4018_ID_TABLE("mcp4018-503", MCP4018_503),
+> +	MCP4018_ID_TABLE("mcp4018-104", MCP4018_104),
+> +	MCP4018_ID_TABLE("mcp4019-502", MCP4018_502),
+> +	MCP4018_ID_TABLE("mcp4019-103", MCP4018_103),
+> +	MCP4018_ID_TABLE("mcp4019-503", MCP4018_503),
+> +	MCP4018_ID_TABLE("mcp4019-104", MCP4018_104),
+> +	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(i2c, mcp4018_id);
+>  
+> @@ -157,9 +162,7 @@ static int mcp4018_probe(struct i2c_client *client)
+>  	i2c_set_clientdata(client, indio_dev);
+>  	data->client = client;
+>  
+> -	data->cfg = device_get_match_data(dev);
+> -	if (!data->cfg)
+> -		data->cfg = &mcp4018_cfg[i2c_match_id(mcp4018_id, client)->driver_data];
+> +	data->cfg = i2c_get_match_data(client);
+>  
+>  	indio_dev->info = &mcp4018_info;
+>  	indio_dev->channels = &mcp4018_channel;
 

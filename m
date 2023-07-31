@@ -2,72 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35FE1769755
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 15:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8836076976C
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 15:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232471AbjGaNSr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 09:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55914 "EHLO
+        id S232934AbjGaNXz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jul 2023 09:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232137AbjGaNSp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 09:18:45 -0400
+        with ESMTP id S229675AbjGaNXx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 09:23:53 -0400
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A58B10E3;
-        Mon, 31 Jul 2023 06:18:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28728EB;
+        Mon, 31 Jul 2023 06:23:53 -0700 (PDT)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 17CE35C00E9;
-        Mon, 31 Jul 2023 09:18:40 -0400 (EDT)
+        by mailout.nyi.internal (Postfix) with ESMTP id 973EF5C00EE;
+        Mon, 31 Jul 2023 09:23:52 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 31 Jul 2023 09:18:40 -0400
+  by compute6.internal (MEProxy); Mon, 31 Jul 2023 09:23:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
         :cc:content-type:content-type:date:date:from:from:in-reply-to
         :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1690809520; x=1690895920; bh=80
-        1WsE/c7u7Xz/YIkabyJaAJBLEEYxfh2dsjpigtnr4=; b=oqqPOiImVyRAHfJJ2v
-        Fx/iYSwDgIpz9bFWFBslp2rtwpJv7JqE/OeODIgQn3MQ/DJ17ndUz+K8JF9zHfxx
-        zsa6BETBp+9ld7qttnYRCqyXU6lZdIV5KlLig+EahHb/YuSJKUUKVLw6ruLmN0yJ
-        PnchjokJECXNo5s7vvj+ZwHa36DoYvhz7rWJRngnVf7/s6/4H5Ei18ZZUEjzBnA6
-        A7VuY2pq6DKytCrYxC0yHDXnOyqDVQM3vflrbbOmsN8vVU4pvCg+zyC5xU3wI5PM
-        0GJJEY8i0TE3XloTWsPxT8yaf+l+sqALeLn3AmG0yfbPWW6XpAgdBvZcVmB6ltMd
-        hyGQ==
+        :subject:subject:to:to; s=fm2; t=1690809832; x=1690896232; bh=Se
+        sJURo2GNIPxlgy2lU8LbgruKBtrrvOanK04f/Dc+s=; b=V/1rdpGPql22nPgVxI
+        u5FzGIJAqUQuZ/Mka1qBscZBPK+MRpt0wfyCiNuHXnSxwEsoT/8wewEjeK4iCxhS
+        1gssB0DgVUBMmYAh/aMwTvZ/qmTUQwGC9hB1iP3c43+f7i9JVHM7+M3QUdwWQUfT
+        daLF6XwGXefoMnoYl+yt351PG4+/FmkaPfJ9bhMJtC94UJpZepVnvNCZjz0Yn1hS
+        z2AoFV61CuXUxVFMWxiow+2UZJFK0QCmkSNkcVcsN1TBbfOAldHPkDzEf8pwObfS
+        kmGbaYPNFvI6ja0p+XAIg+YojC1wYWw2D7xFYs/0R8sURAudXP3hf+bR20Adz6Gc
+        7kIQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:content-type:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1690809520; x=1690895920; bh=801WsE/c7u7Xz
-        /YIkabyJaAJBLEEYxfh2dsjpigtnr4=; b=Z5wmAcNoxjSiSFWK1gV3UG11v9WU8
-        v9nm3TPjqy76TfNRsoN3t/aT2rT4JvbGyt2HNzGb4F5nPBXVRTfe/BQ2Aw16wVII
-        yjH2xwJNWVdGsi1mFoOMNJDrgO8aW7wAvnsngd6gGgFZ9SDhZXpsoxLNOoZeJscx
-        wB10mwFJPd3dTk99D5oPJMZ0LC9bai05aEbrXO9b2zHl8luCmzeaN9OKD1WfXB8f
-        h6Un5QzmnvV7lB9qctuTAsDuU/pNUqgr4RQkjluQypzdpZBD+wLobb+aMTsupUrT
-        ldE0DkK7Jo0wwM3NY08mzcYVHayFP7nFZbd9gsBIC0oiZitwiipok8ZbA==
-X-ME-Sender: <xms:r7THZOqpItXO0LF3ah9ouCPxLb0mxwsp0TYa2ajw4CoVQUqo76nBjA>
-    <xme:r7THZMqwGLyzII8DvxR5gLwonDtZB_FwVQDeLfhriAhKXXXCDT4BoEOZurEipWzMO
-    n0LXch750CpiBUKS2U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjeeggdeflecutefuodetggdotefrodftvf
+        :x-sasl-enc; s=fm3; t=1690809832; x=1690896232; bh=SesJURo2GNIPx
+        lgy2lU8LbgruKBtrrvOanK04f/Dc+s=; b=qd8Q2IvEWgefIl0snyxbIWWwf0p1q
+        W9Mx8W07ywXgqbh5n5Fb6mlmCA8q+gXW3j/xE3smcdyCBy0JCyeR8egnzC/nvD4f
+        4GnYCHK+H3fqJTFuPKZRhj0wiaf5TGKZ7dtDcnXGoDFaT+aJg9X5JLjSyq7PhELA
+        aHzdq7+6/iut94tgoQC2JY4nTGWZh4LBF+iGv9gebe/mGjHHI1zGlAD91nYsOCUt
+        fz83rd2327tJ1epaEeejCkQV5V+ygsf19Sy3/6j502UA5+KJ86AeA/H4eyiCyp7s
+        /s2QSWPsgto9gTyIywFRnb7dQOW3lx2TR2GKflHwduf3UNm3oV+PoOz8g==
+X-ME-Sender: <xms:6LXHZGKv4Kri1x0pCHIb7BcvBDfI1yNvQl2oPTv6qPgufTR0AywU3g>
+    <xme:6LXHZOLUipGM2VC8tucp9n4aay3R48F8MYPRZaC891Ep6X2-BGac-dAPqwSrVV6ba
+    zHLe8ZS8W8ukYSeOF4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjeeggdegtdcutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
     ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:r7THZDMa8WKtm4EKC8GgNXWgTi823TeZm1jOheAfOXhBP-ovSDJ7kg>
-    <xmx:r7THZN5lGWQTD0K-CDc544h-8gOCAsyViUerNncYX1x8mNu4SIBnNA>
-    <xmx:r7THZN6XQRntuB_OQybj3UdURV6YT6TQInnOdFRT9W1vUynNIG1g5w>
-    <xmx:sLTHZHv1Njg7MmEu3PzvIX3lyEks4Pmi6JcwPbtwCNIjeMjDpfmtcA>
+    gvrhhnpeegteejkefgtdekteekvdeukedvudegjeehkeeuheegueekieeuffelffdthfeg
+    udenucffohhmrghinhepuggvvhhitggvthhrvggvrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:6LXHZGsIGOdpIibmKb0AtYhv1MDa-Of8I5PRnUcRwQA70kApIbSU0A>
+    <xmx:6LXHZLYjU85LO--02hRJksWV7RV_Tgg1S75Ymb6_E-JSBJcbAsQeYg>
+    <xmx:6LXHZNZ8h4dUyi5fwXcmZtdJ9Fbe8iZvGppehrJ8ljCaMkNPJrvEDg>
+    <xmx:6LXHZLPhVQXXvG8PhHMr2cgtN_Cj1YmpPN0CR5ZOj2F9qOzEiVi7JA>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 925CBB60089; Mon, 31 Jul 2023 09:18:39 -0400 (EDT)
+        id 524C5B6008F; Mon, 31 Jul 2023 09:23:52 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.9.0-alpha0-592-ga9d4a09b4b-fm-defalarms-20230725.001-ga9d4a09b
 Mime-Version: 1.0
-Message-Id: <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
-In-Reply-To: <20230731110239.107086-3-clamor95@gmail.com>
+Message-Id: <0c948578-5cb1-4b4e-8fa6-9de1d658713b@app.fastmail.com>
+In-Reply-To: <20230731110239.107086-2-clamor95@gmail.com>
 References: <20230731110239.107086-1-clamor95@gmail.com>
- <20230731110239.107086-3-clamor95@gmail.com>
-Date:   Mon, 31 Jul 2023 15:18:16 +0200
+ <20230731110239.107086-2-clamor95@gmail.com>
+Date:   Mon, 31 Jul 2023 15:23:32 +0200
 From:   "Arnd Bergmann" <arnd@arndb.de>
 To:     "Svyatoslav Ryhel" <clamor95@gmail.com>,
         "Jonathan Cameron" <jic23@kernel.org>,
@@ -79,7 +79,7 @@ To:     "Svyatoslav Ryhel" <clamor95@gmail.com>,
         "Samu Onkalo" <samu.p.onkalo@nokia.com>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] misc: adps990x: convert to OF
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: light: add apds990x binding
 Content-Type: text/plain
 X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -92,12 +92,16 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote:
-> Add ability to use device tree bindings keeping existing setup.
 
-I see that there are no more in-tree users of the old
-apds990x_platform_data, so I think it would be best to completely
-remove that codepath and merge that structure into struct
-apds990x_chip, to simplify the probing and avoid the extra
-allocation.
+> +---
+> +$id: http://devicetree.org/schemas/iio/light/avago,apds990x.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Avago APDS990x ambient light and proximity sensor
+> +
 
-   Arnd
+The APDS990x looks like a wildcard, which is not appropriate for
+the "compatible" property in DT, and should be replaced with a list
+of specific part numbers to which this applies.
+
+    Arnd

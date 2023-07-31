@@ -2,133 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 262D576A1A6
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 22:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F1776B3CC
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 13:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjGaUB2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 16:01:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41616 "EHLO
+        id S229843AbjHALvE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Aug 2023 07:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjGaUB2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 16:01:28 -0400
-Received: from mgamail.intel.com (unknown [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796908F;
-        Mon, 31 Jul 2023 13:01:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690833687; x=1722369687;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5oGbXYGj4vcg8CCQuePDiYFktmYReAlAj/YZnxzjeD0=;
-  b=VkSFNtZBA5HOuUJzC3R1icmDvQPvaAovL+TfbO/EOpgzDgV/6PRUzgr9
-   u+7wxsxHJYvHKyFr/VuFl4kD8aBzaq4rSJvuvcruOkq/tViFjvAsv6hs9
-   /yDs0vdFZL/bhDKTbkrgygq/7K6gNXNI2ZqDFEqO8Barq/w8ZsSRLrZaX
-   i1Jn2qKPMl3qnCrMnpVsIMab34i/ojQDL1pxPwC+OSnFS7k4CBQ1nEbJ7
-   8VO/9v+SWnsMIMzNQ+PKSYDyaCdKDoRxiNw71khvFggIM3nLoZ09dDvCK
-   ywU6CBpj2eV/Cqn5J+P8V8DlPmLVP30DH4052Hc9+yNS+hgtY71//AQ4v
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="435428394"
-X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
-   d="scan'208";a="435428394"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 13:01:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="1059115379"
-X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
-   d="scan'208";a="1059115379"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 31 Jul 2023 13:01:17 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qQZ4t-003ufD-1R;
-        Mon, 31 Jul 2023 23:01:15 +0300
-Date:   Mon, 31 Jul 2023 23:01:15 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Kees Cook <keescook@chromium.org>, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v3 2/4] iio: core: Add opaque_struct_size() helper and
- use it
-Message-ID: <ZMgTCzslTd2REumj@smile.fi.intel.com>
-References: <20230724110204.46285-1-andriy.shevchenko@linux.intel.com>
- <20230724110204.46285-3-andriy.shevchenko@linux.intel.com>
- <20230729124618.67e89fff@jic23-huawei>
+        with ESMTP id S232683AbjHALvD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 07:51:03 -0400
+X-Greylist: delayed 4200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Aug 2023 04:51:01 PDT
+Received: from mail.cothiafon.pl (mail.cothiafon.pl [217.61.106.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D96010E
+        for <linux-iio@vger.kernel.org>; Tue,  1 Aug 2023 04:51:01 -0700 (PDT)
+Received: by mail.cothiafon.pl (Postfix, from userid 1002)
+        id 21FD08354B; Mon, 31 Jul 2023 10:36:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cothiafon.pl; s=mail;
+        t=1690792634; bh=dwoca0X6C9VXklO/zRgFQCPapTk5LFz4tKaENdvy6Po=;
+        h=Date:From:To:Subject:From;
+        b=s45PQD/sosULQvRYPKUemaCA4/F9XYMymXh0Ky6ZOle0uynVI4lnAqzoOk1YMhgto
+         YdaYf4ayJUs21FdkLjsg0Too4eOxcTGRpkOMoe9HZCrQZ783Bqc46N0vRU69DL45kF
+         mbrc0nBFVHa5pZeOS5rUMdyf/XfXVw5TpZ59fWRt8forJeGzt5w1SmQf4OMKa1mgrq
+         ca7dwaQBohZD7sJ3ZVatwos057qfAXfRXfX5HwqeEys6hHuFOvb5AMMfH8w7OL4Cs4
+         UkUjsue2//RepRQAZA5Bqt1latEMLtD05UWFRv+hcgltY19Jc+pTNRXGTxey4WUiNc
+         ZI/1uaf2hFAfw==
+Received: by mail.cothiafon.pl for <linux-iio@vger.kernel.org>; Mon, 31 Jul 2023 08:35:48 GMT
+Message-ID: <20230731095940-0.1.28.ondy.0.egu5a2k9jd@cothiafon.pl>
+Date:   Mon, 31 Jul 2023 08:35:48 GMT
+From:   =?UTF-8?Q? "Rados=C5=82aw_Grabowski" ?= 
+        <radoslaw.grabowski@cothiafon.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.cothiafon.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230729124618.67e89fff@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jul 29, 2023 at 12:46:18PM +0100, Jonathan Cameron wrote:
-> On Mon, 24 Jul 2023 14:02:02 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Dzie=C5=84 dobry,
 
-...
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-> > + * Note, when @s is 0, the alignment @a is added to the sizeof(*(@p))
-> > + * and the result, depending on the @a, may be way off the initial size.
-> 
-> How often is this true?  A quick and dirty grep suggests at least 2 so perhaps
-> worth retaining the old behaviour.
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
-You mean that the sizeof(_some_grepped_struct_) is much less than an alignment
-in those uses?
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
 
-> Can we take that into account?  Maybe something like
-> 
-> #define opaque_struct_size(p, a, s) ((s) ? size_add(ALIGN(sizeof(*(p)), (a)), (s)): sizeof(*p)) 
-
-(s) will be evaluated twice, not good. So, not in this form.
-
-> Or do it at the call site below.
-
-Looks much better to me.
-
-...
-
-> 	if (sizeof_priv)
-> 		alloc_size = opaque_struct_size(iio_dev_opaque, IIO_DMA_MINALIGN, sizeof_priv);
-> 	else
-> 		alloc_size = sizeof(struct iio_dev_opaque);
-
-Right.
-
-...
-
-> > -	indio_dev->priv = (char *)iio_dev_opaque +
-> > -		ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
-> > +	indio_dev->priv = opaque_struct_data(iio_dev_opaque, IIO_DMA_MINALIGN);
-> 
-> Would have been safer if original code set this to NULL if
-> sizeof_priv == 0
-
-Yeah, original code and proposed change has no difference in this sense.
-
-> A driver doing that should never have used iio_priv() but nicer if it was
-> NULL rather than off the end of the allocation.
-
-Agree.
-But looking at the above, I would rather see that in a form of
-
-	if (...)
-		priv = opaque_struct_data(...);
-	else
-		priv = NULL;
-
--- 
-With Best Regards,
-Andy Shevchenko
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
 
 
+Pozdrawiam
+Rados=C5=82aw Grabowski

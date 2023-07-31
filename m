@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE109768A6D
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 05:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 599F0768A73
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 05:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbjGaDvy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jul 2023 23:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56544 "EHLO
+        id S229775AbjGaDwg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jul 2023 23:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbjGaDvw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jul 2023 23:51:52 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72ED3E57
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jul 2023 20:51:50 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4fe1344b707so6353295e87.1
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jul 2023 20:51:50 -0700 (PDT)
+        with ESMTP id S229768AbjGaDwY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jul 2023 23:52:24 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF54E7C
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jul 2023 20:52:22 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4fe0eb0ca75so6364158e87.2
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jul 2023 20:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690775509; x=1691380309;
+        d=linaro.org; s=google; t=1690775540; x=1691380340;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ddUy3BUYmqLjU7l6ekKc9suZLaStpY0ol+tCNSEW3z4=;
-        b=nRx536MdnTMZBddyBrZfQfZybPTj36s7dpBuoITV2AqiimJJ6/yLNoff6uITUtOlix
-         5ep8CPWaxZ1gMvE8hmC0hqa3X7TNHVSIli2Uxdpn+EEvzybTBH0SI7iRHZq9JESIyrXy
-         TJ1q5JA/ZX6vARBLAIndtCTCX/TCMTzVgHMhhKsfgaKSCiD7b5h9jjrgBeBtpgpaRXGQ
-         NWSSvk0OfFy4zmqhZpZunAtLdCMLwlmdazlycSEaJkc1kHo05wniw8L0ayxj64Ju1Eh8
-         q3Zp47UaMx1LpjaW/4rE6P2FOzwrXw7WyQkCCOLKlo5Z3khwcwvFfuvDRNiYjG1NRyZR
-         CNuQ==
+        bh=bg6pPDD7D9Uau9cvtSERX8kub5e1y1Iop71YmJr52mE=;
+        b=fcpK32Vw4M/g85/TRturThxXpLIIXoyoHnhV/UDSbmdZ69VaDyJPwm4dy8A+XXhgIP
+         /omtP3zw5o3UTEQJs017wcphcO4jx3meEYtY/1AuQW+Q9oXkJmkMWcSUThEriWiB/+16
+         1O2wEf832CONvwkzmj9Y+hAmnOg0mpY0FTCGp3G3HMPb0t4Pq6fnV3hnydMI9lvzgsT3
+         6MhiNRkaNm4zvRHUwvQNsMMIN+Kkao+5FZdq4N3cS9jXixytN1dpc4+VfXf209QrT/F4
+         XBBkkLIhmqlYNXa3/Jzs/kcgNZluWmm6jMWGBh4MtxdeqtpiHU9N4qekjmFsZcp3Eswt
+         WwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690775509; x=1691380309;
+        d=1e100.net; s=20221208; t=1690775540; x=1691380340;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ddUy3BUYmqLjU7l6ekKc9suZLaStpY0ol+tCNSEW3z4=;
-        b=V+SRfWISLu/7GpAIjR9tskTfLl68mwM1FhFxSaIsXPgWRx9N7F2HJJFqYnk+WDIbxy
-         90CY6lz7Lo9zYdtqjlXvg3qGA8r52X89BJal2fSvYoEjxhdWSHBD56NYWPHdYwPzoXzg
-         e99rPtP9ZyRna3tH/jTyKF+ut+4+/auj1pGib7j6FVcY39fbdS+OyKCDDbHzUfP7f4dH
-         Tf98MjJrc1bEVUQJBTnDN4rnJkamBwLwC58tfTvm2TKvnwQXxRVML3xwUzAlnARH1Clw
-         5tFKqPKK+tPJ5wsoPav4InA3nAryRqf+DhT506nZdqro1SuG8XvkfIbTDQLKvOUVIqFr
-         VSOg==
-X-Gm-Message-State: ABy/qLb2LYrqVCKN7RkhhvvHK9ne5O0Bs6dkQuj625BL/ftiUjN2S5/T
-        K+Bxo5xG9qQysbDNZptWoEtk5A==
-X-Google-Smtp-Source: APBJJlGW0FgZvkmVdnLqO2ISjEWdAxAGCuIY34ei7SO1aUTkpabJ/WTzELhPmhAG0RVo9crhEAFOEg==
-X-Received: by 2002:a05:6512:44c:b0:4fd:f80d:f6a3 with SMTP id y12-20020a056512044c00b004fdf80df6a3mr4788001lfk.43.1690775508711;
-        Sun, 30 Jul 2023 20:51:48 -0700 (PDT)
+        bh=bg6pPDD7D9Uau9cvtSERX8kub5e1y1Iop71YmJr52mE=;
+        b=M4VWSY38l17/+UaIYjzAU9ezVaCgmS/TAupu6oakvF00DlzoA+B+2MEwa9ZXJIbdxj
+         Y5vPo0iZOqT3kBZftkDf9HGSL9WFZx3hmvjDwrqbC4yWr3lhrowJmwFRg9tznK0wHwRt
+         MCU/ys/ja8ZqLI4neD5V2uS1gjbQQ3qXltnYrwOKMqXMTrsxaX2kzNFiwFkmWFS+LOXF
+         zXWtYYLUMvUGeqpSqpVf7UblR8tWffwDK5TgGOHgRXIhr8r3y+ycvspdMdQ8Pfm68T7J
+         n7AbGwATOhGGaGYDuisUwU7hEQBoJH41dlh8qJfwi5r4I/Zutmgeri4RMwaAOM1aRaio
+         3V0g==
+X-Gm-Message-State: ABy/qLYMwYFfxoR4XJkMhl/R+ZCdnxsrJihLaLYWuq5WXgx1/zex48hE
+        ylRmkIXYxAVXR99qPRP+rUOwPg==
+X-Google-Smtp-Source: APBJJlGfM1/1VlzDywOVjeNKJ+hEnS5T/exeZtOlifNZHG2W38TLm/a3R3xMtsWj5R9H7RZ7QHuWEQ==
+X-Received: by 2002:a05:6512:ad5:b0:4fd:c923:db5e with SMTP id n21-20020a0565120ad500b004fdc923db5emr6020928lfu.21.1690775540485;
+        Sun, 30 Jul 2023 20:52:20 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
-        by smtp.gmail.com with ESMTPSA id l10-20020ac2430a000000b004fbb1bc1ae0sm1864789lfh.163.2023.07.30.20.51.47
+        by smtp.gmail.com with ESMTPSA id f4-20020ac251a4000000b004eb0c51780bsm1901005lfk.29.2023.07.30.20.52.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Jul 2023 20:51:48 -0700 (PDT)
-Message-ID: <42d3106a-de8f-24f5-e7d2-1ad7ecde9d23@linaro.org>
-Date:   Mon, 31 Jul 2023 06:51:47 +0300
+        Sun, 30 Jul 2023 20:52:20 -0700 (PDT)
+Message-ID: <77538959-595b-508d-0144-35d56ab5c7d8@linaro.org>
+Date:   Mon, 31 Jul 2023 06:52:19 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v5 1/2] ARM: dts: qcom: Use labels with generic node names
- for ADC channels
+Subject: Re: [PATCH v5 2/2] arm64: dts: qcom: Use labels with generic node
+ names for ADC channels
 Content-Language: en-GB
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
@@ -76,15 +76,15 @@ Cc:     AngeloGioacchino Del Regno
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20230730-generic-adc-channels-v5-0-e6c69bda8034@somainline.org>
- <20230730-generic-adc-channels-v5-1-e6c69bda8034@somainline.org>
+ <20230730-generic-adc-channels-v5-2-e6c69bda8034@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20230730-generic-adc-channels-v5-1-e6c69bda8034@somainline.org>
+In-Reply-To: <20230730-generic-adc-channels-v5-2-e6c69bda8034@somainline.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -92,18 +92,61 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 30/07/2023 23:31, Marijn Suijten wrote:
-> A future bindings update will replace the free-form qcom,spmi-vadc and
-> qcom,spmi-adc5 channel node names with the specific name `channel`, to
-> be more consistent with how the driver parses the nodes and to match the
-> generic node name set in `iio/adc/adc.yaml`.
+> As discussed in [1] it is more convenient to use a generic `channel`
+> node name for ADC channels while storing a friendly - board-specific
+> instead of PMIC-specific - name in the label, if/when desired to
+> overwrite the channel description already contained (but previously
+> unused) in the driver [2].  Follow up on the dt-bindings' `channel` node
+> name requirement, and instead provide this (sometimes per-board) channel
+> description through a label property.
 > 
+> Also remove all the unused label references (not to be confused with
+> label properties) from pm660, pmp8074 and pms405.
+> 
+> [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+> [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+> 
+> Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
->   arch/arm/boot/dts/qcom/qcom-pm8226.dtsi  | 12 ++++++------
->   arch/arm/boot/dts/qcom/qcom-pm8941.dtsi  | 14 +++++++-------
->   arch/arm/boot/dts/qcom/qcom-pma8084.dtsi | 12 ++++++------
->   arch/arm/boot/dts/qcom/qcom-pmx55.dtsi   |  8 ++++----
->   4 files changed, 23 insertions(+), 23 deletions(-)
+>   arch/arm64/boot/dts/qcom/pm6125.dtsi               | 18 ++++++----
+>   arch/arm64/boot/dts/qcom/pm6150.dtsi               |  2 +-
+>   arch/arm64/boot/dts/qcom/pm6150l.dtsi              |  8 ++---
+>   arch/arm64/boot/dts/qcom/pm660.dtsi                | 33 ++++++++++++------
+>   arch/arm64/boot/dts/qcom/pm7250b.dtsi              | 24 ++++++-------
+>   arch/arm64/boot/dts/qcom/pm8150.dtsi               |  6 ++--
+>   arch/arm64/boot/dts/qcom/pm8150b.dtsi              |  8 ++---
+>   arch/arm64/boot/dts/qcom/pm8150l.dtsi              |  6 ++--
+>   arch/arm64/boot/dts/qcom/pm8916.dtsi               | 14 ++++----
+>   arch/arm64/boot/dts/qcom/pm8950.dtsi               | 39 ++++++++++++++--------
+>   arch/arm64/boot/dts/qcom/pm8953.dtsi               | 12 +++----
+>   arch/arm64/boot/dts/qcom/pm8994.dtsi               | 12 +++----
+>   arch/arm64/boot/dts/qcom/pm8998.dtsi               |  2 +-
+>   arch/arm64/boot/dts/qcom/pmi8950.dtsi              | 12 +++----
+>   arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi          |  6 ++--
+>   arch/arm64/boot/dts/qcom/pmm8155au_2.dtsi          |  6 ++--
+>   arch/arm64/boot/dts/qcom/pmp8074.dtsi              | 27 ++++++++++-----
+>   arch/arm64/boot/dts/qcom/pms405.dtsi               | 21 ++++++++----
+>   arch/arm64/boot/dts/qcom/qrb5165-rb5.dts           | 15 ++++++---
+>   .../boot/dts/qcom/sc7180-trogdor-coachz-r1.dts     |  4 +--
+>   .../arm64/boot/dts/qcom/sc7180-trogdor-coachz.dtsi |  3 +-
+>   .../boot/dts/qcom/sc7180-trogdor-homestar.dtsi     |  3 +-
+>   arch/arm64/boot/dts/qcom/sc7180-trogdor-lazor.dtsi |  2 +-
+>   .../boot/dts/qcom/sc7180-trogdor-pompom-r1.dts     |  2 +-
+>   .../boot/dts/qcom/sc7180-trogdor-pompom-r2.dts     |  2 +-
+>   .../arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi |  3 +-
+>   .../boot/dts/qcom/sc7180-trogdor-wormdingler.dtsi  |  3 +-
+>   arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi       |  3 +-
+>   arch/arm64/boot/dts/qcom/sc7280-idp.dts            |  2 +-
+>   arch/arm64/boot/dts/qcom/sc7280-idp.dtsi           |  2 +-
+>   arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi         |  4 +--
+>   .../dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts     | 26 +++++++--------
+>   arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi         | 10 +++---
+>   arch/arm64/boot/dts/qcom/sdm845-mtp.dts            | 12 +++----
+>   .../dts/qcom/sm6125-sony-xperia-seine-pdx201.dts   | 15 ++++++---
+>   arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  |  6 ++--
+>   arch/arm64/boot/dts/qcom/sm8250-mtp.dts            | 21 ++++++++----
+>   37 files changed, 231 insertions(+), 163 deletions(-)
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 

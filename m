@@ -2,105 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E509769A33
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 16:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814C7769AA4
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 17:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbjGaO6n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 10:58:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57258 "EHLO
+        id S231594AbjGaPSP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jul 2023 11:18:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230075AbjGaO6m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 10:58:42 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23681E7C;
-        Mon, 31 Jul 2023 07:58:40 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fe0c566788so7488072e87.0;
-        Mon, 31 Jul 2023 07:58:40 -0700 (PDT)
+        with ESMTP id S233061AbjGaPSE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 11:18:04 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2121704
+        for <linux-iio@vger.kernel.org>; Mon, 31 Jul 2023 08:18:02 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4fe28e4671dso3061480e87.0
+        for <linux-iio@vger.kernel.org>; Mon, 31 Jul 2023 08:18:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690815518; x=1691420318;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ORB1Q+Iw/OFBqXFQvBc5swFMkKQ4r1p77ZHKyIsEFdc=;
-        b=szOQXcgZiZeR4Nmw9aSousAbXxal+kmPPVxKh+F14Md+xVK38h2x3p09hEaT+UxABm
-         c1oC92ctS3vDVt4IEjIG9z4mP0RjVabJWlOrly7YCr4V3ZsPXi2UazcwDr/GN902iTnZ
-         ArLnAogFOA3vqZAuUD2KpHYm2cX3HPtyRv0MbXkvCReMvVrym3L6h1geBf21Qwpwd0Hf
-         mOFBDd/iamkMAq7nO79njkVI8eIw52NJAmouSM+odeWVXVPIhJRruVxRcMoHBO3UQwwE
-         0xTECIbDS9QvP3fYz0n+r+Wdz17p07GbhfCX50wuLysjR9cWYTEIZf9od6EOaNk9zTRy
-         8qRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690815518; x=1691420318;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+        d=linaro.org; s=google; t=1690816681; x=1691421481;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ORB1Q+Iw/OFBqXFQvBc5swFMkKQ4r1p77ZHKyIsEFdc=;
-        b=kpxcW1ddw8IW6s2WucpQsXWrkphEwBq5VVXqiEInDjUHwCAAPu3jVHRCGwwXFcoT5r
-         aWNQA1rpJ3v01wUgwj/61G8kPNbwbrCKPbNEy8tpslGQD4H0G36j+wlEXHoD6Yk+3/X9
-         CZmi9UwDylQ5D3tGkFJN6Q7+ye5q+k9/AuXb18nrVPAd8RcDHsIjow4cCMsrt742j9mj
-         x5/Nh+UvaeXoGRgVXnUcUU/msEfKFhdlRJOZvQ7Q0KSYFn8peCQL9yuS3AlAfvhchI2r
-         qvZZ1NTGJQg0UBAvmQ1viuy5P4N3i3YGdQfLI9Nz8xSg1F3GFyOg2eCtyOZn307WQ+YE
-         0h3w==
-X-Gm-Message-State: ABy/qLaIG6N6fNstxYvGB7E4xZA1lP+BCaRRjeKoiQ7BsVrOTSTBbdln
-        IJifFgnA0tA0d9y8pACdfL3a6QCDzQo=
-X-Google-Smtp-Source: APBJJlHxuIAEisOHSGuHnxUa55Fmdq5/4wuIatTtWjc8BIjedxOSUMoxPfgn47jjB4MnYkT6xHotAQ==
-X-Received: by 2002:a05:6512:281c:b0:4fb:7559:aea3 with SMTP id cf28-20020a056512281c00b004fb7559aea3mr38563lfb.39.1690815518014;
-        Mon, 31 Jul 2023 07:58:38 -0700 (PDT)
-Received: from [127.0.0.1] ([46.211.17.21])
-        by smtp.gmail.com with ESMTPSA id i18-20020ac25d32000000b004fe15185b67sm2154485lfb.229.2023.07.31.07.58.37
+        bh=8EHSZTqhdf12dvB2wCgIzNCUIZxw+5/2MGAB0jSuGq8=;
+        b=TFLn7IUo8sDEb9ZgZCvceFM2KDMIn76Uv8sUYkDw5frYLNLQc0b93ePY9CM63UbQ7w
+         btp5G5tL4zsajz75UlAq9MzUALhNOOUJ+DwWBj8z06geNCMGHO+QxTLgJ067tm+xd2yo
+         yUEOfm+1X3fXXDKFiOOVpUqI+g/cT4k9bC2g3GynV5sPzLNJS4wlkc82QY0saCbnQPNt
+         eSP1ZKaO8qUxUsejufE/eLhzjIKNMe40dq4QVC2DVmkBPlm0tunF63m8Ldu2NP780u4g
+         1EK8BwqCw4DWhExaf//dOOMCknhQEGhv5TOfimrqx3UdUIsLwmcqDI0KPftzz9m1HBzS
+         U79g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690816681; x=1691421481;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8EHSZTqhdf12dvB2wCgIzNCUIZxw+5/2MGAB0jSuGq8=;
+        b=TQbQOEJTHHp9pV7XTxKlWLv0M2J7dxFUb4lzicoHuZd1BRbGPEXRpPcT7Qnmlk0IpK
+         etAslKJSFT1VAej/SHZRQU5xkZ+fBCFKSaIr6RYTGWopZ/ykaHCY46CLbKw+pJMJfRqV
+         sAsIlsKRRBX2ghvlssBG70UF9EI/3FbjDWxTsI03gp1QB++GnnggITV6EjPx1JCM0z3o
+         EeTR7q5fej6z/lEltBGxjaLqXZMNiStjO/9upbo8UaPsuTWJkGwmK5k+3ghpF+1kRCwW
+         cJ9c+SSApqXfHFTBjbFaxNuXBFZmc7hjeOo46D+OtU0kj9Kltg3k54Gg5ygFo5hwqCBN
+         tHBw==
+X-Gm-Message-State: ABy/qLbKcukA/zvf7Rs7yYl/tFa6uoM7fGpx75NhpvifQx5/eFZfFddf
+        6RkluNQh0IFdvjj8q+KdMovXxAbZvgIj6NCD+Hg=
+X-Google-Smtp-Source: APBJJlGdf4mBViLU9DywMnYgAiIENEFp5pjsZyncw/WX9zB7lUGTOD1GKie2/DFw+s4Ej6NjVqVX/w==
+X-Received: by 2002:ac2:58c8:0:b0:4fb:978e:95b8 with SMTP id u8-20020ac258c8000000b004fb978e95b8mr80421lfo.59.1690816681109;
+        Mon, 31 Jul 2023 08:18:01 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.183])
+        by smtp.gmail.com with ESMTPSA id w16-20020a50fa90000000b0052275deb475sm5568560edr.23.2023.07.31.08.17.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Jul 2023 07:58:37 -0700 (PDT)
-Date:   Mon, 31 Jul 2023 17:58:37 +0300
-From:   Svyatoslav Ryhel <clamor95@gmail.com>
-To:     Arnd Bergmann <arnd@arndb.de>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Samu Onkalo <samu.p.onkalo@nokia.com>
-CC:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] misc: adps990x: convert to OF
-User-Agent: K-9 Mail for Android
-In-Reply-To: <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
-References: <20230731110239.107086-1-clamor95@gmail.com> <20230731110239.107086-3-clamor95@gmail.com> <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
-Message-ID: <7C51AA15-DEBE-486B-9788-F84B260F8880@gmail.com>
+        Mon, 31 Jul 2023 08:18:00 -0700 (PDT)
+Message-ID: <defe7fb9-37b0-df31-9e66-0a126a865813@linaro.org>
+Date:   Mon, 31 Jul 2023 17:17:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH v2] dt-bindings: iio: admv1014: make all regs required
+Content-Language: en-US
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230731144404.389255-1-antoniu.miclaus@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230731144404.389255-1-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 31/07/2023 16:44, Antoniu Miclaus wrote:
+> Make the regulators required in the dt bindings.
+> 
+> Despite the fact that the datasheet is not explicit enough, all the
+> specifications of the part are built around these pins being supplied.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
 
 
-31 =D0=BB=D0=B8=D0=BF=D0=BD=D1=8F 2023 =D1=80=2E 16:18:16 GMT+03:00, Arnd =
-Bergmann <arnd@arndb=2Ede> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=B2(-=D0=
-=BB=D0=B0):
->On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote:
->> Add ability to use device tree bindings keeping existing setup=2E
->
->I see that there are no more in-tree users of the old
->apds990x_platform_data, so I think it would be best to completely
->remove that codepath and merge that structure into struct
->apds990x_chip, to simplify the probing and avoid the extra
->allocation=2E
-
-Thank you very much for your review, but is it mandatory to drop pdata in =
-this particular patch set? To be honest this driver needs serious upgrades =
-and refactoring, and I have no dedication to invest my time into refactorin=
-g it, moreover, I am not a maintainer of this driver, nor a full time kerne=
-l maintainer of any kind=2E I am doing what I am doing only because one of =
-my devices uses this als but it is not something crucial=2E
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
-Svyatoslav R=2E
+Krzysztof
 
->   Arnd

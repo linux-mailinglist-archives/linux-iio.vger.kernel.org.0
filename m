@@ -2,44 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7A967692BF
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 12:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 746E07692CC
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 12:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230324AbjGaKJD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 06:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49282 "EHLO
+        id S230257AbjGaKNL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jul 2023 06:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbjGaKJB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 06:09:01 -0400
+        with ESMTP id S232285AbjGaKNK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 06:13:10 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97C15E49
-        for <linux-iio@vger.kernel.org>; Mon, 31 Jul 2023 03:08:51 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RDv4t6tCFz6J6WY;
-        Mon, 31 Jul 2023 18:05:34 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A35DE3;
+        Mon, 31 Jul 2023 03:13:09 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RDv9R4xgmz6J7N8;
+        Mon, 31 Jul 2023 18:09:31 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 31 Jul
- 2023 11:08:47 +0100
-Date:   Mon, 31 Jul 2023 11:08:46 +0100
+ 2023 11:13:06 +0100
+Date:   Mon, 31 Jul 2023 11:13:06 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Atul Raut <rauji.raut@gmail.com>
-CC:     <cosmin.tanislav@analog.com>, <lars@metafoo.de>,
-        <Michael.Hennerich@analog.com>, <jic23@kernel.org>,
-        <linux-iio@vger.kernel.org>,
-        <linux-kernel-mentees@lists.linuxfoundation.org>
-Subject: Re: [PATCH] iio: accel: Replace zero-length arrays with
- DECLARE_FLEX_ARRAY() helper
-Message-ID: <20230731110846.00004176@Huawei.com>
-In-Reply-To: <20230731014406.22810-1-rauji.raut@gmail.com>
-References: <20230731014406.22810-1-rauji.raut@gmail.com>
+To:     "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "conor+dt@kernel.org" <conor+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: iio: admv1014: make all regs required
+Message-ID: <20230731111306.000036da@Huawei.com>
+In-Reply-To: <BN6PR03MB339557689BCCF795B18C68319B05A@BN6PR03MB3395.namprd03.prod.outlook.com>
+References: <20230727113136.98037-1-antoniu.miclaus@analog.com>
+        <7f7d1c90-9969-66bd-fd71-defffe0e05d6@linaro.org>
+        <BN6PR03MB3395F9139A225AA97A100B829B01A@BN6PR03MB3395.namprd03.prod.outlook.com>
+        <20230729125516.68a29852@jic23-huawei>
+        <BN6PR03MB339557689BCCF795B18C68319B05A@BN6PR03MB3395.namprd03.prod.outlook.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
@@ -52,49 +60,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 30 Jul 2023 18:44:06 -0700
-Atul Raut <rauji.raut@gmail.com> wrote:
+On Mon, 31 Jul 2023 07:40:14 +0000
+"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
 
-Patch title should mention the device
-
-iio: accel: adxl367: ...
-
-
-> Replacing zero-length arrays with C99 flexible-array
-> members since they are obsolete.
-> Use the new DECLARE_FLEX_ARRAY() auxiliary macro instead
-> of defining a zero-length array.
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Saturday, July 29, 2023 2:55 PM
+> > To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
+> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>;
+> > robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
+> > conor+dt@kernel.org; linux-iio@vger.kernel.org;
+> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH] dt-bindings: iio: admv1014: make all regs required
+> > 
+> > [External]
+> > 
+> > On Thu, 27 Jul 2023 12:02:04 +0000
+> > "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
+> >   
+> > > > -----Original Message-----
+> > > > From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > > > Sent: Thursday, July 27, 2023 2:47 PM
+> > > > To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>; jic23@kernel.org;
+> > > > robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
+> > > > conor+dt@kernel.org; linux-iio@vger.kernel.org;
+> > > > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
+> > > > Subject: Re: [PATCH] dt-bindings: iio: admv1014: make all regs required
+> > > >
+> > > > [External]
+> > > >
+> > > > On 27/07/2023 13:31, Antoniu Miclaus wrote:  
+> > > > > Since the regulators are required in the driver implementation, make
+> > > > > them required also in the bindings.  
+> > 
+> > This bit is probably not strictly true.  Try no providing them and you will
+> > probably find stub regulators created on assumption they are fixed regs
+> > that we aren't interested in controlling.
+> >   
+> > > > >  
+> > > >
+> > > > The true reason should be whether the hardware requires them.  
+> > Because if  
+> > > > hardware does not need some, the driver should be fixed.  
+> > > The datasheet is not very explicit on this topic, but all the specifications of  
+> > the  
+> > > part are built around these pins being supplied.
+> > > Moreover, the evaluation board or the part comes with all VCC pins  
+> > connected  
+> > > to fixed supplies.  
+> > 
+> > Agreed - these should be required in the binding.
+> >   
+> Hello Jonathan,
 > 
-> This fixes warnings such as:
-> ./drivers/iio/accel/adxl367_spi.c:38:6-17: WARNING use flexible-array member instead (https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays)
-> 
-> Signed-off-by: Atul Raut <rauji.raut@gmail.com>
+> Not sure if I fully understand. Should I drop this patch? 
 
-It isn't a variable length array so the heuristic that provided that warning is wrong.
+Patch is good.  The binding should state these are required - it doesn't
+mean that the driver will fail to probe on systems that doesn't provide
+them.  It does encourage any new DTS files to incorporate them which is
+good to have.
 
-It could be switched to a u8 but then the code would be slightly harder to read
-as the functions it is being passed are typically used with arrays - this one just
-happens to only be one element long.
+Only thing that needs changing is the patch should not justify the
+addition of these to the binding because they 'are required in the
+driver implementation'.  Just drop that statement and the patch is
+fine.
+
+
+
+> And also drop the "required" of the regulators in the admv1013 patch?
+> https://patchwork.kernel.org/project/linux-iio/patch/20230727110121.93546-1-antoniu.miclaus@analog.com/
+
+As long as the patch doesn't say anything about what the driver does
+then it is fine.  Note DT bindings and patch descriptions for them should
+never mention the driver.
 
 Jonathan
 
-
-
-> ---
->  drivers/iio/accel/adxl367_spi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/accel/adxl367_spi.c b/drivers/iio/accel/adxl367_spi.c
-> index 118c894015a5..9dc61cb45fc5 100644
-> --- a/drivers/iio/accel/adxl367_spi.c
-> +++ b/drivers/iio/accel/adxl367_spi.c
-> @@ -35,7 +35,7 @@ struct adxl367_spi_state {
->  	 */
->  	u8			reg_write_tx_buf[1] __aligned(IIO_DMA_MINALIGN);
->  	u8			reg_read_tx_buf[2];
-> -	u8			fifo_tx_buf[1];
-> +	DECLARE_FLEX_ARRAY(u8,			fifo_tx_buf);
->  };
->  
->  static int adxl367_read_fifo(void *context, __be16 *fifo_buf,
+> Thanks,
+> > There was an old disagreement on this in which it they were not marked
+> > required in some bindings because the regulator subsystem would assume
+> > they
+> > were fixed supplies that were just missing in the DT and so provides stub
+> > regulators.
+> > My understanding at least has changed and now we mark the required even
+> > if
+> > the driver works fine on some boards without them being supplied.
+> > 
+> > Note though that this means the whole of trivial-devices.yaml is garbage
+> > as very few devices actually work without any power :)
+> > 
+> > Jonathan
+> > 
+> > 
+> >   
+> > > > Best regards,
+> > > > Krzysztof  
+> > >  
+> 
 

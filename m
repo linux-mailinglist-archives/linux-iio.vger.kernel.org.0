@@ -2,107 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2647699EC
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 16:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E509769A33
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 16:58:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232856AbjGaOoa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 10:44:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50974 "EHLO
+        id S229850AbjGaO6n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jul 2023 10:58:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232812AbjGaOo3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 10:44:29 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C45711C;
-        Mon, 31 Jul 2023 07:44:25 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 36VD2OcO002849;
-        Mon, 31 Jul 2023 10:44:22 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s65y9bpdc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 31 Jul 2023 10:44:22 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 36VEiL8X022831
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 31 Jul 2023 10:44:21 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 31 Jul 2023 10:44:20 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 31 Jul 2023 10:44:20 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 31 Jul 2023 10:44:20 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.194])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 36VEi8M3007605;
-        Mon, 31 Jul 2023 10:44:10 -0400
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v2] dt-bindings: iio: admv1014: make all regs required
-Date:   Mon, 31 Jul 2023 17:44:04 +0300
-Message-ID: <20230731144404.389255-1-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S230075AbjGaO6m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 10:58:42 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23681E7C;
+        Mon, 31 Jul 2023 07:58:40 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fe0c566788so7488072e87.0;
+        Mon, 31 Jul 2023 07:58:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690815518; x=1691420318;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ORB1Q+Iw/OFBqXFQvBc5swFMkKQ4r1p77ZHKyIsEFdc=;
+        b=szOQXcgZiZeR4Nmw9aSousAbXxal+kmPPVxKh+F14Md+xVK38h2x3p09hEaT+UxABm
+         c1oC92ctS3vDVt4IEjIG9z4mP0RjVabJWlOrly7YCr4V3ZsPXi2UazcwDr/GN902iTnZ
+         ArLnAogFOA3vqZAuUD2KpHYm2cX3HPtyRv0MbXkvCReMvVrym3L6h1geBf21Qwpwd0Hf
+         mOFBDd/iamkMAq7nO79njkVI8eIw52NJAmouSM+odeWVXVPIhJRruVxRcMoHBO3UQwwE
+         0xTECIbDS9QvP3fYz0n+r+Wdz17p07GbhfCX50wuLysjR9cWYTEIZf9od6EOaNk9zTRy
+         8qRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690815518; x=1691420318;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ORB1Q+Iw/OFBqXFQvBc5swFMkKQ4r1p77ZHKyIsEFdc=;
+        b=kpxcW1ddw8IW6s2WucpQsXWrkphEwBq5VVXqiEInDjUHwCAAPu3jVHRCGwwXFcoT5r
+         aWNQA1rpJ3v01wUgwj/61G8kPNbwbrCKPbNEy8tpslGQD4H0G36j+wlEXHoD6Yk+3/X9
+         CZmi9UwDylQ5D3tGkFJN6Q7+ye5q+k9/AuXb18nrVPAd8RcDHsIjow4cCMsrt742j9mj
+         x5/Nh+UvaeXoGRgVXnUcUU/msEfKFhdlRJOZvQ7Q0KSYFn8peCQL9yuS3AlAfvhchI2r
+         qvZZ1NTGJQg0UBAvmQ1viuy5P4N3i3YGdQfLI9Nz8xSg1F3GFyOg2eCtyOZn307WQ+YE
+         0h3w==
+X-Gm-Message-State: ABy/qLaIG6N6fNstxYvGB7E4xZA1lP+BCaRRjeKoiQ7BsVrOTSTBbdln
+        IJifFgnA0tA0d9y8pACdfL3a6QCDzQo=
+X-Google-Smtp-Source: APBJJlHxuIAEisOHSGuHnxUa55Fmdq5/4wuIatTtWjc8BIjedxOSUMoxPfgn47jjB4MnYkT6xHotAQ==
+X-Received: by 2002:a05:6512:281c:b0:4fb:7559:aea3 with SMTP id cf28-20020a056512281c00b004fb7559aea3mr38563lfb.39.1690815518014;
+        Mon, 31 Jul 2023 07:58:38 -0700 (PDT)
+Received: from [127.0.0.1] ([46.211.17.21])
+        by smtp.gmail.com with ESMTPSA id i18-20020ac25d32000000b004fe15185b67sm2154485lfb.229.2023.07.31.07.58.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Jul 2023 07:58:37 -0700 (PDT)
+Date:   Mon, 31 Jul 2023 17:58:37 +0300
+From:   Svyatoslav Ryhel <clamor95@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Samu Onkalo <samu.p.onkalo@nokia.com>
+CC:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] misc: adps990x: convert to OF
+User-Agent: K-9 Mail for Android
+In-Reply-To: <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
+References: <20230731110239.107086-1-clamor95@gmail.com> <20230731110239.107086-3-clamor95@gmail.com> <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
+Message-ID: <7C51AA15-DEBE-486B-9788-F84B260F8880@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 5iyFEbzMSbBHYr3-uhIitBIJQ2Ndhrvq
-X-Proofpoint-GUID: 5iyFEbzMSbBHYr3-uhIitBIJQ2Ndhrvq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-31_07,2023-07-31_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2306200000 definitions=main-2307310131
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make the regulators required in the dt bindings.
 
-Despite the fact that the datasheet is not explicit enough, all the
-specifications of the part are built around these pins being supplied.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v2:
- - improve commit description.
- .../devicetree/bindings/iio/frequency/adi,admv1014.yaml   | 8 ++++++++
- 1 file changed, 8 insertions(+)
+31 =D0=BB=D0=B8=D0=BF=D0=BD=D1=8F 2023 =D1=80=2E 16:18:16 GMT+03:00, Arnd =
+Bergmann <arnd@arndb=2Ede> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=B2(-=D0=
+=BB=D0=B0):
+>On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote:
+>> Add ability to use device tree bindings keeping existing setup=2E
+>
+>I see that there are no more in-tree users of the old
+>apds990x_platform_data, so I think it would be best to completely
+>remove that codepath and merge that structure into struct
+>apds990x_chip, to simplify the probing and avoid the extra
+>allocation=2E
 
-diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
-index ab86daa2c56e..8e4c5ff0da14 100644
---- a/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
-+++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
-@@ -103,6 +103,14 @@ required:
-   - clocks
-   - clock-names
-   - vcm-supply
-+  - vcc-if-bb-supply
-+  - vcc-vga-supply
-+  - vcc-vva-supply
-+  - vcc-lna-3p3-supply
-+  - vcc-lna-1p5-supply
-+  - vcc-bg-supply
-+  - vcc-quad-supply
-+  - vcc-mixer-supply
- 
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
--- 
-2.41.0
+Thank you very much for your review, but is it mandatory to drop pdata in =
+this particular patch set? To be honest this driver needs serious upgrades =
+and refactoring, and I have no dedication to invest my time into refactorin=
+g it, moreover, I am not a maintainer of this driver, nor a full time kerne=
+l maintainer of any kind=2E I am doing what I am doing only because one of =
+my devices uses this als but it is not something crucial=2E
 
+Best regards,
+Svyatoslav R=2E
+
+>   Arnd

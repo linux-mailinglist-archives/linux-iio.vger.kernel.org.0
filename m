@@ -2,106 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8836076976C
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 15:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A2647699EC
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 16:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232934AbjGaNXz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 09:23:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58484 "EHLO
+        id S232856AbjGaOoa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jul 2023 10:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjGaNXx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 09:23:53 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28728EB;
-        Mon, 31 Jul 2023 06:23:53 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 973EF5C00EE;
-        Mon, 31 Jul 2023 09:23:52 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 31 Jul 2023 09:23:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1690809832; x=1690896232; bh=Se
-        sJURo2GNIPxlgy2lU8LbgruKBtrrvOanK04f/Dc+s=; b=V/1rdpGPql22nPgVxI
-        u5FzGIJAqUQuZ/Mka1qBscZBPK+MRpt0wfyCiNuHXnSxwEsoT/8wewEjeK4iCxhS
-        1gssB0DgVUBMmYAh/aMwTvZ/qmTUQwGC9hB1iP3c43+f7i9JVHM7+M3QUdwWQUfT
-        daLF6XwGXefoMnoYl+yt351PG4+/FmkaPfJ9bhMJtC94UJpZepVnvNCZjz0Yn1hS
-        z2AoFV61CuXUxVFMWxiow+2UZJFK0QCmkSNkcVcsN1TBbfOAldHPkDzEf8pwObfS
-        kmGbaYPNFvI6ja0p+XAIg+YojC1wYWw2D7xFYs/0R8sURAudXP3hf+bR20Adz6Gc
-        7kIQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1690809832; x=1690896232; bh=SesJURo2GNIPx
-        lgy2lU8LbgruKBtrrvOanK04f/Dc+s=; b=qd8Q2IvEWgefIl0snyxbIWWwf0p1q
-        W9Mx8W07ywXgqbh5n5Fb6mlmCA8q+gXW3j/xE3smcdyCBy0JCyeR8egnzC/nvD4f
-        4GnYCHK+H3fqJTFuPKZRhj0wiaf5TGKZ7dtDcnXGoDFaT+aJg9X5JLjSyq7PhELA
-        aHzdq7+6/iut94tgoQC2JY4nTGWZh4LBF+iGv9gebe/mGjHHI1zGlAD91nYsOCUt
-        fz83rd2327tJ1epaEeejCkQV5V+ygsf19Sy3/6j502UA5+KJ86AeA/H4eyiCyp7s
-        /s2QSWPsgto9gTyIywFRnb7dQOW3lx2TR2GKflHwduf3UNm3oV+PoOz8g==
-X-ME-Sender: <xms:6LXHZGKv4Kri1x0pCHIb7BcvBDfI1yNvQl2oPTv6qPgufTR0AywU3g>
-    <xme:6LXHZOLUipGM2VC8tucp9n4aay3R48F8MYPRZaC891Ep6X2-BGac-dAPqwSrVV6ba
-    zHLe8ZS8W8ukYSeOF4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjeeggdegtdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeegteejkefgtdekteekvdeukedvudegjeehkeeuheegueekieeuffelffdthfeg
-    udenucffohhmrghinhepuggvvhhitggvthhrvggvrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:6LXHZGsIGOdpIibmKb0AtYhv1MDa-Of8I5PRnUcRwQA70kApIbSU0A>
-    <xmx:6LXHZLYjU85LO--02hRJksWV7RV_Tgg1S75Ymb6_E-JSBJcbAsQeYg>
-    <xmx:6LXHZNZ8h4dUyi5fwXcmZtdJ9Fbe8iZvGppehrJ8ljCaMkNPJrvEDg>
-    <xmx:6LXHZLPhVQXXvG8PhHMr2cgtN_Cj1YmpPN0CR5ZOj2F9qOzEiVi7JA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 524C5B6008F; Mon, 31 Jul 2023 09:23:52 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-592-ga9d4a09b4b-fm-defalarms-20230725.001-ga9d4a09b
-Mime-Version: 1.0
-Message-Id: <0c948578-5cb1-4b4e-8fa6-9de1d658713b@app.fastmail.com>
-In-Reply-To: <20230731110239.107086-2-clamor95@gmail.com>
-References: <20230731110239.107086-1-clamor95@gmail.com>
- <20230731110239.107086-2-clamor95@gmail.com>
-Date:   Mon, 31 Jul 2023 15:23:32 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Svyatoslav Ryhel" <clamor95@gmail.com>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Samu Onkalo" <samu.p.onkalo@nokia.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: light: add apds990x binding
-Content-Type: text/plain
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232812AbjGaOo3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 10:44:29 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C45711C;
+        Mon, 31 Jul 2023 07:44:25 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 36VD2OcO002849;
+        Mon, 31 Jul 2023 10:44:22 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s65y9bpdc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 31 Jul 2023 10:44:22 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 36VEiL8X022831
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 31 Jul 2023 10:44:21 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 31 Jul 2023 10:44:20 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 31 Jul 2023 10:44:20 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 31 Jul 2023 10:44:20 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.194])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 36VEi8M3007605;
+        Mon, 31 Jul 2023 10:44:10 -0400
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v2] dt-bindings: iio: admv1014: make all regs required
+Date:   Mon, 31 Jul 2023 17:44:04 +0300
+Message-ID: <20230731144404.389255-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 5iyFEbzMSbBHYr3-uhIitBIJQ2Ndhrvq
+X-Proofpoint-GUID: 5iyFEbzMSbBHYr3-uhIitBIJQ2Ndhrvq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-31_07,2023-07-31_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2306200000 definitions=main-2307310131
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote:
+Make the regulators required in the dt bindings.
 
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/avago,apds990x.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Avago APDS990x ambient light and proximity sensor
-> +
+Despite the fact that the datasheet is not explicit enough, all the
+specifications of the part are built around these pins being supplied.
 
-The APDS990x looks like a wildcard, which is not appropriate for
-the "compatible" property in DT, and should be replaced with a list
-of specific part numbers to which this applies.
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v2:
+ - improve commit description.
+ .../devicetree/bindings/iio/frequency/adi,admv1014.yaml   | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-    Arnd
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
+index ab86daa2c56e..8e4c5ff0da14 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
+@@ -103,6 +103,14 @@ required:
+   - clocks
+   - clock-names
+   - vcm-supply
++  - vcc-if-bb-supply
++  - vcc-vga-supply
++  - vcc-vva-supply
++  - vcc-lna-3p3-supply
++  - vcc-lna-1p5-supply
++  - vcc-bg-supply
++  - vcc-quad-supply
++  - vcc-mixer-supply
+ 
+ allOf:
+   - $ref: /schemas/spi/spi-peripheral-props.yaml#
+-- 
+2.41.0
+

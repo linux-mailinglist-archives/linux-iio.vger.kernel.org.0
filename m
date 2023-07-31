@@ -2,130 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17ABE769AE7
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 17:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 262D576A1A6
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jul 2023 22:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229669AbjGaPjY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jul 2023 11:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49650 "EHLO
+        id S229748AbjGaUB2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jul 2023 16:01:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbjGaPjX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 11:39:23 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E97D8;
-        Mon, 31 Jul 2023 08:39:21 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 991E85C0115;
-        Mon, 31 Jul 2023 11:39:20 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 31 Jul 2023 11:39:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1690817960; x=1690904360; bh=3sigVTCHFGVp6funFXn9uMuJRWZKuRcAdPw
-        XsFRL79U=; b=euvsBWRLUcgYzXOv1gUR1dh6GsWM/6vgxNlLxFaWlFVPxBRK+Y5
-        vh2ASC2d2M/80LiY9f/xB9tqCii5mb6xmIGqOlzvlZCyyS8uJImpF5z909mG2RvD
-        4Yb+5faz+AGFAn05IIwkGQD7+pVTbO2z23gqA/MTSyFWSVZdKi+9YJRf4LS9aKIu
-        Xpvw8IbIZpVOOGCQH5P3/53IQc8VH5CtCe9mpcAhvRejuVevHS0VArXpmQPNuSeh
-        f7gjGEncdVNwVhUpoFueY3kBYVbknAaCyfbhtTV7AC8+EZ9s7Brhxj87YG/b3SoC
-        yI/aNBgtMLYUk4azI6ida25VQTdv6523X+A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1690817960; x=1690904360; bh=3sigVTCHFGVp6funFXn9uMuJRWZKuRcAdPw
-        XsFRL79U=; b=HyWGJiXZ+MNH2y46FO1+cigNi91kIU4365wFjuNjNMtMGeumAf1
-        K5gjGXK6lndpZUxYot6IDZ7jH/k8dvYOHqCTqddLCImU0CPjNdShIOnGfVXgYuWE
-        mR0HQiceO2GsvtfsGm1QS7ah7G8hsVL7NerNtH7ayETLiic3ADu7voN97pzk1Y0c
-        phGWV+tPcrLVc5xnRspm7x3L+feofd19kq9lorOdzfWPjyM8V1fCH3rclBMq7TRq
-        bEyojzgHEeDYtpDjReh1Eq4HJLnUOHJTgxTzrDpDbXdnpZ/Xt8w6xqP12zhlViU7
-        A4+Vsd7mM9G3PsXmUtlKOwTpZVby9pY2PlA==
-X-ME-Sender: <xms:qNXHZI4kvdwJPdlvXkp6H3EQRNgSQRMfQwrECk61YoaEkL39jzEGCg>
-    <xme:qNXHZJ5APgqGiWebqlTjRr5x-ONt_2HHrZ6kZo9uAftnF65zgwx_pwIQEy15SQMCM
-    hZlQQOX2w0eC9nAGy4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjeeggdeijecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
-    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:qNXHZHfPl9ekhjjXlnW9-PY2Vr_lT25YYa6_jWHQwqlmUh0wpoTnNA>
-    <xmx:qNXHZNKrn-gD26nLbRak_Lkq-0wnU5XAIGA8ZYtqqnzSUG-g5GsA1g>
-    <xmx:qNXHZMKYNj4PfS7OO6NihWOZZ-ib3udGBHBpWZpglOXtHDHW1AHxxg>
-    <xmx:qNXHZL-DxcazecXQPWBgxihOE1ZM_w2xR59y9f0WEngbh0VgUSL3Xw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 0CAB4B60089; Mon, 31 Jul 2023 11:39:20 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-592-ga9d4a09b4b-fm-defalarms-20230725.001-ga9d4a09b
-Mime-Version: 1.0
-Message-Id: <c7526061-2f4e-4843-825c-98d9494af625@app.fastmail.com>
-In-Reply-To: <7C51AA15-DEBE-486B-9788-F84B260F8880@gmail.com>
-References: <20230731110239.107086-1-clamor95@gmail.com>
- <20230731110239.107086-3-clamor95@gmail.com>
- <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
- <7C51AA15-DEBE-486B-9788-F84B260F8880@gmail.com>
-Date:   Mon, 31 Jul 2023 17:38:59 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Svyatoslav Ryhel" <clamor95@gmail.com>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Samu Onkalo" <samu.p.onkalo@nokia.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] misc: adps990x: convert to OF
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229519AbjGaUB2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jul 2023 16:01:28 -0400
+Received: from mgamail.intel.com (unknown [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796908F;
+        Mon, 31 Jul 2023 13:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690833687; x=1722369687;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5oGbXYGj4vcg8CCQuePDiYFktmYReAlAj/YZnxzjeD0=;
+  b=VkSFNtZBA5HOuUJzC3R1icmDvQPvaAovL+TfbO/EOpgzDgV/6PRUzgr9
+   u+7wxsxHJYvHKyFr/VuFl4kD8aBzaq4rSJvuvcruOkq/tViFjvAsv6hs9
+   /yDs0vdFZL/bhDKTbkrgygq/7K6gNXNI2ZqDFEqO8Barq/w8ZsSRLrZaX
+   i1Jn2qKPMl3qnCrMnpVsIMab34i/ojQDL1pxPwC+OSnFS7k4CBQ1nEbJ7
+   8VO/9v+SWnsMIMzNQ+PKSYDyaCdKDoRxiNw71khvFggIM3nLoZ09dDvCK
+   ywU6CBpj2eV/Cqn5J+P8V8DlPmLVP30DH4052Hc9+yNS+hgtY71//AQ4v
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="435428394"
+X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
+   d="scan'208";a="435428394"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2023 13:01:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="1059115379"
+X-IronPort-AV: E=Sophos;i="6.01,245,1684825200"; 
+   d="scan'208";a="1059115379"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP; 31 Jul 2023 13:01:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qQZ4t-003ufD-1R;
+        Mon, 31 Jul 2023 23:01:15 +0300
+Date:   Mon, 31 Jul 2023 23:01:15 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Kees Cook <keescook@chromium.org>, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v3 2/4] iio: core: Add opaque_struct_size() helper and
+ use it
+Message-ID: <ZMgTCzslTd2REumj@smile.fi.intel.com>
+References: <20230724110204.46285-1-andriy.shevchenko@linux.intel.com>
+ <20230724110204.46285-3-andriy.shevchenko@linux.intel.com>
+ <20230729124618.67e89fff@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230729124618.67e89fff@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 31, 2023, at 16:58, Svyatoslav Ryhel wrote:
-> 31 =D0=BB=D0=B8=D0=BF=D0=BD=D1=8F 2023 =D1=80. 16:18:16 GMT+03:00, Arn=
-d Bergmann <arnd@arndb.de> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=B2(-=D0=
-=BB=D0=B0):
->>On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote:
->>> Add ability to use device tree bindings keeping existing setup.
->>
->>I see that there are no more in-tree users of the old
->>apds990x_platform_data, so I think it would be best to completely
->>remove that codepath and merge that structure into struct
->>apds990x_chip, to simplify the probing and avoid the extra
->>allocation.
->
-> Thank you very much for your review, but is it mandatory to drop pdata=20
-> in this particular patch set? To be honest this driver needs serious=20
-> upgrades and refactoring, and I have no dedication to invest my time=20
-> into refactoring it, moreover, I am not a maintainer of this driver,=20
-> nor a full time kernel maintainer of any kind. I am doing what I am=20
-> doing only because one of my devices uses this als but it is not=20
-> something crucial.
+On Sat, Jul 29, 2023 at 12:46:18PM +0100, Jonathan Cameron wrote:
+> On Mon, 24 Jul 2023 14:02:02 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-We have a lot of drivers that are lacking the cleanup I'm asking
-for, so I don't think I'd mandate it at this point, but I don't
-actually expect the patch to be any more complicated in the end,
-so just try it out.
+...
 
-I think at the minimum, please remove the include/platform_data
-header and move the contents into the driver itself, I'd be fine
-with that. If you can easily do further cleanup by dropping
-the separate allocation and folding the apds990x_fw_probe()
-function back into apds990x_probe(), please do that, just stop
-at the point where you feel it gets too complicated.
+> > + * Note, when @s is 0, the alignment @a is added to the sizeof(*(@p))
+> > + * and the result, depending on the @a, may be way off the initial size.
+> 
+> How often is this true?  A quick and dirty grep suggests at least 2 so perhaps
+> worth retaining the old behaviour.
 
-    Arnd
+You mean that the sizeof(_some_grepped_struct_) is much less than an alignment
+in those uses?
+
+> Can we take that into account?  Maybe something like
+> 
+> #define opaque_struct_size(p, a, s) ((s) ? size_add(ALIGN(sizeof(*(p)), (a)), (s)): sizeof(*p)) 
+
+(s) will be evaluated twice, not good. So, not in this form.
+
+> Or do it at the call site below.
+
+Looks much better to me.
+
+...
+
+> 	if (sizeof_priv)
+> 		alloc_size = opaque_struct_size(iio_dev_opaque, IIO_DMA_MINALIGN, sizeof_priv);
+> 	else
+> 		alloc_size = sizeof(struct iio_dev_opaque);
+
+Right.
+
+...
+
+> > -	indio_dev->priv = (char *)iio_dev_opaque +
+> > -		ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
+> > +	indio_dev->priv = opaque_struct_data(iio_dev_opaque, IIO_DMA_MINALIGN);
+> 
+> Would have been safer if original code set this to NULL if
+> sizeof_priv == 0
+
+Yeah, original code and proposed change has no difference in this sense.
+
+> A driver doing that should never have used iio_priv() but nicer if it was
+> NULL rather than off the end of the allocation.
+
+Agree.
+But looking at the above, I would rather see that in a form of
+
+	if (...)
+		priv = opaque_struct_data(...);
+	else
+		priv = NULL;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

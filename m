@@ -2,85 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C67D076BC06
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 20:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE16476BC14
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 20:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbjHASMW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Aug 2023 14:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60656 "EHLO
+        id S229612AbjHASNf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Aug 2023 14:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbjHASMV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 14:12:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1540510E;
-        Tue,  1 Aug 2023 11:12:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A01C66166F;
-        Tue,  1 Aug 2023 18:12:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7029AC433C8;
-        Tue,  1 Aug 2023 18:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690913540;
-        bh=E4LcPlCQ/o2sDNG8UZOTlAtL4LvKYVDiX+JdRpxfqmY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JveUG0hdxUnDM4IT9enzeTgaYZ7+MvVTnW7hcy4ADnznDv3A/Li4vJqrNQj3Llzzo
-         D28mxUnih7FBqBxhveNtQBMDphgQ9LeMdAp4fsIzBE22/IKKNA/5BeHJ011uSa5gX8
-         Kums6hdrG9Y7I4mCLsGy+eNLHELMrzN2BiBK4W6hYlUe3sFrSFhkew6vG+gWB0vVYj
-         +c6z3FvSivA2QO9k2hcad7Pjj48ZfHNlj6wchcvRvwRF60hmS0OPPeFCYY4PVPNslf
-         QxttEwTpEJ5Yy45Ix79crvW2KJ/LwylSUiqlt2vnrVeicq7iEsTfuAAMdDlNDMNiHb
-         W2fUdPd6CMK1Q==
-Date:   Tue, 1 Aug 2023 19:12:13 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        with ESMTP id S230211AbjHASNe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 14:13:34 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA281718;
+        Tue,  1 Aug 2023 11:13:33 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2b9f48b6796so22722701fa.3;
+        Tue, 01 Aug 2023 11:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690913611; x=1691518411;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SX9SROyYlg4Z57m8wNgFv1TluRxtlys2GnXNOmheIgY=;
+        b=GOtKLuKzbaetr/yM0mQawdNUEwqvjTx+JHn63H7hSXRklQ9faYuUsEznr5ur6NQxDp
+         9l5Jn8SR19Lh/pTZACMPzLUvsBmSFaY+QlfF3x6gMUTmbLjiOmc3+QLzZkeo9BOwcDgA
+         f5vy2wd7vFRQn49Zm8Peo8t9tOpjX3nt2rb9u+FXZF+o4RdystjWEylo8eT/XCnku4XS
+         tqAD47o00ArSAOYNIsvw4xKi2eJlt5L/kk7+MBXaLpJsu3yflqvYMQBEIQDw69uTATZI
+         5O8VsciWwFq+ISyPjMqwBEzbScyuyV5GJiZquGbTXV/VO1ZLEo8gVjYbk6HPeEUULPMQ
+         LPeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690913611; x=1691518411;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SX9SROyYlg4Z57m8wNgFv1TluRxtlys2GnXNOmheIgY=;
+        b=XyLL6OGqiA/CSB7wiIHdI3IDHs5+9J1aDfipNiqpmcYv1MIl1eTTZ5W0Wx720U4KSC
+         5WbM/q+kzLzddWnBqJnTvx26zA9wcANAAHfZ7TOzEWBuOsxUyjfNk2RzGLVubKmqqk08
+         dWgh5i6Luo5vlD8YntaAax9PrjTtnsltxTm6ktD1Vk32tMTgP197F7CKsuWxF2Uh3XE3
+         y44g5e+W9H20Pm1EG3EHNVIoaMVz3DyEtT70GnCeJgG3UMXKBOcSO+SjNqSJLhPhhsrC
+         LZ10UbvANatfLNOlVyMe6HpxCcyN5v+bKEaJ9J59tzZYHCPqkxzULwQthVf7G9WyWCwc
+         pi7A==
+X-Gm-Message-State: ABy/qLbWUFMVHeA0jNkJiOc0Fl4RG+yA4AjUQOli0Mi66+kSgU+WA01E
+        qwAiB8lHD7KE9xaW1QS4L3c=
+X-Google-Smtp-Source: APBJJlGvIAUJQe2AwNnP7ttKEzBGssvzjJCeL8BP9V27t4d3RAQ/LD74zzqRS9TyJDksK9ur5/CjHA==
+X-Received: by 2002:a05:651c:1028:b0:2b9:f007:9910 with SMTP id w8-20020a05651c102800b002b9f0079910mr2450664ljm.53.1690913611362;
+        Tue, 01 Aug 2023 11:13:31 -0700 (PDT)
+Received: from [127.0.0.1] ([46.211.6.234])
+        by smtp.gmail.com with ESMTPSA id f14-20020a2e6a0e000000b002b9e0d19644sm1771838ljc.106.2023.08.01.11.13.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Aug 2023 11:13:31 -0700 (PDT)
+Date:   Tue, 01 Aug 2023 21:13:30 +0300
+From:   Svyatoslav Ryhel <clamor95@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Samu Onkalo <samu.p.onkalo@nokia.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: admv1014: make all regs required
-Message-ID: <20230801191213.5fde213d@jic23-huawei>
-In-Reply-To: <defe7fb9-37b0-df31-9e66-0a126a865813@linaro.org>
-References: <20230731144404.389255-1-antoniu.miclaus@analog.com>
-        <defe7fb9-37b0-df31-9e66-0a126a865813@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Subject: Re: [PATCH v1 2/2] misc: adps990x: convert to OF
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20230801191026.02512438@jic23-huawei>
+References: <20230731110239.107086-1-clamor95@gmail.com> <20230731110239.107086-3-clamor95@gmail.com> <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com> <7C51AA15-DEBE-486B-9788-F84B260F8880@gmail.com> <c7526061-2f4e-4843-825c-98d9494af625@app.fastmail.com> <20230801191026.02512438@jic23-huawei>
+Message-ID: <8A489018-9C77-4013-B055-89853ACBF8C6@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 31 Jul 2023 17:17:59 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On 31/07/2023 16:44, Antoniu Miclaus wrote:
-> > Make the regulators required in the dt bindings.
-> > 
-> > Despite the fact that the datasheet is not explicit enough, all the
-> > specifications of the part are built around these pins being supplied.
-> > 
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > ---  
-> 
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Applied.
+1 =D1=81=D0=B5=D1=80=D0=BF=D0=BD=D1=8F 2023 =D1=80=2E 21:10:26 GMT+03:00, =
+Jonathan Cameron <jic23@kernel=2Eorg> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=
+=D0=B2(-=D0=BB=D0=B0):
+>On Mon, 31 Jul 2023 17:38:59 +0200
+>"Arnd Bergmann" <arnd@arndb=2Ede> wrote:
+>
+>> On Mon, Jul 31, 2023, at 16:58, Svyatoslav Ryhel wrote:
+>> > 31 =D0=BB=D0=B8=D0=BF=D0=BD=D1=8F 2023 =D1=80=2E 16:18:16 GMT+03:00, =
+Arnd Bergmann <arnd@arndb=2Ede> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=B2(=
+-=D0=BB=D0=B0): =20
+>> >>On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote: =20
+>> >>> Add ability to use device tree bindings keeping existing setup=2E =
+=20
+>> >>
+>> >>I see that there are no more in-tree users of the old
+>> >>apds990x_platform_data, so I think it would be best to completely
+>> >>remove that codepath and merge that structure into struct
+>> >>apds990x_chip, to simplify the probing and avoid the extra
+>> >>allocation=2E =20
+>> >
+>> > Thank you very much for your review, but is it mandatory to drop pdat=
+a=20
+>> > in this particular patch set? To be honest this driver needs serious=
+=20
+>> > upgrades and refactoring, and I have no dedication to invest my time=
+=20
+>> > into refactoring it, moreover, I am not a maintainer of this driver,=
+=20
+>> > nor a full time kernel maintainer of any kind=2E I am doing what I am=
+=20
+>> > doing only because one of my devices uses this als but it is not=20
+>> > something crucial=2E =20
+>>=20
+>> We have a lot of drivers that are lacking the cleanup I'm asking
+>> for, so I don't think I'd mandate it at this point, but I don't
+>> actually expect the patch to be any more complicated in the end,
+>> so just try it out=2E
+>>=20
+>> I think at the minimum, please remove the include/platform_data
+>> header and move the contents into the driver itself, I'd be fine
+>> with that=2E If you can easily do further cleanup by dropping
+>> the separate allocation and folding the apds990x_fw_probe()
+>> function back into apds990x_probe(), please do that, just stop
+>> at the point where you feel it gets too complicated=2E
+>>=20
+>
+>It's a long shot, but this looks pretty close in register map to
+>the apds9960 in IIO=2E
+>
+>Maybe try adding the ID to that driver and cross your fingers?
 
-Thanks,
+If you pay me for a broken phone or repair if smth goes wrong, sure, why n=
+ot=2E
 
-Jonathan
-
-> 
-> Best regards,
-> Krzysztof
-> 
-
+>There is some stuff going on around the register address / commands
+>that I haven't figured out but it looks similar for the byte access
+>path and that may be all the IIO driver is using=2E
+>
+>If you are fine testing, it's possible someone else might do the
+>leg work (if me I'll emulate just enough to convince myself I didn't
+>break it too badly)=2E Won't be high on my list, but maybe I'll get
+>a boring wet weekend sometime=2E=2E=2E
+>
+>Jonathan
+>
+>>     Arnd
+>

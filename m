@@ -2,52 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C5F76BBDC
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 20:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFAA476BBFA
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 20:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbjHASBS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Aug 2023 14:01:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55186 "EHLO
+        id S230136AbjHASKh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Aug 2023 14:10:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbjHASBR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 14:01:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC34C2110;
-        Tue,  1 Aug 2023 11:01:15 -0700 (PDT)
+        with ESMTP id S229671AbjHASKh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 14:10:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E14A10E;
+        Tue,  1 Aug 2023 11:10:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56C9B6165F;
-        Tue,  1 Aug 2023 18:01:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CAAC433C8;
-        Tue,  1 Aug 2023 18:01:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C80FA6166F;
+        Tue,  1 Aug 2023 18:10:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53358C433C8;
+        Tue,  1 Aug 2023 18:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690912874;
-        bh=SDiTEHmqRQneCIydIMNwfooNPbP30yM2hiPLGaYqj9Y=;
+        s=k20201202; t=1690913435;
+        bh=k+dw7L8vyhlKn9VUzSf3b0oQlhLBaS6C3SxWnN9fOtE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ptx2v+Vu3yMtXEfT16XDzMzFpUTBSk/3Xq71X8iJrKVJASiElf181+4Ui+0ulyEM+
-         0ez1IGRAE5meiiZrsEfnYPepMHFYqck8oFMM4lypZ/nCIObh8P0xkXVAk+HalC8G3s
-         QA/ZJUGElEONjH97muCkFqItoJNZNKnBn77DZY7BVToyERQbjniNhJY0d1o86BuyI5
-         HCh9PW8FMWhSxa4JTtPMEKr5qHreDpdQrzLvHTX8Cf7WauGot2zB4ILHn+fkPt0r4v
-         ucXOzG/wlP8tkbozN8PbJUqhO8KjEIBoMH+NnV3/pWEQLy4bJI4XaddF6kP4N658eN
-         ZsZAdIvp/54wg==
-Date:   Tue, 1 Aug 2023 19:01:07 +0100
+        b=CYBT9DHsBKKt9Bi/j8BCn+CAiaCy7IlCYCqH9uG+v13meObZ99nkdddt8wMex3qH7
+         YHKoGShoUTU/K8cNCDrigmfM4AAZwh346CH/bF1Uv21pSo+t9oM/pfqqFVNcacKilT
+         wKuJsr3d2qUSLoZoHXrCkMS6JM2zWRUUeq5h+6xY9eDIb1gJeo3r0L9KCO8WqOoqOo
+         z2d08kkwlGECnUiwWBN1/vfiIC8x26d7vwGAgEw7sB5WS4lSyXhmpSBkugV3+9vrdK
+         dyd8JkyZLhgDf5TmzU0mdtd8h4X6/4A6IJ3+xAlLYSXYVqRak/B3RofT+jeCg+tcXA
+         6aMYt/R6Vq7gw==
+Date:   Tue, 1 Aug 2023 19:10:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc:     nuno.sa@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com,
-        lgirdwood@gmail.com, broonie@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad3552r: Correct device IDs
-Message-ID: <20230801190107.2ebc3e61@jic23-huawei>
-In-Reply-To: <38b71b347f9c75e926dec55d7ecfa078aedd70c6.1690804520.git.marcelo.schmitt1@gmail.com>
-References: <38b71b347f9c75e926dec55d7ecfa078aedd70c6.1690804520.git.marcelo.schmitt1@gmail.com>
+To:     "Arnd Bergmann" <arnd@arndb.de>
+Cc:     "Svyatoslav Ryhel" <clamor95@gmail.com>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Samu Onkalo" <samu.p.onkalo@nokia.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] misc: adps990x: convert to OF
+Message-ID: <20230801191026.02512438@jic23-huawei>
+In-Reply-To: <c7526061-2f4e-4843-825c-98d9494af625@app.fastmail.com>
+References: <20230731110239.107086-1-clamor95@gmail.com>
+        <20230731110239.107086-3-clamor95@gmail.com>
+        <a16db5ac-2b9a-45ab-b693-2f459d689c7d@app.fastmail.com>
+        <7C51AA15-DEBE-486B-9788-F84B260F8880@gmail.com>
+        <c7526061-2f4e-4843-825c-98d9494af625@app.fastmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,47 +65,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 31 Jul 2023 08:59:35 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Mon, 31 Jul 2023 17:38:59 +0200
+"Arnd Bergmann" <arnd@arndb.de> wrote:
 
-> Device IDs for AD3542R and AD3552R were swapped.
-> Change device ID values so they are correct for each DAC chip.
-> 
-Hi Marcelo,
+> On Mon, Jul 31, 2023, at 16:58, Svyatoslav Ryhel wrote:
+> > 31 =D0=BB=D0=B8=D0=BF=D0=BD=D1=8F 2023 =D1=80. 16:18:16 GMT+03:00, Arnd=
+ Bergmann <arnd@arndb.de> =D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=B2(-=D0=
+=BB=D0=B0): =20
+> >>On Mon, Jul 31, 2023, at 13:02, Svyatoslav Ryhel wrote: =20
+> >>> Add ability to use device tree bindings keeping existing setup. =20
+> >>
+> >>I see that there are no more in-tree users of the old
+> >>apds990x_platform_data, so I think it would be best to completely
+> >>remove that codepath and merge that structure into struct
+> >>apds990x_chip, to simplify the probing and avoid the extra
+> >>allocation. =20
+> >
+> > Thank you very much for your review, but is it mandatory to drop pdata=
+=20
+> > in this particular patch set? To be honest this driver needs serious=20
+> > upgrades and refactoring, and I have no dedication to invest my time=20
+> > into refactoring it, moreover, I am not a maintainer of this driver,=20
+> > nor a full time kernel maintainer of any kind. I am doing what I am=20
+> > doing only because one of my devices uses this als but it is not=20
+> > something crucial. =20
+>=20
+> We have a lot of drivers that are lacking the cleanup I'm asking
+> for, so I don't think I'd mandate it at this point, but I don't
+> actually expect the patch to be any more complicated in the end,
+> so just try it out.
+>=20
+> I think at the minimum, please remove the include/platform_data
+> header and move the contents into the driver itself, I'd be fine
+> with that. If you can easily do further cleanup by dropping
+> the separate allocation and folding the apds990x_fw_probe()
+> function back into apds990x_probe(), please do that, just stop
+> at the point where you feel it gets too complicated.
+>=20
 
-Agreed with the patch and that it matches the datasheets.. However
-needs more info in the description so that people know how urgent the fix is.
+It's a long shot, but this looks pretty close in register map to
+the apds9960 in IIO.
 
-Missing.
-- Fixes tag so we know what trees need the fix (as they include the ID in
-  the fixes tag.
-- Description of the user visible effects of this bug.
+Maybe try adding the ID to that driver and cross your fingers?
 
-With those added I'll be happy to queue this up. Note I've just sent
-a pull request for fixes, so not in a hurry for this - otherwise
-I 'might' have figured out the details and added them whilst applying.
+There is some stuff going on around the register address / commands
+that I haven't figured out but it looks similar for the byte access
+path and that may be all the IIO driver is using.
 
-Thanks
+If you are fine testing, it's possible someone else might do the
+leg work (if me I'll emulate just enough to convince myself I didn't
+break it too badly). Won't be high on my list, but maybe I'll get
+a boring wet weekend sometime...
 
 Jonathan
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> ---
->  drivers/iio/dac/ad3552r.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-> index d5ea1a1be122..a492e8f2fc0f 100644
-> --- a/drivers/iio/dac/ad3552r.c
-> +++ b/drivers/iio/dac/ad3552r.c
-> @@ -140,8 +140,8 @@ enum ad3552r_ch_vref_select {
->  };
->  
->  enum ad3542r_id {
-> -	AD3542R_ID = 0x4008,
-> -	AD3552R_ID = 0x4009,
-> +	AD3542R_ID = 0x4009,
-> +	AD3552R_ID = 0x4008,
->  };
->  
->  enum ad3552r_ch_output_range {
+
+>     Arnd
 

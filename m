@@ -2,66 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B634976B447
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 14:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8847276B45A
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Aug 2023 14:04:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbjHAMDx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Aug 2023 08:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51294 "EHLO
+        id S230216AbjHAMEu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Aug 2023 08:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232623AbjHAMDe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 08:03:34 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51DA21BD3;
-        Tue,  1 Aug 2023 05:02:53 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fe463420fbso828504e87.3;
-        Tue, 01 Aug 2023 05:02:53 -0700 (PDT)
+        with ESMTP id S234574AbjHAMDL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Aug 2023 08:03:11 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772F1A1;
+        Tue,  1 Aug 2023 05:02:17 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fe389d6f19so3094235e87.3;
+        Tue, 01 Aug 2023 05:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690891371; x=1691496171;
+        d=gmail.com; s=20221208; t=1690891335; x=1691496135;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T9RO8UlUTwn3hEH6HK6IaUASxewRiScP6UARVCA4DwU=;
-        b=CbTbEjkuDxtAWmuAnL+js8Un7DPuDyWVGzTLIvCt+LmXDumdE5C361SA3H6RwvCDq5
-         9EZq9crd6VtY7h7ZN08wKKdeIo+2jQI4CplVbieLrZwXGJstsKWvoMhwm07IP6HMYH3Y
-         3ksD8VpUghrQlGDRFY5t8m3/3+WCGC1yzT5Gc1zFF9Z00Ixn5RjbQp2QI10KldX9Nthy
-         vs12jUes6M9QTiGFlpIfSQsw1DAQe4yoxhvdQRzsPBBNZNccwiHXxixQUJV8DqQ6pMqd
-         GawK7CF7/pAySWm8Ny8u6sUKy9tgvswndlcGhU66iYdSNUxWb3U4xTatoofjMwZ+OraE
-         E1eg==
+        bh=dZ24obycD5mrkQpoUsQoswLpJmFabLRX8Q+g0alpa64=;
+        b=c/9EB8XkZx4fheyF95mnag4F9DbjGT8wXzwdS4bzQq1QkPLYTiW2v+zHyGKCm9fZq9
+         nMLkf7QQNzOdBHs4cICcBMR4v7gXBay+FrfSl5DZp2HyEyEcJSJ66H+AiK1J5J+t2njT
+         FURvjTGAmnAiMtuiNsO6FQw6/+Tb9Mr+wihrP4DHHYCLpl5BeB38S4zR37IT8VgKK4sF
+         6M6/nNghvI1Tj2w4Gz8VyMShcL9DR/qjnP2eTEajov3OXyxwGhdRgYflB33Ve4/tmiU/
+         GHLLiEdN+lEqOV8r9RklwWRvVf7Z++fR7APSOvStAl9kBm7TF95okjyv94oB7yN4U9V+
+         m+aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690891371; x=1691496171;
+        d=1e100.net; s=20221208; t=1690891336; x=1691496136;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T9RO8UlUTwn3hEH6HK6IaUASxewRiScP6UARVCA4DwU=;
-        b=Uy7AHi0LxymaXhRmlS2VFRMgRCb9XxlqKZEE28J9YBte7QcKnkDS36naP/GFHPk8nq
-         Xsk33BMaJZU6gCZ7cvGpMVPZVT1HikELLv0TO5IiCUEC2m3KU3bNANA7KmrF+5xIYcap
-         6mAfSsjR4kzB3pw78YuxtdSP4dDxvI7XX9japHNDUtg+/SdCk8gCiGUexVXMG4K+VoDU
-         jPZ1D4JK9MLRhaSVls7kMHVwNEKl5/8ynHuTgGxc6bu/XbeLXdgLUdW4N3inxT5NS8nl
-         9qK2ykawn0uMvd++UBgU4OqgFqW1bucn5G59C/1CVHkgQMlT92LLOR13DEjkayiSVsby
-         T0mw==
-X-Gm-Message-State: ABy/qLZeIH+Mcz0mnkbIZwI204WUrz+RNJ+OXTdZzfrN0mc2sJoUjuwv
-        C5D9LFqYUrhipIaOK1fmaOc=
-X-Google-Smtp-Source: APBJJlH8k9qQDQnZ1nYtZrLLCdpwDqVmgDOxZJZlv3w36+eJv3zO0GNAVNtA6sXmOPXeQ9WKGgsJkg==
-X-Received: by 2002:a05:6512:1141:b0:4fe:4f8:8e75 with SMTP id m1-20020a056512114100b004fe04f88e75mr2039371lfg.68.1690891371256;
-        Tue, 01 Aug 2023 05:02:51 -0700 (PDT)
+        bh=dZ24obycD5mrkQpoUsQoswLpJmFabLRX8Q+g0alpa64=;
+        b=Fgt+XGjMnsRtkP81grNGg4x+XcYr2bhMsING/Yr0wj5ieOd4bB4zt2a+EelZj1vpj+
+         voFnoZBciJjWXAT11tMrDokN/7NAAaPdOOy+jn4Mx0s2cx+z9/fQ2R1Fxr6eTlaXaxqT
+         CLIq30n/sPe4zqdB1a+ur37ku3rHT9m/n2bwgpvPpV6HJs8D6AUFKOzwfCYrcU9RopdA
+         /r98Nygq2rdcV8w/KfbQ7R3goeZSz6YruNCB/zo/JlafhLmcuXAu+mIajknkuUKUGuTV
+         JfVWR0KA1SSKp1frRtTNSCry++DkHePo3ZwUBc7wnn2S3T10MHlG15ZLrIpZXlXmTXsR
+         tyeg==
+X-Gm-Message-State: ABy/qLZvokMk2BLIAm4vKiUZhqju3BVRy1PmX21iOblz8CvTimIZ5gor
+        k9KaSbkcHfxyQAKmf6cErk0UyoAggRI=
+X-Google-Smtp-Source: APBJJlGUbR6qseRbOp06+srd9N+Xvbusf0qVOYUB087O49MuYDLjhZ88NAwGt7XDgRkUnS8zsVijTg==
+X-Received: by 2002:a05:6512:3e02:b0:4f9:596d:c803 with SMTP id i2-20020a0565123e0200b004f9596dc803mr2817166lfv.53.1690891335344;
+        Tue, 01 Aug 2023 05:02:15 -0700 (PDT)
 Received: from fedora ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id d12-20020a05651221cc00b004f4b42e2d7dsm2518784lft.230.2023.08.01.05.02.50
+        by smtp.gmail.com with ESMTPSA id j16-20020a19f510000000b004fe15543d31sm2501193lfb.192.2023.08.01.05.02.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Aug 2023 05:02:50 -0700 (PDT)
-Date:   Tue, 1 Aug 2023 15:02:47 +0300
+        Tue, 01 Aug 2023 05:02:14 -0700 (PDT)
+Date:   Tue, 1 Aug 2023 15:02:10 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v8 2/8] iio: cdc: ad7150: relax return value check for IRQ get
-Message-ID: <3ad1c6f195ead3dfa8711235e1dead139d27f700.1690890774.git.mazziesaccount@gmail.com>
+Cc:     Andreas Klinger <ak@it-klinger.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v8 1/8] iio: mb1232: relax return value check for IRQ get
+Message-ID: <9e18cf49a8bb581a84c3fa548ea577e2a3eb840d.1690890774.git.mazziesaccount@gmail.com>
 References: <cover.1690890774.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KY2dqMcsNm14XP28"
+        protocol="application/pgp-signature"; boundary="J5xUErDDa2yWVVr+"
 Content-Disposition: inline
 In-Reply-To: <cover.1690890774.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -75,84 +75,58 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---KY2dqMcsNm14XP28
+--J5xUErDDa2yWVVr+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-fwnode_irq_get[_byname]() were changed to not return 0 anymore. The
-special error case where device-tree based IRQ mapping fails can't no
-longer be reliably detected from this return value. This yields a
-functional change in the driver where the mapping failure is treated as
-an error.
+fwnode_irq_get() was changed to not return 0 anymore.
 
-The mapping failure can occur for example when the device-tree IRQ
-information translation call-back(s) (xlate) fail, IRQ domain is not
-found, IRQ type conflicts, etc. In most cases this indicates an error in
-the device-tree and special handling is not really required.
-
-One more thing to note is that ACPI APIs do not return zero for any
-failures so this special handling did only apply on device-tree based
-systems.
-
-Drop the special handling for DT mapping failures as these can no longer
-be separated from other errors at driver side. Change all failures in
-IRQ getting to be handled by continuing without the events instead of
-aborting the probe upon certain errors.
+Drop check for return value 0.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 ---
-Revision history:
-v5 =3D> v6:
- - Never abort the probe when IRQ getting fails but continue without
-   events.
-
-Please note that I don't have the hardware to test this change.
-Furthermore, testing this type of device-tree error cases is not
-trivial, as the question we probably dive in is "what happens with the
-existing users who have errors in the device-tree". Answering to this
-question is not simple.
+Revsion history:
+v5 =3D>:
+- No changes
+v4 =3D> v5:
+ - drop unnecessary data->irqnr =3D -1 assignment
 
 The patch changing the fwnode_irq_get() got merged during 5.4:
 https://lore.kernel.org/all/fb7241d3-d1d1-1c37-919b-488d6d007484@gmail.com/
 This is a clean-up as agreed.
 ---
- drivers/iio/cdc/ad7150.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/proximity/mb1232.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/cdc/ad7150.c b/drivers/iio/cdc/ad7150.c
-index d656d2f12755..4c03b9e834b8 100644
---- a/drivers/iio/cdc/ad7150.c
-+++ b/drivers/iio/cdc/ad7150.c
-@@ -541,6 +541,7 @@ static int ad7150_probe(struct i2c_client *client)
- 	const struct i2c_device_id *id =3D i2c_client_get_device_id(client);
- 	struct ad7150_chip_info *chip;
- 	struct iio_dev *indio_dev;
-+	bool use_irq =3D true;
- 	int ret;
-=20
- 	indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*chip));
-@@ -561,14 +562,13 @@ static int ad7150_probe(struct i2c_client *client)
-=20
- 	chip->interrupts[0] =3D fwnode_irq_get(dev_fwnode(&client->dev), 0);
- 	if (chip->interrupts[0] < 0)
--		return chip->interrupts[0];
--	if (id->driver_data =3D=3D AD7150) {
-+		use_irq =3D false;
-+	else if (id->driver_data =3D=3D AD7150) {
- 		chip->interrupts[1] =3D fwnode_irq_get(dev_fwnode(&client->dev), 1);
- 		if (chip->interrupts[1] < 0)
--			return chip->interrupts[1];
-+			use_irq =3D false;
+diff --git a/drivers/iio/proximity/mb1232.c b/drivers/iio/proximity/mb1232.c
+index fb1073c8d9f7..614e65cb9d42 100644
+--- a/drivers/iio/proximity/mb1232.c
++++ b/drivers/iio/proximity/mb1232.c
+@@ -76,7 +76,7 @@ static s16 mb1232_read_distance(struct mb1232_data *data)
+ 		goto error_unlock;
  	}
--	if (chip->interrupts[0] &&
--	    (id->driver_data =3D=3D AD7151 || chip->interrupts[1])) {
-+	if (use_irq) {
- 		irq_set_status_flags(chip->interrupts[0], IRQ_NOAUTOEN);
- 		ret =3D devm_request_threaded_irq(&client->dev,
- 						chip->interrupts[0],
+=20
+-	if (data->irqnr >=3D 0) {
++	if (data->irqnr > 0) {
+ 		/* it cannot take more than 100 ms */
+ 		ret =3D wait_for_completion_killable_timeout(&data->ranging,
+ 									HZ/10);
+@@ -212,10 +212,7 @@ static int mb1232_probe(struct i2c_client *client)
+ 	init_completion(&data->ranging);
+=20
+ 	data->irqnr =3D fwnode_irq_get(dev_fwnode(&client->dev), 0);
+-	if (data->irqnr <=3D 0) {
+-		/* usage of interrupt is optional */
+-		data->irqnr =3D -1;
+-	} else {
++	if (data->irqnr > 0) {
+ 		ret =3D devm_request_irq(dev, data->irqnr, mb1232_handle_irq,
+ 				IRQF_TRIGGER_FALLING, id->name, indio_dev);
+ 		if (ret < 0) {
 --=20
 2.40.1
 
@@ -169,19 +143,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---KY2dqMcsNm14XP28
+--J5xUErDDa2yWVVr+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmTI9GcACgkQeFA3/03a
-ocUUjwf8CSetfr27ZZjtC0oqZpp4BdR53XDzoFmfXNXgmIBejxn+1VcyY0VGK86n
-4NdI/EVvuTsZuAr36tSBhy+TQzXkIVKQ4rYlyX40YQ1h5IFVSF2l/2hL2izYUTZ2
-mRcICjmW5fWGvLbw+Lmk7eCoQVo3RGiwbQe8OsIx7jdp9QJ47luFi8xIL3xcL8bX
-109lFBD+7WPSoyOPOrq0kHUsdj8wvIUk2zva8JM9s/cVeYQuAIZHjbV2enMCLeU9
-AKvouzXwpHtBE2owtYXgrzCgo2GPHeVf2cLeO5cARQXltZouvFJoIvNouSbqcQdL
-WatL9bZEndV12NS6dRRCL6lKfhM2uw==
-=hVic
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmTI9EIACgkQeFA3/03a
+ocXhWwf/Rk+MFZQNNTDcnf9QlGeY61n/OU09YlpNeDS00/n0lNKZTQ/Nrlkpe70u
+U5Vqeqr894GPIWZHeZRmAp1b50+IufAHdE1rA/2amOpOrNy9jtZjyPLY496Vparv
+PrvD/Mb08ZLYbTEjLBkevdOWJi67t+gVd7NTRz4VvALJL3VqGqocYjgdXoMKUE6R
+UxtUavr5FIvOs3HPUuYDF78ibdALFOOXw//T18SopVxytcPyo/TnUW1kYIM9xIzg
+DdfBmfLalWZwsBEVM6gX3dblrt79Vq4vkZphKVqwycaks8LBIodvuctEy+DmMx/x
+HYU5ERmgvVTa7qNfgesd3ANGuKFCQw==
+=OAE+
 -----END PGP SIGNATURE-----
 
---KY2dqMcsNm14XP28--
+--J5xUErDDa2yWVVr+--

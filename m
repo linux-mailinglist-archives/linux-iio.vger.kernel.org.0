@@ -2,64 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 139BF76CEDC
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Aug 2023 15:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 567BD76E8E2
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Aug 2023 14:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233926AbjHBNfc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Aug 2023 09:35:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34088 "EHLO
+        id S231705AbjHCM4n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Aug 2023 08:56:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233722AbjHBNfW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Aug 2023 09:35:22 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2CD2701;
-        Wed,  2 Aug 2023 06:35:20 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fbf09a9139so11314021e87.2;
-        Wed, 02 Aug 2023 06:35:20 -0700 (PDT)
+        with ESMTP id S229924AbjHCM4m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Aug 2023 08:56:42 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E1E1712;
+        Thu,  3 Aug 2023 05:56:41 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-523108efb36so499163a12.1;
+        Thu, 03 Aug 2023 05:56:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690983318; x=1691588118;
+        d=gmail.com; s=20221208; t=1691067400; x=1691672200;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cIdVDpJXzS+NvG6cPE69v+Vo8D8lHdK5ntY+IO2Phoo=;
-        b=D2kDCBtAttEWumqYhWLnqvzu6wleezJOq2vuwf5ntVyQ2rTwT6EjhipQarm7eSaZM0
-         c1p/UpO91vnGCCn0bVnT2mogT1Dl0G55aWrYyug7/TMfrZa6rXcHSGBgIpxgtgX0N8zw
-         UzzjBeDVkF95OdNCm7kbjHxJyxForQRSK20cO1Uh8XysUwBmVSrXe92W1R7b6k97Za1C
-         1CXlFiyofIeMw1Xu8uL38AzhkKL1DPVDlapdESRsHP0Oo+gsxx/J/fU5bkKfl2w37Kk5
-         R/Ij0OLkqBVnu9lbCq9ix8ykKxNtTirJVLgLpPmx1M0hJNdUwbI/JJ4w2udZ9a2XfuGp
-         VNXA==
+        bh=9w2kAX5SuWXUcxUMa/7advq5QKHG60UYwE5l01L0SL4=;
+        b=H3ibOCOUojy7D5f0/dMAe08rOL8nXB9zx2LjkJkv0CoLWmyo+cZ2sdjUQex7XzzUjZ
+         GecP/NbvZQKWjg6MQpUhv9XVWB3Uc6evWDnBRFhxjO74HMmaGZG83Q81VVRfenURPVcN
+         bvfyHXlmjER5lmnD2CFFRlt4WdixwvtMJGJh2I8OaMi2xVx9o6HU7WyjPuv3yAw15JAV
+         lJmYyR4WikgXhitDWGMzYC8Ihm6SfSomNBetyrrNJY4pnsQthav6IfZ53zn4Hbehgmx2
+         7LoX6BUIDIZHyK81SDQDRvAOtllsF1/RAfl9ak7JpQQsvcjeNVkNavDtRA3nU7B4XmuE
+         Ar0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690983318; x=1691588118;
+        d=1e100.net; s=20221208; t=1691067400; x=1691672200;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cIdVDpJXzS+NvG6cPE69v+Vo8D8lHdK5ntY+IO2Phoo=;
-        b=h/zcyyqPB94MXbVhYctbh2iOVxn/TfXDljKpyvrkmIubsYF7levmqNh48dCbG5KZM5
-         r74l2ssc8IVQmolQvhMk7fctsBl9/A24BOs4VSIjVR2tRM7nmh+qC9zLd8pavWpAQLAe
-         7zuP07U/lEsHS0DEVX8o8WtN2KHH600Oj6+kWx+rl5Npe/gtHX6H/xA6OriJTigiAF+Y
-         c1p5FV6yoeZeW9sAvsxunxBVpwQ/CWhe3sByRCMFILHT4iIQjwd/j4EWP3xLoigZVeyy
-         fKnsji9XJYz2vJ7MFtIGIH2BH9lC21t84Uy2lFICycgA+b6u4mRLQl4pi5BZfIEhX8EU
-         qmjw==
-X-Gm-Message-State: ABy/qLYwPGj5JVOpPu1ylfcD0sfMEYiWQBoAtvwpN0t6SAUpvNCqLNSD
-        tSfA4K+QrdsF9JmkgPGbo3OzOJYF8PV1mA==
-X-Google-Smtp-Source: APBJJlEHTtK/CnKxbSzEwYziNluvzwpl4TyauHGwMYXt4Y6XTzcawP+k/3a8BYfEbHGb3QZCY1jRUg==
-X-Received: by 2002:a19:501a:0:b0:4fe:2f8a:457e with SMTP id e26-20020a19501a000000b004fe2f8a457emr4109315lfb.43.1690983317800;
-        Wed, 02 Aug 2023 06:35:17 -0700 (PDT)
-Received: from localhost.localdomain ([78.97.234.98])
-        by smtp.gmail.com with ESMTPSA id d15-20020aa7d68f000000b00522594a614fsm8547719edr.13.2023.08.02.06.35.16
+        bh=9w2kAX5SuWXUcxUMa/7advq5QKHG60UYwE5l01L0SL4=;
+        b=aevDG4PV8dJNvxl/rLBRSqPqVyok7Ksnav3zrr/988Jv6SxJB8qoXeBQibcCQejFtA
+         o6/ICP4CXiIw0oY20NG2tLd8KNFNKKYIrL/2JXQkSToDanKVY0Z8gDbla+QeIoB7bqf9
+         A0v4oAh12SE19vlMINxhvGbVdADLmZVl/NB5kz4F2teUCTwx5LD3xsEmk3ne3d8uL8/5
+         MseDy9XMQJafAR5Iegy+h8BjtChPy5F12Ck6ahAy4Qp0GGp8+hx8W0AwQSBjN9UpsYow
+         lp78m+v4CT3gvrkQFLMXYsfTlwr/kZf1NGi7DYwLNVcvWPit3k/xPcTQqT6R5WfCHvBM
+         i/Fg==
+X-Gm-Message-State: ABy/qLaLz0gb0004nCTobYcrupGErdhvzq03G44f8z0TBlZKgw5GIy9y
+        J/ZUvJIrdkeYd+pxEfu73s8=
+X-Google-Smtp-Source: APBJJlGDtIbCvMmKx/Bm1ASPtAVgVnQMJIdWxxexX0nBxEAKPzbyqADWOguSCp1E5vLkt+biTy0Iww==
+X-Received: by 2002:a17:906:3cb1:b0:99b:f08d:a390 with SMTP id b17-20020a1709063cb100b0099bf08da390mr6778946ejh.26.1691067399651;
+        Thu, 03 Aug 2023 05:56:39 -0700 (PDT)
+Received: from colla-nuc.fritz.box (host-79-26-241-62.retail.telecomitalia.it. [79.26.241.62])
+        by smtp.gmail.com with ESMTPSA id ci18-20020a170906c35200b0099bd682f317sm10378877ejb.206.2023.08.03.05.56.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Aug 2023 06:35:17 -0700 (PDT)
-From:   Andrei Coardos <aboutphysycs@gmail.com>
-To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com, linux-iio@vger.kernel.org
-Cc:     alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com,
-        lars@metafoo.de, jic23@kernel.org,
-        Andrei Coardos <aboutphysycs@gmail.com>,
-        Alexandru Ardelean <alex@shruggie.ro>
-Subject: [PATCH v2] iio: trigger: stm32-lptimer-trigger: remove unneeded platform_set_drvdata()
-Date:   Wed,  2 Aug 2023 16:35:09 +0300
-Message-Id: <20230802133509.29381-1-aboutphysycs@gmail.com>
+        Thu, 03 Aug 2023 05:56:39 -0700 (PDT)
+Received: from colla-nuc.fritz.box (localhost [127.0.0.1])
+        by colla-nuc.fritz.box (8.15.2/8.15.2/Debian-22ubuntu3) with ESMTP id 373CucRs207731;
+        Thu, 3 Aug 2023 14:56:38 +0200
+Received: (from colla@localhost)
+        by colla-nuc.fritz.box (8.15.2/8.15.2/Submit) id 373Cub6h207730;
+        Thu, 3 Aug 2023 14:56:37 +0200
+From:   Andrea Collamati <andrea.collamati@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andrea Collamati <andrea.collamati@gmail.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: =?UTF-8?q?=5BPATCH=20v4=200/2=5D=20add=20MCP4728=20I2C=20DAC=20driver=E2=80=8B?=
+Date:   Thu,  3 Aug 2023 14:56:33 +0200
+Message-Id: <cover.1691066050.git.andrea.collamati@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -71,41 +80,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This function call was found to be unnecessary as there is no equivalent
-platform_get_drvdata() call to access the private data of the driver. Also,
-the private data is defined in this driver, so there is no risk of it being
-accessed outside of this driver file.
+Changes v3->v4:
+- sorted includes
+- driver name inlined
+- used FIELD_PREP() / FIELD_GET() to define/access regs
+- fix comment style
+- removed infrastructur form multiple support devices
+- wrapped up custom ABI in the standard ABI of _scale
+- used dev_get_drvdata(dev) to cleanup code
+- used devm_add_action_or_reset to cleanup code
 
-Reviewed-by: Alexandru Ardelean <alex@shruggie.ro>
-Signed-off-by: Andrei Coardos <aboutphysycs@gmail.com>
----
+Changes v2->v3:
+- fix wrong i2c_device_id array indentation
+- removed double blank line in Kconfig
+- added description in dt-bindings
+- use uppercase letters for device name
 
-Changelog V1->V2:
+Changes v1->v2:
+- fix mcp4728_remove prototype
+- improve indentation
+- various fixes suggested by checkscript.pl
+- removed unused of_device_id.data field
+- removed unuseful mcp4728_data.id field
+- various fixes suggested by dt_binding_check
 
-* https://lore.kernel.org/linux-iio/CAH3L5QpuoDYU6qvWH7_z5Yx0cW2qPMbCA8AFEYAPsiEkSzCiwQ@mail.gmail.com/T/#t
-* Adjusted the returning values of the function
+Andrea Collamati (2):
+  dt-bindings: iio: dac: add mcp4728.yaml
+  iio: add MCP4728 I2C DAC driver
 
+ .../bindings/iio/dac/microchip,mcp4728.yaml   |  49 ++
+ drivers/iio/dac/Kconfig                       |  11 +
+ drivers/iio/dac/Makefile                      |   1 +
+ drivers/iio/dac/mcp4728.c                     | 626 ++++++++++++++++++
+ 4 files changed, 687 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/microchip,mcp4728.yaml
+ create mode 100644 drivers/iio/dac/mcp4728.c
 
- drivers/iio/trigger/stm32-lptimer-trigger.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/drivers/iio/trigger/stm32-lptimer-trigger.c b/drivers/iio/trigger/stm32-lptimer-trigger.c
-index df2416e33375..ab1cc6a05f26 100644
---- a/drivers/iio/trigger/stm32-lptimer-trigger.c
-+++ b/drivers/iio/trigger/stm32-lptimer-trigger.c
-@@ -88,11 +88,7 @@ static int stm32_lptim_trigger_probe(struct platform_device *pdev)
- 	priv->dev = &pdev->dev;
- 	priv->trg = stm32_lptim_triggers[index];
- 
--	ret = stm32_lptim_setup_trig(priv);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return stm32_lptim_setup_trig(priv);
- }
- 
- static const struct of_device_id stm32_lptim_trig_of_match[] = {
 -- 
 2.34.1
 

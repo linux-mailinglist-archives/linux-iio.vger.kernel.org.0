@@ -2,108 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFDC76F35E
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Aug 2023 21:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC07476F3B3
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Aug 2023 21:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbjHCTWf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Aug 2023 15:22:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59160 "EHLO
+        id S231356AbjHCT42 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Aug 2023 15:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbjHCTWd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Aug 2023 15:22:33 -0400
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C362BA
-        for <linux-iio@vger.kernel.org>; Thu,  3 Aug 2023 12:22:32 -0700 (PDT)
-Received: by mail-ua1-x92d.google.com with SMTP id a1e0cc1a2514c-79a31d66002so455156241.3
-        for <linux-iio@vger.kernel.org>; Thu, 03 Aug 2023 12:22:32 -0700 (PDT)
+        with ESMTP id S230172AbjHCT41 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Aug 2023 15:56:27 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3DC1706;
+        Thu,  3 Aug 2023 12:56:27 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1bf7eb259d5so598507fac.0;
+        Thu, 03 Aug 2023 12:56:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691090551; x=1691695351;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o1T2gH68DArT9FmYrPj9BMhK77ECutQD6S0cdO/cxM0=;
-        b=ny84zohfpmzmtt0eYE61+7x5gx6BbdREdY81Vr973udeoVVY8AKYPLmVx1AYaSMEWY
-         XJ2rExN7Cuw0Ovhf0XNk0YFt/B3prBwO516BJRAtjOJQASz/AScIZGZ+eUea1mpPeYCh
-         MooxQRXVSKGTtu3+8eVEjbEfzjGhCTIYBSI6vMxH8X2x+PpxrzzLwE19Q1ohmXFo11r4
-         8N13qe7YqeZ3GCVgksAc+vTJBFn3K29QOMzbulRh/zmJUs8brkfDrFlX7Np6xg6RMlrZ
-         STPFouGaVLYBt3A3pbrS9dWIDizU7h31fZugVNxxRpKjMPzf7FSFoDTSM+vImlRNSWXy
-         UxPg==
+        d=gmail.com; s=20221208; t=1691092586; x=1691697386;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FA21cdF3ub2w1qPV3MyZWOJAJ8z0WCJcF7ZXUjUMPYw=;
+        b=Ixygbdk9dAWXPPgsaH5duaOFAPejcKPOehOpKovKOspLOlwQc2QFqDs7h3yMAFuSgr
+         nDGt7bf1zxdC6cRt5qXX9bByWv2QvC06tmlWdoBg9E+W+PiXHe+swHO8zGAgZ0J5wnWm
+         dm+EkczTPhzpO47/xxxQvQRqC5cT9BXsvNXw+z2LDiGWK1hGLrg1TDvkCf+kKrmfxtVn
+         8SkR9BjQsAqiZy7kgIU4P2EF+xyjEP24Na5LsRtU4GxIsmPGUPL0fltOsr6D7L0ruehq
+         P/xdBvl19Rq6RqGdZ/GSLKPHPvxmEpEAiIw2m6N3Kh5dRCTvjBFfgsHn/j1BA/53XmIu
+         lk8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691090551; x=1691695351;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o1T2gH68DArT9FmYrPj9BMhK77ECutQD6S0cdO/cxM0=;
-        b=g5X80zz05UIzGyLK/M4Ab3Jnt1mlY7kEIOWPGU3an64ai6rPOXFk1gPia/WWuWwaB9
-         bjQ65V7F+hu2+ssX3eyGgLY0SNB0z8wHQs8pmGO26WEl8GjAwhqKUgn6D1UheDrvujRy
-         XJV/ylo6K8PEDKsOPzH/7sf/8WFJdLUcvZPiMmQuvBodUr4DhJ7rRkNnpFg64D20bmKf
-         J97M/CLFr07Avcx4gHojb85wFkQ/nVyVKa9GpoJiZ7w6UqxeTX62N8t1dJ8Bg7VmRg9B
-         TE0A62iZ8Xm/maS1iw9LBuU0JuE9DbrbVz6+3nLKeav2fFYNh+DbmDr/pig0oZJC5/ZR
-         wK6g==
-X-Gm-Message-State: ABy/qLZdklEddaEWjqPqwipQkxU3cbsKqmnTarnuO7r+eAc9YOOkPAP7
-        hatxaqMQ8n40StByTzlucsOliV8IvDxvv08b/h8=
-X-Google-Smtp-Source: APBJJlGyfRXQMER1Gt5fDu8Rdp2YZU7so89bf9DIrdnQtZPa3YHIvsOIjX6tpZc0ra1uNwewnbg0Eg==
-X-Received: by 2002:a67:fd69:0:b0:444:c644:c231 with SMTP id h9-20020a67fd69000000b00444c644c231mr7199155vsa.12.1691090551551;
-        Thu, 03 Aug 2023 12:22:31 -0700 (PDT)
-Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
-        by smtp.gmail.com with ESMTPSA id i19-20020a67c213000000b0044794fe40f3sm81153vsj.21.2023.08.03.12.22.30
+        d=1e100.net; s=20221208; t=1691092586; x=1691697386;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FA21cdF3ub2w1qPV3MyZWOJAJ8z0WCJcF7ZXUjUMPYw=;
+        b=f7KpabNwL8hpRkNQyHa/VMcYiwYunqYnUz278V91zIAM0k+cDR7a2N/aXqHFjXP5Xw
+         hQDzZfft6mxXoU+DraZPgZdra2IvahIt35wCf0jbp+EUI+oe5+3UXmDnyyleXu++/7Aj
+         Ly5MWtUr7ZgRKUHZEY+EZ0RrA0bSi38YdyZ1dcqyro4AI+3hMg5YDa/J4MNoJgz+2lhN
+         st4liPSQ8ICheoa7Yb1pKSq/XXGT/21/rSQ3wwvUbC0YSSra2vxkQsbtWWXIS72GJaY7
+         kQ0WrB7POEmURmNBFwiPAO9Q6YeHHFXAFmy+t3io9parhUq/haP3Vb4vvKC5IT9wsW6G
+         ozZA==
+X-Gm-Message-State: ABy/qLZhLfy667CARcqIiqhEBBZBM5BQpsUx/rtp5GDenqHdYPlVLjEE
+        nmw19YLwcjnSGmyczqHxN0I=
+X-Google-Smtp-Source: APBJJlG6VcN8dQbEB6JbHAxHDmeZsOBLfZ9UdvEXJ0dum+BPbm3XOOYyopVIemX2wSQ5WsH8GBH4qA==
+X-Received: by 2002:a05:6870:c111:b0:1a6:8911:61a9 with SMTP id f17-20020a056870c11100b001a6891161a9mr17496810oad.29.1691092586249;
+        Thu, 03 Aug 2023 12:56:26 -0700 (PDT)
+Received: from localhost ([2804:30c:927:dd00:76d4:c2a9:4431:27fe])
+        by smtp.gmail.com with ESMTPSA id dw23-20020a056870771700b001a9911765efsm330787oab.40.2023.08.03.12.56.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 12:22:30 -0700 (PDT)
-Date:   Thu, 3 Aug 2023 15:22:28 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Pavel Machek <pavel@denx.de>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH v3] counter: rz-mtu3-cnt: Reorder locking sequence for
- consistency
-Message-ID: <ZMv+dICGMsWoVpfU@fedora>
-References: <20230725154611.227556-1-biju.das.jz@bp.renesas.com>
+        Thu, 03 Aug 2023 12:56:25 -0700 (PDT)
+Date:   Thu, 3 Aug 2023 16:56:23 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     nuno.sa@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com,
+        jic23@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
+        Chandrakant.Minajigi@analog.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: dac: ad3552r: Correct device IDs
+Message-ID: <011f480220799fbfabdd53896f8a2f251ad995ad.1691091324.git.marcelo.schmitt1@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UibedGS5+vaQ13nT"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230725154611.227556-1-biju.das.jz@bp.renesas.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Device IDs for AD3542R and AD3552R were swapped leading to unintended
+collection of DAC output ranges being used for each design.
+Change device ID values so they are correct for each DAC chip.
 
---UibedGS5+vaQ13nT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Reported-by: Chandrakant Minajigi <Chandrakant.Minajigi@analog.com>
+---
+A user has reported that the IDs were wrong and the output ranges were not ok.
+Also, the dt-doc and the driver require the adi,output-range-microvolt property
+for ad3542r but not for ad3552r, which could cause actual ad3552r probing to
+fail if the device node did not have that property.
+It's not clear from datasheet if setting the output range is really required for
+ad3542r.
 
-On Tue, Jul 25, 2023 at 04:46:11PM +0100, Biju Das wrote:
-> All functions except rz_mtu3_count_enable_write(), call
-> pm_runtime_{get,put} inside the lock. For consistency do the same here.
->=20
-> Reported-by: Pavel Machek <pavel@denx.de>
-> Closes: https://lore.kernel.org/r/ZH8Fmom8vZ4DwxqA@duo.ucw.cz
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Was once better at sending patches. Hope I get used to it again :)
 
-Applied to counter-next.
+Thanks
 
-Thanks,
+ drivers/iio/dac/ad3552r.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-William Breathitt Gray
+diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
+index d5ea1a1be122..a492e8f2fc0f 100644
+--- a/drivers/iio/dac/ad3552r.c
++++ b/drivers/iio/dac/ad3552r.c
+@@ -140,8 +140,8 @@ enum ad3552r_ch_vref_select {
+ };
+ 
+ enum ad3542r_id {
+-	AD3542R_ID = 0x4008,
+-	AD3552R_ID = 0x4009,
++	AD3542R_ID = 0x4009,
++	AD3552R_ID = 0x4008,
+ };
+ 
+ enum ad3552r_ch_output_range {
+-- 
+2.40.1
 
---UibedGS5+vaQ13nT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZMv+dAAKCRC1SFbKvhIj
-K/RtAP9TCfM4UxCGQVG1P2aWQTVJHQ5DFEzToiJfx8uI08ecmgD8DF+rWeTgFQSr
-oa5KQUHNKF5kxByXX1wGkWAu/9jkIAQ=
-=d4Z9
------END PGP SIGNATURE-----
-
---UibedGS5+vaQ13nT--

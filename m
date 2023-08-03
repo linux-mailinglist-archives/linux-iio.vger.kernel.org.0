@@ -2,60 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68E876F2F8
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Aug 2023 20:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFDC76F35E
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Aug 2023 21:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230409AbjHCStn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Aug 2023 14:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33740 "EHLO
+        id S229799AbjHCTWf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Aug 2023 15:22:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234903AbjHCSsB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Aug 2023 14:48:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F032D4E;
-        Thu,  3 Aug 2023 11:47:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 820BB61E8C;
-        Thu,  3 Aug 2023 18:46:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353FBC433C7;
-        Thu,  3 Aug 2023 18:46:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691088416;
-        bh=GFEg2m6DB2KbdjEpaONHepp4fVsAqm7MaT+ukZJmCgw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GcnbVzceeIb3dwHAqgGzYuX+MZd+B/nCCk8GUiuEVcnKb2FvRSCAc9Nm7aeEBDkJe
-         W//AMrZcAmPdtHktj9kbO4ebjRuK3f+enyUUxf+ccrkl8T/GU4DBnniMXHAWBBvN25
-         s870lEbIQepWS/I+JQsfPIgRIGm98uMXbo+VKnr2tdC1XFFZC5LCKNAimQ5jJENHgh
-         mVV1eOCP8z/2bbzczxsqgNJaNClyHTs2OxTx94vGOcU7SzozFGIAtOdH4dJ5QzUCsr
-         gS2Vj6SuwVwoLcmkMmjy+huOQgGzAYoh573AaTY1c9pydxxkfL/hxOh5xJMNZ1swcw
-         RiPHIdIbjRsyA==
-Date:   Thu, 3 Aug 2023 19:46:51 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Andrea Collamati <andrea.collamati@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: dac: add mcp4728.yaml
-Message-ID: <20230803-muzzle-shorten-5e59c2985a3c@spud>
-References: <cover.1691066050.git.andrea.collamati@gmail.com>
- <d93dd116cfa7f958c038c0c62993071ea48451d2.1691066050.git.andrea.collamati@gmail.com>
- <20230803-art-marbles-c57091465420@spud>
- <8077daef-bbcc-4162-a9c8-18bae3372878@gmail.com>
+        with ESMTP id S229590AbjHCTWd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Aug 2023 15:22:33 -0400
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C362BA
+        for <linux-iio@vger.kernel.org>; Thu,  3 Aug 2023 12:22:32 -0700 (PDT)
+Received: by mail-ua1-x92d.google.com with SMTP id a1e0cc1a2514c-79a31d66002so455156241.3
+        for <linux-iio@vger.kernel.org>; Thu, 03 Aug 2023 12:22:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691090551; x=1691695351;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o1T2gH68DArT9FmYrPj9BMhK77ECutQD6S0cdO/cxM0=;
+        b=ny84zohfpmzmtt0eYE61+7x5gx6BbdREdY81Vr973udeoVVY8AKYPLmVx1AYaSMEWY
+         XJ2rExN7Cuw0Ovhf0XNk0YFt/B3prBwO516BJRAtjOJQASz/AScIZGZ+eUea1mpPeYCh
+         MooxQRXVSKGTtu3+8eVEjbEfzjGhCTIYBSI6vMxH8X2x+PpxrzzLwE19Q1ohmXFo11r4
+         8N13qe7YqeZ3GCVgksAc+vTJBFn3K29QOMzbulRh/zmJUs8brkfDrFlX7Np6xg6RMlrZ
+         STPFouGaVLYBt3A3pbrS9dWIDizU7h31fZugVNxxRpKjMPzf7FSFoDTSM+vImlRNSWXy
+         UxPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691090551; x=1691695351;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o1T2gH68DArT9FmYrPj9BMhK77ECutQD6S0cdO/cxM0=;
+        b=g5X80zz05UIzGyLK/M4Ab3Jnt1mlY7kEIOWPGU3an64ai6rPOXFk1gPia/WWuWwaB9
+         bjQ65V7F+hu2+ssX3eyGgLY0SNB0z8wHQs8pmGO26WEl8GjAwhqKUgn6D1UheDrvujRy
+         XJV/ylo6K8PEDKsOPzH/7sf/8WFJdLUcvZPiMmQuvBodUr4DhJ7rRkNnpFg64D20bmKf
+         J97M/CLFr07Avcx4gHojb85wFkQ/nVyVKa9GpoJiZ7w6UqxeTX62N8t1dJ8Bg7VmRg9B
+         TE0A62iZ8Xm/maS1iw9LBuU0JuE9DbrbVz6+3nLKeav2fFYNh+DbmDr/pig0oZJC5/ZR
+         wK6g==
+X-Gm-Message-State: ABy/qLZdklEddaEWjqPqwipQkxU3cbsKqmnTarnuO7r+eAc9YOOkPAP7
+        hatxaqMQ8n40StByTzlucsOliV8IvDxvv08b/h8=
+X-Google-Smtp-Source: APBJJlGyfRXQMER1Gt5fDu8Rdp2YZU7so89bf9DIrdnQtZPa3YHIvsOIjX6tpZc0ra1uNwewnbg0Eg==
+X-Received: by 2002:a67:fd69:0:b0:444:c644:c231 with SMTP id h9-20020a67fd69000000b00444c644c231mr7199155vsa.12.1691090551551;
+        Thu, 03 Aug 2023 12:22:31 -0700 (PDT)
+Received: from fedora (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id i19-20020a67c213000000b0044794fe40f3sm81153vsj.21.2023.08.03.12.22.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 12:22:30 -0700 (PDT)
+Date:   Thu, 3 Aug 2023 15:22:28 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Pavel Machek <pavel@denx.de>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH v3] counter: rz-mtu3-cnt: Reorder locking sequence for
+ consistency
+Message-ID: <ZMv+dICGMsWoVpfU@fedora>
+References: <20230725154611.227556-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wapNLu/LBcZ2UjUH"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="UibedGS5+vaQ13nT"
 Content-Disposition: inline
-In-Reply-To: <8077daef-bbcc-4162-a9c8-18bae3372878@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230725154611.227556-1-biju.das.jz@bp.renesas.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -63,42 +75,35 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---wapNLu/LBcZ2UjUH
+--UibedGS5+vaQ13nT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 03, 2023 at 08:39:30PM +0200, Andrea Collamati wrote:
-> On 8/3/23 17:21, Conor Dooley wrote:
-> > On Thu, Aug 03, 2023 at 02:56:34PM +0200, Andrea Collamati wrote:
-> >> Add documentation for MCP4728
-> >>
-> >> Signed-off-by: Andrea Collamati <andrea.collamati@gmail.com>
-> > I gave you a reviewed-by on v3, is there a reason that you dropped it?
-
-> Sorry it's the first time I try to submit a driver.
-
-No worries. It's just hard to know if people do things intentionally or
-not!
-
-> So after your positive review I should add...
+On Tue, Jul 25, 2023 at 04:46:11PM +0100, Biju Das wrote:
+> All functions except rz_mtu3_count_enable_write(), call
+> pm_runtime_{get,put} inside the lock. For consistency do the same here.
 >=20
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
->=20
-> I will do in v5.
+> Reported-by: Pavel Machek <pavel@denx.de>
+> Closes: https://lore.kernel.org/r/ZH8Fmom8vZ4DwxqA@duo.ucw.cz
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-But don't post a v5 for that alone, if this version is fine then it can
-be picked up on application.
+Applied to counter-next.
 
---wapNLu/LBcZ2UjUH
+Thanks,
+
+William Breathitt Gray
+
+--UibedGS5+vaQ13nT
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMv2GwAKCRB4tDGHoIJi
-0uzoAPoDksbA688aJm4Cr6zqDm0rcUNAucXQEpRVHd1bAEO60wD/VWEuPceGWKat
-ui7rltRkgUyDhB+LEmSe+vwnPWzNRg0=
-=vYmp
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZMv+dAAKCRC1SFbKvhIj
+K/RtAP9TCfM4UxCGQVG1P2aWQTVJHQ5DFEzToiJfx8uI08ecmgD8DF+rWeTgFQSr
+oa5KQUHNKF5kxByXX1wGkWAu/9jkIAQ=
+=d4Z9
 -----END PGP SIGNATURE-----
 
---wapNLu/LBcZ2UjUH--
+--UibedGS5+vaQ13nT--

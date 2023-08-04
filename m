@@ -2,119 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 371E37704B0
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 17:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C40A57705B5
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 18:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjHDP3d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Aug 2023 11:29:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34822 "EHLO
+        id S229526AbjHDQRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Aug 2023 12:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230158AbjHDP3P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 11:29:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F31CC55A8;
-        Fri,  4 Aug 2023 08:28:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA7B56207B;
-        Fri,  4 Aug 2023 15:28:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E616C433CC;
-        Fri,  4 Aug 2023 15:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691162912;
-        bh=56zoPeM/CV8ihxlnw5WYA8d04D9FlMkTeWO4Tsa8NqU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hrgCRcnaZajvRqDBsuL2DRhZQ4Qb/xMJjIgluxRWXeW4Zf7Yixf2tRDJXBRNweKZ1
-         QlOAvCLPMlpuATurkOyOdTpUxsK5KrrJFdLji93N6B+H8OJugV7Kjqv52z8/oFvOkJ
-         MUJAW5HysFgFOyfHqtjGXNptDxWpQa/01+lSmQSeZlTqbYkDRQi4SlZLsC3K1ly8Ja
-         mb7wr1pI3XtZR/98pCVPrJroOG92sCnKsHLnP51N3IXriHe1LpRbVk9W+u7sEk+qFG
-         Nh4wM2qnd4WackmUgbvVVbTknyDqDBo7NTsQqkvvpXyN1qCot2SFoA7CYNp8mFlk+8
-         dcxw7IAMGx5Bw==
-Date:   Fri, 4 Aug 2023 16:28:28 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     marius.cristea@microchip.com
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] Adding support for Microchip MCP3564 ADC family
-Message-ID: <20230804-doze-confining-edf4f50d736d@spud>
-References: <20230804142820.89593-1-marius.cristea@microchip.com>
+        with ESMTP id S229499AbjHDQRl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 12:17:41 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 90250B2;
+        Fri,  4 Aug 2023 09:17:39 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.01,255,1684767600"; 
+   d="scan'208";a="171950178"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 05 Aug 2023 01:17:38 +0900
+Received: from localhost.localdomain (unknown [10.226.93.35])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 9436840116B5;
+        Sat,  5 Aug 2023 01:17:33 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-acpi@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-rtc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+Date:   Fri,  4 Aug 2023 17:17:24 +0100
+Message-Id: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="69mBrM4Ph1nZWzIB"
-Content-Disposition: inline
-In-Reply-To: <20230804142820.89593-1-marius.cristea@microchip.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+This patch series extend device_get_match_data() to struct bus_type,
+so that buses like I2C can get matched data.
 
---69mBrM4Ph1nZWzIB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+There is a plan to replace i2c_get_match_data()->device_get_match_data()
+later, once this patch hits mainline as it is redundant.
 
-On Fri, Aug 04, 2023 at 05:28:18PM +0300, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> Adding support for Microchip family of 153.6 ksps, Low-Noise 16/24-Bit
-> Delta-Sigma ADCs with an SPI interface. This driver covers the following =
-part
-> numbers:
->  - MCP3561, MCP3562, MCP3564, MCP3561R, MCP3562R, MCP3564R,
->  - MCP3461, MCP3462, MCP3464, MCP3461R, MCP3462R and MCP3464R.
->=20
-> Differences related to previous patch:
-> v3:
-> - fix review comments:
->   - fix and update the device tree bindings
->   - enable "auto_zeroing_ref_enable" attribute only
->     when internal reference is used
->   - remove unused headers
->   - fix comments (kernel-docs)
->   - remove scan_type
->   - replace "extend_name" with read_label
->   - print label for each channel (label could be added into the dt)
->   - add comment to explain the maximum channels numbers
->   - add protection around critical region
+v6->v7:
+ * Added ack from Greg Kroah-Hartman for patch#1
+ * Swapped patch#2 and patch#3 from v6.
+ * Added Rb tag from Andy for patch#2 and patch#4
+ * Updated commit description of patch#2 by removing unnecessary wrapping.
+ * Updated typo in commit description struct bus_type()->struct bus_type.
+v5->v6:
+ * Cced linux-rtc and linux-iio as these subsytems uses i2c_get_match_
+   data() and this function become redundant once this patch series hits
+   mainline.
+ * Added Rb tag from Sakari for patch#1.
+ * Moved patch#3 from v5 to patch#2 and patch#2 from v5 to patch#4.
+ * Added Rb tag from Andy for patch#2
+ * Separate patch#3 to prepare for better difference for
+   i2c_match_id() changes.
+ * Merged patch#4 from v5 with patch#4.
+v4->v5:
+ * Added const struct device_driver variable 'drv' in i2c_device_get_match
+   _data().
+ * For code readability and maintenance perspective, added separate NULL
+   check for drv and client variable and added comment for NULL check for
+   drv variable.
+ * Created separate patch for converting i2c_of_match_device_sysfs() to
+   non-static.
+ * Removed export symbol for i2c_of_match_device_sysfs().
+ * Replaced 'dev->driver'->'drv'.
+ * Replaced return value data->NULL to avoid (potentially) stale pointers,
+   if there is no match.
+v3->v4:
+ * Documented corner case for device_get_match_data()
+ * Dropped struct i2c_driver parameter from i2c_get_match_data_helper()
+ * Split I2C sysfs handling in separate patch(patch#3)
+ * Added space after of_device_id for i2c_of_match_device_sysfs()
+ * Added const parameter for struct i2c_client, to prevent overriding it's
+   pointer.
+ * Moved declaration from public i2c.h->i2c-core.h
+v2->v3:
+ * Added Rb tag from Andy for patch#1.
+ * Extended to support i2c_of_match_device() as suggested by Andy.
+ * Changed i2c_of_match_device_sysfs() as non-static function as it is
+   needed for i2c_device_get_match_data().
+ * Added a TODO comment to use i2c_verify_client() when it accepts const
+   pointer.
+ * Added multiple returns to make code path for device_get_match_data()
+   faster in i2c_get_match_data().
+RFC v1->v2:
+ * Replaced "Signed-off-by"->"Suggested-by" tag for Dmitry.
+ * Documented device_get_match_data().
+ * Added multiple returns to make code path for generic fwnode-based
+   lookup faster.
+ * Fixed build warnings reported by kernel test robot <lkp@intel.com>
+ * Added const qualifier to return type and parameter struct i2c_driver
+   in i2c_get_match_data_helper().
+ * Added const qualifier to struct i2c_driver in i2c_get_match_data()
+ * Dropped driver variable from i2c_device_get_match_data()
+ * Replaced to_i2c_client with logic for assigning verify_client as it
+   returns non const pointer.
 
->   - fallback compatible in device tree to deal with some newer part number
+Biju Das (4):
+  drivers: fwnode: Extend device_get_match_data() to struct bus_type
+  i2c: Enhance i2c_get_match_data()
+  i2c: i2c-core-of: Convert i2c_of_match_device_sysfs() to non-static
+  i2c: Add i2c_device_get_match_data() callback
 
-The compatibles are all still in an enum in the binding with no
-fallbacks. Did you forget to commit this?
+ drivers/base/property.c     | 27 ++++++++++++++++-
+ drivers/i2c/i2c-core-base.c | 60 ++++++++++++++++++++++++++++++-------
+ drivers/i2c/i2c-core-of.c   |  4 +--
+ drivers/i2c/i2c-core.h      |  9 ++++++
+ include/linux/device/bus.h  |  3 ++
+ 5 files changed, 90 insertions(+), 13 deletions(-)
 
-Thanks,
-Conor.
+-- 
+2.25.1
 
->  =20
-> - Open questions:
->   - whether or not to add a spi-mux type of thing to deal with the part n=
-umber
->     address in case there are multiple devices connected to the same chip
->     select.
->   - discussion related to the "custom property". Last time around a conse=
-nsus
->     wasn't reached.=20
-
---69mBrM4Ph1nZWzIB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZM0ZHAAKCRB4tDGHoIJi
-0mUTAP46a8eRFu3rukoDmNmwgNsOmobBPRGPtSnMPkJ2r8SheAD/W9l5IqLR9bCU
-8r04SbrY9ic7HyKnNjjRj6HQTQXQfwc=
-=sF9v
------END PGP SIGNATURE-----
-
---69mBrM4Ph1nZWzIB--

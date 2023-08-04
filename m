@@ -2,100 +2,266 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FFED77073F
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 19:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A3077091E
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 21:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232041AbjHDRfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Aug 2023 13:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58788 "EHLO
+        id S229514AbjHDThi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Aug 2023 15:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232344AbjHDRfO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 13:35:14 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99DF94ED7
-        for <linux-iio@vger.kernel.org>; Fri,  4 Aug 2023 10:35:05 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-34928e9f24bso8505495ab.0
-        for <linux-iio@vger.kernel.org>; Fri, 04 Aug 2023 10:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691170504; x=1691775304;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oujJ+4x9Jqnc7az44sLEMX7bXrpiZXX5ckxrG5n/tHo=;
-        b=d2CwLfk1vQ4vS1ViB/M97N6Payx5hyQz4XbSAlyQ0C0Wxv1zkJvljAk74bgRr2XnQ9
-         YuXbwV+OkflxOZMyXybjehNXWsJpb0hGPh3ehG7eXAbx7g6dBkHkyoZcf9AMA6T1BSzD
-         NlCxU47cmtbX1fWryNp54pEEQVAtAdIC2hG9USTYmJawT2rEXfHfKq/8kICvSjLi9Xls
-         Rru1heOR5CMeoB0hr/ECNDMMQh0plgB/C1H/aEKKgqtD3iW6dkcLGI0hgZbFc2/exfLi
-         /WItGsK6KopRMQX3LHJTJfTe8i2bv5hiD/QvlxVTfkmmR2WyPd5O65VZWK0Hb4OBwr6v
-         oGOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691170504; x=1691775304;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oujJ+4x9Jqnc7az44sLEMX7bXrpiZXX5ckxrG5n/tHo=;
-        b=Js9KjJgyOZy49+qmrsuwgJkVqCmfsRnrfRQ3kuzABJ3Ucr+Z/74WdFkqrkGqZme6pu
-         lrL3kGqNT00HBjpJoOc8FU74mRhCoXFELxTuKM+NpsvGqPlxT8eZKl2wk1OM2MrAoEp3
-         V3mX4amuf/oFAzCBhIniWD91gdFTZlskbcM1XDIb+t8ZFzXPC07b0ExAEt081+b3d1cn
-         uwwWpfNrv3Jyq4f92f7/aQ7Ro2Zug2rAlNOV7xcRl9GdmY6KW/5WY+Jme+525JysoWZU
-         26aHjcRHhtSspW7UDaBTWXwbqMvqCL9d0Q2EBA2nfXCnYTT/QmLO/oDwgxN1UjE2+3AC
-         r0Bg==
-X-Gm-Message-State: AOJu0YxPN2uYO9ZUVL4aPE84/1oTYUnBy0kAWHj9q07JPIoDXqwqJc7a
-        1Z+H8Ig8baz/VDBUJoM1RgpOTLP11paMNymVq9jRwJ3OIaM=
-X-Google-Smtp-Source: AGHT+IG/8P/6gNEIUk0nNvaJnhFQyLsLIvTL8MRhN2gvGaTqZy3UJDsfel1eDLKgdzTkLPJGmF5fOXnLnLrRaBMGUGc=
-X-Received: by 2002:a05:6e02:164d:b0:348:8ebc:f759 with SMTP id
- v13-20020a056e02164d00b003488ebcf759mr3949350ilu.6.1691170504223; Fri, 04 Aug
- 2023 10:35:04 -0700 (PDT)
+        with ESMTP id S229548AbjHDThf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 15:37:35 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529F0E7;
+        Fri,  4 Aug 2023 12:37:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691177854; x=1722713854;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aPArex8+yqQJfr0Dx1twcKyz+HqyUonP/iP9Dd9pRd4=;
+  b=DRyk7v4uZZ9b0Jn5B+pJ0Z3gwRrEb+ectCW4bVUN2/Q/Ke3mucI4q4Xj
+   WcceKOqL0rp/GiKcPExUflK9pWUy2ckE/eTts4hLR+wJ4DoCwqZgfCOAG
+   aVpmFjK2dbZABTJlnM/f704WyCJ8yGJpNFVlShoXH/LrDMbj37VoN6YZt
+   doOqWRX3+30M8CTJUguD5E3cJfMVsAWDMpW2Vx+4PrlmuS/nhWTobXAxl
+   vRdKG96nJhmVV0LYwYsjngPzEkwhgJF8b8II6vCRsXQCOyMZ08Y1qSRru
+   dE/HWrUJME+SzHcko8XY3lNYaBzHc/fixnDAgdAj7rHngTaKrgfn/NgY6
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="373886342"
+X-IronPort-AV: E=Sophos;i="6.01,255,1684825200"; 
+   d="scan'208";a="373886342"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2023 12:37:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="733383459"
+X-IronPort-AV: E=Sophos;i="6.01,255,1684825200"; 
+   d="scan'208";a="733383459"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 04 Aug 2023 12:37:29 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qS0c3-0055Lo-1J;
+        Fri, 04 Aug 2023 22:37:27 +0300
+Date:   Fri, 4 Aug 2023 22:37:27 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: mcp3911: add support for the whole
+ MCP39xx family
+Message-ID: <ZM1Td+v3tcoaID9v@smile.fi.intel.com>
+References: <20230804100248.3773861-1-marcus.folkesson@gmail.com>
+ <20230804100248.3773861-2-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
-References: <CAKaHzc88pv3XtAR8gWJYQqu=KJJ4mrVgbKU2ASmvbj2u==ZtYw@mail.gmail.com>
-In-Reply-To: <CAKaHzc88pv3XtAR8gWJYQqu=KJJ4mrVgbKU2ASmvbj2u==ZtYw@mail.gmail.com>
-From:   robin getz <rgetz503@gmail.com>
-Date:   Fri, 4 Aug 2023 13:34:53 -0400
-Message-ID: <CAKaHzc_2E42oFZVA=Y_K=Zds7U32vayu7n7fkd0qsw6M3gzk-w@mail.gmail.com>
-Subject: Re: Libiio v0.25 release candidate available
-To:     linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230804100248.3773861-2-marcus.folkesson@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--rc2 was released today.
+On Fri, Aug 04, 2023 at 12:02:48PM +0200, Marcus Folkesson wrote:
+> Microchip does have many similar chips, add support for those.
+> 
+> The new supported chips are:
+>   - microchip,mcp3910
+>   - microchip,mcp3912
+>   - microchip,mcp3913
+>   - microchip,mcp3914
+>   - microchip,mcp3918
+>   - microchip,mcp3919
 
-https://github.com/analogdevicesinc/libiio/releases/tag/v0.25-rc.2
+...
 
-- fixes/improvements for Windows IPv6 handling
-- fixes in iiod (to print out IP connections)
+>  	help
+> -	  Say yes here to build support for Microchip Technology's MCP3911
+> -	  analog to digital converter.
+> +	  Say yes here to build support for Microchip Technology's MCP3910,
 
-Please try it out, and let us know if you see any issues.
+> +          MCP3911, MCP3912, MCP3913, MCP3914, MCP3918 and MCP3919
 
-On Fri, Jul 28, 2023 at 9:54=E2=80=AFAM robin getz <rgetz503@gmail.com> wro=
-te:
->
-> Celebrating 9 years of libiio, the userspace Library for interfacing
-> with Linux IIO devices (libiio)  is getting ready for a new release:
-> https://github.com/analogdevicesinc/libiio/releases/tag/v0.25-rc.1
->
-> Improvements:
->  - improved (proper) handling for IPv6 link-local addresses
-> - added binaries and fixed a few macOS-13 arm64 issues
-> - have iiod shutdown, and reload IIO context when getting USR1 signal
-> - added bindings for C++11
-> - added some missing man pages
-> - fixed builds for SPARC
-> - and many more
->
-> If you find anything, please report to:
-> https://github.com/analogdevicesinc/libiio/issues
->
-> This is likely (hopefully) the last release before an upgrade to
-> libiio 1.0, so we would like to make sure it's as stable as possible,
-> as most future effort will be spent on the 1.x branch.
->
-> -Robin
+This line is misindented. Should be <TAB><space><space>.
+
+> +	  analog to digital converters.
+
+...
+
+> +#define MCP3910_REG_OFFCAL_CH0		0x0f
+> +#define MCP3910_OFFCAL(x)		(MCP3910_REG_OFFCAL_CH0 + x * 6)
+> +
+> +
+
+Single blank line is enough.
+
+...
+
+> +static int mcp3910_get_offset(struct mcp3911 *adc, int channel, int *val)
+> +{
+> +	return mcp3911_read(adc, MCP3910_OFFCAL(channel), val, 3);
+
+Just to be sure, the proper endianess conversion is done in mcp3911_read()
+and mcp3911_write() calls?
+
+This question applies to all calls to that APIs.
+
+> +}
+
+...
+
+> +	int ret = mcp3911_write(adc, MCP3910_OFFCAL(channel), val,
+> +			3);
+
+This looks weird not being on a single line. Moreover it fits even
+80 characters. Same applies to other similar cases.
+
+Also, please use better approach, i.e.
+
+	int ret;
+
+	ret = ...(...);
+	if (ret)
+		...
+
+Also applies to several places.
+
+> +	if (ret)
+> +		return ret;
+
+...
+
+> +	/* Enable offset*/
+
+Missing space.
+
+...
+
+> +static int mcp3910_get_osr(struct mcp3911 *adc, int *val)
+> +{
+> +	int ret = mcp3911_read(adc, MCP3910_REG_CONFIG0, val, 3);
+
+Have you run checkpatch? Here should be a blank line. Same in other several
+places.
+
+> +	*val = FIELD_GET(MCP3910_CONFIG0_OSR, *val);
+> +	*val = 32 << *val;
+
+Please, use a temporary variable and assign the result only once.
+It will be a better code.
+
+> +	return ret;
+> +}
+
+...
+
+> +static int mcp3911_set_osr(struct mcp3911 *adc, int val)
+> +{
+> +	val = FIELD_PREP(MCP3911_CONFIG_OSR, val);
+
+As per above.
+
+> +	return mcp3911_update(adc, MCP3911_REG_CONFIG,
+> +			MCP3911_CONFIG_OSR, val, 2);
+
+> +
+
+Redundant blank line.
+
+> +}
+
+...
+
+> +static int mcp3911_get_osr(struct mcp3911 *adc, int *val)
+> +{
+
+As per above.
+
+> +}
+
+...
+
+> +       /* Set gain to 1 for all channels */
+
+Again, wrong indentation. Can you check all your lines for the proper
+indentation. (Here should be just <TAB>.)
+
+...
+
+> +	for (int i = 0; i < adc->chip->num_channels - 1; i++) {
+> +		adc->gain[i] = 1;
+> +		regval &= ~MCP3911_GAIN_MASK(i);
+> +	}
+
+Missing blank line.
+
+> +	return mcp3911_write(adc, MCP3911_REG_GAIN, regval, 1);
+> +
+> +
+
+Too many redundant blank lines.
+
+> +}
+
+...
+
+> +       /* Set gain to 1 for all channels */
+
+Mind indentation.
+
+...
+
+> +	/* Disable offset to ignore any old values in offset register*/
+
+Missing space.
+
+...
+
+> +	adc->chip = (struct mcp3911_chip_info *)spi_get_device_id(spi)->driver_data;
+
+Can't you use spi_get_device_match_data()?
+
+...
+
+> +	/*
+> +	 * Fallback to "device-addr" due to historical mismatch between
+> +	 * dt-bindings and implementation
+
+Missing grammatical period at the end.
+
+> +	 */
+
+...
+
+> +		device_property_read_u32(&adc->spi->dev, "device-addr", &adc->dev_addr);
+
+With
+
+	struct device *dev = &adc->spi->dev;
+
+lines like this will be neater.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

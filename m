@@ -2,98 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5883A77038B
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 16:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FFE477038E
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 16:51:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231833AbjHDOu4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Aug 2023 10:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36892 "EHLO
+        id S230005AbjHDOvY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Aug 2023 10:51:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231847AbjHDOuy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 10:50:54 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1936649E1;
-        Fri,  4 Aug 2023 07:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691160652; x=1722696652;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=40OHL2z1D2BDju0OQCJozvDlO1ndY6wr+lQO9kmgHxY=;
-  b=Wm0g//ikntRf63tOCAUT/3qzX+bp7Uk5BAYRhTfO4U5ygi7Tas6PcIbh
-   AJZD+bgQIX6dHkNusokC50xiK5tslYApGoARkCSFvQJyfXG0mimIQ75vH
-   gIexQt4/6Qh/XyvjCl8KNE91Ol+nkKD32R/jBWy8Eiv0FfG2r/CDXB+Dy
-   1qH9CjWF5umlWtSbh8wHpLU3meZO5t2rCsFwT4s03bDbnpc3h8UW4booq
-   cNRIB9Dm4C2BzoZ/a+noMW/TbngGMDesTCbwmGTyJueiEE451p/QQTmFP
-   U7GHMNn6Z3IExegn1gzl3BOC2lCAM4bVs6ig9czWrg+aDApzaFSAE9Oi9
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="367630428"
-X-IronPort-AV: E=Sophos;i="6.01,255,1684825200"; 
-   d="scan'208";a="367630428"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2023 07:50:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="820150960"
-X-IronPort-AV: E=Sophos;i="6.01,255,1684825200"; 
-   d="scan'208";a="820150960"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 04 Aug 2023 07:50:48 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qRw8c-00Cz83-2p;
-        Fri, 04 Aug 2023 17:50:46 +0300
-Date:   Fri, 4 Aug 2023 17:50:46 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-rtc@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v6 3/4] i2c: Enhance i2c_get_match_data()
-Message-ID: <ZM0QRhrBkdNtZRz5@smile.fi.intel.com>
-References: <20230804070915.117829-1-biju.das.jz@bp.renesas.com>
- <20230804070915.117829-4-biju.das.jz@bp.renesas.com>
+        with ESMTP id S231340AbjHDOvX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 10:51:23 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A274749E0
+        for <linux-iio@vger.kernel.org>; Fri,  4 Aug 2023 07:51:22 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 374CF3tX028158;
+        Fri, 4 Aug 2023 10:51:19 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s8qabv3v7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Aug 2023 10:51:19 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 374EpIs0005019
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 4 Aug 2023 10:51:18 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 4 Aug 2023
+ 10:51:17 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 4 Aug 2023 10:51:17 -0400
+Received: from nsa.sphairon.box ([10.44.3.51])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 374Ep87g010508;
+        Fri, 4 Aug 2023 10:51:10 -0400
+From:   Nuno Sa <nuno.sa@analog.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>
+Subject: [RFC PATCH 0/3] Add converter framework
+Date:   Fri, 4 Aug 2023 16:53:38 +0200
+Message-ID: <20230804145342.1600136-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230804070915.117829-4-biju.das.jz@bp.renesas.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 84ywc7cLMeaqtRf9WERgJqAB4A6zw0RW
+X-Proofpoint-GUID: 84ywc7cLMeaqtRf9WERgJqAB4A6zw0RW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-04_14,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2306200000 definitions=main-2308040133
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 04, 2023 at 08:09:14AM +0100, Biju Das wrote:
-> Enhance i2c_get_match_data() for a faster path for device_get_
-> match_data().
+This is the initial RFC following the discussion in [1]. I'm aware this is
+by no means ready for inclusion and it's not even compilable since in
+the RFC I did not included the patch to add component_compare_fwnode()
+and component_release_fwnode(). 
 
-Strange wrap, the function name shouldn't have a new line in between :-)
+The goal is to have a first feel on the
+direction of the framework so that if I  need to drastically change it,
+better do it now. The RFC also brings the ad9647 and the axi_adc core to
+the same functionality we have now upstream with one extra fundamental
+feature that is calibrating the digital interface. This would be very
+difficult to do with the current design. Note that I don't expect any
+review on those drivers (rather than things related to the framework). 
 
-> While at it, add const to struct i2c_driver to prevent overriding
-> the driver pointer.
+I also want to bring up a couple of things that I've
+been thinking that I'm yet not sure about (so some feedback might make
+mind in one direction or another).
 
-...
+1) Im yet not sure if I should have different compatibles in the
+axi-adc-core driver. Note this soft core is a generic core and for every
+design (where the frontend device changes or has subtle changes like
+different number of data paths) there are subtle changes. So, the number
+of channels might be different, the available test patterns might be
+different, some ops might be available for some designs but not for
+others, etc... With a different compatible we could fine tune
+those differences (with a chip_info like structure) and pass some const
+converter_config to the framework that would allow it to do more safety
+checks and potentially reduce the number of converter_ops.
+OTOH, starting to add all of these compatibles might become messy in the
+long run and will likely mean that we'll always have to change both
+drivers in order to support a new frontend. And the frontend devices
+should really be the ones having all the "knowledge" to configure the
+soft core even if it means more converter_ops (though devicetree might
+help as some features are really HW dependent). I more inclined to just
+leave things as-is in the RFC.
 
-> v6:
->  * Separate patch to prepare for better difference for
->    i2c_match_id() changes.
+2) There are some IIO attributes (like scale, frequency, etc) that might
+be implemented in the soft cores. I still didn't made my mind if I should just
+have a catch all read_raw() and write_raw() converter_ops or more fine
+tuned ops. Having the catch all reduces the number of ops but also makes
+it more easier to add stuff that ends up being not used anymore and then
+forgotten. There are also cases (eg: setting sampling frequency) where
+we might need to apply settings in both the frontend and the backend
+devices which means having the catch all write_raw() would be more
+awkward in these case. I'm a bit more inclined to the more specific ops. 
 
-With this it actually should be patch 2 and patch 2 become 3
-(there is not much difference code wise, but logically this
- can be applied even without the rest).
+3) I also placed this in addac as this is mostly used in high speed DACs
+and ADCs but maybe we should just have it in the top level directory
+just in case this is started to be used in different type of devices?
 
-With the above addressed
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+4) Some function and data names are also starting to become very big so
+if there are no objections I will move all to use conv instead of full
+converter. Or maybe something a bit more generic (converter is a bit specific
+I know)?
+
+I would love to hear some ideas about the above...
+
+Anyways, I should also mention that the only visible ABI breakage is in
+the IIO device name. Before it was named "adi-axi-adc" and now it's
+"ad9647" which is what makes sense actually. With the current approach
+we would not be able to actually distinguish between designs. 
+
+So my plan for the actual series will be to just add the framework and migrate
+the current drivers to it with the same functionality as they have now (not
+sure if it will be viable to migrate the drivers in a way each commit is
+functional - unless we convert both drivers in one commit). After that
+point, I will start adding all the missing features (and devices) to the
+ad9467 driver. To note that I also plan to include the axi-dac driver in
+the first series and that will require IIO DMA output buffer support
+so we might need to cherry-pick those patches from Paul's DMABUF series.
+
+Thanks!
+- Nuno Sá
+
+[1]: https://lore.kernel.org/linux-iio/dac3967805d7ddbd4653ead6d50e614844e0b70b.camel@gmail.com/
+
+Nuno Sa (3):
+  iio: addac: add new converter framework
+  iio: adc: ad9647: add based on converter framework
+  iio: adc: adi-axi-adc: add based on new converter framework
+
+ drivers/iio/adc/ad9467_new.c        | 830 ++++++++++++++++++++++++++++
+ drivers/iio/adc/adi-axi-adc-new.c   | 405 ++++++++++++++
+ drivers/iio/addac/converter.c       | 547 ++++++++++++++++++
+ include/linux/iio/addac/converter.h | 485 ++++++++++++++++
+ 4 files changed, 2267 insertions(+)
+ create mode 100644 drivers/iio/adc/ad9467_new.c
+ create mode 100644 drivers/iio/adc/adi-axi-adc-new.c
+ create mode 100644 drivers/iio/addac/converter.c
+ create mode 100644 include/linux/iio/addac/converter.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.41.0
 

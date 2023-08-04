@@ -2,109 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC07476F3B3
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Aug 2023 21:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96A176FA58
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 08:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231356AbjHCT42 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Aug 2023 15:56:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39862 "EHLO
+        id S232432AbjHDGq1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Aug 2023 02:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230172AbjHCT41 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Aug 2023 15:56:27 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3DC1706;
-        Thu,  3 Aug 2023 12:56:27 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1bf7eb259d5so598507fac.0;
-        Thu, 03 Aug 2023 12:56:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691092586; x=1691697386;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FA21cdF3ub2w1qPV3MyZWOJAJ8z0WCJcF7ZXUjUMPYw=;
-        b=Ixygbdk9dAWXPPgsaH5duaOFAPejcKPOehOpKovKOspLOlwQc2QFqDs7h3yMAFuSgr
-         nDGt7bf1zxdC6cRt5qXX9bByWv2QvC06tmlWdoBg9E+W+PiXHe+swHO8zGAgZ0J5wnWm
-         dm+EkczTPhzpO47/xxxQvQRqC5cT9BXsvNXw+z2LDiGWK1hGLrg1TDvkCf+kKrmfxtVn
-         8SkR9BjQsAqiZy7kgIU4P2EF+xyjEP24Na5LsRtU4GxIsmPGUPL0fltOsr6D7L0ruehq
-         P/xdBvl19Rq6RqGdZ/GSLKPHPvxmEpEAiIw2m6N3Kh5dRCTvjBFfgsHn/j1BA/53XmIu
-         lk8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691092586; x=1691697386;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FA21cdF3ub2w1qPV3MyZWOJAJ8z0WCJcF7ZXUjUMPYw=;
-        b=f7KpabNwL8hpRkNQyHa/VMcYiwYunqYnUz278V91zIAM0k+cDR7a2N/aXqHFjXP5Xw
-         hQDzZfft6mxXoU+DraZPgZdra2IvahIt35wCf0jbp+EUI+oe5+3UXmDnyyleXu++/7Aj
-         Ly5MWtUr7ZgRKUHZEY+EZ0RrA0bSi38YdyZ1dcqyro4AI+3hMg5YDa/J4MNoJgz+2lhN
-         st4liPSQ8ICheoa7Yb1pKSq/XXGT/21/rSQ3wwvUbC0YSSra2vxkQsbtWWXIS72GJaY7
-         kQ0WrB7POEmURmNBFwiPAO9Q6YeHHFXAFmy+t3io9parhUq/haP3Vb4vvKC5IT9wsW6G
-         ozZA==
-X-Gm-Message-State: ABy/qLZhLfy667CARcqIiqhEBBZBM5BQpsUx/rtp5GDenqHdYPlVLjEE
-        nmw19YLwcjnSGmyczqHxN0I=
-X-Google-Smtp-Source: APBJJlG6VcN8dQbEB6JbHAxHDmeZsOBLfZ9UdvEXJ0dum+BPbm3XOOYyopVIemX2wSQ5WsH8GBH4qA==
-X-Received: by 2002:a05:6870:c111:b0:1a6:8911:61a9 with SMTP id f17-20020a056870c11100b001a6891161a9mr17496810oad.29.1691092586249;
-        Thu, 03 Aug 2023 12:56:26 -0700 (PDT)
-Received: from localhost ([2804:30c:927:dd00:76d4:c2a9:4431:27fe])
-        by smtp.gmail.com with ESMTPSA id dw23-20020a056870771700b001a9911765efsm330787oab.40.2023.08.03.12.56.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 12:56:25 -0700 (PDT)
-Date:   Thu, 3 Aug 2023 16:56:23 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     nuno.sa@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com,
-        jic23@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
-        Chandrakant.Minajigi@analog.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: dac: ad3552r: Correct device IDs
-Message-ID: <011f480220799fbfabdd53896f8a2f251ad995ad.1691091324.git.marcelo.schmitt1@gmail.com>
+        with ESMTP id S230236AbjHDGq0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 02:46:26 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A04BB1;
+        Thu,  3 Aug 2023 23:46:25 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3745RAYk011332;
+        Fri, 4 Aug 2023 02:46:16 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s8gfs3squ-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 04 Aug 2023 02:46:16 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 3746kFma016036
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 4 Aug 2023 02:46:15 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 4 Aug 2023
+ 02:46:14 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 4 Aug 2023 02:46:14 -0400
+Received: from rbolboac.ad.analog.com ([10.48.65.173])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 3746k49i009664;
+        Fri, 4 Aug 2023 02:46:07 -0400
+From:   Ramona Bolboaca <ramona.bolboaca@analog.com>
+To:     <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Ramona Bolboaca <ramona.bolboaca@analog.com>
+Subject: [PATCH v3 0/3] Add new channels for adis16475
+Date:   Fri, 4 Aug 2023 09:45:56 +0300
+Message-ID: <20230804064559.47192-1-ramona.bolboaca@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: FM2-QoP4mYltiQxw68tyP-C46awF1VBF
+X-Proofpoint-GUID: FM2-QoP4mYltiQxw68tyP-C46awF1VBF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-04_04,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ mlxlogscore=676 impostorscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2306200000 definitions=main-2308040059
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Device IDs for AD3542R and AD3552R were swapped leading to unintended
-collection of DAC output ranges being used for each design.
-Change device ID values so they are correct for each DAC chip.
+changes in v3:
+ new patches: 1,2 which add IIO_DELTA_ANGL and IIO_DELTA_VELOCITY channel types
+ patch3: 
+  - added new flag for presence of delta measuremets in burst data
+  - removed available scan mask, a simple check is performed in
+  adis16475_update_scan_mode to see if the scan mask is valid and to configure
+  the burst data selection based on the scan mask.
 
-Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Reported-by: Chandrakant Minajigi <Chandrakant.Minajigi@analog.com>
----
-A user has reported that the IDs were wrong and the output ranges were not ok.
-Also, the dt-doc and the driver require the adi,output-range-microvolt property
-for ad3542r but not for ad3552r, which could cause actual ad3552r probing to
-fail if the device node did not have that property.
-It's not clear from datasheet if setting the output range is really required for
-ad3542r.
+Ramona Bolboaca (3):
+  iio: Add IIO_DELTA_ANGL channel type
+  iio: Add IIO_DELTA_VELOCITY channel type
+  iio: imu: adis16475.c: Add delta angle and delta velocity channels
 
-Was once better at sending patches. Hope I get used to it again :)
+ Documentation/ABI/testing/sysfs-bus-iio |  29 +++++
+ drivers/iio/imu/adis16475.c             | 165 +++++++++++++++++++++---
+ drivers/iio/industrialio-core.c         |   2 +
+ include/uapi/linux/iio/types.h          |   2 +
+ tools/iio/iio_event_monitor.c           |   4 +
+ 5 files changed, 183 insertions(+), 19 deletions(-)
 
-Thanks
-
- drivers/iio/dac/ad3552r.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index d5ea1a1be122..a492e8f2fc0f 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -140,8 +140,8 @@ enum ad3552r_ch_vref_select {
- };
- 
- enum ad3542r_id {
--	AD3542R_ID = 0x4008,
--	AD3552R_ID = 0x4009,
-+	AD3542R_ID = 0x4009,
-+	AD3552R_ID = 0x4008,
- };
- 
- enum ad3552r_ch_output_range {
 -- 
-2.40.1
+2.25.1
 

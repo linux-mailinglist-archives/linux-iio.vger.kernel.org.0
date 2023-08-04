@@ -2,45 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056BA7705C5
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 18:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FFED77073F
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 19:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbjHDQSE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Aug 2023 12:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
+        id S232041AbjHDRfV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Aug 2023 13:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbjHDQSB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 12:18:01 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 275F0B2;
-        Fri,  4 Aug 2023 09:17:58 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="6.01,255,1684767600"; 
-   d="scan'208";a="171950234"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 05 Aug 2023 01:17:57 +0900
-Received: from localhost.localdomain (unknown [10.226.93.35])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id DE4E040116CC;
-        Sat,  5 Aug 2023 01:17:53 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-i2c@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-rtc@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v7 4/4] i2c: Add i2c_device_get_match_data() callback
-Date:   Fri,  4 Aug 2023 17:17:28 +0100
-Message-Id: <20230804161728.394920-5-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
-References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+        with ESMTP id S232344AbjHDRfO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 13:35:14 -0400
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99DF94ED7
+        for <linux-iio@vger.kernel.org>; Fri,  4 Aug 2023 10:35:05 -0700 (PDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-34928e9f24bso8505495ab.0
+        for <linux-iio@vger.kernel.org>; Fri, 04 Aug 2023 10:35:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691170504; x=1691775304;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oujJ+4x9Jqnc7az44sLEMX7bXrpiZXX5ckxrG5n/tHo=;
+        b=d2CwLfk1vQ4vS1ViB/M97N6Payx5hyQz4XbSAlyQ0C0Wxv1zkJvljAk74bgRr2XnQ9
+         YuXbwV+OkflxOZMyXybjehNXWsJpb0hGPh3ehG7eXAbx7g6dBkHkyoZcf9AMA6T1BSzD
+         NlCxU47cmtbX1fWryNp54pEEQVAtAdIC2hG9USTYmJawT2rEXfHfKq/8kICvSjLi9Xls
+         Rru1heOR5CMeoB0hr/ECNDMMQh0plgB/C1H/aEKKgqtD3iW6dkcLGI0hgZbFc2/exfLi
+         /WItGsK6KopRMQX3LHJTJfTe8i2bv5hiD/QvlxVTfkmmR2WyPd5O65VZWK0Hb4OBwr6v
+         oGOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691170504; x=1691775304;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oujJ+4x9Jqnc7az44sLEMX7bXrpiZXX5ckxrG5n/tHo=;
+        b=Js9KjJgyOZy49+qmrsuwgJkVqCmfsRnrfRQ3kuzABJ3Ucr+Z/74WdFkqrkGqZme6pu
+         lrL3kGqNT00HBjpJoOc8FU74mRhCoXFELxTuKM+NpsvGqPlxT8eZKl2wk1OM2MrAoEp3
+         V3mX4amuf/oFAzCBhIniWD91gdFTZlskbcM1XDIb+t8ZFzXPC07b0ExAEt081+b3d1cn
+         uwwWpfNrv3Jyq4f92f7/aQ7Ro2Zug2rAlNOV7xcRl9GdmY6KW/5WY+Jme+525JysoWZU
+         26aHjcRHhtSspW7UDaBTWXwbqMvqCL9d0Q2EBA2nfXCnYTT/QmLO/oDwgxN1UjE2+3AC
+         r0Bg==
+X-Gm-Message-State: AOJu0YxPN2uYO9ZUVL4aPE84/1oTYUnBy0kAWHj9q07JPIoDXqwqJc7a
+        1Z+H8Ig8baz/VDBUJoM1RgpOTLP11paMNymVq9jRwJ3OIaM=
+X-Google-Smtp-Source: AGHT+IG/8P/6gNEIUk0nNvaJnhFQyLsLIvTL8MRhN2gvGaTqZy3UJDsfel1eDLKgdzTkLPJGmF5fOXnLnLrRaBMGUGc=
+X-Received: by 2002:a05:6e02:164d:b0:348:8ebc:f759 with SMTP id
+ v13-20020a056e02164d00b003488ebcf759mr3949350ilu.6.1691170504223; Fri, 04 Aug
+ 2023 10:35:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <CAKaHzc88pv3XtAR8gWJYQqu=KJJ4mrVgbKU2ASmvbj2u==ZtYw@mail.gmail.com>
+In-Reply-To: <CAKaHzc88pv3XtAR8gWJYQqu=KJJ4mrVgbKU2ASmvbj2u==ZtYw@mail.gmail.com>
+From:   robin getz <rgetz503@gmail.com>
+Date:   Fri, 4 Aug 2023 13:34:53 -0400
+Message-ID: <CAKaHzc_2E42oFZVA=Y_K=Zds7U32vayu7n7fkd0qsw6M3gzk-w@mail.gmail.com>
+Subject: Re: Libiio v0.25 release candidate available
+To:     linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,134 +66,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add i2c_device_get_match_data() callback to struct bus_type.
+-rc2 was released today.
 
-While at it, introduced i2c_get_match_data_helper() to avoid code
-duplication with i2c_get_match_data().
+https://github.com/analogdevicesinc/libiio/releases/tag/v0.25-rc.2
 
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v6->v7:
- * Updated typo in commit description struct bus_type()->struct bus_type.
- * Added Rb tag from Andy.
-v5->v6:
- * Merged with patch#3 from v5.
- * Separate patch#3 to prepare for better difference for
-   i2c_match_id() changes.
-v4->v5:
- * Added const struct device_driver variable 'drv' in i2c_device_get_match
-   _data().
- * For code readability and maintenance perspective, added separate NULL
-   check for drv and client variable and added comment for NULL check for
-   drv variable.
-v3->v4:
- * Dropped struct i2c_driver parameter from i2c_get_match_data_helper()
- * Split I2C sysfs handling in separate patch.
-v2->v3:
- * Extended to support i2c_of_match_device() as suggested by Andy.
- * Changed i2c_of_match_device_sysfs() as non-static function as it is
-   needed for i2c_device_get_match_data().
- * Added a TODO comment to use i2c_verify_client() when it accepts const
-   pointer.
- * Added multiple returns to make code path for device_get_match_data()
-   faster in i2c_get_match_data().
-RFC v1->v2:
- * Replaced "Signed-off-by"->"Suggested-by" tag for Dmitry.
- * Fixed build warnings reported by kernel test robot <lkp@intel.com>
- * Added const qualifier to return type and parameter struct i2c_driver
-   in i2c_get_match_data_helper().
- * Added const qualifier to struct i2c_driver in i2c_get_match_data()
- * Dropped driver variable from i2c_device_get_match_data()
- * Replaced to_i2c_client with logic for assigning verify_client as it
-   returns non const pointer.
----
- drivers/i2c/i2c-core-base.c | 53 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 6 deletions(-)
+- fixes/improvements for Windows IPv6 handling
+- fixes in iiod (to print out IP connections)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 7005dfe64066..d543460e47c2 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -114,15 +114,10 @@ const struct i2c_device_id *i2c_match_id(const struct i2c_device_id *id,
- }
- EXPORT_SYMBOL_GPL(i2c_match_id);
- 
--const void *i2c_get_match_data(const struct i2c_client *client)
-+static const void *i2c_get_match_data_helper(const struct i2c_client *client)
- {
- 	const struct i2c_driver *driver = to_i2c_driver(client->dev.driver);
- 	const struct i2c_device_id *match;
--	const void *data;
--
--	data = device_get_match_data(&client->dev);
--	if (data)
--		return data;
- 
- 	match = i2c_match_id(driver->id_table, client);
- 	if (!match)
-@@ -130,6 +125,51 @@ const void *i2c_get_match_data(const struct i2c_client *client)
- 
- 	return (const void *)match->driver_data;
- }
-+
-+static const void *i2c_device_get_match_data(const struct device *dev)
-+{
-+	const struct device_driver *drv = dev->driver;
-+	const struct i2c_client *client;
-+	const void *data;
-+
-+	/*
-+	 * It is not guaranteed that the function is always called on a device
-+	 * bound to a driver (even though we normally expect this to be the
-+	 * case).
-+	 */
-+	if (!drv)
-+		return NULL;
-+
-+	/* TODO: use i2c_verify_client() when it accepts const pointer */
-+	client = (dev->type == &i2c_client_type) ? to_i2c_client(dev) : NULL;
-+	if (!client)
-+		return NULL;
-+
-+	data = i2c_get_match_data_helper(client);
-+	if (data)
-+		return data;
-+
-+	if (drv->of_match_table) {
-+		const struct of_device_id *match;
-+
-+		match = i2c_of_match_device_sysfs(drv->of_match_table, client);
-+		if (match)
-+			return match->data;
-+	}
-+
-+	return NULL;
-+}
-+
-+const void *i2c_get_match_data(const struct i2c_client *client)
-+{
-+	const void *data;
-+
-+	data = device_get_match_data(&client->dev);
-+	if (data)
-+		return data;
-+
-+	return i2c_get_match_data_helper(client);
-+}
- EXPORT_SYMBOL(i2c_get_match_data);
- 
- static int i2c_device_match(struct device *dev, struct device_driver *drv)
-@@ -694,6 +734,7 @@ struct bus_type i2c_bus_type = {
- 	.probe		= i2c_device_probe,
- 	.remove		= i2c_device_remove,
- 	.shutdown	= i2c_device_shutdown,
-+	.get_match_data	= i2c_device_get_match_data,
- };
- EXPORT_SYMBOL_GPL(i2c_bus_type);
- 
--- 
-2.25.1
+Please try it out, and let us know if you see any issues.
 
+On Fri, Jul 28, 2023 at 9:54=E2=80=AFAM robin getz <rgetz503@gmail.com> wro=
+te:
+>
+> Celebrating 9 years of libiio, the userspace Library for interfacing
+> with Linux IIO devices (libiio)  is getting ready for a new release:
+> https://github.com/analogdevicesinc/libiio/releases/tag/v0.25-rc.1
+>
+> Improvements:
+>  - improved (proper) handling for IPv6 link-local addresses
+> - added binaries and fixed a few macOS-13 arm64 issues
+> - have iiod shutdown, and reload IIO context when getting USR1 signal
+> - added bindings for C++11
+> - added some missing man pages
+> - fixed builds for SPARC
+> - and many more
+>
+> If you find anything, please report to:
+> https://github.com/analogdevicesinc/libiio/issues
+>
+> This is likely (hopefully) the last release before an upgrade to
+> libiio 1.0, so we would like to make sure it's as stable as possible,
+> as most future effort will be spent on the 1.x branch.
+>
+> -Robin

@@ -2,45 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9620770391
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 16:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 819F777038F
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Aug 2023 16:51:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231853AbjHDOv0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Aug 2023 10:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
+        id S231858AbjHDOvZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Aug 2023 10:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231856AbjHDOvZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 10:51:25 -0400
+        with ESMTP id S230512AbjHDOvY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Aug 2023 10:51:24 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA06649C3
-        for <linux-iio@vger.kernel.org>; Fri,  4 Aug 2023 07:51:21 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 374Cdd0E028523;
-        Fri, 4 Aug 2023 10:51:18 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s8qabv3v4-1
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231B749D7
+        for <linux-iio@vger.kernel.org>; Fri,  4 Aug 2023 07:51:22 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 374DPfe8011410;
+        Fri, 4 Aug 2023 10:51:19 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s8gfs64we-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Aug 2023 10:51:17 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 374EpG1F038424
+        Fri, 04 Aug 2023 10:51:18 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 374EpHFl005016
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 4 Aug 2023 10:51:16 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 4 Aug 2023
- 10:51:15 -0400
+        Fri, 4 Aug 2023 10:51:17 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 4 Aug 2023 10:51:16 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 4 Aug 2023 10:51:16 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 4 Aug 2023 10:51:15 -0400
+ Transport; Fri, 4 Aug 2023 10:51:16 -0400
 Received: from nsa.sphairon.box ([10.44.3.51])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 374Ep87h010508;
-        Fri, 4 Aug 2023 10:51:13 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 374Ep87i010508;
+        Fri, 4 Aug 2023 10:51:14 -0400
 From:   Nuno Sa <nuno.sa@analog.com>
 To:     <linux-iio@vger.kernel.org>
 CC:     Jonathan Cameron <jic23@kernel.org>
-Subject: [RFC PATCH 1/3] iio: addac: add new converter framework
-Date:   Fri, 4 Aug 2023 16:53:39 +0200
-Message-ID: <20230804145342.1600136-2-nuno.sa@analog.com>
+Subject: [RFC PATCH 2/3] iio: adc: ad9647: add based on converter framework
+Date:   Fri, 4 Aug 2023 16:53:40 +0200
+Message-ID: <20230804145342.1600136-3-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230804145342.1600136-1-nuno.sa@analog.com>
 References: <20230804145342.1600136-1-nuno.sa@analog.com>
@@ -48,19 +52,19 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: lc8RRxQGhuYJdQz71zuK7JcRfNbby4ZK
-X-Proofpoint-GUID: lc8RRxQGhuYJdQz71zuK7JcRfNbby4ZK
+X-Proofpoint-ORIG-GUID: AKejXqI6B84n-NKpGIAio2G8Xk04iEOx
+X-Proofpoint-GUID: AKejXqI6B84n-NKpGIAio2G8Xk04iEOx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-08-04_14,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ mlxlogscore=999 impostorscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2306200000 definitions=main-2308040133
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -69,1056 +73,846 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/addac/converter.c       | 547 ++++++++++++++++++++++++++++
- include/linux/iio/addac/converter.h | 485 ++++++++++++++++++++++++
- 2 files changed, 1032 insertions(+)
- create mode 100644 drivers/iio/addac/converter.c
- create mode 100644 include/linux/iio/addac/converter.h
+ drivers/iio/adc/ad9467_new.c | 830 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 830 insertions(+)
+ create mode 100644 drivers/iio/adc/ad9467_new.c
 
-diff --git a/drivers/iio/addac/converter.c b/drivers/iio/addac/converter.c
+diff --git a/drivers/iio/adc/ad9467_new.c b/drivers/iio/adc/ad9467_new.c
 new file mode 100644
-index 000000000000..31ac704255ad
+index 000000000000..ccdd3a893beb
 --- /dev/null
-+++ b/drivers/iio/addac/converter.c
-@@ -0,0 +1,547 @@
++++ b/drivers/iio/adc/ad9467_new.c
+@@ -0,0 +1,830 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Framework to handle complex IIO aggregate devices
++ * Analog Devices AD9467 SPI ADC driver
 + *
-+ * A note on some of the design expectations with regards to lifetimes and
-+ * devices bringup/removal.
-+ *
-+ * The Framework is using, under the wood, the component API which makes it to
-+ * easy treat a bunch of devices as one aggregate device. This means that the
-+ * complete thing is only brought to live when all the deviced are probed. To do
-+ * this, two callbacks are used that should in fact completely replace .probe()
-+ * and .remove(). The formers should only be used the minimum needed. Ideally,
-+ * only to call the functions to add and remove frontend annd backend devices.
-+ *
-+ * It is advised for frontend and backend drivers to use their .remove()
-+ * callbacks (to use devres API during the frontend and backends initialization).
-+ * See the comment in @converter_frontend_bind().
-+ *
-+ * It is also assumed that converter objects cannot be accessed once one of the
-+ * devices of the aggregate device is removed (effectively bringing the all the
-+ * devices down). Based on that assumption, these objects are not refcount which
-+ * means accessing them will likely fail miserably.
-+ *
-+ * Copyright (C) 2023 Analog Devices Inc.
++ * Copyright 2012-2023 Analog Devices Inc.
 + */
 +
-+#define dev_fmt(fmt) "Converter - " fmt
-+
-+#include <linux/component.h>
-+#include <linux/debugfs.h>
++#include <linux/clk.h>
++#include <linux/delay.h>
 +#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/iio/addc/converter.h>
-+#include <linux/iio/iio.h>
-+#include <linux/list.h>
++#include <linux/gpio/consumer.h>
++#include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
 +#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
++#include <linux/slab.h>
++#include <linux/spi/spi.h>
 +
-+struct converter_backend {
-+	struct list_head entry;
-+	struct device *dev;
-+	const struct converter_ops *ops;
++#include <linux/iio/addc/converter.h>
++#include <linux/iio/buffer-dmaengine.h>
++#include <linux/iio/iio.h>
++
++/*
++ * ADI High-Speed ADC common spi interface registers
++ * See Application-Note AN-877:
++ *   https://www.analog.com/media/en/technical-documentation/application-notes/AN-877.pdf
++ */
++
++#define AN877_ADC_REG_CHIP_ID		0x01
++#define AN877_ADC_REG_CHAN_INDEX        0x05
++#define AN877_ADC_REG_TEST_IO		0x0D
++#define AN877_ADC_REG_OUTPUT_MODE	0x14
++#define AN877_ADC_REG_OUTPUT_PHASE	0x16
++#define AN877_ADC_REG_OUTPUT_DELAY	0x17
++#define AN877_ADC_REG_VREF		0x18
++#define AN877_ADC_REG_TRANSFER		0xFF
++
++/* AN877_ADC_REG_TRANSFER */
++#define AN877_ADC_TRANSFER_SYNC		0x1
++
++/* AN877_ADC_REG_OUTPUT_MODE */
++#define AN877_ADC_OUTPUT_MODE_OFFSET_BINARY	0x0
++#define AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT	0x1
++
++/* AN877_ADC_REG_OUTPUT_PHASE */
++#define AN877_ADC_OUTPUT_EVEN_ODD_MODE_EN	0x20
++#define AN877_ADC_INVERT_DCO_CLK		0x80
++
++/* AN877_ADC_REG_TEST_IO */
++#define AN877_ADC_TESTMODE_OFF			0x0
++#define AN877_ADC_TESTMODE_PN23_SEQ             0x5
++#define AN877_ADC_TESTMODE_PN9_SEQ              0x6
++
++#define AD9647_MAX_TEST_POINTS		32
++/*
++ * Analog Devices AD9265 16-Bit, 125/105/80 MSPS ADC
++ */
++
++#define CHIPID_AD9265			0x64
++#define AD9265_DEF_OUTPUT_MODE		0x40
++#define AD9265_REG_VREF_MASK		0xC0
++
++/*
++ * Analog Devices AD9434 12-Bit, 370/500 MSPS ADC
++ */
++
++#define CHIPID_AD9434			0x6A
++#define AD9434_DEF_OUTPUT_MODE		0x00
++#define AD9434_REG_VREF_MASK		0xC0
++
++/*
++ * Analog Devices AD9467 16-Bit, 200/250 MSPS ADC
++ */
++
++#define CHIPID_AD9467			0x50
++#define AD9467_DEF_OUTPUT_MODE		0x08
++#define AD9467_REG_VREF_MASK		0x0F
++
++struct ad9467_chip_info {
 +	const char *name;
-+	void *drvdata;
-+
-+	struct regmap *regmap;
-+	unsigned int cached_reg_addr;
++	const struct iio_chan_spec *channels;
++	const unsigned int (*scale_table)[2];
++	unsigned int id;
++	int num_scales;
++	unsigned long max_rate;
++	unsigned int default_output_mode;
++	unsigned int vref_mask;
++	unsigned int num_channels;
++	unsigned int num_lanes;
++	bool has_dco;
 +};
 +
-+struct converter_frontend {
-+	struct list_head list;
-+	const struct frontend_ops *ops;
-+	struct device *dev;
++struct ad9467_state {
++	const struct ad9467_chip_info *info;
++	struct converter_backend *conv;
++	struct spi_device *spi;
++	struct clk *clk;
++	unsigned int output_mode;
++	unsigned long adc_clk;
 +};
 +
-+static ssize_t converter_debugfs_read_reg(struct file *file,
-+					  char __user *userbuf,
-+					  size_t count, loff_t *ppos)
++/*
++ * Infer about moving to regmap (looks pretty straight)...
++ * Moreover we need to make this DMA safe
++ */
++static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
 +{
-+	struct converter_backend *conv = file->private_data;
-+	unsigned int val = 0;
-+	char read_buf[20];
-+	int ret, len;
-+
-+	ret = regmap_read(conv->regmap, conv->cached_reg_addr, &val);
-+	if (ret) {
-+		dev_err(conv->dev, "%s: read failed\n", __func__);
-+		return ret;
-+	}
-+
-+	len = scnprintf(read_buf, sizeof(read_buf), "0x%X\n", val);
-+
-+	return simple_read_from_buffer(userbuf, count, ppos, read_buf, len);
-+}
-+
-+static ssize_t converter_debugfs_write_reg(struct file *file,
-+					   const char __user *userbuf,
-+					   size_t count, loff_t *ppos)
-+{
-+	struct converter_backend *conv = file->private_data;
-+	unsigned int val;
-+	char buf[80];
-+	ssize_t rc;
++	unsigned char tbuf[2], rbuf[1];
 +	int ret;
 +
-+	rc = simple_write_to_buffer(buf, sizeof(buf), ppos, userbuf, count);
-+	if (rc < 0)
-+		return rc;
++	tbuf[0] = 0x80 | (reg >> 8);
++	tbuf[1] = reg & 0xFF;
 +
-+	ret = sscanf(buf, "%i %i", &conv->cached_reg_addr, &val);
++	ret = spi_write_then_read(spi,
++				  tbuf, ARRAY_SIZE(tbuf),
++				  rbuf, ARRAY_SIZE(rbuf));
 +
-+	switch (ret) {
-+	case 1:
-+		break;
-+	case 2:
-+		ret = regmap_write(conv->regmap, conv->cached_reg_addr, val);
-+		if (ret) {
-+			dev_err(conv->dev, "%s: write failed\n", __func__);
-+			return ret;
-+		}
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return count;
-+}
-+
-+static const struct file_operations converter_debugfs_reg_fops = {
-+	.open = simple_open,
-+	.read = converter_debugfs_read_reg,
-+	.write = converter_debugfs_write_reg,
-+};
-+
-+static void __converter_add_direct_reg_access(struct converter_backend *conv,
-+					      struct iio_dev *indio_dev)
-+{
-+	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
-+	const char *name = conv->name;
-+	char file_name[64];
-+
-+	if (!conv->regmap)
-+		return;
-+	if (!d)
-+		return;
-+
-+	if (!conv->name)
-+		name = "converter";
-+
-+	snprintf(file_name, sizeof(file_name), "%s_direct_reg_access", name);
-+
-+	debugfs_create_file(file_name, 0644, d, conv,
-+			    &converter_debugfs_reg_fops);
-+}
-+
-+void converter_add_direct_reg_access(struct converter_backend *conv,
-+				     struct iio_dev *indio_dev)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_FS))
-+		__converter_add_direct_reg_access(conv, indio_dev);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_add_direct_reg_access, IIO_CONVERTER);
-+
-+static int converter_bind(struct device *dev, struct device *aggregate,
-+			  void *data)
-+{
-+	struct converter_frontend *frontend = dev_get_drvdata(aggregate);
-+	struct converter_backend *conv = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = conv->ops->backend_init(conv, dev);
-+	if (ret)
++	if (ret < 0)
 +		return ret;
 +
-+	list_add_tail(&conv->entry, &frontend->list);
-+
-+	return 0;
++	return rbuf[0];
 +}
 +
-+static void converter_unbind(struct device *dev, struct device *aggregate,
-+			     void *data)
++static int ad9467_spi_write(struct spi_device *spi, unsigned int reg,
++			    unsigned int val)
 +{
-+	struct converter_backend *conv = dev_get_drvdata(dev);
++	unsigned char buf[3];
 +
-+	if (conv->ops->backend_close)
-+		conv->ops->backend_close(conv);
++	buf[0] = reg >> 8;
++	buf[1] = reg & 0xFF;
++	buf[2] = val;
 +
-+	/* after this point the converter should not be used anymore */
-+	converter_set_drvdata(conv, NULL);
++	return spi_write(spi, buf, ARRAY_SIZE(buf));
 +}
 +
-+static const struct component_ops converter_component_ops = {
-+	.bind = converter_bind,
-+	.unbind = converter_unbind,
-+};
-+
-+static int converter_frontend_bind(struct device *dev)
++static void __ad9467_get_scale(struct ad9467_state *st, int index,
++			       unsigned int *val, unsigned int *val2)
 +{
-+	struct converter_frontend *frontend = dev_get_drvdata(dev);
-+	int ret;
++	const struct iio_chan_spec *chan = &st->info->channels[0];
++	unsigned int tmp;
 +
-+	ret = component_bind_all(dev, NULL);
-+	if (ret)
-+		return ret;
-+	/*
-+	 * We open a new group so that we can control when resources are
-+	 * released and still use device managed (devm_) calls. The expectations
-+	 * are that on probe, backend resources are allocated first followed by
-+	 * the frontend resources (where registering the IIO device must happen)
-+	 * Naturally we want the reverse order on the unbind path and that would
-+	 * not be possible without opening our own devres group.
-+
-+	 * Note that the component API also opens it's own devres group when
-+	 * calling the .bind() callbacks for both the aggregate device
-+	 * (our frontend) and each of the components (our backends). On the
-+	 * unbind path, the aggregate .unbind() function is called
-+	 * (@converter_frontend_unbind()) which should be responsible to tear
-+	 * down all the components (effectively releasing all the resources
-+	 * allocated on each component devres group) and only then the aggregate
-+	 * devres group is released. Hence, the order we want to maintain for
-+	 * releasing resources would not be satisfied because backend resources
-+	 * would be freed first. With our own group, we can control when
-+	 * releasing the resources and we do it before @component_unbind_all().
-+	 *
-+	 * This also relies that internally the component API is releasing each
-+	 * of the component's devres group. That is likely not to change, but
-+	 * maybe we should not trust it and also open our own groups for backend
-+	 * devices?!
-+	 *
-+	 * Another very important thing to keep in mind is that this is only
-+	 * valid if frontend and backend driver's are implementing their
-+	 * .remove() callback to call @converter_frontend_del() and
-+	 * @converter_backend_del(). Calling those functions from
-+	 * devm_add_action* and use devm APIs in .frontend_init() and
-+	 * .backend_init() is not going to work. Not perfect but still better
-+	 * than having to tear everything down in .frontend_close() and
-+	 * .backend_close()
-+	 */
-+	if (!devres_open_group(dev, frontend, GFP_KERNEL))
-+		return -ENOMEM;
-+
-+	ret = frontend->ops->frontend_init(frontend, dev);
-+	if (ret) {
-+		devres_release_group(dev, frontend);
-+		return ret;
-+	}
-+
-+	devres_close_group(dev, NULL);
-+	return 0;
++	tmp = (st->info->scale_table[index][0] * 1000000ULL) >> chan->scan_type.realbits;
++	*val = tmp / 1000000;
++	*val2 = tmp % 1000000;
 +}
 +
-+static void converter_frontend_unbind(struct device *dev)
++/* needs to check for ret codes */
++static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
 +{
-+	struct converter_frontend *frontend = dev_get_drvdata(dev);
++	unsigned int i, vref_val;
 +
-+	if (frontend->ops->frontend_close)
-+		frontend->ops->frontend_close(frontend);
++	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
 +
-+	devres_release_group(dev, frontend);
-+	component_unbind_all(dev, NULL);
-+	list_del_init(&frontend->list);
-+}
++	vref_val &= st->info->vref_mask;
 +
-+static const struct component_master_ops frontend_component_ops = {
-+	.bind = converter_frontend_bind,
-+	.unbind = converter_frontend_unbind,
-+};
-+
-+struct converter_backend *converter_get(const struct converter_frontend *frontend,
-+					const char *name)
-+{
-+	struct converter_backend *iter, *conv = NULL;
-+	struct device *dev = frontend->dev;
-+	struct fwnode_handle *fwnode;
-+	int index = 0;
-+
-+	if (list_empty(&frontend->list)) {
-+		dev_err(dev, "Backend list is empty...\n");
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	/* if no name given, we assume only one converter_backend exists */
-+	if (!name)
-+		return list_first_entry(&frontend->list,
-+					struct converter_backend, entry);
-+
-+	index = device_property_match_string(frontend->dev, "converter-names",
-+					     name);
-+	if (index < 0)
-+		return ERR_PTR(index);
-+
-+	fwnode = fwnode_find_reference(dev_fwnode(dev), "converters", index);
-+	if (IS_ERR(fwnode))
-+		return ERR_CAST(fwnode);
-+
-+	list_for_each_entry(iter, &frontend->list, entry) {
-+		if (device_match_fwnode(iter->dev, fwnode)) {
-+			conv = iter;
++	for (i = 0; i < st->info->num_scales; i++) {
++		if (vref_val == st->info->scale_table[i][1])
 +			break;
-+		}
 +	}
 +
-+	fwnode_handle_put(fwnode);
++	if (i == st->info->num_scales)
++		return -ERANGE;
 +
-+	if (!conv) {
-+		dev_err(dev, "Converter (%s) not found in the list\n", name);
-+		return ERR_PTR(-ENODEV);
-+	}
++	__ad9467_get_scale(st, i, val, val2);
 +
-+	/* See if we can add device_property_string_read_index() */
-+	conv->name = kstrdup_const(name, GFP_KERNEL);
-+	if (!conv->name)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return conv;
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_get, IIO_CONVERTER);
-+
-+static int converter_frontend_add_matches(struct converter_frontend *frontend,
-+					  struct component_match **match)
-+{
-+	struct device *dev = frontend->dev;
-+	struct fwnode_handle *fwnode;
-+	int index = 0;
-+
-+	do {
-+		fwnode = fwnode_find_reference(dev_fwnode(dev), "converters",
-+					       index);
-+		if (IS_ERR(fwnode))
-+			break;
-+
-+		component_match_add_release(dev, match,
-+					    component_release_fwnode,
-+					    component_compare_fwnode, fwnode);
-+		index++;
-+	} while (true);
-+
-+	/* no devices?! */
-+	if (!index) {
-+		dev_err(dev, "No converters. Make sure the \"converters\" property is given!\n");
-+		return -ENODEV;
-+	}
-+
-+	if (PTR_ERR(fwnode) != -ENOENT)
-+		return PTR_ERR(fwnode);
-+
-+	return 0;
++	return IIO_VAL_INT_PLUS_MICRO;
 +}
 +
-+int converter_test_pattern_set(struct converter_backend *conv,
-+			       unsigned int chan,
-+			       enum converter_test_pattern pattern)
++/* Needs mutex and check for ret codes */
++static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
 +{
-+	if (pattern >= CONVERTER_TEST_PATTERN_MAX)
++	unsigned int scale_val[2];
++	unsigned int i;
++
++	if (val != 0)
 +		return -EINVAL;
-+	if (!conv->ops->test_pattern_set)
-+		return -ENOTSUPP;
 +
-+	return conv->ops->test_pattern_set(conv, chan, pattern);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_test_pattern_set, IIO_CONVERTER);
++	for (i = 0; i < st->info->num_scales; i++) {
++		__ad9467_get_scale(st, i, &scale_val[0], &scale_val[1]);
++		if (scale_val[0] != val || scale_val[1] != val2)
++			continue;
 +
-+int converter_chan_status_get(struct converter_backend *conv,
-+			      unsigned int chan,
-+			      struct converter_chan_status *status)
-+{
-+	if (!conv->ops->chan_status)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->chan_status(conv, chan, status);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_chan_status_get, IIO_CONVERTER);
-+
-+int converter_iodelay_set(struct converter_backend *conv,
-+			  unsigned int num_lanes, unsigned int delay)
-+{
-+	if (!num_lanes)
-+		return -EINVAL;
-+	if (!conv->ops->iodelay_set)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->iodelay_set(conv, num_lanes, delay);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_iodelay_set, IIO_CONVERTER);
-+
-+int converter_data_format_set(struct converter_backend *conv,
-+			      unsigned int chan,
-+			      const struct converter_data_fmt *data)
-+{
-+	if (data->type >= CONVERTER_DATA_TYPE_MAX)
-+		return -EINVAL;
-+	if (!conv->ops->data_format_set)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->data_format_set(conv, chan, data);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_data_format_set, IIO_CONVERTER);
-+
-+int converter_sample_edge_select(struct converter_backend *conv,
-+				 enum converter_edge edge)
-+{
-+	if (edge >= CONVERTER_EDGE_MAX)
-+		return -EINVAL;
-+	if (conv->ops->sample_edge_select)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->sample_edge_select(conv, edge);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_sample_edge_select, IIO_CONVERTER);
-+
-+int converter_chan_enable(struct converter_backend *conv, unsigned int chan)
-+{
-+	if (!conv->ops->chan_enable)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->chan_enable(conv, chan);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_chan_enable, IIO_CONVERTER);
-+
-+int converter_chan_disable(struct converter_backend *conv, unsigned int chan)
-+{
-+	if (!conv->ops->disable)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->chan_disable(conv, chan);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_chan_disable, IIO_CONVERTER);
-+
-+int converter_enable(struct converter_backend *conv)
-+{
-+	if (!conv->ops->enable)
-+		return -ENOTSUPP;
-+
-+	return conv->ops->enable(conv);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_enable, IIO_CONVERTER);
-+
-+void converter_disable(struct converter_backend *conv)
-+{
-+	if (!conv->ops->disable)
-+		return;
-+
-+	conv->ops->disable(conv);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_disable, IIO_CONVERTER);
-+
-+int __converter_test_pattern_xlate(unsigned int pattern,
-+				   const struct converter_test_pattern_xlate *xlate,
-+				   int n_matches)
-+{
-+	unsigned int p = n_matches;
-+
-+	while (p--) {
-+		if (pattern == xlate[p].pattern)
-+			return xlate[p].reg_val;
++		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
++				 st->info->scale_table[i][1]);
++		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++				 AN877_ADC_TRANSFER_SYNC);
++		return 0;
 +	}
 +
 +	return -EINVAL;
 +}
-+EXPORT_SYMBOL_NS_GPL(__converter_test_pattern_xlate, IIO_CONVERTER);
 +
-+void converter_set_regmap(struct converter_backend *conv,
-+			  struct regmap *regmap)
++static int ad9467_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan,
++			   int *val, int *val2, long mask)
 +{
-+	conv->regmap = regmap;
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_set_regmap, IIO_CONVERTER);
++	struct ad9467_state *st = iio_priv(indio_dev);
 +
-+void converter_set_drvdata(struct converter_backend *conv, void *drvdata)
-+{
-+	conv->drvdata = drvdata;
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_set_drvdata, IIO_CONVERTER);
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		return ad9467_get_scale(st, val, val2);
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*val = clk_get_rate(st->clk);
 +
-+void *converter_get_drvdata(const struct converter_backend *conv)
-+{
-+	WARN_ON(!conv->drvdata);
-+	return conv->drvdata;
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_get_drvdata, IIO_CONVERTER);
-+
-+void converter_del(struct device *dev)
-+{
-+	component_del(dev, &converter_component_ops);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_del, IIO_CONVERTER);
-+
-+static void converter_free(void *conv)
-+{
-+	struct converter_backend *__conv = conv;
-+
-+	if (__conv->name)
-+		kfree_const(__conv->name);
-+
-+	kfree(__conv);
-+}
-+
-+int converter_add(struct device *dev, const struct converter_ops *ops)
-+{
-+	struct converter_backend *conv;
-+	int ret;
-+
-+	if (!ops || !ops->backend_init)
-+		return -EINVAL;
-+
-+	conv = kzalloc(sizeof(*conv), GFP_KERNEL);
-+	if (!conv)
-+		return -ENOMEM;
-+
-+	/*
-+	 * The expectation is that everything goes up and down in
-+	 * .converter_bind() and .converter_unbind() respectively. Hence, it's
-+	 * not expected for converter objects to be accessed after unbind(). As
-+	 * soon as that does not stand anymore, we need to
-+	 * drop devm_add_action_or_reset() and properly refcount the objects.
-+	 */
-+	ret = devm_add_action_or_reset(dev, converter_free, conv);
-+	if (ret)
-+		return ret;
-+
-+	conv->ops = ops;
-+	dev_set_drvdata(dev, conv);
-+	conv->dev = dev;
-+
-+	return component_add(dev, &converter_component_ops);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_add, IIO_CONVERTER);
-+
-+void converter_frontend_del(struct device *dev)
-+{
-+	component_master_del(dev, &frontend_component_ops);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_frontend_del, IIO_CONVERTER);
-+
-+int converter_frontend_add(struct device *dev, const struct frontend_ops *ops)
-+{
-+	struct converter_frontend *frontend;
-+	struct component_match *match;
-+	int ret;
-+
-+	if (!ops || !ops->frontend_init) {
-+		dev_err(dev, "Mandatory ops missing\n");
++		return IIO_VAL_INT;
++	default:
 +		return -EINVAL;
 +	}
++}
 +
-+	frontend = devm_kzalloc(dev, sizeof(*frontend), GFP_KERNEL);
-+	if (!frontend)
-+		return -ENOMEM;
++static int ad9647_calibrate_prepare(const struct ad9467_state *st)
++{
++	int ret;
 +
-+	frontend->ops = ops;
-+	frontend->dev = dev;
-+	INIT_LIST_HEAD(&frontend->list);
-+	dev_set_drvdata(dev, frontend);
-+
-+	ret = converter_frontend_add_matches(frontend, &match);
++	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TEST_IO,
++			       AN877_ADC_TESTMODE_PN9_SEQ);
 +	if (ret)
 +		return ret;
 +
-+	return component_master_add_with_match(dev, &frontend_component_ops,
-+					       match);
-+}
-+EXPORT_SYMBOL_NS_GPL(converter_frontend_add, IIO_CONVERTER);
++	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++			       AN877_ADC_TRANSFER_SYNC);
++		if (ret)
++			return ret;
 +
-+MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
-+MODULE_DESCRIPTION("Framework to handle complex IIO aggregate devices");
++	ret = converter_test_pattern_set(st->conv, 0, CONVERTER_ADI_PRBS_9A);
++	if (ret)
++		return ret;
++
++	return converter_chan_enable(st->conv, 0);
++}
++
++static int ad9647_calibrate_stop(const struct ad9467_state *st)
++{
++	int ret;
++
++	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TEST_IO,
++			       AN877_ADC_TESTMODE_OFF);
++	if (ret)
++		return ret;
++
++	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++			       AN877_ADC_TRANSFER_SYNC);
++	if (ret)
++		return ret;
++
++	return converter_chan_disable(st->conv, 0);
++}
++
++static int ad9467_calibrate_apply(const struct ad9467_state *st,
++				  unsigned int val)
++{
++	if (st->info->has_dco) {
++		int ret;
++
++		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_DELAY,
++				       val);
++		if (ret)
++			return ret;
++
++		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
++	}
++
++	return converter_iodelay_set(st->conv, st->info->num_lanes, val);
++}
++
++static int ad9467_calibrate_status_check(const struct ad9467_state *st)
++{
++	struct converter_chan_status status = {0};
++	int ret;
++
++	ret = converter_chan_status_get(st->conv, 0, &status);
++	if (ret)
++		return ret;
++
++	if (status.errors)
++		return 1;
++
++	return 0;
++}
++
++static void ad9467_dump_table(const unsigned char *err_field,
++			      unsigned int size, unsigned int val)
++{
++	unsigned int cnt;
++
++	for (cnt = 0; cnt < size; cnt++) {
++		if (cnt == val) {
++			pr_debug("|");
++			continue;
++		}
++
++		pr_debug("%c", err_field[cnt] ? '-' : 'o');
++		if (cnt == size / 2)
++			pr_debug("\n");
++	}
++}
++
++static int ad9467_find_optimal_point(const unsigned char *err_field,
++				     unsigned int size)
++{
++	unsigned int val, cnt = 0, max_cnt = 0, max_start = 0;
++	int start = -1;
++
++	for (val = 0; val < size; val++) {
++		if (!err_field[val]) {
++			if (start == -1)
++				start = val;
++			cnt++;
++		} else {
++			if (cnt > max_cnt) {
++				max_cnt = cnt;
++				max_start = start;
++			}
++
++			start = -1;
++			cnt = 0;
++		}
++	}
++
++	if (cnt > max_cnt) {
++		max_cnt = cnt;
++		max_start = start;
++	}
++
++	if (!max_cnt)
++		return -EIO;
++
++	val = max_start + max_cnt / 2;
++	ad9467_dump_table(err_field, size, val);
++
++	return val;
++}
++
++static int ad9467_do_calibrate(const struct ad9467_state *st)
++{
++	unsigned char err_field[AD9647_MAX_TEST_POINTS * 2] = {0};
++	unsigned int max_val = AD9647_MAX_TEST_POINTS, val;
++	bool inv_range = false;
++	int ret;
++
++	ret = ad9647_calibrate_prepare(st);
++	if (ret)
++		return ret;
++retune:
++	if (st->info->has_dco) {
++		unsigned int phase = AN877_ADC_OUTPUT_EVEN_ODD_MODE_EN;
++
++		if (inv_range)
++			phase |= AN877_ADC_INVERT_DCO_CLK;
++
++		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_PHASE,
++				       phase);
++		if (ret)
++			return ret;
++	} else {
++		if (inv_range)
++			ret = converter_sample_on_falling_edge(st->conv);
++		else
++			ret = converter_sample_on_rising_edge(st->conv);
++
++		if (ret)
++			return ret;
++	}
++
++	for (val = 0; val < max_val; val++) {
++		ret = ad9467_calibrate_apply(st, val);
++		if (ret)
++			return ret;
++
++		ret = ad9467_calibrate_status_check(st);
++		if (ret < 0)
++			return ret;
++
++		err_field[val + inv_range * max_val] = ret;
++	}
++
++	if (!inv_range) {
++		inv_range = true;
++		goto retune;
++	}
++
++	val = ad9467_find_optimal_point(err_field, sizeof(err_field));
++	if (val < 0)
++		return val;
++
++	if (val < max_val) {
++		if (st->info->has_dco)
++			ret = ad9467_spi_write(st->spi,
++					       AN877_ADC_REG_OUTPUT_PHASE,
++					       AN877_ADC_OUTPUT_EVEN_ODD_MODE_EN);
++		else
++			ret = converter_sample_on_rising_edge(st->conv);
++	} else {
++		val -= max_val + 1;
++		/*
++		 * inv_range = true is the last test to run. Hence, there's no
++		 * need to re-do any configuration
++		 */
++		inv_range = false;
++	}
++
++	if (st->info->has_dco)
++		dev_dbg(&st->spi->dev,
++			" %s DCO 0x%X CLK %lu Hz\n", inv_range ? "INVERT" : "",
++			 val, st->adc_clk);
++	else
++		dev_dbg(&st->spi->dev,
++			" %s IDELAY 0x%x\n", inv_range ? "INVERT" : "", val);
++
++	ret = ad9647_calibrate_stop(st);
++	if (ret)
++		return ret;
++
++	/* finally apply the optimal value */
++	return ad9467_calibrate_apply(st, val);
++}
++
++static int ad9467_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long mask)
++{
++	struct ad9467_state *st = iio_priv(indio_dev);
++	long r_clk;
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		return ad9467_set_scale(st, val, val2);
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++
++		r_clk = clk_round_rate(st->clk, val);
++		if (r_clk < 0 || r_clk > st->info->max_rate) {
++			dev_warn(&st->spi->dev,
++				 "Error setting ADC sample rate %ld", r_clk);
++			iio_device_release_direct_mode(indio_dev);
++			return -EINVAL;
++		}
++
++		if (st->adc_clk == r_clk) {
++			iio_device_release_direct_mode(indio_dev);
++			return 0;
++		}
++
++		ret = clk_set_rate(st->clk, r_clk);
++		if (ret) {
++			iio_device_release_direct_mode(indio_dev);
++			return ret;
++		}
++
++		st->adc_clk = r_clk;
++		ret = ad9467_do_calibrate(st);
++		iio_device_release_direct_mode(indio_dev);
++		return ret;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad9467_read_available(struct iio_dev *indio_dev,
++				 struct iio_chan_spec const *chan,
++				 const int **vals, int *type, int *length,
++				 long mask)
++{
++	struct ad9467_state *st = iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (const int *)st->info->scale_table;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		/* Values are stored in a 2D matrix */
++		*length = st->info->num_scales * 2;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
++				   const unsigned long *scan_mask)
++{
++	struct ad9467_state *st = iio_priv(indio_dev);
++	unsigned int c;
++	int ret;
++
++	for (c = 0; c < st->info->num_channels; c++) {
++		if (test_bit(c, scan_mask))
++			ret = converter_chan_enable(st->conv, c);
++		else
++			ret = converter_chan_disable(st->conv, c);
++
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int ad9467_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++			     unsigned int writeval, unsigned int *readval)
++{
++	struct ad9467_state *st = iio_priv(indio_dev);
++	struct spi_device *spi = st->spi;
++	int ret;
++
++	if (!readval) {
++		ret = ad9467_spi_write(spi, reg, writeval);
++		if (ret)
++			return ret;
++
++		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
++	}
++
++	ret = ad9467_spi_read(spi, reg);
++	if (ret < 0)
++		return ret;
++
++	*readval = ret;
++
++	return 0;
++}
++
++/* missing available scales... */
++#define AD9467_CHAN(_chan, _si, _bits, _sign)				\
++{									\
++	.type = IIO_VOLTAGE,						\
++	.indexed = 1,							\
++	.channel = _chan,						\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
++		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE),	\
++	.scan_index = _si,						\
++	.scan_type = {							\
++		.sign = _sign,						\
++		.realbits = _bits,					\
++		.storagebits = 16,					\
++	},								\
++}
++
++static const struct iio_chan_spec ad9434_channels[] = {
++	AD9467_CHAN(0, 0, 12, 'S'),
++};
++
++static const struct iio_chan_spec ad9467_channels[] = {
++	AD9467_CHAN(0, 0, 16, 'S'),
++};
++
++static const unsigned int ad9265_scale_table[][2] = {
++	{1250, 0x00}, {1500, 0x40}, {1750, 0x80}, {2000, 0xC0},
++};
++
++static const unsigned int ad9434_scale_table[][2] = {
++	{1600, 0x1C}, {1580, 0x1D}, {1550, 0x1E}, {1520, 0x1F}, {1500, 0x00},
++	{1470, 0x01}, {1440, 0x02}, {1420, 0x03}, {1390, 0x04}, {1360, 0x05},
++	{1340, 0x06}, {1310, 0x07}, {1280, 0x08}, {1260, 0x09}, {1230, 0x0A},
++	{1200, 0x0B}, {1180, 0x0C},
++};
++
++static const unsigned int ad9467_scale_table[][2] = {
++	{2000, 0}, {2100, 6}, {2200, 7},
++	{2300, 8}, {2400, 9}, {2500, 10},
++};
++
++static const struct ad9467_chip_info ad9467_chip_tbl = {
++	.name = "ad9467",
++	.id = CHIPID_AD9467,
++	.max_rate = 250000000UL,
++	.scale_table = ad9467_scale_table,
++	.num_scales = ARRAY_SIZE(ad9467_scale_table),
++	.channels = ad9467_channels,
++	.num_channels = ARRAY_SIZE(ad9467_channels),
++	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
++	.vref_mask = AD9467_REG_VREF_MASK,
++	.num_lanes = 8,
++};
++
++static const struct ad9467_chip_info ad9265_chip_tbl = {
++	.name = "ad9265",
++	.id = CHIPID_AD9265,
++	.max_rate = 125000000UL,
++	.scale_table = ad9265_scale_table,
++	.num_scales = ARRAY_SIZE(ad9265_scale_table),
++	.channels = ad9467_channels,
++	.num_channels = ARRAY_SIZE(ad9467_channels),
++	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
++	.vref_mask = AD9265_REG_VREF_MASK,
++	.has_dco = true,
++};
++
++static const struct ad9467_chip_info ad9434_chip_tbl = {
++	.name = "ad9434",
++	.id = CHIPID_AD9434,
++	.max_rate = 500000000UL,
++	.scale_table = ad9434_scale_table,
++	.num_scales = ARRAY_SIZE(ad9434_scale_table),
++	.channels = ad9434_channels,
++	.num_channels = ARRAY_SIZE(ad9434_channels),
++	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
++	.vref_mask = AD9434_REG_VREF_MASK,
++	.num_lanes = 6,
++};
++
++static const struct iio_info ad9467_info = {
++	.read_raw = ad9467_read_raw,
++	.write_raw = ad9467_write_raw,
++	.update_scan_mode = ad9467_update_scan_mode,
++	.debugfs_reg_access = ad9467_reg_access,
++	.read_avail = ad9467_read_available,
++};
++
++static int ad9467_reset(struct device *dev)
++{
++	struct gpio_desc *gpio;
++
++	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(gpio))
++		return PTR_ERR(gpio);
++	if (!gpio)
++		return 0;
++
++	fsleep(1);
++	gpiod_set_value_cansleep(gpio, 0);
++	fsleep(10);
++
++	return 0;
++}
++
++/*
++ * Also candidate for a generic helper...
++ *
++ * This is something that I don't like much because, hardwarewise, the dma is
++ * connected to the backend device so it would make sense for the dma
++ * properties to be in the platform device rather than the frontend. However,
++ * detaching the IIO DMA buffer like that from the place where the IIO
++ * device is handled would feel equally odd and, while doable, it would
++ * require some hacking and new converter ops to make sure that resources
++ * lifetime feel right (so also export the non devm_ @iio_dmaengine_buffer_alloc()).
++ */
++static int ad9467_buffer_get(struct iio_dev *indio_dev)
++{
++	struct device *dev = indio_dev->dev.parent;
++	const char *dma_name;
++
++	if (!device_property_present(dev, "dmas"))
++		return 0;
++
++	if (device_property_read_string(dev, "dma-names", &dma_name))
++		dma_name = "rx";
++
++	return devm_iio_dmaengine_buffer_setup(dev, indio_dev, dma_name);
++}
++
++static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
++{
++	int ret;
++
++	ret = ad9467_spi_write(spi, AN877_ADC_REG_OUTPUT_MODE, mode);
++	if (ret < 0)
++		return ret;
++
++	return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++				AN877_ADC_TRANSFER_SYNC);
++}
++
++static int ad9467_channels_setup(const struct ad9467_state *st, bool test_mode)
++{
++	struct converter_data_fmt data;
++	unsigned int c, mode;
++	int ret;
++
++	if (test_mode) {
++		data.enable = false;
++		mode = st->info->default_output_mode;
++	} else {
++		mode = st->info->default_output_mode |
++				AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
++		data.type = CONVERTER_TWOS_COMPLEMENT;
++		data.sign_extend = true;
++		data.enable = true;
++	}
++
++	ret = ad9467_outputmode_set(st->spi, mode);
++	if (ret)
++		return ret;
++
++	for (c = 0; c < st->info->num_channels; c++) {
++		ret = converter_data_format_set(st->conv, c, &data);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int ad9467_calibrate(const struct ad9467_state *st)
++{
++	int ret;
++
++	ret = ad9467_channels_setup(st, true);
++	if (ret)
++		return ret;
++
++	ret = ad9467_do_calibrate(st);
++	if (ret)
++		return ret;
++
++	return ad9467_channels_setup(st, false);
++}
++
++static int ad9467_init(struct converter_frontend *frontend, struct device *dev)
++{
++	struct spi_device *spi = to_spi_device(dev);
++	struct iio_dev *indio_dev;
++	struct ad9467_state *st;
++	unsigned int id;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++	st->spi = spi;
++
++	st->info = spi_get_device_match_data(spi);
++	if (!st->info)
++		return -EINVAL;
++
++	st->conv = converter_get(frontend, NULL);
++	if (IS_ERR(st->conv))
++		return PTR_ERR(st->conv);
++
++	st->clk = devm_clk_get_enabled(dev, "adc-clk");
++	if (IS_ERR(st->clk))
++		return PTR_ERR(st->clk);
++
++	st->adc_clk = clk_get_rate(st->clk);
++
++	ret = ad9467_reset(dev);
++	if (ret)
++		return ret;
++
++	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
++	if (id != st->info->id) {
++		dev_err(dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
++			id, st->info->id);
++		return -ENODEV;
++	}
++
++	indio_dev->name = st->info->name;
++	indio_dev->channels = st->info->channels;
++	indio_dev->num_channels = st->info->num_channels;
++	indio_dev->info = &ad9467_info;
++
++	ret = ad9467_buffer_get(indio_dev);
++	if (ret)
++		return ret;
++
++	ret = converter_enable(st->conv);
++	if (ret)
++		return ret;
++
++	ret = ad9467_calibrate(st);
++	if (ret)
++		return ret;
++	ret = devm_iio_device_register(dev, indio_dev);
++	if (ret)
++		return ret;
++
++	converter_add_direct_reg_access(st->conv, indio_dev);
++
++	return 0;
++}
++
++static const struct frontend_ops ad9467_ops = {
++	.frontend_init = ad9467_init,
++};
++
++static int ad9467_probe(struct spi_device *spi)
++{
++	return converter_frontend_add(&spi->dev, &ad9467_ops);
++}
++
++/*
++ * It actually matters to remove the frontend in the .remove() hook. This means
++ * that all the converters (and the frontend) will be tear down before running
++ * any specific devres cleanup (at the driver core level). What this all means is
++ * that we can use devm_ apis in .frontend_init() and being sure those resources
++ * will be released after the backend resources and before any devm_* used
++ * in .probe().
++ */
++static void ad9467_remove(struct spi_device *spi)
++{
++	converter_del(&spi->dev);
++}
++
++static const struct of_device_id ad9467_of_match[] = {
++	{ .compatible = "adi,ad9265", .data = &ad9265_chip_tbl, },
++	{ .compatible = "adi,ad9434", .data = &ad9434_chip_tbl, },
++	{ .compatible = "adi,ad9467-new", .data = &ad9467_chip_tbl, },
++	{}
++};
++MODULE_DEVICE_TABLE(of, ad9467_of_match);
++
++static const struct spi_device_id ad9467_ids[] = {
++	{ "ad9265", (kernel_ulong_t)&ad9265_chip_tbl },
++	{ "ad9434", (kernel_ulong_t)&ad9434_chip_tbl },
++	{ "ad9467-new", (kernel_ulong_t)&ad9467_chip_tbl },
++	{}
++};
++MODULE_DEVICE_TABLE(spi, ad9467_ids);
++
++static struct spi_driver ad9467_driver = {
++	.driver = {
++		.name = "ad9467",
++		.of_match_table = ad9467_of_match,
++	},
++	.probe = ad9467_probe,
++	.remove = ad9467_remove,
++	.id_table = ad9467_ids,
++};
++module_spi_driver(ad9467_driver);
++
++MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
++MODULE_DESCRIPTION("Analog Devices AD9467 ADC driver");
 +MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/iio/addac/converter.h b/include/linux/iio/addac/converter.h
-new file mode 100644
-index 000000000000..09d9d491b2b8
---- /dev/null
-+++ b/include/linux/iio/addac/converter.h
-@@ -0,0 +1,485 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _CONVERTER_H
-+#define _CONVERTER_H
-+
-+struct converter_frontend;
-+struct converter_backend;
-+struct iio_dev;
-+struct device;
-+struct regmap;
-+
-+enum converter_test_pattern {
-+	CONVERTER_PRBS_7,
-+	CONVERTER_PRBS_15,
-+	CONVERTER_PRBS_23,
-+	CONVERTER_PRBS_31,
-+	CONVERTER_RAMP_NIBBLE,
-+	CONVERTER_RAMP_16,
-+	/* vendor specific from 32 */
-+	CONVERTER_ADI_PRBS_9A = 32,
-+	CONVERTER_ADI_PRBS_23A,
-+	CONVERTER_ADI_PRBS_X,
-+	CONVERTER_TEST_PATTERN_MAX
-+};
-+
-+enum converter_data_type {
-+	CONVERTER_TWOS_COMPLEMENT,
-+	CONVERTER_OFFSET_BINARY,
-+	CONVERTER_DATA_TYPE_MAX
-+};
-+
-+enum converter_edge {
-+	CONVERTER_RISING_EDGE_SAMPLE,
-+	CONVERTER_FALLING_EDGE_SAMPLE,
-+	CONVERTER_EDGE_MAX
-+};
-+
-+struct converter_chan_status {
-+	bool errors;
-+};
-+
-+/**
-+ * struct converter_data_fmt - Backend data format
-+ * @type:		Data type.
-+ * @sign_extend:	Bool to tell if the data is sign extended.
-+ * @enable:		Enable/Disable the data format module. If disabled,
-+ *			not formatting will happen.
-+ */
-+struct converter_data_fmt {
-+	enum converter_data_type type;
-+	bool sign_extend;
-+	bool enable;
-+};
-+
-+/**
-+ * struct converter_test_pattern_xlate - Helper struct for test pattern handling
-+ * @pattern:	Pattern to configure.
-+ * @reg_val:	Register value for the pattern to configure.
-+ */
-+struct converter_test_pattern_xlate {
-+	enum converter_test_pattern pattern;
-+	unsigned int reg_val;
-+};
-+
-+/**
-+ * struct converter_ops - Backend supported operations
-+ * @backend_init:	Mandatory function to initialize the backend device. It
-+ *			should be a replacement for .probe() where the latest
-+ *			should only have to care about doing @converter_add().
-+ * @backend_close:	Optional function to tear down the device.
-+ * @enable:		Enable the backend device.
-+ * @disable:		Disable the backend device.
-+ * @data_format_set:	Configure the data format for a specific channel.
-+ * @chan_enable:	Enable one channel.
-+ * @chan_disable:	Disable one channel.
-+ * @iodelay_set:	Controls the IO delay for all the lanes at the interface
-+ *			(where data is actually transferred between frontend and
-+			backend) level.
-+ * @test_pattern_set:	Set's a test pattern to be transmitted/received by the
-+ *			backend. Typically useful for debug or interface
-+ *			purposes calibration.
-+ */
-+struct converter_ops {
-+	int (*backend_init)(struct converter_backend *conv, struct device *dev);
-+	void (*backend_close)(struct converter_backend *conv);
-+	int (*enable)(struct converter_backend *conv);
-+	void (*disable)(struct converter_backend *conv);
-+	int (*data_format_set)(struct converter_backend *conv,
-+			       unsigned int chan,
-+			       const struct converter_data_fmt *data);
-+	int (*chan_enable)(struct converter_backend *conv, unsigned int chan);
-+	int (*chan_disable)(struct converter_backend *conv, unsigned int chan);
-+	int (*iodelay_set)(struct converter_backend *conv,
-+			   unsigned int num_lanes, unsigned int delay);
-+	int (*test_pattern_set)(struct converter_backend *conv,
-+				unsigned int chan,
-+				enum converter_test_pattern pattern);
-+	int (*chan_status)(struct converter_backend *conv, unsigned int chan,
-+			   struct converter_chan_status *status);
-+	int (*sample_edge_select)(struct converter_backend *conv,
-+				  enum converter_edge edge);
-+};
-+
-+/**
-+ * struct frontend_ops - Frontend supported operations
-+ * @frontend_init:	Mandatory function to initialize the frontend device. It
-+ *			should be a replacement for .probe() where the latest
-+ *			should only have to care about doing @frontend_add().
-+ * @frontend_close:	Optional function to tear down the device.
-+ */
-+struct frontend_ops {
-+	int (*frontend_init)(struct converter_frontend *frontend,
-+			     struct device *dev);
-+	void (*frontend_close)(struct converter_frontend *frontend);
-+};
-+
-+/**
-+ * converter_test_pattern_xlate() - Helper macro for translatting test patterns
-+ * @pattern:	Pattern to translate.
-+ * @xlate:	List of @struct converter_test_pattern_xlate pairs.
-+ *
-+ * Simple helper to match a supported pattern and get the register value. Should
-+ * only be called by backend devices. Automatically computes the number of
-+ * @xlate entries.
-+ */
-+#define converter_test_pattern_xlate(pattern, xlate)	\
-+	__converter_test_pattern_xlate(pattern, xlate, ARRAY_SIZE(xlate));
-+
-+#if IS_ENABLED(CONFIG_IIO_CONVERTER)
-+
-+/**
-+ * converter_get_drvdata - Get driver private data
-+ * @conv:	Converter device.
-+ */
-+void *converter_get_drvdata(const struct converter_backend *conv);
-+
-+/**
-+ * converter_set_drvdata - Set driver private data
-+ * @conv:	Converter device.
-+ * @drvdata:	Driver private data.
-+ */
-+void converter_set_drvdata(struct converter_backend *conv, void *drvdata);
-+
-+/**
-+ * converter_set_regmap - Add a regmap object to a converter
-+ * @conv:	Converter device.
-+ * @regmap:	Regmap object.
-+ */
-+void converter_set_regmap(struct converter_backend *conv,
-+			  struct regmap *regmap);
-+
-+/**
-+ * __converter_test_pattern_xlate - Helper macro for translatting test patterns
-+ * @pattern:	Pattern to translate.
-+ * @xlate:	List of @struct converter_test_pattern_xlate pairs.
-+ * @n_matches:	Number of entries in @xlate.
-+ *
-+ * Simple helper to match a supported pattern and get the register value. Should
-+ * only be called by backend devices.
-+ */
-+int __converter_test_pattern_xlate(unsigned int pattern,
-+				   const struct converter_test_pattern_xlate *xlate,
-+				   int n_matches);
-+
-+/**
-+ *
-+ */
-+int converter_add(struct device *dev, const struct converter_ops *ops);
-+
-+/**
-+ * converter_del - Remove the converter device
-+ * @dev:	device to remove from the aggregate
-+ *
-+ * Removes the converter from the aggregate device. This tears down the frontend
-+ * and all the converters.
-+ *
-+ * Ideally, this should be called from the backend driver .remove() callback.
-+ * This means that all the converters (and the frontend) will be tear down before
-+ * running any specific devres cleanup (at the driver core level). What this all
-+ * means is that we can use devm_ apis in @backend_init() and being sure those
-+ * resources will be released after the backend resources and before any devm_*
-+ * used in @probe(). If that is not the case, one should likely not use any
-+ * devm_ API in @backend_init(). That means .backend_close() should be
-+ * provided to do all the necessary cleanups.
-+ */
-+void converter_del(struct device *dev);
-+
-+/**
-+ * converter_enable - Enable the device
-+ * @conv:	Converter device.
-+ *
-+ * Enables the backend device.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_enable(struct converter_backend *conv);
-+
-+/**
-+ * converter_disable - Disable the device
-+ * @conv:	Converter device.
-+ *
-+ * Disables the backend device.
-+ */
-+void converter_disable(struct converter_backend *conv);
-+
-+/**
-+ * converter_test_pattern_set - Set a test pattern
-+ * @conv:	Converter device.
-+ * @chan:	Channel number.
-+ * @pattern:	Pattern to set.
-+ *
-+ * Set's a test pattern to be transmitted/received by the backend. Typically
-+ * useful for debug or interface calibration purposes. A backend driver can
-+ * call the @converter_test_pattern_xlate() helper to validate the pattern
-+ * (given an array of @struct converter_test_pattern_xlate).
-+ *
-+ * Note that some patterns might be frontend specific. I.e, as far as the
-+ * backend is concerned the pattern is valid (from a register point of view) but
-+ * the actual support for the pattern is not implemented in the device for this
-+ * specific frontend. It's up to the frontend to ask for a proper pattern
-+ * (as it should know better).
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_test_pattern_set(struct converter_backend *conv,
-+			       unsigned int chan,
-+			       enum converter_test_pattern pattern);
-+
-+int converter_chan_status_get(struct converter_backend *conv,
-+			      unsigned int chan,
-+			      struct converter_chan_status *status);
-+
-+/**
-+ * converter_data_format_set - Configure the data format
-+ * @conv:	Converter device.
-+ * @chan:	Channel number.
-+ * @data:	Data format.
-+ *
-+ * Properly configure a channel with respect to the expected data format. A
-+ * @struct converter_data_fmt must be passed with the settings.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_data_format_set(struct converter_backend *conv,
-+			      unsigned int chan,
-+			      const struct converter_data_fmt *data);
-+
-+int converter_sample_edge_select(struct converter_backend *conv,
-+				 enum converter_edge edge);
-+
-+static inline int
-+converter_sample_on_falling_edge(struct converter_backend *conv)
-+{
-+	return converter_sample_edge_select(conv, CONVERTER_RISING_EDGE_SAMPLE);
-+}
-+
-+static inline int
-+converter_sample_on_rising_edge(struct converter_backend *conv)
-+{
-+	return converter_sample_edge_select(conv, CONVERTER_FALLING_EDGE_SAMPLE);
-+}
-+
-+/**
-+ * converter_chan_enable - Enable a backend channel
-+ * @conv:	Converter device.
-+ * @chan:	Channel number.
-+ *
-+ * Enables a channel on the backend device.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_chan_enable(struct converter_backend *conv, unsigned int chan);
-+
-+/**
-+ * converter_chan_disable - Disable a backend channel
-+ * @conv:	Converter device.
-+ * @chan:	Channel number.
-+ *
-+ * Disables a channel on the backend device.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_chan_disable(struct converter_backend *conv, unsigned int chan);
-+
-+/**
-+ * converter_iodelay_set - Set's the backend data interface IO delay
-+ * @conv:	Converter device.
-+ * @num_lanes:	Number of lanes in the data interface.
-+ * @delay:	Delay to set.
-+ *
-+ * Controls the IO delay for all the lanes at the data interface (where data is
-+ * actually transferred between frontend and backend) level.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_iodelay_set(struct converter_backend *conv,
-+			  unsigned int num_lanes, unsigned int delay);
-+
-+/**
-+ * converter_frontend_del - Remove the frontend device
-+ * @dev:	Device to remove from the aggregate
-+ *
-+ * Removes the frontend from the aggregate device. This tears down the frontend
-+ * and all the converters.
-+ *
-+ * Ideally, this should be called from the frontend driver .remove() callback.
-+ * This means that all the converters (and the frontend) will be tear down
-+ * before running any specific devres cleanup (at the driver core level). What
-+ * this all means is that we can use devm_ apis in .frontend_init() and being
-+ * sure those resources will be released after the backend resources and before
-+ * any devm_* used in .probe(). If that is not the case, one should likely not
-+ * use any devm_ API in .frontend_init(). That means .frontend_close() should be
-+ * provided to do all the necessary cleanups.
-+ */
-+void converter_frontend_del(struct device *dev);
-+
-+/**
-+ * converter_frontend_add - Allocate and add a frontend device
-+ * @dev:	Device to allocate frontend for.
-+ * @ops:	Frontend callbacks.
-+ *
-+ * This allocates the frontend device and looks for all converters needed
-+ * so that, when they are available, all of the devices in the aggregate can be
-+ * initialized.
-+ *
-+ * RETURNS:
-+ * 0 on success, negative error number on failure.
-+ */
-+int converter_frontend_add(struct device *dev, const struct frontend_ops *ops);
-+
-+/**
-+ * converter_get - Get a converter object
-+ * @frontend:	Frontend device.
-+ * @name:	Converter name.
-+ *
-+ * Get's a pointer to a converter device. If name is NULL, then it is assumed
-+ * that only one backend device is bond with the frontend and the first element
-+ * in the list is retrieved. Should only be called from the .frontend_init()
-+ * callback.
-+ *
-+ * RETURNS:
-+ * A converter pointer, negative error pointer otherwise.
-+ */
-+struct converter_backend *__must_check
-+converter_get(const struct converter_frontend *frontend, const char *name);
-+
-+/**
-+ * converter_add_direct_reg_access - Add debugfs direct register access
-+ * @conv: Coverter device
-+ * @indio_dev: IIO device
-+ *
-+ * This is analogous to the typical IIO direct register access in debugfs. The
-+ * extra converter file will be added in the same debugs dir as @indio_dev.
-+ * Moreover, if @conv->name is NULL, the file will be called
-+ * converter_direct_reg_access. Otherwise, will be
-+ * @conv->name_converter_direct_reg_access.
-+ */
-+void converter_add_direct_reg_access(struct converter_backend *conv,
-+				     struct iio_dev *indio_dev);
-+
-+#else
-+
-+static inline void *converter_get_drvdata(const struct converter_backend *conv)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return NULL;
-+}
-+
-+static inline void converter_set_drvdata(struct converter_backend *conv,
-+					 void *drvdata)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+}
-+
-+static inline void converter_set_regmap(struct converter_backend *conv,
-+					struct regmap *regmap)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+}
-+
-+static inline int
-+__converter_test_pattern_xlate(unsigned int pattern,
-+			       const struct converter_test_pattern_xlate *xlate,
-+			       int n_matches)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline struct converter_backend *__must_check
-+converter_get(const struct converter_frontend *frontend, const char *name)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return ERR_PTR(-ENOTSUPP);
-+}
-+
-+static inline int converter_add(struct device *dev,
-+				const struct converter_ops *ops)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline void converter_del(struct device *dev)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+}
-+
-+static inline int converter_enable(struct converter_backend *conv)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline void converter_disable(struct converter_backend *conv)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+}
-+
-+static inline int
-+converter_test_pattern_set(struct converter_backend *conv,
-+			   unsigned int chan,
-+			   enum converter_test_pattern pattern)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline int
-+converter_data_format_set(struct converter_backend *conv,
-+			  unsigned int chan,
-+			  const struct converter_data_fmt *data)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline int converter_chan_enable(struct converter_backend *conv,
-+					unsigned int chan)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline int converter_chan_disable(struct converter_backend *conv,
-+					 unsigned int chan)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline int converter_iodelay_set(struct converter_backend *conv,
-+					unsigned int num_lanes,
-+					unsigned int val)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline void
-+converter_add_direct_reg_access(struct converter_backend *conv,
-+				struct iio_dev *indio_dev)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+}
-+
-+static inline int converter_frontend_add(struct device *dev,
-+					 const struct frontend_ops *ops)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+	return -ENOTSUPP;
-+}
-+
-+static inline void converter_frontend_del(struct device *dev)
-+{
-+	WARN_ONCE(1, "converter API is disabled");
-+}
-+
-+#endif
-+#endif
++MODULE_IMPORT_NS(IIO_CONVERTER);
 -- 
 2.41.0
 

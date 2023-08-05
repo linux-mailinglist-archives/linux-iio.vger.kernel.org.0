@@ -2,84 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9FB770F00
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Aug 2023 11:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB165771098
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Aug 2023 18:40:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbjHEJPf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Aug 2023 05:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36386 "EHLO
+        id S229516AbjHEQkp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Aug 2023 12:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbjHEJP0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Aug 2023 05:15:26 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 083A4469F;
-        Sat,  5 Aug 2023 02:15:25 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b9a828c920so43953181fa.1;
-        Sat, 05 Aug 2023 02:15:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691226923; x=1691831723;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VEMrhJgRpsbu7zR7TA2bQHTZOtBmsvLnhXD4/GvVmYU=;
-        b=ByzRNtMFnLrd9GxiHSVQHLxowzr65hqXuPf/NZB0wensOhVPYzu5ToLqe4kIy7MHEj
-         Y1SliYE8cxWcMcmLgnNHDu6Yy+T20WE/uWB5Fkmn0YXwvjDB+w/iIvnGJtJZou9TcAAj
-         L5q4aaT9uV8t3leAu+J81DmXNXeABjKe02P9n2WUPMpl7ScsLLc+J1qiewecbQweZLKq
-         GQ5KFOo1W/HwX9fZQy84McBdVE8sPc9QOC8cHkMPdeoVjLssJf9yd/R7Hk84cp0hSSTc
-         am8plE9JiTbJlpVbFsrf84cS69QHVVN5DToRRRQl33S8Ydyt21XHjUlKpblBxiDkkRRg
-         Z/gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691226923; x=1691831723;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VEMrhJgRpsbu7zR7TA2bQHTZOtBmsvLnhXD4/GvVmYU=;
-        b=gS+jcrXlpm6+kBGvHlXHWPEbreXFZFyVlT8zsnbd0C0+e6W2BAooeRWtNs8V944s6L
-         LU0KvieHCoK1LpuF7phIRJc+6C6ix1zo0jqaEAhaUTT/mpyVTT0nt/yVHf/7oGB7NWEh
-         mBAUjb5DulKfWtxwdGtu8uNJ47rC6f7YEjFDslg1Ld1S9O7AO7c5paP1ltX0g37D7Udr
-         0vz5Kttm+YP741RDdoULXNQ3UL5kTOL0duJ7nIkmcLj439dbtciL9myFiJwBM/uXGUo8
-         WL6ONWVokxMQRX2MsEufbSC7tEm6vS0dggUrZLVasrq6WR4HGalAe5Zoxa/TrShCrNVJ
-         zY+w==
-X-Gm-Message-State: AOJu0Yx0HYNFd2X3Pr9gBuNskepGPX+l4jJC3+7XW1l9ScflBQZI+qGM
-        ZLlbwgxiZx0LeGgNbG889fpWKTvJ/I7wBjl4
-X-Google-Smtp-Source: AGHT+IHUkxlpoPzF31OElddPnzgqTc5AMFFKr2pzjnaghDPp3Ip1gxFvrpXc1JPPQXDzlWQaLABPLQ==
-X-Received: by 2002:a2e:98cf:0:b0:2b9:e053:79d8 with SMTP id s15-20020a2e98cf000000b002b9e05379d8mr3322896ljj.18.1691226922927;
-        Sat, 05 Aug 2023 02:15:22 -0700 (PDT)
-Received: from gmail.com (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id v9-20020a2e7a09000000b002b836d8c839sm815724ljc.40.2023.08.05.02.15.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Aug 2023 02:15:22 -0700 (PDT)
-Date:   Sat, 5 Aug 2023 11:17:21 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: mcp3911: add support for the whole
- MCP39xx family
-Message-ID: <ZM4ToQ4EiuEwlbEi@gmail.com>
-References: <20230804100248.3773861-1-marcus.folkesson@gmail.com>
- <20230804100248.3773861-2-marcus.folkesson@gmail.com>
- <ZM1Td+v3tcoaID9v@smile.fi.intel.com>
+        with ESMTP id S229441AbjHEQko (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Aug 2023 12:40:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA3710F8;
+        Sat,  5 Aug 2023 09:40:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AD9060AF0;
+        Sat,  5 Aug 2023 16:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F80FC433C8;
+        Sat,  5 Aug 2023 16:40:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691253641;
+        bh=ykPFYyhRYBB3T6oKUZ9VYmG082m8qU1MrJwEqVFoxak=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WP5x6kWVnd2Us8o3Ut65Dto87uu1msoCvvHK/Mmpx1cMcYnLJ0ZUyarkV8fEb8sFN
+         /qCyJRSCBVRBsQDzd1Hqg92DuRuEQk9+zoxcC3SplmHDmiAkMWgybyqHnCPvGdkUZS
+         mlSoXa66Py9AJk21AwDKEm33NmuG2uJVRktc4GMrVg9lGGN4lkB1EwgqJn6g+68cfr
+         j4wFmgM583kbfr06/KqTzglNRgaJQkP4hsXWlQq0MNgZ1IQgdoZMG42VPtbDFNcjLu
+         5I2jqnlhY7SHbnRckdbzbIRvSHdXu23DnE7h2YJIs37OYu1V2vQBU1K0M7yFnr3/HC
+         a5ufNQFh2Z/+Q==
+Date:   Sat, 5 Aug 2023 17:40:36 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-rtc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+ bus_type
+Message-ID: <20230805174036.129ffbc2@jic23-huawei>
+In-Reply-To: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="OZc4EUY9h3zGPqzZ"
-Content-Disposition: inline
-In-Reply-To: <ZM1Td+v3tcoaID9v@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -88,94 +68,104 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri,  4 Aug 2023 17:17:24 +0100
+Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
---OZc4EUY9h3zGPqzZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> This patch series extend device_get_match_data() to struct bus_type,
+> so that buses like I2C can get matched data.
+> 
+> There is a plan to replace i2c_get_match_data()->device_get_match_data()
+> later, once this patch hits mainline as it is redundant.
 
+Are we sure we don't have any instances left of the pattern that
+used to be common (typically for drivers where dt tables were added
+later) of
 
-Hi Andy,
+	chip_info = device_get_match_data();
+	if (!chip_info) {
+		chip_info = arrayofchipinfo[id->driver_data];	
+	}
 
-Thanks for your revew!
+Looks like the first driver I checked, iio/adc/max1363.c does
+this still and will I think break with this series.
 
-[...]
->=20
-> > +static int mcp3910_get_offset(struct mcp3911 *adc, int channel, int *v=
-al)
-> > +{
-> > +	return mcp3911_read(adc, MCP3910_OFFCAL(channel), val, 3);
->=20
-> Just to be sure, the proper endianess conversion is done in mcp3911_read()
-> and mcp3911_write() calls?
->=20
-> This question applies to all calls to that APIs.
+Or am I missing some reason this isn't a problem?
 
-Yes it does.
+Clearly this only matters if we get to the bus callback, but
+enabling that is the whole point of this series.  Hence
+I think a lot of auditing is needed before this can be safely applied.
 
-[...]
+Jonathan
 
->=20
-> > +static int mcp3910_get_osr(struct mcp3911 *adc, int *val)
-> > +{
-> > +	int ret =3D mcp3911_read(adc, MCP3910_REG_CONFIG0, val, 3);
->=20
-> Have you run checkpatch? Here should be a blank line. Same in other sever=
-al
-> places.
+> v6->v7:
+>  * Added ack from Greg Kroah-Hartman for patch#1
+>  * Swapped patch#2 and patch#3 from v6.
+>  * Added Rb tag from Andy for patch#2 and patch#4
+>  * Updated commit description of patch#2 by removing unnecessary wrapping.
+>  * Updated typo in commit description struct bus_type()->struct bus_type.
+> v5->v6:
+>  * Cced linux-rtc and linux-iio as these subsytems uses i2c_get_match_
+>    data() and this function become redundant once this patch series hits
+>    mainline.
+>  * Added Rb tag from Sakari for patch#1.
+>  * Moved patch#3 from v5 to patch#2 and patch#2 from v5 to patch#4.
+>  * Added Rb tag from Andy for patch#2
+>  * Separate patch#3 to prepare for better difference for
+>    i2c_match_id() changes.
+>  * Merged patch#4 from v5 with patch#4.
+> v4->v5:
+>  * Added const struct device_driver variable 'drv' in i2c_device_get_match
+>    _data().
+>  * For code readability and maintenance perspective, added separate NULL
+>    check for drv and client variable and added comment for NULL check for
+>    drv variable.
+>  * Created separate patch for converting i2c_of_match_device_sysfs() to
+>    non-static.
+>  * Removed export symbol for i2c_of_match_device_sysfs().
+>  * Replaced 'dev->driver'->'drv'.
+>  * Replaced return value data->NULL to avoid (potentially) stale pointers,
+>    if there is no match.
+> v3->v4:
+>  * Documented corner case for device_get_match_data()
+>  * Dropped struct i2c_driver parameter from i2c_get_match_data_helper()
+>  * Split I2C sysfs handling in separate patch(patch#3)
+>  * Added space after of_device_id for i2c_of_match_device_sysfs()
+>  * Added const parameter for struct i2c_client, to prevent overriding it's
+>    pointer.
+>  * Moved declaration from public i2c.h->i2c-core.h
+> v2->v3:
+>  * Added Rb tag from Andy for patch#1.
+>  * Extended to support i2c_of_match_device() as suggested by Andy.
+>  * Changed i2c_of_match_device_sysfs() as non-static function as it is
+>    needed for i2c_device_get_match_data().
+>  * Added a TODO comment to use i2c_verify_client() when it accepts const
+>    pointer.
+>  * Added multiple returns to make code path for device_get_match_data()
+>    faster in i2c_get_match_data().
+> RFC v1->v2:
+>  * Replaced "Signed-off-by"->"Suggested-by" tag for Dmitry.
+>  * Documented device_get_match_data().
+>  * Added multiple returns to make code path for generic fwnode-based
+>    lookup faster.
+>  * Fixed build warnings reported by kernel test robot <lkp@intel.com>
+>  * Added const qualifier to return type and parameter struct i2c_driver
+>    in i2c_get_match_data_helper().
+>  * Added const qualifier to struct i2c_driver in i2c_get_match_data()
+>  * Dropped driver variable from i2c_device_get_match_data()
+>  * Replaced to_i2c_client with logic for assigning verify_client as it
+>    returns non const pointer.
+> 
+> Biju Das (4):
+>   drivers: fwnode: Extend device_get_match_data() to struct bus_type
+>   i2c: Enhance i2c_get_match_data()
+>   i2c: i2c-core-of: Convert i2c_of_match_device_sysfs() to non-static
+>   i2c: Add i2c_device_get_match_data() callback
+> 
+>  drivers/base/property.c     | 27 ++++++++++++++++-
+>  drivers/i2c/i2c-core-base.c | 60 ++++++++++++++++++++++++++++++-------
+>  drivers/i2c/i2c-core-of.c   |  4 +--
+>  drivers/i2c/i2c-core.h      |  9 ++++++
+>  include/linux/device/bus.h  |  3 ++
+>  5 files changed, 90 insertions(+), 13 deletions(-)
+> 
 
-Yes, checkpatch does not report any warning for this.
-
-[...]
-
-> > +	adc->chip =3D (struct mcp3911_chip_info *)spi_get_device_id(spi)->dri=
-ver_data;
->=20
-> Can't you use spi_get_device_match_data()?
->=20
-> ...
-
-Will go for spi_get_device_match_data().
-
-[...]
-
->=20
-> > +		device_property_read_u32(&adc->spi->dev, "device-addr", &adc->dev_ad=
-dr);
->=20
-> With
->=20
-> 	struct device *dev =3D &adc->spi->dev;
->=20
-> lines like this will be neater.
-
-Indeed, but I think I will short it down to just spi->dev.
-
->=20
->=20
->=20
-
-Best regards,
-Marcus Folkesson
-
---OZc4EUY9h3zGPqzZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmTOE5wACgkQiIBOb1ld
-UjKezw/9Ft3n9wG4UJox6bgPA6LdrFllY0Joyk8WcdHUzckCXh8R0kFowgIOhOOd
-8LekC5lNQrx8r2aCpPwOyw7tuCVPjxrqUVxnF4ibU+HNFz4bqBodrXb6teUNAAHJ
-8SBcgwfUsKz3zcg2WHKzcbZJYJnKHcdD5yzaecypRyNPFo+NfHhIoiav0tDWFMlk
-6Ldd1Xa5w4xV4kCVt/BFl5YGOy/okrlntVEdWjL2+Jxu+rb7iD5FRQlS0d0OMPZk
-WldHXAOpguEzJRMdRxPmWtEdhyfVyQEymSoKrS22iPJt/EJsxd+p3pvmq/PKdogD
-4Q4dx4slUdYWD7CHRfTJ/cEMe3d9PUI5Cjqb381UavKJ4N/RsfgwoLO/LlbDZaBu
-z6J9fTWKSFa0jPpXamxxaLeoTBTU8ZM0KHipK8xalaBO40NM7MsrIoWHSpBUYV6W
-c4wDqpe5fz1YDOMZ+bea00Uyl+XlzNaVY/rWO2cflnRZ8I3550WaAKTPVJwlTy2F
-58gwoEPD3X82RmTSAtwoVxTgXzbWileIM3/x0Hs08pksOuYUEkuFjCO1/i9sn2SB
-JnCl6d3oRYW4D1+nksu5rFqPZIk72kIH4OgXdpG2x+gdRVt+iIBKWBKYUUhRJi3e
-BF16knGzDggpv/+YYvGO3ZbjqfWSvf6tGyusiXOAGXw4Loz4Xgw=
-=Rgh5
------END PGP SIGNATURE-----
-
---OZc4EUY9h3zGPqzZ--

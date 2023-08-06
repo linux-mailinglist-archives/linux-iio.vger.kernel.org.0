@@ -2,116 +2,244 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 492B477151F
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Aug 2023 15:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCE43771545
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Aug 2023 15:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjHFNHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Aug 2023 09:07:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35724 "EHLO
+        id S230060AbjHFNaC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Aug 2023 09:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjHFNG7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Aug 2023 09:06:59 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA3319A6
-        for <linux-iio@vger.kernel.org>; Sun,  6 Aug 2023 06:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=s31663417; t=1691327199; x=1691931999; i=p.jungkamp@gmx.net;
- bh=1cntvCccU9PIxnQIHTK24pvznNp8Y0OyrDsIxorKFSc=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
- b=jzpG6WvWZlvyDaQMK3wK6DxjLdt4p5ikIiePleqHzCh7LgFGVX67f7Ay1rOBGxYTbwzfJKc
- VZLaXi2YKuAFWbCnzARmPivTRlsHdTJphLybXYh08I4nXLzEfQfePNiILCSP2n1rexhmAIdwT
- tyd2B2ZlUBB8BtutGxnZpYuy2YXKkZFkXPNvNuRxuybcqGKeDdy0gx0GGhsxXosyxHrQW6ZgO
- +pnzRJQlrfpQ39pJJI3VUBwhbt/9oTpE95WbOVLOrtgNyrkjN+sE+fpAmLthMjkNxR2/3NM6u
- waUbZkjNw2iXbBsZxM+qkF1TgOhZ1n3eZkc0m9mhJSUrrnUjOqbQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from yoga9.fritz.box ([79.193.195.172]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MXGr8-1qKSuX12dC-00Yl3A; Sun, 06
- Aug 2023 15:06:39 +0200
-From:   Philipp Jungkamp <p.jungkamp@gmx.net>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, Philipp Jungkamp <p.jungkamp@gmx.net>
-Subject: [PATCH] IIO: hid-sensor-prox: add missing scale attribute
-Date:   Sun,  6 Aug 2023 14:59:26 +0200
-Message-ID: <20230806130558.89812-2-p.jungkamp@gmx.net>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S229456AbjHFNaB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Aug 2023 09:30:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58EF6B5;
+        Sun,  6 Aug 2023 06:30:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E33D960F21;
+        Sun,  6 Aug 2023 13:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1493C433C8;
+        Sun,  6 Aug 2023 13:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691328599;
+        bh=7KXBsHrZKGdjI3D+ZTPDNywNWzwNv7z1Uwso7p57syk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=TNTlLAJvs2yL1O26cBC5+pDYyohVGGKWvnzsOztk+SLo+8r0K1BnL3aamKZcbo3d2
+         OrUfr0LLoi4TTue1VH6NLPSg9piEZLgf+b4USdfp2YAjQ0+1LAUVbDd0ZL4WvJHp4Q
+         91u9WHJVLL/RirpcpCRBYUa8Z93JkNjMohYVipxo7eJ64izsKRqiJq37yot2dAr1Wv
+         tCbrnFuobKkH7L1/QG9oX5T9j1NsMq/IMOhGyGRQz7rGLHQN9oc4ELSkszcXsmAYg1
+         iasLafh+rRXzTPPSHHYYvFigNCGBrqnJEsRCExqxBUPyKJSBDF7QuD93At8j7AC7d2
+         dOYKSSaYYBpNg==
+Date:   Sun, 6 Aug 2023 14:29:50 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+ bus_type
+Message-ID: <20230806142950.6c409600@jic23-huawei>
+In-Reply-To: <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+        <20230805174036.129ffbc2@jic23-huawei>
+        <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gXuuZG9e/q5Cv3eqhh5b/8GV/dkW2wmTCNM17Lth/TvmQYEs7Xc
- Bcn8ToWmwJHAb6gfPyJVx/527f1Lr6ip5unrJ1Bm0sGhrMOt+UvrIuQdSqsR1PM2VHMTDe1
- 2Qv8HtaZJd1Gau/FMc9KhP73FTb0wjmV79gJQu+jWLCscd148reJYPfOxYi+SAzpRlYXHLO
- ExZwmrhVI3kCH8bGqyyWA==
-UI-OutboundReport: notjunk:1;M01:P0:zkTaFwbUU14=;raRRE1EnwLik60/+82BFGIaKeQs
- 9yvM1Xj+J7Kc8ps3oKrhiDYquf1VYnSv6G2V3BNLtvzXz3FQEvTqfWt9mxh1rPCCIwkyIaxZq
- vz/Sn7n+2sWnKN4epFbvEECClbAAlTdY30ZXWaadlL7RKnFS2eD7mwKImRUi89Xq1gMz4wSys
- SjT9bhK3QKczq+yY/eVdMYPIdjrNCxyVBtgwWeDl9f3bCDMkc2xL5LHtyg9BgcBnsNTXkaj2L
- CHS7AIY19xwkanFo95YOwjLHoFqp+AIXbTUcn9UNG/h7FHhBUX/SFr17KVIjC/npCS86lew+l
- WIuBmhpISMVDJ4jD/GxXNK7mQxm0jGKsfFtXsx+x587lqFLhTo85flrGnBA/yIjIoFHM4nPYs
- fNCeu77QwFGUWOQjSR9wd1UOt60cVup+1f5k3AdXaes7a6J2MwVkuG8z72U3IR6ttWrbs0wDT
- 1K5646FGxs7Labp66acEz8SZkUWAXLTID9Wwoy3v0Fx6UHcFMO9nX6LmotrPbowOe8no93nyS
- pCml6Ek9jMyApoK7XlPf6BX+dxjgjv/+VOp0utCeqFzMBVh1JT45jv4tIHswlo9nbbdWWUE8a
- Iq/pSOeneWK/wkVuvzz/JZ7uZlSoQCh+TEvGHh4Q0Vh/KbH9DcngT0mZB/zmIvUhF0C+JfYcv
- p3+/2l8r2AZPZBHS8RsjmGdmvzxHnmWZFplQiyUUR1gPYfk1cdUsnUbWS87DoH1T5xM6nF3pY
- fQLOZ+OyBaby4Q7tcCchLefr8xWLoQOyIzPnCJD7u8PkkiP2icCNi1m5AquXRZXDHZ2inM5/B
- 5e7+CkOBXk+5UEXsxY4n+SKPW0g3SOWXsel0AiN6JeMqRm8kejb3Th5O/NNc/McIpw+d87Ypi
- yV9kgY3VUE6zuiFXohpS/gJN/zPez0KS4kFm3K6zI5h3RdWk0lxMDFmSpJC7RWnWGQ3nral+2
- nBrqMwODLCS76qr/SX8kzjJIbJA=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The hid-sensor-prox returned an empty string on sysfs in_proximity_scale
-read. This is due to the the driver's scale never being initialized.
+On Sat, 5 Aug 2023 17:42:21 +0000
+Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-Try to query the scale of the HID sensor using hid_sensor_format_scale.
+> Hi Jonathan Cameron,
+> 
+> Thanks for the feedback.
+> 
+> > Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+> > bus_type
+> > 
+> > On Fri,  4 Aug 2023 17:17:24 +0100
+> > Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> >   
+> > > This patch series extend device_get_match_data() to struct bus_type,
+> > > so that buses like I2C can get matched data.
+> > >
+> > > There is a plan to replace
+> > > i2c_get_match_data()->device_get_match_data()
+> > > later, once this patch hits mainline as it is redundant.  
+> > 
+> > Are we sure we don't have any instances left of the pattern that used to
+> > be common (typically for drivers where dt tables were added
+> > later) of
+> > 
+> > 	chip_info = device_get_match_data();
+> > 	if (!chip_info) {
+> > 		chip_info = arrayofchipinfo[id->driver_data];
+> > 	}
+> > 
+> > Looks like the first driver I checked, iio/adc/max1363.c does this still
+> > and will I think break with this series.
+> > 
+> > Or am I missing some reason this isn't a problem?  
+> 
+> Good catch, this will break.
+> we need to make I2C table like OF/ACPI tables.
+> 
+> Yes, before adding callback support to i2c_device_get_match_data(),
+> We need to make similar table for OF/ACPI/I2C for all i2c drivers
+> that use device_get_match_data()or of_get_device_match_data().
 
-Signed-off-by: Philipp Jungkamp <p.jungkamp@gmx.net>
-=2D--
-Hello,
+To throw another option out there, could we make the I2C subsystem use
+the of_device_id table in place of the i2c_device_id table? 
+That is perform matches based only on the of_device_id table in all
+drivers (with some glue code making that work for the less common paths,
+remaining board files etc). The ACPI PRP0001 magic is doing similar
+already.
 
-up until now I've used the sensor directly through the buffered IIO interf=
-ace,
-ignoring the in_proximity_scale attribute. But while integrating it with
-iio-sensor-proxy I noticed that a read on scale return an empty string,
-breaking the code there.
+I can't immediately see why that wouldn't work other than being a bit
+of a large job to implement in all drivers.
 
-Looking at the code in `hid-sensor-prox.c` it is fairly obvious that the s=
-cale
-just wasn't being initialized. I now added the hid_sensor_format_scale cal=
-l
-similar to the ones found in e.g. `hid-sensor-als.c`.
+Getting rid of the duplication would be good.  Probably some rough corners
+to make it possible to do this in a gradual process. In particular some
+of the naming used for i2c_device_id table entries won't be 'valid'
+DT compatibles (minus the vendor id)
 
-Regards,
-Philipp Jungkamp
+> 
+> May be first intermediate step is to use i2c_get_match_data()
+> For such table conversion. Once all table conversion is done
+> then we can add i2c_device_get_match_data() callback.
+> 
+> The below one is the recommendation from Andy.
+> 
+> + * Besides the fact that some drivers abuse the device ID driver_data type
+> + * and claim it to be integer, for the bus specific ID tables the driver_data
+> + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> + * but not for this function. It's recommended to convert those either to avoid
+> + * 0 or use a real pointer to the predefined driver data.
+> + */
 
- drivers/iio/light/hid-sensor-prox.c | 3 +++
- 1 file changed, 3 insertions(+)
+We still need to maintain consistency across the two tables, which
+is a stronger requirement than avoiding 0.  Some drivers already do that by
+forcing the enum used to start at 1 which doesn't solver the different data
+types issue.
 
-diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-s=
-ensor-prox.c
-index a47591e1bad9..aaf2ce6ed52c 100644
-=2D-- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -227,6 +227,9 @@ static int prox_parse_report(struct platform_device *p=
-dev,
- 	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
- 			st->prox_attr.report_id);
+Jonathan
 
-+	st->scale_precision =3D hid_sensor_format_scale(usage_id, &st->prox_attr=
-,
-+				&st->scale_pre_decml, &st->scale_post_decml);
-+
- 	return ret;
- }
-
-=2D-
-2.41.0
+> 
+> > 
+> > Clearly this only matters if we get to the bus callback, but enabling that
+> > is the whole point of this series.  Hence I think a lot of auditing is
+> > needed before this can be safely applied.  
+> 
+> Sure.
+> 
+> Cheers,
+> Biju
+> 
+> > 
+> > Jonathan
+> >   
+> > > v6->v7:
+> > >  * Added ack from Greg Kroah-Hartman for patch#1
+> > >  * Swapped patch#2 and patch#3 from v6.
+> > >  * Added Rb tag from Andy for patch#2 and patch#4
+> > >  * Updated commit description of patch#2 by removing unnecessary  
+> > wrapping.  
+> > >  * Updated typo in commit description struct bus_type()->struct  
+> > bus_type.  
+> > > v5->v6:
+> > >  * Cced linux-rtc and linux-iio as these subsytems uses i2c_get_match_
+> > >    data() and this function become redundant once this patch series hits
+> > >    mainline.
+> > >  * Added Rb tag from Sakari for patch#1.
+> > >  * Moved patch#3 from v5 to patch#2 and patch#2 from v5 to patch#4.
+> > >  * Added Rb tag from Andy for patch#2
+> > >  * Separate patch#3 to prepare for better difference for
+> > >    i2c_match_id() changes.
+> > >  * Merged patch#4 from v5 with patch#4.
+> > > v4->v5:
+> > >  * Added const struct device_driver variable 'drv' in  
+> > i2c_device_get_match  
+> > >    _data().
+> > >  * For code readability and maintenance perspective, added separate NULL
+> > >    check for drv and client variable and added comment for NULL check  
+> > for  
+> > >    drv variable.
+> > >  * Created separate patch for converting i2c_of_match_device_sysfs() to
+> > >    non-static.
+> > >  * Removed export symbol for i2c_of_match_device_sysfs().
+> > >  * Replaced 'dev->driver'->'drv'.
+> > >  * Replaced return value data->NULL to avoid (potentially) stale  
+> > pointers,  
+> > >    if there is no match.
+> > > v3->v4:
+> > >  * Documented corner case for device_get_match_data()
+> > >  * Dropped struct i2c_driver parameter from
+> > > i2c_get_match_data_helper()
+> > >  * Split I2C sysfs handling in separate patch(patch#3)
+> > >  * Added space after of_device_id for i2c_of_match_device_sysfs()
+> > >  * Added const parameter for struct i2c_client, to prevent overriding  
+> > it's  
+> > >    pointer.
+> > >  * Moved declaration from public i2c.h->i2c-core.h
+> > > v2->v3:
+> > >  * Added Rb tag from Andy for patch#1.
+> > >  * Extended to support i2c_of_match_device() as suggested by Andy.
+> > >  * Changed i2c_of_match_device_sysfs() as non-static function as it is
+> > >    needed for i2c_device_get_match_data().
+> > >  * Added a TODO comment to use i2c_verify_client() when it accepts const
+> > >    pointer.
+> > >  * Added multiple returns to make code path for device_get_match_data()
+> > >    faster in i2c_get_match_data().
+> > > RFC v1->v2:
+> > >  * Replaced "Signed-off-by"->"Suggested-by" tag for Dmitry.
+> > >  * Documented device_get_match_data().
+> > >  * Added multiple returns to make code path for generic fwnode-based
+> > >    lookup faster.
+> > >  * Fixed build warnings reported by kernel test robot <lkp@intel.com>
+> > >  * Added const qualifier to return type and parameter struct i2c_driver
+> > >    in i2c_get_match_data_helper().
+> > >  * Added const qualifier to struct i2c_driver in i2c_get_match_data()
+> > >  * Dropped driver variable from i2c_device_get_match_data()
+> > >  * Replaced to_i2c_client with logic for assigning verify_client as it
+> > >    returns non const pointer.
+> > >
+> > > Biju Das (4):
+> > >   drivers: fwnode: Extend device_get_match_data() to struct bus_type
+> > >   i2c: Enhance i2c_get_match_data()
+> > >   i2c: i2c-core-of: Convert i2c_of_match_device_sysfs() to non-static
+> > >   i2c: Add i2c_device_get_match_data() callback
+> > >
+> > >  drivers/base/property.c     | 27 ++++++++++++++++-
+> > >  drivers/i2c/i2c-core-base.c | 60 ++++++++++++++++++++++++++++++-------
+> > >  drivers/i2c/i2c-core-of.c   |  4 +--
+> > >  drivers/i2c/i2c-core.h      |  9 ++++++
+> > >  include/linux/device/bus.h  |  3 ++
+> > >  5 files changed, 90 insertions(+), 13 deletions(-)
+> > >  
+> 
 

@@ -2,244 +2,360 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE43771545
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Aug 2023 15:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C616771556
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Aug 2023 15:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbjHFNaC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Aug 2023 09:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
+        id S229931AbjHFNk5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Aug 2023 09:40:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjHFNaB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Aug 2023 09:30:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58EF6B5;
-        Sun,  6 Aug 2023 06:30:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E33D960F21;
-        Sun,  6 Aug 2023 13:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1493C433C8;
-        Sun,  6 Aug 2023 13:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691328599;
-        bh=7KXBsHrZKGdjI3D+ZTPDNywNWzwNv7z1Uwso7p57syk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TNTlLAJvs2yL1O26cBC5+pDYyohVGGKWvnzsOztk+SLo+8r0K1BnL3aamKZcbo3d2
-         OrUfr0LLoi4TTue1VH6NLPSg9piEZLgf+b4USdfp2YAjQ0+1LAUVbDd0ZL4WvJHp4Q
-         91u9WHJVLL/RirpcpCRBYUa8Z93JkNjMohYVipxo7eJ64izsKRqiJq37yot2dAr1Wv
-         tCbrnFuobKkH7L1/QG9oX5T9j1NsMq/IMOhGyGRQz7rGLHQN9oc4ELSkszcXsmAYg1
-         iasLafh+rRXzTPPSHHYYvFigNCGBrqnJEsRCExqxBUPyKJSBDF7QuD93At8j7AC7d2
-         dOYKSSaYYBpNg==
-Date:   Sun, 6 Aug 2023 14:29:50 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
- bus_type
-Message-ID: <20230806142950.6c409600@jic23-huawei>
-In-Reply-To: <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
-        <20230805174036.129ffbc2@jic23-huawei>
-        <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S229480AbjHFNk5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Aug 2023 09:40:57 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CF2A9;
+        Sun,  6 Aug 2023 06:40:53 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-99bc9e3cbf1so780384966b.0;
+        Sun, 06 Aug 2023 06:40:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691329252; x=1691934052;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fU+KPSMF0wLESp4p8P4jvhJTfFBp1WYvnj+Ct4KwVLA=;
+        b=TTOe/udkl54PiRYY0YOnLJPVGnBUdQFAFT8j1LYZqFtez/a3Fz5jAD3htIyUC28Nq5
+         9dXvP3ITUDzbAQ4klubOAzfYIXZvnNfgOFQq1kkMV2ja3c306vjFXWJro8BProihS8xX
+         IaSETbSZXLJZHF56pE6DjhEJHTDS4agel975om2vEqz3yG7Ro0Mr/41q6ZlsDZB4wSL4
+         oE8L5Vf6LW1+VZR7xvZZ+lZQYqgr79ca/rUQLsmh8swQ7d+zen89KnBpvQIQgQWLZEiq
+         C19CgVxGpZtLMYPbFwvcO0xrgyv4FDY7VdUp+hcsaSUu6/aFzBq+bMsRb5e53JITkFjc
+         1V2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691329252; x=1691934052;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fU+KPSMF0wLESp4p8P4jvhJTfFBp1WYvnj+Ct4KwVLA=;
+        b=cQx5di415X7CjGgnmJH2sChS7j3+rCtHWXjcXhqRaFcCr4viYFcXRCoV9rKXHyhyPD
+         FKLyokGPclH1gzZTIh8k9Q7drqpg/JxjbqQDClQzB8np8/mw6UPY6p1+uJhtmpH+bp6d
+         B7loEp2mWFZ5WGTkFJa+CXmXJ0p9lx/EJ/JKQFUq5DXMgXpRbxBeCbJz2FooLnz+mU9R
+         s6eRh6g6tL5al+vSPsvlIrFSxHVnwWjRPXqZkTiKn5JMVn58tL3Cv3HAouoLHX1iifBB
+         ucMHwpQ80Qm77kiQNeRIWJ/9HsAOvTPl7ulyWNaZjn112SdBO+QGpdcNCnPen+X46hq6
+         W4hw==
+X-Gm-Message-State: AOJu0YztNTzH9clWj+dh7Z164T4OF4JCEPtqICMOp2A4VE5OTWaoiIIf
+        stDP/ftbMKNr9VMDkHV00TV1SIYfpsyc2w==
+X-Google-Smtp-Source: AGHT+IGwFORKJYi3uARuhyJDcjA26nrtRcAUbPKoHvU0Zg71xUzoAqQTmnQ4pgCnjep/SYBAUX/GvA==
+X-Received: by 2002:a17:906:74d2:b0:99c:602b:6a6d with SMTP id z18-20020a17090674d200b0099c602b6a6dmr6352950ejl.11.1691329251683;
+        Sun, 06 Aug 2023 06:40:51 -0700 (PDT)
+Received: from [192.168.4.4] (host-79-26-241-62.retail.telecomitalia.it. [79.26.241.62])
+        by smtp.gmail.com with ESMTPSA id lf13-20020a170906ae4d00b0099cc402d3ddsm1580338ejb.202.2023.08.06.06.40.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 06 Aug 2023 06:40:51 -0700 (PDT)
+Message-ID: <75d97d40-767e-53b2-d3dd-5695ae7ac392@gmail.com>
+Date:   Sun, 6 Aug 2023 15:40:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 2/2] iio: add MCP4728 I2C DAC driver
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1691066050.git.andrea.collamati@gmail.com>
+ <a0933003ed3c855f9d80d6ce0a40add2b6f0ba36.1691066050.git.andrea.collamati@gmail.com>
+ <20230805192859.116421bc@jic23-huawei>
+From:   Andrea Collamati <andrea.collamati@gmail.com>
+In-Reply-To: <20230805192859.116421bc@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 5 Aug 2023 17:42:21 +0000
-Biju Das <biju.das.jz@bp.renesas.com> wrote:
+Hi Jonathan,
 
-> Hi Jonathan Cameron,
-> 
-> Thanks for the feedback.
-> 
-> > Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
-> > bus_type
-> > 
-> > On Fri,  4 Aug 2023 17:17:24 +0100
-> > Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> >   
-> > > This patch series extend device_get_match_data() to struct bus_type,
-> > > so that buses like I2C can get matched data.
-> > >
-> > > There is a plan to replace
-> > > i2c_get_match_data()->device_get_match_data()
-> > > later, once this patch hits mainline as it is redundant.  
-> > 
-> > Are we sure we don't have any instances left of the pattern that used to
-> > be common (typically for drivers where dt tables were added
-> > later) of
-> > 
-> > 	chip_info = device_get_match_data();
-> > 	if (!chip_info) {
-> > 		chip_info = arrayofchipinfo[id->driver_data];
-> > 	}
-> > 
-> > Looks like the first driver I checked, iio/adc/max1363.c does this still
-> > and will I think break with this series.
-> > 
-> > Or am I missing some reason this isn't a problem?  
-> 
-> Good catch, this will break.
-> we need to make I2C table like OF/ACPI tables.
-> 
-> Yes, before adding callback support to i2c_device_get_match_data(),
-> We need to make similar table for OF/ACPI/I2C for all i2c drivers
-> that use device_get_match_data()or of_get_device_match_data().
+I tested the driver and I didn't find any issue.
 
-To throw another option out there, could we make the I2C subsystem use
-the of_device_id table in place of the i2c_device_id table? 
-That is perform matches based only on the of_device_id table in all
-drivers (with some glue code making that work for the less common paths,
-remaining board files etc). The ACPI PRP0001 magic is doing similar
-already.
+These are the tests I performed:
 
-I can't immediately see why that wouldn't work other than being a bit
-of a large job to implement in all drivers.
+Test Configuration:
+SW:
+git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
+commit: ee812337ee74cc403b4fbd85840dbe1b21d9a60f
 
-Getting rid of the duplication would be good.  Probably some rough corners
-to make it possible to do this in a gradual process. In particular some
-of the naming used for i2c_device_id table entries won't be 'valid'
-DT compatibles (minus the vendor id)
+HW:
+- Aster board from Toradex hosting imx7d processor
+- Adafruit MCP4728 https://www.adafruit.com/product/4470
 
-> 
-> May be first intermediate step is to use i2c_get_match_data()
-> For such table conversion. Once all table conversion is done
-> then we can add i2c_device_get_match_data() callback.
-> 
-> The below one is the recommendation from Andy.
-> 
-> + * Besides the fact that some drivers abuse the device ID driver_data type
-> + * and claim it to be integer, for the bus specific ID tables the driver_data
-> + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
-> + * but not for this function. It's recommended to convert those either to avoid
-> + * 0 or use a real pointer to the predefined driver data.
-> + */
+TEST:
 
-We still need to maintain consistency across the two tables, which
-is a stronger requirement than avoiding 0.  Some drivers already do that by
-forcing the enum used to start at 1 which doesn't solver the different data
-types issue.
+Probe Test                                OK
+#> insmod mcp4728.ko
 
-Jonathan
+Read Scales                                OK
+~# cat /sys/devices/platform/soc/30800000.bus/30a50000.i2c/i2c-3/3-0064/iio:device1/out_voltage_scale_available
+0.805664 0.500000 1.000000
 
-> 
-> > 
-> > Clearly this only matters if we get to the bus callback, but enabling that
-> > is the whole point of this series.  Hence I think a lot of auditing is
-> > needed before this can be safely applied.  
-> 
-> Sure.
-> 
-> Cheers,
-> Biju
-> 
-> > 
-> > Jonathan
-> >   
-> > > v6->v7:
-> > >  * Added ack from Greg Kroah-Hartman for patch#1
-> > >  * Swapped patch#2 and patch#3 from v6.
-> > >  * Added Rb tag from Andy for patch#2 and patch#4
-> > >  * Updated commit description of patch#2 by removing unnecessary  
-> > wrapping.  
-> > >  * Updated typo in commit description struct bus_type()->struct  
-> > bus_type.  
-> > > v5->v6:
-> > >  * Cced linux-rtc and linux-iio as these subsytems uses i2c_get_match_
-> > >    data() and this function become redundant once this patch series hits
-> > >    mainline.
-> > >  * Added Rb tag from Sakari for patch#1.
-> > >  * Moved patch#3 from v5 to patch#2 and patch#2 from v5 to patch#4.
-> > >  * Added Rb tag from Andy for patch#2
-> > >  * Separate patch#3 to prepare for better difference for
-> > >    i2c_match_id() changes.
-> > >  * Merged patch#4 from v5 with patch#4.
-> > > v4->v5:
-> > >  * Added const struct device_driver variable 'drv' in  
-> > i2c_device_get_match  
-> > >    _data().
-> > >  * For code readability and maintenance perspective, added separate NULL
-> > >    check for drv and client variable and added comment for NULL check  
-> > for  
-> > >    drv variable.
-> > >  * Created separate patch for converting i2c_of_match_device_sysfs() to
-> > >    non-static.
-> > >  * Removed export symbol for i2c_of_match_device_sysfs().
-> > >  * Replaced 'dev->driver'->'drv'.
-> > >  * Replaced return value data->NULL to avoid (potentially) stale  
-> > pointers,  
-> > >    if there is no match.
-> > > v3->v4:
-> > >  * Documented corner case for device_get_match_data()
-> > >  * Dropped struct i2c_driver parameter from
-> > > i2c_get_match_data_helper()
-> > >  * Split I2C sysfs handling in separate patch(patch#3)
-> > >  * Added space after of_device_id for i2c_of_match_device_sysfs()
-> > >  * Added const parameter for struct i2c_client, to prevent overriding  
-> > it's  
-> > >    pointer.
-> > >  * Moved declaration from public i2c.h->i2c-core.h
-> > > v2->v3:
-> > >  * Added Rb tag from Andy for patch#1.
-> > >  * Extended to support i2c_of_match_device() as suggested by Andy.
-> > >  * Changed i2c_of_match_device_sysfs() as non-static function as it is
-> > >    needed for i2c_device_get_match_data().
-> > >  * Added a TODO comment to use i2c_verify_client() when it accepts const
-> > >    pointer.
-> > >  * Added multiple returns to make code path for device_get_match_data()
-> > >    faster in i2c_get_match_data().
-> > > RFC v1->v2:
-> > >  * Replaced "Signed-off-by"->"Suggested-by" tag for Dmitry.
-> > >  * Documented device_get_match_data().
-> > >  * Added multiple returns to make code path for generic fwnode-based
-> > >    lookup faster.
-> > >  * Fixed build warnings reported by kernel test robot <lkp@intel.com>
-> > >  * Added const qualifier to return type and parameter struct i2c_driver
-> > >    in i2c_get_match_data_helper().
-> > >  * Added const qualifier to struct i2c_driver in i2c_get_match_data()
-> > >  * Dropped driver variable from i2c_device_get_match_data()
-> > >  * Replaced to_i2c_client with logic for assigning verify_client as it
-> > >    returns non const pointer.
-> > >
-> > > Biju Das (4):
-> > >   drivers: fwnode: Extend device_get_match_data() to struct bus_type
-> > >   i2c: Enhance i2c_get_match_data()
-> > >   i2c: i2c-core-of: Convert i2c_of_match_device_sysfs() to non-static
-> > >   i2c: Add i2c_device_get_match_data() callback
-> > >
-> > >  drivers/base/property.c     | 27 ++++++++++++++++-
-> > >  drivers/i2c/i2c-core-base.c | 60 ++++++++++++++++++++++++++++++-------
-> > >  drivers/i2c/i2c-core-of.c   |  4 +--
-> > >  drivers/i2c/i2c-core.h      |  9 ++++++
-> > >  include/linux/device/bus.h  |  3 ++
-> > >  5 files changed, 90 insertions(+), 13 deletions(-)
-> > >  
-> 
+Write DAC CH0                            OK
+#>iio_attr -c mcp4728 voltage0 scale    1.000000
+#>iio_attr -c mcp4728 voltage0 raw         750
+Voltage Monitor Reading:                749 mV
 
+Write DAC CH1                            OK
+#>iio_attr -c mcp4728 voltage1 scale    0.5
+#>iio_attr -c mcp4728 voltage1 raw        750
+Voltage Monitor Reading:                378 mV
+
+Write DAC CH2                            OK
+#>iio_attr -c mcp4728 voltage2 scale    0.805664
+#>iio_attr -c mcp4728 voltage2 raw        750
+Voltage Monitor Reading:                603 mV ~ 750*0.805664 ~ 604 mV
+
+Write DAC CH3                            OK
+#>iio_attr -c mcp4728 voltage3 scale    1.000000
+#>iio_attr -c mcp4728 voltage3 raw        350
+Voltage Monitor Reading:                354 mV
+
+Store EEPROM                            OK
+#>echo y > /sys/devices/platform/soc/30800000.bus/30a50000.i2c/i2c-3/3-0064/iio:device1/store_eeprom
+#>power cycle board
+Voltage Monitor Reading CH0                749 mV
+Voltage Monitor Reading CH1                378 mV
+Voltage Monitor Reading CH2                605 mV
+Voltage Monitor Reading CH3                355 mV
+
+Power Down CH0
+#>iio_attr -c mcp4728 voltage0 powerdown_mode 1kohm_to_gnd
+#>iio_attr -c mcp4728 voltage0 powerdown 1
+Voltage Monitor Reading CH0                 0 mV
+
+Power Down CH1
+#>iio_attr -c mcp4728 voltage1 powerdown_mode 1kohm_to_gnd
+#>iio_attr -c mcp4728 voltage1 powerdown 1
+Voltage Monitor Reading CH1                 0 mV
+
+Power Down CH2
+#>iio_attr -c mcp4728 voltage2 powerdown_mode 1kohm_to_gnd
+#>iio_attr -c mcp4728 voltage2 powerdown 1
+Voltage Monitor Reading CH2                 0 mV
+
+Power Down CH3
+#>iio_attr -c mcp4728 voltage3 powerdown_mode 1kohm_to_gnd
+#>iio_attr -c mcp4728 voltage3 powerdown 1
+Voltage Monitor Reading CH3                 0 mV
+
+
+Regards
+
+        Andrea
+
+On 8/5/23 20:28, Jonathan Cameron wrote:
+> On Thu,  3 Aug 2023 14:56:35 +0200
+> Andrea Collamati <andrea.collamati@gmail.com> wrote:
+>
+>> MCP4728 is a 12-bit quad channel DAC with I2C interface.
+>>
+>> support for:
+>>  * per-channel gain
+>>  * per-channel power state
+>>  * per-channel power down mode control
+>>  * per-channel vref selection internal/vdd
+>>  * store current state to on-chip EEPROM
+>>
+>> Signed-off-by: Andrea Collamati <andrea.collamati@gmail.com>
+> Hi Andrea,
+>
+> On this final read through I noticed a few minor things. Rather than
+> get you to do a v5 I've made the changes whilst applying. Please
+> take a sanity check at
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=testing
+> to make sure I didn't break anything and let me know if I did!
+>
+> Applied with the below mentioned changes to the togreg branch of iio.git
+> which is initially pushed out as testing to let 0-day poke at it and see
+> if it can find any problems.
+>
+> Thanks,
+>
+> Jonathan
+>
+>> diff --git a/drivers/iio/dac/mcp4728.c b/drivers/iio/dac/mcp4728.c
+>> new file mode 100644
+>> index 000000000000..ba3eab349b0a
+>> --- /dev/null
+>> +++ b/drivers/iio/dac/mcp4728.c
+>> @@ -0,0 +1,626 @@
+> ...
+>
+>
+>
+>> +
+>> +static int mcp4728_set_scale(int channel, struct mcp4728_data *data, int val,
+>> +			     int val2)
+>> +{
+>> +	int scale = mcp4728_find_matching_scale(data, val, val2);
+>> +
+>> +	if (scale < 0)
+>> +		return scale;
+>> +
+>> +	switch (scale) {
+>> +	case MCP4728_SCALE_VDD:
+>> +		data->chdata[channel].ref_mode = MCP4728_VREF_EXTERNAL_VDD;
+>> +		break;
+>> +	case MCP4728_SCALE_VINT_NO_GAIN:
+>> +		data->chdata[channel].ref_mode = MCP4728_VREF_INTERNAL_2048mV;
+>> +		data->chdata[channel].g_mode   = MCP4728_GAIN_X1;
+>> +		break;
+>> +	case MCP4728_SCALE_VINT_GAIN_X2:
+>> +		data->chdata[channel].ref_mode = MCP4728_VREF_INTERNAL_2048mV;
+>> +		data->chdata[channel].g_mode   = MCP4728_GAIN_X2;
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +	return 0;
+> return instead of breaking above as nothing to be done after the switch.
+> Side effect of that is this return 0 not needed.
+>
+>> +}
+> ...
+>
+>> +static int mcp4728_write_raw(struct iio_dev *indio_dev,
+>> +			     struct iio_chan_spec const *chan, int val,
+>> +			     int val2, long mask)
+>> +{
+>> +	struct mcp4728_data *data = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		if (val < 0 || val > GENMASK(MCP4728_RESOLUTION - 1, 0))
+>> +			return -EINVAL;
+>> +		data->chdata[chan->channel].dac_value = val;
+>> +		ret = mcp4728_program_channel_cfg(chan->channel, indio_dev);
+>> +		break;
+> Direct returns preferred if no cleanup to do.
+>
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		ret = mcp4728_set_scale(chan->channel, data, val, val2);
+>> +		if (ret)
+>> +			break;
+>> +
+>> +		ret = mcp4728_program_channel_cfg(chan->channel, indio_dev);
+>> +		break;
+>> +	default:
+>> +		ret = -EINVAL;
+>> +		break;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>
+>
+>> +static int mcp4728_init_channels_data(struct mcp4728_data *data)
+>> +{
+>> +	u8 inbuf[MCP4728_READ_RESPONSE_LEN];
+>> +	int ret;
+>> +	unsigned int i;
+>> +
+>> +	ret = i2c_master_recv(data->client, inbuf, MCP4728_READ_RESPONSE_LEN);
+>> +	if (ret < 0) {
+>> +		dev_err(&data->client->dev,
+>> +			"failed to read mcp4728 conf. Err=%d\n", ret);
+>> +		return ret;
+> As this is only called from probe, we should still use dev_err_probe() in here
+> as mentioned below.
+>
+>
+>> +	} else if (ret != MCP4728_READ_RESPONSE_LEN) {
+>> +		dev_err(&data->client->dev,
+>> +			"failed to read mcp4728 conf. Wrong Response Len ret=%d\n",
+>> +			ret);
+>> +		return -EIO;
+>> +	}
+>> +
+>> +	for (i = 0; i < MCP4728_N_CHANNELS; i++) {
+>> +		struct mcp4728_channel_data *ch = &data->chdata[i];
+>> +		u8 r2				= inbuf[i * 6 + 1];
+>> +		u8 r3				= inbuf[i * 6 + 2];
+>> +
+>> +		ch->dac_value = FIELD_GET(MCP4728_DAC_H_MASK, r2) << 8 |
+>> +				FIELD_GET(MCP4728_DAC_L_MASK, r3);
+>> +		ch->ref_mode = FIELD_GET(MCP4728_VREF_MASK, r2);
+>> +		ch->pd_mode  = FIELD_GET(MCP4728_PDMODE_MASK, r2);
+>> +		ch->g_mode   = FIELD_GET(MCP4728_GAIN_MASK, r2);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+> ...
+>
+>> +static int mcp4728_probe(struct i2c_client *client)
+>> +{
+>> +	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>> +	struct mcp4728_data *data;
+>> +	struct iio_dev *indio_dev;
+>> +	int err;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>> +	if (!indio_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	data = iio_priv(indio_dev);
+>> +	i2c_set_clientdata(client, indio_dev);
+>> +	data->client = client;
+>> +
+>> +	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+>> +	if (IS_ERR(data->vdd_reg))
+>> +		return PTR_ERR(data->vdd_reg);
+>> +
+>> +	err = regulator_enable(data->vdd_reg);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	err = devm_add_action_or_reset(&client->dev, mcp4728_reg_disable,
+>> +				       data->vdd_reg);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	/* MCP4728 has internal EEPROM that save each channel boot configuration.
+> Trivial but comment syntax in IIO (there are some differences in a few other subsystems)
+> is
+> 	/*
+> 	 * MCP...
+>
+>> +	 * It means that device configuration is unknown to the driver at kernel boot.
+>> +	 * mcp4728_init_channels_data reads back DAC settings and stores them in data
+>> +	 * structure.
+>> +	 */
+>> +	err = mcp4728_init_channels_data(data);
+>> +	if (err) {
+> I'd missed this previously but dev_err_probe() has several advantages in that
+> it handles deferring neatly and also ends up with less code.
+>
+>> +		dev_err(&client->dev,
+>> +			"failed to read mcp4728 current configuration\n");
+>> +		return err;
+>> +	}
+>> +
+>> +	err = mcp4728_init_scales_avail(data);
+>> +	if (err) {
+>> +		dev_err(&client->dev, "failed to init scales\n");
+>> +		return err;
+>> +	}
+>> +
+>> +	indio_dev->name		= id->name;
+>> +	indio_dev->info		= &mcp4728_info;
+>> +	indio_dev->channels	= mcp4728_channels;
+>> +	indio_dev->num_channels = MCP4728_N_CHANNELS;
+>> +	indio_dev->modes	= INDIO_DIRECT_MODE;
+>> +
+>> +	return devm_iio_device_register(&client->dev, indio_dev);
+>> +}

@@ -2,119 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3491771487
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Aug 2023 13:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492B477151F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Aug 2023 15:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbjHFLaW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Aug 2023 07:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52498 "EHLO
+        id S229481AbjHFNHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Aug 2023 09:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjHFLaV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Aug 2023 07:30:21 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB25EE47
-        for <linux-iio@vger.kernel.org>; Sun,  6 Aug 2023 04:30:19 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qSbxU-0008Gh-Du; Sun, 06 Aug 2023 13:30:04 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qSbxT-001VMe-3R; Sun, 06 Aug 2023 13:30:03 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qSbxS-00AqWs-AO; Sun, 06 Aug 2023 13:30:02 +0200
-Date:   Sun, 6 Aug 2023 13:30:01 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: pressure: bmp280: Use i2c_get_match_data
-Message-ID: <20230806113001.26neek3slt3w77zt@pengutronix.de>
-References: <cover.1691276610.git.ang.iglesiasg@gmail.com>
- <b3483bd87093d4cd0862904b70a167ebbb538644.1691276610.git.ang.iglesiasg@gmail.com>
+        with ESMTP id S229436AbjHFNG7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Aug 2023 09:06:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA3319A6
+        for <linux-iio@vger.kernel.org>; Sun,  6 Aug 2023 06:06:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=s31663417; t=1691327199; x=1691931999; i=p.jungkamp@gmx.net;
+ bh=1cntvCccU9PIxnQIHTK24pvznNp8Y0OyrDsIxorKFSc=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=jzpG6WvWZlvyDaQMK3wK6DxjLdt4p5ikIiePleqHzCh7LgFGVX67f7Ay1rOBGxYTbwzfJKc
+ VZLaXi2YKuAFWbCnzARmPivTRlsHdTJphLybXYh08I4nXLzEfQfePNiILCSP2n1rexhmAIdwT
+ tyd2B2ZlUBB8BtutGxnZpYuy2YXKkZFkXPNvNuRxuybcqGKeDdy0gx0GGhsxXosyxHrQW6ZgO
+ +pnzRJQlrfpQ39pJJI3VUBwhbt/9oTpE95WbOVLOrtgNyrkjN+sE+fpAmLthMjkNxR2/3NM6u
+ waUbZkjNw2iXbBsZxM+qkF1TgOhZ1n3eZkc0m9mhJSUrrnUjOqbQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from yoga9.fritz.box ([79.193.195.172]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MXGr8-1qKSuX12dC-00Yl3A; Sun, 06
+ Aug 2023 15:06:39 +0200
+From:   Philipp Jungkamp <p.jungkamp@gmx.net>
+To:     Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-iio@vger.kernel.org, Philipp Jungkamp <p.jungkamp@gmx.net>
+Subject: [PATCH] IIO: hid-sensor-prox: add missing scale attribute
+Date:   Sun,  6 Aug 2023 14:59:26 +0200
+Message-ID: <20230806130558.89812-2-p.jungkamp@gmx.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bzetm4d6c34w7mbf"
-Content-Disposition: inline
-In-Reply-To: <b3483bd87093d4cd0862904b70a167ebbb538644.1691276610.git.ang.iglesiasg@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gXuuZG9e/q5Cv3eqhh5b/8GV/dkW2wmTCNM17Lth/TvmQYEs7Xc
+ Bcn8ToWmwJHAb6gfPyJVx/527f1Lr6ip5unrJ1Bm0sGhrMOt+UvrIuQdSqsR1PM2VHMTDe1
+ 2Qv8HtaZJd1Gau/FMc9KhP73FTb0wjmV79gJQu+jWLCscd148reJYPfOxYi+SAzpRlYXHLO
+ ExZwmrhVI3kCH8bGqyyWA==
+UI-OutboundReport: notjunk:1;M01:P0:zkTaFwbUU14=;raRRE1EnwLik60/+82BFGIaKeQs
+ 9yvM1Xj+J7Kc8ps3oKrhiDYquf1VYnSv6G2V3BNLtvzXz3FQEvTqfWt9mxh1rPCCIwkyIaxZq
+ vz/Sn7n+2sWnKN4epFbvEECClbAAlTdY30ZXWaadlL7RKnFS2eD7mwKImRUi89Xq1gMz4wSys
+ SjT9bhK3QKczq+yY/eVdMYPIdjrNCxyVBtgwWeDl9f3bCDMkc2xL5LHtyg9BgcBnsNTXkaj2L
+ CHS7AIY19xwkanFo95YOwjLHoFqp+AIXbTUcn9UNG/h7FHhBUX/SFr17KVIjC/npCS86lew+l
+ WIuBmhpISMVDJ4jD/GxXNK7mQxm0jGKsfFtXsx+x587lqFLhTo85flrGnBA/yIjIoFHM4nPYs
+ fNCeu77QwFGUWOQjSR9wd1UOt60cVup+1f5k3AdXaes7a6J2MwVkuG8z72U3IR6ttWrbs0wDT
+ 1K5646FGxs7Labp66acEz8SZkUWAXLTID9Wwoy3v0Fx6UHcFMO9nX6LmotrPbowOe8no93nyS
+ pCml6Ek9jMyApoK7XlPf6BX+dxjgjv/+VOp0utCeqFzMBVh1JT45jv4tIHswlo9nbbdWWUE8a
+ Iq/pSOeneWK/wkVuvzz/JZ7uZlSoQCh+TEvGHh4Q0Vh/KbH9DcngT0mZB/zmIvUhF0C+JfYcv
+ p3+/2l8r2AZPZBHS8RsjmGdmvzxHnmWZFplQiyUUR1gPYfk1cdUsnUbWS87DoH1T5xM6nF3pY
+ fQLOZ+OyBaby4Q7tcCchLefr8xWLoQOyIzPnCJD7u8PkkiP2icCNi1m5AquXRZXDHZ2inM5/B
+ 5e7+CkOBXk+5UEXsxY4n+SKPW0g3SOWXsel0AiN6JeMqRm8kejb3Th5O/NNc/McIpw+d87Ypi
+ yV9kgY3VUE6zuiFXohpS/gJN/zPez0KS4kFm3K6zI5h3RdWk0lxMDFmSpJC7RWnWGQ3nral+2
+ nBrqMwODLCS76qr/SX8kzjJIbJA=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The hid-sensor-prox returned an empty string on sysfs in_proximity_scale
+read. This is due to the the driver's scale never being initialized.
 
---bzetm4d6c34w7mbf
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Try to query the scale of the HID sensor using hid_sensor_format_scale.
 
-On Sun, Aug 06, 2023 at 01:15:03AM +0200, Angel Iglesias wrote:
-> Replaces device_get_match_data() and fallback match_id logic by new
-> unified helper function i2c_get_match_data().
->=20
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
->=20
-> diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp=
-280-i2c.c
-> index 693eb1975fdc..4ebaa4edc4fc 100644
-> --- a/drivers/iio/pressure/bmp280-i2c.c
-> +++ b/drivers/iio/pressure/bmp280-i2c.c
-> @@ -11,9 +11,9 @@ static int bmp280_i2c_probe(struct i2c_client *client)
->  	const struct bmp280_chip_info *chip_info;
->  	struct regmap *regmap;
-> =20
-> -	chip_info =3D device_get_match_data(&client->dev);
-> +	chip_info =3D i2c_get_match_data(client);
->  	if (!chip_info)
-> -		chip_info =3D (const struct bmp280_chip_info *) id->driver_data;
-> +		return -ENODEV;
+Signed-off-by: Philipp Jungkamp <p.jungkamp@gmx.net>
+=2D--
+Hello,
 
-the old code assumed that chip_info isn't NULL (implicitly by
-dereferencing that pointer in the line below). I wouldn't change
-semantics in a patch converting to a helper and so just do:
+up until now I've used the sensor directly through the buffered IIO interf=
+ace,
+ignoring the in_proximity_scale attribute. But while integrating it with
+iio-sensor-proxy I noticed that a read on scale return an empty string,
+breaking the code there.
 
--	chip_info =3D device_get_match_data(&client->dev);
-+	chip_info =3D i2c_get_match_data(client);
--	if (!chip_info)
--		chip_info =3D (const struct bmp280_chip_info *) id->driver_data;
+Looking at the code in `hid-sensor-prox.c` it is fairly obvious that the s=
+cale
+just wasn't being initialized. I now added the hid_sensor_format_scale cal=
+l
+similar to the ones found in e.g. `hid-sensor-als.c`.
 
-or alternatively, if you think adding a check is a good idea, add an
-error message in the error path and mention the semantic change in the
-commit log.
+Regards,
+Philipp Jungkamp
 
-Best regards
-Uwe
+ drivers/iio/light/hid-sensor-prox.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-s=
+ensor-prox.c
+index a47591e1bad9..aaf2ce6ed52c 100644
+=2D-- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -227,6 +227,9 @@ static int prox_parse_report(struct platform_device *p=
+dev,
+ 	dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr.index,
+ 			st->prox_attr.report_id);
 
---bzetm4d6c34w7mbf
-Content-Type: application/pgp-signature; name="signature.asc"
++	st->scale_precision =3D hid_sensor_format_scale(usage_id, &st->prox_attr=
+,
++				&st->scale_pre_decml, &st->scale_post_decml);
++
+ 	return ret;
+ }
 
------BEGIN PGP SIGNATURE-----
+=2D-
+2.41.0
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmTPhDkACgkQj4D7WH0S
-/k598gf/QYIEI5D+K8ylQZxk0SXcmUtPK1FbAhUY5CwUpmcE2tV0lG917a/XtYOI
-+T2fLwtlZvVwQY2BiuObqtiqRZPNi3zHW1OsulMfKpD0MZLxtcZsVHlW3nTnEPYu
-YKia11jR4Oj5TQbfzG8GSekIFZ4/5VqR+So+7DDaAWa+8c3RZ9o1oJU+Kqyu5H9d
-huk7YtgDHdNu5FbgT3CbqFgECoq63cUYiQVcK4R0WRY8dOqRMAfDompSSx+eA8xb
-oTOHltgJyHgC4cb/f0IHzR89ns8PuE0dRcPFE0NVKu7m7MSOUupHwu7bS0hLxPhL
-ATrH21jzbIDuJoakCiEbEYbyFuQRxQ==
-=R2Cx
------END PGP SIGNATURE-----
-
---bzetm4d6c34w7mbf--

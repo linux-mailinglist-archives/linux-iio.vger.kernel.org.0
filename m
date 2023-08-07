@@ -2,129 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1F3D772CD5
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Aug 2023 19:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 026E1772FC1
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Aug 2023 21:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231194AbjHGR0C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Aug 2023 13:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59906 "EHLO
+        id S229663AbjHGTqX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Aug 2023 15:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231462AbjHGR0B (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Aug 2023 13:26:01 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DAA759F;
-        Mon,  7 Aug 2023 10:25:59 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="6.01,262,1684767600"; 
-   d="scan'208";a="175893230"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 08 Aug 2023 02:25:59 +0900
-Received: from localhost.localdomain (unknown [10.226.92.227])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 15102403C9A4;
-        Tue,  8 Aug 2023 02:25:54 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>
+        with ESMTP id S229509AbjHGTqX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Aug 2023 15:46:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5722121;
+        Mon,  7 Aug 2023 12:45:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECC2C619F1;
+        Mon,  7 Aug 2023 19:45:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB52C433C8;
+        Mon,  7 Aug 2023 19:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691437513;
+        bh=/H/K+rkMsK2omYcW/qNUyfid3VGJ1y+Y1xoeTLm/UbI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=sxFyG8N9964gi9g8QW6N5rJAxP0itZZ/ve4N117v75OWaFcQ9txqbuE01zhwi/8An
+         NfQtGMdibXgTxPceDDcIdPiw5lakYwPTa1kjXd40wWpZR2F3xgWkpKfzWSAwqUWoto
+         YxRXFU5hVZrL4bKbKqioF7gNaDTFztQSxNjz3XkPCNdRzNqerqizEB3pWpIaeW+a3m
+         O2q7GihLcL0OzmxhmkejNmNe9QQmjHbaAUHgASKSWkmkWAeOe1GZjXasalj4hdH+u3
+         MQhW74jV5/OWlov+1qBVRxTHjL+pnRGhuVDDxsPPDjUGNYWIeSeCszUDGuJhI0OXZL
+         EjaQnYcY1lAbA==
+Date:   Mon, 7 Aug 2023 20:45:05 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        Peter Rosin <peda@axentia.se>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Crt Mori <cmo@melexis.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-iio@vger.kernel.org,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org
-Subject: [PATCH 2/2] iio: magnetometer: ak8975: Simplify probe()
-Date:   Mon,  7 Aug 2023 18:25:48 +0100
-Message-Id: <20230807172548.258247-2-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230807172548.258247-1-biju.das.jz@bp.renesas.com>
-References: <20230807172548.258247-1-biju.das.jz@bp.renesas.com>
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+ bus_type
+Message-ID: <20230807204505.5f3f245e@jic23-huawei>
+In-Reply-To: <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+        <20230805174036.129ffbc2@jic23-huawei>
+        <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+        <20230806142950.6c409600@jic23-huawei>
+        <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Simplify the probe() by replacing device_get_match_data() and
-i2c_client_get_device_id by i2c_get_match_data() as we have similar I2C,
-ACPI and DT matching table.
+On Mon, 7 Aug 2023 17:54:07 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-While at it, replace name->chipset to make error message consistent.
+> On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
+> > On Sat, 5 Aug 2023 17:42:21 +0000
+> > Biju Das <biju.das.jz@bp.renesas.com> wrote:  
+> > > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:  
+> 
+> ...
+> 
+> > > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > > + * but not for this function. It's recommended to convert those either to avoid
+> > > + * 0 or use a real pointer to the predefined driver data.  
+> 
+> > We still need to maintain consistency across the two tables, which
+> > is a stronger requirement than avoiding 0.  
+> 
+> True. Any suggestion how to amend the above comment? Because the documentation
+> makes sense on its own (may be split from the series?).
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
- drivers/iio/magnetometer/ak8975.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+For bus ID tables it is fine right now as long as no one checks for NULL.
+I guess adding this to the i2c_get_match_data and spi equivalent wrapper
+functions might avoid someone shooting themselves in the foot (I've done it
+for starters more than once).
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index eb706d0bf70b..9c4d942ffab3 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -878,16 +878,13 @@ static irqreturn_t ak8975_handle_trigger(int irq, void *p)
- 
- static int ak8975_probe(struct i2c_client *client)
- {
--	const struct i2c_device_id *id = i2c_client_get_device_id(client);
- 	struct ak8975_data *data;
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
- 	struct gpio_desc *reset_gpiod;
--	const void *match;
- 	unsigned int i;
- 	int err;
- 	enum asahi_compass_chipset chipset;
--	const char *name = NULL;
- 
- 	/*
- 	 * Grab and set up the supplied GPIO.
-@@ -927,15 +924,8 @@ static int ak8975_probe(struct i2c_client *client)
- 	if (err)
- 		return err;
- 
--	/* id will be NULL when enumerated via ACPI */
--	match = device_get_match_data(&client->dev);
--	if (match) {
--		chipset = (uintptr_t)match;
--		name = dev_name(&client->dev);
--	} else if (id) {
--		chipset = (enum asahi_compass_chipset)(id->driver_data);
--		name = id->name;
--	} else
-+	chipset = (uintptr_t)i2c_get_match_data(client);
-+	if (!chipset)
- 		return -ENOSYS;
- 
- 	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
-@@ -967,12 +957,13 @@ static int ak8975_probe(struct i2c_client *client)
- 		dev_err(&client->dev, "Unexpected device\n");
- 		goto power_off;
- 	}
--	dev_dbg(&client->dev, "Asahi compass chip %s\n", name);
-+	dev_dbg(&client->dev, "Asahi compass chip %d\n", chipset);
- 
- 	/* Perform some basic start-of-day setup of the device. */
- 	err = ak8975_setup(client);
- 	if (err < 0) {
--		dev_err(&client->dev, "%s initialization fails\n", name);
-+		dev_err(&client->dev, "Initialization failed for chip %d\n",
-+			chipset);
- 		goto power_off;
- 	}
- 
-@@ -982,7 +973,7 @@ static int ak8975_probe(struct i2c_client *client)
- 	indio_dev->info = &ak8975_info;
- 	indio_dev->available_scan_masks = ak8975_scan_masks;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->name = name;
-+	indio_dev->name = dev_name(&client->dev);
- 
- 	err = iio_triggered_buffer_setup(indio_dev, NULL, ak8975_handle_trigger,
- 					 NULL);
--- 
-2.25.1
+> 
+> > Some drivers already do that by forcing the enum used to start at 1 which
+> > doesn't solver the different data types issue.  
+> 
+> And some maintainers do not want to see non-enum values in i2c ID table.
+> *Shrug*.
+> 
 
+That leaves us stuck unless we move to a form where the i2c ID table isn't
+used if there is an of_device_id table (or maybe we invent yet another table
+and if that is present it is used for dt and were i2c_device_id is used and
+hence becomes an opt in?  That will also be tricky however.
+
+Jonathan

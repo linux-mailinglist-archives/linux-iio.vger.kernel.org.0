@@ -2,91 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D677A772FE4
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Aug 2023 21:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E86BB773062
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Aug 2023 22:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjHGTvW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Aug 2023 15:51:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43302 "EHLO
+        id S230211AbjHGUhU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Aug 2023 16:37:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbjHGTvV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Aug 2023 15:51:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFA8172A
-        for <linux-iio@vger.kernel.org>; Mon,  7 Aug 2023 12:50:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0626961F95
-        for <linux-iio@vger.kernel.org>; Mon,  7 Aug 2023 19:50:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0D3C433C7;
-        Mon,  7 Aug 2023 19:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691437856;
-        bh=zgkIJrhOa8rgUvqiVhd/EfQLmFmpL3o8U7Vuk+laMr8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=aX/rVDlJdnV3SJ8Bs/0IU+oWcwUuV+47excvm1M/ibzpj/Ek3tBrwA/0t9KNDqO3M
-         sBkS4mfBsGki59EZmzUc9vCwUm62Jsbze85LMBatOjrcqHUkI41WeB4Fi3v7FCR7im
-         x+wQDyl1E9S6XTSePnp6Z7Dhkq4k1kWFUmb6vYVmR2J40ZyXdODj9XBBPoIr7Ht4YP
-         f/6VfT5fCf8+3EvCb1uCqkawEQmPHKrDVfNeYYv6COFS4LNVtBdNoKRTiCIeeqZbyi
-         86G2d0q+pyQrrxxEyeRoy1zjj282w/1UUdeNuJMhr1l7fl5Q/c5wWsd6Ozihm29GGN
-         sEjpA+e0q+gvA==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        kernel test robot <lkp@intel.com>,
-        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Subject: [PATCH] iio: light: opt4001: Fix a wrong array iteration limit
-Date:   Mon,  7 Aug 2023 20:50:43 +0100
-Message-ID: <20230807195043.200767-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S230216AbjHGUhS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Aug 2023 16:37:18 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B7210D8;
+        Mon,  7 Aug 2023 13:37:17 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-686be28e1a8so3436754b3a.0;
+        Mon, 07 Aug 2023 13:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691440636; x=1692045436;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AkcdWxF3VIdhdBqAc/Bhm/xZMNeQwoh34ermhL900ts=;
+        b=RnphY0FF1I8cEjADWD2ipjXR41GSVVD/m3MOYoNXgmtqBPVo5ZL6xfTJOs2hNAB3/2
+         wkIQr2odC0loOJ4PQbMi7egm6nLFpjS1KtvQZI1vJ1qsZoDzcVF6BKl9Ms0Rdeqta/Nd
+         gRE5ZjCVV+lZUm2WpsABFsPPG7bnfxXUErJomoz+AgWEVWmGg6kg7gFHtwWeV0NaSsmA
+         TBl7fhl4bndUA1VM8AfWCboJQfaGvUiff4rotdXaYVA+1NhTMGNGCkWuxTk8My6QdHb9
+         15ZozFSnRRGaX8Mnrmc7vI9B70ArcYEMGgBKl4OpRtGkfJnYBup1G39F0WJdyByFfQ9j
+         Nthg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691440636; x=1692045436;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AkcdWxF3VIdhdBqAc/Bhm/xZMNeQwoh34ermhL900ts=;
+        b=WhaOpSnb0t7X/prFFkKd51B6QQrAaZCgTbNL5moSq1ESHL6BFuA7WtO+ZVAFHiBZhM
+         6q/7mP+lrxLNvQ/cgl4wdsQxn5C+JHOoyq5r2RktIIYjG6x6g4k2jXHvNyYoOwkOApCQ
+         DD74gvq2kRJplcDWV2ueYSOhR1S01fh4BC2uo20dqiMgV2pjuRVGksd+bZ/dVA0KY7N/
+         pUCD5zcNxKwuxLLjeLUBac3MmnB8okpckPvyKrXaHZClRG+ujb1cgTRWwIj306Subx9h
+         U+CDm0Vj7c1REnPxVOFuUzbhdHgghTQKIbagNtMBiLrdNDXANef6TJT2OinOIzmkZ2vi
+         avCg==
+X-Gm-Message-State: AOJu0YwWXB+ryHzDCAwBfGMUG1QQ3YrwCzG30ybSXYd7sQVjSDoHi371
+        RRTlbj6opsl0dwxZtVDfEe+gaWVK3U0=
+X-Google-Smtp-Source: AGHT+IEKmK0BmgKPBT2it75tXWkSx8ysqKgPxFAxn0DZjPXZB2zhCP3ectLWjEtdLMTNXlOjUs6WEA==
+X-Received: by 2002:a05:6a00:1828:b0:687:8417:ab51 with SMTP id y40-20020a056a00182800b006878417ab51mr10737572pfa.8.1691440636312;
+        Mon, 07 Aug 2023 13:37:16 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:b0a6:8f72:5b50:cfc])
+        by smtp.gmail.com with ESMTPSA id s8-20020aa78d48000000b006873aa079aasm6808889pfe.171.2023.08.07.13.37.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Aug 2023 13:37:15 -0700 (PDT)
+Date:   Mon, 7 Aug 2023 13:37:12 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+Message-ID: <ZNFV+C1HCIRJpbdC@google.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+ <20230805174036.129ffbc2@jic23-huawei>
+ <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <20230806142950.6c409600@jic23-huawei>
+ <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, Aug 07, 2023 at 05:54:07PM +0300, Andy Shevchenko wrote:
+> On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
+> > On Sat, 5 Aug 2023 17:42:21 +0000
+> > Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> 
+> ...
+> 
+> > > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > > + * but not for this function. It's recommended to convert those either to avoid
+> > > + * 0 or use a real pointer to the predefined driver data.
+> 
+> > We still need to maintain consistency across the two tables, which
+> > is a stronger requirement than avoiding 0.
+> 
+> True. Any suggestion how to amend the above comment? Because the documentation
+> makes sense on its own (may be split from the series?).
+> 
+> > Some drivers already do that by forcing the enum used to start at 1 which
+> > doesn't solver the different data types issue.
+> 
+> And some maintainers do not want to see non-enum values in i2c ID table.
+> *Shrug*.
 
-In practice it's unlikely anyone would try to set the integration time
-to 0 which isn't in the available list and if they did then they would
-get index 12 which whilst reserved on the device fits in the field.
-However a compiler might get half way through this reasoning and that
-might be the cause of
+So in legacy ID lookup path we can safely assume that values below 4096
+are scalars and return NULL from the new device_get_match_data(). This
+way current drivers using the values as indices or doing direct
+comparisons against them can continue doing manual look up and using
+them as they see fit. And we can convert the drivers at our leisure.
 
-> >> drivers/iio/light/opt4001.c:215:9: error: call to '__compiletime_assert_355' declared with 'error' attribute: FIELD_PREP: value too large for the field
->      215 |         reg |= FIELD_PREP(OPT4001_CTRL_CONV_TIME_MASK, chip->int_time);
+Thanks.
 
-Even if this isn't the cause, it looks like a bug to me.
-
-Fixes: 9a9608418292 ("iio: light: Add support for TI OPT4001 light sensor")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308061902.0gVz6bSe-lkp@intel.com/
-Cc: Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/light/opt4001.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/light/opt4001.c b/drivers/iio/light/opt4001.c
-index 502946bf9f94..83f978706758 100644
---- a/drivers/iio/light/opt4001.c
-+++ b/drivers/iio/light/opt4001.c
-@@ -137,7 +137,7 @@ static int opt4001_als_time_to_index(const u32 als_integration_time)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(opt4001_int_time_available); i++) {
-+	for (i = 0; i < ARRAY_SIZE(opt4001_int_time_available) / 2; i++) {
- 		if (als_integration_time == opt4001_int_time_available[i][1])
- 			return i;
- 	}
 -- 
-2.41.0
-
+Dmitry

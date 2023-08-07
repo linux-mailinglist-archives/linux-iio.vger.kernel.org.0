@@ -2,69 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB32772794
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Aug 2023 16:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626277727FC
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Aug 2023 16:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231536AbjHGOXs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Aug 2023 10:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38260 "EHLO
+        id S234723AbjHGOil (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Aug 2023 10:38:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbjHGOXr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Aug 2023 10:23:47 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14329C2;
-        Mon,  7 Aug 2023 07:23:46 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-51e429e1eabso6306109a12.2;
-        Mon, 07 Aug 2023 07:23:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691418224; x=1692023024;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mTflw2x77oizGZVYhSaej804cS88CNB3gsQx6H6fr5Q=;
-        b=MqybVASJYhgq/Xq7m+ZAuezyoXZACwS5eBEdQPUIkbzFWAKcsaR+nwVDE4Ooryxw/X
-         mwREGJlS+jpJHArqK77sSl8+aQZg1YkPrODDVeSv+F3K1NXy4kI8nqmTRtilZRDblAZS
-         7vQ8wW8cKqxFC1v/PRSBVdUC3GVJo8ePUMdQC0x7haytzDEIUig6wG7APXEX6E1KCFhi
-         57Wl0+zi7OWXl/og9JFmGNNyHgiiX97ihfR0Vyf0s42SNArubWj31XWWX0iyOc0kkiRM
-         /RloG7Eh6DtmcRUVPynL8/6Ne/ukGE9Ptsnl5xIuTxkgxokwcR+mzV2a3xFvPVSuKzKU
-         RO7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691418224; x=1692023024;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mTflw2x77oizGZVYhSaej804cS88CNB3gsQx6H6fr5Q=;
-        b=e/KgK2VRzcPCTlvUqaUNOt0yChFupqz0fofAGx86qZiG8NZ0pJPD2iSXDGRNoVqWgz
-         C1kqaBH5cRGtLzgoDIcu4hQhqcWTFJ4rxRu7iS1KVNdfWJiXUFUpfwodbgmU2DGDwamB
-         lm5P6C6HxMeptwbdW3/KFY0msCNZnPaEDI0XcWgUrtpNdEwkgQmzpAmkSY7AGgwZ78/Z
-         WVZ3zEdkVXz10zMT5zxopjBdqXt5eJCeOPaFvc9N4g/3iCoCB6dty6sDfK+5NSNv3Lk1
-         +DcZUE0qt05kSSN7MrBeuQ/Xll8P3sEtQu32qTxY2iKA9kJGu+T9UPfRHgD1INffS/+s
-         ecyA==
-X-Gm-Message-State: AOJu0YznGBgIk+av8UimTvam0OMrWWAwH1TzvgOelzNCcjW58k9Z6Bdi
-        /SBJZgfVA89Edne7ny6RMek=
-X-Google-Smtp-Source: AGHT+IEdQumEhOAGOcUm1qDuqulTJZk9s7geXGLWSWuBIsER5LzI+EeEObSbLOQn5QYAzVCDQK/ieA==
-X-Received: by 2002:a50:fa8e:0:b0:523:4014:4e81 with SMTP id w14-20020a50fa8e000000b0052340144e81mr226778edr.35.1691418224242;
-        Mon, 07 Aug 2023 07:23:44 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef09:a500:ffed:38f8:59e7:f38e? (p200300f6ef09a500ffed38f859e7f38e.dip0.t-ipconnect.de. [2003:f6:ef09:a500:ffed:38f8:59e7:f38e])
-        by smtp.gmail.com with ESMTPSA id n18-20020aa7c692000000b005224d15d3dfsm5215809edq.87.2023.08.07.07.23.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 07:23:43 -0700 (PDT)
-Message-ID: <cef38375a5259e7df0111821b112341ed670e682.camel@gmail.com>
-Subject: Re: [PATCH v4 1/3] iio: Add IIO_DELTA_ANGL channel type
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Ramona Bolboaca <ramona.bolboaca@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 07 Aug 2023 16:26:17 +0200
-In-Reply-To: <20230807111227.374371-2-ramona.bolboaca@analog.com>
-References: <20230807111227.374371-1-ramona.bolboaca@analog.com>
-         <20230807111227.374371-2-ramona.bolboaca@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 
+        with ESMTP id S234537AbjHGOii (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Aug 2023 10:38:38 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D97510DD;
+        Mon,  7 Aug 2023 07:38:37 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 377EAbHa025188;
+        Mon, 7 Aug 2023 10:38:25 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3s9kb1ty85-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Aug 2023 10:38:25 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 377EcNkZ056328
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 7 Aug 2023 10:38:23 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 7 Aug 2023 10:38:23 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 7 Aug 2023 10:38:22 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 7 Aug 2023 10:38:22 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.194])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 377EcAFV022976;
+        Mon, 7 Aug 2023 10:38:15 -0400
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH] iio: admv1013: add mixer_vgate corner cases
+Date:   Mon, 7 Aug 2023 17:38:05 +0300
+Message-ID: <20230807143806.6954-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 8O4WMoDGPjjBTTYZ8mooRsYqTmoqwkrM
+X-Proofpoint-ORIG-GUID: 8O4WMoDGPjjBTTYZ8mooRsYqTmoqwkrM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_15,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0 bulkscore=0
+ mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2306200000 definitions=main-2308070135
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,54 +70,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2023-08-07 at 14:12 +0300, Ramona Bolboaca wrote:
-> The delta angle is defined as a piece-wise integration of angular
-> velocity data. The delta angle represents the amount of
-> angular displacement between two consecutive measurements and it
-> is measured in radians.
->=20
-> In order to track the total angular displacement during a desired
-> period of time, simply sum-up the delta angle samples acquired
-> during that time.
->=20
-> IIO currently does not offer a suitable channel type for this
-> type of measurements hence this patch adds it.
->=20
-> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
-> ---
-> =C2=A0Documentation/ABI/testing/sysfs-bus-iio | 14 ++++++++++++++
-> =C2=A0drivers/iio/industrialio-core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 1 +
-> =C2=A0include/uapi/linux/iio/types.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
-> =C2=A0tools/iio/iio_event_monitor.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 ++
-> =C2=A04 files changed, 18 insertions(+)
->=20
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio
-> b/Documentation/ABI/testing/sysfs-bus-iio
-> index a2854dc9a839..32675fa7dc6f 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -279,6 +279,20 @@ Description:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0but should match other such assignments on device).
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0Units after application of scale and offset are m/s=
-^2.
-> =C2=A0
-> +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/sys/bu=
-s/iio/devices/iio:deviceX/in_deltaangl_x_raw
-> +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/sys/bu=
-s/iio/devices/iio:deviceX/in_deltaangl_y_raw
-> +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/sys/bu=
-s/iio/devices/iio:deviceX/in_deltaangl_z_raw
+Include the corner cases in the computation of the MIXER_VGATE register
+value.
 
-I wonder if we also need to add these to the scan element specific bits? Fr=
-om a
-quick look, it seems not all supported attributes are in there so I'm not s=
-ure
-what's the policy in here :)
+According to the datasheet: The MIXER_VGATE values follows the VCM such
+as, that for a 0V to 1.8V VCM, MIXER_VGATE = 23.89 VCM + 81, and for a >
+1.8V to 2.6V VCM, MIXER_VGATE = 23.75 VCM + 1.25.
 
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ drivers/iio/frequency/admv1013.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-- Nuno S=C3=A1
+diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+index 9bf8337806fc..df29f1216b9a 100644
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -348,9 +348,9 @@ static int admv1013_update_mixer_vgate(struct admv1013_state *st)
+ 
+ 	vcm = regulator_get_voltage(st->reg);
+ 
+-	if (vcm < 1800000)
++	if (vcm <= 1800000)
+ 		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
+-	else if (vcm > 1800000 && vcm < 2600000)
++	else if (vcm > 1800000 && vcm <= 2600000)
+ 		mixer_vgate = (2375 * vcm / 1000000 + 125) / 100;
+ 	else
+ 		return -EINVAL;
+-- 
+2.41.0
+

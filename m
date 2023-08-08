@@ -2,107 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5FF477468D
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 20:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5758B77479C
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 21:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231611AbjHHS6F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Aug 2023 14:58:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
+        id S235998AbjHHTRb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Aug 2023 15:17:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjHHS5a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 14:57:30 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D9321D472;
-        Tue,  8 Aug 2023 10:17:24 -0700 (PDT)
+        with ESMTP id S233295AbjHHTQT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 15:16:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73EA3A6B7;
+        Tue,  8 Aug 2023 09:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691515044; x=1723051044;
+  t=1691512773; x=1723048773;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=RaKiTBiaD9BsjOO0Nilkq1si5mCIBl34JpYb7gEASig=;
-  b=HZtdjIDL+H9BaDEXMdrFR+OFQkzcDoZnD3YHFqV71qAAHBwBLIoR8hsA
-   igH1gSne7mn5NHMmNEZzRvceECnD/xAPq3+JKSyIIlE/bxVmfrCbmMw/x
-   w6QdLGqXDMsm+JNnKzP+BKNo6LlDS0js1B0BlrZAiRWjD2iKDvARl/FdT
-   R1zxSyH2NIUI65ASDOMG5UmBJOf1yeUTq7oxveQ7iuyQoRcWc/QpYk10h
-   mlZQiAsSHU5VkLhEM6Igsz1wIWyebpuZOlGbcvmE2MGSWfjPa17Ts6tR4
-   lTPyuiS/uKP/L6PpqkQGoZ+0tbvwLNtnatgW4TvDY+c3Hdd5hRY/sbt7o
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="360970361"
+  bh=/xmEuNUa1F857kBIWG/rzmWse5hqaes6dViG2uDIUl0=;
+  b=J3jBeuW9rm0HpbuAS/TBiGYNp6NaWkepve69CycYiImqgbars7sYNCjq
+   TuFsmWQO0lRWo0i89R9BfVFMrjUIG+duZVMhlVv3mgNYMeW7NLHaZxbUZ
+   Rgqbwqvgn8OwA+VfPJFFeNSf4f/3vDOxJWIeQfr99GIx1M2alIKmikSz6
+   64ZNvc9JDwi0dxDZ201vyG7GdmsJGIq5mqjsP3B+DLZxOlBdh0B1afYQw
+   UUx0mDcN4q6/HE8B7Xi3q1cOZ5mXxrImyVdAG8g/ROXj8HOtAsbwrbWV4
+   6WzZzRJ4/YXi5x1OSs9U2B879fr9r+p9wNMohoIQn8GFnqKttTCK56GpH
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="369777246"
 X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
-   d="scan'208";a="360970361"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 09:24:58 -0700
+   d="scan'208";a="369777246"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 09:38:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="845525000"
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="734623035"
 X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
-   d="scan'208";a="845525000"
+   d="scan'208";a="734623035"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 08 Aug 2023 09:24:54 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 08 Aug 2023 09:38:32 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 2C1A21B4; Tue,  8 Aug 2023 19:28:02 +0300 (EEST)
+        id 5A8B515C; Tue,  8 Aug 2023 19:41:41 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v1 0/6] iio: Introduce and use device_property_match_property_string()
-Date:   Tue,  8 Aug 2023 19:27:54 +0300
-Message-Id: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Subject: [PATCH v1 1/1] iio: dac: stm32-dac: Use correct header(s) instead of string_helpers.h
+Date:   Tue,  8 Aug 2023 19:41:37 +0300
+Message-Id: <20230808164137.66663-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-At least 4 drivers in the kernel are open coding functionality of
-proposed device_property_match_property_string() helper.
+There is nothing from string_helpers.h used in the driver, correct
+the header inclusion block accordingly.
 
-There are also more existing users, but I want to limit this to one
-(biggest user so far) subsystem. Hence, assuming Greg KH is okay
-this can be routed via IIO (and again via Greg :-).
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/dac/stm32-dac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The +28 statistics in particular due to documentation.
-With more users converted we may actually get rid of some
-lines of code in the future.
-
-Andy Shevchenko (6):
-  device property: Use fwnode_property_string_array_count()
-  device property: Add fwnode_property_match_property_string()
-  iio: frequency: adf4377: Switch to
-    device_property_match_property_string()
-  iio: frequency: admv1014: Switch to
-    device_property_match_property_string()
-  iio: magnetometer: tmag5273: Switch to
-    device_property_match_property_string()
-  iio: proximity: sx9324: Switch to
-    device_property_match_property_string()
-
- drivers/base/property.c             | 37 ++++++++++++++++++++++++++++-
- drivers/iio/frequency/adf4377.c     | 16 +++++--------
- drivers/iio/frequency/admv1014.c    | 31 ++++++++++--------------
- drivers/iio/magnetometer/tmag5273.c | 10 +++-----
- drivers/iio/proximity/sx9324.c      | 24 ++++++++-----------
- include/linux/property.h            | 12 ++++++++++
- 6 files changed, 79 insertions(+), 51 deletions(-)
-
+diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
+index 15eb44075107..3cab28c7ee3b 100644
+--- a/drivers/iio/dac/stm32-dac.c
++++ b/drivers/iio/dac/stm32-dac.c
+@@ -11,12 +11,13 @@
+ #include <linux/delay.h>
+ #include <linux/iio/iio.h>
+ #include <linux/kernel.h>
++#include <linux/kstrtox.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+-#include <linux/string_helpers.h>
++#include <linux/string_choices.h>
+ 
+ #include "stm32-dac-core.h"
+ 
 -- 
 2.40.0.1.gaa8946217a0b
 

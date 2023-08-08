@@ -2,87 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9797747B9
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 21:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE0F774945
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 21:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233331AbjHHTSi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Aug 2023 15:18:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37066 "EHLO
+        id S233975AbjHHTus (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Aug 2023 15:50:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233448AbjHHTRd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 15:17:33 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B6641218
-        for <linux-iio@vger.kernel.org>; Tue,  8 Aug 2023 09:40:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=s31663417; t=1691512826; x=1692117626; i=p.jungkamp@gmx.net;
- bh=18wFevJLsDiZsFQVTk1J9k5nBSQD5ODzu19ss65admU=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=LEWZU+Z827es8IwUCoN3ZNPzQUhUkuJbH2/RMciBDv4hAhvXuNHMiRJJBaIiNPeup3W8i4U
- 3Y/ZWs7cJ25bVzp6pVslPd8B62bprzR7pxQUClJ4Z1RkeRRipuk8sOtsFlC4gGD9v9Bk3/Gcf
- vUGm4E1sArZeS0nrCTHG89RKkIREW1OIirpIr97Y/J8MGtXLq4kMupUhFRoSrRzccUQWvYoPR
- 9L6jGjymSHgG6CfaaJ/FyhAbZ5WfG3ADnCDq+HclFUONNJAFSQc9qAhPA1r5NKSoJFxRqdvIg
- Ad9lIwynxSfyq9EaegBtw+sRk4CPbrlCes1i6BDsh1ITtEWljO0Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [134.130.193.161] ([134.130.193.161]) by web-mail.gmx.net
- (3c-app-gmx-bs40.server.lan [172.19.170.92]) (via HTTP); Tue, 8 Aug 2023
- 14:22:10 +0200
-MIME-Version: 1.0
-Message-ID: <trinity-2e8c2d00-be4a-4590-ae0f-265289d9256b-1691497330952@3c-app-gmx-bs40>
-From:   Philipp Jungkamp <p.jungkamp@gmx.net>
-To:     srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     Jiri Kosina <jikos@kernel.org>,
+        with ESMTP id S233961AbjHHTu1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 15:50:27 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870F153509;
+        Tue,  8 Aug 2023 09:56:09 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RKxV54TDFz6GD4v;
+        Tue,  8 Aug 2023 23:11:25 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 8 Aug
+ 2023 16:16:20 +0100
+Date:   Tue, 8 Aug 2023 16:16:19 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Aw: Re: [PATCH] IIO: hid-sensor-prox: add missing scale attribute
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 8 Aug 2023 14:22:10 +0200
-Importance: normal
-Sensitivity: Normal
-In-Reply-To: <cd33e36768322d4e8f7919711d3474f57c4383ff.camel@linux.intel.com>
-References: <20230806130558.89812-2-p.jungkamp@gmx.net>
- <cd33e36768322d4e8f7919711d3474f57c4383ff.camel@linux.intel.com>
-X-UI-Message-Type: mail
-X-Priority: 3
-X-Provags-ID: V03:K1:ED0Ds9WrVVnUXLeCwSaSwEEyITa81AGO3dW3K2wIYMp2VHwmcfJtGVX29NipYFqqxTnq5
- Dk02v3qRJvsXVcxRRn2MHQOm2QkNGYnY5RNpt/Y+s1GsMBVj2uy3qq+qVweuk6DuGJm0ZDmQgRb0
- FfoK/4Y7Jv+ZT6/WqTPTzqp3m9NwpOqd2EnPfcPEqJJ0p5+IAHAsfApDvXQhy6ByQ2LP5STnwbGM
- hDXIIQiiQPyYNzbxiIpKYxsS7FhyHynfAmHYtNZzH3NCEMHW61dNfeH74YNcYBNJdBDkqH0QAjoY
- Wg=
-UI-OutboundReport: notjunk:1;M01:P0:DMRA4qhZcuw=;q7f5k2+5/71uFJKu3fYTryU2MCL
- f9K8SvATtma24VKYLkxMA+u5Z8yzyOh/NlafuS5K2RrNQ/ofXhT/UH5P8P1rmRkNcZmSqDVYB
- z5nKXJ0jE2J1AMSZWbssE9NKzGxuSeKI8qyVmBWUTDm4smbz/i16HjDwAV8aTuMsVdbe40K1f
- y2UyIKuEpvuXfyufG6XGfLPlx4sFi8J0Md5Il14Y0rkXbkD6rbE5cD99qqt+qIbSly9SJM7j3
- 1UzJYy2mces9VdsWVA1qbzjLxM1GZYhaZH6GLJVKgjO9xGdHJ2EPleuPm1WnXNgiESw6YINfX
- hf0kahQ/Mo71bV8uVRKY5etrvSyNbny8Dmd6edmEdIbBcvtxXnI0azhagHVenbk6dbSE3X4B4
- 2ZTmcKshJccNzZIgn+t+VGZllwlfQbvGrHj47tmQN1QDIf9IOIRFiXK8GMPmv1iVsfgqlnIvB
- FCcbn1vfEospD+nbqMPz5ZAKeoqwdT3k/HOAxW4O6GOKwXkYCZfl3qecuBCJTj+S8oPsPt3R/
- h7Ir1yLDGbbBVgayzZKaiibTV3MnMAd+CTiuD2jw14wm22ROC6nDTPqNVz8I08FXq8HRq8Pro
- OuShnaGh9sZAW1rvn4fDYYF7/v/7QdDfqsbmBaY3m8fPpbBUxaPPmWZQrMJxWI0JLIkMQoo9t
- 3hV1DxLVTQ47a0DbXEeGSlVdfQC8HtlqLUiDy9lt1MXBRumA7o7PPq2SSyXtKcaJYN5mpMc9H
- lHxdLKdzQh4UNNV9aUXevtUA4MO2NjDp9145Oz9hqLikPDU2OlAGdKK36WKF4tXzN19zSr+83
- zf6n0mF81YgwkVCp1B3Lxo20O7H0svMbajuzWNbnBsPZ8=
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org\" <linux-renesas-soc@vger.kernel.org>"@domain.invalid
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+ bus_type
+Message-ID: <20230808161619.00000b92@Huawei.com>
+In-Reply-To: <ZNFV+C1HCIRJpbdC@google.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+        <20230805174036.129ffbc2@jic23-huawei>
+        <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+        <20230806142950.6c409600@jic23-huawei>
+        <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+        <ZNFV+C1HCIRJpbdC@google.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> > The hid-sensor-prox returned an empty string on sysfs
-> > in_proximity_scale
-> > read. This is due to the the driver's scale never being initialized.
->
-> What is scale value reporting here? Is it 1.
->
-> Thanks,
-> Srinivas
+On Mon, 7 Aug 2023 13:37:12 -0700
+Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
 
-Calling `read` on the sysfs file `in_proximity_scale` returns 0, thus an empty string.
-Adding the hid_format_scale call makes that a '1.000000'.
+> On Mon, Aug 07, 2023 at 05:54:07PM +0300, Andy Shevchenko wrote:
+> > On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:  
+> > > On Sat, 5 Aug 2023 17:42:21 +0000
+> > > Biju Das <biju.das.jz@bp.renesas.com> wrote:  
+> > > > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:  
+> > 
+> > ...
+> >   
+> > > > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > > > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > > > + * but not for this function. It's recommended to convert those either to avoid
+> > > > + * 0 or use a real pointer to the predefined driver data.  
+> >   
+> > > We still need to maintain consistency across the two tables, which
+> > > is a stronger requirement than avoiding 0.  
+> > 
+> > True. Any suggestion how to amend the above comment? Because the documentation
+> > makes sense on its own (may be split from the series?).
+> >   
+> > > Some drivers already do that by forcing the enum used to start at 1 which
+> > > doesn't solver the different data types issue.  
+> > 
+> > And some maintainers do not want to see non-enum values in i2c ID table.
+> > *Shrug*.  
+> 
+> So in legacy ID lookup path we can safely assume that values below 4096
+> are scalars and return NULL from the new device_get_match_data(). This
+> way current drivers using the values as indices or doing direct
+> comparisons against them can continue doing manual look up and using
+> them as they see fit. And we can convert the drivers at our leisure.
 
-Regards,
-Philipp
+Good idea.  Though I suspect there may still be nasty cases. People have
+been known to put chip ID values in these fields so that they can then
+match them against a who am I register as a 'detect it's the right part' check.
+
+No idea if we have any drivers doing that but if there are hopefully not too many!
+
+Jonathan
+
+> 
+> Thanks.
+> 
+

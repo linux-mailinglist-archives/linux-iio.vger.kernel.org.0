@@ -2,55 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4ED0774198
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 19:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3826773FB1
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 18:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234478AbjHHRYR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Aug 2023 13:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42246 "EHLO
+        id S233097AbjHHQvN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Aug 2023 12:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234480AbjHHRXl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 13:23:41 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799221EF72;
-        Tue,  8 Aug 2023 09:09:54 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso9496472e87.1;
-        Tue, 08 Aug 2023 09:09:54 -0700 (PDT)
+        with ESMTP id S231458AbjHHQuS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 12:50:18 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC605B86
+        for <linux-iio@vger.kernel.org>; Tue,  8 Aug 2023 08:57:37 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4fe457ec6e7so9654092e87.3
+        for <linux-iio@vger.kernel.org>; Tue, 08 Aug 2023 08:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691510967; x=1692115767;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Qc9TaZ0YZxfr2ijk4qJEfWVJCx/zM4Mwpq5TAaoTRE=;
-        b=RFgjI424/B1J8d6fEQU85hdFR29a2/jvGuzeKNbrcbA2Kz+4Z4+3nkGWGw1SIKjUnl
-         XfQEwoKbPHyPc3IMihHxdlHz4D1RSKgM1PZ+ik2B3T2OqH3aM1CQCVkFcrn+8qCM6LfA
-         48wihyD2GoNsnhjaeEyD7JRgKohwaBlqzUJ5bVpefjLB/qok90Cxn9nQMmvSD31xdFcA
-         /ghsCcLoOrE0ncMr0yGRr7gZv6ejow98BpmWYVuf/eBxkFQMOsrRHOdOndCaIsI7l9kG
-         pp75lojReKqQcHxFA+B7/KiBd5qDmAexqF5KNnN2J81xB2QWRO/TphBxM/JWW8b7K4Rk
-         raoQ==
+        d=linaro.org; s=google; t=1691510228; x=1692115028;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UL57MaBdPM6++P437QDJfGupULs2TDGGdbQMca9U3hM=;
+        b=HKWdi8rZHU1c0mtkvBhkFjoY9ntJeC8p/iTzmD2glmSkZoR4WM+0xHVpo9kVw80rrA
+         xvUyLH3fJ8uA1F4S25xNxMw0GRAFzLWzjjwi6CldcqVo3sf0VguAqmNeCR6WsJGMw1UN
+         /m/bSh313j7qo2TXyn2OIsslAHZTJFYwPYVRKjunpvldpZ1mhaskb5kYFWnabWr6Vu55
+         hBXIFdlw/VUb90c93jwjg5njGhATDmPKXiWKiplxT1t78WqH2SGg/rsEfLzM0O6XzFfs
+         AAMcg0ZefS8w7y9Ct8YfbQv5x0IhPZiOXJxg1COFu9cWm4i01ZN+guhVmVWvHCiQxlBs
+         yLGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691510967; x=1692115767;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+Qc9TaZ0YZxfr2ijk4qJEfWVJCx/zM4Mwpq5TAaoTRE=;
-        b=cXBmYIlt0u7Yg1U79aobcPFBRuhoGHXXU97V+Q9TPoOKbx3j2jCZ5Kls9mnJSmQniA
-         XbI7nWAT0IkQvSlpK0c4QwPitVpFF2zFRDigJEpWjscUHue+XqoX0MC8v+RGiQO/4McO
-         gVemFCHUFEdkp19z9pBY5OkJfMQC3hxjlgqx4MI8PKTeueMnMk1jhzJr/99f6NspK/Ce
-         kkLfBvLhHR3cv/N5Ei1kmAEFH/d/mAsFRKwGcOmnpakr28Vzb1nWOdSXvRtZd4Il/5wL
-         3797rADOv7uXtym0T9SkfFf1oHFTBYtG7GxUvvRVZRvx5Mx/N9JHcTJ0XOvhl2xV8sfK
-         hHdg==
-X-Gm-Message-State: AOJu0YxyuZnNfYfhyw/OoE2OG+z8dSXyK84yti0xxSgYXy7sbMwVKdQY
-        XL7O5TONi3OT2Um+tAaaEKgJhCYw6Yg5pI3X
-X-Google-Smtp-Source: AGHT+IGwh13bXO1PdIDK9A2IeD+OcpE7lGUQqZmmNhhWKV9U7iMTXE1/H8R9JVCPsPxdCaTWb6BaTg==
-X-Received: by 2002:a2e:3208:0:b0:2b9:ad7d:a144 with SMTP id y8-20020a2e3208000000b002b9ad7da144mr8929317ljy.11.1691479226041;
-        Tue, 08 Aug 2023 00:20:26 -0700 (PDT)
-Received: from gmail.com (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id z22-20020a2e8856000000b002b95eb96ab7sm2210306ljj.18.2023.08.08.00.20.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 00:20:25 -0700 (PDT)
-Date:   Tue, 8 Aug 2023 09:22:24 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        d=1e100.net; s=20221208; t=1691510228; x=1692115028;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UL57MaBdPM6++P437QDJfGupULs2TDGGdbQMca9U3hM=;
+        b=Dc6jjZfqgaYB4ov7YIafcdqBocVkK8v+QetOIbhM8NEsg9Nzcyt3NYUKliQhAeqXgT
+         gVon0SsFsn9stncFnvTMTsEAI7ZpVlZBNhgGY7QDnrn/cvJVsdtLUkHTPg0XalFkO1Gp
+         lBdiGkI2HefGK9XUP/k42ahKlFfxPBxz7Cza2oqQgdtGie9lOjJAAMFQ4tM5HCYZhCkd
+         AmtLObbuuh9jfmx5wFRNVthTJUtPSzL3tAv7YAsmgphBCyIRBXiASpN9nUKDCT/+q68T
+         u85l97wjx+0TjcoT2TCNWHAhYQqmKrvJBMrFosvQ4CLMBCTebjaP14KNWgmKQ8EnXOKN
+         oiGA==
+X-Gm-Message-State: AOJu0YwP4t5LVHGmySYNAZCgzBfx286OGJ/Dflnixu/jJlNYlANATJzW
+        Xnc3TZzyC4qu9aLYSKKGZGKeo4VZ/tvwzSugOF0=
+X-Google-Smtp-Source: AGHT+IFluzaGKTZK8dhiGf/jIxAe/vY+rM3Cg47RyOvynYVtONEW1n8zg4Kg7M1SwOUHcoCqsotjVw==
+X-Received: by 2002:a17:906:10cc:b0:99c:c50f:7fb4 with SMTP id v12-20020a17090610cc00b0099cc50f7fb4mr5853025ejv.1.1691480985744;
+        Tue, 08 Aug 2023 00:49:45 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.113])
+        by smtp.gmail.com with ESMTPSA id os14-20020a170906af6e00b0098963eb0c3dsm6235990ejb.26.2023.08.08.00.49.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Aug 2023 00:49:45 -0700 (PDT)
+Message-ID: <74abc9e0-ba9a-d7ec-4f1c-815f8e351701@linaro.org>
+Date:   Tue, 8 Aug 2023 09:49:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 2/2] iio: adc: mcp3911: add support for the whole
+ MCP39xx family
+Content-Language: en-US
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -67,112 +75,42 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: mcp3911: add support for the whole
- MCP39xx family
-Message-ID: <ZNHtMBG4yHpgL1kj@gmail.com>
 References: <20230807071831.4152183-1-marcus.folkesson@gmail.com>
  <20230807071831.4152183-2-marcus.folkesson@gmail.com>
- <ZNETcVNsEmvK0KKH@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9iQz+m/6foi59TLA"
-Content-Disposition: inline
-In-Reply-To: <ZNETcVNsEmvK0KKH@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+ <ZNETcVNsEmvK0KKH@smile.fi.intel.com> <ZNHtMBG4yHpgL1kj@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <ZNHtMBG4yHpgL1kj@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 08/08/2023 09:22, Marcus Folkesson wrote:
 
---9iQz+m/6foi59TLA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>>
+>> ...
+>>
+>>> -	ret = mcp3911_config(adc);
+>>> +	ret = device_property_read_u32(&adc->spi->dev, "microchip,device-addr", &adc->dev_addr);
+>>
+>> Why not spi->dev? Ditto for other uses like this.
+> 
+> After all, I think it is better to stick sith adc->spi-dev to be
+> consistent with the rest of the probe function. Change to spi->dev
+> should probably be a seperate patch.
+> Do you agree?
+> 
 
-On Mon, Aug 07, 2023 at 06:53:21PM +0300, Andy Shevchenko wrote:
-> On Mon, Aug 07, 2023 at 09:18:31AM +0200, Marcus Folkesson wrote:
-> > Microchip does have many similar chips, add support for those.
-> >=20
-> > The new supported chips are:
-> >   - microchip,mcp3910
-> >   - microchip,mcp3912
-> >   - microchip,mcp3913
-> >   - microchip,mcp3914
-> >   - microchip,mcp3918
-> >   - microchip,mcp3919
->=20
-> ...
->=20
-> > +#define MCP3910_STATUSCOM_DRHIZ         BIT(20)
->=20
-> Is it deliberately using spaces? If so, why?
+You can first simplify the usages and then add new family support
+already using spi->dev.
 
-No, probably due to my with my new vim setup..
+Best regards,
+Krzysztof
 
->=20
-> ...
->=20
-> > +static int mcp3910_get_osr(struct mcp3911 *adc, int *val)
-> > +{
-> > +	int ret, osr;
-> > +
-> > +	ret =3D mcp3911_read(adc, MCP3910_REG_CONFIG0, val, 3);
->=20
-> > +	osr =3D FIELD_GET(MCP3910_CONFIG0_OSR, *val);
-> > +	*val =3D 32 << osr;
-> > +	return ret;
->=20
-> I believe this is wrong order. Or bad code. The rule of thumb is not poll=
-ute
-> the output variable if we know the error happened.
->=20
-> Same applies to another function.
->=20
-> > +}
->=20
-> ...
->=20
-> > -	ret =3D mcp3911_config(adc);
-> > +	ret =3D device_property_read_u32(&adc->spi->dev, "microchip,device-ad=
-dr", &adc->dev_addr);
->=20
-> Why not spi->dev? Ditto for other uses like this.
-
-After all, I think it is better to stick sith adc->spi-dev to be
-consistent with the rest of the probe function. Change to spi->dev
-should probably be a seperate patch.
-Do you agree?
-
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
->=20
->=20
-
---9iQz+m/6foi59TLA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmTR7SsACgkQiIBOb1ld
-UjKmLhAAmVbkmMJoLp/7/9BSuDNad52Q4sV0eiG2cYqHMn/ZFLdVISQmtYDtbPAd
-Kb2Co//QorEr0UeoxEKqOqkWOn1VhLHhP7wne2EosuVWZtW0f1t+wBx89NkMcr4O
-PwVZbSjPeOy7ZYqAk9av0pYugdW4H1dRCvivY9FsB653tuOQ3R+jetOxn0pWou06
-mCfA0jtBVFptfKjTuifEsPuGqJS4g20yyfMuDMOBhOA6362ShAV/vlq/EUr3c+C9
-f5t3MfCfYXrC/8tOI4DDzZ8VlFCDmEbPdAwjaOvaEJLh+enC4Yjh/kS3B6IryOGM
-VUatDrmCg1/vSrtBHCLsysC2ZPep1Liz+tthDwNB68KPlOiugQd1NN1LoO1mb3Jn
-khDZUdB9CEAJvSzA6sx3ZtehW7iKIrPCuc8EY9NClbHd63Q4hkXXXvbWzFSEr6Vv
-+/Fkg8WA4rfTjq1oOHsna2CNiHsb+xpbhoSPV4Y5qRpKsNQOSB74T8aU+YDxYDmy
-fhvC/d0aKPFcInIZaforvFOP4AAFgsDtYKNSI64qkiR4DjCe4+s0HsVNxWqFgjcg
-EZMzT8iuaZ4sFuNmlqskhQgqj/b+iN7vA/kaSztrnOlx6Ir5+uOk7dyHD+walUJs
-j+LuiTv4faZM22I4+J8df8ORUoLhj2r9nhggYg6zIXox04Bbu4s=
-=B4Sa
------END PGP SIGNATURE-----
-
---9iQz+m/6foi59TLA--

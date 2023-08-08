@@ -2,329 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9A27774743
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 21:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 477DF7745B4
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 20:45:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234702AbjHHTNZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Aug 2023 15:13:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60668 "EHLO
+        id S233644AbjHHSpK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Aug 2023 14:45:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234814AbjHHTNL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 15:13:11 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A325351D3;
-        Tue,  8 Aug 2023 09:35:39 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-99bc512526cso855135766b.1;
-        Tue, 08 Aug 2023 09:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691512502; x=1692117302;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SkJoIl6bqN5V/arz35UqS7vxqymZsvhTQ0NmSaBWTpc=;
-        b=aWTCoVkGvg4zYFRtsVweX3Y1ZWkJ6IdzZGpjekBCTjqBYnGSn/T4rteLMQwje2pSpg
-         FMYUu645hm7Ud2fgruVlMuhPxHMrIHHhC7jt39y6evuTau2WHegCxIPhN0dcapaj/ruT
-         jSegFBzbnBjnbWdWU+W5BQB+FITxUDC2jCgxbVvyygOVOnrg8IWsGnFz7/INgxnkY+NK
-         8i6Qmckdneg2sdqCAzIsoZaoSAIEu5s9oPHIuEfSHNnDAQQhqXjbc8C8SZsNaHoOByC2
-         NuobX5ztpxbNBLu+F5zwefRN0/m2EY2hIKBqmmGovM8VwTvx0qmocL9o18QSBUYo7bm7
-         KUHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691512502; x=1692117302;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SkJoIl6bqN5V/arz35UqS7vxqymZsvhTQ0NmSaBWTpc=;
-        b=DnmleRf8VD7RP42jG6mlWexo+C9PpGyROXWPPy18UcUMSfuqKFIhX1coo5NuJaT/Ao
-         U0AWO6fyd/5lziBf5oCUBq4Z+M/kvgrq2zdy95ImWwdem3Hiray7gxLte/uHBI5oi9E/
-         SAKjwf9AMeb1HCVLxP1/ohIzksdTXrSwX46Gopp3pZUS9jUCKPd69RD836CuWkf/Q8ej
-         Xyl/dQIwoRRobCbQ4Fv0g5Oa276eFCH0VEM4HlBk5E4mTyRB1OWcN4R8pfKUDAZ4+e0Q
-         dN+SJxBVldgxk1R+ovIuqviddIXjpS82pOQ7GJqfvnC7ZDUCgNmR8ZvQhtPc+Rn3AC0a
-         w2bA==
-X-Gm-Message-State: AOJu0YxAS2ID7K7WQbwUmw0q/TytvsnOfE2p/461mVQy+Ydv8j4OiOHy
-        BspOwA7woG65ckmW45UythVNretWgUBwtHF4
-X-Google-Smtp-Source: AGHT+IHGGicBO6hh1cowRODMmbY3oe1devolNZrQRK4+F3jdN7CbErysf5M2mBuoBuAU0jdi9iQl5g==
-X-Received: by 2002:a05:6512:31d6:b0:4f8:7772:3dfd with SMTP id j22-20020a05651231d600b004f877723dfdmr8655721lfe.11.1691492572360;
-        Tue, 08 Aug 2023 04:02:52 -0700 (PDT)
-Received: from localhost.localdomain (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id q10-20020ac246ea000000b004fbad682ffesm1826587lfo.88.2023.08.08.04.02.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 04:02:51 -0700 (PDT)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/4] iio: adc: mcp3911: fix indentation
-Date:   Tue,  8 Aug 2023 13:04:31 +0200
-Message-Id: <20230808110432.240773-3-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230808110432.240773-1-marcus.folkesson@gmail.com>
-References: <20230808110432.240773-1-marcus.folkesson@gmail.com>
+        with ESMTP id S233662AbjHHSoj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 14:44:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D933D199;
+        Tue,  8 Aug 2023 09:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691512885; x=1723048885;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eo0WgR5mRHn12TykrjAcW5PBByn61DLkNzcLEYnCe1g=;
+  b=klIBUqiYSWmX9ImvHe/rEkekHrGz0dYN8Zffevdh77odpVXWhXGZjCl2
+   hvEagEOVte6Y3/NmCgXQvEwoRajegFaNmOFdRAm8xTex6pal8gKm8RFt6
+   4f2QbmpnLr2ipsZxKs0E6kq3IB37syNhyVERK/8OMX73hp9awJOblx1p6
+   d7JBxlWKBkAH5Q50/xyeNqUKroGY9OlnPGsZKA5Ro8q6SN5nvcn0XdYxp
+   ei9L/K48Kd5dcSQ+zcvZKq5HBRbvZnHJYVxRTOmtT2SmaNc92vfJpC0+s
+   YvqMBiME61jUJYoj/X9qK3+8zGhkVkoYH5WMi9wiP1KzRVFD+VGQoWd7F
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="374480755"
+X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
+   d="scan'208";a="374480755"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 05:18:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="734512997"
+X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
+   d="scan'208";a="734512997"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 08 Aug 2023 05:18:54 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qTLfo-007NhS-1M;
+        Tue, 08 Aug 2023 15:18:52 +0300
+Date:   Tue, 8 Aug 2023 15:18:52 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+Message-ID: <ZNIyrG/2h/PeS9Oz@smile.fi.intel.com>
+References: <20230804161728.394920-1-biju.das.jz@bp.renesas.com>
+ <20230805174036.129ffbc2@jic23-huawei>
+ <OS0PR01MB59220491C7C8AA40BEFAAD82860EA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <20230806142950.6c409600@jic23-huawei>
+ <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+ <ZNFV+C1HCIRJpbdC@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZNFV+C1HCIRJpbdC@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The file does not make use of indentation properly.
-Fix that.
+On Mon, Aug 07, 2023 at 01:37:12PM -0700, Dmitry Torokhov wrote:
+> On Mon, Aug 07, 2023 at 05:54:07PM +0300, Andy Shevchenko wrote:
+> > On Sun, Aug 06, 2023 at 02:29:50PM +0100, Jonathan Cameron wrote:
+> > > On Sat, 5 Aug 2023 17:42:21 +0000
+> > > Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > > > > On Fri,  4 Aug 2023 17:17:24 +0100
+> > > > > Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
+...
 
-Notes:
-    v4:
-        - New patch in this series
+> > > > + * Besides the fact that some drivers abuse the device ID driver_data type
+> > > > + * and claim it to be integer, for the bus specific ID tables the driver_data
+> > > > + * may be defined as kernel_ulong_t. For these tables 0 is a valid response,
+> > > > + * but not for this function. It's recommended to convert those either to avoid
+> > > > + * 0 or use a real pointer to the predefined driver data.
+> > 
+> > > We still need to maintain consistency across the two tables, which
+> > > is a stronger requirement than avoiding 0.
+> > 
+> > True. Any suggestion how to amend the above comment? Because the documentation
+> > makes sense on its own (may be split from the series?).
+> > 
+> > > Some drivers already do that by forcing the enum used to start at 1 which
+> > > doesn't solver the different data types issue.
+> > 
+> > And some maintainers do not want to see non-enum values in i2c ID table.
+> > *Shrug*.
+> 
+> So in legacy ID lookup path we can safely assume that values below 4096
+> are scalars and return NULL from the new device_get_match_data(). This
+> way current drivers using the values as indices or doing direct
+> comparisons against them can continue doing manual look up and using
+> them as they see fit. And we can convert the drivers at our leisure.
 
- drivers/iio/adc/mcp3911.c | 97 ++++++++++++++++++++-------------------
- 1 file changed, 49 insertions(+), 48 deletions(-)
+It's a good idea, but I believe will be received as hack.
+But why not to try? We indeed have an error pointers for the last page
+and NULL (which is only up to 16 IIRC) and reserved space in the first
+page. To be more robust I would check all enums that are being used
+in I2C ID tables for maximum value and if that is less than 16, use
+ZERO_OR_NULL_PTR() instead of custom stuff.
 
-diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-index 8bbf2f7c839e..8b465d2aad1a 100644
---- a/drivers/iio/adc/mcp3911.c
-+++ b/drivers/iio/adc/mcp3911.c
-@@ -33,7 +33,7 @@
- #define MCP3911_GAIN_VAL(ch, val)      ((val << 3 * ch) & MCP3911_GAIN_MASK(ch))
- 
- #define MCP3911_REG_STATUSCOM		0x0a
--#define MCP3911_STATUSCOM_DRHIZ         BIT(12)
-+#define MCP3911_STATUSCOM_DRHIZ		BIT(12)
- #define MCP3911_STATUSCOM_READ		GENMASK(7, 6)
- #define MCP3911_STATUSCOM_CH1_24WIDTH	BIT(4)
- #define MCP3911_STATUSCOM_CH0_24WIDTH	BIT(3)
-@@ -112,7 +112,7 @@ static int mcp3911_write(struct mcp3911 *adc, u8 reg, u32 val, u8 len)
- }
- 
- static int mcp3911_update(struct mcp3911 *adc, u8 reg, u32 mask,
--		u32 val, u8 len)
-+			  u32 val, u8 len)
- {
- 	u32 tmp;
- 	int ret;
-@@ -127,8 +127,8 @@ static int mcp3911_update(struct mcp3911 *adc, u8 reg, u32 mask,
- }
- 
- static int mcp3911_write_raw_get_fmt(struct iio_dev *indio_dev,
--					struct iio_chan_spec const *chan,
--					long mask)
-+				     struct iio_chan_spec const *chan,
-+				     long mask)
- {
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
-@@ -141,9 +141,9 @@ static int mcp3911_write_raw_get_fmt(struct iio_dev *indio_dev,
- }
- 
- static int mcp3911_read_avail(struct iio_dev *indio_dev,
--			     struct iio_chan_spec const *chan,
--			     const int **vals, int *type, int *length,
--			     long info)
-+			      struct iio_chan_spec const *chan,
-+			      const int **vals, int *type, int *length,
-+			      long info)
- {
- 	switch (info) {
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-@@ -212,8 +212,8 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
- }
- 
- static int mcp3911_write_raw(struct iio_dev *indio_dev,
--			    struct iio_chan_spec const *channel, int val,
--			    int val2, long mask)
-+			     struct iio_chan_spec const *channel, int val,
-+			     int val2, long mask)
- {
- 	struct mcp3911 *adc = iio_priv(indio_dev);
- 	int ret = -EINVAL;
-@@ -223,12 +223,12 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_SCALE:
- 		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
- 			if (val == mcp3911_scale_table[i][0] &&
--				val2 == mcp3911_scale_table[i][1]) {
-+			    val2 == mcp3911_scale_table[i][1]) {
- 
- 				adc->gain[channel->channel] = BIT(i);
- 				ret = mcp3911_update(adc, MCP3911_REG_GAIN,
--						MCP3911_GAIN_MASK(channel->channel),
--						MCP3911_GAIN_VAL(channel->channel, i), 1);
-+						     MCP3911_GAIN_MASK(channel->channel),
-+						     MCP3911_GAIN_VAL(channel->channel, i), 1);
- 			}
- 		}
- 		break;
-@@ -246,8 +246,8 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 
- 		/* Enable offset*/
- 		ret = mcp3911_update(adc, MCP3911_REG_STATUSCOM,
--				MCP3911_STATUSCOM_EN_OFFCAL,
--				MCP3911_STATUSCOM_EN_OFFCAL, 2);
-+				     MCP3911_STATUSCOM_EN_OFFCAL,
-+				     MCP3911_STATUSCOM_EN_OFFCAL, 2);
- 		break;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-@@ -255,7 +255,7 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 			if (val == mcp3911_osr_table[i]) {
- 				val = FIELD_PREP(MCP3911_CONFIG_OSR, i);
- 				ret = mcp3911_update(adc, MCP3911_REG_CONFIG, MCP3911_CONFIG_OSR,
--						val, 2);
-+						     val, 2);
- 				break;
- 			}
- 		}
-@@ -279,7 +279,7 @@ static int mcp3911_calc_scale_table(struct mcp3911 *adc)
- 		if (ret < 0) {
- 			dev_err(&adc->spi->dev,
- 				"failed to get vref voltage: %d\n",
--			       ret);
-+				ret);
- 			return ret;
- 		}
- 
-@@ -305,25 +305,25 @@ static int mcp3911_calc_scale_table(struct mcp3911 *adc)
- 	return 0;
- }
- 
--#define MCP3911_CHAN(idx) {					\
--		.type = IIO_VOLTAGE,				\
--		.indexed = 1,					\
--		.channel = idx,					\
--		.scan_index = idx,				\
--		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
--		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
--			BIT(IIO_CHAN_INFO_OFFSET) |		\
--			BIT(IIO_CHAN_INFO_SCALE),		\
--		.info_mask_shared_by_type_available =           \
--			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
--		.info_mask_separate_available =			\
--			BIT(IIO_CHAN_INFO_SCALE),		\
--		.scan_type = {					\
--			.sign = 's',				\
--			.realbits = 24,				\
--			.storagebits = 32,			\
--			.endianness = IIO_BE,			\
--		},						\
-+#define MCP3911_CHAN(idx) {				\
-+	.type = IIO_VOLTAGE,				\
-+	.indexed = 1,					\
-+	.channel = idx,					\
-+	.scan_index = idx,				\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
-+	BIT(IIO_CHAN_INFO_OFFSET) |			\
-+	BIT(IIO_CHAN_INFO_SCALE),			\
-+	.info_mask_shared_by_type_available =           \
-+	BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
-+	.info_mask_separate_available =			\
-+	BIT(IIO_CHAN_INFO_SCALE),			\
-+	.scan_type = {					\
-+		.sign = 's',				\
-+		.realbits = 24,				\
-+		.storagebits = 32,			\
-+		.endianness = IIO_BE,			\
-+	},						\
- }
- 
- static const struct iio_chan_spec mcp3911_channels[] = {
-@@ -355,7 +355,7 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
- 	ret = spi_sync_transfer(adc->spi, xfer, ARRAY_SIZE(xfer));
- 	if (ret < 0) {
- 		dev_warn(&adc->spi->dev,
--				"failed to get conversion data\n");
-+			 "failed to get conversion data\n");
- 		goto out;
- 	}
- 
-@@ -494,7 +494,7 @@ static int mcp3911_probe(struct spi_device *spi)
- 			return ret;
- 
- 		ret = devm_add_action_or_reset(&spi->dev,
--				mcp3911_cleanup_regulator, adc->vref);
-+					       mcp3911_cleanup_regulator, adc->vref);
- 		if (ret)
- 			return ret;
- 	}
-@@ -517,10 +517,10 @@ static int mcp3911_probe(struct spi_device *spi)
- 
- 	if (device_property_read_bool(&spi->dev, "microchip,data-ready-hiz"))
- 		ret = mcp3911_update(adc, MCP3911_REG_STATUSCOM, MCP3911_STATUSCOM_DRHIZ,
--				0, 2);
-+				     0, 2);
- 	else
- 		ret = mcp3911_update(adc, MCP3911_REG_STATUSCOM, MCP3911_STATUSCOM_DRHIZ,
--				MCP3911_STATUSCOM_DRHIZ, 2);
-+				     MCP3911_STATUSCOM_DRHIZ, 2);
- 	if (ret)
- 		return ret;
- 
-@@ -528,12 +528,12 @@ static int mcp3911_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--       /* Set gain to 1 for all channels */
-+	/* Set gain to 1 for all channels */
- 	for (int i = 0; i < MCP3911_NUM_CHANNELS; i++) {
- 		adc->gain[i] = 1;
- 		ret = mcp3911_update(adc, MCP3911_REG_GAIN,
--				MCP3911_GAIN_MASK(i),
--				MCP3911_GAIN_VAL(i, 0), 1);
-+				     MCP3911_GAIN_MASK(i),
-+				     MCP3911_GAIN_VAL(i, 0), 1);
- 		if (ret)
- 			return ret;
- 	}
-@@ -550,8 +550,8 @@ static int mcp3911_probe(struct spi_device *spi)
- 
- 	if (spi->irq > 0) {
- 		adc->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
--				indio_dev->name,
--				iio_device_id(indio_dev));
-+						   indio_dev->name,
-+						   iio_device_id(indio_dev));
- 		if (!adc->trig)
- 			return -ENOMEM;
- 
-@@ -567,15 +567,16 @@ static int mcp3911_probe(struct spi_device *spi)
- 		 * don't enable the interrupt to avoid extra load on the system.
- 		 */
- 		ret = devm_request_irq(&spi->dev, spi->irq,
--				&iio_trigger_generic_data_rdy_poll, IRQF_NO_AUTOEN | IRQF_ONESHOT,
--				indio_dev->name, adc->trig);
-+				       &iio_trigger_generic_data_rdy_poll,
-+				       IRQF_NO_AUTOEN | IRQF_ONESHOT,
-+				       indio_dev->name, adc->trig);
- 		if (ret)
- 			return ret;
- 	}
- 
- 	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
--			NULL,
--			mcp3911_trigger_handler, NULL);
-+					      NULL,
-+					      mcp3911_trigger_handler, NULL);
- 	if (ret)
- 		return ret;
- 
 -- 
-2.40.1
+With Best Regards,
+Andy Shevchenko
+
 

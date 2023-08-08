@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B695774097
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 19:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B29774162
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Aug 2023 19:19:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231229AbjHHRFn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Aug 2023 13:05:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
+        id S234412AbjHHRTk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Aug 2023 13:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231394AbjHHRE5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 13:04:57 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AFB11A744;
-        Tue,  8 Aug 2023 09:02:07 -0700 (PDT)
+        with ESMTP id S233090AbjHHRS5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Aug 2023 13:18:57 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 404B88CA7;
+        Tue,  8 Aug 2023 09:07:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691510527; x=1723046527;
+  t=1691510865; x=1723046865;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=XveRea9FANQPUg2+NGfW1ls9tlTN5Z18q/yQQW52Pdg=;
-  b=eLl/B+C6sBC8bNHtExz3HCdThPt5hLYA8yttYiQaKVGc9dfy/1XvdrGs
-   rEfaDAFJyBXWIeFXgLled8Mt6sYQxuCxAgaiDWefQS/efHAXi2xRlgGoQ
-   avBAqH3GDMwnNOMZ3/iGKd4z3kW7t9QF8rbziuaTngdvEpyCqoLJ9tqUR
-   7DV1uuPYGez7wQN74dHO/WrylRuvMmR/MGwiG3DneNTNZj9NxDwOfS1gJ
-   pqZLCnN8xRiaOUXEzzsnOz+6vcTF5HqK/hVLYeHEe6xyAZKAc++vdfHYa
-   7IC4ktsUmotG6zwOY4uAgJvB+ahfic+ke+7yDFvXdsTtsaqdZs/G01gpC
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="373581385"
+  bh=R6UzZPmeddLD5E78VuDAI1PCQFG215xuKvwMFArd0fs=;
+  b=EHy+Hn0ktZWdBtZqAg1pcup75rcH10V0FYUgR7Q8LRrbHTck2yypR142
+   iA8KilkE5OM5+g5korQjyEzmnLd0nkmtG0x4FX/A7MmRSKC8qKiJfRFZ7
+   W5OrQ8lNPG97md6zJNei6K/TWlEb8V+51A8cQl9qcKQSP4rMWZJxxOtz0
+   LnuWjj772+T3AslKe9+P0pqY1OHoI/Dqg4/tpPcKikJqum+BHM2LH9RwI
+   10vpdOlDZ9UjuIqWiTfR9tMdNU4s0ai0d47FMtz0dxkXDsdVv27dnpU2j
+   OQtOglCi6Tob8JfVma99qjeTb5WzkoLRlmSBrh9hrUMgNPVlUa4ewzgfI
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="351138159"
 X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
-   d="scan'208";a="373581385"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 07:13:32 -0700
+   d="scan'208";a="351138159"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 07:23:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="801337918"
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="821390354"
 X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
-   d="scan'208";a="801337918"
+   d="scan'208";a="821390354"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 08 Aug 2023 07:13:28 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 08 Aug 2023 07:23:42 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qTNSg-00BIxZ-0M;
-        Tue, 08 Aug 2023 17:13:26 +0300
-Date:   Tue, 8 Aug 2023 17:13:25 +0300
+        id 1qTNca-00BeUL-0J;
+        Tue, 08 Aug 2023 17:23:40 +0300
+Date:   Tue, 8 Aug 2023 17:23:39 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Marcus Folkesson <marcus.folkesson@gmail.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
@@ -61,94 +61,177 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] iio: adc: mcp3911: fix indentation
-Message-ID: <ZNJNhSLIv/fazbhz@smile.fi.intel.com>
+Subject: Re: [PATCH v4 4/4] iio: adc: mcp3911: add support for the whole
+ MCP39xx family
+Message-ID: <ZNJP6xpOvRJigtMx@smile.fi.intel.com>
 References: <20230808110432.240773-1-marcus.folkesson@gmail.com>
- <20230808110432.240773-3-marcus.folkesson@gmail.com>
+ <20230808110432.240773-4-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230808110432.240773-3-marcus.folkesson@gmail.com>
+In-Reply-To: <20230808110432.240773-4-marcus.folkesson@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 08, 2023 at 01:04:31PM +0200, Marcus Folkesson wrote:
-> The file does not make use of indentation properly.
-> Fix that.
+On Tue, Aug 08, 2023 at 01:04:32PM +0200, Marcus Folkesson wrote:
+> Microchip does have many similar chips, add support for those.
 
 ...
 
->  static int mcp3911_update(struct mcp3911 *adc, u8 reg, u32 mask,
-> -		u32 val, u8 len)
-> +			  u32 val, u8 len)
+>  	help
+> -	  Say yes here to build support for Microchip Technology's MCP3911
+> -	  analog to digital converter.
+> +	  Say yes here to build support for Microchip Technology's MCP3910,
+> +	  MCP3911, MCP3912, MCP3913, MCP3914, MCP3918 and MCP3919
+> +	  analog to digital converters.
 
-Can val be moved to the previous line?
+For maintenance this can be written as
 
-...
+	  Say yes here to build support for one of the following
+	  Microchip Technology's analog to digital converters:
+	    MCP3910, MCP3911, MCP3912, MCP3913, MCP3914,
+	    MCP3918, MCP3919
 
->  		if (ret < 0) {
->  			dev_err(&adc->spi->dev,
->  				"failed to get vref voltage: %d\n",
-> -			       ret);
-> +				ret);
->  			return ret;
-
-With
-
-	struct device *dev = &adc->spi->dev;
-
-this becomes
-
-			dev_err(dev, "failed to get vref voltage: %d\n", ret);
-
-and one change less here.
-
->  		}
+>  	  This driver can also be built as a module. If so, the module will be
+>  	  called mcp3911.
 
 ...
 
-> -#define MCP3911_CHAN(idx) {					\
-> -		.type = IIO_VOLTAGE,				\
-> -		.indexed = 1,					\
-> -		.channel = idx,					\
-> -		.scan_index = idx,				\
-> -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
-> -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
-> -			BIT(IIO_CHAN_INFO_OFFSET) |		\
-> -			BIT(IIO_CHAN_INFO_SCALE),		\
-> -		.info_mask_shared_by_type_available =           \
-> -			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-> -		.info_mask_separate_available =			\
-> -			BIT(IIO_CHAN_INFO_SCALE),		\
-> -		.scan_type = {					\
-> -			.sign = 's',				\
-> -			.realbits = 24,				\
-> -			.storagebits = 32,			\
-> -			.endianness = IIO_BE,			\
-> -		},						\
+> +#define MCP3910_OFFCAL(x)		(MCP3910_REG_OFFCAL_CH0 + x * 6)
 
->  }
-
-This looks like unneeded churn to me.
+Inconsistent macro implementation, i.e. you need to use (x).
 
 ...
 
->  	if (ret < 0) {
->  		dev_warn(&adc->spi->dev,
-> -				"failed to get conversion data\n");
-> +			 "failed to get conversion data\n");
->  		goto out;
->  	}
+> +static int mcp3910_get_osr(struct mcp3911 *adc, int *val)
+> +{
+> +	int ret, osr;
 
-Same as above with temporary variable for struct device.
+Strictly speaking osr can't be negative, otherwise it's a UB below.
+
+	u32 osr = FIELD_GET(MCP3910_CONFIG0_OSR, *val);
+	int ret;
+
+and why val is int?
+
+> +	ret = mcp3911_read(adc, MCP3910_REG_CONFIG0, val, 3);
+> +	if (ret)
+> +		return ret;
+> +
+> +	osr = FIELD_GET(MCP3910_CONFIG0_OSR, *val);
+> +	*val = 32 << osr;
+> +	return ret;
+> +}
+
+...
+
+> +static int mcp3910_set_osr(struct mcp3911 *adc, int val)
+> +{
+
+> +	int osr;
+> +
+> +	osr = FIELD_PREP(MCP3910_CONFIG0_OSR, val);
+
+Can be on one line.
+
+> +	return mcp3911_update(adc, MCP3910_REG_CONFIG0,
+> +			      MCP3910_CONFIG0_OSR, osr, 3);
+> +}
+
+...
+
+> +static int mcp3911_set_osr(struct mcp3911 *adc, int val)
+> +static int mcp3911_get_osr(struct mcp3911 *adc, int *val)
+
+As per above comments.
+
+...
+
+> +	if (adc->vref) {
+> +		dev_dbg(&adc->spi->dev, "use external voltage reference\n");
+> +		regval |= FIELD_PREP(MCP3910_CONFIG1_VREFEXT, 1);
+> +	} else {
+
+> +		dev_dbg(&adc->spi->dev,
+> +			"use internal voltage reference (1.2V)\n");
+
+
+As per previous patch comments
+
+		dev_dbg(dev, "use internal voltage reference (1.2V)\n");
+
+> +		regval |= FIELD_PREP(MCP3910_CONFIG1_VREFEXT, 0);
+> +	}
+
+...
+
+> +	if (adc->clki) {
+> +		dev_dbg(&adc->spi->dev, "use external clock as clocksource\n");
+> +		regval |= FIELD_PREP(MCP3910_CONFIG1_CLKEXT, 1);
+> +	} else {
+> +		dev_dbg(&adc->spi->dev,
+> +			"use crystal oscillator as clocksource\n");
+
+Ditto.
+
+> +		regval |= FIELD_PREP(MCP3910_CONFIG1_CLKEXT, 0);
+> +	}
+
+...
+
+> +	if (device_property_read_bool(&adc->spi->dev, "microchip,data-ready-hiz"))
+
+This also becomes shorter.
+
+One trick to make it even shorter:
+
+	if (device_property_present(dev, "microchip,data-ready-hiz"))
+
+> +		regval |= FIELD_PREP(MCP3910_STATUSCOM_DRHIZ, 0);
+> +	else
+> +		regval |= FIELD_PREP(MCP3910_STATUSCOM_DRHIZ, 1);
+
+...
+
+> +	ret = device_property_read_u32(&spi->dev, "microchip,device-addr", &adc->dev_addr);
+
+I would move it after the comment. It will be more visible what we are
+expecting and what the legacy is.
+
+
+> +	/*
+> +	 * Fallback to "device-addr" due to historical mismatch between
+> +	 * dt-bindings and implementation.
+> +	 */
+
+	ret = device_property_read_u32(dev, "microchip,device-addr", &adc->dev_addr);
+
+>  	if (ret)
+> -		return ret;
+> +		device_property_read_u32(&spi->dev, "device-addr", &adc->dev_addr);
+
+> +	if (adc->dev_addr > 3) {
+> +		dev_err(&spi->dev,
+> +			"invalid device address (%i). Must be in range 0-3.\n",
+> +			adc->dev_addr);
+> +		return -EINVAL;
+
+		return dev_err_probe(...);
+
+> +	}
+
+...
+
+> +	dev_dbg(&spi->dev, "use device address %i\n", adc->dev_addr);
+
+Is it useful?
 
 -- 
 With Best Regards,

@@ -2,175 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 251857766D0
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 20:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5227E7766EA
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 20:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231609AbjHIR7w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 13:59:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58276 "EHLO
+        id S233163AbjHISDL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Aug 2023 14:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231489AbjHIR7u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 13:59:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 225AA1736;
-        Wed,  9 Aug 2023 10:59:50 -0700 (PDT)
+        with ESMTP id S233074AbjHISDK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 14:03:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE8802111;
+        Wed,  9 Aug 2023 11:03:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB04864362;
-        Wed,  9 Aug 2023 17:59:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F65C433C7;
-        Wed,  9 Aug 2023 17:59:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55D20643B0;
+        Wed,  9 Aug 2023 18:03:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B6EC433C9;
+        Wed,  9 Aug 2023 18:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691603989;
-        bh=212JSj0ldyl9eOSzdc/UjKowkgzQsvjsWBwyjn429qA=;
+        s=k20201202; t=1691604182;
+        bh=rPL3CLW5XuFRA39bX+QGXMYR05A+1pGnImddf5wGUCE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CJ2iXFR63LOoxYi9NIzlKOPV00krK0s1vc1TBUdf5I9/j5yCNYTY27/jzd0BOoKok
-         Sp6R6/bJDIs36lsgjtfFBPiTwtljOVkTAlkQfT0jbOYmeP6MGDFHsKCewMaDKMA5p+
-         cI76Qi4mToukDI2xzn77qgZO9p2fZECGOuI+YN5R6RtwGvk6R1zoGSPvb1Y0DLCzQn
-         dqSs2zIpCd4TrF+apU+qJ7YlidXgMKtpipZjONpCqSiGWAB2fiA4XwCiLF6UogDkha
-         0YC29wuUDVH0Gg6j5S6dpVMHHSH3RHxww6a8WfylKdsZ42MDgTzBGj7QqHhKe5/MRe
-         uB1Sn8s9IT/XA==
-Date:   Wed, 9 Aug 2023 18:59:44 +0100
+        b=BBVzXWQHKu1WI7BUZSyUq4RygUDDCn2Ynwrw/QQ4B6iSmvfMMvCmZNQGKWvt9WWXk
+         TXhNXYQ97qc/qgVsNns+eO0xxDrsGM+l+cnwEWlkANhqOOWT9b5W+/MzBKM3re5UIH
+         w2/5uecoFeYuoQYwHJu/IqLtoA9McZPQXxnGdT026XdOqYctlg6ISQBt+JRcwHBntT
+         DNt0F4zG3BGdiJavlJs47IOb3rnWoFFrK3PieDkSTGCd6zCKZanOhLFbYhcHsVox2I
+         bmWGCvR6ElObEHmCmF5cXoiznRdLgeNFsYX3gT/iqewhVn1dMxKIlAnFrKXdKZNgCT
+         k2QV2n/L7KVkg==
+Date:   Wed, 9 Aug 2023 19:02:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kent Gustavsson <kent@minoris.se>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 2/6] device property: Add
- fwnode_property_match_property_string()
-Message-ID: <20230809185944.1ae78e34@jic23-huawei>
-In-Reply-To: <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
-References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
-        <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] iio: adc: mcp3911: add support for the whole
+ MCP39xx family
+Message-ID: <20230809190257.67602e55@jic23-huawei>
+In-Reply-To: <ZNM1AYMB3RGRWp7C@gmail.com>
+References: <20230808110432.240773-1-marcus.folkesson@gmail.com>
+        <20230808110432.240773-4-marcus.folkesson@gmail.com>
+        <ZNJP6xpOvRJigtMx@smile.fi.intel.com>
+        <ZNM1AYMB3RGRWp7C@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  8 Aug 2023 19:27:56 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 9 Aug 2023 08:41:05 +0200
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 
-> Sometimes the users want to match the single value string property
-> against an array of predefined strings. Create a helper for them.
+> > ...
+> >   
+> > > +#define MCP3910_OFFCAL(x)		(MCP3910_REG_OFFCAL_CH0 + x * 6)  
+> > 
+> > Inconsistent macro implementation, i.e. you need to use (x).  
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/base/property.c  | 35 +++++++++++++++++++++++++++++++++++
->  include/linux/property.h | 12 ++++++++++++
->  2 files changed, 47 insertions(+)
+> Sorry, I do not get you
 > 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 3bb9505f1631..8f8e2a6816bc 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -498,6 +498,41 @@ int fwnode_property_match_string(const struct fwnode_handle *fwnode,
->  }
->  EXPORT_SYMBOL_GPL(fwnode_property_match_string);
->  
-> +/**
-> + * fwnode_property_match_property_string - find a property string value in an array and return index
-> + * @fwnode: Firmware node to get the property of
-> + * @propname: Name of the property holding the string value
-> + * @array: String array to search in
-> + * @n: Size of the @array
-> + *
-> + * Find a property string value in a given @array and if it is found return
-> + * the index back.
-> + *
-> + * Return: index, starting from %0, if the string value was found in the @array (success),
-> + *	   %-ENOENT when the string value was not found in the @array,
-> + *	   %-EINVAL if given arguments are not valid,
-> + *	   %-ENODATA if the property does not have a value,
-> + *	   %-EPROTO or %-EILSEQ if the property is not a string,
-> + *	   %-ENXIO if no suitable firmware interface is present.
-> + */
-> +int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
-> +	const char *propname, const char * const *array, size_t n)
+> 
+> [...]
+> 
+> > > +static int mcp3910_get_osr(struct mcp3911 *adc, int *val)
+> > > +{
+> > > +	int ret, osr;  
+> > 
+> > Strictly speaking osr can't be negative, otherwise it's a UB below.
+> > 
+> > 	u32 osr = FIELD_GET(MCP3910_CONFIG0_OSR, *val);
+> > 	int ret;
+> > 
+> > and why val is int?  
+> 
+> I will change val to u32 for *_get_osr(), *_set_osr() and *_set_scale().
+> 
+> [...]
+> 
+> > > +	if (device_property_read_bool(&adc->spi->dev, "microchip,data-ready-hiz"))  
+> > 
+> > This also becomes shorter.
+> > 
+> > One trick to make it even shorter:
+> > 
+> > 	if (device_property_present(dev, "microchip,data-ready-hiz"))  
+> 
+> Thank you, I wasn't aware of device_property_present().
 
-Hi Andy,
+I know the read_bool function is direct equivalent of this but where a property
+is a flag, it feels more natural to me to check it with that one.
+read_present() feels more appropriate for where you want to know a more
+complex property is present.
 
-Whilst I'm not 100% sold on adding ever increasing complexity to what we
-match, this one feels like a common enough thing to be worth providing.
+Doesn't matter that much either way however so up to you.
 
-Looking at the usecases I wonder if it would be better to pass in
-an unsigned int *ret which is only updated on a match?
-
-That way the common properties approach of not checking the return value
-if we have an optional property would apply.
-
-e.g. patch 3 would end up with a block that looks like:
-
-	st->input_mode = ADMV1014_IQ_MODE;
-	device_property_match_property_string(&spi->dev, "adi,input-mode",
-					      input_mode_names,
-					      ARRAY_SIZE(input_mode_names),
-					      &st->input_mode);
-
-Only neat and tidy if the thing being optionally read into is an unsigned int
-though (otherwise you still need a local variable)
-
-Jonathan
-
-
-> +{
-> +	const char *string;
-> +	int ret;
-> +
-> +	ret = fwnode_property_read_string(fwnode, propname, &string);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = match_string(array, n, string);
-> +	if (ret < 0)
-> +		ret = -ENOENT;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(fwnode_property_match_property_string);
-> +
->  /**
->   * fwnode_property_get_reference_args() - Find a reference with arguments
->   * @fwnode:	Firmware node where to look for the reference
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 8c3c6685a2ae..11f3ad6814f2 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -97,6 +97,18 @@ static inline bool device_is_compatible(const struct device *dev, const char *co
->  	return fwnode_device_is_compatible(dev_fwnode(dev), compat);
->  }
->  
-> +int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
-> +					  const char *propname,
-> +					  const char * const *array, size_t n);
-> +
-> +static inline
-> +int device_property_match_property_string(const struct device *dev,
-> +					  const char *propname,
-> +					  const char * const *array, size_t n)
-> +{
-> +	return fwnode_property_match_property_string(dev_fwnode(dev), propname, array, n);
-> +}
-> +
->  int fwnode_property_get_reference_args(const struct fwnode_handle *fwnode,
->  				       const char *prop, const char *nargs_prop,
->  				       unsigned int nargs, unsigned int index,
+> 
+> [...]
+> 
+> >   
+> > > +	dev_dbg(&spi->dev, "use device address %i\n", adc->dev_addr);  
+> > 
+> > Is it useful?  
+> 
+> Yes, I think so.
+> 
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko
+> > 
+> >   
+> 
+> Best regards,
+> Marcus Folkesson
 

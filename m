@@ -2,119 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A12777531E
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 08:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04953775509
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 10:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbjHIGrh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 02:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55160 "EHLO
+        id S230155AbjHIIVu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Aug 2023 04:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230166AbjHIGrg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 02:47:36 -0400
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D85E1FD0;
-        Tue,  8 Aug 2023 23:47:33 -0700 (PDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-        by mx1.sberdevices.ru (Postfix) with ESMTP id 474A010000C;
-        Wed,  9 Aug 2023 09:47:29 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 474A010000C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1691563649;
-        bh=+CKFOyW2EVG6gVwlH3fFY3vLjdXm1Ohy5NxJ0+Ciizs=;
-        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From;
-        b=Jnsx1Zzy71/UnQAmV9kt/MM5PO37GXYB+eAi0y4NqjHoAHRtx6laZ+bSvqgwSIrLv
-         YEn3/EiZmLrR6VdfG6+O4HeOdtHnckDnKGO1lavwiPeuTAv7ZLUCf0NCQAIKTW8wR2
-         TtSEpBYjKKLU2yIqLnCjjdS3IxxhZVLTTwuww0B3yPyvz4/Zi18iGmOSDFQ3jldcsM
-         0hOD7gmgiKhA3FPgVWraIWFoGJAbclhLvj4XfV8VSFt5YpS6qg6AJ70WLgi7tJxmQq
-         lsPdj3Zwjl6FuTevLmy1mRIdCU8Qauve85SHqZZ9ubSwco2WOJIaY85hTt4dN3KOCV
-         44wEt2UuOqEPQ==
-Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.sberdevices.ru (Postfix) with ESMTPS;
-        Wed,  9 Aug 2023 09:47:29 +0300 (MSK)
-Received: from localhost (100.64.160.123) by p-i-exch-sc-m01.sberdevices.ru
- (172.16.192.107) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 9 Aug
- 2023 09:47:23 +0300
-Date:   Wed, 9 Aug 2023 09:47:23 +0300
-From:   Dmitry Rokosov <ddrokosov@sberdevices.ru>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: accel: msa311: Use correct header(s) instead
- of string_helpers.h
-Message-ID: <20230809064723.24jgjgr7pclzz5yo@CAB-WSD-L081021>
-References: <20230808164152.66748-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229702AbjHIIVu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 04:21:50 -0400
+X-Greylist: delayed 325 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Aug 2023 01:21:49 PDT
+Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6071510FF
+        for <linux-iio@vger.kernel.org>; Wed,  9 Aug 2023 01:21:49 -0700 (PDT)
+Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
+        id 849C34D7AA; Wed,  9 Aug 2023 08:16:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
+        s=mail; t=1691568983;
+        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
+        h=Date:From:To:Subject:From;
+        b=Eo2O2GsDIoWDzBo6FWtPqU/R9mANEGNLYXyHo/KGz06CNUBVWIHV/KLNoS1XBPwTB
+         03eDysDhTMA21VHVvceq5EA4yecq0HOzPnSrtlPOvoO+GT3t4Yn3IapP/2aE2p3HfW
+         laI6fZvPmq9wbjWlcN3+z5lEZ0Msa0a3D/uhyJDbD5EmfFgIDsJQ34/7lufWiGtjEP
+         8lfH63pMqV+l1TUdU8m0YEuxfZb/sdKaQHg0UGqpEUx899dH/jb43Ww4HbZERqZ1eT
+         PBqrp8CU7H66hjnzUC4moAVy1xLPyFyLffahmczWZY5xNueomYf/ZHz4OmIUAVfwBb
+         jz0oQKdHh6c0Q==
+Received: by mail.profitpathwaygo.com for <linux-iio@vger.kernel.org>; Wed,  9 Aug 2023 08:16:11 GMT
+Message-ID: <20230809064500-0.1.10.4rt6.0.qr5ddyah8e@profitpathwaygo.com>
+Date:   Wed,  9 Aug 2023 08:16:11 GMT
+From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
+X-Mailer: mail.profitpathwaygo.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230808164152.66748-1-andriy.shevchenko@linux.intel.com>
-User-Agent: NeoMutt/20220415
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 179138 [Aug 08 2023]
-X-KSMG-AntiSpam-Version: 5.9.59.0
-X-KSMG-AntiSpam-Envelope-From: DDRokosov@sberdevices.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 526 526 7a6a9b19f6b9b3921b5701490f189af0e0cd5310, {Track_E25351}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2;sberdevices.ru:5.0.1,7.1.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/08/09 03:59:00 #21563149
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Andy,
+Dzie=C5=84 dobry,
 
-Thank you for the patch!
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-On Tue, Aug 08, 2023 at 07:41:52PM +0300, Andy Shevchenko wrote:
-> There is nothing from string_helpers.h used in the driver, correct
-> the header inclusion block accordingly.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-> ---
->  drivers/iio/accel/msa311.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
-> index 6ddcc3c2f840..b8ddbfd98f11 100644
-> --- a/drivers/iio/accel/msa311.c
-> +++ b/drivers/iio/accel/msa311.c
-> @@ -33,7 +33,7 @@
->  #include <linux/pm.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/regmap.h>
-> -#include <linux/string_helpers.h>
-> +#include <linux/string_choices.h>
->  #include <linux/units.h>
->  
->  #include <linux/iio/buffer.h>
-> -- 
-> 2.40.0.1.gaa8946217a0b
-> 
 
--- 
-Thank you,
-Dmitry
+Pozdrawiam serdecznie
+Adam Charachuta

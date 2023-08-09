@@ -2,65 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04953775509
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 10:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C2C77558C
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 10:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230155AbjHIIVu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 04:21:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41332 "EHLO
+        id S229826AbjHIIhh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 9 Aug 2023 04:37:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbjHIIVu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 04:21:50 -0400
-X-Greylist: delayed 325 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Aug 2023 01:21:49 PDT
-Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6071510FF
-        for <linux-iio@vger.kernel.org>; Wed,  9 Aug 2023 01:21:49 -0700 (PDT)
-Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
-        id 849C34D7AA; Wed,  9 Aug 2023 08:16:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
-        s=mail; t=1691568983;
-        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
-        h=Date:From:To:Subject:From;
-        b=Eo2O2GsDIoWDzBo6FWtPqU/R9mANEGNLYXyHo/KGz06CNUBVWIHV/KLNoS1XBPwTB
-         03eDysDhTMA21VHVvceq5EA4yecq0HOzPnSrtlPOvoO+GT3t4Yn3IapP/2aE2p3HfW
-         laI6fZvPmq9wbjWlcN3+z5lEZ0Msa0a3D/uhyJDbD5EmfFgIDsJQ34/7lufWiGtjEP
-         8lfH63pMqV+l1TUdU8m0YEuxfZb/sdKaQHg0UGqpEUx899dH/jb43Ww4HbZERqZ1eT
-         PBqrp8CU7H66hjnzUC4moAVy1xLPyFyLffahmczWZY5xNueomYf/ZHz4OmIUAVfwBb
-         jz0oQKdHh6c0Q==
-Received: by mail.profitpathwaygo.com for <linux-iio@vger.kernel.org>; Wed,  9 Aug 2023 08:16:11 GMT
-Message-ID: <20230809064500-0.1.10.4rt6.0.qr5ddyah8e@profitpathwaygo.com>
-Date:   Wed,  9 Aug 2023 08:16:11 GMT
-From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
-To:     <linux-iio@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
-X-Mailer: mail.profitpathwaygo.com
+        with ESMTP id S229652AbjHIIhe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 04:37:34 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC62C170B;
+        Wed,  9 Aug 2023 01:37:33 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RLNct5KHJz6J7mD;
+        Wed,  9 Aug 2023 16:33:50 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 9 Aug
+ 2023 09:37:30 +0100
+Date:   Wed, 9 Aug 2023 09:37:29 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+CC:     "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Waqar Hameed <waqar.hameed@axis.com>,
+        Kees Cook <keescook@chromium.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>, <gongruiqi1@huawei.com>
+Subject: Re: [PATCH RFC] iio: irsd200: fix -Warray-bounds bug in
+ irsd200_trigger_handler
+Message-ID: <20230809093729.00000a1d@Huawei.com>
+In-Reply-To: <ZNIijIoh/famqTDl@work>
+References: <20230808083719.280777-1-gongruiqi@huaweicloud.com>
+        <ZNIijIoh/famqTDl@work>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Tue, 8 Aug 2023 05:10:04 -0600
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+> On Tue, Aug 08, 2023 at 04:37:19PM +0800, GONG, Ruiqi wrote:
+> > From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+> > 
+> > When compiling with gcc 13 with -Warray-bounds enabled:
+> > 
+> > In file included from drivers/iio/proximity/irsd200.c:15:
+> > In function ‘iio_push_to_buffers_with_timestamp’,
+> >     inlined from ‘irsd200_trigger_handler’ at drivers/iio/proximity/irsd200.c:770:2:
+> > ./include/linux/iio/buffer.h:42:46: error: array subscript ‘int64_t {aka long long int}[0]’
+> > is partly outside array bounds of ‘s16[1]’ {aka ‘short int[1]’} [-Werror=array-bounds=]
+> >    42 |                 ((int64_t *)data)[ts_offset] = timestamp;
+> >       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+> > drivers/iio/proximity/irsd200.c: In function ‘irsd200_trigger_handler’:
+> > drivers/iio/proximity/irsd200.c:763:13: note: object ‘buf’ of size 2
+> >   763 |         s16 buf = 0;
+> >       |             ^~~
+> > 
+> > The problem seems to be that irsd200_trigger_handler() is taking a s16
+> > variable as an int64_t buffer. Fix it by extending the buffer to 64 bits.  
+> 
+> Thanks for working on this!
+> 
+> > 
+> > Link: https://github.com/KSPP/linux/issues/331
+> > Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>  
+> 
+> Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+Good find on the bug, but the fix is wrong even if it squashes the error.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+> 
+> --
+> Gustavo
+> 
+> > ---
+> > 
+> > RFC: It's a preliminary patch since I'm not familiar with this hardware.
+> > Further comments/reviews are needed about whether this fix is correct,
+> > or we should use iio_push_to_buffers() instead of the *_with_timestamp()
+> > version.
+> > 
+> >  drivers/iio/proximity/irsd200.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/proximity/irsd200.c b/drivers/iio/proximity/irsd200.c
+> > index 5bd791b46d98..34c479881bdf 100644
+> > --- a/drivers/iio/proximity/irsd200.c
+> > +++ b/drivers/iio/proximity/irsd200.c
+> > @@ -759,10 +759,10 @@ static irqreturn_t irsd200_trigger_handler(int irq, void *pollf)
+> >  {
+> >  	struct iio_dev *indio_dev = ((struct iio_poll_func *)pollf)->indio_dev;
+> >  	struct irsd200_data *data = iio_priv(indio_dev);
+> > -	s16 buf = 0;
+> > +	int64_t buf = 0;
 
+s64 as internal kernel type.
+More importantly needs to be at least s64 buf[2]; as the offset
+https://elixir.bootlin.com/linux/latest/source/include/linux/iio/buffer.h#L41
+will be 1 due to this filling the timestamp in at first 8 byte aligned location
+after the data that is already in the buffer.
 
-Pozdrawiam serdecznie
-Adam Charachuta
+With hindsight was a bad decision a long time ago not to force people to also
+pass the size into this function so we could detect this at runtime at least.
+Hard to repair now give very large number of drivers using this and the fact
+that it's not always easy to work out that size.  Unfortunately occasionally
+one of these slips through review :(
+
+I suppose we could, in some cases check if the buffer was at least 16 bytes which
+would get us some of the way.
+
+Jonathan
+
+> >  	int ret;
+> >  
+> > -	ret = irsd200_read_data(data, &buf);
+> > +	ret = irsd200_read_data(data, (s16 *)&buf);
+> >  	if (ret)
+> >  		goto end;
+> >  
+> > -- 
+> > 2.41.0
+> >   
+

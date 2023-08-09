@@ -2,82 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82FB776193
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 15:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0557F77662E
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 19:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231540AbjHINsb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 09:48:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54702 "EHLO
+        id S232084AbjHIRNf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Aug 2023 13:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbjHINsb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 09:48:31 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E69FD1982;
-        Wed,  9 Aug 2023 06:48:30 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-686c06b806cso4657096b3a.2;
-        Wed, 09 Aug 2023 06:48:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691588910; x=1692193710;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rvbh4jU+1cEbN3wltBsq4nP/sZCDdeE9099yewO8Uxo=;
-        b=Pt0XsrqicbrE3/dUyGuuGfvISLRjCh6DxzUcuL/5QWqsQk4qMOpJ+Q4oEQdPtHpRrT
-         wIajdhY3FtBvgsz/o+EkUztjFBKuTE1S0jamB/tagD/ZMjsLdyntEPF7ekERi2HsVTGY
-         VX+QLP2dT4RuvZfdDUJBm/6nLCAghGg4x3P+fRX+q5crq9tj3SZzwFNydOOPS1Bn4QzR
-         7ZVqunCPl56zphmjJnHCsO06RsxcFIK4K1gZVg74qSCCjQoomgBnTCzFTS0AKhLOTUY9
-         3jQmxvOanC6X5qE/S/kKh6BH5+dk9pKhp5jBMT7dG/IQnbBLadWwe7XhqSY9jtOrOXv7
-         Y9JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691588910; x=1692193710;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rvbh4jU+1cEbN3wltBsq4nP/sZCDdeE9099yewO8Uxo=;
-        b=hmrZOFf62+FcPRHF7xeZGt6au58I3pC8Aif95zwoMN3c8c4jEvgNSlJXu4ZoC3w2It
-         A8WLWjoHYp+rDX+L4+cw19H3Yv7w/zUWwE/hcOZAtqZv0tC6QESHPZ/ysn3tZXQkd/Va
-         nMl0U0Ex0TymT600AS7EPvtwiJFgWvE1xPkLXBOPOorIuVAEqZMihsA8+WVz5a7nkVx9
-         yy8Mts7VFze7vOMlVahqFW7DIiASxaKCMO/BlryJd4gfv4bYFX5qINpuc3jW0Goos7n2
-         mCDAoP4Bm9LZ1IYgReEYaFM2VIP+FSAXQs1dHmVyWJKx5J/7dg6dN09mwOKaO/GPdtxH
-         jw4Q==
-X-Gm-Message-State: AOJu0Ywvo9+WPawKPnCs64Mk2kGi0MYta4CltMP45FT422p9wAfe4D2h
-        jEL0UOlOZ9SXVxqioKFxoEsiiqO6NMR6HA==
-X-Google-Smtp-Source: AGHT+IE/AsLrl9c8r6ucjaJHj8/CwCnrQDkP6935GcZelSVkALFgLETBrpSeYYUeBDLSR/vZ5og1Dw==
-X-Received: by 2002:a05:6a20:54a1:b0:126:9081:2156 with SMTP id i33-20020a056a2054a100b0012690812156mr2962837pzk.4.1691588910128;
-        Wed, 09 Aug 2023 06:48:30 -0700 (PDT)
-Received: from localhost.localdomain ([120.88.183.85])
-        by smtp.gmail.com with ESMTPSA id ju2-20020a170903428200b001bbcf43e120sm11191169plb.95.2023.08.09.06.48.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 06:48:29 -0700 (PDT)
-From:   Mighty <bavishimithil@gmail.com>
-To:     linus.walleij@linaro.org
-Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
-        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Date:   Wed,  9 Aug 2023 19:13:37 +0530
-Message-Id: <20230809134337.28224-1-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220524075448.140238-1-linus.walleij@linaro.org>
-References: <20220524075448.140238-1-linus.walleij@linaro.org>
+        with ESMTP id S229517AbjHIRNf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 13:13:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE0B1FEF;
+        Wed,  9 Aug 2023 10:13:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2240064251;
+        Wed,  9 Aug 2023 17:13:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE84C433C8;
+        Wed,  9 Aug 2023 17:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691601213;
+        bh=+nrTL02ww3JydtaHvbtFC7KdfKrvmXtVFH1FyyLEWGI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Zd/elhXcp3KzONVWRbLdRxXwf0AzdFl4P4uRYuUP2GLi9CQPwSnkJd+Rck7ckBBOW
+         lJqbtLux3KucpqY3wja4V0FhuVYejoOAx5CipbNNvUZ32EqSN673D5orMbOqesjKCC
+         V/KnOEdy+HFSXgxeQ7kL+0tPgotD5GmmbFQXdYLvJPXjN9brbtSX6Bk46ilI22gM5M
+         tEwrDrFVbfh6Dk8DaFTD3aMZBTCWDsChNgLQWsR8Oyw4FTfC/JJoVWKPMyyuc+YceI
+         5LMtp7W1rC/YtD5xAS4MtMyaH8lBDmxpuh1ifZRUZu+a6a2YQiWRG7+uIBYGkxN4VU
+         XdNzQ95zEcVpw==
+Date:   Wed, 9 Aug 2023 18:13:29 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Waqar Hameed <waqar.hameed@axis.com>,
+        Kees Cook <keescook@chromium.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>, <gongruiqi1@huawei.com>
+Subject: Re: [PATCH RFC] iio: irsd200: fix -Warray-bounds bug in
+ irsd200_trigger_handler
+Message-ID: <20230809181329.46c00a5d@jic23-huawei>
+In-Reply-To: <20230809093729.00000a1d@Huawei.com>
+References: <20230808083719.280777-1-gongruiqi@huaweicloud.com>
+        <ZNIijIoh/famqTDl@work>
+        <20230809093729.00000a1d@Huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> The current code "mostly works" because we have not run into
-> systems supporting only raw but not scale or only scale but not
-> raw, and I doubt there are few using the rescaler on anything
-> such, but let's fix the logic.
+On Wed, 9 Aug 2023 09:37:29 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-This does break the logic for twl6030/6032 boards as the seem to only have only raw and processed masks[1]. What would a probable solution for it be, to modify the twl gpadc to include scale+raw or just revert back to the OR?
+> On Tue, 8 Aug 2023 05:10:04 -0600
+> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+>=20
+> > On Tue, Aug 08, 2023 at 04:37:19PM +0800, GONG, Ruiqi wrote: =20
+> > > From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+> > >=20
+> > > When compiling with gcc 13 with -Warray-bounds enabled:
+> > >=20
+> > > In file included from drivers/iio/proximity/irsd200.c:15:
+> > > In function =E2=80=98iio_push_to_buffers_with_timestamp=E2=80=99,
+> > >     inlined from =E2=80=98irsd200_trigger_handler=E2=80=99 at drivers=
+/iio/proximity/irsd200.c:770:2:
+> > > ./include/linux/iio/buffer.h:42:46: error: array subscript =E2=80=98i=
+nt64_t {aka long long int}[0]=E2=80=99
+> > > is partly outside array bounds of =E2=80=98s16[1]=E2=80=99 {aka =E2=
+=80=98short int[1]=E2=80=99} [-Werror=3Darray-bounds=3D]
+> > >    42 |                 ((int64_t *)data)[ts_offset] =3D timestamp;
+> > >       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+> > > drivers/iio/proximity/irsd200.c: In function =E2=80=98irsd200_trigger=
+_handler=E2=80=99:
+> > > drivers/iio/proximity/irsd200.c:763:13: note: object =E2=80=98buf=E2=
+=80=99 of size 2
+> > >   763 |         s16 buf =3D 0;
+> > >       |             ^~~
+> > >=20
+> > > The problem seems to be that irsd200_trigger_handler() is taking a s16
+> > > variable as an int64_t buffer. Fix it by extending the buffer to 64 b=
+its.   =20
+> >=20
+> > Thanks for working on this!
+> >  =20
+> > >=20
+> > > Link: https://github.com/KSPP/linux/issues/331
+> > > Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>   =20
+> >=20
+> > Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org> =20
+>=20
+> Good find on the bug, but the fix is wrong even if it squashes the error.
+>=20
+> >=20
+> > --
+> > Gustavo
+> >  =20
+> > > ---
+> > >=20
+> > > RFC: It's a preliminary patch since I'm not familiar with this hardwa=
+re.
+> > > Further comments/reviews are needed about whether this fix is correct,
+> > > or we should use iio_push_to_buffers() instead of the *_with_timestam=
+p()
+> > > version.
+> > >=20
+> > >  drivers/iio/proximity/irsd200.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/proximity/irsd200.c b/drivers/iio/proximity/=
+irsd200.c
+> > > index 5bd791b46d98..34c479881bdf 100644
+> > > --- a/drivers/iio/proximity/irsd200.c
+> > > +++ b/drivers/iio/proximity/irsd200.c
+> > > @@ -759,10 +759,10 @@ static irqreturn_t irsd200_trigger_handler(int =
+irq, void *pollf)
+> > >  {
+> > >  	struct iio_dev *indio_dev =3D ((struct iio_poll_func *)pollf)->indi=
+o_dev;
+> > >  	struct irsd200_data *data =3D iio_priv(indio_dev);
+> > > -	s16 buf =3D 0;
+> > > +	int64_t buf =3D 0; =20
+>=20
+> s64 as internal kernel type.
+> More importantly needs to be at least s64 buf[2]; as the offset
+> https://elixir.bootlin.com/linux/latest/source/include/linux/iio/buffer.h=
+#L41
+> will be 1 due to this filling the timestamp in at first 8 byte aligned lo=
+cation
+> after the data that is already in the buffer.
+>=20
+> With hindsight was a bad decision a long time ago not to force people to =
+also
+> pass the size into this function so we could detect this at runtime at le=
+ast.
+> Hard to repair now give very large number of drivers using this and the f=
+act
+> that it's not always easy to work out that size.  Unfortunately occasiona=
+lly
+> one of these slips through review :(
+>=20
+> I suppose we could, in some cases check if the buffer was at least 16 byt=
+es which
+> would get us some of the way.
+>=20
+I was going to pick the patch up and modify it, but I think you managed
+to send it out as an html email so it didn't reach the mailing list archive=
+s.
+If you could send a v2 with s64 buf[2]; that would be great.
+Due to some travel I need to send a pull request shortly but this won't be =
+in
+a release for some time (as pull is targetting 6.6) so not a problem as long
+as we make sure to address in soon.
 
-[1] https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L808-L840
+Thanks,
 
-Mithil
+Jonathan
+
+> Jonathan
+>=20
+> > >  	int ret;
+> > > =20
+> > > -	ret =3D irsd200_read_data(data, &buf);
+> > > +	ret =3D irsd200_read_data(data, (s16 *)&buf);
+> > >  	if (ret)
+> > >  		goto end;
+> > > =20
+> > > --=20
+> > > 2.41.0
+> > >    =20
+>=20
+

@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F06D2776892
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 21:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6A8776ACD
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 23:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233672AbjHITWb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 15:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45356 "EHLO
+        id S229742AbjHIVOy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Aug 2023 17:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233776AbjHITVv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 15:21:51 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC533271E;
-        Wed,  9 Aug 2023 12:21:33 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fe2048c910so879325e9.1;
-        Wed, 09 Aug 2023 12:21:33 -0700 (PDT)
+        with ESMTP id S232549AbjHITLt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 15:11:49 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9362133;
+        Wed,  9 Aug 2023 12:11:49 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-317c3ac7339so190113f8f.0;
+        Wed, 09 Aug 2023 12:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691608891; x=1692213691;
+        d=gmail.com; s=20221208; t=1691608307; x=1692213107;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
         bh=jPPGQ+wxlHFewcUApvejhQsm3EbyLhFjPmLUIYs1mIA=;
-        b=Yf/0nS0RlfXq3jjWmmuzz8DCLCcUuRc8oZUZZcECUsbBDkumaBIwZJ1e2iT6REd9bi
-         AS9/861epi1z4mtzJotNwEAlKgMWaoopBFYINQh6lXcOE5Nc71NNMPTEeJCx8GLP7lg9
-         c1efbuYgZup3SQFxAehb6FMmTqJS7fQQfKcBGwwTPHUyne1cYWMfdtamzy2ezmon0IMa
-         zWxsFh7rpya/eT1xGfcaQJvDksVZCdGo1J3aMTuv7bIAQ8BxguQKvF2cA6Isdh2OxK1T
-         0AqHocby5FltjhrS24Hb9ygbskiGqcKT8xsyT/pb7Bl3k9X4v9yccQ8xMwsKqCiKn7ej
-         jJ8A==
+        b=djWxn2JjLwROEob8+9JyYpTjDkWtbmUQyNNl3HfTJ2i3fFrnnAFOZYPUgUSVFPbOAn
+         ALOz4d3oHu4VkQRqYTllD1OuV7sfSeKB5Qtj3+2QIEsCOwndDe+sht+8xkwmAuifbA9I
+         MB5cr7boOpT82wMZWor2Hi45Ex9nr8tv+t6giTu57G6QSU3J7XQDllvme8I6XA34qobO
+         ALOLIwbLgeOe7bYRdXL5CA+kTk+XF1LbTTriTCIEuL8H0SEJqrK742X68Cor5WCoNxH5
+         S81K4iwdmeZF3FEufiSmtga2EO6ekbcZi0DzZ7ma0EjVOlw3gBKmj0gkk82sxSEcSiZb
+         rl9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691608891; x=1692213691;
+        d=1e100.net; s=20221208; t=1691608307; x=1692213107;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
         bh=jPPGQ+wxlHFewcUApvejhQsm3EbyLhFjPmLUIYs1mIA=;
-        b=LY6yqmlB8MdVff7Ome7V3f4s8/N1fxPSJE84rqqTXLov/qXVg2akCuvYSI9tT/zNoL
-         8SGeaYfAI1CqEMJKTUWVqGwgCHmSdW94P6z2vVVdhDaHlqq5cuhJJNJN2ZU/ZwhJTi4c
-         kS/ENYgS07JZ+vg8vW2L+ObkgJAWeeOUZAPk4QUogTQUNivhnvUo3EDc5sEOWqPhBY1y
-         0FS3o/7Zmm0aZru56JH1FkemZKolb23TfVmAV7fL7+uRoBJmgmwRrfIMO9LkRoONmuaA
-         QshOBj4eC59HoioQt9nZYcCXRhHECXmpA9+bwVjSWmP1qpIgnY+pA6JUPz37TPU6ZoW4
-         KFcg==
-X-Gm-Message-State: AOJu0Yxn0yrdHaxNZiAWT7LWgAw8I2S5yCOxyx/VP1gjEaGj5dswwyGe
-        JmTvTxa1rMZ0gdf59F6T+j4XLjo85e+8jQ==
-X-Google-Smtp-Source: AGHT+IHG3DVh0wTreGUVD55Jcte+mqcBCjYbGTLT4ZHG7VkFAc6rMKo7sUsaeH0V9slXULAUICwM8w==
-X-Received: by 2002:a05:600c:ace:b0:3fe:21b9:806 with SMTP id c14-20020a05600c0ace00b003fe21b90806mr105206wmr.0.1691608890846;
-        Wed, 09 Aug 2023 12:21:30 -0700 (PDT)
+        b=e3t7p/2LwuDSv8jO1kno+a4CeVJy/yTQb4vK94wfr59noEam7TwCoDv/ItVPl4DZMY
+         PsGJvsK+lzhppjW1tDejXemXvqY5CsSltcT9io7pWFHhcFdqk+ElQMTvofHqGwrtk7T8
+         wq1xMeDCQ4w3hFb+CDt/elOm/4bp9M8h4YxYcxlYVNR01tyAC+ejTUZZjgk0AQSQwchn
+         wf9g/Fpryeui1do189UQgIDKBxkpzoBGXD+9ldmmghvhQeL4TpOObFmW4E8HaE3EHhu7
+         sCirHYVgHG40GTSs8AkvopYGK1F3f0ovooMJNTvcnph3fpa7OrQGp2KZj26nmK0RUyK9
+         50RA==
+X-Gm-Message-State: AOJu0Yx21U/3QSNKfHkq8XLSGQYptxPCYfbNeiW5+EaEFZdYHpbMgu+F
+        06PvM4t1FLUQZwa2nBPckcA=
+X-Google-Smtp-Source: AGHT+IHkjpXkhylg3BaqrFnmYqDxUaYLxq1NqvN7XsX+7ewJZzzW2BxkLeQFGluMKnhFlV2OpxGTzQ==
+X-Received: by 2002:adf:e8d0:0:b0:314:2e95:1ec9 with SMTP id k16-20020adfe8d0000000b003142e951ec9mr294333wrn.10.1691608307346;
+        Wed, 09 Aug 2023 12:11:47 -0700 (PDT)
 Received: from localhost.localdomain ([2a01:e0a:bb2:6df0:64ae:3840:3a64:b26a])
-        by smtp.gmail.com with ESMTPSA id d5-20020a5d6dc5000000b003142ea7a661sm17750651wrz.21.2023.08.09.12.21.30
+        by smtp.gmail.com with ESMTPSA id f6-20020adfdb46000000b003177074f830sm17582681wrj.59.2023.08.09.12.11.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 12:21:30 -0700 (PDT)
+        Wed, 09 Aug 2023 12:11:46 -0700 (PDT)
 From:   Mehdi Djait <mehdi.djait.k@gmail.com>
 To:     jic23@kernel.org, mazziesaccount@gmail.com
 Cc:     krzysztof.kozlowski+dt@linaro.org,
@@ -56,7 +56,7 @@ Cc:     krzysztof.kozlowski+dt@linaro.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Mehdi Djait <mehdi.djait.k@gmail.com>
 Subject: [PATCH v7 0/7] iio: accel: Add support for Kionix/ROHM KX132-1211 accelerometer
-Date:   Wed,  9 Aug 2023 21:21:25 +0200
+Date:   Wed,  9 Aug 2023 21:11:31 +0200
 Message-Id: <cover.1691607526.git.mehdi.djait.k@gmail.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0

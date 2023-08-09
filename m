@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC55B776AD1
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 23:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2577776AB8
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 23:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbjHIVOy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 17:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
+        id S233027AbjHIVHh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Aug 2023 17:07:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233349AbjHITMD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 15:12:03 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F68213F;
-        Wed,  9 Aug 2023 12:11:59 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-3177163aa97so186139f8f.0;
-        Wed, 09 Aug 2023 12:11:59 -0700 (PDT)
+        with ESMTP id S233018AbjHIVHg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 17:07:36 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F176A1724;
+        Wed,  9 Aug 2023 14:07:34 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe45481edfso1906195e9.1;
+        Wed, 09 Aug 2023 14:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691608318; x=1692213118;
+        d=gmail.com; s=20221208; t=1691615253; x=1692220053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=7bqzS9h0CgvDS8ZZVemKv+0rs4fFcra0nUU+EHxfMg4=;
-        b=ouEQ/dqHXDWQ1ugDrj/OobcwSu+UbyqIw/aLn63KysFu4OKk+bMNS+gD1jzIG0n5dM
-         O7IdOlNJtIga7gHjhKjwtP0AvtpN6r61BLMo8+OvlMKD4lFfrAnJhXLvY5C0j3FvqLZv
-         KzQ4+6MJrJv2aHwPshJDwF9oRA4Sq9EQ4NKkw7dDv4GYXzmiFU7YXAl0BuoRlzX4F5iN
-         NwtU3Ipow8SaDXlHulC/2mN3Tb0KZVAEl7ZIYqd52XCi03PXa/+1Fznm3Gb1F1Ns3PeK
-         BuO8pZaZvseYqhD+xlbucFvhN0CHzvwNarrZgiYlHQAFH5RCuKAXzKqFDx6vGCrX1evS
-         5CqA==
+        b=rlBo7cjR38Vqk8lSB8hWlpnA7bMCH99C+Ygb3oH0XMLpKjcyS8mrqH7t348tCiAllm
+         zk2qdjcjKu/qaoZabD5usCU1dXsY1gX0itLik9BQnzX5922ZPf5SOZrKjNzHvDcJyuL1
+         1g8azk0jZhwHxafZNU7+5+WZIqAvQD95Y4lgFe8wTj2zBrba5fkxYCX89GaeSafuPVyH
+         8NlKHSe6qp4sPjomHoE9aYrKaOngWB4xHdyjRCju0sIpYP2DtzFRDyrP1y5h06wK1uHK
+         0JQXe9npVKgJUqpCefOlBUnM6hAZQ6d0SEimOjwsKtylaXVnBLNOpBUMQfRp8sxsz8rN
+         iTdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691608318; x=1692213118;
+        d=1e100.net; s=20221208; t=1691615253; x=1692220053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=7bqzS9h0CgvDS8ZZVemKv+0rs4fFcra0nUU+EHxfMg4=;
-        b=BYRU7ob21sF4HPtCRE5/X6csJEzjsgfjhO3KraFDZqhD72QkCMWcUE598NBcEJCqX0
-         YGqLC9VX0NX/Cv8NElkjKXg9ZJ5gnnbFdrUUiZ3HXM66XtsGBdDqYkp7VOyinBRckzx4
-         6g8zypYM20KISfR8MxRGyHNqdXvht1W4XwmS/zEqZZ+AXfgt7pZa0YAecpqK5WRAmQgA
-         y8sz5fT9s7oFhBZ+HxXzeCIHQbmE56zkQTTNH3djiu1/hgejqdu5+XFvicygtbPoppGG
-         fZk3OiPtoIqSU6eZfBxK4YmaXSKyCr7077zQJ5FejbPyMHYB1rrXN+d6RFk+9uAIDtHW
-         +S1g==
-X-Gm-Message-State: AOJu0YxPX/8//0Yc8CsVCAM4LrzeMiCyEC5sWWGwDzE7+qFw48wpfIBK
-        GGqVTsUXXQk+E/E/7rSZeNE=
-X-Google-Smtp-Source: AGHT+IFz9tcHMBEg8sFq4fSNouhmtztMi6ZfTvgBJZ0KD3V9ve9IlyU/i8QEJC3h5HFTd/cCujKI0Q==
-X-Received: by 2002:adf:fad1:0:b0:317:3dff:7189 with SMTP id a17-20020adffad1000000b003173dff7189mr184049wrs.66.1691608318140;
-        Wed, 09 Aug 2023 12:11:58 -0700 (PDT)
+        b=KBvnBKAOU8KOGNOPkUQFzGA1O1FtdD/cTOy4jVt0shlsGWGeVV8H1BSldNfjdlryZL
+         10ESJb3EeasSsH2z2z/MZVydzrlyn2MvmlquctOEIXjDCzHe6OWJSiaET+O64jZn0Y7B
+         5adKovV0wrRcgQtWYi/C+8cehQo0UFg3cU6UFw+sXgx/EOi6tGX2ehFxmjmRDOJbjtx4
+         UjAA6zKsi2jsAHFGyy2U9NW8O0Lt8PeeBLSxsWHZGXfAtUadR0ciL1bxYGbHVpPDbJis
+         ne07DF9X3LDlvjMSXoqVNI4oseGLMDihIP9XQnbqn8OKLOw40uBGyxaLy2NvbabfHj0M
+         PVQA==
+X-Gm-Message-State: AOJu0YwaZRmscQoQLDx0d+YTs6FUGDc1VwShrEZ1bkjJ4lMNIJk+zzhF
+        L7YcSnvcFGdliwn3bsXlKbxnip1aUJlRtw==
+X-Google-Smtp-Source: AGHT+IHmzwbWWRGNQ4P1sXzFb4LnRqOf09xPYl1IXfsVuATTjkoI+Cmy2RieQaT4CyRdVGNbvxpQeA==
+X-Received: by 2002:a05:600c:2196:b0:3fe:2e0d:b715 with SMTP id e22-20020a05600c219600b003fe2e0db715mr276221wme.18.1691615253191;
+        Wed, 09 Aug 2023 14:07:33 -0700 (PDT)
 Received: from localhost.localdomain ([2a01:e0a:bb2:6df0:64ae:3840:3a64:b26a])
-        by smtp.gmail.com with ESMTPSA id f6-20020adfdb46000000b003177074f830sm17582681wrj.59.2023.08.09.12.11.57
+        by smtp.gmail.com with ESMTPSA id t21-20020a1c7715000000b003fe0bb31a6asm59170wmi.43.2023.08.09.14.06.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 12:11:57 -0700 (PDT)
+        Wed, 09 Aug 2023 14:07:32 -0700 (PDT)
 From:   Mehdi Djait <mehdi.djait.k@gmail.com>
 To:     jic23@kernel.org, mazziesaccount@gmail.com
 Cc:     krzysztof.kozlowski+dt@linaro.org,
@@ -57,7 +57,7 @@ Cc:     krzysztof.kozlowski+dt@linaro.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Mehdi Djait <mehdi.djait.k@gmail.com>
 Subject: [PATCH v7 5/7] iio: accel: kionix-kx022a: Refactor driver and add chip_info structure
-Date:   Wed,  9 Aug 2023 21:11:36 +0200
+Date:   Wed,  9 Aug 2023 23:05:39 +0200
 Message-Id: <8fb74f21bda4949a862bcb4bb1ed4f0acb135948.1691607526.git.mehdi.djait.k@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1691607526.git.mehdi.djait.k@gmail.com>
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net

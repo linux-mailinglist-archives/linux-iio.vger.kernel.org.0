@@ -2,172 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2287752FE
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 08:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A12777531E
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Aug 2023 08:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbjHIGjL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Aug 2023 02:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50606 "EHLO
+        id S231236AbjHIGrh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Aug 2023 02:47:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231176AbjHIGjK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 02:39:10 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8E0710CF;
-        Tue,  8 Aug 2023 23:39:09 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b9e6cc93c6so98459791fa.2;
-        Tue, 08 Aug 2023 23:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691563148; x=1692167948;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WpWeiayZlAIEe1E3Nk+nVHStYloxOzgi1iWPgYNSoH4=;
-        b=SPfF8hmRjOUTuyW97uqrRow1dZk8ia9JEEJSkdDhn4Z97+qm9p+jx8vwbTHPuqb4/A
-         G3sJ80FQtSSCCliHhk0ApTFlxKnjSbu71JoSU8s8w3bJXmbNBLogKLFIq3jAGRPi1CF1
-         wQLU9X0Fe7uo5/eXHDxq0UkrGnSNek0KYMwJB7vX4qR1ZEdBycIhOSGYbpednJH6qa3U
-         f3a0yf8BhKThLanTmAlWVgQFsuQwB7unYQRQ3743nPTeRaJAkawMYT9jGPmm07y8Po93
-         NmXanB6oz/Z9nzGby8ZU7QqlpbGVDyDEIwQk0DIujF3s91SVwurXOlO2tOwAvMqjGnH3
-         4KUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691563148; x=1692167948;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WpWeiayZlAIEe1E3Nk+nVHStYloxOzgi1iWPgYNSoH4=;
-        b=aaxkfMDqMkqCz2GUlPuRZjtW+sOlkVnvikFiOBv6d2EiP4GYbkee20Ms/rqvt9HQgK
-         7qSYlJtfI3obumn33dvhpZrIHVLm2lHqWcP/Xa//k0A7BQWGD1ys/opWl2DAg6cI6/FC
-         Xoe/CMQnrow2AlLtIW5szuSJKbSPyUuVt2HpkU+hHyLtLvvQEFjptnKam+oCNFD/86uW
-         dDVnOXIUMz++hPRZGDhr466jXARDBeHm4n73QyEO8wEzH3WM2ugbQGb2BJ1nrmIjCc7h
-         3Pn5b/wdpmhfnAmlGAm92skX5v241ATGFjINM4cnN/2H/T88DS1XTH8BuTtiwIb61WmE
-         FWOQ==
-X-Gm-Message-State: AOJu0Ywv+nHHrAi/srEKgDaLFNUjksF8Hgx6+Q0jnK9DwiBO/A+UiC96
-        mM/l7UeIDRr0Gq5GPdGvF/MBvYbEtJ9Zr+Rf
-X-Google-Smtp-Source: AGHT+IFKP5AWyWZujLJpO5etyUcBx/bpzy+SZ6bQ/z8/IumMuM87ftVqy2hSI6J/xmpbvKCRAUUo9A==
-X-Received: by 2002:a2e:a0cc:0:b0:2b6:e124:4d96 with SMTP id f12-20020a2ea0cc000000b002b6e1244d96mr1010220ljm.26.1691563147554;
-        Tue, 08 Aug 2023 23:39:07 -0700 (PDT)
-Received: from gmail.com (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id m22-20020a2e9356000000b002ba161bdc9asm2584823ljh.79.2023.08.08.23.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 23:39:06 -0700 (PDT)
-Date:   Wed, 9 Aug 2023 08:41:05 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+        with ESMTP id S230166AbjHIGrg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Aug 2023 02:47:36 -0400
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D85E1FD0;
+        Tue,  8 Aug 2023 23:47:33 -0700 (PDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+        by mx1.sberdevices.ru (Postfix) with ESMTP id 474A010000C;
+        Wed,  9 Aug 2023 09:47:29 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 474A010000C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1691563649;
+        bh=+CKFOyW2EVG6gVwlH3fFY3vLjdXm1Ohy5NxJ0+Ciizs=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From;
+        b=Jnsx1Zzy71/UnQAmV9kt/MM5PO37GXYB+eAi0y4NqjHoAHRtx6laZ+bSvqgwSIrLv
+         YEn3/EiZmLrR6VdfG6+O4HeOdtHnckDnKGO1lavwiPeuTAv7ZLUCf0NCQAIKTW8wR2
+         TtSEpBYjKKLU2yIqLnCjjdS3IxxhZVLTTwuww0B3yPyvz4/Zi18iGmOSDFQ3jldcsM
+         0hOD7gmgiKhA3FPgVWraIWFoGJAbclhLvj4XfV8VSFt5YpS6qg6AJ70WLgi7tJxmQq
+         lsPdj3Zwjl6FuTevLmy1mRIdCU8Qauve85SHqZZ9ubSwco2WOJIaY85hTt4dN3KOCV
+         44wEt2UuOqEPQ==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.sberdevices.ru (Postfix) with ESMTPS;
+        Wed,  9 Aug 2023 09:47:29 +0300 (MSK)
+Received: from localhost (100.64.160.123) by p-i-exch-sc-m01.sberdevices.ru
+ (172.16.192.107) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 9 Aug
+ 2023 09:47:23 +0300
+Date:   Wed, 9 Aug 2023 09:47:23 +0300
+From:   Dmitry Rokosov <ddrokosov@sberdevices.ru>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/4] iio: adc: mcp3911: add support for the whole
- MCP39xx family
-Message-ID: <ZNM1AYMB3RGRWp7C@gmail.com>
-References: <20230808110432.240773-1-marcus.folkesson@gmail.com>
- <20230808110432.240773-4-marcus.folkesson@gmail.com>
- <ZNJP6xpOvRJigtMx@smile.fi.intel.com>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: accel: msa311: Use correct header(s) instead
+ of string_helpers.h
+Message-ID: <20230809064723.24jgjgr7pclzz5yo@CAB-WSD-L081021>
+References: <20230808164152.66748-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="nrv095Qp/+mbQXwa"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <ZNJP6xpOvRJigtMx@smile.fi.intel.com>
+In-Reply-To: <20230808164152.66748-1-andriy.shevchenko@linux.intel.com>
+User-Agent: NeoMutt/20220415
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 179138 [Aug 08 2023]
+X-KSMG-AntiSpam-Version: 5.9.59.0
+X-KSMG-AntiSpam-Envelope-From: DDRokosov@sberdevices.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 526 526 7a6a9b19f6b9b3921b5701490f189af0e0cd5310, {Track_E25351}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;p-i-exch-sc-m01.sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2;sberdevices.ru:5.0.1,7.1.1, FromAlignment: s, {Tracking_white_helo}, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/08/09 03:59:00 #21563149
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hello Andy,
 
---nrv095Qp/+mbQXwa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for the patch!
 
-> ...
->=20
-> > +#define MCP3910_OFFCAL(x)		(MCP3910_REG_OFFCAL_CH0 + x * 6)
->=20
-> Inconsistent macro implementation, i.e. you need to use (x).
+On Tue, Aug 08, 2023 at 07:41:52PM +0300, Andy Shevchenko wrote:
+> There is nothing from string_helpers.h used in the driver, correct
+> the header inclusion block accordingly.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Sorry, I do not get you
+Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
 
+> ---
+>  drivers/iio/accel/msa311.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+> index 6ddcc3c2f840..b8ddbfd98f11 100644
+> --- a/drivers/iio/accel/msa311.c
+> +++ b/drivers/iio/accel/msa311.c
+> @@ -33,7 +33,7 @@
+>  #include <linux/pm.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/regmap.h>
+> -#include <linux/string_helpers.h>
+> +#include <linux/string_choices.h>
+>  #include <linux/units.h>
+>  
+>  #include <linux/iio/buffer.h>
+> -- 
+> 2.40.0.1.gaa8946217a0b
+> 
 
-[...]
-
-> > +static int mcp3910_get_osr(struct mcp3911 *adc, int *val)
-> > +{
-> > +	int ret, osr;
->=20
-> Strictly speaking osr can't be negative, otherwise it's a UB below.
->=20
-> 	u32 osr =3D FIELD_GET(MCP3910_CONFIG0_OSR, *val);
-> 	int ret;
->=20
-> and why val is int?
-
-I will change val to u32 for *_get_osr(), *_set_osr() and *_set_scale().
-
-[...]
-
-> > +	if (device_property_read_bool(&adc->spi->dev, "microchip,data-ready-h=
-iz"))
->=20
-> This also becomes shorter.
->=20
-> One trick to make it even shorter:
->=20
-> 	if (device_property_present(dev, "microchip,data-ready-hiz"))
-
-Thank you, I wasn't aware of device_property_present().
-
-[...]
-
->=20
-> > +	dev_dbg(&spi->dev, "use device address %i\n", adc->dev_addr);
->=20
-> Is it useful?
-
-Yes, I think so.
-
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
->=20
->=20
-
-Best regards,
-Marcus Folkesson
-
---nrv095Qp/+mbQXwa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmTTNPwACgkQiIBOb1ld
-UjJMIxAA0ziqecFc2NsbIKI+ra1llKa2RMulAVXDaozUb6uMV+gwo5UN1ayLGuqv
-asYAWxkaL0T/xTp86mrMNGFlvm+brllmsgmu72q4Xzclq5zJy7EEAnV8D/5OXGE2
-xY63As3iX10rvdSYdIOCdm04M8//35jipJtSEUuUQ+wDx75tG7h1hUBjAdO6nru+
-5hkplGFv6badZGHhfbglNxER17OSsK19uocXxxZyvynompHTwh2CdpHbwEjDt7Hw
-bXf6C/sPdEPeEJyIc/bFAuIxaPy9ujcXgxxLNvybFtMz+nfd9wwFYhor7gj/xIac
-Q/xF/7QuYrBSz1AHLImsFopyXto9LHQs4uFnuCnXvcFmnMUKLKt4M3b2pcsVG2hd
-8WnRfx0TqKI0XpBA07+ePjJL3sXE4UatqNFFdvfV8UvU0IZc/6A2BIlknO83y1db
-1bwV3Oqh8S7mUf6KVFm14ksaQS93Zrca05zLM4wh2cxg3ar0ASpqJreutsmdLJNI
-3wG52RBw+uDIB+FXwRY5triNlb7xKWqKEMBHhJ0fdO3dyaKChfkAHxLqE2lALMnN
-soAWus6zFpgfQyD9beC0jkn81o1xyME+Xwemv3ztcKD7ZSR5dfauejVIEV8OxCgg
-yBC/BVlriluQtKeMDfXEzbiqlzOa/bK3j7ZdnnzTBP4khWpATyo=
-=5dFK
------END PGP SIGNATURE-----
-
---nrv095Qp/+mbQXwa--
+-- 
+Thank you,
+Dmitry

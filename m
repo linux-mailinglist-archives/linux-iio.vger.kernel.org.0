@@ -2,139 +2,279 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2563B7781AC
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 21:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A3F77825A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 22:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233757AbjHJTh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 15:37:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
+        id S233573AbjHJUvM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 16:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233486AbjHJTh0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 15:37:26 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5A2213B;
-        Thu, 10 Aug 2023 12:37:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691696245; x=1723232245;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xx83EKLu+vN9CXT+mV65pORzjTdIyb9PiTLDHfY8Y3Y=;
-  b=fPNZTXEjZNZbw66LIy8UFogYcWw7wEU6TNArkvYvhMUxcKaWZ3OEIUHP
-   PtWN3ABVXLUomUblgeRpi9ln4ps6TEJSIAkhuxdQBP6FCgxCal9foGoYT
-   vgGWOZJkP6HBsTI+EWv0H7ANBWsUb8E/nxDXKpvJ//cHyEU//O2ikmuF0
-   lKYP98rmEJvO5qsO4KA8RYTa5tKJdjHGkYrZRf+9HC4xa2xr0NUlABqyH
-   ZdF+9P18OaOsi1X2fqC22dqejYqTGOdzECqsmu/Vd3Wz4bMMKzll8owG8
-   yNgWN3Zh+RYJcAQ1w9ug79kU1pQNOF7S8RV7oT/1XAflzHgPpp+x1nQ0w
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="351825314"
-X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
-   d="scan'208";a="351825314"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 12:37:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="906175689"
-X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
-   d="scan'208";a="906175689"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 10 Aug 2023 12:37:18 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qUBTB-0007DA-2s;
-        Thu, 10 Aug 2023 19:37:17 +0000
-Date:   Fri, 11 Aug 2023 03:36:21 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S231956AbjHJUvM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 16:51:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EB6270E;
+        Thu, 10 Aug 2023 13:51:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D549965449;
+        Thu, 10 Aug 2023 20:51:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAD3C433C8;
+        Thu, 10 Aug 2023 20:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691700670;
+        bh=D/+A79azXEalodMTBC1cWRFoAqzjpUxIqIK+CgZ8WcU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=r7T4m0rQQGbHwzkP0K3ZaZQSlJN+UpYOynNdXP45ljAmD8T19J702URtqg9eo7Hii
+         Kgy1KqdYazA2QcFpBOQyR1xCyBdIyxQ6fziWyY5zErD96I4OT8jgqprxo/grMhHbnE
+         PTuYrwppjVS++yDL3YNPW++tyrWNMpptDXEoxgFyt9MST6B3eD5a0+5Hy+yPN/PR7B
+         FeWnKDFRhU9iAvgklAQMw65M+smfCIwYZe+2BWubtXIbYSZ/UBnCKCqztZBisZVKVs
+         XbhnagBxq7xMBZ02FkQaX11LreKY6NtdhnKin6mj1NSHX5HsLOKCG7g9KWQq+WXm4v
+         Ea2yCjd1Px2SA==
+Received: (nullmailer pid 1154620 invoked by uid 1000);
+        Thu, 10 Aug 2023 20:51:07 -0000
+Date:   Thu, 10 Aug 2023 14:51:07 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
         Cosmin Tanislav <demonsingur@gmail.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Okan Sahin <okan.sahin@analog.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
         William Breathitt Gray <william.gray@linaro.org>,
-        Lee Jones <lee@kernel.org>, Haibo Chen <haibo.chen@nxp.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
         Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
         Ceclan Dumitru <dumitru.ceclan@analog.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: ad717x: add AD717X driver
-Message-ID: <202308110347.LseABMWN-lkp@intel.com>
-References: <20230810093322.593259-2-mitrutzceclan@gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: adc: add AD717X
+Message-ID: <20230810205107.GA1136590-robh@kernel.org>
+References: <20230810093322.593259-1-mitrutzceclan@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230810093322.593259-2-mitrutzceclan@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230810093322.593259-1-mitrutzceclan@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Dumitru,
+On Thu, Aug 10, 2023 at 12:33:16PM +0300, Dumitru Ceclan wrote:
+> The AD717x family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
+> 
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
+>  .../bindings/iio/adc/adi,ad717x.yaml          | 158 ++++++++++++++++++
+>  1 file changed, 158 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad717x.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad717x.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad717x.yaml
+> new file mode 100644
+> index 000000000000..f12926e69958
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad717x.yaml
+> @@ -0,0 +1,158 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2023 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad717x.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD717X ADC family SPI driver
 
-kernel test robot noticed the following build errors:
+Drop 'SPI driver'. This is not a driver.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.5-rc5 next-20230809]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> +
+> +maintainers:
+> +  - Ceclan Dumitru <dumitru.ceclan@analog.com>
+> +
+> +description: |
+> +  Bindings for the Analog Devices AD717X ADC's. Datasheets for supported chips:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7172-2
+> +      - adi,ad7173-8
+> +      - adi,ad7175-2
+> +      - adi,ad7176-2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  spi-cpol:
+> +    type: boolean
+> +
+> +  spi-cpha:
+> +    type: boolean
+> +
+> +  adi,temp-channel:
+> +    description:
+> +      Enables temperature reading channel
+> +    type: boolean
+> +
+> +  dependencies:
+> +    adi,temp-channel:
+> +      compatible:
+> +        enum:
+> +          - adi,ad7172-2
+> +          - adi,ad7173-8
+> +          - adi,ad7175-2
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dumitru-Ceclan/iio-adc-ad717x-add-AD717X-driver/20230810-173526
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20230810093322.593259-2-mitrutzceclan%40gmail.com
-patch subject: [PATCH 2/2] iio: adc: ad717x: add AD717X driver
-config: xtensa-randconfig-m041-20230811 (https://download.01.org/0day-ci/archive/20230811/202308110347.LseABMWN-lkp@intel.com/config)
-compiler: xtensa-linux-gcc (GCC) 12.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230811/202308110347.LseABMWN-lkp@intel.com/reproduce)
+That's not actually valid schema. You are missing "properties" above 
+"compatible". I'm also not sure the tools which do a number of 
+fixups/transforms on schemas would handle this. I do think this is a bit 
+nicer than the if/then schemas we normally use for restricting 
+properties by compatibles.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308110347.LseABMWN-lkp@intel.com/
+> +
+> +
 
-All errors (new ones prefixed by >>):
+Extra blank line.
 
-   In file included from include/linux/device/driver.h:21,
-                    from include/linux/device.h:32,
-                    from drivers/iio/adc/ad717x.c:9:
->> include/linux/module.h:244:1: error: expected ',' or ';' before 'extern'
-     244 | extern typeof(name) __mod_##type##__##name##_device_table               \
-         | ^~~~~~
-   drivers/iio/adc/ad717x.c:974:1: note: in expansion of macro 'MODULE_DEVICE_TABLE'
-     974 | MODULE_DEVICE_TABLE(of, ad717x_of_match);
-         | ^~~~~~~~~~~~~~~~~~~
+> +  required:
+> +    - compatible
+> +    - reg
+> +    - interrupts
+> +    - spi-cpol
+> +    - spi-cpha
 
+If the device(s) are not configurable, then you shouldn't need these 2 
+properties. The driver can hardcode the correct setting.
 
-vim +244 include/linux/module.h
+> +
+> +patternProperties:
+> +  "^channel@([0-9a-f])$":
 
-^1da177e4c3f41 Linus Torvalds    2005-04-16  240  
-cff26a51da5d20 Rusty Russell     2014-02-03  241  #ifdef MODULE
-cff26a51da5d20 Rusty Russell     2014-02-03  242  /* Creates an alias so file2alias.c can find device table. */
-^1da177e4c3f41 Linus Torvalds    2005-04-16  243  #define MODULE_DEVICE_TABLE(type, name)					\
-0bf8bf50eddc75 Matthias Kaehlcke 2017-07-24 @244  extern typeof(name) __mod_##type##__##name##_device_table		\
-cff26a51da5d20 Rusty Russell     2014-02-03  245    __attribute__ ((unused, alias(__stringify(name))))
-cff26a51da5d20 Rusty Russell     2014-02-03  246  #else  /* !MODULE */
-cff26a51da5d20 Rusty Russell     2014-02-03  247  #define MODULE_DEVICE_TABLE(type, name)
-cff26a51da5d20 Rusty Russell     2014-02-03  248  #endif
-^1da177e4c3f41 Linus Torvalds    2005-04-16  249  
+Don't need ().
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        description: Channel number
+> +        minimum: 0
+> +        maximum: 15
+> +
+> +      diff-channels:
+> +        description:
+> +          Analog input pins
+> +        items:
+> +          minimum: 0
+> +          maximum: 31
+> +      
+> +      adi,bipolar:
+> +        description: Specify if the channel should measure in bipolar mode.
+> +        type: boolean
+> +
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      status = "okay";
+
+Drop status.
+
+You need #address-cells and #size-cells. Did you test this?
+
+> +
+> +      ad7173@0 {
+> +        compatible = "adi,ad7173-8";
+> +        reg = <0>;
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+> +        interrupt-parent = <&gpio>;
+> +        spi-max-frequency = <5000000>;
+> +        spi-cpol;
+> +        spi-cpha;
+> +
+> +        adi,temp-channel;
+> +
+> +        channel@0 {
+> +          reg = <0>;
+> +          adi,bipolar;
+> +
+> +          diff-channels = <0 1>;
+> +        };
+> +
+> +        channel@1 {
+> +          reg = <1>;
+> +
+> +          diff-channels = <2 3>;
+> +        };
+> +
+> +        channel@2 {
+> +          reg = <2>;
+> +          adi,bipolar;
+> +
+> +          diff-channels = <4 5>;
+> +        };
+> +
+> +        channel@3 {
+> +          reg = <3>;
+> +          adi,bipolar;
+> +
+> +          diff-channels = <6 7>;
+> +        };
+> +
+> +        channel@4 {
+> +          reg = <4>;
+> +
+> +          diff-channels = <8 9>;
+> +        };
+> +      };
+> +    };
+> -- 
+> 2.30.2
+> 

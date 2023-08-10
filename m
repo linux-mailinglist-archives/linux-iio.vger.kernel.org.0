@@ -2,98 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B49777959
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 15:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09C7377798E
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 15:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbjHJNQQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 09:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34738 "EHLO
+        id S234883AbjHJN1I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 09:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjHJNQP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 09:16:15 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46BC10E6;
-        Thu, 10 Aug 2023 06:16:13 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-52256241c66so1875247a12.1;
-        Thu, 10 Aug 2023 06:16:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691673372; x=1692278172;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eAuRIb9hwyIu6dnXcH+TXEAAfJ99BNcUhSMFW29Ah70=;
-        b=sRrQlKiNnZ7svKfAek7DmHQQeVDV5TvUCLnQ862Xr1UYovByLii4ywFObEu4sv3NF/
-         biUPBLmcUWV0Yo/dPcp3rxw2Fds1Kf+Yu9YKtwPzyZIT5zBjXvpIs0sXdZnYsEJaqzE0
-         47D/k4i6nYaql12YAAoAuwyhbZ9VO1fyeyB4sbk6nb8qKq7gOZNiaE3Cf+PdvKi7NbCA
-         JHjlOkYWVnKonQyDEMIhVWQBY2V6LVaBsLJuVFv4FtpwaBh2T6A1kdUAGYYMx/RVA0qr
-         v/6+HCnQzDdVrRSppBs3roQmz/n+SxxNQxhjzENrh5Oq0Zls+rXtGHDxM51TNFxhX4Jc
-         WQvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691673372; x=1692278172;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eAuRIb9hwyIu6dnXcH+TXEAAfJ99BNcUhSMFW29Ah70=;
-        b=HrjGoQhBHT+kgrU1luqJIF4k1UDI9TqA8vSY/IX6PArjbupGPMqgxi5KkpZa6rZ/Y+
-         Ka9ZpegWiTLDOhYSSOOEYFy7f1iNhMw9s4c7FjFLZC8iBrhIde16bwlKM2iaAnqSBc0o
-         52n7Xe60eT3XXzm1ib83KLQQRrj8ChYIMgjgZOHhiBbA/8kZwFGSCGJCJTaoW0WSdSiS
-         tnOuQfDGdXRbcZmChBtn/FlIGaFzKys88coo2WSVfkltwNMLuujJnZQ6Ye8o1bKxBm7n
-         Mw9jKczv0S9zIJdGi3lhHrAbCeqUU4wlkBM5ZsMam94tV5REAQVRZTFqsLyQ+ReEiE0q
-         2t/Q==
-X-Gm-Message-State: AOJu0Yy9bYHp1VFa2xp62ZzCzkohog66gkDV1XxjLFvPA3fR3PtyAODj
-        DMnfExyWbWFsT4wxGldg3I8=
-X-Google-Smtp-Source: AGHT+IHNI3HnqX57z6jfrhpjJsEH/IGWIeQH5dVXv7HkFv0eLYEnRGHjapQoJzGJnuxNaHPbS1GIew==
-X-Received: by 2002:a05:6402:11c9:b0:51e:5bd5:fe7e with SMTP id j9-20020a05640211c900b0051e5bd5fe7emr2622631edw.17.1691673372147;
-        Thu, 10 Aug 2023 06:16:12 -0700 (PDT)
-Received: from ?IPv6:2001:a61:3488:8a01:c631:bde5:1eff:9b66? ([2001:a61:3488:8a01:c631:bde5:1eff:9b66])
-        by smtp.gmail.com with ESMTPSA id n5-20020aa7c785000000b0052338f5b2a4sm798722eds.86.2023.08.10.06.16.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Aug 2023 06:16:11 -0700 (PDT)
-Message-ID: <2505544e4b5fdd5280b3f8406b223cebae6086df.camel@gmail.com>
-Subject: Re: [PATCH v5 0/3] Add new channels for adis16475
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Ramona Bolboaca <ramona.bolboaca@analog.com>, jic23@kernel.org,
-        nuno.sa@analog.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 10 Aug 2023 15:16:10 +0200
-In-Reply-To: <20230808075059.645525-1-ramona.bolboaca@analog.com>
-References: <20230808075059.645525-1-ramona.bolboaca@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S232369AbjHJN1H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 09:27:07 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF63E26AC;
+        Thu, 10 Aug 2023 06:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691674026; x=1723210026;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NNTKjAQ4/Nbiw5gObH2nRESWhwRRZzoZr3mLclxqhow=;
+  b=F52AEd15Lkv8izGmXNJAAZGncCFHi/iN6nsnfiosSrV46kqXDe3a2XzN
+   chqoJ9W1/nhD/EqW410iZZvmySdJeICue7bL49ATfFmpAOcsxCAadX3pf
+   j9FwmC0k3PhHQwdwV5C8mi6BpXD0q9DIqQi4AIoXNE/LsqM3dt4wxd/w/
+   zt6c+QMNGrm0uowQWj+hheIO35aQEIXFtX07XU1CIkIGaP4MJa5+69M/f
+   RDnKZwEyYxknpE5p+0vmDHwpJ4IXTt+FtyyN/fgU8KJMeSWABvowSton+
+   3lCc1WbjytTHr4/YrqYIQ9CyiTIP4MSM6TA5/JCME+3/Sfm2/bxO5s959
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="435295103"
+X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
+   d="scan'208";a="435295103"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 06:27:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="855940741"
+X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
+   d="scan'208";a="855940741"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga004.jf.intel.com with ESMTP; 10 Aug 2023 06:26:57 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qU5gk-002j9r-39;
+        Thu, 10 Aug 2023 16:26:54 +0300
+Date:   Thu, 10 Aug 2023 16:26:54 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Gerald Loacker <gerald.loacker@wolfvision.net>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v1 2/6] device property: Add
+ fwnode_property_match_property_string()
+Message-ID: <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
+References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
+ <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
+ <20230809185944.1ae78e34@jic23-huawei>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230809185944.1ae78e34@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2023-08-08 at 10:50 +0300, Ramona Bolboaca wrote:
-> changes in v5:
-> =C2=A0 patch 1: added documentation for all supported attributes
-> =C2=A0 patch 2: added documentation for all supported attributes
-> =C2=A0 patch 3: no changes
->=20
-> Ramona Bolboaca (3):
-> =C2=A0 iio: Add IIO_DELTA_ANGL channel type
-> =C2=A0 iio: Add IIO_DELTA_VELOCITY channel type
-> =C2=A0 iio: imu: adis16475.c: Add delta angle and delta velocity channels
->=20
-> =C2=A0Documentation/ABI/testing/sysfs-bus-iio |=C2=A0 45 +++++++
-> =C2=A0drivers/iio/imu/adis16475.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 165 +++++++++++++++++++++---
-> =C2=A0drivers/iio/industrialio-core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +
-> =C2=A0include/uapi/linux/iio/types.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +
-> =C2=A0tools/iio/iio_event_monitor.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +
-> =C2=A05 files changed, 199 insertions(+), 19 deletions(-)
->=20
+On Wed, Aug 09, 2023 at 06:59:44PM +0100, Jonathan Cameron wrote:
+> On Tue,  8 Aug 2023 19:27:56 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+...
+
+> > +int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
+> > +	const char *propname, const char * const *array, size_t n)
+> 
+> Hi Andy,
+> 
+> Whilst I'm not 100% sold on adding ever increasing complexity to what we
+> match, this one feels like a common enough thing to be worth providing.
+
+Yep, that's why I considered it's good to add (and because of new comers).
+
+> Looking at the usecases I wonder if it would be better to pass in
+> an unsigned int *ret which is only updated on a match?
+
+So the question is here are we going to match (pun intended) the prototype to
+the device_property_match*() family of functions or to device_property_read_*()
+one. If the latter, this has to be renamed, but then it probably will contradict
+the semantics as we are _matching_ against something and not just _reading_
+something.
+
+That said, do you agree that current implementation is (slightly) better from
+these aspects? Anyway, look at the below.
+
+> That way the common properties approach of not checking the return value
+> if we have an optional property would apply.
+> 
+> e.g. patch 3
+
+Only?
+
+> would end up with a block that looks like:
+> 
+> 	st->input_mode = ADMV1014_IQ_MODE;
+> 	device_property_match_property_string(&spi->dev, "adi,input-mode",
+> 					      input_mode_names,
+> 					      ARRAY_SIZE(input_mode_names),
+> 					      &st->input_mode);
+> 
+> Only neat and tidy if the thing being optionally read into is an unsigned int
+> though (otherwise you still need a local variable)
+
+We also can have a hybrid variant, returning in both sides
+
+  int device_property_match_property_string(..., size_t *index)
+  {
+	  if (index)
+		  *index = ret;
+	  return ret;
+  }
+
+(also note the correct return type as it has to match to @n).
+
+Would it be still okay or too over engineered?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

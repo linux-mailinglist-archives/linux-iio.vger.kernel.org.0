@@ -2,139 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09C7377798E
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 15:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8177377799A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 15:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234883AbjHJN1I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 09:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54930 "EHLO
+        id S234867AbjHJN3a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 09:29:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232369AbjHJN1H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 09:27:07 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF63E26AC;
-        Thu, 10 Aug 2023 06:27:06 -0700 (PDT)
+        with ESMTP id S234838AbjHJN3a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 09:29:30 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC0E92115;
+        Thu, 10 Aug 2023 06:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691674026; x=1723210026;
+  t=1691674169; x=1723210169;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=NNTKjAQ4/Nbiw5gObH2nRESWhwRRZzoZr3mLclxqhow=;
-  b=F52AEd15Lkv8izGmXNJAAZGncCFHi/iN6nsnfiosSrV46kqXDe3a2XzN
-   chqoJ9W1/nhD/EqW410iZZvmySdJeICue7bL49ATfFmpAOcsxCAadX3pf
-   j9FwmC0k3PhHQwdwV5C8mi6BpXD0q9DIqQi4AIoXNE/LsqM3dt4wxd/w/
-   zt6c+QMNGrm0uowQWj+hheIO35aQEIXFtX07XU1CIkIGaP4MJa5+69M/f
-   RDnKZwEyYxknpE5p+0vmDHwpJ4IXTt+FtyyN/fgU8KJMeSWABvowSton+
-   3lCc1WbjytTHr4/YrqYIQ9CyiTIP4MSM6TA5/JCME+3/Sfm2/bxO5s959
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="435295103"
+  bh=EBF+COueCekwMR2I3qVFSbTuJOjqTaqeByXFOY1SFa4=;
+  b=V43mVJhy0uKu/PV8VHWWRC4Ur/Z02/dR0wuHmF6kP602Ar9H4CwvUSzB
+   XXzk/fIjM4ZGPl4snWZAwDjC18G6pwW5ssZ6RAPInCOvXn4268KjTfGAg
+   8Uc/SV7sekEcrl1SU3SBROBwZIOXyu8yrve12WsvV1nGMzZTVBYsOAYxg
+   6hKu4UbMoCZjFYgYvHpENJEGC/7wEVG8DHbtH4VWG+jaG8V0onReCx/Gk
+   olIMBMWIGr6CTWHDZsIFebLaWkV1TQhnw7oD3m1IMO72/2FzmUqRJRAW2
+   503U5gU1eBR9oVeIVsBxc0cfIFDRptUcgekAdLtztG+d1EV4QXIhcwDmQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="374169989"
 X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="435295103"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 06:27:06 -0700
+   d="scan'208";a="374169989"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 06:29:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="855940741"
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="732231353"
 X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="855940741"
+   d="scan'208";a="732231353"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 10 Aug 2023 06:26:57 -0700
+  by orsmga002.jf.intel.com with ESMTP; 10 Aug 2023 06:29:25 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qU5gk-002j9r-39;
-        Thu, 10 Aug 2023 16:26:54 +0300
-Date:   Thu, 10 Aug 2023 16:26:54 +0300
+        id 1qU5jB-002odo-3D;
+        Thu, 10 Aug 2023 16:29:25 +0300
+Date:   Thu, 10 Aug 2023 16:29:25 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 2/6] device property: Add
- fwnode_property_match_property_string()
-Message-ID: <ZNTlniWf8Ou9hHOT@smile.fi.intel.com>
-References: <20230808162800.61651-1-andriy.shevchenko@linux.intel.com>
- <20230808162800.61651-3-andriy.shevchenko@linux.intel.com>
- <20230809185944.1ae78e34@jic23-huawei>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: accel: kionix-kx022a: Use correct header(s)
+ instead of string_helpers.h
+Message-ID: <ZNTmNW1I2aI6ervP@smile.fi.intel.com>
+References: <20230808164204.66818-1-andriy.shevchenko@linux.intel.com>
+ <d8f84ec0-142d-88d1-c317-acfb8c234bad@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230809185944.1ae78e34@jic23-huawei>
+In-Reply-To: <d8f84ec0-142d-88d1-c317-acfb8c234bad@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 06:59:44PM +0100, Jonathan Cameron wrote:
-> On Tue,  8 Aug 2023 19:27:56 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > +int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
-> > +	const char *propname, const char * const *array, size_t n)
+On Wed, Aug 09, 2023 at 09:00:39AM +0300, Matti Vaittinen wrote:
+> On 8/8/23 19:42, Andy Shevchenko wrote:
+> > There is nothing from string_helpers.h used in the driver, correct
+> > the header inclusion block accordingly.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> Hi Andy,
+> Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
-> Whilst I'm not 100% sold on adding ever increasing complexity to what we
-> match, this one feels like a common enough thing to be worth providing.
+> Out of the curiosity - is the goal to get rid of including choices from
+> helpers? (I think) then the header split would be more beneficial.
 
-Yep, that's why I considered it's good to add (and because of new comers).
+At the end, yes.
 
-> Looking at the usecases I wonder if it would be better to pass in
-> an unsigned int *ret which is only updated on a match?
-
-So the question is here are we going to match (pun intended) the prototype to
-the device_property_match*() family of functions or to device_property_read_*()
-one. If the latter, this has to be renamed, but then it probably will contradict
-the semantics as we are _matching_ against something and not just _reading_
-something.
-
-That said, do you agree that current implementation is (slightly) better from
-these aspects? Anyway, look at the below.
-
-> That way the common properties approach of not checking the return value
-> if we have an optional property would apply.
-> 
-> e.g. patch 3
-
-Only?
-
-> would end up with a block that looks like:
-> 
-> 	st->input_mode = ADMV1014_IQ_MODE;
-> 	device_property_match_property_string(&spi->dev, "adi,input-mode",
-> 					      input_mode_names,
-> 					      ARRAY_SIZE(input_mode_names),
-> 					      &st->input_mode);
-> 
-> Only neat and tidy if the thing being optionally read into is an unsigned int
-> though (otherwise you still need a local variable)
-
-We also can have a hybrid variant, returning in both sides
-
-  int device_property_match_property_string(..., size_t *index)
-  {
-	  if (index)
-		  *index = ret;
-	  return ret;
-  }
-
-(also note the correct return type as it has to match to @n).
-
-Would it be still okay or too over engineered?
+Thank you for acknowledging!
 
 -- 
 With Best Regards,

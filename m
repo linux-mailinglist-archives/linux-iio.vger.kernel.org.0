@@ -2,113 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27AD57775A0
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 12:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4EAB7776BA
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 13:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233645AbjHJKV2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 06:21:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48648 "EHLO
+        id S234424AbjHJLTr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 07:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjHJKV1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 06:21:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E699F;
-        Thu, 10 Aug 2023 03:21:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4434360C7C;
-        Thu, 10 Aug 2023 10:21:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1741FC433C7;
-        Thu, 10 Aug 2023 10:21:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691662885;
-        bh=/oo6Cti5X2PkHJVhs0kFuUVMAQ5VK2S+ldpqgHl8wrU=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=qDk2oabu2xbNFZJsSC6pjuDJ025V+GfGk9RWZPz3fM+069ZH+yTJOc4maoAfbY/QQ
-         9XDt680gmylpV/XPbhFiapn5dSuxqwdKLv2XhvHGkYgHgE58khHDGO/LXPGwT1Rg4b
-         cX3V+9tt+n3LmHoVSszZ6bqE+nKQ4xlEkyB5Yam2YsZuQmgt+wTakBUBPL4JhP+TOs
-         dd3YBtcC9O85Zk83aXx6vRqBtb09jOxypJ+Klc3lU6Ddx00v1TOJ1cIX/K59k+AiKa
-         ufDg/cjbCtPdZfDKsuSjySiXB2JEqag8tGOCctF1GNKAn9jjcc9ACse1x5Uh0/HcPp
-         P2TzMvh69yxew==
-Received: (nullmailer pid 4166371 invoked by uid 1000);
-        Thu, 10 Aug 2023 10:21:23 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc:     =?utf-8?q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        with ESMTP id S234570AbjHJLTn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 07:19:43 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F53826B6
+        for <linux-iio@vger.kernel.org>; Thu, 10 Aug 2023 04:19:37 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4fe0fe622c3so1130852e87.2
+        for <linux-iio@vger.kernel.org>; Thu, 10 Aug 2023 04:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691666375; x=1692271175;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PD2GRNX1Jjay8puie92l6jb2A21ZGy6pa02WKtpuhVk=;
+        b=S02JNx4QRwltGeoDYVjXQDIOUw8v9lQF+D32SZpaS95wTNH5dkOXsew/5f0gKG04ON
+         7HUbhywzmTslFJmFQkSa7eEn1US11DSDbPY3MH1vxyKiWSgxtzPCRz1HLU4L3nfyIogc
+         B2FInlZ285KdB81z+mUyUWBUTjdwSnERThIP4mnbZilfZAwvF1Jj6kb9vHmOLhFGnJ1J
+         ku8KIVsmrQo18RHqaIm+NgDON8NvpfYK/j83ql4GE8+krocSLS3xtpMAynVBylKsamuh
+         xkqAmxmUrDCvzN4L1RsQbwEAMeQytjKWCKSjTYh+/MrQQox7E8YX1tqNkFq4Pp4TkV2P
+         qYpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691666375; x=1692271175;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PD2GRNX1Jjay8puie92l6jb2A21ZGy6pa02WKtpuhVk=;
+        b=FOFeTYxweHkZkz5DnJHEnkCzgDJJ5VDWeD9QxTSDwmE+YESQzWgFy8eUgIpUC/0T1z
+         lne1zwr8xIDuVtct5Scg2SuxxHG3usytxlNVWN9q4N9gu1lvYCpHJI7872c6TjND1erQ
+         QgoPR6XWDHz3RvnrMzMMIbjg9bHZLLKRONf6Jdhazy5eNf6UmVVucZklSYrOwl8Xyl9p
+         2sxC8K3gSbnfOqJ/Dz62ipb19LZlVvdcVRGPrWILrk52zFkuMmFyB1ot0h/HF8Levw78
+         Yqv8UUNUTHdT5DMzxoDGjo25dU1UP5R1u1jv/abA84u9IaTOqOZu1ITYurZt1WZDAZgz
+         I5Dw==
+X-Gm-Message-State: AOJu0Yxir0zCMfruL4jLR9Ao+qMfSUmPLjkl2A9sBeFJCtCzKzHb6QrC
+        Pkb0g/2I/uqNg4eQkgtoMQju2kG9oRNWhmy7QRU1kg==
+X-Google-Smtp-Source: AGHT+IFzEoQ+JLrkxCj7YDAT+5ma5m9CP/aItpuP7f2CS0c8OIH4fEoXIC8cct3iBWAhAfSq3bEuZA==
+X-Received: by 2002:a05:6512:33d2:b0:4f8:7124:6803 with SMTP id d18-20020a05651233d200b004f871246803mr2375378lfg.35.1691666375646;
+        Thu, 10 Aug 2023 04:19:35 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.222.113])
+        by smtp.gmail.com with ESMTPSA id u26-20020aa7d0da000000b0051e0cb4692esm668779edo.17.2023.08.10.04.19.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Aug 2023 04:19:35 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        linux-kernel@vger.kernel.org, ChiaEn Wu <chiaen_wu@richtek.com>,
-        linux-iio@vger.kernel.org, ChiYuan Huang <cy_huang@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Ceclan Dumitru <dumitru.ceclan@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20230810093322.593259-1-mitrutzceclan@gmail.com>
-References: <20230810093322.593259-1-mitrutzceclan@gmail.com>
-Message-Id: <169166288203.4166285.8158781296690048623.robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: adc: add AD717X
-Date:   Thu, 10 Aug 2023 04:21:23 -0600
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Andi Shyti <andi.shyti@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] iio: dac: ad5755: mark OF related data as maybe unused
+Date:   Thu, 10 Aug 2023 13:19:32 +0200
+Message-Id: <20230810111933.205619-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+When compile tested with W=1 on x86_64 with driver as built-in:
 
-On Thu, 10 Aug 2023 12:33:16 +0300, Dumitru Ceclan wrote:
-> The AD717x family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel
-> applications or higher speed multiplexed applications. The Sigma-Delta
-> ADC is intended primarily for measurement of signals close to DC but also
-> delivers outstanding performance with input bandwidths out to ~10kHz.
-> 
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
->  .../bindings/iio/adc/adi,ad717x.yaml          | 158 ++++++++++++++++++
->  1 file changed, 158 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad717x.yaml
-> 
+  ad5755.c:866:34: error: unused variable 'ad5755_of_match' [-Werror,-Wunused-const-variable]
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/iio/dac/ad5755.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230810093322.593259-1-mitrutzceclan@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+index 404865e35460..823049ce2686 100644
+--- a/drivers/iio/dac/ad5755.c
++++ b/drivers/iio/dac/ad5755.c
+@@ -863,7 +863,7 @@ static const struct spi_device_id ad5755_id[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, ad5755_id);
+ 
+-static const struct of_device_id ad5755_of_match[] = {
++static const struct of_device_id ad5755_of_match[] __maybe_unused = {
+ 	{ .compatible = "adi,ad5755" },
+ 	{ .compatible = "adi,ad5755-1" },
+ 	{ .compatible = "adi,ad5757" },
+-- 
+2.34.1
 

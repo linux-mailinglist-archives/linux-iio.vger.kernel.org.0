@@ -2,61 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8471B776EDB
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 06:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAF24776FD2
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 07:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231825AbjHJEBQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 00:01:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37402 "EHLO
+        id S232289AbjHJFvs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 01:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjHJEBP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 00:01:15 -0400
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76726E71;
-        Wed,  9 Aug 2023 21:01:14 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4RLtWm5K5mz4f3jYK;
-        Thu, 10 Aug 2023 12:01:08 +0800 (CST)
-Received: from vm-fedora-38.huawei.com (unknown [10.67.174.164])
-        by APP4 (Coremail) with SMTP id gCh0CgCnhKf+YNRkntJqAQ--.7154S2;
-        Thu, 10 Aug 2023 12:01:09 +0800 (CST)
-From:   "GONG, Ruiqi" <gongruiqi@huaweicloud.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Waqar Hameed <waqar.hameed@axis.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Wang Weiyang <wangweiyang2@huawei.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>, gongruiqi1@huawei.com
-Subject: [PATCH v2] iio: irsd200: fix -Warray-bounds bug in irsd200_trigger_handler
-Date:   Thu, 10 Aug 2023 11:59:10 +0800
-Message-ID: <20230810035910.1334706-1-gongruiqi@huaweicloud.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S229611AbjHJFvr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 01:51:47 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C78DC;
+        Wed,  9 Aug 2023 22:51:47 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b9bee2d320so8093401fa.1;
+        Wed, 09 Aug 2023 22:51:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691646705; x=1692251505;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TpwH6CCckkwKB4b82sShzAZy8oiId1XJvF4iz7xS6YQ=;
+        b=SgsUhD5BAYpS7ZdPJE+9MT33EDDfwEw/ipKRwCywtAwkj8evHMBhVjYA8XnqZrZCkv
+         WoR/Ti6vJF9TjcH7CeMH6sb+vRKM99fMFIf3hFKA1kDrK8UmErC5HYZ7mdPzP873AjDf
+         4VeB5aMR6XSBvqhvz+Ae12qvXqVueYdapDFWGFyDwmAVjp+wrWW4FzpqbKbeShcdCP8l
+         appcYo5ixB6cxFTHCQ7jFkXb7q4vzWmWjCtYUOgIWYw2zlyybfZXSEtXjRWBYD/x5yaG
+         OQK2ZwJcrVxAaCAIXJwtQGyJQNzqLBD9KLe+3r5fDRZNX20i8PbC+EnUlYjvIlxRkxwY
+         jWDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691646705; x=1692251505;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TpwH6CCckkwKB4b82sShzAZy8oiId1XJvF4iz7xS6YQ=;
+        b=Qi+OSADsq/0enZUxhhigsMKa1UpBqhUsBWJKOHtj9kyNuNihcZSBF8NHJ9JlrzW36Y
+         m9voMG2aIUAEeQpSmgG6UQ32KbDObS2P67tNzfRPy91MsMUWiPApHgR6S/Vc+r3/WRGd
+         QUjIu202GtrM0PHccXcvZ+IZyRNB25Emj25XNMXAagi5h83BbZMrAS8Rkjdu+6G4CM9b
+         Idfckee0BvQ/tBykUtdfVJ1rhHFpFOCWvjikNzXPbj9rwrRSR4X/CD+yxZgEd0+MT1iD
+         Aa6Djlp8Y5bqe8dgo+gDDuGg2aZ8BJpfMOOI0/lanjmPos04SqsS5lnhiJHKDyZ3JQE2
+         n0TQ==
+X-Gm-Message-State: AOJu0Yy8ovmml5bG5tBaarPgawJOibdmyje5mUsXTd9GrZCqYYLi4M3p
+        6XFdJywz9DgGj7JhW5NqrOadkdHSizo=
+X-Google-Smtp-Source: AGHT+IEoe0G3lfZ+S6iJ/h89zB0Ua7L9cZarWrRph2vnXHeRE/CtRQ66qXF2XkGtfLaMAht2qHgVtA==
+X-Received: by 2002:a2e:8484:0:b0:2ba:6599:b433 with SMTP id b4-20020a2e8484000000b002ba6599b433mr643420ljh.25.1691646704943;
+        Wed, 09 Aug 2023 22:51:44 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::5? (dc78bmyyyyyyyyyyyyyct-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::5])
+        by smtp.gmail.com with ESMTPSA id r16-20020a2e80d0000000b002b6ffa50896sm188806ljg.128.2023.08.09.22.51.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 22:51:44 -0700 (PDT)
+Message-ID: <cd99bd43-9876-9c07-217e-6547e2d8b5cb@gmail.com>
+Date:   Thu, 10 Aug 2023 08:51:43 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 7/7] iio: accel: Add support for Kionix/ROHM KX132-1211
+ accelerometer
+Content-Language: en-US, en-GB
+To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org,
+        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <cover.1691607526.git.mehdi.djait.k@gmail.com>
+ <a430f5f387991e11079393eba6544e4635c7c091.1691607526.git.mehdi.djait.k@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <a430f5f387991e11079393eba6544e4635c7c091.1691607526.git.mehdi.djait.k@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: gCh0CgCnhKf+YNRkntJqAQ--.7154S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFyrWF43Aw15urW7tF1xAFb_yoW8tF1xpF
-        Z3Aw4UZrW8ZFy7CF18ZFyDWa4Fqa45J34j9FW7W3s8Zw4Fv3sY9F1Fkw1SgFyqgF4Iyr1j
-        qrZ3JF48CF1DJr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IY
-        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
-        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF
-        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2
-        jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UQzVbUUUUU=
-X-CM-SenderInfo: pjrqw2pxltxq5kxd4v5lfo033gof0z/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,60 +78,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+On 8/9/23 22:11, Mehdi Djait wrote:
+> Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
+> ranges from ±2G to ±16G, digital output through I²C/SPI.
+> Add support for basic accelerometer features such as reading acceleration
+> via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
+> 
+> Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
+> Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
+> ---
+> v7:
+> - added a min_t in kx132_get_fifo_bytes to ensure that we don't that the
+>    fifo_bytes is never bigger than the
+>    fifo_length * KX022A_FIFO_SAMPLES_SIZE_BYTES - no matter what we read from I2C
+>    as suggested by Matti
 
-When compiling with gcc 13 with -Warray-bounds enabled:
+Thanks a lot Mehdi! Looks good to me :)
 
-In file included from drivers/iio/proximity/irsd200.c:15:
-In function ‘iio_push_to_buffers_with_timestamp’,
-    inlined from ‘irsd200_trigger_handler’ at drivers/iio/proximity/irsd200.c:770:2:
-./include/linux/iio/buffer.h:42:46: error: array subscript ‘int64_t {aka long long int}[0]’
-is partly outside array bounds of ‘s16[1]’ {aka ‘short int[1]’} [-Werror=array-bounds=]
-   42 |                 ((int64_t *)data)[ts_offset] = timestamp;
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
-drivers/iio/proximity/irsd200.c: In function ‘irsd200_trigger_handler’:
-drivers/iio/proximity/irsd200.c:763:13: note: object ‘buf’ of size 2
-  763 |         s16 buf = 0;
-      |             ^~~
+Yours,
+	-- Matti
 
-The problem seems to be that irsd200_trigger_handler() is taking a s16
-variable as an int64_t buffer. As Jonathan suggested [1], fix it by
-extending the buffer to a two-element array of s64.
-
-Link: https://github.com/KSPP/linux/issues/331
-Link: https://lore.kernel.org/lkml/20230809181329.46c00a5d@jic23-huawei/ [1]
-Fixes: 3db3562bc66e ("iio: Add driver for Murata IRS-D200")
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-
-v2: change buf to `s64 buf[2]`
-
- drivers/iio/proximity/irsd200.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/proximity/irsd200.c b/drivers/iio/proximity/irsd200.c
-index 5bd791b46d98..bdff91f6b1a3 100644
---- a/drivers/iio/proximity/irsd200.c
-+++ b/drivers/iio/proximity/irsd200.c
-@@ -759,14 +759,14 @@ static irqreturn_t irsd200_trigger_handler(int irq, void *pollf)
- {
- 	struct iio_dev *indio_dev = ((struct iio_poll_func *)pollf)->indio_dev;
- 	struct irsd200_data *data = iio_priv(indio_dev);
--	s16 buf = 0;
-+	s64 buf[2] = {};
- 	int ret;
- 
--	ret = irsd200_read_data(data, &buf);
-+	ret = irsd200_read_data(data, (s16 *)buf);
- 	if (ret)
- 		goto end;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &buf,
-+	iio_push_to_buffers_with_timestamp(indio_dev, buf,
- 					   iio_get_time_ns(indio_dev));
- 
- end:
 -- 
-2.41.0
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

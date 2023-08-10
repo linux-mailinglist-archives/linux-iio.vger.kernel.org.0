@@ -2,108 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF24776FD2
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 07:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D72777379
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 10:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232289AbjHJFvs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 01:51:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47450 "EHLO
+        id S232117AbjHJI4a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 04:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjHJFvr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 01:51:47 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C78DC;
-        Wed,  9 Aug 2023 22:51:47 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b9bee2d320so8093401fa.1;
-        Wed, 09 Aug 2023 22:51:46 -0700 (PDT)
+        with ESMTP id S231596AbjHJI43 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 04:56:29 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6172103
+        for <linux-iio@vger.kernel.org>; Thu, 10 Aug 2023 01:56:29 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-583d702129cso8652427b3.3
+        for <linux-iio@vger.kernel.org>; Thu, 10 Aug 2023 01:56:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691646705; x=1692251505;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TpwH6CCckkwKB4b82sShzAZy8oiId1XJvF4iz7xS6YQ=;
-        b=SgsUhD5BAYpS7ZdPJE+9MT33EDDfwEw/ipKRwCywtAwkj8evHMBhVjYA8XnqZrZCkv
-         WoR/Ti6vJF9TjcH7CeMH6sb+vRKM99fMFIf3hFKA1kDrK8UmErC5HYZ7mdPzP873AjDf
-         4VeB5aMR6XSBvqhvz+Ae12qvXqVueYdapDFWGFyDwmAVjp+wrWW4FzpqbKbeShcdCP8l
-         appcYo5ixB6cxFTHCQ7jFkXb7q4vzWmWjCtYUOgIWYw2zlyybfZXSEtXjRWBYD/x5yaG
-         OQK2ZwJcrVxAaCAIXJwtQGyJQNzqLBD9KLe+3r5fDRZNX20i8PbC+EnUlYjvIlxRkxwY
-         jWDA==
+        d=linaro.org; s=google; t=1691657788; x=1692262588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y4xzhtgK2ZzvOYUDyqNSbtvklnaYEVyirCJgKwWKjKc=;
+        b=r96+eZWbRyq6nfaVV7VksEHYdO4rbmkXKvs1TzZmcvoJqoo9rzhy4biR7Cah7jgdOo
+         od5JiHxyra3MzW6c03d8sWhGe5I5u9R+IkSr1ce55lrsx+q8bMVHQWt5wLtep/NMzr6q
+         Cf3sGJVKXJ63hdOBtPNTk3tgDtZV+R9rtq70IVXjIDDtDwWLfdU2cp/zdWJf6c+RVETx
+         xvH2vUGFpmVLpLSmXb6LU2IE10mD16h5o06cfRo+a6VkiJfxI+f9GXy5mU1LbN1aIC4j
+         DUgWbFv1QgGDsQdHXi7fsnjDH3JTojWshdIURjrDWHaKkyLuDH+WS1iLfXTR6qdSpIbk
+         4lfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691646705; x=1692251505;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TpwH6CCckkwKB4b82sShzAZy8oiId1XJvF4iz7xS6YQ=;
-        b=Qi+OSADsq/0enZUxhhigsMKa1UpBqhUsBWJKOHtj9kyNuNihcZSBF8NHJ9JlrzW36Y
-         m9voMG2aIUAEeQpSmgG6UQ32KbDObS2P67tNzfRPy91MsMUWiPApHgR6S/Vc+r3/WRGd
-         QUjIu202GtrM0PHccXcvZ+IZyRNB25Emj25XNMXAagi5h83BbZMrAS8Rkjdu+6G4CM9b
-         Idfckee0BvQ/tBykUtdfVJ1rhHFpFOCWvjikNzXPbj9rwrRSR4X/CD+yxZgEd0+MT1iD
-         Aa6Djlp8Y5bqe8dgo+gDDuGg2aZ8BJpfMOOI0/lanjmPos04SqsS5lnhiJHKDyZ3JQE2
-         n0TQ==
-X-Gm-Message-State: AOJu0Yy8ovmml5bG5tBaarPgawJOibdmyje5mUsXTd9GrZCqYYLi4M3p
-        6XFdJywz9DgGj7JhW5NqrOadkdHSizo=
-X-Google-Smtp-Source: AGHT+IEoe0G3lfZ+S6iJ/h89zB0Ua7L9cZarWrRph2vnXHeRE/CtRQ66qXF2XkGtfLaMAht2qHgVtA==
-X-Received: by 2002:a2e:8484:0:b0:2ba:6599:b433 with SMTP id b4-20020a2e8484000000b002ba6599b433mr643420ljh.25.1691646704943;
-        Wed, 09 Aug 2023 22:51:44 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::5? (dc78bmyyyyyyyyyyyyyct-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::5])
-        by smtp.gmail.com with ESMTPSA id r16-20020a2e80d0000000b002b6ffa50896sm188806ljg.128.2023.08.09.22.51.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 22:51:44 -0700 (PDT)
-Message-ID: <cd99bd43-9876-9c07-217e-6547e2d8b5cb@gmail.com>
-Date:   Thu, 10 Aug 2023 08:51:43 +0300
+        d=1e100.net; s=20221208; t=1691657788; x=1692262588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y4xzhtgK2ZzvOYUDyqNSbtvklnaYEVyirCJgKwWKjKc=;
+        b=G3RmNwZIKIXB8sWI5znObj4UCwHv1Jp9G2VOKqNxtYm/6cz6uMbZgmwmJmN7UvM5X5
+         qbzeulZpR0n/ytkX1L7N7K6f8D8KglK/nWrsPkC03PiiqQsTVBMg8UvMrdVlbiqQwmQI
+         zVOvK9B7H4u3dQ4Wh5eDP1XJT/IbxTpHHE70XToLzwhKOmg7pxfqgJnRfAqEVQnPXqZ+
+         k1WrXg+RYaUuWv3bNvW0vx0FB7lDWxR0GgCjdptRrkOuKjKocmvOJ8bKZaC4BcK/a6x9
+         JEDUBsC/NpqGXJt9LixbTGabxDoBNRbn1rah42bMSkyUnBo2LkQ+k2mTxIM/Pu9O3buN
+         amTA==
+X-Gm-Message-State: AOJu0YyWUpXC/gm3mARgdEpid9J8oYhMvqHoWmihtCvHDNWmbX/7BfXe
+        zsSEPjhXRxT0MIp4ZEoNxtZdfLM2cnwrulKCH9irWg==
+X-Google-Smtp-Source: AGHT+IHLVKgLS+yA12n4e4oVR00qirPsOIQHxKivvEYUO3GDX4h6o1R1JjXDTABXln2G48Ua37dLjT4kf/I4MTOSdhU=
+X-Received: by 2002:a25:76d0:0:b0:cef:e2c4:d366 with SMTP id
+ r199-20020a2576d0000000b00cefe2c4d366mr2018376ybc.48.1691657788682; Thu, 10
+ Aug 2023 01:56:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v7 7/7] iio: accel: Add support for Kionix/ROHM KX132-1211
- accelerometer
-Content-Language: en-US, en-GB
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>, jic23@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org,
-        andriy.shevchenko@linux.intel.com, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <cover.1691607526.git.mehdi.djait.k@gmail.com>
- <a430f5f387991e11079393eba6544e4635c7c091.1691607526.git.mehdi.djait.k@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <a430f5f387991e11079393eba6544e4635c7c091.1691607526.git.mehdi.djait.k@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220524075448.140238-1-linus.walleij@linaro.org> <20230809134337.28224-1-bavishimithil@gmail.com>
+In-Reply-To: <20230809134337.28224-1-bavishimithil@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 10 Aug 2023 10:56:17 +0200
+Message-ID: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+To:     Mighty <bavishimithil@gmail.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
+        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/9/23 22:11, Mehdi Djait wrote:
-> Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
-> ranges from ±2G to ±16G, digital output through I²C/SPI.
-> Add support for basic accelerometer features such as reading acceleration
-> via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
-> 
-> Datasheet: https://kionixfs.azureedge.net/en/document/KX132-1211-Technical-Reference-Manual-Rev-5.0.pdf
-> Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Mehdi Djait <mehdi.djait.k@gmail.com>
-> ---
-> v7:
-> - added a min_t in kx132_get_fifo_bytes to ensure that we don't that the
->    fifo_bytes is never bigger than the
->    fifo_length * KX022A_FIFO_SAMPLES_SIZE_BYTES - no matter what we read from I2C
->    as suggested by Matti
+On Wed, Aug 9, 2023 at 3:48=E2=80=AFPM Mighty <bavishimithil@gmail.com> wro=
+te:
 
-Thanks a lot Mehdi! Looks good to me :)
+> > The current code "mostly works" because we have not run into
+> > systems supporting only raw but not scale or only scale but not
+> > raw, and I doubt there are few using the rescaler on anything
+> > such, but let's fix the logic.
+>
+> This does break the logic for twl6030/6032 boards as the seem to
+> only have only raw and processed masks[1]. What would a probable
+> solution for it be, to modify the twl gpadc to include scale+raw or just
+> revert back to the OR?
+>
+> [1] https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030=
+-gpadc.c#L808-L840
+
+How does it break it?
+
+It's a change to the AFE rescaler driver so it can't really "break"
+twl6030-gpadc.
+
+Isn't the complete picture involving some device tree using the prescaler
+etc?
+
+Can you try to dig out that so we can see the whole situation?
 
 Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Linus Walleij

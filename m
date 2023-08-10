@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92A37777C48
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 17:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2563B7781AC
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Aug 2023 21:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233717AbjHJPgv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Aug 2023 11:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50882 "EHLO
+        id S233757AbjHJTh0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Aug 2023 15:37:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbjHJPgv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 11:36:51 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD5526B6;
-        Thu, 10 Aug 2023 08:36:50 -0700 (PDT)
+        with ESMTP id S233486AbjHJTh0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Aug 2023 15:37:26 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5A2213B;
+        Thu, 10 Aug 2023 12:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691681810; x=1723217810;
+  t=1691696245; x=1723232245;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=NTbuf4AyYKmPslKaW6cwFEVLhlsLUMNyTDrHunTksbU=;
-  b=ZyuunNgI9aQM6CTyHwawW5DXskTwB5GHO43oqwp0gbPQJZc18iJeMDoo
-   Y2a6xda8bAGZORIN/WMnaMUmIDqwXhALzqaToU8rElG9SYnhTR8B0+TQr
-   GpfY9iD4PdAoUECJxuovS7A8jjDvgEbd6f89H8CBhHo4bXiFzjG4s0AQP
-   DeWT/ytpTIhH7t4jFoOngx4YgbZ+OO+iblzNSS7CdxFqO2CPC9HBRMTlD
-   TYg8d2QflWK+fwOz+V2uNRX4tneNt1KvZ0QgfrmIiEWo0eSoO3ce3jLhx
-   WwicXzNtT5T4W1BX/p5ePeTqA7gTWAn7NZXAMeseiqKCnDgv26BR38DSw
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="375149709"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="375149709"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 08:36:46 -0700
+   mime-version:in-reply-to;
+  bh=xx83EKLu+vN9CXT+mV65pORzjTdIyb9PiTLDHfY8Y3Y=;
+  b=fPNZTXEjZNZbw66LIy8UFogYcWw7wEU6TNArkvYvhMUxcKaWZ3OEIUHP
+   PtWN3ABVXLUomUblgeRpi9ln4ps6TEJSIAkhuxdQBP6FCgxCal9foGoYT
+   vgGWOZJkP6HBsTI+EWv0H7ANBWsUb8E/nxDXKpvJ//cHyEU//O2ikmuF0
+   lKYP98rmEJvO5qsO4KA8RYTa5tKJdjHGkYrZRf+9HC4xa2xr0NUlABqyH
+   ZdF+9P18OaOsi1X2fqC22dqejYqTGOdzECqsmu/Vd3Wz4bMMKzll8owG8
+   yNgWN3Zh+RYJcAQ1w9ug79kU1pQNOF7S8RV7oT/1XAflzHgPpp+x1nQ0w
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="351825314"
+X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
+   d="scan'208";a="351825314"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 12:37:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="761819428"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
-   d="scan'208";a="761819428"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 10 Aug 2023 08:36:39 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qU7iH-0079nW-0e;
-        Thu, 10 Aug 2023 18:36:37 +0300
-Date:   Thu, 10 Aug 2023 18:36:36 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc:     Dumitru Ceclan <mitrutzceclan@gmail.com>,
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="906175689"
+X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
+   d="scan'208";a="906175689"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 10 Aug 2023 12:37:18 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qUBTB-0007DA-2s;
+        Thu, 10 Aug 2023 19:37:17 +0000
+Date:   Fri, 11 Aug 2023 03:36:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc:     oe-kbuild-all@lists.linux.dev,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         Alexander Sverdlin <alexander.sverdlin@gmail.com>,
@@ -70,79 +71,70 @@ Cc:     Dumitru Ceclan <mitrutzceclan@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 2/2] iio: adc: ad717x: add AD717X driver
-Message-ID: <ZNUEBDsMg6UfeOtl@smile.fi.intel.com>
-References: <20230810093322.593259-1-mitrutzceclan@gmail.com>
- <20230810093322.593259-2-mitrutzceclan@gmail.com>
- <34f5e2118a4714048231e6ee9a8f244248616bd0.camel@gmail.com>
+Message-ID: <202308110347.LseABMWN-lkp@intel.com>
+References: <20230810093322.593259-2-mitrutzceclan@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <34f5e2118a4714048231e6ee9a8f244248616bd0.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230810093322.593259-2-mitrutzceclan@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 01:57:02PM +0200, Nuno Sá wrote:
-> On Thu, 2023-08-10 at 12:33 +0300, Dumitru Ceclan wrote:
+Hi Dumitru,
 
-...
+kernel test robot noticed the following build errors:
 
-> Is ad717x_gpio_cleanup() being used anywhere? Moreover I would maybe just get rid of
-> the #ifdef wrapper and just select GPIOLIB. How often will it be disabled anyways?
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.5-rc5 next-20230809]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The agreement is that users are depend on and not selecting GPIOLIB.
-Any news in these agreement terms?
+url:    https://github.com/intel-lab-lkp/linux/commits/Dumitru-Ceclan/iio-adc-ad717x-add-AD717X-driver/20230810-173526
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20230810093322.593259-2-mitrutzceclan%40gmail.com
+patch subject: [PATCH 2/2] iio: adc: ad717x: add AD717X driver
+config: xtensa-randconfig-m041-20230811 (https://download.01.org/0day-ci/archive/20230811/202308110347.LseABMWN-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 12.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20230811/202308110347.LseABMWN-lkp@intel.com/reproduce)
 
-...
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308110347.LseABMWN-lkp@intel.com/
 
-> > +       id &= AD717X_ID_MASK;
-> > +       if (id != st->info->id)
-> > +               dev_warn(&st->sd.spi->dev, "Unexpected device id: %x, expected:
-> > %x\n",
-> > +                                           id, st->info->id);
-> > +
-> 
-> Shouldn't we error out?
+All errors (new ones prefixed by >>):
 
-It seems a new way of thinking about unsupported CHIP ID. Dunno if hw vendors
-won't ever do a dirty trick that new ID must be programmed differently and
-otherwise burn hardware to a smoke...
+   In file included from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from drivers/iio/adc/ad717x.c:9:
+>> include/linux/module.h:244:1: error: expected ',' or ';' before 'extern'
+     244 | extern typeof(name) __mod_##type##__##name##_device_table               \
+         | ^~~~~~
+   drivers/iio/adc/ad717x.c:974:1: note: in expansion of macro 'MODULE_DEVICE_TABLE'
+     974 | MODULE_DEVICE_TABLE(of, ad717x_of_match);
+         | ^~~~~~~~~~~~~~~~~~~
 
-I'm with you here, unknown chips mustn't be supported.
 
-...
+vim +244 include/linux/module.h
 
-> > +                               *val = -(1 << (chan->scan_type.realbits - 1));
-> 
-> nit: I don't expect the driver to really be updated with more devices (it's
-> like this for a long time) but the above is not very extensible... Imagine we
-> add a device with 32bit channels? We would enter shady waters If I'm not
-> missing anything.
-
-Also 1 << 31 is UB in accordance with C standard.
-
-...
-
-> > +       st->info = device_get_match_data(&spi->dev);
-> > +       if (!st->info)
-> > +               return -ENODEV;
-> > +
-> 
-> spi_get_device_match_data() (not really sure if this is still applicable
-> since some work related to this is being done for i2c - and eventually in spi
-> I guess).
-
-Still applicable.
+^1da177e4c3f41 Linus Torvalds    2005-04-16  240  
+cff26a51da5d20 Rusty Russell     2014-02-03  241  #ifdef MODULE
+cff26a51da5d20 Rusty Russell     2014-02-03  242  /* Creates an alias so file2alias.c can find device table. */
+^1da177e4c3f41 Linus Torvalds    2005-04-16  243  #define MODULE_DEVICE_TABLE(type, name)					\
+0bf8bf50eddc75 Matthias Kaehlcke 2017-07-24 @244  extern typeof(name) __mod_##type##__##name##_device_table		\
+cff26a51da5d20 Rusty Russell     2014-02-03  245    __attribute__ ((unused, alias(__stringify(name))))
+cff26a51da5d20 Rusty Russell     2014-02-03  246  #else  /* !MODULE */
+cff26a51da5d20 Rusty Russell     2014-02-03  247  #define MODULE_DEVICE_TABLE(type, name)
+cff26a51da5d20 Rusty Russell     2014-02-03  248  #endif
+^1da177e4c3f41 Linus Torvalds    2005-04-16  249  
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

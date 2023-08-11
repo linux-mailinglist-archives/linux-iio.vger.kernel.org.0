@@ -2,112 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DC2778B0B
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 12:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7CF778BAE
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 12:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235764AbjHKKKG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Aug 2023 06:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35130 "EHLO
+        id S231894AbjHKKQs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Aug 2023 06:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233965AbjHKKJj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 06:09:39 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF84F3C0E;
-        Fri, 11 Aug 2023 03:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691748541; x=1723284541;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=3TyPERQgCXiavt1l/KErY+uJ/EFwbbRdQVVtcfN+4cE=;
-  b=miRbBGkiDp0R/KM8oNCLGGslh9S9G2cDcbhpIigsQSqJ3TFF7jujGuxt
-   qQ7/EoVs+IzPBx9+rD6b2T251UyHTg2rpbpsqF+XwdMMgI5cXcu1raRZu
-   KSQ+8VywmrMobVQ7CdJTQN3VEWoTP217hc7TaaR9Zowhpfz4IJGxQrtQV
-   fh3KboAdkfnVAfXE8SgXrlhcIuoXQwgXrMBNXZw1t6t8wBMzmzxEIpWiv
-   /c2OATbuF8o56e1Lc2uzj7wYn4o53D3GQG7vfgIVXIuekb9IWOZoWLxPR
-   gAzXBofwS35Potprnh6dkEI12N7xaRqsa2eVKNbS/VUmNi2LhqxLsWxJD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="435539486"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="435539486"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2023 03:09:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="1063272569"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="1063272569"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP; 11 Aug 2023 03:08:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qUP4j-009vcS-0B;
-        Fri, 11 Aug 2023 13:08:57 +0300
-Date:   Fri, 11 Aug 2023 13:08:56 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 5/7] iio: accel: kionix-kx022a: Refactor driver and
- add chip_info structure
-Message-ID: <ZNYIuBjIHItnsyJL@smile.fi.intel.com>
-References: <cover.1691607526.git.mehdi.djait.k@gmail.com>
- <8fb74f21bda4949a862bcb4bb1ed4f0acb135948.1691607526.git.mehdi.djait.k@gmail.com>
- <ZNYDa+Un5bl5y9vT@smile.fi.intel.com>
- <CAFukWp2w2KwE+Obt1DWTcT81DbN7FdMNVo2Q7MSvjNi=_0uBRA@mail.gmail.com>
+        with ESMTP id S229930AbjHKKQr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 06:16:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9838BB4;
+        Fri, 11 Aug 2023 03:16:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D3C266E04;
+        Fri, 11 Aug 2023 10:16:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C666C433C7;
+        Fri, 11 Aug 2023 10:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691749006;
+        bh=p0874zC3P/4HkNA+wVRJkLg0l75K8zpw30iVncdc3hA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZnbEJxBBvvyRVrrgqaUgZZHjXTQaaVvRcmnG+Kw6tY0jW8JMLnEntCAan1/Jv/IwK
+         7S2gJZ1TdIKGrRy6ZexEARpp7JOigKWp2EyHIPnSQm30nHkGgawvRoW4h7JlKMa6bW
+         B9VZPDYj7V1mJVZxUoasRspo2Tk97FQH9M1olZHQ=
+Date:   Fri, 11 Aug 2023 12:16:44 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
+Cc:     Oleksii_Moisieiev@epam.com, herbert@gondor.apana.org.au,
+        davem@davemloft.net, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        alexandre.torgue@foss.st.com, vkoul@kernel.org, jic23@kernel.org,
+        olivier.moysan@foss.st.com, arnaud.pouliquen@foss.st.com,
+        mchehab@kernel.org, fabrice.gasnier@foss.st.com,
+        andi.shyti@kernel.org, ulf.hansson@linaro.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, hugues.fruchet@foss.st.com,
+        lee@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+        arnd@kernel.org, richardcochran@gmail.com,
+        Frank Rowand <frowand.list@gmail.com>, peng.fan@oss.nxp.com,
+        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [IGNORE][PATCH v4 01/11] dt-bindings: Document common device
+ controller bindings
+Message-ID: <2023081117-sprout-cruncher-862c@gregkh>
+References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
+ <20230811100731.108145-2-gatien.chevallier@foss.st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFukWp2w2KwE+Obt1DWTcT81DbN7FdMNVo2Q7MSvjNi=_0uBRA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230811100731.108145-2-gatien.chevallier@foss.st.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 11, 2023 at 12:01:23PM +0200, Mehdi Djait wrote:
-> On Fri, Aug 11, 2023 at 11:46 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, Aug 09, 2023 at 09:11:36PM +0200, Mehdi Djait wrote:
-
-...
-
-> > > +     val = min_t(unsigned int, data->chip_info->fifo_length, val);
-> >
-> > min_t() is a beast. Please, use min() if no special requirement for
-> > min_t() here, otherwise explain why.
+On Fri, Aug 11, 2023 at 12:07:21PM +0200, Gatien Chevallier wrote:
+> From: Oleksii Moisieiev <Oleksii_Moisieiev@epam.com>
 > 
-> No actual reason, you suggested min_t or min for a previous version
-
-After the minmax series (see discussion in LKML) I am pretty sure min_t()
-shouldn't be used at all or with very minimum cases where people know what
-they are doing.
-
-...
-
-> > > +     data->fifo_buffer = kmalloc(data->chip_info->fifo_length *
-> > > +                                 KX022A_FIFO_SAMPLES_SIZE_BYTES, GFP_KERNEL);
-> >
-> > kmalloc_array()
+> Introducing of the common device controller bindings for the controller
+> provider and consumer devices. Those bindings are intended to allow
+> divided system on chip into multiple domains, that can be used to
+> configure hardware permissions.
 > 
-> Should I send another version for this ?
+> Signed-off-by: Oleksii Moisieiev <oleksii_moisieiev@epam.com>
+> [Gatien: Fix typos and YAML error]
+> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+> ---
+> 
+> Changes in V4: 
+> 	Corrected typos and YAML errors	
 
-Sure.
+Why are we supposed to ignore the first patch in this series, but pay
+attention to the 10 after this that depend on it?
 
-> The usage of kmalloc is quite straightforward and easy to understand here.
+totally confused,
 
-Yes, and prone to errors. Multiplication theoretically may overflow and
-your code doesn't aware of that, kmalloc_array() does it.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+greg k-h

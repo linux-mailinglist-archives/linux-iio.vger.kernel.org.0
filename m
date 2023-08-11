@@ -2,113 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 363C6778A48
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 11:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 940EC778A6F
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 11:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233266AbjHKJqZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Aug 2023 05:46:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
+        id S235037AbjHKJ5I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Aug 2023 05:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233345AbjHKJqZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 05:46:25 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBC12728;
-        Fri, 11 Aug 2023 02:46:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691747184; x=1723283184;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GfM6LFRnkm8QU2AlvTqOJ4q6NoQlTqqbu9cz4ujRsCY=;
-  b=FpeTja50Wb8B9n9sghwl09hGSiRz8DiSVaTn0noE2VT+ZqcGFBCMs0KQ
-   9yhInJfgcq6fy3wXAOqwaZYrRx6IWchzUSka4l4dVtnOgPqnvy80Zi2Rq
-   MWxDqnmQKcXDeVpUKKQwqz7jswn/dycxGcF6PlHdEFHX5HryqvWY1+Tgb
-   U74qOWQ/DktElCGX6Qd3Ns3SFJR4VCWSDQBRiwaW3fXsYR6HmyWgNjOYZ
-   np54sZSq/VZmkh6hcjBAqn/8q8HyVRVHAESVVu1azhxwasfKfsqkhztPY
-   MySdrAGC7St8bzxFUBeb+fPdu4iK4UnmLtdcV267nPzq5udIxJE0GzPr9
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="369111748"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="369111748"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2023 02:46:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="979184854"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="979184854"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 11 Aug 2023 02:46:21 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qUOip-009A3Y-35;
-        Fri, 11 Aug 2023 12:46:19 +0300
-Date:   Fri, 11 Aug 2023 12:46:19 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mehdi Djait <mehdi.djait.k@gmail.com>
-Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 5/7] iio: accel: kionix-kx022a: Refactor driver and
- add chip_info structure
-Message-ID: <ZNYDa+Un5bl5y9vT@smile.fi.intel.com>
-References: <cover.1691607526.git.mehdi.djait.k@gmail.com>
- <8fb74f21bda4949a862bcb4bb1ed4f0acb135948.1691607526.git.mehdi.djait.k@gmail.com>
+        with ESMTP id S233241AbjHKJ5H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 05:57:07 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 158EB273E;
+        Fri, 11 Aug 2023 02:57:05 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RMfKh6b0SzTm5q;
+        Fri, 11 Aug 2023 17:55:04 +0800 (CST)
+Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
+ (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 11 Aug
+ 2023 17:57:02 +0800
+From:   Yue Haibing <yuehaibing@huawei.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <yuehaibing@huawei.com>,
+        <jean-baptiste.maneyrol@tdk.com>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] iio: Remove unused declarations
+Date:   Fri, 11 Aug 2023 17:57:01 +0800
+Message-ID: <20230811095701.35372-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8fb74f21bda4949a862bcb4bb1ed4f0acb135948.1691607526.git.mehdi.djait.k@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 09:11:36PM +0200, Mehdi Djait wrote:
-> Add the chip_info structure to the driver's private data to hold all
-> the device specific infos.
-> Refactor the kx022a driver implementation to make it more generic and
-> extensible.
+Commit 0f3a8c3f34f7 ("iio: Add support for creating IIO devices via configfs")
+declared but never implemented iio_sw_device_type_configfs_{un}register().
+Commit b662f809d410 ("iio: core: Introduce IIO software triggers") declared but
+never implemented iio_sw_trigger_type_configfs_{un}register().
+Commit a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+declared but never implemented fxls8962af_core_remove().
+Commit 8dedcc3eee3a ("iio: core: centralize ioctl() calls to the main chardev")
+declared but never implemented iio_device_ioctl().
 
-...
+Commit d430f3c36ca6 ("iio: imu: inv_mpu6050: Use regmap instead of i2c specific functions")
+removed inv_mpu6050_write_reg() but not its declaration.
 
-> +	chip_info = device_get_match_data(&i2c->dev);
-> +	if (!chip_info) {
-> +		const struct i2c_device_id *id = i2c_client_get_device_id(i2c);
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ drivers/iio/accel/fxls8962af.h            | 1 -
+ drivers/iio/iio_core.h                    | 3 ---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h | 1 -
+ include/linux/iio/sw_device.h             | 3 ---
+ include/linux/iio/sw_trigger.h            | 3 ---
+ 5 files changed, 11 deletions(-)
 
-Missing blank line.
-
-> +		chip_info = (const struct kx022a_chip_info *)id->driver_data;
-> +		if (!chip_info)
-> +			return -EINVAL;
-> +	}
-
-...
-
-> -	if (val > KX022A_FIFO_LENGTH)
-> -		val = KX022A_FIFO_LENGTH;
-> +	val = min_t(unsigned int, data->chip_info->fifo_length, val);
-
-min_t() is a beast. Please, use min() if no special requirement for
-min_t() here, otherwise explain why.
-
-...
-
-> +	data->fifo_buffer = kmalloc(data->chip_info->fifo_length *
-> +				    KX022A_FIFO_SAMPLES_SIZE_BYTES, GFP_KERNEL);
-
-kmalloc_array()
-
-> +	if (!data->fifo_buffer)
-> +		return -ENOMEM;
-
+diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
+index 9cbe98c3ba9a..6eaa2803b26f 100644
+--- a/drivers/iio/accel/fxls8962af.h
++++ b/drivers/iio/accel/fxls8962af.h
+@@ -14,7 +14,6 @@ enum {
+ };
+ 
+ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
+-int fxls8962af_core_remove(struct device *dev);
+ 
+ extern const struct dev_pm_ops fxls8962af_pm_ops;
+ extern const struct regmap_config fxls8962af_i2c_regmap_conf;
+diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
+index 501e286702ef..1a38b1915e7a 100644
+--- a/drivers/iio/iio_core.h
++++ b/drivers/iio/iio_core.h
+@@ -30,9 +30,6 @@ struct iio_ioctl_handler {
+ 		      unsigned int cmd, unsigned long arg);
+ };
+ 
+-long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
+-		      unsigned int cmd, unsigned long arg);
+-
+ void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
+ 				       struct iio_ioctl_handler *h);
+ void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index ed5a96e78df0..95f548235de7 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -464,7 +464,6 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type);
+ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable);
+ int inv_mpu6050_switch_engine(struct inv_mpu6050_state *st, bool en,
+ 			      unsigned int mask);
+-int inv_mpu6050_write_reg(struct inv_mpu6050_state *st, int reg, u8 val);
+ int inv_mpu_acpi_create_mux_client(struct i2c_client *client);
+ void inv_mpu_acpi_delete_mux_client(struct i2c_client *client);
+ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+diff --git a/include/linux/iio/sw_device.h b/include/linux/iio/sw_device.h
+index eff1e6b2595c..0f7fe7b522e3 100644
+--- a/include/linux/iio/sw_device.h
++++ b/include/linux/iio/sw_device.h
+@@ -51,9 +51,6 @@ void iio_unregister_sw_device_type(struct iio_sw_device_type *dt);
+ struct iio_sw_device *iio_sw_device_create(const char *, const char *);
+ void iio_sw_device_destroy(struct iio_sw_device *);
+ 
+-int iio_sw_device_type_configfs_register(struct iio_sw_device_type *dt);
+-void iio_sw_device_type_configfs_unregister(struct iio_sw_device_type *dt);
+-
+ static inline
+ void iio_swd_group_init_type_name(struct iio_sw_device *d,
+ 				  const char *name,
+diff --git a/include/linux/iio/sw_trigger.h b/include/linux/iio/sw_trigger.h
+index 47de2443e984..bc77f88df303 100644
+--- a/include/linux/iio/sw_trigger.h
++++ b/include/linux/iio/sw_trigger.h
+@@ -51,9 +51,6 @@ void iio_unregister_sw_trigger_type(struct iio_sw_trigger_type *tt);
+ struct iio_sw_trigger *iio_sw_trigger_create(const char *, const char *);
+ void iio_sw_trigger_destroy(struct iio_sw_trigger *);
+ 
+-int iio_sw_trigger_type_configfs_register(struct iio_sw_trigger_type *tt);
+-void iio_sw_trigger_type_configfs_unregister(struct iio_sw_trigger_type *tt);
+-
+ static inline
+ void iio_swt_group_init_type_name(struct iio_sw_trigger *t,
+ 				  const char *name,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 

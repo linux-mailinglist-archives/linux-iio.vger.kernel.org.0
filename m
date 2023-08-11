@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E303C778AA7
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 12:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28607778AE5
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 12:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjHKKHq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Aug 2023 06:07:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57146 "EHLO
+        id S235535AbjHKKJG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Aug 2023 06:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229719AbjHKKHp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 06:07:45 -0400
+        with ESMTP id S235531AbjHKKI7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 06:08:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E38DEA;
-        Fri, 11 Aug 2023 03:07:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCE930CD;
+        Fri, 11 Aug 2023 03:08:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D984360F97;
-        Fri, 11 Aug 2023 10:07:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD18C433C7;
-        Fri, 11 Aug 2023 10:07:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45F2B66E26;
+        Fri, 11 Aug 2023 10:08:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE266C433BB;
+        Fri, 11 Aug 2023 10:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691748463;
-        bh=HHqgty3rovQxNjR0U0Pr3TlDn756khOb1WS3upeemtQ=;
+        s=k20201202; t=1691748524;
+        bh=jTLGNFFdzle1CYrnK/oXkobWpUEyBNF6m/UIsNJAaAk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dG84dKM0MxtSx69ZuflemSKTdcdYelrPelyz6J17st9AWk5/kDx3tBkhS+TFoVayl
-         CREee+MKgtB4DPlq9XaVuAaxokPeqwYFq2Unt9l8CIPvltiAaoTQqHBG5dosYIhUTM
-         2LFoAx9e2ofKcz0E6B20O/IoajsfAtfEi7rHrIS/EijQFawJ0elNdny/Xeg7lz43uU
-         l4Xs4bxAm8qaGpkulVGqqYbxhlLyAetqgpNMoZNy9289tR6Jgr+E6YlGBVvBlT7qyt
-         8NG1ENx+dldnPClmRtqSc49txG1aXwOQwEtjdO9wfif35iKL1TOw3MxiWaT7gVBgr+
-         W4+AmkR6Mb6Pg==
-Date:   Fri, 11 Aug 2023 12:07:37 +0200
+        b=HlLG8ncpx9zLh/JjXG37dja0xNnq9iuCOrbqr58eAbOvJAw9e6rFjm8J/MqV8nwvN
+         towaV4/5TAsU+a9zrfd0qiJYbLtspqIQhQgOdUhju89VlQWRUyAErFAzXc+JWYElqU
+         fqsGcVlF4HksnCjdh69a47mxO+DvQGuiSamQ00aKUvMPAX4NTnr4ixeFJNZ0kD3nrm
+         L2/MbsCO5oFLTpDbIh8IFUGbTYLC8XgzTz5U8RVu5HeLcQxJm8ooYc3/y1bfbMsGxE
+         yoj+0/sGS5ec1e0oKfwGNOfkCMbKepB0b1q//C5CcFkIJunahgRFL7ma7a7xbdYVXs
+         9ga0pPSaN+FSA==
+Date:   Fri, 11 Aug 2023 12:08:38 +0200
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -40,15 +40,14 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Mario Tesi <mario.tesi@st.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: lsm6dsx: Support temperature channel
-Message-ID: <ZNYIaagdt7HuRet5@lore-rh-laptop>
+Subject: Re: [PATCH 0/2] iio: imu: lsm6dsx: Support temperature and ism330dhc
+Message-ID: <ZNYIpqz7EMDqISyX@lore-rh-laptop>
 References: <20230811-iio-spacex-lsm6ds0-v1-0-e953a440170d@linaro.org>
- <20230811-iio-spacex-lsm6ds0-v1-1-e953a440170d@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="b/r7Mr9rznlcEMbf"
+        protocol="application/pgp-signature"; boundary="bhhokxLNw1UQtA2T"
 Content-Disposition: inline
-In-Reply-To: <20230811-iio-spacex-lsm6ds0-v1-1-e953a440170d@linaro.org>
+In-Reply-To: <20230811-iio-spacex-lsm6ds0-v1-0-e953a440170d@linaro.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -60,193 +59,55 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---b/r7Mr9rznlcEMbf
+--bhhokxLNw1UQtA2T
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> The LSM6DSX (possibly other ST IMUs as well) has a temperature
-> channel that can be read out. Modify the lsm6dsx core to
-> accomodate temperature readout: make headspace for three
-> members in the channels and odr_table, support offset and make
-> the available milli_hz frequency resolution optional.
->=20
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-[...]
->  static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] =3D=
- {
->  	{
->  		.reset =3D {
-> @@ -835,6 +840,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
-ensor_settings[] =3D {
->  				.chan =3D st_lsm6dsx_gyro_channels,
->  				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
->  			},
-> +			[ST_LSM6DSX_ID_TEMP] =3D {
-> +				.chan =3D st_lsm6dsx_temp_channels,
-> +				.len =3D ARRAY_SIZE(st_lsm6dsx_temp_channels),
-> +			},
->  		},
->  		.drdy_mask =3D {
->  			.addr =3D 0x13,
-> @@ -869,6 +878,15 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
-ensor_settings[] =3D {
->  				.odr_avl[6] =3D { 833000, 0x07 },
->  				.odr_len =3D 7,
->  			},
-> +			[ST_LSM6DSX_ID_TEMP] =3D {
-> +				.reg =3D {
-> +					.addr =3D 0x0A,
-> +					.mask =3D GENMASK(5, 4),
-> +				},
+> The ISM330DHC is used in the SpaceX Starlink terminals which
+> are running a realtime patched close-to-mainline Linux kernel so
+> let's support it because why not.
 
-looking at the ISM330DHCX datasheet, the temperature sensor ODR is just 52H=
-z,
-while values in 0x0A register are used only for FIFO decimation, they are n=
-ot
-values you can configure the sensor e.g. for read_one_shot().
+Hi Linus,
 
-> +				.odr_avl[0] =3D {  26000, 0x02 },
-> +				.odr_avl[1] =3D {  52000, 0x03 },
-> +				.odr_len =3D 2,
-> +			},
->  		},
->  		.fs_table =3D {
->  			[ST_LSM6DSX_ID_ACC] =3D {
-> @@ -937,6 +955,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
-ensor_settings[] =3D {
->  				.addr =3D 0x09,
->  				.mask =3D GENMASK(7, 4),
->  			},
-> +			[ST_LSM6DSX_ID_TEMP] =3D {
-> +				.addr =3D 0x0A,
-> +				.mask =3D GENMASK(5, 4),
-> +			},
->  		},
->  		.fifo_ops =3D {
->  			.update_fifo =3D st_lsm6dsx_update_fifo,
-> @@ -1661,6 +1683,7 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor=
-, u32 req_odr)
->  	switch (sensor->id) {
->  	case ST_LSM6DSX_ID_GYRO:
->  		break;
-> +	case ST_LSM6DSX_ID_TEMP:
->  	case ST_LSM6DSX_ID_EXT0:
->  	case ST_LSM6DSX_ID_EXT1:
->  	case ST_LSM6DSX_ID_EXT2:
-> @@ -1800,6 +1823,10 @@ static int st_lsm6dsx_read_raw(struct iio_dev *iio=
-_dev,
->  		*val2 =3D sensor->gain;
->  		ret =3D IIO_VAL_INT_PLUS_NANO;
->  		break;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val =3D sensor->offset;
-> +		ret =3D IIO_VAL_INT;
-> +		break;
->  	default:
->  		ret =3D -EINVAL;
->  		break;
-> @@ -2016,9 +2043,11 @@ st_lsm6dsx_sysfs_sampling_frequency_avail(struct d=
-evice *dev,
-> =20
->  	odr_table =3D &sensor->hw->settings->odr_table[sensor->id];
->  	for (i =3D 0; i < odr_table->odr_len; i++)
-> -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
-> -				 odr_table->odr_avl[i].milli_hz / 1000,
-> -				 odr_table->odr_avl[i].milli_hz % 1000);
-> +		if (odr_table->odr_avl[i].milli_hz) {
-> +			len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
-> +					 odr_table->odr_avl[i].milli_hz / 1000,
-> +					 odr_table->odr_avl[i].milli_hz % 1000);
-> +		}
->  	buf[len - 1] =3D '\n';
-> =20
->  	return len;
-> @@ -2106,6 +2135,22 @@ static const struct iio_info st_lsm6dsx_gyro_info =
-=3D {
->  	.write_raw_get_fmt =3D st_lsm6dsx_write_raw_get_fmt,
->  };
-> =20
-> +static struct attribute *st_lsm6dsx_temp_attributes[] =3D {
-> +	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group st_lsm6dsx_temp_attribute_group =3D {
-> +	.attrs =3D st_lsm6dsx_temp_attributes,
-> +};
-> +
-> +static const struct iio_info st_lsm6dsx_temp_info =3D {
-> +	.attrs =3D &st_lsm6dsx_temp_attribute_group,
-> +	.read_raw =3D st_lsm6dsx_read_raw,
-> +	.write_raw =3D st_lsm6dsx_write_raw,
-> +	.hwfifo_set_watermark =3D st_lsm6dsx_set_watermark,
-> +};
-> +
->  static int st_lsm6dsx_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_p=
-in)
->  {
->  	struct device *dev =3D hw->dev;
-> @@ -2379,7 +2424,16 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(str=
-uct st_lsm6dsx_hw *hw,
->  	sensor->id =3D id;
->  	sensor->hw =3D hw;
->  	sensor->odr =3D hw->settings->odr_table[id].odr_avl[0].milli_hz;
-
-here ODR should be 52 I guess
-
-> -	sensor->gain =3D hw->settings->fs_table[id].fs_avl[0].gain;
-> +	if (id =3D=3D ST_LSM6DSX_ID_TEMP) {
-> +		/*
-> +		 * The temperature sensor has a fixed scale and offset such
-> +		 * that: temp_C =3D (raw / 256) + 25
-> +		 */
-> +		sensor->gain =3D 3906;
-> +		sensor->offset =3D 25;
-
-
-I was wondering about the 25 costant value since ISM330DHCX ds does not pro=
-vide
-a typical value. Maybe we should provide a way for the user to configure it?
-
-> +	} else {
-> +		sensor->gain =3D hw->settings->fs_table[id].fs_avl[0].gain;
-> +	}
->  	sensor->watermark =3D 1;
-> =20
->  	switch (id) {
-> @@ -2393,6 +2447,11 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(str=
-uct st_lsm6dsx_hw *hw,
->  		scnprintf(sensor->name, sizeof(sensor->name), "%s_gyro",
->  			  name);
->  		break;
-> +	case ST_LSM6DSX_ID_TEMP:
-> +		iio_dev->info =3D &st_lsm6dsx_temp_info;
-> +		scnprintf(sensor->name, sizeof(sensor->name), "%s_temp",
-> +			  name);
+this is cool, thx for working on this. Some comments in patch 1/2 and 2/2.
 
 Regards,
 Lorenzo
 
-> +		break;
->  	default:
->  		return NULL;
->  	}
 >=20
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Linus Walleij (2):
+>       iio: lsm6dsx: Support temperature channel
+>       iio: imu: lsm6dsx: Add support for ism330dhc
+>=20
+>  drivers/iio/imu/st_lsm6dsx/Kconfig             |  8 +--
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h        | 26 ++++++++-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |  4 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 73 ++++++++++++++++++++=
+++++--
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c    |  5 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c    |  4 ++
+>  6 files changed, 109 insertions(+), 11 deletions(-)
+> ---
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> change-id: 20230811-iio-spacex-lsm6ds0-33c9365e94bf
+>=20
+> Best regards,
 > --=20
-> 2.34.1
+> Linus Walleij <linus.walleij@linaro.org>
 >=20
 
---b/r7Mr9rznlcEMbf
+--bhhokxLNw1UQtA2T
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZNYIZwAKCRA6cBh0uS2t
-rLRAAP0ZpysPS8KRJhWhSxzNKTu6ZksYK3TsBVCknpWZrVPT8QEAgmjFZ8MSofKv
-Cle6tfNnkqn5BvPKAu7rAUV2qnKM/AI=
-=Sz4h
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZNYIowAKCRA6cBh0uS2t
+rGDjAQCjnWMmxTARPSs6tcuNlSjey080HQuGR6uHvI8GF8h/HwD+KXuBjZE/JQeE
+io0VH6UNp+M2hQEObOzhEMTjHPZNkQM=
+=Oqml
 -----END PGP SIGNATURE-----
 
---b/r7Mr9rznlcEMbf--
+--bhhokxLNw1UQtA2T--

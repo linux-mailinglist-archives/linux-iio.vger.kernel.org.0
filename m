@@ -2,57 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A574B77896E
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 11:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641E477896F
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Aug 2023 11:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229503AbjHKJIM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Aug 2023 05:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60464 "EHLO
+        id S230009AbjHKJIc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Aug 2023 05:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjHKJIM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 05:08:12 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A3D211C
-        for <linux-iio@vger.kernel.org>; Fri, 11 Aug 2023 02:08:11 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-583d63ca1e9so20268637b3.1
-        for <linux-iio@vger.kernel.org>; Fri, 11 Aug 2023 02:08:11 -0700 (PDT)
+        with ESMTP id S229733AbjHKJIb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Aug 2023 05:08:31 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9069D2D6D
+        for <linux-iio@vger.kernel.org>; Fri, 11 Aug 2023 02:08:30 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fe82ac3ab4so2670859e87.1
+        for <linux-iio@vger.kernel.org>; Fri, 11 Aug 2023 02:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1691744890; x=1692349690;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=liLW/nS6lNiVs7Mn3ykQKreqi50kVvFD0DECJxNhFVk=;
-        b=i4m63y1134Kwii/iYQDy0q5giqzRxZAu0YyFSiwCXB++hdvlCUMOO+sN5ySaawRP4Y
-         +HKzPExlNgVJdAiyZPxFopQXk8jnu3H0WwRFv1542ji+t0Dom6eK2De93MhuasbNGRa1
-         vtlWPZiiJfN66UebIkYgmz3G6oQg9GQ2C7HXz7ZGZNY5KHCdVYsr9HiN7FHG8WKMR52i
-         CFmZKCj8iL4+2MG+lkuUdkKOBQ4/e8FdcGfkCTWFQ55vdvHtGi3IjU3Y2f6VkrRqvaa7
-         MBQdTjmI2gMOENEd4eRiHj0rq1qiBGmkrz7hE0cdVpCmk3zkUdQsskEV7d2MNTGUURys
-         OtHw==
+        d=linaro.org; s=google; t=1691744909; x=1692349709;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lY+LwKhdiwT5yUuk0pfp4VDPScPM/Qp05zIRykeUedo=;
+        b=Ymm1VEr5VHHuUz1h0+0XGLFthsQ1Rf6B3gZS+Lpm3PWXOMXbVuAXMspHQ2NfZ+IvXK
+         7YO2Cp1V+hFu44BiVs8JmnR9WyGqm8b47pRH3/zmUnj6meoZi2gPBy/t23j0A9Htdk17
+         41x6Ipud2ZsqAgi1YleOSLog0zNo+LgL4bsMQhbKcV0tjKUjrpD7TdFBFKRWPeMD5JUh
+         OOpeR51vEF3o/sniMiYFHlpseN/0h87a597AaogHaTTB5Ufbpmi+t/KlmdqXzQdbbQjr
+         xK7/nGXBAARgUld1YIPelNHRgJcMZ1y2EDDh9WFLd+UZBd/ACjTzPcCK2zKRWBEQIGSL
+         XpYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691744890; x=1692349690;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=liLW/nS6lNiVs7Mn3ykQKreqi50kVvFD0DECJxNhFVk=;
-        b=GiJDxWx8RHt8FJuu3NjgnIuybLHdZWfiTHNkirryr6EmxjCXSABTuLTK0Li2zcSSW2
-         I3Md1LUsHisjxtxmI0Nggjn7gCqoTjFfAYE973L1kq+E8LgR0KYfiAgVmDwESZtahRRU
-         Sk2HyHkPyh0Aue5l0yblsWrnSkMRQX60Cc/3W+tfECcWupS1Mbci0Jp3pcg7JlsZTaDe
-         1WWchQWo05GW/jvq5bj73+LrO5+MPg5vnQHXQsvGuauTtmQMQgO15+M6hhVDQkxkZAUg
-         SYchbGicen73AG2cBL4XLoUKu68i8YZrObnC07YnIMKs1kqp2hlcNf55qYB7wyVpElXC
-         BEvA==
-X-Gm-Message-State: AOJu0YyFcHNWn7dNCDHtXMcAdDdSLdVmyZ2XZzTvVs6+gAce4hRcKxdz
-        JE4ES2Tm28Poeiax9P0A8SUacTmoMdgdEh40d33Y7PMnVZi0Q7JBrIJrIQ==
-X-Google-Smtp-Source: AGHT+IFJBa7drtmaWNpi9qpVHqFmas5+9ZlmgHWrYSUMdCvsnTdapuNcDdZAc9LcazLEEejpGtF2Wao0yDChBhyfnpo=
-X-Received: by 2002:a81:a086:0:b0:571:bd3e:73ca with SMTP id
- x128-20020a81a086000000b00571bd3e73camr1318698ywg.16.1691744890738; Fri, 11
- Aug 2023 02:08:10 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691744909; x=1692349709;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lY+LwKhdiwT5yUuk0pfp4VDPScPM/Qp05zIRykeUedo=;
+        b=ESHE4om61fB6TyPlSLsJjU/NM3SsoBaMMMeBiKC4emDDpHRKkIRMLNt9tsNI1tbCc4
+         4aITp6bzaotd6FaJs0ILngiGrje8GojfxeZYedg5vsSx/t790md4R8DTZZtQg/EMR9MQ
+         T7esTM4cJyDfwyyDCGlRsyy1mFy80nWIdmLip6F2iBCE8TS43zTDReKauyussFLmx12e
+         7DfM81ZT1g1G9BwDKm9kn2ExxTYmLfVhSxUvj1QAX8zScDn5e5GUTA1ebcLiGIzpLh1I
+         pFvf1b2urDJHTQmXJnE+HnYRpkopLMtTOamg/glZuEnIwAl4jtkCutDnj6ks0+vuIiKi
+         qHFw==
+X-Gm-Message-State: AOJu0Yza3Fz4kwsgyMoWfvkNrqCCFkOWbzx8i4QPHxbalwiVSgRwerJl
+        H/rFyq7uAV60M3PU9iGDcTpquA==
+X-Google-Smtp-Source: AGHT+IHGPuOs6tx4yRfVp0Qm9TI8cnImteMDWSv8MiPZfesohXJLwu0z7qx277pTjY90I59383tM1w==
+X-Received: by 2002:a05:6512:33ca:b0:4fe:8e0:87f3 with SMTP id d10-20020a05651233ca00b004fe08e087f3mr927803lfg.41.1691744908749;
+        Fri, 11 Aug 2023 02:08:28 -0700 (PDT)
+Received: from [127.0.1.1] ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id w3-20020ac24423000000b004fe2f085d5csm642340lfl.299.2023.08.11.02.08.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Aug 2023 02:08:28 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 0/2] iio: imu: lsm6dsx: Support temperature and ism330dhc
+Date:   Fri, 11 Aug 2023 11:08:24 +0200
+Message-Id: <20230811-iio-spacex-lsm6ds0-v1-0-e953a440170d@linaro.org>
 MIME-Version: 1.0
-From:   Phil Elwell <phil@raspberrypi.com>
-Date:   Fri, 11 Aug 2023 10:08:00 +0100
-Message-ID: <CAMEGJJ3aiKUtTsHzVgbVEfiRUL+VV1zfc9-FoCRTjfWp4-=5ug@mail.gmail.com>
-Subject: BMP180 (no) interrupt problem
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIj61WQC/x3MSQqAMAxA0atI1gY6qKhXERfaRg04lAZEKN7d4
+ vIt/k8gFJkE+iJBpJuFrzNDlwW4bTpXQvbZYJSxqtUamS+UMDl6cJej8aLQWtfZpqaumhfIYYi
+ 08PNPh/F9P0RtFZtkAAAA
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Mario Tesi <mario.tesi@st.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.3
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,49 +76,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan and linux-iio,
+The ISM330DHC is used in the SpaceX Starlink terminals which
+are running a realtime patched close-to-mainline Linux kernel so
+let's support it because why not.
 
-I've run into a problem running a BMP180 over I2C - it's on a
-Raspberry Pi, but I don't think that's particularly relevant. As it's
-a BMP180 it has no interrupt signal, but it apparently shares an ID
-with the BMP085 which does. As a result, the driver and bindings
-sensibly treat the IRQ as optional.
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Linus Walleij (2):
+      iio: lsm6dsx: Support temperature channel
+      iio: imu: lsm6dsx: Add support for ism330dhc
 
-The function bmp280_common_probe contains the following fragment:
+ drivers/iio/imu/st_lsm6dsx/Kconfig             |  8 +--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h        | 26 ++++++++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |  4 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 73 ++++++++++++++++++++++++--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c    |  5 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c    |  4 ++
+ 6 files changed, 109 insertions(+), 11 deletions(-)
+---
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+change-id: 20230811-iio-spacex-lsm6ds0-33c9365e94bf
 
-/*
-* Attempt to grab an optional EOC IRQ - only the BMP085 has this
-* however as it happens, the BMP085 shares the chip ID of BMP180
-* so we look for an IRQ if we have that.
-*/
-if (irq > 0 || (chip_id  == BMP180_CHIP_ID)) {
-    ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
-    if (ret)
-        return ret;
-}
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
 
-where the irq is passed in from the I2C or SPI framework. Inside
-bmp085_fetch_eoc_irq it immediately does:
-
-    irq_trig = irqd_get_trigger_type(irq_get_irq_data(irq));
-
-irq_get_irq_data converts irq to an irqd, returning either a pointer
-to the irq_data or a NULL. irq_get_trigger_type essentially just
-indirects through the pointer to retrieve the irq_common_data pointer.
-
-There is nothing to prevent irq from being 0, and in the case of a
-BMP180 that is the expected value. This is where it gets strange: on
-an ARCH=arm build I'm getting a valid-looking irq_data pointer back
-for IRQ 0, but on ARCH=arm64 I get the more obvious NULL pointer,
-leading to an exception.
-
-I'm hesitant to suggest there's a bug in such old code, but I don't
-understand why the condition in the probe function isn't:
-
-    if (irq > 0 && (chip_id  == BMP180_CHIP_ID))
-
-Do you have any thoughts?
-
-Many thanks,
-
-Phil Elwell

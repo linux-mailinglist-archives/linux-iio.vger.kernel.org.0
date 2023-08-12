@@ -2,40 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD77D779DE7
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 09:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C3F779E36
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 10:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbjHLHY0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Aug 2023 03:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50588 "EHLO
+        id S236300AbjHLIcJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Aug 2023 04:32:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbjHLHY0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 03:24:26 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1AD5112A;
-        Sat, 12 Aug 2023 00:24:24 -0700 (PDT)
+        with ESMTP id S236246AbjHLIcI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 04:32:08 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4DC71271E;
+        Sat, 12 Aug 2023 01:32:10 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,167,1684767600"; 
-   d="scan'208";a="176432361"
+   d="scan'208";a="172750607"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 12 Aug 2023 16:24:24 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 12 Aug 2023 17:32:09 +0900
 Received: from localhost.localdomain (unknown [10.226.92.36])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 5BFDF417E7A2;
-        Sat, 12 Aug 2023 16:24:21 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 5D4EF4196927;
+        Sat, 12 Aug 2023 17:32:06 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
         linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] iio: adc: max1363: Use i2c_get_match_data()
-Date:   Sat, 12 Aug 2023 08:24:19 +0100
-Message-Id: <20230812072419.42645-1-biju.das.jz@bp.renesas.com>
+Subject: [PATCH RFC/RFT] iio: imu: lsm6dsx: Use i2c_get_match_data()
+Date:   Sat, 12 Aug 2023 09:32:04 +0100
+Message-Id: <20230812083204.55346-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -48,124 +47,250 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Replace device_get_match_data() and i2c_match_id() by
-i2c_get_match_data() by making similar I2C and DT-based matching
-table.
+Replace device_get_match_data() and id lookup for retrieving match data
+by i2c_get_match_data() by converting enum->pointer for data in the
+match table.
 
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
-Note:
-This patch is only compile tested.
----
- drivers/iio/adc/max1363.c | 87 ++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 42 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c | 126 ++++++++++++--------
+ 1 file changed, 74 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index b31581616ce3..7c2a98b8c3a9 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -1599,9 +1599,7 @@ static int max1363_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+index 911444ec57c0..a2def435c9c2 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+@@ -16,6 +16,30 @@
  
--	st->chip_info = device_get_match_data(&client->dev);
--	if (!st->chip_info)
--		st->chip_info = &max1363_chip_info_tbl[id->driver_data];
-+	st->chip_info = i2c_get_match_data(client);
- 	st->client = client;
+ #include "st_lsm6dsx.h"
  
- 	st->vref_uv = st->chip_info->int_vref_mv * 1000;
-@@ -1669,46 +1667,51 @@ static int max1363_probe(struct i2c_client *client)
- 	return devm_iio_device_register(&client->dev, indio_dev);
++static const int lsm6ds3 = ST_LSM6DS3_ID;
++static const int lsm6ds3h = ST_LSM6DS3H_ID;
++static const int lsm6dsl = ST_LSM6DSL_ID;
++static const int lsm6dsm = ST_LSM6DSM_ID;
++static const int ism330dlc = ST_ISM330DLC_ID;
++static const int lsm6dso = ST_LSM6DSO_ID;
++static const int asm330lhh = ST_ASM330LHH_ID;
++static const int lsm6dsox = ST_LSM6DSOX_ID;
++static const int lsm6dsr = ST_LSM6DSR_ID;
++static const int lsm6ds3tr_c = ST_LSM6DS3TRC_ID;
++static const int ism330dhcx = ST_ISM330DHCX_ID;
++static const int lsm9ds1_imu = ST_LSM9DS1_ID;
++static const int lsm6ds0 = ST_LSM6DS0_ID;
++static const int lsm6dsrx = ST_LSM6DSRX_ID;
++static const int lsm6dst = ST_LSM6DST_ID;
++static const int lsm6dsop = ST_LSM6DSOP_ID;
++static const int asm330lhhx = ST_ASM330LHHX_ID;
++static const int lsm6dstx = ST_LSM6DSTX_ID;
++static const int lsm6dsv = ST_LSM6DSV_ID;
++static const int lsm6dsv16x = ST_LSM6DSV16X_ID;
++static const int lsm6dso16is = ST_LSM6DSO16IS_ID;
++static const int ism330is = ST_ISM330IS_ID;
++static const int asm330lhb = ST_ASM330LHB_ID;
++
+ static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+@@ -23,12 +47,10 @@ static const struct regmap_config st_lsm6dsx_i2c_regmap_config = {
+ 
+ static int st_lsm6dsx_i2c_probe(struct i2c_client *client)
+ {
+-	int hw_id;
++	const int *hw_id;
+ 	struct regmap *regmap;
+ 
+-	hw_id = (kernel_ulong_t)device_get_match_data(&client->dev);
+-	if (!hw_id)
+-		hw_id = i2c_client_get_device_id(client)->driver_data;
++	hw_id = i2c_get_match_data(client);
+ 	if (!hw_id)
+ 		return -EINVAL;
+ 
+@@ -38,136 +60,136 @@ static int st_lsm6dsx_i2c_probe(struct i2c_client *client)
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	return st_lsm6dsx_probe(&client->dev, client->irq, hw_id, regmap);
++	return st_lsm6dsx_probe(&client->dev, client->irq, *hw_id, regmap);
  }
  
-+#define MAX1363_ID_TABLE(_name, cfg) {				\
-+	.name = _name,						\
-+	.driver_data = (kernel_ulong_t)&max1363_chip_info_tbl[cfg],	\
-+}
-+
- static const struct i2c_device_id max1363_id[] = {
--	{ "max1361", max1361 },
--	{ "max1362", max1362 },
--	{ "max1363", max1363 },
--	{ "max1364", max1364 },
--	{ "max1036", max1036 },
--	{ "max1037", max1037 },
--	{ "max1038", max1038 },
--	{ "max1039", max1039 },
--	{ "max1136", max1136 },
--	{ "max1137", max1137 },
--	{ "max1138", max1138 },
--	{ "max1139", max1139 },
--	{ "max1236", max1236 },
--	{ "max1237", max1237 },
--	{ "max1238", max1238 },
--	{ "max1239", max1239 },
--	{ "max11600", max11600 },
--	{ "max11601", max11601 },
--	{ "max11602", max11602 },
--	{ "max11603", max11603 },
--	{ "max11604", max11604 },
--	{ "max11605", max11605 },
--	{ "max11606", max11606 },
--	{ "max11607", max11607 },
--	{ "max11608", max11608 },
--	{ "max11609", max11609 },
--	{ "max11610", max11610 },
--	{ "max11611", max11611 },
--	{ "max11612", max11612 },
--	{ "max11613", max11613 },
--	{ "max11614", max11614 },
--	{ "max11615", max11615 },
--	{ "max11616", max11616 },
--	{ "max11617", max11617 },
--	{ "max11644", max11644 },
--	{ "max11645", max11645 },
--	{ "max11646", max11646 },
--	{ "max11647", max11647 },
--	{}
-+	MAX1363_ID_TABLE("max1361", max1361),
-+	MAX1363_ID_TABLE("max1362", max1362),
-+	MAX1363_ID_TABLE("max1363", max1363),
-+	MAX1363_ID_TABLE("max1364", max1364),
-+	MAX1363_ID_TABLE("max1036", max1036),
-+	MAX1363_ID_TABLE("max1037", max1037),
-+	MAX1363_ID_TABLE("max1038", max1038),
-+	MAX1363_ID_TABLE("max1039", max1039),
-+	MAX1363_ID_TABLE("max1136", max1136),
-+	MAX1363_ID_TABLE("max1137", max1137),
-+	MAX1363_ID_TABLE("max1138", max1138),
-+	MAX1363_ID_TABLE("max1139", max1139),
-+	MAX1363_ID_TABLE("max1236", max1236),
-+	MAX1363_ID_TABLE("max1237", max1237),
-+	MAX1363_ID_TABLE("max1238", max1238),
-+	MAX1363_ID_TABLE("max1239", max1239),
-+	MAX1363_ID_TABLE("max11600", max11600),
-+	MAX1363_ID_TABLE("max11601", max11601),
-+	MAX1363_ID_TABLE("max11602", max11602),
-+	MAX1363_ID_TABLE("max11603", max11603),
-+	MAX1363_ID_TABLE("max11604", max11604),
-+	MAX1363_ID_TABLE("max11605", max11605),
-+	MAX1363_ID_TABLE("max11606", max11606),
-+	MAX1363_ID_TABLE("max11607", max11607),
-+	MAX1363_ID_TABLE("max11608", max11608),
-+	MAX1363_ID_TABLE("max11609", max11609),
-+	MAX1363_ID_TABLE("max11610", max11610),
-+	MAX1363_ID_TABLE("max11611", max11611),
-+	MAX1363_ID_TABLE("max11612", max11612),
-+	MAX1363_ID_TABLE("max11613", max11613),
-+	MAX1363_ID_TABLE("max11614", max11614),
-+	MAX1363_ID_TABLE("max11615", max11615),
-+	MAX1363_ID_TABLE("max11616", max11616),
-+	MAX1363_ID_TABLE("max11617", max11617),
-+	MAX1363_ID_TABLE("max11644", max11644),
-+	MAX1363_ID_TABLE("max11645", max11645),
-+	MAX1363_ID_TABLE("max11646", max11646),
-+	MAX1363_ID_TABLE("max11647", max11647),
-+	{ /* sentinel */ }
+ static const struct of_device_id st_lsm6dsx_i2c_of_match[] = {
+ 	{
+ 		.compatible = "st,lsm6ds3",
+-		.data = (void *)ST_LSM6DS3_ID,
++		.data = &lsm6ds3,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6ds3h",
+-		.data = (void *)ST_LSM6DS3H_ID,
++		.data = &lsm6ds3h,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsl",
+-		.data = (void *)ST_LSM6DSL_ID,
++		.data = &lsm6dsl,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsm",
+-		.data = (void *)ST_LSM6DSM_ID,
++		.data = &lsm6dsm,
+ 	},
+ 	{
+ 		.compatible = "st,ism330dlc",
+-		.data = (void *)ST_ISM330DLC_ID,
++		.data = &ism330dlc,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dso",
+-		.data = (void *)ST_LSM6DSO_ID,
++		.data = &lsm6dso,
+ 	},
+ 	{
+ 		.compatible = "st,asm330lhh",
+-		.data = (void *)ST_ASM330LHH_ID,
++		.data = &asm330lhh,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsox",
+-		.data = (void *)ST_LSM6DSOX_ID,
++		.data = &lsm6dsox,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsr",
+-		.data = (void *)ST_LSM6DSR_ID,
++		.data = &lsm6dsr,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6ds3tr-c",
+-		.data = (void *)ST_LSM6DS3TRC_ID,
++		.data = &lsm6ds3tr_c,
+ 	},
+ 	{
+ 		.compatible = "st,ism330dhcx",
+-		.data = (void *)ST_ISM330DHCX_ID,
++		.data = &ism330dhcx,
+ 	},
+ 	{
+ 		.compatible = "st,lsm9ds1-imu",
+-		.data = (void *)ST_LSM9DS1_ID,
++		.data = &lsm9ds1_imu,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6ds0",
+-		.data = (void *)ST_LSM6DS0_ID,
++		.data = &lsm6ds0,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsrx",
+-		.data = (void *)ST_LSM6DSRX_ID,
++		.data = &lsm6dsrx,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dst",
+-		.data = (void *)ST_LSM6DST_ID,
++		.data = &lsm6dst,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsop",
+-		.data = (void *)ST_LSM6DSOP_ID,
++		.data = &lsm6dsop,
+ 	},
+ 	{
+ 		.compatible = "st,asm330lhhx",
+-		.data = (void *)ST_ASM330LHHX_ID,
++		.data = &asm330lhhx,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dstx",
+-		.data = (void *)ST_LSM6DSTX_ID,
++		.data = &lsm6dstx,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsv",
+-		.data = (void *)ST_LSM6DSV_ID,
++		.data = &lsm6dsv,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dsv16x",
+-		.data = (void *)ST_LSM6DSV16X_ID,
++		.data = &lsm6dsv16x,
+ 	},
+ 	{
+ 		.compatible = "st,lsm6dso16is",
+-		.data = (void *)ST_LSM6DSO16IS_ID,
++		.data = &lsm6dso16is,
+ 	},
+ 	{
+ 		.compatible = "st,ism330is",
+-		.data = (void *)ST_ISM330IS_ID,
++		.data = &ism330is,
+ 	},
+ 	{
+ 		.compatible = "st,asm330lhb",
+-		.data = (void *)ST_ASM330LHB_ID,
++		.data = &asm330lhb,
+ 	},
+ 	{},
  };
+ MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
  
- MODULE_DEVICE_TABLE(i2c, max1363_id);
+ static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
+-	{ "SMO8B30", ST_LSM6DS3TRC_ID, },
++	{ "SMO8B30", (kernel_ulong_t)&lsm6ds3tr_c, },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(acpi, st_lsm6dsx_i2c_acpi_match);
+ 
+ static const struct i2c_device_id st_lsm6dsx_i2c_id_table[] = {
+-	{ ST_LSM6DS3_DEV_NAME, ST_LSM6DS3_ID },
+-	{ ST_LSM6DS3H_DEV_NAME, ST_LSM6DS3H_ID },
+-	{ ST_LSM6DSL_DEV_NAME, ST_LSM6DSL_ID },
+-	{ ST_LSM6DSM_DEV_NAME, ST_LSM6DSM_ID },
+-	{ ST_ISM330DLC_DEV_NAME, ST_ISM330DLC_ID },
+-	{ ST_LSM6DSO_DEV_NAME, ST_LSM6DSO_ID },
+-	{ ST_ASM330LHH_DEV_NAME, ST_ASM330LHH_ID },
+-	{ ST_LSM6DSOX_DEV_NAME, ST_LSM6DSOX_ID },
+-	{ ST_LSM6DSR_DEV_NAME, ST_LSM6DSR_ID },
+-	{ ST_LSM6DS3TRC_DEV_NAME, ST_LSM6DS3TRC_ID },
+-	{ ST_ISM330DHCX_DEV_NAME, ST_ISM330DHCX_ID },
+-	{ ST_LSM9DS1_DEV_NAME, ST_LSM9DS1_ID },
+-	{ ST_LSM6DS0_DEV_NAME, ST_LSM6DS0_ID },
+-	{ ST_LSM6DSRX_DEV_NAME, ST_LSM6DSRX_ID },
+-	{ ST_LSM6DST_DEV_NAME, ST_LSM6DST_ID },
+-	{ ST_LSM6DSOP_DEV_NAME, ST_LSM6DSOP_ID },
+-	{ ST_ASM330LHHX_DEV_NAME, ST_ASM330LHHX_ID },
+-	{ ST_LSM6DSTX_DEV_NAME, ST_LSM6DSTX_ID },
+-	{ ST_LSM6DSV_DEV_NAME, ST_LSM6DSV_ID },
+-	{ ST_LSM6DSV16X_DEV_NAME, ST_LSM6DSV16X_ID },
+-	{ ST_LSM6DSO16IS_DEV_NAME, ST_LSM6DSO16IS_ID },
+-	{ ST_ISM330IS_DEV_NAME, ST_ISM330IS_ID },
+-	{ ST_ASM330LHB_DEV_NAME, ST_ASM330LHB_ID },
++	{ ST_LSM6DS3_DEV_NAME, (kernel_ulong_t)&lsm6ds3 },
++	{ ST_LSM6DS3H_DEV_NAME, (kernel_ulong_t)&lsm6ds3h },
++	{ ST_LSM6DSL_DEV_NAME, (kernel_ulong_t)&lsm6dsl },
++	{ ST_LSM6DSM_DEV_NAME, (kernel_ulong_t)&lsm6dsm },
++	{ ST_ISM330DLC_DEV_NAME, (kernel_ulong_t)&ism330dlc },
++	{ ST_LSM6DSO_DEV_NAME, (kernel_ulong_t)&lsm6dso },
++	{ ST_ASM330LHH_DEV_NAME, (kernel_ulong_t)&asm330lhh },
++	{ ST_LSM6DSOX_DEV_NAME, (kernel_ulong_t)&lsm6dsox },
++	{ ST_LSM6DSR_DEV_NAME, (kernel_ulong_t)&lsm6dsr },
++	{ ST_LSM6DS3TRC_DEV_NAME, (kernel_ulong_t)&lsm6ds3tr_c },
++	{ ST_ISM330DHCX_DEV_NAME, (kernel_ulong_t)&ism330dhcx },
++	{ ST_LSM9DS1_DEV_NAME, (kernel_ulong_t)&lsm9ds1_imu },
++	{ ST_LSM6DS0_DEV_NAME, (kernel_ulong_t)&lsm6ds0 },
++	{ ST_LSM6DSRX_DEV_NAME, (kernel_ulong_t)&lsm6dsrx },
++	{ ST_LSM6DST_DEV_NAME, (kernel_ulong_t)&lsm6dst },
++	{ ST_LSM6DSOP_DEV_NAME, (kernel_ulong_t)&lsm6dsop },
++	{ ST_ASM330LHHX_DEV_NAME, (kernel_ulong_t)&asm330lhhx },
++	{ ST_LSM6DSTX_DEV_NAME, (kernel_ulong_t)&lsm6dstx },
++	{ ST_LSM6DSV_DEV_NAME, (kernel_ulong_t)&lsm6dsv },
++	{ ST_LSM6DSV16X_DEV_NAME, (kernel_ulong_t)&lsm6dsv16x },
++	{ ST_LSM6DSO16IS_DEV_NAME, (kernel_ulong_t)&lsm6dso16is },
++	{ ST_ISM330IS_DEV_NAME, (kernel_ulong_t)&ism330is },
++	{ ST_ASM330LHB_DEV_NAME, (kernel_ulong_t)&asm330lhb },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
 -- 
 2.25.1
 

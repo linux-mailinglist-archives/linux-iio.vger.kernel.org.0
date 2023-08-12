@@ -2,152 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302BB779FD4
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 13:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB59A77A010
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 15:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231993AbjHLLzA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Aug 2023 07:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54818 "EHLO
+        id S231882AbjHLNBe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Aug 2023 09:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbjHLLy7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 07:54:59 -0400
+        with ESMTP id S230298AbjHLNBe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 09:01:34 -0400
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A3554BA;
-        Sat, 12 Aug 2023 04:55:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4E9B7EA;
+        Sat, 12 Aug 2023 06:01:36 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,168,1684767600"; 
-   d="scan'208";a="176442329"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 12 Aug 2023 20:55:02 +0900
-Received: from localhost.localdomain (unknown [10.226.92.36])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id F1CB041D4E36;
-        Sat, 12 Aug 2023 20:54:58 +0900 (JST)
+   d="scan'208";a="176445098"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 12 Aug 2023 22:01:35 +0900
+Received: from localhost.localdomain (unknown [10.226.92.6])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id D8E114002950;
+        Sat, 12 Aug 2023 22:01:32 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Crt Mori <cmo@melexis.com>, Marek Vasut <marex@denx.de>,
-        linux-iio@vger.kernel.org,
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
-Subject: [PATCH 2/2] iio: dac: mcp4725: Use i2c_get_match_data()
-Date:   Sat, 12 Aug 2023 12:54:49 +0100
-Message-Id: <20230812115449.89942-3-biju.das.jz@bp.renesas.com>
+Subject: [PATCH] iio: proximity: sx9310: Convert enum->pointer for match data table
+Date:   Sat, 12 Aug 2023 14:01:30 +0100
+Message-Id: <20230812130130.123243-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230812115449.89942-1-biju.das.jz@bp.renesas.com>
-References: <20230812115449.89942-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Replace local variable chip_id with struct iio_chan_spec for device data
-and use its .ext_info for chip identification. After this replace
-device_get_match_data() and id lookup for retrieving match data
-by i2c_get_match_data() by converting enum->pointer for data in the
-match table.
+Convert enum->pointer for data in match data table, so that
+device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
+bus type match support added to it.
+
+Add struct sx931x_info and replace enum->sx931x_info in the match table
+and simplify sx9310_check_whoami().
 
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- drivers/iio/dac/mcp4725.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ drivers/iio/proximity/sx9310.c | 44 +++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/iio/dac/mcp4725.c b/drivers/iio/dac/mcp4725.c
-index 33a61f65bc25..f9ce01c4cc53 100644
---- a/drivers/iio/dac/mcp4725.c
-+++ b/drivers/iio/dac/mcp4725.c
-@@ -386,7 +386,7 @@ static int mcp4725_probe(struct i2c_client *client)
- 	struct mcp4725_data *data;
- 	struct iio_dev *indio_dev;
- 	struct mcp4725_platform_data *pdata, pdata_dt;
--	int chip_id;
-+	const struct iio_chan_spec *ch;
- 	u8 inbuf[4];
- 	u8 pd;
- 	u8 ref;
-@@ -398,10 +398,8 @@ static int mcp4725_probe(struct i2c_client *client)
- 	data = iio_priv(indio_dev);
- 	i2c_set_clientdata(client, indio_dev);
- 	data->client = client;
--	if (dev_fwnode(&client->dev))
--		chip_id = (uintptr_t)device_get_match_data(&client->dev);
--	else
--		chip_id = id->driver_data;
-+	ch = i2c_get_match_data(client);
-+
- 	pdata = dev_get_platdata(&client->dev);
- 
- 	if (!pdata) {
-@@ -414,7 +412,7 @@ static int mcp4725_probe(struct i2c_client *client)
- 		pdata = &pdata_dt;
- 	}
- 
--	if (chip_id == MCP4725 && pdata->use_vref) {
-+	if (ch->ext_info == mcp4725_ext_info && pdata->use_vref) {
- 		dev_err(&client->dev,
- 			"external reference is unavailable on MCP4725");
- 		return -EINVAL;
-@@ -455,12 +453,12 @@ static int mcp4725_probe(struct i2c_client *client)
- 
- 	indio_dev->name = id->name;
- 	indio_dev->info = &mcp4725_info;
--	indio_dev->channels = &mcp472x_channel[chip_id];
-+	indio_dev->channels = ch;
- 	indio_dev->num_channels = 1;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
- 	/* read current DAC value and settings */
--	err = i2c_master_recv(client, inbuf, chip_id == MCP4725 ? 3 : 4);
-+	err = i2c_master_recv(client, inbuf, ch->ext_info == mcp4725_ext_info ? 3 : 4);
- 
- 	if (err < 0) {
- 		dev_err(&client->dev, "failed to read DAC value");
-@@ -470,10 +468,10 @@ static int mcp4725_probe(struct i2c_client *client)
- 	data->powerdown = pd > 0;
- 	data->powerdown_mode = pd ? pd - 1 : 2; /* largest resistor to gnd */
- 	data->dac_value = (inbuf[1] << 4) | (inbuf[2] >> 4);
--	if (chip_id == MCP4726)
-+	if (ch->ext_info == mcp4726_ext_info)
- 		ref = (inbuf[3] >> 3) & 0x3;
- 
--	if (chip_id == MCP4726 && ref != data->ref_mode) {
-+	if (ch->ext_info == mcp4726_ext_info && ref != data->ref_mode) {
- 		dev_info(&client->dev,
- 			"voltage reference mode differs (conf: %u, eeprom: %u), setting %u",
- 			data->ref_mode, ref, data->ref_mode);
-@@ -511,8 +509,8 @@ static void mcp4725_remove(struct i2c_client *client)
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index d977aacb7491..0f1d5226a585 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -159,6 +159,11 @@ static_assert(SX9310_NUM_CHANNELS <= SX_COMMON_MAX_NUM_CHANNELS);
  }
+ #define SX9310_CHANNEL(idx) SX9310_NAMED_CHANNEL(idx, NULL)
  
- static const struct i2c_device_id mcp4725_id[] = {
--	{ "mcp4725", MCP4725 },
--	{ "mcp4726", MCP4726 },
-+	{ "mcp4725", (kernel_ulong_t)&mcp472x_channel[MCP4725] },
-+	{ "mcp4726", (kernel_ulong_t)&mcp472x_channel[MCP4726] },
- 	{ }
++struct sx931x_info {
++	const char *name;
++	unsigned int whoami;
++};
++
+ static const struct iio_chan_spec sx9310_channels[] = {
+ 	SX9310_CHANNEL(0),			/* CS0 */
+ 	SX9310_CHANNEL(1),			/* CS1 */
+@@ -902,7 +907,7 @@ static int sx9310_check_whoami(struct device *dev,
+ 			       struct iio_dev *indio_dev)
+ {
+ 	struct sx_common_data *data = iio_priv(indio_dev);
+-	unsigned int long ddata;
++	const struct sx931x_info *ddata;
+ 	unsigned int whoami;
+ 	int ret;
+ 
+@@ -910,20 +915,11 @@ static int sx9310_check_whoami(struct device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	ddata = (uintptr_t)device_get_match_data(dev);
+-	if (ddata != whoami)
++	ddata = device_get_match_data(dev);
++	if (ddata->whoami != whoami)
+ 		return -EINVAL;
+ 
+-	switch (whoami) {
+-	case SX9310_WHOAMI_VALUE:
+-		indio_dev->name = "sx9310";
+-		break;
+-	case SX9311_WHOAMI_VALUE:
+-		indio_dev->name = "sx9311";
+-		break;
+-	default:
+-		return -ENODEV;
+-	}
++	indio_dev->name = ddata->name;
+ 
+ 	return 0;
+ }
+@@ -1015,23 +1011,33 @@ static int sx9310_resume(struct device *dev)
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(sx9310_pm_ops, sx9310_suspend, sx9310_resume);
+ 
++static const struct sx931x_info sx9310_info = {
++	.name = "sx9310",
++	.whoami = SX9310_WHOAMI_VALUE
++};
++
++static const struct sx931x_info sx9311_info = {
++	.name = "sx9311",
++	.whoami = SX9311_WHOAMI_VALUE
++};
++
+ static const struct acpi_device_id sx9310_acpi_match[] = {
+-	{ "STH9310", SX9310_WHOAMI_VALUE },
+-	{ "STH9311", SX9311_WHOAMI_VALUE },
++	{ "STH9310", (kernel_ulong_t)&sx9310_info },
++	{ "STH9311", (kernel_ulong_t)&sx9311_info },
+ 	{}
  };
- MODULE_DEVICE_TABLE(i2c, mcp4725_id);
-@@ -520,11 +518,11 @@ MODULE_DEVICE_TABLE(i2c, mcp4725_id);
- static const struct of_device_id mcp4725_of_match[] = {
- 	{
- 		.compatible = "microchip,mcp4725",
--		.data = (void *)MCP4725
-+		.data = &mcp472x_channel[MCP4725]
- 	},
- 	{
- 		.compatible = "microchip,mcp4726",
--		.data = (void *)MCP4726
-+		.data = &mcp472x_channel[MCP4726]
- 	},
- 	{ }
+ MODULE_DEVICE_TABLE(acpi, sx9310_acpi_match);
+ 
+ static const struct of_device_id sx9310_of_match[] = {
+-	{ .compatible = "semtech,sx9310", (void *)SX9310_WHOAMI_VALUE },
+-	{ .compatible = "semtech,sx9311", (void *)SX9311_WHOAMI_VALUE },
++	{ .compatible = "semtech,sx9310", &sx9310_info },
++	{ .compatible = "semtech,sx9311", &sx9311_info },
+ 	{}
  };
+ MODULE_DEVICE_TABLE(of, sx9310_of_match);
+ 
+ static const struct i2c_device_id sx9310_id[] = {
+-	{ "sx9310", SX9310_WHOAMI_VALUE },
+-	{ "sx9311", SX9311_WHOAMI_VALUE },
++	{ "sx9310", (kernel_ulong_t)&sx9310_info },
++	{ "sx9311", (kernel_ulong_t)&sx9311_info },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(i2c, sx9310_id);
 -- 
 2.25.1
 

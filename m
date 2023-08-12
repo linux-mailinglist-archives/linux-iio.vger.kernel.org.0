@@ -2,94 +2,211 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D914C77A0E3
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 17:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E32977A0F9
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 18:12:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjHLPue (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Aug 2023 11:50:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
+        id S229452AbjHLQL5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Aug 2023 12:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHLPud (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 11:50:33 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B408AE4D;
-        Sat, 12 Aug 2023 08:50:36 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fe4cdb724cso26854615e9.1;
-        Sat, 12 Aug 2023 08:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691855435; x=1692460235;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=u8IVYGqEH3Y3ZSIOn/x2bcKDSicUgSZMVN8qe7sTQxw=;
-        b=mCBaSBLPzVgFIuf1UFh8gjyiaENdrvhsdzYZOGbd3dmirSkGSg/5OfI6J6FM+Qtv4f
-         Nq/PFTLjeFqC+q2niQKQhvqGmbJHiMxYnZi1xrfJjRw0ihUS70g+uz2AxoE8AFEkqMg4
-         CUviuCPvoUXbq0NEjjClnpRF1co00g1kRH3uzGl84mmuxoDqmp1V/cK32YvKdkfoFldG
-         afNOkovksP/8ZWEC6SUXQbtOVIlEr62KuT/JBIfc6yy9qRsaVc/0FBIbO76idF9dkfX4
-         OWxtxqwMoX/qImiljfVGAgamX9o1Ed0j3ZX0webN44XAs/RW22u/Z0UbT/WAh90X7wym
-         gREw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691855435; x=1692460235;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=u8IVYGqEH3Y3ZSIOn/x2bcKDSicUgSZMVN8qe7sTQxw=;
-        b=EmOpP2cYGr6epdSk91cucPI3Ufj+dodeTS5/EtgLJwNMPUGccX/oZpPKNulkNO/grc
-         VamX+UuE9gYcrRrcuwBuS968Xk9OF+6Bh+IS4UVHNJkcgEnlwSBGnJ+U+bGzBnZNzPEG
-         xwgevlLXlngzuGSxdExCnc4oz5A1kUN9IY2znOqa3RcpPizKCV1XtYhmuv3Aer5Y2Dzv
-         Shw/XMI0avyATGIj0qWXbp0mCdz5Yz4oEbOtCj0f+dEPJlD/WoDLNoekXZJ2t0uDZ0VZ
-         Y877kugNUINIBP6L9GZ68qMXwWRSTbom6143u/m5NJ+9VYrF/TsLpQEb4oO0Uuplagh7
-         6cvA==
-X-Gm-Message-State: AOJu0Yz/gPakW+5RbbthAJo0slIR9R+FPZrA8pAMcQdEY8hg2jobkmhW
-        L2+IdKLXlVIn2de3VgzT760=
-X-Google-Smtp-Source: AGHT+IF5g0xLpWLYh2ysH+zUmzaZLbKulu6pTqus92bRtixr6gdsLwEg3vY+LURn6qb8aYDJDZXhjQ==
-X-Received: by 2002:a05:600c:1d20:b0:3fe:3521:d9e2 with SMTP id l32-20020a05600c1d2000b003fe3521d9e2mr4073713wms.6.1691855434987;
-        Sat, 12 Aug 2023 08:50:34 -0700 (PDT)
-Received: from DreamMachine2.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
-        by smtp.gmail.com with ESMTPSA id b15-20020a05600c11cf00b003fd2e898aa3sm6758422wmi.0.2023.08.12.08.50.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Aug 2023 08:50:34 -0700 (PDT)
-Message-ID: <91329fb858ec7dbb71455c46dab73373c3ee366b.camel@gmail.com>
-Subject: Re: [PATCH 1/2] iio: pressure: bmp280: i2c: Rearrange vars in
- reverse xmas tree order
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229451AbjHLQL5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 12:11:57 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CAE9810DE;
+        Sat, 12 Aug 2023 09:11:59 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.01,168,1684767600"; 
+   d="scan'208";a="176453865"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 13 Aug 2023 01:11:59 +0900
+Received: from localhost.localdomain (unknown [10.226.92.6])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id A7A314003FC0;
+        Sun, 13 Aug 2023 01:11:56 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org
-Date:   Sat, 12 Aug 2023 17:50:33 +0200
-In-Reply-To: <ZNERMrPeftok9LF8@smile.fi.intel.com>
-References: <cover.1691276610.git.ang.iglesiasg@gmail.com>
-         <80c7bf32dee57a4a21e5c623b9adbc5e1175f2de.1691276610.git.ang.iglesiasg@gmail.com>
-         <ZNERMrPeftok9LF8@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (by Flathub.org) 
+        linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH] iio: temperature: tmp117: Convert enum->pointer for data in the match tables
+Date:   Sat, 12 Aug 2023 17:11:54 +0100
+Message-Id: <20230812161154.196555-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2023-08-07 at 18:43 +0300, Andy Shevchenko wrote:
-> On Sun, Aug 06, 2023 at 01:15:02AM +0200, Angel Iglesias wrote:
-> > Minor cleanup reordering local variable declarations following reverse
-> > christmas tree convention.
->=20
-> What about other functions there? Are all of them ordered correctly?
->=20
-This one was a leftover from previous work I did on this driver. I will che=
-ck
-the rest of the drive and update it to follow the same convention if requir=
-ed.
-Thank you for your time.
+Convert enum->pointer for data in the match tables, so that
+device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
+bus type match support added to it.
 
-Kind regards
-Angel
+Add struct tmp11x_info and replace enum->struct *tmp11x_info for data in
+the match table. Drop tmp117_identify() and simplify tmp117_probe() by
+replacing device_get_match_data() and id lookup for retrieving data by
+i2c_get_match_data().
+
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+ drivers/iio/temperature/tmp117.c | 94 +++++++++++++++-----------------
+ 1 file changed, 44 insertions(+), 50 deletions(-)
+
+diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
+index fc02f491688b..059953015ae7 100644
+--- a/drivers/iio/temperature/tmp117.c
++++ b/drivers/iio/temperature/tmp117.c
+@@ -42,6 +42,12 @@ struct tmp117_data {
+ 	s16 calibbias;
+ };
+ 
++struct tmp11x_info {
++	const char *name;
++	struct iio_chan_spec const *channels;
++	int num_channels;
++};
++
+ static int tmp117_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *channel, int *val,
+ 			   int *val2, long mask)
+@@ -119,57 +125,54 @@ static const struct iio_chan_spec tmp116_channels[] = {
+ 	},
+ };
+ 
++static const struct tmp11x_info tmp116_channels_info = {
++	.name = "tmp116",
++	.channels = tmp116_channels,
++	.num_channels = ARRAY_SIZE(tmp116_channels)
++};
++
++static const struct tmp11x_info tmp117_channels_info = {
++	.name = "tmp117",
++	.channels = tmp117_channels,
++	.num_channels = ARRAY_SIZE(tmp117_channels)
++};
++
+ static const struct iio_info tmp117_info = {
+ 	.read_raw = tmp117_read_raw,
+ 	.write_raw = tmp117_write_raw,
+ };
+ 
+-static int tmp117_identify(struct i2c_client *client)
++static int tmp117_probe(struct i2c_client *client)
+ {
+-	const struct i2c_device_id *id;
+-	unsigned long match_data;
++	const struct tmp11x_info *match_data;
++	struct tmp117_data *data;
++	struct iio_dev *indio_dev;
+ 	int dev_id;
+ 
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
++		return -EOPNOTSUPP;
++
+ 	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
+ 	if (dev_id < 0)
+ 		return dev_id;
+ 
+ 	switch (dev_id) {
+ 	case TMP116_DEVICE_ID:
++		match_data = &tmp116_channels_info;
++		break;
+ 	case TMP117_DEVICE_ID:
+-		return dev_id;
++		match_data = &tmp117_channels_info;
++		break;
++	default:
++		dev_info(&client->dev,
++			 "Unknown device id (0x%x), use fallback compatible\n",
++			 dev_id);
++		match_data = i2c_get_match_data(client);
+ 	}
+ 
+-	dev_info(&client->dev, "Unknown device id (0x%x), use fallback compatible\n",
+-		 dev_id);
+-
+-	match_data = (uintptr_t)device_get_match_data(&client->dev);
+-	if (match_data)
+-		return match_data;
+-
+-	id = i2c_client_get_device_id(client);
+-	if (id)
+-		return id->driver_data;
+-
+-	dev_err(&client->dev, "Failed to identify unsupported device\n");
+-
+-	return -ENODEV;
+-}
+-
+-static int tmp117_probe(struct i2c_client *client)
+-{
+-	struct tmp117_data *data;
+-	struct iio_dev *indio_dev;
+-	int ret, dev_id;
+-
+-	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+-		return -EOPNOTSUPP;
+-
+-	ret = tmp117_identify(client);
+-	if (ret < 0)
+-		return ret;
+-
+-	dev_id = ret;
++	if (!match_data)
++		return dev_err_probe(&client->dev, -ENODEV,
++				     "Failed to identify unsupported device\n");
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -181,33 +184,24 @@ static int tmp117_probe(struct i2c_client *client)
+ 
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->info = &tmp117_info;
++	indio_dev->channels = match_data->channels;
++	indio_dev->num_channels = match_data->num_channels;
++	indio_dev->name = match_data->name;
+ 
+-	switch (dev_id) {
+-	case TMP116_DEVICE_ID:
+-		indio_dev->channels = tmp116_channels;
+-		indio_dev->num_channels = ARRAY_SIZE(tmp116_channels);
+-		indio_dev->name = "tmp116";
+-		break;
+-	case TMP117_DEVICE_ID:
+-		indio_dev->channels = tmp117_channels;
+-		indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
+-		indio_dev->name = "tmp117";
+-		break;
+-	}
+ 
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
+ static const struct of_device_id tmp117_of_match[] = {
+-	{ .compatible = "ti,tmp116", .data = (void *)TMP116_DEVICE_ID },
+-	{ .compatible = "ti,tmp117", .data = (void *)TMP117_DEVICE_ID },
++	{ .compatible = "ti,tmp116", .data = &tmp116_channels_info },
++	{ .compatible = "ti,tmp117", .data = &tmp117_channels_info },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, tmp117_of_match);
+ 
+ static const struct i2c_device_id tmp117_id[] = {
+-	{ "tmp116", TMP116_DEVICE_ID },
+-	{ "tmp117", TMP117_DEVICE_ID },
++	{ "tmp116", (kernel_ulong_t)&tmp116_channels_info },
++	{ "tmp117", (kernel_ulong_t)&tmp117_channels_info },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, tmp117_id);
+-- 
+2.25.1
 

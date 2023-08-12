@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B4CD77A147
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 19:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6AF677A164
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 19:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjHLRNf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Aug 2023 13:13:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44638 "EHLO
+        id S229451AbjHLR1Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Aug 2023 13:27:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjHLRNe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 13:13:34 -0400
+        with ESMTP id S229447AbjHLR1Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 13:27:25 -0400
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0E1A3E71;
-        Sat, 12 Aug 2023 10:13:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C446710DD;
+        Sat, 12 Aug 2023 10:27:27 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,168,1684767600"; 
-   d="scan'208";a="176456389"
+   d="scan'208";a="176457130"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 13 Aug 2023 02:13:36 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 13 Aug 2023 02:27:27 +0900
 Received: from localhost.localdomain (unknown [10.226.92.6])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 6D08840482BB;
-        Sun, 13 Aug 2023 02:13:33 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 7623C404EBD4;
+        Sun, 13 Aug 2023 02:27:24 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
@@ -28,14 +28,12 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Peter Rosin <peda@axentia.se>,
-        =?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
         linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] iio: chemical: atlas-sensor: Convert enum->pointer for data in the match tables
-Date:   Sat, 12 Aug 2023 18:13:30 +0100
-Message-Id: <20230812171330.226247-1-biju.das.jz@bp.renesas.com>
+Subject: [PATCH] iio: chemical: vz89x: Convert enum->pointer for data in the match tables
+Date:   Sat, 12 Aug 2023 18:27:18 +0100
+Message-Id: <20230812172718.232718-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -53,94 +51,70 @@ Convert enum->pointer for data in the match tables, so that
 device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
 bus type match support added to it.
 
-Replace enum->struct *atlas_device for data in the match table. Simplify
+Replace enum->struct *vz89x_chip_data for data in the match table. Simplify
 the probe() by replacing device_get_match_data() and ID lookup for
 retrieving data by i2c_get_match_data().
 
-While at it, add const qualifier to struct atlas_device and drop unused
-id variable from probe().
+While at it, drop unused variables id and chip_id from probe().
 
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- drivers/iio/chemical/atlas-sensor.c | 32 +++++++++++++----------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ drivers/iio/chemical/vz89x.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-index fb15bb216019..88a22d12a294 100644
---- a/drivers/iio/chemical/atlas-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -87,7 +87,7 @@ enum {
- struct atlas_data {
- 	struct i2c_client *client;
- 	struct iio_trigger *trig;
--	struct atlas_device *chip;
-+	const struct atlas_device *chip;
- 	struct regmap *regmap;
- 	struct irq_work work;
- 	unsigned int interrupt_enabled;
-@@ -353,7 +353,7 @@ struct atlas_device {
- 	int delay;
+diff --git a/drivers/iio/chemical/vz89x.c b/drivers/iio/chemical/vz89x.c
+index 13555f4f401a..5b358bcd311b 100644
+--- a/drivers/iio/chemical/vz89x.c
++++ b/drivers/iio/chemical/vz89x.c
+@@ -342,19 +342,17 @@ static const struct vz89x_chip_data vz89x_chips[] = {
  };
  
--static struct atlas_device atlas_devices[] = {
-+static const struct atlas_device atlas_devices[] = {
- 	[ATLAS_PH_SM] = {
- 				.channels = atlas_ph_channels,
- 				.num_channels = 3,
-@@ -589,30 +589,29 @@ static const struct iio_info atlas_info = {
- };
- 
- static const struct i2c_device_id atlas_id[] = {
--	{ "atlas-ph-sm", ATLAS_PH_SM },
--	{ "atlas-ec-sm", ATLAS_EC_SM },
--	{ "atlas-orp-sm", ATLAS_ORP_SM },
--	{ "atlas-do-sm", ATLAS_DO_SM },
--	{ "atlas-rtd-sm", ATLAS_RTD_SM },
-+	{ "atlas-ph-sm", (kernel_ulong_t)&atlas_devices[ATLAS_PH_SM] },
-+	{ "atlas-ec-sm", (kernel_ulong_t)&atlas_devices[ATLAS_EC_SM] },
-+	{ "atlas-orp-sm", (kernel_ulong_t)&atlas_devices[ATLAS_ORP_SM] },
-+	{ "atlas-do-sm", (kernel_ulong_t)&atlas_devices[ATLAS_DO_SM] },
-+	{ "atlas-rtd-sm", (kernel_ulong_t)&atlas_devices[ATLAS_RTD_SM] },
- 	{}
- };
- MODULE_DEVICE_TABLE(i2c, atlas_id);
- 
- static const struct of_device_id atlas_dt_ids[] = {
--	{ .compatible = "atlas,ph-sm", .data = (void *)ATLAS_PH_SM, },
--	{ .compatible = "atlas,ec-sm", .data = (void *)ATLAS_EC_SM, },
--	{ .compatible = "atlas,orp-sm", .data = (void *)ATLAS_ORP_SM, },
--	{ .compatible = "atlas,do-sm", .data = (void *)ATLAS_DO_SM, },
--	{ .compatible = "atlas,rtd-sm", .data = (void *)ATLAS_RTD_SM, },
-+	{ .compatible = "atlas,ph-sm", .data = &atlas_devices[ATLAS_PH_SM], },
-+	{ .compatible = "atlas,ec-sm", .data = &atlas_devices[ATLAS_EC_SM], },
-+	{ .compatible = "atlas,orp-sm", .data = &atlas_devices[ATLAS_ORP_SM], },
-+	{ .compatible = "atlas,do-sm", .data = &atlas_devices[ATLAS_DO_SM], },
-+	{ .compatible = "atlas,rtd-sm", .data = &atlas_devices[ATLAS_RTD_SM], },
+ static const struct of_device_id vz89x_dt_ids[] = {
+-	{ .compatible = "sgx,vz89x", .data = (void *) VZ89X },
+-	{ .compatible = "sgx,vz89te", .data = (void *) VZ89TE },
++	{ .compatible = "sgx,vz89x", .data = &vz89x_chips[VZ89X] },
++	{ .compatible = "sgx,vz89te", .data = &vz89x_chips[VZ89TE] },
  	{ }
  };
- MODULE_DEVICE_TABLE(of, atlas_dt_ids);
+ MODULE_DEVICE_TABLE(of, vz89x_dt_ids);
  
- static int atlas_probe(struct i2c_client *client)
+ static int vz89x_probe(struct i2c_client *client)
  {
 -	const struct i2c_device_id *id = i2c_client_get_device_id(client);
- 	struct atlas_data *data;
--	struct atlas_device *chip;
-+	const struct atlas_device *chip;
- 	struct iio_trigger *trig;
+ 	struct device *dev = &client->dev;
  	struct iio_dev *indio_dev;
- 	int ret;
-@@ -621,10 +620,7 @@ static int atlas_probe(struct i2c_client *client)
+ 	struct vz89x_data *data;
+-	int chip_id;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
  	if (!indio_dev)
- 		return -ENOMEM;
+@@ -369,14 +367,10 @@ static int vz89x_probe(struct i2c_client *client)
+ 	else
+ 		return -EOPNOTSUPP;
  
--	if (!dev_fwnode(&client->dev))
--		chip = &atlas_devices[id->driver_data];
+-	if (!dev_fwnode(dev))
+-		chip_id = id->driver_data;
 -	else
--		chip = &atlas_devices[(unsigned long)device_get_match_data(&client->dev)];
-+	chip = i2c_get_match_data(client);
+-		chip_id = (unsigned long)device_get_match_data(dev);
++	data->chip = i2c_get_match_data(client);
  
- 	indio_dev->info = &atlas_info;
- 	indio_dev->name = ATLAS_DRV_NAME;
+ 	i2c_set_clientdata(client, indio_dev);
+ 	data->client = client;
+-	data->chip = &vz89x_chips[chip_id];
+ 	data->last_update = jiffies - HZ;
+ 	mutex_init(&data->lock);
+ 
+@@ -391,8 +385,8 @@ static int vz89x_probe(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id vz89x_id[] = {
+-	{ "vz89x", VZ89X },
+-	{ "vz89te", VZ89TE },
++	{ "vz89x", (kernel_ulong_t)&vz89x_chips[VZ89X] },
++	{ "vz89te", (kernel_ulong_t)&vz89x_chips[VZ89TE] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, vz89x_id);
 -- 
 2.25.1
 

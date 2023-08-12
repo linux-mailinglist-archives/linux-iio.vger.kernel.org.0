@@ -2,214 +2,264 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E79677A02C
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 15:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC0F77A04B
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 16:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjHLNi2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Aug 2023 09:38:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44416 "EHLO
+        id S236078AbjHLOJW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Aug 2023 10:09:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjHLNi2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 09:38:28 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 225FFE62;
-        Sat, 12 Aug 2023 06:38:31 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="6.01,168,1684767600"; 
-   d="scan'208";a="176446235"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 12 Aug 2023 22:38:30 +0900
-Received: from localhost.localdomain (unknown [10.226.92.6])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id E8A85400295A;
-        Sat, 12 Aug 2023 22:38:27 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] iio: accel: adxl345: Convert enum->pointer for data in match data table
-Date:   Sat, 12 Aug 2023 14:38:25 +0100
-Message-Id: <20230812133825.141581-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S233514AbjHLOJU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 10:09:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FA81FEE;
+        Sat, 12 Aug 2023 07:09:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 248D362493;
+        Sat, 12 Aug 2023 14:09:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB08C433C8;
+        Sat, 12 Aug 2023 14:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691849362;
+        bh=z+m4uxf5uQXSYdBR7XRst5uEUqfj5OU0THhKy2Pgzw0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NRcuuSwRkCingBsl/vsEZbgeFFYLrf1y+jccW0/5Yc5HDj+1VoVAME8JmLoRwatmv
+         cq9vWxL4zAE9ZVUJLta84Dvv5Inw/EfKSi/yAs63VyBxmpmvFYbATcUsu77nljsk2A
+         aA3VJilGgMOpA/ket7dhpg569WOR9pO165Aa92NCsdjCCxPdIgZY5ieRy7nbUuFLnh
+         5IcBP4Gl/p7TKLadf1jSNE+GDBp+0bp0kFtLguMP/b1EWW/an8byu12FnBRohiFL9c
+         uRJrWRUhrLp3tNfyj4R8So0k0XxPic0tJx3E0PAmnu0wkeyaegTrtitZo78/ruaSpI
+         fW6TnxXPQeEnQ==
+Date:   Sat, 12 Aug 2023 16:09:12 +0200
+From:   Simon Horman <horms@kernel.org>
+To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
+Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, alexandre.torgue@foss.st.com,
+        vkoul@kernel.org, jic23@kernel.org, olivier.moysan@foss.st.com,
+        arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
+        fabrice.gasnier@foss.st.com, andi.shyti@kernel.org,
+        ulf.hansson@linaro.org, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, hugues.fruchet@foss.st.com, lee@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, arnd@kernel.org,
+        richardcochran@gmail.com, Frank Rowand <frowand.list@gmail.com>,
+        peng.fan@oss.nxp.com, linux-crypto@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH v4 05/11] firewall: introduce stm32_firewall framework
+Message-ID: <ZNeSiFQGdOXbR+2S@vergenet.net>
+References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
+ <20230811100731.108145-6-gatien.chevallier@foss.st.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230811100731.108145-6-gatien.chevallier@foss.st.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert enum->pointer for data in match data table, so that
-device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
-bus type match support added to it.
+On Fri, Aug 11, 2023 at 12:07:25PM +0200, Gatien Chevallier wrote:
 
-Add struct adxl3x5_chip_info and replace enum->adxl3x5_chip_info in the
-match table and simplify adxl345_probe().
+...
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
- drivers/iio/accel/adxl345.h      |  5 +++++
- drivers/iio/accel/adxl345_core.c | 19 +++++--------------
- drivers/iio/accel/adxl345_i2c.c  | 20 +++++++++++++++-----
- drivers/iio/accel/adxl345_spi.c  | 20 +++++++++++++++-----
- 4 files changed, 40 insertions(+), 24 deletions(-)
+> diff --git a/drivers/bus/stm32_firewall.c b/drivers/bus/stm32_firewall.c
+> new file mode 100644
+> index 000000000000..900f3b052a66
+> --- /dev/null
+> +++ b/drivers/bus/stm32_firewall.c
+> @@ -0,0 +1,293 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2023, STMicroelectronics - All Rights Reserved
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/bus/stm32_firewall_device.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/init.h>
+> +#include <linux/io.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/types.h>
+> +#include <linux/slab.h>
+> +
+> +#include "stm32_firewall.h"
+> +
+> +/* Corresponds to STM32_FIREWALL_MAX_EXTRA_ARGS + firewall ID */
+> +#define STM32_FIREWALL_MAX_ARGS		(STM32_FIREWALL_MAX_EXTRA_ARGS + 1)
+> +
+> +static LIST_HEAD(firewall_controller_list);
+> +static DEFINE_MUTEX(firewall_controller_list_lock);
+> +
+> +/* Firewall device API */
+> +int stm32_firewall_get_firewall(struct device_node *np, struct stm32_firewall *firewall,
+> +				unsigned int nb_firewall)
+> +{
+> +	struct stm32_firewall_controller *ctrl;
+> +	struct of_phandle_iterator it;
+> +	unsigned int i, j = 0;
+> +	int err;
+> +
+> +	if (!firewall || !nb_firewall)
+> +		return -EINVAL;
+> +
+> +	/* Parse property with phandle parsed out */
+> +	of_for_each_phandle(&it, err, np, "feature-domains", "#feature-domain-cells", 0) {
+> +		struct of_phandle_args provider_args;
+> +		struct device_node *provider = it.node;
+> +		const char *fw_entry;
+> +		bool match = false;
+> +
+> +		if (err) {
+> +			pr_err("Unable to get feature-domains property for node %s\n, err: %d",
+> +			       np->full_name, err);
+> +			of_node_put(provider);
+> +			return err;
+> +		}
+> +
+> +		if (j > nb_firewall) {
+> +			pr_err("Too many firewall controllers");
+> +			of_node_put(provider);
+> +			return -EINVAL;
+> +		}
+> +
+> +		provider_args.args_count = of_phandle_iterator_args(&it, provider_args.args,
+> +								    STM32_FIREWALL_MAX_ARGS);
+> +
+> +		/* Check if the parsed phandle corresponds to a registered firewall controller */
+> +		mutex_lock(&firewall_controller_list_lock);
+> +		list_for_each_entry(ctrl, &firewall_controller_list, entry) {
+> +			if (ctrl->dev->of_node->phandle == it.phandle) {
+> +				match = true;
+> +				firewall[j].firewall_ctrl = ctrl;
+> +				break;
+> +			}
+> +		}
+> +		mutex_unlock(&firewall_controller_list_lock);
+> +
+> +		if (!match) {
+> +			firewall[j].firewall_ctrl = NULL;
+> +			pr_err("No firewall controller registered for %s\n", np->full_name);
+> +			of_node_put(provider);
+> +			return -ENODEV;
+> +		}
+> +
+> +		err = of_property_read_string_index(np, "feature-domain-names", j, &fw_entry);
+> +		if (err == 0)
+> +			firewall[j].entry = fw_entry;
+> +
+> +		/* Handle the case when there are no arguments given along with the phandle */
+> +		if (provider_args.args_count < 0 ||
+> +		    provider_args.args_count > STM32_FIREWALL_MAX_ARGS) {
+> +			of_node_put(provider);
+> +			return -EINVAL;
+> +		} else if (provider_args.args_count == 0) {
+> +			firewall[j].extra_args_size = 0;
+> +			firewall[j].firewall_id = U32_MAX;
+> +			j++;
+> +			continue;
+> +		}
+> +
+> +		/* The firewall ID is always the first argument */
+> +		firewall[j].firewall_id = provider_args.args[0];
+> +
+> +		/* Extra args start at the third argument */
+> +		for (i = 0; i < provider_args.args_count; i++)
+> +			firewall[j].extra_args[i] = provider_args.args[i + 1];
 
-diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-index d7e67cb08538..8df1b7f43cb9 100644
---- a/drivers/iio/accel/adxl345.h
-+++ b/drivers/iio/accel/adxl345.h
-@@ -13,6 +13,11 @@ enum adxl345_device_type {
- 	ADXL375 = 2,
- };
- 
-+struct adxl3x5_chip_info {
-+	const char *name;
-+	unsigned int type;
-+};
-+
- int adxl345_core_probe(struct device *dev, struct regmap *regmap);
- 
- #endif /* _ADXL345_H_ */
-diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index 1919e0089c11..6da457c06e27 100644
---- a/drivers/iio/accel/adxl345_core.c
-+++ b/drivers/iio/accel/adxl345_core.c
-@@ -222,24 +222,15 @@ static void adxl345_powerdown(void *regmap)
- 
- int adxl345_core_probe(struct device *dev, struct regmap *regmap)
- {
--	enum adxl345_device_type type;
-+	const struct adxl3x5_chip_info *info;
- 	struct adxl345_data *data;
- 	struct iio_dev *indio_dev;
--	const char *name;
- 	u32 regval;
- 	int ret;
- 
--	type = (uintptr_t)device_get_match_data(dev);
--	switch (type) {
--	case ADXL345:
--		name = "adxl345";
--		break;
--	case ADXL375:
--		name = "adxl375";
--		break;
--	default:
-+	info = device_get_match_data(dev);
-+	if (info->type != ADXL345 && info->type != ADXL375)
- 		return -EINVAL;
--	}
- 
- 	ret = regmap_read(regmap, ADXL345_REG_DEVID, &regval);
- 	if (ret < 0)
-@@ -255,7 +246,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap)
- 
- 	data = iio_priv(indio_dev);
- 	data->regmap = regmap;
--	data->type = type;
-+	data->type = info->type;
- 	/* Enable full-resolution mode */
- 	data->data_range = ADXL345_DATA_FORMAT_FULL_RES;
- 
-@@ -264,7 +255,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap)
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to set data range\n");
- 
--	indio_dev->name = name;
-+	indio_dev->name = info->name;
- 	indio_dev->info = &adxl345_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = adxl345_channels;
-diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
-index e47d12f19602..498e04bdeef1 100644
---- a/drivers/iio/accel/adxl345_i2c.c
-+++ b/drivers/iio/accel/adxl345_i2c.c
-@@ -30,22 +30,32 @@ static int adxl345_i2c_probe(struct i2c_client *client)
- 	return adxl345_core_probe(&client->dev, regmap);
- }
- 
-+static const struct adxl3x5_chip_info adxl345_i2c_info = {
-+	.name = "adxl345",
-+	.type = ADXL345
-+};
-+
-+static const struct adxl3x5_chip_info adxl375_i2c_info = {
-+	.name = "adxl375",
-+	.type = ADXL375
-+};
-+
- static const struct i2c_device_id adxl345_i2c_id[] = {
--	{ "adxl345", ADXL345 },
--	{ "adxl375", ADXL375 },
-+	{ "adxl345", (kernel_ulong_t)&adxl345_i2c_info },
-+	{ "adxl375", (kernel_ulong_t)&adxl375_i2c_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, adxl345_i2c_id);
- 
- static const struct of_device_id adxl345_of_match[] = {
--	{ .compatible = "adi,adxl345", .data = (const void *)ADXL345 },
--	{ .compatible = "adi,adxl375", .data = (const void *)ADXL375 },
-+	{ .compatible = "adi,adxl345", .data = &adxl345_i2c_info },
-+	{ .compatible = "adi,adxl375", .data = &adxl375_i2c_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, adxl345_of_match);
- 
- static const struct acpi_device_id adxl345_acpi_match[] = {
--	{ "ADS0345", ADXL345 },
-+	{ "ADS0345", (kernel_ulong_t)&adxl345_i2c_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match);
-diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-index aaade5808657..2076bb79be2a 100644
---- a/drivers/iio/accel/adxl345_spi.c
-+++ b/drivers/iio/accel/adxl345_spi.c
-@@ -36,22 +36,32 @@ static int adxl345_spi_probe(struct spi_device *spi)
- 	return adxl345_core_probe(&spi->dev, regmap);
- }
- 
-+static const struct adxl3x5_chip_info adxl345_spi_info = {
-+	.name = "adxl345",
-+	.type = ADXL345
-+};
-+
-+static const struct adxl3x5_chip_info adxl375_spi_info = {
-+	.name = "adxl375",
-+	.type = ADXL375
-+};
-+
- static const struct spi_device_id adxl345_spi_id[] = {
--	{ "adxl345", ADXL345 },
--	{ "adxl375", ADXL375 },
-+	{ "adxl345", (kernel_ulong_t)&adxl345_spi_info },
-+	{ "adxl375", (kernel_ulong_t)&adxl375_spi_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, adxl345_spi_id);
- 
- static const struct of_device_id adxl345_of_match[] = {
--	{ .compatible = "adi,adxl345", .data = (const void *)ADXL345 },
--	{ .compatible = "adi,adxl375", .data = (const void *)ADXL375 },
-+	{ .compatible = "adi,adxl345", .data = &adxl345_spi_info },
-+	{ .compatible = "adi,adxl375", .data = &adxl375_spi_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, adxl345_of_match);
- 
- static const struct acpi_device_id adxl345_acpi_match[] = {
--	{ "ADS0345", ADXL345 },
-+	{ "ADS0345", (kernel_ulong_t)&adxl345_spi_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match);
--- 
-2.25.1
+Hi Gatien,
 
+Above it is checked that the maximum value of provider_args.args_count is
+STM32_FIREWALL_MAX_ARGS.
+So here the maximum value of i is STM32_FIREWALL_MAX_ARGS - 1.
+
+STM32_FIREWALL_MAX_ARGS is defined as STM32_FIREWALL_MAX_EXTRA_ARGS + 1
+And STM32_FIREWALL_MAX_EXTRA_ARGS is defined as 5.
+So the maximum value of i is (5 + 1 - 1) = 5.
+
+firewall[j] is of type struct stm32_firewall.
+And its args field has STM32_FIREWALL_MAX_EXTRA_ARGS (5) elements.
+Thus the maximum valid index is (5 - 1) = 4.
+
+But the line above may access index 5.
+
+Flagged by Smatch.
+
+> +
+> +		/* Remove the firewall ID arg that is not an extra argument */
+> +		firewall[j].extra_args_size = provider_args.args_count - 1;
+> +
+> +		j++;
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(stm32_firewall_get_firewall);
+
+...
+
+> diff --git a/include/linux/bus/stm32_firewall_device.h b/include/linux/bus/stm32_firewall_device.h
+> new file mode 100644
+> index 000000000000..7b4450a8ec15
+> --- /dev/null
+> +++ b/include/linux/bus/stm32_firewall_device.h
+> @@ -0,0 +1,141 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2023, STMicroelectronics - All Rights Reserved
+> + */
+> +
+> +#ifndef STM32_FIREWALL_DEVICE_H
+> +#define STM32_FIREWALL_DEVICE_H
+> +
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/types.h>
+> +
+> +#define STM32_FIREWALL_MAX_EXTRA_ARGS		5
+> +
+> +/* Opaque reference to stm32_firewall_controller */
+> +struct stm32_firewall_controller;
+> +
+> +/**
+> + * struct stm32_firewall - Information on a device's firewall. Each device can have more than one
+> + *			   firewall.
+> + *
+> + * @firewall_ctrl:		Pointer referencing a firewall controller of the device. It is
+> + *				opaque so a device cannot manipulate the controller's ops or access
+> + *				the controller's data
+> + * @extra_args:			Extra arguments that are implementation dependent
+> + * @entry:			Name of the firewall entry
+> + * @extra_args_size:		Number of extra arguments
+> + * @firewall_id:		Firewall ID associated the device for this firewall controller
+> + */
+> +struct stm32_firewall {
+> +	struct stm32_firewall_controller *firewall_ctrl;
+> +	u32 extra_args[STM32_FIREWALL_MAX_EXTRA_ARGS];
+> +	const char *entry;
+> +	size_t extra_args_size;
+> +	u32 firewall_id;
+> +};
+
+...

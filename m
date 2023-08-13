@@ -2,71 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D1A77AACA
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Aug 2023 21:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0FF77AB13
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Aug 2023 22:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231210AbjHMTJR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Aug 2023 15:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49840 "EHLO
+        id S229761AbjHMUJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Aug 2023 16:09:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbjHMTJQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 15:09:16 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48B851713;
-        Sun, 13 Aug 2023 12:09:16 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-31977ace1c8so237445f8f.1;
-        Sun, 13 Aug 2023 12:09:16 -0700 (PDT)
+        with ESMTP id S229519AbjHMUJo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 16:09:44 -0400
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC5D10F6;
+        Sun, 13 Aug 2023 13:09:46 -0700 (PDT)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-56dd683e9b3so1819631eaf.3;
+        Sun, 13 Aug 2023 13:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691953755; x=1692558555;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RXBR08df/DXV58NKIeSQwWxVeGpxhoQ0bVGRTRA80lw=;
-        b=bxBvQS8ZdMJL0ViNasV+ePxB6Duqvx8Rix49Msa9rsJMX2Pro7soVVCLxdPufAOP+t
-         xUS6zGkPj/zVg0u/f9mK5hBa848NfHopPZ52lFhFvBf86gsv5QPMA4cCpmyUilkL82SV
-         EANMVoMcaUK/3AYxSdq+jEX54JGqFTixIujqTndRIzNzqL03IkJ0jzzPEAYS+PVBNtO9
-         RO6FBZuiB6XHSMhl4RshPt/dsknZxx+Ku48sgNVunza1J+U/KyY9KqlscTzH4tp3g+Y2
-         Pir+mL/38xuHBrWbFxnKtS4hzd3yCEeNDyHVYmkQhNKIsnNQXCT+xu0T+Zg4DhRRumVV
-         mTwg==
+        d=gmail.com; s=20221208; t=1691957385; x=1692562185;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N4eOur7xzUuWE1jLJtLsCuNeMunUTcybCDDE4uH7wPE=;
+        b=F4fZtLp2rX8V+DZ5Q18M4FanFhhdkVnIIgE8R1kOx30e5EhQSkQuUn66uasA58yxXs
+         xAf6sgVpuTdiNFXgEAQHfW1uADZSCR4VQUQIc4H7tTrBe4CbQ2/bX+M+fvRJyk1XkkRz
+         euWnVvQAL4YXewO95AOA1MWuKi6iybUqZQNKc5KPBN/pwTn+I/m13n8TxZFybe4Vk3pW
+         EcAAyF9CFtZx7lmazxd0VeLEbjg0/tc2TMCJzimI/zu2neCSXgsCQ0yxZuwXuVHH2Xj0
+         A9jcDqAO/MYSZM2YvqNAQBk81Taw7TzefNlApD6zZp/oSU2eVVCfqVcT1IUAmycw4TZt
+         LY+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691953755; x=1692558555;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RXBR08df/DXV58NKIeSQwWxVeGpxhoQ0bVGRTRA80lw=;
-        b=d2nr6jinkOi+xlbmrQtwxVaVO4WcEDw2OOeAqWxHBkksY0vUurgQczLVOPnWNXSHV+
-         /oUeiIjn8UEYEqgOos2fHSqN3QyDGc1/+odRJwsZ6YeBM8J97nV1Xhncn+Ci4QiL/WcM
-         xB5zP5JIu8GfwfiTPv8m/WgAL3QGjI5H0ghv/N0u3MNJbw0/6INFHfI5prs3gzSzkUCG
-         kuzK+dDuqmf/DOGbnjMfF/cPlPn4ma+zz0KnPr8xHxyTQJDaL6EgH3yC+dOMTaq4HY6v
-         66wZlf5j6x5A99gfuFI0XpfATGzul7ZC4WTZVkDqMqAl6GMN3J0hNiganffSdxw/TrLy
-         RPdg==
-X-Gm-Message-State: AOJu0Yy58nxM7AKSuQ2jMoqtuf2vW/u79A6RI2IFGb5mkBm/DMWa6aOx
-        +xlLUyfnMyLI3htxVkndcGw=
-X-Google-Smtp-Source: AGHT+IGdLQB+taBB8+9FFscmxy685Ga9PTwhT3M6lSw3fOJ6I+pDWCkva0VpkvOTzIB5CCL82dwsvg==
-X-Received: by 2002:adf:f7cd:0:b0:317:eaf5:d556 with SMTP id a13-20020adff7cd000000b00317eaf5d556mr5190093wrq.69.1691953754583;
-        Sun, 13 Aug 2023 12:09:14 -0700 (PDT)
-Received: from DreamMachine2.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
-        by smtp.gmail.com with ESMTPSA id q10-20020adfcd8a000000b0031753073abcsm12084364wrj.36.2023.08.13.12.09.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Aug 2023 12:09:14 -0700 (PDT)
-Message-ID: <954c859835aed6c41a356fdd999a8be51469eb9e.camel@gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+        d=1e100.net; s=20221208; t=1691957385; x=1692562185;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N4eOur7xzUuWE1jLJtLsCuNeMunUTcybCDDE4uH7wPE=;
+        b=Gl4zmjjDJFC7/FzdRZfaRgRuPaedq9VVzGlTotEQDycV175f8/Z8N3ljqn46Urgd9F
+         IkCCJ7GKcZCiT21SYiLqNqjEAHgirzWJkwEvTwU9DfA573Le+KhxqNB6ddIFoFIuCgzY
+         Wxx3efgZm9fxc6gmqhy4An58TiEFZHLmSd4tA6wEOOVpbaPCvr93t+TW7kIBUGRaTWR9
+         qVbD9gcS7nMLyZYtRSJIYLvAE46p4r2LDyW//p7ggjDkoPKg2/lm9cXgomqB/E9ocjKH
+         ViXcdgMRwsg5iwoBRSM1upYACalkBFNNRsA3yDP7pa3XNoHlPIEzf3L+wbqX4CT+yDIk
+         VO6Q==
+X-Gm-Message-State: AOJu0YxQa4vTvrfRze66YvEp6WbCoRe9SdGaR0OXe1TPpY3zafq4X7+P
+        UbAQI58HEBY6xutNBYIenG5hVle0Cb/v69sG1I8=
+X-Google-Smtp-Source: AGHT+IFhYQwsIunEs4kvDBkTWiY+u+owL0/TySFP72Y3YDJIr/NrLd62w0jMl3nTiMeraZ8rjD7tS0T3okiouNSVQjU=
+X-Received: by 2002:a4a:2a19:0:b0:56c:c061:a9a8 with SMTP id
+ k25-20020a4a2a19000000b0056cc061a9a8mr3792658oof.0.1691957385391; Sun, 13 Aug
+ 2023 13:09:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230812130130.123243-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20230812130130.123243-1-biju.das.jz@bp.renesas.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 13 Aug 2023 23:09:09 +0300
+Message-ID: <CAHp75VfqGB1OYLGjK6MRPtPCkaFeY=c13RSEXrDH9eC5W9vjmw@mail.gmail.com>
+Subject: Re: [PATCH] iio: proximity: sx9310: Convert enum->pointer for match
+ data table
 To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Date:   Sun, 13 Aug 2023 21:09:13 +0200
-In-Reply-To: <55f8dc02de16a353f0449bc1c7cb487bd776dfaf.1691952005.git.ang.iglesiasg@gmail.com>
-References: <cover.1691952005.git.ang.iglesiasg@gmail.com>
-         <55f8dc02de16a353f0449bc1c7cb487bd776dfaf.1691952005.git.ang.iglesiasg@gmail.com>
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (by Flathub.org) 
-MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -77,45 +73,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2023-08-13 at 21:03 +0200, Angel Iglesias wrote:
-> Replaces device_get_match_data() and fallback match_id logic by new
-> unified helper function i2c_get_match_data().
->=20
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
->=20
-> diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp=
-280-
-> i2c.c
-> index 693eb1975fdc..34e3bc758493 100644
-> --- a/drivers/iio/pressure/bmp280-i2c.c
-> +++ b/drivers/iio/pressure/bmp280-i2c.c
-> @@ -11,9 +11,7 @@ static int bmp280_i2c_probe(struct i2c_client *client)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct bmp280_chip_=
-info *chip_info;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct regmap *regmap;
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D device_get_match=
-_data(&client->dev);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!chip_info)
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0chip_info =3D (const struct bmp280_chip_info *) id->drive=
-r_data;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D i2c_get_match_da=
-ta(client);
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0regmap =3D devm_regmap_in=
-it_i2c(client, chip_info->regmap_config);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ERR(regmap)) {
+On Sat, Aug 12, 2023 at 4:01=E2=80=AFPM Biju Das <biju.das.jz@bp.renesas.co=
+m> wrote:
+>
+> Convert enum->pointer for data in match data table, so that
+> device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
+> bus type match support added to it.
+>
+> Add struct sx931x_info and replace enum->sx931x_info in the match table
+> and simplify sx9310_check_whoami().
 
-Hi,
+...
 
-I noticed I submitted this change that was also submitted by Biju Das on an=
-other
-patch:
-https://lore.kernel.org/all/20230812175808.236405-1-biju.das.jz@bp.renesas.=
-com/
+> +       ddata =3D device_get_match_data(dev);
+> +       if (ddata->whoami !=3D whoami)
+>                 return -EINVAL;
 
-Should I drop this patch from the series?
+-ENODEV looks better.
 
-Kind regards,
-Angel
+...
+
+> +static const struct sx931x_info sx9310_info =3D {
+> +       .name =3D "sx9310",
+> +       .whoami =3D SX9310_WHOAMI_VALUE
+
+Keep trailing comma.
+
+> +};
+> +
+> +static const struct sx931x_info sx9311_info =3D {
+> +       .name =3D "sx9311",
+> +       .whoami =3D SX9311_WHOAMI_VALUE
+
+Ditto.
+
+> +};
+
+...
+
+Otherwise looks good to me
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+--=20
+With Best Regards,
+Andy Shevchenko

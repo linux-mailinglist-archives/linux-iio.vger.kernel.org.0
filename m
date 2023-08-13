@@ -2,63 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0FF77AB13
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Aug 2023 22:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5DA77AB1A
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Aug 2023 22:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbjHMUJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Aug 2023 16:09:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33166 "EHLO
+        id S229522AbjHMUQW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Aug 2023 16:16:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjHMUJo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 16:09:44 -0400
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC5D10F6;
-        Sun, 13 Aug 2023 13:09:46 -0700 (PDT)
-Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-56dd683e9b3so1819631eaf.3;
-        Sun, 13 Aug 2023 13:09:46 -0700 (PDT)
+        with ESMTP id S229512AbjHMUQV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 16:16:21 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76B110F9;
+        Sun, 13 Aug 2023 13:16:23 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a7d7de894bso2505225b6e.3;
+        Sun, 13 Aug 2023 13:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691957385; x=1692562185;
+        d=gmail.com; s=20221208; t=1691957783; x=1692562583;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N4eOur7xzUuWE1jLJtLsCuNeMunUTcybCDDE4uH7wPE=;
-        b=F4fZtLp2rX8V+DZ5Q18M4FanFhhdkVnIIgE8R1kOx30e5EhQSkQuUn66uasA58yxXs
-         xAf6sgVpuTdiNFXgEAQHfW1uADZSCR4VQUQIc4H7tTrBe4CbQ2/bX+M+fvRJyk1XkkRz
-         euWnVvQAL4YXewO95AOA1MWuKi6iybUqZQNKc5KPBN/pwTn+I/m13n8TxZFybe4Vk3pW
-         EcAAyF9CFtZx7lmazxd0VeLEbjg0/tc2TMCJzimI/zu2neCSXgsCQ0yxZuwXuVHH2Xj0
-         A9jcDqAO/MYSZM2YvqNAQBk81Taw7TzefNlApD6zZp/oSU2eVVCfqVcT1IUAmycw4TZt
-         LY+g==
+        bh=zbq+ZoL+3cYllWrZqE2glhR/uej79xUgT6XSVMz6GME=;
+        b=Fe65SPY5+SIb43a9+eOmljhPnronAMZKF44mVr3LHQ2DrFG54Pnge8Pera7OxyvypZ
+         pYV4c1L8pznRUEfeMhtlHqj5WOEUyFM+ItJdQErid8JZ3JD8b6nBCwbJS1Jr1UZ8s1Um
+         9rf4VYrTHicY0WswdkuSbFPnHQO7gF4DE2FYysQvLZy43fD7DWPR4aeypGlA9Il9jHLt
+         K4uuIMqpXK9wuxtBk/2W+HH8E5MlO4g5UiQW7RcsxQVN1g8SVBg/kwJCiO6XBgTIbzm6
+         3uIvJsnsUFCvfCnDocDKSYzNJ0DAXGLiSaFvaTJhT1UfwonlBkXUYKNTpfaUvpJ45FYF
+         I9wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691957385; x=1692562185;
+        d=1e100.net; s=20221208; t=1691957783; x=1692562583;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N4eOur7xzUuWE1jLJtLsCuNeMunUTcybCDDE4uH7wPE=;
-        b=Gl4zmjjDJFC7/FzdRZfaRgRuPaedq9VVzGlTotEQDycV175f8/Z8N3ljqn46Urgd9F
-         IkCCJ7GKcZCiT21SYiLqNqjEAHgirzWJkwEvTwU9DfA573Le+KhxqNB6ddIFoFIuCgzY
-         Wxx3efgZm9fxc6gmqhy4An58TiEFZHLmSd4tA6wEOOVpbaPCvr93t+TW7kIBUGRaTWR9
-         qVbD9gcS7nMLyZYtRSJIYLvAE46p4r2LDyW//p7ggjDkoPKg2/lm9cXgomqB/E9ocjKH
-         ViXcdgMRwsg5iwoBRSM1upYACalkBFNNRsA3yDP7pa3XNoHlPIEzf3L+wbqX4CT+yDIk
-         VO6Q==
-X-Gm-Message-State: AOJu0YxQa4vTvrfRze66YvEp6WbCoRe9SdGaR0OXe1TPpY3zafq4X7+P
-        UbAQI58HEBY6xutNBYIenG5hVle0Cb/v69sG1I8=
-X-Google-Smtp-Source: AGHT+IFhYQwsIunEs4kvDBkTWiY+u+owL0/TySFP72Y3YDJIr/NrLd62w0jMl3nTiMeraZ8rjD7tS0T3okiouNSVQjU=
-X-Received: by 2002:a4a:2a19:0:b0:56c:c061:a9a8 with SMTP id
- k25-20020a4a2a19000000b0056cc061a9a8mr3792658oof.0.1691957385391; Sun, 13 Aug
- 2023 13:09:45 -0700 (PDT)
+        bh=zbq+ZoL+3cYllWrZqE2glhR/uej79xUgT6XSVMz6GME=;
+        b=GDLiJ5S3yJTApd/FNZw7koI57I4bHt/RiesSlobNF6Oyr82rB6+f104orf7wknZc1u
+         iodbfFgzKmWNcsAzr/Mrxan18efIrSjxJoZlsAyX2XiX9Ucbk5wzG+VS67cfBI/98Etx
+         1nXwA/SO5RmdtWTJEGKk2tXE9dnqaY9zJFOnCpUsiHmWt+WYd29V3rR28oPIdlZD0IIT
+         HCGRP/pGYdI31UIMTFhoMdBKs4FBXzcZZIYGLXfRF94/8lz1syK9hOIBbMuVJ5exCg8i
+         /aRVVc/dStO4pR6G7KK7ITbKzneX0rp2+2ztXNWmmCQXotwt0SmhudwFx8ay7xr6JlvV
+         tuTA==
+X-Gm-Message-State: AOJu0YzTGyFihrXtr5x1RfoWOLtg3Kp4RaDF8FKkHD3CqOl8E5BQwLrO
+        EopksCqj1p0zym4KHchcT4qXoiyqON3rbGYfOJc=
+X-Google-Smtp-Source: AGHT+IF4Cfup7NtYYZZ9hIWSgVIsqHG4rKNu/4/pBIA/nnIJHQHr1oxeRQMsqeMjAOgyep/bfIj2oA0Y4JNzMQiBU04=
+X-Received: by 2002:a05:6808:1797:b0:3a7:4400:ebf0 with SMTP id
+ bg23-20020a056808179700b003a74400ebf0mr8171647oib.5.1691957782972; Sun, 13
+ Aug 2023 13:16:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230812130130.123243-1-biju.das.jz@bp.renesas.com>
-In-Reply-To: <20230812130130.123243-1-biju.das.jz@bp.renesas.com>
+References: <20230812133825.141581-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20230812133825.141581-1-biju.das.jz@bp.renesas.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 13 Aug 2023 23:09:09 +0300
-Message-ID: <CAHp75VfqGB1OYLGjK6MRPtPCkaFeY=c13RSEXrDH9eC5W9vjmw@mail.gmail.com>
-Subject: Re: [PATCH] iio: proximity: sx9310: Convert enum->pointer for match
- data table
+Date:   Sun, 13 Aug 2023 23:15:46 +0300
+Message-ID: <CAHp75VeX+T=hAN+PgtHTdv4b6UtDVgveUUww1b1kuOngzDinFw@mail.gmail.com>
+Subject: Re: [PATCH] iio: accel: adxl345: Convert enum->pointer for data in
+ match data table
 To:     Biju Das <biju.das.jz@bp.renesas.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -73,46 +73,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 12, 2023 at 4:01=E2=80=AFPM Biju Das <biju.das.jz@bp.renesas.co=
+On Sat, Aug 12, 2023 at 4:38=E2=80=AFPM Biju Das <biju.das.jz@bp.renesas.co=
 m> wrote:
 >
 > Convert enum->pointer for data in match data table, so that
 > device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
 > bus type match support added to it.
 >
-> Add struct sx931x_info and replace enum->sx931x_info in the match table
-> and simplify sx9310_check_whoami().
+> Add struct adxl3x5_chip_info and replace enum->adxl3x5_chip_info in the
+> match table and simplify adxl345_probe().
 
 ...
 
-> +       ddata =3D device_get_match_data(dev);
-> +       if (ddata->whoami !=3D whoami)
+> +       info =3D device_get_match_data(dev);
+> +       if (info->type !=3D ADXL345 && info->type !=3D ADXL375)
 >                 return -EINVAL;
 
--ENODEV looks better.
+I would rather use switch-case.
+Anyway, same comments here as for the other patch: ENODEV and trailing comm=
+as.
 
 ...
 
-> +static const struct sx931x_info sx9310_info =3D {
-> +       .name =3D "sx9310",
-> +       .whoami =3D SX9310_WHOAMI_VALUE
-
-Keep trailing comma.
-
+> +static const struct adxl3x5_chip_info adxl345_i2c_info =3D {
+> +       .name =3D "adxl345",
+> +       .type =3D ADXL345
 > +};
 > +
-> +static const struct sx931x_info sx9311_info =3D {
-> +       .name =3D "sx9311",
-> +       .whoami =3D SX9311_WHOAMI_VALUE
-
-Ditto.
-
+> +static const struct adxl3x5_chip_info adxl375_i2c_info =3D {
+> +       .name =3D "adxl375",
+> +       .type =3D ADXL375
 > +};
 
-...
+> +static const struct adxl3x5_chip_info adxl345_spi_info =3D {
+> +       .name =3D "adxl345",
+> +       .type =3D ADXL345
+> +};
+> +
+> +static const struct adxl3x5_chip_info adxl375_spi_info =3D {
+> +       .name =3D "adxl375",
+> +       .type =3D ADXL375
+> +};
 
-Otherwise looks good to me
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Why dup?
 
 --=20
 With Best Regards,

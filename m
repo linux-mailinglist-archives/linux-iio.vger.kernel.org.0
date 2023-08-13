@@ -2,127 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 046BA77A29A
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Aug 2023 22:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72BE177AABF
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Aug 2023 21:04:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjHLUk3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Aug 2023 16:40:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56380 "EHLO
+        id S229740AbjHMTEp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Aug 2023 15:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjHLUk2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Aug 2023 16:40:28 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE12100
-        for <linux-iio@vger.kernel.org>; Sat, 12 Aug 2023 13:40:31 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d62bdd1a97dso3038701276.3
-        for <linux-iio@vger.kernel.org>; Sat, 12 Aug 2023 13:40:31 -0700 (PDT)
+        with ESMTP id S229563AbjHMTEo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 15:04:44 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091B8EA;
+        Sun, 13 Aug 2023 12:04:46 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3179ed1dfbbso3302378f8f.1;
+        Sun, 13 Aug 2023 12:04:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691872830; x=1692477630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zd5MvNncZ2kNwClMx/zXWF5lNfRwjacKaiYxgN8VXks=;
-        b=RYpinmAxS//Bh+jVdiYRpi6azE6mjTL+duw6SpfeEYxugTKwxDvBjHuEgJnuhqqKI3
-         YaUKR/XxJWXAuI7abeBkNAPasGQRqXEOCxWUjXw8RQQtpIgOlw0Efimtb76Pg3Yxj353
-         r+sY4ATp1QN9wJEJ8vr6bMTHJqFewRdZD8dqx19bSpo6mYJl97xLESUKbQCe7xc/N/iV
-         3g8cwmHyXZp4ExOg5Zmsy+OglsMSReNhz402i0gdxq0mYxbTSJE3KZkwhdROqPlIep7o
-         mHXtNlscklWXh9JGseImcboz/3hay1kC0DNDzt5FNzVLTr4kMjV1QA/4XYYth2o2U2sy
-         3xRw==
+        d=gmail.com; s=20221208; t=1691953484; x=1692558284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YiVx73zMIwhMYy+6WCs90BoQ2EToUuMEWAY2N9/qEm4=;
+        b=UXW7PvnsMJqgGosXqg2bPu0hDF2COZgOaVhMppGHWrflPea2ziMvEPjTJvFmIYoqpR
+         zRFbIc5O/uPJ3+xDSK3V0DJCQRzZG+6fNQ5uqZX2PpwRBSlCvslt+5Nug0rN5syvr+l9
+         WZw0QLZm6oT3EOt7G1q+LUUf/3iidJ3WVABlU2EKEzHG6hlD03ObmfCejJ9Kv75sg5fv
+         dRIWmTa1vA1AFc23Jx0Mf9mq/1+YZkGcbrHcAomtVqQOrNOKGiJFXTlW87bpLzLYD97Y
+         eZAhVT2K8HImy0zdvVF84uHJC0/IoTiQLvJNlmSVwi2gmC5FY9tndvKMNXUHYitdyUsb
+         Xgfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691872830; x=1692477630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zd5MvNncZ2kNwClMx/zXWF5lNfRwjacKaiYxgN8VXks=;
-        b=Aq3lDV+jB/ezmXaTQkJKCbcLx1lRXA3m5/VZHfHUm0Fb2Mjep5pirjY0vrPApgJfTz
-         GB6nB/scOlzgIts0gWdDVHC71LlOz4m8B0RsLATN+gJUkybixrAbp8556I/wBLuA0MQ2
-         psFy84LGuDs+00WDrYe0ZsbYJ2LBXIj+oQcc0l+WUVMRKZez9AhMcwVwPS/vhjEZuQLN
-         7g4Ki6GzeYRxor+dFjLuA05DO+BWH5XO+9OerNSwaZvW/ucR2g3xVS9GOva6vOmB/Nfz
-         TKDAwEmt3AVcWyyvCEjUNrSV6Fd8Duc8rpgetn0h2y1jgggb4vDUJ9x3PknAklbGAqkc
-         wh/A==
-X-Gm-Message-State: AOJu0Yy7Xbpms/RMcAO7uCKE5EHSe7N7Ks0jqzJ1XHMdhzzIMa5+RolF
-        yJuIgTUmGL1YcNohX5DILu+RADtc10LW31sLAt2hTA==
-X-Google-Smtp-Source: AGHT+IF5cFusxqanXw81oUhW0wSJHOShxqJ3gpQ7O92z9q6bsfmS+eIxcyHZS/dFF0V1h8vMTNYJf/S9Ct75+/iQAFE=
-X-Received: by 2002:a25:5091:0:b0:d16:bdcf:943d with SMTP id
- e139-20020a255091000000b00d16bdcf943dmr5774172ybb.6.1691872830701; Sat, 12
- Aug 2023 13:40:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230811-iio-spacex-lsm6ds0-v1-0-e953a440170d@linaro.org>
- <20230811-iio-spacex-lsm6ds0-v1-1-e953a440170d@linaro.org>
- <ZNYIaagdt7HuRet5@lore-rh-laptop> <CACRpkdYHMyfvAGxgvtB8jgTsOp36Lm4gXzVYcBfXdY7RQK36cQ@mail.gmail.com>
- <ZNdOOuXy7vON/Shb@lore-rh-laptop>
-In-Reply-To: <ZNdOOuXy7vON/Shb@lore-rh-laptop>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 12 Aug 2023 22:40:19 +0200
-Message-ID: <CACRpkdYUnpb4oo+4pBxhQqbnquDP_+w3ecGoFX18TTC9BSZFwg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: lsm6dsx: Support temperature channel
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        d=1e100.net; s=20221208; t=1691953484; x=1692558284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YiVx73zMIwhMYy+6WCs90BoQ2EToUuMEWAY2N9/qEm4=;
+        b=GnymGz245dkSl/MjIVO5nlAodcjW9mBIfsv/dQGxgNmwKsNJjeooNAxiermXyo4ZGk
+         v3abKl8QqIhCDtlU4wUObb1H9BumEw8Qi6d7i6RrGdJVYIVdOE2T7afih7CkSI1Tq17t
+         +utn7gBZhHP6lA1WMXp2GQdasLvAJkk57jBn4rZW+Dr1BqLxr1W0/CyWpKLm6sqiwBr9
+         8G/rIxeSdqem+IdE7W0ikXMQaxBAQjiabtfRQ/jZyFs5AiPDLkRMTpYwMIQymwH7wiUS
+         0tLKvHRfqkVXdpHFZaxrSpKGxLStH9wzBLzJ1RTk+jE0dvYASKX+rWnmQPTOPi10a4fv
+         yX7g==
+X-Gm-Message-State: AOJu0YzXfYor6kupG8eY6x8bIy2cwteN644l9DCEXuBCbhEbJdptcul1
+        rehrIaUMkdCbwIGeyf1vgtVlLZu3Jh0=
+X-Google-Smtp-Source: AGHT+IE8rgt9Q9AVla+6aOEZLJrAMcNpss0uhbUi/cV+1g2EBid1dqsSQaWcTpEjbmINj/M3J+NExg==
+X-Received: by 2002:adf:fdce:0:b0:317:6992:855c with SMTP id i14-20020adffdce000000b003176992855cmr6427267wrs.19.1691953484015;
+        Sun, 13 Aug 2023 12:04:44 -0700 (PDT)
+Received: from localhost.localdomain (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
+        by smtp.gmail.com with ESMTPSA id a2-20020a5d4d42000000b00317ca89f6c5sm12111678wru.107.2023.08.13.12.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Aug 2023 12:04:43 -0700 (PDT)
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Mario Tesi <mario.tesi@st.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v2 0/3] iio: pressure: bmp280: Small driver cleanup
+Date:   Sun, 13 Aug 2023 21:03:53 +0200
+Message-ID: <cover.1691952005.git.ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 12, 2023 at 11:17=E2=80=AFAM Lorenzo Bianconi <lorenzo@kernel.o=
-rg> wrote:
+Minor cleanup of BMP280 i2c code and migration to the new helper functions
+i2c_get_match_data() and spi_get_device_match_data().
 
-> > > looking at the ISM330DHCX datasheet, the temperature sensor ODR is ju=
-st 52Hz,
-> > > while values in 0x0A register are used only for FIFO decimation, they=
- are not
-> > > values you can configure the sensor e.g. for read_one_shot().
+Revise driver coding style to follow reverse christmas tree.
 
-BTW looked at this and the read_one_shot() call uses
-register 0x20/0x21 as appropriate.
+Changelog v2:
+- Added patch 3 adopting spi_get_device_match_data().
+- Updated patch 2 following advice from Uwe Kleine-König
+  <u.kleine-koenig@pengutronix.de> regarding unintentioned driver semantic
+  changes.
+- Revised thoroughfully driver coding style and update more functions.
 
-> > >
-> > > > +                             .odr_avl[0] =3D {  26000, 0x02 },
-> > > > +                             .odr_avl[1] =3D {  52000, 0x03 },
-> > > > +                             .odr_len =3D 2,
-> >
-> > I look at page 44, paragraph 9.6 about bits 4-5:
-> >
-> > ODR_T_BATCH_[1:0]
-> > Selects batch data rate (write frequency in FIFO) for temperature data
-> > (00: Temperature not batched in FIFO (default);
-> > 01: 1.6 Hz;
-> > 10: 12.5 Hz;
-> > 11: 52 Hz)
->
-> AFAIR the batch register is used to sub-sample sensor data before queuein=
-g them
-> into the FIFO (please check st_lsm6dsx_set_fifo_odr()), but it does not r=
-efer
-> to the configured sensor ODR.
-> Looking at the device application-note [0], the temperature sensor ODR de=
-pends
-> on the accel/gyro one:
->
-> - temperature sensor ODR =3D=3D accel sensor ODR if accel ODR is < 52Hz a=
-nd the
->   gyro is in power-down
-> - temperature sensor ODR =3D 52Hz if accel ODR > 52Hz or if the gyro is n=
-ot in
->   power-down
+v1:
+https://lore.kernel.org/all/cover.1691276610.git.ang.iglesiasg@gmail.com/
 
-We handle the TEMP along with the EXT channels in
-st_lsm6dsx_set_odr() which actually makes sure to match
-the data rate of the accelerometer.
+Angel Iglesias (3):
+  iio: pressure: bmp280: i2c: Rearrange vars in reverse xmas tree order
+  iio: pressure: bmp280: Use i2c_get_match_data
+  iio: pressure: bmp280: Use spi_get_device_match_data()
 
-It looks as nobody cared to look into the issue with the
-gyroscope though :/ It feels like a whole separate issue,
-I expect more channels to be affected by that...
+ drivers/iio/pressure/bmp280-core.c |  4 ++--
+ drivers/iio/pressure/bmp280-i2c.c  |  8 +++-----
+ drivers/iio/pressure/bmp280-spi.c  | 10 +++-------
+ 3 files changed, 8 insertions(+), 14 deletions(-)
 
-Yours,
-Linus Walleij
+
+base-commit: 14b7447cec15ee8dfdfe0da66ba1e280ded7e00a
+-- 
+2.41.0
+

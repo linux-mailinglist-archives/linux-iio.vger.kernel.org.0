@@ -2,121 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5DA77AB1A
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Aug 2023 22:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C066F77AEA1
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Aug 2023 00:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjHMUQW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Aug 2023 16:16:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49300 "EHLO
+        id S230354AbjHMWxS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Aug 2023 18:53:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjHMUQV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 16:16:21 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76B110F9;
-        Sun, 13 Aug 2023 13:16:23 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a7d7de894bso2505225b6e.3;
-        Sun, 13 Aug 2023 13:16:23 -0700 (PDT)
+        with ESMTP id S231204AbjHMWxC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Aug 2023 18:53:02 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21AC593
+        for <linux-iio@vger.kernel.org>; Sun, 13 Aug 2023 15:45:02 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4ff72830927so809923e87.3
+        for <linux-iio@vger.kernel.org>; Sun, 13 Aug 2023 15:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691957783; x=1692562583;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zbq+ZoL+3cYllWrZqE2glhR/uej79xUgT6XSVMz6GME=;
-        b=Fe65SPY5+SIb43a9+eOmljhPnronAMZKF44mVr3LHQ2DrFG54Pnge8Pera7OxyvypZ
-         pYV4c1L8pznRUEfeMhtlHqj5WOEUyFM+ItJdQErid8JZ3JD8b6nBCwbJS1Jr1UZ8s1Um
-         9rf4VYrTHicY0WswdkuSbFPnHQO7gF4DE2FYysQvLZy43fD7DWPR4aeypGlA9Il9jHLt
-         K4uuIMqpXK9wuxtBk/2W+HH8E5MlO4g5UiQW7RcsxQVN1g8SVBg/kwJCiO6XBgTIbzm6
-         3uIvJsnsUFCvfCnDocDKSYzNJ0DAXGLiSaFvaTJhT1UfwonlBkXUYKNTpfaUvpJ45FYF
-         I9wg==
+        d=melexis.com; s=google; t=1691966700; x=1692571500;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eNNWcc82/wmdMGHxAJ5w6sLQEhv4REH7B6W6mtmcsh4=;
+        b=UxQmDcrIJ7oHBla6GDIGa/UBD0PUnuAOWTYHUyFHHRP9bdStKWovWTdU7bpjr3Nal0
+         PxjrX4bPZw3tfm6zB0yFTPrftLr5cVUifEGQNB4uyfCQ3RPvmxNeXpq17SQXVVSctTFs
+         jYWAj+h+PSUyGo2i4BlKUcJc+ylfHAaD72h2FJHIobuh+TC/As7XYKZp/yyAkh5wW/ab
+         mSm83HXg+CQcAfgHxvQd7T8ohRAQ2VndvVoZ58AbJvKVp5YiTYc+YmbC1TVXmLZXnTBT
+         HceqkQXCBd5PmFuy2VoZ6PmvI96lI3fNLh+IV8uQb0oKn+cR/n77c+/UN/OqG+64MneD
+         MShg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691957783; x=1692562583;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zbq+ZoL+3cYllWrZqE2glhR/uej79xUgT6XSVMz6GME=;
-        b=GDLiJ5S3yJTApd/FNZw7koI57I4bHt/RiesSlobNF6Oyr82rB6+f104orf7wknZc1u
-         iodbfFgzKmWNcsAzr/Mrxan18efIrSjxJoZlsAyX2XiX9Ucbk5wzG+VS67cfBI/98Etx
-         1nXwA/SO5RmdtWTJEGKk2tXE9dnqaY9zJFOnCpUsiHmWt+WYd29V3rR28oPIdlZD0IIT
-         HCGRP/pGYdI31UIMTFhoMdBKs4FBXzcZZIYGLXfRF94/8lz1syK9hOIBbMuVJ5exCg8i
-         /aRVVc/dStO4pR6G7KK7ITbKzneX0rp2+2ztXNWmmCQXotwt0SmhudwFx8ay7xr6JlvV
-         tuTA==
-X-Gm-Message-State: AOJu0YzTGyFihrXtr5x1RfoWOLtg3Kp4RaDF8FKkHD3CqOl8E5BQwLrO
-        EopksCqj1p0zym4KHchcT4qXoiyqON3rbGYfOJc=
-X-Google-Smtp-Source: AGHT+IF4Cfup7NtYYZZ9hIWSgVIsqHG4rKNu/4/pBIA/nnIJHQHr1oxeRQMsqeMjAOgyep/bfIj2oA0Y4JNzMQiBU04=
-X-Received: by 2002:a05:6808:1797:b0:3a7:4400:ebf0 with SMTP id
- bg23-20020a056808179700b003a74400ebf0mr8171647oib.5.1691957782972; Sun, 13
- Aug 2023 13:16:22 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691966700; x=1692571500;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eNNWcc82/wmdMGHxAJ5w6sLQEhv4REH7B6W6mtmcsh4=;
+        b=JvNMYztZXxRdRR7eXCywbvUA8qPn8aK9Yr2r+UQcjdylkT76M4dgTgf9vUV50ZoWQ6
+         Hj/R8nkZXL2kPP6Tw2GWDwO7aqTiEQie4n4IULtdVfIo//vh7XJ/mrGkSg+ZuC+pljBZ
+         I7bKM0zPBKsbnLjuB7NZoDNczDrNMNt6bS0EgI5HP7B4ybj34TMdUhbpIT0+AEoGW1wv
+         w/nTw/6Af1sRuBsTwOb1Z/YdEkuhOAsugxCwsmZWAigBFeogNIszDBJksUoxixAk/BzY
+         5w9REX4Eg6O/zj558zGMi9OdEoGaxePzfc+aUk1O8/C9DFDs7zFNciCA8ek2rIcvX7OQ
+         ybbg==
+X-Gm-Message-State: AOJu0YyLI9SDfkJ2h8cweEZrRl1MeCLOp3m2XF7Jh2l1Cf4WgD2RvqIP
+        DExsDi+oOn/TZyAaJZmpKSpGh9tTMilQrbfA1074uYMQTdXR0X3Lw6Y=
+X-Google-Smtp-Source: AGHT+IE0UxoTPUYWQSaYOJ1tLhZrX8DCyi+5KunTxPeUraeigwoLkr6v82QoV3kf3vL5i7pjRT6iE2SFP2Xwe+11lfw=
+X-Received: by 2002:ac2:5105:0:b0:4fe:1ecf:8ab4 with SMTP id
+ q5-20020ac25105000000b004fe1ecf8ab4mr4964676lfb.18.1691966226497; Sun, 13 Aug
+ 2023 15:37:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230812133825.141581-1-biju.das.jz@bp.renesas.com>
-In-Reply-To: <20230812133825.141581-1-biju.das.jz@bp.renesas.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 13 Aug 2023 23:15:46 +0300
-Message-ID: <CAHp75VeX+T=hAN+PgtHTdv4b6UtDVgveUUww1b1kuOngzDinFw@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: adxl345: Convert enum->pointer for data in
- match data table
+References: <20230812162222.200004-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20230812162222.200004-1-biju.das.jz@bp.renesas.com>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Mon, 14 Aug 2023 00:36:31 +0200
+Message-ID: <CAKv63uvEu3kPYF=idNyW4RkwVWFgixdstQyvuUhhHzc_rPgqqg@mail.gmail.com>
+Subject: Re: [PATCH] iio: mlx90614: Use i2c_get_match_data()
 To:     Biju Das <biju.das.jz@bp.renesas.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 12, 2023 at 4:38=E2=80=AFPM Biju Das <biju.das.jz@bp.renesas.co=
-m> wrote:
+It should not break some backwards compatibility so:
+Acked-by: "Crt Mori <cmo@melexis.com>"
+
+On Sat, 12 Aug 2023 at 18:22, Biju Das <biju.das.jz@bp.renesas.com> wrote:
 >
-> Convert enum->pointer for data in match data table, so that
-> device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
-> bus type match support added to it.
+> Replace device_get_match_data()->i2c_get_match_data() to extend matching
+> support for ID table.
 >
-> Add struct adxl3x5_chip_info and replace enum->adxl3x5_chip_info in the
-> match table and simplify adxl345_probe().
-
-...
-
-> +       info =3D device_get_match_data(dev);
-> +       if (info->type !=3D ADXL345 && info->type !=3D ADXL375)
->                 return -EINVAL;
-
-I would rather use switch-case.
-Anyway, same comments here as for the other patch: ENODEV and trailing comm=
-as.
-
-...
-
-> +static const struct adxl3x5_chip_info adxl345_i2c_info =3D {
-> +       .name =3D "adxl345",
-> +       .type =3D ADXL345
-> +};
-> +
-> +static const struct adxl3x5_chip_info adxl375_i2c_info =3D {
-> +       .name =3D "adxl375",
-> +       .type =3D ADXL375
-> +};
-
-> +static const struct adxl3x5_chip_info adxl345_spi_info =3D {
-> +       .name =3D "adxl345",
-> +       .type =3D ADXL345
-> +};
-> +
-> +static const struct adxl3x5_chip_info adxl375_spi_info =3D {
-> +       .name =3D "adxl375",
-> +       .type =3D ADXL375
-> +};
-
-Why dup?
-
---=20
-With Best Regards,
-Andy Shevchenko
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+>  drivers/iio/temperature/mlx90614.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
+> index 07bb5df24ab3..740018d4b3df 100644
+> --- a/drivers/iio/temperature/mlx90614.c
+> +++ b/drivers/iio/temperature/mlx90614.c
+> @@ -600,7 +600,7 @@ static int mlx90614_probe(struct i2c_client *client)
+>         data->client = client;
+>         mutex_init(&data->lock);
+>         data->wakeup_gpio = mlx90614_probe_wakeup(client);
+> -       data->chip_info = device_get_match_data(&client->dev);
+> +       data->chip_info = i2c_get_match_data(client);
+>
+>         mlx90614_wakeup(data);
+>
+> --
+> 2.25.1
+>

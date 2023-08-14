@@ -2,98 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8077277BA7E
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Aug 2023 15:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A533577BE51
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Aug 2023 18:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231575AbjHNNqA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Aug 2023 09:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
+        id S229839AbjHNQoK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Aug 2023 12:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231637AbjHNNpp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Aug 2023 09:45:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F374106;
-        Mon, 14 Aug 2023 06:45:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7E7761FB6;
-        Mon, 14 Aug 2023 13:45:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918D8C433C8;
-        Mon, 14 Aug 2023 13:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692020744;
-        bh=3GWUGU3sn/mG21fzGuyMqh51zJlW4hGxN9JOTvBoYEc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YqD2U0V2tuxKZqxWonJYrqzUtF4LVqwXLZtE4B/8QCGUXmjMdi5/Vy3RG8+ny68FW
-         9ZLD41a9bVbdV5626Qbkc/m8Uff5zw0x3RRPyGBxZkf5FqceOXnFOniggixG/FtXs6
-         GTb8FSPkQ/TjyNtQqcbkB8/Vs87Sb3YosijuXHfP248tR4OnTyh9h+Rw6iqoHSK2Cq
-         LVLf9nAXZ6pYHSUxJccABK8IUTTPy7LQ2PxZLrKJqjt8lQhVMxPWYnPt5631xOPHoH
-         vnppiFo25hGzBQ89EK/NfqwgiG7yy+nKN3EVUWjBwbz9h4gWtTs1H/GF89huUiwnVw
-         KHfaLNQ7ni+YQ==
-Date:   Mon, 14 Aug 2023 15:45:41 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Gatien Chevallier <gatien.chevallier@foss.st.com>
-Cc:     Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, alexandre.torgue@foss.st.com,
-        vkoul@kernel.org, jic23@kernel.org, olivier.moysan@foss.st.com,
-        arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
-        fabrice.gasnier@foss.st.com, andi.shyti@kernel.org,
-        ulf.hansson@linaro.org, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, hugues.fruchet@foss.st.com, lee@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, arnd@kernel.org,
-        richardcochran@gmail.com, Frank Rowand <frowand.list@gmail.com>,
-        peng.fan@oss.nxp.com, linux-crypto@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 02/11] dt-bindings: treewide: add feature-domains
- description
-Message-ID: <ZNowBaT2nLj4jEm3@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Gatien Chevallier <gatien.chevallier@foss.st.com>,
-        Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, alexandre.torgue@foss.st.com, vkoul@kernel.org,
-        jic23@kernel.org, olivier.moysan@foss.st.com,
-        arnaud.pouliquen@foss.st.com, mchehab@kernel.org,
-        fabrice.gasnier@foss.st.com, andi.shyti@kernel.org,
-        ulf.hansson@linaro.org, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, hugues.fruchet@foss.st.com, lee@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, arnd@kernel.org,
-        richardcochran@gmail.com, Frank Rowand <frowand.list@gmail.com>,
-        peng.fan@oss.nxp.com, linux-crypto@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20230811100731.108145-1-gatien.chevallier@foss.st.com>
- <20230811100731.108145-3-gatien.chevallier@foss.st.com>
+        with ESMTP id S232190AbjHNQny (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Aug 2023 12:43:54 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18337E65;
+        Mon, 14 Aug 2023 09:43:53 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3197b461bb5so702642f8f.3;
+        Mon, 14 Aug 2023 09:43:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692031431; x=1692636231;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QcV/Qi3bNqSTHWoo2wyHtkP3GXOLBpyAawkkekXtGoc=;
+        b=ohDZd8D3k7q+R7Wgv6pDh8mZ2FWd0cDL11F3vtkm9UUjOQSaBr090DAGbIxRJAp6Ko
+         ItmA6+oE/3eZrYmuNE4/0Vkf2C1KR38vZoSdU32lLK3jwf4FnDRd1dUI3lqNfFL3sD0v
+         PlvRqqliYF54tgEFu5SwFVpU+VrRUUjRA9NTcE5pwGaIsZNbiuvRS2KP0nV5XIjEi096
+         yhK5+PwYc65h2wEEfz2MkiHyIm+WnraRj358y0m4Dsb2tqsyHvJfvNZQW+qE6iEMIhCa
+         CO4y+433Fo8tP/5u8+S2VwTcrqf5RmRLY6WVwev+LXvJcw9J7zmfmg4b8a2UHP6O3f66
+         dDUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692031431; x=1692636231;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QcV/Qi3bNqSTHWoo2wyHtkP3GXOLBpyAawkkekXtGoc=;
+        b=Rk8no7mKWpeCAKzQO1fBm7EcqnRlbPpzP1MtYCzkruIlKSGG4vNt4N2F/XIES1uiNb
+         qyOYmVzJW+/zR/SoAtyDblR737qk9b0dh1Nk/b6C965H68xPVwKn3lyV9kDuQk2BooDO
+         f1mTJF/GKOCWLQPJ5Zh1WLPt6j3CmsDDaAgYpV4bNaWFXu/aFjLCKg+vMKG5KnNK24eG
+         KpNU4MLW9erfU+f+zwlEEt5jBX8vHTGzF9rc+vOabix/RG/qzhWIvbqrSl8iWICG+iW4
+         Q1SEz6G/qHC9/RzgKdE5P+OpG9CWKIuzUqkwbl6X5KfZDz0SNHJ0uLi+OxSHuXstXpKw
+         1jhQ==
+X-Gm-Message-State: AOJu0Yzhvc+6vK2kElYI8JirmHJTmN/k3V6lxjYMkDMAJaSL17envYuM
+        9REtS0085t7U6V5opvuaqbWnYtT4040=
+X-Google-Smtp-Source: AGHT+IG8uA+jP2upULXvv/RXRMZgq30oshgUhmW73T0YKn9CPSZ15Ec4dguH5H7MM9lPXPbf7BWh1w==
+X-Received: by 2002:a5d:6809:0:b0:314:1ca4:dbd9 with SMTP id w9-20020a5d6809000000b003141ca4dbd9mr6962731wru.27.1692031431265;
+        Mon, 14 Aug 2023 09:43:51 -0700 (PDT)
+Received: from DreamMachine2.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
+        by smtp.gmail.com with ESMTPSA id k3-20020a056000004300b003177074f830sm14990946wrx.59.2023.08.14.09.43.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Aug 2023 09:43:50 -0700 (PDT)
+Message-ID: <a83bde5079b769950220c0f1f3b8d374db39cfc7.camel@gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Date:   Mon, 14 Aug 2023 18:43:49 +0200
+In-Reply-To: <OS0PR01MB5922EDF7759069CD4993FA468617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <cover.1691952005.git.ang.iglesiasg@gmail.com>
+         <55f8dc02de16a353f0449bc1c7cb487bd776dfaf.1691952005.git.ang.iglesiasg@gmail.com>
+         <954c859835aed6c41a356fdd999a8be51469eb9e.camel@gmail.com>
+         <OS0PR01MB5922EDF7759069CD4993FA468617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (by Flathub.org) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="W69stkuq3CQIl/r9"
-Content-Disposition: inline
-In-Reply-To: <20230811100731.108145-3-gatien.chevallier@foss.st.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,47 +80,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---W69stkuq3CQIl/r9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 11, 2023 at 12:07:22PM +0200, Gatien Chevallier wrote:
-> feature-domains is an optional property that allows a peripheral to
-> refer to one or more feature domain controller(s).
+On Mon, 2023-08-14 at 06:57 +0000, Biju Das wrote:
+> Hi Angel Iglesias,
 >=20
-> Description of this property is added to all peripheral binding files of
-> the peripheral under the STM32 firewall controllers. It allows an accurate
-> representation of the hardware, where various peripherals are connected
-> to this firewall bus. The firewall can then check the peripheral accesses
-> before allowing it to probe.
 >=20
-> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_da=
+ta
+> >=20
+> > On Sun, 2023-08-13 at 21:03 +0200, Angel Iglesias wrote:
+> > > Replaces device_get_match_data() and fallback match_id logic by new
+> > > unified helper function i2c_get_match_data().
+> > >=20
+> > > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> > >=20
+> > > diff --git a/drivers/iio/pressure/bmp280-i2c.c
+> > > b/drivers/iio/pressure/bmp280- i2c.c index 693eb1975fdc..34e3bc758493
+> > > 100644
+> > > --- a/drivers/iio/pressure/bmp280-i2c.c
+> > > +++ b/drivers/iio/pressure/bmp280-i2c.c
+> > > @@ -11,9 +11,7 @@ static int bmp280_i2c_probe(struct i2c_client
+> > > *client)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct bmp280_c=
+hip_info *chip_info;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct regmap *regmap=
+;
+> > >=20
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D device_get_m=
+atch_data(&client->dev);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!chip_info)
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D (const struct bmp280_chip_info *)
+> > > id->driver_data;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D i2c_get_matc=
+h_data(client);
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0regmap =3D devm_regma=
+p_init_i2c(client,
+> > > chip_info->regmap_config);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ERR(regmap)) {
+> >=20
+> > Hi,
+> >=20
+> > I noticed I submitted this change that was also submitted by Biju Das o=
+n
+> > another
+> > patch:
+>=20
+> > Should I drop this patch from the series?
+>=20
+> I think it is ok. Andy is suggesting to use unified table for SPI/I2C
+>=20
+> Is it something do able and testable in your environment? see [1],
+> If yes, please create another patch for using unified table for both i2c =
+and
+> spi.
 
-Acked-by: Wolfram Sang <wsa@kernel.org> # for I2C (once the rest is accepte=
-d)
+I have around a BMP390 with the SPI pins available to test it out. In the c=
+ase
+of the bmp280 we could unify the of_match table as they're almost the same.=
+ In
+the case of the spi_device_id and i2c_device_id tables, as they're differen=
+t
+structs I'm not sure if they can be unified.
 
+Regarding Andy's comment, I think he's referring to the duplicated chip inf=
+os.
+In the case of the bmp280, the chip_infos are defined on the common driver =
+code
+and used for both SPI and I2C match tables.
 
---W69stkuq3CQIl/r9
-Content-Type: application/pgp-signature; name="signature.asc"
+>=20
+> https://lore.kernel.org/linux-renesas-soc/CAHp75VeX+T=3DhAN+PgtHTdv4b6UtD=
+VgveUUww1b1kuOngzDinFw@mail.gmail.com/T/#t
+>=20
+> Cheers,
+> Biju
 
------BEGIN PGP SIGNATURE-----
+Kind regards,
+Angel
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmTaMAUACgkQFA3kzBSg
-KbaUdQ//dzd+zVw4+lLQfMm5N9CAHnO3jRuJqiYQmp/rDIgsZY8CClGeuNYuiFGQ
-sJAlf9Vh2aH2qFbq7TJkPelVMPe97mgjxKZDJjrpGUe6CTcLGpK4P5dx0bQmxrDV
-X9wg54/VUPmf92H5LDELCgEQBUpxE2M9kMMYXubSN+gyCYDo+RZFOw+aOfRcqKkT
-jyWMjSPQsNYTIn/u+DiQidjJYYW3Y1NwiUufKoBCbTUDkmUkBsIAkqq5dYf1he96
-cDBjQz4aQzw8q9mITHh1GI3MX5AGpxJc8XmUwD2PwcshkDb57FJkTElHQIhKJW2R
-+BPM4dGmzfvtj6G7+/7/E0CWVymbxnEkOVK46qPYw00tD2C7Khm0kRLEbwEcenS3
-SlXgrYoVcGf73cxfYrShbSvV32GuQZ9onZxIbgdFMjtiCO7E2WKqPUkNt1hDecEf
-WoMbKLXvmxdcRjmmkRJRBGeUwKThDjHDvfYtURQ3+31TVkqxLDLoHE8gF78pL3yw
-LW4HQwfekpHvSObQssYoMM2mJrM7yidifx+OCmWywsvmYM3MlJklqapPTI+IVwdm
-CxMb+ZhS+C8HJfNS/5Q7AY4N4Qav0cG8Kdk2xTS2hBurkQ87PGjXdpkKPRIG6/wD
-02vyuQVUcnLNDqAwXkEORXxqaidoTN/suDmNhiHszczHfBZ/X0o=
-=VsN7
------END PGP SIGNATURE-----
-
---W69stkuq3CQIl/r9--

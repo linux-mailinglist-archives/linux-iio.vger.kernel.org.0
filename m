@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E53477CE86
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93C8B77CE92
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:57:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237575AbjHOOyA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Aug 2023 10:54:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
+        id S237590AbjHOO5U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 10:57:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237783AbjHOOx7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:53:59 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF7DE5B;
-        Tue, 15 Aug 2023 07:53:59 -0700 (PDT)
+        with ESMTP id S237558AbjHOO4p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:56:45 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E512BE6B;
+        Tue, 15 Aug 2023 07:56:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692111239; x=1723647239;
+  t=1692111404; x=1723647404;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=8cZYt7HFAnk2MmSwXTT2RjgwpBr32yZmczsS440Qatw=;
-  b=Vv7sNR3/duZXS1dd7e7sSt9EfIfKffR5uw0GNL3gw5J6EL0o6e06KBNh
-   Vy3ZmMwMd/YIGx/0vPPKWqoGnKtiCbyxldkElDvGHyJ8yj5lh1WOi3o/6
-   zIlblfbtGUeKKizPiap8yKaSyEzkGJ0Cs/5WwGKXLzLywvBBCzalvtBaw
-   pTDJtT55X43tQmruEmmThMreQE8FevHaalzMMua6UMzhUn3RS7t0LGj4n
-   atADgBfdHi1zVk0bh2kA/fmo5m4HohKGGOQq51hUeUz/gAdsIFVBqNwM0
-   KGD1qOthzNBpeLE5ZD8G0QhYflK50aohws1EeYCGLzUAa/Q05xGPpWMcI
+  bh=XXo3sz+mFRNGA11E4wYdBpJxSd47MXqkcrpQIJGqJXk=;
+  b=RP7o/eGZfqwhFQDbyeDyHuyCFRLrhn9sY1jJK1ETwDmTSnxmva9u5KeM
+   NeotbZGfv+1NfDwRDChKIxEOXpHMXNYLOQtQ08xp+1QgnLeyEd8InafyW
+   UT0JZ7GPWG6hcfcsW5DyOXTlNbHc8Vhom+B7MVMpr34Toj5msM7I+B9vY
+   j3YzOQl5lCq+qsvfS3tWAD5/yt95ZqUxzEWUH0FWq72Wc9v1VnMXeF3EP
+   L8msPu+nq/HA0XwfH3zVkGn1dA9NaXtTgfctywcvijP0EpPR3LNb4l6/W
+   SA1LdzPD2jwbtSZ9tSRcLH1OY6N8wzK857qi+c0wLJFUK2I04QwqVkUlS
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="371207049"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="438632443"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="371207049"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 07:53:58 -0700
+   d="scan'208";a="438632443"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 07:56:44 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907630159"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="733872171"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="907630159"
+   d="scan'208";a="733872171"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP; 15 Aug 2023 07:53:53 -0700
+  by orsmga002.jf.intel.com with ESMTP; 15 Aug 2023 07:56:39 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qVvQd-0065qi-2C;
-        Tue, 15 Aug 2023 17:53:51 +0300
-Date:   Tue, 15 Aug 2023 17:53:51 +0300
+        id 1qVvTJ-006BvE-2R;
+        Tue, 15 Aug 2023 17:56:37 +0300
+Date:   Tue, 15 Aug 2023 17:56:37 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Marcus Folkesson <marcus.folkesson@gmail.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
@@ -61,54 +61,38 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/6] iio: adc: mcp3911: simplify usage of spi->dev
-Message-ID: <ZNuRf3hZ9Z2fddxa@smile.fi.intel.com>
+Subject: Re: [PATCH v5 5/6] iio: adc: mcp3911: avoid ambiguity parameters in
+ macros
+Message-ID: <ZNuSJTjOL1sEnVUd@smile.fi.intel.com>
 References: <20230814121010.184842-1-marcus.folkesson@gmail.com>
- <20230814121010.184842-3-marcus.folkesson@gmail.com>
+ <20230814121010.184842-5-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230814121010.184842-3-marcus.folkesson@gmail.com>
+In-Reply-To: <20230814121010.184842-5-marcus.folkesson@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 02:10:07PM +0200, Marcus Folkesson wrote:
-> Replace the usage of `adc->spi->dev` with `dev` to make the code prettier.
+On Mon, Aug 14, 2023 at 02:10:09PM +0200, Marcus Folkesson wrote:
+> Name macro parameters after what they represent instead of 'x'.
 
-...
+Yes, but it's not my suggestion, what I was talking about is how macro
+parameters being treated.
 
->  	u32 ref = MCP3911_INT_VREF_MV;
-> +	struct device *dev = &adc->spi->dev;
+This change doesn't make the problem go away.
 
-Keep it upper.
+Per se, this one is good for its purposes.
 
->  	u32 div;
->  	int ret;
->  	u64 tmp;
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-...
-
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      NULL,
-
-This can be moved to the upper line.
-
-> +					      mcp3911_trigger_handler, NULL);
->  	if (ret)
->  		return ret;
-
-...
-
-With above addressed,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+This shouldn't be here.
 
 -- 
 With Best Regards,

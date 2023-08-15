@@ -2,49 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51CF277CF71
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 17:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6020D77D058
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 18:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238204AbjHOPpR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Aug 2023 11:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44734 "EHLO
+        id S238564AbjHOQrN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 12:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238205AbjHOPpF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 11:45:05 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B1C10C6;
-        Tue, 15 Aug 2023 08:45:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692114304; x=1723650304;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=N4FQQZBClojt4wY/wN9yRlt7dQFZc3hyheZLUA0OBTc=;
-  b=TtXIdm5yXGPjRwXudY+Dh+mg9xd9/7to6zfyChaL9fC8QvBBfseYfFnG
-   55GHs1NUxWa3WbFKdHBs4RAFTQO1q6+rbJolRi05RuCLpJhHp2TasL2Fp
-   bBTMCbqjJgcKeGAgxYfad98aGNMD/DUaoLBbAR0sUTgMbnUXGFQH8FfAj
-   SqnJEtT42USmjBEZG6nxN53y6AYAC6vLs66537xIzyHDBRcdTakFVpQfY
-   cOpA4gZt8lWAynPWaBMMYWZ6EbKLcMPGA8OY6eJNxfCdkC7rEqfA+X3+b
-   oVzi6dleeHb9TcFX6oMavuwXR8Q4419eEoirjMPQjQwmY3gziCj8tXFRX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="438647161"
-X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="438647161"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 08:45:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907654997"
-X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="907654997"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP; 15 Aug 2023 08:44:59 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qVwE5-007rrs-0v;
-        Tue, 15 Aug 2023 18:44:57 +0300
-Date:   Tue, 15 Aug 2023 18:44:56 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+        with ESMTP id S238561AbjHOQqp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 12:46:45 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE4D1B5;
+        Tue, 15 Aug 2023 09:46:44 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4ff882397ecso1073931e87.3;
+        Tue, 15 Aug 2023 09:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692118003; x=1692722803;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=If53RCBUL3psNaRCWLvzX+560q7uNFgIHgOS54tj/hQ=;
+        b=YcRtI7jvRG3KmX79eeMTST1rqcFzTieR04DIMLIfPKBb8ccBhVcUeNh/qzLcsola1F
+         T7DqdS2wGfInQtjd7CRvt0nuR+IdyaVigH2SRt1Qzr7nbwDSEAdshia8WS6KsE3qx0sR
+         7XbhJ1Xt4teSggqnD4IpxFJ2WngqOnZSY2PUMiWcDurpbyEn2ENc6NhIhZ9lc9Xl5pG3
+         7FqpLoc+Tu9cNdml8XJ9RgiAHmjVxQ2afgQeX+0iDeOVogMmQmqlkfgm7ykPFbtk/zw2
+         vByR4Si8Np1yKRb3iFXC/UQv6Cjmneg+6ME3g0AZSTTo4hdaGEqoSP6RUMJi7rSlunrO
+         BAyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692118003; x=1692722803;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=If53RCBUL3psNaRCWLvzX+560q7uNFgIHgOS54tj/hQ=;
+        b=PagM+VDCPekRfZpyDwb6WdNp9SgyR+f6pbuQnrARhEcsQi5yEmXxkKasXXWJOJx+wK
+         Tk0kA6jcFfS6xNSSNGyaB/qw6K2u9IieuO/cJf3NgJWXdwjy4g+/pnN5c23TfaBE/Ngq
+         WhtnydJXYhMJNJOxEZc5oyhnEpZN9ZxK5PhAkDIx9Bw6hC7SNIdQeO1zyrswPNKgCRTJ
+         PaJY26ND7jHEomXjooxpYZs+m+dTbrSRwnLaOq0Zj8qRBPSJd41D3+mgWUW4bsVlZgk8
+         V5n85oKBBwRHi5095XfSQb+NynTgOV+cdyvGGXKSZef8pG3GJ3Qw4Jcab+aHk7tJq7Pi
+         SfSw==
+X-Gm-Message-State: AOJu0Yxk07TDDDxUVwKe41WJn8JdkUqZ7niPygAKwJNKVQeptaLGpRGQ
+        v0f1I+HxXIebjWSIEUW3GTw=
+X-Google-Smtp-Source: AGHT+IFvrl/phZeooY4g5IqD6jnEjiC3p/tH5091Sy4kC/bAtswbiNSu+NmFsoh09sBBSZjO+39kzQ==
+X-Received: by 2002:a05:6512:2513:b0:4fe:8ba8:16a9 with SMTP id be19-20020a056512251300b004fe8ba816a9mr9501094lfb.55.1692118002781;
+        Tue, 15 Aug 2023 09:46:42 -0700 (PDT)
+Received: from gmail.com (83-233-6-197.cust.bredband2.com. [83.233.6.197])
+        by smtp.gmail.com with ESMTPSA id j25-20020ac25519000000b004fe432108absm2532242lfk.182.2023.08.15.09.46.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 09:46:41 -0700 (PDT)
+Date:   Tue, 15 Aug 2023 18:49:11 +0200
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,136 +67,66 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 6/6] iio: adc: mcp3911: add support for the whole
- MCP39xx family
-Message-ID: <ZNudeE+VNzSqFRGY@smile.fi.intel.com>
+Subject: Re: [PATCH v5 5/6] iio: adc: mcp3911: avoid ambiguity parameters in
+ macros
+Message-ID: <ZNush-mJqb8W6fjJ@gmail.com>
 References: <20230814121010.184842-1-marcus.folkesson@gmail.com>
- <20230814121010.184842-6-marcus.folkesson@gmail.com>
+ <20230814121010.184842-5-marcus.folkesson@gmail.com>
+ <ZNuSJTjOL1sEnVUd@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="gG4ZBKiCQPvz6Bk4"
 Content-Disposition: inline
-In-Reply-To: <20230814121010.184842-6-marcus.folkesson@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZNuSJTjOL1sEnVUd@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 02:10:10PM +0200, Marcus Folkesson wrote:
-> Microchip does have many similar chips, add support for those.
-> 
-> The new supported chips are:
->   - microchip,mcp3910
->   - microchip,mcp3912
->   - microchip,mcp3913
->   - microchip,mcp3914
->   - microchip,mcp3918
->   - microchip,mcp3919
 
-...
+--gG4ZBKiCQPvz6Bk4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->  	struct {
-> -		u32 channels[MCP3911_NUM_CHANNELS];
-> +		u32 channels[MCP39XX_MAX_NUM_CHANNELS];
->  		s64 ts __aligned(8);
+On Tue, Aug 15, 2023 at 05:56:37PM +0300, Andy Shevchenko wrote:
+> On Mon, Aug 14, 2023 at 02:10:09PM +0200, Marcus Folkesson wrote:
+> > Name macro parameters after what they represent instead of 'x'.
+>=20
+> Yes, but it's not my suggestion, what I was talking about is how macro
+> parameters being treated.
 
-Can we actually have the __aligned_s64 defined?
-
-Rhetorical... Let me send a patch for that as it's not related to this series.
-
->  	} scan;
-
-...
-
-> +	/* Enable offset*/
-
-Missing space.
-
-...
-
-> +static int mcp3911_get_osr(struct mcp3911 *adc, u32 *val)
-> +{
-> +	int ret, osr;
-> +
-> +	ret = mcp3911_read(adc, MCP3911_REG_CONFIG, val, 2);
-> +	if (ret)
-> +		return ret;
-> +
-> +	osr = FIELD_GET(MCP3911_CONFIG_OSR, *val);
-> +	*val = 32 << osr;
-
-> +	return ret;
-
-	return 0;
-
-> +}
-
-...
-
->  {
-> -	struct device *dev = &adc->spi->dev;
->  	u32 regval;
->  	int ret;
-
-> +	struct device *dev = &adc->spi->dev;
-
-Stray change.
-
-...
-
-> +	/* Disable offset to ignore any old values in offset register*/
-
-Missing space.
-
-...
-
-> +	u32 regval;
-> +	int ret;
-> +	struct device *dev = &adc->spi->dev;
-
-Make the longer line first.
-
-...
-
-> +		dev_dbg(dev,
-> +			"use internal voltage reference (1.2V)\n");
-
-One line.
-
-...
-
-> +		dev_dbg(dev,
-> +			"use crystal oscillator as clocksource\n");
-
-Ditto.
-
-(This is the outcome of the exercise with temporary dev variable)
-
-...
-
-> +	ret = device_property_read_u32(dev, "microchip,device-addr", &adc->dev_addr);
->  	if (ret)
-> -		return ret;
-> +		device_property_read_u32(dev, "device-addr", &adc->dev_addr);
-> +	if (adc->dev_addr > 3) {
-
-> +		dev_err_probe(dev, -EINVAL,
-> +			"invalid device address (%i). Must be in range 0-3.\n",
-> +			adc->dev_addr);
-
-Missing return?
-
-		return dev_err_probe(...);
-
-> +	}
-> +	dev_dbg(dev, "use device address %i\n", adc->dev_addr);
-
--- 
-With Best Regards,
-Andy Shevchenko
+Sorry, I clearly missunderstood what you was aiming for.
+I will change to (ch) in this patch and keep it consistent in the
+following.
 
 
+Best regards,
+Marcus Folkesson
+
+--gG4ZBKiCQPvz6Bk4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmTbrIIACgkQiIBOb1ld
+UjLtPg/+P74NyFgPv+ugZTH+rxz9RzKBi0bGT6bAVV70G96YxRZlApT5K9Tn+q1V
+WZu/zySEgF++o+rg4Nog6ElpOED5ySq9JQ+6btGaiEZ4rsiC38aqCDiEhOhiUTO9
+DghF/7Lo33iGcDt4E7SdA9MtyXDJQirZH6/ULehVwS4CLcv9pi3mbZse16fI/o6s
+xWwiLOaTUsXRaGRORF0/cecqoVgoXhW/Z3VYra7nehh7pruNB4WRwKnp+TzhyOwU
+nOTZhJDytW9HxkwuQiLJ/aecwGDnTVe/VRvZvNDxLdcvmW3SY6tREYXYyp0wqSJ4
+VhJwluO7fxkGGY/e6qPSNI/APbYuuOozi548LETj/g5x70YdJIJRMLmDW6YoK90J
+/sffnaXcNiuh/tponMtErqWN15Dvi0M1RNi1V0NPaHwvCTc7TEtHyUVwyABcNlqb
+k4OSoH8H1dS3mCZav11kCCEp51sMFG4amCkSLvFAm/8mMMLlFeEy8iXO0e1XUxv3
+AZ0j0INKO6xa3ZeaTUO2ALMlBEUxCtLUo6nGEQibFGnsU5OJ7wgyLC6EIOKjqDBh
+8pVinw0CKp1WwZ517rFqBlTBZAHz9z6cYWbjWbazrIc82sZn/hBzTR0WAfKowmGO
+vpTUtssLqD1Bgq9Roaapj+qWGZIU2nmDh4cBAMXXviQaBCS87qo=
+=tHfk
+-----END PGP SIGNATURE-----
+
+--gG4ZBKiCQPvz6Bk4--

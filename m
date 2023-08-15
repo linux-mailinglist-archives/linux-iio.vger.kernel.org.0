@@ -2,64 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D42277CF5E
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 17:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51CF277CF71
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 17:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238158AbjHOPla (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Aug 2023 11:41:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36478 "EHLO
+        id S238204AbjHOPpR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 11:45:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238169AbjHOPlS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 11:41:18 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A39BE61;
-        Tue, 15 Aug 2023 08:41:17 -0700 (PDT)
+        with ESMTP id S238205AbjHOPpF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 11:45:05 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B1C10C6;
+        Tue, 15 Aug 2023 08:45:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692114077; x=1723650077;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lWHTVMVVzUsh687F017zJbmNhEj8Fz4h52xIxzZXMOY=;
-  b=NfvOQJNE2AJ/0l0K2jvUEWTGeT54uA14Mn/VlLa7TjqdzIIqmEZ4L+vs
-   i1bhLYfssDzRg4/Ltt2OJzg2H+ZjbcTHniU9s/N3Hzy3BK7cvWBKjtd2e
-   UHEIIMcPGTVAkNt34fF+qF9YSYSpXLNAbvBhKJ3G/tWdsSoW3+CztPRHq
-   8GVK3yd5zZ1Q1B2JWNktM5olvOpLw25vrHIfR8xGvsPqyfC3NfJPb5wx9
-   /bpdcIYnularxuiuvKanC0Emr03ule2oD1UEdx5zEXR/neWc9rcHzmflu
-   YdLfDyKPj2T9F4cQ4kmkbdwa3thp/hlZ9RNe957fxQ/9xXOkH4f+MXdAI
+  t=1692114304; x=1723650304;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=N4FQQZBClojt4wY/wN9yRlt7dQFZc3hyheZLUA0OBTc=;
+  b=TtXIdm5yXGPjRwXudY+Dh+mg9xd9/7to6zfyChaL9fC8QvBBfseYfFnG
+   55GHs1NUxWa3WbFKdHBs4RAFTQO1q6+rbJolRi05RuCLpJhHp2TasL2Fp
+   bBTMCbqjJgcKeGAgxYfad98aGNMD/DUaoLBbAR0sUTgMbnUXGFQH8FfAj
+   SqnJEtT42USmjBEZG6nxN53y6AYAC6vLs66537xIzyHDBRcdTakFVpQfY
+   cOpA4gZt8lWAynPWaBMMYWZ6EbKLcMPGA8OY6eJNxfCdkC7rEqfA+X3+b
+   oVzi6dleeHb9TcFX6oMavuwXR8Q4419eEoirjMPQjQwmY3gziCj8tXFRX
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="351896974"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="438647161"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="351896974"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 08:41:16 -0700
+   d="scan'208";a="438647161"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 08:45:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="727406715"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907654997"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="727406715"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 15 Aug 2023 08:41:13 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 72389C84; Tue, 15 Aug 2023 18:41:12 +0300 (EEST)
+   d="scan'208";a="907654997"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP; 15 Aug 2023 08:44:59 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qVwE5-007rrs-0v;
+        Tue, 15 Aug 2023 18:44:57 +0300
+Date:   Tue, 15 Aug 2023 18:44:56 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Philipp Jungkamp <p.jungkamp@gmx.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Jiri Kosina <jikos@kernel.org>,
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
         Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 3/3] iio: hid-sensor: Use aligned data type for timestamp
-Date:   Tue, 15 Aug 2023 18:40:27 +0300
-Message-Id: <20230815154027.12468-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230815154027.12468-1-andriy.shevchenko@linux.intel.com>
-References: <20230815154027.12468-1-andriy.shevchenko@linux.intel.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 6/6] iio: adc: mcp3911: add support for the whole
+ MCP39xx family
+Message-ID: <ZNudeE+VNzSqFRGY@smile.fi.intel.com>
+References: <20230814121010.184842-1-marcus.folkesson@gmail.com>
+ <20230814121010.184842-6-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814121010.184842-6-marcus.folkesson@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -69,146 +80,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use aligned_s64 for the timestamp field.
+On Mon, Aug 14, 2023 at 02:10:10PM +0200, Marcus Folkesson wrote:
+> Microchip does have many similar chips, add support for those.
+> 
+> The new supported chips are:
+>   - microchip,mcp3910
+>   - microchip,mcp3912
+>   - microchip,mcp3913
+>   - microchip,mcp3914
+>   - microchip,mcp3918
+>   - microchip,mcp3919
 
-Note, the actual data is signed, hence with this we also amend that.
-While at it, drop redundant __alignment directive.
+...
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/accel/hid-sensor-accel-3d.c              | 3 +--
- drivers/iio/gyro/hid-sensor-gyro-3d.c                | 2 +-
- drivers/iio/humidity/hid-sensor-humidity.c           | 2 +-
- drivers/iio/light/hid-sensor-als.c                   | 2 +-
- drivers/iio/orientation/hid-sensor-incl-3d.c         | 2 +-
- drivers/iio/orientation/hid-sensor-rotation.c        | 4 ++--
- drivers/iio/position/hid-sensor-custom-intel-hinge.c | 2 +-
- drivers/iio/pressure/hid-sensor-press.c              | 2 +-
- drivers/iio/temperature/hid-sensor-temperature.c     | 2 +-
- 9 files changed, 10 insertions(+), 11 deletions(-)
+>  	struct {
+> -		u32 channels[MCP3911_NUM_CHANNELS];
+> +		u32 channels[MCP39XX_MAX_NUM_CHANNELS];
+>  		s64 ts __aligned(8);
 
-diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hid-sensor-accel-3d.c
-index 5eac7ea19993..f739589564c5 100644
---- a/drivers/iio/accel/hid-sensor-accel-3d.c
-+++ b/drivers/iio/accel/hid-sensor-accel-3d.c
-@@ -25,10 +25,9 @@ struct accel_3d_state {
- 	struct hid_sensor_hub_callbacks callbacks;
- 	struct hid_sensor_common common_attributes;
- 	struct hid_sensor_hub_attribute_info accel[ACCEL_3D_CHANNEL_MAX];
--	/* Ensure timestamp is naturally aligned */
- 	struct {
- 		u32 accel_val[3];
--		s64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-index 698c50da1f10..a7050a6328d6 100644
---- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
-+++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-@@ -27,7 +27,7 @@ struct gyro_3d_state {
- 	struct hid_sensor_hub_attribute_info gyro[GYRO_3D_CHANNEL_MAX];
- 	struct {
- 		u32 gyro_val[GYRO_3D_CHANNEL_MAX];
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/humidity/hid-sensor-humidity.c b/drivers/iio/humidity/hid-sensor-humidity.c
-index fa0fe404a70a..0e484b78b735 100644
---- a/drivers/iio/humidity/hid-sensor-humidity.c
-+++ b/drivers/iio/humidity/hid-sensor-humidity.c
-@@ -18,7 +18,7 @@ struct hid_humidity_state {
- 	struct hid_sensor_hub_attribute_info humidity_attr;
- 	struct {
- 		s32 humidity_data;
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
-index eb1aedad7edc..8a906d95edd4 100644
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -27,7 +27,7 @@ struct als_state {
- 	struct hid_sensor_hub_attribute_info als_illum;
- 	struct {
- 		u32 illum[CHANNEL_SCAN_INDEX_MAX];
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/orientation/hid-sensor-incl-3d.c b/drivers/iio/orientation/hid-sensor-incl-3d.c
-index ba5b581d5b25..3e5f2c58dfa9 100644
---- a/drivers/iio/orientation/hid-sensor-incl-3d.c
-+++ b/drivers/iio/orientation/hid-sensor-incl-3d.c
-@@ -29,7 +29,7 @@ struct incl_3d_state {
- 	struct hid_sensor_hub_attribute_info incl[INCLI_3D_CHANNEL_MAX];
- 	struct {
- 		u32 incl_val[INCLI_3D_CHANNEL_MAX];
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
-index a033699910e8..864ecbcad26e 100644
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -19,8 +19,8 @@ struct dev_rot_state {
- 	struct hid_sensor_common common_attributes;
- 	struct hid_sensor_hub_attribute_info quaternion;
- 	struct {
--		s32 sampled_vals[4] __aligned(16);
--		u64 timestamp __aligned(8);
-+		s32 sampled_vals[4];
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-index 07c30d217255..48005b568dd9 100644
---- a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-+++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-@@ -39,7 +39,7 @@ struct hinge_state {
- 	const char *labels[CHANNEL_SCAN_INDEX_MAX];
- 	struct {
- 		u32 hinge_val[3];
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 
- 	int scale_pre_decml;
-diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
-index a9215eb32d70..a964c7b65402 100644
---- a/drivers/iio/pressure/hid-sensor-press.c
-+++ b/drivers/iio/pressure/hid-sensor-press.c
-@@ -24,7 +24,7 @@ struct press_state {
- 	struct hid_sensor_hub_attribute_info press_attr;
- 	struct {
- 		u32 press_data;
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
-diff --git a/drivers/iio/temperature/hid-sensor-temperature.c b/drivers/iio/temperature/hid-sensor-temperature.c
-index d40f235af1d4..32f4b13fd554 100644
---- a/drivers/iio/temperature/hid-sensor-temperature.c
-+++ b/drivers/iio/temperature/hid-sensor-temperature.c
-@@ -18,7 +18,7 @@ struct temperature_state {
- 	struct hid_sensor_hub_attribute_info temperature_attr;
- 	struct {
- 		s32 temperature_data;
--		u64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
- 	int scale_post_decml;
+Can we actually have the __aligned_s64 defined?
+
+Rhetorical... Let me send a patch for that as it's not related to this series.
+
+>  	} scan;
+
+...
+
+> +	/* Enable offset*/
+
+Missing space.
+
+...
+
+> +static int mcp3911_get_osr(struct mcp3911 *adc, u32 *val)
+> +{
+> +	int ret, osr;
+> +
+> +	ret = mcp3911_read(adc, MCP3911_REG_CONFIG, val, 2);
+> +	if (ret)
+> +		return ret;
+> +
+> +	osr = FIELD_GET(MCP3911_CONFIG_OSR, *val);
+> +	*val = 32 << osr;
+
+> +	return ret;
+
+	return 0;
+
+> +}
+
+...
+
+>  {
+> -	struct device *dev = &adc->spi->dev;
+>  	u32 regval;
+>  	int ret;
+
+> +	struct device *dev = &adc->spi->dev;
+
+Stray change.
+
+...
+
+> +	/* Disable offset to ignore any old values in offset register*/
+
+Missing space.
+
+...
+
+> +	u32 regval;
+> +	int ret;
+> +	struct device *dev = &adc->spi->dev;
+
+Make the longer line first.
+
+...
+
+> +		dev_dbg(dev,
+> +			"use internal voltage reference (1.2V)\n");
+
+One line.
+
+...
+
+> +		dev_dbg(dev,
+> +			"use crystal oscillator as clocksource\n");
+
+Ditto.
+
+(This is the outcome of the exercise with temporary dev variable)
+
+...
+
+> +	ret = device_property_read_u32(dev, "microchip,device-addr", &adc->dev_addr);
+>  	if (ret)
+> -		return ret;
+> +		device_property_read_u32(dev, "device-addr", &adc->dev_addr);
+> +	if (adc->dev_addr > 3) {
+
+> +		dev_err_probe(dev, -EINVAL,
+> +			"invalid device address (%i). Must be in range 0-3.\n",
+> +			adc->dev_addr);
+
+Missing return?
+
+		return dev_err_probe(...);
+
+> +	}
+> +	dev_dbg(dev, "use device address %i\n", adc->dev_addr);
+
 -- 
-2.40.0.1.gaa8946217a0b
+With Best Regards,
+Andy Shevchenko
+
 

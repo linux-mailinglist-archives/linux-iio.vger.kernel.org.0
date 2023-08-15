@@ -2,103 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E84177CDC5
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A915877CE1C
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235486AbjHOOEv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Aug 2023 10:04:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57124 "EHLO
+        id S237597AbjHOOav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 10:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237508AbjHOOE1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:04:27 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C03199A
-        for <linux-iio@vger.kernel.org>; Tue, 15 Aug 2023 07:04:25 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-31771bb4869so5058962f8f.0
-        for <linux-iio@vger.kernel.org>; Tue, 15 Aug 2023 07:04:25 -0700 (PDT)
+        with ESMTP id S237636AbjHOOa2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:30:28 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2767C199B
+        for <linux-iio@vger.kernel.org>; Tue, 15 Aug 2023 07:30:27 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4ff882397ecso818145e87.3
+        for <linux-iio@vger.kernel.org>; Tue, 15 Aug 2023 07:30:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692108264; x=1692713064;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1Kt0D/0mRQreIolmu1hBGOuZHW1/1RKuyPYj9Zm0N6s=;
-        b=SMC442GCemEBCZ7/mhbAiZoYbQlrOMVJSUIxAfyTqvayKZv6V1N8mFuvKcnTY2N3/h
-         0uYw8m8ueZaV8kdWRhVOUQZOSms7Yo3cB6a/X2MxoHYEh4OJUwCQQmy2DNs6wYvXG14a
-         uk9mwmSeYchwZ5EbAs6fjBY6zV4GMudMD97U87DHpFl+foJWy/fgTCYqthgUfrIlrXhX
-         +yZcV41GwyiqRMW4hNaStImc7vkWKGAo6+9clTdsBH8xlzMgFfmwdSl4op0Yard8ZSsl
-         FvtCtktilGibC9yHSwp/sqovGuQIVMyS8TroZaoqM+EmIQmqa2JTzZlBRCOKEnHpNA9Q
-         e3dQ==
+        d=gmail.com; s=20221208; t=1692109825; x=1692714625;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8zWX6sWFpbIqxvJkpqPafp4zk2BFLanx/lSJWZDELAA=;
+        b=c2Xk/xKruo+2UtyP8O3IiQOmCqEUrZHadqJQZKdJ+IlEmB7glIEbbGxR1dAD1cqv0D
+         SNyhmaAG7PPJOo3IGz/7Boq/5M3lRWyEYLjrElmxegpPFr92P9G15TCQKM1MeEExXYbr
+         7Hxtt9+yKVMHXoslsQsH4U8tUWPGQbO5C+dUvZDilPGoKWKh/FkcHnH5ebh5Sc94CnGW
+         c6nDLp9yHl2co/jWjgBkZughcl1lTDe0gEtQFcJF2EOCdjs803036+w6nHb2ugsVG/D0
+         X7aTaPyFpYhhoQgqB9vQ7SmmeQ+L0pu5dEGcBVymUJZLmJi9Kg7G/QTKkq92k8Sqz5T9
+         dpyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692108264; x=1692713064;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1692109825; x=1692714625;
+        h=to:subject:message-id:date:from:sender:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Kt0D/0mRQreIolmu1hBGOuZHW1/1RKuyPYj9Zm0N6s=;
-        b=JNJmIFHflturJCV7veTWmbrKLfKcb6oHQcRb0DtNrASHguA9myCHombIwAHh0za0NQ
-         jzpPe9dsloyNYNc5Ow2QzNdfBoA92SlTSS06mqqdu0EQJUQEkPFb7CHRE0m6AhP7lRGP
-         t0SgowJv69xtC7hC7oLralKUlE0k7whTqSvWkUdYRLgHKOH80woEoHK3QGsmptFRXuWT
-         W7ZUFg1bgGa2XFBboxbcUyLe+T10b2bwSekhmY0c8YTT1JnfA3aYpI3KBzWkcWP83JaD
-         q4OWGa7N1eCPx0Gje8LPUbWUuI5pGrB9XE7FHkN4eNUDVqlA75eTBvAiNKmmYV54Cl9d
-         dFAQ==
-X-Gm-Message-State: AOJu0Yx4YnGPv7oDKvD+EJ6gItzub8rI6JT/XQ8vGhXyAWQyhsDLTtJM
-        19Lp+V3KN+yxPW1Tt/ZCxLinf1cpyiiI0tIAP+E=
-X-Google-Smtp-Source: AGHT+IFEaEWHbfPxRqBmaj7JYEStaKa2v/AYKLUSsJi0+/geq6vNo0xOD/LDvxNcVz0OdPOUS6zE7g==
-X-Received: by 2002:adf:dec2:0:b0:317:5a99:4549 with SMTP id i2-20020adfdec2000000b003175a994549mr8804116wrn.0.1692108264384;
-        Tue, 15 Aug 2023 07:04:24 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.214.188])
-        by smtp.gmail.com with ESMTPSA id y1-20020a05600c364100b003fbb06af219sm17941603wmq.32.2023.08.15.07.04.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Aug 2023 07:04:23 -0700 (PDT)
-Message-ID: <628ea167-b61b-b8fd-df67-2871f867ad33@linaro.org>
-Date:   Tue, 15 Aug 2023 16:04:22 +0200
+        bh=8zWX6sWFpbIqxvJkpqPafp4zk2BFLanx/lSJWZDELAA=;
+        b=kyy8rHD3IABatkb1WzXeB3ZALaqNPOynTGnCrTSQGZq0XltaGSWq3MKBPJxP3INFQY
+         rlw2t5LAI/3c5X5gd8+vPstN1lf9K/Jk7H9BHJsgeSKlWZAOlS0fq2eEPFOedy15IUP+
+         8xOASKtgy6jx758vHN+F4P6fBEdFgx61sUoFqh/J53yK+iT5xv4XlRws+pnRX9SD88mq
+         MQLoaZ9cIlMkIs4+UcB7wJwuBJVWjzi+WBN9btaEODsmmXWmihSd89lgt0NKrC5ZryK1
+         KeF8kgwJ0F/1ymEONaYlFxLWJk+qKQ0qOyti1N37cWu5Z3Nrup9g/rKROUNeUvi9sc1I
+         ri0A==
+X-Gm-Message-State: AOJu0YyqNja/SowOm3yM6dAMGiW+//CA2P2E300w0N9JLSYl8fs+MFvS
+        lhFCRPYqVWhE96lC3BljJ8+Tt5uaOesu79OVoPM=
+X-Google-Smtp-Source: AGHT+IHzFN180rJL/0i/AHjBkvTjf5cRvfdvxb8XJ20SZl872kemu8fQqFq0AAe27OnmxioLb8yxvLTuc6ukh8vIWUk=
+X-Received: by 2002:a05:6512:239f:b0:4f6:47a2:7bb4 with SMTP id
+ c31-20020a056512239f00b004f647a27bb4mr10384193lfv.60.1692109824458; Tue, 15
+ Aug 2023 07:30:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 1/2] iio: dac: ad5755: mark OF related data as maybe
- unused
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>
-References: <20230810111933.205619-1-krzysztof.kozlowski@linaro.org>
- <20230811163324.00003b3c@Huawei.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230811163324.00003b3c@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Sender: folsonterfah@gmail.com
+Received: by 2002:ab2:813:0:b0:1d0:a44e:7acf with HTTP; Tue, 15 Aug 2023
+ 07:30:23 -0700 (PDT)
+From:   Pavillion Tchi <tchi.pavillion@gmail.com>
+Date:   Tue, 15 Aug 2023 14:30:23 +0000
+X-Google-Sender-Auth: WngU8F2lbxG8K1LicbIhe-tfMUI
+Message-ID: <CANgBfaQ8WpVRXoRedfCLwiji1nOt3k5g24fXeoyVTi+y97kiVg@mail.gmail.com>
+Subject: Hallo
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/08/2023 17:33, Jonathan Cameron wrote:
-> On Thu, 10 Aug 2023 13:19:32 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> When compile tested with W=1 on x86_64 with driver as built-in:
->>
->>   ad5755.c:866:34: error: unused variable 'ad5755_of_match' [-Werror,-Wunused-const-variable]
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> I'd rather see the table used as relying on the fallback path via the spi_match_id table
-> is fragile as two tables may not have equivalent entries in the long run.
-> Entry missing in the spi_driver.driver structure.
-> 
-> Bonus points for adding the match data to the of table and making them all pointers
-> there and in spi_device_id table + using spi_get_device_match_data()
-
-... and now I remember that I already sent such patch some time ago and
-you already said this to me. Uh, sorry for sending the same thing again.
-I'll fix it in spare time as you described.
-
-Best regards,
-Krzysztof
-
+-- 
+Hallo
+Heb je mijn vorige e-mail ontvangen?

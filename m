@@ -2,69 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A915877CE1C
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D8E77CE39
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237597AbjHOOav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Aug 2023 10:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42316 "EHLO
+        id S237679AbjHOOhS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 10:37:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237636AbjHOOa2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:30:28 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2767C199B
-        for <linux-iio@vger.kernel.org>; Tue, 15 Aug 2023 07:30:27 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4ff882397ecso818145e87.3
-        for <linux-iio@vger.kernel.org>; Tue, 15 Aug 2023 07:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692109825; x=1692714625;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8zWX6sWFpbIqxvJkpqPafp4zk2BFLanx/lSJWZDELAA=;
-        b=c2Xk/xKruo+2UtyP8O3IiQOmCqEUrZHadqJQZKdJ+IlEmB7glIEbbGxR1dAD1cqv0D
-         SNyhmaAG7PPJOo3IGz/7Boq/5M3lRWyEYLjrElmxegpPFr92P9G15TCQKM1MeEExXYbr
-         7Hxtt9+yKVMHXoslsQsH4U8tUWPGQbO5C+dUvZDilPGoKWKh/FkcHnH5ebh5Sc94CnGW
-         c6nDLp9yHl2co/jWjgBkZughcl1lTDe0gEtQFcJF2EOCdjs803036+w6nHb2ugsVG/D0
-         X7aTaPyFpYhhoQgqB9vQ7SmmeQ+L0pu5dEGcBVymUJZLmJi9Kg7G/QTKkq92k8Sqz5T9
-         dpyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692109825; x=1692714625;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8zWX6sWFpbIqxvJkpqPafp4zk2BFLanx/lSJWZDELAA=;
-        b=kyy8rHD3IABatkb1WzXeB3ZALaqNPOynTGnCrTSQGZq0XltaGSWq3MKBPJxP3INFQY
-         rlw2t5LAI/3c5X5gd8+vPstN1lf9K/Jk7H9BHJsgeSKlWZAOlS0fq2eEPFOedy15IUP+
-         8xOASKtgy6jx758vHN+F4P6fBEdFgx61sUoFqh/J53yK+iT5xv4XlRws+pnRX9SD88mq
-         MQLoaZ9cIlMkIs4+UcB7wJwuBJVWjzi+WBN9btaEODsmmXWmihSd89lgt0NKrC5ZryK1
-         KeF8kgwJ0F/1ymEONaYlFxLWJk+qKQ0qOyti1N37cWu5Z3Nrup9g/rKROUNeUvi9sc1I
-         ri0A==
-X-Gm-Message-State: AOJu0YyqNja/SowOm3yM6dAMGiW+//CA2P2E300w0N9JLSYl8fs+MFvS
-        lhFCRPYqVWhE96lC3BljJ8+Tt5uaOesu79OVoPM=
-X-Google-Smtp-Source: AGHT+IHzFN180rJL/0i/AHjBkvTjf5cRvfdvxb8XJ20SZl872kemu8fQqFq0AAe27OnmxioLb8yxvLTuc6ukh8vIWUk=
-X-Received: by 2002:a05:6512:239f:b0:4f6:47a2:7bb4 with SMTP id
- c31-20020a056512239f00b004f647a27bb4mr10384193lfv.60.1692109824458; Tue, 15
- Aug 2023 07:30:24 -0700 (PDT)
+        with ESMTP id S237693AbjHOOgx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:36:53 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335B219A4;
+        Tue, 15 Aug 2023 07:36:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692110212; x=1723646212;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rtgdSA9vcQoHmkbubdnn9solITQI/tTkYq65Mu7X6gY=;
+  b=VhOgHn8V0RoGNFP/BqQ6DUzXDhvKQVzQZyvuRJNbxVLyQ1ICZa7jBEDv
+   RVPtlpN/qt2CTNyt/6ZsFR0ual0ts7GCi5uYkQ24vwExzhgSsiNfWcuyV
+   UNFsfUlxL3VFWGpjilhqMMPSTZze+AcBcUVi7hPtMmeGW+VRUgKdwC1Qk
+   uZ3+/7UgrXgESbtju8/wjl7GGpz4Nn5JRR9AbU8w31XTHMVE0eeqbAuRO
+   FRQF70sQa4JUrzVGUiFpHnZPHRXG/rMZQM0JyMgbIiW863MT4Fzp4yrwn
+   2gsi8Ml2g6A2wnYVPHy26gyYElVm341sf0hwyp3fK3fLyfLQsdA40z+19
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="376023162"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="376023162"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 07:36:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="799211216"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="799211216"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga008.fm.intel.com with ESMTP; 15 Aug 2023 07:36:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qVvA1-005Uej-29;
+        Tue, 15 Aug 2023 17:36:41 +0300
+Date:   Tue, 15 Aug 2023 17:36:41 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/6] iio: adc: mcp3911: make use of dev_err_probe()
+Message-ID: <ZNuNedpsuPmdfumG@smile.fi.intel.com>
+References: <20230814121010.184842-1-marcus.folkesson@gmail.com>
+ <20230814121010.184842-2-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
-Sender: folsonterfah@gmail.com
-Received: by 2002:ab2:813:0:b0:1d0:a44e:7acf with HTTP; Tue, 15 Aug 2023
- 07:30:23 -0700 (PDT)
-From:   Pavillion Tchi <tchi.pavillion@gmail.com>
-Date:   Tue, 15 Aug 2023 14:30:23 +0000
-X-Google-Sender-Auth: WngU8F2lbxG8K1LicbIhe-tfMUI
-Message-ID: <CANgBfaQ8WpVRXoRedfCLwiji1nOt3k5g24fXeoyVTi+y97kiVg@mail.gmail.com>
-Subject: Hallo
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814121010.184842-2-marcus.folkesson@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, Aug 14, 2023 at 02:10:06PM +0200, Marcus Folkesson wrote:
+> Simplify code by switch to dev_err_probe().
+> 
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+> 
+> Notes:
+>     v5:
+>         - New patch in this series
+> 
+>  drivers/iio/adc/mcp3911.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> index 974c5bd923a6..681248a3ddde 100644
+> --- a/drivers/iio/adc/mcp3911.c
+> +++ b/drivers/iio/adc/mcp3911.c
+> @@ -468,6 +468,7 @@ static int mcp3911_probe(struct spi_device *spi)
+>  {
+>  	struct iio_dev *indio_dev;
+>  	struct mcp3911 *adc;
+> +	struct device *dev = &spi->dev;
+>  	int ret;
+
+With preserved reversed xmas tree order (longer line comes first),
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+>  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
+> @@ -482,10 +483,7 @@ static int mcp3911_probe(struct spi_device *spi)
+>  		if (PTR_ERR(adc->vref) == -ENODEV) {
+>  			adc->vref = NULL;
+>  		} else {
+> -			dev_err(&adc->spi->dev,
+> -				"failed to get regulator (%ld)\n",
+> -				PTR_ERR(adc->vref));
+> -			return PTR_ERR(adc->vref);
+> +			return dev_err_probe(dev, PTR_ERR(adc->vref), "failed to get regulator\n");
+>  		}
+>  
+>  	} else {
+> @@ -504,10 +502,7 @@ static int mcp3911_probe(struct spi_device *spi)
+>  		if (PTR_ERR(adc->clki) == -ENOENT) {
+>  			adc->clki = NULL;
+>  		} else {
+> -			dev_err(&adc->spi->dev,
+> -				"failed to get adc clk (%ld)\n",
+> -				PTR_ERR(adc->clki));
+> -			return PTR_ERR(adc->clki);
+> +			return dev_err_probe(dev, PTR_ERR(adc->clki), "failed to get adc clk\n");
+>  		}
+>  	}
+>  
+> -- 
+> 2.41.0
+> 
+
 -- 
-Hallo
-Heb je mijn vorige e-mail ontvangen?
+With Best Regards,
+Andy Shevchenko
+
+

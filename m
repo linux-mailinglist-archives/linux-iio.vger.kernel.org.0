@@ -2,160 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A533577BE51
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Aug 2023 18:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9169477C807
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 08:45:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjHNQoK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Aug 2023 12:44:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52118 "EHLO
+        id S235176AbjHOGoz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 02:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232190AbjHNQny (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Aug 2023 12:43:54 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18337E65;
-        Mon, 14 Aug 2023 09:43:53 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3197b461bb5so702642f8f.3;
-        Mon, 14 Aug 2023 09:43:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692031431; x=1692636231;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QcV/Qi3bNqSTHWoo2wyHtkP3GXOLBpyAawkkekXtGoc=;
-        b=ohDZd8D3k7q+R7Wgv6pDh8mZ2FWd0cDL11F3vtkm9UUjOQSaBr090DAGbIxRJAp6Ko
-         ItmA6+oE/3eZrYmuNE4/0Vkf2C1KR38vZoSdU32lLK3jwf4FnDRd1dUI3lqNfFL3sD0v
-         PlvRqqliYF54tgEFu5SwFVpU+VrRUUjRA9NTcE5pwGaIsZNbiuvRS2KP0nV5XIjEi096
-         yhK5+PwYc65h2wEEfz2MkiHyIm+WnraRj358y0m4Dsb2tqsyHvJfvNZQW+qE6iEMIhCa
-         CO4y+433Fo8tP/5u8+S2VwTcrqf5RmRLY6WVwev+LXvJcw9J7zmfmg4b8a2UHP6O3f66
-         dDUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692031431; x=1692636231;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QcV/Qi3bNqSTHWoo2wyHtkP3GXOLBpyAawkkekXtGoc=;
-        b=Rk8no7mKWpeCAKzQO1fBm7EcqnRlbPpzP1MtYCzkruIlKSGG4vNt4N2F/XIES1uiNb
-         qyOYmVzJW+/zR/SoAtyDblR737qk9b0dh1Nk/b6C965H68xPVwKn3lyV9kDuQk2BooDO
-         f1mTJF/GKOCWLQPJ5Zh1WLPt6j3CmsDDaAgYpV4bNaWFXu/aFjLCKg+vMKG5KnNK24eG
-         KpNU4MLW9erfU+f+zwlEEt5jBX8vHTGzF9rc+vOabix/RG/qzhWIvbqrSl8iWICG+iW4
-         Q1SEz6G/qHC9/RzgKdE5P+OpG9CWKIuzUqkwbl6X5KfZDz0SNHJ0uLi+OxSHuXstXpKw
-         1jhQ==
-X-Gm-Message-State: AOJu0Yzhvc+6vK2kElYI8JirmHJTmN/k3V6lxjYMkDMAJaSL17envYuM
-        9REtS0085t7U6V5opvuaqbWnYtT4040=
-X-Google-Smtp-Source: AGHT+IG8uA+jP2upULXvv/RXRMZgq30oshgUhmW73T0YKn9CPSZ15Ec4dguH5H7MM9lPXPbf7BWh1w==
-X-Received: by 2002:a5d:6809:0:b0:314:1ca4:dbd9 with SMTP id w9-20020a5d6809000000b003141ca4dbd9mr6962731wru.27.1692031431265;
-        Mon, 14 Aug 2023 09:43:51 -0700 (PDT)
-Received: from DreamMachine2.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
-        by smtp.gmail.com with ESMTPSA id k3-20020a056000004300b003177074f830sm14990946wrx.59.2023.08.14.09.43.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 09:43:50 -0700 (PDT)
-Message-ID: <a83bde5079b769950220c0f1f3b8d374db39cfc7.camel@gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+        with ESMTP id S234110AbjHOGok (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 02:44:40 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87224E72;
+        Mon, 14 Aug 2023 23:44:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692081879; x=1723617879;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WoRkywen7QyRJh5gY+NeF3XBAuuj7J1YVN5gmyneGXU=;
+  b=HwsMxuzTNnjKD4mNmnnpLkqJnmEIjMvJbxwqZ9Zty7pLwWtg/r2kJb4h
+   tYrJEy53LpG/6WXYT+8bDcl0uhMGZl0edgHlrFPCnC/1fToEg9JcHQRNV
+   PCr3bn1zjrMEtHVdaqe2xO6znx1VvXPu5+xgVjWm/3SmCYRND/ZQpWAt3
+   hF6+IYSfpbm7O+XGuNciB8jnJnNi9tPBUloQYJLxQ9/5yTWID3ZP9qUg9
+   sHkQvQVa9n2XAd3edXDVhiKHZpyvUN9sgqX1BP0p7X15GWQCEHkxr0vnA
+   CIulMNzpMucW/zxa8MD8uaeMKZ2iR4d06IfD+l1vBF9g6HRXeqUXgLdhH
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="438554581"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="438554581"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 23:44:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="736809481"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="736809481"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 14 Aug 2023 23:44:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qVnn5-006tP3-2q;
+        Tue, 15 Aug 2023 09:44:31 +0300
+Date:   Tue, 15 Aug 2023 09:44:31 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Date:   Mon, 14 Aug 2023 18:43:49 +0200
-In-Reply-To: <OS0PR01MB5922EDF7759069CD4993FA468617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-References: <cover.1691952005.git.ang.iglesiasg@gmail.com>
-         <55f8dc02de16a353f0449bc1c7cb487bd776dfaf.1691952005.git.ang.iglesiasg@gmail.com>
-         <954c859835aed6c41a356fdd999a8be51469eb9e.camel@gmail.com>
-         <OS0PR01MB5922EDF7759069CD4993FA468617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (by Flathub.org) 
+        Peter Rosin <peda@axentia.se>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct bus_type
+Message-ID: <ZNsez3oWNcT72PGy@smile.fi.intel.com>
+References: <20230806142950.6c409600@jic23-huawei>
+ <ZNEFjyAloqlkMWn7@smile.fi.intel.com>
+ <ZNFV+C1HCIRJpbdC@google.com>
+ <ZNIyrG/2h/PeS9Oz@smile.fi.intel.com>
+ <20230809182551.7eca502e@jic23-huawei>
+ <OS0PR01MB59221A1ADB67E96E9E39D0198613A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <ZNT+NY99n7y3abwa@smile.fi.intel.com>
+ <OS0PR01MB5922DD3C809B78F1E9C5949B8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <ZNZF6cjx5N+ZsIJx@smile.fi.intel.com>
+ <OS0PR01MB5922E09340CDCFF54A9A6CBA8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB5922E09340CDCFF54A9A6CBA8610A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2023-08-14 at 06:57 +0000, Biju Das wrote:
-> Hi Angel Iglesias,
->=20
->=20
-> > Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_da=
-ta
-> >=20
-> > On Sun, 2023-08-13 at 21:03 +0200, Angel Iglesias wrote:
-> > > Replaces device_get_match_data() and fallback match_id logic by new
-> > > unified helper function i2c_get_match_data().
-> > >=20
-> > > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> > >=20
-> > > diff --git a/drivers/iio/pressure/bmp280-i2c.c
-> > > b/drivers/iio/pressure/bmp280- i2c.c index 693eb1975fdc..34e3bc758493
-> > > 100644
-> > > --- a/drivers/iio/pressure/bmp280-i2c.c
-> > > +++ b/drivers/iio/pressure/bmp280-i2c.c
-> > > @@ -11,9 +11,7 @@ static int bmp280_i2c_probe(struct i2c_client
-> > > *client)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct bmp280_c=
-hip_info *chip_info;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct regmap *regmap=
-;
-> > >=20
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D device_get_m=
-atch_data(&client->dev);
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!chip_info)
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D (const struct bmp280_chip_info *)
-> > > id->driver_data;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D i2c_get_matc=
-h_data(client);
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0regmap =3D devm_regma=
-p_init_i2c(client,
-> > > chip_info->regmap_config);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ERR(regmap)) {
-> >=20
-> > Hi,
-> >=20
-> > I noticed I submitted this change that was also submitted by Biju Das o=
-n
-> > another
-> > patch:
->=20
-> > Should I drop this patch from the series?
->=20
-> I think it is ok. Andy is suggesting to use unified table for SPI/I2C
->=20
-> Is it something do able and testable in your environment? see [1],
-> If yes, please create another patch for using unified table for both i2c =
-and
-> spi.
+On Fri, Aug 11, 2023 at 02:46:10PM +0000, Biju Das wrote:
+> > Subject: Re: [PATCH v7 0/4] Extend device_get_match_data() to struct
+> > bus_type
+> > On Fri, Aug 11, 2023 at 01:27:36PM +0000, Biju Das wrote:
+> > > > On Thu, Aug 10, 2023 at 09:05:10AM +0000, Biju Das wrote:
 
-I have around a BMP390 with the SPI pins available to test it out. In the c=
-ase
-of the bmp280 we could unify the of_match table as they're almost the same.=
- In
-the case of the spi_device_id and i2c_device_id tables, as they're differen=
-t
-structs I'm not sure if they can be unified.
+...
 
-Regarding Andy's comment, I think he's referring to the duplicated chip inf=
-os.
-In the case of the bmp280, the chip_infos are defined on the common driver =
-code
-and used for both SPI and I2C match tables.
+> > > > I'm good with this approach, but make sure you checked the whole
+> > > > kernel source tree for a such.
+> > >
+> > > Checking against 16 is too short I guess??
+> > >
+> > > drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h has 18 enums.
+> > 
+> > So, what does prevent us from moving that tables to use pointers?
+> 
+> I think that will lead to ABI breakage(client->name vs id->name)
+> 
+> 	match = device_get_match_data(&client->dev);
+> 	if (match) {
+> 		chip_type = (uintptr_t)match;
+> 		name = client->name;
+> 	} else if (id) {
+> 		chip_type = (enum inv_devices)
+> 			id->driver_data;
+> 		name = id->name;
+> 	} else {
+> 		return -ENOSYS;
+> 	}
 
->=20
-> https://lore.kernel.org/linux-renesas-soc/CAHp75VeX+T=3DhAN+PgtHTdv4b6UtD=
-VgveUUww1b1kuOngzDinFw@mail.gmail.com/T/#t
->=20
-> Cheers,
-> Biju
 
-Kind regards,
-Angel
+It's easy to work around (may be better fix can be found, haven't checked, just
+what first comes to my mind):
+
+	match ...
+	name = match->name;
+
+	/* If enumerated via firmware node, fix the ABI */
+	if (dev_fwnode())
+		client->name
+
+> > > /*device enum */
+> > > enum inv_devices {
+> > > 	INV_MPU6050,
+> > > 	INV_MPU6500,
+> > > 	INV_MPU6515,
+> > > 	INV_MPU6880,
+> > > 	INV_MPU6000,
+> > > 	INV_MPU9150,
+> > > 	INV_MPU9250,
+> > > 	INV_MPU9255,
+> > > 	INV_ICM20608,
+> > > 	INV_ICM20608D,
+> > > 	INV_ICM20609,
+> > > 	INV_ICM20689,
+> > > 	INV_ICM20600,
+> > > 	INV_ICM20602,
+> > > 	INV_ICM20690,
+> > > 	INV_IAM20680,
+> > > 	INV_NUM_PARTS
+> > > };
+> > >
+> > > The new helper function
+> > 
+> > You mean for debugging? We don't need that in production.
+> 
+> That is sample code for iterating through id table to find max enum
+> and check against ZERO_OR_NULL_PTR
+
+Much better with a coccinelle. You will find all or almost all occurrences
+without too much effort done.
+
+> > I think what you need is a coccinelle script to find these.
+> 
+> I need to explore using coccinelle script as I have n't tried before.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

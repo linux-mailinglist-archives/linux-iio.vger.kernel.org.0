@@ -2,63 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F10077CE77
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E53477CE86
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Aug 2023 16:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237571AbjHOOvv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Aug 2023 10:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49394 "EHLO
+        id S237575AbjHOOyA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Aug 2023 10:54:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237800AbjHOOvo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:51:44 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E2AEC5;
-        Tue, 15 Aug 2023 07:51:44 -0700 (PDT)
+        with ESMTP id S237783AbjHOOx7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Aug 2023 10:53:59 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF7DE5B;
+        Tue, 15 Aug 2023 07:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692111104; x=1723647104;
+  t=1692111239; x=1723647239;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=6X0G28l1pLKS18FXAeC482NhunZuxGuMSmAYK7+ghYE=;
-  b=lwxHzF2L3TAq5SrGsCohb8AyKj8O6r0shBhBlVSkrD9jjzvXdX/OuyMO
-   yWX61cGT954l1BOcfRDwPgiGL2MRwnYagg504GqVHxSLUXczabX8X5E8I
-   j9HUpHTT6YGIv8QjLurRIC4UINB6YB+vTenzvoz66tb3xnKCDBksY2TxN
-   qwTuezFpggOc3IHWpHb9b/KEthmOfzbIYMgBUTT/APbxVQRbcqIaU3MtV
-   bO9o95kxqThe3yCFy0ojfiSG8mVzA0EZgGrx+f1rCN9nwaJ5BQt4/OKgZ
-   pkda4UQYaX33uB5bXmbniCa+IUkjKZpNZ5w7pqqBXu/hk2HaFh+0byxXJ
+  bh=8cZYt7HFAnk2MmSwXTT2RjgwpBr32yZmczsS440Qatw=;
+  b=Vv7sNR3/duZXS1dd7e7sSt9EfIfKffR5uw0GNL3gw5J6EL0o6e06KBNh
+   Vy3ZmMwMd/YIGx/0vPPKWqoGnKtiCbyxldkElDvGHyJ8yj5lh1WOi3o/6
+   zIlblfbtGUeKKizPiap8yKaSyEzkGJ0Cs/5WwGKXLzLywvBBCzalvtBaw
+   pTDJtT55X43tQmruEmmThMreQE8FevHaalzMMua6UMzhUn3RS7t0LGj4n
+   atADgBfdHi1zVk0bh2kA/fmo5m4HohKGGOQq51hUeUz/gAdsIFVBqNwM0
+   KGD1qOthzNBpeLE5ZD8G0QhYflK50aohws1EeYCGLzUAa/Q05xGPpWMcI
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="376026581"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="371207049"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="376026581"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 07:51:43 -0700
+   d="scan'208";a="371207049"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 07:53:58 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="980383497"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907630159"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="980383497"
+   d="scan'208";a="907630159"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 15 Aug 2023 07:51:41 -0700
+  by orsmga005.jf.intel.com with ESMTP; 15 Aug 2023 07:53:53 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qVvOV-00610g-0F;
-        Tue, 15 Aug 2023 17:51:39 +0300
-Date:   Tue, 15 Aug 2023 17:51:38 +0300
+        id 1qVvQd-0065qi-2C;
+        Tue, 15 Aug 2023 17:53:51 +0300
+Date:   Tue, 15 Aug 2023 17:53:51 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: bmp280: Use i2c_get_match_data()
-Message-ID: <ZNuQ+idDAna6XbvH@smile.fi.intel.com>
-References: <20230812175808.236405-1-biju.das.jz@bp.renesas.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/6] iio: adc: mcp3911: simplify usage of spi->dev
+Message-ID: <ZNuRf3hZ9Z2fddxa@smile.fi.intel.com>
+References: <20230814121010.184842-1-marcus.folkesson@gmail.com>
+ <20230814121010.184842-3-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230812175808.236405-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20230814121010.184842-3-marcus.folkesson@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -70,20 +80,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 12, 2023 at 06:58:08PM +0100, Biju Das wrote:
-> Replace device_get_match_data() and id lookup for retrieving match data
-> by i2c_get_match_data().
+On Mon, Aug 14, 2023 at 02:10:07PM +0200, Marcus Folkesson wrote:
+> Replace the usage of `adc->spi->dev` with `dev` to make the code prettier.
 
 ...
 
->  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
->  
-> -	chip_info = device_get_match_data(&client->dev);
-> -	if (!chip_info)
-> -		chip_info = (const struct bmp280_chip_info *) id->driver_data;
-> +	chip_info = i2c_get_match_data(client);
+>  	u32 ref = MCP3911_INT_VREF_MV;
+> +	struct device *dev = &adc->spi->dev;
 
-Is id still in use?
+Keep it upper.
+
+>  	u32 div;
+>  	int ret;
+>  	u64 tmp;
+
+...
+
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      NULL,
+
+This can be moved to the upper line.
+
+> +					      mcp3911_trigger_handler, NULL);
+>  	if (ret)
+>  		return ret;
+
+...
+
+With above addressed,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
 With Best Regards,

@@ -2,124 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F18577E412
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Aug 2023 16:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A6C577E8E1
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Aug 2023 20:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343860AbjHPOpU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Aug 2023 10:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
+        id S1345595AbjHPSkk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Aug 2023 14:40:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343828AbjHPOpD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 10:45:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582D0268F;
-        Wed, 16 Aug 2023 07:45:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0AA4669F0;
-        Wed, 16 Aug 2023 14:45:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038D9C433C8;
-        Wed, 16 Aug 2023 14:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692197101;
-        bh=ugjQhqHLmEDVXEccQlVOVRh5SwCzRAZMzSapMmH9OlU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ejzyapGBdwIDDaXGBbMFtC5Qw+sa99thGSOO5TByi1AcLV43qnajUZIsPzsAaigyI
-         MHvdl8pNZygzhjfXhwgGhfYybb4/P2pDh3OkfWJV4x7zJqsIxp/KnTPXv23ZoMQb/A
-         Mc5yArVNks4iZpSoejZxYfI042/Hx7PoQ54BHZ4jgQ91vvH3cT8emw/4hrbZEI+Hl4
-         +T8usxYQwgwuyQowG/gekeKeX3FpwyMKSvvhuzX8E+t61TXpTjU3m5ihEX5SV0VQV1
-         1fApkosv1EP3ai3bsBQ5bmPrFwaw5/CcFjNv4hgLrylGpciDfWvhOFv9xm0I1KZDiR
-         xl7Ucob/x+ixA==
-Date:   Wed, 16 Aug 2023 15:44:55 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Mingjin Yang <mingjin.yang@unisoc.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1345647AbjHPSkX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 14:40:23 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8C8A41B2;
+        Wed, 16 Aug 2023 11:40:21 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.01,177,1684767600"; 
+   d="scan'208";a="173112494"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 17 Aug 2023 03:40:20 +0900
+Received: from localhost.localdomain (unknown [10.226.92.33])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id EC5F5406C46D;
+        Thu, 17 Aug 2023 03:40:17 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, magicyangmingjin@gmail.com,
-        Ling_Ling.Xu@unisoc.com, Jinfeng.Lin1@unisoc.com,
-        Yangbin.Li@unisoc.com, Jiansheng.Wu@unisoc.com,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V0 1/2] dt-bindings: iio: adc: Add support for ump518
- pmic adc
-Message-ID: <20230816-dastardly-escapade-75597e244088@spud>
-References: <20230816080225.21482-1-mingjin.yang@unisoc.com>
- <20230816080225.21482-2-mingjin.yang@unisoc.com>
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH] iio: magnetometer: ak8975: Convert enum->pointer for data in the match tables
+Date:   Wed, 16 Aug 2023 19:40:15 +0100
+Message-Id: <20230816184015.12420-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="y46xbF1UowmDvRWh"
-Content-Disposition: inline
-In-Reply-To: <20230816080225.21482-2-mingjin.yang@unisoc.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Convert enum->pointer for data in the match tables to simplify the probe()
+by replacing device_get_match_data() and i2c_client_get_device_id by
+i2c_get_match_data() as we have similar I2C, ACPI and DT matching table.
 
---y46xbF1UowmDvRWh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+Note:
+ * This patch is only compile tested.
+---
+ drivers/iio/magnetometer/ak8975.c | 75 +++++++++++++------------------
+ 1 file changed, 30 insertions(+), 45 deletions(-)
 
-On Wed, Aug 16, 2023 at 04:02:24PM +0800, Mingjin Yang wrote:
-> Add ump518 pmic adc description and sample in dt-bindings.
->=20
-> Signed-off-by: Mingjin Yang <mingjin.yang@unisoc.com>
-> ---
->  Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml | 2 ++
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index eb706d0bf70b..104798549de1 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -813,13 +813,13 @@ static const struct iio_info ak8975_info = {
+ };
+ 
+ static const struct acpi_device_id ak_acpi_match[] = {
+-	{"AK8975", AK8975},
+-	{"AK8963", AK8963},
+-	{"INVN6500", AK8963},
+-	{"AK009911", AK09911},
+-	{"AK09911", AK09911},
+-	{"AKM9911", AK09911},
+-	{"AK09912", AK09912},
++	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
++	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
+@@ -883,10 +883,7 @@ static int ak8975_probe(struct i2c_client *client)
+ 	struct iio_dev *indio_dev;
+ 	struct gpio_desc *eoc_gpiod;
+ 	struct gpio_desc *reset_gpiod;
+-	const void *match;
+-	unsigned int i;
+ 	int err;
+-	enum asahi_compass_chipset chipset;
+ 	const char *name = NULL;
+ 
+ 	/*
+@@ -928,27 +925,15 @@ static int ak8975_probe(struct i2c_client *client)
+ 		return err;
+ 
+ 	/* id will be NULL when enumerated via ACPI */
+-	match = device_get_match_data(&client->dev);
+-	if (match) {
+-		chipset = (uintptr_t)match;
+-		name = dev_name(&client->dev);
+-	} else if (id) {
+-		chipset = (enum asahi_compass_chipset)(id->driver_data);
+-		name = id->name;
+-	} else
+-		return -ENOSYS;
+-
+-	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
+-		if (ak_def_array[i].type == chipset)
+-			break;
+-
+-	if (i == ARRAY_SIZE(ak_def_array)) {
+-		dev_err(&client->dev, "AKM device type unsupported: %d\n",
+-			chipset);
++	data->def = i2c_get_match_data(client);
++	if (!data->def)
+ 		return -ENODEV;
+-	}
+ 
+-	data->def = &ak_def_array[i];
++	/* If enumerated via firmware node, fix the ABI */
++	if (dev_fwnode(&client->dev))
++		name = dev_name(&client->dev);
++	else
++		name = id->name;
+ 
+ 	/* Fetch the regulators */
+ 	data->vdd = devm_regulator_get(&client->dev, "vdd");
+@@ -1077,28 +1062,28 @@ static DEFINE_RUNTIME_DEV_PM_OPS(ak8975_dev_pm_ops, ak8975_runtime_suspend,
+ 				 ak8975_runtime_resume, NULL);
+ 
+ static const struct i2c_device_id ak8975_id[] = {
+-	{"ak8975", AK8975},
+-	{"ak8963", AK8963},
+-	{"AK8963", AK8963},
+-	{"ak09911", AK09911},
+-	{"ak09912", AK09912},
+-	{"ak09916", AK09916},
++	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
++	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"ak09911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"ak09912", (kernel_ulong_t)&ak_def_array[AK09912] },
++	{"ak09916", (kernel_ulong_t)&ak_def_array[AK09916] },
+ 	{}
+ };
+ 
+ MODULE_DEVICE_TABLE(i2c, ak8975_id);
+ 
+ static const struct of_device_id ak8975_of_match[] = {
+-	{ .compatible = "asahi-kasei,ak8975", },
+-	{ .compatible = "ak8975", },
+-	{ .compatible = "asahi-kasei,ak8963", },
+-	{ .compatible = "ak8963", },
+-	{ .compatible = "asahi-kasei,ak09911", },
+-	{ .compatible = "ak09911", },
+-	{ .compatible = "asahi-kasei,ak09912", },
+-	{ .compatible = "ak09912", },
+-	{ .compatible = "asahi-kasei,ak09916", },
+-	{ .compatible = "ak09916", },
++	{ .compatible = "asahi-kasei,ak8975", .data = &ak_def_array[AK8975] },
++	{ .compatible = "ak8975", .data = &ak_def_array[AK8975] },
++	{ .compatible = "asahi-kasei,ak8963", .data = &ak_def_array[AK8963] },
++	{ .compatible = "ak8963", .data = &ak_def_array[AK8963] },
++	{ .compatible = "asahi-kasei,ak09911", .data = &ak_def_array[AK09911] },
++	{ .compatible = "ak09911", .data = &ak_def_array[AK09911] },
++	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
++	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
++	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
++	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ak8975_of_match);
+-- 
+2.25.1
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-Thanks,
-Conor.
-
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.ya=
-ml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> index 8181cf9a8e07..f28d188d83da 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> @@ -21,6 +21,7 @@ properties:
->        - sprd,sc2730-adc
->        - sprd,sc2731-adc
->        - sprd,ump9620-adc
-> +      - sprd,ump518-adc
-> =20
->    reg:
->      maxItems: 1
-> @@ -46,6 +47,7 @@ allOf:
->              contains:
->                enum:
->                  - sprd,ump9620-adc
-> +                - sprd,ump518-adc
->      then:
->        properties:
->          nvmem-cells:
-> --=20
-> 2.17.1
->=20
-
---y46xbF1UowmDvRWh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNzg5wAKCRB4tDGHoIJi
-0o3mAP9lfznoeS5TI6minXIn7I72U4YDoOoWD9+AGj7r/cVmagD/bH/bc1NYcQWw
-GmGzkM1Oy7CEMFcEtNtdPA/vuWHxOAU=
-=JbvI
------END PGP SIGNATURE-----
-
---y46xbF1UowmDvRWh--

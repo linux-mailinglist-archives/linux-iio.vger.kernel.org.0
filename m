@@ -2,28 +2,28 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47E077DB98
+	by mail.lfdr.de (Postfix) with ESMTP id 7E8E577DB97
 	for <lists+linux-iio@lfdr.de>; Wed, 16 Aug 2023 10:04:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230382AbjHPIED (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S237656AbjHPIED (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 16 Aug 2023 04:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44098 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242732AbjHPIDk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 04:03:40 -0400
+        with ESMTP id S242538AbjHPIDo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 04:03:44 -0400
 Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E547C1987
-        for <linux-iio@vger.kernel.org>; Wed, 16 Aug 2023 01:03:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF10A109
+        for <linux-iio@vger.kernel.org>; Wed, 16 Aug 2023 01:03:41 -0700 (PDT)
 Received: from dlp.unisoc.com ([10.29.3.86])
-        by SHSQR01.spreadtrum.com with ESMTP id 37G839QM044059;
-        Wed, 16 Aug 2023 16:03:10 +0800 (+08)
+        by SHSQR01.spreadtrum.com with ESMTP id 37G83Hw9045140;
+        Wed, 16 Aug 2023 16:03:17 +0800 (+08)
         (envelope-from Mingjin.Yang@unisoc.com)
 Received: from SHDLP.spreadtrum.com (shmbx06.spreadtrum.com [10.0.1.11])
-        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RQgYm0SPgz2PrQN4;
-        Wed, 16 Aug 2023 16:01:00 +0800 (CST)
+        by dlp.unisoc.com (SkyGuard) with ESMTPS id 4RQgYv4K8Rz2PrmZp;
+        Wed, 16 Aug 2023 16:01:07 +0800 (CST)
 Received: from xm9614pcu.spreadtrum.com (10.13.2.29) by shmbx06.spreadtrum.com
  (10.0.1.11) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Wed, 16 Aug
- 2023 16:03:07 +0800
+ 2023 16:03:14 +0800
 From:   Mingjin Yang <mingjin.yang@unisoc.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -38,16 +38,18 @@ CC:     <mingjin.yang@unisoc.com>, <magicyangmingjin@gmail.com>,
         Chunyan Zhang <zhang.lyra@gmail.com>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH V0 0/2] Add support for UMP serise pmic adc
-Date:   Wed, 16 Aug 2023 16:02:23 +0800
-Message-ID: <20230816080225.21482-1-mingjin.yang@unisoc.com>
+Subject: [PATCH V0 1/2] dt-bindings: iio: adc: Add support for ump518 pmic adc
+Date:   Wed, 16 Aug 2023 16:02:24 +0800
+Message-ID: <20230816080225.21482-2-mingjin.yang@unisoc.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230816080225.21482-1-mingjin.yang@unisoc.com>
+References: <20230816080225.21482-1-mingjin.yang@unisoc.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.13.2.29]
 X-ClientProxiedBy: SHCAS01.spreadtrum.com (10.0.1.201) To
  shmbx06.spreadtrum.com (10.0.1.11)
-X-MAIL: SHSQR01.spreadtrum.com 37G839QM044059
+X-MAIL: SHSQR01.spreadtrum.com 37G83Hw9045140
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
@@ -57,20 +59,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Patch 1, add UMP518 pmic adc description and sample in dt-bindings.
-Patch 2, add UMP serise pmic adc driver, support both voltage and current mode.
+Add ump518 pmic adc description and sample in dt-bindings.
 
-Mingjin Yang (2):
-  dt-bindings: iio: adc: Add support for ump518 pmic adc
-  iio: adc: sprd_pmic_adc: Add support for UMP serise pmic adc
+Signed-off-by: Mingjin Yang <mingjin.yang@unisoc.com>
+---
+ Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../bindings/iio/adc/sprd,sc2720-adc.yaml     |    2 +
- drivers/iio/adc/Kconfig                       |   10 +
- drivers/iio/adc/Makefile                      |    1 +
- drivers/iio/adc/sprd_pmic_adc.c               | 1298 +++++++++++++++++
- 4 files changed, 1311 insertions(+)
- create mode 100644 drivers/iio/adc/sprd_pmic_adc.c
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
+index 8181cf9a8e07..f28d188d83da 100644
+--- a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
+@@ -21,6 +21,7 @@ properties:
+       - sprd,sc2730-adc
+       - sprd,sc2731-adc
+       - sprd,ump9620-adc
++      - sprd,ump518-adc
+ 
+   reg:
+     maxItems: 1
+@@ -46,6 +47,7 @@ allOf:
+             contains:
+               enum:
+                 - sprd,ump9620-adc
++                - sprd,ump518-adc
+     then:
+       properties:
+         nvmem-cells:
 -- 
 2.17.1
 

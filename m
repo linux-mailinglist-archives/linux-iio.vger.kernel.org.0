@@ -2,179 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A6C577E8E1
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Aug 2023 20:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 496EF77EB1B
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Aug 2023 22:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345595AbjHPSkk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Aug 2023 14:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34572 "EHLO
+        id S1346286AbjHPU4e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Aug 2023 16:56:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345647AbjHPSkX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 14:40:23 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8C8A41B2;
-        Wed, 16 Aug 2023 11:40:21 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="6.01,177,1684767600"; 
-   d="scan'208";a="173112494"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 17 Aug 2023 03:40:20 +0900
-Received: from localhost.localdomain (unknown [10.226.92.33])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id EC5F5406C46D;
-        Thu, 17 Aug 2023 03:40:17 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] iio: magnetometer: ak8975: Convert enum->pointer for data in the match tables
-Date:   Wed, 16 Aug 2023 19:40:15 +0100
-Message-Id: <20230816184015.12420-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1346289AbjHPU4Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 16:56:24 -0400
+X-Greylist: delayed 1772 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Aug 2023 13:56:22 PDT
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73AEB270A;
+        Wed, 16 Aug 2023 13:56:22 -0700 (PDT)
+Received: from p200300ccff49da001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff49:da00:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qWN6G-002hco-8F; Wed, 16 Aug 2023 22:26:40 +0200
+Received: from andi by aktux with local (Exim 4.96)
+        (envelope-from <andreas@kemnade.info>)
+        id 1qWN6F-001MPV-1i;
+        Wed, 16 Aug 2023 22:26:39 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        andreas@kemnade.info, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio: adc: Add TI TWL603X GPADC
+Date:   Wed, 16 Aug 2023 22:26:14 +0200
+Message-Id: <20230816202614.324457-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert enum->pointer for data in the match tables to simplify the probe()
-by replacing device_get_match_data() and i2c_client_get_device_id by
-i2c_get_match_data() as we have similar I2C, ACPI and DT matching table.
+Document TI TWL603X GPADC devicetree bindings.
+A driver is already there, the compatibles are used, but not documented.
+Use two separate files to reference only the allowed compatible in
+a future YAML version of
+Documentation/devicetree/bindings/mfd/twl-family.txt
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
-Note:
- * This patch is only compile tested.
----
- drivers/iio/magnetometer/ak8975.c | 75 +++++++++++++------------------
- 1 file changed, 30 insertions(+), 45 deletions(-)
+ .../bindings/iio/adc/ti,twl6030-gpadc.yaml    | 42 +++++++++++++++++++
+ .../bindings/iio/adc/ti,twl6032-gpadc.yaml    | 42 +++++++++++++++++++
+ 2 files changed, 84 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index eb706d0bf70b..104798549de1 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -813,13 +813,13 @@ static const struct iio_info ak8975_info = {
- };
- 
- static const struct acpi_device_id ak_acpi_match[] = {
--	{"AK8975", AK8975},
--	{"AK8963", AK8963},
--	{"INVN6500", AK8963},
--	{"AK009911", AK09911},
--	{"AK09911", AK09911},
--	{"AKM9911", AK09911},
--	{"AK09912", AK09912},
-+	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
-+	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
-@@ -883,10 +883,7 @@ static int ak8975_probe(struct i2c_client *client)
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
- 	struct gpio_desc *reset_gpiod;
--	const void *match;
--	unsigned int i;
- 	int err;
--	enum asahi_compass_chipset chipset;
- 	const char *name = NULL;
- 
- 	/*
-@@ -928,27 +925,15 @@ static int ak8975_probe(struct i2c_client *client)
- 		return err;
- 
- 	/* id will be NULL when enumerated via ACPI */
--	match = device_get_match_data(&client->dev);
--	if (match) {
--		chipset = (uintptr_t)match;
--		name = dev_name(&client->dev);
--	} else if (id) {
--		chipset = (enum asahi_compass_chipset)(id->driver_data);
--		name = id->name;
--	} else
--		return -ENOSYS;
--
--	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
--		if (ak_def_array[i].type == chipset)
--			break;
--
--	if (i == ARRAY_SIZE(ak_def_array)) {
--		dev_err(&client->dev, "AKM device type unsupported: %d\n",
--			chipset);
-+	data->def = i2c_get_match_data(client);
-+	if (!data->def)
- 		return -ENODEV;
--	}
- 
--	data->def = &ak_def_array[i];
-+	/* If enumerated via firmware node, fix the ABI */
-+	if (dev_fwnode(&client->dev))
-+		name = dev_name(&client->dev);
-+	else
-+		name = id->name;
- 
- 	/* Fetch the regulators */
- 	data->vdd = devm_regulator_get(&client->dev, "vdd");
-@@ -1077,28 +1062,28 @@ static DEFINE_RUNTIME_DEV_PM_OPS(ak8975_dev_pm_ops, ak8975_runtime_suspend,
- 				 ak8975_runtime_resume, NULL);
- 
- static const struct i2c_device_id ak8975_id[] = {
--	{"ak8975", AK8975},
--	{"ak8963", AK8963},
--	{"AK8963", AK8963},
--	{"ak09911", AK09911},
--	{"ak09912", AK09912},
--	{"ak09916", AK09916},
-+	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
-+	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"ak09911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"ak09912", (kernel_ulong_t)&ak_def_array[AK09912] },
-+	{"ak09916", (kernel_ulong_t)&ak_def_array[AK09916] },
- 	{}
- };
- 
- MODULE_DEVICE_TABLE(i2c, ak8975_id);
- 
- static const struct of_device_id ak8975_of_match[] = {
--	{ .compatible = "asahi-kasei,ak8975", },
--	{ .compatible = "ak8975", },
--	{ .compatible = "asahi-kasei,ak8963", },
--	{ .compatible = "ak8963", },
--	{ .compatible = "asahi-kasei,ak09911", },
--	{ .compatible = "ak09911", },
--	{ .compatible = "asahi-kasei,ak09912", },
--	{ .compatible = "ak09912", },
--	{ .compatible = "asahi-kasei,ak09916", },
--	{ .compatible = "ak09916", },
-+	{ .compatible = "asahi-kasei,ak8975", .data = &ak_def_array[AK8975] },
-+	{ .compatible = "ak8975", .data = &ak_def_array[AK8975] },
-+	{ .compatible = "asahi-kasei,ak8963", .data = &ak_def_array[AK8963] },
-+	{ .compatible = "ak8963", .data = &ak_def_array[AK8963] },
-+	{ .compatible = "asahi-kasei,ak09911", .data = &ak_def_array[AK09911] },
-+	{ .compatible = "ak09911", .data = &ak_def_array[AK09911] },
-+	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
-+	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
-+	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
-+	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ak8975_of_match);
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
+new file mode 100644
+index 000000000000..08bc0468f616
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
+@@ -0,0 +1,42 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,twl6030-gpadc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: GPADC subsystem in the TWL6030 power module
++
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++description:
++  The GPADC subsystem in the TWL6030 consists of a 10-bit ADC
++  combined with a 15-input analog multiplexer.
++
++properties:
++  compatible:
++    const: ti,twl6030-gpadc
++
++  interrupts:
++    maxItems: 1
++
++  "#io-channel-cells":
++    const: 1
++
++required:
++  - compatible
++  - interrupts
++  - "#io-channel-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    twl {
++        gpadc {
++            compatible = "ti,twl6030-gpadc";
++            interrupts = <3>;
++            #io-channel-cells = <1>;
++        };
++    };
++...
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
+new file mode 100644
+index 000000000000..70acec533277
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
+@@ -0,0 +1,42 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,twl6032-gpadc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: GPADC subsystem in the TWL6032 power module
++
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++description:
++  The GPADC subsystem in the TWL6032 consists of a 10-bit ADC
++  combined with a 19-input analog multiplexer.
++
++properties:
++  compatible:
++    const: ti,twl6032-gpadc
++
++  interrupts:
++    maxItems: 1
++
++  "#io-channel-cells":
++    const: 1
++
++required:
++  - compatible
++  - interrupts
++  - "#io-channel-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    twl {
++        gpadc {
++            compatible = "ti,twl6032-gpadc";
++            interrupts = <3>;
++            #io-channel-cells = <1>;
++        };
++    };
++...
 -- 
-2.25.1
+2.39.2
 

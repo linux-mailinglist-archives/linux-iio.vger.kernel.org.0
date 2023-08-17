@@ -2,179 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9A477F6FB
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Aug 2023 14:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B173077FF7F
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Aug 2023 23:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351025AbjHQM7K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Aug 2023 08:59:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37100 "EHLO
+        id S1355151AbjHQVHF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Aug 2023 17:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351029AbjHQM6w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Aug 2023 08:58:52 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23522D7E;
-        Thu, 17 Aug 2023 05:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692277131; x=1723813131;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KrypkWV1dHYb49zfPyAXomQ6ntXuDb7YJdmm+yorAKc=;
-  b=DdEvBC0l4kQN6ttdYWfhOJDAyr8XKLFx+3A8g1i9z+KpEV1x/nbxzNI6
-   ixn1Qbwyh/RUQFQ3s32b0So1h+umVu4Qh5HEM9Hvj5aY3RbTk5TN+dK2n
-   IgLNv01ginXpOQX7ucsSl5NSJbpwupamcA7AGPfhzU4MDtCNba/u4dcRZ
-   yN2dlbxnxq5aw8lQd3B5VC8Ns3etaxe2i4SuvhuUibjrCszIBXLLmsUnG
-   VN82Kv1Lrtrx1txgL6RGUb3Ef92oXWba2fN647pZrlnrCdfCCvBHENxtm
-   3uY/H0rzH6ReG/YUygVP4dBDLhhvkPzhBdUbuZCEsMFxzLcdEljN4Xsav
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="371706872"
-X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
-   d="scan'208";a="371706872"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 05:58:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="858224570"
-X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
-   d="scan'208";a="858224570"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 17 Aug 2023 05:58:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qWcaJ-00COmW-2o;
-        Thu, 17 Aug 2023 15:58:43 +0300
-Date:   Thu, 17 Aug 2023 15:58:43 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
+        with ESMTP id S1355162AbjHQVGf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Aug 2023 17:06:35 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EBCD3598;
+        Thu, 17 Aug 2023 14:06:33 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fe4cdb724cso2934045e9.1;
+        Thu, 17 Aug 2023 14:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692306391; x=1692911191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A/n5gsGN3X6wqKs4QWYhwyWFk9n8jh5yT11xGhWly7s=;
+        b=coGw6ozWft6aN/ahlyTkG8tr4JRUnqxCL287rcKXlTg7bw35prvS+KUODKdaHAQfKK
+         eqEoxd9qD64ksNz+k2rXtB0A0dn3Sr0PoH7H1ggeB/zLiamXN2stRlCQcWeyP5uKxv5D
+         Wy7BZhVZjbd/tag+2FQyoPFpGXwFzxL5q3owFdjLoPegqGVbXm0NS2kKbDWpPuK4RRlg
+         wefHXZyDP58utEdf1rjcpz4cyoru6CxsYL8q3hcrF8rrA2u9XfXjdnzg699SNKdMYNRv
+         rv4JFasjUZGc8WPf2VjLbtueeJsv314mUE8frNSfd42qnf+axzSpew2A+qMNhi/3bOG6
+         u7vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692306391; x=1692911191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A/n5gsGN3X6wqKs4QWYhwyWFk9n8jh5yT11xGhWly7s=;
+        b=bw5EjuQXUijwQrPQpU+fAIygL9AvyQjHDtgcxtgw0Jf84pRDOgXW00KNHxI4K8pEP+
+         +1NN3vRJ2DRZGM7Y5sB1cLZcqfhHbdHYIUoDph5R5rY+E46t0Fz5WfMAw2dpWzDQs6g7
+         xXZ/KO9QiNoF7LXoL6rMWD5YFUkjsqtozNlctpdpu0CF0rY7Hq6rTREo+TqnEqkPY1W5
+         CnwtjaWjkMuvMS/YdE7vlQbkMFy+ea79xUsUNKkVxk5IB8OHdmZJ9WPtFehZd772N0hK
+         y0KlldA0M3bal+WwabxsRi6ZxlUZECmYHSUoQ/FSQL5A4ir0BaaTeI4/+y80Ojl2Mj4C
+         M9+Q==
+X-Gm-Message-State: AOJu0YxykeDnhS92MBtWKSwE2idF2Nm4q1HBQZ9aSt+AG1WtEKYwtLbe
+        EoSOWRvBtOFY1rB2RZaJVe9WvlxfbhA=
+X-Google-Smtp-Source: AGHT+IHsEjPOYvH9B7b/8EMDeJyy0luDEtweHWC/veol8UzAuntX7d4LmrO3Lg0ZHhnaa0sPwlfJVQ==
+X-Received: by 2002:a7b:ce0f:0:b0:3fe:20ef:1d32 with SMTP id m15-20020a7bce0f000000b003fe20ef1d32mr622709wmc.10.1692306391066;
+        Thu, 17 Aug 2023 14:06:31 -0700 (PDT)
+Received: from localhost.localdomain (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
+        by smtp.gmail.com with ESMTPSA id b15-20020a05600c11cf00b003fe215e4492sm669727wmi.4.2023.08.17.14.06.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Aug 2023 14:06:30 -0700 (PDT)
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 6/6] iio: adc: mcp3911: add support for the whole
- MCP39xx family
-Message-ID: <ZN4Zg235AdYwI70E@smile.fi.intel.com>
-References: <20230817120518.153728-1-marcus.folkesson@gmail.com>
- <20230817120518.153728-6-marcus.folkesson@gmail.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 0/2] iio: pressure: bmp280: Add support for BMP390
+Date:   Thu, 17 Aug 2023 23:05:20 +0200
+Message-ID: <cover.1692305434.git.ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230817120518.153728-6-marcus.folkesson@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 02:05:18PM +0200, Marcus Folkesson wrote:
-> Microchip does have many similar chips, add support for those.
-> 
-> The new supported chips are:
->   - microchip,mcp3910
->   - microchip,mcp3912
->   - microchip,mcp3913
->   - microchip,mcp3914
->   - microchip,mcp3918
->   - microchip,mcp3919
+Adds support for the Bosch BMP390 pressure sensors. This new series shares
+the regmap present on the BMP380 family of sensors.
 
-...
+Patch 1 introduces a minor refactor to allow multiple device IDs per
+family of chip_info, making room for extended sensor families with
+various IDs sharing the same regmap.
+Patch 2 adds the BMP390 id to the list of BMP380 devices id list.
 
-> +static int mcp3910_set_offset(struct mcp3911 *adc, int channel, int val)
-> +{
+Angel Iglesias (2):
+  iio: pressure: bmp280: Allow multiple chips id per family of devices
+  iio: pressure: bmp280: Add support for BMP390
 
-	unsigned int mask = MCP3910_CONFIG0_EN_OFFCAL;
+ drivers/iio/pressure/bmp280-core.c | 51 ++++++++++++++++++++++++------
+ drivers/iio/pressure/bmp280.h      |  4 ++-
+ 2 files changed, 44 insertions(+), 11 deletions(-)
 
-> +	int ret;
-> +
-> +	/* Write offset */
-> +	ret = mcp3911_write(adc, MCP3910_OFFCAL(channel), val, 3);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Enable offset */
-> +	return mcp3911_update(adc, MCP3910_REG_CONFIG0,
-> +			      MCP3910_CONFIG0_EN_OFFCAL,
-> +			      MCP3910_CONFIG0_EN_OFFCAL, 3);
 
-	return mcp3911_update(adc, MCP3910_REG_CONFIG0, mask, mask, 3);
-
-> +}
-
-...
-
-> +static int mcp3911_set_offset(struct mcp3911 *adc, int channel, int val)
-> +{
-
-As per above.
-
-> +}
-
-...
-
-> +static int mcp3910_set_osr(struct mcp3911 *adc, u32 val)
-> +{
-
-	unsigned int mask = MCP3910_CONFIG0_OSR;
-
-> +	int osr = FIELD_PREP(MCP3910_CONFIG0_OSR, val);
-> +
-> +	return mcp3911_update(adc, MCP3910_REG_CONFIG0,
-> +			      MCP3910_CONFIG0_OSR, osr, 3);
-
-	return mcp3911_update(adc, MCP3910_REG_CONFIG0, mask, osr, 3);
-
-> +}
-
-...
-
-> +static int mcp3911_set_osr(struct mcp3911 *adc, u32 val)
-
-In the similar way.
-
-...
-
-> +static int mcp3910_set_scale(struct mcp3911 *adc, int channel, u32 val)
-> +{
-> +	return mcp3911_update(adc, MCP3910_REG_GAIN,
-> +			      MCP3911_GAIN_MASK(channel),
-> +			      MCP3911_GAIN_VAL(channel, val), 3);
-> +}
-> +
-> +static int mcp3911_set_scale(struct mcp3911 *adc, int channel, u32 val)
-> +{
-> +	return mcp3911_update(adc, MCP3911_REG_GAIN,
-> +			      MCP3911_GAIN_MASK(channel),
-> +			      MCP3911_GAIN_VAL(channel, val), 1);
-> +}
-
-These can be also converted, but I don't see much difference
-(same LoC amount, similar readability).
-
-...
-
-> +	/* Disable offset to ignore any old values in offset register */
-> +	return mcp3911_update(adc, MCP3910_REG_CONFIG0,
-> +			      MCP3910_CONFIG0_EN_OFFCAL,
-> +			      MCP3910_CONFIG0_EN_OFFCAL, 3);
-
-This is a dup code with some of mcp3910_set_offset(). Perhaps a helper?
-
+base-commit: 14b7447cec15ee8dfdfe0da66ba1e280ded7e00a
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.41.0
 

@@ -2,107 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED7677EB19
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Aug 2023 22:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5698A77F441
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Aug 2023 12:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231737AbjHPUz5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Aug 2023 16:55:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46724 "EHLO
+        id S1349118AbjHQKWq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Aug 2023 06:22:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346329AbjHPUzo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Aug 2023 16:55:44 -0400
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E43271F
-        for <linux-iio@vger.kernel.org>; Wed, 16 Aug 2023 13:55:43 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-56546b45f30so5401245a12.3
-        for <linux-iio@vger.kernel.org>; Wed, 16 Aug 2023 13:55:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692219342; x=1692824142;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=C00XHrqX2JehVx2BBEXfXecV7OVkf6gSj4eigV0sDaQ=;
-        b=Wd+2qwQqJLbcXOZfZxHK7QeYcunXx/JB1n8i5nb0p6eHz8dT9PSiVtuZHXF9om1+hX
-         afleLuXxjUJI+9b6oL+ivcB0pCk60ar2sDz6igfDLeBu8b+zpuhIB3GoyLlDBFfcGP0S
-         eF8L6NfDlEdKuwAYRfjUf1/T0y843DHuXwRPM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692219342; x=1692824142;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C00XHrqX2JehVx2BBEXfXecV7OVkf6gSj4eigV0sDaQ=;
-        b=gTal8SqW9fMZu/+D1eN1MJfs2AyPa63zcmVrownWINIRdQeGjiGrSz4JvSXMSdp0LT
-         H3iQjsK01fJQQYDfOw1HLzFHM0/Sz4SRLH3F6VScn1RXWqUd6LxwqxeB/5JxTfwlrzpa
-         23V+gNj1bUHunNXiMC6HZExihI3/H8VY7tXa9id0nCbGQH26SuDMUB1s2TJnwTqEXTgS
-         fZk2xpJkB6fGgMQkrKU8xhDMK4jjB6lDj3JQ5Fvtw9aF9xQEM4TqmDNVaanqNIqvUX9n
-         FCZ5x1ylJraStsFs97/LDiKolcHSHSAgeMWmrIqawuZAOGZjHcN5f+Oo0fdoCGVAemI/
-         3rbQ==
-X-Gm-Message-State: AOJu0Yxd/j9s9EZnAn/U9qreLY8nWpCaoue9pSaVhkYOb6E9z38ouAWO
-        VespS2mqZ7s3UucwijPbVsc+EQ==
-X-Google-Smtp-Source: AGHT+IHJW+AH5vlrIhdUlHgmZMHwz/lc7DRwSMYiYs0PBq1i1vK5obxcxfHOGdznenzbMzBFW6xmFA==
-X-Received: by 2002:a17:90a:d988:b0:262:f0e6:9e09 with SMTP id d8-20020a17090ad98800b00262f0e69e09mr2633351pjv.14.1692219342574;
-        Wed, 16 Aug 2023 13:55:42 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id 5-20020a17090a018500b0026b26181ac9sm178867pjc.14.2023.08.16.13.55.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Aug 2023 13:55:41 -0700 (PDT)
-Date:   Wed, 16 Aug 2023 13:55:41 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "GONG, Ruiqi" <gongruiqi@huaweicloud.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1348524AbjHQKWQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Aug 2023 06:22:16 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB67198C;
+        Thu, 17 Aug 2023 03:22:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692267735; x=1723803735;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Ss7gCg55nt/Mplxkim4ZflEyJooGqNvzgPK7BVhYsBc=;
+  b=nCTgHA8wXthPIvDF3P3XgNrGSkfrMi1mdEYG5xvHq9Eq0A6dtGgZPPQ5
+   tq23l0ZFmbyTfkKame9JmJZ/0FXSauENoNU+JhaZT5llus3p8kEotntVQ
+   E9uCzGR8XTp2nRLG0l3FcZQ7OPgs6I27VyMTHGmEIFKxGrRNqxxFdPV4p
+   /ov5+4buABIREyz/6DUm1uQPeJkhAZNJWtDcOPI/pNzVBWip2CyMOm9Ki
+   Hk8KQgGf+Jh2x02QBV4Vc54JidnUCAJzCPhs/FpMfcmYKX72r7CursOjT
+   MjorVu8cgsMub/YSppsdik1GhPxrNoSWNcnwSHegYJ5HN3P9FD3y036T5
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="439123337"
+X-IronPort-AV: E=Sophos;i="6.01,179,1684825200"; 
+   d="scan'208";a="439123337"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 03:22:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="848837294"
+X-IronPort-AV: E=Sophos;i="6.01,179,1684825200"; 
+   d="scan'208";a="848837294"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 17 Aug 2023 03:22:04 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qWa8g-0070sj-0O;
+        Thu, 17 Aug 2023 13:22:02 +0300
+Date:   Thu, 17 Aug 2023 13:22:01 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Waqar Hameed <waqar.hameed@axis.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org,
-        Wang Weiyang <wangweiyang2@huawei.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>, gongruiqi1@huawei.com
-Subject: Re: [PATCH v2] iio: irsd200: fix -Warray-bounds bug in
- irsd200_trigger_handler
-Message-ID: <202308161355.9EC0D12C@keescook>
-References: <20230810035910.1334706-1-gongruiqi@huaweicloud.com>
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Jean Delvare <jdelvare@suse.de>,
+        Vladimir Oltean <olteanv@gmail.com>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ti-dac5571: Use i2c_get_match_data()
+Message-ID: <ZN30yevtrxRrzmS5@smile.fi.intel.com>
+References: <20230812090418.75020-1-biju.das.jz@bp.renesas.com>
+ <ZNsm3efpkYlL4Gki@smile.fi.intel.com>
+ <CAMuHMdVcQ06ydE7uEZ4kqM3A19exR1g+xAGSqiGXJ_KJpZYn-w@mail.gmail.com>
+ <ZNusymsNh/zFgHg7@smile.fi.intel.com>
+ <CAMuHMdUVCS_D0SBtDBrLQbAkdt0ZUbMOca+ukdwUtnGqzUr+cA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230810035910.1334706-1-gongruiqi@huaweicloud.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAMuHMdUVCS_D0SBtDBrLQbAkdt0ZUbMOca+ukdwUtnGqzUr+cA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 11:59:10AM +0800, GONG, Ruiqi wrote:
-> From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
-> 
-> When compiling with gcc 13 with -Warray-bounds enabled:
-> 
-> In file included from drivers/iio/proximity/irsd200.c:15:
-> In function ‘iio_push_to_buffers_with_timestamp’,
->     inlined from ‘irsd200_trigger_handler’ at drivers/iio/proximity/irsd200.c:770:2:
-> ./include/linux/iio/buffer.h:42:46: error: array subscript ‘int64_t {aka long long int}[0]’
-> is partly outside array bounds of ‘s16[1]’ {aka ‘short int[1]’} [-Werror=array-bounds=]
->    42 |                 ((int64_t *)data)[ts_offset] = timestamp;
->       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
-> drivers/iio/proximity/irsd200.c: In function ‘irsd200_trigger_handler’:
-> drivers/iio/proximity/irsd200.c:763:13: note: object ‘buf’ of size 2
->   763 |         s16 buf = 0;
->       |             ^~~
-> 
-> The problem seems to be that irsd200_trigger_handler() is taking a s16
-> variable as an int64_t buffer. As Jonathan suggested [1], fix it by
-> extending the buffer to a two-element array of s64.
-> 
-> Link: https://github.com/KSPP/linux/issues/331
-> Link: https://lore.kernel.org/lkml/20230809181329.46c00a5d@jic23-huawei/ [1]
-> Fixes: 3db3562bc66e ("iio: Add driver for Murata IRS-D200")
-> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+On Wed, Aug 16, 2023 at 10:16:00AM +0200, Geert Uytterhoeven wrote:
+> On Tue, Aug 15, 2023 at 6:50 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Tue, Aug 15, 2023 at 09:29:06AM +0200, Geert Uytterhoeven wrote:
+> > > On Tue, Aug 15, 2023 at 9:19 AM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > On Sat, Aug 12, 2023 at 10:04:18AM +0100, Biju Das wrote:
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+...
+
+> > > > > +     {.compatible = "ti,dac5571", .data = &dac5571_spec[single_8bit] },
+> > > > > +     {.compatible = "ti,dac6571", .data = &dac5571_spec[single_10bit] },
+> > > > > +     {.compatible = "ti,dac7571", .data = &dac5571_spec[single_12bit] },
+> > > > > +     {.compatible = "ti,dac5574", .data = &dac5571_spec[quad_8bit] },
+> > > > > +     {.compatible = "ti,dac6574", .data = &dac5571_spec[quad_10bit] },
+> > > > > +     {.compatible = "ti,dac7574", .data = &dac5571_spec[quad_12bit] },
+> > > > > +     {.compatible = "ti,dac5573", .data = &dac5571_spec[quad_8bit] },
+> > > > > +     {.compatible = "ti,dac6573", .data = &dac5571_spec[quad_10bit] },
+> > > > > +     {.compatible = "ti,dac7573", .data = &dac5571_spec[quad_12bit] },
+> > > > > +     {.compatible = "ti,dac121c081", .data = &dac5571_spec[single_12bit] },
+> > > >
+> > > > I would reorder them a bit.
+> > >
+> > > Which is safe in this particular case...
+> > > But not in general, as there might be fall-back compatible values.
+> >
+> > You mean the OF ID list must be specifically ordered?! What a nice minefield!
+> > This has to be fixed somewhere else, surely.
+> 
+> Seems like it is, cfr. the scoring system in drivers/of/base.c
+> __of_device_is_compatible().  Sorry for the confusion.
+> 
+> I still tend to order them in match tables though, from most-specific
+> to least-specific.
+> 
+> Note that soc_device_match() (which is used less, fortunately) does
+> not have such a scoring system, so order does matter there.
+
+Should be fixed there, because it's a big downside of OF.
 
 -- 
-Kees Cook
+With Best Regards,
+Andy Shevchenko
+
+

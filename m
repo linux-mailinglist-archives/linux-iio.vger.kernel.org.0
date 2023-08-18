@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E477812D1
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 20:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 473347812D6
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 20:24:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352453AbjHRSYJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1379416AbjHRSYJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Fri, 18 Aug 2023 14:24:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36058 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379421AbjHRSX4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 14:23:56 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2AA272D7D;
-        Fri, 18 Aug 2023 11:23:54 -0700 (PDT)
+        with ESMTP id S1379425AbjHRSX7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 14:23:59 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3C3922D58;
+        Fri, 18 Aug 2023 11:23:58 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,183,1684767600"; 
-   d="scan'208";a="176989963"
+   d="scan'208";a="173296403"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 19 Aug 2023 03:23:53 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 19 Aug 2023 03:23:57 +0900
 Received: from localhost.localdomain (unknown [10.226.93.81])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 274874063CA5;
-        Sat, 19 Aug 2023 03:23:49 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 0EDD54063CA7;
+        Sat, 19 Aug 2023 03:23:53 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
@@ -33,36 +33,88 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v2 0/2] Match data improvements for mma8452 driver
-Date:   Fri, 18 Aug 2023 19:23:45 +0100
-Message-Id: <20230818182347.332507-1-biju.das.jz@bp.renesas.com>
+Subject: [PATCH v2 1/2] iio: accel: mma8452: Convert enum->pointer for data in the ID table
+Date:   Fri, 18 Aug 2023 19:23:46 +0100
+Message-Id: <20230818182347.332507-2-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230818182347.332507-1-biju.das.jz@bp.renesas.com>
+References: <20230818182347.332507-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch series aims to add match data improvements for mma8452
-driver.
+Convert enum->pointer for data in the ID table, so that device_get_match_data()
+can do match against OF/ACPI/I2C tables, once i2c bus type match support
+added to it.
 
+Replace enum->struct *mma_chip_info for data in the ID table and simplify
+mma8452_probe() by replacing device_get_match_data()->i2c_get_match_data().
+
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
 v1->v2:
  * Added Rb tag from Hans de Goede.
- * Added patch#2 for sorting match tables.
+---
+ drivers/iio/accel/mma8452.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-Biju Das (2):
-  iio: accel: mma8452: Convert enum->pointer for data in the ID table
-  iio: accel: mma8452: Sort match tables
-
- drivers/iio/accel/mma8452.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
-
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index f42a88711486..5864ad726e97 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -1547,7 +1547,6 @@ MODULE_DEVICE_TABLE(of, mma8452_dt_ids);
+ 
+ static int mma8452_probe(struct i2c_client *client)
+ {
+-	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	struct mma8452_data *data;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
+@@ -1560,15 +1559,10 @@ static int mma8452_probe(struct i2c_client *client)
+ 	data->client = client;
+ 	mutex_init(&data->lock);
+ 
+-	data->chip_info = device_get_match_data(&client->dev);
+-	if (!data->chip_info) {
+-		if (id) {
+-			data->chip_info = &mma_chip_info_table[id->driver_data];
+-		} else {
+-			dev_err(&client->dev, "unknown device model\n");
+-			return -ENODEV;
+-		}
+-	}
++	data->chip_info = i2c_get_match_data(client);
++	if (!data->chip_info)
++		return dev_err_probe(&client->dev, -ENODEV,
++				     "unknown device model\n");
+ 
+ 	ret = iio_read_mount_matrix(&client->dev, &data->orientation);
+ 	if (ret)
+@@ -1830,12 +1824,12 @@ static const struct dev_pm_ops mma8452_pm_ops = {
+ };
+ 
+ static const struct i2c_device_id mma8452_id[] = {
+-	{ "mma8451", mma8451 },
+-	{ "mma8452", mma8452 },
+-	{ "mma8453", mma8453 },
+-	{ "mma8652", mma8652 },
+-	{ "mma8653", mma8653 },
+-	{ "fxls8471", fxls8471 },
++	{ "mma8451", (kernel_ulong_t)&mma_chip_info_table[mma8451] },
++	{ "mma8452", (kernel_ulong_t)&mma_chip_info_table[mma8452] },
++	{ "mma8453", (kernel_ulong_t)&mma_chip_info_table[mma8453] },
++	{ "mma8652", (kernel_ulong_t)&mma_chip_info_table[mma8652] },
++	{ "mma8653", (kernel_ulong_t)&mma_chip_info_table[mma8653] },
++	{ "fxls8471", (kernel_ulong_t)&mma_chip_info_table[fxls8471] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, mma8452_id);
 -- 
 2.25.1
 

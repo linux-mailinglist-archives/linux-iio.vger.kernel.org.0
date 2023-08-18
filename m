@@ -2,25 +2,25 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C12367806BA
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 09:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DEF57806C0
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 09:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358389AbjHRH4w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S1358394AbjHRH4w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Fri, 18 Aug 2023 03:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46692 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358471AbjHRH4n (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 03:56:43 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A7ABE3A91;
-        Fri, 18 Aug 2023 00:56:18 -0700 (PDT)
+        with ESMTP id S1358477AbjHRH4o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 03:56:44 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 25FE54209;
+        Fri, 18 Aug 2023 00:56:20 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,182,1684767600"; 
-   d="scan'208";a="176955322"
+   d="scan'208";a="173263209"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 18 Aug 2023 16:56:10 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 18 Aug 2023 16:56:13 +0900
 Received: from localhost.localdomain (unknown [10.226.93.81])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 54CD141BBD56;
-        Fri, 18 Aug 2023 16:56:07 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id B72AB41BBD7D;
+        Fri, 18 Aug 2023 16:56:10 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
@@ -32,151 +32,89 @@ Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         linux-renesas-soc@vger.kernel.org
-Subject: [PATCH v2 1/5] iio: magnetometer: ak8975: Convert enum->pointer for data in the match tables
-Date:   Fri, 18 Aug 2023 08:55:56 +0100
-Message-Id: <20230818075600.24277-2-biju.das.jz@bp.renesas.com>
+Subject: [PATCH v2 2/5] iio: magnetometer: ak8975: Sort ID and ACPI tables
+Date:   Fri, 18 Aug 2023 08:55:57 +0100
+Message-Id: <20230818075600.24277-3-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
 References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert enum->pointer for data in the match tables to simplify the probe()
-by replacing device_get_match_data() and i2c_client_get_device_id by
-i2c_get_match_data() as we have similar I2C, ACPI and DT matching table.
+Sort ID table alphabetically by name and acpi table by HID.
 
+While at it, drop blank line before ID table.
+
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
-v1->v2:
- * No change
+v2:
+ * New patch
 ---
- drivers/iio/magnetometer/ak8975.c | 75 +++++++++++++------------------
- 1 file changed, 30 insertions(+), 45 deletions(-)
+ drivers/iio/magnetometer/ak8975.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index eb706d0bf70b..104798549de1 100644
+index 104798549de1..8cfceb007936 100644
 --- a/drivers/iio/magnetometer/ak8975.c
 +++ b/drivers/iio/magnetometer/ak8975.c
-@@ -813,13 +813,13 @@ static const struct iio_info ak8975_info = {
+@@ -812,18 +812,6 @@ static const struct iio_info ak8975_info = {
+ 	.read_raw = &ak8975_read_raw,
  };
  
- static const struct acpi_device_id ak_acpi_match[] = {
--	{"AK8975", AK8975},
--	{"AK8963", AK8963},
--	{"INVN6500", AK8963},
--	{"AK009911", AK09911},
--	{"AK09911", AK09911},
--	{"AKM9911", AK09911},
--	{"AK09912", AK09912},
-+	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
-+	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
-@@ -883,10 +883,7 @@ static int ak8975_probe(struct i2c_client *client)
- 	struct iio_dev *indio_dev;
- 	struct gpio_desc *eoc_gpiod;
- 	struct gpio_desc *reset_gpiod;
--	const void *match;
--	unsigned int i;
- 	int err;
--	enum asahi_compass_chipset chipset;
- 	const char *name = NULL;
- 
- 	/*
-@@ -928,27 +925,15 @@ static int ak8975_probe(struct i2c_client *client)
- 		return err;
- 
- 	/* id will be NULL when enumerated via ACPI */
--	match = device_get_match_data(&client->dev);
--	if (match) {
--		chipset = (uintptr_t)match;
--		name = dev_name(&client->dev);
--	} else if (id) {
--		chipset = (enum asahi_compass_chipset)(id->driver_data);
--		name = id->name;
--	} else
--		return -ENOSYS;
+-static const struct acpi_device_id ak_acpi_match[] = {
+-	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
+-	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
+-	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
+-	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
+-	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
+-	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
+-	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
 -
--	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
--		if (ak_def_array[i].type == chipset)
--			break;
--
--	if (i == ARRAY_SIZE(ak_def_array)) {
--		dev_err(&client->dev, "AKM device type unsupported: %d\n",
--			chipset);
-+	data->def = i2c_get_match_data(client);
-+	if (!data->def)
- 		return -ENODEV;
--	}
- 
--	data->def = &ak_def_array[i];
-+	/* If enumerated via firmware node, fix the ABI */
-+	if (dev_fwnode(&client->dev))
-+		name = dev_name(&client->dev);
-+	else
-+		name = id->name;
- 
- 	/* Fetch the regulators */
- 	data->vdd = devm_regulator_get(&client->dev, "vdd");
-@@ -1077,28 +1062,28 @@ static DEFINE_RUNTIME_DEV_PM_OPS(ak8975_dev_pm_ops, ak8975_runtime_suspend,
+ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+ {
+ 	struct ak8975_data *data = iio_priv(indio_dev);
+@@ -1061,16 +1049,27 @@ static int ak8975_runtime_resume(struct device *dev)
+ static DEFINE_RUNTIME_DEV_PM_OPS(ak8975_dev_pm_ops, ak8975_runtime_suspend,
  				 ak8975_runtime_resume, NULL);
  
- static const struct i2c_device_id ak8975_id[] = {
--	{"ak8975", AK8975},
--	{"ak8963", AK8963},
--	{"AK8963", AK8963},
--	{"ak09911", AK09911},
--	{"ak09912", AK09912},
--	{"ak09916", AK09916},
-+	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
-+	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++static const struct acpi_device_id ak_acpi_match[] = {
 +	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
-+	{"ak09911", (kernel_ulong_t)&ak_def_array[AK09911] },
-+	{"ak09912", (kernel_ulong_t)&ak_def_array[AK09912] },
-+	{"ak09916", (kernel_ulong_t)&ak_def_array[AK09916] },
++	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
++	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
++	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
++
+ static const struct i2c_device_id ak8975_id[] = {
+-	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
+-	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
+ 	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
+ 	{"ak09911", (kernel_ulong_t)&ak_def_array[AK09911] },
+ 	{"ak09912", (kernel_ulong_t)&ak_def_array[AK09912] },
+ 	{"ak09916", (kernel_ulong_t)&ak_def_array[AK09916] },
  	{}
  };
- 
+-
  MODULE_DEVICE_TABLE(i2c, ak8975_id);
  
  static const struct of_device_id ak8975_of_match[] = {
--	{ .compatible = "asahi-kasei,ak8975", },
--	{ .compatible = "ak8975", },
--	{ .compatible = "asahi-kasei,ak8963", },
--	{ .compatible = "ak8963", },
--	{ .compatible = "asahi-kasei,ak09911", },
--	{ .compatible = "ak09911", },
--	{ .compatible = "asahi-kasei,ak09912", },
--	{ .compatible = "ak09912", },
--	{ .compatible = "asahi-kasei,ak09916", },
--	{ .compatible = "ak09916", },
-+	{ .compatible = "asahi-kasei,ak8975", .data = &ak_def_array[AK8975] },
-+	{ .compatible = "ak8975", .data = &ak_def_array[AK8975] },
-+	{ .compatible = "asahi-kasei,ak8963", .data = &ak_def_array[AK8963] },
-+	{ .compatible = "ak8963", .data = &ak_def_array[AK8963] },
-+	{ .compatible = "asahi-kasei,ak09911", .data = &ak_def_array[AK09911] },
-+	{ .compatible = "ak09911", .data = &ak_def_array[AK09911] },
-+	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
-+	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
-+	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
-+	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ak8975_of_match);
 -- 
 2.25.1
 

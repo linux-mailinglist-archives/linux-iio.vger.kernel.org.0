@@ -2,105 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF87F780FAE
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 17:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C35E78105D
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 18:29:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378360AbjHRP5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Aug 2023 11:57:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50330 "EHLO
+        id S1378632AbjHRQ3F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Aug 2023 12:29:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349349AbjHRP5W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 11:57:22 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934352722;
-        Fri, 18 Aug 2023 08:57:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692374241; x=1723910241;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=9YjmrG0M3FuEJFsUpIklKPspYGwMDw6HDn/wrRhzTLo=;
-  b=l0/sogmJsUnK2/uKG6W8Di+Dhu4bizmU+DcZEVoS6buBPNbTE+ixnSRX
-   SvS5vM3D5Zn5j6ULtWhEeln6dk3bVvBtf6CgHahHxlYqLtRrKN7swGCjL
-   zsIKz+XQ2PB3Hrro6IgG8EHQ7pp4ca2uJARXneIIBLGJSq2Nx56RCgNMH
-   XTY068fymoEgHqv7L5IZw2kOyYbCz7iLqMDLvrufWV046q4M5MyDNdzJN
-   VmRMTjI8ht78rEAcLBhSMplTNIFru1UGOCgcM88IvMFi3UKuRUY/JLEBg
-   G7lBwAE8XWz+MbPdU8hp/V1hQ8itaqw+qlXTDJ/FZfIV5vbexwfYLUgdv
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="439512031"
-X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
-   d="scan'208";a="439512031"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 08:57:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="735144842"
-X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
-   d="scan'208";a="735144842"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 18 Aug 2023 08:57:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qX1qf-00EqNx-2Z;
-        Fri, 18 Aug 2023 18:57:17 +0300
-Date:   Fri, 18 Aug 2023 18:57:17 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 1/2] iio: pressure: bmp280: Allow multiple chips id per
- family of devices
-Message-ID: <ZN+U3Rqef7bvhpZ7@smile.fi.intel.com>
-References: <cover.1692305434.git.ang.iglesiasg@gmail.com>
- <8856287079b5dc1099f5b98a0168f008fbb8debd.1692305434.git.ang.iglesiasg@gmail.com>
- <ZN9TyGjr/pqLQUpT@smile.fi.intel.com>
- <b209214a80c98f92db57be30883ec78dfc116ab0.camel@gmail.com>
+        with ESMTP id S1378684AbjHRQ27 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 12:28:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 153DE3C0A
+        for <linux-iio@vger.kernel.org>; Fri, 18 Aug 2023 09:28:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A427D6218E
+        for <linux-iio@vger.kernel.org>; Fri, 18 Aug 2023 16:28:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9679FC433C7;
+        Fri, 18 Aug 2023 16:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692376137;
+        bh=+NcaldpIQVmkvpVnVqQ5XaYdWi6XguM0xKct5EPVYuM=;
+        h=Date:From:To:Subject:From;
+        b=ixhaCVbFOjcYp8Xip6pqhQr7Fvn681YHLA+8g3tnb0J33NgBuh983qyqvAO3sf/+P
+         QkUnxlrqTRXEigWBAskR3RKL3YNgsiqawjZEpIMcqO3HTGAqnCwi7s8lDYzKmlnlEp
+         IqS4x3PEIitQ3VtE1Hq49TMFR2apvO21KVDZrgBBQUUCXlhiu/MCUMweYCQsQXyoIQ
+         vJ7bm2QZ+kgxy6GxOWi50gCgGTcpL6uC1yoLzcsiUdU2P9eZL0bqj8uSQccG4ZE9my
+         WCvvcH/aQ77Be/UfHXDHAANjMQcTMj38tkdFXcVeDGys3RyALP2S/3x6ukt128noFQ
+         XCnyiMApQOCig==
+Date:   Fri, 18 Aug 2023 12:28:53 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [GIT PULL] First set of Counter updates for the 6.6 cycle
+Message-ID: <ZN+cRfEqnKvzTMh3@ishi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cPHUKrXJijZ5Mpi/"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b209214a80c98f92db57be30883ec78dfc116ab0.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 05:52:07PM +0200, Angel Iglesias wrote:
-> On Fri, 2023-08-18 at 14:19 +0300, Andy Shevchenko wrote:
-> > On Thu, Aug 17, 2023 at 11:05:21PM +0200, Angel Iglesias wrote:
 
-...
+--cPHUKrXJijZ5Mpi/
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > -       const unsigned int chip_id;
-> > 
-> > Yeah, this const makes a little sense...
-> > 
-> > > +       const unsigned int *chip_id;
-> > 
-> > ...but not this :-)
-> 
-> Isn't the same case as "const struct iio_chan_spec *channels" or "const int
-> *oversampling_temp_avail". I thoght that this meant a pointer to a constant
-> integer. On bmp280-core I declare the arrays with the modifiers static const.
+The following changes since commit 2ccdd1b13c591d306f0401d98dedc4bdcd02b421:
 
-Yes, and that is my point:
-- old code makes a little sense
-- new code makes a lot of sense
+  Linux 6.5-rc6 (2023-08-13 11:29:55 -0700)
 
-> > What I'm wondering is why it's int and not u8 / u16
-> > (as it seems only a byte value there).
-> 
-> Yeah, can be u8, as the reg width is 1 byte and this IDs are stored on one reg.
-> I just carried over the int type from previous versions, but it's just wasting
-> space :/
+are available in the Git repository at:
 
--- 
-With Best Regards,
-Andy Shevchenko
+  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counte=
+r-updates-for-6.6a
 
+for you to fetch changes up to 39266b642ccdc154b48eae11263920956fa0e89e:
 
+  counter: rz-mtu3-cnt: Reorder locking sequence for consistency (2023-08-1=
+6 09:41:29 -0400)
+
+----------------------------------------------------------------
+First set of Counter updates for the 6.6 cycle
+
+This set consists primarily of minor clean-ups. The counter_priv()
+'const' attribute change does yield a small improvement in reducing
+the binary size.
+
+Changes
+* rz-mtu3-cnt
+  - Reorder locking sequence for consistency
+* Documentation
+  - sysfs-bus-counter: Fix indentation
+* counter
+  - Declare counter_priv() to be const
+* microchip-tcb-capture
+  - Explicitly include correct DT includes
+
+----------------------------------------------------------------
+Biju Das (2):
+      Documentation: ABI: sysfs-bus-counter: Fix indentation
+      counter: rz-mtu3-cnt: Reorder locking sequence for consistency
+
+Rob Herring (1):
+      counter: Explicitly include correct DT includes
+
+Uwe Kleine-K=F6nig (1):
+      counter: Declare counter_priv() to be const
+
+ Documentation/ABI/testing/sysfs-bus-counter | 8 ++++----
+ drivers/counter/microchip-tcb-capture.c     | 1 -
+ drivers/counter/rz-mtu3-cnt.c               | 4 ++--
+ include/linux/counter.h                     | 2 +-
+ 4 files changed, 7 insertions(+), 8 deletions(-)
+
+--cPHUKrXJijZ5Mpi/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZN+cRQAKCRC1SFbKvhIj
+K7pHAP44okBbceXXA0Jqhqejmi/PFlvEjR1xrWvefxoyzw4UsQD7BXhGbhPfnFOt
+ID1oVAxKNVYi0pNTZohxVw1BoYgQxAM=
+=++ls
+-----END PGP SIGNATURE-----
+
+--cPHUKrXJijZ5Mpi/--

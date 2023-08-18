@@ -2,129 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8395B780EEE
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 17:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E01780F48
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 17:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378080AbjHRPSc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 18 Aug 2023 11:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
+        id S1357510AbjHRPfz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Aug 2023 11:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378048AbjHRPR6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 11:17:58 -0400
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A832235A1;
-        Fri, 18 Aug 2023 08:17:57 -0700 (PDT)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-58439daf39fso10768307b3.1;
-        Fri, 18 Aug 2023 08:17:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692371876; x=1692976676;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2N194ARL0/KzZa8KoNgGxFPEhbq3PBex382jco3e17o=;
-        b=TKSbOh9LBQsNM6P4teMjgm7YmrWazk6o0mVIxi9uiYCN0IcFazffFkru2S0sa8hCFr
-         eHv3PwPr/MttwWQv/c5WFxj9GO1UZDZ3hrNPZTesjTSbM+jJ+WqeNG2oTkevk+5S7Ib+
-         rGbw4WK2LupTgP0qLHmjmjMg4Lr0wPhGP7IWgOjKjcd0XV3N0hDaGLE9lLMKlYdaKGIr
-         RFvc/uMqZWWr/OcB0gDM0E7nUC0acBvCBl2CRilNnXrsz1+rO1yJa7FLBAACWxFZW//y
-         qSAJBFPqjJl667px/qFd0ZEXrNwnOW4EYD0XsMHHVbbIss4uaoua1qx6Ic59cHVOMMSD
-         vjsw==
-X-Gm-Message-State: AOJu0YxnM4oql/hpIyazxN2LQtX9uzJDyzBO8auPAXdkzuZNPv9eGppB
-        V0kiXuwcFCzOe8WaBIbR0h2XgeXVWbohaqdX
-X-Google-Smtp-Source: AGHT+IF9EkUXfYKWDpugr9PlIGEUUogtfEJyfqA/Xcd1WL53C62nM9twgktMS+ftnLsDOxBFn+fLsw==
-X-Received: by 2002:a81:6241:0:b0:58c:9974:b660 with SMTP id w62-20020a816241000000b0058c9974b660mr3128915ywb.22.1692371876510;
-        Fri, 18 Aug 2023 08:17:56 -0700 (PDT)
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com. [209.85.128.181])
-        by smtp.gmail.com with ESMTPSA id l4-20020a81d544000000b005839a780c29sm535202ywj.102.2023.08.18.08.17.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Aug 2023 08:17:56 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-58a24ac48eeso10868337b3.0;
-        Fri, 18 Aug 2023 08:17:56 -0700 (PDT)
-X-Received: by 2002:a25:250f:0:b0:d11:45d3:b25d with SMTP id
- l15-20020a25250f000000b00d1145d3b25dmr3091291ybl.46.1692371875925; Fri, 18
- Aug 2023 08:17:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
- <20230818075600.24277-5-biju.das.jz@bp.renesas.com> <ZN9WCKQ/hv4zKfsK@smile.fi.intel.com>
- <OS0PR01MB5922F93ABF408AA9037A8EAC861BA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <ZN+IDGfc0MJfqOV9@smile.fi.intel.com>
-In-Reply-To: <ZN+IDGfc0MJfqOV9@smile.fi.intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 18 Aug 2023 17:17:44 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWwo1hYnbztoRUtHD7iw53f7Np-vPsfMMBdwbMP7-Q98A@mail.gmail.com>
-Message-ID: <CAMuHMdWwo1hYnbztoRUtHD7iw53f7Np-vPsfMMBdwbMP7-Q98A@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] iio: magnetometer: ak8975: Drop deprecated enums
- from OF table
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S1378195AbjHRPf3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 11:35:29 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D646F2D5A;
+        Fri, 18 Aug 2023 08:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692372928; x=1723908928;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=aHPesWzI2q66E3D2T90Mmbv5OkczsTXWcHwv/MUk1F8=;
+  b=SB1nzBJxFS9D848kk4MLT59IMuUkKCd4pvaLFsWoqgjCcVxJpkYSWNQ6
+   /dICER2P/N6G07S2bdweqs7PhW3EPI5T29p+de41AdoAoD8NZ3bsn5sz7
+   J+caRiGCjadmSuyNWJ9ePfEaWpB29vNgrxZIoCto5Jebixo5w3ryLXikR
+   YsdMcubpw+s0XvQ2qwNOhBrWMu24O1ahiBFvaD0zYZ7LNazOOTwyBVnxV
+   uG2qdZdouK6xj+KgmDcdevAstfjTExwYUTy7b6RVnKqju8u4a4y/zdjnp
+   qpnFoyhDnuXVJzJVZt8e1ZcYcEYxpB6FXHZYMCTuguqxFT/NcdAlpdoJC
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="375904366"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="375904366"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 08:35:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="770170999"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="770170999"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 18 Aug 2023 08:35:02 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qX1V7-00E5ai-0T;
+        Fri, 18 Aug 2023 18:35:01 +0300
+Date:   Fri, 18 Aug 2023 18:35:00 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] iio: magnetometer: ak8975: Sort OF table
+Message-ID: <ZN+PpLsAayzfgTtb@smile.fi.intel.com>
+References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
+ <20230818075600.24277-6-biju.das.jz@bp.renesas.com>
+ <ZN9WVvo+pixspCsw@smile.fi.intel.com>
+ <CAMuHMdX0cnPDNHdUoquGTzZJE-CD81Lor=3q+j36rJyS23mJqw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdX0cnPDNHdUoquGTzZJE-CD81Lor=3q+j36rJyS23mJqw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
-
-CC devicetree
-
-On Fri, Aug 18, 2023 at 5:03 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Fri, Aug 18, 2023 at 11:40:37AM +0000, Biju Das wrote:
-> > > Subject: Re: [PATCH v2 4/5] iio: magnetometer: ak8975: Drop deprecated
-> > > enums from OF table
-> > >
-> > > On Fri, Aug 18, 2023 at 08:55:59AM +0100, Biju Das wrote:
-> > > > Drop deprecated enums from OF table as corresponding entries are
-> > > > removed from bindings and it also saves memory.
-> > >
-> > > You can't do this.
-> > >
-> > > Only sorting by "prefixed first" criteria is possible.
+On Fri, Aug 18, 2023 at 04:55:18PM +0200, Geert Uytterhoeven wrote:
+> On Fri, Aug 18, 2023 at 1:30 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Fri, Aug 18, 2023 at 08:56:00AM +0100, Biju Das wrote:
+> > > Sort OF table alphabetically by compatibles.
 > >
-> > The rule applies only for fallback compatible. I checked bindings and I don't
-> > find any fallback compatibles. All compatibles are just enums. Am I missing
-> > anything here??
->
-> Yes. As per above patch. The _whole_ world is not under your / our control.
-> NAK to this change, sorry.
+> > > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > Wrong, I haven't suggested that. See comment to the previous patch.
+> >
+> > And this is definitely wrong as Geert explained already why.
+> > You need to fix the code that handles the ID table first.
+> 
+> I retracted my own comment:
+> https://lore.kernel.org/r/CAMuHMdUVCS_D0SBtDBrLQbAkdt0ZUbMOca+ukdwUtnGqzUr+cA@mail.gmail.com
+> 
+> Upon a second read, I agree my reply
+> 
+>     Seems like it is, cfr. the scoring system in drivers/of/base.c
+> 
+> was confusing, as it was not super clear if it was a response to the
+> first or the second line of your comment:
+> 
+>     You mean the OF ID list must be specifically ordered?! What a nice
+> minefield!
+>     This has to be fixed somewhere else, surely.
+> 
+> Conclusion: there is no issue, the scoring system handles primary
+> vs. fallback compatible values, irrespective of ordering.
 
-The single user ever in the upstream kernel was fixed in commit
-9846210b1ec9bbaa ("ARM: tegra: seaboard: add missing DT vendor
-prefixes") in v3.8 back in 2012.
-And it had to be fixed again 9 years later in commit fa0fdb78cb5d4cde
-("ARM: dts: am335x: Use correct vendor prefix for Asahi Kasei Corp.").
+Now I'm totally confused. Previously you mentioned a couple of
+different APIs — one in OF, one in SoC. AFAIU the second one
+still needs to be fixed to follow the logic that OF does.
 
-There may be other out-of-tree users, which would be broken by this
-change.  Typically we wait a few years between deprecating a compatible
-value and removing support from the driver.
+My previous understanding was that
+  OF code — no issue
+  SoC code — the ordering is required to be correct
 
-As Biju is only deprecating these compatible values in PATCH 3/5 of
-his series, this may be a bit premature.
+Can you confirm that there is no issue in that second case?
+And if there is none, why did you mention it?
 
-Gr{oetje,eeting}s,
-
-                        Geert
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

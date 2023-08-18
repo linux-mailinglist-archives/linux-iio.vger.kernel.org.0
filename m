@@ -2,145 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0185E780AF4
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 13:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C26FE780B07
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 13:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232046AbjHRLTs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Aug 2023 07:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51078 "EHLO
+        id S1351577AbjHRLV5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Aug 2023 07:21:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376622AbjHRLTm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 07:19:42 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 213F83AB4;
-        Fri, 18 Aug 2023 04:19:41 -0700 (PDT)
+        with ESMTP id S1376621AbjHRLVl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 07:21:41 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5896A3AB2;
+        Fri, 18 Aug 2023 04:21:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692357581; x=1723893581;
+  t=1692357700; x=1723893700;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ECNjpOhCkzTU1qIG9kKqGxSVPEjrxK8n8FSK7eqFXF4=;
-  b=NYhBbPtor904mKB+Oftr/U24DQjS8Bmu0sDqymyK+Sh8/98qfeIwUbVq
-   qGhqAqpSruS9oup2+0InZ1ipc4AZ2r62/zKRaR8E7u7vgFiHN4OQzA0by
-   m3tMwqaz3CpvmRc5UyKCxz2ucNrd861F/spkIG2BkV6LJb0TCGuHUfyei
-   lIwU1N3mr1SpExmyoFlr9vzoQOQH7W0KEW+u0whHX7WO7OqNJUjcDA6x7
-   yR471ujNXanhpJQdQ2+bueRnsawXlKOvorokc8x+T2y4ocyURJB9QK/6L
-   yow6ssyL0nNXG2FP5+hdWoQKgHsjmD8d0EilmT9m75kKFgLniypUfBe1A
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="404061545"
+  bh=CKRSS1iusdv1+5oh3j8yKQXBHN0I1ieRa1yex02/XD8=;
+  b=Qo3UWgb/EViDQ2UH4qA2I9NmULITXiti1v8KOp/7RUY6Px7PbSLOryt3
+   MT2xVWtIDpO2EyOsDioJv4j+UsA3k8VBy9Tmu7THr1EYof8AGs6LEDyRU
+   5a6uU6EiCav85kG/KmNFk1cOtbqJ8XhdQgeXhd34kJulN0mlOdRkyGb2F
+   QfAnVJBW6bRz4l5ixx1IqRGiHmzEi6FzDds60qIRPlBVdwsHhDDxVsm3e
+   sv8Uq4U1nIXRv0mbdYSQbppNChpj5zlvu1/oVXCgEQtPGWfSTLbM8hMsQ
+   8g1HCTmx/eFNEyoAGrIfsVeFhIGD3UKpUCvEt6sH4hfP3FjbdHRuNwJXS
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="370538362"
 X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
-   d="scan'208";a="404061545"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 04:19:40 -0700
+   d="scan'208";a="370538362"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 04:21:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="684871290"
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="728579674"
 X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
-   d="scan'208";a="684871290"
+   d="scan'208";a="728579674"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 18 Aug 2023 04:19:38 -0700
+  by orsmga007.jf.intel.com with ESMTP; 18 Aug 2023 04:21:38 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qWxVx-005S6T-18;
-        Fri, 18 Aug 2023 14:19:37 +0300
-Date:   Fri, 18 Aug 2023 14:19:36 +0300
+        id 1qWxXs-005WEC-1U;
+        Fri, 18 Aug 2023 14:21:36 +0300
+Date:   Fri, 18 Aug 2023 14:21:36 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Angel Iglesias <ang.iglesiasg@gmail.com>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 1/2] iio: pressure: bmp280: Allow multiple chips id per
- family of devices
-Message-ID: <ZN9TyGjr/pqLQUpT@smile.fi.intel.com>
+Subject: Re: [PATCH 2/2] iio: pressure: bmp280: Add support for BMP390
+Message-ID: <ZN9UQMR8X4/vMV1Z@smile.fi.intel.com>
 References: <cover.1692305434.git.ang.iglesiasg@gmail.com>
- <8856287079b5dc1099f5b98a0168f008fbb8debd.1692305434.git.ang.iglesiasg@gmail.com>
+ <a34c72a2027c4b98bd815e8cf01f56d69c5d1386.1692305434.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8856287079b5dc1099f5b98a0168f008fbb8debd.1692305434.git.ang.iglesiasg@gmail.com>
+In-Reply-To: <a34c72a2027c4b98bd815e8cf01f56d69c5d1386.1692305434.git.ang.iglesiasg@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 11:05:21PM +0200, Angel Iglesias wrote:
-> Improve device detection in certain chip families known to have various
-> chip ids.
+On Thu, Aug 17, 2023 at 11:05:22PM +0200, Angel Iglesias wrote:
+> Adds BMP390 device id to the supported ids on bmp380 sensor family
 
 ...
 
-> +	ret = -EINVAL;
+>  #define BMP180_CHIP_ID			0x55
+>  #define BMP280_CHIP_ID			0x58
+>  #define BME280_CHIP_ID			0x60
+> +#define BMP390_CHIP_ID			0x60
 
-Why do you need this...
-
-> +	for (i = 0; i < data->chip_info->num_chip_id; i++) {
-> +		if (chip_id == data->chip_info->chip_id[i]) {
-
-> +			ret = 0;
-
-..and this...
-
-> +			break;
-> +		}
-> +	}
-
-> +	if (ret) {
-
-...and this?
-
-You can simply do
-
-	for (i = 0; i < data->chip_info->num_chip_id; i++) {
-		if (chip_id == data->chip_info->chip_id[i])
-			break;
-	}
-	if (i < data->chip_info->num_chip_id) {
-
-...
-
-> +		// 0x<id>, so four chars per number plus one space + ENDL
-> +		size_t nbuf = 5*data->chip_info->num_chip_id*sizeof(char);
-
-Besides lack of spaces...
-
-> +		char *buf = kmalloc(nbuf, GFP_KERNEL);
-
-...this at least should be kmalloc_array() and on top maybe something from
-overflow.h will be needed.
-
-> +		if (!buf)
-> +			return ret;
-> +
-> +		for (i = 0; i < data->chip_info->num_chip_id; i++)
-> +			snprintf(&buf[i*5], nbuf, "0x%x ", data->chip_info->chip_id[i]);
-> +		buf[nbuf-1] = '\0';
-> +
-> +		dev_err(dev, "bad chip id: expected [ %s ] got 0x%x\n", buf, chip_id);
-> +		kfree(buf);
-> +		return ret;
->  	}
-
-...
-
-> -	const unsigned int chip_id;
-
-Yeah, this const makes a little sense...
-
-> +	const unsigned int *chip_id;
-
-...but not this :-)
-
-What I'm wondering is why it's int and not u8 / u16
-(as it seems only a byte value there).
-
-> +	int num_chip_id;
-
-unsigned.
+Keep it a bit better ordered. At the first glance, move
+before BME.
 
 -- 
 With Best Regards,

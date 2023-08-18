@@ -2,97 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A177812FB
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 20:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE1C78131B
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 20:56:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379464AbjHRSlD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Aug 2023 14:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45646 "EHLO
+        id S1379546AbjHRSzo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Aug 2023 14:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379465AbjHRSkt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 14:40:49 -0400
+        with ESMTP id S1379542AbjHRSzk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 14:55:40 -0400
 Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7493835A5;
-        Fri, 18 Aug 2023 11:40:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 32C673A98;
+        Fri, 18 Aug 2023 11:55:38 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.01,183,1684767600"; 
-   d="scan'208";a="173296905"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 19 Aug 2023 03:40:46 +0900
+   d="scan'208";a="173297301"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 19 Aug 2023 03:55:37 +0900
 Received: from localhost.localdomain (unknown [10.226.93.81])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 4624A4072B2D;
-        Sat, 19 Aug 2023 03:40:43 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 413A84001DC3;
+        Sat, 19 Aug 2023 03:55:33 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 RESEND 2/2] iio: accel: mma8452: Sort match tables
-Date:   Fri, 18 Aug 2023 19:40:33 +0100
-Message-Id: <20230818184033.335502-3-biju.das.jz@bp.renesas.com>
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v2] iio: chemical: atlas-sensor: Convert enum->pointer for data in the match tables
+Date:   Fri, 18 Aug 2023 19:55:31 +0100
+Message-Id: <20230818185531.336672-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230818184033.335502-1-biju.das.jz@bp.renesas.com>
-References: <20230818184033.335502-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sort ID table alphabetically by name and OF table by compatible.
+Convert enum->pointer for data in the match tables, so that
+device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
+bus type match support added to it.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Replace enum->struct *atlas_device for data in the match table. Simplify
+the probe() by replacing device_get_match_data() and ID lookup for
+retrieving data by i2c_get_match_data().
+
+While at it, add const qualifier to struct atlas_device and drop inner
+trailing commas from OF table.
+
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
-v2:
- * New patch
+v1->v2:
+ * Added Rb tag from Andy
+ * Dropped id variable removal sentance from commit description
+ * Dropped inner trailing commas from commit description.
 ---
- drivers/iio/accel/mma8452.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/atlas-sensor.c | 32 +++++++++++++----------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 5864ad726e97..d3fd0318e47b 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1535,12 +1535,12 @@ static int mma8452_reset(struct i2c_client *client)
- }
- 
- static const struct of_device_id mma8452_dt_ids[] = {
-+	{ .compatible = "fsl,fxls8471", .data = &mma_chip_info_table[fxls8471] },
- 	{ .compatible = "fsl,mma8451", .data = &mma_chip_info_table[mma8451] },
- 	{ .compatible = "fsl,mma8452", .data = &mma_chip_info_table[mma8452] },
- 	{ .compatible = "fsl,mma8453", .data = &mma_chip_info_table[mma8453] },
- 	{ .compatible = "fsl,mma8652", .data = &mma_chip_info_table[mma8652] },
- 	{ .compatible = "fsl,mma8653", .data = &mma_chip_info_table[mma8653] },
--	{ .compatible = "fsl,fxls8471", .data = &mma_chip_info_table[fxls8471] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, mma8452_dt_ids);
-@@ -1824,12 +1824,12 @@ static const struct dev_pm_ops mma8452_pm_ops = {
+diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+index fb15bb216019..baf93e5e3ca7 100644
+--- a/drivers/iio/chemical/atlas-sensor.c
++++ b/drivers/iio/chemical/atlas-sensor.c
+@@ -87,7 +87,7 @@ enum {
+ struct atlas_data {
+ 	struct i2c_client *client;
+ 	struct iio_trigger *trig;
+-	struct atlas_device *chip;
++	const struct atlas_device *chip;
+ 	struct regmap *regmap;
+ 	struct irq_work work;
+ 	unsigned int interrupt_enabled;
+@@ -353,7 +353,7 @@ struct atlas_device {
+ 	int delay;
  };
  
- static const struct i2c_device_id mma8452_id[] = {
-+	{ "fxls8471", (kernel_ulong_t)&mma_chip_info_table[fxls8471] },
- 	{ "mma8451", (kernel_ulong_t)&mma_chip_info_table[mma8451] },
- 	{ "mma8452", (kernel_ulong_t)&mma_chip_info_table[mma8452] },
- 	{ "mma8453", (kernel_ulong_t)&mma_chip_info_table[mma8453] },
- 	{ "mma8652", (kernel_ulong_t)&mma_chip_info_table[mma8652] },
- 	{ "mma8653", (kernel_ulong_t)&mma_chip_info_table[mma8653] },
--	{ "fxls8471", (kernel_ulong_t)&mma_chip_info_table[fxls8471] },
+-static struct atlas_device atlas_devices[] = {
++static const struct atlas_device atlas_devices[] = {
+ 	[ATLAS_PH_SM] = {
+ 				.channels = atlas_ph_channels,
+ 				.num_channels = 3,
+@@ -589,30 +589,29 @@ static const struct iio_info atlas_info = {
+ };
+ 
+ static const struct i2c_device_id atlas_id[] = {
+-	{ "atlas-ph-sm", ATLAS_PH_SM },
+-	{ "atlas-ec-sm", ATLAS_EC_SM },
+-	{ "atlas-orp-sm", ATLAS_ORP_SM },
+-	{ "atlas-do-sm", ATLAS_DO_SM },
+-	{ "atlas-rtd-sm", ATLAS_RTD_SM },
++	{ "atlas-ph-sm", (kernel_ulong_t)&atlas_devices[ATLAS_PH_SM] },
++	{ "atlas-ec-sm", (kernel_ulong_t)&atlas_devices[ATLAS_EC_SM] },
++	{ "atlas-orp-sm", (kernel_ulong_t)&atlas_devices[ATLAS_ORP_SM] },
++	{ "atlas-do-sm", (kernel_ulong_t)&atlas_devices[ATLAS_DO_SM] },
++	{ "atlas-rtd-sm", (kernel_ulong_t)&atlas_devices[ATLAS_RTD_SM] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(i2c, atlas_id);
+ 
+ static const struct of_device_id atlas_dt_ids[] = {
+-	{ .compatible = "atlas,ph-sm", .data = (void *)ATLAS_PH_SM, },
+-	{ .compatible = "atlas,ec-sm", .data = (void *)ATLAS_EC_SM, },
+-	{ .compatible = "atlas,orp-sm", .data = (void *)ATLAS_ORP_SM, },
+-	{ .compatible = "atlas,do-sm", .data = (void *)ATLAS_DO_SM, },
+-	{ .compatible = "atlas,rtd-sm", .data = (void *)ATLAS_RTD_SM, },
++	{ .compatible = "atlas,ph-sm", .data = &atlas_devices[ATLAS_PH_SM] },
++	{ .compatible = "atlas,ec-sm", .data = &atlas_devices[ATLAS_EC_SM] },
++	{ .compatible = "atlas,orp-sm", .data = &atlas_devices[ATLAS_ORP_SM] },
++	{ .compatible = "atlas,do-sm", .data = &atlas_devices[ATLAS_DO_SM] },
++	{ .compatible = "atlas,rtd-sm", .data = &atlas_devices[ATLAS_RTD_SM] },
  	{ }
  };
- MODULE_DEVICE_TABLE(i2c, mma8452_id);
+ MODULE_DEVICE_TABLE(of, atlas_dt_ids);
+ 
+ static int atlas_probe(struct i2c_client *client)
+ {
+-	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	struct atlas_data *data;
+-	struct atlas_device *chip;
++	const struct atlas_device *chip;
+ 	struct iio_trigger *trig;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
+@@ -621,10 +620,7 @@ static int atlas_probe(struct i2c_client *client)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	if (!dev_fwnode(&client->dev))
+-		chip = &atlas_devices[id->driver_data];
+-	else
+-		chip = &atlas_devices[(unsigned long)device_get_match_data(&client->dev)];
++	chip = i2c_get_match_data(client);
+ 
+ 	indio_dev->info = &atlas_info;
+ 	indio_dev->name = ATLAS_DRV_NAME;
 -- 
 2.25.1
 

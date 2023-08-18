@@ -2,120 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF7C678109B
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 18:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDB72781116
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Aug 2023 18:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378690AbjHRQlZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Aug 2023 12:41:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
+        id S1378841AbjHRQ6Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Aug 2023 12:58:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378800AbjHRQlK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 12:41:10 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871634211;
-        Fri, 18 Aug 2023 09:41:05 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fe2ba3e260so10975235e9.2;
-        Fri, 18 Aug 2023 09:41:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692376864; x=1692981664;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=llWGqwOUEcvGgJX27cVTnwCFd4kTNMJ1aEznWwewQDA=;
-        b=qjufmJ0AnN3fBqC8z19KJd0LenNRUz/ljHs1f5fnyeBb4wqm4haxnHSaOkzXqBbGAe
-         ZsBYqkIewBhLXqn1Xcd00nrJTS3a3UxQaRAvGmlt7KQDDXpKHOIAuE9AFWCshosuiHBk
-         8+rZHpl4TFqdq24fpijh8OhdnSHEePyRYKtX+JS/kCrYCAz73fdqXkTIV2TKBhumaCxF
-         n3jc7lf0bkcH4XibGJ818+0bUbjf/y7HcuU4GMp6Q+Oarmr3Nq0SnG+F38Jqz37sViBJ
-         JmpeXpyI7wL/8ug613ayC/3nnTUcAD/+kJ/mzTcCx9ymGEgMrUTB8diS1sCVFbhSZmhp
-         zT7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692376864; x=1692981664;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=llWGqwOUEcvGgJX27cVTnwCFd4kTNMJ1aEznWwewQDA=;
-        b=B/tDgxzoJQwoZKENzv9rBNVhT7BURlEPKffBGNZaJsmP3doyiOWo3PumtWUUB+9vZ1
-         c9QGWzlpEOl3NeWWCGC5w1/PH8nRduRo1w80Nx3b4PAV2G72a9UBQYexpDaDhx9VFOwF
-         IYSSXKeHzPB/QD/Fcz75QN3TknuC4bl7j5Jy059hEnJl9aJ7mMtp6qlzKsYqWZkoHTHX
-         cUOfF2MXAGe4NMuzReg3DGK1xLMszqogFw/D1eYZTYN08mDc9Me60OUqbLImIEyBlKww
-         NbfZwp9z2FYCCOiltdbWrPzqM0i31rYZMflxP5iJRBkoJ5RAXpRKJZU3fNjLtzpDaRaN
-         3cog==
-X-Gm-Message-State: AOJu0YxYaVFtyveFWQ/88V2r2Q1WIPGekyAG76ccJjWVqcmzZUyCo34l
-        lduFsZK9v/z0AIGPs248Y9w=
-X-Google-Smtp-Source: AGHT+IEB8a/G+9BZ2dnBLPj/ntNNt6rplNjHz/KD0/JrsBpFPPzMtEwYfol4loLcyOsUbn5o5GNEQg==
-X-Received: by 2002:a05:600c:365a:b0:3fb:b008:2003 with SMTP id y26-20020a05600c365a00b003fbb0082003mr2558846wmq.38.1692376863691;
-        Fri, 18 Aug 2023 09:41:03 -0700 (PDT)
-Received: from DreamMachine2.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
-        by smtp.gmail.com with ESMTPSA id u24-20020a05600c00d800b003fbe791a0e8sm3465886wmm.0.2023.08.18.09.41.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Aug 2023 09:41:03 -0700 (PDT)
-Message-ID: <a0a4bb894689f0377ac7a3e3eb750516459fe1bb.camel@gmail.com>
-Subject: Re: [PATCH 1/2] iio: pressure: bmp280: Allow multiple chips id per
- family of devices
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Date:   Fri, 18 Aug 2023 18:41:02 +0200
-In-Reply-To: <ZN+U3Rqef7bvhpZ7@smile.fi.intel.com>
-References: <cover.1692305434.git.ang.iglesiasg@gmail.com>
-         <8856287079b5dc1099f5b98a0168f008fbb8debd.1692305434.git.ang.iglesiasg@gmail.com>
-         <ZN9TyGjr/pqLQUpT@smile.fi.intel.com>
-         <b209214a80c98f92db57be30883ec78dfc116ab0.camel@gmail.com>
-         <ZN+U3Rqef7bvhpZ7@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (by Flathub.org) 
+        with ESMTP id S1378891AbjHRQ6C (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Aug 2023 12:58:02 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4B6C3C3F;
+        Fri, 18 Aug 2023 09:57:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1692377877; x=1723913877;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tYP9zSg0rueRu76BbY3YrCv6Yjv7OvHqs7Z8XMR1gAU=;
+  b=f/BIbdwOTk+bogM+M6vaCnTyjpiing8iyJ376Dm2tuhM/oihiEETsWGI
+   n9y4+PTwtMGVS1S/86C3FrJyqo1gkaNus1kzsxw20GU9GKP3RaOYpuBLW
+   eJ9yqCbcL3kvZWVgbABqN009As/AggwVMo+kLPj4BDE1hOqIaljxgeHtr
+   eQYJqZ7m+USSV403Ynp30VKNHHPJ0bZ/wI8yYMqk4W+9NcLctdOFFEMof
+   oleQkfm4AjH1IYrr93bFCn0koXO+cTAnFK2aBEhzTzk09BpDcpli3gDk7
+   uxxH4FGxk7p0hw7lCNHApjKjGZsW3lDJvSltKQXFC2LZJ/BeTzI3Vb8XQ
+   w==;
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="230584349"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 18 Aug 2023 09:57:56 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 18 Aug 2023 09:57:56 -0700
+Received: from marius-VM.mshome.net (10.10.115.15) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.21 via Frontend Transport; Fri, 18 Aug 2023 09:57:54 -0700
+From:   <marius.cristea@microchip.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>
+CC:     <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <marius.cristea@microchip.com>
+Subject: [PATCH v4 0/2] Adding support for Microchip MCP3564 ADC family
+Date:   Fri, 18 Aug 2023 19:57:48 +0300
+Message-ID: <20230818165750.55406-1-marius.cristea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2023-08-18 at 18:57 +0300, Andy Shevchenko wrote:
-> On Fri, Aug 18, 2023 at 05:52:07PM +0200, Angel Iglesias wrote:
-> > On Fri, 2023-08-18 at 14:19 +0300, Andy Shevchenko wrote:
-> > > On Thu, Aug 17, 2023 at 11:05:21PM +0200, Angel Iglesias wrote:
->=20
-> ...
->=20
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const unsigned int chip_=
-id;
-> > >=20
-> > > Yeah, this const makes a little sense...
-> > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const unsigned int *chip=
-_id;
-> > >=20
-> > > ...but not this :-)
-> >=20
-> > Isn't the same case as "const struct iio_chan_spec *channels" or "const=
- int
-> > *oversampling_temp_avail". I thoght that this meant a pointer to a cons=
-tant
-> > integer. On bmp280-core I declare the arrays with the modifiers static
-> > const.
->=20
-> Yes, and that is my point:
-> - old code makes a little sense
-> - new code makes a lot of sense
+From: Marius Cristea <marius.cristea@microchip.com>
 
-Thanks for the clarification. I initially understood the opposite :S
+Adding support for Microchip family of 153.6 ksps, Low-Noise 16/24-Bit
+Delta-Sigma ADCs with an SPI interface. This driver covers the following part
+numbers:
+ - MCP3561, MCP3562, MCP3564, MCP3561R, MCP3562R, MCP3564R,
+ - MCP3461, MCP3462, MCP3464, MCP3461R, MCP3462R and MCP3464R.
 
-> > > What I'm wondering is why it's int and not u8 / u16
-> > > (as it seems only a byte value there).
-> >=20
-> > Yeah, can be u8, as the reg width is 1 byte and this IDs are stored on =
-one
-> > reg.
-> > I just carried over the int type from previous versions, but it's just
-> > wasting
-> > space :/
->=20
+Differences related to previous patch:
+v3:
+- fix review comments from v3:
+  - adding label names for channels into the example from the
+    "microchip,mcp3564.yaml" file  
+  - update defines names (with _REG and _MASK)
+  - code clean-up
+  - flip logic to cut down on indent in some cases
+  - use "spi_get_device_match_data" instead of "device_get_match_data"
+  - remove some unnecessary _SET functions
+- change "boost_current" attribute to "boost_current_gain". The
+  attribute is a gain not an absolute value.
+- change "boost_current_available" attribute to
+  "boost_current_gain_available"
+- update comment from v3 (to better describe the change) "fallback compatible
+  in device tree to deal with some newer part number" to "stop failing to
+  probe when the chip id is not recognized. In this case a fallback
+  compatible has been used to support a new part number"
+
+v3:
+- fix review comments:
+  - fix and update the device tree bindings
+  - enable "auto_zeroing_ref_enable" attribute only
+    when internal reference is used
+  - remove unused headers
+  - fix comments (kernel-docs)
+  - remove scan_type
+  - replace "extend_name" with read_label
+  - print label for each channel (label could be added into the dt)
+  - add comment to explain the maximum channels numbers
+  - add protection around critical region
+  - stop failing to probe when the chip id is not recognized. In this
+    case a fallback compatible has been used to support a new part number
+
+
+- Open questions:
+  - whether or not to add a spi-mux type of thing to deal with the part number
+    address in case there are multiple devices connected to the same chip
+    select.
+  - discussion related to the "custom property". Last time around a consensus
+    wasn't reached.
+
+v2:
+- fix review comments:
+  - change the device tree bindings
+  - change the ADC channel creation (starting from DT)
+  - use defines, masks and FIELD_PREP() instead of hardcoded values
+  - mode the PGA from Hardware Gain to scale
+  - add a current output channel from burnout current
+  - fix coding style issues
+  - use self-explanatory naming to drop the comment
+- renumbered the versioning (start with v1 instead of v0)
+
+v1:
+- first version committed to review
+
+Marius Cristea (2):
+  dt-bindings: iio: adc: adding MCP3564 ADC
+  iio: adc: adding support for MCP3564 ADC
+
+ .../ABI/testing/sysfs-bus-iio-adc-mcp3564     |   53 +
+ .../bindings/iio/adc/microchip,mcp3564.yaml   |  205 +++
+ MAINTAINERS                                   |    7 +
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/mcp3564.c                     | 1527 +++++++++++++++++
+ 6 files changed, 1806 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-mcp3564
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
+ create mode 100644 drivers/iio/adc/mcp3564.c
+
+
+base-commit: 9e66fb52449538406cea43e9f3889c391350e76e
+-- 
+2.34.1
 

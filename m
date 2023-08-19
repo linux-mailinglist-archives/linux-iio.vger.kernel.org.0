@@ -2,95 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D836178184C
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Aug 2023 10:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43741781BE1
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Aug 2023 03:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjHSI0R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Aug 2023 04:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58096 "EHLO
+        id S229619AbjHTA7C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Aug 2023 20:59:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229556AbjHSI0H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Aug 2023 04:26:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B2BA5D2;
-        Sat, 19 Aug 2023 01:26:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7B4061632;
-        Sat, 19 Aug 2023 08:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368A5C433C8;
-        Sat, 19 Aug 2023 08:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692433562;
-        bh=IqklKkPtidqb2CVW+tpMi5aCC8MPd+5t0OXkV7z/4YU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cSxWLhGjlcFR/25K7tpjKDR7n4q64KfhdItaAPLD/hH0XNTfLeTTHHZ/PLMyVOtoU
-         0fhU+gJ8GmTopN4tqd0/Lt3nTeoFOf0xDmMJkwd0aey/vfD8JmY/RB9/0h8YNpko1i
-         jvzqZ7mPmG1YRPV16nTQuL0TvtXcTs7j3yc+1+pBw1pI2lXWiF3LR2dz5BmygQEoo+
-         Q/iMp4RTMM6BE5H0xUcV6nIqD46fjJ0NvcirPAviW5/xx9x/DUu1wj7Or3d3i6LHj5
-         94joCv1NJs7eTfPzU42mHa2MMu6lrq0QD6/intcGi72cKFaq3QHgWAsZ1xsHunIqRw
-         8x52cejPbF8jA==
-Date:   Sat, 19 Aug 2023 09:25:57 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     marius.cristea@microchip.com
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        with ESMTP id S230030AbjHTA6r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Aug 2023 20:58:47 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A17623F764
+        for <linux-iio@vger.kernel.org>; Sat, 19 Aug 2023 11:35:31 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2b9cdba1228so31839051fa.2
+        for <linux-iio@vger.kernel.org>; Sat, 19 Aug 2023 11:35:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692470129; x=1693074929;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YN1OpmCbaY81QbyPI9C85rcMVU0xABdKhrlhiE3u5AI=;
+        b=gQVsr71trj0v6TnZbViu5KLlzO9r2799VjZoC9vzHe1mXxDJw/DxeApmhVFYNLrAXZ
+         oW0ST51eoMROfOsyQtYWf1vheuYceSIZzlFyMRdgEm97ZYBHI0UrFQZKMc9CbPHWX0zw
+         z++AnrETDHCRIPmVhEy6gzWVbBid/zXgRP6XmaTbD7zTMSohxPRDhF/I0cvhjKyRE+q+
+         G02eGi+xaLeP88JHBYavqUXJSdCPzr+PffwTuTwJDk7a06yn3ptH7gxAQaYCiAMWbyqy
+         NWgC8yn9xxWmwjs+8OzFt88vsJeGRUf/UUQhjJjW8ohzAfXaTFNWfQqqfD5aV50qJ4pg
+         R9tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692470129; x=1693074929;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YN1OpmCbaY81QbyPI9C85rcMVU0xABdKhrlhiE3u5AI=;
+        b=LM6pL/WGqs4buF+4ZxvG0EfR9WlDRbuR8kVTnTWVK0Fkw909L7vZNbX++PwdwARWh7
+         o/jNDitIZrpHgmJdW5LbCORjkZHh9dg7w7dATfhFL6MhDfYQWQiZd031Iu034j+8fI5u
+         1ZlPN9h73sdwJC1nXcB7FA9oFf2XvKF83wP7X2C4vbz4mauEMb8iqZm5bFGUgIjfwiR/
+         sqUQJAVa1eghUW18diOIyRJjZJQK57BaX3JRzQuN9iKGL5F5QmiJSJkeOEOkjn5RAkxF
+         xeCRQKkVy6nfhJY0Xbcq/gCXcnYDoHc/2fJbWT4BeGmQ5SISioNTsG8HOAzc0dtSSApg
+         ggJQ==
+X-Gm-Message-State: AOJu0YyGT/48GauEseSdQGQY5ZMNcJe2U1NbViWaS327ePz0E4bPqI4j
+        pZ4OgdZ/iBtCsjg/XpeBk2L2ahdyKA4KzOg6iKg=
+X-Google-Smtp-Source: AGHT+IHyIS3/rx1L8OgHE5RB+ScVHWoDpPgPFtw8VIbtYoEjUhFHSppkQ7zw42ytcZvQ8xvrMHk2RA==
+X-Received: by 2002:a2e:731a:0:b0:2bb:9710:9d99 with SMTP id o26-20020a2e731a000000b002bb97109d99mr1695872ljc.44.1692470129550;
+        Sat, 19 Aug 2023 11:35:29 -0700 (PDT)
+Received: from [192.168.0.22] ([77.252.47.198])
+        by smtp.gmail.com with ESMTPSA id z1-20020a170906240100b0097073f1ed84sm3150266eja.4.2023.08.19.11.35.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Aug 2023 11:35:28 -0700 (PDT)
+Message-ID: <426d78d6-9fa6-bfeb-b36a-fba264097a27@linaro.org>
+Date:   Sat, 19 Aug 2023 20:35:27 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add TI TWL603X GPADC
+Content-Language: en-US
+To:     Andreas Kemnade <andreas@kemnade.info>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: adding MCP3564 ADC
-Message-ID: <20230819-swimsuit-scallion-9e91ec99b92a@spud>
-References: <20230818165750.55406-1-marius.cristea@microchip.com>
- <20230818165750.55406-2-marius.cristea@microchip.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="uKFwu7uCDxw/NwPv"
-Content-Disposition: inline
-In-Reply-To: <20230818165750.55406-2-marius.cristea@microchip.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20230816202614.324457-1-andreas@kemnade.info>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230816202614.324457-1-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 16/08/2023 22:26, Andreas Kemnade wrote:
+> Document TI TWL603X GPADC devicetree bindings.
+> A driver is already there, the compatibles are used, but not documented.
+> Use two separate files to reference only the allowed compatible in
+> a future YAML version of
+> Documentation/devicetree/bindings/mfd/twl-family.txt
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
 
---uKFwu7uCDxw/NwPv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your patch. There is something to discuss/improve.
 
-On Fri, Aug 18, 2023 at 07:57:49PM +0300, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> This is the device tree schema for iio driver for
-> Microchip family of 153.6 ksps, Low-Noise 16/24-Bit
-> Delta-Sigma ADCs with an SPI interface (Microchip's
-> MCP3461, MCP3462, MCP3464, MCP3461R, MCP3462R,
-> MCP3464R, MCP3561, MCP3562, MCP3564, MCP3561R,
-> MCP3562R and MCP3564R analog to digital converters).
->=20
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+>  .../bindings/iio/adc/ti,twl6030-gpadc.yaml    | 42 +++++++++++++++++++
+>  .../bindings/iio/adc/ti,twl6032-gpadc.yaml    | 42 +++++++++++++++++++
+>  2 files changed, 84 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,twl6032-gpadc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
+> new file mode 100644
+> index 000000000000..08bc0468f616
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/ti,twl6030-gpadc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: GPADC subsystem in the TWL6030 power module
+> +
+> +maintainers:
+> +  - Jonathan Cameron <jic23@kernel.org>
 
-Thanks,
-Conor.
+This should be rather someone knowing or having or caring about this
+particular hardware, not subsystem maintainer.
 
---uKFwu7uCDxw/NwPv
-Content-Type: application/pgp-signature; name="signature.asc"
+> +
+> +description:
+> +  The GPADC subsystem in the TWL6030 consists of a 10-bit ADC
+> +  combined with a 15-input analog multiplexer.
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,twl6030-gpadc
 
------BEGIN PGP SIGNATURE-----
+Devices look fairly similar. Same properties. Why aren't they in one
+binding (enum here instead)?
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZOB8lQAKCRB4tDGHoIJi
-0o3TAPwM74R81vKUiQEtMzW1+og9PDflT/siRzcGXep77V1vPwEA+GkxKH0X5QZJ
-tucd4cgqowy/bgIRGcmoE5j14amnlg8=
-=QCcD
------END PGP SIGNATURE-----
+Best regards,
+Krzysztof
 
---uKFwu7uCDxw/NwPv--

@@ -2,86 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AA25782EAE
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Aug 2023 18:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35CA7783434
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Aug 2023 23:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233521AbjHUQpW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Aug 2023 12:45:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51098 "EHLO
+        id S231151AbjHUUhN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Aug 2023 16:37:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232912AbjHUQpV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Aug 2023 12:45:21 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68EACC;
-        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1bf078d5f33so27361845ad.3;
-        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692636319; x=1693241119;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NdM56TQugKolVtnM2vEBlZtwTSJbtDlseuSS2vjAiNU=;
-        b=XLiBAsc1D8k9fk5Nqbc/co6XUtWiAXl3AFWSCbrw8cwf3OvXMxnqiFslUIvmK8NyXN
-         uDVHyghAWy+dO3nPPtBJepy9Wn6MYyPg+bMVSfx5VJkplCoy4NwqeMYWbp8dUzEWBPzA
-         O5qQBW/qz6YrELx0gGwB+WtwOwo99A4gxcWjHWqZ7NlASbELgVxS3J1olhCaLuw0/Bms
-         lTIqKA5D65JU7b/Ex8INBKUdh0yQOfBtChTTbswgWFsz+nsh6+eFnbhfiXOrX0incVAJ
-         7NthDaVEae3jRn0z1+EBRAaLmTr9NcWR4Qi3wJN0z2P6I9RWbIZneknUAfEpb/WLbBEh
-         tNrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692636319; x=1693241119;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NdM56TQugKolVtnM2vEBlZtwTSJbtDlseuSS2vjAiNU=;
-        b=da/6gePj6cHh7Jw3DCjndwG8EiPZnZgSbIW+lvX+cz4+aNY5V5W/vcUH+7v4pvQowX
-         5wbLxAvkzEFk8kPOSx9C+JT/gg9XNo6WPgd8ARk13hXg/17bFRuysm7K2qy4+OtoXA5a
-         AETuORetNc63paZ7CBx8SpArmSkU3okSHqt5WNhcxdShGMtobhb/Gh7b0a1uAt/XV1bn
-         D9Y8kYAidxKR6BntUxOqW5JVp8LpMILNnl8DpZ0CWTgVsD7OkjTj7/DL/xlZWJfK3UGG
-         q2f9ycS7AJVHBqpjgrFOox2sf/cYAgtwtc3aHIG2V2eq1yHLRa/MVV5CGdZ9vA/BZoDK
-         H24g==
-X-Gm-Message-State: AOJu0YxjM5IK4LuLUWFDfO8P1m+A3MDsejzAoAp61JbTeUUntVHOM3Ce
-        smrlJzPp1aaFrj2codm9OVV533JDYAnOBA==
-X-Google-Smtp-Source: AGHT+IHP+eJce60nwuTZdhY6fkcRYe7A8x1KzzfzpRnwTBKR3XZ0ZVNPt8aKjaosjl07R3zDcS7mQA==
-X-Received: by 2002:a17:902:e54f:b0:1bc:61d6:5fcc with SMTP id n15-20020a170902e54f00b001bc61d65fccmr9007318plf.51.1692636319132;
-        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
-Received: from localhost.localdomain ([103.14.183.220])
-        by smtp.gmail.com with ESMTPSA id m15-20020a170902bb8f00b001b89466a5f4sm3809019pls.105.2023.08.21.09.45.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 09:45:18 -0700 (PDT)
-From:   Mighty <bavishimithil@gmail.com>
-To:     linus.walleij@linaro.org
-Cc:     bavishimithil@gmail.com, jic23@kernel.org, lars@metafoo.de,
-        liambeguin@gmail.com, linux-iio@vger.kernel.org, peda@axentia.se,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Date:   Mon, 21 Aug 2023 22:15:09 +0530
-Message-Id: <20230821164509.45-1-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
-References: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
+        with ESMTP id S229916AbjHUUhM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Aug 2023 16:37:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59BBCC7;
+        Mon, 21 Aug 2023 13:37:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECE4D63B7E;
+        Mon, 21 Aug 2023 20:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509F7C433C7;
+        Mon, 21 Aug 2023 20:37:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692650230;
+        bh=X7Bms6M8oLw/coJIxa4RAToyJCbMhPrTfEm4sthOme8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OfcaiGvEPaIg7Hxv3qMsyY247BK2fzPB3AdKqZ/XXXT3L1fcicR3cS9IbOYTAFXK7
+         +taaQlDHb6x2k2KU9fViQ78qRwoHLaj9loBNoT8osRnRt46/Elew1B1nfjxlnt05ih
+         Ch3/WSVSG9kqTeyn2yyTZVjVTMporWhY3ABd5fg9h41ZfzBIHP0eQRthB1QkhXe5b/
+         OauJ2ctERZFZ1yp/ULOFWbQTI0r63JPuhFugymqpP0GowCz7nfFcFs4sy75sWoi9lQ
+         vqebub51XjJmw2lC9fXSIHKPuyjIGnvy+SPnx41wTtB4RK7XourwuKRLvM3PZQW/7s
+         aq2FH+1IrhUzg==
+Received: (nullmailer pid 2252304 invoked by uid 1000);
+        Mon, 21 Aug 2023 20:37:08 -0000
+Date:   Mon, 21 Aug 2023 15:37:08 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] dt-bindings: iio: magnetometer:
+ asahi-kasei,ak8975: Drop deprecated enums
+Message-ID: <20230821203708.GA2250389-robh@kernel.org>
+References: <20230818075600.24277-1-biju.das.jz@bp.renesas.com>
+ <20230818075600.24277-4-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230818075600.24277-4-biju.das.jz@bp.renesas.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> How does it break it?
->
-> It's a change to the AFE rescaler driver so it can't really "break"
-> twl6030-gpadc.
+On Fri, Aug 18, 2023 at 08:55:58AM +0100, Biju Das wrote:
+> Drop deprecated enums from bindings as it is been here for a long time.
 
-Not necessarily the gpadc, but it breaks my current-sense-shunt which requires an adc channel for it to work, since the iio-rescale driver wont recognise the channel (as it only is IIO_CHAN_INFO_RAW, so the && breaks)
+Would be good to have "long time" defined as Geert provided.
 
-> Isn't the complete picture involving some device tree using the prescaler
-> etc?
+> 
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v2:
+>  * New patch
+> ---
+>  .../bindings/iio/magnetometer/asahi-kasei,ak8975.yaml      | 7 -------
+>  1 file changed, 7 deletions(-)
 
-I'm not sure I understand that, could you explain it, maybe with some example as well?
-
-Mithil
+Acked-by: Rob Herring <robh@kernel.org>

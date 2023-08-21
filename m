@@ -2,96 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD19782AC6
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Aug 2023 15:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AA25782EAE
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Aug 2023 18:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231791AbjHUNp6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Aug 2023 09:45:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39606 "EHLO
+        id S233521AbjHUQpW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Aug 2023 12:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231770AbjHUNp6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Aug 2023 09:45:58 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D394FB;
-        Mon, 21 Aug 2023 06:45:53 -0700 (PDT)
+        with ESMTP id S232912AbjHUQpV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Aug 2023 12:45:21 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68EACC;
+        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1bf078d5f33so27361845ad.3;
+        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1692625553;
-  x=1724161553;
-  h=references:from:to:cc:subject:date:in-reply-to:
-   message-id:mime-version:content-transfer-encoding;
-  bh=MQdmWqNQajJmWoXPlqJR+8bjrqdRLEAq+htHeeP1mNc=;
-  b=njzp49B0k+V5Qa+TCq40ndhWjPouGr34TOH6Qv5hWJhetxMkfJYNG+zo
-   TomrLGJYJkV8cG4aaFX5YL8vEF+bhOrwxbUR2DWAw485AROMSjMiN6f/N
-   lai/lxW1qowcxFQSLFS3veuYgetZ8fS58/a0crs/TG36lXOXUUmiRi30z
-   /WmN4uNPbFJZvNqVFw/aR713pFOs3B9Z0xQxqKV7XDTOw4Xv35bF3BCxG
-   IQ9eH42ho5jDpe8+xyQp8GAMFKrO+c/VLr3OJ9CsFUoQbIpvMruWoAI1K
-   LDkOYvR7iIzgyLf40rhpIRwJ9Ds/JF7lO5KIlie4/0a5Usxt6JwXZPRIc
-   g==;
-References: <20230810035910.1334706-1-gongruiqi@huaweicloud.com>
-User-agent: a.out
-From:   Waqar Hameed <waqar.hameed@axis.com>
-To:     "GONG, Ruiqi" <gongruiqi@huaweicloud.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
-        "Kees Cook" <keescook@chromium.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
-        "Wang Weiyang" <wangweiyang2@huawei.com>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>, <gongruiqi1@huawei.com>
-Subject: Re: [PATCH v2] iio: irsd200: fix -Warray-bounds bug in
- irsd200_trigger_handler
-Date:   Mon, 21 Aug 2023 15:41:18 +0200
-In-Reply-To: <20230810035910.1334706-1-gongruiqi@huaweicloud.com>
-Message-ID: <pndsf8cse40.fsf@axis.com>
+        d=gmail.com; s=20221208; t=1692636319; x=1693241119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NdM56TQugKolVtnM2vEBlZtwTSJbtDlseuSS2vjAiNU=;
+        b=XLiBAsc1D8k9fk5Nqbc/co6XUtWiAXl3AFWSCbrw8cwf3OvXMxnqiFslUIvmK8NyXN
+         uDVHyghAWy+dO3nPPtBJepy9Wn6MYyPg+bMVSfx5VJkplCoy4NwqeMYWbp8dUzEWBPzA
+         O5qQBW/qz6YrELx0gGwB+WtwOwo99A4gxcWjHWqZ7NlASbELgVxS3J1olhCaLuw0/Bms
+         lTIqKA5D65JU7b/Ex8INBKUdh0yQOfBtChTTbswgWFsz+nsh6+eFnbhfiXOrX0incVAJ
+         7NthDaVEae3jRn0z1+EBRAaLmTr9NcWR4Qi3wJN0z2P6I9RWbIZneknUAfEpb/WLbBEh
+         tNrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692636319; x=1693241119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NdM56TQugKolVtnM2vEBlZtwTSJbtDlseuSS2vjAiNU=;
+        b=da/6gePj6cHh7Jw3DCjndwG8EiPZnZgSbIW+lvX+cz4+aNY5V5W/vcUH+7v4pvQowX
+         5wbLxAvkzEFk8kPOSx9C+JT/gg9XNo6WPgd8ARk13hXg/17bFRuysm7K2qy4+OtoXA5a
+         AETuORetNc63paZ7CBx8SpArmSkU3okSHqt5WNhcxdShGMtobhb/Gh7b0a1uAt/XV1bn
+         D9Y8kYAidxKR6BntUxOqW5JVp8LpMILNnl8DpZ0CWTgVsD7OkjTj7/DL/xlZWJfK3UGG
+         q2f9ycS7AJVHBqpjgrFOox2sf/cYAgtwtc3aHIG2V2eq1yHLRa/MVV5CGdZ9vA/BZoDK
+         H24g==
+X-Gm-Message-State: AOJu0YxjM5IK4LuLUWFDfO8P1m+A3MDsejzAoAp61JbTeUUntVHOM3Ce
+        smrlJzPp1aaFrj2codm9OVV533JDYAnOBA==
+X-Google-Smtp-Source: AGHT+IHP+eJce60nwuTZdhY6fkcRYe7A8x1KzzfzpRnwTBKR3XZ0ZVNPt8aKjaosjl07R3zDcS7mQA==
+X-Received: by 2002:a17:902:e54f:b0:1bc:61d6:5fcc with SMTP id n15-20020a170902e54f00b001bc61d65fccmr9007318plf.51.1692636319132;
+        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
+Received: from localhost.localdomain ([103.14.183.220])
+        by smtp.gmail.com with ESMTPSA id m15-20020a170902bb8f00b001b89466a5f4sm3809019pls.105.2023.08.21.09.45.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 09:45:18 -0700 (PDT)
+From:   Mighty <bavishimithil@gmail.com>
+To:     linus.walleij@linaro.org
+Cc:     bavishimithil@gmail.com, jic23@kernel.org, lars@metafoo.de,
+        liambeguin@gmail.com, linux-iio@vger.kernel.org, peda@axentia.se,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+Date:   Mon, 21 Aug 2023 22:15:09 +0530
+Message-Id: <20230821164509.45-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
+References: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.0.5.60]
-X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail02w.axis.com
- (10.20.40.8)
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 11:59 +0800 "GONG, Ruiqi" <gongruiqi@huaweicloud.co=
-m> wrote:
+> How does it break it?
+>
+> It's a change to the AFE rescaler driver so it can't really "break"
+> twl6030-gpadc.
 
-> From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
->
-> When compiling with gcc 13 with -Warray-bounds enabled:
->
-> In file included from drivers/iio/proximity/irsd200.c:15:
-> In function =E2=80=98iio_push_to_buffers_with_timestamp=E2=80=99,
->     inlined from =E2=80=98irsd200_trigger_handler=E2=80=99 at drivers/iio=
-/proximity/irsd200.c:770:2:
-> ./include/linux/iio/buffer.h:42:46: error: array subscript =E2=80=98int64=
-_t {aka long long int}[0]=E2=80=99
-> is partly outside array bounds of =E2=80=98s16[1]=E2=80=99 {aka =E2=80=98=
-short int[1]=E2=80=99} [-Werror=3Darray-bounds=3D]
->    42 |                 ((int64_t *)data)[ts_offset] =3D timestamp;
->       |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
-> drivers/iio/proximity/irsd200.c: In function =E2=80=98irsd200_trigger_han=
-dler=E2=80=99:
-> drivers/iio/proximity/irsd200.c:763:13: note: object =E2=80=98buf=E2=80=
-=99 of size 2
->   763 |         s16 buf =3D 0;
->       |             ^~~
->
-> The problem seems to be that irsd200_trigger_handler() is taking a s16
-> variable as an int64_t buffer. As Jonathan suggested [1], fix it by
-> extending the buffer to a two-element array of s64.
->
-> Link: https://github.com/KSPP/linux/issues/331
-> Link: https://lore.kernel.org/lkml/20230809181329.46c00a5d@jic23-huawei/ =
-[1]
-> Fixes: 3db3562bc66e ("iio: Add driver for Murata IRS-D200")
-> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-> Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Not necessarily the gpadc, but it breaks my current-sense-shunt which requires an adc channel for it to work, since the iio-rescale driver wont recognise the channel (as it only is IIO_CHAN_INFO_RAW, so the && breaks)
 
-Reviewed-by: Waqar Hameed <waqar.hameed@axis.com>
-Tested-by: Waqar Hameed <waqar.hameed@axis.com>
+> Isn't the complete picture involving some device tree using the prescaler
+> etc?
+
+I'm not sure I understand that, could you explain it, maybe with some example as well?
+
+Mithil

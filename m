@@ -2,61 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08EE7785D2A
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Aug 2023 18:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CF32785D39
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Aug 2023 18:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233251AbjHWQ0Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Aug 2023 12:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37784 "EHLO
+        id S231260AbjHWQ1v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Aug 2023 12:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbjHWQ0Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Aug 2023 12:26:16 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F9BE68;
-        Wed, 23 Aug 2023 09:26:14 -0700 (PDT)
+        with ESMTP id S230288AbjHWQ1u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Aug 2023 12:27:50 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D99F1706;
+        Wed, 23 Aug 2023 09:27:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692807974; x=1724343974;
+  t=1692808052; x=1724344052;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Uh40LslCjNWpAlM1qtjuXk8TRQEreFpGEUbxgUCgHFM=;
-  b=aZEOiUylEelIEgIx6urGXdQ9Z5tax7rvEWI/G3/MNqLeZocQz0I24DZl
-   NKh5uJ1fn3Fbymd77V2iBmEs0RWNUD44cUayZtgYwke+VHrBNAWMmziXn
-   dMRcXYhEqBebF2DBHVbdrs4Lu2hmaB7YEZo8pUxiNFF9+GgQMq0wVv03U
-   Jawg1wylVfwwH+DBnQ1nck5B7CrrbXvgeoCUSaI1z5lc4+kvqx6eoHzLu
-   dsQWzOSjEnLPfM9Lvmdd887MSNowv+GmyzIhcJaCb5pmhEcx4KSsxLipl
-   W1YkOWwbzXLakoOXAdlu2DiBiqcUKyELfnbdpPidEUYw+DtIwbPMVAZhl
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="376933148"
+  bh=c/AoVJfF4PYu5efh5pY08Ha8ys/5etCoS/t6ukRs3Pg=;
+  b=mJ+fNMg33FTXDn9fF8HR2CFlAZjdrAtClmBnxzEovJf0kcMolMIMxjMc
+   Mhtjt7d0Wg4zC+M5lROlbGWdBemkdWHV9+tu6PivsyJz6zXzfPt93TMeH
+   TZ7+oxCNn9j761ctEa4Zy9JgAvKxjQUlIaQMEaaF2vyge9QbNeUMxANWl
+   wHLO3bEo0B+KGANtfAnw86UphLcNh+WUXgCkhrTzzLz7wm9YGg3n6xWfF
+   22Hl59R7mHc/eSI6VWugsxAh8WtTYS+cd9Ka+NGf4nR1w3VB7j79DCSlr
+   ZbLYkMqZAgZtPOW1pj/P1eGOjkirTwyY/SSaZM1jbU1Lyhsfthi7VgUsw
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="405209560"
 X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="376933148"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2023 09:26:14 -0700
+   d="scan'208";a="405209560"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2023 09:27:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="826791632"
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="851100500"
 X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="826791632"
+   d="scan'208";a="851100500"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 23 Aug 2023 09:26:12 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 23 Aug 2023 09:27:06 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qYqgM-00FI6w-2p;
-        Wed, 23 Aug 2023 19:26:10 +0300
-Date:   Wed, 23 Aug 2023 19:26:10 +0300
+        id 1qYqhE-00FJdC-1o;
+        Wed, 23 Aug 2023 19:27:04 +0300
+Date:   Wed, 23 Aug 2023 19:27:04 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Angel Iglesias <ang.iglesiasg@gmail.com>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Allow multiple chips id
- per family of devices
-Message-ID: <ZOYzIvrvZGjQldDe@smile.fi.intel.com>
+Subject: Re: [PATCH v2 3/3] iio: pressure: bmp280: Add support for BMP390
+Message-ID: <ZOYzWD3YIHCq5lq2@smile.fi.intel.com>
 References: <cover.1692805377.git.ang.iglesiasg@gmail.com>
- <7bdfbfeb106acc5560e6cb090131f105b2d2e418.1692805377.git.ang.iglesiasg@gmail.com>
+ <52adecef119e65e145669925e4a355a84e7f84d9.1692805377.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7bdfbfeb106acc5560e6cb090131f105b2d2e418.1692805377.git.ang.iglesiasg@gmail.com>
+In-Reply-To: <52adecef119e65e145669925e4a355a84e7f84d9.1692805377.git.ang.iglesiasg@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -68,74 +67,12 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 05:58:06PM +0200, Angel Iglesias wrote:
-> Improve device detection in certain chip families known to have various
-> chip ids.
+On Wed, Aug 23, 2023 at 05:58:07PM +0200, Angel Iglesias wrote:
+> Adds BMP390 device id to the supported ids on bmp380 sensor family
 
+Add
+ID
 IDs
-
-...
-
->  #include <linux/completion.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/random.h>
-> +#include <linux/overflow.h>
-
-Please, preserve ordering.
-
-...
-
->  	struct bmp280_data *data;
->  	struct gpio_desc *gpiod;
->  	unsigned int chip_id;
-> -	int ret;
-> +	int ret, i;
-
-	unsigned int i;
-
-...
-
-> +	if (i == data->chip_info->num_chip_id) {
-> +		size_t nbuf;
-> +		char *buf;
-> +
-> +		// 0x<id>, so four chars per number plus one space + ENDL
-
-> +		if (check_mul_overflow(5, data->chip_info->num_chip_id, &nbuf))
-> +			return ret;
-> +
-> +		buf = kmalloc_array(nbuf, sizeof(char), GFP_KERNEL);
-
-We almost never do a array allocation for byte sizes. Instead of the above you
-need to use
-
-		buf = kmalloc_array(data->chip_info->num_chip_id, 5, GFP_KERNEL);
-
-> +		if (!buf)
-
-This check assumes that num_chip_id is never 0, so...
-
-> +			return ret;
-> +
-> +		for (i = 0; i < data->chip_info->num_chip_id; i++)
-> +			snprintf(&buf[i*5], nbuf, "0x%x ", data->chip_info->chip_id[i]);
-
-> +		buf[nbuf-1] = '\0';
-
-...this is redundant assignment. sprintf() guarantees the NUL termination.
-
-> +
-> +		dev_err(dev, "bad chip id: expected [ %s ] got 0x%x\n", buf, chip_id);
-
-"...expected one of..."
-
-> +		kfree(buf);
-> +		return ret;
-
-Oh, I didn't get that you allocated memory only to print a message...
-
-
->  	}
 
 -- 
 With Best Regards,

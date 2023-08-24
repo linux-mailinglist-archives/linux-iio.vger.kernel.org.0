@@ -2,84 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6F3786A04
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 10:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2DD9786CCB
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 12:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbjHXI23 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Aug 2023 04:28:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47694 "EHLO
+        id S240850AbjHXK3B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Aug 2023 06:29:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238037AbjHXI2R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 04:28:17 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EBC61724
-        for <linux-iio@vger.kernel.org>; Thu, 24 Aug 2023 01:28:13 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d74a012e613so914986276.1
-        for <linux-iio@vger.kernel.org>; Thu, 24 Aug 2023 01:28:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692865692; x=1693470492;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fbZXlWH/Q8bA4cToPPyHa9lAxPs+6lFe41wEh4sK6+0=;
-        b=iKKLOa0OUqZ1LzpDD+ScrT4Th9qCkgBZFRNJS0/RII9YsFohgA0t0kRvQYzymnLb6q
-         2uF85DyKkq1nolQ2ETjmW0f8HHfn3yUzTB5Dp5UHWyYFDaH763af5MjF0bVKzLS/469Q
-         3DRwrgOFeHZh+4PN7Nt1Nx3veKlqDxWbWPuSZ0t749Tqcke28N681eiHBat1vDsPo2IR
-         5P+h5fPfKicAo+217IRJMQGeLr6yWm9wCJKFZeLp2Ppbqx3lIONbgBS/B183WJEgSzw2
-         b1Gu7A50vZE6GfRzHob/Trs8847N0cRMv39prMWca7R1SdbAKa3/styl5zVE3bJfgNb1
-         bOtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692865692; x=1693470492;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fbZXlWH/Q8bA4cToPPyHa9lAxPs+6lFe41wEh4sK6+0=;
-        b=lpO7MIMhNRw58alqcoGT96qkJm9ri71Eze3kyPC8TuK1srgpm8Q76TNIDx5bYZCR4r
-         7okCpeHGC5IXjWQeIl/kqO8q2YYwgB6+pEQ9Y2OwUJ3jlzfoOQKa9PWMOlGwNxqBTEOe
-         JSP8M6cfNLDf2/6KddCoZpjKedX+xeY3osP0WSlRwHOG6tpdjBMnPL83PUcxtctkmVoV
-         hNKItU4Fe3WZjUeU5mLNakXVB3lq7lg6riYIOYFWx4jLek3xvJNQMSJMu/MYeZfAhEG/
-         PzxPlwPA9k21gtUUc92QEz3Q/YGlKRgcH0N5ajQyXZzfnQAWsaQ6QAu+Co6A6skASJfI
-         hu6A==
-X-Gm-Message-State: AOJu0Yw/bQpuemVjMPsx53ryMLVk9rdVP6jhmxMuAbayXq4GF5j+m/S/
-        4bL2R7ifENnynbWyFluYRB9l0KWZgMSbGvLD5Ii95Q==
-X-Google-Smtp-Source: AGHT+IFnYBgOH3uh/7jigYtlvGxAMhdpG1BC4qh447vUsVFSIeY66UJQGPLeMpB8FS952XQurSxGo7Zbf6ByXBF8WwU=
-X-Received: by 2002:a05:6902:566:b0:d0f:dc7d:ff19 with SMTP id
- a6-20020a056902056600b00d0fdc7dff19mr14603489ybt.9.1692865692347; Thu, 24 Aug
- 2023 01:28:12 -0700 (PDT)
+        with ESMTP id S239591AbjHXK23 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 06:28:29 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B5C851991;
+        Thu, 24 Aug 2023 03:28:26 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 612BD1042;
+        Thu, 24 Aug 2023 03:29:06 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BFDD63F740;
+        Thu, 24 Aug 2023 03:28:19 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 11:28:16 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Mike Leach <mike.leach@linaro.org>,
+        James Clark <james.clark@arm.com>,
+        Leo Yan <leo.yan@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Corey Minyard <minyard@acm.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        M ark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-iio@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        alsa-devel@alsa-project.org, linux-scsi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Drop remaining unneeded quotes
+Message-ID: <20230824102816.q3qoub6vzen5uomj@bogus>
+References: <20230823183749.2609013-1-robh@kernel.org>
 MIME-Version: 1.0
-References: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
- <20230824073933.80-1-bavishimithil@gmail.com> <CACRpkdYOpz7gDQsM+tgxj7sjKzv8FtehEsjezD8_bpDk-F_b=A@mail.gmail.com>
-In-Reply-To: <CACRpkdYOpz7gDQsM+tgxj7sjKzv8FtehEsjezD8_bpDk-F_b=A@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 24 Aug 2023 10:28:01 +0200
-Message-ID: <CACRpkdYtXAWDcAMRJxh5YbNKmrYurH=z0pR47bftc+u1Yt4Nig@mail.gmail.com>
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-To:     Mighty <bavishimithil@gmail.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
-        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230823183749.2609013-1-robh@kernel.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 10:24=E2=80=AFAM Linus Walleij <linus.walleij@linar=
-o.org> wrote:
+On Wed, Aug 23, 2023 at 01:28:47PM -0500, Rob Herring wrote:
+> Cleanup bindings dropping the last remaining unneeded quotes. With this,
+> the check for this can be enabled in yamllint.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/arm/arm,vexpress-juno.yaml   |  2 +-
 
-> This should definitely be reflected in the scale attribute for the
-> raw channel instead,
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 
-Actually both IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_OFFSET
-as it looks.
-
-I usually use tools/iio/iio_generic_buffer.c to test the result after
-applied scale and offset as it takes those into account.
-
-Yours,
-Linus Walleij
+-- 
+Regards,
+Sudeep

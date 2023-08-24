@@ -2,111 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C4B5787762
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 20:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0852E78783E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 20:51:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242940AbjHXSBg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Aug 2023 14:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
+        id S242085AbjHXSvF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Aug 2023 14:51:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242937AbjHXSBI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 14:01:08 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDC51BDA
-        for <linux-iio@vger.kernel.org>; Thu, 24 Aug 2023 11:01:05 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2bcbfb3705dso928041fa.1
-        for <linux-iio@vger.kernel.org>; Thu, 24 Aug 2023 11:01:05 -0700 (PDT)
+        with ESMTP id S243168AbjHXSvA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 14:51:00 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9303D1BCE;
+        Thu, 24 Aug 2023 11:50:58 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3a7e68f4214so122655b6e.1;
+        Thu, 24 Aug 2023 11:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692900063; x=1693504863;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cPxzv9t3p39NU/gbtPOY6IoN2rD1VfceHzg8RtFq2Bg=;
-        b=f5esVyKQZ71yizujJYUIxZT8FsGtQ242ReO/a7NQ5Qmp8n9byp8JLP1U4lU8TNL1nA
-         QrOzJWM4Rt4NwMvbi7DMi9zyB72syss94Xt0ADsdKSoQf1CU/Z0a5qFXD412/69y8Oox
-         1Rn9l2gjjBkGIfcGM0+krsGoE2rbcQxxITrgCtEURkXqVi9fI0OIusURAJxuSfgG48v7
-         wuLto5fodq20ekA+QrG7PoAcnlhUk6COyKzL6vMXwg637jy1oSczgdncZnebqmePC1d4
-         STU3zhX+I2bXhvbAHYIgGjp+NNUHzemsK3OUTd3/1LeCI+Q1r1iii7eaSSRuMnFfje6T
-         c87Q==
+        d=gmail.com; s=20221208; t=1692903058; x=1693507858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aqVyJ9RUVtyyFKnwGC2cT2NgtLaSYlYeieCEq7zLn7A=;
+        b=jM2PVtsKTwXStWBeVP6L5ykfpTvweRpjc4p4hUENOU2hL4/fi6HiXK0WPdeHx9nasP
+         IjNijML+zxv3996HI4Do+YQ7xsu80s6ojONy/72S3AQEAjpitUNe4dRtGXcdmN5dG9h8
+         1+e1uvLLM7TUnO/jFTaW71Y0r2QKzFW4iEXfQadzjM2yPR0sp9nYsiOvlTssFTR0oNn0
+         SD3D+OOsfC4V9Qs0sIcG+JH4rKfPS0lxADSJrx3rvJk5PKwqNM+RyF4g540Ja4bN5YqY
+         5b6MYRRkFEQn2PFwz/5vuO4Uv4YovXzsDv6S3iPoFHevO2nVEFIEDwZ+gcTFc3rzKUn5
+         gk2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692900063; x=1693504863;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cPxzv9t3p39NU/gbtPOY6IoN2rD1VfceHzg8RtFq2Bg=;
-        b=DKUCibW9XpVmGoW3+HET8V7tXkxM/Zf7Xs0qKSgrXJUA53VCiF4WS+aN/PzUq745zW
-         IWBTRgTLke45iOfbcX+TWjHgcZCdNGVlENumNGboWelnYnMQHedEbt05iQ4/cWdzlLM4
-         2B2bYjaFIPjnjNAT+xFG0AxyHKLxVSPdgi7Vs3n+zEYjkX6MvnqIRwYIxP4kGPfhXa/P
-         /Jw0imAd3s9gkkR/lnsPFMa0STYVfuV5mjp2WMMxjM8j/I2ydoPiYDUTQtqGHAZQufee
-         MKySLg43sOnV40YHCPgNcR5OmW0qbnNp9LoW4VGtGD6YvqzTEOVZiYGPJGTXij3TwAGv
-         ZwcA==
-X-Gm-Message-State: AOJu0Yw/gNpF0W9IE4pl4qVnvylWZmWxujfIH4ajr44LwmxMbbM4lsoS
-        T9UZKNZFLmLk6yAJpYe2rEMhig==
-X-Google-Smtp-Source: AGHT+IF3oQjhQ/CrsCHxbcStZaLH02wx5R+6zcPSfNyc15LlOGfevXm2PkaqTPDf0az24ueTeNtBMg==
-X-Received: by 2002:a05:6512:3444:b0:500:78ee:4cd7 with SMTP id j4-20020a056512344400b0050078ee4cd7mr9528093lfr.23.1692900063647;
-        Thu, 24 Aug 2023 11:01:03 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id c6-20020a056402120600b005232c051605sm17323edw.19.2023.08.24.11.01.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 11:01:03 -0700 (PDT)
-Message-ID: <f935f35f-e00b-4ebe-2071-de9d8f2f6512@linaro.org>
-Date:   Thu, 24 Aug 2023 20:01:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 2/3] iio: adc: ltc2309: switch to new .probe()
-Content-Language: en-US
-To:     Liam Beguin <liambeguin@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        d=1e100.net; s=20221208; t=1692903058; x=1693507858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aqVyJ9RUVtyyFKnwGC2cT2NgtLaSYlYeieCEq7zLn7A=;
+        b=ltFWeCa/Q3lUTOua4vcyRjgfVD8u+zNH2X+nJR0A3rn5kpkp4My3b01ICk5/b7GIVB
+         MGnQJypJYumiTAGfQKHYMYsU6yVUVCHgZsMbq+kRZGoRMoU5pnq26z/DfTFgNFW1Rvu/
+         9kDECemxzYdHwmpX8i3VW7ABU+stehE3yBGSEAp/BiCBwxMInodrI5+rIIX3/sN2Mrtb
+         g5GTsirgwj9KkCvTP1r+vR4YFQetdemVHCh/D4Gj0b5d+Tqjp2pGDW/n6MFE6iZi1YFW
+         DJgA5eTd0xy/7Eeblws4KdxZGZSb9uuElqEcsR+DDel71p9m4XITc6nnRQfHu0YzXPSa
+         zhXw==
+X-Gm-Message-State: AOJu0YwUFWle6AAQGBI9TWhL98qFABCiogQoHPpxMY3mA8XB/6QsGq41
+        XEz3SNPOnS2G3P7eFDaiyMGW8VeeFIdVbns/
+X-Google-Smtp-Source: AGHT+IFccbnP2QFsXt4xG63svj36Lg9j5RsmEKqyuRIdBVB6l8Uws8JJF0le51SOlq/ZRpUmOwnCbg==
+X-Received: by 2002:a05:6358:429d:b0:134:c984:ab74 with SMTP id s29-20020a056358429d00b00134c984ab74mr14817501rwc.9.1692903057794;
+        Thu, 24 Aug 2023 11:50:57 -0700 (PDT)
+Received: from shaak (modemcable063.135-226-192.mc.videotron.ca. [192.226.135.63])
+        by smtp.gmail.com with ESMTPSA id a10-20020ac8434a000000b004109d386323sm22148qtn.66.2023.08.24.11.50.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Aug 2023 11:50:57 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 14:50:54 -0400
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org
+Subject: Re: [PATCH 3/3] dt-bindings: iio: adc: add lltc,ltc2309 bindings
+Message-ID: <20230824185054.GA3659959@shaak>
 References: <20230824-ltc2309-v1-0-b87b4eb8030c@gmail.com>
- <20230824-ltc2309-v1-2-b87b4eb8030c@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230824-ltc2309-v1-2-b87b4eb8030c@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ <20230824-ltc2309-v1-3-b87b4eb8030c@gmail.com>
+ <e54273c7-4728-7577-f053-b15307d3a083@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e54273c7-4728-7577-f053-b15307d3a083@linaro.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/08/2023 18:55, Liam Beguin wrote:
-> Recent changes to the I2C subsystem removed the id parameter of the
-> probe function. Update driver to use the new prototype, and keep this as
-> an independent commit to facilitate backporting.
+On Thu, Aug 24, 2023 at 07:56:29PM +0200, Krzysztof Kozlowski wrote:
+> On 24/08/2023 18:55, Liam Beguin wrote:
+> > Add devicetree bindings for the Linear Technology LTC2309 ADC driver.
+> > 
+> > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
 > 
-> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-> ---
->  drivers/iio/adc/ltc2309.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> Thank you for your patch. There is something to discuss/improve.
 > 
-> diff --git a/drivers/iio/adc/ltc2309.c b/drivers/iio/adc/ltc2309.c
-> index ee1fd9b82e2a..d26bbd70b0ff 100644
-> --- a/drivers/iio/adc/ltc2309.c
-> +++ b/drivers/iio/adc/ltc2309.c
-> @@ -158,8 +158,7 @@ static const struct iio_info ltc2309_info = {
->  	.read_raw = ltc2309_read_raw,
->  };
->  
-> -static int ltc2309_probe(struct i2c_client *client,
-> -			 const struct i2c_device_id *id)
-> +static int ltc2309_probe(struct i2c_client *client)
+> > +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml
+> > @@ -0,0 +1,52 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> 
+> Wrong license. Run checkpatch before sending patches.
+> 
 
-This patch does not make sense. Do not send patch (1/3) which does not
-compile and is buggy, just to immediately fix it. We do not add known
-wrong code.
+Sorry about that, I ran it through checkpatch but it didn't flag
+anything.
 
-Best regards,
-Krzysztof
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/lltc,ltc2309.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Linear Technology / Analog Devices LTC2309 ADC
+> > +
+> > +maintainers:
+> > +  - Liam Beguin <liambeguin@gmail.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - lltc,ltc2309
+> > +
+> > +  refcomp-supply:
+> > +    description: Power supply for the reference voltage
+> 
+> refcomp is not a supply. It is called "Reference Buffer Output.". You
 
+That makes sense, I was going for the PIN name from the datasheet.
+
+> probably wanted vref-supply, which suggests you should just add it to
+> ltc2497 bindings. I don't see any differences.
+> 
+
+I hadn't thought of reusing an existing bindings file for a different
+driver. I'll update ltc2497.yaml instead since it avoids duplicating the
+whole file.
+
+> > +
+> > +  reg:
+> > +    enum:
+> > +      - 0x08
+> > +      - 0x09
+> > +      - 0x0a
+> > +      - 0x0b
+> > +      - 0x18
+> > +      - 0x19
+> > +      - 0x1a
+> > +      - 0x1b
+> > +      - 0x28
+> > +
+> > +  "#io-channel-cells":
+> > +    const: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        adc@28 {
+> > +            #io-channel-cells = <1>;
+> > +            compatible = "lltc,ltc2309";
+> > +            reg = <0x28>;
+> 
+> If the example stays, then order is compatible first, then reg, then the
+> rest. Also add the supply to make example complete.
+
+Thanks for pointing out the proper order.
+
+> But I think this should be squashed with other binding so no need for
+> the example.
+> 
+> Best regards,
+> Krzysztof
+> 
+
+Thanks for your time!
+Liam

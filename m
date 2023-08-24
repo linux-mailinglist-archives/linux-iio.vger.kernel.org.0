@@ -2,94 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289127868BF
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 09:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3044A7868C8
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 09:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjHXHl0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Aug 2023 03:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
+        id S234027AbjHXHnD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 24 Aug 2023 03:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240415AbjHXHlM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 03:41:12 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4FC19BA;
-        Thu, 24 Aug 2023 00:40:45 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1c50438636fso4112023fac.1;
-        Thu, 24 Aug 2023 00:40:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692862784; x=1693467584;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9n/0lQ9X/JrpEk2281pTL+VBdCVP7hveKwT7KHv5l4g=;
-        b=L51BCBkP4bsz7FEAw8rwbVt8CK54nOtF7ZrYhafNdJaBNCCDS8xf/zYLd+o5XxYBib
-         YEhyC/EwtGE2l8IbdT5uPQ0KrpwxPMm1gYqfUbqK9SnZtsJwx49IXmIxeHIay2U1HmYC
-         kae6tTq++7FlH+mHXhpZoaTkIuYIQonlRlCAXSBmjn19K6EKAKPKM+dzTRzKpVnEq/NS
-         70XNPsibaTw7XATwJ/xk3FLb+rDKrbj89tuEvJV6yclqsTvmKnGB4KCjoMsvqTFuWENW
-         p6734jhKV9whb5qfh1JxLD9B2HZ1djDZnxqqQQ75QOZW6rWw4m7phcRTGlP+Q+5V5a93
-         n+yQ==
+        with ESMTP id S240429AbjHXHml (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 03:42:41 -0400
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C7A170A;
+        Thu, 24 Aug 2023 00:42:26 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-bcb6dbc477eso5955730276.1;
+        Thu, 24 Aug 2023 00:42:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692862784; x=1693467584;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1692862929; x=1693467729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9n/0lQ9X/JrpEk2281pTL+VBdCVP7hveKwT7KHv5l4g=;
-        b=FbjTr5CjybOvO7WJQN8XBOrN2H9ZDkArGBWwl2D3TWfkqseNmAPH+3BWFFquHsGUdS
-         MJm7Nz7LJL7giLHyJMHdXg6TGI1A8dT7NsGxK0hHBfPJnoVU2irbJZY32OqFegtuYrS3
-         Ri2X9+wAPb/aXjOYKiYspWzjVaB4GugOZcpF24g8Ppk5lhuSJiKiBsPYiUdy2q/FBc/J
-         vYzFEpeAo1ek6CfjuMuWdwaEhPuX/Mv0j2YtuUPJ7ePkKiY9qilBC1vZYuEHQxaM+rEV
-         5Mu1Bi3Q07SEjyNnOXgWR2dgB5kfU0e5taJlJQF+ESN+Az1i7OOoF+YOlIKVQXCC178y
-         1xjA==
-X-Gm-Message-State: AOJu0YyzFPtoPX1ULHQ4lrd3S6iCTdsgbyWa0Swu/0/TBfnl1edccuUP
-        1YKXAyps0QeswTNeyEs3qYY=
-X-Google-Smtp-Source: AGHT+IGM6e9v42ABX1o0PuElzRCn6NpeKSgre4o6v4s9TY4LpzAmv6PoFEkP+cOWBTRMfNq0f+PRGQ==
-X-Received: by 2002:a05:6870:ec8a:b0:1ba:9a49:d967 with SMTP id eo10-20020a056870ec8a00b001ba9a49d967mr17920209oab.23.1692862783844;
-        Thu, 24 Aug 2023 00:39:43 -0700 (PDT)
-Received: from localhost.localdomain ([103.14.183.69])
-        by smtp.gmail.com with ESMTPSA id a18-20020aa78652000000b00666e649ca46sm6967322pfo.101.2023.08.24.00.39.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Aug 2023 00:39:43 -0700 (PDT)
-From:   Mighty <bavishimithil@gmail.com>
-To:     linus.walleij@linaro.org
-Cc:     bavishimithil@gmail.com, jic23@kernel.org, lars@metafoo.de,
-        liambeguin@gmail.com, linux-iio@vger.kernel.org, peda@axentia.se,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Date:   Thu, 24 Aug 2023 13:09:33 +0530
-Message-Id: <20230824073933.80-1-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
-References: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
+        bh=dhv4Bg1fdD4fcuHP4DlJnIZ9JdHOfbSov1NYQWp3Ek8=;
+        b=AUkWWfX/zFe56Yxj+BNMG9GYZd670gyfSKx962grd7skql98XJFT6sYafeF+K5Z5UT
+         uOSKmvz4SSZIBuz5mqlJIuCg1m7IThElJhOyVuw3ickhoASJp57LSq/vhONcjoAzu5DS
+         fJuAxaKSWp9TpgL6jR3raPzeb5LyRJKMzifsIEdYLoKXmiPpU6Qfxu/lmAHFtsYOm+cL
+         DA26NRyOTLp4V8sfKm1CH9KnnpgoD1ArDN88uQ2GUXJ/q7zmPf9FaW3o0Ws2OXLChTub
+         FKdW2N+Kp3V2QocRbp7vgkdQBkENXTXCCyC8bqGPrQelFUg6dYk1WS8VekSuws3VXTt9
+         ipig==
+X-Gm-Message-State: AOJu0Yx9vL8zg2n+aLaEmW1xcn/9o7fif0DG/MxgpsxjIpyozYQSjt2+
+        1CGVEXxp2jYf0iYPVcQKqxHj8MGbeILy8w==
+X-Google-Smtp-Source: AGHT+IFHvPS0ch0Ft+QoIRmYP0ssAD5Obu+K54gJyP4DyMVpin6CXenCeFQLr0zMO2e8H5nv/tKibg==
+X-Received: by 2002:a81:dd02:0:b0:58f:afe5:4c16 with SMTP id e2-20020a81dd02000000b0058fafe54c16mr15233630ywn.30.1692862928821;
+        Thu, 24 Aug 2023 00:42:08 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id i127-20020a819185000000b0058c4e33b2d6sm3798266ywg.90.2023.08.24.00.42.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Aug 2023 00:42:08 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d77f614243aso478610276.0;
+        Thu, 24 Aug 2023 00:42:08 -0700 (PDT)
+X-Received: by 2002:a25:ae92:0:b0:d3b:e659:5331 with SMTP id
+ b18-20020a25ae92000000b00d3be6595331mr14472125ybj.58.1692862928507; Thu, 24
+ Aug 2023 00:42:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230823183749.2609013-1-robh@kernel.org>
+In-Reply-To: <20230823183749.2609013-1-robh@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 24 Aug 2023 09:41:56 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWSrpjUK4Fa9cBiRqsnhh2GxyXK5fCt8B-RmaDgEy6OeA@mail.gmail.com>
+Message-ID: <CAMuHMdWSrpjUK4Fa9cBiRqsnhh2GxyXK5fCt8B-RmaDgEy6OeA@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Drop remaining unneeded quotes
+To:     Rob Herring <robh@kernel.org>
+Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Mike Leach <mike.leach@linaro.org>,
+        James Clark <james.clark@arm.com>,
+        Leo Yan <leo.yan@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Corey Minyard <minyard@acm.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        M ark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-iio@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        alsa-devel@alsa-project.org, linux-scsi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 1:51 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Wed, Aug 23, 2023 at 8:38 PM Rob Herring <robh@kernel.org> wrote:
+> Cleanup bindings dropping the last remaining unneeded quotes. With this,
+> the check for this can be enabled in yamllint.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-> OK so twl6030 is providing some channels with IIO_CHAN_INFO_RAW
-> without IIO_CHAN_INFO_SCALE.
+>  .../bindings/soc/renesas/renesas,rzg2l-sysc.yaml     |  4 ++--
 
-Exactly, checking the driver there doesnt seem to be any scaler used. The two functions to read raw[1] and processed[2] are quite simple, with processed using the raw function as well. Since there is no mention of SCALE, could I just patch that in with the RAW, it wouldnt change anything in the driver (the driver has cases for RAW and PROCESSED only) and would fix the issue at hand as well.
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-> Say the raw value is 100, then 100 what? Microvolts?
+Gr{oetje,eeting}s,
 
-I'd assume Volts, I couldnt find a datasheet for TWL6032 hence the assumption based on code https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L504.
+                        Geert
 
-> patch the twl6030 driver to convert all IIO_CHAN_INFO_RAW to IIO_CHAN_INFO_PROCESSED.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-That would break the case here https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L541 hence I think we just comply to adding scale as well, even though it would be 1:1?
-There is this https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L447 but I'm not very sure about how it changes the scale.
-
-[1] https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L462
-[2] https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L487
-
-Mithil
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

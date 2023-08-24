@@ -2,58 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E737D786FA8
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 14:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 299D6786FAC
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 14:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236607AbjHXMvp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Aug 2023 08:51:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
+        id S235624AbjHXMxw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Aug 2023 08:53:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241361AbjHXMv3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 08:51:29 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6742ECD0;
-        Thu, 24 Aug 2023 05:51:22 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4ff9abf18f9so10344047e87.2;
-        Thu, 24 Aug 2023 05:51:22 -0700 (PDT)
+        with ESMTP id S241070AbjHXMxX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 08:53:23 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F632102;
+        Thu, 24 Aug 2023 05:53:00 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b703a0453fso110607101fa.3;
+        Thu, 24 Aug 2023 05:53:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692881480; x=1693486280;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HxaN86uxdQ2hIjLtCcmkw3T1a4Gg2HerW4j/yXNxBOs=;
-        b=QPqpJCibFwuicCtOjT0g5X1VoXn30IZEZVZ/2B9hq6U9JYnNHPSkG7r+p/uCtvfEW9
-         iyrv6Z4cCb9pDoWZS/aA5S4wsfQTFcrdsJhjkp/5zM/vkTA05lVNvTLWvqj/auwEVXq+
-         WgBRP92gXoyTdZVw/4TXgEVcgzgmsxXkZsg0zDgJxm9Xo2fnnS7o/27ac6rMPhaZ/TV9
-         VHzIarpWwzrhwUZWrZlgjel4tT/tPj3I7oRNdQosRKatQe8+wkNPUUKVxxffuUP9NrNF
-         CF8i692LVuN9W/L9KtXsyA7r2/3rZ86E8Ckh/6LSgIWAcY01wqoh6C2cwT//qrQ4OZyU
-         fh2A==
+        d=gmail.com; s=20221208; t=1692881578; x=1693486378;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0ZbCgUGLVJxh28Fxtwbt5g9eIsJm3RzEc1jzzP0yoCo=;
+        b=Zm1eTXCTpxH13MilotK4gLLyp1TbdHgb3kXzTCRMZ7vm6+7pNxA5vKT8tQNSJ8w3NW
+         3rM8MZZUbCWFGiOUrYDUKeL1ak8UPEI+B+4ybjWK4wGrvPlpBHPGXwrVw3ZcZj/iyQpg
+         kEUcIrb5O/3QPr3UqMKaHoST5ZrljRcUnu5NzmC2BlGibqm2E3bXjySa3KFHaveorf57
+         Q9ky8w0/4RYjiS12m7S+g4bz9lEqg7L4Pw2P+JSlbv02uvcpuU4Jx9I6roRqIo7qzIaT
+         hrc/6wUj9EbZEu0wMu8Q9dySRYC65QGM7tKvMYVdCwGkW7Ms2loBkgIXNzchQrSVTm3A
+         xuYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692881480; x=1693486280;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1692881578; x=1693486378;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HxaN86uxdQ2hIjLtCcmkw3T1a4Gg2HerW4j/yXNxBOs=;
-        b=N7m+YwaIgesn3KGccMSaox53YMPsF7YFmEoscfXLhDqAdLuknzgFo97GgVS5EcTUEY
-         /bWZ360X9nqYeR+tEbdWGCz03tL1mV9FL4rYeGtnf769NKdGnn48zdIY9oW0jBbXZTMB
-         2XUx4MuAOUd4qrPy4CSrLjtxa1+2FlBQdw7XNe7n4KDnnmITSYV+aVAOxl3gBhFNaTwJ
-         Ls1rg8tXSs1GK3qQq+8amkgDtbw+/Ev35ZUnEKU60ESEI3MYkYKoUaFhlczfjoQYga13
-         6eQR623a1f35gS2nS7HgsxyS/Y9Ey5EQHYfjNg4AHj4MMjIObReXfY/rLzs7+BIIJWGX
-         9Hlg==
-X-Gm-Message-State: AOJu0YzA5L6/nSGG/d1CnA+28SFw4+6kg1kCleqX9gBfykxbosLUsEWF
-        f6kH3dHrrkO81vXc+IQkEfw=
-X-Google-Smtp-Source: AGHT+IGVo9is3ndYCWhXdlmusr+UH2e1O0U6g9Q19q1m8p5cozyfz2lOlrnGuqg/9TazaKOaBX4lEQ==
-X-Received: by 2002:a05:6512:12c4:b0:4fb:9712:a717 with SMTP id p4-20020a05651212c400b004fb9712a717mr12351733lfg.13.1692881479841;
-        Thu, 24 Aug 2023 05:51:19 -0700 (PDT)
+        bh=0ZbCgUGLVJxh28Fxtwbt5g9eIsJm3RzEc1jzzP0yoCo=;
+        b=kAA0Qzv6uK5gK0ZuK9u3SO+ABpyiXqwXPyjUEU4StrOkKLFvHoEeRPM6lB31GJYnfw
+         1sAV3AnisHr51jo7z5VNeonjGAdm72kH9g7i5DHaspfFk1fyZKDcHJ4ohJ8kYX6rOuQV
+         3h1iwlOC0MOYE33hzswqXJYJlcqy6KiAVg2MCi69BkVk60g1FPrDw2sPnLiBzyQu+udg
+         FRLaqkoNkeH5TOdYaJGvPmH5vG2N5Hl1MKAiRBuXntOffdukEKEEOhSNa0HivnUR/tWC
+         fnbp2WYqirG5Y8JTScHIHemWHYp1BNvNVLHYiE7+Fi2yoQeHD2xddtP9chqvS7FwKf/E
+         e3gA==
+X-Gm-Message-State: AOJu0YwdzLhyHKfHJemlUo4DZ5Rq8WKyTzwmKU50quT+8o2insBiN9pi
+        0oUs8n6MFoOlfXChXezyoSM=
+X-Google-Smtp-Source: AGHT+IHUj25zsFGZ+80EmSJ3pzZ9+7FoEVs88pwzrJzoTaPK1DtahFJU8ZEEyM7xNK3RdPsHBIwQuQ==
+X-Received: by 2002:a05:6512:689:b0:4fe:85c:aeba with SMTP id t9-20020a056512068900b004fe085caebamr14218210lfe.21.1692881578458;
+        Thu, 24 Aug 2023 05:52:58 -0700 (PDT)
 Received: from [172.16.196.206] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id m25-20020ac24259000000b004fe4811d382sm3130885lfl.85.2023.08.24.05.51.18
+        by smtp.gmail.com with ESMTPSA id q4-20020a19a404000000b0050078c9b53asm2270206lfc.231.2023.08.24.05.52.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 05:51:18 -0700 (PDT)
-Message-ID: <a3c2e506-3840-0136-a28f-a50eb0fdf72d@gmail.com>
-Date:   Thu, 24 Aug 2023 15:51:18 +0300
+        Thu, 24 Aug 2023 05:52:57 -0700 (PDT)
+Message-ID: <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
+Date:   Thu, 24 Aug 2023 15:52:56 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
+Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
+ retrieve number of bytes in buffer
 Content-Language: en-US, en-GB
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mehdi Djait <mehdi.djait.k@gmail.com>
@@ -61,17 +63,15 @@ Cc:     jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         robh+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <cover.1692824815.git.mehdi.djait.k@gmail.com>
- <c41ed69af6432298cbd82896328333f31d41dda0.1692824815.git.mehdi.djait.k@gmail.com>
- <ZOdG1wFo892bJU53@smile.fi.intel.com>
+ <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
+ <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v8 7/7] iio: accel: Add support for Kionix/ROHM KX132-1211
- accelerometer
-In-Reply-To: <ZOdG1wFo892bJU53@smile.fi.intel.com>
+In-Reply-To: <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,54 +79,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/24/23 15:02, Andy Shevchenko wrote:
-> On Wed, Aug 23, 2023 at 11:16:41PM +0200, Mehdi Djait wrote:
->> Kionix KX132-1211 is a tri-axis 16-bit accelerometer that can support
->> ranges from ±2G to ±16G, digital output through I²C/SPI.
->> Add support for basic accelerometer features such as reading acceleration
->> via IIO using raw reads, triggered buffer (data-ready), or the WMI IRQ.
+On 8/24/23 14:58, Andy Shevchenko wrote:
+> On Wed, Aug 23, 2023 at 11:16:40PM +0200, Mehdi Djait wrote:
+>> Since Kionix accelerometers use various numbers of bits to report data, a
+>> device-specific function is required.
+>> Implement the function as a callback in the device-specific chip_info structure
 > 
 > ...
 > 
->>   	help
->> -	  Enable support for the Kionix KX022A digital tri-axis
->> -	  accelerometer connected to I2C interface.
->> +	  Enable support for the Kionix KX022A, KX132-1211 digital tri-axis
->> +	  accelerometers connected to SPI interface.
+>> +	int ret, fifo_bytes;
+>> +
+>> +	ret = regmap_read(data->regmap, KX022A_REG_BUF_STATUS_1, &fifo_bytes);
+>> +	if (ret) {
+>> +		dev_err(data->dev, "Error reading buffer status\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	if (fifo_bytes == KX022A_FIFO_FULL_VALUE)
+>> +		return KX022A_FIFO_MAX_BYTES;
+>> +
+>> +	return fifo_bytes;
 > 
-> I know I have given a tag, but since it most likely require a new version,
-> this can be amended for the better maintenance as
-> 
-> 	  Enable support for the Kionix digital tri-axis accelerometers
-> 	  connected to SPI interface. Supported devices are:
-> 	    KX022A, KX132-1211
-> 
-> ...
-> 
->>   	help
->> -	  Enable support for the Kionix KX022A digital tri-axis
->> -	  accelerometer connected to I2C interface.
->> +	  Enable support for the Kionix KX022A, KX132-1211 digital tri-axis
->> +	  accelerometers connected to I2C interface.
-> 
-> Ditto.
-> 
-> ...
-> 
->> +static const struct regmap_access_table kx132_volatile_regs = {
->> +	.yes_ranges = &kx132_volatile_ranges[0],
-> 
-> 
-> This should be the same as
-> 
-> 	.yes_ranges = kx132_volatile_ranges,
-> 
+> This will be called each time ->get_fifo_bytes() called.
+> Do you expect the fifo_bytes to be changed over times?
+> Shouldn't we simply cache the value?
 
-The driver uses &kx132_volatile_ranges[0] in a few places (for kx022a) 
-so I believe this is okay. Well, I know I am biased as I do personally 
-find &kx132_volatile_ranges[0] clearer. Here we point to the first 
-element in an array - and yes, it may be I am minority here - but at 
-least I wouldn't ask for changing this.
+I think this value tells how many samples there currently is in the 
+FIFO. Caching it does not sound meaningful unless I am missing something.
 
 Yours,
 	-- Matti

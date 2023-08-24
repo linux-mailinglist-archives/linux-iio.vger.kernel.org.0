@@ -2,106 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC42786E83
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 13:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D86786E92
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Aug 2023 13:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236847AbjHXLzx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Aug 2023 07:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57856 "EHLO
+        id S241244AbjHXL6g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Aug 2023 07:58:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241231AbjHXLzp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 07:55:45 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D91F198B;
-        Thu, 24 Aug 2023 04:55:44 -0700 (PDT)
+        with ESMTP id S241298AbjHXL6H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Aug 2023 07:58:07 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82295198B;
+        Thu, 24 Aug 2023 04:58:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692878144; x=1724414144;
+  t=1692878285; x=1724414285;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=EtMJWCpQgqm1YfQxm3Dui0oxAoD0oovwXpijZ/43xVc=;
-  b=LeL29O3tJ8rZvP/qmckq19+xGh0vpYkoBbH63V5fNE7SpuIqTePvAg6u
-   ly3FbKPKnrEkBx2bJAiO1mz85Tn04vn6TaE6KbjbNgmLrCtGZEi4xvN6q
-   hqztDAXjoKZMlxfFsOYpXleW+p0IFpejYua0r+0unxbKhLMtEJ7WVkvCl
-   Ay8U6368dXyyXuoN6dVasCoiHain+tXwdnyjVod+CO2tiWen+HrLpIHeX
-   YzibTKqRF3Wst6GJE4co0H7R+TpN7DuQkmhWiyZ65uh8r5RwgHeFiD0vt
-   Hf/Va5Ij0Enjhh8GILmkYwKqCViYJlXnhws2npWqSLXoRuwJKcvDFVlUx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="359402107"
+  bh=bAYzHLuFAeGqKxkWSClnB0qv/1uootV3ro6JSV7uZfc=;
+  b=IX4Tq+5lsQINYeS6HnLhSvyUhzvexRP9DRBD0hgl9B+9BKoOvnFIFvWi
+   mJuKgEXFtNfyu3BJfk7TJHMbCpiPZOjrY/sJK3BnbMDUXzHtDNJL/UofR
+   5TT0SLrmsWLqAoYvVwQTEhQbN8Rw8rikGHZR9+ss/j3RkIFFRW2BXRPBD
+   hCMGezduV3ZiIWqS00ilmSjjpBxXIEhgzg+ZI+TqQke4Ny6jrYEFpLi2Y
+   pTCLzUtN2TOEPAHzXz1nLa/sHqaXrePSCcBLiMWCcQlmp+Ut8PKR0UYeV
+   DWKa4hoekRBYaXzLPpTsLNbHAi2aJzqxJkHLfuUPipOH/YzIvL7yEdlnF
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="354747632"
 X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="359402107"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 04:55:43 -0700
+   d="scan'208";a="354747632"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 04:58:05 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="827095503"
+X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="807103087"
 X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="827095503"
+   d="scan'208";a="807103087"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 24 Aug 2023 04:55:40 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 24 Aug 2023 04:58:02 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qZ8w7-002A2V-0j;
-        Thu, 24 Aug 2023 14:55:39 +0300
-Date:   Thu, 24 Aug 2023 14:55:38 +0300
+        id 1qZ8yP-002FA2-0H;
+        Thu, 24 Aug 2023 14:58:01 +0300
+Date:   Thu, 24 Aug 2023 14:58:00 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mehdi Djait <mehdi.djait.k@gmail.com>
 Cc:     jic23@kernel.org, mazziesaccount@gmail.com,
         krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
         lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v8 5/7] iio: accel: kionix-kx022a: Refactor driver and
- add chip_info structure
-Message-ID: <ZOdFOobezrVoMYJn@smile.fi.intel.com>
+Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
+ retrieve number of bytes in buffer
+Message-ID: <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
 References: <cover.1692824815.git.mehdi.djait.k@gmail.com>
- <8ff0761f3912491d1d31f2f096e24423ad04140b.1692824815.git.mehdi.djait.k@gmail.com>
+ <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8ff0761f3912491d1d31f2f096e24423ad04140b.1692824815.git.mehdi.djait.k@gmail.com>
+In-Reply-To: <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 11:16:39PM +0200, Mehdi Djait wrote:
-> Add the chip_info structure to the driver's private data to hold all
-> the device specific infos.
-> Refactor the kx022a driver implementation to make it more generic and
-> extensible.
+On Wed, Aug 23, 2023 at 11:16:40PM +0200, Mehdi Djait wrote:
+> Since Kionix accelerometers use various numbers of bits to report data, a
+> device-specific function is required.
+> Implement the function as a callback in the device-specific chip_info structure
 
 ...
 
-> +	chip_info = device_get_match_data(&i2c->dev);
-> +	if (!chip_info) {
-> +		const struct i2c_device_id *id = i2c_client_get_device_id(i2c);
+> +	int ret, fifo_bytes;
 > +
-> +		chip_info = (const struct kx022a_chip_info *)id->driver_data;
-> +		if (!chip_info)
-> +			return -EINVAL;
+> +	ret = regmap_read(data->regmap, KX022A_REG_BUF_STATUS_1, &fifo_bytes);
+> +	if (ret) {
+> +		dev_err(data->dev, "Error reading buffer status\n");
+> +		return ret;
 > +	}
+> +
+> +	if (fifo_bytes == KX022A_FIFO_FULL_VALUE)
+> +		return KX022A_FIFO_MAX_BYTES;
+> +
+> +	return fifo_bytes;
 
-There is a new API for that, please use it.
+This will be called each time ->get_fifo_bytes() called.
+Do you expect the fifo_bytes to be changed over times?
+Shouldn't we simply cache the value?
 
 ...
 
-> +/* kx022a Regmap configs */
+> +	fifo_bytes = data->chip_info->get_fifo_bytes(data);
 
-regmap
+>  
 
-...
+Now this blank line becomes redundant.
 
->  		irq = fwnode_irq_get_byname(fwnode, "INT2");
->  		if (irq <= 0)
+>  	if (fifo_bytes % KX022A_FIFO_SAMPLES_SIZE_BYTES)
+>  		dev_warn(data->dev, "Bad FIFO alignment. Data may be corrupt\n");
 
-= 0 case is fixed now, means should never appear here,
-but it's a material for another, separate change.
-
->  			return dev_err_probe(dev, irq, "No suitable IRQ\n");
 
 -- 
 With Best Regards,

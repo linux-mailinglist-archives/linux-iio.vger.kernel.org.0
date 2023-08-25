@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C4EE7887E0
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 14:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 289A07887F6
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 14:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243021AbjHYMzG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Aug 2023 08:55:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40164 "EHLO
+        id S240028AbjHYM6R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Aug 2023 08:58:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244990AbjHYMyx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 08:54:53 -0400
+        with ESMTP id S245002AbjHYM5x (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 08:57:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4FC01BE2
-        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 05:54:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3A22139
+        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 05:57:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78E3C6448F
-        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 12:54:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8680DC433C8;
-        Fri, 25 Aug 2023 12:54:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16DAE61AF0
+        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 12:57:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FB3C433C8;
+        Fri, 25 Aug 2023 12:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692968089;
-        bh=FWQPg110TvgRc6tCfjwnV3BeJ2g4RKBITPitm6v1+Vs=;
+        s=k20201202; t=1692968242;
+        bh=oK+UJY0bkF8Ywx3I5L1JxmoE98xeSKEIW/uQI5EQvXw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=R/eKp0y/LlrvgJ7LLiNKjoL0vcRSwv/gytA5fqtgx1gDs523gUrtepyQw90Am8tR5
-         c8ICNbA4HsODW5ldVMDUIt3Gm26P51dBk6fbDwcKymHWHIkRBHHvdsGQka9ulMv+Ra
-         NRBAUsXlyXurHz5cnM/DkFHh1zCJtAGp0RrbOWb0Bycb4OlddnlU3uzMhrqvKepI/k
-         qddY1uENgMVdD0ey0T5qkGynB3uYUArbazG3DOiZ3c3gOh7IShBREPp2D1rjkr+nxi
-         t87TtaHV6pQ/5uGIxeo0ZqH9sI68Ps9PEdx6cwJqRvStvf3vu1ckwsvqP4yEupJakU
-         zA6yNkY7LyHsw==
-Date:   Fri, 25 Aug 2023 13:55:04 +0100
+        b=VAb/zMY57q/KcVtBg1bQpEutdDpiY5joNNw1Q8ZIMbSi4L1LoYPFifzUfyQpIsKE/
+         x8ms+6osxL3VbzupfAc8w1/SLSEUc+wdlcs4XOvoviRo59A/V2tx0YOKaJKfkhIyV1
+         vfS5XsP+X3iFp/3sQfXq2HcGcdbaDHw/8ZFkYEzwQ3hVSV0mTMhlh62nOZT3cYAlex
+         Es4URJ40lO7+mTLGthpB/jZwFIiqw5xLMRn3LNVmLDN3zHSasw0XhGD+NWSw2vnHsD
+         r4QJc/ts1mnLDsVMSVmFjrU7B3iW/EcfZwo6D7Q8sgKGiMvZ/1odkYjRTOfzmPRERV
+         EyBGbfaHNI/TA==
+Date:   Fri, 25 Aug 2023 13:57:40 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jinjie Ruan <ruanjinjie@huawei.com>
 Cc:     <lars@metafoo.de>, <nicolas.ferre@microchip.com>,
@@ -44,12 +44,12 @@ Cc:     <lars@metafoo.de>, <nicolas.ferre@microchip.com>,
         <linux-iio@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH -next 3/4] iio: adc: spear_adc: Use
+Subject: Re: [PATCH -next 4/4] iio: frequency: adf4350: Use
  devm_clk_get_enabled() helper function
-Message-ID: <20230825135504.17b4464e@jic23-huawei>
-In-Reply-To: <20230825105746.2999548-4-ruanjinjie@huawei.com>
+Message-ID: <20230825135740.50c9643a@jic23-huawei>
+In-Reply-To: <20230825105746.2999548-5-ruanjinjie@huawei.com>
 References: <20230825105746.2999548-1-ruanjinjie@huawei.com>
-        <20230825105746.2999548-4-ruanjinjie@huawei.com>
+        <20230825105746.2999548-5-ruanjinjie@huawei.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,7 +64,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 25 Aug 2023 18:57:45 +0800
+On Fri, 25 Aug 2023 18:57:46 +0800
 Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 
 > The devm_clk_get_enabled() helper:
@@ -75,85 +75,72 @@ Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 > This simplifies the code.
 > 
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Also switch to devm_iio_device_register() and drop the remove function.
+
+I'm fairly sure st->reg is never used except for disable. As such you can finish
+the job here by moving to equivalent devm_regulator enabled call and devm_iio_device_register()
+That should avoid any potential ordering issues which are a bit un obvious with just
+this patch
 
 Jonathan
 
 > ---
->  drivers/iio/adc/spear_adc.c | 30 +++++++-----------------------
->  1 file changed, 7 insertions(+), 23 deletions(-)
+>  drivers/iio/frequency/adf4350.c | 20 +++++---------------
+>  1 file changed, 5 insertions(+), 15 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
-> index ad54ef798109..cd7708aa95af 100644
-> --- a/drivers/iio/adc/spear_adc.c
-> +++ b/drivers/iio/adc/spear_adc.c
-> @@ -297,36 +297,27 @@ static int spear_adc_probe(struct platform_device *pdev)
->  	st->adc_base_spear3xx =
->  		(struct adc_regs_spear3xx __iomem *)st->adc_base_spear6xx;
+> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
+> index 85e289700c3c..22330d1768ff 100644
+> --- a/drivers/iio/frequency/adf4350.c
+> +++ b/drivers/iio/frequency/adf4350.c
+> @@ -491,20 +491,14 @@ static int adf4350_probe(struct spi_device *spi)
+>  	}
 >  
-> -	st->clk = devm_clk_get(dev, NULL);
-> +	st->clk = devm_clk_get_enabled(dev, NULL);
->  	if (IS_ERR(st->clk)) {
-> -		dev_err(dev, "failed getting clock\n");
-> -		return PTR_ERR(st->clk);
-> -	}
+>  	if (!pdata->clkin) {
+> -		clk = devm_clk_get(&spi->dev, "clkin");
+> +		clk = devm_clk_get_enabled(&spi->dev, "clkin");
+>  		if (IS_ERR(clk))
+> -			return -EPROBE_DEFER;
 > -
-> -	ret = clk_prepare_enable(st->clk);
-> -	if (ret) {
->  		dev_err(dev, "failed enabling clock\n");
-> -		return ret;
-> +		return PTR_ERR(st->clk);
+> -		ret = clk_prepare_enable(clk);
+> -		if (ret < 0)
+> -			return ret;
+> +			return PTR_ERR(clk);
 >  	}
 >  
->  	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0) {
-> -		ret = irq;
-> -		goto errout2;
+>  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> -	if (indio_dev == NULL) {
+> -		ret =  -ENOMEM;
+> -		goto error_disable_clk;
 > -	}
-> +	if (irq < 0)
-> +		return irq;
+> +	if (indio_dev == NULL)
+> +		return -ENOMEM;
 >  
->  	ret = devm_request_irq(dev, irq, spear_adc_isr, 0, SPEAR_ADC_MOD_NAME,
->  			       st);
->  	if (ret < 0) {
->  		dev_err(dev, "failed requesting interrupt\n");
-> -		goto errout2;
-> +		return ret;
+>  	st = iio_priv(indio_dev);
+>  
+> @@ -512,7 +506,7 @@ static int adf4350_probe(struct spi_device *spi)
+>  	if (!IS_ERR(st->reg)) {
+>  		ret = regulator_enable(st->reg);
+>  		if (ret)
+> -			goto error_disable_clk;
+> +			return ret;
 >  	}
 >  
->  	if (of_property_read_u32(np, "sampling-frequency",
->  				 &st->sampling_freq)) {
->  		dev_err(dev, "sampling-frequency missing in DT\n");
-> -		ret = -EINVAL;
-> -		goto errout2;
-> +		return -EINVAL;
->  	}
+>  	spi_set_drvdata(spi, indio_dev);
+> @@ -564,8 +558,6 @@ static int adf4350_probe(struct spi_device *spi)
+>  error_disable_reg:
+>  	if (!IS_ERR(st->reg))
+>  		regulator_disable(st->reg);
+> -error_disable_clk:
+> -	clk_disable_unprepare(clk);
 >  
->  	/*
-> @@ -355,24 +346,17 @@ static int spear_adc_probe(struct platform_device *pdev)
->  
->  	ret = iio_device_register(indio_dev);
->  	if (ret)
-> -		goto errout2;
-> +		return ret;
->  
->  	dev_info(dev, "SPEAR ADC driver loaded, IRQ %d\n", irq);
->  
->  	return 0;
-> -
-> -errout2:
-> -	clk_disable_unprepare(st->clk);
-> -	return ret;
+>  	return ret;
 >  }
+> @@ -581,8 +573,6 @@ static void adf4350_remove(struct spi_device *spi)
 >  
->  static int spear_adc_remove(struct platform_device *pdev)
->  {
->  	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> -	struct spear_adc_state *st = iio_priv(indio_dev);
-> -
 >  	iio_device_unregister(indio_dev);
-> -	clk_disable_unprepare(st->clk);
 >  
->  	return 0;
+> -	clk_disable_unprepare(st->clk);
+> -
+>  	if (!IS_ERR(reg))
+>  		regulator_disable(reg);
 >  }
 

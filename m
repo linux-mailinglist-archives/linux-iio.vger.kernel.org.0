@@ -2,60 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289A07887F6
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 14:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF021788CD9
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 17:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240028AbjHYM6R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Aug 2023 08:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38164 "EHLO
+        id S231529AbjHYPxe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Aug 2023 11:53:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245002AbjHYM5x (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 08:57:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3A22139
-        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 05:57:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16DAE61AF0
-        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 12:57:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FB3C433C8;
-        Fri, 25 Aug 2023 12:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692968242;
-        bh=oK+UJY0bkF8Ywx3I5L1JxmoE98xeSKEIW/uQI5EQvXw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VAb/zMY57q/KcVtBg1bQpEutdDpiY5joNNw1Q8ZIMbSi4L1LoYPFifzUfyQpIsKE/
-         x8ms+6osxL3VbzupfAc8w1/SLSEUc+wdlcs4XOvoviRo59A/V2tx0YOKaJKfkhIyV1
-         vfS5XsP+X3iFp/3sQfXq2HcGcdbaDHw/8ZFkYEzwQ3hVSV0mTMhlh62nOZT3cYAlex
-         Es4URJ40lO7+mTLGthpB/jZwFIiqw5xLMRn3LNVmLDN3zHSasw0XhGD+NWSw2vnHsD
-         r4QJc/ts1mnLDsVMSVmFjrU7B3iW/EcfZwo6D7Q8sgKGiMvZ/1odkYjRTOfzmPRERV
-         EyBGbfaHNI/TA==
-Date:   Fri, 25 Aug 2023 13:57:40 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jinjie Ruan <ruanjinjie@huawei.com>
-Cc:     <lars@metafoo.de>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>,
-        <matthias.bgg@gmail.com>,
-        <angelogioacchino.delregno@collabora.com>,
-        <Michael.Hennerich@analog.com>, <heiko@sntech.de>,
-        <yangyingliang@huawei.com>, <robh@kernel.org>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH -next 4/4] iio: frequency: adf4350: Use
- devm_clk_get_enabled() helper function
-Message-ID: <20230825135740.50c9643a@jic23-huawei>
-In-Reply-To: <20230825105746.2999548-5-ruanjinjie@huawei.com>
-References: <20230825105746.2999548-1-ruanjinjie@huawei.com>
-        <20230825105746.2999548-5-ruanjinjie@huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S230012AbjHYPxN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 11:53:13 -0400
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECA72134;
+        Fri, 25 Aug 2023 08:53:10 -0700 (PDT)
+Received: by mail-ua1-x92b.google.com with SMTP id a1e0cc1a2514c-79dc53034a8so428133241.3;
+        Fri, 25 Aug 2023 08:53:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692978789; x=1693583589;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f5Kmux/HC46hJNKCbtSnITYQVTMalez+vl2RvQ09lR8=;
+        b=i268qshuyAMtctFsbTLamd9inbE3Cavm6XmKx8iW0wb0qjJy5DCCzL5SUDi6G1fArC
+         6QjoF3ad5CyLHNX2PdjVMh1o1TI0XxwiJyHp4UlBuDz21VaJwR+3hSq+BETQMHK+JsR3
+         ur1S65NFMTApeJEVR6VIiwsI9O9Y5h61zlPJnGyGwHXBQD8iUy7ikTNNnVx/mk+i8oWg
+         BAvl8XiS5xVHsStYYtmnTWVJJuE2yss6Ifyyg9yI7XkZAwMj+iu7TGpSZmNrm1hmMvhm
+         p8iMihPvt+NcyTUgvRIAROR9XBRVh+e4Q51/vNtIwIN9r1ACmuQs6Z6pU1okEsVXzFZG
+         NYFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692978789; x=1693583589;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f5Kmux/HC46hJNKCbtSnITYQVTMalez+vl2RvQ09lR8=;
+        b=HWk8Xw8PCHyQKhKMlraE0iES7kmMV7o+k7ew+Ih146KsfN7/ymoz82EgkByyWRt+TT
+         JvrDz5k21gpxa22wKQTW5JlXbpAv4E2A1HM4QF+xEg2NDZAudTj0ROzQpiq2m6wQDunH
+         vPr2Uo5LatL5F/Xwrn8G0kc7MsfV2WwayqQTzl9m2NfDRJo/jHKh/kYA1SGqxvSjToVs
+         C6Fs822bER0+DU61n2Zsk3Vj3cHvJ43YsJtxH0kTEfHGSTAV1eb4yh+59qV137FP0u78
+         y4VudfbjDgsr2nBIiH1ZXH82odKLltpHtnIfXhwGvsTvhK0z3rTB0j8QGijP35vvt8P+
+         5Frg==
+X-Gm-Message-State: AOJu0YyynfVp7djoKZK9E+60wma8uWOL1Og53Czbf+UObdkwQC8piEp0
+        OsVAn/+LrpFloFgR7o/GLpiqp+gtelsWYhZd
+X-Google-Smtp-Source: AGHT+IFs/hx76DVW8mFdXhcvl/g6lqzGBFfz0RrxRAHpl0R8N0lkyWUSVZ8I41gGhSA4mwPUx6UTTQ==
+X-Received: by 2002:a67:ee59:0:b0:44e:8626:71f2 with SMTP id g25-20020a67ee59000000b0044e862671f2mr7019845vsp.13.1692978789573;
+        Fri, 25 Aug 2023 08:53:09 -0700 (PDT)
+Received: from shaak (modemcable063.135-226-192.mc.videotron.ca. [192.226.135.63])
+        by smtp.gmail.com with ESMTPSA id j13-20020a0cf50d000000b0063d2a70dff5sm635778qvm.72.2023.08.25.08.53.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Aug 2023 08:53:09 -0700 (PDT)
+Date:   Fri, 25 Aug 2023 11:53:07 -0400
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 3/3] dt-bindings: iio: adc: add lltc,ltc2309 bindings
+Message-ID: <20230825155307.GA3149625@shaak>
+References: <20230824-ltc2309-v1-0-b87b4eb8030c@gmail.com>
+ <20230824-ltc2309-v1-3-b87b4eb8030c@gmail.com>
+ <e54273c7-4728-7577-f053-b15307d3a083@linaro.org>
+ <20230824185054.GA3659959@shaak>
+ <fecb8658-ed3a-1c5c-70bb-5238b09d4e76@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fecb8658-ed3a-1c5c-70bb-5238b09d4e76@linaro.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,83 +81,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 25 Aug 2023 18:57:46 +0800
-Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+Hi Krzysztof,
 
-> The devm_clk_get_enabled() helper:
->     - calls devm_clk_get()
->     - calls clk_prepare_enable() and registers what is needed in order to
->       call clk_disable_unprepare() when needed, as a managed resource.
+On Fri, Aug 25, 2023 at 08:15:57AM +0200, Krzysztof Kozlowski wrote:
+> On 24/08/2023 20:50, Liam Beguin wrote:
+> > On Thu, Aug 24, 2023 at 07:56:29PM +0200, Krzysztof Kozlowski wrote:
+> >> On 24/08/2023 18:55, Liam Beguin wrote:
+> >>> Add devicetree bindings for the Linear Technology LTC2309 ADC driver.
+> >>>
+> >>> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+> >>
+> >> Thank you for your patch. There is something to discuss/improve.
+> >>
+> >>> +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml
+> >>> @@ -0,0 +1,52 @@
+> >>> +# SPDX-License-Identifier: GPL-2.0
+> >>
+> >> Wrong license. Run checkpatch before sending patches.
+> >>
+> > 
+> > Sorry about that, I ran it through checkpatch but it didn't flag
+> > anything.
 > 
-> This simplifies the code.
+> No, you didn't, because checkpatch flags it easily:
 > 
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-
-I'm fairly sure st->reg is never used except for disable. As such you can finish
-the job here by moving to equivalent devm_regulator enabled call and devm_iio_device_register()
-That should avoid any potential ordering issues which are a bit un obvious with just
-this patch
-
-Jonathan
-
-> ---
->  drivers/iio/frequency/adf4350.c | 20 +++++---------------
->  1 file changed, 5 insertions(+), 15 deletions(-)
+> WARNING: DT binding documents should be licensed (GPL-2.0-only OR
+> BSD-2-Clause)
+> #21: FILE: Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml:1:
+> +# SPDX-License-Identifier: GPL-2.0
 > 
-> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-> index 85e289700c3c..22330d1768ff 100644
-> --- a/drivers/iio/frequency/adf4350.c
-> +++ b/drivers/iio/frequency/adf4350.c
-> @@ -491,20 +491,14 @@ static int adf4350_probe(struct spi_device *spi)
->  	}
->  
->  	if (!pdata->clkin) {
-> -		clk = devm_clk_get(&spi->dev, "clkin");
-> +		clk = devm_clk_get_enabled(&spi->dev, "clkin");
->  		if (IS_ERR(clk))
-> -			return -EPROBE_DEFER;
-> -
-> -		ret = clk_prepare_enable(clk);
-> -		if (ret < 0)
-> -			return ret;
-> +			return PTR_ERR(clk);
->  	}
->  
->  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> -	if (indio_dev == NULL) {
-> -		ret =  -ENOMEM;
-> -		goto error_disable_clk;
-> -	}
-> +	if (indio_dev == NULL)
-> +		return -ENOMEM;
->  
->  	st = iio_priv(indio_dev);
->  
-> @@ -512,7 +506,7 @@ static int adf4350_probe(struct spi_device *spi)
->  	if (!IS_ERR(st->reg)) {
->  		ret = regulator_enable(st->reg);
->  		if (ret)
-> -			goto error_disable_clk;
-> +			return ret;
->  	}
->  
->  	spi_set_drvdata(spi, indio_dev);
-> @@ -564,8 +558,6 @@ static int adf4350_probe(struct spi_device *spi)
->  error_disable_reg:
->  	if (!IS_ERR(st->reg))
->  		regulator_disable(st->reg);
-> -error_disable_clk:
-> -	clk_disable_unprepare(clk);
->  
->  	return ret;
->  }
-> @@ -581,8 +573,6 @@ static void adf4350_remove(struct spi_device *spi)
->  
->  	iio_device_unregister(indio_dev);
->  
-> -	clk_disable_unprepare(st->clk);
-> -
->  	if (!IS_ERR(reg))
->  		regulator_disable(reg);
->  }
+> total: 0 errors, 2 warnings, 52 lines checked
 
+It seems like I wasn't running checkpatch in strict mode.
+Thanks for pointing that out.
+
+> 
+> Best regards,
+> Krzysztof
+
+Cheers,
+Liam

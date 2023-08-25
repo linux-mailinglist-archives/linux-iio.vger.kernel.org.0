@@ -2,117 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F662787FA9
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 08:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA932788100
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 09:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241567AbjHYGQI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Aug 2023 02:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
+        id S233800AbjHYHio (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Aug 2023 03:38:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240966AbjHYGQD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 02:16:03 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEE019A0
-        for <linux-iio@vger.kernel.org>; Thu, 24 Aug 2023 23:16:00 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-50079d148aeso806295e87.3
-        for <linux-iio@vger.kernel.org>; Thu, 24 Aug 2023 23:16:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692944159; x=1693548959;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iM8El1KJDRMivN5v0+AcTBC/Luw+Aw9QD61213DG9Tw=;
-        b=HKIWiSgCf7clZB0dX0JAxEOoikVQyJ6WmsGXPGfiBYeMpdBxWTX+FwO3L3asRkWkrX
-         1qErpVNAHb+oAqYsWQ1zF1kiJ2dVfOraIpQqEkJVFJ3aHM8Qap37rLVfUf3Y/vOBKb6q
-         b00IT5dkHrmi1j5p+YS8BKcax4ZdYO9CEMrob3D3AaLHc0NomBef7FWZx9czrdt/ADyi
-         tHm8i2RvvQmLNpbRVENojA3/307Z5OqKBdmWovTfnzxjgiVhyo7KKKqcPglQbn9STgye
-         JiMfFRn0eGN4fmznF91bDApthclKVYJurfE5mA4ZR/qnp5ePDXVx132ZmqCPtYRrVAkx
-         v1mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692944159; x=1693548959;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iM8El1KJDRMivN5v0+AcTBC/Luw+Aw9QD61213DG9Tw=;
-        b=C1+0W7pjj8Ex4MQjW24cMuqmjhDZD7EkSTFVsSN5Ac9bjgUk08FzBfoT27GJ0Y+GPe
-         pf6j0O0JxpdEQvfbKUPzEORRTbb9wWh0nC2GI7XZO7kcbbllQfGCimlaAKtCpkN16fAy
-         u5mYJ8x1jXGCdPrsdheqnPPBhBwpuSUgM4MXjfNmtu4vqAnJ8N+kDZxd8lOCUBHCMy4o
-         iKVBPfmwg0sDIVeXg46r0qsxqxQZZTmnJqCLwambEWHjchh9j5mAS7Sf9o+T5NizJnEv
-         CCpF0Thb1rgNKTtaor5f6jr8DMzfall4oN0yW5D/OcuCa8xAV5xQv8lIHPXjAPjxZkfu
-         2DOQ==
-X-Gm-Message-State: AOJu0YxqESh18+G4CQeGYJRmOlPYGg6Mk/JAkR5ApKKEOs04NGPNu36M
-        zu04D49P8Jb1zFKH23q83NjZtQ==
-X-Google-Smtp-Source: AGHT+IEG9YFvwBfJPh6Y4mk9Ujr63j9OKLTrCL6u4jSYhGphoBNbE1PIDQSsGBZ4FSaaNzcJUBKaJw==
-X-Received: by 2002:a05:6512:1590:b0:4ff:ae42:19e2 with SMTP id bp16-20020a056512159000b004ffae4219e2mr1092193lfb.58.1692944158849;
-        Thu, 24 Aug 2023 23:15:58 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id a20-20020a1709064a5400b00992b50fbbe9sm577072ejv.90.2023.08.24.23.15.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 23:15:58 -0700 (PDT)
-Message-ID: <fecb8658-ed3a-1c5c-70bb-5238b09d4e76@linaro.org>
-Date:   Fri, 25 Aug 2023 08:15:57 +0200
+        with ESMTP id S237109AbjHYHiO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 03:38:14 -0400
+Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5651FC4
+        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 00:38:12 -0700 (PDT)
+Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
+        id AA217467AD; Fri, 25 Aug 2023 07:36:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
+        s=mail; t=1692949048;
+        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
+        h=Date:From:To:Subject:From;
+        b=Bh+4WkDvOSlMaCtd1abRc2c6xiAfrTJ1EkNJaSd5dpTHTXJYI/zWuZvS6HrEKbqsP
+         wNxZId7+NTEDgop1KF9DAfRMsB3ITGLEDBWgnwvQ+t6e/zTfdhvgRsFyzNuHHEQHgM
+         +q+jnBz+qcXe5k/G7PHZy0Mv4DqxnSvFVZ20k1Ljhb273Er4+51kExQSRirdtUxmwD
+         4lTibEgkEXcGa+WDQmxJ5+gtmAJDdib18xHNKKW6McfeqaCMYNa+EqqJgswUHktzex
+         7CniibyV2oleQ20CJyQ44bGkTn5aF7bQn61UyFU5gH2FS3Bhc/rfwsnED1Q2xqAqH0
+         lW2rWT2SN+z6g==
+Received: by mail.profitpathwaygo.com for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 07:36:10 GMT
+Message-ID: <20230825064500-0.1.1d.cqhc.0.ea6t3m4412@profitpathwaygo.com>
+Date:   Fri, 25 Aug 2023 07:36:10 GMT
+From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
+X-Mailer: mail.profitpathwaygo.com
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 3/3] dt-bindings: iio: adc: add lltc,ltc2309 bindings
-Content-Language: en-US
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20230824-ltc2309-v1-0-b87b4eb8030c@gmail.com>
- <20230824-ltc2309-v1-3-b87b4eb8030c@gmail.com>
- <e54273c7-4728-7577-f053-b15307d3a083@linaro.org>
- <20230824185054.GA3659959@shaak>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230824185054.GA3659959@shaak>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/08/2023 20:50, Liam Beguin wrote:
-> On Thu, Aug 24, 2023 at 07:56:29PM +0200, Krzysztof Kozlowski wrote:
->> On 24/08/2023 18:55, Liam Beguin wrote:
->>> Add devicetree bindings for the Linear Technology LTC2309 ADC driver.
->>>
->>> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
->>
->> Thank you for your patch. There is something to discuss/improve.
->>
->>> +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml
->>> @@ -0,0 +1,52 @@
->>> +# SPDX-License-Identifier: GPL-2.0
->>
->> Wrong license. Run checkpatch before sending patches.
->>
-> 
-> Sorry about that, I ran it through checkpatch but it didn't flag
-> anything.
+Dzie=C5=84 dobry,
 
-No, you didn't, because checkpatch flags it easily:
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-WARNING: DT binding documents should be licensed (GPL-2.0-only OR
-BSD-2-Clause)
-#21: FILE: Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml:1:
-+# SPDX-License-Identifier: GPL-2.0
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-total: 0 errors, 2 warnings, 52 lines checked
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
 
-Best regards,
-Krzysztof
-
+Pozdrawiam serdecznie
+Adam Charachuta

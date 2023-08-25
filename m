@@ -2,64 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA932788100
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 09:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70F09788387
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Aug 2023 11:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233800AbjHYHio (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Aug 2023 03:38:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        id S232410AbjHYJ26 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Aug 2023 05:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237109AbjHYHiO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 03:38:14 -0400
-Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5651FC4
-        for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 00:38:12 -0700 (PDT)
-Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
-        id AA217467AD; Fri, 25 Aug 2023 07:36:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
-        s=mail; t=1692949048;
-        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
-        h=Date:From:To:Subject:From;
-        b=Bh+4WkDvOSlMaCtd1abRc2c6xiAfrTJ1EkNJaSd5dpTHTXJYI/zWuZvS6HrEKbqsP
-         wNxZId7+NTEDgop1KF9DAfRMsB3ITGLEDBWgnwvQ+t6e/zTfdhvgRsFyzNuHHEQHgM
-         +q+jnBz+qcXe5k/G7PHZy0Mv4DqxnSvFVZ20k1Ljhb273Er4+51kExQSRirdtUxmwD
-         4lTibEgkEXcGa+WDQmxJ5+gtmAJDdib18xHNKKW6McfeqaCMYNa+EqqJgswUHktzex
-         7CniibyV2oleQ20CJyQ44bGkTn5aF7bQn61UyFU5gH2FS3Bhc/rfwsnED1Q2xqAqH0
-         lW2rWT2SN+z6g==
-Received: by mail.profitpathwaygo.com for <linux-iio@vger.kernel.org>; Fri, 25 Aug 2023 07:36:10 GMT
-Message-ID: <20230825064500-0.1.1d.cqhc.0.ea6t3m4412@profitpathwaygo.com>
-Date:   Fri, 25 Aug 2023 07:36:10 GMT
-From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
-To:     <linux-iio@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
-X-Mailer: mail.profitpathwaygo.com
-MIME-Version: 1.0
+        with ESMTP id S242570AbjHYJ2x (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Aug 2023 05:28:53 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF891FC4;
+        Fri, 25 Aug 2023 02:28:52 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-3110ab7110aso544680f8f.3;
+        Fri, 25 Aug 2023 02:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692955730; x=1693560530;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=L9gkSsKr8PfNJlb4LvEK/fNo3ovniSqfgVEwj5PCDnc=;
+        b=O/7SRdB0PhfYQW4c8F/nT+UANPGRlskpmigPZjnpMDFBU6DLLvtR7E3GNbkh4FFmY2
+         GkhbY/EHhRAC7ZUKPqga1eirDWsWACmQbXikIf5Lm1KyGi1lwQxtGv+L+imcmqsOSWqB
+         QxKqLLQp6UtEeoK4/nwQoPqBLe9O3yGmXUgKCQ/5bSsh5NauTxrcMI0ane8BM+rl5q1r
+         z+vg6gBE0gwkFZoY+Di2FJfya+03XLebeDKaobSMbwH1/qhumwtn34+kt0aAIYbOwcJG
+         kjeXMy2z0slmntnWmCoQs7Bv5O2WH2q5m4aNKxsHfn1/dNc3ON5uNGcd31Cl1/hhxMV+
+         rPvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692955730; x=1693560530;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=L9gkSsKr8PfNJlb4LvEK/fNo3ovniSqfgVEwj5PCDnc=;
+        b=gG9GLH5FVq6lXicK31xEcuQ5DmcAN3L+Pw1bXwHFI1vmaJDWWLdtO3RFku3u8qb0B7
+         1hbXGoEQviqkRMpeSl8fFmkilGvN1zByvjxK1enZqV15NIbf6IJT4Lofpxro/VPG53N8
+         emQIC14bTZYCnXP6KLHNLj9HkjFlWAXrZRtB3Xkj69Y30puMuOIkOXWeTdiFfsqhRMdR
+         /epPmTOTmL5V3a+scCwmSDPxYUMZR3f5cyd3RZslzmVpHw7iWtK8qySoJoelYsA2S+dN
+         JnSD1TkGqp9qNDdf6Yf5zsONMU8/RHoItg7ZBJB1Tqnsk3O0mbM8vYiMSSZOOU+38Asl
+         naCQ==
+X-Gm-Message-State: AOJu0YzHx7W73ZeLNu8M3lm8vUfBYLFasY7nL1UJ0tl3VWFlp8DEas/S
+        reYkZSYmx5xLzDJzFyTDQ3JAJ7V4CW8=
+X-Google-Smtp-Source: AGHT+IE4bXY5Mj5h0YD1I3pVT1xVuU9EpvBJbVIxKDFQJtM70Ht49M9+YPoC0rEOX6GQOBoT8KeZqw==
+X-Received: by 2002:a05:6000:12d2:b0:317:58eb:1e33 with SMTP id l18-20020a05600012d200b0031758eb1e33mr14002442wrx.8.1692955730319;
+        Fri, 25 Aug 2023 02:28:50 -0700 (PDT)
+Received: from thinkpad-work.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
+        by smtp.gmail.com with ESMTPSA id n12-20020a5d67cc000000b00317afc7949csm1680566wrw.50.2023.08.25.02.28.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Aug 2023 02:28:49 -0700 (PDT)
+Message-ID: <60fcef0b71c3b6a5a35bd2bf706af7545acc3e6a.camel@gmail.com>
+Subject: Re: [PATCH v2 1/3] iio: pressure: bmp280: Use uint8 to store chip
+ ids
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Date:   Fri, 25 Aug 2023 11:28:48 +0200
+In-Reply-To: <ZOYxGhZxpTDUpURQ@smile.fi.intel.com>
+References: <cover.1692805377.git.ang.iglesiasg@gmail.com>
+         <cf08dd2fab1fd91ca7ed0724d1f50435c8c2914b.1692805377.git.ang.iglesiasg@gmail.com>
+         <ZOYveUBg3rKK+ZQ9@smile.fi.intel.com> <ZOYxGhZxpTDUpURQ@smile.fi.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+User-Agent: Evolution 3.48.4 (by Flathub.org) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
-
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
-
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
-
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
-
-
-Pozdrawiam serdecznie
-Adam Charachuta
+On Wed, 2023-08-23 at 19:17 +0300, Andy Shevchenko wrote:
+> On Wed, Aug 23, 2023 at 07:10:33PM +0300, Andy Shevchenko wrote:
+> > On Wed, Aug 23, 2023 at 05:58:05PM +0200, Angel Iglesias wrote:
+> > > Represent the device id reg values using uint8 to optimize memory use=
+.
+> >=20
+> > This doesn't correspond to the code, in the code you used uint8_t.
+>=20
+> ...
+>=20
+> > > =C2=A0struct bmp280_chip_info {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int id_reg;
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const unsigned int chip_id=
+;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uint8_t chip_id;
+> >=20
+> > While this will compile and even work properly in kernel we use uXX typ=
+es,
+> > here u8.
+>=20
+> Actually this patch doesn't optimize memory use. The alignment will creat=
+e
+> a gap anyway.
+>=20
+> That said, this patch is simply redundant.
+>=20
+OK, I'll drop it on v3 then

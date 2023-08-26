@@ -2,83 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C157894CF
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Aug 2023 10:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 205E2789502
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Aug 2023 11:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjHZIgm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Aug 2023 04:36:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45090 "EHLO
+        id S232163AbjHZJIx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Aug 2023 05:08:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbjHZIgX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Aug 2023 04:36:23 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FBA213A
-        for <linux-iio@vger.kernel.org>; Sat, 26 Aug 2023 01:36:20 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-523b066d7ceso2306658a12.2
-        for <linux-iio@vger.kernel.org>; Sat, 26 Aug 2023 01:36:20 -0700 (PDT)
+        with ESMTP id S232177AbjHZJIY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Aug 2023 05:08:24 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32192694
+        for <linux-iio@vger.kernel.org>; Sat, 26 Aug 2023 02:08:20 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99c353a395cso209504166b.2
+        for <linux-iio@vger.kernel.org>; Sat, 26 Aug 2023 02:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693038979; x=1693643779;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1693040899; x=1693645699;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DLuvtTSFsh+JsVxGOiA4Xb35SPTbinIM1/fw5S+zmhE=;
-        b=RIhjKu9qVES3FjJC22lGg3xPRYCwqSUYQyhuMC7MZM/jrQsnldLjL2WmonwbRsAunj
-         4/qq3k1cB+YesuPtbHpHY0jInhttCx1EvYH27hUDziVrJcdZ3EF9Lf3umoi508oRFnrj
-         uJyAdPtqfDUWRrrn7HgFPQwBVfULKZI0i2z3sGCkf4yPMHd78xlsz7m4aCrnRQ/RO8UK
-         W7cI8a+FuTllqO+UKpw7INX3aahvjjXt7xEYBRNQH5kvQjzoSNdED10Z/qvE5tfJnCsX
-         CPiIwQO/Y5HYC1Brn0rXmZteQosKsgu5bcCNYsym2f15gYciLcmhoQW+tpag4EHSp+Df
-         CZSw==
+        bh=tHBPO1finZtCSzkNzREsRM57eDDW8dRuPlHc7KXEI7E=;
+        b=ebBYVLUEJRCHTJFhPgKmAvvApP456FETyMfE/EEGbTnL7tBGP9RT+lZ0YIKWvRtbkl
+         im+YylWMPxqz+/f5RTrBb23Q4vm7To4yJ2MegCZvgRMozl3cZdf7UTjLyJ4JhKrl44Q7
+         OkVXAPpMS5IAOAhy4R8rLz4cHfCG0wNlU+xghTM7kBV4LKb0ER8b5pwG7d6ivTmkAIGL
+         4RZn1BIUfZpAvMPBrSBDcdg0sSoPIftx6hPOStzwucNWHB4Y7TBrflj76FyXa/Xy5K3g
+         WEotVSLv+nQkz4Cr25UDTsy5DC3beU2igsJibK/+J8JsxfUbE3sL4GhKPiIzQhcESIHq
+         aJSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693038979; x=1693643779;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1693040899; x=1693645699;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DLuvtTSFsh+JsVxGOiA4Xb35SPTbinIM1/fw5S+zmhE=;
-        b=Q9kR5qQn1xA88sXqECMBVRJUUbXdlECusILh2ZPPfgVKrM652kZKl2lTKNMq3+sXya
-         Y1ecXCELNcoiUR61Hym93lkRtlR6VN9F0vqibXHSCqGo09my8q30eFwkxaDYf83SoagL
-         nl11P5udzbP+0Xb3hbSq/XSkr7B/1LrKTzb2jIqn9wGZd/MQO4J/u8GEbbIeKLP46bMR
-         2JPF45vPKYtaPQ1Qehzibo2czn9sr3ijXwa0GhhP8HfDw4uNEouccG1tvgEGyMVFth8m
-         DShqS+b/hqR1I1iZmzqCfQL910MNZJHwj5oivAvSXrKbIPUJfmsHhygzGeAQn36XbLeh
-         93pA==
-X-Gm-Message-State: AOJu0YwuvajuqZR8uLarE/40uuXmC5BI3JhW68Nuavs8644MOeSZdd0E
-        /fk3KAV8AmFVAtL9h99v9cnFBA==
-X-Google-Smtp-Source: AGHT+IHMg5LV/V7ymlXjJxDUGXYB2ba4oX2as7CHzc3zUC79kBqKhtmzzJAxW3GvDen8GWFxpVlt+Q==
-X-Received: by 2002:aa7:c98c:0:b0:528:925f:413e with SMTP id c12-20020aa7c98c000000b00528925f413emr15785879edt.12.1693038979042;
-        Sat, 26 Aug 2023 01:36:19 -0700 (PDT)
+        bh=tHBPO1finZtCSzkNzREsRM57eDDW8dRuPlHc7KXEI7E=;
+        b=ED7NKapSNQdT1M4PcHkoOcv+4PTSL6VyxQEP+e5OKzMmtb8CnWYzfZt9rxkRoOKo9X
+         cZDSacO9afdSwZa9qyzZJpv/G5WMan5gId397X4PduojGbThwEfm/LN7z6SUZKyYXuBe
+         0JzTDNDXGn+YzNuJC2bRGtozi0Nj21pZKmywbJIveCx8MC4l7X4YCtu7Ev+7ZLNvqbb5
+         cnHTs0qEmtHWB/YW8+dIdaiE8wnMKQjzcX21UHi/RUaX8NwngM3ELmBdGQg6TvtgT2VT
+         Xo9P0sLCoQrliQutyKcaNvEecEROx65y/woelaA6SaMsYRJqFXuLzf4BK8HF93DACdUB
+         Z5Kw==
+X-Gm-Message-State: AOJu0YwfXwXjNm12QOsAFcHDBp9uIgoIITxcbRkM6yqHysU3Q37+v56c
+        HAnuseXmjxA2vLZhSc6iAJ9HdQ==
+X-Google-Smtp-Source: AGHT+IFBsq8qdlmmG8uKd+cBMJkWrAnVKUoEBdT+75a6YZ8BdQ8w/8jwBArKR0mhr6742YPO2IV9Aw==
+X-Received: by 2002:a17:907:2bf7:b0:9a1:ad87:1354 with SMTP id gv55-20020a1709072bf700b009a1ad871354mr11981804ejc.34.1693040899316;
+        Sat, 26 Aug 2023 02:08:19 -0700 (PDT)
 Received: from [192.168.0.22] ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id e10-20020aa7d7ca000000b005256994e335sm1866916eds.92.2023.08.26.01.36.17
+        by smtp.gmail.com with ESMTPSA id gy25-20020a170906f25900b00985ed2f1584sm1914630ejb.187.2023.08.26.02.08.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Aug 2023 01:36:18 -0700 (PDT)
-Message-ID: <d190bba6-71be-639e-750f-7c7d234b4da7@linaro.org>
-Date:   Sat, 26 Aug 2023 10:36:17 +0200
+        Sat, 26 Aug 2023 02:08:18 -0700 (PDT)
+Message-ID: <9d44d4a7-bb53-1240-8b4b-2ebcf3f766ec@linaro.org>
+Date:   Sat, 26 Aug 2023 11:08:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH 3/3] dt-bindings: iio: adc: add lltc,ltc2309 bindings
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add lltc,ltc2309 bindings
+Content-Language: en-US
+To:     Liam Beguin <liambeguin@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org
-References: <20230824-ltc2309-v1-0-b87b4eb8030c@gmail.com>
- <20230824-ltc2309-v1-3-b87b4eb8030c@gmail.com>
- <e54273c7-4728-7577-f053-b15307d3a083@linaro.org>
- <20230824185054.GA3659959@shaak>
- <fecb8658-ed3a-1c5c-70bb-5238b09d4e76@linaro.org>
- <20230825155307.GA3149625@shaak>
-Content-Language: en-US
+References: <20230825-ltc2309-v2-0-6d75f2b3fb50@gmail.com>
+ <20230825-ltc2309-v2-1-6d75f2b3fb50@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230825155307.GA3149625@shaak>
+In-Reply-To: <20230825-ltc2309-v2-1-6d75f2b3fb50@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,44 +82,13 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 25/08/2023 17:53, Liam Beguin wrote:
-> Hi Krzysztof,
+On 25/08/2023 20:20, Liam Beguin wrote:
+> Add devicetree bindings for the Linear Technology LTC2309 ADC driver.
 > 
-> On Fri, Aug 25, 2023 at 08:15:57AM +0200, Krzysztof Kozlowski wrote:
->> On 24/08/2023 20:50, Liam Beguin wrote:
->>> On Thu, Aug 24, 2023 at 07:56:29PM +0200, Krzysztof Kozlowski wrote:
->>>> On 24/08/2023 18:55, Liam Beguin wrote:
->>>>> Add devicetree bindings for the Linear Technology LTC2309 ADC driver.
->>>>>
->>>>> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
->>>>
->>>> Thank you for your patch. There is something to discuss/improve.
->>>>
->>>>> +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml
->>>>> @@ -0,0 +1,52 @@
->>>>> +# SPDX-License-Identifier: GPL-2.0
->>>>
->>>> Wrong license. Run checkpatch before sending patches.
->>>>
->>>
->>> Sorry about that, I ran it through checkpatch but it didn't flag
->>> anything.
->>
->> No, you didn't, because checkpatch flags it easily:
->>
->> WARNING: DT binding documents should be licensed (GPL-2.0-only OR
->> BSD-2-Clause)
->> #21: FILE: Documentation/devicetree/bindings/iio/adc/lltc,ltc2309.yaml:1:
->> +# SPDX-License-Identifier: GPL-2.0
->>
->> total: 0 errors, 2 warnings, 52 lines checked
-> 
-> It seems like I wasn't running checkpatch in strict mode.
+> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+> ---
 
-No. This was not a strict mode but a regular run. I don't understand why
-you are turning this all the time around... You can easily check by
-yourself and reproduce the warning any time.
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

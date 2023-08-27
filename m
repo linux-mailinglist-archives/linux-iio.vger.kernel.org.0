@@ -2,57 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 123DA78A0E4
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Aug 2023 20:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CDC878A0EE
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Aug 2023 20:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229594AbjH0SJy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Aug 2023 14:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36722 "EHLO
+        id S229956AbjH0SY6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Aug 2023 14:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbjH0SJl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Aug 2023 14:09:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A559AC9;
-        Sun, 27 Aug 2023 11:09:38 -0700 (PDT)
+        with ESMTP id S230038AbjH0SYl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Aug 2023 14:24:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEE8126;
+        Sun, 27 Aug 2023 11:24:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3708E614BA;
-        Sun, 27 Aug 2023 18:09:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA077C433C8;
-        Sun, 27 Aug 2023 18:09:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A55D2612E6;
+        Sun, 27 Aug 2023 18:24:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A9FC433C7;
+        Sun, 27 Aug 2023 18:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693159777;
-        bh=oHb1AKwhAF0IMae6XrrnNKcxQ6DhFENseFL14Fq6aRE=;
+        s=k20201202; t=1693160677;
+        bh=5LBr0PUCmQUw1b5oIphP5l65FL+oB8K9EFBppnUTIQk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lD8Cr212zFmFEYfiRrjTWBDsoKN1OR6MBmCsakTQtYxbV6ucxOcZ+779vTtTlX8qc
-         JaFxaqc38ZVXMTtLWHtUEBECl4nGZ7ahK/vLbksyFLgvvY3mbOc3d3FKb/iMCvI/6K
-         mVIogzegGACTmeHTI3cLN6OrWRV/v2qrZoZTLH+XvogU6qTR3ursJ2HQWVOqbmWCJq
-         cS/XY3dY4bkbZyAALt0qSmgT6E44ok/x7gu8a8pmZCb6glW5NNPYgoEglK71PvMdiV
-         j7uaBhqOkTZohiQwOKv3LuBv/tpCBWFR4kO7nIAKi15gGAqH4gOmKB0jltq5cRJvwo
-         s6ErXopLA5s9Q==
-Date:   Sun, 27 Aug 2023 19:09:55 +0100
+        b=i+IgHp01Yj9sln+/4F7qP4HnOCeycQNohYsUfTG4fOFpkh/v0LBlP8DazmShN5+lQ
+         rnmcwAKEV2tzBRBzyqByE549+M3kbTgumCpKieKHFhcooueXCMneb2YUNl8gt7ZGBK
+         fQcL7U2lZKK0yfHVzAMuXu1+F1Dyzg3OkuFuX2Ns02+Hk0oR6iGWdtRlaoTTyNRyNP
+         8TFHD2gPkqJG6cOUXjKrAroqkKSJ+jp8Z7GqZK82uedSRZpkyoegRpSEr+Cl0kDUjM
+         ttK49IddKAhlTITVp5EZXr69yKbUFcXyyv5DLEQN3KJ942FP+RRT1xZn/dyYDyRcr+
+         Ce8sCWQ3yjCUw==
+Date:   Sun, 27 Aug 2023 19:24:53 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mehdi Djait <mehdi.djait.k@gmail.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
- retrieve number of bytes in buffer
-Message-ID: <20230827190732.5e2215d0@jic23-huawei>
-In-Reply-To: <ZOdrtNQijmhN9RAx@smile.fi.intel.com>
-References: <cover.1692824815.git.mehdi.djait.k@gmail.com>
-        <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
-        <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
-        <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
-        <ZOdddZ0Zpk5CknH8@smile.fi.intel.com>
-        <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
-        <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
-        <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
-        <ZOdrtNQijmhN9RAx@smile.fi.intel.com>
+Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v6 1/6] dt-bindings: iio: adc: mcp3911: add support for
+ the whole MCP39xx family
+Message-ID: <20230827192404.34956e39@jic23-huawei>
+In-Reply-To: <ZN4VrLPKhQIVLxfP@smile.fi.intel.com>
+References: <20230817120518.153728-1-marcus.folkesson@gmail.com>
+        <ZN4VrLPKhQIVLxfP@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -67,62 +72,25 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, 17 Aug 2023 15:42:20 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> > > > > I see. I think my confusion can be easily cured by renaming the callback to
-> > > > >
-> > > > >         get_amount_bytes_in_fifo()
-> > > > >
-> > > > > or
-> > > > >
-> > > > >         get_bytes_in_fifo()
-> > > > >
-> > > > > or alike.  
-> > > >
-> > > > or leave it as is. The function is documented:  
-> > >  
-> > > > + * @get_fifo_bytes: function pointer to get number of bytes in the FIFO buffer  
-> > >
-> > > Do you find it unambiguous? I do not.
-> > >
-> > > Still needs more words to explain if it's a capacity of FIFO or is it amount of
-> > > valid bytes for the current transfer or what?  
-> > 
-> > how about change the description to:
-> > function pointer to get amount  of acceleration data bytes currently
-> > stored in the sensor's FIFO buffer
-> > 
-> > and change the function to "get_amount_bytes_in_fifo()"  
+> On Thu, Aug 17, 2023 at 02:05:13PM +0200, Marcus Folkesson wrote:
+> > Microchip does have many similar chips, add those to the compatible
+> > string as the driver support is extended.  
 > 
-> Sounds good to me, thank you!
+> With properly formed cover letter (and using --base) a maintainer may safe
+> their time by utilizing some features of `b4`. I.e. the
 > 
-Bikeshedding time ;)
-
-I don't like "amount" in this - it ends up adding little meaning
-and to me it is ugly English.  It's making it clear that we are dealing
-with some sort of count but that is already true of get_bytes_in_fifo()
-So to my reading it adds nothing wrt to removing ambiguity.
-
-get_number_of_bytes_in_fifo() flows better but also adds nothing over
-get_bytes_in_fifo()
-
-You could make it clear it is something that changes over time.
-
-get_current_bytes_in_fifo()
-
-Which at least implies it changes - though it doesn't rule out a weird
-variable max size fifo.
-
-get_fifo_bytes_available() might be the clearest option and is the one
-I would prefer.  It's still a little messy as it could mean
-'number of bytes of data that haven't been used yet in the fifo and
- are available for samples in the future'.
-
-Sigh.  Maybe least ambiguous is something longer like.
-
-get_fifo_bytes_available_to_read()
-get_fifo_bytes_available_out()
-
-Honestly I don't care that much what you go with :)
+> 	b4 -slt -M ...
+> 
+> will treat the series as a PR with summary in cover letter taking into merge
+> commit. This is really cool feature and from now on I will require people to
+> submit the series with mandatory cover-letter and --base in use.
+> 
+> BUT. I'm not the maintainer here, so up to Jonathan to decide.
+> 
+Not today, but I'll keep the option in mind.  Thanks for highlighting it.
 
 Jonathan
 

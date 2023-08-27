@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD22789E98
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Aug 2023 15:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA26789EA5
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Aug 2023 15:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230182AbjH0N0g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S230188AbjH0N0g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Sun, 27 Aug 2023 09:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbjH0N0A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Aug 2023 09:26:00 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52037189
-        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 06:25:53 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2bb9a063f26so35797351fa.2
-        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 06:25:53 -0700 (PDT)
+        with ESMTP id S230181AbjH0N0B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Aug 2023 09:26:01 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3217219F
+        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 06:25:54 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4ffa94a7a47so3602944e87.1
+        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 06:25:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693142751; x=1693747551;
+        d=linaro.org; s=google; t=1693142752; x=1693747552;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qq3BxAnxew6Dft2P4UeUZDsOAM3fd799SyMWmIu1TH8=;
-        b=tcf4/N+U7OfMIqQsXoAB94+ahYsqsnBb4AHSeHtkAAymO74IXCoZC/pd9sTltDqeN1
-         kTmArmUjFbVUk9rYVpLtRFiLC/TT2TYzE3waz1l6vX1uSmdGDYPSs23p7oMm5qdqHx1Q
-         1IKJEdZIJKnbbs4Ljp4pUKjEIVb3vMsZgKgXnxWEA6qxv9lXbqUW0nw7oBG4W1jreBpf
-         GJjEdurlbrPRyIq6n9Ce8p5L9gTADTZ1g3Wp1sLvMO68kcCBGE4W0lzdl9wogWJm0Msq
-         FOlR5WanPCA9gxBowSnOdW9boy82TYTjsXvIGnIEdyrYQ6Ms0AI3QRaZPPD68wNc16AX
-         UMKw==
+        bh=VxQdYkyWAirjpetKU3hEnd9sbSo7DDZ8krxceFVfwx0=;
+        b=WxraFvmyJbGsBn5weUymj3BTZVNRLXcC4K/bmmcjvigw4xA0CiagL9hltvq5dXCl4w
+         7AoZ+hFIx3h2hrGUVZa+Zuv9xvkYhu+24059pbQuJMjGAotRkuE1a6kK8+zOqW7YcttY
+         34Q0rOFP9tD1JrbxnCEYuZIKPMirXIP3GH4JwJxhs9/MXt4UOC8nJyA8nJ/6ja+ZiW3y
+         4sV6pqTX8+p+Cb5qHc6YTjCgALv/b3PbRIof5ewTVL6RgJZV9mBV5qU3FCJ3TFD/YE6O
+         2F8Vcc9mZWZZtUAUnMnvjBghRJ+D3a4b+rwCsR/VPOIYRPu7yWNmQDgXQZCZxQ24yVRT
+         N7Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693142751; x=1693747551;
+        d=1e100.net; s=20221208; t=1693142752; x=1693747552;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qq3BxAnxew6Dft2P4UeUZDsOAM3fd799SyMWmIu1TH8=;
-        b=BErGSQs76YY1W5SXigpDF0sg9nUXS36CdYLc4Euhr9ZTN50jEV3TDYUKqAhLSZNPlb
-         DttQk7thgV2rHxwn7fQM3mtkNeBR2siIc9D5pieeCpYOiMQp+p8MgYBZujwkSx/LJfej
-         Ac37VtsW9oGepAXYGHxrLF2r89enCHz3wLwgUBDTb0lPyKYcUU2XcSczLe8sqh2Qy79W
-         huUmRKnFhx0wQEF9rEjRg4o+PZ25Yxq5I5nQ3//cPLB5jLqzdmHGhfgn0TQrjZxkDjPa
-         NAEj5i4n2NV9hYVRdScznxefY2hdPPGtISkC6GD+GEoqNbNKZwcCj5N8hgBwzGGPlvqH
-         26cg==
-X-Gm-Message-State: AOJu0Yx+jTSMuY+rhKEG/cuUQ6N+nNZAjXi3acHr3G7StlOK+zUxg13p
-        vbqXpMzBCE98FFWCAkk6Lo5NTg==
-X-Google-Smtp-Source: AGHT+IE9y3UytJ/mudrDtl6dRfsXiuo6S4/Dz0F4nFElhCHrBvnyCnUR6Tg/ndq+I/sfGEG4+9Y7nA==
-X-Received: by 2002:a05:6512:4026:b0:4ff:80d4:e132 with SMTP id br38-20020a056512402600b004ff80d4e132mr19689019lfb.29.1693142751647;
-        Sun, 27 Aug 2023 06:25:51 -0700 (PDT)
+        bh=VxQdYkyWAirjpetKU3hEnd9sbSo7DDZ8krxceFVfwx0=;
+        b=FTp8Aznc6ZUsPeyWE4ujx4p72o2OUw6u3yA88M1wtrDB28Y8cj7f945M+vJ4jyjY4v
+         nxWKjupIGO7M5wrgPhH0W7msaRmv9vY+7trr/HHt7xU0AGkWDJp9/vNXCXPWMZgczDHx
+         SvjEQt/bH3KHXiYMY3VXM6h/Vw5pJORhwJS/R0taDDUHbw1P7pvBmdgfDqHhN3YilUp3
+         EEseXMafFoHaV7pNdGyQHx9MHoCCdy9WoY8unRAdMZSlyR3XN6Joft2JNLeaADk0mYg7
+         /OeSVaX+2zPbFSV1+505H0DYOohQuIPKdD32PAsZSUKLLkNliBw4pNfdiZUiDayoFjY6
+         nhkA==
+X-Gm-Message-State: AOJu0YwQEkFQfzfZiFqdWWGvDRSEagS+bhh5ekJhQ8N5ajx2DCr5YrRZ
+        i+6nCmwNyGMubYva+4MhPaW3Yw==
+X-Google-Smtp-Source: AGHT+IEBq+432Ra4majFwHLNDn4DD9na78AsL3Xzt2e4u1UryYFsuKO2A+N1Xql9gcQ1R+V5VOQ3oA==
+X-Received: by 2002:a05:6512:2347:b0:4f8:8be4:8a82 with SMTP id p7-20020a056512234700b004f88be48a82mr19569962lfu.22.1693142752538;
+        Sun, 27 Aug 2023 06:25:52 -0700 (PDT)
 Received: from umbar.unikie.fi ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id t9-20020ac243a9000000b004faa2de9877sm1142040lfl.286.2023.08.27.06.25.50
+        by smtp.gmail.com with ESMTPSA id t9-20020ac243a9000000b004faa2de9877sm1142040lfl.286.2023.08.27.06.25.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 27 Aug 2023 06:25:51 -0700 (PDT)
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
@@ -62,9 +62,9 @@ Cc:     Andy Gross <agross@kernel.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
         linux-leds@vger.kernel.org
-Subject: [PATCH v5 30/37] ARM: dts: qcom: mdm9615: move RPM regulators to board files
-Date:   Sun, 27 Aug 2023 16:25:18 +0300
-Message-Id: <20230827132525.951475-31-dmitry.baryshkov@linaro.org>
+Subject: [PATCH v5 31/37] ARM: dts: qcom: msm8660: move RPM regulators to board files
+Date:   Sun, 27 Aug 2023 16:25:19 +0300
+Message-Id: <20230827132525.951475-32-dmitry.baryshkov@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230827132525.951475-1-dmitry.baryshkov@linaro.org>
 References: <20230827132525.951475-1-dmitry.baryshkov@linaro.org>
@@ -85,302 +85,478 @@ of the SoC. Move them to board files.
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- .../boot/dts/qcom/qcom-mdm9615-wp8548.dtsi    | 136 ++++++++++++++++++
- arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi      | 134 -----------------
- 2 files changed, 136 insertions(+), 134 deletions(-)
+ .../dts/qcom/qcom-apq8060-dragonboard.dts     | 141 ++++++++++++------
+ arch/arm/boot/dts/qcom/qcom-msm8660-surf.dts  |  10 ++
+ arch/arm/boot/dts/qcom/qcom-msm8660.dtsi      |  66 --------
+ 3 files changed, 102 insertions(+), 115 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi b/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi
-index 27c3d92d9452..0dd52cac0e2e 100644
---- a/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi
-@@ -134,6 +134,142 @@ &gsbi5_serial {
- 	pinctrl-names = "default";
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts b/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts
+index 10b8f529c337..8b70d4a59c7b 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts
+@@ -453,6 +453,8 @@ &rpm {
+ 	 * that means
+ 	 */
+ 	regulators-0 {
++		compatible = "qcom,rpm-pm8901-regulators";
++
+ 		vdd_l0-supply = <&pm8901_s4>;
+ 		vdd_l1-supply = <&vph>;
+ 		vdd_l2-supply = <&vph>;
+@@ -470,57 +472,63 @@ regulators-0 {
+ 		lvs3_in-supply = <&pm8058_s2>;
+ 		mvs_in-supply = <&pm8058_s3>;
+ 
+-		l0 {
++		pm8901_l0: l0 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 		};
+-		l1 {
++
++		pm8901_l1: l1 {
+ 			regulator-min-microvolt = <3300000>;
+ 			regulator-max-microvolt = <3300000>;
+ 			bias-pull-down;
+ 		};
+-		l2 {
++
++		pm8901_l2: l2 {
+ 			/* TMA340 requires strictly 3.3V */
+ 			regulator-min-microvolt = <3300000>;
+ 			regulator-max-microvolt = <3300000>;
+ 			bias-pull-down;
+ 		};
+-		l3 {
++
++		pm8901_l3: l3 {
+ 			regulator-min-microvolt = <3300000>;
+ 			regulator-max-microvolt = <3300000>;
+ 			bias-pull-down;
+ 		};
+-		l4 {
++
++		pm8901_l4: l4 {
+ 			regulator-min-microvolt = <2600000>;
+ 			regulator-max-microvolt = <2600000>;
+ 			bias-pull-down;
+ 		};
+-		l5 {
++
++		pm8901_l5: l5 {
+ 			regulator-min-microvolt = <2850000>;
+ 			regulator-max-microvolt = <2850000>;
+ 			bias-pull-down;
+ 		};
+-		l6 {
++
++		pm8901_l6: l6 {
+ 			regulator-min-microvolt = <2200000>;
+ 			regulator-max-microvolt = <2200000>;
+ 			bias-pull-down;
+ 		};
+ 
+ 		/* s0 and s1 are SAW regulators controlled over SPM */
+-		s2 {
++		pm8901_s2: s2 {
+ 			regulator-min-microvolt = <1300000>;
+ 			regulator-max-microvolt = <1300000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+ 			bias-pull-down;
+ 		};
+-		s3 {
++		pm8901_s3: s3 {
+ 			regulator-min-microvolt = <1100000>;
+ 			regulator-max-microvolt = <1100000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+ 			bias-pull-down;
+ 		};
+-		s4 {
++		pm8901_s4: s4 {
+ 			regulator-min-microvolt = <1225000>;
+ 			regulator-max-microvolt = <1225000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+@@ -528,17 +536,22 @@ s4 {
+ 		};
+ 
+ 		/* LVS0 thru 3 and mvs are just switches */
+-		lvs0 {
++		pm8901_lvs0: lvs0 {
+ 			regulator-always-on;
+ 		};
+-		lvs1 { };
+-		lvs2 { };
+-		lvs3 { };
+-		mvs { };
+ 
++		pm8901_lvs1: lvs1 { };
++
++		pm8901_lvs2: lvs2 { };
++
++		pm8901_lvs3: lvs3 { };
++
++		pm8901_mvs: mvs { };
+ 	};
+ 
+ 	regulators-1 {
++		compatible = "qcom,rpm-pm8058-regulators";
++
+ 		vdd_l0_l1_lvs-supply = <&pm8058_s3>;
+ 		vdd_l2_l11_l12-supply = <&vph>;
+ 		vdd_l3_l4_l5-supply = <&vph>;
+@@ -560,144 +573,169 @@ regulators-1 {
+ 		vdd_s4-supply = <&vph>;
+ 		vdd_ncp-supply = <&vph>;
+ 
+-		l0 {
++		pm8058_l0: l0 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 		};
+-		l1 {
++
++		pm8058_l1: l1 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 		};
+-		l2 {
++
++		pm8058_l2: l2 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <2600000>;
+ 			bias-pull-down;
+ 		};
+-		l3 {
++
++		pm8058_l3: l3 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			bias-pull-down;
+ 		};
+-		l4 {
++
++		pm8058_l4: l4 {
+ 			regulator-min-microvolt = <2850000>;
+ 			regulator-max-microvolt = <2850000>;
+ 			bias-pull-down;
+ 		};
+-		l5 {
++
++		pm8058_l5: l5 {
+ 			regulator-min-microvolt = <2850000>;
+ 			regulator-max-microvolt = <2850000>;
+ 			bias-pull-down;
+ 		};
+-		l6 {
++
++		pm8058_l6: l6 {
+ 			regulator-min-microvolt = <3000000>;
+ 			regulator-max-microvolt = <3600000>;
+ 			bias-pull-down;
+ 		};
+-		l7 {
++
++		pm8058_l7: l7 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			bias-pull-down;
+ 		};
+-		l8 {
++
++		pm8058_l8: l8 {
+ 			regulator-min-microvolt = <2900000>;
+ 			regulator-max-microvolt = <3050000>;
+ 			bias-pull-down;
+ 		};
+-		l9 {
++
++		pm8058_l9: l9 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			bias-pull-down;
+ 		};
+-		l10 {
++
++		pm8058_l10: l10 {
+ 			regulator-min-microvolt = <2600000>;
+ 			regulator-max-microvolt = <2600000>;
+ 			bias-pull-down;
+ 		};
+-		l11 {
++
++		pm8058_l11: l11 {
+ 			regulator-min-microvolt = <1500000>;
+ 			regulator-max-microvolt = <1500000>;
+ 			bias-pull-down;
+ 		};
+-		l12 {
++
++		pm8058_l12: l12 {
+ 			regulator-min-microvolt = <2900000>;
+ 			regulator-max-microvolt = <2900000>;
+ 			bias-pull-down;
+ 		};
+-		l13 {
++
++		pm8058_l13: l13 {
+ 			regulator-min-microvolt = <2050000>;
+ 			regulator-max-microvolt = <2050000>;
+ 			bias-pull-down;
+ 		};
+-		l14 {
++
++		pm8058_l14: l14 {
+ 			regulator-min-microvolt = <2850000>;
+ 			regulator-max-microvolt = <2850000>;
+ 		};
+-		l15 {
++
++		pm8058_l15: l15 {
+ 			regulator-min-microvolt = <2850000>;
+ 			regulator-max-microvolt = <2850000>;
+ 			bias-pull-down;
+ 		};
+-		l16 {
++
++		pm8058_l16: l16 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			bias-pull-down;
+ 			regulator-always-on;
+ 		};
+-		l17 {
++
++		pm8058_l17: l17 {
+ 			// 1.5V according to schematic
+ 			regulator-min-microvolt = <2600000>;
+ 			regulator-max-microvolt = <2600000>;
+ 			bias-pull-down;
+ 		};
+-		l18 {
++
++		pm8058_l18: l18 {
+ 			regulator-min-microvolt = <2200000>;
+ 			regulator-max-microvolt = <2200000>;
+ 			bias-pull-down;
+ 		};
+-		l19 {
++
++		pm8058_l19: l19 {
+ 			regulator-min-microvolt = <2500000>;
+ 			regulator-max-microvolt = <2500000>;
+ 			bias-pull-down;
+ 		};
+-		l20 {
++
++		pm8058_l20: l20 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			bias-pull-down;
+ 		};
+-		l21 {
++
++		pm8058_l21: l21 {
+ 			// 1.1 V according to schematic
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 			regulator-always-on;
+ 		};
+-		l22 {
++
++		pm8058_l22: l22 {
+ 			// 1.2 V according to schematic
+ 			regulator-min-microvolt = <1150000>;
+ 			regulator-max-microvolt = <1150000>;
+ 			bias-pull-down;
+ 		};
+-		l23 {
++
++		pm8058_l23: l23 {
+ 			// Unused
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 		};
+-		l24 {
++
++		pm8058_l24: l24 {
+ 			// Unused
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 		};
+-		l25 {
++
++		pm8058_l25: l25 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			bias-pull-down;
+ 		};
+ 
+-		s0 {
++		pm8058_s0: s0 {
+ 			// regulator-min-microvolt = <500000>;
+ 			// regulator-max-microvolt = <1325000>;
+ 			regulator-min-microvolt = <1100000>;
+@@ -705,7 +743,8 @@ s0 {
+ 			qcom,switch-mode-frequency = <1600000>;
+ 			bias-pull-down;
+ 		};
+-		s1 {
++
++		pm8058_s1: s1 {
+ 			// regulator-min-microvolt = <500000>;
+ 			// regulator-max-microvolt = <1250000>;
+ 			regulator-min-microvolt = <1100000>;
+@@ -713,21 +752,24 @@ s1 {
+ 			qcom,switch-mode-frequency = <1600000>;
+ 			bias-pull-down;
+ 		};
+-		s2 {
++
++		pm8058_s2: s2 {
+ 			// 1.3 V according to schematic
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1400000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+ 			bias-pull-down;
+ 		};
+-		s3 {
++
++		pm8058_s3: s3 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+ 			regulator-always-on;
+ 			bias-pull-down;
+ 		};
+-		s4 {
++
++		pm8058_s4: s4 {
+ 			regulator-min-microvolt = <2200000>;
+ 			regulator-max-microvolt = <2200000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+@@ -736,14 +778,15 @@ s4 {
+ 		};
+ 
+ 		/* LVS0 and LVS1 are just switches */
+-		lvs0 {
++		pm8058_lvs0: lvs0 {
+ 			bias-pull-down;
+ 		};
+-		lvs1 {
++
++		pm8058_lvs1: lvs1 {
+ 			bias-pull-down;
+ 		};
+ 
+-		ncp {
++		pm8058_ncp: ncp {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			qcom,switch-mode-frequency = <1600000>;
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8660-surf.dts b/arch/arm/boot/dts/qcom/qcom-msm8660-surf.dts
+index be2fbc1e0950..69fe651f564d 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8660-surf.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8660-surf.dts
+@@ -65,6 +65,16 @@ MATRIX_KEY(5, 4, KEY_MENU)
+ 	keypad,num-columns = <5>;
  };
  
 +&rpm {
-+	regulators {
-+		compatible = "qcom,rpm-pm8018-regulators";
++	regulators-0 {
++		compatible = "qcom,rpm-pm8901-regulators";
++	};
 +
-+		vin_lvs1-supply = <&pm8018_s3>;
-+
-+		vdd_l7-supply = <&pm8018_s4>;
-+		vdd_l8-supply = <&pm8018_s3>;
-+		vdd_l9_l10_l11_l12-supply = <&pm8018_s5>;
-+
-+		/* Buck SMPS */
-+		pm8018_s1: s1 {
-+			regulator-min-microvolt = <500000>;
-+			regulator-max-microvolt = <1150000>;
-+			qcom,switch-mode-frequency = <1600000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_s2: s2 {
-+			regulator-min-microvolt = <1225000>;
-+			regulator-max-microvolt = <1300000>;
-+			qcom,switch-mode-frequency = <1600000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_s3: s3 {
-+			regulator-always-on;
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			qcom,switch-mode-frequency = <1600000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_s4: s4 {
-+			regulator-min-microvolt = <2100000>;
-+			regulator-max-microvolt = <2200000>;
-+			qcom,switch-mode-frequency = <1600000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_s5: s5 {
-+			regulator-always-on;
-+			regulator-min-microvolt = <1350000>;
-+			regulator-max-microvolt = <1350000>;
-+			qcom,switch-mode-frequency = <1600000>;
-+			bias-pull-down;
-+		};
-+
-+		/* PMOS LDO */
-+		pm8018_l2: l2 {
-+			regulator-always-on;
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l3: l3 {
-+			regulator-always-on;
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l4: l4 {
-+			regulator-min-microvolt = <3300000>;
-+			regulator-max-microvolt = <3300000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l5: l5 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l6: l6 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2850000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l7: l7 {
-+			regulator-min-microvolt = <1850000>;
-+			regulator-max-microvolt = <1900000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l8: l8 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1200000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l9: l9 {
-+			regulator-min-microvolt = <750000>;
-+			regulator-max-microvolt = <1150000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l10: l10 {
-+			regulator-min-microvolt = <1050000>;
-+			regulator-max-microvolt = <1050000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l11: l11 {
-+			regulator-min-microvolt = <1050000>;
-+			regulator-max-microvolt = <1050000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l12: l12 {
-+			regulator-min-microvolt = <1050000>;
-+			regulator-max-microvolt = <1050000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l13: l13 {
-+			regulator-min-microvolt = <1850000>;
-+			regulator-max-microvolt = <2950000>;
-+			bias-pull-down;
-+		};
-+
-+		pm8018_l14: l14 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+			bias-pull-down;
-+		};
-+
-+		/* Low Voltage Switch */
-+		pm8018_lvs1: lvs1 {
-+			bias-pull-down;
-+		};
++	regulators-1 {
++		compatible = "qcom,rpm-pm8058-regulators";
 +	};
 +};
 +
+ /* eMMC */
  &sdcc1 {
- 	status = "okay";
- };
-diff --git a/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi b/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi
-index e23ca6c42683..07e712e890f6 100644
---- a/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi
-@@ -338,140 +338,6 @@ rpm: rpm@108000 {
- 				     <GIC_SPI 21 IRQ_TYPE_EDGE_RISING>,
- 				     <GIC_SPI 22 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "ack", "err", "wakeup";
+ 	vmmc-supply = <&vsdcc_fixed>;
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi
+index eef4712bbcc4..a7c245b9c8f9 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi
+@@ -347,72 +347,6 @@ rpmcc: clock-controller {
+ 				clocks = <&pxo_board>;
+ 				clock-names = "pxo";
+ 			};
 -
--			regulators {
--				compatible = "qcom,rpm-pm8018-regulators";
+-			regulators-0 {
+-				compatible = "qcom,rpm-pm8901-regulators";
 -
--				vin_lvs1-supply = <&pm8018_s3>;
+-				pm8901_l0: l0 {};
+-				pm8901_l1: l1 {};
+-				pm8901_l2: l2 {};
+-				pm8901_l3: l3 {};
+-				pm8901_l4: l4 {};
+-				pm8901_l5: l5 {};
+-				pm8901_l6: l6 {};
 -
--				vdd_l7-supply = <&pm8018_s4>;
--				vdd_l8-supply = <&pm8018_s3>;
--				vdd_l9_l10_l11_l12-supply = <&pm8018_s5>;
+-				/* S0 and S1 Handled as SAW regulators by SPM */
+-				pm8901_s2: s2 {};
+-				pm8901_s3: s3 {};
+-				pm8901_s4: s4 {};
 -
--				/* Buck SMPS */
--				pm8018_s1: s1 {
--					regulator-min-microvolt = <500000>;
--					regulator-max-microvolt = <1150000>;
--					qcom,switch-mode-frequency = <1600000>;
--					bias-pull-down;
--				};
+-				pm8901_lvs0: lvs0 {};
+-				pm8901_lvs1: lvs1 {};
+-				pm8901_lvs2: lvs2 {};
+-				pm8901_lvs3: lvs3 {};
 -
--				pm8018_s2: s2 {
--					regulator-min-microvolt = <1225000>;
--					regulator-max-microvolt = <1300000>;
--					qcom,switch-mode-frequency = <1600000>;
--					bias-pull-down;
--				};
+-				pm8901_mvs: mvs {};
+-			};
 -
--				pm8018_s3: s3 {
--					regulator-always-on;
--					regulator-min-microvolt = <1800000>;
--					regulator-max-microvolt = <1800000>;
--					qcom,switch-mode-frequency = <1600000>;
--					bias-pull-down;
--				};
+-			regulators-1 {
+-				compatible = "qcom,rpm-pm8058-regulators";
 -
--				pm8018_s4: s4 {
--					regulator-min-microvolt = <2100000>;
--					regulator-max-microvolt = <2200000>;
--					qcom,switch-mode-frequency = <1600000>;
--					bias-pull-down;
--				};
+-				pm8058_l0: l0 {};
+-				pm8058_l1: l1 {};
+-				pm8058_l2: l2 {};
+-				pm8058_l3: l3 {};
+-				pm8058_l4: l4 {};
+-				pm8058_l5: l5 {};
+-				pm8058_l6: l6 {};
+-				pm8058_l7: l7 {};
+-				pm8058_l8: l8 {};
+-				pm8058_l9: l9 {};
+-				pm8058_l10: l10 {};
+-				pm8058_l11: l11 {};
+-				pm8058_l12: l12 {};
+-				pm8058_l13: l13 {};
+-				pm8058_l14: l14 {};
+-				pm8058_l15: l15 {};
+-				pm8058_l16: l16 {};
+-				pm8058_l17: l17 {};
+-				pm8058_l18: l18 {};
+-				pm8058_l19: l19 {};
+-				pm8058_l20: l20 {};
+-				pm8058_l21: l21 {};
+-				pm8058_l22: l22 {};
+-				pm8058_l23: l23 {};
+-				pm8058_l24: l24 {};
+-				pm8058_l25: l25 {};
 -
--				pm8018_s5: s5 {
--					regulator-always-on;
--					regulator-min-microvolt = <1350000>;
--					regulator-max-microvolt = <1350000>;
--					qcom,switch-mode-frequency = <1600000>;
--					bias-pull-down;
--				};
+-				pm8058_s0: s0 {};
+-				pm8058_s1: s1 {};
+-				pm8058_s2: s2 {};
+-				pm8058_s3: s3 {};
+-				pm8058_s4: s4 {};
 -
--				/* PMOS LDO */
--				pm8018_l2: l2 {
--					regulator-always-on;
--					regulator-min-microvolt = <1800000>;
--					regulator-max-microvolt = <1800000>;
--					bias-pull-down;
--				};
+-				pm8058_lvs0: lvs0 {};
+-				pm8058_lvs1: lvs1 {};
 -
--				pm8018_l3: l3 {
--					regulator-always-on;
--					regulator-min-microvolt = <1800000>;
--					regulator-max-microvolt = <1800000>;
--					bias-pull-down;
--				};
--
--				pm8018_l4: l4 {
--					regulator-min-microvolt = <3300000>;
--					regulator-max-microvolt = <3300000>;
--					bias-pull-down;
--				};
--
--				pm8018_l5: l5 {
--					regulator-min-microvolt = <2850000>;
--					regulator-max-microvolt = <2850000>;
--					bias-pull-down;
--				};
--
--				pm8018_l6: l6 {
--					regulator-min-microvolt = <1800000>;
--					regulator-max-microvolt = <2850000>;
--					bias-pull-down;
--				};
--
--				pm8018_l7: l7 {
--					regulator-min-microvolt = <1850000>;
--					regulator-max-microvolt = <1900000>;
--					bias-pull-down;
--				};
--
--				pm8018_l8: l8 {
--					regulator-min-microvolt = <1200000>;
--					regulator-max-microvolt = <1200000>;
--					bias-pull-down;
--				};
--
--				pm8018_l9: l9 {
--					regulator-min-microvolt = <750000>;
--					regulator-max-microvolt = <1150000>;
--					bias-pull-down;
--				};
--
--				pm8018_l10: l10 {
--					regulator-min-microvolt = <1050000>;
--					regulator-max-microvolt = <1050000>;
--					bias-pull-down;
--				};
--
--				pm8018_l11: l11 {
--					regulator-min-microvolt = <1050000>;
--					regulator-max-microvolt = <1050000>;
--					bias-pull-down;
--				};
--
--				pm8018_l12: l12 {
--					regulator-min-microvolt = <1050000>;
--					regulator-max-microvolt = <1050000>;
--					bias-pull-down;
--				};
--
--				pm8018_l13: l13 {
--					regulator-min-microvolt = <1850000>;
--					regulator-max-microvolt = <2950000>;
--					bias-pull-down;
--				};
--
--				pm8018_l14: l14 {
--					regulator-min-microvolt = <2850000>;
--					regulator-max-microvolt = <2850000>;
--					bias-pull-down;
--				};
--
--				/* Low Voltage Switch */
--				pm8018_lvs1: lvs1 {
--					bias-pull-down;
--				};
+-				pm8058_ncp: ncp {};
 -			};
  		};
- 	};
- };
+ 
+ 		amba {
 -- 
 2.39.2
 

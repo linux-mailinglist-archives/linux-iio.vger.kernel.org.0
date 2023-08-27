@@ -2,46 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2710F78A04E
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Aug 2023 18:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE28278A051
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Aug 2023 18:59:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbjH0QxP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Aug 2023 12:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35758 "EHLO
+        id S229817AbjH0Q6m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Aug 2023 12:58:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbjH0QxA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Aug 2023 12:53:00 -0400
+        with ESMTP id S229853AbjH0Q6Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Aug 2023 12:58:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F6F126
-        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB306106
+        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 09:58:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C88A6121E
-        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 16:52:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B094C433C7;
-        Sun, 27 Aug 2023 16:52:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E1336109A
+        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 16:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9D1C433C8;
+        Sun, 27 Aug 2023 16:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693155174;
-        bh=sNPfudDErK++d7E2enryhljjTmiFLGuh6TImRz1WxYM=;
+        s=k20201202; t=1693155502;
+        bh=Z+cE7+gAHqJGe8NItGJLieEqxdYjp2p6vkeJ3RZJRes=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=l7m2gkifymT7uGqhCuNQLDxnbtd28vjVzXSbSKaQWOmG77AC68virfbpeS3bqtkz1
-         TVGfMZom+S1p5LMsP+075CEWaja9s7oT2yzvuCErd9M6EN1rhzJnwuagzaZDBmBcec
-         2eIouUnfp9OY8OiJtNJMH2Dsa9YKH1CEAn0WMHMnNFDkGKvZFPu3hcgCeeXkp+7u/T
-         bPoD84l/OcpRdcJ+ImCviPrxgBcQ3Vy61zRLcXT+AuHV0QATXwgUIcmQw8pbrxEj+9
-         XyXSYu3UFKvNa+6SJFrarDiodJartk09p1AHvl83niDEGwRXkgzXdB1qcm03F6GN5C
-         9uCyceuz6XUWw==
-Date:   Sun, 27 Aug 2023 17:53:15 +0100
+        b=q3zj6k8XagjHSzGDWtjzzcOav/qWyeTZki7s0WUUy4KDb8sS3jJSYEGDT9HBT0hFr
+         tYQYv0nfGarbkFXG7rm0O4ICZM73oFZ+ojYX3lOoycdOI6efihNrAotVMU7LtmtDqA
+         xDaLAjF16SECwvog4iu3PYnc3iQf/4WiXnOa/3O+mJjAGZ/k2s4TYb9tWzDsk3Vz8U
+         bGPmyWToJdQB2JCjdmxeoqQe/R9cgEtqTS1+HMQL/ty/YzviQXqeIdeQskA+Gnoymy
+         HT60216NGsZV+j2n3YJu7+iyZxloiOR/YA2ZL9qsv77DoEUSjd4ZWJba7M28+1cNge
+         bkqcsrh15VeiQ==
+Date:   Sun, 27 Aug 2023 17:58:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jinjie Ruan <ruanjinjie@huawei.com>
-Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH -next v2] iio: frequency: adf4350: Use device managed
- functions
-Message-ID: <20230827175315.4e1c96ed@jic23-huawei>
-In-Reply-To: <20230826064131.3773530-1-ruanjinjie@huawei.com>
-References: <20230826064131.3773530-1-ruanjinjie@huawei.com>
+Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH -next v2 2/2] iio: adc: spear_adc: Use dev_err_probe()
+Message-ID: <20230827175843.6e74d7cc@jic23-huawei>
+In-Reply-To: <20230826062733.3714169-3-ruanjinjie@huawei.com>
+References: <20230826062733.3714169-1-ruanjinjie@huawei.com>
+        <20230826062733.3714169-3-ruanjinjie@huawei.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,182 +55,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 26 Aug 2023 14:41:30 +0800
+On Sat, 26 Aug 2023 14:27:32 +0800
 Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 
-> The devm_clk_get_enabled() helper:
->     - calls devm_clk_get()
->     - calls clk_prepare_enable() and registers what is needed in order to
->       call clk_disable_unprepare() when needed, as a managed resource.
-> 
-> Also replace devm_regulator_get() and regulator_enable() with
-> devm_regulator_get_enable() helper and remove regulator_disable().
-> 
-> Replace iio_device_register() with devm_iio_device_register() and remove
-> iio_device_unregister().
-> 
-> And st->reg is not used anymore, so remove it.
-> 
-> This simplifies the code.
+> Use the dev_err_probe() helper to simplify error handling during probe.
+> This also handle scenario, when EDEFER is returned and useless error
+> is printed.
 > 
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> ---
+>  drivers/iio/adc/spear_adc.c | 24 ++++++++----------------
+>  1 file changed, 8 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+> index d24adacfdf53..0ccda1cd0add 100644
+> --- a/drivers/iio/adc/spear_adc.c
+> +++ b/drivers/iio/adc/spear_adc.c
+> @@ -274,10 +274,8 @@ static int spear_adc_probe(struct platform_device *pdev)
+>  	int irq;
+>  
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(struct spear_adc_state));
+> -	if (!indio_dev) {
+> -		dev_err(dev, "failed allocating iio device\n");
+> -		return -ENOMEM;
+> -	}
+> +	if (!indio_dev)
+> +		return dev_err_probe(dev, -ENOMEM, "failed allocating iio device\n");
 
-Hi Jinjie,
+Whilst 100 chars tends to be allowed if it helps readability, in cases
+like this one, where it makes very little difference to how easy the code is
+to read, keep to max 80 chars.
 
-This patch has exposed what looks like a minor bug to me in the existing code.
-I think we should fix that as part of your changes. It's an obscure enough race
-condition and lack of powering down on error, that I don't think we need to
-separate the fix out from the main patch.
+I've added some line breaks whilst applying.
 
-The short description (more inline) is register an additional devm callback
-to set the device into software controlled power down mode after the device
-is unregistered (and equivalent in the error path.)
+Series applied to the togreg branch of iio.git and pushed out as testing.
+I'll be rebasing on rc1 once available so I won't push this out for linux-next
+to pick up until I've done that in a few weeks time.
 
-Sorry this turned out to be more complex than expected!
+Nice cleanup.
 
 Thanks,
 
 Jonathan
- 
-> ---
-> v2:
-> - Also use devm_regulator_get_enable() and devm_iio_device_register().
-> - Update the commit message and title.
-> ---
->  drivers/iio/frequency/adf4350.c | 52 ++++++++-------------------------
->  1 file changed, 12 insertions(+), 40 deletions(-)
-> 
-> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-> index 85e289700c3c..b38d024529eb 100644
-> --- a/drivers/iio/frequency/adf4350.c
-> +++ b/drivers/iio/frequency/adf4350.c
-> @@ -33,7 +33,6 @@ enum {
->  
->  struct adf4350_state {
->  	struct spi_device		*spi;
-> -	struct regulator		*reg;
->  	struct gpio_desc		*lock_detect_gpiod;
->  	struct adf4350_platform_data	*pdata;
->  	struct clk			*clk;
-> @@ -491,29 +490,20 @@ static int adf4350_probe(struct spi_device *spi)
->  	}
->  
->  	if (!pdata->clkin) {
-> -		clk = devm_clk_get(&spi->dev, "clkin");
-> +		clk = devm_clk_get_enabled(&spi->dev, "clkin");
->  		if (IS_ERR(clk))
-> -			return -EPROBE_DEFER;
-> -
-> -		ret = clk_prepare_enable(clk);
-> -		if (ret < 0)
-> -			return ret;
-> +			return PTR_ERR(clk);
->  	}
->  
->  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> -	if (indio_dev == NULL) {
-> -		ret =  -ENOMEM;
-> -		goto error_disable_clk;
-> -	}
-> +	if (indio_dev == NULL)
-> +		return -ENOMEM;
+
 >  
 >  	st = iio_priv(indio_dev);
 >  
-> -	st->reg = devm_regulator_get(&spi->dev, "vcc");
-> -	if (!IS_ERR(st->reg)) {
-> -		ret = regulator_enable(st->reg);
-> -		if (ret)
-> -			goto error_disable_clk;
+> @@ -298,10 +296,8 @@ static int spear_adc_probe(struct platform_device *pdev)
+>  		(struct adc_regs_spear3xx __iomem *)st->adc_base_spear6xx;
+>  
+>  	st->clk = devm_clk_get_enabled(dev, NULL);
+> -	if (IS_ERR(st->clk)) {
+> -		dev_err(dev, "failed enabling clock\n");
+> -		return PTR_ERR(st->clk);
 > -	}
-> +	ret = devm_regulator_get_enable(&spi->dev, "vcc");
-> +	if (ret)
-> +		return ret;
+> +	if (IS_ERR(st->clk))
+> +		return dev_err_probe(dev, PTR_ERR(st->clk), "failed enabling clock\n");
 >  
->  	spi_set_drvdata(spi, indio_dev);
->  	st->spi = spi;
-> @@ -544,47 +534,29 @@ static int adf4350_probe(struct spi_device *spi)
+>  	irq = platform_get_irq(pdev, 0);
+>  	if (irq < 0)
+> @@ -309,16 +305,12 @@ static int spear_adc_probe(struct platform_device *pdev)
 >  
->  	st->lock_detect_gpiod = devm_gpiod_get_optional(&spi->dev, NULL,
->  							GPIOD_IN);
-> -	if (IS_ERR(st->lock_detect_gpiod)) {
-> -		ret = PTR_ERR(st->lock_detect_gpiod);
-> -		goto error_disable_reg;
+>  	ret = devm_request_irq(dev, irq, spear_adc_isr, 0, SPEAR_ADC_MOD_NAME,
+>  			       st);
+> -	if (ret < 0) {
+> -		dev_err(dev, "failed requesting interrupt\n");
+> -		return ret;
 > -	}
-> +	if (IS_ERR(st->lock_detect_gpiod))
-> +		return PTR_ERR(st->lock_detect_gpiod);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "failed requesting interrupt\n");
 >  
->  	if (pdata->power_up_frequency) {
->  		ret = adf4350_set_freq(st, pdata->power_up_frequency);
->  		if (ret)
-> -			goto error_disable_reg;
-> +			return ret;
->  	}
+>  	if (of_property_read_u32(np, "sampling-frequency",
+> -				 &st->sampling_freq)) {
+> -		dev_err(dev, "sampling-frequency missing in DT\n");
+> -		return -EINVAL;
+> -	}
+> +				 &st->sampling_freq))
+> +		return dev_err_probe(dev, -EINVAL, "sampling-frequency missing in DT\n");
 >  
-> -	ret = iio_device_register(indio_dev);
-> +	ret = devm_iio_device_register(&spi->dev, indio_dev);
->  	if (ret)
-> -		goto error_disable_reg;
-> +		return ret;
->  
->  	return 0;
-> -
-> -error_disable_reg:
-> -	if (!IS_ERR(st->reg))
-> -		regulator_disable(st->reg);
-> -error_disable_clk:
-> -	clk_disable_unprepare(clk);
-> -
-> -	return ret;
->  }
->  
->  static void adf4350_remove(struct spi_device *spi)
->  {
->  	struct iio_dev *indio_dev = spi_get_drvdata(spi);
->  	struct adf4350_state *st = iio_priv(indio_dev);
-> -	struct regulator *reg = st->reg;
->  
->  	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
->  	adf4350_sync_config(st);
-
-Unfortunately this shouts "bug" at me.  Nothing to do with your change
-as such, but it's made a lot more obvious by it.
-
-Couple of things that are wrong.
-
-1) The device is powered down 'before' we unregister it with the
-   subsystem and as such userspace interfaces are still exposed which
-   probably won't do the right thing if the chip is powered down.
-
-2) This isn't done in the error paths in probe.
-
-The actual register update here "sort of" balances (in a fairly non obvious fashion)
-one in adf4350_set_freq() so I would register a new callback with devm_add_action_or_reset()
-after this block
-  	if (pdata->power_up_frequency) {
- 		ret = adf4350_set_freq(st, pdata->power_up_frequency);
-  		if (ret)
- +			return ret;
-  	}
-(here)
-
-that runs
-  	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
-  	adf4350_sync_config(st);
-
-in both error and remove paths.  Doing that will let us get
-rid of the remove function completely.
-
-
-> -
-> -	iio_device_unregister(indio_dev);
-> -
-> -	clk_disable_unprepare(st->clk);
-> -
-> -	if (!IS_ERR(reg))
-> -		regulator_disable(reg);
->  }
->  
->  static const struct of_device_id adf4350_of_match[] = {
+>  	/*
+>  	 * Optional avg_samples defaults to 0, resulting in single data
 

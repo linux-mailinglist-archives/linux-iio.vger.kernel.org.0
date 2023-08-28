@@ -2,74 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05B2F78B22E
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 15:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3715378B22F
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 15:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbjH1NoW convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 28 Aug 2023 09:44:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
+        id S229905AbjH1Noy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 09:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230423AbjH1NoM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 09:44:12 -0400
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83FCDA3;
-        Mon, 28 Aug 2023 06:44:08 -0700 (PDT)
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-591ba8bd094so38081867b3.3;
-        Mon, 28 Aug 2023 06:44:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693230247; x=1693835047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nCn7X4SYn2LsLooEbK0lCsA9sbKj3FbEDo96IuhwGMQ=;
-        b=I4ZD51dbnkP2D0mYGyHWmCPnJcvIgvklmHXTF7PXCGJZTYxSddu/8lOoWb1Acyw9Ym
-         QXUorrNxUcZwYGIlsl/nMJe0WeGPIO98ysAHLWLQUUWiTa38LU732lBhJlosBmq9i/KC
-         G0eaxgf4QLKmoOoKKXyCIQOiyiXHotsKUBRO1UyHYquJhT45b9983bknpfnluKKg1fqV
-         vG+jt10WBgMRQQ5M+Cg6FjLJdSeCeaxKO/k0AxCxSfx2oWP9lj1PHx/zf41kNgg2XLOH
-         dOFcO921N3ZjEuuH+gWXS3eJfIizb7jYFtREmeyxUP8i3SipEorrq8rZsDXSYCK9L7Yc
-         GSNw==
-X-Gm-Message-State: AOJu0Yxfjjo37yU8p6KLqcmE2SzN6nDZe3SiWKHmJjqNVESdFOPuC0nm
-        A1O+tiNWRziUAh0i5cre2v4WFd+Kg1xCqA==
-X-Google-Smtp-Source: AGHT+IHtJJlNC0V09/KS6/Ro7bNgW53zr/lEKZL0GKHEheM4m2pgZ6z+Hg47Gw21B60RmoNflkhaZA==
-X-Received: by 2002:a81:b659:0:b0:595:1cb4:8921 with SMTP id h25-20020a81b659000000b005951cb48921mr4374665ywk.13.1693230247517;
-        Mon, 28 Aug 2023 06:44:07 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id p185-20020a0de6c2000000b005865494000dsm2130322ywe.115.2023.08.28.06.44.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Aug 2023 06:44:07 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-d78328bc2abso2905681276.2;
-        Mon, 28 Aug 2023 06:44:07 -0700 (PDT)
-X-Received: by 2002:a25:48d:0:b0:d7a:d923:4493 with SMTP id
- 135-20020a25048d000000b00d7ad9234493mr5361752ybe.64.1693230247094; Mon, 28
- Aug 2023 06:44:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230818190429.338065-1-biju.das.jz@bp.renesas.com>
- <20230828133525.5afaea4f@jic23-huawei> <OS0PR01MB59225F5472B4BE500429394C86E0A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-In-Reply-To: <OS0PR01MB59225F5472B4BE500429394C86E0A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 28 Aug 2023 15:43:55 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUEtjrEUCPk_G-kAyp8oEDu21oU+BwWVCZ8N4JJ6VTJUg@mail.gmail.com>
-Message-ID: <CAMuHMdUEtjrEUCPk_G-kAyp8oEDu21oU+BwWVCZ8N4JJ6VTJUg@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: chemical: vz89x: Convert enum->pointer for data
- in the match tables
+        with ESMTP id S230423AbjH1Noi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 09:44:38 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B13D8;
+        Mon, 28 Aug 2023 06:44:34 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (117.145-247-81.adsl-dyn.isp.belgacom.be [81.247.145.117])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id C70482D8;
+        Mon, 28 Aug 2023 15:43:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1693230191;
+        bh=Q421iyHecR8gDgk819+wnsxoOAwEwRcjEy6a+o93vfw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=l5CYFivHdcKjvz6B2E2/fynloy7sko6x+rOhhOPgixU5waMvaNwOwtP7CbgzP5g5r
+         hh/UY8AxFg5vus9STIKcNSuYiBkzXtQybtOfGfp7lmmdvxJ33dw/JcgTFS4oMjKjHX
+         Td+meB7eVhsl5Rf69REmjKQJ1OK63o/h8ETsL8SE=
+Date:   Mon, 28 Aug 2023 16:44:42 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Biju Das <biju.das.jz@bp.renesas.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: dac: ti-dac5571: Use i2c_get_match_data()
+Message-ID: <20230828134442.GL14596@pendragon.ideasonboard.com>
+References: <20230818173907.323640-1-biju.das.jz@bp.renesas.com>
+ <20230818173907.323640-2-biju.das.jz@bp.renesas.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230818173907.323640-2-biju.das.jz@bp.renesas.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,40 +55,106 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Biju,
 
-On Mon, Aug 28, 2023 at 2:43 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > Subject: Re: [PATCH v2] iio: chemical: vz89x: Convert enum->pointer for
-> > data in the match tables
-> >
-> > On Fri, 18 Aug 2023 20:04:29 +0100
-> > Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> >
-> > > Convert enum->pointer for data in the match tables, so that
-> > > device_get_match_data() can do match against OF/ACPI/I2C tables, once
-> > > i2c bus type match support added to it.
-> > >
-> > > Replace enum->struct *vz89x_chip_data for data in the match table.
-> > > Simplify the probe() by replacing device_get_match_data() and ID
-> > > lookup for retrieving data by i2c_get_match_data().
-> > >
-> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >
-> > Biju,
-> >
-> > Make sure you cc the driver authors etc.
->
-> Normally, I ran a script against the patch to get details and additionally I add Geert, renesas-soc , Andy in Cc list.
+Thank you for the patch.
 
-I don't think there is a need to add renesas-soc (or me, FWIW ;-), unless
-the specific device is used on Renesas platforms.
+On Fri, Aug 18, 2023 at 06:39:06PM +0100, Biju Das wrote:
+> Replace device_get_match_data() and id lookup for retrieving match data
+> by i2c_get_match_data() by converting enum->pointer for data in the
+> match table.
+> 
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-Gr{oetje,eeting}s,
+The change looks fine, but a commit message that explains why would
+be nice, the same way you have done with a similar modification in a DRM
+bridge driver.
 
-                        Geert
+> ---
+> v1->v2:
+>  * No change.
+> ---
+>  drivers/iio/dac/ti-dac5571.c | 48 ++++++++++++++++--------------------
+>  1 file changed, 21 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
+> index bab11b9adc25..2bb3f76569ee 100644
+> --- a/drivers/iio/dac/ti-dac5571.c
+> +++ b/drivers/iio/dac/ti-dac5571.c
+> @@ -313,7 +313,6 @@ static int dac5571_probe(struct i2c_client *client)
+>  	const struct dac5571_spec *spec;
+>  	struct dac5571_data *data;
+>  	struct iio_dev *indio_dev;
+> -	enum chip_id chip_id;
+>  	int ret, i;
+>  
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> @@ -329,12 +328,7 @@ static int dac5571_probe(struct i2c_client *client)
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->channels = dac5571_channels;
+>  
+> -	if (dev_fwnode(dev))
+> -		chip_id = (uintptr_t)device_get_match_data(dev);
+> -	else
+> -		chip_id = id->driver_data;
+> -
+> -	spec = &dac5571_spec[chip_id];
+> +	spec = i2c_get_match_data(client);
+>  
+>  	indio_dev->num_channels = spec->num_channels;
+>  	data->spec = spec;
+> @@ -392,31 +386,31 @@ static void dac5571_remove(struct i2c_client *i2c)
+>  }
+>  
+>  static const struct of_device_id dac5571_of_id[] = {
+> -	{.compatible = "ti,dac5571", .data = (void *)single_8bit},
+> -	{.compatible = "ti,dac6571", .data = (void *)single_10bit},
+> -	{.compatible = "ti,dac7571", .data = (void *)single_12bit},
+> -	{.compatible = "ti,dac5574", .data = (void *)quad_8bit},
+> -	{.compatible = "ti,dac6574", .data = (void *)quad_10bit},
+> -	{.compatible = "ti,dac7574", .data = (void *)quad_12bit},
+> -	{.compatible = "ti,dac5573", .data = (void *)quad_8bit},
+> -	{.compatible = "ti,dac6573", .data = (void *)quad_10bit},
+> -	{.compatible = "ti,dac7573", .data = (void *)quad_12bit},
+> -	{.compatible = "ti,dac121c081", .data = (void *)single_12bit},
+> +	{.compatible = "ti,dac5571", .data = &dac5571_spec[single_8bit] },
+> +	{.compatible = "ti,dac6571", .data = &dac5571_spec[single_10bit] },
+> +	{.compatible = "ti,dac7571", .data = &dac5571_spec[single_12bit] },
+> +	{.compatible = "ti,dac5574", .data = &dac5571_spec[quad_8bit] },
+> +	{.compatible = "ti,dac6574", .data = &dac5571_spec[quad_10bit] },
+> +	{.compatible = "ti,dac7574", .data = &dac5571_spec[quad_12bit] },
+> +	{.compatible = "ti,dac5573", .data = &dac5571_spec[quad_8bit] },
+> +	{.compatible = "ti,dac6573", .data = &dac5571_spec[quad_10bit] },
+> +	{.compatible = "ti,dac7573", .data = &dac5571_spec[quad_12bit] },
+> +	{.compatible = "ti,dac121c081", .data = &dac5571_spec[single_12bit] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, dac5571_of_id);
+>  
+>  static const struct i2c_device_id dac5571_id[] = {
+> -	{"dac5571", single_8bit},
+> -	{"dac6571", single_10bit},
+> -	{"dac7571", single_12bit},
+> -	{"dac5574", quad_8bit},
+> -	{"dac6574", quad_10bit},
+> -	{"dac7574", quad_12bit},
+> -	{"dac5573", quad_8bit},
+> -	{"dac6573", quad_10bit},
+> -	{"dac7573", quad_12bit},
+> -	{"dac121c081", single_12bit},
+> +	{"dac5571", (kernel_ulong_t)&dac5571_spec[single_8bit] },
+> +	{"dac6571", (kernel_ulong_t)&dac5571_spec[single_10bit] },
+> +	{"dac7571", (kernel_ulong_t)&dac5571_spec[single_12bit] },
+> +	{"dac5574", (kernel_ulong_t)&dac5571_spec[quad_8bit] },
+> +	{"dac6574", (kernel_ulong_t)&dac5571_spec[quad_10bit] },
+> +	{"dac7574", (kernel_ulong_t)&dac5571_spec[quad_12bit] },
+> +	{"dac5573", (kernel_ulong_t)&dac5571_spec[quad_8bit] },
+> +	{"dac6573", (kernel_ulong_t)&dac5571_spec[quad_10bit] },
+> +	{"dac7573", (kernel_ulong_t)&dac5571_spec[quad_12bit] },
+> +	{"dac121c081", (kernel_ulong_t)&dac5571_spec[single_12bit] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(i2c, dac5571_id);
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Regards,
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Laurent Pinchart

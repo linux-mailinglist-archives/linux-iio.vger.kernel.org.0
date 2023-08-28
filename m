@@ -2,131 +2,247 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE7E78AE42
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 12:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7EF78AE59
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 13:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232084AbjH1K7E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 06:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35080 "EHLO
+        id S232116AbjH1LBo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 07:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232464AbjH1K6b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 06:58:31 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D824B18D
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 03:58:19 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2bcc331f942so36298191fa.0
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 03:58:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693220298; x=1693825098;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f2XzqsSsmE3l45hP4mU3k5M6kXYXzeumOpdKps22yCs=;
-        b=t4WSrm+5ViWlAM5gzwMKYJc5jnKbkBwhcuDRbmCYiWzv4HsT1za3eOtGlJdB82VnH0
-         bMCdYZzzIYY1EUDSk1L5QOS+10YIhox2595hMOxy3rxjxigGzjvUj2I2GMIpcK6gHvBR
-         +Sb9GQRScorezzULATyRFGhtNexHSGSS+yAv6XNBk1TZjKe/YMOLDr/dnEOPfqao+A1j
-         hhD6dTcfL3pTyIFu18H/fMTr+c6+rxF6gFWPTSCudQywjPvCHqkZflx0e9nRsxSKz012
-         vxQaw7ScANzCN6lxLjoCrBFRyXG9V/NYiZrl30Oqkrk8R97AUFrWJZl5LM35G0pLGFSG
-         N6nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693220298; x=1693825098;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f2XzqsSsmE3l45hP4mU3k5M6kXYXzeumOpdKps22yCs=;
-        b=Mjkw73dWE6/34G+dpSV0tILjjcXBdwVAgtF3z6aAsk/Q88gwTmCqAvIT90Iv7CHHh2
-         v8aHJLDShWASG3nArOsyDz+uU+SHdyg571viNTcPgd+mAd1oQkighNt/k58FAGugmpdb
-         8aonn3bw0sE/LGhwpx1YbYBoEoD4rzcjVrVq2IG/QbiLm9kzBIxY0A1854A0zIS+8By9
-         fXT6D3dljvsEoo5xt9EPu/9vYUG+HsDzITjHQ+VO8WyqFo6X2RJQnM4C7axItn4IvU+k
-         YYrIY7XLhGR2oO2CWymiIxmeWMjfsr8lXkZIT0cTaVULVkwtKehY+XOnBNlinTTz9I8/
-         nLQA==
-X-Gm-Message-State: AOJu0Yw6AJcVmM3mfnkTVcJCqszeENRsLVg+Nte6+5lMpP/2I5WCgSVr
-        0peTSAo8Plk9+MfV1SIUTY9INQ==
-X-Google-Smtp-Source: AGHT+IFqXv5ZJniD9wN2HNJG0SNvHvgC+QU/+zXjtJ6B84YEyrSFMtHf4x/A5llcQz6M15BHWeZlGA==
-X-Received: by 2002:a2e:98c4:0:b0:2bc:dd8f:ccd7 with SMTP id s4-20020a2e98c4000000b002bcdd8fccd7mr5262439ljj.16.1693220298086;
-        Mon, 28 Aug 2023 03:58:18 -0700 (PDT)
-Received: from [192.168.1.101] (abyl195.neoplus.adsl.tpnet.pl. [83.9.31.195])
-        by smtp.gmail.com with ESMTPSA id w16-20020a2e9990000000b002b6d7682050sm1698240lji.89.2023.08.28.03.58.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Aug 2023 03:58:17 -0700 (PDT)
-Message-ID: <697ded4a-6d52-4aa3-b7a7-dab0a49e85c9@linaro.org>
-Date:   Mon, 28 Aug 2023 12:58:16 +0200
+        with ESMTP id S232427AbjH1LBS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 07:01:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2A619A
+        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 04:01:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43B78618E8
+        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 11:00:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD9CC433C7;
+        Mon, 28 Aug 2023 11:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693220450;
+        bh=zUXWtiTa5HyO37rdNLAUgFkO6biH5P/G6jD6QYnHQ84=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SHhoP5hUfFbDEgaaJpkkudPraTXYSCJyYvOrDiDQp8NiJie2YNtJXkeh1pR/Ozybn
+         zPx8Qw9iQTrgN1a2p1H8c8v62lKDOBM94/609OD8/htQa4bHtRjW2TGgtJdoE3hrsW
+         Ht8T4qve8xioVZv1OC5S6r+zG+bt3Cx1mOSgseu09QDV9233DRp+XbDhyYwc3qzFAS
+         tPKsbT1Ji9B2PNcRLsSIm/ArT9vFQ4EWj5iagUkr1Il39UtWbK/yYOZ+hQGVxDZBPo
+         WYKH2Wibp6lcwsKXDdgEmcoZX5UxP82yqnpD+Fqc3fN83ufui9EdxV2av6as1ZcyKL
+         Wf/jFAavmsOKw==
+Date:   Mon, 28 Aug 2023 12:01:10 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jinjie Ruan <ruanjinjie@huawei.com>
+Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH -next v3] iio: frequency: adf4350: Use device managed
+ functions and fix power down issue.
+Message-ID: <20230828120110.6e4e1df2@jic23-huawei>
+In-Reply-To: <20230828062717.2310219-1-ruanjinjie@huawei.com>
+References: <20230828062717.2310219-1-ruanjinjie@huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 16/37] ARM: dts: qcom: msm8960: move PMIC interrupts to
- the board files
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-arm-msm@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
-        linux-leds@vger.kernel.org
-References: <20230827132525.951475-1-dmitry.baryshkov@linaro.org>
- <20230827132525.951475-17-dmitry.baryshkov@linaro.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230827132525.951475-17-dmitry.baryshkov@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27.08.2023 15:25, Dmitry Baryshkov wrote:
-> The interrupt of SSBI PMICs is routed to the SoCs GPIO. As such, it is
-> not a property of the SoC, it is a property of the particular board
-> (even if it is standard and unified between all devices). Move these
-> interrupt specifications to the board files.
-> 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+On Mon, 28 Aug 2023 14:27:16 +0800
+Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 
-Konrad
+> The devm_clk_get_enabled() helper:
+>     - calls devm_clk_get()
+>     - calls clk_prepare_enable() and registers what is needed in order to
+>       call clk_disable_unprepare() when needed, as a managed resource.
+> 
+> Also replace devm_regulator_get() and regulator_enable() with
+> devm_regulator_get_enable() helper and remove regulator_disable().
+> 
+> Replace iio_device_register() with devm_iio_device_register() and remove
+> iio_device_unregister().
+> 
+> And st->reg is not used anymore, so remove it.
+> 
+> As Jonathan pointed out, couple of things that are wrong:
+> 
+> 1) The device is powered down 'before' we unregister it with the
+>    subsystem and as such userspace interfaces are still exposed which
+>    probably won't do the right thing if the chip is powered down.
+> 
+> 2) This isn't done in the error paths in probe.
+> 
+> To solve this problem, register a new callback adf4350_power_down()
+> with devm_add_action_or_reset(), to enable software power down in both
+> error and device detach path. So the remove function can be removed.
+> 
+> Remove spi_set_drvdata() from the probe function, since spi_get_drvdata()
+> is not used anymore.
+> 
+> Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Applied to the togreg branch of iio.git but only pushed out as testing for now
+as I will be rebasing on rc1.  As such these won't appear in linux-next until
+after the merge window has closed.
+
+Thanks,
+
+Jonathan
+
+> ---
+> v3:
+> - Add a device managed hook to enable software power down.
+> - Remove the remove function.
+> - Remove the spi_set_drvdata() call in probe function.
+> - Add the fix tag.
+> - Update the commit message and title.
+> v2:
+> - Also use devm_regulator_get_enable() and devm_iio_device_register().
+> - Update the commit message and title.
+> ---
+>  drivers/iio/frequency/adf4350.c | 77 +++++++++++----------------------
+>  1 file changed, 26 insertions(+), 51 deletions(-)
+> 
+> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
+> index 85e289700c3c..2c17110f3b61 100644
+> --- a/drivers/iio/frequency/adf4350.c
+> +++ b/drivers/iio/frequency/adf4350.c
+> @@ -33,7 +33,6 @@ enum {
+>  
+>  struct adf4350_state {
+>  	struct spi_device		*spi;
+> -	struct regulator		*reg;
+>  	struct gpio_desc		*lock_detect_gpiod;
+>  	struct adf4350_platform_data	*pdata;
+>  	struct clk			*clk;
+> @@ -469,6 +468,15 @@ static struct adf4350_platform_data *adf4350_parse_dt(struct device *dev)
+>  	return pdata;
+>  }
+>  
+> +static void adf4350_power_down(void *data)
+> +{
+> +	struct iio_dev *indio_dev = data;
+> +	struct adf4350_state *st = iio_priv(indio_dev);
+> +
+> +	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
+> +	adf4350_sync_config(st);
+> +}
+> +
+>  static int adf4350_probe(struct spi_device *spi)
+>  {
+>  	struct adf4350_platform_data *pdata;
+> @@ -491,31 +499,21 @@ static int adf4350_probe(struct spi_device *spi)
+>  	}
+>  
+>  	if (!pdata->clkin) {
+> -		clk = devm_clk_get(&spi->dev, "clkin");
+> +		clk = devm_clk_get_enabled(&spi->dev, "clkin");
+>  		if (IS_ERR(clk))
+> -			return -EPROBE_DEFER;
+> -
+> -		ret = clk_prepare_enable(clk);
+> -		if (ret < 0)
+> -			return ret;
+> +			return PTR_ERR(clk);
+>  	}
+>  
+>  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> -	if (indio_dev == NULL) {
+> -		ret =  -ENOMEM;
+> -		goto error_disable_clk;
+> -	}
+> +	if (indio_dev == NULL)
+> +		return -ENOMEM;
+>  
+>  	st = iio_priv(indio_dev);
+>  
+> -	st->reg = devm_regulator_get(&spi->dev, "vcc");
+> -	if (!IS_ERR(st->reg)) {
+> -		ret = regulator_enable(st->reg);
+> -		if (ret)
+> -			goto error_disable_clk;
+> -	}
+> +	ret = devm_regulator_get_enable(&spi->dev, "vcc");
+> +	if (ret)
+> +		return ret;
+>  
+> -	spi_set_drvdata(spi, indio_dev);
+>  	st->spi = spi;
+>  	st->pdata = pdata;
+>  
+> @@ -544,47 +542,25 @@ static int adf4350_probe(struct spi_device *spi)
+>  
+>  	st->lock_detect_gpiod = devm_gpiod_get_optional(&spi->dev, NULL,
+>  							GPIOD_IN);
+> -	if (IS_ERR(st->lock_detect_gpiod)) {
+> -		ret = PTR_ERR(st->lock_detect_gpiod);
+> -		goto error_disable_reg;
+> -	}
+> +	if (IS_ERR(st->lock_detect_gpiod))
+> +		return PTR_ERR(st->lock_detect_gpiod);
+>  
+>  	if (pdata->power_up_frequency) {
+>  		ret = adf4350_set_freq(st, pdata->power_up_frequency);
+>  		if (ret)
+> -			goto error_disable_reg;
+> +			return ret;
+>  	}
+>  
+> -	ret = iio_device_register(indio_dev);
+> +	ret = devm_add_action_or_reset(&spi->dev, adf4350_power_down, indio_dev);
+>  	if (ret)
+> -		goto error_disable_reg;
+> +		return dev_err_probe(&spi->dev, ret,
+> +				     "Failed to add action to managed power down\n");
+>  
+> -	return 0;
+> -
+> -error_disable_reg:
+> -	if (!IS_ERR(st->reg))
+> -		regulator_disable(st->reg);
+> -error_disable_clk:
+> -	clk_disable_unprepare(clk);
+> -
+> -	return ret;
+> -}
+> -
+> -static void adf4350_remove(struct spi_device *spi)
+> -{
+> -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+> -	struct adf4350_state *st = iio_priv(indio_dev);
+> -	struct regulator *reg = st->reg;
+> -
+> -	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
+> -	adf4350_sync_config(st);
+> -
+> -	iio_device_unregister(indio_dev);
+> -
+> -	clk_disable_unprepare(st->clk);
+> +	ret = devm_iio_device_register(&spi->dev, indio_dev);
+> +	if (ret)
+> +		return ret;
+>  
+> -	if (!IS_ERR(reg))
+> -		regulator_disable(reg);
+> +	return 0;
+>  }
+>  
+>  static const struct of_device_id adf4350_of_match[] = {
+> @@ -607,7 +583,6 @@ static struct spi_driver adf4350_driver = {
+>  		.of_match_table = adf4350_of_match,
+>  	},
+>  	.probe		= adf4350_probe,
+> -	.remove		= adf4350_remove,
+>  	.id_table	= adf4350_id,
+>  };
+>  module_spi_driver(adf4350_driver);
+

@@ -2,245 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27ABB78AF4F
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 13:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A495F78B084
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 14:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbjH1Lue (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 07:50:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52070 "EHLO
+        id S230242AbjH1Mfl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 08:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232575AbjH1Lub (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 07:50:31 -0400
+        with ESMTP id S229560AbjH1MfI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 08:35:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC45A6;
-        Mon, 28 Aug 2023 04:50:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A3EB6;
+        Mon, 28 Aug 2023 05:35:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABA8763BCD;
-        Mon, 28 Aug 2023 11:50:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17650C433C7;
-        Mon, 28 Aug 2023 11:50:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EABCA64715;
+        Mon, 28 Aug 2023 12:35:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB550C433C8;
+        Mon, 28 Aug 2023 12:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693223428;
-        bh=8xo8j+niCNMxfIkp+dOj3mvzxqKTb/LA6X3WeKgkXko=;
+        s=k20201202; t=1693226105;
+        bh=ZLecRXe4nCCOe6k3tzeMLLPIVj8DEPANgv8jB6rB+mM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oLzkdH2GI2GPVGYU6Zs64ts2l6qzM+rwoJyT3itxtJcbRniSPKb+Hzuo6yZa3VQiz
-         bla7c3eNCCe+vVpdSYNWIbDdhloAahGKdWHYh7JtwhBtsII/F0sP0SAcb2N4ya9z/b
-         Ws5D5kbFpAx/xguU+9XjXv8qwjJI7WB/bt6Ayq3c/ql4sOfsqiC29jM8RvxNDdaYOr
-         0Q+BQaiDVFj2B1Wx0XVYMl4AGH9BjicSlTv4N2PGZ1dhYyxWIAWIO474xBhqm6Uml5
-         k1Lh0ZYt4q50X3Dc/knBziMscYzlignrMKesH7UosQPFnlpqg7TvXU6SbAMys0SOvQ
-         3LW2HmHM6Hjyg==
-Date:   Mon, 28 Aug 2023 12:50:47 +0100
+        b=c/IrYXayzNGjfvfrBMvO0PfEbzI77z3bd3wzJCK2IJRpwE5Mmtdx+cxdkxFszqQdM
+         txmm3IZvZY0D/dZd20tYrzD6nWU/Enyx49DGkSzYd746MXcGnmlo/GlAXachLiQ9Dq
+         bmDsy7xO/QZcTf9Bc1u3Jy/zr74EhwWHYv8HgA1nW5GT/+GSFfbGU2gN30OmcEfjJO
+         MnrJnnNC59sj7yRsRKDVPJnJxGdGDGfOrKBIvPCms9hcuK4lC55LdJeR2vw06ad6Mo
+         Wz9tVFbZjr8Omqw8vZW7sWIUPDb6+83II3pF4b/PjjkfZrQCGpJEeafDuiASUTLly4
+         AinriyZon7+jw==
+Date:   Mon, 28 Aug 2023 13:35:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Biju Das <biju.das.jz@bp.renesas.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?= =?UTF-8?B?Zw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2] iio: accel: adxl345: Convert enum->pointer for data
- in match data table
-Message-ID: <20230828125047.406d667b@jic23-huawei>
-In-Reply-To: <20230818181229.329055-1-biju.das.jz@bp.renesas.com>
-References: <20230818181229.329055-1-biju.das.jz@bp.renesas.com>
+        linux-renesas-soc@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: Re: [PATCH v2] iio: chemical: vz89x: Convert enum->pointer for data
+ in the match tables
+Message-ID: <20230828133525.5afaea4f@jic23-huawei>
+In-Reply-To: <20230818190429.338065-1-biju.das.jz@bp.renesas.com>
+References: <20230818190429.338065-1-biju.das.jz@bp.renesas.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Aug 2023 19:12:29 +0100
+On Fri, 18 Aug 2023 20:04:29 +0100
 Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-> Convert enum->pointer for data in match data table, so that
+> Convert enum->pointer for data in the match tables, so that
 > device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
 > bus type match support added to it.
 > 
-> Add struct adxl3x5_chip_info and replace enum->adxl3x5_chip_info in the
-> match table and simplify adxl345_probe().
+> Replace enum->struct *vz89x_chip_data for data in the match table. Simplify
+> the probe() by replacing device_get_match_data() and ID lookup for
+> retrieving data by i2c_get_match_data().
 > 
 > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+Biju,
+
+Make sure you cc the driver authors etc.
+
+I'll queue this one up, but Matt feel free to comment if you have time
+
+Thanks,
+
+Jonathan
+
+
 > ---
 > v1->v2:
->  * Replaced EINVAL->ENODEV for invaild chip type.
->  * Kept leading commas for adxl345_*_info and adxl375_*_info.
->  * Restored switch statement in adxl345_core_probe()
-
-One more thing inline.
-
+>  * Added Rb tag from Andy.
+>  * Dropped id variable removal from commit description.
 > ---
->  drivers/iio/accel/adxl345.h      |  5 +++++
->  drivers/iio/accel/adxl345_core.c | 16 ++++++----------
->  drivers/iio/accel/adxl345_i2c.c  | 20 +++++++++++++++-----
->  drivers/iio/accel/adxl345_spi.c  | 20 +++++++++++++++-----
->  4 files changed, 41 insertions(+), 20 deletions(-)
+>  drivers/iio/chemical/vz89x.c | 16 +++++-----------
+>  1 file changed, 5 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-> index d7e67cb08538..8df1b7f43cb9 100644
-> --- a/drivers/iio/accel/adxl345.h
-> +++ b/drivers/iio/accel/adxl345.h
-> @@ -13,6 +13,11 @@ enum adxl345_device_type {
->  	ADXL375 = 2,
+> diff --git a/drivers/iio/chemical/vz89x.c b/drivers/iio/chemical/vz89x.c
+> index 13555f4f401a..5b358bcd311b 100644
+> --- a/drivers/iio/chemical/vz89x.c
+> +++ b/drivers/iio/chemical/vz89x.c
+> @@ -342,19 +342,17 @@ static const struct vz89x_chip_data vz89x_chips[] = {
 >  };
 >  
-> +struct adxl3x5_chip_info {
-> +	const char *name;
-> +	unsigned int type;
-> +};
-> +
->  int adxl345_core_probe(struct device *dev, struct regmap *regmap);
+>  static const struct of_device_id vz89x_dt_ids[] = {
+> -	{ .compatible = "sgx,vz89x", .data = (void *) VZ89X },
+> -	{ .compatible = "sgx,vz89te", .data = (void *) VZ89TE },
+> +	{ .compatible = "sgx,vz89x", .data = &vz89x_chips[VZ89X] },
+> +	{ .compatible = "sgx,vz89te", .data = &vz89x_chips[VZ89TE] },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, vz89x_dt_ids);
 >  
->  #endif /* _ADXL345_H_ */
-> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 1919e0089c11..810048099ba9 100644
-> --- a/drivers/iio/accel/adxl345_core.c
-> +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -222,23 +222,19 @@ static void adxl345_powerdown(void *regmap)
->  
->  int adxl345_core_probe(struct device *dev, struct regmap *regmap)
+>  static int vz89x_probe(struct i2c_client *client)
 >  {
-> -	enum adxl345_device_type type;
-> +	const struct adxl3x5_chip_info *info;
->  	struct adxl345_data *data;
+> -	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>  	struct device *dev = &client->dev;
 >  	struct iio_dev *indio_dev;
-> -	const char *name;
->  	u32 regval;
->  	int ret;
+>  	struct vz89x_data *data;
+> -	int chip_id;
 >  
-> -	type = (uintptr_t)device_get_match_data(dev);
-> -	switch (type) {
-> +	info = device_get_match_data(dev);
-> +	switch (info->type) {
->  	case ADXL345:
-> -		name = "adxl345";
-> -		break;
->  	case ADXL375:
-> -		name = "adxl375";
->  		break;
->  	default:
-> -		return -EINVAL;
-> +		return -ENODEV;
->  	}
-Why not just
-	if (!info)
-		return -ENODEV;
-
-All of the structures have one of these two types anyway, so what is the point
-in checking the type field.
-
-
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -369,14 +367,10 @@ static int vz89x_probe(struct i2c_client *client)
+>  	else
+>  		return -EOPNOTSUPP;
 >  
->  	ret = regmap_read(regmap, ADXL345_REG_DEVID, &regval);
-> @@ -255,7 +251,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap)
+> -	if (!dev_fwnode(dev))
+> -		chip_id = id->driver_data;
+> -	else
+> -		chip_id = (unsigned long)device_get_match_data(dev);
+> +	data->chip = i2c_get_match_data(client);
 >  
->  	data = iio_priv(indio_dev);
->  	data->regmap = regmap;
-> -	data->type = type;
-> +	data->type = info->type;
->  	/* Enable full-resolution mode */
->  	data->data_range = ADXL345_DATA_FORMAT_FULL_RES;
+>  	i2c_set_clientdata(client, indio_dev);
+>  	data->client = client;
+> -	data->chip = &vz89x_chips[chip_id];
+>  	data->last_update = jiffies - HZ;
+>  	mutex_init(&data->lock);
 >  
-> @@ -264,7 +260,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap)
->  	if (ret < 0)
->  		return dev_err_probe(dev, ret, "Failed to set data range\n");
->  
-> -	indio_dev->name = name;
-> +	indio_dev->name = info->name;
->  	indio_dev->info = &adxl345_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels = adxl345_channels;
-> diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
-> index e47d12f19602..219de556e81a 100644
-> --- a/drivers/iio/accel/adxl345_i2c.c
-> +++ b/drivers/iio/accel/adxl345_i2c.c
-> @@ -30,22 +30,32 @@ static int adxl345_i2c_probe(struct i2c_client *client)
->  	return adxl345_core_probe(&client->dev, regmap);
+> @@ -391,8 +385,8 @@ static int vz89x_probe(struct i2c_client *client)
 >  }
 >  
-> +static const struct adxl3x5_chip_info adxl345_i2c_info = {
-> +	.name = "adxl345",
-> +	.type = ADXL345,
-> +};
-> +
-> +static const struct adxl3x5_chip_info adxl375_i2c_info = {
-> +	.name = "adxl375",
-> +	.type = ADXL375,
-> +};
-> +
->  static const struct i2c_device_id adxl345_i2c_id[] = {
-> -	{ "adxl345", ADXL345 },
-> -	{ "adxl375", ADXL375 },
-> +	{ "adxl345", (kernel_ulong_t)&adxl345_i2c_info },
-> +	{ "adxl375", (kernel_ulong_t)&adxl375_i2c_info },
+>  static const struct i2c_device_id vz89x_id[] = {
+> -	{ "vz89x", VZ89X },
+> -	{ "vz89te", VZ89TE },
+> +	{ "vz89x", (kernel_ulong_t)&vz89x_chips[VZ89X] },
+> +	{ "vz89te", (kernel_ulong_t)&vz89x_chips[VZ89TE] },
 >  	{ }
 >  };
->  MODULE_DEVICE_TABLE(i2c, adxl345_i2c_id);
->  
->  static const struct of_device_id adxl345_of_match[] = {
-> -	{ .compatible = "adi,adxl345", .data = (const void *)ADXL345 },
-> -	{ .compatible = "adi,adxl375", .data = (const void *)ADXL375 },
-> +	{ .compatible = "adi,adxl345", .data = &adxl345_i2c_info },
-> +	{ .compatible = "adi,adxl375", .data = &adxl375_i2c_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, adxl345_of_match);
->  
->  static const struct acpi_device_id adxl345_acpi_match[] = {
-> -	{ "ADS0345", ADXL345 },
-> +	{ "ADS0345", (kernel_ulong_t)&adxl345_i2c_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match);
-> diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-> index aaade5808657..3acdacc07293 100644
-> --- a/drivers/iio/accel/adxl345_spi.c
-> +++ b/drivers/iio/accel/adxl345_spi.c
-> @@ -36,22 +36,32 @@ static int adxl345_spi_probe(struct spi_device *spi)
->  	return adxl345_core_probe(&spi->dev, regmap);
->  }
->  
-> +static const struct adxl3x5_chip_info adxl345_spi_info = {
-> +	.name = "adxl345",
-> +	.type = ADXL345,
-> +};
-> +
-> +static const struct adxl3x5_chip_info adxl375_spi_info = {
-> +	.name = "adxl375",
-> +	.type = ADXL375,
-> +};
-> +
->  static const struct spi_device_id adxl345_spi_id[] = {
-> -	{ "adxl345", ADXL345 },
-> -	{ "adxl375", ADXL375 },
-> +	{ "adxl345", (kernel_ulong_t)&adxl345_spi_info },
-> +	{ "adxl375", (kernel_ulong_t)&adxl375_spi_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(spi, adxl345_spi_id);
->  
->  static const struct of_device_id adxl345_of_match[] = {
-> -	{ .compatible = "adi,adxl345", .data = (const void *)ADXL345 },
-> -	{ .compatible = "adi,adxl375", .data = (const void *)ADXL375 },
-> +	{ .compatible = "adi,adxl345", .data = &adxl345_spi_info },
-> +	{ .compatible = "adi,adxl375", .data = &adxl375_spi_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, adxl345_of_match);
->  
->  static const struct acpi_device_id adxl345_acpi_match[] = {
-> -	{ "ADS0345", ADXL345 },
-> +	{ "ADS0345", (kernel_ulong_t)&adxl345_spi_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match);
+>  MODULE_DEVICE_TABLE(i2c, vz89x_id);
 

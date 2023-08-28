@@ -2,200 +2,248 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E94FB78B0AC
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 14:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640EE78B0D4
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 14:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbjH1Mj1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 08:39:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
+        id S231339AbjH1MoS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 08:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231414AbjH1MjR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 08:39:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72DF2E5;
-        Mon, 28 Aug 2023 05:39:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06F87646FF;
-        Mon, 28 Aug 2023 12:39:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FC3C433C8;
-        Mon, 28 Aug 2023 12:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693226354;
-        bh=AJ/D0dSNKs2WWkqHEkyhtlNB/RFmUtCukj/4gBGXlfY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qVKFNV3Dg2ayGodF9JLgDjB7/QOGFGEz1TysL0qbWNeA7QgB85aN+i02LWHZitO8J
-         PiThcHdIVGBdlsh8L0zRAdU9JqyUfI21ZN6/yh6/rpnJxh4BkDEjaeJQ1YtgrzKNqn
-         2FM/slyu/HcNkxuUKWTutEaxZ3gFKjdAESB7oq50loVrDUNAyrqHJn0yYEVc5kCuY/
-         gnFxqMv9tM68zTlLJNJiRwKTe7QHB06ySK/eC8fjn8TN1YCxgfCCmhlIThTIXMfS/x
-         5hakxJCZlJO25Ak8yJiM+W9LpmCtoHL5xYZBpsk4NxdBfS6xG4hdcf7TnerPHXdG0Q
-         GwE44WhsAS6qQ==
-Date:   Mon, 28 Aug 2023 13:39:33 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        with ESMTP id S231346AbjH1Mn5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 08:43:57 -0400
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2126.outbound.protection.outlook.com [40.107.113.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D878C100;
+        Mon, 28 Aug 2023 05:43:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DgR6P069CKi7ETJCa1ppOXECOu+i5FLPHgLcXe8DqsIf/vFCQGoUzXbA8/huMoBsDBHB3kqiwbCE9k+LfFcJY1ykP1s/vFCkrxCDCuTUvKzY0D+hymsFAXJoM/hWKG1qN1jh/LThcDpyR/YuNsNliJfsFSrbaKv5JjpPJFus8b6gBuLO6eDVTDJU61titzHqj/U4UwxyTRMcj2fZMIESImJG7YXgnp1CvAB8AALUC+2ljBXyHV9dWmaNPixjiQhcAyy6WgmkgrkezczP9M9xiMvJzHlcoisXv8v847S1YfB31PF8QOE1OupRFqYdySM/mOD0NljK5l75wGUNZA8VEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EMeUNvIBbjS3vAlAqWuHAQWP5TUfuR99t0MpXZb34w4=;
+ b=Q+cFQmj83NEprR4QlKXFy7eJpt9gQz+ubNCUJnFckle4pKdMuzoAraquUhxbQbKzR5QNPqBk6izGQwGgA9zPQMFWmw2Wqh6boufmBmfqDfLNb1d4K3v4V5coxJwQosqoAIFvTTLE4NlNR3TUAe3HDrO7WdMtnBHAMstSS/96aa1Lr9QOoIsVjUuSez/sybhAROo7H71rnxc3jVgG0dXK7wv6dJ+y6HjzSWgajBr7EWUl4MIc63lH78v8PIcEH33vAmb7dcIULa4vSYZJoiIDE/Ay+K8epXzztLWQPD1WGsJYauY9cF6Bw4ww46kZ0QPAqT9XPnvyHVSs4mGCHyJG6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EMeUNvIBbjS3vAlAqWuHAQWP5TUfuR99t0MpXZb34w4=;
+ b=LULIQZmFcms1uU6QXyr3+bHC6Isojmrg8aSKZPfcATMyn+t+kNhwP3GE7/RdpMnvWJohLw+bt8RbDxOlml4G14B2Sv7E0UBaIaKxbBd78ln1z23Ll79A7g2+Eu/SNse1a7KYd69pFj+IMr0HC1srZu64cfEQWpJlg4dUpXKO3nw=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by TYCPR01MB7776.jpnprd01.prod.outlook.com (2603:1096:400:181::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Mon, 28 Aug
+ 2023 12:43:51 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::9d23:32f5:9325:3706]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::9d23:32f5:9325:3706%4]) with mapi id 15.20.6699.034; Mon, 28 Aug 2023
+ 12:43:51 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>
-Subject: Re: [PATCH v2] iio: proximity: sx9310: Convert enum->pointer for
- match data table
-Message-ID: <20230828133933.1ef5145a@jic23-huawei>
-In-Reply-To: <20230818175819.325663-1-biju.das.jz@bp.renesas.com>
-References: <20230818175819.325663-1-biju.das.jz@bp.renesas.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: RE: [PATCH v2] iio: chemical: vz89x: Convert enum->pointer for data
+ in the match tables
+Thread-Topic: [PATCH v2] iio: chemical: vz89x: Convert enum->pointer for data
+ in the match tables
+Thread-Index: AQHZ0gbUmy/zC4DAjkC8+0qQGcYEt6//tC6AgAAASjA=
+Date:   Mon, 28 Aug 2023 12:43:51 +0000
+Message-ID: <OS0PR01MB59225F5472B4BE500429394C86E0A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20230818190429.338065-1-biju.das.jz@bp.renesas.com>
+ <20230828133525.5afaea4f@jic23-huawei>
+In-Reply-To: <20230828133525.5afaea4f@jic23-huawei>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TYCPR01MB7776:EE_
+x-ms-office365-filtering-correlation-id: b9e25fc8-c20b-47a2-ef6a-08dba7c46e76
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: E8fpzKDrY34gnn/gusDmAKF45mo7myywHLjZQXiHhXUNWUnORWcqSkK5aqqvRTw/88/0141aJ81FAVTc5JyyPpdWzW6cd5MlR5Ag2LCwQlXHAhmo+k/43Xs2GNzwEsw/B4vP1PjUxtvjxH0oQZ2Pfr0xqiE+wqh3ovXNmb+g1KhbS7/Xn+TVj39g03+6RCfxbnARXWrUYgx2YyPk2sNp6+FvE2QfIN3MWtrMbKidWM5w2lwNi8ZKMOeOnELATGfRwp/nyN3iAchtfWwbpmLkgfhmfULz/YW1QbI2at7XHSQ08JtQ+bocG6ZvZcXXs2dq01WzkxzcWUjp4ezZCsxowKWVYoFhX2LNbNk8+gf4IAQTi4f/Y7osRg85AYBhOdRSrfgznULLA3T2EkXSEs5ZoyNf7ILMlAROgdPRUnugQXnCrpmNHFktU3x5XLC5ne8pu1xceOkZh9UXmav0eR5YLd86/8zQ86N7wxmoJCWhaYR7nHiFl+QwV5+QkNsmwTFKL313AZtXHjiRex1CTk+1Dfs18k1NrenXDZ8vtH2P+xQCEuvSoVPf2m6qMKiUzWz3u054b67Dg24NwKGKBS5OcALiCLaSWHQ7kIHUUtkLuH30vKalFxkjij671cVaO55q
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(346002)(366004)(39860400002)(396003)(186009)(1800799009)(451199024)(41300700001)(122000001)(38100700002)(86362001)(83380400001)(478600001)(38070700005)(71200400001)(26005)(9686003)(7696005)(6506007)(55016003)(76116006)(66946007)(66476007)(54906003)(6916009)(2906002)(64756008)(33656002)(66446008)(66556008)(316002)(5660300002)(8676002)(8936002)(4326008)(52536014);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?u0cQ7yA3bcH/TA0kmy1iar1SCPcFH55duVn4F2dY/vt/wtBtSqzqEaeFPO?=
+ =?iso-8859-1?Q?yYQAscj91IMzSPdJk5L+2QeVbSP0VxNw+u5EG5DjDON9LskUb79y0w8zEK?=
+ =?iso-8859-1?Q?2gptMapaaYDnPQALf/34CkLMhs3/SPvu4uimvSOTn7q4Z4ygD7tvPVgzMJ?=
+ =?iso-8859-1?Q?FsisECInIHfy61INvz70SLSexUM40ummh8o51H0AXHiOH+bdKwiyaWw+Mj?=
+ =?iso-8859-1?Q?arf6Tt3VHfHtVGWdgLl8avFXg+IOsfgj1dG8X3FgJeED0+CQNxyMVBC5TS?=
+ =?iso-8859-1?Q?UqaJ53LEp7xFjmV7v2rSwqct6AfUuJX7IJWHMegCRFpEBVqfZRuPN7J2LV?=
+ =?iso-8859-1?Q?VJVlQEjXAVU1MVDfy+x4y+IdlhgdKnZq4xT/uT4DBHD/+T6alvmwws0Hk/?=
+ =?iso-8859-1?Q?CAYKPSN7c5PSfFoHPT0bqlC8Pj0JMc5xX02NlNXi+bhn8tJVJ3mqq9jKTM?=
+ =?iso-8859-1?Q?Z7TPcBIEgNSqNblJI7msrCBJuBDuDR9KETrfppnxBikGBv537T8kQtHF9N?=
+ =?iso-8859-1?Q?6LBp5ZxAJdkNwgSv2pRbzgD9yr3Ww/IOKMeB1rYnkQI+PgBZ6oEdGGW5tl?=
+ =?iso-8859-1?Q?OugDWWgUqFHfMhfqS9edO9Al8f+PW3GbaXz33Qzgyy33GoDrb5KCf2a7OH?=
+ =?iso-8859-1?Q?2FZ+8J1vLKOqEWxkuo6yY45n+0MqULVFIfr1Te9v98dwx3Vatqt2zc1wNm?=
+ =?iso-8859-1?Q?dlT8l3I2DP3l1kMTV/UEwVNEsDmGo+qdVtXxysmLyIz7TJbHCmBgPqiNkF?=
+ =?iso-8859-1?Q?6a1DFEhXBUN1QeW1bsLUNVexHn2eAj5r3SkWpAjBecn6nicOIWPFNg9llt?=
+ =?iso-8859-1?Q?x463y6HXLGeckzw0XkldOPKvT3xF7f8FSUnY9z4TuZlIYwLdFyJdqxOPdi?=
+ =?iso-8859-1?Q?HSrfxzgIHyQXKRh36hFQHhJYz37wTcQSb9QFU7H7MHA1ofNTicCZZGm+K0?=
+ =?iso-8859-1?Q?kAxsnvPU5MLZIX7NMmXIYWj2+tm3T0pyqKfuDediIY+CGUfHvCRFNMU3JN?=
+ =?iso-8859-1?Q?oP/nLos1qUa+gVAvl4bGX6wTm1ZFRifA2Klx/SWb/INVJwV2O0pYcB1oX0?=
+ =?iso-8859-1?Q?Dby09GsD5HgUeQt6QzyE6absPXTxTMFEswKd1CioL+3YnVX0kIAcljoMWH?=
+ =?iso-8859-1?Q?SOJGdaqT68fWqlRJ6GKbQ/kwdb+hm0umSg3EbMstcZYQkN6eWvn4HY3s7X?=
+ =?iso-8859-1?Q?9IvOmrfLUNO2pTxsPGjh9L1Ttv5NfncHuWM/xEfg6CL45OO9lpq1fY3kAM?=
+ =?iso-8859-1?Q?DAl+CISjjbkjDG3dXEvcx8uRg0mNyYLN4EM2rCemYp+s7paOYm0cySZuek?=
+ =?iso-8859-1?Q?WlXQtYpiReDVmbXURK3jbtNR7GU0xtaWfJAk72izzwFdizOj82Z5U9Eyjw?=
+ =?iso-8859-1?Q?l3Fn0060pVZowOsmQd3WC9S/hnPUPpxLm5UhGkYcAad8d7h5qQQqzCAwsa?=
+ =?iso-8859-1?Q?CtuwxERy0vNhlp7FIOeyZDrdBXSo3v8m8lsm9O4OFck2eqTAiWfiQ17J/s?=
+ =?iso-8859-1?Q?dE1hXD1pj6u32SdwV0J7jHaUE2RBTkhHPvtQEUiFY5ntOQAXuutXQJe/LN?=
+ =?iso-8859-1?Q?yh3TxbqLsOD/h/blXksIWvY6Tz77eHdtbvlZ/YHUDVV3f+MQBoMXmtF2bB?=
+ =?iso-8859-1?Q?Qe4INNPcm28vHmOd5pL6G7EO+cDBN249YjlUHTjP8jJjyB60GATMNHww?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9e25fc8-c20b-47a2-ef6a-08dba7c46e76
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2023 12:43:51.1233
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3tP+ESJgTLE+9oAOREkQZM842KuWA6BfSA1QlexR0VBMUqBctoFCwBCwTAk+cl/6a/gGBGZZcaMRhB4/csvuTJbNUCWbQ7NIFQjpVSOoIws=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB7776
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Aug 2023 18:58:19 +0100
-Biju Das <biju.das.jz@bp.renesas.com> wrote:
+Hi Jonathan Cameron,
 
-> Convert enum->pointer for data in match data table, so that
-> device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
-> bus type match support added to it.
-> 
-> Add struct sx931x_info and replace enum->sx931x_info in the match table
-> and simplify sx9310_check_whoami().
+> Subject: Re: [PATCH v2] iio: chemical: vz89x: Convert enum->pointer for
+> data in the match tables
+>=20
+> On Fri, 18 Aug 2023 20:04:29 +0100
+> Biju Das <biju.das.jz@bp.renesas.com> wrote:
+>=20
+> > Convert enum->pointer for data in the match tables, so that
+> > device_get_match_data() can do match against OF/ACPI/I2C tables, once
+> > i2c bus type match support added to it.
+> >
+> > Replace enum->struct *vz89x_chip_data for data in the match table.
+> > Simplify the probe() by replacing device_get_match_data() and ID
+> > lookup for retrieving data by i2c_get_match_data().
+> >
+> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>=20
+> Biju,
+>=20
+> Make sure you cc the driver authors etc.
 
-+CC Gwendal,
+Normally, I ran a script against the patch to get details and additionally =
+I add Geert, renesas-soc , Andy in Cc list.
+So far the patch worked correctly. Not sure I need to enhance the script to=
+ get driver authors name (for eg: Matt in this case)??
 
-I've applied this but note there is a comment inline + there is still plenty
-of time for others to comment before I push this out as non rebasing.
+#!/bin/bash
+PROGRAM_DIRECTORY=3D"$(cd "$(dirname "$0")"; pwd; )"
 
-Thanks,
+source "${PROGRAM_DIRECTORY}/get_recipients_lib.sh"
 
-Jonathan
+MUST_HAVE+=3D("Geert Uytterhoeven <geert+renesas@glider.be>")
+#MUST_HAVE+=3D("Chris Paterson <chris.paterson2@renesas.com>")
+#MUST_HAVE+=3D("Fabrizio Castro <fabrizio.castro.jz@renesas.com>")
+MUST_HAVE+=3D("Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.c=
+om>")
+MUST_HAVE+=3D("linux-renesas-soc@vger.kernel.org")
 
-> 
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
-> v1->v2:
->  * Replaced EINVAL->ENODEV if there is a mismatch in whoami against
->    whoami match data from device_get_match_data().
->  * Kept trailing comma for sx9310_info and sx9311_info.
->  * Added Rb tag from Andy.
-> ---
->  drivers/iio/proximity/sx9310.c | 46 +++++++++++++++++++---------------
->  1 file changed, 26 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index d977aacb7491..0d230a0dff56 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -159,6 +159,11 @@ static_assert(SX9310_NUM_CHANNELS <= SX_COMMON_MAX_NUM_CHANNELS);
->  }
->  #define SX9310_CHANNEL(idx) SX9310_NAMED_CHANNEL(idx, NULL)
->  
-> +struct sx931x_info {
-> +	const char *name;
-> +	unsigned int whoami;
-> +};
-> +
->  static const struct iio_chan_spec sx9310_channels[] = {
->  	SX9310_CHANNEL(0),			/* CS0 */
->  	SX9310_CHANNEL(1),			/* CS1 */
-> @@ -902,7 +907,7 @@ static int sx9310_check_whoami(struct device *dev,
->  			       struct iio_dev *indio_dev)
->  {
->  	struct sx_common_data *data = iio_priv(indio_dev);
-> -	unsigned int long ddata;
-> +	const struct sx931x_info *ddata;
->  	unsigned int whoami;
->  	int ret;
->  
-> @@ -910,20 +915,11 @@ static int sx9310_check_whoami(struct device *dev,
->  	if (ret)
->  		return ret;
->  
-> -	ddata = (uintptr_t)device_get_match_data(dev);
-> -	if (ddata != whoami)
-> -		return -EINVAL;
-> -
-> -	switch (whoami) {
-> -	case SX9310_WHOAMI_VALUE:
-> -		indio_dev->name = "sx9310";
-> -		break;
-> -	case SX9311_WHOAMI_VALUE:
-> -		indio_dev->name = "sx9311";
-> -		break;
-> -	default:
-> +	ddata = device_get_match_data(dev);
-> +	if (ddata->whoami != whoami)
->  		return -ENODEV;
-> -	}
-The original code is more strict than it should be.  To enable the use
-of fallback compatibles - such that a newer device can be declared
-compatible with an older device (except typically for the whoami value)
-this code should at most print a dev_info() to say we are carrying on even
-though we don't fully recognise the device.
+MUST_DROP+=3D("linux-kernel@vger.kernel.org")
 
-It would be great to have a follow up patch make that small relaxation here.
+populate_to_list
+populate_cc_list
 
-Thanks,
+the script uses below commands to add relevant to and cc field.
+./scripts/get_maintainer.pl ${PATCH_FILES} | grep maintainer
 
-Jonathan
+Cheers,
+Biju
 
-
-
-> +
-> +	indio_dev->name = ddata->name;
->  
->  	return 0;
->  }
-> @@ -1015,23 +1011,33 @@ static int sx9310_resume(struct device *dev)
->  
->  static DEFINE_SIMPLE_DEV_PM_OPS(sx9310_pm_ops, sx9310_suspend, sx9310_resume);
->  
-> +static const struct sx931x_info sx9310_info = {
-> +	.name = "sx9310",
-> +	.whoami = SX9310_WHOAMI_VALUE,
-> +};
-> +
-> +static const struct sx931x_info sx9311_info = {
-> +	.name = "sx9311",
-> +	.whoami = SX9311_WHOAMI_VALUE,
-> +};
-> +
->  static const struct acpi_device_id sx9310_acpi_match[] = {
-> -	{ "STH9310", SX9310_WHOAMI_VALUE },
-> -	{ "STH9311", SX9311_WHOAMI_VALUE },
-> +	{ "STH9310", (kernel_ulong_t)&sx9310_info },
-> +	{ "STH9311", (kernel_ulong_t)&sx9311_info },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(acpi, sx9310_acpi_match);
->  
->  static const struct of_device_id sx9310_of_match[] = {
-> -	{ .compatible = "semtech,sx9310", (void *)SX9310_WHOAMI_VALUE },
-> -	{ .compatible = "semtech,sx9311", (void *)SX9311_WHOAMI_VALUE },
-> +	{ .compatible = "semtech,sx9310", &sx9310_info },
-> +	{ .compatible = "semtech,sx9311", &sx9311_info },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, sx9310_of_match);
->  
->  static const struct i2c_device_id sx9310_id[] = {
-> -	{ "sx9310", SX9310_WHOAMI_VALUE },
-> -	{ "sx9311", SX9311_WHOAMI_VALUE },
-> +	{ "sx9310", (kernel_ulong_t)&sx9310_info },
-> +	{ "sx9311", (kernel_ulong_t)&sx9311_info },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(i2c, sx9310_id);
+>=20
+> I'll queue this one up, but Matt feel free to comment if you have time
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+>=20
+> > ---
+> > v1->v2:
+> >  * Added Rb tag from Andy.
+> >  * Dropped id variable removal from commit description.
+> > ---
+> >  drivers/iio/chemical/vz89x.c | 16 +++++-----------
+> >  1 file changed, 5 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/drivers/iio/chemical/vz89x.c
+> > b/drivers/iio/chemical/vz89x.c index 13555f4f401a..5b358bcd311b 100644
+> > --- a/drivers/iio/chemical/vz89x.c
+> > +++ b/drivers/iio/chemical/vz89x.c
+> > @@ -342,19 +342,17 @@ static const struct vz89x_chip_data
+> > vz89x_chips[] =3D {  };
+> >
+> >  static const struct of_device_id vz89x_dt_ids[] =3D {
+> > -	{ .compatible =3D "sgx,vz89x", .data =3D (void *) VZ89X },
+> > -	{ .compatible =3D "sgx,vz89te", .data =3D (void *) VZ89TE },
+> > +	{ .compatible =3D "sgx,vz89x", .data =3D &vz89x_chips[VZ89X] },
+> > +	{ .compatible =3D "sgx,vz89te", .data =3D &vz89x_chips[VZ89TE] },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, vz89x_dt_ids);
+> >
+> >  static int vz89x_probe(struct i2c_client *client)  {
+> > -	const struct i2c_device_id *id =3D i2c_client_get_device_id(client);
+> >  	struct device *dev =3D &client->dev;
+> >  	struct iio_dev *indio_dev;
+> >  	struct vz89x_data *data;
+> > -	int chip_id;
+> >
+> >  	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+> >  	if (!indio_dev)
+> > @@ -369,14 +367,10 @@ static int vz89x_probe(struct i2c_client *client)
+> >  	else
+> >  		return -EOPNOTSUPP;
+> >
+> > -	if (!dev_fwnode(dev))
+> > -		chip_id =3D id->driver_data;
+> > -	else
+> > -		chip_id =3D (unsigned long)device_get_match_data(dev);
+> > +	data->chip =3D i2c_get_match_data(client);
+> >
+> >  	i2c_set_clientdata(client, indio_dev);
+> >  	data->client =3D client;
+> > -	data->chip =3D &vz89x_chips[chip_id];
+> >  	data->last_update =3D jiffies - HZ;
+> >  	mutex_init(&data->lock);
+> >
+> > @@ -391,8 +385,8 @@ static int vz89x_probe(struct i2c_client *client)
+> > }
+> >
+> >  static const struct i2c_device_id vz89x_id[] =3D {
+> > -	{ "vz89x", VZ89X },
+> > -	{ "vz89te", VZ89TE },
+> > +	{ "vz89x", (kernel_ulong_t)&vz89x_chips[VZ89X] },
+> > +	{ "vz89te", (kernel_ulong_t)&vz89x_chips[VZ89TE] },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, vz89x_id);
 

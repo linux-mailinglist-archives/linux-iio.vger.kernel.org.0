@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D3178AAAE
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 12:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D7B78AAE2
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 12:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231129AbjH1KYW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 06:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32952 "EHLO
+        id S230479AbjH1KZ7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 06:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231207AbjH1KYB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 06:24:01 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10724124
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 03:23:58 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-5009d4a4897so4588331e87.0
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 03:23:57 -0700 (PDT)
+        with ESMTP id S231325AbjH1KZy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 06:25:54 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C5612E
+        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 03:25:48 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4ffae5bdc9aso4803244e87.1
+        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 03:25:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693218236; x=1693823036;
+        d=linaro.org; s=google; t=1693218346; x=1693823146;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8VWpV9+B808NRLvgbM41AhvAqoxBwvMufB3jcuicSPc=;
-        b=Eo6kfECVXXh6BwSE8sFouSkJmT1fKDLGaAYIfEBgOqP08wQ2OXasK5yVEW3lAMhidM
-         9o8o5HTa5mmUebDutIbhAqMzt1Ds3Z8b5+0BJNiX2rLrKFeCdXEn/e+rmnxNY9xrVGil
-         RMw8UARxa57nS4HIAfxTYy/Y22KtAVNFWaAKca+OBN42arOR0BSRyvrqGFX6iTi5/Yfh
-         PJ9HvEBriH/0H7z9cPJNi5ziv2liqeRnkDZDQlOIK6+0sDV8dAolBumhkk4cm4cSCr/o
-         Lq4bXdTnoZdipTGixxJy1MusaL3eddrZyjwJK6PZ3+pcybGAeLisP8oYvGgLle2xBghN
-         yssw==
+        bh=f2XzqsSsmE3l45hP4mU3k5M6kXYXzeumOpdKps22yCs=;
+        b=jRIBELIDlIbEZQJXuDCYvtGdZFoPDMYxWION1DgtAhFwBRNzoYknV7CX4HexmPzMTn
+         SXmkRX25Jn3SXfpgRIsT8etv4YHvEzw4Lwzt7f937I/s+Hq13nlARffdR5hl85SOE/2H
+         np+2FFhMdFuvwDoG5faO7MTxqYVRxWNi6N3kR9YdaoN6XjvaQgO5X5Dth5dO9rfqFGn1
+         QLMcusd4XjbifPzneOFxE5taL87RNnQDazsbpmQhXocyLlZ3LlUHP9GkJDOfWv4s29PK
+         lzf2Gb1FRO4KM8cebEDSXuHGb8gzMpvmaFtys4n1AwluVDPShoCYtQ4jYV2yK+gZTtZ4
+         syIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693218236; x=1693823036;
+        d=1e100.net; s=20221208; t=1693218346; x=1693823146;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8VWpV9+B808NRLvgbM41AhvAqoxBwvMufB3jcuicSPc=;
-        b=cXWsKaukTQ0h8Jg7eq2xR3U9eJjJkvN+tC1Vux2C+BGSuGmMM5UxUE0p44DtqbLmam
-         pdw18EaIJHyG5q45fLtl6zCYchBfvdyd7KvEXnvLOcef2K5ooGW/WCIhVeIWdZWUEKAv
-         PbcsBQQwS2DWTUkcuKbdq83Ukqmx9ljZ94IyZl1rKblU8wtXrdQNyDG4W3th/go2DSMd
-         FvNqIYagOLB1DKg2SRzolv/j2FUvNfzPLRwcCWEqAhYCj6n7uWJbKeQ51QupkH0tU7wR
-         TFTMvAqktDeGMaiHiiuFfBWCd8FVmADNHCPeg1DtCC7P87J0SnpMcUiTwA1cWD7QgaX6
-         xSEg==
-X-Gm-Message-State: AOJu0YxfTr4h+ASsVmYiE4/VhE5oevioKACNn3b1xonSVk1n/Baw5bJS
-        E7fCG/TR64P9FKYQYfyhf2mCCg==
-X-Google-Smtp-Source: AGHT+IENjk82d0+SXYzVRCZsXFCgxJElBVqKD4cEgWlvlqN+rBPcqzSk1tSdj54Pd/kpO6mLTdPHnA==
-X-Received: by 2002:a05:6512:200d:b0:4f8:5d0f:c779 with SMTP id a13-20020a056512200d00b004f85d0fc779mr16135455lfb.40.1693218236340;
-        Mon, 28 Aug 2023 03:23:56 -0700 (PDT)
+        bh=f2XzqsSsmE3l45hP4mU3k5M6kXYXzeumOpdKps22yCs=;
+        b=SagZ0DQPVvVDj3J/v/VDX17e2Rj6owutloDMK10juSlrXebLITLWgvYkU+eLTUwYU/
+         By1vK/TZNPjAf5/MKXQcST5Cw6b+OM6b1npLZ9oiyoX6246grBkyk//yap+AVfBViE/L
+         FqmJHCGy0/RYrrSV9AcFjNIVWYQqRmvLan8M8Cdyfx5rCDDxhEZuULsKRVoLRL+R+I6Q
+         cp6E3aTksdQoFDCVNpt/fHSRKmI+b0qp8aaOeXsMLvzI1H4VE8G7NJ3ZFMXoY4Avd+5y
+         n3+qH2kWPSw0wyoMeTuEXIfTdiKmZ5zKNm9Jp4e5iNg8BnI4B/PXbD1+djNQK9MaWid/
+         FTeA==
+X-Gm-Message-State: AOJu0Yx2b8KGmAuPzvnZEodqIfNIBuZ/ryy50dq76rkt+a78Y2pEGYqq
+        IjMLef/KJ1yKDaFKvPm15hdiEA==
+X-Google-Smtp-Source: AGHT+IGmG7wKZMpRMRPb+72UjrYzpgzGEeM/qYPJ1h0hbXslVdaOQe2JpeiolVhbe6pKmVNkN6QQHw==
+X-Received: by 2002:a05:6512:6d5:b0:500:b9e3:91bd with SMTP id u21-20020a05651206d500b00500b9e391bdmr1832482lff.41.1693218346178;
+        Mon, 28 Aug 2023 03:25:46 -0700 (PDT)
 Received: from [192.168.1.101] (abyl195.neoplus.adsl.tpnet.pl. [83.9.31.195])
-        by smtp.gmail.com with ESMTPSA id x29-20020ac259dd000000b004fbac2646e3sm1507819lfn.195.2023.08.28.03.23.55
+        by smtp.gmail.com with ESMTPSA id u8-20020ac243c8000000b004ff9ecbf158sm1504928lfl.74.2023.08.28.03.25.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Aug 2023 03:23:56 -0700 (PDT)
-Message-ID: <995f91d4-ecca-452f-a58e-6cff9e590713@linaro.org>
-Date:   Mon, 28 Aug 2023 12:23:55 +0200
+        Mon, 28 Aug 2023 03:25:45 -0700 (PDT)
+Message-ID: <6da3dc68-cbea-4670-a560-62c67059004c@linaro.org>
+Date:   Mon, 28 Aug 2023 12:25:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 37/37] ARM: dts: qcom: mdm9615: drop qcom, prefix from
- SSBI node name
+Subject: Re: [PATCH v5 13/37] ARM: dts: qcom: apq8064: move PMIC interrupts to
+ the board files
 Content-Language: en-US
 To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
@@ -69,7 +69,7 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
         linux-leds@vger.kernel.org
 References: <20230827132525.951475-1-dmitry.baryshkov@linaro.org>
- <20230827132525.951475-38-dmitry.baryshkov@linaro.org>
+ <20230827132525.951475-14-dmitry.baryshkov@linaro.org>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -106,12 +106,13 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230827132525.951475-38-dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230827132525.951475-14-dmitry.baryshkov@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -119,8 +120,13 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 27.08.2023 15:25, Dmitry Baryshkov wrote:
+> The interrupt of SSBI PMICs is routed to the SoCs GPIO. As such, it is
+> not a property of the SoC, it is a property of the particular board
+> (even if it is standard and unified between all devices). Move these
+> interrupt specifications to the board files.
+> 
 > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 > ---
-Same as p36
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad

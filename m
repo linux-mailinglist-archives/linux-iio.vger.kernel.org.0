@@ -2,233 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0169C78B55B
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D3B378B57D
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:42:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232404AbjH1Q0V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 12:26:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
+        id S231132AbjH1QmF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 12:42:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232764AbjH1Q0R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:26:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A331113D;
-        Mon, 28 Aug 2023 09:26:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3524D63C0B;
-        Mon, 28 Aug 2023 16:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB932C433C8;
-        Mon, 28 Aug 2023 16:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693239968;
-        bh=OvYV9Htm9mU/km9WRjPlS3QpfQqo2NlyVWl3AqwuPJU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aTMoaOBEQWHyzAdjGZbACBWr/HmrQA3Cvi2aC+eSDpXPaSiqBObYEG2SbNXQPDx06
-         Z0MckpI4yhO7ZQvzeetKjAvcCBRVG+C/PVB0zoG3hxG3iSorC6u6s++e6JH5xL6aS8
-         vS+0PJM3x7SssYr+QWYzODv2NfDKnpTmWBcSHBMR/PrhpkJTQnEBbrirXXFECuqzGC
-         hVwiFZWAG562g2uYskXR1Fm3tzlBfywDsheLV+SFczdKiqj2Bb0zuHevWV9NGZiiXP
-         VZXIzQLAUig2NhbtDdtanQpcTEWMilUJ86LtfR5Xjk80/Lnkcy0VMgizysUi+TUmkW
-         mExTr0JREa3nw==
-Date:   Mon, 28 Aug 2023 17:26:28 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Puranjay Mohan <puranjay12@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org,
-        Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH] iio: temperature: tmp117: Convert enum->pointer for
- data in the match tables
-Message-ID: <20230828172628.76beca65@jic23-huawei>
-In-Reply-To: <20230812161154.196555-1-biju.das.jz@bp.renesas.com>
-References: <20230812161154.196555-1-biju.das.jz@bp.renesas.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S231744AbjH1QmD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:42:03 -0400
+X-Greylist: delayed 5984 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Aug 2023 09:41:57 PDT
+Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00CE3F9;
+        Mon, 28 Aug 2023 09:41:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1693240916;
+        bh=qMLnaoLr7Mxo2WAiGAwS0IA7JoMknwpbu2iKGRbMgtQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=vH7ENNrcedrqWanNUcN4EIlugB7fjXU7rPCQ9xEZdsY9ujrhxujVqF+VcdQwN+wfZ
+         Rxc96rzaZKYnqB3XiO4RabqCkMj5LEjP7r4ZAU8qpsBlphbjnw5mX1AegiBoaYJl80
+         nurWtWvQxp+bY/xq3lLYw+rrjjUwh4MczaXjHCwo=
+Received: from localhost.localdomain ([122.14.229.192])
+        by newxmesmtplogicsvrszc5-0.qq.com (NewEsmtp) with SMTP
+        id 8E52FE7E; Tue, 29 Aug 2023 00:35:37 +0800
+X-QQ-mid: xmsmtpt1693240537td16zclax
+Message-ID: <tencent_273D6814AA50AF24126F966A3DB684C0FE09@qq.com>
+X-QQ-XMAILINFO: NFvJBhJV2/hXwhjejeYoN5PG4pyPtPw2M/TIYGva9QgadJmM2h091KEZjafGq2
+         T5tlxcSeJkTiSOunxxJhcoDjpnMg9AdPYI1uCf4EAv62b8q3f+Q8Apw6OL5sVTduoLMCXCtq1QkI
+         20yCg2nbII6R5wB0Vm3z294iEgbhrzrE+NXmL1p6iNg4XhcPGLDvJzxmsYtMTIDSBLXN8dxuABAR
+         Ik9CPFOqQGBCNbBTuTVGWQRytfxVGsEd2gPx4WZAaAEbTl/Mjnr9miqOF7RHVpJK/crS/GPbH+x5
+         SKhuj274CAmES5zxNFOF+R2rELNG/SkhTvD5y8AeQrwCYNf1rpRx1eATl+hbCYtOY5KqV8Fz//Qb
+         ZO20aL+fxSZ5VfFKM7JiN/zp5TLJsDZ2mZdWGJTlO4cILjbO33bL2IpYSLruBHCTXqShjpCVPj9s
+         BtoIYDA4VFi59JDrMO9jNBvqaS51xRjt1v/SGpBRYAIXk7Fy5HLMNN7q/s/kj8N9y13KsfPfjlrb
+         3CUlE67+wYWZjvGBmCuI/Tbe3gN7ccXx2Iwghm9SuGiF+zNCXRK0jdWjsjwJlrZDrBjN8U6QB5vw
+         CoJu2rp6rhzqPSXcJ9l41Pm8fnUmf8algkDZYsXWUzy1ipX2zj2RIkdw25TUGhp0LjqpoCkIFG2g
+         eFa3KXiXwxt5NsFb1p6eflRQzRRReaf67f+AEPKOVRuA+M0hQW0ZjhqCOPy0RlfpHsK1OIWv8YHO
+         +OVfxZhVh+QH6B/mN8cJ0U/fr0gcT24wi2SAIFgqvbAE1qR9nb9PVNH6ju7Tg6jh2XSaND2zhUWd
+         UW7Dsz2Pb4Ztkaa8fT16vJ5ZwVh+XVO5Ie8F4cQRL0WaDUJHyr8QTqi4eQo8LSfA2Ua8Vq87b20l
+         9Ejmbu75rpuNjbptuNwm+n1x946soLdFhFPsOg6Z9Wv075+CLLZvNr7soxlVh0eGEeWe7HIHlpze
+         R/0NOMcbhAg/X31A+Vsd747DYx5RVPjEweKoM+M2fA6/EWy+JU6M/kQO6GizLy2ewRngFyM14=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From:   Zhang Shurong <zhang_shurong@foxmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, lgirdwood@gmail.com,
+        broonie@kernel.org, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] io: adc: stm32-adc: fix potential NULL pointer dereference in
+ stm32_adc_probe()
+Date:   Tue, 29 Aug 2023 00:35:36 +0800
+X-OQ-MSGID: <3266012.aeNJFYEL58@localhost.localdomain>
+In-Reply-To: <20230828171605.15c51c28@jic23-huawei>
+References: <tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com>
+ <tencent_CF6E986A75B63EC09E3D98143650B5241809@qq.com>
+ <20230828171605.15c51c28@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 12 Aug 2023 17:11:54 +0100
-Biju Das <biju.das.jz@bp.renesas.com> wrote:
+=E5=9C=A8 2023=E5=B9=B48=E6=9C=8829=E6=97=A5=E6=98=9F=E6=9C=9F=E4=BA=8C CST=
+ =E4=B8=8A=E5=8D=8812:16:05=EF=BC=8CJonathan Cameron =E5=86=99=E9=81=93=EF=
+=BC=9A
+> On Mon, 28 Aug 2023 23:02:07 +0800
+>=20
+> Zhang Shurong <zhang_shurong@foxmail.com> wrote:
+> > =E5=9C=A8 2023=E5=B9=B47=E6=9C=8817=E6=97=A5=E6=98=9F=E6=9C=9F=E4=B8=80=
+ CST =E4=B8=8A=E5=8D=8812:08:21=EF=BC=8CJonathan Cameron =E5=86=99=E9=81=93=
+=EF=BC=9A
+> >=20
+> > > On Sat, 15 Jul 2023 23:55:50 +0800
+> > >=20
+> > > Zhang Shurong <zhang_shurong@foxmail.com> wrote:
+> > > > of_match_device() may fail and returns a NULL pointer.
+> > > >=20
+> > > > Fix this by checking the return value of of_match_device().
+> > > >=20
+> > > > Fixes: 64ad7f6438f3 ("iio: adc: stm32: introduce compatible data cf=
+g")
+> > > > Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+> > >=20
+> > > Hi Zhang,
+> > >=20
+> > > I'm not sure we can actually make this bug happen. Do you have
+> > > a way of triggering it?  The driver is only probed on devices where
+> > > that match will work.
+> > >=20
+> > > Also, assuming the match table is the same one associated with this
+> > > probe
+> > > function, then us priv->cfg =3D of_device_get_match_data() and check =
+the
+> > > output of that which is what we really care about.
+> > >=20
+> > > Jonathan
+> > >=20
+> > > > ---
+> > > >=20
+> > > >  drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
+> > > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > > >=20
+> > > > diff --git a/drivers/iio/adc/stm32-adc-core.c
+> > > > b/drivers/iio/adc/stm32-adc-core.c index 48f02dcc81c1..70011fdbf5f6
+> > > > 100644
+> > > > --- a/drivers/iio/adc/stm32-adc-core.c
+> > > > +++ b/drivers/iio/adc/stm32-adc-core.c
+> > > > @@ -706,6 +706,8 @@ static int stm32_adc_probe(struct platform_devi=
+ce
+> > > > *pdev)>
+> > > >=20
+> > > >  	struct stm32_adc_priv *priv;
+> > > >  	struct device *dev =3D &pdev->dev;
+> > > >  	struct device_node *np =3D pdev->dev.of_node;
+> > > >=20
+> > > > +	const struct of_device_id *of_id;
+> > > > +
+> > > >=20
+> > > >  	struct resource *res;
+> > > >  	u32 max_rate;
+> > > >  	int ret;
+> > > >=20
+> > > > @@ -718,8 +720,11 @@ static int stm32_adc_probe(struct platform_dev=
+ice
+> > > > *pdev)>
+> > > >=20
+> > > >  		return -ENOMEM;
+> > > >  =09
+> > > >  	platform_set_drvdata(pdev, &priv->common);
+> > > >=20
+> > > > -	priv->cfg =3D (const struct stm32_adc_priv_cfg *)
+> > > > -		of_match_device(dev->driver->of_match_table, dev)->data;
+> > > > +	of_id =3D of_match_device(dev->driver->of_match_table, dev);
+> > > > +	if (!of_id)
+> > > > +		return -ENODEV;
+> > > > +
+> > > > +	priv->cfg =3D (const struct stm32_adc_priv_cfg *)of_id->data;
+> > > >=20
+> > > >  	priv->nb_adc_max =3D priv->cfg->num_adcs;
+> > > >  	spin_lock_init(&priv->common.lock);
+> >=20
+> > Hello Jonathan,
+> >=20
+> > I think we can make it happen by designing the platform device in a way
+> > that its name aligns with that of the driver. In such a scenario, when
+> > the driver is probed, the of_match_device function will return null. You
+> > can verify this functionality by reviewing the following function:
+> >=20
+> > static int platform_match(struct device *dev, struct device_driver *drv)
+>=20
+> I don't think we care about that case.  If there is a real example of
+> why someone would do this then that would be a different matter.
+>=20
+> Jonathan
+>=20
+> > Best regards,
+> > Shurong
+I just think it might be more appropriate to return the correct error code =
+in=20
+this situation. I agree with your assessment that it is an abnormal case.=20
+Therefore, it is perfectly fine if you decide not to select this patch.
 
-> Convert enum->pointer for data in the match tables, so that
-> device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
-> bus type match support added to it.
-> 
-> Add struct tmp11x_info and replace enum->struct *tmp11x_info for data in
-> the match table. Drop tmp117_identify() and simplify tmp117_probe() by
-> replacing device_get_match_data() and id lookup for retrieving data by
-> i2c_get_match_data().
-> 
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Thanks for your kind reply.
 
-+CC Marco who has been active on this driver recently.
+Shurong
 
-I'll apply it in the meantime, but still very much open to review comments.
 
-Jonathan
-
-> ---
->  drivers/iio/temperature/tmp117.c | 94 +++++++++++++++-----------------
->  1 file changed, 44 insertions(+), 50 deletions(-)
-> 
-> diff --git a/drivers/iio/temperature/tmp117.c b/drivers/iio/temperature/tmp117.c
-> index fc02f491688b..059953015ae7 100644
-> --- a/drivers/iio/temperature/tmp117.c
-> +++ b/drivers/iio/temperature/tmp117.c
-> @@ -42,6 +42,12 @@ struct tmp117_data {
->  	s16 calibbias;
->  };
->  
-> +struct tmp11x_info {
-> +	const char *name;
-> +	struct iio_chan_spec const *channels;
-> +	int num_channels;
-> +};
-> +
->  static int tmp117_read_raw(struct iio_dev *indio_dev,
->  			   struct iio_chan_spec const *channel, int *val,
->  			   int *val2, long mask)
-> @@ -119,57 +125,54 @@ static const struct iio_chan_spec tmp116_channels[] = {
->  	},
->  };
->  
-> +static const struct tmp11x_info tmp116_channels_info = {
-> +	.name = "tmp116",
-> +	.channels = tmp116_channels,
-> +	.num_channels = ARRAY_SIZE(tmp116_channels)
-> +};
-> +
-> +static const struct tmp11x_info tmp117_channels_info = {
-> +	.name = "tmp117",
-> +	.channels = tmp117_channels,
-> +	.num_channels = ARRAY_SIZE(tmp117_channels)
-> +};
-> +
->  static const struct iio_info tmp117_info = {
->  	.read_raw = tmp117_read_raw,
->  	.write_raw = tmp117_write_raw,
->  };
->  
-> -static int tmp117_identify(struct i2c_client *client)
-> +static int tmp117_probe(struct i2c_client *client)
->  {
-> -	const struct i2c_device_id *id;
-> -	unsigned long match_data;
-> +	const struct tmp11x_info *match_data;
-> +	struct tmp117_data *data;
-> +	struct iio_dev *indio_dev;
->  	int dev_id;
->  
-> +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
-> +		return -EOPNOTSUPP;
-> +
->  	dev_id = i2c_smbus_read_word_swapped(client, TMP117_REG_DEVICE_ID);
->  	if (dev_id < 0)
->  		return dev_id;
->  
->  	switch (dev_id) {
->  	case TMP116_DEVICE_ID:
-> +		match_data = &tmp116_channels_info;
-> +		break;
->  	case TMP117_DEVICE_ID:
-> -		return dev_id;
-> +		match_data = &tmp117_channels_info;
-> +		break;
-> +	default:
-> +		dev_info(&client->dev,
-> +			 "Unknown device id (0x%x), use fallback compatible\n",
-> +			 dev_id);
-> +		match_data = i2c_get_match_data(client);
->  	}
->  
-> -	dev_info(&client->dev, "Unknown device id (0x%x), use fallback compatible\n",
-> -		 dev_id);
-> -
-> -	match_data = (uintptr_t)device_get_match_data(&client->dev);
-> -	if (match_data)
-> -		return match_data;
-> -
-> -	id = i2c_client_get_device_id(client);
-> -	if (id)
-> -		return id->driver_data;
-> -
-> -	dev_err(&client->dev, "Failed to identify unsupported device\n");
-> -
-> -	return -ENODEV;
-> -}
-> -
-> -static int tmp117_probe(struct i2c_client *client)
-> -{
-> -	struct tmp117_data *data;
-> -	struct iio_dev *indio_dev;
-> -	int ret, dev_id;
-> -
-> -	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
-> -		return -EOPNOTSUPP;
-> -
-> -	ret = tmp117_identify(client);
-> -	if (ret < 0)
-> -		return ret;
-> -
-> -	dev_id = ret;
-> +	if (!match_data)
-> +		return dev_err_probe(&client->dev, -ENODEV,
-> +				     "Failed to identify unsupported device\n");
->  
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (!indio_dev)
-> @@ -181,33 +184,24 @@ static int tmp117_probe(struct i2c_client *client)
->  
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->info = &tmp117_info;
-> +	indio_dev->channels = match_data->channels;
-> +	indio_dev->num_channels = match_data->num_channels;
-> +	indio_dev->name = match_data->name;
->  
-> -	switch (dev_id) {
-> -	case TMP116_DEVICE_ID:
-> -		indio_dev->channels = tmp116_channels;
-> -		indio_dev->num_channels = ARRAY_SIZE(tmp116_channels);
-> -		indio_dev->name = "tmp116";
-> -		break;
-> -	case TMP117_DEVICE_ID:
-> -		indio_dev->channels = tmp117_channels;
-> -		indio_dev->num_channels = ARRAY_SIZE(tmp117_channels);
-> -		indio_dev->name = "tmp117";
-> -		break;
-> -	}
->  
->  	return devm_iio_device_register(&client->dev, indio_dev);
->  }
->  
->  static const struct of_device_id tmp117_of_match[] = {
-> -	{ .compatible = "ti,tmp116", .data = (void *)TMP116_DEVICE_ID },
-> -	{ .compatible = "ti,tmp117", .data = (void *)TMP117_DEVICE_ID },
-> +	{ .compatible = "ti,tmp116", .data = &tmp116_channels_info },
-> +	{ .compatible = "ti,tmp117", .data = &tmp117_channels_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, tmp117_of_match);
->  
->  static const struct i2c_device_id tmp117_id[] = {
-> -	{ "tmp116", TMP116_DEVICE_ID },
-> -	{ "tmp117", TMP117_DEVICE_ID },
-> +	{ "tmp116", (kernel_ulong_t)&tmp116_channels_info },
-> +	{ "tmp117", (kernel_ulong_t)&tmp117_channels_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(i2c, tmp117_id);
 

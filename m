@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DAAB78B697
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 19:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD55178B69C
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 19:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbjH1RgE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 13:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
+        id S231187AbjH1Rgf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 13:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232981AbjH1Rfa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 13:35:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFB21A1;
-        Mon, 28 Aug 2023 10:35:22 -0700 (PDT)
+        with ESMTP id S232871AbjH1RgS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 13:36:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74124129;
+        Mon, 28 Aug 2023 10:36:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E075D64E5A;
-        Mon, 28 Aug 2023 17:35:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65A1C433C7;
-        Mon, 28 Aug 2023 17:35:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A887619A9;
+        Mon, 28 Aug 2023 17:36:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D76C433C7;
+        Mon, 28 Aug 2023 17:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693244121;
-        bh=l0URK5+hKXJ+ZT9yLXrM2vwer/pEtGQhRykpFAOPVes=;
+        s=k20201202; t=1693244171;
+        bh=khAhSNkkvgPxvpni4X10fm1fWoh1aSP8vHZAonVLaU4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HSOXtyGAH1FTSAyZfiyKCFBM8xmGZXvN7k9Bs5YjbvDR8Ttz31nuwZimAvS+Oqgr1
-         EVoMLyoJTqkrg+ixr2l2NbPT1zjXkoSdcCgMeawsWc7tNhabo6xCtkx7NvOClc+QlT
-         trN2lOXZKG5CXrzoa4ImT36+siP9APNSZcEBJ/C31x6rfHlr6InNpMa/BX5DfWM1Nr
-         lHjwBbsOVocvJskCBetjxNKRbsNCWsi9/1YfprkAHPvbYlJcFJQ6S5k4msvd0N0rwN
-         P2ipqQiZE7s6IKwBkkY4FBf6vBSFKc53S2HeH7/cNkRpyR902jMTQVD74NBqgjFV6E
-         oDTagiBdGuXqQ==
-Date:   Mon, 28 Aug 2023 18:35:39 +0100
+        b=XaDSnFJYFj7sGgMHoiKHyFZ93lu1oHgVpElveESQZkJ01Hk2Cu2YtLMYw1+/ltyn1
+         bYBAQ/Ny1zpoBa05DPq/NY0EyYsdvcwxUe4AGR30S2jvqM7azI/OA0CN38680illAE
+         tX7QYtK1xnwzHiFppbKMZZfTuSdyE8iD7sPO+3mbc+dxdU9dmoAjmVzeCbLhJ9MKmH
+         JZxquIxyClFWs7H0eN+j24gcQdroYAyE54QKTDscaw79a9gypSQgrVedVo9cTRKnAe
+         llqtYaiZeybJU00+CujJQFueFCmXazZ2Y0PJXvL6QpLLuwsB+GlmCcJY1fc3FiVFuq
+         R2YQY0irSPVyQ==
+Date:   Mon, 28 Aug 2023 18:36:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+To:     Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: accel: kionix-kx022a: Use correct header(s)
+Subject: Re: [PATCH v1 1/1] iio: accel: msa311: Use correct header(s)
  instead of string_helpers.h
-Message-ID: <20230828183539.43799693@jic23-huawei>
-In-Reply-To: <ZNTmNW1I2aI6ervP@smile.fi.intel.com>
-References: <20230808164204.66818-1-andriy.shevchenko@linux.intel.com>
-        <d8f84ec0-142d-88d1-c317-acfb8c234bad@gmail.com>
-        <ZNTmNW1I2aI6ervP@smile.fi.intel.com>
+Message-ID: <20230828183630.54b3fb35@jic23-huawei>
+In-Reply-To: <20230809064723.24jgjgr7pclzz5yo@CAB-WSD-L081021>
+References: <20230808164152.66748-1-andriy.shevchenko@linux.intel.com>
+        <20230809064723.24jgjgr7pclzz5yo@CAB-WSD-L081021>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,24 +58,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Aug 2023 16:29:25 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 9 Aug 2023 09:47:23 +0300
+Dmitry Rokosov <ddrokosov@sberdevices.ru> wrote:
 
-> On Wed, Aug 09, 2023 at 09:00:39AM +0300, Matti Vaittinen wrote:
-> > On 8/8/23 19:42, Andy Shevchenko wrote:  
-> > > There is nothing from string_helpers.h used in the driver, correct
-> > > the header inclusion block accordingly.
-> > > 
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> > 
-> > Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> > 
-> > Out of the curiosity - is the goal to get rid of including choices from
-> > helpers? (I think) then the header split would be more beneficial.  
+> Hello Andy,
 > 
-> At the end, yes.
+> Thank you for the patch!
 > 
-> Thank you for acknowledging!
+> On Tue, Aug 08, 2023 at 07:41:52PM +0300, Andy Shevchenko wrote:
+> > There is nothing from string_helpers.h used in the driver, correct
+> > the header inclusion block accordingly.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> 
+> Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> 
+Applied
+
+Thanks,
+J
+> > ---
+> >  drivers/iio/accel/msa311.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+> > index 6ddcc3c2f840..b8ddbfd98f11 100644
+> > --- a/drivers/iio/accel/msa311.c
+> > +++ b/drivers/iio/accel/msa311.c
+> > @@ -33,7 +33,7 @@
+> >  #include <linux/pm.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/regmap.h>
+> > -#include <linux/string_helpers.h>
+> > +#include <linux/string_choices.h>
+> >  #include <linux/units.h>
+> >  
+> >  #include <linux/iio/buffer.h>
+> > -- 
+> > 2.40.0.1.gaa8946217a0b
+> >   
 > 
 
-Applied.

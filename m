@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7EF78AE59
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 13:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3BB78AE83
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 13:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232116AbjH1LBo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 07:01:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33574 "EHLO
+        id S230287AbjH1LLT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 07:11:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232427AbjH1LBS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 07:01:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2A619A
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 04:01:01 -0700 (PDT)
+        with ESMTP id S229457AbjH1LKz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 07:10:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5718DB0
+        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 04:10:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43B78618E8
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 11:00:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD9CC433C7;
-        Mon, 28 Aug 2023 11:00:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D21096101A
+        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 11:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD15C433C7;
+        Mon, 28 Aug 2023 11:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693220450;
-        bh=zUXWtiTa5HyO37rdNLAUgFkO6biH5P/G6jD6QYnHQ84=;
+        s=k20201202; t=1693221051;
+        bh=DMuVDxVvJsPX7o3ESONpW6pbjsxj0df6GemKzMzkuEk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SHhoP5hUfFbDEgaaJpkkudPraTXYSCJyYvOrDiDQp8NiJie2YNtJXkeh1pR/Ozybn
-         zPx8Qw9iQTrgN1a2p1H8c8v62lKDOBM94/609OD8/htQa4bHtRjW2TGgtJdoE3hrsW
-         Ht8T4qve8xioVZv1OC5S6r+zG+bt3Cx1mOSgseu09QDV9233DRp+XbDhyYwc3qzFAS
-         tPKsbT1Ji9B2PNcRLsSIm/ArT9vFQ4EWj5iagUkr1Il39UtWbK/yYOZ+hQGVxDZBPo
-         WYKH2Wibp6lcwsKXDdgEmcoZX5UxP82yqnpD+Fqc3fN83ufui9EdxV2av6as1ZcyKL
-         Wf/jFAavmsOKw==
-Date:   Mon, 28 Aug 2023 12:01:10 +0100
+        b=cZOoly7o6u4saSwkK6GbaKPhiY2YQ721Pgi47UUq7DW9/7LyzFPBqjsa9+vs3GtJ6
+         jdFvYduUKThzkO85mISMugsuMAvQjBsvmQlghp3m8Kz47MWvYGHIi2LIsfMHkwqD0I
+         JqUuDLoTOJWdYtCretbKfRwhjhmbOg8CW9IkQTfxo7P/kdoYvNvSmHti5A7EChZyFE
+         +sqt8QclTLFdTbodtWPb5BWKQBmQqIv3zJ0ZW6oSGA7rsPcMHbbK9Li+vYTQBtFDbA
+         2CJPjfQPf5gi4s53EOpliKxBEirsP3KAjObu3veoVbc+UYXV2GsQV1+S0o2ScLwudK
+         5lQFSpdv6kNww==
+Date:   Mon, 28 Aug 2023 12:11:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jinjie Ruan <ruanjinjie@huawei.com>
 Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
@@ -40,15 +40,15 @@ Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Subject: Re: [PATCH -next v3] iio: frequency: adf4350: Use device managed
  functions and fix power down issue.
-Message-ID: <20230828120110.6e4e1df2@jic23-huawei>
+Message-ID: <20230828121111.4bfd07c9@jic23-huawei>
 In-Reply-To: <20230828062717.2310219-1-ruanjinjie@huawei.com>
 References: <20230828062717.2310219-1-ruanjinjie@huawei.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,14 +90,6 @@ Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 > Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Applied to the togreg branch of iio.git but only pushed out as testing for now
-as I will be rebasing on rc1.  As such these won't appear in linux-next until
-after the merge window has closed.
-
-Thanks,
-
-Jonathan
-
 > ---
 > v3:
 > - Add a device managed hook to enable software power down.
@@ -234,6 +226,17 @@ Jonathan
 > -	if (!IS_ERR(reg))
 > -		regulator_disable(reg);
 > +	return 0;
+Tiny tweak, which I'll make whilst applying.
+
+	return devm_iio_device_register() is the same
+and saves us a few lines.
+
+One of the random static analysis scripts people run picks up on this
+one so if I left it we would probably get a patch in a few weeks making the
+change.  Easier to do it now :)
+
+Jonathan
+
 >  }
 >  
 >  static const struct of_device_id adf4350_of_match[] = {

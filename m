@@ -2,152 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 647D878B339
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 16:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF09E78B34A
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 16:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231383AbjH1Off (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 10:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55406 "EHLO
+        id S231748AbjH1OiT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 10:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230458AbjH1OfG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 10:35:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC5C4C9;
-        Mon, 28 Aug 2023 07:35:03 -0700 (PDT)
+        with ESMTP id S231743AbjH1OiI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 10:38:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD3EA1;
+        Mon, 28 Aug 2023 07:38:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83FB0649C7;
-        Mon, 28 Aug 2023 14:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17738C433C8;
-        Mon, 28 Aug 2023 14:34:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F3226297F;
+        Mon, 28 Aug 2023 14:38:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8646C433C8;
+        Mon, 28 Aug 2023 14:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693233302;
-        bh=xvcD4T141QWQdLnTpjwFsaRzVQbDz33pxGbpyYMH39s=;
+        s=k20201202; t=1693233484;
+        bh=Vm4Wb10pnSJCprThUHs5sRplOiiwrW2ZhbukDVPepoI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nsftVUsYbfugJ2EsSq4/XYJZ4RiwxXGDBsQIyj0SW4IaLjyUIJdvCIoE0qjgnujA/
-         BiWFMgKTVf3TEjJWy1fI4t8H5tDWLyaX9vsE4H/BR4WBSMeuCf7olL7XZ2ZfDK2A7o
-         lTjG8i7jq6+jrrYuzOEGFa3p/YPxFjtxuS75MBCKLBTH4FKQ9006ovnbbRqBcXZK9J
-         BfWh9A0cs1IgJAjC67SvPFk45bp6/40icq/pcEyZPHWrSJUE8arhwK5dvvGyggzCyR
-         VFiN0vJfvtzJjjv/Sy2x0dGtLwzNrp44VTm1rP+WD2kOVTeu/sMFTFJOQ+8MqW3ZIm
-         sQP2IIMl0o0uw==
-Date:   Mon, 28 Aug 2023 15:35:22 +0100
+        b=TYjeuUkx+aBA69jTjQfy6/BIxSzPSHe+d0f+4zKudk/jmte2P4kq6DsjofEu4Z3Sd
+         S2HHRHN++ZGbURWqIMNUpfYSXl3C1ks83yUFQ6O9uMpUq3OvkAq6fVzgjT0pXFe+hP
+         8sRfRo5AFNQI87b0+rqK2Fz0HhxIkvhfociXqBQru7L5gyWEmSI4gZSGesZCC3Q6Hf
+         UZq8aoYF1eqkCNE7o3dASUVY98qxumRELPlOcCHwWcDtv1aSK9DlZyAc8bu529UJpe
+         ExVNeWYtChP2/F2NVXpBpKKsdwlEF74QxtSVWojgbvvgRhMteW+8AxfU/NNfTbOAyU
+         96jKiKtVk+eeg==
+Date:   Mon, 28 Aug 2023 15:38:21 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ana-Maria Cusco <ana-maria.cusco@analog.com>
-Cc:     Michael Hennerich <michael.hennerich@analog.com>,
+To:     kernel test robot <lkp@intel.com>
+Cc:     Mingjin Yang <mingjin.yang@unisoc.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] iio: amplifiers: hmc425a: Add Support HMC540S 4-bit
- Attenuator
-Message-ID: <20230828153522.754cb7ff@jic23-huawei>
-In-Reply-To: <20230816110906.144540-1-ana-maria.cusco@analog.com>
-References: <20230816110906.144540-1-ana-maria.cusco@analog.com>
+        oe-kbuild-all@lists.linux.dev, magicyangmingjin@gmail.com,
+        Ling_Ling.Xu@unisoc.com, Jinfeng.Lin1@unisoc.com,
+        Yangbin.Li@unisoc.com, Jiansheng.Wu@unisoc.com,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V0 2/2] iio: adc: sprd_pmic_adc: Add support for UMP
+ serise pmic adc
+Message-ID: <20230828153821.51705a00@jic23-huawei>
+In-Reply-To: <202308162143.UjXhwiRf-lkp@intel.com>
+References: <20230816080225.21482-3-mingjin.yang@unisoc.com>
+        <202308162143.UjXhwiRf-lkp@intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 16 Aug 2023 14:09:05 +0300
-Ana-Maria Cusco <ana-maria.cusco@analog.com> wrote:
+On Wed, 16 Aug 2023 22:07:15 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> From: Michael Hennerich <michael.hennerich@analog.com>
+> Hi Mingjin,
 > 
-> This adds support for the Analog Devices HMC540s 1 dB LSB
-> Silicon MMIC 4-Bit Digital Positive Control Attenuator, 0.1 - 8 GHz
+> kernel test robot noticed the following build warnings:
 > 
-> Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-
-Hi Ana-Maria
-
-Generally for all but single patch series, I'd prefer a cover letter.
-For new drivers, just put a short description of the device in there.
-There are various reasons, but the simplest one is that it provides
-a place where people can offer Reviewed-by etc for the whole series
-in a form that the b4 tool I (and lots of other maintainers) use can
-pick it up automatically.
-
-Anyhow, actual patches look great to me.
-
-Applied to the togreg branch of iio.git and pushed out as testing for now.
-I will be rebasing on 5.6-rc1 once it's available after which these should
-get picked up by linux-next.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/amplifiers/hmc425a.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+> [auto build test WARNING on robh/for-next]
+> [also build test WARNING on linus/master v6.5-rc6 next-20230816]
+> [cannot apply to jic23-iio/togreg]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
 > 
-> diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hmc425a.c
-> index 108f0f1685ef..e87d35d50a95 100644
-> --- a/drivers/iio/amplifiers/hmc425a.c
-> +++ b/drivers/iio/amplifiers/hmc425a.c
-> @@ -21,6 +21,7 @@
->  
->  enum hmc425a_type {
->  	ID_HMC425A,
-> +	ID_HMC540S,
->  };
->  
->  struct hmc425a_chip_info {
-> @@ -70,6 +71,9 @@ static int hmc425a_read_raw(struct iio_dev *indio_dev,
->  		case ID_HMC425A:
->  			gain = ~code * -500;
->  			break;
-> +		case ID_HMC540S:
-> +			gain = ~code * -1000;
-> +			break;
->  		}
->  
->  		*val = gain / 1000;
-> @@ -106,6 +110,9 @@ static int hmc425a_write_raw(struct iio_dev *indio_dev,
->  	case ID_HMC425A:
->  		code = ~((abs(gain) / 500) & 0x3F);
->  		break;
-> +	case ID_HMC540S:
-> +		code = ~((abs(gain) / 1000) & 0xF);
-> +		break;
->  	}
->  
->  	mutex_lock(&st->lock);
-> @@ -157,6 +164,7 @@ static const struct iio_chan_spec hmc425a_channels[] = {
->  /* Match table for of_platform binding */
->  static const struct of_device_id hmc425a_of_match[] = {
->  	{ .compatible = "adi,hmc425a", .data = (void *)ID_HMC425A },
-> +	{ .compatible = "adi,hmc540s", .data = (void *)ID_HMC540S },
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, hmc425a_of_match);
-> @@ -171,6 +179,15 @@ static struct hmc425a_chip_info hmc425a_chip_info_tbl[] = {
->  		.gain_max = 0,
->  		.default_gain = -0x40, /* set default gain -31.5db*/
->  	},
-> +	[ID_HMC540S] = {
-> +		.name = "hmc540s",
-> +		.channels = hmc425a_channels,
-> +		.num_channels = ARRAY_SIZE(hmc425a_channels),
-> +		.num_gpios = 4,
-> +		.gain_min = -15000,
-> +		.gain_max = 0,
-> +		.default_gain = -0x10, /* set default gain -15.0db*/
-> +	},
->  };
->  
->  static int hmc425a_probe(struct platform_device *pdev)
+> url:    https://github.com/intel-lab-lkp/linux/commits/Mingjin-Yang/dt-bindings-iio-adc-Add-support-for-ump518-pmic-adc/20230816-160754
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+> patch link:    https://lore.kernel.org/r/20230816080225.21482-3-mingjin.yang%40unisoc.com
+> patch subject: [PATCH V0 2/2] iio: adc: sprd_pmic_adc: Add support for UMP serise pmic adc
+> config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20230816/202308162143.UjXhwiRf-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 12.3.0
+> reproduce: (https://download.01.org/0day-ci/archive/20230816/202308162143.UjXhwiRf-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202308162143.UjXhwiRf-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    drivers/iio/adc/sprd_pmic_adc.c: In function 'ump9620_ch_data_init':
+> >> drivers/iio/adc/sprd_pmic_adc.c:530:1: warning: the frame size of 1320 bytes is larger than 1024 bytes [-Wframe-larger-than=]  
+>      530 | }
+>          | ^
+> 
+> 
+> vim +530 drivers/iio/adc/sprd_pmic_adc.c
+> 
+>    506	
+>    507	static void ump9620_ch_data_init(struct sprd_adc_data *data)
+>    508	{
+>    509		struct sprd_adc_channel_data ch_data_def = CH_DATA_INIT(SCALE_00, 0, 0, RATIO_DEF);
+>    510		struct sprd_adc_channel_data ch_data[SPRD_ADC_CHANNEL_MAX] = {
+
+Make these both const and I think the compiler will move these off the stack thus
+solving the issue seen.
+
+>    511			[0] = CH_DATA_INIT(SCALE_01, 0, 0, RATIO_DEF),
+>    512			[5] = CH_DATA_INIT(SCALE_00, 0x1, 0x9, RATIO_DEF),
+>    513			[6] = CH_DATA_INIT(SCALE_00, 0x1, 0x9, RATIO_DEF),
+>    514			[7] = CH_DATA_INIT(SCALE_10, 0, 0, RATIO_DEF),
+>    515			[9] = CH_DATA_INIT(SCALE_10, 0, 0, RATIO_DEF),
+>    516			[10] = CH_DATA_INIT(SCALE_11, 0, 0, RATIO_DEF),
+>    517			[11] = CH_DATA_INIT(SCALE_00, 0, 0, RATIO_DEF),
+>    518			[13] = CH_DATA_INIT(SCALE_01, 0, 0, RATIO_DEF),
+>    519			[14] = CH_DATA_INIT(SCALE_00, 0, 0, RATIO(68, 900)),
+>    520			[15] = CH_DATA_INIT(SCALE_00, 0, 0, RATIO(1, 3)),
+>    521			[19] = CH_DATA_INIT(SCALE_11, 0, 0, RATIO_DEF),
+>    522			[21] = CH_DATA_INIT(SCALE_00, 0, 0, RATIO(3, 8)),
+>    523			[22] = CH_DATA_INIT(SCALE_00, 0, 0, RATIO(3, 8)),
+>    524			[23] = CH_DATA_INIT(SCALE_00, 0, 0, RATIO(3, 8)),
+>    525			[30] = CH_DATA_INIT(SCALE_11, 0, 0, RATIO_DEF),
+>    526			[31] = CH_DATA_INIT(SCALE_11, 0, 0, RATIO_DEF),
+>    527		};
+>    528	
+>    529		sprd_adc_ch_data_merge(data, ch_data, &ch_data_def);
+
+>  > 530	}  
+>    531	
+> 
 

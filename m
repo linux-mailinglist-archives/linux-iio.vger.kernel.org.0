@@ -2,167 +2,229 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C47878A5BD
+	by mail.lfdr.de (Postfix) with ESMTP id 5992978A5BE
 	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 08:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjH1GYx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 02:24:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59072 "EHLO
+        id S229588AbjH1G2G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 02:28:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbjH1GYb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 02:24:31 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7472BBF;
-        Sun, 27 Aug 2023 23:24:29 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-5007abb15e9so4317175e87.0;
-        Sun, 27 Aug 2023 23:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693203868; x=1693808668;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pJEEAUFPzNHL6qeRgs4ZV0S7WVIrOvIW9wbr+X3tFe4=;
-        b=QNo9/4Gx3pM3EQHZCPHTjVCsd+LQO/mNKW3m32bL4usyDhQcc8UaQk12nnwojEPqxp
-         xLEV1CJtW8xNVk+3tybZgABpmWfQzm708n0jPCsy6vim+gUde0KhubJURiH4fIjRHRbl
-         BPeJ0m9hOepsktkdZigesxYc2/hQ9NX3CfNabYN/ewv5+/bTd+ZL7KSw6K7dJqmYhYe4
-         9rcdjGeUy0eVkLinaFpOmi8rLWq5LTS9MMLr2XB0G5xHcVf9xpnQr910qZLoe7KzMlRH
-         +0P4rVWvVOqs+7kY7Y8tvY6HHOjts4XI86QyxoJHQcQrF6Eyipuox+nsZs3fcxHArDUe
-         e7fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693203868; x=1693808668;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pJEEAUFPzNHL6qeRgs4ZV0S7WVIrOvIW9wbr+X3tFe4=;
-        b=c5piqVAXrTHkO5i63Ach+Cm7vPpk6MdxsXpw0nS/Go/8ha+7apxrTOr2/vUpf1730Z
-         qRkuBpkFDSvjQUHmkH9BWoI3++Z9ayKI/hzaY/yqpjt/OudXvudaUb3owdWkw5jqvPsI
-         QgHdvHGv0lWHB4d1k0TylG25egK2nt6p5z2jgz1Oj569aTyzH3gqStiIuFGjoPCNbmd/
-         fHStNt74kX/zqOS6hDmzp4toQ7Kei4FDLXq+Ibo6/7CF7TiZB/+kzAryOR/rO/SGaNRz
-         NjyQRmXcwfipVk4hsFjTtuiHbHFCH/14HDCfFcEkFC+y2iJTM6At+FGLriPhnuNeonWr
-         svDQ==
-X-Gm-Message-State: AOJu0YzvMSLEBRyJgCIUkxuw4YJRv0Fui2wZdV320fTxC/yqdfhZCZ6O
-        HyPlHvsoNgjeyUaekOfOtYE=
-X-Google-Smtp-Source: AGHT+IFsnWBDIsFl7sMk13p09aaoc28fgtljnP8uYi1nofxVIvuHHfzYnM4o4KLAjANfpIbIEGa/9g==
-X-Received: by 2002:ac2:4c2e:0:b0:500:95d8:1b01 with SMTP id u14-20020ac24c2e000000b0050095d81b01mr8648061lfq.65.1693203867426;
-        Sun, 27 Aug 2023 23:24:27 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::5? (dc78bmyyyyyyyyyyyyyct-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::5])
-        by smtp.gmail.com with ESMTPSA id v20-20020ac25614000000b004fbc82dd1a5sm1441871lfd.13.2023.08.27.23.24.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Aug 2023 23:24:26 -0700 (PDT)
-Message-ID: <61247547-690c-fb8b-3a45-cd60754836a7@gmail.com>
-Date:   Mon, 28 Aug 2023 09:24:25 +0300
+        with ESMTP id S229767AbjH1G17 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 02:27:59 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4979D109
+        for <linux-iio@vger.kernel.org>; Sun, 27 Aug 2023 23:27:56 -0700 (PDT)
+Received: from kwepemi500008.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RZ0tx5BjZzrSV0;
+        Mon, 28 Aug 2023 14:26:17 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 28 Aug
+ 2023 14:27:53 +0800
+From:   Jinjie Ruan <ruanjinjie@huawei.com>
+To:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <ruanjinjie@huawei.com>
+Subject: [PATCH -next v3] iio: frequency: adf4350: Use device managed functions and fix power down issue.
+Date:   Mon, 28 Aug 2023 14:27:16 +0800
+Message-ID: <20230828062717.2310219-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mehdi Djait <mehdi.djait.k@gmail.com>,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <cover.1692824815.git.mehdi.djait.k@gmail.com>
- <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
- <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
- <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
- <ZOdddZ0Zpk5CknH8@smile.fi.intel.com>
- <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
- <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
- <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
- <ZOdrtNQijmhN9RAx@smile.fi.intel.com> <20230827190732.5e2215d0@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
- retrieve number of bytes in buffer
-In-Reply-To: <20230827190732.5e2215d0@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/27/23 21:09, Jonathan Cameron wrote:
-> 
->>>>>> I see. I think my confusion can be easily cured by renaming the callback to
->>>>>>
->>>>>>          get_amount_bytes_in_fifo()
->>>>>>
->>>>>> or
->>>>>>
->>>>>>          get_bytes_in_fifo()
->>>>>>
->>>>>> or alike.
->>>>>
->>>>> or leave it as is. The function is documented:
->>>>   
->>>>> + * @get_fifo_bytes: function pointer to get number of bytes in the FIFO buffer
->>>>
->>>> Do you find it unambiguous? I do not.
->>>>
->>>> Still needs more words to explain if it's a capacity of FIFO or is it amount of
->>>> valid bytes for the current transfer or what?
->>>
->>> how about change the description to:
->>> function pointer to get amount  of acceleration data bytes currently
->>> stored in the sensor's FIFO buffer
->>>
->>> and change the function to "get_amount_bytes_in_fifo()"
->>
->> Sounds good to me, thank you!
->>
-> Bikeshedding time ;)
-> 
-> I don't like "amount" in this - it ends up adding little meaning
-> and to me it is ugly English.  It's making it clear that we are dealing
-> with some sort of count but that is already true of get_bytes_in_fifo()
-> So to my reading it adds nothing wrt to removing ambiguity.
-> 
-> get_number_of_bytes_in_fifo() flows better but also adds nothing over
-> get_bytes_in_fifo()
-> 
-> You could make it clear it is something that changes over time.
-> 
-> get_current_bytes_in_fifo()
-> 
-> Which at least implies it changes - though it doesn't rule out a weird
-> variable max size fifo.
-> 
-> get_fifo_bytes_available() might be the clearest option and is the one
-> I would prefer.  It's still a little messy as it could mean
-> 'number of bytes of data that haven't been used yet in the fifo and
->   are available for samples in the future'.
-> 
-> Sigh.  Maybe least ambiguous is something longer like.
-> 
-> get_fifo_bytes_available_to_read()
-> get_fifo_bytes_available_out()
-> 
-> Honestly I don't care that much what you go with :)
+The devm_clk_get_enabled() helper:
+    - calls devm_clk_get()
+    - calls clk_prepare_enable() and registers what is needed in order to
+      call clk_disable_unprepare() when needed, as a managed resource.
 
-If this was a democracy (which it isn't) - my vote would go for "leave 
-as it is" because the concept of a data collecting fifo where amount of 
-data acquired in FIFO is readable from a register is common enough. I 
-think that people who work on a driver like this should guess what this 
-is for. Besides, if anything more than looking at the code is needed, 
-then the plain guessing won't do and one needs anyway to open the 
-data-sheet.
+Also replace devm_regulator_get() and regulator_enable() with
+devm_regulator_get_enable() helper and remove regulator_disable().
 
- From my perspective this series adds a nice value and is good to go.
+Replace iio_device_register() with devm_iio_device_register() and remove
+iio_device_unregister().
 
-Just my 10 cents though :)
+And st->reg is not used anymore, so remove it.
 
-Yours,
-	-- Matti
+As Jonathan pointed out, couple of things that are wrong:
 
+1) The device is powered down 'before' we unregister it with the
+   subsystem and as such userspace interfaces are still exposed which
+   probably won't do the right thing if the chip is powered down.
+
+2) This isn't done in the error paths in probe.
+
+To solve this problem, register a new callback adf4350_power_down()
+with devm_add_action_or_reset(), to enable software power down in both
+error and device detach path. So the remove function can be removed.
+
+Remove spi_set_drvdata() from the probe function, since spi_get_drvdata()
+is not used anymore.
+
+Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+---
+v3:
+- Add a device managed hook to enable software power down.
+- Remove the remove function.
+- Remove the spi_set_drvdata() call in probe function.
+- Add the fix tag.
+- Update the commit message and title.
+v2:
+- Also use devm_regulator_get_enable() and devm_iio_device_register().
+- Update the commit message and title.
+---
+ drivers/iio/frequency/adf4350.c | 77 +++++++++++----------------------
+ 1 file changed, 26 insertions(+), 51 deletions(-)
+
+diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
+index 85e289700c3c..2c17110f3b61 100644
+--- a/drivers/iio/frequency/adf4350.c
++++ b/drivers/iio/frequency/adf4350.c
+@@ -33,7 +33,6 @@ enum {
+ 
+ struct adf4350_state {
+ 	struct spi_device		*spi;
+-	struct regulator		*reg;
+ 	struct gpio_desc		*lock_detect_gpiod;
+ 	struct adf4350_platform_data	*pdata;
+ 	struct clk			*clk;
+@@ -469,6 +468,15 @@ static struct adf4350_platform_data *adf4350_parse_dt(struct device *dev)
+ 	return pdata;
+ }
+ 
++static void adf4350_power_down(void *data)
++{
++	struct iio_dev *indio_dev = data;
++	struct adf4350_state *st = iio_priv(indio_dev);
++
++	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
++	adf4350_sync_config(st);
++}
++
+ static int adf4350_probe(struct spi_device *spi)
+ {
+ 	struct adf4350_platform_data *pdata;
+@@ -491,31 +499,21 @@ static int adf4350_probe(struct spi_device *spi)
+ 	}
+ 
+ 	if (!pdata->clkin) {
+-		clk = devm_clk_get(&spi->dev, "clkin");
++		clk = devm_clk_get_enabled(&spi->dev, "clkin");
+ 		if (IS_ERR(clk))
+-			return -EPROBE_DEFER;
+-
+-		ret = clk_prepare_enable(clk);
+-		if (ret < 0)
+-			return ret;
++			return PTR_ERR(clk);
+ 	}
+ 
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+-	if (indio_dev == NULL) {
+-		ret =  -ENOMEM;
+-		goto error_disable_clk;
+-	}
++	if (indio_dev == NULL)
++		return -ENOMEM;
+ 
+ 	st = iio_priv(indio_dev);
+ 
+-	st->reg = devm_regulator_get(&spi->dev, "vcc");
+-	if (!IS_ERR(st->reg)) {
+-		ret = regulator_enable(st->reg);
+-		if (ret)
+-			goto error_disable_clk;
+-	}
++	ret = devm_regulator_get_enable(&spi->dev, "vcc");
++	if (ret)
++		return ret;
+ 
+-	spi_set_drvdata(spi, indio_dev);
+ 	st->spi = spi;
+ 	st->pdata = pdata;
+ 
+@@ -544,47 +542,25 @@ static int adf4350_probe(struct spi_device *spi)
+ 
+ 	st->lock_detect_gpiod = devm_gpiod_get_optional(&spi->dev, NULL,
+ 							GPIOD_IN);
+-	if (IS_ERR(st->lock_detect_gpiod)) {
+-		ret = PTR_ERR(st->lock_detect_gpiod);
+-		goto error_disable_reg;
+-	}
++	if (IS_ERR(st->lock_detect_gpiod))
++		return PTR_ERR(st->lock_detect_gpiod);
+ 
+ 	if (pdata->power_up_frequency) {
+ 		ret = adf4350_set_freq(st, pdata->power_up_frequency);
+ 		if (ret)
+-			goto error_disable_reg;
++			return ret;
+ 	}
+ 
+-	ret = iio_device_register(indio_dev);
++	ret = devm_add_action_or_reset(&spi->dev, adf4350_power_down, indio_dev);
+ 	if (ret)
+-		goto error_disable_reg;
++		return dev_err_probe(&spi->dev, ret,
++				     "Failed to add action to managed power down\n");
+ 
+-	return 0;
+-
+-error_disable_reg:
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
+-error_disable_clk:
+-	clk_disable_unprepare(clk);
+-
+-	return ret;
+-}
+-
+-static void adf4350_remove(struct spi_device *spi)
+-{
+-	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct adf4350_state *st = iio_priv(indio_dev);
+-	struct regulator *reg = st->reg;
+-
+-	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
+-	adf4350_sync_config(st);
+-
+-	iio_device_unregister(indio_dev);
+-
+-	clk_disable_unprepare(st->clk);
++	ret = devm_iio_device_register(&spi->dev, indio_dev);
++	if (ret)
++		return ret;
+ 
+-	if (!IS_ERR(reg))
+-		regulator_disable(reg);
++	return 0;
+ }
+ 
+ static const struct of_device_id adf4350_of_match[] = {
+@@ -607,7 +583,6 @@ static struct spi_driver adf4350_driver = {
+ 		.of_match_table = adf4350_of_match,
+ 	},
+ 	.probe		= adf4350_probe,
+-	.remove		= adf4350_remove,
+ 	.id_table	= adf4350_id,
+ };
+ module_spi_driver(adf4350_driver);
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.34.1
 

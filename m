@@ -2,49 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9A6B78B576
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 990F478B585
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbjH1Qj5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 12:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50434 "EHLO
+        id S230018AbjH1Qnm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 12:43:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230457AbjH1QjY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:39:24 -0400
+        with ESMTP id S232559AbjH1QnS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:43:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6EC6F9;
-        Mon, 28 Aug 2023 09:39:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 854DE132;
+        Mon, 28 Aug 2023 09:43:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6528E63869;
-        Mon, 28 Aug 2023 16:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CD3C433C7;
-        Mon, 28 Aug 2023 16:39:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F021B64BCA;
+        Mon, 28 Aug 2023 16:43:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFAAC433C8;
+        Mon, 28 Aug 2023 16:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693240760;
-        bh=5LJ1v2A62rI8z41UV5q4orZmdPInisKLh5rGtam6KFU=;
+        s=k20201202; t=1693240994;
+        bh=KPrMH9Cz6xf9vHhCampnQF2DPCzBGUacD0Nc5EfhZYA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PgxcobcyCv7ZK1SQHtWPiRZbcyAgyhnB2FASMfMBvMjcxjKGbDrNiBvQOZZ/2/5pS
-         JqaDEG0zEa22adNre6ZfMfS71pRFS9+ggJUG46LDtCMqIZn7ZatDf5OOop2IDuZDq0
-         XfhCFzzq/y3fAzNVHSU89iFXtNCQmglYMRThppcSCwzwmlweTqVYvQZxT4KVU5O0dK
-         WaXfnOKabvmmPbCiEqlrItpjXPWZZnGQK9XrlF+vozz3ezV3o6zXmbQ6g6hqkJqb+0
-         YeJ0UJIJIhogmT6HjB1a1GE4gvZKAyeFICnAkv8ssYzwWD6P1SzIf2+uPDqFkIKcey
-         IThvKg15pieJQ==
-Date:   Mon, 28 Aug 2023 17:39:41 +0100
+        b=iwGWWMrZw+A8p7XBo1vaOChaNZcg1HgVcvGZt+EHDY9URgP149jYFq/+NTo323PBW
+         BZOnxfG78A8zyBdTVlBy7bmE+Xcn4zGb1dnVd4//+1bKhxoFaqHTAKRLeycD4lBoQw
+         SdN4fZdPsD+NEoebIntx9EBbOqYx+iuw62Gii7DOVfFEBzhSp2D76rP8dJFRbDy2tO
+         7lrE6U3HKq86/RkO1UQQ9j9BT4SuFMiFn+kBr1A9h9NsBsMr1FZQIHcIjmpzMCMXv+
+         K1x1oOEA/+MXTnzZkt23vYfY3IdhWn+B4xXdsAthrDVQ2umaMjlsn3pbb4ia5ltJ8b
+         Vi/Rl6KDSOcHw==
+Date:   Mon, 28 Aug 2023 17:43:32 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yue Haibing <yuehaibing@huawei.com>
-Cc:     <lars@metafoo.de>, <jean-baptiste.maneyrol@tdk.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] iio: Remove unused declarations
-Message-ID: <20230828173941.6c2cf470@jic23-huawei>
-In-Reply-To: <20230811095701.35372-1-yuehaibing@huawei.com>
-References: <20230811095701.35372-1-yuehaibing@huawei.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Mario Tesi <mario.tesi@st.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: lsm6dsx: Support temperature channel
+Message-ID: <20230828174332.101ecbcf@jic23-huawei>
+In-Reply-To: <CACRpkdYUnpb4oo+4pBxhQqbnquDP_+w3ecGoFX18TTC9BSZFwg@mail.gmail.com>
+References: <20230811-iio-spacex-lsm6ds0-v1-0-e953a440170d@linaro.org>
+        <20230811-iio-spacex-lsm6ds0-v1-1-e953a440170d@linaro.org>
+        <ZNYIaagdt7HuRet5@lore-rh-laptop>
+        <CACRpkdYHMyfvAGxgvtB8jgTsOp36Lm4gXzVYcBfXdY7RQK36cQ@mail.gmail.com>
+        <ZNdOOuXy7vON/Shb@lore-rh-laptop>
+        <CACRpkdYUnpb4oo+4pBxhQqbnquDP_+w3ecGoFX18TTC9BSZFwg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,100 +62,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Aug 2023 17:57:01 +0800
-Yue Haibing <yuehaibing@huawei.com> wrote:
+On Sat, 12 Aug 2023 22:40:19 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> Commit 0f3a8c3f34f7 ("iio: Add support for creating IIO devices via configfs")
-> declared but never implemented iio_sw_device_type_configfs_{un}register().
-> Commit b662f809d410 ("iio: core: Introduce IIO software triggers") declared but
-> never implemented iio_sw_trigger_type_configfs_{un}register().
-> Commit a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-> declared but never implemented fxls8962af_core_remove().
-> Commit 8dedcc3eee3a ("iio: core: centralize ioctl() calls to the main chardev")
-> declared but never implemented iio_device_ioctl().
-> 
-> Commit d430f3c36ca6 ("iio: imu: inv_mpu6050: Use regmap instead of i2c specific functions")
-> removed inv_mpu6050_write_reg() but not its declaration.
-> 
-> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Applied to the togreg branch of iio.git but I won't push these out (other than
-as testing) until I can rebase on rc1.
+> On Sat, Aug 12, 2023 at 11:17=E2=80=AFAM Lorenzo Bianconi <lorenzo@kernel=
+.org> wrote:
+>=20
+> > > > looking at the ISM330DHCX datasheet, the temperature sensor ODR is =
+just 52Hz,
+> > > > while values in 0x0A register are used only for FIFO decimation, th=
+ey are not
+> > > > values you can configure the sensor e.g. for read_one_shot(). =20
+>=20
+> BTW looked at this and the read_one_shot() call uses
+> register 0x20/0x21 as appropriate.
+>=20
+> > > > =20
+> > > > > +                             .odr_avl[0] =3D {  26000, 0x02 },
+> > > > > +                             .odr_avl[1] =3D {  52000, 0x03 },
+> > > > > +                             .odr_len =3D 2, =20
+> > >
+> > > I look at page 44, paragraph 9.6 about bits 4-5:
+> > >
+> > > ODR_T_BATCH_[1:0]
+> > > Selects batch data rate (write frequency in FIFO) for temperature data
+> > > (00: Temperature not batched in FIFO (default);
+> > > 01: 1.6 Hz;
+> > > 10: 12.5 Hz;
+> > > 11: 52 Hz) =20
+> >
+> > AFAIR the batch register is used to sub-sample sensor data before queue=
+ing them
+> > into the FIFO (please check st_lsm6dsx_set_fifo_odr()), but it does not=
+ refer
+> > to the configured sensor ODR.
+> > Looking at the device application-note [0], the temperature sensor ODR =
+depends
+> > on the accel/gyro one:
+> >
+> > - temperature sensor ODR =3D=3D accel sensor ODR if accel ODR is < 52Hz=
+ and the
+> >   gyro is in power-down
+> > - temperature sensor ODR =3D 52Hz if accel ODR > 52Hz or if the gyro is=
+ not in
+> >   power-down =20
+>=20
+> We handle the TEMP along with the EXT channels in
+> st_lsm6dsx_set_odr() which actually makes sure to match
+> the data rate of the accelerometer.
+>=20
+> It looks as nobody cared to look into the issue with the
+> gyroscope though :/ It feels like a whole separate issue,
+> I expect more channels to be affected by that...
+>=20
+> Yours,
+> Linus Walleij
+FWIW this seems crazy.  Ah well, Lorenzo is the expert on these beasts.
 
-Thanks,
-
-Jonathan
-> ---
->  drivers/iio/accel/fxls8962af.h            | 1 -
->  drivers/iio/iio_core.h                    | 3 ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h | 1 -
->  include/linux/iio/sw_device.h             | 3 ---
->  include/linux/iio/sw_trigger.h            | 3 ---
->  5 files changed, 11 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
-> index 9cbe98c3ba9a..6eaa2803b26f 100644
-> --- a/drivers/iio/accel/fxls8962af.h
-> +++ b/drivers/iio/accel/fxls8962af.h
-> @@ -14,7 +14,6 @@ enum {
->  };
->  
->  int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
-> -int fxls8962af_core_remove(struct device *dev);
->  
->  extern const struct dev_pm_ops fxls8962af_pm_ops;
->  extern const struct regmap_config fxls8962af_i2c_regmap_conf;
-> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> index 501e286702ef..1a38b1915e7a 100644
-> --- a/drivers/iio/iio_core.h
-> +++ b/drivers/iio/iio_core.h
-> @@ -30,9 +30,6 @@ struct iio_ioctl_handler {
->  		      unsigned int cmd, unsigned long arg);
->  };
->  
-> -long iio_device_ioctl(struct iio_dev *indio_dev, struct file *filp,
-> -		      unsigned int cmd, unsigned long arg);
-> -
->  void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
->  				       struct iio_ioctl_handler *h);
->  void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> index ed5a96e78df0..95f548235de7 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> @@ -464,7 +464,6 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type);
->  int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable);
->  int inv_mpu6050_switch_engine(struct inv_mpu6050_state *st, bool en,
->  			      unsigned int mask);
-> -int inv_mpu6050_write_reg(struct inv_mpu6050_state *st, int reg, u8 val);
->  int inv_mpu_acpi_create_mux_client(struct i2c_client *client);
->  void inv_mpu_acpi_delete_mux_client(struct i2c_client *client);
->  int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
-> diff --git a/include/linux/iio/sw_device.h b/include/linux/iio/sw_device.h
-> index eff1e6b2595c..0f7fe7b522e3 100644
-> --- a/include/linux/iio/sw_device.h
-> +++ b/include/linux/iio/sw_device.h
-> @@ -51,9 +51,6 @@ void iio_unregister_sw_device_type(struct iio_sw_device_type *dt);
->  struct iio_sw_device *iio_sw_device_create(const char *, const char *);
->  void iio_sw_device_destroy(struct iio_sw_device *);
->  
-> -int iio_sw_device_type_configfs_register(struct iio_sw_device_type *dt);
-> -void iio_sw_device_type_configfs_unregister(struct iio_sw_device_type *dt);
-> -
->  static inline
->  void iio_swd_group_init_type_name(struct iio_sw_device *d,
->  				  const char *name,
-> diff --git a/include/linux/iio/sw_trigger.h b/include/linux/iio/sw_trigger.h
-> index 47de2443e984..bc77f88df303 100644
-> --- a/include/linux/iio/sw_trigger.h
-> +++ b/include/linux/iio/sw_trigger.h
-> @@ -51,9 +51,6 @@ void iio_unregister_sw_trigger_type(struct iio_sw_trigger_type *tt);
->  struct iio_sw_trigger *iio_sw_trigger_create(const char *, const char *);
->  void iio_sw_trigger_destroy(struct iio_sw_trigger *);
->  
-> -int iio_sw_trigger_type_configfs_register(struct iio_sw_trigger_type *tt);
-> -void iio_sw_trigger_type_configfs_unregister(struct iio_sw_trigger_type *tt);
-> -
->  static inline
->  void iio_swt_group_init_type_name(struct iio_sw_trigger *t,
->  				  const char *name,
-
+Jonathna

@@ -2,189 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F1178B3BF
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 16:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A718178B404
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 17:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231827AbjH1O4b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 10:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58586 "EHLO
+        id S230007AbjH1PJB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 11:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231990AbjH1O43 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 10:56:29 -0400
-Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2114.outbound.protection.outlook.com [40.107.113.114])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76BECBF;
-        Mon, 28 Aug 2023 07:56:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hjSKQg56UcRqD6XPICwkgVJhzPBoyMQtb0qLDSjoU3Wg/D8cKxIKXVWV0IOysPV5BNGTCHFjaIjsDayECmIa6Zm6J4tIyP5cFft7IGcNqT3MEnu8H6KGwvyCYDHnyIGmfH0mo6mfjop3qtR7bfjLRXGXShqOHb9jtIGTn7m/zupiQ0xUKu5GY0w6jRiI22kDeaucbs/0CyfzyY6TEq19wDg3YvioKd7XM/bAJR119U98Y85uCM123MMXMhIzNRIvRm0x+YTuuXWHyjkASjjbk69XCDlrU+RflPMS3Ytf+uOSRztFyCwlg2akpqt+y775uHPOpz+9vY3B3VWlPDuLdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wUjOa3VWTFJNBVzAQ3N9k38U+QaDHo6N4o5WvLCBAt0=;
- b=NC4mjeJEytLkkAjmtEcev7G31l+jSIX7vEs0qnDfcw4lhVVWfujNGa82/PRiwXQEDPuXiftA0cH96EY/TZB6K3527QwUHrKqGiqkATbKV/M9Wn8k3jn2+9QfN174EzawjT/1DA1x/EGSYWnciXTLL4coCwPDiecok29jDefRET/3OXpd8h8m0GU/5CtHhGADk+x18y+r6zZ0XIK0NLYwrJHYnWcPAznJ7LogBmRF2N0cbB57qkwNPMAMtoe+u4PZciKoWtqrfkYjgVEHkYAw/SVLvzHHLbIkWHvbDVKKv4SXJERVQC4o+wpZBI+s68Obxod9h1/3tbMStfLdLQMOUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wUjOa3VWTFJNBVzAQ3N9k38U+QaDHo6N4o5WvLCBAt0=;
- b=Ao8DKGxY/1fdLbOiqZZaDkeRiY1fYGYC/IEM6yrW/sbbacy40eRSgryQ2+xlCDOOA8NEmQ2vxU+v8RHTvWVcHkqIExjgwgRT7XzL9flq6ke8pdJrVwZ3ElJQZsFihuN5L8ac3KErbmceooC/z/cRhp8JzdJqYwmVnlpmpp/BgyI=
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
- by OS3PR01MB5654.jpnprd01.prod.outlook.com (2603:1096:604:b4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Mon, 28 Aug
- 2023 14:56:21 +0000
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::9d23:32f5:9325:3706]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::9d23:32f5:9325:3706%4]) with mapi id 15.20.6699.034; Mon, 28 Aug 2023
- 14:56:21 +0000
-From:   Biju Das <biju.das.jz@bp.renesas.com>
+        with ESMTP id S232462AbjH1PIw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 11:08:52 -0400
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8F921AD;
+        Mon, 28 Aug 2023 08:08:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1693235318;
+        bh=jSltvEstbop3NROWcEwdZJbmP1v8gLHUw94pJQsaf3A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=pNw2iT/qbyWCGBLuhbcCv7cCEMZNdVn8fFoCL+QUImBa6sMTuen1oeRZE01b1IylE
+         hH2C8JNQaYPlbVL/tlPbSLvL801cB/JQfacoTVg57o54LPqoiXspDPzLg0jUtvwRMX
+         a/zLB8LbBrX1a15qHWUxjhVX72ZogzqE2E2n165Y=
+Received: from localhost.localdomain ([122.14.229.192])
+        by newxmesmtplogicsvrsza7-0.qq.com (NewEsmtp) with SMTP
+        id 8738A04; Mon, 28 Aug 2023 23:02:07 +0800
+X-QQ-mid: xmsmtpt1693234927t8a1x7jf4
+Message-ID: <tencent_CF6E986A75B63EC09E3D98143650B5241809@qq.com>
+X-QQ-XMAILINFO: MeK9O+zTyEgNs+LeEp8wuw1W+ZzSO1xt89C05fPo+KhYxR40w2ZLaCnt7UoQYP
+         1LsuFXgH5yk7FsRZrDt/fIqNHWDOhKl6e2a/0KP79uUqIyBDmpSauM746pTQOXM0KfZy1ScFdJqr
+         fQyr5SmAeTi5MmtXu34Qpz7M4eJ5Kto6Pr5NJtr1EPjoM6bvBtp6U1ClinRqyXslYpYUPLOe9C4Z
+         3xfrahIgwaHA2wkKlwsILr4K3raS7jtQ+FGWoQ2ocpAOrhJNt1SG1o6vXXLcW2YT/sr2AKFphzLN
+         OXviIH2CZueQR5hK89KyIHIitiQsEFCoJKX5jZZ36Dkvd8dtfoOnvTr/BBBE/D4Y94lnJICStTYf
+         8Aw7fkCbWa6O0FthHHmmCof9Wh9ckxPLO1mOHJZLMLNUurTX+GWUuQKJY4MrVLpZREhJ1rDcvPMp
+         qjetfGoM7hTH5XXEjcTt3JDE36uDURCN7ktDrOXH/UQeiX1GB8IMnlSKJ2srdKyOz2JLsPGA5T9c
+         eu4kT5GD95hEtRwOm9VKP/bu3jCWy7TuDvg99h509XaHKPpDRQwUIcOSvLQCUxdG23Eg089Y/HEZ
+         1MqtHrKRjEJgDufwyYJ7M6YyTpvk0zsJ3OfnQxUnDB3xZYVn8+NPsRtbqfv30hcrD+nXTTvo86oa
+         wfeel8s2T0+O9T701m0O4tHVTX9UWd5N/1qyize4oHfs2kRfiFV3K14qumHpFwN22EePVBDtJMNP
+         Je/fK5yYmUbmOsr5wR5aQ2w437Tetulqbzkpc2g75iOzlgsMs+qthpa150x/3hvYkqdHgXIPY7M+
+         gbWptpFW4o+7xprMGGO39en5bcSpFnPav2S0xOCsa4syW+CFzohnSH5yjdXhUKeMiiq7IEoumbeC
+         YO6FyTNE/ew2PV/95/EvgleJn8LPvxyBsMsa0FL+nZ3qqjoloNqocUUIkRVmggK/rckR0nzudnx0
+         ZmvKRi5lfafiV3ojyvJjbaw10zZ0hASq0pEr0gxc0xFvrAKcGYAdhaqTX6pDFM
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From:   Zhang Shurong <zhang_shurong@foxmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Crt Mori <cmo@melexis.com>, Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH] iio: mlx90614: Use i2c_get_match_data()
-Thread-Topic: [PATCH] iio: mlx90614: Use i2c_get_match_data()
-Thread-Index: AQHZzTkxU3tnEzpQsUChcb0A0nZmRq/o0sOAgACi2+CAFlhpAIAAFviQ
-Date:   Mon, 28 Aug 2023 14:56:21 +0000
-Message-ID: <OS0PR01MB5922B91989C9F1B1E194B5C986E0A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-References: <20230812162222.200004-1-biju.das.jz@bp.renesas.com>
-        <CAKv63uvEu3kPYF=idNyW4RkwVWFgixdstQyvuUhhHzc_rPgqqg@mail.gmail.com>
-        <OS0PR01MB592204FC9A5A054CDFC300F38617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <20230828143332.48bfa4ed@jic23-huawei>
-In-Reply-To: <20230828143332.48bfa4ed@jic23-huawei>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|OS3PR01MB5654:EE_
-x-ms-office365-filtering-correlation-id: 8c2924ca-3129-4049-180c-08dba7d6f101
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: p+7ArABFkdeFXreqC1BgTreB/Rn2J9HGNWruJjjahxyTWEafovWo9OyGSfe70pI64164tKC2lF5dNSsp7dR6SCFS3W76ZcbHt1xd4BkP9GZYu2htp6pj+ZFRwnOVqdU5zkMLk8MPh3rktRpHzbAxgdV6CfE4IH+bw0gbbhGDL+gPMrAZQXaotbNGMSBb0o6HdwgJ8Dg7/vLsieeoLfqWndTXDVD5xwPDbE4ABw+m8W5wCWmN+dIEQ3m/JeQTLGD7m9uahZU+LxEZD8/Gtnseep1RydYouxkJckSAd4+eBF7vMHEiVFAd/ORSwRvGYKwV/v4R7Pxp3FQG7zdItYa8BloAY4ut465V2Y2IY3vcqiitmmFXe00RgwdkmakxLiDt/y2eT/MbYzZqJBERqvvVVkGxZzT7/zxc61obFBNPVeOP2wsu5nP1IYWLb2hyXiKE7gDNHR4BQ24mzOIf6BNRQYsMaG1wrtEi0xS/Jt/KHTQKLAz5lhlmPdLg/WOyVZQ3852DeISFVt38gYrMLPiIudXI6x61dQBSXs4FsGgghuzLgN1U8oMYZ71EGqo5nfTKrIJJwlXaI4nGuC5dsiAMTvM/A/O84yr6bk02aNkXZvfWQ9f9PK4PVIVvCNmxpi3Z
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(376002)(396003)(39860400002)(346002)(451199024)(1800799009)(186009)(7696005)(6506007)(71200400001)(9686003)(33656002)(86362001)(38100700002)(38070700005)(122000001)(55016003)(2906002)(26005)(83380400001)(478600001)(76116006)(52536014)(66476007)(66556008)(66946007)(41300700001)(8676002)(4326008)(8936002)(5660300002)(64756008)(66446008)(54906003)(6916009)(316002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ho+HwvVJ/Js2dU0d0EG5SmBZwZfq4dsHT3czGuEDURTbvE4JjYh578H4JkiR?=
- =?us-ascii?Q?NtkJWZPKEapXMpfCVM34x8G2ce58cLpqDVBvyGoT4iElpHGu6zdxNXilB2va?=
- =?us-ascii?Q?3KB1lqMa9vuuQjXe8Yo93mu+shgo4zhM30niJj+/mjaYotid4JR1GIQN83wY?=
- =?us-ascii?Q?Ms43oelDvYh4FkzIPBc6XVjgWKYoxXCjuFQcDI1PyGZOp7vYl4MZ4V1YnI4s?=
- =?us-ascii?Q?S+zScuJ4LZf2EU8cjHflmkPCM6eOA+xZVJf3Vqxwt8rXea3BO0+OyHJk9pfv?=
- =?us-ascii?Q?3wWa1TBOFAAW+W3rNBXS444od9CbU4zhxVegvpwD6+cS/LT4h3H4tDBSz+CL?=
- =?us-ascii?Q?CewIUrwozjxxNutLlfGu/2QIBPyIue0MKewEZnC6RjhJgjDtH5Y5X/KKIk5v?=
- =?us-ascii?Q?V8yQ9PS6imfGfhXjTv+jSnDID3YXLvcEPRui6hA7n1m8lMvXQ/dsX1p56H0i?=
- =?us-ascii?Q?KF7TyfTt5BdLpuN9y9kAmH+ewQqcSs80KF19gjkyk0zh+Yw7HHzHf2b5ctfq?=
- =?us-ascii?Q?/5YYxwjKeKdqTIVU2b4nrjSjAGlRugiPWvfaYVB/Ys48bhzceZnf/CC3Sdu4?=
- =?us-ascii?Q?Cj73CR0a4yGn5z/FKLRm3+GrbVgDnAhII0LtChAta0sS+3Xdw6/L7owMubPa?=
- =?us-ascii?Q?cC0u/s/2UMbIAucZ5THrf96dbiHzKa4haOZAIY2/JiO49FhX9ASjBIWIndOY?=
- =?us-ascii?Q?1x2Naxq0yyFubfD+wVEqHzqINStkCRDZqxDE8QBCqsCdBgymh2qt3zmE1RUK?=
- =?us-ascii?Q?rkyU71GCRK3YCklfNQHfcy00MFNLrhE1ij6xUAqf84ubcNBtD8pdu+UwK86+?=
- =?us-ascii?Q?f7k7/ZdMlRv8qqCM+hTKuz1NXFQXbqXsublloxp+vDx4JLqvf35OIfJ8Oymd?=
- =?us-ascii?Q?5LQGOuz0I/oD3VGtCDOJyOp0phKrpFEleuiiV76plBm94Xbu1AW+IKW28sBv?=
- =?us-ascii?Q?CXSqvuSy+7s/ANHVmpooggszKIxMe8QGVCa10nPRejKDTE+4+6Il8hy55HBO?=
- =?us-ascii?Q?mtiSE3aNitWFQh3w7nSVcjeJXIpaBwIpvOz/aCxnjURCaxFqIpYgGSyYMuWg?=
- =?us-ascii?Q?K5T8x/CPfKihMzJOOiZlUdrRdgC3UENhZUzT77NqVLfjhnqSpU/aqBjo+pfU?=
- =?us-ascii?Q?OHywWryqUnTI9JqPXCUYfsObFHXbffAmXJkqUcsziDcGmbyucoxyyv5z2nl7?=
- =?us-ascii?Q?piGkdzMZIN68x/kNwWZB9i9KqfOi2WIIg+zcTCKIfqntgnn1nfCpcSBnljMW?=
- =?us-ascii?Q?iq9TEeEuiVFD0PNyzH5trRjq7ijpqVzgAOb2uFmRFA57yMDcTETLpHWePuRS?=
- =?us-ascii?Q?2lR6Z40dpTD9eKDP6MOgQSNSmYK6lVrulkEQ3prYadFXNLQx8rZH1SrToT4T?=
- =?us-ascii?Q?ErUC9U9NM6m1L7xyjjORj5Rzdai1QzmoUZiwPg3sH3olxardNQ/luDulUu1C?=
- =?us-ascii?Q?OEVp+ONGRJn80T8GO+6J8PVJfIwRfQ6dctt1w/eEGAh1rwS05j7HxHldX6Q1?=
- =?us-ascii?Q?UH5RMRQ+wNBpWZbzrcCOSlM78C/an5ZyKbJkMqxlcJ1ULVFFMnfz8qiR0aWV?=
- =?us-ascii?Q?NLJQqvEIGM0g/3H6wugMD5unbNnsk+HZHtz4ClGHcaSOFLT40YQZBCjMf4ai?=
- =?us-ascii?Q?iA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Cc:     lars@metafoo.de, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, lgirdwood@gmail.com,
+        broonie@kernel.org, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] io: adc: stm32-adc: fix potential NULL pointer dereference in
+ stm32_adc_probe()
+Date:   Mon, 28 Aug 2023 23:02:07 +0800
+X-OQ-MSGID: <5984351.lOV4Wx5bFT@localhost.localdomain>
+In-Reply-To: <20230716170821.3305e3fa@jic23-huawei>
+References: <tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com>
+ <20230716170821.3305e3fa@jic23-huawei>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c2924ca-3129-4049-180c-08dba7d6f101
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2023 14:56:21.0876
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dcCVYZSJmJUvURz5+FNQDDj5uNSuDaseC4/h/Df+ZySU5EmeK2BRJBB0CACPcBnSOWp8xifGNdZoI245ALImMitSTx80JV+cTwRqA+jfdns=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB5654
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan Cameron,
-
-> Subject: Re: [PATCH] iio: mlx90614: Use i2c_get_match_data()
+=E5=9C=A8 2023=E5=B9=B47=E6=9C=8817=E6=97=A5=E6=98=9F=E6=9C=9F=E4=B8=80 CST=
+ =E4=B8=8A=E5=8D=8812:08:21=EF=BC=8CJonathan Cameron =E5=86=99=E9=81=93=EF=
+=BC=9A
+> On Sat, 15 Jul 2023 23:55:50 +0800
 >=20
-> On Mon, 14 Aug 2023 08:28:28 +0000
-> Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> Zhang Shurong <zhang_shurong@foxmail.com> wrote:
+> > of_match_device() may fail and returns a NULL pointer.
+> >=20
+> > Fix this by checking the return value of of_match_device().
+> >=20
+> > Fixes: 64ad7f6438f3 ("iio: adc: stm32: introduce compatible data cfg")
+> > Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
 >=20
-> > Hi Crt Mori,
-> >
-> > > Subject: Re: [PATCH] iio: mlx90614: Use i2c_get_match_data()
-> > >
-> > > It should not break some backwards compatibility so:
-> >
-> > You mean,
-> >
-> > Fixes: 3d5ead238bc8 ("iio: mlx90614: Factor our register IO and
-> > constants into model specific descriptor")
-> >
-> > Hi Jonathan,
-> >
-> > Is it some thing you can do while applying Cc ing stable@kernel.org ?
+> Hi Zhang,
 >=20
-> You've lost me.
+> I'm not sure we can actually make this bug happen. Do you have
+> a way of triggering it?  The driver is only probed on devices where
+> that match will work.
 >=20
-> I think Crt was just saying this patch is fine, not referring to any othe=
-r
-> changes.
+> Also, assuming the match table is the same one associated with this probe
+> function, then us priv->cfg =3D of_device_get_match_data() and check the
+> output of that which is what we really care about.
+>=20
+> Jonathan
+>=20
+> > ---
+> >=20
+> >  drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/stm32-adc-core.c
+> > b/drivers/iio/adc/stm32-adc-core.c index 48f02dcc81c1..70011fdbf5f6
+> > 100644
+> > --- a/drivers/iio/adc/stm32-adc-core.c
+> > +++ b/drivers/iio/adc/stm32-adc-core.c
+> > @@ -706,6 +706,8 @@ static int stm32_adc_probe(struct platform_device
+> > *pdev)>=20
+> >  	struct stm32_adc_priv *priv;
+> >  	struct device *dev =3D &pdev->dev;
+> >  	struct device_node *np =3D pdev->dev.of_node;
+> >=20
+> > +	const struct of_device_id *of_id;
+> > +
+> >=20
+> >  	struct resource *res;
+> >  	u32 max_rate;
+> >  	int ret;
+> >=20
+> > @@ -718,8 +720,11 @@ static int stm32_adc_probe(struct platform_device
+> > *pdev)>=20
+> >  		return -ENOMEM;
+> >  =09
+> >  	platform_set_drvdata(pdev, &priv->common);
+> >=20
+> > -	priv->cfg =3D (const struct stm32_adc_priv_cfg *)
+> > -		of_match_device(dev->driver->of_match_table, dev)->data;
+> > +	of_id =3D of_match_device(dev->driver->of_match_table, dev);
+> > +	if (!of_id)
+> > +		return -ENODEV;
+> > +
+> > +	priv->cfg =3D (const struct stm32_adc_priv_cfg *)of_id->data;
+> >=20
+> >  	priv->nb_adc_max =3D priv->cfg->num_adcs;
+> >  	spin_lock_init(&priv->common.lock);
+Hello Jonathan,
 
-Ok,
+I think we can make it happen by designing the platform device in a way tha=
+t=20
+its name aligns with that of the driver. In such a scenario, when the drive=
+r=20
+is probed, the of_match_device function will return null. You can verify th=
+is=20
+functionality by reviewing the following function:
 
-Biju
+static int platform_match(struct device *dev, struct device_driver *drv)
 
-> > Biju
-> >
-> > > Acked-by: "Crt Mori <cmo@melexis.com>"
-> > >
-> > > On Sat, 12 Aug 2023 at 18:22, Biju Das <biju.das.jz@bp.renesas.com>
-> wrote:
-> > > >
-> > > > Replace device_get_match_data()->i2c_get_match_data() to extend
-> > > > matching support for ID table.
-> > > >
-> > > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> > > > ---
-> > > >  drivers/iio/temperature/mlx90614.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/iio/temperature/mlx90614.c
-> > > > b/drivers/iio/temperature/mlx90614.c
-> > > > index 07bb5df24ab3..740018d4b3df 100644
-> > > > --- a/drivers/iio/temperature/mlx90614.c
-> > > > +++ b/drivers/iio/temperature/mlx90614.c
-> > > > @@ -600,7 +600,7 @@ static int mlx90614_probe(struct i2c_client
-> *client)
-> > > >         data->client =3D client;
-> > > >         mutex_init(&data->lock);
-> > > >         data->wakeup_gpio =3D mlx90614_probe_wakeup(client);
-> > > > -       data->chip_info =3D device_get_match_data(&client->dev);
-> > > > +       data->chip_info =3D i2c_get_match_data(client);
-> > > >
-> > > >         mlx90614_wakeup(data);
-> > > >
-> > > > --
-> > > > 2.25.1
-> > > >
+Best regards,
+Shurong
+
+
 

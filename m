@@ -2,101 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EEEF78B151
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 15:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 749B378B154
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 15:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjH1NG5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 09:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50654 "EHLO
+        id S229872AbjH1NIC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 09:08:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229903AbjH1NGy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 09:06:54 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FEEA6
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 06:06:51 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2bcc14ea414so48577881fa.0
-        for <linux-iio@vger.kernel.org>; Mon, 28 Aug 2023 06:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693228010; x=1693832810;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
-        b=O/lt5LD5Xsuwpk+vEIjOuHaU6gfLkT3SrGeLooL3f2svc/xymW3JAZmVIQaOwXIrgo
-         jG6bBHjzRIyVBn/jBJFczBf17jXZeBFqhlgwHH1rCqra7dDjQLsL7tcOfoWLgBV11EEf
-         /SmL5QHYiqgq2lK453Dmb2jlIZrTfkzPYRTF9bIcD0JZzGPMOCUmVKIA/iiSuqCZUnkW
-         kxpd2I729bY0MblXN1sj0XgZLIMOzwCF3NaOtQhsiJJB61xe9gQX1Lj/A73ft7rntqCd
-         ghrQmjwsvEv7Dpjfcj678jOZUI5EjHKtsLy2PmQxpS26PCDtgBR6UCG6D+Kpa+EjG7Ud
-         DhpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693228010; x=1693832810;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
-        b=gnD35f+A9UrK6wSjaVK5ZSV9/psQ8A7LZ3BunBmdM7p0duDIr9XpMau3TQJsa7i7mf
-         xo+yu7yQNOXP4oD/zFRk1oKoe6AMgbIdTsTo956uGIT9MVz4O7QCQC71ZCZoSyslKXRM
-         Ay00YFoDHDdwwF8RdOsBZHnwtU72DxI3KvdBlCLjvHz88h1i/tUuDRIXzcAbgoUHeEX8
-         Yk2MP17QmB4IHBeqj9OLAsWnG7w3jyivlIRoP7WTqmWmcgQxP9JNBUKQUIOHeb2lLjTF
-         qSKHwdao+m4GySfcB5db9zfnvVGB1/20RcMoBdSGObMlXCYsumCWxa8ff0dwjAfQpTw6
-         tXew==
-X-Gm-Message-State: AOJu0Yw3GSvwWHNL2leswubKg34iGDU0pEFLXdOcyI69X98bd1hK8FQE
-        nmdZZohVlQegSw7JnleUon/jI8lhjYpYlffC+SE=
-X-Google-Smtp-Source: AGHT+IH8MJj5SaTwXifdUuqZBGqpbMlRHoTKukzfNMPXYHO1CH2qELk6+rp1Augqi0VrRUbDzkL6Y7MgVSgGRe6U12o=
-X-Received: by 2002:a2e:9818:0:b0:2bc:db70:b563 with SMTP id
- a24-20020a2e9818000000b002bcdb70b563mr11075132ljj.32.1693228009610; Mon, 28
- Aug 2023 06:06:49 -0700 (PDT)
+        with ESMTP id S231714AbjH1NHo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 09:07:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF2ACC;
+        Mon, 28 Aug 2023 06:07:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A2DD61BE2;
+        Mon, 28 Aug 2023 13:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9D2C433C8;
+        Mon, 28 Aug 2023 13:07:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693228061;
+        bh=Q3LE0iQJI1xchevaEPiexMt4SmGiYSeC4tYhZlrGScM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=meL5Rq1MRiLrevEbB0n6gLpQHnVY8z+uaed7PIZt9MI0ht3l33FbcgM7GmWRFYAri
+         bPFcWCNfSqA5Y+XdPA/qygHNzD0SUBGoJKeBF9iJyO1PCAhPLQkIlRYVq+B59zZU0A
+         LGfkQMENT0KhkCcuoA6E4LeP1qBtj955RxW8DBlmK3lT9/pQmHp4ccJSP6tUffKTaI
+         06YylZIAZmZ7GIsSCALsWo58hB1WSSiBc8HB0TRTRZu2mrSkywKQmDFlz/YfiTB4qN
+         CocTuc6W005wUpI3vOIm+HGOR2W4Vs5dCcIkVL12srouN4Tk4iid9v5t3QTbq+uOhq
+         lQovfQz1Cs34Q==
+Date:   Mon, 28 Aug 2023 14:08:01 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: magnetometer: yamaha-yas530: Drop enum
+ chip_ids
+Message-ID: <20230828140801.1a60e547@jic23-huawei>
+In-Reply-To: <ZNsgFG2aL78IKbYq@smile.fi.intel.com>
+References: <20230812065741.20990-1-biju.das.jz@bp.renesas.com>
+        <20230812065741.20990-3-biju.das.jz@bp.renesas.com>
+        <ZNsgFG2aL78IKbYq@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a2e:81d0:0:b0:2b9:344f:fe4d with HTTP; Mon, 28 Aug 2023
- 06:06:49 -0700 (PDT)
-Reply-To: ab8111977@gmail.com
-From:   Ms Nadage Lassou <vdhdg65@gmail.com>
-Date:   Mon, 28 Aug 2023 14:06:49 +0100
-Message-ID: <CALadyHYFs4p3skdPJOcHmzq9CZWhBc8mFVmC61xr0fjv3SJcSg@mail.gmail.com>
-Subject: REPLY BACK.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5003]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [vdhdg65[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [ab8111977[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [vdhdg65[at]gmail.com]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:22a listed in]
-        [list.dnswl.org]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Greetings.
+On Tue, 15 Aug 2023 09:49:56 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-I have something important to tell you.
-i will send you the details once i hear from you.
-Thanks,
-Ms Nadage Lassou
+> On Sat, Aug 12, 2023 at 07:57:41AM +0100, Biju Das wrote:
+> > Drop the unnecessary enum chip_ids by splitting the array
+> > yas5xx_chip_info_tbl[] as individual variables.  
+> 
+> In my opinion this is an unneeded churn.
+> I leave this to Jonathan to decide.
+> 
+Agree with Andy.
+
+I don't care strongly about doing it one way or another. But as
+it's already done via an array - better to leave it like that
+and avoid the churn.
+
+Jonathan
+

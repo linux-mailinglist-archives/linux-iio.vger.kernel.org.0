@@ -2,60 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12DF378B529
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFFBD78B532
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbjH1QNS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 12:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57286 "EHLO
+        id S229863AbjH1QQC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 12:16:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232701AbjH1QNM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:13:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CBC011A;
-        Mon, 28 Aug 2023 09:13:10 -0700 (PDT)
+        with ESMTP id S232039AbjH1QPu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:15:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29984123;
+        Mon, 28 Aug 2023 09:15:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E34F861842;
-        Mon, 28 Aug 2023 16:13:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C0AC433C8;
-        Mon, 28 Aug 2023 16:13:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD8CC62297;
+        Mon, 28 Aug 2023 16:15:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D33CC433C7;
+        Mon, 28 Aug 2023 16:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693239189;
-        bh=JjmhmMqfpF5r3bunbB960c6WKcXtbhhdoL9h9MPdIxU=;
+        s=k20201202; t=1693239347;
+        bh=EXag5HMY6SlOvR4DazyxL95o7MXc5ZXzhpW8NYQZm0Y=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AHOFa92wixfMzpJvcJVGDwE9IzNCye3SDE25aZOfjrMFTsRyIjAA1r5b5oaEohJGE
-         WE9Q1TR2Y1LhRYiDisC6uoSqG/uIUrm/4hJB/Kn4Wy3MU4G7KXC59cG7yRiErK/E7G
-         S4u6TRHC01VyzMqyR3eyKJwWvxOq/UGqGcuTVjNq1EhdlCjbNoINQznIqqXbwiPHtP
-         vmbsk+W3lg2FRs6kifci8KpJ02+2OytVqBsuTtqwHFsRyjm9rH0Xa/Y3P6F55O/prz
-         tzk8UUX6khSN/IYjtTTgvzDbzs13j9ZTPLJqwNtY8S/f1+XT6+lAWAcZpfvZXPzl/D
-         eCnqQBWqc8E+w==
-Date:   Mon, 28 Aug 2023 17:13:26 +0100
+        b=UgHpqvXmxHlpbaD1JE2Fd9hEGfXfDjEB1abZD8W1PiapXHm3RTvlOxsU7sYNq88fT
+         xOCfZhGDiImMGdV8yXf2sHh5KEMQaaypsQSj7rR2BinSqetWg9dpJAwCp4ZrjgugHd
+         T1jrrtS695dtBZM+HV7yv669bqndee8qf7sfnOH4eEPX1rfJijNGvTpvC+tqeTMc+J
+         QCqYjIvOdCPTP8qc0K+kHYEEsW6IeTSbwPQBL2Hm9Zu4nQ1+CS6LZknnh7tIQgrytn
+         CLqKv3HfxjNZTpVV7hce17Tt4P1ydsqRC76JS4flLbQWXvyZ8S1VJLNyjMfXP9hAb/
+         0geEwc+kyNqiA==
+Date:   Mon, 28 Aug 2023 17:16:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?= =?UTF-8?B?Zw==?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-iio@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-renesas-soc@vger.kernel.org,
-        Andreas Brauchli <a.brauchli@elementarea.net>
-Subject: Re: [PATCH] iio: chemical: sgp30: Convert enum->pointer for data in
- the match tables
-Message-ID: <20230828171326.7623a254@jic23-huawei>
-In-Reply-To: <20230812165730.216180-1-biju.das.jz@bp.renesas.com>
-References: <20230812165730.216180-1-biju.das.jz@bp.renesas.com>
+To:     Zhang Shurong <zhang_shurong@foxmail.com>
+Cc:     lars@metafoo.de, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, lgirdwood@gmail.com,
+        broonie@kernel.org, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] io: adc: stm32-adc: fix potential NULL pointer
+ dereference in stm32_adc_probe()
+Message-ID: <20230828171605.15c51c28@jic23-huawei>
+In-Reply-To: <tencent_CF6E986A75B63EC09E3D98143650B5241809@qq.com>
+References: <tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com>
+        <20230716170821.3305e3fa@jic23-huawei>
+        <tencent_CF6E986A75B63EC09E3D98143650B5241809@qq.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,119 +60,97 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 12 Aug 2023 17:57:30 +0100
-Biju Das <biju.das.jz@bp.renesas.com> wrote:
+On Mon, 28 Aug 2023 23:02:07 +0800
+Zhang Shurong <zhang_shurong@foxmail.com> wrote:
 
-> Convert enum->pointer for data in the match tables, so that
-> device_get_match_data() can do match against OF/ACPI/I2C tables, once i2c
-> bus type match support added to it.
-> 
-> Add product_id variable to struct sgp_device and remove the local variable
-> product_id in probe() and replace enum->struct *sgp_device for data in the
-> match table. Simplify theprobe() by replacing device_get_match_data() and
-> ID lookup for retrieving data by i2c_get_match_data().
-> 
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-+CC Andreas (comments still welcome!)
+> =E5=9C=A8 2023=E5=B9=B47=E6=9C=8817=E6=97=A5=E6=98=9F=E6=9C=9F=E4=B8=80 C=
+ST =E4=B8=8A=E5=8D=8812:08:21=EF=BC=8CJonathan Cameron =E5=86=99=E9=81=93=
+=EF=BC=9A
+> > On Sat, 15 Jul 2023 23:55:50 +0800
+> >=20
+> > Zhang Shurong <zhang_shurong@foxmail.com> wrote: =20
+> > > of_match_device() may fail and returns a NULL pointer.
+> > >=20
+> > > Fix this by checking the return value of of_match_device().
+> > >=20
+> > > Fixes: 64ad7f6438f3 ("iio: adc: stm32: introduce compatible data cfg")
+> > > Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com> =20
+> >=20
+> > Hi Zhang,
+> >=20
+> > I'm not sure we can actually make this bug happen. Do you have
+> > a way of triggering it?  The driver is only probed on devices where
+> > that match will work.
+> >=20
+> > Also, assuming the match table is the same one associated with this pro=
+be
+> > function, then us priv->cfg =3D of_device_get_match_data() and check the
+> > output of that which is what we really care about.
+> >=20
+> > Jonathan
+> >  =20
+> > > ---
+> > >=20
+> > >  drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
+> > >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/stm32-adc-core.c
+> > > b/drivers/iio/adc/stm32-adc-core.c index 48f02dcc81c1..70011fdbf5f6
+> > > 100644
+> > > --- a/drivers/iio/adc/stm32-adc-core.c
+> > > +++ b/drivers/iio/adc/stm32-adc-core.c
+> > > @@ -706,6 +706,8 @@ static int stm32_adc_probe(struct platform_device=
+ =20
+> > > *pdev)>  =20
+> > >  	struct stm32_adc_priv *priv;
+> > >  	struct device *dev =3D &pdev->dev;
+> > >  	struct device_node *np =3D pdev->dev.of_node;
+> > >=20
+> > > +	const struct of_device_id *of_id;
+> > > +
+> > >=20
+> > >  	struct resource *res;
+> > >  	u32 max_rate;
+> > >  	int ret;
+> > >=20
+> > > @@ -718,8 +720,11 @@ static int stm32_adc_probe(struct platform_devic=
+e =20
+> > > *pdev)>  =20
+> > >  		return -ENOMEM;
+> > >  =09
+> > >  	platform_set_drvdata(pdev, &priv->common);
+> > >=20
+> > > -	priv->cfg =3D (const struct stm32_adc_priv_cfg *)
+> > > -		of_match_device(dev->driver->of_match_table, dev)->data;
+> > > +	of_id =3D of_match_device(dev->driver->of_match_table, dev);
+> > > +	if (!of_id)
+> > > +		return -ENODEV;
+> > > +
+> > > +	priv->cfg =3D (const struct stm32_adc_priv_cfg *)of_id->data;
+> > >=20
+> > >  	priv->nb_adc_max =3D priv->cfg->num_adcs;
+> > >  	spin_lock_init(&priv->common.lock); =20
+> Hello Jonathan,
+>=20
+> I think we can make it happen by designing the platform device in a way t=
+hat=20
+> its name aligns with that of the driver. In such a scenario, when the dri=
+ver=20
+> is probed, the of_match_device function will return null. You can verify =
+this=20
+> functionality by reviewing the following function:
+>=20
+> static int platform_match(struct device *dev, struct device_driver *drv)
 
-Applied to the togreg branch of iio.git but only pushed out as testing for
-now because I'll be rebasing on rc1 once available.  0-day can poke at
-it in the meantime.
-
-Thanks,
+I don't think we care about that case.  If there is a real example of
+why someone would do this then that would be a different matter.
 
 Jonathan
 
-> ---
->  drivers/iio/chemical/sgp30.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/iio/chemical/sgp30.c b/drivers/iio/chemical/sgp30.c
-> index b509cff9ce37..21730d62b5c8 100644
-> --- a/drivers/iio/chemical/sgp30.c
-> +++ b/drivers/iio/chemical/sgp30.c
-> @@ -114,6 +114,7 @@ struct sgp_data {
->  };
->  
->  struct sgp_device {
-> +	unsigned long product_id;
->  	const struct iio_chan_spec *channels;
->  	int num_channels;
->  };
-> @@ -182,10 +183,12 @@ static const struct iio_chan_spec sgpc3_channels[] = {
->  
->  static const struct sgp_device sgp_devices[] = {
->  	[SGP30] = {
-> +		.product_id = SGP30,
->  		.channels = sgp30_channels,
->  		.num_channels = ARRAY_SIZE(sgp30_channels),
->  	},
->  	[SGPC3] = {
-> +		.product_id = SGPC3,
->  		.channels = sgpc3_channels,
->  		.num_channels = ARRAY_SIZE(sgpc3_channels),
->  	},
-> @@ -491,28 +494,25 @@ static const struct iio_info sgp_info = {
->  };
->  
->  static const struct of_device_id sgp_dt_ids[] = {
-> -	{ .compatible = "sensirion,sgp30", .data = (void *)SGP30 },
-> -	{ .compatible = "sensirion,sgpc3", .data = (void *)SGPC3 },
-> +	{ .compatible = "sensirion,sgp30", .data = &sgp_devices[SGP30] },
-> +	{ .compatible = "sensirion,sgpc3", .data = &sgp_devices[SGPC3] },
->  	{ }
->  };
->  
->  static int sgp_probe(struct i2c_client *client)
->  {
->  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> +	const struct sgp_device *match_data;
->  	struct device *dev = &client->dev;
->  	struct iio_dev *indio_dev;
->  	struct sgp_data *data;
-> -	unsigned long product_id;
->  	int ret;
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
->  	if (!indio_dev)
->  		return -ENOMEM;
->  
-> -	if (dev_fwnode(dev))
-> -		product_id = (unsigned long)device_get_match_data(dev);
-> -	else
-> -		product_id = id->driver_data;
-> +	match_data = i2c_get_match_data(client);
->  
->  	data = iio_priv(indio_dev);
->  	i2c_set_clientdata(client, indio_dev);
-> @@ -528,15 +528,15 @@ static int sgp_probe(struct i2c_client *client)
->  
->  	data->feature_set = be16_to_cpu(data->buffer.raw_words[0].value);
->  
-> -	ret = sgp_check_compat(data, product_id);
-> +	ret = sgp_check_compat(data, match_data->product_id);
->  	if (ret)
->  		return ret;
->  
->  	indio_dev->info = &sgp_info;
->  	indio_dev->name = id->name;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> -	indio_dev->channels = sgp_devices[product_id].channels;
-> -	indio_dev->num_channels = sgp_devices[product_id].num_channels;
-> +	indio_dev->channels = match_data->channels;
-> +	indio_dev->num_channels = match_data->num_channels;
->  
->  	sgp_init(data);
->  
-> @@ -562,8 +562,8 @@ static void sgp_remove(struct i2c_client *client)
->  }
->  
->  static const struct i2c_device_id sgp_id[] = {
-> -	{ "sgp30", SGP30 },
-> -	{ "sgpc3", SGPC3 },
-> +	{ "sgp30", (kernel_ulong_t)&sgp_devices[SGP30] },
-> +	{ "sgpc3", (kernel_ulong_t)&sgp_devices[SGPC3] },
->  	{ }
->  };
->  
+>=20
+> Best regards,
+> Shurong
+>=20
+>=20
+>=20
 

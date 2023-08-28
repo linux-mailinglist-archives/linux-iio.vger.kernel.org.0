@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BCB878B544
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A90978B54B
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Aug 2023 18:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232003AbjH1QV3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 12:21:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37866 "EHLO
+        id S230080AbjH1QXi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Aug 2023 12:23:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231959AbjH1QV0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:21:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE4612F;
-        Mon, 28 Aug 2023 09:21:23 -0700 (PDT)
+        with ESMTP id S232629AbjH1QX2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 12:23:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD00D9;
+        Mon, 28 Aug 2023 09:23:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85257617E8;
-        Mon, 28 Aug 2023 16:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E29C433C7;
-        Mon, 28 Aug 2023 16:21:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E130639B1;
+        Mon, 28 Aug 2023 16:23:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E008C433C8;
+        Mon, 28 Aug 2023 16:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693239682;
-        bh=Awq66Zq2Eb/SGJZyHFDZUuO9edR+O2zgLG7NEBrFQ6g=;
+        s=k20201202; t=1693239804;
+        bh=o/jFXI+4PDQqaeii6lhru0BhuK2E9c2qYS8zBrR1sFE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=p9LDsqanasYF64wTy5CS37t7p2cVWRE9yAzkKuJPKj3NWtE4QUQ75z8b689tgVY5S
-         T5UKxLWXvPunxT3WcDo9TxRMyOzedWWu2Wmqw5HMUn/c3dZlINRtwYrKn19+qTYK1P
-         YDJ0PIl3KzdHyyyGZs/uHvwy53VOMQY3GWe8bjtE2ic8M2T4euHIfjKKsBgl6vwoZq
-         St9+wVyEKNDJK6oATrrf/5v4PyjlDQV4xQ1TYYxB48mX84SsCHD17/OfZ+pvfUGLhU
-         nUlJIJd0216cShg7fIRemWboZcszsbbQBYkjv2IpjPHG6ZA7am1yzmueOaQ/MVYrbg
-         mIUG8Jb+K/zew==
-Date:   Mon, 28 Aug 2023 17:21:41 +0100
+        b=D6ANAuBFVVYtd85obqEVowYAknHVkQjFv5eynSU586jX8dW5ar1f+CJKNVDHC3vIA
+         9RCC+BIA8k7sd3NNdiaaYhnxmDbgOPVxFZ9wJpIjgzPfBJtJw01+klP9uEjckrnofJ
+         y1VPod0yVBTZj9BQJ4EKib4094uoR7V/k4GZ6oUyjR+6zQftG6+srBeiJlqTjbsv1j
+         5zh2vESR/WIgKb7hxUq9/OKCZ7arR/8fRLoJ96ahCUrYJXGzHdcEAKx7gfgmqGotLN
+         G0FqInt+y4I/ztuMuf6yRL9sd0UacaLfdPPpJPJ4nAROutqNXT2bViEA6TdKYZlhIw
+         jg7If4xM26Pvw==
+Date:   Mon, 28 Aug 2023 17:23:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org,
+        Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] iio: potentiometer: ad5110: Use i2c_get_match_data()
-Message-ID: <20230828172141.47f61baf@jic23-huawei>
-In-Reply-To: <20230812150838.185055-1-biju.das.jz@bp.renesas.com>
-References: <20230812150838.185055-1-biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH] iio: light: opt4001: Use i2c_get_match_data()
+Message-ID: <20230828172343.021b00e9@jic23-huawei>
+In-Reply-To: <20230812151908.188696-1-biju.das.jz@bp.renesas.com>
+References: <20230812151908.188696-1-biju.das.jz@bp.renesas.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,65 +59,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 12 Aug 2023 16:08:38 +0100
+On Sat, 12 Aug 2023 16:19:08 +0100
 Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-> Replace device_get_match_data()->i2c_get_match_data by making similar I2C
-> and DT-based matching table to extend matching support for ID table.
+> Replace device_get_match_data()->i2c_get_match_data() to extend matching
+> support for ID table.
 > 
 > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-Could have been a little clearer on the reasoning for doign this, but meh there
-are a lot of them and this is moving things forwards.
+This is fairly harmless (I think) but if Stefan or anyone else has a comment
+I won't be pushing this out as non rebasing until after rc1.
 
-Applied.
+Applied to the togreg branch of iio.git and pushed out as testing.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/potentiometer/ad5110.c | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
+>  drivers/iio/light/opt4001.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/potentiometer/ad5110.c b/drivers/iio/potentiometer/ad5110.c
-> index 991e745c4f93..aaf02cc7aeba 100644
-> --- a/drivers/iio/potentiometer/ad5110.c
-> +++ b/drivers/iio/potentiometer/ad5110.c
-> @@ -278,14 +278,19 @@ static const struct of_device_id ad5110_of_match[] = {
->  };
->  MODULE_DEVICE_TABLE(of, ad5110_of_match);
+> diff --git a/drivers/iio/light/opt4001.c b/drivers/iio/light/opt4001.c
+> index 502946bf9f94..6cf60151b3d8 100644
+> --- a/drivers/iio/light/opt4001.c
+> +++ b/drivers/iio/light/opt4001.c
+> @@ -412,7 +412,7 @@ static int opt4001_probe(struct i2c_client *client)
+>  	if (dev_id != OPT4001_DEVICE_ID_VAL)
+>  		dev_warn(&client->dev, "Device ID: %#04x unknown\n", dev_id);
 >  
-> +#define AD5110_ID_TABLE(_name, cfg) {				\
-> +	.name = _name,						\
-> +	.driver_data = (kernel_ulong_t)&ad5110_cfg[cfg],	\
-> +}
-> +
->  static const struct i2c_device_id ad5110_id[] = {
-> -	{ "ad5110-10", AD5110_10 },
-> -	{ "ad5110-80", AD5110_80 },
-> -	{ "ad5112-05", AD5112_05 },
-> -	{ "ad5112-10", AD5112_10 },
-> -	{ "ad5112-80", AD5112_80 },
-> -	{ "ad5114-10", AD5114_10 },
-> -	{ "ad5114-80", AD5114_80 },
-> +	AD5110_ID_TABLE("ad5110-10", AD5110_10),
-> +	AD5110_ID_TABLE("ad5110-80", AD5110_80),
-> +	AD5110_ID_TABLE("ad5112-05", AD5112_05),
-> +	AD5110_ID_TABLE("ad5112-10", AD5112_10),
-> +	AD5110_ID_TABLE("ad5112-80", AD5112_80),
-> +	AD5110_ID_TABLE("ad5114-10", AD5114_10),
-> +	AD5110_ID_TABLE("ad5114-80", AD5114_80),
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(i2c, ad5110_id);
-> @@ -305,7 +310,7 @@ static int ad5110_probe(struct i2c_client *client)
->  	data->client = client;
->  	mutex_init(&data->lock);
->  	data->enable = 1;
-> -	data->cfg = device_get_match_data(dev);
-> +	data->cfg = i2c_get_match_data(client);
+> -	chip->chip_info = device_get_match_data(&client->dev);
+> +	chip->chip_info = i2c_get_match_data(client);
 >  
->  	/* refresh RDAC register with EEPROM */
->  	ret = ad5110_write(data, AD5110_RESET, 0);
+>  	indio_dev->channels = opt4001_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(opt4001_channels);
 

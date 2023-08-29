@@ -2,119 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6341A78C56C
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 15:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFA6778C64F
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 15:43:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234413AbjH2NcF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 09:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55832 "EHLO
+        id S229759AbjH2NnU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 09:43:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236038AbjH2Nbh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 09:31:37 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF40F7;
-        Tue, 29 Aug 2023 06:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693315894; x=1724851894;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=j8TotLg+WCeiZgYEEdgpTqcpkTRhh9Ch/8LAKiO0za0=;
-  b=Etwj2K2w0Zs7G4GNMpKCbahxyF16SIF64DmFpeZjkahRt31WS/jRGZxs
-   m9XISwAP/IARCnUUWGNnw0y5oK8sg5ZZ0jh5dkmjQA7geSVD1Ye77HAAX
-   3mk5Vq66ou3oDWd0Ziy5DlVKjruvFg3HDQNBEFuWEtBZw6ZoiBHIsZWP5
-   WZVXLq4BB5t92n3mlRYp1JRVsVtLvgFGm/JhR3o7DXu1zmJZz7dQRN1jq
-   +fP3E0ftQ/wsw2vjVYcEo4c9/f2ncjoLRmOw7Sqnx+TdxaLtygWk6EQuE
-   9yymNI0K6JBy3QafZMqfS35HBbSMN6fxoWmghYRX9uZEeXxY943skyyqm
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="354880211"
-X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
-   d="scan'208";a="354880211"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 06:31:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="985354090"
-X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
-   d="scan'208";a="985354090"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 29 Aug 2023 06:31:27 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qayoW-004tGp-29;
-        Tue, 29 Aug 2023 16:31:24 +0300
-Date:   Tue, 29 Aug 2023 16:31:24 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Dumitru Ceclan <mitrutzceclan@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Okan Sahin <okan.sahin@analog.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Lee Jones <lee@kernel.org>, Haibo Chen <haibo.chen@nxp.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-        Ceclan Dumitru <dumitru.ceclan@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: ad717x: add AD717X driver
-Message-ID: <ZO3zLKrZNGekV7Co@smile.fi.intel.com>
-References: <20230810093322.593259-1-mitrutzceclan@gmail.com>
- <20230810093322.593259-2-mitrutzceclan@gmail.com>
- <34f5e2118a4714048231e6ee9a8f244248616bd0.camel@gmail.com>
- <ZNUEBDsMg6UfeOtl@smile.fi.intel.com>
- <5a31871d0e0322b9704633bd2dca2503c554c358.camel@gmail.com>
+        with ESMTP id S236844AbjH2NnG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 09:43:06 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBFACEC;
+        Tue, 29 Aug 2023 06:42:35 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37TBrQKU019514;
+        Tue, 29 Aug 2023 15:40:58 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:in-reply-to:references
+        :mime-version:content-transfer-encoding:content-type; s=
+        selector1; bh=PwB5UAXoCWyBxCXABWMO2FWSZwa0SK8ik9JE6Z0KgzY=; b=mR
+        XwklBzu1lZv2pXDoprQzD52F3B1S7lXai4jSBGk9L/tSnxtmFJZrh5d1qToeUFzF
+        JIKR68O5hK5O4y4E+nPz0VFdT9XyBBgM8rTwT7+ENWRAc6sfvJ4bNOHWVF7NjWiL
+        Cro+J8Osro0ojOWAE8pYaFZ8V8yx6+tI0FisHi93g1Ms4g9XVL0loPcR/r2mIMBy
+        HMK+7briU+7vs3GCUBTvITLA4HSssOhjeOlqjSshzuGd3SpYALtIWWCdKs5CTfHw
+        B+NxPqxUaQn44cG3n+QxecZrzwp/HFbfs0TshkPAIB7gwaO8tZqxbvq5YGU+qsOD
+        z5VXygz6RGA7blPf3EmA==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sq6tfmchm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Aug 2023 15:40:58 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id AD7B910005E;
+        Tue, 29 Aug 2023 15:40:57 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A4DB82207DB;
+        Tue, 29 Aug 2023 15:40:57 +0200 (CEST)
+Received: from localhost (10.201.22.39) by SHFDAG1NODE2.st.com (10.75.129.70)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Tue, 29 Aug
+ 2023 15:40:57 +0200
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To:     <william.gray@linaro.org>, <lee@kernel.org>
+CC:     <alexandre.torgue@foss.st.com>, <fabrice.gasnier@foss.st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 4/8] mfd: stm32-timers: add support for interrupts
+Date:   Tue, 29 Aug 2023 15:40:25 +0200
+Message-ID: <20230829134029.2402868-5-fabrice.gasnier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
+References: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5a31871d0e0322b9704633bd2dca2503c554c358.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.201.22.39]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-29_10,2023-08-29_01,2023-05-22_02
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 29, 2023 at 11:14:31AM +0200, Nuno Sá wrote:
-> On Thu, 2023-08-10 at 18:36 +0300, Andy Shevchenko wrote:
-> > On Thu, Aug 10, 2023 at 01:57:02PM +0200, Nuno Sá wrote:
-> > > On Thu, 2023-08-10 at 12:33 +0300, Dumitru Ceclan wrote:
+There are two types of STM32 timers that may have:
+- a global interrupt line
+- 4 dedicated interrupt lines.
+Those interrupts are optional as defined in the dt-bindings. Enforce checks
+on either one, four or no interrupts are provided with their names.
+Optionally get them here, to be used by child devices.
 
-...
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+---
+ drivers/mfd/stm32-timers.c       | 46 ++++++++++++++++++++++++++++++++
+ include/linux/mfd/stm32-timers.h | 11 ++++++++
+ 2 files changed, 57 insertions(+)
 
-> > > Is ad717x_gpio_cleanup() being used anywhere? Moreover I would maybe just
-> > > get rid of
-> > > the #ifdef wrapper and just select GPIOLIB. How often will it be disabled
-> > > anyways?
-> > 
-> > The agreement is that users are depend on and not selecting GPIOLIB.
-> > Any news in these agreement terms?
-> 
-> Hmm no idea about that. If you say so, it's just one new thing I'm learning :)
-
-That's the last I know.
-Cc'ing to GPIOLIB maintainers...
-
+diff --git a/drivers/mfd/stm32-timers.c b/drivers/mfd/stm32-timers.c
+index 44ed2fce0319..51fb97bdab9c 100644
+--- a/drivers/mfd/stm32-timers.c
++++ b/drivers/mfd/stm32-timers.c
+@@ -214,6 +214,48 @@ static void stm32_timers_dma_remove(struct device *dev,
+ 			dma_release_channel(ddata->dma.chans[i]);
+ }
+ 
++static const char * const stm32_timers_irq_name[STM32_TIMERS_MAX_IRQS] = {
++	"brk", "up", "trg-com", "cc"
++};
++
++static int stm32_timers_irq_probe(struct platform_device *pdev,
++				  struct stm32_timers *ddata)
++{
++	int i, ret;
++
++	/*
++	 * STM32 Timer may have either:
++	 * - a unique global interrupt line
++	 * - four dedicated interrupt lines that may be handled separately.
++	 * Optionally get them here, to be used by child devices.
++	 */
++	ret = platform_get_irq_byname_optional(pdev, "global");
++	if (ret < 0 && ret != -ENXIO) {
++		return ret;
++	} else if (ret != -ENXIO) {
++		ddata->irq[STM32_TIMERS_IRQ_GLOBAL_BRK] = ret;
++		ddata->nr_irqs = 1;
++		return 0;
++	}
++
++	for (i = 0; i < STM32_TIMERS_MAX_IRQS; i++) {
++		ret = platform_get_irq_byname_optional(pdev, stm32_timers_irq_name[i]);
++		if (ret < 0 && ret != -ENXIO) {
++			return ret;
++		} else if (ret != -ENXIO) {
++			ddata->irq[i] = ret;
++			ddata->nr_irqs++;
++		}
++	}
++
++	if (ddata->nr_irqs && ddata->nr_irqs != STM32_TIMERS_MAX_IRQS) {
++		dev_err(&pdev->dev, "Invalid number of IRQs %d\n", ddata->nr_irqs);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int stm32_timers_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -245,6 +287,10 @@ static int stm32_timers_probe(struct platform_device *pdev)
+ 
+ 	stm32_timers_get_arr_size(ddata);
+ 
++	ret = stm32_timers_irq_probe(pdev, ddata);
++	if (ret)
++		return ret;
++
+ 	ret = stm32_timers_dma_probe(dev, ddata);
+ 	if (ret) {
+ 		stm32_timers_dma_remove(dev, ddata);
+diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
+index 1b94325febb3..ca35af30745f 100644
+--- a/include/linux/mfd/stm32-timers.h
++++ b/include/linux/mfd/stm32-timers.h
+@@ -102,6 +102,15 @@ enum stm32_timers_dmas {
+ 	STM32_TIMERS_MAX_DMAS,
+ };
+ 
++/* STM32 Timer may have either a unique global interrupt or 4 interrupt lines */
++enum stm32_timers_irqs {
++	STM32_TIMERS_IRQ_GLOBAL_BRK, /* global or brk IRQ */
++	STM32_TIMERS_IRQ_UP,
++	STM32_TIMERS_IRQ_TRG_COM,
++	STM32_TIMERS_IRQ_CC,
++	STM32_TIMERS_MAX_IRQS,
++};
++
+ /**
+  * struct stm32_timers_dma - STM32 timer DMA handling.
+  * @completion:		end of DMA transfer completion
+@@ -123,6 +132,8 @@ struct stm32_timers {
+ 	struct regmap *regmap;
+ 	u32 max_arr;
+ 	struct stm32_timers_dma dma; /* Only to be used by the parent */
++	unsigned int nr_irqs;
++	int irq[STM32_TIMERS_MAX_IRQS];
+ };
+ 
+ #if IS_REACHABLE(CONFIG_MFD_STM32_TIMERS)
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 

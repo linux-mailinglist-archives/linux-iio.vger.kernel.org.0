@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A219E78C518
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 15:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC41378C51C
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 15:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234370AbjH2NWv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 09:22:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47032 "EHLO
+        id S235014AbjH2NXX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 09:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235973AbjH2NWU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 09:22:20 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA6C5198;
-        Tue, 29 Aug 2023 06:22:17 -0700 (PDT)
+        with ESMTP id S236031AbjH2NXG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 09:23:06 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83C11BF;
+        Tue, 29 Aug 2023 06:23:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693315337; x=1724851337;
+  t=1693315382; x=1724851382;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=d8sp4qSQkZUEOkUFOpWIf+WUTXVK3m5MY9l3IVgWXKI=;
-  b=Goehiy7y78EuzRm+KsAAk3TMrjdtXE2saw7NcFZWSS1YkCmbMENGeb+T
-   DoW4SzlvgJmi7ns3746agQQ2+WfDdjN36zIBKc047yA13QDMFrKSKEiP4
-   29avHoi/sLYi3m39zgIuOBCyo1pNl2AItWlzE8dN1woNzodMb6bfwjfJp
-   oU1+OTkJxU4i+UrFTvm24H9ap/mdtXta0/h6uYUiqBsmJhmXezed5C/wg
-   2HfJGi6bg7hQAVfZrDzwfZZmh2LDbmcj2oq1zMQbd98cFS9oASx10V3j0
-   fCv4XAy2XPVdbMtDQKD3sdH6FV80hvEleF+5n9NeXWa1TAWqEwCmvOWlI
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="378082265"
+  bh=XsOalVaIilKSnqJ168eGblRrPPVV7yvX6wZpdU+7mg8=;
+  b=mR3JDtxeSXIh+bLRTIPqUoMYOjfNcDveZxlQxMLd1GQJJdHSLUGisKfn
+   6hGY+2RZAMSXSSWkJlYE+L4E+A2vReXXo8Wt+rgTHx8rms9zouXPOq9p5
+   Ya+XaWB057LIw1UCiCr1RRMgedax+C9ZEWh7GG20bY0qFk9KMZbVXTEk6
+   xjbVjT4nwM68AyFG7Df8lF75ubyE9fju+pjUpDIVRhT2EuNtPtCthCA0d
+   O8Mdp9DR93CgI71u7nF6o84A3R2kVXwADP7fiHijSGltrl8899R/yBMs6
+   vvXebRU0H4rSYK71EV7YE+i/lKmVNIBlErA4iomsduQMTdsYpJ+fzyb4H
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="354878077"
 X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
-   d="scan'208";a="378082265"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 06:22:17 -0700
+   d="scan'208";a="354878077"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 06:23:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="882321012"
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="985352731"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="985352731"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Aug 2023 06:22:19 -0700
+  by fmsmga006.fm.intel.com with ESMTP; 29 Aug 2023 06:22:59 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qayfc-004t8Y-1B;
-        Tue, 29 Aug 2023 16:22:12 +0300
-Date:   Tue, 29 Aug 2023 16:22:12 +0300
+        id 1qaygL-004t9W-1h;
+        Tue, 29 Aug 2023 16:22:57 +0300
+Date:   Tue, 29 Aug 2023 16:22:57 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -52,65 +53,38 @@ Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 3/3] iio: hid-sensor: Use aligned data type for
- timestamp
-Message-ID: <ZO3xBHClZIXXHJVn@smile.fi.intel.com>
+Subject: Re: [PATCH v1 1/3] types: Complement the aligned types with signed
+ 64-bit one
+Message-ID: <ZO3xMQv/4HEhPktX@smile.fi.intel.com>
 References: <20230815154027.12468-1-andriy.shevchenko@linux.intel.com>
- <20230815154027.12468-3-andriy.shevchenko@linux.intel.com>
- <20230828170928.5264dadf@jic23-huawei>
+ <20230828171018.2ee59df7@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230828170928.5264dadf@jic23-huawei>
+In-Reply-To: <20230828171018.2ee59df7@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 05:09:28PM +0100, Jonathan Cameron wrote:
-> On Tue, 15 Aug 2023 18:40:27 +0300
+On Mon, Aug 28, 2023 at 05:10:18PM +0100, Jonathan Cameron wrote:
+> On Tue, 15 Aug 2023 18:40:25 +0300
 > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > -	/* Ensure timestamp is naturally aligned */
 > 
-> Comment is still true and no more or less obvious than it was with the old code
-> I think so I don't really see why it should be removed with this change.
+> > Some user may want to use aligned signed 64-bit type.
+> > Provide it for them.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Excellent.  I'll pick this up once the minor things in the first two
+> users are resolved (as long as no one argues we shouldn't have this
+> for some reason!)
 
-Doesn't the prefix "aligned" make this comment somehow redundant?
-
-> >  	struct {
-> >  		u32 accel_val[3];
-> > -		s64 timestamp __aligned(8);
-> > +		aligned_s64 timestamp;
-> >  	} scan;
-
-...
-
-> > -		s32 sampled_vals[4] __aligned(16);
-> > +		s32 sampled_vals[4];
-> 
-> Hmm. I can't immediately recall why that aligned(16) is therebut
-> it's not related to the rest of this change so I'm not sure we should touch
-> it. I don't think we ever required quaternions to be aligned as a whole so
-> this does feel odd but in the category of something we should be careful
-> touching or at very least do it in a different patch where it stands out.
-
-I have checked the code and find nothing that justifies this, I can split it
-to a separate patch, though.
-
-Note, among ISH HID drivers it's the only one with a such...
-
-> > +		aligned_s64 timestamp;
-> >  	} scan;
-
+I'll cook a new series sooner than later. Thank you for the review!
 
 -- 
 With Best Regards,

@@ -2,119 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B4778BD56
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 05:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 615E578BE81
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 08:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbjH2DrN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Aug 2023 23:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
+        id S229596AbjH2Gdx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 02:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235385AbjH2DrA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Aug 2023 23:47:00 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDCFF132;
-        Mon, 28 Aug 2023 20:46:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693280816; x=1724816816;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+ninwmA3zMhf9RUq16DUTOFabf7QRtExygxEvVBZFNo=;
-  b=atUbPaT/tf++iKQzx1SNwK2VFs7xXz34c2cyufe3zR6JzW6eXq58APmo
-   VcfQzMyTjfSkFsLyu8WeE0No3dOXg2SA9rXefVMovl/afsScRZEGE2dXp
-   /7OvCehI43jtwYJ4SUq4NQdtFdf9o0gNN9HsxmYMMiyJtdb5zlp+1lvXk
-   1pkTaBHVvN1Gjg+n1TYpAM3gjgJcXvUEO2mspVNxGBbnZw1jBA5P5xl37
-   FzW41aME2oHAXTSeA8Kal5kI7YTXBJ0oWwwI08Zr/h9PnqKjBG+WSMKvY
-   iT4g4DtoaTEUKWFAhhW6NNPc/+hSa/cMD29+CfmxQkgqgUB2uyH9btMls
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10816"; a="355593225"
-X-IronPort-AV: E=Sophos;i="6.02,208,1688454000"; 
-   d="scan'208";a="355593225"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2023 20:46:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10816"; a="803939188"
-X-IronPort-AV: E=Sophos;i="6.02,208,1688454000"; 
-   d="scan'208";a="803939188"
-Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 28 Aug 2023 20:46:54 -0700
-Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qapgs-0008M7-0F;
-        Tue, 29 Aug 2023 03:46:54 +0000
-Date:   Tue, 29 Aug 2023 11:46:46 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Liam Beguin <liambeguin@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Liam Beguin <liambeguin@gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: adc: add ltc2309 support
-Message-ID: <202308291144.r2JZxP9a-lkp@intel.com>
-References: <20230828-ltc2309-v3-2-338b3a8fab8b@gmail.com>
+        with ESMTP id S231455AbjH2Gdd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 02:33:33 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCEBB13E;
+        Mon, 28 Aug 2023 23:33:30 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2b95d5ee18dso59666771fa.1;
+        Mon, 28 Aug 2023 23:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693290809; x=1693895609;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cK2hK31b0m5rDzqp3vB26ZBGv/YhBK2MTESfxpIodNM=;
+        b=CbLIshFjC6vK98lxHBO6x7GJ5PZxzFSZyhs5lmNXWrgvbF0uoUHxkdWAnUC3laoGTR
+         UaNUnp5Ia6VWb5z2cy9c6CY89pm7bvKIg8kV007CjtXjIGK5CU6CM7WHSQKbQp7aLxwU
+         uczzJPb8M9/fKhnE15XIoe+QeNXHuSfJjQqiUk/sEo0iV6yMDCIDCsa+8OHjO7R7mBl4
+         F8K/Fz7fG2JmXZe7XRMVO3Mso+BvNmdNywWmICnDjVeHtu3ne4sq+EXbNL6Pf7MNUE3J
+         k+LYikltfJ+K19rcxmZyvOyq7+ArhoOM23tEbzg2Wevb3/Uz19ML1c7/Isuy3N/lqQY8
+         qjDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693290809; x=1693895609;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cK2hK31b0m5rDzqp3vB26ZBGv/YhBK2MTESfxpIodNM=;
+        b=jg4ia7SAzhfg6XU/jSodc9F4aA/5SLw0gK01XW/3iTzn7ba/6mRvEF3VQrIFcZq+rS
+         4e9N0P4RL04dvPImUoHPeKwA4etqn27s54fr0TkOfAF2olGRXN+Oide5FRmOttGATUT2
+         Y5pnusso89dadHdu7pNsFo/Kt5iwF4BZYVJ7p/NBojmuz7p5kiSROJozBTq2SQayOhtm
+         /a0D/a8MlT9WeCTj9jIXFXDCsdbMDNv2psBNG5I4jmCkQ7OLIfUyq7TBIp1IMQ3zdEWZ
+         SIzwD/UxWdu0X5YFLmiZVxba1ENCpH9JmsCJ6vHW3OH0g8eiwXo2/nvrpxEcfDq2zjFz
+         plfQ==
+X-Gm-Message-State: AOJu0YxNWBBprA+VJXNX3BIl3mPhz1dHtpsFXBviUOeNW+euP68hDQzM
+        Jnx01f+dAo0UjhPMoaEOSLE=
+X-Google-Smtp-Source: AGHT+IELbkZD8D9cvA4oLG68kKjvzxKhf1sFhYmmlRm5TeBqZ5xCJ+R/+WddA/SDTdg/WpoAySpJoQ==
+X-Received: by 2002:a2e:7008:0:b0:2bc:d8fd:13df with SMTP id l8-20020a2e7008000000b002bcd8fd13dfmr14313727ljc.41.1693290808688;
+        Mon, 28 Aug 2023 23:33:28 -0700 (PDT)
+Received: from [172.16.196.206] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id u16-20020a2e8550000000b002b9af8422a8sm2004439ljj.130.2023.08.28.23.33.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Aug 2023 23:33:27 -0700 (PDT)
+Message-ID: <7ca3b60f-e59f-b578-7c22-48487663cfa7@gmail.com>
+Date:   Tue, 29 Aug 2023 09:33:27 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828-ltc2309-v3-2-338b3a8fab8b@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
+ <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
+ <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
+ <ZOdddZ0Zpk5CknH8@smile.fi.intel.com>
+ <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
+ <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
+ <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
+ <ZOdrtNQijmhN9RAx@smile.fi.intel.com> <20230827190732.5e2215d0@jic23-huawei>
+ <61247547-690c-fb8b-3a45-cd60754836a7@gmail.com>
+ <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
+ retrieve number of bytes in buffer
+In-Reply-To: <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Liam,
+On 8/28/23 13:53, Andy Shevchenko wrote:
+> On Mon, Aug 28, 2023 at 09:24:25AM +0300, Matti Vaittinen wrote:
+>> On 8/27/23 21:09, Jonathan Cameron wrote:
+> 
+> ...
+> 
+>> I think that people who work on a driver like this should guess what this is
+>> for.
+> 
+> _This_ is the result of what people always forgot to think about, i.e. newcomers.
 
-kernel test robot noticed the following build warnings:
+Thanks Andy. This was a good heads-up for me. I do also see the need for 
+fresh blood here - we aren't getting any younger.
 
-[auto build test WARNING on a5e505a99ca748583dbe558b691be1b26f05d678]
+> What _if_ the newcomer starts with this code and already being puzzled enough on
+> what the heck the function does. With all ambiguity we rise the threshold for the
+> newcomers and make the kernel project not attractive to start with 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Liam-Beguin/dt-bindings-iio-adc-add-lltc-ltc2309-bindings/20230829-104615
-base:   a5e505a99ca748583dbe558b691be1b26f05d678
-patch link:    https://lore.kernel.org/r/20230828-ltc2309-v3-2-338b3a8fab8b%40gmail.com
-patch subject: [PATCH v3 2/2] iio: adc: add ltc2309 support
-config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20230829/202308291144.r2JZxP9a-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230829/202308291144.r2JZxP9a-lkp@intel.com/reproduce)
+I really appreciate you making a point about attracting newcomers (and 
+there is no sarcasm in this statement). I however don't think we're 
+rising the bar here. If a newcomer wants to work on a device-driver, the 
+_first_ thing to do is to be familiar with the device. Without prior 
+experience of this kind of devices it is really a must to get the 
+data-sheet and see how the device operates before jumping into reading 
+the code. I would say that after reading the fifo lvl description from 
+data-sheet this should be obvious - and no, I don't think we should 
+replicate the data-sheet documentation in the drivers for parts that 
+aren't very peculiar.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308291144.r2JZxP9a-lkp@intel.com/
+But the question how to attract newcomers to kernel is very valid and I 
+guess that not too many of us is thinking of it. Actually, I think we 
+should ask from the newcomers we have that what has been the most 
+repulsive part of the work when they have contributed.
 
-All warnings (new ones prefixed by >>):
+(besides the
+> C language which is already considered as mastodon among youngsters).
 
->> drivers/iio/adc/ltc2309.c:42: warning: Function parameter or member 'vref_mv' not described in 'ltc2309'
+I think this is at least partially the truth. However, I think that in 
+many cases one of the issues goes beyond the language - many younger 
+generation people I know aren't really interested in _why_ things work, 
+they just want to get things working in any way they can - and nowadays 
+when you can find a tutorial for pretty much anything - one really can 
+just look up instruction about how a "foobar can be made to buzz" 
+instead of trying to figure out what makes a "foobar to buzz" in order 
+to make it to buzz. So, I don't blame people getting used to take a 
+different approach. (Not sure this makes sense - don't really know how 
+to express my thoughts about this in a clear way - besides, it may not 
+even matter).
 
+Anyways, I am pretty sure that - as with any community - the way people 
+are treated and how their contribution is appreciated is the key to make 
+them feel good and like the work. I think that in some cases it may 
+include allowing new contributors to get their code merged when it has 
+reached "good enough" state - even if it was not perfect. (Sure, when 
+things are good enough is subject to greater minds than me to ponder) ;)
 
-vim +42 drivers/iio/adc/ltc2309.c
+Yours,
+	-- Matti
 
-    27	
-    28	/**
-    29	 * struct ltc2309 - internal device data structure
-    30	 * @dev:	Device reference
-    31	 * @client:	I2C reference
-    32	 * @vref:	External reference source
-    33	 * @lock:	Lock to serialize data access
-    34	 * @vref_mv	Internal voltage reference
-    35	 */
-    36	struct ltc2309 {
-    37		struct device		*dev;
-    38		struct i2c_client	*client;
-    39		struct regulator	*vref;
-    40		struct mutex		lock; /* serialize data access */
-    41		int			vref_mv;
-  > 42	};
-    43	
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+

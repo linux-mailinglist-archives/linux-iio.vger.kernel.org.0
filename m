@@ -2,155 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 615E578BE81
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 08:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFDC78BF0D
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 09:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjH2Gdx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 02:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        id S231255AbjH2HRj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 03:17:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231455AbjH2Gdd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 02:33:33 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCEBB13E;
-        Mon, 28 Aug 2023 23:33:30 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2b95d5ee18dso59666771fa.1;
-        Mon, 28 Aug 2023 23:33:30 -0700 (PDT)
+        with ESMTP id S229790AbjH2HRQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 03:17:16 -0400
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ABBE1A2
+        for <linux-iio@vger.kernel.org>; Tue, 29 Aug 2023 00:17:13 -0700 (PDT)
+Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3a7d7df4e67so2908471b6e.1
+        for <linux-iio@vger.kernel.org>; Tue, 29 Aug 2023 00:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693290809; x=1693895609;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cK2hK31b0m5rDzqp3vB26ZBGv/YhBK2MTESfxpIodNM=;
-        b=CbLIshFjC6vK98lxHBO6x7GJ5PZxzFSZyhs5lmNXWrgvbF0uoUHxkdWAnUC3laoGTR
-         UaNUnp5Ia6VWb5z2cy9c6CY89pm7bvKIg8kV007CjtXjIGK5CU6CM7WHSQKbQp7aLxwU
-         uczzJPb8M9/fKhnE15XIoe+QeNXHuSfJjQqiUk/sEo0iV6yMDCIDCsa+8OHjO7R7mBl4
-         F8K/Fz7fG2JmXZe7XRMVO3Mso+BvNmdNywWmICnDjVeHtu3ne4sq+EXbNL6Pf7MNUE3J
-         k+LYikltfJ+K19rcxmZyvOyq7+ArhoOM23tEbzg2Wevb3/Uz19ML1c7/Isuy3N/lqQY8
-         qjDw==
+        d=linaro.org; s=google; t=1693293432; x=1693898232;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qGc0bOEwCL9dLwtf2Uz6R6tmfq5mkAvVX8svpmXULvU=;
+        b=qwOezK1uP0TkJo92kr/f3E4WQnMuOBusRjpGtsvc/NSdMnllJe0QQE+00UoRyg81Zi
+         lJtAoYcDjVh0nCBkvKMVQuvHfyaEdgyzsD2Xugel/2XMe86SkaQi7TXjc3djqehY2aK9
+         fU18BrnAt+L5CsWyG91439sm4vXw+dCfNcwciBAzBEo8pQS8bGcRPQfjpYiH/10MmzRX
+         sr2voif8HZS/5//ZWJhZcrwtyXnghpOxk6U5uSsn0Y8rh2wi2yJBz27mhJPpCQ8lGF3u
+         nvNV17wAsDkAuSPfp5858YmPbzLhXGoNMAc2sdagDG9LaRER1ikyeWL17hWvwkysiB0e
+         R+Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693290809; x=1693895609;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cK2hK31b0m5rDzqp3vB26ZBGv/YhBK2MTESfxpIodNM=;
-        b=jg4ia7SAzhfg6XU/jSodc9F4aA/5SLw0gK01XW/3iTzn7ba/6mRvEF3VQrIFcZq+rS
-         4e9N0P4RL04dvPImUoHPeKwA4etqn27s54fr0TkOfAF2olGRXN+Oide5FRmOttGATUT2
-         Y5pnusso89dadHdu7pNsFo/Kt5iwF4BZYVJ7p/NBojmuz7p5kiSROJozBTq2SQayOhtm
-         /a0D/a8MlT9WeCTj9jIXFXDCsdbMDNv2psBNG5I4jmCkQ7OLIfUyq7TBIp1IMQ3zdEWZ
-         SIzwD/UxWdu0X5YFLmiZVxba1ENCpH9JmsCJ6vHW3OH0g8eiwXo2/nvrpxEcfDq2zjFz
-         plfQ==
-X-Gm-Message-State: AOJu0YxNWBBprA+VJXNX3BIl3mPhz1dHtpsFXBviUOeNW+euP68hDQzM
-        Jnx01f+dAo0UjhPMoaEOSLE=
-X-Google-Smtp-Source: AGHT+IELbkZD8D9cvA4oLG68kKjvzxKhf1sFhYmmlRm5TeBqZ5xCJ+R/+WddA/SDTdg/WpoAySpJoQ==
-X-Received: by 2002:a2e:7008:0:b0:2bc:d8fd:13df with SMTP id l8-20020a2e7008000000b002bcd8fd13dfmr14313727ljc.41.1693290808688;
-        Mon, 28 Aug 2023 23:33:28 -0700 (PDT)
-Received: from [172.16.196.206] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id u16-20020a2e8550000000b002b9af8422a8sm2004439ljj.130.2023.08.28.23.33.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Aug 2023 23:33:27 -0700 (PDT)
-Message-ID: <7ca3b60f-e59f-b578-7c22-48487663cfa7@gmail.com>
-Date:   Tue, 29 Aug 2023 09:33:27 +0300
+        d=1e100.net; s=20221208; t=1693293432; x=1693898232;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qGc0bOEwCL9dLwtf2Uz6R6tmfq5mkAvVX8svpmXULvU=;
+        b=TkIA+3tuCz2cL6mvOWzsPYLw4YX/Tw4gEmgWOMN7IR2quFmjgcrL5eQE9oxvIy5uab
+         KNOXbdYTZzT4PyeCwyQk9wI0uHqsJNjwgrQVTdSNvl44Jk6p90mE6c7dVjjvovv06ZUQ
+         Yj4Okwj6b7t1eFrlnKTHF0BVHybUT5TqtbxZUxtLRPoQtcIPCI1yPaM3Fj+91zuXdsB5
+         6+4gi+gKC0YoFBmeIme0z4GYOS7vJubjVMbc2zA3Dz4ppLylSvCqSl3rWS/N/0IJOpsR
+         7yR5KcNN7F/hlJ3o1ojecZ30R+n8d0mYh1PsJ3kYtFxU+AVt2e//SUtYuxpIOwFBeC7A
+         nDbg==
+X-Gm-Message-State: AOJu0YxjJVEMJIpDRVEvtTuK4+9w6ReoofrzHlYC/HGepYJ9d2ddxauH
+        nHyIU9sW2DaJpjkjk1PycyQJfz8+haelPBnn4ArbLQ==
+X-Google-Smtp-Source: AGHT+IFG2k0Cz4dK+rpKFyu3h3Fn1+ao4KFkvlrORYOUos5Ij37+T9H3uOQaX0CvJcOWnL9RK37UdfeC4iFtBKhJoUE=
+X-Received: by 2002:a05:6358:430e:b0:133:b42:69ca with SMTP id
+ r14-20020a056358430e00b001330b4269camr30521623rwc.18.1693293432549; Tue, 29
+ Aug 2023 00:17:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <923d01408680f5ac88ca8ee565a990645578ee83.1692824815.git.mehdi.djait.k@gmail.com>
- <ZOdFyKHBc6BcOgZw@smile.fi.intel.com>
- <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
- <ZOdddZ0Zpk5CknH8@smile.fi.intel.com>
- <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
- <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
- <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
- <ZOdrtNQijmhN9RAx@smile.fi.intel.com> <20230827190732.5e2215d0@jic23-huawei>
- <61247547-690c-fb8b-3a45-cd60754836a7@gmail.com>
- <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
- retrieve number of bytes in buffer
-In-Reply-To: <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
+ <20230824073933.80-1-bavishimithil@gmail.com> <CACRpkdYOpz7gDQsM+tgxj7sjKzv8FtehEsjezD8_bpDk-F_b=A@mail.gmail.com>
+ <CACRpkdYtXAWDcAMRJxh5YbNKmrYurH=z0pR47bftc+u1Yt4Nig@mail.gmail.com> <20230828191859.2cced5cb@jic23-huawei>
+In-Reply-To: <20230828191859.2cced5cb@jic23-huawei>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 29 Aug 2023 09:17:00 +0200
+Message-ID: <CACRpkdZXBjHU4t-GVOCFxRO-AHGxKnxMeHD2s4Y4PuC29gBq6g@mail.gmail.com>
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Mighty <bavishimithil@gmail.com>, lars@metafoo.de,
+        liambeguin@gmail.com, linux-iio@vger.kernel.org, peda@axentia.se,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/28/23 13:53, Andy Shevchenko wrote:
-> On Mon, Aug 28, 2023 at 09:24:25AM +0300, Matti Vaittinen wrote:
->> On 8/27/23 21:09, Jonathan Cameron wrote:
-> 
-> ...
-> 
->> I think that people who work on a driver like this should guess what this is
->> for.
-> 
-> _This_ is the result of what people always forgot to think about, i.e. newcomers.
+On Mon, Aug 28, 2023 at 8:18=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 
-Thanks Andy. This was a good heads-up for me. I do also see the need for 
-fresh blood here - we aren't getting any younger.
+> Not 100% the follow is relevant as I've lost track of the discussion
+> but maybe it is useful.
+>
+> Worth noting there are a few reasons why RAW and PROCESSED can coexist
+> in drivers and indeed why SCALE can be absent.. (OFFSET is much the same)
 
-> What _if_ the newcomer starts with this code and already being puzzled enough on
-> what the heck the function does. With all ambiguity we rise the threshold for the
-> newcomers and make the kernel project not attractive to start with 
+That's fine. If we have PROCESSED the rescaler will use that first.
 
-I really appreciate you making a point about attracting newcomers (and 
-there is no sarcasm in this statement). I however don't think we're 
-rising the bar here. If a newcomer wants to work on a device-driver, the 
-_first_ thing to do is to be familiar with the device. Without prior 
-experience of this kind of devices it is really a must to get the 
-data-sheet and see how the device operates before jumping into reading 
-the code. I would say that after reading the fifo lvl description from 
-data-sheet this should be obvious - and no, I don't think we should 
-replicate the data-sheet documentation in the drivers for parts that 
-aren't very peculiar.
+What we're discussing are channels that have just RAW
+and no PROCESSED, nor SCALE or OFFSET yet are connected to
+a rescaler.
 
-But the question how to attract newcomers to kernel is very valid and I 
-guess that not too many of us is thinking of it. Actually, I think we 
-should ask from the newcomers we have that what has been the most 
-repulsive part of the work when they have contributed.
+> 1) If SCALE =3D 1.0 the driver is allowed not to provide it - the channel
+>    might still be raw if OFFSET !=3D 0
 
-(besides the
-> C language which is already considered as mastodon among youngsters).
+I'm not so sure the rescaler can handle that though. Just no-one
+ran into it yet...
 
-I think this is at least partially the truth. However, I think that in 
-many cases one of the issues goes beyond the language - many younger 
-generation people I know aren't really interested in _why_ things work, 
-they just want to get things working in any way they can - and nowadays 
-when you can find a tutorial for pretty much anything - one really can 
-just look up instruction about how a "foobar can be made to buzz" 
-instead of trying to figure out what makes a "foobar to buzz" in order 
-to make it to buzz. So, I don't blame people getting used to take a 
-different approach. (Not sure this makes sense - don't really know how 
-to express my thoughts about this in a clear way - besides, it may not 
-even matter).
+> 2) If the channel has a horrible non linear and none invertable conversio=
+n
+>    to standard units and events support the you might need PROCESSED to
+>    provide the useful value, but RAW to give you clue what the current va=
+lue
+>    is for setting an event (light sensors are usual place we see this).
+>
+> 3) Historical ABI errors.  If we first had RAW and no scale or offset bec=
+ause
+>    we had no known values for them.  Then later we discovered that there
+>    was a non linear transform involved (often when someone found a magic
+>    calibration code somewhere).  Given the RAW interface might be in use
+>    and isn't a bug as such, we can't easily remove it.  The new PROCESSED
+>    interface needs to be there because of the non linear transform..
+>
+> Odd corner cases...  In this particular case the original code made no
+> sense but might have allowed for case 3 by accident?
 
-Anyways, I am pretty sure that - as with any community - the way people 
-are treated and how their contribution is appreciated is the key to make 
-them feel good and like the work. I think that in some cases it may 
-include allowing new contributors to get their code merged when it has 
-reached "good enough" state - even if it was not perfect. (Sure, when 
-things are good enough is subject to greater minds than me to ponder) ;)
+I think it's fine, we make PROCESSED take precedence in all cases
+as long as SCALE is not there as well.
+
+rescale_configure_channel() does this:
+
+        if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
+            iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
+                dev_info(dev, "using raw+scale source channel\n");
+        } else if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
+                dev_info(dev, "using processed channel\n");
+                rescale->chan_processed =3D true;
+        } else {
+                dev_err(dev, "source channel is not supported\n");
+                return -EINVAL;
+        }
+
+I think the first line should be
+
+if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
+    (iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE ||
+     iio_channel_has_info(schan,IIO_CHAN_INFO_OFFSET)))
+
+right? We just never ran into it.
 
 Yours,
-	-- Matti
-
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Linus Walleij

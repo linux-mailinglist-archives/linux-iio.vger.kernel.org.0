@@ -2,530 +2,333 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 023B878C78A
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 16:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 658A278C795
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 16:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbjH2O3c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 10:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50078 "EHLO
+        id S234577AbjH2OcQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 10:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236697AbjH2O3a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 10:29:30 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3CCE1;
-        Tue, 29 Aug 2023 07:29:26 -0700 (PDT)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37TC4ipW022673;
-        Tue, 29 Aug 2023 15:42:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding:content-type; s=
-        selector1; bh=2b/Urmpixky2eQRaU/4lkgH9werd2cvqOZ7IIz+15Kg=; b=B3
-        yEacZ23+RBmGNw38HUdvSOMBJ3+psuaC/Qh9TPURsDgFZizoobV58QA4QKBhPrff
-        64q7FuI0Uey4zprLc0F63+lIHr9Rs5S2XdyR0xuQbTKdzIsg9tr03DyrqzlA5ite
-        Whdmy8XuRzyZsDYgHiTswBtKKwMfncfIlXcxNf4iHlTOaRvs3D3ldm9fIi9optkA
-        tHUT+NQ2b2gMppnNWxGct+9jkvezYGckpsuzfX92iBPMdtMp+m5wEhsxzWW2/Vkh
-        Vex6uJtA4/FiVHXT0dppbfZSNMWinmIIz2E5zvjByvB4heqTBD23pej+wisbqIUj
-        V0xMQ0V6f66IwFuhHI7g==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sq8qwc3q4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 15:42:11 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 45AA2100057;
-        Tue, 29 Aug 2023 15:42:11 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3CFE922AFFD;
-        Tue, 29 Aug 2023 15:42:11 +0200 (CEST)
-Received: from localhost (10.201.22.39) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Tue, 29 Aug
- 2023 15:42:10 +0200
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-To:     <william.gray@linaro.org>, <lee@kernel.org>
-CC:     <alexandre.torgue@foss.st.com>, <fabrice.gasnier@foss.st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 8/8] counter: stm32-timer-cnt: add support for events
-Date:   Tue, 29 Aug 2023 15:40:29 +0200
-Message-ID: <20230829134029.2402868-9-fabrice.gasnier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
-References: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
+        with ESMTP id S236134AbjH2Oby (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 10:31:54 -0400
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2130.outbound.protection.outlook.com [40.107.114.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1661FEC;
+        Tue, 29 Aug 2023 07:31:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dw4DyTjpgq7VzLcHbvlGh0ipQwR8XfwBKriBa+3fVtCuq7xSk9ZnazoDwcCfsAayB74GIORZEhewA8sQcJ3q4OSmFcX3cGkxfOUx7Yh75AkhpIRqyehTB+b9QFNcdB2mIHD/kpGu7ecstPFzIMPjc+pvwGmeO2kDVgE7l/gobfGKSiVxtz9+8HWOMSSVhV+tXbWOZa/bCSL4wW0J87p65E9iwlDmHX6c9EgzR17jIpshxGx/Pny5zLkofQ/B+inVtmluwY5eEmU+JYDZYjvstLT/ERLWO6FlC8qsCZpgaQVV+qxyqekgio0HsuiXzXXjdDG699uycgcAuIYP9/mcgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0Ja1/QiaRaLHP1NcYzoiLrBu3pM3vY08cslKt/fldN4=;
+ b=flZ74/BYqVYd4xWyZvjNc8N08h4SBq3Tu4v1asQrIv6T/3y8dRBB/mK/TX4XdcbsAN8B0q8SgaIK5Q9OPQxodNmUk08KIQuIX72xzHligWA8SNgOB23HMjSUMhUvMwTlqLrVhVPstME4+fxy8mbSg4W0pHoHvX9oklUbj8QbyEwggUpzLJdrzYEuoYTiEUPH3ev6lAdA3uoT610yuKg9wa4WGIxU1aB6upCOwkhpClxOSyeYCdGvxCZXsliytyCzVfhH6nX2DWNFUT6zakM96Ipyh8mh28SadudZduRx4bawvWw5T+2Oy0saUY4ud3bCo0LcrlAN74W5K11Tg52SaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0Ja1/QiaRaLHP1NcYzoiLrBu3pM3vY08cslKt/fldN4=;
+ b=X5Q6PcAln4Anlv3luNewhp+wtbWcbFD9HLBeXU8MJhNmxmxduZ9esMWUjVpKS3UaB5TM7MpXLSz8b6mqXSDADmKS218X8vlt5AVOYi0KP2YH105Pq/cRBPy11TkMUmS3ORX4Dsty02W26VOwaBZ7GMTKpsVGyXdTs+ObhC1QuAk=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by TY3PR01MB9875.jpnprd01.prod.outlook.com (2603:1096:400:22f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.18; Tue, 29 Aug
+ 2023 14:31:46 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::9d23:32f5:9325:3706]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::9d23:32f5:9325:3706%5]) with mapi id 15.20.6745.015; Tue, 29 Aug 2023
+ 14:31:46 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: RE: [PATCH v2] iio: accel: adxl345: Convert enum->pointer for data in
+ match data table
+Thread-Topic: [PATCH v2] iio: accel: adxl345: Convert enum->pointer for data
+ in match data table
+Thread-Index: AQHZ0f+RVC+TghUIq0qBFm0IPCGs26//pxKAgAG/stA=
+Date:   Tue, 29 Aug 2023 14:31:46 +0000
+Message-ID: <OS0PR01MB5922770083CB801AD06FC41986E7A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20230818181229.329055-1-biju.das.jz@bp.renesas.com>
+ <20230828124817.2622d85a@jic23-huawei>
+In-Reply-To: <20230828124817.2622d85a@jic23-huawei>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TY3PR01MB9875:EE_
+x-ms-office365-filtering-correlation-id: 841f1299-09d3-4bf2-e986-08dba89cac36
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: dDulna9lAfSlDX/6tGBc72e9n+4SlvuihvoH3j3ghdsSiPl3PONORnvClJjWz//6qmyEIiTgZolYKO9BxdinRDA9/FS6xFSJwyyuJfoDsxY6RZec5YJysCvvZ+ovupKszuebksndtM10LHMLG+iPQX+lEnwrETNW3VmsQOGbDlwlEL5ItitQn7VUsNypcT1/i43Xdo8R7rE9gkb6G8zmWfcZMh0SGXbPxGEQdTUv4LEG5eAnzVscJ3JQZBSJe7bb2HTy7nyUGFscnvqhD2Y9Q0kCOpe4MsNY++FBGgcdZhQieWPO7Fm4wvUB5Xyxa1NWJTwPaZB53WNTCVejXDles5kaPrnriMzOlpgFezHazRhBjprqeQ1vrcK+AR68RXaksXwvTOR6n81f92VHYFyshYErBP3deU1feqUIg1R7FxhUudiP/stF6x16seYUWjZnEqOluyhKJ+XeYUhbVg0W4WXMLJ4XG9q/GOrIaT6Yre6Y6sJ1VPmm0VYtmTWVNBS+mRYVbScltecgCMgd+EgGjw2Zxgpodx+7FAWCudglAJiq2BvzgwYkkZASCrCSVXSVW0MtWTm0a0mdFxhu8exTPEoymegwfsA5Q7NCsFWbk45RcZ5mEAMH1ri4RgDQNvd+
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(346002)(396003)(366004)(136003)(1800799009)(186009)(451199024)(2906002)(54906003)(76116006)(33656002)(64756008)(66446008)(66476007)(66556008)(66946007)(5660300002)(316002)(6916009)(55016003)(41300700001)(8936002)(4326008)(8676002)(52536014)(71200400001)(6506007)(7696005)(9686003)(38100700002)(38070700005)(122000001)(86362001)(478600001)(83380400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?oBc1XujYIJ/V2XTZqiGMMPQSPRaOj4qSMvpp+ZrhCrNwZ51+PYMqRMtOEL0i?=
+ =?us-ascii?Q?Ze5CLwpfxnfoGRNG+nEA1KpQpQ2Jiy5QVMmkAI/7B8AI5w2RjvJjWgIGXBeb?=
+ =?us-ascii?Q?IC7IkZAxpYbaMlZLXKK9N6n0GM4AWyBNeiCtAygT9LQ6q2TgpgYZVUefv7ec?=
+ =?us-ascii?Q?vg8wyom9bdPhaUwDTvE0HI4OaYICnrFonSEyjYZBxhuQIKtJFo5e5h2Z79zP?=
+ =?us-ascii?Q?cXwya102VPGgDWo+VP+fpeemffrA7ISa/WL+eCXI4Er9E39PGY5s3zuhGn77?=
+ =?us-ascii?Q?R20/4wlFcYBVcDrFsUsUyza9Ri+4Go6eelDMyaMdClaaoELsaUr+lQsR4bh3?=
+ =?us-ascii?Q?t9qwJqOKR0Vg6cOtrvLMdohqYnYnPmUj45ovdBQCkZu5JiujkPeHnzHymc33?=
+ =?us-ascii?Q?fqjSquUxFwAl5UoQzDWD3koUWxYFT3385KL1IgW0p8R3gMWKMXPPZr1YG+em?=
+ =?us-ascii?Q?6vjwcLJSieb1ytMN1xEvClBUuc4nWBvi9P6n7d4i/AqGOt3elqHCtkMokdK3?=
+ =?us-ascii?Q?I0bEZZ0VjIOhoTdCO3Geg4hlCpJAt9zv4Q45ffZGoiNfAI0+y8i2fN1TsM43?=
+ =?us-ascii?Q?Jsd+tw47wnfMlbvrMBgB32uQlDA+L8ysPydXGT2HLdgxFzEVW5DqmV1MrdO2?=
+ =?us-ascii?Q?yf7oq7XcQTckCJkvcT6929S+4l8IdIt+XTBSEW/yiQyiqw+DZz5f5cjAv7Os?=
+ =?us-ascii?Q?eTDiOqg1PG6eq1BX1O+8FUVdGBdDpvRVo6RwCfkpsY3GCdzCPXShxF1Z0wkp?=
+ =?us-ascii?Q?rfbcs9NAM7WslomfBHAYK5UdKealNJeCOiFoRhc7zY/eLrY6IDGd8GxmaeHE?=
+ =?us-ascii?Q?HogmSjz/NSozwAFqE6GBb6uxTq0sng8jk3at4FBDHK/BM58J5xgMq3rn10Ka?=
+ =?us-ascii?Q?aD9mvvczk4vGWOLjFrDttM706+yBRYv5tWc6jHUDCenFdWysZaG5BGo+VGrw?=
+ =?us-ascii?Q?9PNOe5apZsL1o9VADjFGnxiHCUc9aEJiuzZ9IpLEDQrtWNi8eKVdPkx8sAdI?=
+ =?us-ascii?Q?x5cbqrG45Ag8MTdAr0hLPaTeYKS9/JU7Dqk/+D25euUDH2A/njPJT23rXqCY?=
+ =?us-ascii?Q?WrbrlURUmy3tZw34wOEewlBNSuXE/MhAQ7E+ECoNHYjAHKWZ/uxl+mhgTQyB?=
+ =?us-ascii?Q?uX5MTVRTLAHAkfRKOiDBDl18UA3v3coCFFDhVNaBpU+XTD5e2nP9hCQuKXVj?=
+ =?us-ascii?Q?s7HDP7dzk3xyFnjBA/op1d6mSQXPzvUMj/749Gcnt9dsshhSb8n85qb3LgCr?=
+ =?us-ascii?Q?32FAmjSShpm5IQnB3HWIn1fP4niWN2dFnyWuted7fUTlUilufM18BdU9z2LY?=
+ =?us-ascii?Q?nUWxEF2WrPUqhNHRsP+AwfszWrDaSNs3x7p5J51uKDm9l07cjzKJWg5lMDUf?=
+ =?us-ascii?Q?c+zkMf9f7IjIcuRKXJDGMkWLFvrjCY1Xy/9x/lY9QHVr4WEH2SuN6JfbrcGt?=
+ =?us-ascii?Q?/Ui2wsVmZMsAjPndOF2zpHIz03OoUjE6yWdzFxBAzpFUkWskCRRc9FuYo69D?=
+ =?us-ascii?Q?Zu4sLUePvOBwqRqM+CuvbNCf+cA1OfnH1BrO2T1+oEIc3eGxcEhMIaInUE0Z?=
+ =?us-ascii?Q?3eHfk2xiqgacagBsdso=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.201.22.39]
-X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-29_10,2023-08-29_01,2023-05-22_02
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 841f1299-09d3-4bf2-e986-08dba89cac36
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2023 14:31:46.0412
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4MN3ctlZTo4L3/eTzcP1qm+bIkLTybpmvLaT4RxRVopZ++T4cOTkt4XgK9qxIF8v+LjfdvcbHNdOBJKv3HIybFH5AbbBTyK1MPbCn8OM9io=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB9875
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for capture and overflow events. Also add the related
-validation and configuration. Captured counter value can be retrieved
-through CCRx register. Register and enable interrupts to push events.
+Hi Jonathan Cameron,
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
- drivers/counter/stm32-timer-cnt.c | 279 +++++++++++++++++++++++++++++-
- include/linux/mfd/stm32-timers.h  |  15 ++
- 2 files changed, 285 insertions(+), 9 deletions(-)
+Thanks for the feedback.
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index e39b3964bc9d..05188f1da0b0 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -8,6 +8,7 @@
-  *
-  */
- #include <linux/counter.h>
-+#include <linux/interrupt.h>
- #include <linux/mfd/stm32-timers.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-@@ -37,6 +38,7 @@ struct stm32_timer_regs {
- 
- struct stm32_timer_cnt {
- 	struct regmap *regmap;
-+	atomic_t nb_ovf;
- 	struct clk *clk;
- 	u32 max_arr;
- 	bool enabled;
-@@ -44,6 +46,8 @@ struct stm32_timer_cnt {
- 	bool has_encoder;
- 	u32 idx;
- 	unsigned int nchannels;
-+	unsigned int nr_irqs;
-+	u32 *irq;
- };
- 
- static const enum counter_function stm32_count_functions[] = {
-@@ -253,6 +257,60 @@ static int stm32_count_prescaler_write(struct counter_device *counter,
- 	return regmap_write(priv->regmap, TIM_PSC, psc);
- }
- 
-+static int stm32_count_cap_read(struct counter_device *counter,
-+				struct counter_count *count,
-+				size_t ch, u64 *cap)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	u32 ccrx;
-+
-+	switch (ch) {
-+	case 0:
-+		regmap_read(priv->regmap, TIM_CCR1, &ccrx);
-+		break;
-+	case 1:
-+		regmap_read(priv->regmap, TIM_CCR2, &ccrx);
-+		break;
-+	case 2:
-+		regmap_read(priv->regmap, TIM_CCR3, &ccrx);
-+		break;
-+	case 3:
-+		regmap_read(priv->regmap, TIM_CCR4, &ccrx);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	dev_dbg(counter->parent, "CCR%zu: 0x%08x\n", ch, ccrx);
-+
-+	*cap = ccrx;
-+
-+	return 0;
-+}
-+
-+static int stm32_count_nb_ovf_read(struct counter_device *counter,
-+				   struct counter_count *count, u64 *val)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+
-+	*val = atomic_read(&priv->nb_ovf);
-+
-+	return 0;
-+}
-+
-+static int stm32_count_nb_ovf_write(struct counter_device *counter,
-+				    struct counter_count *count, u64 val)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+
-+	if (val > U32_MAX)
-+		return -ERANGE;
-+
-+	atomic_set(&priv->nb_ovf, val);
-+
-+	return 0;
-+}
-+
- static struct counter_comp stm32_count_ext[] = {
- 	COUNTER_COMP_DIRECTION(stm32_count_direction_read),
- 	COUNTER_COMP_ENABLE(stm32_count_enable_read, stm32_count_enable_write),
-@@ -260,6 +318,43 @@ static struct counter_comp stm32_count_ext[] = {
- 			     stm32_count_ceiling_write),
- 	COUNTER_COMP_COUNT_U64("prescaler", stm32_count_prescaler_read,
- 			       stm32_count_prescaler_write),
-+	COUNTER_COMP_COUNT_U64("num_overflows", stm32_count_nb_ovf_read, stm32_count_nb_ovf_write),
-+};
-+
-+static DEFINE_COUNTER_ARRAY_CAPTURE(stm32_count_cap_array_4ch, 4);
-+static struct counter_comp stm32_count_4ch_ext[] = {
-+	COUNTER_COMP_DIRECTION(stm32_count_direction_read),
-+	COUNTER_COMP_ENABLE(stm32_count_enable_read, stm32_count_enable_write),
-+	COUNTER_COMP_CEILING(stm32_count_ceiling_read,
-+			     stm32_count_ceiling_write),
-+	COUNTER_COMP_COUNT_U64("prescaler", stm32_count_prescaler_read,
-+			       stm32_count_prescaler_write),
-+	COUNTER_COMP_ARRAY_CAPTURE(stm32_count_cap_read, NULL, stm32_count_cap_array_4ch),
-+	COUNTER_COMP_COUNT_U64("num_overflows", stm32_count_nb_ovf_read, stm32_count_nb_ovf_write),
-+};
-+
-+static DEFINE_COUNTER_ARRAY_CAPTURE(stm32_count_cap_array_2ch, 2);
-+static struct counter_comp stm32_count_2ch_ext[] = {
-+	COUNTER_COMP_DIRECTION(stm32_count_direction_read),
-+	COUNTER_COMP_ENABLE(stm32_count_enable_read, stm32_count_enable_write),
-+	COUNTER_COMP_CEILING(stm32_count_ceiling_read,
-+			     stm32_count_ceiling_write),
-+	COUNTER_COMP_COUNT_U64("prescaler", stm32_count_prescaler_read,
-+			       stm32_count_prescaler_write),
-+	COUNTER_COMP_ARRAY_CAPTURE(stm32_count_cap_read, NULL, stm32_count_cap_array_2ch),
-+	COUNTER_COMP_COUNT_U64("num_overflows", stm32_count_nb_ovf_read, stm32_count_nb_ovf_write),
-+};
-+
-+static DEFINE_COUNTER_ARRAY_CAPTURE(stm32_count_cap_array_1ch, 1);
-+static struct counter_comp stm32_count_1ch_ext[] = {
-+	COUNTER_COMP_DIRECTION(stm32_count_direction_read),
-+	COUNTER_COMP_ENABLE(stm32_count_enable_read, stm32_count_enable_write),
-+	COUNTER_COMP_CEILING(stm32_count_ceiling_read,
-+			     stm32_count_ceiling_write),
-+	COUNTER_COMP_COUNT_U64("prescaler", stm32_count_prescaler_read,
-+			       stm32_count_prescaler_write),
-+	COUNTER_COMP_ARRAY_CAPTURE(stm32_count_cap_read, NULL, stm32_count_cap_array_1ch),
-+	COUNTER_COMP_COUNT_U64("num_overflows", stm32_count_nb_ovf_read, stm32_count_nb_ovf_write),
- };
- 
- static const enum counter_synapse_action stm32_clock_synapse_actions[] = {
-@@ -321,12 +416,130 @@ static int stm32_action_read(struct counter_device *counter,
- 	}
- }
- 
-+struct stm32_count_cc_regs {
-+	u32 ccmr_reg;
-+	u32 ccmr_mask;
-+	u32 ccmr_bits;
-+	u32 ccer_bits;
-+};
-+
-+static const struct stm32_count_cc_regs stm32_cc[] = {
-+	{ TIM_CCMR1, TIM_CCMR_CC1S, TIM_CCMR_CC1S_TI1,
-+		TIM_CCER_CC1E | TIM_CCER_CC1P | TIM_CCER_CC1NP },
-+	{ TIM_CCMR1, TIM_CCMR_CC2S, TIM_CCMR_CC2S_TI2,
-+		TIM_CCER_CC2E | TIM_CCER_CC2P | TIM_CCER_CC2NP },
-+	{ TIM_CCMR2, TIM_CCMR_CC3S, TIM_CCMR_CC3S_TI3,
-+		TIM_CCER_CC3E | TIM_CCER_CC3P | TIM_CCER_CC3NP },
-+	{ TIM_CCMR2, TIM_CCMR_CC4S, TIM_CCMR_CC4S_TI4,
-+		TIM_CCER_CC4E | TIM_CCER_CC4P | TIM_CCER_CC4NP },
-+};
-+
-+static int stm32_count_capture_configure(struct counter_device *counter, unsigned int ch,
-+					 bool enable)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	u32 ccmr, ccer, sr;
-+
-+	if (ch >= ARRAY_SIZE(stm32_cc)) {
-+		dev_err(counter->parent, "invalid ch: %d\n", ch);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * configure channel in input capture mode, map channel 1 on TI1, channel2 on TI2...
-+	 * Select both edges / non-inverted to trigger a capture.
-+	 */
-+	if (enable) {
-+		/* first clear possibly latched capture flag upon enabling */
-+		regmap_read(priv->regmap, TIM_CCER, &ccer);
-+		if (!(ccer & stm32_cc[ch].ccer_bits)) {
-+			sr = ~TIM_SR_CC_IF(ch);
-+			regmap_write(priv->regmap, TIM_SR, sr);
-+		}
-+		regmap_update_bits(priv->regmap, stm32_cc[ch].ccmr_reg, stm32_cc[ch].ccmr_mask,
-+				   stm32_cc[ch].ccmr_bits);
-+		regmap_set_bits(priv->regmap, TIM_CCER, stm32_cc[ch].ccer_bits);
-+	} else {
-+		regmap_clear_bits(priv->regmap, TIM_CCER, stm32_cc[ch].ccer_bits);
-+		regmap_clear_bits(priv->regmap, stm32_cc[ch].ccmr_reg, stm32_cc[ch].ccmr_mask);
-+	}
-+
-+	regmap_read(priv->regmap, stm32_cc[ch].ccmr_reg, &ccmr);
-+	regmap_read(priv->regmap, TIM_CCER, &ccer);
-+	dev_dbg(counter->parent, "%s(%s) ch%d 0x%08x 0x%08x\n", __func__, enable ? "ena" : "dis",
-+		ch, ccmr, ccer);
-+
-+	return 0;
-+}
-+
-+static int stm32_count_events_configure(struct counter_device *counter)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	struct counter_event_node *event_node;
-+	int i, ret;
-+	u32 val, dier = 0;
-+
-+	list_for_each_entry(event_node, &counter->events_list, l) {
-+		switch (event_node->event) {
-+		case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
-+			/* first clear possibly latched UIF before enabling */
-+			regmap_read(priv->regmap, TIM_DIER, &val);
-+			if (!(val & TIM_DIER_UIE))
-+				regmap_write(priv->regmap, TIM_SR, (u32)~TIM_SR_UIF);
-+			dier |= TIM_DIER_UIE;
-+			break;
-+		case COUNTER_EVENT_CAPTURE:
-+			ret = stm32_count_capture_configure(counter, event_node->channel, true);
-+			if (ret)
-+				return ret;
-+			dier |= TIM_DIER_CC_IE(event_node->channel);
-+			break;
-+		default:
-+			/* should never reach this path */
-+			return -EINVAL;
-+		}
-+	}
-+
-+	regmap_write(priv->regmap, TIM_DIER, dier);
-+
-+	/* check for disabled capture events */
-+	for (i = 0 ; i < priv->nchannels; i++) {
-+		if (!(dier & TIM_DIER_CC_IE(i))) {
-+			ret = stm32_count_capture_configure(counter, i, false);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int stm32_count_watch_validate(struct counter_device *counter,
-+				      const struct counter_watch *watch)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+
-+	switch (watch->event) {
-+	case COUNTER_EVENT_CAPTURE:
-+		if (watch->channel >= priv->nchannels) {
-+			dev_err(counter->parent, "Invalid channel %d\n", watch->channel);
-+			return -EINVAL;
-+		}
-+	case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct counter_ops stm32_timer_cnt_ops = {
- 	.count_read = stm32_count_read,
- 	.count_write = stm32_count_write,
- 	.function_read = stm32_count_function_read,
- 	.function_write = stm32_count_function_write,
- 	.action_read = stm32_action_read,
-+	.events_configure = stm32_count_events_configure,
-+	.watch_validate = stm32_count_watch_validate,
- };
- 
- static int stm32_count_clk_get_freq(struct counter_device *counter,
-@@ -404,8 +617,8 @@ static struct counter_count stm32_counts_enc_4ch = {
- 	.num_functions = ARRAY_SIZE(stm32_count_functions),
- 	.synapses = stm32_count_synapses_enc_4ch,
- 	.num_synapses = ARRAY_SIZE(stm32_count_synapses_enc_4ch),
--	.ext = stm32_count_ext,
--	.num_ext = ARRAY_SIZE(stm32_count_ext)
-+	.ext = stm32_count_4ch_ext,
-+	.num_ext = ARRAY_SIZE(stm32_count_4ch_ext)
- };
- 
- /* STM32 Timer with up to 4 capture channels (without encoder) */
-@@ -469,8 +682,8 @@ static struct counter_count stm32_counts_4ch = {
- 	.num_functions = 1, /* increase */
- 	.synapses = stm32_count_synapses_no_enc,
- 	.num_synapses = ARRAY_SIZE(stm32_count_synapses_no_enc),
--	.ext = stm32_count_ext,
--	.num_ext = ARRAY_SIZE(stm32_count_ext)
-+	.ext = stm32_count_4ch_ext,
-+	.num_ext = ARRAY_SIZE(stm32_count_4ch_ext)
- };
- 
- static struct counter_count stm32_counts_2ch = {
-@@ -480,8 +693,8 @@ static struct counter_count stm32_counts_2ch = {
- 	.num_functions = 1, /* increase */
- 	.synapses = stm32_count_synapses_no_enc,
- 	.num_synapses = 3, /* clock, ch1 and ch2 */
--	.ext = stm32_count_ext,
--	.num_ext = ARRAY_SIZE(stm32_count_ext)
-+	.ext = stm32_count_2ch_ext,
-+	.num_ext = ARRAY_SIZE(stm32_count_2ch_ext)
- };
- 
- static struct counter_count stm32_counts_1ch = {
-@@ -491,8 +704,8 @@ static struct counter_count stm32_counts_1ch = {
- 	.num_functions = 1, /* increase */
- 	.synapses = stm32_count_synapses_no_enc,
- 	.num_synapses = 2, /* clock, ch1 */
--	.ext = stm32_count_ext,
--	.num_ext = ARRAY_SIZE(stm32_count_ext)
-+	.ext = stm32_count_1ch_ext,
-+	.num_ext = ARRAY_SIZE(stm32_count_1ch_ext)
- };
- 
- static struct counter_count stm32_counts = {
-@@ -506,6 +719,42 @@ static struct counter_count stm32_counts = {
- 	.num_ext = ARRAY_SIZE(stm32_count_ext)
- };
- 
-+static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
-+{
-+	struct counter_device *counter = ptr;
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	u32 clr = GENMASK(31, 0); /* SR flags can be cleared by writing 0 (wr 1 has no effect) */
-+	u32 sr, dier;
-+	int i;
-+
-+	regmap_read(priv->regmap, TIM_SR, &sr);
-+	regmap_read(priv->regmap, TIM_DIER, &dier);
-+	/* Only take care of enabled IRQs */
-+	dier &= (TIM_DIER_UIE | TIM_DIER_CC1IE | TIM_DIER_CC2IE | TIM_DIER_CC3IE | TIM_DIER_CC4IE);
-+	sr &= dier;
-+
-+	if (sr & TIM_SR_UIF) {
-+		atomic_inc(&priv->nb_ovf);
-+		counter_push_event(counter, COUNTER_EVENT_OVERFLOW_UNDERFLOW, 0);
-+		dev_dbg(counter->parent, "COUNTER_EVENT_OVERFLOW_UNDERFLOW\n");
-+		/* SR flags can be cleared by writing 0, only clear relevant flag */
-+		clr &= ~TIM_SR_UIF;
-+	}
-+
-+	/* Check capture events */
-+	for (i = 0 ; i < priv->nchannels; i++) {
-+		if (sr & TIM_SR_CC_IF(i)) {
-+			counter_push_event(counter, COUNTER_EVENT_CAPTURE, i);
-+			clr &= ~TIM_SR_CC_IF(i);
-+			dev_dbg(counter->parent, "COUNTER_EVENT_CAPTURE, %d\n", i);
-+		}
-+	}
-+
-+	regmap_write(priv->regmap, TIM_SR, clr);
-+
-+	return IRQ_HANDLED;
-+};
-+
- static void stm32_timer_cnt_detect_channels(struct platform_device *pdev,
- 					    struct stm32_timer_cnt *priv)
- {
-@@ -568,7 +817,7 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct stm32_timer_cnt *priv;
- 	struct counter_device *counter;
--	int ret;
-+	int i, ret;
- 
- 	if (IS_ERR_OR_NULL(ddata))
- 		return -EINVAL;
-@@ -582,6 +831,8 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 	priv->regmap = ddata->regmap;
- 	priv->clk = ddata->clk;
- 	priv->max_arr = ddata->max_arr;
-+	priv->nr_irqs = ddata->nr_irqs;
-+	priv->irq = ddata->irq;
- 
- 	ret = stm32_timer_cnt_probe_encoder(pdev, priv);
- 	if (ret)
-@@ -630,6 +881,16 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, priv);
- 
-+	for (i = 0; i < priv->nr_irqs; i++) {
-+		ret = devm_request_irq(&pdev->dev, priv->irq[i], stm32_timer_cnt_isr,
-+				       0, dev_name(dev), counter);
-+		if (ret) {
-+			dev_err(dev, "Failed to request irq %d (err %d)\n",
-+				priv->irq[i], ret);
-+			return ret;
-+		}
-+	}
-+
- 	/* Reset input selector to its default input */
- 	regmap_write(priv->regmap, TIM_TISEL, 0x0);
- 
-diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
-index ca35af30745f..f0c6e6d2df66 100644
---- a/include/linux/mfd/stm32-timers.h
-+++ b/include/linux/mfd/stm32-timers.h
-@@ -41,6 +41,11 @@
- #define TIM_SMCR_SMS	(BIT(0) | BIT(1) | BIT(2)) /* Slave mode selection */
- #define TIM_SMCR_TS	(BIT(4) | BIT(5) | BIT(6)) /* Trigger selection */
- #define TIM_DIER_UIE	BIT(0)	/* Update interrupt	   */
-+#define TIM_DIER_CC1IE	BIT(1)  /* CC1 Interrupt Enable    */
-+#define TIM_DIER_CC2IE	BIT(2)  /* CC2 Interrupt Enable    */
-+#define TIM_DIER_CC3IE	BIT(3)  /* CC3 Interrupt Enable    */
-+#define TIM_DIER_CC4IE	BIT(4)  /* CC4 Interrupt Enable    */
-+#define TIM_DIER_CC_IE(x)	BIT((x) + 1) /* CC1, CC2, CC3, CC4 interrupt enable */
- #define TIM_DIER_UDE	BIT(8)  /* Update DMA request Enable */
- #define TIM_DIER_CC1DE	BIT(9)  /* CC1 DMA request Enable  */
- #define TIM_DIER_CC2DE	BIT(10) /* CC2 DMA request Enable  */
-@@ -49,6 +54,7 @@
- #define TIM_DIER_COMDE	BIT(13) /* COM DMA request Enable  */
- #define TIM_DIER_TDE	BIT(14) /* Trigger DMA request Enable */
- #define TIM_SR_UIF	BIT(0)	/* Update interrupt flag   */
-+#define TIM_SR_CC_IF(x)	BIT((x) + 1) /* CC1, CC2, CC3, CC4 interrupt flag */
- #define TIM_EGR_UG	BIT(0)	/* Update Generation       */
- #define TIM_CCMR_PE	BIT(3)	/* Channel Preload Enable  */
- #define TIM_CCMR_M1	(BIT(6) | BIT(5))  /* Channel PWM Mode 1 */
-@@ -60,16 +66,23 @@
- #define TIM_CCMR_CC1S_TI2	BIT(1)	/* IC1/IC3 selects TI2/TI4 */
- #define TIM_CCMR_CC2S_TI2	BIT(8)	/* IC2/IC4 selects TI2/TI4 */
- #define TIM_CCMR_CC2S_TI1	BIT(9)	/* IC2/IC4 selects TI1/TI3 */
-+#define TIM_CCMR_CC3S		(BIT(0) | BIT(1)) /* Capture/compare 3 sel */
-+#define TIM_CCMR_CC4S		(BIT(8) | BIT(9)) /* Capture/compare 4 sel */
-+#define TIM_CCMR_CC3S_TI3	BIT(0)	/* IC3 selects TI3 */
-+#define TIM_CCMR_CC4S_TI4	BIT(8)	/* IC4 selects TI4 */
- #define TIM_CCER_CC1E	BIT(0)	/* Capt/Comp 1  out Ena    */
- #define TIM_CCER_CC1P	BIT(1)	/* Capt/Comp 1  Polarity   */
- #define TIM_CCER_CC1NE	BIT(2)	/* Capt/Comp 1N out Ena    */
- #define TIM_CCER_CC1NP	BIT(3)	/* Capt/Comp 1N Polarity   */
- #define TIM_CCER_CC2E	BIT(4)	/* Capt/Comp 2  out Ena    */
- #define TIM_CCER_CC2P	BIT(5)	/* Capt/Comp 2  Polarity   */
-+#define TIM_CCER_CC2NP	BIT(7)	/* Capt/Comp 2N Polarity   */
- #define TIM_CCER_CC3E	BIT(8)	/* Capt/Comp 3  out Ena    */
- #define TIM_CCER_CC3P	BIT(9)	/* Capt/Comp 3  Polarity   */
-+#define TIM_CCER_CC3NP	BIT(11)	/* Capt/Comp 3N Polarity   */
- #define TIM_CCER_CC4E	BIT(12)	/* Capt/Comp 4  out Ena    */
- #define TIM_CCER_CC4P	BIT(13)	/* Capt/Comp 4  Polarity   */
-+#define TIM_CCER_CC4NP	BIT(15)	/* Capt/Comp 4N Polarity   */
- #define TIM_CCER_CCXE	(BIT(0) | BIT(4) | BIT(8) | BIT(12))
- #define TIM_BDTR_BKE(x)	BIT(12 + (x) * 12) /* Break input enable */
- #define TIM_BDTR_BKP(x)	BIT(13 + (x) * 12) /* Break input polarity */
-@@ -91,6 +104,8 @@
- #define TIM_BDTR_BKF_MASK	0xF
- #define TIM_BDTR_BKF_SHIFT(x)	(16 + (x) * 4)
- 
-+#define MAX_TIM_IC_CHANNELS	4 /* Max number of input capature channels */
-+
- enum stm32_timers_dmas {
- 	STM32_TIMERS_DMA_CH1,
- 	STM32_TIMERS_DMA_CH2,
--- 
-2.25.1
+> Subject: Re: [PATCH v2] iio: accel: adxl345: Convert enum->pointer for da=
+ta
+> in match data table
+>=20
+> On Fri, 18 Aug 2023 19:12:29 +0100
+> Biju Das <biju.das.jz@bp.renesas.com> wrote:
+>=20
+> > Convert enum->pointer for data in match data table, so that
+> > device_get_match_data() can do match against OF/ACPI/I2C tables, once
+> > i2c bus type match support added to it.
+> >
+> > Add struct adxl3x5_chip_info and replace enum->adxl3x5_chip_info in
+> > the match table and simplify adxl345_probe().
+> >
+> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+>=20
+> Hi Biju.
+>=20
+> The enum is used for very few purposes in this driver.
+> Whilst this patch is a good step in the right direction I'd like to see t=
+he
+> enum go away entirely by adding the remaining chip specific data to the n=
+ew
+> chip_info structure.
+> I think that's just one scale value :)
+
+OK.
+
+>=20
+> Jonathan
+>=20
+> > ---
+> > v1->v2:
+> >  * Replaced EINVAL->ENODEV for invaild chip type.
+> >  * Kept leading commas for adxl345_*_info and adxl375_*_info.
+> >  * Restored switch statement in adxl345_core_probe()
+> > ---
+> >  drivers/iio/accel/adxl345.h      |  5 +++++
+> >  drivers/iio/accel/adxl345_core.c | 16 ++++++----------
+> > drivers/iio/accel/adxl345_i2c.c  | 20 +++++++++++++++-----
+> > drivers/iio/accel/adxl345_spi.c  | 20 +++++++++++++++-----
+> >  4 files changed, 41 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
+> > index d7e67cb08538..8df1b7f43cb9 100644
+> > --- a/drivers/iio/accel/adxl345.h
+> > +++ b/drivers/iio/accel/adxl345.h
+> > @@ -13,6 +13,11 @@ enum adxl345_device_type {
+> >  	ADXL375 =3D 2,
+> >  };
+> >
+> > +struct adxl3x5_chip_info {
+> No wild cards in naming. I almost always ends up being a problem in the
+> long run.
+> adxl345_chip_info is fine as it's in the adxl345 file.
+
+OK, will change it.
+
+Cheers,
+Biju
+
+>=20
+> > +	const char *name;
+> > +	unsigned int type;
+> > +};
+> > +
+> >  int adxl345_core_probe(struct device *dev, struct regmap *regmap);
+> >
+> >  #endif /* _ADXL345_H_ */
+> > diff --git a/drivers/iio/accel/adxl345_core.c
+> > b/drivers/iio/accel/adxl345_core.c
+> > index 1919e0089c11..810048099ba9 100644
+> > --- a/drivers/iio/accel/adxl345_core.c
+> > +++ b/drivers/iio/accel/adxl345_core.c
+> > @@ -222,23 +222,19 @@ static void adxl345_powerdown(void *regmap)
+> >
+> >  int adxl345_core_probe(struct device *dev, struct regmap *regmap)  {
+> > -	enum adxl345_device_type type;
+> > +	const struct adxl3x5_chip_info *info;
+> >  	struct adxl345_data *data;
+> >  	struct iio_dev *indio_dev;
+> > -	const char *name;
+> >  	u32 regval;
+> >  	int ret;
+> >
+> > -	type =3D (uintptr_t)device_get_match_data(dev);
+> > -	switch (type) {
+> > +	info =3D device_get_match_data(dev);
+> > +	switch (info->type) {
+> >  	case ADXL345:
+> > -		name =3D "adxl345";
+> > -		break;
+> >  	case ADXL375:
+> > -		name =3D "adxl375";
+> >  		break;
+> >  	default:
+> > -		return -EINVAL;
+> > +		return -ENODEV;
+> >  	}
+> >
+> >  	ret =3D regmap_read(regmap, ADXL345_REG_DEVID, &regval); @@ -255,7
+> > +251,7 @@ int adxl345_core_probe(struct device *dev, struct regmap
+> > *regmap)
+> >
+> >  	data =3D iio_priv(indio_dev);
+> >  	data->regmap =3D regmap;
+> > -	data->type =3D type;
+> > +	data->type =3D info->type;
+> >  	/* Enable full-resolution mode */
+> >  	data->data_range =3D ADXL345_DATA_FORMAT_FULL_RES;
+> >
+> > @@ -264,7 +260,7 @@ int adxl345_core_probe(struct device *dev, struct
+> regmap *regmap)
+> >  	if (ret < 0)
+> >  		return dev_err_probe(dev, ret, "Failed to set data range\n");
+> >
+> > -	indio_dev->name =3D name;
+> > +	indio_dev->name =3D info->name;
+> >  	indio_dev->info =3D &adxl345_info;
+> >  	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> >  	indio_dev->channels =3D adxl345_channels; diff --git
+> > a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
+> > index e47d12f19602..219de556e81a 100644
+> > --- a/drivers/iio/accel/adxl345_i2c.c
+> > +++ b/drivers/iio/accel/adxl345_i2c.c
+> > @@ -30,22 +30,32 @@ static int adxl345_i2c_probe(struct i2c_client
+> *client)
+> >  	return adxl345_core_probe(&client->dev, regmap);  }
+> >
+> > +static const struct adxl3x5_chip_info adxl345_i2c_info =3D {
+> > +	.name =3D "adxl345",
+> > +	.type =3D ADXL345,
+> > +};
+> > +
+> > +static const struct adxl3x5_chip_info adxl375_i2c_info =3D {
+> > +	.name =3D "adxl375",
+> > +	.type =3D ADXL375,
+> > +};
+> > +
+> >  static const struct i2c_device_id adxl345_i2c_id[] =3D {
+> > -	{ "adxl345", ADXL345 },
+> > -	{ "adxl375", ADXL375 },
+> > +	{ "adxl345", (kernel_ulong_t)&adxl345_i2c_info },
+> > +	{ "adxl375", (kernel_ulong_t)&adxl375_i2c_info },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(i2c, adxl345_i2c_id);
+> >
+> >  static const struct of_device_id adxl345_of_match[] =3D {
+> > -	{ .compatible =3D "adi,adxl345", .data =3D (const void *)ADXL345 },
+> > -	{ .compatible =3D "adi,adxl375", .data =3D (const void *)ADXL375 },
+> > +	{ .compatible =3D "adi,adxl345", .data =3D &adxl345_i2c_info },
+> > +	{ .compatible =3D "adi,adxl375", .data =3D &adxl375_i2c_info },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, adxl345_of_match);
+> >
+> >  static const struct acpi_device_id adxl345_acpi_match[] =3D {
+> > -	{ "ADS0345", ADXL345 },
+> > +	{ "ADS0345", (kernel_ulong_t)&adxl345_i2c_info },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match); diff --git
+> > a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
+> > index aaade5808657..3acdacc07293 100644
+> > --- a/drivers/iio/accel/adxl345_spi.c
+> > +++ b/drivers/iio/accel/adxl345_spi.c
+> > @@ -36,22 +36,32 @@ static int adxl345_spi_probe(struct spi_device *spi=
+)
+> >  	return adxl345_core_probe(&spi->dev, regmap);  }
+> >
+> > +static const struct adxl3x5_chip_info adxl345_spi_info =3D {
+> > +	.name =3D "adxl345",
+> > +	.type =3D ADXL345,
+> > +};
+> > +
+> > +static const struct adxl3x5_chip_info adxl375_spi_info =3D {
+> > +	.name =3D "adxl375",
+> > +	.type =3D ADXL375,
+> > +};
+> > +
+> >  static const struct spi_device_id adxl345_spi_id[] =3D {
+> > -	{ "adxl345", ADXL345 },
+> > -	{ "adxl375", ADXL375 },
+> > +	{ "adxl345", (kernel_ulong_t)&adxl345_spi_info },
+> > +	{ "adxl375", (kernel_ulong_t)&adxl375_spi_info },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(spi, adxl345_spi_id);
+> >
+> >  static const struct of_device_id adxl345_of_match[] =3D {
+> > -	{ .compatible =3D "adi,adxl345", .data =3D (const void *)ADXL345 },
+> > -	{ .compatible =3D "adi,adxl375", .data =3D (const void *)ADXL375 },
+> > +	{ .compatible =3D "adi,adxl345", .data =3D &adxl345_spi_info },
+> > +	{ .compatible =3D "adi,adxl375", .data =3D &adxl375_spi_info },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, adxl345_of_match);
+> >
+> >  static const struct acpi_device_id adxl345_acpi_match[] =3D {
+> > -	{ "ADS0345", ADXL345 },
+> > +	{ "ADS0345", (kernel_ulong_t)&adxl345_spi_info },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match);
 

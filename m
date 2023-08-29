@@ -2,126 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF8D78C362
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 13:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A766778C505
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 15:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbjH2LiL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 29 Aug 2023 07:38:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
+        id S235931AbjH2NTG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 09:19:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232022AbjH2Lhs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 07:37:48 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF43129;
-        Tue, 29 Aug 2023 04:37:45 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RZlfs5vQSz67K8h;
-        Tue, 29 Aug 2023 19:33:25 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 29 Aug
- 2023 12:37:43 +0100
-Date:   Tue, 29 Aug 2023 12:37:42 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Mighty <bavishimithil@gmail.com>, <lars@metafoo.de>,
-        <liambeguin@gmail.com>, <linux-iio@vger.kernel.org>,
-        <peda@axentia.se>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Message-ID: <20230829123742.0000033e@Huawei.com>
-In-Reply-To: <CACRpkdZXBjHU4t-GVOCFxRO-AHGxKnxMeHD2s4Y4PuC29gBq6g@mail.gmail.com>
-References: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
-        <20230824073933.80-1-bavishimithil@gmail.com>
-        <CACRpkdYOpz7gDQsM+tgxj7sjKzv8FtehEsjezD8_bpDk-F_b=A@mail.gmail.com>
-        <CACRpkdYtXAWDcAMRJxh5YbNKmrYurH=z0pR47bftc+u1Yt4Nig@mail.gmail.com>
-        <20230828191859.2cced5cb@jic23-huawei>
-        <CACRpkdZXBjHU4t-GVOCFxRO-AHGxKnxMeHD2s4Y4PuC29gBq6g@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S235941AbjH2NSu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 09:18:50 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F321F7;
+        Tue, 29 Aug 2023 06:18:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693315128; x=1724851128;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7J2QJDwfsMXgCfWqfJMKUpM0mvVbSNEniUpWtVl4Uzw=;
+  b=azbDd4i1GJgBZYSFbc/Uxi832wh/m3V4j8Tkua2gQXc5+oncWB2aF7fc
+   tpz6c2paVNxMlDh8Hhlq1t5kZqj971pbYLA6eHL1P2IMuKwG5wwqI8r2Y
+   OOZ0LrhB2GQp+Tc45ZzJD6fKEPtqmUTNr9AuOmpLnm8bTffttyRX50By0
+   dOfaHbqdtu8fA6LXoTsal4m+EzW5B62UIQj0TvZDsJx5NYLpcM/96ANR1
+   m5tJCf1/64MG03SKq5IWRm0iiFetYP5R+nIwQE8hrPrq6Vnb1Jg0VJQix
+   DIRiuxJt/7mY+kupvTmRD5crONnnQ5D6fokNyMEuymvG+T2DX1n8QRcnK
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="372776934"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="372776934"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 06:18:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="808662221"
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="808662221"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 29 Aug 2023 06:18:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qaycE-004t5p-2s;
+        Tue, 29 Aug 2023 16:18:42 +0300
+Date:   Tue, 29 Aug 2023 16:18:42 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Philipp Jungkamp <p.jungkamp@gmx.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 2/3] iio: imu: st_lsm6dsx: Use aligned data type for
+ timestamp
+Message-ID: <ZO3wMlze3HRkkoMY@smile.fi.intel.com>
+References: <20230815154027.12468-1-andriy.shevchenko@linux.intel.com>
+ <20230815154027.12468-2-andriy.shevchenko@linux.intel.com>
+ <20230828170341.3a9641f0@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230828170341.3a9641f0@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 29 Aug 2023 09:17:00 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Mon, Aug 28, 2023 at 05:03:41PM +0100, Jonathan Cameron wrote:
+> On Tue, 15 Aug 2023 18:40:26 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Mon, Aug 28, 2023 at 8:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > Not 100% the follow is relevant as I've lost track of the discussion
-> > but maybe it is useful.
-> >
-> > Worth noting there are a few reasons why RAW and PROCESSED can coexist
-> > in drivers and indeed why SCALE can be absent.. (OFFSET is much the same)  
-> 
-> That's fine. If we have PROCESSED the rescaler will use that first.
-> 
-> What we're discussing are channels that have just RAW
-> and no PROCESSED, nor SCALE or OFFSET yet are connected to
-> a rescaler.
-> 
-> > 1) If SCALE = 1.0 the driver is allowed not to provide it - the channel
-> >    might still be raw if OFFSET != 0  
-> 
-> I'm not so sure the rescaler can handle that though. Just no-one
-> ran into it yet...
-> 
-> > 2) If the channel has a horrible non linear and none invertable conversion
-> >    to standard units and events support the you might need PROCESSED to
-> >    provide the useful value, but RAW to give you clue what the current value
-> >    is for setting an event (light sensors are usual place we see this).
-> >
-> > 3) Historical ABI errors.  If we first had RAW and no scale or offset because
-> >    we had no known values for them.  Then later we discovered that there
-> >    was a non linear transform involved (often when someone found a magic
-> >    calibration code somewhere).  Given the RAW interface might be in use
-> >    and isn't a bug as such, we can't easily remove it.  The new PROCESSED
-> >    interface needs to be there because of the non linear transform..
-> >
-> > Odd corner cases...  In this particular case the original code made no
-> > sense but might have allowed for case 3 by accident?  
-> 
-> I think it's fine, we make PROCESSED take precedence in all cases
-> as long as SCALE is not there as well.
-> 
-> rescale_configure_channel() does this:
-> 
->         if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
->             iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
->                 dev_info(dev, "using raw+scale source channel\n");
->         } else if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
->                 dev_info(dev, "using processed channel\n");
->                 rescale->chan_processed = true;
->         } else {
->                 dev_err(dev, "source channel is not supported\n");
->                 return -EINVAL;
->         }
-> 
-> I think the first line should be
-> 
-> if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
->     (iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE ||
->      iio_channel_has_info(schan,IIO_CHAN_INFO_OFFSET)))
-> 
-> right? We just never ran into it.
+...
 
-Makes sense to me.
-
-Jonathan
-
+> >  	struct {
+> >  		__le16 channels[3];
+> > -		s64 ts __aligned(8);
+> > +		__aligned_s64 ts;
 > 
-> Yours,
-> Linus Walleij
+> aligned_s64 as it's internal to the kernel?
+
+Either works, but strictly speaking you are right, better no underscored
+variant.
+
+> >  	} scan[ST_LSM6DSX_ID_MAX];
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

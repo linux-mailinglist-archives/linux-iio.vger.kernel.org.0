@@ -2,372 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C56D678BF7B
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 09:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC2B978C02A
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 10:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231833AbjH2HpO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 03:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
+        id S233425AbjH2IWz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 04:22:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233792AbjH2Hoy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 03:44:54 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D114F139
-        for <linux-iio@vger.kernel.org>; Tue, 29 Aug 2023 00:44:50 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2bcfdadd149so43876801fa.0
-        for <linux-iio@vger.kernel.org>; Tue, 29 Aug 2023 00:44:50 -0700 (PDT)
+        with ESMTP id S234102AbjH2IWs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 04:22:48 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAD4E9;
+        Tue, 29 Aug 2023 01:22:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1693297365; x=1724833365;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=ffxOonbk4uG5JZYQV2ZjACG6aGqN6tGf4oZ7Qpuck9U=;
+  b=Xm0yB5KMe0hyp6ITVqHvkcDMA62f0+45oXfwCmhDjP/H4Sk02jZ+TWpu
+   pUjpV6UZ4AvhRzGl72jQVJssyEnJNtqvslzPDfRLygBuclCXG7imeA0WO
+   9uQS7atsev9Qi+qLdcUkkSRJrsmEaxYYgmx2pLmsqY6yeBvBB5N4o5K7t
+   TAWQmfprgZRTXtuOM7+HGAYIFd1TIjVZQwsKISO2zoZxVjFH6SlJ9Z8Cf
+   t3OaRuF4rjNOLrrRr9fuZOnrT1ba3VbVXA5gyyy680+/CZVAkWKfa7ARH
+   lfHWSA4KFj9+X+MQCGjM3m22pD+wIOWNSf+/U+t8gsplC/QQxmuj4kMe0
+   w==;
+X-IronPort-AV: E=Sophos;i="6.02,210,1688454000"; 
+   d="scan'208";a="1782156"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 29 Aug 2023 01:22:44 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Tue, 29 Aug 2023 01:22:16 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21 via Frontend Transport; Tue, 29 Aug 2023 01:22:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EyOisIl5H0tePeugnFnlopkrEaInAOIzz85OEYBb+5rYtYGjgeGq0cVxEIwFnAVNJJGBXkLgzZvk2V7XWmrWFNojWmY53ZL78gSf5Sws6SUS0RqicSbUAxyLtheEVtReCaJAOfqn7mUdu91W7ipqWj9QN6+k9ZB8OGxJclpPdxmSO30GIJbzsbJTrbl0YAtXRkMmYGStyiFC5g0vk7Cb8jA5NkXWJtB+nvDtJQhdWjRWEQ+OYvD4yWThrHWUezwaAj3bGTBbUhLceoPBf+NE5WLi3hZro50UpmrYxbUvmLnq9lIV9G8N+kgOHEqiugdVQxOrLyLKwWZrJZQng8cexQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ffxOonbk4uG5JZYQV2ZjACG6aGqN6tGf4oZ7Qpuck9U=;
+ b=MFsdCuAAxy5ZzTXu3lURUQFBhxExOGNfadCJQdKAg5wTEKPk8w5ftieG9ZJ98HW4gTmNaAmgRmq0vXJmdrCQUXtjAPha1eyUotDdSJJAQhYPRREkG2e35kAD9mQL86jnh10ZrRW2+BRFEB5AaS3Cpjz07daChx8Pu2FeE4OuLDdMfbUYAAo2hMHcf8iWkqHPAf0snBN10HFTVb0kKLH1KBNimf5jeH7fkaC5+bnscemMGFWFry2z+utHUrhl4HjxP8FIirvvHM4sL4OGlTOMCX3UUp+O2rWCoL3hzUw/puwWrElrIT66ojkBCr2k0p+v4RnAanSKlckHUcBxFFKOSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693295089; x=1693899889;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6HoKHxCi31sYWMZUsZDNEe3+QfUTrLKmNWaVeGEEaAg=;
-        b=pdKQyAu6G8ZHYvEyl4co8Ek4WHVUDKFiRDuD8n9FyrtI9ujfsia+Ay52/6QdXofh7K
-         cNWLM3zyM1ZqROTnhPhnjmiRaFrDpSKbb6k4JWbf3xeXF6rJvSQ6mEyP2nYEavOKn0Xm
-         rPMcTuDjmByr5LrMwiCvt3IBmIn0YxSMZSx8LbpQ1yPTcgWYfyrAsXLvjNMhV1s49Pyb
-         sORxW1vRoHIni1B99rqPk48uUDUkYrheNW648lVONFI3EJex/ENTjuxzWIAbSv1HrVc4
-         MSHQD5qC3Tpk/WMEu6gktOT/CWPGVeOM6TmBpJlmGr7Fsg32hvZ6yKsM+U9VO3svzFvZ
-         ukRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693295089; x=1693899889;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6HoKHxCi31sYWMZUsZDNEe3+QfUTrLKmNWaVeGEEaAg=;
-        b=aLwdwA61uF9QrTdBigKFpiRXgQ07xttMOq5c41xzUBc81/GlmEeage9VPLGwao9r5x
-         m7N7cRwPUd5vG+93f1bn+ruGNB24MAIh6czuGsnvn6lrvAuDkDIgCjRlMfJlcjgwv73Z
-         DVHBmvyQPoT3+zVCGYEqS/k536Z1sbwPRKrkt52VFyeGA1xNZ1gtjllxf3G+u0N3Kowq
-         +6Ln+6Y/JGAL/o46xIPmiSdDcNDyDRngomudQtC14fTqsbOXm+VyL37UlcNyzD7HfZ0b
-         WzjyAPjOYWr5r6aqMRpp2aOZfvN+K5/T7AoHEqaN+snSW39d68y1VjIGBc6YDKEyYu47
-         IpXA==
-X-Gm-Message-State: AOJu0YxzUGyLOt8OrjBq0bzzm/eNcD563+albFO3NJAfzlFMpOmPBSn7
-        gzJMXIb0YZhcNe7xRY5Z+JTObQ==
-X-Google-Smtp-Source: AGHT+IH603/f7BMDWm5MFnkc/oBPNjngIdCU8Y28ENJwuL40+PGiMZ75UAXojV2eACqikE7RxXBgTg==
-X-Received: by 2002:a2e:b4bb:0:b0:2bc:fc2e:7671 with SMTP id q27-20020a2eb4bb000000b002bcfc2e7671mr5636569ljm.13.1693295089029;
-        Tue, 29 Aug 2023 00:44:49 -0700 (PDT)
-Received: from [127.0.1.1] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id w1-20020a2e3001000000b002b6c61bac2esm2036316ljw.92.2023.08.29.00.44.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 00:44:48 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 29 Aug 2023 09:44:46 +0200
-Subject: [PATCH v2] RFC: iio: lsm6dsx: Support temperature channel on some
- devices
-MIME-Version: 1.0
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ffxOonbk4uG5JZYQV2ZjACG6aGqN6tGf4oZ7Qpuck9U=;
+ b=ogoixvs3gfO5lycMQpC90TxyiQ0ldPEgkVFeZkWjz/2jFKQw1ltihcGU2/ZJ9sKuammYmyg94S2gJy6l8GGuIUK7rrjlNaDMjgpYWC7p4A0vxXpKSj0xyi2BnFDPoBWRBkBLjLv80eq90Mz/1X20Gw52XxzFJXiLpGMxdrzr11Q=
+Received: from PH7PR11MB6403.namprd11.prod.outlook.com (2603:10b6:510:1f9::9)
+ by DS0PR11MB7652.namprd11.prod.outlook.com (2603:10b6:8:14e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Tue, 29 Aug
+ 2023 08:22:15 +0000
+Received: from PH7PR11MB6403.namprd11.prod.outlook.com
+ ([fe80::aabe:19f9:915:b97e]) by PH7PR11MB6403.namprd11.prod.outlook.com
+ ([fe80::aabe:19f9:915:b97e%4]) with mapi id 15.20.6699.034; Tue, 29 Aug 2023
+ 08:22:15 +0000
+From:   <Marius.Cristea@microchip.com>
+To:     <jic23@kernel.org>
+CC:     <devicetree@vger.kernel.org>, <conor+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <robh+dt@kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] iio: adc: adding support for MCP3564 ADC
+Thread-Topic: [PATCH v4 2/2] iio: adc: adding support for MCP3564 ADC
+Thread-Index: AQHZ0fUtS2GyhDbLdE6x3sxNs+CUNq//0JGAgAEvV4A=
+Date:   Tue, 29 Aug 2023 08:22:15 +0000
+Message-ID: <9e81a4bb1afcf5a36a0a0ec90a149020c9c0cbdf.camel@microchip.com>
+References: <20230818165750.55406-1-marius.cristea@microchip.com>
+         <20230818165750.55406-3-marius.cristea@microchip.com>
+         <20230828151631.6a60282b@jic23-huawei>
+In-Reply-To: <20230828151631.6a60282b@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6403:EE_|DS0PR11MB7652:EE_
+x-ms-office365-filtering-correlation-id: adc87b9b-2d90-4530-cd5f-08dba8690d43
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: c++oGOJ4LVDHMeCBUuFkQZlR/3wd/AviBjItlvbEZlFY+yZyfHKF/8U2ime/+7zjcd9y2Z1hRoAqRddqrqy079M3U7RJEydVpeYxbx8BwY+EA7JeZqpCFLhib4HDn8qH9qH0ihgblZRsg3lH+gDGqMgEVAaZtc029NkOGj9R3Lii/hwKHTSciQAzpF8jhFOSRoxdrCz5DZtM0dyd0KDb4DSaf5oE7WaKSkSRtuPE+nbfnLBcJJ7Nvyp7J9shbDyiJdBOSVnqXtb28WTvhgL5jLx+/4/OmFYaalcdpgL8qoOGZ+weQJ9qZCbmIcGoM7KHKssM6GEmbdG8gS7Hg/dcOC4N4qTrlsgPRESZzIHI6VnnG5oVCf7q4E0wf3lMuwIp4f+HT152yjKDbjT239dW1IMPZtuNxqBp8kxbHTuvYXd9ew1PCNlWunYIvDmzz1kOwFwO2yoqMfLmjc6KQxBNnUdaS4G0hcV0sdybDhKjcv7l2FHbQ2TwmekbxZ1/HxM9WqY1MpH3pmHPfQQZVcd21qFLDqxlOhrMnPzob+Aa5pjtSkJTr5BXQ6RibyzAT4OcsArJJ5iy+oPoXpzWfiUBJHlmbs8d7Nr8f4NGxTUMm1bz8+50Mo3fZXiozy+YgepD
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6403.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(136003)(376002)(366004)(396003)(346002)(186009)(451199024)(1800799009)(6512007)(6486002)(6506007)(71200400001)(478600001)(83380400001)(76116006)(26005)(2906002)(54906003)(2616005)(316002)(64756008)(6916009)(66446008)(66476007)(66946007)(66556008)(91956017)(41300700001)(8936002)(5660300002)(8676002)(4326008)(36756003)(122000001)(38070700005)(38100700002)(86362001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bXB3ZnJQQVVhTXE1QnQvNlB1N3FhT2RHR1YzOE1nRjcrUEE1b2Fid05JOCtC?=
+ =?utf-8?B?eTIza3RtT1AvWDM1UitrVWdycjJIVm9UMmNFSk5rL20xOGJpOWt0dVBlVm1u?=
+ =?utf-8?B?R0IzajBhaSt6cHp5VDU4SzhTUFBmVTZ6TUxSRDIyUitGVFQxb24wS1NOV3Ez?=
+ =?utf-8?B?Q2lRTUF4YjlETGw3bUdMd2l4eTUwc0JVME1HSzJYUjM3YUVEdzJ0eWVjVDBp?=
+ =?utf-8?B?L1pYTnpvQ0FET0sySHVXYmZEd0tFL05XUk1OcTh4T2tjdmNEVTlDL0NEUFND?=
+ =?utf-8?B?SVR3aS9TL1UzQkc0S3Jsc1E1cWhwUEZJaGV3UU8vSk9mbXQyQkt1VEt6RnU5?=
+ =?utf-8?B?SjZrRmRIRGRRdUZJVXBUTWFkWCsybVhQcm1WVzIwdExTZVhQTzQ0ODdwMWN0?=
+ =?utf-8?B?SG5UREZyTytHM3djc1NIbFpWczhoTUt4QkJjdVA4WVMyR1NyenlCSVFGdlhV?=
+ =?utf-8?B?amNBMTAzWEtxQjlQN3FHOTdSOXR5K1djbjlxMEhjMWl1dmRQUXN3N2xmVTFU?=
+ =?utf-8?B?c1g0Q3RZall0TitacDFKTEVHUnA5VWZGdDhJaUJrM3dsdUZsRUQ0d3JhNVBZ?=
+ =?utf-8?B?Z3B1ejZkL1ZrNjJWb1FLdWFoMkoxRHlyVENKeGJJcXpld0NXVUNGMTZqeXl1?=
+ =?utf-8?B?cCswSXZ6YnJvczN4dy9tZWFZV1ZNUC9vTjl1bjRSZldBYjZhaVVQdjNQK2xj?=
+ =?utf-8?B?T1JPcWZmN25mVnZRQmxTRUtWZy9kVkhZdGh2YVdzSHl5YnQ0Z0hTYjcyaTMx?=
+ =?utf-8?B?VHVmMkxENE9PSWJsVGRra2preTZ4MWF2MUJwOE5BN1RhT2pOS3RrL3NhTXdF?=
+ =?utf-8?B?VUlrM0pMNFdVcm93NHd3Yyt5ZE15NW1nRklMSStpdVlQbTZIYWhjN004UFN5?=
+ =?utf-8?B?c2N4UDM5VjFCQUo5elZYVW5GWFd1WWZFQTZqN1c1QWNHaEJQVWhQUW5XT29F?=
+ =?utf-8?B?ZzhaVCtHbGdpS2pJQ0VBQWppSUpPQzI5d2dvZHIrajdPY0FlajR1L0Uwb1Vk?=
+ =?utf-8?B?QVc0ZnF4VnZsbVkvdXJjT3JOZ25KVXJCbjFndGNaNjVKS3MyQk9UQTRpK2FY?=
+ =?utf-8?B?bHhqRDFtUmtSZHRnMXFmSnpkWUpYSDlIbXZsRWZNY3A4NFdkcjN1T0pWVGJV?=
+ =?utf-8?B?Y1hKYnZUVG43OFdUYlpQWUlUaW9KZFhMemFBQ1JZclQwTFVFNkpaeTc5bFl3?=
+ =?utf-8?B?c0loalJaelM5ZlR1R0x5NXZaN256TVcwTi9tdlNBZWtrdnROVUdSbVdpL2xj?=
+ =?utf-8?B?anZxTm1sWm9BS2VzYlBlVTZvZjJiMk5UTGxXZDcrcG1iem5JNUF4V1pYVTdq?=
+ =?utf-8?B?ODhMNjVhUXRpaTB6U1E2V3ZJNHhnOCtydEFseXBZNWF1TmFRYlJwL0RsNFBD?=
+ =?utf-8?B?YlUyK2lsOEs4R090S2ZqbjlSM2JFYWc5aEN5ZzEzSmJBUjdrcUNwNVZWOC90?=
+ =?utf-8?B?WDRjVkNVRy9HWnBTZjFjYkppVmJuTHBVM2MwSFU4dHppdXljaXNjOGI0b3VR?=
+ =?utf-8?B?NDJRcWFkZzlxUS9CQVJ3QTBhZ2xMR1dERUFBTGVOYVdVMEU3TzE4ZnlrbFBx?=
+ =?utf-8?B?a280cGRKMWNRcE9iUjcwNzRlNGVRcFRLVnBOd1dESnNqQzRwcGhrTWFLY2Zx?=
+ =?utf-8?B?MVpIRWlvNDhCUmpabExJRmpXcFZQQmdQdndwMlpNbnoxS3VQaFRlS3pWeFhp?=
+ =?utf-8?B?SkJTS0hnVEV2WTNFdW1iM1NsSWlYOTBublVNN3BJRVdCQWZYOU0rM1REaHZl?=
+ =?utf-8?B?dUliNk5DZ0ZQNFRSMXJ4SnhJZFVicXdiTTd4NGtwZ2swTkNTNURjR2FqcWty?=
+ =?utf-8?B?S0V4b1FzYWY1Q0ZaSlhYOHFKazFEb3hWVGNWNFVzUkUvUTZXQlRrNUtQdkNH?=
+ =?utf-8?B?eEVUbzFodnR1Z1NRRjN2MDlGUVlxR2M4WFlQVWhEWDEzTXBmSUtSY0JpVUVQ?=
+ =?utf-8?B?WE1qQTRoRGdnSTRua1hUcVBYZXV1c2YrbUM4S0RPRmx4K1ZmL3k0UHU1eFJY?=
+ =?utf-8?B?V0RZaWEwdldJODRCb3F6YTAwUTFBanJDQkJ1bWJQcGtEMEQwdWk5d3FGdSt6?=
+ =?utf-8?B?RmhNcDRiVGdWR1lsbXNQRzN6OHI4N1hNeDNRSCtDeXlhMms5NC9xZThsQy9W?=
+ =?utf-8?B?YUhpVWRTS2xDUkpBaS94WlRTT0pYTC9tTzFJemw5bm9EN3NEekJlYVVKVTd0?=
+ =?utf-8?Q?OKIRcb49W6WLZUCTioFfIpk=3D?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230829-iio-spacex-lsm6ds0-v2-1-584e161b612f@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAO2h7WQC/32NQQ6CMBBFr0Jm7ZiWFhRX3sOwqHSASZCSjiEY0
- rtbOYDL95L//g5CkUngVuwQaWXhMGcoTwV0o5sHQvaZoVSlUVetkTmgLK6jDSd51V4UGtM1pq6
- osc8e8nCJ1PN2RB9t5pHlHeLn+Fj1z/7NrRoVUlMZZ63SF+XvE88uhnOIA7QppS+JO0CMtQAAA
- A==
-To:     Kevin Bosien <kbosien@spacex.com>, Jim Gruen <jgruen@spacex.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Mario Tesi <mario.tesi@st.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: b4 0.12.3
+Content-ID: <68FDF3D077D2B94899FBE2365A5A3E61@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6403.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: adc87b9b-2d90-4530-cd5f-08dba8690d43
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2023 08:22:15.0385
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VhNFi7oA55U4XUMCqAzwA+xTYJzvvDl551/ir3jb/T/ZEK6aw2mu7G/S5TpUcoFeHDFWl5oOHXRDUyJzRO+tV4hnLvr5lqRjcc7luuOuU1g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7652
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The ISM330 sensors (wai 0x6b) has a temperature channel that can
-be read out. Modify the lsm6dsx core to accomodate temperature
-readout on these sensors:
-
-- Make headspace for three members in the channels and odr_table,
-- Support offset
-- Add code to avoid configuring the ODR of the temperature
-  sensor, it has no real ODR control register.
-
-This is investigated because the hardware has important real-life
-use cases using the Linux kernel.
-
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-The ISM330DHCX is used in the SpaceX Starlink terminals which
-are running a realtime patched close-to-mainline Linux kernel so
-let's support temperature readout on it because why not.
-SpaceX is using the temperature.
----
-Changes in v2:
-- Put to RFC because I can't test changes.
-- Added some mail addresses to SpaceX to the header. Maybe you
-  guys can check if this works for you. Or forward to designated
-  open source ambassador or whatever can help. (Addresses found
-  in SpaceX code drop.)
-- Drop the code with strings for ism330dhc as we concluded that
-  this is probably ism330dhcx which is already supported.
-  (Would be nice if SpaceX can confirm.)
-- Don't write in nonsense register 0x0a for temperature sensor
-- More elaborate code to just avoid writing ODR for the temperature
-  sensor and instead rely on gyro or accelerometer to drive
-  the odr
-- Link to v1: https://lore.kernel.org/r/20230811-iio-spacex-lsm6ds0-v1-0-e953a440170d@linaro.org
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h        | 24 +++++++-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |  4 ++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 79 +++++++++++++++++++++++++-
- 3 files changed, 102 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index c19237717e81..4d013889c287 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -118,6 +118,23 @@ enum st_lsm6dsx_hw_id {
- 	.ext_info = st_lsm6dsx_ext_info,				\
- }
- 
-+#define ST_LSM6DSX_TEMP(chan_type, addr, scan_idx)			\
-+{									\
-+	.type = chan_type,						\
-+	.address = addr,						\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-+				BIT(IIO_CHAN_INFO_SCALE) |		\
-+				BIT(IIO_CHAN_INFO_OFFSET),		\
-+	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-+	.scan_index = scan_idx,						\
-+	.scan_type = {							\
-+		.sign = 's',						\
-+		.realbits = 16,						\
-+		.storagebits = 16,					\
-+		.endianness = IIO_LE,					\
-+	},								\
-+}
-+
- struct st_lsm6dsx_reg {
- 	u8 addr;
- 	u8 mask;
-@@ -320,7 +337,7 @@ struct st_lsm6dsx_settings {
- 	struct {
- 		const struct iio_chan_spec *chan;
- 		int len;
--	} channels[2];
-+	} channels[3];
- 	struct {
- 		struct st_lsm6dsx_reg irq1;
- 		struct st_lsm6dsx_reg irq2;
-@@ -332,7 +349,7 @@ struct st_lsm6dsx_settings {
- 		struct st_lsm6dsx_reg od;
- 	} irq_config;
- 	struct st_lsm6dsx_reg drdy_mask;
--	struct st_lsm6dsx_odr_table_entry odr_table[2];
-+	struct st_lsm6dsx_odr_table_entry odr_table[3];
- 	struct st_lsm6dsx_samples_to_discard samples_to_discard[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
- 	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
-@@ -346,6 +363,7 @@ struct st_lsm6dsx_settings {
- enum st_lsm6dsx_sensor_id {
- 	ST_LSM6DSX_ID_GYRO,
- 	ST_LSM6DSX_ID_ACC,
-+	ST_LSM6DSX_ID_TEMP,
- 	ST_LSM6DSX_ID_EXT0,
- 	ST_LSM6DSX_ID_EXT1,
- 	ST_LSM6DSX_ID_EXT2,
-@@ -364,6 +382,7 @@ enum st_lsm6dsx_fifo_mode {
-  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
-  * @gain: Configured sensor sensitivity.
-  * @odr: Output data rate of the sensor [Hz].
-+ * @offset: Constant offset of the sensor
-  * @samples_to_discard: Number of samples to discard for filters settling time.
-  * @watermark: Sensor watermark level.
-  * @decimator: Sensor decimation factor.
-@@ -378,6 +397,7 @@ struct st_lsm6dsx_sensor {
- 
- 	u32 gain;
- 	u32 odr;
-+	u32 offset;
- 
- 	u16 samples_to_discard;
- 	u16 watermark;
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-index 066fe561c5e8..c588451e2ddf 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -61,6 +61,7 @@ struct st_lsm6dsx_decimator_entry {
- enum st_lsm6dsx_fifo_tag {
- 	ST_LSM6DSX_GYRO_TAG = 0x01,
- 	ST_LSM6DSX_ACC_TAG = 0x02,
-+	ST_LSM6DSX_TEMP_TAG = 0x03,
- 	ST_LSM6DSX_TS_TAG = 0x04,
- 	ST_LSM6DSX_EXT0_TAG = 0x0f,
- 	ST_LSM6DSX_EXT1_TAG = 0x10,
-@@ -532,6 +533,9 @@ st_lsm6dsx_push_tagged_data(struct st_lsm6dsx_hw *hw, u8 tag,
- 	case ST_LSM6DSX_ACC_TAG:
- 		iio_dev = hw->iio_devs[ST_LSM6DSX_ID_ACC];
- 		break;
-+	case ST_LSM6DSX_TEMP_TAG:
-+		iio_dev = hw->iio_devs[ST_LSM6DSX_ID_TEMP];
-+		break;
- 	case ST_LSM6DSX_EXT0_TAG:
- 		if (hw->enable_mask & BIT(ST_LSM6DSX_ID_EXT0))
- 			iio_dev = hw->iio_devs[ST_LSM6DSX_ID_EXT0];
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 6a18b363cf73..76847d95c1b6 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -100,6 +100,11 @@ static const struct iio_chan_spec st_lsm6ds0_gyro_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
-+static const struct iio_chan_spec st_lsm6dsx_temp_channels[] = {
-+	ST_LSM6DSX_TEMP(IIO_TEMP, 0x20, 0),
-+	IIO_CHAN_SOFT_TIMESTAMP(1),
-+};
-+
- static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 	{
- 		.reset = {
-@@ -835,6 +840,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.chan = st_lsm6dsx_gyro_channels,
- 				.len = ARRAY_SIZE(st_lsm6dsx_gyro_channels),
- 			},
-+			[ST_LSM6DSX_ID_TEMP] = {
-+				.chan = st_lsm6dsx_temp_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_temp_channels),
-+			},
- 		},
- 		.drdy_mask = {
- 			.addr = 0x13,
-@@ -869,6 +878,17 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.odr_avl[6] = { 833000, 0x07 },
- 				.odr_len = 7,
- 			},
-+			[ST_LSM6DSX_ID_TEMP] = {
-+				/*
-+				 * NOTE: this ODR will be capped and controllerd by the
-+				 * gyro and accelerometer don't have any reg to configure
-+				 * this ODR.
-+				 */
-+				.odr_avl[0] = {  12500, 0x01 },
-+				.odr_avl[1] = {  26000, 0x02 },
-+				.odr_avl[2] = {  52000, 0x03 },
-+				.odr_len = 3,
-+			},
- 		},
- 		.fs_table = {
- 			[ST_LSM6DSX_ID_ACC] = {
-@@ -937,6 +957,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x09,
- 				.mask = GENMASK(7, 4),
- 			},
-+			[ST_LSM6DSX_ID_TEMP] = {
-+				.addr = 0x0A,
-+				.mask = GENMASK(5, 4),
-+			},
- 		},
- 		.fifo_ops = {
- 			.update_fifo = st_lsm6dsx_update_fifo,
-@@ -1618,8 +1642,8 @@ int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u32 odr, u8 *val)
- 	odr_table = &sensor->hw->settings->odr_table[sensor->id];
- 	for (i = 0; i < odr_table->odr_len; i++) {
- 		/*
--		 * ext devices can run at different odr respect to
--		 * accel sensor
-+		 * ext devices and temp sensor can run at different odr
-+		 * respect to accel sensor
- 		 */
- 		if (odr_table->odr_avl[i].milli_hz >= odr)
- 			break;
-@@ -1661,6 +1685,21 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
- 	switch (sensor->id) {
- 	case ST_LSM6DSX_ID_GYRO:
- 		break;
-+	case ST_LSM6DSX_ID_TEMP:
-+		/*
-+		 * According to the application note AN5398 Rev 3
-+		 * for ISM330DHCX, section 10, page 109
-+		 * the ODR for the temperature sensor is equal to the
-+		 * accelerometer ODR if the gyroscope is powered-down,
-+		 * up to 52 Hz, but constant 52 Hz if the gyroscope
-+		 * is powered on. It never goes above 52 Hz.
-+		 */
-+		ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_GYRO]);
-+		if ((req_odr > 0) && (hw->enable_mask |= BIT(ref_sensor->id)))
-+			/* Gyro is on! ODR fixed to 52 Hz */
-+			return 0;
-+		/* We fall through and activate accelerometer if need be */
-+		fallthrough;
- 	case ST_LSM6DSX_ID_EXT0:
- 	case ST_LSM6DSX_ID_EXT1:
- 	case ST_LSM6DSX_ID_EXT2:
-@@ -1800,6 +1839,10 @@ static int st_lsm6dsx_read_raw(struct iio_dev *iio_dev,
- 		*val2 = sensor->gain;
- 		ret = IIO_VAL_INT_PLUS_NANO;
- 		break;
-+	case IIO_CHAN_INFO_OFFSET:
-+		*val = sensor->offset;
-+		ret = IIO_VAL_INT;
-+		break;
- 	default:
- 		ret = -EINVAL;
- 		break;
-@@ -2106,6 +2149,22 @@ static const struct iio_info st_lsm6dsx_gyro_info = {
- 	.write_raw_get_fmt = st_lsm6dsx_write_raw_get_fmt,
- };
- 
-+static struct attribute *st_lsm6dsx_temp_attributes[] = {
-+	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group st_lsm6dsx_temp_attribute_group = {
-+	.attrs = st_lsm6dsx_temp_attributes,
-+};
-+
-+static const struct iio_info st_lsm6dsx_temp_info = {
-+	.attrs = &st_lsm6dsx_temp_attribute_group,
-+	.read_raw = st_lsm6dsx_read_raw,
-+	.write_raw = st_lsm6dsx_write_raw,
-+	.hwfifo_set_watermark = st_lsm6dsx_set_watermark,
-+};
-+
- static int st_lsm6dsx_get_drdy_pin(struct st_lsm6dsx_hw *hw, int *drdy_pin)
- {
- 	struct device *dev = hw->dev;
-@@ -2379,7 +2438,16 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 	sensor->id = id;
- 	sensor->hw = hw;
- 	sensor->odr = hw->settings->odr_table[id].odr_avl[0].milli_hz;
--	sensor->gain = hw->settings->fs_table[id].fs_avl[0].gain;
-+	if (id == ST_LSM6DSX_ID_TEMP) {
-+		/*
-+		 * The temperature sensor has a fixed scale and offset such
-+		 * that: temp_C = (raw / 256) + 25
-+		 */
-+		sensor->gain = 3906;
-+		sensor->offset = 25;
-+	} else {
-+		sensor->gain = hw->settings->fs_table[id].fs_avl[0].gain;
-+	}
- 	sensor->watermark = 1;
- 
- 	switch (id) {
-@@ -2393,6 +2461,11 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
- 		scnprintf(sensor->name, sizeof(sensor->name), "%s_gyro",
- 			  name);
- 		break;
-+	case ST_LSM6DSX_ID_TEMP:
-+		iio_dev->info = &st_lsm6dsx_temp_info;
-+		scnprintf(sensor->name, sizeof(sensor->name), "%s_temp",
-+			  name);
-+		break;
- 	default:
- 		return NULL;
- 	}
-
----
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-change-id: 20230811-iio-spacex-lsm6ds0-33c9365e94bf
-
-Best regards,
--- 
-Linus Walleij <linus.walleij@linaro.org>
-
+SGkgSm9uYXRoYW4sDQoNClBsZWFzZSwgc2VlIGJlbG93Og0KDQoNCj4gPiArc3RhdGljIGludCBt
+Y3AzNTY0X3VwZGF0ZV84Yml0cyhzdHJ1Y3QgbWNwMzU2NF9zdGF0ZSAqYWRjLCB1OCByZWcsDQo+
+ID4gdTMyIG1hc2ssIHU4IHZhbCkNCj4gPiArew0KPiA+ICvCoMKgwqDCoCB1OCB0bXA7DQo+ID4g
+K8KgwqDCoMKgIGludCByZXQ7DQo+ID4gKw0KPiA+ICvCoMKgwqDCoCByZXQgPSBtY3AzNTY0X3Jl
+YWRfOGJpdHMoYWRjLCByZWcsICZ0bXApOw0KPiA+ICvCoMKgwqDCoCBpZiAocmV0IDwgMCkNCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiByZXQ7DQo+ID4gKw0KPiA+ICvCoMKg
+wqDCoCB2YWwgJj0gbWFzazsNCj4gVGhpcyBsb29rcyB3cm9uZyAtIHdvdWxkIGV4cGVjdCB0aGlz
+IHRvIGJlDQo+IMKgwqDCoMKgwqDCoMKgIHZhbCAmPSB+bWFzazsgLy8gd2lwZSBvdXQgdGhlIGJp
+dHMgaW4gbWFzay4NCj4gPiANCg0KQWN0dWFsbHkgYW0gZG9pbmcgdGhlIG9wcGVyYXRpb24gdHdp
+Y2UgKHRoZSB2YWwgaXMgYWxyZWFkeSBjb3JyZWN0IGJ5DQp1c2luZyBGSUVMRF9QUkVQIHdoZW4g
+Y2FsbGluZyBtY3AzNTY0X3VwZGF0ZV84Yml0cykuIEknbSBtYWtpbmcgc3VyZQ0KdGhhdCB0aGUg
+dmFsdWUgcmVjZWl2ZWQgaGFzIG9ubHkgdGhlIG1hc2sgYml0cyB2YWxpZC4NCg0KDQo+ID4gK8Kg
+wqDCoMKgIHZhbCB8PSB0bXAgJiB+bWFzazsNCj4gYW5kDQo+IMKgwqDCoMKgwqDCoMKgIHZhbCB8
+PSB0bXAgJiBtYXNrO8KgIC8vd3JpdGUgdGhlIGJpdHNzIGluIG1hc2suDQo+IA0KPiBJcyB0aGUg
+bWFzayB0aGUgaW52ZXJzZSA/wqAgQXQgZmlyc3QgZ2xhbmNlIGl0IGRvZXNuJ3Qgc2VlbSB0byBi
+ZS4NCj4gDQo+IA0KDQpUaGUgdG1wIGlzIHRoZSB2YWx1ZSB0aGF0IHdhcyByZWFkIGZyb20gdGhl
+IGhhcmR3YXJlIChJIG5lZWQgbm90IHRvDQp0b3VjaC9vdmVyd3JpdGUgKH5tYXNrKSBiaXRzKS4g
+InRtcCAmIH5tYXNrIiB3aWxsIGNsZWFyIHRoZSBtYXNrIGJpdHMNCmZyb20gdGhlIGhhcmR3YXJl
+LCBpbiBvcmRlciB0byBtYWtlIHRoZSAifCIgd2l0aCB0aGUgdmFsLg0KDQpBY3R1YWxseSBteSBs
+b2dpYyBpcyBhIGxpdHRsZSBiaXQgdHdpc3RlZC4gSSBjYW4gcmV3cml0ZSBpdCB0byBiZSBtb3Jl
+DQpjbGVhci4NCg0KDQoNClRoYW5rcywNCk1hcml1cw0K

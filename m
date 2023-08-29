@@ -2,98 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A31278CA4E
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 19:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F11F778CB9E
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 20:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230493AbjH2RLH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 13:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37366 "EHLO
+        id S237900AbjH2SBI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 14:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237649AbjH2RKx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 13:10:53 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA55EFC
-        for <linux-iio@vger.kernel.org>; Tue, 29 Aug 2023 10:10:50 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-50078e52537so7195173e87.1
-        for <linux-iio@vger.kernel.org>; Tue, 29 Aug 2023 10:10:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693329049; x=1693933849;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kUDDfMckAfjBAxdn8UbsV0PI1LaLGtDpMC0izbCsEyw=;
-        b=pbC+E701z8pgAN9J67YbQJLsxBdHLBVuAwWonWR5+gntMBHPmLJHBjfbBiNQVphcP8
-         cBwZkTZLuowp76ilvXiunTr2QEfNU2Y/kgamH0fblMtM4htx8QtaOJm2UTSYJbumxECf
-         TtipZgQX+Tp1ub30QDnmp33Jf/yIg9cuJ9Hq1tc17nN/TkJBtcY7mnKK9Tb83yC9hvgN
-         TvWBsyvgSjU54aVkyabIYO/HiUae25sHmytR4eDgGArQhWIt30MMh3PTM/MB3q53Zzoz
-         uyp0CLPUJlieiZpN/RSgt4gNmxiGPKdhKEywcGPGiOxEwoYbZyVvSkobOX6Qbf/CaZP/
-         X2Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693329049; x=1693933849;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kUDDfMckAfjBAxdn8UbsV0PI1LaLGtDpMC0izbCsEyw=;
-        b=K47kKah7+34tZRHViSvMcD4joOL4UfmCnwnbTNL5i4G3/dX70+TMReLGHHZ2WyTSdC
-         XZJGeuVDiA6inRBQVa4G4N0KnxhrQNMAkSEa2fqzzg9En2MzVQA7YAzX4wU0VMV73/B6
-         6e9j/9YPapEM0EGBNKiwituAWgv7O5nKMGDH+JyOumS6rMeRhXxAOkzcw0eUU1Je2C1e
-         yF/aH9oioEBGpN0FA4XHjrONd7NPB7H4h+iCKy9KBJTf/MKAmKnKWBScEZqezoCUYNnu
-         CBjrc/QAf74TMN2zSBJRHIXUGufnm7G9VtPUF6wy90ibh9buOJ8NYIPk0D9Uo1rUvxQf
-         kxLw==
-X-Gm-Message-State: AOJu0YxOD/0RKEOetVlvw0YH9YqRsjHmF5mDhmMTXrgc2BnyRjeGNgrF
-        i07Hhjlz2ZEU3SQYelxqxWtWJA==
-X-Google-Smtp-Source: AGHT+IHHQks1xGIxY16uCjwppAfUaLvnxxPfEhYUrLLX0rUNO4P/6kbFaMYJqOrLlPhWdG/DG/E4ew==
-X-Received: by 2002:a05:6512:224e:b0:4fd:c84f:30c9 with SMTP id i14-20020a056512224e00b004fdc84f30c9mr24645234lfu.47.1693329049106;
-        Tue, 29 Aug 2023 10:10:49 -0700 (PDT)
-Received: from [192.168.0.22] ([77.252.47.196])
-        by smtp.gmail.com with ESMTPSA id q4-20020a170906144400b00992eabc0ad8sm6136008ejc.42.2023.08.29.10.10.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Aug 2023 10:10:48 -0700 (PDT)
-Message-ID: <ab0d99ca-54b9-2535-a783-967a3b2443bf@linaro.org>
-Date:   Tue, 29 Aug 2023 19:10:47 +0200
+        with ESMTP id S238158AbjH2SAw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 14:00:52 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5EA6185;
+        Tue, 29 Aug 2023 11:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693332049; x=1724868049;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Li1t9Xs9+ZlNzSrfJujiGlWo959VLxYmazSAAODNF44=;
+  b=XbkIDTIvUdSWyVHdaGoj+OtT0FkxVgXnjOBAXdV0+wbxlD+oNyWzWHjN
+   cFQSZEDHvWCpoP8ot+k2CGRtcv9xBHh2R9IkZ+NjcPNaFCEUsbDUq7TTB
+   6A3GCSvCsFRUZ4euxAs7UM7isRSDL7AXmkUR/SnYy+wW90cdLndyEeHhi
+   O8840nq8CVaTDqtevlMqH58bfG3L1SIkM3sVTFH7AHT+IolBrN/QQ1+yB
+   6bEkV6KpKANYmABl2dvdDdpRLYc7uXteQfPUaqxsPZ2lb2fHXyd71o3gI
+   kxjMoV1ZHCs2CW1k2sg/e0Cpn6O8OUkWVl4uUYB0wxpYejbQB4SoO7yKr
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="461819601"
+X-IronPort-AV: E=Sophos;i="6.02,211,1688454000"; 
+   d="scan'208";a="461819601"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2023 11:00:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10817"; a="853381425"
+X-IronPort-AV: E=Sophos;i="6.02,211,1688454000"; 
+   d="scan'208";a="853381425"
+Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 29 Aug 2023 11:00:47 -0700
+Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qb31C-0008yp-1F;
+        Tue, 29 Aug 2023 18:00:46 +0000
+Date:   Wed, 30 Aug 2023 02:00:34 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        william.gray@linaro.org, lee@kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, alexandre.torgue@foss.st.com,
+        fabrice.gasnier@foss.st.com, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 8/8] counter: stm32-timer-cnt: add support for events
+Message-ID: <202308300133.jtLeSGia-lkp@intel.com>
+References: <20230829134029.2402868-9-fabrice.gasnier@foss.st.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: adding MCP3564 ADC
-Content-Language: en-US
-To:     marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230829154133.40716-1-marius.cristea@microchip.com>
- <20230829154133.40716-2-marius.cristea@microchip.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230829154133.40716-2-marius.cristea@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230829134029.2402868-9-fabrice.gasnier@foss.st.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 29/08/2023 17:41, marius.cristea@microchip.com wrote:
-> From: Marius Cristea <marius.cristea@microchip.com>
-> 
-> This is the device tree schema for iio driver for
-> Microchip family of 153.6 ksps, Low-Noise 16/24-Bit
-> Delta-Sigma ADCs with an SPI interface (Microchip's
-> MCP3461, MCP3462, MCP3464, MCP3461R, MCP3462R,
-> MCP3464R, MCP3561, MCP3562, MCP3564, MCP3561R,
-> MCP3562R and MCP3564R analog to digital converters).
-> 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
->  .../bindings/iio/adc/microchip,mcp3564.yaml   | 205 ++++++++++++++++++
+Hi Fabrice,
 
-What changed? Cover letter says nothing about binding, so this patch
-must say. Especially that you decided to ignore review.
+kernel test robot noticed the following build warnings:
 
-Best regards,
-Krzysztof
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.5 next-20230829]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Fabrice-Gasnier/counter-chrdev-fix-getting-array-extensions/20230829-230111
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20230829134029.2402868-9-fabrice.gasnier%40foss.st.com
+patch subject: [PATCH 8/8] counter: stm32-timer-cnt: add support for events
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230830/202308300133.jtLeSGia-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230830/202308300133.jtLeSGia-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308300133.jtLeSGia-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/counter/stm32-timer-cnt.c: In function 'stm32_count_watch_validate':
+>> drivers/counter/stm32-timer-cnt.c:524:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
+     524 |                 if (watch->channel >= priv->nchannels) {
+         |                    ^
+   drivers/counter/stm32-timer-cnt.c:528:9: note: here
+     528 |         case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
+         |         ^~~~
+
+
+vim +524 drivers/counter/stm32-timer-cnt.c
+
+   516	
+   517	static int stm32_count_watch_validate(struct counter_device *counter,
+   518					      const struct counter_watch *watch)
+   519	{
+   520		struct stm32_timer_cnt *const priv = counter_priv(counter);
+   521	
+   522		switch (watch->event) {
+   523		case COUNTER_EVENT_CAPTURE:
+ > 524			if (watch->channel >= priv->nchannels) {
+   525				dev_err(counter->parent, "Invalid channel %d\n", watch->channel);
+   526				return -EINVAL;
+   527			}
+   528		case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
+   529			return 0;
+   530		default:
+   531			return -EINVAL;
+   532		}
+   533	}
+   534	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

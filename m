@@ -2,119 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EC9978C108
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 11:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CDBE78C356
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 13:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbjH2JMY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 05:12:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53694 "EHLO
+        id S230493AbjH2LeX convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 29 Aug 2023 07:34:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231553AbjH2JMB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 05:12:01 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D3397;
-        Tue, 29 Aug 2023 02:11:55 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99c353a395cso532540666b.2;
-        Tue, 29 Aug 2023 02:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693300314; x=1693905114;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uzSuIOJ3sqvXAI3VO2/i5132hzppV1oPr0EHGMgWBHI=;
-        b=Pm3pqOVX/mOZ7WHkGFW6WyTXfRRw2ptaRtfbVrfVoVdFHjicbkavWitLv7DRPoaTej
-         bQ4CcaCgyGB99A4JZcYaxLE6Ns7/U/4TjIuyiAgSfJqlFKERbxIZAZFwXirFM2HWNZen
-         vCnKOJFuv6OrNPhjSC2Sk/OBRgQnyPrjawimAjXTNpirFFNCcoBqJqO5ZYSwTLM9OrZ7
-         NeCondDF18l5m8XZDOmoOFXRR7tOU1nI1e42VprCbhbisrO3bWe9HfAsQNsR1wDVPf4Q
-         FMXdpV5yzLHm3tbv6lMFNuDXZ5gnmUUO9KP0Jpq+X3d30Lfy36t6v7QsyXhRUlQ+r482
-         hYsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693300314; x=1693905114;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uzSuIOJ3sqvXAI3VO2/i5132hzppV1oPr0EHGMgWBHI=;
-        b=go5na+Y760846PH9W4eOGdpMDmRDpJ0g2huqniqgomFr+WSIoz1bzeBHaHOgQZctZu
-         McfpeyKBg3TOJFcmEcOvDjeLN07ZHtz5chjmA0R2xCC2QsaiXNkYnz4X2njMfIXW8RtW
-         blc059hkL+rdO/ysIrGw8oZgyOvHC3YPCCnaSVlu3sdh0xFn6kR/BIiiqrFKBwFAMs8y
-         xgqdw2/9CXQX9Fg+UCi6Lc6kmyOyWg9BGSNYcJCZBXslnMMTHccI6uZe0dMVZgSZhAbn
-         p00saQfOXZ39k7SRW+z63xxJMoSJ2WrhIrLDt0KbvtlELHT8NdsBNN2enhNXGWueBb1+
-         jd9g==
-X-Gm-Message-State: AOJu0Yy3kmh3VllAVA5USCrFwKLNgnDQHqNzfVdZbrDXmqiO2keFyqP+
-        6G1h9THb3qGztewqrctCo0w=
-X-Google-Smtp-Source: AGHT+IHyQe8RnjtzcC0yd6y6svQSSefXBSCX188B5o03d8S1ty9U2ZhHzFiVv8/Gx7MPhSRriaDvGQ==
-X-Received: by 2002:a17:906:ef8c:b0:9a5:cc73:a2a6 with SMTP id ze12-20020a170906ef8c00b009a5cc73a2a6mr778916ejb.14.1693300313749;
-        Tue, 29 Aug 2023 02:11:53 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef34:6000:bd39:43a2:571c:1c76? (p200300f6ef346000bd3943a2571c1c76.dip0.t-ipconnect.de. [2003:f6:ef34:6000:bd39:43a2:571c:1c76])
-        by smtp.gmail.com with ESMTPSA id u22-20020a17090626d600b009a1fd22257fsm5715350ejc.207.2023.08.29.02.11.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 02:11:52 -0700 (PDT)
-Message-ID: <5a31871d0e0322b9704633bd2dca2503c554c358.camel@gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad717x: add AD717X driver
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Dumitru Ceclan <mitrutzceclan@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Okan Sahin <okan.sahin@analog.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Lee Jones <lee@kernel.org>, Haibo Chen <haibo.chen@nxp.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Leonard =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
-        Ceclan Dumitru <dumitru.ceclan@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 29 Aug 2023 11:14:31 +0200
-In-Reply-To: <ZNUEBDsMg6UfeOtl@smile.fi.intel.com>
-References: <20230810093322.593259-1-mitrutzceclan@gmail.com>
-         <20230810093322.593259-2-mitrutzceclan@gmail.com>
-         <34f5e2118a4714048231e6ee9a8f244248616bd0.camel@gmail.com>
-         <ZNUEBDsMg6UfeOtl@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 
+        with ESMTP id S231983AbjH2LeN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 07:34:13 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4101A109;
+        Tue, 29 Aug 2023 04:34:10 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RZlZj4jhTz6J7Df;
+        Tue, 29 Aug 2023 19:29:49 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 29 Aug
+ 2023 12:34:07 +0100
+Date:   Tue, 29 Aug 2023 12:34:06 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     <Marius.Cristea@microchip.com>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        <conor+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <robh+dt@kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] iio: adc: adding support for MCP3564 ADC
+Message-ID: <20230829123406.0000403f@Huawei.com>
+In-Reply-To: <ae3562ee30e6d8aecae2a447cffc4ad6e8e44578.camel@microchip.com>
+References: <20230818165750.55406-1-marius.cristea@microchip.com>
+        <20230818165750.55406-3-marius.cristea@microchip.com>
+        <20230828151631.6a60282b@jic23-huawei>
+        <ae3562ee30e6d8aecae2a447cffc4ad6e8e44578.camel@microchip.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2023-08-10 at 18:36 +0300, Andy Shevchenko wrote:
-> On Thu, Aug 10, 2023 at 01:57:02PM +0200, Nuno S=C3=A1 wrote:
-> > On Thu, 2023-08-10 at 12:33 +0300, Dumitru Ceclan wrote:
->=20
-> ...
->=20
-> > Is ad717x_gpio_cleanup() being used anywhere? Moreover I would maybe ju=
-st
-> > get rid of
-> > the #ifdef wrapper and just select GPIOLIB. How often will it be disabl=
-ed
-> > anyways?
->=20
-> The agreement is that users are depend on and not selecting GPIOLIB.
-> Any news in these agreement terms?
->=20
+On Tue, 29 Aug 2023 07:29:57 +0000
+<Marius.Cristea@microchip.com> wrote:
 
-Hmm no idea about that. If you say so, it's just one new thing I'm learning=
- :)
+> Hi Jonathan,
+> 
+>    Thank you for the review.
+> 
+> 
+> > 
+> >   
+> > > +
+> > > +/*
+> > > + * Current Source/Sink Selection Bits for Sensor Bias (source on
+> > > VIN+/sink on VIN-)
+> > > + */
+> > > +static const int mcp3564_burnout_avail[][2] = {
+> > > +     [MCP3564_CONFIG0_CS_SEL_0_0_uA] = {0, 0},
+> > > +     [MCP3564_CONFIG0_CS_SEL_0_9_uA] = {0, 900},
+> > > +     [MCP3564_CONFIG0_CS_SEL_3_7_uA] = {0, 3700},
+> > > +     [MCP3564_CONFIG0_CS_SEL_15_uA] = {0, 15000}
+	[MCP3564_CONFIG0_CS_SEL_15_uA] = { 0, 15000 }
 
-- Nuno S=C3=A1
+etc
+
+> > > +};  
+> > 
+> > Trivial, but I'd like brackets after the { and before the } as makes
+> > things a tiny bit
+> > more readable to my eye.
+> > 
+> >   
+> 
+> I'm not sure that I understood what/how to change here. Can you,
+> please, give me an example?
+> 
+> 
+> 
+> Thanks,
+> Marius
+

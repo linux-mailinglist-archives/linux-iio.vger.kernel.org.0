@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A667778C663
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 15:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C721C78C782
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Aug 2023 16:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232425AbjH2Np0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Aug 2023 09:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59002 "EHLO
+        id S231321AbjH2O0i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Aug 2023 10:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236447AbjH2NpK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 09:45:10 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85587184;
-        Tue, 29 Aug 2023 06:44:44 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37TBpWh2021538;
-        Tue, 29 Aug 2023 15:42:09 +0200
+        with ESMTP id S236916AbjH2O0P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Aug 2023 10:26:15 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3A6122;
+        Tue, 29 Aug 2023 07:26:09 -0700 (PDT)
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37TC53S0016602;
+        Tue, 29 Aug 2023 15:40:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding:content-type; s=
-        selector1; bh=bQrDBJhz22wpFweWdN5Xj8vqxciJAWGqjrhNj1tNtrQ=; b=12
-        ehP/gUQjzfActRqLephKlJnWCk4/6NuQH/DHxglQfHv0UUx9SZhD6KI76wKpQVru
-        wdnpneo930fw5EMgusIjqR0ow4Oy0Nq0vb3sgHC089Oejk7N94zVVmHtHHTF2dNc
-        LeTegJ/lEbOld5XrxTjP0uP5NvpPOl3eaB+hji6IAX0YiDaUho4SV+lnHZgyDnzp
-        3832q0mvOTi+X5mrTLfbaoJ/DcC9Y/Li8JCBSC0koS/CrmfDmN9BUK8ZNrrbR8zx
-        t6nONIXUBEed+0d2bgh8LB++fDeRL40NKijRVhb722KEZz/2LZMhZWMCYuaWSJpn
-        KovtgL/v5+aqWpqU01oA==
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=selector1; bh=fUZCKmv
+        n1npPDCOhK3S0jk8SDzGzr+LS8tr677k25J8=; b=N5b5Dy6usDnLsjxAE3qc+wJ
+        tnEKae8EVKH4enXub6ura/sik/FwVUMVwIe6oa8nJ9smOsju5RaDcR9+dLvAC/c4
+        ClstWfwPuZ0zEqrPYHQSxbmxlNbU+BZKW2aW3a/+JMkNpWLfohydqciaLw4fTKS1
+        WDsuiV+R8D6p3FLOVIxgyAG1PCAVCiGXdXa4oGkI3QtlCnmy0yntAS/39NkzeYX9
+        Fsk/Uf6tVseF419Q4zn214EJ806vE+OSFiqd1bZKGWFT100oowhvFZFUmRjF8g4y
+        bx/M/i1F+UkhwV1xzxohQXfXIZZI3RUGKw70X2Xbweykc2eFbDkR/nowxSaykVQ=
+        =
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sq6h44p6w-1
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sqtxysy5v-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Aug 2023 15:42:09 +0200 (MEST)
+        Tue, 29 Aug 2023 15:40:56 +0200 (MEST)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 174D6100057;
-        Tue, 29 Aug 2023 15:42:09 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6D9B210005E;
+        Tue, 29 Aug 2023 15:40:56 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1179B22AFFD;
-        Tue, 29 Aug 2023 15:42:09 +0200 (CEST)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 647F02207DB;
+        Tue, 29 Aug 2023 15:40:56 +0200 (CEST)
 Received: from localhost (10.201.22.39) by SHFDAG1NODE2.st.com (10.75.129.70)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Tue, 29 Aug
- 2023 15:42:08 +0200
+ 2023 15:40:54 +0200
 From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 To:     <william.gray@linaro.org>, <lee@kernel.org>
 CC:     <alexandre.torgue@foss.st.com>, <fabrice.gasnier@foss.st.com>,
@@ -48,12 +48,10 @@ CC:     <alexandre.torgue@foss.st.com>, <fabrice.gasnier@foss.st.com>,
         <linux-stm32@st-md-mailman.stormreply.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 5/8] counter: stm32-timer-cnt: rename quadrature signal
-Date:   Tue, 29 Aug 2023 15:40:26 +0200
-Message-ID: <20230829134029.2402868-6-fabrice.gasnier@foss.st.com>
+Subject: [PATCH 0/8] counter: fix, improvements and stm32 timer events support
+Date:   Tue, 29 Aug 2023 15:40:21 +0200
+Message-ID: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
-References: <20230829134029.2402868-1-fabrice.gasnier@foss.st.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -72,28 +70,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Rename "Channel 1 Quadrature B", as it corresponds to timer input ch2.
-I suspect it referred to the (unique) counter earlier, but the physical
-input really is CH2.
+This series combines some fix and improvements to the counter interface,
+found while stm32 timer counter driver developements.
+It also introduces a new tool that can be used for testing.
 
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
- drivers/counter/stm32-timer-cnt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Then, it improves the stm32 timer counter driver by introducing new signals,
+e.g. counting frequency, and missing channels.
+It also adds support for interrupt based events using the chrdev interface.
+Two event types are added in this series: overflows and capture.
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 6206d2dc3d47..eae851f6db2c 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -283,7 +283,7 @@ static struct counter_signal stm32_signals[] = {
- 	},
- 	{
- 		.id = 1,
--		.name = "Channel 1 Quadrature B"
-+		.name = "Channel 2 Quadrature B"
- 	}
- };
- 
+Up to now, stm32 timer counter driver focused mainly on quadrature
+encoder feature. With this series, all timer instances can be enabled
+for simple counting (with overflow and capture events).
+
+Fabrice Gasnier (8):
+  counter: chrdev: fix getting array extensions
+  counter: chrdev: remove a typo in header file comment
+  tools/counter: add a flexible watch events tool
+  mfd: stm32-timers: add support for interrupts
+  counter: stm32-timer-cnt: rename quadrature signal
+  counter: stm32-timer-cnt: introduce clock signal
+  counter: stm32-timer-cnt: populate capture channels and check encoder
+  counter: stm32-timer-cnt: add support for events
+
+ drivers/counter/counter-chrdev.c     |   4 +-
+ drivers/counter/stm32-timer-cnt.c    | 585 ++++++++++++++++++++++++++-
+ drivers/mfd/stm32-timers.c           |  46 +++
+ include/linux/mfd/stm32-timers.h     |  26 ++
+ include/uapi/linux/counter.h         |   2 +-
+ tools/counter/Build                  |   1 +
+ tools/counter/Makefile               |   8 +-
+ tools/counter/counter_watch_events.c | 348 ++++++++++++++++
+ 8 files changed, 998 insertions(+), 22 deletions(-)
+ create mode 100644 tools/counter/counter_watch_events.c
+
 -- 
 2.25.1
 

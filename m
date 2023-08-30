@@ -2,43 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7428178DA9B
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Aug 2023 20:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE47B78DA86
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Aug 2023 20:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232807AbjH3Sgo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Aug 2023 14:36:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43244 "EHLO
+        id S233573AbjH3Sga convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 30 Aug 2023 14:36:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343623AbjH3QSm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Aug 2023 12:18:42 -0400
+        with ESMTP id S1343637AbjH3Q3W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Aug 2023 12:29:22 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A429D2;
-        Wed, 30 Aug 2023 09:18:39 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbTwG0jV1z67j6l;
-        Thu, 31 Aug 2023 00:17:34 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB79C107
+        for <linux-iio@vger.kernel.org>; Wed, 30 Aug 2023 09:29:17 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbV4k2mQbz688hZ;
+        Thu, 31 Aug 2023 00:24:54 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 30 Aug
- 2023 17:18:37 +0100
-Date:   Wed, 30 Aug 2023 17:18:36 +0100
+ 2023 17:29:13 +0100
+Date:   Wed, 30 Aug 2023 17:29:03 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 0/6] iio: Add buffer write() support
-Message-ID: <20230830171836.000045c3@Huawei.com>
-In-Reply-To: <20230830171118.00007726@Huawei.com>
-References: <20230807112113.47157-1-paul@crapouillou.net>
-        <20230830171118.00007726@Huawei.com>
+To:     Nuno Sa <nuno.sa@analog.com>
+CC:     <linux-iio@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [RFC PATCH 0/3] Add converter framework
+Message-ID: <20230830172903.0000027f@Huawei.com>
+In-Reply-To: <20230804145342.1600136-1-nuno.sa@analog.com>
+References: <20230804145342.1600136-1-nuno.sa@analog.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.227.76]
 X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -52,110 +47,140 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 30 Aug 2023 17:11:18 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Fri, 4 Aug 2023 16:53:38 +0200
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> On Mon,  7 Aug 2023 13:21:07 +0200
-> Paul Cercueil <paul@crapouillou.net> wrote:
-> 
-> > [V3 was: "iio: new DMABUF based API, v3"][1]
-> > 
-> > Hi Jonathan,
-> > 
-> > This is a subset of my patchset that introduced a new interface based on
-> > DMABUF objects [1]. It adds write() support to the IIO buffer
-> > infrastructure.
-> > 
-> > The reason it is not the full IIO-DMABUF patchset, is because you
-> > requested performance benchmarks - and our current numbers are barely
-> > better (~ +10%) than the fileio interface. There is a good reason for
-> > that: V3 of the patchset switched from having the IIO core creating the
-> > DMABUFs backed by physically contiguous memory, to having the IIO core
-> > being a simple DMABUF importer, and having the DMABUFs created
-> > externally. We now use the udmabuf driver to create those, and they are
-> > allocated from paged memory. While this works perfectly fine, our
-> > buffers are now cut in 4 KiB chunks (pages), non-contiguous in memory,
-> > which causes the DMA hardware to create an IRQ storm, as it raises an
-> > interrupt after each 4 KiB in the worst case scenario.  
-> 
-> Interesting. I'm guessing you don't necessarily need contiguous memory
-> and huge pages would get rid of most of that overhead?
-> 
-> Given embedded target those huge pages are hard to get so you need
-> hugetlb support to improve the chances of it working.  Some quick searching
-> suggests there is possible support on the way.
-> https://lore.kernel.org/linux-mm/20230817064623.3424348-1-vivek.kasireddy@intel.com/
-> 
-> 
-> > 
-> > Anyway, this is not directly a problem of the IIO-DMABUF code - but I
-> > can't really upstream a shiny new interface that I claim is much faster,
-> > without giving numbers.
-> > 
-> > So while we fix this (either by updating the DMA IP and driver to
-> > support scatter-gather)  
-> 
-> Long run you almost always end up needing that unless contig requirements
-> are small and you want a robust solution.  I'm guessing no IOMMU to pretend
-> it's all contiguous... 
-> 
-> > or by hacking something quick to give us
-> > physically contiguous DMABUFs just for the benchmark), I thought it
-> > would make sense to upstream the few patches of the V3 patchset that are
-> > needed for the IIO-DMABUF interface but aren't directly related.  
-> 
-> Good idea.
-> 
-> > 
-> > As for write() support, Nuno (Cc'd) said he will work on upstreaming the
-> > DAC counterpart of adc/adi-axi-adc.c in the next few weeks, so there
-> > will be a user for the buffer write() support. I hope you are okay with
-> > this - otherwise, we can just wait until this work is done and submit it
-> > all at once.  
-> 
-> Absolutely fine, though I won't pick this up without the user also being
-> ready to go.
+> This is the initial RFC following the discussion in [1]. I'm aware this is
+> by no means ready for inclusion and it's not even compilable since in
+> the RFC I did not included the patch to add component_compare_fwnode()
+> and component_release_fwnode(). 
 
+Whilst I haven't read this through yet, I suspect Olivier will be able to
+offer some insight on some of this and likewise you may be able to
+point out pitfalls etc in his series (I see you did some review already :)
 
-Having looked through these again, they are straight forward so no changes
-requested from me.  Nuno, if you can add this set into appropriate
-point in your series that will make use of it that will make my life easier
-and ensure and minor rebasing etc happens without having to bother Paul.
+https://lore.kernel.org/linux-iio/20230727150324.1157933-1-olivier.moysan@foss.st.com/
 
-Thanks,
+Both are about multiple interacting components of an overall datapath.
+Whether there is commonality isn't yet clear to me.
+
+> 
+> The goal is to have a first feel on the
+> direction of the framework so that if I  need to drastically change it,
+> better do it now. The RFC also brings the ad9647 and the axi_adc core to
+> the same functionality we have now upstream with one extra fundamental
+> feature that is calibrating the digital interface. This would be very
+> difficult to do with the current design. Note that I don't expect any
+> review on those drivers (rather than things related to the framework). 
+> 
+> I also want to bring up a couple of things that I've
+> been thinking that I'm yet not sure about (so some feedback might make
+> mind in one direction or another).
+> 
+> 1) Im yet not sure if I should have different compatibles in the
+> axi-adc-core driver. Note this soft core is a generic core and for every
+> design (where the frontend device changes or has subtle changes like
+> different number of data paths) there are subtle changes. So, the number
+> of channels might be different, the available test patterns might be
+> different, some ops might be available for some designs but not for
+> others, etc... 
+
+I don't suppose there is any chance Analog can make at least some of this
+discoverable from the hardware?  Capability registers etc in the long
+run. Can't fix what is already out there.
+
+> With a different compatible we could fine tune
+> those differences (with a chip_info like structure) and pass some const
+> converter_config to the framework that would allow it to do more safety
+> checks and potentially reduce the number of converter_ops.
+> OTOH, starting to add all of these compatibles might become messy in the
+> long run and will likely mean that we'll always have to change both
+> drivers in order to support a new frontend. And the frontend devices
+> should really be the ones having all the "knowledge" to configure the
+> soft core even if it means more converter_ops (though devicetree might
+> help as some features are really HW dependent). I more inclined to just
+> leave things as-is in the RFC.
+
+I'm fine with putting this stuff in DT where possible.
+
+> 
+> 2) There are some IIO attributes (like scale, frequency, etc) that might
+> be implemented in the soft cores. I still didn't made my mind if I should just
+> have a catch all read_raw() and write_raw() converter_ops or more fine
+> tuned ops. Having the catch all reduces the number of ops but also makes
+> it more easier to add stuff that ends up being not used anymore and then
+> forgotten. There are also cases (eg: setting sampling frequency) where
+> we might need to apply settings in both the frontend and the backend
+> devices which means having the catch all write_raw() would be more
+> awkward in these case. I'm a bit more inclined to the more specific ops. 
+
+It's the kernel - we can always change the internal API later as long as we
+don't touch the user space part.  Go with your gut feeling today and
+if it changes this sort of refactor usually isn't that bad.
+
+> 
+> 3) I also placed this in addac as this is mostly used in high speed DACs
+> and ADCs but maybe we should just have it in the top level directory
+> just in case this is started to be used in different type of devices?
+
+Easy to change later so right now I don't care where it is.
+
+> 
+> 4) Some function and data names are also starting to become very big so
+> if there are no objections I will move all to use conv instead of full
+> converter. Or maybe something a bit more generic (converter is a bit specific
+> I know)?
+
+Abrv. fine as long as consistenty used.
+
+> 
+> I would love to hear some ideas about the above...
+> 
+> Anyways, I should also mention that the only visible ABI breakage is in
+> the IIO device name. Before it was named "adi-axi-adc" and now it's
+> "ad9647" which is what makes sense actually. With the current approach
+> we would not be able to actually distinguish between designs. 
+
+Given that will probably only result in support calls to ADI I'm fine with
+that breakage. :)
+
+> 
+> So my plan for the actual series will be to just add the framework and migrate
+> the current drivers to it with the same functionality as they have now (not
+> sure if it will be viable to migrate the drivers in a way each commit is
+> functional - unless we convert both drivers in one commit).
+Make sure they build. It's fine to end up with some non functional stubs
+during such a migration.
+
+> After that
+> point, I will start adding all the missing features (and devices) to the
+> ad9467 driver. To note that I also plan to include the axi-dac driver in
+> the first series and that will require IIO DMA output buffer support
+> so we might need to cherry-pick those patches from Paul's DMABUF series.
+As mentioned in reply to that, I'm fine with you carrying Paul's miniseries
+in your patch set to make this all easy to manage.
 
 Jonathan
 
 > 
-> > 
-> > Changelog since v3:
-> > - [PATCH 2/6] is new;
-> > - [PATCH 3/6]: Drop iio_dma_buffer_space_available() function, and
-> >   update patch description accordingly;
-> > - [PATCH 6/6]: .space_available is now set to iio_dma_buffer_usage
-> >   (which is functionally the exact same).
-> > 
-> > Cheers,
-> > -Paul
-> > 
-> > [1] https://lore.kernel.org/all/20230403154800.215924-1-paul@crapouillou.net/
-> > 
-> > Alexandru Ardelean (1):
-> >   iio: buffer-dma: split iio_dma_buffer_fileio_free() function
-> > 
-> > Paul Cercueil (5):
-> >   iio: buffer-dma: Get rid of outgoing queue
-> >   iio: buffer-dma: Rename iio_dma_buffer_data_available()
-> >   iio: buffer-dma: Enable buffer write support
-> >   iio: buffer-dmaengine: Support specifying buffer direction
-> >   iio: buffer-dmaengine: Enable write support
-> > 
-> >  drivers/iio/adc/adi-axi-adc.c                 |   3 +-
-> >  drivers/iio/buffer/industrialio-buffer-dma.c  | 187 ++++++++++++------
-> >  .../buffer/industrialio-buffer-dmaengine.c    |  28 ++-
-> >  include/linux/iio/buffer-dma.h                |  11 +-
-> >  include/linux/iio/buffer-dmaengine.h          |   5 +-
-> >  5 files changed, 160 insertions(+), 74 deletions(-)
-> >   
+> Thanks!
+> - Nuno Sá
+> 
+> [1]: https://lore.kernel.org/linux-iio/dac3967805d7ddbd4653ead6d50e614844e0b70b.camel@gmail.com/
+> 
+> Nuno Sa (3):
+>   iio: addac: add new converter framework
+>   iio: adc: ad9647: add based on converter framework
+>   iio: adc: adi-axi-adc: add based on new converter framework
+> 
+>  drivers/iio/adc/ad9467_new.c        | 830 ++++++++++++++++++++++++++++
+>  drivers/iio/adc/adi-axi-adc-new.c   | 405 ++++++++++++++
+>  drivers/iio/addac/converter.c       | 547 ++++++++++++++++++
+>  include/linux/iio/addac/converter.h | 485 ++++++++++++++++
+>  4 files changed, 2267 insertions(+)
+>  create mode 100644 drivers/iio/adc/ad9467_new.c
+>  create mode 100644 drivers/iio/adc/adi-axi-adc-new.c
+>  create mode 100644 drivers/iio/addac/converter.c
+>  create mode 100644 include/linux/iio/addac/converter.h
 > 
 

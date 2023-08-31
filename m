@@ -2,171 +2,394 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6363578EB40
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 13:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 453DA78F0A1
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 17:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235845AbjHaLBb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 31 Aug 2023 07:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
+        id S232611AbjHaPxo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 31 Aug 2023 11:53:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231375AbjHaLBb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 07:01:31 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EABC5CDD;
-        Thu, 31 Aug 2023 04:01:27 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9a21b6d105cso75352666b.3;
-        Thu, 31 Aug 2023 04:01:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693479686; x=1694084486; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eO3kPR8hwQQNiVrq80EvGuv/qgY68iFDiiKzJDgISpA=;
-        b=sQGjiDMQtLroc4/97tbRzBaGDZk+doUSB8g1gfusUjUaaq4A5uOvYJnRbrKTHYtAew
-         NoBXcIn2vC+t+1hgfyrVTKOZA8SuagjPwFV4J1A+dBtMWIX8EjknqvPlm4r+Ns7YrSXS
-         f/HePrmEFelZUgGH1i5JypJvHygulqOOGOvQASsEumALpPFldLMzK09NBYVRE3DjQA6G
-         7v0QAlQFV4rMQwAsSYDEC9kMklvjnnyHBglrTuE1FG1GVgfnvNQyGYd0vtN7ZbACov5b
-         V2gYGhjZoS9dRMWMLDnsQso1iOTj7dxMJtZvJdGwBKplvcRKBO/wMQ25qgdFOE1ibXRX
-         5llg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693479686; x=1694084486;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eO3kPR8hwQQNiVrq80EvGuv/qgY68iFDiiKzJDgISpA=;
-        b=XL0ld+PXRjD5itQ7PABFwWu4XkuCP8ZNEXA4G5VbgJj3YjHMWGJNwpRqkOr8WJW1Y9
-         UWPvUmBbXBpuokues9wmtb15oCRU9fMBgQHZ0lK6LaFEivFp+GOow/PhWocOwSI27bcf
-         1pdvRvH8AxCTAZFYVo+ZKCEw5g4+B5kajiveeErOy7hRnpDh4+y31EHiKtYuVCgZ7YM+
-         e+4TWS25vvNwMbO62H+z+R0JgbXDHKGgdSDpdGfhbuKUwlbWXjW4/TanxJjGtlUawXug
-         +U+7Rb50LYz9D1H1HP6SxGVD1v0YqRbx5nAgGtxFMaeFUCcOr5JnDcdDVR0MU1VArOzV
-         tBcw==
-X-Gm-Message-State: AOJu0Yy6Oe4jf/Eah0YmLABvtwHzcLNnUa0m86bjjoNThWzpVcsitYvZ
-        Cx0dxxZfRk+qQjSStGNzOQo=
-X-Google-Smtp-Source: AGHT+IFKmUNRd857qFSDmC7Upxx+JxDAYy0VxA0KOk6zd6KKRErWFaSuBzEdyne6H556QfNF9Fh96Q==
-X-Received: by 2002:a17:906:53cd:b0:9a1:fcd7:b825 with SMTP id p13-20020a17090653cd00b009a1fcd7b825mr3980283ejo.71.1693479686140;
-        Thu, 31 Aug 2023 04:01:26 -0700 (PDT)
-Received: from ?IPv6:2001:a61:3488:8a01:c631:bde5:1eff:9b66? ([2001:a61:3488:8a01:c631:bde5:1eff:9b66])
-        by smtp.gmail.com with ESMTPSA id c25-20020a170906529900b0099b42c90830sm638090ejm.36.2023.08.31.04.01.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 04:01:25 -0700 (PDT)
-Message-ID: <066d686946951e270e8fca127d8332c80b6cfac8.camel@gmail.com>
-Subject: Re: [PATCH v4 0/6] iio: Add buffer write() support
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 31 Aug 2023 13:01:24 +0200
-In-Reply-To: <20230830171836.000045c3@Huawei.com>
-References: <20230807112113.47157-1-paul@crapouillou.net>
-         <20230830171118.00007726@Huawei.com> <20230830171836.000045c3@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S230094AbjHaPxn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 11:53:43 -0400
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068711A3;
+        Thu, 31 Aug 2023 08:53:39 -0700 (PDT)
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37VE3Toe012289;
+        Thu, 31 Aug 2023 17:53:04 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:subject:to:cc:references:from
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=tdfXHbaA8B9kmWWa7lzvV7hPJOZ3PDnaE1ei6pzWp5M=; b=tJ
+        xKDbn7+rxWdFXMOyLMw0rZWWSk2WZS4XKTFPqrpWZaBDxZPUpQHUcqThqKA0NzkY
+        MmKQ+6UwJ1iMaAaxD1d/L8APEr3UNGQpwkGZ9JraNXdc5khwo6CbRqsVWof2iyic
+        4HppAH+eGWIzRoXYKzXrxmsbq4p7VAjWpcwB1wlDFcvYV9ZBiI0IPGVQ3x+ya5u4
+        djK3Xle9egS2qMrDg3SvyrBhMHRN2xkNdYn5EH/fe7YM40qJKoUGQzroEviDhTnf
+        GDt2UFllxFYMTHcyMZjQCu4stvItpUT8ddGriR9zo3vSJNs8LkegLAyZ+WVEn6H2
+        hmk/GTuQKoQY3GLc+ORg==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sqvbhm8m1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 31 Aug 2023 17:53:04 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C7359100056;
+        Thu, 31 Aug 2023 17:53:02 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6C53C2092E2;
+        Thu, 31 Aug 2023 17:53:02 +0200 (CEST)
+Received: from [10.201.20.178] (10.201.20.178) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 31 Aug
+ 2023 17:53:01 +0200
+Message-ID: <d17f56a5-6f6b-d359-0123-ce04bb177e33@foss.st.com>
+Date:   Thu, 31 Aug 2023 17:53:00 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC v2 03/11] dt-bindings: iio: stm32-dfsdm-adc: add scaling
+ support
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+CC:     Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        <alsa-devel@alsa-project.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20230727150324.1157933-1-olivier.moysan@foss.st.com>
+ <20230727150324.1157933-4-olivier.moysan@foss.st.com>
+ <20230811171011.GA3618531-robh@kernel.org>
+From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
+In-Reply-To: <20230811171011.GA3618531-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.201.20.178]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-31_14,2023-08-31_01,2023-05-22_02
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2023-08-30 at 17:18 +0100, Jonathan Cameron wrote:
-> On Wed, 30 Aug 2023 17:11:18 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
->=20
-> > On Mon,=C2=A0 7 Aug 2023 13:21:07 +0200
-> > Paul Cercueil <paul@crapouillou.net> wrote:
-> >=20
-> > > [V3 was: "iio: new DMABUF based API, v3"][1]
-> > >=20
-> > > Hi Jonathan,
-> > >=20
-> > > This is a subset of my patchset that introduced a new interface based=
- on
-> > > DMABUF objects [1]. It adds write() support to the IIO buffer
-> > > infrastructure.
-> > >=20
-> > > The reason it is not the full IIO-DMABUF patchset, is because you
-> > > requested performance benchmarks - and our current numbers are barely
-> > > better (~ +10%) than the fileio interface. There is a good reason for
-> > > that: V3 of the patchset switched from having the IIO core creating t=
-he
-> > > DMABUFs backed by physically contiguous memory, to having the IIO cor=
-e
-> > > being a simple DMABUF importer, and having the DMABUFs created
-> > > externally. We now use the udmabuf driver to create those, and they a=
-re
-> > > allocated from paged memory. While this works perfectly fine, our
-> > > buffers are now cut in 4 KiB chunks (pages), non-contiguous in memory=
-,
-> > > which causes the DMA hardware to create an IRQ storm, as it raises an
-> > > interrupt after each 4 KiB in the worst case scenario.=C2=A0=20
-> >=20
-> > Interesting. I'm guessing you don't necessarily need contiguous memory
-> > and huge pages would get rid of most of that overhead?
-> >=20
-> > Given embedded target those huge pages are hard to get so you need
-> > hugetlb support to improve the chances of it working.=C2=A0 Some quick =
-searching
-> > suggests there is possible support on the way.
-> > https://lore.kernel.org/linux-mm/20230817064623.3424348-1-vivek.kasired=
-dy@intel.com/
-> >=20
-> >=20
-> > >=20
-> > > Anyway, this is not directly a problem of the IIO-DMABUF code - but I
-> > > can't really upstream a shiny new interface that I claim is much fast=
-er,
-> > > without giving numbers.
-> > >=20
-> > > So while we fix this (either by updating the DMA IP and driver to
-> > > support scatter-gather)=C2=A0=20
-> >=20
-> > Long run you almost always end up needing that unless contig requiremen=
-ts
-> > are small and you want a robust solution.=C2=A0 I'm guessing no IOMMU t=
-o pretend
-> > it's all contiguous...=20
-> >=20
-> > > or by hacking something quick to give us
-> > > physically contiguous DMABUFs just for the benchmark), I thought it
-> > > would make sense to upstream the few patches of the V3 patchset that =
-are
-> > > needed for the IIO-DMABUF interface but aren't directly related.=C2=
-=A0=20
-> >=20
-> > Good idea.
-> >=20
-> > >=20
-> > > As for write() support, Nuno (Cc'd) said he will work on upstreaming =
-the
-> > > DAC counterpart of adc/adi-axi-adc.c in the next few weeks, so there
-> > > will be a user for the buffer write() support. I hope you are okay wi=
-th
-> > > this - otherwise, we can just wait until this work is done and submit=
- it
-> > > all at once.=C2=A0=20
-> >=20
-> > Absolutely fine, though I won't pick this up without the user also bein=
-g
-> > ready to go.
->=20
->=20
-> Having looked through these again, they are straight forward so no change=
-s
-> requested from me.=C2=A0 Nuno, if you can add this set into appropriate
-> point in your series that will make use of it that will make my life easi=
-er
-> and ensure and minor rebasing etc happens without having to bother Paul.
->=20
+Hi Rob,
 
-Sure...
+On 8/11/23 19:10, Rob Herring wrote:
+> On Thu, Jul 27, 2023 at 05:03:14PM +0200, Olivier Moysan wrote:
+>> Add scaling support to STM32 DFSDM.
+>>
+>> This introduces the following changes:
+> 
+> Why?
+> 
 
-- Nuno S=C3=A1
->=20
+This RFC is an attempt to support scaling through a change in DFSDM 
+topology.
+
+These changes have some impacts on DFSDM and sd modulator bindings.
+To keep things simple in this RFC, I skipped legacy support, to put the 
+emphasis on the new bindings proposal.
+There are two changes here: adoption of the generic IIO bindings and new 
+"io-backends" property. This needs to be put in two separate patches at 
+the end, I think (as already done for driver patches)
+
+Anyway, the current bindings would become deprecated with these changes. 
+I still have to consider how to support these legacy bindings for next 
+step, However.
+
+BRs
+Olivier
+
+>> - Add ADC generic channel binding and remove support of deprecated
+>> channel bindings.
+> 
+> When was it deprecated?
+> 
+>> - DFSDM is now implemented as a channel provider, so remove io-channels
+>> properties.
+>> - Add iio-backend property to connect DFSDM to an SD modulator.
+> 
+> io-backends
+> 
+> All sorts of ABI issues with this change. Please explain why you don't
+> care.
+> 
+>>
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>> ---
+>>   .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  | 189 ++++++------------
+>>   1 file changed, 63 insertions(+), 126 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+>> index 1970503389aa..128545cedc7f 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+>> @@ -85,22 +85,14 @@ patternProperties:
+>>           description: Specifies the DFSDM filter instance used.
+>>           maxItems: 1
+>>   
+>> -      interrupts:
+>> -        maxItems: 1
+>> +      '#address-cells':
+>> +        const: 1
+>>   
+>> -      st,adc-channels:
+>> -        description: |
+>> -          List of single-ended channels muxed for this ADC.
+>> -          On stm32h7 and stm32mp1:
+>> -          - For st,stm32-dfsdm-adc: up to 8 channels numbered from 0 to 7.
+>> -          - For st,stm32-dfsdm-dmic: 1 channel numbered from 0 to 7.
+>> -        $ref: /schemas/types.yaml#/definitions/uint32-array
+>> -        items:
+>> -          minimum: 0
+>> -          maximum: 7
+>> +      '#size-cells':
+>> +        const: 0
+>>   
+>> -      st,adc-channel-names:
+>> -        description: List of single-ended channel names.
+>> +      interrupts:
+>> +        maxItems: 1
+>>   
+>>         st,filter-order:
+>>           description: |
+>> @@ -111,39 +103,6 @@ patternProperties:
+>>           $ref: /schemas/types.yaml#/definitions/uint32
+>>           maximum: 5
+>>   
+>> -      "#io-channel-cells":
+>> -        const: 1
+>> -
+>> -      st,adc-channel-types:
+>> -        description: |
+>> -          Single-ended channel input type.
+>> -          - "SPI_R": SPI with data on rising edge (default)
+>> -          - "SPI_F": SPI with data on falling edge
+>> -          - "MANCH_R": manchester codec, rising edge = logic 0, falling edge = logic 1
+>> -          - "MANCH_F": manchester codec, rising edge = logic 1, falling edge = logic 0
+>> -        items:
+>> -          enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
+>> -        $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+>> -
+>> -      st,adc-channel-clk-src:
+>> -        description: |
+>> -          Conversion clock source.
+>> -          - "CLKIN": external SPI clock (CLKIN x)
+>> -          - "CLKOUT": internal SPI clock (CLKOUT) (default)
+>> -          - "CLKOUT_F": internal SPI clock divided by 2 (falling edge).
+>> -          - "CLKOUT_R": internal SPI clock divided by 2 (rising edge).
+>> -        items:
+>> -          enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
+>> -        $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+>> -
+>> -      st,adc-alt-channel:
+>> -        description:
+>> -          Must be defined if two sigma delta modulators are
+>> -          connected on same SPI input.
+>> -          If not set, channel n is connected to SPI input n.
+>> -          If set, channel n is connected to SPI input n + 1.
+>> -        type: boolean
+>> -
+>>         st,filter0-sync:
+>>           description:
+>>             Set to 1 to synchronize with DFSDM filter instance 0.
+>> @@ -157,14 +116,68 @@ patternProperties:
+>>           items:
+>>             - const: rx
+>>   
+>> +    patternProperties:
+>> +      "^channel@([0-9]|1[0-9])$":
+>> +        type: object
+>> +        $ref: "adc.yaml"
+>> +        description: Represents the external channels which are connected to the DFSDM.
+>> +
+>> +        properties:
+>> +          reg:
+>> +            items:
+>> +              minimum: 0
+>> +              maximum: 19
+>> +
+>> +          label:
+>> +            description: |
+>> +              Unique name to identify channel.
+>> +
+>> +          st,adc-channel-types:
+>> +            description: |
+>> +              Single-ended channel input type.
+>> +              - "SPI_R": SPI with data on rising edge (default)
+>> +              - "SPI_F": SPI with data on falling edge
+>> +              - "MANCH_R": manchester codec, rising edge = logic 0, falling edge = logic 1
+>> +              - "MANCH_F": manchester codec, rising edge = logic 1, falling edge = logic 0
+>> +            items:
+>> +              enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
+>> +            $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+>> +
+>> +          st,adc-channel-clk-src:
+>> +            description: |
+>> +              Conversion clock source.
+>> +              - "CLKIN": external SPI clock (CLKIN x)
+>> +              - "CLKOUT": internal SPI clock (CLKOUT) (default)
+>> +              - "CLKOUT_F": internal SPI clock divided by 2 (falling edge).
+>> +              - "CLKOUT_R": internal SPI clock divided by 2 (rising edge).
+>> +            items:
+>> +              enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
+>> +            $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+>> +
+>> +          st,adc-alt-channel:
+>> +            description:
+>> +              Must be defined if two sigma delta modulators are
+>> +              connected on same SPI input.
+>> +              If not set, channel n is connected to SPI input n.
+>> +              If set, channel n is connected to SPI input n + 1.
+>> +            type: boolean
+>> +
+>> +          io-backends:
+>> +            description: |
+>> +              phandle to an external sigma delta modulator or internal ADC output.
+>> +            $ref: /schemas/types.yaml#/definitions/phandle
+>> +
+>> +        required:
+>> +          - reg
+>> +          - io-backends
+>> +
+>> +        additionalProperties: false
+>> +
+>>       required:
+>>         - compatible
+>>         - reg
+>>         - interrupts
+>> -      - st,adc-channels
+>> -      - st,adc-channel-names
+>>         - st,filter-order
+>> -      - "#io-channel-cells"
+>>   
+>>       allOf:
+>>         - if:
+>> @@ -175,14 +188,6 @@ patternProperties:
+>>   
+>>           then:
+>>             properties:
+>> -            st,adc-channels:
+>> -              minItems: 1
+>> -              maxItems: 8
+>> -
+>> -            st,adc-channel-names:
+>> -              minItems: 1
+>> -              maxItems: 8
+>> -
+>>               st,adc-channel-types:
+>>                 minItems: 1
+>>                 maxItems: 8
+>> @@ -191,14 +196,6 @@ patternProperties:
+>>                 minItems: 1
+>>                 maxItems: 8
+>>   
+>> -            io-channels:
+>> -              description:
+>> -                From common IIO binding. Used to pipe external sigma delta
+>> -                modulator or internal ADC output to DFSDM channel.
+>> -
+>> -          required:
+>> -            - io-channels
+>> -
+>>         - if:
+>>             properties:
+>>               compatible:
+>> @@ -207,12 +204,6 @@ patternProperties:
+>>   
+>>           then:
+>>             properties:
+>> -            st,adc-channels:
+>> -              maxItems: 1
+>> -
+>> -            st,adc-channel-names:
+>> -              maxItems: 1
+>> -
+>>               st,adc-channel-types:
+>>                 maxItems: 1
+>>   
+>> @@ -237,15 +228,9 @@ patternProperties:
+>>                   "#sound-dai-cells":
+>>                     const: 0
+>>   
+>> -                io-channels:
+>> -                  description:
+>> -                    From common IIO binding. Used to pipe external sigma delta
+>> -                    modulator or internal ADC output to DFSDM channel.
+>> -
+>>                 required:
+>>                   - compatible
+>>                   - "#sound-dai-cells"
+>> -                - io-channels
+>>   
+>>   allOf:
+>>     - if:
+>> @@ -278,52 +263,4 @@ allOf:
+>>                   minimum: 0
+>>                   maximum: 5
+>>   
+>> -examples:
+>> -  - |
+>> -    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> -    #include <dt-bindings/clock/stm32mp1-clks.h>
+>> -    dfsdm: dfsdm@4400d000 {
+>> -      compatible = "st,stm32mp1-dfsdm";
+>> -      reg = <0x4400d000 0x800>;
+>> -      clocks = <&rcc DFSDM_K>, <&rcc ADFSDM_K>;
+>> -      clock-names = "dfsdm", "audio";
+>> -      #address-cells = <1>;
+>> -      #size-cells = <0>;
+>> -
+>> -      dfsdm0: filter@0 {
+>> -        compatible = "st,stm32-dfsdm-dmic";
+>> -        reg = <0>;
+>> -        interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>;
+>> -        dmas = <&dmamux1 101 0x400 0x01>;
+>> -        dma-names = "rx";
+>> -        #io-channel-cells = <1>;
+>> -        st,adc-channels = <1>;
+>> -        st,adc-channel-names = "dmic0";
+>> -        st,adc-channel-types = "SPI_R";
+>> -        st,adc-channel-clk-src = "CLKOUT";
+>> -        st,filter-order = <5>;
+>> -
+>> -        asoc_pdm0: dfsdm-dai {
+>> -          compatible = "st,stm32h7-dfsdm-dai";
+>> -          #sound-dai-cells = <0>;
+>> -          io-channels = <&dfsdm0 0>;
+>> -        };
+>> -      };
+>> -
+>> -      dfsdm_pdm1: filter@1 {
+>> -        compatible = "st,stm32-dfsdm-adc";
+>> -        reg = <1>;
+>> -        interrupts = <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>;
+>> -        dmas = <&dmamux1 102 0x400 0x01>;
+>> -        dma-names = "rx";
+>> -        #io-channel-cells = <1>;
+>> -        st,adc-channels = <2 3>;
+>> -        st,adc-channel-names = "in2", "in3";
+>> -        st,adc-channel-types = "SPI_R", "SPI_R";
+>> -        st,adc-channel-clk-src = "CLKOUT_F", "CLKOUT_F";
+>> -        io-channels = <&sd_adc2 &sd_adc3>;
+>> -        st,filter-order = <1>;
+>> -      };
+>> -    };
+>> -
+>>   ...
+>> -- 
+>> 2.25.1
+>>

@@ -2,59 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9B178F0EB
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 18:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1AB478F0F9
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 18:14:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346712AbjHaQJB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 31 Aug 2023 12:09:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35526 "EHLO
+        id S1345117AbjHaQOc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 31 Aug 2023 12:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346725AbjHaQJB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 12:09:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72151BF;
-        Thu, 31 Aug 2023 09:08:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55D23628FE;
-        Thu, 31 Aug 2023 16:08:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C508C433C8;
-        Thu, 31 Aug 2023 16:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693498136;
-        bh=VwM7qmZwL0LfwTXvw6CcC/Oxp23S2JlM/KwU31Hzoew=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iBCnyJlQgDulXcpJ0ntNjLsU7W1O/3K0x4maauJR3MfubxUdi1RrWHl5v5juEiIKd
-         6j3syWmx7rqEQw64hx9myG2r2t1Kl2AA4gpvlLAGHCw6jQoojbU3nXgZ7FNdGX5ntY
-         8pOaVksk9XgEQGCjOhlVamswSuVixvRVpDv0D+8CktfjjNnOChGuJVIwp90DhdG+LP
-         dNpUHybVy03S6+oPWXblgF7fzMYx1l3dGhgb+cwuOoaedgg+2Bsysyan+KsCDKgd/5
-         LdGeLOjhNbovOTJitMzvd+ztJvrHNrBC2hVMsHOcKZuoe5tVTYricWeCSkUL9i9tCk
-         5MFUtL59dp2yg==
-Date:   Thu, 31 Aug 2023 17:08:51 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-        Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH v3 0/5] Add RZ/G2UL MTU3a support
-Message-ID: <20230831-iphone-muscular-7442cda2c39e@spud>
-References: <20230727081848.100834-1-biju.das.jz@bp.renesas.com>
+        with ESMTP id S236397AbjHaQOb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 12:14:31 -0400
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34A31B0;
+        Thu, 31 Aug 2023 09:14:28 -0700 (PDT)
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37VE3TsM012289;
+        Thu, 31 Aug 2023 18:14:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        message-id:date:mime-version:from:subject:to:cc:references
+        :in-reply-to:content-type:content-transfer-encoding; s=
+        selector1; bh=1YiWnfqTSJwEqmD8zgssWIDW581bRoV7B7MWFLNnKqk=; b=Ze
+        LuWjziX0p8wxdvAOxHTH1TKurdSN/SFQwbDD8U72oN8rpJHxKLqe/J/jS4ZYOySl
+        wvbqESalb870/mEmikcqVxoei4B1hv1cO7bqg6QUP+6ex0EMMqHG48uYYiR2fZUx
+        X77J82Hsw4yrxCLtux5hzkgJgH/WQjQn1FebttdNNgXPJcYYWsPhPlsGg4Bf0vB6
+        QVk1J/yLbMNp3vwPPZU65CH7cL8s+XHaGNo/bvCvoxIfVIesiNF8aM9CjdmEJ9Bg
+        o04cm4+x1MzUNmrsbZDHxodfZrPTxfRbTQIa4SCb0Fh0v/aiPXOTUHvzH9grao4+
+        +YkVoeRltRGy73DRnajw==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sqvbhmb7w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 31 Aug 2023 18:14:13 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 35CED100056;
+        Thu, 31 Aug 2023 18:14:13 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2D1A921ADC5;
+        Thu, 31 Aug 2023 18:14:13 +0200 (CEST)
+Received: from [10.201.20.178] (10.201.20.178) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 31 Aug
+ 2023 18:14:12 +0200
+Message-ID: <095f9c64-bcac-e838-ba69-b5df623c444f@foss.st.com>
+Date:   Thu, 31 Aug 2023 18:14:12 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hDUORSrU7M6o6mlp"
-Content-Disposition: inline
-In-Reply-To: <20230727081848.100834-1-biju.das.jz@bp.renesas.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+From:   Olivier MOYSAN <olivier.moysan@foss.st.com>
+Subject: Re: [RFC v2 01/11] iio: introduce iio backend device
+To:     =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        "Fabrice GASNIER" <fabrice.gasnier@st.com>
+References: <20230727150324.1157933-1-olivier.moysan@foss.st.com>
+ <20230727150324.1157933-2-olivier.moysan@foss.st.com>
+ <7ec3fe6183409c218b97a3359e951731b47fe16d.camel@gmail.com>
+Content-Language: en-US
+In-Reply-To: <7ec3fe6183409c218b97a3359e951731b47fe16d.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.201.20.178]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-31_14,2023-08-31_01,2023-05-22_02
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,53 +75,114 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Nuno,
 
---hDUORSrU7M6o6mlp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 7/28/23 10:42, Nuno Sá wrote:
+> Hi Olivier,
+> 
+> On Thu, 2023-07-27 at 17:03 +0200, Olivier Moysan wrote:
+>> Add a new device type in IIO framework.
+>> This backend device does not compute channel attributes and does not expose
+>> them through sysfs, as done typically in iio-rescale frontend device.
+>> Instead, it allows to report information applying to channel
+>> attributes through callbacks. These backend devices can be cascaded
+>> to represent chained components.
+>> An IIO device configured as a consumer of a backend device can compute
+>> the channel attributes of the whole chain.
+>>
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>> ---
+>>   drivers/iio/Makefile               |   1 +
+>>   drivers/iio/industrialio-backend.c | 107 +++++++++++++++++++++++++++++
+>>   include/linux/iio/backend.h        |  56 +++++++++++++++
+>>   3 files changed, 164 insertions(+)
+>>   create mode 100644 drivers/iio/industrialio-backend.c
+>>   create mode 100644 include/linux/iio/backend.h
+>>
+>> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
+>> index 9622347a1c1b..9b59c6ab1738 100644
+>> --- a/drivers/iio/Makefile
+>> +++ b/drivers/iio/Makefile
+>> @@ -5,6 +5,7 @@
+>>   
+>>   obj-$(CONFIG_IIO) += industrialio.o
+>>   industrialio-y := industrialio-core.o industrialio-event.o inkern.o
+>> +industrialio-$(CONFIG_IIO_BACKEND) += industrialio-backend.o
+>>   industrialio-$(CONFIG_IIO_BUFFER) += industrialio-buffer.o
+>>   industrialio-$(CONFIG_IIO_TRIGGER) += industrialio-trigger.o
+>>   
+>> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-
+>> backend.c
+>> new file mode 100644
+>> index 000000000000..7d0625889873
+>> --- /dev/null
+>> +++ b/drivers/iio/industrialio-backend.c
+>> @@ -0,0 +1,107 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/* The industrial I/O core, backend handling functions
+>> + *
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/device.h>
+>> +#include <linux/property.h>
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/iio/backend.h>
+>> +
+>> +static DEFINE_IDA(iio_backend_ida);
+>> +
+>> +#define to_iio_backend(_device) container_of((_device), struct iio_backend,
+>> dev)
+>> +
+>> +static void iio_backend_release(struct device *device)
+>> +{
+>> +       struct iio_backend *backend = to_iio_backend(device);
+>> +
+>> +       kfree(backend->name);
+>> +       kfree(backend);
+>> +}
+>> +
+>> +static const struct device_type iio_backend_type = {
+>> +       .release = iio_backend_release,
+>> +       .name = "iio_backend_device",
+>> +};
+>> +
+>> +struct iio_backend *iio_backend_alloc(struct device *parent)
+>> +{
+>> +       struct iio_backend *backend;
+>> +
+>> +       backend = devm_kzalloc(parent, sizeof(*backend), GFP_KERNEL);
+>>
+> 
+> No error checking.
+> 
+> I guess a lot of cleanings are still missing but the important thing I wanted to
+> notice is that the above pattern is not ok.
+> Your 'struct iio_backend *backend'' embeds a 'stuct device' which is a
+> refcounted object. Nevertheless, you're binding the lifetime of your object to
+> the parent device and that is wrong. The reason is that as soon as your parent
+> device get's released or just unbinded from it's driver, all the devres stuff
+> (including your 'struct iio_backend' object) will be released independentof
+> your 'struct device' refcount value...
+> 
+> So, you might argue this won't ever be an issue in here but the pattern is still
+> wrong. There are some talks about this, the last one was given at the latest
+> EOSS:
+> 
+> https://www.youtube.com/watch?v=HCiJL7djGw8&list=PLbzoR-pLrL6pY8a8zSKRC6-AihFrruOkq&index=27&ab_channel=TheLinuxFoundation
+> 
 
-On Thu, Jul 27, 2023 at 09:18:43AM +0100, Biju Das wrote:
-> This patch series aims to add MTU3a support for RZ/G2UL SMARC EVK.
-> Also it fixes overflow/underflow interrupt names.
->=20
-> v2->v3:
->  * Dropped patch#4, as it accepted for 6.5 fixes.
->  * Moved patch#2 to patch#1 as it is fixes patch.
->  * Added Rb tag from Geert for patch#1 and patch#3.
->  * Updated the link to lore for Closes tag for patch#2.
->  * Documented RZ/Five SoC as the same IP used in RZ/G2UL SoC.
->=20
-> v1->v2:
->  * Added Ack tags from Conor Dooley for binding patches
->  * Updated commit description RZ/G2UL->RZ/{G2UL,Five} for patch#5.
->  * Fixed build error reported by kernel test robot by replacing
->    GIC_SPI x ->SOC_PERIPHERAL_IRQ(x) for patch#5.
->=20
-> Biju Das (5):
->   dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt
->     names
->   dt-bindings: timer: renesas,rz-mtu3: Improve documentation
->   dt-bindings: timer: renesas,rz-mtu3: Document RZ/{G2UL,Five} SoCs
->   arm64: dts: renesas: r9a07g043: Add MTU3a node
->   arm64: dts: renesas: rzg2ul-smarc: Add support for enabling MTU3
+This is a good point. Thanks for pointing it out. Sure, there are still 
+many things to improve.
 
-I'm seeing dtbs_check issues in next & Linus' tree as the binding
-patches for this don't seem to have landed.
-What's the craic with getting them applied?
+I have seen the comment from Jonathan on your "Add converter framework" 
+serie. I had a quick look at the serie. It seems that we share the need 
+to aggregate some IIO devices. But I need to read it more carefully to 
+check if we can find some convergences here.
 
-Thanks,
-Conor.
+BRs
+Olivier
 
---hDUORSrU7M6o6mlp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZPC7EwAKCRB4tDGHoIJi
-0vG2AQDOw1T5mt+KLqizXOrufBVI8DrfzfsP+8hF8JSCGpfslwEAuBks5VYsqIlM
-/pPHCvPcGg+EEYLeiQlkP8EXk93RiQ4=
-=mtLw
------END PGP SIGNATURE-----
-
---hDUORSrU7M6o6mlp--
+> - Nuno Sá
+> 
+> 

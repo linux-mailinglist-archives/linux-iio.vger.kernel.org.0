@@ -2,59 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2698378DA87
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Aug 2023 20:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06BA178E75B
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 09:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236588AbjH3Sgc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Aug 2023 14:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49294 "EHLO
+        id S229463AbjHaHs1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 31 Aug 2023 03:48:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343916AbjH3RPS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Aug 2023 13:15:18 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69999E
-        for <linux-iio@vger.kernel.org>; Wed, 30 Aug 2023 10:15:15 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RbW5n2Hl4z67QKJ;
-        Thu, 31 Aug 2023 01:10:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 30 Aug
- 2023 18:15:12 +0100
-Date:   Wed, 30 Aug 2023 18:15:12 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Nuno Sa <nuno.sa@analog.com>
-CC:     <linux-iio@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [RFC PATCH 3/3] iio: adc: adi-axi-adc: add based on new
- converter framework
-Message-ID: <20230830181512.00005204@Huawei.com>
-In-Reply-To: <20230804145342.1600136-4-nuno.sa@analog.com>
-References: <20230804145342.1600136-1-nuno.sa@analog.com>
-        <20230804145342.1600136-4-nuno.sa@analog.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S232494AbjHaHs1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 03:48:27 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AB63CEB;
+        Thu, 31 Aug 2023 00:48:22 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-98377c5d53eso53444066b.0;
+        Thu, 31 Aug 2023 00:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693468101; x=1694072901; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m/h0H2YPVBqYjaGBwW4IhOCDM0z5E5pLi9XA+OkpL5s=;
+        b=DaF2UgeMyBj+hpEjz4+GqrVVDSUZi6MLT3gAffv+0Hbvs8P0Nd9evCrAVXidaLcxdL
+         8+vt3QcvEShRWY81nqhsIxHR1SbwaxEEQ6oFUz+G60VCVC5Eu0PmezH/ApEFTzoNMnyr
+         7x/ojQjd5xsdjv01mfHRZL5TtGtj3+VhbvazRp7H2+iAOQPALQAl3u7V/bjd3BMjUV6b
+         ksXm4mPB+w8nIPz0HQfgzeJPgSmZ3D8LzCDeoy3o7ihkBCvmorFyBRpvh6xsfFMnURf/
+         Nvzh4kn4wyTScGEmUIsaolXDPPtZfEmV1gfNFMiogup798q5q6h1mFqE2HgUqDfhR0s6
+         fnXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693468101; x=1694072901;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=m/h0H2YPVBqYjaGBwW4IhOCDM0z5E5pLi9XA+OkpL5s=;
+        b=BmdJosiOAOPma5pzfidw3Mm0aMhlNq6dqXw25kjRX9/mZtOvpk8KChkVrGC9wb+yG4
+         pmOwgET2UaWFSPt3PCRbPMrR+B8DuANkHVz8Eq42gBWS/xTsCZUB/hybG16Z3edR3R3M
+         3mgXaj+1LVDLfH+qTUDuCECpBM313Dz8ji1jUaSVAKDmROAhE6u9uyBBu10iUPqeVdpc
+         nhc1aLkTjUq9Z7UTjNhWmcIsd5BoM+Neysbt2LsSmSgTYniHce7ESImrxP17zCpiCN2M
+         YJM0Z9fPCB1IDPknn27Zl4UoHDGED3KkSVZQVhMydA920rrsvRaqF9zUrfBJO24x77mz
+         lCwg==
+X-Gm-Message-State: AOJu0YzdMuwnD1T53B8VJz8N/Qlj4s9Q37lB47C8h3V+9Lxfg1qvPgty
+        NtMI8IggL4PXoNWpO2wREVg=
+X-Google-Smtp-Source: AGHT+IFfYkO2CAmJrVcq+fgCI0FkUGLFzUGOMlvN9bEPnvcgaCvoohYnbwFfAsyv9bczO3YMQk6/PA==
+X-Received: by 2002:a17:906:5397:b0:9a1:e941:6f48 with SMTP id g23-20020a170906539700b009a1e9416f48mr3543360ejo.13.1693468100420;
+        Thu, 31 Aug 2023 00:48:20 -0700 (PDT)
+Received: from ?IPv6:2001:a61:3488:8a01:c631:bde5:1eff:9b66? ([2001:a61:3488:8a01:c631:bde5:1eff:9b66])
+        by smtp.gmail.com with ESMTPSA id f22-20020a170906495600b0098e2eaec395sm450311ejt.130.2023.08.31.00.48.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Aug 2023 00:48:19 -0700 (PDT)
+Message-ID: <0527327b556aac4ce9b7e4db85aa831ca439e600.camel@gmail.com>
+Subject: Re: [PATCH] iio: addac: ad74413r: fix function prefix typo
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+        linus.walleij@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 31 Aug 2023 09:48:19 +0200
+In-Reply-To: <20230830094314.26353-1-antoniu.miclaus@analog.com>
+References: <20230830094314.26353-1-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Aug 2023 16:53:41 +0200
-Nuno Sa <nuno.sa@analog.com> wrote:
+On Wed, 2023-08-30 at 12:43 +0300, Antoniu Miclaus wrote:
+> Use complete device name prefix in the input current offset getter
+> function.
+>=20
+> Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+This a typo fix. So, I'm not so sure if a Fixes tag, backporting is really =
+needed...
+Anyways,
 
-Nothing stood out as a particular problem in here
-either...
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-Jonathan
+>=20

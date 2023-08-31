@@ -2,72 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0953378EB32
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 12:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6363578EB40
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Aug 2023 13:01:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242267AbjHaK6u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 31 Aug 2023 06:58:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59836 "EHLO
+        id S235845AbjHaLBb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 31 Aug 2023 07:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238082AbjHaK6u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 06:58:50 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A751CF3
-        for <linux-iio@vger.kernel.org>; Thu, 31 Aug 2023 03:58:47 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-52713d2c606so824605a12.2
-        for <linux-iio@vger.kernel.org>; Thu, 31 Aug 2023 03:58:47 -0700 (PDT)
+        with ESMTP id S231375AbjHaLBb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Aug 2023 07:01:31 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EABC5CDD;
+        Thu, 31 Aug 2023 04:01:27 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9a21b6d105cso75352666b.3;
+        Thu, 31 Aug 2023 04:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693479526; x=1694084326; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1693479686; x=1694084486; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ANiV6pVTHe22vduWsQCzD7/kNMTm2rXNTRfhsAcavXw=;
-        b=Jpm2plUTMdyPkyJ/QO+vEElj+xomqa1UdjSdQ75nVvtOvcQETd2DEOz3GMVD9/8o5F
-         sQMYKk9WzMokFy5q9/FTaIV+hc7nsJy6mjaiM4e3qA0sa0BTP0aCqIKKhA98/2tGPBH4
-         7ISyZRtnAVznYvuyYXg2X4mFTpJ13NrP2oIhGwzhANfBDbMn1qRflpSHA9LSSDc3XVPO
-         T7islZ6BBZWus0CwzfOqv0rihUyN5XaPHj5DBoVgLzWQi8nwYXBsA/x/8hev3p+ynaCb
-         kv5RmXzuWJVwhJoHv5KFOtDuV0Z4DASTB3XAvaqdY6COuCKU//AXYbHpUYykwt7+xB1Y
-         MVZA==
+        bh=eO3kPR8hwQQNiVrq80EvGuv/qgY68iFDiiKzJDgISpA=;
+        b=sQGjiDMQtLroc4/97tbRzBaGDZk+doUSB8g1gfusUjUaaq4A5uOvYJnRbrKTHYtAew
+         NoBXcIn2vC+t+1hgfyrVTKOZA8SuagjPwFV4J1A+dBtMWIX8EjknqvPlm4r+Ns7YrSXS
+         f/HePrmEFelZUgGH1i5JypJvHygulqOOGOvQASsEumALpPFldLMzK09NBYVRE3DjQA6G
+         7v0QAlQFV4rMQwAsSYDEC9kMklvjnnyHBglrTuE1FG1GVgfnvNQyGYd0vtN7ZbACov5b
+         V2gYGhjZoS9dRMWMLDnsQso1iOTj7dxMJtZvJdGwBKplvcRKBO/wMQ25qgdFOE1ibXRX
+         5llg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693479526; x=1694084326;
+        d=1e100.net; s=20221208; t=1693479686; x=1694084486;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ANiV6pVTHe22vduWsQCzD7/kNMTm2rXNTRfhsAcavXw=;
-        b=I/x2V+mRKjNhk/WNuoE31JJ3TG0v2vqllT9XoZddgkZbHSeiFUX+4/je+YEHG48enr
-         Ss+FIphbJKXpkjLB83ouiIpdJRhnoqOVSlkGFkImnR1jbFOX5Nn0jIG5AWfVJ8XdzvQC
-         7Yu2nC2g1WLBOihpHSIn8+ANeeEaABC9fx/wT3ez0l1sHQldDtb6O57kzmj5/3fsmQL8
-         9ffNjDXWHm3J7T8KTKA6UHptR/CjYdgjVxiRd3WUk5eBvsbihSS5x4j1YV0NRrfQO7YH
-         HfYaYksdMYBHX0tUG6Kv1WJqkls1OC2bVMgRBxqNgm1sqKr8UTg08kqEaocMDNTpBu0f
-         ZixQ==
-X-Gm-Message-State: AOJu0Yzu5310gvyCp6w2NtyeJ6X23DwyGLKg5uPcle93w1Vz4pVnAnB9
-        rT3hGQIPb9NvkvEFseWGEwI=
-X-Google-Smtp-Source: AGHT+IGLHqCPXKCwWbnFJQX0s7PW1unCVBSzFWIFO0HMJ4xQwDt0enFEi7TKnOFL1aunrEBj+d/pRA==
-X-Received: by 2002:a05:6402:2c4:b0:523:38f5:c5ad with SMTP id b4-20020a05640202c400b0052338f5c5admr3620802edx.20.1693479525589;
-        Thu, 31 Aug 2023 03:58:45 -0700 (PDT)
+        bh=eO3kPR8hwQQNiVrq80EvGuv/qgY68iFDiiKzJDgISpA=;
+        b=XL0ld+PXRjD5itQ7PABFwWu4XkuCP8ZNEXA4G5VbgJj3YjHMWGJNwpRqkOr8WJW1Y9
+         UWPvUmBbXBpuokues9wmtb15oCRU9fMBgQHZ0lK6LaFEivFp+GOow/PhWocOwSI27bcf
+         1pdvRvH8AxCTAZFYVo+ZKCEw5g4+B5kajiveeErOy7hRnpDh4+y31EHiKtYuVCgZ7YM+
+         e+4TWS25vvNwMbO62H+z+R0JgbXDHKGgdSDpdGfhbuKUwlbWXjW4/TanxJjGtlUawXug
+         +U+7Rb50LYz9D1H1HP6SxGVD1v0YqRbx5nAgGtxFMaeFUCcOr5JnDcdDVR0MU1VArOzV
+         tBcw==
+X-Gm-Message-State: AOJu0Yy6Oe4jf/Eah0YmLABvtwHzcLNnUa0m86bjjoNThWzpVcsitYvZ
+        Cx0dxxZfRk+qQjSStGNzOQo=
+X-Google-Smtp-Source: AGHT+IFKmUNRd857qFSDmC7Upxx+JxDAYy0VxA0KOk6zd6KKRErWFaSuBzEdyne6H556QfNF9Fh96Q==
+X-Received: by 2002:a17:906:53cd:b0:9a1:fcd7:b825 with SMTP id p13-20020a17090653cd00b009a1fcd7b825mr3980283ejo.71.1693479686140;
+        Thu, 31 Aug 2023 04:01:26 -0700 (PDT)
 Received: from ?IPv6:2001:a61:3488:8a01:c631:bde5:1eff:9b66? ([2001:a61:3488:8a01:c631:bde5:1eff:9b66])
-        by smtp.gmail.com with ESMTPSA id h3-20020a50ed83000000b005236b47116asm648098edr.70.2023.08.31.03.58.44
+        by smtp.gmail.com with ESMTPSA id c25-20020a170906529900b0099b42c90830sm638090ejm.36.2023.08.31.04.01.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 03:58:45 -0700 (PDT)
-Message-ID: <5cb434575554ae2cfaadc4ec02e118112e74a898.camel@gmail.com>
-Subject: Re: [RFC PATCH 0/3] Add converter framework
+        Thu, 31 Aug 2023 04:01:25 -0700 (PDT)
+Message-ID: <066d686946951e270e8fca127d8332c80b6cfac8.camel@gmail.com>
+Subject: Re: [PATCH v4 0/6] iio: Add buffer write() support
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>
-Date:   Thu, 31 Aug 2023 12:58:44 +0200
-In-Reply-To: <20230831102806.000026cd@Huawei.com>
-References: <20230804145342.1600136-1-nuno.sa@analog.com>
-         <20230830172903.0000027f@Huawei.com>
-         <d4eead3eedb99e252f7c022ce5572a3a307b9b1e.camel@gmail.com>
-         <20230831102806.000026cd@Huawei.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Paul Cercueil <paul@crapouillou.net>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Thu, 31 Aug 2023 13:01:24 +0200
+In-Reply-To: <20230830171836.000045c3@Huawei.com>
+References: <20230807112113.47157-1-paul@crapouillou.net>
+         <20230830171118.00007726@Huawei.com> <20230830171836.000045c3@Huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,70 +76,97 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2023-08-31 at 10:28 +0100, Jonathan Cameron wrote:
-> On Thu, 31 Aug 2023 10:20:20 +0200
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Wed, 2023-08-30 at 17:18 +0100, Jonathan Cameron wrote:
+> On Wed, 30 Aug 2023 17:11:18 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 >=20
-> > On Wed, 2023-08-30 at 17:29 +0100, Jonathan Cameron wrote:
-> > > On Fri, 4 Aug 2023 16:53:38 +0200
-> > > Nuno Sa <nuno.sa@analog.com> wrote:
-> > > =C2=A0=20
-> > > > This is the initial RFC following the discussion in [1]. I'm aware =
-this is
-> > > > by no means ready for inclusion and it's not even compilable since =
-in
-> > > > the RFC I did not included the patch to add component_compare_fwnod=
-e()
-> > > > and component_release_fwnode().=C2=A0=C2=A0=20
-> > >=20
-> > > Whilst I haven't read this through yet, I suspect Olivier will be abl=
-e to
-> > > offer some insight on some of this and likewise you may be able to
-> > > point out pitfalls etc in his series (I see you did some review alrea=
-dy :)
-> > >=20
-> > > https://lore.kernel.org/linux-iio/20230727150324.1157933-1-olivier.mo=
-ysan@foss.st.com/
-> > >=20
-> > > Both are about multiple interacting components of an overall datapath=
-.
-> > > Whether there is commonality isn't yet clear to me.
-> > > =C2=A0=20
+> > On Mon,=C2=A0 7 Aug 2023 13:21:07 +0200
+> > Paul Cercueil <paul@crapouillou.net> wrote:
 > >=20
-> > I made a very general comment in that series but I need to look better =
-at it. Not
-> > sure if we can merge them together but let's see...
+> > > [V3 was: "iio: new DMABUF based API, v3"][1]
+> > >=20
+> > > Hi Jonathan,
+> > >=20
+> > > This is a subset of my patchset that introduced a new interface based=
+ on
+> > > DMABUF objects [1]. It adds write() support to the IIO buffer
+> > > infrastructure.
+> > >=20
+> > > The reason it is not the full IIO-DMABUF patchset, is because you
+> > > requested performance benchmarks - and our current numbers are barely
+> > > better (~ +10%) than the fileio interface. There is a good reason for
+> > > that: V3 of the patchset switched from having the IIO core creating t=
+he
+> > > DMABUFs backed by physically contiguous memory, to having the IIO cor=
+e
+> > > being a simple DMABUF importer, and having the DMABUFs created
+> > > externally. We now use the udmabuf driver to create those, and they a=
+re
+> > > allocated from paged memory. While this works perfectly fine, our
+> > > buffers are now cut in 4 KiB chunks (pages), non-contiguous in memory=
+,
+> > > which causes the DMA hardware to create an IRQ storm, as it raises an
+> > > interrupt after each 4 KiB in the worst case scenario.=C2=A0=20
+> >=20
+> > Interesting. I'm guessing you don't necessarily need contiguous memory
+> > and huge pages would get rid of most of that overhead?
+> >=20
+> > Given embedded target those huge pages are hard to get so you need
+> > hugetlb support to improve the chances of it working.=C2=A0 Some quick =
+searching
+> > suggests there is possible support on the way.
+> > https://lore.kernel.org/linux-mm/20230817064623.3424348-1-vivek.kasired=
+dy@intel.com/
+> >=20
+> >=20
+> > >=20
+> > > Anyway, this is not directly a problem of the IIO-DMABUF code - but I
+> > > can't really upstream a shiny new interface that I claim is much fast=
+er,
+> > > without giving numbers.
+> > >=20
+> > > So while we fix this (either by updating the DMA IP and driver to
+> > > support scatter-gather)=C2=A0=20
+> >=20
+> > Long run you almost always end up needing that unless contig requiremen=
+ts
+> > are small and you want a robust solution.=C2=A0 I'm guessing no IOMMU t=
+o pretend
+> > it's all contiguous...=20
+> >=20
+> > > or by hacking something quick to give us
+> > > physically contiguous DMABUFs just for the benchmark), I thought it
+> > > would make sense to upstream the few patches of the V3 patchset that =
+are
+> > > needed for the IIO-DMABUF interface but aren't directly related.=C2=
+=A0=20
+> >=20
+> > Good idea.
+> >=20
+> > >=20
+> > > As for write() support, Nuno (Cc'd) said he will work on upstreaming =
+the
+> > > DAC counterpart of adc/adi-axi-adc.c in the next few weeks, so there
+> > > will be a user for the buffer write() support. I hope you are okay wi=
+th
+> > > this - otherwise, we can just wait until this work is done and submit=
+ it
+> > > all at once.=C2=A0=20
+> >=20
+> > Absolutely fine, though I won't pick this up without the user also bein=
+g
+> > ready to go.
 >=20
-> Great. I wasn't sure either!=C2=A0 If nothing else more cross review is a=
-lways
-> good even if we decide we need two frameworks.
+>=20
+> Having looked through these again, they are straight forward so no change=
+s
+> requested from me.=C2=A0 Nuno, if you can add this set into appropriate
+> point in your series that will make use of it that will make my life easi=
+er
+> and ensure and minor rebasing etc happens without having to bother Paul.
 >=20
 
-Indeed...
-
-> My one takeaway from looking at this is I need to understand the componen=
-t
-> framework better and do some messing around with simple cases before I'll
-
-Fair enough... It's a fairly straight framework and I like the idea of havi=
-ng the
-whole thing (multiple devices) coming up/down together since it simplifies =
-some
-things. But I don't feel to strong about it so in the end, if we decide to =
-go with
-typical OF/FW lookup, also fine with me.
-
-> be confident on how this works.=C2=A0 Maybe we can get some input from de=
-velopers
-> of that framework on future versions?
->=20
-
-Sure, they might have some thoughts on the hacks I'm doing to use devres. B=
-ut I fear
-they'll be a bit biased for what they "enforce" in the component framework =
-(my idea
-was to build on top of it).
+Sure...
 
 - Nuno S=C3=A1
-
-
+>=20

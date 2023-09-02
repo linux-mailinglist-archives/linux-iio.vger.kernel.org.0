@@ -2,60 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D27D7900AF
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Sep 2023 18:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF4C7908AC
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Sep 2023 18:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345318AbjIAQZW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Sep 2023 12:25:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47670 "EHLO
+        id S234172AbjIBQ0o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Sep 2023 12:26:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345275AbjIAQZV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Sep 2023 12:25:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC0610EC;
-        Fri,  1 Sep 2023 09:25:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D9AF7B82515;
-        Fri,  1 Sep 2023 16:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 93AE4C433C9;
-        Fri,  1 Sep 2023 16:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693585515;
-        bh=sHKOqNSdp4q7wIKiijKS4YQmgT1mGamM+gLYzuAIKt4=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=lyMZbDyjiAC9n4nQcawlnvJh/Y4UxIyNx5hbyU40khC7ww1Isrn9b0HqjFFyCSnuv
-         kONl8Okhidd9vdCfJV9pFvQj/OlTnMjQPrR9c8FEVCO6vJExyFJyJ9JZPLmBDhjxgK
-         ZrJYWLPlllbUCLSSllcHb5oyeAh2NUvTPE00Mg/iIwT74pQJTPCTRSxA99kde1SWsA
-         UGDun1RUp9dSxyq+duIjemtcUhGw/y6gTZcyX3aQTRXyq0vvGRu2prJh+hhi6lHiYC
-         /+ILX4aCoYI/2h00GBYFp1YT72Bfb/osua5wbHdi4WBaIRgMWef6Yv7IS0DBO+UwV1
-         WjmcKg6aaIF9w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 78818C595D2;
-        Fri,  1 Sep 2023 16:25:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232336AbjIBQ0o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Sep 2023 12:26:44 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id ACC121B1;
+        Sat,  2 Sep 2023 09:26:40 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.02,222,1688396400"; 
+   d="scan'208";a="174798223"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 03 Sep 2023 01:26:38 +0900
+Received: from localhost.localdomain (unknown [10.226.92.16])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 33CA840071F9;
+        Sun,  3 Sep 2023 01:26:35 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Biju Das <biju.das.au@gmail.com>
+Subject: [PATCH] iio: adc: ti-adc081c: Simplify probe()
+Date:   Sat,  2 Sep 2023 17:26:33 +0100
+Message-Id: <20230902162633.50546-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v9 0/4] Add support for Allwinner GPADC on D1/T113s/R329/T507
- SoCs
-From:   patchwork-bot+linux-riscv@kernel.org
-Message-Id: <169358551548.8276.916609345616924463.git-patchwork-notify@kernel.org>
-Date:   Fri, 01 Sep 2023 16:25:15 +0000
-References: <20230715091816.3074375-1-bigunclemax@gmail.com>
-In-Reply-To: <20230715091816.3074375-1-bigunclemax@gmail.com>
-To:     Maksim Kiselev <bigunclemax@gmail.com>
-Cc:     linux-riscv@lists.infradead.org, linux-iio@vger.kernel.org,
-        jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, p.zabel@pengutronix.de,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,36 +45,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello:
+Simpilfy probe() by replacing of_device_get_match_data() and id lookup for
+retrieving match data by using i2c_get_match_data() by making similar
+OF/I2C/ACPI match tables.
 
-This series was applied to riscv/linux.git (fixes)
-by Jernej Skrabec <jernej.skrabec@gmail.com>:
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+ drivers/iio/adc/ti-adc081c.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-On Sat, 15 Jul 2023 12:18:12 +0300 you wrote:
-> This series adds support for general purpose ADC (GPADC) on new
-> Allwinner's SoCs, such as D1, T113s, T507 and R329. The implemented driver
-> provides basic functionality for getting ADC channels data.
-> 
-> Change History:
-> v9:
-> - Dropped fixes tag
-> - Reworded commits to remove 'This patch'
-> 
-> [...]
-
-Here is the summary with links:
-  - [v9,1/4] iio: adc: Kconfig change description for Allwinner GPADC
-    (no matching commit)
-  - [v9,2/4] iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
-    (no matching commit)
-  - [v9,3/4] dt-bindings: iio: adc: Add Allwinner D1/T113s/R329/T507 SoCs GPADC
-    (no matching commit)
-  - [v9,4/4] riscv: dts: allwinner: d1: Add GPADC node
-    https://git.kernel.org/riscv/c/d0d73ee5e98c
-
-You are awesome, thank you!
+diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+index 50c450e7a55f..6c2cb3dabbbf 100644
+--- a/drivers/iio/adc/ti-adc081c.c
++++ b/drivers/iio/adc/ti-adc081c.c
+@@ -154,7 +154,6 @@ static void adc081c_reg_disable(void *reg)
+ 
+ static int adc081c_probe(struct i2c_client *client)
+ {
+-	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	struct iio_dev *iio;
+ 	struct adc081c *adc;
+ 	const struct adcxx1c_model *model;
+@@ -163,10 +162,7 @@ static int adc081c_probe(struct i2c_client *client)
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+ 		return -EOPNOTSUPP;
+ 
+-	if (dev_fwnode(&client->dev))
+-		model = device_get_match_data(&client->dev);
+-	else
+-		model = &adcxx1c_models[id->driver_data];
++	model = i2c_get_match_data(client);
+ 
+ 	iio = devm_iio_device_alloc(&client->dev, sizeof(*adc));
+ 	if (!iio)
+@@ -207,9 +203,9 @@ static int adc081c_probe(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id adc081c_id[] = {
+-	{ "adc081c", ADC081C },
+-	{ "adc101c", ADC101C },
+-	{ "adc121c", ADC121C },
++	{ "adc081c", (kernel_ulong_t)&adcxx1c_models[ADC081C] },
++	{ "adc101c", (kernel_ulong_t)&adcxx1c_models[ADC101C] },
++	{ "adc121c", (kernel_ulong_t)&adcxx1c_models[ADC121C] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, adc081c_id);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 

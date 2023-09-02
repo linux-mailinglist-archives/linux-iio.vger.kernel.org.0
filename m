@@ -2,37 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEFB57908B0
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Sep 2023 18:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 288A47908CB
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Sep 2023 19:05:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234471AbjIBQcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Sep 2023 12:32:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51222 "EHLO
+        id S234846AbjIBRFj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Sep 2023 13:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232336AbjIBQcm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Sep 2023 12:32:42 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0BABCCC5;
-        Sat,  2 Sep 2023 09:32:38 -0700 (PDT)
+        with ESMTP id S230113AbjIBRFi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Sep 2023 13:05:38 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8F454E5B;
+        Sat,  2 Sep 2023 10:05:35 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.02,222,1688396400"; 
-   d="scan'208";a="174798428"
+   d="scan'208";a="178507164"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie5.idc.renesas.com with ESMTP; 03 Sep 2023 01:32:38 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 03 Sep 2023 02:05:34 +0900
 Received: from localhost.localdomain (unknown [10.226.92.16])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id E6A52401D15B;
-        Sun,  3 Sep 2023 01:32:35 +0900 (JST)
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 6F6D5402F022;
+        Sun,  3 Sep 2023 02:05:32 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH] iio: adc: ti-ads1015: Simplify probe()
-Date:   Sat,  2 Sep 2023 17:32:33 +0100
-Message-Id: <20230902163233.56449-1-biju.das.jz@bp.renesas.com>
+        Biju Das <biju.das.au@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH] iio: adc: ltc2497: Simplify probe()
+Date:   Sat,  2 Sep 2023 18:05:29 +0100
+Message-Id: <20230902170529.62297-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -50,31 +49,32 @@ retrieving match data by using i2c_get_match_data().
 
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- drivers/iio/adc/ti-ads1015.c | 5 +----
+ drivers/iio/adc/ltc2497.c | 5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 075c75a87544..9984515bfdea 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -976,16 +976,13 @@ static int ads1015_set_conv_mode(struct ads1015_data *data, int mode)
+diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
+index 5bdd40729611..6401a7727c31 100644
+--- a/drivers/iio/adc/ltc2497.c
++++ b/drivers/iio/adc/ltc2497.c
+@@ -95,7 +95,6 @@ static int ltc2497_result_and_measure(struct ltc2497core_driverdata *ddata,
  
- static int ads1015_probe(struct i2c_client *client)
+ static int ltc2497_probe(struct i2c_client *client)
  {
 -	const struct i2c_device_id *id = i2c_client_get_device_id(client);
- 	const struct ads1015_chip_data *chip;
+ 	const struct ltc2497_chip_info *chip_info;
  	struct iio_dev *indio_dev;
- 	struct ads1015_data *data;
- 	int ret;
- 	int i;
+ 	struct ltc2497_driverdata *st;
+@@ -115,9 +114,7 @@ static int ltc2497_probe(struct i2c_client *client)
+ 	st->client = client;
+ 	st->common_ddata.result_and_measure = ltc2497_result_and_measure;
  
--	chip = device_get_match_data(&client->dev);
--	if (!chip)
--		chip = (const struct ads1015_chip_data *)id->driver_data;
-+	chip = i2c_get_match_data(client);
- 	if (!chip)
- 		return dev_err_probe(&client->dev, -EINVAL, "Unknown chip\n");
+-	chip_info = device_get_match_data(dev);
+-	if (!chip_info)
+-		chip_info = (const struct ltc2497_chip_info *)id->driver_data;
++	chip_info = i2c_get_match_data(client);
+ 	st->common_ddata.chip_info = chip_info;
  
+ 	resolution = chip_info->resolution;
 -- 
 2.25.1
 

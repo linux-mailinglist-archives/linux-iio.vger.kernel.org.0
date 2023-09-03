@@ -2,64 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A06FF790D2A
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 19:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9218790D64
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 20:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234783AbjICRMo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Sep 2023 13:12:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44092 "EHLO
+        id S245272AbjICSE3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Sep 2023 14:04:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236843AbjICRMo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 13:12:44 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D34E6;
-        Sun,  3 Sep 2023 10:12:13 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-271d9823cacso501762a91.1;
-        Sun, 03 Sep 2023 10:12:13 -0700 (PDT)
+        with ESMTP id S229665AbjICSE3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 14:04:29 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12FB1DF;
+        Sun,  3 Sep 2023 11:04:26 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf55a81eeaso1617235ad.0;
+        Sun, 03 Sep 2023 11:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693761066; x=1694365866; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1693764265; x=1694369065; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XX0pKdbFNYmrphq/Y+iw4HhYl8nlpe+5IYFf/BgP23o=;
-        b=sebHnCOt8AeqgKYJF0dYR1fKV6jCa43DzW7OIRTIMZK2Q8+uPjbYhI2mwlf4YG4yul
-         tubtx66FSj7NU29ulObCMLFMyE/VDM3ng6JRGJFRqQCX4kl8nUNeEvEstBArw2eAwPIR
-         odTdxGB9MwZN3pG5Dud+ne2479+5W+g6zhqbfWp1oF4dxNUtGav1hmFCtn5ODahnxM6o
-         0PtGzxJSfDu4LfAWEhx0GMAsTdUXto9ZncC84BSXC9Drm1eOpUGb2Ik4SAPlJ7c3He9O
-         31p+LLnEEsrDbkpQhNrJXlIPSi/AIJCnvk/cj2aEhgZnIZIy8nMEuKO2bBDjXrSfi6nv
-         AASg==
+        bh=ee/3hlXRZIaJVPE2zhwt71URwtmHV6mucybKD81AfEg=;
+        b=kYaXKOtSgYYutr/3gkv0djwYshK+ECv9lkz2W4sp1Necp+rsYX4zoUHVClLzKVlK4+
+         S2oiV9Qxz7RvqGhibpVW+x8nXPyC8gmnHwnZ8JXIwEUuRhxEa7WIl/1IKqImJ8hegpXZ
+         N1zsuBEK7JAHesQyV5oh+36FCBR6iTRSIVwFK+C0eb9RfJIbr4U0E2/5jVOYb1yk8E1C
+         z36HaUwqJwHm3sByuK3+tw4QNvdLDZ6+eYi/gTJq7tEpWBtTeRgkeoWRosEDyExvY5Fj
+         eLfW8M0phpO/u7z9DGqfJYN0fvDpi5K24mRsUvZ0ovmTJr2V9u0+jekNVlAuEHwcu0KN
+         1sBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693761066; x=1694365866;
+        d=1e100.net; s=20221208; t=1693764265; x=1694369065;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XX0pKdbFNYmrphq/Y+iw4HhYl8nlpe+5IYFf/BgP23o=;
-        b=VgF7XZkfhSWS/J/SD0d0GvmIFokxwbR4n7CXVo4FdetL7nPrAkAIXonUT3t1dQWfFd
-         8ni82mtBqo5WLC3tzgv1v2bqWNEfIeF/E/eCJFkqhZ/q7f6E7h536uGkFI6ff/6+m0u6
-         Ta1sri6E7U0VK0I+ihkNMFn8ambOQKueBjVRYiZD7rNzUeqEpjBXB6X8XoWAV/lFDUe+
-         frs3LkMRPWddLUVkTorrxW+O24ZWOdk+6ma4jYcvn7TqtjmlSfN6QHN5+OKz9WKVjhHr
-         GQRG8D2bULoYoZCMxQy/qlr4+SvsLxvz9+gl8VkqYzNEQRzqgk5w6bBp3boA9SSrDHnG
-         QQhA==
-X-Gm-Message-State: AOJu0YwpTCiNHeQGs/MYj2I27xXPoYE3vI9HuKrhr1TNUyWT75ShVpCo
-        yB8IT+hWD1wrYe3S97lAnxw=
-X-Google-Smtp-Source: AGHT+IFM6jA27tJZk09oV9DngEq0ZF+qktQvLv6yc0sqanWrvukx7JJTil6ebabMYxwo/YiL+sDQ0Q==
-X-Received: by 2002:a17:90a:b945:b0:26d:2fe5:ff2a with SMTP id f5-20020a17090ab94500b0026d2fe5ff2amr7083732pjw.29.1693761065520;
-        Sun, 03 Sep 2023 10:11:05 -0700 (PDT)
+        bh=ee/3hlXRZIaJVPE2zhwt71URwtmHV6mucybKD81AfEg=;
+        b=e6XynMqfwhcYsFRWCzdprjlEK/UhamNd99WQwgnvRZLGI8H8m1n12b/H7Gc04oBcue
+         qK3ZqKv1yLSfeBd6xmJWynY1rA+lHdEuK36EKF+7Wta/8tlsTuXLt5It650OeTkhV13m
+         xIW4kTEEyDzqKELaxztbZZIJT2w4Mu/4JaVJMVDxIxj58D6d0acxMN8YCmGaFg1mxqEn
+         0vjhc6ass0pc0prZa5+ZsCNQZFS6lqt+URCQ8Rx+tEXIcONGbJpkeL11AXzcImBAuRk7
+         hSlNVeZI0tqUrSX2C9OvYO718UPEyRDzaUEKIcBkdhqH9F6/OvCX90L7btMwju92spvs
+         OgBg==
+X-Gm-Message-State: AOJu0Yz1x+CkEBB4ieo9hdeH4dVUUMqYuS0m9G+4cfCcxxasY/HJzjVG
+        A7MzFsvfu2MEWDHq3vFeMp8=
+X-Google-Smtp-Source: AGHT+IG9fjM74F18bgzQQ3ahAdybvZ4+SffiFXWeHpZ0+rt8xktOOMAZ/ok779aWyfjxQwTU0WQeLQ==
+X-Received: by 2002:a17:902:f7cd:b0:1c0:8044:750b with SMTP id h13-20020a170902f7cd00b001c08044750bmr5903407plw.47.1693764265355;
+        Sun, 03 Sep 2023 11:04:25 -0700 (PDT)
 Received: from localhost.localdomain ([45.64.12.149])
-        by smtp.gmail.com with ESMTPSA id 14-20020a17090a01ce00b00263dfe9b972sm8387926pjd.0.2023.09.03.10.11.02
+        by smtp.gmail.com with ESMTPSA id jf10-20020a170903268a00b001bbb25dd3a7sm6142712plb.187.2023.09.03.11.04.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Sep 2023 10:11:04 -0700 (PDT)
+        Sun, 03 Sep 2023 11:04:24 -0700 (PDT)
 From:   Mighty <bavishimithil@gmail.com>
 To:     linus.walleij@linaro.org
-Cc:     bavishimithil@gmail.com, jic23@kernel.org, lars@metafoo.de,
-        liambeguin@gmail.com, linux-iio@vger.kernel.org, peda@axentia.se,
-        stable@vger.kernel.org
+Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
+        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
 Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Date:   Sun,  3 Sep 2023 22:40:56 +0530
-Message-Id: <20230903171056.41-1-bavishimithil@gmail.com>
+Date:   Sun,  3 Sep 2023 23:34:17 +0530
+Message-Id: <20230903180417.22-1-bavishimithil@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CACRpkdYtXAWDcAMRJxh5YbNKmrYurH=z0pR47bftc+u1Yt4Nig@mail.gmail.com>
-References: <CACRpkdYtXAWDcAMRJxh5YbNKmrYurH=z0pR47bftc+u1Yt4Nig@mail.gmail.com>
+In-Reply-To: <20220524075448.140238-1-linus.walleij@linaro.org>
+References: <20220524075448.140238-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -73,16 +72,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 1:54 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Mon, Aug 28, 2023 at 11:48 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Seems reasonable to me!
-I'd say I send a patch to the mailing list and see the response, I'm not very experienced with this device. The inputs of other people who worked on this driver would guide me in the right way then i guess.
+> 2) If the channel has a horrible non linear and none invertable conversion
+>    to standard units and events support the you might need PROCESSED to
+>    provide the useful value, but RAW to give you clue what the current value
+>    is for setting an event (light sensors are usual place we see this).
 
-> That looks like the channel is actually processed, not raw, right?
-> i.e. that should only be done on channels marked as processed.
-
-Yeah the raw channel function does call a correction function in some cases, not very sure why. https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L480
-In the end the processed function also calls the raw function again dont know why, https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030-gpadc.c#L496. But in any case there is no mention of the scale attribute, so to make it comply with the condition I dont see an issue adding it to the properties
+In this very specific case yes, it is being used as a current sense shunt for a light+prox sensor (gp2ap002), so I do think that it might be case 2 instead of 3. But with no other devices using the twl6030/32 gpadc for any features it could also be due to it not being updated like case 3. Also the fact that the adc would break in cases when its not just a light sensor as well, we just dont have any such devices yet.
+I'm pretty lost at how the code handles RAW and PROCESSED anyways, cant seem to find a proper rescaler. Ideally BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE) should be there in it, but since SCALE isnt used anywhere in the driver it wouldnt break any functionality, but it would lose logic. We'd have to look into the working of the gpadc again to understand how the factors fit in there.
 
 Regards,
 Mithil

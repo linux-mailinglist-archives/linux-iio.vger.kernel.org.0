@@ -2,48 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B80A790BB0
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 13:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0077B790BB5
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 13:52:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236762AbjICLta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Sep 2023 07:49:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36058 "EHLO
+        id S235258AbjICLwv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Sep 2023 07:52:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232740AbjICLt3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 07:49:29 -0400
+        with ESMTP id S232740AbjICLwu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 07:52:50 -0400
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960FC124;
-        Sun,  3 Sep 2023 04:49:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9326E11D;
+        Sun,  3 Sep 2023 04:52:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id C220DCE0A37;
-        Sun,  3 Sep 2023 11:49:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F4DC433C8;
-        Sun,  3 Sep 2023 11:49:20 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id E2019CE0947;
+        Sun,  3 Sep 2023 11:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FBFC433C7;
+        Sun,  3 Sep 2023 11:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693741762;
-        bh=RZnKWRxJBDwWPohSlK1fxgk7fJ1IGWszvjrh7ebV0A8=;
+        s=k20201202; t=1693741962;
+        bh=cxyIgvgIZ5hFw4+LmUCRY7UAgvFWrzKap+K9RohlwbI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aT09363HQEh05bl0Wp0uD4mkvdHNAENtlb3wg6zlYpJdaRtIHLD5RnEOHzOKl6g9X
-         LSAMnXZKhw5fEjxg+NfSmevfdkiMIggVCLEqZ68T0bRroZFb587kO0j33e5EvQsGzP
-         IYBMQRLhbd4CdawHPrbD086e23ug548OfX2A27ikTKszh+98mecvI2NBC4Fwtou61m
-         rpYFMELey3cS51R4b+wq9WQ/SZ/eklP9wSRaJi/cIS5b1b++xfDY56o4VpceaOARjv
-         RuVndIS3W98S8TQxMTfknzi21+sFR78k+HIrNu2PfH9RalCEVp2rHexgt9Z+/9eRmi
-         RvSMDciMxWjFw==
-Date:   Sun, 3 Sep 2023 12:49:49 +0100
+        b=sZY8zqHUT/5fZjThVW0Dg110RljkNP3dOWBvkETVqZl9mW/mbzCJLOpEmL6sVf8mT
+         n38ZYkf76gxBVF+IUjEcHWcysh1ebAiH+W+YKmq9vvyMMUTj5hjtebsJCza2K+aeqE
+         iwjFCEYBQC0lDjlhZqjZUTYvjxAJb101PcussiZx00dv9lnOx06R/HtITip9p4REXx
+         wSVcEpS0EeexoMOw71SzIe3Lx799b1nIIIoj/wOhpfrB7hb6dJJDtTG2y8NtSDZAp4
+         ss4UwY7oqvp5gVA25Y84onpWT1KdTg5xJvNPAXkCS6FWYudxjVijv58SYrqt+/Ggbt
+         RcH0SNAFehXJQ==
+Date:   Sun, 3 Sep 2023 12:53:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <marius.cristea@microchip.com>
-Cc:     <lars@metafoo.de>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 2/2] iio: adc: adding support for MCP3564 ADC
-Message-ID: <20230903124949.2074e5ad@jic23-huawei>
-In-Reply-To: <20230829154133.40716-3-marius.cristea@microchip.com>
-References: <20230829154133.40716-1-marius.cristea@microchip.com>
-        <20230829154133.40716-3-marius.cristea@microchip.com>
+To:     Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+Cc:     eajames@linux.ibm.com, lars@metafoo.de, joel@jms.id.au,
+        andrew@aj.id.au, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] iio: pressure: dps310: Adjust Timeout Settings
+Message-ID: <20230903125309.12c59189@jic23-huawei>
+In-Reply-To: <20230829180222.3431926-2-lakshmiy@us.ibm.com>
+References: <20230829180222.3431926-1-lakshmiy@us.ibm.com>
+        <20230829180222.3431926-2-lakshmiy@us.ibm.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,27 +57,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 29 Aug 2023 18:41:33 +0300
-<marius.cristea@microchip.com> wrote:
+On Tue, 29 Aug 2023 13:02:22 -0500
+Lakshmi Yadlapati <lakshmiy@us.ibm.com> wrote:
 
-> From: Marius Cristea <marius.cristea@microchip.com>
+> The DPS310 sensor chip has been encountering intermittent errors while
+> reading the sensor device across various system designs. This issue causes
+> the chip to become "stuck," preventing the indication of "ready" status
+> for pressure and temperature measurements in the MEAS_CFG register.
 > 
-> This is the iio driver for Microchip family of 153.6 ksps,
-> Low-Noise 16/24-Bit Delta-Sigma ADCs with an SPI interface
-> (Microchip's  MCP3461, MCP3462, MCP3464, MCP3461R, MCP3462R,
-> MCP3464R, MCP3561, MCP3562, MCP3564, MCP3561R,
-> MCP3562R and MCP3564R analog to digital converters).
+> To address this issue, this commit fixes the timeout settings to improve
+> sensor stability:
+> - After sending a reset command to the chip, the timeout has been extended
+>   from 2.5 ms to 15 ms, aligning with the DPS310 specification.
+> - The read timeout value of the MEAS_CFG register has been adjusted from
+>   20ms to 30ms to match the specification.
 > 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+Hi Lakshmi,
 
-LGTM
+This seems reasonable to me, but as we probably want to backport it to
+stable kernels, please could you figure out an appropriate Fixes tag.
 
-Series applied to the togreg branch of iio.git.
-Note I'll be rebasing that branch of rc1 once available and in the
-meantime it will only be visible as testing.
+Fine to just reply to this email with the tag rather than resend.
 
-Note there was a trailing space in the docs file.  Fixed that up.
-Thanks,
+Thanks
 
 Jonathan
+ 
+> ---
+>  drivers/iio/pressure/dps310.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+> index b10dbf5cf494..1ff091b2f764 100644
+> --- a/drivers/iio/pressure/dps310.c
+> +++ b/drivers/iio/pressure/dps310.c
+> @@ -57,8 +57,8 @@
+>  #define  DPS310_RESET_MAGIC	0x09
+>  #define DPS310_COEF_BASE	0x10
+>  
+> -/* Make sure sleep time is <= 20ms for usleep_range */
+> -#define DPS310_POLL_SLEEP_US(t)		min(20000, (t) / 8)
+> +/* Make sure sleep time is <= 30ms for usleep_range */
+> +#define DPS310_POLL_SLEEP_US(t)		min(30000, (t) / 8)
+>  /* Silently handle error in rate value here */
+>  #define DPS310_POLL_TIMEOUT_US(rc)	((rc) <= 0 ? 1000000 : 1000000 / (rc))
+>  
+> @@ -402,8 +402,8 @@ static int dps310_reset_wait(struct dps310_data *data)
+>  	if (rc)
+>  		return rc;
+>  
+> -	/* Wait for device chip access: 2.5ms in specification */
+> -	usleep_range(2500, 12000);
+> +	/* Wait for device chip access: 15ms in specification */
+> +	usleep_range(15000, 55000);
+>  	return 0;
+>  }
+>  
 

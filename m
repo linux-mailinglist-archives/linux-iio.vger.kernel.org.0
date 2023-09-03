@@ -2,51 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AEC8790B7C
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 12:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA662790B80
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 12:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236473AbjICKqi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Sep 2023 06:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34502 "EHLO
+        id S236269AbjICK4e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Sep 2023 06:56:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235800AbjICKqh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 06:46:37 -0400
+        with ESMTP id S235800AbjICK4d (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 06:56:33 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33617120;
-        Sun,  3 Sep 2023 03:46:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C47DE
+        for <linux-iio@vger.kernel.org>; Sun,  3 Sep 2023 03:56:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 76864B80B74;
-        Sun,  3 Sep 2023 10:46:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B8C433C8;
-        Sun,  3 Sep 2023 10:46:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CF2BCB8095B
+        for <linux-iio@vger.kernel.org>; Sun,  3 Sep 2023 10:56:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67A8C433C7;
+        Sun,  3 Sep 2023 10:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693737991;
-        bh=fHQHtVJU95tWVAt5a2wKC1eHKHzE83lNKBDz+6XcItw=;
+        s=k20201202; t=1693738586;
+        bh=F3v8Zviy0RTyqBsYdGII4jkFcafdcQfcPg3vX1A7VeI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XyjSGL5QrYBvk4SaMUkYXmRvBaPBe96WLfKrnbhgm/9xSQvBJKr2wqOXBnNEuyZ7f
-         y7cG3RtKZWEnuh0AOqID4q2GpMEbo6rFjA5otDnNYQW5LXFCICkjTzsIy/yDBXFppw
-         s1eVSd4EzsujDU99/1bhB/OXq/Pdky0CBw0lBNaOTkxGDAix5zHkfm4U+3w2/g3Znc
-         Ai/nRdnYKEwTAbZa58h/TaHR256ds+fEnM2Jp+Tw9ndYVTfw4uz1Gb5StEwl9K1GBt
-         cLxD+3nRPvNFAT29PzGiledmcM2TN5PLMYbTmh3poQuNMtJWfS1DBJpS3/s+hUBKBu
-         AeztbBn9Ivurg==
-Date:   Sun, 3 Sep 2023 11:46:58 +0100
+        b=KV8B99BmIIN6bSDqe2XI1OdQXRliz470VPJrDByfGpxtyA4eqlJqpPliaLv2nkGhq
+         1k91MgTDeGlJZSLMyVmG+ZCWiABYUrEx544xGcZIaAKlviaBVP3Q+Wq9v85PpeRIJG
+         GnGcnx69PH+u+uncY6tU1SYIfZy3o4hZVMB8tZxAIy8g6tK3q6ZjbjyHmJS3VGrRsd
+         5iWO0uea33zUabcM4hVzJxPGZmvu/ch9b8FMAOqhknq92dOnJAFIhbiQSXsqFZfOtw
+         0smUD8xWTbQYBg/4p3IlscY0293opLJYf3wyzWWC+62H0Drs8j/UXpILv9u+VriGmI
+         UeRTWwJHQq3ow==
+Date:   Sun, 3 Sep 2023 11:56:53 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Olivier MOYSAN <olivier.moysan@foss.st.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Fabrice GASNIER <fabrice.gasnier@st.com>
-Subject: Re: [RFC v2 01/11] iio: introduce iio backend device
-Message-ID: <20230903114658.24eed6bd@jic23-huawei>
-In-Reply-To: <8b63cad8749ceca31d2f50ee36925ce18523620f.camel@gmail.com>
-References: <20230727150324.1157933-1-olivier.moysan@foss.st.com>
-        <20230727150324.1157933-2-olivier.moysan@foss.st.com>
-        <7ec3fe6183409c218b97a3359e951731b47fe16d.camel@gmail.com>
-        <095f9c64-bcac-e838-ba69-b5df623c444f@foss.st.com>
-        <8b63cad8749ceca31d2f50ee36925ce18523620f.camel@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org
+Subject: Re: [RFC PATCH 1/3] iio: addac: add new converter framework
+Message-ID: <20230903115653.5bb8c0e8@jic23-huawei>
+In-Reply-To: <aaed9bdef386f77a4211f6010f96cfaa92e70515.camel@gmail.com>
+References: <20230804145342.1600136-1-nuno.sa@analog.com>
+        <20230804145342.1600136-2-nuno.sa@analog.com>
+        <20230830180234.00007437@Huawei.com>
+        <aaed9bdef386f77a4211f6010f96cfaa92e70515.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,206 +57,400 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 01 Sep 2023 10:01:19 +0200
+On Thu, 31 Aug 2023 11:32:54 +0200
 Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Hi Olivier,
->=20
-> On Thu, 2023-08-31 at 18:14 +0200, Olivier MOYSAN wrote:
+> On Wed, 2023-08-30 at 18:02 +0100, Jonathan Cameron wrote:
+> > On Fri, 4 Aug 2023 16:53:39 +0200
+> > Nuno Sa <nuno.sa@analog.com> wrote:
+> >  =20
+> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com> =20
+> >=20
 > > Hi Nuno,
+> >  =20
+>=20
+> Hi Jonathan,
+>=20
+> Thanks for the initial review...
+>=20
 > >=20
-> > On 7/28/23 10:42, Nuno S=C3=A1 wrote: =20
-> > > Hi Olivier,
-> > >=20
-> > > On Thu, 2023-07-27 at 17:03 +0200, Olivier Moysan wrote: =20
-> > > > Add a new device type in IIO framework.
-> > > > This backend device does not compute channel attributes and does no=
-t expose
-> > > > them through sysfs, as done typically in iio-rescale frontend devic=
-e.
-> > > > Instead, it allows to report information applying to channel
-> > > > attributes through callbacks. These backend devices can be cascaded
-> > > > to represent chained components.
-> > > > An IIO device configured as a consumer of a backend device can comp=
-ute
-> > > > the channel attributes of the whole chain.
-> > > >=20
-> > > > Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> > > > ---
-> > > > =C2=A0=C2=A0drivers/iio/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> > > > =C2=A0=C2=A0drivers/iio/industrialio-backend.c | 107 ++++++++++++++=
-+++++++++++++++
-> > > > =C2=A0=C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 56 +++++++++++++++
-> > > > =C2=A0=C2=A03 files changed, 164 insertions(+)
-> > > > =C2=A0=C2=A0create mode 100644 drivers/iio/industrialio-backend.c
-> > > > =C2=A0=C2=A0create mode 100644 include/linux/iio/backend.h
-> > > >=20
-> > > > diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-> > > > index 9622347a1c1b..9b59c6ab1738 100644
-> > > > --- a/drivers/iio/Makefile
-> > > > +++ b/drivers/iio/Makefile
-> > > > @@ -5,6 +5,7 @@
-> > > > =C2=A0=20
-> > > > =C2=A0=C2=A0obj-$(CONFIG_IIO) +=3D industrialio.o
-> > > > =C2=A0=C2=A0industrialio-y :=3D industrialio-core.o industrialio-ev=
-ent.o inkern.o
-> > > > +industrialio-$(CONFIG_IIO_BACKEND) +=3D industrialio-backend.o
-> > > > =C2=A0=C2=A0industrialio-$(CONFIG_IIO_BUFFER) +=3D industrialio-buf=
-fer.o
-> > > > =C2=A0=C2=A0industrialio-$(CONFIG_IIO_TRIGGER) +=3D industrialio-tr=
-igger.o
-> > > > =C2=A0=20
-> > > > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/indus=
-trialio-
-> > > > backend.c
-> > > > new file mode 100644
-> > > > index 000000000000..7d0625889873
-> > > > --- /dev/null
-> > > > +++ b/drivers/iio/industrialio-backend.c
-> > > > @@ -0,0 +1,107 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > +/* The industrial I/O core, backend handling functions
-> > > > + *
-> > > > + */
-> > > > +
-> > > > +#include <linux/kernel.h>
-> > > > +#include <linux/device.h>
-> > > > +#include <linux/property.h>
-> > > > +#include <linux/iio/iio.h>
-> > > > +#include <linux/iio/backend.h>
-> > > > +
-> > > > +static DEFINE_IDA(iio_backend_ida);
-> > > > +
-> > > > +#define to_iio_backend(_device) container_of((_device), struct iio=
-_backend,
-> > > > dev)
-> > > > +
-> > > > +static void iio_backend_release(struct device *device)
-> > > > +{
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_backend *back=
-end =3D to_iio_backend(device);
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(backend->name);
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(backend);
-> > > > +}
-> > > > +
-> > > > +static const struct device_type iio_backend_type =3D {
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.release =3D iio_backend=
-_release,
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.name =3D "iio_backend_d=
-evice",
-> > > > +};
-> > > > +
-> > > > +struct iio_backend *iio_backend_alloc(struct device *parent)
-> > > > +{
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_backend *back=
-end;
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0backend =3D devm_kzalloc=
-(parent, sizeof(*backend), GFP_KERNEL);
-> > > >  =20
-> > >=20
-> > > No error checking.
-> > >=20
-> > > I guess a lot of cleanings are still missing but the important thing =
-I wanted to
-> > > notice is that the above pattern is not ok.
-> > > Your 'struct iio_backend *backend'' embeds a 'stuct device' which is a
-> > > refcounted object. Nevertheless, you're binding the lifetime of your =
-object to
-> > > the parent device and that is wrong. The reason is that as soon as yo=
-ur parent
-> > > device get's released or just unbinded from it's driver, all the devr=
-es stuff
-> > > (including your 'struct iio_backend' object) will be released indepen=
-dentof
-> > > your 'struct device' refcount value...
-> > >=20
-> > > So, you might argue this won't ever be an issue in here but the patte=
-rn is still
-> > > wrong. There are some talks about this, the last one was given at the=
- latest
-> > > EOSS:
-> > >=20
-> > > https://www.youtube.com/watch?v=3DHCiJL7djGw8&list=3DPLbzoR-pLrL6pY8a=
-8zSKRC6-AihFrruOkq&index=3D27&ab_channel=3DTheLinuxFoundation
-> > >  =20
-> >=20
-> > This is a good point. Thanks for pointing it out. Sure, there are still=
-=20
-> > many things to improve.
-> >=20
-> > I have seen the comment from Jonathan on your "Add converter framework"=
-=20
-> > serie. I had a quick look at the serie. It seems that we share the need=
-=20
-> > to aggregate some IIO devices. But I need to read it more carefully to=
-=20
-> > check if we can find some convergences here. =20
+> > One general comment is that you could have stripped this back a fair bit
+> > for ease of understanding.=C2=A0 At this stage we don't care about thin=
+gs
+> > like debug or control of test patterns.=C2=A0 Bring those in as extra p=
+atches.
+> >  =20
 >=20
-> Yeah, In my case, the backend devices are typically FPGA soft cores and t=
-he aggregate
-> device might connect to multiple of these backends. That was one of the r=
-eason why I
-> used the component API where the aggregate device is only configured when=
- all the
-> devices are probed. Similarly, when one of them is unbind, the whole thin=
-g should be
-> torn down. Also, in my case, the frontend device needs to do a lot of set=
-up on the
-> backend device so the whole thing works (so I do have/need a lot more .op=
-s).
+> Agreed... As I mentioned (I think) in the cover, I made the RFC bigger th=
+an needed to
+> kind of showcase how we can properly configure the hdl core to support th=
+ings
+> (interface calibration) that were very hard to do with the current implem=
+entation.
+> I'll make sure to add the minimum needed API to accommodate what we have =
+right now.
 >=20
-> Anyways, it does not matter much what the backend device is and from a fi=
-rst glance
-> and looking at the .ops you have, it seems that this could easily be supp=
-orted in the
-> framework I'm adding. The only things I'm seeing are:
+> > I haven't fully gotten my head around the ordering constraints on remov=
+al.
+> > Are there other users of the component framework that have similar prob=
+lems?
+> >  =20
 >=20
-> 1) You would need to use the component API if it's ok. Also not sure if t=
-he cascaded
-> usecase you mention would work with that API.
+> My understanding on the component API is that one should do all the tear =
+down in the
+> .unbind() callback. As usual, I can see some drivers not really doing tha=
+t.
 >=20
-> 2) We would need to add the .read_raw() op. If you look at my RFC, I alre=
-ady have
-> some comments/concerns about having an option like that (see there).
+> > Also, I don't yet understand how a multiple front end, single backend s=
+etup
+> > would work.=C2=A0 Or indeed single front end, multiple backend...=C2=A0=
+ Maybe we don't
+> > need those cases, but if we want this to be useful beyond adi-axi we
+> > probably at least want an outline of how they work.
+> >  =20
 >=20
-> Having said that, none of the above are blockers as 1), I can ditch the c=
-omponent API
-> in favour of typical FW/OF lookup (even though the component API makes so=
-me things
-> easier to handle) and 2), adding a .read_raw() op is not a blocker for me.
->=20
-> Alternatively, another (maybe crazy) idea would be to have this framework=
- have the
-> really generic stuff (like lookup + generic ops) and build my iio-convert=
-er on top of
-> it (extending it). You know, some OO fun :). Maybe not worth the trouble =
-though.
->=20
-> Let's if Jonathan has some suggestions on how to proceed...
+> Indeed we can have multiple (and we have it out of tree) backends on one =
+frontend.
+> Think on an ADC/DAC with fairly complex data path with more than one
+> channel/interface (CMOS, LVDS, etc). Typically, in those case, each of th=
+e interface
+> will be connected to an instance of the hdl core (the backend).
 
-The two of you are definitely the most familiar with the code and the restr=
-ictions
-around it, so ideally I'd like you go figure out the path forwards and tell=
- me :)
+That might work out for your case, but not the stm32 one where I think we c=
+an end
+up with interleaved data from two front ends in the same buffer...
 
-To me this is a non core extension of IIO so as long as we end up with some=
-thing
-maintainable that solves some (all?) of the ordering and dependency issues =
-I'll
-be happy.  I'd rather not have two solutions of course if there is not a go=
-od
-reason why they have to be different.  If we do end up with two solutions I
-want clear documentation for the restrictions of each so that we hopefully
-don't end up with a 3rd solution down the line.
+>=20
+> > Jonathan
+> >  =20
+> > > ---
+> > > =C2=A0drivers/iio/addac/converter.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 547 ++++++++++++++++++++++++++++
+> > > =C2=A0include/linux/iio/addac/converter.h | 485 +++++++++++++++++++++=
++++
+> > > =C2=A02 files changed, 1032 insertions(+)
+> > > =C2=A0create mode 100644 drivers/iio/addac/converter.c
+> > > =C2=A0create mode 100644 include/linux/iio/addac/converter.h
+> > >=20
+> > > diff --git a/drivers/iio/addac/converter.c b/drivers/iio/addac/conver=
+ter.c
+> > > new file mode 100644
+> > > index 000000000000..31ac704255ad
+> > > --- /dev/null
+> > > +++ b/drivers/iio/addac/converter.c
+> > > @@ -0,0 +1,547 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +/*
+> > > + * Framework to handle complex IIO aggregate devices
+> > > + *
+> > > + * A note on some of the design expectations with regards to lifetim=
+es and
+> > > + * devices bringup/removal.
+> > > + *
+> > > + * The Framework is using, under the wood, the component API which m=
+akes it to
+> > > + * easy treat a bunch of devices as one aggregate device. This means=
+ that the
+> > > + * complete thing is only brought to live when all the deviced are p=
+robed. To do =20
+> >=20
+> > devices
+> >  =20
+> > > + * this, two callbacks are used that should in fact completely repla=
+ce .probe()
+> > > + * and .remove(). The formers should only be used the minimum needed=
+. Ideally, =20
+> >=20
+> > I don't follow the sentence in the middle of the line above.
+> >  =20
+> > > + * only to call the functions to add and remove frontend annd backen=
+d devices. =20
+> > Spell check...
+> >  =20
+> > > + *
+> > > + * It is advised for frontend and backend drivers to use their .remo=
+ve() =20
+> >=20
+> > I'd not 'advise' things. I'd say the 'use' them.
+> >  =20
+> > > + * callbacks (to use devres API during the frontend and backends
+> > > initialization).
+> > > + * See the comment in @converter_frontend_bind().
+> > > + *
+> > > + * It is also assumed that converter objects cannot be accessed once=
+ one of the
+> > > + * devices of the aggregate device is removed (effectively bringing =
+the all the =20
+> >=20
+> > bringing all the devices down
+> >  =20
+> > > + * devices down). Based on that assumption, these objects are not re=
+fcount which =20
+> >=20
+> > recounted
+> >  =20
+> > > + * means accessing them will likely fail miserably. =20
+> >=20
+> > I hope that doesn't mean there will be no protection.=C2=A0 I don't min=
+d if nothing
+> > works
+> > but breaking the kernel isn't an option.
+> >  =20
+>=20
+> Hmm, well, you'll have a use after free... But one will have to be creati=
+ve to use
+> one of these objects after releasing the device from the driver (on the u=
+nbind path).
+> And here we don't have any interaction with chardevs, etc which might kee=
+p references
+> to devices even after unbind.
+>=20
+> The only place where I can see someone doing it wrong is from a frontend =
+driver if
+> for some reason (that I cannot think of now) we need to keep references/u=
+se 'struct
+> converter' after .frontend_close() is called. In that case and if the bac=
+kend driver
+> was the one being removed/unbind, the converter object will effectively b=
+e freed (as
+> it was allocated with devres) and we are left with a possible use after f=
+ree. But
+> that would be a very strange usecase to be missed in review (I hope :)).
+>=20
+> We can always refcount the converters (not sure if we need to do it for f=
+rontend
+> devices). Sure, drivers can still screw up but at least in that case, the=
+ framework
+> is not to blame :).
+
+If the rules are clearly stated (with some reasoning) I don't think we need
+to care about saying what happens if you break them.  People will always sh=
+oot
+themselves in the foot, but as long as it is reasonably fiddly to do that's
+fine by me :)
+
+...
+
+> > > +static int converter_frontend_bind(struct device *dev)
+> > > +{
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct converter_frontend =
+*frontend =3D dev_get_drvdata(dev);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int ret;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D component_bind_all=
+(dev, NULL);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return ret;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * We open a new group so =
+that we can control when resources are
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * released and still use =
+device managed (devm_) calls. The expectations
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * are that on probe, back=
+end resources are allocated first followed by
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the frontend resources =
+(where registering the IIO device must happen)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Naturally we want the r=
+everse order on the unbind path and that would
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * not be possible without=
+ opening our own devres group.
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Note that the component=
+ API also opens it's own devres group when
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * calling the .bind() cal=
+lbacks for both the aggregate device
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * (our frontend) and each=
+ of the components (our backends). On the
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * unbind path, the aggreg=
+ate .unbind() function is called
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * (@converter_frontend_un=
+bind()) which should be responsible to tear
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * down all the components=
+ (effectively releasing all the resources
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * allocated on each compo=
+nent devres group) and only then the aggregate
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * devres group is release=
+d. Hence, the order we want to maintain for
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * releasing resources wou=
+ld not be satisfied because backend resources
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * would be freed first. W=
+ith our own group, we can control when
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * releasing the resources=
+ and we do it before @component_unbind_all().
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * This also relies that i=
+nternally the component API is releasing each
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * of the component's devr=
+es group. That is likely not to change, but
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * maybe we should not tru=
+st it and also open our own groups for backend
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * devices?!
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Another very important =
+thing to keep in mind is that this is only
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * valid if frontend and b=
+ackend driver's are implementing their
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * .remove() callback to c=
+all @converter_frontend_del() and
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * @converter_backend_del(=
+). Calling those functions from
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * devm_add_action* and us=
+e devm APIs in .frontend_init() and
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * .backend_init() is not =
+going to work. Not perfect but still better
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * than having to tear eve=
+rything down in .frontend_close() and
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * .backend_close() =20
+> >=20
+> > That last bit is nasty and will be non obvious to driver authors.
+> >=20
+> > I wonder if we can come up with some means to make it hard to do.
+> >  =20
+>=20
+> Yeah, I agree. The alternative is to always bring everything down in
+> .frontend_close() and .backend_close(). But that can also be prone to sub=
+tle bugs
+> because it's easy to mess up the ordering when not using devres.
+>=20
+> So, at this point, I cannot really think on a perfect solution rather tha=
+n keeping
+> some rules like (assuming we keep the logic we have now):
+>=20
+> * Using devres on frontend|backend_init() only when .remove() is provided=
+ on the
+> driver.
+> * No mixes of devres and .frontend|backend_close()
+>=20
+> But yeah, would be nice if we could come up with something to make it mor=
+e obvious to
+> driver authors.
+
+>=20
+> We might be able to detect that converter_backend_del() and converter_fro=
+ntend_del()
+> are under devres while no .frontend|backend_close() is being given. I gue=
+ss that
+> could be a valid indicator of likely misusage.
+>=20
+> Or even better (but I'm not sure it's doable with the current devres API)=
+, detecting
+> that converter_backend_del() or converter_frontend_del() are under devres=
+ while more
+> resources are also allocated in our specific opened groups. That would al=
+ways be a
+> problem (I think) because the only way for the _del() functions to be und=
+er devres is
+> if someone added them (from .probe) with devm_add_action() which means th=
+at tearing
+> down the aggregate will happen after some resources (which were allocated=
+ in the
+> _init() function) are already freed (as even with new groups, devres will=
+ remove
+> things on the reverse order). And that would defenitely be problematic. A=
+nd, in fact,
+> is the whole reason why I have the .del() functions on .remove() (so, tea=
+ring down
+> the aggregate device is the first thing to happen and resources are freed=
+ in the
+> reverse order they were allocated).
+>=20
+
+I couldn't work out how to do anything easily and would need some experimen=
+ts.
+Maybe some 'hidden' devres callbacks and a state flag somewhere.  If we reg=
+ister
+that very late we can perhaps detect that we entered devres cleanup before =
+calling
+expected manual cleanup.  I'm thinking have the setup path register a flag =
+checking
+callback and the cleanup path set a flag (devres now safe).  Then we can at=
+ least
+make it scream if we end up doing things in wrong way.
+
+> Other thought would be some generic helper macros to use in these type of=
+ drivers so
+> a .remove() callback is always added to remove the components.=20
+I wondered if that could work but it's an ugly macro because needs to deal =
+with
+different bus types.
+
+>=20
+> Anyways, even the above might be tricky enough to not include it. I'll gi=
+ve it some
+> thought.
+
+Agreed - seems fiddly but maybe there is a neat trick to it.
+Or indeed another subsystem already doing something.
+
+> > > +#define converter_test_pattern_xlate(pattern, xlate)=C2=A0=C2=A0=C2=
+=A0\
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0__converter_test_pattern_x=
+late(pattern, xlate, ARRAY_SIZE(xlate));
+> > > +
+> > > +#if IS_ENABLED(CONFIG_IIO_CONVERTER) =20
+> >=20
+> > Why?=C2=A0 I'd expect any driver that uses this framework to be useless=
+ without
+> > it, so we shouldn't need protections. Handle that with Kconfig select /=
+ depends
+> >  =20
+>=20
+> Well, we do have cases of frontends that might be used in standalone mode=
+ (I mean,
+> with no backend device) or with the backend connected. But alright, I wil=
+l keep
+> things simple for now and let's take care if such case ever get's upstrea=
+m (hopefully
+> they eventual do :)).
+
+Yeah. Introduce the stubs when you need them ;)
+
+...
+
+> > > +
+> > > +/**
+> > > + * converter_frontend_del - Remove the frontend device
+> > > + * @dev:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Device to remove f=
+rom the aggregate
+> > > + *
+> > > + * Removes the frontend from the aggregate device. This tears down t=
+he frontend
+> > > + * and all the converters.
+> > > + *
+> > > + * Ideally, this should be called from the frontend driver .remove()=
+ callback.
+> > > + * This means that all the converters (and the frontend) will be tea=
+r down =20
+> > torn down  =20
+> > > + * before running any specific devres cleanup (at the driver core le=
+vel). What
+> > > + * this all means is that we can use devm_ apis in .frontend_init() =
+and being
+> > > + * sure those resources will be released after the backend resources=
+ and before
+> > > + * any devm_* used in .probe(). If that is not the case, one should =
+likely not
+> > > + * use any devm_ API in .frontend_init(). That means .frontend_close=
+() should be
+> > > + * provided to do all the necessary cleanups. =20
+> >=20
+> > You can force a driver remove to tear down another driver binding first=
+ though it
+> > all
+> > gets fiddly.=C2=A0 Take a look at how device_release_driver() is used.=
+=C2=A0 May well not
+> > help you here though - I've not thought it through properly.
+> >  =20
+>=20
+> Yeah, I know but I don't think it would help us here or even be correct a=
+nd I think
+> the problem would be the same. I mean, we would still need to call
+> converter_frontend_del() or converter_backend_del() from the respective .=
+remove()
+> callbacks.
+>=20
+Agreed. I'm also not sure it helps and low on time at the moment to experim=
+ent around this.
 
 Jonathan
-
->=20
-> - Nuno S=C3=A1
-> > >  =20
->=20
-

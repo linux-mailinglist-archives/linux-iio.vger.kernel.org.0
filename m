@@ -2,52 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF81790BA5
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 13:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B80A790BB0
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Sep 2023 13:49:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236602AbjICLnX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Sep 2023 07:43:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53518 "EHLO
+        id S236762AbjICLta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Sep 2023 07:49:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbjICLnX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 07:43:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FEEDF3;
-        Sun,  3 Sep 2023 04:43:16 -0700 (PDT)
+        with ESMTP id S232740AbjICLt3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Sep 2023 07:49:29 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960FC124;
+        Sun,  3 Sep 2023 04:49:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07B7560C26;
-        Sun,  3 Sep 2023 11:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7CDC433C8;
-        Sun,  3 Sep 2023 11:43:12 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id C220DCE0A37;
+        Sun,  3 Sep 2023 11:49:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F4DC433C8;
+        Sun,  3 Sep 2023 11:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693741395;
-        bh=6Nqr5gw8uCnA8rg+G6Bui+BU1I6puGFeo5IqC4ON170=;
+        s=k20201202; t=1693741762;
+        bh=RZnKWRxJBDwWPohSlK1fxgk7fJ1IGWszvjrh7ebV0A8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LrsnYnE7FdIFvQjVAcYGXu9awE7Z8YCZkQxUgcNfzCrglEKuoAgcx0iiktcCPEtcF
-         QOKASvyxSwfSZx1r44F9cbSxnCqu1Qhu6C5Oc8UB5YHSzR0/krAZ+p0L6cGu83Ss+E
-         ocKGpsBpSEK8wxZKpY9bu6jFYmw/FG6BQTRV17+PpZzsoHEDLdKIFaEdPyVEx5+du4
-         PVqt6mlTHKhzROWRVU0NrQsx8PWo4su+uBuGTMwk1Sq4iRa5HvOBhjzXoWlopI3nLq
-         q1tGA/dIGYxiVMNwRWaF07epqAa2tIzOjcrQf9hcfYU90CAv49wxYHDd2nka8iiAsm
-         BQyYtT1j5bevg==
-Date:   Sun, 3 Sep 2023 12:43:41 +0100
+        b=aT09363HQEh05bl0Wp0uD4mkvdHNAENtlb3wg6zlYpJdaRtIHLD5RnEOHzOKl6g9X
+         LSAMnXZKhw5fEjxg+NfSmevfdkiMIggVCLEqZ68T0bRroZFb587kO0j33e5EvQsGzP
+         IYBMQRLhbd4CdawHPrbD086e23ug548OfX2A27ikTKszh+98mecvI2NBC4Fwtou61m
+         rpYFMELey3cS51R4b+wq9WQ/SZ/eklP9wSRaJi/cIS5b1b++xfDY56o4VpceaOARjv
+         RuVndIS3W98S8TQxMTfknzi21+sFR78k+HIrNu2PfH9RalCEVp2rHexgt9Z+/9eRmi
+         RvSMDciMxWjFw==
+Date:   Sun, 3 Sep 2023 12:49:49 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: add ltc2309 support
-Message-ID: <20230903124341.360c95fe@jic23-huawei>
-In-Reply-To: <20230828-ltc2309-v3-2-338b3a8fab8b@gmail.com>
-References: <20230828-ltc2309-v3-0-338b3a8fab8b@gmail.com>
-        <20230828-ltc2309-v3-2-338b3a8fab8b@gmail.com>
+To:     <marius.cristea@microchip.com>
+Cc:     <lars@metafoo.de>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 2/2] iio: adc: adding support for MCP3564 ADC
+Message-ID: <20230903124949.2074e5ad@jic23-huawei>
+In-Reply-To: <20230829154133.40716-3-marius.cristea@microchip.com>
+References: <20230829154133.40716-1-marius.cristea@microchip.com>
+        <20230829154133.40716-3-marius.cristea@microchip.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,76 +58,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Aug 2023 22:41:35 -0400
-Liam Beguin <liambeguin@gmail.com> wrote:
+On Tue, 29 Aug 2023 18:41:33 +0300
+<marius.cristea@microchip.com> wrote:
 
-> The LTC2309 is an 8-Channel, 12-Bit SAR ADC with an I2C Interface.
+> From: Marius Cristea <marius.cristea@microchip.com>
 > 
-> This implements support for all single-ended and differential channels,
-> in unipolar mode only.
+> This is the iio driver for Microchip family of 153.6 ksps,
+> Low-Noise 16/24-Bit Delta-Sigma ADCs with an SPI interface
+> (Microchip's  MCP3461, MCP3462, MCP3464, MCP3461R, MCP3462R,
+> MCP3464R, MCP3561, MCP3562, MCP3564, MCP3561R,
+> MCP3562R and MCP3564R analog to digital converters).
 > 
-> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-Hi Liam,
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 
-A few really small editorial bits in here.  I'll fix them whilst applying.
-Series applied to the togreg branch of iio.git
+LGTM
 
-Note I will be rebasing the tree on rc1 once available and in the meantime
-this will only be pushed out as testing.
+Series applied to the togreg branch of iio.git.
+Note I'll be rebasing that branch of rc1 once available and in the
+meantime it will only be visible as testing.
 
+Note there was a trailing space in the docs file.  Fixed that up.
 Thanks,
 
 Jonathan
-
-
-
-> +/**
-> + * struct ltc2309 - internal device data structure
-> + * @dev:	Device reference
-> + * @client:	I2C reference
-> + * @vref:	External reference source
-> + * @lock:	Lock to serialize data access
-> + * @vref_mv	Internal voltage reference
-
-Missing : which is what the bot picked up on.
-
-> + */
-> +struct ltc2309 {
-> +	struct device		*dev;
-> +	struct i2c_client	*client;
-> +	struct regulator	*vref;
-> +	struct mutex		lock; /* serialize data access */
-> +	int			vref_mv;
-> +};
-
-> +
-> +void ltc2309_regulator_disable(void *regulator)
-> +{
-> +	struct regulator *r = (struct regulator *)regulator;
-
-Never any need to explicitly cast from a void * to any other pointer type.
-(C spec says it is always fine to do this :)
-
-Given type is obvious from use, can just do
-	regulator_disable(regulator);
-and lose the local variable.
-
-> +
-> +	regulator_disable(r);
-> +}
-
-..
-> +
-> +static const struct of_device_id ltc2309_of_match[] = {
-> +	{ .compatible = "lltc,ltc2309" },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, ltc2309_of_match);
-> +
-> +static const struct i2c_device_id ltc2309_id[] = {
-> +	{ "ltc2309" },
-> +	{}
-
-Trivial but space between { and } for consistency.
-
 

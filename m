@@ -2,114 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEE2A79281C
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 18:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6B4792631
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 18:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240895AbjIEQTF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Sep 2023 12:19:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
+        id S239036AbjIEQTC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Sep 2023 12:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353730AbjIEHmP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 03:42:15 -0400
-Received: from mx2.spacex.com (mx2.spacex.com [192.31.242.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 946531A8;
-        Tue,  5 Sep 2023 00:42:11 -0700 (PDT)
-Received: from pps.filterd (mx2.spacex.com [127.0.0.1])
-        by mx2.spacex.com (8.17.1.19/8.17.1.19) with ESMTP id 3857ehrr002119;
-        Tue, 5 Sep 2023 00:41:37 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=spacex.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=dkim; bh=Fe2kVIqYuP87NBZP7GEV+E/4WDl2D8+n1T4Yzpbk7rY=;
- b=ixYmNHf8MWo9WWg9d2AkkRkSgz8uQGcomhyfRIA5864YwhHY+ieiAu4CzUmPcVzfLvwo
- 01hJx7XpZpJT+YUM9qgxKRap9qW6tWadUcT87wl5056u+GbmAWdYfBb7mUIyThToEppI
- L8tvVppZGYslNqfxlllcssWueXCFJ8PUSmMD7aO5XWzf67EQby/VZXv6lX/qRcgzTm+V
- Bwem+HbeX273mcMT+x4DrC1F6Ppr3wNTK7kXM3opru9f4SWgOrlpp1ElK071WvaP5ZOg
- t62u2D/fsrYgLnjjrYftgKpAlgAhCO1gxjyiuOdELauiv0EgbI37PxJVDWbEj3vLsZFo Cw== 
-Received: from smtp.spacex.corp ([10.34.3.233])
-        by mx2.spacex.com (PPS) with ESMTPS id 3sv2fgkd8e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 05 Sep 2023 00:41:37 -0700
-Received: from spacex.com (10.1.32.161) by HT-DC-EX-D2-N1.spacex.corp
- (10.34.3.233) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Tue, 5 Sep
- 2023 00:41:37 -0700
-Date:   Tue, 5 Sep 2023 00:41:37 -0700
-From:   Andy Spencer <aspencer@spacex.com>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        Kevin Bosien <kbosien@spacex.com>,
-        Jim Gruen <jgruen@spacex.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mario Tesi <mario.tesi@st.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] RFC: iio: lsm6dsx: Support temperature channel on
- some devices
-Message-ID: <20230905074137.GB10702@spacex.com>
-References: <20230829-iio-spacex-lsm6ds0-v2-1-584e161b612f@linaro.org>
- <ZPBa40RHJ93proj0@lore-desk>
+        with ESMTP id S1353840AbjIEIU5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 04:20:57 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380E6CE0
+        for <linux-iio@vger.kernel.org>; Tue,  5 Sep 2023 01:20:53 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id 2adb3069b0e04-5007616b756so3796368e87.3
+        for <linux-iio@vger.kernel.org>; Tue, 05 Sep 2023 01:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693902051; x=1694506851; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
+        b=WyyvPMEfe4FOVqHOIWdr/B2P0p03RPzGq0eAy6olIuEmDr190DF60UMTUjSzD3ICzN
+         0WsAegs64/BiRqCpXkN1qURw3kJmTI2wMa8rTaukjr0/l9jhm+3ubCn9+y0oKw0Vf/Ks
+         YIRtHy/tktgd0JCbt9j66zUkqNxhaH1k0FzKmAu+yKNICqHvkjDH6q7yKGNLfZeY066C
+         rjUXbiHJ42XZriL2gTX15/F6y+Se4qD3ChTlmHmU/A+Bl1kzMG1cMn1BnC25iR+qjjlJ
+         Ikwy1nXebC5hCeU4AgcZQ4VZpVOWulwi6FywqPblj59NiPYUSn0tuU6Bbo6p4XZRvT/F
+         gtfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693902051; x=1694506851;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
+        b=RK0gcvjiXC3/pkPA7wwU1kPEm7cpUsp/7LXjuFVJQs/0Dhfu5XA0hv9/GwhL4zrL/q
+         zCZynl6RTvQ/ycHaOpdvFbyhmQOwNNYlm1NR4lMxDC4nRhsw6MzF3273/BAUS6IXT4fQ
+         HuoHDnBwzbfwrWkWPzgN5ZsLcF8ZpPwnKGnNv7zDAkTQADQFjzNDnKA9TafUL0VyLLVt
+         MJH48de9cHJKwAtq7pkbSBBqbaFRDQ60Zm2h6vQjCSYkrcbnFd7Xumfz4DDnWn4D1fEp
+         Zt8gkY4QdHC+JiQBQVNoLoZxvWxkoBf61wfeOb7GgbmkL5lPj8ulQRh+uSPZ53qgYVAB
+         aaOQ==
+X-Gm-Message-State: AOJu0YzZVGUGs0XHGZRTr5VaD8a0r6dLvi2ZsORRvD9tU978Dg2jPh1Z
+        yz/LIPC0uHlXjwSOH8N+fotFmeJRD8aJWhIrqn4=
+X-Google-Smtp-Source: AGHT+IHc9ajH3Rii9UZwOOqLrsXanmcTWvKjiURPKmJK5D52sTkbD7l1BRzq/bCfrfUZjlWt/04s1jIBCk3z7CpHIFE=
+X-Received: by 2002:a19:6755:0:b0:501:bf37:1fc0 with SMTP id
+ e21-20020a196755000000b00501bf371fc0mr624754lfj.33.1693902050884; Tue, 05 Sep
+ 2023 01:20:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZPBa40RHJ93proj0@lore-desk>
-X-ClientProxiedBy: ht-dc-ex-d1-n2.spacex.corp (10.34.3.231) To
- HT-DC-EX-D2-N1.spacex.corp (10.34.3.233)
-X-Proofpoint-ORIG-GUID: pa2NSxCAJI-fXhH5FaYlmeCpNT_8wUF9
-X-Proofpoint-GUID: pa2NSxCAJI-fXhH5FaYlmeCpNT_8wUF9
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxlogscore=966
- phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309050068
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a54:3ac4:0:b0:22f:40f:e031 with HTTP; Tue, 5 Sep 2023
+ 01:20:50 -0700 (PDT)
+Reply-To: wuwumoneytransfer5000@hotmail.com
+From:   "(IMF) SCAM VICTIMS" <mimichi4500@gmail.com>
+Date:   Tue, 5 Sep 2023 01:20:50 -0700
+Message-ID: <CAGhkD8USA9d9+1HDw3AKO0o45v_Z8cjdpcgnjTbVjdDUbiyg2w@mail.gmail.com>
+Subject: Betrugsopfer
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lorenzo,
+Sehr geehrter E-Mail-Besitzer,
 
-Thanks for reviewing this!
 
-Regarding the TODR and ODR_T_BATCH settings:
 
-> > +			[ST_LSM6DSX_ID_TEMP] = {
-> > +				/*
-> > +				 * NOTE: this ODR will be capped and controllerd by the
-> > +				 * gyro and accelerometer don't have any reg to configure
-> > +				 * this ODR.
-> > +				 */
-> > +				.odr_avl[0] = {  12500, 0x01 },
-> > +				.odr_avl[1] = {  26000, 0x02 },
-> > +				.odr_avl[2] = {  52000, 0x03 },
-> > +				.odr_len = 3,
-> 
-> please consider we do not support low-power mode iirc (just
-> high-performance - bit 4 in CTRL6_C (15h)), so even enabling accel
-> sensor, the temp sensor will always runs at 52Hz. Here we should add
-> just one entry, like:
-> 
-> 				.odr_avl[0] = { 52000, 0x03 },
-> 				.odr_len = 1,
+Der Internationale W=C3=A4hrungsfonds (IWF) entsch=C3=A4digt alle Betrugsop=
+fer
+und Ihre E-Mail-Adresse wurde auf der Liste der Betrugsopfer gefunden.
 
-I didn't see a way to configure the batch data rate in the IIO driver
-aside from the "odr_avl" table.
+Dieses Western Union-B=C3=BCro wurde vom IWF beauftragt Ihnen Ihre
+Verg=C3=BCtung per Western Union Money Transfer zu =C3=BCberweisen.
 
-It seemed useful to allow reading the gyro/accel at a high rate, such as
-416 Hz, while still allowing the lower temperature sub-sampling rates of
-1.6 and 12.5 Hz. My original intent in adding the lower ODR table
-entries here was to reuse the sampling_frequency sysfs attr to
-configure the batch data rate, since that seems to be what most people
-would care about.
+Wir haben uns jedoch entschieden Ihre eigene Zahlung =C3=BCber Geldtransfer
+der Westunion in H=C3=B6he von =E2=82=AC5,000, pro Tag vorzunehmen bis die
+Gesamtsumme von =E2=82=AC1,500.000.00, vollst=C3=A4ndig an Sie =C3=BCberwie=
+sen wurde.
 
-Alternately, we could add a separate "odr_batch_avl" table along with a
-separate sysfs attr (e.g. "buffer_sampling_frequency"). That would be a
-lot more work though, especially since the actual ODR for the temp
-sensor won't be configurable anyway.
+Wir k=C3=B6nnen die Zahlung m=C3=B6glicherweise nicht nur mit Ihrer
+E-Mail-Adresse senden daher ben=C3=B6tigen wir Ihre Informationen dar=C3=BC=
+ber
+wohin wir das Geld an Sie senden wie z. B.:
 
-Note, I don't have any specific need for the lower rates, so if 52 Hz is
-the only rate supported, that still "works for me".
+
+Name des Adressaten ________________
+
+Adresse________________
+
+Land__________________
+
+Telefonnummer________________
+
+Angeh=C3=A4ngte Kopie Ihres Ausweises______________
+
+Das Alter ________________________
+
+
+Wir beginnen mit der =C3=9Cbertragung sobald wir Ihre Informationen
+erhalten haben: Kontakt E-Mail: ( wuwumoneytransfer5000@hotmail.com)
+
+
+Getreu,
+
+
+Herr Anthony Duru,
+
+Direktor von Geldtransfer der Westunion

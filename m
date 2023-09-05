@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7211679266B
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 18:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEE2A79281C
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 18:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244137AbjIEQTK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Sep 2023 12:19:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44382 "EHLO
+        id S240895AbjIEQTF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Sep 2023 12:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353714AbjIEH3Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 03:29:16 -0400
-X-Greylist: delayed 1699 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 00:29:13 PDT
-Received: from mx1.spacex.com (mx1.spacex.com [192.31.242.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF2612A;
-        Tue,  5 Sep 2023 00:29:13 -0700 (PDT)
-Received: from pps.filterd (mx1.spacex.com [127.0.0.1])
-        by mx1.spacex.com (8.17.1.19/8.17.1.19) with ESMTP id 3856mRwG024661;
-        Tue, 5 Sep 2023 00:00:20 -0700
+        with ESMTP id S1353730AbjIEHmP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 03:42:15 -0400
+Received: from mx2.spacex.com (mx2.spacex.com [192.31.242.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 946531A8;
+        Tue,  5 Sep 2023 00:42:11 -0700 (PDT)
+Received: from pps.filterd (mx2.spacex.com [127.0.0.1])
+        by mx2.spacex.com (8.17.1.19/8.17.1.19) with ESMTP id 3857ehrr002119;
+        Tue, 5 Sep 2023 00:41:37 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=spacex.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=dkim; bh=cq23JOlHgu5rbK1y8IOKTZCBV67iU0GG+0pR+xzjC70=;
- b=QZg0ONkZ4E7pUbbCYrsoh6pe7J9yxNfeTgYYiCerjlg/bC0/ZOnk2aG0HTiNC04kS5y1
- 3hEpgQMkcIgAWrjnuQ/bEo1rzQ3HiMqmPnhDlsx5TawS/kq9DvBNsmmNJEaF1hhnQtYX
- iEi3DnmaoIuhP5+m7jOj/c1CuaOkk2Rxspr1cJwCThMIZW4sEmP5JvNhmeJO3HO19QaJ
- Czu4/TGJcAxvKNHPn7NcDv3ZF9cP5uGW7hhfI1Ig9/19tRf5qzHRg/kSQfgCeZasKUMQ
- H/ffqWLtlwm7Q+r3UmlJJ55vSkbII6060ZoSzvxc5q1svptzoFOb2uytiKulZ+uhQQDR pA== 
+ in-reply-to; s=dkim; bh=Fe2kVIqYuP87NBZP7GEV+E/4WDl2D8+n1T4Yzpbk7rY=;
+ b=ixYmNHf8MWo9WWg9d2AkkRkSgz8uQGcomhyfRIA5864YwhHY+ieiAu4CzUmPcVzfLvwo
+ 01hJx7XpZpJT+YUM9qgxKRap9qW6tWadUcT87wl5056u+GbmAWdYfBb7mUIyThToEppI
+ L8tvVppZGYslNqfxlllcssWueXCFJ8PUSmMD7aO5XWzf67EQby/VZXv6lX/qRcgzTm+V
+ Bwem+HbeX273mcMT+x4DrC1F6Ppr3wNTK7kXM3opru9f4SWgOrlpp1ElK071WvaP5ZOg
+ t62u2D/fsrYgLnjjrYftgKpAlgAhCO1gxjyiuOdELauiv0EgbI37PxJVDWbEj3vLsZFo Cw== 
 Received: from smtp.spacex.corp ([10.34.3.233])
-        by mx1.spacex.com (PPS) with ESMTPS id 3sv2fgkwgc-1
+        by mx2.spacex.com (PPS) with ESMTPS id 3sv2fgkd8e-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 05 Sep 2023 00:00:20 -0700
+        Tue, 05 Sep 2023 00:41:37 -0700
 Received: from spacex.com (10.1.32.161) by HT-DC-EX-D2-N1.spacex.corp
  (10.34.3.233) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Tue, 5 Sep
- 2023 00:00:20 -0700
-Date:   Tue, 5 Sep 2023 00:00:10 -0700
+ 2023 00:41:37 -0700
+Date:   Tue, 5 Sep 2023 00:41:37 -0700
 From:   Andy Spencer <aspencer@spacex.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-CC:     Kevin Bosien <kbosien@spacex.com>, Jim Gruen <jgruen@spacex.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Linus Walleij <linus.walleij@linaro.org>,
+        Kevin Bosien <kbosien@spacex.com>,
+        Jim Gruen <jgruen@spacex.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Mario Tesi <mario.tesi@st.com>,
@@ -46,87 +46,70 @@ CC:     Kevin Bosien <kbosien@spacex.com>, Jim Gruen <jgruen@spacex.com>,
         <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v2] RFC: iio: lsm6dsx: Support temperature channel on
  some devices
-Message-ID: <20230905070010.GA10702@spacex.com>
+Message-ID: <20230905074137.GB10702@spacex.com>
 References: <20230829-iio-spacex-lsm6ds0-v2-1-584e161b612f@linaro.org>
+ <ZPBa40RHJ93proj0@lore-desk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20230829-iio-spacex-lsm6ds0-v2-1-584e161b612f@linaro.org>
-X-ClientProxiedBy: ht-dc-ex-d3-n1.spacex.corp (10.34.3.236) To
+In-Reply-To: <ZPBa40RHJ93proj0@lore-desk>
+X-ClientProxiedBy: ht-dc-ex-d1-n2.spacex.corp (10.34.3.231) To
  HT-DC-EX-D2-N1.spacex.corp (10.34.3.233)
-X-Proofpoint-GUID: KB-a4pQQh9igq_YYGD7iljXL0vDjqAlF
-X-Proofpoint-ORIG-GUID: KB-a4pQQh9igq_YYGD7iljXL0vDjqAlF
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- impostorscore=0 adultscore=0 clxscore=1011 mlxlogscore=999
- priorityscore=1501 mlxscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309050062
+X-Proofpoint-ORIG-GUID: pa2NSxCAJI-fXhH5FaYlmeCpNT_8wUF9
+X-Proofpoint-GUID: pa2NSxCAJI-fXhH5FaYlmeCpNT_8wUF9
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 mlxlogscore=966
+ phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309050068
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Linus,
+Hi Lorenzo,
 
-Thanks for helping get this into mainline :)
+Thanks for reviewing this!
 
+Regarding the TODR and ODR_T_BATCH settings:
 
-> Changes in v2:
-> - Put to RFC because I can't test changes.
-> - Added some mail addresses to SpaceX to the header. Maybe you
->   guys can check if this works for you. Or forward to designated
->   open source ambassador or whatever can help. (Addresses found
->   in SpaceX code drop.)
+> > +			[ST_LSM6DSX_ID_TEMP] = {
+> > +				/*
+> > +				 * NOTE: this ODR will be capped and controllerd by the
+> > +				 * gyro and accelerometer don't have any reg to configure
+> > +				 * this ODR.
+> > +				 */
+> > +				.odr_avl[0] = {  12500, 0x01 },
+> > +				.odr_avl[1] = {  26000, 0x02 },
+> > +				.odr_avl[2] = {  52000, 0x03 },
+> > +				.odr_len = 3,
+> 
+> please consider we do not support low-power mode iirc (just
+> high-performance - bit 4 in CTRL6_C (15h)), so even enabling accel
+> sensor, the temp sensor will always runs at 52Hz. Here we should add
+> just one entry, like:
+> 
+> 				.odr_avl[0] = { 52000, 0x03 },
+> 				.odr_len = 1,
 
-I am familiar with these changes and can help review and test this.
+I didn't see a way to configure the batch data rate in the IIO driver
+aside from the "odr_avl" table.
 
+It seemed useful to allow reading the gyro/accel at a high rate, such as
+416 Hz, while still allowing the lower temperature sub-sampling rates of
+1.6 and 12.5 Hz. My original intent in adding the lower ODR table
+entries here was to reuse the sampling_frequency sysfs attr to
+configure the batch data rate, since that seems to be what most people
+would care about.
 
-> - Drop the code with strings for ism330dhc as we concluded that
->   this is probably ism330dhcx which is already supported.
->   (Would be nice if SpaceX can confirm.)
+Alternately, we could add a separate "odr_batch_avl" table along with a
+separate sysfs attr (e.g. "buffer_sampling_frequency"). That would be a
+lot more work though, especially since the actual ODR for the temp
+sensor won't be configurable anyway.
 
-I believe we did use the ism330dhc a long time ago but have since
-switched to the ism330dhcx. The register maps are compatible, so the old
-name stuck around. Adding support for ism330dhcx only is fine.
-
-
-> - Don't write in nonsense register 0x0a for temperature sensor
-> - More elaborate code to just avoid writing ODR for the temperature
->   sensor and instead rely on gyro or accelerometer to drive
->   the odr
-
-OK, we only use this in batch mode, I'll confirm that removing this
-write (for non-batch mode) works as expected.
-
-
-> +				/*
-> +				 * NOTE: this ODR will be capped and controllerd by the
-> +				 * gyro and accelerometer don't have any reg to configure
-> +				 * this ODR.
-> +				 */
-> +				.odr_avl[0] = {  12500, 0x01 },
-> +				.odr_avl[1] = {  26000, 0x02 },
-> +				.odr_avl[2] = {  52000, 0x03 },
-> +				.odr_len = 3,
-
-As per the other thread, the data rate should be 1600, 12500, and 52000.
-
-
-> +		/*
-> +		 * The temperature sensor has a fixed scale and offset such
-> +		 * that: temp_C = (raw / 256) + 25
-> +		 */
-> +		sensor->gain = 3906;
-> +		sensor->offset = 25;
-
-I believe the gain should be set to 3906250 now (1e9 / 256). 3906 was an
-approximation from an older kernel that used IIO_VAL_INT_PLUS_MICRO
-instead of IIO_VAL_INT_PLUS_NANO.
-
-Also in st_lsm6dsx_alloc_iiodev(), I believe we can/should avoid setting
-available_scan_masks, the mask (0x7) isn't really valid for the
-temperature sensor that has only one channel.
+Note, I don't have any specific need for the lower rates, so if 52 Hz is
+the only rate supported, that still "works for me".

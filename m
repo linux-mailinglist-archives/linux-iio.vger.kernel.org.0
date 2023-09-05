@@ -2,89 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE58792594
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 18:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AECA97925B1
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 18:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237543AbjIEQTP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Sep 2023 12:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41506 "EHLO
+        id S237631AbjIEQTW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Sep 2023 12:19:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354185AbjIEKI6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 06:08:58 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266E81AB;
-        Tue,  5 Sep 2023 03:08:54 -0700 (PDT)
+        with ESMTP id S1354332AbjIEKpz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 06:45:55 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C04199
+        for <linux-iio@vger.kernel.org>; Tue,  5 Sep 2023 03:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1693908533; x=1725444533;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+8MX5ACtp0E3yDFO037e/NmBawdAVmspJKr7wW6W9gE=;
-  b=i38X5fCHxDmaP4LRFg3nEZuBqfAoPear1ZPI/GL9hweOVcp7jHLh1GrC
-   ru4MoxqCj7g76I0QM04ZIXXvcWpNis6L0wfxA7LOx/GbSfRS6D7dnfO/C
-   V0hdNdrWY9mGfehBuTQu8mXidkkmo6Zapj1mLO5wcqCOqcXfuRzwKd/u2
-   zOxNGNgAnocXYAjSl6QxlZlUgsxRHIFwDVABEi8RxgLszwA1wERadcq6M
-   W8CIK0sSclvga1aFaz/Rd/3K6+Pr0EEOyVWdgobyvAqgit/49hm+G9SmQ
-   x5iZ/1AHI6qKm76hO5Rl2w94EIuztyIOP8Zn088shyFqgEIQhcnieFLw/
-   g==;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693910748; x=1725446748;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HNPwCnC1djlcmIxUV2dUyoA7cOsHxuuhbGyWpmkIKQw=;
+  b=FF+pk4Y/lYRTMonjajRwsjHuyLePcPNOaQAl4ICTK7hnm0A6rdbT+qwY
+   OYrqeM1i5LOnIScghiCJdiV184M94fDdxcr2irf5lwUOPxs+Ri0w3+US3
+   9rMf5ZWtGWO4giXCaaopwLe0VyQCOubB2RCKInhsdhmdPvoSHXifSCkDq
+   ASIiJea9Ok/bQ9mZxYyt9C54oAGHmZ3erLdst4kQwYb5NWdrpOIGWvKbK
+   dCzniygcxYyX8yNxQT5oQSh+Cuanq/5tB28l3ouhT9H6mTGwc2gnvC8Uq
+   IWxnjsUt27rjm4Pz4olO60rVUTybQsh4gPbrOa1hnf5n4BFTmWoLjH7wu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="443162580"
 X-IronPort-AV: E=Sophos;i="6.02,229,1688454000"; 
-   d="scan'208";a="2881960"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 05 Sep 2023 03:08:43 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 5 Sep 2023 03:08:43 -0700
-Received: from che-lt-i70843lx.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.21 via Frontend Transport; Tue, 5 Sep 2023 03:08:40 -0700
-From:   Dharma Balasubiramani <dharma.b@microchip.com>
-To:     <kamel.bouhara@bootlin.com>, <william.gray@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <balamanikandan.gunasundar@microchip.com>,
-        <hari.prasathge@microchip.com>, <nicolas.ferre@microchip.com>,
-        Dharma Balasubiramani <dharma.b@microchip.com>
-Subject: [linux][PATCH] counter: microchip-tcb-capture: Fix the use of internal GCLK logic
-Date:   Tue, 5 Sep 2023 15:38:35 +0530
-Message-ID: <20230905100835.315024-1-dharma.b@microchip.com>
-X-Mailer: git-send-email 2.25.1
+   d="scan'208";a="443162580"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 03:45:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="884275198"
+X-IronPort-AV: E=Sophos;i="6.02,229,1688454000"; 
+   d="scan'208";a="884275198"
+Received: from unknown (HELO smile.fi.intel.com) ([10.237.72.54])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 03:45:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qdTYw-006evp-0v;
+        Tue, 05 Sep 2023 13:45:38 +0300
+Date:   Tue, 5 Sep 2023 13:45:37 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Tomas Melin <tomas.melin@vaisala.com>
+Cc:     linux-iio@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        u.kleine-koenig@pengutronix.de
+Subject: Re: [PATCH] iio: adc: ti-ads1015: support deferred probe
+Message-ID: <ZPcG0fzoMU5OMave@smile.fi.intel.com>
+References: <20230904101533.455896-1-tomas.melin@vaisala.com>
+ <ZPW+MXuBSYEE1GfF@smile.fi.intel.com>
+ <e12f3459-7025-89a1-704b-209391cb8f55@vaisala.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e12f3459-7025-89a1-704b-209391cb8f55@vaisala.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As per the datasheet, the clock selection Bits 2:0 – TCCLKS[2:0] should
-be set to 0 while using the internal GCLK (TIMER_CLOCK1).
+On Tue, Sep 05, 2023 at 09:13:28AM +0300, Tomas Melin wrote:
+> On 04/09/2023 14:23, Andy Shevchenko wrote:
+> > On Mon, Sep 04, 2023 at 01:15:22PM +0300, Tomas Melin wrote:
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
----
- drivers/counter/microchip-tcb-capture.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+...
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index e2d1dc6ca668..c7af13aca36c 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -98,7 +98,7 @@ static int mchp_tc_count_function_write(struct counter_device *counter,
- 		priv->qdec_mode = 0;
- 		/* Set highest rate based on whether soc has gclk or not */
- 		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
--		if (priv->tc_cfg->has_gclk)
-+		if (!priv->tc_cfg->has_gclk)
- 			cmr |= ATMEL_TC_TIMER_CLOCK2;
- 		else
- 			cmr |= ATMEL_TC_TIMER_CLOCK1;
+> >> +out:
+> >> +	if ((ret == -EAGAIN) || (ret == -ENXIO))
+> >> +		return -EPROBE_DEFER;
+> >> +	return ret;
+> > 
+> > Oh my... This looks so-o hackish.> If anything, it has to be fixed on the level of regmap I2C APIs or
+> so.As such this does fix a real world issue. Providing some helpers for
+> this on regmap level would probably be great. To add such an API I
+> suspect there should first be existing users for it, and this would be
+> one example.
+> Until there would be such an generic API, I'm not sure if there are many
+> other alternatives than to check for invalid returns and defer the probe.
+
+As Jonathan said, please try to elaborate better what the real word issue is,
+how it can be reproduced, etc.
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 

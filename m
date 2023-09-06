@@ -2,152 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A2279302F
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Sep 2023 22:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD28A793512
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Sep 2023 07:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234307AbjIEUol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Sep 2023 16:44:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35792 "EHLO
+        id S238047AbjIFF7U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Sep 2023 01:59:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231228AbjIEUol (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Sep 2023 16:44:41 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD3E132;
-        Tue,  5 Sep 2023 13:44:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693946677; x=1725482677;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ldRgTQqmEua8N5cJhViF6FB4LOCXO1IC3Kf5Kk1RTeM=;
-  b=N3eNrQ2Do9uMHdXBpsdMncRwfeBx26jiwR2LhKwTyJtywF9Yi9AKYUOp
-   pdFbMnPbeeWRWALxt9Ex6DpnLFuvCpCE58z766Ruvy7L2A0T6X7SqvOTQ
-   LrByfTenykFIwGH9PJQ7FPfVPzEVQttE2dywx63eu5Fw0WeXJQye/qZ+Q
-   HYJkSx8BUX5/3hceoW1ZD/s53hqsJrmEqTUaRMd6YoO6U0frDrwx4mNSo
-   YB1sTK8VhCK6BLFHl0MwXFfSWLPEq0gtFag1KU0CoDmuG9J2g9qWok4W3
-   8YN/QBT1YCFl5XsJbyl+JonZ/Tmkq5GWoJDZR5DogJWakfMiVlNlQXs4v
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="361928011"
-X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
-   d="scan'208";a="361928011"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 13:44:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="864886953"
-X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
-   d="scan'208";a="864886953"
-Received: from lkp-server02.sh.intel.com (HELO e0b2ea88afd5) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 05 Sep 2023 13:44:33 -0700
-Received: from kbuild by e0b2ea88afd5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qdcuV-00023o-1b;
-        Tue, 05 Sep 2023 20:44:31 +0000
-Date:   Wed, 6 Sep 2023 04:44:26 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Liam Beguin <liambeguin@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Liam Beguin <liambeguin@gmail.com>
-Subject: Re: [PATCH 2/3] iio: adc: ltc2309: switch to new .probe()
-Message-ID: <202309060456.UYGqTIBd-lkp@intel.com>
-References: <20230824-ltc2309-v1-2-b87b4eb8030c@gmail.com>
+        with ESMTP id S230129AbjIFF7U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Sep 2023 01:59:20 -0400
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2050.outbound.protection.outlook.com [40.107.8.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F93C1BB
+        for <linux-iio@vger.kernel.org>; Tue,  5 Sep 2023 22:59:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UvlFynDJz+CMLWeMO4OX6oqA+lZQNvaGlszJNiJNsru0k76qdnhhtqJK7pEPYz2CutRl++aF/ZKpxx9KxrmzSvX662xLNIQOeN5fc5jL3LguGd7rJC4pZzgWgRpi/pg/M2jsVEO89QK4rdSDVgq4xi+FNw4ljsqahod38wlXYisUU0IGfL1b7kD6cIS0lrIB6gzhPIAdy7lGBHbqnOEokekE2c2327uRIY8ZKbnxjUQW1qb2pwUAHROps0+BSrwO7peT9W+FsPn6uIgDGy5wCXSZy5uOovNNtPDTI/ws9c8D/8Rs3Xr16TyT9Omu2ntG+CsjhcSUbDWH1hjfsXTvKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4w7enhfaqcCChX9echJaiwfmD+lRv3qT6sto+bjWkGE=;
+ b=Tdi16+GFQLqDdz9jmMF0AqZpa5p7BJiIEBuqMy8Bxu8zJz+QaKzSQ1vEZMOkrK0NT4mUhBZT2QRxreasX+nqAhfFEVRefpDuPIPguEDhGtUjNi5deWGEgquJmYtuuPrRDla/XiCKrisD3Q7eXvOHP9BKnHvIE8FyCo/ovP4VBpRwkt0OiyxGKL4wSyF9dTB6R30si3/CYZzorYhdL8lVqMDWfuW6h/MiNVsL3XMQSLwrsQ+TENNrpXmIU2i4Ier7zEMQqY8a8dX0+CVN10zNUYWhto0/IfH09D0UPZ0GrmDE+yaZxz3aUNyQlcnGl9/vyoY2zeanILEJ6zKTZUH2vQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4w7enhfaqcCChX9echJaiwfmD+lRv3qT6sto+bjWkGE=;
+ b=LyeTmdiJD+rdGBFhRbXK8Jbuszxm8TEvTqEG+Ya3I/f59oGA9RuL8EN+MIUiBUSIkyWV1zMKvF538rjCNy3zke8wps0Q6QiVycKfxfijEY0j88B/yqoGjTnnL04qq8g7//UW/0GDeq0zhVb8Dk94tokQB3hT5WlLqiOQMELCYHxh484F/fw100218QGSelYr+xwXLva07gokSUs8fiyfaC35yIthRWBIHVM4Mpg7i9JpxAXX5KgZxoE9Tsw/4fGENiC7C2IZVVYp9rJO5utO6o02HlyGh42PQBmeCH10Jzur48Dhnq3AESE4blQWNzSCL7zUG+hp84ihnlYOs2Q3ug==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from HE1PR0602MB3625.eurprd06.prod.outlook.com (2603:10a6:7:81::18)
+ by VI1PR06MB6463.eurprd06.prod.outlook.com (2603:10a6:800:11d::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
+ 2023 05:59:13 +0000
+Received: from HE1PR0602MB3625.eurprd06.prod.outlook.com
+ ([fe80::cec4:e994:fbc6:5f07]) by HE1PR0602MB3625.eurprd06.prod.outlook.com
+ ([fe80::cec4:e994:fbc6:5f07%6]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
+ 05:59:13 +0000
+Message-ID: <b34d2c94-ae78-c7ee-9352-12f4ee1c0294@vaisala.com>
+Date:   Wed, 6 Sep 2023 08:59:09 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] iio: adc: ti-ads1015: support deferred probe
+Content-Language: en-US
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
+        u.kleine-koenig@pengutronix.de
+References: <20230904101533.455896-1-tomas.melin@vaisala.com>
+ <ZPW+MXuBSYEE1GfF@smile.fi.intel.com> <20230904141251.00002b7d@Huawei.com>
+ <848d639c-43d1-bf92-2292-059dd1a019cf@vaisala.com>
+ <38f995ab-99de-1d88-696e-edc78e24c8b2@metafoo.de>
+From:   Tomas Melin <tomas.melin@vaisala.com>
+In-Reply-To: <38f995ab-99de-1d88-696e-edc78e24c8b2@metafoo.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GVYP280CA0009.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:fa::23) To HE1PR0602MB3625.eurprd06.prod.outlook.com
+ (2603:10a6:7:81::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824-ltc2309-v1-2-b87b4eb8030c@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: HE1PR0602MB3625:EE_|VI1PR06MB6463:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6820e51-6b7f-4e12-f25e-08dbae9e64d2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fGh6W6hKuNJGGQUmYcd0nKIe0SZE8v1N/tgluLCmRc1BGafrOLS7UbFlaFNUTO9z4iKdak8aEqZIKZd7Pf+dt4ZlmdgBU+YP/NBDFT/2oFUalpiHKhrq531OXvmkTsd5PiAZ335cFYKVfBsHTJ4ZjkktpsS3mJhFcR+gWFRxYLLG4a2qyk4y+YaUItDbzhjbC6VBXhjlaQeDiCn+o5Tu16SNC9J+qf23KHL+xt3CRpeQmSk7KdJafd6klVcNrQ+OnwUOKmcOTKAJM1QO3LX/Ge01DUYJPqSWnBCG4jrLS1Am7marIHXRBn7AToY0b29vonLPHf7ZQ+tEz2pjw8+/h2reTwjd6Elb5NqfKiftbJGIo3jmgXyQhZ9CnOzmiJGJrKi3nhiOoUOvxlFc4ZLh7gqROQvInJKWyXQ/YuT+SOTu6x4P6UbS9bAq8g64OLI0eRAZbsSL8D2TkBzsRLtiWZZBgMlheSRZL48umEN5hTqNLkM8GbN3z4V7TiHiH+GoiU17P136yB88K5S0viEaZndKH127NyNdhLdwQzOAZjAuxYcxe70Vi+g68IKj6oTNDctFyALVS4LKVcH9JAGwpMSAoA/aMtPR9BSQamQnBF2aOnAUBUE5OBZUP42uAvnmi0OgR4jfoTtTo0xr51RABg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0602MB3625.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39850400004)(376002)(366004)(396003)(346002)(186009)(1800799009)(451199024)(66476007)(8936002)(83380400001)(478600001)(4326008)(8676002)(41300700001)(66946007)(6666004)(53546011)(110136005)(66556008)(6512007)(2616005)(316002)(26005)(6486002)(6506007)(38100700002)(2906002)(44832011)(5660300002)(31696002)(86362001)(31686004)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T0RZWm5tMnpLdnJPQ0hpSG9FRG51RTlkYmJ4dGxkNVg5VFdMYkdIR2pTWkdn?=
+ =?utf-8?B?a2hoSXowYWZBM2xyaVF4amEyUVRURy9Kb3ZxSyt5MjlwbVhYR1dDQTlIa0E1?=
+ =?utf-8?B?WWdOWU9naVZ2OFJTb202THBHVE02eDBNRzZhcjE1Y0RqVFU5RTRNbDlzQzVm?=
+ =?utf-8?B?RVAydDUyOXFLZjk2dzZ5NE1OSWNDMmpOdnhvVVpxZ3FOM29UQnBmNmR5Ukhw?=
+ =?utf-8?B?QzZTeVVndFBjNlp5RDR6bVNDbnNzajNGVG5PWUk0M3NhOE96dFd5ZDFUekhC?=
+ =?utf-8?B?SCtHeXhjaExoM3dSa0hkazRnU2t0NWRRenluVVIwT21UeXRocnh0V00rVlll?=
+ =?utf-8?B?YVZ3Q1pabFdWTDlITjlndXJLTk1UNmNhQ1cwazMxNFBKOHI0UHFGRXZHc216?=
+ =?utf-8?B?Vmg3a0x3MFM5WER0enFsYTIwa0N5a2lVQW9MbmdiUTRna1M1eUsrV1k5STBJ?=
+ =?utf-8?B?b1hpWHFnRjIwMkpXR2VNbEhFeXBBd3BOZk4rbjQvVTBkaXlMSEpRNkNsSW5l?=
+ =?utf-8?B?VGt5QU1Ranc2KytCREpwSDA0aStmTURGNUI4Q2xPNDNrL05BYjBpK1d6Vlcr?=
+ =?utf-8?B?WGo4QjlSSGduSll3akU2S05FKzhLVm92ZC9vZjBvaFpYRjBKNjEzMVJORGxt?=
+ =?utf-8?B?RXJIWHZFc0xQQ1pnOTVoWjFtWFJkV25JSDN5YlBWUjRnWEIzZmhBajVuUmFl?=
+ =?utf-8?B?VktjRldWZlQ1K1BJOVlJbHlKcXQvUXJtaThReEtWR0MrRi84cUxWbWp4TFRE?=
+ =?utf-8?B?d29VZ1REbjBoekt6b0ljcWRuZnFJQTh4eFdyQ2ZmOHJSRUErbm9Ecm5JL0Mw?=
+ =?utf-8?B?ZVBqQ24xa3dhdzdEcjJzeWt3V1BlWjJyQi9kMnhiTmU1SmxjTlkrTDc3bXFi?=
+ =?utf-8?B?SmVSU1QzK3RWaHZoK1pzcW9xY2o5YmMxRTBrbXVDV3M5eFBhVTdDQUluaHNs?=
+ =?utf-8?B?aCsvNGpvLzJJUFcwalBCdVluVGFhcG05bm4rWGdlNnJwc2J5dnF6WWwvRGpz?=
+ =?utf-8?B?aXVlOFhjNmNrblhOeUVwblJoSGJjZWVDSHZRN2JCcXNLNU8xbGphRUlndXBS?=
+ =?utf-8?B?RzZxMndrQmd3NUpLanlHMFNYektSMExzL1cxSkZWM1kzbXJOWXRJVDFXZmlD?=
+ =?utf-8?B?MTF1Rk9TSmJlcGlKQ3RXUTNkVDlLcGdzUHp1cHFFVHN4NGszSUdTMFRyNDRX?=
+ =?utf-8?B?T3M0OWNOUVVZUUV5aC9LM01jS2p0aVVZU25NSGtlOVhvaFJ6VFJyZEZ1dllJ?=
+ =?utf-8?B?MXQwUzhPcUZTaSszWjA2RFBOeXloUUdrU3B6dElDdzFYWjhjYzFlakkramU4?=
+ =?utf-8?B?ZGxqYnh1elBlblF5d1ZZc2R0NUh3YUdCNktmM2paQXdOMW56aEJLTkgzY3RR?=
+ =?utf-8?B?cXNKUmFkNDlrOFFFOUM2emFHZkRSdWlYM1lQRXdEK3FGQmFTbGxmK2o1MGY3?=
+ =?utf-8?B?VldRYStoeFpyaGsrcGRUOFlPa1Y3SnAvQkM3QkhLcloxbDZiN2k2SGpxZHBq?=
+ =?utf-8?B?eFJ3TzQ1TTNlR3Bod2ZEZWEra3ZWS1NaQUxlOGlleDgzZEIrQk9zZFFIdTZ3?=
+ =?utf-8?B?L0dDS01SbUhPZm1sc3I5ZVNQcDJUNjRFZGRsWFFVcmFSUlJkUlBvUW41cW9V?=
+ =?utf-8?B?RUlXNngrWENsT0lIR1FlR2NwQkJYcHcwSnRuNkUva2taS2FRaytOeFJ6SU5j?=
+ =?utf-8?B?VWxPc3A2MjFkZW1GcDhVWHZpaTdxeWNYSk9EdGVnU25YUXFTR0dzbm1GalBZ?=
+ =?utf-8?B?WFZGTmhkOVNYTDhQN3Rvd3lSbm5uN05wdmdlOHdUcHNmMWY2Rlg0b3JvVW41?=
+ =?utf-8?B?T2NEZjFTSGRvbjRYbjBqYWtZWDNTSTFRNEVnRHFBTFVpTU5pTXF5eUJ4bkRR?=
+ =?utf-8?B?V0dMeFBBWGFkSkQvZGpvZ29RS0Fpd3c3REpNRGVTbGtpMTBJNStFMTY5a3Ns?=
+ =?utf-8?B?MTJ3MVhnMTBKTlhwZWhNNU9MRnlNTUdnTFdPdm5QSDlhUTlSUlUvNlJhVjg1?=
+ =?utf-8?B?bTBmUHNITU1aSDhGdU9TUlJOTUZzRjNDSXFRbE1iMElsejhrWHJaTXcxcDZj?=
+ =?utf-8?B?WFB3enRuNjRsdlVNRS9lMkY0RXJRQ2kzc0N5ODNVUjA2Mi9mOHY3ODd5dHBl?=
+ =?utf-8?B?aVA5WGZQSk1pZkl1a1lyL094USt6bG8xUk00Q3F0eGw1T3MwZTRvQWhtME5h?=
+ =?utf-8?B?cFE9PQ==?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6820e51-6b7f-4e12-f25e-08dbae9e64d2
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0602MB3625.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 05:59:12.8041
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z5vQHlv8cOLY0gqM0uNMQNmZAr/yzEnxdKxfTRUpL5eft9PwS/wywS15iGJtAZKDcCCwGSiVsc2Eb8uhNC9pSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR06MB6463
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Liam,
+On 05/09/2023 15:31, Lars-Peter Clausen wrote:
+> On 9/5/23 04:43, Tomas Melin wrote:
+>> Hi,
+>>
+>> Point is, that if the communication to the i2c bus has some temporary
+>> error like EAGAIN, why could it not be reasonable to try again at a
+>> later time instead of giving up completely.
+> 
+> The way probe deferral works, or is supposed to work, is that if a 
+> driver detects that it is missing a resource to initialize the device it 
+> can return EPROBE_DEFER to try again later. Once a new resource becomes 
+> available it will try again. In your case there is no resource 
+> dependency, but just a random failure. So there is no guarantee that 
+> probe will actually be called again since there might not be any new 
+> resources that become available.
+> 
+> The solution you've implemented might work on your specific platform, 
+> but it does not work by design, it only works by chance. Returning 
+> EPROBE_DEFER for things like IO errors is not the right approach. If you 
+> need a quick hack you can for example write a small userspace script 
+> that will trigger re-probe of the device at system startup.
+Right, I will need to take a different approach with this. Thanks for
+the input!
 
-kernel test robot noticed the following build warnings:
+Tomas
 
-[auto build test WARNING on a5e505a99ca748583dbe558b691be1b26f05d678]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Liam-Beguin/iio-adc-add-ltc2309-support/20230825-005720
-base:   a5e505a99ca748583dbe558b691be1b26f05d678
-patch link:    https://lore.kernel.org/r/20230824-ltc2309-v1-2-b87b4eb8030c%40gmail.com
-patch subject: [PATCH 2/3] iio: adc: ltc2309: switch to new .probe()
-config: i386-randconfig-061-20230906 (https://download.01.org/0day-ci/archive/20230906/202309060456.UYGqTIBd-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230906/202309060456.UYGqTIBd-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309060456.UYGqTIBd-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/adc/ltc2309.c:138:24: sparse: sparse: cast to restricted __be16
-
-vim +138 drivers/iio/adc/ltc2309.c
-
-a967828958b014 Liam Beguin 2023-08-24  106  
-a967828958b014 Liam Beguin 2023-08-24  107  static int ltc2309_read_raw(struct iio_dev *indio_dev,
-a967828958b014 Liam Beguin 2023-08-24  108  			    struct iio_chan_spec const *chan, int *val,
-a967828958b014 Liam Beguin 2023-08-24  109  			    int *val2, long mask)
-a967828958b014 Liam Beguin 2023-08-24  110  {
-a967828958b014 Liam Beguin 2023-08-24  111  	struct ltc2309 *ltc2309 = iio_priv(indio_dev);
-a967828958b014 Liam Beguin 2023-08-24  112  	u16 buf;
-a967828958b014 Liam Beguin 2023-08-24  113  	int ret;
-a967828958b014 Liam Beguin 2023-08-24  114  	u8 din;
-a967828958b014 Liam Beguin 2023-08-24  115  
-a967828958b014 Liam Beguin 2023-08-24  116  	mutex_lock(&ltc2309->lock);
-a967828958b014 Liam Beguin 2023-08-24  117  
-a967828958b014 Liam Beguin 2023-08-24  118  	switch (mask) {
-a967828958b014 Liam Beguin 2023-08-24  119  	case IIO_CHAN_INFO_RAW:
-a967828958b014 Liam Beguin 2023-08-24  120  		din = FIELD_PREP(LTC2309_DIN_CH_MASK, chan->address & 0x0f) |
-a967828958b014 Liam Beguin 2023-08-24  121  			FIELD_PREP(LTC2309_DIN_UNI, 1) |
-a967828958b014 Liam Beguin 2023-08-24  122  			FIELD_PREP(LTC2309_DIN_SLEEP, 0);
-a967828958b014 Liam Beguin 2023-08-24  123  
-a967828958b014 Liam Beguin 2023-08-24  124  		ret = i2c_smbus_write_byte(ltc2309->client, din);
-a967828958b014 Liam Beguin 2023-08-24  125  		if (ret < 0) {
-a967828958b014 Liam Beguin 2023-08-24  126  			dev_err(ltc2309->dev, "i2c command failed: %pe\n",
-a967828958b014 Liam Beguin 2023-08-24  127  				ERR_PTR(ret));
-a967828958b014 Liam Beguin 2023-08-24  128  			goto out;
-a967828958b014 Liam Beguin 2023-08-24  129  		}
-a967828958b014 Liam Beguin 2023-08-24  130  
-a967828958b014 Liam Beguin 2023-08-24  131  		ret = i2c_master_recv(ltc2309->client, (char *)&buf, 2);
-a967828958b014 Liam Beguin 2023-08-24  132  		if (ret < 0) {
-a967828958b014 Liam Beguin 2023-08-24  133  			dev_err(ltc2309->dev, "i2c read failed: %pe\n",
-a967828958b014 Liam Beguin 2023-08-24  134  				ERR_PTR(ret));
-a967828958b014 Liam Beguin 2023-08-24  135  			goto out;
-a967828958b014 Liam Beguin 2023-08-24  136  		}
-a967828958b014 Liam Beguin 2023-08-24  137  
-a967828958b014 Liam Beguin 2023-08-24 @138  		*val = be16_to_cpu(buf) >> 4;
-a967828958b014 Liam Beguin 2023-08-24  139  
-a967828958b014 Liam Beguin 2023-08-24  140  		ret = IIO_VAL_INT;
-a967828958b014 Liam Beguin 2023-08-24  141  		break;
-a967828958b014 Liam Beguin 2023-08-24  142  	case IIO_CHAN_INFO_SCALE:
-a967828958b014 Liam Beguin 2023-08-24  143  		*val = ltc2309->vref_mv;
-a967828958b014 Liam Beguin 2023-08-24  144  		*val2 = LTC2309_ADC_RESOLUTION;
-a967828958b014 Liam Beguin 2023-08-24  145  		ret = IIO_VAL_FRACTIONAL_LOG2;
-a967828958b014 Liam Beguin 2023-08-24  146  		break;
-a967828958b014 Liam Beguin 2023-08-24  147  	default:
-a967828958b014 Liam Beguin 2023-08-24  148  		ret = -EINVAL;
-a967828958b014 Liam Beguin 2023-08-24  149  		break;
-a967828958b014 Liam Beguin 2023-08-24  150  	}
-a967828958b014 Liam Beguin 2023-08-24  151  
-a967828958b014 Liam Beguin 2023-08-24  152  out:
-a967828958b014 Liam Beguin 2023-08-24  153  	mutex_unlock(&ltc2309->lock);
-a967828958b014 Liam Beguin 2023-08-24  154  	return ret;
-a967828958b014 Liam Beguin 2023-08-24  155  }
-a967828958b014 Liam Beguin 2023-08-24  156  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> 

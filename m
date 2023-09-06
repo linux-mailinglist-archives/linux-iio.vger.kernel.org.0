@@ -2,160 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD28A793512
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Sep 2023 07:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B21793CC2
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Sep 2023 14:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238047AbjIFF7U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Sep 2023 01:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34678 "EHLO
+        id S233828AbjIFMg6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Sep 2023 08:36:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbjIFF7U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Sep 2023 01:59:20 -0400
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2050.outbound.protection.outlook.com [40.107.8.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F93C1BB
-        for <linux-iio@vger.kernel.org>; Tue,  5 Sep 2023 22:59:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UvlFynDJz+CMLWeMO4OX6oqA+lZQNvaGlszJNiJNsru0k76qdnhhtqJK7pEPYz2CutRl++aF/ZKpxx9KxrmzSvX662xLNIQOeN5fc5jL3LguGd7rJC4pZzgWgRpi/pg/M2jsVEO89QK4rdSDVgq4xi+FNw4ljsqahod38wlXYisUU0IGfL1b7kD6cIS0lrIB6gzhPIAdy7lGBHbqnOEokekE2c2327uRIY8ZKbnxjUQW1qb2pwUAHROps0+BSrwO7peT9W+FsPn6uIgDGy5wCXSZy5uOovNNtPDTI/ws9c8D/8Rs3Xr16TyT9Omu2ntG+CsjhcSUbDWH1hjfsXTvKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4w7enhfaqcCChX9echJaiwfmD+lRv3qT6sto+bjWkGE=;
- b=Tdi16+GFQLqDdz9jmMF0AqZpa5p7BJiIEBuqMy8Bxu8zJz+QaKzSQ1vEZMOkrK0NT4mUhBZT2QRxreasX+nqAhfFEVRefpDuPIPguEDhGtUjNi5deWGEgquJmYtuuPrRDla/XiCKrisD3Q7eXvOHP9BKnHvIE8FyCo/ovP4VBpRwkt0OiyxGKL4wSyF9dTB6R30si3/CYZzorYhdL8lVqMDWfuW6h/MiNVsL3XMQSLwrsQ+TENNrpXmIU2i4Ier7zEMQqY8a8dX0+CVN10zNUYWhto0/IfH09D0UPZ0GrmDE+yaZxz3aUNyQlcnGl9/vyoY2zeanILEJ6zKTZUH2vQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4w7enhfaqcCChX9echJaiwfmD+lRv3qT6sto+bjWkGE=;
- b=LyeTmdiJD+rdGBFhRbXK8Jbuszxm8TEvTqEG+Ya3I/f59oGA9RuL8EN+MIUiBUSIkyWV1zMKvF538rjCNy3zke8wps0Q6QiVycKfxfijEY0j88B/yqoGjTnnL04qq8g7//UW/0GDeq0zhVb8Dk94tokQB3hT5WlLqiOQMELCYHxh484F/fw100218QGSelYr+xwXLva07gokSUs8fiyfaC35yIthRWBIHVM4Mpg7i9JpxAXX5KgZxoE9Tsw/4fGENiC7C2IZVVYp9rJO5utO6o02HlyGh42PQBmeCH10Jzur48Dhnq3AESE4blQWNzSCL7zUG+hp84ihnlYOs2Q3ug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from HE1PR0602MB3625.eurprd06.prod.outlook.com (2603:10a6:7:81::18)
- by VI1PR06MB6463.eurprd06.prod.outlook.com (2603:10a6:800:11d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Wed, 6 Sep
- 2023 05:59:13 +0000
-Received: from HE1PR0602MB3625.eurprd06.prod.outlook.com
- ([fe80::cec4:e994:fbc6:5f07]) by HE1PR0602MB3625.eurprd06.prod.outlook.com
- ([fe80::cec4:e994:fbc6:5f07%6]) with mapi id 15.20.6745.034; Wed, 6 Sep 2023
- 05:59:13 +0000
-Message-ID: <b34d2c94-ae78-c7ee-9352-12f4ee1c0294@vaisala.com>
-Date:   Wed, 6 Sep 2023 08:59:09 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] iio: adc: ti-ads1015: support deferred probe
-Content-Language: en-US
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        u.kleine-koenig@pengutronix.de
-References: <20230904101533.455896-1-tomas.melin@vaisala.com>
- <ZPW+MXuBSYEE1GfF@smile.fi.intel.com> <20230904141251.00002b7d@Huawei.com>
- <848d639c-43d1-bf92-2292-059dd1a019cf@vaisala.com>
- <38f995ab-99de-1d88-696e-edc78e24c8b2@metafoo.de>
-From:   Tomas Melin <tomas.melin@vaisala.com>
-In-Reply-To: <38f995ab-99de-1d88-696e-edc78e24c8b2@metafoo.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: GVYP280CA0009.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:fa::23) To HE1PR0602MB3625.eurprd06.prod.outlook.com
- (2603:10a6:7:81::18)
+        with ESMTP id S230332AbjIFMg6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Sep 2023 08:36:58 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 725B4171C;
+        Wed,  6 Sep 2023 05:36:54 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2bceca8a41aso55668551fa.0;
+        Wed, 06 Sep 2023 05:36:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694003813; x=1694608613; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cYvzf03YqecQCtZTCL0bWpYSy2s7Z4Fa4sz1ABBRHMM=;
+        b=SoUYFgn6+EHW/N3IgOoO9bkcPeLFAxAbVRFGAipS1VOCE4AZIRPbZ62GCSjm2icgmz
+         55layHRloGMgn4VvW2wL/QG+GmPephYk+Yp5utc1vwg774Jb4FDCPn5ZgVerKkzAo8XY
+         1ZiqDw7aX00KhPUvTScQetRIQOzIAT0Z9XPTw7GLyys3ldjSMC+KZGQVJG71faIykVVN
+         pblIxyPBLIrNvG9er5exiP7ES+P28XZx/rU6qm2BQcPzCzmzkGWD3YBDxpFVwHYmcH1Z
+         8CLlVJ7ZyFVQrFsNC6YouxF9N6rBgUe/doKEGeqUp/ss3iedXtVouA239sCBMz4zF1dS
+         Bc9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694003813; x=1694608613;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cYvzf03YqecQCtZTCL0bWpYSy2s7Z4Fa4sz1ABBRHMM=;
+        b=amWuTO5ep0oDikW3ITslaZ3G2UY2YCItemEUKjfzzkWMUeysDftrBbCjpe707v+Rdg
+         bGwlEPxshEjv3wSLHbTFciZ0XgwGshJlv/I1xsOXxOXPxg4UEHq29WDC7zVotMxCqUtx
+         ogMaG9IWuL5wr2SdiUNf9+zuik6MzIB6c4wTFPVmaCa9rOgNo3/E5q7jVt6LZ6FCagel
+         NqEGaWcKsTxpUkkWW34MWrSFaSxjDwIz6kbsKYf7asBzA0FBkn1WBo8YH9eKdiIRf+Az
+         sbl+oBxAfEm4hK50/QvE7OtlCq+BWlr8iCJ8dqa7a5PjHspDCZLXbivUYPKhMX0t/Cp9
+         w2hw==
+X-Gm-Message-State: AOJu0YwD168fnGhHGw8wUsJRwamFWEstIgAB2P/bM0We/zPsz36WBEVo
+        NfJIQK5jR+hTq7DAKeKBR8s=
+X-Google-Smtp-Source: AGHT+IGdTSaEthamaVjn/54BDzKGHgEN4k3YI3rK2BSG/B8X29U+0rCNZRHJJ+PyIOSr4dL2Z+638A==
+X-Received: by 2002:a05:651c:1214:b0:2bc:f39b:d1a8 with SMTP id i20-20020a05651c121400b002bcf39bd1a8mr2272623lja.46.1694003812353;
+        Wed, 06 Sep 2023 05:36:52 -0700 (PDT)
+Received: from dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
+        by smtp.gmail.com with ESMTPSA id h24-20020a2e9018000000b002bceae8b9fasm3285094ljg.109.2023.09.06.05.36.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Sep 2023 05:36:51 -0700 (PDT)
+Date:   Wed, 6 Sep 2023 15:36:43 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Support ROHM BM1390 pressure sensor
+Message-ID: <cover.1694001462.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0602MB3625:EE_|VI1PR06MB6463:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6820e51-6b7f-4e12-f25e-08dbae9e64d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fGh6W6hKuNJGGQUmYcd0nKIe0SZE8v1N/tgluLCmRc1BGafrOLS7UbFlaFNUTO9z4iKdak8aEqZIKZd7Pf+dt4ZlmdgBU+YP/NBDFT/2oFUalpiHKhrq531OXvmkTsd5PiAZ335cFYKVfBsHTJ4ZjkktpsS3mJhFcR+gWFRxYLLG4a2qyk4y+YaUItDbzhjbC6VBXhjlaQeDiCn+o5Tu16SNC9J+qf23KHL+xt3CRpeQmSk7KdJafd6klVcNrQ+OnwUOKmcOTKAJM1QO3LX/Ge01DUYJPqSWnBCG4jrLS1Am7marIHXRBn7AToY0b29vonLPHf7ZQ+tEz2pjw8+/h2reTwjd6Elb5NqfKiftbJGIo3jmgXyQhZ9CnOzmiJGJrKi3nhiOoUOvxlFc4ZLh7gqROQvInJKWyXQ/YuT+SOTu6x4P6UbS9bAq8g64OLI0eRAZbsSL8D2TkBzsRLtiWZZBgMlheSRZL48umEN5hTqNLkM8GbN3z4V7TiHiH+GoiU17P136yB88K5S0viEaZndKH127NyNdhLdwQzOAZjAuxYcxe70Vi+g68IKj6oTNDctFyALVS4LKVcH9JAGwpMSAoA/aMtPR9BSQamQnBF2aOnAUBUE5OBZUP42uAvnmi0OgR4jfoTtTo0xr51RABg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0602MB3625.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39850400004)(376002)(366004)(396003)(346002)(186009)(1800799009)(451199024)(66476007)(8936002)(83380400001)(478600001)(4326008)(8676002)(41300700001)(66946007)(6666004)(53546011)(110136005)(66556008)(6512007)(2616005)(316002)(26005)(6486002)(6506007)(38100700002)(2906002)(44832011)(5660300002)(31696002)(86362001)(31686004)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T0RZWm5tMnpLdnJPQ0hpSG9FRG51RTlkYmJ4dGxkNVg5VFdMYkdIR2pTWkdn?=
- =?utf-8?B?a2hoSXowYWZBM2xyaVF4amEyUVRURy9Kb3ZxSyt5MjlwbVhYR1dDQTlIa0E1?=
- =?utf-8?B?WWdOWU9naVZ2OFJTb202THBHVE02eDBNRzZhcjE1Y0RqVFU5RTRNbDlzQzVm?=
- =?utf-8?B?RVAydDUyOXFLZjk2dzZ5NE1OSWNDMmpOdnhvVVpxZ3FOM29UQnBmNmR5Ukhw?=
- =?utf-8?B?QzZTeVVndFBjNlp5RDR6bVNDbnNzajNGVG5PWUk0M3NhOE96dFd5ZDFUekhC?=
- =?utf-8?B?SCtHeXhjaExoM3dSa0hkazRnU2t0NWRRenluVVIwT21UeXRocnh0V00rVlll?=
- =?utf-8?B?YVZ3Q1pabFdWTDlITjlndXJLTk1UNmNhQ1cwazMxNFBKOHI0UHFGRXZHc216?=
- =?utf-8?B?Vmg3a0x3MFM5WER0enFsYTIwa0N5a2lVQW9MbmdiUTRna1M1eUsrV1k5STBJ?=
- =?utf-8?B?b1hpWHFnRjIwMkpXR2VNbEhFeXBBd3BOZk4rbjQvVTBkaXlMSEpRNkNsSW5l?=
- =?utf-8?B?VGt5QU1Ranc2KytCREpwSDA0aStmTURGNUI4Q2xPNDNrL05BYjBpK1d6Vlcr?=
- =?utf-8?B?WGo4QjlSSGduSll3akU2S05FKzhLVm92ZC9vZjBvaFpYRjBKNjEzMVJORGxt?=
- =?utf-8?B?RXJIWHZFc0xQQ1pnOTVoWjFtWFJkV25JSDN5YlBWUjRnWEIzZmhBajVuUmFl?=
- =?utf-8?B?VktjRldWZlQ1K1BJOVlJbHlKcXQvUXJtaThReEtWR0MrRi84cUxWbWp4TFRE?=
- =?utf-8?B?d29VZ1REbjBoekt6b0ljcWRuZnFJQTh4eFdyQ2ZmOHJSRUErbm9Ecm5JL0Mw?=
- =?utf-8?B?ZVBqQ24xa3dhdzdEcjJzeWt3V1BlWjJyQi9kMnhiTmU1SmxjTlkrTDc3bXFi?=
- =?utf-8?B?SmVSU1QzK3RWaHZoK1pzcW9xY2o5YmMxRTBrbXVDV3M5eFBhVTdDQUluaHNs?=
- =?utf-8?B?aCsvNGpvLzJJUFcwalBCdVluVGFhcG05bm4rWGdlNnJwc2J5dnF6WWwvRGpz?=
- =?utf-8?B?aXVlOFhjNmNrblhOeUVwblJoSGJjZWVDSHZRN2JCcXNLNU8xbGphRUlndXBS?=
- =?utf-8?B?RzZxMndrQmd3NUpLanlHMFNYektSMExzL1cxSkZWM1kzbXJOWXRJVDFXZmlD?=
- =?utf-8?B?MTF1Rk9TSmJlcGlKQ3RXUTNkVDlLcGdzUHp1cHFFVHN4NGszSUdTMFRyNDRX?=
- =?utf-8?B?T3M0OWNOUVVZUUV5aC9LM01jS2p0aVVZU25NSGtlOVhvaFJ6VFJyZEZ1dllJ?=
- =?utf-8?B?MXQwUzhPcUZTaSszWjA2RFBOeXloUUdrU3B6dElDdzFYWjhjYzFlakkramU4?=
- =?utf-8?B?ZGxqYnh1elBlblF5d1ZZc2R0NUh3YUdCNktmM2paQXdOMW56aEJLTkgzY3RR?=
- =?utf-8?B?cXNKUmFkNDlrOFFFOUM2emFHZkRSdWlYM1lQRXdEK3FGQmFTbGxmK2o1MGY3?=
- =?utf-8?B?VldRYStoeFpyaGsrcGRUOFlPa1Y3SnAvQkM3QkhLcloxbDZiN2k2SGpxZHBq?=
- =?utf-8?B?eFJ3TzQ1TTNlR3Bod2ZEZWEra3ZWS1NaQUxlOGlleDgzZEIrQk9zZFFIdTZ3?=
- =?utf-8?B?L0dDS01SbUhPZm1sc3I5ZVNQcDJUNjRFZGRsWFFVcmFSUlJkUlBvUW41cW9V?=
- =?utf-8?B?RUlXNngrWENsT0lIR1FlR2NwQkJYcHcwSnRuNkUva2taS2FRaytOeFJ6SU5j?=
- =?utf-8?B?VWxPc3A2MjFkZW1GcDhVWHZpaTdxeWNYSk9EdGVnU25YUXFTR0dzbm1GalBZ?=
- =?utf-8?B?WFZGTmhkOVNYTDhQN3Rvd3lSbm5uN05wdmdlOHdUcHNmMWY2Rlg0b3JvVW41?=
- =?utf-8?B?T2NEZjFTSGRvbjRYbjBqYWtZWDNTSTFRNEVnRHFBTFVpTU5pTXF5eUJ4bkRR?=
- =?utf-8?B?V0dMeFBBWGFkSkQvZGpvZ29RS0Fpd3c3REpNRGVTbGtpMTBJNStFMTY5a3Ns?=
- =?utf-8?B?MTJ3MVhnMTBKTlhwZWhNNU9MRnlNTUdnTFdPdm5QSDlhUTlSUlUvNlJhVjg1?=
- =?utf-8?B?bTBmUHNITU1aSDhGdU9TUlJOTUZzRjNDSXFRbE1iMElsejhrWHJaTXcxcDZj?=
- =?utf-8?B?WFB3enRuNjRsdlVNRS9lMkY0RXJRQ2kzc0N5ODNVUjA2Mi9mOHY3ODd5dHBl?=
- =?utf-8?B?aVA5WGZQSk1pZkl1a1lyL094USt6bG8xUk00Q3F0eGw1T3MwZTRvQWhtME5h?=
- =?utf-8?B?cFE9PQ==?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6820e51-6b7f-4e12-f25e-08dbae9e64d2
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0602MB3625.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 05:59:12.8041
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z5vQHlv8cOLY0gqM0uNMQNmZAr/yzEnxdKxfTRUpL5eft9PwS/wywS15iGJtAZKDcCCwGSiVsc2Eb8uhNC9pSQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR06MB6463
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="9EvZjNHDEQk1gQo8"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 05/09/2023 15:31, Lars-Peter Clausen wrote:
-> On 9/5/23 04:43, Tomas Melin wrote:
->> Hi,
->>
->> Point is, that if the communication to the i2c bus has some temporary
->> error like EAGAIN, why could it not be reasonable to try again at a
->> later time instead of giving up completely.
-> 
-> The way probe deferral works, or is supposed to work, is that if a 
-> driver detects that it is missing a resource to initialize the device it 
-> can return EPROBE_DEFER to try again later. Once a new resource becomes 
-> available it will try again. In your case there is no resource 
-> dependency, but just a random failure. So there is no guarantee that 
-> probe will actually be called again since there might not be any new 
-> resources that become available.
-> 
-> The solution you've implemented might work on your specific platform, 
-> but it does not work by design, it only works by chance. Returning 
-> EPROBE_DEFER for things like IO errors is not the right approach. If you 
-> need a quick hack you can for example write a small userspace script 
-> that will trigger re-probe of the device at system startup.
-Right, I will need to take a different approach with this. Thanks for
-the input!
 
-Tomas
+--9EvZjNHDEQk1gQo8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+ROHM BM1390 Pressure sensor (BM1390GLV-Z) can measure pressures ranging
+=66rom 300 hPa to 1300 hPa with configurable measurement averaging and an
+internal FIFO. The sensor does also provide temperature measurements
+although, according to the data sheet, sensor performs internal
+temperature compensation for the MEMS.
+
+Sensor does also contain IIR filter implemented in HW. The data-sheet
+says the IIR filter can be configured to be "weak", "middle" or
+"strong". Some RMS noise figures are provided in data sheet but no
+accurate maths for the filter configurations is provided.
+
+I actually asked if we can define 3db frequencies corresponding to these
+IIR filter settings - and I received values 0.452Hz, 0.167Hz, and 0.047Hz
+but I am not at all sure we understood each others with the HW
+colleagues... Hence, the IIR filter configuration is not supported by this
+driver and the filter is just configured to the "middle" setting.
+(at least for now)
+
+It would also be possible to not use IIR filter but just do some simple
+averaging. I wonder if it would make sense to implement the OVERSAMPLING
+value setting so that if this value is written, IIR filter is disabled and
+number of samples to be averaged is set to value requested by
+OVERSAMPLING. The data-sheet has a mention that if IIR is used, the
+number of averaged samples must be set to a fixed value.
+
+The FIFO measurement mode (in sensor hardware) is only measuring the
+pressure and not the temperature. The driver measures temperature when
+FIFO is flushed and simply uses the same measured temperature value to
+all reported temperatures. This should not be a problem when temperature
+is not changing very rapidly (several degrees C / second) but allows users
+to get the temperature measurements from sensor without any additional
+logic.
+
+This driver has received limited amount of testing this far. It's in a
+state 'works on my machine, for my use cases' - and all feedback is
+appreciated!
+
+Matti Vaittinen (3):
+  dt-bindings: Add ROHM BM1390 pressure sensor
+  iio: pressure: Support ROHM BU1390
+  MAINTAINERS: Add ROHM BM1390
+
+ .../bindings/iio/pressure/rohm,bm1390.yaml    |  52 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/pressure/Kconfig                  |   9 +
+ drivers/iio/pressure/Makefile                 |   1 +
+ drivers/iio/pressure/rohm-bm1390.c            | 944 ++++++++++++++++++
+ 5 files changed, 1012 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/rohm,bm1=
+390.yaml
+ create mode 100644 drivers/iio/pressure/rohm-bm1390.c
 
 
-> 
-> 
+base-commit: 2dde18cd1d8fac735875f2e4987f11817cc0bc2c
+--=20
+2.41.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--9EvZjNHDEQk1gQo8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmT4clYACgkQeFA3/03a
+ocUxhwf+NDchSYAOou6z94pkXu1dCe92/1S1hsKqODo1x9ktS7bBGKlBfzzucKeZ
+uWZX+Lpu/5ga5azop2P3bG9NuiNL5rIN0MTW1uHIczT/Ib+u54jStuCgHS8w4DGn
+FTfabM46/9JKBeUoaJX6WDXcOX9lJRsR4hx96pzTZLC2ftHWOnvU64bLE3nO/mFD
+7dcJ8flFNE/9ayn8LXj/mIn2JNVMTSsdXG01LNnzc7YksDhZ+NW+P4pt98f6/iw+
+Vp5Gxfmy4piJngmszKUnYcLLsql/kuZ1Y23FfzFpe+g9eUGrti9TJyMUUzZ5JkQA
+PpJEO15krN5yM5FAIiptbR4twK9CNg==
+=23Jn
+-----END PGP SIGNATURE-----
+
+--9EvZjNHDEQk1gQo8--

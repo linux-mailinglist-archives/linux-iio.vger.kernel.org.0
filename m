@@ -2,157 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D0CA79412E
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Sep 2023 18:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB065797579
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 17:51:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231249AbjIFQJA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Sep 2023 12:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45898 "EHLO
+        id S233197AbjIGPrW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Sep 2023 11:47:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjIFQJA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Sep 2023 12:09:00 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A78CE2;
-        Wed,  6 Sep 2023 09:08:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694016505; x=1725552505;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OzLF5wEtqk1sfQVJ8OcWXgZIS7Ouwn48FOTinl06s6Q=;
-  b=gHMGLiqAjH91S1lzILfMDzsVJ/cOzYqgFQIItzbsa8i/vQHgaQZF2W/j
-   eNRTmmtH9owpzh36xfTCxXhDZBYc2fI95DW9IuB/h9ED8GZmGYT8tkhus
-   odqTvNsod0RY5650K0f3/oH0VrHD8oxWD+XeGVZPtcIAVYiaHRhs8+hIC
-   +lkLd4Yw4xUNVpAurKtC3kpNKjABoecNEPY2yzblkmpDTuVcbuRPLK+In
-   PLIdq0jrV9nls9ZwNYX81qCFGj+iFS+pEAinfqZLOLDi66A3Oc2Lvl4E3
-   StuA/SCY/1akDkAECawFN7ZM0dON5ZtHsFYilMyObAVlneGoqIBou75wn
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="376008453"
-X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="376008453"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 09:03:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="741604970"
-X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="741604970"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 09:03:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qduzu-006z6D-0F;
-        Wed, 06 Sep 2023 19:03:18 +0300
-Date:   Wed, 6 Sep 2023 19:03:17 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
- retrieve number of bytes in buffer
-Message-ID: <ZPiixW6CiR+z8s/r@smile.fi.intel.com>
-References: <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
- <ZOdddZ0Zpk5CknH8@smile.fi.intel.com>
- <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
- <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
- <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
- <ZOdrtNQijmhN9RAx@smile.fi.intel.com>
- <20230827190732.5e2215d0@jic23-huawei>
- <61247547-690c-fb8b-3a45-cd60754836a7@gmail.com>
- <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
- <7ca3b60f-e59f-b578-7c22-48487663cfa7@gmail.com>
+        with ESMTP id S243257AbjIGPb7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 11:31:59 -0400
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2072e.outbound.protection.outlook.com [IPv6:2a01:111:f403:700c::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF996184;
+        Thu,  7 Sep 2023 08:31:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kdyJpt+ShYjCs1ET2GEJq/3S1fFcn6/naTfwpobjltqQy9p6WKEbch2mRNVPxdyj4ObIcflrWLCYR1m7IibN6v2joWV6PL6tu7Ol3+xJ7aOb+c8WoZJnFzNsJo58+Exp+bM3X4LiIxAa3q36s8axoua9Ude9KiyG2rYzoTjaDBQIbYnRZFS0YH+ZqkIqbYinVwfkAQF9awqD9qJddTsPUIZwrIy4s/cVlqkUXEgF79b1SnRkFFZQ/iX/vqHZOD3ayVGYYT/14b5LWR+cKnQ2RbDxGc3Fdmk7VWyfqNg6oQcuZaC+mpwM1Rk8gJlNx2ap0fxbbyVhwjkpbrntpW23jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vy8M43cTTAhgjJlYkTRB8XFzgx12uNLeVkdmGj072QA=;
+ b=i8GL0TMiCfIlX2Y7/mS1Uf0F3ghhRdOEXgrn+8sC4czWiOXM9A42wiJZ1aWTfDp+lQzODJoLz1Nec+OkNmmiIrrXn66tGWDl3ZngDJWg2H8E+1dCMRJa/MgUl4qG3qdTTj1QDX3vxwtjxmcdNggAdGtwCwqonic0Yg8v5A9mTT5v8oi3GeAMlkJH58/bmNAlishxclZ41ZGWwSNwNY9kUpgDc9MqKolxz5Uixy1CIkuWkOkZS4Y6PhqJqh3SRgNO+Ko165/bd7FyWLhq1O42fs7CpTi9u/kSkc53cAw+liwIvTRu40funQjjomUE98NvGtRhrKa43ewv14niMmkbWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vy8M43cTTAhgjJlYkTRB8XFzgx12uNLeVkdmGj072QA=;
+ b=l+Y2lMkjD3j4Cb+zFzNeF/XYwiU92egwbABpy4hBnUQ4ptJTpBy62INTWqnjj/jv8yBaoKTfu3rowTHZprOHq/AwVk5wtUy174tZHMTPHtRBHLVgSha0EM94E00zRIiZxAp9NkV9QNcpEBhs5qkFad2Cuad4+sEXMHjC0kpmKqM=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by OSZPR01MB9532.jpnprd01.prod.outlook.com (2603:1096:604:1d1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36; Thu, 7 Sep
+ 2023 07:11:23 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::9d23:32f5:9325:3706]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::9d23:32f5:9325:3706%5]) with mapi id 15.20.6745.035; Thu, 7 Sep 2023
+ 07:11:23 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: RE: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
+Thread-Topic: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
+Thread-Index: AQHZzhmqGbM3bOJHNkKqVyoGVC6rua/pXDPggACkmYCAJRdrdoAAACIA
+Date:   Thu, 7 Sep 2023 07:11:23 +0000
+Message-ID: <OS0PR01MB592270FB205349A3548D242E86EEA@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <cover.1691952005.git.ang.iglesiasg@gmail.com>
+         <55f8dc02de16a353f0449bc1c7cb487bd776dfaf.1691952005.git.ang.iglesiasg@gmail.com>
+         <954c859835aed6c41a356fdd999a8be51469eb9e.camel@gmail.com>
+         <OS0PR01MB5922EDF7759069CD4993FA468617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+         <a83bde5079b769950220c0f1f3b8d374db39cfc7.camel@gmail.com>
+         <20230828123937.2bff2d92@jic23-huawei>
+ <8c206c8079d363d961f8f1f40c8346e872143f83.camel@gmail.com>
+In-Reply-To: <8c206c8079d363d961f8f1f40c8346e872143f83.camel@gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|OSZPR01MB9532:EE_
+x-ms-office365-filtering-correlation-id: 74d92c4d-4be1-454a-565c-08dbaf71a4aa
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: mrCTFdGdBJ4nZSKLiTiAHaisqoCfEeSR0K6t2n28dDGSk7KjVu1qtbWfNlYCw5Mrl0ZKkT+YwYDvljypu7Gl1OlBY/rnsSo5Qb9iR/Xv6wRY4dB3mABXm4AgS8E+58hbS8K8aRg/qg4aCBBDmvKmRQrSUAUi+3RUXUUga2FRzJaGfw5rKRfsup5Bq0tR4wl9XL/cOVV7JiQflK8zjPin2aD7WKVsicwaIDF6wLHxSlnkiscjPhb6xoLH/aBylGFhrm7OsvRoE2PpDasPDHfQxVQSLw+FA9gnLC1NzLy1UOiAQxtA93UvbmBQwTt7uf1uAAXOJS12jafUT8UE4qrJura2CgnKTNY8rgc33iSrzdtyCXtz0dmq9u5aEdPxMDSTeUdnjpQEn+2ydk5n5hKiUoHwQgOY2hHLNFY3bInPu+J6y7BlT94bO7ZYp4v1+iPGE2BX4Pfg3IDEBsf+bR/D+mv7UZNWVc1Tg08ya3X7ewqv7wcZZyd2+4CCDIJdUpk2fSEHSLELRwCjUYv8VDgWota4qklI/TWszFHtnDFX8B7wylAUQwg3NIL+Y9iPaF6OBlTEhArCtKEGSMAD3DX0T5EFjm5oVWh1EbX8u8qoM5Ehm3o5N5VRR9LvqixN2iE5
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(396003)(376002)(366004)(39860400002)(451199024)(1800799009)(186009)(66476007)(64756008)(54906003)(316002)(66446008)(122000001)(33656002)(71200400001)(86362001)(110136005)(66946007)(76116006)(66556008)(2906002)(8676002)(41300700001)(52536014)(8936002)(4326008)(5660300002)(55016003)(38100700002)(38070700005)(478600001)(9686003)(26005)(6506007)(7696005)(83380400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Nc2PLbeTqTiz6NkU/ZDcsPny1At79blJgdRd2dzYeVXDlAkBdnHG5625ws?=
+ =?iso-8859-1?Q?gpr3SFVZvNEEbdmuS83yDdLtj4bRZrGTw+G6l8u7EcyjFdr5/EKZr+V3pm?=
+ =?iso-8859-1?Q?hJW7EKNd2hhhv8d/BfY8yZao0hsmOch1eKstPg9uAtAQdp+BojFORKt2//?=
+ =?iso-8859-1?Q?Tu/iTXT6HHgG6PlfaGFGtlU9Epn4924nYG1c+gLYYW0Xv7HAeFZ1xqIW7R?=
+ =?iso-8859-1?Q?m8QXR8D1CAGEa5Gsc4FZhTXVS5EakyCceK89+Nas3yF7A/J+ZBR3NsN3q8?=
+ =?iso-8859-1?Q?SlL1Wi8JkIxaqexXFMHdRA0zMfUbD+WYK3WlQD2fhHIxDoBmjOTG05fCDR?=
+ =?iso-8859-1?Q?GFxRoHphL9e/mj3ql8I+CKlMvwyt3rd7OBCn93/voeswjIrS44hxD2sbfh?=
+ =?iso-8859-1?Q?4IiSH2S3JZVUTqklHkHYXZDibZKGO++oKWAo81XvkojjsRhzyqZfv++jrV?=
+ =?iso-8859-1?Q?oZ2Fr97tfEI87awimThaNbEsbQyna4ivfgW5rk7pklubNp9hL2XnzpSzVu?=
+ =?iso-8859-1?Q?73F7m5EQ6wfgFfYDhG4rvHpWdhoWpI48fNTHlJ5OPgq32zflBB4YMAe1Nm?=
+ =?iso-8859-1?Q?bvMYnS/GgVHZzrvV7uw8z+E90UpRSg+NhvhxR+ITACgtcAivQfaBoXAMjg?=
+ =?iso-8859-1?Q?eoTAE1twMgGN4J1pgkmSWHqPvUqj1vaIAT7kbvBnLJI9syTrwykwWGDNhG?=
+ =?iso-8859-1?Q?+AZ6M4IDOnWJX2PmGDedrY2X5uD04+p42FakQ7g77x3C/IULnFBy67u8er?=
+ =?iso-8859-1?Q?b+lNqnERz3Ld0WMkvInvhrh0eFg8gagrTbxMWR+6XxQ9WTw3kZIa8LP0qz?=
+ =?iso-8859-1?Q?+M/XVrxwooN4hmFs56fzxD9TBoYmD6Lxukqo9iRco/fZvaP9pi/k4TQdaZ?=
+ =?iso-8859-1?Q?rkmqP1igfmCWZMKLaNE6cWvTFXqv0B+/Ny2RjGKIT7VpqgnIjR/Qo7/HFi?=
+ =?iso-8859-1?Q?nONOrWc70n3adc6WlKmcLkkp3DtgIO5PcxpA1kYT8pEh8Fwfeq+u9IQhs3?=
+ =?iso-8859-1?Q?l4u8pb5j+iSeR3Ky0sRlWB4SkUFgQ8qM/5VDCr0e60cQrNcpFVQClaYOKx?=
+ =?iso-8859-1?Q?tpzpVjJcpxRHQoAkReeL/+ufoj7CdNuXWvbIXkoj6l7n2/XmgHRuq5iTxD?=
+ =?iso-8859-1?Q?0rf8ObtybH4ec8L+X6IHycTVtde0hwwBxx+KVFrwp9rMqjM4USLAbJOdyi?=
+ =?iso-8859-1?Q?rvml81kJfsNuv/zuXeGwBZBuf613UQf9qifGKssEIo1UbjgRVTDogFq9PB?=
+ =?iso-8859-1?Q?7kk4Kt+rmWUlFcT/b4EizhCqETXM/+mYONFFgYv0BGPyagw415ElE5BD6i?=
+ =?iso-8859-1?Q?hD48QtfzsUTqfUHbDNAXtbMwT0QqYUUIgwJ/DYkSv5fh8wwYiOvIEPLQfo?=
+ =?iso-8859-1?Q?5pqb1U9/ieMWAPdI7SumVZ9bRLg7P6QmQaM1thA+2+BrMIqgVbTHkjlBQw?=
+ =?iso-8859-1?Q?xVonX4vYwB8g5Tx0gMN0alBZD215GoMmbiqhUgs2sEy2ZAPgbL123XC4o1?=
+ =?iso-8859-1?Q?/SLW+pmihhkiYtdNR29Gcpy8oaYmhhwKIRMZi41BQj3Sn2HvenNudmnSkq?=
+ =?iso-8859-1?Q?2gRLeRRTDOjAQ3P7ToR4RbmotyYc4CEbpQh946idpYart5wPvT4BJagbkd?=
+ =?iso-8859-1?Q?Ud5MEqzgY9tW3QwvE/z5ZLQdZbbfU2O/CXgxeyml2UrWu12W2u/+Ic9Q?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ca3b60f-e59f-b578-7c22-48487663cfa7@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74d92c4d-4be1-454a-565c-08dbaf71a4aa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2023 07:11:23.1368
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YjXoO8SziN0c5Cb/m2NnNlvNLwIykCpAEwYlbbTiwJNJXxrOO9VG4Tj5vkJFdjLVHCsFSSUTx9cPNTasQ2M9d2nNuWfN2+jEVHL0mHqnqQ8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB9532
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 29, 2023 at 09:33:27AM +0300, Matti Vaittinen wrote:
-> On 8/28/23 13:53, Andy Shevchenko wrote:
-> > On Mon, Aug 28, 2023 at 09:24:25AM +0300, Matti Vaittinen wrote:
-> > > On 8/27/23 21:09, Jonathan Cameron wrote:
+Hi Angel Iglesias,
 
-Sorry it took a bit of time to reply on this.
+> Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
+>=20
+> On Mon, 2023-08-28 at 12:39 +0100, Jonathan Cameron wrote:
+> > On Mon, 14 Aug 2023 18:43:49 +0200
+> > Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+> >
+> > > On Mon, 2023-08-14 at 06:57 +0000, Biju Das wrote:
+> > > > Hi Angel Iglesias,
+> > > >
+> > > >
+> > > > > Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use
+> > > > > i2c_get_match_data
+> > > > >
+> > > > > On Sun, 2023-08-13 at 21:03 +0200, Angel Iglesias wrote:
+> > > > > > Replaces device_get_match_data() and fallback match_id logic
+> > > > > > by new unified helper function i2c_get_match_data().
+> > > > > >
+> > > > > > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> > > > > >
+> > > > > > diff --git a/drivers/iio/pressure/bmp280-i2c.c
+> > > > > > b/drivers/iio/pressure/bmp280- i2c.c index
+> > > > > > 693eb1975fdc..34e3bc758493
+> > > > > > 100644
+> > > > > > --- a/drivers/iio/pressure/bmp280-i2c.c
+> > > > > > +++ b/drivers/iio/pressure/bmp280-i2c.c
+> > > > > > @@ -11,9 +11,7 @@ static int bmp280_i2c_probe(struct
+> > > > > > i2c_client
+> > > > > > *client)
+> > > > > > =A0=A0=A0=A0=A0=A0=A0=A0const struct bmp280_chip_info *chip_inf=
+o;
+> > > > > > =A0=A0=A0=A0=A0=A0=A0=A0struct regmap *regmap;
+> > > > > >
+> > > > > > -=A0=A0=A0=A0=A0=A0=A0chip_info =3D device_get_match_data(&clie=
+nt->dev);
+> > > > > > -=A0=A0=A0=A0=A0=A0=A0if (!chip_info)
+> > > > > > -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0chip_info =3D (co=
+nst struct bmp280_chip_info *)
+> > > > > > id->driver_data;
+> > > > > > +=A0=A0=A0=A0=A0=A0=A0chip_info =3D i2c_get_match_data(client);
+> > > > > >
+> > > > > > =A0=A0=A0=A0=A0=A0=A0=A0regmap =3D devm_regmap_init_i2c(client,
+> > > > > > chip_info->regmap_config);
+> > > > > > =A0=A0=A0=A0=A0=A0=A0=A0if (IS_ERR(regmap)) {
+> > > > >
+> > > > > Hi,
+> > > > >
+> > > > > I noticed I submitted this change that was also submitted by
+> > > > > Biju Das on another
+> > > > > patch:
+> > > >
+> > > > > Should I drop this patch from the series?
+> > > >
+> > > > I think it is ok. Andy is suggesting to use unified table for
+> > > > SPI/I2C
+> > > >
+> > > > Is it something do able and testable in your environment? see [1],
+> > > > If yes, please create another patch for using unified table for
+> > > > both i2c and spi.
+> > >
+> > > I have around a BMP390 with the SPI pins available to test it out.
+> > > In the case of the bmp280 we could unify the of_match table as
+> > > they're almost the same.
+> > > In
+> > > the case of the spi_device_id and i2c_device_id tables, as they're
+> > > different structs I'm not sure if they can be unified.
+> > >
+> > > Regarding Andy's comment, I think he's referring to the duplicated
+> > > chip infos.
+> > > In the case of the bmp280, the chip_infos are defined on the common
+> > > driver code and used for both SPI and I2C match tables.
+> > Hi,
+> >
+> > I'm loosing track of where we are with this driver as multiple people
+> > are working on it.
+> >
+> > Angel, as most of the work is yours, please could you manage the flow
+> > of patches for this one so I get series with clear statement of what
+> > they are dependent on.
+>=20
+> Sure. If Biju is okay with it, maybe I should squash toghether this two
+> series of mine:
 
-...
+I am ok with it, as I don't have bandwidth as well as board for testing it.=
+ Please feel free to post.
 
-> > > I think that people who work on a driver like this should guess what this is
-> > > for.
-> > 
-> > _This_ is the result of what people always forgot to think about, i.e. newcomers.
-> 
-> Thanks Andy. This was a good heads-up for me. I do also see the need for
-> fresh blood here - we aren't getting any younger.
-> 
-> > What _if_ the newcomer starts with this code and already being puzzled enough on
-> > what the heck the function does. With all ambiguity we rise the threshold for the
-> > newcomers and make the kernel project not attractive to start with
-> 
-> I really appreciate you making a point about attracting newcomers (and there
-> is no sarcasm in this statement). I however don't think we're rising the bar
-> here. If a newcomer wants to work on a device-driver, the _first_ thing to
-> do is to be familiar with the device. Without prior experience of this kind
-> of devices it is really a must to get the data-sheet and see how the device
-> operates before jumping into reading the code. I would say that after
-> reading the fifo lvl description from data-sheet this should be obvious -
-> and no, I don't think we should replicate the data-sheet documentation in
-> the drivers for parts that aren't very peculiar.
-
-There are (at least?) two approaches on the contribution:
-1) generic / library wise;
-2) specific hardware wise.
-
-You are talking about 2), while my remark is about both. I can imagine a newcomer
-who possess a hardware that looks similar to what this driver is for. Now, they
-would like to write a new driver (note, that compatibility can be checked by
-reading the RTL definitions, so no need to dive into the code) and use this as
-a (nice) reference. With that in mind, they can read a function named
-get_fifo_bytes() with not so extensive documentation nor fully self-explanatory
-name. One may mistakenly though about this as a function for something that
-returns FIFO capacity, but in the reality it is current amount of valid / data
-bytes in the FIFO for the ongoing communication with the device.
-
-> But the question how to attract newcomers to kernel is very valid and I
-> guess that not too many of us is thinking of it. Actually, I think we should
-> ask from the newcomers we have that what has been the most repulsive part of
-> the work when they have contributed.
-
-> (besides the
-> > C language which is already considered as mastodon among youngsters).
-> 
-> I think this is at least partially the truth. However, I think that in many
-> cases one of the issues goes beyond the language - many younger generation
-> people I know aren't really interested in _why_ things work, they just want
-> to get things working in any way they can - and nowadays when you can find a
-> tutorial for pretty much anything - one really can just look up instruction
-> about how a "foobar can be made to buzz" instead of trying to figure out
-> what makes a "foobar to buzz" in order to make it to buzz. So, I don't blame
-> people getting used to take a different approach. (Not sure this makes sense
-> - don't really know how to express my thoughts about this in a clear way -
-> besides, it may not even matter).
-
-Yeah, I share your frustration and agree that people are loosing the feel of
-curiosity. Brave New World in front of us...
-
-> Anyways, I am pretty sure that - as with any community - the way people are
-> treated and how their contribution is appreciated is the key to make them
-> feel good and like the work. I think that in some cases it may include
-> allowing new contributors to get their code merged when it has reached "good
-> enough" state - even if it was not perfect. (Sure, when things are good
-> enough is subject to greater minds than me to ponder) ;)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers,
+Biju

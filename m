@@ -2,379 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4F6679782C
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 18:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45152797B42
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 20:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237587AbjIGQmZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Sep 2023 12:42:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52478 "EHLO
+        id S241494AbjIGSLR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Sep 2023 14:11:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235391AbjIGQmA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 12:42:00 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8AA269A;
-        Thu,  7 Sep 2023 09:08:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694102913; x=1725638913;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7CHvxDHCHPtOuBCQWw9gx4GqYSPc7pMh1YaZILhTDkk=;
-  b=mFDRC5xcsROPUpyNTYsgGvxNkUJiv6pBu/s+Fw7EItP7vBPAutXGSAXE
-   myZ+oMrAGlSNAIYBKT4ojk97EFD9A4Dktl8VY6joGgXN7+eH2hu44Luvl
-   ZjvommVLOUROBJnzdtWjX/ktRDT1uF8Th+0bBcwlB31hz19pjOJQbl/Zp
-   tA6e4eQ4TG8wrSRBfJE+pEMyVLVv/MgROO9xmungiwPl04JcDtIMeMYkn
-   zjxM6JI4n48yRZpPtzFZkeiCLqYi9mI9v8ddNFh7XK34oZTnXc+35hcmn
-   jy20FDy4Cs9Oy+3LO8hmVN19b2IOf/PjN4SsmmDJu/Q1XFH6naE9yK8N2
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="380093378"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="380093378"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 06:57:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="771291695"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="771291695"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 06:57:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qeFW4-007K8K-0c;
-        Thu, 07 Sep 2023 16:57:52 +0300
-Date:   Thu, 7 Sep 2023 16:57:51 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1343638AbjIGSLN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 14:11:13 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681772117;
+        Thu,  7 Sep 2023 11:10:46 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2bce552508fso21795841fa.1;
+        Thu, 07 Sep 2023 11:10:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694110244; x=1694715044; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ck0eLIxfOYoympEUqr1tahPrvmIkWwNYKiHxaNfIYz4=;
+        b=eBk62sCcJ4HqIcj1DjB2jkTYBoxvOxkuM3NN/beQB9uMsbLna73DK7d1sGdXYyP4mg
+         w5Ma0TbOS/302skKHayVFZARfKZU1wDwRoDAOWXiipae1Kc5Hz+dpU/kgqlvvMhGJ/7x
+         AJ+drArGTXFiCM33dnZ3LtycFdHgzfXwYPSKb+xeushQemQEO0T6NlA5qecaRYxUYC+r
+         lbFcB2uFhaZpsVx3iFhju6el0nh4UHQCizAJHd6FMM9aNccy0OVKQ37mNbfWXyJoiJQ1
+         /0sDgFQLn6rEMu/gzvow2egBXWEJpvt3HYbzbxqWKSeHyUTmSTdXiim8JOv+W5njggXm
+         +TVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694110244; x=1694715044;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ck0eLIxfOYoympEUqr1tahPrvmIkWwNYKiHxaNfIYz4=;
+        b=ZqJzSFFi1UF75ImhQ/HFv6R2Yz/32SCQQ+1wovbjQwP+PGYBl/y4b0vG9gr7yBuFCH
+         7ULN/nhK4wTru8/HRD1qYt7peYlcQBBFlS5YuScapgVchYA5kctiGlneMXdswDn6TszZ
+         mwqUG8pRNQ0lrsWJ4r0wsi9cnx/XPEu9nGZr68BnL0HzLMcMG6G+xJ45Iqcp8auutikp
+         kM+sZ9+kCClMprCro+IRRnNR8JC+3NPgiuL6l61SktFSWgB6qMegZ/rHnqHzBS9/p6MP
+         wNaB83hr52Ev9iqr4SbZiQosXqHDBt22liNvNgEEzti9BcmLweQBrJCy/p19JN4pImt6
+         wxUQ==
+X-Gm-Message-State: AOJu0YyXjsUSiAFrIRcOksx7ottTtXVUH5ye1vSGIcl3G77cywTV0BoX
+        7uYFcczYt/F7Fy4PTg10yteQisLxR08=
+X-Google-Smtp-Source: AGHT+IF7cSjqLYrDfLGPhnioqyqsJTTFtlImwhxIPwRpHoVojsOIRHvx27MZmLl02DjOzot0em2imw==
+X-Received: by 2002:a1c:7905:0:b0:401:d69e:8b4d with SMTP id l5-20020a1c7905000000b00401d69e8b4dmr4331815wme.9.1694070550862;
+        Thu, 07 Sep 2023 00:09:10 -0700 (PDT)
+Received: from thinkpad-work.lan (35.red-83-35-63.dynamicip.rima-tde.net. [83.35.63.35])
+        by smtp.gmail.com with ESMTPSA id z6-20020a7bc7c6000000b003fa96fe2bd9sm1591689wmk.22.2023.09.07.00.09.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Sep 2023 00:09:10 -0700 (PDT)
+Message-ID: <8c206c8079d363d961f8f1f40c8346e872143f83.camel@gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use i2c_get_match_data
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
-Message-ID: <ZPnW38eO6by1NjIr@smile.fi.intel.com>
-References: <cover.1694001462.git.mazziesaccount@gmail.com>
- <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
- <ZPifWlRvX5hLFPvG@smile.fi.intel.com>
- <4d8e2873-49bc-8314-ee16-dd327a92898d@gmail.com>
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Date:   Thu, 07 Sep 2023 09:09:09 +0200
+In-Reply-To: <20230828123937.2bff2d92@jic23-huawei>
+References: <cover.1691952005.git.ang.iglesiasg@gmail.com>
+         <55f8dc02de16a353f0449bc1c7cb487bd776dfaf.1691952005.git.ang.iglesiasg@gmail.com>
+         <954c859835aed6c41a356fdd999a8be51469eb9e.camel@gmail.com>
+         <OS0PR01MB5922EDF7759069CD4993FA468617A@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+         <a83bde5079b769950220c0f1f3b8d374db39cfc7.camel@gmail.com>
+         <20230828123937.2bff2d92@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (by Flathub.org) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4d8e2873-49bc-8314-ee16-dd327a92898d@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 08:57:17AM +0300, Matti Vaittinen wrote:
-> On 9/6/23 18:48, Andy Shevchenko wrote:
-> > On Wed, Sep 06, 2023 at 03:37:48PM +0300, Matti Vaittinen wrote:
+On Mon, 2023-08-28 at 12:39 +0100, Jonathan Cameron wrote:
+> On Mon, 14 Aug 2023 18:43:49 +0200
+> Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+>=20
+> > On Mon, 2023-08-14 at 06:57 +0000, Biju Das wrote:
+> > > Hi Angel Iglesias,
+> > >=20
+> > > =C2=A0=20
+> > > > Subject: Re: [PATCH v2 2/3] iio: pressure: bmp280: Use
+> > > > i2c_get_match_data
+> > > >=20
+> > > > On Sun, 2023-08-13 at 21:03 +0200, Angel Iglesias wrote:=C2=A0=20
+> > > > > Replaces device_get_match_data() and fallback match_id logic by n=
+ew
+> > > > > unified helper function i2c_get_match_data().
+> > > > >=20
+> > > > > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> > > > >=20
+> > > > > diff --git a/drivers/iio/pressure/bmp280-i2c.c
+> > > > > b/drivers/iio/pressure/bmp280- i2c.c index 693eb1975fdc..34e3bc75=
+8493
+> > > > > 100644
+> > > > > --- a/drivers/iio/pressure/bmp280-i2c.c
+> > > > > +++ b/drivers/iio/pressure/bmp280-i2c.c
+> > > > > @@ -11,9 +11,7 @@ static int bmp280_i2c_probe(struct i2c_client
+> > > > > *client)
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct bmp2=
+80_chip_info *chip_info;
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct regmap *re=
+gmap;
+> > > > >=20
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D device_g=
+et_match_data(&client->dev);
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!chip_info)
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D (const struct bmp280_chip_info *)
+> > > > > id->driver_data;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip_info =3D i2c_get_=
+match_data(client);
+> > > > >=20
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0regmap =3D devm_r=
+egmap_init_i2c(client,
+> > > > > chip_info->regmap_config);
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (IS_ERR(regmap=
+)) {=C2=A0=20
+> > > >=20
+> > > > Hi,
+> > > >=20
+> > > > I noticed I submitted this change that was also submitted by Biju D=
+as on
+> > > > another
+> > > > patch:=C2=A0=20
+> > > =C2=A0=20
+> > > > Should I drop this patch from the series?=C2=A0=20
+> > >=20
+> > > I think it is ok. Andy is suggesting to use unified table for SPI/I2C
+> > >=20
+> > > Is it something do able and testable in your environment? see [1],
+> > > If yes, please create another patch for using unified table for both =
+i2c
+> > > and
+> > > spi.=C2=A0=20
+> >=20
+> > I have around a BMP390 with the SPI pins available to test it out. In t=
+he
+> > case
+> > of the bmp280 we could unify the of_match table as they're almost the s=
+ame.
+> > In
+> > the case of the spi_device_id and i2c_device_id tables, as they're diff=
+erent
+> > structs I'm not sure if they can be unified.
+> >=20
+> > Regarding Andy's comment, I think he's referring to the duplicated chip
+> > infos.
+> > In the case of the bmp280, the chip_infos are defined on the common dri=
+ver
+> > code
+> > and used for both SPI and I2C match tables.
+> Hi,
+>=20
+> I'm loosing track of where we are with this driver as multiple people are
+> working on it.
+>=20
+> Angel, as most of the work is yours, please could you manage the flow of
+> patches
+> for this one so I get series with clear statement of what they are depend=
+ent
+> on.
 
-...
+Sure. If Biju is okay with it, maybe I should squash toghether this two ser=
+ies
+of mine:
+https://patchwork.kernel.org/project/linux-iio/cover/cover.1691952005.git.a=
+ng.iglesiasg@gmail.com/
+https://patchwork.kernel.org/project/linux-iio/cover/cover.1692805377.git.a=
+ng.iglesiasg@gmail.com/
 
-> > > +struct bm1390_data {
-> > > +	int64_t timestamp, old_timestamp;
-> > 
-> > Out of a sudden int64_t instead of u64?
-> 
-> Judging the iio_push_to_buffers_with_timestamp() and iio_get_time_ns(), IIO
-> operates with signed timestamps. One being s64, the other int64_t.
-> 
-> > > +	struct iio_trigger *trig;
-> > > +	struct regmap *regmap;
-> > > +	struct device *dev;
-> > > +	struct bm1390_data_buf buf;
-> > > +	int irq;
-> > > +	unsigned int state;
-> > > +	bool trigger_enabled;
-> > 
-> > > +	u8 watermark;
-> > 
-> > Or u8 instead of uint8_t?
-> 
-> So, uint8_t is preferred? I don't really care all that much which of these
-> to use - which may even show up as a lack of consistency... I think I did
-> use uint8_t when I learned about it - but at some point someone somewhere
-> asked me to use u8 instead.. This somewhere might have been u-boot though...
-> 
-> So, are you Suggesting I should replace u8 with uint8_t? Can do if it
-> matters.
+And pull this patch from Biju:
+https://patchwork.kernel.org/project/linux-iio/patch/20230812175808.236405-=
+1-biju.das.jz@bp.renesas.com/
 
-Consistency matters, since I do not know the intention behind, I suggest use
-either, but be consistent in the entire code. However, uXX are specific Linux
-kernel internal types and some maintainers prefer them. Also you may grep for
-the frequency of intXX_t vs. sXX or their unsigned counterparts.
+Sorry again from the noise introduced in the mail-list,
 
-> > > +	/* Prevent accessing sensor during FIFO read sequence */
-> > > +	struct mutex mutex;
-> > > +};
+Kind regards,
+Angel
 
-...
-
-> > > +static int bm1390_read_temp(struct bm1390_data *data, int *temp)
-> > > +{
-> > > +	u8 temp_reg[2] __aligned(2);
-> > 
-> > Why?! Just use proper bitwise type.
-> 
-> What is the proper bitwise type in this case?
-> 
-> I'll explain my reasoning:
-> What we really have in hardware (BM1390) and read from it is 8bit registers.
-> This is u8 to me. And as we read two consecutive registers, we use u8
-> arr[2]. In my eyes it describes the data perfectly well, right?
-
-Two different registers?! Why bulk is used in that case?
-To me looks like you are reading 16-bit (or one that fits in 16-bit) register
-in BE notation.
-
-> > > +	__be16 *temp_raw;
-> > > +	int ret;
-> > > +	s16 val;
-> > > +	bool negative;
-> > > +
-> > > +	ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp_reg,
-> > > +			       sizeof(temp_reg));
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	if (temp_reg[0] & 0x80)
-> > > +		negative = true;
-> > > +	else
-> > > +		negative = false;
-> > 
-> > > +	temp_raw = (__be16 *)&temp_reg[0];
-> > 
-> > Heck no. Make temp_reg be properly typed.
-> 
-> As I explained above, to me it seems ur arr[2} is _the_ proper type to
-> represent data we read from the device.
-> 
-> What we need to do is to convert the 16bits of data to an integer we can
-> give to the rest of the system. And, we happen to know how to 'manipulate'
-> the data to get it in format of understandable integer. As we have these 16
-> bits in memory, aligned to 2 byte boundary - why shouldn't we just
-> 'manipulate' the data and say - here we have your integer, please be my
-> guest and use it?
-
-Because it smell like a hack and is a hack here.
-Either it's a single BE16 register, or it's two different registers that by
-very unknown reason you are reading in a bulk. The code in this form is no
-go.
-
-> Well, I am keen to learn the 'correct bitwise type' you talk about - can you
-> please explain me what this correct type for two 8bit integers is? Maybe I
-> can improve.
-
-If the registers are not of the same nature the bulk access is wrong.
-Use one by one reads.
-
-> > > +	val = be16_to_cpu(*temp_raw);
-> > > +
-> > > +	if (negative) {
-> > > +		/*
-> > > +		 * Two's complement. I am not sure if all supported
-> > > +		 * architectures actually use 2's complement represantation of
-> > > +		 * signed ints. If yes, then we could just do the endianes
-> > > +		 * conversion and say this is the s16 value. However, as I
-> > > +		 * don't know, and as the conversion is pretty simple. let's
-> > > +		 * just convert the signed 2's complement to absolute value and
-> > > +		 * multiply by -1.
-> > > +		 */
-> > > +		val = ~val + 1;
-> > > +		val *= -1;
-> > > +	}
-> > > +
-> > > +	*temp = val;
-> > > +
-> > > +	return 0;
-> > > +}
-
-...
-
-> > > +static int bm1390_pressure_read(struct bm1390_data *data, u32 *pressure)
-> > > +{
-> > > +	int ret;
-> > > +	u8 raw[3];
-> > > +
-> > > +	ret = regmap_bulk_read(data->regmap, BM1390_REG_PRESSURE_BASE,
-> > > +			       &raw[0], sizeof(raw));
-
-&raw[0] --> raw
-
-> > > +	if (ret < 0)
-> > > +		return ret;
-> > > +
-> > > +	*pressure = (u32)(raw[2] >> 2 | raw[1] << 6 | raw[0] << 14);
-
-This, btw, looks like le24, but I'm puzzled with right shift.
-I need to read datasheet carefully to understand this.
-
-> > > +	return 0;
-> > > +}
-
-...
-
-> > > + /* The enum values map directly to register bits */
-> > 
-> > In this case assign _all_ values explicitly. Currently it's prone to errors
-> > if somebody squeezed a value in between.
-> 
-> Agree. This is a good practice. Thanks. (although, it shouldn't really
-> matter here as nobody really should squeeze a value in between as enum is
-> short and we have this just comment above).
-
-Right, but code can be done more robust against these. I do not see any
-argument against this. It's cheap and correct to add assignments and
-then we do not care about the sequence, even if somebody messes it up.
-
-> > > +enum bm1390_meas_mode {
-> > > +	BM1390_MEAS_MODE_STOP = 0x0,
-> > > +	BM1390_MEAS_MODE_1SHOT,
-> > > +	BM1390_MEAS_MODE_CONTINUOUS,
-> > > +};
-
-...
-
-> > > +	mutex_lock(&data->mutex);
-> > 
-> > Wouldn't you like to start using cleanup.h?
-> 
-> The new macro "thingee" for C++ destructor like constructs?
-
-I was talking about these: guard() / scoped_guard().
-
-> TBH, I am not really in a rush with it for two reasons.
-> 1) The syntax looks very alien to me. I would like to get some time to get
-> used to it before voluntarily ending up maintaining a code using it. (I
-> don't like practicing things upstream as practicing tends to include making
-> more errors).
-> 
-> 2. Related to 1). I am not (yet) convinced incorporating changes in stuff
-> using these cleanups is easy. I'm a bit reserved and would like to see how
-> things play out.
-> 
-> 3. I expect I will get a few requests to backport the code to some older
-> kernels used by some big customers. (I've been doing plenty of extra work
-> when backporting my kernel improvements like regmap_irq stuff, linear
-> ranges, regulator pickable ranges, gts-helpers to customer kernels to get my
-> drivers working - or working around the lack of thiose features. I have been
-> willing to pay this prize to get those helpers upstream for everyone to use.
-> The cleanup.h however is there so it does not _need_ new users. I don't
-> think _all_ existing drivers will be converted to use it so one more should
-> probably not hurt. I think that in a year at least some customers will be
-> using kernel containing the cleanup.h - so by latest then it is time for me
-> to jump on that train. I hope I am used to reading those macros by then).
-
-OK.
-
-...
-
-> > > +	case IIO_CHAN_INFO_SCALE:
-> > > +		if (chan->type == IIO_TEMP) {
-> > > +			*val = 31;
-> > > +			*val2 = 250000;
-> > > +
-> > > +			return IIO_VAL_INT_PLUS_MICRO;
-> > > +		} else if (chan->type == IIO_PRESSURE) {
-> > > +			*val = 0;
-> > > +			/*
-> > > +			 * pressure in hPa is register value divided by 2048.
-> > > +			 * This means kPa is 1/20480 times the register value,
-> > > +			 * which equals to 48828.125 * 10 ^ -9
-> > > +			 * This is 48828.125 nano kPa.
-> > > +			 *
-> > > +			 * When we scale this using IIO_VAL_INT_PLUS_NANO we
-> > > +			 * get 48828 - which means we lose some accuracy. Well,
-> > > +			 * let's try to live with that.
-> > > +			 */
-> > > +			*val2 = 48828;
-> > > +
-> > > +			return IIO_VAL_INT_PLUS_NANO;
-> > > +		}
-> > > +
-> > > +		return -EINVAL;
-> > 
-> > Why not switch-case like other drivers do?
-> 
-> In my eyes avoiding the very simple if - else if does not warrant nested
-> switches which look ugly to me.
-
-Okay, yet another disagreement.
-
-> > > +	case IIO_CHAN_INFO_RAW:
-> > > +		ret = iio_device_claim_direct_mode(idev);
-> > > +		if (ret)
-> > > +			return ret;
-> > > +
-> > > +		ret = bm1390_read_data(data, chan, val, val2);
-> > > +		iio_device_release_direct_mode(idev);
-> > 
-> > > +		if (!ret)
-> > > +			return IIO_VAL_INT;
-> > > +
-> > > +		return ret;
-> > 
-> > Why not usual pattern?
-> > 
-> > 		if (ret)
-> > 			return ret;
-> 
-> I see your point, ok.
-> 
-> > > +	default:
-> > > +		return -EINVAL;
-> > > +	}
-
-...
-
-> > > +	smp_lvl = FIELD_GET(BM1390_MASK_FIFO_LVL, smp_lvl);
-> > 
-> > > +
-> > 
-> > Unneeded blank line.
-> > 
-> > > +	if (smp_lvl > 4) {
-> > > +		/*
-> > > +		 * Valid values should be 0, 1, 2, 3, 4 - rest are probably
-> > > +		 * bit errors in I2C line. Don't overflow if this happens.
-> > > +		 */
-> > > +		dev_err(data->dev, "bad FIFO level %d\n", smp_lvl);
-> > > +		smp_lvl = 4;
-> > > +	}
-> > 
-> > > +	if (!smp_lvl)
-> > > +		return ret;
-> > 
-> > This can be checked first as it's and error condition
-> 
-> I wouldn't say it is an error condition.
-
-Returning ret suggests otherwise.
-
-> It just means there was no samples
-> collected in buffer.
-
-But as you explained below, the code is actually 0 there.
-In any case bailing out conditionals are better to be first.
-
->  and previous branch has
-> > no side effects on this. Also, wouldn't be better to use error code explicitly?
-> 
-> Yes. For the clarity we definitely should explicitly do "return 0" here.
-> Thanks.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> Thanks,
+>=20
+> Jonathan
+>=20
+> >=20
+> > >=20
+> > > https://lore.kernel.org/linux-renesas-soc/CAHp75VeX+T=3DhAN+PgtHTdv4b=
+6UtDVgveUUww1b1kuOngzDinFw@mail.gmail.com/T/#t
+> > >=20
+> > > Cheers,
+> > > Biju=C2=A0=20
+> >=20
+> > Kind regards,
+> > Angel
+> >=20
+>=20
 

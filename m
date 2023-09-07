@@ -2,219 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 556A9797700
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 18:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D8B979768C
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 18:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241162AbjIGQTn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Sep 2023 12:19:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
+        id S232139AbjIGQNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Sep 2023 12:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243966AbjIGQSj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 12:18:39 -0400
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE08F5FD9;
-        Thu,  7 Sep 2023 08:52:46 -0700 (PDT)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-99bf3f59905so134766366b.3;
-        Thu, 07 Sep 2023 08:52:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694101803; x=1694706603; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b2ziK0bcDlG6fjHgj7xGJvi60UEQrR120hAPw+QcVl8=;
-        b=ke2hgNmPC6KoTJRmBjwYqINF1g/iM3iGzrBniJO814GMOjIhtiEhhmOfsU5Aq75zN8
-         3Vu8boEyEQScwO1Jeozppp3zIxqCDdHyK9cuKJA5SXAjAavIhPsTthRWK2+3Ixw51xEC
-         did3ptEozJjUICzEDfA75E7N8SikemhusDqlVvKL1QG+uYDV+4gIQYV7ShPq3gWiTIvE
-         slcTAen+Pq4JQRzjcBG6K+YW6AhMgI2B11QaTT8blMgxewSM1X/0zzO9ysdUxRtN0pug
-         qcggrwjUEZFeXgcGbYCXhOZzRWiV67KwJ/Fa6HVzpFF2TSRxK69pbiySOItILoSZEpj3
-         bKAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694101803; x=1694706603;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b2ziK0bcDlG6fjHgj7xGJvi60UEQrR120hAPw+QcVl8=;
-        b=ZejTd9sSJPrqGSDxjgi0kKZZaTYc8tAlbd4pzsUPagl6DqUYwLTfMxF2Mlf+RTpgir
-         6PD4m2bPNA5WKV2HMse5WsUBbIoaW5Ef5vRWj5nvJ9pC8axBT35nuKLthKL3Gj8WE1q1
-         UTLz0bIYKM3BDStdL0fXFLWz5nSRgMPIRFz9xNmYKpTa3wociLYtTB2Kb5ajnOgpP1YZ
-         Q2zKsPBNCkDnGENIJUJ3rMXajB/OKVAUvmbMZlnASqeham4LFvncd+FSevo2vJC7QsxP
-         +NuamL4IJPExSNUF8h4zDJBNYywpt04bqj6g7/I6XClLmR3jDa08+oeNksGw49+xBJqZ
-         nrvQ==
-X-Gm-Message-State: AOJu0Yz/3KfiICNktWe9SdF12O6dkqw1ZUCjp3aBN0aVHANRFly10dbd
-        JYHiOBHvh/WtH5alnknutPS59cWjrs4=
-X-Google-Smtp-Source: AGHT+IExlUL6rEqkXkWj5kCfcLjbVQ+cdR8Yu7TuJOdWN9QHQtLbSo02FW8eaX4EpcQMdQ+5h0hNJg==
-X-Received: by 2002:a2e:9b04:0:b0:2b5:7f93:b3b0 with SMTP id u4-20020a2e9b04000000b002b57f93b3b0mr3720871lji.17.1694068428713;
-        Wed, 06 Sep 2023 23:33:48 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
-        by smtp.gmail.com with ESMTPSA id w14-20020a2e958e000000b002b70aff9a97sm3782450ljh.16.2023.09.06.23.33.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Sep 2023 23:33:47 -0700 (PDT)
-Message-ID: <8b73d2d9-ebba-8f3c-4b39-e3671117acf1@gmail.com>
-Date:   Thu, 7 Sep 2023 09:33:47 +0300
+        with ESMTP id S238680AbjIGQMo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 12:12:44 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DEA0B32C;
+        Thu,  7 Sep 2023 09:09:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BAEC433BD;
+        Thu,  7 Sep 2023 10:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694081320;
+        bh=dQri/2DWuR9JAYOqjTr0UMKQHoPS125OeefglwyHSOA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rxBXfAQvGgpOclbJJ0FU7bDBYrz9OFJ4AdjlP9wEaNFPcM/lRjHdlRILhTohwBlRj
+         hY/LUf2vjajj4Tn/J5SOn2pDzCi46sL/LraJHGt2EVeLv1fo4Yhj2Ma5VdEkm0okwt
+         a16aLnaw5FaP8GgSseTqwGr+BKvGjbbYYzmWLyuw0ijip2U7PhQwGw32L5S1BnHCnh
+         LxXYyNkg+utAxZH3BOfpbXXvGUJjLwNFtRoj/It7uS7Rj+zbIJUxBtee8NUD+mw65/
+         JoLSibwPKzPLXtrweKsCufKtg4zhtGjUC1FOcxUjURfnf/f0Liu7kr07mYtVu1WO1U
+         untDSoP31xZhA==
+Date:   Thu, 7 Sep 2023 11:08:33 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: Add ROHM BM1390 pressure sensor
+Message-ID: <20230907-e9e5cdcef1e6c88c1f6afbdd@fedora>
+References: <cover.1694001462.git.mazziesaccount@gmail.com>
+ <55e59e66824f75ce8ffe58d3463a9cbca56e25ac.1694001462.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <eb47d0c9-9144-c947-f91e-d487c6ec9c45@gmail.com>
- <ZOdddZ0Zpk5CknH8@smile.fi.intel.com>
- <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
- <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
- <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
- <ZOdrtNQijmhN9RAx@smile.fi.intel.com> <20230827190732.5e2215d0@jic23-huawei>
- <61247547-690c-fb8b-3a45-cd60754836a7@gmail.com>
- <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
- <7ca3b60f-e59f-b578-7c22-48487663cfa7@gmail.com>
- <ZPiixW6CiR+z8s/r@smile.fi.intel.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
- retrieve number of bytes in buffer
-In-Reply-To: <ZPiixW6CiR+z8s/r@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="E4qdq8M9IN4HLNi4"
+Content-Disposition: inline
+In-Reply-To: <55e59e66824f75ce8ffe58d3463a9cbca56e25ac.1694001462.git.mazziesaccount@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/6/23 19:03, Andy Shevchenko wrote:
-> On Tue, Aug 29, 2023 at 09:33:27AM +0300, Matti Vaittinen wrote:
->> On 8/28/23 13:53, Andy Shevchenko wrote:
->>> On Mon, Aug 28, 2023 at 09:24:25AM +0300, Matti Vaittinen wrote:
->>>> On 8/27/23 21:09, Jonathan Cameron wrote:
-> 
-> Sorry it took a bit of time to reply on this.
 
-No problem. Autumn is approaching and darkness is falling in Finland... 
-So, at least I am really slowing down with everything... :|
+--E4qdq8M9IN4HLNi4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ...
-> 
->>>> I think that people who work on a driver like this should guess what this is
->>>> for.
->>>
->>> _This_ is the result of what people always forgot to think about, i.e. newcomers.
->>
->> Thanks Andy. This was a good heads-up for me. I do also see the need for
->> fresh blood here - we aren't getting any younger.
->>
->>> What _if_ the newcomer starts with this code and already being puzzled enough on
->>> what the heck the function does. With all ambiguity we rise the threshold for the
->>> newcomers and make the kernel project not attractive to start with
->>
->> I really appreciate you making a point about attracting newcomers (and there
->> is no sarcasm in this statement). I however don't think we're rising the bar
->> here. If a newcomer wants to work on a device-driver, the _first_ thing to
->> do is to be familiar with the device. Without prior experience of this kind
->> of devices it is really a must to get the data-sheet and see how the device
->> operates before jumping into reading the code. I would say that after
->> reading the fifo lvl description from data-sheet this should be obvious -
->> and no, I don't think we should replicate the data-sheet documentation in
->> the drivers for parts that aren't very peculiar.
-> 
-> There are (at least?) two approaches on the contribution:
-> 1) generic / library wise;
-> 2) specific hardware wise.
-> 
-> You are talking about 2), while my remark is about both. I can imagine a newcomer
-> who possess a hardware that looks similar to what this driver is for.
+On Wed, Sep 06, 2023 at 03:37:19PM +0300, Matti Vaittinen wrote:
+> BM1390GLV-Z is a pressure sensor which performs internal temperature
+> compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
+> and sample averaging and IIR filtering is built in sensor. Temperature
+> measurement is also supported.
+>=20
+> Add dt-bindings for the sensor.
+>=20
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> ---
+>  .../bindings/iio/pressure/rohm,bm1390.yaml    | 52 +++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/rohm,b=
+m1390.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.y=
+aml b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+> new file mode 100644
+> index 000000000000..d681fdd0f5ea
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+> @@ -0,0 +1,52 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/rohm,bm1390.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ROHM BM1390 pressure sensor
+> +
+> +maintainers:
+> +  - Matti Vaittinen <mazziesaccount@gmail.com>
+> +
+> +description: |
 
-Yes. I am talking about 2). And my stance is that device drivers belong 
-to category 2). If one works with a device driver for some HW, then 
-he/she needs to be willing to understand the hardware.
+You've got no formatting to preserve the | is not needed.
 
-  Now, they
-> would like to write a new driver (note, that compatibility can be checked by
-> reading the RTL definitions, so no need to dive into the code) and use this as
-> a (nice) reference. With that in mind, they can read a function named
-> get_fifo_bytes() with not so extensive documentation nor fully self-explanatory
-> name. One may mistakenly though about this as a function for something that
-> returns FIFO capacity, but in the reality it is current amount of valid / data
-> bytes in the FIFO for the ongoing communication with the device. 
+> +  BM1390GLV-Z is a pressure sensor which performs internal temperature
+> +  compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
+> +  and sample averaging and IIR filtering is built in sensor.
 
-I can't avoid having a feeling that this is a very unlikely scenario. I 
-am afraid that by requesting this type of improvements at patch series 
-which is at v8 and has been running for half an year (and which was of a 
-good quality to start with, especially knowing this was the author's 
-first driver) is going to be more repulsive to the newcomers than the 
-potential obfuscation.
+nit: "built in to the sensor." or just "built-in."
 
-I don't try claiming that no-one could ever hit this trap (even if I 
-don't see it likely). I still believe that if one does so, he/she will 
-also get such a bug fixed without being totally discouraged - it's 
-business as usual.
+Otherwise this seems alright to me,
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-I hope this does not come out as rude. I do appreciate your reviews, 
-it's comforting to know someone looks my code with sharp eyes and points 
-out things like the dead code in BM1390 driver! I just like the words 
-Jonathan once spilled out:
+> Temperature
+> +  measurement is also supported.
+> +
+> +properties:
+> +  compatible:
+> +    const: rohm,bm1390glv-z
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +        pressure-sensor@5d {
+> +            compatible =3D "kionix,kx022a";
+> +            reg =3D <0x5d>;
+> +
+> +            interrupt-parent =3D <&gpio1>;
+> +            interrupts =3D <29 IRQ_TYPE_LEVEL_LOW>;
+> +
+> +            vdd-supply =3D <&vdd>;
+> +        };
+> +    };
+> --=20
+> 2.41.0
+>=20
+>=20
+> --=20
+> Matti Vaittinen, Linux device drivers
+> ROHM Semiconductors, Finland SWDC
+> Kiviharjunlenkki 1E
+> 90220 OULU
+> FINLAND
+>=20
+> ~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+> Simon says - in Latin please.
+> ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+> Thanks to Simon Glass for the translation =3D]=20
 
-"Don't let the perfect be enemy of good" (or something along those lines).
 
->> But the question how to attract newcomers to kernel is very valid and I
->> guess that not too many of us is thinking of it. Actually, I think we should
->> ask from the newcomers we have that what has been the most repulsive part of
->> the work when they have contributed.
-> 
->> (besides the
->>> C language which is already considered as mastodon among youngsters).
->>
->> I think this is at least partially the truth. However, I think that in many
->> cases one of the issues goes beyond the language - many younger generation
->> people I know aren't really interested in _why_ things work, they just want
->> to get things working in any way they can - and nowadays when you can find a
->> tutorial for pretty much anything - one really can just look up instruction
->> about how a "foobar can be made to buzz" instead of trying to figure out
->> what makes a "foobar to buzz" in order to make it to buzz. So, I don't blame
->> people getting used to take a different approach. (Not sure this makes sense
->> - don't really know how to express my thoughts about this in a clear way -
->> besides, it may not even matter).
-> 
-> Yeah, I share your frustration and agree that people are loosing the feel of
-> curiosity. Brave New World in front of us...
 
-Well, who knows how things will be working out for the new generations? 
-Maybe they won't need the kernel in the future? Yes, I am stubbornly 
-hanging in the past practices and values. Direction things seem to head 
-do not always appeal to me - but perhaps it's just me? Who can say my 
-values and practices are the right ones for new generations :) My oldest 
-son just moved to his own home and I need to accept that young do build 
-their own lives on different values I had. And who knows, maybe the 
-approach of just doing things without knowing what exactly happens under 
-the hood makes this world very good for them?
+--E4qdq8M9IN4HLNi4
+Content-Type: application/pgp-signature; name="signature.asc"
 
-But yes - I don't think it suits the kernel project at all :) This is a 
-project of dinosaurs like us XD
+-----BEGIN PGP SIGNATURE-----
 
-(DISCLAIMER: I don't know quite all young people in the world. Frankly 
-to tell, not even 90% XD So, I am not trying to say "all young people 
-are like this or that". I just have a feeling that certain way of 
-thinking is more common amongst certain generations - but maybe it's 
-just my misjudgement. Please, don't be offended).
+iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZPmhIAAKCRB4tDGHoIJi
+0sFfAP4pJNv9hR6rflrFMwoAsSA1yKyN+RQ5LPWfSuaVDOfUlgD/aximGsBCt/J4
+4Pw2ixhrYmw68QTXBPRbEuJpeGyQkQY=
+=NZh8
+-----END PGP SIGNATURE-----
 
-> 
->> Anyways, I am pretty sure that - as with any community - the way people are
->> treated and how their contribution is appreciated is the key to make them
->> feel good and like the work. I think that in some cases it may include
->> allowing new contributors to get their code merged when it has reached "good
->> enough" state - even if it was not perfect. (Sure, when things are good
->> enough is subject to greater minds than me to ponder) ;)
-> 
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+--E4qdq8M9IN4HLNi4--

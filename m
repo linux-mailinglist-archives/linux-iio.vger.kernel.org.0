@@ -2,55 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D8B979768C
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 18:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCDC797916
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Sep 2023 19:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232139AbjIGQNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Sep 2023 12:13:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
+        id S241653AbjIGRBa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Sep 2023 13:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238680AbjIGQMo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 12:12:44 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DEA0B32C;
-        Thu,  7 Sep 2023 09:09:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BAEC433BD;
-        Thu,  7 Sep 2023 10:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694081320;
-        bh=dQri/2DWuR9JAYOqjTr0UMKQHoPS125OeefglwyHSOA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rxBXfAQvGgpOclbJJ0FU7bDBYrz9OFJ4AdjlP9wEaNFPcM/lRjHdlRILhTohwBlRj
-         hY/LUf2vjajj4Tn/J5SOn2pDzCi46sL/LraJHGt2EVeLv1fo4Yhj2Ma5VdEkm0okwt
-         a16aLnaw5FaP8GgSseTqwGr+BKvGjbbYYzmWLyuw0ijip2U7PhQwGw32L5S1BnHCnh
-         LxXYyNkg+utAxZH3BOfpbXXvGUJjLwNFtRoj/It7uS7Rj+zbIJUxBtee8NUD+mw65/
-         JoLSibwPKzPLXtrweKsCufKtg4zhtGjUC1FOcxUjURfnf/f0Liu7kr07mYtVu1WO1U
-         untDSoP31xZhA==
-Date:   Thu, 7 Sep 2023 11:08:33 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: Add ROHM BM1390 pressure sensor
-Message-ID: <20230907-e9e5cdcef1e6c88c1f6afbdd@fedora>
-References: <cover.1694001462.git.mazziesaccount@gmail.com>
- <55e59e66824f75ce8ffe58d3463a9cbca56e25ac.1694001462.git.mazziesaccount@gmail.com>
+        with ESMTP id S239200AbjIGRBC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 13:01:02 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 226E5210C;
+        Thu,  7 Sep 2023 10:00:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1694106039;
+  x=1725642039;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=0HShL49IKdWXDbTEKh+qaXy8Z/aZhrAVPA9VeReGrAc=;
+  b=lAB9g4T6hc+g4diDHVNgGPUx+74Bxe9oq5ZVmi7tpDaoovAg6bZ6g76e
+   JR5UQ3plUS4gZJfKPwzqRrm5j4RC0hc+Tc8LZQHd+DK1OvYhM3j1XoeHD
+   KQeOQDPzIs9n8k6+UGzXWzEWvKGIW1iaHymIFNCNFxV2RnIFBeXXtwhsz
+   34ghl0jwxaUWPUhQaIYK2qXelShM3HkVl1kYsGJfR6PuBsUCFFF4DQC4t
+   q99ej3KXYApDy4+ORwD6TTGPPuCLwhB4WXbNtW1W6fVEHoRtAB7ID2pvs
+   03Monjp46xgIPN9nQdJ6NaX9VIC6hQc+Vw0pzmb2lLfxL3LrujBLsEbBg
+   A==;
+From:   =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+Date:   Thu, 7 Sep 2023 12:53:14 +0200
+Subject: [PATCH] iio: light: vcnl4000: Don't power on/off chip in config
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="E4qdq8M9IN4HLNi4"
-Content-Disposition: inline
-In-Reply-To: <55e59e66824f75ce8ffe58d3463a9cbca56e25ac.1694001462.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20230907-vcnl4000-pm-fix-v1-1-58a11c1d5a6c@axis.com>
+X-B4-Tracking: v=1; b=H4sIAJmr+WQC/x2NywqDQAxFf0WybiC1Sh+/UrqYyWRqoE4lESmI/
+ 97R5eHcw13BxVQcHs0KJou6fkuF86kBHkJ5C2qqDC21F7rTFRcun46IcBox6w9jf0tMKefYM9Q
+ qBheMFgoPezcGn8V2MZnU/XH1fG3bHyqK8ox6AAAA
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@axis.com>,
+        =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1694084004; l=1611;
+ i=marten.lindahl@axis.com; s=20230329; h=from:subject:message-id;
+ bh=H8tOJOL2nRLx5d0MtZXPuLd64FZ4lHUshLXSHdTT7Qk=;
+ b=ZZ+1HZwpikOf0sWcyA54MEu7XZG5ISi0v9ruQLLyqWNz48A3EUNTYHk+F6ZwfZ6kYIbN9m9Kn
+ 4IDrVezUB7jBXv3l7TltaIGXHUjEihgeenvdUEHF2sQV31qPuyX9Gtw
+X-Developer-Key: i=marten.lindahl@axis.com; a=ed25519;
+ pk=JfbjqFPJnIDIQOkJBeatC8+S3Ax3N0RIdmN+fL3wXgw=
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,123 +60,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+After enabling/disabling interrupts on the vcnl4040 chip the als and/or
+ps sensor is powered on or off depending on the interrupt enable bits.
+This is made as a last step in write_event_config.
 
---E4qdq8M9IN4HLNi4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+But there is no reason to do this as the runtime PM handles the power
+state of the sensors. Interfering with this may impact sensor readings.
 
-On Wed, Sep 06, 2023 at 03:37:19PM +0300, Matti Vaittinen wrote:
-> BM1390GLV-Z is a pressure sensor which performs internal temperature
-> compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
-> and sample averaging and IIR filtering is built in sensor. Temperature
-> measurement is also supported.
->=20
-> Add dt-bindings for the sensor.
->=20
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> ---
->  .../bindings/iio/pressure/rohm,bm1390.yaml    | 52 +++++++++++++++++++
->  1 file changed, 52 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/pressure/rohm,b=
-m1390.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.y=
-aml b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
-> new file mode 100644
-> index 000000000000..d681fdd0f5ea
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
-> @@ -0,0 +1,52 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/pressure/rohm,bm1390.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ROHM BM1390 pressure sensor
-> +
-> +maintainers:
-> +  - Matti Vaittinen <mazziesaccount@gmail.com>
-> +
-> +description: |
+Consider the following:
+ 1. Userspace makes sensor data reading which triggers 2000ms RPM resume
+    (sensor powered on) timeout
+ 2. Userspace disables interrupts => powers sensor off
+ 3. Userspace reads sensor data = 0 because sensor is off and RPM didn't
+    power on the sensor as resume timeout is still active
+ 4. RPM resume timeout passed
 
-You've got no formatting to preserve the | is not needed.
+Powering sensor off in (2) risks a time window of close to 2000ms where
+sensor data readings are disabled as in (3).
 
-> +  BM1390GLV-Z is a pressure sensor which performs internal temperature
-> +  compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
-> +  and sample averaging and IIR filtering is built in sensor.
+Skip setting power state when writing new event config.
 
-nit: "built in to the sensor." or just "built-in."
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+---
+ drivers/iio/light/vcnl4000.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Otherwise this seems alright to me,
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 3a52b09c2823..fdf763a04b0b 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -1513,7 +1513,6 @@ static int vcnl4040_write_event_config(struct iio_dev *indio_dev,
+ 
+ out:
+ 	mutex_unlock(&data->vcnl4000_lock);
+-	data->chip_spec->set_power_state(data, data->ps_int || data->als_int);
+ 
+ 	return ret;
+ }
 
-> Temperature
-> +  measurement is also supported.
-> +
-> +properties:
-> +  compatible:
-> +    const: rohm,bm1390glv-z
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +        pressure-sensor@5d {
-> +            compatible =3D "kionix,kx022a";
-> +            reg =3D <0x5d>;
-> +
-> +            interrupt-parent =3D <&gpio1>;
-> +            interrupts =3D <29 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +            vdd-supply =3D <&vdd>;
-> +        };
-> +    };
-> --=20
-> 2.41.0
->=20
->=20
-> --=20
-> Matti Vaittinen, Linux device drivers
-> ROHM Semiconductors, Finland SWDC
-> Kiviharjunlenkki 1E
-> 90220 OULU
-> FINLAND
->=20
-> ~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-> Simon says - in Latin please.
-> ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-> Thanks to Simon Glass for the translation =3D]=20
+---
+base-commit: 7ba2090ca64ea1aa435744884124387db1fac70f
+change-id: 20230907-vcnl4000-pm-fix-b58dc0dffb5c
 
+Best regards,
+-- 
+Mårten Lindahl <marten.lindahl@axis.com>
 
-
---E4qdq8M9IN4HLNi4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZPmhIAAKCRB4tDGHoIJi
-0sFfAP4pJNv9hR6rflrFMwoAsSA1yKyN+RQ5LPWfSuaVDOfUlgD/aximGsBCt/J4
-4Pw2ixhrYmw68QTXBPRbEuJpeGyQkQY=
-=NZh8
------END PGP SIGNATURE-----
-
---E4qdq8M9IN4HLNi4--

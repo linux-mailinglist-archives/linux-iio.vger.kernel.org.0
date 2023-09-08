@@ -2,86 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3731797EB7
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Sep 2023 00:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8E5798171
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Sep 2023 07:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237501AbjIGWdH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 7 Sep 2023 18:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
+        id S233103AbjIHFLB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Sep 2023 01:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237730AbjIGWdG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Sep 2023 18:33:06 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A751BC7
-        for <linux-iio@vger.kernel.org>; Thu,  7 Sep 2023 15:32:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF22C433C8;
-        Thu,  7 Sep 2023 22:32:58 +0000 (UTC)
-Date:   Thu, 7 Sep 2023 18:32:55 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org
-Subject: [GIT PULL] First set of Counter fixes for 6.6
-Message-ID: <ZPpPl8V97juxRNyT@ishi>
+        with ESMTP id S230452AbjIHFK7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 01:10:59 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183AD1997;
+        Thu,  7 Sep 2023 22:10:55 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2bcfdadd149so29925071fa.0;
+        Thu, 07 Sep 2023 22:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694149853; x=1694754653; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UFHIUWHnNmQApPV1/bfs0UvEu6K4rETbQH94CLPjy5c=;
+        b=gU3UFauFYxA/UNNBQERw6lLlxVkI0wWg17LCUBk4zRQE5I4N/vCdNV86fWvfVZ6QW5
+         KXYa3xNIUTMkTtz7rz81iB7rmwhGqrGOFZ1U4V8HoZGJIqWFD6a43eQcG6U2rZ7c28wv
+         NbOCp/Dx7dnDN6Xlx2mj5ooJmFHrpsfoqsjvkMynswE2IHLf//g4zbBEdfUl76Li43KX
+         MduII7CRzgwSaRNv10Z96+n0++RET2VmtbTsV2YkS16j+7Dyasws5hZT4hR8KYH1IZEt
+         rSVW85QpK4OFU9Of65KX7jHX5cK3dUhXKHlwISum/Je4m4HC7WOKD0zI3JIfmNb+xpYa
+         fqiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694149853; x=1694754653;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UFHIUWHnNmQApPV1/bfs0UvEu6K4rETbQH94CLPjy5c=;
+        b=deu/YwOg6zn3lb8VqYL+REoAE1zwud0pyA8TkGi+QwmoityPzGtzZ1/LV1wpME1bTY
+         h/4jKlG5VGjd2P1wQ3q65SP2G7DIlYX2DzQRunOR+htAKZKhNh+6X37tlMZ89NnLRPDv
+         Epbl/rt1o6uPbAR2AgH6CBthrJGqQBSc34LYUVdlzh966MzKvF/gbWqUgjXYg5fgVMKT
+         8jwUfh8W99Kq1xB6lXrSUGkMJBAxgpVupZTia+vYKP/8Z9zjzlzLhn5W/KWUeQ0bg0y7
+         CCj7XcAzW2OGbEPpFsuh8BpFasJBcoF58NvfWOA82tmqsE8JWC6ta6hS4OBg/pgDxdjn
+         uHBg==
+X-Gm-Message-State: AOJu0Yw/g7l+2ifNWuR253AdGxhit6kFTLBx/70N0Tw0l2PNZlrW8lQ0
+        mChRN0Dt4z3uFPrBFptb3bU=
+X-Google-Smtp-Source: AGHT+IHkmwL6J0JEYxPcyvxzepIZkzQPEW1RAz1nnotQMfzOKs9sBDFOzF2NCkc3prdt5tH+8Pu3Kg==
+X-Received: by 2002:a2e:900f:0:b0:2bc:dfab:5dc8 with SMTP id h15-20020a2e900f000000b002bcdfab5dc8mr843564ljg.37.1694149853049;
+        Thu, 07 Sep 2023 22:10:53 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
+        by smtp.gmail.com with ESMTPSA id m14-20020a2e910e000000b002ba161bdc9asm161751ljg.79.2023.09.07.22.10.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Sep 2023 22:10:52 -0700 (PDT)
+Message-ID: <e02bcbc0-ff86-e330-ab85-1a6e202063a6@gmail.com>
+Date:   Fri, 8 Sep 2023 08:10:51 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hkGJ/AjSEAaO41c6"
-Content-Disposition: inline
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/3] dt-bindings: Add ROHM BM1390 pressure sensor
+Content-Language: en-US, en-GB
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1694001462.git.mazziesaccount@gmail.com>
+ <55e59e66824f75ce8ffe58d3463a9cbca56e25ac.1694001462.git.mazziesaccount@gmail.com>
+ <20230907-e9e5cdcef1e6c88c1f6afbdd@fedora>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20230907-e9e5cdcef1e6c88c1f6afbdd@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 9/7/23 13:08, Conor Dooley wrote:
+> On Wed, Sep 06, 2023 at 03:37:19PM +0300, Matti Vaittinen wrote:
+>> BM1390GLV-Z is a pressure sensor which performs internal temperature
+>> compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
+>> and sample averaging and IIR filtering is built in sensor. Temperature
+>> measurement is also supported.
+>>
+>> Add dt-bindings for the sensor.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> ---
+>>   .../bindings/iio/pressure/rohm,bm1390.yaml    | 52 +++++++++++++++++++
+>>   1 file changed, 52 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+>> new file mode 100644
+>> index 000000000000..d681fdd0f5ea
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/pressure/rohm,bm1390.yaml
+>> @@ -0,0 +1,52 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/pressure/rohm,bm1390.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: ROHM BM1390 pressure sensor
+>> +
+>> +maintainers:
+>> +  - Matti Vaittinen <mazziesaccount@gmail.com>
+>> +
+>> +description: |
+> 
+> You've got no formatting to preserve the | is not needed.
+> 
+>> +  BM1390GLV-Z is a pressure sensor which performs internal temperature
+>> +  compensation for the MEMS. Pressure range is from 300 hPa to 1300 hPa
+>> +  and sample averaging and IIR filtering is built in sensor.
+> 
+> nit: "built in to the sensor." or just "built-in."
+> 
+> Otherwise this seems alright to me,
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
---hkGJ/AjSEAaO41c6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-The following changes since commit 2dde18cd1d8fac735875f2e4987f11817cc0bc2c:
+Thanks Conor! I'll fix them for v2 :)
 
-  Linux 6.5 (2023-08-27 14:49:51 -0700)
+Yours,
+	-- Matti
 
-are available in the Git repository at:
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.6a
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-for you to fetch changes up to df8fdd01c98b99d04915c04f3a5ce73f55456b7c:
-
-  counter: microchip-tcb-capture: Fix the use of internal GCLK logic (2023-09-05 12:25:14 -0400)
-
-----------------------------------------------------------------
-First set of Counter fixes for 6.6
-
-The counter_get_ext() function would incorrectly refer to the first
-element of the extensions array to handle component array extensions
-when they are located at a different index; a fix is provided to index
-to the correct element in the array for this case. A fix for the
-microchip-tcb-capture is provided as well to correct an inverted
-internal GCLK logic for clock selection.
-
-----------------------------------------------------------------
-Dharma Balasubiramani (1):
-      counter: microchip-tcb-capture: Fix the use of internal GCLK logic
-
-Fabrice Gasnier (1):
-      counter: chrdev: fix getting array extensions
-
- drivers/counter/counter-chrdev.c        | 4 ++--
- drivers/counter/microchip-tcb-capture.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
---hkGJ/AjSEAaO41c6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZPpPlwAKCRC1SFbKvhIj
-K32TAP0RDnKDstj6vGh82+avylpBc9VnZlPKhhNoxl6gQ/sF7wD+OOnkxTdJpxw7
-Wu//mRVsluGDVFEkaqXJ6Ot3SVEJCwI=
-=t7Em
------END PGP SIGNATURE-----
-
---hkGJ/AjSEAaO41c6--

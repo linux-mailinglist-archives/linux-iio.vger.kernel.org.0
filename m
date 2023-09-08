@@ -2,112 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1029798328
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Sep 2023 09:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAA9798E94
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Sep 2023 21:02:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233296AbjIHHSI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Sep 2023 03:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
+        id S241511AbjIHTCc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Sep 2023 15:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231371AbjIHHSI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 03:18:08 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D0AE1BC8;
-        Fri,  8 Sep 2023 00:18:04 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-501bef6e0d3so2967283e87.1;
-        Fri, 08 Sep 2023 00:18:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694157482; x=1694762282; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=smf62hNaj0uPO3gBbh1PGmNcBmE2E6aTkzmFVeY/thc=;
-        b=TesyKRAopNb1CqujJfQfPkm5MpFt8GJI2jbhkgHbomAbofZ6dknbAZc+IhXtfXpyqJ
-         ohMCkNtyJ6cc1Vn3wsknthKomc6Tn8uSbEvMV1/SnJsTrKI+gZLJ2g1rkIJME4J5UgCK
-         7+iIhagqrNdrQerWKv/D3NG2XKo0i/VsJCVFVfxUfwfCcoVSgELqC7FObQPGAQ5YK3Yb
-         9H77UQ8QBrtUMDNqQ9sm/YFMFYH5kEg7AuAPmtBWlNmnni4v0Uoe1uUc/nVpGMPTw091
-         +DYfOSpBvoAFNJyXzBv6SQ2jXdEG26XGe+Ks0b7ACpXGuqIvhXybOc8GB6DUz8T0PkAJ
-         BUhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694157482; x=1694762282;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=smf62hNaj0uPO3gBbh1PGmNcBmE2E6aTkzmFVeY/thc=;
-        b=r1ZFDHaxEvQ5yNOo4gihWMt87d5p5qGZjC8h5MW5RrtiQMlJ45+ZHo60JGeQ1PzFIm
-         AcqZcE+YcihBi28Oz0xTAfVM5MmuEAhGsGsciOgKo0E1nDLUHVTFc6bxvH1/QEM/pjIG
-         ahOPjYmEnSYfByfFcOHgHSY7GltT2WOFoFBoDtkwQEAz26FTXU7YN5NqZkSCm3G/0srZ
-         DQvLSLVdktUd7AK/rA/VWnpW0ZM3OssCWk4ovwSoMSyceDazDIrIKimDUTDJJlzlMu0I
-         vATZeCYPRtQ8PD3cjFGe7omZHbidDMV7OBvRAQXyD8cKxm9WWMmVyYsuho5neju6nYGZ
-         UycQ==
-X-Gm-Message-State: AOJu0YxhvCPDEJM49+hrEtzkxOnaIazyOv0m0r/zmA4AcELj85/UVT1v
-        GrV3yu7dP9jlC3FeZWm7ah8=
-X-Google-Smtp-Source: AGHT+IFvYcLcQiX/WNdwXlR0SJaMJDqkELEUc8cSoI79tSPyREwua0CZkJEU+nKRYdn+1ABxf8/dSA==
-X-Received: by 2002:ac2:58e1:0:b0:4ff:7004:545e with SMTP id v1-20020ac258e1000000b004ff7004545emr1124685lfo.4.1694157482223;
-        Fri, 08 Sep 2023 00:18:02 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
-        by smtp.gmail.com with ESMTPSA id z13-20020a19f70d000000b005007fc9cccasm195517lfe.94.2023.09.08.00.18.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Sep 2023 00:18:01 -0700 (PDT)
-Message-ID: <4b5ea58a-bee3-26cf-2c0d-e08fc4d1b051@gmail.com>
-Date:   Fri, 8 Sep 2023 10:18:00 +0300
+        with ESMTP id S235518AbjIHTCb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 15:02:31 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D06AE6F;
+        Fri,  8 Sep 2023 12:02:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B6FC43397;
+        Fri,  8 Sep 2023 18:33:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694197983;
+        bh=ta2natytOGl/MNNvGTNRj7ruD1g8JHgVcPbG7D7SZMw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=O1dTQE17H0hK37bWLBp7Nvs8vJBL/lUrWhPq9kWqDh0dmeYZp99J0v83jG5J/nUMi
+         GMPkRWsWGU1EW/DHVQJxSBFNPDgYv8vbMHzIJokbzC9g7Vlr37hLVIXborNw3zjJ5z
+         OdkTuvKbHQDN+VkVQ+e7KUCv4mTchllOo0t/Y60Bvt3Z0Xu7tlvYz6Gf2svav8ITOc
+         Xg1/GwhPEP+e3qiniE0G28whffAJ0Ts4/WYaO7mMfqNxUwas9nOpJ+VZOF9sixdeh7
+         tYIwQJKlsMFvK6SnFfRSTLj+QuBOykHcZTw/PUVEO1goSSTlOLWpJ1yXqV5KgQ5tz1
+         aIjXhdtRkd45Q==
+Date:   Fri, 8 Sep 2023 19:33:29 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
+Message-ID: <20230908193329.0ddd39e2@jic23-huawei>
+In-Reply-To: <4d8e2873-49bc-8314-ee16-dd327a92898d@gmail.com>
+References: <cover.1694001462.git.mazziesaccount@gmail.com>
+        <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
+        <ZPifWlRvX5hLFPvG@smile.fi.intel.com>
+        <4d8e2873-49bc-8314-ee16-dd327a92898d@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] dt-bindings: Add ROHM BM1390 pressure sensor
-Content-Language: en-US, en-GB
-To:     Benjamin Bara <bbara93@gmail.com>
-Cc:     ak@it-klinger.de, andriy.shevchenko@linux.intel.com,
-        ang.iglesiasg@gmail.com, conor+dt@kernel.org,
-        devicetree@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        matti.vaittinen@fi.rohmeurope.com, robh+dt@kernel.org
-References: <55e59e66824f75ce8ffe58d3463a9cbca56e25ac.1694001462.git.mazziesaccount@gmail.com>
- <20230908071421.1309276-1-bbara93@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20230908071421.1309276-1-bbara93@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/8/23 10:14, Benjamin Bara wrote:
-> Hi Matti,
+On Thu, 7 Sep 2023 08:57:17 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+> Morning Andy,
 > 
-> just accidentally saw your series.
+> Thanks for the review.
 > 
-> On Wed, Sep 06, 2023 at 03:37:19PM +0300, Matti Vaittinen wrote:
->> +examples:
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +    i2c {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +        pressure-sensor@5d {
->> +            compatible = "kionix,kx022a";
+> On 9/6/23 18:48, Andy Shevchenko wrote:
+> > On Wed, Sep 06, 2023 at 03:37:48PM +0300, Matti Vaittinen wrote:  
+> >> Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z can measure
+> >> pressures ranging from 300 hPa to 1300 hPa with configurable measurement
+> >> averaging and internal FIFO. The sensor does also provide temperature
+> >> measurements.
+> >>
+> >> Sensor does also contain IIR filter implemented in HW. The data-sheet
+> >> says the IIR filter can be configured to be "weak", "middle" or
+> >> "strong". Some RMS noise figures are provided in data sheet but no
+> >> accurate maths for the filter configurations is provided. Hence, the IIR
+> >> filter configuration is not supported by this driver and the filter is
+> >> configured to the "middle" setting (at least not for now).
+> >>
+> >> The FIFO measurement mode is only measuring the pressure and not the
+> >> temperature. The driver measures temperature when FIFO is flushed and
+> >> simply uses the same measured temperature value to all reported
+> >> temperatures. This should not be a problem when temperature is not
+> >> changing very rapidly (several degrees C / second) but allows users to
+> >> get the temperature measurements from sensor without any additional logic.  
+> > 
+> > ...
+> > 
+> >   
+> >> +struct bm1390_data {
+> >> +	int64_t timestamp, old_timestamp;  
+> > 
+> > Out of a sudden int64_t instead of u64?  
 > 
-> I think the compatible in the example is not right.
+> Judging the iio_push_to_buffers_with_timestamp() and iio_get_time_ns(), 
+> IIO operates with signed timestamps. One being s64, the other int64_t.
 
-Indeed it's not! Great catch! Thanks! Must be fixed in v2.
+That's odd. Ah well.  Should both be s64 as internal to the kernel only.
 
-Oh - and long time no see - I hope you had a great summer :) I'm waiting 
-to see you continuing the regulator stuff ;)
 
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+> 
+> >> +	struct iio_trigger *trig;
+> >> +	struct regmap *regmap;
+> >> +	struct device *dev;
+> >> +	struct bm1390_data_buf buf;
+> >> +	int irq;
+> >> +	unsigned int state;
+> >> +	bool trigger_enabled;  
+> >   
+> >> +	u8 watermark;  
+> > 
+> > Or u8 instead of uint8_t?  
+> 
+> So, uint8_t is preferred? I don't really care all that much which of 
+> these to use - which may even show up as a lack of consistency... I 
+> think I did use uint8_t when I learned about it - but at some point 
+> someone somewhere asked me to use u8 instead.. This somewhere might have 
+> been u-boot though...
+> 
+> So, are you Suggesting I should replace u8 with uint8_t? Can do if it 
+> matters.
+u8 preferred for internal to kernel stuff, uint8_t if a userspace header.

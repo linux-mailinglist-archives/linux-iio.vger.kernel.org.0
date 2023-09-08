@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9107A798216
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Sep 2023 08:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 974EC79824E
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Sep 2023 08:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230432AbjIHGNA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Sep 2023 02:13:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46640 "EHLO
+        id S237063AbjIHGYg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Sep 2023 02:24:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231240AbjIHGM7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 02:12:59 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04D219A6;
-        Thu,  7 Sep 2023 23:12:54 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-501bd7711e8so2949399e87.1;
-        Thu, 07 Sep 2023 23:12:54 -0700 (PDT)
+        with ESMTP id S238452AbjIHGYf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 02:24:35 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9804B19A6;
+        Thu,  7 Sep 2023 23:24:30 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2bcc14ea414so28718221fa.0;
+        Thu, 07 Sep 2023 23:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694153573; x=1694758373; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694154269; x=1694759069; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
         bh=poqBFblIGkZYzM95ib/AwQKqF/vFUuMutfef2/uB2EU=;
-        b=GFkVe4996Iim7FWhsu8ucAQOevN2cZlQ0LSaNhTig2dx3MoyaNBfX4WLTBeTc74NKE
-         45WVq53lFOtyoZN/aStE4dXopZ4gGtLYx+5MLOrwg25ERqa4mnNfbrisYNG1Bik9+5v/
-         GMr2qbEIaml3+Pg/FLy66JHKXFvgfMPL4Z6EEtpDzW8KKvaIQ71IoGHqfVfl/7wq2Lv2
-         mVPdvRhIUHQ+Vpv5QadYnoBt/MpItxfLH1nYPJ12Qkl4+DuHpP5D94dYkG0YLxHSsn7H
-         RSlMe39TugdNKbUqqHgQirq73nAOmfVbiICJrmBfGVFmwG6SInWSx/D7DAviXPuTHM3j
-         lq1w==
+        b=N3tTQ7XF+FP3pj/k3T5B5AqO6VTOzi182r34DgWTm7EnMAr3af6g6NnG3hwmY3Ie6o
+         F7gRs5ftwYX9LjELY++gxpNUy7EM3fvmCLGmOxOgUelbR3nwIr1ewjhpzExCoAXIOUdI
+         CnbwesfLef3vBoeLtpbQGq5aFvC0AWH+sGXoCKeYibLHWo8O4YRO2heHCQEz2t0Nhk3h
+         BdlERc5rDZj2hUPtABBLEtlEhGHQw1TWjaiikR5G14xV4BM+8KoRkayFz3LUJhT/MfoQ
+         YMhe6Hn+bfWS/q6Wlz3pJ4MVz730E6iK4dd5GLgWskALmTtAS/zKCmbHLQBIG68BE7h/
+         cyGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694153573; x=1694758373;
+        d=1e100.net; s=20230601; t=1694154269; x=1694759069;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
         bh=poqBFblIGkZYzM95ib/AwQKqF/vFUuMutfef2/uB2EU=;
-        b=Nusq3yTR0rw1mBTFBqHDRMw6BGpxNyjREAOEcfi8QRbFyf9WnjIrbU1KnYa+RfPMb6
-         QJrheL7y42F00xoWJGfZW1Kg7Y/Zv1oqeKLp9o7HO+ZT9Yjs/bu4cb2mz6o+XwMHF0BA
-         4ixg9zN3VJLMYsNgw9TbjCKUzdU+BTjgND/DurapvHeokQnKxk2OmpZcz2L3OlIJi/P/
-         j5AY9qVuzQUBuMUUofSZYkdGRGyfCLD/m6y1AHduhH8QLWfjyAV/87hr0SZ70s8XxUt6
-         VCarzz/igfCJo9Ap/ebQmLDMkjDVKhgKHtDnRY4XcDr6rCx8eTRo1Tc9Uhskqmhg/cxE
-         3HCA==
-X-Gm-Message-State: AOJu0YwrpnIlY1ZLAMCY3PQRzog0+oRvn0ljbdtdHV1Bi2hRQ0HHAEqv
-        4sT+TSYf28rYVb9InIOChbA=
-X-Google-Smtp-Source: AGHT+IHJtcRO66AE8lCaGQ76m7Iw8n1Z70sii4yozRD4RYJzuVX0lQnYKE0Eu//9CyZG44IJqEtIDg==
-X-Received: by 2002:a05:6512:1599:b0:500:bb99:69a7 with SMTP id bp25-20020a056512159900b00500bb9969a7mr1259039lfb.14.1694153572630;
-        Thu, 07 Sep 2023 23:12:52 -0700 (PDT)
+        b=HF8LSj0FZ4I0eNQ6dddD+bF30citapfK5fskbcwVx8/1kiY370Um6/vDQOG23Hg6kF
+         VbUhb30HnGGYnZdDt72ucACfLSpwpQPeWwIul3M8mgKEMvxrOGlSOtaes8xP5fyc5N0M
+         MhNqA8GZJWaS7PRav6wp6981p+I7x9hPKu8cRkDGzaC7PLFi50s0yDD8LVHqXYIm/4Dh
+         E4s8SPCgOBhLK0eJ6D2W6JNVgGNWgGQ03Wvl6Q185X4QDG45NOOKqTOcSnfviuphE3UL
+         jZLRiNSdD0IKfPDoqGse5tzld/+VJ6XRx800n5GuqM9rkdEAxPPfEM5G+TxZiZslqweP
+         0dNg==
+X-Gm-Message-State: AOJu0YwlGYQ7p911kH0qbG/e3w5qcZkMqvGR0HcfKeYvVMh3o1XN80Dd
+        zgwqRimnvCGDSydZaC9Yt7Q=
+X-Google-Smtp-Source: AGHT+IGATGlK1TdeR750Ftd5ipdwsL6GfW9TwVuipKbbBDeBAb+eAzwbBDPSTwo0Ffh29N67kaBcFA==
+X-Received: by 2002:a2e:b60a:0:b0:2b7:11f8:27d with SMTP id r10-20020a2eb60a000000b002b711f8027dmr1067893ljn.7.1694154268606;
+        Thu, 07 Sep 2023 23:24:28 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
-        by smtp.gmail.com with ESMTPSA id i27-20020ac2523b000000b00501bd55f74csm175011lfl.209.2023.09.07.23.12.51
+        by smtp.gmail.com with ESMTPSA id s10-20020a2e2c0a000000b002b836d8c839sm185078ljs.40.2023.09.07.23.24.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 23:12:52 -0700 (PDT)
-Message-ID: <eba53e24-ea01-6c38-27ee-27c3d10aa73f@gmail.com>
-Date:   Fri, 8 Sep 2023 09:12:51 +0300
+        Thu, 07 Sep 2023 23:24:27 -0700 (PDT)
+Message-ID: <e5cdcce2-98b6-ac4e-7e21-0bd73c7e9dfe@gmail.com>
+Date:   Fri, 8 Sep 2023 09:24:27 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0

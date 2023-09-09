@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E75F279945E
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Sep 2023 02:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 581A37994A9
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Sep 2023 02:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242773AbjIIAkU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Sep 2023 20:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55850 "EHLO
+        id S237731AbjIIAlA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Sep 2023 20:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345857AbjIIAjl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 20:39:41 -0400
+        with ESMTP id S1346009AbjIIAkI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 20:40:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD52C271F;
-        Fri,  8 Sep 2023 17:38:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127B9C116A8;
-        Sat,  9 Sep 2023 00:38:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20EE92D59;
+        Fri,  8 Sep 2023 17:39:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08E2C433BA;
+        Sat,  9 Sep 2023 00:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694219924;
-        bh=3FdsGKdIimLySiH95S3fd9cn34fEnJcqoSPUbeK7X3o=;
+        s=k20201202; t=1694219958;
+        bh=DJRNoHFecysmiRGxz13K8gc5M0CooR90fT3HAX7I4BI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jm78EsV5nGbMpPG12xfx4a1p8zRHuu6DBOzjBIyRD6iX5mJJUVPxPea5aQKoeRTCV
-         /bx9IwvWQsWE30hSOdoHUvsJWLz50a7RcBRC/FwMvRdXUGTraAUgn51IM+mWgwlnFA
-         4rJTgZL8gv5g9V3Lj16t8UY/kvWPKDYyIHXB8XK8sQa6Cei6wdywVpRN3dS1pIR8Ad
-         sBPfcjRosova5pNSHh2QXWJAsA9y7adXgf5NvrELj76KPhHIydfICIZYtfUnhvSU9I
-         v+qFGzWsGz7AQAFjrlGmo4Ba8SxVzo3FiVNyeG2jBdw/mLk1rBI2DJgJR7tp8f5mLb
-         X22//wMlrV65A==
+        b=pOP9aUC3CQcP59uVibt8EGzMfGS/pUNTvx2UU0dp9VVpZAJ6HDpQM70naXNlHzro/
+         3Txn8MzGGb3afOzAdrgqQlvYbLix8/9BRzQXfxXCg/HMCkRCeLAZyi8sf3fibemt8N
+         jAINuBw9LPnGkRd7q1ljpe93n/H9HrQ/nYHkh8nsfBP9kddJ+vtfUMzLLlI2QHQEqo
+         SXTypSXAFgwjsH6at2i5ckUGPDaElEMRWsPTNCR/dACfMizttHvybo45zzztN6Pb/x
+         2oDlIRXz2g4Onh5OikaTiOhyJORkAdxBZjoCVhEIhaKeAuOHpvv2eDvGYmuLhJ0Rvc
+         QwgVDZc7O8GsQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chenyuan Mi <michenyuan@huawei.com>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nuno Sa <nuno.sa@analog.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 14/24] tools: iio: iio_generic_buffer: Fix some integer type and calculation
-Date:   Fri,  8 Sep 2023 20:38:06 -0400
-Message-Id: <20230909003818.3580081-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 07/19] iio: core: Use min() instead of min_t() to make code more robust
+Date:   Fri,  8 Sep 2023 20:38:51 -0400
+Message-Id: <20230909003903.3580394-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230909003818.3580081-1-sashal@kernel.org>
-References: <20230909003818.3580081-1-sashal@kernel.org>
+In-Reply-To: <20230909003903.3580394-1-sashal@kernel.org>
+References: <20230909003903.3580394-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.52
+X-stable-base: Linux 5.15.131
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,71 +54,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Chenyuan Mi <michenyuan@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 49d736313d0975ddeb156f4f59801da833f78b30 ]
+[ Upstream commit cb1d17535061ca295903f97f5cb0af9db719c02c ]
 
-In function size_from_channelarray(), the return value 'bytes' is defined
-as int type. However, the calcution of 'bytes' in this function is designed
-to use the unsigned int type. So it is necessary to change 'bytes' type to
-unsigned int to avoid integer overflow.
+min() has strict type checking and preferred over min_t() for
+unsigned types to avoid overflow. Here it's unclear why min_t()
+was chosen since both variables are of the same type. In any
+case update to use min().
 
-The size_from_channelarray() is called in main() function, its return value
-is directly multipled by 'buf_len' and then used as the malloc() parameter.
-The 'buf_len' is completely controllable by user, thus a multiplication
-overflow may occur here. This could allocate an unexpected small area.
-
-Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
-Link: https://lore.kernel.org/r/20230725092407.62545-1-michenyuan@huawei.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20230721170022.3461-5-andriy.shevchenko@linux.intel.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_generic_buffer.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/iio/industrialio-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index f8deae4e26a15..44bbf80f0cfdd 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -51,9 +51,9 @@ enum autochan {
-  * Has the side effect of filling the channels[i].location values used
-  * in processing the buffer output.
-  **/
--static int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
-+static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
- {
--	int bytes = 0;
-+	unsigned int bytes = 0;
- 	int i = 0;
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index a7f5d432c95d9..c374e5fe94f3c 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -418,7 +418,7 @@ static ssize_t iio_debugfs_write_reg(struct file *file,
+ 	char buf[80];
+ 	int ret;
  
- 	while (i < num_channels) {
-@@ -348,7 +348,7 @@ int main(int argc, char **argv)
- 	ssize_t read_size;
- 	int dev_num = -1, trig_num = -1;
- 	char *buffer_access = NULL;
--	int scan_size;
-+	unsigned int scan_size;
- 	int noevents = 0;
- 	int notrigger = 0;
- 	char *dummy;
-@@ -674,7 +674,16 @@ int main(int argc, char **argv)
- 	}
+-	count = min_t(size_t, count, (sizeof(buf)-1));
++	count = min(count, sizeof(buf) - 1);
+ 	if (copy_from_user(buf, userbuf, count))
+ 		return -EFAULT;
  
- 	scan_size = size_from_channelarray(channels, num_channels);
--	data = malloc(scan_size * buf_len);
-+
-+	size_t total_buf_len = scan_size * buf_len;
-+
-+	if (scan_size > 0 && total_buf_len / scan_size != buf_len) {
-+		ret = -EFAULT;
-+		perror("Integer overflow happened when calculate scan_size * buf_len");
-+		goto error;
-+	}
-+
-+	data = malloc(total_buf_len);
- 	if (!data) {
- 		ret = -ENOMEM;
- 		goto error;
 -- 
 2.40.1
 

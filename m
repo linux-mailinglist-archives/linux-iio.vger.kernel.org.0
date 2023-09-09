@@ -2,30 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8F97994D6
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Sep 2023 02:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 717457994FF
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Sep 2023 02:45:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346217AbjIIAnm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 8 Sep 2023 20:43:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43334 "EHLO
+        id S236115AbjIIAoj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 8 Sep 2023 20:44:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346084AbjIIAnW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 20:43:22 -0400
+        with ESMTP id S231760AbjIIAoI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 8 Sep 2023 20:44:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C71273F;
-        Fri,  8 Sep 2023 17:40:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2683DC43395;
-        Sat,  9 Sep 2023 00:39:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92AF44AB;
+        Fri,  8 Sep 2023 17:41:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FCCC4166B;
+        Sat,  9 Sep 2023 00:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694219996;
-        bh=P4qbOjdR/nYDCmzjET6WTsY2fVqvZ/QQieCnmICiY6o=;
+        s=k20201202; t=1694220028;
+        bh=NZMo8a28i7U4O7fPr6vcTgkZHB8n3jjzm1LpvEa3zVY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jg9fUYXKl37Glu4MMsj3lq9PYxdOnfuZQsFHodbg9kS0T7QE8d4BPBxd3P5Xfialp
-         TGlz+BTDyqjjternbG+QJQsWLIw3u4mprbwBPETvme7FCcSS2gzDfKjH8b6Pb0gYtD
-         GjSboT9+9QFAEkLDoeQwCZaUBpDeb1oILg5RBIBB8goXCfC9GaRqIkKCd+Ryqn63Vc
-         MSZ98ykfM7bwRIyt4jkhI88zfalI4I7KF53pYQ1esaJp/vowHo0qjp3GevbkviAoip
-         xW+uHyBID9T4jTCDHcQ9ZfZF2LtFMPVKUGhmLFACPbedmo+LkRoIu1uAiwisjA7gqE
-         6Yt0iUEjWWxyw==
+        b=AL+pOfQqLajuqM5catImuKndrbIbJ1FPT2+aym/dK7Kc58SHu0k1QqC92EtouoNTo
+         vGSTkiYVdBtSaRIpeSerHvk/Eq8LcLqjiwbjAgDDZu0tNmvpXwptKsaO1JXzeQrFVP
+         d8Sm7CxM8OH3sb/z9SzDtNtxLQ9/s26AAwBWh3J2RM4a6Q8iCELznsHcL3EPNW+Wg9
+         /XSqWjx6LAf/YMZYjbzjkNjiHW2mmzJxBHBl+1rsJ/8mzuwJYbtA/7z1v5ggpzLeIM
+         pA2IdYFXFffgtG4StCYZqc2EQrAuPpYkcEjo1YGl87wDQEDINv1+IzX13oHyI8+HA/
+         fZmAXX9h4uVEw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -33,16 +33,16 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 07/16] iio: core: Use min() instead of min_t() to make code more robust
-Date:   Fri,  8 Sep 2023 20:39:32 -0400
-Message-Id: <20230909003941.3580631-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 06/14] iio: core: Use min() instead of min_t() to make code more robust
+Date:   Fri,  8 Sep 2023 20:40:06 -0400
+Message-Id: <20230909004015.3580832-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230909003941.3580631-1-sashal@kernel.org>
-References: <20230909003941.3580631-1-sashal@kernel.org>
+In-Reply-To: <20230909004015.3580832-1-sashal@kernel.org>
+References: <20230909004015.3580832-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.194
+X-stable-base: Linux 5.4.256
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 261d3b17edc9a..5b24b5bcc18e0 100644
+index 485b2e6748c59..52e10df70c079 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -361,7 +361,7 @@ static ssize_t iio_debugfs_write_reg(struct file *file,
+@@ -328,7 +328,7 @@ static ssize_t iio_debugfs_write_reg(struct file *file,
  	char buf[80];
  	int ret;
  

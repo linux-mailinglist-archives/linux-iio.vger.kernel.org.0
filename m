@@ -2,58 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCF50799E90
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Sep 2023 15:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99A87799E9A
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Sep 2023 16:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243091AbjIJN5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Sep 2023 09:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55204 "EHLO
+        id S239004AbjIJODp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Sep 2023 10:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbjIJN5S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Sep 2023 09:57:18 -0400
+        with ESMTP id S230174AbjIJODp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Sep 2023 10:03:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2A8CC5;
-        Sun, 10 Sep 2023 06:57:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C9BC433C8;
-        Sun, 10 Sep 2023 13:57:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7886CCC5;
+        Sun, 10 Sep 2023 07:03:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D5BC433C8;
+        Sun, 10 Sep 2023 14:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694354233;
-        bh=msSma7JeAnGtSAB/2hVF2hPfqZC05HK+fqnZnQOwubw=;
+        s=k20201202; t=1694354621;
+        bh=wTbYtIegKrFF/yYFdEQr8XdRy/kc5XFbBENiOAM+JqU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JHCY3VnNyIccxeUb4yhimP5OIdb1xsIqSG2cEdAyzpkkPMuyGHetr6fuSDYczo+bB
-         z/vr/yH0jGjLE0vj7io5bpaaoZvw1DA454U8sPHGPD4DSEA4mPyv5zgvqRaxsHoNuS
-         Iu2AhKs0KPQWQ93Yox0LUkMO+WHFzYlvs5sCYkElKRxlqpGpJKDxq4udsdFgUgO7j5
-         2ZaoEY3RGL1+pZfw/p42uTOf30RUq8E4RdejReDX7hg5toFroxP4jkjh0l+8mD7c5W
-         lvp4NPC4Z/O9J2LTYVdJgq7TVxh17p2HBnCRMSa3rP2ktsS/1ADzkthsq6o1/UY9mF
-         Qeu2zJ8cQK3Kg==
-Date:   Sun, 10 Sep 2023 14:57:06 +0100
+        b=p3NjNXxPNA5C4jMAi6Srjy+TK7wk0Z132c3j2OizyvcaStnONMzt5nCQ8N5BIh17N
+         AY3gYWnfjVMwaRwUwo0YmlwXCP758rWn1MgWEoSIh+KPCAMgegcg8G0NdE7YKOejWr
+         NlJD5r3kyYFf1niD+dxXPW8ALs2iT3XoPhAl+aX8tMGWoY1r76O3uXzR3KMAQY80Eu
+         KVTGH6xus/uTXGhKD8lUEFM1Y1maQNCQf2+dUsi2yzgVsBFkjAD9L8TPVMsObetjY8
+         OwkmPsLVDd6+1HIC2z47bbD9mv67JzevLiZQ2inCmtYpSaCMwyvRLOsbSpU9dAjm0L
+         +V48XEFEiQIcw==
+Date:   Sun, 10 Sep 2023 15:03:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     =?UTF-8?B?5p2o5piO6YeR?= <magicyangmingjin@gmail.com>
-Cc:     Mingjin Yang <mingjin.yang@unisoc.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, Ling_Ling.Xu@unisoc.com,
-        Jinfeng.Lin1@unisoc.com, Yangbin.Li@unisoc.com,
-        Jiansheng.Wu@unisoc.com, Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V0 2/2] iio: adc: sprd_pmic_adc: Add support for UMP
- serise pmic adc
-Message-ID: <20230910145706.7cae84aa@jic23-huawei>
-In-Reply-To: <CAKJtOf6N0P9Phqsm-2B1p1kCZ+Tezz3rZ8muLzAvXQoi=QFCtg@mail.gmail.com>
-References: <20230816080225.21482-1-mingjin.yang@unisoc.com>
-        <20230816080225.21482-3-mingjin.yang@unisoc.com>
-        <20230828165709.56ffa299@jic23-huawei>
-        <CAKJtOf5chsyPrnMZGv32YFvxG1x5cDtBQmzk7wRqCn7C2+cB=g@mail.gmail.com>
-        <20230903121437.520e5da3@jic23-huawei>
-        <CAKJtOf6N0P9Phqsm-2B1p1kCZ+Tezz3rZ8muLzAvXQoi=QFCtg@mail.gmail.com>
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: adc: add ltc2309 support
+Message-ID: <20230910150333.472437be@jic23-huawei>
+In-Reply-To: <20230903124341.360c95fe@jic23-huawei>
+References: <20230828-ltc2309-v3-0-338b3a8fab8b@gmail.com>
+        <20230828-ltc2309-v3-2-338b3a8fab8b@gmail.com>
+        <20230903124341.360c95fe@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -63,54 +56,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 5 Sep 2023 10:59:33 +0800
-=E6=9D=A8=E6=98=8E=E9=87=91 <magicyangmingjin@gmail.com> wrote:
+On Sun, 3 Sep 2023 12:43:41 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> > > > > +static int sprd_adc_enable(struct sprd_adc_data *data, int chann=
-el)
-> > > > > +{
-> > > > > +     int ret =3D 0;
-> > > > > +     u32 reg_read =3D 0;
-> > > > > +
-> > > > > +     if (data->pm_data.clk_regmap) {
-> > > > > +             ret =3D regmap_update_bits(data->pm_data.clk_regmap=
-, data->pm_data.clk_reg,
-> > > > > +                                      data->pm_data.clk_reg_mask,
-> > > > > +                                      data->pm_data.clk_reg_mask=
-);
-> > > > > +             ret |=3D regmap_read(data->pm_data.clk_regmap, data=
-->pm_data.clk_reg, &reg_read);
-> > > > > +             if (ret) {
-> > > > > +                     dev_err(data->dev, "failed to enable clk26m=
-, channel %d\n", channel);
-> > > > > +                     return ret;
-> > > > > +             }
-> > > > > +             dev_dbg(data->dev, "enable clk26m: ch %d, reg_read =
-0x%x\n", channel, reg_read); =20
-> > > >
-> > > > Directly accessing the regmap of a clock seems unusual. Why not pro=
-vide generic clock interfaces
-> > > > for this? =20
-> > >
-> > > This register is used to vote to enable/disable the pmic 26m clk which
-> > > is provided to modules like audio, typec and adc.
-> > > Therefore, this clk cannot be disabled or enabled directly. =20
-> >
-> > clk_enable() and friends support reference counted enable and disable
-> > so I don't understand why this needs something unusual. =20
->=20
-> Through communication with internal clk colleagues,
-> I learned that this register is not a traditional eb register,
+> On Mon, 28 Aug 2023 22:41:35 -0400
+> Liam Beguin <liambeguin@gmail.com> wrote:
+> 
+> > The LTC2309 is an 8-Channel, 12-Bit SAR ADC with an I2C Interface.
+> > 
+> > This implements support for all single-ended and differential channels,
+> > in unipolar mode only.
+> > 
+> > Signed-off-by: Liam Beguin <liambeguin@gmail.com>  
+> Hi Liam,
+> 
+> A few really small editorial bits in here.  I'll fix them whilst applying.
+> Series applied to the togreg branch of iio.git
+> 
+> Note I will be rebasing the tree on rc1 once available and in the meantime
+> this will only be pushed out as testing.
 
-eb?
+A couple more static analysis reports came in (unreachable return in one pace
+and a missing static.  I've fixed up in my tree.
 
-Sorry, I'm not familiar with the term.
+Thanks,
 
-> so the current clk driver is not configured to support this.
->=20
-> Jonathan Cameron <jic23@kernel.org> =E4=BA=8E2023=E5=B9=B49=E6=9C=883=E6=
-=97=A5=E5=91=A8=E6=97=A5 19:14=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Wed, 30 Aug 2023 15:15:12 +0800
-> > =E6=9D=A8=E6=98=8E=E9=87=91 <magicyangmingjin@gmail.com> wrote:
-> > =20
+Jonathan
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+> 
+> > +/**
+> > + * struct ltc2309 - internal device data structure
+> > + * @dev:	Device reference
+> > + * @client:	I2C reference
+> > + * @vref:	External reference source
+> > + * @lock:	Lock to serialize data access
+> > + * @vref_mv	Internal voltage reference  
+> 
+> Missing : which is what the bot picked up on.
+> 
+> > + */
+> > +struct ltc2309 {
+> > +	struct device		*dev;
+> > +	struct i2c_client	*client;
+> > +	struct regulator	*vref;
+> > +	struct mutex		lock; /* serialize data access */
+> > +	int			vref_mv;
+> > +};  
+> 
+> > +
+> > +void ltc2309_regulator_disable(void *regulator)
+> > +{
+> > +	struct regulator *r = (struct regulator *)regulator;  
+> 
+> Never any need to explicitly cast from a void * to any other pointer type.
+> (C spec says it is always fine to do this :)
+> 
+> Given type is obvious from use, can just do
+> 	regulator_disable(regulator);
+> and lose the local variable.
+> 
+> > +
+> > +	regulator_disable(r);
+> > +}  
+> 
+> ..
+> > +
+> > +static const struct of_device_id ltc2309_of_match[] = {
+> > +	{ .compatible = "lltc,ltc2309" },
+> > +	{ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, ltc2309_of_match);
+> > +
+> > +static const struct i2c_device_id ltc2309_id[] = {
+> > +	{ "ltc2309" },
+> > +	{}  
+> 
+> Trivial but space between { and } for consistency.
+> 
+> 
+

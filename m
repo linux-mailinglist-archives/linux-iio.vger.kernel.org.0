@@ -2,46 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40386799E89
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Sep 2023 15:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF50799E90
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Sep 2023 15:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233001AbjIJNug (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Sep 2023 09:50:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47782 "EHLO
+        id S243091AbjIJN5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Sep 2023 09:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbjIJNug (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Sep 2023 09:50:36 -0400
+        with ESMTP id S230174AbjIJN5S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Sep 2023 09:57:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D296ACC5;
-        Sun, 10 Sep 2023 06:50:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C72C433C7;
-        Sun, 10 Sep 2023 13:50:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E2A8CC5;
+        Sun, 10 Sep 2023 06:57:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C9BC433C8;
+        Sun, 10 Sep 2023 13:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694353831;
-        bh=a/EEGpvo/bK+O5iYQ0fsAhegdogdjwxLNJQ7K4ATQyM=;
+        s=k20201202; t=1694354233;
+        bh=msSma7JeAnGtSAB/2hVF2hPfqZC05HK+fqnZnQOwubw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YaTyWbya49IiNmT+Kft7EpgmY5XSOqh8DXLB5twblCxRZ9/2XN/Jet3px8QP14BTO
-         ntGsU75my7iJ9yTwzsA5n5XZAMy9gyDfIqBHKTUnAFow+k2jpO1cJ2+1om9A9tPfJ0
-         39gxA4NDyrNLXP09wlK9rHvCI5OkDR17X52TPQk7CucUCSXxSTTIBp7U7g+w+MA4Gl
-         aSDWFSfOTBlo+WIzDBS0/2J1ZhdLsoxbdPGAXUKHWwWeEe0k0llc+I96Plk324jkPM
-         Mb7fQukNf6pgFWB1jiIieLvybcflMeTZvp5+PSbkl6tep+Yv4xlaAe7OuoJUuiRg76
-         uOTgBK+9pV7GA==
-Date:   Sun, 10 Sep 2023 14:50:25 +0100
+        b=JHCY3VnNyIccxeUb4yhimP5OIdb1xsIqSG2cEdAyzpkkPMuyGHetr6fuSDYczo+bB
+         z/vr/yH0jGjLE0vj7io5bpaaoZvw1DA454U8sPHGPD4DSEA4mPyv5zgvqRaxsHoNuS
+         Iu2AhKs0KPQWQ93Yox0LUkMO+WHFzYlvs5sCYkElKRxlqpGpJKDxq4udsdFgUgO7j5
+         2ZaoEY3RGL1+pZfw/p42uTOf30RUq8E4RdejReDX7hg5toFroxP4jkjh0l+8mD7c5W
+         lvp4NPC4Z/O9J2LTYVdJgq7TVxh17p2HBnCRMSa3rP2ktsS/1ADzkthsq6o1/UY9mF
+         Qeu2zJ8cQK3Kg==
+Date:   Sun, 10 Sep 2023 14:57:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Cc:     "eajames@linux.ibm.com" <eajames@linux.ibm.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "joel@jms.id.au" <joel@jms.id.au>,
-        "andrew@aj.id.au" <andrew@aj.id.au>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 1/1] iio: pressure: dps310: Adjust Timeout Settings
-Message-ID: <20230910145025.34cc4728@jic23-huawei>
-In-Reply-To: <D273D407-B2EE-4089-95C9-43CF937B91EB@us.ibm.com>
-References: <20230829180222.3431926-1-lakshmiy@us.ibm.com>
-        <20230829180222.3431926-2-lakshmiy@us.ibm.com>
-        <20230903125309.12c59189@jic23-huawei>
-        <D273D407-B2EE-4089-95C9-43CF937B91EB@us.ibm.com>
+To:     =?UTF-8?B?5p2o5piO6YeR?= <magicyangmingjin@gmail.com>
+Cc:     Mingjin Yang <mingjin.yang@unisoc.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Ling_Ling.Xu@unisoc.com,
+        Jinfeng.Lin1@unisoc.com, Yangbin.Li@unisoc.com,
+        Jiansheng.Wu@unisoc.com, Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V0 2/2] iio: adc: sprd_pmic_adc: Add support for UMP
+ serise pmic adc
+Message-ID: <20230910145706.7cae84aa@jic23-huawei>
+In-Reply-To: <CAKJtOf6N0P9Phqsm-2B1p1kCZ+Tezz3rZ8muLzAvXQoi=QFCtg@mail.gmail.com>
+References: <20230816080225.21482-1-mingjin.yang@unisoc.com>
+        <20230816080225.21482-3-mingjin.yang@unisoc.com>
+        <20230828165709.56ffa299@jic23-huawei>
+        <CAKJtOf5chsyPrnMZGv32YFvxG1x5cDtBQmzk7wRqCn7C2+cB=g@mail.gmail.com>
+        <20230903121437.520e5da3@jic23-huawei>
+        <CAKJtOf6N0P9Phqsm-2B1p1kCZ+Tezz3rZ8muLzAvXQoi=QFCtg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,98 +63,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 6 Sep 2023 14:55:25 +0000
-Lakshmi Yadlapati <lakshmiy@us.ibm.com> wrote:
+On Tue, 5 Sep 2023 10:59:33 +0800
+=E6=9D=A8=E6=98=8E=E9=87=91 <magicyangmingjin@gmail.com> wrote:
 
-> Fixes: 7b4ab4abcea4 ("iio: pressure: dps310: Reset chip after timeout")
+> > > > > +static int sprd_adc_enable(struct sprd_adc_data *data, int chann=
+el)
+> > > > > +{
+> > > > > +     int ret =3D 0;
+> > > > > +     u32 reg_read =3D 0;
+> > > > > +
+> > > > > +     if (data->pm_data.clk_regmap) {
+> > > > > +             ret =3D regmap_update_bits(data->pm_data.clk_regmap=
+, data->pm_data.clk_reg,
+> > > > > +                                      data->pm_data.clk_reg_mask,
+> > > > > +                                      data->pm_data.clk_reg_mask=
+);
+> > > > > +             ret |=3D regmap_read(data->pm_data.clk_regmap, data=
+->pm_data.clk_reg, &reg_read);
+> > > > > +             if (ret) {
+> > > > > +                     dev_err(data->dev, "failed to enable clk26m=
+, channel %d\n", channel);
+> > > > > +                     return ret;
+> > > > > +             }
+> > > > > +             dev_dbg(data->dev, "enable clk26m: ch %d, reg_read =
+0x%x\n", channel, reg_read); =20
+> > > >
+> > > > Directly accessing the regmap of a clock seems unusual. Why not pro=
+vide generic clock interfaces
+> > > > for this? =20
+> > >
+> > > This register is used to vote to enable/disable the pmic 26m clk which
+> > > is provided to modules like audio, typec and adc.
+> > > Therefore, this clk cannot be disabled or enabled directly. =20
+> >
+> > clk_enable() and friends support reference counted enable and disable
+> > so I don't understand why this needs something unusual. =20
 >=20
-> Thanks,
-> Lakshmi
->=20
-Applied to the fixes-togreg branch of iio.git
-Note I'll probably rebase on rc1 before sending a pull request.
+> Through communication with internal clk colleagues,
+> I learned that this register is not a traditional eb register,
 
-Thanks,
+eb?
 
-Jonathan
+Sorry, I'm not familiar with the term.
 
-> =EF=BB=BFOn 9/3/23, 6:52 AM, "Jonathan Cameron" <jic23@kernel.org <mailto=
-:jic23@kernel.org>> wrote:
+> so the current clk driver is not configured to support this.
 >=20
->=20
-> On Tue, 29 Aug 2023 13:02:22 -0500
-> Lakshmi Yadlapati <lakshmiy@us.ibm.com <mailto:lakshmiy@us.ibm.com>> wrot=
-e:
->=20
->=20
-> > The DPS310 sensor chip has been encountering intermittent errors while
-> > reading the sensor device across various system designs. This issue cau=
-ses
-> > the chip to become "stuck," preventing the indication of "ready" status
-> > for pressure and temperature measurements in the MEAS_CFG register.
-> >=20
-> > To address this issue, this commit fixes the timeout settings to improve
-> > sensor stability:
-> > - After sending a reset command to the chip, the timeout has been exten=
-ded
-> > from 2.5 ms to 15 ms, aligning with the DPS310 specification.
-> > - The read timeout value of the MEAS_CFG register has been adjusted from
-> > 20ms to 30ms to match the specification.
-> >=20
-> > Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com <mailto:lakshmiy@=
-us.ibm.com>> =20
-> Hi Lakshmi,
->=20
->=20
-> This seems reasonable to me, but as we probably want to backport it to
-> stable kernels, please could you figure out an appropriate Fixes tag.
->=20
->=20
-> Fine to just reply to this email with the tag rather than resend.
->=20
->=20
-> Thanks
->=20
->=20
-> Jonathan
->=20
->=20
-> > ---
-> > drivers/iio/pressure/dps310.c | 8 ++++----
-> > 1 file changed, 4 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps31=
-0.c
-> > index b10dbf5cf494..1ff091b2f764 100644
-> > --- a/drivers/iio/pressure/dps310.c
-> > +++ b/drivers/iio/pressure/dps310.c
-> > @@ -57,8 +57,8 @@
-> > #define DPS310_RESET_MAGIC 0x09
-> > #define DPS310_COEF_BASE 0x10
-> >=20
-> > -/* Make sure sleep time is <=3D 20ms for usleep_range */
-> > -#define DPS310_POLL_SLEEP_US(t) min(20000, (t) / 8)
-> > +/* Make sure sleep time is <=3D 30ms for usleep_range */
-> > +#define DPS310_POLL_SLEEP_US(t) min(30000, (t) / 8)
-> > /* Silently handle error in rate value here */
-> > #define DPS310_POLL_TIMEOUT_US(rc) ((rc) <=3D 0 ? 1000000 : 1000000 / (=
-rc))
-> >=20
-> > @@ -402,8 +402,8 @@ static int dps310_reset_wait(struct dps310_data *da=
-ta)
-> > if (rc)
-> > return rc;
-> >=20
-> > - /* Wait for device chip access: 2.5ms in specification */
-> > - usleep_range(2500, 12000);
-> > + /* Wait for device chip access: 15ms in specification */
-> > + usleep_range(15000, 55000);
-> > return 0;
-> > }
-> >  =20
->=20
->=20
->=20
->=20
->=20
-
+> Jonathan Cameron <jic23@kernel.org> =E4=BA=8E2023=E5=B9=B49=E6=9C=883=E6=
+=97=A5=E5=91=A8=E6=97=A5 19:14=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > On Wed, 30 Aug 2023 15:15:12 +0800
+> > =E6=9D=A8=E6=98=8E=E9=87=91 <magicyangmingjin@gmail.com> wrote:
+> > =20

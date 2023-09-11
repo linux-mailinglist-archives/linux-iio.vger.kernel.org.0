@@ -2,115 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EEFF799E9E
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Sep 2023 16:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D695D79A275
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Sep 2023 06:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346457AbjIJOJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Sep 2023 10:09:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40778 "EHLO
+        id S229881AbjIKEbr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Sep 2023 00:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIJOJo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Sep 2023 10:09:44 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35AD9CC5
-        for <linux-iio@vger.kernel.org>; Sun, 10 Sep 2023 07:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-        s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=p1JWTqoQvTarQF3f8e9vwT/2tJ5LzNNh5EYA3VIYc0I=; b=OTk9zsihtSIVQxx75uYzyd2nM3
-        VuggNi1CtkYPy4z0qW6sBhbYYANP5O2tx9j9jXZ1Ow57ni8egFaHReAV//AN3PL8CQQP95bOx4KKD
-        QGAwFbW5dmsE1WgG7+BlRthoUS4ukhSciDtz3zkfO/ka94ibAAv0ljADO+9A59IiX3cnDU8PtoVmi
-        IPUruxLUiLDL28mtQXlKJJ43yjRMMZRwo2633YnwHKjEnCYpMa30mLCW61yoB7ja91aopyRmEJCCt
-        RBMeDzPt5TsWS18/DjisaKjJXUhewtuECMDuKphgI3m5B+9G331D0BlTRC+6jb1WvoxW0V7FBlMET
-        y1j8ykAA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www381.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <lars@metafoo.de>)
-        id 1qfL7y-000O6N-VN; Sun, 10 Sep 2023 16:09:31 +0200
-Received: from [136.25.87.181] (helo=lars-desktop.lan)
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1qfL7y-000GyK-Ft; Sun, 10 Sep 2023 16:09:30 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: ad4310: Replace devm_clk_register() with devm_clk_hw_register()
-Date:   Sun, 10 Sep 2023 07:09:03 -0700
-Message-Id: <20230910140903.551081-1-lars@metafoo.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S232202AbjIKEbp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 00:31:45 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92FD310D
+        for <linux-iio@vger.kernel.org>; Sun, 10 Sep 2023 21:31:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 27C7EC433C8;
+        Mon, 11 Sep 2023 04:31:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694406700;
+        bh=hCZNy5nnJJEKpjdwvb3ZA53uXt3DRe1CFgiAoexjyDM=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=nHybS8EDNBwHjDkmigXeTZfu8QY/IR3YRVDPwsR4HxiWQP2pJ+S94qPrYB2RnlFGe
+         GFIOddV0VTlAWQ+CCi3X0Sh7m5ckn5AJs813IiMx3gxY+np+AlT9cfw8PM+KHlWtY4
+         rZzyevqUfy41q8cGUvIvfRlNppYKhiK1NyxYidhQ3i0c6r3RXu38LnQOSE4kxagWlR
+         gS1higVCMfbe2lwIq8lYol62fJX1WObZlvOnl/+i7GDwwoSVNycfRt6HKehi8gMp8V
+         d5TEitR2YeFgEeoY4v4oOSnep+nDiqO2fM077tSBgSdw04BbE2LJpZYw8+QI2Y0Oyz
+         +Hfb1TgEPtssw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1066EC64459;
+        Mon, 11 Sep 2023 04:31:40 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.8/27027/Sun Sep 10 09:37:07 2023)
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        T_SPF_TEMPERROR autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v3] iio: cros_ec: Fix the allocation size for cros_ec_command
+From:   patchwork-bot+chrome-platform@kernel.org
+Message-Id: <169440670006.22573.13274283826527276324.git-patchwork-notify@kernel.org>
+Date:   Mon, 11 Sep 2023 04:31:40 +0000
+References: <20230630143719.1513906-1-yguoaz@gmail.com>
+In-Reply-To: <20230630143719.1513906-1-yguoaz@gmail.com>
+To:     yguoaz <yguoaz@gmail.com>
+Cc:     tzungbi@kernel.org, jic23@kernel.org, lars@metafoo.de,
+        bleung@chromium.org, groeck@google.com, dianders@chromium.org,
+        mazziesaccount@gmail.com, gwendal@chromium.org,
+        linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The devm_clk_register() is deprecated and devm_clk_hw_register() should be
-used as a replacement.
+Hello:
 
-Switching to the clk_hw interface also allows to use the built-in device
-managed version of registering the clock provider. The non-clk_hw interface
-does not have a device managed version.
+This patch was applied to chrome-platform/linux.git (for-kernelci)
+by Jonathan Cameron <Jonathan.Cameron@huawei.com>:
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
- drivers/iio/adc/ad4130.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+On Fri, 30 Jun 2023 22:37:19 +0800 you wrote:
+> The struct cros_ec_command contains several integer fields and a
+> trailing array. An allocation size neglecting the integer fields can
+> lead to buffer overrun.
+> 
+> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
+> 
+> [...]
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index 5a5dd5e87ffc..feb86fe6c422 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -1817,18 +1817,12 @@ static const struct clk_ops ad4130_int_clk_ops = {
- 	.unprepare = ad4130_int_clk_unprepare,
- };
- 
--static void ad4130_clk_del_provider(void *of_node)
--{
--	of_clk_del_provider(of_node);
--}
--
- static int ad4130_setup_int_clk(struct ad4130_state *st)
- {
- 	struct device *dev = &st->spi->dev;
- 	struct device_node *of_node = dev_of_node(dev);
- 	struct clk_init_data init;
- 	const char *clk_name;
--	struct clk *clk;
- 	int ret;
- 
- 	if (st->int_pin_sel == AD4130_INT_PIN_CLK ||
-@@ -1845,15 +1839,12 @@ static int ad4130_setup_int_clk(struct ad4130_state *st)
- 	init.ops = &ad4130_int_clk_ops;
- 
- 	st->int_clk_hw.init = &init;
--	clk = devm_clk_register(dev, &st->int_clk_hw);
--	if (IS_ERR(clk))
--		return PTR_ERR(clk);
--
--	ret = of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
-+	ret = devm_clk_hw_register(dev, &st->int_clk_hw);
- 	if (ret)
- 		return ret;
- 
--	return devm_add_action_or_reset(dev, ad4130_clk_del_provider, of_node);
-+	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
-+					   &st->int_clk_hw);
- }
- 
- static int ad4130_setup(struct iio_dev *indio_dev)
+Here is the summary with links:
+  - [v3] iio: cros_ec: Fix the allocation size for cros_ec_command
+    https://git.kernel.org/chrome-platform/c/8a4629055ef5
+
+You are awesome, thank you!
 -- 
-2.39.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

@@ -2,84 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57DCD79A2D8
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Sep 2023 07:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCE1879A3C6
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Sep 2023 08:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234001AbjIKFck (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Sep 2023 01:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37232 "EHLO
+        id S229552AbjIKGrs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Sep 2023 02:47:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232488AbjIKFcj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 01:32:39 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF53F1AE;
-        Sun, 10 Sep 2023 22:32:34 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b703a0453fso67378131fa.3;
-        Sun, 10 Sep 2023 22:32:34 -0700 (PDT)
+        with ESMTP id S234537AbjIKGrn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 02:47:43 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3DB8133;
+        Sun, 10 Sep 2023 23:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694410353; x=1695015153; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ehBh9q1f9vB5QhBqVr0ikLRRBvwCGJle+Wl7XRRbw2U=;
-        b=sDj9qfm4P9aqN4Yzyy7+XhKsEuFre3ciN42apnlvKu+DDrkSalcVOpB+zSNudsCP0U
-         8tM3q88XQIqoUnbQPEu5rLA710uVcmQqOGv6KFiuNQ7mV1KhkkE1REhZxZNKMhDTmi3+
-         eqwzy1OTy4BnHGYkJuXIZi1AtRSSqWdswJme2k25B5RVxtegrXdfJ/tlFLeFkf5cBhcg
-         g+90pormHJsxtrBfahVOkByd3wc6nCR141Jr31KPKGEFj+8IWVHzmLsbYreqAflVN8Ab
-         EcXdfw/DhJsCIF5cBbevOEdBq2ibA70j/6tfaiUT870xfu0Zi8+1zvOVoMAVsVXl4Fi8
-         9HFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694410353; x=1695015153;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ehBh9q1f9vB5QhBqVr0ikLRRBvwCGJle+Wl7XRRbw2U=;
-        b=SqtMGxeVfNivxzKSkDzEdyp3v4F/AiFKKL1OIdQHFIgQbLzZ3J+pAtDGysAgE5fOq7
-         Bw/1K9BWbY73gaxmPC4RT+qs0WKeZ8tG7yRcLgnkvd3aiE2BdvnXmQcffj+3+FLDaG8S
-         yCtAE0QT1gXYMli0h+y/iMxVFXeebZMU0NXBR/lUZEf0l9RtgaoLyjb2WTfvy593+Cru
-         AG7qPxuxF1xauoEKuqnXlLPjeAYbQE9G0Kmfbqp73IGnUbVfwFCNvuh7llR7ZG5BF6qx
-         Whkny3BfOTkTNjqkfo/tv48nDK4uxSvqmlSPr8is+n84jJ7z9XnWXS6TFsnYksdWvpGB
-         3l4A==
-X-Gm-Message-State: AOJu0YyFdTkvJm0lB0ht2AaxZhRVVsrDw1+bBD+GjxUpZtCiGBdlszRi
-        n9/J5UaNLnKWh/lf5fP8XqI=
-X-Google-Smtp-Source: AGHT+IECPUjgSqCzU/Mjsl4nZGR8emUICxoTv0BUjEASbBC2SCyaTHJzZKX1sV/ibaTcJPpeqKYJyg==
-X-Received: by 2002:a2e:9609:0:b0:2bc:fd50:573a with SMTP id v9-20020a2e9609000000b002bcfd50573amr7596052ljh.6.1694410352668;
-        Sun, 10 Sep 2023 22:32:32 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
-        by smtp.gmail.com with ESMTPSA id n9-20020a2e7209000000b002bcd2653872sm1386326ljc.30.2023.09.10.22.32.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Sep 2023 22:32:32 -0700 (PDT)
-Message-ID: <33073300-e238-0319-0a97-094a25dcf86b@gmail.com>
-Date:   Mon, 11 Sep 2023 08:32:31 +0300
-MIME-Version: 1.0
+  d=axis.com; q=dns/txt; s=axis-central1; t=1694414856;
+  x=1725950856;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=/6KmqRJkE27f+wvLvCaf/Z5Z2V3U+zRyNDxmt9gnJZI=;
+  b=MW9l9zyhclPuAnLpxjuqGryJVzP4ItyPOESzXIfZ1MRZjxXkHKew/2Iv
+   xsyXdjUUQM1I36sRSdnfQzenovn+Cg1PQ2jt0Okyd04gw78LTT4C4h+SO
+   KdbVizIhr4qUiVh7mc8smnE0vK9TihIWVpoRGN9UQwLaYMma+tjPhVVoi
+   qMBrcLRrp3p7aL3WoSvHCgS+1kTAEk2VHBa20jryEcSd0CfyhyZAMMCYK
+   XqmiIOZhNPzrUeoJQAG4wIMdeKId7r0kfI5vbGI4hXcpRBpS/WXCgiQe3
+   z7247QG76Jj+ykRNy8maDu+4u+ll/sZ5wUlem79OemvbYstYlheq3kC+Y
+   w==;
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b2hZuHLgqtzDrxRmxC4yriM+Xgrz/6rHgZcRDM3wHIadRoq6wmAJQLikMahV/ZatqAKOV6ca8ctaG7NtSaw0VUidSxnR8Qq80VAZN4hX3R2mh7jFyC5eRZWmWKx7DmjHL9WCYv+Ga9GoISsccqIFJzW4YI6kDZGAA8v+X4yTUAPUciEl/v+CW3C6y93HKw0Gv6yosNV3cofi3rfDQORRSLkHtiRoSajIuSpa/AgATB1C5GSVpIes26X5ksLpHLOgiFo24AwesdQ52uGD/rQkXpe3/UjQz32ptt/SK1BrFnSeq7eElp7n+UZhsdhRG4Pypv9RNo8k0kazgWOp8DChAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/6KmqRJkE27f+wvLvCaf/Z5Z2V3U+zRyNDxmt9gnJZI=;
+ b=TPM+EMx+DLbEY1zEqCqwEWqN/qa2GHuQ5qfdHPxPcBREuWeTscgjUrEL+2fEiDiLUur2ExeNS0Xw+K8b2ygTZjtrzEvyDHeD6VAC7Kp38gLsTmCrUY0QVRIgkdQiq6xQBJ+VQQNHHsekz26K/+W/TU+p5Px/2jUqRykOLWZLpLWv2OgEpsqgdbV5/a/9j7jeKV5zE+mR9ffAxHgTumuYu7RMLLDiIjA7lctJSIiMhxf4jWAcDz/baJ3h6rSpHG0MPyGbgY5YMXqult0RcA7CmmIkoQb9JmbEYlRQVvS1sTKliISADjdRNrosX1zOroCV3lwz28AhyL71Z8dBZQ+nZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
+ dkim=pass header.d=axis.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/6KmqRJkE27f+wvLvCaf/Z5Z2V3U+zRyNDxmt9gnJZI=;
+ b=oPEKMa2kNqsWUfMKfl6BMDlOtBze1gP5VduuZhQjK0XEFCChKYG+WDO57eJWraBgvS8ASNHBsIGdM2KH6ESPTi5HQm2thf/yQy1NNfaOOdZ3mvNiM4mToTXTE2GdgNSyOQ1I4tvn5gZbO+TQ3QnppYHQ0hoSJyrb8nqtY4w4RHo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axis.com;
+Message-ID: <63a9a3c2-bdb7-0b33-6f08-5b0481ea9e3b@axis.com>
+Date:   Mon, 11 Sep 2023 08:47:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] iio: light: vcnl4000: Don't power on/off chip in config
+Content-Language: en-US
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1694001462.git.mazziesaccount@gmail.com>
- <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
- <ZPifWlRvX5hLFPvG@smile.fi.intel.com>
- <4d8e2873-49bc-8314-ee16-dd327a92898d@gmail.com>
- <ZPnW38eO6by1NjIr@smile.fi.intel.com>
- <eba53e24-ea01-6c38-27ee-27c3d10aa73f@gmail.com>
- <20230908194425.24f1554e@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
-In-Reply-To: <20230908194425.24f1554e@jic23-huawei>
+CC:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@axis.com>
+References: <20230907-vcnl4000-pm-fix-v1-1-58a11c1d5a6c@axis.com>
+ <20230910143235.16a924bc@jic23-huawei>
+From:   =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>
+In-Reply-To: <20230910143235.16a924bc@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MM0P280CA0061.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:8::21) To AS8PR02MB9529.eurprd02.prod.outlook.com
+ (2603:10a6:20b:5a5::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR02MB9529:EE_|PR3PR02MB6428:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8649e51-bd9e-4a6d-b488-08dbb292f976
+X-LD-Processed: 78703d3c-b907-432f-b066-88f7af9ca3af,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BwCbM3qYw+/vKNT/J6+yurRHx/IYwm0Al2X1Y9JQCzEenPYups8LYNy9jjMCTpGVGBQEkQFaK42t1/B8NTgk4wjSfUIyf6GVLkmonPsN+GXyWLl/1gZEwx9UaxqYIj8QjPSpkoem5SriJivZdejedjUz3VEhaEtDjBk2D/Cha22Z6xkWgebIdJ2JyfdS8yacAbX3WRprRm6i0zQhkpbv7msbxUiay8E/9iOmMQnMCAhcu/kWWnOvfXpTwmWKGEYwEzaANgmtamUwv5KIHJXHA9d8sv71WJA2xrmc1T+7fcxG4/FxVhxoBA4dm89pV9kwUSg1iyrWCrqn8tBmc/p4ySx9uXmVj/cL941UKZgUcDv1uGvMdpQLSDiOwbwgSmbzcO0gBh/Brr+9R5zr4egHIuAZ4bHY9kbZAgfrOciOa83K2wUgAUDOUUrTfpLxva5Ope9nG5goLJDScdxBKP2LiIoeFI5qjmmj62tUhm0WiKXdNVL1/xzxjHFr+wCzg1SNzn6IYUk2vIsUeWCkLeiYkyIgr6YSMhy7yLRqbL6a1Rd5qS0KoXlFCRRS9xSNrwiW1wB4uiAKvCGkLKY6TDKIE78iewsRhv3fbIWtbwaYQo8WgV5CBBuF4IA+qKusz8TmVE8BMaLrT2YtiI0M3e/9ig==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR02MB9529.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(396003)(136003)(346002)(39850400004)(186009)(1800799009)(451199024)(26005)(107886003)(6512007)(53546011)(2616005)(38100700002)(31696002)(36756003)(83380400001)(66574015)(5660300002)(2906002)(478600001)(41300700001)(8676002)(4326008)(8936002)(6486002)(6506007)(6916009)(66556008)(66946007)(66476007)(316002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U0xhWjRKVThtZlBWRjFIdFEyam9sMzZsS0ErakdXL0VDNjNaWHU4RnRaU1ZD?=
+ =?utf-8?B?amM0T2VXSE1jaU5tUEMyMTlCTjJwV1BkKzhqcnhDNVcrSmtKdEdpUmx0ZnRG?=
+ =?utf-8?B?cTByMmlYVzl4b1NRbFVHenEwTEoySTc4Qnh2WEZlOEcveFlUQ1FrRHRpR0ND?=
+ =?utf-8?B?T3o1bXpBdnFkVCtvQW1GbUFPUTVoNHpWZzh5blpDQzJ0WFpvSzUxZlR3RVRC?=
+ =?utf-8?B?cWE3WWEzbi9oQ3JzZnk3K002b3RDdVpXN0p6dTRNaitXc1ZNbnIyYzF0Um1m?=
+ =?utf-8?B?RDU3YzltOEQwdy9aSXVvd1ovV1VSVWE2cjJKSXd4Qmg4QzNpUHVSQ2dlZzFP?=
+ =?utf-8?B?bXF5SnRCaDVhMlA4a1ZZN1JwOHFOMEx3eHpCMllpOFQ5T1RVdnQzWWMxem9X?=
+ =?utf-8?B?blJqRnV5bmZBQWNRK3g5aXFkSU44c0ZIeFgwZWFJWk54eEdQRXBYZjUrR0Vl?=
+ =?utf-8?B?bU4wREd2UlpYcU1ESE5EblVwaHlyL29TbzNSMHFwTWQ4cGlXbU9hRzUrZ0lp?=
+ =?utf-8?B?ZlpzT1UxZzJCNUFlVUFPbUd1ZURFNkxwSE42NHRPSnBJYjNUaGc1RkpCVjVI?=
+ =?utf-8?B?V1VJbE5ML1pMb3IvSEFUZVdjY3lnV3U0UEEwbEs5NWtsTy9WQXJRUXg0YVZH?=
+ =?utf-8?B?bnl6bDJSS09kNzNPckxackVubFh5VDJxR0ZZY1o0WU52cElkTGlrSzJmRyta?=
+ =?utf-8?B?YjFHcGZxUWxnWlZUTXRDWkZPY2FCMEErTTVzSHJIcGpsK3k2bUhtVTFFbUQ4?=
+ =?utf-8?B?ajlKMm5aaUVuM1JReGFqNm5RVUhnV3U1TE45VU5LRHlJanlwZkVMeXFzUy85?=
+ =?utf-8?B?aWxnb0NreDlHTjZCcWhCZ284QlVxNkxSTWEwT3FPdTl0aXZkekhyOHQ2b0NQ?=
+ =?utf-8?B?ejd4bFFRL1ZvVjJqNlRER3BKYkFWU3owYW4xVktwd2I0S3U5Tzlvd3NtalZL?=
+ =?utf-8?B?aU9oRUVrOGR5VmVKQlQvU0dCc0xtWWpldjAxWDQrMWh0YnV1WFdYZnlnTzJv?=
+ =?utf-8?B?cFZmbGVjR212a08rcHVIYWNhMXFod0xOSmd4aStsSStLQWFuSXVoS1I3VzNS?=
+ =?utf-8?B?TlFHMDRGbnorVGEyMTZmdEs3UnJTNGZ4Y1RvcHQwdlZlODRXK3pkUDVFaTdv?=
+ =?utf-8?B?aVQ3V1c4UjJsWWxFRWd2Q2hUZkY2ZXpzMTlORFNodEE4a25iK1lUcEYvSjRZ?=
+ =?utf-8?B?T3RjdzF1M0VHWFRkSEE4UHp6TGY3eGd5aGpFRVh5V252N3VVcHVHMEFjLzh2?=
+ =?utf-8?B?bk9CQWpRNTlkdG8zMDhkSGJndWVjUWlKRzl3MzFEUCtTakREZlNLZ0VLOWI1?=
+ =?utf-8?B?c3NwNVlPNytNMVRlVUNNc1FqelU0OFNiUTYwU0NlTVZRTlZBeE5qeVFCdHY5?=
+ =?utf-8?B?V3c1aUNIYVFEU3pJUmZmeTdONjVIV0tMbFBYOS9YL3JIQ2VhYTJad3lxSkFI?=
+ =?utf-8?B?NVdtcStwN2NYVVRoRkNYb3daelE3VE9CZ3JYUk05YXBRbFRWZDZ4V2hJd2Fp?=
+ =?utf-8?B?dUR4djNVS0xZWVZaL0NndTdUbWpPeHhyY3Y1STNjMUhpdWJCVDRjNVhhcERU?=
+ =?utf-8?B?bkw4akZuRWdVQjhZN1hobXcvcTh5Sm53UFliZzJrOFZmc1JSL3oydkVNVUlQ?=
+ =?utf-8?B?V296cDd2bVBOM2NTZWU3cTFuajIxYmpIeUdudFg2emNoT2ZuME5xdVY2U3hO?=
+ =?utf-8?B?clU2WjE4OW9SWEI3aGZHT1lZeGlPbHhKc3hOZGlkcXFCcjF1ejk0UVAwV1B4?=
+ =?utf-8?B?SEhEZTBEeHRVMmErTEpueWFJYVNrYTJVbVY2bHYzN3VEaHViMWdpMGhGN2hv?=
+ =?utf-8?B?OG1icEc5bW8zNVVrRW95RFNnUlQxcTAzRUVUTzQrcU1HWW9Mc1BkS3hsYnBh?=
+ =?utf-8?B?NjdZcGQxVEhxb2NsWVpvTm94QjVscm5RMm4raVcveFBKRUlsdXVWVHVVMGZp?=
+ =?utf-8?B?QjBycGgrUE1kUFJKc0xCd3dXS0ZvUXc0VnRNS0NEbFFNK1pUQmZVeGtGRzFU?=
+ =?utf-8?B?UjMxMjJiMnBUaGczRDRjdkplOXNPVkNYWCswcVBVZzNGb1FvWkpTYzdiclcx?=
+ =?utf-8?B?ajdVQklpMXpJTDd4T00wUDVkS2oxZDRMcEJ0ODBrQkp4R3pVU3U5SmhFOVFz?=
+ =?utf-8?Q?7EiSK8LxEMSvQCCxtwVaFb8iV?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8649e51-bd9e-4a6d-b488-08dbb292f976
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR02MB9529.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2023 06:47:32.4544
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qXk2WdBDslIDDVeGR32n91Un3eCw8XF/z4ydXf0X5RgLF2dnUdia6RkIN0ziXVILSnUIarnqvJzHHSQBfFOPxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR02MB6428
 X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,220 +128,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/8/23 21:44, Jonathan Cameron wrote:
-> On Fri, 8 Sep 2023 09:12:51 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> On 9/7/23 16:57, Andy Shevchenko wrote:
->>> On Thu, Sep 07, 2023 at 08:57:17AM +0300, Matti Vaittinen wrote:
->>>> On 9/6/23 18:48, Andy Shevchenko wrote:
->>>>> On Wed, Sep 06, 2023 at 03:37:48PM +0300, Matti Vaittinen wrote:
->>>
->>> ...
->>>    
->>>>>> +struct bm1390_data {
->>>>>> +	int64_t timestamp, old_timestamp;
->>>>>
->>>>> Out of a sudden int64_t instead of u64?
->>>>
->>>> Judging the iio_push_to_buffers_with_timestamp() and iio_get_time_ns(), IIO
->>>> operates with signed timestamps. One being s64, the other int64_t.
->>>>   
->>>>>> +	struct iio_trigger *trig;
->>>>>> +	struct regmap *regmap;
->>>>>> +	struct device *dev;
->>>>>> +	struct bm1390_data_buf buf;
->>>>>> +	int irq;
->>>>>> +	unsigned int state;
->>>>>> +	bool trigger_enabled;
->>>>>   
->>>>>> +	u8 watermark;
->>>>>
->>>>> Or u8 instead of uint8_t?
->>>>
->>>> So, uint8_t is preferred? I don't really care all that much which of these
->>>> to use - which may even show up as a lack of consistency... I think I did
->>>> use uint8_t when I learned about it - but at some point someone somewhere
->>>> asked me to use u8 instead.. This somewhere might have been u-boot though...
->>>>
->>>> So, are you Suggesting I should replace u8 with uint8_t? Can do if it
->>>> matters.
->>>
->>> Consistency matters, since I do not know the intention behind, I suggest use
->>> either, but be consistent in the entire code. However, uXX are specific Linux
->>> kernel internal types and some maintainers prefer them. Also you may grep for
->>> the frequency of intXX_t vs. sXX or their unsigned counterparts.
->>>    
->>>>>> +	/* Prevent accessing sensor during FIFO read sequence */
->>>>>> +	struct mutex mutex;
->>>>>> +};
->>>
->>> ...
->>>    
->>>>>> +static int bm1390_read_temp(struct bm1390_data *data, int *temp)
->>>>>> +{
->>>>>> +	u8 temp_reg[2] __aligned(2);
->>>>>
->>>>> Why?! Just use proper bitwise type.
->>>>
->>>> What is the proper bitwise type in this case?
->>>>
->>>> I'll explain my reasoning:
->>>> What we really have in hardware (BM1390) and read from it is 8bit registers.
->>>> This is u8 to me. And as we read two consecutive registers, we use u8
->>>> arr[2]. In my eyes it describes the data perfectly well, right?
->>>
->>> Two different registers?! Why bulk is used in that case?
->>> To me looks like you are reading 16-bit (or one that fits in 16-bit) register
->>> in BE notation.
+Hi Jonathan!
+
+Thanks! I'll rephrase it and add the fixes tags.
+
+Kind regards
+
+Mårten
+
+On 9/10/23 15:32, Jonathan Cameron wrote:
+> On Thu, 7 Sep 2023 12:53:14 +0200
+> Mårten Lindahl <marten.lindahl@axis.com> wrote:
+>
+> Hi Mårten,
+>
+> Agree with your reasoning etc (and I guess you've triggered this for real)
+> so just a few patch description etc comments.
+>
+>> After enabling/disabling interrupts on the vcnl4040 chip the als and/or
+>> ps sensor is powered on or off depending on the interrupt enable bits.
+>> This is made as a last step in write_event_config.
 >>
->> As I wrote, it is two 8 bit registers at consecutive addresses. And this
->> is what u8 arr[2]; also says.
+>> But there is no reason to do this as the runtime PM handles the power
+>> state of the sensors. Interfering with this may impact sensor readings.
 >>
->> Bulk read is mandatory as HW has a special feature of preventing the
->> update of these registers when a read is ongoing. If we do two reads we
->> risk of getting one of the registers updated between the accesses -
->> resulting incorrect value.
-> 
-> Far as the kernel is concerned this is a __be16 and we use a bulk read to
-> fill it from two registers.  If the use showed them having unrelated uses
-> then it would be fair to handle it as an array of u8.
-
-After you explained me that we don't need the extra hassle with the 
-negative values (specific two's complement handling) - I do agree. If we 
-needed to check the high bit in reg X to detect if special handling is 
-required (as I thought) - then I would have still thought that checking 
-the high bit from u8 which matches the spec would be much clearer. But 
-yes - in this case, after your explanation - I do agree. Thanks :)
-
-> 
+> I think the following example could be clearer. I haven't checked
+> the naming of states in runtime pm, but a few things seem backwards to me.
+>
+>> Consider the following:
+>>   1. Userspace makes sensor data reading which triggers 2000ms RPM resume
+>>      (sensor powered on) timeout
+> It triggers a timeout to do runtime suspend if no access in 2000ms, not resume.
+>
+>>   2. Userspace disables interrupts => powers sensor off
+>>   3. Userspace reads sensor data = 0 because sensor is off and RPM didn't
+>>      power on the sensor as resume timeout is still active
+> suspend timeout hasn't yet run out, so the runtime pm subsystem thinks the
+> device is still powered up and doesn't need resuming.
+>
+>>   4. RPM resume timeout passed
+> suspend timeout.
+>
+>> Powering sensor off in (2) risks a time window of close to 2000ms where
+>> sensor data readings are disabled as in (3).
 >>
->>>    
->>>>>> +	__be16 *temp_raw;
->>>>>> +	int ret;
->>>>>> +	s16 val;
->>>>>> +	bool negative;
->>>>>> +
->>>>>> +	ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp_reg,
->>>>>> +			       sizeof(temp_reg));
->>>>>> +	if (ret)
->>>>>> +		return ret;
->>>>>> +
->>>>>> +	if (temp_reg[0] & 0x80)
->>>>>> +		negative = true;
->>>>>> +	else
->>>>>> +		negative = false;
->>>>>   
->>>>>> +	temp_raw = (__be16 *)&temp_reg[0];
->>>>>
->>>>> Heck no. Make temp_reg be properly typed.
->>>>
->>>> As I explained above, to me it seems ur arr[2} is _the_ proper type to
->>>> represent data we read from the device.
->>>>
->>>> What we need to do is to convert the 16bits of data to an integer we can
->>>> give to the rest of the system. And, we happen to know how to 'manipulate'
->>>> the data to get it in format of understandable integer. As we have these 16
->>>> bits in memory, aligned to 2 byte boundary - why shouldn't we just
->>>> 'manipulate' the data and say - here we have your integer, please be my
->>>> guest and use it?
->>>
->>> Because it smell like a hack and is a hack here.
->>> Either it's a single BE16 register, or it's two different registers that by
->>> very unknown reason you are reading in a bulk.
+>> Skip setting power state when writing new event config.
 >>
->> It is two registers. The bulk read might warrant a comment - although I
->> believe this is nothing unusual. If it is a hack or not is an opinion.
->> To me it looks like a code that explicitly shows what data is and how it
->> is being handled. It does what it is supposed to do and shows it in all
->> dirty details.
-> 
-> Read it directly into a __be16
-
-Yes. This makes sense also to me now that we don't really need the:
- >>>>>> +	if (temp_reg[0] & 0x80)
- >>>>>> +		negative = true;
- >>>>>> +	else
- >>>>>> +		negative = false;
-
-shown above.
-
-> 
+>> Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+> Fixes tag - probably 2 of them. One for the recent change that added
+> the || als_int part and one for wherever the bug originally came from
+> with comments to say why there are two fixes tags.
+>
+>> ---
+>>   drivers/iio/light/vcnl4000.c | 1 -
+>>   1 file changed, 1 deletion(-)
 >>
->> Still, I am open to suggestions but I'd prefer seeing a real improvement
->> instead of claiming that the hardware is something it is not (eg, having
->> 16bit registers or should be read by individual accesses).
+>> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+>> index 3a52b09c2823..fdf763a04b0b 100644
+>> --- a/drivers/iio/light/vcnl4000.c
+>> +++ b/drivers/iio/light/vcnl4000.c
+>> @@ -1513,7 +1513,6 @@ static int vcnl4040_write_event_config(struct iio_dev *indio_dev,
+>>   
+>>   out:
+>>   	mutex_unlock(&data->vcnl4000_lock);
+>> -	data->chip_spec->set_power_state(data, data->ps_int || data->als_int);
+> This will need manual backporting as this line changed recently and I'm fairly
+> sure the argument is equally valid for the older code.
+>
+>>   
+>>   	return ret;
+>>   }
 >>
->> The code in this form is no
->>> go.
->>>    
->>>> Well, I am keen to learn the 'correct bitwise type' you talk about - can you
->>>> please explain me what this correct type for two 8bit integers is? Maybe I
->>>> can improve.
->>>
->>> If the registers are not of the same nature the bulk access is wrong.
->>> Use one by one reads.
+>> ---
+>> base-commit: 7ba2090ca64ea1aa435744884124387db1fac70f
+>> change-id: 20230907-vcnl4000-pm-fix-b58dc0dffb5c
 >>
->> Of same nature? As I said, there is 2 8bit registers at consecutive
->> addresses. They have no other 'nature' as far as I can tell.
->>
->> Data in these registers in not in standard format - it needs to be
->> manipulated to make it an ordinary integer. The code shows this very
->> clearly by not reading it in any standard integer.
-> 
-> I'm not convinced it does.  All support arch are 2s complement.
-> be16_to_cpu() is fine for what you have unless I'm missing something.
-> If it weren't we would have signed versions of those macros.
-
-No. You don't miss a thing. I didn't know if it's ok to treat i6bit 
-two's complement just as a native 16bit signed integer.
-
->>> ...
->>>    
->>>>>> +static int bm1390_pressure_read(struct bm1390_data *data, u32 *pressure)
->>>>>> +{
->>>>>> +	int ret;
->>>>>> +	u8 raw[3];
->>>>>> +
->>>>>> +	ret = regmap_bulk_read(data->regmap, BM1390_REG_PRESSURE_BASE,
->>>>>> +			       &raw[0], sizeof(raw));
->>>
->>> &raw[0] --> raw
->>>    
->>>>>> +	if (ret < 0)
->>>>>> +		return ret;
->>>>>> +
->>>>>> +	*pressure = (u32)(raw[2] >> 2 | raw[1] << 6 | raw[0] << 14);
->>>
->>> This, btw, looks like le24, but I'm puzzled with right shift.
->>> I need to read datasheet carefully to understand this.
->>
->> It's not just le24. We, again, have data placed in registers so that it
->> needs some suffling. The data-sheet does decent job explaining it
->> though. AFAIR, there was a 'gap' in bits so it needed some more suffling
->> to sift the bits so that they're consecutive. I think this indeed is
->> something that needs to be looked up from data-sheet to understand why
->> this play with bits is done.
-> 
-> 
-> These cases are harder to argue.  I'm fine with either approach for this one
-> as a get_unaligned_le24() >> 2 would give same answer unless I'm also missing
-> something but it isn't that obvious.
-
-I need to look at the spec and the get_unaligned_le24() to be able to 
-say something :) I wrote this code before my summer holidays but didn't 
-have the time to test and send the patches until now. Will get back to 
-this IC later this week.
-
-Thanks for the feedback guys!
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+>> Best regards,

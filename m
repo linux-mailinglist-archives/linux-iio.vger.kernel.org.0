@@ -2,49 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA78B79A293
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Sep 2023 06:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC0479A2B9
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Sep 2023 07:16:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233265AbjIKEtF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Sep 2023 00:49:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50798 "EHLO
+        id S230419AbjIKFP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Sep 2023 01:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231226AbjIKEtF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 00:49:05 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF977F3
-        for <linux-iio@vger.kernel.org>; Sun, 10 Sep 2023 21:49:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 381B6C433C9;
-        Mon, 11 Sep 2023 04:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694407740;
-        bh=k/bNi/wtdyxwTWNBDji8wt1vn0oeEotNhCNoMtybfaQ=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=YV/ZXBdXjcjmEC3+xTUZmJVdpi9v3HzazWfeMfa0JuauXfk99Ox0gNDAZFnEZx678
-         XyH5HQhZ5ClXhwqhVPgUWdPYgfnfDsQRbg7J27e24Cbql5wx4S27UhjMD5KvTS5b36
-         6mvlvWppdOXqwa44EIHaQdMp1+6MgRa9IVcheIlaMTYGN1Tpk7RxUqSzEpGYElwkMd
-         A4q3qkTp6rK+xv1vuOU216pMEwTQKbQkpJPYT7n5kXK/F6SJ0fWq+IOHecTORUm1Vg
-         +m/ZDpt38pc+H3x+O5EBJIuJCA7TqJa7zbhGBkc5X7q3ZSiy0T0iDSZPVsSvIvJbL6
-         mrVWq7r9Q2A9g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1F080C64459;
-        Mon, 11 Sep 2023 04:49:00 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229446AbjIKFP7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 01:15:59 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7251AE;
+        Sun, 10 Sep 2023 22:15:54 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-5008d16cc36so6751050e87.2;
+        Sun, 10 Sep 2023 22:15:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694409353; x=1695014153; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2xXSO1mNrtCurS91ej22fH2JzQkdqZJz5EMO/iglVMo=;
+        b=YNDqSvIRbWy8Y1doVaeo59emu0Dt8Xsq1ATolu1rL0oBs43ntFXFdZmua9a9V0rOLc
+         /rw1RAqNkd4xQozKXms+MByNTq21XxIFurAuGcZmAbzEXytMnN55mNfnnHGYP+JAu68P
+         Qkd7vVKJtSwnrol5mLjIKbbrBZw0ADuUQc7TCmHPiweDzat+xRTeULHl2aJCfJ076Uvx
+         jK7bt2BJwYhUJvdqhyYI1guMV5n4rn2J/I/M/zC88U9ILdicO2A3J6aEOM8ZGAVFqHV4
+         BV8d4dhxxr8gLn4VIQv3mOWTQeWi+U7wyKPNPXsIECK6+6cWct3vXZao/VWlUAXkSYfN
+         E9Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694409353; x=1695014153;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2xXSO1mNrtCurS91ej22fH2JzQkdqZJz5EMO/iglVMo=;
+        b=T8clg0yEBJghgSOTklc2xvyRR5ohrKIqIHyrX2yl/GpvJ+KhVvLKzw5M4M74RW0+PF
+         gQTayKmPwFMd7dY6CpdgxOkOPR11DzhT8+eSZRdyLLfoCIxHTy5awOLztrFBzPzjmhFq
+         e/U6LII1BRZTxCz8dewpalFcHJgY2ML4FskGH1osTBRoDrVL/BHJjKUBlY/C5j4TsvrB
+         fLoWgGyHOGEhXOVQM+CBcyBStSYFaLFjn5ab7NWe4ifFRyY0RWcs7Hh2b//i7w1u6LE2
+         KyfQ4BuW9OYK4jm6Qf+jerfjFLQV1Nvv/6ZhxA5usulx0CuDV6b6Yw2Dip2cp4lNmJ9Z
+         dkZw==
+X-Gm-Message-State: AOJu0YzxxpK7BjyGlPX6fSblK8uxof4UxC2W+rYoKarlloiVicKR8UX6
+        j19BrOWC16FYmPesm5ChQJD5/58WST4=
+X-Google-Smtp-Source: AGHT+IGO8I1Qvg+29UQ+u4ehq9VfswEVbtP4werFdBe+QXk0tytJT3fmcv1xbHyWzKQmBO7dHKdfpg==
+X-Received: by 2002:a05:6512:5d0:b0:4ff:9a75:211e with SMTP id o16-20020a05651205d000b004ff9a75211emr6102872lfo.42.1694409352821;
+        Sun, 10 Sep 2023 22:15:52 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::1? (dc78bmyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::1])
+        by smtp.gmail.com with ESMTPSA id u9-20020a056512040900b004fb9536bc99sm1202886lfk.169.2023.09.10.22.15.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 Sep 2023 22:15:52 -0700 (PDT)
+Message-ID: <6077edb2-8076-10e8-d34f-70426188a0f0@gmail.com>
+Date:   Mon, 11 Sep 2023 08:15:51 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] iio: cros_ec: Fix the allocation size for cros_ec_command
-From:   patchwork-bot+chrome-platform@kernel.org
-Message-Id: <169440774012.22573.2546469868468555437.git-patchwork-notify@kernel.org>
-Date:   Mon, 11 Sep 2023 04:49:00 +0000
-References: <20230630143719.1513906-1-yguoaz@gmail.com>
-In-Reply-To: <20230630143719.1513906-1-yguoaz@gmail.com>
-To:     yguoaz <yguoaz@gmail.com>
-Cc:     tzungbi@kernel.org, jic23@kernel.org, lars@metafoo.de,
-        bleung@chromium.org, groeck@google.com, dianders@chromium.org,
-        mazziesaccount@gmail.com, gwendal@chromium.org,
-        linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1694001462.git.mazziesaccount@gmail.com>
+ <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
+ <20230908194509.6a4f4adc@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
+In-Reply-To: <20230908194509.6a4f4adc@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,28 +83,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello:
-
-This patch was applied to chrome-platform/linux.git (for-next)
-by Jonathan Cameron <Jonathan.Cameron@huawei.com>:
-
-On Fri, 30 Jun 2023 22:37:19 +0800 you wrote:
-> The struct cros_ec_command contains several integer fields and a
-> trailing array. An allocation size neglecting the integer fields can
-> lead to buffer overrun.
+On 9/8/23 21:45, Jonathan Cameron wrote:
 > 
-> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
+>> +static int bm1390_read_temp(struct bm1390_data *data, int *temp)
+>> +{
+>> +	u8 temp_reg[2] __aligned(2);
+>> +	__be16 *temp_raw;
+>> +	int ret;
+>> +	s16 val;
+>> +	bool negative;
+>> +
+>> +	ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp_reg,
+>> +			       sizeof(temp_reg));
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (temp_reg[0] & 0x80)
+>> +		negative = true;
+>> +	else
+>> +		negative = false;
+>> +
+>> +	temp_raw = (__be16 *)&temp_reg[0];
+>> +	val = be16_to_cpu(*temp_raw);
+>> +
+>> +	if (negative) {
+>> +		/*
+>> +		 * Two's complement. I am not sure if all supported
+>> +		 * architectures actually use 2's complement represantation of
 > 
-> [...]
+> AFAIK they do. Many IIO drivers would be broken if not..
 
-Here is the summary with links:
-  - [v3] iio: cros_ec: Fix the allocation size for cros_ec_command
-    https://git.kernel.org/chrome-platform/c/8a4629055ef5
+Great. Then I think it means we really can treat the combined value of 
+the registers as s16 BE. Should make this much simpler :)
 
-You are awesome, thank you!
+> 
+>> +		 * signed ints. If yes, then we could just do the endianes
+>> +		 * conversion and say this is the s16 value. However, as I
+>> +		 * don't know, and as the conversion is pretty simple. let's
+>> +		 * just convert the signed 2's complement to absolute value and
+>> +		 * multiply by -1.
+>> +		 */
+>> +		val = ~val + 1;
+>> +		val *= -1;
+>> +	}
+>> +
+>> +	*temp = val;
+>> +
+>> +	return 0;
+>> +}
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
+~~ When things go utterly wrong vim users can always type :help! ~~
 

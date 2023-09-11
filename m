@@ -2,122 +2,210 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E4179B341
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Sep 2023 02:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBA279AEC8
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Sep 2023 01:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241969AbjIKVar (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54572 "EHLO
+        id S1348737AbjIKVae (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237364AbjIKMnT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 08:43:19 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2842CEB;
-        Mon, 11 Sep 2023 05:43:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1694436194;
-  x=1725972194;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=SBL7YdeBxdBTOUww15FA3CVSUVZQP5Z5Vgj3rVYX48k=;
-  b=bMLs648jnmLrycFxAd/NR5BsxC8iUY2JHzCklwdBxaRT/eE3CK4aJP2F
-   YCqYBj1BAqkRRCWOKam2opDiUxldqjSivifeEjTwB4LhMNDEoMBWdiEuc
-   SgQlGOgtNR5C8axpj/qOR723B/62QTLz8D/ayiKZmv2R20ujH+9e36iaC
-   WRojoIkZS5pt+9JsTjBJOujNznn8lpy9Gt1xRqzQxEmUgfyQxdlRP2F/i
-   XOHHDJhpq8SmO4cs7D2OfEfsHpihBiaNsoI+V+lL/eW+TyFWxbC/1pH6H
-   uW/qTjqTR4w2F2d1OJy64LDBgrVYDhsTHvA7aXTMBbgvkAgugbn20PErA
-   g==;
-From:   =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
-Date:   Mon, 11 Sep 2023 14:43:01 +0200
-Subject: [PATCH v2] iio: light: vcnl4000: Don't power on/off chip in config
+        with ESMTP id S237641AbjIKNET (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Sep 2023 09:04:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF8A3DF;
+        Mon, 11 Sep 2023 06:04:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694437453; x=1725973453;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EMruZn7KJAod3p21S8e62jnjMl5BS9upTMZiKyPocf0=;
+  b=IXz+ymP/i47Xc+ZJ+WVAKOGaxBYinE97u8h0ElO/0ptQpCYpWj74BPNS
+   lzFpfZR1m6PnAC8v7hRm4ArRUphz/oneauAZWbLvjS2KOwCzMfyrNpl5s
+   0+VkHYyg0hay7rK2ZUTUF8cHXolrnRp0a7NvOAPQUwjMg/AapQd/AGB2E
+   oyMqnd2EbiyFxW/qiUHr9M95u4B2OyWUniaxDoOd9dxgwPiQ0yw4S799F
+   o792ShgQ2a9fdy9zdV5Upf1gZXVCYEJ/ac0wwa6VXkM7yFsrj96tdidPK
+   8Xlc034U3UmfFg95KuXkFuIIFithsqsHfxGkof4q+8t6o5RA75RE0+Ubx
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="358377179"
+X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
+   d="scan'208";a="358377179"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 06:03:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="1074123880"
+X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
+   d="scan'208";a="1074123880"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 06:03:10 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qfgZG-008Kb6-0W;
+        Mon, 11 Sep 2023 16:03:06 +0300
+Date:   Mon, 11 Sep 2023 16:03:05 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v8 6/7] iio: accel: kionix-kx022a: Add a function to
+ retrieve number of bytes in buffer
+Message-ID: <ZP8QCVbOpUOMxV8g@smile.fi.intel.com>
+References: <CAFukWp2Z0OCrJdTy+wzVs9jdCm70YNR-66q06=xoyGhaHg=aog@mail.gmail.com>
+ <ZOdfeaW6AxE4eeqw@smile.fi.intel.com>
+ <CAFukWp0ubncNcMiw-s_h5GoP1_RsjTaw3XxayGMuaeJJJneBow@mail.gmail.com>
+ <ZOdrtNQijmhN9RAx@smile.fi.intel.com>
+ <20230827190732.5e2215d0@jic23-huawei>
+ <61247547-690c-fb8b-3a45-cd60754836a7@gmail.com>
+ <ZOx8rAFBXMylgNzm@smile.fi.intel.com>
+ <7ca3b60f-e59f-b578-7c22-48487663cfa7@gmail.com>
+ <ZPiixW6CiR+z8s/r@smile.fi.intel.com>
+ <8b73d2d9-ebba-8f3c-4b39-e3671117acf1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20230907-vcnl4000-pm-fix-v2-1-298e01f54db4@axis.com>
-X-B4-Tracking: v=1; b=H4sIAFQL/2QC/3WNTQ6CMBBGr2Jm7ZgpWkVX3sOwaKeDNJFCWtJgC
- He3sHf5vp+8BZJELwkehwWiZJ/8EApUxwNwZ8Jb0LvCUFF1pjvdMHP4XIgIxx5bP6PVtWNybWs
- 1Q3lZkwRtNIG77debNEncijFK2e+qV1O482ka4nc3Z7Wl/yVZoUJdG6VYOW2u/DSzTyceemjWd
- f0B7PKxRsYAAAA=
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel@axis.com>,
-        =?utf-8?q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1694436191; l=2532;
- i=marten.lindahl@axis.com; s=20230329; h=from:subject:message-id;
- bh=ML9qCkSy62+/e/ZwttKxao8jlCaohmo4AkMCQFSHeqY=;
- b=pWYIlAiRK7o6BthzsDkxg5tOxYpJfrT2uvzFep5zMW5S7HTXS8tHZDfPhD+jSm+f/JNKMWjfN
- hVGQJ0pTK4zCTNU7REUNq8VXKB6OmyWSvsLycvKFFpIdELRJUiUPv4K
-X-Developer-Key: i=marten.lindahl@axis.com; a=ed25519;
- pk=JfbjqFPJnIDIQOkJBeatC8+S3Ax3N0RIdmN+fL3wXgw=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8b73d2d9-ebba-8f3c-4b39-e3671117acf1@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-After enabling/disabling interrupts on the vcnl4040 chip the als and/or
-ps sensor is powered on or off depending on the interrupt enable bits.
-This is made as a last step in write_event_config.
+On Thu, Sep 07, 2023 at 09:33:47AM +0300, Matti Vaittinen wrote:
+> On 9/6/23 19:03, Andy Shevchenko wrote:
+> > On Tue, Aug 29, 2023 at 09:33:27AM +0300, Matti Vaittinen wrote:
+> > > On 8/28/23 13:53, Andy Shevchenko wrote:
+> > > > On Mon, Aug 28, 2023 at 09:24:25AM +0300, Matti Vaittinen wrote:
+> > > > > On 8/27/23 21:09, Jonathan Cameron wrote:
 
-But there is no reason to do this as the runtime PM handles the power
-state of the sensors. Interfering with this may impact sensor readings.
+...
 
-Consider the following:
- 1. Userspace makes sensor data reading which triggers RPM resume
-    (sensor powered on) and a RPM suspend timeout. The timeout is 2000ms
-    before RPM suspend powers the sensor off if no new reading is made
-    within the timeout period.
- 2. Userspace disables interrupts => powers sensor off
- 3. Userspace reads sensor data = 0 because sensor is off and the
-    suspend timeout has not passed. For each new reading made within the
-    timeout period the timeout is renewed with 2000ms and RPM will not
-    make a new resume (device was not suspended). So the sensor will
-    not be powered on.
- 4. No further userspace reading for 2000ms ends RPM suspend timeout and
-    triggers suspend (powers off already powered off sensor).
+> > > > > I think that people who work on a driver like this should guess what this is
+> > > > > for.
+> > > > 
+> > > > _This_ is the result of what people always forgot to think about, i.e.
+> > > > newcomers.
+> > > 
+> > > Thanks Andy. This was a good heads-up for me. I do also see the need for
+> > > fresh blood here - we aren't getting any younger.
+> > > 
+> > > > What _if_ the newcomer starts with this code and already being puzzled
+> > > > enough on what the heck the function does. With all ambiguity we rise
+> > > > the threshold for the newcomers and make the kernel project not
+> > > > attractive to start with
+> > > 
+> > > I really appreciate you making a point about attracting newcomers (and there
+> > > is no sarcasm in this statement). I however don't think we're rising the bar
+> > > here. If a newcomer wants to work on a device-driver, the _first_ thing to
+> > > do is to be familiar with the device. Without prior experience of this kind
+> > > of devices it is really a must to get the data-sheet and see how the device
+> > > operates before jumping into reading the code. I would say that after
+> > > reading the fifo lvl description from data-sheet this should be obvious -
+> > > and no, I don't think we should replicate the data-sheet documentation in
+> > > the drivers for parts that aren't very peculiar.
+> > 
+> > There are (at least?) two approaches on the contribution:
+> > 1) generic / library wise;
+> > 2) specific hardware wise.
+> > 
+> > You are talking about 2), while my remark is about both. I can imagine a
+> > newcomer who possess a hardware that looks similar to what this driver is
+> > for.
+> 
+> Yes. I am talking about 2). And my stance is that device drivers belong to
+> category 2). If one works with a device driver for some HW, then he/she
+> needs to be willing to understand the hardware.
+> 
+> > Now, they would like to write a new driver (note, that compatibility can be
+> > checked by reading the RTL definitions, so no need to dive into the code)
+> > and use this as a (nice) reference. With that in mind, they can read a
+> > function named get_fifo_bytes() with not so extensive documentation nor
+> > fully self-explanatory name. One may mistakenly though about this as a
+> > function for something that returns FIFO capacity, but in the reality it is
+> > current amount of valid / data bytes in the FIFO for the ongoing
+> > communication with the device.
+> 
+> I can't avoid having a feeling that this is a very unlikely scenario. I am
+> afraid that by requesting this type of improvements at patch series which is
+> at v8 and has been running for half an year (and which was of a good quality
+> to start with, especially knowing this was the author's first driver) is
+> going to be more repulsive to the newcomers than the potential obfuscation.
 
-Powering sensor off in (2) makes all consecutive readings made within
-2000ms to the previous reading (3) return invalid data.
+I agree and this is a side talk to the topic.
 
-Skip setting power state when writing new event config.
+> I don't try claiming that no-one could ever hit this trap (even if I don't
+> see it likely). I still believe that if one does so, he/she will also get
+> such a bug fixed without being totally discouraged - it's business as usual.
+> 
+> I hope this does not come out as rude. I do appreciate your reviews, it's
+> comforting to know someone looks my code with sharp eyes and points out
+> things like the dead code in BM1390 driver! I just like the words Jonathan
+> once spilled out:
+> 
+> "Don't let the perfect be enemy of good" (or something along those lines).
 
-Fixes: 546676121cb9 ("iio: light: vcnl4000: Add interrupt support for vcnl4040")
-Fixes: bc292aaf9cb4 ("iio: light: vcnl4000: add illuminance irq vcnl4040/4200")
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
----
-Changes in v2:
-- Rephrasing of commit msg.
-- Added 2 Fixes tags:
-  1. First tag refers to the original patch introducing the bug.
-  2. Second tag is for a later patch extending the faulty condition introduced in original patch.
-- Link to v1: https://lore.kernel.org/r/20230907-vcnl4000-pm-fix-v1-1-58a11c1d5a6c@axis.com
----
- drivers/iio/light/vcnl4000.c | 1 -
- 1 file changed, 1 deletion(-)
+True.
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index 3a52b09c2823..fdf763a04b0b 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -1513,7 +1513,6 @@ static int vcnl4040_write_event_config(struct iio_dev *indio_dev,
- 
- out:
- 	mutex_unlock(&data->vcnl4000_lock);
--	data->chip_spec->set_power_state(data, data->ps_int || data->als_int);
- 
- 	return ret;
- }
+> > > But the question how to attract newcomers to kernel is very valid and I
+> > > guess that not too many of us is thinking of it. Actually, I think we should
+> > > ask from the newcomers we have that what has been the most repulsive part of
+> > > the work when they have contributed.
+> > 
+> > > > (besides the C language which is already considered as mastodon among
+> > > > youngsters).
+> > > 
+> > > I think this is at least partially the truth. However, I think that in many
+> > > cases one of the issues goes beyond the language - many younger generation
+> > > people I know aren't really interested in _why_ things work, they just want
+> > > to get things working in any way they can - and nowadays when you can find a
+> > > tutorial for pretty much anything - one really can just look up instruction
+> > > about how a "foobar can be made to buzz" instead of trying to figure out
+> > > what makes a "foobar to buzz" in order to make it to buzz. So, I don't blame
+> > > people getting used to take a different approach. (Not sure this makes sense
+> > > - don't really know how to express my thoughts about this in a clear way -
+> > > besides, it may not even matter).
+> > 
+> > Yeah, I share your frustration and agree that people are loosing the feel of
+> > curiosity. Brave New World in front of us...
+> 
+> Well, who knows how things will be working out for the new generations?
+> Maybe they won't need the kernel in the future? Yes, I am stubbornly hanging
+> in the past practices and values. Direction things seem to head do not
+> always appeal to me - but perhaps it's just me? Who can say my values and
+> practices are the right ones for new generations :) My oldest son just moved
+> to his own home and I need to accept that young do build their own lives on
+> different values I had. And who knows, maybe the approach of just doing
+> things without knowing what exactly happens under the hood makes this world
+> very good for them?
+> 
+> But yes - I don't think it suits the kernel project at all :) This is a
+> project of dinosaurs like us XD
+> 
+> (DISCLAIMER: I don't know quite all young people in the world. Frankly to
+> tell, not even 90% XD So, I am not trying to say "all young people are like
+> this or that".
 
----
-base-commit: 7ba2090ca64ea1aa435744884124387db1fac70f
-change-id: 20230907-vcnl4000-pm-fix-b58dc0dffb5c
+Operating in terms of universal quantifier is always wrong (pun intended).
 
-Best regards,
+> I just have a feeling that certain way of thinking is more
+> common amongst certain generations - but maybe it's just my misjudgement.
+> Please, don't be offended).
+> 
+> > > Anyways, I am pretty sure that - as with any community - the way people
+> > > are treated and how their contribution is appreciated is the key to make
+> > > them feel good and like the work. I think that in some cases it may
+> > > include allowing new contributors to get their code merged when it has
+> > > reached "good enough" state - even if it was not perfect. (Sure, when
+> > > things are good enough is subject to greater minds than me to ponder) ;)
+
 -- 
-Mårten Lindahl <marten.lindahl@axis.com>
+With Best Regards,
+Andy Shevchenko
+
 

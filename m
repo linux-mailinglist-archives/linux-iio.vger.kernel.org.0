@@ -2,248 +2,428 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 705A979CFE4
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Sep 2023 13:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACE6779D3DC
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Sep 2023 16:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234696AbjILL3L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Sep 2023 07:29:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52284 "EHLO
+        id S236014AbjILOiT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Sep 2023 10:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234745AbjILL2j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Sep 2023 07:28:39 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DB81711;
-        Tue, 12 Sep 2023 04:28:34 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38CBOcYp032093;
-        Tue, 12 Sep 2023 07:28:16 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3t15ueps2h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 12 Sep 2023 07:28:16 -0400 (EDT)
-Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.22/8.17.1.22) with ESMTP id 38CBG5Js011010;
-        Tue, 12 Sep 2023 07:28:15 -0400
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2171.outbound.protection.outlook.com [104.47.73.171])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3t15ueps2g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 12 Sep 2023 07:28:15 -0400 (EDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C6cu6X936pWW4Qpbv4JYqIUctVzoMp79JRzHvxiFsaq05oDOdxCUk+LyIbM403e1MkUdnsoAboznZ0qgt4kYP8WnjwuGMgAyBPA9jm4h09III5r9eEcyfVikh54jfoOUGyS7pvAdOEzyoolzW36TZbV58Nku3WRir+U7fHIPV2pQl60HNEytm0mHgm4RzoY8861ZeH450nxKDdix7S6K2XyFp4MpmgrKj2EQGFNe64IZo9RDqTNdPAkY9WxTqWLzO/L5gbb49ZgkSubU83VDk6zL1Lv1PNvltI3fzF87C+IdavVzQQtj3u8l1eQdQ2IYS229hSqG+l1lYVK6jFaCAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B2MIUQ8SC6BT2F8Es+2ga+riaPlDSwjuhl9FZyFhwMk=;
- b=ELiOU6M/FRWrKGQhNAo5o3J+bFt1otwO4V8M09qcEk7jXuKd0UEDn2WyeruBIEea4S064mN4L2yMDSy/rFqIsqKuSsQZ30sVqbK6ejbOKxVCTm9mLiSEwYa8kOKC3oy3nhSTnsr6ElE/FM6+OYKyTlrx4Pvn0M02mp66T85zLx4iZYwolbqmEKF3UlwLXrqSNLVTEm4zQLkB0yc7gbe19Sztz+P1OZjoGGb9FnUZ+LhgbMLhu81iyNmS7Jfmkl5dDawdPA6kRBCMz2p5I18wFBGslUma0XY8M7G/vrDkqU1Y/94X5FsfVZWco+CqWnD9ZwMQvkH3B1sAbZ106riVVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B2MIUQ8SC6BT2F8Es+2ga+riaPlDSwjuhl9FZyFhwMk=;
- b=iCyIZVWU4HvApt+TZsTqctoh/nFIhp4j2KVV56Ni43bkAaymJRTFpX6veef8GSOdZnsc2yjkVChuYI2JvfdDrWkDFcffUvmlRT7zZTAwa6+vH5wUPuOnicreh0sMXfVT0Sm+joFL0FtTF3rXEbCaw+tp9tL0fNfoob/U1P0juRc=
-Received: from SN7PR03MB7132.namprd03.prod.outlook.com (2603:10b6:806:352::6)
- by BY5PR03MB5233.namprd03.prod.outlook.com (2603:10b6:a03:22c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37; Tue, 12 Sep
- 2023 11:28:13 +0000
-Received: from SN7PR03MB7132.namprd03.prod.outlook.com
- ([fe80::4a36:f52e:cc42:6fa4]) by SN7PR03MB7132.namprd03.prod.outlook.com
- ([fe80::4a36:f52e:cc42:6fa4%7]) with mapi id 15.20.6768.029; Tue, 12 Sep 2023
- 11:28:13 +0000
-From:   "Hennerich, Michael" <Michael.Hennerich@analog.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC:     Conor Dooley <conor@kernel.org>,
-        "Cusco, Ana-Maria" <Ana-Maria.Cusco@analog.com>,
+        with ESMTP id S236042AbjILOiR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Sep 2023 10:38:17 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C6DCC3;
+        Tue, 12 Sep 2023 07:38:13 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlR3g076Pz67Lmq;
+        Tue, 12 Sep 2023 22:36:31 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
+ 2023 15:38:10 +0100
+Date:   Tue, 12 Sep 2023 15:38:08 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 2/2] dt-bindings: iio: hmc425a: add entry for HMC540S
-Thread-Topic: [PATCH 2/2] dt-bindings: iio: hmc425a: add entry for HMC540S
-Thread-Index: AQHZ5UZWmtTs1TbX6Ua+FRSaw83kbrAW6SSAgAAkqlA=
-Date:   Tue, 12 Sep 2023 11:28:13 +0000
-Message-ID: <SN7PR03MB7132BD9C59A640EE4A5B0EA68EF1A@SN7PR03MB7132.namprd03.prod.outlook.com>
-References: <20230816110906.144540-1-ana-maria.cusco@analog.com>
-        <20230816110906.144540-2-ana-maria.cusco@analog.com>
-        <20230816-stoop-exonerate-148c7bdc01c2@spud>
-        <SN7PR03MB7132732C9DB517378897DADA8EF1A@SN7PR03MB7132.namprd03.prod.outlook.com>
-        <06a007ad-ab6b-2ed0-8f70-6837680c8684@linaro.org>
- <20230912101643.00005cc8@Huawei.com>
-In-Reply-To: <20230912101643.00005cc8@Huawei.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbWhlbm5lcmlc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy03NDc0MDllNy01MTVmLTExZWUtYjgwYy1iY2Yx?=
- =?us-ascii?Q?NzFjNDc2MTlcYW1lLXRlc3RcNzQ3NDA5ZTktNTE1Zi0xMWVlLWI4MGMtYmNm?=
- =?us-ascii?Q?MTcxYzQ3NjE5Ym9keS50eHQiIHN6PSI1NTUyIiB0PSIxMzMzODk5MTY5MjI2?=
- =?us-ascii?Q?NDkwMjYiIGg9IjZ4NjBMQ2ExT3BXaTlUZkJMb3hMMkJLcUhWcz0iIGlkPSIi?=
- =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
- =?us-ascii?Q?RENHY3MyYk9YWkFaSVdwWUhQQ0w4b2toYWxnYzhJdnlnREFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFRQUJBQUFBbEdUR1ZnQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
- =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
- =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
- =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
- =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
- =?us-ascii?Q?dGE+?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR03MB7132:EE_|BY5PR03MB5233:EE_
-x-ms-office365-filtering-correlation-id: 217353f2-0c75-4483-09c2-08dbb3835a1e
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 6sR8C+VSEze7Ifz9RrEvNGeoxnGFRJpCfLvqd1ofspSYOpPMo7U0H9scPeDD+YJES0Gh6sPOISPfIWGxArnWQ3p4lSp6X8hQEJZh+FFhN++8JiI6eIEFTuCVW60wb3yWehkg5sTkKs/MyMsri5w48YBLQsx9V2Vo9UO+eI/JVLbuyY4aViyX3Zh+3RK7PnuILUwxB/wdrZNPzM8DTH2LhoA7LJOlqbO4MpGnBEWUFYsgobkoiEzmtQ6hHMqNGG6t3+blrLbs0T3o3psKqzXsQoWXj03mqP2C+u8TnNGQdzfuOxeO7ICNBcg2avB+bBXZnq5v8defnDoZD+8Kho2MJjAbFFMQH+8mTAsPuXAl/2zFsk0guCWmuYF6flMWrVZ+YtWEjgP8YqcjxjkGgcLqQ3veR8vhCV0t+zLCHzW/WSXvCgiQ9kEemqYe0HDmgiYYUkZEZq8cPtk/0V58S4IE3VMUquMmOQXp/XeNPLXTs+SNMK1Ib2oelR3++R58maX/l/2np5gq6M3jdXLRFhwkpJTm4DJCXT0Uh9oC5MTJAtSiwFqRBxPXXy+/pmVMXfR7bKXUHAbXZSqoa/UUB1qbe1F6c7cw/HHHn17+A1mjhJY4L88F55zp8WyHqygt8oDJ
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR03MB7132.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(396003)(376002)(366004)(39860400002)(186009)(451199024)(1800799009)(52536014)(5660300002)(8676002)(8936002)(4326008)(83380400001)(71200400001)(9686003)(6506007)(7696005)(26005)(53546011)(55016003)(478600001)(122000001)(76116006)(66946007)(316002)(54906003)(110136005)(66476007)(41300700001)(66556008)(66446008)(64756008)(86362001)(2906002)(33656002)(38100700002)(38070700005)(7416002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?szIngYPxOkLZR4gr04txxRzbRsNog34DlMU91PSAVr6yOc62QGZrs9nnW0i0?=
- =?us-ascii?Q?frEKYEuh8riOnJ58ZgASYEC+gxtT9O8zmscEJkHl4uYzfcRVl4f0Wz87oJxG?=
- =?us-ascii?Q?AfzQYmZp05e+7HNoX3lLjVe3J0/3bYwmbUPl/gnScfwaKA2taDYyWtLIZfIn?=
- =?us-ascii?Q?ROr16ckr/Wuvabe2dCIEQbfFpqldhh3S0vqfuSR881u5DmTa3y5RnFzkMWkN?=
- =?us-ascii?Q?pdr3CD9GuZjua8ScsTFaG/BwpwELlu+H71JhFLzShVI6vVmB5vHOVeAZIPS+?=
- =?us-ascii?Q?b3hCUtQr+KADTqhFpjzf6Rwf9CxZXUFi2G4lPvajBeZ78zRDi2uKAbFfdngX?=
- =?us-ascii?Q?F8XJgwxmJl60tPD1yAWDAOjo4zLfpnMJdG3JALNvjuC0vE7KkuqHUnZPVm1i?=
- =?us-ascii?Q?SiPKZg03jfTt/vsMuPdJmNgOvFWbTDYj8eBqTgWc8em41fR7dqAqKAfimQUL?=
- =?us-ascii?Q?iT+NcDnQ+m4CWHhXlYYSo3FTxDVjXZ2M8vLtYKdFr+PNyhbs+rE98prX3ejx?=
- =?us-ascii?Q?i5oW1doxEmlqVN/7+CVDXF8ipfaLeRv6kbHBT4Xdiw9q5ohItft0AqEkivaF?=
- =?us-ascii?Q?u9gMO80XlOcfGay9j2aWjQhGRl6les/54Ntxp/xlCIjAOwo1Vi8plaag6npg?=
- =?us-ascii?Q?EwFOCLteTm+AfBgK1X5W+ljtVMfSqLKCX4KSnqqz7Xq5XJtplNFKO2jwxBZY?=
- =?us-ascii?Q?v/F1lmQ0qjXTQ+jXBdTJoGLD7VJQ9/tP9/57CDTm8VuhaJ8Hy3CPiOnI8H/y?=
- =?us-ascii?Q?ZypHWTcIVJBNCwNyZJnqfmX14O+Ecwl//XERA85HcKpyV3cA+hU2lqLNZDMN?=
- =?us-ascii?Q?9NWUESp3v/u1j7HRiAmtCZo7aam/4cRrWPjoSHZqJ++ukgnm/cbbMjE3HdQy?=
- =?us-ascii?Q?ppEtELA0k3AHkms1cp1GmxRQUsgZZNMMjp5GTcvV+7k+x6x39wJHjDJ3ZNaH?=
- =?us-ascii?Q?NR2datf6jvL8d8NXJ+yuR/TvU7+ulGFZwPggNTTD5zJZlerUM+TnFEnW/0Te?=
- =?us-ascii?Q?jFx0B9PAnsTJjxMO178WVJktFV8TTaHCpUIGr52AxP0jf03vXtC3Gju3Xjyh?=
- =?us-ascii?Q?+KG6nMHu8w9df5ggzzqBWit9PX3DvaTWfQ/LoRYk0KktfQXBhAzAqACE9hj/?=
- =?us-ascii?Q?FvKXD940d1McbYTWKWvQWvbSJUWKqusX0PhF0aNmfyS2yGNTFgfTfII+UrjG?=
- =?us-ascii?Q?rnKixslubgjhpu0XqhOpOqzvIusIHD+uoRw1UGUYO1WdTzX7GOzYWpDdneZm?=
- =?us-ascii?Q?kWefRtsgFhspuhF/epAogtY43+eaVfB3/NCJ8XZx2d/PawkKiacloeMMwwTM?=
- =?us-ascii?Q?jmVIfmMeE00d7Hpgy06LL3nPB9/IsUrZH7+anXXNxeHSh3t9PsVcUgGTyRmM?=
- =?us-ascii?Q?0mAZdxdlMKkmENPW6Ngyazmdu08raHK0DC5GKwE+f5eKrklrV0u3xE0+Gr/G?=
- =?us-ascii?Q?k3e1+0TeMIwz3HgnYcESCLo3eY0VQdDJ8mPXQ2agJsWiYbdVZBPb3/KCkj+U?=
- =?us-ascii?Q?0xbU0F9Pf/eMlD9KOdmPL9jn23JCnh5oh0vqQx03EsLERICnogvuBttjSuzs?=
- =?us-ascii?Q?I6FOESAxYS0omYQsvGvwZ8vm9WSJzDQUj3Pt/JZVKvthC4cEtABcwFuerhgk?=
- =?us-ascii?Q?mw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
+Message-ID: <20230912153808.00002857@Huawei.com>
+In-Reply-To: <fc509b73-35df-89e0-5cc0-4bf852d6da7d@gmail.com>
+References: <cover.1694001462.git.mazziesaccount@gmail.com>
+        <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
+        <20230910142225.5863a850@jic23-huawei>
+        <fc509b73-35df-89e0-5cc0-4bf852d6da7d@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR03MB7132.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 217353f2-0c75-4483-09c2-08dbb3835a1e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Sep 2023 11:28:13.7058
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1uVjKIireiExSvbG0qpaR1k14RYUZMpR45LX0ohjxg6pbzHOn8kfKXv2hH96ObmfPrSjVvLJ7uKbImsLgDdfEOEtkXkHj5QmcOzHUhSSGUs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB5233
-X-Proofpoint-ORIG-GUID: QPncvh0mXg-xAm9fnsYuzF3FbwipgJl_
-X-Proofpoint-GUID: 058BQQ5Y1HY0ClthtY-X0uovVlj-NB4I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_09,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 adultscore=0 malwarescore=0 mlxlogscore=827
- mlxscore=0 clxscore=1015 bulkscore=0 priorityscore=1501 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2309120094
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-> -----Original Message-----
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Sent: Dienstag, 12. September 2023 11:17
-> To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Cc: Hennerich, Michael <Michael.Hennerich@analog.com>; Conor Dooley
-> <conor@kernel.org>; Cusco, Ana-Maria <Ana-Maria.Cusco@analog.com>;
-> Lars-Peter Clausen <lars@metafoo.de>; Jonathan Cameron
-> <jic23@kernel.org>; Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
-> <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
-> <conor+dt@kernel.org>; linux-iio@vger.kernel.org;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH 2/2] dt-bindings: iio: hmc425a: add entry for HMC540S
->=20
-> [External]
->=20
-> On Tue, 12 Sep 2023 08:56:56 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->=20
-> > On 12/09/2023 08:36, Hennerich, Michael wrote:
-> > >
-> > >
-> > >> -----Original Message-----
-> > >> From: Conor Dooley <conor@kernel.org>
-> > >> Sent: Mittwoch, 16. August 2023 16:37
-> > >> To: Cusco, Ana-Maria <Ana-Maria.Cusco@analog.com>
-> > >> Cc: Lars-Peter Clausen <lars@metafoo.de>; Hennerich, Michael
-> > >> <Michael.Hennerich@analog.com>; Jonathan Cameron
-> > >> <jic23@kernel.org>; Rob Herring <robh+dt@kernel.org>; Krzysztof
-> > >> Kozlowski <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley
-> > >> <conor+dt@kernel.org>; linux-iio@vger.kernel.org;
-> > >> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
-> > >> Subject: Re: [PATCH 2/2] dt-bindings: iio: hmc425a: add entry for
-> > >> HMC540S
-> > >>
-> > >> [External]
-> > >>
-> > >> On Wed, Aug 16, 2023 at 02:09:06PM +0300, Ana-Maria Cusco wrote:
-> > >>> Added support for HMC540SLP3E broadband 4-bit Silicon IC digital
-> > >>> attenuator with a 15 dB control range and wide frequency coverage
-> > >>> (0.1 to 8 GHz).
-> > >>>
-> > >>> Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-> > >>
-> > >> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > >
-> > > Adding missing Signed-off-by tag
-> > >
-> > > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> >
-> > Why it is missing? What is the purpose of this adding?
-> >
-> > Best regards,
-> > Krzysztof
-> >
-> >
->=20
-> Wrong patch.  This is supposed to be on patch 1 where Michael was the
-> author (he confirmed intent in response to a linux-next missing sign-off =
-mail).
-> I've added it there, but if you can reply to that email Michael, it will =
-make
-> things nice and clear.
->=20
-> Jonathan
+> >> The FIFO measurement mode is only measuring the pressure and not the
+> >> temperature. The driver measures temperature when FIFO is flushed and
+> >> simply uses the same measured temperature value to all reported
+> >> temperatures. This should not be a problem when temperature is not
+> >> changing very rapidly (several degrees C / second) but allows users to
+> >> get the temperature measurements from sensor without any additional logic.  
+> > 
+> > IIRC this is a bit different from what we've typically done in the past
+> > where we just take the view that a slow moving thing like temperature
+> > can be read from sysfs or that enabling it disables the watermark.
+> > 
+> > However, what you have seems like valid use of the ABI to me so I'm
+> > fine with this approach if it makes sense for your expected users
+> > (which you get to guess at ;)
+> > 
+> > Given there are multiple ways of handling combination of FIFO hardware
+> > and triggers, it's good to add a little bit of info on that in this
+> > patch description (I misunderstood what you were doing initially)
+> >   
+> My idea is that the sensor can either be used in two ways,
+> 
+> 1. With trigger (data-ready IRQ). In this case the FIFO is not used as 
+> we get data ready for each collected sample. Instead, for each 
+> data-ready IRQ we read the sample from sensor and push it to the IIO buffer.
+> 
+> 2. With hardware FIFO and watermark IRQ. In this case the data-ready is 
+> not used but we enable watermark IRQ. At each watermark IRQ we go and 
+> read all samples in FIFO and push them to the IIO buffer.
+> 
+> Do you mean the commit message should explain this?
+yes
 
-Sorry - my fault.
 
-The Signed-off-by tag should have been for patch "iio: amplifiers: hmc425a:=
- Add Support HMC540S 4-bit Attenuator"
+> >> +
+> >> +static int __bm1390_fifo_flush(struct iio_dev *idev, unsigned int samples,
+> >> +			       bool irq)
+> >> +{
+> >> +	/* The fifo holds maximum of 4 samples */  
+> > 
+> > Whilst useful info - why have comment here?  
+> 
+> It really looks like it's missplaced. I may have suffled some code to 
+> other place without moving the comment. I'll drop or move it - thanks!
+> 
+> >   
+> >> +	struct bm1390_data *data = iio_priv(idev);
+> >> +	struct bm1390_data_buf buffer;
+> >> +	int smp_lvl, ret, i;
+> >> +	u64 sample_period;
+> >> +	__be16 temp = 0;
+> >> +
+> >> +	/*
+> >> +	 * If the IC is accessed during FIFO read samples can be dropped.
+> >> +	 * Prevent access until FIFO_LVL is read
+> >> +	 */
+> >> +	if (test_bit(BM1390_CHAN_TEMP, idev->active_scan_mask)) {
+> >> +		ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp,
+> >> +				       sizeof(temp));
+> >> +		if (ret)
+> >> +			return ret;
+> >> +	}
+> >> +
+> >> +	ret = regmap_read(data->regmap, BM1390_REG_FIFO_LVL, &smp_lvl);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	smp_lvl = FIELD_GET(BM1390_MASK_FIFO_LVL, smp_lvl);
+> >> +
+> >> +	if (smp_lvl > 4) {
+> >> +		/*
+> >> +		 * Valid values should be 0, 1, 2, 3, 4 - rest are probably
+> >> +		 * bit errors in I2C line. Don't overflow if this happens.
+> >> +		 */
+> >> +		dev_err(data->dev, "bad FIFO level %d\n", smp_lvl);
+> >> +		smp_lvl = 4;
+> >> +	}
+> >> +
+> >> +	if (!smp_lvl)
+> >> +		return ret;
+> >> +
+> >> +	sample_period = data->timestamp - data->old_timestamp;
+> >> +	do_div(sample_period, smp_lvl);
+> >> +
+> >> +	if (samples && smp_lvl > samples)
+> >> +		smp_lvl = samples;
+> >> +
+> >> +	for (i = 0; i < smp_lvl; i++) {
+> >> +		ret = bm1390_pressure_read(data, &buffer.pressure);
+> >> +		if (ret)
+> >> +			break;
+> >> +
+> >> +		buffer.temp = temp;
+> >> +		/*
+> >> +		 * Old timestamp is either the previous sample IRQ time,
+> >> +		 * previous flush-time or, if this was first sample, the enable
+> >> +		 * time. When we add a sample period to that we should get the
+> >> +		 * best approximation of the time-stamp we are handling.
+> >> +		 *
+> >> +		 * Idea is to always keep the "old_timestamp" matching the
+> >> +		 * timestamp which we are currently handling.
+> >> +		 */
+> >> +		data->old_timestamp += sample_period;
+> >> +
+> >> +		iio_push_to_buffers_with_timestamp(idev, &buffer,
+> >> +						   data->old_timestamp);
+> >> +	}
+> >> +	/* Reading the FIFO_LVL closes the FIFO access sequence */
+> >> +	regmap_read(data->regmap, BM1390_REG_FIFO_LVL, &smp_lvl);  
+> > 
+> > ret =  
+> 
+> I didn't want to determine success of getting the data by success of 
+> this read. Instead, I wanted to ret to contain the success of reading 
+> the pressure in the for-loop. We might spill out a warning if this reads 
+> fails though.
 
-Regards,
-Michael
+Does it mean the next read is going to fail?  I'm too lazy to look at
+datasheet to see what you mean by FIFO access sequence.
+If it does I'd rather we reported error as early as possible.
+
+Mind you I can't remember if errors in here result in anything useful anyway.
+
+
+
+
+> >> +static int bm1390_set_watermark(struct iio_dev *idev, unsigned int val)
+> >> +{
+> >> +	struct bm1390_data *data = iio_priv(idev);
+> >> +
+> >> +	if (val < BM1390_WMI_MIN || val > BM1390_WMI_MAX)
+> >> +		return -EINVAL;  
+> > 
+> > It's definitely possible to argue a watermark of 1 is also supported - just
+> > run in bypass mode with data ready interrupt.  Not sure we care enough to
+> > make that supported in this interface though.  Driver doesn't need to
+> > support everything possible.  
+> 
+> True. I'm not sure this is worth the complexity though. It'd mean we had 
+> to support DRDY when in FIFO mode - iff watermark is 1. Currently we 
+> don't need to bother the DRDY or FIFO disabling when in FIFO mode.
+
+Ok.
+
+
+> 
+> >> +	if (ret || !dummy)
+> >> +		return IRQ_NONE;
+> >> +
+> >> +	dev_dbg(data->dev, "DRDY trig status 0x%x\n", dummy);
+> >> +
+> >> +	ret = bm1390_pressure_read(data, &data->buf.pressure);
+> >> +	if (ret) {
+> >> +		dev_warn(data->dev, "sample read failed %d\n", ret);
+> >> +		return IRQ_NONE;  
+> > As below.  Still our interrupt even if we couldn't read the data
+> > As such, IRQ_HANDLED; is current reutrn value.  
+> 
+> I've learned a hard way that it can be a very good idea to return 
+> IRQ_NONE if HW access fails in IRQ handling. If we don't (can't) ack the 
+> IRQ line, we'll be sitting in IRQ handler. The feature which disables 
+> local IRQ after <N> unhandled IRQs has made a huge difference when I've 
+> received bug reports from people. Being able to access the device when 
+> the 'wild' IRQ gets disabled and being able to retrieve the logs is 
+> priceless. Also, seeing the 'nobody cares, disabling IRQ' in the log is 
+> a really valuable hint :)
+
+Hmm.  Usually the warn splat works out as enough to provide
+a hint. Kind of depends on whether the particular failure blocks correct
+handling or not.  Some devices don't care if you successfully
+read the buffer or not.  Its always annoyed me that there is no
+IRQ_ERROR return.
+
+
+> 
+> >   
+> >> +	}
+> >> +
+> >> +	mutex_unlock(&data->mutex);
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
+> >> +static int bm1390_set_drdy_irq(struct bm1390_data *data, bool en)
+> >> +{
+> >> +	if (en)
+> >> +		return regmap_set_bits(data->regmap, BM1390_REG_MODE_CTRL,
+> >> +				       BM1390_MASK_DRDY_EN);
+> >> +	return regmap_clear_bits(data->regmap, BM1390_REG_MODE_CTRL,
+> >> +				 BM1390_MASK_DRDY_EN);
+> >> +}
+> >> +
+> >> +static int bm1390_trigger_set_state(struct iio_trigger *trig,
+> >> +				    bool state)
+> >> +{
+> >> +	struct bm1390_data *data = iio_trigger_get_drvdata(trig);
+> >> +	int ret = 0;
+> >> +
+> >> +	mutex_lock(&data->mutex);
+> >> +
+> >> +	if (data->trigger_enabled == state)
+> >> +		goto unlock_out;
+> >> +
+> >> +	if (data->state == BM1390_STATE_FIFO) {
+> >> +		dev_warn(data->dev, "Can't set trigger when FIFO enabled\n");  
+> > 
+> > Why not?  Spec reference ideally.  I haven't gotten my head around this
+> > but I'd expect an attempt to set the trigger state to indicate that we don't
+> > want to use the fifo and as such it should be disabled in this path.  
+> 
+> This may be my limited understanding of how IIO is typically used. To me 
+> it sounded a bit strange that someone setting trigger could abort an 
+> ongoing buffered measurement. I would have expected the buffering to be 
+> explicitly disabled by user before allowing the trigger to be used.
+
+We mostly try to enable as many userspace paths as possible.  If they
+ask for something and we can easily do it (even if it stops something
+else) then we are fine with it.  
+ 
+> Especially because the trigger and FIFO are pretty much exclusive 
+> features (as with data-ready trigger you'll get each individual sample 
+> read). My assumption was that an attempt to enable data-ready when FIFO 
+> was in use is a misconfiguration.
+
+I agree, but doesn't mean we aren't nice to them anyway :)  Expectation
+is they should go back to a sensible state before setting up something new
+and complex.
+
+
+Now if it's tricky to handle in code then we can indeed use an error.
+
+I have better understood how you are are handing fifo vs data ready
+now hence I'm not that bothered by this spitting out an error.  It's the same
+as changing a trigger when a buffer is running which makes little sense,
+though it only applies in INDIO_BUFFER_TRIGGERED mode.
+Perhaps we should broaden that and then we'll block much earlier.
+ 
+...
+
+
+
+> > 
+> >   
+> >> +}
+> >> +
+> >> +static int bm1390_probe(struct i2c_client *i2c)
+> >> +{
+> >> +	struct bm1390_data *data;
+> >> +	struct regmap *regmap;
+> >> +	struct iio_dev *idev;
+> >> +	struct device *dev;
+> >> +	unsigned int part_id;
+> >> +	int ret;
+> >> +
+> >> +	dev = &i2c->dev;
+> >> +
+> >> +	regmap = devm_regmap_init_i2c(i2c, &bm1390_regmap);
+> >> +	if (IS_ERR(regmap))
+> >> +		return dev_err_probe(dev, PTR_ERR(regmap),
+> >> +				     "Failed to initialize Regmap\n");
+> >> +
+> >> +	idev = devm_iio_device_alloc(dev, sizeof(*data));
+> >> +	if (!idev)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	ret = devm_regulator_get_enable(dev, "vdd");
+> >> +	if (ret)
+> >> +		return dev_err_probe(dev, ret, "Failed to get regulator\n");
+> >> +
+> >> +	data = iio_priv(idev);
+> >> +
+> >> +	ret = regmap_read(regmap, BM1390_REG_PART_ID, &part_id);
+> >> +	if (ret)
+> >> +		return dev_err_probe(dev, ret, "Failed to access sensor\n");
+> >> +
+> >> +	if (part_id != BM1390_ID)
+> >> +		dev_warn(dev, "unknown device 0x%x\n", part_id);
+> >> +
+> >> +	data->regmap = regmap;
+> >> +	data->dev = dev;
+> >> +	data->irq = i2c->irq;
+> >> +	/*
+> >> +	 * Default watermark to WMI_MAX. We could also allow setting WMI to 0,
+> >> +	 * and interpret that as "WMI is disabled, use FIFO_FULL" but I've
+> >> +	 * no idea what is assumed if watermark is 0. Does it mean each sample
+> >> +	 * should trigger IRQ, or no samples should do that?  
+> > 
+> > In my head at least, if we are using fifo_full it is still a watermark but one
+> > that matches size of buffer.
+> > I think for previous drivers we've had 0 and 1 both meaning it's a dataready
+> > interrupt (i.e. one entry in the fifo).  That would be fine here as well
+> > and would correspond to putting the device in bypass mode.  
+> 
+> Thanks for the explanation. It makes sense.
+> Meanwhile I was reading the spec and I think the FIFO_FULL usage with 
+> this IC is like asking for a nose-bleed. FIFO_FULL IRQ is acked by 
+> reading the status - and if data is not read from the FIFO, then the 
+> status will remain cleared (and I assume also the IRQ line will stay 
+> low). I assume it's easy enough to write a code that acks the IRQ while 
+> leaving the buffer full - and effectively killing the FIFO_FULL IRQ. No 
+> more samples for you then.
+
+Its not a level IRQ?  What fun. Indeed silly corner case.
+
+> 
+> > 	  
+> >> +	 *
+> >> +	 * Well, for now we just allow BM1390_WMI_MIN to BM1390_WMI_MAX and
+> >> +	 * discard every other configuration when triggered mode is not used.
+> >> +	 */
+> >> +	data->watermark = BM1390_WMI_MAX;
+> >> +	mutex_init(&data->mutex);
+> >> +
+> >> +	idev->channels = bm1390_channels;
+> >> +	idev->num_channels = ARRAY_SIZE(bm1390_channels);
+> >> +	idev->name = "bm1390";
+> >> +	idev->info = &bm1390_info;
+> >> +	idev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;  
+> > 
+> > The triggered buffer setup should set the second of these inside
+> > the IIO core code (as it always needs to be set if that code is called).  
+> 
+> Right. Thanks.
+
+Oops. I'm wrong in this.  I'd forgotten the distinction between
+INDIO_BUFFER_TRIGGERED and INDIO_BUFFER_SOFTWARE.
+
+You should set this as you have done.
+
+...
+
+> >> +static struct i2c_driver bm1390_driver = {
+> >> +	.driver = {
+> >> +		.name = "bm1390",
+> >> +		.of_match_table = bm1390_of_match,
+> >> +		.probe_type = PROBE_PREFER_ASYNCHRONOUS,  
+> > 
+> > I don't mind seeing this but I do want it to have a comment saying 'why'.
+> > I assume there is something really slow involved in probing this?  
+> 
+> I wouldn't say there is anything really slow. What I have gathered is:
+> 
+> 1) The grand idea is that at the end of the day (week, month, year) 
+> async probing should be the default when it causes no problems.
+
+Agreed.
+
+> 
+> 2) Problems are rare (although they may exist).
+> 
+> 3) All regulator drivers were changes (or suggested to be changed) to do 
+> async probing because for example the ramp-rates may be slow.
+> 
+> 4) This driver enables the VDD supply - with potentially slow ramp-rate 
+> (well, the I need to guess user's setups statement holds again) so it 
+> may potentially take a while (probably not long though).
+> 
+> 5) We have a few msleeps() in bm1390_chip_init() - which are likely to 
+> result a sleep tens of milliseconds. So there is some delay.
+> 
+>  From those 5 things I derived assumption that async probe would be the 
+> right thing to start with. We can drop it if it causes a problem in an 
+> actual setup :)
+> 
+I don't mind having it - I'd just like a little comment including what
+minimum sleep time is and that a VDD supply enable may add time to it.
+
+So set the bounds.
+
+Jonathan
+

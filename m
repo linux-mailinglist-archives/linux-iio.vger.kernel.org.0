@@ -2,77 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFFE779F186
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Sep 2023 20:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D595D79F1BF
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Sep 2023 21:09:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232025AbjIMS6l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Sep 2023 14:58:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54756 "EHLO
+        id S231875AbjIMTJz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Sep 2023 15:09:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232040AbjIMS6l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Sep 2023 14:58:41 -0400
+        with ESMTP id S229975AbjIMTJz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Sep 2023 15:09:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F8D1986;
-        Wed, 13 Sep 2023 11:58:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52586C433C8;
-        Wed, 13 Sep 2023 18:58:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C561999;
+        Wed, 13 Sep 2023 12:09:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A8AC433C7;
+        Wed, 13 Sep 2023 19:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694631516;
-        bh=L9fkqwogJ6Mw64LwM2CsR4hDgaa8lc+8w9VbJ4PNCGc=;
+        s=k20201202; t=1694632190;
+        bh=Ktek55em2lQqOLi5XrDpc0X2yRD8Pv24UsJnY2E/vlM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J8b1Bplv02uuQdKs58aNHvlwnrlJzMkrtHa9J+XFcom8YQCnTmaRf1wDO9C1rwehy
-         883tTyW9cD7u1328pmVBgbH7da3lwn6FIthkYyQdK224myzMg1+L/AqWtbpr7hGDxo
-         6/l98Rm8s6Kr8XoEcyOQPtXNKVSPanC/z6rFuo12XwJtEea3RRJ1OSB3pROfDbgvHx
-         vKC2mPhq9Edn8A+aWZJRuoqLF73+7efE1dY8gFUQsatnylccdo7zdJBWp8nYnnv0ja
-         uN/UkoAKU3EuMdnYnq3VB7o2Ew1LM5Q4bCxEtscc37DQQqAOpJhl1WEv+Snu0uVTvf
-         a+88nhgxm98WA==
-Date:   Wed, 13 Sep 2023 19:58:30 +0100
+        b=nQO0JEba4WiZV1j94DNPCq1BYLHgmbABq30DurjcAe4ok7NGPCf/J/27Zi21UVgBS
+         Pk3a3M7hCxfPJh6cyU6froE3+yxucopavyqW7AMR8EgeXbt8vgtdL/LpU1E3Rc/Djp
+         xMwmpW3VMaOUeYdaT9ZjouDR95jpnqRZuKanFTKMGulk5s2gJ/yW/LE7fvYF8VQYjz
+         wilMKcidfyehQeZv/+hPCiCKO20Xr0IaDUJyVH7jJ7i9qRd7df7esyofV+2a0OgkTU
+         ynX+z+vpiKrV+U5S9smVMi+FtuO9bj8osyGqdeM7dfe//L+P4sVDFjsFr39MV1LsAY
+         PpDX7Ynf6PBnA==
+Date:   Wed, 13 Sep 2023 20:09:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: addac: Kconfig: update ad74413r selections
-Message-ID: <20230913195830.04126014@jic23-huawei>
-In-Reply-To: <20230912085421.51102-1-antoniu.miclaus@analog.com>
-References: <20230912085421.51102-1-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH] iio: addac: ad74413r: update channel function set
+Message-ID: <20230913200944.086ec3c3@jic23-huawei>
+In-Reply-To: <20230911142950.216687-1-antoniu.miclaus@analog.com>
+References: <20230911142950.216687-1-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 12 Sep 2023 11:54:21 +0300
+On Mon, 11 Sep 2023 17:29:50 +0300
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Building ad74413r without selecting IIO_BUFFER and
-> IIO_TRIGGERED_BUFFER generates error with respect to the iio trigger
-> functions that are used within the driver.
-> Update the Kconfig accordingly.
-> 
-> Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
+> According to the datasheet switching to a new channel function implies
+> multiple steps.
+>=20
+> All functions must be selected for a minimum of 130 =CE=BCs before changi=
+ng
+> to another function.
+> The DAC_CODEx registers are not reset by changing channel functions.
+> Prior to changing channel functions, it is recommended to set the DAC
+> code to 0x0000 via the DAC_CODEx registers. Set the channel function
+> to high impedance via the CH_FUNC_SETUPx registers before transitioning
+> to the new channel function. After the new channel function is configured,
+> it is recommended to wait 150 =CE=BCs before updating the DAC code.
+>=20
+> Even though the channel switch is done at only at probe, where a device
+> reset is performed, that does not guarantee that the steps prior
+> changing to new channel function should be neglected.
+>=20
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
 
+Given description and lack of fixes tag, I'm not treating this as a fix.
+Let me know if I should and provide a fixes tag in reply to this therad.
+
+Applied to the togreg branch of iio.git and pushed out as testing.
 Thanks,
 
 Jonathan
-
 > ---
->  drivers/iio/addac/Kconfig | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
-> index 877f9124803c..397544f23b85 100644
-> --- a/drivers/iio/addac/Kconfig
-> +++ b/drivers/iio/addac/Kconfig
-> @@ -24,6 +24,8 @@ config AD74413R
->  	depends on GPIOLIB && SPI
->  	select REGMAP_SPI
->  	select CRC8
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Say yes here to build support for Analog Devices AD74412R/AD74413R
->  	  quad-channel software configurable input/output solution.
+>  drivers/iio/addac/ad74413r.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>=20
+> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> index 6b0e8218f150..7b9ebb481815 100644
+> --- a/drivers/iio/addac/ad74413r.c
+> +++ b/drivers/iio/addac/ad74413r.c
+> @@ -441,12 +441,30 @@ static int ad74413r_set_channel_function(struct ad7=
+4413r_state *st,
+>  {
+>  	int ret;
+> =20
+> +	ret =3D regmap_update_bits(st->regmap,
+> +				 AD74413R_REG_CH_FUNC_SETUP_X(channel),
+> +				 AD74413R_CH_FUNC_SETUP_MASK,
+> +				 CH_FUNC_HIGH_IMPEDANCE);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set DAC code to 0 prior to changing channel function */
+> +	ret =3D ad74413r_set_channel_dac_code(st, channel, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Delay required before transition to new desired mode */
+> +	usleep_range(130, 150);
+> +
+>  	ret =3D regmap_update_bits(st->regmap,
+>  				  AD74413R_REG_CH_FUNC_SETUP_X(channel),
+>  				  AD74413R_CH_FUNC_SETUP_MASK, func);
+>  	if (ret)
+>  		return ret;
+> =20
+> +	/* Delay required before updating the new DAC code */
+> +	usleep_range(150, 170);
+> +
+>  	if (func =3D=3D CH_FUNC_CURRENT_INPUT_LOOP_POWER)
+>  		ret =3D regmap_set_bits(st->regmap,
+>  				      AD74413R_REG_ADC_CONFIG_X(channel),
 

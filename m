@@ -2,141 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB927A0303
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Sep 2023 13:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB527A03D5
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Sep 2023 14:28:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237455AbjINLrx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Sep 2023 07:47:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
+        id S237440AbjINM2S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Sep 2023 08:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237253AbjINLrw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Sep 2023 07:47:52 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660B19B;
-        Thu, 14 Sep 2023 04:47:48 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2bcb89b476bso13641631fa.1;
-        Thu, 14 Sep 2023 04:47:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694692066; x=1695296866; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4yf8sd4MykaTLQ5lgfem5cP9B4aMgOVdyURQ2Y//BtI=;
-        b=hGNuq0Ao5ZorVtWc9zc88ZSCSwrs/ShXpGSsPyJsIqLkpN5yFoz3UTkU2lrMdRdpNf
-         m7wGjcXU27/OhU+uIinLS2Tis1G5PxS1oHSizg6I+jsi9coP8SUw0GvcVlAlPWb5dYaF
-         cPFEeAeoMWzbIY0fJllgFfhYjMANfdT+dZNa0UsBrvyZMj2/FXbRWTs9FZph4e6a2/X7
-         DE7RHuAnIP/fI6cJZxzfzsy4IZWjHdI7+yXALLhQDVh3YHk9J5EJZqeZGA6ZiWnGWZvb
-         4p7wnuEjL5e4SbLLVsmPsFsebiCFMDmXzAdfrkHSKh4IEsIvDfZ9eueb/3L2lkOoFKgv
-         XjTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694692066; x=1695296866;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4yf8sd4MykaTLQ5lgfem5cP9B4aMgOVdyURQ2Y//BtI=;
-        b=VCY/2yJWZwWM9iz9uuFOBzIEmyqnkoR5ASbPcqR4P4rh89Vd2iMlzNbG7xlVeKBvco
-         21z7rnK8Tz5xHemARC8gRK2NcNMekxtRB1CyBMjpx8PSfGF+BPVBKU8FbMm9B7wR4jwf
-         hgJfhIHYxQBBvEoNqqyl5Viz+Whi2yTnzn+uJwtOSCMIOVdbJvyw8WIU2L6gfGXPqYhY
-         4c/mH6iMbWxmgJwfsrS4Ujxjlp767/aIZuwckZA0tDtVjxLF9MyHaPyuiaD8Nww/M1Gk
-         lmiwUV4E5BFNFnNpBke5aSclLoPAMkdEOiOzaQve/0rbFLufu4EAxx1X7YZdihNtK4eu
-         fGKQ==
-X-Gm-Message-State: AOJu0Yw8LuzLoypO9LV/ewx8XcN3th1+2T/PliPZKDxnPva5PQAn7fjO
-        E+iw7U5RHt2bwOfYP+BoeiB9hF4zS8k=
-X-Google-Smtp-Source: AGHT+IEzQjqtPQkQKjniAb0a6Hmu/i9+fy44xMKN/oe1brAjHK3IZkiGO+904a7fwTje8Uwg+QkvOA==
-X-Received: by 2002:a05:6512:3091:b0:4f8:766f:8dc3 with SMTP id z17-20020a056512309100b004f8766f8dc3mr5547625lfd.32.1694692066237;
-        Thu, 14 Sep 2023 04:47:46 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
-        by smtp.gmail.com with ESMTPSA id w12-20020a05651204cc00b004fe33e05eebsm248392lfq.203.2023.09.14.04.47.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Sep 2023 04:47:45 -0700 (PDT)
-Message-ID: <b8817140-508e-5c94-e37b-8727cf1abe4a@gmail.com>
-Date:   Thu, 14 Sep 2023 14:47:44 +0300
+        with ESMTP id S238202AbjINM2R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Sep 2023 08:28:17 -0400
+X-Greylist: delayed 902 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Sep 2023 05:28:13 PDT
+Received: from mickerik.phytec.de (mickerik.phytec.de [91.26.50.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135E11FCC
+        for <linux-iio@vger.kernel.org>; Thu, 14 Sep 2023 05:28:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+        q=dns/txt; i=@phytec.de; t=1694693589; x=1697285589;
+        h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=s3tNlvvUmtI8ptMGyvvsPrGgLl/WPnVCwK8f76krFqY=;
+        b=bbmq2LS4zDUab/IAhQWcG6misYXXjdTYHQ9KbY866Kral3cZFU00btdPcNXuHRdY
+        Bre+ga0ZSbi+P3675V8EpulNsnMk9GfbUTs0P4IWV7l5rw4Ubr/1qvK/w9J5RkVb
+        0sd1gmdQ9u5cpk2O8YgVXQDnpLS/eTmhSwjsKy4sB9Q=;
+X-AuditID: ac14000a-6e25770000001e37-a5-6502f8d47b91
+Received: from berlix.phytec.de (Unknown_Domain [172.25.0.12])
+        (using TLS with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client did not present a certificate)
+        by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 8D.75.07735.4D8F2056; Thu, 14 Sep 2023 14:13:09 +0200 (CEST)
+Received: from augenblix2.phytec.de (172.25.0.11) by Berlix.phytec.de
+ (172.25.0.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Thu, 14 Sep
+ 2023 14:13:08 +0200
+From:   Wadim Egorov <w.egorov@phytec.de>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
+        <heiko@sntech.de>, <mugunthanvnm@ti.com>, <peter.ujfalusi@ti.com>
+CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <upstream@lists.phytec.de>, <nm@ti.com>
+Subject: [PATCH] iio: adc: ti_am335x_adc: Make DMAs optional
+Date:   Thu, 14 Sep 2023 14:13:00 +0200
+Message-ID: <20230914121300.845493-1-w.egorov@phytec.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US, en-GB
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1694001462.git.mazziesaccount@gmail.com>
- <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
- <20230910142225.5863a850@jic23-huawei>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
-In-Reply-To: <20230910142225.5863a850@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.25.0.11]
+X-ClientProxiedBy: Berlix.phytec.de (172.25.0.12) To Berlix.phytec.de
+ (172.25.0.12)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDLMWRmVeSWpSXmKPExsWyRpKBR/fqD6ZUgz49i/+PXrNaPGhaxWSx
+        ZPJ8Vot5R96xWFzeNYfN4uqDcos3P84yWcz6+IPV4v+eHewW3e/UHbg8Nq3qZPPo725h9Vjy
+        5hCrx/Zr85g9jt/YzuTxeZNcAFsUl01Kak5mWWqRvl0CV8aTLYcYC05wVVydHdfAeJKji5GT
+        Q0LAROJfzxPWLkYuDiGBJUwSredPsEE4Txgldl2fxwRSxSagLnFnwzewKhGBRkaJC5umM4Ik
+        mAWyJI6tPgBmCwvYSEzctwPMZhFQlfjUd44VxOYVsJBYceI+C8Q6eYmZl76zQ8QFJU7OfMIC
+        MUdeonnrbGYIW0Li4IsXYLYQUPzFpeVwvdPOvWaGsEMltn7ZzjSBUWAWklGzkIyahWTUAkbm
+        VYxCuZnJ2alFmdl6BRmVJanJeimpmxhBMSDCwLWDsW+OxyFGJg7GQ4wSHMxKIrxstkypQrwp
+        iZVVqUX58UWlOanFhxilOViUxHnv9zAlCgmkJ5akZqemFqQWwWSZODilGhinbmT0TdrOUBZz
+        cb3kzuos/iUm9gvnTDpR0RW0uGwO3xlvhYSpYSc0XoUd4mt+/23xcyXZc7dc8gS/bXGevmlG
+        8968nYEPVveZJWXk2oa5aGy6EW0isnQ2p7yL8JWFzU8zvbN7aubGKqT43azguXzu9hq/fYvO
+        pV5dUDdb21FdaufWlEadDRJKLMUZiYZazEXFiQAEjkT+bwIAAA==
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 9/10/23 16:22, Jonathan Cameron wrote:
-> On Wed, 6 Sep 2023 15:37:48 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z can measure
->> pressures ranging from 300 hPa to 1300 hPa with configurable measurement
->> averaging and internal FIFO. The sensor does also provide temperature
->> measurements.
->>
->> Sensor does also contain IIR filter implemented in HW. The data-sheet
->> says the IIR filter can be configured to be "weak", "middle" or
->> "strong". Some RMS noise figures are provided in data sheet but no
->> accurate maths for the filter configurations is provided. Hence, the IIR
->> filter configuration is not supported by this driver and the filter is
->> configured to the "middle" setting (at least not for now).
+DMAs are optional. Even if the DMA request is unsuccessfully,
+the ADC can still work properly.
+Make tiadc_request_dma() not fail if we do not provide dmas &
+dma-names properties.
 
->> +
->> +static irqreturn_t bm1390_irq_thread_handler(int irq, void *private)
->> +{
->> +	struct iio_dev *idev = private;
->> +	struct bm1390_data *data = iio_priv(idev);
->> +	int ret = IRQ_NONE;
->> +
->> +	mutex_lock(&data->mutex);
->> +
->> +	if (data->trigger_enabled) {
->> +		iio_trigger_poll_nested(data->trig);
->> +		ret = IRQ_HANDLED;
->> +	}
->> +
->> +	if (data->state == BM1390_STATE_FIFO) {
-> 
-> Can this and trigger_enabled be true?
+This actually fixes the wrong error handling of the tiadc_request_dma()
+result where the probing only failed if -EPROPE_DEFER was returned.
 
-Thanks for asking this question. Intention was that these are mutually 
-exclusive. However, I think that the check
-if (iio_device_get_current_mode(idev) == INDIO_BUFFER_TRIGGERED)
-in bm1390_buffer_postenable(), before calling the bm1390_fifo_enable() 
-is not 100% race free.
+Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
 
-I, however, like the idea of having this check in the buffer-enable 
-function - I think it makes the design much more obvious. What I will do 
-is adding another check for:
-	if (data->trigger_enable) {
-		ret = -EBUSY;
-		goto unlock_out;
-	}
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ drivers/iio/adc/ti_am335x_adc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-inside the bm1390_fifo_enable() to the section which holds the mutex.
-
-
-Yours,
-	-- Matti
-
-
-
+diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
+index 8db7a01cb5fb..e14aa9254ab1 100644
+--- a/drivers/iio/adc/ti_am335x_adc.c
++++ b/drivers/iio/adc/ti_am335x_adc.c
+@@ -543,8 +543,11 @@ static int tiadc_request_dma(struct platform_device *pdev,
+ 	if (IS_ERR(dma->chan)) {
+ 		int ret = PTR_ERR(dma->chan);
+ 
++		if (ret != -ENODEV)
++			return dev_err_probe(&pdev->dev, ret,
++					     "RX DMA channel request failed\n");
+ 		dma->chan = NULL;
+-		return ret;
++		return 0;
+ 	}
+ 
+ 	/* RX buffer */
+@@ -670,7 +673,7 @@ static int tiadc_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
+ 	err = tiadc_request_dma(pdev, adc_dev);
+-	if (err && err == -EPROBE_DEFER)
++	if (err)
+ 		goto err_dma;
+ 
+ 	return 0;
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.25.1
 

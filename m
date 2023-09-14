@@ -2,95 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B70F27A02A3
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Sep 2023 13:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB927A0303
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Sep 2023 13:47:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233007AbjINL3P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Sep 2023 07:29:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35384 "EHLO
+        id S237455AbjINLrx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Sep 2023 07:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234216AbjINL3O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Sep 2023 07:29:14 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116611A5
-        for <linux-iio@vger.kernel.org>; Thu, 14 Sep 2023 04:29:10 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-31c93d2a24fso722227f8f.2
-        for <linux-iio@vger.kernel.org>; Thu, 14 Sep 2023 04:29:09 -0700 (PDT)
+        with ESMTP id S237253AbjINLrw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Sep 2023 07:47:52 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660B19B;
+        Thu, 14 Sep 2023 04:47:48 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2bcb89b476bso13641631fa.1;
+        Thu, 14 Sep 2023 04:47:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694690948; x=1695295748; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2BByK3tfc6PUbDwCOEaXXr3ISJ4Vq9CFVyzLm4t+uio=;
-        b=L74vR5Z8pM35AbBoodWcn7UboHsrCPODJyPCQVk5hrPTW73J0r5r71/JktlzxQT2ZZ
-         LqSTxljfuBz1829rT1JFz2iEWuxcUQg3LRGqw3nJPp/VyIGlQXrJ3EYPMyAJoAMa7/Id
-         gK4jV71n2e8ZTA7ege5OXekbucCyRVgibLHpG/f5v4BvlwH/+mkqLjRIQ4na2oJtZSnN
-         SxwRuqLlbnRWJODEA3n4n4PzVZ1FPl+ihpB8HPAC7WFU6wKvAEORLxf558urcRUrnGRu
-         9xYj6spmqge90ztSmVO+MjdtLqv8EThTzy80+djxhxTKv+LnDGktQ86eQ8yGtTjxBIJ5
-         79xQ==
+        d=gmail.com; s=20221208; t=1694692066; x=1695296866; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4yf8sd4MykaTLQ5lgfem5cP9B4aMgOVdyURQ2Y//BtI=;
+        b=hGNuq0Ao5ZorVtWc9zc88ZSCSwrs/ShXpGSsPyJsIqLkpN5yFoz3UTkU2lrMdRdpNf
+         m7wGjcXU27/OhU+uIinLS2Tis1G5PxS1oHSizg6I+jsi9coP8SUw0GvcVlAlPWb5dYaF
+         cPFEeAeoMWzbIY0fJllgFfhYjMANfdT+dZNa0UsBrvyZMj2/FXbRWTs9FZph4e6a2/X7
+         DE7RHuAnIP/fI6cJZxzfzsy4IZWjHdI7+yXALLhQDVh3YHk9J5EJZqeZGA6ZiWnGWZvb
+         4p7wnuEjL5e4SbLLVsmPsFsebiCFMDmXzAdfrkHSKh4IEsIvDfZ9eueb/3L2lkOoFKgv
+         XjTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694690948; x=1695295748;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2BByK3tfc6PUbDwCOEaXXr3ISJ4Vq9CFVyzLm4t+uio=;
-        b=OSGAiGX6eVJALl65TwwJQi2RV/DGZ1EAZCt8XSbDkV5t6uh1yhXb5WkvT/8gXE2Uqf
-         Yo2trjKhIx7K2i47Q/k5dn8BdR8nP/xV0vb8Rk9C3ntrVuSiHevkWU0fYt4mltTYAHqH
-         /5x74Z7ZvDjuxQ/oDucrhEFx4wAFmC5XBZ8HDj6HqGEsK3+ONs3+n/ec8bZ6dGNh0jJn
-         fU+QdICaJ7uE0iXuzmeH8/ZD9TbTN6GY60yOKSl6SC4NCcT+pJmAYM4R5wAp6TWuivjv
-         Z4O4zw9KfoOKCAaBdQ8AasFH5LaHzmKOlSEpRaTdXiO9gpYKwH4KbTXviIXwQduyW5Bo
-         wbrA==
-X-Gm-Message-State: AOJu0Yx5/Gd4Gfa3NnlSieYb2DPEf2GfFb1ZaaYuv3lMJCcnwgVod+fG
-        MfGrV8S7xeRI1tEcDeJ1raNo1Q==
-X-Google-Smtp-Source: AGHT+IHMZzn5BP2AIGJzfT5STy/AkkoqJZEe16UVQpFHRDWuxaUqKWaEoVO567wUnU71eP4MjhwLyQ==
-X-Received: by 2002:adf:f6c7:0:b0:317:f537:748d with SMTP id y7-20020adff6c7000000b00317f537748dmr4177351wrp.64.1694690948342;
-        Thu, 14 Sep 2023 04:29:08 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id s18-20020a5d4252000000b0031c5d74ecd8sm1519411wrr.84.2023.09.14.04.29.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 04:29:08 -0700 (PDT)
-Date:   Thu, 14 Sep 2023 14:29:05 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     marius.cristea@microchip.com
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: adc: adding support for MCP3564 ADC
-Message-ID: <b936e5cf-fcd3-421b-917a-5673df02f631@kadam.mountain>
-References: <5ba16a5c-71aa-4dc1-8be6-320750d10b73@moroto.mountain>
+        d=1e100.net; s=20230601; t=1694692066; x=1695296866;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4yf8sd4MykaTLQ5lgfem5cP9B4aMgOVdyURQ2Y//BtI=;
+        b=VCY/2yJWZwWM9iz9uuFOBzIEmyqnkoR5ASbPcqR4P4rh89Vd2iMlzNbG7xlVeKBvco
+         21z7rnK8Tz5xHemARC8gRK2NcNMekxtRB1CyBMjpx8PSfGF+BPVBKU8FbMm9B7wR4jwf
+         hgJfhIHYxQBBvEoNqqyl5Viz+Whi2yTnzn+uJwtOSCMIOVdbJvyw8WIU2L6gfGXPqYhY
+         4c/mH6iMbWxmgJwfsrS4Ujxjlp767/aIZuwckZA0tDtVjxLF9MyHaPyuiaD8Nww/M1Gk
+         lmiwUV4E5BFNFnNpBke5aSclLoPAMkdEOiOzaQve/0rbFLufu4EAxx1X7YZdihNtK4eu
+         fGKQ==
+X-Gm-Message-State: AOJu0Yw8LuzLoypO9LV/ewx8XcN3th1+2T/PliPZKDxnPva5PQAn7fjO
+        E+iw7U5RHt2bwOfYP+BoeiB9hF4zS8k=
+X-Google-Smtp-Source: AGHT+IEzQjqtPQkQKjniAb0a6Hmu/i9+fy44xMKN/oe1brAjHK3IZkiGO+904a7fwTje8Uwg+QkvOA==
+X-Received: by 2002:a05:6512:3091:b0:4f8:766f:8dc3 with SMTP id z17-20020a056512309100b004f8766f8dc3mr5547625lfd.32.1694692066237;
+        Thu, 14 Sep 2023 04:47:46 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f8:1500::3? (dc78bmyyyyyyyyyyyyybt-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::3])
+        by smtp.gmail.com with ESMTPSA id w12-20020a05651204cc00b004fe33e05eebsm248392lfq.203.2023.09.14.04.47.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Sep 2023 04:47:45 -0700 (PDT)
+Message-ID: <b8817140-508e-5c94-e37b-8727cf1abe4a@gmail.com>
+Date:   Thu, 14 Sep 2023 14:47:44 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ba16a5c-71aa-4dc1-8be6-320750d10b73@moroto.mountain>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US, en-GB
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1694001462.git.mazziesaccount@gmail.com>
+ <08f7085ba1af2fae21c942f6c20a94c237df53ba.1694001462.git.mazziesaccount@gmail.com>
+ <20230910142225.5863a850@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH 2/3] iio: pressure: Support ROHM BU1390
+In-Reply-To: <20230910142225.5863a850@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 14, 2023 at 01:01:02PM +0300, Dan Carpenter wrote:
-> Hello Marius Cristea,
+On 9/10/23 16:22, Jonathan Cameron wrote:
+> On Wed, 6 Sep 2023 15:37:48 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> The patch 33ec3e5fc1ea: "iio: adc: adding support for MCP3564 ADC"
-> from Aug 29, 2023 (linux-next), leads to the following Smatch static
-> checker warning:
-> 
-> 	drivers/iio/adc/mcp3564.c:1426 mcp3564_probe()
-> 	warn: address of NULL pointer 'indio_dev'
-> 
-> drivers/iio/adc/mcp3564.c
->     1418 static int mcp3564_probe(struct spi_device *spi)
->     1419 {
->     1420         int ret;
->     1421         struct iio_dev *indio_dev;
->     1422         struct mcp3564_state *adc;
->     1423 
->     1424         indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
->     1425         if (!indio_dev) {
-> --> 1426                 dev_err_probe(&indio_dev->dev, PTR_ERR(indio_dev),
->                                        ^^^^^^^^^^^^^^^
-> This will crash
+>> Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z can measure
+>> pressures ranging from 300 hPa to 1300 hPa with configurable measurement
+>> averaging and internal FIFO. The sensor does also provide temperature
+>> measurements.
+>>
+>> Sensor does also contain IIR filter implemented in HW. The data-sheet
+>> says the IIR filter can be configured to be "weak", "middle" or
+>> "strong". Some RMS noise figures are provided in data sheet but no
+>> accurate maths for the filter configurations is provided. Hence, the IIR
+>> filter configuration is not supported by this driver and the filter is
+>> configured to the "middle" setting (at least not for now).
 
-Actually I think that dev_err_probe() has a check for this kind of bug
-so it doesn't actually crash.  The check is burried deep into the call
-tree where it prints the name and if the address is < PAGE_SIZE it just
-prints the device name as "(efault)".  But it's still not ideal.
+>> +
+>> +static irqreturn_t bm1390_irq_thread_handler(int irq, void *private)
+>> +{
+>> +	struct iio_dev *idev = private;
+>> +	struct bm1390_data *data = iio_priv(idev);
+>> +	int ret = IRQ_NONE;
+>> +
+>> +	mutex_lock(&data->mutex);
+>> +
+>> +	if (data->trigger_enabled) {
+>> +		iio_trigger_poll_nested(data->trig);
+>> +		ret = IRQ_HANDLED;
+>> +	}
+>> +
+>> +	if (data->state == BM1390_STATE_FIFO) {
+> 
+> Can this and trigger_enabled be true?
 
-regads,
-dan carpenter
+Thanks for asking this question. Intention was that these are mutually 
+exclusive. However, I think that the check
+if (iio_device_get_current_mode(idev) == INDIO_BUFFER_TRIGGERED)
+in bm1390_buffer_postenable(), before calling the bm1390_fifo_enable() 
+is not 100% race free.
+
+I, however, like the idea of having this check in the buffer-enable 
+function - I think it makes the design much more obvious. What I will do 
+is adding another check for:
+	if (data->trigger_enable) {
+		ret = -EBUSY;
+		goto unlock_out;
+	}
+
+inside the bm1390_fifo_enable() to the section which holds the mutex.
+
+
+Yours,
+	-- Matti
+
+
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

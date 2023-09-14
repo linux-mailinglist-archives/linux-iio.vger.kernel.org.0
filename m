@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E0417A1015
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Sep 2023 23:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9527A1014
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Sep 2023 23:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjINVyT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Sep 2023 17:54:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42614 "EHLO
+        id S229654AbjINVxz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Sep 2023 17:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjINVyT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Sep 2023 17:54:19 -0400
+        with ESMTP id S229472AbjINVxy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Sep 2023 17:53:54 -0400
 Received: from mx0d-0054df01.pphosted.com (mx0d-0054df01.pphosted.com [67.231.150.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0130B1BFA
-        for <linux-iio@vger.kernel.org>; Thu, 14 Sep 2023 14:54:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA1E1BFA
+        for <linux-iio@vger.kernel.org>; Thu, 14 Sep 2023 14:53:50 -0700 (PDT)
 Received: from pps.filterd (m0209000.ppops.net [127.0.0.1])
-        by mx0c-0054df01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38EKZ41v024603;
-        Thu, 14 Sep 2023 17:24:55 -0400
+        by mx0c-0054df01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38EKVLYk008627;
+        Thu, 14 Sep 2023 17:24:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=calian.com; h=
         from:to:cc:subject:date:message-id:in-reply-to:references
         :content-transfer-encoding:content-type:mime-version; s=
-        selector2; bh=pDeZ66DosiDD8uj0gctctN9VJkMT0GtVpIb02Mkyhxw=; b=M3
-        FAt/3wnX4hPxfKMT7BlHcf/mXHKAdhrABtLxGF/ZRb0bm8y//sInkh+oSODr6z6S
-        +ccsvH53FvYivMz0DrMBFxetb+oy+L98p54KAUPZRV0XnBiCc1ms0o77jHHmtCD9
-        Yt8XzgrdGYs+MrXpyz4tM6HGEtY06KMEdOdQpWdXHhzxBW33uV1JhUFHjFPrPb/w
-        RK5LF9U+t/UJ+CDOXNDsUZyY90HBLZkRtQujkred0fFPYTZok+MNMbmAYRhhhxQ0
-        YaWHFn/rpj+xHoBQGH0r7bDZR4fkCp3eOIcazz2PnWXw7guzZpJl8/9UMs5DnMHI
-        4y5b4QGlTcWpngrcY+oQ==
+        selector2; bh=SAGqRSMhAJS9pau9JFspdr+osCi04ZAdxiQoVZ5jc5A=; b=hx
+        YB/Mbkp5YPqiq8F4VpGeOkfEMvuyHat5XSx6DuBvS+BOUaY+Sm/etp1EGYWibDlG
+        jRvwd4kTBYcWzAzkAuLcFz4Oa93MQ6ax+Y83JCQeZ5ThrHSle8XiXRivewQtUsQy
+        OaXzm1ZYxqJ+V4A940IRnIfR6neWssVUnJVndwriAJqqTolIe/ZFI3ayLWnT/meu
+        +B2p654sspB7s0M9Cy1xf+pZcs1gPORIhGJMTWURjBsjauKYbLBr3Q4PUAPQApB3
+        rd/X5W8a8irPilVFZGFx0+577zRh0KkqBMQkxpWpGF9owu0tGIvXf8omj0zMYrtX
+        Uawv53AvBmWdOyvJx5hQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=calian.com; h=
         from:to:cc:subject:date:message-id:in-reply-to:references
         :content-transfer-encoding:content-type:mime-version; s=
-        selector1; bh=pDeZ66DosiDD8uj0gctctN9VJkMT0GtVpIb02Mkyhxw=; b=BR
-        aY7zppH0pbPV1V43/ghTqRpK3NzidlFfjQUdgvJ2HS22CYAbJhgltD3yB7JUGsR8
-        8Pb9vVcnfSYNY0O7vCAptRcC6zWyLsSOXK+xNP0PWbCiJgkbEh3gGHyG2qWr5017
-        y3HNg5uOxMqGl08HH1SDIY8adM+o0bzb9iMHZDzJuG6Sws/pa+whxziFFY38rpx0
-        C8F5KB2KBk9yHBaIsrjlff0YgN04orcdPfmXJKd87qCo+zWB8rIzj/tgEG927zpT
-        JQUZYxdN9mMfzGAILvYcmV+L+NdY/+Yo7ic5urCKfjkdRWhOShZCX24l8dswgzsz
-        kjx1t+4PIhWTkBG5IqpA==
-Received: from can01-yqb-obe.outbound.protection.outlook.com (mail-yqbcan01lp2234.outbound.protection.outlook.com [104.47.75.234])
-        by mx0c-0054df01.pphosted.com (PPS) with ESMTPS id 3t2ybea1v4-1
+        selector1; bh=SAGqRSMhAJS9pau9JFspdr+osCi04ZAdxiQoVZ5jc5A=; b=m6
+        9MW7m87lOqhOsv0Vt8mTKGsUzG2rujNwG37uHcCiOe40vfF+Vs6Lfv+pECDWEWdp
+        i1tpgXQ3hcSKaz9lKcV9cINQIp5ZdrXLgv3yOyIFjjDFCG016Az/u60NeLgxoQZM
+        O5og3bju4H15J11AhN0BaiCr7UFlO1s/m2mTukwbWOB9zUpN//PInJIebiPgbGx+
+        LqI/EqMLtdE3+3HLdp0aTIQPu1pKbUdfZLFLXzZo+UDYRQ6oPOBuCDlgmVWVqWWb
+        tML2ypJqcqy/p8V3qehMlj9p5Y5+6uN2SARq9UbFPsEi0uKN2CgNoUqC9k7aZ4Pi
+        n9pGNPZdAUbO8jLFgASw==
+Received: from can01-yqb-obe.outbound.protection.outlook.com (mail-yqbcan01lp2240.outbound.protection.outlook.com [104.47.75.240])
+        by mx0c-0054df01.pphosted.com (PPS) with ESMTPS id 3t2ybea1v6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 14 Sep 2023 17:24:54 -0400 (EDT)
+        Thu, 14 Sep 2023 17:24:56 -0400 (EDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MSXGcBsjpTubdOopDuCTYSqW0r2oKGlknKqvv8axKIcSPw0wo6OFHOWNjiOV1NElpAdueDSqxEn/NerrItYJwFHDdmK26YJEXVOj59C1a7NLdOt3H0bfDMurdJi1Y7ukVDPPNagOFqvoxAHRpZ6zepowP6oHaOlVdCWEvYY62XS5+LxG7PmXBokn5N1ZOv1dJglA+RrLB/zWNo1HrpsapONIAwHuIUatWg6EnSAkljoK8gQ0qhb6sZAKW8c3OOyKU+jrZleGhjBlG9T5vHpmOHf8iVPW3LwIFcBanKG3+tOTXJzGnNSqJh+ArnhdWi+j1Obsp5b1TO9+8hWKXaOzSA==
+ b=M10HbykRv+7w58Iks6YN4kbCaKsE7Qu77n6rCZctkb6kzM09PYKaT69aqHy47uypmPBtpfrYAKZH/c9hoBcDhrwoQXBabkM9hWh5JA5xoyqBQElDMDoP1XTF1RBo8aWBgTm813xcABbcTi2bKlCrBI/kDUnsvSbe6Ug/bY1yS7ritJGCb5d10AtNcwec8xIHZ12/yRnzDIiEhq3NMxPkMdSFT72IgjkJh2aNKLgwpQWMAwWfDKOq86bu3rACewgal0KbBeGeebcjX5lGV1D8o5+d5q4/2a+QM4NfyE2bTwfT8hCPSglC0RzvmQrT0MpFtYgWuMAnKk2+Dv0cDVFEtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pDeZ66DosiDD8uj0gctctN9VJkMT0GtVpIb02Mkyhxw=;
- b=mqVhyvJEHob9z+yVNdyZWuA2O0/QVg4yQpXpuWzBGrsYVD4z08E9JbVc9Ig9zcdARj1MT3IqBYIXXy51aB4Uc2witUSVCf6pXnZLROHXYN9fPNSoSqE7UYro92fe48c7HIJbMb8KBRHiZXaT8hIXyYqirUwR+3DHBiGxx9C9ptZ9IzyNAhKS3iXCSldW3rZo7i/Shz2zH56ELBrz4LuxbAUV1MmaTjUdY/FYwvzhbOEQ6LOzuQdeAuzEp+i5mJtS7G0qR9AQYrWc/oLIKQZD1zpL7B/LsoOUNPJYYqfnoMkj722WfAY5/OAp9ankhnfHnRdZR7EJbjWzY+1S1o4VmA==
+ bh=SAGqRSMhAJS9pau9JFspdr+osCi04ZAdxiQoVZ5jc5A=;
+ b=jeucmPNMKx8n4Hqw9z5SUFR0WiU5uwscJHpRcJFQE7iOPawP8bmGLQ2SjEiXrLWy6njWz8hOCEYN7zDVYhPtafkH/AftY661SFr3CIdqINOROWncZsV3AFvuCnOsMM5UO+mNttgtX9EIDPxfogwH+iUbL/nH3lwojakjDQlyqJZG6kBfAi6VhuX8FbRW437HZdJkqvpHTtnvIcDvZGwC0aac9p4MTa0w2wnD82ZUTVDz8XEWL6rX1AJWq6WH0vhpmH6Akj3apAOPrS7yN0jjQ9OhduTPNswq1+u1FAS2M6Ou2gz4D9ZVoG9WO2YKxB9u6AbAEEMHhBpowggGeXPj+w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=calian.com; dmarc=pass action=none header.from=calian.com;
  dkim=pass header.d=calian.com; arc=none
@@ -55,11 +55,11 @@ Received: from YT2PR01MB8838.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:b9::6)
  by YT3PR01MB5551.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:64::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Thu, 14 Sep
- 2023 21:24:53 +0000
+ 2023 21:24:55 +0000
 Received: from YT2PR01MB8838.CANPRD01.PROD.OUTLOOK.COM
  ([fe80::cde8:7c8d:8d0a:8aec]) by YT2PR01MB8838.CANPRD01.PROD.OUTLOOK.COM
  ([fe80::cde8:7c8d:8d0a:8aec%3]) with mapi id 15.20.6792.020; Thu, 14 Sep 2023
- 21:24:53 +0000
+ 21:24:55 +0000
 From:   Robert Hancock <robert.hancock@calian.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -67,9 +67,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Anand Ashok Dumbre <anandash@xilinx.com>,
         linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Robert Hancock <robert.hancock@calian.com>
-Subject: [PATCH 1/2] iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature thresholds
-Date:   Thu, 14 Sep 2023 15:24:31 -0600
-Message-ID: <20230914212432.2842010-2-robert.hancock@calian.com>
+Subject: [PATCH 2/2] iio: adc: xilinx-xadc: Correct temperature offset/scale for UltraScale
+Date:   Thu, 14 Sep 2023 15:24:32 -0600
+Message-ID: <20230914212432.2842010-3-robert.hancock@calian.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230914212432.2842010-1-robert.hancock@calian.com>
 References: <20230914212432.2842010-1-robert.hancock@calian.com>
@@ -81,71 +81,71 @@ X-ClientProxiedBy: SJ0PR05CA0122.namprd05.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: YT2PR01MB8838:EE_|YT3PR01MB5551:EE_
-X-MS-Office365-Filtering-Correlation-Id: f6858644-a11c-4b34-f2f4-08dbb5690938
+X-MS-Office365-Filtering-Correlation-Id: 8bfdb4e4-7ba3-4206-c9dd-08dbb5690a1d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zB8zy0d6u3v1gsdmtauS8dCtWXt0wNEbrUB15TIX7XNImye2UTDs86ucp70f6JMKUURgsSr42KMkA9OMD2dEa5f7kYMJjQPdScCsvOKzm++KXKuSNelaUK51H6iWU3sM9+1M5XhFKw4ZptwfktfrN6g013NingTQVVAHLxBoUeZZVsx5J+mnjTswhmvO27Nm7UfJSYNU3r/KfXyiLDmGsHwN07cELhYlwUznqi2UxsZeUXcPIsHQSxUjvuPA5nrkiSTwj/V8pTPDw8VJXZy84He1jF+SsOx8a8p3CU068vkJKJKmEx4dajUhjH4cusZUtqW/lHP3kODDT30X6RUd2UqWfrcMsZmKy95pFTvDGGmv6nMbewuMyuxn2QZZbhmDlHyeSPEWrDXDZPVi5H1cnFs3uxoQhfC5WLRS+TfCXZgKo6C7jZ2nQT1J4bD3g2LjwTXPOLwPRqSIHFOYVUrAj7KFtdL9sTdm2OeTm4FToEiYlRsL5Y0cNknLfur0fHLNXaBNOjcMCYD9YjhEuI8Ladr51EYTTW5WFwM5335s0UfNSqFH+UNq/Y5OqsQCO8vjbc3bdo9HuYFa8tlPV7h7WdLWXM8Zdj8o0lhJ7biHarwLaMbUh4K22qcw+1YXtxv4
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB8838.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(396003)(136003)(366004)(376002)(1800799009)(451199024)(186009)(54906003)(6666004)(66946007)(66476007)(66556008)(52116002)(44832011)(6506007)(6486002)(41300700001)(6512007)(316002)(6916009)(478600001)(2616005)(4326008)(8676002)(1076003)(107886003)(8936002)(26005)(5660300002)(36756003)(38100700002)(38350700002)(2906002)(83380400001)(86362001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 1JZpakXFBNfFjQWPGDZ/UPZ30n38TX6f0KJgCDkmRDYT+xIu8wnbYd6AcfBwspXGhF3BLBhAoMEj8y541CXopJ6rWQHmm8zY99Y8ZH1bk+IYXMPtX6OJR64sA6Ls5hDmZKB3KHnxQLbM903KVBtTxuHpfQ6lF4n5ydN3gn2qqRytJz35DaB/W/YwCRe9aCr+dz4Q/umbm1QcSyiRlBdOEWXhug8m2P5Ljq5LtEo4hU3cp2FLmm0yIS8qifsSx3eNDjCP0nTBMEDuZS7AzglHhje4wIAb3eg8JsV0S8hhjiuxF0CMnyLxoXN8zSfbcT0xOQXaTYzWImr+rQve23CrUxC/yssRXOSkYnabIAmW7c38uKikZ8f9OD60cVUtBGWDwFZzy3wfOQx1KWNrMIlQvcZgfJ0wctkP7mE4E3Ht2u36ALbCiUL7mMl071uvUlf7WYAVEk7LiZbABRzbyrb51wfi3RezvLj/BN2JEO6++h7eJ6zQpnu2dxGGiB64ZnhE0wm3Jz6Dp9g2mRKkDmM1G2YVM/3uNBAcxyhWZ9vStgaG03e9EEGJxVKdxSJu7ws1pUN6J69/aEm8oXKXotLSzjATdiNfze/pbWwu9pNQYX0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB8838.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(396003)(136003)(366004)(376002)(1800799009)(451199024)(186009)(54906003)(6666004)(66946007)(66476007)(66556008)(52116002)(44832011)(6506007)(6486002)(41300700001)(6512007)(316002)(6916009)(966005)(478600001)(2616005)(4326008)(8676002)(1076003)(107886003)(8936002)(26005)(5660300002)(36756003)(38100700002)(38350700002)(2906002)(83380400001)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FVK/t+xDmdfiNDSIrtGNxPC+MTiSfCiJwnF8r4ITgX434XeJbcj84NlgPp2r?=
- =?us-ascii?Q?GF7fd/Fjmsh5GaKsO9qsZ3fYjvb7QtHH36TUW5kckjmpjY8ehTzzLzk5OvAN?=
- =?us-ascii?Q?mLrjX8EXIc1lHYN+YQeVgk/eJCjmQpziXW/SvtkLOTTFy8qcjudznrxlavrv?=
- =?us-ascii?Q?OeF3JclShJBtJP7OeSES8XPWogEXNA4F4TgNiIvOym3W58eaOT/GMTjjWOkx?=
- =?us-ascii?Q?I4n+adScYbNcK/ZOo0FwrqjiFrF4/WAYJALPFgnG7NphFh4hxKAwUvARfdrG?=
- =?us-ascii?Q?pWbgA8YBbEsgUi5nShyPE2Uj4sAHnb4eqNVKCWBsHA9JtBUhMkcTmST90D2l?=
- =?us-ascii?Q?4N04OzbyJiS6a9NtfMLRXsUeckpJX5oT/vT6pfjSrqRmaFIRe7UvrCWB25au?=
- =?us-ascii?Q?Lq080ZXh7PKAHSspTD17xac0eukAzUUs3LGfstaUTeO4HqjX5RfG6HU9mi6h?=
- =?us-ascii?Q?s0WtetW0DvE71CFsBmWx7SMFiu4gbcUoBAYBlfp2/QJU/hWiM2TT9/CVZbnc?=
- =?us-ascii?Q?j19iHCTk7qrdbfU6Ls2viIcSqTtTw3y3amLOj+GCmxRWOHfo5RNqoX6hFfoD?=
- =?us-ascii?Q?1/GgI6xB0P3D9Nwt2+whYBlavawRO0Q/5ik7fGmOxpp7pEl3lC8MKgkBWRne?=
- =?us-ascii?Q?ub5ZtRHdn1pYf6M+TgvcT8z7nNU/Xexj6uLnqvU4JJN+q/nOSAV9UKgnE27U?=
- =?us-ascii?Q?gVFgA6rdrgw7AzeernnCgi4qeoTfRmq17am391U1cfkjy+zQllQcF780GASO?=
- =?us-ascii?Q?T468AmkG6Mit6WcYNWduygd8GMGHveTm6s9Kckgzcee4YD03Ic3wHL/6DlmT?=
- =?us-ascii?Q?O/NHFgmC5hp3BCh4fRtix65nw+VCNXZHGxGLYvo3yXXPR8zdF1wO+cYBdtWZ?=
- =?us-ascii?Q?sHUDIDoY4wx2RAFL1CitahNDZq1Y3pspl6Ylw2yUqDLtl3JXN3qDFKgbur50?=
- =?us-ascii?Q?nIU9ayKftBte5i9uX9A/B0dHs/+HonW36tTSKG4JteYe8BlZEg2E5lurLVnw?=
- =?us-ascii?Q?8uV01m0tdxqTv7ooXHLFF5c6J9ndIlx8beLDds1Nszqo9EZNLnJziMRmqpyo?=
- =?us-ascii?Q?w30hhmiZupI/Wgq5tGCAX/cs1ZIXuAdwRv1CX6h9d6MEebhBy71iNmlvMn7D?=
- =?us-ascii?Q?WhNZvn29cijCswig+xfAe00KIWkv61kTd6LMI2x6Ua5f+ZV8kTLZcsH+9Kn/?=
- =?us-ascii?Q?8OuBQlc0VaIfMdPg3ZSbhh2tJHNSzd8MrK4C3lMbh5+/F+qt1GclRWUAaP0E?=
- =?us-ascii?Q?Ka//aZJk6smjtFPvSs6L4kNDup3kDO+NymCe7x3+IFpMUD1x1AVqHkd5PV68?=
- =?us-ascii?Q?wtD894/BzRVRDPZqiQyg1cVB3X03SVudlVgd6HuunCg2Z3ys/W49tqO6kMQg?=
- =?us-ascii?Q?T8IaKeNEiML7tXVXJ1OIOdLYDsTBhzYJLCSfQ8OXjsx3E5uBFmkdTRzReWsM?=
- =?us-ascii?Q?lYXmiKiVJq5uNA77euaAIj8ixJog+XlzXPoc0p5FCRmj2usWmHGsvK7ZLaIm?=
- =?us-ascii?Q?v2Q7zrJAw86CrrdL9kbjYIDUZ5apS5D8EKAfLdJCTq1ZOyb2wCbZmexYnOe3?=
- =?us-ascii?Q?l/YgEq+HWVvmPq4tpz+HrwTajsGYJwT0ePZDbnVgsosklQqvzxcmjml8LD9o?=
- =?us-ascii?Q?eA=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eCqCkFY9yoq+3d3fhm4lpvwsqmgeDd/fHHTSsFmW4e4JdAeaoxuGyZ/MDB1d?=
+ =?us-ascii?Q?vuAbZBqwTBG1QOaGiJpqoW0rT310PILDqFzmHlrnL55fWZ4VHmlutPJm8uQl?=
+ =?us-ascii?Q?YI1qvpbsftzNAOV8nxaeV7tTdqxgPmYomdH/eg/rHnJRDhazywqICyAhymd6?=
+ =?us-ascii?Q?2rqYOOdBlNZ9ozOVp71OcQG5JI1K6ryrx2DrxnpxGzprbSYDwytybQBMKwiT?=
+ =?us-ascii?Q?9a2S4b1o8o88NBTFZcgnzXUH3PoGuHY5JPTCChzs44i/VTLDSckqNrtPs5up?=
+ =?us-ascii?Q?Jj8YDAo5wqlboKF11GAunURI9wFhlPP0UkrtMu9p0uM519tUdMfMJSjS+NNx?=
+ =?us-ascii?Q?xF2eaO+jWl+N7rX1B6m4aMMssprj6gLJGd8NUIBw8qo623SLIH8l2d/XdsPC?=
+ =?us-ascii?Q?sod/lwXEBUNCzSZLu0p1IW5QDVC1gAvgBBAP5hLBfnOJq2X/oz1GYjPrNuPH?=
+ =?us-ascii?Q?arIQUwwbTvv5Z1+KZv5U1eEWR0YnMzE3vbieee14FrRGr2EWoiB73lYf+Kws?=
+ =?us-ascii?Q?yysDEBBihfEgSFfRhh9FFTcMz5z0sRvLPKxUKail57svlSW3LPs4cBZM7jVY?=
+ =?us-ascii?Q?ZadoIc0f4PY3Fz6e21CQfOO8C+bGZjg+/9+yu1jIFkE+mX6iv8vpVhKiiJag?=
+ =?us-ascii?Q?5IoPnwSCM7TtwC9Y2zu6L2VO123L7OMe5HkjSqyF/koI/nhc8qNFWgLX0cWW?=
+ =?us-ascii?Q?o+xGNoFU5dZM18IwTvbVqGorSbiJWHuLIJfxf+4fvcnVVWy/sqvznA1Luw+N?=
+ =?us-ascii?Q?nVrN+knC+t9kAdik3C3XsdMvWI9IvdE26xh00hm7yjC0B1UAVbzqdOjsCbAr?=
+ =?us-ascii?Q?4AMfwb+04r2Z6j/bRVDzSsXm6yXZwwHKAyaDo0r+XNOeTjLPYmXryU21HfXs?=
+ =?us-ascii?Q?4CO/rWjlDMggfXFGCd8ZrM91a1KjrQBa5o4fm8JmtDgO1oV9XGD+Gr9AhZQ0?=
+ =?us-ascii?Q?xhg/zaKMyxjldxSTmInxnf1eIsLJS3FQM1sZHjBjegPPssL7+L9POuXdX8O5?=
+ =?us-ascii?Q?scIWzgW/ArY86D2BkpJwG7ZAUe7OxsbjyeSLYMjhLx+gIt7niG6Ni27Bhu8Z?=
+ =?us-ascii?Q?oP5EE+aNmMQWn1Y6ONi+3+ny9IqRttj6gbBMc6JYKd9C5zB5RB/8b6T5VCpO?=
+ =?us-ascii?Q?D4VkhqGPcw1otP7S/RTOmAX3XQhfChEQbV9foDp/FHztp5XuL4jsAPU6TxXV?=
+ =?us-ascii?Q?fe/ZuQf8+M17WcgXTmI9sQNUck+UM8gNAmZwnc65RZL65/zjCkwSqTOEa/Yi?=
+ =?us-ascii?Q?qIAXx403eaLCNRclKt1lAvIntpZnMYZqIYCfk3zzcoAUJhnhDuEWht3+coyD?=
+ =?us-ascii?Q?RTJQcu8sHzxJqhn0/yOlxNj0yQ+sYiS8EA9zNmADpkUMYD2NQWbF6mm5s/ex?=
+ =?us-ascii?Q?/qvogHAv0kQzY4upY8RZwg/FsSRwW/5tVZiSU56tmPE3Ip73J/trFCodg15C?=
+ =?us-ascii?Q?kIRII1+jYSyp/+1sGJdgbU8o+OKRhTY+6jpddXzGYLu8AoOm3IeoL4XeOSst?=
+ =?us-ascii?Q?Z7JWxSZdXYCfSStHnUwPjE8Af0rEBs9foX0MgIj6IEFsSa03HfEwmwshiZRe?=
+ =?us-ascii?Q?KYR9kyCeAS1AyyUX06z16xRpknAKf9tRu58TkmFJV3iErEhMWIEWoebtRhUp?=
+ =?us-ascii?Q?cw=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?XmjvLwO4a8Kc4zYvogh86qqiiUdeA9dFGPYmRDM+uBM4vJHiWqXwxNeQSFn3?=
- =?us-ascii?Q?p3DI2DFXCxLitzffjCDdfxXvDXPTXSeknb0kclVkYIXFU3TSAzx56dASeq3H?=
- =?us-ascii?Q?S9FI15YB2NvFK8LYitR3s6WEC6vs2ZgVoJxsu55cOp8xQrdqeCKSLpkxW2ZY?=
- =?us-ascii?Q?l6jFbjyhiaUe68COK66hD7aMm+pbl2iDv1CBZAxKmHFFVVEB7nby2yCGPC6F?=
- =?us-ascii?Q?s/NtnYmxZryANoDja9CAi7cWbvNOveEILea3xQyC4VDIZvIfoB8oyTp2ihzC?=
- =?us-ascii?Q?VSJae22LtKMl0DflPstsvc/MvrR7nNogolReFag0zD9w5TcHtbY2d4bntrlS?=
- =?us-ascii?Q?qoAzKF1zKaUG8GNz3YwX37vaUly/B4qA7ecqJhXLoLcxLzaYad/zqclF/0yf?=
- =?us-ascii?Q?pyIvsMQ73fEpU0lo43DtiRBv0iMj+c0X/bV6NpFnawELtECk5hYbRK/m8iew?=
- =?us-ascii?Q?nKLn4iwhTgmkDiqTm0ajFrlJZWd/7MZkuOgWmmmOM8uPpzCsiRs5nOuCuoI5?=
- =?us-ascii?Q?6KdKp8g/mqSqnEFdXtxCRnpsYdRilVy61+d+6OI2mK4y2f1KJLX0XGGs4jS5?=
- =?us-ascii?Q?thgXSrDRUNXoQfR5aMIlKt+UiU7fCqXFXpn7ddTTBZ+YESHt4+onfpH6154V?=
- =?us-ascii?Q?BeSn4A42vzPWVscpIYMMgzFDdO2Hel8AurJWe7nzvRYlmE0rFB+5Y5GubTs6?=
- =?us-ascii?Q?mbRglI8XDQA4ynvR4CPnFWdrDBZqx8pYZYiM561KKeJNfhSyuCFEtbZkFXs/?=
- =?us-ascii?Q?khdEB9IwnFLlKN9mMOmvVw1A2AkqAiUyI8+WBRtkrcCi+CWLtzp5SyEupIkh?=
- =?us-ascii?Q?JcR1UJ7uZzE/RpEkIYjgqbSZsI1fhktVEqcT87yWP6L/DHCAAO1tc7xmEBa4?=
- =?us-ascii?Q?8msMeesaIjS+ejDhrbJ3rkghbM8EyPs9jJ4TmLNlFDuCdF3uwspAJnRV7aKF?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?And98HhwN9GpNKOSTTQmdGzu+basCTUsEaVXerHziQzA0IPnepBingC8OHYk?=
+ =?us-ascii?Q?1mnvDtGzIKKrBixNlaAsJyPo/a6hNDgdG5vRQsqDpA1peXbxjOMMM8yh6M6e?=
+ =?us-ascii?Q?J8+0auLxs7vdpMjZxabw/s2ymdflghSX8dDjcUt+dykPecerNPISE/DMHxHG?=
+ =?us-ascii?Q?TyIL+fHxyQ95DhOwhqw8iRs8W1movnBCDaTxPktrb59yNqENaNsmGfJUfaBq?=
+ =?us-ascii?Q?PcyMDuNwZSw48ro3Lm4+UIWTha9rMOqH2hgSShMPO1eXnvRcFIUBGUuC70Fu?=
+ =?us-ascii?Q?nthmlX+uDDoZO//qo5ec8SsXt4SQgExHZiQcOkdehyJCPyYUjLWvlQXtIOJo?=
+ =?us-ascii?Q?Ghp11+LdCMrddDthBCJB4JfYcnj9XysRFSFcEGqnG4e3Okk2vS4YU9PRpXjL?=
+ =?us-ascii?Q?YzkqF5AcIaNlv0rUAUljwJ+g+Qsvwqhvtc9Y6nEWL57mFWt/9jrTvRiQswwt?=
+ =?us-ascii?Q?6CYiUTCUCcHHBlssFXeN2WExG7W4QZi9AOYBfYH9nfPReEILiuC/hkoMVM0d?=
+ =?us-ascii?Q?HtaGo0wOcKSYKFwVTErS0U6wt9iV3JwCNoccqD3pkkgELnpfH2sybHNiVXMb?=
+ =?us-ascii?Q?U6oIUpwgjR/eNOjLMT1IYv6bJEP+kc49WFhlSSfSibw89tIoiFk4BfX1QVvm?=
+ =?us-ascii?Q?xf7rrWAP9RVWWiYscE1DnMQSMAw9dv2OV1csvMm1lQN4/e8tbqLuDG9SpE+Q?=
+ =?us-ascii?Q?c9tYVx/YQLklufmg3U5fmx/wCu5Dc2wrfBf+NjDvUBCFzfC4om5jG8+VWwkX?=
+ =?us-ascii?Q?OBzGV+eLKxYQH23e+38fHIAO6darGT1kakiVCY0fNiO+P/Fo8sgr4NRfnqva?=
+ =?us-ascii?Q?uuFyg5/iqoKJ3TCiXP+eZRkuMafVy8RcdWQzLWBCGR2pqzH2Q0OVC6/u0KwR?=
+ =?us-ascii?Q?Wtf2Yda41UvE+BO0JQkkoDkKHPTRkCLw23qQ8CaeKBBPtPh/ZU5XGdrxqMIm?=
 X-OriginatorOrg: calian.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6858644-a11c-4b34-f2f4-08dbb5690938
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bfdb4e4-7ba3-4206-c9dd-08dbb5690a1d
 X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB8838.CANPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 21:24:53.5521
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 21:24:55.0508
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 23b57807-562f-49ad-92c4-3bb0f07a1fdf
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p7alNhJZacKd0rZLTucU4UFWMSL2dsPocXwpa7SaYoENWNgFBsZ3IX4yNfjM35hFgnH2ifqygo5fwPXBcGL3Z7zYd2ihxa5/aaNaIp170Ko=
+X-MS-Exchange-CrossTenant-UserPrincipalName: NF/xsNus+AbPlojRhxt045ly/FmtYftlqlgzYywVOXy8aXjubtEhcj5v0ooafomOvl+2+5APtWPzTI06aZzVVQbyHJiAIqr9bPSBhXYhQD4=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB5551
-X-Proofpoint-ORIG-GUID: 5b9Z5CGz1R_UX4JsFoXzO4EtBXbXz_DG
-X-Proofpoint-GUID: 5b9Z5CGz1R_UX4JsFoXzO4EtBXbXz_DG
+X-Proofpoint-ORIG-GUID: bLmTvQQ6rMJZ5Z2LgIwr_UuahbmM4bwS
+X-Proofpoint-GUID: bLmTvQQ6rMJZ5Z2LgIwr_UuahbmM4bwS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-14_12,2023-09-14_01,2023-05-22_02
@@ -154,50 +154,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In the probe function, the driver was reading out the thresholds already
-set in the core, which can be configured by the user in the Vivado tools
-when the FPGA image is built. However, it later clobbered those values
-with zero or maximum values. In particular, the overtemperature shutdown
-threshold register was overwritten with the max value, which effectively
-prevents the FPGA from shutting down when the desired threshold was
-eached, potentially risking hardware damage in that case.
+The driver was previously using offset and scale values for the
+temperature sensor readings which were only valid for 7-series devices.
+Add per-device-type values for offset and scale and set them appropriately
+for each device type.
 
-Remove this code to leave the preconfigured default threshold values
-intact.
+Note that the values used for the UltraScale family are for UltraScale+
+(i.e. the SYSMONE4 primitive) using the internal reference, as that seems
+to be the most common configuration and the device tree values Xilinx's
+device tree generator produces don't seem to give us anything to tell us
+which configuration is used. However, the differences within the UltraScale
+family seem fairly minor and it's closer than using the 7-series values
+instead in any case.
 
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
+Fixes: c2b7720a7905 ("iio: xilinx-xadc: Add basic support for Ultrascale System Monitor")
 Signed-off-by: Robert Hancock <robert.hancock@calian.com>
 ---
- drivers/iio/adc/xilinx-xadc-core.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ drivers/iio/adc/xilinx-xadc-core.c | 17 ++++++++++++++---
+ drivers/iio/adc/xilinx-xadc.h      |  2 ++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index dba73300f894..88d523ac7881 100644
+index 88d523ac7881..1c6314dd4d1d 100644
 --- a/drivers/iio/adc/xilinx-xadc-core.c
 +++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1429,22 +1429,6 @@ static int xadc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+@@ -456,6 +456,9 @@ static const struct xadc_ops xadc_zynq_ops = {
+ 	.interrupt_handler = xadc_zynq_interrupt_handler,
+ 	.update_alarm = xadc_zynq_update_alarm,
+ 	.type = XADC_TYPE_S7,
++	/* Temp in C = (val * 503.975) / 2**bits - 273.15 */
++	.temp_scale = 503975,
++	.temp_offset = 273150,
+ };
  
--	/* Set thresholds to min/max */
--	for (i = 0; i < 16; i++) {
--		/*
--		 * Set max voltage threshold and both temperature thresholds to
--		 * 0xffff, min voltage threshold to 0.
--		 */
--		if (i % 8 < 4 || i == 7)
--			xadc->threshold[i] = 0xffff;
--		else
--			xadc->threshold[i] = 0;
--		ret = xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(i),
--			xadc->threshold[i]);
--		if (ret)
--			return ret;
--	}
--
- 	/* Go to non-buffered mode */
- 	xadc_postdisable(indio_dev);
+ static const unsigned int xadc_axi_reg_offsets[] = {
+@@ -566,6 +569,9 @@ static const struct xadc_ops xadc_7s_axi_ops = {
+ 	.interrupt_handler = xadc_axi_interrupt_handler,
+ 	.flags = XADC_FLAGS_BUFFERED | XADC_FLAGS_IRQ_OPTIONAL,
+ 	.type = XADC_TYPE_S7,
++	/* Temp in C = (val * 503.975) / 2**bits - 273.15 */
++	.temp_scale = 503975,
++	.temp_offset = 273150,
+ };
  
+ static const struct xadc_ops xadc_us_axi_ops = {
+@@ -577,6 +583,12 @@ static const struct xadc_ops xadc_us_axi_ops = {
+ 	.interrupt_handler = xadc_axi_interrupt_handler,
+ 	.flags = XADC_FLAGS_BUFFERED | XADC_FLAGS_IRQ_OPTIONAL,
+ 	.type = XADC_TYPE_US,
++	/**
++	 * Values below are for UltraScale+ (SYSMONE4) using internal reference.
++	 * See https://docs.xilinx.com/v/u/en-US/ug580-ultrascale-sysmon
++	 */
++	.temp_scale = 509314,
++	.temp_offset = 280231,
+ };
+ 
+ static int _xadc_update_adc_reg(struct xadc *xadc, unsigned int reg,
+@@ -945,8 +957,7 @@ static int xadc_read_raw(struct iio_dev *indio_dev,
+ 			*val2 = bits;
+ 			return IIO_VAL_FRACTIONAL_LOG2;
+ 		case IIO_TEMP:
+-			/* Temp in C = (val * 503.975) / 2**bits - 273.15 */
+-			*val = 503975;
++			*val = xadc->ops->temp_scale;
+ 			*val2 = bits;
+ 			return IIO_VAL_FRACTIONAL_LOG2;
+ 		default:
+@@ -954,7 +965,7 @@ static int xadc_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		/* Only the temperature channel has an offset */
+-		*val = -((273150 << bits) / 503975);
++		*val = -((xadc->ops->temp_offset << bits) / xadc->ops->temp_scale);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		ret = xadc_read_samplerate(xadc);
+diff --git a/drivers/iio/adc/xilinx-xadc.h b/drivers/iio/adc/xilinx-xadc.h
+index 7d78ce698967..3036f4d613ff 100644
+--- a/drivers/iio/adc/xilinx-xadc.h
++++ b/drivers/iio/adc/xilinx-xadc.h
+@@ -85,6 +85,8 @@ struct xadc_ops {
+ 
+ 	unsigned int flags;
+ 	enum xadc_type type;
++	int temp_scale;
++	int temp_offset;
+ };
+ 
+ static inline int _xadc_read_adc_reg(struct xadc *xadc, unsigned int reg,
 -- 
 2.41.0
 
